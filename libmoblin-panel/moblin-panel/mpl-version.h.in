@@ -1,0 +1,87 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+/* mpl-panel-clutter.c */
+/*
+ * Copyright (c) 2009 Intel Corp.
+ *
+ * Author: Tomas Frydrych <tf@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+#ifndef __MPL_PANEL_VERSION_H__
+#define __MPL_PANEL_VERSION_H__
+
+/**
+ * MOBLIN_PANEL_MAJOR_VERSION:
+ *
+ * The major version of the moblin-panel library (1, if %MOBLIN_PANEL_VERSION is 1.2.3)
+ */
+#define MOBLIN_PANEL_MAJOR_VERSION   (@PLUGIN_MAJOR_VERSION@)
+
+/**
+ * MOBLIN_PANEL_MINOR_VERSION:
+ *
+ * The minor version of the moblin-panel library (2, if %MOBLIN_PANEL_VERSION is 1.2.3)
+ */
+#define MOBLIN_PANEL_MINOR_VERSION   (@PLUGIN_MINOR_VERSION@)
+
+/**
+ * MOBLIN_PANEL_MICRO_VERSION:
+ *
+ * The micro version of the moblin-panel library (3, if %MOBLIN_PANEL_VERSION is 1.2.3)
+ */
+#define MOBLIN_PANEL_MICRO_VERSION   (@PLUGIN_MICRO_VERSION@)
+
+/**
+ * MOBLIN_PANEL_VERSION:
+ *
+ * The full version of the moblin-panel library, like 1.2.3
+ */
+#define MOBLIN_PANEL_VERSION         @PLUGIN_VERSION@
+
+/**
+ * MOBLIN_PANEL_VERSION_S:
+ *
+ * The full version of the moblin-panel library, in string form (suited for
+ * string concatenation)
+ */
+#define MOBLIN_PANEL_VERSION_S       "@PLUGIN_VERSION@"
+
+/**
+ * MOBLIN_PANEL_VERSION_HEX:
+ *
+ * Numerically encoded version of the moblin-panel library, like 0x010203
+ */
+#define MOBLIN_PANEL_VERSION_HEX     ((PLUGIN_MAJOR_VERSION << 24) | \
+                                 (PLUGIN_MINOR_VERSION << 16) | \
+                                 (PLUGIN_MICRO_VERSION << 8))
+
+/**
+ * MOBLIN_PANEL_CHECK_VERSION:
+ * @major: major version, like 1 in 1.2.3
+ * @minor: minor version, like 2 in 1.2.3
+ * @micro: micro version, like 3 in 1.2.3
+ *
+ * Evaluates to %TRUE if the version of the moblin-panel library is greater
+ * than @major, @minor and @micro
+ */
+#define MOBLIN_PANEL_CHECK_VERSION(major,minor,micro) \
+        (MOBLIN_PANEL_MAJOR_VERSION > (major) || \
+         (MOBLIN_PANEL_MAJOR_VERSION == (major) && MOBLIN_PANEL_MINOR_VERSION > (minor)) || \
+         (MOBLIN_PANEL_MAJOR_VERSION == (major) && MOBLIN_PANEL_MINOR_VERSION == (minor) && MOBLIN_PANEL_MICRO_VERSION >= (micro)))
+
+#endif /* __MPL_PANEL_VERSION_H__ */

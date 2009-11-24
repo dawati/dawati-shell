@@ -27,6 +27,18 @@ AC_CONFIG_MACRO_DIR([build/autotools])
 AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 
 AM_INIT_AUTOMAKE([dist-bzip2])
+
+PLUGIN_MAJOR_VERSION=plugin_major_version
+PLUGIN_MINOR_VERSION=plugin_minor_version
+PLUGIN_MICRO_VERSION=plugin_micro_version
+PLUGIN_VERSION=plugin_version
+PLUGIN_API_VERSION=plugin_api_version
+AC_SUBST(PLUGIN_MAJOR_VERSION)
+AC_SUBST(PLUGIN_MINOR_VERSION)
+AC_SUBST(PLUGIN_MICRO_VERSION)
+AC_SUBST(PLUGIN_VERSION)
+AC_SUBST(PLUGIN_API_VERSION)
+
 AM_CONFIG_HEADER([config.h])
 
 GETTEXT_PACKAGE=mutter-moblin-netbook-plugin
@@ -156,6 +168,7 @@ tests/Makefile
 libmoblin-panel/Makefile
 libmoblin-panel/moblin-panel.pc
 libmoblin-panel/moblin-panel/Makefile
+libmoblin-panel/moblin-panel/mpl-version.h
 libmoblin-panel/theme/Makefile
 libmoblin-panel/tests/Makefile
 ])

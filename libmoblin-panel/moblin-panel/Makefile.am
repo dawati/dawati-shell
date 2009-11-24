@@ -3,6 +3,7 @@ lib_LTLIBRARIES = libmoblin-panel.la
 
 libmoblin_panel_includedir = $(includedir)/libmoblin-panel/moblin-panel
 libmoblin_panel_include_HEADERS = \
+	mpl-version.h \
 	mpl-entry.h \
 	mpl-icon-theme.h \
 	mpl-panel-client.h \
