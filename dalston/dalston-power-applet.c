@@ -367,18 +367,22 @@ dalston_power_applet_update_battery_state (DalstonPowerApplet *applet)
   if (ac_connected)
   {
     mpl_panel_client_request_button_style (priv->panel_client, "state-plugged");
-  } else if (percentage < 0) {
-    mpl_panel_client_request_button_style (priv->panel_client, "state-missing");
-  } else if (percentage < 20) {
-    mpl_panel_client_request_button_style (priv->panel_client, "state-empty");
-  } else if (percentage >= 20 && percentage < 35) {
-    mpl_panel_client_request_button_style (priv->panel_client, "state-25");
-  } else if (percentage >= 35 && percentage < 60) {
-    mpl_panel_client_request_button_style (priv->panel_client, "state-50");
-  } else if (percentage >= 60 && percentage < 90){
-    mpl_panel_client_request_button_style (priv->panel_client, "state-75");
+    mpl_panel_client_request_tooltip (priv->panel_client, _("power connected"));
   } else {
-    mpl_panel_client_request_button_style (priv->panel_client, "state-full");
+    mpl_panel_client_request_tooltip (priv->panel_client, _("battery"));
+    if (percentage < 0) {
+      mpl_panel_client_request_button_style (priv->panel_client, "state-missing");
+    } else if (percentage < 20) {
+      mpl_panel_client_request_button_style (priv->panel_client, "state-empty");
+    } else if (percentage >= 20 && percentage < 35) {
+      mpl_panel_client_request_button_style (priv->panel_client, "state-25");
+    } else if (percentage >= 35 && percentage < 60) {
+      mpl_panel_client_request_button_style (priv->panel_client, "state-50");
+    } else if (percentage >= 60 && percentage < 90){
+      mpl_panel_client_request_button_style (priv->panel_client, "state-75");
+    } else {
+      mpl_panel_client_request_button_style (priv->panel_client, "state-full");
+    }
   }
 
   if (percentage < 0) {
