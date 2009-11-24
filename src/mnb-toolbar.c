@@ -1722,8 +1722,7 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
       panel  = mnb_panel_oop_new (name,
                                   TOOLBAR_X_PADDING, TOOLBAR_HEIGHT,
                                   screen_width - TOOLBAR_X_PADDING * 2,
-                                  screen_height - 1.5 * TOOLBAR_HEIGHT -
-                                  MNB_DROP_DOWN_TOP_PADDING);
+                                  screen_height - TOOLBAR_HEIGHT);
 
       if (panel)
         {
@@ -2507,7 +2506,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
      */
     mnb_panel_set_size (panel,
                         screen_width - TOOLBAR_X_PADDING * 2,
-                        screen_height - TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA);
+                        screen_height - TOOLBAR_HEIGHT);
   }
 }
 
