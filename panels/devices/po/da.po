@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: dalston\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-23 18:44+0000\n"
-"PO-Revision-Date: 2009-11-24 22:59+0100\n"
+"PO-Revision-Date: 2009-11-25 08:20+0100\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgid ""
 "We've noticed that your battery is running a bit low. If you can it would be "
 "a good idea to plug in and top up."
 msgstr ""
-"Vi har bemærker at dit batteri næsten er tomt. Hvis du kan, vil det være en "
+"Vi har bemærket at dit batteri næsten er tomt. Hvis du kan, vil det være en "
 "god idé at sætte stikket i og lade op."
 
 #: ../dalston/dalston-power-applet.c:280
@@ -51,8 +51,8 @@ msgid ""
 "You're running quite low on battery. It'd be a good idea to save all your "
 "work and plug in as soon as you can"
 msgstr ""
-"Du kører på ret lav batteri. Det vil være en god idé at gemme alt dit arbejde "
-"og sætte stikket i så snart du kan"
+"Du kører på ret lavt batteriniveau. Det vil være en god idé at gemme alt dit arbejde "
+"og sætte stikket i, så snart du kan"
 
 #: ../dalston/dalston-power-applet.c:282
 msgid "Danger!"
@@ -72,7 +72,7 @@ msgstr "Beklager, det ser ud som om dit batteri er i stykker."
 
 #: ../dalston/dalston-power-applet.c:412
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "Dit batteri er fuldt opladet og du har klar til at køre."
+msgstr "Dit batteri er fuldt opladet og du har klar til at gå i gang."
 
 #: ../dalston/dalston-power-applet.c:415
 #, c-format
@@ -82,11 +82,11 @@ msgstr "Dit batteri oplader. Det er omkring <b>%d</b>%% fuldt."
 #: ../dalston/dalston-power-applet.c:422
 #, c-format
 msgid "Your battery is being used. It is about <b>%d</b>%% full."
-msgstr "Dit batteri bliver brugt. Det er omrking <b>%d</b>%% fuldt."
+msgstr "Dit batteri bliver brugt. Det er omkring <b>%d</b>%% fuldt."
 
 #: ../dalston/dalston-power-applet.c:430
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr "Beklager, det ser ikke ud til at du har et batteri installeret."
+msgstr "Beklager, det ser ikke ud til, at du har et batteri installeret."
 
 #: ../dalston/dalston-power-applet.c:515
 msgid "Display brightness"
@@ -151,7 +151,7 @@ msgstr "Sluk"
 
 #: ../dalston/dalston-volume-pane.c:258
 msgid "Output volume"
-msgstr "Outputlydstyrkeniveau"
+msgstr "Lydstyrke for output"
 
 #: ../dalston/dalston-volume-pane.c:302
 msgid "Mute"
@@ -203,7 +203,7 @@ msgstr "Lydløs"
 
 #: ../libgvc/gvc-mixer-control.c:97
 msgid "GNOME Volume Control"
-msgstr "GNOME lydstyrkekontrol"
+msgstr "Lydstyrkekontrol for GNOME"
 
 #: ../libgvc/gvc-mixer-control.c:1020
 msgid "System Sounds"
@@ -260,4 +260,4 @@ msgstr "Sæt computeren til at sove når den har været inaktiv i:"
 
 #: ../data/dalston-power-settings-capplet.desktop.in.h:2
 msgid "Settings for adjusting power usage"
-msgstr "Indstillinger for justering af strømbrug"
+msgstr "Indstillinger for justering af strømforbrug"
