@@ -91,20 +91,24 @@ static gboolean
 change_button_style_cb (gpointer data)
 {
   static int count = 0;
-  static int height = 800;
+  static int height = 520;
 
   MplPanelClient *panel = MPL_PANEL_CLIENT (data);
 
   count++;
   height -= 10;
 
+  if (height < 100)
+    height = 520;
+
   if (count % 2)
     mpl_panel_client_request_button_style (panel, "state2");
   else
     mpl_panel_client_request_button_style (panel, "state1");
 
+#if 1
   mpl_panel_client_set_height_request (panel, height);
-
+#endif
   return TRUE;
 }
 
