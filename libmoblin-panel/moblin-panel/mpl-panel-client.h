@@ -79,7 +79,6 @@ typedef struct
   void (*request_focus)        (MplPanelClient *panel);
   void (*request_button_style) (MplPanelClient *panel, const gchar *style);
   void (*request_tooltip)      (MplPanelClient *panel, const gchar *tooltip);
-
 } MplPanelClientClass;
 
 GType mpl_panel_client_get_type (void);

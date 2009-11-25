@@ -54,7 +54,6 @@ enum
   PROP_STYLESHEET,
   PROP_BUTTON_STYLE,
   PROP_XID,
-
   PROP_TOOLBAR_SERVICE
 };
 
@@ -231,7 +230,7 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
   MplPanelClientPrivate *priv = self->priv;
   guint real_height = height;
 
-  g_debug ("%s called", __FUNCTION__);
+  g_debug ("dbus init: %d,%d;%dx%d", x, y, width, height);
 
   if (!priv->xid)
     return FALSE;
@@ -391,7 +390,7 @@ mnb_panel_dbus_ping (MplPanelClient *self, GError **error)
 static void
 mpl_panel_client_class_init (MplPanelClientClass *klass)
 {
-  GObjectClass     *object_class   = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MplPanelClientPrivate));
 
@@ -446,7 +445,7 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                                                       "XID",
                                                       "XID",
                                                       0, G_MAXUINT,
-                                                      1024,
+                                                      0,
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
 
@@ -1144,4 +1143,3 @@ mpl_panel_client_get_xid (MplPanelClient *panel)
 
   return panel->priv->xid;
 }
-

@@ -151,7 +151,6 @@ mpl_panel_clutter_hide (MplPanelClient *self)
   clutter_actor_hide (priv->stage);
 }
 
-
 static void
 mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
 {
