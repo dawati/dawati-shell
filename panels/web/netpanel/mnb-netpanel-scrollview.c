@@ -347,6 +347,16 @@ mnb_netpanel_scrollview_unmap (ClutterActor *actor)
     clutter_actor_unmap (CLUTTER_ACTOR (priv->scroll_bar));
 }
 
+static gboolean
+mnb_netpanel_scrollview_captured_event (ClutterActor *actor,
+                                        ClutterEvent *event)
+{
+  if (event->type == CLUTTER_BUTTON_PRESS)
+    moblin_netbook_netpanel_button_press (clutter_actor_get_parent (actor));
+
+  return FALSE;
+}
+
 static void
 mnb_netpanel_scrollview_class_init (MnbNetpanelScrollviewClass *klass)
 {
@@ -367,6 +377,7 @@ mnb_netpanel_scrollview_class_init (MnbNetpanelScrollviewClass *klass)
   actor_class->pick = mnb_netpanel_scrollview_pick;
   actor_class->map = mnb_netpanel_scrollview_map;
   actor_class->unmap = mnb_netpanel_scrollview_unmap;
+  actor_class->captured_event = mnb_netpanel_scrollview_captured_event;
 }
 
 static gboolean

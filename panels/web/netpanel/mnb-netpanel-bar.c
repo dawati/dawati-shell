@@ -466,7 +466,6 @@ mnb_netpanel_bar_key_press_event_cb (GObject         *obj,
 
 static void
 mnb_netpanel_bar_key_focus_out_cb (GObject         *obj,
-                                   ClutterKeyEvent *event,
                                    MnbNetpanelBar  *self)
 {
   mnb_netpanel_bar_set_show_auto_complete (self, FALSE);
@@ -517,7 +516,7 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
                     G_CALLBACK (mnb_netpanel_bar_activate_cb), self);
   g_signal_connect (actor, "key-press-event",
                     G_CALLBACK (mnb_netpanel_bar_key_press_event_cb), self);
-  g_signal_connect (entry, "key-focus-out",
+  g_signal_connect (actor, "key-focus-out",
                     G_CALLBACK (mnb_netpanel_bar_key_focus_out_cb), self);
   g_signal_connect (actor, "button-press-event",
                     G_CALLBACK(mnb_netpanel_bar_button_press_cb),
