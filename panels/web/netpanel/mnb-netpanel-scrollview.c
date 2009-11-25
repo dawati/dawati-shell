@@ -19,6 +19,7 @@
  */
 
 #include "mnb-netpanel-scrollview.h"
+#include "moblin-netbook-netpanel.h"
 #include "mwb-utils.h"
 
 /* FIXME: replace with styles or properties */
