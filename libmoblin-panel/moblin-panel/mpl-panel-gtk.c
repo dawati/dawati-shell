@@ -84,17 +84,29 @@ mpl_panel_gtk_finalize (GObject *object)
 static void
 mpl_panel_gtk_set_size (MplPanelClient *self, guint width, guint height)
 {
-  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (self)->priv;
+  MplPanelGtkPrivate  *priv = MPL_PANEL_GTK (self)->priv;
+  MplPanelClientClass *p_class;
+
+  p_class = MPL_PANEL_CLIENT_CLASS (mpl_panel_gtk_parent_class);
 
   gtk_window_resize (GTK_WINDOW (priv->window), width, height);
+
+  if (p_class->set_size)
+    p_class->set_size (self, width, height);
 }
 
 static void
 mpl_panel_gtk_set_position (MplPanelClient *self, gint x, gint y)
 {
-  MplPanelGtkPrivate *priv = MPL_PANEL_GTK (self)->priv;
+  MplPanelGtkPrivate  *priv = MPL_PANEL_GTK (self)->priv;
+  MplPanelClientClass *p_class;
+
+  p_class = MPL_PANEL_CLIENT_CLASS (mpl_panel_gtk_parent_class);
 
   gtk_window_move (GTK_WINDOW (priv->window), x, y);
+
+  if (p_class->set_position)
+    p_class->set_position (self, x, y);
 }
 
 static void

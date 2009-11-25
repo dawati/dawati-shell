@@ -106,6 +106,9 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
   XSizeHints              hints;
+  MplPanelClientClass    *p_class;
+
+  p_class = MPL_PANEL_CLIENT_CLASS (mpl_panel_clutter_parent_class);
 
   hints.min_width = width;
   hints.min_height = height;
@@ -120,6 +123,9 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
 
   clutter_actor_set_size (priv->stage, width, height);
   clutter_stage_ensure_viewport (CLUTTER_STAGE (priv->stage));
+
+  if (p_class->set_size)
+    p_class->set_size (self, width, height);
 }
 
 static void
@@ -127,12 +133,18 @@ mpl_panel_clutter_set_position (MplPanelClient *self, gint x, gint y)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   Display                *xdpy = clutter_x11_get_default_display ();
+  MplPanelClientClass    *p_class;
+
+  p_class = MPL_PANEL_CLIENT_CLASS (mpl_panel_clutter_parent_class);
 
   MPL_X_ERROR_TRAP ();
 
   XMoveWindow (xdpy, priv->xwindow, x, y);
 
   MPL_X_ERROR_UNTRAP ();
+
+  if (p_class->set_position)
+    p_class->set_position (self, x, y);
 }
 
 static void
