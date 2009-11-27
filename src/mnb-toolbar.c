@@ -902,8 +902,6 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
 
-  g_debug ("%s", __FUNCTION__);
-
   if (CLUTTER_IS_ACTOR (panel))
     {
       clutter_actor_raise_top (priv->lowlight);
