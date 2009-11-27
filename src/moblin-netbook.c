@@ -552,7 +552,7 @@ moblin_netbook_panel_frame_footer_cb (MnbPanelFrame *frame, MutterWindow *mcw)
 
   if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
     {
-      mnb_panel_hide (panel);
+      mnb_panel_hide_with_toolbar (panel);
     }
 }
 
