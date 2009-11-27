@@ -107,8 +107,6 @@ void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
 
 gboolean mnb_toolbar_owns_window (MnbToolbar *toolbar, MutterWindow *mcw);
 
-void mnb_toolbar_hide_panel_and_self (MnbToolbar *self, MnbPanel *panel);
-
 G_END_DECLS
 
 #endif /* _MNB_TOOLBAR */
