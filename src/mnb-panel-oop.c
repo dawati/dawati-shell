@@ -934,8 +934,6 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
                     G_CALLBACK (mnb_panel_oop_mutter_window_destroy_cb),
                     panel);
 
-  g_object_set (mcw, "no-shadow", TRUE, NULL);
-
   priv->mapped = TRUE;
 
   mnb_panel_oop_show_animate (panel);
