@@ -272,6 +272,33 @@ find_services (void)
   g_object_unref (proxy);
 }
 
+static void
+show_network_panel (void)
+{
+  DBusGConnection *session_bus;
+  GError *error = NULL;
+  DBusGProxy *proxy;
+
+  session_bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (connection == NULL) {
+    g_printerr ("Cannot connect to DBus: %s\n", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  proxy = dbus_g_proxy_new_for_name (session_bus,
+                                     "org.moblin.UX.Shell.Toolbar",
+                                     "/org/moblin/UX/Shell/Toolbar",
+                                     "org.moblin.UX.Shell.Toolbar");
+
+  dbus_g_proxy_call_no_reply (proxy, "ShowPanel",
+                              G_TYPE_STRING, "network", G_TYPE_INVALID);
+  /* Need to flush because we're out of the main loop by now */
+  dbus_g_connection_flush (connection);
+
+  g_object_unref (proxy);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -317,6 +344,8 @@ main (int argc, char **argv)
 
   state = STATE_START;
   state_machine ();
+
+  show_network_panel ();
 
   return 0;
 }
