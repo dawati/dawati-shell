@@ -71,6 +71,10 @@ static const gchar * mnb_panel_oop_get_button_style (MnbPanel *panel);
 static const gchar  *mnb_panel_oop_get_stylesheet    (MnbPanel *panel);
 static void mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height);
 static void mnb_panel_oop_show (MnbPanel *panel);
+static void mnb_panel_oop_button_toggled_cb (NbtkWidget *button,
+                                             GParamSpec *pspec,
+                                             MnbPanel   *panel);
+static void mnb_panel_oop_show_animate      (MnbPanelOop *panel);
 
 enum
 {
@@ -84,10 +88,8 @@ enum
 enum
 {
   READY,
-  REQUEST_BUTTON_STYLE,
-  REQUEST_TOOLTIP,
   REMOTE_PROCESS_DIED,
-  SET_SIZE,
+
   LAST_SIGNAL
 };
 
@@ -104,10 +106,7 @@ struct _MnbPanelOopPrivate
   gchar           *stylesheet;
   gchar           *button_style_id;
   guint            xid;
-  guint            child_xid;
   gchar           *child_class;
-
-  GtkWidget       *window;
 
   guint            width;
   guint            height;
@@ -188,28 +187,9 @@ void
 mnb_panel_oop_focus (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
-  MetaDisplay        *display;
-  MutterPlugin       *plugin = moblin_netbook_get_plugin_singleton ();
-  guint32             timestamp;
-
-  display   = meta_screen_get_display (mutter_plugin_get_screen (plugin));
-  timestamp = meta_display_get_current_time_roundtrip (display);
-
-  meta_error_trap_push (display);
-
-  XRaiseWindow (meta_display_get_xdisplay (display), priv->xid);
-  XSync (meta_display_get_xdisplay (display), False);
 
   if (priv->mcw)
-    meta_display_set_input_focus_window (display,
-                                     mutter_window_get_meta_window (priv->mcw),
-                                     FALSE,
-                                     timestamp);
-
-  XSetInputFocus (meta_display_get_xdisplay (display), priv->child_xid,
-                  RevertToPointerRoot, timestamp);
-
-  meta_error_trap_pop (display, TRUE);
+    moblin_netbook_activate_mutter_window (priv->mcw);
 }
 
 /*
@@ -218,7 +198,7 @@ mnb_panel_oop_focus (MnbPanelOop *panel)
 static void
 mnb_panel_oop_request_focus_cb (DBusGProxy *proxy, MnbPanelOop *panel)
 {
-  if (!CLUTTER_ACTOR_IS_MAPPED (panel))
+  if (!mnb_panel_is_mapped ((MnbPanel*)panel))
     {
       g_warning ("Panel %s requested focus while not visible !!!",
                  mnb_panel_oop_get_name ((MnbPanel*)panel));
@@ -226,18 +206,6 @@ mnb_panel_oop_request_focus_cb (DBusGProxy *proxy, MnbPanelOop *panel)
     }
 
   mnb_panel_oop_focus (panel);
-}
-
-static void
-mnb_panel_oop_request_show_cb (DBusGProxy *proxy, MnbPanelOop *panel)
-{
-  clutter_actor_show (CLUTTER_ACTOR (panel));
-}
-
-static void
-mnb_panel_oop_request_hide_cb (DBusGProxy *proxy, MnbPanelOop *panel)
-{
-  mnb_panel_hide_with_toolbar ((MnbPanel*)panel);
 }
 
 static void
@@ -250,7 +218,7 @@ mnb_panel_oop_request_button_style_cb (DBusGProxy  *proxy,
   g_free (priv->button_style_id);
   priv->button_style_id = g_strdup (style_id);
 
-  g_signal_emit (panel, signals[REQUEST_BUTTON_STYLE], 0, style_id);
+  g_signal_emit_by_name (panel, "request-button-style", style_id);
 }
 
 static void
@@ -263,40 +231,21 @@ mnb_panel_oop_request_tooltip_cb (DBusGProxy  *proxy,
   g_free (priv->tooltip);
   priv->tooltip = g_strdup (tooltip);
 
-  g_signal_emit (panel, signals[REQUEST_TOOLTIP], 0, tooltip);
+  g_signal_emit_by_name (panel, "request-tooltip", tooltip);
 }
 
 static void
-mnb_panel_oop_set_size_cb (DBusGProxy *proxy,
-                           guint       width,
-                           guint       height,
-                           MnbPanelOop   *panel)
+mnb_panel_oop_set_size_cb (DBusGProxy  *proxy,
+                           guint        width,
+                           guint        height,
+                           MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
-  GtkWidget          *socket;
-  GdkWindow          *socket_win;
-
-  if (!priv->window)
-    return;
 
   priv->width  = width;
   priv->height = height;
 
-  /*
-   * Resize our top-level window to match. If the window is hidden, move it
-   * so that we can be sure it is entirely off screen.
-   */
-  if (!CLUTTER_ACTOR_IS_VISIBLE (panel))
-    gtk_window_move (GTK_WINDOW (priv->window),
-                     TOOLBAR_X_PADDING, -(height + 100));
-
-  gtk_window_resize (GTK_WINDOW (priv->window), width, height);
-
-  if ((socket = gtk_bin_get_child (GTK_BIN (priv->window))) &&
-      (socket_win = gtk_socket_get_plug_window (GTK_SOCKET (socket))))
-    gdk_window_resize (socket_win, width, height);
-
-  g_signal_emit (panel, signals[SET_SIZE], 0, width, height);
+  g_debug (G_STRLOC " Panel resized to %dx%d", width, height);
 }
 
 static void
@@ -304,13 +253,6 @@ mnb_panel_oop_dispose (GObject *self)
 {
   MnbPanelOopPrivate *priv   = MNB_PANEL_OOP (self)->priv;
   DBusGProxy         *proxy  = priv->proxy;
-  GtkWidget          *window = priv->window;
-
-  if (priv->window)
-    {
-      priv->window = NULL;
-      gtk_widget_destroy (window);
-    }
 
   if (proxy)
     {
@@ -336,6 +278,14 @@ mnb_panel_oop_dispose (GObject *self)
     {
       dbus_g_connection_unref (priv->dbus_conn);
       priv->dbus_conn = NULL;
+    }
+
+  if (priv->button)
+    {
+      g_signal_handlers_disconnect_by_func (priv->button,
+                                            mnb_panel_oop_button_toggled_cb,
+                                            self);
+      priv->button = NULL;
     }
 
   G_OBJECT_CLASS (mnb_panel_oop_parent_class)->dispose (self);
@@ -382,6 +332,26 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
                                                         G_PARAM_CONSTRUCT_ONLY));
 
   g_object_class_install_property (object_class,
+                                   PROP_X,
+                                   g_param_spec_int ("x",
+                                                     "X coordinate",
+                                                     "X coordiante",
+                                                      0, G_MAXINT,
+                                                      0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+                                   PROP_Y,
+                                   g_param_spec_int ("y",
+                                                     "Y coordinate",
+                                                     "Y coordiante",
+                                                      0, G_MAXINT,
+                                                      0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
                                    PROP_WIDTH,
                                    g_param_spec_uint ("width",
                                                       "Width",
@@ -401,26 +371,6 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
 
-  signals[REQUEST_BUTTON_STYLE] =
-    g_signal_new ("request-button-style",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelOopClass, request_button_style),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_STRING);
-
-  signals[REQUEST_TOOLTIP] =
-    g_signal_new ("request-tooltip",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelOopClass, request_tooltip),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_STRING);
-
   signals[READY] =
     g_signal_new ("ready",
                   G_TYPE_FROM_CLASS (object_class),
@@ -438,17 +388,6 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-
-  signals[SET_SIZE] =
-    g_signal_new ("set-size",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MnbPanelOopClass, set_size),
-                  NULL, NULL,
-                  moblin_netbook_marshal_VOID__UINT_UINT,
-                  G_TYPE_NONE, 2,
-                  G_TYPE_UINT,
-                  G_TYPE_UINT);
 
   dbus_g_object_register_marshaller (moblin_netbook_marshal_VOID__UINT_UINT,
                                      G_TYPE_NONE,
@@ -492,13 +431,6 @@ static void
 mnb_panel_oop_show_completed (MnbPanel *self)
 {
   MnbPanelOopPrivate *priv  = MNB_PANEL_OOP (self)->priv;
-  gfloat           x = 0, y = 0;
-
-  clutter_actor_get_position (CLUTTER_ACTOR (self), &x, &y);
-
-  gtk_window_move (GTK_WINDOW (priv->window),
-                   (gint)x + TOOLBAR_X_PADDING,
-                   (gint)y + MNB_DROP_DOWN_TOP_PADDING);
 
   mnb_panel_oop_focus (MNB_PANEL_OOP (self));
 
@@ -511,7 +443,6 @@ static void
 mnb_panel_oop_hide_begin (MnbPanel *self)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (self)->priv;
-  GtkWidget          *window = priv->window;
 
   priv->hide_in_progress = TRUE;
 
@@ -520,13 +451,6 @@ mnb_panel_oop_hide_begin (MnbPanel *self)
       g_warning (G_STRLOC " No DBus proxy!");
       return;
     }
-
-  /*
-   * We do not hide the window here, only move it off screen; this significantly
-   * improves the Toolbar button response time.
-   */
-  gtk_window_move (GTK_WINDOW (window), TOOLBAR_X_PADDING,
-                   -(priv->height + 100));
 
   org_moblin_UX_Shell_Panel_hide_begin_async (priv->proxy,
                                               mnb_panel_oop_dbus_dumb_reply_cb,
@@ -544,11 +468,6 @@ mnb_panel_oop_hide_completed (MnbPanel *self)
     {
       g_warning (G_STRLOC " No DBus proxy!");
       return;
-    }
-
-  if (priv->window)
-    {
-      gtk_widget_hide (priv->window);
     }
 
   org_moblin_UX_Shell_Panel_hide_end_async (priv->proxy,
@@ -575,34 +494,6 @@ mnb_panel_oop_connect_to_dbus ()
 }
 
 static void
-mnb_panel_oop_socket_size_allocate_cb (GtkWidget     *widget,
-                                       GtkAllocation *allocation,
-                                       gpointer       data)
-{
-  GtkSocket *socket = GTK_SOCKET (widget);
-
-  if (socket->is_mapped)
-    {
-      MnbPanelOopPrivate *priv = MNB_PANEL_OOP (data)->priv;
-
-      /*
-       * If the window is mapped, and we are not currently in the hide
-       * animation, ensure the window position.
-       */
-      if (!priv->hide_in_progress && CLUTTER_ACTOR_IS_MAPPED (data))
-        {
-          gfloat x = 0, y = 0;
-
-          clutter_actor_get_position (CLUTTER_ACTOR (data), &x, &y);
-
-          gtk_window_move (GTK_WINDOW (priv->window),
-                           (gint)x + TOOLBAR_X_PADDING,
-                           (gint)y + MNB_DROP_DOWN_TOP_PADDING);
-        }
-    }
-}
-
-static void
 mnb_panel_oop_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
 {
   MnbPanelOop        *panel = MNB_PANEL_OOP (data);
@@ -615,23 +506,6 @@ mnb_panel_oop_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
   priv->dead = TRUE;
   g_signal_emit (panel, signals[REMOTE_PROCESS_DIED], 0);
   g_object_unref (panel);
-}
-
-static gboolean
-mnb_panel_oop_plug_removed_cb (GtkSocket *socket, gpointer data)
-{
-  MnbPanelOop        *panel = MNB_PANEL_OOP (data);
-  MnbPanelOopPrivate *priv  = panel->priv;
-
-  priv->child_xid = None;
-
-  g_object_ref (panel);
-  priv->ready = FALSE;
-  priv->dead = TRUE;
-  g_signal_emit (panel, signals[REMOTE_PROCESS_DIED], 0);
-  g_object_unref (panel);
-
-  return FALSE;
 }
 
 static void
@@ -647,14 +521,12 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
                                        gpointer    panel)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
-  GtkWidget       *socket;
-  GtkWidget       *window;
 
   if (error)
     {
       g_warning ("Could not initialize Panel %s: %s",
                  mnb_panel_oop_get_name ((MnbPanel*)panel), error->message);
-      clutter_actor_destroy (CLUTTER_ACTOR (panel));
+      g_object_unref (panel);
       return;
     }
 
@@ -675,7 +547,7 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
   g_free (priv->button_style_id);
   priv->button_style_id = g_strdup (button_style_id);
 
-  priv->child_xid = xid;
+  priv->xid = xid;
 
   g_free (priv->child_class);
 
@@ -726,43 +598,6 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
 
     meta_error_trap_pop (display, TRUE);
   }
-
-  /*
-   * If we already have a window, we are being called because the panel has
-   * died on us; we simply destroy the window and start again. (It should be
-   * possible to just destroy the socket and reuse the window (after unmapping
-   * it, but this is simple and robust.)
-   */
-  if (priv->window)
-    {
-      gtk_widget_destroy (priv->window);
-    }
-
-  socket = gtk_socket_new ();
-  priv->window = window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DOCK);
-#if 0
-  gtk_window_set_keep_above (GTK_WINDOW (window), TRUE);
-#endif
-  gtk_window_resize (GTK_WINDOW (window), window_width, window_height);
-
-  gtk_window_move (GTK_WINDOW (window),
-                   TOOLBAR_X_PADDING,
-                   TOOLBAR_HEIGHT + MNB_DROP_DOWN_TOP_PADDING);
-
-  gtk_container_add (GTK_CONTAINER (window), socket);
-  gtk_widget_realize (socket);
-  gtk_socket_add_id (GTK_SOCKET (socket), xid);
-
-  g_signal_connect (socket, "size-allocate",
-                    G_CALLBACK (mnb_panel_oop_socket_size_allocate_cb), panel);
-
-  g_signal_connect (socket, "plug-removed",
-                    G_CALLBACK (mnb_panel_oop_plug_removed_cb), panel);
-
-  gtk_widget_realize (window);
-
-  priv->xid = GDK_WINDOW_XWINDOW (window->window);
 
   priv->ready = TRUE;
   priv->dead = FALSE;
@@ -870,16 +705,6 @@ mnb_panel_oop_setup_proxy (MnbPanelOop *panel)
   /*
    * Hook up to the signals the interface defines.
    */
-  dbus_g_proxy_add_signal (proxy, "RequestShow", G_TYPE_INVALID);
-  dbus_g_proxy_connect_signal (proxy, "RequestShow",
-                               G_CALLBACK (mnb_panel_oop_request_show_cb),
-                               panel, NULL);
-
-  dbus_g_proxy_add_signal (proxy, "RequestHide", G_TYPE_INVALID);
-  dbus_g_proxy_connect_signal (proxy, "RequestHide",
-                               G_CALLBACK (mnb_panel_oop_request_hide_cb),
-                               panel, NULL);
-
   dbus_g_proxy_add_signal (proxy, "RequestFocus", G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestFocus",
                                G_CALLBACK (mnb_panel_oop_request_focus_cb),
@@ -950,23 +775,23 @@ mnb_panel_oop_constructed (GObject *self)
 }
 
 MnbPanelOop *
-mnb_panel_oop_new (MutterPlugin *plugin,
-               const gchar  *dbus_name,
-               guint         width,
-               guint         height)
+mnb_panel_oop_new (const gchar  *dbus_name,
+                   gint          x,
+                   gint          y,
+                   guint         width,
+                   guint         height)
 {
   MnbPanelOop *panel = g_object_new (MNB_TYPE_PANEL_OOP,
-                                  "mutter-plugin", plugin,
-                                  "dbus-name",     dbus_name,
-                                  "width",         width,
-                                  "height",        height,
-                                  NULL);
+                                     "dbus-name",     dbus_name,
+                                     "width",         width,
+                                     "height",        height,
+                                     NULL);
 
   if (!panel->priv->constructed)
     {
       g_warning (G_STRLOC " Construction of Panel for %s failed.", dbus_name);
 
-      clutter_actor_destroy (CLUTTER_ACTOR (panel));
+      g_object_unref (panel);
       return NULL;
     }
 
@@ -1019,26 +844,16 @@ mnb_panel_oop_mutter_window_destroy_cb (ClutterActor *actor, gpointer data)
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (data)->priv;
 
   priv->mcw = NULL;
-
-  clutter_actor_hide (CLUTTER_ACTOR (data));
 }
 
-static void
-mnb_panel_oop_pixmap_size_notify_cb (GObject    *gobject,
-                                     GParamSpec *pspec,
-                                     gpointer    data)
-{
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (data));
-}
-
-/*
- * FIXME
- */
 void
 mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
 {
-  MnbPanelOopPrivate *priv    = panel->priv;
-  ClutterActor    *texture;
+  MnbPanelOopPrivate *priv;
+
+  g_return_if_fail (MNB_IS_PANEL_OOP (panel));
+
+  priv = panel->priv;
 
   if (!mcw)
     {
@@ -1048,40 +863,28 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
                                         mnb_panel_oop_mutter_window_destroy_cb,
                                         panel);
 
-          texture = mutter_window_get_texture (priv->mcw);
-
-          if (texture)
-            g_signal_handlers_disconnect_by_func (texture,
-                                           mnb_panel_oop_pixmap_size_notify_cb,
-                                           panel);
-
           priv->mcw = NULL;
         }
-
-      mnb_drop_down_set_child (MNB_DROP_DOWN (panel), NULL);
 
       return;
     }
 
   if (mcw == priv->mcw)
     return;
-
-  texture = mutter_window_get_texture (mcw);
+  else if (priv->mcw)
+    {
+      g_signal_handlers_disconnect_by_func (priv->mcw,
+                                        mnb_panel_oop_mutter_window_destroy_cb,
+                                        panel);
+    }
 
   priv->mcw = mcw;
 
-  g_object_ref (texture);
-  clutter_actor_unparent (texture);
-  mnb_drop_down_set_child (MNB_DROP_DOWN (panel), texture);
-
-  g_signal_connect (texture, "notify::pixmap-width",
-                    G_CALLBACK (mnb_panel_oop_pixmap_size_notify_cb),
-                    panel);
-  g_signal_connect (texture, "notify::pixmap-height",
-                    G_CALLBACK (mnb_panel_oop_pixmap_size_notify_cb),
-                    panel);
-
-  g_object_unref (texture);
+  if (!mcw)
+    {
+      g_warning (G_STRLOC " Asked to show panel with no MutterWindow !!!");
+      return;
+    }
 
   g_signal_connect (mcw, "destroy",
                     G_CALLBACK (mnb_panel_oop_mutter_window_destroy_cb),
@@ -1089,9 +892,7 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
 
   g_object_set (mcw, "no-shadow", TRUE, NULL);
 
-  clutter_actor_hide (CLUTTER_ACTOR (mcw));
-
-  CLUTTER_ACTOR_CLASS (mnb_panel_oop_parent_class)->show (CLUTTER_ACTOR (panel));
+  mnb_panel_oop_show_animate (panel);
 }
 
 guint
@@ -1106,21 +907,17 @@ mnb_panel_oop_is_ready (MnbPanelOop *panel)
   return panel->priv->ready;
 }
 
-/*
- * FIXME !!!
- */
 static void
 mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
-  gfloat x, y, w, h;
-  gint   wi, hi, hfi;
+  gfloat w, h;
   gboolean h_change = FALSE, w_change = FALSE;
 
   /*
    * Exit if no change
    */
-  clutter_actor_get_size (CLUTTER_ACTOR (panel), &w, &h);
+  clutter_actor_get_size (CLUTTER_ACTOR (priv->mcw), &w, &h);
 
   if ((guint)w != width)
     w_change = TRUE;
@@ -1131,31 +928,7 @@ mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
   if (!w_change && !h_change)
     return;
 
-  mnb_drop_down_get_footer_geometry (MNB_DROP_DOWN (panel), &x, &y, &w, &h);
-
-  /*
-   * Hack: the footer geometry API for some reason returns 0 the first time
-   * we try to show the panel. Probably the panel is not yet fully setup. As
-   * a quick fix, fallback to the default size here, if that happens.
-   */
-  hfi = (gint) h;
-
-  if (!hfi)
-    hfi = TOOLBAR_HEIGHT/2;
-
-  /*
-   * FIXME -- the border and shaddow should not be hardcoded here.
-   */
-  wi = width - 2 * 4;
-  hi = height - hfi - MNB_DROP_DOWN_TOP_PADDING - MNB_DROP_DOWN_SHADOW_HEIGHT;
-
-  if (wi < 0)
-    wi = 0;
-
-  if (hi < 0)
-    hi = 0;
-
-  org_moblin_UX_Shell_Panel_set_size_async (priv->proxy, wi, hi,
+  org_moblin_UX_Shell_Panel_set_size_async (priv->proxy, width, height,
                                             mnb_panel_oop_dbus_dumb_reply_cb,
                                             NULL);
 }
@@ -1345,7 +1118,7 @@ mnb_panel_oop_ensure_size (MnbPanelOop *panel)
     }
 }
 
-void
+static void
 mnb_panel_oop_show_animate (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
@@ -1424,7 +1197,7 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
     g_signal_connect_after (animation,
                             "completed",
                             G_CALLBACK (mnb_panel_oop_show_completed_cb),
-                            mcw);
+                            panel);
   priv->show_anim = animation;
 }
 
@@ -1477,6 +1250,9 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
 
   priv->in_hide_animation = FALSE;
   g_signal_emit_by_name (panel, "hide-completed");
+
+  mutter_plugin_effect_completed (plugin, priv->mcw, MUTTER_PLUGIN_DESTROY);
+
   g_object_unref (priv->mcw);
 }
 
@@ -1577,6 +1353,71 @@ mnb_panel_oop_get_size (MnbPanel *panel, guint *width, guint *height)
 }
 
 static void
+mnb_panel_oop_button_weak_unref_cb (MnbPanelOop *panel, GObject *button)
+{
+  panel->priv->button = NULL;
+}
+
+/*
+ * TODO -- there is obviously a degree of overlap between this and the
+ * MnbDropDown code; see if we could fold it somewhere to avoid duplication.
+ */
+static void
+mnb_panel_oop_button_toggled_cb (NbtkWidget *button,
+                                 GParamSpec *pspec,
+                                 MnbPanel   *panel)
+{
+  if (nbtk_button_get_checked (NBTK_BUTTON (button)))
+    {
+#if 0
+      /*
+       * Must reset the y in case a previous animation ended prematurely
+       * and the y is not set correctly; see bug 900.
+       */
+      clutter_actor_set_y (actor, TOOLBAR_HEIGHT);
+#endif
+      mnb_panel_show (panel);
+    }
+  else
+    mnb_panel_hide (panel);
+}
+
+static void
+mnb_panel_oop_set_button (MnbPanel *panel, NbtkButton *button)
+{
+  MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
+  NbtkButton         *old_button;
+
+  g_return_if_fail (!button || NBTK_IS_BUTTON (button));
+
+  old_button = priv->button;
+  priv->button = button;
+
+  if (old_button)
+    {
+      g_object_weak_unref (G_OBJECT (old_button),
+                           (GWeakNotify) mnb_panel_oop_button_weak_unref_cb,
+                           panel);
+
+      g_signal_handlers_disconnect_by_func (old_button,
+                                 G_CALLBACK (mnb_panel_oop_button_toggled_cb),
+                                 panel);
+    }
+
+  if (button)
+    {
+      g_object_weak_ref (G_OBJECT (button),
+                         (GWeakNotify) mnb_panel_oop_button_weak_unref_cb,
+                         panel);
+
+      g_signal_connect (button,
+                        "notify::checked",
+                        G_CALLBACK (mnb_panel_oop_button_toggled_cb),
+                        panel);
+    }
+}
+
+static void
 mnb_panel_iface_init (MnbPanelIface *iface)
 {
   iface->show             = mnb_panel_oop_show;
@@ -1593,5 +1434,7 @@ mnb_panel_iface_init (MnbPanelIface *iface)
 
   iface->set_size         = mnb_panel_oop_set_size;
   iface->get_size         = mnb_panel_oop_get_size;
+
+  iface->set_button       = mnb_panel_oop_set_button;
 }
 

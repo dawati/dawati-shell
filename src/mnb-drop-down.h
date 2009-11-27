@@ -77,9 +77,6 @@ NbtkWidget*   mnb_drop_down_new (MutterPlugin *plugin);
 void          mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child);
 ClutterActor* mnb_drop_down_get_child (MnbDropDown *drop_down);
 
-
-void          mnb_drop_down_set_button (MnbDropDown *drop_down, NbtkButton *button);
-
 void          mnb_drop_down_get_footer_geometry (MnbDropDown *drop_down,
                                                  gfloat      *x,
                                                  gfloat      *y,

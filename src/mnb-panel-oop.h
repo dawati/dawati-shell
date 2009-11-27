@@ -62,15 +62,13 @@ typedef struct {
 
   void (*ready)                 (MnbPanelOop *panel);
   void (*remote_process_died)   (MnbPanelOop *panel);
-  void (*request_button_style)  (MnbPanelOop *panel, const gchar *style);
-  void (*request_tooltip)       (MnbPanelOop *panel, const gchar *tooltip);
-  void (*set_size)              (MnbPanelOop *panel, guint width, guint height);
 } MnbPanelOopClass;
 
 GType mnb_panel_oop_get_type (void);
 
-MnbPanelOop *mnb_panel_oop_new (MutterPlugin *plugin,
-                                const gchar  *dbus_name,
+MnbPanelOop *mnb_panel_oop_new (const gchar  *dbus_name,
+                                gint          x,
+                                gint          y,
                                 guint         width,
                                 guint         height);
 
@@ -89,7 +87,6 @@ gboolean      mnb_panel_oop_is_ancestor_of_transient (MnbPanelOop     *panel,
 void          mnb_toolbar_ping_panel_oop      (DBusGConnection *dbus_conn,
                                                const gchar     *dbus_name);
 
-void          mnb_panel_oop_show_animate      (MnbPanelOop *panel);
 void          mnb_panel_oop_hide_animate      (MnbPanelOop *panel);
 
 G_END_DECLS

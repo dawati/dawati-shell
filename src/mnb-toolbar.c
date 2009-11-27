@@ -1099,7 +1099,7 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                CLUTTER_ACTOR (panel));
   clutter_actor_set_width (CLUTTER_ACTOR (panel), screen_width);
 
-  mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
+  mnb_panel_set_button (panel, NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
   clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
 }
@@ -1570,8 +1570,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
 
   priv->panels[index] = panel;
 
-  /*FIXME -- use iface, when we have one */
-  mnb_drop_down_set_button (MNB_DROP_DOWN (panel), NBTK_BUTTON (button));
+  mnb_panel_set_button (panel, NBTK_BUTTON (button));
   clutter_actor_set_position (CLUTTER_ACTOR (panel), 0, TOOLBAR_HEIGHT);
   clutter_actor_lower_bottom (CLUTTER_ACTOR (panel));
   clutter_actor_raise (CLUTTER_ACTOR (panel), priv->lowlight);
@@ -1681,7 +1680,8 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
       mutter_plugin_query_screen_size (priv->plugin,
                                        &screen_width, &screen_height);
 
-      panel  = mnb_panel_oop_new (priv->plugin, name,
+      panel  = mnb_panel_oop_new (name,
+                                  0, TOOLBAR_HEIGHT,
                                   screen_width - TOOLBAR_X_PADDING * 2,
                                   screen_height - 1.5 * TOOLBAR_HEIGHT -
                                   MNB_DROP_DOWN_TOP_PADDING);

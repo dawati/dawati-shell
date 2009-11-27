@@ -25,6 +25,7 @@
 #include <clutter/x11/clutter-x11.h>
 
 #include "mnb-switcher-zone.h"
+#include "../mnb-panel.h"
 
 struct _MnbSwitcherZonePrivate
 {

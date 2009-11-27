@@ -1775,6 +1775,25 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 static void
 destroy (MutterPlugin *plugin, MutterWindow *mcw)
 {
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaCompWindowType          type;
+  Window                      xwin;
+
+  type = mutter_window_get_window_type (mcw);
+  xwin = mutter_window_get_x_window (mcw);
+
+  if (type == META_COMP_WINDOW_DOCK)
+    {
+      MnbPanel   *panel;
+      MnbToolbar *toolbar = MNB_TOOLBAR (priv->toolbar);
+
+      if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
+        {
+          mnb_panel_oop_hide_animate (MNB_PANEL_OOP (panel));
+          return;
+        }
+    }
+
   handle_window_destruction (mcw, plugin);
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
@@ -2779,4 +2798,37 @@ moblin_netbook_get_toolbar (MutterPlugin *plugin)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   return priv->toolbar;
+}
+
+gboolean
+moblin_netbook_activate_mutter_window (MutterWindow *mcw)
+{
+  MetaWindow     *window;
+  MetaWorkspace  *workspace;
+  MetaWorkspace  *active_workspace;
+  MetaScreen     *screen;
+  MetaDisplay    *display;
+  guint32         timestamp;
+
+  window           = mutter_window_get_meta_window (mcw);
+  screen           = meta_window_get_screen (window);
+  display          = meta_screen_get_display (screen);
+  workspace        = meta_window_get_workspace (window);
+  active_workspace = meta_screen_get_active_workspace (screen);
+
+  /*
+   * Make sure our stamp is recent enough.
+   */
+  timestamp = meta_display_get_current_time_roundtrip (display);
+
+  if (!active_workspace || (active_workspace == workspace))
+    {
+      meta_window_activate_with_workspace (window, timestamp, workspace);
+    }
+  else
+    {
+      meta_workspace_activate_with_focus (workspace, window, timestamp);
+    }
+
+  return TRUE;
 }

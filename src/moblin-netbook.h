@@ -169,4 +169,7 @@ moblin_netbook_activate_window (MetaWindow *window);
 ClutterActor *
 moblin_netbook_get_toolbar (MutterPlugin *plugin);
 
+gboolean
+moblin_netbook_activate_mutter_window (MutterWindow *mcw);
+
 #endif

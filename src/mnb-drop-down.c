@@ -628,11 +628,11 @@ mnb_drop_down_button_weak_unref_cb (MnbDropDown *drop_down, GObject *button)
   drop_down->priv->button = NULL;
 }
 
-void
-mnb_drop_down_set_button (MnbDropDown *drop_down,
-                          NbtkButton *button)
+static void
+mnb_drop_down_panel_set_button (MnbPanel *panel, NbtkButton *button)
 {
-  NbtkButton *old_button;
+  MnbDropDown *drop_down = MNB_DROP_DOWN (panel);
+  NbtkButton  *old_button;
 
   g_return_if_fail (MNB_IS_DROP_DOWN (drop_down));
   g_return_if_fail (!button || NBTK_IS_BUTTON (button));
@@ -729,5 +729,7 @@ mnb_panel_iface_init (MnbPanelIface *iface)
 
   iface->set_size         = mnb_drop_down_panel_set_size;
   iface->get_size         = mnb_drop_down_panel_get_size;
+
+  iface->set_button       = mnb_drop_down_panel_set_button;
 }
 

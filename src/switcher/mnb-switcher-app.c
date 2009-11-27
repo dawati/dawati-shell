@@ -441,20 +441,15 @@ mnb_switcher_app_activate (MnbSwitcherItem *item)
 {
   MnbSwitcherAppPrivate *priv   = MNB_SWITCHER_APP (item)->priv;
   MnbSwitcher           *switcher;
-  MetaWindow            *window;
 
   switcher = mnb_switcher_item_get_switcher (MNB_SWITCHER_ITEM (item));
-
-  window           = mutter_window_get_meta_window (priv->mw);
 
   mnb_switcher_end_kbd_grab (switcher);
   clutter_ungrab_pointer ();
 
   mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));
 
-  moblin_netbook_activate_window (window);
-
-  return TRUE;
+  return moblin_netbook_activate_mutter_window (priv->mw);
 }
 
 /*
