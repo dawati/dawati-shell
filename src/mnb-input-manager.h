@@ -53,4 +53,7 @@ MnbInputRegion *mnb_input_manager_push_region (gint          x,
 void            mnb_input_manager_remove_region (MnbInputRegion  *mir);
 void            mnb_input_manager_remove_region_without_update (MnbInputRegion  *mir);
 void            mnb_input_manager_push_window (MutterWindow *mcw, MnbInputLayer layer);
+void            mnb_input_manager_push_actor  (ClutterActor *actor, MnbInputLayer layer);
+void            mnb_input_manager_push_oop_panel (MutterWindow *mcw);
+
 #endif

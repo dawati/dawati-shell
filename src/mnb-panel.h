@@ -29,6 +29,7 @@
 #include <dbus/dbus-glib.h>
 
 #include "mnb-drop-down.h"
+#include "mnb-input-manager.h"
 
 G_BEGIN_DECLS
 
@@ -83,31 +84,32 @@ typedef struct {
 
 GType mnb_panel_get_type (void);
 
-const gchar * mnb_panel_get_name          (MnbPanel *panel);
-const gchar * mnb_panel_get_tooltip       (MnbPanel *panel);
-const gchar * mnb_panel_get_stylesheet    (MnbPanel *panel);
-const gchar * mnb_panel_get_button_style  (MnbPanel *panel);
-void          mnb_panel_set_size          (MnbPanel *panel,
-                                           guint     width,
-                                           guint     height);
-void          mnb_panel_get_size          (MnbPanel *panel,
-                                           guint    *width,
-                                           guint    *height);
-void          mnb_panel_set_position      (MnbPanel *panel,
-                                           gint      x,
-                                           gint      y);
-void          mnb_panel_get_position      (MnbPanel *panel,
-                                           gint     *x,
-                                           gint     *y);
-void          mnb_panel_show              (MnbPanel *panel);
-void          mnb_panel_hide              (MnbPanel *panel);
-void          mnb_panel_hide_with_toolbar (MnbPanel *panel);
+const gchar *    mnb_panel_get_name          (MnbPanel *panel);
+const gchar *    mnb_panel_get_tooltip       (MnbPanel *panel);
+const gchar *    mnb_panel_get_stylesheet    (MnbPanel *panel);
+const gchar *    mnb_panel_get_button_style  (MnbPanel *panel);
+void             mnb_panel_set_size          (MnbPanel *panel,
+                                              guint     width,
+                                              guint     height);
+void             mnb_panel_get_size          (MnbPanel *panel,
+                                              guint    *width,
+                                              guint    *height);
+void             mnb_panel_set_position      (MnbPanel *panel,
+                                              gint      x,
+                                              gint      y);
+void             mnb_panel_get_position      (MnbPanel *panel,
+                                              gint     *x,
+                                              gint     *y);
+void             mnb_panel_show              (MnbPanel *panel);
+void             mnb_panel_hide              (MnbPanel *panel);
+void             mnb_panel_hide_with_toolbar (MnbPanel *panel);
 
-gboolean      mnb_panel_is_mapped         (MnbPanel *panel);
+gboolean         mnb_panel_is_mapped         (MnbPanel *panel);
 
-void          mnb_panel_set_button        (MnbPanel *panel, NbtkButton *button);
+void             mnb_panel_set_button        (MnbPanel   *panel,
+                                              NbtkButton *button);
 
-void          mnb_panel_ensure_size       (MnbPanel *panel);
+void             mnb_panel_ensure_size       (MnbPanel *panel);
 
 G_END_DECLS
 

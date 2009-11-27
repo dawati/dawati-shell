@@ -179,7 +179,7 @@ struct _MnbToolbarPrivate
   gboolean panel_input_only  : 1; /* Set when the region below panels should not
                                    * be included in the panel input region.
                                    */
-  MnbInputRegion *dropdown_region;
+
   MnbInputRegion *trigger_region;  /* The show panel trigger region */
   MnbInputRegion *input_region;    /* The panel input region on the region
                                    * stack.
@@ -242,12 +242,6 @@ mnb_toolbar_dispose (GObject *object)
     {
       g_object_unref (priv->dbus_conn);
       priv->dbus_conn = NULL;
-    }
-
-  if (priv->dropdown_region)
-    {
-      mnb_input_manager_remove_region (priv->dropdown_region);
-      priv->dropdown_region = NULL;
     }
 
   if (priv->input_region)
@@ -470,12 +464,6 @@ mnb_toolbar_hide (MnbToolbar *toolbar)
     {
       mnb_input_manager_remove_region (priv->input_region);
       priv->input_region = NULL;
-    }
-
-  if (priv->dropdown_region)
-    {
-      mnb_input_manager_remove_region (priv->dropdown_region);
-      priv->dropdown_region = NULL;
     }
 
   priv->in_hide_animation = TRUE;
@@ -944,25 +932,12 @@ mnb_toolbar_panel_show_begin_cb (MnbPanel *panel, MnbToolbar *toolbar)
  * whole panel area.
  */
 static void
-mnb_toolbar_dropdown_show_completed_full_cb (MnbDropDown *dropdown,
-                                             MnbToolbar  *toolbar)
+mnb_toolbar_dropdown_show_completed_full_cb (MnbPanel   *panel,
+                                             MnbToolbar *toolbar)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
-  MutterPlugin      *plugin = priv->plugin;
-  gfloat             w, h;
-  gint               screen_width, screen_height;
+  g_assert (CLUTTER_IS_ACTOR (panel));
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  clutter_actor_get_transformed_size (CLUTTER_ACTOR (dropdown), &w, &h);
-
-  if (priv->dropdown_region)
-    mnb_input_manager_remove_region_without_update (priv->dropdown_region);
-
-  priv->dropdown_region =
-    mnb_input_manager_push_region (0, TOOLBAR_HEIGHT,
-                                   (guint)w, screen_height-TOOLBAR_HEIGHT,
-                                   FALSE, MNB_INPUT_LAYER_PANEL);
+  mnb_input_manager_push_actor (CLUTTER_ACTOR (panel), MNB_INPUT_LAYER_PANEL);
 
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
 }
@@ -971,39 +946,26 @@ static void
 mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
                                                 MnbToolbar  *toolbar)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
-  guint              panel_width, panel_height;
-  gint               screen_width, screen_height;
+  MutterWindow *mcw;
 
-  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
+  g_assert (MNB_IS_PANEL_OOP (panel));
 
-  mnb_panel_get_size (panel, &panel_width, &panel_height);
+  mcw = mnb_panel_oop_get_mutter_window ((MnbPanelOop*)panel);
 
-  if (priv->dropdown_region)
-    mnb_input_manager_remove_region_without_update (priv->dropdown_region);
-
-  priv->dropdown_region =
-    mnb_input_manager_push_region (0, TOOLBAR_HEIGHT + panel_height,
-                                   screen_width,
-                                   screen_height -
-                                   (TOOLBAR_HEIGHT + panel_height),
-                                   FALSE, MNB_INPUT_LAYER_PANEL);
+  if (!mcw)
+    g_warning ("Completed show on panel with no window ?!");
+  else
+    mnb_input_manager_push_oop_panel (mcw);
 
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
 }
 
 static void
-mnb_toolbar_dropdown_hide_completed_cb (MnbDropDown *dropdown, MnbToolbar  *toolbar)
+mnb_toolbar_dropdown_hide_completed_cb (MnbPanel *panel, MnbToolbar  *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
-
-  if (priv->dropdown_region)
-    {
-      mnb_input_manager_remove_region (priv->dropdown_region);
-      priv->dropdown_region = NULL;
-    }
 
   moblin_netbook_stash_window_focus (plugin, CurrentTime);
 
@@ -1274,6 +1236,7 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
   MutterPlugin      *plugin;
   gfloat             x, y,w, h;
   gint               screen_width, screen_height;
+  MnbInputRegion    *region;
 
   /*
    * If this panel is visible, we need to update the input region to match
@@ -1289,21 +1252,23 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  if (priv->dropdown_region)
-    mnb_input_manager_remove_region_without_update (priv->dropdown_region);
+  region = mnb_panel_get_input_region (panel);
+
+  if (region)
+    mnb_input_manager_remove_region_without_update (region);
 
   if (priv->panel_input_only)
-    priv->dropdown_region =
-      mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
-                                     (guint)w, (guint)h,
-                                     FALSE, MNB_INPUT_LAYER_PANEL);
+    region = mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
+                                            (guint)w, (guint)h,
+                                            FALSE, MNB_INPUT_LAYER_PANEL);
   else
-    priv->dropdown_region =
-      mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
-                                     (guint)w,
-                                     screen_height -
-                                     (TOOLBAR_HEIGHT+(gint)y),
-                                     FALSE, MNB_INPUT_LAYER_PANEL);
+    region = mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
+                                            (guint)w,
+                                            screen_height -
+                                            (TOOLBAR_HEIGHT+(gint)y),
+                                            FALSE, MNB_INPUT_LAYER_PANEL);
+
+  mnb_panel_set_input_region (panel, region);
 }
 #endif
 
