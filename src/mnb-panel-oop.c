@@ -262,8 +262,6 @@ mnb_panel_oop_set_size_cb (DBusGProxy  *proxy,
 
   priv->width  = width;
   priv->height = height;
-
-  g_debug (G_STRLOC " Panel resized to %dx%d", width, height);
 }
 
 static void
@@ -276,8 +274,6 @@ mnb_panel_oop_set_position_cb (DBusGProxy  *proxy,
 
   priv->x = x;
   priv->y = y;
-
-  g_debug (G_STRLOC " Panel moved to %dx%d", x, y);
 }
 
 static void
@@ -639,7 +635,6 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
 
             priv->child_class = g_strdup (r_prop + len0 + 1);
 
-            g_debug ("child class %s", priv->child_class);
             XFree (r_prop);
           }
       }
@@ -1053,7 +1048,6 @@ mnb_panel_oop_is_ancestor_of_transient (MnbPanelOop *panel, MutterWindow *mcw)
 static void
 mnb_panel_oop_dbus_ping_cb (DBusGProxy *proxy, GError *error, gpointer data)
 {
-  g_debug ("Ping to %s acknowledged", (gchar*)data);
   g_free (data);
 }
 
@@ -1348,6 +1342,7 @@ mnb_panel_oop_button_toggled_cb (NbtkWidget *button,
        */
       clutter_actor_set_y (actor, TOOLBAR_HEIGHT);
 #endif
+
       mnb_panel_show (panel);
     }
   else
