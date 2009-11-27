@@ -1253,6 +1253,14 @@ mnb_switcher_get_button_style (MnbPanel *panel)
   return "zones-button";
 }
 
+static gboolean
+mnb_switcher_is_mapped (MnbPanel *panel)
+{
+  g_return_val_if_fail (MNB_IS_SWITCHER (panel), FALSE);
+
+  return CLUTTER_ACTOR_IS_MAPPED (panel);
+}
+
 static void
 mnb_panel_iface_init (MnbPanelIface *iface)
 {
@@ -1261,5 +1269,7 @@ mnb_panel_iface_init (MnbPanelIface *iface)
   iface->get_button_style = mnb_switcher_get_button_style;
 
   iface->set_size         = mnb_switcher_set_size;
+
+  iface->is_mapped        = mnb_switcher_is_mapped;
 }
 

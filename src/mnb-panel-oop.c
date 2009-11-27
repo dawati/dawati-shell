@@ -121,6 +121,7 @@ struct _MnbPanelOopPrivate
   /*
    * The show/hide machinery
    */
+  gboolean         mapped            : 1;
   gboolean         in_show_animation : 1;
   gboolean         in_hide_animation : 1;
   gboolean         hide_toolbar      : 1;
@@ -392,6 +393,9 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
   dbus_g_object_register_marshaller (moblin_netbook_marshal_VOID__UINT_UINT,
                                      G_TYPE_NONE,
                                      G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INVALID);
+  dbus_g_object_register_marshaller (moblin_netbook_marshal_VOID__INT_INT,
+                                     G_TYPE_NONE,
+                                     G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID);
 }
 
 static void
@@ -892,6 +896,8 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
 
   g_object_set (mcw, "no-shadow", TRUE, NULL);
 
+  priv->mapped = TRUE;
+
   mnb_panel_oop_show_animate (panel);
 }
 
@@ -1331,6 +1337,8 @@ mnb_panel_oop_hide (MnbPanel *panel)
       return;
     }
 
+  priv->mapped = FALSE;
+
   org_moblin_UX_Shell_Panel_hide_async (priv->proxy,
                                         mnb_panel_oop_dbus_dumb_reply_cb,
                                         NULL);
@@ -1417,6 +1425,60 @@ mnb_panel_oop_set_button (MnbPanel *panel, NbtkButton *button)
     }
 }
 
+static gboolean
+mnb_panel_oop_is_mapped (MnbPanel *panel)
+{
+  MnbPanelOopPrivate *priv;
+
+  g_return_val_if_fail (MNB_IS_PANEL_OOP (panel), FALSE);
+
+  priv = MNB_PANEL_OOP (panel)->priv;
+
+  return priv->mapped;
+}
+
+static void
+mnb_panel_oop_set_position (MnbPanel *panel, gint x, gint y)
+{
+  MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
+  gfloat xf, yf;
+  gboolean x_change = FALSE, y_change = FALSE;
+
+  /*
+   * Exit if no change
+   */
+  clutter_actor_get_position (CLUTTER_ACTOR (priv->mcw), &xf, &yf);
+
+  if ((guint)xf != x)
+    x_change = TRUE;
+
+  if ((guint)yf != y)
+    y_change = TRUE;
+
+  if (!x_change && !y_change)
+    return;
+
+  org_moblin_UX_Shell_Panel_set_position_async (priv->proxy, x, y,
+                                            mnb_panel_oop_dbus_dumb_reply_cb,
+                                            NULL);
+}
+
+static void
+mnb_panel_oop_get_position (MnbPanel *panel, gint *x, gint *y)
+{
+  MnbPanelOopPrivate  *priv = MNB_PANEL_OOP (panel)->priv;
+  gfloat               xf = 0.0, yf = 0.0;
+
+  if (priv->mcw)
+    clutter_actor_get_position (CLUTTER_ACTOR (priv->mcw), &xf, &yf);
+
+  if (x)
+    *x = xf;
+
+  if (y)
+    *y = yf;
+}
+
 static void
 mnb_panel_iface_init (MnbPanelIface *iface)
 {
@@ -1434,7 +1496,11 @@ mnb_panel_iface_init (MnbPanelIface *iface)
 
   iface->set_size         = mnb_panel_oop_set_size;
   iface->get_size         = mnb_panel_oop_get_size;
+  iface->set_position     = mnb_panel_oop_set_position;
+  iface->get_position     = mnb_panel_oop_get_position;
 
   iface->set_button       = mnb_panel_oop_set_button;
+
+  iface->is_mapped        = mnb_panel_oop_is_mapped;
 }
 

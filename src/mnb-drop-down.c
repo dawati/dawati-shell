@@ -722,6 +722,26 @@ mnb_drop_down_panel_get_size (MnbPanel *panel, guint *width, guint *height)
 }
 
 static void
+mnb_drop_down_panel_set_position (MnbPanel *panel, gint x, gint y)
+{
+  clutter_actor_set_position (CLUTTER_ACTOR (panel), x, y);
+}
+
+static void
+mnb_drop_down_panel_get_position (MnbPanel *panel, gint *x, gint *y)
+{
+  gfloat xf, yf;
+
+  clutter_actor_get_position (CLUTTER_ACTOR (panel), &xf, &yf);
+
+  if (x)
+    *x = xf;
+
+  if (y)
+    *y = yf;
+}
+
+static void
 mnb_panel_iface_init (MnbPanelIface *iface)
 {
   iface->show             = mnb_drop_down_panel_show;
@@ -729,6 +749,8 @@ mnb_panel_iface_init (MnbPanelIface *iface)
 
   iface->set_size         = mnb_drop_down_panel_set_size;
   iface->get_size         = mnb_drop_down_panel_get_size;
+  iface->set_position     = mnb_drop_down_panel_set_position;
+  iface->get_position     = mnb_drop_down_panel_get_position;
 
   iface->set_button       = mnb_drop_down_panel_set_button;
 }
