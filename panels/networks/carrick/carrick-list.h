@@ -84,8 +84,6 @@ void carrick_list_set_notification_manager (CarrickList                *list,
                                             CarrickNotificationManager *notification_manager);
 CarrickNotificationManager *carrick_list_get_notification_manager (CarrickList *list);
 
-void carrick_list_update (CarrickList *list, const GList *services);
-
 void carrick_list_set_fallback (CarrickList *list);
 
 G_END_DECLS

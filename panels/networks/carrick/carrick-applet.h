@@ -63,7 +63,6 @@ GType carrick_applet_get_type (void);
 
 CarrickApplet* carrick_applet_new (void);
 GtkWidget* carrick_applet_get_pane (CarrickApplet *applet);
-GtkWidget* carrick_applet_get_icon (CarrickApplet *applet);
 
 G_END_DECLS
 
