@@ -91,6 +91,7 @@ enum
 {
   READY,
   REMOTE_PROCESS_DIED,
+  DESTROY,
 
   LAST_SIGNAL
 };
@@ -319,6 +320,8 @@ mnb_panel_oop_dispose (GObject *self)
       priv->button = NULL;
     }
 
+  g_signal_emit (self, signals[DESTROY], 0);
+
   G_OBJECT_CLASS (mnb_panel_oop_parent_class)->dispose (self);
 }
 
@@ -419,6 +422,17 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  signals[DESTROY] =
+    g_signal_new ("destroy",
+		  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_CLEANUP |
+                  G_SIGNAL_NO_RECURSE  |
+                  G_SIGNAL_NO_HOOKS,
+		  0,
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 
   dbus_g_object_register_marshaller (moblin_netbook_marshal_VOID__UINT_UINT,
                                      G_TYPE_NONE,
