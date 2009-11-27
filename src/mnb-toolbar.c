@@ -1139,10 +1139,10 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                CLUTTER_ACTOR (panel));
   clutter_actor_set_width (CLUTTER_ACTOR (panel),
-                           screen_width - TOOLBAR_X_PADDING * 2);
+                           screen_width);
 
   mnb_panel_set_button (panel, NBTK_BUTTON (button));
-  mnb_panel_set_position (panel, TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
+  mnb_panel_set_position (panel, 0, TOOLBAR_HEIGHT);
 }
 
 static void
