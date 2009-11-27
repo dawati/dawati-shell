@@ -1078,7 +1078,6 @@ mnb_panel_oop_show_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
     }
 
   g_signal_emit_by_name (panel, "show-completed");
-  g_object_unref (priv->mcw);
 }
 
 static void
@@ -1111,10 +1110,7 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
     }
 
   if (priv->in_show_animation)
-    {
-      g_signal_stop_emission_by_name (panel, "show");
-      return;
-    }
+    return;
 
   if (priv->hide_completed_id)
     {
@@ -1160,8 +1156,6 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
 
   priv->in_show_animation = TRUE;
 
-  g_object_ref (mcw);
-
   animation = clutter_actor_animate (mcw, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
                                      "x", x,
@@ -1182,10 +1176,7 @@ mnb_panel_oop_show (MnbPanel *panel)
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
 
   if (priv->in_show_animation)
-    {
-      g_signal_stop_emission_by_name (panel, "show");
-      return;
-    }
+    return;
 
   if (priv->hide_completed_id)
     {
@@ -1226,7 +1217,6 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
   priv->in_hide_animation = FALSE;
   g_signal_emit_by_name (panel, "hide-completed");
 
-  g_object_unref (priv->mcw);
   mutter_plugin_effect_completed (plugin, priv->mcw, MUTTER_PLUGIN_DESTROY);
 }
 
@@ -1244,10 +1234,7 @@ mnb_panel_oop_hide_animate (MnbPanelOop *panel)
     }
 
   if (priv->in_hide_animation)
-    {
-      g_signal_stop_emission_by_name (panel, "hide");
-      return;
-    }
+    return;
 
   priv->in_hide_animation = TRUE;
 
@@ -1278,8 +1265,6 @@ mnb_panel_oop_hide_animate (MnbPanelOop *panel)
         nbtk_button_set_checked (priv->button, FALSE);
     }
 
-  g_object_ref (mcw);
-
   animation = clutter_actor_animate (mcw, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
                                      "y", -clutter_actor_get_height (mcw),
@@ -1300,10 +1285,7 @@ mnb_panel_oop_hide (MnbPanel *panel)
   MnbPanelOopPrivate  *priv = MNB_PANEL_OOP (panel)->priv;
 
   if (priv->in_hide_animation)
-    {
-      g_signal_stop_emission_by_name (panel, "hide");
-      return;
-    }
+    return;
 
   priv->mapped = FALSE;
 
