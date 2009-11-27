@@ -20,6 +20,8 @@
  */
 
 
+#include <X11/XF86keysym.h>
+#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <libnotify/notify.h>
@@ -37,6 +39,120 @@
 #define PADDING 4
 
 #define PKG_THEMEDIR PKG_DATADIR"/theme"
+
+static guint _battery_key_code = 0;
+static gboolean _panel_is_visible = FALSE;
+
+static gboolean
+window_grab_key (GdkWindow *window,
+                 guint      key_code)
+{
+  Display *dpy = GDK_DISPLAY ();
+  guint    mask = AnyModifier;
+  gint     ret;
+
+  gdk_error_trap_push ();
+
+  ret = XGrabKey (dpy, key_code, mask, GDK_WINDOW_XID (window), True,
+                  GrabModeAsync, GrabModeAsync);
+  if (BadAccess == ret)
+  {
+    g_warning ("%s: 'BadAccess' grabbing key %d",
+               G_STRLOC,
+               key_code);
+    return FALSE;
+  }
+
+  /* grab the lock key if possible */
+  ret = XGrabKey (dpy, key_code, LockMask | mask, GDK_WINDOW_XID (window), True,
+                  GrabModeAsync, GrabModeAsync);
+  if (BadAccess == ret)
+  {
+    g_warning ("%s: 'BadAccess' grabbing key %d with LockMask",
+               G_STRLOC,
+               key_code);
+    return FALSE;
+  }
+
+  gdk_flush ();
+  gdk_error_trap_pop ();
+
+  return TRUE;
+}
+
+static GdkFilterReturn
+_event_filter_cb (XEvent          *xev,
+                  GdkEvent        *ev,
+                  MplPanelClient  *panel_client)
+{
+  if (xev->type == KeyPress &&
+      xev->xkey.keycode == _battery_key_code)
+  {
+    g_debug ("%s() toggle visibility to %d", __FUNCTION__, !_panel_is_visible);
+    if (_panel_is_visible)
+      mpl_panel_client_request_hide (panel_client);
+    else
+      mpl_panel_client_request_show (panel_client);
+    return GDK_FILTER_REMOVE;
+  }
+
+  return GDK_FILTER_CONTINUE;
+}
+
+static void
+_bind_battery_key (MplPanelClient *panel_client)
+{
+  GdkWindow *root_window;
+
+  _battery_key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_Battery);
+  if (_battery_key_code)
+  {
+    root_window = gdk_screen_get_root_window (gdk_screen_get_default ());
+    window_grab_key (root_window, _battery_key_code);
+    gdk_window_add_filter (root_window,
+                           (GdkFilterFunc) _event_filter_cb,
+                           panel_client);
+  } else {
+    g_warning ("%s : XKeysymToKeycode (%x) failed. "
+               "Battery shortcut not enabled.",
+               G_STRLOC,
+               XF86XK_Battery);
+  }
+}
+
+static gboolean
+_release_battery_key_cb (GtkWidget       *widget,
+                         GdkEvent        *event,
+                         MplPanelClient  *panel_client)
+{
+  GdkWindow *root_window;
+
+  root_window = gdk_screen_get_root_window (gdk_screen_get_default ());
+  gdk_window_remove_filter (root_window,
+                            (GdkFilterFunc) _event_filter_cb,
+                            panel_client);
+
+  XUngrabKey (GDK_DISPLAY (), _battery_key_code,
+              AnyModifier, GDK_WINDOW_XID (root_window));
+  XUngrabKey (GDK_DISPLAY (), _battery_key_code,
+              AnyModifier | LockMask, GDK_WINDOW_XID (root_window));
+
+  return FALSE;
+}
+
+static void
+_panel_show_begin_cb (MplPanelClient  *panel_client,
+                      gpointer         data)
+{
+  _panel_is_visible = TRUE;
+}
+
+static void
+_panel_hide_begin_cb (MplPanelClient  *panel_client,
+                      gpointer         data)
+{
+  _panel_is_visible = FALSE;
+}
 
 static void
 _setup_panel (DalstonBatteryMonitor *monitor)
@@ -61,6 +177,16 @@ _setup_panel (DalstonBatteryMonitor *monitor)
   pane = dalston_power_applet_get_pane (power_applet);
   gtk_container_add (GTK_CONTAINER (window), pane);
   gtk_widget_show (window);
+
+  /* Bind to battery key. */
+  _bind_battery_key (panel_client);
+  g_signal_connect (window, "delete-event",
+                    G_CALLBACK (_release_battery_key_cb), panel_client);
+
+  g_signal_connect (panel_client, "show-begin",
+                    G_CALLBACK (_panel_show_begin_cb), NULL);
+  g_signal_connect (panel_client, "hide-begin",
+                    G_CALLBACK (_panel_hide_begin_cb), NULL);
 }
 
 static void
