@@ -1456,7 +1456,18 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
    */
   if (mutter_window_is_override_redirect (mcw))
     {
+      MetaWindow  *mw       = mutter_window_get_meta_window (mcw);
+      const gchar *wm_class = meta_window_get_wm_class (mw);
+
       mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+
+      /*
+       * If this is a SCIM window, ensure we have an input region for it on the
+       * top of the stack (so that events get through even if a panel is
+       * present).
+       */
+      if (wm_class && !strcmp (wm_class, "Scim-panel-gtk"))
+        mnb_input_manager_push_window (mcw, MNB_INPUT_LAYER_TOP);
     }
   else if (type == META_COMP_WINDOW_DOCK)
     {
