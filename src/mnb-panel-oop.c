@@ -967,16 +967,26 @@ mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
   gfloat w, h;
   gboolean h_change = FALSE, w_change = FALSE;
 
-  /*
-   * Exit if no change
-   */
-  clutter_actor_get_size (CLUTTER_ACTOR (priv->mcw), &w, &h);
+  if (priv->mcw)
+    {
+      /*
+       * Exit if no change
+       */
+      clutter_actor_get_size (CLUTTER_ACTOR (priv->mcw), &w, &h);
 
-  if ((guint)w != width)
-    w_change = TRUE;
+      if ((guint)w != width)
+        w_change = TRUE;
 
-  if ((guint)h != height)
-    h_change = TRUE;
+      if ((guint)h != height)
+        h_change = TRUE;
+    }
+  else
+    {
+      /*
+       * If we have no mutter window yet, just force the dbus call.
+       */
+      w_change = TRUE;
+    }
 
   if (!w_change && !h_change)
     return;
@@ -1403,16 +1413,27 @@ mnb_panel_oop_set_position (MnbPanel *panel, gint x, gint y)
   gfloat xf, yf;
   gboolean x_change = FALSE, y_change = FALSE;
 
-  /*
-   * Exit if no change
-   */
-  clutter_actor_get_position (CLUTTER_ACTOR (priv->mcw), &xf, &yf);
+  if (priv->mcw)
+    {
+      /*
+       * Exit if no change
+       */
+      clutter_actor_get_position (CLUTTER_ACTOR (priv->mcw), &xf, &yf);
 
-  if ((guint)xf != x)
-    x_change = TRUE;
+      if ((guint)xf != x)
+        x_change = TRUE;
 
-  if ((guint)yf != y)
-    y_change = TRUE;
+      if ((guint)yf != y)
+        y_change = TRUE;
+    }
+  else
+    {
+      /*
+       * This is the case when the position of the panel is set while it is
+       * not mapped; force the dbus call.
+       */
+      x_change = TRUE;
+    }
 
   if (!x_change && !y_change)
     return;
