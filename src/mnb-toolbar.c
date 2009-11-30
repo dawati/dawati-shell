@@ -445,10 +445,7 @@ mnb_toolbar_hide (MnbToolbar *toolbar)
   ClutterAnimation  *animation;
 
   if (priv->in_hide_animation)
-    {
-      g_signal_stop_emission_by_name (actor, "hide");
-      return;
-    }
+    return;
 
   clutter_actor_hide (priv->shadow);
 
