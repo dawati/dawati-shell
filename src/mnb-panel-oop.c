@@ -1009,15 +1009,15 @@ mnb_panel_oop_owns_window (MnbPanelOop *panel, MutterWindow *mcw)
 {
   MnbPanelOopPrivate *priv = panel->priv;
   const gchar        *wclass;
+  Window              xid;
 
-  if (!priv->mcw || !mcw)
+  if (!mcw)
     return FALSE;
 
-  /*
-   * Return FALSE for the top level panel window.
-   */
-  if (priv->mcw == mcw)
-    return FALSE;
+  xid = mutter_window_get_x_window (mcw);
+
+  if (xid == priv->xid)
+    return TRUE;
 
   wclass = meta_window_get_wm_class (mutter_window_get_meta_window (mcw));
 
