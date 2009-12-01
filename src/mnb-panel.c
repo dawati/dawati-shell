@@ -34,8 +34,6 @@
                      (vfunc));                                    \
   } G_STMT_END
 
-#define I_(str)  (g_intern_static_string ((str)))
-
 enum
 {
   SHOW_BEGIN,
@@ -135,7 +133,7 @@ mnb_panel_get_type (void)
       };
 
       panel_type = g_type_register_static (G_TYPE_INTERFACE,
-                                           I_("MnbPanel"),
+                                           g_intern_static_string ("MnbPanel"),
                                            &panel_info, 0);
 
       g_type_interface_add_prerequisite (panel_type, G_TYPE_OBJECT);
