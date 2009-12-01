@@ -1143,3 +1143,21 @@ mpl_panel_client_get_xid (MplPanelClient *panel)
 
   return panel->priv->xid;
 }
+
+void
+mpl_panel_client_request_show (MplPanelClient *panel)
+{
+  g_warning ("%s is deprecated use mpl_panel_client_show() instead.",
+             __FUNCTION__);
+
+  mpl_panel_client_show (panel);
+}
+
+void
+mpl_panel_client_request_hide (MplPanelClient *panel)
+{
+  g_warning ("%s is deprecated use mpl_panel_client_hide() instead.",
+             __FUNCTION__);
+
+  mpl_panel_client_hide (panel);
+}
