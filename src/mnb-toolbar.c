@@ -752,12 +752,20 @@ mnb_toolbar_set_waiting_for_panel_hide (MnbToolbar *toolbar, gboolean whether)
  * all others; in the oposite case, we hide the associated panel.
  */
 static void
-mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
+mnb_toolbar_button_toggled_cb (NbtkButton *button,
+                               GParamSpec *pspec,
+                               MnbToolbar *toolbar)
 {
-  MnbToolbar        *toolbar = MNB_TOOLBAR (data);
   MnbToolbarPrivate *priv    = toolbar->priv;
   gint               i;
   gboolean           checked;
+
+  static gboolean    recursion = FALSE;
+
+  if (recursion)
+    return;
+
+  recursion = TRUE;
 
   checked = nbtk_button_get_checked (button);
 
@@ -801,6 +809,8 @@ mnb_toolbar_toggle_buttons (NbtkButton *button, gpointer data)
               }
           }
       }
+
+  recursion = FALSE;
 }
 
 static gint
@@ -1052,11 +1062,11 @@ mnb_toolbar_append_panel_old (MnbToolbar  *toolbar,
                                         BUTTON_WIDTH,
                                         TOOLBAR_HEIGHT);
 
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (mnb_toolbar_toggle_buttons),
+  g_signal_connect (button, "notify::checked",
+                    G_CALLBACK (mnb_toolbar_button_toggled_cb),
                     toolbar);
 
-    {
+  {
       MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
       MetaDisplay *display = meta_screen_get_display (screen);
 
@@ -1542,8 +1552,9 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
                                    CLUTTER_ACTOR (button));
     }
 
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (mnb_toolbar_toggle_buttons), toolbar);
+  g_signal_connect (button, "notify::checked",
+                    G_CALLBACK (mnb_toolbar_button_toggled_cb),
+                    toolbar);
 
   g_signal_connect (panel, "show-completed",
                     G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
