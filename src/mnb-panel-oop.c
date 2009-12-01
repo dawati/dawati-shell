@@ -129,7 +129,7 @@ struct _MnbPanelOopPrivate
   gboolean         mapped            : 1;
   gboolean         in_show_animation : 1;
   gboolean         in_hide_animation : 1;
-  gboolean         hide_toolbar      : 1;
+  gboolean         dont_hide_toolbar : 1;
 
   NbtkButton      *button;
 
@@ -1081,7 +1081,7 @@ mnb_panel_oop_show_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
   MnbPanelOopPrivate *priv = panel->priv;
 
   priv->in_show_animation = FALSE;
-  priv->hide_toolbar = FALSE;
+  priv->dont_hide_toolbar = FALSE;
   priv->show_anim = NULL;
   priv->show_completed_id = 0;
 
@@ -1214,7 +1214,7 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
   priv->hide_anim = NULL;
   priv->hide_completed_id = 0;
 
-  if (priv->hide_toolbar)
+  if (!priv->dont_hide_toolbar)
     {
       /*
        * If the hide_toolbar flag is set, we attempt to hide the Toolbar now
@@ -1225,7 +1225,7 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
       if (toolbar)
         mnb_toolbar_hide ((MnbToolbar*)toolbar);
 
-      priv->hide_toolbar = FALSE;
+      priv->dont_hide_toolbar = FALSE;
     }
 
   priv->in_hide_animation = FALSE;
@@ -1254,7 +1254,7 @@ mnb_panel_oop_hide_animate (MnbPanelOop *panel, MutterWindow *mcw)
       priv->show_anim = NULL;
       priv->show_completed_id = 0;
       priv->in_show_animation = FALSE;
-      priv->hide_toolbar = FALSE;
+      priv->dont_hide_toolbar = FALSE;
 
       if (priv->button)
         {
@@ -1296,6 +1296,16 @@ mnb_panel_oop_hide (MnbPanel *panel)
 
   if (priv->in_hide_animation)
     return;
+
+  /*
+   * Set the dont_hide_toolbar flag, since we are closing the panel internally,
+   * in response to an explicit mnb_panel_hide() call. If we want to hide
+   * both panel and toolbar internally, we use the MnbToolbar API for this.
+   *
+   * (But if the panel hid itself, e.g., because it launched an application,
+   * we hide both panel an toolbar, which is the default behaviour.)
+   */
+  priv->dont_hide_toolbar = TRUE;
 
   priv->mapped = FALSE;
 
