@@ -1628,7 +1628,7 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
 
       if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
         {
-          mnb_panel_oop_hide_animate (MNB_PANEL_OOP (panel));
+          mnb_panel_oop_hide_animate (MNB_PANEL_OOP (panel), mcw);
           return;
         }
     }

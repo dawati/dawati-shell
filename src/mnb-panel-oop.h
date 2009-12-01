@@ -87,7 +87,8 @@ gboolean      mnb_panel_oop_is_ancestor_of_transient (MnbPanelOop     *panel,
 void          mnb_toolbar_ping_panel_oop      (DBusGConnection *dbus_conn,
                                                const gchar     *dbus_name);
 
-void          mnb_panel_oop_hide_animate      (MnbPanelOop *panel);
+void          mnb_panel_oop_hide_animate      (MnbPanelOop  *panel,
+                                               MutterWindow *mcw);
 
 G_END_DECLS
 

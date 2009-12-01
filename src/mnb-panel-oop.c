@@ -1235,20 +1235,16 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
 }
 
 void
-mnb_panel_oop_hide_animate (MnbPanelOop *panel)
+mnb_panel_oop_hide_animate (MnbPanelOop *panel, MutterWindow *mcw)
 {
   MnbPanelOopPrivate  *priv = panel->priv;
   ClutterAnimation    *animation;
-  ClutterActor        *mcw = (ClutterActor*)priv->mcw;
-
-  if (!mcw)
-    {
-      g_warning ("Attempted to hide a panel with no associated window");
-      return;
-    }
+  ClutterActor        *actor = CLUTTER_ACTOR (mcw);
 
   if (priv->in_hide_animation)
     return;
+
+  priv->mcw = mcw;
 
   priv->in_hide_animation = TRUE;
 
@@ -1279,9 +1275,9 @@ mnb_panel_oop_hide_animate (MnbPanelOop *panel)
         nbtk_button_set_checked (priv->button, FALSE);
     }
 
-  animation = clutter_actor_animate (mcw, CLUTTER_EASE_IN_SINE,
+  animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "y", -clutter_actor_get_height (mcw),
+                                     "y", -clutter_actor_get_height (actor),
                                      NULL);
 
   priv->hide_completed_id =
