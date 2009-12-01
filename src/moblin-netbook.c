@@ -1227,8 +1227,10 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
    * NB: This must come before we notify Mutter that the effect completed,
    *     otherwise the destruction of this window will be completed and the
    *     workspace switch effect will crash.
+   */
 
- */ if (type != META_COMP_WINDOW_SPLASHSCREEN &&
+  if ((type == META_COMP_WINDOW_NORMAL ||
+       type == META_COMP_WINDOW_DIALOG ) &&
       !mnb_toolbar_owns_window ((MnbToolbar*)priv->toolbar, mcw))
     check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
 }
