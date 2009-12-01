@@ -1110,15 +1110,15 @@ check_for_empty_workspace (MutterPlugin *plugin,
         }
 
       meta_screen_remove_workspace (screen, current_ws, timestamp);
-    }
 
-  /*
-   * Check if we show the myzone; we do this after a short timeout, so that
-   * we do not drop the myzone if the application does something like first
-   * pop a root password dialog, and only after the dialog closes, creates its
-   * main window (see MB#4766).
-   */
-  g_timeout_add (MYZONE_TIMEOUT, (GSourceFunc)maybe_show_myzone, plugin);
+      /*
+       * Check if we show the myzone; we do this after a short timeout, so that
+       * we do not drop the myzone if the application does something like first
+       * pop a root password dialog, and only after the dialog closes, creates
+       * its main window (see MB#4766).
+       */
+      g_timeout_add (MYZONE_TIMEOUT, (GSourceFunc)maybe_show_myzone, plugin);
+    }
 }
 
 /*
