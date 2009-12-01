@@ -910,6 +910,8 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
 
   if (!mcw)
     {
+      g_warning (G_STRLOC " Asked to show panel with no MutterWindow !!!");
+
       if (priv->mcw)
         {
           g_signal_handlers_disconnect_by_func (priv->mcw,
@@ -932,12 +934,6 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
     }
 
   priv->mcw = mcw;
-
-  if (!mcw)
-    {
-      g_warning (G_STRLOC " Asked to show panel with no MutterWindow !!!");
-      return;
-    }
 
   g_signal_connect (mcw, "destroy",
                     G_CALLBACK (mnb_panel_oop_mutter_window_destroy_cb),
