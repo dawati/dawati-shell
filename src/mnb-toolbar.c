@@ -1587,7 +1587,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
 
   if (index == MYZONE)
     {
-      if (priv->shown)
+      if (priv->shown && !priv->shown_myzone)
         {
           mnb_panel_show (panel);
           priv->shown_myzone = TRUE;
