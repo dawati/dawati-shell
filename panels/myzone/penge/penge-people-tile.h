@@ -22,7 +22,7 @@
 #define _PENGE_PEOPLE_TILE
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <penge/penge-interesting-tile.h>
 #include <mojito-client/mojito-item.h>
 

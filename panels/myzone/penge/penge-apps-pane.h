@@ -22,7 +22,7 @@
 #define _PENGE_APPS_PANE
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_APPS_PANE, PengeAppsPaneClass))
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
 } PengeAppsPane;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 } PengeAppsPaneClass;
 
 GType penge_apps_pane_get_type (void);

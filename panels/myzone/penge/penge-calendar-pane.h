@@ -22,7 +22,7 @@
 #define _PENGE_CALENDAR_PANE
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPaneClass))
 
 typedef struct {
-  NbtkWidget parent;
+  MxWidget parent;
 } PengeCalendarPane;
 
 typedef struct {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 } PengeCalendarPaneClass;
 
 GType penge_calendar_pane_get_type (void);

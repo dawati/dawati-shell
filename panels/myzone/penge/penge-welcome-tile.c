@@ -21,7 +21,7 @@
 
 #include "penge-welcome-tile.h"
 
-G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_WELCOME_TILE, PengeWelcomeTilePrivate))
@@ -80,15 +80,15 @@ penge_welcome_tile_class_init (PengeWelcomeTileClass *klass)
 static void
 penge_welcome_tile_init (PengeWelcomeTile *tile)
 {
-  NbtkWidget *label;
+  ClutterActor *label;
   ClutterActor *tmp_text;
 
-  nbtk_widget_set_style_class_name ((NbtkWidget *)tile, "PengeWelcomeTile");
+  mx_widget_set_style_class_name (MX_WIDGET ((ClutterActor *)tile), "PengeWelcomeTile");
 
-  label = nbtk_label_new (_("<b>Welcome to Moblin 2.1 for Netbooks</b>"));
+  label = mx_label_new (_("<b>Welcome to Moblin 2.1 for Netbooks</b>"));
   clutter_actor_set_name ((ClutterActor *)label,
                           "penge-welcome-primary-text");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                    PANGO_WRAP_WORD_CHAR);
@@ -96,35 +96,35 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                                TRUE);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)label,
-                                        0, 0,
-                                        "x-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        "y-expand", TRUE,
-                                        "y-fill", TRUE,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                      (ClutterActor *)label,
+                                      0, 0,
+                                      "x-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-expand", TRUE,
+                                      "y-fill", TRUE,
+                                      NULL);
 
-  label = nbtk_label_new (_("As Moblin is a bit different to other computers, " \
+  label = mx_label_new (_("As Moblin is a bit different to other computers, " \
                             "we've put together a couple of bits and pieces to " \
                             "help you find your way around. " \
                             "We hope you enjoy it, The Moblin Team."));
   clutter_actor_set_name ((ClutterActor *)label,
                           "penge-welcome-secondary-text");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                    PANGO_WRAP_WORD_CHAR);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)label,
-                                        1, 0,
-                                        "x-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        "y-expand", TRUE,
-                                        "y-fill", TRUE,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                      (ClutterActor *)label,
+                                      1, 0,
+                                      "x-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-expand", TRUE,
+                                      "y-fill", TRUE,
+                                      NULL);
 }
 
 ClutterActor *

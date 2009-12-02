@@ -26,7 +26,7 @@
 
 #include "penge-event-tile.h"
 
-G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVENTS_PANE, PengeEventsPanePrivate))
@@ -42,7 +42,7 @@ struct _PengeEventsPanePrivate {
   GHashTable *uid_to_events;
   GHashTable *uid_to_actors;
 
-  NbtkWidget *no_events_bin;
+  ClutterActor *no_events_bin;
 
   gint count;
 };
@@ -251,7 +251,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   JanaTime *on_the_hour;
   GList *window_start = NULL, *window_end = NULL;
   JanaTime *t = NULL;
-  NbtkWidget *label;
+  ClutterActor *label;
 
   g_return_if_fail (priv->time);
 
@@ -265,24 +265,24 @@ penge_events_pane_update (PengeEventsPane *pane)
   {
     if (!priv->no_events_bin)
     {
-      label = nbtk_label_new (_("No calendar entries this week"));
-      priv->no_events_bin = nbtk_bin_new ();
-      nbtk_bin_set_child (NBTK_BIN (priv->no_events_bin),
-                          (ClutterActor *)label);
-      nbtk_table_add_actor (NBTK_TABLE (pane),
-                            (ClutterActor *)priv->no_events_bin,
-                            0,
-                            0);
-      nbtk_widget_set_style_class_name (label,
-                                        "PengeNoMoreEventsLabel");
+      label = mx_label_new (_("No calendar entries this week"));
+      priv->no_events_bin = mx_bin_new ();
+      mx_bin_set_child (MX_BIN (priv->no_events_bin),
+                        label);
+      mx_table_add_actor (MX_TABLE (pane),
+                          priv->no_events_bin,
+                          0,
+                          0);
+      mx_widget_set_style_class_name (MX_WIDGET (label),
+                                      "PengeNoMoreEventsLabel");
 
-      clutter_actor_set_height ((ClutterActor *)priv->no_events_bin, 46);
+      clutter_actor_set_height (priv->no_events_bin, 46);
     }
   } else {
     if (priv->no_events_bin)
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                      (ClutterActor *)priv->no_events_bin);
+                                      priv->no_events_bin);
       priv->no_events_bin = NULL;
     }
   }
@@ -307,9 +307,7 @@ penge_events_pane_update (PengeEventsPane *pane)
       if (l->next)
       {
         window_start = l->next;
-      }
-      else
-      {
+      } else {
         window_start = l;
       }
     } else if (jana_utils_time_compare (t, on_the_hour, FALSE) == 0) {
@@ -391,10 +389,10 @@ penge_events_pane_update (PengeEventsPane *pane)
                             NULL);
 
       clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
-      nbtk_table_add_actor (NBTK_TABLE (pane),
-                            actor,
-                            count,
-                            0);
+      mx_table_add_actor (MX_TABLE (pane),
+                          actor,
+                          count,
+                          0);
       g_hash_table_insert (priv->uid_to_actors,
                            jana_component_get_uid (JANA_COMPONENT (event)),
                            g_object_ref (actor));

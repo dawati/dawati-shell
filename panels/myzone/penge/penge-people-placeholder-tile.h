@@ -21,7 +21,7 @@
 #define _PENGE_PEOPLE_PLACEHOLDER_TILE
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -43,11 +43,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_PEOPLE_PLACEHOLDER_TILE, PengePeoplePlaceholderTileClass))
 
 typedef struct {
-  NbtkButton parent;
+  MxButton parent;
 } PengePeoplePlaceholderTile;
 
 typedef struct {
-  NbtkButtonClass parent_class;
+  MxButtonClass parent_class;
 } PengePeoplePlaceholderTileClass;
 
 GType penge_people_placeholder_tile_get_type (void);

@@ -26,7 +26,7 @@
 
 #include <string.h>
 
-G_DEFINE_TYPE (PengeEventTile, penge_event_tile, NBTK_TYPE_BUTTON)
+G_DEFINE_TYPE (PengeEventTile, penge_event_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVENT_TILE, PengeEventTilePrivate))
@@ -38,12 +38,12 @@ struct _PengeEventTilePrivate {
   JanaTime *time;
   JanaStore *store;
 
-  NbtkWidget *time_label;
-  NbtkWidget *summary_label;
-  NbtkWidget *details_label;
-  NbtkWidget *time_bin;
+  ClutterActor *time_label;
+  ClutterActor *summary_label;
+  ClutterActor *details_label;
+  ClutterActor *time_bin;
 
-  NbtkWidget *inner_table;
+  ClutterActor *inner_table;
 };
 
 enum
@@ -191,7 +191,7 @@ _enter_event_cb (ClutterActor *actor,
 
   time_str = jana_utils_strftime (t, "%H:%M");
 
-  nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
+  mx_label_set_text (MX_LABEL (priv->time_label), time_str);
   g_object_unref (t);
   g_free (time_str);
 
@@ -217,7 +217,7 @@ _leave_event_cb (ClutterActor *actor,
     if (jana_time_get_day (priv->time) != jana_time_get_day (t))
     {
       time_str = jana_utils_strftime (t, "%a");
-      nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
+      mx_label_set_text (MX_LABEL (priv->time_label), time_str);
       g_free (time_str);
     }
     g_object_unref (t);
@@ -227,7 +227,7 @@ _leave_event_cb (ClutterActor *actor,
 }
 
 static void
-_button_clicked_cb (NbtkButton *button,
+_button_clicked_cb (MxButton *button,
                     gpointer    userdata)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
@@ -258,67 +258,63 @@ penge_event_tile_init (PengeEventTile *self)
   PengeEventTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
 
-  priv->inner_table = nbtk_table_new ();
-  nbtk_bin_set_child (NBTK_BIN (self), (ClutterActor *)priv->inner_table);
-  nbtk_bin_set_fill (NBTK_BIN (self), TRUE, TRUE);
+  priv->inner_table = mx_table_new ();
+  mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);
+  mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
-  priv->time_bin = nbtk_bin_new ();
-  clutter_actor_set_width ((ClutterActor *)priv->time_bin,
+  priv->time_bin = mx_bin_new ();
+  clutter_actor_set_width (priv->time_bin,
                            60);
-  nbtk_widget_set_style_class_name (priv->time_bin,
-                                    "PengeEventTimeBin");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->time_bin),
+                                  "PengeEventTimeBin");
 
-  priv->time_label = nbtk_label_new ("XX:XX");
-  nbtk_widget_set_style_class_name (priv->time_label,
-                                    "PengeEventTimeLabel");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->time_label));
+  priv->time_label = mx_label_new ("XX:XX");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->time_label),
+                                  "PengeEventTimeLabel");
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->time_label));
 
-  nbtk_bin_set_child (NBTK_BIN (priv->time_bin),
-                      (ClutterActor *)priv->time_label);
+  mx_bin_set_child (MX_BIN (priv->time_bin),
+                    priv->time_label);
 
-  priv->summary_label = nbtk_label_new ("Summary text");
-  nbtk_widget_set_style_class_name (priv->summary_label,
-                                    "PengeEventSummary");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->summary_label));
+  priv->summary_label = mx_label_new ("Summary text");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->summary_label),
+                                  "PengeEventSummary");
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->summary_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
-  priv->details_label = nbtk_label_new ("Details text");
-  nbtk_widget_set_style_class_name (priv->details_label,
-                                    "PengeEventDetails");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_label));
+  priv->details_label = mx_label_new ("Details text");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->details_label),
+                                  "PengeEventDetails");
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->details_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   /* Populate the table */
-  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
-                        (ClutterActor *)priv->time_bin,
-                        0,
-                        0);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      priv->time_bin,
+                      0,
+                      0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               (ClutterActor *)priv->time_bin,
-                               "x-expand",
-                               FALSE,
-                               "x-fill",
-                               FALSE,
-                               "y-expand",
-                               FALSE,
-                               "y-fill",
-                               FALSE,
+                               priv->time_bin,
+                               "x-expand", FALSE,
+                               "x-fill", FALSE,
+                               "y-expand", FALSE,
+                               "y-fill", FALSE,
                                NULL);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
-                        (ClutterActor *)priv->summary_label,
-                        0,
-                        1);
-  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
-                        (ClutterActor *)priv->details_label,
-                        1,
-                        1);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      priv->summary_label,
+                      0,
+                      1);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      priv->details_label,
+                      1,
+                      1);
 
   /* Make the time label span two rows */
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               (ClutterActor *)priv->time_bin,
+                               priv->time_bin,
                                "row-span",
                                2,
                                NULL);
@@ -328,23 +324,19 @@ penge_event_tile_init (PengeEventTile *self)
    * space
    */
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               (ClutterActor *)priv->summary_label,
-                               "x-expand",
-                               TRUE,
-                               "y-fill",
-                               FALSE,
+                               priv->summary_label,
+                               "x-expand", TRUE,
+                               "y-fill", FALSE,
                                NULL);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               (ClutterActor *)priv->details_label,
-                               "x-expand",
-                               TRUE,
-                               "y-fill",
-                               FALSE,
+                               priv->details_label,
+                               "x-expand", TRUE,
+                               "y-fill", FALSE,
                                NULL);
 
   /* Setup spacing and padding */
-  nbtk_table_set_row_spacing (NBTK_TABLE (priv->inner_table), 4);
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->inner_table), 8);
+  mx_table_set_row_spacing (MX_TABLE (priv->inner_table), 4);
+  mx_table_set_col_spacing (MX_TABLE (priv->inner_table), 8);
 
   g_signal_connect (self,
                     "enter-event",
@@ -359,8 +351,7 @@ penge_event_tile_init (PengeEventTile *self)
                     (GCallback)_button_clicked_cb,
                     self);
 
-  clutter_actor_set_reactive ((ClutterActor *)self,
-                              TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 }
 
 static void
@@ -392,18 +383,18 @@ penge_event_tile_update (PengeEventTile *tile)
 
     if (jana_utils_time_compare (t, priv->time, FALSE) < 0)
     {
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_label),
-                                          "past");
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_bin),
-                                          "past");
+      mx_widget_set_style_pseudo_class (MX_WIDGET (priv->time_label),
+                                        "past");
+      mx_widget_set_style_pseudo_class (MX_WIDGET (priv->time_bin),
+                                        "past");
     } else {
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_label),
-                                          NULL);
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (priv->time_bin),
-                                          NULL);
+      mx_widget_set_style_pseudo_class (MX_WIDGET (priv->time_label),
+                                        NULL);
+      mx_widget_set_style_pseudo_class (MX_WIDGET (priv->time_bin),
+                                        NULL);
     }
 
-    nbtk_label_set_text (NBTK_LABEL (priv->time_label), time_str);
+    mx_label_set_text (MX_LABEL (priv->time_label), time_str);
     g_object_unref (t);
     g_free (time_str);
   }
@@ -418,10 +409,10 @@ penge_event_tile_update (PengeEventTile *tile)
     p = strchr (summary_str, '\n');
     if (p)
       *p = '\0';
-    nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
+    mx_label_set_text (MX_LABEL (priv->summary_label), summary_str);
     g_free (summary_str);
   } else {
-    nbtk_label_set_text (NBTK_LABEL (priv->summary_label), "");
+    mx_label_set_text (MX_LABEL (priv->summary_label), "");
   }
 
   details_str = jana_event_get_location (priv->event);
@@ -433,7 +424,7 @@ penge_event_tile_update (PengeEventTile *tile)
 
   if (!details_str)
   {
-    nbtk_label_set_text (NBTK_LABEL (priv->details_label), "");
+    mx_label_set_text (MX_LABEL (priv->details_label), "");
 
     /* 
      * If we fail to get some kind of description make the summary text
@@ -449,7 +440,7 @@ penge_event_tile_update (PengeEventTile *tile)
     p = strchr (details_str, '\n');
     if (p)
       *p = '\0';
-    nbtk_label_set_text (NBTK_LABEL (priv->details_label), details_str);
+    mx_label_set_text (MX_LABEL (priv->details_label), details_str);
     g_free (details_str);
 
     clutter_actor_show (CLUTTER_ACTOR (priv->details_label));

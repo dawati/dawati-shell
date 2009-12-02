@@ -22,7 +22,7 @@
 #define _PENGE_GRID_VIEW
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_GRID_VIEW, PengeGridViewClass))
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
 } PengeGridView;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 } PengeGridViewClass;
 
 GType penge_grid_view_get_type (void);

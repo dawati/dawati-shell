@@ -34,7 +34,7 @@
 
 #include "penge-people-placeholder-tile.h"
 
-G_DEFINE_TYPE (PengePeoplePane, penge_people_pane, NBTK_TYPE_WIDGET)
+G_DEFINE_TYPE (PengePeoplePane, penge_people_pane, MX_TYPE_WIDGET)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_PEOPLE_PANE, PengePeoplePanePrivate))

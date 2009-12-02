@@ -25,7 +25,7 @@
 
 #include "penge-people-placeholder-tile.h"
 
-G_DEFINE_TYPE (PengePeoplePlaceholderTile, penge_people_placeholder_tile, NBTK_TYPE_BUTTON)
+G_DEFINE_TYPE (PengePeoplePlaceholderTile, penge_people_placeholder_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_PEOPLE_PLACEHOLDER_TILE, PengePeoplePlaceholderTilePrivate))
@@ -37,7 +37,7 @@ G_DEFINE_TYPE (PengePeoplePlaceholderTile, penge_people_placeholder_tile, NBTK_T
 typedef struct _PengePeoplePlaceholderTilePrivate PengePeoplePlaceholderTilePrivate;
 
 struct _PengePeoplePlaceholderTilePrivate {
-  NbtkWidget *inner_table;
+  ClutterActor *inner_table;
 };
 
 static void
@@ -80,7 +80,7 @@ penge_people_placeholder_tile_class_init (PengePeoplePlaceholderTileClass *klass
 }
 
 static void
-_button_clicked_cb (NbtkButton *button,
+_button_clicked_cb (MxButton *button,
                     gpointer    userdata)
 {
   GAppInfo *app_info = (GAppInfo *)userdata;
@@ -96,7 +96,7 @@ static void
 penge_people_placeholder_tile_init (PengePeoplePlaceholderTile *self)
 {
   PengePeoplePlaceholderTilePrivate *priv = GET_PRIVATE (self);
-  NbtkWidget *label;
+  ClutterActor *label;
   ClutterActor *tex;
   GtkIconTheme *icon_theme;
   GtkIconInfo *icon_info;
@@ -105,30 +105,30 @@ penge_people_placeholder_tile_init (PengePeoplePlaceholderTile *self)
   GIcon *icon;
   ClutterActor *tmp_text;
 
-  priv->inner_table = nbtk_table_new ();
-  nbtk_bin_set_child (NBTK_BIN (self), (ClutterActor *)priv->inner_table);
-  nbtk_bin_set_fill (NBTK_BIN (self), TRUE, TRUE);
+  priv->inner_table = mx_table_new ();
+  mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);
+  mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
-  label = nbtk_label_new (_("Things that your friends do online will appear here. " \
-                            "Activate your accounts now!"));
+  label = mx_label_new (_("Things that your friends do online will appear here. " \
+                          "Activate your accounts now!"));
   clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-main-message");
 
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                    PANGO_WRAP_WORD_CHAR);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->inner_table),
-                                        (ClutterActor *)label,
-                                        0, 0,
-                                        "x-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        "y-expand", TRUE,
-                                        "y-fill", TRUE,
-                                        "col-span", 2,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
+                                      label,
+                                      0, 0,
+                                      "x-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-expand", TRUE,
+                                      "y-fill", TRUE,
+                                      "col-span", 2,
+                                      NULL);
 
   app_info = (GAppInfo *)g_desktop_app_info_new ("bisho.desktop");
 
@@ -152,26 +152,26 @@ penge_people_placeholder_tile_init (PengePeoplePlaceholderTile *self)
       g_clear_error (&error);
     } else {
       clutter_actor_set_size (tex, ICON_SIZE, ICON_SIZE);
-      nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->inner_table),
-                                            tex,
-                                            1, 0,
-                                            "x-expand", FALSE,
-                                            "x-fill", FALSE,
-                                            "y-fill", FALSE,
-                                            "y-expand", TRUE,
-                                            NULL);
+      mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
+                                          tex,
+                                          1, 0,
+                                          "x-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-fill", FALSE,
+                                          "y-expand", TRUE,
+                                          NULL);
     }
 
-    label = nbtk_label_new (g_app_info_get_name (app_info));
+    label = mx_label_new (g_app_info_get_name (app_info));
     clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-other-message");
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->inner_table),
-                                          (ClutterActor *)label,
-                                          1, 1,
-                                          "x-expand", TRUE,
-                                          "x-fill", TRUE,
-                                          "y-expand", TRUE,
-                                          "y-fill", FALSE,
-                                          NULL);
+    mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
+                                        label,
+                                        1, 1,
+                                        "x-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-expand", TRUE,
+                                        "y-fill", FALSE,
+                                        NULL);
   }
 
   g_signal_connect (self,

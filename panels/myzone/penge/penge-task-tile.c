@@ -25,7 +25,7 @@
 #include <libjana-ecal/jana-ecal.h>
 #include <glib/gi18n.h>
 
-G_DEFINE_TYPE (PengeTaskTile, penge_task_tile, NBTK_TYPE_BUTTON)
+G_DEFINE_TYPE (PengeTaskTile, penge_task_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_TASK_TILE, PengeTaskTilePrivate))
@@ -36,13 +36,13 @@ struct _PengeTaskTilePrivate {
     JanaTask *task;
     JanaStore *store;
 
-    NbtkWidget *summary_label;
-    NbtkWidget *details_label;
-    NbtkWidget *check_button;
+    ClutterActor *summary_label;
+    ClutterActor *details_label;
+    ClutterActor *check_button;
 
     guint commit_timeout;
 
-    NbtkWidget *inner_table;
+    ClutterActor *inner_table;
 };
 
 enum
@@ -162,12 +162,12 @@ _commit_timeout_cb (gpointer userdata)
 }
 
 static void
-_check_button_clicked_cb (NbtkButton *button,
-                          gpointer    userdata)
+_check_button_clicked_cb (MxButton *button,
+                          gpointer  userdata)
 {
   PengeTaskTilePrivate *priv = GET_PRIVATE (userdata);
 
-  if (nbtk_button_get_checked (button))
+  if (mx_button_get_checked (button))
   {
     jana_task_set_completed (priv->task, TRUE);
   } else {
@@ -185,8 +185,8 @@ _check_button_clicked_cb (NbtkButton *button,
 }
 
 static void
-_button_clicked_cb (NbtkButton *button,
-                    gpointer    userdata)
+_button_clicked_cb (MxButton *button,
+                    gpointer  userdata)
 {
   PengeTaskTilePrivate *priv = GET_PRIVATE (userdata);
   gchar *uid;
@@ -213,76 +213,67 @@ penge_task_tile_init (PengeTaskTile *self)
   PengeTaskTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
 
-  priv->inner_table = nbtk_table_new ();
-  nbtk_bin_set_child (NBTK_BIN (self), (ClutterActor *)priv->inner_table);
-  nbtk_bin_set_fill (NBTK_BIN (self), TRUE, TRUE);
+  priv->inner_table = mx_table_new ();
+  mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);
+  mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
-  priv->check_button = nbtk_button_new ();
-  nbtk_button_set_toggle_mode (NBTK_BUTTON (priv->check_button), TRUE);
-  nbtk_widget_set_style_class_name (priv->check_button,
-                                    "PengeTaskToggleButton");
+  priv->check_button = mx_button_new ();
+  mx_button_set_toggle_mode (MX_BUTTON (priv->check_button), TRUE);
+  mx_widget_set_style_class_name (MX_WIDGET (priv->check_button),
+                                  "PengeTaskToggleButton");
   clutter_actor_set_size ((ClutterActor *)priv->check_button, 21, 21);
 
-  priv->summary_label = nbtk_label_new ("Summary text");
-  nbtk_widget_set_style_class_name (priv->summary_label,
-                                    "PengeTaskSummaryLabel");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->summary_label));
+  priv->summary_label = mx_label_new ("Summary text");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->summary_label),
+                                  "PengeTaskSummaryLabel");
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->summary_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
-  priv->details_label = nbtk_label_new ("Details text");
-  nbtk_widget_set_style_class_name (priv->details_label,
-                                    "PengeTaskDetails");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->details_label));
+  priv->details_label = mx_label_new ("Details text");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->details_label),
+                                  "PengeTaskDetails");
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->details_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   /* Populate the table */
-  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
-                        (ClutterActor *)priv->check_button,
-                        0,
-                        0);
-  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
-                        (ClutterActor *)priv->summary_label,
-                        0,
-                        1);
-  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
-                        (ClutterActor *)priv->details_label,
-                        1,
-                        1);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      (ClutterActor *)priv->check_button,
+                      0,
+                      0);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      (ClutterActor *)priv->summary_label,
+                      0,
+                      1);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      (ClutterActor *)priv->details_label,
+                      1,
+                      1);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->check_button,
-                               "x-expand",
-                               FALSE,
-                               "x-fill",
-                               FALSE,
-                               "y-expand",
-                               FALSE,
-                               "y-fill",
-                               FALSE,
-                               "row-span",
-                               2,
+                               "x-expand", FALSE,
+                               "x-fill", FALSE,
+                               "y-expand", FALSE,
+                               "y-fill", FALSE,
+                               "row-span", 2,
                                NULL);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->summary_label,
-                               "x-expand",
-                               TRUE,
-                               "y-fill",
-                               FALSE,
+                               "x-expand", TRUE,
+                               "y-fill", FALSE,
                                NULL);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->details_label,
-                               "x-expand",
-                               TRUE,
-                               "y-fill",
-                               FALSE,
+                               "x-expand", TRUE,
+                               "y-fill", FALSE,
                                NULL);
 
   /* Setup spacing and padding */
-  nbtk_table_set_row_spacing (NBTK_TABLE (priv->inner_table), 4);
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->inner_table), 8);
+  mx_table_set_row_spacing (MX_TABLE (priv->inner_table), 4);
+  mx_table_set_col_spacing (MX_TABLE (priv->inner_table), 8);
 
   g_signal_connect (priv->check_button,
                    "clicked",
@@ -311,10 +302,10 @@ penge_task_tile_update (PengeTaskTile *tile)
 
   if (summary_str)
   {
-    nbtk_label_set_text (NBTK_LABEL (priv->summary_label), summary_str);
+    mx_label_set_text (MX_LABEL (priv->summary_label), summary_str);
     g_free (summary_str);
   } else {
-    nbtk_label_set_text (NBTK_LABEL (priv->summary_label), "");
+    mx_label_set_text (MX_LABEL (priv->summary_label), "");
     g_warning (G_STRLOC ": No summary string for task.");
   }
 
@@ -323,7 +314,7 @@ penge_task_tile_update (PengeTaskTile *tile)
   if (due)
   {
     details_str = jana_utils_strftime (due, _("Due %x"));
-    nbtk_label_set_text (NBTK_LABEL(priv->details_label), details_str);
+    mx_label_set_text (MX_LABEL (priv->details_label), details_str);
     g_free (details_str);
 
     clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
@@ -345,8 +336,8 @@ penge_task_tile_update (PengeTaskTile *tile)
                                  NULL);
   }
 
-  nbtk_button_set_checked (NBTK_BUTTON (priv->check_button),
-                           jana_task_get_completed (priv->task));
+  mx_button_set_checked (MX_BUTTON (priv->check_button),
+                         jana_task_get_completed (priv->task));
 }
 
 gchar *

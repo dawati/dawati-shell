@@ -165,8 +165,8 @@ penge_recent_file_tile_finalize (GObject *object)
 }
 
 static void
-_clicked_cb (NbtkButton *button,
-             gpointer    userdata)
+_clicked_cb (MxButton *button,
+             gpointer  userdata)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (userdata);
 

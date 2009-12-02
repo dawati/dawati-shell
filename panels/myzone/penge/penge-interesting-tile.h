@@ -22,7 +22,7 @@
 #define _PENGE_INTERESTING_TILE
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_INTERESTING_TILE, PengeInterestingTileClass))
 
 typedef struct {
-  NbtkButton parent;
+  MxButton parent;
 } PengeInterestingTile;
 
 typedef struct {
-  NbtkButtonClass parent_class;
+  MxButtonClass parent_class;
 } PengeInterestingTileClass;
 
 GType penge_interesting_tile_get_type (void);

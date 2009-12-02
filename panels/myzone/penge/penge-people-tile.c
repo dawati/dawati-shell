@@ -132,8 +132,8 @@ _remove_clicked_cb (PengeInterestingTile *tile,
 }
 
 static void
-_clicked_cb (NbtkButton *button,
-             gpointer    userdata)
+_clicked_cb (MxButton *button,
+             gpointer  userdata)
 {
   PengePeopleTile *tile = PENGE_PEOPLE_TILE (button);
   PengePeopleTilePrivate *priv = GET_PRIVATE (button);
@@ -178,7 +178,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
 {
   PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
   ClutterActor *body, *tmp_text;
-  NbtkWidget *label;
+  ClutterActor *label;
   const gchar *content, *thumbnail;
   gchar *date;
   GError *error = NULL;
@@ -217,15 +217,16 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     }
   } else if (mojito_item_has_key (item, "content")) {
     content = mojito_item_get_value (item, "content");
-    body = (ClutterActor *)nbtk_bin_new ();
-    nbtk_widget_set_style_class_name ((NbtkWidget *)body,
-                                      "PengePeopleTileContentBackground");
-    label = nbtk_label_new (content);
-    nbtk_widget_set_style_class_name (label, "PengePeopleTileContentLabel");
-    nbtk_bin_set_child (NBTK_BIN (body), (ClutterActor *)label);
-    nbtk_bin_set_alignment (NBTK_BIN (body), NBTK_ALIGN_START,
-                            NBTK_ALIGN_START);
-    tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+    body = (ClutterActor *)mx_bin_new ();
+    mx_widget_set_style_class_name (MX_WIDGET (body),
+                                    "PengePeopleTileContentBackground");
+    label = mx_label_new (content);
+    mx_widget_set_style_class_name (MX_WIDGET (label), "PengePeopleTileContentLabel");
+    mx_bin_set_child (MX_BIN (body), (ClutterActor *)label);
+    mx_bin_set_alignment (MX_BIN (body),
+                          MX_ALIGN_START,
+                          MX_ALIGN_START);
+    tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
     clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
     clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                      PANGO_WRAP_WORD_CHAR);
@@ -234,11 +235,10 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                      PANGO_ALIGN_LEFT);
     g_object_set (tile,
-              "body",
-              body,
-              NULL);
+                  "body", body,
+                  NULL);
   } else {
-    if (g_str_equal (item->service,"lastfm"))
+    if (g_str_equal (item->service, "lastfm"))
     {
       body = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
 
@@ -269,7 +269,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                     "secondary-text", mojito_item_get_value (item, "author"),
                     NULL);
     } else {
-      date = nbtk_utils_format_time (&(item->date));
+      date = mx_utils_format_time (&(item->date));
       g_object_set (tile,
                     "primary-text", mojito_item_get_value (item, "title"),
                     "secondary-text", date,
@@ -277,7 +277,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
       g_free (date);
     }
   } else if (mojito_item_has_key (item, "author")) {
-      date = nbtk_utils_format_time (&(item->date));
+      date = mx_utils_format_time (&(item->date));
       g_object_set (tile,
                     "primary-text", mojito_item_get_value (item, "author"),
                     "secondary-text", date,
@@ -291,3 +291,4 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                 "icon-path", mojito_item_get_value (item, "authoricon"),
                 NULL);
 }
+

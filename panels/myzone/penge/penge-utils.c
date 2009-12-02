@@ -23,7 +23,7 @@
 #include <string.h>
 #include <glib/gi18n.h>
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <moblin-panel/mpl-panel-client.h>
 
 #include "penge-grid-view.h"
@@ -31,7 +31,7 @@
 void
 penge_utils_load_stylesheet ()
 {
-  NbtkStyle *style;
+  MxStyle *style;
   GError *error = NULL;
   gchar *path;
 
@@ -40,11 +40,11 @@ penge_utils_load_stylesheet ()
                            NULL);
 
   /* register the styling */
-  style = nbtk_style_get_default ();
+  style = mx_style_get_default ();
 
-  if (!nbtk_style_load_from_file (style,
-                             path,
-                             &error))
+  if (!mx_style_load_from_file (style,
+                                path,
+                                &error))
   {
     g_warning (G_STRLOC ": Error opening style: %s",
                error->message);

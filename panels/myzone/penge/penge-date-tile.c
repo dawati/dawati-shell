@@ -22,7 +22,7 @@
 
 #include <libjana/jana.h>
 
-G_DEFINE_TYPE (PengeDateTile, penge_date_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeDateTile, penge_date_tile, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_DATE_TILE, PengeDateTilePrivate))
@@ -31,8 +31,8 @@ typedef struct _PengeDateTilePrivate PengeDateTilePrivate;
 
 struct _PengeDateTilePrivate {
     JanaTime *time;
-    NbtkWidget *day_label;
-    NbtkWidget *date_label;
+    ClutterActor *day_label;
+    ClutterActor *date_label;
 };
 
 enum
@@ -123,31 +123,31 @@ penge_date_tile_init (PengeDateTile *self)
 {
   PengeDateTilePrivate *priv = GET_PRIVATE (self);
 
-  priv->day_label = nbtk_label_new ("Day");
-  nbtk_widget_set_style_class_name (priv->day_label,
-                                    "PengeDayLabel");
-  priv->date_label = nbtk_label_new ("XX");
-  nbtk_widget_set_style_class_name (priv->date_label,
-                                    "PengeDateLabel");
+  priv->day_label = mx_label_new ("Day");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->day_label),
+                                  "PengeDayLabel");
+  priv->date_label = mx_label_new ("XX");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->date_label),
+                                  "PengeDateLabel");
 
 
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)priv->day_label,
-                        0,
-                        0);
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)priv->date_label,
-                        1,
-                        0);
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->day_label,
+                      0,
+                      0);
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->date_label,
+                      1,
+                      0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               (ClutterActor *)priv->date_label,
+                               priv->date_label,
                                "y-expand",
                                TRUE,
                                "x-expand",
                                TRUE,
                                NULL);
 
-  clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 }
 
 static void
@@ -160,10 +160,10 @@ penge_date_tile_update (PengeDateTile *tile)
 
   tmp_str = jana_utils_strftime (priv->time, "%e");
   tmp_str = g_strstrip(tmp_str);
-  nbtk_label_set_text (NBTK_LABEL (priv->date_label), tmp_str);
+  mx_label_set_text (MX_LABEL (priv->date_label), tmp_str);
   g_free (tmp_str);
 
   tmp_str = jana_utils_strftime (priv->time, "%A");
-  nbtk_label_set_text (NBTK_LABEL (priv->day_label), tmp_str);
+  mx_label_set_text (MX_LABEL (priv->day_label), tmp_str);
   g_free (tmp_str);
 }

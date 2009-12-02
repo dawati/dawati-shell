@@ -5,13 +5,13 @@ PengeGridView
 
 PengeCalendarPane
 {
-  border-image: url('file://backdrop.png') 5 5 5 5;
+  border-image: url('backdrop.png') 5 5 5 5;
   padding: 2;
 }
 
 PengeAppsPane
 {
-  border-image: url('file://backdrop.png') 5 5 5 5;
+  border-image: url('backdrop.png') 5 5 5 5;
   padding: 2;
 }
 
@@ -31,36 +31,36 @@ PengeEventTile, PengeTaskTile, PengeAppTile
 PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover,
 PengeEventTile:active, PengeTaskTile:active, PengeAppTile:active
 {
-  border-image: url('file://tile-partial-glow.png') 7 8 9 8;
+  border-image: url('tile-partial-glow.png') 7 8 9 8;
 }
 
 
 PengeRecentFileTile, PengePeopleTile
 {
-  border-image: url('file://tile-bg.png') 7 8 9 8;
+  border-image: url('tile-bg.png') 7 8 9 8;
   padding: 6 7 8 7;
 }
 
 
 PengeRecentFileTile:hover, PengePeopleTile:hover
 {
-  border-image: url('file://tile-glow.png') 7 8 9 8;
+  border-image: url('tile-glow.png') 7 8 9 8;
   padding: 6 7 8 7;
 }
 
-NbtkButton.PengeTaskToggleButton
+MxButton.PengeTaskToggleButton
 {
-  border-image: url('file://check_box.png') 0;
+  border-image: url('check_box.png') 0;
 }
 
-NbtkButton.PengeTaskToggleButton:hover, NbtkButton.PengeTaskToggleButton:checked
+MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
 {
-  border-image: url('file://checked_box.png') 0;
+  border-image: url('checked_box.png') 0;
 }
 
 PengeDateTile
 {
-  border-image: url('file://date-background.png') 16;
+  border-image: url('date-background.png') 16;
 }
 
 PengeEventTile *.PengeEventTimeLabel
@@ -73,7 +73,7 @@ PengeEventTile *.PengeEventTimeLabel
 
 PengeDateTile *.PengeDateTileBackground
 {
-  border-image: url('file://date-background-background.png') 16;
+  border-image: url('date-background-background.png') 16;
 }
 
 PengeEventTile *.PengeEventTimeLabel:past
@@ -86,12 +86,12 @@ PengeEventTile *.PengeEventTimeLabel:past
 
 PengeEventTile *.PengeEventTimeBin
 {
-  border-image: url('file://time-bg.png') 0;
+  border-image: url('time-bg.png') 0;
 }
 
 PengeEventTile *.PengeEventTimeBin:past
 {
-  border-image: url('file://time-bg-past.png') 0;
+  border-image: url('time-bg-past.png') 0;
 }
 
 PengeDateTile *.PengeDayLabel
@@ -128,7 +128,7 @@ PengePeopleTile *.PengePeopleTileContentLabel
 
 PengePeopleTile *.PengePeopleTileContentBackground
 {
-  border-image: url('file://quotebackground.png') 45 51 46 52;
+  border-image: url('quotebackground.png') 45 51 46 52;
   padding: 8;
 }
 
@@ -139,7 +139,7 @@ PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
   color: #2c2c2cff;
 }
 
-NbtkTable.PengeInterestingTileDetails
+MxTable.PengeInterestingTileDetails
 {
   background-color: black;
   padding: 2;
@@ -161,19 +161,19 @@ PengePeoplePlaceholderTile *#penge-no-content-other-message
 
 PengePeoplePlaceholderTile
 {
-  border-image: url('file://no-content-tile-bg.png') 7 8 9 8;
+  border-image: url('no-content-tile-bg.png') 7 8 9 8;
   padding: 10 11 12 11;
 }
 
 PengePeoplePlaceholderTile:hover
 {
-  border-image: url('file://no-content-tile-glow-bg.png') 7 8 9 8;
+  border-image: url('no-content-tile-glow-bg.png') 7 8 9 8;
   padding: 10 11 12 11;
 }
 
 PengeWelcomeTile
 {
-  border-image: url('file://backdrop.png') 5 5 5 5;
+  border-image: url('backdrop.png') 5 5 5 5;
   padding: 6;
 }
 
@@ -199,10 +199,10 @@ PengeWelcomeTile *#penge-welcome-secondary-text
 
 *.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon
 {
-  background-image: url('file://tile-dismiss-icon-normal.png')
+  background-image: url('tile-dismiss-icon-normal.png');
 }
 
 *.PengeInterestingTileRemoveButton:hover *.PengeInterestingTileIcon
 {
-  background-image: url('file://tile-dismiss-icon-hover.png')
+  background-image: url('tile-dismiss-icon-hover.png');
 }

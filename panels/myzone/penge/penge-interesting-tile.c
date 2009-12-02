@@ -24,7 +24,7 @@
 #include "penge-utils.h"
 #include "penge-magic-texture.h"
 
-G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, NBTK_TYPE_BUTTON)
+G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_INTERESTING_TILE, PengeInterestingTilePrivate))
@@ -32,15 +32,15 @@ G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, NBTK_TYPE_BUTTON)
 typedef struct _PengeInterestingTilePrivate PengeInterestingTilePrivate;
 
 struct _PengeInterestingTilePrivate {
-  NbtkWidget *inner_table;
+  ClutterActor *inner_table;
 
   ClutterActor *body;
   ClutterActor *icon;
-  NbtkWidget *bin;
-  NbtkWidget *primary_text;
-  NbtkWidget *secondary_text;
-  NbtkWidget *details_overlay;
-  NbtkWidget *remove_button;
+  ClutterActor *bin;
+  ClutterActor *primary_text;
+  ClutterActor *secondary_text;
+  ClutterActor *details_overlay;
+  ClutterActor *remove_button;
 };
 
 enum
@@ -91,7 +91,7 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       if (!priv->body)
         return;
 
-      nbtk_bin_set_child (NBTK_BIN (priv->bin),
+      mx_bin_set_child (MX_BIN (priv->bin),
                           priv->body);
 
 
@@ -115,12 +115,12 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
 
       break;
     case PROP_PRIMARY_TEXT:
-      nbtk_label_set_text (NBTK_LABEL (priv->primary_text),
-                           g_value_get_string (value));
+      mx_label_set_text (MX_LABEL (priv->primary_text),
+                         g_value_get_string (value));
       break;
     case PROP_SECONDARY_TEXT:
-      nbtk_label_set_text (NBTK_LABEL (priv->secondary_text),
-                           g_value_get_string (value));
+      mx_label_set_text (MX_LABEL (priv->secondary_text),
+                         g_value_get_string (value));
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -199,8 +199,8 @@ _enter_event_cb (ClutterActor *actor,
 {
   PengeInterestingTilePrivate *priv = GET_PRIVATE (userdata);
 
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
-                                      "hover");
+  mx_widget_set_style_pseudo_class (MX_WIDGET (actor),
+                                    "hover");
 
   if (1)
   {
@@ -232,7 +232,7 @@ _leave_event_cb (ClutterActor *actor,
 {
   PengeInterestingTilePrivate *priv = GET_PRIVATE (userdata);
 
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+  mx_widget_set_style_pseudo_class (MX_WIDGET (actor),
                                       NULL);
 
   if (0)
@@ -259,8 +259,8 @@ _leave_event_cb (ClutterActor *actor,
 }
 
 static void
-_remove_button_clicked (NbtkButton *button,
-                        gpointer    userdata)
+_remove_button_clicked (MxButton *button,
+                        gpointer  userdata)
 {
   PengeInterestingTile *tile = PENGE_INTERESTING_TILE (userdata);
 
@@ -272,20 +272,20 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 {
   PengeInterestingTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
-  NbtkWidget *icon;
+  ClutterActor *icon;
 
-  priv->inner_table = nbtk_table_new ();
-  nbtk_bin_set_child (NBTK_BIN (self),
-                      (ClutterActor *)priv->inner_table);
-  nbtk_bin_set_fill (NBTK_BIN (self), TRUE, TRUE);
-  priv->bin = nbtk_bin_new ();
-  nbtk_bin_set_fill (NBTK_BIN (priv->bin), TRUE, TRUE);
-  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
-                        (ClutterActor *)priv->bin,
-                        0,
-                        0);
+  priv->inner_table = mx_table_new ();
+  mx_bin_set_child (MX_BIN (self),
+                    priv->inner_table);
+  mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
+  priv->bin = mx_bin_new ();
+  mx_bin_set_fill (MX_BIN (priv->bin), TRUE, TRUE);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      priv->bin,
+                      0,
+                      0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               (ClutterActor *)priv->bin,
+                               priv->bin,
                                "y-align", 0.0,
                                "x-align", 0.0,
                                "row-span", 2,
@@ -293,19 +293,19 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                "y-expand", TRUE,
                                NULL);
 
-  priv->primary_text = nbtk_label_new ("Primary text");
-  nbtk_widget_set_style_class_name (priv->primary_text, 
-                                    "PengeInterestingTilePrimaryLabel");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->primary_text));
+  priv->primary_text = mx_label_new ("Primary text");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->primary_text), 
+                                  "PengeInterestingTilePrimaryLabel");
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->primary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);
 
-  priv->secondary_text = nbtk_label_new ("Secondary text");
-  nbtk_widget_set_style_class_name (priv->secondary_text, 
-                                    "PengeInterestingTileSecondaryLabel");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->secondary_text));
+  priv->secondary_text = mx_label_new ("Secondary text");
+  mx_widget_set_style_class_name (MX_WIDGET (priv->secondary_text), 
+                                  "PengeInterestingTileSecondaryLabel");
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->secondary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
@@ -316,32 +316,28 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   clutter_actor_hide (priv->icon);
 
   /* This gets added to ourself table after our body because of ordering */
-  priv->details_overlay = nbtk_table_new ();
-  nbtk_widget_set_style_class_name (priv->details_overlay,
-                                    "PengeInterestingTileDetails");
+  priv->details_overlay = mx_table_new ();
+  mx_widget_set_style_class_name (MX_WIDGET (priv->details_overlay),
+                                  "PengeInterestingTileDetails");
   clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay, 0x0);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->inner_table),
-                        (ClutterActor *)priv->details_overlay,
-                        1,
-                        0);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      priv->details_overlay,
+                      1,
+                      0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->details_overlay,
-                               "x-expand",
-                               TRUE,
-                               "y-expand",
-                               TRUE,
-                               "y-fill",
-                               FALSE,
-                               "y-align",
-                               1.0,
+                               "x-expand", TRUE,
+                               "y-expand", TRUE,
+                               "y-fill", FALSE,
+                               "y-align", 1.0,
                                NULL);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
-                        (ClutterActor *)priv->primary_text,
-                        0,
-                        1);
+  mx_table_add_actor (MX_TABLE (priv->details_overlay),
+                      priv->primary_text,
+                      0,
+                      1);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                (ClutterActor *)priv->primary_text,
@@ -351,10 +347,10 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                FALSE,
                                NULL);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
-                        (ClutterActor *)priv->secondary_text,
-                        1,
-                        1);
+  mx_table_add_actor (MX_TABLE (priv->details_overlay),
+                      priv->secondary_text,
+                      1,
+                      1);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                (ClutterActor *)priv->secondary_text,
                                "x-expand",
@@ -365,16 +361,16 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 
   /*
    * Explicitly set the width to 100 to avoid overflowing text. Slightly
-   * hackyish but works around a strange bug in NbtkTable where if the text
+   * hackyish but works around a strange bug in MxTable where if the text
    * is too long it will cause negative positioning of the icon.
    */
   clutter_actor_set_width ((ClutterActor *)priv->primary_text, 100);
   clutter_actor_set_width ((ClutterActor *)priv->secondary_text, 100);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->details_overlay),
-                        priv->icon,
-                        0,
-                        0);
+  mx_table_add_actor (MX_TABLE (priv->details_overlay),
+                      priv->icon,
+                      0,
+                      0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                priv->icon,
                                "row-span", 2,
@@ -382,27 +378,26 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                "x-expand", FALSE,
                                "y-fill", FALSE,
                                "x-fill", FALSE,
-                               "allocate-hidden", FALSE,
                                NULL);
 
-  priv->remove_button = nbtk_button_new ();
-  nbtk_widget_set_style_class_name (priv->remove_button,
-                                    "PengeInterestingTileRemoveButton");
-  icon = (NbtkWidget *)nbtk_icon_new ();
-  nbtk_widget_set_style_class_name (icon,
-                                    "PengeInterestingTileIcon");
-  nbtk_bin_set_child (NBTK_BIN (priv->remove_button),
+  priv->remove_button = mx_button_new ();
+  mx_widget_set_style_class_name (MX_WIDGET (priv->remove_button),
+                                  "PengeInterestingTileRemoveButton");
+  icon = (ClutterActor *)mx_icon_new ();
+  mx_widget_set_style_class_name (MX_WIDGET (icon),
+                                  "PengeInterestingTileIcon");
+  mx_bin_set_child (MX_BIN (priv->remove_button),
                       (ClutterActor *)icon);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->inner_table),
-                                        (ClutterActor *)priv->remove_button,
-                                        0, 0,
-                                        "x-expand", TRUE,
-                                        "y-expand", TRUE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", 1.0,
-                                        "y-align", 0.0,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
+                                      priv->remove_button,
+                                      0, 0,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      "x-align", 1.0,
+                                      "y-align", 0.0,
+                                      NULL);
 
   clutter_actor_set_opacity ((ClutterActor *)priv->remove_button, 0x0);
 
@@ -420,7 +415,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                     (GCallback)_remove_button_clicked,
                     self);
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->details_overlay), 4);
+  mx_table_set_col_spacing (MX_TABLE (priv->details_overlay), 4);
 
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }

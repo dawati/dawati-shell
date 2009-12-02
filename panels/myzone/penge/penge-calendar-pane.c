@@ -28,7 +28,7 @@
 #include "penge-events-pane.h"
 #include "penge-tasks-pane.h"
 
-G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, NBTK_TYPE_WIDGET)
+G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, MX_TYPE_WIDGET)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPanePrivate))
@@ -47,7 +47,7 @@ struct _PengeCalendarPanePrivate {
   guint8 day_of_month;
 
   ClutterActor *calendar_tex;
-  NbtkWidget *header_table;
+  ClutterActor *header_table;
 
   ClutterActor *single_divider;
   ClutterActor *double_divider;
@@ -103,9 +103,9 @@ penge_calendar_pane_get_preferred_width (ClutterActor *actor,
   gfloat header_nat, header_min;
   gfloat events_nat, events_min;
   gfloat tasks_nat, tasks_min;
-  NbtkPadding padding = { 0, };
+  MxPadding padding = { 0, };
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   clutter_actor_get_preferred_width (CLUTTER_ACTOR (priv->header_table),
                                      for_height,
@@ -142,9 +142,9 @@ penge_calendar_pane_get_preferred_height (ClutterActor *actor,
   gfloat events_nat, events_min;
   gfloat tasks_nat, tasks_min;
   gfloat single_div_nat, double_div_nat;
-  NbtkPadding padding = { 0, };
+  MxPadding padding = { 0, };
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->header_table),
                                       for_width,
@@ -221,12 +221,12 @@ penge_calendar_pane_allocate (ClutterActor          *actor,
   gfloat width, height, remaining_height, last_y;
   gfloat tasks_available_h, events_available_h;
   ClutterActorBox child_box;
-  NbtkPadding padding = { 0, };
+  MxPadding padding = { 0, };
 
   if (CLUTTER_ACTOR_CLASS (penge_calendar_pane_parent_class)->allocate)
     CLUTTER_ACTOR_CLASS (penge_calendar_pane_parent_class)->allocate (actor, box, flags);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   width = box->x2 - box->x1;
   height = box->y2 - box->y1;
@@ -446,19 +446,19 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   JanaTime *now;
   JanaTime *on_the_next_hour;
   glong next_timeout_seconds;
-  NbtkWidget *label;
+  ClutterActor *label;
   GError *error = NULL;
   ClutterActor *tmp_text;
 
   now = jana_ecal_utils_time_now_local ();
 
   /* Title bit at the top */
-  priv->header_table = nbtk_table_new ();
+  priv->header_table = mx_table_new ();
   priv->calendar_tex = clutter_texture_new ();
-  nbtk_table_add_actor (NBTK_TABLE (priv->header_table),
-                        priv->calendar_tex,
-                        0,
-                        0);
+  mx_table_add_actor (MX_TABLE (priv->header_table),
+                      priv->calendar_tex,
+                      0,
+                      0);
   /* Need to fix the size to avoid being squashed */
   clutter_actor_set_size (priv->calendar_tex, 30, 31);
 
@@ -473,15 +473,15 @@ penge_calendar_pane_init (PengeCalendarPane *self)
 
   penge_calendar_pane_update_calendar_icon (self, now);
 
-  label = nbtk_label_new (_("<b>Appointments</b>"));
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  label = mx_label_new (_("<b>Appointments</b>"));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text), TRUE);
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (label),
-                                    "PengeCalendarPaneTitle");
-  nbtk_table_add_actor (NBTK_TABLE (priv->header_table),
-                        (ClutterActor *)label,
-                        0,
-                        1);
+  mx_widget_set_style_class_name (MX_WIDGET (label),
+                                  "PengeCalendarPaneTitle");
+  mx_table_add_actor (MX_TABLE (priv->header_table),
+                      label,
+                      0,
+                      1);
 
   /* Use expand TRUE and fill FALSE to center valign with icon */
   clutter_container_child_set (CLUTTER_CONTAINER (priv->header_table),

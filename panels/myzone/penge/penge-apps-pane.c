@@ -24,7 +24,7 @@
 #include "penge-app-tile.h"
 #include <moblin-panel/mpl-app-bookmark-manager.h>
 
-G_DEFINE_TYPE (PengeAppsPane, penge_apps_pane, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeAppsPane, penge_apps_pane, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_APPS_PANE, PengeAppsPanePrivate))
@@ -177,10 +177,10 @@ penge_apps_pane_update (PengeAppsPane *pane)
                             "bookmark",
                             uri,
                             NULL);
-      nbtk_table_add_actor (NBTK_TABLE (pane),
-                            actor,
-                            count / ROW_SIZE,
-                            count % ROW_SIZE);
+      mx_table_add_actor (MX_TABLE (pane),
+                          actor,
+                          count / ROW_SIZE,
+                          count % ROW_SIZE);
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
                                    "x-expand",

@@ -22,7 +22,7 @@
 #define _PENGE_RECENT_FILES_PANE
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_RECENT_FILES_PANE, PengeRecentFilesPaneClass))
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
 } PengeRecentFilesPane;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 } PengeRecentFilesPaneClass;
 
 GType penge_recent_files_pane_get_type (void);

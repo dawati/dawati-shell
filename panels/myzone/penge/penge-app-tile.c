@@ -26,7 +26,7 @@
 #include "penge-app-tile.h"
 #include "penge-utils.h"
 
-G_DEFINE_TYPE (PengeAppTile, penge_app_tile, NBTK_TYPE_BUTTON)
+G_DEFINE_TYPE (PengeAppTile, penge_app_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_APP_TILE, PengeAppTilePrivate))
@@ -201,8 +201,8 @@ penge_app_tile_constructed (GObject *object)
                                              NULL);
       }
 
-      nbtk_widget_set_tooltip_text (NBTK_WIDGET (object),
-                                    name);
+      mx_widget_set_tooltip_text (MX_WIDGET (object),
+                                  name);
       g_free (name);
     }
     g_key_file_free (kf);
@@ -243,8 +243,8 @@ penge_app_tile_class_init (PengeAppTileClass *klass)
 }
 
 static void
-_button_clicked_cb (NbtkButton *button,
-                    gpointer    userdata)
+_button_clicked_cb (MxButton *button,
+                    gpointer  userdata)
 {
   PengeAppTilePrivate *priv = GET_PRIVATE (userdata);
   GError *error = NULL;
@@ -280,8 +280,8 @@ penge_app_tile_init (PengeAppTile *self)
   priv->tex = clutter_texture_new ();
   clutter_actor_set_size (priv->tex, ICON_SIZE, ICON_SIZE);
 
-  nbtk_bin_set_child (NBTK_BIN (self),
-                      priv->tex);
+  mx_bin_set_child (MX_BIN (self),
+                    priv->tex);
   g_signal_connect (self,
                     "clicked",
                     (GCallback)_button_clicked_cb,

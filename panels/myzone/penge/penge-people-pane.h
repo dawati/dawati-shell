@@ -21,7 +21,7 @@
 #ifndef _PENGE_PEOPLE_PANE
 #define _PENGE_PEOPLE_PANE
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <glib-object.h>
 #include <mojito-client/mojito-client.h>
 
@@ -45,11 +45,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_PEOPLE_PANE, PengePeoplePaneClass))
 
 typedef struct {
-  NbtkWidget parent;
+  MxWidget parent;
 } PengePeoplePane;
 
 typedef struct {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 } PengePeoplePaneClass;
 
 GType penge_people_pane_get_type (void);

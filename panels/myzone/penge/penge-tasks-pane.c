@@ -26,7 +26,7 @@
 
 #include "penge-task-tile.h"
 
-G_DEFINE_TYPE (PengeTasksPane, penge_tasks_pane, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeTasksPane, penge_tasks_pane, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_TASKS_PANE, PengeTasksPanePrivate))
@@ -40,7 +40,7 @@ struct _PengeTasksPanePrivate {
   GHashTable *uid_to_tasks;
   GHashTable *uid_to_actors;
 
-  NbtkWidget *no_tasks_bin;
+  ClutterActor *no_tasks_bin;
 
   gint count;
 };
@@ -416,7 +416,7 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   gchar *uid;
   ClutterActor *actor;
   JanaTask *first_task = NULL;
-  NbtkWidget *label;
+  ClutterActor *label;
 
   old_actors = g_hash_table_get_values (priv->uid_to_actors);
 
@@ -430,16 +430,16 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   {
     if (!priv->no_tasks_bin)
     {
-      label = nbtk_label_new (_("Nothing to do today"));
-      priv->no_tasks_bin = nbtk_bin_new ();
-      nbtk_bin_set_child (NBTK_BIN (priv->no_tasks_bin),
+      label = mx_label_new (_("Nothing to do today"));
+      priv->no_tasks_bin = mx_bin_new ();
+      mx_bin_set_child (MX_BIN (priv->no_tasks_bin),
                           (ClutterActor *)label);
-      nbtk_table_add_actor (NBTK_TABLE (pane),
-                            (ClutterActor *)priv->no_tasks_bin,
-                            0,
-                            0);
-      nbtk_widget_set_style_class_name (label,
-                                        "PengeNoMoreTasksLabel");
+      mx_table_add_actor (MX_TABLE (pane),
+                          priv->no_tasks_bin,
+                          0,
+                          0);
+      mx_widget_set_style_class_name (MX_WIDGET (label),
+                                      "PengeNoMoreTasksLabel");
 
       clutter_actor_set_height ((ClutterActor *)priv->no_tasks_bin, 46);
     }
@@ -480,10 +480,10 @@ penge_tasks_pane_update (PengeTasksPane *pane)
                             NULL);
 
       clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
-      nbtk_table_add_actor (NBTK_TABLE (pane),
-                            actor,
-                            count,
-                            0);
+      mx_table_add_actor (MX_TABLE (pane),
+                          actor,
+                          count,
+                          0);
       g_hash_table_insert (priv->uid_to_actors,
                            jana_component_get_uid (JANA_COMPONENT (task)),
                            g_object_ref (actor));
@@ -506,3 +506,4 @@ penge_tasks_pane_update (PengeTasksPane *pane)
 
   g_list_free (tasks);
 }
+

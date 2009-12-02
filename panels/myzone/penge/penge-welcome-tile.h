@@ -21,7 +21,7 @@
 #define _PENGE_WELCOME_TILE
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -43,11 +43,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_WELCOME_TILE, PengeWelcomeTileClass))
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
 } PengeWelcomeTile;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 } PengeWelcomeTileClass;
 
 GType penge_welcome_tile_get_type (void);

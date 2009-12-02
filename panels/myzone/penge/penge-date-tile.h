@@ -22,7 +22,7 @@
 #define _PENGE_DATE_TILE
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -44,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_DATE_TILE, PengeDateTileClass))
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
 } PengeDateTile;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 } PengeDateTileClass;
 
 GType penge_date_tile_get_type (void);

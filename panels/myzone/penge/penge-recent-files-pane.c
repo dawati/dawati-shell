@@ -30,7 +30,7 @@
 #include "penge-magic-list-view.h"
 #include "penge-welcome-tile.h"
 
-G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeRecentFilesPane, penge_recent_files_pane, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_RECENT_FILES_PANE, PengeRecentFilesPanePrivate))
@@ -252,22 +252,22 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
     if (g_list_length (items) < 4)
     {
       priv->welcome_tile = penge_welcome_tile_new ();
-      nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                            priv->welcome_tile,
-                                            0, 0,
-                                            "x-expand", FALSE,
-                                            "y-expand", FALSE,
-                                            "x-fill", FALSE,
-                                            "y-fill", TRUE,
-                                            NULL);
-      nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                            list_view,
-                                            1, 0,
-                                            "x-expand", TRUE,
-                                            "y-expand", TRUE,
-                                            "x-fill", TRUE,
-                                            "y-fill", TRUE,
-                                            NULL);
+      mx_table_add_actor_with_properties (MX_TABLE (self),
+                                          priv->welcome_tile,
+                                          0, 0,
+                                          "x-expand", FALSE,
+                                          "y-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-fill", TRUE,
+                                          NULL);
+      mx_table_add_actor_with_properties (MX_TABLE (self),
+                                          list_view,
+                                          1, 0,
+                                          "x-expand", TRUE,
+                                          "y-expand", TRUE,
+                                          "x-fill", TRUE,
+                                          "y-fill", TRUE,
+                                          NULL);
 
       /* We will remove this callback if list length exceeds 3 */
       g_signal_connect (priv->manager,
@@ -281,15 +281,15 @@ penge_recent_files_pane_init (PengeRecentFilesPane *self)
 
   if (!priv->welcome_tile)
   {
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                          list_view,
-                                          0, 0,
-                                          "x-expand", TRUE,
-                                          "y-expand", TRUE,
-                                          "x-fill", TRUE,
-                                          "y-fill", TRUE,
-                                          NULL);
-  }
+    mx_table_add_actor_with_properties (MX_TABLE (self),
+                                        list_view,
+                                        0, 0,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        NULL);
+}
 
   priv->list_view = list_view;
 

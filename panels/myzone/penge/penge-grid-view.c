@@ -28,7 +28,7 @@
 
 #include "penge-view-background.h"
 
-G_DEFINE_TYPE (PengeGridView, penge_grid_view, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_GRID_VIEW, PengeGridViewPrivate))
@@ -211,10 +211,10 @@ penge_grid_view_init (PengeGridView *self)
                                       NULL);
   clutter_actor_set_width (priv->calendar_pane, 280);
 
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->calendar_pane,
-                        0,
-                        0);
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->calendar_pane,
+                      0,
+                      0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->calendar_pane,
                                "y-expand", TRUE,
@@ -228,10 +228,10 @@ penge_grid_view_init (PengeGridView *self)
                                             NULL);
 
   clutter_actor_set_width (priv->favourite_apps_pane, 280);
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->favourite_apps_pane,
-                        1,
-                        0);
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->favourite_apps_pane,
+                      1,
+                      0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->favourite_apps_pane,
                                "y-expand", TRUE,
@@ -250,10 +250,10 @@ penge_grid_view_init (PengeGridView *self)
                error->message);
     g_clear_error (&error);
   } else {
-    nbtk_table_add_actor (NBTK_TABLE (self),
-                          div_tex,
-                          0,
-                          1);
+    mx_table_add_actor (MX_TABLE (self),
+                        div_tex,
+                        0,
+                        1);
     clutter_container_child_set (CLUTTER_CONTAINER (self),
                                  div_tex,
                                  "x-expand",
@@ -268,10 +268,10 @@ penge_grid_view_init (PengeGridView *self)
   priv->recent_files_pane = g_object_new (PENGE_TYPE_RECENT_FILES_PANE, 
                                           NULL);
 
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->recent_files_pane,
-                        0,
-                        2);
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->recent_files_pane,
+                      0,
+                      2);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->recent_files_pane,
                                "row-span",
@@ -294,20 +294,16 @@ penge_grid_view_init (PengeGridView *self)
                error->message);
     g_clear_error (&error);
   } else {
-    nbtk_table_add_actor (NBTK_TABLE (self),
-                          div_tex,
-                          0,
-                          3);
+    mx_table_add_actor (MX_TABLE (self),
+                        div_tex,
+                        0,
+                        3);
     clutter_container_child_set (CLUTTER_CONTAINER (self),
                                  div_tex,
-                                 "x-expand",
-                                 FALSE,
-                                 "x-fill",
-                                 FALSE,
-                                 "x-align",
-                                 1.0,
-                                 "row-span",
-                                 2,
+                                 "x-expand", FALSE,
+                                 "x-fill", FALSE,
+                                 "x-align", 1.0,
+                                 "row-span", 2,
                                  NULL);
   }
 
@@ -315,27 +311,22 @@ penge_grid_view_init (PengeGridView *self)
   priv->people_pane = g_object_new (PENGE_TYPE_PEOPLE_PANE,
                                     NULL);
 
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        priv->people_pane,
-                        0,
-                        4);
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->people_pane,
+                      0,
+                      4);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->people_pane,
-                               "row-span",
-                               2,
-                               "x-expand",
-                               TRUE,
-                               "y-expand",
-                               TRUE,
-                               "x-fill",
-                               TRUE,
-                               "y-fill",
-                               TRUE,
+                               "row-span", 2,
+                               "x-expand", TRUE,
+                               "y-expand", TRUE,
+                               "x-fill", TRUE,
+                               "y-fill", TRUE,
                                NULL);
 
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 6);
+  mx_table_set_row_spacing (MX_TABLE (self), 6);
+  mx_table_set_col_spacing (MX_TABLE (self), 6);
 
   /* 
    * Create a background and parent it to the grid. We paint and allocate this

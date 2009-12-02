@@ -23,7 +23,7 @@
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <bickley/bkl.h>
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
@@ -66,7 +66,7 @@ main (int    argc,
 {
   MplPanelClient *client;
   ClutterActor *stage;
-  NbtkWidget *grid_view;
+  ClutterActor *grid_view;
   GOptionContext *context;
   GError *error = NULL;
 
@@ -90,11 +90,12 @@ main (int    argc,
   g_option_context_free (context);
 
   MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
-
+#if 0
   nbtk_texture_cache_load_cache (nbtk_texture_cache_get_default (),
                                  NBTK_CACHE);
-  nbtk_style_load_from_file (nbtk_style_get_default (),
-                             THEMEDIR "/panel.css", NULL);
+#endif
+  mx_style_load_from_file (mx_style_get_default (),
+                           THEMEDIR "/panel.css", NULL);
 
   if (!standalone)
   {
