@@ -16,6 +16,8 @@
       <arg name="window_height" type="u" direction="out"/>
     </method>
 
+    <method name="Unload"/>
+
     <method name="SetPosition">
       <arg name="x" type="i" direction="in"/>
       <arg name="y" type="i" direction="in"/>

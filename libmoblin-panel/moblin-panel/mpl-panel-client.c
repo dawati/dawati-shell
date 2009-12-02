@@ -59,6 +59,7 @@ enum
 
 enum
 {
+  UNLOAD,
   SET_SIZE,
   SET_POSITION,
   SHOW,
@@ -386,7 +387,23 @@ mnb_panel_dbus_ping (MplPanelClient *self, GError **error)
   return TRUE;
 }
 
+static gboolean
+mnb_panel_dbus_unload (MplPanelClient *self, GError **error)
+{
+  g_debug ("%s called", __FUNCTION__);
+  g_signal_emit (self, signals[UNLOAD], 0);
+  return TRUE;
+}
+
 #include "mnb-panel-dbus-glue.h"
+
+static gboolean
+mpl_panel_client_real_unload (MplPanelClient *panel)
+{
+  g_main_loop_quit (NULL);
+
+  return TRUE;
+}
 
 static void
 mpl_panel_client_class_init (MplPanelClientClass *klass)
@@ -400,6 +417,8 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
   object_class->dispose          = mpl_panel_client_dispose;
   object_class->finalize         = mpl_panel_client_finalize;
   object_class->constructed      = mpl_panel_client_constructed;
+
+  klass->unload                  = mpl_panel_client_real_unload;
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
                                    &dbus_glib_mnb_panel_dbus_object_info);
@@ -459,6 +478,15 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                                      FALSE,
                                      G_PARAM_READWRITE |
                                      G_PARAM_CONSTRUCT_ONLY));
+
+  signals[UNLOAD] =
+    g_signal_new ("unload",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MplPanelClientClass, unload),
+                  NULL, NULL,
+                  moblin_netbook_marshal_BOOLEAN__VOID,
+                  G_TYPE_BOOLEAN, 0);
 
   signals[SET_SIZE] =
     g_signal_new ("set-size",
@@ -865,6 +893,12 @@ mpl_panel_client_new (guint        xid,
     }
 
   return panel;
+}
+
+void
+mpl_panel_client_unload (MplPanelClient *panel)
+{
+  g_signal_emit (panel, signals[UNLOAD], 0);
 }
 
 void

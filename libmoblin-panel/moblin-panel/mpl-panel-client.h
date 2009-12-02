@@ -65,14 +65,15 @@ typedef struct
   /*
    * Public signals -- connect to these from your panel.
    */
-  void (*set_size)           (MplPanelClient *panel, guint width, guint height);
-  void (*set_position)       (MplPanelClient *panel, gint x, gint y);
-  void (*show)               (MplPanelClient *panel);
-  void (*show_begin)         (MplPanelClient *panel);
-  void (*show_end)           (MplPanelClient *panel);
-  void (*hide)               (MplPanelClient *panel);
-  void (*hide_begin)         (MplPanelClient *panel);
-  void (*hide_end)           (MplPanelClient *panel);
+  gboolean (*unload)         (MplPanelClient *panel);
+  void     (*set_size)       (MplPanelClient *panel, guint width, guint height);
+  void     (*set_position)   (MplPanelClient *panel, gint x, gint y);
+  void     (*show)           (MplPanelClient *panel);
+  void     (*show_begin)     (MplPanelClient *panel);
+  void     (*show_end)       (MplPanelClient *panel);
+  void     (*hide)           (MplPanelClient *panel);
+  void     (*hide_begin)     (MplPanelClient *panel);
+  void     (*hide_end)       (MplPanelClient *panel);
 
   /*
    * Private signals
@@ -91,6 +92,8 @@ MplPanelClient *mpl_panel_client_new       (guint        xid,
                                             const gchar *tooltip,
                                             const gchar *stylesheet,
                                             const gchar *button_style);
+
+void  mpl_panel_client_unload               (MplPanelClient *panel);
 
 void  mpl_panel_client_set_height_request   (MplPanelClient *panel,
                                              guint           height);
