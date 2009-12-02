@@ -43,6 +43,7 @@ enum
 
   REQUEST_BUTTON_STYLE,
   REQUEST_TOOLTIP,
+  REQUEST_BUTTON_STATE,
 
   LAST_SIGNAL
 };
@@ -105,6 +106,16 @@ mnb_panel_base_init (gpointer g_iface)
                       g_cclosure_marshal_VOID__STRING,
                       G_TYPE_NONE, 1,
                       G_TYPE_STRING);
+
+      signals[REQUEST_BUTTON_STATE] =
+        g_signal_new ("request-button-state",
+                      iface_type,
+                      G_SIGNAL_RUN_LAST,
+                      G_STRUCT_OFFSET (MnbPanelIface, request_button_state),
+                      NULL, NULL,
+                      g_cclosure_marshal_VOID__ENUM,
+                      G_TYPE_NONE, 1,
+                      G_TYPE_ENUM);
 
       signals[REQUEST_TOOLTIP] =
         g_signal_new ("request-tooltip",

@@ -1129,6 +1129,31 @@ mnb_toolbar_panel_request_button_style_cb (MnbPanel    *panel,
 }
 
 static void
+mnb_toolbar_panel_request_button_state_cb (MnbPanel       *panel,
+                                           MnbButtonState  state,
+                                           MnbToolbar     *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint               index;
+  ClutterActor      *actor;
+
+  index = mnb_toolbar_panel_instance_to_index (toolbar, panel);
+
+  if (index < 0)
+    return;
+
+  actor = CLUTTER_ACTOR (priv->buttons[index]);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (actor) && (state & MNB_BUTTON_HIDDEN))
+    clutter_actor_hide (actor);
+  else if (!CLUTTER_ACTOR_IS_MAPPED (actor) && !(state & MNB_BUTTON_HIDDEN))
+    clutter_actor_show (actor);
+
+  if ((state & MNB_BUTTON_INSENSITIVE))
+    g_warning (G_STRLOC " Insensitive state is not yet implemented.");
+}
+
+static void
 mnb_toolbar_panel_request_tooltip_cb (MnbPanel    *panel,
                                       const gchar *tooltip,
                                       MnbToolbar  *toolbar)
@@ -1568,6 +1593,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
 
   g_signal_connect (panel, "request-button-style",
                     G_CALLBACK (mnb_toolbar_panel_request_button_style_cb),
+                    toolbar);
+
+  g_signal_connect (panel, "request-button-state",
+                    G_CALLBACK (mnb_toolbar_panel_request_button_state_cb),
                     toolbar);
 
   g_signal_connect (panel, "request-tooltip",

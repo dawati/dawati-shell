@@ -240,6 +240,14 @@ mnb_panel_oop_request_button_style_cb (DBusGProxy  *proxy,
 }
 
 static void
+mnb_panel_oop_request_button_state_cb (DBusGProxy     *proxy,
+                                       MnbButtonState  state,
+                                       MnbPanelOop    *panel)
+{
+  g_signal_emit_by_name (panel, "request-button-state", state);
+}
+
+static void
 mnb_panel_oop_request_tooltip_cb (DBusGProxy  *proxy,
                                   const gchar *tooltip,
                                   MnbPanelOop    *panel)
@@ -293,6 +301,10 @@ mnb_panel_oop_dispose (GObject *self)
 
       dbus_g_proxy_disconnect_signal (proxy, "RequestButtonStyle",
                              G_CALLBACK (mnb_panel_oop_request_button_style_cb),
+                             self);
+
+      dbus_g_proxy_disconnect_signal (proxy, "RequestButtonState",
+                             G_CALLBACK (mnb_panel_oop_request_button_state_cb),
                              self);
 
       dbus_g_proxy_disconnect_signal (proxy, "RequestTooltip",
@@ -769,6 +781,12 @@ mnb_panel_oop_setup_proxy (MnbPanelOop *panel)
                            G_TYPE_STRING, G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestButtonStyle",
                              G_CALLBACK (mnb_panel_oop_request_button_style_cb),
+                             panel, NULL);
+
+  dbus_g_proxy_add_signal (proxy, "RequestButtonState",
+                           G_TYPE_ENUM, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy, "RequestButtonState",
+                             G_CALLBACK (mnb_panel_oop_request_button_state_cb),
                              panel, NULL);
 
   dbus_g_proxy_add_signal (proxy, "RequestTooltip",

@@ -24,4 +24,11 @@
 #define MPL_PANEL_POWER        "power"
 #define MPL_PANEL_TEST         "test"
 
+typedef enum
+{
+  MNB_BUTTON_NORMAL      = 0,
+  MNB_BUTTON_HIDDEN      = 0x1,
+  MNB_BUTTON_INSENSITIVE = 0x2
+} MnbButtonState;
+
 #endif

@@ -28,6 +28,8 @@
 #include <glib-object.h>
 #include <X11/X.h>
 
+#include "mpl-panel-common.h"
+
 G_BEGIN_DECLS
 
 #define MPL_TYPE_PANEL_CLIENT mpl_panel_client_get_type()
@@ -79,6 +81,7 @@ typedef struct
   void (*request_focus)        (MplPanelClient *panel);
   void (*request_button_style) (MplPanelClient *panel, const gchar *style);
   void (*request_tooltip)      (MplPanelClient *panel, const gchar *tooltip);
+  void (*request_button_state) (MplPanelClient *panel, MnbButtonState state);
 } MplPanelClientClass;
 
 GType mpl_panel_client_get_type (void);
@@ -100,6 +103,8 @@ void  mpl_panel_client_request_button_style (MplPanelClient *panel,
                                              const gchar    *style);
 void  mpl_panel_client_request_tooltip      (MplPanelClient *panel,
                                              const gchar    *tooltip);
+void  mpl_panel_client_request_button_state (MplPanelClient *panel,
+                                             MnbButtonState  state);
 
 gboolean mpl_panel_client_launch_application   (MplPanelClient *panel,
                                                 const gchar    *app);

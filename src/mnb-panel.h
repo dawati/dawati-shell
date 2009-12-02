@@ -28,6 +28,8 @@
 #include <glib-object.h>
 #include <dbus/dbus-glib.h>
 
+#include <moblin-panel/mpl-panel-common.h>
+
 #include "mnb-drop-down.h"
 #include "mnb-input-manager.h"
 
@@ -58,6 +60,7 @@ typedef struct {
   void          (*hide_begin)          (MnbPanel *panel);
   void          (*hide_completed)      (MnbPanel *panel);
   void          (*request_button_style)(MnbPanel *panel, const gchar *style);
+  void          (*request_button_state)(MnbPanel *panel, MnbButtonState state);
   void          (*request_tooltip)     (MnbPanel *panel, const gchar *tooltip);
 
   gboolean      (*is_mapped)           (MnbPanel *panel);
