@@ -160,8 +160,9 @@ struct _MnbToolbarPrivate
   NbtkWidget   *time; /* The time and date fields, needed for the updates */
   NbtkWidget   *date;
 
-  NbtkWidget   *buttons[NUM_ZONES]; /* Buttons, one per zone & applet */
-  MnbPanel     *panels[NUM_ZONES];  /* Panels (the dropdowns) */
+  NbtkWidget   *buttons[NUM_ZONES];        /* Buttons, one per zone & applet */
+  MnbPanel     *panels[NUM_ZONES];         /* Panels (the dropdowns) */
+  gboolean      panel_unloaded[NUM_ZONES]; /* Whether panel was unloaded */
 
   gboolean no_autoloading    : 1;
   gboolean shown             : 1;
@@ -1312,11 +1313,19 @@ mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
   if (index >= 0)
     {
+      MnbToolbarPrivate *priv = toolbar->priv;
+
       /*
        * Get the panel name before we dispose of it.
        */
       name = g_strdup (mnb_panel_get_name (panel));
       mnb_toolbar_dispose_of_panel (toolbar, index, FALSE);
+
+      /*
+       * If the panel went away because we unloaded it, we are done.
+       */
+      if (priv->panel_unloaded[index])
+        return;
     }
 
   /*
@@ -1807,6 +1816,9 @@ mnb_toolbar_autostart_panels_cb (gpointer toolbar)
 
   for (i = 0; i < NUM_ZONES; ++i)
     {
+      if (priv->panel_unloaded[i])
+        continue;
+
       switch (i)
         {
           /* Add here any apps that have been converted to multiproc */
@@ -2153,6 +2165,48 @@ mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name)
     }
 
   mnb_panel_hide (priv->panels[index]);
+}
+
+void
+mnb_toolbar_unload_panel (MnbToolbar *toolbar, const gchar *panel_name)
+{
+  MnbToolbarPrivate *priv  = toolbar->priv;
+  gint               index = mnb_toolbar_panel_name_to_index (panel_name);
+
+  if (index < 0 || !priv->panels[index])
+    return;
+
+  if (!MNB_IS_PANEL_OOP (priv->panels[index]))
+    {
+      g_warning ("Panel %s cannot be unloaded (only OOP panels can be).",
+                 panel_name);
+      return;
+    }
+
+  priv->panel_unloaded[index] = TRUE;
+
+  mnb_panel_oop_unload ((MnbPanelOop*)priv->panels[index]);
+}
+
+void
+mnb_toolbar_load_panel (MnbToolbar *toolbar, const gchar *panel_name)
+{
+  MnbToolbarPrivate *priv  = toolbar->priv;
+  gint               index = mnb_toolbar_panel_name_to_index (panel_name);
+  gchar             *dbus_name;
+
+  if (index < 0 || priv->panels[index])
+    return;
+
+  priv->panel_unloaded[index] = FALSE;
+
+  dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, panel_name, NULL);
+
+  g_debug (G_STRLOC " starting service [%s (%s)].", panel_name, dbus_name);
+
+  mnb_toolbar_ping_panel_oop (priv->dbus_conn, dbus_name);
+
+  g_free (dbus_name);
 }
 
 /* returns NULL if no panel active */

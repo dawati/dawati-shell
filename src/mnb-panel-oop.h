@@ -90,6 +90,8 @@ void          mnb_toolbar_ping_panel_oop      (DBusGConnection *dbus_conn,
 void          mnb_panel_oop_hide_animate      (MnbPanelOop  *panel,
                                                MutterWindow *mcw);
 
+void          mnb_panel_oop_unload            (MnbPanelOop *panel);
+
 G_END_DECLS
 
 #endif /* _MNB_PANEL_OOP */

@@ -1504,3 +1504,12 @@ mnb_panel_iface_init (MnbPanelIface *iface)
   iface->is_mapped        = mnb_panel_oop_is_mapped;
 }
 
+void
+mnb_panel_oop_unload (MnbPanelOop *panel)
+{
+  MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
+
+  org_moblin_UX_Shell_Panel_unload_async (priv->proxy,
+                                          mnb_panel_oop_dbus_dumb_reply_cb,
+                                          NULL);
+}
