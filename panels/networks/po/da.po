@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: carrick-ng\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-10 20:49+0000\n"
-"PO-Revision-Date: 2009-11-25 08:45+0100\n"
+"PO-Revision-Date: 2009-12-03 23:47+0100\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -115,26 +115,26 @@ msgstr "Du er nu forbundet til et %s netværk"
 
 #: ../carrick/carrick-notification-manager.c:165
 msgid "Network lost"
-msgstr "Netværk er tabt"
+msgstr "Netværk er mistet"
 
 #: ../carrick/carrick-notification-manager.c:173
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "Beklager, vi tabte din trådede forbindelse"
+msgstr "Beklager, vi mistede din trådede forbindelse"
 
 #: ../carrick/carrick-notification-manager.c:177
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "Beklager, vi tabte din %s forbindelse til %s"
+msgstr "Beklager, vi mistede din %s forbindelse til %s"
 
 #: ../carrick/carrick-notification-manager.c:183
 #, c-format
 msgid "Sorry, we've lost your %s connection"
-msgstr "Beklager, vi tabte din %s forbindelse"
+msgstr "Beklager, vi m din %s forbindelse"
 
 #: ../carrick/carrick-notification-manager.c:200
 msgid "Network changed"
-msgstr "Netværk er ændret"
+msgstr "Netværksforbindelsen er ændret"
 
 #: ../carrick/carrick-notification-manager.c:219
 #, c-format
@@ -142,7 +142,7 @@ msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to a wired "
 "network"
 msgstr ""
-"Beklager, din forbindelse til %s er tabt, så vi har forbundet dig til et trådet "
+"Beklager, din forbindelse til %s er mistet, så vi har forbundet dig til et trådet "
 "netværk"
 
 #: ../carrick/carrick-notification-manager.c:226
@@ -151,7 +151,7 @@ msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
 "network"
 msgstr ""
-"Beklager, din forbindelse til %s er tabt, så vi har forbundet dig til %s, et %s "
+"Beklager, din forbindelse til %s er mistet, så vi har forbundet dig til %s, et %s "
 "netværk"
 
 #: ../carrick/carrick-notification-manager.c:234
@@ -159,14 +159,14 @@ msgstr ""
 msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr ""
-"Beklager, din forbindelse til %s er tabt, så vi har forbundet dig til et %s netværk"
+"Beklager, din forbindelse til %s er mistet, så vi har forbundet dig til et %s netværk"
 
 #: ../carrick/carrick-notification-manager.c:244
 #, c-format
 msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a wired network"
 msgstr ""
-"Beklager din %s forbindelse er tabt, så vi har forbundet dig til et trådet netværk"
+"Beklager din %s forbindelse er mistet, så vi har forbundet dig til et trådet netværk"
 
 #: ../carrick/carrick-notification-manager.c:251
 #, c-format
@@ -174,7 +174,7 @@ msgid ""
 "Sorry, your %s connection was lost. So we've connected you to %s, a %s "
 "network"
 msgstr ""
-"Beklager, din %s forbindelse er tabt, så vi har forbundet dig til %s, et %s "
+"Beklager, din %s forbindelse er mistet, så vi har forbundet dig til %s, et %s "
 "netværk"
 
 #: ../carrick/carrick-notification-manager.c:260
@@ -182,7 +182,7 @@ msgstr ""
 msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr ""
-"Beklager, din %s forbindelse er tabt, så vi har forbundet dig til et %s netværk"
+"Beklager, din %s forbindelse er mistet, så vi har forbundet dig til et %s netværk"
 
 #: ../carrick/carrick-pane.c:633
 msgid "New connection settings"
@@ -257,7 +257,7 @@ msgstr "Intern fejl: Ugyldig netværkstjeneste"
 
 #: ../carrick/carrick-service-item.c:52
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Kritisk fejl: Kunne ikke forbinde til Forbindelseshåndteringen"
+msgstr "Kritisk fejl: Kunne ikke tilgå til Forbindelseshåndteringen"
 
 #: ../carrick/carrick-service-item.c:53
 msgid "ERROR: No 3G Hardware detected"
@@ -273,11 +273,11 @@ msgstr "%s-krypteret"
 
 #: ../carrick/carrick-service-item.c:280
 msgid "Disconnect"
-msgstr "Kobl fra"
+msgstr "Afbryd forbindelse"
 
 #: ../carrick/carrick-service-item.c:283
 msgid "Connected"
-msgstr "Forbind"
+msgstr "Forbundet"
 
 #: ../carrick/carrick-service-item.c:290 ../carrick/carrick-service-item.c:299
 #, c-format
@@ -295,20 +295,20 @@ msgstr "Associering"
 #: ../carrick/carrick-service-item.c:311 ../carrick/carrick-service-item.c:336
 #: ../carrick/carrick-service-item.c:1273
 msgid "Connect"
-msgstr "Forbind"
+msgstr "Opret forbindelse"
 
 #: ../carrick/carrick-service-item.c:339
 msgid "Connection failed"
-msgstr "Forbindelse mislykkedes"
+msgstr "Forbindelsen kunne ikke oprettes"
 
 #: ../carrick/carrick-service-item.c:342
 msgid "Sorry, the connection failed. You could try again."
-msgstr "Beklager, forbindelsen mislykkedes. Du kan prøve igen."
+msgstr "Beklager, forbindelsen kunne ikke oprettes. Du kunne prøve igen."
 
 #: ../carrick/carrick-service-item.c:348 ../carrick/carrick-service-item.c:351
 #, c-format
 msgid "Disconnecting"
-msgstr "Frakobler"
+msgstr "Afbryder forbindelse"
 
 #: ../carrick/carrick-service-item.c:409
 msgid "Type password here"
@@ -336,7 +336,7 @@ msgid ""
 "either 10 or 26 characters, you have %i."
 msgstr ""
 "Din adgangskode har ikke den rette længde. For en WEP-forbindelse skal den være "
-"enten 10 eller 26 tegn, du har %i."
+"enten 10 eller 26 tegn. Du har %i."
 
 #: ../carrick/carrick-service-item.c:678
 #, c-format
@@ -345,7 +345,7 @@ msgid ""
 "characters long, you have %i"
 msgstr ""
 "Din adgangskode er for kort. For en WPA-forbindelse skal den være mindst 8 "
-"tegn langt, du har %i"
+"tegn langt. Du har %i"
 
 #: ../carrick/carrick-service-item.c:682
 #, c-format
@@ -353,8 +353,8 @@ msgid ""
 "Your password is too long. For a WPA  connection it needs to have fewer than "
 "63 characters, you have %i"
 msgstr ""
-"Din adgangskode er for langt. For en WPA-forbindelse skal den være mindre end "
-"63 tegn, du har %i"
+"Din adgangskode er for lang. For en WPA-forbindelse skal den være mindre end "
+"63 tegn. Du har %i"
 
 #: ../carrick/carrick-service-item.c:691
 #, c-format
@@ -362,8 +362,8 @@ msgid ""
 "Your password is too short. For a WPA2  connection it needs to be at least 8 "
 "characters long, you have %i"
 msgstr ""
-"Din adgangskode er for langt. For en WPA2-forbindelse, skal den være mindst 8 "
-"tegn langt, du har %i"
+"Din adgangskode er for kort. For en WPA2-forbindelse, skal den være mindst 8 "
+"tegn langt. Du har %i"
 
 #: ../carrick/carrick-service-item.c:695
 #, c-format
@@ -371,8 +371,8 @@ msgid ""
 "Your password is too long. For a WPA2  connection it needs to have fewer "
 "than 63 characters, you have %i"
 msgstr ""
-"Din adgangskode er for langt. For en WPA2-forbindelse, skal den være mindre "
-"end 63 tegn, du har %i"
+"Din adgangskode er for lang. For en WPA2-forbindelse, skal den være mindre "
+"end 63 tegn. Du har %i"
 
 #: ../carrick/carrick-service-item.c:1209
 msgid "Scanning"
@@ -392,7 +392,7 @@ msgstr "netværk - ikke forbundet"
 
 #: ../src/carrick.c:70
 msgid "networks - connecting"
-msgstr "netværk - forbinder"
+msgstr "netværk - opretter forbindelse"
 
 #: ../src/carrick.c:76
 msgid "networks - wired"
