@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-19 18:22+0000\n"
+"POT-Creation-Date: 2009-12-03 23:44+0000\n"
 "PO-Revision-Date: 2009-11-19 14:56-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -16,35 +16,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED KINGDOM\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
 
-#: ../src/moblin-netbook.c:448
-#: ../src/mnb-toolbar.c:1483
+#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "zones"
 
-#: ../src/moblin-netbook.c:561
+#: ../src/moblin-netbook.c:621
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook Effects"
 
-#: ../src/moblin-netbook.c:565
+#: ../src/moblin-netbook.c:625
 msgid "Effects for Moblin Netbooks"
 msgstr "Effects for Moblin Netbooks"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:677
+#. 
+#: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:687
+#. 
+#: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
 msgstr "%e %B, %Y"
 
@@ -56,11 +55,11 @@ msgstr "Dismiss"
 msgid "Dismiss All"
 msgstr "Dismiss All"
 
-#: ../src/switcher/mnb-switcher.c:301
+#: ../src/switcher/mnb-switcher.c:307
 msgid "No Zones yet"
 msgstr "No Zones yet"
 
-#: ../src/switcher/mnb-switcher.c:321
+#: ../src/switcher/mnb-switcher.c:327
 msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
 msgstr "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 
@@ -68,3 +67,14 @@ msgstr "Applications you’re using will show up here. You will be able to switc
 msgid "No applications on this zone"
 msgstr "No applications on this zone"
 
+#: ../src/moblin-netbook.c:2543
+msgid "Unknown window"
+msgstr "Unknown window"
+
+#: ../src/moblin-netbook.c:2529
+msgid "Activate"
+msgstr "Activate"
+
+#: ../src/moblin-netbook.c:2545
+msgid "Is asking for your attention."
+msgstr "is asking for your attention."
