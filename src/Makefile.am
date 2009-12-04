@@ -1,5 +1,9 @@
 SUBDIRS=effects switcher notifications
 
+xmldir = $(pkgdatadir)/dbus-xml
+xml_DATA = 	mnb-panel-dbus.xml	\
+		mnb-toolbar-dbus.xml
+
 pkglibdir=$(MUTTER_PLUGIN_DIR)
 
 AM_CFLAGS = \
