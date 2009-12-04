@@ -625,7 +625,7 @@ _connect_button_cb (GtkButton          *connect_button,
 	    dbus_g_proxy_set_default_timeout (priv->proxy, -1);
 
             if (panel_client)
-              mpl_panel_client_request_hide (panel_client);
+              mpl_panel_client_hide (panel_client);
 	  }
         }
     }
