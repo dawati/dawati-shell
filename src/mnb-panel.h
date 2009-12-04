@@ -62,8 +62,10 @@ typedef struct {
   void          (*request_button_style)(MnbPanel *panel, const gchar *style);
   void          (*request_button_state)(MnbPanel *panel, MnbButtonState state);
   void          (*request_tooltip)     (MnbPanel *panel, const gchar *tooltip);
+  void          (*request_modality)    (MnbPanel *panel, gboolean modal);
 
   gboolean      (*is_mapped)           (MnbPanel *panel);
+  gboolean      (*is_modal)            (MnbPanel *panel);
 
   const gchar * (*get_name)            (MnbPanel *panel);
   const gchar * (*get_stylesheet)      (MnbPanel *panel);
@@ -108,6 +110,7 @@ void             mnb_panel_hide              (MnbPanel *panel);
 void             mnb_panel_hide_with_toolbar (MnbPanel *panel);
 
 gboolean         mnb_panel_is_mapped         (MnbPanel *panel);
+gboolean         mnb_panel_is_modal          (MnbPanel *panel);
 
 void             mnb_panel_set_button        (MnbPanel   *panel,
                                               NbtkButton *button);

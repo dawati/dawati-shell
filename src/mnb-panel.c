@@ -44,6 +44,7 @@ enum
   REQUEST_BUTTON_STYLE,
   REQUEST_TOOLTIP,
   REQUEST_BUTTON_STATE,
+  REQUEST_MODALITY,
 
   LAST_SIGNAL
 };
@@ -126,6 +127,16 @@ mnb_panel_base_init (gpointer g_iface)
                       g_cclosure_marshal_VOID__STRING,
                       G_TYPE_NONE, 1,
                       G_TYPE_STRING);
+
+      signals[REQUEST_BUTTON_STATE] =
+        g_signal_new ("request-modality",
+                      iface_type,
+                      G_SIGNAL_RUN_LAST,
+                      G_STRUCT_OFFSET (MnbPanelIface, request_modality),
+                      NULL, NULL,
+                      g_cclosure_marshal_VOID__BOOLEAN,
+                      G_TYPE_NONE, 1,
+                      G_TYPE_BOOLEAN);
     }
 }
 
@@ -346,6 +357,24 @@ mnb_panel_is_mapped (MnbPanel *panel)
     }
 
   return iface->is_mapped (panel);
+}
+
+gboolean
+mnb_panel_is_modal (MnbPanel *panel)
+{
+  MnbPanelIface *iface;
+
+  g_return_val_if_fail (MNB_IS_PANEL (panel), FALSE);
+
+  iface = MNB_PANEL_GET_IFACE (panel);
+
+  if (!iface->is_modal)
+    {
+      MNB_PANEL_WARN_NOT_IMPLEMENTED (panel, "is_modal");
+      return FALSE;
+    }
+
+  return iface->is_modal (panel);
 }
 
 void
