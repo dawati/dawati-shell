@@ -177,7 +177,7 @@ main (int    argc,
                         (GCallback) _connection_changed_cb,
                         panel_client);
 
-      gtk_widget_show_all (window);
+      gtk_widget_show_all (pane);
     }
   else
     {
