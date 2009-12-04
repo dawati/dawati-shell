@@ -73,6 +73,7 @@ enum
   REQUEST_BUTTON_STYLE,
   REQUEST_TOOLTIP,
   REQUEST_BUTTON_STATE,
+  REQUEST_MODALITY,
 
   LAST_SIGNAL
 };
@@ -602,6 +603,16 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__ENUM,
                   G_TYPE_NONE, 1,
                   G_TYPE_ENUM);
+
+  signals[REQUEST_MODALITY] =
+    g_signal_new ("request-modality",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MplPanelClientClass, request_modality),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__BOOLEAN,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_BOOLEAN);
 }
 
 static void
@@ -951,6 +962,12 @@ mpl_panel_client_request_button_state (MplPanelClient *panel,
                                        MnbButtonState  state)
 {
   g_signal_emit (panel, signals[REQUEST_BUTTON_STATE], 0, state);
+}
+
+void
+mpl_panel_client_request_modality (MplPanelClient *panel, gboolean modal)
+{
+  g_signal_emit (panel, signals[REQUEST_MODALITY], 0, modal);
 }
 
 #include "mnb-toolbar-dbus-bindings.h"

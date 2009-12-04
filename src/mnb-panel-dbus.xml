@@ -56,5 +56,9 @@
     </signal>
 
     <signal name="RequestFocus"/>
+
+    <signal name="RequestModality">
+      <arg name="state" type="b"/>
+    </signal>
   </interface>
 </node>
