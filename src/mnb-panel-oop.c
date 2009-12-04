@@ -127,6 +127,7 @@ struct _MnbPanelOopPrivate
    * The show/hide machinery
    */
   gboolean         mapped            : 1;
+  gboolean         modal             : 1;
   gboolean         in_show_animation : 1;
   gboolean         in_hide_animation : 1;
   gboolean         dont_hide_toolbar : 1;
@@ -248,6 +249,21 @@ mnb_panel_oop_request_button_state_cb (DBusGProxy     *proxy,
 }
 
 static void
+mnb_panel_oop_request_modality_cb (DBusGProxy     *proxy,
+                                   gboolean        modal,
+                                   MnbPanelOop    *panel)
+{
+  MnbPanelOopPrivate *priv      = panel->priv;
+  gboolean            not_modal = !priv->modal;
+
+  if (not_modal == modal)
+    {
+      priv->modal = modal;
+      g_signal_emit_by_name (panel, "request-modality", modal);
+    }
+}
+
+static void
 mnb_panel_oop_request_tooltip_cb (DBusGProxy  *proxy,
                                   const gchar *tooltip,
                                   MnbPanelOop    *panel)
@@ -305,6 +321,10 @@ mnb_panel_oop_dispose (GObject *self)
 
       dbus_g_proxy_disconnect_signal (proxy, "RequestButtonState",
                              G_CALLBACK (mnb_panel_oop_request_button_state_cb),
+                             self);
+
+      dbus_g_proxy_disconnect_signal (proxy, "RequestModality",
+                             G_CALLBACK (mnb_panel_oop_request_modality_cb),
                              self);
 
       dbus_g_proxy_disconnect_signal (proxy, "RequestTooltip",
@@ -793,6 +813,12 @@ mnb_panel_oop_setup_proxy (MnbPanelOop *panel)
                            G_TYPE_STRING, G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "RequestTooltip",
                                G_CALLBACK (mnb_panel_oop_request_tooltip_cb),
+                               panel, NULL);
+
+  dbus_g_proxy_add_signal (proxy, "RequestModality",
+                           G_TYPE_BOOLEAN, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy, "RequestModality",
+                               G_CALLBACK (mnb_panel_oop_request_modality_cb),
                                panel, NULL);
 
   dbus_g_proxy_add_signal (proxy, "SetSize",
@@ -1326,6 +1352,7 @@ mnb_panel_oop_hide (MnbPanel *panel)
   priv->dont_hide_toolbar = TRUE;
 
   priv->mapped = FALSE;
+  priv->modal  = FALSE;
 
   org_moblin_UX_Shell_Panel_hide_async (priv->proxy,
                                         mnb_panel_oop_dbus_dumb_reply_cb,
@@ -1426,6 +1453,18 @@ mnb_panel_oop_is_mapped (MnbPanel *panel)
   return priv->mapped;
 }
 
+static gboolean
+mnb_panel_oop_is_modal (MnbPanel *panel)
+{
+  MnbPanelOopPrivate *priv;
+
+  g_return_val_if_fail (MNB_IS_PANEL_OOP (panel), FALSE);
+
+  priv = MNB_PANEL_OOP (panel)->priv;
+
+  return priv->modal;
+}
+
 static void
 mnb_panel_oop_set_position (MnbPanel *panel, gint x, gint y)
 {
@@ -1502,6 +1541,7 @@ mnb_panel_iface_init (MnbPanelIface *iface)
   iface->set_button       = mnb_panel_oop_set_button;
 
   iface->is_mapped        = mnb_panel_oop_is_mapped;
+  iface->is_modal         = mnb_panel_oop_is_modal;
 }
 
 void
