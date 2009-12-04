@@ -1,4 +1,5 @@
 lib_LTLIBRARIES = libpenge.la
+noinst_PROGRAMS = test-block-layout
 
 libpenge_headers = penge-people-pane.h \
 		   penge-people-tile.h \
@@ -23,7 +24,8 @@ libpenge_headers = penge-people-pane.h \
 		   penge-welcome-tile.h \
 		   penge-people-placeholder-tile.h \
 		   penge-interesting-tile.h \
-		   penge-source-manager.h
+		   penge-source-manager.h \
+		   penge-block-layout.h
 
 libpenge_la_SOURCES = \
 		      $(libpenge_headers) \
@@ -50,7 +52,8 @@ libpenge_la_SOURCES = \
 		      penge-welcome-tile.c \
 		      penge-people-placeholder-tile.c \
 		      penge-interesting-tile.c \
-		      penge-source-manager.c
+		      penge-source-manager.c \
+		      penge-block-layout.c
 
 AM_CFLAGS = -Wall \
 	    $(PENGE_CFLAGS) \
@@ -60,4 +63,7 @@ AM_CFLAGS = -Wall \
 	    -DTHEMEDIR=\"$(pkgdatadir)/theme\"
 
 libpenge_la_LIBADD = $(MPL_LIBS) \
-		     $(PENGE_LIBS) 
+		     $(PENGE_LIBS)
+
+test_block_layout_SOURCES = test-block-layout.c
+test_block_layout_LDADD = $(top_builddir)/penge/libpenge.la
