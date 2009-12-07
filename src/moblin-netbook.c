@@ -458,10 +458,8 @@ moblin_netbook_plugin_constructed (GObject *object)
   toolbar = priv->toolbar =
     CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
 
-#if 1
-  mnb_toolbar_append_panel_old (MNB_TOOLBAR (toolbar),
-                                MPL_PANEL_ZONES, _("zones"));
-#endif
+  mnb_toolbar_append_panel_builtin (MNB_TOOLBAR (toolbar),
+                                    MPL_PANEL_ZONES, _("zones"));
 
   clutter_set_motion_events_enabled (TRUE);
 
