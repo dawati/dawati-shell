@@ -468,6 +468,9 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
   dbus_g_object_register_marshaller (moblin_netbook_marshal_VOID__INT_INT,
                                      G_TYPE_NONE,
                                      G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_object_register_marshaller (moblin_netbook_marshal_VOID__ENUM,
+                                     G_TYPE_NONE,
+                                     G_TYPE_ENUM, G_TYPE_INVALID);
 }
 
 static void
