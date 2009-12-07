@@ -507,7 +507,16 @@ _delete_button_cb (GtkButton *delete_button,
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
-      if (priv->favorite)
+      if (g_strcmp0 (priv->state, "failure") == 0)
+        {
+          /* The service is marked failure, use Service.Remove to set
+           * back to idle state and clear password and favorite flag
+           */
+          org_moblin_connman_Service_remove_async (priv->proxy,
+                                                   dbus_proxy_notify_cb,
+                                                   item);
+        }
+      else if (priv->favorite)
         {
           /* If the network is a favorite it's set to auto-connect and
            * has therefore been connected before, use Service.Remove
