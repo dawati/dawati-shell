@@ -24,6 +24,7 @@
 
 #include "mnb-panel.h"
 #include "mnb-toolbar.h"
+#include "mnb-enum-types.h"
 
 #define MNB_PANEL_WARN_NOT_IMPLEMENTED(panel,vfunc)               \
   G_STMT_START {                                                  \
@@ -116,7 +117,7 @@ mnb_panel_base_init (gpointer g_iface)
                       NULL, NULL,
                       g_cclosure_marshal_VOID__ENUM,
                       G_TYPE_NONE, 1,
-                      G_TYPE_ENUM);
+                      MNB_TYPE_BUTTON_STATE);
 
       signals[REQUEST_TOOLTIP] =
         g_signal_new ("request-tooltip",

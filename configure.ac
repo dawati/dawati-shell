@@ -136,6 +136,8 @@ AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g -O0"])
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
+GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
+AC_SUBST(GLIB_MKENUMS)
 
 MUTTER_PLUGIN_DIR=$($PKG_CONFIG mutter-plugins --variable=plugindir)
 AC_SUBST(MUTTER_PLUGIN_DIR)
