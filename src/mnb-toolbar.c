@@ -51,6 +51,9 @@
 
 #include <clutter/x11/clutter-x11.h>
 
+#define KEY_DIR "/desktop/moblin/toolbar/panels"
+#define KEY_ORDER KEY_DIR "/order"
+
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
@@ -110,6 +113,7 @@ static MnbPanel * mnb_toolbar_panel_name_to_panel (MnbToolbar  *toolbar,
 static MnbToolbarPanel * mnb_toolbar_panel_name_to_panel_internal (MnbToolbar  *toolbar,
                                                                    const gchar *name);
 static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, MnbPanel *panel);
+static void mnb_toolbar_setup_gconf (MnbToolbar *toolbar);
 
 enum {
     MYZONE = 0,
@@ -168,6 +172,22 @@ struct _MnbToolbarPanel
   gboolean    unloaded     : 1;
   gboolean    applet       : 1;
 };
+
+static void
+mnb_toolbar_panel_destroy (MnbToolbarPanel *tp)
+{
+  g_free (tp->name);
+  g_free (tp->service);
+  g_free (tp->button_stylesheet);
+  g_free (tp->button_style);
+  g_free (tp->tooltip);
+
+  if (tp->button)
+    g_critical (G_STRLOC ": button leaked");
+
+  if (tp->panel)
+    g_critical (G_STRLOC ": panel leaked");
+}
 
 struct _MnbToolbarPrivate
 {
@@ -1015,16 +1035,11 @@ mnb_toolbar_append_panel_builtin (MnbToolbar  *toolbar,
   MnbPanel          *panel = NULL;
   MnbToolbarPanel   *tp;
   gint               screen_width, screen_height;
-  gint               index;
 
   tp = mnb_toolbar_panel_name_to_panel_internal (toolbar, name);
 
   if (!tp)
     return;
-
-  index = mnb_toolbar_get_panel_index (toolbar, tp);
-
-  g_assert (index >= 0);
 
   if (tp->panel)
     {
@@ -1284,7 +1299,8 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
 static void
 mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
-  MnbToolbarPanel *tp;
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MnbToolbarPanel   *tp;
 
   tp = mnb_toolbar_panel_to_toolbar_panel (toolbar, panel);
 
@@ -1298,8 +1314,9 @@ mnb_toolbar_panel_died_cb (MnbPanel *panel, MnbToolbar *toolbar)
    */
   if (tp->unloaded)
     {
-      /* FIXME -- should we remove the tp object here ? */
       mnb_toolbar_dispose_of_button (toolbar, tp);
+      priv->panels = g_list_remove (priv->panels, tp);
+      mnb_toolbar_panel_destroy (tp);
       return;
     }
 
@@ -1417,69 +1434,21 @@ mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
   mnb_toolbar_dispose_of_panel (toolbar, tp, TRUE);
 }
 
-/*
- * Appends a panel
- */
 static void
-mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
+mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
+  MnbToolbarPrivate *priv   = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
-  NbtkWidget        *button;
-  gint               screen_width, screen_height;
-  gchar             *button_style = NULL;
-  const gchar       *name;
-  const gchar       *tooltip;
-  const gchar       *stylesheet = NULL;
-  const gchar       *style_id = NULL;
   gint               index;
+  gint               screen_width, screen_height;
+  NbtkWidget        *button;
 
-  if (!tp)
+  if (!tp || !tp->button)
     return;
 
-  name       = tp->name;
-  tooltip    = tp->tooltip;
-  stylesheet = tp->button_stylesheet;
-  style_id   = tp->button_style;
-
-  if (!style_id || !*style_id)
-    {
-      if (tp->button_style)
-        style_id = tp->button_style;
-      else
-        button_style = g_strdup_printf ("%s-button", name);
-    }
+  button = tp->button;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  if (tp->button)
-    clutter_actor_destroy (CLUTTER_ACTOR (tp->button));
-
-  button = tp->button = mnb_toolbar_button_new ();
-
-  if (stylesheet && *stylesheet)
-    {
-      GError    *error = NULL;
-      NbtkStyle *style = nbtk_style_new ();
-
-      if (!nbtk_style_load_from_file (style, stylesheet, &error))
-        {
-          if (error)
-            g_warning ("Unable to load stylesheet %s: %s",
-                       stylesheet, error->message);
-
-          g_error_free (error);
-        }
-      else
-        nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
-    }
-
-  nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
-  clutter_actor_set_name (CLUTTER_ACTOR (button),
-                          button_style ? button_style : style_id);
-
-  g_free (button_style);
 
   index = mnb_toolbar_get_panel_index (toolbar, tp);
 
@@ -1534,6 +1503,67 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                    CLUTTER_ACTOR (button));
     }
+}
+
+/*
+ * Appends a panel
+ */
+static void
+mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
+{
+  NbtkWidget  *button;
+  gchar       *button_style = NULL;
+  const gchar *name;
+  const gchar *tooltip;
+  const gchar *stylesheet = NULL;
+  const gchar *style_id = NULL;
+
+  if (!tp)
+    return;
+
+  name       = tp->name;
+  tooltip    = tp->tooltip;
+  stylesheet = tp->button_stylesheet;
+  style_id   = tp->button_style;
+
+  if (!style_id || !*style_id)
+    {
+      if (tp->button_style)
+        style_id = tp->button_style;
+      else
+        button_style = g_strdup_printf ("%s-button", name);
+    }
+
+  if (tp->button)
+    clutter_actor_destroy (CLUTTER_ACTOR (tp->button));
+
+  button = tp->button = mnb_toolbar_button_new ();
+
+  if (stylesheet && *stylesheet)
+    {
+      GError    *error = NULL;
+      NbtkStyle *style = nbtk_style_new ();
+
+      if (!nbtk_style_load_from_file (style, stylesheet, &error))
+        {
+          if (error)
+            g_warning ("Unable to load stylesheet %s: %s",
+                       stylesheet, error->message);
+
+          g_error_free (error);
+        }
+      else
+        nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
+    }
+
+  nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
+  nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
+  clutter_actor_set_name (CLUTTER_ACTOR (button),
+                          button_style ? button_style : style_id);
+
+  g_free (button_style);
+
+  mnb_toolbar_ensure_button_position (toolbar, tp);
 
   g_signal_connect (button, "notify::checked",
                     G_CALLBACK (mnb_toolbar_button_toggled_cb),
@@ -2016,6 +2046,11 @@ mnb_toolbar_setup_panels (MnbToolbar *toolbar)
    */
   for (; l; l = l->next)
     mnb_toolbar_append_button (toolbar, l->data);
+
+  /*
+   * And watch for changes
+   */
+  mnb_toolbar_setup_gconf (toolbar);
 }
 
 static void
@@ -2874,3 +2909,259 @@ mnb_toolbar_owns_window (MnbToolbar *toolbar, MutterWindow *mcw)
   return FALSE;
 }
 
+/*
+ * Creates MnbToolbarPanel object from a desktop file.
+ *
+ * desktop is the desktop file name without the .desktop prefix, which will be
+ * loaded from standard location.
+ */
+static MnbToolbarPanel *
+mnb_toolbar_make_panel_from_desktop (MnbToolbar  *toolbar,
+                                     const gchar *desktop)
+{
+  g_warning ("%s is not implemented.!", __FUNCTION__);
+  return NULL;
+}
+
+static gint
+mnb_toolbar_find_panel_by_name (const MnbToolbarPanel *tp, const gchar *name)
+{
+  if (!tp || !tp->name)
+    return -1;
+
+  return strcmp (tp->name, name);
+}
+
+
+static void
+mnb_toolbar_sort_panels (MnbToolbar *toolbar, GSList *order)
+{
+  MnbToolbarPrivate *priv  = toolbar->priv;
+  GSList            *l;
+  GList             *panels = priv->panels;
+
+  for (l = order; l; l = l->next)
+    {
+      const gchar     *name = l->data;
+      GList           *k;
+      MnbToolbarPanel *tp;
+
+      k = g_list_find_custom (panels, name,
+                              (GCompareFunc) mnb_toolbar_find_panel_by_name);
+
+      if (!k)
+        tp = mnb_toolbar_make_panel_from_desktop (toolbar, name);
+      else
+        tp = k->data;
+
+      if (!tp)
+        continue;
+
+      /*
+       * Move to the start of the list.
+       */
+      if (k)
+        panels = g_list_delete_link (panels, k);
+
+      panels = g_list_prepend (panels, tp);
+    }
+
+  panels = g_list_reverse (panels);
+
+  priv->panels = panels;
+
+  for (; panels; panels = panels->next)
+    {
+      MnbToolbarPanel *tp = panels->data;
+
+      if (!tp || !tp->button)
+        continue;
+
+      mnb_toolbar_ensure_button_position (toolbar, tp);
+    }
+}
+
+static void
+mnb_toolbar_panel_gconf_key_changed_cb (GConfClient *client,
+                                        guint        cnxn_id,
+                                        GConfEntry  *entry,
+                                        gpointer     data)
+{
+  MnbToolbar        *toolbar = MNB_TOOLBAR (data);
+  MnbToolbarPrivate *priv    = toolbar->priv;
+  GConfValue        *value;
+  const gchar       *key;
+
+  key = gconf_entry_get_key (entry);
+
+  if (!key)
+    {
+      g_warning (G_STRLOC ": no key!");
+      return;
+    }
+
+  value = gconf_entry_get_value (entry);
+
+  if (!value)
+    {
+      g_warning (G_STRLOC ": no value!");
+      return;
+    }
+
+  if (!strcmp (key, KEY_ORDER))
+    {
+      GSList *order;
+
+      if (value->type != GCONF_VALUE_LIST)
+        {
+          g_warning (G_STRLOC ": %s does not contain a list!", KEY_ORDER);
+          return;
+        }
+
+      if (gconf_value_get_list_type (value) != GCONF_VALUE_STRING)
+        {
+          g_warning (G_STRLOC ": %s list does not contain strings!", KEY_ORDER);
+          return;
+        }
+
+      order = gconf_value_get_list (value);
+
+      mnb_toolbar_sort_panels (toolbar, order);
+      return;
+    }
+
+  /*
+   * If we got here, the key in question is in the per-panel directory, so
+   * identify the panel and the directory.
+   */
+  {
+    gchar       *panel_name = g_strdup (key + strlen (KEY_DIR) + 1);
+    const gchar *panel_key;
+    gchar       *p;
+
+    p = strchr (panel_name, '/');
+
+    if (!p)
+      {
+        g_warning (G_STRLOC ": invalid key %s does not hold panel name", key);
+        goto finish_panel_key;
+      }
+
+    *p = 0;
+
+    panel_key = p+1;
+
+    /*
+     * Check this is the final element of the key
+     */
+    p = strchr (panel_key, '/');
+
+    if (p)
+      {
+        g_warning (G_STRLOC ": invalid key %s does not hold panel key", key);
+        goto finish_panel_key;
+      }
+
+    if (!strcmp (panel_key, "enabled"))
+      {
+        gboolean  enabled;
+        GSList   *order;
+
+        if (value->type != GCONF_VALUE_BOOL)
+          {
+            g_warning (G_STRLOC ":panel key %s is not boolean", panel_key);
+            goto finish_panel_key;
+          }
+
+        enabled = gconf_value_get_bool (value);
+
+        if (!enabled)
+          {
+            g_debug ("Panel %s was disabled", panel_name);
+            mnb_toolbar_unload_panel (toolbar, panel_name);
+          }
+        else
+          {
+            MnbToolbarPanel *tp;
+            GError          *error = NULL;
+            GSList          *l;
+
+            g_debug ("Panel %s was enabled", panel_name);
+
+            tp = mnb_toolbar_make_panel_from_desktop (toolbar, panel_name);
+
+            if (!tp)
+              {
+                g_warning (G_STRLOC ":could not create panel %s", panel_name);
+                goto finish_panel_key;
+              }
+
+            priv->panels = g_list_prepend (priv->panels, tp);
+
+            order = gconf_client_get_list (client, KEY_ORDER,
+                                           GCONF_VALUE_STRING, &error);
+
+            if (error || !order)
+              {
+                g_warning (G_STRLOC ":could not obtain panel order: %s",
+                           error ? error->message : "unknow error");
+                g_clear_error (&error);
+                goto finish_panel_key;
+              }
+
+            mnb_toolbar_sort_panels (toolbar, order);
+
+            for (l = order; l; l = l->next)
+              g_free (l->data);
+
+            g_slist_free (order);
+
+            /*
+             * FIXME -- for now start the panel service, later on this will
+             *          be done on demand.
+             */
+            mnb_toolbar_start_panel_service (toolbar, tp);
+          }
+      }
+    else
+      {
+        g_warning (G_STRLOC ":unknow panel key %s", panel_key);
+        goto finish_panel_key;
+      }
+
+    /*
+     * Clean up
+     */
+  finish_panel_key:
+    g_free (panel_name);
+  }
+}
+
+static void
+mnb_toolbar_setup_gconf (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate          *priv   = toolbar->priv;
+  MutterPlugin               *plugin = priv->plugin;
+  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GConfClient                *client = ppriv->gconf_client;
+  GError                     *error  = NULL;
+
+  gconf_client_add_dir (client,
+                        KEY_DIR,
+                        GCONF_CLIENT_PRELOAD_NONE,
+                        &error);
+
+  if (error)
+    {
+      g_warning (G_STRLOC ": Error when adding directory for notification: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+  gconf_client_notify_add (client,
+                           KEY_DIR,
+                           mnb_toolbar_panel_gconf_key_changed_cb,
+                           toolbar,
+                           NULL,
+                           &error);
+}
