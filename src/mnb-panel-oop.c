@@ -1393,20 +1393,18 @@ mnb_panel_oop_button_toggled_cb (NbtkWidget *button,
                                  GParamSpec *pspec,
                                  MnbPanel   *panel)
 {
+  MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
+
   if (nbtk_button_get_checked (NBTK_BUTTON (button)))
     {
-#if 0
-      /*
-       * Must reset the y in case a previous animation ended prematurely
-       * and the y is not set correctly; see bug 900.
-       */
-      clutter_actor_set_y (actor, TOOLBAR_HEIGHT);
-#endif
-
-      mnb_panel_show (panel);
+      if (!priv->mapped)
+        mnb_panel_show (panel);
     }
   else
-    mnb_panel_hide (panel);
+    {
+      if (priv->mapped)
+        mnb_panel_hide (panel);
+    }
 }
 
 static void
