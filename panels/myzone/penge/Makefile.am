@@ -1,5 +1,5 @@
 lib_LTLIBRARIES = libpenge.la
-noinst_PROGRAMS = test-block-layout
+noinst_PROGRAMS = test-block-layout test-model-bridge
 
 libpenge_headers = penge-people-pane.h \
 		   penge-people-tile.h \
@@ -25,7 +25,8 @@ libpenge_headers = penge-people-pane.h \
 		   penge-people-placeholder-tile.h \
 		   penge-interesting-tile.h \
 		   penge-source-manager.h \
-		   penge-block-layout.h
+		   penge-block-layout.h \
+		   penge-model-bridge.h
 
 libpenge_la_SOURCES = \
 		      $(libpenge_headers) \
@@ -53,7 +54,8 @@ libpenge_la_SOURCES = \
 		      penge-people-placeholder-tile.c \
 		      penge-interesting-tile.c \
 		      penge-source-manager.c \
-		      penge-block-layout.c
+		      penge-block-layout.c \
+		      penge-model-bridge.c
 
 AM_CFLAGS = -Wall \
 	    $(PENGE_CFLAGS) \
@@ -67,3 +69,6 @@ libpenge_la_LIBADD = $(MPL_LIBS) \
 
 test_block_layout_SOURCES = test-block-layout.c
 test_block_layout_LDADD = $(top_builddir)/penge/libpenge.la
+
+test_model_bridge_SOURCES = test-model-bridge.c
+test_model_bridge_LDADD = $(top_builddir)/penge/libpenge.la
