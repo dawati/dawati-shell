@@ -2586,7 +2586,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
           g_source_remove (priv->trigger_timeout_id);
           priv->trigger_timeout_id = 0;
         }
-      else if (CLUTTER_ACTOR_IS_MAPPED (toolbar))
+      else if (CLUTTER_ACTOR_IS_MAPPED (toolbar) &&
+               !priv->waiting_for_panel_hide)
         {
           mnb_toolbar_trigger_region_set_height (toolbar, 0);
           mnb_toolbar_hide (toolbar);
