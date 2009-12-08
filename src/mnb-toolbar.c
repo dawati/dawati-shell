@@ -1646,9 +1646,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
                     G_CALLBACK (mnb_toolbar_panel_request_tooltip_cb),
                     toolbar);
 
-  g_signal_connect (panel, "ready",
-                    G_CALLBACK (mnb_toolbar_panel_ready_cb), toolbar);
-
   g_signal_connect (panel, "remote-process-died",
                     G_CALLBACK (mnb_toolbar_panel_died_cb), toolbar);
 
@@ -1658,6 +1655,12 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
     mnb_panel_set_button (panel, NBTK_BUTTON (tp->button));
 
   mnb_panel_set_position (panel, TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
+
+  if (mnb_panel_oop_is_ready (MNB_PANEL_OOP (panel)))
+    mnb_toolbar_panel_ready_cb (panel, toolbar);
+  else
+    g_signal_connect (panel, "ready",
+                      G_CALLBACK (mnb_toolbar_panel_ready_cb), toolbar);
 
   if (index == MYZONE)
     {
