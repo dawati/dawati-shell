@@ -386,6 +386,8 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   plugin_singleton = (MutterPlugin*)object;
 
+  priv->gconf_client = gconf_client_get_default ();
+
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
     meta_prefs_set_num_workspaces (1);
@@ -2128,8 +2130,6 @@ desktop_background_init (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   GError *error = NULL;
-
-  priv->gconf_client = gconf_client_get_default ();
 
   gconf_client_add_dir (priv->gconf_client,
                         KEY_DIR,
