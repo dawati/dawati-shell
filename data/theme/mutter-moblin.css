@@ -156,6 +156,22 @@ MnbToolbarButton#status-button:hover, MnbToolbarButton#status-button:active, Mnb
   background-image: url("file://panel/status-coloured.png");
 }
 
+/* network button */
+MnbToolbarButton#network-button {
+  background-image: url("file://panel/network-normal.png");
+}
+MnbToolbarButton#network-button:hover, MnbToolbarButton#network-button:active, MnbToolbarButton#network-button:checked {
+  background-image: url("file://panel/network-coloured.png");
+}
+
+/* bluetooth button */
+MnbToolbarButton#bluetooth-button {
+  background-image: url("file://panel/bluetooth-normal.png");
+}
+MnbToolbarButton#bluetooth-button:hover, MnbToolbarButton#bluetooth-button:active, MnbToolbarButton#bluetooth-button:checked {
+  background-image: url("file://panel/bluetooth-coloured.png");
+}
+
 /* tooltips */
 NbtkTooltip {
   color: white;

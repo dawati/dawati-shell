@@ -7,12 +7,16 @@ theme_paneldir = $(MUTTER_MOBLIN_THEME_DIR)/panel
 dist_theme_panel_DATA = \
 	theme/panel/apps-coloured.png \
 	theme/panel/apps-normal.png \
+	theme/panel/bluetooth-coloured.png \
+	theme/panel/bluetooth-normal.png \
 	theme/panel/internet-coloured.png \
 	theme/panel/internet-normal.png \
 	theme/panel/media-coloured.png \
 	theme/panel/media-normal.png \
 	theme/panel/myzone-coloured.png \
 	theme/panel/myzone-normal.png \
+	theme/panel/network-coloured.png \
+	theme/panel/network-normal.png \
 	theme/panel/panel-background.png \
 	theme/panel/panel-shadow.png \
 	theme/panel/pasteboard-coloured.png \
