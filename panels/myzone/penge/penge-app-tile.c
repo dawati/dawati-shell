@@ -188,7 +188,7 @@ penge_app_tile_constructed (GObject *object)
     } else {
       name = g_key_file_get_locale_string (kf,
                                            G_KEY_FILE_DESKTOP_GROUP,
-                                           G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME,
+                                           G_KEY_FILE_DESKTOP_KEY_NAME,
                                            NULL,
                                            NULL);
 
