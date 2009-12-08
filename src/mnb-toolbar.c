@@ -864,6 +864,11 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
                 mnb_panel_hide (tp->panel);
               }
           }
+        else
+          {
+            g_debug ("Button clicked before panel available");
+            nbtk_button_set_checked (NBTK_BUTTON (tp->button), FALSE);
+          }
       }
     }
 
