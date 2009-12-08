@@ -117,7 +117,8 @@ dist_theme_notifiers_DATA = \
 
 theme_effectsdir = $(MUTTER_MOBLIN_THEME_DIR)/effects
 dist_theme_effects_DATA = \
-	theme/effects/zone-switch-background.png
+	theme/effects/zone-switch-background.png \
+	theme/effects/bin-border-image.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE

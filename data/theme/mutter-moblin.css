@@ -431,15 +431,14 @@ MnbNotification > *.NotificationBody
 }
 
 /* zone switching effect */
-/* FIME -- should subclass to avoid this broad selection. */
-MxFrame#zone-switch-background {
-  border-image: url("effects/zone-switch-background.png") 0 stretch stretch;
+MnbFancyBin {
+  padding: 6 6 7 6;
+  curve-radius: 2;
+  border-image: url("file://effects/bin-border-image.png") 8 8 9 8;
 }
 
-MxTable#zone-switch-strip {
-  /* uses same assets as the chooser */
-  border-image: url("chooser/background.png") 11 11 11 11 stretch stretch;
-  /* should match the column spacing, currently not themable. */
-  padding: 60;
+MnbZonesPreview {
+  spacing: 16;
+  border-image: url("file://effects/zone-switch-background.png") 0 stretch stretch;
 }
 

@@ -22,11 +22,15 @@
  */
 
 #include "mnb-switch-zones-effect.h"
+#include "mnb-fancy-bin.h"
+#include "mnb-zones-preview.h"
 
-#define MNBZE_ZOOM_IN_DURATION  100
-#define MNBZE_ZOOM_OUT_DURATION 100
-#define MNBZE_MOTION_DURATION   200
-#define MNBZE_PAD 40
+static ClutterActor *zones_preview = NULL;
+
+#define MNBZE_ZOOM_IN_DURATION  400
+#define MNBZE_ZOOM_OUT_DURATION 400
+#define MNBZE_MOTION_DURATION   800
+#define MNBZE_PAD 24
 #define MNBZE_CELL_PAD 4
 
 /*
@@ -63,6 +67,21 @@ static void
 release_clones (ClutterActor *clone, gpointer data)
 {
   clutter_actor_destroy (clone);
+}
+
+/*
+ * Enable/disable 'fancy' mode on the workspace clones
+ */
+static void
+enable_fanciness (ClutterActor *strip, gboolean enable)
+{
+  GList *c, *children;
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (strip));
+  for (c = children; c; c = c->next)
+    mnb_fancy_bin_set_fancy (MNB_FANCY_BIN (c->data), enable);
+
+  g_list_free (children);
 }
 
 static void
@@ -127,11 +146,12 @@ on_strip_animation_completed (ClutterAnimation *anim, gpointer data)
         g_signal_handler_disconnect (anim, strip_cb_id);
         strip_cb_id = 0;
 
-        a = clutter_actor_animate (frame, CLUTTER_LINEAR,
+        a = clutter_actor_animate (frame, CLUTTER_EASE_OUT_QUAD,
                                    MNBZE_ZOOM_IN_DURATION,
                                    "scale-x", 1.0,
                                    "scale-y", 1.0,
                                    NULL);
+        enable_fanciness (strip, FALSE);
 
         current_anim = a;
 
@@ -166,6 +186,7 @@ on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
                                    (gfloat)(-MNBZE_PAD
                                    -((screen_width + MNBZE_PAD)*current_to)),
                                    NULL);
+        enable_fanciness (strip, TRUE);
 
         current_anim = a;
 
@@ -180,6 +201,16 @@ on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
       g_warning ("zoom-out completion callback for %p(%p) called in stage %d\n",
                  anim, current_anim, estage);
     }
+}
+
+static void
+mnb_switch_zones_completed_cb (MnbZonesPreview *preview, MutterPlugin *plugin)
+{
+  clutter_actor_destroy (zones_preview);
+  zones_preview = NULL;
+
+  mutter_plugin_effect_completed (plugin, actor_for_cb,
+                                  MUTTER_PLUGIN_SWITCH_WORKSPACE);
 }
 
 /*
@@ -208,12 +239,86 @@ on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
  *          to it.
  */
 void
-mnb_switch_zones_effect (MutterPlugin         *plug,
+mnb_switch_zones_effect (MutterPlugin         *plugin,
                          const GList         **actors,
                          gint                  from,
                          gint                  to,
                          MetaMotionDirection   direction)
 {
+  GList *w;
+  gint width, height;
+  ClutterActor *window_group;
+
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  if ((from == to) && !zones_preview)
+    {
+      mutter_plugin_effect_completed (plugin, NULL,
+                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+      return;
+    }
+
+  actor_for_cb = (*actors)->data;
+
+  if (!zones_preview)
+    {
+      MetaScreen *screen;
+      ClutterActor *stage;
+
+      /* Construct the zones preview actor */
+      zones_preview = mnb_zones_preview_new ();
+      g_object_set (G_OBJECT (zones_preview),
+                    "workspace", (gdouble)from,
+                    NULL);
+
+      /* Add it to the stage */
+      screen = mutter_plugin_get_screen (plugin);
+      stage = mutter_get_stage_for_screen (screen);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), zones_preview);
+
+      /* Attach to completed signal */
+      g_signal_connect (zones_preview, "switch-completed",
+                        G_CALLBACK (mnb_switch_zones_completed_cb), plugin);
+    }
+
+  mutter_plugin_query_screen_size (plugin, &width, &height);
+  g_object_set (G_OBJECT (zones_preview),
+                "workspace-width", (guint)width,
+                "workspace-height", (guint)height,
+                "workspace-bg", priv->desktop_tex,
+                NULL);
+
+  mnb_zones_preview_clear (MNB_ZONES_PREVIEW (zones_preview));
+
+  /* Add windows to zone preview actor */
+  for (w = mutter_plugin_get_windows (plugin); w; w = w->next)
+    {
+      MutterWindow *window = w->data;
+      gint workspace = mutter_window_get_workspace (window);
+      MetaCompWindowType type = mutter_window_get_window_type (window);
+
+      /*
+       * Only show regular windows that are not sticky (getting stacking order
+       * right for sticky windows would be really hard, and since they appear
+       * on each workspace, they do not help in identifying which workspace
+       * it is).
+       */
+      if ((workspace < 0) ||
+          mutter_window_is_override_redirect (window) ||
+          (type != META_COMP_WINDOW_NORMAL))
+        continue;
+
+      mnb_zones_preview_add_window (MNB_ZONES_PREVIEW (zones_preview), window);
+    }
+
+  /* Make sure it's on top */
+  window_group = mutter_plugin_get_window_group (plugin);
+  clutter_actor_raise (zones_preview, window_group);
+
+  /* Initiate animation */
+  mnb_zones_preview_change_workspace (MNB_ZONES_PREVIEW (zones_preview), to);
+
+#if 0
   ClutterAnimation           *a;
   gdouble                     target_scale_x, target_scale_y;
   gint                        cell_width, cell_height;
@@ -223,14 +328,15 @@ mnb_switch_zones_effect (MutterPlugin         *plug,
   if (from == to)
     {
       mutter_plugin_effect_completed (plugin, NULL,
-				      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
       return;
     }
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  cell_width = (screen_width -
-                MAX_WORKSPACES * 2 * MNBZE_CELL_PAD) / MAX_WORKSPACES;
+  cell_width = screen_width / 3;
+  /*cell_width = (screen_width -
+                MAX_WORKSPACES * 2 * MNBZE_CELL_PAD) / MAX_WORKSPACES;*/
 
   cell_height = screen_height * cell_width / screen_width;
 
@@ -292,7 +398,7 @@ mnb_switch_zones_effect (MutterPlugin         *plug,
   /*
    * Start the zoom out effect.
    */
-  a = clutter_actor_animate (frame, CLUTTER_LINEAR,
+  a = clutter_actor_animate (frame, CLUTTER_EASE_IN_QUAD,
                              MNBZE_ZOOM_OUT_DURATION,
                              "scale-x", target_scale_x,
                              "scale-y", target_scale_y,
@@ -384,7 +490,7 @@ mnb_switch_zones_effect (MutterPlugin         *plug,
               zoom_in_cb_id = 0;
             }
 
-          a = clutter_actor_animate (frame, CLUTTER_LINEAR,
+          a = clutter_actor_animate (frame, CLUTTER_EASE_IN_QUAD,
                                      MNBZE_ZOOM_OUT_DURATION,
                                      "scale-x", target_scale_x,
                                      "scale-y", target_scale_y,
@@ -417,6 +523,7 @@ mnb_switch_zones_effect (MutterPlugin         *plug,
           break;
         }
     }
+#endif
 }
 
 /*
@@ -578,7 +685,11 @@ fill_strip (MutterPlugin *plugin,
   l = workspaces;
   while (l)
     {
-      ClutterActor  *ws = l->data;
+      ClutterActor *ws_bin;
+      ClutterActor *ws = l->data;
+
+      ws_bin = mnb_fancy_bin_new ();
+      mnb_fancy_bin_set_child (MNB_FANCY_BIN (ws_bin), ws);
 
       mx_table_add_actor (strip, ws, 0, ws_count);
 
