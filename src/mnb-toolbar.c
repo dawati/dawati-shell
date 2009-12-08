@@ -850,6 +850,14 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
       {
         if (tp->button)
           nbtk_button_set_checked (NBTK_BUTTON (tp->button), FALSE);
+
+        if (tp->panel)
+          {
+            if (mnb_panel_is_mapped (tp->panel))
+              {
+                mnb_panel_hide (tp->panel);
+              }
+          }
       }
     else
       {
