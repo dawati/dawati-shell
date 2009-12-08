@@ -393,12 +393,14 @@ penge_block_layout_allocate (ClutterLayoutManager   *layout,
                          priv->padding;
           child_box.y2 = child_box.y1 + priv->actual_tile_height;
 
-          if (child_box.x2 > width || child_box.y2 > height)
-          {
-            break;
-          }
-
           clutter_actor_allocate (child, &child_box, flags);
+          clutter_actor_show (child);
+
+          g_debug (G_STRLOC ": y_count = %d, x_count = %d, " \
+                   "box = (%f, %f) (%f, %f)",
+                   y_count, x_count,
+                   child_box.x1, child_box.y1,
+                   child_box.x2, child_box.y2);
           clutter_actor_show (child);
 
           children = g_list_remove (children, child);
@@ -418,6 +420,11 @@ penge_block_layout_allocate (ClutterLayoutManager   *layout,
 
     if (!children)
       break;
+  }
+
+  for (l = children; l; l = l->next)
+  {
+    clutter_actor_hide (CLUTTER_ACTOR (l->data));
   }
 
   g_list_free (children);
