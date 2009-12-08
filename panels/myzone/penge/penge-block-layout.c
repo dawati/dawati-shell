@@ -346,6 +346,7 @@ penge_block_layout_allocate (ClutterLayoutManager   *layout,
   gint y_count, x_count;
   ClutterActor *child;
   ClutterActorBox child_box;
+  gboolean fit_found = FALSE;
 
   width = box->x2 - box->x1;
   height = box->y2 - box->y1;
@@ -369,10 +370,11 @@ penge_block_layout_allocate (ClutterLayoutManager   *layout,
     for (x_count = 0; x_count < priv->column_count; /* nop */)
     {
       /* Find first that can fit */
+      fit_found = FALSE;
+
       for (l = children; l; l = l->next)
       {
         child = (ClutterActor *)l->data;
-
         col_span = penge_block_layout_get_child_column_span (layout,
                                                              container,
                                                              child);
@@ -402,13 +404,16 @@ penge_block_layout_allocate (ClutterLayoutManager   *layout,
           children = g_list_remove (children, child);
 
           x_count += col_span;
-          break;
+
+          fit_found = TRUE;
         }
       }
 
-      if (!children)
+      if (!fit_found)
+      {
+        /* We couldn't find something that fitted */
         break;
-
+      }
     }
 
     if (!children)
