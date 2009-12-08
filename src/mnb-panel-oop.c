@@ -71,9 +71,6 @@ static const gchar * mnb_panel_oop_get_button_style (MnbPanel *panel);
 static const gchar  *mnb_panel_oop_get_stylesheet    (MnbPanel *panel);
 static void mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height);
 static void mnb_panel_oop_show (MnbPanel *panel);
-static void mnb_panel_oop_button_toggled_cb (NbtkWidget *button,
-                                             GParamSpec *pspec,
-                                             MnbPanel   *panel);
 static void mnb_panel_oop_show_animate      (MnbPanelOop *panel);
 
 enum
@@ -342,9 +339,6 @@ mnb_panel_oop_dispose (GObject *self)
 
   if (priv->button)
     {
-      g_signal_handlers_disconnect_by_func (priv->button,
-                                            mnb_panel_oop_button_toggled_cb,
-                                            self);
       priv->button = NULL;
     }
 
@@ -1219,6 +1213,7 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
 
   animation = clutter_actor_animate (mcw, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
+                                     "x", x,
                                      "y", y,
                                      NULL);
 
@@ -1383,29 +1378,6 @@ mnb_panel_oop_button_weak_unref_cb (MnbPanelOop *panel, GObject *button)
   panel->priv->button = NULL;
 }
 
-/*
- * TODO -- there is obviously a degree of overlap between this and the
- * MnbDropDown code; see if we could fold it somewhere to avoid duplication.
- */
-static void
-mnb_panel_oop_button_toggled_cb (NbtkWidget *button,
-                                 GParamSpec *pspec,
-                                 MnbPanel   *panel)
-{
-  MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
-
-  if (nbtk_button_get_checked (NBTK_BUTTON (button)))
-    {
-      if (!priv->mapped)
-        mnb_panel_show (panel);
-    }
-  else
-    {
-      if (priv->mapped)
-        mnb_panel_hide (panel);
-    }
-}
-
 static void
 mnb_panel_oop_set_button (MnbPanel *panel, NbtkButton *button)
 {
@@ -1423,9 +1395,6 @@ mnb_panel_oop_set_button (MnbPanel *panel, NbtkButton *button)
                            (GWeakNotify) mnb_panel_oop_button_weak_unref_cb,
                            panel);
 
-      g_signal_handlers_disconnect_by_func (old_button,
-                                 G_CALLBACK (mnb_panel_oop_button_toggled_cb),
-                                 panel);
     }
 
   if (button)
@@ -1433,11 +1402,6 @@ mnb_panel_oop_set_button (MnbPanel *panel, NbtkButton *button)
       g_object_weak_ref (G_OBJECT (button),
                          (GWeakNotify) mnb_panel_oop_button_weak_unref_cb,
                          panel);
-
-      g_signal_connect (button,
-                        "notify::checked",
-                        G_CALLBACK (mnb_panel_oop_button_toggled_cb),
-                        panel);
     }
 }
 

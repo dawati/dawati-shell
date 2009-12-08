@@ -31,8 +31,6 @@
 
 #define SLIDE_DURATION 150
 
-static void mnb_button_toggled_cb (NbtkWidget *, GParamSpec *, MnbDropDown *);
-
 static void mnb_panel_iface_init (MnbPanelIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MnbDropDown,
@@ -109,8 +107,6 @@ mnb_drop_down_dispose (GObject *object)
 
   if (priv->button)
     {
-      g_signal_handlers_disconnect_by_func (priv->button,
-                                            mnb_button_toggled_cb, object);
       priv->button = NULL;
     }
 
@@ -346,26 +342,6 @@ mnb_button_event_capture (ClutterActor *actor, ClutterButtonEvent *event)
 }
 
 static void
-mnb_button_toggled_cb (NbtkWidget  *button,
-                       GParamSpec  *pspec,
-                       MnbDropDown *drop_down)
-{
-  ClutterActor *actor = CLUTTER_ACTOR (drop_down);
-
-  if (nbtk_button_get_checked (NBTK_BUTTON (button)))
-    {
-      /*
-       * Must reset the y in case a previous animation ended prematurely
-       * and the y is not set correctly; see bug 900.
-       */
-      clutter_actor_set_y (actor, TOOLBAR_HEIGHT);
-      clutter_actor_show (actor);
-    }
-  else
-    clutter_actor_hide (actor);
-}
-
-static void
 mnb_drop_down_allocate (ClutterActor          *actor,
                         const ClutterActorBox *box,
                         ClutterAllocationFlags flags)
@@ -565,10 +541,6 @@ mnb_drop_down_panel_set_button (MnbPanel *panel, NbtkButton *button)
       g_object_weak_unref (G_OBJECT (old_button),
                            (GWeakNotify) mnb_drop_down_button_weak_unref_cb,
                            drop_down);
-
-      g_signal_handlers_disconnect_by_func (old_button,
-                                            G_CALLBACK (mnb_button_toggled_cb),
-                                            drop_down);
     }
 
   if (button)
@@ -576,11 +548,6 @@ mnb_drop_down_panel_set_button (MnbPanel *panel, NbtkButton *button)
       g_object_weak_ref (G_OBJECT (button),
                          (GWeakNotify) mnb_drop_down_button_weak_unref_cb,
                          drop_down);
-
-      g_signal_connect (button,
-                        "notify::checked",
-                        G_CALLBACK (mnb_button_toggled_cb),
-                        drop_down);
     }
 }
 
