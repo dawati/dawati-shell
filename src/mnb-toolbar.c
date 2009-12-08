@@ -169,8 +169,9 @@ struct _MnbToolbarPanel
   NbtkWidget *button;
   MnbPanel   *panel;
 
-  gboolean    unloaded     : 1;
-  gboolean    applet       : 1;
+  gboolean    unloaded : 1;
+  gboolean    applet   : 1;
+  gboolean    current  : 1;
 };
 
 static void
@@ -2935,9 +2936,12 @@ mnb_toolbar_find_panel_by_name (const MnbToolbarPanel *tp, const gchar *name)
   return strcmp (tp->name, name);
 }
 
-
+/*
+ * Sorts out panels to match the new order, removing / adding any panels
+ * in the process.
+ */
 static void
-mnb_toolbar_sort_panels (MnbToolbar *toolbar, GSList *order)
+mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
 {
   MnbToolbarPrivate *priv  = toolbar->priv;
   GSList            *l;
@@ -2960,6 +2964,8 @@ mnb_toolbar_sort_panels (MnbToolbar *toolbar, GSList *order)
       if (!tp)
         continue;
 
+      tp->current = TRUE;
+
       /*
        * Move to the start of the list.
        */
@@ -2973,11 +2979,51 @@ mnb_toolbar_sort_panels (MnbToolbar *toolbar, GSList *order)
 
   priv->panels = panels;
 
-  for (; panels; panels = panels->next)
+  /*
+   * Destroy any panels that are no longer current
+   */
+  while (panels)
+    {
+      MnbToolbarPanel *tp = panels->data;
+      MnbPanel        *panel;
+
+      if (!tp || tp->current)
+        {
+          panels = panels->next;
+          continue;
+        }
+
+      panel = tp->panel;
+
+      g_debug ("Panel %s was disabled, unloading", tp->name);
+      mnb_toolbar_dispose_of_button (toolbar, tp);
+      mnb_toolbar_dispose_of_panel  (toolbar, tp, FALSE);
+
+      priv->panels = g_list_remove (priv->panels, tp);
+      mnb_toolbar_panel_destroy (tp);
+
+      mnb_panel_oop_unload ((MnbPanelOop*)panel);
+
+      /*
+       * Start from the beginning.
+       */
+      panels = priv->panels;
+    }
+
+  /*
+   * Now fix up the button positions; also clear the current flag on the
+   * remaining panels
+   */
+  for (panels = priv->panels; panels; panels = panels->next)
     {
       MnbToolbarPanel *tp = panels->data;
 
-      if (!tp || !tp->button)
+      if (!tp)
+        continue;
+
+      tp->current = FALSE;
+
+      if (!tp->button)
         continue;
 
       mnb_toolbar_ensure_button_position (toolbar, tp);
@@ -2990,10 +3036,9 @@ mnb_toolbar_panel_gconf_key_changed_cb (GConfClient *client,
                                         GConfEntry  *entry,
                                         gpointer     data)
 {
-  MnbToolbar        *toolbar = MNB_TOOLBAR (data);
-  MnbToolbarPrivate *priv    = toolbar->priv;
-  GConfValue        *value;
-  const gchar       *key;
+  MnbToolbar  *toolbar = MNB_TOOLBAR (data);
+  GConfValue  *value;
+  const gchar *key;
 
   key = gconf_entry_get_key (entry);
 
@@ -3029,115 +3074,11 @@ mnb_toolbar_panel_gconf_key_changed_cb (GConfClient *client,
 
       order = gconf_value_get_list (value);
 
-      mnb_toolbar_sort_panels (toolbar, order);
+      mnb_toolbar_fixup_panels (toolbar, order);
       return;
     }
 
-  /*
-   * If we got here, the key in question is in the per-panel directory, so
-   * identify the panel and the directory.
-   */
-  {
-    gchar       *panel_name = g_strdup (key + strlen (KEY_DIR) + 1);
-    const gchar *panel_key;
-    gchar       *p;
-
-    p = strchr (panel_name, '/');
-
-    if (!p)
-      {
-        g_warning (G_STRLOC ": invalid key %s does not hold panel name", key);
-        goto finish_panel_key;
-      }
-
-    *p = 0;
-
-    panel_key = p+1;
-
-    /*
-     * Check this is the final element of the key
-     */
-    p = strchr (panel_key, '/');
-
-    if (p)
-      {
-        g_warning (G_STRLOC ": invalid key %s does not hold panel key", key);
-        goto finish_panel_key;
-      }
-
-    if (!strcmp (panel_key, "enabled"))
-      {
-        gboolean  enabled;
-        GSList   *order;
-
-        if (value->type != GCONF_VALUE_BOOL)
-          {
-            g_warning (G_STRLOC ":panel key %s is not boolean", panel_key);
-            goto finish_panel_key;
-          }
-
-        enabled = gconf_value_get_bool (value);
-
-        if (!enabled)
-          {
-            g_debug ("Panel %s was disabled", panel_name);
-            mnb_toolbar_unload_panel (toolbar, panel_name);
-          }
-        else
-          {
-            MnbToolbarPanel *tp;
-            GError          *error = NULL;
-            GSList          *l;
-
-            g_debug ("Panel %s was enabled", panel_name);
-
-            tp = mnb_toolbar_make_panel_from_desktop (toolbar, panel_name);
-
-            if (!tp)
-              {
-                g_warning (G_STRLOC ":could not create panel %s", panel_name);
-                goto finish_panel_key;
-              }
-
-            priv->panels = g_list_prepend (priv->panels, tp);
-
-            order = gconf_client_get_list (client, KEY_ORDER,
-                                           GCONF_VALUE_STRING, &error);
-
-            if (error || !order)
-              {
-                g_warning (G_STRLOC ":could not obtain panel order: %s",
-                           error ? error->message : "unknow error");
-                g_clear_error (&error);
-                goto finish_panel_key;
-              }
-
-            mnb_toolbar_sort_panels (toolbar, order);
-
-            for (l = order; l; l = l->next)
-              g_free (l->data);
-
-            g_slist_free (order);
-
-            /*
-             * FIXME -- for now start the panel service, later on this will
-             *          be done on demand.
-             */
-            mnb_toolbar_start_panel_service (toolbar, tp);
-          }
-      }
-    else
-      {
-        g_warning (G_STRLOC ":unknow panel key %s", panel_key);
-        goto finish_panel_key;
-      }
-
-    /*
-     * Clean up
-     */
-  finish_panel_key:
-    g_free (panel_name);
-  }
+  g_warning (G_STRLOC ": Unknown key %s", key);
 }
 
 static void
