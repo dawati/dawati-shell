@@ -192,72 +192,6 @@ penge_interesting_tile_class_init (PengeInterestingTileClass *klass)
                   0);
 }
 
-static gboolean
-_enter_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  PengeInterestingTilePrivate *priv = GET_PRIVATE (userdata);
-
-  mx_widget_set_style_pseudo_class (MX_WIDGET (actor),
-                                    "hover");
-
-  if (1)
-  {
-    clutter_actor_animate ((ClutterActor *)priv->details_overlay,
-                           CLUTTER_LINEAR,
-                           150,
-                           "opacity", 0xc0,
-                           NULL);
-    clutter_actor_animate ((ClutterActor *)priv->remove_button,
-                           CLUTTER_LINEAR,
-                           150,
-                           "opacity", 0xff, /* asset already has opacity */
-                           NULL);
-  } else {
-    clutter_actor_animate ((ClutterActor *)priv->details_overlay,
-                           CLUTTER_LINEAR,
-                           150,
-                           "opacity", 0,
-                           NULL);
-  }
-
-  return FALSE;
-}
-
-static gboolean
-_leave_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  PengeInterestingTilePrivate *priv = GET_PRIVATE (userdata);
-
-  mx_widget_set_style_pseudo_class (MX_WIDGET (actor),
-                                      NULL);
-
-  if (0)
-  {
-    clutter_actor_animate ((ClutterActor *)priv->details_overlay,
-                           CLUTTER_LINEAR,
-                           150,
-                           "opacity", 0xc0,
-                           NULL);
-  } else {
-    clutter_actor_animate ((ClutterActor *)priv->details_overlay,
-                           CLUTTER_LINEAR,
-                           150,
-                           "opacity", 0,
-                           NULL);
-    clutter_actor_animate ((ClutterActor *)priv->remove_button,
-                           CLUTTER_LINEAR,
-                           150,
-                           "opacity", 0,
-                           NULL);
-  }
-
-  return FALSE;
-}
-
 static void
 _remove_button_clicked (MxButton *button,
                         gpointer  userdata)
@@ -396,17 +330,6 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                       "x-align", 1.0,
                                       "y-align", 0.0,
                                       NULL);
-
-  clutter_actor_set_opacity ((ClutterActor *)priv->remove_button, 0x0);
-
-  g_signal_connect (self,
-                    "enter-event",
-                    (GCallback)_enter_event_cb,
-                    self);
-  g_signal_connect (self,
-                    "leave-event",
-                    (GCallback)_leave_event_cb,
-                    self);
 
   g_signal_connect (priv->remove_button,
                     "clicked",
