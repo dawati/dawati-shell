@@ -606,12 +606,14 @@ _connect_button_cb (GtkButton          *connect_button,
 	      NULL
 	    };
 
-	    if (!g_spawn_async(NULL, argv, NULL, flags, NULL,
+	    if (g_spawn_async(NULL, argv, NULL, flags, NULL,
 			       NULL, &pid, &error))
-	    {
+            {
+              carrick_shell_hide ();
+	    } else {
 	      g_debug("Unable to spawn 3g connection wizard");
 	      g_error_free(error);
-	    }
+            }
 	  }
 	  else
 	  {
@@ -628,8 +630,6 @@ _connect_button_cb (GtkButton          *connect_button,
 						      dbus_proxy_notify_cb,
 						      item);
 	    dbus_g_proxy_set_default_timeout (priv->proxy, -1);
-
-            carrick_shell_hide ();
  	  }
         }
     }
