@@ -114,6 +114,13 @@ _connection_changed_cb (CarrickPane     *pane,
   g_free (tip);
 }
 
+void
+carrick_shell_request_focus (void)
+{
+  if (panel_client)
+    mpl_panel_client_request_focus (panel_client);
+}
+
 int
 main (int    argc,
       char **argv)
