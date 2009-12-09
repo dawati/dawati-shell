@@ -128,6 +128,32 @@ carrick_shell_hide (void)
     mpl_panel_client_hide (panel_client);
 }
 
+static void
+panel_hide_cb (MplPanelClient *panel_client, gpointer user_data)
+{
+  GtkDialog *dialog = GTK_DIALOG (user_data);
+
+  gtk_dialog_response (dialog, GTK_RESPONSE_DELETE_EVENT);
+}
+
+static void
+dialog_destroy_cb (gpointer data, GObject *object)
+{
+  g_signal_handler_disconnect (panel_client, GPOINTER_TO_INT (data));
+}
+
+void
+carrick_shell_close_dialog_on_hide (GtkDialog *dialog)
+{
+  guint32 signal_id;
+
+  if (!panel_client)
+    return;
+
+  signal_id = g_signal_connect (panel_client, "hide", G_CALLBACK (panel_hide_cb), dialog);
+  g_object_weak_ref (G_OBJECT (dialog), dialog_destroy_cb, GINT_TO_POINTER (signal_id));
+}
+
 int
 main (int    argc,
       char **argv)

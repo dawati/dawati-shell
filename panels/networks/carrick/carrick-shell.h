@@ -27,3 +27,9 @@ void carrick_shell_request_focus (void);
  * Hide the shell
  */
 void carrick_shell_hide (void);
+
+/*
+ * Close @dialog if the shell is hidden. Specifically, send the DELETE_EVENT
+ * response.
+ */
+void carrick_shell_close_dialog_on_hide (GtkDialog *dialog);
