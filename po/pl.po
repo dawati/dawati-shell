@@ -2,164 +2,139 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-14 21:01+0000\n"
+"POT-Creation-Date: 2009-12-03 23:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
-msgid "Less than a minute ago"
-msgstr "Mniej niż minutę temu"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
-msgid "A few minutes ago"
-msgstr "Parę minut temu"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
-msgid "A couple of hours ago"
-msgstr "Kilka godzin temu"
-
-# No good way to say "earlier today"
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
-msgid "Earlier today"
-msgstr "Kilkanaście godzin temu"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
-msgid "Yesterday"
-msgstr "Wczoraj"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
-#, c-format
-msgid "On %A"
-msgstr "Dnia %A"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
-msgid "Unknown"
-msgstr "Nie sprecyzowano"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
-msgid "Last week"
-msgstr "Zeszły tydzień"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
-msgid "A couple of weeks ago"
-msgstr "Parę tygodni temu"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
-msgid "This month"
-msgstr "W tym miesiącu"
-
-#. Now Jan., last used in Dec.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
-msgid "Last month"
-msgstr "W zeszłym miesiącu"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
-msgid "This year"
-msgstr "W tym roku"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
-msgid "Last year"
-msgstr "W zeszłym roku"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
-msgid "Ages ago"
-msgstr "Wieki temu"
-
-#: ../src/moblin-netbook.c:305 ../src/mnb-toolbar.c:1339
+#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "strefy"
 
-#: ../src/moblin-netbook.c:412
+#: ../src/moblin-netbook.c:621
 msgid "Moblin Netbook Effects"
 msgstr "Efekty Moblina na netbooku"
 
-#: ../src/moblin-netbook.c:416
+#: ../src/moblin-netbook.c:625
 msgid "Effects for Moblin Netbooks"
 msgstr "Efekty dla Netbooków z Moblinem"
-
-#: ../src/mnb-notification.c:266
-msgid "Dismiss"
-msgstr "Zamknij"
-
-#: ../src/mnb-notification-cluster.c:657
-msgid "Dismiss All"
-msgstr "Ucisz wszystkie"
-
-#: ../src/mnb-switcher.c:1707
-msgid "No Zones yet"
-msgstr "Na razie brak Stref"
-
-#: ../src/mnb-switcher.c:1729
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał "
-"możliwość przełączać się między nimi i organizować je tak jak Ci się podoba."
-
-# "na tej strefie" is also a possiblity
-#: ../src/mnb-switcher.c:1952
-msgid "No applications on this zone"
-msgstr "Brak aplikacji w tej strefie"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:666
+#. 
+#: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:676
+#. 
+#: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
 msgstr "%-d %B %Y"
 
-#: ../src/mnb-toolbar.c:1576
-msgid "power & brightness"
-msgstr "zasilanie i jasność"
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Zamknij"
 
-#: ../src/mnb-toolbar.c:1579
-msgid "volume"
-msgstr "głośność"
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Ucisz wszystkie"
 
-#: ../src/mnb-toolbar.c:1582
-msgid "bluetooth"
-msgstr "bluetooth"
+#: ../src/switcher/mnb-switcher.c:307
+msgid "No Zones yet"
+msgstr "Na razie brak Stref"
 
-#: ../src/mnb-toolbar.c:1585
-msgid "networks"
-msgstr "sieci"
+#: ../src/switcher/mnb-switcher.c:327
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał możliwość przełączać się między nimi i organizować je tak jak Ci się podoba."
 
-# alternatively "próba"
-#: ../src/mnb-toolbar.c:1588
-msgid "test"
-msgstr "test"
+# "na tej strefie" is also a possiblity
+#: ../src/switcher/mnb-switcher-zone-apps.c:463
+msgid "No applications on this zone"
+msgstr "Brak aplikacji w tej strefie"
 
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Historia przeglądania będzie widoczna tutaj kiedy posłuchasz muzyki, "
-#~ "rzucisz okiem na zdjęcia lub obejrzysz film. Dostępne przykładowe "
-#~ "materiały na dobry początek:"
+#: ../src/moblin-netbook.c:2543
+msgid "Unknown window"
+msgstr "Nieznane okno"
+
+#: ../src/moblin-netbook.c:2529
+msgid "Activate"
+msgstr "Aktywuj"
+
+#: ../src/moblin-netbook.c:2545
+msgid "Is asking for your attention."
+msgstr "Prosi o Twoją uwagę."
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Mniej niż minutę temu"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Parę minut temu"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Kilka godzin temu"
+
+#~ msgid "Earlier today"
+#~ msgstr "Kilkanaście godzin temu"
+
+#~ msgid "Yesterday"
+#~ msgstr "Wczoraj"
+
+#~ msgid "On %A"
+#~ msgstr "Dnia %A"
+
+#~ msgid "Last week"
+#~ msgstr "Zeszły tydzień"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Parę tygodni temu"
+
+#~ msgid "This month"
+#~ msgstr "W tym miesiącu"
+
+#~ msgid "Last month"
+#~ msgstr "W zeszłym miesiącu"
+
+#~ msgid "This year"
+#~ msgstr "W tym roku"
+
+#~ msgid "Last year"
+#~ msgstr "W zeszłym roku"
+
+#~ msgid "Ages ago"
+#~ msgstr "Wieki temu"
+
+#~ msgid "power & brightness"
+#~ msgstr "zasilanie i jasność"
+
+#~ msgid "volume"
+#~ msgstr "głośność"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "sieci"
+
+#~ msgid "test"
+#~ msgstr "test"
+
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Historia przeglądania będzie widoczna tutaj kiedy posłuchasz muzyki, rzucisz okiem na zdjęcia lub obejrzysz film. Dostępne przykładowe materiały na dobry początek:"
 
 #~ msgid "Recently played"
 #~ msgstr "Ostatnio odtwarzane"
@@ -167,7 +142,6 @@ msgstr "test"
 #~ msgid "Search results"
 #~ msgstr "Wyniki wyszukiwania"
 
-# The literal translation is "kolejka odtwarzania" but the term is less natural than "playlista"
 #~ msgid "Playqueue"
 #~ msgstr "Playlista"
 
@@ -186,17 +160,9 @@ msgstr "test"
 #~ msgid "Search"
 #~ msgstr "Szukaj"
 
-# Season is translated as one of:
-# Sezon,
-# Seria,
-# Część
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Seria %d Odcinek %d"
 
-# Season is translated as one of:
-# Sezon,
-# Seria,
-# Część
 #~ msgid "Season %d"
 #~ msgstr "Seria %d"
 
@@ -218,12 +184,8 @@ msgstr "test"
 #~ msgid "applications"
 #~ msgstr "aplikacje"
 
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Twoje ulubione strony będą pojawiać się tutaj oraz w nowych zakładkach w "
-#~ "miarę jak przeglądasz sieć."
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "Twoje ulubione strony będą pojawiać się tutaj oraz w nowych zakładkach w miarę jak przeglądasz sieć."
 
 #~ msgid "Untitled"
 #~ msgstr "Bez tytułu"
@@ -273,36 +235,20 @@ msgstr "test"
 #~ msgid "pasteboard"
 #~ msgstr "schowek"
 
-# Depend on context... could also be:
-# <b>Spotkania</b>
-# <b>Grafik</b>
-# <b>Terminarz</b>
-# <b>Plany</b>
 #~ msgid "<b>Appointments</b>"
 #~ msgstr "<b>Zaplanowane</b>"
 
 #~ msgid "No calendar entries this week"
 #~ msgstr "Brak wpisów w kalendarzu na ten tydzień"
 
-#~ msgid ""
-#~ "Your friends' feeds and web services will appear here. Activate your "
-#~ "accounts now!"
-#~ msgstr ""
-#~ "Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj "
-#~ "Twoje konta!"
+#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+#~ msgstr "Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj Twoje konta!"
 
-# I'm really unhappy with this one but can't think of anything better
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>Witamy na Moblinie 2.0 na netbooki</b>"
 
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "Moblin różni się od innych komputerów w wielu aspektach, pozbieraliśmy "
-#~ "więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, "
-#~ "Team Moblin"
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Moblin różni się od innych komputerów w wielu aspektach, pozbieraliśmy więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team Moblin"
 
 #~ msgid "Web page"
 #~ msgstr "Strona"
@@ -325,11 +271,8 @@ msgstr "test"
 #~ msgid "Send a message"
 #~ msgstr "Wyślij wiadomość"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Niestety nie znaleziono znajomych. Czy konto Komunikatora jest "
-#~ "skonfigurowane?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Niestety nie znaleziono znajomych. Czy konto Komunikatora jest skonfigurowane?"
 
 #~ msgid "People"
 #~ msgstr "Osoby"
@@ -352,19 +295,15 @@ msgstr "test"
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
 #~ msgstr "Aby skorzystać z paska narzędzi, dojedź kursorem do górnej krawędzi"
 
-# "Offline"?  Masculine form unfortunately
 #~ msgid "Offline"
 #~ msgstr "Rozłączony"
 
-# Masculine form unfortunately
 #~ msgid "Available"
 #~ msgstr "Dostępny"
 
-# Masculine form unfortunately
 #~ msgid "Away"
 #~ msgstr "Nie przy komputerze"
 
-# Masculine form unfortunately
 #~ msgid "Busy"
 #~ msgstr "Zajęty"
 
@@ -395,20 +334,12 @@ msgstr "test"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Twój aktualny stan - rozłączony"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Żeby aktualizować swój stan należy ustawić konto Web-serwisu u dostawcy, "
-#~ "który ma opcję powiadamiania o stanach"
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Żeby aktualizować swój stan należy ustawić konto Web-serwisu u dostawcy, który ma opcję powiadamiania o stanach"
 
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Aby aktualizować status w Komunikatorze potrzebujesz skonfigurowanego "
-#~ "konta"
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Aby aktualizować status w Komunikatorze potrzebujesz skonfigurowanego konta"
 
-# either "stan" or "status"
 #~ msgid "status"
 #~ msgstr "stan"
 
@@ -416,9 +347,7 @@ msgstr "test"
 #~ msgstr "myzone"
 
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-#~ msgstr ""
-#~ "ikonka panelu wymaga rozmiaru (%i x %i) i będzie przeskalowana do (%i x %"
-#~ "i)"
+#~ msgstr "ikonka panelu wymaga rozmiaru (%i x %i) i będzie przeskalowana do (%i x %i)"
 
 #~ msgid "Local"
 #~ msgstr "Lokalne"
