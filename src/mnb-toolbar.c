@@ -861,6 +861,12 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
                 mnb_panel_hide (tp->panel);
               }
           }
+
+        /*
+         * Ensure the pinged flag is cleared (the user seems to have clicked
+         * some other buttons since they clicked on this one)
+         */
+        tp->pinged = FALSE;
       }
     else
       {
