@@ -288,7 +288,6 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                priv->bin,
                                "y-align", 0.0,
                                "x-align", 0.0,
-                               "row-span", 2,
                                "y-fill", TRUE,
                                "y-expand", TRUE,
                                NULL);
@@ -319,7 +318,6 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   priv->details_overlay = mx_table_new ();
   mx_widget_set_style_class_name (MX_WIDGET (priv->details_overlay),
                                   "PengeInterestingTileDetails");
-  clutter_actor_set_opacity ((ClutterActor *)priv->details_overlay, 0x0);
 
   mx_table_add_actor (MX_TABLE (priv->inner_table),
                       priv->details_overlay,
