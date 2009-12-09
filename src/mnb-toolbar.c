@@ -174,6 +174,7 @@ struct _MnbToolbarPanel
   gboolean    unloaded : 1;
   gboolean    applet   : 1;
   gboolean    current  : 1;
+  gboolean    pinged   : 1;
 };
 
 static void
@@ -881,6 +882,8 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
                 g_debug ("Button clicked before panel available");
 
                 nbtk_button_set_checked (NBTK_BUTTON (tp->button), FALSE);
+
+                tp->pinged = TRUE;
                 mnb_toolbar_start_panel_service (toolbar, tp);
               }
           }
@@ -1683,7 +1686,12 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
     g_signal_connect (panel, "ready",
                       G_CALLBACK (mnb_toolbar_panel_ready_cb), toolbar);
 
-  if (index == MYZONE)
+  if (tp->pinged)
+    {
+      tp->pinged = FALSE;
+      mnb_panel_show (panel);
+    }
+  else if (index == MYZONE)
     {
       if (priv->shown && !priv->shown_myzone)
         {
