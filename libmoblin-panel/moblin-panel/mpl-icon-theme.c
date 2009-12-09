@@ -59,35 +59,6 @@ get_n_parts (const gchar *icon_name)
 }
 
 static gchar *
-lookup_in_theme (GtkIconTheme  *theme,
-                 gchar        **icon_names,
-                 gint           icon_size)
-{
-  GIcon       *icon;
-  GtkIconInfo *info;
-  gchar       *icon_file = NULL;
-
-  g_return_val_if_fail (theme, 0);
-  g_return_val_if_fail (icon_names, 0);
-
-  icon = g_themed_icon_new_from_names (icon_names, -1);
-  g_return_val_if_fail (icon, 0);
-
-  info = gtk_icon_theme_lookup_by_gicon (theme,
-                                         icon,
-                                         icon_size,
-                                         GTK_ICON_LOOKUP_NO_SVG);
-  g_object_unref (icon);
-  if (info)
-  {
-    icon_file = g_strdup (gtk_icon_info_get_filename (info));
-    gtk_icon_info_free (info);
-  }
-
-  return icon_file;
-}
-
-static gchar *
 lookup_in_well_known_places (const gchar  **paths,
                              const gchar   *icon_name)
 {
@@ -114,10 +85,8 @@ mpl_icon_theme_lookup_icon_file (GtkIconTheme *self,
                                  const gchar  *icon_name,
                                  gint          icon_size)
 {
-  gchar               **names;
-  const gchar          *name;
-  guint                 i = 0;
-  gchar                *icon_file = NULL;
+  GIcon *icon = NULL;
+  gchar *icon_file = NULL;
 
   g_return_val_if_fail (self, NULL);
 
@@ -133,31 +102,47 @@ mpl_icon_theme_lookup_icon_file (GtkIconTheme *self,
     return g_strdup (icon_name);
   }
 
-  /* Build names vector. */
-  names = g_new0 (gchar *, get_n_parts (icon_name) * 2 + 1);
-  name = icon_name;
-  do {
-    if (0 == g_strcmp0 (name, icon_name))
-    {
-      names[i++] = g_strdup_printf ("%s-%s", ICON_PREFIX, name);
-      names[i++] = g_strdup (name);
-    } else {
-      names[i++] = g_strdup_printf ("%s%s", ICON_PREFIX, name);
-      name += 1; /* skip leading "-" */
-      names[i++] = g_strdup (name);
-    }
-  } while (NULL != (name = strchr (name, '-')));
-
-  names[i] = NULL;
-
-  /* Look up themed icon. */
-  if (i > 0)
+  /* Look up with "moblin-" prefix as requested by hbons. */
+  if (g_str_has_prefix (icon_name, ICON_PREFIX))
   {
-    icon_file = lookup_in_theme (GTK_ICON_THEME (self),
-                                 names,
-                                 icon_size);
+    icon = g_themed_icon_new_with_default_fallbacks (icon_name);
+  } else {
+
+    /* +1 for the "moblin-" prefixed name, +1 for NULL terminator. */
+    guint n_parts = get_n_parts (icon_name);
+    gchar **names = g_new0 (gchar *, n_parts + 2);
+    gchar *name = (gchar *) icon_name;
+    guint i = 0;
+
+    do {
+      if (i == 0)
+      {
+        names[i++] = g_strdup_printf ("%s-%s", ICON_PREFIX, name);
+        names[i++] = g_strdup (name);
+      } else {
+        name += 1; /* skip leading "-" */
+        names[i++] = g_strdup (name);
+      }
+    } while (NULL != (name = strchr (name, '-')));
+    names[i] = NULL;
+
+    icon = g_themed_icon_new_from_names (names, n_parts + 1);
+    g_strfreev (names);
   }
-  g_strfreev (names);
+
+  if (icon)
+  {
+    GtkIconInfo *info = gtk_icon_theme_lookup_by_gicon (GTK_ICON_THEME (self),
+                                                        icon,
+                                                        icon_size,
+                                                        GTK_ICON_LOOKUP_NO_SVG);
+    if (info)
+    {
+      icon_file = g_strdup (gtk_icon_info_get_filename (info));
+      gtk_icon_info_free (info);
+    }
+    g_object_unref (icon);
+  }
 
   /* Search well-known places. */
   if (NULL == icon_file &&
