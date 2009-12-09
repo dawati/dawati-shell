@@ -78,6 +78,9 @@ void mnb_zones_preview_add_window (MnbZonesPreview *preview,
 void mnb_zones_preview_change_workspace (MnbZonesPreview *preview,
                                          gint             workspace);
 
+void mnb_zones_preview_set_n_workspaces (MnbZonesPreview *preview,
+                                         gint             workspace);
+
 void mnb_zones_preview_clear (MnbZonesPreview *preview);
 
 G_END_DECLS

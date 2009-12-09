@@ -445,7 +445,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       /* Start zooming out */
       priv->anim_phase = MNB_ZP_ZOOM_OUT;
       clutter_actor_animate (CLUTTER_ACTOR (preview),
-                             CLUTTER_EASE_OUT_SINE,
+                             CLUTTER_EASE_IN_SINE,
                              220,
                              "zoom", 0.3,
                              NULL);
@@ -457,7 +457,8 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       mnb_zones_preview_enable_fanciness (preview, TRUE);
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_LINEAR,
-                             350,
+                             175 * ABS ((gdouble)priv->dest_workspace -
+                                        priv->workspace),
                              "workspace", (gdouble)priv->dest_workspace,
                              NULL);
       break;
@@ -467,7 +468,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       mnb_zones_preview_enable_fanciness (preview, FALSE);
       priv->anim_phase = MNB_ZP_ZOOM_IN;
       clutter_actor_animate (CLUTTER_ACTOR (preview),
-                             CLUTTER_EASE_IN_SINE,
+                             CLUTTER_EASE_OUT_SINE,
                              220,
                              "zoom", 1.0,
                              NULL);
@@ -612,6 +613,30 @@ mnb_zones_preview_get_workspace_group (MnbZonesPreview *preview,
     }
 
   return mnb_fancy_bin_get_child (MNB_FANCY_BIN (bin));
+}
+
+void
+mnb_zones_preview_set_n_workspaces (MnbZonesPreview *preview,
+                                    gint             workspace)
+{
+  gint current_length;
+
+  MnbZonesPreviewPrivate *priv = preview->priv;
+
+  current_length = g_list_length (priv->workspace_bins);
+  if (current_length < workspace)
+    mnb_zones_preview_get_workspace_group (preview, workspace - 1);
+  else if (current_length > workspace)
+    {
+      gint i;
+      for (i = 0; i < current_length - workspace; i++)
+        {
+          GList *link = g_list_last (priv->workspace_bins);
+          clutter_actor_destroy (CLUTTER_ACTOR (link->data));
+          priv->workspace_bins =
+            g_list_delete_link (priv->workspace_bins, link);
+        }
+    }
 }
 
 void

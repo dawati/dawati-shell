@@ -23,6 +23,7 @@
  */
 
 #include <clutter/x11/clutter-x11.h>
+#include <moblin-panel/mpl-panel-client.h>
 
 #include "mnb-switcher-zone.h"
 #include "../mnb-panel.h"
@@ -32,6 +33,7 @@ struct _MnbSwitcherZonePrivate
   MnbSwitcher  *switcher;
 
   gint          index;
+  guint32       timestamp;
 
   ClutterActor *table;             /* the inner content area     */
   ClutterActor *label;             /* the label area             */
@@ -336,6 +338,29 @@ mnb_switcher_zone_text_style (MnbSwitcherZone     *zone,
   return text_name;
 }
 
+static void
+mnb_switcher_zone_hide_completed_cb (MplPanelClient  *panel,
+                                     MnbSwitcherZone *zone)
+{
+  MnbSwitcherZonePrivate *priv      = zone->priv;
+  MutterPlugin           *plugin    = moblin_netbook_get_plugin_singleton ();
+  MetaScreen             *screen    = mutter_plugin_get_screen (plugin);
+  MetaWorkspace          *workspace =
+    meta_screen_get_workspace_by_index (screen, priv->index);
+
+  g_signal_handlers_disconnect_by_func (panel,
+                                        mnb_switcher_zone_hide_completed_cb,
+                                        zone);
+
+  if (!workspace)
+    {
+      g_warning ("No workspace specified, %s: %d", __FILE__, __LINE__);
+      return;
+    }
+
+  meta_workspace_activate (workspace, priv->timestamp);
+}
+
 /*
  * Handling of button release on the zone -- we switch to the corresponding
  * workspace.
@@ -345,27 +370,18 @@ mnb_switcher_zone_button_release (ClutterActor       *actor,
                                   ClutterButtonEvent *event)
 {
   MnbSwitcherZonePrivate *priv      = MNB_SWITCHER_ZONE (actor)->priv;
-  MutterPlugin           *plugin    = moblin_netbook_get_plugin_singleton ();
-  MetaScreen             *screen    = mutter_plugin_get_screen (plugin);
-  guint32                 timestamp = clutter_x11_get_current_event_time ();
-  MetaWorkspace          *workspace;
 
   if (mnb_switcher_get_dnd_in_progress (priv->switcher))
     return FALSE;
 
-  workspace = meta_screen_get_workspace_by_index (screen, priv->index);
-
-  if (!workspace)
-    {
-      g_warning ("No workspace specified, %s:%d\n", __FILE__, __LINE__);
-      return FALSE;
-    }
+  priv->timestamp = clutter_x11_get_current_event_time ();
 
   mnb_panel_hide_with_toolbar (MNB_PANEL (priv->switcher));
 
   mnb_switcher_end_kbd_grab (priv->switcher);
 
-  meta_workspace_activate (workspace, timestamp);
+  g_signal_connect (priv->switcher, "hide-completed",
+                    G_CALLBACK (mnb_switcher_zone_hide_completed_cb), actor);
 
   return FALSE;
 }

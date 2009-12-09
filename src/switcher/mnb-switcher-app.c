@@ -23,6 +23,7 @@
  */
 #include <string.h>
 #include <clutter/x11/clutter-x11.h>
+#include <moblin-panel/mpl-panel-client.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <display.h>
 
@@ -431,6 +432,19 @@ mnb_switcher_app_get_property (GObject    *gobject,
     }
 }
 
+static void
+mnb_switcher_app_hide_completed_cb (MplPanelClient *panel,
+                                    MnbSwitcherApp *app)
+{
+  MnbSwitcherAppPrivate *priv = app->priv;
+
+  g_signal_handlers_disconnect_by_func (panel,
+                                        mnb_switcher_app_hide_completed_cb,
+                                        app);
+
+  moblin_netbook_activate_mutter_window (priv->mw);
+}
+
 /*
  * An implemntation of the MnbSwitcherItem::activate() vfunction
  *
@@ -439,8 +453,7 @@ mnb_switcher_app_get_property (GObject    *gobject,
 static gboolean
 mnb_switcher_app_activate (MnbSwitcherItem *item)
 {
-  MnbSwitcherAppPrivate *priv   = MNB_SWITCHER_APP (item)->priv;
-  MnbSwitcher           *switcher;
+  MnbSwitcher *switcher;
 
   switcher = mnb_switcher_item_get_switcher (MNB_SWITCHER_ITEM (item));
 
@@ -449,7 +462,10 @@ mnb_switcher_app_activate (MnbSwitcherItem *item)
 
   mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));
 
-  return moblin_netbook_activate_mutter_window (priv->mw);
+  g_signal_connect (switcher, "hide-completed",
+                    G_CALLBACK (mnb_switcher_app_hide_completed_cb), item);
+
+  return TRUE;
 }
 
 /*

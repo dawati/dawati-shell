@@ -247,6 +247,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 {
   GList *w;
   gint width, height;
+  MetaScreen *screen;
   ClutterActor *window_group;
 
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -260,9 +261,10 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
   actor_for_cb = (*actors)->data;
 
+  screen = mutter_plugin_get_screen (plugin);
+
   if (!zones_preview)
     {
-      MetaScreen *screen;
       ClutterActor *stage;
 
       /* Construct the zones preview actor */
@@ -272,7 +274,6 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
                     NULL);
 
       /* Add it to the stage */
-      screen = mutter_plugin_get_screen (plugin);
       stage = mutter_get_stage_for_screen (screen);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), zones_preview);
 
@@ -289,6 +290,8 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
                 NULL);
 
   mnb_zones_preview_clear (MNB_ZONES_PREVIEW (zones_preview));
+  mnb_zones_preview_set_n_workspaces (MNB_ZONES_PREVIEW (zones_preview),
+                                      meta_screen_get_n_workspaces (screen));
 
   /* Add windows to zone preview actor */
   for (w = mutter_plugin_get_windows (plugin); w; w = w->next)

@@ -868,13 +868,8 @@ mnb_switcher_select_zone (MnbSwitcher *switcher, MnbSwitcherZone *zone)
     }
 }
 
-/*
- * Activates the window currently selected in the switcher.
- */
-void
-mnb_switcher_activate_selection (MnbSwitcher *switcher,
-                                 gboolean     close,
-                                 guint        timestamp)
+static void
+mnb_switcher_activate_selection_cb (MnbSwitcher *switcher)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
   MnbSwitcherItem    *item = priv->selected_item;
@@ -889,9 +884,34 @@ mnb_switcher_activate_selection (MnbSwitcher *switcher,
       g_warning (G_STRLOC " Nothing to activate");
       return;
     }
+}
 
+static void
+mnb_switcher_hide_completed_cb (MplPanelClient *panel,
+                                MnbSwitcher    *switcher)
+{
+  g_signal_handlers_disconnect_by_func (panel,
+                                        mnb_switcher_hide_completed_cb,
+                                        switcher);
+  mnb_switcher_activate_selection_cb (switcher);
+}
+
+/*
+ * Activates the window currently selected in the switcher.
+ */
+void
+mnb_switcher_activate_selection (MnbSwitcher *switcher,
+                                 gboolean     close,
+                                 guint        timestamp)
+{
   if (close)
-    mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));
+    {
+      mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));
+      g_signal_connect (switcher, "hide-completed",
+                        G_CALLBACK (mnb_switcher_hide_completed_cb), switcher);
+    }
+  else
+    mnb_switcher_activate_selection_cb (switcher);
 }
 
 /*
