@@ -263,6 +263,12 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
   *alloc_width  = width;
   *alloc_height = real_height;
 
+  /*
+   * Make sure that the window is hidden (the window can be left mapped, if the
+   * Toolbar died on us, and then bad things happen).
+   */
+  mpl_panel_client_hide (self);
+
   g_signal_emit (self, signals[SET_POSITION], 0, x, y);
   g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
 
