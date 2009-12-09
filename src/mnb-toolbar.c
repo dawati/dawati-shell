@@ -1563,8 +1563,8 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
       if (!nbtk_style_load_from_file (style, stylesheet, &error))
         {
           if (error)
-            g_warning ("Unable to load stylesheet %s: %s",
-                       stylesheet, error->message);
+            g_debug ("Unable to load stylesheet %s: %s",
+                     stylesheet, error->message);
 
           g_error_free (error);
         }
@@ -2002,17 +2002,17 @@ mnb_toolbar_make_toolbar_panel (MnbToolbar  *toolbar,
                                 gboolean     builtin)
 {
   MnbToolbarPanel *tp = g_new0 (MnbToolbarPanel, 1);
-  gchar           *dbus_name;
 
-  dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
-
-  tp->name         = g_strdup (name);
-  tp->applet       = applet;
-  tp->button_style = g_strdup_printf ("%s-button", name);
-  tp->tooltip      = g_strdup (name);
+  tp->name              = g_strdup (name);
+  tp->tooltip           = g_strdup (name);
+  tp->applet            = applet;
+  tp->button_style      = g_strdup_printf ("%s-button", name);
 
   if (!builtin)
-    tp->service = dbus_name;
+    {
+      tp->button_stylesheet = g_strdup_printf (THEMEDIR "/%s/button.css", name);
+      tp->service = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
+    }
 
   return tp;
 }
