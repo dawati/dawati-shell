@@ -22,3 +22,8 @@
  * Request that the shell (specifically the panel) request that it be focused.
  */
 void carrick_shell_request_focus (void);
+
+/*
+ * Hide the shell
+ */
+void carrick_shell_hide (void);

@@ -121,6 +121,13 @@ carrick_shell_request_focus (void)
     mpl_panel_client_request_focus (panel_client);
 }
 
+void
+carrick_shell_hide (void)
+{
+  if (panel_client)
+    mpl_panel_client_hide (panel_client);
+}
+
 int
 main (int    argc,
       char **argv)
