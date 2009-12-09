@@ -474,6 +474,8 @@ _delete_button_cb (GtkButton *delete_button,
                                         GTK_RESPONSE_ACCEPT,
                                         NULL);
 
+  carrick_shell_close_dialog_on_hide (GTK_DIALOG (dialog));
+
   gtk_dialog_set_has_separator (GTK_DIALOG (dialog),
                                 FALSE);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
