@@ -465,7 +465,7 @@ _delete_button_cb (GtkButton *delete_button,
   gchar                     *label_text = NULL;
 
   dialog = gtk_dialog_new_with_buttons (_ ("Really remove?"),
-                                        NULL,
+                                        GTK_WINDOW (gtk_widget_get_toplevel (user_data)),
                                         GTK_DIALOG_MODAL |
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_STOCK_CANCEL,
