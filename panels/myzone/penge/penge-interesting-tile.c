@@ -320,9 +320,10 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                   "PengeInterestingTileIcon");
   mx_bin_set_child (MX_BIN (priv->remove_button),
                       (ClutterActor *)icon);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->details_overlay),
                                       priv->remove_button,
-                                      0, 0,
+                                      0, 2,
+                                      "row-span", 2,
                                       "x-expand", TRUE,
                                       "y-expand", TRUE,
                                       "x-fill", FALSE,
