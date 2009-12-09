@@ -53,12 +53,6 @@ G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 #define INVALID_CONNMAN _("Critical Error: Unable to access Connection Manager")
 #define MISSING_3G_HW _("ERROR: No 3G Hardware detected")
 
-/*
- * TODO: A last-minute pre-release fix for MB#7304; better solution
- *       to be implement.
- */
-extern MplPanelClient *panel_client;
-
 enum {
   PROP_0,
   PROP_DRAGGABLE,
@@ -633,9 +627,8 @@ _connect_button_cb (GtkButton          *connect_button,
 						      item);
 	    dbus_g_proxy_set_default_timeout (priv->proxy, -1);
 
-            if (panel_client)
-              mpl_panel_client_hide (panel_client);
-	  }
+            carrick_shell_hide ();
+ 	  }
         }
     }
 }
