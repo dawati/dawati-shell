@@ -36,12 +36,7 @@
 #include "carrick-icon-factory.h"
 #include "carrick-notification-manager.h"
 #include "carrick-network-model.h"
-
-/*
- * TODO: A last-minute pre-release fix for MB#7304; better solution
- *       to be implement.
- */
-extern MplPanelClient *panel_client;
+#include "carrick-shell.h"
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_HBOX)
 
@@ -826,8 +821,7 @@ _new_connection_cb (GtkButton *button,
   /*
    * Now explicitely focus the panel (MB#7304)
    */
-  if (panel_client)
-    mpl_panel_client_request_focus (panel_client);
+  carrick_shell_request_focus ();
 
   gtk_widget_destroy (dialog);
 }
