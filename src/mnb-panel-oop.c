@@ -1219,7 +1219,6 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
 
   animation = clutter_actor_animate (mcw, CLUTTER_EASE_IN_SINE,
                                      SLIDE_DURATION,
-                                     "x", x,
                                      "y", y,
                                      NULL);
 
