@@ -114,6 +114,8 @@ static MnbToolbarPanel * mnb_toolbar_panel_name_to_panel_internal (MnbToolbar  *
                                                                    const gchar *name);
 static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, MnbPanel *panel);
 static void mnb_toolbar_setup_gconf (MnbToolbar *toolbar);
+static gboolean mnb_toolbar_start_panel_service (MnbToolbar *toolbar,
+                                                 MnbToolbarPanel *tp);
 
 enum {
     MYZONE = 0,
@@ -877,7 +879,9 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
             if (checked)
               {
                 g_debug ("Button clicked before panel available");
+
                 nbtk_button_set_checked (NBTK_BUTTON (tp->button), FALSE);
+                mnb_toolbar_start_panel_service (toolbar, tp);
               }
           }
       }
@@ -1874,6 +1878,7 @@ mnb_toolbar_start_panel_service (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   return TRUE;
 }
 
+#if 0
 static gboolean
 mnb_toolbar_autostart_panels_cb (gpointer toolbar)
 {
@@ -1910,6 +1915,7 @@ mnb_toolbar_autostart_panels_cb (gpointer toolbar)
 
   return TRUE;
 }
+#endif
 
 /*
  * Create panels for any of our services that are already up.
@@ -2808,9 +2814,11 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
         }
     }
 
+#if 0
   g_timeout_add_seconds (TOOLBAR_AUTOSTART_DELAY,
                          mnb_toolbar_autostart_panels_cb,
                          toolbar);
+#endif
 
   g_signal_connect (stage, "notify::allocation",
                     G_CALLBACK (mnb_toolbar_stage_allocation_cb),
