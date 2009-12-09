@@ -124,8 +124,9 @@ gboolean
 mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
                                                      const gchar    *uri);
 
-Window
-mpl_panel_client_get_xid (MplPanelClient *panel);
+Window mpl_panel_client_get_xid (MplPanelClient *panel);
+
+void mpl_panel_client_ready (MplPanelClient *panel);
 
 G_END_DECLS
 

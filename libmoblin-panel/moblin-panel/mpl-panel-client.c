@@ -54,7 +54,8 @@ enum
   PROP_STYLESHEET,
   PROP_BUTTON_STYLE,
   PROP_XID,
-  PROP_TOOLBAR_SERVICE
+  PROP_TOOLBAR_SERVICE,
+  PROP_DELAYED_READY
 };
 
 enum
@@ -74,6 +75,8 @@ enum
   REQUEST_TOOLTIP,
   REQUEST_BUTTON_STATE,
   REQUEST_MODALITY,
+
+  READY,
 
   LAST_SIGNAL
 };
@@ -101,6 +104,8 @@ struct _MplPanelClientPrivate
 
   gboolean         constructed     : 1; /*poor man's constructor return value*/
   gboolean         toolbar_service : 1;
+  gboolean         ready_emitted   : 1;
+  gboolean         delayed_ready   : 1;
 };
 
 static void
@@ -130,6 +135,9 @@ mpl_panel_client_get_property (GObject    *object,
       break;
     case PROP_TOOLBAR_SERVICE:
       g_value_set_boolean (value, priv->toolbar_service);
+      break;
+    case PROP_DELAYED_READY:
+      g_value_set_boolean (value, priv->delayed_ready);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -167,6 +175,9 @@ mpl_panel_client_set_property (GObject      *object,
       break;
     case PROP_TOOLBAR_SERVICE:
       priv->toolbar_service = g_value_get_boolean (value);
+      break;
+    case PROP_DELAYED_READY:
+      priv->delayed_ready = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -271,6 +282,16 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
 
   g_signal_emit (self, signals[SET_POSITION], 0, x, y);
   g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
+
+  if (priv->ready_emitted)
+    {
+      /*
+       * Are getting embedded for a second, or n-th time; emit the ready
+       * signal.
+       */
+
+      g_signal_emit (self, signals[READY], 0);
+    }
 
   return TRUE;
 }
@@ -486,6 +507,16 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                                      G_PARAM_READWRITE |
                                      G_PARAM_CONSTRUCT_ONLY));
 
+  g_object_class_install_property (object_class,
+                                   PROP_DELAYED_READY,
+                                   g_param_spec_boolean ("delayed-ready",
+                                     "Delayed emission of 'ready' signal",
+                                     "Whether emission of 'ready' signal should"
+                                     " be delayed until later.",
+                                     FALSE,
+                                     G_PARAM_READWRITE |
+                                     G_PARAM_CONSTRUCT_ONLY));
+
   signals[UNLOAD] =
     g_signal_new ("unload",
                   G_TYPE_FROM_CLASS (object_class),
@@ -619,6 +650,15 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__BOOLEAN,
                   G_TYPE_NONE, 1,
                   G_TYPE_BOOLEAN);
+
+  signals[READY] =
+    g_signal_new ("ready",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -817,6 +857,29 @@ mpl_panel_client_setup_toolbar_proxy (MplPanelClient *panel)
   return TRUE;
 }
 
+/*
+ * We install a one-off idle to emit the READY signal
+ */
+static gboolean
+mpl_panel_client_ready_idle_cb (gpointer data)
+{
+  MplPanelClient *panel = data;
+
+  static guint count = 0;
+
+  /*
+   * Allow the main loop to spin few times
+   */
+  if (count++ < 5)
+    return TRUE;
+
+  g_signal_emit (panel, signals[READY], 0);
+
+  panel->priv->ready_emitted = TRUE;
+
+  return FALSE;
+}
+
 static void
 mpl_panel_client_constructed (GObject *self)
 {
@@ -885,6 +948,10 @@ mpl_panel_client_constructed (GObject *self)
    * plan.
    */
   priv->constructed = TRUE;
+
+  if (!priv->delayed_ready)
+    g_idle_add_full (G_PRIORITY_LOW,
+                     mpl_panel_client_ready_idle_cb, self, NULL);
 }
 
 MplPanelClient *
@@ -1235,4 +1302,26 @@ mpl_panel_client_request_hide (MplPanelClient *panel)
              __FUNCTION__);
 
   mpl_panel_client_hide (panel);
+}
+
+void
+mpl_panel_client_ready (MplPanelClient *panel)
+{
+  MplPanelClientPrivate *priv;
+
+  g_return_if_fail (MPL_IS_PANEL_CLIENT (panel));
+
+  priv = panel->priv;
+
+  if (!priv->delayed_ready)
+    {
+      g_warning ("%s can only be called if the client object was constructed "
+                 "with 'delayed-ready' property set to TRUE.!",
+                 __FUNCTION__);
+      return;
+    }
+
+  priv->ready_emitted = TRUE;
+
+  g_signal_emit (panel, signals[READY], 0);
 }

@@ -60,5 +60,8 @@
     <signal name="RequestModality">
       <arg name="state" type="b"/>
     </signal>
+
+    <signal name="Ready"/>
+
   </interface>
 </node>

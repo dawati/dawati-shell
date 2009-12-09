@@ -298,6 +298,17 @@ mnb_panel_oop_set_position_cb (DBusGProxy  *proxy,
 }
 
 static void
+mnb_panel_oop_ready_cb (DBusGProxy  *proxy,
+                        MnbPanelOop *panel)
+{
+  MnbPanelOopPrivate *priv = panel->priv;
+
+  priv->ready = TRUE;
+
+  g_signal_emit (panel, signals[READY], 0);
+}
+
+static void
 mnb_panel_oop_dispose (GObject *self)
 {
   MnbPanelOopPrivate *priv   = MNB_PANEL_OOP (self)->priv;
@@ -671,15 +682,12 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
     meta_error_trap_pop (display, TRUE);
   }
 
-  priv->ready = TRUE;
   priv->dead = FALSE;
 
   dbus_free (name);
   dbus_free (tooltip);
   dbus_free (stylesheet);
   dbus_free (button_style_id);
-
-  g_signal_emit (panel, signals[READY], 0);
 }
 
 /*
@@ -828,6 +836,11 @@ mnb_panel_oop_setup_proxy (MnbPanelOop *panel)
                            G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID);
   dbus_g_proxy_connect_signal (proxy, "SetPosition",
                                G_CALLBACK (mnb_panel_oop_set_position_cb),
+                               panel, NULL);
+
+  dbus_g_proxy_add_signal (proxy, "Ready", G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy, "Ready",
+                               G_CALLBACK (mnb_panel_oop_ready_cb),
                                panel, NULL);
 
   mnb_panel_oop_init_owner (panel);
