@@ -22,9 +22,8 @@
 #include "penge-grid-view.h"
 
 #include "penge-calendar-pane.h"
-#include "penge-recent-files-pane.h"
+#include "penge-everything-pane.h"
 #include "penge-apps-pane.h"
-#include "penge-people-pane.h"
 
 #include "penge-view-background.h"
 
@@ -39,10 +38,8 @@ typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 
 struct _PengeGridViewPrivate {
   ClutterActor *calendar_pane;
-  ClutterActor *recent_files_pane;
   ClutterActor *favourite_apps_pane;
-  ClutterActor *people_pane;
-
+  ClutterActor *everything_pane;
   ClutterActor *background;
   MplPanelClient *panel_client;
 };
@@ -265,65 +262,18 @@ penge_grid_view_init (PengeGridView *self)
                                  NULL);
   }
 
-  priv->recent_files_pane = g_object_new (PENGE_TYPE_RECENT_FILES_PANE, 
-                                          NULL);
+  priv->everything_pane = g_object_new (PENGE_TYPE_EVERYTHING_PANE,
+                                        NULL);
 
-  mx_table_add_actor (MX_TABLE (self),
-                      priv->recent_files_pane,
-                      0,
-                      2);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               priv->recent_files_pane,
-                               "row-span",
-                               2,
-                               "x-expand",
-                               TRUE,
-                               "y-expand",
-                               TRUE,
-                               "x-fill",
-                               TRUE,
-                               "y-fill",
-                               TRUE,
-                               NULL);
-
-  div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
-
-  if (!div_tex)
-  {
-    g_warning (G_STRLOC ": Error loading vertical divider: %s",
-               error->message);
-    g_clear_error (&error);
-  } else {
-    mx_table_add_actor (MX_TABLE (self),
-                        div_tex,
-                        0,
-                        3);
-    clutter_container_child_set (CLUTTER_CONTAINER (self),
-                                 div_tex,
-                                 "x-expand", FALSE,
-                                 "x-fill", FALSE,
-                                 "x-align", 1.0,
-                                 "row-span", 2,
-                                 NULL);
-  }
-
-
-  priv->people_pane = g_object_new (PENGE_TYPE_PEOPLE_PANE,
-                                    NULL);
-
-  mx_table_add_actor (MX_TABLE (self),
-                      priv->people_pane,
-                      0,
-                      4);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               priv->people_pane,
-                               "row-span", 2,
-                               "x-expand", TRUE,
-                               "y-expand", TRUE,
-                               "x-fill", TRUE,
-                               "y-fill", TRUE,
-                               NULL);
-
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->everything_pane,
+                                      0, 2,
+                                      "row-span", 2,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-fill", TRUE,
+                                      NULL);
 
   mx_table_set_row_spacing (MX_TABLE (self), 6);
   mx_table_set_col_spacing (MX_TABLE (self), 6);
