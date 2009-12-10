@@ -394,23 +394,27 @@ penge_block_layout_allocate (ClutterLayoutManager   *layout,
           child_box.y2 = child_box.y1 + priv->actual_tile_height;
 
           clutter_actor_allocate (child, &child_box, flags);
-          clutter_actor_show (child);
-
+#if DEBUG
           g_debug (G_STRLOC ": y_count = %d, x_count = %d, " \
                    "box = (%f, %f) (%f, %f)",
                    y_count, x_count,
                    child_box.x1, child_box.y1,
                    child_box.x2, child_box.y2);
-          clutter_actor_show (child);
-
+#endif
           children = g_list_remove (children, child);
 
+          /* Increment with the col-span to take into consideration how many
+           * "blocks" we are occupying
+           */
           x_count += col_span;
 
           fit_found = TRUE;
         }
       }
 
+      /* If we didn't find something that fits then we just leave a gap. This
+       * is basically fine.
+       */
       if (!fit_found)
       {
         /* We couldn't find something that fitted */
@@ -422,9 +426,14 @@ penge_block_layout_allocate (ClutterLayoutManager   *layout,
       break;
   }
 
+  /* Allocate all children we don't get round to with {0,0,0,0}. We skip such
+   * children in the paint.
+   */
   for (l = children; l; l = l->next)
   {
-    clutter_actor_hide (CLUTTER_ACTOR (l->data));
+    ClutterActor *actor = CLUTTER_ACTOR (l->data);
+    ClutterActorBox zero_box = { 0, };
+    clutter_actor_allocate (actor, &zero_box, flags);
   }
 
   g_list_free (children);
@@ -534,3 +543,4 @@ penge_block_layout_set_spacing (PengeBlockLayout *pbl,
 
   clutter_layout_manager_layout_changed (CLUTTER_LAYOUT_MANAGER (pbl));
 }
+
