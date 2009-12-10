@@ -183,6 +183,9 @@ penge_people_tile_set_item (PengePeopleTile *tile,
   const gchar *content, *thumbnail;
   gchar *date;
   GError *error = NULL;
+  ClutterActor *avatar = NULL;
+  ClutterActor *avatar_bin;
+  const gchar *author_icon;
 
   if (priv->item == item)
     return;
@@ -220,15 +223,44 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     }
   } else if (mojito_item_has_key (item, "content")) {
     content = mojito_item_get_value (item, "content");
-    body = (ClutterActor *)mx_bin_new ();
+    body = mx_table_new ();
+
+    mx_table_set_col_spacing (MX_TABLE (body), 6);
     mx_widget_set_style_class_name (MX_WIDGET (body),
                                     "PengePeopleTileContentBackground");
+
+    author_icon = mojito_item_get_value (item, "authoricon");
+    avatar = clutter_texture_new_from_file (author_icon, NULL);
+    avatar_bin = mx_bin_new ();
+    mx_bin_set_child (MX_BIN (avatar_bin), avatar);
+    mx_bin_set_fill (MX_BIN (avatar_bin), TRUE, TRUE);
+    mx_widget_set_style_class_name (MX_WIDGET (avatar_bin),
+                                    "PengePeopleTileAvatarBackground");
+    mx_table_add_actor_with_properties (MX_TABLE (body),
+                                        avatar_bin,
+                                        0, 0,
+                                        "x-expand", FALSE,
+                                        "y-expand", TRUE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.5,
+                                        "y-align", 0.5,
+                                        NULL);
+    clutter_actor_set_size (avatar_bin, 48, 48);
+
     label = mx_label_new (content);
     mx_widget_set_style_class_name (MX_WIDGET (label), "PengePeopleTileContentLabel");
-    mx_bin_set_child (MX_BIN (body), (ClutterActor *)label);
-    mx_bin_set_alignment (MX_BIN (body),
-                          MX_ALIGN_START,
-                          MX_ALIGN_START);
+    mx_table_add_actor_with_properties (MX_TABLE (body),
+                                        label,
+                                        0, 1,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "x-fill", TRUE,
+                                        "y-fill", TRUE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.0,
+                                        NULL);
+
     tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
     clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
     clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
@@ -291,9 +323,16 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     g_assert_not_reached ();
   }
 
-  g_object_set (tile,
-                "icon-path", mojito_item_get_value (item, "authoricon"),
-                NULL);
+  if (!avatar)
+  {
+    g_object_set (tile,
+                  "icon-path", mojito_item_get_value (item, "authoricon"),
+                  NULL);
+  } else {
+    g_object_set (tile,
+                  "icon-path", NULL,
+                  NULL);
+  }
 }
 
 gboolean
