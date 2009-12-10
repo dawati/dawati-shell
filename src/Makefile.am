@@ -13,33 +13,35 @@ AM_CFLAGS = \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\" \
 	-I$(top_srcdir)/libmoblin-panel
 
-source_h =	../libmoblin-panel/moblin-panel/mpl-panel-common.h \
-		$(DBUS_GLUE) 			\
-		$(DBUS_BINDINGS) 		\
-		mnb-scale-group.h               \
-		moblin-netbook.h		\
-		mnb-drop-down.h                 \
-		mnb-input-manager.h		\
-		mnb-toolbar.h                   \
-		mnb-toolbar-button.h            \
-		mnb-panel.h			\
-		mnb-panel-frame.h		\
-		mnb-panel-oop.h
+dbus_h = 	$(srcdir)/$(DBUS_GLUE) 			\
+		$(srcdir)/$(DBUS_BINDINGS)
+
+source_h =	$(srcdir)/../libmoblin-panel/moblin-panel/mpl-panel-common.h \
+		$(srcdir)/mnb-scale-group.h             \
+		$(srcdir)/moblin-netbook.h		\
+		$(srcdir)/mnb-drop-down.h               \
+		$(srcdir)/mnb-input-manager.h		\
+		$(srcdir)/mnb-toolbar.h                 \
+		$(srcdir)/mnb-toolbar-button.h          \
+		$(srcdir)/mnb-panel.h			\
+		$(srcdir)/mnb-panel-frame.h		\
+		$(srcdir)/mnb-panel-oop.h
 
 
-source_c = 	mnb-scale-group.c	        \
-		moblin-netbook.c		\
-		$(MARSHALS)                     \
-		mnb-drop-down.c                 \
-		mnb-input-manager.c		\
-		mnb-toolbar.c                   \
-		mnb-toolbar-button.c            \
-		mnb-panel.c         		\
-		mnb-panel-frame.c         	\
-		mnb-panel-oop.c			\
-		mnb-enum-types.c
+source_c = 	$(srcdir)/mnb-enum-types.c		\
+		$(srcdir)/mnb-scale-group.c	        \
+		$(srcdir)/moblin-netbook.c		\
+		$(srcdir)/$(MARSHALS)                   \
+		$(srcdir)/mnb-drop-down.c               \
+		$(srcdir)/mnb-input-manager.c		\
+		$(srcdir)/mnb-toolbar.c                 \
+		$(srcdir)/mnb-toolbar-button.c          \
+		$(srcdir)/mnb-panel.c         		\
+		$(srcdir)/mnb-panel-frame.c         	\
+		$(srcdir)/mnb-panel-oop.c
 
-moblin_netbook_la_SOURCES  = 	$(source_h) \
+moblin_netbook_la_SOURCES  = 	$(dbus_h)	\
+				$(source_h) 	\
 				$(source_c)
 
 DBUS_GLUE =	mnb-panel-dbus-glue.h		\
