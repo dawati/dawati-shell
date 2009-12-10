@@ -347,7 +347,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                       "x-fill", FALSE,
                                       "y-fill", FALSE,
                                       "x-align", 1.0,
-                                      "y-align", 0.0,
+                                      "y-align", 0.5,
                                       NULL);
 
   g_signal_connect (priv->remove_button,
