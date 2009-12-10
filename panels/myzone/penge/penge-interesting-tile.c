@@ -109,9 +109,27 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       }
 
       if (path)
+      {
         clutter_actor_show (priv->icon);
-      else
+        clutter_container_child_set (priv->details_overlay,
+                                     priv->primary_text,
+                                     "col", 1,
+                                     NULL);
+        clutter_container_child_set (priv->details_overlay,
+                                     priv->secondary_text,
+                                     "col", 1,
+                                     NULL);
+      } else {
         clutter_actor_hide (priv->icon);
+        clutter_container_child_set (priv->details_overlay,
+                                     priv->primary_text,
+                                     "col", 0,
+                                     NULL);
+        clutter_container_child_set (priv->details_overlay,
+                                     priv->secondary_text,
+                                     "col", 0,
+                                     NULL);
+      }
 
       break;
     case PROP_PRIMARY_TEXT:
@@ -340,4 +358,14 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   mx_table_set_col_spacing (MX_TABLE (priv->details_overlay), 4);
 
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
+
+  clutter_actor_hide (priv->icon);
+  clutter_container_child_set (priv->details_overlay,
+                               priv->primary_text,
+                               "col", 0,
+                               NULL);
+  clutter_container_child_set (priv->details_overlay,
+                               priv->secondary_text,
+                               "col", 0,
+                               NULL);
 }
