@@ -111,21 +111,21 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       if (path)
       {
         clutter_actor_show (priv->icon);
-        clutter_container_child_set (priv->details_overlay,
+        clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                      priv->primary_text,
                                      "col", 1,
                                      NULL);
-        clutter_container_child_set (priv->details_overlay,
+        clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                      priv->secondary_text,
                                      "col", 1,
                                      NULL);
       } else {
         clutter_actor_hide (priv->icon);
-        clutter_container_child_set (priv->details_overlay,
+        clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                      priv->primary_text,
                                      "col", 0,
                                      NULL);
-        clutter_container_child_set (priv->details_overlay,
+        clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                      priv->secondary_text,
                                      "col", 0,
                                      NULL);
@@ -360,11 +360,11 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 
   clutter_actor_hide (priv->icon);
-  clutter_container_child_set (priv->details_overlay,
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                priv->primary_text,
                                "col", 0,
                                NULL);
-  clutter_container_child_set (priv->details_overlay,
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->details_overlay),
                                priv->secondary_text,
                                "col", 0,
                                NULL);
