@@ -2031,7 +2031,9 @@ mnb_toolbar_make_toolbar_panel (MnbToolbar  *toolbar,
 
   if (!builtin)
     {
+#if 0
       tp->button_stylesheet = g_strdup_printf (THEMEDIR "/%s/button.css", name);
+#endif
       tp->service = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, name, NULL);
     }
 
