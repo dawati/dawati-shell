@@ -113,7 +113,6 @@ penge_model_bridge_resync (PengeModelBridge *bridge)
   GList *children, *l;
   ClutterModelIter *iter;
   gpointer p;
-  ClutterActor *last_actor = NULL;
   ClutterActor *actor;
 
   children = clutter_container_get_children (priv->container);
@@ -122,8 +121,6 @@ penge_model_bridge_resync (PengeModelBridge *bridge)
   while (iter && !clutter_model_iter_is_last (iter))
   {
     clutter_model_iter_get (iter, 0, &p, -1);
-
-    g_debug (G_STRLOC ": %s", mojito_item_get_value (p, "content"));
 
     actor = g_hash_table_lookup (priv->pointer_to_actor, p);
 
@@ -185,7 +182,7 @@ penge_model_bridge_set_model (PengeModelBridge *bridge,
   priv->model = g_object_ref (model);
 
   g_signal_connect (priv->model,
-                    "bulk-end", _model_bulk_end_cb,
+                    "bulk-end", (GCallback)_model_bulk_end_cb,
                     bridge);
 
   penge_model_bridge_resync (bridge);
