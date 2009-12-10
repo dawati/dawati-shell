@@ -110,13 +110,13 @@ PengeDateTile *.PengeDateLabel
 PengePeopleTile *.PengeInterestingTilePrimaryLabel,
 PengeRecentFileTile *.PengeInterestingTilePrimaryLabel
 {
-  color: white;
+  color: #3e3e3eff;
 }
 
 PengePeopleTile *.PengeInterestingTileSecondaryLabel,
 PengeRecentFileTile *.PengeInterestingTileSecondaryLabel
 {
-  color: white;
+  color: #3e3e3eff;
   font-size: 11;
 }
 
@@ -141,7 +141,6 @@ PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 
 MxTable.PengeInterestingTileDetails
 {
-  background-color: black;
   padding: 2;
 }
 
