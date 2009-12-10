@@ -16,7 +16,8 @@ AM_CFLAGS = \
 dbus_h = 	$(srcdir)/$(DBUS_GLUE) 			\
 		$(srcdir)/$(DBUS_BINDINGS)
 
-source_h =	$(srcdir)/../libmoblin-panel/moblin-panel/mpl-panel-common.h \
+source_h =	$(srcdir)/marshal.h			\
+		$(srcdir)/../libmoblin-panel/moblin-panel/mpl-panel-common.h \
 		$(srcdir)/mnb-scale-group.h             \
 		$(srcdir)/moblin-netbook.h		\
 		$(srcdir)/mnb-drop-down.h               \
@@ -31,7 +32,7 @@ source_h =	$(srcdir)/../libmoblin-panel/moblin-panel/mpl-panel-common.h \
 source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/mnb-scale-group.c	        \
 		$(srcdir)/moblin-netbook.c		\
-		$(srcdir)/$(MARSHALS)                   \
+		$(srcdir)/marshal.c                   	\
 		$(srcdir)/mnb-drop-down.c               \
 		$(srcdir)/mnb-input-manager.c		\
 		$(srcdir)/mnb-toolbar.c                 \
@@ -91,7 +92,7 @@ stamp-marshal.h: marshal.list
 	&& rm -f xgen-cmh \
 	&& echo timestamp > $(@F)
 
-mnb-marshal.c: marshal.h Makefile
+marshal.c: marshal.h Makefile
 	$(QUIET_GEN)( echo "#include \"marshal.h\"" ; \
 	  $(GLIB_GENMARSHAL) \
 	  	--prefix=moblin_netbook_marshal \
