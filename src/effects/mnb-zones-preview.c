@@ -648,6 +648,11 @@ mnb_zones_preview_add_window (MnbZonesPreview *preview,
   MetaRectangle rect;
   gint workspace;
 
+  /* TODO: Determine if we need to add a weak reference on the window
+   *       in case it gets destroyed during the animation.
+   *       I'd have thought that the clone's reference on the texture
+   *       would be enough that this wouldn't be necessary.
+   */
   workspace = mutter_window_get_workspace (window);
   group = mnb_zones_preview_get_workspace_group (preview, workspace);
 
