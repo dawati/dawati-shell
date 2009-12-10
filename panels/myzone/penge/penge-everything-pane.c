@@ -509,10 +509,10 @@ penge_everything_pane_init (PengeEverythingPane *self)
                     self);
 
   priv->layout = penge_block_layout_new ();
-  penge_block_layout_set_spacing (PENGE_BLOCK_LAYOUT (priv->layout), 10);
+  penge_block_layout_set_spacing (PENGE_BLOCK_LAYOUT (priv->layout), 4);
   penge_block_layout_set_min_tile_size (PENGE_BLOCK_LAYOUT (priv->layout),
-                                        140,
-                                        92);
+                                        160,
+                                        110);
 
   g_signal_connect (priv->layout,
                     "count-changed",
