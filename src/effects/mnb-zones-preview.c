@@ -71,7 +71,6 @@ struct _MnbZonesPreviewPrivate
   MnbZonesPreviewPhase  anim_phase;
 };
 
-
 static void
 mnb_zones_preview_get_property (GObject    *object,
                                 guint       property_id,
@@ -444,6 +443,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
     case MNB_ZP_STATIC:
       /* Start zooming out */
       priv->anim_phase = MNB_ZP_ZOOM_OUT;
+      mnb_zones_preview_enable_fanciness (preview, TRUE);
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_EASE_IN_SINE,
                              220,
@@ -454,7 +454,6 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
     case MNB_ZP_ZOOM_OUT:
       /* Start panning */
       priv->anim_phase = MNB_ZP_PAN;
-      mnb_zones_preview_enable_fanciness (preview, TRUE);
       clutter_actor_animate (CLUTTER_ACTOR (preview),
                              CLUTTER_LINEAR,
                              175 * ABS ((gdouble)priv->dest_workspace -
@@ -468,8 +467,8 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       mnb_zones_preview_enable_fanciness (preview, FALSE);
       priv->anim_phase = MNB_ZP_ZOOM_IN;
       clutter_actor_animate (CLUTTER_ACTOR (preview),
-                             CLUTTER_EASE_OUT_SINE,
-                             220,
+                             CLUTTER_EASE_OUT_CUBIC,
+                             250,
                              "zoom", 1.0,
                              NULL);
       break;

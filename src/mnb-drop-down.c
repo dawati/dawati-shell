@@ -611,7 +611,7 @@ mnb_drop_down_panel_get_size (MnbPanel *panel, guint *width, guint *height)
 
   /*
    * FIXME -- need to find out why the height of the panel is reported as
-   * 0 and fix that; this is a very uggly cludge.
+   * 0 and fix that; this is a very ugly cludge.
    */
   clutter_actor_get_size (CLUTTER_ACTOR (panel), &w, &h);
 
