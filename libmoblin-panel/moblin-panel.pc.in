@@ -5,9 +5,10 @@ includedir=@includedir@
 datarootdir=@datarootdir@
 datadir=@datadir@
 moblin_panel_theme_dir=@MUTTER_MOBLIN_THEME_DIR@
+moblin_panel_panels_dir=@MUTTER_MOBLIN_PANELS_DIR@
 
 Name: libmoblin-panel
-Description: Dev framwork for moblin panels
+Description: Dev framework for moblin panels
 Requires: dbus-glib-1 nbtk-1.2 gtk+-2.0 gio-unix-2.0
 Version: @VERSION@
 Libs: -L${libdir} -lmoblin-panel

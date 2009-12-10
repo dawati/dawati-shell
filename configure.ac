@@ -80,6 +80,9 @@ PKG_CHECK_MODULES(LIBMPL,
 MUTTER_MOBLIN_THEME_DIR="${datadir}/${PACKAGE}/theme"
 AC_SUBST([MUTTER_MOBLIN_THEME_DIR])
 
+MUTTER_MOBLIN_PANELS_DIR="${datadir}/${PACKAGE}/panels"
+AC_SUBST([MUTTER_MOBLIN_PANELS_DIR])
+
 # Mutter-moblin
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl
