@@ -44,7 +44,7 @@ PengeRecentFileTile, PengePeopleTile
 
 PengeRecentFileTile:hover, PengePeopleTile:hover
 {
-  border-image: url('tile-glow.png') 7 8 9 8;
+  border-image: url('tile-partial-glow.png') 7 8 9 8;
   padding: 6 7 8 7;
 }
 
