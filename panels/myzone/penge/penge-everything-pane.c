@@ -22,11 +22,13 @@
 #include <gio/gio.h>
 #include <glib/gi18n.h>
 #include <moblin-panel/mpl-utils.h>
+#include <bickley/bkl-item-extended.h>
 
 #include "penge-everything-pane.h"
 #include "penge-recent-file-tile.h"
 #include "penge-people-tile.h"
 #include "penge-block-layout.h"
+#include "penge-source-manager.h"
 
 G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, CLUTTER_TYPE_BOX)
 
@@ -41,6 +43,7 @@ struct _PengeEverythingPanePrivate {
   GtkRecentManager *recent_manager;
   ClutterLayoutManager *layout;
   GHashTable *pointer_to_actor;
+  PengeSourceManager *source_manager;
 
   gint block_count;
 
@@ -235,12 +238,14 @@ _add_from_mojito_item (PengeEverythingPane *pane,
 static ClutterActor *
 _add_from_recent_file_info (PengeEverythingPane *pane,
                             GtkRecentInfo       *info,
+                            BklItem             *bi,
                             const gchar         *thumbnail_path)
 {
   ClutterActor *actor;
 
   actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
                         "info", info,
+                        "item", bi,
                         "thumbnail-path", thumbnail_path,
                         NULL);
 
@@ -303,6 +308,8 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
       mojito_items = g_list_remove (mojito_items, mojito_item);
     } else {
+      BklItem *bi = NULL;
+
       /* Recent file item is newer */
 
       actor = g_hash_table_lookup (priv->pointer_to_actor,
@@ -325,11 +332,29 @@ penge_everything_pane_update (PengeEverythingPane *pane)
         }
 
         uri = gtk_recent_info_get_uri (recent_file_info);
-        thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+
+        bi = penge_source_manager_find_item (priv->source_manager, uri);
+
+        if (bi)
+        {
+          const char *thumb_uri;
+
+          thumb_uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) bi);
+
+          if (thumb_uri)
+            thumbnail_path = g_filename_from_uri (thumb_uri, NULL, NULL);
+          else
+            thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+        } else {
+          thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+        }
 
         /* Skip those without thumbnail */
         if (!g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
         {
+          if (bi)
+            g_object_unref (bi);
+
           gtk_recent_info_unref (recent_file_info);
           recent_file_items = g_list_remove (recent_file_items,
                                              recent_file_info);
@@ -339,6 +364,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
         actor = _add_from_recent_file_info (pane,
                                             recent_file_info,
+                                            bi,
                                             thumbnail_path);
 
         g_free (thumbnail_path);
@@ -353,6 +379,9 @@ penge_everything_pane_update (PengeEverythingPane *pane)
       gtk_recent_info_unref (recent_file_info);
       recent_file_items = g_list_remove (recent_file_items,
                                          recent_file_info);
+
+      if (bi)
+        g_object_unref (bi);
     }
 
     clutter_container_lower_child (CLUTTER_CONTAINER (pane),
@@ -491,6 +520,14 @@ _layout_count_changed_cb (PengeBlockLayout *layout,
 }
 
 static void
+_source_manager_ready (PengeSourceManager *source_manager,
+                       gpointer            userdata)
+{
+  PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
+  penge_everything_pane_queue_update (pane);
+}
+
+static void
 penge_everything_pane_init (PengeEverythingPane *self)
 {
   PengeEverythingPanePrivate *priv = GET_PRIVATE (self);
@@ -520,5 +557,12 @@ penge_everything_pane_init (PengeEverythingPane *self)
                     self);
 
   clutter_actor_set_opacity (CLUTTER_ACTOR (self), 0x0);
+
+  /* Set up a source manager for finding the recent items */
+  priv->source_manager = g_object_new (PENGE_TYPE_SOURCE_MANAGER, NULL);
+  g_signal_connect (priv->source_manager,
+                    "ready",
+                    G_CALLBACK (_source_manager_ready),
+                    self);
 }
 
