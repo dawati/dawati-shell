@@ -1,3 +1,3 @@
 [D-BUS Service]
 Name=org.moblin.UX.Shell.Panels.network
-Exec=@bindir@/carrick-connection-panel
+Exec=@libexecdir@/carrick-connection-panel

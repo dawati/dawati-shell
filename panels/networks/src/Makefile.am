@@ -1,4 +1,4 @@
-bin_PROGRAMS = carrick-connection-panel
+libexec_PROGRAMS = carrick-connection-panel
 
 carrick_connection_panel_SOURCES = carrick.c
 
@@ -25,6 +25,6 @@ CLEANFILES = $(service_DATA)
 DISTCLEANFILES = $(service_DATA)
 
 %.service: %.service.in
-	$(QUIET_GEN)sed -e "s|\@bindir\@|$(bindir)|" $< > $@
+	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 -include $(top_srcdir)/git.mk
