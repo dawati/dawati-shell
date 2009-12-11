@@ -190,7 +190,9 @@ PengeWelcomeTile *#penge-welcome-secondary-text
   color: #2c2c2cff;
 }
 
-*.PengeInterestingTileRemoveButton, *.PengeInterestingTileRemoveButton:hover
+*.PengeInterestingTileRemoveButton,
+*.PengeInterestingTileRemoveButton:hover,
+*.PengeInterestingTileRemoveButton:active
 {
   border-image:none;
   padding:0;
