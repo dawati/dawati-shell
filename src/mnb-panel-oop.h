@@ -92,6 +92,9 @@ void          mnb_panel_oop_hide_animate      (MnbPanelOop  *panel,
 
 void          mnb_panel_oop_unload            (MnbPanelOop *panel);
 
+void          mnb_panel_oop_set_delayed_show  (MnbPanelOop *panel,
+                                               gboolean     delayed);
+
 G_END_DECLS
 
 #endif /* _MNB_PANEL_OOP */

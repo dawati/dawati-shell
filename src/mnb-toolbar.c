@@ -51,6 +51,9 @@
 
 #include <clutter/x11/clutter-x11.h>
 
+/* FIME -- duplicated from MnbDropDown.c */
+#define SLIDE_DURATION 150
+
 #define KEY_DIR "/desktop/moblin/toolbar/panels"
 #define KEY_ORDER KEY_DIR "/order"
 
@@ -199,6 +202,7 @@ struct _MnbToolbarPrivate
 
   ClutterActor *hbox; /* This is where all the contents are placed */
   ClutterActor *lowlight;
+  ClutterActor *panel_stub;
   ClutterActor *shadow;
 
   NbtkWidget   *time; /* The time and date fields, needed for the updates */
@@ -885,9 +889,21 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
           {
             if (checked)
               {
+                gint screen_width, screen_height;
+
                 g_debug ("Button clicked before panel available");
 
                 nbtk_button_set_checked (NBTK_BUTTON (tp->button), FALSE);
+
+                mutter_plugin_query_screen_size (priv->plugin,
+                                                 &screen_width, &screen_height);
+
+                clutter_actor_set_size (priv->panel_stub,
+                                        screen_width - TOOLBAR_X_PADDING * 2,
+                                        screen_height / 3);
+                clutter_actor_set_opacity (priv->panel_stub, 0xff);
+                clutter_actor_show (priv->panel_stub);
+                clutter_actor_raise_top (priv->panel_stub);
 
                 tp->pinged = TRUE;
                 mnb_toolbar_start_panel_service (toolbar, tp);
@@ -972,6 +988,9 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
 
       actor = (ClutterActor*) mnb_panel_oop_get_mutter_window (opanel);
 
+      if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel_stub))
+        clutter_actor_raise (priv->panel_stub, actor);
+
       clutter_actor_lower (priv->shadow, actor);
       clutter_actor_lower (priv->lowlight, priv->shadow);
     }
@@ -980,6 +999,26 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
 static void
 mnb_toolbar_panel_show_begin_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->panel_stub))
+    {
+      guint  w, h;
+      gfloat wf, hf;
+
+      mnb_panel_get_size (panel, &w, &h);
+
+      wf = w;
+      hf = h;
+
+      clutter_actor_animate (priv->panel_stub, CLUTTER_EASE_IN_SINE,
+                             SLIDE_DURATION,
+                             "opacity", 0,
+                             "width", wf,
+                             "height", hf,
+                             NULL);
+    }
+
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
 }
 
@@ -1007,12 +1046,14 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
   g_assert (MNB_IS_PANEL_OOP (panel));
 
   mcw = mnb_panel_oop_get_mutter_window ((MnbPanelOop*)panel);
+  mnb_panel_oop_set_delayed_show ((MnbPanelOop*)panel, FALSE);
 
   if (!mcw)
     g_warning ("Completed show on panel with no window ?!");
   else
     mnb_input_manager_push_oop_panel (mcw);
 
+  clutter_actor_hide (toolbar->priv->panel_stub);
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
 }
@@ -1427,6 +1468,12 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
       if (tp->pinged)
         {
           tp->pinged = FALSE;
+
+          g_debug ("Showing pinged panel");
+
+          if (MNB_IS_PANEL_OOP (panel))
+            mnb_panel_oop_set_delayed_show ((MnbPanelOop*)panel, TRUE);
+
           mnb_panel_show (panel);
         }
       else if (index == MYZONE)
@@ -2101,7 +2148,7 @@ mnb_toolbar_constructed (GObject *self)
   MutterPlugin      *plugin = priv->plugin;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
-  ClutterActor      *lowlight;
+  ClutterActor      *lowlight, *panel_stub;
   ClutterActor      *shadow, *sh_texture;
   gint               screen_width, screen_height;
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
@@ -2150,6 +2197,16 @@ mnb_toolbar_constructed (GObject *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), lowlight);
   clutter_actor_hide (lowlight);
   priv->lowlight = lowlight;
+
+  panel_stub = (ClutterActor*)nbtk_bin_new ();
+  clutter_actor_set_size (panel_stub,
+                          screen_width - TOOLBAR_X_PADDING * 2,
+                          screen_height / 3);
+  clutter_actor_set_position (panel_stub, TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
+  clutter_actor_set_name (panel_stub, "panel-stub");
+  clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), panel_stub);
+  clutter_actor_hide (panel_stub);
+  priv->panel_stub = panel_stub;
 
   /*
    * The shadow needs to go into the window group, like the lowlight.

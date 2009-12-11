@@ -81,7 +81,7 @@ enum
   PROP_X,
   PROP_Y,
   PROP_WIDTH,
-  PROP_HEIGHT,
+  PROP_HEIGHT
 };
 
 enum
@@ -128,6 +128,7 @@ struct _MnbPanelOopPrivate
   gboolean         in_show_animation : 1;
   gboolean         in_hide_animation : 1;
   gboolean         dont_hide_toolbar : 1;
+  gboolean         delayed_show      : 1;
 
   NbtkButton      *button;
 
@@ -1217,25 +1218,47 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
 
   g_signal_emit_by_name (panel, "show-begin");
 
-  clutter_actor_get_position (mcw, &x, &y);
-  clutter_actor_get_size (mcw, &width, &height);
+  if (priv->delayed_show)
+    {
+      priv->in_show_animation = TRUE;
 
-  clutter_actor_set_position (mcw, x, -height);
+      clutter_actor_set_opacity (mcw, 0);
 
-  priv->in_show_animation = TRUE;
+      animation = clutter_actor_animate (mcw, CLUTTER_EASE_IN_SINE,
+                                         SLIDE_DURATION,
+                                         "opacity", 0xff,
+                                         NULL);
 
-  animation = clutter_actor_animate (mcw, CLUTTER_EASE_IN_SINE,
-                                     SLIDE_DURATION,
-                                     "x", x,
-                                     "y", y,
-                                     NULL);
+      priv->show_completed_id =
+        g_signal_connect_after (animation,
+                                "completed",
+                                G_CALLBACK (mnb_panel_oop_show_completed_cb),
+                                panel);
+      priv->show_anim = animation;
+    }
+  else
+    {
+      clutter_actor_get_position (mcw, &x, &y);
+      clutter_actor_get_size (mcw, &width, &height);
 
-  priv->show_completed_id =
-    g_signal_connect_after (animation,
-                            "completed",
-                            G_CALLBACK (mnb_panel_oop_show_completed_cb),
-                            panel);
-  priv->show_anim = animation;
+      clutter_actor_set_position (mcw, x, -height);
+
+      priv->in_show_animation = TRUE;
+
+      animation = clutter_actor_animate (mcw, CLUTTER_EASE_IN_SINE,
+                                         SLIDE_DURATION,
+                                         "x", x,
+                                         "y", y,
+                                         NULL);
+
+      priv->show_completed_id =
+        g_signal_connect_after (animation,
+                                "completed",
+                                G_CALLBACK (mnb_panel_oop_show_completed_cb),
+                                panel);
+      priv->show_anim = animation;
+    }
+
 }
 
 static void
@@ -1529,4 +1552,12 @@ mnb_panel_oop_unload (MnbPanelOop *panel)
   org_moblin_UX_Shell_Panel_unload_async (priv->proxy,
                                           mnb_panel_oop_dbus_dumb_reply_cb,
                                           NULL);
+}
+
+void
+mnb_panel_oop_set_delayed_show (MnbPanelOop *panel, gboolean delayed)
+{
+  MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
+
+  priv->delayed_show = delayed;
 }
