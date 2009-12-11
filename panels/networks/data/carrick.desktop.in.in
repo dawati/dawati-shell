@@ -1,17 +1,15 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Name=Carrick connection panel
 Type=Application
-Enconding=UTF-8
-TryExec=carrick-connection-panel
-Exec=carrick-connection-panel
-Icon=carrick-connection-panel
-Terminal=false
-Categories=
-Comment=A connman user interface
-GenericName=Connection manager
-NoDisplay=true
-X-GNOME-Autostart-enable=true
-Name[en_GB]=Carrick connection panel.desktop
+_Name=network
+_Comment=Network settings
+Exec=@LIBEXECDIR@/carrick-connection-panel
 OnlyShowIn=MOBLIN;
+X-GNOME-Autostart-enable=true
+X-Moblin-Priority=High
+X-Moblin-Service=org.moblin.UX.Shell.Panels.network
+X-Moblin-Panel-Optional=false
+X-Moblin-Panel-Type=applet
+X-Moblin-Panel-Stylesheet=@THEME_DIR@/network-applet.css
+X-Moblin-Panel-Button-Style=offline

@@ -11,3 +11,4 @@ callouts/3g/ggg-manual-dialog.c
 callouts/3g/ggg-plan-dialog.c
 callouts/3g/ggg-provider-dialog.c
 callouts/3g/ggg-service-dialog.c
+data/carrick.desktop.in.in
