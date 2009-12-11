@@ -2198,15 +2198,21 @@ mnb_toolbar_constructed (GObject *self)
   clutter_actor_hide (lowlight);
   priv->lowlight = lowlight;
 
-  panel_stub = (ClutterActor*)nbtk_bin_new ();
-  clutter_actor_set_size (panel_stub,
-                          screen_width - TOOLBAR_X_PADDING * 2,
-                          screen_height / 3);
-  clutter_actor_set_position (panel_stub, TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
-  clutter_actor_set_name (panel_stub, "panel-stub");
-  clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), panel_stub);
-  clutter_actor_hide (panel_stub);
-  priv->panel_stub = panel_stub;
+  {
+    ClutterActor *label = (ClutterActor*) nbtk_label_new ("Loading panel ...");
+
+    panel_stub = (ClutterActor*)nbtk_bin_new ();
+    nbtk_bin_set_child (NBTK_BIN (panel_stub), label);
+
+    clutter_actor_set_size (panel_stub,
+                            screen_width - TOOLBAR_X_PADDING * 2,
+                            screen_height / 3);
+    clutter_actor_set_position (panel_stub, TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
+    clutter_actor_set_name (panel_stub, "panel-stub");
+    clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), panel_stub);
+    clutter_actor_hide (panel_stub);
+    priv->panel_stub = panel_stub;
+  }
 
   /*
    * The shadow needs to go into the window group, like the lowlight.
