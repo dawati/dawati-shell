@@ -1,8 +1,6 @@
 bin_PROGRAMS = carrick-connection-panel
 
-carrick_connection_panel_SOURCES = \
-                carrick.c \
-                $(NULL)
+carrick_connection_panel_SOURCES = carrick.c
 
 INCLUDES = -I$(top_srcdir)/connman-common
 
