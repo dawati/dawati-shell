@@ -73,6 +73,38 @@ penge_everything_pane_set_property (GObject *object, guint property_id,
 static void
 penge_everything_pane_dispose (GObject *object)
 {
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->pointer_to_actor)
+  {
+    g_hash_table_unref (priv->pointer_to_actor);
+    priv->pointer_to_actor = NULL;
+  }
+
+  if (priv->view)
+  {
+    g_object_unref (priv->view);
+    priv->view = NULL;
+  }
+
+  if (priv->client)
+  {
+    g_object_unref (priv->client);
+    priv->client = NULL;
+  }
+
+  if (priv->source_manager)
+  {
+    g_object_unref (priv->source_manager);
+    priv->source_manager = NULL;
+  }
+
+  if (priv->recent_manager)
+  {
+    g_object_unref (priv->recent_manager);
+    priv->recent_manager = NULL;
+  }
+
   G_OBJECT_CLASS (penge_everything_pane_parent_class)->dispose (object);
 }
 
