@@ -70,7 +70,7 @@ penge_recent_file_tile_get_property (GObject *object, guint property_id,
       g_value_set_string (value, priv->thumbnail_path);
       break;
     case PROP_INFO:
-      g_value_set_pointer (value, priv->info);
+      g_value_set_boxed (value, priv->info);
       break;
     case PROP_ITEM:
       g_value_set_object (value, priv->item);
@@ -404,16 +404,6 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
 }
 
 static void
-_remove_clicked_cb (PengeInterestingTile *tile,
-                    gpointer              userdata)
-{
-  PengeRecentFileTilePrivate *priv = GET_PRIVATE (tile);
-
-  penge_recent_files_model_remove_item (priv->model,
-                                        priv->info);
-}
-
-static void
 penge_recent_file_tile_init (PengeRecentFileTile *self)
 {
   PengeRecentFileTilePrivate *priv = GET_PRIVATE (self);
@@ -427,11 +417,6 @@ penge_recent_file_tile_init (PengeRecentFileTile *self)
   g_signal_connect (self,
                     "clicked",
                     (GCallback)_clicked_cb,
-                    self);
-
-  g_signal_connect (self,
-                    "remove-clicked",
-                    (GCallback)_remove_clicked_cb,
                     self);
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
