@@ -121,18 +121,6 @@ penge_people_tile_class_init (PengePeopleTileClass *klass)
 }
 
 static void
-_remove_clicked_cb (PengeInterestingTile *tile,
-                    gpointer              userdata)
-{
-  PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
-  MojitoClient *client;
-
-  client = penge_people_pane_dup_mojito_client_singleton ();
-  mojito_client_hide_item (client, priv->item);
-  g_object_unref (client);
-}
-
-static void
 _clicked_cb (MxButton *button,
              gpointer  userdata)
 {
@@ -145,10 +133,6 @@ _clicked_cb (MxButton *button,
 static void
 penge_people_tile_init (PengePeopleTile *self)
 {
-  g_signal_connect (self,
-                    "remove-clicked",
-                    (GCallback)_remove_clicked_cb,
-                    self);
   g_signal_connect (self,
                     "clicked",
                     (GCallback)_clicked_cb,
