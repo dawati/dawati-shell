@@ -25,6 +25,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <glib/gstdio.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
@@ -669,8 +670,14 @@ static void
 mpl_panel_client_init (MplPanelClient *self)
 {
   MplPanelClientPrivate *priv;
+  const gchar           *home;
 
   priv = self->priv = MPL_PANEL_CLIENT_GET_PRIVATE (self);
+
+  home = g_get_home_dir ();
+
+  if (g_chdir (home))
+    g_warning ("Unable to change working directory to '%s'", home);
 }
 
 static DBusGConnection *
