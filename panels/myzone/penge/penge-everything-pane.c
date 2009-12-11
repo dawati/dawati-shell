@@ -23,6 +23,7 @@
 #include <glib/gi18n.h>
 #include <moblin-panel/mpl-utils.h>
 #include <bickley/bkl-item-extended.h>
+#include <gconf/gconf-client.h>
 
 #include "penge-everything-pane.h"
 #include "penge-recent-file-tile.h"
@@ -34,6 +35,13 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, CLUTTER_TYPE_BOX)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVERYTHING_PANE, PengeEverythingPanePrivate))
+
+#define MOBLIN_MYZONE_MIN_TILE_WIDTH "/desktop/moblin/myzone/min_tile_width"
+#define MOBLIN_MYZONE_MIN_TILE_HEIGHT "/desktop/moblin/myzone/min_tile_height"
+
+#define TILE_WIDTH 160
+#define TILE_HEIGHT 110
+
 
 typedef struct _PengeEverythingPanePrivate PengeEverythingPanePrivate;
 
@@ -610,6 +618,8 @@ static void
 penge_everything_pane_init (PengeEverythingPane *self)
 {
   PengeEverythingPanePrivate *priv = GET_PRIVATE (self);
+  gfloat tile_width, tile_height;
+  GConfClient *client;
 
   /* pointer to pointer */
   priv->pointer_to_actor = g_hash_table_new (NULL, NULL);
@@ -626,9 +636,33 @@ penge_everything_pane_init (PengeEverythingPane *self)
 
   priv->layout = penge_block_layout_new ();
   penge_block_layout_set_spacing (PENGE_BLOCK_LAYOUT (priv->layout), 4);
+
+  client = gconf_client_get_default ();
+
+  tile_width = gconf_client_get_float (client,
+                                       MOBLIN_MYZONE_MIN_TILE_WIDTH,
+                                       NULL);
+
+  /* Returns 0.0 if unset */
+  if (tile_width == 0.0)
+  {
+    tile_width = TILE_WIDTH;
+  }
+
+  tile_height = gconf_client_get_float (client,
+                                        MOBLIN_MYZONE_MIN_TILE_HEIGHT,
+                                        NULL);
+
+  if (tile_height == 0.0)
+  {
+    tile_height = TILE_HEIGHT;
+  }
+
+  g_object_unref (client);
+
   penge_block_layout_set_min_tile_size (PENGE_BLOCK_LAYOUT (priv->layout),
-                                        160,
-                                        110);
+                                        tile_width,
+                                        tile_height);
 
   g_signal_connect (priv->layout,
                     "count-changed",
