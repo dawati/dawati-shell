@@ -630,7 +630,13 @@ penge_events_pane_setup_stores (PengeEventsPane *pane)
     }
 
     /* Remove from the list so that we can kill old ones */
-    old_source_uids = g_list_remove (old_source_uids, uid);
+    for (l = old_source_uids; l; l = l->next)
+    {
+      if (g_str_equal (l->data, uid))
+      {
+        old_source_uids = g_list_remove (old_source_uids, l->data);
+      }
+    }
   }
 
   g_slist_free (sources);
