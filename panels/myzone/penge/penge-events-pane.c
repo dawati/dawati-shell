@@ -56,6 +56,11 @@ enum
   PROP_TIME
 };
 
+typedef struct {
+  JanaEvent *event;
+  JanaStore *store;
+} PengeEventData;
+
 #define TILE_WIDTH 216
 #define TILE_HEIGHT 52
 
@@ -66,6 +71,9 @@ static void penge_events_pane_update_duration (PengeEventsPane *pane,
                                                JanaStoreView   *view);
 static void penge_events_pane_update_durations (PengeEventsPane *pane);
 static void penge_events_pane_update (PengeEventsPane *pane);
+
+static PengeEventData *penge_event_data_new (void);
+static void penge_event_data_free (PengeEventData *data);
 
 static void
 penge_events_pane_get_property (GObject *object, guint property_id,
@@ -224,8 +232,12 @@ static gint
 _event_compare_func (gconstpointer a,
                      gconstpointer b)
 {
-  JanaEvent *event_a = (JanaEvent *)a;
-  JanaEvent *event_b = (JanaEvent *)b;
+  PengeEventData *ed_a = (PengeEventData *)a;
+  PengeEventData *ed_b = (PengeEventData *)b;
+
+  JanaEvent *event_a = ed_a->event;
+  JanaEvent *event_b = ed_b->event;
+
   JanaTime *start_a, *start_b;
   gint retval;
 
@@ -248,6 +260,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
   GList *events;
   GList *l;
+  PengeEventData *event_data;
   JanaEvent *event;
   gint count = 0;
   ClutterActor *actor;
@@ -304,7 +317,9 @@ penge_events_pane_update (PengeEventsPane *pane)
   window_start = events;
   for (l = events; l; l = l->next)
   {
-    event = (JanaEvent *)l->data;
+    event_data = (PengeEventData *)l->data;
+    event = (JanaEvent *)event_data->event;
+
     t = jana_event_get_start (event);
 
     if (jana_utils_time_compare (t, on_the_hour, FALSE) < 0)
@@ -336,7 +351,8 @@ penge_events_pane_update (PengeEventsPane *pane)
   window_end = window_start;
   for (l = window_start; l && count < priv->count; l = l->next)
   {
-    event = (JanaEvent *)l->data;
+    PengeEventData *event_data = (PengeEventData *)l->data;
+    event = (JanaEvent *)event_data->event;
 
     if (l->next)
     {
@@ -364,7 +380,9 @@ penge_events_pane_update (PengeEventsPane *pane)
   count = 0;
   for (l = window_start; l; l = l->next)
   {
-    event = (JanaEvent *)l->data;
+    event_data = (PengeEventData *)l->data;
+    event = event_data->event;
+
     uid = jana_component_get_uid (JANA_COMPONENT (event));
 
     actor = g_hash_table_lookup (priv->uid_to_actors,
@@ -389,7 +407,7 @@ penge_events_pane_update (PengeEventsPane *pane)
       actor = g_object_new (PENGE_TYPE_EVENT_TILE,
                             "event", event,
                             "time", priv->time,
-                            "store", NULL,
+                            "store", event_data->store,
                             NULL);
 
       clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
@@ -457,10 +475,18 @@ _store_view_added_cb (JanaStoreView *view,
       if (jana_utils_duration_contains (priv->duration,
                                         jana_event_get_start (event)))
       {
-       uid = jana_component_get_uid (component);
-       g_hash_table_insert (priv->uid_to_events,
+        PengeEventData *event_data;
+
+        uid = jana_component_get_uid (component);
+        event_data = penge_event_data_new ();
+
+        /* Gives us a new reference, no need to ref-up */
+        event_data->store = jana_store_view_get_store (view);
+        event_data->event = g_object_ref (event);
+
+        g_hash_table_insert (priv->uid_to_events,
                              uid,
-                             g_object_ref (event));
+                             event_data);
       }
     }
   }
@@ -480,6 +506,7 @@ _store_view_modified_cb (JanaStoreView *view,
   JanaEvent *old_event;
   gchar *uid;
   ClutterActor *actor;
+  PengeEventData *event_data;
 
   for (l = components; l; l = l->next)
   {
@@ -491,9 +518,9 @@ _store_view_modified_cb (JanaStoreView *view,
 
     if (old_event)
     {
-      g_hash_table_replace (priv->uid_to_events,
-                            jana_component_get_uid (component),
-                            g_object_ref (component));
+      event_data = g_hash_table_lookup (priv->uid_to_events, g_strdup (uid));
+      g_object_unref (event_data->event);
+      event_data->event = g_object_ref (component);
     } else {
       g_warning (G_STRLOC ": Told to modify an unknown event with uid: %s",
                  uid);
@@ -645,13 +672,25 @@ penge_events_pane_setup_stores (PengeEventsPane *pane)
   {
     JanaStore *store;
     const gchar *uid = (const gchar *)l->data;
+    GHashTableIter iter;
+    gchar *event_uid;
+    PengeEventData *event_data;
 
     store = g_hash_table_lookup (priv->stores, uid);
     g_hash_table_remove (priv->views, store);
 
-    /* TODO: Search through the list of events and remove those with a store
-     * that matches */
+    g_hash_table_iter_init (&iter, priv->uid_to_events);
+
+    while (g_hash_table_iter_next (&iter,
+                                   (gpointer)&event_uid,
+                                   (gpointer)&event_data))
+    {
+      if (event_data->store == store)
+        g_hash_table_iter_remove (&iter);
+    }
   }
+
+  penge_events_pane_update (pane);
 }
 
 
@@ -671,7 +710,7 @@ penge_events_pane_init (PengeEventsPane *self)
   priv->uid_to_events = g_hash_table_new_full (g_str_hash,
                                                g_str_equal,
                                                g_free,
-                                               g_object_unref);
+                                               (GDestroyNotify)penge_event_data_free);
   priv->uid_to_actors = g_hash_table_new_full (g_str_hash,
                                                g_str_equal,
                                                g_free,
@@ -741,3 +780,19 @@ penge_events_pane_update_durations (PengeEventsPane *pane)
 
   g_list_free (views);
 }
+
+static PengeEventData *
+penge_event_data_new (void)
+{
+  return g_slice_new0 (PengeEventData);
+}
+
+static void
+penge_event_data_free (PengeEventData *data)
+{
+  g_object_unref (data->event);
+  g_object_unref (data->store);
+
+  g_slice_free (PengeEventData, data);
+}
+
