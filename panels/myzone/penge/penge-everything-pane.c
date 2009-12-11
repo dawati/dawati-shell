@@ -210,6 +210,20 @@ _compare_item_and_info (MojitoItem    *item,
   }
 }
 
+static void
+_people_tile_remove_clicked_cb (PengeInterestingTile *tile,
+                                gpointer              userdata)
+{
+  PengeEverythingPane *pane = (PengeEverythingPane *)userdata;
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  MojitoItem *item;
+
+  g_object_get (tile,
+                "item", &item,
+                NULL);
+  mojito_client_hide_item (priv->client, item);
+}
+
 static ClutterActor *
 _add_from_mojito_item (PengeEverythingPane *pane,
                        MojitoItem          *item)
@@ -232,7 +246,35 @@ _add_from_mojito_item (PengeEverythingPane *pane,
                                       NULL);
   }
 
+  g_signal_connect (actor,
+                    "remove-clicked",
+                    (GCallback)_people_tile_remove_clicked_cb,
+                    pane);
+
   return actor;
+}
+
+static void
+_recent_file_tile_remove_clicked_cb (PengeInterestingTile *tile,
+                                     gpointer              userdata)
+{
+  PengeEverythingPane *pane = (PengeEverythingPane *)userdata;
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  GtkRecentInfo *info;
+  GError *error = NULL;
+
+  g_object_get (tile,
+                "info", &info,
+                NULL);
+
+  if (!gtk_recent_manager_remove_item (priv->recent_manager,
+                                       gtk_recent_info_get_uri (info),
+                                       &error))
+  {
+    g_warning (G_STRLOC ": Unable to remove item: %s",
+               error->message);
+    g_clear_error (&error);
+  }
 }
 
 static ClutterActor *
@@ -250,6 +292,11 @@ _add_from_recent_file_info (PengeEverythingPane *pane,
                         NULL);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (pane), actor);
+
+  g_signal_connect (actor,
+                    "remove-clicked",
+                    (GCallback)_recent_file_tile_remove_clicked_cb,
+                    pane);
 
   return actor;
 }
