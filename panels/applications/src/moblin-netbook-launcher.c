@@ -187,6 +187,13 @@ container_get_n_visible_children (ClutterContainer *container)
 
 enum
 {
+  PROP_0,
+
+  PROP_OPEN_FIRST_EXPANDER
+};
+
+enum
+{
   LAUNCHER_ACTIVATED,
 
   LAST_SIGNAL
@@ -220,6 +227,9 @@ struct MnbLauncherPrivate_ {
   ClutterActor            *fav_label;
   ClutterActor            *fav_grid;
   ClutterActor            *apps_grid;
+
+  /* Data */
+  gboolean                 open_first_expander;
 
   /* While filtering. */
   gboolean                 is_filtering;
@@ -846,7 +856,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
         /* Remember and open first expander by default. */
-        if (priv->directory_iter == priv->directories)
+        if (priv->open_first_expander &&
+            priv->directory_iter == priv->directories)
         {
           nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
           priv->first_expander = NBTK_EXPANDER (expander);
@@ -1534,8 +1545,48 @@ _constructor (GType                  gtype,
 }
 
 static void
+_get_property (GObject    *gobject,
+               guint       prop_id,
+               GValue     *value,
+               GParamSpec *pspec)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (gobject);
+
+  switch (prop_id)
+    {
+      case PROP_OPEN_FIRST_EXPANDER:
+          g_value_set_boolean (value, priv->open_first_expander);
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+        break;
+    }
+}
+
+static void
+_set_property (GObject      *gobject,
+               guint         prop_id,
+               const GValue *value,
+               GParamSpec   *pspec)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (gobject);
+
+  switch (prop_id)
+    {
+      case PROP_OPEN_FIRST_EXPANDER:
+        /* Construct-only, no notification. */
+        priv->open_first_expander = g_value_get_boolean (value);
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+        break;
+    }
+}
+
+static void
 mnb_launcher_class_init (MnbLauncherClass *klass)
 {
+  GParamSpec *pspec;
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
@@ -1543,8 +1594,23 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
 
   object_class->constructor = _constructor;
   object_class->dispose = _dispose;
+  object_class->set_property = _set_property;
+  object_class->get_property = _get_property;
 
   actor_class->key_focus_in = _key_focus_in;
+
+  /* Properties */
+
+  pspec = g_param_spec_boolean ("open-first-expander",
+                                "Open first expander",
+                                "Whether to open the first expander by default",
+                                FALSE,
+                                G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_OPEN_FIRST_EXPANDER,
+                                   pspec);
+
+  /* Signals */
 
   _signals[LAUNCHER_ACTIVATED] =
     g_signal_new ("launcher-activated",
@@ -1603,7 +1669,8 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   g_hash_table_iter_init (&iter, priv->expanders);
   while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &expander))
   {
-    if (expander == priv->first_expander &&
+    if (priv->open_first_expander &&
+        expander == priv->first_expander &&
         !nbtk_expander_get_expanded (expander))
     {
       nbtk_expander_set_expanded (expander, TRUE);

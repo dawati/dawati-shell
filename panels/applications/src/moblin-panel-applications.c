@@ -113,17 +113,18 @@ panel_hide_end_cb (MplPanelClient *panel,
   mnb_launcher_clear_filter (launcher);
 }
 
-static gboolean _standalone = FALSE;
-
-static GOptionEntry _options[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone, "Do not embed into the mutter-moblin panel", NULL},
-  { NULL }
-};
-
 int
 main (int     argc,
       char  **argv)
 {
+  static gboolean _standalone = FALSE;
+  static gboolean _open_first = FALSE;
+  static GOptionEntry _options[] = {
+    { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone, "Do not embed into the mutter-moblin panel", NULL },
+    { "open-first", 'o', 0, G_OPTION_ARG_NONE, &_open_first, "Open the first expander by default", NULL },
+    { NULL }
+  };
+
   ClutterActor    *stage;
   ClutterActor    *launcher;
   GOptionContext  *context;
@@ -171,7 +172,9 @@ main (int     argc,
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
 
-      launcher = mnb_launcher_new ();
+      launcher = g_object_new (MNB_TYPE_LAUNCHER,
+                               "open-first-expander", _open_first,
+                               NULL);
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (standalone_launcher_activated_cb), NULL);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
