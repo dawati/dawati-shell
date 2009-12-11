@@ -177,7 +177,11 @@ mpl_panel_client_set_property (GObject      *object,
       priv->toolbar_service = g_value_get_boolean (value);
       break;
     case PROP_DELAYED_READY:
-      priv->delayed_ready = g_value_get_boolean (value);
+      if (g_main_loop_is_running (NULL))
+        g_critical ("The delayed-ready property has to be set before starting "
+                    "the main loop, but main loop is already running.");
+      else
+        priv->delayed_ready = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -515,7 +519,7 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                                      " be delayed until later.",
                                      FALSE,
                                      G_PARAM_READWRITE |
-                                     G_PARAM_CONSTRUCT_ONLY));
+                                     G_PARAM_CONSTRUCT));
 
   signals[UNLOAD] =
     g_signal_new ("unload",
@@ -1324,4 +1328,46 @@ mpl_panel_client_ready (MplPanelClient *panel)
   priv->ready_emitted = TRUE;
 
   g_signal_emit (panel, signals[READY], 0);
+}
+
+/**
+ * mpl_panel_client_set_delayed_ready
+ * @panel: a #MplPanelClient
+ * @delayed: boolean value for the delayed-ready property.
+ *
+ * Sets the value of the delayed-ready property. When this property is set to
+ * %TRUE the #MplPanelClient::ready signal will not be emitted until the panel
+ * application calls mpl_panel_client_ready().
+ *
+ * Note: The delayed-ready property can only be set before the main loop is
+ * started; calling this function once the main loop has been started will
+ * result in a critical warning.
+ *
+ * Return value: %TRUE if the call was successful.
+ */
+gboolean
+mpl_panel_client_set_delayed_ready (MplPanelClient *panel, gboolean delayed)
+{
+  MplPanelClientPrivate *priv;
+  gboolean               not_delayed;
+
+  g_return_val_if_fail (MPL_IS_PANEL_CLIENT (panel), FALSE);
+
+  priv = panel->priv;
+
+  not_delayed = !priv->delayed_ready;
+
+  if (not_delayed != delayed)
+    return TRUE;
+
+  if (g_main_loop_is_running (NULL))
+    {
+      g_critical ("The delayed-ready property has to be set before starting "
+                  "the main loop, but main loop is already running.");
+      return FALSE;
+    }
+
+  priv->delayed_ready = delayed;
+
+  return TRUE;
 }

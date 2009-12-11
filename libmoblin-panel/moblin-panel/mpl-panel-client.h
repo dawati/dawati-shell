@@ -128,6 +128,8 @@ Window mpl_panel_client_get_xid (MplPanelClient *panel);
 
 void mpl_panel_client_ready (MplPanelClient *panel);
 
+gboolean mpl_panel_set_delayed_ready (MplPanelClient *panel, gboolean delayed);
+
 G_END_DECLS
 
 #endif /* _MPL_PANEL_CLIENT */
