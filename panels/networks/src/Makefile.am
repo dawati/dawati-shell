@@ -23,6 +23,7 @@ service_DATA =     org.moblin.UX.Shell.Panels.network.service
 
 EXTRA_DIST = $(service_in_files)
 
+CLEANFILES = $(service_DATA)
 DISTCLEANFILES = $(service_DATA)
 
 %.service: %.service.in
