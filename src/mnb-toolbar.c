@@ -1364,12 +1364,14 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
   if (MNB_IS_PANEL (panel))
     {
+      MnbToolbarPrivate *priv   = toolbar->priv;
       NbtkWidget        *button;
       const gchar       *name;
       const gchar       *tooltip;
       const gchar       *style_id;
       const gchar       *stylesheet;
       MnbToolbarPanel   *tp;
+      gint               index;
 
       name = mnb_panel_get_name (panel);
 
@@ -1383,6 +1385,8 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
       tooltip    = mnb_panel_get_tooltip (panel);
       stylesheet = mnb_panel_get_stylesheet (panel);
       style_id   = mnb_panel_get_button_style (panel);
+
+      index = mnb_toolbar_get_panel_index (toolbar, tp);
 
       if (button)
         {
@@ -1420,6 +1424,19 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
           g_free (button_style);
         }
 
+      if (tp->pinged)
+        {
+          tp->pinged = FALSE;
+          mnb_panel_show (panel);
+        }
+      else if (index == MYZONE)
+        {
+          if (priv->shown && !priv->shown_myzone)
+            {
+              mnb_panel_show (panel);
+              priv->shown_myzone = TRUE;
+            }
+        }
     }
 }
 
@@ -1611,7 +1628,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
   gint               screen_width, screen_height;
   const gchar       *name;
   MnbToolbarPanel   *tp;
-  gint               index;
 
   if (MNB_IS_PANEL (panel))
     {
@@ -1651,9 +1667,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  index = mnb_toolbar_get_panel_index (toolbar, tp);
-
-
   g_signal_connect (panel, "show-completed",
                     G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
                     toolbar);
@@ -1691,20 +1704,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
   else
     g_signal_connect (panel, "ready",
                       G_CALLBACK (mnb_toolbar_panel_ready_cb), toolbar);
-
-  if (tp->pinged)
-    {
-      tp->pinged = FALSE;
-      mnb_panel_show (panel);
-    }
-  else if (index == MYZONE)
-    {
-      if (priv->shown && !priv->shown_myzone)
-        {
-          mnb_panel_show (panel);
-          priv->shown_myzone = TRUE;
-        }
-    }
 }
 
 static void
