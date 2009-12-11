@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 09:22+0000\n"
-"PO-Revision-Date: 2009-08-16 17:21+0200\n"
+"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"PO-Revision-Date: 2009-12-11 19:55+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -17,106 +17,35 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Italian\n"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
-msgid "Less than a minute ago"
-msgstr "Meno di un minuto fa"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
-msgid "A few minutes ago"
-msgstr "Alcuni minuti fa"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
-msgid "A couple of hours ago"
-msgstr "Un paio d'ore fa"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
-msgid "Earlier today"
-msgstr "Oggi"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
-msgid "Yesterday"
-msgstr "Ieri"
-
-# (ndt) giorno della settimana
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
-#, c-format
-msgid "On %A"
-msgstr "%A"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
-msgid "Unknown"
-msgstr "Sconosciuto"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
-msgid "Last week"
-msgstr "La scorsa settimana"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
-msgid "A couple of weeks ago"
-msgstr "Un paio di settimane fa"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
-msgid "This month"
-msgstr "Questo mese"
-
-#. Now Jan., last used in Dec.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
-msgid "Last month"
-msgstr "Lo scorso mese"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
-msgid "This year"
-msgstr "Quest'anno"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
-msgid "Last year"
-msgstr "Lo scorso anno"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
-msgid "Ages ago"
-msgstr "Anni fa"
-
-#: ../src/moblin-netbook.c:305 ../src/mnb-toolbar.c:1339
+#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "zone"
 
-#: ../src/moblin-netbook.c:412
+#: ../src/moblin-netbook.c:621
 msgid "Moblin Netbook Effects"
 msgstr "Effetti Moblin netbook"
 
-#: ../src/moblin-netbook.c:416
+#: ../src/moblin-netbook.c:625
 msgid "Effects for Moblin Netbooks"
 msgstr "Effetti per i netbook Moblin"
 
-#: ../src/mnb-notification.c:266
-msgid "Dismiss"
-msgstr "Ignora"
+#: ../src/moblin-netbook.c:2529
+msgid "Activate"
+msgstr "Attiva"
 
-#: ../src/mnb-notification-cluster.c:657
-msgid "Dismiss All"
-msgstr "Ignora tutto"
+#: ../src/moblin-netbook.c:2543
+msgid "Unknown window"
+msgstr "Finestra sconosciuta"
 
-#: ../src/mnb-switcher.c:1707
-msgid "No Zones yet"
-msgstr "Zone non definite"
-
-#: ../src/mnb-switcher.c:1729
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Le applicazioni in uso vengono mostrate qui. È possibile passare da "
-"un'applicazione all'altra e organizzarle come meglio si crede."
-
-#: ../src/mnb-switcher.c:1952
-msgid "No applications on this zone"
-msgstr "Nessuna applicazione in questa zona"
+#: ../src/moblin-netbook.c:2545
+msgid "Is asking for your attention."
+msgstr "Richiede l'attenzione."
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:666
+#: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
 msgstr "%H.%M"
 
@@ -124,29 +53,88 @@ msgstr "%H.%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:676
+#: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
-#: ../src/mnb-toolbar.c:1576
-msgid "power & brightness"
-msgstr "alimentazione e luminosità"
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Ignora"
 
-#: ../src/mnb-toolbar.c:1579
-msgid "volume"
-msgstr "volume"
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Ignora tutto"
 
-#: ../src/mnb-toolbar.c:1582
-msgid "bluetooth"
-msgstr "bluetooth"
+#: ../src/switcher/mnb-switcher.c:307
+msgid "No Zones yet"
+msgstr "Zone non definite"
 
-#: ../src/mnb-toolbar.c:1585
-msgid "networks"
-msgstr "reti"
+#: ../src/switcher/mnb-switcher.c:327
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Le applicazioni in uso vengono mostrate qui. È possibile passare da "
+"un'applicazione all'altra e organizzarle come meglio si crede."
 
-#: ../src/mnb-toolbar.c:1588
-msgid "test"
-msgstr "test"
+#: ../src/switcher/mnb-switcher-zone-apps.c:463
+msgid "No applications on this zone"
+msgstr "Nessuna applicazione in questa zona"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Meno di un minuto fa"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Alcuni minuti fa"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Un paio d'ore fa"
+
+#~ msgid "Earlier today"
+#~ msgstr "Oggi"
+
+#~ msgid "Yesterday"
+#~ msgstr "Ieri"
+
+# (ndt) giorno della settimana
+#~ msgid "On %A"
+#~ msgstr "%A"
+
+#~ msgid "Last week"
+#~ msgstr "La scorsa settimana"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Un paio di settimane fa"
+
+#~ msgid "This month"
+#~ msgstr "Questo mese"
+
+#~ msgid "Last month"
+#~ msgstr "Lo scorso mese"
+
+#~ msgid "This year"
+#~ msgstr "Quest'anno"
+
+#~ msgid "Last year"
+#~ msgstr "Lo scorso anno"
+
+#~ msgid "Ages ago"
+#~ msgstr "Anni fa"
+
+#~ msgid "power & brightness"
+#~ msgstr "alimentazione e luminosità"
+
+#~ msgid "volume"
+#~ msgstr "volume"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "reti"
+
+#~ msgid "test"
+#~ msgstr "test"
 
 # (ndt) leggermente libera...
 #~ msgid ""
