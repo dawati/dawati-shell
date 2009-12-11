@@ -34,8 +34,9 @@ G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, MX_TYPE_TABLE)
 typedef struct _PengeEventsPanePrivate PengeEventsPanePrivate;
 
 struct _PengeEventsPanePrivate {
-  JanaStore *store;
-  JanaStoreView *view;
+  GHashTable *stores;
+  GHashTable *views;
+
   JanaDuration *duration;
   JanaTime *time;
 
@@ -45,6 +46,8 @@ struct _PengeEventsPanePrivate {
   ClutterActor *no_events_bin;
 
   gint count;
+
+  ESourceList *source_list;
 };
 
 enum
@@ -59,7 +62,9 @@ enum
 #define APPOINTMENT_ENTRY_TEXT _("Create an appointment")
 #define APPOINTMENT_ENTRY_BUTTON _("Add")
 
-static void penge_events_pane_update_duration (PengeEventsPane *pane);
+static void penge_events_pane_update_duration (PengeEventsPane *pane,
+                                               JanaStoreView   *view);
+static void penge_events_pane_update_durations (PengeEventsPane *pane);
 static void penge_events_pane_update (PengeEventsPane *pane);
 
 static void
@@ -89,7 +94,7 @@ penge_events_pane_set_property (GObject *object, guint property_id,
         g_object_unref (priv->time);
 
       priv->time = g_value_dup_object (value);
-      penge_events_pane_update_duration ((PengeEventsPane *)object);
+      penge_events_pane_update_durations ((PengeEventsPane *)object);
       penge_events_pane_update ((PengeEventsPane *)object);
       break;
   default:
@@ -114,16 +119,16 @@ penge_events_pane_dispose (GObject *object)
     priv->uid_to_actors = NULL;
   }
 
-  if (priv->store)
+  if (priv->stores)
   {
-    g_object_unref (priv->store);
-    priv->store = NULL;
+    g_hash_table_unref (priv->stores);
+    priv->stores = NULL;
   }
 
-  if (priv->view)
+  if (priv->views)
   {
-    g_object_unref (priv->view);
-    priv->view = NULL;
+    g_hash_table_unref (priv->views);
+    priv->views = NULL;
   }
 
   G_OBJECT_CLASS (penge_events_pane_parent_class)->dispose (object);
@@ -379,13 +384,12 @@ penge_events_pane_update (PengeEventsPane *pane)
                                    NULL);
       g_object_set (actor, "time", priv->time, NULL);
     } else {
+
+      /* TODO: Put store in here */
       actor = g_object_new (PENGE_TYPE_EVENT_TILE,
-                            "event",
-                            event,
-                            "time",
-                            priv->time,
-                            "store",
-                            priv->store,
+                            "event", event,
+                            "time", priv->time,
+                            "store", NULL,
                             NULL);
 
       clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
@@ -546,26 +550,110 @@ _store_opened_cb (JanaStore *store,
 {
   PengeEventsPane *pane = (PengeEventsPane *)userdata;
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
+  JanaStoreView *view;
 
+  view = jana_store_get_view (store);
 
-  priv->view = jana_store_get_view (priv->store);
+  g_hash_table_insert (priv->views,
+                       store,
+                       view);
 
   /* Set it up to only show events from nowish until the end of the day. */
-  penge_events_pane_update_duration (pane);
+  penge_events_pane_update_duration (pane, view);
 
-  g_signal_connect (priv->view,
+  g_signal_connect (view,
                     "added",
                     (GCallback)_store_view_added_cb,
                     pane);
-  g_signal_connect (priv->view,
+  g_signal_connect (view,
                     "modified",
                     (GCallback)_store_view_modified_cb,
                     pane);
-  g_signal_connect (priv->view,
+  g_signal_connect (view,
                     "removed",
                     (GCallback)_store_view_removed_cb,
                     pane);
-  jana_store_view_start (priv->view);
+  jana_store_view_start (view);
+}
+
+#define CALENDAR_GCONF_PREFIX  "/apps/evolution/calendar"
+#define CALENDAR_GCONF_SOURCES CALENDAR_GCONF_PREFIX "/sources"
+
+static void
+penge_events_pane_setup_stores (PengeEventsPane *pane)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
+  GSList *groups, *sl;
+  GList *old_source_uids;
+  GSList *sources = NULL;
+  GList *l;
+
+  old_source_uids = g_hash_table_get_keys (priv->stores);
+
+  groups = e_source_list_peek_groups (priv->source_list);
+
+  for (sl = groups; sl; sl = sl->next)
+  {
+    ESourceGroup *group = (ESourceGroup *)sl->data;
+    GSList *group_sources;
+
+    group_sources = e_source_group_peek_sources (group);
+    sources = g_slist_concat (sources, g_slist_copy (group_sources));
+  }
+
+  for (sl = sources; sl; sl = sl->next)
+  {
+    ESource *source = (ESource *)sl->data;
+    JanaStore *store;
+    const gchar *uid;
+
+    uid = e_source_peek_uid (source);
+    store = g_hash_table_lookup (priv->stores, uid);
+
+    if (!store)
+    {
+      gchar *uri;
+
+      uri = e_source_get_uri (source);
+      store = jana_ecal_store_new_from_uri (uri,
+                                            JANA_COMPONENT_EVENT);
+      g_hash_table_insert (priv->stores,
+                           g_strdup (uid),
+                           store);
+
+      g_signal_connect (store,
+                        "opened",
+                        (GCallback)_store_opened_cb,
+                        pane);
+      jana_store_open (store);
+      g_free (uri);
+    }
+
+    /* Remove from the list so that we can kill old ones */
+    old_source_uids = g_list_remove (old_source_uids, uid);
+  }
+
+  g_slist_free (sources);
+
+  for (l = old_source_uids; l; l = l->next)
+  {
+    JanaStore *store;
+    const gchar *uid = (const gchar *)l->data;
+
+    store = g_hash_table_lookup (priv->stores, uid);
+    g_hash_table_remove (priv->views, store);
+
+    /* TODO: Search through the list of events and remove those with a store
+     * that matches */
+  }
+}
+
+
+static void
+_source_list_changed_cb (ESourceList *source_list,
+                         gpointer     userdata)
+{
+  penge_events_pane_setup_stores ((PengeEventsPane *)userdata);
 }
 
 static void
@@ -583,20 +671,29 @@ penge_events_pane_init (PengeEventsPane *self)
                                                g_free,
                                                g_object_unref);
 
-  /* Create a store for events then connect a signal to be fired when the
-   * store is open. We will create a view and then listen on that view for
-   * changes in the contents of the view
-   */
-  priv->store = jana_ecal_store_new (JANA_COMPONENT_EVENT);
-  g_signal_connect (priv->store,
-                    "opened",
-                    (GCallback)_store_opened_cb,
+  priv->stores = g_hash_table_new_full (g_str_hash,
+                                        g_str_equal,
+                                        g_free,
+                                        g_object_unref);
+  priv->views = g_hash_table_new_full (NULL,
+                                       NULL,
+                                       NULL,
+                                       g_object_unref);
+
+
+  priv->source_list = e_source_list_new_for_gconf_default (CALENDAR_GCONF_SOURCES);
+
+  g_signal_connect (priv->source_list,
+                    "changed",
+                    (GCallback)_source_list_changed_cb,
                     self);
-  jana_store_open (priv->store);
+
+  penge_events_pane_setup_stores (self);
 }
 
 static void
-penge_events_pane_update_duration (PengeEventsPane *pane)
+penge_events_pane_update_duration (PengeEventsPane *pane,
+                                   JanaStoreView   *view)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
   JanaTime *start_of_week;
@@ -618,6 +715,23 @@ penge_events_pane_update_duration (PengeEventsPane *pane)
 
   priv->duration = jana_duration_new (start_of_week, end_of_week);
 
-  if (priv->view)
-    jana_store_view_set_range (priv->view, start_of_week, end_of_week);
+  jana_store_view_set_range (view, start_of_week, end_of_week);
+}
+
+static void
+penge_events_pane_update_durations (PengeEventsPane *pane)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
+  GList *views, *l;
+
+  views = g_hash_table_get_values (priv->views);
+
+  for (l = views; l; l = l->next)
+  {
+    JanaStoreView *view = (JanaStoreView *)l->data;
+
+    penge_events_pane_update_duration (pane, view);
+  }
+
+  g_list_free (views);
 }
