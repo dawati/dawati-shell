@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-10 20:49+0000\n"
-"PO-Revision-Date: 2009-12-12 11:09+0100\n"
+"PO-Revision-Date: 2009-12-12 11:28+0100\n"
 "Last-Translator: Boštjan Pišler <designandinvent@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -240,7 +240,7 @@ msgstr "Napaka: Neveljavno omrežje storitev"
 
 #: ../carrick/carrick-service-item.c:52
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Napaka: Ni mogoče dostopati do Urejevalnika povezav"
+msgstr "Napaka: Ni mogoče dostopati do Upravitelja povezav"
 
 #: ../carrick/carrick-service-item.c:53
 msgid "ERROR: No 3G Hardware detected"
