@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-10 20:49+0000\n"
-"PO-Revision-Date: 2009-11-19 14:17+0530\n"
+"PO-Revision-Date: 2009-12-12 11:22+0530\n"
 "Last-Translator: sankarshan mukhopadhyay <sankarshan@fedoraproject.org>\n"
 "Language-Team: anubad@lists.ankur.org.in\n"
 "Language: en\n"
@@ -116,7 +116,7 @@ msgstr ""
 
 #: ../carrick/carrick-notification-manager.c:165
 msgid "Network lost"
-msgstr ""
+msgstr "নেটওয়ার্ক খুঁজে পাওয়া যায়নি"
 
 #: ../carrick/carrick-notification-manager.c:173
 #, c-format
@@ -135,7 +135,7 @@ msgstr ""
 
 #: ../carrick/carrick-notification-manager.c:200
 msgid "Network changed"
-msgstr ""
+msgstr "নেটওয়ার্ক পরিবর্তন হয়েছে"
 
 #: ../carrick/carrick-notification-manager.c:219
 #, c-format
@@ -178,7 +178,7 @@ msgstr ""
 
 #: ../carrick/carrick-pane.c:633
 msgid "New connection settings"
-msgstr ""
+msgstr "নতুন সংযোগের বৈশিষ্ট্য"
 
 #: ../carrick/carrick-pane.c:669
 msgid ""
@@ -189,11 +189,11 @@ msgstr ""
 
 #: ../carrick/carrick-pane.c:679
 msgid "Network name"
-msgstr ""
+msgstr "নেটওয়ার্কের নাম"
 
 #: ../carrick/carrick-pane.c:691
 msgid "Network security"
-msgstr ""
+msgstr "নেটওয়ার্কের সুরক্ষা বৈশিষ্ট্য"
 
 #: ../carrick/carrick-pane.c:701
 msgid "None"
@@ -201,24 +201,24 @@ msgstr ""
 
 #: ../carrick/carrick-pane.c:715
 msgid "Password"
-msgstr ""
+msgstr "পাসওয়ার্ড"
 
 #: ../carrick/carrick-pane.c:730 ../carrick/carrick-service-item.c:1284
 msgid "Show password"
-msgstr ""
+msgstr "পাসওয়ার্ড প্রদর্শন করা হবে"
 
 #: ../carrick/carrick-pane.c:1404
 msgid "Networks"
-msgstr ""
+msgstr "নেটওয়ার্ক সমূহ"
 
 #. New connection button
 #: ../carrick/carrick-pane.c:1428
 msgid "Add new connection"
-msgstr ""
+msgstr "নতুন সংযোগ যোগ করুন"
 
 #: ../carrick/carrick-pane.c:1501 ../carrick/carrick-service-item.c:249
 msgid "Wired"
-msgstr ""
+msgstr "তারযুক্ত"
 
 #: ../carrick/carrick-pane.c:1639
 msgid "Offline mode"
@@ -275,7 +275,7 @@ msgstr ""
 
 #: ../carrick/carrick-service-item.c:293
 msgid "Configuring"
-msgstr ""
+msgstr "কনফিগার করা হচ্ছে"
 
 #: ../carrick/carrick-service-item.c:302
 msgid "Associating"
@@ -284,11 +284,11 @@ msgstr ""
 #: ../carrick/carrick-service-item.c:311 ../carrick/carrick-service-item.c:336
 #: ../carrick/carrick-service-item.c:1273
 msgid "Connect"
-msgstr ""
+msgstr "সংযোগ স্থাপন করুন"
 
 #: ../carrick/carrick-service-item.c:339
 msgid "Connection failed"
-msgstr ""
+msgstr "সংযোগ স্থাপন করা যায়নি"
 
 #: ../carrick/carrick-service-item.c:342
 msgid "Sorry, the connection failed. You could try again."
@@ -297,11 +297,11 @@ msgstr ""
 #: ../carrick/carrick-service-item.c:348 ../carrick/carrick-service-item.c:351
 #, c-format
 msgid "Disconnecting"
-msgstr ""
+msgstr "সংযোগ বিচ্ছিন্ন করা হয়েছে"
 
 #: ../carrick/carrick-service-item.c:409
 msgid "Type password here"
-msgstr ""
+msgstr "এখানে পাসওয়ার্ড টাইপ করুন"
 
 #: ../carrick/carrick-service-item.c:472
 msgid "Really remove?"
@@ -360,47 +360,47 @@ msgstr ""
 #. It should look like the ones below network name in the UI
 #: ../carrick/carrick-service-item.c:1228
 msgid "WPA2 encrypted"
-msgstr ""
+msgstr "WPA2 encrypted"
 
 #: ../src/carrick.c:64
 msgid "networks - not connected"
-msgstr ""
+msgstr "নেটওয়ার্ক - সংযুক্ত নয়"
 
 #: ../src/carrick.c:70
 msgid "networks - connecting"
-msgstr ""
+msgstr "নেটওয়ার্ক - যোগাযোগ করা হচ্ছে"
 
 #: ../src/carrick.c:76
 msgid "networks - wired"
-msgstr ""
+msgstr "নেটওয়ার্ক - তারযুক্ত"
 
 #: ../src/carrick.c:78
 #, c-format
 msgid "networks - %s - wifi"
-msgstr ""
+msgstr "নেটওয়ার্ক - %s - wifi"
 
 #: ../src/carrick.c:81
 #, c-format
 msgid "networks - %s - wimax"
-msgstr ""
+msgstr "নেটওয়ার্ক - %s - wimax"
 
 #: ../src/carrick.c:84
 #, c-format
 msgid "networks - %s - 3G"
-msgstr ""
+msgstr "নেটওয়ার্ক - %s - 3G"
 
 #: ../src/carrick.c:87
 #, c-format
 msgid "networks - %s - bluetooth"
-msgstr ""
+msgstr "নেটওয়ার্ক - %s - bluetooth"
 
 #: ../src/carrick.c:90 ../src/carrick.c:102
 msgid "networks"
-msgstr ""
+msgstr "নেটওয়ার্ক"
 
 #: ../src/carrick.c:97
 msgid "networks - error"
-msgstr ""
+msgstr "নেটওয়ার্ক - ত্রুটি"
 
 #: ../src/carrick.c:129
 msgid "Run in standalone mode"
@@ -408,62 +408,62 @@ msgstr ""
 
 #: ../src/carrick.c:140
 msgid "Carrick connectivity applet"
-msgstr ""
+msgstr "Carrick সংযোগের অ্যাপ্লেট"
 
 #: ../src/carrick.c:141
 msgid "- Moblin connectivity applet"
-msgstr ""
+msgstr "- Moblin সংযোগের অ্যাপ্লেট"
 
 #: ../src/carrick.c:164
 msgid "network"
-msgstr ""
+msgstr "নেটওয়ার্ক"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
 #: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
-msgstr ""
+msgstr "সেলুলার তথ্য সংযোগ উইজার্ড"
 
 #: ../callouts/3g/ggg-country-dialog.c:93
 msgid "Select Country"
-msgstr ""
+msgstr "দেশ নির্বাচন করুন"
 
 #: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
-msgstr ""
+msgstr "ব্যবহারকারীদ্বারা কনফিগারেশন"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr ""
+msgstr "প্ল্যানের নাম (প্রয়োজনীয়):"
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
-msgstr ""
+msgstr "ব্যবহারকারীর নাম:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:99
 msgid "Password:"
-msgstr ""
+msgstr "পাসওয়ার্ড:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:103
 msgid "Gateway:"
-msgstr ""
+msgstr "গেটওয়ে:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
-msgstr ""
+msgstr "প্রাইমারি DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
-msgstr ""
+msgstr "সেকেন্ডারি DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
-msgstr ""
+msgstr "টারযশিয়ারি DNS:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
-msgstr ""
+msgstr "3G প্ল্যান নির্বাচন করুন"
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
@@ -472,8 +472,8 @@ msgstr ""
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
 msgid "%s (Roaming)"
-msgstr ""
+msgstr "%s (রোমিং)"
 
 #: ../callouts/3g/ggg-service-dialog.c:125
 msgid "Select 3G Service"
-msgstr ""
+msgstr "3G পরিসেবা নির্বাচন করুন"
