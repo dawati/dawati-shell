@@ -1,0 +1,471 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-10 20:49+0000\n"
+"PO-Revision-Date: 2009-12-12 11:01+0100\n"
+"Last-Translator: Boštjan Pišler <designandinvent@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#.
+#. * Translator note: The disabled technologies available to be turned on is put together at
+#. * runtime.
+#. * The conjunction 'or' will be at the end of a choice of disabled technologies,
+#. * for example 'WiFi, WiMAX or 3G.
+#.
+#: ../carrick/carrick-list.c:859
+msgid " or "
+msgstr " ali "
+
+#.
+#. * Translator note: the comma ',' will be used to join the different disabled technologies
+#. * as in the above example; 'WiFi, WiMAX or 3G'
+#.
+#: ../carrick/carrick-list.c:864
+msgid ", "
+msgstr ", "
+
+#: ../carrick/carrick-list.c:865
+#: ../carrick/carrick-util.c:34
+msgid "wired"
+msgstr "žična"
+
+#: ../carrick/carrick-list.c:866
+#: ../carrick/carrick-pane.c:1469
+#: ../carrick/carrick-util.c:32
+msgid "WiFi"
+msgstr "WiFi"
+
+#: ../carrick/carrick-list.c:867
+#: ../carrick/carrick-pane.c:1563
+#: ../carrick/carrick-util.c:38
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-list.c:868
+#: ../carrick/carrick-pane.c:1532
+#: ../carrick/carrick-util.c:36
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-list.c:869
+#: ../carrick/carrick-pane.c:1595
+#: ../carrick/carrick-util.c:40
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#.
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#.
+#: ../carrick/carrick-list.c:882
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "Ne najdem nobenih omrežij. Upravitelj povezav ni prižgan, poizkusite ponovno zagnati računalnik."
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-list.c:892
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Ne najdem nobenih omrežij. Poizkusite onemogočiti Način brez povezav"
+
+#: ../carrick/carrick-list.c:1029
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr "Ne najdem nobenih omrežij. Poizkusite omogočiti %s."
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-list.c:1043
+msgid "Sorry, we can't find any networks"
+msgstr "Ne najdem nobenih omrežij."
+
+#: ../carrick/carrick-notification-manager.c:104
+msgid "Network connected"
+msgstr "Povezan z omrežjem"
+
+#: ../carrick/carrick-notification-manager.c:112
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "Uspešno ste povezani z žičnim omrežjem"
+
+#: ../carrick/carrick-notification-manager.c:142
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "Uspešno ste povezani z %s, omrežje %s"
+
+#: ../carrick/carrick-notification-manager.c:148
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "Uspešno ste povezani na %s omrežje"
+
+#: ../carrick/carrick-notification-manager.c:165
+msgid "Network lost"
+msgstr "Seznam omrežij"
+
+#: ../carrick/carrick-notification-manager.c:173
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "Vaša žična povezava je bila prekinjena"
+
+#: ../carrick/carrick-notification-manager.c:177
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "Vaša %s povezava s %s je bila prekinjena"
+
+#: ../carrick/carrick-notification-manager.c:183
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "Vaša %s povezava je bila prekinjena"
+
+#: ../carrick/carrick-notification-manager.c:200
+msgid "Network changed"
+msgstr "Omrežje spremenjeno"
+
+#: ../carrick/carrick-notification-manager.c:219
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Vaša povezava z %s je bila prekinjena, sedaj ste povezani na žično omrežje"
+
+#: ../carrick/carrick-notification-manager.c:226
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "Vaša povezava z %s je bila prekinjena, sedaj ste povezani z %s, ki je %s omrežje"
+
+#: ../carrick/carrick-notification-manager.c:234
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Vaša povezava z %s je bila prekinjena, sedaj ste povezani na %s omrežje"
+
+#: ../carrick/carrick-notification-manager.c:244
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Vaša %s povezava je bila prekinjena, sedaj ste povezani na žično omrežje"
+
+#: ../carrick/carrick-notification-manager.c:251
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "Vaša %s povezava je bila prekinjena, sedaj ste povezani z %s, ki je %s omrežje"
+
+#: ../carrick/carrick-notification-manager.c:260
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Vaša %s povezava je bila prekinjena, sedaj ste povezani na %s omrežje"
+
+#: ../carrick/carrick-pane.c:633
+msgid "New connection settings"
+msgstr "Nastavitve nove povezave"
+
+#: ../carrick/carrick-pane.c:669
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+"Vpišite ime povezave na katero se želite\n"
+"povezati in kjer je potrebno še geslo in tip\n"
+"varovanja."
+
+#: ../carrick/carrick-pane.c:679
+msgid "Network name"
+msgstr "Ime omrežja"
+
+#: ../carrick/carrick-pane.c:691
+msgid "Network security"
+msgstr "Varovanje omrežja"
+
+#: ../carrick/carrick-pane.c:701
+msgid "None"
+msgstr "Brez"
+
+#: ../carrick/carrick-pane.c:715
+msgid "Password"
+msgstr "Geslo"
+
+#: ../carrick/carrick-pane.c:730
+#: ../carrick/carrick-service-item.c:1284
+msgid "Show password"
+msgstr "Pokaži geslo"
+
+#: ../carrick/carrick-pane.c:1404
+msgid "Networks"
+msgstr "Omrežja"
+
+#. New connection button
+#: ../carrick/carrick-pane.c:1428
+msgid "Add new connection"
+msgstr "Dodaj povezavo"
+
+#: ../carrick/carrick-pane.c:1501
+#: ../carrick/carrick-service-item.c:249
+msgid "Wired"
+msgstr "Žična"
+
+#: ../carrick/carrick-pane.c:1639
+msgid "Offline mode"
+msgstr "Način brez povezav"
+
+#: ../carrick/carrick-pane.c:1664
+msgid "This will disable all your connections"
+msgstr "To bo onemogočilo vse povezave"
+
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#.
+#: ../carrick/carrick-service-item.c:49
+msgid "Critical Error: Invalid country code"
+msgstr "Napaka: Neveljavna koda države"
+
+#: ../carrick/carrick-service-item.c:50
+msgid "Missing required APN (service plan name)"
+msgstr "Manjka obvezen APN (ime paketa storitev)"
+
+#: ../carrick/carrick-service-item.c:51
+msgid "Internal Error: Invalid network service"
+msgstr "Napaka: Neveljavno omrežje storitev"
+
+#: ../carrick/carrick-service-item.c:52
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr "Napaka: Ni mogoče dostopati do Urejevalnika povezav"
+
+#: ../carrick/carrick-service-item.c:53
+msgid "ERROR: No 3G Hardware detected"
+msgstr "Napaka: Ni strojne opreme za 3G"
+
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#.
+#: ../carrick/carrick-service-item.c:185
+#, c-format
+msgid "%s encrypted"
+msgstr "%s kodiranje"
+
+#: ../carrick/carrick-service-item.c:280
+msgid "Disconnect"
+msgstr "Prekini"
+
+#: ../carrick/carrick-service-item.c:283
+msgid "Connected"
+msgstr "Poveži"
+
+#: ../carrick/carrick-service-item.c:290
+#: ../carrick/carrick-service-item.c:299
+#, c-format
+msgid "Cancel"
+msgstr "Prekliči"
+
+#: ../carrick/carrick-service-item.c:293
+msgid "Configuring"
+msgstr "Nastavljam"
+
+#: ../carrick/carrick-service-item.c:302
+msgid "Associating"
+msgstr "Seznanjam"
+
+#: ../carrick/carrick-service-item.c:311
+#: ../carrick/carrick-service-item.c:336
+#: ../carrick/carrick-service-item.c:1273
+msgid "Connect"
+msgstr "Poveži"
+
+#: ../carrick/carrick-service-item.c:339
+msgid "Connection failed"
+msgstr "Povezava ni uspela"
+
+#: ../carrick/carrick-service-item.c:342
+msgid "Sorry, the connection failed. You could try again."
+msgstr "Povezava ni uspela, poizkusite lahko ponovno"
+
+#: ../carrick/carrick-service-item.c:348
+#: ../carrick/carrick-service-item.c:351
+#, c-format
+msgid "Disconnecting"
+msgstr "Prekinjam"
+
+#: ../carrick/carrick-service-item.c:409
+msgid "Type password here"
+msgstr "Tukaj vnesite gelso"
+
+#: ../carrick/carrick-service-item.c:472
+msgid "Really remove?"
+msgstr "Res odstranim?"
+
+#: ../carrick/carrick-service-item.c:490
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr ""
+"Res želite odstraniti %s %s omrežje? To bo zbrisalo\n"
+"geslo in onemogočilo avtomatično povezavo z %s."
+
+#: ../carrick/carrick-service-item.c:667
+#, c-format
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
+msgstr "Napačna dolžina gesla, za WEP povezavo mora biti 10 ali pa 26 znakov, vi ste jih vnesli %i."
+
+#: ../carrick/carrick-service-item.c:678
+#, c-format
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Napačna dolžina gesla, za WPA povezavo mora biti vsaj 8 znakov, vi ste jih vnesli %i"
+
+#: ../carrick/carrick-service-item.c:682
+#, c-format
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "Napačna dolžina gesla, za WPA povezavo je dovoljenih največ 62 znakov, vi ste jih vnesli %i"
+
+#: ../carrick/carrick-service-item.c:691
+#, c-format
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Napačna dolžina gesla, za WPA2 povezavo mora biti vsaj 8 znakov, vi ste jih vnesli %i"
+
+#: ../carrick/carrick-service-item.c:695
+#, c-format
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "Napačna dolžina gesla, za WPA2 povezavo je dovoljeno največ 62 znakov, vi ste jih vnesli %i"
+
+#: ../carrick/carrick-service-item.c:1209
+msgid "Scanning"
+msgstr "Iščem"
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:1228
+msgid "WPA2 encrypted"
+msgstr "WPA2 zakodirano"
+
+#: ../src/carrick.c:64
+msgid "networks - not connected"
+msgstr "omrežja - brez povezave"
+
+#: ../src/carrick.c:70
+msgid "networks - connecting"
+msgstr "omrežja - povezujem"
+
+#: ../src/carrick.c:76
+msgid "networks - wired"
+msgstr "omrežja - žično"
+
+#: ../src/carrick.c:78
+#, c-format
+msgid "networks - %s - wifi"
+msgstr "omrežja - %s - wifi"
+
+#: ../src/carrick.c:81
+#, c-format
+msgid "networks - %s - wimax"
+msgstr "omrežja - %s - wimax"
+
+#: ../src/carrick.c:84
+#, c-format
+msgid "networks - %s - 3G"
+msgstr "omrežja - %s - 3G"
+
+#: ../src/carrick.c:87
+#, c-format
+msgid "networks - %s - bluetooth"
+msgstr "omrežja - %s - bluetooth"
+
+#: ../src/carrick.c:90
+#: ../src/carrick.c:102
+msgid "networks"
+msgstr "omrežja"
+
+#: ../src/carrick.c:97
+msgid "networks - error"
+msgstr "omrežja - napaka"
+
+#: ../src/carrick.c:129
+msgid "Run in standalone mode"
+msgstr "Poženi v samostojnem načinu"
+
+#: ../src/carrick.c:140
+msgid "Carrick connectivity applet"
+msgstr "Carrick program za povezave"
+
+#: ../src/carrick.c:141
+msgid "- Moblin connectivity applet"
+msgstr "- Moblin program za povezave"
+
+#: ../src/carrick.c:164
+msgid "network"
+msgstr "omrežje"
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr "Čarovnik za mobilno podatkovno povezavo"
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "Izberite državo"
+
+#: ../callouts/3g/ggg-manual-dialog.c:89
+msgid "Manual Configuration"
+msgstr "Ročna nastavitev"
+
+#: ../callouts/3g/ggg-manual-dialog.c:93
+msgid "Plan Name (required):"
+msgstr "Ime paketa storitve (obvezno):"
+
+#: ../callouts/3g/ggg-manual-dialog.c:96
+msgid "Username:"
+msgstr "Uporabniško ime:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:99
+msgid "Password:"
+msgstr "Geslo:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:103
+msgid "Gateway:"
+msgstr "Vrata:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:106
+msgid "Primary DNS:"
+msgstr "Primarni DNS:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:109
+msgid "Secondary DNS:"
+msgstr "Sekundarni DNS:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:112
+msgid "Tertiary DNS:"
+msgstr "Terciarni DNS:"
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "Izberite 3G paket storitev "
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "Izbrite ponudnika"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr "%s (gostovanje)"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "Izberite storitev 3G"
+
