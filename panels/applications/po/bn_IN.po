@@ -1,0 +1,38 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# sankarshan mukhopadhyay <sankarshan@fedoraproject.org>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-16 11:30+0000\n"
+"PO-Revision-Date: 2009-12-12 12:27+0530\n"
+"Last-Translator: sankarshan mukhopadhyay <sankarshan@fedoraproject.org>\n"
+"Language-Team: anubad@lists.ankur.org.in\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.4.1\n"
+
+#.
+#. * Fav apps.
+#.
+#. Label
+#: ../src/moblin-netbook-launcher.c:813
+msgid "Favorite Applications"
+msgstr "পছন্দের অ্যাপ্লিকেশন"
+
+#: ../src/moblin-netbook-launcher.c:1337
+msgid "Applications"
+msgstr "অ্যাপ্লিকেশন"
+
+#: ../src/moblin-netbook-launcher.c:1348
+msgid "Search"
+msgstr "খুঁজে নিন"
+
+#: ../src/moblin-panel-applications.c:196
+msgid "applications"
+msgstr "অ্যাপ্লিকেশন"
