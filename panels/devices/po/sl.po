@@ -1,0 +1,255 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-23 18:44+0000\n"
+"PO-Revision-Date: 2009-12-12 12:21+0100\n"
+"Last-Translator: Boštjan Pišler <designandinvent@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && n%100<10 ? 1 : 2);\n"
+
+#: ../dalston/dalston-power-applet.c:237
+#, c-format
+msgid "<b>%d</b> hour"
+msgid_plural "<b>%d</b> hours"
+msgstr[0] "<b>%d</b> ura"
+msgstr[1] "<b>%d</b> ure"
+msgstr[2] "<b>%d</b> ur"
+
+#: ../dalston/dalston-power-applet.c:244
+#: ../dalston/dalston-power-applet.c:257
+#, c-format
+msgid "<b>%d</b> minute"
+msgid_plural "<b>%d</b> minutes"
+msgstr[0] "<b>%d</b> minuta"
+msgstr[1] "<b>%d</b> minute"
+msgstr[2] "<b>%d</b> minut"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid "Running low on battery"
+msgstr "Zmankuje baterije"
+
+#: ../dalston/dalston-power-applet.c:278
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Opazili smo da vam zmankuje baterije, priporočamo da se priklopite na električno omrežje, če je to mogoče."
+
+#: ../dalston/dalston-power-applet.c:280
+msgid "Getting close to empty"
+msgstr "Skoraj prazno"
+
+#: ../dalston/dalston-power-applet.c:280
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Baterija je že skoraj prazna, shranite vaše delo in se čim prej priklopite na električno omrežje"
+
+#: ../dalston/dalston-power-applet.c:282
+msgid "Danger!"
+msgstr "Nevarnost!"
+
+#: ../dalston/dalston-power-applet.c:282
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Vašemu računalniku bo zmanjkalo baterije in se bo sedaj izklopil. Prosimo shranite vaše delo in se vidimo kmalu."
+
+#: ../dalston/dalston-power-applet.c:409
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Vaša baterija ne dela."
+
+#: ../dalston/dalston-power-applet.c:412
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Vaša baterija je polna."
+
+#: ../dalston/dalston-power-applet.c:415
+#, c-format
+msgid "Your battery is charging. It is about <b>%d</b>%% full."
+msgstr "Vaša baterija se polni. Sedaj je na <b>%d</b>%%."
+
+#: ../dalston/dalston-power-applet.c:422
+#, c-format
+msgid "Your battery is being used. It is about <b>%d</b>%% full."
+msgstr "Vaša baterija je v uporabi. Sedaj je na <b>%d</b>%%."
+
+#: ../dalston/dalston-power-applet.c:430
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Nimate priklopljene baterije."
+
+#: ../dalston/dalston-power-applet.c:515
+msgid "Display brightness"
+msgstr "Svetlost zaslona"
+
+#: ../dalston/dalston-power-applet.c:550
+msgid "Sorry, we don't support modifying the brightness of your screen"
+msgstr "Spreminjaje svetlosti vašega zaslona ni mogoče"
+
+#: ../dalston/dalston-brightness-slider.c:224
+msgid "Brighter than the sun"
+msgstr "Svetlejše od sonca"
+
+#: ../dalston/dalston-brightness-slider.c:226
+msgid "Very bright"
+msgstr "Zelo svetlo"
+
+#: ../dalston/dalston-brightness-slider.c:228
+msgid "Bright"
+msgstr "Svetlo"
+
+#: ../dalston/dalston-brightness-slider.c:230
+msgid "Morning has broken"
+msgstr "Jutro je tu"
+
+#: ../dalston/dalston-brightness-slider.c:232
+msgid "Midday"
+msgstr "Poldne"
+
+#: ../dalston/dalston-brightness-slider.c:234
+msgid "Pretty dusky"
+msgstr "Precej mračno"
+
+#: ../dalston/dalston-brightness-slider.c:236
+msgid "Twilight"
+msgstr "Somrak"
+
+#: ../dalston/dalston-brightness-slider.c:238
+msgid "Very dark"
+msgstr "Zelo temno"
+
+#: ../dalston/dalston-brightness-slider.c:240
+msgid "Total eclipse"
+msgstr "Popolnoma zatemnjeno"
+
+#: ../dalston/dalston-button-monitor.c:178
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Če se ne odločite bom ugasnil čez %d sekund."
+
+#: ../dalston/dalston-button-monitor.c:281
+msgid "Would you like to turn off now?"
+msgstr "Želite ugasniti?"
+
+#: ../dalston/dalston-button-monitor.c:282
+msgid "If you don't decide I'll turn off in 30 seconds"
+msgstr "Če se ne odločite bom ugasnil čez 30 sekund"
+
+#: ../dalston/dalston-button-monitor.c:289
+msgid "Turn off"
+msgstr "Zaustavitev"
+
+#: ../dalston/dalston-volume-pane.c:258
+msgid "Output volume"
+msgstr "Izhodna jakost"
+
+#: ../dalston/dalston-volume-pane.c:302
+msgid "Mute"
+msgstr "Nemo"
+
+#: ../dalston/dalston-volume-pane.c:320
+msgid "Alert sounds"
+msgstr "Opozorilni zvoki"
+
+#: ../dalston/dalston-volume-pane.c:332
+msgid "Play test sound"
+msgstr "Predvajaj poizusni zvok"
+
+#: ../dalston/dalston-volume-slider.c:224
+msgid "Turned up to 11"
+msgstr "Privito do 11"
+
+#: ../dalston/dalston-volume-slider.c:226
+msgid "Very loud"
+msgstr "Zelo glasno"
+
+#: ../dalston/dalston-volume-slider.c:228
+msgid "Loud"
+msgstr "Glasno"
+
+#: ../dalston/dalston-volume-slider.c:230
+msgid "Fairly loud"
+msgstr "Deloma glasno"
+
+#: ../dalston/dalston-volume-slider.c:232
+msgid "Middle of the road"
+msgstr "Srednje"
+
+#: ../dalston/dalston-volume-slider.c:234
+msgid "Fairly quiet"
+msgstr "Tiho"
+
+#: ../dalston/dalston-volume-slider.c:236
+msgid "Quiet"
+msgstr "Precej tiho"
+
+#: ../dalston/dalston-volume-slider.c:238
+msgid "Very quiet"
+msgstr "Zelo tiho"
+
+#: ../dalston/dalston-volume-slider.c:240
+msgid "Silent"
+msgstr "Neslišno"
+
+#: ../libgvc/gvc-mixer-control.c:97
+msgid "GNOME Volume Control"
+msgstr "GNOME nastavitve zvoka"
+
+#: ../libgvc/gvc-mixer-control.c:1020
+msgid "System Sounds"
+msgstr "Sistemski zvoki"
+
+#: ../src/dalston-power-applet.c:50
+msgid "battery"
+msgstr "baterija"
+
+#: ../src/dalston-volume-applet.c:58
+msgid "sound"
+msgstr "zvok"
+
+#: ../src/dalston-power-settings-capplet.c:21
+msgid "Ten minutes"
+msgstr "Deset "
+
+#: ../src/dalston-power-settings-capplet.c:22
+msgid "Twenty minutes"
+msgstr "Dvajset minut"
+
+#: ../src/dalston-power-settings-capplet.c:23
+msgid "Half an hour"
+msgstr "Pol ure"
+
+#: ../src/dalston-power-settings-capplet.c:24
+msgid "40 minutes"
+msgstr "40 minut"
+
+#: ../src/dalston-power-settings-capplet.c:25
+msgid "An hour"
+msgstr "Uro"
+
+#: ../src/dalston-power-settings-capplet.c:26
+msgid "Never"
+msgstr "Nikoli"
+
+#: ../src/dalston-power-settings-capplet.c:135
+msgid "Power Management Settings"
+msgstr "Nastavitve upravljanja porabe energije"
+
+#: ../src/dalston-power-settings-capplet.c:140
+#: ../data/dalston-power-settings-capplet.desktop.in.h:1
+msgid "Power Management Preferences"
+msgstr "Nastavitve upravljanja porabe energije"
+
+#: ../src/dalston-power-settings-capplet.c:146
+msgid "<b>Power Settings</b>"
+msgstr "<b>Nastavitve porabe energije</b>"
+
+#: ../src/dalston-power-settings-capplet.c:157
+msgid "Put computer to sleep when inactive for:"
+msgstr "Po kakšnem času neaktivnosti naj računalnik zaspi:"
+
+#: ../data/dalston-power-settings-capplet.desktop.in.h:2
+msgid "Settings for adjusting power usage"
+msgstr "Nastavitve za prilagajanje porabe energije"
+
