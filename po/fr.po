@@ -1,191 +1,199 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:04+0000\n"
+"POT-Creation-Date: 2009-12-03 23:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
-msgid "Less than a minute ago"
-msgstr "Il y a moins d'une minute"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
-msgid "A few minutes ago"
-msgstr "Il y a quelques minutes"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
-msgid "A couple of hours ago"
-msgstr "Il y a quelques heures"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
-msgid "Earlier today"
-msgstr "Un peu plus tôt aujourd'hui"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
-msgid "Yesterday"
-msgstr "Hier"
-
-# "On Tuesday" would be "Mardi" only in French.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
-#, c-format
-msgid "On %A"
-msgstr "%A"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
-msgid "Unknown"
-msgstr "Inconnu"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
-msgid "Last week"
-msgstr "La semaine dernière"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
-msgid "A couple of weeks ago"
-msgstr "Il y a quelques semaines"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
-msgid "This month"
-msgstr "Ce mois"
-
-#. Now Jan., last used in Dec.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
-msgid "Last month"
-msgstr "Le mois dernier"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
-msgid "This year"
-msgstr "Cette année"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
-msgid "Last year"
-msgstr "L'année dernière"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
-msgid "Ages ago"
-msgstr "Ça fait un bail"
-
-#: ../src/moblin-netbook.c:319
-#: ../src/mnb-toolbar.c:1337
+#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "zones"
 
-#: ../src/moblin-netbook.c:429
+#: ../src/moblin-netbook.c:621
 msgid "Moblin Netbook Effects"
 msgstr "Effets spéciaux pour netbook utilisant Moblin"
 
-#: ../src/moblin-netbook.c:433
+#: ../src/moblin-netbook.c:625
 msgid "Effects for Moblin Netbooks"
 msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
 
-#: ../src/mnb-notification.c:257
-msgid "Dismiss"
-msgstr "Supprimer"
-
-#: ../src/mnb-notification-cluster.c:657
-msgid "Dismiss All"
-msgstr "Tout supprimer"
-
-# For France, use 24-hour clock
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:660
+#. 
+# For France, use 24-hour clock
+#: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:670
+#. 
+#: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
-#: ../src/switcher/mnb-switcher.c:280
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Supprimer"
+
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Tout supprimer"
+
+#: ../src/switcher/mnb-switcher.c:307
 msgid "No Zones yet"
 msgstr "Aucune zone n'est définie"
 
-#: ../src/switcher/mnb-switcher.c:302
+#: ../src/switcher/mnb-switcher.c:327
 msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
 msgstr "Les applications que vous utilisez vont apparaître ici. Vous pourrez les organizer et y accéder à votre guise."
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:408
+#: ../src/switcher/mnb-switcher-zone-apps.c:463
 msgid "No applications on this zone"
 msgstr "Pas d'applications dans cette zone"
 
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Vous devez avoir écouté de la musique, regardé des photos ou des vidéos "
-#~ "avant de pouvoir consulter votre historique. Pour le moment, vous pouvez "
-#~ "accéder à des fichiers multimédia de démo :"
+#: ../src/moblin-netbook.c:2543
+msgid "Unknown window"
+msgstr "Fenêtre inconnue"
+
+#: ../src/moblin-netbook.c:2529
+msgid "Activate"
+msgstr "Activer"
+
+#: ../src/moblin-netbook.c:2545
+msgid "Is asking for your attention."
+msgstr "Requiert votre attention."
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Il y a moins d'une minute"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Il y a quelques minutes"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Il y a quelques heures"
+
+#~ msgid "Earlier today"
+#~ msgstr "Un peu plus tôt aujourd'hui"
+
+#~ msgid "Yesterday"
+#~ msgstr "Hier"
+
+#~ msgid "On %A"
+#~ msgstr "%A"
+
+#~ msgid "Last week"
+#~ msgstr "La semaine dernière"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Il y a quelques semaines"
+
+#~ msgid "This month"
+#~ msgstr "Ce mois"
+
+#~ msgid "Last month"
+#~ msgstr "Le mois dernier"
+
+#~ msgid "This year"
+#~ msgstr "Cette année"
+
+#~ msgid "Last year"
+#~ msgstr "L'année dernière"
+
+#~ msgid "Ages ago"
+#~ msgstr "Ça fait un bail"
+
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Vous devez avoir écouté de la musique, regardé des photos ou des vidéos avant de pouvoir consulter votre historique. Pour le moment, vous pouvez accéder à des fichiers multimédia de démo :"
+
 #~ msgid "Recently played"
 #~ msgstr "Récemment utilisés"
+
 #~ msgid "Search results"
 #~ msgstr "Résultats de recherche"
+
 #~ msgid "Playqueue"
 #~ msgstr "File de lecture"
+
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "Saison %u, épisode %u"
+
 #~ msgid "Previous"
 #~ msgstr "Précédent"
+
 #~ msgid "Next"
 #~ msgstr "Suivant"
+
 #~ msgid "Media"
 #~ msgstr "Fichiers multimédia"
+
 #~ msgid "Search"
 #~ msgstr "Rechercher"
+
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Saison %d épisode %d"
+
 #~ msgid "Season %d"
 #~ msgstr "Saison %d"
+
 #~ msgid "Episode %d"
 #~ msgstr "Épisode %d"
+
 #~ msgid "Year %d"
 #~ msgstr "Année %d"
+
 #~ msgid "media"
 #~ msgstr "fichiers multimédia"
+
 #~ msgid "Favourite Applications"
 #~ msgstr "Applications favorites"
+
 #~ msgid "Applications"
 #~ msgstr "Applications"
+
 #~ msgid "applications"
 #~ msgstr "applications"
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Lorsque vous visitez des pages web, vos pages favorites apparaissent ici "
-#~ "et sur la page Nouvel onglet du navigateur."
+
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "Lorsque vous visitez des pages web, vos pages favorites apparaissent ici et sur la page Nouvel onglet du navigateur."
+
 #~ msgid "Untitled"
 #~ msgstr "Sans titre"
+
 #~ msgid "New tab"
 #~ msgstr "Nouvel onglet"
+
 #~ msgid "Internet"
 #~ msgstr "Internet"
+
 #~ msgid "Go"
 #~ msgstr "Lancer"
+
 #~ msgid "Tabs"
 #~ msgstr "Onglets"
+
 #~ msgid "Favorite pages"
 #~ msgstr "Pages favorites"
+
 #~ msgid "internet"
 #~ msgstr "Internet"
+
 #~ msgid "Search for %%s on %s"
 #~ msgstr "Chercher %%s dans %s"
+
 #~ msgid "Go to %s"
 #~ msgstr "Aller sur %s"
+
 #~ msgid "Copy"
 #~ msgstr "Copier"
-
