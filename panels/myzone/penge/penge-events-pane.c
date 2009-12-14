@@ -459,35 +459,26 @@ _store_view_added_cb (JanaStoreView *view,
   JanaEvent *event;
   gchar *uid;
 
-  /* Explicitly check that the event is within our duration. This is because
-   * i've seen a difficult to track down bug where events outside the range
-   * appear
-   */
-
   for (l = components; l; l = l->next)
   {
     component = (JanaComponent *)l->data;
 
     if (jana_component_get_component_type (component) == JANA_COMPONENT_EVENT)
     {
+      PengeEventData *event_data;
+
       event = (JanaEvent *)component;
 
-      if (jana_utils_duration_contains (priv->duration,
-                                        jana_event_get_start (event)))
-      {
-        PengeEventData *event_data;
+      uid = jana_component_get_uid (component);
+      event_data = penge_event_data_new ();
 
-        uid = jana_component_get_uid (component);
-        event_data = penge_event_data_new ();
+      /* Gives us a new reference, no need to ref-up */
+      event_data->store = jana_store_view_get_store (view);
+      event_data->event = g_object_ref (event);
 
-        /* Gives us a new reference, no need to ref-up */
-        event_data->store = jana_store_view_get_store (view);
-        event_data->event = g_object_ref (event);
-
-        g_hash_table_insert (priv->uid_to_events,
-                             uid,
-                             event_data);
-      }
+      g_hash_table_insert (priv->uid_to_events,
+                           uid,
+                           event_data);
     }
   }
 
