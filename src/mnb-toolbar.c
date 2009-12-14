@@ -71,6 +71,7 @@
 #define TOOLBAR_AUTOSTART_DELAY 15
 #define TOOLBAR_AUTOSTART_ATTEMPTS 10
 #define TOOLBAR_WAITING_FOR_PANEL_TIMEOUT 1 /* in seconds */
+#define TOOLBAR_PANEL_STUB_TIMEOUT 10       /* in seconds */
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
 #if 0
@@ -245,6 +246,7 @@ struct _MnbToolbarPrivate
   gint             old_screen_height;
 
   guint            waiting_for_panel_cb_id;
+  guint            panel_stub_timeout_id;
 };
 
 static void
@@ -802,6 +804,17 @@ mnb_toolbar_set_waiting_for_panel_hide (MnbToolbar *toolbar, gboolean whether)
   priv->waiting_for_panel_show = FALSE;
 }
 
+static gboolean
+mnb_toolbar_panel_stub_timeout_cb (gpointer data)
+{
+  MnbToolbar        *toolbar = data;
+  MnbToolbarPrivate *priv    = toolbar->priv;
+
+  clutter_actor_hide (priv->panel_stub);
+
+  return FALSE;
+}
+
 /*
  * Toolbar button click handler.
  *
@@ -879,6 +892,13 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
             if (checked && !mnb_panel_is_mapped (tp->panel))
               {
                 mnb_panel_show (tp->panel);
+
+                if (priv->panel_stub_timeout_id)
+                  {
+                    g_source_remove (priv->panel_stub_timeout_id);
+                    priv->panel_stub_timeout_id = 0;
+                    clutter_actor_hide (priv->panel_stub);
+                  }
               }
             else if (!checked && mnb_panel_is_mapped (tp->panel))
               {
@@ -904,6 +924,16 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
                 clutter_actor_set_opacity (priv->panel_stub, 0xff);
                 clutter_actor_show (priv->panel_stub);
                 clutter_actor_raise_top (priv->panel_stub);
+
+                if (priv->panel_stub_timeout_id)
+                  {
+                    g_source_remove (priv->panel_stub_timeout_id);
+                  }
+
+                priv->panel_stub_timeout_id =
+                  g_timeout_add_seconds (TOOLBAR_PANEL_STUB_TIMEOUT,
+                                         mnb_toolbar_panel_stub_timeout_cb,
+                                         toolbar);
 
                 tp->pinged = TRUE;
                 mnb_toolbar_start_panel_service (toolbar, tp);
@@ -1496,6 +1526,12 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
           if (MNB_IS_PANEL_OOP (panel))
             mnb_panel_oop_set_delayed_show ((MnbPanelOop*)panel, TRUE);
+
+          if (priv->panel_stub_timeout_id)
+            {
+              g_source_remove (priv->panel_stub_timeout_id);
+              priv->panel_stub_timeout_id = 0;
+            }
 
           mnb_panel_show (panel);
         }
