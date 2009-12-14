@@ -50,7 +50,7 @@ static void
 _grid_view_activated_cb (PengeGridView *grid_view,
                          gpointer       userdata)
 {
-  mpl_panel_client_request_hide ((MplPanelClient *)userdata);
+  mpl_panel_client_hide ((MplPanelClient *)userdata);
 }
 
 static gboolean standalone = FALSE;
