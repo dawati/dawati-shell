@@ -70,10 +70,11 @@ libpenge_la_LIBADD = $(MPL_LIBS) \
 		     $(PENGE_LIBS)
 
 test_block_layout_SOURCES = test-block-layout.c
-test_block_layout_LDADD = $(top_builddir)/penge/libpenge.la
+test_block_layout_LDADD = libpenge.la
 
 test_model_bridge_SOURCES = test-model-bridge.c
-test_model_bridge_LDADD = $(top_builddir)/penge/libpenge.la
+test_model_bridge_LDADD = libpenge.la
 
 test_everything_pane_SOURCES = test-everything-pane.c
-test_everything_pane_LDADD = $(top_builddir)/penge/libpenge.la
+test_everything_pane_LDADD = libpenge.la
+
