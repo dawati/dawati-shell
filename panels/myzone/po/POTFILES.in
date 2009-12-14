@@ -1,4 +1,5 @@
 # List of source files containing translatable strings.
+data/moblin-panel-myzone.desktop.in.in
 src/moblin-panel-myzone.c
 penge/penge-calendar-pane.c
 penge/penge-events-pane.c
