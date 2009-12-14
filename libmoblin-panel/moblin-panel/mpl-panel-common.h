@@ -10,7 +10,7 @@
 #define MPL_TOOLBAR_DBUS_NAME      "org.moblin.UX.Shell.Toolbar"
 #define MPL_TOOLBAR_DBUS_INTERFACE "org.moblin.UX.Shell.Toolbar"
 
-#define MPL_PANEL_MYZONE       "moblin-panel-myzone"
+#define MPL_PANEL_MYZONE       "myzone"
 #define MPL_PANEL_STATUS       "status"
 #define MPL_PANEL_ZONES        "zones"
 #define MPL_PANEL_INTERNET     "internet"

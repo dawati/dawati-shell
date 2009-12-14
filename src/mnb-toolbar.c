@@ -2227,9 +2227,9 @@ mnb_toolbar_setup_panels (MnbToolbar *toolbar)
                                        MPL_PANEL_STATUS, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       "moblin-panel-myzone",
-                                       "myzone",
-                                       "myzone", FALSE, FALSE);
+                                       MPL_PANEL_MYZONE,
+                                       MPL_PANEL_MYZONE,
+                                       MPL_PANEL_MYZONE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
 
   priv->panels = l;
