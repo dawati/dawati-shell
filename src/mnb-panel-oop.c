@@ -1115,7 +1115,51 @@ mnb_panel_oop_dbus_ping_cb (DBusGProxy *proxy, GError *error, gpointer data)
 void
 mnb_toolbar_ping_panel_oop (DBusGConnection *dbus_conn, const gchar *dbus_name)
 {
-  DBusGProxy *proxy = mnb_panel_oop_create_dbus_proxy (dbus_conn, dbus_name);
+  DBusGProxy  *proxy;
+  const gchar *p = dbus_name;
+  gchar        c;
+
+  g_return_if_fail (dbus_name);
+
+  /*
+   * Do sanity check on the dbus_name, otherwise dbus might abort us.
+   *
+   * Check that the object name does not use a leading digit
+   */
+  p = strrchr (p, '.');
+
+  if (p && (c = *(p+1)) >= '0' && c <='9')
+    {
+      g_warning ("panel dbus name '%s' uses digit as first character of name",
+                 dbus_name);
+      return;
+    }
+
+  /*
+   * Check we got nothing but alphanumerics and '.'
+   */
+  p = dbus_name;
+
+  while ((c = *p++))
+    {
+      if (c >= '0' && c <= '9')
+        continue;
+
+      if (c >= 'A' && c <= 'Z')
+        continue;
+
+      if (c >= 'a' && c <= 'z')
+        continue;
+
+      if (c == '.')
+        continue;
+
+      g_warning ("panel dbus name '%s' contains invalid character '%c'",
+                 dbus_name, c);
+      return;
+    }
+
+  proxy = mnb_panel_oop_create_dbus_proxy (dbus_conn, dbus_name);
 
   if (!proxy)
     {
