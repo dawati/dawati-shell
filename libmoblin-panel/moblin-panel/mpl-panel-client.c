@@ -103,10 +103,11 @@ struct _MplPanelClientPrivate
   guint            requested_height;
   guint            real_height;
 
-  gboolean         constructed     : 1; /*poor man's constructor return value*/
-  gboolean         toolbar_service : 1;
-  gboolean         ready_emitted   : 1;
-  gboolean         delayed_ready   : 1;
+  gboolean         constructed       : 1; /*poor man's constr return value*/
+  gboolean         toolbar_service   : 1;
+  gboolean         ready_emitted     : 1;
+  gboolean         delayed_ready     : 1;
+  gboolean         main_loop_running : 1;
 };
 
 static void
@@ -151,7 +152,8 @@ mpl_panel_client_set_property (GObject      *object,
                                const GValue *value,
                                GParamSpec   *pspec)
 {
-  MplPanelClientPrivate *priv = MPL_PANEL_CLIENT (object)->priv;
+  MplPanelClient        *panel = MPL_PANEL_CLIENT (object);
+  MplPanelClientPrivate *priv  = panel->priv;
 
   switch (property_id)
     {
@@ -178,11 +180,7 @@ mpl_panel_client_set_property (GObject      *object,
       priv->toolbar_service = g_value_get_boolean (value);
       break;
     case PROP_DELAYED_READY:
-      if (g_main_loop_is_running (NULL))
-        g_critical ("The delayed-ready property has to be set before starting "
-                    "the main loop, but main loop is already running.");
-      else
-        priv->delayed_ready = g_value_get_boolean (value);
+      mpl_panel_client_set_delayed_ready (panel, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -891,6 +889,23 @@ mpl_panel_client_ready_idle_cb (gpointer data)
   return FALSE;
 }
 
+/*
+ * We install a one-off idle to install the ready idle, if needed
+ */
+static gboolean
+mpl_panel_client_one_off_idle_cb (gpointer data)
+{
+  MplPanelClient *panel = data;
+
+  if (!panel->priv->delayed_ready)
+    g_idle_add_full (G_PRIORITY_LOW,
+                     mpl_panel_client_ready_idle_cb, panel, NULL);
+
+  panel->priv->main_loop_running = TRUE;
+
+  return FALSE;
+}
+
 static void
 mpl_panel_client_constructed (GObject *self)
 {
@@ -960,9 +975,7 @@ mpl_panel_client_constructed (GObject *self)
    */
   priv->constructed = TRUE;
 
-  if (!priv->delayed_ready)
-    g_idle_add_full (G_PRIORITY_LOW,
-                     mpl_panel_client_ready_idle_cb, self, NULL);
+  g_idle_add (mpl_panel_client_one_off_idle_cb, self);
 }
 
 MplPanelClient *
@@ -1367,7 +1380,7 @@ mpl_panel_client_set_delayed_ready (MplPanelClient *panel, gboolean delayed)
   if (not_delayed != delayed)
     return TRUE;
 
-  if (g_main_loop_is_running (NULL))
+  if (priv->main_loop_running)
     {
       g_critical ("The delayed-ready property has to be set before starting "
                   "the main loop, but main loop is already running.");
