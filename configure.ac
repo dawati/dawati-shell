@@ -83,6 +83,13 @@ AC_SUBST([MUTTER_MOBLIN_THEME_DIR])
 MUTTER_MOBLIN_PANELS_DIR="${datadir}/${PACKAGE}/panels"
 AC_SUBST([MUTTER_MOBLIN_PANELS_DIR])
 
+AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+if test x"$GCONFTOOL" = xno; then
+  AC_MSG_ERROR([gconftool-2 not found])
+fi
+
+AM_GCONF_SOURCE_2
+
 # Mutter-moblin
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl

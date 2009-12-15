@@ -5,6 +5,19 @@ desktopfiles_in_files=moblin-panel-zones.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
 
+schemadir   = @GCONF_SCHEMA_FILE_DIR@
+schema_in_files = mutter-moblin.schemas.in
+schema_DATA = $(schema_in_files:.schemas.in=.schemas)
+
+@INTLTOOL_SCHEMAS_RULE@
+
+if GCONF_SCHEMAS_INSTALL
+install-data-local:
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schema_DATA)
+else
+install-data-local:
+endif
+
 themedir = $(MUTTER_MOBLIN_THEME_DIR)
 dist_theme_DATA = \
 	theme/mutter-moblin.css
@@ -120,5 +133,5 @@ uninstall-hook:
 	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
 endif
 
-CLEANFILES = $(desktopfiles_files)
-EXTRA_DIST = $(desktopfiles_in_files)
+CLEANFILES = $(desktopfiles_files) $(schema_DATA)
+EXTRA_DIST = $(desktopfiles_in_files) $(schema_in_files)

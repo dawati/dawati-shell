@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 data/moblin-panel-zones.desktop.in
+data/mutter-moblin.schemas.in
 src/moblin-netbook.c
 src/mnb-toolbar.c
 src/notifications/mnb-notification.c

@@ -1,0 +1,18 @@
+<gconfschemafile>
+  <schemalist>
+    <schema>
+      <key>/schemas/desktop/moblin/toolbar/panels/order</key>
+      <applyto>/desktop/moblin/toolbar/panels/order</applyto>
+      <owner>mutter-moblin</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[moblin-panel-myzone,moblin-panel-status,moblin-panel-people,moblin-panel-internet,moblin-panel-media,moblin-panel-applications,moblin-panel-zones,bluetooth-panel,carrick-connection-panel]</default>
+      <locale name="C">
+         <short>Order of panels on toolbar</short>
+         <long>
+		Determines the order of panels on the toolbar.
+         </long>
+      </locale>
+    </schema>
+  </schemalist>
+</gconfschemafile>
