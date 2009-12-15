@@ -392,9 +392,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
     meta_prefs_set_num_workspaces (1);
 
-  nbtk_texture_cache_load_cache (nbtk_texture_cache_get_default (),
-                                 THEMEDIR "/nbtk.cache");
-  nbtk_style_load_from_file (nbtk_style_get_default (),
+  mx_texture_cache_load_cache (mx_texture_cache_get_default (),
+                                 THEMEDIR "/mx.cache");
+  mx_style_load_from_file (mx_style_get_default (),
                              THEMEDIR "/mutter-moblin.css",
                              &err);
   if (err)
@@ -1737,9 +1737,9 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
-  NbtkWidget                 *switcher;
+  MxWidget                 *switcher;
 
-  switcher = (NbtkWidget*) mnb_toolbar_get_switcher (toolbar);
+  switcher = (MxWidget*) mnb_toolbar_get_switcher (toolbar);
 
   if (switcher && mnb_switcher_handle_xevent (MNB_SWITCHER (switcher), xev))
     return TRUE;

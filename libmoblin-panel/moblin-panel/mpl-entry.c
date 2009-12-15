@@ -39,7 +39,7 @@ static void clutter_container_iface_init (ClutterContainerIface *iface);
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE_WITH_CODE (MplEntry, mpl_entry, NBTK_TYPE_BIN,
+G_DEFINE_TYPE_WITH_CODE (MplEntry, mpl_entry, MX_TYPE_FRAME,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 clutter_container_iface_init));
 
@@ -61,17 +61,17 @@ clutter_container_iface_init (ClutterContainerIface *iface)
 }
 
 static void
-search_button_clicked_cb (NbtkButton  *button,
+search_button_clicked_cb (MxButton  *button,
                           MplEntry    *entry)
 {
   g_signal_emit (entry, _signals[BUTTON_CLICKED], 0);
 }
 
 static void
-clear_button_clicked_cb (NbtkButton *button,
+clear_button_clicked_cb (MxButton *button,
                          MplEntry   *entry)
 {
-  nbtk_entry_set_text (NBTK_ENTRY (entry->priv->entry), NULL);
+  mx_entry_set_text (MX_ENTRY (entry->priv->entry), NULL);
 }
 
 static void
@@ -96,11 +96,11 @@ mpl_entry_get_preferred_width (ClutterActor *actor,
                                gfloat       *natural_width_p)
 {
   MplEntryPrivate *priv = MPL_ENTRY (actor)->priv;
-  NbtkPadding padding = { 0, 0, 0, 0 };
+  MxPadding padding = { 0, 0, 0, 0 };
   gfloat min_width_entry, min_width_button;
   gfloat natural_width_entry, natural_width_button;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   clutter_actor_get_preferred_width (priv->entry, for_height,
                                      &min_width_entry,
@@ -130,11 +130,11 @@ mpl_entry_get_preferred_height (ClutterActor *actor,
                                 gfloat       *natural_height_p)
 {
   MplEntryPrivate *priv = MPL_ENTRY (actor)->priv;
-  NbtkPadding padding = { 0, 0, 0, 0 };
+  MxPadding padding = { 0, 0, 0, 0 };
   gfloat min_height_entry, min_height_button;
   gfloat natural_height_entry, natural_height_button;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   clutter_actor_get_preferred_height (priv->entry, for_width,
                                       &min_height_entry,
@@ -161,14 +161,14 @@ mpl_entry_allocate (ClutterActor          *actor,
                     ClutterAllocationFlags flags)
 {
   MplEntryPrivate *priv = MPL_ENTRY (actor)->priv;
-  NbtkPadding padding = { 0, 0, 0, 0 };
+  MxPadding padding = { 0, 0, 0, 0 };
   ClutterActorBox entry_box, button_box;
   gfloat entry_width, entry_height, button_width, button_height;
 
   CLUTTER_ACTOR_CLASS (mpl_entry_parent_class)->
     allocate (actor, box, flags);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   /* Button is right-aligned. */
   clutter_actor_get_preferred_size (priv->table,
@@ -224,7 +224,7 @@ mpl_entry_pick (ClutterActor       *actor,
 }
 
 static void
-mpl_entry_style_changed (NbtkWidget *widget)
+mpl_entry_style_changed (MxWidget *widget)
 {
   MplEntryPrivate *priv = MPL_ENTRY (widget)->priv;
 
@@ -366,7 +366,7 @@ set_clear_button_size (ClutterActor *clear_button)
   GValue background_image = { 0, };
 
   g_value_init (&background_image, G_TYPE_STRING);
-  nbtk_stylable_get_property (NBTK_STYLABLE (clear_button),
+  mx_stylable_get_property (MX_STYLABLE (clear_button),
                               "background-image", &background_image);
   if (g_value_get_string (&background_image))
     {
@@ -402,39 +402,39 @@ mpl_entry_init (MplEntry *self)
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mpl_entry_style_changed), NULL);
 
-  priv->entry = CLUTTER_ACTOR (nbtk_entry_new (""));
+  priv->entry = CLUTTER_ACTOR (mx_entry_new (""));
   clutter_actor_set_parent (priv->entry, CLUTTER_ACTOR (self));
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->entry),
+  mx_widget_set_style_class_name (MX_WIDGET (priv->entry),
                                     "MplEntryEntry");
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry));
+  text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   g_signal_connect (text, "text-changed",
                     G_CALLBACK (text_changed_cb),
                     self);
 
-  priv->table = CLUTTER_ACTOR (nbtk_table_new ());
+  priv->table = CLUTTER_ACTOR (mx_table_new ());
   clutter_actor_set_parent (priv->table, CLUTTER_ACTOR (self));
 
-  priv->clear_button = CLUTTER_ACTOR (nbtk_button_new ());
+  priv->clear_button = CLUTTER_ACTOR (mx_button_new ());
   clutter_actor_hide (priv->clear_button);
-  nbtk_table_add_actor (NBTK_TABLE (priv->table), priv->clear_button, 0, 0);
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->clear_button),
+  mx_table_add_actor (MX_TABLE (priv->table), priv->clear_button, 0, 0);
+  mx_widget_set_style_class_name (MX_WIDGET (priv->clear_button),
                                     "MplEntryClearButton");
   set_clear_button_size (priv->clear_button);
   g_signal_connect (priv->clear_button, "clicked",
                     G_CALLBACK (clear_button_clicked_cb),
                     self);
 
-  priv->search_button = CLUTTER_ACTOR (nbtk_button_new ());
-  nbtk_table_add_actor (NBTK_TABLE (priv->table), priv->search_button, 0, 1);
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (priv->search_button),
+  priv->search_button = CLUTTER_ACTOR (mx_button_new ());
+  mx_table_add_actor (MX_TABLE (priv->table), priv->search_button, 0, 1);
+  mx_widget_set_style_class_name (MX_WIDGET (priv->search_button),
                                     "MplEntryButton");
   g_signal_connect (priv->search_button, "clicked",
                     G_CALLBACK (search_button_clicked_cb),
                     self);
 }
 
-NbtkWidget *
+MxWidget *
 mpl_entry_new (const char *label)
 {
   return g_object_new (MPL_TYPE_ENTRY,
@@ -447,7 +447,7 @@ mpl_entry_get_label (MplEntry *self)
 {
   g_return_val_if_fail (MPL_IS_ENTRY (self), NULL);
 
-  return nbtk_button_get_label (NBTK_BUTTON (self->priv->search_button));
+  return mx_button_get_label (MX_BUTTON (self->priv->search_button));
 }
 
 void
@@ -456,7 +456,7 @@ mpl_entry_set_label (MplEntry     *self,
 {
   g_return_if_fail (self);
 
-  nbtk_button_set_label (NBTK_BUTTON (self->priv->search_button), text);
+  mx_button_set_label (MX_BUTTON (self->priv->search_button), text);
 }
 
 const gchar *
@@ -464,7 +464,7 @@ mpl_entry_get_text (MplEntry *self)
 {
   g_return_val_if_fail (MPL_IS_ENTRY (self), NULL);
 
-  return nbtk_entry_get_text (NBTK_ENTRY (self->priv->entry));
+  return mx_entry_get_text (MX_ENTRY (self->priv->entry));
 }
 
 void
@@ -474,14 +474,14 @@ mpl_entry_set_text (MplEntry     *self,
   g_return_if_fail (self);
 
   if (text)
-    nbtk_entry_set_text (NBTK_ENTRY (self->priv->entry), text);
+    mx_entry_set_text (MX_ENTRY (self->priv->entry), text);
 }
 
-NbtkWidget *
-mpl_entry_get_nbtk_entry (MplEntry *self)
+MxWidget *
+mpl_entry_get_mx_entry (MplEntry *self)
 {
   g_return_val_if_fail (MPL_IS_ENTRY (self), NULL);
 
-  return NBTK_WIDGET (self->priv->entry);
+  return MX_WIDGET (self->priv->entry);
 }
 

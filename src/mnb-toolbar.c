@@ -93,7 +93,7 @@
 #define TOOLBAR_SHADOW_EXTRA  37
 #define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA)
 
-G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, NBTK_TYPE_BIN)
+G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, MX_TYPE_FRAME)
 
 #define MNB_TOOLBAR_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_TOOLBAR, MnbToolbarPrivate))
@@ -172,7 +172,7 @@ struct _MnbToolbarPanel
   gchar      *button_style;
   gchar      *tooltip;
 
-  NbtkWidget *button;
+  ClutterActor *button;
   MnbPanel   *panel;
 
   gboolean    unloaded : 1;
@@ -197,8 +197,6 @@ mnb_toolbar_panel_destroy (MnbToolbarPanel *tp)
 
   if (tp->panel)
     g_critical (G_STRLOC ": panel leaked");
-
-  g_free (tp);
 }
 
 struct _MnbToolbarPrivate
@@ -210,8 +208,8 @@ struct _MnbToolbarPrivate
   ClutterActor *panel_stub;
   ClutterActor *shadow;
 
-  NbtkWidget   *time; /* The time and date fields, needed for the updates */
-  NbtkWidget   *date;
+  ClutterActor   *time; /* The time and date fields, needed for the updates */
+  ClutterActor   *date;
 
   MnbPanel     *switcher;
 
@@ -478,7 +476,9 @@ mnb_toolbar_real_hide (ClutterActor *actor)
       if (panel && panel->button)
         {
           clutter_actor_hide (CLUTTER_ACTOR (panel->button));
-          nbtk_button_set_checked (NBTK_BUTTON (panel->button), FALSE);
+
+          if (mx_button_get_checked (MX_BUTTON (panel->button)))
+            mx_button_set_checked (MX_BUTTON (panel->button), FALSE);
         }
     }
 }
@@ -730,7 +730,7 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
     strftime (time_str, 64, _("%l:%M %P"), tmp);
   else
     snprintf (time_str, 64, "Time");
-  nbtk_label_set_text (NBTK_LABEL (priv->time), time_str);
+  mx_label_set_text (MX_LABEL (priv->time), time_str);
 
   if (tmp)
     /* translators: translate this to a suitable date format for your locale.
@@ -740,7 +740,7 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
     strftime (time_str, 64, _("%B %e, %Y"), tmp);
   else
     snprintf (time_str, 64, "Date");
-  nbtk_label_set_text (NBTK_LABEL (priv->date), time_str);
+  mx_label_set_text (MX_LABEL (priv->date), time_str);
 
   return TRUE;
 }
@@ -826,7 +826,7 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
  * all others; in the oposite case, we hide the associated panel.
  */
 static void
-mnb_toolbar_button_toggled_cb (NbtkButton *button,
+mnb_toolbar_button_toggled_cb (MxButton *button,
                                GParamSpec *pspec,
                                MnbToolbar *toolbar)
 {
@@ -841,7 +841,7 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
 
   recursion = TRUE;
 
-  checked = nbtk_button_get_checked (button);
+  checked = mx_button_get_checked (button);
 
   /*
    * Clear the autohiding flag -- if the user is clicking on the panel buttons
@@ -856,10 +856,10 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
       if (!tp)
         continue;
 
-      if (tp->button != (NbtkWidget*)button)
+      if (tp->button != (ClutterActor*)button)
       {
-        if (tp->button)
-          nbtk_button_set_checked (NBTK_BUTTON (tp->button), FALSE);
+        if (tp->button && mx_button_get_checked (MX_BUTTON (tp->button)))
+          mx_button_set_checked (MX_BUTTON (tp->button), FALSE);
 
         if (tp->panel)
           {
@@ -1232,7 +1232,7 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
                            screen_width);
 
   if (tp->button)
-    mnb_panel_set_button (panel, NBTK_BUTTON (tp->button));
+    mnb_panel_set_button (panel, MX_BUTTON (tp->button));
   mnb_panel_set_position (panel, 0, TOOLBAR_HEIGHT);
 }
 
@@ -1288,7 +1288,7 @@ mnb_toolbar_panel_request_tooltip_cb (MnbPanel    *panel,
     return;
 
   if (tp->button)
-    nbtk_widget_set_tooltip_text (tp->button, tooltip);
+    mx_widget_set_tooltip_text (MX_WIDGET (tp->button), tooltip);
 }
 
 /*
@@ -1333,7 +1333,7 @@ mnb_toolbar_dispose_of_button (MnbToolbar      *toolbar,
                                MnbToolbarPanel *tp)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
-  NbtkWidget        *button;
+  ClutterActor        *button;
 
   if (!tp)
     return;
@@ -1479,7 +1479,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
   if (MNB_IS_PANEL (panel))
     {
       MnbToolbarPrivate *priv   = toolbar->priv;
-      NbtkWidget        *button;
+      ClutterActor        *button;
       const gchar       *name;
       const gchar       *tooltip;
       const gchar       *style_id;
@@ -1509,9 +1509,9 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
           if (stylesheet && *stylesheet)
             {
               GError    *error = NULL;
-              NbtkStyle *style = nbtk_style_new ();
+              MxStyle *style = mx_style_new ();
 
-              if (!nbtk_style_load_from_file (style, stylesheet, &error))
+              if (!mx_style_load_from_file (style, stylesheet, &error))
                 {
                   if (error)
                     g_warning ("Unable to load stylesheet %s: %s",
@@ -1520,7 +1520,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
                   g_error_free (error);
                 }
               else
-                nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
+                mx_stylable_set_style (MX_STYLABLE (button), style);
             }
 
           if (!style_id || !*style_id)
@@ -1531,7 +1531,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
                 button_style = g_strdup_printf ("%s-button", name);
             }
 
-          nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
+          mx_widget_set_tooltip_text (MX_WIDGET (button), tooltip);
           clutter_actor_set_name (CLUTTER_ACTOR (button),
                                   button_style ? button_style : style_id);
 
@@ -1614,7 +1614,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   MutterPlugin      *plugin = priv->plugin;
   gint               index;
   gint               screen_width, screen_height;
-  NbtkWidget        *button;
+  ClutterActor        *button;
 
   if (!tp || !tp->button)
     return;
@@ -1648,9 +1648,8 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                                             BUTTON_WIDTH,
                                             TOOLBAR_HEIGHT);
 
-      if (!clutter_actor_get_parent (CLUTTER_ACTOR (button)))
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                     CLUTTER_ACTOR (button));
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                   CLUTTER_ACTOR (button));
     }
   else
     {
@@ -1674,9 +1673,8 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                                          TRAY_BUTTON_WIDTH,
                                          TOOLBAR_HEIGHT);
 
-      if (!clutter_actor_get_parent (CLUTTER_ACTOR (button)))
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                     CLUTTER_ACTOR (button));
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                   CLUTTER_ACTOR (button));
     }
 }
 
@@ -1686,7 +1684,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 static void
 mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 {
-  NbtkWidget  *button;
+  ClutterActor  *button;
   gchar       *button_style = NULL;
   const gchar *name;
   const gchar *tooltip;
@@ -1717,9 +1715,9 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   if (stylesheet && *stylesheet)
     {
       GError    *error = NULL;
-      NbtkStyle *style = nbtk_style_new ();
+      MxStyle *style = mx_style_new ();
 
-      if (!nbtk_style_load_from_file (style, stylesheet, &error))
+      if (!mx_style_load_from_file (style, stylesheet, &error))
         {
           if (error)
             g_debug ("Unable to load stylesheet %s: %s",
@@ -1728,11 +1726,11 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
           g_error_free (error);
         }
       else
-        nbtk_stylable_set_style (NBTK_STYLABLE (button), style);
+        mx_stylable_set_style (MX_STYLABLE (button), style);
     }
 
-  nbtk_button_set_toggle_mode (NBTK_BUTTON (button), TRUE);
-  nbtk_widget_set_tooltip_text (NBTK_WIDGET (button), tooltip);
+  mx_button_set_toggle_mode (MX_BUTTON (button), TRUE);
+  mx_widget_set_tooltip_text (MX_WIDGET (button), tooltip);
   clutter_actor_set_name (CLUTTER_ACTOR (button),
                           button_style ? button_style : style_id);
 
@@ -1839,7 +1837,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
   tp->panel = panel;
 
   if (tp->button)
-    mnb_panel_set_button (panel, NBTK_BUTTON (tp->button));
+    mnb_panel_set_button (panel, MX_BUTTON (tp->button));
 
   mnb_panel_set_position (panel, TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
 
@@ -2222,7 +2220,7 @@ mnb_toolbar_constructed (GObject *self)
   gint               screen_width, screen_height;
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
   DBusGConnection   *conn;
-  NbtkWidget        *time_bin, *date_bin;
+  ClutterActor        *time_bin, *date_bin;
   MetaScreen        *screen = mutter_plugin_get_screen (plugin);
   ClutterActor      *wgroup = mutter_get_window_group_for_screen (screen);
 
@@ -2268,10 +2266,10 @@ mnb_toolbar_constructed (GObject *self)
   priv->lowlight = lowlight;
 
   {
-    ClutterActor *label = (ClutterActor*) nbtk_label_new ("Loading panel ...");
+    ClutterActor *label = (ClutterActor*) mx_label_new ("Loading panel ...");
 
-    panel_stub = (ClutterActor*)nbtk_bin_new ();
-    nbtk_bin_set_child (NBTK_BIN (panel_stub), label);
+    panel_stub = (ClutterActor*)mx_frame_new ();
+    mx_bin_set_child (MX_BIN (panel_stub), label);
 
     clutter_actor_set_size (panel_stub,
                             screen_width - TOOLBAR_X_PADDING * 2,
@@ -2292,7 +2290,7 @@ mnb_toolbar_constructed (GObject *self)
                                    NULL);
   if (sh_texture)
     {
-      shadow = nbtk_texture_frame_new (CLUTTER_TEXTURE (sh_texture),
+      shadow = mx_texture_frame_new (CLUTTER_TEXTURE (sh_texture),
                                            0,   /* top */
                                            200, /* right */
                                            0,   /* bottom */
@@ -2310,17 +2308,17 @@ mnb_toolbar_constructed (GObject *self)
                     self);
 
   /* create time and date labels */
-  priv->time = nbtk_label_new ("");
+  priv->time = mx_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->time), "time-label");
-  time_bin = nbtk_bin_new ();
-  nbtk_bin_set_child (NBTK_BIN (time_bin), (ClutterActor*)priv->time);
+  time_bin = mx_frame_new ();
+  mx_bin_set_child (MX_BIN (time_bin), (ClutterActor*)priv->time);
   clutter_actor_set_position ((ClutterActor*)time_bin, 20.0, 8.0);
   clutter_actor_set_width ((ClutterActor*)time_bin, 161.0);
 
-  priv->date = nbtk_label_new ("");
+  priv->date = mx_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
-  date_bin = nbtk_bin_new ();
-  nbtk_bin_set_child (NBTK_BIN (date_bin), (ClutterActor*)priv->date);
+  date_bin = mx_frame_new ();
+  mx_bin_set_child (MX_BIN (date_bin), (ClutterActor*)priv->date);
   clutter_actor_set_position ((ClutterActor*)date_bin, 20.0, 35.0);
   clutter_actor_set_size ((ClutterActor*)date_bin, 161.0, 25.0);
 
@@ -2331,8 +2329,8 @@ mnb_toolbar_constructed (GObject *self)
 
   mnb_toolbar_update_time_date (priv);
 
-  nbtk_bin_set_alignment (NBTK_BIN (self), NBTK_ALIGN_START, NBTK_ALIGN_START);
-  nbtk_bin_set_child (NBTK_BIN (self), hbox);
+  mx_bin_set_alignment (MX_BIN (self), MX_ALIGN_START, MX_ALIGN_START);
+  mx_bin_set_child (MX_BIN (self), hbox);
 
   g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);
 
@@ -2367,7 +2365,7 @@ mnb_toolbar_constructed (GObject *self)
                     self);
 }
 
-NbtkWidget*
+ClutterActor*
 mnb_toolbar_new (MutterPlugin *plugin)
 {
   return g_object_new (MNB_TYPE_TOOLBAR,

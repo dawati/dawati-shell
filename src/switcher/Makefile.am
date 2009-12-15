@@ -3,7 +3,7 @@ noinst_LTLIBRARIES = libswitcher.la
 
 AM_CFLAGS = \
 	@MUTTER_PLUGIN_CFLAGS@ \
-	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
+	-DMX_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/mx.cache\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\" \
 	-I$(top_srcdir)/libmoblin-panel
 

@@ -46,8 +46,8 @@ struct _MnbSwitcherAppPrivate
 
   /* Draggable properties */
   guint               threshold;
-  NbtkDragAxis        axis;
-  NbtkDragContainment containment;
+  MxDragAxis        axis;
+  MxDragContainment containment;
   ClutterActorBox     area;
 
   gboolean            disposed              : 1; /* disposed guard   */
@@ -77,13 +77,13 @@ enum
   PROP_DRAG_ACTOR
 };
 
-static void nbtk_draggable_iface_init (NbtkDraggableIface *iface);
+static void mx_draggable_iface_init (MxDraggableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MnbSwitcherApp,
                          mnb_switcher_app,
                          MNB_TYPE_SWITCHER_ITEM,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_DRAGGABLE,
-                                                nbtk_draggable_iface_init));
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_DRAGGABLE,
+                                                mx_draggable_iface_init));
 
 #define MNB_SWITCHER_APP_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_APP,\
@@ -144,7 +144,7 @@ mnb_switcher_app_orig_zone_weak_notify (gpointer data, GObject *object)
 }
 
 static void
-mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
+mnb_switcher_app_drag_begin (MxDraggable       *draggable,
                              gfloat               event_x,
                              gfloat               event_y,
                              gint                 event_button,
@@ -222,7 +222,7 @@ mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
   priv->clone = clone;
   clutter_actor_set_opacity (clone, 0x7f);
   clutter_actor_set_size (clone, width, height);
-  nbtk_table_add_actor (NBTK_TABLE (parent), clone, row, col);
+  mx_table_add_actor (MX_TABLE (parent), clone, row, col);
   clutter_container_child_set (CLUTTER_CONTAINER (parent), clone,
                                "y-fill", FALSE,
                                "x-fill", FALSE,  NULL);
@@ -237,7 +237,7 @@ mnb_switcher_app_drag_begin (NbtkDraggable       *draggable,
 }
 
 static void
-mnb_switcher_app_drag_motion (NbtkDraggable *draggable,
+mnb_switcher_app_drag_motion (MxDraggable *draggable,
                               gfloat         delta_x,
                               gfloat         delta_y)
 {
@@ -245,7 +245,7 @@ mnb_switcher_app_drag_motion (NbtkDraggable *draggable,
 }
 
 static void
-mnb_switcher_app_drag_end (NbtkDraggable *draggable,
+mnb_switcher_app_drag_end (MxDraggable *draggable,
                            gfloat         event_x,
                            gfloat         event_y)
 {
@@ -293,7 +293,7 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
       clutter_actor_set_size (self, -1.0, -1.0);
-      nbtk_table_add_actor (NBTK_TABLE (orig_parent), self,
+      mx_table_add_actor (MX_TABLE (orig_parent), self,
                             priv->orig_row, priv->orig_col);
 
       clutter_container_child_set (orig_parent, self,
@@ -329,7 +329,7 @@ mnb_switcher_app_drag_end (NbtkDraggable *draggable,
 }
 
 static void
-nbtk_draggable_iface_init (NbtkDraggableIface *iface)
+mx_draggable_iface_init (MxDraggableIface *iface)
 {
   iface->drag_begin  = mnb_switcher_app_drag_begin;
   iface->drag_motion = mnb_switcher_app_drag_motion;
@@ -375,9 +375,9 @@ mnb_switcher_app_set_property (GObject      *gobject,
     case PROP_ENABLED:
       priv->enabled = g_value_get_boolean (value);
       if (priv->enabled)
-        nbtk_draggable_enable (NBTK_DRAGGABLE (gobject));
+        mx_draggable_enable (MX_DRAGGABLE (gobject));
       else
-        nbtk_draggable_disable (NBTK_DRAGGABLE (gobject));
+        mx_draggable_disable (MX_DRAGGABLE (gobject));
       break;
 
     case PROP_DRAG_ACTOR:
@@ -457,7 +457,7 @@ mnb_switcher_app_activate (MnbSwitcherItem *item)
  *
  * Even when the the press-motion-release sequence is interpreted as a drag,
  * we still get the press and release events because of the way the
- * NbtkDraggable implementation is done. So, we have custom closures that
+ * MxDraggable implementation is done. So, we have custom closures that
  * prevent the events from propagating.
  */
 static gboolean
@@ -586,7 +586,7 @@ mnb_switcher_app_wm_delete_timeout_cb (gpointer data)
 }
 
 static gboolean
-mnb_switcher_app_close_button_press_cb (NbtkIcon           *button,
+mnb_switcher_app_close_button_press_cb (MxIcon           *button,
                                         ClutterButtonEvent *event,
                                         MnbSwitcherApp     *app)
 {
@@ -598,7 +598,7 @@ mnb_switcher_app_close_button_press_cb (NbtkIcon           *button,
 }
 
 static gboolean
-mnb_switcher_app_close_button_release_cb (NbtkIcon           *button,
+mnb_switcher_app_close_button_release_cb (MxIcon           *button,
                                           ClutterButtonEvent *event,
                                           MnbSwitcherApp     *app)
 {
@@ -622,21 +622,21 @@ mnb_switcher_app_close_button_release_cb (NbtkIcon           *button,
 }
 
 static gboolean
-mnb_switcher_app_close_button_enter_cb (NbtkWidget           *button,
+mnb_switcher_app_close_button_enter_cb (MxWidget           *button,
                                         ClutterCrossingEvent *event,
                                         gpointer              data)
 {
-  nbtk_widget_set_style_pseudo_class (button, "hover");
+  mx_widget_set_style_pseudo_class (button, "hover");
 
   return FALSE;
 }
 
 static gboolean
-mnb_switcher_app_close_button_leave_cb (NbtkWidget           *button,
+mnb_switcher_app_close_button_leave_cb (MxWidget           *button,
                                         ClutterCrossingEvent *event,
                                         gpointer              data)
 {
-  nbtk_widget_set_style_pseudo_class (button, NULL);
+  mx_widget_set_style_pseudo_class (button, NULL);
 
   return FALSE;
 }
@@ -674,7 +674,7 @@ mnb_switcher_app_constructed (GObject *self)
       priv->icon = icon;
     }
 
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (self),"switcher-application");
+  mx_widget_set_style_class_name (MX_WIDGET (self),"switcher-application");
 
   /*
    * Clone the glx texture in the MutterWindow, and insert it into ourselves.
@@ -708,13 +708,13 @@ mnb_switcher_app_constructed (GObject *self)
   {
     ClutterActor *button;
 
-    button = (ClutterActor*) nbtk_icon_new ();
+    button = (ClutterActor*) mx_icon_new ();
 
     clutter_actor_set_parent (button, actor);
     clutter_actor_set_reactive (button, TRUE);
     clutter_actor_show (button);
 
-    nbtk_widget_set_style_class_name (NBTK_WIDGET (button),
+    mx_widget_set_style_class_name (MX_WIDGET (button),
                                       "switcher-application-close-button");
 
     g_signal_connect (button, "button-press-event",
@@ -755,7 +755,7 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
 
   if (priv->icon)
     {
-      NbtkPadding     padding    = { 0, };
+      MxPadding     padding    = { 0, };
       ClutterActorBox allocation = { 0, };
       gfloat          natural_width, natural_height;
       gfloat          min_width, min_height;
@@ -766,7 +766,7 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
       parent_width  = box->x2 - box->x1;
       parent_height = box->y2 - box->y1;
 
-      nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+      mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
       clutter_actor_get_preferred_size (priv->icon,
                                         &min_width,
@@ -787,7 +787,7 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
 
   if (priv->close_button)
     {
-      NbtkPadding     padding    = { 0, };
+      MxPadding     padding    = { 0, };
       ClutterActorBox allocation = { 0, };
       gfloat          natural_width, natural_height;
       gfloat          min_width, min_height;
@@ -798,7 +798,7 @@ mnb_switcher_app_allocate (ClutterActor          *actor,
       parent_width  = box->x2 - box->x1;
       parent_height = box->y2 - box->y1;
 
-      nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+      mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
       clutter_actor_get_preferred_size (priv->close_button,
                                         &min_width,
@@ -922,7 +922,7 @@ mnb_switcher_app_init (MnbSwitcherApp *self)
 
   priv->threshold = 5;
   priv->axis = 0;
-  priv->containment = NBTK_DISABLE_CONTAINMENT;
+  priv->containment = MX_DISABLE_CONTAINMENT;
   priv->enabled = TRUE;
 }
 

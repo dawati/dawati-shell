@@ -27,9 +27,9 @@
 
 struct _MnbSwitcherPrivate {
   MutterPlugin    *plugin;
-  NbtkWidget      *table;
+  ClutterActor    *table;
   MnbSwitcherZone *new_zone;
-  NbtkTooltip     *active_tooltip;
+  MxTooltip     *active_tooltip;
   GList           *global_tab_list;
   GList           *last_workspaces;
 

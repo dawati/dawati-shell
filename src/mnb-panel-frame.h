@@ -26,7 +26,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 /*
  * These must match the assets !
@@ -56,14 +56,14 @@ G_BEGIN_DECLS
 typedef struct _MnbPanelFramePrivate MnbPanelFramePrivate;
 
 typedef struct {
-  NbtkWidget parent;
+  MxWidget parent;
 
   /*< private >*/
   MnbPanelFramePrivate *priv;
 } MnbPanelFrame;
 
 typedef struct {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 } MnbPanelFrameClass;
 
 GType             mnb_panel_frame_get_type  (void);

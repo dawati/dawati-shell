@@ -73,7 +73,7 @@ AM_GLIB_GNU_GETTEXT
 # Libmoblin-panel
 PKG_CHECK_MODULES(LIBMPL,
                   dbus-glib-1
-                  nbtk-1.2
+                  mx-1.0 = 0.3.0
                   gtk+-2.0
                   gio-unix-2.0)
 
@@ -93,7 +93,7 @@ AM_GCONF_SOURCE_2
 # Mutter-moblin
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl
-                  nbtk-1.2                           dnl
+                  mx-1.0 = 0.3.0                     dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
                   dbus-glib-1                        dnl
@@ -120,15 +120,15 @@ fi
 
 AC_ARG_ENABLE([cache],
               [AC_HELP_STRING([--enable-cache],
-                              [Enable Nbtk image cache generation])],
+                              [Enable Mx image cache generation])],
               [],
               [enable_cache=no])
 
 AS_IF([test "x$enable_cache" = "xyes"],
       [
-      AC_CHECK_PROG([NBTK_CREATE_IMAGE_CACHE],
-	        [nbtk-create-image-cache],
-		[$(which nbtk-create-image-cache)])
+      AC_CHECK_PROG([MX_CREATE_IMAGE_CACHE],
+	        [mx-create-image-cache],
+		[$(which mx-create-image-cache)])
 ])
 
 AM_CONDITIONAL([ENABLE_CACHE],   [test "x$enable_cache" = "xyes"])

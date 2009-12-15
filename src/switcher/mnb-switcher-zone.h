@@ -57,7 +57,7 @@ typedef struct _MnbSwitcherZoneClass   MnbSwitcherZoneClass;
 struct _MnbSwitcherZone
 {
   /*< private >*/
-  NbtkTable parent_instance;
+  MxTable parent_instance;
 
   MnbSwitcherZonePrivate *priv;
 };
@@ -65,7 +65,7 @@ struct _MnbSwitcherZone
 struct _MnbSwitcherZoneClass
 {
   /*< private >*/
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 
   /*
    * The following functions return the name of the css style
@@ -146,7 +146,7 @@ gboolean         mnb_switcher_zone_select_item      (MnbSwitcherZone      *zone,
 gboolean         mnb_switcher_zone_select           (MnbSwitcherZone      *zone);
 void             mnb_switcher_zone_unselect_all     (MnbSwitcherZone      *zone);
 MnbSwitcher     *mnb_switcher_zone_get_switcher     (MnbSwitcherZone      *zone);
-NbtkTable       *mnb_switcher_zone_get_content_area (MnbSwitcherZone      *zone);
+MxTable       *mnb_switcher_zone_get_content_area (MnbSwitcherZone      *zone);
 gboolean         mnb_switcher_zone_is_pageable      (MnbSwitcherZone      *zone);
 void             mnb_switcher_zone_set_pageable     (MnbSwitcherZone      *zone,
                                                      gboolean              whether);

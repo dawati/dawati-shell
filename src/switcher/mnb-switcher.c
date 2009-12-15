@@ -32,7 +32,7 @@
 #include <display.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <keybindings.h>
 
 #include <glib/gi18n.h>
@@ -135,7 +135,7 @@ mnb_switcher_enable_new_workspace (MnbSwitcher *switcher, MnbSwitcherZone *zone)
    * If the application is the only child in its zone, the new zone remains
    * disabled.
    *
-   * Would like to be able to use here nbtk_table_get_row_count(), but it
+   * Would like to be able to use here mx_table_get_row_count(), but it
    * is unreliable.
    */
 
@@ -213,7 +213,7 @@ mnb_switcher_show (ClutterActor *self)
   MetaScreen         *screen = mutter_plugin_get_screen (priv->plugin);
   gint                ws_count, active_ws;
   gint                i, screen_width, screen_height;
-  NbtkWidget         *table;
+  ClutterActor       *table;
   ClutterActor       *toolbar;
   gint                apps_count = 0xffff; /* inital value > 1 */
 
@@ -249,10 +249,10 @@ mnb_switcher_show (ClutterActor *self)
   priv->last_workspaces = g_list_copy (meta_screen_get_workspaces (screen));
 
   /* create the contents */
-  table = nbtk_table_new ();
+  table = mx_table_new ();
   priv->table = table;
-  nbtk_table_set_row_spacing (NBTK_TABLE (table), 4);
-  nbtk_table_set_col_spacing (NBTK_TABLE (table), 7);
+  mx_table_set_row_spacing (MX_TABLE (table), 4);
+  mx_table_set_col_spacing (MX_TABLE (table), 7);
 
   clutter_actor_set_name (CLUTTER_ACTOR (table), "switcher-table");
 
@@ -299,41 +299,42 @@ mnb_switcher_show (ClutterActor *self)
 
       if (!apps_count)
         {
-          NbtkWidget         *table = priv->table;
-          ClutterActor       *bin;
-          NbtkWidget         *label;
+          ClutterActor         *table = priv->table;
+          ClutterActor     *bin;
+          ClutterActor     *label;
 
-          bin = CLUTTER_ACTOR (nbtk_bin_new ());
-          label = nbtk_label_new (_("No Zones yet"));
+          bin = CLUTTER_ACTOR (mx_frame_new ());
+          label = mx_label_new (_("No Zones yet"));
 
-          nbtk_widget_set_style_class_name (label, "workspace-title-label");
+          mx_widget_set_style_class_name (MX_WIDGET (label),
+                                          "workspace-title-label");
 
-          nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
+          mx_bin_set_child (MX_BIN (bin), CLUTTER_ACTOR (label));
 
           clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-title-active");
 
-          nbtk_widget_set_style_class_name (NBTK_WIDGET (bin),
+          mx_widget_set_style_class_name (MX_WIDGET (bin),
                                             "workspace-title");
 
-          nbtk_table_add_actor (NBTK_TABLE (table), bin, 0, 0);
+          mx_table_add_actor (MX_TABLE (table), bin, 0, 0);
           clutter_container_child_set (CLUTTER_CONTAINER (table),
                                        CLUTTER_ACTOR (bin),
                                        "y-expand", FALSE,
                                        "x-fill", TRUE,
                                        NULL);
 
-          bin = CLUTTER_ACTOR (nbtk_bin_new ());
-          label = nbtk_label_new (_("Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."));
+          bin = CLUTTER_ACTOR (mx_frame_new ());
+          label = mx_label_new (_("Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."));
           clutter_actor_set_name ((ClutterActor *)label, "workspace-no-wins-label");
 
-          nbtk_bin_set_child (NBTK_BIN (bin), CLUTTER_ACTOR (label));
-          nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START,
-                                  NBTK_ALIGN_MIDDLE);
+          mx_bin_set_child (MX_BIN (bin), CLUTTER_ACTOR (label));
+          mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START,
+                                  MX_ALIGN_MIDDLE);
           clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-no-wins-bin");
 
-          nbtk_table_add_actor (NBTK_TABLE (table), bin, 1, 0);
+          mx_table_add_actor (MX_TABLE (table), bin, 1, 0);
           clutter_container_child_set (CLUTTER_CONTAINER (table),
                                        CLUTTER_ACTOR (bin),
                                        "y-expand", FALSE,
@@ -354,7 +355,7 @@ mnb_switcher_show (ClutterActor *self)
         active = TRUE;
 
       zone = mnb_switcher_zone_apps_new (switcher, active, i);
-      nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (zone), 0, i);
+      mx_table_add_actor (MX_TABLE (table), CLUTTER_ACTOR (zone), 0, i);
       mnb_switcher_zone_apps_populate (zone, dnd);
       g_object_set (zone, "enabled", TRUE, NULL);
 
@@ -383,7 +384,7 @@ mnb_switcher_show (ClutterActor *self)
      */
     g_object_set (new_ws, "enabled", FALSE, NULL);
 
-    nbtk_table_add_actor (NBTK_TABLE (table), CLUTTER_ACTOR (new_ws), 0,
+    mx_table_add_actor (MX_TABLE (table), CLUTTER_ACTOR (new_ws), 0,
                           ws_count);
 
     clutter_container_child_set (CLUTTER_CONTAINER (table),
@@ -429,11 +430,11 @@ ClutterActor *
 mnb_switcher_append_app_zone (MnbSwitcher *switcher, gint index)
 {
   MnbSwitcherPrivate *priv  = switcher->priv;
-  NbtkWidget         *table = priv->table;
+  ClutterActor         *table = priv->table;
   ClutterActor       *zone;
 
   zone = (ClutterActor*)mnb_switcher_zone_apps_new (switcher, FALSE, index);
-  nbtk_table_add_actor (NBTK_TABLE (table), zone, 0, index);
+  mx_table_add_actor (MX_TABLE (table), zone, 0, index);
   g_object_set (zone, "enabled", TRUE, NULL);
 
   /*
@@ -623,7 +624,7 @@ mnb_switcher_n_workspaces_notify (MetaScreen *screen,
 
           remove_count++;
 
-          /* NbtkTable provides no API to get a child at given position, so we
+          /* MxTable provides no API to get a child at given position, so we
            * have to iterate the child list, querying the child column property
            */
           while (t)
@@ -755,7 +756,7 @@ mnb_switcher_init (MnbSwitcher *self)
   mnb_switcher_setup_metacity_keybindings (self);
 }
 
-NbtkWidget*
+ClutterActor*
 mnb_switcher_new (MutterPlugin *plugin)
 {
   MnbSwitcher *switcher;
@@ -769,7 +770,7 @@ mnb_switcher_new (MutterPlugin *plugin)
                            "mutter-plugin", plugin,
                            NULL);
 
-  return NBTK_WIDGET (switcher);
+  return (ClutterActor*)switcher;
 }
 
 /*
@@ -1139,7 +1140,7 @@ mnb_switcher_tooltip_weak_notify (gpointer data, GObject *obj)
 {
   MnbSwitcherPrivate *priv = MNB_SWITCHER (data)->priv;
 
-  if (priv->active_tooltip == (NbtkTooltip*)obj)
+  if (priv->active_tooltip == (MxTooltip*)obj)
     priv->active_tooltip = NULL;
 }
 
@@ -1155,7 +1156,7 @@ mnb_switcher_hide_tooltip (MnbSwitcher *switcher)
     {
       g_object_weak_unref (G_OBJECT (priv->active_tooltip),
                            mnb_switcher_tooltip_weak_notify, switcher);
-      nbtk_tooltip_hide (NBTK_TOOLTIP (priv->active_tooltip));
+      mx_tooltip_hide (MX_TOOLTIP (priv->active_tooltip));
       priv->active_tooltip = NULL;
     }
 }
@@ -1164,7 +1165,7 @@ mnb_switcher_hide_tooltip (MnbSwitcher *switcher)
  * Shows the provided tooltip, hiding any previously visible tooltips.
  */
 void
-mnb_switcher_show_tooltip (MnbSwitcher *switcher, NbtkTooltip *tooltip)
+mnb_switcher_show_tooltip (MnbSwitcher *switcher, MxTooltip *tooltip)
 {
   MnbSwitcherPrivate *priv = switcher->priv;
 
@@ -1172,16 +1173,16 @@ mnb_switcher_show_tooltip (MnbSwitcher *switcher, NbtkTooltip *tooltip)
     {
       g_object_weak_unref (G_OBJECT (priv->active_tooltip),
                            mnb_switcher_tooltip_weak_notify, switcher);
-      nbtk_tooltip_hide (NBTK_TOOLTIP (priv->active_tooltip));
+      mx_tooltip_hide (MX_TOOLTIP (priv->active_tooltip));
       priv->active_tooltip = NULL;
     }
 
   if (tooltip)
     {
-      nbtk_tooltip_show (tooltip);
+      mx_tooltip_show (tooltip);
       g_object_weak_ref (G_OBJECT (tooltip),
                          mnb_switcher_tooltip_weak_notify, switcher);
-      priv->active_tooltip = NBTK_TOOLTIP (tooltip);
+      priv->active_tooltip = MX_TOOLTIP (tooltip);
     }
 }
 

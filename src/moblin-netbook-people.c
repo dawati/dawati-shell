@@ -24,7 +24,7 @@
 
 #include <string.h>
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 #include "moblin-netbook-people.h"
 #include "mnb-drop-down.h"
@@ -43,10 +43,10 @@ ClutterActor *
 make_people_panel (MutterPlugin *plugin,
                    gint          width)
 {
-  NbtkWidget *drop_down;
-  NbtkWidget *people_panel;
+  MxWidget *drop_down;
+  MxWidget *people_panel;
 
-  drop_down = (NbtkWidget *)mnb_drop_down_new (plugin);
+  drop_down = (MxWidget *)mnb_drop_down_new (plugin);
   people_panel = mnb_people_panel_new ();
   mnb_drop_down_set_child (MNB_DROP_DOWN (drop_down), (ClutterActor *)people_panel);
   mnb_people_panel_set_dropdown (MNB_PEOPLE_PANEL (people_panel), MNB_DROP_DOWN (drop_down));

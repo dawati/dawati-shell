@@ -25,7 +25,7 @@
 #include "mnb-toolbar-button.h"
 #include "mnb-toolbar.h"
 
-G_DEFINE_TYPE (MnbToolbarButton, mnb_toolbar_button, NBTK_TYPE_BUTTON)
+G_DEFINE_TYPE (MnbToolbarButton, mnb_toolbar_button, MX_TYPE_BUTTON)
 
 
 #define MNB_TOOLBAR_BUTTON_GET_PRIVATE(obj)    \
@@ -90,23 +90,23 @@ mnb_toolbar_button_unmap (ClutterActor *actor)
 }
 
 static void
-mnb_toolbar_button_paint_background (NbtkWidget         *actor,
+mnb_toolbar_button_paint_background (MxWidget         *actor,
                                      ClutterActor       *background,
                                      const ClutterColor *color)
 {
   MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (actor)->priv;
 
-  NBTK_WIDGET_CLASS (
-         mnb_toolbar_button_parent_class)->draw_background (actor,
-                                                            background,
-                                                            color);
+  MX_WIDGET_CLASS (
+         mnb_toolbar_button_parent_class)->paint_background (actor,
+                                                             background,
+                                                             color);
 
   if (priv->old_bg)
     clutter_actor_paint (priv->old_bg);
 }
 
 static void
-mnb_toolbar_button_transition (NbtkButton *button, ClutterActor *old_bg)
+mnb_toolbar_button_transition (MxButton *button, ClutterActor *old_bg)
 {
   MnbToolbarButtonPrivate *priv = MNB_TOOLBAR_BUTTON (button)->priv;
   const gchar *pseudo_class;
@@ -114,7 +114,7 @@ mnb_toolbar_button_transition (NbtkButton *button, ClutterActor *old_bg)
   ClutterActor *bg_image;
   ClutterActor *icon;
 
-  pseudo_class = nbtk_stylable_get_pseudo_class (NBTK_STYLABLE (button));
+  pseudo_class = mx_widget_get_style_pseudo_class (MX_WIDGET (button));
 
   if (priv->old_bg)
     {
@@ -122,21 +122,24 @@ mnb_toolbar_button_transition (NbtkButton *button, ClutterActor *old_bg)
       priv->old_bg = NULL;
     }
 
-  bg_image = nbtk_widget_get_border_image (NBTK_WIDGET (button));
+  bg_image = mx_widget_get_border_image (MX_WIDGET (button));
   if (!bg_image)
     return;
 
-  icon = nbtk_widget_get_background_image (NBTK_WIDGET (button));
+  icon = mx_widget_get_background_image (MX_WIDGET (button));
 
   if (!icon)
-    icon = nbtk_bin_get_child (NBTK_BIN (button));
+    icon = mx_bin_get_child (MX_BIN (button));
 
   if (icon)
     g_object_set (G_OBJECT (icon),
                   "scale-gravity", CLUTTER_GRAVITY_CENTER,
                   NULL);
 
+#if 0
+  /* MX FIXME */
   g_object_get (button, "transition-duration", &duration, NULL);
+#endif
 
   if (!g_strcmp0 (pseudo_class, "hover"))
     {
@@ -239,7 +242,7 @@ mnb_toolbar_button_press (ClutterActor *actor, ClutterButtonEvent *event)
 #if 0
   /* Disable until a more complete solution is ready */
   /* don't react to button press when already active */
-  if (nbtk_button_get_checked (NBTK_BUTTON (actor)))
+  if (mx_button_get_checked (MX_BUTTON (actor)))
     return TRUE;
   else
 #endif
@@ -251,7 +254,7 @@ static gboolean
 mnb_toolbar_button_enter (ClutterActor *actor, ClutterCrossingEvent *event)
 {
   /* don't show a tooltip when the button is "checked" */
-  if (nbtk_button_get_checked (NBTK_BUTTON (actor)))
+  if (mx_button_get_checked (MX_BUTTON (actor)))
     return TRUE;
   else
     return CLUTTER_ACTOR_CLASS (mnb_toolbar_button_parent_class)->enter_event (actor,
@@ -290,15 +293,15 @@ mnb_toolbar_button_hide (ClutterActor *actor)
   /*
    * Clear any left over hover state (MB#5518)
    */
-  nbtk_widget_set_style_pseudo_class ((NbtkWidget*) actor, NULL);
+  mx_widget_set_style_pseudo_class ((MxWidget*) actor, NULL);
 }
 
 static void
 mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  NbtkWidgetClass *widget_class  = NBTK_WIDGET_CLASS (klass);
-  NbtkButtonClass *button_class  = NBTK_BUTTON_CLASS (klass);
+  MxWidgetClass *widget_class  = MX_WIDGET_CLASS (klass);
+  MxButtonClass *button_class  = MX_BUTTON_CLASS (klass);
   GObjectClass    *gobject_class = G_OBJECT_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbToolbarButtonPrivate));
@@ -311,11 +314,15 @@ mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
   actor_class->unmap              = mnb_toolbar_button_unmap;
   actor_class->hide               = mnb_toolbar_button_hide;
 
+#if 0
+  /*
+   * MX FIXME
+   */
   button_class->transition        = mnb_toolbar_button_transition;
-
+#endif
   gobject_class->dispose          = mnb_toolbar_button_dispose;
 
-  widget_class->draw_background   = mnb_toolbar_button_paint_background;
+  widget_class->paint_background  = mnb_toolbar_button_paint_background;
 }
 
 static void
@@ -323,10 +330,13 @@ mnb_toolbar_button_init (MnbToolbarButton *self)
 {
   self->priv = MNB_TOOLBAR_BUTTON_GET_PRIVATE (self);
 
+#if 0
+  /* MX FIXME */
   g_object_set (self, "transition-duration", 500, NULL);
+#endif
 }
 
-NbtkWidget*
+ClutterActor*
 mnb_toolbar_button_new (void)
 {
   return g_object_new (MNB_TYPE_TOOLBAR_BUTTON, NULL);

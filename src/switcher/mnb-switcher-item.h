@@ -25,7 +25,7 @@
 #ifndef _MNB_SWITCHER_ITEM
 #define _MNB_SWITCHER_ITEM
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include "mnb-switcher.h"
 
 G_BEGIN_DECLS
@@ -33,7 +33,7 @@ G_BEGIN_DECLS
 /*
  * MnbSwitcherItem
  *
- * An abstract NbtkBin subclass represening a single navigable item in the switcher.
+ * An abstract MxFrame subclass represening a single navigable item in the switcher.
  *
  */
 #define MNB_TYPE_SWITCHER_ITEM                 (mnb_switcher_item_get_type ())
@@ -50,7 +50,7 @@ typedef struct _MnbSwitcherItemClass   MnbSwitcherItemClass;
 struct _MnbSwitcherItem
 {
   /*< private >*/
-  NbtkBin parent_instance;
+  MxFrame parent_instance;
 
   MnbSwitcherItemPrivate *priv;
 };
@@ -58,7 +58,7 @@ struct _MnbSwitcherItem
 struct _MnbSwitcherItemClass
 {
   /*< private >*/
-  NbtkBinClass parent_class;
+  MxFrameClass parent_class;
 
   const gchar * (*active_style) (MnbSwitcherItem *item);
   gboolean      (*activate)     (MnbSwitcherItem *item);

@@ -28,7 +28,7 @@
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"
 
-G_DEFINE_TYPE (MnbNotification, mnb_notification, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (MnbNotification, mnb_notification, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
@@ -51,12 +51,12 @@ enum {
 static guint signals[N_SIGNALS] = {0};
 
 struct _MnbNotificationPrivate {
-  NbtkWidget   *body;
-  NbtkWidget   *summary;
+  ClutterActor   *body;
+  ClutterActor   *summary;
   ClutterActor *icon;
-  NbtkWidget   *dismiss_button;
-  NbtkWidget   *button_box;
-  NbtkWidget   *title_box;
+  ClutterActor *dismiss_button;
+  ClutterActor *button_box;
+  ClutterActor *title_box;
 
   guint         id;
 
@@ -201,26 +201,26 @@ mnb_notification_init (MnbNotification *self)
 
   priv = self->priv = GET_PRIVATE (self);
 
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (self), "Notification");
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 8);
+  mx_widget_set_style_class_name (MX_WIDGET (self), "Notification");
+  mx_table_set_col_spacing (MX_TABLE (self), 4);
+  mx_table_set_row_spacing (MX_TABLE (self), 8);
 
-  priv->dismiss_button = nbtk_button_new ();
+  priv->dismiss_button = mx_button_new ();
   priv->icon           = g_object_ref_sink (clutter_texture_new ());
-  priv->body           = nbtk_label_new ("");
-  priv->summary        = nbtk_label_new ("");
-  priv->title_box      = nbtk_table_new ();
+  priv->body           = mx_label_new ("");
+  priv->summary        = mx_label_new ("");
+  priv->title_box      = mx_table_new ();
 
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->title_box), 4);
-  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->title_box), 0, 0);
+  mx_table_set_col_spacing (MX_TABLE (priv->title_box), 4);
+  mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->title_box), 0, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->title_box),
                                "y-expand", FALSE,
                                "x-expand", TRUE,
                                NULL);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->title_box), priv->icon, 0, 0);
+  mx_table_add_actor (MX_TABLE (priv->title_box), priv->icon, 0, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
                                CLUTTER_ACTOR (priv->icon),
                                "y-expand", FALSE,
@@ -230,11 +230,11 @@ mnb_notification_init (MnbNotification *self)
                                "y-fill", FALSE,
                                NULL);
 
-  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->summary)));
+  txt = CLUTTER_TEXT(mx_label_get_clutter_text(MX_LABEL(priv->summary)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->title_box), CLUTTER_ACTOR (priv->summary), 0, 1);
+  mx_table_add_actor (MX_TABLE (priv->title_box), CLUTTER_ACTOR (priv->summary), 0, 1);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
                                CLUTTER_ACTOR (priv->summary),
                                "y-expand", TRUE,
@@ -245,9 +245,9 @@ mnb_notification_init (MnbNotification *self)
                                "x-fill", FALSE,
                                NULL);
 
-  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
+  mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
 
-  txt = CLUTTER_TEXT(nbtk_label_get_clutter_text(NBTK_LABEL(priv->body)));
+  txt = CLUTTER_TEXT(mx_label_get_clutter_text(MX_LABEL(priv->body)));
   clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
   clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
@@ -259,13 +259,13 @@ mnb_notification_init (MnbNotification *self)
                                "x-expand", FALSE,
                                NULL);
 
-  nbtk_button_set_label (NBTK_BUTTON (priv->dismiss_button), _("Dismiss"));
+  mx_button_set_label (MX_BUTTON (priv->dismiss_button), _("Dismiss"));
 
   /* create the box for the buttons */
-  priv->button_box = nbtk_grid_new ();
-  nbtk_grid_set_end_align (NBTK_GRID (priv->button_box), TRUE);
-  nbtk_grid_set_column_gap (NBTK_GRID (priv->button_box), 7);
-  nbtk_table_add_actor (NBTK_TABLE (self), CLUTTER_ACTOR (priv->button_box),
+  priv->button_box = mx_grid_new ();
+  mx_grid_set_end_align (MX_GRID (priv->button_box), TRUE);
+  mx_grid_set_column_spacing (MX_GRID (priv->button_box), 7);
+  mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->button_box),
                         2, 0);
 
   /* add the dismiss button to the button box */
@@ -275,14 +275,14 @@ mnb_notification_init (MnbNotification *self)
   g_signal_connect (priv->dismiss_button, "clicked",
                     G_CALLBACK (on_dismiss_click), self);
 
-  nbtk_widget_set_style_class_name (priv->summary,
+  mx_widget_set_style_class_name (MX_WIDGET (priv->summary),
                                     "NotificationSummary");
-  nbtk_widget_set_style_class_name (priv->body,
+  mx_widget_set_style_class_name (MX_WIDGET (priv->body),
                                     "NotificationBody");
 
 }
 
-NbtkWidget*
+ClutterActor*
 mnb_notification_new (void)
 {
   return g_object_new (MNB_TYPE_NOTIFICATION,
@@ -307,10 +307,10 @@ mnb_notification_update (MnbNotification *notification,
   priv->timeout = details->timeout_ms;
 
   if (details->summary)
-    nbtk_label_set_text (NBTK_LABEL(priv->summary), details->summary);
+    mx_label_set_text (MX_LABEL(priv->summary), details->summary);
 
   if (details->body)
-    nbtk_label_set_text (NBTK_LABEL(priv->body), details->body);
+    mx_label_set_text (MX_LABEL(priv->body), details->body);
 
   if (details->icon_pixbuf)
     {
@@ -357,7 +357,7 @@ mnb_notification_update (MnbNotification *notification,
     }
   else if (!clutter_actor_get_parent (priv->icon))
     {
-      nbtk_table_add_actor (NBTK_TABLE (priv->title_box), priv->icon, 0, 0);
+      mx_table_add_actor (MX_TABLE (priv->title_box), priv->icon, 0, 0);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
                                    CLUTTER_ACTOR (priv->icon),
                                    "y-expand", FALSE,
@@ -395,15 +395,15 @@ mnb_notification_update (MnbNotification *notification,
           if (strcasecmp(key, "default") != 0)
             {
               ActionData *data;
-              NbtkWidget *button;
+              ClutterActor *button;
 
               data = g_slice_new (ActionData);
               data->notification = notification;
               data->action = g_strdup (key);
 
-              button = nbtk_button_new ();
+              button = mx_button_new ();
 
-              nbtk_button_set_label (NBTK_BUTTON (button), value);
+              mx_button_set_label (MX_BUTTON (button), value);
 
               clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
                                            CLUTTER_ACTOR (button));
@@ -418,12 +418,12 @@ mnb_notification_update (MnbNotification *notification,
 
   if (details->is_urgent)
     {
-      nbtk_widget_set_style_class_name (priv->summary,
+      mx_widget_set_style_class_name (MX_WIDGET (priv->summary),
                                         "NotificationSummaryUrgent");
     }
   else
     {
-      nbtk_widget_set_style_class_name (priv->summary,
+      mx_widget_set_style_class_name (MX_WIDGET (priv->summary),
                                         "NotificationSummary");
     }
 }

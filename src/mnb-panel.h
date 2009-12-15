@@ -84,7 +84,7 @@ typedef struct {
   void          (*get_position)        (MnbPanel *panel,
                                         gint     *x,
                                         gint     *y);
-  void          (*set_button)          (MnbPanel *panel, NbtkButton *button);
+  void          (*set_button)          (MnbPanel *panel, MxButton *button);
 } MnbPanelIface;
 
 GType mnb_panel_get_type (void);
@@ -113,7 +113,7 @@ gboolean         mnb_panel_is_mapped         (MnbPanel *panel);
 gboolean         mnb_panel_is_modal          (MnbPanel *panel);
 
 void             mnb_panel_set_button        (MnbPanel   *panel,
-                                              NbtkButton *button);
+                                              MxButton *button);
 
 void             mnb_panel_ensure_size       (MnbPanel *panel);
 

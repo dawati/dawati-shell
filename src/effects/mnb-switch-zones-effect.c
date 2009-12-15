@@ -54,7 +54,7 @@ static MutterPlugin     *plugin         = NULL;
 static gint              screen_width   = 0;
 static gint              screen_height  = 0;
 
-static void fill_strip (MutterPlugin*, NbtkTable*, gint, gint);
+static void fill_strip (MutterPlugin*, MxTable*, gint, gint);
 
 /*
  * Release the ClutterClone actors we use for the effect.
@@ -195,14 +195,14 @@ on_zoom_out_animation_completed (ClutterAnimation *anim, gpointer data)
  *
  * The effect is constructed of there layers of actors:
  *
- * desktop: this is the top level container for the effect; a NbtkBin with the
+ * desktop: this is the top level container for the effect; a MxBin with the
  *          *#zone-switch-background style.
  *
  * frame:   this is a window onto the desktop; this actor has the zoom effects
  *          applied to (it needs to be separate from the desktop, so that as we
  *          zoom the desktop background remains full screen).
  *
- * strip:   this an NbtkTable with a single row that contains the individual
+ * strip:   this an MxTable with a single row that contains the individual
  *          desktop thumbnails. Its position within the frame determines what
  *          what user sees; the strip has the motion part of the effect applied
  *          to it.
@@ -245,15 +245,15 @@ mnb_switch_zones_effect (MutterPlugin         *plug,
       ClutterActor *stage  = mutter_get_stage_for_screen (screen);
       ClutterActor *window_group;
 
-      desktop = CLUTTER_ACTOR (nbtk_bin_new ());
+      desktop = CLUTTER_ACTOR (mx_frame_new ());
       clutter_actor_set_name (desktop, "zone-switch-background");
       clutter_actor_set_size (desktop, screen_width, screen_height);
 
-      strip = CLUTTER_ACTOR (nbtk_table_new ());
+      strip = CLUTTER_ACTOR (mx_table_new ());
 
       clutter_actor_set_name (strip, "zone-switch-strip");
 
-      nbtk_table_set_col_spacing (NBTK_TABLE (strip), MNBZE_PAD);
+      mx_table_set_col_spacing (MX_TABLE (strip), MNBZE_PAD);
 
       frame = clutter_group_new ();
 
@@ -278,7 +278,7 @@ mnb_switch_zones_effect (MutterPlugin         *plug,
   /*
    * Construct the strip.
    */
-  fill_strip (plugin, NBTK_TABLE (strip), screen_width, screen_height);
+  fill_strip (plugin, MX_TABLE (strip), screen_width, screen_height);
 
   /*
    * Position the strip so that the current desktop is in the frame window.
@@ -421,7 +421,7 @@ mnb_switch_zones_effect (MutterPlugin         *plug,
 
 /*
  * Constructs the desktop thumbnails. At present these are just ClutterGroups,
- * we will probably want to wrap these in NbtkBin so they can be themed.
+ * we will probably want to wrap these in MxBin so they can be themed.
  */
 static ClutterActor *
 make_nth_workspace (MutterPlugin  *plugin,
@@ -513,7 +513,7 @@ clone_weak_notify (gpointer data, GObject *object)
  */
 static void
 fill_strip (MutterPlugin *plugin,
-            NbtkTable    *strip,
+            MxTable    *strip,
             gint          screen_width,
             gint          screen_height)
 {
@@ -580,7 +580,7 @@ fill_strip (MutterPlugin *plugin,
     {
       ClutterActor  *ws = l->data;
 
-      nbtk_table_add_actor (strip, ws, 0, ws_count);
+      mx_table_add_actor (strip, ws, 0, ws_count);
 
       ++ws_count;
       l = l->next;

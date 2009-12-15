@@ -26,7 +26,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 #include "moblin-netbook-notify-store.h"
 
@@ -52,13 +52,13 @@ G_BEGIN_DECLS
 typedef struct _MnbNotificationUrgentPrivate MnbNotificationUrgentPrivate;
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
   /*< private >*/
   MnbNotificationUrgentPrivate *priv;
 } MnbNotificationUrgent;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 
   void (*sync_input_region) (MnbNotificationUrgent *urgent);
 

@@ -1,7 +1,7 @@
 #ifndef __MPL_ENTRY_H__
 #define __MPL_ENTRY_H__
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -18,14 +18,14 @@ typedef struct _MplEntryClass     MplEntryClass;
 
 struct _MplEntry
 {
-  NbtkBin parent_instance;
+  MxFrame parent_instance;
 
   MplEntryPrivate *priv;
 };
 
 struct _MplEntryClass
 {
-  NbtkBinClass parent_class;
+  MxFrameClass parent_class;
 
   /* Signals. */
   void (* button_clicked) (MplEntry *self);
@@ -35,7 +35,7 @@ struct _MplEntryClass
 
 GType mpl_entry_get_type (void) G_GNUC_CONST;
 
-NbtkWidget *  mpl_entry_new       (const char   *label);
+MxWidget *  mpl_entry_new       (const char   *label);
 
 const gchar * mpl_entry_get_label (MplEntry     *self);
 void          mpl_entry_set_label (MplEntry     *self,
@@ -45,7 +45,7 @@ const gchar * mpl_entry_get_text  (MplEntry     *self);
 void          mpl_entry_set_text  (MplEntry     *self,
                                    const gchar  *text);
 
-NbtkWidget * mpl_entry_get_nbtk_entry  (MplEntry     *self);
+MxWidget * mpl_entry_get_mx_entry  (MplEntry     *self);
 
 G_END_DECLS
 

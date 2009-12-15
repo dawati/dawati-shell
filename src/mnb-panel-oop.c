@@ -130,7 +130,7 @@ struct _MnbPanelOopPrivate
   gboolean         dont_hide_toolbar : 1;
   gboolean         delayed_show      : 1;
 
-  NbtkButton      *button;
+  MxButton      *button;
 
   gulong           show_completed_id;
   gulong           hide_completed_id;
@@ -1186,8 +1186,8 @@ mnb_panel_oop_show_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
 
   if (priv->button)
     {
-      if (!nbtk_button_get_checked (priv->button))
-        nbtk_button_set_checked (priv->button, TRUE);
+      if (!mx_button_get_checked (priv->button))
+        mx_button_set_checked (priv->button, TRUE);
     }
 
   g_signal_emit_by_name (panel, "show-completed");
@@ -1379,8 +1379,8 @@ mnb_panel_oop_hide_animate (MnbPanelOop *panel, MutterWindow *mcw)
 
       if (priv->button)
         {
-          if (nbtk_button_get_checked (priv->button))
-            nbtk_button_set_checked (priv->button, FALSE);
+          if (mx_button_get_checked (priv->button))
+            mx_button_set_checked (priv->button, FALSE);
         }
     }
 
@@ -1392,8 +1392,8 @@ mnb_panel_oop_hide_animate (MnbPanelOop *panel, MutterWindow *mcw)
       /* hide is hooked into the notify::checked signal from the button, so
        * make sure we don't get into a loop by checking checked first
        */
-      if (nbtk_button_get_checked (priv->button))
-        nbtk_button_set_checked (priv->button, FALSE);
+      if (mx_button_get_checked (priv->button))
+        mx_button_set_checked (priv->button, FALSE);
     }
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,
@@ -1459,12 +1459,12 @@ mnb_panel_oop_button_weak_unref_cb (MnbPanelOop *panel, GObject *button)
 }
 
 static void
-mnb_panel_oop_set_button (MnbPanel *panel, NbtkButton *button)
+mnb_panel_oop_set_button (MnbPanel *panel, MxButton *button)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
-  NbtkButton         *old_button;
+  MxButton         *old_button;
 
-  g_return_if_fail (!button || NBTK_IS_BUTTON (button));
+  g_return_if_fail (!button || MX_IS_BUTTON (button));
 
   old_button = priv->button;
   priv->button = button;

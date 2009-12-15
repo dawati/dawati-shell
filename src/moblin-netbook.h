@@ -27,7 +27,7 @@
 
 #include <gconf/gconf-client.h>
 #include <mutter-plugin.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>

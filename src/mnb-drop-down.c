@@ -35,7 +35,7 @@ static void mnb_panel_iface_init (MnbPanelIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MnbDropDown,
                          mnb_drop_down,
-                         NBTK_TYPE_TABLE,
+                         MX_TYPE_TABLE,
                          G_IMPLEMENT_INTERFACE (MNB_TYPE_PANEL,
                                                 mnb_panel_iface_init));
 
@@ -53,7 +53,7 @@ struct _MnbDropDownPrivate {
 
   ClutterActor *child;
   ClutterActor *footer;
-  NbtkButton *button;
+  MxButton *button;
   gint x;
   gint y;
 
@@ -136,8 +136,8 @@ mnb_drop_down_show_completed_cb (ClutterAnimation *anim, ClutterActor *actor)
 
   if (priv->button)
     {
-      if (!nbtk_button_get_checked (priv->button))
-        nbtk_button_set_checked (priv->button, TRUE);
+      if (!mx_button_get_checked (priv->button))
+        mx_button_set_checked (priv->button, TRUE);
     }
 
   g_signal_emit_by_name (actor, "show-completed");
@@ -281,8 +281,8 @@ mnb_drop_down_hide (ClutterActor *actor)
 
       if (priv->button)
         {
-          if (nbtk_button_get_checked (priv->button))
-            nbtk_button_set_checked (priv->button, FALSE);
+          if (mx_button_get_checked (priv->button))
+            mx_button_set_checked (priv->button, FALSE);
         }
     }
 
@@ -294,8 +294,8 @@ mnb_drop_down_hide (ClutterActor *actor)
       /* hide is hooked into the notify::checked signal from the button, so
        * make sure we don't get into a loop by checking checked first
        */
-      if (nbtk_button_get_checked (priv->button))
-        nbtk_button_set_checked (priv->button, FALSE);
+      if (mx_button_get_checked (priv->button))
+        mx_button_set_checked (priv->button, FALSE);
     }
 
   if (!priv->child)
@@ -400,12 +400,12 @@ mnb_drop_down_constructed (GObject *object)
 {
 #if 0
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (object)->priv;
-  NbtkWidget         *footer;
+  ClutterActor       *footer;
 
   /* footer with "up" button */
-  footer = nbtk_button_new ();
-  nbtk_widget_set_style_class_name (footer, "drop-down-footer");
-  nbtk_table_add_actor (NBTK_TABLE (object), CLUTTER_ACTOR (footer), 1, 0);
+  footer = mx_button_new ();
+  mx_widget_set_style_class_name (MX_WIDGET (footer), "drop-down-footer");
+  mx_table_add_actor (MX_TABLE (object), CLUTTER_ACTOR (footer), 1, 0);
   g_signal_connect_swapped (footer, "clicked",
                             G_CALLBACK (mnb_panel_hide_with_toolbar), object);
 
@@ -456,7 +456,7 @@ mnb_drop_down_init (MnbDropDown *self)
                 NULL);
 }
 
-NbtkWidget*
+MxWidget*
 mnb_drop_down_new (MutterPlugin *plugin)
 {
   return g_object_new (MNB_TYPE_DROP_DOWN,
@@ -512,7 +512,7 @@ mnb_drop_down_set_child (MnbDropDown *drop_down,
         g_signal_connect (child, "parent-set",
                           G_CALLBACK (mnb_drop_down_reparent_cb),
                           drop_down);
-      nbtk_table_add_actor (NBTK_TABLE (drop_down), child, 0, 0);
+      mx_table_add_actor (MX_TABLE (drop_down), child, 0, 0);
     }
 
   priv->child = child;
@@ -533,13 +533,13 @@ mnb_drop_down_button_weak_unref_cb (MnbDropDown *drop_down, GObject *button)
 }
 
 static void
-mnb_drop_down_panel_set_button (MnbPanel *panel, NbtkButton *button)
+mnb_drop_down_panel_set_button (MnbPanel *panel, MxButton *button)
 {
   MnbDropDown *drop_down = MNB_DROP_DOWN (panel);
-  NbtkButton  *old_button;
+  MxButton  *old_button;
 
   g_return_if_fail (MNB_IS_DROP_DOWN (drop_down));
-  g_return_if_fail (!button || NBTK_IS_BUTTON (button));
+  g_return_if_fail (!button || MX_IS_BUTTON (button));
 
   old_button = drop_down->priv->button;
   drop_down->priv->button = button;

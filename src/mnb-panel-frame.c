@@ -25,7 +25,7 @@
 
 #include "mnb-panel-frame.h"
 
-G_DEFINE_TYPE (MnbPanelFrame, mnb_panel_frame, NBTK_TYPE_WIDGET);
+G_DEFINE_TYPE (MnbPanelFrame, mnb_panel_frame, MX_TYPE_WIDGET);
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PANEL_FRAME, MnbPanelFramePrivate))
@@ -104,7 +104,7 @@ mnb_panel_frame_finalize (GObject *object)
 
 #if 0
 static void
-mnb_panel_frame_footer_clicked_cb (NbtkButton *button, MnbPanelFrame *frame)
+mnb_panel_frame_footer_clicked_cb (MxButton *button, MnbPanelFrame *frame)
 {
   g_object_ref (frame);
   g_signal_emit (frame, signals[FOOTER_CLICKED], 0);
@@ -117,18 +117,18 @@ mnb_panel_frame_constructed (GObject *object)
 {
 #if 0
   MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (object)->priv;
-  NbtkWidget         *footer;
+  ClutterActor         *footer;
 
   /* footer with "up" button */
-  footer = nbtk_button_new ();
-  nbtk_widget_set_style_class_name (footer, "drop-down-footer");
+  footer = mx_button_new ();
+  mx_widget_set_style_class_name (MX_WIDGET (footer), "drop-down-footer");
 
   clutter_actor_set_parent ((ClutterActor*)footer, CLUTTER_ACTOR (object));
 
   g_signal_connect (footer, "clicked",
                     G_CALLBACK (mnb_panel_frame_footer_clicked_cb), object);
 
-  priv->footer = CLUTTER_ACTOR (footer);
+  priv->footer = footer;
 #endif
 }
 
@@ -145,9 +145,9 @@ mnb_panel_frame_allocate (ClutterActor          *self,
   MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (self)->priv;
   gfloat                min_height, natural_height;
   ClutterActorBox allocation = { 0, };
-  NbtkPadding     padding = { 0, };
+  MxPadding     padding = { 0, };
 
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
 
   clutter_actor_get_preferred_height (priv->footer, -1,
                                       &min_height,
@@ -170,9 +170,9 @@ mnb_panel_frame_get_preferred_width (ClutterActor *self,
 {
   gfloat      min_width, natural_width;
   gfloat      available_height;
-  NbtkPadding padding = { 0, };
+  MxPadding padding = { 0, };
 
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
 
   available_height = for_height - padding.top - padding.bottom;
 
@@ -193,9 +193,9 @@ mnb_panel_frame_get_preferred_height (ClutterActor *self,
 {
   gfloat      min_height, natural_height;
   gfloat      available_width;
-  NbtkPadding padding = { 0, };
+  MxPadding padding = { 0, };
 
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
 
   available_width = for_width - padding.left - padding.right;
 

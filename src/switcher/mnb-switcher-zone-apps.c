@@ -47,12 +47,12 @@ enum
   ZONE_PROP_ENABLED
 };
 
-static void nbtk_droppable_iface_init (NbtkDroppableIface *iface);
+static void mx_droppable_iface_init (MxDroppableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MnbSwitcherZoneApps, mnb_switcher_zone_apps,
                          MNB_TYPE_SWITCHER_ZONE,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_DROPPABLE,
-                                                nbtk_droppable_iface_init));
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_DROPPABLE,
+                                                mx_droppable_iface_init));
 
 #define MNB_SWITCHER_ZONE_APPS_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_ZONE_APPS,\
@@ -99,8 +99,8 @@ mnb_switcher_zone_apps_get_preferred_width (ClutterActor *actor,
  * D&D machinery
  */
 static void
-mnb_switcher_zone_apps_over_in (NbtkDroppable *droppable,
-                                NbtkDraggable *draggable)
+mnb_switcher_zone_apps_over_in (MxDroppable *droppable,
+                                MxDraggable *draggable)
 {
   MnbSwitcherZone            *zone = MNB_SWITCHER_ZONE (droppable);
   MnbSwitcherZoneAppsPrivate *priv = MNB_SWITCHER_ZONE_APPS (droppable)->priv;
@@ -112,8 +112,8 @@ mnb_switcher_zone_apps_over_in (NbtkDroppable *droppable,
 }
 
 static void
-mnb_switcher_zone_apps_over_out (NbtkDroppable *droppable,
-                                 NbtkDraggable *draggable)
+mnb_switcher_zone_apps_over_out (MxDroppable *droppable,
+                                 MxDraggable *draggable)
 {
   MnbSwitcherZone            *zone = MNB_SWITCHER_ZONE (droppable);
   MnbSwitcherZoneAppsPrivate *priv = MNB_SWITCHER_ZONE_APPS (droppable)->priv;
@@ -128,8 +128,8 @@ mnb_switcher_zone_apps_over_out (NbtkDroppable *droppable,
  * D&D drop handler
  */
 static void
-mnb_switcher_zone_apps_drop (NbtkDroppable       *droppable,
-                             NbtkDraggable       *draggable,
+mnb_switcher_zone_apps_drop (MxDroppable       *droppable,
+                             MxDraggable       *draggable,
                              gfloat               event_x,
                              gfloat               event_y,
                              gint                 button,
@@ -145,7 +145,7 @@ mnb_switcher_zone_apps_drop (NbtkDroppable       *droppable,
   MetaWindow                 *meta_win;
   guint32                     timestamp;
   gint                        row;
-  NbtkTable                  *content_area;
+  MxTable                  *content_area;
 
   mcw      = mnb_switcher_app_get_window (app);
   meta_win = mutter_window_get_meta_window (mcw);
@@ -179,7 +179,7 @@ mnb_switcher_zone_apps_drop (NbtkDroppable       *droppable,
     }
 
   content_area = mnb_switcher_zone_get_content_area (zone);
-  row          = nbtk_table_get_row_count (content_area);
+  row          = mx_table_get_row_count (content_area);
   parent       = clutter_actor_get_parent (app_actor);
 
   /*
@@ -189,7 +189,7 @@ mnb_switcher_zone_apps_drop (NbtkDroppable       *droppable,
   g_object_ref (draggable);
   clutter_container_remove_actor (CLUTTER_CONTAINER (parent), app_actor);
   clutter_actor_set_size (app_actor, -1.0, -1.0);
-  nbtk_table_add_actor (content_area, app_actor, row, 0);
+  mx_table_add_actor (content_area, app_actor, row, 0);
 
   clutter_container_child_set (CLUTTER_CONTAINER (content_area), app_actor,
                                "y-fill", FALSE, "x-fill", FALSE,  NULL);
@@ -208,7 +208,7 @@ mnb_switcher_zone_apps_drop (NbtkDroppable       *droppable,
 }
 
 static void
-nbtk_droppable_iface_init (NbtkDroppableIface *iface)
+mx_droppable_iface_init (MxDroppableIface *iface)
 {
   iface->over_in  = mnb_switcher_zone_apps_over_in;
   iface->over_out = mnb_switcher_zone_apps_over_out;
@@ -228,9 +228,9 @@ mnb_switcher_zone_apps_set_property (GObject      *gobject,
     case ZONE_PROP_ENABLED:
       priv->enabled = g_value_get_boolean (value);
       if (priv->enabled)
-        nbtk_droppable_enable (NBTK_DROPPABLE (gobject));
+        mx_droppable_enable (MX_DROPPABLE (gobject));
       else
-        nbtk_droppable_disable (NBTK_DROPPABLE (gobject));
+        mx_droppable_disable (MX_DROPPABLE (gobject));
       break;
 
     default:
@@ -273,7 +273,7 @@ mnb_switcher_zone_apps_append_window (MnbSwitcherZoneApps *zone,
                                       gboolean             ignore_focus,
                                       gboolean             enable_dnd)
 {
-  NbtkTable      *table;
+  MxTable      *table;
   gint            row;
   MnbSwitcherApp *app;
   MnbSwitcher    *switcher;
@@ -297,9 +297,9 @@ mnb_switcher_zone_apps_append_window (MnbSwitcherZoneApps *zone,
         }
     }
 
-  row = nbtk_table_get_row_count (table);
+  row = mx_table_get_row_count (table);
 
-  nbtk_table_add_actor (table, CLUTTER_ACTOR (app), row, 0);
+  mx_table_add_actor (table, CLUTTER_ACTOR (app), row, 0);
 
   /*
    * Enable d&d
@@ -392,7 +392,7 @@ mnb_switcher_zone_apps_actor_removed_cb (ClutterContainer    *content_area,
 {
   gint  *indices;
   gint   i, missing = -1;
-  gint   row_count = nbtk_table_get_row_count (NBTK_TABLE (content_area));
+  gint   row_count = mx_table_get_row_count (MX_TABLE (content_area));
   GList *children  = clutter_container_get_children (content_area);
   GList *l;
 
@@ -444,7 +444,7 @@ mnb_switcher_zone_apps_constructed (GObject *self)
 {
   MnbSwitcherZoneApps        *zone = MNB_SWITCHER_ZONE_APPS (self);
   MnbSwitcherZoneAppsPrivate *priv = zone->priv;
-  NbtkTable                  *table;
+  MxTable                  *table;
 
   if (G_OBJECT_CLASS (mnb_switcher_zone_apps_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_switcher_zone_apps_parent_class)->constructed (self);
@@ -455,12 +455,12 @@ mnb_switcher_zone_apps_constructed (GObject *self)
                     G_CALLBACK (mnb_switcher_zone_apps_actor_removed_cb),
                     self);
 
-  nbtk_table_set_row_spacing (NBTK_TABLE (table), 6);
-  nbtk_table_set_col_spacing (NBTK_TABLE (table), 6);
+  mx_table_set_row_spacing (MX_TABLE (table), 6);
+  mx_table_set_col_spacing (MX_TABLE (table), 6);
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
   priv->empty_label =
-    (ClutterActor*)nbtk_label_new (_("No applications on this zone"));
+    (ClutterActor*)mx_label_new (_("No applications on this zone"));
   g_object_ref_sink (priv->empty_label);
 }
 
@@ -676,7 +676,7 @@ mnb_switcher_zone_apps_check_if_empty (MnbSwitcherZoneApps *zone)
   MnbSwitcherZoneAppsPrivate *priv = zone->priv;
   GList *l, *o;
   gboolean empty = TRUE;
-  NbtkTable *table;
+  MxTable *table;
 
   table = mnb_switcher_zone_get_content_area ((MnbSwitcherZone*)zone);
 
@@ -698,10 +698,10 @@ mnb_switcher_zone_apps_check_if_empty (MnbSwitcherZoneApps *zone)
       mnb_switcher_zone_set_has_items ((MnbSwitcherZone*)zone, FALSE);
       if (!clutter_actor_get_parent (priv->empty_label))
         {
-          NbtkTable *table;
+          MxTable *table;
 
           table = mnb_switcher_zone_get_content_area ((MnbSwitcherZone*)zone);
-          nbtk_table_add_actor (table, priv->empty_label, 0, 0);
+          mx_table_add_actor (table, priv->empty_label, 0, 0);
         }
     }
   else
@@ -724,7 +724,7 @@ mnb_switcher_zone_apps_activate_window (MnbSwitcherZoneApps *zone,
                                         MutterWindow        *mcw)
 {
   GList           *l, *o;
-  NbtkTable       *table;
+  MxTable       *table;
   MnbSwitcherItem *item = NULL;
 
   table = mnb_switcher_zone_get_content_area ((MnbSwitcherZone*)zone);

@@ -26,7 +26,7 @@
 #define _MNB_TOOLBAR_BUTTON
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -50,19 +50,19 @@ G_BEGIN_DECLS
 typedef struct _MnbToolbarButtonPrivate MnbToolbarButtonPrivate;
 
 typedef struct {
-  NbtkButton parent;
+  MxButton parent;
 
   /*< private >*/
   MnbToolbarButtonPrivate *priv;
 } MnbToolbarButton;
 
 typedef struct {
-  NbtkButtonClass parent_class;
+  MxButtonClass parent_class;
 } MnbToolbarButtonClass;
 
 GType mnb_toolbar_button_get_type (void);
 
-NbtkWidget* mnb_toolbar_button_new (void);
+ClutterActor* mnb_toolbar_button_new (void);
 void mnb_toolbar_button_set_reactive_area (MnbToolbarButton  *button, gint x, gint y, gint width, gint height);
 
 G_END_DECLS

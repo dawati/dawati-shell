@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <moblin-panel/mpl-entry.h>
 
 static void
@@ -41,12 +41,12 @@ keynav_cb (ClutterActor *actor,
 int
 main (int argc, char *argv[])
 {
-  NbtkWidget *entry;
+  MxWidget *entry;
   ClutterActor *stage;
 
   clutter_init (&argc, &argv);
 
-  nbtk_style_load_from_file (nbtk_style_get_default (),
+  mx_style_load_from_file (mx_style_get_default (),
                              "../theme/theme.css", NULL);
 
   stage = clutter_stage_get_default ();

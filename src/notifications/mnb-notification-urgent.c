@@ -29,7 +29,7 @@
 
 G_DEFINE_TYPE (MnbNotificationUrgent,   \
                mnb_notification_urgent, \
-               NBTK_TYPE_WIDGET)
+               MX_TYPE_WIDGET)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
@@ -43,7 +43,7 @@ static void last_focused_weak_notify (gpointer data, GObject *object);
 
 struct _MnbNotificationUrgentPrivate {
   ClutterGroup *notifiers;
-  NbtkWidget   *active;
+  ClutterActor   *active;
   gint          n_notifiers;
   ClutterActor *last_focused;
 };
@@ -269,11 +269,11 @@ id_compare (gconstpointer a, gconstpointer b)
   return mnb_notification_get_id (notification) - find_id;
 }
 
-static NbtkWidget*
+static ClutterActor*
 find_widget (ClutterGroup *container, guint32 id)
 {
   GList *children, *l;
-  NbtkWidget *w;
+  ClutterActor *w;
 
   children = clutter_container_get_children (CLUTTER_CONTAINER(container));
   l = g_list_find_custom (children, GINT_TO_POINTER (id), id_compare);
@@ -356,7 +356,7 @@ on_notification_added (MoblinNetbookNotifyStore *store,
                        MnbNotificationUrgent   *urgent)
 {
   MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (urgent)->priv;
-  NbtkWidget *w;
+  ClutterActor *w;
   MutterPlugin *plugin;
 
   if (!notification->is_urgent)
@@ -431,7 +431,7 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
                         MnbNotificationUrgent *urgent)
 {
   MnbNotificationUrgentPrivate *priv = MNB_NOTIFICATION_URGENT (urgent)->priv;
-  NbtkWidget *w;
+  ClutterActor *w;
 
   w = find_widget (priv->notifiers, id);
 
@@ -446,9 +446,9 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
 
       if (priv->active == NULL && priv->n_notifiers > 0)
         {
-          priv->active = NBTK_WIDGET (
-            clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers),
-                                         0));
+          priv->active =
+            clutter_group_get_nth_child (CLUTTER_GROUP (priv->notifiers), 0);
+
           clutter_actor_show (CLUTTER_ACTOR(priv->active));
         }
       else

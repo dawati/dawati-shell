@@ -25,7 +25,7 @@
 #ifndef _MNB_SWITCHER_APP
 #define _MNB_SWITCHER_APP
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include "mnb-switcher.h"
 #include "mnb-switcher-item.h"
 

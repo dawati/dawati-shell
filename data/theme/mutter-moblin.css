@@ -1,49 +1,49 @@
 /* generic classes */
 
-NbtkEntry:indeterminate {
+MxEntry:indeterminate {
   color: gray;
 }
 
-NbtkScrollView {
+MxScrollView {
   xthickness: 26;
   ythickness: 26;
 }
 
-NbtkScrollBar {
+MxScrollBar {
   background-color: #e7ebee;
   padding: 3;
 }
 
-NbtkScrollBar > *#backward-stepper {
-  border-image: url("file://generic/vscroll-backward.png") 2 4 2 2 stretch stretch;
+MxScrollBar > *#backward-stepper {
+  border-image: url("generic/vscroll-backward.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkScrollBar > *#backward-stepper:active {
-  border-image: url("file://generic/vscroll-backward-hover.png") 2 4 2 2 stretch stretch;
+MxScrollBar > *#backward-stepper:active {
+  border-image: url("generic/vscroll-backward-hover.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkScrollBar > *#forward-stepper {
-  border-image: url("file://generic/vscroll-forward.png") 2 4 2 2 stretch stretch;
+MxScrollBar > *#forward-stepper {
+  border-image: url("generic/vscroll-forward.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkScrollBar > *#forward-stepper:active {
-  border-image: url("file://generic/vscroll-forward-hover.png") 2 4 2 2 stretch stretch;
+MxScrollBar > *#forward-stepper:active {
+  border-image: url("generic/vscroll-forward-hover.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkScrollBar *#handle {
-  border-image: url("file://generic/vscroll-handle.png") 2 4 2 2 stretch stretch;
+MxScrollBar *#handle {
+  border-image: url("generic/vscroll-handle.png") 2 4 2 2 stretch stretch;
 }
 
-NbtkTable {
+MxTable {
   background-color: #f000;
 }
 
-NbtkLabel#time-label {
+MxLabel#time-label {
   color: #c0c0c0;
   font-size: 19px;
 }
 
-NbtkLabel#date-label {
+MxLabel#date-label {
   color: #c0c0c0;
   font-size: 12px;
 }
@@ -55,7 +55,7 @@ MnbSwitcher > *#switcher-table {
 }
 
 MnbToolbar {
-  border-image: url("file://panel/panel-background.png") 0 200 0 200 stretch;
+  border-image: url("panel/panel-background.png") 0 200 0 200 stretch;
 }
 
 MnbToolbarButton {
@@ -63,21 +63,21 @@ MnbToolbarButton {
 }
 
 MnbToolbarButton:checked {
-  border-image: url("file://panel/toolbar-button-active.png") 0 stretch;
+  border-image: url("panel/toolbar-button-active.png") 0 stretch;
 }
 
 MnbToolbarButton:hover, MnbToolbarButton:active {
-  border-image: url("file://panel/toolbar-button-hover.png") 0 stretch;
+  border-image: url("panel/toolbar-button-hover.png") 0 stretch;
 }
 
 /* Toolbar usage hint */
 
-NbtkBin.toolbar-instruction-box {
- border-image: url("file://panel/toolbar-hint.png") 47 6 6 60;
+MxFrame.toolbar-instruction-box {
+ border-image: url("panel/toolbar-hint.png") 47 6 6 60;
  padding: 10 10 30 60;
 }
 
-NbtkLabel.toolbar-instruction-label {
+MxLabel.toolbar-instruction-label {
   font-family: "Droid Sans";
   font-size: 15px;
   color: white;
@@ -85,99 +85,99 @@ NbtkLabel.toolbar-instruction-label {
 
 /* applications button */
 MnbToolbarButton#applications-button {
-  background-image: url("file://panel/apps-normal.png");
+  background-image: url("panel/apps-normal.png");
 }
 
 MnbToolbarButton#applications-button:hover, MnbToolbarButton#applications-button:active, MnbToolbarButton#applications-button:checked  {
-  background-image: url("file://panel/apps-coloured.png");
+  background-image: url("panel/apps-coloured.png");
 }
 
 /* internet button */
 MnbToolbarButton#internet-button {
-  background-image: url("file://panel/internet-normal.png");
+  background-image: url("panel/internet-normal.png");
 }
 MnbToolbarButton#internet-button:hover, MnbToolbarButton#internet-button:active, MnbToolbarButton#internet-button:checked {
-  background-image: url("file://panel/internet-coloured.png");
+  background-image: url("panel/internet-coloured.png");
 }
 
 /* media button */
 MnbToolbarButton#media-button {
-  background-image: url("file://panel/media-normal.png");
+  background-image: url("panel/media-normal.png");
 }
 MnbToolbarButton#media-button:hover, MnbToolbarButton#media-button:active, MnbToolbarButton#media-button:checked {
-  background-image: url("file://panel/media-coloured.png");
+  background-image: url("panel/media-coloured.png");
 }
 
 /* myzone button */
 MnbToolbarButton#myzone-button {
-  background-image: url("file://panel/myzone-normal.png");
+  background-image: url("panel/myzone-normal.png");
 }
 MnbToolbarButton#myzone-button:hover, MnbToolbarButton#myzone-button:active, MnbToolbarButton#myzone-button:checked {
-  background-image: url("file://panel/myzone-coloured.png");
+  background-image: url("panel/myzone-coloured.png");
 }
 
 /* pasteboard button */
 MnbToolbarButton#pasteboard-button {
-  background-image: url("file://panel/pasteboard-normal.png");
+  background-image: url("panel/pasteboard-normal.png");
 }
 MnbToolbarButton#pasteboard-button:hover, MnbToolbarButton#pasteboard-button:active, MnbToolbarButton#pasteboard-button:checked {
-  background-image: url("file://panel/pasteboard-coloured.png");
+  background-image: url("panel/pasteboard-coloured.png");
 }
 
 /* people button */
 MnbToolbarButton#people-button {
-  background-image: url("file://panel/people-normal.png");
+  background-image: url("panel/people-normal.png");
 }
 MnbToolbarButton#people-button:hover, MnbToolbarButton#people-button:active, MnbToolbarButton#people-button:checked {
-  background-image: url("file://panel/people-coloured.png");
+  background-image: url("panel/people-coloured.png");
 }
 
 MnbToolbarButton#people-button-active {
-  background-image: url("file://panel/people-active-normal.png");
+  background-image: url("panel/people-active-normal.png");
 }
 MnbToolbarButton#people-button-active:hover, MnbToolbarButton#people-button-active:active, MnbToolbarButton#people-button-active:checked {
-  background-image: url("file://panel/people-active-coloured.png");
+  background-image: url("panel/people-active-coloured.png");
 }
 
 
 /* spaces button */
 MnbToolbarButton#zones-button {
-  background-image: url("file://panel/spaces-normal.png");
+  background-image: url("panel/spaces-normal.png");
 }
 MnbToolbarButton#zones-button:hover, MnbToolbarButton#zones-button:active, MnbToolbarButton#zones-button:checked {
-  background-image: url("file://panel/spaces-coloured.png");
+  background-image: url("panel/spaces-coloured.png");
 }
 
 /* status button */
 MnbToolbarButton#status-button {
-  background-image: url("file://panel/status-normal.png");
+  background-image: url("panel/status-normal.png");
 }
 MnbToolbarButton#status-button:hover, MnbToolbarButton#status-button:active, MnbToolbarButton#status-button:checked {
-  background-image: url("file://panel/status-coloured.png");
+  background-image: url("panel/status-coloured.png");
 }
 
 /* network button */
 MnbToolbarButton#network-button {
-  background-image: url("file://panel/network-normal.png");
+  background-image: url("panel/network-normal.png");
 }
 MnbToolbarButton#network-button:hover, MnbToolbarButton#network-button:active, MnbToolbarButton#network-button:checked {
-  background-image: url("file://panel/network-coloured.png");
+  background-image: url("panel/network-coloured.png");
 }
 
 /* bluetooth button */
 MnbToolbarButton#bluetooth-button {
-  background-image: url("file://panel/bluetooth-normal.png");
+  background-image: url("panel/bluetooth-normal.png");
 }
 MnbToolbarButton#bluetooth-button:hover, MnbToolbarButton#bluetooth-button:active, MnbToolbarButton#bluetooth-button:checked {
-  background-image: url("file://panel/bluetooth-coloured.png");
+  background-image: url("panel/bluetooth-coloured.png");
 }
 
 /* tooltips */
-NbtkTooltip {
+MxTooltip {
   color: white;
   padding: 4 10 12 10;
-  background-image: url('file://generic/tooltip-arrow.png');
-  border-image: url('file://generic/tooltip-background.png') 4 11 12 11;
+  background-image: url('generic/tooltip-arrow.png');
+  border-image: url('generic/tooltip-background.png') 4 11 12 11;
   font-size: 15px;
 }
 
@@ -201,7 +201,7 @@ MnbSwitcher *#workspace-title-label-over {
 }
 
 MnbSwitcher *#workspace-no-wins-bin {
-  border-image: url('file://generic/placeholder-bg.png') 4 stretch;
+  border-image: url('generic/placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
@@ -211,36 +211,36 @@ MnbSwitcher *#workspace-no-wins-label {
 }
 
 MnbSwitcher *.workspace-title {
-  border-image: url("file://switcher/workspace-title.png") 4;
+  border-image: url("switcher/workspace-title.png") 4;
   padding: 4;
   color: white;
 }
 
 MnbSwitcher *#workspace-title-active {
-  border-image: url("file://switcher/workspace-title-active.png") 4;
+  border-image: url("switcher/workspace-title-active.png") 4;
   padding: 4;
   color: white;
 }
 
 MnbSwitcher *.workspace-title-new {
-  border-image: url("file://switcher/workspace-title-new.png") 4;
+  border-image: url("switcher/workspace-title-new.png") 4;
   padding: 4;
   color: white;
 }
 
 MnbSwitcher *#workspace-title-new-active {
-  border-image: url("file://switcher/workspace-title-new-active.png") 4;
+  border-image: url("switcher/workspace-title-new-active.png") 4;
   padding: 4;
   color: white;
 }
 
 MnbSwitcher *#workspace-title-new-over {
-  border-image: url("file://switcher/workspace-title-new-over.png") 4;
+  border-image: url("switcher/workspace-title-new-over.png") 4;
   color: white;
 }
 
 MnbSwitcher *#workspace-title-new-disabled {
-  border-image: url("file://switcher/workspace-title-new-disabled.png") 4;
+  border-image: url("switcher/workspace-title-new-disabled.png") 4;
   padding: 4;
   color: white;
 }
@@ -249,96 +249,96 @@ MnbSwitcher *.workspace-title-new-symbol {
 }
 
 MnbSwitcher *#workspace-title-new-symbol-active {
-  border-image: url("file://switcher/workspace-title-new-symbol-active.png") 4;
+  border-image: url("switcher/workspace-title-new-symbol-active.png") 4;
   padding: 4;
   color: white;
 }
 
 MnbSwitcher *#workspace-title-new-symbol-over {
-  border-image: url("file://switcher/workspace-title-new-symbol-over.png") 4;
+  border-image: url("switcher/workspace-title-new-symbol-over.png") 4;
   padding: 4;
   color: white;
 }
 
 MnbSwitcher *#workspace-title-new-symbol-disabled {
-  border-image: url("file://switcher/workspace-title-new-symbol-disabled.png") 4;
+  border-image: url("switcher/workspace-title-new-symbol-disabled.png") 4;
   padding: 4;
   color: white;
 }
 
-NbtkTable.switcher-workspace {
-  border-image: url("file://switcher/workspace-background.png") 4;
+MxTable.switcher-workspace {
+  border-image: url("switcher/workspace-background.png") 4;
   padding: 5;
 }
 
-NbtkTable#switcher-workspace-active {
-  border-image: url("file://switcher/workspace-background-active.png") 4;
+MxTable#switcher-workspace-active {
+  border-image: url("switcher/workspace-background-active.png") 4;
   padding: 5;
 }
 
-NbtkTable.switcher-workspace-new {
-  border-image: url("file://switcher/workspace-background-new.png") 4;
+MxTable.switcher-workspace-new {
+  border-image: url("switcher/workspace-background-new.png") 4;
   padding: 5;
 }
 
-NbtkTable#switcher-workspace-new-active {
-  border-image: url("file://switcher/workspace-background-new-active.png") 4;
+MxTable#switcher-workspace-new-active {
+  border-image: url("switcher/workspace-background-new-active.png") 4;
   padding: 5;
 }
 
-NbtkTable#switcher-workspace-new-over {
-  border-image: url("file://switcher/workspace-background-new-over.png") 4;
+MxTable#switcher-workspace-new-over {
+  border-image: url("switcher/workspace-background-new-over.png") 4;
   padding: 5;
 }
 
-NbtkTable#switcher-workspace-new-disabled {
-  border-image: url("file://switcher/workspace-background-new-disabled.png") 4;
+MxTable#switcher-workspace-new-disabled {
+  border-image: url("switcher/workspace-background-new-disabled.png") 4;
   padding: 5;
 }
 
 MnbSwitcherApp.switcher-application {
-  border-image: url("file://switcher/application-inactive.png") 4;
+  border-image: url("switcher/application-inactive.png") 4;
   padding: 2;
 }
 
 MnbSwitcherApp#switcher-application-active {
-  border-image: url("file://switcher/application-active.png") 4;
+  border-image: url("switcher/application-active.png") 4;
   padding: 2;
 }
 
-NbtkIcon.switcher-application-close-button {
-  background-image: url("file://switcher/application-close-button.png");
+MxIcon.switcher-application-close-button {
+  background-image: url("switcher/application-close-button.png");
 }
 
-NbtkIcon.switcher-application-close-button:hover {
-  background-image: url("file://switcher/application-close-button-hover.png");
+MxIcon.switcher-application-close-button:hover {
+  background-image: url("switcher/application-close-button-hover.png");
 }
 
 /* drop down */
 *.drop-down-footer {
-  border-image: url("file://drop-down/panel_up_button.png") 5;
-  background-image: url("file://drop-down/panel_arrow.png") 5;
+  border-image: url("drop-down/panel_up_button.png") 5;
+  background-image: url("drop-down/panel_arrow.png") 5;
   padding: 15;
 }
 
 *.drop-down-footer:hover {
-  border-image: url("file://drop-down/panel_up_button_hover.png") 5;
-  background-image: url("file://drop-down/panel_arrow_hover.png") 5;
+  border-image: url("drop-down/panel_up_button_hover.png") 5;
+  background-image: url("drop-down/panel_arrow_hover.png") 5;
   padding: 15;
 }
 
-MnbPanelFrame, MnbDropDown, MnbSwitcher, NbtkBin#panel-stub {
-  border-image: url("file://drop-down/panel_shadow.png") 4 8 14 8;
+MnbPanelFrame, MnbDropDown, MnbSwitcher, MxFrame#panel-stub {
+  border-image: url("drop-down/panel_shadow.png") 4 8 14 8;
   padding: 4 4 8 4;
 }
 
-NbtkBin#panel-stub {
-  border-image: url("file://drop-down/panel_stub.png") 4 8 14 8;
+MxFrame#panel-stub {
+  border-image: url("drop-down/panel_stub.png") 4 8 14 8;
   padding: 4 4 8 4;
 }
 
 MnbEntry {
-  border-image: url('file://generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
   padding: 7 10 7 10;
 }
 
@@ -348,23 +348,23 @@ MnbEntry > *.MnbEntryEntry {
 }
 
 MnbEntry *.MnbEntryButton {
-  border-image: url('file://generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
+  border-image: url('generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
 }
 
 MnbEntry *.MnbEntryClearButton {
-  background-image: url('file://generic/search-entry-clear.png');
+  background-image: url('generic/search-entry-clear.png');
   border-image: none;
 }
 
 MnbEntry *.MnbEntryClearButton:hover {
-  background-image: url('file://generic/search-entry-clear-hover.png');
+  background-image: url('generic/search-entry-clear-hover.png');
 }
 
 
 MplEntry {
-  border-image: url('file://generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
   padding: 7 10 7 10;
 }
 
@@ -374,42 +374,42 @@ MplEntry > *.MplEntryEntry {
 }
 
 MplEntry *.MplEntryButton {
-  border-image: url('file://generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
+  border-image: url('generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
 }
 
 MplEntry *.MplEntryClearButton {
-  background-image: url('file://generic/search-entry-clear.png');
+  background-image: url('generic/search-entry-clear.png');
   border-image: none;
 }
 
 MplEntry *.MplEntryClearButton:hover {
-  background-image: url('file://generic/search-entry-clear-hover.png');
+  background-image: url('generic/search-entry-clear-hover.png');
 }
 
-NbtkLabel
+MxLabel
 {
   font-family: "Droid Sans";
   font-size: 12px;
 }
 
 /* date and time */
-NbtkLabel.date-label {
+MxLabel.date-label {
   font-family: "Droid Sans";
   font-size: 15px;
 }
 
 MnbNotification
 {
-  border-image: url('file://notifiers/notification-bg.png') 10 21 33 22;
+  border-image: url('notifiers/notification-bg.png') 10 21 33 22;
   padding: 15 26 38 27;
   font-size: 12px;
 }
 
 MnbNotificationCluster *.notification-control
 {
-  border-image: url('file://notifiers/notification-bg.png') 10 21 33 22;
+  border-image: url('notifiers/notification-bg.png') 10 21 33 22;
   padding: 15 26 38 27;
 }
 
@@ -437,13 +437,13 @@ MnbNotification > *.NotificationBody
 
 /* zone switching effect */
 /* FIME -- should subclass to avoid this broad selection. */
-NbtkBin#zone-switch-background {
-  border-image: url("file://effects/zone-switch-background.png") 0 stretch stretch;
+MxFrame#zone-switch-background {
+  border-image: url("effects/zone-switch-background.png") 0 stretch stretch;
 }
 
-NbtkTable#zone-switch-strip {
+MxTable#zone-switch-strip {
   /* uses same assets as the chooser */
-  border-image: url("file://chooser/background.png") 11 11 11 11 stretch stretch;
+  border-image: url("chooser/background.png") 11 11 11 11 stretch stretch;
   /* should match the column spacing, currently not themable. */
   padding: 60;
 }

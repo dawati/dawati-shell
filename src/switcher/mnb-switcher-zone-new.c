@@ -40,12 +40,12 @@ enum
   ZONE_PROP_ENABLED
 };
 
-static void nbtk_droppable_iface_init (NbtkDroppableIface *iface);
+static void mx_droppable_iface_init (MxDroppableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MnbSwitcherZoneNew, mnb_switcher_zone_new,
                          MNB_TYPE_SWITCHER_ZONE,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_DROPPABLE,
-                                                nbtk_droppable_iface_init));
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_DROPPABLE,
+                                                mx_droppable_iface_init));
 
 #define MNB_SWITCHER_ZONE_NEW_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_ZONE_NEW,\
@@ -75,8 +75,8 @@ mnb_switcher_zone_new_get_preferred_width (ClutterActor *actor,
 }
 
 static void
-mnb_switcher_zone_new_over_in (NbtkDroppable *droppable,
-                               NbtkDraggable *draggable)
+mnb_switcher_zone_new_over_in (MxDroppable *droppable,
+                               MxDraggable *draggable)
 {
   MnbSwitcherZone           *zone = MNB_SWITCHER_ZONE (droppable);
   MnbSwitcherZoneNewPrivate *priv = MNB_SWITCHER_ZONE_NEW (droppable)->priv;
@@ -88,8 +88,8 @@ mnb_switcher_zone_new_over_in (NbtkDroppable *droppable,
 }
 
 static void
-mnb_switcher_zone_new_over_out (NbtkDroppable *droppable,
-                                NbtkDraggable *draggable)
+mnb_switcher_zone_new_over_out (MxDroppable *droppable,
+                                MxDraggable *draggable)
 {
   MnbSwitcherZone           *zone = MNB_SWITCHER_ZONE (droppable);
   MnbSwitcherZoneNewPrivate *priv = MNB_SWITCHER_ZONE_NEW (droppable)->priv;
@@ -105,8 +105,8 @@ mnb_switcher_zone_new_over_out (NbtkDroppable *droppable,
  * item onto the new zone.
  */
 static void
-mnb_switcher_zone_new_drop (NbtkDroppable       *droppable,
-                            NbtkDraggable       *draggable,
+mnb_switcher_zone_new_drop (MxDroppable       *droppable,
+                            MxDraggable       *draggable,
                             gfloat               event_x,
                             gfloat               event_y,
                             gint                 button,
@@ -124,7 +124,7 @@ mnb_switcher_zone_new_drop (NbtkDroppable       *droppable,
   MnbSwitcher                *switcher;
   ClutterActor               *new_zone;
   gint                        index;
-  NbtkTable                  *content_area;
+  MxTable                  *content_area;
 
   mcw      = mnb_switcher_app_get_window (app);
   meta_win = mutter_window_get_meta_window (mcw);
@@ -167,7 +167,7 @@ mnb_switcher_zone_new_drop (NbtkDroppable       *droppable,
 
   clutter_container_remove_actor (CLUTTER_CONTAINER (parent), app_actor);
   clutter_actor_set_size (app_actor, -1.0, -1.0);
-  nbtk_table_add_actor (content_area, app_actor, 0, 0);
+  mx_table_add_actor (content_area, app_actor, 0, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (content_area), app_actor,
                                "y-fill", FALSE, "x-fill", FALSE,  NULL);
 
@@ -183,7 +183,7 @@ mnb_switcher_zone_new_drop (NbtkDroppable       *droppable,
 }
 
 static void
-nbtk_droppable_iface_init (NbtkDroppableIface *iface)
+mx_droppable_iface_init (MxDroppableIface *iface)
 {
   iface->over_in  = mnb_switcher_zone_new_over_in;
   iface->over_out = mnb_switcher_zone_new_over_out;
@@ -203,9 +203,9 @@ mnb_switcher_zone_new_set_property (GObject      *gobject,
     case ZONE_PROP_ENABLED:
       priv->enabled = g_value_get_boolean (value);
       if (priv->enabled)
-        nbtk_droppable_enable (NBTK_DROPPABLE (gobject));
+        mx_droppable_enable (MX_DROPPABLE (gobject));
       else
-        nbtk_droppable_disable (NBTK_DROPPABLE (gobject));
+        mx_droppable_disable (MX_DROPPABLE (gobject));
       break;
 
     default:

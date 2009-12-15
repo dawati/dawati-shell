@@ -122,15 +122,15 @@ dist_theme_effects_DATA = \
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
-texture_cache = $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache
+texture_cache = $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)/mx.cache
 CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)
 
 install-data-hook:
-	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
+	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
 
 uninstall-hook:
 	rm -f $(texture_cache)
-	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
+	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
 endif
 
 CLEANFILES = $(desktopfiles_files) $(schema_DATA)

@@ -59,7 +59,7 @@ enum
   PROP_HAS_ITEMS
 };
 
-G_DEFINE_ABSTRACT_TYPE (MnbSwitcherZone, mnb_switcher_zone, NBTK_TYPE_TABLE);
+G_DEFINE_ABSTRACT_TYPE (MnbSwitcherZone, mnb_switcher_zone, MX_TYPE_TABLE);
 
 #define MNB_SWITCHER_ZONE_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_ZONE,\
@@ -136,7 +136,7 @@ mnb_switcher_zone_set_property (GObject      *gobject,
         priv->label_text = g_value_dup_string (value);
 
         if (priv->text)
-          nbtk_label_set_text (NBTK_LABEL (priv->text), priv->label_text);
+          mx_label_set_text (MX_LABEL (priv->text), priv->label_text);
 
         if (priv->label_text)
           priv->text_set = TRUE;
@@ -200,9 +200,9 @@ mnb_switcher_zone_constructed (GObject *self)
 
   g_assert (priv->index >= 0);
 
-  priv->table = table = (ClutterActor*)nbtk_table_new ();
-  nbtk_table_add_actor (NBTK_TABLE (self), table, 1, 0);
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 4);
+  priv->table = table = (ClutterActor*)mx_table_new ();
+  mx_table_add_actor (MX_TABLE (self), table, 1, 0);
+  mx_table_set_row_spacing (MX_TABLE (self), 4);
 
   if (priv->active)
     state = MNB_SWITCHER_ZONE_ACTIVE;
@@ -211,7 +211,7 @@ mnb_switcher_zone_constructed (GObject *self)
   clutter_actor_set_name (table, zone_name);
 
   zone_class = klass->zone_class (zone);
-  nbtk_widget_set_style_class_name (NBTK_WIDGET (table), zone_class);
+  mx_widget_set_style_class_name (MX_WIDGET (table), zone_class);
 
   /*
    * Now construct the label area
@@ -236,18 +236,18 @@ mnb_switcher_zone_constructed (GObject *self)
       else
         s = g_strdup_printf ("%d", priv->index + 1);
 
-      priv->label = label = CLUTTER_ACTOR (nbtk_bin_new ());
-      priv->text  = text  = (ClutterActor*)nbtk_label_new (s);
+      priv->label = label = CLUTTER_ACTOR (mx_frame_new ());
+      priv->text  = text  = (ClutterActor*)mx_label_new (s);
 
-      nbtk_widget_set_style_class_name (NBTK_WIDGET (text), text_class);
+      mx_widget_set_style_class_name (MX_WIDGET (text), text_class);
       clutter_actor_set_name (CLUTTER_ACTOR (text), text_name);
 
-      nbtk_bin_set_child (NBTK_BIN (label), CLUTTER_ACTOR (text));
+      mx_bin_set_child (MX_BIN (label), CLUTTER_ACTOR (text));
 
-      nbtk_widget_set_style_class_name (NBTK_WIDGET (label), label_class);
+      mx_widget_set_style_class_name (MX_WIDGET (label), label_class);
       clutter_actor_set_name (CLUTTER_ACTOR (label), label_name);
 
-      nbtk_table_add_actor (NBTK_TABLE (self), label, 0, 0);
+      mx_table_add_actor (MX_TABLE (self), label, 0, 0);
       clutter_container_child_set (CLUTTER_CONTAINER (self),
                                    CLUTTER_ACTOR (label),
                                    "y-expand", FALSE,
@@ -711,7 +711,7 @@ mnb_switcher_zone_set_index (MnbSwitcherZone *zone, gint index)
     {
       gchar *s = g_strdup_printf ("%d", index + 1);
 
-      nbtk_label_set_text (NBTK_LABEL (priv->text), s);
+      mx_label_set_text (MX_LABEL (priv->text), s);
       g_free (s);
     }
 
@@ -722,12 +722,12 @@ mnb_switcher_zone_set_index (MnbSwitcherZone *zone, gint index)
  * Returns the content area of this table, i.e., where the items go; this can
  * be used by any subclasses to manipulate their contents.
  */
-NbtkTable *
+MxTable *
 mnb_switcher_zone_get_content_area (MnbSwitcherZone *zone)
 {
   MnbSwitcherZonePrivate *priv = zone->priv;
 
-  return NBTK_TABLE (priv->table);
+  return MX_TABLE (priv->table);
 }
 
 gboolean

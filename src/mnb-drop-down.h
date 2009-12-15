@@ -26,7 +26,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include "moblin-netbook.h"
 
 /*
@@ -60,19 +60,19 @@ G_BEGIN_DECLS
 typedef struct _MnbDropDownPrivate MnbDropDownPrivate;
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
   /*< private >*/
   MnbDropDownPrivate *priv;
 } MnbDropDown;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 
 } MnbDropDownClass;
 
 GType mnb_drop_down_get_type (void);
 
-NbtkWidget*   mnb_drop_down_new (MutterPlugin *plugin);
+MxWidget*     mnb_drop_down_new (MutterPlugin *plugin);
 
 void          mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child);
 ClutterActor* mnb_drop_down_get_child (MnbDropDown *drop_down);

@@ -27,7 +27,7 @@
 #define _MNB_TOOLBAR
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 #include "mnb-panel.h"
 #include "mnb-panel-oop.h"
@@ -55,13 +55,13 @@ G_BEGIN_DECLS
 typedef struct _MnbToolbarPrivate MnbToolbarPrivate;
 
 typedef struct {
-  NbtkBin parent;
+  MxFrame parent;
 
   MnbToolbarPrivate *priv;
 } MnbToolbar;
 
 typedef struct {
-  NbtkBinClass parent_class;
+  MxFrameClass parent_class;
 
   void (*show_completed) (MnbToolbar *toolbar);
   void (*hide_begin)     (MnbToolbar *toolbar);
@@ -72,7 +72,7 @@ typedef void (* MnbToolbarCallback) (MnbPanel *panel, gpointer data);
 
 GType mnb_toolbar_get_type (void);
 
-NbtkWidget* mnb_toolbar_new (MutterPlugin *plugin);
+ClutterActor* mnb_toolbar_new (MutterPlugin *plugin);
 
 gboolean mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin);
 

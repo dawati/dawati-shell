@@ -379,7 +379,7 @@ mnb_panel_is_modal (MnbPanel *panel)
 }
 
 void
-mnb_panel_set_button (MnbPanel *panel, NbtkButton *button)
+mnb_panel_set_button (MnbPanel *panel, MxButton *button)
 {
   MnbPanelIface *iface;
 

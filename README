@@ -45,6 +45,6 @@ The following Metacity preferences are of possible interest:
 
 Dependencies:
 
-NBTK: git.moblin.org/nbtk.git
+MX: git.moblin.org/mx.git
 jana: svn.gnome.org/svn/jana
 mojito: git.moblin.org/mojito.git

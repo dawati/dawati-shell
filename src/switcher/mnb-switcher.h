@@ -66,7 +66,7 @@ typedef struct {
 
 GType mnb_switcher_get_type (void);
 
-NbtkWidget* mnb_switcher_new (MutterPlugin *plugin);
+ClutterActor* mnb_switcher_new (MutterPlugin *plugin);
 
 void        mnb_switcher_focus_window_cb (MetaDisplay *display,
                                           GParamSpec  *pspec,
@@ -89,7 +89,7 @@ void        mnb_switcher_dnd_ended    (MnbSwitcher     *switcher,
                                        MnbSwitcherZone *zone);
 void        mnb_switcher_hide_tooltip (MnbSwitcher *switcher);
 void        mnb_switcher_show_tooltip (MnbSwitcher *switcher,
-                                       NbtkTooltip *tooltip);
+                                       MxTooltip *tooltip);
 
 gboolean    mnb_switcher_is_constructing (MnbSwitcher *switcher);
 

@@ -26,7 +26,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 #include "moblin-netbook-notify-store.h"
 
@@ -52,13 +52,13 @@ G_BEGIN_DECLS
 typedef struct _MnbNotificationPrivate MnbNotificationPrivate;
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
   /*< private >*/
   MnbNotificationPrivate *priv;
 } MnbNotification;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 
   void (*closed) (MnbNotification *notification);
   void (*action) (MnbNotification *notification, gchar *desc);
@@ -67,7 +67,7 @@ typedef struct {
 
 GType mnb_notification_get_type (void);
 
-NbtkWidget* mnb_notification_new (void);
+ClutterActor* mnb_notification_new (void);
 
 void
 mnb_notification_update (MnbNotification *notification,

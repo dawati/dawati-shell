@@ -3,7 +3,7 @@ noinst_LTLIBRARIES = libeffects.la
 
 AM_CFLAGS = \
 	@MUTTER_PLUGIN_CFLAGS@ \
-	-DNBTK_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/nbtk.cache\" \
+	-DMX_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/mx.cache\" \
 	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\"
 
 libeffects_la_LIBADD = $(MUTTER_PLUGIN_LIBS)

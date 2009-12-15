@@ -46,7 +46,7 @@ enum
   PROP_SWITCHER,
 };
 
-G_DEFINE_ABSTRACT_TYPE (MnbSwitcherItem, mnb_switcher_item, NBTK_TYPE_BIN);
+G_DEFINE_ABSTRACT_TYPE (MnbSwitcherItem, mnb_switcher_item, MX_TYPE_FRAME);
 
 #define MNB_SWITCHER_ITEM_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_SWITCHER_ITEM,\
@@ -104,7 +104,7 @@ mnb_switcher_item_allocate (ClutterActor          *actor,
   area.width  = w;
   area.height = h;
 
-  nbtk_tooltip_set_tip_area ((NbtkTooltip*) priv->tooltip, &area);
+  mx_tooltip_set_tip_area ((MxTooltip*) priv->tooltip, &area);
 }
 
 static void
@@ -155,7 +155,7 @@ mnb_switcher_item_hover_timeout_cb (gpointer data)
 
   if (!mnb_switcher_get_dnd_in_progress (priv->switcher))
     {
-      mnb_switcher_show_tooltip (priv->switcher, NBTK_TOOLTIP (priv->tooltip));
+      mnb_switcher_show_tooltip (priv->switcher, MX_TOOLTIP (priv->tooltip));
     }
 
   priv->hover_timeout_id = 0;
@@ -209,7 +209,7 @@ mnb_switcher_item_constructed (GObject *self)
   ClutterActor           *actor = CLUTTER_ACTOR (self);
   MnbSwitcherItemPrivate *priv  = MNB_SWITCHER_ITEM (self)->priv;
 
-  priv->tooltip  = g_object_new (NBTK_TYPE_TOOLTIP, NULL);
+  priv->tooltip  = g_object_new (MX_TYPE_TOOLTIP, NULL);
   clutter_actor_set_parent (priv->tooltip, actor);
 }
 
@@ -271,9 +271,9 @@ mnb_switcher_item_show_tooltip (MnbSwitcherItem *self)
   area.width  = w;
   area.height = h;
 
-  nbtk_tooltip_set_tip_area ((NbtkTooltip*) priv->tooltip, &area);
+  mx_tooltip_set_tip_area ((MxTooltip*) priv->tooltip, &area);
 
-  mnb_switcher_show_tooltip (priv->switcher, NBTK_TOOLTIP (priv->tooltip));
+  mnb_switcher_show_tooltip (priv->switcher, MX_TOOLTIP (priv->tooltip));
 }
 
 void
@@ -336,7 +336,7 @@ mnb_switcher_item_set_tooltip (MnbSwitcherItem *self, const gchar *text)
 {
   MnbSwitcherItemPrivate *priv = self->priv;
 
-  nbtk_tooltip_set_label (NBTK_TOOLTIP (priv->tooltip), text);
+  mx_tooltip_set_label (MX_TOOLTIP (priv->tooltip), text);
 }
 
 MnbSwitcher *
