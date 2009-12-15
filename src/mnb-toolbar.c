@@ -177,8 +177,10 @@ struct _MnbToolbarPanel
 
   gboolean    unloaded : 1;
   gboolean    applet   : 1;
+  gboolean    builtin  : 1;
   gboolean    current  : 1;
   gboolean    pinged   : 1;
+  gboolean    required : 1;
 };
 
 static void
@@ -195,6 +197,8 @@ mnb_toolbar_panel_destroy (MnbToolbarPanel *tp)
 
   if (tp->panel)
     g_critical (G_STRLOC ": panel leaked");
+
+  g_free (tp);
 }
 
 struct _MnbToolbarPrivate
@@ -1628,8 +1632,9 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                                             BUTTON_WIDTH,
                                             TOOLBAR_HEIGHT);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                   CLUTTER_ACTOR (button));
+      if (!clutter_actor_get_parent (CLUTTER_ACTOR (button)))
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                     CLUTTER_ACTOR (button));
     }
   else
     {
@@ -1653,8 +1658,9 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                                          TRAY_BUTTON_WIDTH,
                                          TOOLBAR_HEIGHT);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                   CLUTTER_ACTOR (button));
+      if (!clutter_actor_get_parent (CLUTTER_ACTOR (button)))
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                     CLUTTER_ACTOR (button));
     }
 }
 
@@ -2136,13 +2142,16 @@ mnb_toolbar_make_toolbar_panel (MnbToolbar  *toolbar,
                                 const gchar *tooltip,
                                 const gchar *service,
                                 gboolean     applet,
-                                gboolean     builtin)
+                                gboolean     builtin,
+                                gboolean     required)
 {
   MnbToolbarPanel *tp = g_new0 (MnbToolbarPanel, 1);
 
-  tp->name    = g_strdup (name);
-  tp->tooltip = g_strdup (tooltip);
-  tp->applet  = applet;
+  tp->name     = g_strdup (name);
+  tp->tooltip  = g_strdup (tooltip);
+  tp->applet   = applet;
+  tp->builtin  = builtin;
+  tp->required = required;
 
   if (!strcmp (name, "moblin-panel-myzone"))
     tp->button_style = g_strdup_printf ("%s-button", service);
@@ -2174,62 +2183,64 @@ mnb_toolbar_setup_panels (MnbToolbar *toolbar)
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_BLUETOOTH,
                                        MPL_PANEL_BLUETOOTH,
-                                       MPL_PANEL_BLUETOOTH, TRUE, FALSE);
+                                       MPL_PANEL_BLUETOOTH, TRUE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_POWER,
                                        MPL_PANEL_POWER,
-                                       MPL_PANEL_POWER, TRUE, FALSE);
+                                       MPL_PANEL_POWER, TRUE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_VOLUME,
                                        MPL_PANEL_VOLUME,
-                                       MPL_PANEL_VOLUME, TRUE, FALSE);
+                                       MPL_PANEL_VOLUME, TRUE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_NETWORK,
                                        MPL_PANEL_NETWORK,
-                                       MPL_PANEL_NETWORK, TRUE, FALSE);
+                                       MPL_PANEL_NETWORK, TRUE, FALSE, TRUE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_ZONES,
                                        MPL_PANEL_ZONES,
-                                       MPL_PANEL_ZONES, FALSE, TRUE);
+                                       MPL_PANEL_ZONES, FALSE, TRUE, TRUE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_APPLICATIONS,
                                        MPL_PANEL_APPLICATIONS,
-                                       MPL_PANEL_APPLICATIONS, FALSE, FALSE);
+                                       MPL_PANEL_APPLICATIONS,
+                                       FALSE, FALSE, TRUE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_PASTEBOARD,
                                        MPL_PANEL_PASTEBOARD,
-                                       MPL_PANEL_PASTEBOARD, FALSE, FALSE);
+                                       MPL_PANEL_PASTEBOARD,
+                                       FALSE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_MEDIA,
                                        MPL_PANEL_MEDIA,
-                                       MPL_PANEL_MEDIA, FALSE, FALSE);
+                                       MPL_PANEL_MEDIA, FALSE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_INTERNET,
                                        MPL_PANEL_INTERNET,
-                                       MPL_PANEL_INTERNET, FALSE, FALSE);
+                                       MPL_PANEL_INTERNET, FALSE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_PEOPLE,
                                        MPL_PANEL_PEOPLE,
-                                       MPL_PANEL_PEOPLE, FALSE, FALSE);
+                                       MPL_PANEL_PEOPLE, FALSE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_STATUS,
                                        MPL_PANEL_STATUS,
-                                       MPL_PANEL_STATUS, FALSE, FALSE);
+                                       MPL_PANEL_STATUS, FALSE, FALSE, FALSE);
   l = g_list_prepend (l, tp);
   tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                        MPL_PANEL_MYZONE,
                                        MPL_PANEL_MYZONE,
-                                       MPL_PANEL_MYZONE, FALSE, FALSE);
+                                       MPL_PANEL_MYZONE, FALSE, FALSE, TRUE);
   l = g_list_prepend (l, tp);
 
   priv->panels = l;
@@ -3128,11 +3139,120 @@ mnb_toolbar_owns_window (MnbToolbar *toolbar, MutterWindow *mcw)
  * loaded from standard location.
  */
 static MnbToolbarPanel *
-mnb_toolbar_make_panel_from_desktop (MnbToolbar  *toolbar,
-                                     const gchar *desktop)
+mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
 {
-  g_warning ("%s is not implemented.!", __FUNCTION__);
-  return NULL;
+  gchar           *path;
+  GKeyFile        *kfile;
+  GError          *error = NULL;
+  MnbToolbarPanel *tp = NULL;
+
+  path = g_strconcat (PANELSDIR, "/", desktop, ".desktop", NULL);
+
+  kfile = g_key_file_new ();
+
+  if (!g_key_file_load_from_file (kfile, path, G_KEY_FILE_NONE, &error))
+    {
+      g_warning ("Failed to load %s: %s", path, error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      gchar    *s;
+      gboolean  b;
+      gboolean  builtin = FALSE;
+
+      tp = g_new0 (MnbToolbarPanel, 1);
+
+      tp->name = g_strdup (desktop);
+
+      b = g_key_file_get_boolean (kfile,
+                                  G_KEY_FILE_DESKTOP_GROUP,
+                                  "X-Moblin-Panel-Optional",
+                                  &error);
+
+      /*
+       * If the key does not exist (i.e., there is an error), the panel is
+       * not required
+       */
+      if (!error)
+        tp->required = !b;
+      else
+        g_clear_error (&error);
+
+      s = g_key_file_get_locale_string (kfile,
+                                        G_KEY_FILE_DESKTOP_GROUP,
+                                        G_KEY_FILE_DESKTOP_KEY_NAME,
+                                        NULL,
+                                        NULL);
+
+      tp->tooltip = s;
+
+      s = g_key_file_get_string (kfile,
+                                 G_KEY_FILE_DESKTOP_GROUP,
+                                 "X-Moblin-Panel-Button-Style",
+                                        NULL);
+
+      if (!s)
+        {
+          /*
+           * FIXME -- temporary hack
+           */
+          if (!strcmp (desktop, "moblin-panel-myzone"))
+            tp->button_style = g_strdup ("myzone-button");
+          else
+            tp->button_style = g_strdup_printf ("%s-button", desktop);
+        }
+      else
+        tp->button_style = s;
+
+      s = g_key_file_get_string (kfile,
+                                 G_KEY_FILE_DESKTOP_GROUP,
+                                 "X-Moblin-Panel-Type",
+                                 NULL);
+
+      if (s)
+        {
+          if (!strcmp (s, "builtin"))
+            tp->builtin = builtin = TRUE;
+          else if (!strcmp (s, "applet"))
+            tp->applet = TRUE;
+
+          g_free (s);
+        }
+
+      if (!builtin)
+        {
+          s = g_key_file_get_string (kfile,
+                                     G_KEY_FILE_DESKTOP_GROUP,
+                                     "X-Moblin-Panel-Stylesheet",
+                                     NULL);
+
+          tp->button_stylesheet = s;
+
+          s = g_key_file_get_string (kfile,
+                                     G_KEY_FILE_DESKTOP_GROUP,
+                                     "X-Moblin-Service",
+                                     NULL);
+
+          tp->service = s;
+        }
+
+      /*
+       * Sanity check
+       */
+      if (!builtin && !tp->service)
+        {
+          g_warning ("Panel desktop file %s did not contain dbus service",
+                     desktop);
+
+          mnb_toolbar_panel_destroy (tp);
+          tp = NULL;
+        }
+    }
+
+  g_key_file_free (kfile);
+
+  return tp;
 }
 
 static gint
@@ -3157,7 +3277,8 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
 
   for (l = order; l; l = l->next)
     {
-      const gchar     *name = l->data;
+      GConfValue      *value = l->data;
+      const gchar     *name = gconf_value_get_string (value);
       GList           *k;
       MnbToolbarPanel *tp;
 
@@ -3195,7 +3316,7 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
       MnbToolbarPanel *tp = panels->data;
       MnbPanel        *panel;
 
-      if (!tp || tp->current)
+      if (!tp || tp->current || tp->required)
         {
           panels = panels->next;
           continue;
@@ -3203,14 +3324,14 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
 
       panel = tp->panel;
 
-      g_debug ("Panel %s was disabled, unloading", tp->name);
       mnb_toolbar_dispose_of_button (toolbar, tp);
       mnb_toolbar_dispose_of_panel  (toolbar, tp, FALSE);
 
       priv->panels = g_list_remove (priv->panels, tp);
       mnb_toolbar_panel_destroy (tp);
 
-      mnb_panel_oop_unload ((MnbPanelOop*)panel);
+      if (MNB_IS_PANEL_OOP (panel))
+        mnb_panel_oop_unload ((MnbPanelOop*)panel);
 
       /*
        * Start from the beginning.
