@@ -7,31 +7,43 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:26+0000\n"
-"PO-Revision-Date: 2009-11-06 12:56+0100\n"
+"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"PO-Revision-Date: 2009-12-14 17:24+0100\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-netbook.c:391 ../src/mnb-toolbar.c:1427
+#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "zoner"
 
-#: ../src/moblin-netbook.c:504
+#: ../src/moblin-netbook.c:621
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook-effekter"
 
-#: ../src/moblin-netbook.c:508
+#: ../src/moblin-netbook.c:625
 msgid "Effects for Moblin Netbooks"
 msgstr "Effekter til Moblin Netbooks"
+
+#: ../src/moblin-netbook.c:2529
+msgid "Activate"
+msgstr "Aktivér"
+
+#: ../src/moblin-netbook.c:2543
+msgid "Unknown window"
+msgstr "Ukendt vindue"
+
+#: ../src/moblin-netbook.c:2545
+msgid "Is asking for your attention."
+msgstr "Prøver at få din opmærksomhed."
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:675
+#: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -39,7 +51,7 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:685
+#: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
 msgstr "%e. %B, %Y"
 
@@ -51,17 +63,17 @@ msgstr "Forkast"
 msgid "Dismiss All"
 msgstr "Forkast alle"
 
-#: ../src/switcher/mnb-switcher.c:301
+#: ../src/switcher/mnb-switcher.c:307
 msgid "No Zones yet"
 msgstr "Endnu ingen zoner"
 
-#: ../src/switcher/mnb-switcher.c:321
+#: ../src/switcher/mnb-switcher.c:327
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."
 msgstr ""
-"Programmer som du bruger vil blive vist her. Du vil kunne skifte "
-"mellem dem og organisere dem efter dine egne ønsker."
+"Programmer som du bruger vil blive vist her. Du vil kunne skifte mellem dem "
+"og organisere dem efter dine egne ønsker."
 
 #: ../src/switcher/mnb-switcher-zone-apps.c:463
 msgid "No applications on this zone"
