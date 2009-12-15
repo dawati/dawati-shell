@@ -1138,31 +1138,23 @@ mnb_toolbar_get_panel_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   for (l = priv->panels, index = 0; l; l = l->next, ++index)
     {
       if (l->data == tp)
-        return index;
+        {
+          return index;
+        }
+
     }
 
   return -1;
 }
 
-/*
- * Appends a panel of the given name, using the given tooltip.
- *
- * This is a legacy function filling in the gap until we are ready to
- * switch to the dbus API and mnb_toolbar_append_panel().
- *
- */
-void
-mnb_toolbar_append_panel_builtin (MnbToolbar  *toolbar,
-                                  const gchar *name,
-                                  const gchar *tooltip)
+static void
+mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
+                                           MnbToolbarPanel *tp)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
   MnbPanel          *panel = NULL;
-  MnbToolbarPanel   *tp;
   gint               screen_width, screen_height;
-
-  tp = mnb_toolbar_panel_name_to_panel_internal (toolbar, name);
 
   if (!tp)
     return;
@@ -1199,7 +1191,7 @@ mnb_toolbar_append_panel_builtin (MnbToolbar  *toolbar,
 
   if (!panel)
     {
-      g_warning ("Builtin panel %s is not available", name);
+      g_warning ("Builtin panel %s is not available", tp->name);
       return;
     }
 
@@ -1725,6 +1717,9 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   g_signal_connect (button, "notify::checked",
                     G_CALLBACK (mnb_toolbar_button_toggled_cb),
                     toolbar);
+
+  if (tp->builtin)
+    mnb_toolbar_append_panel_builtin_internal (toolbar, tp);
 }
 
 /*
@@ -2244,15 +2239,15 @@ mnb_toolbar_setup_panels (MnbToolbar *toolbar)
   priv->panels = l;
 
   /*
-   * Now that the initial panel data is set up, populate the buttons.
-   */
-  for (; l; l = l->next)
-    mnb_toolbar_append_button (toolbar, l->data);
-
-  /*
    * And watch for changes
    */
   mnb_toolbar_setup_gconf (toolbar);
+
+  /*
+   * Now that the initial panel data is set up, populate the buttons.
+   */
+  for (l = priv->panels; l; l = l->next)
+    mnb_toolbar_append_button (toolbar, l->data);
 }
 
 static void
@@ -3265,9 +3260,12 @@ mnb_toolbar_find_panel_by_name (const MnbToolbarPanel *tp, const gchar *name)
 /*
  * Sorts out panels to match the new order, removing / adding any panels
  * in the process.
+ *
+ * the strings parameter identifies the list type; if TRUE, the list data are
+ * strings, if FALSE they are GConfValues holding a string.
  */
 static void
-mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
+mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order, gboolean strings)
 {
   MnbToolbarPrivate *priv  = toolbar->priv;
   GSList            *l;
@@ -3275,10 +3273,18 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
 
   for (l = order; l; l = l->next)
     {
-      GConfValue      *value = l->data;
-      const gchar     *name = gconf_value_get_string (value);
+      const gchar     *name;
       GList           *k;
       MnbToolbarPanel *tp;
+
+      if (!strings)
+        {
+          GConfValue *value = l->data;
+
+          name = gconf_value_get_string (value);
+        }
+      else
+        name = l->data;
 
       k = g_list_find_custom (panels, name,
                               (GCompareFunc) mnb_toolbar_find_panel_by_name);
@@ -3301,8 +3307,6 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
 
       panels = g_list_prepend (panels, tp);
     }
-
-  panels = g_list_reverse (panels);
 
   priv->panels = panels;
 
@@ -3336,6 +3340,29 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order)
        */
       panels = priv->panels;
     }
+
+  panels = priv->panels;
+
+  /*
+   * Now move any required panels that were not on the list to the start.
+   */
+  while (panels)
+    {
+      MnbToolbarPanel *tp   = panels->data;
+      GList           *next = panels->next;
+
+      if (!tp->current)
+        {
+          tp->current = TRUE;
+
+          priv->panels = g_list_remove (priv->panels, tp);
+          priv->panels = g_list_prepend (priv->panels, tp);
+        }
+
+      panels = next;
+    }
+
+  priv->panels = g_list_reverse (priv->panels);
 
   /*
    * Now fix up the button positions; also clear the current flag on the
@@ -3401,11 +3428,52 @@ mnb_toolbar_panel_gconf_key_changed_cb (GConfClient *client,
 
       order = gconf_value_get_list (value);
 
-      mnb_toolbar_fixup_panels (toolbar, order);
+      mnb_toolbar_fixup_panels (toolbar, order, FALSE);
       return;
     }
 
   g_warning (G_STRLOC ": Unknown key %s", key);
+}
+
+static void
+mnb_toolbar_load_gconf_settings (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate          *priv   = toolbar->priv;
+  MutterPlugin               *plugin = priv->plugin;
+  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  GConfClient                *client = ppriv->gconf_client;
+  GSList                     *order;
+  gint                        i;
+  const gchar                *required[4] = {"moblin-panel-myzone",
+                                             "moblin-panel-applications",
+                                             "moblin-panel-zones",
+                                             "carrick-connection-panel"};
+
+  order = gconf_client_get_list (client, KEY_ORDER, GCONF_VALUE_STRING, NULL);
+
+  /*
+   * Ensure that the required panels are in the list; if not, we insert them
+   * at the end.
+   */
+  for (i = 0; i < G_N_ELEMENTS (required); ++i)
+    {
+      GSList *l = g_slist_find_custom (order,
+                                       required[i],
+                                       (GCompareFunc)g_strcmp0);
+
+      if (!l)
+        {
+          order = g_slist_append (order, g_strdup (required[i]));
+        }
+    }
+
+  mnb_toolbar_fixup_panels (toolbar, order, TRUE);
+
+  /*
+   * Clean up
+   */
+  g_slist_foreach (order, (GFunc)g_free, NULL);
+  g_slist_free (order);
 }
 
 static void
@@ -3435,4 +3503,6 @@ mnb_toolbar_setup_gconf (MnbToolbar *toolbar)
                            toolbar,
                            NULL,
                            &error);
+
+  mnb_toolbar_load_gconf_settings (toolbar);
 }

@@ -76,10 +76,6 @@ NbtkWidget* mnb_toolbar_new (MutterPlugin *plugin);
 
 gboolean mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin);
 
-void mnb_toolbar_append_panel_builtin (MnbToolbar  *toolbar,
-                                       const gchar *name,
-                                       const gchar *tooltip);
-
 void mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name);
 void mnb_toolbar_deactivate_panel (MnbToolbar *toolbar, const gchar *panel_name);
 void mnb_toolbar_unload_panel (MnbToolbar *toolbar, const gchar *panel_name);
