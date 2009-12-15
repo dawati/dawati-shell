@@ -917,8 +917,6 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
 
                 g_debug ("Button clicked before panel available");
 
-                nbtk_button_set_checked (NBTK_BUTTON (tp->button), FALSE);
-
                 mutter_plugin_query_screen_size (priv->plugin,
                                                  &screen_width, &screen_height);
 
