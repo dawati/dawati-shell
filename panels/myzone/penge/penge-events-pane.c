@@ -23,6 +23,7 @@
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
 #include <glib/gi18n.h>
+#include <ical.h>
 
 #include "penge-event-tile.h"
 
@@ -188,20 +189,40 @@ penge_events_pane_allocate (ClutterActor          *actor,
   }
 }
 
+
+static gint
+_flat_event_count (PengeEventsPane *pane)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
+  GList *event_lists, *l;
+  gint count = 0;
+
+  event_lists = g_hash_table_get_values (priv->uid_to_events_list);
+
+  for (l = event_lists; l; l = l->next)
+  {
+    count += g_list_length ((GList *)l->data);
+  }
+
+  g_list_free (event_lists);
+
+  return count;
+}
+
 static void
 penge_events_pane_get_preferred_height (ClutterActor *actor,
                                         gfloat        for_width,
                                         gfloat       *min_height_p,
                                         gfloat       *nat_height_p)
 {
-  PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
+  PengeEventsPane *pane = PENGE_EVENTS_PANE (actor);
 
   if (min_height_p)
     *min_height_p = TILE_HEIGHT;
 
   /* Report our natural height to be our potential maximum */
   if (nat_height_p)
-    *nat_height_p = TILE_HEIGHT * g_hash_table_size (priv->uid_to_events_list);
+    *nat_height_p = TILE_HEIGHT * _flat_event_count (pane);
 }
 
 static void
@@ -408,6 +429,7 @@ penge_events_pane_update (PengeEventsPane *pane)
     rid = jana_ecal_component_get_recurrence_id (JANA_ECAL_COMPONENT (event));
 
     uid_rid = g_strdup_printf ("%s %s", uid, rid);
+
     g_free (uid);
     g_free (rid);
 
@@ -486,24 +508,100 @@ penge_events_pane_update (PengeEventsPane *pane)
   g_object_unref (on_the_hour);
 }
 
-static GList *
-_create_event_list_for_event (JanaComponent *component,
-                              JanaStore     *store)
+typedef struct
 {
-  GList *events_list = NULL;
+  JanaStore *store;
+  GList *events_list;
+} PengeRecurrenceClosure;
+
+static gboolean
+_recur_instance_generate_func (ECalComponent *ecomp,
+                               time_t         start,
+                               time_t         end,
+                               gpointer       data)
+{
+  PengeRecurrenceClosure *closure = (PengeRecurrenceClosure *)data;
   PengeEventData *event_data;
-  JanaEvent *event;
-  gchar *uid;
+  JanaEvent *jevent;
+  JanaTime *stime, *etime;
+  ECalComponentRange erange;
 
-  event = (JanaEvent *)component;
+  jevent = jana_ecal_event_new_from_ecalcomp (ecomp);
 
-  uid = jana_component_get_uid (component);
   event_data = penge_event_data_new ();
+  event_data->store = g_object_ref (closure->store);
+  event_data->event = jevent;
 
-  /* Gives us a new reference, no need to ref-up */
-  event_data->event = g_object_ref (event);
-  event_data->store = g_object_ref (store);
-  events_list = g_list_append (events_list, event_data);
+  e_cal_component_get_recurid (ecomp, &erange);
+
+  stime = jana_ecal_time_new_from_ecaltime (&(erange.datetime));
+  etime = jana_time_duplicate (stime);
+
+  jana_utils_time_adjust (etime, 0, 0, 0, 0, 0, end - start);
+
+  jana_event_set_start (jevent, stime);
+  jana_event_set_end (jevent, etime);
+
+  closure->events_list = g_list_append (closure->events_list, event_data);
+
+  return TRUE;
+}
+
+static GList *
+_create_event_list_for_event (PengeEventsPane *pane,
+                              JanaComponent   *component,
+                              JanaStore       *store)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
+  GList *events_list = NULL;
+
+  if (!jana_event_has_recurrence (JANA_EVENT (component)))
+  {
+    PengeEventData *event_data;
+    JanaEvent *event;
+    gchar *uid;
+
+    event = (JanaEvent *)component;
+
+    uid = jana_component_get_uid (component);
+    event_data = penge_event_data_new ();
+
+    /* Gives us a new reference, no need to ref-up */
+    event_data->event = g_object_ref (event);
+    event_data->store = g_object_ref (store);
+    events_list = g_list_append (events_list, event_data);
+  } else {
+    ECalComponent *ecomp;
+    ECal *ecal;
+    icalcomponent *icomp;
+    time_t tt_start, tt_end;
+    PengeRecurrenceClosure closure;
+
+    g_object_get (component,
+                  "ecalcomp", &ecomp,
+                  NULL);
+
+    g_object_get (store,
+                  "ecal", &ecal,
+                  NULL);
+
+    icomp = e_cal_component_get_icalcomponent (ecomp);
+
+    tt_start = jana_ecal_time_to_time_t ((JanaEcalTime *)priv->duration->start);
+    tt_end = jana_ecal_time_to_time_t ((JanaEcalTime *)priv->duration->end);
+
+    closure.store = store;
+    closure.events_list = NULL;
+
+    e_cal_generate_instances_for_object (ecal,
+                                         icomp,
+                                         tt_start,
+                                         tt_end,
+                                         _recur_instance_generate_func,
+                                         &closure);
+    g_object_unref (ecomp);
+    events_list = closure.events_list;
+  }
 
   return events_list;
 }
@@ -517,7 +615,6 @@ _store_view_added_cb (JanaStoreView *view,
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
   GList *l;
   JanaComponent *component;
-  JanaEvent *event;
   gchar *uid;
   JanaStore *store;
   GList *events_list;
@@ -531,7 +628,7 @@ _store_view_added_cb (JanaStoreView *view,
     if (jana_component_get_component_type (component) == JANA_COMPONENT_EVENT)
     {
       uid = jana_component_get_uid (component);
-      events_list = _create_event_list_for_event (component, store);
+      events_list = _create_event_list_for_event (pane, component, store);
       g_hash_table_insert (priv->uid_to_events_list,
                            uid,
                            events_list);
@@ -552,10 +649,8 @@ _store_view_modified_cb (JanaStoreView *view,
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
   GList *l, *ll;
   JanaComponent *component;
-  JanaEvent *old_event;
   gchar *uid;
   ClutterActor *actor;
-  PengeEventData *event_data;
   GList *old_events_list = NULL;
   GList *events_list = NULL;
   JanaStore *store;
@@ -572,7 +667,7 @@ _store_view_modified_cb (JanaStoreView *view,
 
     if (old_events_list)
     {
-      events_list = _create_event_list_for_event (component, store);
+      events_list = _create_event_list_for_event (pane, component, store);
       g_hash_table_remove (priv->uid_to_events_list, uid);
       g_hash_table_insert (priv->uid_to_events_list,
                            g_strdup (uid),
