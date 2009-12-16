@@ -87,8 +87,11 @@ mnb_panel_frame_dispose (GObject *object)
 
   priv->disposed = TRUE;
 
-  clutter_actor_destroy (priv->footer);
-  priv->footer = NULL;
+  if (priv->footer)
+    {
+      clutter_actor_destroy (priv->footer);
+      priv->footer = NULL;
+    }
 
   G_OBJECT_CLASS (mnb_panel_frame_parent_class)->dispose (object);
 }
@@ -99,6 +102,7 @@ mnb_panel_frame_finalize (GObject *object)
   G_OBJECT_CLASS (mnb_panel_frame_parent_class)->finalize (object);
 }
 
+#if 0
 static void
 mnb_panel_frame_footer_clicked_cb (NbtkButton *button, MnbPanelFrame *frame)
 {
@@ -106,10 +110,12 @@ mnb_panel_frame_footer_clicked_cb (NbtkButton *button, MnbPanelFrame *frame)
   g_signal_emit (frame, signals[FOOTER_CLICKED], 0);
   g_object_unref (frame);
 }
+#endif
 
 static void
 mnb_panel_frame_constructed (GObject *object)
 {
+#if 0
   MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (object)->priv;
   NbtkWidget         *footer;
 
@@ -123,6 +129,7 @@ mnb_panel_frame_constructed (GObject *object)
                     G_CALLBACK (mnb_panel_frame_footer_clicked_cb), object);
 
   priv->footer = CLUTTER_ACTOR (footer);
+#endif
 }
 
 static void
@@ -130,12 +137,13 @@ mnb_panel_frame_allocate (ClutterActor          *self,
                           const ClutterActorBox *box,
                           ClutterAllocationFlags flags)
 {
-  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (self)->priv;
-  gfloat                min_height, natural_height;
 
   CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->allocate (self, box,
                                                                 flags);
 
+#if 0
+  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (self)->priv;
+  gfloat                min_height, natural_height;
   ClutterActorBox allocation = { 0, };
   NbtkPadding     padding = { 0, };
 
@@ -151,6 +159,7 @@ mnb_panel_frame_allocate (ClutterActor          *self,
   allocation.y2 = allocation.y1 + natural_height;
 
   clutter_actor_allocate (priv->footer, &allocation, flags);
+#endif
 }
 
 static void
@@ -206,7 +215,8 @@ mnb_panel_frame_paint (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->paint (self);
 
-  clutter_actor_paint (priv->footer);
+  if (priv->footer)
+    clutter_actor_paint (priv->footer);
 }
 
 static void
@@ -216,7 +226,8 @@ mnb_panel_frame_pick (ClutterActor *self, const ClutterColor *pick_color)
 
   CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->pick (self, pick_color);
 
-  clutter_actor_paint (priv->footer);
+  if (priv->footer)
+    clutter_actor_paint (priv->footer);
 }
 
 static void
@@ -226,7 +237,8 @@ mnb_panel_frame_map (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->map (self);
 
-  clutter_actor_map (priv->footer);
+  if (priv->footer)
+    clutter_actor_map (priv->footer);
 }
 
 static void
@@ -236,7 +248,8 @@ mnb_panel_frame_unmap (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->unmap (self);
 
-  clutter_actor_unmap (priv->footer);
+  if (priv->footer)
+    clutter_actor_unmap (priv->footer);
 }
 
 static void

@@ -574,7 +574,7 @@ moblin_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
       shadow->attach_left   = -4;
       shadow->attach_top    = -4;
       shadow->attach_right  =  4;
-      shadow->attach_bottom = 38;
+      shadow->attach_bottom = 12;
 
       return shadow;
     }

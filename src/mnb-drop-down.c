@@ -110,6 +110,12 @@ mnb_drop_down_dispose (GObject *object)
       priv->button = NULL;
     }
 
+  if (priv->footer)
+    {
+      clutter_actor_destroy (priv->footer);
+      priv->footer = NULL;
+    }
+
   G_OBJECT_CLASS (mnb_drop_down_parent_class)->dispose (object);
 }
 
@@ -392,6 +398,7 @@ mnb_drop_down_allocate (ClutterActor          *actor,
 static void
 mnb_drop_down_constructed (GObject *object)
 {
+#if 0
   MnbDropDownPrivate *priv = MNB_DROP_DOWN (object)->priv;
   NbtkWidget         *footer;
 
@@ -403,6 +410,7 @@ mnb_drop_down_constructed (GObject *object)
                             G_CALLBACK (mnb_panel_hide_with_toolbar), object);
 
   priv->footer = CLUTTER_ACTOR (footer);
+#endif
 }
 
 static void
@@ -573,7 +581,7 @@ mnb_drop_down_get_footer_geometry (MnbDropDown *self,
   *x      = clutter_actor_get_x (CLUTTER_ACTOR (self));
   *y      = clutter_actor_get_height (priv->child);
   *width  = clutter_actor_get_width  (CLUTTER_ACTOR (self));
-  *height = clutter_actor_get_height (priv->footer);
+  *height = /*clutter_actor_get_height (priv->footer)*/ 0;
 }
 
 static void
