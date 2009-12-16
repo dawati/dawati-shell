@@ -1176,6 +1176,21 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
   wm_class  = meta_window_get_wm_class (meta_win);
   wm_name   = meta_window_get_title (meta_win);
 
+  /*
+   * Remove the window from the fullscreen list; do this unconditionally,
+   * so that under no circumstance we leave a dangling pointer behind.
+   */
+  fullscreen_app_removed (plugin, meta_win);
+
+  /*
+   * Disconnect the fullscreen notification handler; strictly speaking
+   * this should not be necessary, as the MetaWindow should be going away,
+   * but take no chances.
+   */
+  g_signal_handlers_disconnect_by_func (meta_win,
+                                        meta_window_fullscreen_notify_cb,
+                                        plugin);
+
   if (type == META_COMP_WINDOW_NORMAL)
     {
       g_signal_handlers_disconnect_by_func (mcw,
@@ -1196,21 +1211,6 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
           if (pid)
             kill (pid, SIGKILL);
         }
-
-      /*
-       * Remove the window from the fullscreen list; do this unconditionally,
-       * so that under no circumstance we leave a dangling pointer behind.
-       */
-      fullscreen_app_removed (plugin, meta_win);
-
-      /*
-       * Disconnect the fullscreen notification handler; strictly speaking
-       * this should not be necessary, as the MetaWindow should be going away,
-       * but take no chances.
-       */
-      g_signal_handlers_disconnect_by_func (meta_win,
-                                            meta_window_fullscreen_notify_cb,
-                                            plugin);
     }
 
   /*
@@ -1443,10 +1443,31 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   MetaCompWindowType          type;
   MnbPanelOop                *active_panel;
   Window                      xwin;
+  MetaWindow                 *mw;
+  gboolean                    fullscreen = FALSE;
+
 
   active_panel = (MnbPanelOop*)mnb_toolbar_get_active_panel (toolbar);
   type         = mutter_window_get_window_type (mcw);
   xwin         = mutter_window_get_x_window (mcw);
+  mw           = mutter_window_get_meta_window (mcw);
+
+  g_object_get (mw, "fullscreen", &fullscreen, NULL);
+
+  if (fullscreen)
+    {
+      MetaWorkspace *ws = meta_window_get_workspace (mw);
+
+      if (ws)
+        {
+          fullscreen_app_added (plugin, mw);
+          clutter_actor_hide (CLUTTER_ACTOR (mcw));
+        }
+    }
+
+  g_signal_connect (mw, "notify::fullscreen",
+                    G_CALLBACK (meta_window_fullscreen_notify_cb),
+                    plugin);
 
   /*
    * The OR test must come before the type test since GTK_WINDOW_POPUP type
@@ -1455,7 +1476,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
    */
   if (mutter_window_is_override_redirect (mcw))
     {
-      MetaWindow  *mw       = mutter_window_get_meta_window (mcw);
       const gchar *wm_class = meta_window_get_wm_class (mw);
 
       mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
@@ -1496,35 +1516,13 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     {
       ClutterAnimation   *animation;
       ActorPrivate       *apriv = get_actor_private (mcw);
-      MetaWindow         *mw    = mutter_window_get_meta_window (mcw);
       MetaScreen        *screen = mutter_plugin_get_screen (plugin);
       gint               screen_width, screen_height;
       gfloat             actor_width, actor_height;
-      gboolean           fullscreen = FALSE;
 
-      if (mw)
-        {
-          g_object_get (mw, "fullscreen", &fullscreen, NULL);
-
-          if (fullscreen)
-            {
-              MetaWorkspace *ws = meta_window_get_workspace (mw);
-
-              if (ws)
-                {
-                  fullscreen_app_added (plugin, mw);
-                  clutter_actor_hide (CLUTTER_ACTOR (mcw));
-                }
-            }
-
-          g_signal_connect (mw, "notify::fullscreen",
-                            G_CALLBACK (meta_window_fullscreen_notify_cb),
-                            plugin);
-
-          /* Hide toolbar etc in presence of modal window */
-          if (meta_window_is_blessed_window (mw))
-            mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
-        }
+      /* Hide toolbar etc in presence of modal window */
+      if (meta_window_is_blessed_window (mw))
+        mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
 
       if (type == META_COMP_WINDOW_NORMAL)
         {
