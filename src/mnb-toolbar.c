@@ -844,20 +844,6 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
   checked = nbtk_button_get_checked (button);
 
   /*
-   * Set the waiting_for_panel flag; this serves two purposes:
-   *
-   *   a) forces LEAVE events to be ignored until the panel is shown (see bug
-   *      3531).
-   *   b) Prevents race conditions when the user starts clicking fast at the
-   *      button (see bug 5020)
-   */
-
-  if (checked)
-    mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
-  else
-    mnb_toolbar_set_waiting_for_panel_hide (toolbar, TRUE);
-
-  /*
    * Clear the autohiding flag -- if the user is clicking on the panel buttons
    * then we are back to normal mode.
    */
@@ -891,10 +877,21 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
       }
     else
       {
+        /*
+         * When showing/hiding this panels, set the waiting_for_panel flag; this
+         * serves two purposes:
+         *
+         *   a) forces LEAVE events to be ignored until the panel is shown
+         *      (see bug 3531).
+         *
+         *   b) Prevents race conditions when the user starts clicking fast at
+         *      the button (see bug 5020)
+         */
         if (tp->panel)
           {
             if (checked && !mnb_panel_is_mapped (tp->panel))
               {
+                mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
                 mnb_panel_show (tp->panel);
 
                 if (priv->panel_stub_timeout_id)
@@ -906,6 +903,7 @@ mnb_toolbar_button_toggled_cb (NbtkButton *button,
               }
             else if (!checked && mnb_panel_is_mapped (tp->panel))
               {
+                mnb_toolbar_set_waiting_for_panel_hide (toolbar, TRUE);
                 mnb_panel_hide (tp->panel);
               }
           }
