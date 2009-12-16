@@ -2148,6 +2148,10 @@ mnb_toolbar_make_toolbar_panel (MnbToolbar  *toolbar,
 
   if (!strcmp (name, "moblin-panel-myzone"))
     tp->button_style = g_strdup_printf ("%s-button", service);
+  else if (!strcmp (name, "moblin-panel-applications"))
+    tp->button_style = g_strdup_printf ("%s-button", service);
+  else if (!strcmp (name, "carrick-connection-panel"))
+    tp->button_style = g_strdup_printf ("%s-button", service);
   else
     tp->button_style = g_strdup_printf ("%s-button", name);
 
@@ -2166,77 +2170,7 @@ static void
 mnb_toolbar_setup_panels (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
-  MnbToolbarPanel   *tp;
-  GList             *l = NULL;
-
-  /*
-   * FIXME -- this will use gconf, etc.
-   */
-
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_BLUETOOTH,
-                                       MPL_PANEL_BLUETOOTH,
-                                       MPL_PANEL_BLUETOOTH, TRUE, FALSE, FALSE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_POWER,
-                                       MPL_PANEL_POWER,
-                                       MPL_PANEL_POWER, TRUE, FALSE, FALSE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_VOLUME,
-                                       MPL_PANEL_VOLUME,
-                                       MPL_PANEL_VOLUME, TRUE, FALSE, FALSE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_NETWORK,
-                                       MPL_PANEL_NETWORK,
-                                       MPL_PANEL_NETWORK, TRUE, FALSE, TRUE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_ZONES,
-                                       MPL_PANEL_ZONES,
-                                       MPL_PANEL_ZONES, FALSE, TRUE, TRUE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_APPLICATIONS,
-                                       MPL_PANEL_APPLICATIONS,
-                                       MPL_PANEL_APPLICATIONS,
-                                       FALSE, FALSE, TRUE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_PASTEBOARD,
-                                       MPL_PANEL_PASTEBOARD,
-                                       MPL_PANEL_PASTEBOARD,
-                                       FALSE, FALSE, FALSE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_MEDIA,
-                                       MPL_PANEL_MEDIA,
-                                       MPL_PANEL_MEDIA, FALSE, FALSE, FALSE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_INTERNET,
-                                       MPL_PANEL_INTERNET,
-                                       MPL_PANEL_INTERNET, FALSE, FALSE, FALSE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_PEOPLE,
-                                       MPL_PANEL_PEOPLE,
-                                       MPL_PANEL_PEOPLE, FALSE, FALSE, FALSE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_STATUS,
-                                       MPL_PANEL_STATUS,
-                                       MPL_PANEL_STATUS, FALSE, FALSE, FALSE);
-  l = g_list_prepend (l, tp);
-  tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                       MPL_PANEL_MYZONE,
-                                       MPL_PANEL_MYZONE,
-                                       MPL_PANEL_MYZONE, FALSE, FALSE, TRUE);
-  l = g_list_prepend (l, tp);
-
-  priv->panels = l;
+  GList             *l;
 
   /*
    * And watch for changes
@@ -3244,6 +3178,29 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
     }
 
   g_key_file_free (kfile);
+
+  if (!tp)
+    {
+      /*
+       * Temporary fallback for borked panels that we really need.
+       */
+      if (!strcmp (desktop, "moblin-panel-applications"))
+        {
+          tp = mnb_toolbar_make_toolbar_panel (toolbar,
+                                               "moblin-panel-applications",
+                                               MPL_PANEL_APPLICATIONS,
+                                               MPL_PANEL_APPLICATIONS,
+                                               FALSE, FALSE, TRUE);
+        }
+      else if (!strcmp (desktop, "carrick-connection-panel"))
+        {
+          tp = mnb_toolbar_make_toolbar_panel (toolbar,
+                                               "carrick-connection-panel",
+                                               MPL_PANEL_NETWORK,
+                                               MPL_PANEL_NETWORK,
+                                               TRUE, FALSE, TRUE);
+        }
+    }
 
   return tp;
 }
