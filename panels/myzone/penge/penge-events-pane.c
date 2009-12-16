@@ -40,8 +40,8 @@ struct _PengeEventsPanePrivate {
   JanaDuration *duration;
   JanaTime *time;
 
-  GHashTable *uid_to_events;
-  GHashTable *uid_to_actors;
+  GHashTable *uid_to_events_list; /* uid to list of event data structures */
+  GHashTable *uid_rid_to_actors; /* uid & rid concatenated to actor */
 
   ClutterActor *no_events_bin;
 
@@ -74,6 +74,7 @@ static void penge_events_pane_update (PengeEventsPane *pane);
 
 static PengeEventData *penge_event_data_new (void);
 static void penge_event_data_free (PengeEventData *data);
+static void penge_event_data_list_free (GList *event_data_list);
 
 static void
 penge_events_pane_get_property (GObject *object, guint property_id,
@@ -115,16 +116,16 @@ penge_events_pane_dispose (GObject *object)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->uid_to_events)
+  if (priv->uid_to_events_list)
   {
-    g_hash_table_unref (priv->uid_to_events);
-    priv->uid_to_events = NULL;
+    g_hash_table_unref (priv->uid_to_events_list);
+    priv->uid_to_events_list = NULL;
   }
 
-  if (priv->uid_to_actors)
+  if (priv->uid_rid_to_actors)
   {
-    g_hash_table_unref (priv->uid_to_actors);
-    priv->uid_to_actors = NULL;
+    g_hash_table_unref (priv->uid_rid_to_actors);
+    priv->uid_rid_to_actors = NULL;
   }
 
   if (priv->stores)
@@ -200,7 +201,7 @@ penge_events_pane_get_preferred_height (ClutterActor *actor,
 
   /* Report our natural height to be our potential maximum */
   if (nat_height_p)
-    *nat_height_p = TILE_HEIGHT * g_hash_table_size (priv->uid_to_events);
+    *nat_height_p = TILE_HEIGHT * g_hash_table_size (priv->uid_to_events_list);
 }
 
 static void
@@ -254,6 +255,26 @@ _event_compare_func (gconstpointer a,
   return retval;
 }
 
+static GList *
+penge_events_pane_flatten_events (PengeEventsPane *pane)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
+  GList *events = NULL, *l;
+  GList *event_lists;
+
+  event_lists = g_hash_table_get_values (priv->uid_to_events_list);
+
+  for (l = event_lists; l; l = l->next)
+  {
+    /* Have to copy the list to avoid upsetting it */
+    events = g_list_concat (events, g_list_copy ((GList *)(l->data)));
+  }
+
+  g_list_free (event_lists);
+
+  return events;
+}
+
 static void
 penge_events_pane_update (PengeEventsPane *pane)
 {
@@ -264,7 +285,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   JanaEvent *event;
   gint count = 0;
   ClutterActor *actor;
-  gchar *uid;
+  gchar *uid, *rid, *uid_rid;
   GList *old_actors;
   JanaTime *on_the_hour;
   GList *window_start = NULL, *window_end = NULL;
@@ -274,9 +295,9 @@ penge_events_pane_update (PengeEventsPane *pane)
   g_return_if_fail (priv->time);
 
   /* So we can remove the "old" actors */
-  old_actors = g_hash_table_get_values (priv->uid_to_actors);
+  old_actors = g_hash_table_get_values (priv->uid_rid_to_actors);
 
-  events = g_hash_table_get_values (priv->uid_to_events);
+  events = penge_events_pane_flatten_events (pane);
   events = g_list_sort (events, _event_compare_func);
 
   if (!events)
@@ -384,26 +405,31 @@ penge_events_pane_update (PengeEventsPane *pane)
     event = event_data->event;
 
     uid = jana_component_get_uid (JANA_COMPONENT (event));
+    rid = jana_ecal_component_get_recurrence_id (JANA_ECAL_COMPONENT (event));
 
-    actor = g_hash_table_lookup (priv->uid_to_actors,
-                                 uid);
-
+    uid_rid = g_strdup_printf ("%s %s", uid, rid);
     g_free (uid);
+    g_free (rid);
+
+
+    actor = g_hash_table_lookup (priv->uid_rid_to_actors,
+                                 uid_rid);
+
     if (actor)
     {
       old_actors = g_list_remove (old_actors, actor);
 
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
-                                   "row",
-                                   count,
-                                   "col",
-                                   0,
+                                   "row", count,
+                                   "col", 0,
                                    NULL);
       g_object_set (actor, "time", priv->time, NULL);
+
+      /* Free this one here. Other code path takes ownership */
+      g_free (uid_rid);
     } else {
 
-      /* TODO: Put store in here */
       actor = g_object_new (PENGE_TYPE_EVENT_TILE,
                             "event", event,
                             "time", priv->time,
@@ -415,8 +441,8 @@ penge_events_pane_update (PengeEventsPane *pane)
                           actor,
                           count,
                           0);
-      g_hash_table_insert (priv->uid_to_actors,
-                           jana_component_get_uid (JANA_COMPONENT (event)),
+      g_hash_table_insert (priv->uid_rid_to_actors,
+                           uid_rid, /* Takes ownership */
                            g_object_ref (actor));
     }
 
@@ -434,17 +460,52 @@ penge_events_pane_update (PengeEventsPane *pane)
     /* TODO: Try and find where we're getting NULL from in here.. */
     if (actor)
     {
+      JanaComponent *event;
       clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
                                       actor);
-      uid = penge_event_tile_get_uid (PENGE_EVENT_TILE (actor));
-      g_hash_table_remove (priv->uid_to_actors,
-                           uid);
+
+      g_object_get (actor,
+                    "event", &event,
+                    NULL);
+
+      uid = jana_component_get_uid (event);
+      rid = jana_ecal_component_get_recurrence_id (JANA_ECAL_COMPONENT (event));
+
+      uid_rid = g_strdup_printf ("%s %s", uid, rid);
       g_free (uid);
+      g_free (rid);
+
+      g_hash_table_remove (priv->uid_rid_to_actors,
+                           uid_rid);
+
+      g_free (uid_rid);
     }
   }
 
   g_list_free (events);
   g_object_unref (on_the_hour);
+}
+
+static GList *
+_create_event_list_for_event (JanaComponent *component,
+                              JanaStore     *store)
+{
+  GList *events_list = NULL;
+  PengeEventData *event_data;
+  JanaEvent *event;
+  gchar *uid;
+
+  event = (JanaEvent *)component;
+
+  uid = jana_component_get_uid (component);
+  event_data = penge_event_data_new ();
+
+  /* Gives us a new reference, no need to ref-up */
+  event_data->event = g_object_ref (event);
+  event_data->store = g_object_ref (store);
+  events_list = g_list_append (events_list, event_data);
+
+  return events_list;
 }
 
 static void
@@ -458,6 +519,10 @@ _store_view_added_cb (JanaStoreView *view,
   JanaComponent *component;
   JanaEvent *event;
   gchar *uid;
+  JanaStore *store;
+  GList *events_list;
+
+  store = jana_store_view_get_store (view);
 
   for (l = components; l; l = l->next)
   {
@@ -465,22 +530,15 @@ _store_view_added_cb (JanaStoreView *view,
 
     if (jana_component_get_component_type (component) == JANA_COMPONENT_EVENT)
     {
-      PengeEventData *event_data;
-
-      event = (JanaEvent *)component;
-
       uid = jana_component_get_uid (component);
-      event_data = penge_event_data_new ();
-
-      /* Gives us a new reference, no need to ref-up */
-      event_data->store = jana_store_view_get_store (view);
-      event_data->event = g_object_ref (event);
-
-      g_hash_table_insert (priv->uid_to_events,
+      events_list = _create_event_list_for_event (component, store);
+      g_hash_table_insert (priv->uid_to_events_list,
                            uid,
-                           event_data);
+                           events_list);
     }
   }
+
+  g_object_unref (store);
 
   penge_events_pane_update (pane);
 }
@@ -492,46 +550,68 @@ _store_view_modified_cb (JanaStoreView *view,
 {
   PengeEventsPane *pane = (PengeEventsPane *)userdata;
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
-  GList *l;
+  GList *l, *ll;
   JanaComponent *component;
   JanaEvent *old_event;
   gchar *uid;
   ClutterActor *actor;
   PengeEventData *event_data;
+  GList *old_events_list = NULL;
+  GList *events_list = NULL;
+  JanaStore *store;
+
+  store = jana_store_view_get_store (view);
 
   for (l = components; l; l = l->next)
   {
     component = (JanaComponent *)l->data;
 
     uid = jana_component_get_uid (component);
-    old_event = g_hash_table_lookup (priv->uid_to_events,
-                                     uid);
+    old_events_list = g_hash_table_lookup (priv->uid_to_events_list,
+                                           uid);
 
-    if (old_event)
+    if (old_events_list)
     {
-      event_data = g_hash_table_lookup (priv->uid_to_events, g_strdup (uid));
-      g_object_unref (event_data->event);
-      event_data->event = g_object_ref (component);
+      events_list = _create_event_list_for_event (component, store);
+      g_hash_table_remove (priv->uid_to_events_list, uid);
+      g_hash_table_insert (priv->uid_to_events_list,
+                           g_strdup (uid),
+                           events_list);
     } else {
       g_warning (G_STRLOC ": Told to modify an unknown event with uid: %s",
                  uid);
     }
 
-    actor = g_hash_table_lookup (priv->uid_to_actors,
-                                 uid);
-
-    if (actor)
+    for (ll = events_list; ll; ll = ll->next)
     {
-      g_object_set (actor,
-                    "event",
-                    component,
-                    NULL);
-    } else {
-      g_warning (G_STRLOC ": Told to modify unknown actor.");
+      PengeEventData *event_data = (PengeEventData *)ll->data;
+      JanaComponent *comp = (JanaComponent *)event_data->event;
+      gchar *rid;
+      gchar *uid_rid;
+
+      rid = jana_ecal_component_get_recurrence_id (JANA_ECAL_COMPONENT (comp));
+
+      uid_rid = g_strdup_printf ("%s %s", uid, rid);
+      g_free (rid);
+
+      actor = g_hash_table_lookup (priv->uid_rid_to_actors, uid_rid);
+
+      if (actor)
+      {
+        g_object_set (actor,
+                      "event", component,
+                      NULL);
+      } else {
+        g_warning (G_STRLOC ": Told to modify unknown actor.");
+      }
+
+      g_free (uid_rid);
     }
 
     g_free (uid);
   }
+
+  g_object_unref (store);
 
   penge_events_pane_update (pane);
 }
@@ -550,8 +630,7 @@ _store_view_removed_cb (JanaStoreView *view,
   {
     uid = (const gchar *)l->data;
 
-
-    if (!g_hash_table_remove (priv->uid_to_events,
+    if (!g_hash_table_remove (priv->uid_to_events_list,
                               uid))
     {
       g_warning (G_STRLOC ": Asked to remove event for unknown uid:%s",
@@ -665,19 +744,25 @@ penge_events_pane_setup_stores (PengeEventsPane *pane)
     const gchar *uid = (const gchar *)l->data;
     GHashTableIter iter;
     gchar *event_uid;
+    GList *events_list = NULL;
     PengeEventData *event_data;
+    GList *l;
 
     store = g_hash_table_lookup (priv->stores, uid);
     g_hash_table_remove (priv->views, store);
 
-    g_hash_table_iter_init (&iter, priv->uid_to_events);
+    g_hash_table_iter_init (&iter, priv->uid_to_events_list);
 
     while (g_hash_table_iter_next (&iter,
                                    (gpointer)&event_uid,
-                                   (gpointer)&event_data))
+                                   (gpointer)&events_list))
     {
-      if (event_data->store == store)
-        g_hash_table_iter_remove (&iter);
+      for (l = events_list; l; l = l->next)
+      {
+        event_data = (PengeEventData *)l->data;
+        if (event_data->store == store)
+          g_hash_table_iter_remove (&iter);
+      }
     }
   }
 
@@ -698,14 +783,14 @@ penge_events_pane_init (PengeEventsPane *self)
   PengeEventsPanePrivate *priv = GET_PRIVATE (self);
 
   /* Create hashes to store our view membership in */
-  priv->uid_to_events = g_hash_table_new_full (g_str_hash,
-                                               g_str_equal,
-                                               g_free,
-                                               (GDestroyNotify)penge_event_data_free);
-  priv->uid_to_actors = g_hash_table_new_full (g_str_hash,
-                                               g_str_equal,
-                                               g_free,
-                                               g_object_unref);
+  priv->uid_to_events_list = g_hash_table_new_full (g_str_hash,
+                                                    g_str_equal,
+                                                    g_free,
+                                                    (GDestroyNotify)penge_event_data_list_free);
+  priv->uid_rid_to_actors = g_hash_table_new_full (g_str_hash,
+                                                   g_str_equal,
+                                                   g_free,
+                                                   g_object_unref);
 
   priv->stores = g_hash_table_new_full (g_str_hash,
                                         g_str_equal,
@@ -785,5 +870,18 @@ penge_event_data_free (PengeEventData *data)
   g_object_unref (data->store);
 
   g_slice_free (PengeEventData, data);
+}
+
+static void
+penge_event_data_list_free (GList *event_data_list)
+{
+  PengeEventData *event_data;
+  GList *l;
+
+  for (l = event_data_list; l; l = l->next)
+  {
+    event_data = (PengeEventData *)l->data;
+    penge_event_data_free (event_data);
+  }
 }
 
