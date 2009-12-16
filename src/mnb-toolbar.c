@@ -1147,6 +1147,34 @@ mnb_toolbar_get_panel_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   return -1;
 }
 
+static gint
+mnb_toolbar_get_applet_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  GList             *l;
+  gint               index;
+
+  if (!tp)
+    return -1;
+
+  for (l = priv->panels, index = 0; l; l = l->next)
+    {
+      MnbToolbarPanel *t = l->data;
+
+      if (!t->applet)
+        continue;
+
+      if (l->data == tp)
+        {
+          return index;
+        }
+
+      ++index;
+    }
+
+  return -1;
+}
+
 static void
 mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
                                            MnbToolbarPanel *tp)
@@ -1631,7 +1659,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
       /*
        * Applet button.
        */
-      gint applets = index - APPLETS_START;
+      gint applets = mnb_toolbar_get_applet_index (toolbar, tp);
       gint x, y;
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
