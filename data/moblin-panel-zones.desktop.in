@@ -3,3 +3,4 @@ Type=Application
 Name=zones
 _Comment=Zones Panel
 X-Moblin-Panel-Type=builtin
+X-Moblin-Panel-Button-Style=zones-button
