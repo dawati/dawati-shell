@@ -363,6 +363,11 @@ mpl_entry_class_init (MplEntryClass *klass)
 static void
 set_clear_button_size (ClutterActor *clear_button)
 {
+
+  /* TODO quick fix for MX port. */
+  clutter_actor_set_size (clear_button, 22, 21);
+
+#if 0
   GValue background_image = { 0, };
 
   g_value_init (&background_image, G_TYPE_STRING);
@@ -389,6 +394,7 @@ set_clear_button_size (ClutterActor *clear_button)
         }
       g_value_unset (&background_image);
     }
+#endif
 }
 
 static void

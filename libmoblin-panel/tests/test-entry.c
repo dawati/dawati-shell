@@ -13,31 +13,6 @@ button_clicked_cb (MplEntry *entry,
   printf ("%s() %s\n", __FUNCTION__, mpl_entry_get_text (entry));
 }
 
-static void
-keynav_cb (ClutterActor *actor,
-           guint         keyval,
-           gpointer      user_data)
-{
-  switch (keyval)
-    {
-      case CLUTTER_Return:
-        printf ("%s() return\n", __FUNCTION__);
-        break;
-      case CLUTTER_Left:
-        printf ("%s() left\n", __FUNCTION__);
-        break;
-      case CLUTTER_Up:
-        printf ("%s() up\n", __FUNCTION__);
-        break;
-      case CLUTTER_Right:
-        printf ("%s() right\n", __FUNCTION__);
-        break;
-      case CLUTTER_Down:
-        printf ("%s() down\n", __FUNCTION__);
-        break;
-    }
-}
-
 int
 main (int argc, char *argv[])
 {
@@ -59,7 +34,6 @@ main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (stage), CLUTTER_ACTOR (entry), NULL);
 
   g_signal_connect (entry, "button-clicked", G_CALLBACK (button_clicked_cb), NULL);
-  g_signal_connect (entry, "keynav-event", G_CALLBACK (keynav_cb), NULL);
 
   clutter_actor_show (stage);
 
