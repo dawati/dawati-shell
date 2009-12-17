@@ -1133,13 +1133,19 @@ mnb_toolbar_get_panel_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   if (!tp)
     return -1;
 
-  for (l = priv->panels, index = 0; l; l = l->next, ++index)
+  for (l = priv->panels, index = 0; l; l = l->next)
     {
+      MnbToolbarPanel *t = l->data;
+
+      if (t->applet)
+        continue;
+
       if (l->data == tp)
         {
           return index;
         }
 
+      ++index;
     }
 
   return -1;
