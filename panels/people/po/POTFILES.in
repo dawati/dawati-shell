@@ -1,4 +1,4 @@
 # List of source files containing translatable strings.
 src/moblin-panel-people.c
 src/mnb-people-panel.c
-
+data/moblin-panel-people.desktop.in.in
