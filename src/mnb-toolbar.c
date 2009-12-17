@@ -1045,7 +1045,18 @@ mnb_toolbar_raise_lowlight_for_panel (MnbToolbar *toolbar, MnbPanel *panel)
         clutter_actor_raise (priv->panel_stub, actor);
 
       clutter_actor_lower (priv->shadow, actor);
-      clutter_actor_lower (priv->lowlight, priv->shadow);
+
+      /*
+       * If the panel is not in a modal state, we lower the lowlight just below
+       * the panel shadow.
+       *
+       * If the panel is in modal state, we raise the lowlight above the panel
+       * actor itself.
+       */
+      if (!mnb_panel_is_modal (panel))
+        clutter_actor_lower (priv->lowlight, priv->shadow);
+      else
+        clutter_actor_raise (priv->lowlight, actor);
     }
 }
 
@@ -1279,6 +1290,21 @@ mnb_toolbar_panel_request_button_state_cb (MnbPanel       *panel,
 
   if ((state & MNB_BUTTON_INSENSITIVE))
     g_warning (G_STRLOC " Insensitive state is not yet implemented.");
+}
+
+static void
+mnb_toolbar_panel_request_modality_cb (MnbPanel       *panel,
+                                       gboolean        modal,
+                                       MnbToolbar     *toolbar)
+{
+  MnbToolbarPanel *tp;
+
+  tp = mnb_toolbar_panel_to_toolbar_panel (toolbar, panel);
+
+  if (!tp || !tp->panel || !mnb_panel_is_mapped (tp->panel))
+    return;
+
+  mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
 }
 
 static void
@@ -1835,6 +1861,10 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
 
   g_signal_connect (panel, "request-tooltip",
                     G_CALLBACK (mnb_toolbar_panel_request_tooltip_cb),
+                    toolbar);
+
+  g_signal_connect (panel, "request-modality",
+                    G_CALLBACK (mnb_toolbar_panel_request_modality_cb),
                     toolbar);
 
   g_signal_connect (panel, "remote-process-died",
