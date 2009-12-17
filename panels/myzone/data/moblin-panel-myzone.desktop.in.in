@@ -14,3 +14,4 @@ X-Moblin-Priority=High
 X-GNOME-Autostart-enable=true
 X-Moblin-Service=org.moblin.UX.Shell.Panels.myzone
 X-Moblin-Panel-Optional=false
+X-Moblin-Panel-Button-Style=myzone-button
