@@ -28,10 +28,9 @@
 #include "penge-everything-pane.h"
 #include "penge-recent-file-tile.h"
 #include "penge-people-tile.h"
-#include "penge-block-layout.h"
 #include "penge-source-manager.h"
 
-G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, CLUTTER_TYPE_BOX)
+G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONTAINER)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVERYTHING_PANE, PengeEverythingPanePrivate))
@@ -49,7 +48,6 @@ struct _PengeEverythingPanePrivate {
   MojitoClient *client;
   MojitoClientView *view;
   GtkRecentManager *recent_manager;
-  ClutterLayoutManager *layout;
   GHashTable *pointer_to_actor;
   PengeSourceManager *source_manager;
 
@@ -123,59 +121,9 @@ penge_everything_pane_finalize (GObject *object)
 }
 
 static void
-penge_everything_pane_constructed (GObject *object)
-{
-  PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (object);
-  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
-
-  clutter_box_set_layout_manager (CLUTTER_BOX (pane), priv->layout);
-
-  if (G_OBJECT_CLASS (penge_everything_pane_parent_class))
-    G_OBJECT_CLASS (penge_everything_pane_parent_class)->finalize (object);
-}
-
-/* These are needed since the layout manager allocates {0, 0, 0, 0} for
- * children it can't lay out.
- */
-static void
-_paint_foreach_cb (ClutterActor *actor,
-                   gpointer      data)
-{
-  ClutterActorBox actor_box;
-  gfloat w, h;
-
-  clutter_actor_get_allocation_box (actor, &actor_box);
-
-  clutter_actor_box_get_size (&actor_box, &w, &h);
-
-  if (w > 0 && h > 0)
-  {
-    clutter_actor_paint (actor);
-  }
-}
-
-static void
-penge_everything_pane_pick (ClutterActor       *actor,
-                            const ClutterColor *color)
-{
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             (ClutterCallback)_paint_foreach_cb,
-                             actor);
-}
-
-static void
-penge_everything_pane_paint (ClutterActor *actor)
-{
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             (ClutterCallback)_paint_foreach_cb,
-                             actor);
-}
-
-static void
 penge_everything_pane_class_init (PengeEverythingPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (PengeEverythingPanePrivate));
 
@@ -183,10 +131,6 @@ penge_everything_pane_class_init (PengeEverythingPaneClass *klass)
   object_class->set_property = penge_everything_pane_set_property;
   object_class->dispose = penge_everything_pane_dispose;
   object_class->finalize = penge_everything_pane_finalize;
-  object_class->constructed = penge_everything_pane_constructed;
-
-  actor_class->paint = penge_everything_pane_paint;
-  actor_class->pick = penge_everything_pane_pick;
 }
 
 /* Sort funct for sorting recent files */
@@ -268,7 +212,6 @@ static ClutterActor *
 _add_from_mojito_item (PengeEverythingPane *pane,
                        MojitoItem          *item)
 {
-  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
   ClutterActor *actor;
 
   actor = g_object_new (PENGE_TYPE_PEOPLE_TILE,
@@ -279,11 +222,10 @@ _add_from_mojito_item (PengeEverythingPane *pane,
 
   if (penge_people_tile_is_double_size (PENGE_PEOPLE_TILE (actor)))
   {
-    clutter_layout_manager_child_set (priv->layout,
-                                      CLUTTER_CONTAINER (pane),
-                                      actor,
-                                      "col-span", 2,
-                                      NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                 actor,
+                                 "col-span", 2,
+                                 NULL);
   }
 
   g_signal_connect (actor,
@@ -592,7 +534,7 @@ _recent_manager_changed_cb (GtkRecentManager *manager,
 }
 
 static void
-_layout_count_changed_cb (PengeBlockLayout *layout,
+_layout_count_changed_cb (PengeBlockContainer *pbc,
                           gint              count,
                           gpointer          userdata)
 {
@@ -634,8 +576,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
                     (GCallback)_recent_manager_changed_cb,
                     self);
 
-  priv->layout = penge_block_layout_new ();
-  penge_block_layout_set_spacing (PENGE_BLOCK_LAYOUT (priv->layout), 4);
+  penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 4);
 
   client = gconf_client_get_default ();
 
@@ -660,11 +601,11 @@ penge_everything_pane_init (PengeEverythingPane *self)
 
   g_object_unref (client);
 
-  penge_block_layout_set_min_tile_size (PENGE_BLOCK_LAYOUT (priv->layout),
-                                        tile_width,
-                                        tile_height);
+  penge_block_container_set_min_tile_size (PENGE_BLOCK_CONTAINER (self),
+                                           tile_width,
+                                           tile_height);
 
-  g_signal_connect (priv->layout,
+  g_signal_connect (self,
                     "count-changed",
                     (GCallback)_layout_count_changed_cb,
                     self);

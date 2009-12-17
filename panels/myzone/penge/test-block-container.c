@@ -20,7 +20,7 @@
 
 #include <stdlib.h>
 
-#include <penge/penge-block-layout.h>
+#include <penge/penge-block-container.h>
 
 static void
 stage_allocation_changed_cb (ClutterActor           *stage,
@@ -41,7 +41,6 @@ main (int    argc,
 {
   ClutterActor *stage;
   ClutterActor *block;
-  ClutterLayoutManager *layout;
   gint i;
   gint n_rects = 16;
 
@@ -51,14 +50,13 @@ main (int    argc,
   clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_set_size (stage, 640, 480);
 
-  layout = penge_block_layout_new ();
-  block = clutter_box_new (layout);
+  block = penge_block_container_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), block);
 
-  penge_block_layout_set_spacing (PENGE_BLOCK_LAYOUT (layout), 10);
-  penge_block_layout_set_min_tile_size (PENGE_BLOCK_LAYOUT (layout),
-                                        140,
-                                        92);
+  penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (block), 10);
+  penge_block_container_set_min_tile_size (PENGE_BLOCK_CONTAINER (block),
+                                           140,
+                                           92);
 
   /* Shamelessly stolen from test-flow-layout from Clutter */
   for (i = 0; i < n_rects; i++)
@@ -73,11 +71,10 @@ main (int    argc,
     rect = clutter_rectangle_new_with_color (&color);
 
     clutter_container_add_actor (CLUTTER_CONTAINER (block), rect);
-    clutter_layout_manager_child_set (layout,
-                                      CLUTTER_CONTAINER (block),
-                                      rect,
-                                      "col-span", (i % 2) + 1,
-                                      NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (block),
+                                 rect,
+                                 "col-span", (i % 2) + 1,
+                                 NULL);
   }
 
   clutter_actor_show_all (stage);

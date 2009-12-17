@@ -22,6 +22,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
+#include "penge-block-container.h"
 
 G_BEGIN_DECLS
 
@@ -43,11 +44,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_EVERYTHING_PANE, PengeEverythingPaneClass))
 
 typedef struct {
-  ClutterBox parent;
+  PengeBlockContainer parent;
 } PengeEverythingPane;
 
 typedef struct {
-  ClutterBoxClass parent_class;
+  PengeBlockContainerClass parent_class;
 } PengeEverythingPaneClass;
 
 GType penge_everything_pane_get_type (void);
