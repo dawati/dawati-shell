@@ -30,12 +30,12 @@ main (int argc, char *argv[])
   clutter_init (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
-                           "../theme/panel.css", NULL);
+                           "../data/theme/panel.css", NULL);
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 400, 200);
 
-  launcher = mnb_launcher_button_new ("internet-coloured", "../data/theme/panel/internet-coloured.png",
+  launcher = mnb_launcher_button_new ("internet-coloured", "../data/theme/apps-coloured.png",
                                       32, "Launcher Button Launcher Button ", 
                                       "Category", "Comment", "/bin/false",
                                       "/usr/share/applications/eog.desktop");

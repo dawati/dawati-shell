@@ -7,7 +7,7 @@ MnbLauncher > *#launcher-vbox {
 }
 
 MnbLauncher *#launcher-filter-pane {
-  border-image: url('launcher-search-bg.png') 4 stretch;
+  border-image: url('launcher-search-bg.png') 4;
   padding: 4;
 }
 
@@ -48,7 +48,7 @@ MnbLauncherButton {
 }
 
 MnbLauncherButton:hover {
-  border-image: url("launcher-hover.png") 4 6 6 4 stretch stretch;
+  border-image: url("launcher-hover.png") 4 6 6 4;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-title {
