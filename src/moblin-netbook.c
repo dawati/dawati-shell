@@ -1430,6 +1430,40 @@ meta_window_is_blessed_window (MetaWindow *mw)
   return FALSE;
 }
 
+static gboolean
+moblin_netbook_window_is_modal_for_panel (MnbPanelOop *panel,
+                                          MetaWindow  *window)
+{
+  MutterWindow *mcw;
+  MetaWindow   *mw;
+  MetaWindow   *trans_for;
+
+  /*
+   * meta_window_get_transient_for() is quite involved, so only call it if
+   * we need to.
+   */
+  if (!meta_window_is_modal (window) ||
+      !(trans_for = meta_window_get_transient_for (window)))
+    {
+      return FALSE;
+    }
+
+  mcw = mnb_panel_oop_get_mutter_window (panel);
+  mw  = mutter_window_get_meta_window (mcw);
+
+  if (trans_for == mw)
+    return TRUE;
+
+  return FALSE;
+}
+
+static void
+moblin_netbook_panel_modal_destroyed_cb (MutterWindow *mcw,
+                                         MnbPanelOop  *panel)
+{
+  mnb_panel_oop_set_auto_modal (panel, FALSE);
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -1447,10 +1481,19 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   gboolean                    fullscreen = FALSE;
 
 
-  active_panel = (MnbPanelOop*)mnb_toolbar_get_active_panel (toolbar);
+  active_panel = (MnbPanelOop*) mnb_toolbar_get_active_panel (toolbar);
   type         = mutter_window_get_window_type (mcw);
   xwin         = mutter_window_get_x_window (mcw);
   mw           = mutter_window_get_meta_window (mcw);
+
+  if (active_panel &&
+      moblin_netbook_window_is_modal_for_panel (active_panel, mw))
+    {
+      mnb_panel_oop_set_auto_modal ((MnbPanelOop*)active_panel, TRUE);
+      g_signal_connect (mcw, "window-destroyed",
+                        G_CALLBACK (moblin_netbook_panel_modal_destroyed_cb),
+                        active_panel);
+    }
 
   g_object_get (mw, "fullscreen", &fullscreen, NULL);
 
