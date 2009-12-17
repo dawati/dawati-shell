@@ -1941,7 +1941,7 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
                              TOOLBAR_X_PADDING,
                              TOOLBAR_HEIGHT + 4,
                              screen_width - TOOLBAR_X_PADDING * 2,
-                             screen_height - TOOLBAR_HEIGHT - 30);
+                             screen_height - TOOLBAR_HEIGHT - 8);
 
   if (panel)
     {
@@ -2861,7 +2861,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
     /* FIXME */
     mnb_panel_set_size (tp->panel,
                         screen_width - TOOLBAR_X_PADDING * 2,
-                        screen_height - TOOLBAR_HEIGHT - 4 - 30);
+                        screen_height - TOOLBAR_HEIGHT - 8);
   }
 }
 

@@ -1229,8 +1229,7 @@ mnb_switcher_set_size (MnbPanel *panel, guint width, guint height)
   if (!priv->empty)
     clutter_actor_set_size (CLUTTER_ACTOR (priv->table),
                             width - TOOLBAR_X_PADDING * 2,
-                            height - TOOLBAR_HEIGHT * 1.5 - 4 +
-                            MNB_DROP_DOWN_SHADOW_HEIGHT);
+                            height - TOOLBAR_HEIGHT - 8);
   else
     clutter_actor_set_width (CLUTTER_ACTOR (priv->table),
                              width - TOOLBAR_X_PADDING * 2);
