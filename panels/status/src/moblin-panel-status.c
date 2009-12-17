@@ -1166,7 +1166,7 @@ setup_panel (MoblinStatusPanel *status_panel)
   MplPanelClient *panel;
   ClutterActor *stage, *status;
 
-  panel = mpl_panel_clutter_new (MPL_PANEL_STATUS,
+  panel = mpl_panel_clutter_new ("status",
                                  _("status"),
                                  NULL,
                                  "status-button",

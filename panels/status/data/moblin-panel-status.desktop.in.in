@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/moblin-panel-status
+TryExec=@libexecdir@/moblin-panel-status
+_Name=status
+Icon=moblin-panel-status
+_Comment=Status panel
+Terminal=false
+Categories=
+OnlyShowIn=MOBLIN;
+X-Moblin-Priority=Low
+X-Moblin-Service=org.moblin.UX.Shell.Panels.status
+X-Moblin-Panel-Optional=true
+X-Moblin-Panel-Button-Style=status-button

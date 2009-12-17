@@ -3,3 +3,4 @@ src/mnb-im-status-row.c
 src/mnb-web-status-entry.c
 src/mnb-web-status-row.c
 src/moblin-panel-status.c
+data/moblin-panel-status.desktop.in.in
