@@ -230,7 +230,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   mx_bin_set_child (MX_BIN (self),
                     priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
-  priv->bin = mx_bin_new ();
+  priv->bin = mx_frame_new ();
   mx_bin_set_fill (MX_BIN (priv->bin), TRUE, TRUE);
   mx_table_add_actor (MX_TABLE (priv->inner_table),
                       priv->bin,

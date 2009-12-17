@@ -262,7 +262,7 @@ penge_event_tile_init (PengeEventTile *self)
   mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
-  priv->time_bin = mx_bin_new ();
+  priv->time_bin = mx_frame_new ();
   clutter_actor_set_width (priv->time_bin,
                            60);
   mx_widget_set_style_class_name (MX_WIDGET (priv->time_bin),

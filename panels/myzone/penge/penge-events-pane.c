@@ -326,7 +326,7 @@ penge_events_pane_update (PengeEventsPane *pane)
     if (!priv->no_events_bin)
     {
       label = mx_label_new (_("No calendar entries this week"));
-      priv->no_events_bin = mx_bin_new ();
+      priv->no_events_bin = mx_frame_new ();
       mx_bin_set_child (MX_BIN (priv->no_events_bin),
                         label);
       mx_table_add_actor (MX_TABLE (pane),

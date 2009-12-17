@@ -215,7 +215,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
 
     author_icon = mojito_item_get_value (item, "authoricon");
     avatar = clutter_texture_new_from_file (author_icon, NULL);
-    avatar_bin = mx_bin_new ();
+    avatar_bin = mx_frame_new ();
     mx_bin_set_child (MX_BIN (avatar_bin), avatar);
     mx_bin_set_fill (MX_BIN (avatar_bin), TRUE, TRUE);
     mx_widget_set_style_class_name (MX_WIDGET (avatar_bin),
