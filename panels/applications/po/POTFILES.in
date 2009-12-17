@@ -1,3 +1,4 @@
 # List of source files containing translatable strings.
 src/moblin-netbook-launcher.c
 src/moblin-panel-applications.c
+data/moblin-panel-applications.desktop.in.in

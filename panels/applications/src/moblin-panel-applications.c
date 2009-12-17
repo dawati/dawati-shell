@@ -191,7 +191,7 @@ main (int     argc,
 
       /* All button styling goes in mutter-moblin.css for now,
        * don't pass our own stylesheet. */
-      panel = mpl_panel_clutter_new (MPL_PANEL_APPLICATIONS,
+      panel = mpl_panel_clutter_new ("applications",
                                       _("applications"),
                                      /*THEMEDIR "/toolbar-button.css" */ NULL,
                                      "applications-button",
