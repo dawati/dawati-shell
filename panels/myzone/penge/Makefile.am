@@ -1,5 +1,5 @@
 lib_LTLIBRARIES = libpenge.la
-noinst_PROGRAMS = test-block-layout test-model-bridge test-everything-pane
+noinst_PROGRAMS = test-block-layout test-everything-pane
 
 libpenge_headers = penge-people-pane.h \
 		   penge-people-tile.h \
@@ -71,9 +71,6 @@ libpenge_la_LIBADD = $(MPL_LIBS) \
 
 test_block_layout_SOURCES = test-block-layout.c
 test_block_layout_LDADD = libpenge.la
-
-test_model_bridge_SOURCES = test-model-bridge.c
-test_model_bridge_LDADD = libpenge.la
 
 test_everything_pane_SOURCES = test-everything-pane.c
 test_everything_pane_LDADD = libpenge.la
