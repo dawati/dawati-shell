@@ -1293,9 +1293,9 @@ mnb_toolbar_panel_request_button_state_cb (MnbPanel       *panel,
 }
 
 static void
-mnb_toolbar_panel_request_modality_cb (MnbPanel       *panel,
-                                       gboolean        modal,
-                                       MnbToolbar     *toolbar)
+mnb_toolbar_panel_notify_modal_cb (MnbPanel   *panel,
+                                   GParamSpec *pspec,
+                                   MnbToolbar *toolbar)
 {
   MnbToolbarPanel *tp;
 
@@ -1863,8 +1863,8 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
                     G_CALLBACK (mnb_toolbar_panel_request_tooltip_cb),
                     toolbar);
 
-  g_signal_connect (panel, "request-modality",
-                    G_CALLBACK (mnb_toolbar_panel_request_modality_cb),
+  g_signal_connect (panel, "notify::modal",
+                    G_CALLBACK (mnb_toolbar_panel_notify_modal_cb),
                     toolbar);
 
   g_signal_connect (panel, "remote-process-died",

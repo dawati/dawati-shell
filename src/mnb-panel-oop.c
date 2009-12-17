@@ -81,7 +81,8 @@ enum
   PROP_X,
   PROP_Y,
   PROP_WIDTH,
-  PROP_HEIGHT
+  PROP_HEIGHT,
+  PROP_MODAL
 };
 
 enum
@@ -125,6 +126,7 @@ struct _MnbPanelOopPrivate
    */
   gboolean         mapped            : 1;
   gboolean         modal             : 1;
+  gboolean         auto_modal        : 1;
   gboolean         in_show_animation : 1;
   gboolean         in_hide_animation : 1;
   gboolean         dont_hide_toolbar : 1;
@@ -161,8 +163,12 @@ mnb_panel_oop_get_property (GObject    *object,
     case PROP_WIDTH:
       g_value_set_uint (value, priv->width);
       break;
-    case PROP_HEIGHT:
-      g_value_set_uint (value, priv->height);
+    case PROP_MODAL:
+      {
+        gboolean modal = priv->modal || priv->auto_modal;
+
+        g_value_set_boolean (value, modal);
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -254,10 +260,16 @@ mnb_panel_oop_request_modality_cb (DBusGProxy     *proxy,
   MnbPanelOopPrivate *priv      = panel->priv;
   gboolean            not_modal = !priv->modal;
 
-  if (not_modal == modal)
+  if (not_modal != !modal)
     {
+      gboolean old_not_modal = !(priv->modal || priv->auto_modal);
+      gboolean new_not_modal = !(modal || priv->auto_modal);
+
       priv->modal = modal;
       g_signal_emit_by_name (panel, "request-modality", modal);
+
+      if (old_not_modal != new_not_modal)
+        g_object_notify (G_OBJECT (panel), "modal");
     }
 }
 
@@ -438,6 +450,14 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
                                                       1024,
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+                                   PROP_MODAL,
+                                   g_param_spec_boolean ("modal",
+                                          "Modal",
+                                          "Whether panel has modal transients",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
 
   signals[READY] =
     g_signal_new ("ready",
@@ -1506,7 +1526,7 @@ mnb_panel_oop_is_modal (MnbPanel *panel)
 
   priv = MNB_PANEL_OOP (panel)->priv;
 
-  return priv->modal;
+  return priv->modal || priv->auto_modal;
 }
 
 static void
@@ -1604,4 +1624,22 @@ mnb_panel_oop_set_delayed_show (MnbPanelOop *panel, gboolean delayed)
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
 
   priv->delayed_show = delayed;
+}
+
+void
+mnb_panel_oop_set_auto_modal (MnbPanelOop *panel, gboolean modal)
+{
+  MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
+  gboolean            not_modal = !priv->auto_modal;
+
+  if (not_modal != !modal)
+    {
+      gboolean old_not_modal = !(priv->modal || priv->auto_modal);
+      gboolean new_not_modal = !(priv->modal || modal);
+
+      priv->auto_modal = modal;
+
+      if (old_not_modal != new_not_modal)
+        g_object_notify (G_OBJECT (panel), "modal");
+    }
 }

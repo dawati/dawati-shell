@@ -95,6 +95,9 @@ void          mnb_panel_oop_unload            (MnbPanelOop *panel);
 void          mnb_panel_oop_set_delayed_show  (MnbPanelOop *panel,
                                                gboolean     delayed);
 
+void          mnb_panel_oop_set_auto_modal    (MnbPanelOop *panel,
+                                               gboolean     modal);
+
 G_END_DECLS
 
 #endif /* _MNB_PANEL_OOP */
