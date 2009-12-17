@@ -26,7 +26,7 @@
 
 #include <string.h>
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include "mnb-launcher-button.h"
 
 #define MNB_LAUNCHER_BUTTON_GET_PRIVATE(obj)    \
@@ -52,7 +52,7 @@ enum
 struct _MnbLauncherButtonPrivate
 {
   ClutterActor  *icon;
-  NbtkLabel     *title;
+  MxLabel       *title;
   ClutterActor  *fav_toggle;
 
   char          *description;
@@ -82,13 +82,13 @@ struct _MnbLauncherButtonPrivate
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbLauncherButton, mnb_launcher_button, NBTK_TYPE_TABLE);
+G_DEFINE_TYPE (MnbLauncherButton, mnb_launcher_button, MX_TYPE_TABLE);
 
 static void
-fav_button_clicked_cb (NbtkButton         *button,
+fav_button_clicked_cb (MxButton           *button,
                        MnbLauncherButton  *self)
 {
-  if (nbtk_button_get_checked (button))
+  if (mx_button_get_checked (button))
     {
       g_signal_emit (self, _signals[FAV_TOGGLED], 0);
     }
@@ -113,7 +113,7 @@ fav_button_clicked_cb (NbtkButton         *button,
           g_signal_handlers_block_by_func (plain_sibling,
                                            fav_button_clicked_cb,
                                            self);
-          nbtk_button_set_checked (NBTK_BUTTON (plain_sibling->priv->fav_toggle),
+          mx_button_set_checked (MX_BUTTON (plain_sibling->priv->fav_toggle),
                                                 FALSE);
           g_signal_handlers_unblock_by_func (plain_sibling,
                                              fav_button_clicked_cb,
@@ -145,12 +145,12 @@ mnb_launcher_button_tooltip_cb (MnbLauncherButton *self)
   area.width = out_v.x - area.x;
   area.height = out_v.y - area.y;
 
-  self->priv->tooltip = g_object_new (NBTK_TYPE_TOOLTIP,
+  self->priv->tooltip = g_object_new (MX_TYPE_TOOLTIP,
                                       "label", self->priv->description,
                                       NULL);
   clutter_actor_set_parent (self->priv->tooltip, CLUTTER_ACTOR (self));
-  nbtk_tooltip_set_tip_area (NBTK_TOOLTIP (self->priv->tooltip), &area);
-  nbtk_tooltip_show (NBTK_TOOLTIP (self->priv->tooltip));
+  mx_tooltip_set_tip_area (MX_TOOLTIP (self->priv->tooltip), &area);
+  mx_tooltip_show (MX_TOOLTIP (self->priv->tooltip));
 
   /* One shot only. */
   self->priv->tooltip_timeout_id = 0;
@@ -226,7 +226,7 @@ mnb_launcher_button_button_release_event (ClutterActor       *actor,
       g_signal_emit (self, _signals[ACTIVATED], 0);
 
       mnb_launcher_button_reset_tooltip (self);
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
+      mx_widget_set_style_pseudo_class (MX_WIDGET (self), NULL);
 
       return TRUE;
     }
@@ -242,7 +242,7 @@ mnb_launcher_button_enter_event (ClutterActor         *actor,
 
   g_signal_emit (self, _signals[HOVERED], 0);
 
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), "hover");
+  mx_widget_set_style_pseudo_class (MX_WIDGET (self), "hover");
 
   return FALSE;
 }
@@ -267,7 +267,7 @@ mnb_launcher_button_leave_event (ClutterActor         *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
+  mx_widget_set_style_pseudo_class (MX_WIDGET (self), NULL);
 
   if (self->priv->is_pressed)
     {
@@ -286,13 +286,13 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
                               ClutterAllocationFlags flags)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
-  NbtkPadding        padding;
+  MxPadding          padding;
   ClutterActorBox    icon_box, title_box, pin_box;
 
   CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)
     ->allocate (actor, box, flags);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
 
   /* Hack allocation of the labels, so the fav toggle overlaps. */
 
@@ -383,7 +383,7 @@ _mapped_notify_cb (MnbLauncherButton  *self,
 {
   if (!CLUTTER_ACTOR_IS_MAPPED (self))
   {
-    nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (self), NULL);
+    mx_widget_set_style_pseudo_class (MX_WIDGET (self), NULL);
 
     mnb_launcher_button_reset_tooltip (self);
   }
@@ -394,7 +394,7 @@ _pseudo_class_notify_cb (MnbLauncherButton  *self,
                          GParamSpec         *pspec,
                          gpointer            user_data)
 {
-  if (NULL == nbtk_widget_get_style_pseudo_class (NBTK_WIDGET (self)))
+  if (NULL == mx_widget_get_style_pseudo_class (MX_WIDGET (self)))
   {
     mnb_launcher_button_reset_tooltip (self);
   }
@@ -407,7 +407,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   self->priv = MNB_LAUNCHER_BUTTON_GET_PRIVATE (self);
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), COL_SPACING);
+  mx_table_set_col_spacing (MX_TABLE (self), COL_SPACING);
 
   g_signal_connect (self, "notify::mapped",
                     G_CALLBACK (_mapped_notify_cb), NULL);
@@ -419,11 +419,11 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   self->priv->icon = NULL;
 
   /* "app" label */
-  self->priv->title = (NbtkLabel *) nbtk_label_new (NULL);
+  self->priv->title = (MxLabel *) mx_label_new (NULL);
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->title), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->title),
                           "mnb-launcher-button-title");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+  mx_table_add_actor_with_properties (MX_TABLE (self),
                                         CLUTTER_ACTOR (self->priv->title),
                                         0, 1,
                                         "x-align", 0.0,
@@ -431,18 +431,18 @@ mnb_launcher_button_init (MnbLauncherButton *self)
                                         "x-fill", TRUE,
                                         NULL);
 
-  label = nbtk_label_get_clutter_text (self->priv->title);
+  label = mx_label_get_clutter_text (self->priv->title);
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
   clutter_text_set_line_wrap (CLUTTER_TEXT (label), TRUE);
 
   /* "fav app" toggle */
-  self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (nbtk_button_new ()));
-  nbtk_button_set_toggle_mode (NBTK_BUTTON (self->priv->fav_toggle), TRUE);
+  self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (mx_button_new ()));
+  mx_button_set_toggle_mode (MX_BUTTON (self->priv->fav_toggle), TRUE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->fav_toggle),
                           "mnb-launcher-button-fav-toggle");
   clutter_actor_set_size (self->priv->fav_toggle, FAV_TOGGLE_SIZE, FAV_TOGGLE_SIZE);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+  mx_table_add_actor_with_properties (MX_TABLE (self),
                                         CLUTTER_ACTOR (self->priv->fav_toggle),
                                         0, 2,
                                         "row-span", 1,
@@ -454,7 +454,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }
 
-NbtkWidget *
+MxWidget *
 mnb_launcher_button_new (const gchar *icon_name,
                          const gchar *icon_file,
                          gint         icon_size,
@@ -472,7 +472,7 @@ mnb_launcher_button_new (const gchar *icon_name,
   mnb_launcher_button_set_icon (self, icon_file, icon_size);
 
   if (title)
-    nbtk_label_set_text (self->priv->title, title);
+    mx_label_set_text (self->priv->title, title);
 
   if (category)
     self->priv->category = g_strdup (category);
@@ -486,10 +486,10 @@ mnb_launcher_button_new (const gchar *icon_name,
   if (desktop_file_path)
     self->priv->desktop_file_path = g_strdup (desktop_file_path);
 
-  return NBTK_WIDGET (self);
+  return MX_WIDGET (self);
 }
 
-NbtkWidget *
+MxWidget *
 mnb_launcher_button_create_favorite (MnbLauncherButton *self)
 {
   MnbLauncherButton *fav_sibling;
@@ -499,7 +499,7 @@ mnb_launcher_button_create_favorite (MnbLauncherButton *self)
                                    self->priv->icon_name,
                                    self->priv->icon_file,
                                    self->priv->icon_size,
-                                   nbtk_label_get_text (self->priv->title),
+                                   mx_label_get_text (self->priv->title),
                                    self->priv->category,
                                    self->priv->description,
                                    self->priv->executable,
@@ -519,7 +519,7 @@ mnb_launcher_button_create_favorite (MnbLauncherButton *self)
   self->priv->fav_sibling = fav_sibling;
   fav_sibling->priv->plain_sibling = self;
 
-  return NBTK_WIDGET (fav_sibling);
+  return MX_WIDGET (fav_sibling);
 }
 
 const char *
@@ -527,7 +527,7 @@ mnb_launcher_button_get_title (MnbLauncherButton *self)
 {
   g_return_val_if_fail (self, NULL);
 
-  return nbtk_label_get_text (self->priv->title);
+  return mx_label_get_text (self->priv->title);
 }
 
 const char *
@@ -567,7 +567,7 @@ mnb_launcher_button_get_favorite (MnbLauncherButton *self)
 {
   g_return_val_if_fail (self, FALSE);
 
-  return nbtk_button_get_checked (NBTK_BUTTON (self->priv->fav_toggle));
+  return mx_button_get_checked (MX_BUTTON (self->priv->fav_toggle));
 }
 
 void
@@ -576,7 +576,7 @@ mnb_launcher_button_set_favorite (MnbLauncherButton *self,
 {
   g_return_if_fail (self);
 
-  nbtk_button_set_checked (NBTK_BUTTON (self->priv->fav_toggle), is_favorite);
+  mx_button_set_checked (MX_BUTTON (self->priv->fav_toggle), is_favorite);
 }
 
 const gchar *
@@ -592,8 +592,8 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
                               const gchar        *icon_file,
                               gint                icon_size)
 {
-  GError *error;
-  NbtkTextureCache *texture_cache;
+  MxTextureCache *texture_cache;
+  GError         *error = NULL;
 
   if (self->priv->icon_file)
     {
@@ -611,8 +611,8 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
   self->priv->icon_size = icon_size;
 
   error = NULL;
-  texture_cache = nbtk_texture_cache_get_default ();
-  self->priv->icon = nbtk_texture_cache_get_actor (texture_cache,
+  texture_cache = mx_texture_cache_get_default ();
+  self->priv->icon = mx_texture_cache_get_actor (texture_cache,
                                                    self->priv->icon_file);
 
   if (error) {
@@ -627,7 +627,7 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
                               self->priv->icon_size,
                               self->priv->icon_size);
     }
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
+    mx_table_add_actor_with_properties (MX_TABLE (self),
                                           CLUTTER_ACTOR (self->priv->icon),
                                           0, 0,
                                           "row-span", 1,
@@ -642,8 +642,8 @@ mnb_launcher_button_compare (MnbLauncherButton *self,
   g_return_val_if_fail (self, 0);
   g_return_val_if_fail (other, 0);
 
-  return g_utf8_collate (nbtk_label_get_text (NBTK_LABEL (self->priv->title)),
-                         nbtk_label_get_text (NBTK_LABEL (other->priv->title)));
+  return g_utf8_collate (mx_label_get_text (MX_LABEL (self->priv->title)),
+                         mx_label_get_text (MX_LABEL (other->priv->title)));
 }
 
 gboolean
@@ -669,7 +669,7 @@ mnb_launcher_button_match (MnbLauncherButton *self,
   /* Title. */
   if (!self->priv->title_key)
     self->priv->title_key =
-      g_utf8_strdown (nbtk_label_get_text (NBTK_LABEL (self->priv->title)),
+      g_utf8_strdown (mx_label_get_text (MX_LABEL (self->priv->title)),
                       -1);
 
   if (self->priv->title_key &&

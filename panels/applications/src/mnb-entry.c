@@ -18,12 +18,13 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <mx/mx.h>
 #include "mnb-entry.h"
 
-static void _stylable_iface_init (NbtkStylableIface *iface);
+static void _stylable_iface_init (MxStylableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MnbEntry, mnb_entry, MPL_TYPE_ENTRY,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE, _stylable_iface_init))
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_STYLABLE, _stylable_iface_init))
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_ENTRY, MnbEntryPrivate))
@@ -49,17 +50,17 @@ typedef struct {
 static guint _signals[LAST_SIGNAL] = { 0, };
 
 /*
- * NbtkStylable, needed to get parent type styling applied.
+ * MxStylable, needed to get parent type styling applied.
  */
 
 static const gchar *
-_stylable_get_style_type (NbtkStylable *stylable)
+_stylable_get_style_type (MxStylable *stylable)
 {
   return "MplEntry";
 }
 
 static void
-_stylable_iface_init (NbtkStylableIface *iface)
+_stylable_iface_init (MxStylableIface *iface)
 {
   static gboolean _is_initialized = FALSE;
 
@@ -207,11 +208,11 @@ mnb_entry_class_init (MnbEntryClass *klass)
 static void
 mnb_entry_init (MnbEntry *self)
 {
-  NbtkWidget    *entry;
+  MxWidget      *entry;
   ClutterActor  *text;
 
-  entry = mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
+  entry = mpl_entry_get_mx_entry (MPL_ENTRY (self));
+  text = mx_entry_get_clutter_text (MX_ENTRY (entry));
   g_signal_connect (text, "key-press-event",
                     G_CALLBACK (_text_key_press_cb),
                     self);
@@ -245,8 +246,8 @@ mnb_entry_set_has_keyboard_focus (MnbEntry *self,
 
   if (keyboard_focus != priv->has_keyboard_focus)
   {
-    NbtkEntry   *entry = (NbtkEntry *) mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
-    ClutterText *text = (ClutterText *) nbtk_entry_get_clutter_text (entry);
+    MxEntry     *entry = (MxEntry *) mpl_entry_get_mx_entry (MPL_ENTRY (self));
+    ClutterText *text = (ClutterText *) mx_entry_get_clutter_text (entry);
 
     priv->has_keyboard_focus = keyboard_focus;
     g_object_notify (G_OBJECT (self), "has-keyboard-focus");

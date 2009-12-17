@@ -23,8 +23,7 @@
 #ifndef __MNB_LAUNCHER_BUTTON_H__
 #define __MNB_LAUNCHER_BUTTON_H__
 
-#include <nbtk/nbtk.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -32,7 +31,7 @@ G_BEGIN_DECLS
 #define MNB_LAUNCHER_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_LAUNCHER_BUTTON, MnbLauncherButton))
 #define MNB_IS_LAUNCHER_BUTTON(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNB_TYPE_LAUNCHER_BUTTON))
 #define MNB_LAUNCHER_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), MNB_TYPE_LAUNCHER_BUTTON, MnbLauncherButtonClass))
-#define NBTK_IS_LAUNCHER_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), MNB_TYPE_LAUNCHER_BUTTON))
+#define MNB_IS_LAUNCHER_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), MNB_TYPE_LAUNCHER_BUTTON))
 #define MNB_LAUNCHER_BUTTON_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_LAUNCHER_BUTTON, MnbLauncherButtonClass))
 
 typedef struct _MnbLauncherButton              MnbLauncherButton;
@@ -42,14 +41,14 @@ typedef struct _MnbLauncherButtonClass         MnbLauncherButtonClass;
 struct _MnbLauncherButton
 {
   /*< private >*/
-  NbtkTable parent;
+  MxTable parent;
 
   MnbLauncherButtonPrivate *priv;
 };
 
 struct _MnbLauncherButtonClass
 {
-  NbtkTableClass parent;
+  MxTableClass parent;
 
   /* signals */
   void (* hovered)      (MnbLauncherButton *self);
@@ -59,16 +58,16 @@ struct _MnbLauncherButtonClass
 
 GType mnb_launcher_button_get_type (void) G_GNUC_CONST;
 
-NbtkWidget * mnb_launcher_button_new (const gchar *icon_name,
-                                      const gchar *icon_file,
-                                      gint         icon_size,
-                                      const gchar *title,
-                                      const gchar *category,
-                                      const gchar *description,
-                                      const gchar *executable,
-                                      const gchar *desktop_file_path);
+MxWidget * mnb_launcher_button_new (const gchar *icon_name,
+                                    const gchar *icon_file,
+                                    gint         icon_size,
+                                    const gchar *title,
+                                    const gchar *category,
+                                    const gchar *description,
+                                    const gchar *executable,
+                                    const gchar *desktop_file_path);
 
-NbtkWidget *  mnb_launcher_button_create_favorite (MnbLauncherButton *self);
+MxWidget *  mnb_launcher_button_create_favorite (MnbLauncherButton *self);
 
 const char *  mnb_launcher_button_get_title       (MnbLauncherButton *self);
 const char *  mnb_launcher_button_get_category    (MnbLauncherButton *self);

@@ -6,7 +6,7 @@ AM_CFLAGS = \
 	$(MPL_CFLAGS) \
 	-DDATADIR=\"$(datadir)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
-	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
+	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\"
 
 libexec_PROGRAMS = moblin-panel-applications

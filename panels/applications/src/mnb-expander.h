@@ -22,7 +22,7 @@
 #define MNB_EXPANDER_H
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -45,12 +45,12 @@ G_BEGIN_DECLS
 
 typedef struct
 {
-  NbtkExpander parent;
+  MxExpander parent;
 } MnbExpander;
 
 typedef struct
 {
-  NbtkExpanderClass parent_class;
+  MxExpanderClass parent_class;
 } MnbExpanderClass;
 
 GType mnb_expander_get_type (void);

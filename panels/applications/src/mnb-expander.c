@@ -20,10 +20,10 @@
 
 #include "mnb-expander.h"
 
-static void _stylable_iface_init (NbtkStylableIface *iface);
+static void _stylable_iface_init (MxStylableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (MnbExpander, mnb_expander, NBTK_TYPE_EXPANDER,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE, _stylable_iface_init))
+G_DEFINE_TYPE_WITH_CODE (MnbExpander, mnb_expander, MX_TYPE_EXPANDER,
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_STYLABLE, _stylable_iface_init))
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_EXPANDER, MnbExpanderPrivate))
@@ -42,17 +42,17 @@ typedef struct  {
 static guint _signals[LAST_SIGNAL] = { 0, };
 
 /*
- * NbtkStylable, needed to get parent type styling applied.
+ * MxStylable, needed to get parent type styling applied.
  */
 
 static const gchar *
-_stylable_get_style_type (NbtkStylable *stylable)
+_stylable_get_style_type (MxStylable *stylable)
 {
-  return "NbtkExpander";
+  return "MxExpander";
 }
 
 static void
-_stylable_iface_init (NbtkStylableIface *iface)
+_stylable_iface_init (MxStylableIface *iface)
 {
   static gboolean _is_initialized = FALSE;
 
@@ -74,7 +74,7 @@ _expanded_notify_cb (MnbExpander  *self,
 {
   MnbExpanderPrivate *priv = GET_PRIVATE (self);
 
-  priv->is_animating = nbtk_expander_get_expanded (NBTK_EXPANDER (self));
+  priv->is_animating = mx_expander_get_expanded (MX_EXPANDER (self));
 }
 
 static void

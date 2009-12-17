@@ -5,7 +5,7 @@
 #include <clutter/clutter.h>
 #include <gtk/gtk.h>
 #include <gio/gdesktopappinfo.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include "mnb-drop-down.h"
 #include "moblin-netbook.h"
 #include "moblin-netbook-launcher.h"
@@ -35,7 +35,7 @@ mnb_drop_down_get_type (void)
   return 0;
 }
 
-NbtkWidget *
+MxWidget *
 mnb_drop_down_new (MutterPlugin *plugin)
 {
   return NULL;
@@ -100,8 +100,8 @@ main (int argc, char *argv[])
   gtk_init (&argc, &argv);
   clutter_init (&argc, &argv);
 
-  nbtk_style_load_from_file (nbtk_style_get_default (),
-                             "../theme/panel.css", NULL);
+  mx_style_load_from_file (mx_style_get_default (),
+                           "../theme/panel.css", NULL);
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);

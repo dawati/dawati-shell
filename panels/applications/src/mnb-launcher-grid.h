@@ -23,7 +23,7 @@
 #define MNB_LAUNCHER_GRID_H
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -51,30 +51,30 @@ G_BEGIN_DECLS
 
 typedef struct {
   /*< private >*/
-  NbtkGrid parent;
+  MxGrid parent;
 } MnbLauncherGrid;
 
 typedef struct {
-  NbtkGridClass parent_class;
+  MxGridClass parent_class;
 } MnbLauncherGridClass;
 
 GType mnb_launcher_grid_get_type (void);
 
-NbtkWidget  * mnb_launcher_grid_new           (void);
+MxWidget  * mnb_launcher_grid_new         (void);
 
-NbtkWidget  * mnb_launcher_grid_keynav        (MnbLauncherGrid  *self,
-                                               guint             keyval);
-NbtkWidget *  mnb_launcher_grid_keynav_up     (MnbLauncherGrid  *self);
-NbtkWidget *  mnb_launcher_grid_keynav_down   (MnbLauncherGrid  *self);
-NbtkWidget  * mnb_launcher_grid_keynav_first  (MnbLauncherGrid  *self);
-void          mnb_launcher_grid_keynav_out    (MnbLauncherGrid  *self);
+MxWidget  * mnb_launcher_grid_keynav        (MnbLauncherGrid  *self,
+                                             guint             keyval);
+MxWidget *  mnb_launcher_grid_keynav_up     (MnbLauncherGrid  *self);
+MxWidget *  mnb_launcher_grid_keynav_down   (MnbLauncherGrid  *self);
+MxWidget *  mnb_launcher_grid_keynav_first  (MnbLauncherGrid  *self);
+void        mnb_launcher_grid_keynav_out    (MnbLauncherGrid  *self);
 
-NbtkWidget *  mnb_launcher_grid_find_widget_by_point        (MnbLauncherGrid  *self,
-                                                             gfloat            x,
-                                                             gfloat            y);
+MxWidget *  mnb_launcher_grid_find_widget_by_point        (MnbLauncherGrid  *self,
+                                                           gfloat            x,
+                                                           gfloat            y);
 
-NbtkWidget  * mnb_launcher_grid_find_widget_by_pseudo_class (MnbLauncherGrid  *self,
-                                                             const gchar      *pseudo_class);
+MxWidget  * mnb_launcher_grid_find_widget_by_pseudo_class (MnbLauncherGrid  *self,
+                                                           const gchar      *pseudo_class);
 
 #endif /* MNB_LAUNCHER_GRID_H */
 

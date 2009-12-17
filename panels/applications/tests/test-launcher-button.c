@@ -3,11 +3,11 @@
 #include <stdlib.h>
 
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include "mnb-launcher-button.h"
 
 static void
-clicked_cb (NbtkWidget          *widget,
+clicked_cb (MxWidget            *widget,
             ClutterButtonEvent  *event,
             gpointer             data)
 {
@@ -24,13 +24,13 @@ fav_toggled_cb (MnbLauncherButton *launcher,
 int
 main (int argc, char *argv[])
 {
-  NbtkWidget *launcher;
+  MxWidget     *launcher;
   ClutterActor *stage;
 
   clutter_init (&argc, &argv);
 
-  nbtk_style_load_from_file (nbtk_style_get_default (),
-                             "../theme/panel.css", NULL);
+  mx_style_load_from_file (mx_style_get_default (),
+                           "../theme/panel.css", NULL);
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 400, 200);

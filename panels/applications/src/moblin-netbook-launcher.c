@@ -31,7 +31,7 @@
 #include <gio/gdesktopappinfo.h>
 
 #include <gtk/gtk.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <moblin-panel/mpl-icon-theme.h>
 
 #include <moblin-panel/mpl-app-bookmark-manager.h>
@@ -44,13 +44,13 @@
 #include "mnb-launcher-tree.h"
 
 static void
-scrollable_ensure_box_visible (NbtkScrollable         *scrollable,
+scrollable_ensure_box_visible (MxScrollable           *scrollable,
                                const ClutterActorBox  *box)
 {
-  NbtkAdjustment *hadjustment;
-  NbtkAdjustment *vadjustment;
-  gdouble         top, right, bottom, left;
-  gdouble         h_page, v_page;
+  MxAdjustment  *hadjustment;
+  MxAdjustment  *vadjustment;
+  gdouble        top, right, bottom, left;
+  gdouble        h_page, v_page;
 
   g_object_get (scrollable,
                 "hadjustment", &hadjustment,
@@ -77,19 +77,19 @@ scrollable_ensure_box_visible (NbtkScrollable         *scrollable,
   /* Vertical. */
   if ((box->y1 - SCROLL_TOP_MARGIN) < top)
   {
-    nbtk_adjustment_set_value (vadjustment, box->y1 - SCROLL_TOP_MARGIN);
+    mx_adjustment_set_value (vadjustment, box->y1 - SCROLL_TOP_MARGIN);
   } else if (box->y2 > bottom) {
 
     gdouble height = box->y2 - box->y1;
     if (height < v_page)
-      nbtk_adjustment_set_value (vadjustment, box->y2 - v_page + SCROLL_TOP_MARGIN);
+      mx_adjustment_set_value (vadjustment, box->y2 - v_page + SCROLL_TOP_MARGIN);
     else
-      nbtk_adjustment_set_value (vadjustment, box->y1 - SCROLL_TOP_MARGIN);
+      mx_adjustment_set_value (vadjustment, box->y1 - SCROLL_TOP_MARGIN);
   }
 }
 
 static void
-scrollable_ensure_actor_visible (NbtkScrollable *scrollable,
+scrollable_ensure_actor_visible (MxScrollable   *scrollable,
                                  ClutterActor   *actor)
 {
   ClutterActorBox box;
@@ -201,7 +201,7 @@ enum
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbLauncher, mnb_launcher, NBTK_TYPE_BIN);
+G_DEFINE_TYPE (MnbLauncher, mnb_launcher, MX_TYPE_BIN);
 
 /*
  * Helper struct that contains all the info needed to switch between
@@ -212,7 +212,7 @@ struct MnbLauncherPrivate_ {
   MplAppBookmarkManager   *manager;
   MnbLauncherMonitor      *monitor;
   GHashTable              *expanders;
-  NbtkExpander            *first_expander;
+  MxExpander              *first_expander;
   GSList                  *launchers;
   gboolean                 first_expansion;
 
@@ -238,7 +238,7 @@ struct MnbLauncherPrivate_ {
 
   /* Keyboard navigation. */
   guint                    expand_timeout_id;
-  NbtkExpander            *expand_expander;
+  MxExpander              *expand_expander;
 
   /* During incremental fill. */
   guint                    fill_id;
@@ -258,7 +258,7 @@ entry_set_focus (MnbLauncher *self,
                  gboolean     focus)
 {
   MnbLauncherPrivate  *priv = GET_PRIVATE (self);
-  NbtkWidget          *expander;
+  MxWidget            *expander;
 
   if (focus)
     clutter_actor_grab_key_focus (priv->filter_entry);
@@ -282,7 +282,7 @@ entry_set_focus (MnbLauncher *self,
                   "active");
       if (expander)
         {
-          NbtkWidget *inner_grid = NBTK_WIDGET (nbtk_bin_get_child (NBTK_BIN (expander)));
+          MxWidget *inner_grid = MX_WIDGET (mx_bin_get_child (MX_BIN (expander)));
           mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
         }
     }
@@ -300,7 +300,7 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
                             MnbLauncher        *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  NbtkWidget *expander;
+  MxWidget *expander;
 
   if (priv->is_filtering)
     {
@@ -309,14 +309,14 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
            launchers_iter;
            launchers_iter = launchers_iter->next)
         {
-          nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launchers_iter->data),
-                                              NULL);
+          mx_widget_set_style_pseudo_class (MX_WIDGET (launchers_iter->data),
+                                            NULL);
         }
     }
   else
     {
       clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                                 (ClutterCallback) nbtk_widget_set_style_pseudo_class,
+                                 (ClutterCallback) mx_widget_set_style_pseudo_class,
                                  NULL);
 
       expander = mnb_launcher_grid_find_widget_by_pseudo_class (
@@ -324,9 +324,9 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
                   "active");
       if (expander)
         {
-          ClutterActor *inner_grid = nbtk_bin_get_child (NBTK_BIN (expander));
+          ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (expander));
           clutter_container_foreach (CLUTTER_CONTAINER (inner_grid),
-                                     (ClutterCallback) nbtk_widget_set_style_pseudo_class,
+                                     (ClutterCallback) mx_widget_set_style_pseudo_class,
                                      NULL);
         }
     }
@@ -359,7 +359,7 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
 
   if (mnb_launcher_button_get_favorite (launcher))
     {
-      NbtkWidget *clone = mnb_launcher_button_create_favorite (launcher);
+      MxWidget *clone = mnb_launcher_button_create_favorite (launcher);
       clutter_container_add (CLUTTER_CONTAINER (priv->fav_grid),
                              CLUTTER_ACTOR (clone), NULL);
       g_signal_connect (clone, "hovered",
@@ -420,14 +420,14 @@ launcher_button_reload_icon_cb (ClutterActor  *launcher,
 
 }
 
-static NbtkWidget *
+static MxWidget *
 launcher_button_create_from_entry (MnbLauncherApplication *entry,
                                    const gchar      *category,
                                    GtkIconTheme     *theme)
 {
   const gchar *generic_name, *description, *exec, *icon_name;
   gchar *icon_file;
-  NbtkWidget  *button;
+  MxWidget  *button;
 
   description = NULL;
   exec = NULL;
@@ -456,44 +456,8 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
   return button;
 }
 
-#if 0
-/* The idle delay doesn't work for being able to select the first item
- * of a freshly expanded expander, so get rid of it. */
-static gboolean
-expander_expand_complete_idle_cb (MnbLauncher *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  ClutterActor *launcher;
-
-  /* Do not highlight if the focus has already moved on to fav apps. */
-  launcher = (ClutterActor *) mnb_launcher_grid_find_widget_by_pseudo_class (
-                                MNB_LAUNCHER_GRID (priv->fav_grid),
-                                "hover");
-  if (launcher)
-    return FALSE;
-
-  if (nbtk_expander_get_expanded (priv->expand_expander))
-    {
-      ClutterActor *inner_grid;
-
-      inner_grid = nbtk_bin_get_child (NBTK_BIN (priv->expand_expander));
-      launcher = (ClutterActor *) mnb_launcher_grid_find_widget_by_pseudo_class (
-                                    MNB_LAUNCHER_GRID (inner_grid),
-                                    "hover");
-
-      if (!launcher)
-        launcher = (ClutterActor *) mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
-
-      priv->expand_timeout_id = 0;
-      priv->expand_expander = NULL;
-    }
-
-  return FALSE;
-}
-#endif
-
 static void
-expander_expand_complete_cb (NbtkExpander     *expander,
+expander_expand_complete_cb (MxExpander       *expander,
                              MnbLauncher      *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
@@ -506,14 +470,10 @@ expander_expand_complete_cb (NbtkExpander     *expander,
       priv->expand_expander = NULL;
     }
 
-  if (nbtk_expander_get_expanded (expander))
+  if (mx_expander_get_expanded (expander))
     {
       priv->expand_expander = expander;
-#if 0
-      /* See callback for why this is deactivated. */
-      priv->expand_timeout_id = g_idle_add ((GSourceFunc) expander_expand_complete_idle_cb,
-                                            self);
-#endif
+
       /* On first expansion focus is in the entry, do not highlight anything. */
       if (priv->first_expansion)
         {
@@ -522,32 +482,32 @@ expander_expand_complete_cb (NbtkExpander     *expander,
       else
         {
           /* Do not highlight if the focus has already moved on to fav apps. */
-          ClutterActor *inner_grid = nbtk_bin_get_child (NBTK_BIN (priv->expand_expander));
+          ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (priv->expand_expander));
           ClutterActor *launcher = (ClutterActor *) mnb_launcher_grid_find_widget_by_pseudo_class (
                                                       MNB_LAUNCHER_GRID (inner_grid),
                                                       "hover");
           if (!launcher)
             mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
 
-          scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+          scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
                                            CLUTTER_ACTOR (expander));
         }
     }
   else
     {
       ClutterActor *inner_grid;
-      inner_grid = nbtk_bin_get_child (NBTK_BIN (expander));
+      inner_grid = mx_bin_get_child (MX_BIN (expander));
       mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
     }
 }
 
 static void
-expander_expanded_notify_cb (NbtkExpander    *expander,
+expander_expanded_notify_cb (MxExpander      *expander,
                              GParamSpec      *pspec,
                              MnbLauncher     *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  NbtkExpander    *e;
+  MxExpander      *e;
   const gchar     *category;
   GHashTableIter   iter;
 
@@ -560,7 +520,7 @@ expander_expanded_notify_cb (NbtkExpander    *expander,
     }
 
   /* Close other open expander, so that just the newly opended one is expanded. */
-  if (nbtk_expander_get_expanded (expander))
+  if (mx_expander_get_expanded (expander))
     {
       g_hash_table_iter_init (&iter, priv->expanders);
       while (g_hash_table_iter_next (&iter,
@@ -569,21 +529,21 @@ expander_expanded_notify_cb (NbtkExpander    *expander,
         {
           if (e != expander)
             {
-              ClutterActor *inner_grid = nbtk_bin_get_child (NBTK_BIN (e));
+              ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (e));
               mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
-              nbtk_expander_set_expanded (e, FALSE);
+              mx_expander_set_expanded (e, FALSE);
             }
         }
     }
   else
     {
-      ClutterActor *inner_grid = nbtk_bin_get_child (NBTK_BIN (expander));
+      ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (expander));
       mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
     }
 }
 
 static void
-expander_frame_allocated_cb (NbtkExpander           *expander,
+expander_frame_allocated_cb (MxExpander             *expander,
                              ClutterActorBox const  *box,
                              MnbLauncher            *self)
 {
@@ -591,7 +551,7 @@ expander_frame_allocated_cb (NbtkExpander           *expander,
 
   if (!priv->first_expansion)
     {
-      scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+      scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
                                        CLUTTER_ACTOR (expander));
     }
 }
@@ -602,7 +562,7 @@ expander_expand_cb (MnbLauncher     *self)
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
   priv->expand_timeout_id = 0;
-  nbtk_expander_set_expanded (priv->expand_expander, TRUE);
+  mx_expander_set_expanded (priv->expand_expander, TRUE);
   priv->expand_expander = NULL;
 
   return FALSE;
@@ -610,7 +570,7 @@ expander_expand_cb (MnbLauncher     *self)
 
 static void
 mnb_launcher_hover_expander (MnbLauncher     *self,
-                              NbtkExpander    *expander)
+                             MxExpander      *expander)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
@@ -623,12 +583,12 @@ mnb_launcher_hover_expander (MnbLauncher     *self,
 
   if (expander)
     {
-      nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (expander), "hover");
+      mx_widget_set_style_pseudo_class (MX_WIDGET (expander), "hover");
       priv->expand_expander = expander;
       priv->expand_timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
                                                         (GSourceFunc) expander_expand_cb,
                                                         self);
-      scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+      scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
                                        CLUTTER_ACTOR (expander));
     }
 }
@@ -639,7 +599,7 @@ mnb_launcher_keynav_in_grid (MnbLauncher       *self,
                               guint              keyval)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  NbtkWidget *launcher;
+  MxWidget *launcher;
 
   launcher = mnb_launcher_grid_find_widget_by_pseudo_class (grid, "hover");
   if (launcher)
@@ -655,7 +615,7 @@ mnb_launcher_keynav_in_grid (MnbLauncher       *self,
             }
           else
             {
-              scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+              scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
                                                CLUTTER_ACTOR (launcher));
             }
 
@@ -675,7 +635,7 @@ mnb_launcher_keynav_in_grid (MnbLauncher       *self,
               launcher_button_activated_cb (MNB_LAUNCHER_BUTTON (launcher),
                                             self);
             } else {
-              scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+              scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
                                                CLUTTER_ACTOR (launcher));
             }
           return TRUE;
@@ -754,7 +714,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   MnbLauncherDirectory  *directory;
   GList                 *entry_iter;
   ClutterActor          *inner_grid;
-  NbtkWidget            *button;
+  MxWidget              *button;
   int                    n_buttons = 0;
 
   if (priv->tree == NULL)
@@ -803,8 +763,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   directory = (MnbLauncherDirectory *) priv->directory_iter->data;
 
   inner_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-  nbtk_grid_set_column_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
-  nbtk_grid_set_row_gap (NBTK_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
+  mx_grid_set_column_gap (MX_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
+  mx_grid_set_row_gap (MX_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
   clutter_actor_set_name (inner_grid, "launcher-expander-grid");
 
   button = NULL;
@@ -846,7 +806,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         ClutterActor *expander;
 
         expander = CLUTTER_ACTOR (mnb_expander_new ());
-        nbtk_expander_set_label (NBTK_EXPANDER (expander),
+        mx_expander_set_label (MX_EXPANDER (expander),
                                   directory->name);
         clutter_actor_set_width (expander, SCROLLVIEW_INNER_WIDTH (self));
         clutter_container_add (CLUTTER_CONTAINER (priv->apps_grid),
@@ -859,8 +819,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         if (priv->open_first_expander &&
             priv->directory_iter == priv->directories)
         {
-          nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
-          priv->first_expander = NBTK_EXPANDER (expander);
+          mx_expander_set_expanded (MX_EXPANDER (expander), TRUE);
+          priv->first_expander = MX_EXPANDER (expander);
         }
 
         g_signal_connect (expander, "notify::expanded",
@@ -904,7 +864,7 @@ mnb_launcher_fill (MnbLauncher     *self)
    */
 
   /* Label */
-  priv->fav_label = CLUTTER_ACTOR (nbtk_label_new (_("Favorite Applications")));
+  priv->fav_label = CLUTTER_ACTOR (mx_label_new (_("Favorite Applications")));
   clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
                          priv->fav_label, NULL);
   g_object_ref (priv->fav_label);
@@ -914,8 +874,8 @@ mnb_launcher_fill (MnbLauncher     *self)
   priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
                          priv->fav_grid, NULL);
-  nbtk_grid_set_row_gap (NBTK_GRID (priv->fav_grid), LAUNCHER_GRID_ROW_GAP);
-  nbtk_grid_set_column_gap (NBTK_GRID (priv->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
+  mx_grid_set_row_gap (MX_GRID (priv->fav_grid), LAUNCHER_GRID_ROW_GAP);
+  mx_grid_set_column_gap (MX_GRID (priv->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
   clutter_actor_set_width (priv->fav_grid, SCROLLVIEW_INNER_WIDTH (self));
   clutter_actor_set_name (priv->fav_grid, "launcher-fav-grid");
   g_object_ref (priv->fav_grid);
@@ -935,7 +895,7 @@ mnb_launcher_fill (MnbLauncher     *self)
           gchar             *uri;
           gchar             *desktop_file_path;
           MnbLauncherApplication  *entry;
-          NbtkWidget        *button = NULL;
+          MxWidget          *button = NULL;
           GError            *error = NULL;
 
           uri = (gchar *) fav_apps_iter->data;
@@ -989,7 +949,7 @@ mnb_launcher_fill (MnbLauncher     *self)
                          priv->apps_grid, NULL);
   clutter_actor_set_name (priv->apps_grid, "launcher-apps-grid");
   clutter_actor_set_width (priv->apps_grid, SCROLLVIEW_INNER_WIDTH (self));
-  nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
+  mx_grid_set_row_gap (MX_GRID (priv->apps_grid),
                          EXPANDER_GRID_ROW_GAP);
 
   priv->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -1040,9 +1000,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
           priv->is_filtering = TRUE;
           mnb_launcher_set_show_fav_apps (self, FALSE);
 
-          nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
+          mx_grid_set_row_gap (MX_GRID (priv->apps_grid),
                                  LAUNCHER_GRID_ROW_GAP);
-          nbtk_grid_set_column_gap (NBTK_GRID (priv->apps_grid),
+          mx_grid_set_column_gap (MX_GRID (priv->apps_grid),
                                     LAUNCHER_GRID_COLUMN_GAP);
 
           /* Hide expanders. */
@@ -1062,7 +1022,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
               clutter_actor_hide (CLUTTER_ACTOR (launcher));
               clutter_actor_reparent (CLUTTER_ACTOR (launcher),
                                       priv->apps_grid);
-              nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launcher), NULL);
+              mx_widget_set_style_pseudo_class (MX_WIDGET (launcher), NULL);
             }
         }
 
@@ -1077,7 +1037,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
           else
             {
               clutter_actor_hide (CLUTTER_ACTOR (button));
-              nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (button), NULL);
+              mx_widget_set_style_pseudo_class (MX_WIDGET (button), NULL);
             }
         }
 
@@ -1092,9 +1052,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 
       priv->is_filtering = FALSE;
 
-      nbtk_grid_set_row_gap (NBTK_GRID (priv->apps_grid),
+      mx_grid_set_row_gap (MX_GRID (priv->apps_grid),
                              EXPANDER_GRID_ROW_GAP);
-      nbtk_grid_set_column_gap (NBTK_GRID (priv->apps_grid), 0);
+      mx_grid_set_column_gap (MX_GRID (priv->apps_grid), 0);
 
       if (container_has_children (CLUTTER_CONTAINER (priv->fav_grid)))
         mnb_launcher_set_show_fav_apps (self, TRUE);
@@ -1105,9 +1065,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
           MnbLauncherButton *launcher   = MNB_LAUNCHER_BUTTON (iter->data);
           const gchar       *category   = mnb_launcher_button_get_category (launcher);
           ClutterActor      *e          = g_hash_table_lookup (priv->expanders, category);
-          ClutterActor      *inner_grid = nbtk_bin_get_child (NBTK_BIN (e));
+          ClutterActor      *inner_grid = mx_bin_get_child (MX_BIN (e));
 
-          nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (launcher), NULL);
+          mx_widget_set_style_pseudo_class (MX_WIDGET (launcher), NULL);
           clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
         }
 
@@ -1153,34 +1113,34 @@ entry_keynav_cb (MnbEntry         *entry,
                  MnbLauncher      *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  NbtkWidget *launcher;
-  NbtkWidget *expander;
+  MxWidget *launcher;
+  MxWidget *expander;
 
   if (keyval == CLUTTER_Page_Up)
     {
-      NbtkScrollBar *vscroll = NBTK_SCROLL_BAR (
-                                  nbtk_scroll_view_get_vscroll_bar (
-                                    NBTK_SCROLL_VIEW (priv->scrollview)));
-      NbtkAdjustment *adjust = nbtk_scroll_bar_get_adjustment (vscroll);
+      MxScrollBar *vscroll = MX_SCROLL_BAR (
+                                  mx_scroll_view_get_vscroll_bar (
+                                    MX_SCROLL_VIEW (priv->scrollview)));
+      MxAdjustment *adjust = mx_scroll_bar_get_adjustment (vscroll);
       gdouble page_size, value;
       g_object_get (adjust,
                     "page-size", &page_size,
                     "value", &value,
                     NULL);
-      nbtk_adjustment_set_value (adjust, value - page_size);
+      mx_adjustment_set_value (adjust, value - page_size);
     }
   else if (keyval == CLUTTER_Page_Down)
     {
-      NbtkScrollBar *vscroll = NBTK_SCROLL_BAR (
-                                  nbtk_scroll_view_get_vscroll_bar (
-                                    NBTK_SCROLL_VIEW (priv->scrollview)));
-      NbtkAdjustment *adjust = nbtk_scroll_bar_get_adjustment (vscroll);
+      MxScrollBar *vscroll = MX_SCROLL_BAR (
+                                  mx_scroll_view_get_vscroll_bar (
+                                    MX_SCROLL_VIEW (priv->scrollview)));
+      MxAdjustment *adjust = mx_scroll_bar_get_adjustment (vscroll);
       gdouble page_size, value;
       g_object_get (adjust,
                     "page-size", &page_size,
                     "value", &value,
                     NULL);
-      nbtk_adjustment_set_value (adjust, value + page_size);
+      mx_adjustment_set_value (adjust, value + page_size);
     }
 
   if (priv->is_filtering)
@@ -1240,8 +1200,8 @@ entry_keynav_cb (MnbEntry         *entry,
       if (keyval == CLUTTER_Down ||
           keyval == CLUTTER_Right)
         {
-          NbtkPadding padding;
-          nbtk_widget_get_padding (NBTK_WIDGET (priv->apps_grid),
+          MxPadding padding;
+          mx_widget_get_padding (MX_WIDGET (priv->apps_grid),
                                     &padding);
 
           mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->fav_grid));
@@ -1249,17 +1209,17 @@ entry_keynav_cb (MnbEntry         *entry,
                       MNB_LAUNCHER_GRID (priv->apps_grid),
                       padding.left + 1,
                       padding.top + 1);
-          if (nbtk_expander_get_expanded (NBTK_EXPANDER (expander)))
+          if (mx_expander_get_expanded (MX_EXPANDER (expander)))
             {
-              NbtkWidget *inner_grid = NBTK_WIDGET (nbtk_bin_get_child (NBTK_BIN (expander)));
+              MxWidget *inner_grid = MX_WIDGET (mx_bin_get_child (MX_BIN (expander)));
               launcher = mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
               if (launcher)
-                scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+                scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
                                                  CLUTTER_ACTOR (launcher));
             }
           else
             mnb_launcher_hover_expander (self,
-                                          NBTK_EXPANDER (expander));
+                                         MX_EXPANDER (expander));
         }
       return;
     }
@@ -1278,7 +1238,7 @@ entry_keynav_cb (MnbEntry         *entry,
             if (expander)
               {
                 mnb_launcher_hover_expander (self,
-                                              NBTK_EXPANDER (expander));
+                                             MX_EXPANDER (expander));
               }
             break;
           case CLUTTER_Down:
@@ -1287,12 +1247,12 @@ entry_keynav_cb (MnbEntry         *entry,
             if (expander)
               {
                 mnb_launcher_hover_expander (self,
-                                              NBTK_EXPANDER (expander));
+                                             MX_EXPANDER (expander));
               }
             break;
           case CLUTTER_Return:
             mnb_launcher_hover_expander (self, NULL);
-            nbtk_expander_set_expanded (NBTK_EXPANDER (expander), TRUE);
+            mx_expander_set_expanded (MX_EXPANDER (expander), TRUE);
             break;
         }
 
@@ -1305,7 +1265,7 @@ entry_keynav_cb (MnbEntry         *entry,
               "active");
   if (expander)
     {
-      NbtkWidget *inner_grid = NBTK_WIDGET (nbtk_bin_get_child (NBTK_BIN (expander)));
+      MxWidget *inner_grid = MX_WIDGET (mx_bin_get_child (MX_BIN (expander)));
       gboolean keystroke_handled = mnb_launcher_keynav_in_grid (self,
                                     MNB_LAUNCHER_GRID (inner_grid),
                                     keyval);
@@ -1314,7 +1274,7 @@ entry_keynav_cb (MnbEntry         *entry,
             (keyval == CLUTTER_Up ||
             keyval == CLUTTER_Left))
         {
-          gfloat gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
+          gfloat gap = mx_grid_get_row_gap (MX_GRID (priv->apps_grid));
           gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
           gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander));
 
@@ -1322,16 +1282,16 @@ entry_keynav_cb (MnbEntry         *entry,
                       MNB_LAUNCHER_GRID (priv->apps_grid),
                       x + 1,
                       y - gap - 1);
-          if (NBTK_IS_EXPANDER (expander))
+          if (MX_IS_EXPANDER (expander))
             mnb_launcher_hover_expander (self,
-                                          NBTK_EXPANDER (expander));
+                                         MX_EXPANDER (expander));
           else
             {
               /* Move focus to the fav apps pane. */
               mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
               launcher = mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (priv->fav_grid));
               if (launcher)
-                scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+                scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
                                                  CLUTTER_ACTOR (launcher));
             }
         }
@@ -1340,7 +1300,7 @@ entry_keynav_cb (MnbEntry         *entry,
             (keyval == CLUTTER_Down ||
             keyval == CLUTTER_Right))
         {
-          gfloat gap = nbtk_grid_get_row_gap (NBTK_GRID (priv->apps_grid));
+          gfloat gap = mx_grid_get_row_gap (MX_GRID (priv->apps_grid));
           gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
           gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander)) +
                           clutter_actor_get_height (CLUTTER_ACTOR (expander));
@@ -1350,7 +1310,7 @@ entry_keynav_cb (MnbEntry         *entry,
                       x + 1,
                       y + gap + 1);
           mnb_launcher_hover_expander (self,
-                                        NBTK_EXPANDER (expander));
+                                       MX_EXPANDER (expander));
         }
 
       return;
@@ -1361,22 +1321,22 @@ entry_keynav_cb (MnbEntry         *entry,
     {
       launcher = mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (priv->fav_grid));
       if (launcher)
-        scrollable_ensure_actor_visible (NBTK_SCROLLABLE (priv->scrolled_vbox),
+        scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
                                          CLUTTER_ACTOR (launcher));
       return;
     }
 
   /* Still nothing hovered, get first expander. */
   {
-    NbtkPadding padding;
-    nbtk_widget_get_padding (NBTK_WIDGET (priv->apps_grid),
+    MxPadding padding;
+    mx_widget_get_padding (MX_WIDGET (priv->apps_grid),
                               &padding);
     expander = mnb_launcher_grid_find_widget_by_point (
                 MNB_LAUNCHER_GRID (priv->apps_grid),
                 padding.left + 1,
                 padding.top + 1);
     mnb_launcher_hover_expander (self,
-                                  NBTK_EXPANDER (expander));
+                                 MX_EXPANDER (expander));
     return;
   }
 }
@@ -1451,21 +1411,21 @@ _constructor (GType                  gtype,
 
   MnbLauncherPrivate *priv = self->priv = REAL_GET_PRIVATE (self);
   ClutterActor    *bar;
-  NbtkWidget      *vbox, *label;
+  MxWidget        *vbox, *label;
 
-  vbox = nbtk_table_new ();
+  vbox = mx_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");
-  nbtk_bin_set_child (NBTK_BIN (self), CLUTTER_ACTOR (vbox));
+  mx_bin_set_child (MX_BIN (self), CLUTTER_ACTOR (vbox));
 
   /* Filter row. */
-  priv->filter_hbox = (ClutterActor *) nbtk_table_new ();
+  priv->filter_hbox = (ClutterActor *) mx_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_hbox), "launcher-filter-pane");
-  nbtk_table_set_col_spacing (NBTK_TABLE (priv->filter_hbox), 20);
-  nbtk_table_add_actor (NBTK_TABLE (vbox), CLUTTER_ACTOR (priv->filter_hbox), 0, 0);
+  mx_table_set_col_spacing (MX_TABLE (priv->filter_hbox), 20);
+  mx_table_add_actor (MX_TABLE (vbox), CLUTTER_ACTOR (priv->filter_hbox), 0, 0);
 
-  label = nbtk_label_new (_("Applications"));
+  label = mx_label_new (_("Applications"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "launcher-filter-label");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->filter_hbox),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->filter_hbox),
                                         CLUTTER_ACTOR (label),
                                         0, 0,
                                         "y-align", 0.5,
@@ -1478,7 +1438,7 @@ _constructor (GType                  gtype,
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_entry), "launcher-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->filter_entry),
                            FILTER_ENTRY_WIDTH);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->filter_hbox),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->filter_hbox),
                                         CLUTTER_ACTOR (priv->filter_entry),
                                         0, 1,
                                         "y-align", 0.5,
@@ -1490,17 +1450,13 @@ _constructor (GType                  gtype,
   /*
    * Applications
    */
-  priv->scrollview = CLUTTER_ACTOR (nbtk_scroll_view_new ());
-  nbtk_scroll_view_set_row_size (NBTK_SCROLL_VIEW (priv->scrollview), SCROLLVIEW_ROW_SIZE);
-  bar = nbtk_scroll_view_get_vscroll_bar (NBTK_SCROLL_VIEW (priv->scrollview));
-#if 0
-  /* XXX - the mode was removed from NBTK */
-  nbtk_scroll_bar_set_mode (NBTK_SCROLL_BAR (bar), NBTK_SCROLL_BAR_MODE_IDLE);
-#endif
+  priv->scrollview = CLUTTER_ACTOR (mx_scroll_view_new ());
+  mx_scroll_view_set_row_size (MX_SCROLL_VIEW (priv->scrollview), SCROLLVIEW_ROW_SIZE);
+  bar = mx_scroll_view_get_vscroll_bar (MX_SCROLL_VIEW (priv->scrollview));
   clutter_actor_set_size (priv->scrollview,
                           SCROLLVIEW_OUTER_WIDTH (self), /* account for padding */
                           SCROLLVIEW_OUTER_HEIGHT (self));
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (vbox), priv->scrollview, 1, 0,
+  mx_table_add_actor_with_properties (MX_TABLE (vbox), priv->scrollview, 1, 0,
                                         "x-expand", TRUE,
                                         "x-fill", TRUE,
                                         "y-expand", TRUE,
@@ -1658,9 +1614,9 @@ mnb_launcher_clear_filter (MnbLauncher *self)
 {
   MnbLauncherPrivate  *priv = GET_PRIVATE (self);
   GHashTableIter       iter;
-  NbtkExpander        *expander;
-  NbtkScrollBar       *vscroll;
-  NbtkAdjustment      *adjust;
+  MxExpander          *expander;
+  MxScrollBar         *vscroll;
+  MxAdjustment        *adjust;
 
   mpl_entry_set_text (MPL_ENTRY (priv->filter_entry), "");
 
@@ -1671,16 +1627,16 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   {
     if (priv->open_first_expander &&
         expander == priv->first_expander &&
-        !nbtk_expander_get_expanded (expander))
+        !mx_expander_get_expanded (expander))
     {
-      nbtk_expander_set_expanded (expander, TRUE);
+      mx_expander_set_expanded (expander, TRUE);
     }
   }
 
   /* Reset scroll position. */
-  vscroll = NBTK_SCROLL_BAR (nbtk_scroll_view_get_vscroll_bar (
-                              NBTK_SCROLL_VIEW (self->priv->scrollview)));
-  adjust = nbtk_scroll_bar_get_adjustment (vscroll);
-  nbtk_adjustment_set_value (adjust, 0.0);
+  vscroll = MX_SCROLL_BAR (mx_scroll_view_get_vscroll_bar (
+                              MX_SCROLL_VIEW (self->priv->scrollview)));
+  adjust = mx_scroll_bar_get_adjustment (vscroll);
+  mx_adjustment_set_value (adjust, 0.0);
 }
 

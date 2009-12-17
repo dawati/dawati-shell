@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include "mnb-launcher-searchbar.h"
 
 static void
@@ -22,13 +22,13 @@ search_cb (MnbLauncherSearchbar *bar)
 int
 main (int argc, char *argv[])
 {
-  NbtkWidget *bar;
+  MxWidget     *bar;
   ClutterActor *stage;
 
   clutter_init (&argc, &argv);
 
-  nbtk_style_load_from_file (nbtk_style_get_default (),
-                             "../theme/panel.css", NULL);
+  mx_style_load_from_file (mx_style_get_default (),
+                           "../theme/panel.css", NULL);
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 400, 200);
