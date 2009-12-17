@@ -329,12 +329,7 @@ MxIcon.switcher-application-close-button:hover {
 
 MnbPanelFrame, MnbDropDown, MnbSwitcher, MxFrame#panel-stub {
   border-image: url("drop-down/panel_shadow.png") 4 8 14 8;
-  padding: 4 4 8 4;
-}
-
-MxFrame#panel-stub {
-  border-image: url("drop-down/panel_stub.png") 4 8 14 8;
-  padding: 4 4 8 4;
+  padding: 4 4 12 4;
 }
 
 MnbEntry {
