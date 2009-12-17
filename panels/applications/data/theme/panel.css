@@ -7,7 +7,7 @@ MnbLauncher > *#launcher-vbox {
 }
 
 MnbLauncher *#launcher-filter-pane {
-  border-image: url('file://launcher-search-bg.png') 4 stretch;
+  border-image: url('launcher-search-bg.png') 4 stretch;
   padding: 4;
 }
 
@@ -48,7 +48,7 @@ MnbLauncherButton {
 }
 
 MnbLauncherButton:hover {
-  border-image: url("file://launcher-hover.png") 4 6 6 4 stretch stretch;
+  border-image: url("launcher-hover.png") 4 6 6 4 stretch stretch;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-title {
@@ -72,19 +72,19 @@ MnbLauncherButton > *#mnb-launcher-button-fav-toggle {
 }
 
 MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle {
-  background-image: url("file://launcher-button-fav-toggle.png");
+  background-image: url("launcher-button-fav-toggle.png");
   border-image: none;
 }
 
 MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:checked {
-  background-image: url("file://launcher-button-fav-toggle-checked.png");
+  background-image: url("launcher-button-fav-toggle-checked.png");
 }
 
 MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:active {
-  background-image: url("file://launcher-button-fav-toggle-active.png");
+  background-image: url("launcher-button-fav-toggle-active.png");
 }
 
 MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:hover {
-  background-image: url("file://launcher-button-fav-toggle-hover.png");
+  background-image: url("launcher-button-fav-toggle-hover.png");
 }
 

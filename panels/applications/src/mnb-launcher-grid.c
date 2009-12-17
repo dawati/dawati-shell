@@ -67,7 +67,7 @@ _find_widget_by_pseudo_class_cb (ClutterActor                      *actor,
   if (!MX_IS_STYLABLE (actor))
     return;
 
-  pseudo_class = mx_stylable_get_pseudo_class (MX_STYLABLE (actor));
+  pseudo_class = mx_widget_get_style_pseudo_class (MX_WIDGET (actor));
   if (0 == g_strcmp0 (data->pseudo_class, pseudo_class))
     data->widget = MX_WIDGET (actor);
 }
@@ -145,7 +145,7 @@ mnb_launcher_grid_keynav_up (MnbLauncherGrid *self)
       clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
   y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
-      mx_grid_get_row_gap (MX_GRID (self)) -
+      mx_grid_get_row_spacing (MX_GRID (self)) -
       clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
@@ -170,7 +170,7 @@ mnb_launcher_grid_keynav_right (MnbLauncherGrid *self)
     return NULL;
 
   x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
-      mx_grid_get_column_gap (MX_GRID (self)) +
+      mx_grid_get_column_spacing (MX_GRID (self)) +
       clutter_actor_get_width (CLUTTER_ACTOR (old)) * 1.5;
 
   y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
@@ -201,7 +201,7 @@ mnb_launcher_grid_keynav_down (MnbLauncherGrid *self)
       clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
   y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
-      mx_grid_get_row_gap (MX_GRID (self)) +
+      mx_grid_get_row_spacing (MX_GRID (self)) +
       clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
@@ -226,7 +226,7 @@ mnb_launcher_grid_keynav_left (MnbLauncherGrid *self)
     return NULL;
 
   x = clutter_actor_get_x (CLUTTER_ACTOR (old)) -
-      mx_grid_get_column_gap (MX_GRID (self)) -
+      mx_grid_get_column_spacing (MX_GRID (self)) -
       clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
   y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
@@ -261,7 +261,7 @@ mnb_launcher_grid_keynav_wrap_up (MnbLauncherGrid *self)
       clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
   y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
-      mx_grid_get_row_gap (MX_GRID (self)) -
+      mx_grid_get_row_spacing (MX_GRID (self)) -
       clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
@@ -292,7 +292,7 @@ mnb_launcher_grid_keynav_wrap_down (MnbLauncherGrid *self)
       clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
   y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
-      mx_grid_get_row_gap (MX_GRID (self)) +
+      mx_grid_get_row_spacing (MX_GRID (self)) +
       clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);

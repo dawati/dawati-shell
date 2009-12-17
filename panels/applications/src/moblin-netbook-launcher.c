@@ -763,8 +763,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   directory = (MnbLauncherDirectory *) priv->directory_iter->data;
 
   inner_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-  mx_grid_set_column_gap (MX_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
-  mx_grid_set_row_gap (MX_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
+  mx_grid_set_column_spacing (MX_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
+  mx_grid_set_row_spacing (MX_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
   clutter_actor_set_name (inner_grid, "launcher-expander-grid");
 
   button = NULL;
@@ -874,8 +874,8 @@ mnb_launcher_fill (MnbLauncher     *self)
   priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
                          priv->fav_grid, NULL);
-  mx_grid_set_row_gap (MX_GRID (priv->fav_grid), LAUNCHER_GRID_ROW_GAP);
-  mx_grid_set_column_gap (MX_GRID (priv->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
+  mx_grid_set_row_spacing (MX_GRID (priv->fav_grid), LAUNCHER_GRID_ROW_GAP);
+  mx_grid_set_column_spacing (MX_GRID (priv->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
   clutter_actor_set_width (priv->fav_grid, SCROLLVIEW_INNER_WIDTH (self));
   clutter_actor_set_name (priv->fav_grid, "launcher-fav-grid");
   g_object_ref (priv->fav_grid);
@@ -949,7 +949,7 @@ mnb_launcher_fill (MnbLauncher     *self)
                          priv->apps_grid, NULL);
   clutter_actor_set_name (priv->apps_grid, "launcher-apps-grid");
   clutter_actor_set_width (priv->apps_grid, SCROLLVIEW_INNER_WIDTH (self));
-  mx_grid_set_row_gap (MX_GRID (priv->apps_grid),
+  mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
                          EXPANDER_GRID_ROW_GAP);
 
   priv->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -1000,9 +1000,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
           priv->is_filtering = TRUE;
           mnb_launcher_set_show_fav_apps (self, FALSE);
 
-          mx_grid_set_row_gap (MX_GRID (priv->apps_grid),
+          mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
                                  LAUNCHER_GRID_ROW_GAP);
-          mx_grid_set_column_gap (MX_GRID (priv->apps_grid),
+          mx_grid_set_column_spacing (MX_GRID (priv->apps_grid),
                                     LAUNCHER_GRID_COLUMN_GAP);
 
           /* Hide expanders. */
@@ -1052,9 +1052,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 
       priv->is_filtering = FALSE;
 
-      mx_grid_set_row_gap (MX_GRID (priv->apps_grid),
-                             EXPANDER_GRID_ROW_GAP);
-      mx_grid_set_column_gap (MX_GRID (priv->apps_grid), 0);
+      mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
+                               EXPANDER_GRID_ROW_GAP);
+      mx_grid_set_column_spacing (MX_GRID (priv->apps_grid), 0);
 
       if (container_has_children (CLUTTER_CONTAINER (priv->fav_grid)))
         mnb_launcher_set_show_fav_apps (self, TRUE);
@@ -1274,7 +1274,7 @@ entry_keynav_cb (MnbEntry         *entry,
             (keyval == CLUTTER_Up ||
             keyval == CLUTTER_Left))
         {
-          gfloat gap = mx_grid_get_row_gap (MX_GRID (priv->apps_grid));
+          gfloat gap = mx_grid_get_row_spacing (MX_GRID (priv->apps_grid));
           gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
           gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander));
 
@@ -1300,7 +1300,7 @@ entry_keynav_cb (MnbEntry         *entry,
             (keyval == CLUTTER_Down ||
             keyval == CLUTTER_Right))
         {
-          gfloat gap = mx_grid_get_row_gap (MX_GRID (priv->apps_grid));
+          gfloat gap = mx_grid_get_row_spacing (MX_GRID (priv->apps_grid));
           gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
           gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander)) +
                           clutter_actor_get_height (CLUTTER_ACTOR (expander));
@@ -1410,8 +1410,7 @@ _constructor (GType                  gtype,
                                         ->constructor (gtype, n_properties, properties);
 
   MnbLauncherPrivate *priv = self->priv = REAL_GET_PRIVATE (self);
-  ClutterActor    *bar;
-  MxWidget        *vbox, *label;
+  ClutterActor    *bar, *vbox, *label;
 
   vbox = mx_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");

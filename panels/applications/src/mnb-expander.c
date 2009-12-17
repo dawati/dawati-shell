@@ -20,10 +20,7 @@
 
 #include "mnb-expander.h"
 
-static void _stylable_iface_init (MxStylableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (MnbExpander, mnb_expander, MX_TYPE_EXPANDER,
-                         G_IMPLEMENT_INTERFACE (MX_TYPE_STYLABLE, _stylable_iface_init))
+G_DEFINE_TYPE (MnbExpander, mnb_expander, MX_TYPE_EXPANDER)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_EXPANDER, MnbExpanderPrivate))
@@ -40,28 +37,6 @@ typedef struct  {
 } MnbExpanderPrivate;
 
 static guint _signals[LAST_SIGNAL] = { 0, };
-
-/*
- * MxStylable, needed to get parent type styling applied.
- */
-
-static const gchar *
-_stylable_get_style_type (MxStylable *stylable)
-{
-  return "MxExpander";
-}
-
-static void
-_stylable_iface_init (MxStylableIface *iface)
-{
-  static gboolean _is_initialized = FALSE;
-
-  if (!_is_initialized)
-  {
-    iface->get_style_type = _stylable_get_style_type;
-    _is_initialized = TRUE;
-  }
-}
 
 /*
  * MnbExpander
