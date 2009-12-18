@@ -231,8 +231,8 @@ mnb_notification_init (MnbNotification *self)
                                NULL);
 
   txt = CLUTTER_TEXT(mx_label_get_clutter_text(MX_LABEL(priv->summary)));
-  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_END);
+  clutter_text_set_line_alignment (txt, PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (txt, PANGO_ELLIPSIZE_END);
 
   mx_table_add_actor (MX_TABLE (priv->title_box), CLUTTER_ACTOR (priv->summary), 0, 1);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
@@ -248,10 +248,10 @@ mnb_notification_init (MnbNotification *self)
   mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
 
   txt = CLUTTER_TEXT(mx_label_get_clutter_text(MX_LABEL(priv->body)));
-  clutter_text_set_line_alignment (CLUTTER_TEXT (txt), PANGO_ALIGN_LEFT);
-  clutter_text_set_ellipsize (CLUTTER_TEXT (txt), PANGO_ELLIPSIZE_NONE);
-  clutter_text_set_line_wrap (CLUTTER_TEXT (txt), TRUE);
-  clutter_text_set_use_markup (CLUTTER_TEXT (txt), TRUE);
+  clutter_text_set_line_alignment (txt, PANGO_ALIGN_LEFT);
+  clutter_text_set_ellipsize (txt, PANGO_ELLIPSIZE_NONE);
+  clutter_text_set_line_wrap (txt, TRUE);
+  clutter_text_set_use_markup (txt, TRUE);
 
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->body),
@@ -377,14 +377,17 @@ mnb_notification_update (MnbNotification *notification,
       GHashTableIter iter;
       gchar *key, *value;
 
-      /* Remove all except default / Dismiss action. We must do this to
-       * support "updating".
+      /*
+       * Remove all buttons, but hold onto the default button and append it
+       * at the end.
        */
       for (l = clutter_container_get_children (CLUTTER_CONTAINER (priv->button_box));
            l;
            l = g_list_delete_link (l, l))
         {
-          if (l->data != priv->dismiss_button)
+          if (l->data == priv->dismiss_button)
+            g_object_ref (priv->dismiss_button);
+
             clutter_container_remove_actor (CLUTTER_CONTAINER (priv->button_box),
                                             CLUTTER_ACTOR (l->data));
         }
@@ -414,6 +417,10 @@ mnb_notification_update (MnbNotification *notification,
               has_action = TRUE;
             }
         }
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                   priv->dismiss_button);
+      g_object_unref (priv->dismiss_button);
     }
 
   if (details->is_urgent)
