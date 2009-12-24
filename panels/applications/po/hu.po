@@ -1,37 +1,35 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: moblin-panel-application\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2009-11-26 05:58+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Gönczi Norbert <gonczinorbert@gmail.com>\n"
+"Language-Team: hungarian\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Hungarian\n"
+"X-Poedit-Country: HUNGARY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #.
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:869
-msgid "Favourite Applications"
-msgstr ""
+#: ../src/moblin-netbook-launcher.c:815
+msgid "Favorite Applications"
+msgstr "Kedvencek alkalmazások"
 
-#: ../src/moblin-netbook-launcher.c:1366
+#: ../src/moblin-netbook-launcher.c:1339
 msgid "Applications"
-msgstr ""
+msgstr "Alkalmazások"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/moblin-netbook-launcher.c:1350
 msgid "Search"
-msgstr ""
+msgstr "Keresés"
 
-#: ../src/moblin-panel-applications.c:164
+#: ../src/moblin-panel-applications.c:196
 msgid "applications"
-msgstr ""
+msgstr "alkalmazások"
+
