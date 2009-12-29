@@ -1975,9 +1975,6 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
   if (panel)
     {
-      /*
-       * FIXME -- destroy is ClutterActor signal
-       */
       g_signal_connect (panel, "destroy",
                         G_CALLBACK (mnb_toolbar_panel_destroy_cb), toolbar);
 
@@ -2390,9 +2387,6 @@ mnb_toolbar_constructed (GObject *self)
 
   mnb_toolbar_setup_panels (MNB_TOOLBAR (self));
 
-  /*
-   * FIXME -- start panels on demand only
-   */
   if (conn)
     mnb_toolbar_dbus_setup_panels (MNB_TOOLBAR (self));
 
