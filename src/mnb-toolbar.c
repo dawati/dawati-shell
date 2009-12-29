@@ -2105,15 +2105,14 @@ mnb_toolbar_autostart_panels_cb (gpointer toolbar)
 }
 #endif
 
-/*
- * Create panels for any of our services that are already up.
- */
 static void
-mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
+mnb_toolbar_dbus_list_names_cb (DBusGProxy  *proxy,
+                                char       **names,
+                                GError      *error,
+                                gpointer     data)
 {
-  MnbToolbarPrivate  *priv = toolbar->priv;
-  gchar             **names = NULL;
-  GError             *error = NULL;
+  MnbToolbar         *toolbar = MNB_TOOLBAR (data);
+  MnbToolbarPrivate  *priv    = toolbar->priv;
 
   if (!priv->dbus_conn || !priv->dbus_proxy)
     {
@@ -2123,11 +2122,8 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
 
   /*
    * Insert panels for any services already running.
-   *
-   * FIXME -- should probably do this asynchronously.
    */
-  if (org_freedesktop_DBus_list_names (priv->dbus_proxy,
-                                       &names, &error))
+  if (!error)
     {
       gchar **p = names;
       while (*p)
@@ -2153,12 +2149,43 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
           p++;
         }
     }
+  else
+    {
+      g_warning (G_STRLOC " Initial panel setup failed: %s",
+                 error->message);
+      g_error_free (error);
+    }
 
-  dbus_free_string_array (names);
+  if (names)
+    dbus_free_string_array (names);
 
   dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
                                G_CALLBACK (mnb_toolbar_noc_cb),
                                toolbar, NULL);
+}
+
+
+/*
+ * Create panels for any of our services that are already up.
+ */
+static void
+mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate  *priv = toolbar->priv;
+
+  if (!priv->dbus_conn || !priv->dbus_proxy)
+    {
+      g_warning ("DBus connection not available, cannot start panels !!!");
+      return;
+    }
+
+  /*
+   * Insert panels for any services already running. Like everything else,
+   * do this asynchronously to avoid blocking the WM.
+   */
+  org_freedesktop_DBus_list_names_async (priv->dbus_proxy,
+                                         mnb_toolbar_dbus_list_names_cb,
+                                         toolbar);
 }
 
 static gboolean
@@ -2239,6 +2266,8 @@ mnb_toolbar_setup_panels (MnbToolbar *toolbar)
    */
   for (l = priv->panels; l; l = l->next)
     mnb_toolbar_append_button (toolbar, l->data);
+
+  mnb_toolbar_dbus_setup_panels (toolbar);
 }
 
 static void
@@ -2386,9 +2415,6 @@ mnb_toolbar_constructed (GObject *self)
                     self);
 
   mnb_toolbar_setup_panels (MNB_TOOLBAR (self));
-
-  if (conn)
-    mnb_toolbar_dbus_setup_panels (MNB_TOOLBAR (self));
 
   g_signal_connect (screen, "restacked",
                     G_CALLBACK (mnb_toolbar_screen_restacked_cb),
