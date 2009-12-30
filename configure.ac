@@ -139,9 +139,16 @@ AC_ARG_ENABLE([debug],
               [],
               [enable_debug=no])
 
+AC_ARG_ENABLE([profile],
+              [AC_HELP_STRING([--enable-profile],
+                              [Enable profiling])],
+              [],
+              [enable_profile=no])
+
 CFLAGS="$CFLAGS -Wall"
 
 AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g -O0"])
+AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
@@ -194,6 +201,7 @@ echo "
             Mutter version   :    mutter_version
             Installation path:    ${MUTTER_PLUGIN_DIR}
 	    Debug            :    ${enable_debug} (CFLAGS: ${CFLAGS})
+	    Profile          :    ${enable_profile} (CFLAGS: ${CFLAGS})
 	    Scaled background:    ${scale_background}
 	    Power Applet     :    ${power_applet}
 
