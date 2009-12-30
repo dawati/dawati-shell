@@ -201,7 +201,7 @@ enum
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbLauncher, mnb_launcher, MX_TYPE_BIN);
+G_DEFINE_TYPE (MnbLauncher, mnb_launcher, MX_TYPE_FRAME);
 
 /*
  * Helper struct that contains all the info needed to switch between

@@ -56,12 +56,12 @@ typedef struct MnbLauncherClass_ MnbLauncherClass;
 typedef struct MnbLauncherPrivate_ MnbLauncherPrivate;
 
 struct MnbLauncher_ {
-  MxBin                parent;
+  MxFrame              parent;
   MnbLauncherPrivate  *priv;
 };
 
 struct MnbLauncherClass_ {
-  MxBinClass parent;
+  MxFrameClass parent;
 
   /* Signals. */
   void (* launcher_activated) (MnbLauncher  *self,
