@@ -24,7 +24,7 @@
 
 #include <glib-object.h>
 #include <mutter-plugin.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -56,14 +56,14 @@ typedef struct _MnbZonesPreviewPrivate MnbZonesPreviewPrivate;
 
 struct _MnbZonesPreview
 {
-  NbtkWidget parent;
+  MxWidget parent;
 
   MnbZonesPreviewPrivate *priv;
 };
 
 struct _MnbZonesPreviewClass
 {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 
   void (* switch_completed) (MnbZonesPreview *preview);
 };

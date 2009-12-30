@@ -23,7 +23,7 @@
 #define _MNB_FANCY_BIN_H
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -55,14 +55,14 @@ typedef struct _MnbFancyBinPrivate MnbFancyBinPrivate;
 
 struct _MnbFancyBin
 {
-  NbtkWidget parent;
+  MxWidget parent;
 
   MnbFancyBinPrivate *priv;
 };
 
 struct _MnbFancyBinClass
 {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 };
 
 GType mnb_fancy_bin_get_type (void) G_GNUC_CONST;

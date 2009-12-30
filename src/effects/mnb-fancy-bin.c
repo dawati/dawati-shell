@@ -20,13 +20,12 @@
  */
 
 #include "mnb-fancy-bin.h"
-#include <nbtk/nbtk.h>
 
-static void nbtk_stylable_iface_init (NbtkStylableIface *iface);
+static void mx_stylable_iface_init (MxStylableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (MnbFancyBin, mnb_fancy_bin, NBTK_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE,
-                                                nbtk_stylable_iface_init))
+G_DEFINE_TYPE_WITH_CODE (MnbFancyBin, mnb_fancy_bin, MX_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_STYLABLE,
+                                                mx_stylable_iface_init))
 
 #define FANCY_BIN_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_FANCY_BIN, MnbFancyBinPrivate))
@@ -143,11 +142,11 @@ mnb_fancy_bin_paint (ClutterActor *actor)
   /* Draw the clipped child if necessary */
   if (priv->fanciness > 0.0)
     {
-      NbtkPadding padding;
+      MxPadding padding;
       gfloat width, height;
 
       clutter_actor_get_size (actor, &width, &height);
-      nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+      mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
       /* Create a clip path so that the clone won't poke out
        * from underneath the background.
@@ -233,7 +232,7 @@ mnb_fancy_bin_get_preferred_width (ClutterActor *actor,
                                    gfloat       *min_width_p,
                                    gfloat       *nat_width_p)
 {
-  NbtkPadding padding;
+  MxPadding padding;
   MnbFancyBinPrivate *priv = MNB_FANCY_BIN (actor)->priv;
 
   if (min_width_p)
@@ -247,7 +246,7 @@ mnb_fancy_bin_get_preferred_width (ClutterActor *actor,
                                        min_width_p,
                                        nat_width_p);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   if (min_width_p)
     *min_width_p += padding.left + padding.right;
@@ -261,7 +260,7 @@ mnb_fancy_bin_get_preferred_height (ClutterActor *actor,
                                     gfloat       *min_height_p,
                                     gfloat       *nat_height_p)
 {
-  NbtkPadding padding;
+  MxPadding padding;
   MnbFancyBinPrivate *priv = MNB_FANCY_BIN (actor)->priv;
 
   if (min_height_p)
@@ -275,7 +274,7 @@ mnb_fancy_bin_get_preferred_height (ClutterActor *actor,
                                         min_height_p,
                                         nat_height_p);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   if (min_height_p)
     *min_height_p += padding.top + padding.bottom;
@@ -288,12 +287,12 @@ mnb_fancy_bin_allocate (ClutterActor          *actor,
                         const ClutterActorBox *box,
                         ClutterAllocationFlags flags)
 {
-  NbtkPadding padding;
+  MxPadding padding;
   ClutterActorBox child_box;
 
   MnbFancyBinPrivate *priv = MNB_FANCY_BIN (actor)->priv;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   if (priv->real_child)
     clutter_actor_allocate_preferred_size (priv->real_child, flags);
@@ -359,7 +358,7 @@ mnb_fancy_bin_class_init (MnbFancyBinClass *klass)
 }
 
 static void
-nbtk_stylable_iface_init (NbtkStylableIface *iface)
+mx_stylable_iface_init (MxStylableIface *iface)
 {
   static gboolean is_initialised = FALSE;
 
@@ -375,18 +374,18 @@ nbtk_stylable_iface_init (NbtkStylableIface *iface)
                                  "the corners of the cloned actor, in px.",
                                  0, G_MAXUINT, 2,
                                  G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface, MNB_TYPE_FANCY_BIN, pspec);
+      mx_stylable_iface_install_property (iface, MNB_TYPE_FANCY_BIN, pspec);
     }
 }
 
 static void
-mnb_fancy_bin_style_changed_cb (NbtkStylable *stylable, MnbFancyBin *self)
+mnb_fancy_bin_style_changed_cb (MxStylable *stylable, MnbFancyBin *self)
 {
   MnbFancyBinPrivate *priv = self->priv;
 
-  nbtk_stylable_get (stylable,
-                     "curve-radius", &priv->curve_radius,
-                     NULL);
+  mx_stylable_get (stylable,
+                   "curve-radius", &priv->curve_radius,
+                   NULL);
 }
 
 static void

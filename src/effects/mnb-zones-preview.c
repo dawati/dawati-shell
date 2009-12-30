@@ -22,11 +22,11 @@
 #include "mnb-zones-preview.h"
 #include "mnb-fancy-bin.h"
 
-static void nbtk_stylable_iface_init (NbtkStylableIface *iface);
+static void mx_stylable_iface_init (MxStylableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (MnbZonesPreview, mnb_zones_preview, NBTK_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE,
-                                                nbtk_stylable_iface_init))
+G_DEFINE_TYPE_WITH_CODE (MnbZonesPreview, mnb_zones_preview, MX_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_STYLABLE,
+                                                mx_stylable_iface_init))
 
 #define ZONES_PREVIEW_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_ZONES_PREVIEW, MnbZonesPreviewPrivate))
@@ -260,7 +260,7 @@ mnb_zones_preview_allocate (ClutterActor           *actor,
     {
       ClutterActorBox child_box;
       gfloat width, height;
-      NbtkPadding padding;
+      MxPadding padding;
 
       ClutterActor *bin = CLUTTER_ACTOR (w->data);
 
@@ -268,7 +268,7 @@ mnb_zones_preview_allocate (ClutterActor           *actor,
       width *= priv->zoom;
       height *= priv->zoom;
 
-      nbtk_widget_get_padding (NBTK_WIDGET (bin), &padding);
+      mx_widget_get_padding (MX_WIDGET (bin), &padding);
 
       /* We allocate the preferred size, but we make sure the padding is
        * 'outside' the target area.
@@ -372,7 +372,7 @@ mnb_zones_preview_class_init (MnbZonesPreviewClass *klass)
 }
 
 static void
-nbtk_stylable_iface_init (NbtkStylableIface *iface)
+mx_stylable_iface_init (MxStylableIface *iface)
 {
   static gboolean is_initialised = FALSE;
 
@@ -387,18 +387,18 @@ nbtk_stylable_iface_init (NbtkStylableIface *iface)
                                  "Spacing between workspaces, in px.",
                                  0, G_MAXUINT, 24,
                                  G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface, MNB_TYPE_ZONES_PREVIEW, pspec);
+      mx_stylable_iface_install_property (iface, MNB_TYPE_ZONES_PREVIEW, pspec);
     }
 }
 
 static void
-mnb_zones_preview_style_changed_cb (NbtkStylable    *stylable,
+mnb_zones_preview_style_changed_cb (MxStylable      *stylable,
                                     MnbZonesPreview *self)
 {
   MnbZonesPreviewPrivate *priv = self->priv;
 
-  nbtk_stylable_get (stylable,
-                     "spacing", &priv->spacing,
+  mx_stylable_get (stylable,
+                   "spacing", &priv->spacing,
                      NULL);
 }
 

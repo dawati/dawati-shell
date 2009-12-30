@@ -23,7 +23,6 @@
  */
 #include <string.h>
 #include <clutter/x11/clutter-x11.h>
-#include <moblin-panel/mpl-panel-client.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <display.h>
 
@@ -433,7 +432,7 @@ mnb_switcher_app_get_property (GObject    *gobject,
 }
 
 static void
-mnb_switcher_app_hide_completed_cb (MplPanelClient *panel,
+mnb_switcher_app_hide_completed_cb (MnbSwitcher    *panel,
                                     MnbSwitcherApp *app)
 {
   MnbSwitcherAppPrivate *priv = app->priv;

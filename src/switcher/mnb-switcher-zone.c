@@ -23,7 +23,6 @@
  */
 
 #include <clutter/x11/clutter-x11.h>
-#include <moblin-panel/mpl-panel-client.h>
 
 #include "mnb-switcher-zone.h"
 #include "../mnb-panel.h"
@@ -339,7 +338,7 @@ mnb_switcher_zone_text_style (MnbSwitcherZone     *zone,
 }
 
 static void
-mnb_switcher_zone_hide_completed_cb (MplPanelClient  *panel,
+mnb_switcher_zone_hide_completed_cb (MnbSwitcher     *panel,
                                      MnbSwitcherZone *zone)
 {
   MnbSwitcherZonePrivate *priv      = zone->priv;

@@ -887,8 +887,8 @@ mnb_switcher_activate_selection_cb (MnbSwitcher *switcher)
 }
 
 static void
-mnb_switcher_hide_completed_cb (MplPanelClient *panel,
-                                MnbSwitcher    *switcher)
+mnb_switcher_hide_completed_cb (MnbSwitcher *panel,
+                                MnbSwitcher *switcher)
 {
   g_signal_handlers_disconnect_by_func (panel,
                                         mnb_switcher_hide_completed_cb,
