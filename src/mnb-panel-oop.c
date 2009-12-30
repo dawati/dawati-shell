@@ -124,7 +124,6 @@ struct _MnbPanelOopPrivate
   /*
    * The show/hide machinery
    */
-  gboolean         mapped            : 1;
   gboolean         modal             : 1;
   gboolean         auto_modal        : 1;
   gboolean         in_show_animation : 1;
@@ -1014,8 +1013,6 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
                     G_CALLBACK (mnb_panel_oop_mutter_window_destroy_cb),
                     panel);
 
-  priv->mapped = TRUE;
-
   mnb_panel_oop_show_animate (panel);
 }
 
@@ -1448,7 +1445,6 @@ mnb_panel_oop_hide (MnbPanel *panel)
    */
   priv->dont_hide_toolbar = TRUE;
 
-  priv->mapped = FALSE;
   priv->modal  = FALSE;
 
   org_moblin_UX_Shell_Panel_hide_async (priv->proxy,
@@ -1514,7 +1510,7 @@ mnb_panel_oop_is_mapped (MnbPanel *panel)
 
   priv = MNB_PANEL_OOP (panel)->priv;
 
-  return priv->mapped;
+  return (priv->mcw != NULL);
 }
 
 static gboolean
