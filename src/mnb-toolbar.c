@@ -122,32 +122,6 @@ static gboolean mnb_toolbar_start_panel_service (MnbToolbar *toolbar,
                                                  MnbToolbarPanel *tp);
 
 enum {
-    MYZONE = 0,
-    STATUS_ZONE,
-    PEOPLE_ZONE,
-    INTERNET_ZONE,
-    MEDIA_ZONE,
-    PASTEBOARD_ZONE,
-    APPS_ZONE,
-    SPACES_ZONE,
-
-    APPLETS_START,
-
-    /* Below here are the applets -- with the new dbus API, these are
-     * just extra panels, only the buttons are slightly different in size.
-     */
-    WIFI_APPLET = APPLETS_START,
-    VOLUME_APPLET,
-#ifndef DISABLE_POWER_APPLET
-    BATTERY_APPLET,
-#endif
-    BT_APPLET,
-    TEST_APPLET,
-    /* LAST */
-    NUM_ZONES
-};
-
-enum {
   PROP_0,
 
   PROP_MUTTER_PLUGIN,
@@ -1511,15 +1485,11 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
   if (MNB_IS_PANEL (panel))
     {
       MnbToolbarPrivate *priv   = toolbar->priv;
-      ClutterActor        *button;
-      const gchar       *name;
+      ClutterActor      *button;
       const gchar       *tooltip;
       const gchar       *style_id;
       const gchar       *stylesheet;
       MnbToolbarPanel   *tp;
-      gint               index;
-
-      name = mnb_panel_get_name (panel);
 
       tp = mnb_toolbar_panel_to_toolbar_panel (toolbar, panel);
 
@@ -1531,8 +1501,6 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
       tooltip    = mnb_panel_get_tooltip (panel);
       stylesheet = mnb_panel_get_stylesheet (panel);
       style_id   = mnb_panel_get_button_style (panel);
-
-      index = mnb_toolbar_get_panel_index (toolbar, tp);
 
       if (button)
         {
@@ -1557,6 +1525,8 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
           if (!style_id || !*style_id)
             {
+              const gchar *name = mnb_panel_get_name (panel);
+
               if (tp->button_style)
                 style_id = tp->button_style;
               else
@@ -1587,9 +1557,9 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
           mnb_panel_show (panel);
         }
-      else if (index == MYZONE)
+      else if (!priv->shown_myzone && priv->shown)
         {
-          if (priv->shown && !priv->shown_myzone)
+          if (tp->name && !strcmp (tp->name, "moblin-panel-myzone"))
             {
               mnb_panel_show (panel);
               priv->shown_myzone = TRUE;
