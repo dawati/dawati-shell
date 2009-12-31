@@ -3234,15 +3234,7 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
       /*
        * Temporary fallback for borked panels that we really need.
        */
-      if (!strcmp (desktop, "moblin-panel-applications"))
-        {
-          tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                               "moblin-panel-applications",
-                                               MPL_PANEL_APPLICATIONS,
-                                               MPL_PANEL_APPLICATIONS,
-                                               FALSE, FALSE, TRUE);
-        }
-      else if (!strcmp (desktop, "carrick-connection-panel"))
+      if (!strcmp (desktop, "carrick-connection-panel"))
         {
           tp = mnb_toolbar_make_toolbar_panel (toolbar,
                                                "carrick-connection-panel",
