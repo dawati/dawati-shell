@@ -2547,7 +2547,7 @@ mnb_toolbar_get_switcher (MnbToolbar *toolbar)
   MnbToolbarPrivate *priv = toolbar->priv;
   GList             *l;
 
-  if (!G_UNLIKELY (priv->switcher))
+  if (G_UNLIKELY (!priv->switcher))
     {
       for (l = priv->panels; l; l = l->next)
         {
