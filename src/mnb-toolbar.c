@@ -182,8 +182,8 @@ struct _MnbToolbarPrivate
   ClutterActor *panel_stub;
   ClutterActor *shadow;
 
-  ClutterActor   *time; /* The time and date fields, needed for the updates */
-  ClutterActor   *date;
+  ClutterActor *time; /* The time and date fields, needed for the updates */
+  ClutterActor *date;
 
   MnbPanel     *switcher;
 
@@ -1339,7 +1339,7 @@ mnb_toolbar_dispose_of_button (MnbToolbar      *toolbar,
                                MnbToolbarPanel *tp)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
-  ClutterActor        *button;
+  ClutterActor      *button;
 
   if (!tp)
     return;
@@ -1508,7 +1508,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
 
           if (stylesheet && *stylesheet)
             {
-              GError    *error = NULL;
+              GError  *error = NULL;
               MxStyle *style = mx_style_new ();
 
               if (!mx_style_load_from_file (style, stylesheet, &error))
@@ -1616,7 +1616,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   MutterPlugin      *plugin = priv->plugin;
   gint               index;
   gint               screen_width, screen_height;
-  ClutterActor        *button;
+  ClutterActor      *button;
 
   if (!tp || !tp->button)
     return;
@@ -1686,12 +1686,12 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 static void
 mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 {
-  ClutterActor  *button;
-  gchar       *button_style = NULL;
-  const gchar *name;
-  const gchar *tooltip;
-  const gchar *stylesheet = NULL;
-  const gchar *style_id = NULL;
+  ClutterActor *button;
+  gchar        *button_style = NULL;
+  const gchar  *name;
+  const gchar  *tooltip;
+  const gchar  *stylesheet = NULL;
+  const gchar  *style_id = NULL;
 
   if (!tp)
     return;
@@ -1716,7 +1716,7 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 
   if (stylesheet && *stylesheet)
     {
-      GError    *error = NULL;
+      GError  *error = NULL;
       MxStyle *style = mx_style_new ();
 
       if (!mx_style_load_from_file (style, stylesheet, &error))
@@ -2253,7 +2253,7 @@ mnb_toolbar_constructed (GObject *self)
   gint               screen_width, screen_height;
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
   DBusGConnection   *conn;
-  ClutterActor        *time_bin, *date_bin;
+  ClutterActor      *time_bin, *date_bin;
   MetaScreen        *screen = mutter_plugin_get_screen (plugin);
   ClutterActor      *wgroup = mutter_get_window_group_for_screen (screen);
 
@@ -2530,7 +2530,7 @@ mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar)
 gboolean
 mnb_toolbar_in_transition (MnbToolbar *toolbar)
 {
-  MnbToolbarPrivate *priv  = toolbar->priv;
+  MnbToolbarPrivate *priv = toolbar->priv;
 
   return (priv->in_show_animation || priv->in_hide_animation);
 }
