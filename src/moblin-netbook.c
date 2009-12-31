@@ -1780,26 +1780,39 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
-  MxWidget                 *switcher;
 
-  switcher = (MxWidget*) mnb_toolbar_get_switcher (toolbar);
-
-  if (switcher && mnb_switcher_handle_xevent (MNB_SWITCHER (switcher), xev))
-    return TRUE;
-
-  if (xev->type == KeyPress || xev->type == KeyRelease)
+  /*
+   * Avoid any unnecessary procesing here, as this function is called all the
+   * time.
+   *
+   * We ourselves only need to do extra work for Key events, and the Switcher
+   * only cares about Key and Pointer events.
+   */
+  if (xev->type == KeyPress      ||
+      xev->type == KeyRelease    ||
+      xev->type == ButtonPress   ||
+      xev->type == ButtonRelease ||
+      xev->type == MotionNotify)
     {
-      MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-      ClutterActor *stage   = mutter_get_stage_for_screen (screen);
-      Window        xwin;
+      MnbSwitcher *switcher = MNB_SWITCHER (mnb_toolbar_get_switcher (toolbar));
 
-      /*
-       * We only get key events on the no-focus window, but for clutter we
-       * need to pretend they come from the stage window.
-       */
-      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+      if (switcher && mnb_switcher_handle_xevent (switcher, xev))
+        return TRUE;
 
-      xev->xany.window = xwin;
+      if (xev->type == KeyPress || xev->type == KeyRelease)
+        {
+          MetaScreen   *screen = mutter_plugin_get_screen (plugin);
+          ClutterActor *stage  = mutter_get_stage_for_screen (screen);
+          Window        xwin;
+
+          /*
+           * We only get key events on the no-focus window, but for clutter we
+           * need to pretend they come from the stage window.
+           */
+          xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+          xev->xany.window = xwin;
+        }
     }
 
   return (clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE);
