@@ -2248,7 +2248,8 @@ mnb_toolbar_constructed (GObject *self)
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
   ClutterActor      *lowlight, *panel_stub;
-  ClutterActor      *shadow, *sh_texture;
+  ClutterActor      *shadow;
+  ClutterTexture    *sh_texture;
   gint               screen_width, screen_height;
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
   DBusGConnection   *conn;
@@ -2316,17 +2317,16 @@ mnb_toolbar_constructed (GObject *self)
   /*
    * The shadow needs to go into the window group, like the lowlight.
    */
-  sh_texture =
-    clutter_texture_new_from_file (THEMEDIR
-                                   "/panel/panel-shadow.png",
-                                   NULL);
+  sh_texture = mx_texture_cache_get_texture (mx_texture_cache_get_default (),
+                                             THEMEDIR
+                                             "/panel/panel-shadow.png");
   if (sh_texture)
     {
-      shadow = mx_texture_frame_new (CLUTTER_TEXTURE (sh_texture),
-                                           0,   /* top */
-                                           200, /* right */
-                                           0,   /* bottom */
-                                           200  /* left */);
+      shadow = mx_texture_frame_new (sh_texture,
+                                     0,   /* top */
+                                     200, /* right */
+                                     0,   /* bottom */
+                                     200  /* left */);
       clutter_actor_set_size (shadow, screen_width, TOOLBAR_SHADOW_EXTRA);
       clutter_actor_set_y (shadow, TOOLBAR_HEIGHT);
       clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), shadow);
