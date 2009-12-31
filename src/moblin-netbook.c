@@ -2109,23 +2109,23 @@ setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   gint                        screen_width, screen_height;
-  gboolean                    new_texture = FALSE;
+  ClutterActor               *new_texture;
+  ClutterActor               *old_texture = priv->desktop_tex;
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
                                    &screen_width, &screen_height);
 
   g_assert (filename);
 
-  if (!priv->desktop_tex)
-    {
-      new_texture = TRUE;
-      priv->desktop_tex = clutter_texture_new_from_file (filename, NULL);
-    }
-  else
-    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->desktop_tex),
-                                   filename, NULL);
+  new_texture = (ClutterActor*)
+    mx_texture_cache_get_texture (mx_texture_cache_get_default (), filename);
 
-  if (priv->desktop_tex == NULL)
+  priv->desktop_tex = new_texture;
+
+  if (old_texture)
+    clutter_actor_destroy (old_texture);
+
+  if (!new_texture)
     {
       g_warning ("Failed to load '%s', No tiled desktop image", filename);
     }
@@ -2133,10 +2133,10 @@ setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
     {
       ClutterActor *stage = mutter_get_stage_for_screen (screen);
 
-      clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
+      clutter_actor_set_size (new_texture, screen_width, screen_height);
 
 #if !USE_SCALED_BACKGROUND
-      g_object_set (priv->desktop_tex,
+      g_object_set (new_texture,
                     "repeat-x", TRUE,
                     "repeat-y", TRUE,
                     NULL);
@@ -2144,11 +2144,10 @@ setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
 
       if (new_texture)
         {
-          clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                                       priv->desktop_tex);
-          clutter_actor_lower_bottom (priv->desktop_tex);
+          clutter_container_add_actor (CLUTTER_CONTAINER (stage), new_texture);
+          clutter_actor_lower_bottom (new_texture);
 
-          g_signal_connect (priv->desktop_tex, "paint",
+          g_signal_connect (new_texture, "paint",
                             G_CALLBACK (desktop_background_paint),
                             plugin);
         }
