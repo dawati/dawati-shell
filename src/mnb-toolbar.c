@@ -866,6 +866,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
          *   b) Prevents race conditions when the user starts clicking fast at
          *      the button (see bug 5020)
          */
+
         if (tp->panel)
           {
             if (checked && !mnb_panel_is_mapped (tp->panel))
@@ -892,8 +893,6 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
               {
                 gint screen_width, screen_height;
 
-                g_debug ("Button clicked before panel available");
-
                 mutter_plugin_query_screen_size (priv->plugin,
                                                  &screen_width, &screen_height);
 
@@ -918,6 +917,15 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
 
                 tp->pinged = TRUE;
                 mnb_toolbar_start_panel_service (toolbar, tp);
+              }
+            else
+              {
+                /*
+                 * We are waiting for the panel to load; just ignore the click.
+                 * This is not very nice to the user maybe, but simple and
+                 * clean.
+                 */
+                mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
               }
           }
       }
