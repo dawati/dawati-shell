@@ -2649,7 +2649,8 @@ meta_display_window_demands_attention_cb (MetaDisplay *display,
 {
   MutterPlugin       *plugin = MUTTER_PLUGIN (data);
 
-  get_demands_attention_notification (plugin, mw, FALSE);
+  if (mw != meta_display_get_focus_window (display))
+    get_demands_attention_notification (plugin, mw, FALSE);
 }
 
 void
