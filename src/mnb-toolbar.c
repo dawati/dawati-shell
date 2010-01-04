@@ -310,23 +310,27 @@ mnb_toolbar_finalize (GObject *object)
  * show/hide machinery
  */
 static void
-mnb_toolbar_show_completed_cb (ClutterTimeline *timeline, ClutterActor *actor)
+mnb_toolbar_show_completed_cb (ClutterAnimation *animation, ClutterActor *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
   GList             *l = priv->panels;
 
-  for (; l; l = l->next)
+  if (!priv->in_hide_animation && CLUTTER_ACTOR_IS_VISIBLE (actor))
     {
-      MnbToolbarPanel *panel = l->data;
+      for (; l; l = l->next)
+        {
+          MnbToolbarPanel *panel = l->data;
 
-      if (panel && panel->button)
-        clutter_actor_set_reactive (CLUTTER_ACTOR (panel->button), TRUE);
+          if (panel && panel->button)
+            clutter_actor_set_reactive (CLUTTER_ACTOR (panel->button), TRUE);
+        }
+
+      clutter_actor_show (priv->shadow);
+
+      g_signal_emit (actor, toolbar_signals[SHOW_COMPLETED], 0);
     }
 
-  clutter_actor_show (priv->shadow);
-
   priv->in_show_animation = FALSE;
-  g_signal_emit (actor, toolbar_signals[SHOW_COMPLETED], 0);
   g_object_unref (actor);
 }
 
@@ -424,7 +428,7 @@ mnb_toolbar_show (ClutterActor *actor)
 
   g_object_ref (actor);
 
-  g_signal_connect (clutter_animation_get_timeline (animation),
+  g_signal_connect (animation,
                     "completed",
                     G_CALLBACK (mnb_toolbar_show_completed_cb),
                     actor);
