@@ -792,6 +792,7 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
   MnbToolbar        *toolbar = data;
   MnbToolbarPrivate *priv    = toolbar->priv;
 
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
   clutter_actor_hide (priv->panel_stub);
 
   return FALSE;
@@ -899,6 +900,8 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                 clutter_actor_set_size (priv->panel_stub,
                                         screen_width,
                                         screen_height / 3);
+
+                mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
                 clutter_actor_set_opacity (priv->panel_stub, 0xff);
                 clutter_actor_show (priv->panel_stub);
                 clutter_actor_raise_top (priv->panel_stub);
