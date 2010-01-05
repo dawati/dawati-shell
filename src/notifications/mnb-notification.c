@@ -310,7 +310,12 @@ mnb_notification_update (MnbNotification *notification,
     mx_label_set_text (MX_LABEL(priv->summary), details->summary);
 
   if (details->body)
-    mx_label_set_text (MX_LABEL(priv->body), details->body);
+    {
+      mx_label_set_text (MX_LABEL(priv->body), details->body);
+      clutter_text_set_use_markup (CLUTTER_TEXT (mx_label_get_clutter_text(
+                                                       MX_LABEL(priv->body))),
+                                   TRUE);
+    }
 
   if (details->icon_pixbuf)
     {
