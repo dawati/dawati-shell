@@ -117,6 +117,7 @@ struct _MnbPanelOopPrivate
   MutterWindow    *mcw;
 
   gboolean         constructed      : 1;
+  gboolean         initialized      : 1;
   gboolean         dead             : 1; /* Set when the remote  */
   gboolean         ready            : 1;
   gboolean         hide_in_progress : 1;
@@ -317,7 +318,8 @@ mnb_panel_oop_ready_cb (DBusGProxy  *proxy,
 
   priv->ready = TRUE;
 
-  g_signal_emit (panel, signals[READY], 0);
+  if (priv->initialized)
+    g_signal_emit (panel, signals[READY], 0);
 }
 
 static void
@@ -703,6 +705,10 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
   }
 
   priv->dead = FALSE;
+  priv->initialized = TRUE;
+
+  if (priv->ready)
+    g_signal_emit (panel, signals[READY], 0);
 
   dbus_free (name);
   dbus_free (tooltip);
@@ -1025,7 +1031,9 @@ mnb_panel_oop_get_xid (MnbPanelOop *panel)
 gboolean
 mnb_panel_oop_is_ready (MnbPanelOop *panel)
 {
-  return panel->priv->ready;
+  MnbPanelOopPrivate *priv = panel->priv;
+
+  return (priv->ready && priv->initialized);
 }
 
 static void
