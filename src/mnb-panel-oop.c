@@ -1273,11 +1273,21 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
                         G_CALLBACK (mnb_toolbar_show_completed_cb),
                         panel);
 
+      /*
+       * Must hide the mcw, otherwise it becomes visible during the toolbar
+       * animation.
+       */
+      clutter_actor_hide (mcw);
       clutter_actor_show (toolbar);
       return;
     }
 
   g_signal_emit_by_name (panel, "show-begin");
+
+  /*
+   * Ensure the mcw is visible.
+   */
+  clutter_actor_show (mcw);
 
   if (priv->delayed_show)
     {
