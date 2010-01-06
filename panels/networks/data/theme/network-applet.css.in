@@ -10,19 +10,19 @@ MnbToolbarButton:hover, MnbToolbarButton:active {
   border-image: url("@pkgdatadir@/icons/toolbar-button-hover.png") 0 stretch;
 }
 
-MnbToolbarButton#3g-strong {
+MnbToolbarButton#threeg-strong {
   background-image: url("@pkgdatadir@/icons/network-3g-strong.png");
 }
 
-MnbToolbarButton#3g-strong:hover, MnbToolbarButton#3g-strong:active, MnbToolbarButton#3g-strong:checked  {
+MnbToolbarButton#threeg-strong:hover, MnbToolbarButton#threeg-strong:active, MnbToolbarButton#threeg-strong:checked  {
   background-image: url("@pkgdatadir@/icons/network-3g-strong-hover.png");
 }
 
-MnbToolbarButton#3g-weak {
+MnbToolbarButton#threeg-weak {
   background-image: url("@pkgdatadir@/icons/network-3g-weak.png");
 }
 
-MnbToolbarButton#3g-weak:hover, MnbToolbarButton#3g-weak:active, MnbToolbarButton#3g-weak:checked  {
+MnbToolbarButton#threeg-weak:hover, MnbToolbarButton#threeg-weak:active, MnbToolbarButton#threeg-weak:checked  {
   background-image: url("@pkgdatadir@/icons/network-3g-weak-hover.png");
 }
 

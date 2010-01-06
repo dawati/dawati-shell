@@ -79,10 +79,10 @@ static const gchar *icon_ids[] = {
   "wimax-strong", /* ICON_WIMAX_STRONG_HOVER */
   "wimax-weak", /* ICON_WIMAX_WEAK */
   "wimax-weak", /* ICON_WIMAX_WEAK_HOVER */
-  "3g-strong", /* ICON_3G_STRONG */
-  "3g-strong", /* ICON_3G_STRONG_HOVER */
-  "3g-weak", /* ICON_3G_WEAK */
-  "3g-weak", /* ICON_3G_WEAK_HOVER */
+  "threeg-strong", /* ICON_3G_STRONG */
+  "threeg-strong", /* ICON_3G_STRONG_HOVER */
+  "threeg-weak", /* ICON_3G_WEAK */
+  "threeg-weak", /* ICON_3G_WEAK_HOVER */
   "bluetooth-strong", /* ICON_BLUETOOTH_STRONG */
   "bluetooth-strong", /* ICON_BLUETOOTH_STRONG_HOVER */
   "bluetooth-weak", /* ICON_BLUETOOTH_WEAK */
