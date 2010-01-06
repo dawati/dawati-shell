@@ -31,6 +31,9 @@
 
 #include <config.h>
 
+static GTimer *profile_timer = NULL;
+static guint stage_paint_idle = 0;
+
 static void
 _client_set_size_cb (MplPanelClient *client,
                      guint           width,
@@ -60,6 +63,34 @@ static GOptionEntry entries[] = {
   { NULL }
 };
 
+static void _stage_paint_cb (ClutterActor *actor,
+                             gpointer      userdata);
+
+static gboolean
+_stage_paint_idle_cb (gpointer userdata)
+{
+  g_debug (G_STRLOC ": PROFILE: Idle stage painted: %f",
+           g_timer_elapsed (profile_timer, NULL));
+
+  g_signal_handlers_disconnect_by_func (userdata,
+                                        _stage_paint_cb,
+                                        NULL);
+  return FALSE;
+}
+
+static void
+_stage_paint_cb (ClutterActor *actor,
+                 gpointer      userdata)
+{
+  if (stage_paint_idle == 0)
+  {
+    stage_paint_idle = g_idle_add_full (G_PRIORITY_LOW,
+                                        _stage_paint_idle_cb,
+                                        actor,
+                                        NULL);
+  }
+}
+
 int
 main (int    argc,
       char **argv)
@@ -76,6 +107,8 @@ main (int    argc,
   textdomain (GETTEXT_PACKAGE);
 
   g_thread_init (NULL);
+  profile_timer = g_timer_new ();
+
   bkl_init ();
 
   context = g_option_context_new ("- mutter-moblin myzone panel");
@@ -142,6 +175,12 @@ main (int    argc,
     clutter_actor_show_all (stage);
   }
 
+  g_signal_connect_after (stage,
+                          "paint",
+                          (GCallback)_stage_paint_cb,
+                          NULL);
+  g_debug (G_STRLOC ": PROFILE: Main loop started: %f",
+           g_timer_elapsed (profile_timer, NULL));
   clutter_main ();
 
   return 0;
