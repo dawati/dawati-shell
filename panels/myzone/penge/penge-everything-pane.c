@@ -53,7 +53,7 @@ struct _PengeEverythingPanePrivate {
 
   gint block_count;
 
-  guint update_timeout_id;
+  guint update_idle_id;
 };
 
 static void
@@ -436,7 +436,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 }
 
 static gboolean
-_update_timeout_cb (gpointer userdata)
+_update_idle_cb (gpointer userdata)
 {
   PengeEverythingPane *pane = (PengeEverythingPane *)userdata;
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -451,7 +451,7 @@ _update_timeout_cb (gpointer userdata)
     clutter_actor_set_opacity (CLUTTER_ACTOR (pane), 0xff);
   }
 
-  priv->update_timeout_id = 0;
+  priv->update_idle_id = 0;
 
   return FALSE;
 }
@@ -461,13 +461,11 @@ penge_everything_pane_queue_update (PengeEverythingPane *pane)
 {
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
 
-  if (priv->update_timeout_id)
+  if (priv->update_idle_id)
   {
     /* No need to update, we already have an update queued */
   } else {
-    priv->update_timeout_id = g_timeout_add_seconds (1,
-                                                     _update_timeout_cb,
-                                                     pane);
+    priv->update_idle_id = g_idle_add (_update_idle_cb, pane);
   }
 }
 
