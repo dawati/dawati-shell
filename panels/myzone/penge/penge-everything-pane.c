@@ -291,6 +291,8 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   GList *old_actors = NULL;
   ClutterActor *actor;
 
+  g_debug (G_STRLOC ": Updating everything pane");
+
   /* Get recent files and sort */
   recent_file_items = gtk_recent_manager_get_items (priv->recent_manager);
   recent_file_items = g_list_sort (recent_file_items,
