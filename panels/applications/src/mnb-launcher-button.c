@@ -168,7 +168,7 @@ mnb_launcher_button_reset_tooltip (MnbLauncherButton *self)
 
   if (self->priv->tooltip)
   {
-    clutter_actor_destroy (self->priv->tooltip);
+    clutter_actor_unparent (self->priv->tooltip);
     self->priv->tooltip = NULL;
   }
 }
