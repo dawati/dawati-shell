@@ -26,9 +26,6 @@ G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, MX_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_WELCOME_TILE, PengeWelcomeTilePrivate))
 
-#define TILE_WIDTH 170.0f
-#define TILE_HEIGHT 115.0f
-
 typedef struct _PengeWelcomeTilePrivate PengeWelcomeTilePrivate;
 
 struct _PengeWelcomeTilePrivate {
@@ -47,34 +44,15 @@ penge_welcome_tile_finalize (GObject *object)
   G_OBJECT_CLASS (penge_welcome_tile_parent_class)->finalize (object);
 }
 
-/* Return reasonable tile size. If we don't do this then the huge potential
- * size of the text gives strange results with table.
- */
-static void
-penge_welcome_tile_get_preferred_width (ClutterActor *self,
-                                        gfloat        for_height,
-                                        gfloat       *min_width_p,
-                                        gfloat       *natural_width_p)
-{
-  if (min_width_p)
-    *min_width_p = TILE_WIDTH * 2;
-
-  if (natural_width_p)
-    *natural_width_p = TILE_WIDTH * 2;
-}
-
 static void
 penge_welcome_tile_class_init (PengeWelcomeTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (PengeWelcomeTilePrivate));
 
   object_class->dispose = penge_welcome_tile_dispose;
   object_class->finalize = penge_welcome_tile_finalize;
-
-  actor_class->get_preferred_width = penge_welcome_tile_get_preferred_width;
 }
 
 static void
@@ -85,15 +63,13 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
 
   mx_widget_set_style_class_name (MX_WIDGET ((ClutterActor *)tile), "PengeWelcomeTile");
 
-  label = mx_label_new (_("<b>Welcome to Moblin 2.1 for Netbooks</b>"));
+  label = mx_label_new (_("Welcome to Moblin"));
   clutter_actor_set_name ((ClutterActor *)label,
                           "penge-welcome-primary-text");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                    PANGO_WRAP_WORD_CHAR);
-  clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text),
-                               TRUE);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
   mx_table_add_actor_with_properties (MX_TABLE (tile),
@@ -101,14 +77,17 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                                       0, 0,
                                       "x-expand", TRUE,
                                       "x-fill", TRUE,
-                                      "y-expand", TRUE,
+                                      "y-expand", FALSE,
                                       "y-fill", TRUE,
                                       NULL);
+  mx_table_set_row_spacing (MX_TABLE (tile), 6);
 
-  label = mx_label_new (_("As Moblin is a bit different to other computers, " \
-                            "we've put together a couple of bits and pieces to " \
-                            "help you find your way around. " \
-                            "We hope you enjoy it, The Moblin Team."));
+  label = mx_label_new (_("This is the Myzone,  where your recently "
+                          "used files and content from your web feeds will "
+                          "appear. To setup your Web Accounts, head over to "
+                          "the Monocle Man!"));
+
+
   clutter_actor_set_name ((ClutterActor *)label,
                           "penge-welcome-secondary-text");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));

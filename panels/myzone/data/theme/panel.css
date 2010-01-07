@@ -151,20 +151,21 @@ PengePeoplePlaceholderTile:hover
 
 PengeWelcomeTile
 {
-  border-image: url('backdrop.png') 5 5 5 5;
-  padding: 6;
+  border-image: url('no-content-tile-bg.png') 7 8 9 8;
+  padding: 10 11 12 11;
 }
 
-PengeWelcomeTile *#penge-welcome-primary-text
+*#penge-welcome-primary-text
 {
   color: #009bceff;
-  font-size:19px;
+  font-size:19;
+  font-weight: bold;
   font-family: "Droid Sans", "Sans";
 }
 
-PengeWelcomeTile *#penge-welcome-secondary-text
+*#penge-welcome-secondary-text
 {
-  font-size:14px;
+  font-size:14;
   font-family: "Droid Sans", "Sans";
   color: #2c2c2cff;
 }
