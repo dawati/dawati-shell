@@ -54,6 +54,8 @@ struct _PengeEverythingPanePrivate {
   gint block_count;
 
   guint update_idle_id;
+
+  GHashTable *uuid_to_mojito_items;
 };
 
 static void
@@ -85,6 +87,12 @@ penge_everything_pane_dispose (GObject *object)
   {
     g_hash_table_unref (priv->pointer_to_actor);
     priv->pointer_to_actor = NULL;
+  }
+
+  if (priv->uuid_to_mojito_items)
+  {
+    g_hash_table_unref (priv->uuid_to_mojito_items);
+    priv->uuid_to_mojito_items = NULL;
   }
 
   if (priv->view)
@@ -283,6 +291,20 @@ _add_from_recent_file_info (PengeEverythingPane *pane,
   return actor;
 }
 
+static gint
+_mojito_item_sort_compare_func (MojitoItem *a,
+                                MojitoItem *b)
+{
+  if (a->date.tv_sec> b->date.tv_sec)
+  {
+    return -1;
+  } else if (a->date.tv_sec == b->date.tv_sec) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
 static void
 penge_everything_pane_update (PengeEverythingPane *pane)
 {
@@ -299,7 +321,9 @@ penge_everything_pane_update (PengeEverythingPane *pane)
                                    (GCompareFunc)_recent_files_sort_func);
 
   /* Get Mojito items */
-  mojito_items = mojito_client_view_get_sorted_items (priv->view);
+  mojito_items = g_hash_table_get_values (priv->uuid_to_mojito_items);
+  mojito_items = g_list_sort (mojito_items,
+                              (GCompareFunc)_mojito_item_sort_compare_func);
 
   old_actors = g_hash_table_get_values (priv->pointer_to_actor);
 
@@ -477,6 +501,11 @@ _view_item_added_cb (MojitoClientView *view,
                      gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+
+  g_hash_table_insert (priv->uuid_to_mojito_items,
+                       item->uuid,
+                       mojito_item_ref (item));
 
   penge_everything_pane_queue_update (pane);
 }
@@ -487,6 +516,10 @@ _view_item_removed_cb (MojitoClientView *view,
                        gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+
+  g_hash_table_remove (priv->uuid_to_mojito_items,
+                       item->uuid);
 
   penge_everything_pane_queue_update (pane);
 }
@@ -565,6 +598,12 @@ penge_everything_pane_init (PengeEverythingPane *self)
 
   /* pointer to pointer */
   priv->pointer_to_actor = g_hash_table_new (NULL, NULL);
+
+  /* For storing mojito items */
+  priv->uuid_to_mojito_items = g_hash_table_new_full (g_str_hash,
+                                                      g_str_equal,
+                                                      NULL,
+                                                      (GDestroyNotify)mojito_item_unref);
 
   priv->client = mojito_client_new ();
   mojito_client_get_services (priv->client, _client_get_services_cb, self);
