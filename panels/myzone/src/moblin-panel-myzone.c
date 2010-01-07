@@ -44,9 +44,9 @@ _client_set_size_cb (MplPanelClient *client,
                           width,
                           height);
 
-  g_debug (G_STRLOC ": Dimensions for grid view: %d x %d",
-           width,
-           height);
+  g_message (G_STRLOC ": Dimensions for grid view: %d x %d",
+             width,
+             height);
 }
 
 static void
@@ -69,8 +69,8 @@ static void _stage_paint_cb (ClutterActor *actor,
 static gboolean
 _stage_paint_idle_cb (gpointer userdata)
 {
-  g_debug (G_STRLOC ": PROFILE: Idle stage painted: %f",
-           g_timer_elapsed (profile_timer, NULL));
+  g_message (G_STRLOC ": PROFILE: Idle stage painted: %f",
+             g_timer_elapsed (profile_timer, NULL));
 
   g_signal_handlers_disconnect_by_func (userdata,
                                         _stage_paint_cb,
@@ -179,8 +179,8 @@ main (int    argc,
                           "paint",
                           (GCallback)_stage_paint_cb,
                           NULL);
-  g_debug (G_STRLOC ": PROFILE: Main loop started: %f",
-           g_timer_elapsed (profile_timer, NULL));
+  g_message (G_STRLOC ": PROFILE: Main loop started: %f",
+             g_timer_elapsed (profile_timer, NULL));
   clutter_main ();
 
   return 0;
