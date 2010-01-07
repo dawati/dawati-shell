@@ -18,6 +18,7 @@ PengeAppsPane
 *.PengeCalendarPaneTitle
 {
   font-size: 17;
+  font-weight: bold;
   font-family: "Droid Sans", "Sans";
   color: #3e3e3eff;
 }
