@@ -15,7 +15,7 @@ PengeAppsPane
   padding: 2;
 }
 
-*.PengeCalendarPaneTitle
+MxLabel.PengeCalendarPaneTitle
 {
   font-size: 17;
   font-weight: bold;
@@ -60,7 +60,7 @@ MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
 }
 
 
-PengeEventTile *.PengeEventTimeLabel
+MxLabel.PengeEventTimeLabel
 {
   color: white;
   font-size:12;
@@ -68,7 +68,7 @@ PengeEventTile *.PengeEventTimeLabel
   padding: 8;
 }
 
-PengeEventTile *.PengeEventTimeLabel:past
+MxLabel.PengeEventTimeLabel:past
 {
   color: white;
   font-size:12;
@@ -76,27 +76,14 @@ PengeEventTile *.PengeEventTimeLabel:past
   padding: 8;
 }
 
-PengeEventTile *.PengeEventTimeBin
+*.PengeEventTimeBin
 {
   border-image: url('time-bg.png') 0;
 }
 
-PengeEventTile *.PengeEventTimeBin:past
+*.PengeEventTimeBin:past
 {
   border-image: url('time-bg-past.png') 0;
-}
-
-PengeDateTile *.PengeDayLabel
-{
-  font-size: 18;
-  font-family: "Droid Sans", "Sans";
-}
-
-PengeDateTile *.PengeDateLabel
-{
-  font-size: 78;
-  font-family: "Droid Sans", "Sans";
-  color: #4eb9f1ff;
 }
 
 PengePeopleTile *.PengeInterestingTilePrimaryLabel,
