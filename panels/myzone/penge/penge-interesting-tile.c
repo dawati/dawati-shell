@@ -36,7 +36,6 @@ struct _PengeInterestingTilePrivate {
 
   ClutterActor *body;
   ClutterActor *icon;
-  ClutterActor *bin;
   ClutterActor *primary_text;
   ClutterActor *secondary_text;
   ClutterActor *details_overlay;
@@ -82,7 +81,7 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
     case PROP_BODY:
       if (priv->body)
       {
-        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->bin),
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->inner_table),
                                         priv->body);
       }
 
@@ -91,10 +90,14 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       if (!priv->body)
         return;
 
-      mx_bin_set_child (MX_BIN (priv->bin),
-                          priv->body);
-
-
+      mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
+                                          priv->body,
+                                          0, 0,
+                                          "y-align", 0.0,
+                                          "x-align", 0.0,
+                                          "y-fill", TRUE,
+                                          "y-expand", TRUE,
+                                          NULL);
       break;
     case PROP_ICON_PATH:
       path = g_value_get_string (value);
@@ -230,19 +233,6 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   mx_bin_set_child (MX_BIN (self),
                     priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
-  priv->bin = mx_frame_new ();
-  mx_bin_set_fill (MX_BIN (priv->bin), TRUE, TRUE);
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->bin,
-                      0,
-                      0);
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               priv->bin,
-                               "y-align", 0.0,
-                               "x-align", 0.0,
-                               "y-fill", TRUE,
-                               "y-expand", TRUE,
-                               NULL);
 
   priv->primary_text = mx_label_new ("Primary text");
   mx_widget_set_style_class_name (MX_WIDGET (priv->primary_text), 
