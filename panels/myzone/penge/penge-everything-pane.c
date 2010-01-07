@@ -30,6 +30,8 @@
 #include "penge-people-tile.h"
 #include "penge-source-manager.h"
 
+#include "penge-welcome-tile.h"
+
 G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONTAINER)
 
 #define GET_PRIVATE(o) \
@@ -56,6 +58,8 @@ struct _PengeEverythingPanePrivate {
   guint update_idle_id;
 
   GHashTable *uuid_to_mojito_items;
+
+  ClutterActor *welcome_tile;
 };
 
 static void
@@ -326,6 +330,27 @@ penge_everything_pane_update (PengeEverythingPane *pane)
                               (GCompareFunc)_mojito_item_sort_compare_func);
 
   old_actors = g_hash_table_get_values (priv->pointer_to_actor);
+
+  if (!mojito_items && !recent_file_items)
+  {
+    if (!priv->welcome_tile)
+    {
+      priv->welcome_tile = penge_welcome_tile_new ();
+      clutter_container_add_actor (CLUTTER_CONTAINER (pane),
+                                   priv->welcome_tile);
+      clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                   priv->welcome_tile,
+                                   "col-span", 2,
+                                   NULL);
+    }
+  } else {
+    if (priv->welcome_tile)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                      priv->welcome_tile);
+      priv->welcome_tile = NULL;
+    }
+  }
 
   while (mojito_items || recent_file_items)
   {
