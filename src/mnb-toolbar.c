@@ -1883,8 +1883,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
   if (tp->button)
     mnb_panel_set_button (panel, MX_BUTTON (tp->button));
 
-  mnb_panel_set_position (panel, TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
-
   if (mnb_panel_oop_is_ready (MNB_PANEL_OOP (panel)))
     mnb_toolbar_panel_ready_cb (panel, toolbar);
   else
