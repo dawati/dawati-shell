@@ -447,7 +447,6 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   glong next_timeout_seconds;
   ClutterActor *label;
   GError *error = NULL;
-  ClutterActor *tmp_text;
 
   now = jana_ecal_utils_time_now_local ();
 
