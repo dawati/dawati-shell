@@ -58,10 +58,6 @@ MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
   border-image: url('checked_box.png') 0;
 }
 
-PengeDateTile
-{
-  border-image: url('date-background.png') 16;
-}
 
 PengeEventTile *.PengeEventTimeLabel
 {
@@ -69,11 +65,6 @@ PengeEventTile *.PengeEventTimeLabel
   font-size:12;
   font-family: "Droid Sans", "Sans";
   padding: 8;
-}
-
-PengeDateTile *.PengeDateTileBackground
-{
-  border-image: url('date-background-background.png') 16;
 }
 
 PengeEventTile *.PengeEventTimeLabel:past

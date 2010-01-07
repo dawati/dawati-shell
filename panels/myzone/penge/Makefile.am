@@ -5,7 +5,6 @@ libpenge_headers = penge-people-pane.h \
 		   penge-people-tile.h \
 		   penge-recent-files-pane.h \
 		   penge-recent-file-tile.h \
-		   penge-date-tile.h \
 		   penge-event-tile.h \
 		   penge-events-pane.h \
 		   penge-calendar-pane.h \
@@ -35,7 +34,6 @@ libpenge_la_SOURCES = \
 		      penge-people-tile.c \
 		      penge-recent-files-pane.c \
 		      penge-recent-file-tile.c \
-		      penge-date-tile.c \
 		      penge-event-tile.c \
 		      penge-events-pane.c \
 		      penge-calendar-pane.c \

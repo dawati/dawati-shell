@@ -24,7 +24,6 @@
 #include <libjana/jana.h>
 
 #include <glib/gi18n.h>
-#include "penge-date-tile.h"
 #include "penge-events-pane.h"
 #include "penge-tasks-pane.h"
 

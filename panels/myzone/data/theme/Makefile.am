@@ -5,8 +5,6 @@ dist_theme_DATA = \
 	calendar-icon.png \
 	check_box.png \
 	checked_box.png \
-	date-background-background.png \
-	date-background.png \
 	default-album-artwork.png \
 	default-avatar-icon.png \
 	double-div-line.png \
