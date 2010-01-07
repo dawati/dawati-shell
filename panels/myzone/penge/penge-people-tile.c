@@ -253,8 +253,6 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                 PANGO_ELLIPSIZE_END);
     clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                      PANGO_ALIGN_LEFT);
-    clutter_text_set_use_markup (CLUTTER_TEXT (tmp_text),
-                                 TRUE);
     g_object_set (tile,
                   "body", body,
                   NULL);
