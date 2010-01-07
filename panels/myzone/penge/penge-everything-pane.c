@@ -496,30 +496,41 @@ penge_everything_pane_queue_update (PengeEverythingPane *pane)
 }
 
 static void
-_view_item_added_cb (MojitoClientView *view,
-                     MojitoItem       *item,
-                     gpointer          userdata)
+_view_items_added_cb (MojitoClientView *view,
+                      GList            *items,
+                      gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  GList *l;
 
-  g_hash_table_insert (priv->uuid_to_mojito_items,
-                       item->uuid,
-                       mojito_item_ref (item));
+  for (l = items; l; l = l->next)
+  {
+    MojitoItem *item = (MojitoItem *)l->data;
+    g_hash_table_insert (priv->uuid_to_mojito_items,
+                         item->uuid,
+                         mojito_item_ref (item));
+  }
 
   penge_everything_pane_queue_update (pane);
 }
 
 static void
-_view_item_removed_cb (MojitoClientView *view,
-                       MojitoItem       *item,
-                       gpointer          userdata)
+_view_items_removed_cb (MojitoClientView *view,
+                        GList            *items,
+                        gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
 
-  g_hash_table_remove (priv->uuid_to_mojito_items,
-                       item->uuid);
+  GList *l;
+
+  for (l = items; l; l = l->next)
+  {
+    MojitoItem *item = (MojitoItem *)l->data;
+    g_hash_table_remove (priv->uuid_to_mojito_items,
+                         item->uuid);
+  }
 
   penge_everything_pane_queue_update (pane);
 }
@@ -535,12 +546,12 @@ _client_open_view_cb (MojitoClient     *client,
   priv->view = view;
 
   g_signal_connect (view,
-                    "item-added",
-                    (GCallback)_view_item_added_cb,
+                    "items-added",
+                    (GCallback)_view_items_added_cb,
                     userdata);
   g_signal_connect (view,
-                    "item-removed",
-                    (GCallback)_view_item_removed_cb,
+                    "items-removed",
+                    (GCallback)_view_items_removed_cb,
                     userdata);
   mojito_client_view_start (view);
 }
