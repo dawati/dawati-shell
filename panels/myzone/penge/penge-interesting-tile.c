@@ -269,7 +269,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                (ClutterActor *)priv->details_overlay,
                                "x-expand", TRUE,
-                               "y-expand", TRUE,
+                               "y-expand", FALSE,
                                "y-fill", FALSE,
                                "y-align", 1.0,
                                NULL);
