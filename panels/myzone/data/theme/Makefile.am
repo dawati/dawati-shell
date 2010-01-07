@@ -8,18 +8,12 @@ dist_theme_DATA = \
 	default-album-artwork.png \
 	default-avatar-icon.png \
 	double-div-line.png \
-	event-background-dark.png \
-	general-background-dark.png \
-	general-background.png \
 	linus.png \
 	no-content-tile-bg.png \
 	no-content-tile-glow-bg.png \
-	people-background.png \
 	quotebackground.png \
-	recent-files-background.png \
 	single-div-line.png \
 	tile-bg.png \
-	tile-glow.png \
 	tile-partial-glow.png \
 	time-bg-past.png \
 	time-bg.png \
