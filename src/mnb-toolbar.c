@@ -189,6 +189,9 @@ struct _MnbToolbarPrivate
 
   GList        *panels;         /* Panels (the dropdowns) */
 
+
+  MnbToolbarPanel *stubbed_panel; /* The panel for which we are showing stub */
+
   gboolean no_autoloading    : 1;
   gboolean shown             : 1;
   gboolean shown_myzone      : 1;
@@ -791,9 +794,25 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
 {
   MnbToolbar        *toolbar = data;
   MnbToolbarPrivate *priv    = toolbar->priv;
+  MnbToolbarPanel   *stubbed = priv->stubbed_panel;
+  GList             *l;
 
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
   clutter_actor_hide (priv->panel_stub);
+  priv->stubbed_panel = NULL;
+
+  for (l = priv->panels; l; l = l->next)
+    {
+      MnbToolbarPanel *tp = l->data;
+
+      if (!tp || tp != stubbed)
+        continue;
+
+      if (mx_button_get_checked (MX_BUTTON (tp->button)))
+        mx_button_set_checked (MX_BUTTON (tp->button), FALSE);
+
+      break;
+    }
 
   return FALSE;
 }
@@ -879,6 +898,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                     g_source_remove (priv->panel_stub_timeout_id);
                     priv->panel_stub_timeout_id = 0;
                     clutter_actor_hide (priv->panel_stub);
+                    priv->stubbed_panel = NULL;
                   }
               }
             else if (!checked && mnb_panel_is_mapped (tp->panel))
@@ -904,6 +924,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                 clutter_actor_set_opacity (priv->panel_stub, 0xff);
                 clutter_actor_show (priv->panel_stub);
                 clutter_actor_raise_top (priv->panel_stub);
+                priv->stubbed_panel = tp;
 
                 if (priv->panel_stub_timeout_id)
                   {
@@ -1094,7 +1115,8 @@ static void
 mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
                                                 MnbToolbar  *toolbar)
 {
-  MutterWindow *mcw;
+  MnbToolbarPrivate *priv = toolbar->priv;
+  MutterWindow      *mcw;
 
   g_assert (MNB_IS_PANEL_OOP (panel));
 
@@ -1106,7 +1128,8 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
   else
     mnb_input_manager_push_oop_panel (mcw);
 
-  clutter_actor_hide (toolbar->priv->panel_stub);
+  clutter_actor_hide (priv->panel_stub);
+  priv->stubbed_panel = NULL;
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
 }
