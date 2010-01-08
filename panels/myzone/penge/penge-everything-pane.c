@@ -316,6 +316,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   GList *mojito_items, *recent_file_items, *l;
   GList *old_actors = NULL;
   ClutterActor *actor;
+  gboolean show_welcome_tile = TRUE;
 
   g_debug (G_STRLOC ": Updating everything pane");
 
@@ -331,19 +332,8 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
   old_actors = g_hash_table_get_values (priv->pointer_to_actor);
 
-  if (!mojito_items && !recent_file_items)
+  if (mojito_items || recent_file_items)
   {
-    if (!priv->welcome_tile)
-    {
-      priv->welcome_tile = penge_welcome_tile_new ();
-      clutter_container_add_actor (CLUTTER_CONTAINER (pane),
-                                   priv->welcome_tile);
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   priv->welcome_tile,
-                                   "col-span", 2,
-                                   NULL);
-    }
-  } else {
     if (priv->welcome_tile)
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
@@ -387,6 +377,8 @@ penge_everything_pane_update (PengeEverythingPane *pane)
       }
 
       mojito_items = g_list_remove (mojito_items, mojito_item);
+
+      show_welcome_tile = FALSE;
     } else {
       BklItem *bi = NULL;
 
@@ -454,6 +446,8 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
         /* Needed to remove from hash when we kill the actor */
         g_object_set_data (G_OBJECT (actor), "data-pointer", recent_file_info);
+
+        show_welcome_tile = FALSE;
       }
 
       gtk_recent_info_unref (recent_file_info);
@@ -475,12 +469,27 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   {
     gpointer p;
     p = g_object_get_data (G_OBJECT (l->data), "data-pointer");
-    clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                    CLUTTER_ACTOR (l->data));
-    g_hash_table_remove (priv->pointer_to_actor, p);
+
+    if (p)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                      CLUTTER_ACTOR (l->data));
+      g_hash_table_remove (priv->pointer_to_actor, p);
+    }
   }
 
   g_list_free (old_actors);
+
+  if (show_welcome_tile)
+  {
+    priv->welcome_tile = penge_welcome_tile_new ();
+    clutter_container_add_actor (CLUTTER_CONTAINER (pane),
+                                 priv->welcome_tile);
+    clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                 priv->welcome_tile,
+                                 "col-span", 2,
+                                 NULL);
+  }
 
   g_list_free (mojito_items);
   g_list_free (recent_file_items);
