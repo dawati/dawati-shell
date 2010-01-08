@@ -19,7 +19,7 @@
 #ifndef _MWB_SEPARATOR_H
 #define _MWB_SEPARATOR_H
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -50,19 +50,19 @@ typedef struct _MwbSeparatorPrivate MwbSeparatorPrivate;
 
 struct _MwbSeparatorClass
 {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 };
 
 struct _MwbSeparator
 {
-  NbtkWidget parent;
+  MxWidget parent;
 
   MwbSeparatorPrivate *priv;
 };
 
 GType mwb_separator_get_type (void) G_GNUC_CONST;
 
-NbtkWidget *mwb_separator_new (void);
+MxWidget *mwb_separator_new (void);
 
 void mwb_separator_get_color (MwbSeparator *separator,
                               ClutterColor *color);

@@ -34,7 +34,7 @@ mwb_utils_focus_on_click_cb (ClutterActor       *actor,
 }
 
 inline void
-mwb_utils_table_add (NbtkTable    *table,
+mwb_utils_table_add (MxTable    *table,
                      ClutterActor *child,
                      gint          row,
                      gint          col,
@@ -43,7 +43,7 @@ mwb_utils_table_add (NbtkTable    *table,
                      gboolean      y_expand,
                      gboolean      y_fill)
 {
-  nbtk_table_add_actor_with_properties (table, child, row, col,
+  mx_table_add_actor_with_properties (table, child, row, col,
                                         "x-expand", x_expand,
                                         "x-fill", x_fill,
                                         "y-expand", y_expand,
@@ -97,7 +97,7 @@ mwb_utils_actor_has_focus (ClutterActor *actor)
 }
 
 void
-mwb_utils_show_popup (NbtkPopup *popup)
+mwb_utils_show_popup (MxPopup *popup)
 {
   ClutterAnimation *animation;
   ClutterActor *actor = CLUTTER_ACTOR (popup);

@@ -21,7 +21,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include "mwb-ac-list.h"
 
 G_BEGIN_DECLS
@@ -51,13 +51,13 @@ G_BEGIN_DECLS
 typedef struct _MwbRadicalBarPrivate MwbRadicalBarPrivate;
 
 typedef struct {
-  NbtkWidget parent;
+  MxWidget parent;
   
   MwbRadicalBarPrivate *priv;
 } MwbRadicalBar;
 
 typedef struct {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 
   void (* go)                 (MwbRadicalBar *radical_bar, const gchar *url);
   void (* reload)             (MwbRadicalBar *radical_bar);
@@ -67,7 +67,7 @@ typedef struct {
 
 GType mwb_radical_bar_get_type (void);
 
-NbtkWidget *mwb_radical_bar_new (void);
+MxWidget *mwb_radical_bar_new (void);
 
 void mwb_radical_bar_focus         (MwbRadicalBar *radical_bar);
 

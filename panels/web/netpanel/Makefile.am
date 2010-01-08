@@ -1,11 +1,11 @@
 AM_CFLAGS = \
 	$(SQLITE_CFLAGS) \
-	$(NBTK_CFLAGS) \
+	$(MX_CFLAGS) \
 	$(GTK_CFLAGS) \
 	$(NETPANEL_CFLAGS) \
 	$(MPL_CFLAGS) \
 	-DLOCALEDIR=\"$(localedir)\" \
-	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
+	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/netpanel\" \
 	-I$(top_srcdir)/common
 
@@ -13,7 +13,7 @@ libexec_PROGRAMS = moblin-panel-web
 
 moblin_panel_web_LDADD = \
 	$(SQLITE_LIBS) \
-	$(NBTK_LIBS) \
+	$(MX_LIBS) \
 	$(GTK_LIBS) \
 	$(NETPANEL_LIBS) \
 	$(MPL_LIBS) \
@@ -35,7 +35,7 @@ servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.internet.service.in
 service_DATA = org.moblin.UX.Shell.Panels.internet.service
 
-autostartdir = $(sysconfdir)/xdg/autostart
+autostartdir = $(datadir)/mutter-moblin/panels
 autostart_DATA = moblin-panel-web.desktop
 
 EXTRA_DIST = $(service_in_files) $(autostart_DATA)

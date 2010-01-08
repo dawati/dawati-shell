@@ -55,7 +55,7 @@
   "LEFT OUTER JOIN moz_favicons f ON r.favicon_id = f.id " \
   "GROUP BY r.id ORDER BY r.frecency DESC LIMIT 14"
 
-G_DEFINE_TYPE (MwbAcList, mwb_ac_list, NBTK_TYPE_WIDGET);
+G_DEFINE_TYPE (MwbAcList, mwb_ac_list, MX_TYPE_WIDGET);
 
 #define MWB_AC_LIST_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MWB_TYPE_AC_LIST, \
@@ -98,7 +98,7 @@ struct _MwbAcListPrivate
   gdouble          anim_progress;
   ClutterTimeline *timeline;
 
-  NbtkWidget    *separator;
+  MxWidget    *separator;
 
   ClutterColor   match_color;
 
@@ -133,7 +133,7 @@ typedef struct _MwbAcListEntry MwbAcListEntry;
 
 struct _MwbAcListEntry
 {
-  NbtkWidget *label_actor;
+  MxWidget *label_actor;
   gchar *label_text;
   gchar *url;
   gint match_start, match_end;
@@ -142,7 +142,7 @@ struct _MwbAcListEntry
   /* This is used for drawing the highlight and also for picking. Its
      color gets set to the highlight color but it will not be painted
      if the row is not highlighted */
-  NbtkWidget *highlight_widget;
+  MxWidget *highlight_widget;
   guint highlight_motion_handler;
   guint highlight_clicked_handler;
 };
@@ -420,10 +420,10 @@ mwb_ac_list_get_preferred_height_with_max (MwbAcList *self,
 
   if (natural_height_p)
     {
-      NbtkPadding padding;
+      MxPadding padding;
       gfloat height;
 
-      nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+      mx_widget_get_padding (MX_WIDGET (self), &padding);
 
       height = mwb_ac_list_get_height (self,
                                        max_height -
@@ -440,7 +440,7 @@ static void
 mwb_ac_list_paint (ClutterActor *actor)
 {
   MwbAcListPrivate *priv = MWB_AC_LIST (actor)->priv;
-  NbtkPadding padding;
+  MxPadding padding;
   ClutterGeometry geom;
   gfloat separator_height = 0.;
   gfloat ypos;
@@ -449,7 +449,7 @@ mwb_ac_list_paint (ClutterActor *actor)
   /* Chain up to get the background */
   CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->paint (actor);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   clutter_actor_get_allocation_geometry (actor, &geom);
 
@@ -509,7 +509,7 @@ mwb_ac_list_pick (ClutterActor *actor, const ClutterColor *color)
   gfloat separator_height = 0;
   gfloat ypos;
   ClutterGeometry geom;
-  NbtkPadding padding;
+  MxPadding padding;
   gint i;
 
   /* Chain up so we get a bounding box painted */
@@ -519,7 +519,7 @@ mwb_ac_list_pick (ClutterActor *actor, const ClutterColor *color)
     clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->separator), -1,
                                         NULL, &separator_height);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   clutter_actor_get_allocation_geometry (actor, &geom);
 
@@ -630,7 +630,7 @@ mwb_ac_list_update_entry (MwbAcList *ac_list,
 
   if (entry->highlight_widget == NULL)
     {
-      entry->highlight_widget = g_object_new (NBTK_TYPE_BIN,
+      entry->highlight_widget = g_object_new (MX_TYPE_FRAME,
                                               "reactive", TRUE,
                                               NULL);
       entry->highlight_motion_handler
@@ -648,11 +648,11 @@ mwb_ac_list_update_entry (MwbAcList *ac_list,
   if (entry->label_actor)
     clutter_actor_unparent (CLUTTER_ACTOR (entry->label_actor));
 
-  entry->label_actor = nbtk_label_new (entry->label_text);
+  entry->label_actor = MX_WIDGET (mx_label_new (entry->label_text));
   clutter_actor_set_parent (CLUTTER_ACTOR (entry->label_actor),
                             CLUTTER_ACTOR (ac_list));
 
-  text = nbtk_label_get_clutter_text (NBTK_LABEL (entry->label_actor));
+  text = mx_label_get_clutter_text (MX_LABEL (entry->label_actor));
 
   if (entry->match_end > 0)
     {
@@ -687,14 +687,14 @@ mwb_ac_list_allocate (ClutterActor           *actor,
 {
   MwbAcList *self = MWB_AC_LIST (actor);
   MwbAcListPrivate *priv = self->priv;
-  NbtkPadding padding;
+  MxPadding padding;
   gint i;
   gfloat ypos;
   gfloat separator_height = 0;
 
   CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->allocate (actor, box, flags);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   ypos = padding.top;
 
@@ -793,19 +793,19 @@ mwb_ac_list_update_all_entries (MwbAcList *self)
 }
 
 static void
-mwb_ac_list_style_changed_cb (NbtkWidget *widget)
+mwb_ac_list_style_changed_cb (MxWidget *widget)
 {
   MwbAcList *self = MWB_AC_LIST (widget);
   MwbAcListPrivate *priv = self->priv;
   ClutterColor *color = NULL;
 
-  nbtk_stylable_get (NBTK_STYLABLE (self),
+  mx_stylable_get (MX_STYLABLE (self),
                      "color", &color,
                      NULL);
 
   /* The 'color' property is used to set the search match color. This
      should really be done with a different property but it will be
-     left as a FIXME until Nbtk/libccss gains the ability to add
+     left as a FIXME until Mx/libccss gains the ability to add
      custom color properties */
   if (color)
     {
@@ -967,10 +967,10 @@ mwb_ac_list_init (MwbAcList *self)
   priv->search_stmt = NULL;
 }
 
-NbtkWidget*
+MxWidget*
 mwb_ac_list_new (void)
 {
-  return NBTK_WIDGET (g_object_new (MWB_TYPE_AC_LIST, NULL));
+  return MX_WIDGET (g_object_new (MWB_TYPE_AC_LIST, NULL));
 }
 
 static void

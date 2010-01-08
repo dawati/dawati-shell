@@ -1,11 +1,11 @@
 
-MoblinNetbookNetpanel NbtkButton {
+MoblinNetbookNetpanel MxButton {
   padding: 7 4;
 }
 
 /* Overrode MnbEntry so we need to redeclare its styles apparently */
 MnbNetpanelBar {
-  border-image: url('file://mpl-entry-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('mpl-entry-bg.png') 5 5 6 5 stretch stretch;
   padding: 7 10 7 10;
 }
 
@@ -15,7 +15,7 @@ MnbNetpanelBar > *.MplEntryEntry {
 }
 
 MnbNetpanelBar *.MplEntryButton {
-  border-image: url('file://mpl-entry-separator.png') 0 0 0 3 stretch stretch;
+  border-image: url('mpl-entry-separator.png') 0 0 0 3 stretch stretch;
   font-size: 13;
   padding: 0 2 0 10;
   color: #4e3972;
@@ -26,12 +26,12 @@ MnbNetpanelBar *.MplEntryButton {
 }
 
 MnbNetpanelBar *.MplEntryClearButton {
-  background-image: url('file://mpl-entry-clear.png');
+  background-image: url('mpl-entry-clear.png');
   border-image: none;
 }
 
 MnbNetpanelBar *.MplEntryClearButton:hover {
-  background-image: url('file://mpl-entry-clear-hover.png');
+  background-image: url('mpl-entry-clear-hover.png');
 }
 
 MoblinNetbookNetpanel
@@ -40,7 +40,7 @@ MoblinNetbookNetpanel
   padding: 0 5;
 }
 
-MoblinNetbookNetpanel NbtkLabel
+MoblinNetbookNetpanel MxLabel
 {
   font-family: "Droid Sans";
   font-size: 13px;
@@ -48,7 +48,7 @@ MoblinNetbookNetpanel NbtkLabel
   padding: 0 4;
 }
 
-MoblinNetbookNetpanel NbtkLabel#section
+MoblinNetbookNetpanel MxLabel#section
 {
   font-family: "Droid Sans Bold";
   font-size: 15px;
@@ -66,17 +66,17 @@ MoblinNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
 
 MoblinNetbookNetpanel *#netpanel-placeholder-bin
 {
-  border-image: url('file://placeholder-bg.png') 4 stretch;
+  border-image: url('placeholder-bg.png') 4 stretch;
   padding: 8;
 }
 
 MwbAcList {
   padding: 2 8;
-  border-image: url('file://ac-list.png') 5;
+  border-image: url('ac-list.png') 5;
   color: #59457a; /* search match color */
 }
 
-MwbAcList > NbtkLabel {
+MwbAcList > MxLabel {
   padding: 8 0 8 8;
 }
 
@@ -84,24 +84,24 @@ MwbAcList > MwbSeparator {
   color: #ededed;
 }
 
-MwbAcList > NbtkBin { /* highlight color */
+MwbAcList > MxFrame { /* highlight color */
   background-color: #ded5ed;
 }
 
-MoblinNetbookNetpanel NbtkButton.weblink {
-  border-image: url("file://thumbnail.png") 7 8 9;
+MoblinNetbookNetpanel MxButton.weblink {
+  border-image: url("thumbnail.png") 7 8 9;
   padding: 7 8 9;
   color: #4e3972;
 }
 
-MoblinNetbookNetpanel NbtkButton.weblink:hover {
-  border-image: url("file://thumbnail_hover.png") 7 8 9;
+MoblinNetbookNetpanel MxButton.weblink:hover {
+  border-image: url("thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
   color: #c5a3fc;
 }
 
-MoblinNetbookNetpanel NbtkButton.weblink:active {
-  border-image: url("file://thumbnail_hover.png") 7 8 9;
+MoblinNetbookNetpanel MxButton.weblink:active {
+  border-image: url("thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
 }
 
@@ -111,7 +111,7 @@ MoblinNetbookNetpanel *#netpanel-entrytable
   padding: 6 24;
 }
 
-MoblinNetbookNetpanel *#netpanel-entrytable > NbtkLabel
+MoblinNetbookNetpanel *#netpanel-entrytable > MxLabel
 {
   font-family: "Droid Sans Bold";
   font-size: 18px;

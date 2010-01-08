@@ -52,19 +52,19 @@ G_BEGIN_DECLS
 typedef struct _MnbNetpanelScrollviewPrivate MnbNetpanelScrollviewPrivate;
 
 typedef struct {
-  NbtkWidget parent;
+  MxWidget parent;
   
   MnbNetpanelScrollviewPrivate *priv;
 } MnbNetpanelScrollview;
 
 typedef struct {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 
 } MnbNetpanelScrollviewClass;
 
 GType mnb_netpanel_scrollview_get_type (void);
 
-NbtkWidget *mnb_netpanel_scrollview_new ();
+MxWidget *mnb_netpanel_scrollview_new ();
 
 void mnb_netpanel_scrollview_add_item (MnbNetpanelScrollview *self, guint order,
                                        ClutterActor *item, ClutterActor *title);

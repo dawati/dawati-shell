@@ -23,7 +23,7 @@
 #include <sqlite3.h>
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <gdk/gdk.h>
 
 #define MWB_PROFILES_BASE ".mozilla/moblin-web-browser/"
@@ -61,7 +61,7 @@ mwb_utils_image_to_texture (const guint8 *data,
                             GError **error);
 
 inline void
-mwb_utils_table_add (NbtkTable    *table,
+mwb_utils_table_add (MxTable    *table,
                      ClutterActor *child,
                      gint          row,
                      gint          col,
@@ -74,7 +74,7 @@ gboolean
 mwb_utils_actor_has_focus (ClutterActor *actor);
 
 void
-mwb_utils_show_popup (NbtkPopup *popup);
+mwb_utils_show_popup (MxPopup *popup);
 
 GdkPixbuf *
 mwb_utils_pixbuf_new_from_stock (const gchar *icon_name, gint size);

@@ -29,7 +29,7 @@
 #include "mwb-ac-list.h"
 #include "mwb-spindle.h"
 
-G_DEFINE_TYPE (MwbRadicalBar, mwb_radical_bar, NBTK_TYPE_WIDGET)
+G_DEFINE_TYPE (MwbRadicalBar, mwb_radical_bar, MX_TYPE_WIDGET)
 
 #define RADICAL_BAR_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MWB_TYPE_RADICAL_BAR, \
@@ -62,7 +62,7 @@ enum
 static guint signals[LAST_SIGNAL] = { 0, };
 
 /* We want to show the title when either the entry has focus or the
-   mouse is over the ClutterText, the NbtkEntry or the MwbSpindle. */
+   mouse is over the ClutterText, the MxEntry or the MwbSpindle. */
 typedef enum
 {
   MWB_RADICAL_BAR_ENTRY_HAS_FOCUS    = 1,
@@ -73,7 +73,7 @@ typedef enum
 
 struct _MwbRadicalBarPrivate
 {
-  NbtkWidget      *table;
+  MxWidget      *table;
   ClutterActor    *broken_highlight;
   ClutterActor    *encrypted_highlight;
   ClutterActor    *progress_bar;
@@ -81,13 +81,13 @@ struct _MwbRadicalBarPrivate
   ClutterActor    *default_icon;
   ClutterActor    *spinner;
   ClutterTimeline *spinner_timeline;
-  NbtkWidget      *entry;
-  NbtkWidget      *title;
+  MxWidget      *entry;
+  MxWidget      *title;
   ClutterActor    *spindle;
-  NbtkWidget      *instructions;
-  NbtkWidget      *button;
-  NbtkWidget      *pin_button;
-  NbtkWidget      *lock_icon;
+  MxWidget      *instructions;
+  MxWidget      *button;
+  MxWidget      *pin_button;
+  MxWidget      *lock_icon;
 
   gboolean         loading;
   gdouble          progress;
@@ -108,7 +108,7 @@ struct _MwbRadicalBarPrivate
   /* Whether the pin should be pushed in or not */
   gboolean         pinned;
 
-  NbtkWidget      *ac_list;
+  MxWidget      *ac_list;
   guint            ac_list_activate_handler;
   ClutterTimeline *ac_list_timeline;
   gdouble          ac_list_anim_progress;
@@ -335,7 +335,7 @@ mwb_radical_bar_allocate (ClutterActor           *actor,
                           const ClutterActorBox  *box,
                           ClutterAllocationFlags  flags)
 {
-  NbtkPadding padding;
+  MxPadding padding;
   ClutterActorBox child_box;
   gfloat ac_preferred_height;
 
@@ -345,7 +345,7 @@ mwb_radical_bar_allocate (ClutterActor           *actor,
   CLUTTER_ACTOR_CLASS (mwb_radical_bar_parent_class)->
     allocate (actor, box, flags);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   /* padding only applies to the table */
   child_box.x1 = MWB_PIXBOUND (padding.left);
@@ -506,7 +506,7 @@ mwb_radical_bar_update_instructions (MwbRadicalBar *self)
         text = _("Press down to\n"
                  "explore list");
 
-      nbtk_label_set_text (NBTK_LABEL (priv->instructions), text);
+      mx_label_set_text (MX_LABEL (priv->instructions), text);
 
       /* Restore the natural width of the text */
       g_object_set (priv->instructions,
@@ -582,7 +582,7 @@ mwb_radical_bar_set_show_auto_complete (MwbRadicalBar *self, gboolean show)
 
       if (show)
         {
-          const gchar *text = nbtk_entry_get_text (NBTK_ENTRY (priv->entry));
+          const gchar *text = mx_entry_get_text (MX_ENTRY (priv->entry));
           clutter_actor_show (CLUTTER_ACTOR (priv->ac_list));
           mwb_ac_list_set_search_text (MWB_AC_LIST (priv->ac_list), text);
           mwb_ac_list_set_selection (MWB_AC_LIST (priv->ac_list), -1);
@@ -616,15 +616,15 @@ mwb_radical_bar_complete_url (MwbRadicalBar *self,
   if (!suffix || (strlen (suffix) != 3))
     return;
 
-  text = nbtk_entry_get_text (NBTK_ENTRY (priv->entry));
+  text = mx_entry_get_text (MX_ENTRY (priv->entry));
 
   if (!strncmp (text, "www.", 4) || strchr (text, ':'))
     return;
 
   buf = g_strconcat ("www.", text, ".", suffix, NULL);
-  nbtk_entry_set_text (NBTK_ENTRY (priv->entry), buf);
+  mx_entry_set_text (MX_ENTRY (priv->entry), buf);
   g_free (buf);
-  ctext = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry));
+  ctext = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
   mwb_radical_bar_activate_cb (CLUTTER_TEXT (ctext), self);
 }
 
@@ -648,7 +648,7 @@ mwb_radical_bar_select_all (MwbRadicalBar *radical_bar)
   gint length;
   MwbRadicalBarPrivate *priv = radical_bar->priv;
 
-  text = CLUTTER_TEXT (nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry)));
+  text = CLUTTER_TEXT (mx_entry_get_clutter_text (MX_ENTRY (priv->entry)));
   length = strlen (clutter_text_get_text (text));
   clutter_text_set_selection (text, length, 0);
 }
@@ -663,14 +663,14 @@ mwb_radical_bar_show_uri (MwbRadicalBar *radical_bar)
 
   /* If all of the text is selected then preserve that after the
      text is changed */
-  ctext = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry));
-  old_text = nbtk_entry_get_text (NBTK_ENTRY (priv->entry));
+  ctext = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
+  old_text = mx_entry_get_text (MX_ENTRY (priv->entry));
   was_selected =
     (clutter_text_get_selection_bound (CLUTTER_TEXT (ctext)) == 0 &&
      clutter_text_get_cursor_position (CLUTTER_TEXT (ctext)) ==
      strlen (old_text));
 
-  nbtk_entry_set_text (NBTK_ENTRY (priv->entry),
+  mx_entry_set_text (MX_ENTRY (priv->entry),
                        priv->uri ? priv->uri : NULL);
 
   if (was_selected)
@@ -977,7 +977,7 @@ mwb_radical_bar_activate_uri (MwbRadicalBar *self, const gchar *uri)
 }
 
 static void
-mwb_radical_bar_button_clicked_cb (NbtkButton *button, MwbRadicalBar *self)
+mwb_radical_bar_button_clicked_cb (MxButton *button, MwbRadicalBar *self)
 {
   MwbRadicalBarPrivate *priv = self->priv;
   
@@ -987,7 +987,7 @@ mwb_radical_bar_button_clicked_cb (NbtkButton *button, MwbRadicalBar *self)
     {
       if (priv->text_changed)
         {
-          const gchar *text = nbtk_entry_get_text (NBTK_ENTRY (priv->entry));
+          const gchar *text = mx_entry_get_text (MX_ENTRY (priv->entry));
           mwb_radical_bar_activate_uri (self, text);
         }
       else
@@ -996,7 +996,7 @@ mwb_radical_bar_button_clicked_cb (NbtkButton *button, MwbRadicalBar *self)
 }
 
 static void
-mwb_radical_bar_pin_button_clicked_cb (NbtkButton *button, MwbRadicalBar *self)
+mwb_radical_bar_pin_button_clicked_cb (MxButton *button, MwbRadicalBar *self)
 {
   g_signal_emit (self, signals[PIN_BUTTON_CLICKED], 0);
 }
@@ -1030,7 +1030,7 @@ mwb_radical_bar_text_changed_cb (ClutterText *text, MwbRadicalBar *self)
 
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (priv->ac_list)))
     {
-      const gchar *text = nbtk_entry_get_text (NBTK_ENTRY (priv->entry));
+      const gchar *text = mx_entry_get_text (MX_ENTRY (priv->entry));
       mwb_ac_list_set_search_text (MWB_AC_LIST (priv->ac_list), text);
     }
 }
@@ -1089,7 +1089,7 @@ mwb_radical_bar_set_show_title_state (MwbRadicalBar *self,
 }
 
 static void
-mwb_radical_bar_key_focus_in_cb (NbtkEntry *entry,
+mwb_radical_bar_key_focus_in_cb (MxEntry *entry,
                                  MwbRadicalBar *self)
 {
   MwbRadicalBarPrivate *priv = self->priv;
@@ -1100,7 +1100,7 @@ mwb_radical_bar_key_focus_in_cb (NbtkEntry *entry,
 }
 
 static void
-mwb_radical_bar_key_focus_out_cb (NbtkEntry *entry,
+mwb_radical_bar_key_focus_out_cb (MxEntry *entry,
                                   MwbRadicalBar *self)
 {
   MwbRadicalBarPrivate *priv = self->priv;
@@ -1195,17 +1195,17 @@ mwb_radical_bar_init (MwbRadicalBar *self)
 
   MwbRadicalBarPrivate *priv = self->priv = RADICAL_BAR_PRIVATE (self);
 
-  priv->table = nbtk_table_new ();
-  priv->entry = nbtk_entry_new ("");
-  priv->title = nbtk_label_new ("");
+  priv->table = MX_WIDGET(mx_table_new ());
+  priv->entry = MX_WIDGET(mx_entry_new (""));
+  priv->title = MX_WIDGET(mx_label_new (""));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->title),
                           "radical-bar-title");
-  priv->instructions = nbtk_label_new ("");
+  priv->instructions = MX_WIDGET(mx_label_new (""));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->instructions),
                           "radical-bar-instructions");
-  priv->button = nbtk_button_new ();
-  priv->pin_button = nbtk_button_new ();
-  priv->lock_icon = nbtk_button_new ();
+  priv->button = MX_WIDGET(mx_button_new ());
+  priv->pin_button = MX_WIDGET(mx_button_new ());
+  priv->lock_icon = MX_WIDGET(mx_button_new ());
   priv->spinner = clutter_texture_new_from_file (PKGDATADIR "/spinner.png",
                                                  NULL);
   clutter_actor_hide (priv->spinner);
@@ -1214,7 +1214,7 @@ mwb_radical_bar_init (MwbRadicalBar *self)
 
   texture = clutter_texture_new_from_file (PKGDATADIR "/fail_red.png", NULL);
   priv->broken_highlight =
-    nbtk_texture_frame_new (CLUTTER_TEXTURE (texture),
+    mx_texture_frame_new (CLUTTER_TEXTURE (texture),
                             5, 5, 5, 5);
   clutter_actor_set_parent (priv->broken_highlight, CLUTTER_ACTOR (self));
   clutter_actor_hide (priv->broken_highlight);
@@ -1222,13 +1222,13 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   texture = clutter_texture_new_from_file (PKGDATADIR "/encrypted_yellow.png",
                                            NULL);
   priv->encrypted_highlight =
-    nbtk_texture_frame_new (CLUTTER_TEXTURE (texture), 5, 5, 5, 5);
+    mx_texture_frame_new (CLUTTER_TEXTURE (texture), 5, 5, 5, 5);
   clutter_actor_set_parent (priv->encrypted_highlight, CLUTTER_ACTOR (self));
   clutter_actor_hide (priv->encrypted_highlight);
 
   texture = clutter_texture_new_from_file (PKGDATADIR "/progress.png", NULL);
   priv->progress_bar =
-    nbtk_texture_frame_new (CLUTTER_TEXTURE (texture),
+    mx_texture_frame_new (CLUTTER_TEXTURE (texture),
                             5, 5, 5, 5);
   clutter_actor_set_parent (priv->progress_bar, CLUTTER_ACTOR (self));
   clutter_actor_hide (priv->progress_bar);
@@ -1243,7 +1243,7 @@ mwb_radical_bar_init (MwbRadicalBar *self)
                          NULL);
   priv->show_title_state = 0;
 
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry));
+  text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
 
   mwb_radical_bar_update_button (self);
   mwb_radical_bar_update_pin_button (self);
@@ -1283,29 +1283,29 @@ mwb_radical_bar_init (MwbRadicalBar *self)
                     G_CALLBACK (mwb_utils_focus_on_click_cb),
                     GINT_TO_POINTER (FALSE));
 
-  mwb_utils_table_add (NBTK_TABLE (priv->table), priv->spinner, 0, 0,
+  mwb_utils_table_add (MX_TABLE (priv->table), priv->spinner, 0, 0,
                        FALSE, FALSE, FALSE, FALSE);
 
-  mwb_utils_table_add (NBTK_TABLE (priv->table), CLUTTER_ACTOR (priv->spindle),
+  mwb_utils_table_add (MX_TABLE (priv->table), CLUTTER_ACTOR (priv->spindle),
                        0, 1, TRUE, TRUE, TRUE, TRUE);
 
-  mwb_utils_table_add (NBTK_TABLE (priv->table),
+  mwb_utils_table_add (MX_TABLE (priv->table),
                        CLUTTER_ACTOR (priv->lock_icon),
                        0, 2, FALSE, FALSE, FALSE, FALSE);
 
-  mwb_utils_table_add (NBTK_TABLE (priv->table),
+  mwb_utils_table_add (MX_TABLE (priv->table),
                        CLUTTER_ACTOR (priv->pin_button),
                        0, 3, FALSE, FALSE, FALSE, FALSE);
 
-  mwb_utils_table_add (NBTK_TABLE (priv->table),
+  mwb_utils_table_add (MX_TABLE (priv->table),
                        CLUTTER_ACTOR (priv->instructions), 0, 4, FALSE, TRUE,
                        FALSE, TRUE);
 
   separator = clutter_texture_new_from_file (PKGDATADIR "/entry-separator.png",
                                              NULL);
-  mwb_utils_table_add (NBTK_TABLE (priv->table), separator, 0, 5, FALSE, FALSE,
+  mwb_utils_table_add (MX_TABLE (priv->table), separator, 0, 5, FALSE, FALSE,
                        FALSE, FALSE);
-  mwb_utils_table_add (NBTK_TABLE (priv->table), CLUTTER_ACTOR (priv->button),
+  mwb_utils_table_add (MX_TABLE (priv->table), CLUTTER_ACTOR (priv->button),
                        0, 6, FALSE, FALSE, FALSE, FALSE);
 
   priv->ac_list = mwb_ac_list_new ();
@@ -1320,10 +1320,10 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   mwb_radical_bar_update_instructions (self);
 }
 
-NbtkWidget*
+MxWidget*
 mwb_radical_bar_new (void)
 {
-  return NBTK_WIDGET (g_object_new (MWB_TYPE_RADICAL_BAR, NULL));
+  return MX_WIDGET (g_object_new (MWB_TYPE_RADICAL_BAR, NULL));
 }
 
 void
@@ -1332,7 +1332,7 @@ mwb_radical_bar_focus (MwbRadicalBar *radical_bar)
   ClutterActor *text;
   MwbRadicalBarPrivate *priv = radical_bar->priv;
   
-  text = nbtk_entry_get_clutter_text (NBTK_ENTRY (priv->entry));
+  text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
   mwb_utils_focus_on_click_cb (text, NULL, GINT_TO_POINTER (TRUE));
   mwb_radical_bar_select_all (radical_bar);
 }
@@ -1363,7 +1363,7 @@ mwb_radical_bar_set_title (MwbRadicalBar *radical_bar, const gchar *title)
   if (!title)
     title = "";
 
-  nbtk_label_set_text (NBTK_LABEL (priv->title), title);
+  mx_label_set_text (MX_LABEL (priv->title), title);
 
   g_object_notify (G_OBJECT (radical_bar), "title");
 }
@@ -1404,7 +1404,7 @@ mwb_radical_bar_set_icon (MwbRadicalBar *radical_bar, ClutterActor *icon)
     priv->icon = priv->default_icon;
 
   if (priv->icon)
-    mwb_utils_table_add (NBTK_TABLE (priv->table), priv->icon, 0, 0,
+    mwb_utils_table_add (MX_TABLE (priv->table), priv->icon, 0, 0,
                          FALSE, FALSE, FALSE, FALSE);
 
   if (priv->loading && priv->icon)
@@ -1549,7 +1549,7 @@ mwb_radical_bar_get_uri (MwbRadicalBar *radical_bar)
 const gchar *
 mwb_radical_bar_get_title (MwbRadicalBar *radical_bar)
 {
-  return nbtk_label_get_text (NBTK_LABEL (radical_bar->priv->title));
+  return mx_label_get_text (MX_LABEL (radical_bar->priv->title));
 }
 
 ClutterActor *

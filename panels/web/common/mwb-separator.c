@@ -24,11 +24,11 @@
 
 #include "mwb-separator.h"
 
-static void nbtk_stylable_iface_init (NbtkStylableIface *iface);
+static void mx_stylable_iface_init (MxStylableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (MwbSeparator, mwb_separator, NBTK_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE,
-                                                nbtk_stylable_iface_init));
+G_DEFINE_TYPE_WITH_CODE (MwbSeparator, mwb_separator, MX_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_STYLABLE,
+                                                mx_stylable_iface_init));
 
 #define MWB_SEPARATOR_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MWB_TYPE_SEPARATOR, \
@@ -121,7 +121,7 @@ mwb_separator_paint (ClutterActor *actor)
   MwbSeparator *separator = MWB_SEPARATOR (actor);
   MwbSeparatorPrivate *priv = separator->priv;
   ClutterGeometry geom;
-  NbtkPadding padding;
+  MxPadding padding;
   guint8 tmp_alpha;
   gfloat ypos;
 
@@ -139,7 +139,7 @@ mwb_separator_paint (ClutterActor *actor)
 
   clutter_actor_get_allocation_geometry (actor, &geom);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   /* Center the line in the allocated height */
   ypos = ((geom.height - padding.top - padding.bottom) / 2.0f
@@ -196,9 +196,9 @@ mwb_separator_get_preferred_height (ClutterActor *self,
 
   if (natural_height_p)
     {
-      NbtkPadding padding;
+      MxPadding padding;
 
-      nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+      mx_widget_get_padding (MX_WIDGET (self), &padding);
 
       *natural_height_p = priv->line_width * 3.0f + padding.top +
                           padding.bottom;
@@ -206,14 +206,14 @@ mwb_separator_get_preferred_height (ClutterActor *self,
 }
 
 static void
-mwb_separator_style_changed_cb (NbtkWidget *widget)
+mwb_separator_style_changed_cb (MxWidget *widget)
 {
   MwbSeparator *self = MWB_SEPARATOR (widget);
   ClutterColor *color = NULL;
   double line_width;
   float /* line_width, */ on_width, off_width;
 
-  nbtk_stylable_get (NBTK_STYLABLE (self),
+  mx_stylable_get (MX_STYLABLE (self),
                      "color", &color,
                      "line-width", &line_width,
                      "off-width", &off_width,
@@ -232,7 +232,7 @@ mwb_separator_style_changed_cb (NbtkWidget *widget)
 }
 
 static void
-nbtk_stylable_iface_init (NbtkStylableIface *iface)
+mx_stylable_iface_init (MxStylableIface *iface)
 {
   static gboolean is_initialized = FALSE;
 
@@ -250,7 +250,7 @@ nbtk_stylable_iface_init (NbtkStylableIface *iface)
                                   G_PARAM_STATIC_NAME |
                                   G_PARAM_STATIC_NICK |
                                   G_PARAM_STATIC_BLURB);
-      nbtk_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
+      mx_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
 
       pspec = g_param_spec_float ("off-width",
                                   "Off width",
@@ -261,7 +261,7 @@ nbtk_stylable_iface_init (NbtkStylableIface *iface)
                                   G_PARAM_STATIC_NAME |
                                   G_PARAM_STATIC_NICK |
                                   G_PARAM_STATIC_BLURB);
-      nbtk_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
+      mx_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
 
       pspec = g_param_spec_float ("on-width",
                                   "On width",
@@ -272,7 +272,7 @@ nbtk_stylable_iface_init (NbtkStylableIface *iface)
                                   G_PARAM_STATIC_NAME |
                                   G_PARAM_STATIC_NICK |
                                   G_PARAM_STATIC_BLURB);
-      nbtk_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
+      mx_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
     }
 }
 
@@ -345,10 +345,10 @@ mwb_separator_init (MwbSeparator *self)
                     G_CALLBACK (mwb_separator_style_changed_cb), NULL);
 }
 
-NbtkWidget *
+MxWidget *
 mwb_separator_new (void)
 {
-  NbtkWidget *self = g_object_new (MWB_TYPE_SEPARATOR, NULL);
+  MxWidget *self = g_object_new (MWB_TYPE_SEPARATOR, NULL);
 
   return self;
 }

@@ -1,7 +1,7 @@
 AM_CPPFLAGS = \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
 	-DMWB_VERSION_STRING=\"$(MWB_VERSION)\" \
-	$(NBTK_CFLAGS) \
+	$(MX_CFLAGS) \
 	$(GTK_CFLAGS) \
 	-Wall \
 	-I$(top_srcdir)/common

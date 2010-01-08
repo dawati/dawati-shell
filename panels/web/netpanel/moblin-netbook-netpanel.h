@@ -22,7 +22,7 @@
 #define _MOBLIN_NETBOOK_NETPANEL_H
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <moblin-panel/mpl-panel-clutter.h>
 
 G_BEGIN_DECLS
@@ -52,18 +52,18 @@ G_BEGIN_DECLS
 typedef struct _MoblinNetbookNetpanelPrivate MoblinNetbookNetpanelPrivate;
 
 typedef struct {
-  NbtkWidget parent;
+  MxWidget parent;
   
   MoblinNetbookNetpanelPrivate *priv;
 } MoblinNetbookNetpanel;
 
 typedef struct {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 } MoblinNetbookNetpanelClass;
 
 GType moblin_netbook_netpanel_get_type (void);
 
-NbtkWidget* moblin_netbook_netpanel_new (void);
+MxWidget* moblin_netbook_netpanel_new (void);
 
 void moblin_netbook_netpanel_focus (MoblinNetbookNetpanel *netpanel);
 void moblin_netbook_netpanel_clear (MoblinNetbookNetpanel *netpanel);

@@ -51,7 +51,7 @@ struct _MnbNetpanelBarPrivate
 {
   ClutterActorBox  box;
 
-  NbtkWidget      *ac_list;
+  MxWidget      *ac_list;
   guint            ac_list_activate_handler;
   ClutterTimeline *ac_list_timeline;
   gdouble          ac_list_anim_progress;
@@ -380,7 +380,6 @@ mnb_netpanel_bar_class_init (MnbNetpanelBarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MnbNetpanelBarPrivate));
 
@@ -409,12 +408,12 @@ mnb_netpanel_bar_class_init (MnbNetpanelBarClass *klass)
 static void
 mnb_netpanel_bar_select_all (MnbNetpanelBar *self)
 {
-  NbtkWidget *entry;
+  MxWidget *entry;
   ClutterActor *actor;
   gint length;
 
-  entry = mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
-  actor = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
+  entry = mpl_entry_get_mx_entry (MPL_ENTRY (self));
+  actor = mx_entry_get_clutter_text (MX_ENTRY (entry));
   length = strlen (clutter_text_get_text (CLUTTER_TEXT (actor)));
   clutter_text_set_selection (CLUTTER_TEXT (actor), 0, length);
 }
@@ -504,11 +503,11 @@ static void
 mnb_netpanel_bar_init (MnbNetpanelBar *self)
 {
   MnbNetpanelBarPrivate *priv = self->priv = NETPANEL_BAR_PRIVATE (self);
-  NbtkWidget *entry;
+  MxWidget *entry;
   ClutterActor *actor;
 
-  entry = mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
-  actor = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
+  entry = mpl_entry_get_mx_entry (MPL_ENTRY (self));
+  actor = mx_entry_get_clutter_text (MX_ENTRY (entry));
 
   g_signal_connect (actor, "text-changed",
                     G_CALLBACK (mnb_netpanel_bar_text_changed_cb), self);
@@ -533,10 +532,10 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
   clutter_actor_hide (CLUTTER_ACTOR (priv->ac_list));
 }
 
-NbtkWidget*
+MxWidget*
 mnb_netpanel_bar_new (const gchar *label)
 {
-  return NBTK_WIDGET (g_object_new (MNB_TYPE_NETPANEL_BAR,
+  return MX_WIDGET (g_object_new (MNB_TYPE_NETPANEL_BAR,
                                     "label", label,
                                     NULL));
 }
@@ -544,11 +543,11 @@ mnb_netpanel_bar_new (const gchar *label)
 void
 mnb_netpanel_bar_focus (MnbNetpanelBar *self)
 {
-  NbtkWidget *entry;
+  MxWidget *entry;
   ClutterActor *actor;
 
-  entry = mpl_entry_get_nbtk_entry (MPL_ENTRY (self));
-  actor = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
+  entry = mpl_entry_get_mx_entry (MPL_ENTRY (self));
+  actor = mx_entry_get_clutter_text (MX_ENTRY (entry));
   mwb_utils_focus_on_click_cb (actor, NULL, GINT_TO_POINTER (TRUE));
   mnb_netpanel_bar_select_all (self);
 }

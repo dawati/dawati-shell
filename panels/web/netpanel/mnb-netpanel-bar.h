@@ -67,7 +67,7 @@ typedef struct {
 
 GType mnb_netpanel_bar_get_type (void);
 
-NbtkWidget *mnb_netpanel_bar_new (const gchar *label);
+MxWidget *mnb_netpanel_bar_new (const gchar *label);
 
 void mnb_netpanel_bar_focus (MnbNetpanelBar *netpanel_bar);
 gboolean mnb_netpanel_bar_check_for_search (MnbNetpanelBar *netpanel_bar,

@@ -21,7 +21,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -50,20 +50,20 @@ G_BEGIN_DECLS
 typedef struct _MwbAcListPrivate MwbAcListPrivate;
 
 typedef struct {
-  NbtkWidget parent;
+  MxWidget parent;
 
   MwbAcListPrivate *priv;
 } MwbAcList;
 
 typedef struct {
-  NbtkWidgetClass parent_class;
+  MxWidgetClass parent_class;
 
   void (* activate) (MwbAcList *ac_list);
 } MwbAcListClass;
 
 GType mwb_ac_list_get_type (void);
 
-NbtkWidget *mwb_ac_list_new (void);
+MxWidget *mwb_ac_list_new (void);
 
 void mwb_ac_list_db_stmt_prepare (MwbAcList *self, void *dbcon);
 

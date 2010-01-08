@@ -21,7 +21,7 @@
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include "moblin-netbook-netpanel.h"
@@ -84,9 +84,9 @@ main (int    argc,
 
   MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
 
-  nbtk_texture_cache_load_cache (nbtk_texture_cache_get_default (),
-                                 NBTK_CACHE);
-  nbtk_style_load_from_file (nbtk_style_get_default (),
+  mx_texture_cache_load_cache (mx_texture_cache_get_default (),
+                                 MX_CACHE);
+  mx_style_load_from_file (mx_style_get_default (),
                              THEMEDIR "/panel.css",
                              NULL);
 

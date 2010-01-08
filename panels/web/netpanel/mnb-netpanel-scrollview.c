@@ -28,7 +28,7 @@
 #define COL_SPACING 6
 #define SCROLLBAR_HEIGHT 22
 
-G_DEFINE_TYPE (MnbNetpanelScrollview, mnb_netpanel_scrollview, NBTK_TYPE_WIDGET)
+G_DEFINE_TYPE (MnbNetpanelScrollview, mnb_netpanel_scrollview, MX_TYPE_WIDGET)
 
 #define SCROLLVIEW_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_NETPANEL_SCROLLVIEW, MnbNetpanelScrollviewPrivate))
@@ -45,8 +45,8 @@ struct _MnbNetpanelScrollviewPrivate
 {
   GList          *items;
 
-  NbtkWidget     *scroll_bar;
-  NbtkAdjustment *scroll_adjustment;
+  MxWidget     *scroll_bar;
+  MxAdjustment *scroll_adjustment;
   gint            scroll_offset;
   gint            scroll_page;
   gint            scroll_item;
@@ -89,7 +89,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
                                   ClutterAllocationFlags  flags)
 {
   ClutterActorBox child_box;
-  NbtkPadding padding;
+  MxPadding padding;
   gfloat width, height;
   gfloat item_width = 0.0, item_height = 0.0, title_height = 0.0;
   guint n_items;
@@ -103,7 +103,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
   if (!priv->items)
     return;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
   padding.left   = MWB_PIXBOUND (padding.left);
   padding.top    = MWB_PIXBOUND (padding.top);
   padding.right  = MWB_PIXBOUND (padding.right);
@@ -153,7 +153,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
                     "upper", (gdouble)priv->scroll_total,
                     NULL);
 
-      nbtk_adjustment_set_value (priv->scroll_adjustment,
+      mx_adjustment_set_value (priv->scroll_adjustment,
                                  (gdouble)priv->scroll_offset);
 
       /* Allocate for the scrollbar */
@@ -353,7 +353,8 @@ mnb_netpanel_scrollview_captured_event (ClutterActor *actor,
                                         ClutterEvent *event)
 {
   if (event->type == CLUTTER_BUTTON_PRESS)
-    moblin_netbook_netpanel_button_press (clutter_actor_get_parent (actor));
+    moblin_netbook_netpanel_button_press (MOBLIN_NETBOOK_NETPANEL 
+                                          (clutter_actor_get_parent (actor)));
 
   return FALSE;
 }
@@ -426,19 +427,19 @@ mnb_netpanel_scrollview_scroll_event_cb (ClutterActor       *actor,
   if (offset != priv->scroll_offset)
     {
       priv->scroll_offset = offset;
-      nbtk_adjustment_set_value (priv->scroll_adjustment, (gdouble)offset);
+      mx_adjustment_set_value (priv->scroll_adjustment, (gdouble)offset);
     }
 
   return TRUE;
 }
 
 static void
-mnb_netpanel_scrollview_scroll_value_cb (NbtkAdjustment        *adjustment,
+mnb_netpanel_scrollview_scroll_value_cb (MxAdjustment        *adjustment,
                                          GParamSpec            *pspec,
                                          MnbNetpanelScrollview *self)
 {
   MnbNetpanelScrollviewPrivate *priv = self->priv;
-  gint value = (gint)nbtk_adjustment_get_value (adjustment);
+  gint value = (gint)mx_adjustment_get_value (adjustment);
 
   if (value != priv->scroll_offset)
     {
@@ -454,8 +455,8 @@ mnb_netpanel_scrollview_init (MnbNetpanelScrollview *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
-  priv->scroll_adjustment = nbtk_adjustment_new (0, 0, 0, 100, 200, 200);
-  priv->scroll_bar = nbtk_scroll_bar_new (priv->scroll_adjustment);
+  priv->scroll_adjustment = MX_ADJUSTMENT(mx_adjustment_new (0, 0, 0, 100, 200, 200));
+  priv->scroll_bar = MX_WIDGET(mx_scroll_bar_new (priv->scroll_adjustment));
   clutter_actor_set_height (CLUTTER_ACTOR (priv->scroll_bar), SCROLLBAR_HEIGHT);
   g_object_unref (priv->scroll_adjustment);
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->scroll_bar),
@@ -468,7 +469,7 @@ mnb_netpanel_scrollview_init (MnbNetpanelScrollview *self)
                     G_CALLBACK (mnb_netpanel_scrollview_scroll_value_cb), self);
 }
 
-NbtkWidget*
+MxWidget*
 mnb_netpanel_scrollview_new (void)
 {
   return g_object_new (MNB_TYPE_NETPANEL_SCROLLVIEW, NULL);
