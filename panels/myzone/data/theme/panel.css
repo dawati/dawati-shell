@@ -27,6 +27,7 @@ PengeEventTile, PengeTaskTile, PengeAppTile
 {
   background-color: #fff0;
   padding: 9 10 11 10;
+  border-image: none;
 }
 
 PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover,
@@ -43,7 +44,8 @@ PengeRecentFileTile, PengePeopleTile
 }
 
 
-PengeRecentFileTile:hover, PengePeopleTile:hover
+PengeRecentFileTile:hover, PengePeopleTile:hover,
+PengeRecentFileTile:active, PengePeopleTile:active
 {
   border-image: url('tile-partial-glow.png') 7 8 9 8;
   padding: 6 7 8 7;
