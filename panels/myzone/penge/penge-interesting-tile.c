@@ -235,8 +235,8 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
   priv->primary_text = mx_label_new ("Primary text");
-  mx_widget_set_style_class_name (MX_WIDGET (priv->primary_text), 
-                                  "PengeInterestingTilePrimaryLabel");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->primary_text), 
+                               "PengeInterestingTilePrimaryLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->primary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
@@ -244,8 +244,8 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                               PANGO_ELLIPSIZE_END);
 
   priv->secondary_text = mx_label_new ("Secondary text");
-  mx_widget_set_style_class_name (MX_WIDGET (priv->secondary_text), 
-                                  "PengeInterestingTileSecondaryLabel");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->secondary_text), 
+                               "PengeInterestingTileSecondaryLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->secondary_text));
   clutter_text_set_line_alignment (CLUTTER_TEXT (tmp_text),
                                    PANGO_ALIGN_LEFT);
@@ -258,8 +258,8 @@ penge_interesting_tile_init (PengeInterestingTile *self)
 
   /* This gets added to ourself table after our body because of ordering */
   priv->details_overlay = mx_table_new ();
-  mx_widget_set_style_class_name (MX_WIDGET (priv->details_overlay),
-                                  "PengeInterestingTileDetails");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->details_overlay),
+                               "PengeInterestingTileDetails");
 
   mx_table_add_actor (MX_TABLE (priv->inner_table),
                       priv->details_overlay,
@@ -321,11 +321,11 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                NULL);
 
   priv->remove_button = mx_button_new ();
-  mx_widget_set_style_class_name (MX_WIDGET (priv->remove_button),
-                                  "PengeInterestingTileRemoveButton");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->remove_button),
+                               "PengeInterestingTileRemoveButton");
   icon = (ClutterActor *)mx_icon_new ();
-  mx_widget_set_style_class_name (MX_WIDGET (icon),
-                                  "PengeInterestingTileIcon");
+  mx_stylable_set_style_class (MX_STYLABLE (icon),
+                               "PengeInterestingTileIcon");
   mx_bin_set_child (MX_BIN (priv->remove_button),
                       (ClutterActor *)icon);
   mx_table_add_actor_with_properties (MX_TABLE (priv->details_overlay),

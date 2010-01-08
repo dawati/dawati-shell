@@ -438,8 +438,8 @@ penge_tasks_pane_update (PengeTasksPane *pane)
                           priv->no_tasks_bin,
                           0,
                           0);
-      mx_widget_set_style_class_name (MX_WIDGET (label),
-                                      "PengeNoMoreTasksLabel");
+      mx_stylable_set_style_class (MX_STYLABLE (label),
+                                   "PengeNoMoreTasksLabel");
 
       clutter_actor_set_height ((ClutterActor *)priv->no_tasks_bin, 46);
     }

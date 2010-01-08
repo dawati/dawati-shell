@@ -210,16 +210,16 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     body = mx_table_new ();
 
     mx_table_set_col_spacing (MX_TABLE (body), 6);
-    mx_widget_set_style_class_name (MX_WIDGET (body),
-                                    "PengePeopleTileContentBackground");
+    mx_stylable_set_style_class (MX_STYLABLE (body),
+                                 "PengePeopleTileContentBackground");
 
     author_icon = mojito_item_get_value (item, "authoricon");
     avatar = clutter_texture_new_from_file (author_icon, NULL);
     avatar_bin = mx_frame_new ();
     mx_bin_set_child (MX_BIN (avatar_bin), avatar);
     mx_bin_set_fill (MX_BIN (avatar_bin), TRUE, TRUE);
-    mx_widget_set_style_class_name (MX_WIDGET (avatar_bin),
-                                    "PengePeopleTileAvatarBackground");
+    mx_stylable_set_style_class (MX_STYLABLE (avatar_bin),
+                                 "PengePeopleTileAvatarBackground");
     mx_table_add_actor_with_properties (MX_TABLE (body),
                                         avatar_bin,
                                         0, 0,
@@ -233,7 +233,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     clutter_actor_set_size (avatar, 40, 40);
 
     label = mx_label_new (content);
-    mx_widget_set_style_class_name (MX_WIDGET (label), "PengePeopleTileContentLabel");
+    mx_stylable_set_style_class (MX_STYLABLE (label), "PengePeopleTileContentLabel");
     mx_table_add_actor_with_properties (MX_TABLE (body),
                                         label,
                                         0, 1,

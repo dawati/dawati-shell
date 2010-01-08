@@ -61,7 +61,8 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
   ClutterActor *label;
   ClutterActor *tmp_text;
 
-  mx_widget_set_style_class_name (MX_WIDGET ((ClutterActor *)tile), "PengeWelcomeTile");
+  mx_stylable_set_style_class (MX_STYLABLE (tile),
+                               "PengeWelcomeTile");
 
   label = mx_label_new (_("Welcome to Moblin"));
   clutter_actor_set_name ((ClutterActor *)label,

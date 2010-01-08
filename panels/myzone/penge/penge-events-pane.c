@@ -333,8 +333,8 @@ penge_events_pane_update (PengeEventsPane *pane)
                           priv->no_events_bin,
                           0,
                           0);
-      mx_widget_set_style_class_name (MX_WIDGET (label),
-                                      "PengeNoMoreEventsLabel");
+      mx_stylable_set_style_class (MX_STYLABLE (label),
+                                   "PengeNoMoreEventsLabel");
 
       clutter_actor_set_height (priv->no_events_bin, 46);
     }

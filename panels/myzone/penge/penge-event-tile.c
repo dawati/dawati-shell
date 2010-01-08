@@ -265,27 +265,27 @@ penge_event_tile_init (PengeEventTile *self)
   priv->time_bin = mx_frame_new ();
   clutter_actor_set_width (priv->time_bin,
                            60);
-  mx_widget_set_style_class_name (MX_WIDGET (priv->time_bin),
-                                  "PengeEventTimeBin");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->time_bin),
+                               "PengeEventTimeBin");
 
   priv->time_label = mx_label_new ("XX:XX");
-  mx_widget_set_style_class_name (MX_WIDGET (priv->time_label),
-                                  "PengeEventTimeLabel");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->time_label),
+                               "PengeEventTimeLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->time_label));
 
   mx_bin_set_child (MX_BIN (priv->time_bin),
                     priv->time_label);
 
   priv->summary_label = mx_label_new ("Summary text");
-  mx_widget_set_style_class_name (MX_WIDGET (priv->summary_label),
-                                  "PengeEventSummary");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->summary_label),
+                               "PengeEventSummary");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->summary_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   priv->details_label = mx_label_new ("Details text");
-  mx_widget_set_style_class_name (MX_WIDGET (priv->details_label),
-                                  "PengeEventDetails");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->details_label),
+                               "PengeEventDetails");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->details_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
@@ -383,15 +383,15 @@ penge_event_tile_update (PengeEventTile *tile)
 
     if (jana_utils_time_compare (t, priv->time, FALSE) < 0)
     {
-      mx_widget_set_style_pseudo_class (MX_WIDGET (priv->time_label),
-                                        "past");
-      mx_widget_set_style_pseudo_class (MX_WIDGET (priv->time_bin),
-                                        "past");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_label),
+                                          "past");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_bin),
+                                          "past");
     } else {
-      mx_widget_set_style_pseudo_class (MX_WIDGET (priv->time_label),
-                                        NULL);
-      mx_widget_set_style_pseudo_class (MX_WIDGET (priv->time_bin),
-                                        NULL);
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_label),
+                                          NULL);
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_bin),
+                                          NULL);
     }
 
     mx_label_set_text (MX_LABEL (priv->time_label), time_str);

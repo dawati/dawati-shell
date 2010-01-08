@@ -219,20 +219,20 @@ penge_task_tile_init (PengeTaskTile *self)
 
   priv->check_button = mx_button_new ();
   mx_button_set_toggle_mode (MX_BUTTON (priv->check_button), TRUE);
-  mx_widget_set_style_class_name (MX_WIDGET (priv->check_button),
-                                  "PengeTaskToggleButton");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->check_button),
+                               "PengeTaskToggleButton");
   clutter_actor_set_size ((ClutterActor *)priv->check_button, 21, 21);
 
   priv->summary_label = mx_label_new ("Summary text");
-  mx_widget_set_style_class_name (MX_WIDGET (priv->summary_label),
-                                  "PengeTaskSummaryLabel");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->summary_label),
+                               "PengeTaskSummaryLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->summary_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
   priv->details_label = mx_label_new ("Details text");
-  mx_widget_set_style_class_name (MX_WIDGET (priv->details_label),
-                                  "PengeTaskDetails");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->details_label),
+                               "PengeTaskDetails");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->details_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
