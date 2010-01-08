@@ -299,14 +299,6 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                FALSE,
                                NULL);
 
-  /*
-   * Explicitly set the width to 100 to avoid overflowing text. Slightly
-   * hackyish but works around a strange bug in MxTable where if the text
-   * is too long it will cause negative positioning of the icon.
-   */
-  clutter_actor_set_width ((ClutterActor *)priv->primary_text, 100);
-  clutter_actor_set_width ((ClutterActor *)priv->secondary_text, 100);
-
   mx_table_add_actor (MX_TABLE (priv->details_overlay),
                       priv->icon,
                       0,
