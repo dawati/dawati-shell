@@ -410,8 +410,8 @@ mpl_entry_init (MplEntry *self)
 
   priv->entry = CLUTTER_ACTOR (mx_entry_new (""));
   clutter_actor_set_parent (priv->entry, CLUTTER_ACTOR (self));
-  mx_widget_set_style_class_name (MX_WIDGET (priv->entry),
-                                    "MplEntryEntry");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->entry),
+                               "MplEntryEntry");
   text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
   clutter_text_set_single_line_mode (CLUTTER_TEXT (text), TRUE);
   g_signal_connect (text, "text-changed",
@@ -424,8 +424,8 @@ mpl_entry_init (MplEntry *self)
   priv->clear_button = CLUTTER_ACTOR (mx_button_new ());
   clutter_actor_hide (priv->clear_button);
   mx_table_add_actor (MX_TABLE (priv->table), priv->clear_button, 0, 0);
-  mx_widget_set_style_class_name (MX_WIDGET (priv->clear_button),
-                                    "MplEntryClearButton");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->clear_button),
+                               "MplEntryClearButton");
   set_clear_button_size (priv->clear_button);
   g_signal_connect (priv->clear_button, "clicked",
                     G_CALLBACK (clear_button_clicked_cb),
@@ -433,8 +433,8 @@ mpl_entry_init (MplEntry *self)
 
   priv->search_button = CLUTTER_ACTOR (mx_button_new ());
   mx_table_add_actor (MX_TABLE (priv->table), priv->search_button, 0, 1);
-  mx_widget_set_style_class_name (MX_WIDGET (priv->search_button),
-                                    "MplEntryButton");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->search_button),
+                               "MplEntryButton");
   g_signal_connect (priv->search_button, "clicked",
                     G_CALLBACK (search_button_clicked_cb),
                     self);

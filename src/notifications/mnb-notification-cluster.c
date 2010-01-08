@@ -661,8 +661,8 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
   /* 'Overflow' control */
   priv->control = mx_table_new ();
 
-  mx_widget_set_style_class_name (MX_WIDGET (priv->control),
-                                    "notification-control");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->control),
+                               "notification-control");
 
   widget = mx_button_new ();
   mx_button_set_label (MX_BUTTON (widget), _("Dismiss All"));

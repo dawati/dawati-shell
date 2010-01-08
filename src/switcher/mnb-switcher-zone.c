@@ -212,7 +212,7 @@ mnb_switcher_zone_constructed (GObject *self)
   clutter_actor_set_name (table, zone_name);
 
   zone_class = klass->zone_class (zone);
-  mx_widget_set_style_class_name (MX_WIDGET (table), zone_class);
+  mx_stylable_set_style_class (MX_STYLABLE (table), zone_class);
 
   /*
    * Now construct the label area
@@ -240,12 +240,12 @@ mnb_switcher_zone_constructed (GObject *self)
       priv->label = label = CLUTTER_ACTOR (mx_frame_new ());
       priv->text  = text  = (ClutterActor*)mx_label_new (s);
 
-      mx_widget_set_style_class_name (MX_WIDGET (text), text_class);
+      mx_stylable_set_style_class (MX_STYLABLE (text), text_class);
       clutter_actor_set_name (CLUTTER_ACTOR (text), text_name);
 
       mx_bin_set_child (MX_BIN (label), CLUTTER_ACTOR (text));
 
-      mx_widget_set_style_class_name (MX_WIDGET (label), label_class);
+      mx_stylable_set_style_class (MX_STYLABLE (label), label_class);
       clutter_actor_set_name (CLUTTER_ACTOR (label), label_name);
 
       mx_table_add_actor (MX_TABLE (self), label, 0, 0);

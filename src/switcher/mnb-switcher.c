@@ -306,16 +306,16 @@ mnb_switcher_show (ClutterActor *self)
           bin = CLUTTER_ACTOR (mx_frame_new ());
           label = mx_label_new (_("No Zones yet"));
 
-          mx_widget_set_style_class_name (MX_WIDGET (label),
-                                          "workspace-title-label");
+          mx_stylable_set_style_class (MX_STYLABLE (label),
+                                       "workspace-title-label");
 
           mx_bin_set_child (MX_BIN (bin), CLUTTER_ACTOR (label));
 
           clutter_actor_set_name (CLUTTER_ACTOR (bin),
                                   "workspace-title-active");
 
-          mx_widget_set_style_class_name (MX_WIDGET (bin),
-                                            "workspace-title");
+          mx_stylable_set_style_class (MX_STYLABLE (bin),
+                                       "workspace-title");
 
           mx_table_add_actor (MX_TABLE (table), bin, 0, 0);
           clutter_container_child_set (CLUTTER_CONTAINER (table),

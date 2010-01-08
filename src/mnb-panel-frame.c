@@ -121,7 +121,7 @@ mnb_panel_frame_constructed (GObject *object)
 
   /* footer with "up" button */
   footer = mx_button_new ();
-  mx_widget_set_style_class_name (MX_WIDGET (footer), "drop-down-footer");
+  mx_stylable_set_style_class (MX_STYLABLE (footer), "drop-down-footer");
 
   clutter_actor_set_parent ((ClutterActor*)footer, CLUTTER_ACTOR (object));
 

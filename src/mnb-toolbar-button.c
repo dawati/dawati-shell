@@ -114,7 +114,7 @@ mnb_toolbar_button_transition (MxButton *button, ClutterActor *old_bg)
   ClutterActor *bg_image;
   ClutterActor *icon;
 
-  pseudo_class = mx_widget_get_style_pseudo_class (MX_WIDGET (button));
+  pseudo_class = mx_stylable_get_style_pseudo_class (MX_STYLABLE (button));
 
   if (priv->old_bg)
     {
@@ -293,7 +293,7 @@ mnb_toolbar_button_hide (ClutterActor *actor)
   /*
    * Clear any left over hover state (MB#5518)
    */
-  mx_widget_set_style_pseudo_class ((MxWidget*) actor, NULL);
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor), NULL);
 }
 
 static void

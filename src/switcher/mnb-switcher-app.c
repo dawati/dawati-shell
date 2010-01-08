@@ -641,7 +641,7 @@ mnb_switcher_app_close_button_enter_cb (MxWidget           *button,
                                         ClutterCrossingEvent *event,
                                         gpointer              data)
 {
-  mx_widget_set_style_pseudo_class (button, "hover");
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (button), "hover");
 
   return FALSE;
 }
@@ -651,7 +651,7 @@ mnb_switcher_app_close_button_leave_cb (MxWidget           *button,
                                         ClutterCrossingEvent *event,
                                         gpointer              data)
 {
-  mx_widget_set_style_pseudo_class (button, NULL);
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (button), NULL);
 
   return FALSE;
 }
@@ -689,7 +689,7 @@ mnb_switcher_app_constructed (GObject *self)
       priv->icon = icon;
     }
 
-  mx_widget_set_style_class_name (MX_WIDGET (self),"switcher-application");
+  mx_stylable_set_style_class (MX_STYLABLE (self),"switcher-application");
 
   /*
    * Clone the glx texture in the MutterWindow, and insert it into ourselves.
@@ -729,8 +729,8 @@ mnb_switcher_app_constructed (GObject *self)
     clutter_actor_set_reactive (button, TRUE);
     clutter_actor_show (button);
 
-    mx_widget_set_style_class_name (MX_WIDGET (button),
-                                      "switcher-application-close-button");
+    mx_stylable_set_style_class (MX_STYLABLE (button),
+                                 "switcher-application-close-button");
 
     g_signal_connect (button, "button-press-event",
                       G_CALLBACK (mnb_switcher_app_close_button_press_cb),

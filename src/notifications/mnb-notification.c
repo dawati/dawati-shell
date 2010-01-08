@@ -201,7 +201,7 @@ mnb_notification_init (MnbNotification *self)
 
   priv = self->priv = GET_PRIVATE (self);
 
-  mx_widget_set_style_class_name (MX_WIDGET (self), "Notification");
+  mx_stylable_set_style_class (MX_STYLABLE (self), "Notification");
   mx_table_set_col_spacing (MX_TABLE (self), 4);
   mx_table_set_row_spacing (MX_TABLE (self), 8);
 
@@ -275,9 +275,9 @@ mnb_notification_init (MnbNotification *self)
   g_signal_connect (priv->dismiss_button, "clicked",
                     G_CALLBACK (on_dismiss_click), self);
 
-  mx_widget_set_style_class_name (MX_WIDGET (priv->summary),
+  mx_stylable_set_style_class (MX_STYLABLE (priv->summary),
                                     "NotificationSummary");
-  mx_widget_set_style_class_name (MX_WIDGET (priv->body),
+  mx_stylable_set_style_class (MX_STYLABLE (priv->body),
                                     "NotificationBody");
 
 }
@@ -430,13 +430,13 @@ mnb_notification_update (MnbNotification *notification,
 
   if (details->is_urgent)
     {
-      mx_widget_set_style_class_name (MX_WIDGET (priv->summary),
-                                        "NotificationSummaryUrgent");
+      mx_stylable_set_style_class (MX_STYLABLE (priv->summary),
+                                   "NotificationSummaryUrgent");
     }
   else
     {
-      mx_widget_set_style_class_name (MX_WIDGET (priv->summary),
-                                        "NotificationSummary");
+      mx_stylable_set_style_class (MX_STYLABLE (priv->summary),
+                                   "NotificationSummary");
     }
 }
 
