@@ -4,23 +4,24 @@ MplEntry {
   padding: 7 10 7 10;
 }
 
-MplEntry > *.MplEntryEntry {
+MxEntry.MplEntryEntry, MxEntry.MplEntryEntry:focus {
   border-image: none;
   font-size: 15;
 }
 
-MplEntry *.MplEntryButton {
+MxButton.MplEntryButton, MxButton.MplEntryButton:hover, MxButton.MplEntryButton:active {
   border-image: url('mpl-entry-separator.png') 0 0 0 3;
   color: #be1011;
   font-size: 13;
   padding: 0 2 0 10;
 }
 
-MplEntry *.MplEntryClearButton {
+MxButton.MplEntryClearButton {
   background-image: url('mpl-entry-clear.png');
   border-image: none;
 }
 
-MplEntry *.MplEntryClearButton:hover {
+MxButton.MplEntryClearButton:hover {
   background-image: url('mpl-entry-clear-hover.png');
+  border-image: none;
 }
