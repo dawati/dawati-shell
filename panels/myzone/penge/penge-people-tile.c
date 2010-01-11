@@ -230,7 +230,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                         "x-align", 0.5,
                                         "y-align", 0.5,
                                         NULL);
-    clutter_actor_set_size (avatar, 40, 40);
+    clutter_actor_set_size (avatar, 48, 48);
 
     label = mx_label_new (content);
     mx_stylable_set_style_class (MX_STYLABLE (label), "PengePeopleTileContentLabel");
