@@ -226,7 +226,7 @@ mnb_launcher_button_button_release_event (ClutterActor       *actor,
       g_signal_emit (self, _signals[ACTIVATED], 0);
 
       mnb_launcher_button_reset_tooltip (self);
-      mx_widget_set_style_pseudo_class (MX_WIDGET (self), NULL);
+      mx_stylable_set_style_pseudo_class (MX_WIDGET (self), NULL);
 
       return TRUE;
     }
@@ -242,7 +242,7 @@ mnb_launcher_button_enter_event (ClutterActor         *actor,
 
   g_signal_emit (self, _signals[HOVERED], 0);
 
-  mx_widget_set_style_pseudo_class (MX_WIDGET (self), "hover");
+  mx_stylable_set_style_pseudo_class (MX_WIDGET (self), "hover");
 
   return FALSE;
 }
@@ -267,7 +267,7 @@ mnb_launcher_button_leave_event (ClutterActor         *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
-  mx_widget_set_style_pseudo_class (MX_WIDGET (self), NULL);
+  mx_stylable_set_style_pseudo_class (MX_WIDGET (self), NULL);
 
   if (self->priv->is_pressed)
     {
@@ -383,7 +383,7 @@ _mapped_notify_cb (MnbLauncherButton  *self,
 {
   if (!CLUTTER_ACTOR_IS_MAPPED (self))
   {
-    mx_widget_set_style_pseudo_class (MX_WIDGET (self), NULL);
+    mx_stylable_set_style_pseudo_class (MX_WIDGET (self), NULL);
 
     mnb_launcher_button_reset_tooltip (self);
   }
@@ -394,7 +394,7 @@ _pseudo_class_notify_cb (MnbLauncherButton  *self,
                          GParamSpec         *pspec,
                          gpointer            user_data)
 {
-  if (NULL == mx_widget_get_style_pseudo_class (MX_WIDGET (self)))
+  if (NULL == mx_stylable_get_style_pseudo_class (MX_WIDGET (self)))
   {
     mnb_launcher_button_reset_tooltip (self);
   }

@@ -309,14 +309,14 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
            launchers_iter;
            launchers_iter = launchers_iter->next)
         {
-          mx_widget_set_style_pseudo_class (MX_WIDGET (launchers_iter->data),
+          mx_stylable_set_style_pseudo_class (MX_WIDGET (launchers_iter->data),
                                             NULL);
         }
     }
   else
     {
       clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                                 (ClutterCallback) mx_widget_set_style_pseudo_class,
+                                 (ClutterCallback) mx_stylable_set_style_pseudo_class,
                                  NULL);
 
       expander = mnb_launcher_grid_find_widget_by_pseudo_class (
@@ -326,7 +326,7 @@ launcher_button_hovered_cb (MnbLauncherButton  *launcher,
         {
           ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (expander));
           clutter_container_foreach (CLUTTER_CONTAINER (inner_grid),
-                                     (ClutterCallback) mx_widget_set_style_pseudo_class,
+                                     (ClutterCallback) mx_stylable_set_style_pseudo_class,
                                      NULL);
         }
     }
@@ -583,7 +583,7 @@ mnb_launcher_hover_expander (MnbLauncher     *self,
 
   if (expander)
     {
-      mx_widget_set_style_pseudo_class (MX_WIDGET (expander), "hover");
+      mx_stylable_set_style_pseudo_class (MX_WIDGET (expander), "hover");
       priv->expand_expander = expander;
       priv->expand_timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
                                                         (GSourceFunc) expander_expand_cb,
@@ -1022,7 +1022,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
               clutter_actor_hide (CLUTTER_ACTOR (launcher));
               clutter_actor_reparent (CLUTTER_ACTOR (launcher),
                                       priv->apps_grid);
-              mx_widget_set_style_pseudo_class (MX_WIDGET (launcher), NULL);
+              mx_stylable_set_style_pseudo_class (MX_WIDGET (launcher), NULL);
             }
         }
 
@@ -1037,7 +1037,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
           else
             {
               clutter_actor_hide (CLUTTER_ACTOR (button));
-              mx_widget_set_style_pseudo_class (MX_WIDGET (button), NULL);
+              mx_stylable_set_style_pseudo_class (MX_WIDGET (button), NULL);
             }
         }
 
@@ -1067,7 +1067,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
           ClutterActor      *e          = g_hash_table_lookup (priv->expanders, category);
           ClutterActor      *inner_grid = mx_bin_get_child (MX_BIN (e));
 
-          mx_widget_set_style_pseudo_class (MX_WIDGET (launcher), NULL);
+          mx_stylable_set_style_pseudo_class (MX_WIDGET (launcher), NULL);
           clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
         }
 
