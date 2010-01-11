@@ -26,29 +26,29 @@ MxLabel.PengeCalendarPaneTitle
 PengeEventTile, PengeTaskTile, PengeAppTile
 {
   background-color: #fff0;
-  padding: 9 10 11 10;
+  padding: 4 4 4 4;
   border-image: none;
 }
 
 PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover,
 PengeEventTile:active, PengeTaskTile:active, PengeAppTile:active
 {
-  border-image: url('tile-partial-glow.png') 7 8 9 8;
+  border-image: url('card_frame_hover.png') 4 4 4 4;
 }
 
 
 PengeRecentFileTile, PengePeopleTile
 {
-  border-image: url('tile-bg.png') 7 8 9 8;
-  padding: 6 7 8 7;
+  border-image: url('card_frame.png') 4 4 4 4;
+  padding: 6 6 6 6;
 }
 
 
 PengeRecentFileTile:hover, PengePeopleTile:hover,
 PengeRecentFileTile:active, PengePeopleTile:active
 {
-  border-image: url('tile-partial-glow.png') 7 8 9 8;
-  padding: 6 7 8 7;
+  border-image: url('card_frame_hover.png') 4 4 4 4;
+  padding: 6 6 6 6;
 }
 
 MxButton.PengeTaskToggleButton
@@ -182,17 +182,17 @@ PengeWelcomeTile
 
 *.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon
 {
-  background-image: url('tile-dismiss-icon-normal.png');
+  background-image: url('dismiss_button.png');
 }
 
 *.PengeInterestingTileRemoveButton:hover *.PengeInterestingTileIcon
 {
-  background-image: url('tile-dismiss-icon-hover.png');
+  background-image: url('dismiss_button_hover.png');
 }
 
 *.PengePeopleTileAvatarBackground
 {
-  border-image: url("avatar-bg.png") 5 6 7 6;
-  padding: 5 6 7 6;
+  border-image: url("avatar_frame.png") 4 4 4 4;
+  padding: 2 2 2 2;
 }
 

@@ -53,7 +53,14 @@ dist_theme_DATA = \
 	tile-dismiss-icon-hover.png \
 	tile-dismiss-icon-normal.png \
 	cat.png \
-	avatar-bg.png
+	avatar-bg.png \
+	avatar_frame.png \
+	avatar_icon.png \
+	card_frame.png \
+	card_frame_hover.png \
+	dismiss_button.png \
+	dismiss_button_hover.png
+
 
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/nbtk.cache
