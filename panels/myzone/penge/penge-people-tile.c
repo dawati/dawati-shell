@@ -43,7 +43,7 @@ enum
   PROP_ITEM
 };
 
-#define DEFAULT_AVATAR_PATH THEMEDIR "/default-avatar-icon.png"
+#define DEFAULT_AVATAR_PATH THEMEDIR "/avatar_icon.png"
 #define DEFAULT_ALBUM_ARTWORK THEMEDIR "/default-album-artwork.png"
 
 static void
@@ -214,7 +214,13 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                  "PengePeopleTileContentBackground");
 
     author_icon = mojito_item_get_value (item, "authoricon");
-    avatar = clutter_texture_new_from_file (author_icon, NULL);
+    if (author_icon)
+    {
+      avatar = clutter_texture_new_from_file (author_icon, NULL);
+    } else {
+      avatar = clutter_texture_new_from_file (DEFAULT_AVATAR_PATH, NULL);
+    }
+
     avatar_bin = mx_frame_new ();
     mx_bin_set_child (MX_BIN (avatar_bin), avatar);
     mx_bin_set_fill (MX_BIN (avatar_bin), TRUE, TRUE);
@@ -309,9 +315,18 @@ penge_people_tile_set_item (PengePeopleTile *tile,
 
   if (!avatar)
   {
-    g_object_set (tile,
-                  "icon-path", mojito_item_get_value (item, "authoricon"),
-                  NULL);
+    author_icon = mojito_item_get_value (item, "authoricon");
+
+    if (author_icon)
+    {
+      g_object_set (tile,
+                    "icon-path", author_icon,
+                    NULL);
+    } else {
+      g_object_set (tile,
+                    "icon-path", DEFAULT_AVATAR_PATH,
+                    NULL);
+    }
   } else {
     g_object_set (tile,
                   "icon-path", NULL,
