@@ -83,6 +83,11 @@ MxLabel.toolbar-instruction-label {
   color: white;
 }
 
+MnbToolbarButton
+{
+  border-image: none;
+}
+
 /* applications button */
 MnbToolbarButton#applications-button {
   background-image: url("panel/apps-normal.png");
