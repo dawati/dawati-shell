@@ -73,7 +73,7 @@ AM_GLIB_GNU_GETTEXT
 # Libmoblin-panel
 PKG_CHECK_MODULES(LIBMPL,
                   dbus-glib-1
-                  mx-1.0 = 0.3.0
+                  mx-1.0 = 0.4.0
                   gtk+-2.0
                   gio-unix-2.0)
 
@@ -93,7 +93,7 @@ AM_GCONF_SOURCE_2
 # Mutter-moblin
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl
-                  mx-1.0 = 0.3.0                     dnl
+                  mx-1.0 = 0.4.0                     dnl
                   libstartup-notification-1.0        dnl
                   gtk+-2.0                           dnl
                   dbus-glib-1                        dnl
