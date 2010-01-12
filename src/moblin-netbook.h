@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (c) 2008, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *         Thomas Wood <thomas@linux.intel.com>
@@ -90,6 +90,7 @@ struct _MoblinNetbookPluginPrivate
 
   gboolean               holding_focus       : 1;
   gboolean               compositor_disabled : 1;
+  gboolean               netbook_mode        : 1;
 
   /* Background desktop texture */
   ClutterActor          *desktop_tex;
@@ -171,5 +172,8 @@ moblin_netbook_get_toolbar (MutterPlugin *plugin);
 
 gboolean
 moblin_netbook_activate_mutter_window (MutterWindow *mcw);
+
+gboolean
+moblin_netbook_use_netbook_mode (MutterPlugin *plugin);
 
 #endif

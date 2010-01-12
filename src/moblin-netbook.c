@@ -380,9 +380,19 @@ moblin_netbook_plugin_constructed (GObject *object)
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
 
-  MetaScreen   *screen  = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
-  MetaDisplay  *display = meta_screen_get_display (screen);
-  ClutterActor *stage   = mutter_get_stage_for_screen (screen);
+  MetaScreen   *screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  MetaDisplay  *display   = meta_screen_get_display (screen);
+  ClutterActor *stage     = mutter_get_stage_for_screen (screen);
+  Display      *xdpy      = meta_display_get_xdisplay (display);
+  guint         screen_no = meta_screen_get_screen_number (screen);
+
+  gint          screen_width_mm  = XDisplayWidthMM (xdpy, screen_no);
+  gint          screen_height_mm = XDisplayHeightMM (xdpy, screen_no);
+
+  g_debug ("Screen size %dmm x %dmm", screen_width_mm, screen_height_mm);
+
+  if (screen_width_mm < 280)
+    priv->netbook_mode = TRUE;
 
   plugin_singleton = (MutterPlugin*)object;
 
@@ -2727,4 +2737,12 @@ moblin_netbook_activate_mutter_window (MutterWindow *mcw)
     }
 
   return TRUE;
+}
+
+gboolean
+moblin_netbook_use_netbook_mode (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  return priv->netbook_mode;
 }
