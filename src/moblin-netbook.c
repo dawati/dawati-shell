@@ -2133,6 +2133,12 @@ setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
     {
       ClutterActor *stage = mutter_get_stage_for_screen (screen);
 
+      if (clutter_texture_get_pixel_format (CLUTTER_TEXTURE (new_texture)) &
+          COGL_A_BIT)
+        {
+          g_warning ("Desktop background '%s' has alpha channel", filename);
+        }
+
       clutter_actor_set_size (new_texture, screen_width, screen_height);
 
 #if !USE_SCALED_BACKGROUND
