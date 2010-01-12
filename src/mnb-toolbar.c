@@ -626,6 +626,16 @@ mnb_toolbar_dbus_hide_panel (MnbToolbar  *self,
 
 #include "../src/mnb-toolbar-dbus-glue.h"
 
+static gboolean
+mnb_toolbar_button_press_event (ClutterActor         *actor,
+                                ClutterButtonEvent   *event)
+{
+  /*
+   * We never ever want press events propagated
+   */
+  return TRUE;
+}
+
 static void
 mnb_toolbar_class_init (MnbToolbarClass *klass)
 {
@@ -643,6 +653,7 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
   clutter_class->show = mnb_toolbar_show;
   clutter_class->hide = mnb_toolbar_real_hide;
   clutter_class->allocate = mnb_toolbar_allocate;
+  clutter_class->button_press_event = mnb_toolbar_button_press_event;
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
                                    &dbus_glib_mnb_toolbar_dbus_object_info);
@@ -2194,14 +2205,6 @@ mnb_toolbar_dbus_setup_panels (MnbToolbar *toolbar)
                                          toolbar);
 }
 
-static gboolean
-mnb_toolbar_background_input_cb (ClutterActor *stage,
-                                 ClutterEvent *event,
-                                 gpointer      data)
-{
-  return TRUE;
-}
-
 /*
  * If the compositor restacks, and we are showing an OOP panel, we need to
  * lower the shadow below the panel.
@@ -2276,6 +2279,26 @@ mnb_toolbar_setup_panels (MnbToolbar *toolbar)
   mnb_toolbar_dbus_setup_panels (toolbar);
 }
 
+static gboolean
+mnb_toolbar_lowlight_button_press_cb (ClutterActor *lowlight,
+                                      ClutterEvent *event,
+                                      MnbToolbar   *toolbar)
+{
+  if (CLUTTER_ACTOR_IS_MAPPED (toolbar))
+    {
+      MnbPanel *panel = mnb_toolbar_get_active_panel (toolbar);
+
+      if (!panel || !MNB_IS_PANEL_OOP (panel))
+        return FALSE;
+
+      mnb_panel_hide_with_toolbar (panel);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 mnb_toolbar_constructed (GObject *self)
 {
@@ -2309,6 +2332,8 @@ mnb_toolbar_constructed (GObject *self)
       g_warning (G_STRLOC " DBus connection not available !!!");
     }
 
+  clutter_actor_set_reactive (CLUTTER_ACTOR (actor), TRUE);
+
   hbox = priv->hbox = clutter_group_new ();
 
   g_object_set (self,
@@ -2332,6 +2357,12 @@ mnb_toolbar_constructed (GObject *self)
                           screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);
   clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), lowlight);
   clutter_actor_hide (lowlight);
+  clutter_actor_set_reactive (lowlight, TRUE);
+
+  g_signal_connect (lowlight, "button-press-event",
+                    G_CALLBACK (mnb_toolbar_lowlight_button_press_cb),
+                    self);
+
   priv->lowlight = lowlight;
 
   {
@@ -2368,11 +2399,6 @@ mnb_toolbar_constructed (GObject *self)
       clutter_actor_hide (shadow);
       priv->shadow = shadow;
     }
-
-  g_signal_connect (self,
-                    "button-press-event",
-                    G_CALLBACK (mnb_toolbar_background_input_cb),
-                    self);
 
   /* create time and date labels */
   priv->time = mx_label_new ("");

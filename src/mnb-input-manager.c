@@ -2,7 +2,7 @@
 
 /* mnb-input-manager.c */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -317,11 +317,15 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
   XserverRegion    rgn;
   XRectangle       rect;
   Display         *xdpy;
+  gint             screen_width, screen_height;
 
   g_assert (mgr_singleton);
 
   if (!mir)
     return;
+
+  mutter_plugin_query_screen_size (mgr_singleton->plugin,
+                                   &screen_width, &screen_height);
 
   xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
 
@@ -329,10 +333,10 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
 
   clutter_actor_get_geometry (actor, &geom);
 
-  rect.x      = geom.x;
+  rect.x      = 0;
   rect.y      = geom.y + geom.height;
-  rect.width  = geom.width;
-  rect.height = 30;
+  rect.width  = screen_width;
+  rect.height = screen_height;
 
   XFixesSetRegion (xdpy, mir->region, &rect, 1);
 
@@ -397,8 +401,12 @@ panel_show_cb (ClutterActor *actor, MnbInputLayer layer)
   ClutterGeometry  geom;
   MnbInputRegion  *mir  = g_object_get_qdata (G_OBJECT (actor), quark_mir);
   Display         *xdpy;
+  gint             screen_width, screen_height;
 
   g_assert (mgr_singleton);
+
+  mutter_plugin_query_screen_size (mgr_singleton->plugin,
+                                   &screen_width, &screen_height);
 
   xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
 
@@ -406,8 +414,8 @@ panel_show_cb (ClutterActor *actor, MnbInputLayer layer)
 
   if (!mir)
     {
-      mir = mnb_input_manager_push_region (geom.x, geom.y + geom.height,
-                                           geom.width, 30,
+      mir = mnb_input_manager_push_region (0, geom.y + geom.height,
+                                           screen_width, screen_height,
                                            FALSE, layer);
 
       g_object_set_qdata (G_OBJECT (actor), quark_mir, mir);
@@ -419,10 +427,10 @@ panel_show_cb (ClutterActor *actor, MnbInputLayer layer)
 
       rgn = mir->region;
 
-      rect.x      = geom.x;
+      rect.x      = 0;
       rect.y      = geom.y + geom.height;
-      rect.width  = geom.width;
-      rect.height = 30;
+      rect.width  = screen_width;
+      rect.height = screen_height;
 
       XFixesSetRegion (xdpy, mir->region, &rect, 1);
 
@@ -510,8 +518,12 @@ mnb_input_manager_push_oop_panel (MutterWindow *mcw)
   ClutterActor    *actor = (ClutterActor*)mcw;
   ClutterGeometry  geom;
   MnbInputRegion  *mir;
+  gint             screen_width, screen_height;
 
   g_assert (mgr_singleton);
+
+  mutter_plugin_query_screen_size (mgr_singleton->plugin,
+                                   &screen_width, &screen_height);
 
   mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
 
@@ -520,8 +532,8 @@ mnb_input_manager_push_oop_panel (MutterWindow *mcw)
 
   clutter_actor_get_geometry (actor, &geom);
 
-  mir = mnb_input_manager_push_region (geom.x, geom.y + geom.height,
-                                       geom.width, 30,
+  mir = mnb_input_manager_push_region (0, geom.y + geom.height,
+                                       screen_width, screen_height,
                                        FALSE, MNB_INPUT_LAYER_PANEL);
 
   g_object_set_qdata (G_OBJECT (actor), quark_mir, mir);
