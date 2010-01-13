@@ -70,7 +70,7 @@ launcher_activated_cb (MnbLauncher    *launcher,
   mpl_panel_client_launch_application_from_desktop_file (panel,
                                                          desktop_file,
                                                          NULL);
-  mpl_panel_client_request_hide (panel);
+  mpl_panel_client_hide (panel);
 }
 
 static void

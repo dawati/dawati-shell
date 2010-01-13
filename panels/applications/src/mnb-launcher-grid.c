@@ -67,7 +67,7 @@ _find_widget_by_pseudo_class_cb (ClutterActor                      *actor,
   if (!MX_IS_STYLABLE (actor))
     return;
 
-  pseudo_class = mx_stylable_get_style_pseudo_class (MX_WIDGET (actor));
+  pseudo_class = mx_stylable_get_style_pseudo_class (MX_STYLABLE (actor));
   if (0 == g_strcmp0 (data->pseudo_class, pseudo_class))
     data->widget = MX_WIDGET (actor);
 }
@@ -151,8 +151,8 @@ mnb_launcher_grid_keynav_up (MnbLauncherGrid *self)
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
     {
-      mx_stylable_set_style_pseudo_class (old, NULL);
-      mx_stylable_set_style_pseudo_class (new, "hover");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
       return new;
     }
 
@@ -179,8 +179,8 @@ mnb_launcher_grid_keynav_right (MnbLauncherGrid *self)
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
     {
-      mx_stylable_set_style_pseudo_class (old, NULL);
-      mx_stylable_set_style_pseudo_class (new, "hover");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
       return new;
     }
 
@@ -207,8 +207,8 @@ mnb_launcher_grid_keynav_down (MnbLauncherGrid *self)
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
     {
-      mx_stylable_set_style_pseudo_class (old, NULL);
-      mx_stylable_set_style_pseudo_class (new, "hover");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
       return new;
     }
 
@@ -235,8 +235,8 @@ mnb_launcher_grid_keynav_left (MnbLauncherGrid *self)
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
     {
-      mx_stylable_set_style_pseudo_class (old, NULL);
-      mx_stylable_set_style_pseudo_class (new, "hover");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
       return new;
     }
 
@@ -267,8 +267,8 @@ mnb_launcher_grid_keynav_wrap_up (MnbLauncherGrid *self)
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
     {
-      mx_stylable_set_style_pseudo_class (old, NULL);
-      mx_stylable_set_style_pseudo_class (new, "hover");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
       return new;
     }
 
@@ -298,8 +298,8 @@ mnb_launcher_grid_keynav_wrap_down (MnbLauncherGrid *self)
   new = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (new)
     {
-      mx_stylable_set_style_pseudo_class (old, NULL);
-      mx_stylable_set_style_pseudo_class (new, "hover");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
       return new;
     }
 
@@ -321,7 +321,7 @@ mnb_launcher_grid_keynav_first (MnbLauncherGrid *self)
   widget = mnb_launcher_grid_find_widget_by_point (self, x, y);
   if (widget)
     {
-      mx_stylable_set_style_pseudo_class (widget, "hover");
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (widget), "hover");
       return widget;
     }
 
@@ -335,7 +335,7 @@ mnb_launcher_grid_keynav_out (MnbLauncherGrid *self)
 
   widget = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (widget)
-    mx_stylable_set_style_pseudo_class (widget, NULL);
+    mx_stylable_set_style_pseudo_class (MX_STYLABLE (widget), NULL);
 }
 
 MxWidget *
