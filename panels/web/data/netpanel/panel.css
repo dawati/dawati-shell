@@ -88,19 +88,19 @@ MwbAcList > MxFrame { /* highlight color */
   background-color: #ded5ed;
 }
 
-MoblinNetbookNetpanel MxButton.weblink {
+MoblinNetbookNetpanel MxButton /*.weblink*/ {
   border-image: url("thumbnail.png") 7 8 9;
   padding: 7 8 9;
   color: #4e3972;
 }
 
-MoblinNetbookNetpanel MxButton.weblink:hover {
+MoblinNetbookNetpanel MxButton /*.weblink*/:hover {
   border-image: url("thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
   color: #c5a3fc;
 }
 
-MoblinNetbookNetpanel MxButton.weblink:active {
+MoblinNetbookNetpanel MxButton /*.weblink*/:active {
   border-image: url("thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
 }
