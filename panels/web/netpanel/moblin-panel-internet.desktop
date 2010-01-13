@@ -11,7 +11,6 @@ Terminal=false
 Categories=
 OnlyShowIn=MOBLIN;
 X-GNOME-Autostart-enable=true
-X-Moblin-Priority=High
 X-Moblin-Priority=Low
 X-Moblin-Service=org.moblin.UX.Shell.Panels.internet
 X-Moblin-Panel-Button-Style=internet-button
