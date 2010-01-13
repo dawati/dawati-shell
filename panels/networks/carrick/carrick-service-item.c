@@ -25,7 +25,6 @@
 #include <config.h>
 #include <glib/gi18n.h>
 #include <nbtk/nbtk-gtk.h>
-#include <moblin-panel/mpl-panel-gtk.h>
 
 #include "connman-service-bindings.h"
 

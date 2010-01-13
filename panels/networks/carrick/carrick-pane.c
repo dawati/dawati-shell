@@ -26,7 +26,6 @@
 #include <nbtk/nbtk-gtk.h>
 #include <glib/gi18n.h>
 #include <dbus/dbus-glib.h>
-#include <moblin-panel/mpl-panel-gtk.h>
 
 #include "connman-marshal.h"
 #include "connman-manager-bindings.h"
