@@ -28,6 +28,8 @@
 #include <mx/mx.h>
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
+#include <libnotify/notify.h>
+#include <dalston/dalston-button-monitor.h>
 #include "mpd-folder-pane.h"
 #include "config.h"
 
@@ -76,6 +78,7 @@ main (int     argc,
     { NULL }
   };
 
+  DalstonButtonMonitor *button_monitor;
   ClutterActor    *stage;
   ClutterActor    *content;
   GOptionContext  *context;
@@ -155,6 +158,10 @@ main (int     argc,
       g_signal_connect (panel, "set-size",
                         G_CALLBACK (panel_set_size_cb), content);
     }
+
+  /* Monitor buttons */
+  notify_init ("Moblin Devices Panel");
+  button_monitor = dalston_button_monitor_new ();
 
   clutter_main ();
 

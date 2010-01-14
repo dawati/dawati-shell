@@ -3,7 +3,6 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(DEVICES_CFLAGS) \
-	$(MPL_CFLAGS) \
 	-DDATADIR=\"$(datadir)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
@@ -11,7 +10,10 @@ AM_CFLAGS = \
 
 libexec_PROGRAMS = moblin-panel-devices
 
-moblin_panel_devices_LDADD = $(DEVICES_LIBS) $(MPL_LIBS)
+moblin_panel_devices_LDADD = \
+	../dalston/libdalston.la \
+	$(DEVICES_LIBS) \
+	$(LIBNOTIFY_LIBS)
 
 moblin_panel_devices_SOURCES = \
 	moblin-panel-devices.c \
