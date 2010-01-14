@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.moblin.UX.Shell.Panels.devices
+Exec=@libexecdir@/moblin-panel-devices
+
