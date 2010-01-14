@@ -1,4 +1,10 @@
 # List of source files containing translatable strings.
+dalston/dalston-brightness-slider.c
+dalston/dalston-button-monitor.c
+dalston/dalston-power-applet.c
+dalston/dalston-volume-pane.c
+dalston/dalston-volume-slider.c
 data/moblin-panel-devices.desktop.in.in
+libgvc/gvc-mixer-control.c
 src/moblin-panel-devices.c
 src/mpd-folder-pane.c

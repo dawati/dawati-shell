@@ -3,6 +3,7 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
 	$(DEVICES_CFLAGS) \
+	-I$(top_srcdir) \
 	-DDATADIR=\"$(datadir)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
