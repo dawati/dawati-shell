@@ -1,10 +1,4 @@
-dalston/dalston-power-applet.c
-dalston/dalston-brightness-slider.c
-dalston/dalston-button-monitor.c
-dalston/dalston-volume-pane.c
-dalston/dalston-volume-slider.c
-libgvc/gvc-mixer-control.c
-src/dalston-power-applet.c
-src/dalston-volume-applet.c
-src/dalston-power-settings-capplet.c
-data/dalston-power-settings-capplet.desktop.in
+# List of source files containing translatable strings.
+data/moblin-panel-devices.desktop.in.in
+src/moblin-panel-devices.c
+src/mpd-folder-pane.c

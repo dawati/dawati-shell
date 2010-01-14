@@ -1,9 +1,22 @@
+
 themedir = $(pkgdatadir)/theme
+dist_theme_DATA = \
+	toolbar-button.css \
+	devices-coloured.png \
+	devices-normal.png \
+	panel.css
 
-theme_DATA = power-applet.css volume-applet.css
+# Manage mutter-moblin's texture cache.
 
-%.css: %.css.in $(top_builddir)/config.log
-	$(QUIET_GEN)sed -e "s|\@pkgdatadir\@|$(pkgdatadir)|" $< > $@
+if ENABLE_CACHE
+texture_cache = $(DESTDIR)$(pkgdatadir)/mx.cache
+CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)
 
-EXTRA_DIST = power-applet.css.in volume-applet.css.in
-DISTCLEANFILES = power-applet.css volume-applet.css
+install-data-hook:
+	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(pkgdatadir)
+
+uninstall-hook:
+	rm -f $(texture_cache)
+	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(pkgdatadir)
+endif
+

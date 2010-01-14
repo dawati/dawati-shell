@@ -1,27 +1,18 @@
-SUBDIRS = icons theme
 
-autostart_src_files = 	dalston-power-applet.desktop.in.in \
-			dalston-volume-applet.desktop.in.in
-autostart_in_files = 	dalston-power-applet.desktop.in \
-			dalston-volume-applet.desktop.in
-autostartdir = $(sysconfdir)/xdg/autostart
-autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
+SUBDIRS = theme
 
-desktop_in_files = dalston-power-settings-capplet.desktop.in
-if WITH_SETTINGS_CAPPLET
-desktopdir = $(datadir)/applications
-desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
-endif
 @INTLTOOL_DESKTOP_RULE@
 
-servicedir = $(datadir)/dbus-1/services
-service_in_files = 	org.moblin.UX.Shell.Panels.volume.service.in \
-			org.moblin.UX.Shell.Panels.power.service.in
-service_DATA = 		org.moblin.UX.Shell.Panels.volume.service \
-			org.moblin.UX.Shell.Panels.power.service
+desktopfiles_in_files=moblin-panel-devices.desktop.in
+desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
-%.service: %.service.in
+if ENABLE_MOBLIN_DESKTOP_FILE
+desktopfilesdir=$(MOBLIN_PANELS_DIR)/
+desktopfiles_DATA = $(desktopfiles_files)
+endif
+
+%.desktop.in: %.desktop.in.in Makefile
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
-CLEANFILES = $(desktop_DATA) $(autostart_DATA) $(service_DATA)
-EXTRA_DIST = $(desktop_in_files) $(autostart_src_files) $(service_in_files)
+EXTRA_DIST = moblin-panel-devices.desktop.in.in
+CLEANFILES = moblin-panel-devices.desktop moblin-panel-devices.desktop.in

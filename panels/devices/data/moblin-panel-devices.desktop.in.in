@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/moblin-panel-devices
+TryExec=@libexecdir@/moblin-panel-devices
+_Name=devices
+Icon=moblin-panel-devices
+_Comment=Devices panel
+Terminal=false
+Categories=
+OnlyShowIn=MOBLIN;
+X-Moblin-Priority=Low
+X-Moblin-Service=org.moblin.UX.Shell.Panels.devices
+X-Moblin-Panel-Optional=false
+X-Moblin-Panel-Button-Style=devices-button

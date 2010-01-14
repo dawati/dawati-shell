@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.moblin.UX.Shell.Panels.volume
-Exec=@libexecdir@/dalston-volume-applet
