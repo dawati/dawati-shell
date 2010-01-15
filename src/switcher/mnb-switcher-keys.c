@@ -2,7 +2,7 @@
 
 /*
  * Moblin Netbook
- * Copyright © 2009, Intel Corporation.
+ * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -100,12 +100,14 @@ mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher)
   meta_keybindings_set_custom_handler ("switch_group_backward",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
+#if 0
   meta_keybindings_set_custom_handler ("switch_to_workspace_left",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
   meta_keybindings_set_custom_handler ("switch_to_workspace_right",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
+#endif
   meta_keybindings_set_custom_handler ("switch_to_workspace_up",
                                        mnb_switcher_nop_key_handler,
                                        switcher, NULL);
