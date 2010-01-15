@@ -26,9 +26,6 @@
 #include <gtk/gtk.h>
 #include <dbus/dbus-glib.h>
 
-#if WITH_MOBLIN
-#endif
-
 #include "carrick/carrick-applet.h"
 #include "carrick/carrick-pane.h"
 
@@ -206,11 +203,13 @@ main (int    argc,
     }
 
   /* Force to correct theme */
+#if WITH_MOBLIN
   settings = gtk_settings_get_default ();
   gtk_settings_set_string_property (settings,
                                     "gtk-theme-name",
                                     "Moblin-Netbook",
                                     NULL);
+#endif
 
   applet = carrick_applet_new ();
   pane = carrick_applet_get_pane (applet);
