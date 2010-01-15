@@ -20,20 +20,27 @@
  *
  */
 
-#include <gtk/gtk.h>
-#include <glib/gi18n.h>
-#include <dbus/dbus-glib.h>
-#include <moblin-panel/mpl-panel-common.h>
-#include <moblin-panel/mpl-panel-gtk.h>
-
 #include <config.h>
+
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
+#include <dbus/dbus-glib.h>
+
+#if WITH_MOBLIN
+#endif
 
 #include "carrick/carrick-applet.h"
 #include "carrick/carrick-pane.h"
 
 #define PKG_THEME_DIR PKG_DATA_DIR"/theme"
 
-MplPanelClient *panel_client = NULL;
+
+#if WITH_MOBLIN
+
+#include <moblin-panel/mpl-panel-common.h>
+#include <moblin-panel/mpl-panel-gtk.h>
+
+static MplPanelClient *panel_client = NULL;
 
 static void
 _client_set_size_cb (MplPanelClient *client,
@@ -154,6 +161,15 @@ carrick_shell_close_dialog_on_hide (GtkDialog *dialog)
   g_object_weak_ref (G_OBJECT (dialog), dialog_destroy_cb, GINT_TO_POINTER (signal_id));
 }
 
+#else
+
+/* TODO: Stubs for now */
+void carrick_shell_request_focus (void) {}
+void carrick_shell_hide (void) {}
+void carrick_shell_close_dialog_on_hide (GtkDialog *dialog) {}
+
+#endif
+
 int
 main (int    argc,
       char **argv)
@@ -198,8 +214,18 @@ main (int    argc,
 
   applet = carrick_applet_new ();
   pane = carrick_applet_get_pane (applet);
-  if (!standalone)
-    {
+  if (standalone) {
+      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      g_signal_connect (window,
+                        "delete-event",
+                        (GCallback) gtk_main_quit,
+                        NULL);
+      gtk_container_add (GTK_CONTAINER (window),
+                         pane);
+
+      gtk_widget_show (window);
+  } else {
+#if WITH_MOBLIN
       panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
                                                         _("network"),
                                                         PKG_THEME_DIR "/network-applet.css",
@@ -218,19 +244,10 @@ main (int    argc,
                         panel_client);
 
       gtk_widget_show_all (pane);
-    }
-  else
-    {
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      g_signal_connect (window,
-                        "delete-event",
-                        (GCallback) gtk_main_quit,
-                        NULL);
-      gtk_container_add (GTK_CONTAINER (window),
-                         pane);
-
-      gtk_widget_show (window);
-    }
+#else
+#warning No UI!
+#endif
+  }
 
   gtk_main ();
 }
