@@ -160,10 +160,20 @@ carrick_shell_close_dialog_on_hide (GtkDialog *dialog)
 
 #else
 
+static GtkStatusIcon *status_icon = NULL;
+
 /* TODO: Stubs for now */
 void carrick_shell_request_focus (void) {}
 void carrick_shell_hide (void) {}
 void carrick_shell_close_dialog_on_hide (GtkDialog *dialog) {}
+
+static
+void _activate_cb (GObject *object, gpointer user_data)
+{
+  GtkWidget *window = user_data;
+
+  gtk_widget_show(window);
+}
 
 #endif
 
@@ -244,7 +254,26 @@ main (int    argc,
 
       gtk_widget_show_all (pane);
 #else
-#warning No UI!
+      const gchar *icon_name;
+
+      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      g_signal_connect (window,
+                        "delete-event",
+                        (GCallback) gtk_widget_hide,
+                        NULL);
+      gtk_container_add (GTK_CONTAINER (window),
+                         pane);
+
+      status_icon = gtk_status_icon_new ();
+      gtk_status_icon_set_visible (status_icon, TRUE);
+
+      icon_name = carrick_icon_factory_get_path_for_state (ICON_OFFLINE_HOVER);
+      gtk_status_icon_set_from_file (status_icon, icon_name);
+
+      g_signal_connect (status_icon,
+                        "activate",
+                        (GCallback) _activate_cb,
+                        window);
 #endif
   }
 
