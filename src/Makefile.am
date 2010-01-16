@@ -21,6 +21,8 @@ source_h =	$(srcdir)/marshal.h			\
 		$(srcdir)/../libmoblin-panel/moblin-panel/mpl-panel-common.h \
 		$(srcdir)/mnb-scale-group.h             \
 		$(srcdir)/moblin-netbook.h		\
+		$(srcdir)/moblin-netbook-constraints.h	\
+		$(srcdir)/moblin-netbook-mutter-hints.h	\
 		$(srcdir)/mnb-drop-down.h               \
 		$(srcdir)/mnb-input-manager.h		\
 		$(srcdir)/mnb-toolbar.h                 \
@@ -33,6 +35,8 @@ source_h =	$(srcdir)/marshal.h			\
 source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/mnb-scale-group.c	        \
 		$(srcdir)/moblin-netbook.c		\
+		$(srcdir)/moblin-netbook-constraints.c	\
+		$(srcdir)/moblin-netbook-mutter-hints.c	\
 		$(srcdir)/marshal.c                   	\
 		$(srcdir)/mnb-drop-down.c               \
 		$(srcdir)/mnb-input-manager.c		\

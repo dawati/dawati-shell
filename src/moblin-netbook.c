@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (c) 2008, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *         Thomas Wood <thomas@linux.intel.com>
@@ -33,6 +33,7 @@
 #include "effects/mnb-switch-zones-effect.h"
 #include "notifications/mnb-notification-gtk.h"
 #include "mnb-panel-frame.h"
+#include "moblin-netbook-constraints.h"
 
 #include <compositor-mutter.h>
 #include <display.h>
@@ -614,6 +615,7 @@ moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
   plugin_class->plugin_info      = plugin_info;
   plugin_class->xevent_filter    = xevent_filter;
   plugin_class->get_shadow       = moblin_netbook_get_shadow;
+  plugin_class->constrain_window = moblin_netbook_constrain_window;
 
   g_type_class_add_private (gobject_class, sizeof (MoblinNetbookPluginPrivate));
 }
