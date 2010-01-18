@@ -397,6 +397,30 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   plugin_singleton = (MutterPlugin*)object;
 
+  {
+    gchar *moblin_session;
+    Atom   atom__MOBLIN;
+
+    atom__MOBLIN = XInternAtom (xdpy, "_MOBLIN", False);
+
+    moblin_session =
+      g_strdup_printf ("session-type=%s:frame-style=naked",
+                       priv->netbook_mode ? "netbook" : "nettop");
+
+    g_debug ("Setting _MOBLIN=%s", moblin_session);
+
+    meta_error_trap_push (display);
+    XChangeProperty (xdpy,
+                     meta_screen_get_xroot (screen),
+                     atom__MOBLIN,
+                     XA_STRING,
+                     8, PropModeReplace,
+                     (unsigned char*)moblin_session, strlen (moblin_session));
+    meta_error_trap_pop (display, FALSE);
+
+    g_free (moblin_session);
+  }
+
   priv->gconf_client = gconf_client_get_default ();
 
   /* tweak with env var as then possible to develop in desktop env. */
