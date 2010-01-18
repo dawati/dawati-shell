@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Anuchit Chalothorn <anoochit@gmail.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-applications 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-19 09:28+0000\n"
+"POT-Creation-Date: 2009-10-16 11:30+0000\n"
 "PO-Revision-Date: 2009-08-14 16:14+0700\n"
 "Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
@@ -17,22 +17,21 @@ msgstr ""
 "X-Poedit-Language: Thai\n"
 "X-Poedit-Country: THAILAND\n"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/moblin-netbook-launcher.c:857
-msgid "Favourite Applications"
-msgstr "โปรแกรมโปรด"
-
-#: ../src/moblin-netbook-launcher.c:1354
+#: ../src/moblin-netbook-launcher.c:1337
 msgid "Applications"
 msgstr "โปรแกรมประยุกต์"
 
-#: ../src/moblin-netbook-launcher.c:1365
+#: ../src/moblin-netbook-launcher.c:1348
 msgid "Search"
 msgstr "ค้นหา"
 
-#: ../src/moblin-panel-applications.c:164
+#: ../src/moblin-panel-applications.c:196
 msgid "applications"
 msgstr "โปรแกรมประยุกต์"
+
+#. * Fav apps.
+#. 
+#. Label
+#: ../src/moblin-netbook-launcher.c:813
+msgid "Favorite Applications"
+msgstr "โปรแกรมโปรด"
