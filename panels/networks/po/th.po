@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-19 09:23+0000\n"
-"PO-Revision-Date: 2009-08-21 17:04+0700\n"
+"POT-Creation-Date: 2009-11-10 20:49+0000\n"
+"PO-Revision-Date: 2010-01-19 20:41+0700\n"
 "Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,11 +17,162 @@ msgstr ""
 "X-Poedit-Language: Thai\n"
 "X-Poedit-Country: THAILAND\n"
 
-#: ../carrick/carrick-pane.c:414
+#.
+#. * Translator note: The disabled technologies available to be turned on is put together at
+#. * runtime.
+#. * The conjunction 'or' will be at the end of a choice of disabled technologies,
+#. * for example 'WiFi, WiMAX or 3G.
+#.
+#: ../carrick/carrick-list.c:859
+msgid " or "
+msgstr " หรือ "
+
+#.
+#. * Translator note: the comma ',' will be used to join the different disabled technologies
+#. * as in the above example; 'WiFi, WiMAX or 3G'
+#.
+#: ../carrick/carrick-list.c:864
+#, fuzzy
+msgid ", "
+msgstr ", "
+
+#: ../carrick/carrick-list.c:865
+#: ../carrick/carrick-util.c:34
+msgid "wired"
+msgstr "สาย"
+
+#: ../carrick/carrick-list.c:866
+#: ../carrick/carrick-pane.c:1469
+#: ../carrick/carrick-util.c:32
+msgid "WiFi"
+msgstr "WiFi"
+
+#: ../carrick/carrick-list.c:867
+#: ../carrick/carrick-pane.c:1563
+#: ../carrick/carrick-util.c:38
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-list.c:868
+#: ../carrick/carrick-pane.c:1532
+#: ../carrick/carrick-util.c:36
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-list.c:869
+#: ../carrick/carrick-pane.c:1595
+#: ../carrick/carrick-util.c:40
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#.
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#.
+#: ../carrick/carrick-list.c:882
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ Connection Manager เหมือนไม่ได้ทำงานอยู่ คุณควรลองเริ่มการทำงานของอุปกรณ์ใหม่"
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-list.c:892
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรยกเลิกโหมดออฟไลน์"
+
+#: ../carrick/carrick-list.c:1029
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรเปิดใช้ %s"
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-list.c:1043
+msgid "Sorry, we can't find any networks"
+msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ "
+
+#: ../carrick/carrick-notification-manager.c:104
+msgid "Network connected"
+msgstr "เชื่อมต่อเครือข่าย"
+
+#: ../carrick/carrick-notification-manager.c:112
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "คุณเชื่อมต่อเครือข่ายแบบสายแล้ว"
+
+#: ../carrick/carrick-notification-manager.c:142
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "คุณเชื่อมต่อเครือข่าย %s %s แล้ว"
+
+#: ../carrick/carrick-notification-manager.c:148
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "คุณเชื่อมต่อเครือข่าย %s  แล้ว"
+
+#: ../carrick/carrick-notification-manager.c:165
+msgid "Network lost"
+msgstr "เครือข่ายไม่พบ"
+
+#: ../carrick/carrick-notification-manager.c:173
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อแบบสาย"
+
+#: ../carrick/carrick-notification-manager.c:177
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s ถึง %s"
+
+#: ../carrick/carrick-notification-manager.c:183
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s "
+
+#: ../carrick/carrick-notification-manager.c:200
+msgid "Network changed"
+msgstr "เปลี่ยนแปลงเครือข่าย"
+
+#: ../carrick/carrick-notification-manager.c:219
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณกับเครือข่ายแบบสาย"
+
+#: ../carrick/carrick-notification-manager.c:226
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณไปยัง %s เครือข่าย %s"
+
+#: ../carrick/carrick-notification-manager.c:234
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณกับเครือข่าย %s"
+
+#: ../carrick/carrick-notification-manager.c:244
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณกับเครือข่ายแบบสาย"
+
+#: ../carrick/carrick-notification-manager.c:251
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณไปยัง %s  เครือข่าย %s"
+
+#: ../carrick/carrick-notification-manager.c:260
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s  เชื่อมต่อคุณไปยังเครือข่าย %s "
+
+#: ../carrick/carrick-pane.c:633
 msgid "New connection settings"
 msgstr "ตั้งค่าการเชื่อมต่อใหม่"
 
-#: ../carrick/carrick-pane.c:450
+#: ../carrick/carrick-pane.c:669
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -31,183 +182,132 @@ msgstr ""
 "เชื่อมต่อ, สถานที่, รหัสผ่าน\n"
 "และชนิดของความปลอดภัย"
 
-#: ../carrick/carrick-pane.c:460
+#: ../carrick/carrick-pane.c:679
 msgid "Network name"
 msgstr "ชื่อเครือข่าย"
 
-#: ../carrick/carrick-pane.c:472
+#: ../carrick/carrick-pane.c:691
 msgid "Network security"
 msgstr "ความปลอดภัยเครือข่าย"
 
-#: ../carrick/carrick-pane.c:482
+#: ../carrick/carrick-pane.c:701
 msgid "None"
 msgstr "ไม่มี"
 
-#: ../carrick/carrick-pane.c:496
+#: ../carrick/carrick-pane.c:715
 msgid "Password"
 msgstr "รหัสผ่าน"
 
-#: ../carrick/carrick-pane.c:511
-#: ../carrick/carrick-service-item.c:1036
+#: ../carrick/carrick-pane.c:730
+#: ../carrick/carrick-service-item.c:1284
 msgid "Show password"
 msgstr "แสดงรหัสผ่าน"
 
-#.
-#. * Hint to display when we detect that the connection manager
-#. * is dead.  Ideally the system auto-restarts connman so the
-#. * user will not see this, but this is what to show if all
-#. * available recovery measures fail.
-#.
-#: ../carrick/carrick-pane.c:609
-msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
-msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ โปรแกรม Connection Manager เหมือนไม่ได้ทำานอยู่ คุณอาจจะต้องลองเริ่มการทำงานของอุปกรณ์ใหม่"
-
-#.
-#. * Hint display if we detect that the system is in
-#. * offline mode and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:620
-msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรยกเลิกโหมดออฟไลน์"
-
-#.
-#. * Hint to display if we detect that wifi has been turned off
-#. * and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:636
-msgid "Sorry, we can't find any networks. You could try turning on WiFi."
-msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรเปิดใช้ Wifi"
-
-#.
-#. * Hint to display if we detect that wifi is on but
-#. * WiMAX has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-pane.c:647
-msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
-msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรเปิดใช้ WiMAX"
-
-#.
-#. * Hint to display if we detect that wifi and wimax is on but
-#. * 3G has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-pane.c:658
-msgid "Sorry, we can't find any networks. You could try turning on 3G."
-msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรเปิดใช้ 3G"
-
-#.
-#. * Hint to display if we detect that wifi, wimax, and 3G are on but
-#. * bluetooth has been turned off and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:668
-msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
-msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรเปิดใช้ Bluetooth"
-
-#.
-#. * Hint to display if we detect that all technologies
-#. * other then ethernet have been turned on, and there
-#. * are no available networks
-#.
-#: ../carrick/carrick-pane.c:679
-msgid "Sorry, we can't find any networks. You could try turning on Wired."
-msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรลองเปิดใช้สายแลน"
-
-#.
-#. * Generic message to display if all available networking
-#. * technologies are turned on, but for whatever reason we
-#. * can not find any networks
-#.
-#: ../carrick/carrick-pane.c:691
-msgid "Sorry, we can't find any networks"
-msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ "
-
-#: ../carrick/carrick-pane.c:1030
+#: ../carrick/carrick-pane.c:1404
 msgid "Networks"
 msgstr "เครือข่าย"
 
-#: ../carrick/carrick-pane.c:1070
+#. New connection button
+#: ../carrick/carrick-pane.c:1428
 msgid "Add new connection"
 msgstr "เพิ่มการเชื่อมต่อใหม่"
 
-#: ../carrick/carrick-pane.c:1097
-msgid "WiFi"
-msgstr "WiFi"
-
-#: ../carrick/carrick-pane.c:1129
-#: ../carrick/carrick-service-item.c:224
+#: ../carrick/carrick-pane.c:1501
+#: ../carrick/carrick-service-item.c:249
 msgid "Wired"
 msgstr "สาย"
 
-#: ../carrick/carrick-pane.c:1160
-msgid "3G"
-msgstr "3G"
-
-#: ../carrick/carrick-pane.c:1191
-msgid "WiMAX"
-msgstr "WiMAX"
-
-#: ../carrick/carrick-pane.c:1223
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
-#: ../carrick/carrick-pane.c:1266
+#: ../carrick/carrick-pane.c:1639
 msgid "Offline mode"
 msgstr "โหมดออฟไลน์"
 
-#: ../carrick/carrick-pane.c:1291
+#: ../carrick/carrick-pane.c:1664
 msgid "This will disable all your connections"
 msgstr "นี่จะยกเลิกการเชื่อมต่อของคุณทั้งหมด"
 
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#.
+#: ../carrick/carrick-service-item.c:49
+msgid "Critical Error: Invalid country code"
+msgstr "ผิดพลาดร้ายแรง: รหัสประเทศไม่ถูกต้อง"
+
+#: ../carrick/carrick-service-item.c:50
+msgid "Missing required APN (service plan name)"
+msgstr "ข้อมูลไม่ครบ ต้องการ APN (ชื่อแพลนที่บริการ)"
+
+#: ../carrick/carrick-service-item.c:51
+msgid "Internal Error: Invalid network service"
+msgstr "ผิดพลาดภายใน: บริการเครือข่ายไม่ถูกต้อง"
+
+#: ../carrick/carrick-service-item.c:52
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr "ผิดพลาดร้ายแรง: ไม่ สามารถ เข้าถึง Connection Manager"
+
+#: ../carrick/carrick-service-item.c:53
+msgid "ERROR: No 3G Hardware detected"
+msgstr "ผิดพลาด: ไม่พบอุปกรณ์ 3G"
+
 #. TRANSLATORS: this is a wireless security method, at least WEP,
-#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#: ../carrick/carrick-service-item.c:183
+#. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#.
+#: ../carrick/carrick-service-item.c:185
 #, c-format
 msgid "%s encrypted"
 msgstr "%s เข้ารหัส"
 
-#: ../carrick/carrick-service-item.c:255
+#: ../carrick/carrick-service-item.c:280
 msgid "Disconnect"
 msgstr "ยกเลิกการเชื่อมต่อ"
 
-#: ../carrick/carrick-service-item.c:258
+#: ../carrick/carrick-service-item.c:283
 msgid "Connected"
 msgstr "เชื่อมต่อ"
 
-#: ../carrick/carrick-service-item.c:263
+#: ../carrick/carrick-service-item.c:290
+#: ../carrick/carrick-service-item.c:299
 #, c-format
 msgid "Cancel"
 msgstr "ยกเลิก"
 
-#: ../carrick/carrick-service-item.c:266
+#: ../carrick/carrick-service-item.c:293
 msgid "Configuring"
 msgstr "คอนฟิก"
 
-#: ../carrick/carrick-service-item.c:273
-#: ../carrick/carrick-service-item.c:281
-#: ../carrick/carrick-service-item.c:1025
+#: ../carrick/carrick-service-item.c:302
+msgid "Associating"
+msgstr "ภาคี"
+
+#: ../carrick/carrick-service-item.c:311
+#: ../carrick/carrick-service-item.c:336
+#: ../carrick/carrick-service-item.c:1273
 msgid "Connect"
 msgstr "เชื่อมต่อ"
 
-#: ../carrick/carrick-service-item.c:284
+#: ../carrick/carrick-service-item.c:339
 msgid "Connection failed"
 msgstr "เชื่อมต่อล้มเหลว"
 
-#: ../carrick/carrick-service-item.c:289
-#: ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:342
+msgid "Sorry, the connection failed. You could try again."
+msgstr "เสียใจด้วย การเชื่อมต่อล้มเหลว คุณควรลองใหม่อีกครั้ง"
+
+#: ../carrick/carrick-service-item.c:348
+#: ../carrick/carrick-service-item.c:351
 #, c-format
 msgid "Disconnecting"
 msgstr "กำลังยกเลิกการเชื่อมต่อ"
 
-#: ../carrick/carrick-service-item.c:340
+#: ../carrick/carrick-service-item.c:409
 msgid "Type password here"
 msgstr "พิมพ์รหัสผ่านที่นี่"
 
-#: ../carrick/carrick-service-item.c:403
+#: ../carrick/carrick-service-item.c:472
 msgid "Really remove?"
 msgstr "เอาออก ?"
 
-#: ../carrick/carrick-service-item.c:421
+#: ../carrick/carrick-service-item.c:490
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -218,83 +318,168 @@ msgstr ""
 "รหัสผ่านจะไม่ถูกบันทึกและคุณจะ\n"
 "ไม่สามารถเชื่อมต่อ %s แบบอัตโนมัติได้อีก"
 
+#: ../carrick/carrick-service-item.c:667
+#, c-format
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
+msgstr "รหัสผ่านของคุณความยาวไม่ถูก สำหรับการเชื่อมต่อ WEP ต้องการอย่างน้อย 10 หรือ 26 ตัวอักษร คุณมีแค่ %i."
+
+#: ../carrick/carrick-service-item.c:678
+#, c-format
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "รหัสผ่านของคุณสั้นเกินไป สำหรับการเชื่อมต่อ WPA ต้องการความยาวอย่างน้อย 8 ตัวอักษร คุณมีแค่ %i."
+
+#: ../carrick/carrick-service-item.c:682
+#, c-format
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "รหัสผ่านของคุณยาวเกินไป สำหรับการเชื่อมต่อ WPA ต้องการความยาวอย่างน้อย 62 ตัวอักษร คุณมี %i."
+
+#: ../carrick/carrick-service-item.c:691
+#, c-format
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "รหัสผ่านของคุณสั้นเกินไป สำหรับการเชื่อมต่อ WPA2 ต้องการความยาวอย่างน้อย 8 ตัวอักษร คุณมีแค่ %i."
+
+#: ../carrick/carrick-service-item.c:695
+#, c-format
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "รหัสผ่านของคุณยาวเกินไป สำหรับการเชื่อมต่อ WPA2 ต้องการความยาวอย่างน้อย 63 ตัวอักษร คุณมี %i."
+
+#: ../carrick/carrick-service-item.c:1209
+msgid "Scanning"
+msgstr "กำลังแสกน"
+
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:981
+#: ../carrick/carrick-service-item.c:1228
 msgid "WPA2 encrypted"
 msgstr "WPA2 encrypted"
 
-#: ../carrick/carrick-notification-manager.c:131
-msgid "Network connected"
-msgstr "เชื่อมต่อเครือข่าย"
+#: ../src/carrick.c:64
+msgid "networks - not connected"
+msgstr "เครือข่าย - ไม่เชื่อมต่อ"
 
-#: ../carrick/carrick-notification-manager.c:139
+#: ../src/carrick.c:70
+msgid "networks - connecting"
+msgstr "เครือข่าย - กำลังเชื่อมต่อ"
+
+#: ../src/carrick.c:76
+msgid "networks - wired"
+msgstr "เครื่อข่าย - แบบสาย"
+
+#: ../src/carrick.c:78
 #, c-format
-msgid "You're now connected to a wired network"
-msgstr "คุณเชื่อมต่อเครือข่ายแบบสายแล้ว"
+msgid "networks - %s - wifi"
+msgstr "เครื่อข่าย - %s - ไร้สาย"
 
-#: ../carrick/carrick-notification-manager.c:169
+#: ../src/carrick.c:81
 #, c-format
-msgid "You're now connected to %s, a %s network"
-msgstr "คุณเชื่อมต่อเครือข่าย %s %s แล้ว"
+msgid "networks - %s - wimax"
+msgstr "เครื่อข่าย - %s - ไวแม็กซ์"
 
-#: ../carrick/carrick-notification-manager.c:175
+#: ../src/carrick.c:84
 #, c-format
-msgid "You're now connected to a %s network"
-msgstr "คุณเชื่อมต่อเครือข่าย %s  แล้ว"
+msgid "networks - %s - 3G"
+msgstr "เครื่อข่าย - %s - 3G"
 
-#: ../carrick/carrick-notification-manager.c:192
-msgid "Network lost"
-msgstr "เครือข่ายไม่พบ"
-
-#: ../carrick/carrick-notification-manager.c:200
+#: ../src/carrick.c:87
 #, c-format
-msgid "Sorry, we've lost your wired connection"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อแบบสาย"
+msgid "networks - %s - bluetooth"
+msgstr "เครื่อข่าย - %s - บลูทูธ"
 
-#: ../carrick/carrick-notification-manager.c:204
+#: ../src/carrick.c:90
+#: ../src/carrick.c:102
+msgid "networks"
+msgstr "เครือข่าย"
+
+#: ../src/carrick.c:97
+msgid "networks - error"
+msgstr "เครื่อข่าย - ผิดพลาด"
+
+#: ../src/carrick.c:129
+msgid "Run in standalone mode"
+msgstr "ทำงานในโหมดสแตนด์อะโลน"
+
+#: ../src/carrick.c:140
+msgid "Carrick connectivity applet"
+msgstr "แอพเพลทการเชื่อมต่อ Carrick"
+
+#: ../src/carrick.c:141
+msgid "- Moblin connectivity applet"
+msgstr "- แอพเพลทการเชื่อมต่อ Moblin "
+
+#: ../src/carrick.c:164
+msgid "network"
+msgstr "เครือข่าย"
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr "ผู้ช่วยเชื่อมต่อข้อมูลโทรศัพท์มือถือ"
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "เลือกประเทศ"
+
+#: ../callouts/3g/ggg-manual-dialog.c:89
+msgid "Manual Configuration"
+msgstr "คอนฟิกด้วยตนเอง"
+
+#: ../callouts/3g/ggg-manual-dialog.c:93
+msgid "Plan Name (required):"
+msgstr "ชื่อแพลน (ต้องการ):"
+
+#: ../callouts/3g/ggg-manual-dialog.c:96
+msgid "Username:"
+msgstr "ชื่อผู้ใช้:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:99
+msgid "Password:"
+msgstr "รหัสผ่าน"
+
+#: ../callouts/3g/ggg-manual-dialog.c:103
+msgid "Gateway:"
+msgstr "เกตเวย์:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:106
+msgid "Primary DNS:"
+msgstr "Primary DNS:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:109
+msgid "Secondary DNS:"
+msgstr "Secondary DNS:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:112
+msgid "Tertiary DNS:"
+msgstr "Tertiary DNS:"
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "เลือกแพลน 3G ของคุณ"
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "เลือกผู้ให้บริการ"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
-msgid "Sorry we've lost your %s connection to %s"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s ถึง %s"
+msgid "%s (Roaming)"
+msgstr "%s (การสัญจร)"
 
-#: ../carrick/carrick-notification-manager.c:210
-#, c-format
-msgid "Sorry, we've lost your %s connection"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s "
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "เลือกบริการ 3G"
 
-#: ../carrick/carrick-notification-manager.c:227
-msgid "Network changed"
-msgstr "เปลี่ยนแปลงเครือข่าย"
-
-#: ../carrick/carrick-notification-manager.c:246
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณกับเครือข่ายแบบสาย"
-
-#: ../carrick/carrick-notification-manager.c:253
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณไปยัง %s เครือข่าย %s"
-
-#: ../carrick/carrick-notification-manager.c:261
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณกับเครือข่าย %s"
-
-#: ../carrick/carrick-notification-manager.c:271
-#, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณกับเครือข่ายแบบสาย"
-
-#: ../carrick/carrick-notification-manager.c:278
-#, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s เชื่อมต่อคุณไปยัง %s  เครือข่าย %s"
-
-#: ../carrick/carrick-notification-manager.c:287
-#, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "เสียใจด้วย เราสูญเสียการเชื่อมต่อ %s  เชื่อมต่อคุณไปยังเครือข่าย %s "
+#~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+#~ msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรเปิดใช้ Wifi"
+#~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+#~ msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรเปิดใช้ WiMAX"
+#~ msgid ""
+#~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
+#~ msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรเปิดใช้ Bluetooth"
+#~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
+#~ msgstr "เสียใจด้วย เราไม่สามารถค้นหาเครือข่ายใดๆ คุณควรลองเปิดใช้สายแลน"
 
