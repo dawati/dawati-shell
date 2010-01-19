@@ -42,7 +42,7 @@ am_ready_cb (GObject      *source_object,
   TpAccount *account;
   AnerleyTpFeed *feed;
   ClutterActor *stage;
-  NbtkWidget *scroll_view;
+  ClutterActor *scroll_view;
   ClutterActor *grid;
   const gchar **argv = userdata;
   GError *error = NULL;
@@ -60,7 +60,7 @@ am_ready_cb (GObject      *source_object,
 
   stage = clutter_stage_get_default ();
   grid = CLUTTER_ACTOR (anerley_simple_grid_view_new (ANERLEY_FEED (feed)));
-  scroll_view = nbtk_scroll_view_new ();
+  scroll_view = mx_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                CLUTTER_ACTOR (scroll_view));
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
@@ -75,12 +75,12 @@ main (int    argc,
 {
   TpAccountManager *account_manager;
   gchar *path;
-  NbtkStyle *style;
+  MxStyle *style;
   GError *error = NULL;
 
   if (argc < 2)
   {
-    g_print ("Usage: ./test-tp-feed <account-name>\n");
+    g_print ("Usage: ./test-simple-grid-view <account-name>\n");
     return 1;
   }
 
@@ -90,11 +90,11 @@ main (int    argc,
                            "style.css",
                            NULL);
 
-  style = nbtk_style_get_default ();
+  style = mx_style_get_default ();
 
-  if (!nbtk_style_load_from_file (style,
-                                  path,
-                                  &error))
+  if (!mx_style_load_from_file (style,
+                                path,
+                                &error))
   {
     g_warning (G_STRLOC ": Error opening style: %s",
                error->message);
@@ -105,8 +105,10 @@ main (int    argc,
 
   account_manager = tp_account_manager_dup ();
 
-  tp_account_manager_prepare_async (account_manager, NULL,
-                                    am_ready_cb, argv);
+  tp_account_manager_prepare_async (account_manager,
+                                    NULL,
+                                    am_ready_cb,
+                                    argv);
 
   clutter_main ();
 

@@ -28,7 +28,7 @@
 
 #include <glib/gi18n.h>
 
-G_DEFINE_TYPE (AnerleyTile, anerley_tile, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (AnerleyTile, anerley_tile, MX_TYPE_TABLE)
 
 #define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ANERLEY_TYPE_TILE, AnerleyTilePrivate))
@@ -41,10 +41,11 @@ struct _AnerleyTilePrivate {
   AnerleyItem *item;
 
   ClutterActor *avatar;
-  NbtkWidget *avatar_bin;
-  NbtkWidget *primary_label;
+  ClutterActor *avatar_frame;
+  ClutterActor *primary_label;
+  ClutterActor *secondary_label;
+  ClutterActor *presence_label;
   ClutterActor *presence_icon;
-  NbtkWidget *presence_label;
 };
 
 enum
@@ -61,23 +62,23 @@ _item_display_name_changed_cb (AnerleyItem *item,
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (userdata);
 
-  nbtk_label_set_text (NBTK_LABEL (priv->primary_label),
-                       anerley_item_get_display_name (priv->item));
+  mx_label_set_text (MX_LABEL (priv->primary_label),
+                     anerley_item_get_display_name (priv->item));
 }
 
 static CoglHandle 
 _get_default_avatar_texture (void)
 {
-  NbtkTextureCache *cache;
+  MxTextureCache *cache;
   ClutterTexture *tmp_tex;
   static CoglHandle handle = NULL;
 
   if (handle)
     return handle;
 
-  cache = nbtk_texture_cache_get_default ();
-  tmp_tex = nbtk_texture_cache_get_texture (cache,
-                                            DEFAULT_AVATAR_IMAGE);
+  cache = mx_texture_cache_get_default ();
+  tmp_tex = mx_texture_cache_get_texture (cache,
+                                          DEFAULT_AVATAR_IMAGE);
   handle = clutter_texture_get_cogl_texture (tmp_tex);
   cogl_handle_ref (handle);
   g_object_unref (tmp_tex);
@@ -116,7 +117,7 @@ anerley_tile_update_presence_icon (AnerleyTile *tile,
                                    const gchar *path)
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (tile);
-  NbtkTextureCache *cache;
+  MxTextureCache *cache;
 
   if (priv->presence_icon)
   {
@@ -124,26 +125,21 @@ anerley_tile_update_presence_icon (AnerleyTile *tile,
                                     priv->presence_icon);
   }
 
-  cache = nbtk_texture_cache_get_default ();
+  cache = mx_texture_cache_get_default ();
 
-  priv->presence_icon = (ClutterActor *)nbtk_texture_cache_get_texture (cache,
-                                                                        path);
+  priv->presence_icon = (ClutterActor *)mx_texture_cache_get_texture (cache,
+                                                                      path);
   clutter_actor_set_size (priv->presence_icon, 16, 16);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)priv->presence_icon,
-                                        2,
-                                        1,
-                                        "x-fill",
-                                        FALSE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        FALSE,
-                                        "y-expand",
-                                        TRUE,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                      priv->presence_icon,
+                                      2,
+                                      1,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "y-align", 0.0,
+                                      NULL);
 
   clutter_actor_show (priv->presence_icon);
 }
@@ -166,36 +162,36 @@ _item_presence_changed_cb (AnerleyItem *item,
 
   if (presence_status == NULL)
   {
-    clutter_actor_hide ((ClutterActor *)priv->presence_label);
+    clutter_actor_hide (priv->presence_label);
     if (priv->presence_icon)
-      clutter_actor_hide ((ClutterActor *)priv->presence_icon);
+      clutter_actor_hide (priv->presence_icon);
 
     return;
   }
 
   if (presence_message && !g_str_equal (presence_message, ""))
   {
-    nbtk_label_set_text ((NbtkLabel *)priv->presence_label,
-                         presence_message);
+    mx_label_set_text ((MxLabel *)priv->presence_label,
+                       presence_message);
   } else {
     if (tmp == g_intern_static_string ("available"))
-      nbtk_label_set_text ((NbtkLabel *)priv->presence_label,
-                           _("Available"));
+      mx_label_set_text ((MxLabel *)priv->presence_label,
+                         _("Available"));
     else if (tmp == g_intern_static_string ("dnd"))
-      nbtk_label_set_text ((NbtkLabel *)priv->presence_label,
-                           _("Busy"));
+      mx_label_set_text ((MxLabel *)priv->presence_label,
+                         _("Busy"));
     else if (tmp == g_intern_static_string ("away"))
-      nbtk_label_set_text ((NbtkLabel *)priv->presence_label,
-                           _("Away"));
+      mx_label_set_text ((MxLabel *)priv->presence_label,
+                         _("Away"));
     else if (tmp == g_intern_static_string ("xa"))
-      nbtk_label_set_text ((NbtkLabel *)priv->presence_label,
-                           _("Away"));
+      mx_label_set_text ((MxLabel *)priv->presence_label,
+                         _("Away"));
     else
-      nbtk_label_set_text ((NbtkLabel *)priv->presence_label,
-                           _("Offline"));
+      mx_label_set_text ((MxLabel *)priv->presence_label,
+                         _("Offline"));
   }
 
-  clutter_actor_show ((ClutterActor *)priv->presence_label);
+  clutter_actor_show (priv->presence_label);
 
   if (tmp == g_intern_static_string ("available"))
     presence_icon_name = "presence-available.png";
@@ -428,7 +424,7 @@ _enter_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer       userdata)
 {
-  nbtk_widget_set_style_pseudo_class ((NbtkWidget *)actor,
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor),
                                       "hover");
   return TRUE;
 }
@@ -438,7 +434,7 @@ _leave_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer      userdata)
 {
-  nbtk_widget_set_style_pseudo_class ((NbtkWidget *)actor,
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor),
                                       NULL);
   return TRUE;
 }
@@ -451,66 +447,71 @@ anerley_tile_init (AnerleyTile *self)
 
   self->priv = priv;
 
-  priv->avatar_bin = nbtk_bin_new ();
-  nbtk_widget_set_style_class_name (priv->avatar_bin, "AnerleyTileAvatar");
+  priv->avatar_frame = mx_frame_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->avatar_frame),
+                               "AnerleyTileAvatar");
 
   priv->avatar = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
   /* TODO: Prefill with unknown icon */
-  nbtk_bin_set_child (NBTK_BIN (priv->avatar_bin), priv->avatar);
+  mx_bin_set_child (MX_BIN (priv->avatar_frame), priv->avatar);
 
   /* add avatar */
-  nbtk_table_add_actor (NBTK_TABLE (self), (ClutterActor *)priv->avatar_bin, 0,
-                        0);
-  nbtk_table_child_set_x_fill (NBTK_TABLE (self),
-                               (ClutterActor *)priv->avatar_bin, FALSE);
-  nbtk_table_child_set_y_fill (NBTK_TABLE (self),
-                               (ClutterActor *)priv->avatar_bin, FALSE);
-  nbtk_table_child_set_x_expand (NBTK_TABLE (self),
-                                 (ClutterActor *)priv->avatar_bin, FALSE);
-  nbtk_table_child_set_y_expand (NBTK_TABLE (self),
-                                 (ClutterActor *)priv->avatar_bin, FALSE);
-  nbtk_table_child_set_row_span (NBTK_TABLE (self),
-                                 (ClutterActor *)priv->avatar_bin, 3);
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->avatar_frame, 0,
+                      0);
+  mx_table_child_set_x_fill (MX_TABLE (self),
+                             priv->avatar_frame, FALSE);
+  mx_table_child_set_y_fill (MX_TABLE (self),
+                             priv->avatar_frame, FALSE);
+  mx_table_child_set_x_expand (MX_TABLE (self),
+                               priv->avatar_frame, FALSE);
+  mx_table_child_set_y_expand (MX_TABLE (self),
+                               priv->avatar_frame, FALSE);
+  mx_table_child_set_row_span (MX_TABLE (self),
+                               priv->avatar_frame, 3);
 
-  priv->primary_label = nbtk_label_new ("");
-  nbtk_widget_set_style_class_name (priv->primary_label,
+  priv->primary_label = mx_label_new ("");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->primary_label),
                                     "AnerleyTilePrimaryLabel");
 
-  nbtk_table_add_actor (NBTK_TABLE (self), (ClutterActor *)priv->primary_label,
-                        0, 1);
-  nbtk_table_child_set_y_fill (NBTK_TABLE (self),
-                               (ClutterActor *)priv->primary_label, FALSE);
-  nbtk_table_child_set_x_expand (NBTK_TABLE (self),
-                                 (ClutterActor *)priv->primary_label, FALSE);
-  nbtk_table_child_set_col_span (NBTK_TABLE (self),
-                                 (ClutterActor *)priv->primary_label, 2);
-  nbtk_table_child_set_y_align (NBTK_TABLE (self),
-                                (ClutterActor *)priv->primary_label, 1.0);
-  nbtk_table_child_set_x_align (NBTK_TABLE (self),
-                                (ClutterActor *)priv->primary_label, 0.0);
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (priv->primary_label));
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->primary_label,
+                      0,
+                      1);
+  mx_table_child_set_y_fill (MX_TABLE (self),
+                             priv->primary_label, FALSE);
+  mx_table_child_set_x_expand (MX_TABLE (self),
+                               priv->primary_label, FALSE);
+  mx_table_child_set_col_span (MX_TABLE (self),
+                               priv->primary_label, 2);
+  mx_table_child_set_y_align (MX_TABLE (self),
+                              priv->primary_label, 1.0);
+  mx_table_child_set_x_align (MX_TABLE (self),
+                              priv->primary_label, 0.0);
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->primary_label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text), PANGO_WRAP_WORD);
 
-  priv->presence_label = nbtk_label_new ("");
-  nbtk_widget_set_style_class_name (priv->presence_label,
-                                    "AnerleyTilePresenceLabel");
+  priv->presence_label = mx_label_new ("");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->presence_label),
+                               "AnerleyTilePresenceLabel");
 
-  nbtk_table_add_actor (NBTK_TABLE (self),
-                        (ClutterActor *)priv->presence_label, 2, 2);
-  nbtk_table_child_set_y_fill (NBTK_TABLE (self),
-                               (ClutterActor *)priv->presence_label, FALSE);
-  nbtk_table_child_set_x_fill (NBTK_TABLE (self),
-                               (ClutterActor *)priv->presence_label, FALSE);
-  nbtk_table_child_set_y_align (NBTK_TABLE (self),
-                                (ClutterActor *)priv->presence_label, 0.0);
-  nbtk_table_child_set_x_align (NBTK_TABLE (self),
-                                (ClutterActor *)priv->presence_label, 0.0);
+  mx_table_add_actor (MX_TABLE (self),
+                      (ClutterActor *)priv->presence_label, 2, 2);
+  mx_table_child_set_y_fill (MX_TABLE (self),
+                             priv->presence_label, FALSE);
+  mx_table_child_set_x_fill (MX_TABLE (self),
+                             priv->presence_label, FALSE);
+  mx_table_child_set_y_align (MX_TABLE (self),
+                              priv->presence_label, 0.0);
+  mx_table_child_set_x_align (MX_TABLE (self),
+                              priv->presence_label, 0.0);
 
-  nbtk_table_set_col_spacing ((NbtkTable *)self,
-                              4);
-  nbtk_table_set_row_spacing ((NbtkTable *)self,
-                              4);
+  mx_table_set_col_spacing ((MxTable *)self,
+                            4);
+  mx_table_set_row_spacing ((MxTable *)self,
+                            4);
+
   g_signal_connect (self,
                     "button-press-event",
                     (GCallback)_button_press_event_cb,
@@ -526,12 +527,9 @@ anerley_tile_init (AnerleyTile *self)
                     NULL);
 
   clutter_actor_set_reactive ((ClutterActor *)self, TRUE);
-
-  /* Need stay hidden it to take advantage of optimisations in grid */
-  g_object_set ((ClutterActor *)self, "show-on-set-parent", FALSE, NULL);
 }
 
-NbtkWidget *
+ClutterActor *
 anerley_tile_new (AnerleyItem *item)
 {
   return g_object_new (ANERLEY_TYPE_TILE,

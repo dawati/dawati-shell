@@ -51,13 +51,13 @@ main (int    argc,
 {
   AnerleyFeed *feed;
   ClutterActor *stage;
-  NbtkWidget *scroll_view;
-  NbtkWidget *icon_view;
+  ClutterActor *scroll_view;
+  ClutterActor *icon_view;
   ClutterModel *model;
   gchar *path;
-  NbtkStyle *style;
+  MxStyle *style;
   GError *error = NULL;
-  NbtkWidget *table, *entry;
+  ClutterActor *table, *entry;
   ClutterActor *tmp;
 
 
@@ -69,11 +69,11 @@ main (int    argc,
                            "style.css",
                            NULL);
 
-  style = nbtk_style_get_default ();
+  style = mx_style_get_default ();
 
-  if (!nbtk_style_load_from_file (style,
-                                  path,
-                                  &error))
+  if (!mx_style_load_from_file (style,
+                                path,
+                                &error))
   {
     g_warning (G_STRLOC ": Error opening style: %s",
                error->message);
@@ -87,44 +87,37 @@ main (int    argc,
   stage = clutter_stage_get_default ();
   icon_view = anerley_tile_view_new (ANERLEY_FEED_MODEL (model));
 
-  table = nbtk_table_new ();
-  entry = nbtk_entry_new (NULL);
-  tmp = nbtk_entry_get_clutter_text (NBTK_ENTRY (entry));
+  table = mx_table_new ();
+  entry = mx_entry_new (NULL);
+  tmp = mx_entry_get_clutter_text (MX_ENTRY (entry));
   g_signal_connect (tmp,
                     "text-changed",
                     G_CALLBACK (_entry_text_changed_cb),
                     model);
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
-                                        CLUTTER_ACTOR (entry),
-                                        0,
-                                        0,
-                                        "x-fill",
-                                        TRUE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        FALSE,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (table),
+                                      CLUTTER_ACTOR (entry),
+                                      0,
+                                      0,
+                                      "x-fill", TRUE,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      NULL);
 
-  scroll_view = nbtk_scroll_view_new ();
+  scroll_view = mx_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                CLUTTER_ACTOR (table));
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
                                CLUTTER_ACTOR (icon_view));
   clutter_actor_show_all (stage);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (table),
+  mx_table_add_actor_with_properties (MX_TABLE (table),
                                         CLUTTER_ACTOR (scroll_view),
                                         1,
                                         0,
-                                        "x-fill",
-                                        TRUE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        TRUE,
-                                        "y-fill",
-                                        TRUE,
+                                        "x-fill", TRUE,
+                                        "x-expand", TRUE,
+                                        "y-expand", TRUE,
+                                        "y-fill", TRUE,
                                         NULL);
 
   clutter_actor_set_size (CLUTTER_ACTOR (table), 640, 480);

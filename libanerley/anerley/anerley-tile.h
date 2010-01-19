@@ -25,7 +25,7 @@
 
 #include <glib-object.h>
 #include <anerley/anerley-item.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 
 G_BEGIN_DECLS
 
@@ -49,16 +49,16 @@ G_BEGIN_DECLS
 typedef struct _AnerleyTilePrivate AnerleyTilePrivate;
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
   AnerleyTilePrivate *priv;
 } AnerleyTile;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 } AnerleyTileClass;
 
 GType anerley_tile_get_type (void);
-NbtkWidget *anerley_tile_new (AnerleyItem *item);
+ClutterActor *anerley_tile_new (AnerleyItem *item);
 
 G_END_DECLS
 

@@ -23,7 +23,7 @@
 #ifndef _ANERLEY_TILE_VIEW
 #define _ANERLEY_TILE_VIEW
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <anerley/anerley-feed-model.h>
 #include <anerley/anerley-item.h>
 
@@ -47,18 +47,18 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), ANERLEY_TYPE_TILE_VIEW, AnerleyTileViewClass))
 
 typedef struct {
-  NbtkItemView parent;
+  MxItemView parent;
 } AnerleyTileView;
 
 typedef struct {
-  NbtkItemViewClass parent_class;
+  MxItemViewClass parent_class;
   void (*item_activated)(AnerleyTileView *view, AnerleyItem *item);
   void (*selection_changed)(AnerleyTileView *view);
 } AnerleyTileViewClass;
 
 GType anerley_tile_view_get_type (void);
 
-NbtkWidget *anerley_tile_view_new (AnerleyFeedModel *model);
+ClutterActor *anerley_tile_view_new (AnerleyFeedModel *model);
 AnerleyItem *anerley_tile_view_get_selected_item (AnerleyTileView *view);
 void anerley_tile_view_clear_selected_item (AnerleyTileView *view);
 

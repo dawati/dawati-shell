@@ -23,7 +23,7 @@
 #include "anerley-tile-view.h"
 #include <anerley/anerley-tile.h>
 
-G_DEFINE_TYPE (AnerleyTileView, anerley_tile_view, NBTK_TYPE_ITEM_VIEW)
+G_DEFINE_TYPE (AnerleyTileView, anerley_tile_view, MX_TYPE_ITEM_VIEW)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ANERLEY_TYPE_TILE_VIEW, AnerleyTileViewPrivate))
@@ -175,7 +175,7 @@ _selection_changed_before_cb (AnerleyTileView *tile_view,
   actor = priv->selected_actor;
 
   if (actor)
-    nbtk_widget_set_style_class_name ((NbtkWidget *)actor, NULL);
+    mx_stylable_set_style_class (MX_STYLABLE (actor), NULL);
 }
 
 static void
@@ -188,7 +188,7 @@ _selection_changed_after_cb (AnerleyTileView *tile_view,
   actor = priv->selected_actor;
 
   if (actor)
-    nbtk_widget_set_style_class_name ((NbtkWidget *)actor, "AnerleyTileSelected");
+    mx_stylable_set_style_class (MX_STYLABLE (actor), "AnerleyTileSelected");
 }
 
 static void
@@ -241,9 +241,8 @@ _container_actor_added_cb (ClutterContainer *container,
 static void
 anerley_tile_view_init (AnerleyTileView *self)
 {
-  nbtk_item_view_set_item_type (NBTK_ITEM_VIEW (self),
-                                ANERLEY_TYPE_TILE);
-  nbtk_item_view_add_attribute (NBTK_ITEM_VIEW (self), "item", 0);
+  mx_item_view_set_item_type (MX_ITEM_VIEW (self), ANERLEY_TYPE_TILE);
+  mx_item_view_add_attribute (MX_ITEM_VIEW (self), "item", 0);
 
   g_signal_connect (self,
                     "selection-changed",
@@ -259,18 +258,15 @@ anerley_tile_view_init (AnerleyTileView *self)
                     (GCallback)_container_actor_added_cb,
                     self);
 
-  nbtk_grid_set_row_gap (NBTK_GRID (self), ROW_SPACING);
-  nbtk_grid_set_column_gap (NBTK_GRID (self), COL_SPACING);
+  mx_grid_set_row_spacing (MX_GRID (self), ROW_SPACING);
+  mx_grid_set_column_spacing (MX_GRID (self), COL_SPACING);
 }
 
-NbtkWidget *
+ClutterActor *
 anerley_tile_view_new (AnerleyFeedModel *model)
 {
   return g_object_new (ANERLEY_TYPE_TILE_VIEW,
-                       "model",
-                       model,
-                       "allocate-hidden",
-                       TRUE,
+                       "model", model,
                        NULL);
 }
 
@@ -281,14 +277,14 @@ _bulk_change_start_cb (AnerleyFeedModel *model,
   /* Clear selected item, the old one is almost certainly wrong */
   anerley_tile_view_set_selected_actor ((AnerleyTileView *)userdata,
                                         NULL);
-  nbtk_item_view_freeze (NBTK_ITEM_VIEW (userdata));
+  mx_item_view_freeze (MX_ITEM_VIEW (userdata));
 }
 
 static void
 _bulk_change_end_cb (AnerleyFeedModel *model,
                      gpointer          userdata)
 {
-  nbtk_item_view_thaw (NBTK_ITEM_VIEW (userdata));
+  mx_item_view_thaw (MX_ITEM_VIEW (userdata));
 }
 
 static void
@@ -323,8 +319,8 @@ anerley_tile_view_set_model (AnerleyTileView  *view,
   if (model)
   {
     priv->model = g_object_ref (model);
-    nbtk_item_view_set_model (NBTK_ITEM_VIEW (view),
-                              (ClutterModel *)priv->model);
+    mx_item_view_set_model (MX_ITEM_VIEW (view),
+                            (ClutterModel *)priv->model);
 
     g_signal_connect (model,
                       "bulk-change-start",
@@ -343,8 +339,8 @@ anerley_tile_view_set_model (AnerleyTileView  *view,
   } else {
     if (model_was_set)
     {
-      nbtk_item_view_set_model (NBTK_ITEM_VIEW (view),
-                                NULL);
+      mx_item_view_set_model (MX_ITEM_VIEW (view),
+                              NULL);
     }
   }
 }

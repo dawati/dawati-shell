@@ -23,7 +23,7 @@
 #include "anerley-simple-grid-view.h"
 #include <anerley/anerley-tile.h>
 
-G_DEFINE_TYPE (AnerleySimpleGridView, anerley_simple_grid_view, NBTK_TYPE_GRID)
+G_DEFINE_TYPE (AnerleySimpleGridView, anerley_simple_grid_view, MX_TYPE_GRID)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ANERLEY_TYPE_SIMPLE_GRID_VIEW, AnerleySimpleGridViewPrivate))
@@ -138,7 +138,7 @@ anerley_simple_grid_view_init (AnerleySimpleGridView *self)
                                                 NULL);
 }
 
-NbtkWidget *
+ClutterActor *
 anerley_simple_grid_view_new (AnerleyFeed *feed)
 {
   return g_object_new (ANERLEY_TYPE_SIMPLE_GRID_VIEW, 
@@ -155,15 +155,15 @@ _feed_items_added_cb (AnerleyFeed *feed,
   AnerleySimpleGridView *grid = (AnerleySimpleGridView *)userdata;
   GList *l;
   AnerleyItem *item;
-  NbtkWidget *tile;
+  ClutterActor *tile;
 
   for (l = items; l; l = l->next)
   {
     item = (AnerleyItem *)l->data;
     tile = anerley_tile_new (item);
-    clutter_actor_set_size ((ClutterActor *)tile, 220, 90);
+    clutter_actor_set_size (tile, 220, 90);
     clutter_container_add_actor (CLUTTER_CONTAINER (grid),
-                                 (ClutterActor *)tile);
+                                 tile);
   }
 }
 
@@ -184,7 +184,7 @@ _feed_items_removed_cb (AnerleyFeed *feed,
   AnerleySimpleGridViewPrivate *priv = GET_PRIVATE (grid);
   GList *l;
   AnerleyItem *item;
-  NbtkWidget *tile;
+  ClutterActor *tile;
 
   for (l = items; l; l = l->next)
   {
@@ -194,7 +194,7 @@ _feed_items_removed_cb (AnerleyFeed *feed,
     if (tile)
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (grid),
-                                      (ClutterActor *)tile);
+                                      tile);
     }
   }
 }

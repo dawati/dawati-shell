@@ -20,7 +20,7 @@
  */
 
 
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <anerley/anerley-feed.h>
 
 #ifndef _ANERLEY_SIMPLE_GRID_VIEW_H
@@ -53,16 +53,16 @@ G_BEGIN_DECLS
   ANERLEY_TYPE_SIMPLE_GRID_VIEW, AnerleySimpleGridViewClass))
 
 typedef struct {
-  NbtkGrid parent;
+  MxGrid parent;
 } AnerleySimpleGridView;
 
 typedef struct {
-  NbtkGridClass parent_class;
+  MxGridClass parent_class;
 } AnerleySimpleGridViewClass;
 
 GType anerley_simple_grid_view_get_type (void);
 
-NbtkWidget *anerley_simple_grid_view_new (AnerleyFeed *feed);
+ClutterActor *anerley_simple_grid_view_new (AnerleyFeed *feed);
 
 G_END_DECLS
 

@@ -128,8 +128,10 @@ main (int    argc,
 
   account_manager = tp_account_manager_dup ();
 
-  tp_account_manager_prepare_async (account_manager, NULL,
-                                    am_ready_cb, argv);
+  tp_account_manager_prepare_async (account_manager,
+                                    NULL,
+                                    am_ready_cb,
+                                    argv);
 
   g_main_loop_run (main_loop);
 
