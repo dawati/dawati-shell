@@ -22,7 +22,7 @@
 #define _MNB_PEOPLE_PANEL
 
 #include <glib-object.h>
-#include <nbtk/nbtk.h>
+#include <mx/mx.h>
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
 
@@ -46,16 +46,16 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_PEOPLE_PANEL, MnbPeoplePanelClass))
 
 typedef struct {
-  NbtkTable parent;
+  MxTable parent;
 } MnbPeoplePanel;
 
 typedef struct {
-  NbtkTableClass parent_class;
+  MxTableClass parent_class;
 } MnbPeoplePanelClass;
 
 GType mnb_people_panel_get_type (void);
 
-NbtkWidget *mnb_people_panel_new (void);
+ClutterActor *mnb_people_panel_new (void);
 void mnb_people_panel_set_panel_client (MnbPeoplePanel *people_panel,
                                         MplPanelClient *panel_client);
 G_END_DECLS

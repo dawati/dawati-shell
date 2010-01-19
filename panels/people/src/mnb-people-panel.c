@@ -41,7 +41,7 @@
 
 #include "mnb-people-panel.h"
 
-G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, NBTK_TYPE_TABLE)
+G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_PEOPLE_PANEL, MnbPeoplePanelPrivate))
@@ -57,23 +57,23 @@ struct _MnbPeoplePanelPrivate {
   AnerleyFeedModel *model;
   AnerleyFeedModel *active_model;
   ClutterActor *tex;
-  NbtkWidget *entry;
+  ClutterActor *entry;
   GAppInfo *app_info;
   GtkIconTheme *icon_theme;
-  NbtkWidget *primary_button;
-  NbtkWidget *secondary_button;
-  NbtkWidget *tile_view;
-  NbtkWidget *active_tile_view;
   MplPanelClient *panel_client;
-  NbtkWidget *selection_pane;
-  NbtkWidget *control_box;
-  NbtkWidget *no_people_tile;
-  NbtkWidget *selected_tile;
-  NbtkWidget *nobody_selected_box;
-  NbtkWidget *content_table;
-  NbtkWidget *active_content_table;
-  NbtkWidget *everybody_offline_tile;
-  NbtkWidget *offline_banner;
+  ClutterActor *primary_button;
+  ClutterActor *secondary_button;
+  ClutterActor *tile_view;
+  ClutterActor *active_tile_view;
+  ClutterActor *selection_pane;
+  ClutterActor *control_box;
+  ClutterActor *no_people_tile;
+  ClutterActor *selected_tile;
+  ClutterActor *nobody_selected_box;
+  ClutterActor *content_table;
+  ClutterActor *active_content_table;
+  ClutterActor *everybody_offline_tile;
+  ClutterActor *offline_banner;
 };
 
 static void
@@ -142,40 +142,40 @@ _update_selected_item (MnbPeoplePanel *people_panel,
 
   if (item)
   {
-    clutter_actor_show ((ClutterActor *)priv->selected_tile);
-    clutter_actor_show ((ClutterActor *)priv->primary_button);
+    clutter_actor_show (priv->selected_tile);
+    clutter_actor_show (priv->primary_button);
 
     g_object_set (priv->selected_tile,
                   "item",
                   item,
                   NULL);
-    clutter_actor_show ((ClutterActor *)priv->control_box);
-    clutter_actor_hide ((ClutterActor *)priv->nobody_selected_box);
+    clutter_actor_show (priv->control_box);
+    clutter_actor_hide (priv->nobody_selected_box);
   } else {
-    clutter_actor_hide ((ClutterActor *)priv->selected_tile);
-    clutter_actor_hide ((ClutterActor *)priv->primary_button);
-    clutter_actor_hide ((ClutterActor *)priv->secondary_button);
-    clutter_actor_hide ((ClutterActor *)priv->control_box);
-    clutter_actor_show ((ClutterActor *)priv->nobody_selected_box);
+    clutter_actor_hide (priv->selected_tile);
+    clutter_actor_hide (priv->primary_button);
+    clutter_actor_hide (priv->secondary_button);
+    clutter_actor_hide (priv->control_box);
+    clutter_actor_show (priv->nobody_selected_box);
     return;
   }
 
   if (ANERLEY_IS_ECONTACT_ITEM (item))
   {
-    nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
-                           _("Send an email"));
-    nbtk_button_set_label (NBTK_BUTTON (priv->secondary_button),
-                           _("Edit details"));
-    clutter_actor_show ((ClutterActor *)priv->secondary_button);
+    mx_button_set_label (MX_BUTTON (priv->primary_button),
+                         _("Send an email"));
+    mx_button_set_label (MX_BUTTON (priv->secondary_button),
+                         _("Edit details"));
+    clutter_actor_show (priv->secondary_button);
 
     if (!anerley_econtact_item_get_email (ANERLEY_ECONTACT_ITEM (item)))
     {
-      clutter_actor_hide ((ClutterActor *)priv->primary_button);
+      clutter_actor_hide (priv->primary_button);
     }
   } else if (ANERLEY_IS_TP_ITEM (item)) {
-    nbtk_button_set_label (NBTK_BUTTON (priv->primary_button),
-                           _("Send a message"));
-    clutter_actor_hide ((ClutterActor *)priv->secondary_button);
+    mx_button_set_label (MX_BUTTON (priv->primary_button),
+                         _("Send a message"));
+    clutter_actor_hide (priv->secondary_button);
   } else {
     g_debug (G_STRLOC ": Unknown item type?");
   }
@@ -188,7 +188,7 @@ dropdown_show_cb (MplPanelClient *client,
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
 
   /* give focus to the actor */
-  clutter_actor_grab_key_focus ((ClutterActor *)priv->entry);
+  clutter_actor_grab_key_focus (priv->entry);
 }
 
 
@@ -209,7 +209,7 @@ _enter_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer      userdata)
 {
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor),
                                       "hover");
 
   return FALSE;
@@ -220,7 +220,7 @@ _leave_event_cb (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer      userdata)
 {
-  nbtk_widget_set_style_pseudo_class (NBTK_WIDGET (actor),
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor),
                                       NULL);
 
   return FALSE;
@@ -287,118 +287,96 @@ _icon_theme_changed_cb (GtkIconTheme *icon_theme,
   _update_fallback_icon ((MnbPeoplePanel *)userdata);
 }
 
-static NbtkWidget *
+static ClutterActor *
 _make_empty_people_tile (MnbPeoplePanel *people_panel,
                          gint            width)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
 
-  NbtkWidget *tile;
-  NbtkWidget *bin;
-  NbtkWidget *label;
+  ClutterActor *tile;
+  ClutterActor *frame;
+  ClutterActor *label;
+  ClutterActor *hbox;
   ClutterActor *tmp_text;
-  NbtkWidget *hbox;
 
-  tile = nbtk_table_new ();
-  nbtk_table_set_row_spacing (NBTK_TABLE (tile), 8);
+  tile = mx_table_new ();
+  mx_table_set_row_spacing (MX_TABLE (tile), 8);
 
   clutter_actor_set_width ((ClutterActor *)tile, width);
   clutter_actor_set_name ((ClutterActor *)tile,
                           "people-people-pane-no-people-tile");
-  bin = nbtk_bin_new ();
-  clutter_actor_set_name ((ClutterActor *)bin,
+  frame = mx_frame_new ();
+  clutter_actor_set_name (frame,
                           "people-no-people-message-bin");
-  label = nbtk_label_new (_("Sorry, we can't find any people. " \
-                            "Have you set up a Messenger account?"));
-  clutter_actor_set_name ((ClutterActor *)label,
+  label = mx_label_new (_("Sorry, we can't find any people. " \
+                          "Have you set up a Messenger account?"));
+  clutter_actor_set_name (label,
                           "people-people-pane-main-label");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                    PANGO_WRAP_WORD_CHAR);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
-  nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *)label);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)bin,
-                                        0,
-                                        0,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        FALSE,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        NULL);
-  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
+  mx_bin_set_child (MX_BIN (frame), label);
+  mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                      frame,
+                                      0,
+                                      0,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "x-fill", TRUE,
+                                      "y-fill", FALSE,
+                                      "x-align", 0.0,
+                                      NULL);
+  mx_bin_set_alignment (MX_BIN (frame), MX_ALIGN_START, MX_ALIGN_MIDDLE);
 
   priv->app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
 
   if (priv->app_info)
   {
-    hbox = nbtk_table_new ();
-    clutter_actor_set_name ((ClutterActor *)hbox,
+    hbox = mx_table_new ();
+    clutter_actor_set_name (hbox,
                             "people-no-people-launcher");
-    nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 8);
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                          (ClutterActor *)hbox,
-                                          1,
-                                          0,
-                                          "x-expand",
-                                          FALSE,
-                                          "y-expand",
-                                          FALSE,
-                                          "x-fill",
-                                          FALSE,
-                                          "y-fill",
-                                          FALSE,
-                                          "x-align",
-                                          0.0,
-                                          NULL);
+    mx_table_set_col_spacing (MX_TABLE (hbox), 8);
+    mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                        (ClutterActor *)hbox,
+                                        1,
+                                        0,
+                                        "x-expand", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "x-align", 0.0,
+                                        NULL);
 
 
     priv->tex = clutter_texture_new ();
     clutter_actor_set_size (priv->tex, ICON_SIZE, ICON_SIZE);
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
-                                          priv->tex,
-                                          1,
-                                          0,
-                                          "x-expand",
-                                          FALSE,
-                                          "x-fill",
-                                          FALSE,
-                                          "y-fill",
-                                          FALSE,
-                                          "y-expand",
-                                          FALSE,
-                                          "x-align",
-                                          0.0,
-                                          "y-align",
-                                          0.5,
-                                          NULL);
+    mx_table_add_actor_with_properties (MX_TABLE (hbox),
+                                        priv->tex,
+                                        1,
+                                        0,
+                                        "x-expand", FALSE,
+                                        "x-fill", FALSE,
+                                        "y-fill", FALSE,
+                                        "y-expand", FALSE,
+                                        "x-align", 0.0,
+                                        "y-align", 0.5,
+                                        NULL);
 
-    label = nbtk_label_new (g_app_info_get_description (priv->app_info));
-    clutter_actor_set_name ((ClutterActor *)label, "people-no-people-description");
-    nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
+    label = mx_label_new (g_app_info_get_description (priv->app_info));
+    clutter_actor_set_name (label, "people-no-people-description");
+    mx_table_add_actor_with_properties (MX_TABLE (hbox),
                                           (ClutterActor *)label,
                                           1,
                                           1,
-                                          "x-expand",
-                                          TRUE,
-                                          "x-fill",
-                                          FALSE,
-                                          "y-expand",
-                                          FALSE,
-                                          "y-fill",
-                                          FALSE,
-                                          "x-align",
-                                          0.0,
-                                          "y-align",
-                                          0.5,
+                                          "x-expand", TRUE,
+                                          "x-fill", FALSE,
+                                          "y-expand", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", 0.0,
+                                          "y-align", 0.5,
                                           NULL);
 
     priv->icon_theme = gtk_icon_theme_get_default ();
@@ -430,103 +408,93 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
   return tile;
 }
 
-static NbtkWidget *
+static ClutterActor *
 _make_everybody_offline_tile (MnbPeoplePanel *pane,
                               gint            width)
 {
-  NbtkWidget *tile;
+  ClutterActor *tile;
+  ClutterActor *label, *bin;
   ClutterActor *tmp_text;
-  NbtkWidget *label, *bin;
 
-  tile = nbtk_table_new ();
-  nbtk_table_set_row_spacing (NBTK_TABLE (tile), 8);
+  tile = mx_table_new ();
+  mx_table_set_row_spacing (MX_TABLE (tile), 8);
 
   clutter_actor_set_width ((ClutterActor *)tile, width);
   clutter_actor_set_name ((ClutterActor *)tile,
                           "people-pane-everybody-offline-tile");
-  label = nbtk_label_new (_("Sorry, we can't find any people. " \
-                            "It looks like they are all offline."));
+  label = mx_label_new (_("Sorry, we can't find any people. " \
+                          "It looks like they are all offline."));
   clutter_actor_set_name ((ClutterActor *)label,
                           "people-pane-everybody-offline-label");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                    PANGO_WRAP_WORD_CHAR);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
 
-  bin = nbtk_bin_new ();
-  nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *)label);
-  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
-  nbtk_bin_set_fill (NBTK_BIN (bin), FALSE, TRUE);
-  clutter_actor_set_name ((ClutterActor *)bin,
+  bin = mx_frame_new ();
+  mx_bin_set_child (MX_BIN (bin), label);
+  mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
+  mx_bin_set_fill (MX_BIN (bin), FALSE, TRUE);
+  clutter_actor_set_name (bin,
                           "people-pane-everybody-offline-bin");
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)bin,
-                                        0,
-                                        0,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        FALSE,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                      (ClutterActor *)bin,
+                                      0,
+                                      0,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "x-fill", TRUE,
+                                      "y-fill", FALSE,
+                                      "x-align", 0.0,
+                                      NULL);
   return tile;
 }
 
-static NbtkWidget *
+static ClutterActor *
 _make_offline_banner (MnbPeoplePanel *pane,
                       gint            width)
 {
-  NbtkWidget *tile;
+  ClutterActor *tile;
   ClutterActor *tmp_text;
-  NbtkWidget *label, *bin;
+  ClutterActor *label, *bin;
 
-  tile = nbtk_table_new ();
-  nbtk_table_set_row_spacing (NBTK_TABLE (tile), 8);
+  tile = mx_table_new ();
+  mx_table_set_row_spacing (MX_TABLE (tile), 8);
 
-  clutter_actor_set_width ((ClutterActor *)tile, width);
-  clutter_actor_set_name ((ClutterActor *)tile,
+  clutter_actor_set_width (tile, width);
+  clutter_actor_set_name (tile,
                           "people-pane-you-offline-banner");
-  label = nbtk_label_new (_("To see your IM contacts, "
-                            "go online in the Status panel."));
-  clutter_actor_set_name ((ClutterActor *)label,
+  label = mx_label_new (_("To see your IM contacts, "
+                          "go online in the Status panel."));
+  clutter_actor_set_name (label,
                           "people-pane-you-offline-label");
-  tmp_text = nbtk_label_get_clutter_text (NBTK_LABEL (label));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text),
                                    PANGO_WRAP_WORD_CHAR);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
 
-  bin = nbtk_bin_new ();
-  nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *)label);
-  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
-  nbtk_bin_set_fill (NBTK_BIN (bin), FALSE, TRUE);
-  clutter_actor_set_name ((ClutterActor *)bin,
+  bin = mx_frame_new ();
+  mx_bin_set_child (MX_BIN (bin), (label));
+  mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
+  mx_bin_set_fill (MX_BIN (bin), FALSE, TRUE);
+  clutter_actor_set_name (bin,
                           "people-pane-you-offline-bin");
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (tile),
-                                        (ClutterActor *)bin,
-                                        0,
-                                        0,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        FALSE,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                      (ClutterActor *)bin,
+                                      0,
+                                      0,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "x-fill", TRUE,
+                                      "y-fill", FALSE,
+                                      "x-align", 0.0,
+                                      NULL);
   return tile;
 }
 
@@ -541,7 +509,7 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
   if (clutter_model_get_first_iter ((ClutterModel *)model))
   {
     clutter_actor_show ((ClutterActor *)priv->active_content_table);
-    nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 6);
+    mx_table_set_row_spacing (MX_TABLE (priv->content_table), 6);
 
     if (priv->panel_client)
     {
@@ -562,7 +530,7 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
       }
     }
   } else {
-    nbtk_table_set_row_spacing (NBTK_TABLE (priv->content_table), 0);
+    mx_table_set_row_spacing (MX_TABLE (priv->content_table), 0);
     clutter_actor_hide ((ClutterActor *)priv->active_content_table);
 
     if (priv->panel_client)
@@ -579,8 +547,8 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
 }
 
 static void
-_primary_button_clicked_cb (NbtkButton *button,
-                            gpointer    userdata)
+_primary_button_clicked_cb (MxButton *button,
+                            gpointer  userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
   AnerleyItem *item;
@@ -629,8 +597,8 @@ _edit_contact_action (MnbPeoplePanel *panel,
 }
 
 static void
-_secondary_button_clicked_cb (NbtkButton *button,
-                              gpointer    userdata)
+_secondary_button_clicked_cb (MxButton *button,
+                              gpointer  userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
   AnerleyItem *item;
@@ -708,46 +676,46 @@ _update_placeholder_state (MnbPeoplePanel *self)
   /* There is something in the model, hide all placeholders */
   if (clutter_model_get_first_iter (CLUTTER_MODEL (priv->model)))
   {
-    clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
-    clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
+    clutter_actor_hide (priv->no_people_tile);
+    clutter_actor_hide (priv->everybody_offline_tile);
 
     /* Ensure content stuff is visible */
-    clutter_actor_show ((ClutterActor *)priv->content_table);
-    clutter_actor_show ((ClutterActor *)priv->selection_pane);
+    clutter_actor_show (priv->content_table);
+    clutter_actor_show (priv->selection_pane);
 
     if (accounts_available > 0 && accounts_online == 0)
     {
-      clutter_actor_show ((ClutterActor *)priv->offline_banner);
-      nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
+      clutter_actor_show (priv->offline_banner);
+      mx_table_set_row_spacing (MX_TABLE (self), 6);
     } else {
-      clutter_actor_hide ((ClutterActor *)priv->offline_banner);
+      clutter_actor_hide (priv->offline_banner);
       /* Because allocate-hidden=false still causes row spacing to be applied,
        * so halve it.
        */
-      nbtk_table_set_row_spacing (NBTK_TABLE (self), 3);
+      mx_table_set_row_spacing (MX_TABLE (self), 3);
     }
   } else {
     /* Hide real content stuff */
-    clutter_actor_hide ((ClutterActor *)priv->content_table);
-    clutter_actor_hide ((ClutterActor *)priv->selection_pane);
-    nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
+    clutter_actor_hide (priv->content_table);
+    clutter_actor_hide (priv->selection_pane);
+    mx_table_set_row_spacing (MX_TABLE (self), 6);
 
     if (accounts_online == 0)
     {
       if (accounts_available == 0)
       {
-        clutter_actor_show ((ClutterActor *)priv->no_people_tile);
-        clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
-        clutter_actor_hide ((ClutterActor *)priv->offline_banner);
+        clutter_actor_show (priv->no_people_tile);
+        clutter_actor_hide (priv->everybody_offline_tile);
+        clutter_actor_hide (priv->offline_banner);
       } else {
-        clutter_actor_show ((ClutterActor *)priv->offline_banner);
-        clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
-        clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
+        clutter_actor_show (priv->offline_banner);
+        clutter_actor_hide (priv->no_people_tile);
+        clutter_actor_hide (priv->everybody_offline_tile);
       }
     } else {
-      clutter_actor_show ((ClutterActor *)priv->everybody_offline_tile);
-      clutter_actor_hide ((ClutterActor *)priv->no_people_tile);
-      clutter_actor_hide ((ClutterActor *)priv->offline_banner);
+      clutter_actor_show (priv->everybody_offline_tile);
+      clutter_actor_hide (priv->no_people_tile);
+      clutter_actor_hide (priv->offline_banner);
     }
   }
 }
@@ -779,58 +747,58 @@ static void
 mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
-  NbtkWidget *hbox, *label;
-  NbtkWidget *scroll_view, *scroll_bin, *bin;
+  ClutterActor *hbox, *label;
+  ClutterActor *scroll_view, *scroll_bin, *bin;
   AnerleyFeed *feed, *ebook_feed, *active_feed;
   EBook *book;
   GError *error = NULL;
 
-  nbtk_table_set_col_spacing (NBTK_TABLE (self), 4);
-  nbtk_table_set_row_spacing (NBTK_TABLE (self), 6);
+  mx_table_set_col_spacing (MX_TABLE (self), 4);
+  mx_table_set_row_spacing (MX_TABLE (self), 6);
   clutter_actor_set_name (CLUTTER_ACTOR (self), "people-vbox");
 
-  hbox = nbtk_table_new ();
+  hbox = mx_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (hbox), "people-search");
-  nbtk_table_set_col_spacing (NBTK_TABLE (hbox), 20);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        CLUTTER_ACTOR (hbox),
-                                        0, 0,
-                                        "row-span", 1,
-                                        "col-span", 2,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "x-fill", TRUE,
-                                        "y-fill", TRUE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.0,
-                                        NULL);
+  mx_table_set_col_spacing (MX_TABLE (hbox), 20);
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      CLUTTER_ACTOR (hbox),
+                                      0, 0,
+                                      "row-span", 1,
+                                      "col-span", 2,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "x-fill", TRUE,
+                                      "y-fill", TRUE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.0,
+                                      NULL);
 
-  label = nbtk_label_new (_("People"));
+  label = mx_label_new (_("People"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "people-search-label");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
-                                        CLUTTER_ACTOR (label),
-                                        0, 0,
-                                        "x-expand", FALSE,
-                                        "y-expand", FALSE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.5,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (hbox),
+                                      CLUTTER_ACTOR (label),
+                                      0, 0,
+                                      "x-expand", FALSE,
+                                      "y-expand", FALSE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.5,
+                                      NULL);
 
-  priv->entry = mpl_entry_new (_("Search"));
+  priv->entry = (ClutterActor *) mpl_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600);
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (hbox),
-                                        CLUTTER_ACTOR (priv->entry),
-                                        0, 1,
-                                        "x-expand", FALSE,
-                                        "y-expand", FALSE,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.5,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (hbox),
+                                      CLUTTER_ACTOR (priv->entry),
+                                      0, 1,
+                                      "x-expand", FALSE,
+                                      "y-expand", FALSE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.5,
+                                      NULL);
   g_signal_connect (priv->entry,
                     "text-changed",
                     (GCallback)_entry_text_changed_cb,
@@ -862,57 +830,52 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
   priv->active_tile_view = anerley_tile_view_new (priv->active_model);
 
-  priv->content_table = nbtk_table_new ();
+  priv->content_table = mx_table_new ();
 
   /* active conversations */
-  priv->active_content_table = nbtk_table_new ();
+  priv->active_content_table = mx_table_new ();
 
-  clutter_actor_hide ((ClutterActor *)priv->active_content_table);
-  clutter_actor_set_name ((ClutterActor *)priv->active_content_table, "active-content-table");
+  clutter_actor_hide (priv->active_content_table);
+  clutter_actor_set_name (priv->active_content_table, "active-content-table");
 
-  bin = nbtk_bin_new ();
-  label = nbtk_label_new (_("People talking to you ..."));
-  clutter_actor_set_name ((ClutterActor *)label, "active-content-header-label");
-  nbtk_bin_set_child (NBTK_BIN (bin), (ClutterActor *)label);
-  nbtk_bin_set_alignment (NBTK_BIN (bin), NBTK_ALIGN_START, NBTK_ALIGN_MIDDLE);
-  nbtk_bin_set_fill (NBTK_BIN (bin), FALSE, TRUE);
-  clutter_actor_set_name ((ClutterActor *)bin, "active-content-header");
+  bin = mx_frame_new ();
+  label = mx_label_new (_("People talking to you ..."));
+  clutter_actor_set_name (label, "active-content-header-label");
+  mx_bin_set_child (MX_BIN (bin), label);
+  mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
+  mx_bin_set_fill (MX_BIN (bin), FALSE, TRUE);
+  clutter_actor_set_name (bin, "active-content-header");
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->active_content_table),
-                        (ClutterActor *)bin,
-                        0,
-                        0);
+  mx_table_add_actor (MX_TABLE (priv->active_content_table),
+                      bin,
+                      0,
+                      0);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->active_content_table),
-                        (ClutterActor *)priv->active_tile_view,
-                        1,
-                        0);
+  mx_table_add_actor (MX_TABLE (priv->active_content_table),
+                      priv->active_tile_view,
+                      1,
+                      0);
 
-  nbtk_table_add_actor (NBTK_TABLE (priv->content_table),
-                        (ClutterActor *)priv->active_content_table,
-                        0,
-                        0);
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->content_table),
-                               (ClutterActor *)priv->active_content_table,
-                               "allocate-hidden", FALSE,
-                               NULL);
+  mx_table_add_actor (MX_TABLE (priv->content_table),
+                      priv->active_content_table,
+                      0,
+                      0);
 
   /* main area */
-  scroll_view = nbtk_scroll_view_new ();
+  scroll_view = mx_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
-                               (ClutterActor *)priv->tile_view);
+                               priv->tile_view);
 
-  scroll_bin = nbtk_table_new ();
-  nbtk_table_add_actor (NBTK_TABLE (scroll_bin),
-                        (ClutterActor *)scroll_view,
-                        0,
-                        0);
-  nbtk_table_add_actor (NBTK_TABLE (priv->content_table),
-                        (ClutterActor *)scroll_bin,
-                        1,
-                        0);
-  clutter_actor_set_name ((ClutterActor *)scroll_bin, "people-scroll-bin");
-
+  scroll_bin = mx_table_new ();
+  mx_table_add_actor (MX_TABLE (scroll_bin),
+                      scroll_view,
+                      0,
+                      0);
+  mx_table_add_actor (MX_TABLE (priv->content_table),
+                      scroll_bin,
+                      1,
+                      0);
+  clutter_actor_set_name (scroll_bin, "people-scroll-bin");
 
 
   /* No people && no accounts enabled */
@@ -920,20 +883,18 @@ mnb_people_panel_init (MnbPeoplePanel *self)
     _make_empty_people_tile (self,
                              clutter_actor_get_width ((ClutterActor *)scroll_view));
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->no_people_tile,
-                                        1,
-                                        0,
-                                        "x-fill", TRUE,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "y-fill", FALSE,
-                                        "y-align", 0.0,
-                                        "row-span", 1,
-                                        "col-span", 2,
-                                        "allocate-hidden", FALSE,
-                                        NULL);
-
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->no_people_tile,
+                                      1,
+                                      0,
+                                      "x-fill", TRUE,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
+                                      "y-align", 0.0,
+                                      "row-span", 1,
+                                      "col-span", 2,
+                                      NULL);
 
   /* No people && acounts are online */
   priv->everybody_offline_tile =
@@ -941,201 +902,160 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                   clutter_actor_get_width ((ClutterActor *)scroll_view));
   clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
 
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->everybody_offline_tile,
-                                        1, 0,
-                                        "x-fill", TRUE,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "y-fill", FALSE,
-                                        "y-align", 0.0,
-                                        "row-span", 1,
-                                        "col-span", 2,
-                                        "allocate-hidden", FALSE,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->everybody_offline_tile,
+                                      1, 0,
+                                      "x-fill", TRUE,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
+                                      "y-align", 0.0,
+                                      "row-span", 1,
+                                      "col-span", 2,
+                                      NULL);
 
   priv->offline_banner =
     _make_offline_banner (self,
-                          clutter_actor_get_width ((ClutterActor *)scroll_view));
-  clutter_actor_hide ((ClutterActor *)priv->offline_banner);
-
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->offline_banner,
-                                        1, 0,
-                                        "x-fill", TRUE,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "y-fill", FALSE,
-                                        "y-align", 0.0,
-                                        "row-span", 1,
-                                        "col-span", 2,
-                                        "allocate-hidden", FALSE,
-                                        NULL);
-
+                          clutter_actor_get_width (scroll_view));
+  clutter_actor_hide (priv->offline_banner);
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->offline_banner,
+                                      1, 0,
+                                      "x-fill", TRUE,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
+                                      "y-align", 0.0,
+                                      "row-span", 1,
+                                      "col-span", 2,
+                                      NULL);
 
   /* Real content stuff */
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->content_table,
-                                        2, 0,
-                                        "x-fill", TRUE,
-                                        "x-expand", TRUE,
-                                        "y-expand", FALSE,
-                                        "y-fill", TRUE,
-                                        "row-span", 1,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->content_table,
+                                      2, 0,
+                                      "x-fill", TRUE,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "y-fill", TRUE,
+                                      "row-span", 1,
+                                      NULL);
 
-  priv->selection_pane = nbtk_table_new ();
-  clutter_actor_set_height ((ClutterActor *)priv->selection_pane, 220);
-  clutter_actor_set_name ((ClutterActor *)priv->selection_pane, "people-selection-pane");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (self),
-                                        (ClutterActor *)priv->selection_pane,
-                                        2, 1,
-                                        "x-fill", FALSE,
-                                        "y-fill", FALSE,
-                                        "x-expand", FALSE,
-                                        "y-expand", TRUE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.0,
-                                        NULL);
+  priv->selection_pane = mx_table_new ();
+  clutter_actor_set_height (priv->selection_pane, 220);
+  clutter_actor_set_name (priv->selection_pane, "people-selection-pane");
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->selection_pane,
+                                      2, 1,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.0,
+                                      NULL);
 
-  label = nbtk_label_new (_("Selection"));
-  clutter_actor_set_name ((ClutterActor *)label, "people-selection-label");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->selection_pane),
-                                        (ClutterActor *)label,
-                                        0,
-                                        0,
-                                        "x-fill",
-                                        FALSE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        FALSE,
-                                        "y-expand",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
+  label = mx_label_new (_("Selection"));
+  clutter_actor_set_name (label, "people-selection-label");
+  mx_table_add_actor_with_properties (MX_TABLE (priv->selection_pane),
+                                      label,
+                                      0,
+                                      0,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      "x-expand", FALSE,
+                                      "y-expand", FALSE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.0,
+                                      NULL);
 
-  priv->control_box = nbtk_table_new ();
-  nbtk_table_set_row_spacing (NBTK_TABLE (priv->control_box), 6);
-  clutter_actor_set_width ((ClutterActor *)priv->control_box, 200);
-  clutter_actor_set_name ((ClutterActor *)priv->control_box, "people-control-box");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->selection_pane),
-                                        (ClutterActor *)priv->control_box,
-                                        1,
-                                        0,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        TRUE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        TRUE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
+  priv->control_box = mx_table_new ();
+  mx_table_set_row_spacing (MX_TABLE (priv->control_box), 6);
+  clutter_actor_set_width (priv->control_box, 200);
+  clutter_actor_set_name (priv->control_box, "people-control-box");
+  mx_table_add_actor_with_properties (MX_TABLE (priv->selection_pane),
+                                      priv->control_box,
+                                      1,
+                                      0,
+                                      "x-fill", TRUE,
+                                      "y-fill", TRUE,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.0,
+                                      NULL);
 
-  priv->nobody_selected_box = nbtk_bin_new ();
+  priv->nobody_selected_box = mx_frame_new ();
   clutter_actor_set_width ((ClutterActor *)priv->nobody_selected_box, 200);
   clutter_actor_set_name ((ClutterActor *)priv->nobody_selected_box,
                           "people-nobody-selected");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->selection_pane),
-                                        (ClutterActor *)priv->nobody_selected_box,
-                                        1,
-                                        0,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        TRUE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        TRUE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
-  label = nbtk_label_new (_("Nobody selected"));
+  mx_table_add_actor_with_properties (MX_TABLE (priv->selection_pane),
+                                      (ClutterActor *)priv->nobody_selected_box,
+                                      1,
+                                      0,
+                                      "x-fill", TRUE,
+                                      "y-fill", TRUE,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.0,
+                                      NULL);
+  label = mx_label_new (_("Nobody selected"));
   clutter_actor_set_name ((ClutterActor *)label,
                           "people-nobody-selected-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->nobody_selected_box),
-                               (ClutterActor *)label);
-  nbtk_bin_set_alignment (NBTK_BIN (priv->nobody_selected_box),
-                          NBTK_ALIGN_MIDDLE,
-                          NBTK_ALIGN_START);
-  nbtk_bin_set_fill (NBTK_BIN (priv->nobody_selected_box),
-                     FALSE,
-                     FALSE);
+                               label);
+  mx_bin_set_alignment (MX_BIN (priv->nobody_selected_box),
+                        MX_ALIGN_MIDDLE,
+                        MX_ALIGN_START);
+  mx_bin_set_fill (MX_BIN (priv->nobody_selected_box),
+                   FALSE,
+                   FALSE);
 
   priv->selected_tile = anerley_tile_new (NULL);
   clutter_actor_set_height ((ClutterActor *)priv->selected_tile, 90);
   clutter_actor_set_name (CLUTTER_ACTOR (priv->selected_tile),
                           "people-selected-item");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->control_box),
-                                        (ClutterActor *)priv->selected_tile,
-                                        0,
-                                        0,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->control_box),
+                                      priv->selected_tile,
+                                      0,
+                                      0,
+                                      "x-fill", TRUE,
+                                      "y-fill", FALSE,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.0,
+                                      NULL);
 
-  priv->primary_button = nbtk_button_new_with_label ("");
+  priv->primary_button = mx_button_new_with_label ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->primary_button), "people-primary-action");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->control_box),
-                                        (ClutterActor *)priv->primary_button,
-                                        1,
-                                        0,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        FALSE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        "allocate-hidden",
-                                        FALSE,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->control_box),
+                                      priv->primary_button,
+                                      1,
+                                      0,
+                                      "x-fill", TRUE,
+                                      "y-fill", FALSE,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.0,
+                                      FALSE,
+                                      NULL);
 
-  priv->secondary_button = nbtk_button_new_with_label ("");
+  priv->secondary_button = mx_button_new_with_label ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->secondary_button), "people-secondary-action");
-  nbtk_table_add_actor_with_properties (NBTK_TABLE (priv->control_box),
-                                        (ClutterActor *)priv->secondary_button,
-                                        2,
-                                        0,
-                                        "x-fill",
-                                        TRUE,
-                                        "y-fill",
-                                        FALSE,
-                                        "x-expand",
-                                        TRUE,
-                                        "y-expand",
-                                        TRUE,
-                                        "x-align",
-                                        0.0,
-                                        "y-align",
-                                        0.0,
-                                        NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->control_box),
+                                      priv->secondary_button,
+                                      2,
+                                      0,
+                                      "x-fill", TRUE,
+                                      "y-fill", FALSE,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-align", 0.0,
+                                      "y-align", 0.0,
+                                      NULL);
 
   _update_selected_item (self, NULL);
 
@@ -1194,7 +1114,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     self);
 }
 
-NbtkWidget *
+ClutterActor *
 mnb_people_panel_new (void)
 {
   return g_object_new (MNB_TYPE_PEOPLE_PANEL, NULL);

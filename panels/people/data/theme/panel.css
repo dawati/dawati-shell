@@ -4,7 +4,7 @@
 }
 
 *#people-search {
-  border-image: url('file://people-search-bg.png') 4 stretch;
+  border-image: url('people-search-bg.png') 4 stretch;
   padding: 4;
 }
 
@@ -24,7 +24,7 @@
 *#people-pane-everybody-offline-bin,
 *#people-pane-you-offline-bin
 {
-  border-image: url('file://grey-backdrop.png') 4 stretch;
+  border-image: url('grey-backdrop.png') 4;
   padding: 8;
 }
 
@@ -50,7 +50,7 @@
 
 *#people-no-people-launcher:hover
 {
-  border-image: url("file://tile-bg-hover.png") 5 6 7 6;
+  border-image: url("tile-bg-hover.png") 5 6 7 6;
   padding: 9 10 11 10;
 }
 
@@ -58,7 +58,7 @@
 
 AnerleyTile *.AnerleyTileAvatar
 {
-  border-image: url("file://avatar-bg.png") 5 6 7 6;
+  border-image: url("avatar-bg.png") 5 6 7 6;
   padding: 7 8 9 8;
 }
 
@@ -69,12 +69,12 @@ AnerleyTile
 
 AnerleyTile:hover
 {
-  border-image: url("file://tile-bg-hover.png") 5 6 7 6;
+  border-image: url("tile-bg-hover.png") 5 6 7 6;
 }
 
 AnerleyTile.AnerleyTileSelected
 {
-  border-image: url('file://selected-highlight.png') 5 6 7 6;
+  border-image: url('selected-highlight.png') 5 6 7 6;
 }
 
 AnerleyTile *.AnerleyTilePrimaryLabel
@@ -96,19 +96,19 @@ AnerleyTile *.AnerleyTileSecondaryLabel
 
 *#people-scroll-bin, *#active-content-table
 {
-  border-image: url('file://scroll-view-bin-bg.png') 10 stretch;
+  border-image: url('scroll-view-bin-bg.png') 10;
   padding: 8;
 }
 
 *#active-content-header
 {
-  border-image: url('file://active-conversations-header.png') 1 stretch;
+  border-image: url('active-conversations-header.png') 1;
   padding: 8;
 }
 
 *#people-selection-pane
 {
-  border-image: url('file://selection-border.png') 7 stretch;
+  border-image: url('selection-border.png') 7;
   padding: 8;
 }
 
@@ -126,7 +126,7 @@ AnerleyTile *.AnerleyTileSecondaryLabel
 
 *#people-control-box
 {
-  border-image: url('file://selection-full.png') 5 stretch;
+  border-image: url('selection-full.png') 5;
   padding-top: 6;
   padding-bottom: 6;
   padding-right: 5;
@@ -135,7 +135,7 @@ AnerleyTile *.AnerleyTileSecondaryLabel
 
 *#people-nobody-selected
 {
-  border-image: url('file://selection-empty.png') 5 stretch;
+  border-image: url('selection-empty.png') 5;
   padding: 6;
 }
 
