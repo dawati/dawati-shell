@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-19 09:28+0000\n"
-"PO-Revision-Date: 2009-08-17 19:13+0700\n"
+"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"PO-Revision-Date: 2010-01-19 20:17+0700\n"
 "Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,38 +17,36 @@ msgstr ""
 "X-Poedit-Language: Thai\n"
 "X-Poedit-Country: THAILAND\n"
 
-#: ../penge/penge-calendar-pane.c:207
+#: ../penge/penge-calendar-pane.c:476
 msgid "<b>Appointments</b>"
 msgstr "<b>ตารางนัด</b>"
 
-#: ../penge/penge-events-pane.c:208
+#: ../penge/penge-events-pane.c:59
+msgid "Create an appointment"
+msgstr "สร้างนัดหมาย"
+
+#: ../penge/penge-events-pane.c:60
+#: ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "เพิ่ม"
+
+#: ../penge/penge-events-pane.c:268
 msgid "No calendar entries this week"
 msgstr "ไม่มีนัดหมายในสัปดาห์นี้"
 
-#: ../penge/penge-people-pane.c:191
-msgid ""
-"Your friends' feeds and web services will appear here. Activate your "
-"accounts now!"
-msgstr "ฟีดของเพื่อนๆ และเว็บเซอร์วิสจะปรากฏที่นี่ เปิดใช้งานบัญชีของคุณวันนี้!"
+#: ../penge/penge-people-placeholder-tile.c:116
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
+msgstr "สิ่งที่เพื่อนของคุณทำออนไลน์ จะปรากฏที่นี่. เปิดใช้งานบัญชีของคุณ!"
 
-#: ../penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-msgstr "\t<b>ยินดีต้อนรับสู่ Moblin 2.0 สำหรับ Netbooks</b>"
-
-#: ../penge/penge-recent-files-pane.c:227
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
-msgstr ""
-"เพราะ Moblin แตกต่างจากคอมพิวเตอร์อื่นๆ "
-"เราใส่สิ่งละอันพันละน้อยเข้าไปเพื่อช่วยให้คุณค้นพบหนทาง เราหวังว่าคุณจะชอบมัน ทีม Moblin"
-
-#: ../penge/penge-recent-file-tile.c:218
+#: ../penge/penge-recent-file-tile.c:224
 msgid "Web page"
 msgstr "หน้าเว็บ"
 
-#: ../penge/penge-tasks-pane.c:287
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "สร้างงานใหม่"
+
+#: ../penge/penge-tasks-pane.c:433
 msgid "Nothing to do today"
 msgstr "ไม่มีกิจกรรมวันนี้"
 
@@ -56,3 +54,12 @@ msgstr "ไม่มีกิจกรรมวันนี้"
 #, c-format
 msgid "Due %x"
 msgstr "ระยะเวลา %x"
+
+#: ../penge/penge-welcome-tile.c:88
+msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgstr "<b>ยินดีต้อนรับสู่ Moblin 2.1 สำหรับ Netbooks</b>"
+
+#: ../penge/penge-welcome-tile.c:108
+msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgstr "เพราะ Moblin แตกต่างจากคอมพิวเตอร์อื่นๆ เราใส่สิ่งละอันพันละน้อยเข้าไปเพื่อช่วยให้คุณค้นพบหนทาง เราหวังว่าคุณจะชอบมัน ทีม Moblin"
+
