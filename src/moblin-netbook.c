@@ -1287,6 +1287,7 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
 {
   MutterPlugin *plugin = MUTTER_PLUGIN (data);
 
+#if 0
   /*
    * Flush any pending changes to the visibility of the window.
    * (bug 1008 suggests that the removal of an empty workspace is sometimes
@@ -1303,6 +1304,7 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
    * by flushing the state in the intermediate stage for the alpha2 release.
    */
   meta_window_calc_showing (mw);
+#endif
 
   check_for_empty_workspace (plugin, old_workspace, mw, FALSE);
 }
