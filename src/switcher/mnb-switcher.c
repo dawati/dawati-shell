@@ -2,7 +2,7 @@
 
 /*
  * Moblin Netbook
- * Copyright © 2009, Intel Corporation.
+ * Copyright © 2009, 2010, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -464,7 +464,19 @@ mnb_switcher_hide (ClutterActor *self)
    * item dispose vfunction, but if something breaks and an item leaks, we want
    * to make sure that we at least have no left over tooltips on screen.
    */
-  mnb_switcher_hide_tooltip ((MnbSwitcher*)self);
+  if (priv->active_tooltip)
+    {
+      g_object_weak_unref (G_OBJECT (priv->active_tooltip),
+                           mnb_switcher_tooltip_weak_notify, self);
+
+      /*
+       * We must use the plain clutter_actor_hide() here, since
+       * mx_tooltip_hide() triggers animation, which will not finish until after
+       * the tooltip has been disposed of.
+       */
+      clutter_actor_hide ((ClutterActor*)priv->active_tooltip);
+      priv->active_tooltip = NULL;
+    }
 
   if (priv->show_completed_id)
     {

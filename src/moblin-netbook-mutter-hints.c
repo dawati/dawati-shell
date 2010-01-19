@@ -1,0 +1,101 @@
+#include "moblin-netbook-mutter-hints.h"
+#include "window.h"
+
+#include <string.h>
+
+typedef struct _MutterHints MutterHints;
+
+typedef enum
+{
+  HINT_UNSET = 0,
+  HINT_YES,
+  HINT_NO
+} HintBoolean;
+
+typedef enum
+{
+  HINT_NEW_WORKSPACE = 0x1,
+  HINT_NAKED         = 0x2
+} HintFlags;
+
+
+struct _MutterHints
+{
+  HintBoolean new_workspace;
+
+  gboolean    naked : 1;
+};
+
+static void
+parse_mutter_hints (const gchar *hints_str, MutterHints *hints, HintFlags flags)
+{
+  gchar **items = g_strsplit (hints_str, ":", 0);
+  gchar **p = items;
+
+  if (!p)
+    return;
+
+  while (*p && flags)
+    {
+      gchar **entry = g_strsplit (*p, "=", 0);
+
+      if (entry)
+        {
+          gchar *key;
+          gchar *value;
+
+          key   = *entry;
+          value = key ? *(entry+1) : NULL;
+
+          /*
+           * Only look for flags the caller is interested in; unset each flag
+           * bit as we parse the relevant hint and quit once no more flags are
+           * set.
+           */
+          if (key && value)
+            {
+              if ((flags & HINT_NAKED) &&
+                  !strcmp (key, "moblin-frame-style"))
+                {
+                  flags &= ~HINT_NAKED;
+
+                  if (!strcmp (value, "naked"))
+                    hints->naked = TRUE;
+                }
+              else if ((flags & HINT_NEW_WORKSPACE) &&
+                       !strcmp (key, "moblin-on-new-workspace"))
+                {
+                  flags &= ~HINT_NEW_WORKSPACE;
+
+                  if (!strcmp (value, "yes"))
+                    hints->new_workspace = HINT_YES;
+                  else if (!strcmp (value, "no"))
+                    hints->new_workspace = HINT_NO;
+                }
+              else
+                g_debug (G_STRLOC ": unknown hint [%s=%s]", key, value);
+            }
+
+          g_strfreev (entry);
+        }
+
+      p++;
+    }
+
+  g_strfreev (items);
+}
+
+gboolean
+moblin_netbook_mutter_hints_is_naked (MetaWindow *window)
+{
+  const gchar *hints_str = meta_window_get_mutter_hints (window);
+  MutterHints  hints = {0};
+
+  if (!hints_str)
+    return FALSE;
+
+  parse_mutter_hints (hints_str, &hints, HINT_NAKED);
+
+  return hints.naked;
+}
+

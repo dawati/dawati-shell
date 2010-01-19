@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (c) 2008, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *         Thomas Wood <thomas@linux.intel.com>
@@ -33,6 +33,7 @@
 #include "effects/mnb-switch-zones-effect.h"
 #include "notifications/mnb-notification-gtk.h"
 #include "mnb-panel-frame.h"
+#include "moblin-netbook-constraints.h"
 
 #include <compositor-mutter.h>
 #include <display.h>
@@ -380,11 +381,45 @@ moblin_netbook_plugin_constructed (GObject *object)
   ClutterColor   low_clr = { 0, 0, 0, 0x7f };
   GError        *err = NULL;
 
-  MetaScreen   *screen  = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
-  MetaDisplay  *display = meta_screen_get_display (screen);
-  ClutterActor *stage   = mutter_get_stage_for_screen (screen);
+  MetaScreen   *screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  MetaDisplay  *display   = meta_screen_get_display (screen);
+  ClutterActor *stage     = mutter_get_stage_for_screen (screen);
+  Display      *xdpy      = meta_display_get_xdisplay (display);
+  guint         screen_no = meta_screen_get_screen_number (screen);
+
+  gint          screen_width_mm  = XDisplayWidthMM (xdpy, screen_no);
+  gint          screen_height_mm = XDisplayHeightMM (xdpy, screen_no);
+
+  g_debug ("Screen size %dmm x %dmm", screen_width_mm, screen_height_mm);
+
+  if (screen_width_mm < 280)
+    priv->netbook_mode = TRUE;
 
   plugin_singleton = (MutterPlugin*)object;
+
+  {
+    gchar *moblin_session;
+    Atom   atom__MOBLIN;
+
+    atom__MOBLIN = XInternAtom (xdpy, "_MOBLIN", False);
+
+    moblin_session =
+      g_strdup_printf ("session-type=%s:frame-style=naked",
+                       priv->netbook_mode ? "netbook" : "nettop");
+
+    g_debug ("Setting _MOBLIN=%s", moblin_session);
+
+    meta_error_trap_push (display);
+    XChangeProperty (xdpy,
+                     meta_screen_get_xroot (screen),
+                     atom__MOBLIN,
+                     XA_STRING,
+                     8, PropModeReplace,
+                     (unsigned char*)moblin_session, strlen (moblin_session));
+    meta_error_trap_pop (display, FALSE);
+
+    g_free (moblin_session);
+  }
 
   priv->gconf_client = gconf_client_get_default ();
 
@@ -604,6 +639,7 @@ moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
   plugin_class->plugin_info      = plugin_info;
   plugin_class->xevent_filter    = xevent_filter;
   plugin_class->get_shadow       = moblin_netbook_get_shadow;
+  plugin_class->constrain_window = moblin_netbook_constrain_window;
 
   g_type_class_add_private (gobject_class, sizeof (MoblinNetbookPluginPrivate));
 }
@@ -2133,6 +2169,12 @@ setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
     {
       ClutterActor *stage = mutter_get_stage_for_screen (screen);
 
+      if (clutter_texture_get_pixel_format (CLUTTER_TEXTURE (new_texture)) &
+          COGL_A_BIT)
+        {
+          g_warning ("Desktop background '%s' has alpha channel", filename);
+        }
+
       clutter_actor_set_size (new_texture, screen_width, screen_height);
 
 #if !USE_SCALED_BACKGROUND
@@ -2721,4 +2763,12 @@ moblin_netbook_activate_mutter_window (MutterWindow *mcw)
     }
 
   return TRUE;
+}
+
+gboolean
+moblin_netbook_use_netbook_mode (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+  return priv->netbook_mode;
 }
