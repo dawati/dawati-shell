@@ -34,6 +34,7 @@
 #include "notifications/mnb-notification-gtk.h"
 #include "mnb-panel-frame.h"
 #include "moblin-netbook-constraints.h"
+#include "moblin-netbook-mutter-hints.h"
 
 #include <compositor-mutter.h>
 #include <display.h>
@@ -1517,7 +1518,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   Window                      xwin;
   MetaWindow                 *mw;
   gboolean                    fullscreen = FALSE;
-
+  gboolean                    move_window = FALSE;
 
   active_panel = (MnbPanelOop*) mnb_toolbar_get_active_panel (toolbar);
   type         = mutter_window_get_window_type (mcw);
@@ -1614,14 +1615,36 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       /*
        * Move application window to a new workspace, if appropriate.
-       * (We only move applications, i.e., _NET_WM_WINDOW_TYPE_NORMAL that
-       * were start up with SN. We explicitely exclude modal windows and
-       * windows that are transient.)
+       *
+       *  - only move windows when in netbook mode,
+       *
+       *  - always move windows that set moblin-on-new-workspace hint to yes,
+       *
+       *  - never move windows that set moblin-on-new-workspace hint to no,
+       *
+       *  - apply heuristics when hint is not set:
+       *     - only move applications, i.e., _NET_WM_WINDOW_TYPE_NORMAL,
+       *     - exclude modal windows and windows that are transient.
        */
-      if (type == META_COMP_WINDOW_NORMAL  &&
-          !meta_window_is_modal (mw)       &&
-          meta_window_get_startup_id (mw) &&
-          meta_window_get_transient_for_as_xid (mw) == None)
+      if (priv->netbook_mode)
+        {
+          MnbThreeState state =
+            moblin_netbook_mutter_hints_on_new_workspace (mw);
+
+          if (state == MNB_STATE_YES)
+            {
+              move_window = TRUE;
+            }
+          else if (state == MNB_STATE_UNSET)
+            {
+              move_window =
+                (type == META_COMP_WINDOW_NORMAL  &&
+                 !meta_window_is_modal (mw)       &&
+                 meta_window_get_transient_for_as_xid (mw) == None);
+            }
+        }
+
+      if (move_window)
         {
           MetaDisplay *display = meta_screen_get_display (screen);
           guint32      timestamp;
