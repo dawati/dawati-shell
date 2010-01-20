@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
@@ -15,67 +15,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Thai\n"
-"X-Poedit-Country: THAILAND\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: THAILAND\n"
 
-#: ../src/moblin-netbook.c:463
-#: ../src/switcher/mnb-switcher.c:1247
+#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
-msgstr ""
-
-#: ../src/moblin-netbook.c:621
-msgid "Moblin Netbook Effects"
-msgstr ""
+msgstr "โซน"
 
 #: ../src/moblin-netbook.c:625
 msgid "Effects for Moblin Netbooks"
-msgstr ""
+msgstr "เอฟเฟกสำหรับ Moblin Netbook"
 
-#: ../src/moblin-netbook.c:2529
-msgid "Activate"
-msgstr ""
+#: ../src/moblin-netbook.c:621
+msgid "Moblin Netbook Effects"
+msgstr "เอฟเฟก Moblin Netbook"
 
 #: ../src/moblin-netbook.c:2543
 msgid "Unknown window"
-msgstr ""
+msgstr "หน้าต่างไม่ทราบชื่อ"
 
-#: ../src/moblin-netbook.c:2545
-msgid "Is asking for your attention."
-msgstr ""
+#: ../src/moblin-netbook.c:2529
+msgid "Activate"
+msgstr "เปิดใช้งาน"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
+#. 
 #: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
-msgstr ""
+msgstr "%l:%M %P"
+
+#: ../src/moblin-netbook.c:2545
+msgid "Is asking for your attention."
+msgstr "คุณสนใจหรือไม่"
+
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "ละทิ้ง"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
+#. 
 #: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
-msgstr ""
-
-#: ../src/notifications/mnb-notification.c:262
-msgid "Dismiss"
-msgstr ""
-
-#: ../src/notifications/mnb-notification-cluster.c:668
-msgid "Dismiss All"
-msgstr ""
+msgstr "%B %e, %Y"
 
 #: ../src/switcher/mnb-switcher.c:307
 msgid "No Zones yet"
-msgstr ""
+msgstr "โซนยังไม่มี"
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr ""
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "ละทิ้งทั้งหมด "
 
 #: ../src/switcher/mnb-switcher-zone-apps.c:463
 msgid "No applications on this zone"
-msgstr ""
+msgstr "โปรแกรมไม่มีในโซนนี้"
 
+#: ../src/switcher/mnb-switcher.c:327
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "โปรแกรมที่คุณใช้จะปรากฏขึ้นที่นี่. คุณจะ สามารถเปลี่ยนและจัดให้เนื้อหาตรงใจของคุณได้."
