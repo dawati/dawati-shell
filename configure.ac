@@ -98,7 +98,8 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   gtk+-2.0                           dnl
                   dbus-glib-1                        dnl
                   gconf-2.0
-                  gio-unix-2.0)
+                  gio-unix-2.0
+		  xrandr)
 
 AC_ARG_ENABLE([scaled-background],
 	AC_HELP_STRING([--enable-scaled-background],

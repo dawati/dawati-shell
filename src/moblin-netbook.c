@@ -59,6 +59,7 @@
 #include <string.h>
 #include <signal.h>
 #include <X11/extensions/Xcomposite.h>
+#include <X11/extensions/Xrandr.h>
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib.h>
 
@@ -364,6 +365,51 @@ moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
 }
 
 static void
+moblin_netbook_compute_screen_size (Display *xdpy,
+                                    gint     screen_no,
+                                    gint    *width_mm,
+                                    gint    *height_mm)
+{
+  Window                  xroot = RootWindow (xdpy, screen_no);
+  XRRScreenSize          *sizes;
+  XRRScreenConfiguration *cfg = NULL;
+  SizeID                  current;
+  Rotation                rotation;
+  gint                    n_sizes;
+
+  cfg = XRRGetScreenInfo (xdpy, xroot);
+
+  if (!cfg)
+    goto fallback;
+
+  current = XRRConfigCurrentConfiguration (cfg, &rotation);
+
+  sizes = XRRConfigSizes (cfg, &n_sizes);
+
+  if (current < 0 || !sizes)
+    goto fallback;
+
+  *width_mm  = sizes[current].mwidth;
+  *height_mm = sizes[current].mheight;
+
+  XRRFreeScreenConfigInfo (cfg);
+  return;
+
+ fallback:
+  if (cfg)
+    XRRFreeScreenConfigInfo (cfg);
+
+  g_warning ("Could not retrieve screen info via xrandr");
+
+  /*
+   * Fall back on the server info; this is so inaccurate that it is
+   * useless.
+   */
+  *width_mm  = XDisplayWidthMM  (xdpy, screen_no);
+  *height_mm = XDisplayHeightMM (xdpy, screen_no);
+}
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -390,6 +436,11 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   gint          screen_width_mm  = XDisplayWidthMM (xdpy, screen_no);
   gint          screen_height_mm = XDisplayHeightMM (xdpy, screen_no);
+
+  moblin_netbook_compute_screen_size (xdpy,
+                                      screen_no,
+                                      &screen_width_mm,
+                                      &screen_height_mm);
 
   g_debug ("Screen size %dmm x %dmm", screen_width_mm, screen_height_mm);
 
