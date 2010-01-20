@@ -28,12 +28,19 @@
 
 static ClutterActor *zones_preview = NULL;
 static MutterWindow *window_actor_for_completed_cb = NULL;
+static gint          running = 0;
 
 static void
 mnb_switch_zones_completed_cb (MnbZonesPreview *preview, MutterPlugin *plugin)
 {
   clutter_actor_destroy (zones_preview);
   zones_preview = NULL;
+
+  if (--running < 0)
+    {
+      g_warning (G_STRLOC ": error in running effect accounting!");
+      running = 0;
+    }
 
   mutter_plugin_effect_completed (plugin, window_actor_for_completed_cb,
                                   MUTTER_PLUGIN_SWITCH_WORKSPACE);
@@ -56,10 +63,32 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
 
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  if (running++)
+    {
+      /*
+       * We have been called while the effect is already in progress; we need to
+       * mutter know that we completed the previous run.
+       */
+      if (--running < 0)
+        {
+          g_warning (G_STRLOC ": error in running effect accounting!");
+          running = 0;
+        }
+
+      mutter_plugin_effect_completed (plugin, window_actor_for_completed_cb,
+                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+    }
+
   window_actor_for_completed_cb = actors ? (*actors)->data : NULL;
 
   if ((from == to) && !zones_preview)
     {
+      if (--running < 0)
+        {
+          g_warning (G_STRLOC ": error in running effect accounting!");
+          running = 0;
+        }
+
       mutter_plugin_effect_completed (plugin, window_actor_for_completed_cb,
                                       MUTTER_PLUGIN_SWITCH_WORKSPACE);
       return;
