@@ -2,7 +2,7 @@
 
 /* mnb-panel.c */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -435,6 +435,7 @@ mnb_panel_ensure_size (MnbPanel *panel)
   MetaScreen    *screen;
   MetaWorkspace *workspace;
   MutterPlugin  *plugin = moblin_netbook_get_plugin_singleton ();
+  gboolean       netbook_mode = moblin_netbook_use_netbook_mode (plugin);
 
   screen    = mutter_plugin_get_screen (plugin);
   workspace = meta_screen_get_active_workspace (screen);
@@ -454,9 +455,16 @@ mnb_panel_ensure_size (MnbPanel *panel)
        * Maximum height of the panel is the available working height plus
        * the height of the panel shadow (we allow the shadow to stretch out
        * of the available area).
+       *
+       * When not in netbook mode, the TOOLBAR_HEIGHT is already included in the
+       * available space (because we set a strut for it).
        */
       /* FIXME -- devise a way of doing the shadow */
-      max_height = r.height - TOOLBAR_HEIGHT - 8;
+      max_height = r.height - 8;
+
+      if (netbook_mode)
+        max_height -= TOOLBAR_HEIGHT;
+
       max_width  = r.width - TOOLBAR_X_PADDING * 2;
 
       if (max_height != h || r.width != w)
