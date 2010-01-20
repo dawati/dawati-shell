@@ -31,6 +31,62 @@
 
 #define PKG_THEME_DIR PKG_DATA_DIR"/theme"
 
+static gchar *
+get_tip_and_icon_state (const gchar      *connection_type,
+                        const gchar      *connection_name,
+                        const gchar      *state,
+                        guint            strength,
+                        CarrickIconState *icon_state)
+{
+  gchar *tip;
+
+  if (g_str_equal (state, "idle"))
+    {
+      tip = g_strdup (_("networks - not connected"));
+      *icon_state = ICON_OFFLINE;
+    }
+  else if (g_str_equal (state, "association") ||
+           g_str_equal (state, "configuration"))
+    {
+      tip = g_strdup (_("networks - connecting"));
+      *icon_state = ICON_CONNECTING;
+    }
+  else if (g_str_equal (state, "ready"))
+    {
+      if (g_str_equal (connection_type, "ethernet"))
+        tip = g_strdup (_("networks - wired"));
+      else if (g_str_equal (connection_type, "wifi"))
+        tip = g_strdup_printf (_("networks - %s - wifi"),
+                               connection_name);
+      else if (g_str_equal (connection_type, "wimax"))
+        tip = g_strdup_printf (_("networks - %s - wimax"),
+                               connection_name);
+      else if (g_str_equal (connection_type, "cellular"))
+        tip = g_strdup_printf (_("networks - %s - 3G"),
+                               connection_name);
+      else if (g_str_equal (connection_type, "bluetooth"))
+        tip = g_strdup_printf (_("networks - %s - bluetooth"),
+                               connection_name);
+      else
+        tip = g_strdup (_("networks"));
+
+      *icon_state = carrick_icon_factory_get_state (connection_type,
+                                                   strength);
+    }
+  else if (g_str_equal (state, "error"))
+    {
+      tip = g_strdup (_("networks - error"));
+      *icon_state = ICON_ERROR;
+    }
+  else
+    {
+      tip = g_strdup (_("networks"));
+      *icon_state = ICON_OFFLINE;
+    }
+
+  return tip;
+}
+
 
 #if WITH_MOBLIN
 
@@ -59,53 +115,15 @@ _connection_changed_cb (CarrickPane     *pane,
                         guint            strength,
                         MplPanelClient  *panel_client)
 {
-  CarrickIconState   icon_state;
-  const gchar       *icon_id;
-  gchar             *tip;
+  CarrickIconState icon_state;
+  const gchar      *icon_id;
+  gchar            *tip;
 
-  if (g_str_equal (state, "idle"))
-    {
-      tip = g_strdup (_("networks - not connected"));
-      icon_state = ICON_OFFLINE;
-    }
-  else if (g_str_equal (state, "association") ||
-           g_str_equal (state, "configuration"))
-    {
-      tip = g_strdup (_("networks - connecting"));
-      icon_state = ICON_CONNECTING;
-    }
-  else if (g_str_equal (state, "ready"))
-    {
-      if (g_str_equal (connection_type, "ethernet"))
-        tip = g_strdup (_("networks - wired"));
-      else if (g_str_equal (connection_type, "wifi"))
-        tip = g_strdup_printf (_("networks - %s - wifi"),
-                               connection_name);
-      else if (g_str_equal (connection_type, "wimax"))
-        tip = g_strdup_printf (_("networks - %s - wimax"),
-                               connection_name);
-      else if (g_str_equal (connection_type, "cellular"))
-        tip = g_strdup_printf (_("networks - %s - 3G"),
-                               connection_name);
-      else if (g_str_equal (connection_type, "bluetooth"))
-        tip = g_strdup_printf (_("networks - %s - bluetooth"),
-                               connection_name);
-      else
-        tip = g_strdup (_("networks"));
-
-      icon_state = carrick_icon_factory_get_state (connection_type,
-                                                   strength);
-    }
-  else if (g_str_equal (state, "error"))
-    {
-      tip = g_strdup (_("networks - error"));
-      icon_state = ICON_ERROR;
-    }
-  else
-    {
-      tip = g_strdup (_("networks"));
-      icon_state = ICON_OFFLINE;
-    }
+  tip = get_tip_and_icon_state (connection_type,
+                                connection_name,
+                                state,
+                                strength,
+                                &icon_state);
 
   icon_id = carrick_icon_factory_get_name_for_state (icon_state);
 
