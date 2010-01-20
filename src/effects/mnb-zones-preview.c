@@ -488,7 +488,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
       return;
 
     default:
-      g_warning ("(%s) This shouldn't happen", G_STRLOC);
+      g_warning (G_STRLOC ": This shouldn't happen");
       return;
     }
 
