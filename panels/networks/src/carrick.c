@@ -273,7 +273,9 @@ main (int    argc,
   CarrickApplet *applet;
   GtkWidget     *window;
   GtkWidget     *pane;
+#if WITH_MOBLIN
   GtkSettings   *settings;
+#endif
   gboolean       standalone = FALSE;
   GError        *error = NULL;
   GOptionEntry   entries[] = {
