@@ -240,7 +240,7 @@ _no_people_tile_button_press_event_cb (ClutterActor *actor,
   if (g_app_info_launch (priv->app_info, NULL, context, &error))
   {
     if (priv->panel_client)
-      mpl_panel_client_request_hide (priv->panel_client);
+      mpl_panel_client_hide (priv->panel_client);
   }
 
   if (error)
@@ -564,7 +564,7 @@ _primary_button_clicked_cb (MxButton *button,
     anerley_item_activate (item);
 
     if (priv->panel_client)
-      mpl_panel_client_request_hide (priv->panel_client);
+      mpl_panel_client_hide (priv->panel_client);
   }
 }
 
@@ -591,7 +591,7 @@ _edit_contact_action (MnbPeoplePanel *panel,
       g_free (command_line);
 
       if (priv->panel_client)
-        mpl_panel_client_request_hide (priv->panel_client);
+        mpl_panel_client_hide (priv->panel_client);
     }
   }
 }
@@ -659,7 +659,7 @@ _tile_view_item_activated_cb (AnerleyTileView *view,
   }
 
   if (priv->panel_client)
-    mpl_panel_client_request_hide (priv->panel_client);
+    mpl_panel_client_hide (priv->panel_client);
 }
 
 static void
