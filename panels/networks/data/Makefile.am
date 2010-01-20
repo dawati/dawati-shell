@@ -1,12 +1,16 @@
 SUBDIRS = icons theme
 
-paneldir = @PANEL_DIR@
-panel_in_files = carrick.desktop.in.in
-panel_DATA = $(panel_in_files:.desktop.in.in=.desktop)
+desktop_in_files = carrick.desktop.in.in
+desktop_data = $(desktop_in_files:.desktop.in.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
+if WITH_MOBLIN
+paneldir = @PANEL_DIR@
+panel_DATA = $(desktop_data)
+endif
+
 autostartdir = $(sysconfdir)/xdg/autostart
-autostart_DATA = $(panel_DATA)
+autostart_DATA = $(desktop_data)
 
 EXTRA_DIST = $(panel_in_files)
 CLEANFILES = $(panel_DATA)
