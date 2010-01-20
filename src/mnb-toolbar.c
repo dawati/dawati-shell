@@ -65,10 +65,13 @@
 #define KEY_DIR "/desktop/moblin/toolbar/panels"
 #define KEY_ORDER KEY_DIR "/order"
 
+#define CLOCK_WIDTH 213
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
 
+#define MNB_TOOLBAR_MAX_APPLETS 4
+#define TRAY_WIDTH 200
 #define TRAY_PADDING   3
 #define TRAY_BUTTON_HEIGHT 55
 #define TRAY_BUTTON_WIDTH 44
@@ -197,6 +200,7 @@ struct _MnbToolbarPrivate
 
   GList        *panels;         /* Panels (the dropdowns) */
 
+  guint         max_panels;
 
   MnbToolbarPanel *stubbed_panel; /* The panel for which we are showing stub */
 
@@ -1678,7 +1682,6 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 {
   MnbToolbarPrivate *priv   = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
-  gint               index;
   gint               screen_width, screen_height;
   ClutterActor      *button;
 
@@ -1689,33 +1692,36 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  index = mnb_toolbar_get_panel_index (toolbar, tp);
-
   /*
    * The button size and positioning depends on whether this is a regular
    * zone button, but one of the applet buttons.
    */
   if (!tp->applet)
     {
-      /*
-       * Zone button
-       */
-      clutter_actor_set_size (CLUTTER_ACTOR (button),
-                              BUTTON_WIDTH, BUTTON_HEIGHT);
+      gint index = mnb_toolbar_get_panel_index (toolbar, tp);
 
-      clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                  213 + (BUTTON_WIDTH * index)
-                                  + (BUTTON_SPACING * index),
-                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+      if (index < priv->max_panels)
+        {
+          /*
+           * Zone button
+           */
+          clutter_actor_set_size (CLUTTER_ACTOR (button),
+                                  BUTTON_WIDTH, BUTTON_HEIGHT);
 
-      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
-                                            0,
-                                            -(TOOLBAR_HEIGHT - BUTTON_HEIGHT),
-                                            BUTTON_WIDTH,
-                                            TOOLBAR_HEIGHT);
+          clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                      CLOCK_WIDTH + (BUTTON_WIDTH * index)
+                                      + (BUTTON_SPACING * index),
+                                      TOOLBAR_HEIGHT - BUTTON_HEIGHT);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                   CLUTTER_ACTOR (button));
+          mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                                0,
+                                                -(TOOLBAR_HEIGHT-BUTTON_HEIGHT),
+                                                BUTTON_WIDTH,
+                                                TOOLBAR_HEIGHT);
+
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                       CLUTTER_ACTOR (button));
+        }
     }
   else
     {
@@ -1723,24 +1729,29 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
        * Applet button.
        */
       gint applets = mnb_toolbar_get_applet_index (toolbar, tp);
-      gint x, y;
 
-      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width - (applets + 1) * (TRAY_BUTTON_WIDTH + TRAY_PADDING) - 4;
+      if (applets < MNB_TOOLBAR_MAX_APPLETS)
+        {
+          gint x, y;
 
-      clutter_actor_set_size (CLUTTER_ACTOR (button),
-                              TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
-      clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                  (gfloat)x, (gfloat)y);
+          y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+          x = screen_width - (applets+1) * (TRAY_BUTTON_WIDTH+TRAY_PADDING) - 4;
 
-      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
-                                         0,
-                                         -(TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT),
-                                         TRAY_BUTTON_WIDTH,
-                                         TOOLBAR_HEIGHT);
+          clutter_actor_set_size (CLUTTER_ACTOR (button),
+                                  TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
+          clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                      (gfloat)x, (gfloat)y);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                   CLUTTER_ACTOR (button));
+          mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                                0,
+                                                -(TOOLBAR_HEIGHT -
+                                                  TRAY_BUTTON_HEIGHT),
+                                                TRAY_BUTTON_WIDTH,
+                                                TOOLBAR_HEIGHT);
+
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                       CLUTTER_ACTOR (button));
+        }
     }
 }
 
@@ -1756,9 +1767,40 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   const gchar  *tooltip;
   const gchar  *stylesheet = NULL;
   const gchar  *style_id = NULL;
+  gint          index;
 
   if (!tp)
     return;
+
+  /*
+   * Check that we have space to show this panel.
+   */
+  if (tp->applet)
+    {
+      index = mnb_toolbar_get_applet_index (toolbar, tp);
+
+      if (index >= MNB_TOOLBAR_MAX_APPLETS)
+        {
+          g_warning ("Button for applet %s could not be appended "
+                     "(not enough space; applet index %d, max applets %d)",
+                     tp->name, index, MNB_TOOLBAR_MAX_APPLETS);
+
+          return;
+        }
+    }
+  else
+    {
+      index = mnb_toolbar_get_panel_index (toolbar, tp);
+
+      if (index >= toolbar->priv->max_panels)
+        {
+          g_warning ("Button for panel %s could not be appended "
+                     "(not enough space; panel index %d, max panels %d)",
+                     tp->name, index, toolbar->priv->max_panels);
+
+          return;
+        }
+    }
 
   name       = tp->name;
   tooltip    = tp->tooltip;
@@ -2360,6 +2402,10 @@ mnb_toolbar_constructed (GObject *self)
 
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
+
+  priv->max_panels =
+    (screen_width - CLOCK_WIDTH - TRAY_WIDTH - BUTTON_SPACING) /
+    (BUTTON_WIDTH + BUTTON_SPACING);
 
   clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
 
