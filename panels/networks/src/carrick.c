@@ -179,18 +179,89 @@ carrick_shell_close_dialog_on_hide (GtkDialog *dialog)
 #else
 
 static GtkStatusIcon *status_icon = NULL;
+static GtkWindow *panel_window = NULL;
+static gboolean dialog_visible = FALSE;
+
+static gboolean
+popup_window (GtkWindow *window,
+              guint     time)
+{
+  GdkRectangle   area;
+  GtkOrientation orientation;
+  GdkScreen     *screen;
+  gboolean       res;
+  int            x;
+  int            y;
+
+  screen = gtk_status_icon_get_screen (GTK_STATUS_ICON (status_icon));
+  res = gtk_status_icon_get_geometry (GTK_STATUS_ICON (status_icon),
+                                      &screen,
+                                      &area,
+                                      &orientation);
+  if (! res)
+    {
+      g_warning ("Unable to determine geometry of status icon");
+      return FALSE;
+    }
+
+  /* position roughly */
+  gtk_window_set_screen (window, screen);
+
+  x = area.x;
+  y = area.y + area.height;
+
+  gtk_window_move (window, x, y);
+
+  gtk_window_present_with_time (window, time);
+
+  return TRUE;
+}
 
 /* TODO: Stubs for now */
 void carrick_shell_request_focus (void) {}
 void carrick_shell_hide (void) {}
 void carrick_shell_close_dialog_on_hide (GtkDialog *dialog) {}
 
+static void
+_connection_changed_cb (CarrickPane *pane,
+                        const gchar *connection_type,
+                        const gchar *connection_name,
+                        const gchar *state,
+                        guint       strength,
+                        gpointer    *data)
+{
+  CarrickIconState icon_state;
+  const gchar      *icon_name;
+  gchar            *tip;
+
+  tip = get_tip_and_icon_state (connection_type,
+                                connection_name,
+                                state,
+                                strength,
+                                &icon_state);
+
+  icon_name = carrick_icon_factory_get_path_for_state (icon_state);
+
+  gtk_status_icon_set_from_file (status_icon, icon_name);
+
+  gtk_status_icon_set_tooltip_text (status_icon, tip);
+
+  g_free (tip);
+}
+
 static
 void _activate_cb (GObject *object, gpointer user_data)
 {
-  GtkWidget *window = user_data;
-
-  gtk_widget_show(window);
+  if (dialog_visible)
+    {
+      gtk_widget_hide (GTK_WIDGET (panel_window));
+      dialog_visible = FALSE;
+    }
+  else
+    {
+      popup_window (panel_window, GDK_CURRENT_TIME);
+      dialog_visible = TRUE;
+    }
 }
 
 #endif
@@ -272,26 +343,27 @@ main (int    argc,
 
       gtk_widget_show_all (pane);
 #else
-      const gchar *icon_name;
-
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      g_signal_connect (window,
-                        "delete-event",
-                        (GCallback) gtk_widget_hide,
-                        NULL);
-      gtk_container_add (GTK_CONTAINER (window),
+      panel_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
+      gtk_window_set_decorated (GTK_WINDOW (panel_window), FALSE);
+      gtk_window_set_deletable (GTK_WINDOW (panel_window), FALSE);
+      gtk_window_set_keep_above (GTK_WINDOW (panel_window), TRUE);
+      gtk_window_set_skip_pager_hint (GTK_WINDOW (panel_window), TRUE);
+      gtk_window_set_skip_taskbar_hint (GTK_WINDOW (panel_window), TRUE);
+      gtk_container_add (GTK_CONTAINER (panel_window),
                          pane);
 
       status_icon = gtk_status_icon_new ();
       gtk_status_icon_set_visible (status_icon, TRUE);
 
-      icon_name = carrick_icon_factory_get_path_for_state (ICON_OFFLINE_HOVER);
-      gtk_status_icon_set_from_file (status_icon, icon_name);
-
       g_signal_connect (status_icon,
                         "activate",
                         (GCallback) _activate_cb,
-                        window);
+                        NULL);
+
+      g_signal_connect (pane,
+                        "connection-changed",
+                        (GCallback) _connection_changed_cb,
+                        NULL);
 #endif
   }
 
