@@ -30,6 +30,7 @@
 #include <moblin-panel/mpl-panel-common.h>
 #include <libnotify/notify.h>
 #include <dalston/dalston-button-monitor.h>
+#include "mpd-computer-pane.h"
 #include "mpd-folder-pane.h"
 #include "config.h"
 
@@ -65,7 +66,18 @@ panel_set_size_cb (MplPanelClient *panel,
 static ClutterActor *
 create_panel (void)
 {
-  return mpd_folder_pane_new ();
+  ClutterActor *box;
+  ClutterActor *pane;
+
+  box = mx_box_layout_new ();
+
+  pane = mpd_folder_pane_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), pane);
+
+  pane = mpd_computer_pane_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), pane);
+
+  return box;
 }
 
 int
