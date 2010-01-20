@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Chris Lord <chris@linux.intel.com>
  *
@@ -21,6 +21,8 @@
 
 #include "mnb-zones-preview.h"
 #include "mnb-fancy-bin.h"
+
+#include <stdlib.h>
 
 static void mx_stylable_iface_init (MxStylableIface *iface);
 
@@ -453,15 +455,21 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
 
     case MNB_ZP_ZOOM_OUT:
       /* Start panning */
-      priv->anim_phase = MNB_ZP_PAN;
-      clutter_actor_animate (CLUTTER_ACTOR (preview),
-                             CLUTTER_LINEAR,
-                             175 * ABS ((gdouble)priv->dest_workspace -
-                                        priv->workspace),
-                             "workspace", (gdouble)priv->dest_workspace,
-                             NULL);
-      break;
+      {
+        guint duration = 175 * abs (priv->dest_workspace - priv->workspace);
 
+        if (duration)
+          {
+            priv->anim_phase = MNB_ZP_PAN;
+            clutter_actor_animate (CLUTTER_ACTOR (preview),
+                                   CLUTTER_LINEAR,
+                                   duration,
+                                   "workspace", (gdouble)priv->dest_workspace,
+                                   NULL);
+            break;
+          }
+        /* If duration == 0, fall through here to the next phase*/
+      }
     case MNB_ZP_PAN:
       /* Start zooming in */
       mnb_zones_preview_enable_fanciness (preview, FALSE);
