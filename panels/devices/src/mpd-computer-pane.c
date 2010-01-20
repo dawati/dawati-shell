@@ -26,10 +26,19 @@ G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_BOX_LAYOUT)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_COMPUTER_PANE, MpdComputerPanePrivate))
 
+enum
+{
+  REQUEST_HIDE,
+
+  LAST_SIGNAL
+};
+
 typedef struct
 {
   int dummy;
 } MpdComputerPanePrivate;
+
+static guint _signals[LAST_SIGNAL] = { 0, };
 
 static void
 _settings_clicked_cb (MxButton        *button,
@@ -44,7 +53,7 @@ _settings_clicked_cb (MxButton        *button,
     g_clear_error (&error);
   }
 
-  // TODO emit "hide"
+  g_signal_emit_by_name (self, "request-hide");
 }
 
 static void
@@ -61,6 +70,15 @@ mpd_computer_pane_class_init (MpdComputerPaneClass *klass)
   g_type_class_add_private (klass, sizeof (MpdComputerPanePrivate));
 
   object_class->dispose = _dispose;
+
+  /* Signals */
+
+  _signals[REQUEST_HIDE] = g_signal_new ("request-hide",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
 }
 
 static void
@@ -80,7 +98,7 @@ mpd_computer_pane_init (MpdComputerPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
 }
 
-MpdComputerPane *
+ClutterActor *
 mpd_computer_pane_new (void)
 {
   return g_object_new (MPD_TYPE_COMPUTER_PANE, NULL);

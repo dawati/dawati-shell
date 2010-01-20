@@ -35,6 +35,14 @@
 #include "config.h"
 
 static void
+_pane_request_hide_cb (ClutterActor   *pane,
+                       MplPanelClient *panel)
+{
+  if (panel)
+    mpl_panel_client_hide (panel);
+}
+
+static void
 stage_width_notify_cb (ClutterActor  *stage,
                        GParamSpec    *pspec,
                        ClutterActor  *content)
@@ -64,7 +72,7 @@ panel_set_size_cb (MplPanelClient *panel,
 }
 
 static ClutterActor *
-create_panel (void)
+create_panel (MplPanelClient *panel)
 {
   ClutterActor *box;
   ClutterActor *pane;
@@ -75,6 +83,8 @@ create_panel (void)
   clutter_container_add_actor (CLUTTER_CONTAINER (box), pane);
 
   pane = mpd_computer_pane_new ();
+  g_signal_connect (pane, "request-hide",
+                    G_CALLBACK (_pane_request_hide_cb), panel);
   clutter_container_add_actor (CLUTTER_CONTAINER (box), pane);
 
   return box;
@@ -137,7 +147,7 @@ main (int     argc,
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
 
-      content = create_panel ();
+      content = create_panel (NULL);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), content);
 
       g_signal_connect (stage, "notify::width",
@@ -151,20 +161,18 @@ main (int     argc,
 
     } else {
 
-      MplPanelClient  *panel;
-
       /* All button styling goes in mutter-moblin.css for now,
        * don't pass our own stylesheet. */
-      panel = mpl_panel_clutter_new ("devices",
-                                      _("devices"),
-                                     /*THEMEDIR "/toolbar-button.css" */ NULL,
-                                     "devices-button",
-                                     TRUE);
+      MplPanelClient *panel = mpl_panel_clutter_new ("devices",
+                                                     _("devices"),
+                                                     /*THEMEDIR "/toolbar-button.css" */ NULL,
+                                                     "devices-button",
+                                                     TRUE);
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (panel);
 
       stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
-      content = create_panel ();
+      content = create_panel (panel);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), content);
 
       g_signal_connect (panel, "set-size",

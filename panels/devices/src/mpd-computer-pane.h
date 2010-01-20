@@ -55,7 +55,7 @@ typedef struct
 
 GType mpd_computer_pane_get_type (void);
 
-MpdComputerPane * mpd_computer_pane_new (void);
+ClutterActor * mpd_computer_pane_new (void);
 
 G_END_DECLS
 
