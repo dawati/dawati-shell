@@ -2,7 +2,7 @@
 
 /* mnb-toolbar.c */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Authors: Matthew Allum <matthew.allum@intel.com>
  *          Tomas Frydrych <tf@linux.intel.com>
@@ -27,8 +27,6 @@
 #include "config.h"
 #endif
 
-#include <glib/gi18n.h>
-
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
@@ -37,6 +35,16 @@
 #include <moblin-panel/mpl-panel-common.h>
 #include <display.h>
 #include <keybindings.h>
+#include <errors.h>
+
+/*
+ * Including mutter's errors.h defines the i18n macros, so undefine them before
+ * including the glib i18n header.
+ */
+#undef _
+#undef N_
+#include <glib/gi18n.h>
+
 
 #include "moblin-netbook.h"
 
@@ -422,14 +430,15 @@ mnb_toolbar_show (ClutterActor *actor)
 
   moblin_netbook_stash_window_focus (priv->plugin, CurrentTime);
 
+  g_object_ref (actor);
+
   priv->in_show_animation = TRUE;
 
   /*
    * Start animation and wait for it to complete.
    */
-  animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150, "y", 0.0, NULL);
-
-  g_object_ref (actor);
+  animation = clutter_actor_animate (actor,
+                                     CLUTTER_LINEAR, 150, "y", 0.0, NULL);
 
   g_signal_connect (animation,
                     "completed",
@@ -465,8 +474,8 @@ mnb_toolbar_real_hide (ClutterActor *actor)
 }
 
 static void
-mnb_toolbar_hide_transition_completed_cb (ClutterTimeline *timeline,
-					  ClutterActor *actor)
+mnb_toolbar_hide_transition_completed_cb (ClutterAnimation *animation,
+					  ClutterActor     *actor)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
 
@@ -486,11 +495,17 @@ mnb_toolbar_hide_transition_completed_cb (ClutterTimeline *timeline,
 void
 mnb_toolbar_hide (MnbToolbar *toolbar)
 {
-  ClutterActor *actor = CLUTTER_ACTOR (toolbar);
+  ClutterActor      *actor = CLUTTER_ACTOR (toolbar);
   MnbToolbarPrivate *priv = toolbar->priv;
-  gfloat             height;
   ClutterAnimation  *animation;
+  gfloat             height;
   GList             *l;
+
+  /*
+   * Don't allow the toolbar to hide when not in netbook mode.
+   */
+  if (!moblin_netbook_use_netbook_mode (priv->plugin))
+    return;
 
   if (priv->in_hide_animation)
     return;
@@ -527,7 +542,7 @@ mnb_toolbar_hide (MnbToolbar *toolbar)
   animation = clutter_actor_animate (actor, CLUTTER_LINEAR, 150,
                                      "y", -height, NULL);
 
-  g_signal_connect (clutter_animation_get_timeline (animation),
+  g_signal_connect (animation,
                     "completed",
                     G_CALLBACK (mnb_toolbar_hide_transition_completed_cb),
                     actor);
@@ -2315,6 +2330,7 @@ mnb_toolbar_constructed (GObject *self)
   ClutterActor      *time_bin, *date_bin;
   MetaScreen        *screen = mutter_plugin_get_screen (plugin);
   ClutterActor      *wgroup = mutter_get_window_group_for_screen (screen);
+  gboolean           netbook_mode = moblin_netbook_use_netbook_mode (plugin);
 
   /*
    * Make sure our parent gets chance to do what it needs to.
@@ -2427,14 +2443,47 @@ mnb_toolbar_constructed (GObject *self)
 
   g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);
 
-  g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
-                    "captured-event",
-                    G_CALLBACK (mnb_toolbar_stage_captured_cb),
-                    self);
+  /*
+   * In netbook mode, we need hook to the captured signal to show/hide the
+   * toolbar as required.
+   */
+  if (netbook_mode)
+    g_signal_connect (mutter_plugin_get_stage (MUTTER_PLUGIN (plugin)),
+                      "captured-event",
+                      G_CALLBACK (mnb_toolbar_stage_captured_cb),
+                      self);
+
   g_signal_connect (mutter_plugin_get_stage (plugin),
                     "button-press-event",
                     G_CALLBACK (mnb_toolbar_stage_input_cb),
                     self);
+
+  /*
+   * When not in netbook mode, we need to reserve space for the toolbar.
+   */
+  if (!netbook_mode)
+    {
+      MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      MetaDisplay                *display = meta_screen_get_display (screen);
+      Display                    *xdpy = meta_display_get_xdisplay (display);
+      Window                      xwin = ppriv->focus_xwin;
+      Atom                        strut_atom;
+      gint32                      strut[4] = {0,};
+
+      strut[2] = TOOLBAR_HEIGHT;
+
+      strut_atom = meta_display_get_atom (display,
+                                          META_ATOM__NET_WM_STRUT);
+
+      meta_error_trap_push (display);
+
+      XChangeProperty (xdpy, xwin,
+                       strut_atom,
+                       XA_CARDINAL, 32, PropModeReplace,
+                       (unsigned char *) &strut, 4);
+
+      meta_error_trap_pop (display, FALSE);
+    }
 
   /*
    * Hook into "show" signal on stage, to set up input regions.

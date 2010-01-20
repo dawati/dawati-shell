@@ -541,6 +541,8 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   mnb_input_manager_create (MUTTER_PLUGIN (plugin));
 
+  setup_focus_window (MUTTER_PLUGIN (plugin));
+
   /*
    * This also creates the launcher.
    */
@@ -550,8 +552,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_set_motion_events_enabled (TRUE);
 
   desktop_background_init (MUTTER_PLUGIN (plugin));
-
-  setup_focus_window (MUTTER_PLUGIN (plugin));
 
   /* Notifications */
   priv->notify_store = moblin_netbook_notify_store_new ();
@@ -1986,7 +1986,7 @@ setup_focus_window (MutterPlugin *plugin)
                                      META_ATOM__NET_WM_WINDOW_TYPE_DOCK);
 
   attr.event_mask        = KeyPressMask | KeyReleaseMask | FocusChangeMask;
-  attr.override_redirect = True;
+  attr.override_redirect = False;
 
   xwin = XCreateWindow (xdpy,
                         RootWindow (xdpy,
