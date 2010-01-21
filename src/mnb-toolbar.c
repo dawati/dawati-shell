@@ -127,7 +127,9 @@ static MnbPanel * mnb_toolbar_panel_name_to_panel (MnbToolbar  *toolbar,
                                                    const gchar *name);
 static MnbToolbarPanel * mnb_toolbar_panel_name_to_panel_internal (MnbToolbar  *toolbar,
                                                                    const gchar *name);
-static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, MnbPanel *panel);
+static MnbToolbarPanel * mnb_toolbar_panel_to_toolbar_panel (MnbToolbar *toolbar,
+                                                             MnbPanel *panel);
+static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, MnbToolbarPanel *tp);
 static void mnb_toolbar_setup_gconf (MnbToolbar *toolbar);
 static gboolean mnb_toolbar_start_panel_service (MnbToolbar *toolbar,
                                                  MnbToolbarPanel *tp);
@@ -607,7 +609,8 @@ mnb_toolbar_dbus_hide_toolbar (MnbToolbar *self, GError **error)
 static gboolean
 mnb_toolbar_dbus_show_panel (MnbToolbar *self, gchar *name, GError **error)
 {
-  MnbPanel *panel = mnb_toolbar_panel_name_to_panel (self, name);
+  MnbPanel        *panel = mnb_toolbar_panel_name_to_panel (self, name);
+  MnbToolbarPanel *tp;
 
   if (!panel)
     return FALSE;
@@ -615,8 +618,13 @@ mnb_toolbar_dbus_show_panel (MnbToolbar *self, gchar *name, GError **error)
   if (mnb_panel_is_mapped(panel))
     return TRUE;
 
-  mnb_toolbar_activate_panel_internal (self, panel);
-  return TRUE;
+  if ((tp = mnb_toolbar_panel_to_toolbar_panel (self, panel)))
+    {
+      mnb_toolbar_activate_panel_internal (self, tp);
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 static gboolean
@@ -847,6 +855,37 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
   return FALSE;
 }
 
+static void
+mnb_toolbar_show_pending_panel (MnbToolbar *toolbar, MnbToolbarPanel *tp)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  gint               screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (priv->plugin,
+                                   &screen_width, &screen_height);
+
+  clutter_actor_set_size (priv->panel_stub, screen_width, screen_height / 3);
+
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
+  clutter_actor_set_opacity (priv->panel_stub, 0xff);
+  clutter_actor_show (priv->panel_stub);
+  clutter_actor_raise_top (priv->panel_stub);
+  priv->stubbed_panel = tp;
+
+  if (priv->panel_stub_timeout_id)
+    {
+      g_source_remove (priv->panel_stub_timeout_id);
+    }
+
+  priv->panel_stub_timeout_id =
+    g_timeout_add_seconds (TOOLBAR_PANEL_STUB_TIMEOUT,
+                           mnb_toolbar_panel_stub_timeout_cb,
+                           toolbar);
+
+  tp->pinged = TRUE;
+  mnb_toolbar_start_panel_service (toolbar, tp);
+}
+
 /*
  * Toolbar button click handler.
  *
@@ -941,33 +980,8 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
           {
             if (checked)
               {
-                gint screen_width, screen_height;
-
-                mutter_plugin_query_screen_size (priv->plugin,
-                                                 &screen_width, &screen_height);
-
-                clutter_actor_set_size (priv->panel_stub,
-                                        screen_width,
-                                        screen_height / 3);
-
                 mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
-                clutter_actor_set_opacity (priv->panel_stub, 0xff);
-                clutter_actor_show (priv->panel_stub);
-                clutter_actor_raise_top (priv->panel_stub);
-                priv->stubbed_panel = tp;
-
-                if (priv->panel_stub_timeout_id)
-                  {
-                    g_source_remove (priv->panel_stub_timeout_id);
-                  }
-
-                priv->panel_stub_timeout_id =
-                  g_timeout_add_seconds (TOOLBAR_PANEL_STUB_TIMEOUT,
-                                         mnb_toolbar_panel_stub_timeout_cb,
-                                         toolbar);
-
-                tp->pinged = TRUE;
-                mnb_toolbar_start_panel_service (toolbar, tp);
+                mnb_toolbar_show_pending_panel (toolbar, tp);
               }
             else
               {
@@ -2555,12 +2569,16 @@ mnb_toolbar_new (MutterPlugin *plugin)
 }
 
 static void
-mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, MnbPanel *panel)
+mnb_toolbar_activate_panel_internal (MnbToolbar      *toolbar,
+                                     MnbToolbarPanel *tp)
 {
   MnbToolbarPrivate *priv  = toolbar->priv;
   GList             *l;
+  MnbPanel          *panel = tp->panel;
 
-  if (!panel || mnb_panel_is_mapped (panel))
+  g_return_if_fail (tp);
+
+  if (panel && mnb_panel_is_mapped (panel))
     return;
 
   /*
@@ -2572,19 +2590,32 @@ mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, MnbPanel *panel)
 
   for (l = priv->panels; l; l = l->next)
     {
-      MnbToolbarPanel *tp = l->data;
+      MnbToolbarPanel *t = l->data;
 
-      if (!tp || !tp->panel)
+      if (!t)
         continue;
 
-      if (tp->panel != panel)
+      if (t->panel)
         {
-          if (mnb_panel_is_mapped (tp->panel))
-            mnb_panel_hide (tp->panel);
+          if (t != tp)
+            {
+              if (mnb_panel_is_mapped (t->panel))
+                mnb_panel_hide (t->panel);
+            }
+          else
+            {
+              mnb_panel_show (t->panel);
+            }
         }
-      else
+      else if (t == tp && tp->button)
         {
-          mnb_panel_show (tp->panel);
+          /*
+           * Supposed to start panel that is not yet running.
+           *
+           * Toggle the Toolbar button.
+           */
+          if (!mx_button_get_checked (MX_BUTTON (tp->button)))
+            mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
         }
     }
 }
@@ -2595,8 +2626,8 @@ mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
   MnbToolbarPanel *tp = mnb_toolbar_panel_name_to_panel_internal (toolbar,
                                                                   panel_name);
 
-  if (tp && tp->panel)
-    mnb_toolbar_activate_panel_internal (toolbar, tp->panel);
+  if (tp)
+    mnb_toolbar_activate_panel_internal (toolbar, tp);
 }
 
 void
@@ -3060,8 +3091,8 @@ mnb_toolbar_alt_f2_key_handler (MetaDisplay    *display,
   tp = mnb_toolbar_panel_name_to_panel_internal (toolbar,
                                                  "moblin-panel-applications");
 
-  if (tp && tp->panel)
-    mnb_toolbar_activate_panel_internal (toolbar, tp->panel);
+  if (tp)
+    mnb_toolbar_activate_panel_internal (toolbar, tp);
 }
 
 /*
