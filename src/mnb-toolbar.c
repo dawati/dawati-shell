@@ -238,7 +238,8 @@ struct _MnbToolbarPrivate
   gint             old_screen_width;
   gint             old_screen_height;
 
-  guint            waiting_for_panel_cb_id;
+  guint            waiting_for_panel_show_cb_id;
+  guint            waiting_for_panel_hide_cb_id;
   guint            panel_stub_timeout_id;
 };
 
@@ -770,37 +771,48 @@ mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
  * various depenedent UI ops indefinitely).
  */
 static gboolean
-mnb_toolbar_waiting_for_panel_cb (gpointer data)
+mnb_toolbar_waiting_for_panel_show_cb (gpointer data)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (data)->priv;
 
-  priv->waiting_for_panel_show  = FALSE;
-  priv->waiting_for_panel_hide  = FALSE;
-  priv->waiting_for_panel_cb_id = 0;
+  priv->waiting_for_panel_show       = FALSE;
+  priv->waiting_for_panel_show_cb_id = 0;
+
+  return FALSE;
+}
+
+static gboolean
+mnb_toolbar_waiting_for_panel_hide_cb (gpointer data)
+{
+  MnbToolbarPrivate *priv = MNB_TOOLBAR (data)->priv;
+
+  priv->waiting_for_panel_hide       = FALSE;
+  priv->waiting_for_panel_hide_cb_id = 0;
 
   return FALSE;
 }
 
 static void
-mnb_toolbar_set_waiting_for_panel_show (MnbToolbar *toolbar, gboolean whether)
+mnb_toolbar_set_waiting_for_panel_show (MnbToolbar *toolbar,
+                                        gboolean    whether,
+                                        gboolean    with_timeout)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
 
   /*
    * Remove any existing timeout (if whether is TRUE, we need to restart it)
    */
-  if (priv->waiting_for_panel_cb_id)
+  if (priv->waiting_for_panel_show_cb_id)
     {
-      g_source_remove (priv->waiting_for_panel_cb_id);
-      priv->waiting_for_panel_cb_id = 0;
+      g_source_remove (priv->waiting_for_panel_show_cb_id);
+      priv->waiting_for_panel_show_cb_id = 0;
     }
 
-  if (whether)
-    priv->waiting_for_panel_cb_id =
+  if (whether && with_timeout)
+    priv->waiting_for_panel_show_cb_id =
       g_timeout_add_seconds (TOOLBAR_WAITING_FOR_PANEL_TIMEOUT,
-                             mnb_toolbar_waiting_for_panel_cb, toolbar);
+                             mnb_toolbar_waiting_for_panel_show_cb, toolbar);
 
-  priv->waiting_for_panel_hide = FALSE;
   priv->waiting_for_panel_show = whether;
 }
 
@@ -812,19 +824,18 @@ mnb_toolbar_set_waiting_for_panel_hide (MnbToolbar *toolbar, gboolean whether)
   /*
    * Remove any existing timeout (if whether is TRUE, we need to restart it)
    */
-  if (priv->waiting_for_panel_cb_id)
+  if (priv->waiting_for_panel_hide_cb_id)
     {
-      g_source_remove (priv->waiting_for_panel_cb_id);
-      priv->waiting_for_panel_cb_id = 0;
+      g_source_remove (priv->waiting_for_panel_hide_cb_id);
+      priv->waiting_for_panel_hide_cb_id = 0;
     }
 
   if (whether)
-    priv->waiting_for_panel_cb_id =
+    priv->waiting_for_panel_hide_cb_id =
       g_timeout_add_seconds (TOOLBAR_WAITING_FOR_PANEL_TIMEOUT,
-                             mnb_toolbar_waiting_for_panel_cb, toolbar);
+                             mnb_toolbar_waiting_for_panel_hide_cb, toolbar);
 
   priv->waiting_for_panel_hide = whether;
-  priv->waiting_for_panel_show = FALSE;
 }
 
 static gboolean
@@ -835,7 +846,7 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
   MnbToolbarPanel   *stubbed = priv->stubbed_panel;
   GList             *l;
 
-  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
   clutter_actor_hide (priv->panel_stub);
   priv->stubbed_panel = NULL;
 
@@ -866,7 +877,11 @@ mnb_toolbar_show_pending_panel (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 
   clutter_actor_set_size (priv->panel_stub, screen_width, screen_height / 3);
 
-  mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
+  /*
+   * Set the waiting_for_panel_show flag, but without the timeout (since we
+   * have a stub timeout of our own, which needs to be considerably longer).
+   */
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE, FALSE);
   clutter_actor_set_opacity (priv->panel_stub, 0xff);
   clutter_actor_show (priv->panel_stub);
   clutter_actor_raise_top (priv->panel_stub);
@@ -959,7 +974,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
           {
             if (checked && !mnb_panel_is_mapped (tp->panel))
               {
-                mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
+                mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE, TRUE);
                 mnb_panel_show (tp->panel);
 
                 if (priv->panel_stub_timeout_id)
@@ -980,7 +995,6 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
           {
             if (checked)
               {
-                mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
                 mnb_toolbar_show_pending_panel (toolbar, tp);
               }
             else
@@ -1152,7 +1166,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbPanel   *panel,
 
   mnb_input_manager_push_actor (CLUTTER_ACTOR (panel), MNB_INPUT_LAYER_PANEL);
 
-  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
 }
 
 static void
@@ -1175,7 +1189,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
   clutter_actor_hide (priv->panel_stub);
   priv->stubbed_panel = NULL;
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
-  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE);
+  mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
 }
 
 static void
@@ -2581,13 +2595,6 @@ mnb_toolbar_activate_panel_internal (MnbToolbar      *toolbar,
   if (panel && mnb_panel_is_mapped (panel))
     return;
 
-  /*
-   * Set the waiting_for_panel flag; this prevents the Toolbar from hiding due
-   * to a CLUTTER_LEAVE event that gets generated as the pointer moves from the
-   * stage/toolbar into the panel as it maps.
-   */
-  mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE);
-
   for (l = priv->panels; l; l = l->next)
     {
       MnbToolbarPanel *t = l->data;
@@ -2600,10 +2607,14 @@ mnb_toolbar_activate_panel_internal (MnbToolbar      *toolbar,
           if (t != tp)
             {
               if (mnb_panel_is_mapped (t->panel))
-                mnb_panel_hide (t->panel);
+                {
+                  mnb_toolbar_set_waiting_for_panel_hide (toolbar, TRUE);
+                  mnb_panel_hide (t->panel);
+                }
             }
           else
             {
+              mnb_toolbar_set_waiting_for_panel_show (toolbar, TRUE, TRUE);
               mnb_panel_show (t->panel);
             }
         }
