@@ -98,7 +98,7 @@ mpd_global_key_class_init (MpdGlobalKeyClass *klass)
                                                       "Key code",
                                                       "XF86 Key code",
                                                       0, G_MAXUINT, 0,
-                                                      param_flags));
+                                                      param_flags | G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
