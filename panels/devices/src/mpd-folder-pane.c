@@ -28,10 +28,26 @@ G_DEFINE_TYPE (MpdFolderPane, mpd_folder_pane, MX_TYPE_BOX_LAYOUT)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_FOLDER_PANE, MpdFolderPanePrivate))
 
+enum
+{
+  REQUEST_HIDE,
+
+  LAST_SIGNAL
+};
+
 typedef struct
 {
   int dummy;
 } MpdFolderPanePrivate;
+
+static guint _signals[LAST_SIGNAL] = { 0, };
+
+static void
+_view_request_hide_cb (MpdFolderView  *folder_view,
+                       MpdFolderPane  *self)
+{
+  g_signal_emit_by_name (self, "request-hide");
+}
 
 static void
 _dispose (GObject *object)
@@ -47,6 +63,15 @@ mpd_folder_pane_class_init (MpdFolderPaneClass *klass)
   g_type_class_add_private (klass, sizeof (MpdFolderPanePrivate));
 
   object_class->dispose = _dispose;
+
+  /* Signals */
+
+  _signals[REQUEST_HIDE] = g_signal_new ("request-hide",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
 }
 
 static void
@@ -73,8 +98,10 @@ mpd_folder_pane_init (MpdFolderPane *self)
   label = mx_label_new (_("File Browser"));
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
-  view = g_object_new (MPD_TYPE_FOLDER_VIEW, NULL);
+  view = mpd_folder_view_new ();
   mx_item_view_set_model (MX_ITEM_VIEW (view), store);
+  g_signal_connect (view, "request-hide",
+                    G_CALLBACK (_view_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), view);
 
   g_object_unref (store);

@@ -53,9 +53,11 @@ typedef struct
   MxItemViewClass parent;
 } MpdFolderViewClass;
 
-GType mpd_folder_view_get_type (void);
+GType
+mpd_folder_view_get_type (void);
 
-ClutterActor * mpd_folder_view_new (void);
+ClutterActor *
+mpd_folder_view_new (void);
 
 G_END_DECLS
 

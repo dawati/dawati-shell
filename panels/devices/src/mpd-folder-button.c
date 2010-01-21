@@ -38,25 +38,6 @@ typedef struct
 } MpdFolderButtonPrivate;
 
 static void
-_clicked (MpdFolderButton *self,
-          gpointer         data)
-{
-  MpdFolderButtonPrivate *priv = GET_PRIVATE (self);
-  gchar   *command_line;
-  GError  *error = NULL;
-
-  command_line = g_strdup_printf ("nautilus %s", priv->uri);
-  g_spawn_command_line_async (command_line, &error);
-  g_free (command_line);
-
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-}
-
-static void
 _get_property (GObject    *object,
                guint       property_id,
                GValue     *value,
@@ -130,7 +111,6 @@ mpd_folder_button_class_init (MpdFolderButtonClass *klass)
 static void
 mpd_folder_button_init (MpdFolderButton *self)
 {
-  g_signal_connect (self, "clicked", G_CALLBACK (_clicked), NULL);
 }
 
 ClutterActor *

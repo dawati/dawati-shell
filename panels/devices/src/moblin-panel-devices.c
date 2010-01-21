@@ -80,6 +80,8 @@ create_panel (MplPanelClient *panel)
   box = mx_box_layout_new ();
 
   pane = mpd_folder_pane_new ();
+  g_signal_connect (pane, "request-hide",
+                    G_CALLBACK (_pane_request_hide_cb), panel);
   clutter_container_add_actor (CLUTTER_CONTAINER (box), pane);
 
   pane = mpd_computer_pane_new ();

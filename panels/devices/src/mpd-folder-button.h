@@ -53,13 +53,18 @@ typedef struct
   MxButtonClass parent;
 } MpdFolderButtonClass;
 
-GType mpd_folder_button_get_type (void);
+GType
+mpd_folder_button_get_type (void);
 
-ClutterActor *  mpd_folder_button_new (void);
+ClutterActor *
+mpd_folder_button_new     (void);
 
-gchar const *   mpd_folder_button_get_uri (MpdFolderButton const  *self);
-void            mpd_folder_button_set_uri (MpdFolderButton        *self,
-                                           gchar const            *uri);
+gchar const *
+mpd_folder_button_get_uri (MpdFolderButton const  *self);
+
+void
+mpd_folder_button_set_uri (MpdFolderButton        *self,
+                           gchar const            *uri);
 
 G_END_DECLS
 

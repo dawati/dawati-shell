@@ -58,13 +58,16 @@ enum
   MPD_FOLDER_STORE_ERROR_BOOKMARKS_FILE_EMPTY
 };
 
-GType mpd_folder_store_get_type (void);
+GType
+mpd_folder_store_get_type (void);
 
-ClutterModel *  mpd_folder_store_new (void);
+ClutterModel *
+mpd_folder_store_new        (void);
 
-gboolean            mpd_folder_store_load_file (MpdFolderStore   *self,
-                                                gchar const      *filename,
-                                                GError          **error);
+gboolean
+mpd_folder_store_load_file  (MpdFolderStore   *self,
+                             gchar const      *filename,
+                             GError          **error);
 
 G_END_DECLS
 

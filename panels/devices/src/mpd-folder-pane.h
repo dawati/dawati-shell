@@ -53,9 +53,11 @@ typedef struct
   MxBoxLayoutClass parent;
 } MpdFolderPaneClass;
 
-GType mpd_folder_pane_get_type (void);
+GType
+mpd_folder_pane_get_type (void);
 
-ClutterActor * mpd_folder_pane_new (void);
+ClutterActor *
+mpd_folder_pane_new (void);
 
 G_END_DECLS
 
