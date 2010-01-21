@@ -71,8 +71,10 @@
 #define MYZONE_TIMEOUT              200
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 #define NOTIFICATION_KEY "MNB-MW-urgent-notification"
-#define KEY_DIR "/desktop/moblin/background"
-#define KEY_BG_FILENAME KEY_DIR "/picture_filename"
+#define BG_KEY_DIR "/desktop/moblin/background"
+#define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
+#define THEME_KEY_DIR "/apps/metacity/general"
+#define KEY_THEME THEME_KEY_DIR "/theme"
 
 static MutterPlugin *plugin_singleton = NULL;
 
@@ -436,6 +438,8 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   gint          screen_width_mm  = XDisplayWidthMM (xdpy, screen_no);
   gint          screen_height_mm = XDisplayHeightMM (xdpy, screen_no);
+  gboolean      netbook_mode = FALSE;
+  GConfClient  *gconf_client;
 
   moblin_netbook_compute_screen_size (xdpy,
                                       screen_no,
@@ -445,7 +449,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   g_debug ("Screen size %dmm x %dmm", screen_width_mm, screen_height_mm);
 
   if (screen_width_mm < 280)
-    priv->netbook_mode = TRUE;
+    netbook_mode = priv->netbook_mode = TRUE;
 
   plugin_singleton = (MutterPlugin*)object;
 
@@ -457,7 +461,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
     moblin_session =
       g_strdup_printf ("session-type=%s:frame-style=naked",
-                       priv->netbook_mode ? "netbook" : "nettop");
+                       netbook_mode ? "netbook" : "nettop");
 
     g_debug ("Setting _MOBLIN=%s", moblin_session);
 
@@ -473,7 +477,10 @@ moblin_netbook_plugin_constructed (GObject *object)
     g_free (moblin_session);
   }
 
-  priv->gconf_client = gconf_client_get_default ();
+  gconf_client = priv->gconf_client = gconf_client_get_default ();
+
+  if (!netbook_mode)
+    gconf_client_set_string (gconf_client, KEY_THEME, "Moblin-Nettop", NULL);
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
@@ -2300,7 +2307,7 @@ desktop_background_init (MutterPlugin *plugin)
   GError *error = NULL;
 
   gconf_client_add_dir (priv->gconf_client,
-                        KEY_DIR,
+                        BG_KEY_DIR,
                         GCONF_CLIENT_PRELOAD_NONE,
                         &error);
 
