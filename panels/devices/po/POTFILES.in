@@ -7,4 +7,6 @@ dalston/dalston-volume-slider.c
 data/moblin-panel-devices.desktop.in.in
 libgvc/gvc-mixer-control.c
 src/moblin-panel-devices.c
+src/mpd-battery-tile.c
+src/mpd-computer-pane.c
 src/mpd-folder-pane.c
