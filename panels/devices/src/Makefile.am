@@ -18,6 +18,8 @@ moblin_panel_devices_LDADD = \
 
 moblin_panel_devices_SOURCES = \
 	moblin-panel-devices.c \
+	mpd-battery-tile.c \
+	mpd-battery-tile.h \
 	mpd-computer-pane.c \
 	mpd-computer-pane.h \
 	mpd-folder-button.c \

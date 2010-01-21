@@ -19,6 +19,7 @@
  */
 
 #include <glib/gi18n.h>
+#include "mpd-battery-tile.h"
 #include "mpd-computer-pane.h"
 
 G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_BOX_LAYOUT)
@@ -86,11 +87,15 @@ mpd_computer_pane_init (MpdComputerPane *self)
 {
   ClutterActor *label;
   ClutterActor *button;
+  ClutterActor *tile;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
 
   label = mx_label_new (_("Your Computer"));
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
+
+  tile = mpd_battery_tile_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   button = mx_button_new_with_label (_("All settings"));
   g_signal_connect (button, "clicked",
