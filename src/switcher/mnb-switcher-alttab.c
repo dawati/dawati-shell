@@ -2,7 +2,7 @@
 
 /*
  * Moblin Netbook
- * Copyright © 2009, Intel Corporation.
+ * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -315,7 +315,8 @@ alt_tab_timeout_cb (gpointer data)
       if (toolbar)
         {
           mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), TRUE);
-          mnb_toolbar_activate_panel (MNB_TOOLBAR (toolbar), "zones");
+          mnb_toolbar_activate_panel (MNB_TOOLBAR (toolbar),
+                                      "moblin-panel-zones");
         }
     }
   else if (!priv->alt_tab_down)

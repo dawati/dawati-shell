@@ -3058,7 +3058,7 @@ mnb_toolbar_alt_f2_key_handler (MetaDisplay    *display,
     return;
 
   tp = mnb_toolbar_panel_name_to_panel_internal (toolbar,
-                                                 MPL_PANEL_APPLICATIONS);
+                                                 "moblin-panel-applications");
 
   if (tp && tp->panel)
     mnb_toolbar_activate_panel_internal (toolbar, tp->panel);
