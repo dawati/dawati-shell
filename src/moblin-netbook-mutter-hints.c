@@ -8,7 +8,8 @@ typedef struct _MutterHints MutterHints;
 typedef enum
 {
   HINT_NEW_WORKSPACE = 0x1,
-  HINT_NAKED         = 0x2
+  HINT_FRAME_STYLE   = 0x2,
+  HINT_FRAME_SIZE    = 0x4
 } HintFlags;
 
 
@@ -16,7 +17,8 @@ struct _MutterHints
 {
   MnbThreeState new_workspace;
 
-  gboolean      naked : 1;
+  gboolean      naked        : 1;
+  gboolean      screen_sized : 1;
 };
 
 static void
@@ -47,13 +49,21 @@ parse_mutter_hints (const gchar *hints_str, MutterHints *hints, HintFlags flags)
            */
           if (key && value)
             {
-              if ((flags & HINT_NAKED) &&
+              if ((flags & HINT_FRAME_STYLE) &&
                   !strcmp (key, "moblin-frame-style"))
                 {
-                  flags &= ~HINT_NAKED;
+                  flags &= ~HINT_FRAME_STYLE;
 
                   if (!strcmp (value, "naked"))
                     hints->naked = TRUE;
+                }
+              else if ((flags & HINT_FRAME_SIZE) &&
+                  !strcmp (key, "moblin-frame-size"))
+                {
+                  flags &= ~HINT_FRAME_SIZE;
+
+                  if (!strcmp (value, "screen-sized"))
+                    hints->screen_sized = TRUE;
                 }
               else if ((flags & HINT_NEW_WORKSPACE) &&
                        !strcmp (key, "moblin-on-new-workspace"))
@@ -87,7 +97,7 @@ moblin_netbook_mutter_hints_is_naked (MetaWindow *window)
   if (!hints_str)
     return FALSE;
 
-  parse_mutter_hints (hints_str, &hints, HINT_NAKED);
+  parse_mutter_hints (hints_str, &hints, HINT_FRAME_STYLE);
 
   return hints.naked;
 }
@@ -106,3 +116,16 @@ moblin_netbook_mutter_hints_on_new_workspace (MetaWindow *window)
   return hints.new_workspace;
 }
 
+gboolean
+moblin_netbook_mutter_hints_is_screen_sized (MetaWindow *window)
+{
+  const gchar *hints_str = meta_window_get_mutter_hints (window);
+  MutterHints  hints = {0};
+
+  if (!hints_str)
+    return FALSE;
+
+  parse_mutter_hints (hints_str, &hints, HINT_FRAME_SIZE);
+
+  return hints.screen_sized;
+}

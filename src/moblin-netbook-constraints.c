@@ -119,7 +119,7 @@ screen_sized (MutterPlugin       *plugin,
 
   if (priority > PRIORITY_MAXIMUM || /* None of our businesss */
       meta_window_get_window_type (window) != META_WINDOW_NORMAL ||
-      !moblin_netbook_mutter_hints_is_naked (window))
+      !moblin_netbook_mutter_hints_is_screen_sized (window))
     return TRUE;
 
   old_x = info->current.x - info->fgeom->left_width;
