@@ -22,6 +22,8 @@ moblin_panel_devices_SOURCES = \
 	mpd-battery-tile.h \
 	mpd-computer-pane.c \
 	mpd-computer-pane.h \
+	mpd-global-key.c \
+	mpd-global-key.h \
 	mpd-folder-button.c \
 	mpd-folder-button.h \
 	mpd-folder-pane.c \
