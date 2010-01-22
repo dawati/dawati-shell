@@ -419,6 +419,7 @@ penge_block_container_allocate (ClutterActor           *actor,
           x_count += col_span;
 
           fit_found = TRUE;
+          break;
         }
       }
 
