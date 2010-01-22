@@ -171,16 +171,16 @@ penge_people_tile_set_item (PengePeopleTile *tile,
   ClutterActor *avatar_bin;
   const gchar *author_icon;
 
-  if (priv->item == item)
-    return;
+  if (priv->item != item)
+  {
+    if (priv->item)
+      mojito_item_unref (priv->item);
 
-  if (priv->item)
-    mojito_item_unref (priv->item);
-
-  if (item)
-    priv->item = mojito_item_ref (item);
-  else
-    priv->item = NULL;
+    if (item)
+      priv->item = mojito_item_ref (item);
+    else
+      priv->item = NULL;
+  }
 
   if (!priv->item)
     return;
