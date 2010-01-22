@@ -31,7 +31,10 @@ moblin_panel_devices_SOURCES = \
 	mpd-folder-store.c \
 	mpd-folder-store.h \
 	mpd-folder-view.c \
-	mpd-folder-view.h
+	mpd-folder-view.h \
+	mpd-shutdown-notification.c \
+	mpd-shutdown-notification.h \
+	$(NULL)
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.devices.service.in

@@ -33,15 +33,47 @@
 #include <libnotify/notify.h>
 #include <dalston/dalston-button-monitor.h>
 #include "mpd-computer-pane.h"
-#include "mpd-folder-pane.h"
 #include "mpd-global-key.h"
+#include "mpd-folder-pane.h"
+#include "mpd-shutdown-notification.h"
 #include "config.h"
+
+static void
+_shutdown_notification_shutdown_cb (NotifyNotification *notification,
+                                    gpointer            userdata)
+{
+  g_debug ("%s()", __FUNCTION__);
+
+  // TODO shutdown through egg-console-client
+
+  g_object_unref (notification);
+}
+
+static void
+_shutdown_notification_closed_cb (NotifyNotification *notification,
+                                  gpointer            userdata)
+{
+  g_debug ("%s()", __FUNCTION__);
+
+  g_object_unref (notification);
+}
 
 static void
 _shutdown_key_activated_cb (MxAction  *action,
                             gpointer   data)
 {
-  g_debug ("%s()", __FUNCTION__);
+  NotifyNotification *notification;
+
+  notification = mpd_shutdown_notification_new (
+                        _("Would you like to turn off now?"),
+                        _("If you don't decide I'll turn off in 30 seconds."));
+
+  g_signal_connect (notification, "closed",
+                    G_CALLBACK (_shutdown_notification_closed_cb), NULL);
+  g_signal_connect (notification, "shutdown",
+                    G_CALLBACK (_shutdown_notification_shutdown_cb), NULL);
+
+  mpd_shutdown_notification_run (MPD_SHUTDOWN_NOTIFICATION (notification));
 }
 
 static void
@@ -53,9 +85,9 @@ _pane_request_hide_cb (ClutterActor   *pane,
 }
 
 static void
-stage_width_notify_cb (ClutterActor  *stage,
-                       GParamSpec    *pspec,
-                       ClutterActor  *content)
+_stage_width_notify_cb (ClutterActor  *stage,
+                        GParamSpec    *pspec,
+                        ClutterActor  *content)
 {
   guint width = clutter_actor_get_width (stage);
 
@@ -63,9 +95,9 @@ stage_width_notify_cb (ClutterActor  *stage,
 }
 
 static void
-stage_height_notify_cb (ClutterActor  *stage,
-                        GParamSpec    *pspec,
-                        ClutterActor  *content)
+_stage_height_notify_cb (ClutterActor  *stage,
+                         GParamSpec    *pspec,
+                         ClutterActor  *content)
 {
   guint height = clutter_actor_get_height (stage);
 
@@ -73,10 +105,10 @@ stage_height_notify_cb (ClutterActor  *stage,
 }
 
 static void
-panel_set_size_cb (MplPanelClient *panel,
-                   guint           width,
-                   guint           height,
-                   ClutterActor   *content)
+_panel_set_size_cb (MplPanelClient *panel,
+                    guint           width,
+                    guint           height,
+                    ClutterActor   *content)
 {
   clutter_actor_set_size (CLUTTER_ACTOR (content), width, height);
 }
@@ -112,6 +144,8 @@ create_shutdown_key (void)
   if (shutdown_key_code)
   {
     shutdown_key = mpd_global_key_new (shutdown_key_code);
+    g_signal_connect (shutdown_key, "activated",
+                      G_CALLBACK (_shutdown_key_activated_cb), NULL);
   }
 
   return shutdown_key;
@@ -127,7 +161,6 @@ main (int     argc,
     { NULL }
   };
 
-  DalstonButtonMonitor *button_monitor;
   MxAction        *shutdown_key;
   ClutterActor    *stage;
   ClutterActor    *content;
@@ -153,6 +186,7 @@ main (int     argc,
   g_option_context_free (context);
 
   MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
+  notify_init ("Moblin Panel Devices");
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
     DATADIR "/icons/moblin/48x48/mx.cache");
@@ -179,9 +213,9 @@ main (int     argc,
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), content);
 
       g_signal_connect (stage, "notify::width",
-                        G_CALLBACK (stage_width_notify_cb), content);
+                        G_CALLBACK (_stage_width_notify_cb), content);
       g_signal_connect (stage, "notify::height",
-                        G_CALLBACK (stage_height_notify_cb), content);
+                        G_CALLBACK (_stage_height_notify_cb), content);
 
       clutter_actor_set_size (stage, 1024, 600);
       clutter_actor_show (stage);
@@ -204,18 +238,12 @@ main (int     argc,
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), content);
 
       g_signal_connect (panel, "set-size",
-                        G_CALLBACK (panel_set_size_cb), content);
+                        G_CALLBACK (_panel_set_size_cb), content);
     }
 
-  /* Monitor buttons */
-  /*
-  notify_init ("Moblin Devices Panel");
-  button_monitor = dalston_button_monitor_new ();
-  */
+  /* Hook up shutdown key. */
   shutdown_key = create_shutdown_key ();
   g_object_ref_sink (shutdown_key);
-  g_signal_connect (shutdown_key, "activated",
-                    G_CALLBACK (_shutdown_key_activated_cb), NULL);
 
   clutter_main ();
 
