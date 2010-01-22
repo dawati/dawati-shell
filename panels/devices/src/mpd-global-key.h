@@ -56,7 +56,7 @@ typedef struct
 GType
 mpd_global_key_get_type (void);
 
-MpdGlobalKey *
+MxAction *
 mpd_global_key_new          (guint key_code);
 
 guint

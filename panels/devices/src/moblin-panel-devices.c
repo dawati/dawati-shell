@@ -20,9 +20,11 @@
 
 #include <locale.h>
 #include <stdlib.h>
-#include <glib/gi18n.h>
+#include <X11/XF86keysym.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+#include <glib/gi18n.h>
+#include <gdk/gdkx.h>
 #include <gio/gdesktopappinfo.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
@@ -32,7 +34,15 @@
 #include <dalston/dalston-button-monitor.h>
 #include "mpd-computer-pane.h"
 #include "mpd-folder-pane.h"
+#include "mpd-global-key.h"
 #include "config.h"
+
+static void
+_shutdown_key_activated_cb (MxAction  *action,
+                            gpointer   data)
+{
+  g_debug ("%s()", __FUNCTION__);
+}
 
 static void
 _pane_request_hide_cb (ClutterActor   *pane,
@@ -92,6 +102,21 @@ create_panel (MplPanelClient *panel)
   return box;
 }
 
+static MxAction *
+create_shutdown_key (void)
+{
+  MxAction  *shutdown_key = NULL;
+  guint      shutdown_key_code;
+
+  shutdown_key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_PowerOff);
+  if (shutdown_key_code)
+  {
+    shutdown_key = mpd_global_key_new (shutdown_key_code);
+  }
+
+  return shutdown_key;
+}
+
 int
 main (int     argc,
       char  **argv)
@@ -103,6 +128,7 @@ main (int     argc,
   };
 
   DalstonButtonMonitor *button_monitor;
+  MxAction        *shutdown_key;
   ClutterActor    *stage;
   ClutterActor    *content;
   GOptionContext  *context;
@@ -182,10 +208,18 @@ main (int     argc,
     }
 
   /* Monitor buttons */
+  /*
   notify_init ("Moblin Devices Panel");
   button_monitor = dalston_button_monitor_new ();
+  */
+  shutdown_key = create_shutdown_key ();
+  g_object_ref_sink (shutdown_key);
+  g_signal_connect (shutdown_key, "activated",
+                    G_CALLBACK (_shutdown_key_activated_cb), NULL);
 
   clutter_main ();
+
+  g_object_unref (shutdown_key);
 
   return EXIT_SUCCESS;
 }
