@@ -309,6 +309,70 @@ _mojito_item_sort_compare_func (MojitoItem *a,
   }
 }
 
+
+GList *
+_filter_out_unshowable_recent_items (PengeEverythingPane *pane,
+                                     GList               *list)
+{
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  GList *l;
+
+  l = list;
+  while (l)
+  {
+    GtkRecentInfo *info = (GtkRecentInfo *)l->data;
+    const gchar *uri = NULL;
+    gchar *thumbnail_path = NULL;
+    BklItem *bi;
+
+    /* We have to do this because we edit the list */
+    l = l->next;
+
+    /* Skip *local* non-existing files */
+    if (gtk_recent_info_is_local (info) &&
+      !gtk_recent_info_exists (info))
+    {
+      gtk_recent_info_unref (info);
+      list = g_list_remove (list,
+                            info);
+      continue;
+    }
+
+    uri = gtk_recent_info_get_uri (info);
+
+    bi = penge_source_manager_find_item (priv->source_manager, uri);
+
+    if (bi)
+    {
+      const char *thumb_uri;
+
+      thumb_uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) bi);
+
+      if (thumb_uri)
+        thumbnail_path = g_filename_from_uri (thumb_uri, NULL, NULL);
+      else
+        thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+    } else {
+      thumbnail_path = mpl_utils_get_thumbnail_path (uri);
+    }
+
+    /* Skip those without thumbnail */
+    if (!thumbnail_path || !g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
+    {
+      if (bi)
+        g_object_unref (bi);
+
+      gtk_recent_info_unref (info);
+      list = g_list_remove (list,
+                            info);
+      g_free (thumbnail_path);
+      continue;
+    }
+  }
+
+  return list;
+}
+
 static void
 penge_everything_pane_update (PengeEverythingPane *pane)
 {
@@ -322,6 +386,8 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
   /* Get recent files and sort */
   recent_file_items = gtk_recent_manager_get_items (priv->recent_manager);
+  recent_file_items = _filter_out_unshowable_recent_items (pane,
+                                                           recent_file_items);
   recent_file_items = g_list_sort (recent_file_items,
                                    (GCompareFunc)_recent_files_sort_func);
 
@@ -392,17 +458,6 @@ penge_everything_pane_update (PengeEverythingPane *pane)
         const gchar *uri = NULL;
         gchar *thumbnail_path = NULL;
 
-        /* Skip *local* non-existing files */
-        if (gtk_recent_info_is_local (recent_file_info) &&
-          !gtk_recent_info_exists (recent_file_info))
-        {
-          gtk_recent_info_unref (recent_file_info);
-          recent_file_items = g_list_remove (recent_file_items,
-                                             recent_file_info);
-
-          continue;
-        }
-
         uri = gtk_recent_info_get_uri (recent_file_info);
 
         bi = penge_source_manager_find_item (priv->source_manager, uri);
@@ -419,19 +474,6 @@ penge_everything_pane_update (PengeEverythingPane *pane)
             thumbnail_path = mpl_utils_get_thumbnail_path (uri);
         } else {
           thumbnail_path = mpl_utils_get_thumbnail_path (uri);
-        }
-
-        /* Skip those without thumbnail */
-        if (!thumbnail_path || !g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
-        {
-          if (bi)
-            g_object_unref (bi);
-
-          gtk_recent_info_unref (recent_file_info);
-          recent_file_items = g_list_remove (recent_file_items,
-                                             recent_file_info);
-          g_free (thumbnail_path);
-          continue;
         }
 
         actor = _add_from_recent_file_info (pane,
