@@ -318,22 +318,12 @@ penge_task_tile_update (PengeTaskTile *tile)
     g_free (details_str);
 
     clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
-    clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                                 (ClutterActor *)priv->summary_label,
-                                 "row-span",
-                                 1,
-                                 NULL);
   } else {
     /* 
      * If we fail to get some kind of description make the summary text
      * cover both rows in the tile
      */
     clutter_actor_hide (CLUTTER_ACTOR (priv->details_label));
-    clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                                 (ClutterActor *)priv->summary_label,
-                                 "row-span",
-                                 2,
-                                 NULL);
   }
 
   mx_button_set_checked (MX_BUTTON (priv->check_button),
