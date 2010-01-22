@@ -310,6 +310,18 @@ _mojito_item_sort_compare_func (MojitoItem *a,
 }
 
 
+static gint
+_mojito_item_weight (MojitoItem *item)
+{
+  if (!mojito_item_has_key (item, "thumbnail") &&
+      mojito_item_has_key (item, "content"))
+  {
+    return 2;
+  } else {
+    return 1;
+  }
+}
+
 GList *
 _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
                                      GList               *list)
@@ -381,6 +393,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   GList *old_actors = NULL;
   ClutterActor *actor;
   gboolean show_welcome_tile = TRUE;
+  gint recent_files_count, mojito_items_count;
 
   g_debug (G_STRLOC ": Updating everything pane");
 
@@ -396,6 +409,18 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   mojito_items = g_list_sort (mojito_items,
                               (GCompareFunc)_mojito_item_sort_compare_func);
 
+  recent_files_count = priv->block_count * 1.0;
+
+  if (recent_files_count > g_list_length (recent_file_items))
+    recent_files_count = g_list_length (recent_file_items);
+
+  mojito_items_count = priv->block_count - recent_files_count;
+
+  g_debug (G_STRLOC " recent_files_count = %d, mojito_items_count = %d",
+           recent_files_count,
+           mojito_items_count);
+
+
   old_actors = g_hash_table_get_values (priv->pointer_to_actor);
 
   if (mojito_items || recent_file_items)
@@ -408,19 +433,20 @@ penge_everything_pane_update (PengeEverythingPane *pane)
     }
   }
 
-  while (mojito_items || recent_file_items)
+  while ((mojito_items_count && mojito_items) ||
+         (recent_files_count && recent_file_items))
   {
     MojitoItem *mojito_item = NULL;
     GtkRecentInfo *recent_file_info = NULL;
 
     /* If no mojito items -> force compare to favour recent file */
-    if (mojito_items)
+    if (mojito_items_count && mojito_items)
       mojito_item = (MojitoItem *)mojito_items->data;
     else
       mojito_item = NULL;
 
     /* If no recent files -> force compare to favour mojito stuff */
-    if (recent_file_items)
+    if (recent_files_count && recent_file_items)
       recent_file_info = (GtkRecentInfo *)recent_file_items->data;
     else
       recent_file_info = NULL;
@@ -440,6 +466,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
         /* Needed to remove from hash when we kill the actor */
         g_object_set_data (G_OBJECT (actor), "data-pointer", mojito_item);
+        mojito_items_count -= _mojito_item_weight (mojito_item);
       }
 
       mojito_items = g_list_remove (mojito_items, mojito_item);
@@ -480,6 +507,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
                                             recent_file_info,
                                             bi,
                                             thumbnail_path);
+        recent_files_count--;
 
         g_free (thumbnail_path);
         g_hash_table_insert (priv->pointer_to_actor,
