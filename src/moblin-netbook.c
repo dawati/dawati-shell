@@ -479,8 +479,9 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   gconf_client = priv->gconf_client = gconf_client_get_default ();
 
-  if (!netbook_mode)
-    gconf_client_set_string (gconf_client, KEY_THEME, "Moblin-Nettop", NULL);
+  gconf_client_set_string (gconf_client, KEY_THEME,
+                           netbook_mode ? "Moblin-Netbook" : "Moblin-Nettop",
+                           NULL);
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
