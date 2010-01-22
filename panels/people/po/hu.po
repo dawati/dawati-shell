@@ -3,51 +3,76 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: moblin-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2009-11-26 06:06+0000\n"
+"PO-Revision-Date: 2010-01-22 10:26+0100\n"
+"Last-Translator: Gergely Lónyai <aleph@mandriva.org>\n"
+"Language-Team: Hungarian <aleph@mandriva.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Hungarian\n"
+"X-Poedit-Country: HUNGARY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/mnb-people-panel.c:161
-msgid "Send an email"
-msgstr ""
-
-#: ../src/mnb-people-panel.c:163
-msgid "Edit details"
-msgstr ""
-
-#: ../src/mnb-people-panel.c:172
-msgid "Send a message"
-msgstr ""
-
-#: ../src/mnb-people-panel.c:306
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-
-#: ../src/mnb-people-panel.c:553
-msgid "People"
-msgstr ""
-
-#: ../src/mnb-people-panel.c:566
-msgid "Search"
-msgstr ""
-
-#: ../src/mnb-people-panel.c:682
-msgid "Selection"
-msgstr ""
-
-#: ../src/mnb-people-panel.c:745
-msgid "Nobody selected"
-msgstr ""
-
-#: ../src/moblin-panel-people.c:69
+#: ../src/moblin-panel-people.c:89
+#: ../src/mnb-people-panel.c:573
 msgid "people"
-msgstr ""
+msgstr "ember"
+
+#: ../src/mnb-people-panel.c:166
+msgid "Send an email"
+msgstr "Egy email küldése"
+
+#: ../src/mnb-people-panel.c:168
+msgid "Edit details"
+msgstr "Részletek szerkesztése"
+
+#: ../src/mnb-people-panel.c:177
+msgid "Send a message"
+msgstr "Egy üzenet küldése"
+
+#: ../src/mnb-people-panel.c:311
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Bocsi, nem találok egy személyt sem. Nem lehet, hogy még nincs beállítva az Üzenő kliensed?"
+
+#: ../src/mnb-people-panel.c:447
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Bocsi, nem találok senkit. Mindenkit offline-nak látok."
+
+#: ../src/mnb-people-panel.c:497
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Ha a kapcsolataid meg szeretnéd nézni, menj a Státusz panelra."
+
+#: ../src/mnb-people-panel.c:554
+#, c-format
+msgid "people - %d people are talking to you"
+msgstr "ember - %d ember találkozna veled"
+
+#: ../src/mnb-people-panel.c:561
+msgid "people - Someone is talking to you"
+msgstr "ember - Valaki találkozna veled"
+
+#: ../src/mnb-people-panel.c:808
+msgid "People"
+msgstr "Ember"
+
+#: ../src/mnb-people-panel.c:821
+msgid "Search"
+msgstr "Keresés"
+
+#: ../src/mnb-people-panel.c:874
+msgid "People talking to you ..."
+msgstr "Valaki találkozna veled..."
+
+#: ../src/mnb-people-panel.c:1001
+msgid "Selection"
+msgstr "Kiválasztás"
+
+#: ../src/mnb-people-panel.c:1064
+msgid "Nobody selected"
+msgstr "Senki sincs kiválasztva"
+
