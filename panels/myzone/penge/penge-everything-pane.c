@@ -626,9 +626,12 @@ _client_get_services_cb (MojitoClient *client,
                          const GList  *services,
                          gpointer      userdata)
 {
+  PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+
   mojito_client_open_view (client,
                            (GList *)services,
-                           20,
+                           priv->block_count,
                            _client_open_view_cb,
                            userdata);
 }
