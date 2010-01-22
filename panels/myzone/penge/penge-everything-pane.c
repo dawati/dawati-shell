@@ -503,14 +503,6 @@ _update_idle_cb (gpointer userdata)
 
   penge_everything_pane_update (pane);
 
-  if (priv->block_count > 0)
-  {
-    /* We do this hack since we need to have something in the container to get
-     * going.
-     */
-    clutter_actor_set_opacity (CLUTTER_ACTOR (pane), 0xff);
-  }
-
   priv->update_idle_id = 0;
 
   return FALSE;
@@ -732,8 +724,6 @@ penge_everything_pane_init (PengeEverythingPane *self)
                     "count-changed",
                     (GCallback)_layout_count_changed_cb,
                     self);
-
-  clutter_actor_set_opacity (CLUTTER_ACTOR (self), 0x0);
 
   /* Set up a source manager for finding the recent items */
   priv->source_manager = g_object_new (PENGE_TYPE_SOURCE_MANAGER, NULL);
