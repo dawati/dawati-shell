@@ -570,6 +570,40 @@ _view_items_removed_cb (MojitoClientView *view,
 }
 
 static void
+_view_items_changed_cb (MojitoClientView *view,
+                        GList            *items,
+                        gpointer          userdata)
+{
+  PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+
+  GList *l;
+
+  for (l = items; l; l = l->next)
+  {
+    MojitoItem *item = (MojitoItem *)l->data;
+    ClutterActor *actor;
+
+    /* Important to note that MojitoClientView reuses the MojitoItem so the
+     * pointer is a valid piece of lookup
+     */
+    actor = g_hash_table_lookup (priv->pointer_to_actor,
+                                 item);
+
+    /* Can happily be NULL because we got a changed before we laid out the
+     * actor
+     */
+    if (actor)
+    {
+      g_object_set (actor,
+                    "item", item,
+                    NULL);
+    }
+
+  }
+}
+
+static void
 _client_open_view_cb (MojitoClient     *client,
                       MojitoClientView *view,
                       gpointer          userdata)
@@ -587,6 +621,11 @@ _client_open_view_cb (MojitoClient     *client,
                     "items-removed",
                     (GCallback)_view_items_removed_cb,
                     userdata);
+  g_signal_connect (view,
+                    "items-changed",
+                    (GCallback)_view_items_changed_cb,
+                    userdata);
+
   mojito_client_view_start (view);
 }
 
