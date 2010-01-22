@@ -422,7 +422,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
         }
 
         /* Skip those without thumbnail */
-        if (!g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
+        if (!thumbnail_path || !g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
         {
           if (bi)
             g_object_unref (bi);
