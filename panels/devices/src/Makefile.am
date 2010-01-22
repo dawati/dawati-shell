@@ -12,9 +12,8 @@ AM_CFLAGS = \
 libexec_PROGRAMS = moblin-panel-devices
 
 moblin_panel_devices_LDADD = \
-	../dalston/libdalston.la \
 	$(DEVICES_LIBS) \
-	$(LIBNOTIFY_LIBS)
+  $(NULL)
 
 moblin_panel_devices_SOURCES = \
 	moblin-panel-devices.c \

@@ -31,7 +31,6 @@
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <libnotify/notify.h>
-#include <dalston/dalston-button-monitor.h>
 #include "mpd-computer-pane.h"
 #include "mpd-global-key.h"
 #include "mpd-folder-pane.h"
