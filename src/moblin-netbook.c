@@ -462,8 +462,8 @@ moblin_netbook_plugin_constructed (GObject *object)
     leader_xwin = meta_display_get_leader_window (display);
 
     moblin_session =
-      g_strdup_printf ("session-type=%s:frame-style=naked",
-                       netbook_mode ? "netbook" : "nettop");
+      g_strdup_printf ("session-type=%s",
+                       netbook_mode ? "small-screen" : "bigger-screen");
 
     g_debug ("Setting _MOBLIN=%s", moblin_session);
 
