@@ -1,7 +1,7 @@
-noinst_LTLIBRARIES = libpenge.la
+noinst_LIBRARIES = libpenge.a
 noinst_PROGRAMS = test-block-container test-everything-pane
 
-libpenge_headers = penge-people-pane.h \
+libpenge_a_headers = penge-people-pane.h \
 		   penge-people-tile.h \
 		   penge-recent-file-tile.h \
 		   penge-event-tile.h \
@@ -22,8 +22,8 @@ libpenge_headers = penge-people-pane.h \
 		   penge-block-container.h \
 		   penge-everything-pane.h
 
-libpenge_la_SOURCES = \
-		      $(libpenge_headers) \
+libpenge_a_SOURCES = \
+		      $(libpenge_a_headers) \
 		      penge-people-tile.c \
 		      penge-recent-file-tile.c \
 		      penge-event-tile.c \
@@ -51,12 +51,13 @@ AM_CFLAGS = -Wall \
 	    -DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	    -DTHEMEDIR=\"$(pkgdatadir)/theme\"
 
-libpenge_la_LIBADD = $(MPL_LIBS) \
-		     $(PENGE_LIBS)
-
 test_block_container_SOURCES = test-block-container.c
-test_block_container_LDADD = libpenge.la
+test_block_container_LDADD = libpenge.a \
+			     $(MPL_LIBS) \
+			     $(PENGE_LIBS)
 
 test_everything_pane_SOURCES = test-everything-pane.c
-test_everything_pane_LDADD = libpenge.la
+test_everything_pane_LDADD = libpenge.a \
+			     $(MPL_LIBS) \
+			     $(PENGE_LIBS)
 
