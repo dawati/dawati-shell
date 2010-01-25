@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libpenge.la
+noinst_LTLIBRARIES = libpenge.la
 noinst_PROGRAMS = test-block-container test-everything-pane
 
 libpenge_headers = penge-people-pane.h \
