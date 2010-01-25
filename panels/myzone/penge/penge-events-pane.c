@@ -77,6 +77,8 @@ static PengeEventData *penge_event_data_new (void);
 static void penge_event_data_free (PengeEventData *data);
 static void penge_event_data_list_free (GList *event_data_list);
 
+static void penge_events_pane_setup_stores (PengeEventsPane *pane);
+
 static void
 penge_events_pane_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
@@ -153,6 +155,17 @@ penge_events_pane_finalize (GObject *object)
     jana_duration_free (priv->duration);
 
   G_OBJECT_CLASS (penge_events_pane_parent_class)->finalize (object);
+}
+
+static void
+penge_events_pane_constructed (GObject *object)
+{
+  PengeEventsPane *pane = PENGE_EVENTS_PANE (object);
+
+  penge_events_pane_setup_stores (pane);
+
+  if (G_OBJECT_CLASS (penge_events_pane_parent_class)->constructed)
+    G_OBJECT_CLASS (penge_events_pane_parent_class)->constructed (object);
 }
 
 static gboolean
@@ -238,6 +251,7 @@ penge_events_pane_class_init (PengeEventsPaneClass *klass)
   object_class->set_property = penge_events_pane_set_property;
   object_class->dispose = penge_events_pane_dispose;
   object_class->finalize = penge_events_pane_finalize;
+  object_class->constructed = penge_events_pane_constructed;
 
   actor_class->allocate = penge_events_pane_allocate;
   actor_class->get_preferred_height = penge_events_pane_get_preferred_height;
@@ -246,7 +260,7 @@ penge_events_pane_class_init (PengeEventsPaneClass *klass)
                                "The time",
                                "The time now",
                                JANA_TYPE_TIME,
-                               G_PARAM_READWRITE);
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_TIME, pspec);
 }
 
@@ -903,8 +917,6 @@ penge_events_pane_init (PengeEventsPane *self)
                     "changed",
                     (GCallback)_source_list_changed_cb,
                     self);
-
-  penge_events_pane_setup_stores (self);
 }
 
 static void
