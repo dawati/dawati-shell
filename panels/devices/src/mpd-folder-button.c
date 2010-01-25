@@ -19,6 +19,7 @@
  */
 
 #include "mpd-folder-button.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdFolderButton, mpd_folder_button, MX_TYPE_BUTTON)
 

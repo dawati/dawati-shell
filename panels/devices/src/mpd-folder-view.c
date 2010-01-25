@@ -20,6 +20,7 @@
 
 #include "mpd-folder-button.h"
 #include "mpd-folder-view.h"
+#include "config.h"
 
 static void
 _item_factory_iface_init (MxItemFactoryIface *iface);

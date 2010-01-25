@@ -22,6 +22,7 @@
 #include "mpd-folder-pane.h"
 #include "mpd-folder-store.h"
 #include "mpd-folder-view.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdFolderPane, mpd_folder_pane, MX_TYPE_BOX_LAYOUT)
 

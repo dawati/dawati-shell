@@ -20,6 +20,7 @@
 
 #include <glib/gi18n.h>
 #include "mpd-shutdown-notification.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdShutdownNotification, mpd_shutdown_notification, NOTIFY_TYPE_NOTIFICATION)
 

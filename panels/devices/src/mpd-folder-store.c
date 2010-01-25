@@ -20,6 +20,7 @@
 
 #include <gio/gio.h>
 #include "mpd-folder-store.h"
+#include "config.h"
 
 #define MPD_FOLDER_STORE_ERROR mpd_folder_store_error_quark()
 

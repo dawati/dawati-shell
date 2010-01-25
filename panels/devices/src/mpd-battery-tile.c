@@ -20,6 +20,7 @@
 
 #include <glib/gi18n.h>
 #include "mpd-battery-tile.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdBatteryTile, mpd_battery_tile, MX_TYPE_BOX_LAYOUT)
 

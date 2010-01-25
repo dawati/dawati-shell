@@ -21,6 +21,7 @@
 #include <glib/gi18n.h>
 #include "mpd-battery-tile.h"
 #include "mpd-computer-pane.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_BOX_LAYOUT)
 
