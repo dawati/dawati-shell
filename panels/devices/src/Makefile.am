@@ -11,6 +11,7 @@ AM_CFLAGS = \
 libexec_PROGRAMS = moblin-panel-devices
 
 moblin_panel_devices_LDADD = \
+	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
 	$(DEVICES_LIBS) \
   $(NULL)
 

@@ -23,6 +23,7 @@
 #include <X11/XF86keysym.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+#include <egg-console-kit/egg-console-kit.h>
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
 #include <gio/gdesktopappinfo.h>
@@ -41,10 +42,18 @@ static void
 _shutdown_notification_shutdown_cb (NotifyNotification *notification,
                                     gpointer            userdata)
 {
-  g_debug ("%s()", __FUNCTION__);
+  EggConsoleKit *console;
+  GError        *error = NULL;
 
-  // TODO shutdown through egg-console-client
+  console = egg_console_kit_new ();
+  egg_console_kit_stop (console, &error);
+  if (error)
+  {
+    g_critical ("%s : %s", error->message);
+    g_clear_error (&error);
+  }
 
+  g_object_unref (console);
   g_object_unref (notification);
 }
 
