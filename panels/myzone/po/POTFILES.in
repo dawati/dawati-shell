@@ -3,12 +3,10 @@ data/moblin-panel-myzone.desktop.in.in
 src/moblin-panel-myzone.c
 penge/penge-calendar-pane.c
 penge/penge-events-pane.c
-penge/penge-people-pane.c
 penge/penge-people-placeholder-tile.c
-penge/penge-recent-files-pane.c
 penge/penge-recent-file-tile.c
 penge/penge-tasks-pane.c
 penge/penge-task-tile.c
 penge/penge-utils.c
 penge/penge-welcome-tile.c
-
+penge/penge-everything-pane.c
