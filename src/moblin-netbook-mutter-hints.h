@@ -11,8 +11,6 @@ typedef enum
   MNB_STATE_NO
 } MnbThreeState;
 
-gboolean      moblin_netbook_mutter_hints_is_naked         (MetaWindow *window);
 MnbThreeState moblin_netbook_mutter_hints_on_new_workspace (MetaWindow *window);
-gboolean      moblin_netbook_mutter_hints_is_screen_sized  (MetaWindow *window);
 
 #endif

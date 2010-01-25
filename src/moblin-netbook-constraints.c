@@ -105,76 +105,6 @@ not_too_small (MutterPlugin       *plugin,
   return TRUE;
 }
 
-static gboolean
-screen_sized (MutterPlugin       *plugin,
-              MetaWindow         *window,
-              ConstraintInfo     *info,
-              ConstraintPriority  priority,
-              gboolean            check_only)
-{
-  gint screen_width, screen_height, width, height;
-  gint x = 0, y = 0, old_x = 0, old_y;
-  MetaRectangle *start_rect;
-  MetaRectangle min_size, max_size;
-
-  if (priority > PRIORITY_MAXIMUM || /* None of our businesss */
-      meta_window_get_window_type (window) != META_WINDOW_NORMAL ||
-      !moblin_netbook_mutter_hints_is_screen_sized (window))
-    return TRUE;
-
-  old_x = info->current.x - info->fgeom->left_width;
-  old_y = info->current.y - info->fgeom->top_height;
-
-  width  = info->current.width  +
-    info->fgeom->left_width + info->fgeom->right_width;
-  height = info->current.height +
-    info->fgeom->top_height + info->fgeom->bottom_height;
-
-  screen_width  = info->work_area_monitor.width;
-  screen_height = info->work_area_monitor.height;
-
-  if (width == screen_width && height == screen_height)
-    return TRUE;
-
-  if (check_only)
-    return FALSE;
-
-  width  = screen_width;
-  height = screen_height;
-
-  /* We respect both the max and min size hints */
-  /* We should include the frame here */
-  meta_constraints_get_size_limits (window, info->fgeom, TRUE,
-                                    &min_size, &max_size);
-
-  if (width > max_size.width)
-    width = max_size.width;
-  else if (width < min_size.width)
-    width = min_size.width;
-
-  if (height > max_size.height)
-    height = max_size.height;
-  else if (height < min_size.height)
-    height = min_size.height;
-
-  x = (screen_width  - width) / 2;
-  y = (screen_height > height) ? (screen_height - height) / 2 : 0;
-
-  if (info->action_type == ACTION_MOVE_AND_RESIZE)
-    start_rect = &info->current;
-  else
-    start_rect = &info->orig;
-
-  start_rect->x      = x;
-  start_rect->y      = y;
-  start_rect->width  = width;
-  start_rect->height = height;
-
-  meta_constraints_unextend_by_frame (start_rect, info->fgeom);
-
-  return TRUE;
-}
-
 gboolean
 moblin_netbook_constrain_window (MutterPlugin       *plugin,
                                  MetaWindow         *window,
@@ -187,7 +117,6 @@ moblin_netbook_constrain_window (MutterPlugin       *plugin,
 
   if (priv->netbook_mode)
     {
-      satisfied &= screen_sized  (plugin, window, info, priority, check_only);
       satisfied &= not_too_small (plugin, window, info, priority, check_only);
     }
 

@@ -8,8 +8,6 @@ typedef struct _MutterHints MutterHints;
 typedef enum
 {
   HINT_NEW_WORKSPACE = 0x1,
-  HINT_FRAME_STYLE   = 0x2,
-  HINT_FRAME_SIZE    = 0x4
 } HintFlags;
 
 
@@ -49,23 +47,7 @@ parse_mutter_hints (const gchar *hints_str, MutterHints *hints, HintFlags flags)
            */
           if (key && value)
             {
-              if ((flags & HINT_FRAME_STYLE) &&
-                  !strcmp (key, "moblin-frame-style"))
-                {
-                  flags &= ~HINT_FRAME_STYLE;
-
-                  if (!strcmp (value, "naked"))
-                    hints->naked = TRUE;
-                }
-              else if ((flags & HINT_FRAME_SIZE) &&
-                  !strcmp (key, "moblin-frame-size"))
-                {
-                  flags &= ~HINT_FRAME_SIZE;
-
-                  if (!strcmp (value, "screen-sized"))
-                    hints->screen_sized = TRUE;
-                }
-              else if ((flags & HINT_NEW_WORKSPACE) &&
+              if ((flags & HINT_NEW_WORKSPACE) &&
                        !strcmp (key, "moblin-on-new-workspace"))
                 {
                   flags &= ~HINT_NEW_WORKSPACE;
@@ -88,20 +70,6 @@ parse_mutter_hints (const gchar *hints_str, MutterHints *hints, HintFlags flags)
   g_strfreev (items);
 }
 
-gboolean
-moblin_netbook_mutter_hints_is_naked (MetaWindow *window)
-{
-  const gchar *hints_str = meta_window_get_mutter_hints (window);
-  MutterHints  hints = {0};
-
-  if (!hints_str)
-    return FALSE;
-
-  parse_mutter_hints (hints_str, &hints, HINT_FRAME_STYLE);
-
-  return hints.naked;
-}
-
 MnbThreeState
 moblin_netbook_mutter_hints_on_new_workspace (MetaWindow *window)
 {
@@ -114,18 +82,4 @@ moblin_netbook_mutter_hints_on_new_workspace (MetaWindow *window)
   parse_mutter_hints (hints_str, &hints, HINT_NEW_WORKSPACE);
 
   return hints.new_workspace;
-}
-
-gboolean
-moblin_netbook_mutter_hints_is_screen_sized (MetaWindow *window)
-{
-  const gchar *hints_str = meta_window_get_mutter_hints (window);
-  MutterHints  hints = {0};
-
-  if (!hints_str)
-    return FALSE;
-
-  parse_mutter_hints (hints_str, &hints, HINT_FRAME_SIZE);
-
-  return hints.screen_sized;
 }
