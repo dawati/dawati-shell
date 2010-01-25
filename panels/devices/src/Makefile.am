@@ -1,13 +1,12 @@
 
-QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
-
 AM_CFLAGS = \
 	$(DEVICES_CFLAGS) \
 	-I$(top_srcdir) \
 	-DDATADIR=\"$(datadir)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
-	-DTHEMEDIR=\"$(pkgdatadir)/theme\"
+	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
+	$(NULL)
 
 libexec_PROGRAMS = moblin-panel-devices
 
@@ -44,5 +43,5 @@ EXTRA_DIST = $(service_in_files)
 DISTCLEANFILES = org.moblin.UX.Shell.Panels.devices.service
 
 org.moblin.UX.Shell.Panels.devices.service: org.moblin.UX.Shell.Panels.devices.service.in $(top_builddir)/config.log
-	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
+	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
