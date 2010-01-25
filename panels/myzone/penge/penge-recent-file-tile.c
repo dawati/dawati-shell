@@ -28,7 +28,6 @@
 #include "penge-recent-file-tile.h"
 #include "penge-magic-texture.h"
 #include "penge-utils.h"
-#include "penge-recent-files-model.h"
 
 #include <glib/gi18n.h>
 
@@ -43,7 +42,6 @@ struct _PengeRecentFileTilePrivate {
   gchar *thumbnail_path;
   GtkRecentInfo *info;
   ClutterActor *tex;
-  PengeRecentFilesModel *model;
   BklItem *item;
 };
 
@@ -112,14 +110,6 @@ penge_recent_file_tile_set_property (GObject *object, guint property_id,
       }
 
       penge_recent_file_tile_update (tile);
-      break;
-    case PROP_MODEL:
-      if (g_value_get_object (value) != priv->model)
-      {
-        if (priv->model)
-          g_object_unref (priv->model);
-        priv->model = g_value_dup_object (value);
-      }
       break;
     case PROP_ITEM:
       if (priv->item)
@@ -387,13 +377,6 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
                               GTK_TYPE_RECENT_INFO,
                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_INFO, pspec);
-
-  pspec = g_param_spec_object ("model",
-                               "Model",
-                               "Model that this tile is from",
-                               PENGE_TYPE_RECENT_FILE_MODEL,
-                               G_PARAM_WRITABLE);
-  g_object_class_install_property (object_class, PROP_MODEL, pspec);
 
   pspec = g_param_spec_object ("item",
                                "Item",
