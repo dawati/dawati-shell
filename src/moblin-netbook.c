@@ -456,8 +456,10 @@ moblin_netbook_plugin_constructed (GObject *object)
   {
     gchar *moblin_session;
     Atom   atom__MOBLIN;
+    Window leader_xwin;
 
     atom__MOBLIN = XInternAtom (xdpy, "_MOBLIN", False);
+    leader_xwin = meta_display_get_leader_window (display);
 
     moblin_session =
       g_strdup_printf ("session-type=%s:frame-style=naked",
@@ -467,7 +469,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
     meta_error_trap_push (display);
     XChangeProperty (xdpy,
-                     meta_screen_get_xroot (screen),
+                     leader_xwin,
                      atom__MOBLIN,
                      XA_STRING,
                      8, PropModeReplace,
