@@ -550,7 +550,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
   g_list_free (old_actors);
 
-  if (show_welcome_tile)
+  if (show_welcome_tile && !priv->welcome_tile)
   {
     priv->welcome_tile = penge_welcome_tile_new ();
     clutter_container_add_actor (CLUTTER_CONTAINER (pane),
