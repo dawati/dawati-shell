@@ -25,22 +25,22 @@
 
 G_BEGIN_DECLS
 
-#define mpd_TYPE_BATTERY_DEVICE mpd_battery_device_get_type()
+#define MPD_TYPE_BATTERY_DEVICE mpd_battery_device_get_type()
 
-#define mpd_BATTERY_DEVICE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), mpd_TYPE_BATTERY_DEVICE, MpdBatteryDevice))
+#define MPD_BATTERY_DEVICE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MPD_TYPE_BATTERY_DEVICE, MpdBatteryDevice))
 
-#define mpd_BATTERY_DEVICE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), mpd_TYPE_BATTERY_DEVICE, MpdBatteryDeviceClass))
+#define MPD_BATTERY_DEVICE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MPD_TYPE_BATTERY_DEVICE, MpdBatteryDeviceClass))
 
-#define mpd_IS_BATTERY_DEVICE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), mpd_TYPE_BATTERY_DEVICE))
+#define MPD_IS_BATTERY_DEVICE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MPD_TYPE_BATTERY_DEVICE))
 
-#define mpd_IS_BATTERY_DEVICE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), mpd_TYPE_BATTERY_DEVICE))
+#define MPD_IS_BATTERY_DEVICE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), MPD_TYPE_BATTERY_DEVICE))
 
-#define mpd_BATTERY_DEVICE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), mpd_TYPE_BATTERY_DEVICE, MpdBatteryDeviceClass))
+#define MPD_BATTERY_DEVICE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), MPD_TYPE_BATTERY_DEVICE, MpdBatteryDeviceClass))
 
 typedef struct
 {
@@ -55,8 +55,25 @@ typedef struct
 GType
 mpd_battery_device_get_type (void);
 
+typedef enum
+{
+  MPD_BATTERY_DEVICE_STATE_UNKNOWN = 0,
+  MPD_BATTERY_DEVICE_STATE_CHARGING,
+  MPD_BATTERY_DEVICE_STATE_DISCHARGING,
+  MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED
+} MpdBatteryDeviceState;
+
 MpdBatteryDevice *
-mpd_battery_device_new (void);
+mpd_battery_device_new            (void);
+
+gfloat
+mpd_battery_device_get_percentage (MpdBatteryDevice *self);
+
+MpdBatteryDeviceState
+mpd_battery_device_get_state      (MpdBatteryDevice *self);
+
+gchar const *
+mpd_battery_device_get_state_text (MpdBatteryDevice *self);
 
 G_END_DECLS
 

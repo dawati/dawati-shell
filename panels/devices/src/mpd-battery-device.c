@@ -20,6 +20,7 @@
 
 #define I_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE
 
+#include <glib/gi18n.h>
 #include <devkit-power-gobject/devicekit-power.h>
 #include "mpd-battery-device.h"
 #include "config.h"
@@ -27,13 +28,49 @@
 G_DEFINE_TYPE (MpdBatteryDevice, mpd_battery_device, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), mpd_TYPE_BATTERY_DEVICE, MpdBatteryDevicePrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_BATTERY_DEVICE, MpdBatteryDevicePrivate))
+
+enum
+{
+  PROP_0,
+
+  PROP_PERCENTAGE,
+  PROP_STATE
+};
+
+enum
+{
+  CHANGED,
+
+  LAST_SIGNAL
+};
 
 typedef struct
 {
   DkpClient *client;
   DkpDevice *device;
 } MpdBatteryDevicePrivate;
+
+static guint _signals[LAST_SIGNAL] = { 0, };
+
+static void
+_client_device_changed_cb (DkpClient        *client,
+                           DkpDevice        *device,
+                           MpdBatteryDevice *self)
+{
+  MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
+	DkpDeviceType device_type;
+
+  g_object_get (device,
+                "type", &device_type,
+                NULL);
+
+  if (DKP_DEVICE_TYPE_BATTERY == device_type)
+  {
+    g_return_if_fail (device == priv->device);
+    g_signal_emit_by_name (self, "changed");
+  }
+}
 
 static GObject *
 _constructor (GType                  type,
@@ -75,12 +112,6 @@ _constructor (GType                  type,
 
   g_ptr_array_unref (devices);
 
-  /* Hook up battery device. */
-
-  g_debug ("%s() %s", __FUNCTION__, dkp_device_get_object_path (priv->device));
-
-  // todo
-
   return (GObject *) self;
 }
 
@@ -90,7 +121,18 @@ _get_property (GObject    *object,
                GValue     *value,
                GParamSpec *pspec)
 {
-  switch (property_id) {
+  switch (property_id)
+  {
+  case PROP_PERCENTAGE:
+    g_value_set_float (value,
+                       mpd_battery_device_get_percentage (
+                          MPD_BATTERY_DEVICE (object)));
+    break;
+  case PROP_STATE:
+    g_value_set_uint (value,
+                       mpd_battery_device_get_state (
+                          MPD_BATTERY_DEVICE (object)));
+    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -102,7 +144,8 @@ _set_property (GObject      *object,
                const GValue *value,
                GParamSpec   *pspec)
 {
-  switch (property_id) {
+  switch (property_id)
+  {
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -133,6 +176,15 @@ mpd_battery_device_class_init (MpdBatteryDeviceClass *klass)
   object_class->dispose = _dispose;
   object_class->get_property = _get_property;
   object_class->set_property = _set_property;
+
+  /* Signals */
+
+  _signals[CHANGED] = g_signal_new ("changed",
+                                    G_TYPE_FROM_CLASS (klass),
+                                    G_SIGNAL_RUN_LAST,
+                                    0, NULL, NULL,
+                                    g_cclosure_marshal_VOID__VOID,
+                                    G_TYPE_NONE, 0);
 }
 
 static void
@@ -141,12 +193,87 @@ mpd_battery_device_init (MpdBatteryDevice *self)
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
 
   priv->client = dkp_client_new ();
+  g_signal_connect (priv->client, "device-changed",
+                    G_CALLBACK (_client_device_changed_cb), self);
 }
 
 MpdBatteryDevice *
 mpd_battery_device_new (void)
 {
-  return g_object_new (mpd_TYPE_BATTERY_DEVICE, NULL);
+  return g_object_new (MPD_TYPE_BATTERY_DEVICE, NULL);
 }
 
+gfloat
+mpd_battery_device_get_percentage (MpdBatteryDevice *self)
+{
+  MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
+  gdouble energy;
+  gdouble energy_full;
+
+  g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self), -1.);
+  g_return_val_if_fail (priv->device, -1.);
+
+  g_object_get (priv->device,
+                "energy", &energy,
+                "energy-full", &energy_full,
+                NULL);
+
+  return (gfloat) (energy / energy_full * 100);
+}
+
+MpdBatteryDeviceState
+mpd_battery_device_get_state (MpdBatteryDevice *self)
+{
+  MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
+  MpdBatteryDeviceState state;
+  DkpDeviceState        device_state;
+
+  g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self),
+                        MPD_BATTERY_DEVICE_STATE_UNKNOWN);
+  g_return_val_if_fail (priv->device,
+                        MPD_BATTERY_DEVICE_STATE_UNKNOWN);
+
+  g_object_get (priv->device,
+                "state", &device_state,
+                NULL);
+
+  switch (device_state)
+  {
+  case DKP_DEVICE_STATE_CHARGING:
+    state = MPD_BATTERY_DEVICE_STATE_CHARGING;
+    break;
+  case DKP_DEVICE_STATE_DISCHARGING:
+    state = MPD_BATTERY_DEVICE_STATE_DISCHARGING;
+    break;
+  case DKP_DEVICE_STATE_FULLY_CHARGED:
+    state = MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED;
+    break;
+  default:
+    state = MPD_BATTERY_DEVICE_STATE_UNKNOWN;
+  }
+
+  return state;
+}
+
+gchar const *
+mpd_battery_device_get_state_text (MpdBatteryDevice *self)
+{
+  g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self),
+                        MPD_BATTERY_DEVICE_STATE_UNKNOWN);
+
+  switch (mpd_battery_device_get_state (self))
+  {
+  case MPD_BATTERY_DEVICE_STATE_CHARGING:
+    return _("charging");
+    break;
+  case MPD_BATTERY_DEVICE_STATE_DISCHARGING:
+    return _("discharging");
+    break;
+  case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
+    return _("fully charged");
+    break;
+  default:
+    return _("unknown");
+  }
+}
 

@@ -19,7 +19,22 @@
  */
 
 #include <stdlib.h>
+#include <clutter/clutter.h>
 #include "mpd-battery-device.h"
+
+static void
+battery_print (MpdBatteryDevice *battery)
+{
+  g_debug ("percentage: %f", mpd_battery_device_get_percentage (battery));
+  g_debug ("state: %s", mpd_battery_device_get_state_text (battery));
+}
+
+static void
+_battery_changed_cb (MpdBatteryDevice *battery,
+                     gpointer          user_data)
+{
+  battery_print (battery);
+}
 
 int
 main (int     argc,
@@ -27,10 +42,14 @@ main (int     argc,
 {
   MpdBatteryDevice *battery;
 
-  g_type_init ();
+  clutter_init (&argc, &argv);
 
   battery = mpd_battery_device_new ();
-  g_object_unref (battery);
+  g_signal_connect (battery, "changed",
+                    G_CALLBACK (_battery_changed_cb), NULL);
+  battery_print (battery);
 
+  clutter_main ();
+  g_object_unref (battery);
   return EXIT_SUCCESS;
 }
