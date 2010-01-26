@@ -221,6 +221,8 @@ mpd_global_key_class_init (MpdGlobalKeyClass *klass)
   object_class->get_property = _get_property;
   object_class->set_property = _set_property;
 
+  /* Properties */
+
   param_flags = G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS;
 
   g_object_class_install_property (object_class,

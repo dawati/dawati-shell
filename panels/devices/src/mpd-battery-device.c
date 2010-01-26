@@ -38,20 +38,20 @@ enum
   PROP_STATE
 };
 
-enum
-{
-  CHANGED,
-
-  LAST_SIGNAL
-};
-
 typedef struct
 {
-  DkpClient *client;
-  DkpDevice *device;
+  DkpClient             *client;
+  DkpDevice             *device;
+  guint                  percentage;
+  MpdBatteryDeviceState  state;
 } MpdBatteryDevicePrivate;
 
-static guint _signals[LAST_SIGNAL] = { 0, };
+static void
+mpd_battery_device_set_percentage (MpdBatteryDevice       *self,
+                                   gfloat                  percentage);
+static void
+mpd_battery_device_set_state      (MpdBatteryDevice       *self,
+                                   MpdBatteryDeviceState   state);
 
 static void
 _client_device_changed_cb (DkpClient        *client,
@@ -68,7 +68,11 @@ _client_device_changed_cb (DkpClient        *client,
   if (DKP_DEVICE_TYPE_BATTERY == device_type)
   {
     g_return_if_fail (device == priv->device);
-    g_signal_emit_by_name (self, "changed");
+
+    mpd_battery_device_set_percentage (self,
+                                       mpd_battery_device_get_percentage (self));
+    mpd_battery_device_set_state (self,
+                                  mpd_battery_device_get_state (self));
   }
 }
 
@@ -111,6 +115,13 @@ _constructor (GType                  type,
   }
 
   g_ptr_array_unref (devices);
+
+  /* Set initial properties. */
+
+  mpd_battery_device_set_percentage (self,
+                                      mpd_battery_device_get_percentage (self));
+  mpd_battery_device_set_state (self,
+                                mpd_battery_device_get_state (self));
 
   return (GObject *) self;
 }
@@ -169,6 +180,7 @@ static void
 mpd_battery_device_class_init (MpdBatteryDeviceClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamFlags   param_flags;
 
   g_type_class_add_private (klass, sizeof (MpdBatteryDevicePrivate));
 
@@ -177,14 +189,26 @@ mpd_battery_device_class_init (MpdBatteryDeviceClass *klass)
   object_class->get_property = _get_property;
   object_class->set_property = _set_property;
 
-  /* Signals */
+  /* Properties */
 
-  _signals[CHANGED] = g_signal_new ("changed",
-                                    G_TYPE_FROM_CLASS (klass),
-                                    G_SIGNAL_RUN_LAST,
-                                    0, NULL, NULL,
-                                    g_cclosure_marshal_VOID__VOID,
-                                    G_TYPE_NONE, 0);
+  param_flags = G_PARAM_READABLE | G_PARAM_STATIC_STRINGS;
+
+  g_object_class_install_property (object_class,
+                                   PROP_PERCENTAGE,
+                                   g_param_spec_float ("percentage",
+                                                       "Percentage",
+                                                       "Battery energy percentage",
+                                                       0., 100., 0.,
+                                                       param_flags));
+  g_object_class_install_property (object_class,
+                                   PROP_STATE,
+                                   g_param_spec_uint ("state",
+                                                      "State",
+                                                      "Battery state",
+                                                      MPD_BATTERY_DEVICE_STATE_UNKNOWN,
+                                                      MPD_BATTERY_DEVICE_STATE_DELIMITER,
+                                                      MPD_BATTERY_DEVICE_STATE_UNKNOWN,
+                                                      param_flags));
 }
 
 static void
@@ -221,6 +245,22 @@ mpd_battery_device_get_percentage (MpdBatteryDevice *self)
   return (gfloat) (energy / energy_full * 100);
 }
 
+static void
+mpd_battery_device_set_percentage (MpdBatteryDevice *self,
+                                   gfloat            percentage)
+{
+  MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_BATTERY_DEVICE (self));
+
+  /* Filter out changes after the decimal point. */
+  if ((guint) percentage != priv->percentage)
+  {
+    priv->percentage = percentage;
+    g_object_notify (G_OBJECT (self), "percentage");
+  }
+}
+
 MpdBatteryDeviceState
 mpd_battery_device_get_state (MpdBatteryDevice *self)
 {
@@ -253,6 +293,21 @@ mpd_battery_device_get_state (MpdBatteryDevice *self)
   }
 
   return state;
+}
+
+static void
+mpd_battery_device_set_state (MpdBatteryDevice       *self,
+                              MpdBatteryDeviceState   state)
+{
+  MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_BATTERY_DEVICE (self));
+
+  if (state != priv->state)
+  {
+    priv->state = state;
+    g_object_notify (G_OBJECT (self), "state");
+  }
 }
 
 gchar const *

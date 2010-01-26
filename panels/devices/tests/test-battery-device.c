@@ -30,6 +30,14 @@ battery_print (MpdBatteryDevice *battery)
 }
 
 static void
+_battery_notify_cb (MpdBatteryDevice  *battery,
+                    GParamSpec        *pspec,
+					          gpointer           user_data)
+{
+  battery_print (battery);
+}
+
+static void
 _battery_changed_cb (MpdBatteryDevice *battery,
                      gpointer          user_data)
 {
@@ -45,8 +53,10 @@ main (int     argc,
   clutter_init (&argc, &argv);
 
   battery = mpd_battery_device_new ();
-  g_signal_connect (battery, "changed",
-                    G_CALLBACK (_battery_changed_cb), NULL);
+  g_signal_connect (battery, "notify::percentage",
+                    G_CALLBACK (_battery_notify_cb), NULL);
+  g_signal_connect (battery, "notify::state",
+                    G_CALLBACK (_battery_notify_cb), NULL);
   battery_print (battery);
 
   clutter_main ();

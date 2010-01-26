@@ -98,6 +98,8 @@ mpd_folder_button_class_init (MpdFolderButtonClass *klass)
   object_class->set_property = _set_property;
   object_class->dispose = _dispose;
 
+  /* Properties */
+
   param_flags = G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS;
 
   g_object_class_install_property (object_class,
