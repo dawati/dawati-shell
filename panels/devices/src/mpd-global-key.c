@@ -151,7 +151,7 @@ _set_property (GObject      *object,
   }
 }
 
-GObject *
+static GObject *
 _constructor (GType                  type,
               guint                  n_properties,
               GObjectConstructParam *properties)
