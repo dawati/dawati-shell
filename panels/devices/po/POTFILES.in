@@ -1,6 +1,7 @@
 # List of source files containing translatable strings.
 data/moblin-panel-devices.desktop.in.in
 src/moblin-panel-devices.c
+src/mpd-battery-device.c
 src/mpd-battery-tile.c
 src/mpd-computer-pane.c
 src/mpd-folder-pane.c
