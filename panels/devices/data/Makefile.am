@@ -1,5 +1,5 @@
 
-SUBDIRS = theme
+SUBDIRS = icons theme
 
 @INTLTOOL_DESKTOP_RULE@
 

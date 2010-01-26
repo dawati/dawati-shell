@@ -69,6 +69,8 @@ _client_device_changed_cb (DkpClient        *client,
   {
     g_return_if_fail (device == priv->device);
 
+    // TODO handle removed battery.
+
     mpd_battery_device_set_percentage (self,
                                        mpd_battery_device_get_percentage (self));
     mpd_battery_device_set_state (self,
@@ -235,7 +237,10 @@ mpd_battery_device_get_percentage (MpdBatteryDevice *self)
   gdouble energy_full;
 
   g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self), -1.);
-  g_return_val_if_fail (priv->device, -1.);
+
+  /* Have battery? */
+  if (NULL == priv->device)
+    return -1.;
 
   g_object_get (priv->device,
                 "energy", &energy,
@@ -270,8 +275,11 @@ mpd_battery_device_get_state (MpdBatteryDevice *self)
 
   g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self),
                         MPD_BATTERY_DEVICE_STATE_UNKNOWN);
-  g_return_val_if_fail (priv->device,
-                        MPD_BATTERY_DEVICE_STATE_UNKNOWN);
+
+  if (NULL == priv->device)
+  {
+    return MPD_BATTERY_DEVICE_STATE_MISSING;
+  }
 
   g_object_get (priv->device,
                 "state", &device_state,
@@ -313,11 +321,13 @@ mpd_battery_device_set_state (MpdBatteryDevice       *self,
 gchar const *
 mpd_battery_device_get_state_text (MpdBatteryDevice *self)
 {
-  g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self),
-                        MPD_BATTERY_DEVICE_STATE_UNKNOWN);
+  g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self), NULL);
 
   switch (mpd_battery_device_get_state (self))
   {
+  case MPD_BATTERY_DEVICE_STATE_MISSING:
+    return _("missing");
+    break;
   case MPD_BATTERY_DEVICE_STATE_CHARGING:
     return _("charging");
     break;

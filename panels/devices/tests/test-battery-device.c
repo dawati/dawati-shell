@@ -32,7 +32,7 @@ battery_print (MpdBatteryDevice *battery)
 static void
 _battery_notify_cb (MpdBatteryDevice  *battery,
                     GParamSpec        *pspec,
-					          gpointer           user_data)
+                    gpointer           user_data)
 {
   battery_print (battery);
 }

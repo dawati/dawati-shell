@@ -5,6 +5,7 @@ AM_CFLAGS = \
 	-DDATADIR=\"$(datadir)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
+	-DICONDIR=\"$(pkgdatadir)/icons\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
 	$(NULL)
 
