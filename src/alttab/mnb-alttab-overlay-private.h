@@ -2,7 +2,7 @@
 
 /*
  * Moblin Netbook
- * Copyright © 2009, Intel Corporation.
+ * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -22,16 +22,30 @@
  * 02111-1307, USA.
  */
 
-#ifndef _MNB_SWITCHER_KEYS
-#define _MNB_SWITCHER_KEYS
+#ifndef _MNB_ALTTAB_OVERLAY_PRIVATE
+#define _MNB_ALTTAB_OVERLAY_PRIVATE
 
-#include "mnb-switcher.h"
+#include "mnb-alttab-overlay-app.h"
 
-G_BEGIN_DECLS
+struct _MnbAlttabOverlayPrivate
+{
+  MnbAlttabOverlayApp *active;
 
-void mnb_switcher_setup_metacity_keybindings (MnbSwitcher *switcher);
+  gboolean disposed            : 1;
+  gboolean in_alt_grab         : 1;
+  gboolean alt_tab_down        : 1;
+  gboolean waiting_for_timeout : 1;
+  gboolean backward            : 1;
 
-G_END_DECLS
+  guint32 autoscroll_trigger_id;
+  guint32 autoscroll_advance_id;
+};
 
-#endif /* _MNB_SWITCHER_KEYS */
+void mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay,
+                                 gboolean            backward);
+void mnb_alttab_overlay_activate_selection (MnbAlttabOverlay *overlay,
+                                            guint               timestamp);
 
+GList *mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *overlay);
+
+#endif

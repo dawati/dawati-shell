@@ -22,32 +22,16 @@
  * 02111-1307, USA.
  */
 
-#ifndef _MNB_SWITCHER_PRIVATE
-#define _MNB_SWITCHER_PRIVATE
+#ifndef _MNB_ALTTAB_KEYS
+#define _MNB_ALTTAB_KEYS
 
-struct _MnbSwitcherPrivate {
-  MutterPlugin    *plugin;
-  ClutterActor    *table;
-  MnbSwitcherZone *new_zone;
-  MxTooltip     *active_tooltip;
-  GList           *global_tab_list;
-  GList           *last_workspaces;
+#include "mnb-alttab-overlay.h"
 
-  MnbSwitcherItem *selected_item;
-  MnbSwitcherZone *selected_zone;
+G_BEGIN_DECLS
 
-  guint            show_completed_id;
-  guint            hide_panel_cb_id;
+void mnb_alttab_overlay_setup_metacity_keybindings (MnbAlttabOverlay *);
 
-  gboolean         dnd_in_progress     : 1;
-  gboolean         constructing        : 1;
-  gboolean         empty               : 1;
-};
+G_END_DECLS
 
-void mnb_switcher_advance (MnbSwitcher *switcher, gboolean backward);
-void mnb_switcher_activate_selection (MnbSwitcher *switcher,
-                                      gboolean     close,
-                                      guint        timestamp);
-
-#endif /* _MNB_SWITCHER_PRIVATE */
+#endif /* _MNB_ALTTAB_KEYS */
 

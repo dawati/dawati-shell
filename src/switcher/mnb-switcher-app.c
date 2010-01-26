@@ -2,7 +2,7 @@
 
 /*
  * Moblin Netbook
- * Copyright © 2009, Intel Corporation.
+ * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -456,7 +456,6 @@ mnb_switcher_app_activate (MnbSwitcherItem *item)
 
   switcher = mnb_switcher_item_get_switcher (MNB_SWITCHER_ITEM (item));
 
-  mnb_switcher_end_kbd_grab (switcher);
   clutter_ungrab_pointer ();
 
   mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));

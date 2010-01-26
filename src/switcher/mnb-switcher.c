@@ -21,7 +21,6 @@
  */
 
 #include "mnb-switcher.h"
-#include "mnb-switcher-keys.h"
 #include "mnb-switcher-app.h"
 #include "mnb-switcher-zone-apps.h"
 #include "mnb-switcher-zone-new.h"
@@ -101,13 +100,6 @@ on_show_completed_cb (ClutterActor *self, gpointer data)
             mnb_switcher_zone_apps_activate_window (apps, m);
         }
     }
-
-  /*
-   * Not if we are showing ourselves because of Alt+Tab press (we have a
-   * separate show callback for that).
-   */
-  if (priv->in_alt_grab)
-    return;
 
   if (priv->selected_item)
     mnb_switcher_item_show_tooltip (priv->selected_item);
@@ -216,8 +208,6 @@ mnb_switcher_show (ClutterActor *self)
   ClutterActor       *table;
   ClutterActor       *toolbar;
   gint                apps_count = 0xffff; /* inital value > 1 */
-
-  priv->waiting_for_timeout = FALSE;
 
   moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
@@ -484,36 +474,6 @@ mnb_switcher_hide (ClutterActor *self)
       priv->show_completed_id = 0;
     }
 
-  /*
-   * If we are in alt+Tab grab, we need to release the grab.
-   */
-  if (priv->in_alt_grab)
-    {
-      MutterPlugin *plugin  = priv->plugin;
-      MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-      MetaDisplay  *display = meta_screen_get_display (screen);
-      guint32       timestamp;
-      ClutterActor *toolbar;
-
-      /*
-       * Make sure our stamp is recent enough.
-       */
-      timestamp = meta_display_get_current_time_roundtrip (display);
-
-      meta_display_end_grab_op (display, timestamp);
-      priv->in_alt_grab = FALSE;
-
-      /*
-       * Clear the dont_autohide flag we previously set on the toolbar.
-       */
-      toolbar = clutter_actor_get_parent (self);
-      while (toolbar && !MNB_IS_TOOLBAR (toolbar))
-        toolbar = clutter_actor_get_parent (toolbar);
-
-      if (toolbar)
-        mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (toolbar), FALSE);
-    }
-
   CLUTTER_ACTOR_CLASS (mnb_switcher_parent_class)->hide (self);
 }
 
@@ -526,30 +486,6 @@ mnb_switcher_finalize (GObject *object)
   g_list_free (priv->last_workspaces);
 
   G_OBJECT_CLASS (mnb_switcher_parent_class)->finalize (object);
-}
-
-static void
-mnb_switcher_kbd_grab_notify_cb (MetaScreen  *screen,
-                                 GParamSpec  *pspec,
-                                 MnbSwitcher *switcher)
-{
-  MnbSwitcherPrivate *priv = switcher->priv;
-  gboolean            grabbed;
-
-  if (!priv->in_alt_grab)
-    return;
-
-  g_object_get (screen, "keyboard-grabbed", &grabbed, NULL);
-
-  /*
-   * If the property has changed to FALSE, i.e., Mutter just called
-   * XUngrabKeyboard(), reset the flag
-   */
-  if (!grabbed )
-    {
-      priv->in_alt_grab = FALSE;
-      clutter_actor_hide (CLUTTER_ACTOR (switcher));
-    }
 }
 
 static void
@@ -682,11 +618,6 @@ mnb_switcher_constructed (GObject *self)
 
   switcher->priv->plugin = plugin;
 
-  g_signal_connect (mutter_plugin_get_screen (plugin),
-                    "notify::keyboard-grabbed",
-                    G_CALLBACK (mnb_switcher_kbd_grab_notify_cb),
-                    self);
-
   g_signal_connect (mutter_plugin_get_screen (plugin), "notify::n-workspaces",
                     G_CALLBACK (mnb_switcher_n_workspaces_notify), self);
 }
@@ -764,8 +695,6 @@ mnb_switcher_init (MnbSwitcher *self)
 
   g_signal_connect (self, "hide-completed",
                     G_CALLBACK (on_switcher_hide_completed_cb), NULL);
-
-  mnb_switcher_setup_metacity_keybindings (self);
 }
 
 ClutterActor*
@@ -1108,55 +1037,6 @@ mnb_switcher_meta_window_weak_ref_cb (gpointer data, GObject *mw)
 }
 
 /*
- * Handles X button and pointer events during Alt_tab grab.
- *
- * Returns TRUE if handled.
- */
-gboolean
-mnb_switcher_handle_xevent (MnbSwitcher *switcher, XEvent *xev)
-{
-  MnbSwitcherPrivate *priv   = switcher->priv;
-  MutterPlugin       *plugin = priv->plugin;
-
-  if (!priv->in_alt_grab)
-    return FALSE;
-
-  if (xev->type == KeyRelease)
-    {
-      if ((XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0)==XK_Alt_L) ||
-          (XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0)==XK_Alt_R))
-        {
-          MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-          MetaDisplay  *display = meta_screen_get_display (screen);
-          Time          timestamp = xev->xkey.time;
-
-          meta_display_end_grab_op (display, timestamp);
-          priv->in_alt_grab = FALSE;
-
-          mnb_switcher_activate_selection (switcher, TRUE, timestamp);
-        }
-
-      /*
-       * Block further processing.
-       */
-      return TRUE;
-    }
-  else
-    {
-      /*
-       * Block processing of all keyboard and pointer events.
-       */
-      if (xev->type == KeyPress      ||
-          xev->type == ButtonPress   ||
-          xev->type == ButtonRelease ||
-          xev->type == MotionNotify)
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
-/*
  * Returns TRUE if d&d is currently taking place.
  */
 gboolean
@@ -1227,30 +1107,6 @@ mnb_switcher_is_constructing (MnbSwitcher *switcher)
   MnbSwitcherPrivate *priv = switcher->priv;
 
   return priv->constructing;
-}
-
-/*
- * Ends kbd grab, if one is currently in place.
- */
-void
-mnb_switcher_end_kbd_grab (MnbSwitcher *switcher)
-{
-  MnbSwitcherPrivate *priv = switcher->priv;
-
-  if (priv->in_alt_grab)
-    {
-      MetaScreen  *screen  = mutter_plugin_get_screen (priv->plugin);
-      MetaDisplay *display = meta_screen_get_display (screen);
-      guint        timestamp;
-
-      /*
-       * Make sure our stamp is recent enough.
-       */
-      timestamp = meta_display_get_current_time_roundtrip (display);
-
-      meta_display_end_grab_op (display, timestamp);
-      priv->in_alt_grab = FALSE;
-    }
 }
 
 static void

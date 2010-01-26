@@ -3,7 +3,7 @@
 /*
  * Moblin Netbook
  *
- * Copyright © 2009, Intel Corporation.
+ * Copyright © 2009, 2010, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -75,11 +75,6 @@ void        mnb_switcher_focus_window_cb (MetaDisplay *display,
 void        mnb_switcher_meta_window_weak_ref_cb (gpointer data, GObject *mw);
 
 /*
- * Xevent hook for the alt+tab code
- */
-gboolean    mnb_switcher_handle_xevent (MnbSwitcher *switcher, XEvent *xev);
-
-/*
  * These are for the subcomponents
  */
 gboolean    mnb_switcher_get_dnd_in_progress (MnbSwitcher *switcher);
@@ -94,8 +89,6 @@ void        mnb_switcher_show_tooltip (MnbSwitcher *switcher,
 gboolean    mnb_switcher_is_constructing (MnbSwitcher *switcher);
 
 ClutterActor *mnb_switcher_append_app_zone (MnbSwitcher *switcher, gint index);
-
-void        mnb_switcher_end_kbd_grab (MnbSwitcher *switcher);
 
 G_END_DECLS
 

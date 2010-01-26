@@ -29,6 +29,7 @@
 #include "moblin-netbook.h"
 #include "mnb-drop-down.h"
 #include "switcher/mnb-switcher.h"
+#include "alttab/mnb-alttab-overlay.h"
 #include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"
 #include "notifications/mnb-notification-gtk.h"
@@ -424,6 +425,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   ClutterActor  *overlay;
   ClutterActor  *toolbar;
+  ClutterActor  *switcher_overlay;
   ClutterActor  *lowlight;
   gint           screen_width, screen_height;
   gfloat         w, h;
@@ -559,6 +561,9 @@ moblin_netbook_plugin_constructed (GObject *object)
   toolbar = priv->toolbar =
     CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
 
+  switcher_overlay = priv->switcher_overlay =
+    CLUTTER_ACTOR (mnb_alttab_overlay_new ());
+
   clutter_set_motion_events_enabled (TRUE);
 
   desktop_background_init (MUTTER_PLUGIN (plugin));
@@ -619,6 +624,7 @@ moblin_netbook_plugin_constructed (GObject *object)
    */
   clutter_container_add (CLUTTER_CONTAINER (overlay),
                          toolbar,
+                         switcher_overlay,
                          priv->notification_cluster,
                          NULL);
 
@@ -629,6 +635,7 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   clutter_actor_hide (lowlight);
   clutter_actor_hide (CLUTTER_ACTOR(priv->notification_urgent));
+  clutter_actor_hide (switcher_overlay);
 
   /* Keys */
 
@@ -1902,7 +1909,6 @@ static gboolean
 xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
 
   /*
    * Avoid any unnecessary procesing here, as this function is called all the
@@ -1917,9 +1923,11 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
       xev->type == ButtonRelease ||
       xev->type == MotionNotify)
     {
-      MnbSwitcher *switcher = MNB_SWITCHER (mnb_toolbar_get_switcher (toolbar));
+      MnbAlttabOverlay *overlay;
 
-      if (switcher && mnb_switcher_handle_xevent (switcher, xev))
+      overlay = MNB_ALTTAB_OVERLAY (priv->switcher_overlay);
+
+      if (overlay && mnb_alttab_overlay_handle_xevent (overlay, xev))
         return TRUE;
 
       if (xev->type == KeyPress || xev->type == KeyRelease)

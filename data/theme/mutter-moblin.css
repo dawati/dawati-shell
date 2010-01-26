@@ -319,6 +319,22 @@ MxIcon.switcher-application-close-button:hover {
   background-image: url("switcher/application-close-button-hover.png");
 }
 
+MnbAlttabOverlay {
+  background-color: #44444444;
+  padding: 10;
+}
+
+/* switcher overlay */
+MnbAlttabOverlayApp {
+  border-image: url("switcher/application-inactive.png") 4;
+  padding: 2;
+}
+
+MnbAlttabOverlayApp:active {
+  border-image: url("switcher/application-active.png") 4;
+  padding: 2;
+}
+
 /* drop down */
 *.drop-down-footer {
   border-image: url("drop-down/panel_up_button.png") 5;

@@ -2,7 +2,7 @@
 
 /*
  * Moblin Netbook
- * Copyright © 2009, Intel Corporation.
+ * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -70,10 +70,7 @@ mnb_switcher_item_dispose (GObject *object)
 
   if (priv->tooltip)
     {
-      ClutterActor *parent = clutter_actor_get_parent (priv->tooltip);
-
-      clutter_container_remove_actor (CLUTTER_CONTAINER (parent),
-                                      priv->tooltip);
+      clutter_actor_unparent (priv->tooltip);
       priv->tooltip = NULL;
     }
 

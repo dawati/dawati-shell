@@ -1,4 +1,4 @@
-SUBDIRS=effects switcher notifications
+SUBDIRS=effects switcher alttab notifications
 
 xmldir = $(pkgdatadir)/dbus-xml
 xml_DATA = 	mnb-panel-dbus.xml	\
@@ -110,6 +110,7 @@ moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				effects/libeffects.la	\
 				switcher/libswitcher.la \
+				alttab/libalttab.la	\
 				notifications/libnotifications.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la

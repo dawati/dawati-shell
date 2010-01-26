@@ -83,7 +83,7 @@ struct _MoblinNetbookPluginPrivate
 {
   ClutterActor          *toolbar;
   ClutterActor          *lowlight;
-
+  ClutterActor          *switcher_overlay;
   MetaWindow            *last_focused;
 
   GList                 *fullscreen_wins;

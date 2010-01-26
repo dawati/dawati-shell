@@ -19,10 +19,6 @@ libswitcher_la_SOURCES =				\
 			mnb-switcher-zone-apps.h        \
 			mnb-switcher-zone-new.c         \
 			mnb-switcher-zone-new.h         \
-			mnb-switcher-alttab.c		\
-			mnb-switcher-alttab.h		\
-			mnb-switcher-keys.c		\
-			mnb-switcher-keys.h		\
 			mnb-switcher.c                  \
 			mnb-switcher.h			\
 			mnb-switcher-private.h

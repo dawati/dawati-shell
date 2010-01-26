@@ -2,7 +2,7 @@
 
 /*
  * Moblin Netbook
- * Copyright © 2009, Intel Corporation.
+ * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -376,8 +376,6 @@ mnb_switcher_zone_button_release (ClutterActor       *actor,
   priv->timestamp = clutter_x11_get_current_event_time ();
 
   mnb_panel_hide_with_toolbar (MNB_PANEL (priv->switcher));
-
-  mnb_switcher_end_kbd_grab (priv->switcher);
 
   g_signal_connect (priv->switcher, "hide-completed",
                     G_CALLBACK (mnb_switcher_zone_hide_completed_cb), actor);
