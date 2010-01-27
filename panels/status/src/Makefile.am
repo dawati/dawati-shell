@@ -34,20 +34,17 @@ BUILT_SOURCES = mnb-status-marshal.h mnb-status-marshal.c
 moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
 moblin_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
 moblin_panel_status_SOURCES  = 	\
-	$(BUILT_SOURCES)	\
-	mnb-im-status-row.h	\
-	mnb-im-status-row.c	\
-	mnb-web-status-entry.h	\
-	mnb-web-status-entry.c	\
-	mnb-web-status-row.h	\
-	mnb-web-status-row.c	\
 	moblin-panel-status.c \
 	penge-magic-texture.h \
 	penge-magic-texture.c \
 	mojito-online.h \
 	mojito-online.c \
 	mnb-launcher-button.h \
-	mnb-launcher-button.c
+	mnb-launcher-button.c \
+	mps-tweet-card.h \
+	mps-tweet-card.c \
+	mps-view-bridge.c \
+	mps-view-bridge.h
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.status.service.in
