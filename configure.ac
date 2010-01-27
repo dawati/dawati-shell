@@ -142,6 +142,9 @@ CFLAGS="$CFLAGS -Wall"
 AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g -O0"])
 AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 
+# control center capplet
+PKG_CHECK_MODULES(CAPPLET, clutter-gtk-0.10 mx-1.0 gconf-2.0)
+
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
@@ -169,6 +172,9 @@ build/Makefile
 build/autotools/Makefile
 build/autotools/shave
 build/autotools/shave-libtool
+capplet/Makefile
+capplet/data/Makefile
+capplet/src/Makefile
 data/Makefile
 src/Makefile
 src/effects/Makefile

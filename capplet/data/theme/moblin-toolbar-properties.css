@@ -1,0 +1,73 @@
+MxLabel {
+  font-family: "Droid Sans";
+  font-size: 12px;
+}
+
+/* date and time */
+MxLabel#date-label {
+  color: #c0c0c0;
+  font-size: 12px;
+}
+
+MxLabel#time-label {
+  color: #c0c0c0;
+  font-size: 19px;
+}
+
+MtpJar {
+  background-color: #aaa;
+  padding: 10 0 10 0;
+}
+
+MxBoxLayout#panel-area, MxBoxLayout#applet-area {
+ padding: 5 0 0 0;
+}
+
+MtpToolbar {
+  border-image: url("panel/panel-background.png") 0 200 0 200 stretch;
+}
+
+MnbToolbarButton {
+  padding: 0;
+  border-image: url("panel/toolbar-button-hover.png") 0 stretch;
+}
+
+MnbToolbarButton#applications-button {
+  background-image: url("panel/apps-coloured.png");
+}
+
+MnbToolbarButton#internet-button {
+  background-image: url("panel/internet-coloured.png");
+}
+
+MnbToolbarButton#media-button {
+  background-image: url("panel/media-coloured.png");
+}
+
+MnbToolbarButton#myzone-button {
+  background-image: url("panel/myzone-coloured.png");
+}
+
+MnbToolbarButton#pasteboard-button {
+  background-image: url("panel/pasteboard-coloured.png");
+}
+
+MnbToolbarButton#people-button {
+  background-image: url("panel/people-coloured.png");
+}
+
+MnbToolbarButton#zones-button {
+  background-image: url("panel/spaces-coloured.png");
+}
+
+MnbToolbarButton#status-button {
+  background-image: url("panel/status-coloured.png");
+}
+
+MnbToolbarButton#network-button {
+  background-image: url("panel/network-coloured.png");
+}
+
+MnbToolbarButton#bluetooth-button {
+  background-image: url("panel/bluetooth-coloured.png");
+}

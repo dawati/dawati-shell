@@ -1,0 +1,10 @@
+[Desktop Entry]
+_Name=Toolbar
+_Comment=Set your toolbar preferences
+Exec=moblin-toolbar-properties
+Icon=moblin-toolbar
+Terminal=false
+Type=Application
+StartupNotify=false
+Categories=GNOME;Settings;
+OnlyShowIn=GNOME;
