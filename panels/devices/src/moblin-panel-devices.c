@@ -48,7 +48,7 @@ _shutdown_notification_shutdown_cb (NotifyNotification *notification,
   egg_console_kit_stop (console, &error);
   if (error)
   {
-    g_critical ("%s : %s", error->message);
+    g_critical ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
 
