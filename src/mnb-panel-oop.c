@@ -211,7 +211,10 @@ mnb_panel_oop_focus (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
 
-  if (priv->mcw)
+  if (priv->hide_in_progress)
+    return;
+
+  if (!priv->hide_in_progress && priv->mcw)
     moblin_netbook_activate_mutter_window (priv->mcw);
 }
 
