@@ -514,7 +514,7 @@ mnb_switcher_app_button_release_event (ClutterActor         *actor,
    */
   mnb_switcher_app_activate (MNB_SWITCHER_ITEM (actor));
 
-  return FALSE;
+  return TRUE;
 }
 
 #if 0
