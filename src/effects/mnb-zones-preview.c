@@ -646,6 +646,12 @@ mnb_zones_preview_set_n_workspaces (MnbZonesPreview *preview,
     }
 }
 
+static void
+mnb_zones_preview_mcw_destroy_cb (ClutterActor *mcw, ClutterActor *clone)
+{
+  clutter_actor_destroy (clone);
+}
+
 void
 mnb_zones_preview_add_window (MnbZonesPreview *preview,
                               MutterWindow    *window)
@@ -659,11 +665,19 @@ mnb_zones_preview_add_window (MnbZonesPreview *preview,
    *       in case it gets destroyed during the animation.
    *       I'd have thought that the clone's reference on the texture
    *       would be enough that this wouldn't be necessary.
+   *
+   * We do; while the clone's reference is enough to keep the texture about,
+   * it is not enough to make it possible to map the clone once the texture
+   * has been unparented.
    */
   workspace = mutter_window_get_workspace (window);
   group = mnb_zones_preview_get_workspace_group (preview, workspace);
 
   clone = clutter_clone_new (mutter_window_get_texture (window));
+
+  g_signal_connect (window, "destroy",
+                    G_CALLBACK (mnb_zones_preview_mcw_destroy_cb),
+                    clone);
 
   meta_window_get_outer_rect (mutter_window_get_meta_window (window), &rect);
   clutter_actor_set_position (clone, rect.x, rect.y);
