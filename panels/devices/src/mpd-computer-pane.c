@@ -90,6 +90,7 @@ mpd_computer_pane_init (MpdComputerPane *self)
   ClutterActor *button;
   ClutterActor *tile;
 
+  clutter_actor_set_width (CLUTTER_ACTOR (self), 320);
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
 
   label = mx_label_new (_("Your Computer"));

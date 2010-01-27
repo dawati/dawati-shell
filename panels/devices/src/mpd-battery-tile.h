@@ -45,18 +45,18 @@ G_BEGIN_DECLS
 
 typedef struct
 {
-  MxBoxLayout parent;
+  MxTable parent;
 } MpdBatteryTile;
 
 typedef struct
 {
-  MxBoxLayoutClass parent;
+  MxTableClass parent;
 } MpdBatteryTileClass;
 
 GType
 mpd_battery_tile_get_type (void);
 
-MpdBatteryTile *
+ClutterActor *
 mpd_battery_tile_new (void);
 
 G_END_DECLS

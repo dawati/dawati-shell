@@ -23,7 +23,7 @@
 #include "mpd-battery-tile.h"
 #include "config.h"
 
-G_DEFINE_TYPE (MpdBatteryTile, mpd_battery_tile, MX_TYPE_BOX_LAYOUT)
+G_DEFINE_TYPE (MpdBatteryTile, mpd_battery_tile, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_BATTERY_TILE, MpdBatteryTilePrivate))
@@ -142,12 +142,26 @@ static void
 mpd_battery_tile_init (MpdBatteryTile *self)
 {
   MpdBatteryTilePrivate *priv = GET_PRIVATE (self);
+  ClutterActor *text;
+
+  mx_table_set_col_spacing (MX_TABLE (self), 24);
 
   priv->label = mx_label_new ("");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);
+  text = mx_label_get_clutter_text (MX_LABEL (priv->label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (text), TRUE);
+  mx_table_add_actor_with_properties (MX_TABLE (self), priv->label,
+                                      0, 0,
+                                      "y-align", 0.5,
+                                      "y-expand", TRUE,
+                                      "y-fill", TRUE,
+                                      NULL);
 
   priv->icon = clutter_texture_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->icon);
+  /* Seems not to work huh
+  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (priv->icon), TRUE); */
+  clutter_actor_set_height (priv->icon, 65.);
+  clutter_actor_set_width (priv->icon, 65.);
+  mx_table_add_actor (MX_TABLE (self), priv->icon, 0, 1);
 
   priv->device = mpd_battery_device_new ();
   g_signal_connect (priv->device, "notify::percentage",
@@ -158,7 +172,7 @@ mpd_battery_tile_init (MpdBatteryTile *self)
   update (self);
 }
 
-MpdBatteryTile *
+ClutterActor *
 mpd_battery_tile_new (void)
 {
   return g_object_new (MPD_TYPE_BATTERY_TILE, NULL);
