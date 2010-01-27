@@ -433,15 +433,13 @@ mnb_switcher_app_get_property (GObject    *gobject,
 
 static void
 mnb_switcher_app_hide_completed_cb (MnbSwitcher    *panel,
-                                    MnbSwitcherApp *app)
+                                    MutterWindow   *mcw)
 {
-  MnbSwitcherAppPrivate *priv = app->priv;
-
   g_signal_handlers_disconnect_by_func (panel,
                                         mnb_switcher_app_hide_completed_cb,
-                                        app);
+                                        mcw);
 
-  moblin_netbook_activate_mutter_window (priv->mw);
+  moblin_netbook_activate_mutter_window (mcw);
 }
 
 /*
@@ -452,7 +450,8 @@ mnb_switcher_app_hide_completed_cb (MnbSwitcher    *panel,
 static gboolean
 mnb_switcher_app_activate (MnbSwitcherItem *item)
 {
-  MnbSwitcher *switcher;
+  MnbSwitcherAppPrivate *priv = MNB_SWITCHER_APP (item)->priv;
+  MnbSwitcher           *switcher;
 
   switcher = mnb_switcher_item_get_switcher (MNB_SWITCHER_ITEM (item));
 
@@ -461,7 +460,8 @@ mnb_switcher_app_activate (MnbSwitcherItem *item)
   mnb_panel_hide_with_toolbar (MNB_PANEL (switcher));
 
   g_signal_connect (switcher, "hide-completed",
-                    G_CALLBACK (mnb_switcher_app_hide_completed_cb), item);
+                    G_CALLBACK (mnb_switcher_app_hide_completed_cb),
+                    priv->mw);
 
   return TRUE;
 }
