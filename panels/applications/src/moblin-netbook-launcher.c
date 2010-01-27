@@ -1410,7 +1410,8 @@ _constructor (GType                  gtype,
                                         ->constructor (gtype, n_properties, properties);
 
   MnbLauncherPrivate *priv = self->priv = REAL_GET_PRIVATE (self);
-  ClutterActor    *bar, *vbox, *label;
+  ClutterActor  *vbox, *label;
+  MxAdjustment  *vadjust = NULL;
 
   vbox = mx_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");
@@ -1450,8 +1451,6 @@ _constructor (GType                  gtype,
    * Applications
    */
   priv->scrollview = CLUTTER_ACTOR (mx_scroll_view_new ());
-  mx_scroll_view_set_row_size (MX_SCROLL_VIEW (priv->scrollview), SCROLLVIEW_ROW_SIZE);
-  bar = mx_scroll_view_get_vscroll_bar (MX_SCROLL_VIEW (priv->scrollview));
   clutter_actor_set_size (priv->scrollview,
                           SCROLLVIEW_OUTER_WIDTH (self), /* account for padding */
                           SCROLLVIEW_OUTER_HEIGHT (self));
@@ -1471,6 +1470,11 @@ _constructor (GType                  gtype,
   priv->scrolled_vbox = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   g_object_set (priv->scrolled_vbox,
                 "max-stride", 1,
+                NULL);
+  mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox),
+                                                NULL, &vadjust);
+  g_object_set (vadjust,
+                "step-increment", SCROLLVIEW_ROW_SIZE,
                 NULL);
   clutter_container_add (CLUTTER_CONTAINER (priv->scrollview),
                          priv->scrolled_vbox, NULL);
