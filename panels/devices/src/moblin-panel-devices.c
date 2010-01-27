@@ -87,8 +87,7 @@ static void
 _shell_request_hide_cb (MpdShell        *shell,
                         MplPanelClient  *panel)
 {
-  if (panel)
-    mpl_panel_client_hide (panel);
+  mpl_panel_client_hide (panel);
 }
 
 static void
@@ -220,6 +219,8 @@ main (int     argc,
 
       stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
       shell = mpd_shell_new ();
+      g_signal_connect (shell, "request-hide",
+                        G_CALLBACK (_shell_request_hide_cb), panel);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
 
       g_signal_connect (panel, "set-size",
