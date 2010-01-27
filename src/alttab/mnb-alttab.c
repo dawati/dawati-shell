@@ -117,12 +117,28 @@ end_kbd_grab (MnbAlttabOverlay *overlay)
     }
 }
 
+static gboolean
+alt_tab_slow_down_timeout_cb (gpointer data)
+{
+  MnbAlttabOverlay *overlay = MNB_ALTTAB_OVERLAY (data);
+
+  if (mnb_alttab_overlay_tab_still_down (overlay))
+    {
+      return TRUE;
+    }
+  else
+    {
+      overlay->priv->slowdown_timeout_id = 0;
+      return FALSE;
+    }
+}
+
 /*
  * Callback for the timeout we use to test whether to show alttab or directly
  * move to next window.
  */
 static gboolean
-alt_tab_timeout_cb (gpointer data)
+alt_tab_initial_timeout_cb (gpointer data)
 {
   struct alt_tab_show_complete_data *alt_data = data;
   ClutterActor              *stage;
@@ -251,13 +267,31 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
 
       memcpy (&alt_data->xevent, event, sizeof (XEvent));
 
-      g_timeout_add (100, alt_tab_timeout_cb, alt_data);
+      g_timeout_add (100, alt_tab_initial_timeout_cb, alt_data);
       priv->waiting_for_timeout = TRUE;
       return;
     }
   else
     {
       gboolean backward = FALSE;
+
+      /*
+       * Workaround autorepeat madness -- install a 100ms timeout; if we get
+       * here while the timeout is still in place, ignore the button press
+       * (which is almost certainly due to auto-repeat). When the timeout
+       * triggers, check whether the Tab key is still down. If not, remove the
+       * tiemeout so that the next key press will be handled here; if the key
+       * is still down, leave the timeout in place and keep ignoring the
+       * events.
+       *
+       * The actual advancing is handled by the autoscroll timeouts.
+       */
+      if (priv->slowdown_timeout_id)
+        return;
+
+      priv->slowdown_timeout_id =
+        g_timeout_add (100,
+                       alt_tab_slow_down_timeout_cb, overlay);
 
       priv->waiting_for_timeout = FALSE;
 

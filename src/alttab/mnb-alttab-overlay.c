@@ -29,11 +29,11 @@
 #include <display.h>
 #include <keybindings.h>
 #include <X11/keysym.h>
+#include <clutter/x11/clutter-x11.h>
 
 #define PADDING 10
 
-#define AUTOSCROLL_TRIGGER_TIMEOUT  750
-#define AUTOSCROLL_ADVANCE_TIMEOUT  500
+static void mnb_alttab_stop_autoscroll (MnbAlttabOverlay *overlay);
 
 enum
 {
@@ -360,8 +360,10 @@ mnb_alttab_overlay_handle_xevent (MnbAlttabOverlay *overlay, XEvent *xev)
 
   if (xev->type == KeyRelease)
     {
-      if ((XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0)==XK_Alt_L) ||
-          (XKeycodeToKeysym (xev->xkey.display, xev->xkey.keycode, 0)==XK_Alt_R))
+      if ((XKeycodeToKeysym (xev->xkey.display,
+                             xev->xkey.keycode, 0) == XK_Alt_L) ||
+          (XKeycodeToKeysym (xev->xkey.display,
+                             xev->xkey.keycode, 0) == XK_Alt_R))
         {
           MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
           MetaDisplay  *display = meta_screen_get_display (screen);
@@ -438,12 +440,38 @@ mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay, gboolean backward)
   g_list_free (children);
 }
 
+gboolean
+mnb_alttab_overlay_tab_still_down (MnbAlttabOverlay *overlay)
+{
+  MutterPlugin *plugin  = moblin_netbook_get_plugin_singleton ();
+  MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay  *display = meta_screen_get_display (screen);
+  Display      *xdpy    = meta_display_get_xdisplay (display);
+  char          keys[32];
+  KeyCode       code;
+  guint         bit_index, byte_index;
+
+  code = XKeysymToKeycode (xdpy, XK_Tab);
+
+  g_return_val_if_fail (code != NoSymbol, FALSE);
+
+  byte_index = code / 8;
+  bit_index  = code & 7;
+
+  XQueryKeymap (xdpy, &keys[0]);
+
+  return (1 & (keys[byte_index] >> bit_index));
+}
+
 static gboolean
 mnb_alttab_overlay_autoscroll_advance_cb (gpointer data)
 {
   MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (data)->priv;
 
-  mnb_alttab_overlay_advance (data, priv->backward);
+  if (mnb_alttab_overlay_tab_still_down (data))
+    mnb_alttab_overlay_advance (data, priv->backward);
+  else
+    mnb_alttab_stop_autoscroll (data);
 
   return TRUE;
 }
@@ -457,12 +485,15 @@ mnb_alttab_overlay_autoscroll_trigger_cb (gpointer data)
 
   g_assert (!priv->autoscroll_advance_id);
 
-  mnb_alttab_overlay_advance (data, priv->backward);
+  if (mnb_alttab_overlay_tab_still_down (data))
+    {
+      mnb_alttab_overlay_advance (data, priv->backward);
 
-  priv->autoscroll_advance_id =
-    g_timeout_add (AUTOSCROLL_ADVANCE_TIMEOUT,
-                   mnb_alttab_overlay_autoscroll_advance_cb,
-                   data);
+      priv->autoscroll_advance_id =
+        g_timeout_add (AUTOSCROLL_ADVANCE_TIMEOUT,
+                       mnb_alttab_overlay_autoscroll_advance_cb,
+                       data);
+    }
 
   return FALSE;
 }
@@ -530,7 +561,15 @@ mnb_alttab_reset_autoscroll (MnbAlttabOverlay *overlay, gboolean backward)
 void
 mnb_alttab_overlay_hide (MnbAlttabOverlay *overlay)
 {
+  MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (overlay)->priv;
+
   mnb_alttab_stop_autoscroll (overlay);
+
+  if (priv->slowdown_timeout_id)
+    {
+      g_source_remove (priv->slowdown_timeout_id);
+      priv->slowdown_timeout_id = 0;
+    }
 
   /* FIXME -- do an animation */
   clutter_actor_hide ((ClutterActor*)overlay);

@@ -27,6 +27,9 @@
 
 #include "mnb-alttab-overlay-app.h"
 
+#define AUTOSCROLL_TRIGGER_TIMEOUT  750
+#define AUTOSCROLL_ADVANCE_TIMEOUT  500
+
 struct _MnbAlttabOverlayPrivate
 {
   MnbAlttabOverlayApp *active;
@@ -39,6 +42,7 @@ struct _MnbAlttabOverlayPrivate
 
   guint32 autoscroll_trigger_id;
   guint32 autoscroll_advance_id;
+  guint32 slowdown_timeout_id;
 };
 
 void mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay,
@@ -47,5 +51,7 @@ void mnb_alttab_overlay_activate_selection (MnbAlttabOverlay *overlay,
                                             guint               timestamp);
 
 GList *mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *overlay);
+
+gboolean mnb_alttab_overlay_tab_still_down (MnbAlttabOverlay *overlay);
 
 #endif
