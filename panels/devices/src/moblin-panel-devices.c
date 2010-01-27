@@ -142,7 +142,8 @@ main (int     argc,
 {
   static gboolean _standalone = FALSE;
   static GOptionEntry _options[] = {
-    { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone, "Do not embed into the mutter-moblin panel", NULL },
+    { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone,
+      "Do not embed into the mutter-moblin panel", NULL },
     { NULL }
   };
 

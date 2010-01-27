@@ -1,6 +1,6 @@
 
 AM_CFLAGS = \
-	$(EGG_CONSOLE_KIT_CFLAGS) \
+	$(ECK_CFLAGS) \
 	-DEGG_CONSOLE="\"MPD_CONSOLE\"" \
 	-DEGG_LOGGING="\"MPD_LOGGING\"" \
 	-DEGG_LOG_FILE=\""/tmp/moblin-panel-devices.log"\" \

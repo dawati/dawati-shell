@@ -1,6 +1,6 @@
 
 AM_CFLAGS = \
-	$(DEVICES_CFLAGS) \
+	$(MPD_CFLAGS) \
 	-I$(top_srcdir) \
 	-DDATADIR=\"$(datadir)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
@@ -13,7 +13,7 @@ libexec_PROGRAMS = moblin-panel-devices
 
 moblin_panel_devices_LDADD = \
 	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
-	$(DEVICES_LIBS) \
+	$(MPD_LIBS) \
   $(NULL)
 
 moblin_panel_devices_SOURCES = \

@@ -1,10 +1,10 @@
 
 AM_CFLAGS = \
-	$(DEVICES_CFLAGS) \
+	$(MPD_CFLAGS) \
 	-I$(top_srcdir)/src \
 	$(NULL)
 
-LDADD = $(DEVICES_LIBS)
+LDADD = $(MPD_LIBS)
 
 noinst_PROGRAMS = \
 	test-battery-device \
