@@ -32,9 +32,8 @@
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <libnotify/notify.h>
-#include "mpd-computer-pane.h"
 #include "mpd-global-key.h"
-#include "mpd-folder-pane.h"
+#include "mpd-shell.h"
 #include "mpd-shutdown-notification.h"
 #include "config.h"
 
@@ -85,8 +84,8 @@ _shutdown_key_activated_cb (MxAction  *action,
 }
 
 static void
-_pane_request_hide_cb (ClutterActor   *pane,
-                       MplPanelClient *panel)
+_shell_request_hide_cb (MpdShell        *shell,
+                        MplPanelClient  *panel)
 {
   if (panel)
     mpl_panel_client_hide (panel);
@@ -95,51 +94,30 @@ _pane_request_hide_cb (ClutterActor   *pane,
 static void
 _stage_width_notify_cb (ClutterActor  *stage,
                         GParamSpec    *pspec,
-                        ClutterActor  *content)
+                        MpdShell      *shell)
 {
   guint width = clutter_actor_get_width (stage);
 
-  clutter_actor_set_width (CLUTTER_ACTOR (content), width);
+  clutter_actor_set_width (CLUTTER_ACTOR (shell), width);
 }
 
 static void
-_stage_height_notify_cb (ClutterActor  *stage,
-                         GParamSpec    *pspec,
-                         ClutterActor  *content)
+_stage_height_notify_cb (ClutterActor *stage,
+                         GParamSpec   *pspec,
+                         MpdShell     *shell)
 {
   guint height = clutter_actor_get_height (stage);
 
-  clutter_actor_set_height (CLUTTER_ACTOR (content), height);
+  clutter_actor_set_height (CLUTTER_ACTOR (shell), height);
 }
 
 static void
-_panel_set_size_cb (MplPanelClient *panel,
-                    guint           width,
-                    guint           height,
-                    ClutterActor   *content)
+_panel_set_size_cb (MplPanelClient  *panel,
+                    guint            width,
+                    guint            height,
+                    MpdShell        *shell)
 {
-  clutter_actor_set_size (CLUTTER_ACTOR (content), width, height);
-}
-
-static ClutterActor *
-create_panel (MplPanelClient *panel)
-{
-  ClutterActor *box;
-  ClutterActor *pane;
-
-  box = mx_box_layout_new ();
-
-  pane = mpd_folder_pane_new ();
-  g_signal_connect (pane, "request-hide",
-                    G_CALLBACK (_pane_request_hide_cb), panel);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), pane);
-
-  pane = mpd_computer_pane_new ();
-  g_signal_connect (pane, "request-hide",
-                    G_CALLBACK (_pane_request_hide_cb), panel);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), pane);
-
-  return box;
+  clutter_actor_set_size (CLUTTER_ACTOR (shell), width, height);
 }
 
 static MxAction *
@@ -171,7 +149,7 @@ main (int     argc,
 
   MxAction        *shutdown_key;
   ClutterActor    *stage;
-  ClutterActor    *content;
+  ClutterActor    *shell;
   GOptionContext  *context;
   GError          *error = NULL;
 
@@ -217,17 +195,16 @@ main (int     argc,
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
 
-      content = create_panel (NULL);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), content);
+      shell = mpd_shell_new ();
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
 
       g_signal_connect (stage, "notify::width",
-                        G_CALLBACK (_stage_width_notify_cb), content);
+                        G_CALLBACK (_stage_width_notify_cb), shell);
       g_signal_connect (stage, "notify::height",
-                        G_CALLBACK (_stage_height_notify_cb), content);
+                        G_CALLBACK (_stage_height_notify_cb), shell);
 
       clutter_actor_set_size (stage, 1024, 600);
       clutter_actor_show (stage);
-      clutter_actor_grab_key_focus (content);
 
     } else {
 
@@ -242,11 +219,11 @@ main (int     argc,
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (panel);
 
       stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
-      content = create_panel (panel);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), content);
+      shell = mpd_shell_new ();
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
 
       g_signal_connect (panel, "set-size",
-                        G_CALLBACK (_panel_set_size_cb), content);
+                        G_CALLBACK (_panel_set_size_cb), shell);
     }
 
   /* Hook up shutdown key. */

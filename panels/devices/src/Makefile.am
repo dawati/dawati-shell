@@ -34,6 +34,9 @@ moblin_panel_devices_SOURCES = \
 	mpd-folder-store.h \
 	mpd-folder-view.c \
 	mpd-folder-view.h \
+	mpd-shell.c \
+	mpd-shell.h \
+	mpd-shell-defines.h \
 	mpd-shutdown-notification.c \
 	mpd-shutdown-notification.h \
 	$(NULL)
