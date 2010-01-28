@@ -37,8 +37,6 @@ moblin_panel_status_SOURCES  = 	\
 	moblin-panel-status.c \
 	penge-magic-texture.h \
 	penge-magic-texture.c \
-	mojito-online.h \
-	mojito-online.c \
 	mnb-launcher-button.h \
 	mnb-launcher-button.c \
 	mps-tweet-card.h \
