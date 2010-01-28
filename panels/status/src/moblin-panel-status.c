@@ -52,7 +52,6 @@ typedef struct _MoblinStatusPanel
   MpsViewBridge *bridge;
 } MoblinStatusPanel;
 
-
 static void 
 _client_view_opened_cb (MojitoClient     *client,
                         MojitoClientView *view,
@@ -66,26 +65,15 @@ _client_view_opened_cb (MojitoClient     *client,
 static ClutterActor *
 make_status (MoblinStatusPanel *status_panel)
 {
-  ClutterActor *scroll_view, *box_layout;
-
-  scroll_view = mx_scroll_view_new ();
-
-  box_layout = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (box_layout), TRUE);
-  clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
-                               box_layout);
-
-  status_panel->bridge = mps_view_bridge_new ();
-  mps_view_bridge_set_container (status_panel->bridge,
-                                 CLUTTER_CONTAINER (box_layout));
+  ClutterActor *pane;
 
   status_panel->client = mojito_client_new ();
-  mojito_client_open_view_for_service (status_panel->client,
-                                       "twitter",
-                                       20,
-                                       _client_view_opened_cb,
-                                       status_panel);
-  return scroll_view;
+
+  pane = mps_feed_pane_new (status_panel->client,
+                            mojito_client_get_service (status_panel->client,
+                                                       "twitter"));
+
+  return pane;
 }
 
 static void
