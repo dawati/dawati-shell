@@ -186,6 +186,10 @@ MxTooltip {
   font-size: 15px;
 }
 
+MxTooltip.alttab {
+  background-image: none;
+}
+
 /* workspace switcher */
 MnbSwitcher *.workspace-title-label {
   font-family: "Droid Sans Bold";

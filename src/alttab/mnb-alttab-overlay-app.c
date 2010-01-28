@@ -183,6 +183,7 @@ mnb_alttab_overlay_app_constructed (GObject *self)
   if (title)
     {
       priv->tooltip  = g_object_new (MX_TYPE_TOOLTIP, NULL);
+      mx_stylable_set_style_class (MX_STYLABLE (priv->tooltip), "alttab");
       clutter_actor_set_parent (priv->tooltip, actor);
 
       mx_tooltip_set_label (MX_TOOLTIP (priv->tooltip), title);
