@@ -22,7 +22,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <mojito-client/mojito-client.h>
+#include <libsocialweb-client/sw-client.h>
 
 G_BEGIN_DECLS
 
@@ -55,10 +55,10 @@ GType mps_view_bridge_get_type (void);
 
 MpsViewBridge *mps_view_bridge_new (void);
 void mps_view_bridge_set_view (MpsViewBridge    *bridge,
-                               MojitoClientView *view);
+                               SwClientView *view);
 void mps_view_bridge_set_container (MpsViewBridge    *bridge,
                                     ClutterContainer *container);
-MojitoClientView *mps_view_bridge_get_view (MpsViewBridge *bridge);
+SwClientView *mps_view_bridge_get_view (MpsViewBridge *bridge);
 ClutterContainer *mps_view_bridge_get_container (MpsViewBridge *bridge);
 
 G_END_DECLS

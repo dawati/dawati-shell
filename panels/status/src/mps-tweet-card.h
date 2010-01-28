@@ -22,7 +22,7 @@
 
 #include <glib-object.h>
 #include <mx/mx.h>
-#include <mojito-client/mojito-item.h>
+#include <libsocialweb-client/sw-item.h>
 
 G_BEGIN_DECLS
 
@@ -55,8 +55,8 @@ GType mps_tweet_card_get_type (void);
 
 ClutterActor *mps_tweet_card_new (void);
 void mps_tweet_card_set_item (MpsTweetCard *card,
-                              MojitoItem   *item);
-MojitoItem *mps_tweet_card_get_item (MpsTweetCard *card);
+                              SwItem   *item);
+SwItem *mps_tweet_card_get_item (MpsTweetCard *card);
 
 G_END_DECLS
 

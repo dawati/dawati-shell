@@ -36,7 +36,7 @@
 #include <gtk/gtk.h>
 #include <clutter/x11/clutter-x11.h>
 
-#include <mojito-client/mojito-client.h>
+#include <libsocialweb-client/sw-client.h>
 #include <mx/mx.h>
 
 #include <moblin-panel/mpl-panel-clutter.h>
@@ -46,16 +46,16 @@
 
 typedef struct _MoblinStatusPanel
 {
-  MojitoClient *client;
-  MojitoClientView *view;
+  SwClient *client;
+  SwClientView *view;
   MplPanelClient *panel_client;
   MpsViewBridge *bridge;
 } MoblinStatusPanel;
 
 static void 
-_client_view_opened_cb (MojitoClient     *client,
-                        MojitoClientView *view,
-                        gpointer          userdata)
+_client_view_opened_cb (SwClient     *client,
+                        SwClientView *view,
+                        gpointer      userdata)
 {
   MoblinStatusPanel *status_panel = (MoblinStatusPanel *)userdata;
 
@@ -67,11 +67,11 @@ make_status (MoblinStatusPanel *status_panel)
 {
   ClutterActor *pane;
 
-  status_panel->client = mojito_client_new ();
+  status_panel->client = sw_client_new ();
 
   pane = mps_feed_pane_new (status_panel->client,
-                            mojito_client_get_service (status_panel->client,
-                                                       "twitter"));
+                            sw_client_get_service (status_panel->client,
+                                                   "twitter"));
 
   return pane;
 }

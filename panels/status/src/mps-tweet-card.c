@@ -28,7 +28,7 @@ G_DEFINE_TYPE (MpsTweetCard, mps_tweet_card, MX_TYPE_BUTTON)
 typedef struct _MpsTweetCardPrivate MpsTweetCardPrivate;
 
 struct _MpsTweetCardPrivate {
-  MojitoItem *item;
+  SwItem *item;
   ClutterActor *inner_table;
 
   ClutterActor *avatar_frame;
@@ -83,7 +83,7 @@ mps_tweet_card_dispose (GObject *object)
 
   if (priv->item)
   {
-    mojito_item_unref (priv->item);
+    sw_item_unref (priv->item);
     priv->item = NULL;
   }
 
@@ -112,7 +112,7 @@ mps_tweet_card_class_init (MpsTweetCardClass *klass)
   pspec = g_param_spec_boxed ("item",
                               "Item",
                               "Item",
-                              MOJITO_TYPE_ITEM,
+                              SW_TYPE_ITEM,
                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_ITEM, pspec);
 }
@@ -175,7 +175,7 @@ mps_tweet_card_new (void)
   return g_object_new (MPS_TYPE_TWEET_CARD, NULL);
 }
 
-MojitoItem *
+SwItem *
 mps_tweet_card_get_item (MpsTweetCard *card)
 {
   MpsTweetCardPrivate *priv = GET_PRIVATE (card);
@@ -185,7 +185,7 @@ mps_tweet_card_get_item (MpsTweetCard *card)
 
 void
 mps_tweet_card_set_item (MpsTweetCard *card,
-                         MojitoItem   *item)
+                         SwItem       *item)
 {
   MpsTweetCardPrivate *priv = GET_PRIVATE (card);
   const gchar *author_icon = NULL;
@@ -195,7 +195,7 @@ mps_tweet_card_set_item (MpsTweetCard *card,
   GError *error = NULL;
   ClutterActor *tmp_text;
 
-  author_icon = mojito_item_get_value (item, "authoricon");
+  author_icon = sw_item_get_value (item, "authoricon");
 
   if (!author_icon)
   {
@@ -211,8 +211,8 @@ mps_tweet_card_set_item (MpsTweetCard *card,
     g_clear_error (&error);
   }
 
-  content = mojito_item_get_value (item, "content");
-  author = mojito_item_get_value (item, "author");
+  content = sw_item_get_value (item, "content");
+  author = sw_item_get_value (item, "author");
 
   combined_content = g_markup_printf_escaped("<b>%s</b> %s",
                                              author,

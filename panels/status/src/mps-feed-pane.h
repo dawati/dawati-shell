@@ -51,8 +51,8 @@ typedef struct {
 
 GType mps_feed_pane_get_type (void);
 
-ClutterActor *mps_feed_pane_new (MojitoClient        *client,
-                                 MojitoClientService *service);
+ClutterActor *mps_feed_pane_new (SwClient        *client,
+                                 SwClientService *service);
 
 G_END_DECLS
 

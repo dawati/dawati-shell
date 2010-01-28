@@ -34,8 +34,8 @@
 #include <gtk/gtk.h>
 #include <clutter/x11/clutter-x11.h>
 
-#include <mojito-client/mojito-client.h>
-#include <mojito-client/mojito-client-service.h>
+#include <libsocialweb-client/sw-client.h>
+#include <libsocialweb-client/sw-client-service.h>
 #include <mx/mx.h>
 
 #include <moblin-panel/mpl-panel-clutter.h>
@@ -53,9 +53,9 @@ G_DEFINE_TYPE (MpsFeedPane, mps_feed_pane, MX_TYPE_TABLE)
 typedef struct _MpsFeedPanePrivate MpsFeedPanePrivate;
 
 struct _MpsFeedPanePrivate {
-  MojitoClient *client;
-  MojitoClientService *service;
-  MojitoClientView *view;
+  SwClient *client;
+  SwClientService *service;
+  SwClientView *view;
   MpsViewBridge *bridge;
 
   ClutterActor *entry;
@@ -145,7 +145,7 @@ mps_feed_pane_finalize (GObject *object)
 }
 
 static void
-_view_items_added_cb (MojitoClientView *view,
+_view_items_added_cb (SwClientView *view,
                       GList            *items,
                       gpointer          userdata)
 {
@@ -177,9 +177,9 @@ _view_items_added_cb (MojitoClientView *view,
 }
 
 static void
-_client_view_opened_cb (MojitoClient     *client,
-                        MojitoClientView *view,
-                        gpointer          userdata) 
+_client_view_opened_cb (SwClient     *client,
+                        SwClientView *view,
+                        gpointer      userdata) 
 {
   MpsFeedPane *pane = MPS_FEED_PANE (userdata);
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
@@ -195,9 +195,9 @@ _client_view_opened_cb (MojitoClient     *client,
 }
 
 static void
-_service_status_updated_cb (MojitoClient *service,
-                            gboolean      success,
-                            gpointer      userdata)
+_service_status_updated_cb (SwClient *service,
+                            gboolean  success,
+                            gpointer  userdata)
 {
   MpsFeedPane *pane = MPS_FEED_PANE (userdata);
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
@@ -206,7 +206,7 @@ _service_status_updated_cb (MojitoClient *service,
 
   if (success)
   {
-    mojito_client_view_refresh (priv->view);
+    sw_client_view_refresh (priv->view);
   }
 }
 
@@ -217,18 +217,18 @@ mps_feed_pane_constructed (GObject *object)
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
   const gchar *service_name;
 
-  service_name = mojito_client_service_get_name (priv->service);
+  service_name = sw_client_service_get_name (priv->service);
 
   g_signal_connect (priv->service,
                     "status-updated",
                     (GCallback)_service_status_updated_cb,
                     pane);
 
-  mojito_client_open_view_for_service (priv->client,
-                                       service_name,
-                                       20,
-                                       _client_view_opened_cb,
-                                       pane);
+  sw_client_open_view_for_service (priv->client,
+                                   service_name,
+                                   20,
+                                   _client_view_opened_cb,
+                                   pane);
 
   if (G_OBJECT_CLASS (mps_feed_pane_parent_class)->constructed)
   {
@@ -253,20 +253,20 @@ mps_feed_pane_class_init (MpsFeedPaneClass *klass)
   pspec = g_param_spec_object ("client",
                                "client",
                                "The client-side core",
-                               MOJITO_TYPE_CLIENT,
+                               SW_TYPE_CLIENT,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_CLIENT, pspec);
 
   pspec = g_param_spec_object ("service",
                                "service",
                                "The client-side service object",
-                               MOJITO_CLIENT_TYPE_SERVICE,
+                               SW_CLIENT_TYPE_SERVICE,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_SERVICE, pspec);
 }
 
 static void
-_service_update_status_cb (MojitoClientService *service,
+_service_update_status_cb (SwClientService *service,
                            const GError        *error,
                            gpointer             userdata)
 {
@@ -290,10 +290,10 @@ _update_button_clicked_cb (MxButton    *button,
 
   status_message = mx_entry_get_text (MX_ENTRY (priv->entry));
 
-  mojito_client_service_update_status (priv->service,
-                                       _service_update_status_cb,
-                                       status_message,
-                                       pane);
+  sw_client_service_update_status (priv->service,
+                                   _service_update_status_cb,
+                                   status_message,
+                                   pane);
 
   progress_text = g_strdup_printf (_("Trying to send update \"%s\""),
                                    status_message);
@@ -397,8 +397,8 @@ mps_feed_pane_init (MpsFeedPane *self)
 }
 
 ClutterActor *
-mps_feed_pane_new (MojitoClient        *client,
-                   MojitoClientService *service)
+mps_feed_pane_new (SwClient        *client,
+                   SwClientService *service)
 {
   return g_object_new (MPS_TYPE_FEED_PANE,
                        "client", client,

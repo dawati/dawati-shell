@@ -28,7 +28,7 @@ G_DEFINE_TYPE (MpsViewBridge, mps_view_bridge, G_TYPE_OBJECT)
 typedef struct _MpsViewBridgePrivate MpsViewBridgePrivate;
 
 struct _MpsViewBridgePrivate {
-  MojitoClientView *view;
+  SwClientView *view;
   ClutterContainer *container;
 
   GHashTable *item_uid_to_actor;
@@ -75,7 +75,7 @@ mps_view_bridge_set_property (GObject *object, guint property_id,
   switch (property_id) {
     case PROP_VIEW:
       mps_view_bridge_set_view (bridge,
-                                (MojitoClientView *)g_value_get_object (value));
+                                (SwClientView *)g_value_get_object (value));
       break;
     case PROP_CONTAINER:
       mps_view_bridge_set_container (bridge,
@@ -143,8 +143,8 @@ mps_view_bridge_new (void)
 }
 
 static gint
-_mojito_item_sort_compare_func (MojitoItem *a,
-                                MojitoItem *b)
+_sw_item_sort_compare_func (SwItem *a,
+                            SwItem *b)
 {
   if (a->date.tv_sec < b->date.tv_sec)
   {
@@ -158,7 +158,7 @@ _mojito_item_sort_compare_func (MojitoItem *a,
 
 #if 0
 static void
-_view_items_added_cb (MojitoClientView *view,
+_view_items_added_cb (SwClientView *view,
                       GList            *items,
                       MpsViewBridge    *bridge)
 {
@@ -172,7 +172,7 @@ _view_items_added_cb (MojitoClientView *view,
 
   /* TODO: Add some kind of delaying here */
   items = g_list_sort (items,
-                       (GCompareFunc)_mojito_item_sort_compare_func);
+                       (GCompareFunc)_sw_item_sort_compare_func);
 
   if (!priv->score)
   {
@@ -194,7 +194,7 @@ _view_items_added_cb (MojitoClientView *view,
          i++, l=l->next)
     {
       ClutterActor *actor;
-      MojitoItem   *item = (MojitoItem *)l->data;
+      SwItem   *item = (SwItem *)l->data;
       actor = g_object_new (MPS_TYPE_TWEET_CARD,
                             "item", item,
                             NULL);
@@ -216,7 +216,7 @@ _view_items_added_cb (MojitoClientView *view,
   for (; l != NULL; l = l->next)
   {
     ClutterActor *actor;
-    MojitoItem   *item = (MojitoItem *)l->data;
+    SwItem   *item = (SwItem *)l->data;
     ClutterTimeline *opacity_timeline;
     ClutterAnimation *animation;
     ClutterBehaviour *behave;
@@ -340,9 +340,9 @@ _do_next_card_animation (MpsViewBridge *bridge)
 }
 
 static void
-_view_items_added_cb (MojitoClientView *view,
-                      GList            *items,
-                      MpsViewBridge    *bridge)
+_view_items_added_cb (SwClientView  *view,
+                      GList         *items,
+                      MpsViewBridge *bridge)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
   gint item_count = 0;
@@ -353,14 +353,14 @@ _view_items_added_cb (MojitoClientView *view,
 
   /* Oldest first */
   items = g_list_sort (items,
-                       (GCompareFunc)_mojito_item_sort_compare_func);
+                       (GCompareFunc)_sw_item_sort_compare_func);
 
   item_count = g_list_length (items);
 
 
   for (l = items; l; l = l->next)
   {
-    MojitoItem *item = (MojitoItem *)l->data;
+    SwItem *item = (SwItem *)l->data;
     ClutterActor *actor;
 
     actor = g_object_new (MPS_TYPE_TWEET_CARD,
@@ -413,7 +413,7 @@ _view_items_added_cb (MojitoClientView *view,
 }
 
 static void
-_view_items_removed_cb (MojitoClientView *view,
+_view_items_removed_cb (SwClientView *view,
                         GList            *items,
                         MpsViewBridge    *bridge)
 {
@@ -422,7 +422,7 @@ _view_items_removed_cb (MojitoClientView *view,
 }
 
 static void
-_view_items_changed_cb (MojitoClientView *view,
+_view_items_changed_cb (SwClientView *view,
                         GList     *items,
                         MpsViewBridge *bridge)
 {
@@ -431,7 +431,7 @@ _view_items_changed_cb (MojitoClientView *view,
 
   for (l = items; l; l = l->next)
   {
-    MojitoItem *item = (MojitoItem *)l->data;
+    SwItem *item = (SwItem *)l->data;
     ClutterActor *actor;
 
     actor = g_hash_table_lookup (priv->item_uid_to_actor,
@@ -449,7 +449,7 @@ _view_items_changed_cb (MojitoClientView *view,
 
 void
 mps_view_bridge_set_view (MpsViewBridge    *bridge,
-                          MojitoClientView *view)
+                          SwClientView *view)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
 
@@ -470,7 +470,7 @@ mps_view_bridge_set_view (MpsViewBridge    *bridge,
                     (GCallback)_view_items_changed_cb,
                     bridge);
 
-  mojito_client_view_start (priv->view);
+  sw_client_view_start (priv->view);
 }
 
 void
@@ -484,7 +484,7 @@ mps_view_bridge_set_container (MpsViewBridge    *bridge,
   priv->container = g_object_ref (container);
 }
 
-MojitoClientView *
+SwClientView *
 mps_view_bridge_get_view (MpsViewBridge *bridge)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
