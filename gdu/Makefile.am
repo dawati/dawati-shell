@@ -1,6 +1,7 @@
 
 AM_CFLAGS = \
 	$(GDU_CFLAGS) \
+	-I$(top_srcdir) \
 	-DG_LOG_DOMAIN=\"moblin-panel-devices-gdu\" \
 	-DGDU_API_IS_SUBJECT_TO_CHANGE \
 	-DGDU_COMPILATION \

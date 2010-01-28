@@ -1,5 +1,17 @@
 # List of source files containing translatable strings.
 data/moblin-panel-devices.desktop.in.in
+gdu/gdu-drive.c
+gdu/gdu-hub.c
+gdu/gdu-linux-lvm2-volume-group.c
+gdu/gdu-linux-lvm2-volume-hole.c
+gdu/gdu-linux-lvm2-volume.c
+gdu/gdu-linux-md-drive.c
+gdu/gdu-machine.c
+gdu/gdu-pool.c
+gdu/gdu-ssh-bridge.c
+gdu/gdu-util.c
+gdu/gdu-volume-hole.c
+gdu/gdu-volume.c
 src/moblin-panel-devices.c
 src/mpd-battery-device.c
 src/mpd-battery-tile.c

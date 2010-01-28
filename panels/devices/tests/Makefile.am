@@ -2,6 +2,7 @@
 AM_CFLAGS = \
 	$(MPD_CFLAGS) \
 	-I$(top_srcdir)/src \
+	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
 	$(NULL)
 
 LDADD = $(MPD_LIBS)

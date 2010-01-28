@@ -7,6 +7,7 @@ AM_CFLAGS = \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DICONDIR=\"$(pkgdatadir)/icons\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
+	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
 	$(NULL)
 
 libexec_PROGRAMS = moblin-panel-devices

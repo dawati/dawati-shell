@@ -18,8 +18,6 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#define I_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE
-
 #include <glib/gi18n.h>
 #include <devkit-power-gobject/devicekit-power.h>
 #include "mpd-battery-device.h"
