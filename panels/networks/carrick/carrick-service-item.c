@@ -33,10 +33,6 @@
 #include "carrick-util.h"
 #include "carrick-shell.h"
 
-#if ! HAVE_DECL_GTK_INFO_BAR_NEW
-#include "gtkinfobar.h"
-#endif
-
 G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 
 #define SERVICE_ITEM_PRIVATE(o) \
