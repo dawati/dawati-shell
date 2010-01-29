@@ -121,6 +121,7 @@ static void
 mps_tweet_card_init (MpsTweetCard *self)
 {
   MpsTweetCardPrivate *priv = GET_PRIVATE (self);
+  ClutterActor *tmp_text;
 
   priv->inner_table = mx_table_new ();
   mx_bin_set_child (MX_BIN (self), priv->inner_table);
@@ -148,6 +149,10 @@ mps_tweet_card_init (MpsTweetCard *self)
   priv->content_label = mx_label_new ("");
   mx_stylable_set_style_class (MX_STYLABLE (priv->content_label),
                                "MpsTweetContentLabel");
+
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->content_label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE),
+
   mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
                                       priv->content_label,
                                       0, 1,
