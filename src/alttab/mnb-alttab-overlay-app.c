@@ -369,7 +369,7 @@ mnb_alttab_overlay_app_get_preferred_width (ClutterActor *self,
     scale = ((gfloat)MNB_ALTTAB_OVERLAY_TILE_WIDTH -
              padding.top - padding.right)/ child_natural_h;
 
-  if (*min_width_p)
+  if (min_width_p)
     *min_width_p = 0.0;
 
   if (natural_width_p)
@@ -412,7 +412,7 @@ mnb_alttab_overlay_app_get_preferred_height (ClutterActor *self,
     scale = ((gfloat)MNB_ALTTAB_OVERLAY_TILE_WIDTH -
              padding.top - padding.right)/ child_natural_h;
 
-  if (*min_height_p)
+  if (min_height_p)
     *min_height_p = 0.0;
 
   if (natural_height_p)
