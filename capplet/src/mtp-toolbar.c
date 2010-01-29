@@ -527,3 +527,12 @@ mtp_toolbar_get_applet_buttons (MtpToolbar *toolbar)
 
   return clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));
 }
+
+void
+mtp_toolbar_clear_modified_state (MtpToolbar *toolbar)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+
+  priv->modified = FALSE;
+}
+

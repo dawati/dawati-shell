@@ -275,6 +275,12 @@ construct_contents (GtkWidget    *embed,
         }
 
     }
+
+  /*
+   * Now clear the modified state on the toolbar (set because we were adding
+   * buttons.
+   */
+  mtp_toolbar_clear_modified_state (toolbar);
 }
 
 int

@@ -71,6 +71,7 @@ void mtp_toolbar_insert_button (MtpToolbar       *toolbar,
                                 MtpToolbarButton *button,
                                 MtpToolbarButton *before);
 gboolean mtp_toolbar_was_modified (MtpToolbar *toolbar);
+void     mtp_toolbar_clear_modified_state (MtpToolbar *toolbar);
 GList *mtp_toolbar_get_panel_buttons (MtpToolbar *toolbar);
 GList *mtp_toolbar_get_applet_buttons (MtpToolbar *toolbar);
 
