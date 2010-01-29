@@ -2307,43 +2307,6 @@ mnb_toolbar_screen_restacked_cb (MetaScreen *screen, MnbToolbar *toolbar)
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
 }
 
-static MnbToolbarPanel *
-mnb_toolbar_make_toolbar_panel (MnbToolbar  *toolbar,
-                                const gchar *name,
-                                const gchar *tooltip,
-                                const gchar *service,
-                                gboolean     applet,
-                                gboolean     builtin,
-                                gboolean     required)
-{
-  MnbToolbarPanel *tp = g_new0 (MnbToolbarPanel, 1);
-
-  tp->name     = g_strdup (name);
-  tp->tooltip  = g_strdup (tooltip);
-  tp->applet   = applet;
-  tp->builtin  = builtin;
-  tp->required = required;
-
-  if (!strcmp (name, "moblin-panel-myzone"))
-    tp->button_style = g_strdup_printf ("%s-button", service);
-  else if (!strcmp (name, "moblin-panel-applications"))
-    tp->button_style = g_strdup_printf ("%s-button", service);
-  else if (!strcmp (name, "carrick-connection-panel"))
-    tp->button_style = g_strdup_printf ("%s-button", service);
-  else
-    tp->button_style = g_strdup_printf ("%s-button", name);
-
-  if (!builtin)
-    {
-#if 0
-      tp->button_stylesheet = g_strdup_printf (THEMEDIR "/%s/button.css", name);
-#endif
-      tp->service = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, service, NULL);
-    }
-
-  return tp;
-}
-
 static void
 mnb_toolbar_setup_panels (MnbToolbar *toolbar)
 {
