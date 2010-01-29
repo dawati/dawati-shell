@@ -3427,21 +3427,6 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
 
   g_key_file_free (kfile);
 
-  if (!tp)
-    {
-      /*
-       * Temporary fallback for borked panels that we really need.
-       */
-      if (!strcmp (desktop, "carrick-connection-panel"))
-        {
-          tp = mnb_toolbar_make_toolbar_panel (toolbar,
-                                               "carrick-connection-panel",
-                                               MPL_PANEL_NETWORK,
-                                               MPL_PANEL_NETWORK,
-                                               TRUE, FALSE, TRUE);
-        }
-    }
-
   return tp;
 }
 
@@ -3644,7 +3629,7 @@ mnb_toolbar_load_gconf_settings (MnbToolbar *toolbar)
   const gchar                *required[4] = {"moblin-panel-myzone",
                                              "moblin-panel-applications",
                                              "moblin-panel-zones",
-                                             "carrick-connection-panel"};
+                                             "carrick"};
 
   order = gconf_client_get_list (client, KEY_ORDER, GCONF_VALUE_STRING, NULL);
 
