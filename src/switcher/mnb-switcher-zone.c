@@ -358,6 +358,8 @@ mnb_switcher_zone_hide_completed_cb (MnbSwitcher     *panel,
     }
 
   meta_workspace_activate (workspace, priv->timestamp);
+
+  g_object_unref (zone);
 }
 
 /*
@@ -376,6 +378,9 @@ mnb_switcher_zone_button_release (ClutterActor       *actor,
   priv->timestamp = clutter_x11_get_current_event_time ();
 
   mnb_panel_hide_with_toolbar (MNB_PANEL (priv->switcher));
+
+
+  g_object_ref (actor);
 
   g_signal_connect (priv->switcher, "hide-completed",
                     G_CALLBACK (mnb_switcher_zone_hide_completed_cb), actor);
