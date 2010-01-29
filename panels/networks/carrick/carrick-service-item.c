@@ -24,7 +24,8 @@
 
 #include <config.h>
 #include <glib/gi18n.h>
-#include <nbtk/nbtk-gtk.h>
+#include <mx/mx-gtk.h>
+#include "nbtk-gtk-expander.h"
 
 #include "connman-service-bindings.h"
 

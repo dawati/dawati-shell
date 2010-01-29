@@ -32,20 +32,22 @@ libcarrick_la_SOURCES = carrick-applet.c \
                         carrick-util.c \
                         carrick-util.h \
 			carrick-shell.h \
+			nbtk-gtk-expander.c \
+			nbtk-gtk-expander.h \
                         $(BUILT_SOURCES) \
                         $(NULL)
 
 libcarrick_la_CFLAGS =  -Wall \
                         $(GTK_CFLAGS) \
 			$(MPL_CFLAGS) \
-                        $(NBTK_CFLAGS) \
+                        $(MX_CFLAGS) \
                         $(LIBNOTIFY_CFLAGS) \
                         -DPKG_DATA_DIR=\"$(pkgdatadir)\" \
                         -DLIBEXECDIR=\"$(libexecdir)\"
 
 libcarrick_la_LIBADD = $(GTK_LIBS) \
 			$(MPL_LIBS) \
-                       $(NBTK_LIBS) \
+                       $(MX_LIBS) \
                        $(LIBNOTIFY_LIBS)
 
 
