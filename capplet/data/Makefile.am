@@ -1,3 +1,4 @@
+
 @INTLTOOL_DESKTOP_RULE@
 
 desktopfilesdir = $(datadir)/applications
@@ -10,3 +11,4 @@ dist_theme_DATA = \
 	theme/moblin-toolbar-properties.css
 
 CLEANFILES = $(desktopfiles_DATA)
+EXTRA_DIST = $(desktopfiles_in_files)
