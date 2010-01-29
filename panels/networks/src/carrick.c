@@ -29,8 +29,6 @@
 #include "carrick/carrick-applet.h"
 #include "carrick/carrick-pane.h"
 
-#define PKG_THEME_DIR PKG_DATA_DIR"/theme"
-
 static gchar *
 get_tip_and_icon_state (const gchar      *connection_type,
                         const gchar      *connection_name,
@@ -328,7 +326,7 @@ main (int    argc,
 #if WITH_MOBLIN
       panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
                                                         _("network"),
-                                                        PKG_THEME_DIR "/network-applet.css",
+                                                        THEME_DIR "/network-applet.css",
                                                         "offline",
                                                         TRUE);
       g_signal_connect (panel_client,
