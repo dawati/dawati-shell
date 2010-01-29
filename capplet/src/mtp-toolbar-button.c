@@ -576,9 +576,9 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
           if (stylesheet && *stylesheet)
             {
               GError  *error = NULL;
-              MxStyle *style = mx_style_new ();
 
-              if (!mx_style_load_from_file (style, stylesheet, &error))
+              if (!mx_style_load_from_file (mx_style_get_default (),
+                                            stylesheet, &error))
                 {
                   if (error)
                     g_warning ("Unable to load stylesheet %s: %s",
@@ -586,8 +586,6 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
 
                   g_clear_error (&error);
                 }
-              else
-                mx_stylable_set_style (MX_STYLABLE (button), style);
             }
 
           clutter_actor_set_name ((ClutterActor*)button, priv->button_style);

@@ -1605,18 +1605,16 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
           if (stylesheet && *stylesheet)
             {
               GError  *error = NULL;
-              MxStyle *style = mx_style_new ();
 
-              if (!mx_style_load_from_file (style, stylesheet, &error))
+              if (!mx_style_load_from_file (mx_style_get_default (),
+                                            stylesheet, &error))
                 {
                   if (error)
                     g_warning ("Unable to load stylesheet %s: %s",
                                stylesheet, error->message);
 
-                  g_error_free (error);
+                  g_clear_error (&error);
                 }
-              else
-                mx_stylable_set_style (MX_STYLABLE (button), style);
             }
 
           if (!style_id || !*style_id)
