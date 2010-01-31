@@ -36,7 +36,7 @@ service_in_files = org.moblin.UX.Shell.Panels.internet.service.in
 service_DATA = org.moblin.UX.Shell.Panels.internet.service
 
 autostartdir = $(datadir)/mutter-moblin/panels
-autostart_DATA = moblin-panel-web.desktop
+autostart_DATA = moblin-panel-internet.desktop
 
 EXTRA_DIST = $(service_in_files) $(autostart_DATA)
 
