@@ -74,6 +74,7 @@ struct _MnbPeoplePanelPrivate {
   ClutterActor *active_content_table;
   ClutterActor *everybody_offline_tile;
   ClutterActor *offline_banner;
+  ClutterActor *header_box;
 };
 
 static void
@@ -683,6 +684,13 @@ _update_placeholder_state (MnbPeoplePanel *self)
     clutter_actor_show (priv->content_table);
     clutter_actor_show (priv->selection_pane);
 
+    /* Have to do this since MxTable now treats invisible actors as zero
+     * width and height */
+    clutter_container_child_set (CLUTTER_CONTAINER (self),
+                                 priv->header_box,
+                                 "col-span", 2,
+                                 NULL);
+
     if (accounts_available > 0 && accounts_online == 0)
     {
       clutter_actor_show (priv->offline_banner);
@@ -698,6 +706,14 @@ _update_placeholder_state (MnbPeoplePanel *self)
     /* Hide real content stuff */
     clutter_actor_hide (priv->content_table);
     clutter_actor_hide (priv->selection_pane);
+
+    /* Have to do this since MxTable now treats invisible actors as zero
+     * width and height */
+    clutter_container_child_set (CLUTTER_CONTAINER (self),
+                                 priv->header_box,
+                                 "col-span", 1,
+                                 NULL);
+
     mx_table_set_row_spacing (MX_TABLE (self), 6);
 
     if (accounts_online == 0)
@@ -747,7 +763,7 @@ static void
 mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
-  ClutterActor *hbox, *label;
+  ClutterActor *label;
   ClutterActor *scroll_view, *scroll_bin, *bin;
   AnerleyFeed *feed, *ebook_feed, *active_feed;
   EBook *book;
@@ -757,11 +773,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   mx_table_set_row_spacing (MX_TABLE (self), 6);
   clutter_actor_set_name (CLUTTER_ACTOR (self), "people-vbox");
 
-  hbox = mx_table_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (hbox), "people-search");
-  mx_table_set_col_spacing (MX_TABLE (hbox), 20);
+  priv->header_box = mx_table_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (priv->header_box), "people-search");
+  mx_table_set_col_spacing (MX_TABLE (priv->header_box), 20);
   mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      CLUTTER_ACTOR (hbox),
+                                      CLUTTER_ACTOR (priv->header_box),
                                       0, 0,
                                       "row-span", 1,
                                       "col-span", 2,
@@ -773,9 +789,9 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-align", 0.0,
                                       NULL);
 
-  label = mx_label_new (_("People"));
+  label = mx_label_new (_("<b>People</b>"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "people-search-label");
-  mx_table_add_actor_with_properties (MX_TABLE (hbox),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
                                       CLUTTER_ACTOR (label),
                                       0, 0,
                                       "x-expand", FALSE,
@@ -789,7 +805,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   priv->entry = (ClutterActor *) mpl_entry_new (_("Search"));
   clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "people-search-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600);
-  mx_table_add_actor_with_properties (MX_TABLE (hbox),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
                                       CLUTTER_ACTOR (priv->entry),
                                       0, 1,
                                       "x-expand", FALSE,
