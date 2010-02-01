@@ -674,7 +674,7 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
 
   button = MX_WIDGET(mx_button_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (button), "weblink");
-  mx_stylable_set_style_class (MX_WIDGET (button), "weblink");
+  mx_stylable_set_style_class ((MxStylable*)button, "weblink");
 
   if (!title)
     title = url;
@@ -857,7 +857,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
         }
 
       button = MX_WIDGET(mx_button_new ());
-      mx_stylable_set_style_class (MX_WIDGET (button), "weblink");
+      mx_stylable_set_style_class ((MxStylable*)button, "weblink");
 
       clutter_container_add_actor (CLUTTER_CONTAINER (button),
                                    CLUTTER_ACTOR (tex));
