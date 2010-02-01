@@ -360,7 +360,11 @@ moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
                                       MetaMotionDirection  dir,
                                       MutterPlugin        *plugin)
 {
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gboolean on;
+
+  if (priv->screen_saver)
+    return;
 
   on = !moblin_netbook_fullscreen_apps_present_on_workspace (plugin, to);
 
@@ -1319,6 +1323,18 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
         }
     }
 
+  if (priv->screen_saver == mcw)
+    {
+      gboolean on;
+
+      priv->screen_saver = NULL;
+
+      on = !moblin_netbook_fullscreen_apps_present (plugin);
+
+      if (on)
+        moblin_netbook_toggle_compositor (plugin, on);
+    }
+
   /*
    * * Do not destroy workspace if the closing window is a splash screen.
    *   (Sometimes the splash gets destroyed before the application window
@@ -1387,6 +1403,9 @@ fullscreen_app_added (MutterPlugin *plugin, MetaWindow *mw)
 
   priv->fullscreen_wins = g_list_prepend (priv->fullscreen_wins, mw);
 
+  if (priv->screen_saver)
+    return;
+
   compositor_on = !moblin_netbook_fullscreen_apps_present (plugin);
   moblin_netbook_toggle_compositor (plugin, compositor_on);
 }
@@ -1398,6 +1417,9 @@ fullscreen_app_removed (MutterPlugin *plugin, MetaWindow *mw)
   gboolean                    compositor_on;
 
   priv->fullscreen_wins = g_list_remove (priv->fullscreen_wins, mw);
+
+  if (priv->screen_saver)
+    return;
 
   compositor_on = !moblin_netbook_fullscreen_apps_present (plugin);
   moblin_netbook_toggle_compositor (plugin, compositor_on);
@@ -1638,6 +1660,17 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
        */
       if (wm_class && !strcmp (wm_class, "Scim-panel-gtk"))
         mnb_input_manager_push_window (mcw, MNB_INPUT_LAYER_TOP);
+
+      if (wm_class && !strcmp (wm_class, "Gnome-screensaver"))
+        {
+          g_debug ("Gnome screensaver window 0x%x mapped", (guint)xwin);
+          priv->screen_saver = mcw;
+          moblin_netbook_toggle_compositor (plugin, FALSE);
+
+          g_signal_connect (mcw, "window-destroyed",
+                            G_CALLBACK (window_destroyed_cb),
+                            plugin);
+        }
     }
   else if (type == META_COMP_WINDOW_DOCK)
     {

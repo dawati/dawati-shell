@@ -109,6 +109,8 @@ struct _MoblinNetbookPluginPrivate
   GConfClient           *gconf_client;
 
   MoblinNetbookNotifyStore *notify_store;
+
+  MutterWindow          *screen_saver;
 };
 
 GType moblin_netbook_plugin_get_type (void);
