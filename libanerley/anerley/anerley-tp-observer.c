@@ -227,8 +227,10 @@ anerley_tp_observer_init (AnerleyTpObserver *self)
 
   priv->bus = tp_dbus_daemon_dup (NULL);
 
-  priv->bus_name = g_strdup_printf (TP_CLIENT_BUS_NAME_BASE "Anerley");
-  object_path = g_strdup_printf (TP_CLIENT_OBJECT_PATH_BASE "Anerley");
+  priv->bus_name = g_strdup_printf (TP_CLIENT_BUS_NAME_BASE "Anerley%d",
+                                    (gint)getpid());
+  object_path = g_strdup_printf (TP_CLIENT_OBJECT_PATH_BASE "Anerley%d",
+                                 (gint)getpid());
 
   g_debug ("Ding ding on the bus: %s", priv->bus_name);
   tp_dbus_daemon_request_name (priv->bus,
