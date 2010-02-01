@@ -60,7 +60,7 @@ mwb_utils_image_to_texture (const guint8 *data,
                             guint data_len,
                             GError **error);
 
-inline void
+void
 mwb_utils_table_add (MxTable    *table,
                      ClutterActor *child,
                      gint          row,

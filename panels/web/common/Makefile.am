@@ -9,13 +9,13 @@ AM_CPPFLAGS = \
 noinst_LIBRARIES = libcommon.a
 
 libcommon_a_SOURCES = \
-	mwb-ac-list.c \
+	mwb-ac-list.cc \
 	mwb-ac-list.h \
-	mwb-radical-bar.c \
+	mwb-radical-bar.cc \
 	mwb-radical-bar.h \
-	mwb-separator.c \
+	mwb-separator.cc \
 	mwb-separator.h \
-	mwb-spindle.c \
+	mwb-spindle.cc \
 	mwb-spindle.h \
-	mwb-utils.c \
+	mwb-utils.cc \
 	mwb-utils.h

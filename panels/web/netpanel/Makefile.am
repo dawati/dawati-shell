@@ -1,4 +1,4 @@
-AM_CFLAGS = \
+AM_CPPFLAGS = \
 	$(SQLITE_CFLAGS) \
 	$(MX_CFLAGS) \
 	$(GTK_CFLAGS) \
@@ -20,12 +20,12 @@ moblin_panel_web_LDADD = \
 	$(top_builddir)/common/libcommon.a
 
 moblin_panel_web_SOURCES = \
-  moblin-panel-web.c   \
-  moblin-netbook-netpanel.c \
+  moblin-panel-web.cc   \
+  moblin-netbook-netpanel.cc \
   moblin-netbook-netpanel.h \
-  mnb-netpanel-bar.c        \
+  mnb-netpanel-bar.cc        \
   mnb-netpanel-bar.h        \
-  mnb-netpanel-scrollview.c \
+  mnb-netpanel-scrollview.cc \
   mnb-netpanel-scrollview.h
 
 moblin_panel_web_DEPENDENCIES = \
