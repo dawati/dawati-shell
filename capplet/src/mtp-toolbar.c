@@ -536,3 +536,11 @@ mtp_toolbar_clear_modified_state (MtpToolbar *toolbar)
   priv->modified = FALSE;
 }
 
+void
+mtp_toolbar_mark_modified (MtpToolbar *toolbar)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+
+  priv->modified = TRUE;
+}
+

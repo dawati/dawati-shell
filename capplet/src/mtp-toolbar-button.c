@@ -294,7 +294,16 @@ mtp_toolbar_button_drag_end (MxDraggable *draggable,
 
       g_object_unref (self);
     }
+  else
+    {
+      ClutterActor *parent = priv->orig_parent;
 
+      while (parent && !MTP_IS_TOOLBAR (parent))
+        parent = clutter_actor_get_parent (parent);
+
+      if (parent)
+        mtp_toolbar_mark_modified ((MtpToolbar*) parent);
+    }
 }
 
 static void
