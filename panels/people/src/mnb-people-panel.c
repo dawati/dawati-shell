@@ -289,8 +289,7 @@ _icon_theme_changed_cb (GtkIconTheme *icon_theme,
 }
 
 static ClutterActor *
-_make_empty_people_tile (MnbPeoplePanel *people_panel,
-                         gint            width)
+_make_empty_people_tile (MnbPeoplePanel *people_panel)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
 
@@ -303,7 +302,6 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
   tile = mx_table_new ();
   mx_table_set_row_spacing (MX_TABLE (tile), 8);
 
-  clutter_actor_set_width ((ClutterActor *)tile, width);
   clutter_actor_set_name ((ClutterActor *)tile,
                           "people-people-pane-no-people-tile");
   frame = mx_frame_new ();
@@ -410,8 +408,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel,
 }
 
 static ClutterActor *
-_make_everybody_offline_tile (MnbPeoplePanel *pane,
-                              gint            width)
+_make_everybody_offline_tile (MnbPeoplePanel *pane)
 {
   ClutterActor *tile;
   ClutterActor *label, *bin;
@@ -420,7 +417,6 @@ _make_everybody_offline_tile (MnbPeoplePanel *pane,
   tile = mx_table_new ();
   mx_table_set_row_spacing (MX_TABLE (tile), 8);
 
-  clutter_actor_set_width ((ClutterActor *)tile, width);
   clutter_actor_set_name ((ClutterActor *)tile,
                           "people-pane-everybody-offline-tile");
   label = mx_label_new (_("Sorry, we can't find any people. " \
@@ -895,14 +891,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
 
   /* No people && no accounts enabled */
-  priv->no_people_tile =
-    _make_empty_people_tile (self,
-                             clutter_actor_get_width ((ClutterActor *)scroll_view));
+  priv->no_people_tile = _make_empty_people_tile (self);
 
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       priv->no_people_tile,
-                                      1,
-                                      0,
+                                      1, 0,
                                       "x-fill", TRUE,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
@@ -913,10 +906,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       NULL);
 
   /* No people && acounts are online */
-  priv->everybody_offline_tile =
-    _make_everybody_offline_tile (self,
-                                  clutter_actor_get_width ((ClutterActor *)scroll_view));
-  clutter_actor_hide ((ClutterActor *)priv->everybody_offline_tile);
+  priv->everybody_offline_tile = _make_everybody_offline_tile (self);
+  clutter_actor_hide (priv->everybody_offline_tile);
 
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       priv->everybody_offline_tile,
