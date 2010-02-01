@@ -9,10 +9,11 @@
 }
 
 *#people-search-label {
-  font-family: "Droid Sans Bold";
+  font-family: "Droid Sans";
   font-size: 18px;
   padding-left: 12;
   color: #3e3e3eff;
+  font-weight: bold;
 }
 
 /* why does people-search-entry no longer work ?*/

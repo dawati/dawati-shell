@@ -785,7 +785,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-align", 0.0,
                                       NULL);
 
-  label = mx_label_new (_("<b>People</b>"));
+  label = mx_label_new (_("People"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "people-search-label");
   mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
                                       CLUTTER_ACTOR (label),
