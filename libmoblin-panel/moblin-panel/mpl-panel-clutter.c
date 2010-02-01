@@ -2,7 +2,7 @@
 
 /* mpl-panel-clutter.c */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -164,6 +164,12 @@ mpl_panel_clutter_hide (MplPanelClient *self)
 }
 
 static void
+mpl_panel_clutter_unload (MplPanelClient *panel)
+{
+  clutter_main_quit ();
+}
+
+static void
 mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
 {
   GObjectClass        *object_class = G_OBJECT_CLASS (klass);
@@ -181,6 +187,7 @@ mpl_panel_clutter_class_init (MplPanelClutterClass *klass)
   client_class->set_size         = mpl_panel_clutter_set_size;
   client_class->show             = mpl_panel_clutter_show;
   client_class->hide             = mpl_panel_clutter_hide;
+  client_class->unload           = mpl_panel_clutter_unload;
 }
 
 static void

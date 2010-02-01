@@ -2,7 +2,7 @@
 
 /* mpl-panel-gtk.c */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -128,6 +128,12 @@ mpl_panel_gtk_hide (MplPanelClient *self)
 }
 
 static void
+mpl_panel_gtk_unload (MplPanelClient *panel)
+{
+  gtk_main_quit ();
+}
+
+static void
 mpl_panel_gtk_class_init (MplPanelGtkClass *klass)
 {
   GObjectClass        *object_class = G_OBJECT_CLASS (klass);
@@ -145,6 +151,7 @@ mpl_panel_gtk_class_init (MplPanelGtkClass *klass)
   client_class->set_size         = mpl_panel_gtk_set_size;
   client_class->show             = mpl_panel_gtk_show;
   client_class->hide             = mpl_panel_gtk_hide;
+  client_class->unload           = mpl_panel_gtk_unload;
 }
 
 static void
