@@ -170,6 +170,7 @@ save_toolbar_state (GConfClient *client, MtpToolbar *toolbar)
           MtpToolbarButton *tb   = dl->data;
           const gchar      *name = mtp_toolbar_button_get_name (tb);
 
+          g_debug ("Adding %s to list", name);
           children = g_slist_prepend (children, (gchar*)name);
         }
 
@@ -188,6 +189,8 @@ save_toolbar_state (GConfClient *client, MtpToolbar *toolbar)
       g_list_free (applets);
       g_slist_free (children);
     }
+  else
+    g_debug ("Toolbar not modified");
 }
 
 typedef struct _DeleteData

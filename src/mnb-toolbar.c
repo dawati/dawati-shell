@@ -1434,8 +1434,7 @@ static void
 mnb_toolbar_dispose_of_button (MnbToolbar      *toolbar,
                                MnbToolbarPanel *tp)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
-  ClutterActor      *button;
+  ClutterActor *button;
 
   if (!tp)
     return;
@@ -1452,8 +1451,7 @@ mnb_toolbar_dispose_of_button (MnbToolbar      *toolbar,
                                         0, 0, NULL, NULL,
                                         toolbar);
 
-  clutter_container_remove_actor (CLUTTER_CONTAINER (priv->hbox),
-                                  CLUTTER_ACTOR (button));
+  clutter_actor_destroy (button);
 }
 
 /*
@@ -1745,8 +1743,9 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                                                 BUTTON_WIDTH,
                                                 TOOLBAR_HEIGHT);
 
-          clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                       CLUTTER_ACTOR (button));
+          if (!clutter_actor_get_parent (button))
+            clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                         button);
         }
     }
   else
@@ -1774,9 +1773,9 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                                                   TRAY_BUTTON_HEIGHT),
                                                 TRAY_BUTTON_WIDTH,
                                                 TOOLBAR_HEIGHT);
-
-          clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
-                                       CLUTTER_ACTOR (button));
+          if (!clutter_actor_get_parent (button))
+            clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
+                                         button);
         }
     }
 }
@@ -2308,19 +2307,10 @@ mnb_toolbar_screen_restacked_cb (MetaScreen *screen, MnbToolbar *toolbar)
 static void
 mnb_toolbar_setup_panels (MnbToolbar *toolbar)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
-  GList             *l;
-
   /*
-   * And watch for changes
+   * Set up panels from gconf watch for changes
    */
   mnb_toolbar_setup_gconf (toolbar);
-
-  /*
-   * Now that the initial panel data is set up, populate the buttons.
-   */
-  for (l = priv->panels; l; l = l->next)
-    mnb_toolbar_append_button (toolbar, l->data);
 
   mnb_toolbar_dbus_setup_panels (toolbar);
 }
@@ -3518,10 +3508,10 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order, gboolean strings)
       if (!tp)
         continue;
 
-      tp->current = FALSE;
+      if (tp->current && !tp->button)
+        mnb_toolbar_append_button (toolbar, tp);
 
-      if (!tp->button)
-        continue;
+      tp->current = FALSE;
 
       mnb_toolbar_ensure_button_position (toolbar, tp);
     }
