@@ -42,7 +42,9 @@ moblin_panel_status_SOURCES  = 	\
 	mps-view-bridge.c \
 	mps-view-bridge.h \
 	mps-feed-pane.c \
-	mps-feed-pane.h
+	mps-feed-pane.h \
+	mps-feed-switcher.c \
+	mps-feed-switcher.h
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.status.service.in
