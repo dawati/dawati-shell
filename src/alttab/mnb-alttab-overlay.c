@@ -163,16 +163,6 @@ mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *self)
    */
   filtered = g_list_sort (filtered, sort_windows_by_user_time);
 
-  /*
-   * Now move the top app to the end.
-   */
-  {
-    MutterWindow *m = filtered->data;
-
-    filtered = g_list_remove (filtered, m);
-    filtered = g_list_append (filtered, m);
-  }
-
   return filtered;
 }
 
@@ -184,7 +174,7 @@ static gboolean
 mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
 {
   MnbAlttabOverlayPrivate *priv = self->priv;
-  GList                   *l, *filtered = NULL;
+  GList                   *l, *filtered = NULL, *active = NULL;
 
   filtered = mnb_alttab_overlay_get_app_list (self);
 
@@ -199,10 +189,13 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
       MutterWindow          *m = l->data;
       MnbAlttabOverlayApp *app = mnb_alttab_overlay_app_new (m);
 
+      if (!active)
+        active = l->next;
+
       /*
-       * Mark first application private.
+       * Mark second application active.
        */
-      if (l == filtered)
+      if (l == active)
         {
           mnb_alttab_overlay_app_set_active (app, TRUE);
           priv->active = app;
