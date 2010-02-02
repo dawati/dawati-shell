@@ -124,6 +124,8 @@ mps_tweet_card_init (MpsTweetCard *self)
   ClutterActor *tmp_text;
 
   priv->inner_table = mx_table_new ();
+  mx_table_set_col_spacing (MX_TABLE (priv->inner_table), 8);
+
   mx_bin_set_child (MX_BIN (self), priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
