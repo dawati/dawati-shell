@@ -2817,7 +2817,25 @@ meta_display_window_demands_attention_cb (MetaDisplay *display,
                                           MetaWindow  *mw,
                                           gpointer     data)
 {
-  MutterPlugin       *plugin = MUTTER_PLUGIN (data);
+  MutterPlugin        *plugin = MUTTER_PLUGIN (data);
+  MutterWindow        *mcw;
+  MetaCompWindowType   type;
+
+  mcw = (MutterWindow*)meta_window_get_compositor_private (mw);
+
+  g_return_if_fail (mcw);
+
+  /*
+   * Only use notifications for normal windows and dialogues.
+   */
+  type = mutter_window_get_window_type (mcw);
+
+  if (!(type == META_COMP_WINDOW_NORMAL       ||
+        type == META_COMP_WINDOW_MODAL_DIALOG ||
+        type == META_COMP_WINDOW_DIALOG))
+    {
+      return;
+    }
 
   if (mw != meta_display_get_focus_window (display))
     get_demands_attention_notification (plugin, mw, FALSE);
