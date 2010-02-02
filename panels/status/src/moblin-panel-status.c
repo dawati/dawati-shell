@@ -43,6 +43,7 @@
 #include <moblin-panel/mpl-panel-common.h>
 
 #include "mps-view-bridge.h"
+#include "mps-feed-switcher.h"
 
 typedef struct _MoblinStatusPanel
 {
@@ -68,10 +69,13 @@ make_status (MoblinStatusPanel *status_panel)
   ClutterActor *pane;
 
   status_panel->client = sw_client_new ();
-
+#if 0
   pane = mps_feed_pane_new (status_panel->client,
                             sw_client_get_service (status_panel->client,
                                                    "twitter"));
+#endif
+
+  pane = mps_feed_switcher_new (status_panel->client);
 
   return pane;
 }
