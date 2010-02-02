@@ -1,0 +1,91 @@
+*.mps-tweet-avatar-frame
+{
+  border-image: url("avatar_frame.png") 4 4 4 4;
+  padding: 2 2 2 2;
+}
+
+MpsTweetCard, MpsTweetCard:hover, MpsTweetCard:active
+{
+  border-image: url("status_card_background.png") 4 4 4 4;
+  padding: 8;
+}
+
+MpsTweetCard.mps-tweet-card-first,
+MpsTweetCard.mps-tweet-card-first:hover,
+MpsTweetCard.mps-tweet-card-first:active
+{
+  border-image: none;
+  padding: 8;
+}
+
+*.mps-tweet-content-label
+{
+  font-family: Droid Sans;
+  color: #595959ff;
+  font-size: 16pt;
+}
+
+*.mps-tweet-secondary-label
+{
+  font-family: Droid Sans;
+  color: #7dbe0cff;
+  font-size: 8pt;
+}
+
+*.mps-switcher-notebook
+{
+  padding: 16;
+}
+
+
+*.mps-switcher-new-service
+{
+  border-image: url("add_status_header.png") 4 4 4 4;
+  padding: 6;
+  color: white;
+  font-size: 16pt;
+  font-family: Droid Sans;
+}
+
+*.mps-switcher-button
+{
+  border-image: url("alt_status_header.png") 4 4 4 4;
+  padding: 6;
+  color: white;
+  font-size: 16pt;
+  font-family: Droid Sans;
+}
+
+*.mps-switcher-button:checked,
+*.mps-switcher-button:active,
+*.mps-switcher-button:hover
+{
+  border-image: url("current_status_header.png") 4 4 4 4;
+  padding: 6;
+  color: white;
+  font-size: 16pt;
+  font-family: Droid Sans;
+}
+
+*.mps-status-update-hbox
+{
+  border-image: url("status_entry_box.png") 4 4 4 4;
+}
+
+*.mps-status-entry
+{
+  font-size: 16pt;
+  color: #595959ff;
+  border-image:none;
+}
+
+*.mps-status-update-button,
+*.mps-status-update-button:hover,
+*.mps-status-update-button:active
+{
+  color: #7dbe0cff;
+  font-size: 16pt;
+  border-image:none;
+  padding: 6;
+}
+
