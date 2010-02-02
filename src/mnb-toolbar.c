@@ -83,7 +83,7 @@
 #define TOOLBAR_AUTOSTART_DELAY 15
 #define TOOLBAR_AUTOSTART_ATTEMPTS 10
 #define TOOLBAR_WAITING_FOR_PANEL_TIMEOUT 1 /* in seconds */
-#define TOOLBAR_PANEL_STUB_TIMEOUT 10       /* in seconds */
+#define TOOLBAR_PANEL_STUB_TIMEOUT 6        /* in seconds */
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
 #if 0
@@ -169,6 +169,7 @@ struct _MnbToolbarPanel
   gboolean    current  : 1;
   gboolean    pinged   : 1;
   gboolean    required : 1;
+  gboolean    failed   : 1;
 };
 
 static void
@@ -859,7 +860,21 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
         continue;
 
       if (mx_button_get_checked (MX_BUTTON (tp->button)))
-        mx_button_set_checked (MX_BUTTON (tp->button), FALSE);
+        {
+          gchar *tooltip;
+
+          tp->pinged = FALSE;
+          tp->failed = TRUE;
+
+          tooltip = g_strdup_printf (_("Sorry, %s is broken."),
+                                     tp->tooltip);
+
+          mx_widget_set_tooltip_text (MX_WIDGET (tp->button), tooltip);
+
+          g_free (tooltip);
+
+          mx_button_set_checked (MX_BUTTON (tp->button), FALSE);
+        }
 
       break;
     }
@@ -996,7 +1011,15 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
           {
             if (checked)
               {
-                mnb_toolbar_show_pending_panel (toolbar, tp);
+                if (!tp->failed)
+                  mnb_toolbar_show_pending_panel (toolbar, tp);
+                else
+                  {
+                    g_warning ("Panel %s preiviously failed to load, ingoring",
+                               tp->name);
+
+                    mx_button_set_checked (MX_BUTTON (tp->button), FALSE);
+                  }
               }
             else
               {
@@ -1005,7 +1028,8 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                  * This is not very nice to the user maybe, but simple and
                  * clean.
                  */
-                mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
+                if (!tp->failed)
+                  mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
               }
           }
       }
