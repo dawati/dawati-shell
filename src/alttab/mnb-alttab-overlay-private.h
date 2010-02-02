@@ -43,6 +43,7 @@ struct _MnbAlttabOverlayPrivate
   guint32 autoscroll_trigger_id;
   guint32 autoscroll_advance_id;
   guint32 slowdown_timeout_id;
+  guint32 cancel_timeout_id;
 };
 
 void mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay,

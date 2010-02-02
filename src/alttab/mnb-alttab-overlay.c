@@ -242,7 +242,7 @@ mnb_alttab_overlay_kbd_grab_notify_cb (MetaScreen       *screen,
    * If the property has changed to FALSE, i.e., Mutter just called
    * XUngrabKeyboard(), reset the flag
    */
-  if (!grabbed )
+  if (!grabbed && !priv->cancel_timeout_id)
     {
       priv->in_alt_grab = FALSE;
 
@@ -443,24 +443,45 @@ mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay, gboolean backward)
 gboolean
 mnb_alttab_overlay_tab_still_down (MnbAlttabOverlay *overlay)
 {
-  MutterPlugin *plugin  = moblin_netbook_get_plugin_singleton ();
-  MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay  *display = meta_screen_get_display (screen);
-  Display      *xdpy    = meta_display_get_xdisplay (display);
-  char          keys[32];
-  KeyCode       code;
-  guint         bit_index, byte_index;
+  MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (overlay)->priv;
+  MutterPlugin            *plugin  = moblin_netbook_get_plugin_singleton ();
+  MetaScreen              *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay             *display = meta_screen_get_display (screen);
+  Display                 *xdpy    = meta_display_get_xdisplay (display);
+  char                     keys[32];
+  KeyCode                  code_tab, code_shift_l, code_shift_r;
+  guint                    bit_index_t, byte_index_t;
+  guint                    bit_index_sl, byte_index_sl;
+  guint                    bit_index_sr, byte_index_sr;
 
-  code = XKeysymToKeycode (xdpy, XK_Tab);
+  code_tab     = XKeysymToKeycode (xdpy, XK_Tab);
+  code_shift_l = XKeysymToKeycode (xdpy, XK_Shift_L);
+  code_shift_r = XKeysymToKeycode (xdpy, XK_Shift_R);
 
-  g_return_val_if_fail (code != NoSymbol, FALSE);
+  g_return_val_if_fail (code_tab != NoSymbol, FALSE);
 
-  byte_index = code / 8;
-  bit_index  = code & 7;
+  byte_index_t = code_tab / 8;
+  bit_index_t  = code_tab & 7;
+
+  byte_index_sl = code_shift_l / 8;
+  bit_index_sl  = code_shift_l & 7;
+
+  byte_index_sr = code_shift_r / 8;
+  bit_index_sr  = code_shift_r & 7;
 
   XQueryKeymap (xdpy, &keys[0]);
 
-  return (1 & (keys[byte_index] >> bit_index));
+  if ((1 & (keys[byte_index_sl] >> bit_index_sl)) ||
+      (1 & (keys[byte_index_sr] >> bit_index_sr)))
+    {
+      priv->backward = TRUE;
+    }
+  else
+    {
+      priv->backward = FALSE;
+    }
+
+  return (1 & (keys[byte_index_t] >> bit_index_t));
 }
 
 static gboolean

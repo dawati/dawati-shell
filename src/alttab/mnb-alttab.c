@@ -233,16 +233,36 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
       return;
     }
 
+  priv->alt_tab_down = TRUE;
+
+  /*
+   * If the cancel timeout is pending, remove it and do nothing.
+   */
+  if (priv->cancel_timeout_id)
+    {
+      g_source_remove (priv->cancel_timeout_id);
+      priv->cancel_timeout_id = 0;
+
+      /*
+       * We need to re-establish the kbd grab here; the main reason we get the
+       * immediate cancel/down sequence is when the user presses a modifier
+       * key (e.g., Shift) with the Alt+Tab down, and the original grab might
+       * not catch the events with the modifier down.
+       */
+      establish_keyboard_grab (overlay, display, screen,
+                               binding->mask, event->xkey.time);
+      return;
+    }
+
   if (!priv->in_alt_grab)
     {
       establish_keyboard_grab (overlay, display, screen,
                                binding->mask, event->xkey.time);
     }
 
-  priv->alt_tab_down = TRUE;
-
-  if (!CLUTTER_ACTOR_IS_MAPPED (overlay) ||
-      moblin_netbook_compositor_disabled (plugin))
+  if (!priv->waiting_for_timeout &&
+      (!CLUTTER_ACTOR_IS_VISIBLE (overlay) ||
+       moblin_netbook_compositor_disabled (plugin)))
     {
       struct alt_tab_show_complete_data *alt_data;
 
@@ -286,14 +306,12 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
        *
        * The actual advancing is handled by the autoscroll timeouts.
        */
-      if (priv->slowdown_timeout_id)
+      if (priv->slowdown_timeout_id || priv->waiting_for_timeout)
         return;
 
       priv->slowdown_timeout_id =
         g_timeout_add (100,
                        alt_tab_slow_down_timeout_cb, overlay);
-
-      priv->waiting_for_timeout = FALSE;
 
       if (event->xkey.state & ShiftMask)
         backward = !backward;
@@ -333,6 +351,26 @@ mnb_alttab_overlay_alt_tab_select_handler (MetaDisplay    *display,
     mnb_alttab_overlay_activate_selection (overlay, event->xkey.time);
 }
 
+static gboolean
+alt_tab_cancel_timeout_cb (gpointer data)
+{
+  MnbAlttabOverlay        *overlay = MNB_ALTTAB_OVERLAY (data);
+  MnbAlttabOverlayPrivate *priv    = overlay->priv;
+
+  end_kbd_grab (overlay);
+
+  priv->alt_tab_down = FALSE;
+  priv->cancel_timeout_id = 0;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (overlay))
+    mnb_alttab_overlay_hide (overlay);
+
+  /*
+   * One off
+   */
+  return FALSE;
+}
+
 void
 mnb_alttab_overlay_alt_tab_cancel_handler (MetaDisplay    *display,
                                            MetaScreen     *screen,
@@ -344,11 +382,16 @@ mnb_alttab_overlay_alt_tab_cancel_handler (MetaDisplay    *display,
   MnbAlttabOverlay        *overlay = MNB_ALTTAB_OVERLAY (data);
   MnbAlttabOverlayPrivate *priv    = overlay->priv;
 
-  end_kbd_grab (overlay);
-
-  priv->alt_tab_down = FALSE;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (overlay))
-    mnb_alttab_overlay_hide (overlay);
+  /*
+   * If the user presses Shift while Alt+Tab is down this triggers a cancel
+   * immediately followed by new alt+tab, e.g., the overlay hides and is
+   * immediately recreated. So, install short timeout to avoid the intermediate
+   * hide.
+   */
+  if (!priv->cancel_timeout_id)
+    {
+      priv->cancel_timeout_id =
+        g_timeout_add (100, alt_tab_cancel_timeout_cb, data);
+    }
 }
 
