@@ -1,24 +1,12 @@
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA = \
 	panel.css \
-	decoration-frame.png \
-	edit_close_hover.png \
-	edit_close.png \
-	entry-frame-edit.png \
-	entry-frame-hover.png \
-	im-available.png \
-	im-away.png \
-	im-busy.png \
-	im-offline.png \
-	no_image_icon.png \
-	placeholder-bg.png \
-	minus-button-hover.png \
-	minus-button.png \
-	plus-button-hover.png \
-	plus-button.png \
-	avatar-bg.png \
-	launcher-button-bg.png \
-	avatar_icon.png
+	add_status_header.png \
+	avatar_icon.png \
+	status_entry_box.png \
+	alt_status_header.png \
+	current_status_header.png \
+	avatar_frame.png
 
 # Manage mutter-moblin's texture cache.
 
