@@ -432,9 +432,9 @@ penge_event_tile_update (PengeEventTile *tile)
      */
     clutter_actor_hide (CLUTTER_ACTOR (priv->details_label));
     clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                                 (ClutterActor *)priv->summary_label,
+                                 (ClutterActor *)priv->time_bin,
                                  "row-span",
-                                 2,
+                                 1,
                                  NULL);
   } else {
     p = strchr (details_str, '\n');
@@ -445,9 +445,9 @@ penge_event_tile_update (PengeEventTile *tile)
 
     clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
     clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                                 (ClutterActor *)priv->summary_label,
+                                 (ClutterActor *)priv->time_bin,
                                  "row-span",
-                                 1,
+                                 2,
                                  NULL);
 
   }
