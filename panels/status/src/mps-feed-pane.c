@@ -198,6 +198,8 @@ _client_view_opened_cb (SwClient     *client,
                     "items-added",
                     (GCallback)_view_items_added_cb,
                     pane);
+
+  g_object_unref (pane);
 }
 
 static void
@@ -234,7 +236,7 @@ mps_feed_pane_constructed (GObject *object)
                                    service_name,
                                    20,
                                    _client_view_opened_cb,
-                                   pane);
+                                   g_object_ref (pane));
 
   if (G_OBJECT_CLASS (mps_feed_pane_parent_class)->constructed)
   {
