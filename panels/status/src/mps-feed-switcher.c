@@ -314,6 +314,10 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
                                priv->add_new_service_button);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
+                               priv->add_new_service_button,
+                               "expand", TRUE,
+                               NULL);
 
   priv->notebook = mx_notebook_new ();
   clutter_actor_set_reactive (priv->notebook, TRUE);
@@ -431,6 +435,10 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
 
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
                                  button);
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
+                                 button,
+                                 "expand", TRUE,
+                                 NULL);
     mx_stylable_set_style_class (MX_STYLABLE (button),
                                  "mps-switcher-button");
 
