@@ -85,8 +85,20 @@ static void
 mpd_disk_device_init (MpdDiskDevice *self)
 {
   MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
+  GList *devices;
+  GList *iter;
 
   priv->pool = gdu_pool_new ();
+  g_return_if_fail (priv->pool);
+
+  devices = gdu_pool_get_devices (priv->pool);
+  for (iter = devices; iter; iter = iter->next)
+  {
+    GduDevice *device = GDU_DEVICE (iter->data);
+    g_debug ("%s", gdu_device_get_device_file (device));
+  }
+  g_list_foreach (devices, (GFunc) g_object_unref, NULL);
+  g_list_free (devices);
 }
 
 MpdDiskDevice *
