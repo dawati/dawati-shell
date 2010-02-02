@@ -6,7 +6,8 @@ dist_theme_DATA = \
 	status_entry_box.png \
 	alt_status_header.png \
 	current_status_header.png \
-	avatar_frame.png
+	avatar_frame.png \
+	status_card_background.png
 
 # Manage mutter-moblin's texture cache.
 
