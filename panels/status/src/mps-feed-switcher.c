@@ -310,7 +310,7 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
 
   priv->add_new_service_button = mx_button_new_with_label (_("Add new web service"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->add_new_service_button),
-                               "mps-switcher-new-service-name");
+                               "mps-switcher-new-service");
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
                                priv->add_new_service_button);
