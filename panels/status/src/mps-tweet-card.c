@@ -129,7 +129,7 @@ mps_tweet_card_init (MpsTweetCard *self)
 
   priv->avatar_frame = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->avatar_frame),
-                               "MpsTweetAvatarFrame");
+                               "mps-tweet-avatar-frame");
   priv->avatar = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
                                NULL);
   clutter_actor_set_size (priv->avatar, 48, 48);
@@ -148,7 +148,7 @@ mps_tweet_card_init (MpsTweetCard *self)
 
   priv->content_label = mx_label_new ("");
   mx_stylable_set_style_class (MX_STYLABLE (priv->content_label),
-                               "MpsTweetContentLabel");
+                               "mps-tweet-content-label");
 
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->content_label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE),
@@ -164,7 +164,7 @@ mps_tweet_card_init (MpsTweetCard *self)
 
   priv->secondary_label = mx_label_new ("");
   mx_stylable_set_style_class (MX_STYLABLE (priv->secondary_label),
-                               "MpsTweetSecondaryLabel");
+                               "mps-tweet-secondary-label");
   mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
                                       priv->secondary_label,
                                       1, 1,
