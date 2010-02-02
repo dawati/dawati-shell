@@ -454,8 +454,8 @@ _view_items_changed_cb (SwClientView *view,
 
 
 void
-mps_view_bridge_set_view (MpsViewBridge    *bridge,
-                          SwClientView *view)
+mps_view_bridge_set_view (MpsViewBridge *bridge,
+                          SwClientView  *view)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
 
