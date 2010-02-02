@@ -294,6 +294,8 @@ mps_feed_pane_init (MpsFeedPane *self)
   mps_view_bridge_set_container (priv->bridge,
                                  CLUTTER_CONTAINER (priv->box_layout));
 
+  mx_table_set_row_spacing (MX_TABLE (self), 8);
+
   /* Container population */
 
   mx_table_add_actor_with_properties (MX_TABLE (priv->update_hbox),
