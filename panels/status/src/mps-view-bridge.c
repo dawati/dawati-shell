@@ -103,6 +103,12 @@ mps_view_bridge_dispose (GObject *object)
     priv->item_uid_to_actor = NULL;
   }
 
+  if (priv->view)
+  {
+    g_object_unref (priv->view);
+    priv->view = NULL;
+  }
+
   G_OBJECT_CLASS (mps_view_bridge_parent_class)->dispose (object);
 }
 
