@@ -273,17 +273,17 @@ mps_feed_pane_init (MpsFeedPane *self)
   /* Actor creation */
   priv->entry = mx_entry_new (NULL);
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry),
-                               "mx-status-entry");
+                               "mps-status-entry");
   mx_entry_set_hint_text (priv->entry,
                           _("Enter your status update..."));
 
   priv->update_button = mx_button_new_with_label (_("Update"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->update_button),
-                               "mx-status-update-button");
+                               "mps-status-update-button");
 
   priv->update_hbox = mx_table_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->update_hbox),
-                               "mx-status-update-hbox");
+                               "mps-status-update-hbox");
 
   priv->scroll_view = mx_scroll_view_new ();
 
