@@ -58,6 +58,7 @@ struct _MpsFeedPanePrivate {
   SwClientView *view;
   MpsViewBridge *bridge;
 
+  ClutterActor *update_hbox;
   ClutterActor *entry;
   ClutterActor *update_button;
 
@@ -65,8 +66,6 @@ struct _MpsFeedPanePrivate {
   ClutterActor *box_layout;
 
   ClutterActor *progress_label;
-
-  gboolean update_requested;
 };
 
 enum
@@ -151,38 +150,6 @@ mps_feed_pane_finalize (GObject *object)
 }
 
 static void
-_view_items_added_cb (SwClientView *view,
-                      GList            *items,
-                      gpointer          userdata)
-{
-  MpsFeedPane *pane = MPS_FEED_PANE (userdata);
-  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
-
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
-  if (priv->update_requested)
-  {
-    clutter_actor_animate (priv->progress_label,
-                           CLUTTER_LINEAR,
-                           50,
-                           "opacity", 0,
-                           NULL);
-    clutter_actor_animate (priv->entry,
-                           CLUTTER_LINEAR,
-                           100,
-                           "opacity", 255,
-                           NULL);
-    clutter_actor_animate (priv->update_button,
-                           CLUTTER_LINEAR,
-                           100,
-                           "opacity", 255,
-                           NULL);
-
-    priv->update_requested = FALSE;
-  }
-}
-
-static void
 _client_view_opened_cb (SwClient     *client,
                         SwClientView *view,
                         gpointer      userdata) 
@@ -193,11 +160,6 @@ _client_view_opened_cb (SwClient     *client,
   priv->view = g_object_ref (view);
 
   mps_view_bridge_set_view (priv->bridge, view);
-
-  g_signal_connect (view,
-                    "items-added",
-                    (GCallback)_view_items_added_cb,
-                    pane);
 
   g_object_unref (pane);
 }
@@ -210,11 +172,10 @@ _service_status_updated_cb (SwClient *service,
   MpsFeedPane *pane = MPS_FEED_PANE (userdata);
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
 
-  g_debug (G_STRLOC ": %s", G_STRFUNC);
-
   if (success)
   {
     sw_client_view_refresh (priv->view);
+    mx_entry_set_text (MX_ENTRY (priv->entry), NULL);
   }
 }
 
@@ -302,30 +263,6 @@ _update_button_clicked_cb (MxButton    *button,
                                    _service_update_status_cb,
                                    status_message,
                                    pane);
-
-  progress_text = g_strdup_printf (_("Trying to send update \"%s\""),
-                                   status_message);
-  mx_label_set_text (MX_LABEL (priv->progress_label),
-                     progress_text);
-  g_free (progress_text);
-
-  clutter_actor_animate (priv->entry,
-                         CLUTTER_LINEAR,
-                         50,
-                         "opacity", 0,
-                         NULL);
-  clutter_actor_animate (priv->update_button,
-                         CLUTTER_LINEAR,
-                         50,
-                         "opacity", 0,
-                         NULL);
-  clutter_actor_animate (priv->progress_label,
-                         CLUTTER_LINEAR,
-                         100,
-                         "opacity", 255,
-                         NULL);
-
-  priv->update_requested = TRUE;
 }
 
 static void
@@ -337,13 +274,16 @@ mps_feed_pane_init (MpsFeedPane *self)
   priv->entry = mx_entry_new (NULL);
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry),
                                "mx-status-entry");
+  mx_entry_set_hint_text (priv->entry,
+                          _("Enter your status update..."));
 
   priv->update_button = mx_button_new_with_label (_("Update"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->update_button),
                                "mx-status-update-button");
 
-  priv->progress_label = mx_label_new (NULL);
-  clutter_actor_set_opacity (priv->progress_label, 0);
+  priv->update_hbox = mx_table_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->update_hbox),
+                               "mx-status-update-hbox");
 
   priv->scroll_view = mx_scroll_view_new ();
 
@@ -356,7 +296,7 @@ mps_feed_pane_init (MpsFeedPane *self)
 
   /* Container population */
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->update_hbox),
                                       priv->entry,
                                       0, 0,
                                       "x-expand", TRUE,
@@ -365,7 +305,7 @@ mps_feed_pane_init (MpsFeedPane *self)
                                       "y-fill", FALSE,
                                       NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
+  mx_table_add_actor_with_properties (MX_TABLE (priv->update_hbox),
                                       priv->update_button,
                                       0, 1,
                                       "x-expand", FALSE,
@@ -375,13 +315,12 @@ mps_feed_pane_init (MpsFeedPane *self)
                                       NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->progress_label,
+                                      priv->update_hbox,
                                       0, 0,
                                       "x-expand", TRUE,
                                       "x-fill", TRUE,
                                       "y-expand", FALSE,
                                       "y-fill", FALSE,
-                                      "col-span", 2,
                                       NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (self),
@@ -391,7 +330,6 @@ mps_feed_pane_init (MpsFeedPane *self)
                                       "x-fill", TRUE,
                                       "y-expand", TRUE,
                                       "y-fill", TRUE,
-                                      "col-span", 2,
                                       NULL);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->scroll_view),
