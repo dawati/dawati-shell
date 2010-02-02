@@ -423,8 +423,6 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
 
   button = g_hash_table_lookup (priv->service_to_buttons,
                                 service_name);
-    g_debug ("getting active button: %p",
-             mx_button_group_get_active_button (priv->button_group));
   if (!button)
   {
     button = mx_button_new_with_label (service_name);
@@ -451,13 +449,10 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
     g_object_set_data (G_OBJECT (button), "mps-switcher-pane", pane);
 
   }
-    g_debug ("getting active button: %p",
-             mx_button_group_get_active_button (priv->button_group));
 
   /* Ensure at least one button is active */
   if (!mx_button_group_get_active_button (priv->button_group))
   {
-    g_debug ("setting activeo to %p", button);
     mx_button_group_set_active_button (priv->button_group, button);
   }
 }
