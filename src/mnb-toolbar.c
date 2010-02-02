@@ -52,6 +52,7 @@
 #include "mnb-panel-oop.h"
 #include "mnb-toolbar-button.h"
 #include "mnb-drop-down.h"
+#include "mnb-spinner.h"
 #include "switcher/mnb-switcher.h"
 
 /* For systray windows stuff */
@@ -2407,10 +2408,10 @@ mnb_toolbar_constructed (GObject *self)
   priv->lowlight = lowlight;
 
   {
-    ClutterActor *label = (ClutterActor*) mx_label_new ("Loading panel ...");
+    ClutterActor *spinner = mnb_spinner_new ();
 
     panel_stub = (ClutterActor*)mx_frame_new ();
-    mx_bin_set_child (MX_BIN (panel_stub), label);
+    mx_bin_set_child (MX_BIN (panel_stub), spinner);
 
     clutter_actor_set_size (panel_stub,
                             screen_width, screen_height / 3);

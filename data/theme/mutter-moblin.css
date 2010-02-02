@@ -467,3 +467,10 @@ MnbZonesPreview {
   border-image: url("effects/zone-switch-background.png") 0 stretch stretch;
 }
 
+MnbSpinner {
+  background-color: #0000;
+
+  /* The background image is a strip of spinner frames; individual frames */
+  /* must be square. */
+  background-image: url("generic/spinner.png");
+}
