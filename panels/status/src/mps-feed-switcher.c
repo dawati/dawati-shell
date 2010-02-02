@@ -305,6 +305,8 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (self);
 
   priv->button_box = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box), 8);
+
   mx_stylable_set_style_class (MX_STYLABLE (priv->button_box),
                                "mps-switcher-button-box");
 
