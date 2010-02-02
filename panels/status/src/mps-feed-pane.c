@@ -135,6 +135,12 @@ mps_feed_pane_dispose (GObject *object)
     priv->view = NULL;
   }
 
+  if (priv->bridge)
+  {
+    g_object_unref (priv->bridge);
+    priv->bridge = NULL;
+  }
+
   G_OBJECT_CLASS (mps_feed_pane_parent_class)->dispose (object);
 }
 
