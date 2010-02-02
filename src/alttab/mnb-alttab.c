@@ -180,17 +180,17 @@ alt_tab_initial_timeout_cb (gpointer data)
       MnbAlttabOverlay *overlay = alt_data->overlay;
       GList            *l = mnb_alttab_overlay_get_app_list (overlay);
 
-        if (l && l->next)
-          {
-            mnb_alttab_overlay_activate_window (overlay,
-                                                  l->data,
-                                                  alt_data->xevent.xkey.time);
-          }
+      if (l && l->next)
+        {
+          mnb_alttab_overlay_activate_window (overlay,
+                                              l->next->data,
+                                              alt_data->xevent.xkey.time);
+        }
 
-        g_list_free (l);
+      g_list_free (l);
 
-        end_kbd_grab (alt_data->overlay);
-        g_free (data);
+      end_kbd_grab (alt_data->overlay);
+      g_free (data);
     }
 
   /* One off */
