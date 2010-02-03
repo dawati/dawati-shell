@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:26+0000\n"
-"PO-Revision-Date: 2009-11-08 15:39+0100\n"
+"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,24 +16,36 @@ msgstr ""
 "X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../src/moblin-netbook.c:391
-#: ../src/mnb-toolbar.c:1427
+#: ../src/moblin-netbook.c:463
+#: ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "redjons"
 
-#: ../src/moblin-netbook.c:504
+#: ../src/moblin-netbook.c:621
 msgid "Moblin Netbook Effects"
 msgstr "Efets po Netbook da Moblin"
 
-#: ../src/moblin-netbook.c:508
+#: ../src/moblin-netbook.c:625
 msgid "Effects for Moblin Netbooks"
 msgstr "Efets da Moblin po les Netbooks"
+
+#: ../src/moblin-netbook.c:2529
+msgid "Activate"
+msgstr "Mete en alaedje"
+
+#: ../src/moblin-netbook.c:2543
+msgid "Unknown window"
+msgstr "Purnea nén cnoxhou"
+
+#: ../src/moblin-netbook.c:2545
+msgid "Is asking for your attention."
+msgstr "Vos arinne."
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:675
+#: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -41,7 +53,7 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:685
+#: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
 msgstr "li %e di %B %Y"
 
@@ -53,11 +65,11 @@ msgstr "Rinoncî"
 msgid "Dismiss All"
 msgstr "Rinoncî a ttafwait"
 
-#: ../src/switcher/mnb-switcher.c:301
+#: ../src/switcher/mnb-switcher.c:307
 msgid "No Zones yet"
 msgstr "Nén co d' redjon"
 
-#: ../src/switcher/mnb-switcher.c:321
+#: ../src/switcher/mnb-switcher.c:327
 msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
 msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
 
