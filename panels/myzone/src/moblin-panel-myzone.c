@@ -114,6 +114,7 @@ main (int    argc,
   context = g_option_context_new ("- mutter-moblin myzone panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
+  g_option_context_add_group (context, cogl_get_option_group ());
   g_option_context_add_group (context, gtk_get_option_group (FALSE));
   if (!g_option_context_parse (context, &argc, &argv, &error))
   {
