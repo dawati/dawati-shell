@@ -356,6 +356,8 @@ mnb_alttab_overlay_get_preferred_height (ClutterActor *self,
 
   if (natural_height_p)
     *natural_height_p = height;
+
+  priv->viewport_height = height - padding.top - padding.bottom;
 }
 
 static void
@@ -367,12 +369,25 @@ mnb_alttab_overlay_paint (ClutterActor *self)
 
   if (priv->grid && CLUTTER_ACTOR_IS_MAPPED (priv->grid))
     {
+      ClutterGeometry geom;
+
+      clutter_actor_get_allocation_geometry (priv->grid, &geom);
+
+#if CLUTTER_CHECK_VERSION (1, 1, 3)
+      cogl_clip_push_rectangle (geom.x, geom.y,
+                                geom.x + geom.width,
+                                geom.y + priv->viewport_height);
+#else
+      cogl_clip_push (geom.x, geom.y, geom.width, priv->viewport_height);
+#endif
+
       cogl_push_matrix ();
       cogl_translate (0, (gint) priv->scroll_y * -1, 0);
 
       clutter_actor_paint (priv->grid);
 
       cogl_pop_matrix ();
+      cogl_clip_pop ();
     }
 }
 
@@ -388,24 +403,15 @@ mnb_alttab_overlay_allocate (ClutterActor          *actor,
    */
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_parent_class)->allocate (actor,
                                                                    box, flags);
+
   if (priv->grid)
     {
-      ClutterActorBox allocation = { 0, };
       MxPadding       padding    = { 0, };
-      gfloat          parent_width;
-      gfloat          parent_height;
 
       mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-      parent_width  = box->x2 - box->x1;
-      parent_height = box->y2 - box->y1;
-
-      allocation.x1 = padding.left;
-      allocation.y1 = padding.top;
-      allocation.x2 = parent_width - padding.right;
-      allocation.y2 = parent_height - padding.bottom;
-
-      clutter_actor_allocate (priv->grid, &allocation, flags);
+      clutter_actor_set_position (priv->grid, padding.left, padding.top);
+      clutter_actor_allocate_preferred_size (priv->grid, flags);
     }
 }
 
@@ -531,6 +537,49 @@ mnb_alttab_overlay_handle_xevent (MnbAlttabOverlay *overlay, XEvent *xev)
   return FALSE;
 }
 
+static void
+mnb_alttab_overlay_fix_active_row (MnbAlttabOverlay *overlay, GList *children)
+{
+  MnbAlttabOverlayPrivate *priv = overlay->priv;
+  gint                     pos;
+  GList                   *l;
+  guint                    current_row = priv->current_row;
+  gboolean                 found = FALSE;
+
+  for (l = children, pos = 0; l; l = l->next, ++pos)
+    {
+      MnbAlttabOverlayApp *app    = l->data;
+      gboolean             active = mnb_alttab_overlay_app_get_active (app);
+
+      if (active)
+        {
+          priv->current_row = pos / MNB_ALLTAB_OVERLAY_COLUMNS;
+          found = TRUE;
+          break;
+        }
+    }
+
+  if (!found)
+    priv->current_row = 0;
+
+  if (priv->current_row > current_row && priv->current_row > 3)
+    {
+      priv->scroll_y += (MNB_ALTTAB_OVERLAY_TILE_HEIGHT +
+                         MNB_ALTTAB_OVERLAY_TILE_SPACING);
+    }
+  else if (priv->current_row < current_row && current_row > 3)
+    {
+      priv->scroll_y -= (MNB_ALTTAB_OVERLAY_TILE_HEIGHT +
+                         MNB_ALTTAB_OVERLAY_TILE_SPACING);
+    }
+
+  if (priv->scroll_y < 0.0)
+    {
+      g_warning (G_STRLOC ": scroll out of bounds, fixing");
+      priv->scroll_y = 0.0;
+    }
+}
+
 void
 mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay, gboolean backward)
 {
@@ -572,6 +621,8 @@ mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay, gboolean backward)
       mnb_alttab_overlay_app_set_active (app, TRUE);
       priv->active = app;
     }
+
+  mnb_alttab_overlay_fix_active_row (overlay, children);
 
   g_list_free (children);
 }
@@ -670,6 +721,11 @@ mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward)
     return FALSE;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  /*
+   * Must ensure size, otherewise the reported actor size is not acurate.
+   */
+  mx_widget_ensure_style (MX_WIDGET (overlay));
 
   clutter_actor_get_size ((ClutterActor*) overlay, &w, &h);
 
