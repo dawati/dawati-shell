@@ -576,6 +576,7 @@ mnb_alttab_overlay_fix_active_row (MnbAlttabOverlay *overlay, GList *children)
   GList                   *l;
   guint                    current_row = priv->current_row;
   gboolean                 found = FALSE;
+  gfloat                   scroll_y = priv->scroll_y;
 
   for (l = children, pos = 0; l; l = l->next, ++pos)
     {
@@ -595,19 +596,28 @@ mnb_alttab_overlay_fix_active_row (MnbAlttabOverlay *overlay, GList *children)
 
   if (priv->current_row > current_row && priv->current_row > 3)
     {
-      priv->scroll_y += (MNB_ALTTAB_OVERLAY_TILE_HEIGHT +
-                         MNB_ALTTAB_OVERLAY_TILE_SPACING);
+      scroll_y += (MNB_ALTTAB_OVERLAY_TILE_HEIGHT +
+                   MNB_ALTTAB_OVERLAY_TILE_SPACING);
     }
   else if (priv->current_row < current_row && current_row > 3)
     {
-      priv->scroll_y -= (MNB_ALTTAB_OVERLAY_TILE_HEIGHT +
-                         MNB_ALTTAB_OVERLAY_TILE_SPACING);
+      scroll_y -= (MNB_ALTTAB_OVERLAY_TILE_HEIGHT +
+                   MNB_ALTTAB_OVERLAY_TILE_SPACING);
     }
 
   if (priv->scroll_y < 0.0)
     {
       g_warning (G_STRLOC ": scroll out of bounds, fixing");
       priv->scroll_y = 0.0;
+    }
+
+  if (scroll_y != priv->scroll_y)
+    {
+      clutter_actor_animate (CLUTTER_ACTOR (overlay),
+                             CLUTTER_EASE_IN_SINE,
+                             MNB_ALTTAB_OVERLAY_SCROLL_DURATION,
+                             "scroll-y", scroll_y,
+                             NULL);
     }
 }
 
