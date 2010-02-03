@@ -58,6 +58,12 @@ mpd_disk_device_get_type (void);
 MpdDiskDevice *
 mpd_disk_device_new (void);
 
+guint64
+mpd_disk_device_get_size (MpdDiskDevice *self);
+
+guint64
+mpd_disk_device_get_available_size (MpdDiskDevice *self);
+
 G_END_DECLS
 
 #endif /* MPD_DISK_DEVICE_H */

@@ -27,12 +27,19 @@ main (int     argc,
       char  **argv)
 {
   MpdDiskDevice *disk;
+  guint64        size;
+  guint64        available_size;
 
   clutter_init (&argc, &argv);
 
   disk = mpd_disk_device_new ();
+  g_object_get (disk,
+                "size", &size,
+                "available-size", &available_size,
+                NULL);
 
-  clutter_main ();
+  g_debug ("Size: %lld, available: %lld", size, available_size);
+
   g_object_unref (disk);
   return EXIT_SUCCESS;
 }
