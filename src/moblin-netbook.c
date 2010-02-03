@@ -417,6 +417,35 @@ moblin_netbook_compute_screen_size (Display *xdpy,
 }
 
 static void
+moblin_netbook_display_window_created_cb (MetaDisplay  *display,
+                                          MetaWindow   *win,
+                                          MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MutterWindow               *mcw;
+
+  mcw =  (MutterWindow*) meta_window_get_compositor_private (win);
+
+  g_return_if_fail (mcw);
+
+  if (mutter_window_is_override_redirect (mcw))
+    {
+      const gchar *wm_class = meta_window_get_wm_class (win);
+
+      if (wm_class && !strcmp (wm_class, "Gnome-screensaver"))
+        {
+          g_debug ("Gnome screensaver window mapped");
+          priv->screen_saver = mcw;
+          moblin_netbook_toggle_compositor (plugin, FALSE);
+
+          g_signal_connect (mcw, "window-destroyed",
+                            G_CALLBACK (window_destroyed_cb),
+                            plugin);
+        }
+    }
+}
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -528,6 +557,11 @@ moblin_netbook_plugin_constructed (GObject *object)
   g_signal_connect (display,
                     "window-marked-urgent",
                     G_CALLBACK (meta_display_window_demands_attention_cb),
+                    plugin);
+
+  g_signal_connect (display,
+                    "window-created",
+                    G_CALLBACK (moblin_netbook_display_window_created_cb),
                     plugin);
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
@@ -1660,17 +1694,6 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
        */
       if (wm_class && !strcmp (wm_class, "Scim-panel-gtk"))
         mnb_input_manager_push_window (mcw, MNB_INPUT_LAYER_TOP);
-
-      if (wm_class && !strcmp (wm_class, "Gnome-screensaver"))
-        {
-          g_debug ("Gnome screensaver window 0x%x mapped", (guint)xwin);
-          priv->screen_saver = mcw;
-          moblin_netbook_toggle_compositor (plugin, FALSE);
-
-          g_signal_connect (mcw, "window-destroyed",
-                            G_CALLBACK (window_destroyed_cb),
-                            plugin);
-        }
     }
   else if (type == META_COMP_WINDOW_DOCK)
     {
