@@ -19,7 +19,7 @@
  */
 
 #include <clutter/clutter.h>
-#include <mojito-client/mojito-client.h>
+#include <libsocialweb-client/sw-item.h>
 #include <stdlib.h>
 
 #include "penge-block-layout.h"
@@ -27,18 +27,18 @@
 #include "penge-people-tile.h"
 #include "penge-people-model.h"
 
-static MojitoClient *client;
+static SwClient *client;
 static ClutterModel *model;
 static PengeModelBridge *bridge;
 static ClutterActor *box;
 static ClutterLayoutManager *layout;
 
 static void
-_client_open_view_cb (MojitoClient     *client,
-                      MojitoClientView *view,
-                      gpointer          userdata)
+_client_open_view_cb (SwClient     *client,
+                      SwClientView *view,
+                      gpointer      userdata)
 {
-  mojito_client_view_start (view);
+  sw_client_view_start (view);
 
   model = penge_people_model_new (view);
 
@@ -46,11 +46,11 @@ _client_open_view_cb (MojitoClient     *client,
 }
 
 static void
-_client_get_services_cb (MojitoClient *client,
-                         const GList  *services,
-                         gpointer      userdata)
+_client_get_services_cb (SwClient    *client,
+                         const GList *services,
+                         gpointer     userdata)
 {
-  mojito_client_open_view (client,
+  sw_client_open_view (client,
                            (GList *)services,
                            20,
                            _client_open_view_cb,
@@ -64,7 +64,7 @@ factory_func (PengeModelBridge *bridge,
               ClutterModelIter *iter)
 {
   ClutterActor *actor;
-  MojitoItem *item;
+  SwItem *item;
 
   clutter_model_iter_get (iter, 0, &item, -1);
   actor = g_object_new (PENGE_TYPE_PEOPLE_TILE,
@@ -129,8 +129,8 @@ main (int    argc,
   penge_model_bridge_set_container (bridge, CLUTTER_CONTAINER (box));
   penge_model_bridge_set_factory (bridge, factory_func);
 
-  client = mojito_client_new ();
-  mojito_client_get_services (client, _client_get_services_cb, NULL);
+  client = sw_client_new ();
+  sw_client_get_services (client, _client_get_services_cb, NULL);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 

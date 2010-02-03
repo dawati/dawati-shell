@@ -17,7 +17,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <mojito-client/mojito-client.h>
+#include <libsocialweb-client/sw-client.h>
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <glib/gi18n.h>
@@ -47,8 +47,8 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 typedef struct _PengeEverythingPanePrivate PengeEverythingPanePrivate;
 
 struct _PengeEverythingPanePrivate {
-  MojitoClient *client;
-  MojitoClientView *view;
+  SwClient *client;
+  SwClientView *view;
   GtkRecentManager *recent_manager;
   GHashTable *pointer_to_actor;
   PengeSourceManager *source_manager;
@@ -57,7 +57,7 @@ struct _PengeEverythingPanePrivate {
 
   guint update_idle_id;
 
-  GHashTable *uuid_to_mojito_items;
+  GHashTable *uuid_to_sw_items;
 
   ClutterActor *welcome_tile;
 };
@@ -93,10 +93,10 @@ penge_everything_pane_dispose (GObject *object)
     priv->pointer_to_actor = NULL;
   }
 
-  if (priv->uuid_to_mojito_items)
+  if (priv->uuid_to_sw_items)
   {
-    g_hash_table_unref (priv->uuid_to_mojito_items);
-    priv->uuid_to_mojito_items = NULL;
+    g_hash_table_unref (priv->uuid_to_sw_items);
+    priv->uuid_to_sw_items = NULL;
   }
 
   if (priv->view)
@@ -173,9 +173,9 @@ _recent_files_sort_func (GtkRecentInfo *a,
   }
 }
 
-/* Compare a MojitoItem with a GtkRecentInfo */
+/* Compare a SwItem with a GtkRecentInfo */
 static gint
-_compare_item_and_info (MojitoItem    *item,
+_compare_item_and_info (SwItem        *item,
                         GtkRecentInfo *info)
 {
   time_t time_a;
@@ -212,17 +212,17 @@ _people_tile_remove_clicked_cb (PengeInterestingTile *tile,
 {
   PengeEverythingPane *pane = (PengeEverythingPane *)userdata;
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
-  MojitoItem *item;
+  SwItem *item;
 
   g_object_get (tile,
                 "item", &item,
                 NULL);
-  mojito_client_hide_item (priv->client, item);
+  sw_client_hide_item (priv->client, item);
 }
 
 static ClutterActor *
-_add_from_mojito_item (PengeEverythingPane *pane,
-                       MojitoItem          *item)
+_add_from_sw_item (PengeEverythingPane *pane,
+                   SwItem              *item)
 {
   ClutterActor *actor;
 
@@ -296,8 +296,8 @@ _add_from_recent_file_info (PengeEverythingPane *pane,
 }
 
 static gint
-_mojito_item_sort_compare_func (MojitoItem *a,
-                                MojitoItem *b)
+_sw_item_sort_compare_func (SwItem *a,
+                            SwItem *b)
 {
   if (a->date.tv_sec> b->date.tv_sec)
   {
@@ -311,10 +311,10 @@ _mojito_item_sort_compare_func (MojitoItem *a,
 
 
 static gint
-_mojito_item_weight (MojitoItem *item)
+_sw_item_weight (SwItem *item)
 {
-  if (!mojito_item_has_key (item, "thumbnail") &&
-      mojito_item_has_key (item, "content"))
+  if (!sw_item_has_key (item, "thumbnail") &&
+      sw_item_has_key (item, "content"))
   {
     return 2;
   } else {
@@ -389,11 +389,11 @@ static void
 penge_everything_pane_update (PengeEverythingPane *pane)
 {
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
-  GList *mojito_items, *recent_file_items, *l;
+  GList *sw_items, *recent_file_items, *l;
   GList *old_actors = NULL;
   ClutterActor *actor;
   gboolean show_welcome_tile = TRUE;
-  gint recent_files_count, mojito_items_count;
+  gint recent_files_count, sw_items_count;
 
   g_debug (G_STRLOC ": Updating everything pane");
 
@@ -404,26 +404,26 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   recent_file_items = g_list_sort (recent_file_items,
                                    (GCompareFunc)_recent_files_sort_func);
 
-  /* Get Mojito items */
-  mojito_items = g_hash_table_get_values (priv->uuid_to_mojito_items);
-  mojito_items = g_list_sort (mojito_items,
-                              (GCompareFunc)_mojito_item_sort_compare_func);
+  /* Get Sw items */
+  sw_items = g_hash_table_get_values (priv->uuid_to_sw_items);
+  sw_items = g_list_sort (sw_items,
+                          (GCompareFunc)_sw_item_sort_compare_func);
 
   recent_files_count = priv->block_count * 1.0;
 
   if (recent_files_count > g_list_length (recent_file_items))
     recent_files_count = g_list_length (recent_file_items);
 
-  mojito_items_count = priv->block_count - recent_files_count;
+  sw_items_count = priv->block_count - recent_files_count;
 
-  g_debug (G_STRLOC " recent_files_count = %d, mojito_items_count = %d",
+  g_debug (G_STRLOC " recent_files_count = %d, sw_items_count = %d",
            recent_files_count,
-           mojito_items_count);
+           sw_items_count);
 
 
   old_actors = g_hash_table_get_values (priv->pointer_to_actor);
 
-  if (mojito_items || recent_file_items)
+  if (sw_items || recent_file_items)
   {
     if (priv->welcome_tile)
     {
@@ -433,43 +433,43 @@ penge_everything_pane_update (PengeEverythingPane *pane)
     }
   }
 
-  while ((mojito_items_count && mojito_items) ||
+  while ((sw_items_count && sw_items) ||
          (recent_files_count && recent_file_items))
   {
-    MojitoItem *mojito_item = NULL;
+    SwItem *sw_item = NULL;
     GtkRecentInfo *recent_file_info = NULL;
 
-    /* If no mojito items -> force compare to favour recent file */
-    if (mojito_items_count && mojito_items)
-      mojito_item = (MojitoItem *)mojito_items->data;
+    /* If no sw items -> force compare to favour recent file */
+    if (sw_items_count && sw_items)
+      sw_item = (SwItem *)sw_items->data;
     else
-      mojito_item = NULL;
+      sw_item = NULL;
 
-    /* If no recent files -> force compare to favour mojito stuff */
+    /* If no recent files -> force compare to favour sw stuff */
     if (recent_files_count && recent_file_items)
       recent_file_info = (GtkRecentInfo *)recent_file_items->data;
     else
       recent_file_info = NULL;
 
-    if (_compare_item_and_info (mojito_item, recent_file_info) < 1)
+    if (_compare_item_and_info (sw_item, recent_file_info) < 1)
     {
-      /* Mojito item is newer */
+      /* Sw item is newer */
 
       actor = g_hash_table_lookup (priv->pointer_to_actor,
-                                   mojito_item);
+                                   sw_item);
       if (!actor)
       {
-        actor = _add_from_mojito_item (pane, mojito_item);
+        actor = _add_from_sw_item (pane, sw_item);
         g_hash_table_insert (priv->pointer_to_actor,
-                             mojito_item,
+                             sw_item,
                              actor);
 
         /* Needed to remove from hash when we kill the actor */
-        g_object_set_data (G_OBJECT (actor), "data-pointer", mojito_item);
-        mojito_items_count -= _mojito_item_weight (mojito_item);
+        g_object_set_data (G_OBJECT (actor), "data-pointer", sw_item);
+        sw_items_count -= _sw_item_weight (sw_item);
       }
 
-      mojito_items = g_list_remove (mojito_items, mojito_item);
+      sw_items = g_list_remove (sw_items, sw_item);
 
       show_welcome_tile = FALSE;
     } else {
@@ -561,7 +561,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
                                  NULL);
   }
 
-  g_list_free (mojito_items);
+  g_list_free (sw_items);
   g_list_free (recent_file_items);
 }
 
@@ -592,9 +592,9 @@ penge_everything_pane_queue_update (PengeEverythingPane *pane)
 }
 
 static void
-_view_items_added_cb (MojitoClientView *view,
-                      GList            *items,
-                      gpointer          userdata)
+_view_items_added_cb (SwClientView *view,
+                      GList        *items,
+                      gpointer      userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -602,19 +602,19 @@ _view_items_added_cb (MojitoClientView *view,
 
   for (l = items; l; l = l->next)
   {
-    MojitoItem *item = (MojitoItem *)l->data;
-    g_hash_table_insert (priv->uuid_to_mojito_items,
+    SwItem *item = (SwItem *)l->data;
+    g_hash_table_insert (priv->uuid_to_sw_items,
                          item->uuid,
-                         mojito_item_ref (item));
+                         sw_item_ref (item));
   }
 
   penge_everything_pane_queue_update (pane);
 }
 
 static void
-_view_items_removed_cb (MojitoClientView *view,
-                        GList            *items,
-                        gpointer          userdata)
+_view_items_removed_cb (SwClientView *view,
+                        GList        *items,
+                        gpointer      userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -623,8 +623,8 @@ _view_items_removed_cb (MojitoClientView *view,
 
   for (l = items; l; l = l->next)
   {
-    MojitoItem *item = (MojitoItem *)l->data;
-    g_hash_table_remove (priv->uuid_to_mojito_items,
+    SwItem *item = (SwItem *)l->data;
+    g_hash_table_remove (priv->uuid_to_sw_items,
                          item->uuid);
   }
 
@@ -632,9 +632,9 @@ _view_items_removed_cb (MojitoClientView *view,
 }
 
 static void
-_view_items_changed_cb (MojitoClientView *view,
-                        GList            *items,
-                        gpointer          userdata)
+_view_items_changed_cb (SwClientView *view,
+                        GList        *items,
+                        gpointer      userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -643,10 +643,10 @@ _view_items_changed_cb (MojitoClientView *view,
 
   for (l = items; l; l = l->next)
   {
-    MojitoItem *item = (MojitoItem *)l->data;
+    SwItem *item = (SwItem *)l->data;
     ClutterActor *actor;
 
-    /* Important to note that MojitoClientView reuses the MojitoItem so the
+    /* Important to note that SwClientView reuses the SwItem so the
      * pointer is a valid piece of lookup
      */
     actor = g_hash_table_lookup (priv->pointer_to_actor,
@@ -666,9 +666,9 @@ _view_items_changed_cb (MojitoClientView *view,
 }
 
 static void
-_client_open_view_cb (MojitoClient     *client,
-                      MojitoClientView *view,
-                      gpointer          userdata)
+_client_open_view_cb (SwClient     *client,
+                      SwClientView *view,
+                      gpointer      userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -688,22 +688,22 @@ _client_open_view_cb (MojitoClient     *client,
                     (GCallback)_view_items_changed_cb,
                     userdata);
 
-  mojito_client_view_start (view);
+  sw_client_view_start (view);
 }
 
 static void
-_client_get_services_cb (MojitoClient *client,
-                         const GList  *services,
-                         gpointer      userdata)
+_client_get_services_cb (SwClient    *client,
+                         const GList *services,
+                         gpointer     userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
 
-  mojito_client_open_view (client,
-                           (GList *)services,
-                           priv->block_count,
-                           _client_open_view_cb,
-                           userdata);
+  sw_client_open_view (client,
+                       (GList *)services,
+                       priv->block_count,
+                       _client_open_view_cb,
+                       userdata);
 }
 
 static void
@@ -748,14 +748,14 @@ penge_everything_pane_init (PengeEverythingPane *self)
   /* pointer to pointer */
   priv->pointer_to_actor = g_hash_table_new (NULL, NULL);
 
-  /* For storing mojito items */
-  priv->uuid_to_mojito_items = g_hash_table_new_full (g_str_hash,
-                                                      g_str_equal,
-                                                      NULL,
-                                                      (GDestroyNotify)mojito_item_unref);
+  /* For storing sw items */
+  priv->uuid_to_sw_items = g_hash_table_new_full (g_str_hash,
+                                                  g_str_equal,
+                                                  NULL,
+                                                  (GDestroyNotify)sw_item_unref);
 
-  priv->client = mojito_client_new ();
-  mojito_client_get_services (priv->client, _client_get_services_cb, self);
+  priv->client = sw_client_new ();
+  sw_client_get_services (priv->client, _client_get_services_cb, self);
 
   priv->recent_manager = gtk_recent_manager_new ();
 

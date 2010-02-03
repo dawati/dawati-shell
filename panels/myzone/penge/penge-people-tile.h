@@ -24,7 +24,7 @@
 #include <glib-object.h>
 #include <mx/mx.h>
 #include <penge/penge-interesting-tile.h>
-#include <mojito-client/mojito-item.h>
+#include <libsocialweb-client/sw-item.h>
 
 G_BEGIN_DECLS
 
@@ -55,7 +55,7 @@ typedef struct {
 
 GType penge_people_tile_get_type (void);
 void penge_people_tile_activate (PengePeopleTile *tile,
-                                 MojitoItem      *item);
+                                 SwItem          *item);
 gboolean penge_people_tile_is_double_size (PengePeopleTile *tile);
 G_END_DECLS
 

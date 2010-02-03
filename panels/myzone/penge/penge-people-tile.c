@@ -18,7 +18,7 @@
  */
 
 #include <moblin-panel/mpl-utils.h>
-#include <mojito-client/mojito-client.h>
+#include <libsocialweb-client/sw-client.h>
 
 #include "penge-people-tile.h"
 #include "penge-utils.h"
@@ -32,7 +32,7 @@ G_DEFINE_TYPE (PengePeopleTile, penge_people_tile, PENGE_TYPE_INTERESTING_TILE)
 typedef struct _PengePeopleTilePrivate PengePeopleTilePrivate;
 
 struct _PengePeopleTilePrivate {
-  MojitoItem *item;
+  SwItem *item;
   gboolean double_size;
 };
 
@@ -47,11 +47,13 @@ enum
 
 static void
 penge_people_tile_set_item (PengePeopleTile *tile,
-                            MojitoItem      *item);
+                            SwItem          *item);
 
 static void
-penge_people_tile_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
+penge_people_tile_get_property (GObject    *object,
+                                guint       property_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
 {
   PengePeopleTilePrivate *priv = GET_PRIVATE (object);
 
@@ -65,8 +67,10 @@ penge_people_tile_get_property (GObject *object, guint property_id,
 }
 
 static void
-penge_people_tile_set_property (GObject *object, guint property_id,
-                              const GValue *value, GParamSpec *pspec)
+penge_people_tile_set_property (GObject      *object,
+                                guint         property_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
 {
   switch (property_id) {
     case PROP_ITEM:
@@ -85,7 +89,7 @@ penge_people_tile_dispose (GObject *object)
 
   if (priv->item)
   {
-    mojito_item_unref (priv->item);
+    sw_item_unref (priv->item);
     priv->item = NULL;
   }
 
@@ -114,7 +118,7 @@ penge_people_tile_class_init (PengePeopleTileClass *klass)
   pspec = g_param_spec_boxed ("item",
                               "Item",
                               "The item to show",
-                              MOJITO_TYPE_ITEM,
+                              SW_TYPE_ITEM,
                               G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_ITEM, pspec);
 }
@@ -140,7 +144,7 @@ penge_people_tile_init (PengePeopleTile *self)
 
 void
 penge_people_tile_activate (PengePeopleTile *tile,
-                            MojitoItem      *item)
+                            SwItem          *item)
 {
   const gchar *url;
 
@@ -158,7 +162,7 @@ penge_people_tile_activate (PengePeopleTile *tile,
 
 static void
 penge_people_tile_set_item (PengePeopleTile *tile,
-                            MojitoItem      *item)
+                            SwItem          *item)
 {
   PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
   ClutterActor *body, *tmp_text;
@@ -173,10 +177,10 @@ penge_people_tile_set_item (PengePeopleTile *tile,
   if (priv->item != item)
   {
     if (priv->item)
-      mojito_item_unref (priv->item);
+      sw_item_unref (priv->item);
 
     if (item)
-      priv->item = mojito_item_ref (item);
+      priv->item = sw_item_ref (item);
     else
       priv->item = NULL;
   }
@@ -186,9 +190,9 @@ penge_people_tile_set_item (PengePeopleTile *tile,
 
   priv->double_size = FALSE;
 
-  if (mojito_item_has_key (item, "thumbnail"))
+  if (sw_item_has_key (item, "thumbnail"))
   {
-    thumbnail = mojito_item_get_value (item, "thumbnail");
+    thumbnail = sw_item_get_value (item, "thumbnail");
     body = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
 
     if (clutter_texture_set_from_file (CLUTTER_TEXTURE (body),
@@ -204,15 +208,15 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                   error->message);
       g_clear_error (&error);
     }
-  } else if (mojito_item_has_key (item, "content")) {
-    content = mojito_item_get_value (item, "content");
+  } else if (sw_item_has_key (item, "content")) {
+    content = sw_item_get_value (item, "content");
     body = mx_table_new ();
 
     mx_table_set_col_spacing (MX_TABLE (body), 6);
     mx_stylable_set_style_class (MX_STYLABLE (body),
                                  "PengePeopleTileContentBackground");
 
-    author_icon = mojito_item_get_value (item, "authoricon");
+    author_icon = sw_item_get_value (item, "authoricon");
     if (author_icon)
     {
       avatar = clutter_texture_new_from_file (author_icon, NULL);
@@ -285,26 +289,26 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     }
   }
 
-  if (mojito_item_has_key (item, "title"))
+  if (sw_item_has_key (item, "title"))
   {
-    if (mojito_item_has_key (item, "author"))
+    if (sw_item_has_key (item, "author"))
     {
       g_object_set (tile,
-                    "primary-text", mojito_item_get_value (item, "title"),
-                    "secondary-text", mojito_item_get_value (item, "author"),
+                    "primary-text", sw_item_get_value (item, "title"),
+                    "secondary-text", sw_item_get_value (item, "author"),
                     NULL);
     } else {
       date = mx_utils_format_time (&(item->date));
       g_object_set (tile,
-                    "primary-text", mojito_item_get_value (item, "title"),
+                    "primary-text", sw_item_get_value (item, "title"),
                     "secondary-text", date,
                     NULL);
       g_free (date);
     }
-  } else if (mojito_item_has_key (item, "author")) {
+  } else if (sw_item_has_key (item, "author")) {
       date = mx_utils_format_time (&(item->date));
       g_object_set (tile,
-                    "primary-text", mojito_item_get_value (item, "author"),
+                    "primary-text", sw_item_get_value (item, "author"),
                     "secondary-text", date,
                     NULL);
       g_free (date);
@@ -314,7 +318,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
 
   if (!avatar)
   {
-    author_icon = mojito_item_get_value (item, "authoricon");
+    author_icon = sw_item_get_value (item, "authoricon");
 
     if (author_icon)
     {
