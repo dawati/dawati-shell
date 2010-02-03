@@ -39,6 +39,7 @@ enum
 {
   PROP_0 = 0,
 
+  PROP_SCROLL_Y
 };
 
 G_DEFINE_TYPE (MnbAlttabOverlay, mnb_alttab_overlay, MX_TYPE_WIDGET);
@@ -63,6 +64,17 @@ mnb_alttab_overlay_dispose (GObject *object)
   G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->dispose (object);
 }
 
+static void
+mnb_alltab_overlay_set_scroll_y (MnbAlttabOverlay *overlay, gfloat scroll_y)
+{
+  MnbAlttabOverlayPrivate *priv = overlay->priv;
+
+  if (priv->scroll_y == scroll_y)
+    return;
+
+  priv->scroll_y = scroll_y;
+  clutter_actor_queue_redraw ((ClutterActor*)overlay);
+}
 
 static void
 mnb_alttab_overlay_set_property (GObject      *gobject,
@@ -74,6 +86,11 @@ mnb_alttab_overlay_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
+    case PROP_SCROLL_Y:
+      mnb_alltab_overlay_set_scroll_y (MNB_ALTTAB_OVERLAY (gobject),
+                                       g_value_get_float (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -86,10 +103,14 @@ mnb_alttab_overlay_get_property (GObject    *gobject,
                                  GValue     *value,
                                  GParamSpec *pspec)
 {
-  /* MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (gobject)->priv; */
+  MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (gobject)->priv;
 
   switch (prop_id)
     {
+    case PROP_SCROLL_Y:
+      g_value_set_float (value, priv->scroll_y);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -420,6 +441,7 @@ mnb_alttab_overlay_class_init (MnbAlttabOverlayClass *klass)
 {
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec        *pspec;
 
   object_class->dispose              = mnb_alttab_overlay_dispose;
   object_class->get_property         = mnb_alttab_overlay_get_property;
@@ -434,6 +456,15 @@ mnb_alttab_overlay_class_init (MnbAlttabOverlayClass *klass)
   actor_class->allocate              = mnb_alttab_overlay_allocate;
 
   g_type_class_add_private (klass, sizeof (MnbAlttabOverlayPrivate));
+
+  pspec = g_param_spec_float ("scroll-y",
+                              "scroll y",
+                              "scroll y coordinate of overlay viewport",
+                              0.0, G_MAXFLOAT,
+                              0.0,
+                              G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class, PROP_SCROLL_Y, pspec);
 }
 
 static void
