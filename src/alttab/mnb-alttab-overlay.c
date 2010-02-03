@@ -361,11 +361,13 @@ mnb_alttab_overlay_get_preferred_height (ClutterActor *self,
   /*
    * We allow at most MNB_ALLTAB_OVERLAY_ROWS visible
    */
-  height = (MNB_ALTTAB_OVERLAY_TILE_HEIGHT + MNB_ALTTAB_OVERLAY_TILE_SPACING) *
-    MNB_ALLTAB_OVERLAY_ROWS + MNB_ALTTAB_OVERLAY_TILE_SPACING +
+  height = MNB_ALTTAB_OVERLAY_TILE_HEIGHT * MNB_ALLTAB_OVERLAY_ROWS +
+    MNB_ALTTAB_OVERLAY_TILE_SPACING * (MNB_ALLTAB_OVERLAY_ROWS - 1) +
     gpadding.top + gpadding.bottom + padding.top + padding.bottom;
 
-  clutter_actor_get_preferred_height (priv->grid, for_width, NULL, &grid_n_h);
+  clutter_actor_get_preferred_height (priv->grid,
+                                      for_width - padding.left - padding.right,
+                                      NULL, &grid_n_h);
 
   grid_n_h += (padding.top + padding.bottom);
 
