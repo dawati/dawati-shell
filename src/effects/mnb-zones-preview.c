@@ -646,10 +646,33 @@ mnb_zones_preview_set_n_workspaces (MnbZonesPreview *preview,
     }
 }
 
+static void mnb_zones_preview_clone_destroy_cb (ClutterActor *, ClutterActor *);
+
+/*
+ * If the window is destroyed, we have to destroy the clone.
+ */
 static void
 mnb_zones_preview_mcw_destroy_cb (ClutterActor *mcw, ClutterActor *clone)
 {
+  /*
+   * First disconnect the clone_destroy handler to avoid circularity.
+   */
+  g_signal_handlers_disconnect_by_func (clone,
+                                        mnb_zones_preview_clone_destroy_cb,
+                                        mcw);
+
   clutter_actor_destroy (clone);
+}
+
+/*
+ * When the clone goes away, disconnect the mcw destroy handler.
+ */
+static void
+mnb_zones_preview_clone_destroy_cb (ClutterActor *clone, ClutterActor *mcw)
+{
+  g_signal_handlers_disconnect_by_func (mcw,
+                                        mnb_zones_preview_mcw_destroy_cb,
+                                        clone);
 }
 
 void
@@ -678,6 +701,9 @@ mnb_zones_preview_add_window (MnbZonesPreview *preview,
   g_signal_connect (window, "destroy",
                     G_CALLBACK (mnb_zones_preview_mcw_destroy_cb),
                     clone);
+  g_signal_connect (clone, "destroy",
+                    G_CALLBACK (mnb_zones_preview_clone_destroy_cb),
+                    window);
 
   meta_window_get_outer_rect (mutter_window_get_meta_window (window), &rect);
   clutter_actor_set_position (clone, rect.x, rect.y);
