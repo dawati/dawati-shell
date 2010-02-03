@@ -53,7 +53,7 @@ enum
   PROP_MUTTER_WINDOW
 };
 
-G_DEFINE_TYPE (MnbAlttabOverlayApp, mnb_alttab_overlay_app, MX_TYPE_FRAME);
+G_DEFINE_TYPE (MnbAlttabOverlayApp, mnb_alttab_overlay_app, MX_TYPE_BIN);
 
 #define MNB_ALTTAB_OVERLAY_APP_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_ALTTAB_OVERLAY_APP,\
@@ -200,6 +200,8 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
 {
   MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (actor)->priv;
   MxPadding                   padding    = { 0, };
+  gfloat                      parent_width;
+  gfloat                      parent_height;
 
   /*
    * Let the parent class do it's thing, and then allocate for the icon.
@@ -208,17 +210,49 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
                                                                  box, flags);
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
+  parent_width  = box->x2 - box->x1;
+  parent_height = box->y2 - box->y1;
+
+  if (priv->child)
+    {
+      gfloat          child_w, child_h;
+      gfloat          scale, scale_x, scale_y;
+      gfloat          available_w, available_h;
+      ClutterActorBox allocation = { 0, };
+
+      available_w = (gfloat)MNB_ALTTAB_OVERLAY_TILE_WIDTH -
+        padding.left - padding.right;
+      available_h = (gfloat)MNB_ALTTAB_OVERLAY_TILE_HEIGHT -
+        padding.top - padding.bottom;
+
+      clutter_actor_get_preferred_size (priv->child, NULL, NULL,
+                                        &child_w, &child_h);
+
+      scale_x = available_w / child_w;
+      scale_y = available_h / child_h;
+
+      scale = scale_x < scale_y ? scale_x : scale_y;
+
+      if (scale > 1.0)
+        scale = 1.0;
+
+      child_w *= scale;
+      child_h *= scale;
+
+      allocation.x1 = (parent_width - child_w) / 2.0;
+      allocation.y1 = (parent_height - child_h) / 2.0;
+      allocation.x2 = allocation.x1 + child_w;
+      allocation.y2 = allocation.y1 + child_h;
+
+      clutter_actor_allocate (priv->child, &allocation, flags);
+    }
+
   if (priv->icon)
     {
       ClutterActorBox allocation = { 0, };
       gfloat          natural_width, natural_height;
       gfloat          min_width, min_height;
       gfloat          width, height;
-      gfloat          parent_width;
-      gfloat          parent_height;
-
-      parent_width  = box->x2 - box->x1;
-      parent_height = box->y2 - box->y1;
 
       clutter_actor_get_preferred_size (priv->icon,
                                         &min_width,
@@ -351,44 +385,11 @@ mnb_alttab_overlay_app_get_preferred_width (ClutterActor *self,
                                             gfloat       *min_width_p,
                                             gfloat       *natural_width_p)
 {
-  MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (self)->priv;
-  MxPadding padding;
-  gfloat    child_natural_w, child_natural_h;
-  gfloat    scale;
-
-  mx_widget_get_padding (MX_WIDGET (self), &padding);
-
-  clutter_actor_get_preferred_size (priv->child,
-                                    NULL, NULL,
-                                    &child_natural_w, &child_natural_h);
-
-  if (child_natural_w > child_natural_h)
-    scale = ((gfloat)MNB_ALTTAB_OVERLAY_TILE_WIDTH -
-             padding.left - padding.right)/ child_natural_w;
-  else
-    scale = ((gfloat)MNB_ALTTAB_OVERLAY_TILE_WIDTH -
-             padding.top - padding.right)/ child_natural_h;
-
-  if (scale > 1.0)
-    scale = 1.0;
-
   if (min_width_p)
-    *min_width_p = 0.0;
+    *min_width_p = MNB_ALTTAB_OVERLAY_TILE_WIDTH;
 
   if (natural_width_p)
-    {
-      gfloat nw = child_natural_w * scale + padding.left + padding.right;
-
-      if (for_height >= 0.0)
-        {
-          gfloat nh = child_natural_h * scale + padding.top + padding.bottom;
-          gfloat scale2 = for_height / nh;
-
-          nw *= scale2;
-        }
-
-      *natural_width_p = nw;
-    }
+    *natural_width_p = MNB_ALTTAB_OVERLAY_TILE_WIDTH;
 }
 
 static void
@@ -397,44 +398,11 @@ mnb_alttab_overlay_app_get_preferred_height (ClutterActor *self,
                                              gfloat       *min_height_p,
                                              gfloat       *natural_height_p)
 {
-  MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (self)->priv;
-  MxPadding padding;
-  gfloat    child_natural_w, child_natural_h;
-  gfloat  scale;
-
-  mx_widget_get_padding (MX_WIDGET (self), &padding);
-
-  clutter_actor_get_preferred_size (priv->child,
-                                    NULL, NULL,
-                                    &child_natural_w, &child_natural_h);
-
-  if (child_natural_w > child_natural_h)
-    scale = ((gfloat)MNB_ALTTAB_OVERLAY_TILE_WIDTH -
-             padding.left - padding.right)/ child_natural_w;
-  else
-    scale = ((gfloat)MNB_ALTTAB_OVERLAY_TILE_WIDTH -
-             padding.top - padding.right)/ child_natural_h;
-
-  if (scale > 1.0)
-    scale = 1.0;
-
   if (min_height_p)
-    *min_height_p = 0.0;
+    *min_height_p = MNB_ALTTAB_OVERLAY_TILE_HEIGHT;
 
   if (natural_height_p)
-    {
-      gfloat nh = child_natural_h * scale + padding.top + padding.bottom;
-
-      if (for_width >= 0.0)
-        {
-          gfloat nw = child_natural_w * scale + padding.left + padding.right;
-          gfloat scale2 = for_width / nw;
-
-          nh *= scale2;
-        }
-
-      *natural_height_p = nh;
-    }
+    *natural_height_p = MNB_ALTTAB_OVERLAY_TILE_HEIGHT;
 }
 
 static void

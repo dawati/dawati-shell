@@ -32,8 +32,6 @@ G_BEGIN_DECLS
 /*
  * MnbAlttabOverlayApp
  *
- * A MnbAlttabItem subclass represening a single application thumb in the alttab.
- *
  */
 #define MNB_TYPE_ALTTAB_OVERLAY_APP                 (mnb_alttab_overlay_app_get_type ())
 #define MNB_ALTTAB_OVERLAY_APP(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_ALTTAB_OVERLAY_APP, MnbAlttabOverlayApp))
@@ -49,7 +47,7 @@ typedef struct _MnbAlttabOverlayAppClass   MnbAlttabOverlayAppClass;
 struct _MnbAlttabOverlayApp
 {
   /*< private >*/
-  MxFrame parent;
+  MxBin parent;
 
   MnbAlttabOverlayAppPrivate *priv;
 };
@@ -57,7 +55,7 @@ struct _MnbAlttabOverlayApp
 struct _MnbAlttabOverlayAppClass
 {
   /*< private >*/
-  MxFrameClass parent_class;
+  MxBinClass parent_class;
 };
 
 GType mnb_alttab_overlay_app_get_type (void);

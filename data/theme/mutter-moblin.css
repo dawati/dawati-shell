@@ -331,7 +331,7 @@ MnbAlttabOverlay {
 /* switcher overlay */
 MnbAlttabOverlayApp {
   border-image: url("switcher/application-inactive.png") 4;
-  padding: 2;
+  padding: 5;
 }
 
 MnbAlttabOverlayApp:active {
