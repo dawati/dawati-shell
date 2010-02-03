@@ -2167,6 +2167,7 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
   guint tex_width, tex_height;
   ClutterActorBox alloc;
   GdkRegion *visible_region;
+  gboolean retval = TRUE;
 
   visible_region = mnb_get_background_visible_region (screen);
 
@@ -2218,11 +2219,16 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 
       /* Would be nice to be able to check the number of rects first */
       gdk_region_get_rectangles (visible_region, &rects, &n_rects);
+
       if (n_rects > MAX_RECTS)
 	{
 	  g_free (rects);
 
-          cogl_rectangle (0, 0, alloc.x2 - alloc.x1, alloc.y2 - alloc.y1);
+          /*
+           * This is the simple case; we return FALSE, allowing the paint to
+           * reach the normal texture paint method.
+           */
+          retval = FALSE;
 	}
       else
 	{
@@ -2235,10 +2241,10 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 	      coords[i * 8 + 1] = rect->y;
 	      coords[i * 8 + 2] = rect->x + rect->width;
 	      coords[i * 8 + 3] = rect->y + rect->height;
-	      coords[i * 8 + 4] = rect->x / (alloc.x2 - alloc.x1);
-	      coords[i * 8 + 5] = rect->y / (alloc.y2 - alloc.y1);
-	      coords[i * 8 + 6] = (rect->x + rect->width) / (alloc.x2 - alloc.x1);
-	      coords[i * 8 + 7] = (rect->y + rect->height) / (alloc.y2 - alloc.y1);
+	      coords[i * 8 + 4] = rect->x / (gfloat)tex_width;
+	      coords[i * 8 + 5] = rect->y / (gfloat)tex_height;
+	      coords[i * 8 + 6] = (rect->x + rect->width) / (gfloat)tex_width;
+	      coords[i * 8 + 7] = (rect->y + rect->height) / (gfloat)tex_height;
 	    }
 
 	  g_free (rects);
@@ -2249,7 +2255,7 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 
  finish_up:
   gdk_region_destroy (visible_region);
-  return TRUE;
+  return retval;
 }
 
 /*
@@ -2328,12 +2334,7 @@ setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
 
       clutter_actor_set_size (new_texture, screen_width, screen_height);
 
-#if !USE_SCALED_BACKGROUND
-      g_object_set (new_texture,
-                    "repeat-x", TRUE,
-                    "repeat-y", TRUE,
-                    NULL);
-#endif
+      clutter_texture_set_repeat (CLUTTER_TEXTURE (new_texture), TRUE, TRUE);
 
       if (new_texture)
         {
