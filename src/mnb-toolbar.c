@@ -1661,8 +1661,6 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
         {
           tp->pinged = FALSE;
 
-          g_debug ("Showing pinged panel");
-
           if (MNB_IS_PANEL_OOP (panel))
             mnb_panel_oop_set_delayed_show ((MnbPanelOop*)panel, TRUE);
 
@@ -1878,8 +1876,8 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
       if (!mx_style_load_from_file (style, stylesheet, &error))
         {
           if (error)
-            g_debug ("Unable to load stylesheet %s: %s",
-                     stylesheet, error->message);
+            g_warning ("Unable to load stylesheet %s: %s",
+                       stylesheet, error->message);
 
           g_error_free (error);
         }
@@ -1945,7 +1943,7 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
 
       if (!tp)
         {
-          g_debug (G_STRLOC ": Unknown panel %s", name);
+          g_warning (G_STRLOC ": Unknown panel %s", name);
           return;
         }
     }
@@ -2181,9 +2179,6 @@ mnb_toolbar_start_panel_service (MnbToolbar *toolbar, MnbToolbarPanel *tp)
       g_warning ("Panel %s does not provide service", tp->name);
       return FALSE;
     }
-
-  g_debug ("Panel service [%s (%s)] is not running, starting.",
-           tp->name, tp->service);
 
   mnb_toolbar_ping_panel_oop (priv->dbus_conn, tp->service);
 
@@ -2674,8 +2669,6 @@ mnb_toolbar_load_panel (MnbToolbar *toolbar, const gchar *panel_name)
   tp->unloaded = FALSE;
 
   dbus_name = g_strconcat (MPL_PANEL_DBUS_NAME_PREFIX, panel_name, NULL);
-
-  g_debug (G_STRLOC " starting service [%s (%s)].", panel_name, dbus_name);
 
   mnb_toolbar_ping_panel_oop (priv->dbus_conn, dbus_name);
 
