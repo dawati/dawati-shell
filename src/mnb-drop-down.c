@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (c) 2008, 2010 Intel Corp.
  *
  * Author: Thomas Wood <thomas@linux.intel.com>
  *
@@ -328,10 +328,16 @@ mnb_drop_down_paint (ClutterActor *actor)
 
   clutter_actor_get_allocation_geometry (actor, &geom);
 
+#if CLUTTER_CHECK_VERSION (1, 1, 3)
+      cogl_clip_push_rectangle (priv->x - geom.x, priv->y - geom.y,
+                                priv->x - geom.x + geom.width,
+                                priv->y - geom.y + geom.height);
+#else
   cogl_clip_push (priv->x - geom.x,
                   priv->y - geom.y,
                   geom.width,
                   geom.height);
+#endif
 
   CLUTTER_ACTOR_CLASS (mnb_drop_down_parent_class)->paint (actor);
   cogl_clip_pop ();
