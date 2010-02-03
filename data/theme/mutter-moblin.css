@@ -330,13 +330,14 @@ MnbAlttabOverlay {
 
 /* switcher overlay */
 MnbAlttabOverlayApp {
-  border-image: url("switcher/application-inactive.png") 4;
+  background-color: #fff0;
   padding: 5;
 }
 
 MnbAlttabOverlayApp:active {
+  background-color: #fff;
   border-image: url("switcher/application-active.png") 4;
-  padding: 2;
+  padding: 5;
 }
 
 /* drop down */

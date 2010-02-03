@@ -41,7 +41,7 @@ enum
 
 };
 
-G_DEFINE_TYPE (MnbAlttabOverlay, mnb_alttab_overlay, MX_TYPE_GRID);
+G_DEFINE_TYPE (MnbAlttabOverlay, mnb_alttab_overlay, MX_TYPE_WIDGET);
 
 #define MNB_ALTTAB_OVERLAY_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_ALTTAB_OVERLAY,\
@@ -56,6 +56,9 @@ mnb_alttab_overlay_dispose (GObject *object)
     return;
 
   priv->disposed = TRUE;
+
+  clutter_actor_destroy (priv->grid);
+  priv->grid = NULL;
 
   G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->dispose (object);
 }
@@ -201,7 +204,7 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
           priv->active = app;
         }
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (self),
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->grid),
                                    (ClutterActor*) app);
     }
 
@@ -213,7 +216,9 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
 static void
 mnb_alttab_overlay_depopulate (MnbAlttabOverlay *self)
 {
-  clutter_container_foreach (CLUTTER_CONTAINER (self),
+  MnbAlttabOverlayPrivate *priv = self->priv;
+
+  clutter_container_foreach (CLUTTER_CONTAINER (priv->grid),
                              (ClutterCallback)clutter_actor_destroy,
                              NULL);
 }
@@ -246,11 +251,16 @@ mnb_alttab_overlay_kbd_grab_notify_cb (MetaScreen       *screen,
 static void
 mnb_alttab_overlay_constructed (GObject *self)
 {
-  MxGrid        *grid = MX_GRID (self);
-  MutterPlugin  *plugin = moblin_netbook_get_plugin_singleton ();
+  MnbAlttabOverlayPrivate *priv   = MNB_ALTTAB_OVERLAY (self)->priv;
+  MxGrid                  *grid   = MX_GRID (mx_grid_new ());
+  MutterPlugin            *plugin = moblin_netbook_get_plugin_singleton ();
 
   if (G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->constructed (self);
+
+  priv->grid = (ClutterActor*)grid;
+
+  clutter_actor_set_parent ((ClutterActor*)grid, (ClutterActor*)self);
 
   mx_grid_set_max_stride (grid, MNB_ALLTAB_OVERLAY_COLUMNS);
 
@@ -268,14 +278,134 @@ mnb_alttab_overlay_constructed (GObject *self)
 }
 
 static void
+mnb_alttab_overlay_map (ClutterActor *self)
+{
+  MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_parent_class)->map (self);
+
+  if (priv->grid)
+    clutter_actor_map (priv->grid);
+}
+
+static void
+mnb_alttab_overlay_unmap (ClutterActor *self)
+{
+  MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_parent_class)->unmap (self);
+
+  if (priv->grid)
+    clutter_actor_unmap (priv->grid);
+}
+
+static void
+mnb_alttab_overlay_get_preferred_width (ClutterActor *self,
+                                        gfloat        for_height,
+                                        gfloat       *min_width_p,
+                                        gfloat       *natural_width_p)
+{
+  MnbAlttabOverlayPrivate *priv    = MNB_ALTTAB_OVERLAY (self)->priv;
+  MxPadding                padding = { 0, };
+
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
+
+  clutter_actor_get_preferred_width (priv->grid,
+                                     for_height,
+                                     min_width_p,
+                                     natural_width_p);
+
+  if (min_width_p)
+    *min_width_p += (padding.left + padding.right);
+
+  if (natural_width_p)
+    *natural_width_p += (padding.left + padding.right);
+}
+
+static void
+mnb_alttab_overlay_get_preferred_height (ClutterActor *self,
+                                         gfloat        for_width,
+                                         gfloat       *min_height_p,
+                                         gfloat       *natural_height_p)
+{
+  MnbAlttabOverlayPrivate *priv    = MNB_ALTTAB_OVERLAY (self)->priv;
+  MxPadding                padding = { 0, };
+
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
+
+  clutter_actor_get_preferred_height (priv->grid,
+                                      for_width,
+                                      min_height_p,
+                                      natural_height_p);
+
+  if (min_height_p)
+    *min_height_p += (padding.top + padding.bottom);
+
+  if (natural_height_p)
+    *natural_height_p += (padding.top + padding.bottom);
+}
+
+static void
+mnb_alttab_overlay_paint (ClutterActor *self)
+{
+  MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_parent_class)->paint (self);
+
+  if (priv->grid && CLUTTER_ACTOR_IS_MAPPED (priv->grid))
+    clutter_actor_paint (priv->grid);
+}
+
+static void
+mnb_alttab_overlay_allocate (ClutterActor          *actor,
+                             const ClutterActorBox *box,
+                             ClutterAllocationFlags flags)
+{
+  MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (actor)->priv;
+
+  /*
+   * Let the parent class do it's thing, and then allocate for the icon.
+   */
+  CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_parent_class)->allocate (actor,
+                                                                   box, flags);
+  if (priv->grid)
+    {
+      ClutterActorBox allocation = { 0, };
+      MxPadding       padding    = { 0, };
+      gfloat          parent_width;
+      gfloat          parent_height;
+
+      mx_widget_get_padding (MX_WIDGET (actor), &padding);
+
+      parent_width  = box->x2 - box->x1;
+      parent_height = box->y2 - box->y1;
+
+      allocation.x1 = padding.left;
+      allocation.y1 = padding.top;
+      allocation.x2 = parent_width - padding.right;
+      allocation.y2 = parent_height - padding.bottom;
+
+      clutter_actor_allocate (priv->grid, &allocation, flags);
+    }
+}
+
+static void
 mnb_alttab_overlay_class_init (MnbAlttabOverlayClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass      *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
 
   object_class->dispose              = mnb_alttab_overlay_dispose;
   object_class->get_property         = mnb_alttab_overlay_get_property;
   object_class->set_property         = mnb_alttab_overlay_set_property;
   object_class->constructed          = mnb_alttab_overlay_constructed;
+
+  actor_class->map                   = mnb_alttab_overlay_map;
+  actor_class->unmap                 = mnb_alttab_overlay_unmap;
+  actor_class->get_preferred_width   = mnb_alttab_overlay_get_preferred_width;
+  actor_class->get_preferred_height  = mnb_alttab_overlay_get_preferred_height;
+  actor_class->paint                 = mnb_alttab_overlay_paint;
+  actor_class->allocate              = mnb_alttab_overlay_allocate;
 
   g_type_class_add_private (klass, sizeof (MnbAlttabOverlayPrivate));
 }
@@ -388,7 +518,7 @@ mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay, gboolean backward)
   GList                   *children, *l;
   gboolean                 next_is_active = FALSE;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (overlay));
+  children = clutter_container_get_children (CLUTTER_CONTAINER (priv->grid));
 
   for (l = backward ? g_list_last (children) : children;
        l;

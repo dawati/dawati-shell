@@ -33,6 +33,7 @@
 struct _MnbAlttabOverlayPrivate
 {
   MnbAlttabOverlayApp *active;
+  ClutterActor        *grid;
 
   gboolean disposed            : 1;
   gboolean in_alt_grab         : 1;

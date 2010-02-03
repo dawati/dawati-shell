@@ -216,28 +216,26 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
   if (priv->child)
     {
       gfloat          child_w, child_h;
-      gfloat          scale, scale_x, scale_y;
+      gdouble         scale, scale_x, scale_y;
       gfloat          available_w, available_h;
       ClutterActorBox allocation = { 0, };
 
-      available_w = (gfloat)MNB_ALTTAB_OVERLAY_TILE_WIDTH -
-        padding.left - padding.right;
-      available_h = (gfloat)MNB_ALTTAB_OVERLAY_TILE_HEIGHT -
-        padding.top - padding.bottom;
+      available_w = parent_width - padding.left - padding.right;
+      available_h = parent_height - padding.top - padding.bottom;
 
       clutter_actor_get_preferred_size (priv->child, NULL, NULL,
                                         &child_w, &child_h);
 
-      scale_x = available_w / child_w;
-      scale_y = available_h / child_h;
+      scale_x = (gdouble)available_w / (gdouble)child_w;
+      scale_y = (gdouble)available_h / (gdouble)child_h;
 
       scale = scale_x < scale_y ? scale_x : scale_y;
 
       if (scale > 1.0)
         scale = 1.0;
 
-      child_w *= scale;
-      child_h *= scale;
+      child_w = (gfloat)((gdouble)child_w * scale);
+      child_h = (gfloat)((gdouble)child_h * scale);
 
       allocation.x1 = (parent_width - child_w) / 2.0;
       allocation.y1 = (parent_height - child_h) / 2.0;
@@ -263,9 +261,11 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
       width  = MNB_SWICHER_APP_ICON_SIZE;
       height = MNB_SWICHER_APP_ICON_SIZE;
 
-      allocation.x2 = parent_width - MNB_SWICHER_APP_ICON_PADDING;
+      allocation.x2 = parent_width - padding.right -
+        MNB_SWICHER_APP_ICON_PADDING;
       allocation.x1 = allocation.x2 - width;
-      allocation.y2 = parent_height - MNB_SWICHER_APP_ICON_PADDING;
+      allocation.y2 = parent_height - padding.bottom -
+        MNB_SWICHER_APP_ICON_PADDING;
       allocation.y1 = allocation.y2 - height;
 
       clutter_actor_allocate (priv->icon, &allocation, flags);
