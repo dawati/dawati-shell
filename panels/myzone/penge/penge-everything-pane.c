@@ -39,6 +39,7 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 
 #define MOBLIN_MYZONE_MIN_TILE_WIDTH "/desktop/moblin/myzone/min_tile_width"
 #define MOBLIN_MYZONE_MIN_TILE_HEIGHT "/desktop/moblin/myzone/min_tile_height"
+#define MOBLIN_MYZONE_RATIO "/desktop/moblin/myzone/ratio"
 
 #define TILE_WIDTH 160
 #define TILE_HEIGHT 110
@@ -60,6 +61,10 @@ struct _PengeEverythingPanePrivate {
   GHashTable *uuid_to_sw_items;
 
   ClutterActor *welcome_tile;
+
+  GConfClient *gconf_client;
+  gfloat ratio;
+  guint ratio_notify_id;
 };
 
 static void
@@ -121,6 +126,19 @@ penge_everything_pane_dispose (GObject *object)
   {
     g_object_unref (priv->recent_manager);
     priv->recent_manager = NULL;
+  }
+
+  if (priv->ratio_notify_id)
+  {
+    gconf_client_notify_remove (priv->gconf_client,
+                                priv->ratio_notify_id);
+    priv->ratio_notify_id = 0;
+  }
+
+  if (priv->gconf_client)
+  {
+    g_object_unref (priv->gconf_client);
+    priv->gconf_client = NULL;
   }
 
   G_OBJECT_CLASS (penge_everything_pane_parent_class)->dispose (object);
@@ -409,7 +427,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   sw_items = g_list_sort (sw_items,
                           (GCompareFunc)_sw_item_sort_compare_func);
 
-  recent_files_count = priv->block_count * 1.0;
+  recent_files_count = priv->block_count * priv->ratio;
 
   if (recent_files_count > g_list_length (recent_file_items))
     recent_files_count = g_list_length (recent_file_items);
@@ -739,11 +757,30 @@ _source_manager_ready (PengeSourceManager *source_manager,
 }
 
 static void
+_gconf_ratio_notify_cb (GConfClient *client,
+                        guint        cnxn_id,
+                        GConfEntry  *entry,
+                        gpointer     userdata)
+{
+  PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  GConfValue *value;
+
+  value = gconf_entry_get_value (entry);
+  if (!value)
+    priv->ratio = 0.5;
+  else
+    priv->ratio = gconf_value_get_float (value);
+
+  penge_everything_pane_queue_update (pane);
+}
+
+static void
 penge_everything_pane_init (PengeEverythingPane *self)
 {
   PengeEverythingPanePrivate *priv = GET_PRIVATE (self);
   gfloat tile_width, tile_height;
-  GConfClient *client;
+  GError *error = NULL;
 
   /* pointer to pointer */
   priv->pointer_to_actor = g_hash_table_new (NULL, NULL);
@@ -766,9 +803,9 @@ penge_everything_pane_init (PengeEverythingPane *self)
 
   penge_block_container_set_spacing (PENGE_BLOCK_CONTAINER (self), 4);
 
-  client = gconf_client_get_default ();
+  priv->gconf_client = gconf_client_get_default ();
 
-  tile_width = gconf_client_get_float (client,
+  tile_width = gconf_client_get_float (priv->gconf_client,
                                        MOBLIN_MYZONE_MIN_TILE_WIDTH,
                                        NULL);
 
@@ -778,7 +815,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
     tile_width = TILE_WIDTH;
   }
 
-  tile_height = gconf_client_get_float (client,
+  tile_height = gconf_client_get_float (priv->gconf_client,
                                         MOBLIN_MYZONE_MIN_TILE_HEIGHT,
                                         NULL);
 
@@ -786,8 +823,6 @@ penge_everything_pane_init (PengeEverythingPane *self)
   {
     tile_height = TILE_HEIGHT;
   }
-
-  g_object_unref (client);
 
   penge_block_container_set_min_tile_size (PENGE_BLOCK_CONTAINER (self),
                                            tile_width,
@@ -804,5 +839,22 @@ penge_everything_pane_init (PengeEverythingPane *self)
                     "ready",
                     G_CALLBACK (_source_manager_ready),
                     self);
+
+  priv->ratio_notify_id =
+    gconf_client_notify_add (priv->gconf_client,
+                             MOBLIN_MYZONE_RATIO,
+                             _gconf_ratio_notify_cb,
+                             self,
+                             NULL,
+                             &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error setting gconf key notification: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    gconf_client_notify (priv->gconf_client, MOBLIN_MYZONE_RATIO);
+  }
 }
 
