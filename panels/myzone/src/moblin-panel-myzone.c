@@ -29,7 +29,11 @@
 #include <moblin-panel/mpl-panel-common.h>
 #include <penge/penge-grid-view.h>
 
+#include <gconf/gconf-client.h>
 #include <config.h>
+
+#define MOBLIN_MYZONE_DIR "/desktop/moblin/myzone"
+
 
 static GTimer *profile_timer = NULL;
 static guint stage_paint_idle = 0;
@@ -100,6 +104,7 @@ main (int    argc,
   ClutterActor *grid_view;
   GOptionContext *context;
   GError *error = NULL;
+  GConfClient *gconf_client;
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -180,9 +185,24 @@ main (int    argc,
                           "paint",
                           (GCallback)_stage_paint_cb,
                           NULL);
+
+  gconf_client = gconf_client_get_default ();
+  gconf_client_add_dir (gconf_client,
+                        MOBLIN_MYZONE_DIR,
+                        GCONF_CLIENT_PRELOAD_ONELEVEL,
+                        &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error setting up gconf key directory: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
   g_message (G_STRLOC ": PROFILE: Main loop started: %f",
              g_timer_elapsed (profile_timer, NULL));
   clutter_main ();
+  g_object_unref (gconf_client);
 
   return 0;
 }
