@@ -2815,8 +2815,6 @@ get_demands_attention_notification (MutterPlugin *plugin,
 
   if (old_id != ntf_id)
     {
-      g_debug ("New notification %d", ntf_id);
-
       g_object_set_qdata_full (G_OBJECT (mw), notification_quark,
                                GINT_TO_POINTER (ntf_id), NULL);
 
@@ -2827,8 +2825,6 @@ get_demands_attention_notification (MutterPlugin *plugin,
                         G_CALLBACK (meta_window_demands_attention_cb),
                         GINT_TO_POINTER (ntf_id));
     }
-  else
-    g_debug ("Reusing notificaiton %d", ntf_id);
 
   if (hints)
     g_hash_table_destroy (hints);
