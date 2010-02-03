@@ -23,7 +23,6 @@
 #include "penge-people-tile.h"
 #include "penge-utils.h"
 #include "penge-magic-texture.h"
-#include "penge-people-pane.h"
 
 G_DEFINE_TYPE (PengePeopleTile, penge_people_tile, PENGE_TYPE_INTERESTING_TILE)
 
