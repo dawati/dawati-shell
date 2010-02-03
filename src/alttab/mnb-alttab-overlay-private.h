@@ -35,6 +35,8 @@ struct _MnbAlttabOverlayPrivate
   MnbAlttabOverlayApp *active;
   ClutterActor        *grid;
 
+  gfloat               scroll_y;
+
   gboolean disposed            : 1;
   gboolean in_alt_grab         : 1;
   gboolean alt_tab_down        : 1;

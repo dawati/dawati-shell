@@ -328,21 +328,34 @@ mnb_alttab_overlay_get_preferred_height (ClutterActor *self,
                                          gfloat       *min_height_p,
                                          gfloat       *natural_height_p)
 {
-  MnbAlttabOverlayPrivate *priv    = MNB_ALTTAB_OVERLAY (self)->priv;
-  MxPadding                padding = { 0, };
+  MnbAlttabOverlayPrivate *priv     = MNB_ALTTAB_OVERLAY (self)->priv;
+  MxPadding                padding  = { 0, };
+  MxPadding                gpadding = { 0, };
+  gfloat                   grid_n_h;
+  gfloat                   height;
 
   mx_widget_get_padding (MX_WIDGET (self), &padding);
+  mx_widget_get_padding (MX_WIDGET (priv->grid), &gpadding);
 
-  clutter_actor_get_preferred_height (priv->grid,
-                                      for_width,
-                                      min_height_p,
-                                      natural_height_p);
+  /*
+   * We allow at most MNB_ALLTAB_OVERLAY_ROWS visible
+   */
+  height = (MNB_ALTTAB_OVERLAY_TILE_HEIGHT + MNB_ALTTAB_OVERLAY_TILE_SPACING) *
+    MNB_ALLTAB_OVERLAY_ROWS + MNB_ALTTAB_OVERLAY_TILE_SPACING +
+    gpadding.top + gpadding.bottom + padding.top + padding.bottom;
+
+  clutter_actor_get_preferred_height (priv->grid, for_width, NULL, &grid_n_h);
+
+  grid_n_h += (padding.top + padding.bottom);
+
+  if (grid_n_h < height)
+    height = grid_n_h;
 
   if (min_height_p)
-    *min_height_p += (padding.top + padding.bottom);
+    *min_height_p = height;
 
   if (natural_height_p)
-    *natural_height_p += (padding.top + padding.bottom);
+    *natural_height_p = height;
 }
 
 static void
@@ -353,7 +366,14 @@ mnb_alttab_overlay_paint (ClutterActor *self)
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_parent_class)->paint (self);
 
   if (priv->grid && CLUTTER_ACTOR_IS_MAPPED (priv->grid))
-    clutter_actor_paint (priv->grid);
+    {
+      cogl_push_matrix ();
+      cogl_translate (0, (gint) priv->scroll_y * -1, 0);
+
+      clutter_actor_paint (priv->grid);
+
+      cogl_pop_matrix ();
+    }
 }
 
 static void
