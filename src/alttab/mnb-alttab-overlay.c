@@ -248,18 +248,11 @@ mnb_alttab_overlay_constructed (GObject *self)
 {
   MxGrid        *grid = MX_GRID (self);
   MutterPlugin  *plugin = moblin_netbook_get_plugin_singleton ();
-  gint           screen_width, screen_height;
-  gint           max_stride;
-
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   if (G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->constructed (self);
 
-  max_stride = screen_width / (MNB_ALTTAB_OVERLAY_TILE_WIDTH +
-                               MNB_ALTTAB_OVERLAY_TILE_SPACING);
-
-  mx_grid_set_max_stride (grid, max_stride);
+  mx_grid_set_max_stride (grid, MNB_ALLTAB_OVERLAY_COLUMNS);
 
   mx_grid_set_column_spacing (grid, MNB_ALTTAB_OVERLAY_TILE_SPACING);
   mx_grid_set_row_spacing (grid, MNB_ALTTAB_OVERLAY_TILE_SPACING);
