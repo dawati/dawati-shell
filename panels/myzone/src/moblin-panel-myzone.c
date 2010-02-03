@@ -24,7 +24,6 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <bickley/bkl.h>
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <penge/penge-grid-view.h>
@@ -113,8 +112,6 @@ main (int    argc,
 
   g_thread_init (NULL);
   profile_timer = g_timer_new ();
-
-  bkl_init ();
 
   context = g_option_context_new ("- mutter-moblin myzone panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);

@@ -18,7 +18,6 @@ libpenge_a_headers = penge-people-pane.h \
 		   penge-welcome-tile.h \
 		   penge-people-placeholder-tile.h \
 		   penge-interesting-tile.h \
-		   penge-source-manager.h \
 		   penge-block-container.h \
 		   penge-everything-pane.h
 
@@ -40,7 +39,6 @@ libpenge_a_SOURCES = \
 		      penge-welcome-tile.c \
 		      penge-people-placeholder-tile.c \
 		      penge-interesting-tile.c \
-		      penge-source-manager.c \
 		      penge-block-container.c \
 		      penge-everything-pane.c
 

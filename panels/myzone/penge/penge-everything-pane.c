@@ -22,13 +22,11 @@
 #include <gio/gio.h>
 #include <glib/gi18n.h>
 #include <moblin-panel/mpl-utils.h>
-#include <bickley/bkl-item-extended.h>
 #include <gconf/gconf-client.h>
 
 #include "penge-everything-pane.h"
 #include "penge-recent-file-tile.h"
 #include "penge-people-tile.h"
-#include "penge-source-manager.h"
 
 #include "penge-welcome-tile.h"
 
@@ -52,7 +50,6 @@ struct _PengeEverythingPanePrivate {
   SwClientView *view;
   GtkRecentManager *recent_manager;
   GHashTable *pointer_to_actor;
-  PengeSourceManager *source_manager;
 
   gint block_count;
 
@@ -114,12 +111,6 @@ penge_everything_pane_dispose (GObject *object)
   {
     g_object_unref (priv->client);
     priv->client = NULL;
-  }
-
-  if (priv->source_manager)
-  {
-    g_object_unref (priv->source_manager);
-    priv->source_manager = NULL;
   }
 
   if (priv->recent_manager)
@@ -292,14 +283,12 @@ _recent_file_tile_remove_clicked_cb (PengeInterestingTile *tile,
 static ClutterActor *
 _add_from_recent_file_info (PengeEverythingPane *pane,
                             GtkRecentInfo       *info,
-                            BklItem             *bi,
                             const gchar         *thumbnail_path)
 {
   ClutterActor *actor;
 
   actor = g_object_new (PENGE_TYPE_RECENT_FILE_TILE,
                         "info", info,
-                        "item", bi,
                         "thumbnail-path", thumbnail_path,
                         NULL);
 
@@ -344,7 +333,6 @@ GList *
 _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
                                      GList               *list)
 {
-  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
   GList *l;
 
   l = list;
@@ -353,7 +341,6 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
     GtkRecentInfo *info = (GtkRecentInfo *)l->data;
     const gchar *uri = NULL;
     gchar *thumbnail_path = NULL;
-    BklItem *bi;
 
     /* We have to do this because we edit the list */
     l = l->next;
@@ -370,28 +357,11 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
 
     uri = gtk_recent_info_get_uri (info);
 
-    bi = penge_source_manager_find_item (priv->source_manager, uri);
-
-    if (bi)
-    {
-      const char *thumb_uri;
-
-      thumb_uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) bi);
-
-      if (thumb_uri)
-        thumbnail_path = g_filename_from_uri (thumb_uri, NULL, NULL);
-      else
-        thumbnail_path = mpl_utils_get_thumbnail_path (uri);
-    } else {
-      thumbnail_path = mpl_utils_get_thumbnail_path (uri);
-    }
+    thumbnail_path = mpl_utils_get_thumbnail_path (uri);
 
     /* Skip those without thumbnail */
     if (!thumbnail_path || !g_file_test (thumbnail_path, G_FILE_TEST_EXISTS))
     {
-      if (bi)
-        g_object_unref (bi);
-
       gtk_recent_info_unref (info);
       list = g_list_remove (list,
                             info);
@@ -491,8 +461,6 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
       show_welcome_tile = FALSE;
     } else {
-      BklItem *bi = NULL;
-
       /* Recent file item is newer */
 
       actor = g_hash_table_lookup (priv->pointer_to_actor,
@@ -505,25 +473,10 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
         uri = gtk_recent_info_get_uri (recent_file_info);
 
-        bi = penge_source_manager_find_item (priv->source_manager, uri);
-
-        if (bi)
-        {
-          const char *thumb_uri;
-
-          thumb_uri = bkl_item_extended_get_thumbnail ((BklItemExtended *) bi);
-
-          if (thumb_uri)
-            thumbnail_path = g_filename_from_uri (thumb_uri, NULL, NULL);
-          else
-            thumbnail_path = mpl_utils_get_thumbnail_path (uri);
-        } else {
-          thumbnail_path = mpl_utils_get_thumbnail_path (uri);
-        }
+        thumbnail_path = mpl_utils_get_thumbnail_path (uri);
 
         actor = _add_from_recent_file_info (pane,
                                             recent_file_info,
-                                            bi,
                                             thumbnail_path);
         recent_files_count--;
 
@@ -541,9 +494,6 @@ penge_everything_pane_update (PengeEverythingPane *pane)
       gtk_recent_info_unref (recent_file_info);
       recent_file_items = g_list_remove (recent_file_items,
                                          recent_file_info);
-
-      if (bi)
-        g_object_unref (bi);
     }
 
     clutter_container_lower_child (CLUTTER_CONTAINER (pane),
@@ -749,14 +699,6 @@ _layout_count_changed_cb (PengeBlockContainer *pbc,
 }
 
 static void
-_source_manager_ready (PengeSourceManager *source_manager,
-                       gpointer            userdata)
-{
-  PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
-  penge_everything_pane_queue_update (pane);
-}
-
-static void
 _gconf_ratio_notify_cb (GConfClient *client,
                         guint        cnxn_id,
                         GConfEntry  *entry,
@@ -831,13 +773,6 @@ penge_everything_pane_init (PengeEverythingPane *self)
   g_signal_connect (self,
                     "count-changed",
                     (GCallback)_layout_count_changed_cb,
-                    self);
-
-  /* Set up a source manager for finding the recent items */
-  priv->source_manager = g_object_new (PENGE_TYPE_SOURCE_MANAGER, NULL);
-  g_signal_connect (priv->source_manager,
-                    "ready",
-                    G_CALLBACK (_source_manager_ready),
                     self);
 
   priv->ratio_notify_id =
