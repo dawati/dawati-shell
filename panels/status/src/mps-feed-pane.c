@@ -62,6 +62,9 @@ struct _MpsFeedPanePrivate {
   ClutterActor *entry;
   ClutterActor *update_button;
 
+  ClutterActor *something_wrong_frame;
+  ClutterActor *something_wrong_label;
+
   ClutterActor *scroll_view;
   ClutterActor *box_layout;
 
@@ -179,6 +182,57 @@ _service_status_updated_cb (SwClient *service,
   }
 }
 
+static gboolean
+_has_cap (const gchar **caps,
+          const gchar *cap)
+{
+  if (!caps)
+    return FALSE;
+
+  while (*caps)
+  {
+    if (g_str_equal (*caps, cap))
+      return TRUE;
+
+    caps++;
+  }
+
+  return FALSE;
+}
+
+static void
+_update_from_caps (MpsFeedPane  *pane,
+                   const gchar **caps)
+{
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+
+  if (_has_cap (caps, "can-update-status"))
+  {
+    clutter_actor_hide (priv->something_wrong_frame);
+    clutter_actor_show (priv->update_hbox);
+  } else {
+    clutter_actor_hide (priv->update_hbox);
+    clutter_actor_show (priv->something_wrong_frame);
+  }
+}
+
+static void
+_service_capabilities_changed_cb (SwClientService  *service,
+                                  const gchar     **caps,
+                                  gpointer          userdata)
+{
+  _update_from_caps (MPS_FEED_PANE (userdata), caps);
+}
+
+static void
+_service_get_dynamic_caps_cb (SwClientService  *service,
+                              const gchar     **caps,
+                              const GError     *error,
+                              gpointer          userdata)
+{
+  _update_from_caps (MPS_FEED_PANE (userdata), caps);
+}
+
 static void
 mps_feed_pane_constructed (GObject *object)
 {
@@ -192,6 +246,13 @@ mps_feed_pane_constructed (GObject *object)
                     "status-updated",
                     (GCallback)_service_status_updated_cb,
                     pane);
+  g_signal_connect (priv->service,
+                    "capabilities-changed",
+                    (GCallback)_service_capabilities_changed_cb,
+                    pane);
+  sw_client_service_get_dynamic_capabilities (priv->service,
+                                              _service_get_dynamic_caps_cb,
+                                              pane);
 
   sw_client_open_view_for_service (priv->client,
                                    service_name,
@@ -314,6 +375,16 @@ mps_feed_pane_init (MpsFeedPane *self)
   mps_view_bridge_set_container (priv->bridge,
                                  CLUTTER_CONTAINER (priv->box_layout));
 
+  priv->something_wrong_frame = mx_frame_new ();
+  priv->something_wrong_label = mx_label_new (_("Unable to update status "
+                                                "perhaps you are offline, "
+                                                "the service is unavailable "
+                                                "or your password is wrong."));
+  mx_stylable_set_style_class (MX_STYLABLE (priv->something_wrong_label),
+                               "mps-something-wrong-message");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->something_wrong_frame),
+                               "mps-something-wrong-frame");
+
   mx_table_set_row_spacing (MX_TABLE (self), 8);
 
   /* Container population */
@@ -344,6 +415,14 @@ mps_feed_pane_init (MpsFeedPane *self)
                                       "y-expand", FALSE,
                                       "y-fill", FALSE,
                                       NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->something_wrong_frame,
+                                      0, 0,
+                                      "x-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       priv->scroll_view,
@@ -357,11 +436,16 @@ mps_feed_pane_init (MpsFeedPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->scroll_view),
                                priv->box_layout);
 
+  mx_bin_set_child (MX_BIN (priv->something_wrong_frame),
+                    priv->something_wrong_label);
+
   /* Signals */
   g_signal_connect (priv->update_button,
                     "clicked",
                     (GCallback)_update_button_clicked_cb,
                     self);
+
+  clutter_actor_hide (priv->something_wrong_frame);
 }
 
 ClutterActor *

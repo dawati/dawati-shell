@@ -89,9 +89,14 @@ MpsTweetCard.mps-tweet-card-first:active
   padding: 6;
 }
 
-*.mps-switcher-placeholder-label
+*.mps-switcher-placeholder-label, *.mps-something-wrong-message
 {
   color: #595959ff;
   font-size: 16pt;
+}
+
+*.mps-something-wrong-frame
+{
+  padding: 4px;
 }
 
