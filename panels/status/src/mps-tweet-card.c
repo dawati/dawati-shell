@@ -20,6 +20,8 @@
 #include "mps-tweet-card.h"
 #include "penge-magic-texture.h"
 
+#include <gio/gio.h>
+
 G_DEFINE_TYPE (MpsTweetCard, mps_tweet_card, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(o) \
@@ -117,6 +119,33 @@ mps_tweet_card_class_init (MpsTweetCardClass *klass)
   g_object_class_install_property (object_class, PROP_ITEM, pspec);
 }
 
+void moblin_status_panel_hide (void);
+
+static void
+_button_clicked_cb (MxButton *button,
+                    gpointer  userdata)
+{
+  MpsTweetCardPrivate *priv = GET_PRIVATE (button);
+  GError *error = NULL;
+  const gchar *uri;
+
+  uri = sw_item_get_value (priv->item, "url");
+
+  if (!uri)
+    return;
+
+  if (!g_app_info_launch_default_for_uri (uri,
+                                          NULL,
+                                          &error))
+  {
+    g_warning (G_STRLOC ": Error launching uri: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    moblin_status_panel_hide ();
+  }
+}
+
 static void
 mps_tweet_card_init (MpsTweetCard *self)
 {
@@ -174,6 +203,11 @@ mps_tweet_card_init (MpsTweetCard *self)
                                       "x-expand", TRUE,
                                       "x-fill", TRUE,
                                       NULL);
+
+  g_signal_connect (self,
+                    "clicked",
+                    (GCallback)_button_clicked_cb,
+                    NULL);
 }
 
 ClutterActor *
@@ -201,6 +235,8 @@ mps_tweet_card_set_item (MpsTweetCard *card,
   gchar *combined_content;
   GError *error = NULL;
   ClutterActor *tmp_text;
+
+  priv->item = sw_item_ref (item);
 
   author_icon = sw_item_get_value (item, "authoricon");
 
