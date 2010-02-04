@@ -303,6 +303,7 @@ static void
 mps_feed_switcher_init (MpsFeedSwitcher *self)
 {
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (self);
+  ClutterActor *tmp_text;
 
   priv->button_box = mx_box_layout_new ();
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box), 8);
@@ -330,8 +331,13 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_frame),
                                "mps-switcher-placeholder-frame");
   priv->placeholder_label = mx_label_new (_("You don't appear to have any web "
-                                            "services configured. Or there is "
-                                            "a problem with their configuration."));
+                                            "services configured or there is "
+                                            "a problem with their configuration. "
+                                            "Use the button above to open the web "
+                                            "services configuration and set one up."));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->placeholder_label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text),
+                              TRUE);
 
   mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_label),
                                "mps-switcher-placeholder-label");
