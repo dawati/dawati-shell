@@ -22,6 +22,7 @@
 #include "mpd-battery-tile.h"
 #include "mpd-disk-tile.h"
 #include "mpd-computer-pane.h"
+#include "mpd-volume-tile.h"
 #include "config.h"
 
 G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_BOX_LAYOUT)
@@ -100,6 +101,9 @@ mpd_computer_pane_init (MpdComputerPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   tile = mpd_disk_tile_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+
+  tile = mpd_volume_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   button = mx_button_new_with_label (_("All settings"));
