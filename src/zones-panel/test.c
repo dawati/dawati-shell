@@ -113,7 +113,8 @@ window_opened (WnckScreen *screen,
 
   thumbnail = clutter_glx_texture_pixmap_new_with_window (xid);
 
-  sw_window_set_thumbnail (win, CLUTTER_TEXTURE (thumbnail));
+  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (thumbnail), TRUE);
+  sw_window_set_thumbnail (win, thumbnail);
   sw_window_set_title (win, wnck_window_get_name (window));
   sw_window_set_icon (win, (ClutterTexture*)
                       gtk_clutter_texture_new_from_pixbuf (wnck_window_get_icon (window)));
@@ -142,6 +143,7 @@ main (int argc, char **argv)
   ClutterActor *stage, *overview;
   GList  *windows, *l, *workspaces;
   gint count;
+  WnckWorkspace *active_ws;
 
   clutter_init (&argc, &argv);
   gtk_init (&argc, &argv);
@@ -165,6 +167,7 @@ main (int argc, char **argv)
   workspaces = wnck_screen_get_workspaces (screen);
 
   /* count the number of workspaces and add to switcher */
+  active_ws = wnck_screen_get_active_workspace (screen);
   count = 0;
   for (l = workspaces; l; l = l->next)
     {

@@ -75,7 +75,7 @@ void   sw_window_set_focused (SwWindow *window, gboolean        focused);
 void   sw_window_set_icon    (SwWindow *window, ClutterTexture *icon);
 void   sw_window_set_title   (SwWindow *window, const gchar    *title);
 
-void   sw_window_set_thumbnail (SwWindow *window, ClutterTexture *thumbnail);
+void   sw_window_set_thumbnail (SwWindow *window, ClutterActor *thumbnail);
 
 G_END_DECLS
 

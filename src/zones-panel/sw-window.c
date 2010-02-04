@@ -550,17 +550,16 @@ sw_window_get_xid (SwWindow *window)
 }
 
 void
-sw_window_set_thumbnail (SwWindow       *window,
-                         ClutterTexture *thumbnail)
+sw_window_set_thumbnail (SwWindow     *window,
+                         ClutterActor *thumbnail)
 {
   SwWindowPrivate *priv = SW_WINDOW (window)->priv;
 
   if (priv->texture)
     clutter_actor_destroy (priv->texture);
 
-  priv->texture = (ClutterActor*) thumbnail;
+  priv->texture = thumbnail;
   clutter_actor_set_parent (priv->texture, CLUTTER_ACTOR (window));
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (priv->texture), TRUE);
 }
 
 void
