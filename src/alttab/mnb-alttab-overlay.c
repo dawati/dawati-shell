@@ -252,6 +252,8 @@ mnb_alttab_overlay_kbd_grab_notify_cb (MetaScreen       *screen,
   MnbAlttabOverlayPrivate *priv = overlay->priv;
   gboolean                 grabbed;
 
+  MNB_DBG_MARK();
+
   if (!priv->in_alt_grab)
     return;
 
@@ -261,7 +263,7 @@ mnb_alttab_overlay_kbd_grab_notify_cb (MetaScreen       *screen,
    * If the property has changed to FALSE, i.e., Mutter just called
    * XUngrabKeyboard(), reset the flag
    */
-  if (!grabbed && !priv->cancel_timeout_id)
+  if (!grabbed)
     {
       priv->in_alt_grab = FALSE;
 

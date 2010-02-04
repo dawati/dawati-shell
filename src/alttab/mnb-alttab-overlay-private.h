@@ -48,7 +48,6 @@ struct _MnbAlttabOverlayPrivate
   guint32 autoscroll_trigger_id;
   guint32 autoscroll_advance_id;
   guint32 slowdown_timeout_id;
-  guint32 cancel_timeout_id;
 };
 
 void mnb_alttab_overlay_advance (MnbAlttabOverlay *overlay,
@@ -59,5 +58,11 @@ void mnb_alttab_overlay_activate_selection (MnbAlttabOverlay *overlay,
 GList *mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *overlay);
 
 gboolean mnb_alttab_overlay_tab_still_down (MnbAlttabOverlay *overlay);
+
+gboolean mnb_alttab_overlay_establish_keyboard_grab (MnbAlttabOverlay  *overlay,
+                                                     MetaDisplay  *display,
+                                                     MetaScreen   *screen,
+                                                     gulong        mask,
+                                                     guint         timestamp);
 
 #endif
