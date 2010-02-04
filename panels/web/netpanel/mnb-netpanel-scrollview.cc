@@ -264,7 +264,7 @@ mnb_netpanel_scrollview_paint (ClutterActor *actor)
 
   clutter_actor_get_size (actor, &width, &height);
 
-  cogl_clip_push (0, 0, width, height);
+  cogl_clip_push_rectangle (0, 0, width, height);
 
   offset = priv->scroll_offset;
   cogl_translate (-priv->scroll_offset, 0, 0);

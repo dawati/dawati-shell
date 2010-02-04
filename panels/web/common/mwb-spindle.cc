@@ -173,7 +173,7 @@ mwb_spindle_paint (ClutterActor *actor)
 
           /* We need to clip to the allocation for the animation to
              work */
-          cogl_clip_push (0, 0, geom.width, geom.height);
+          cogl_clip_push_rectangle (0, 0, geom.width, geom.height);
 
           cogl_push_matrix ();
           cogl_translate (0.0f, geom.height / 2.0f, -apothem);

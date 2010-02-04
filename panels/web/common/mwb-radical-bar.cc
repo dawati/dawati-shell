@@ -477,7 +477,7 @@ mwb_radical_bar_paint (ClutterActor *actor)
     {
       ClutterActorBox box;
       clutter_actor_get_allocation_box (CLUTTER_ACTOR (priv->ac_list), &box);
-      cogl_clip_push (box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
+      cogl_clip_push_rectangle (box.x1, box.y1, box.x2, box.y2);
       cogl_translate (0, -(box.y2 - box.y1) *
                          (1.0-priv->ac_list_anim_progress), 0);
       clutter_actor_paint (CLUTTER_ACTOR (priv->ac_list));
