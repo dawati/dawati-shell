@@ -39,8 +39,16 @@
 #include "gvc-mixer-sink-input.h"
 #include "gvc-mixer-source-output.h"
 #include "gvc-mixer-event-role.h"
+#include "gvc-mixer-card.h"
 
 #define GVC_MIXER_CONTROL_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GVC_TYPE_MIXER_CONTROL, GvcMixerControlPrivate))
+
+#define RECONNECT_DELAY 5
+
+enum {
+        PROP_0,
+        PROP_NAME
+};
 
 struct GvcMixerControlPrivate
 {
@@ -48,6 +56,8 @@ struct GvcMixerControlPrivate
         pa_mainloop_api  *pa_api;
         pa_context       *pa_context;
         int               n_outstanding;
+        guint             reconnect_id;
+        char             *name;
 
         gboolean          default_sink_is_set;
         guint             default_sink_id;
@@ -65,13 +75,18 @@ struct GvcMixerControlPrivate
         GHashTable       *sink_inputs; /* routable output streams */
         GHashTable       *source_outputs; /* routable input streams */
         GHashTable       *clients;
+        GHashTable       *cards;
+
+        GvcMixerStream   *new_default_stream; /* new default stream, used in gvc_mixer_control_set_default_sink () */
 };
 
 enum {
+        CONNECTING,
         READY,
-        CONNECTION_FAILED,
         STREAM_ADDED,
         STREAM_REMOVED,
+        CARD_ADDED,
+        CARD_REMOVED,
         DEFAULT_SINK_CHANGED,
         DEFAULT_SOURCE_CHANGED,
         LAST_SIGNAL
@@ -84,31 +99,6 @@ static void     gvc_mixer_control_init       (GvcMixerControl      *mixer_contro
 static void     gvc_mixer_control_finalize   (GObject              *object);
 
 G_DEFINE_TYPE (GvcMixerControl, gvc_mixer_control, G_TYPE_OBJECT)
-
-static void
-_create_mixer_context(GvcMixerControl *mixer)
-{
-        pa_proplist     *proplist;
-
-        /* FIXME: read these from an object property */
-        proplist = pa_proplist_new ();
-        pa_proplist_sets (proplist,
-                          PA_PROP_APPLICATION_NAME,
-                          _("GNOME Volume Control"));
-        pa_proplist_sets (proplist,
-                          PA_PROP_APPLICATION_ID,
-                          "org.gnome.VolumeControl");
-        pa_proplist_sets (proplist,
-                          PA_PROP_APPLICATION_ICON_NAME,
-                          "multimedia-volume-control");
-        pa_proplist_sets (proplist,
-                          PA_PROP_APPLICATION_VERSION,
-                          PACKAGE_VERSION);
-
-        mixer->priv->pa_context = pa_context_new_with_proplist (mixer->priv->pa_api, NULL, proplist);
-        g_assert (mixer->priv->pa_context);
-        pa_proplist_free (proplist);
-}
 
 pa_context *
 gvc_mixer_control_get_pa_context (GvcMixerControl *control)
@@ -130,6 +120,42 @@ gvc_mixer_control_get_event_sink_input (GvcMixerControl *control)
         return stream;
 }
 
+static void
+gvc_mixer_control_stream_restore_cb (pa_context *c,
+                                     const pa_ext_stream_restore_info *info,
+                                     int eol,
+                                     void *userdata)
+{
+        pa_operation *o;
+        GvcMixerControl *control = (GvcMixerControl *) userdata;
+        pa_ext_stream_restore_info new_info;
+
+        if (eol || control->priv->new_default_stream == NULL)
+                return;
+
+        new_info.name = info->name;
+        new_info.channel_map = info->channel_map;
+        new_info.volume = info->volume;
+        new_info.mute = info->mute;
+
+        new_info.device = gvc_mixer_stream_get_name (control->priv->new_default_stream);
+
+        o = pa_ext_stream_restore_write (control->priv->pa_context,
+                                         PA_UPDATE_REPLACE,
+                                         &new_info, 1,
+                                         TRUE, NULL, NULL);
+
+        if (o == NULL) {
+                g_warning ("pa_ext_stream_restore_write() failed: %s",
+                           pa_strerror (pa_context_errno (control->priv->pa_context)));
+                return;
+        }
+
+        g_debug ("Changed default device for %s to %s", info->name, info->device);
+
+        pa_operation_unref (o);
+}
+
 gboolean
 gvc_mixer_control_set_default_sink (GvcMixerControl *control,
                                     GvcMixerStream  *stream)
@@ -144,7 +170,23 @@ gvc_mixer_control_set_default_sink (GvcMixerControl *control,
                                          NULL,
                                          NULL);
         if (o == NULL) {
-                g_warning ("pa_context_set_default_sink() failed");
+                g_warning ("pa_context_set_default_sink() failed: %s",
+                           pa_strerror (pa_context_errno (control->priv->pa_context)));
+                return FALSE;
+        }
+
+        pa_operation_unref (o);
+
+        control->priv->new_default_stream = stream;
+        g_object_add_weak_pointer (G_OBJECT (stream), (gpointer *) &control->priv->new_default_stream);
+
+        o = pa_ext_stream_restore_read (control->priv->pa_context,
+                                        gvc_mixer_control_stream_restore_cb,
+                                        control);
+
+        if (o == NULL) {
+                g_warning ("pa_ext_stream_restore_read() failed: %s",
+                           pa_strerror (pa_context_errno (control->priv->pa_context)));
                 return FALSE;
         }
 
@@ -210,17 +252,30 @@ gvc_mixer_control_get_default_source (GvcMixerControl *control)
         return stream;
 }
 
+static gpointer
+gvc_mixer_control_lookup_id (GHashTable *hash_table,
+                             guint       id)
+{
+        return g_hash_table_lookup (hash_table,
+                                    GUINT_TO_POINTER (id));
+}
+
 GvcMixerStream *
 gvc_mixer_control_lookup_stream_id (GvcMixerControl *control,
                                     guint            id)
 {
-        GvcMixerStream *stream;
-
         g_return_val_if_fail (GVC_IS_MIXER_CONTROL (control), NULL);
 
-        stream = g_hash_table_lookup (control->priv->all_streams,
-                                      GUINT_TO_POINTER (id));
-        return stream;
+        return gvc_mixer_control_lookup_id (control->priv->all_streams, id);
+}
+
+GvcMixerCard *
+gvc_mixer_control_lookup_card_id (GvcMixerControl *control,
+                                  guint            id)
+{
+        g_return_val_if_fail (GVC_IS_MIXER_CONTROL (control), NULL);
+
+        return gvc_mixer_control_lookup_id (control->priv->cards, id);
 }
 
 static void
@@ -231,6 +286,50 @@ listify_hash_values_hfunc (gpointer key,
         GSList **list = user_data;
 
         *list = g_slist_prepend (*list, value);
+}
+
+static int
+gvc_name_collate (const char *namea,
+                  const char *nameb)
+{
+        if (nameb == NULL && namea == NULL)
+                return 0;
+        if (nameb == NULL)
+                return 1;
+        if (namea == NULL)
+                return -1;
+
+        return g_utf8_collate (namea, nameb);
+}
+
+static int
+gvc_card_collate (GvcMixerCard *a,
+                  GvcMixerCard *b)
+{
+        const char *namea;
+        const char *nameb;
+
+        g_return_val_if_fail (a == NULL || GVC_IS_MIXER_CARD (a), 0);
+        g_return_val_if_fail (b == NULL || GVC_IS_MIXER_CARD (b), 0);
+
+        namea = gvc_mixer_card_get_name (a);
+        nameb = gvc_mixer_card_get_name (b);
+
+        return gvc_name_collate (namea, nameb);
+}
+
+GSList *
+gvc_mixer_control_get_cards (GvcMixerControl *control)
+{
+        GSList *retval;
+
+        g_return_val_if_fail (GVC_IS_MIXER_CONTROL (control), NULL);
+
+        retval = NULL;
+        g_hash_table_foreach (control->priv->cards,
+                              listify_hash_values_hfunc,
+                              &retval);
+        return g_slist_sort (retval, (GCompareFunc) gvc_card_collate);
 }
 
 static int
@@ -246,14 +345,7 @@ gvc_stream_collate (GvcMixerStream *a,
         namea = gvc_mixer_stream_get_name (a);
         nameb = gvc_mixer_stream_get_name (b);
 
-        if (nameb == NULL && namea == NULL)
-        	return 0;
-        if (nameb == NULL)
-        	return 1;
-        if (namea == NULL)
-        	return -1;
-
-        return g_utf8_collate (namea, nameb);
+        return gvc_name_collate (namea, nameb);
 }
 
 GSList *
@@ -353,11 +445,17 @@ _set_default_source (GvcMixerControl *control,
 {
         guint new_id;
 
-        new_id = 0;
-
-        if (stream != NULL) {
-                new_id = gvc_mixer_stream_get_id (stream);
+        if (stream == NULL) {
+                control->priv->default_source_id = 0;
+                control->priv->default_source_is_set = FALSE;
+                g_signal_emit (control,
+                               signals[DEFAULT_SOURCE_CHANGED],
+                               0,
+                               PA_INVALID_INDEX);
+                return;
         }
+
+        new_id = gvc_mixer_stream_get_id (stream);
 
         if (control->priv->default_source_id != new_id) {
                 control->priv->default_source_id = new_id;
@@ -375,16 +473,25 @@ _set_default_sink (GvcMixerControl *control,
 {
         guint new_id;
 
-        new_id = 0;
-
-        if (stream != NULL) {
-                new_id = gvc_mixer_stream_get_id (stream);
+        if (stream == NULL) {
+                /* Don't tell front-ends about an unset default
+                 * sink if it's already unset */
+                if (control->priv->default_sink_is_set == FALSE)
+                        return;
+                control->priv->default_sink_id = 0;
+                control->priv->default_sink_is_set = FALSE;
+                g_signal_emit (control,
+                               signals[DEFAULT_SINK_CHANGED],
+                               0,
+                               PA_INVALID_INDEX);
+                return;
         }
+
+        new_id = gvc_mixer_stream_get_id (stream);
 
         if (control->priv->default_sink_id != new_id) {
                 control->priv->default_sink_id = new_id;
                 control->priv->default_sink_is_set = TRUE;
-
                 g_signal_emit (control,
                                signals[DEFAULT_SINK_CHANGED],
                                0,
@@ -528,6 +635,7 @@ update_sink (GvcMixerControl    *control,
         GvcMixerStream *stream;
         gboolean        is_new;
         pa_volume_t     max_volume;
+        GvcChannelMap  *map;
         char            map_buff[PA_CHANNEL_MAP_SNPRINT_MAX];
 
         pa_channel_map_snprint (map_buff, PA_CHANNEL_MAP_SNPRINT_MAX, &info->channel_map);
@@ -539,23 +647,38 @@ update_sink (GvcMixerControl    *control,
                  map_buff);
 #endif
 
+        map = NULL;
         is_new = FALSE;
         stream = g_hash_table_lookup (control->priv->sinks,
                                       GUINT_TO_POINTER (info->index));
         if (stream == NULL) {
-                GvcChannelMap *map;
+#if PA_MICRO > 15
+                GList *list = NULL;
+                guint i;
+#endif /* PA_MICRO > 15 */
+
                 map = gvc_channel_map_new_from_pa_channel_map (&info->channel_map);
                 stream = gvc_mixer_sink_new (control->priv->pa_context,
                                              info->index,
                                              map);
+#if PA_MICRO > 15
+                for (i = 0; i < info->n_ports; i++) {
+                        GvcMixerStreamPort *port;
+
+                        port = g_new0 (GvcMixerStreamPort, 1);
+                        port->port = g_strdup (info->ports[i]->name);
+                        port->human_port = g_strdup (info->ports[i]->description);
+                        port->priority = info->ports[i]->priority;
+                        list = g_list_prepend (list, port);
+                }
+                gvc_mixer_stream_set_ports (stream, list);
+#endif /* PA_MICRO > 15 */
                 g_object_unref (map);
                 is_new = TRUE;
-
-                /*
-                 * If we are creating a new stream, then this is the 
-                 * new default sink.
-                 */
-                control->priv->default_sink_name = g_strdup (info->name);
+        } else if (gvc_mixer_stream_is_running (stream)) {
+                /* Ignore events if volume changes are outstanding */
+                g_debug ("Ignoring event, volume changes are outstanding");
+                return;
         }
 
         max_volume = pa_cvolume_max (&info->volume);
@@ -565,11 +688,11 @@ update_sink (GvcMixerControl    *control,
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
         gvc_mixer_stream_set_is_muted (stream, info->mute);
         gvc_mixer_stream_set_can_decibel (stream, !!(info->flags & PA_SINK_DECIBEL_VOLUME));
-        if (!!(info->flags & PA_SINK_DECIBEL_VOLUME)) {
-                gdouble db;
-                db = pa_sw_volume_to_dB (max_volume);
-                gvc_mixer_stream_set_decibel (stream, db);
-        }
+        gvc_mixer_stream_set_base_volume (stream, (guint32) info->base_volume);
+#if PA_MICRO > 15
+        if (info->active_port != NULL)
+                gvc_mixer_stream_set_port (stream, info->active_port->name);
+#endif /* PA_MICRO > 15 */
 
         if (is_new) {
                 g_hash_table_insert (control->priv->sinks,
@@ -583,6 +706,10 @@ update_sink (GvcMixerControl    *control,
             && strcmp (control->priv->default_sink_name, info->name) == 0) {
                 _set_default_sink (control, stream);
         }
+
+        if (map == NULL)
+                map = gvc_mixer_stream_get_channel_map (stream);
+        gvc_channel_map_volume_changed (map, &info->volume, FALSE);
 }
 
 static void
@@ -610,13 +737,35 @@ update_source (GvcMixerControl      *control,
         stream = g_hash_table_lookup (control->priv->sources,
                                       GUINT_TO_POINTER (info->index));
         if (stream == NULL) {
+#if PA_MICRO > 15
+                GList *list = NULL;
+                guint i;
+#endif /* PA_MICRO > 15 */
                 GvcChannelMap *map;
+
                 map = gvc_channel_map_new_from_pa_channel_map (&info->channel_map);
                 stream = gvc_mixer_source_new (control->priv->pa_context,
                                                info->index,
                                                map);
+#if PA_MICRO > 15
+                for (i = 0; i < info->n_ports; i++) {
+                        GvcMixerStreamPort *port;
+
+                        port = g_new0 (GvcMixerStreamPort, 1);
+                        port->port = g_strdup (info->ports[i]->name);
+                        port->human_port = g_strdup (info->ports[i]->description);
+                        port->priority = info->ports[i]->priority;
+                        list = g_list_prepend (list, port);
+                }
+                gvc_mixer_stream_set_ports (stream, list);
+#endif /* PA_MICRO > 15 */
+
                 g_object_unref (map);
                 is_new = TRUE;
+        } else if (gvc_mixer_stream_is_running (stream)) {
+                /* Ignore events if volume changes are outstanding */
+                g_debug ("Ignoring event, volume changes are outstanding");
+                return;
         }
 
         max_volume = pa_cvolume_max (&info->volume);
@@ -627,11 +776,11 @@ update_source (GvcMixerControl      *control,
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
         gvc_mixer_stream_set_is_muted (stream, info->mute);
         gvc_mixer_stream_set_can_decibel (stream, !!(info->flags & PA_SOURCE_DECIBEL_VOLUME));
-        if (!!(info->flags & PA_SINK_DECIBEL_VOLUME)) {
-                gdouble db;
-                db = pa_sw_volume_to_dB (max_volume);
-                gvc_mixer_stream_set_decibel (stream, db);
-        }
+        gvc_mixer_stream_set_base_volume (stream, (guint32) info->base_volume);
+#if PA_MICRO > 15
+        if (info->active_port != NULL)
+                gvc_mixer_stream_set_port (stream, info->active_port->name);
+#endif /* PA_MICRO > 15 */
 
         if (is_new) {
                 g_hash_table_insert (control->priv->sources,
@@ -752,6 +901,10 @@ update_sink_input (GvcMixerControl          *control,
                                                    map);
                 g_object_unref (map);
                 is_new = TRUE;
+        } else if (gvc_mixer_stream_is_running (stream)) {
+                /* Ignore events if volume changes are outstanding */
+                g_debug ("Ignoring event, volume changes are outstanding");
+                return;
         }
 
         max_volume = pa_cvolume_max (&info->volume);
@@ -766,6 +919,7 @@ update_sink_input (GvcMixerControl          *control,
         set_icon_name_from_proplist (stream, info->proplist, "applications-multimedia");
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
         gvc_mixer_stream_set_is_muted (stream, info->mute);
+        gvc_mixer_stream_set_is_virtual (stream, info->client == PA_INVALID_INDEX);
 
         if (is_new) {
                 g_hash_table_insert (control->priv->sink_inputs,
@@ -835,6 +989,117 @@ update_client (GvcMixerControl      *control,
                              g_strdup (info->name));
 }
 
+static char *
+card_num_streams_to_status (guint sinks,
+                            guint sources)
+{
+        char *sinks_str;
+        char *sources_str;
+        char *ret;
+
+        if (sinks == 0 && sources == 0) {
+                /* translators:
+                 * The device has been disabled */
+                return g_strdup (_("Disabled"));
+        }
+        if (sinks == 0) {
+                sinks_str = NULL;
+        } else {
+                /* translators:
+                 * The number of sound outputs on a particular device */
+                sinks_str = g_strdup_printf (ngettext ("%u Output",
+                                                       "%u Outputs",
+                                                       sinks),
+                                             sinks);
+        }
+        if (sources == 0) {
+                sources_str = NULL;
+        } else {
+                /* translators:
+                 * The number of sound inputs on a particular device */
+                sources_str = g_strdup_printf (ngettext ("%u Input",
+                                                         "%u Inputs",
+                                                         sources),
+                                               sources);
+        }
+        if (sources_str == NULL)
+                return sinks_str;
+        if (sinks_str == NULL)
+                return sources_str;
+        ret = g_strdup_printf ("%s / %s", sinks_str, sources_str);
+        g_free (sinks_str);
+        g_free (sources_str);
+        return ret;
+}
+
+static void
+update_card (GvcMixerControl      *control,
+             const pa_card_info   *info)
+{
+        GvcMixerCard *card;
+        gboolean      is_new;
+#if 1
+        guint i;
+        const char *key;
+        void *state;
+
+        g_debug ("Udpating card %s (index: %u driver: %s):",
+                 info->name, info->index, info->driver);
+
+        for (i = 0; i < info->n_profiles; i++) {
+                struct pa_card_profile_info pi = info->profiles[i];
+                gboolean is_default;
+
+                is_default = (g_strcmp0 (pi.name, info->active_profile->name) == 0);
+                g_debug ("\tProfile '%s': %d sources %d sinks%s",
+                         pi.name, pi.n_sources, pi.n_sinks,
+                         is_default ? " (Current)" : "");
+        }
+        state = NULL;
+        key = pa_proplist_iterate (info->proplist, &state);
+        while (key != NULL) {
+                g_debug ("\tProperty: '%s' = '%s'",
+                        key, pa_proplist_gets (info->proplist, key));
+                key = pa_proplist_iterate (info->proplist, &state);
+        }
+#endif
+        card = g_hash_table_lookup (control->priv->cards,
+                                    GUINT_TO_POINTER (info->index));
+        if (card == NULL) {
+                GList *list = NULL;
+
+                for (i = 0; i < info->n_profiles; i++) {
+                        struct pa_card_profile_info pi = info->profiles[i];
+                        GvcMixerCardProfile *profile;
+
+                        profile = g_new0 (GvcMixerCardProfile, 1);
+                        profile->profile = g_strdup (pi.name);
+                        profile->human_profile = g_strdup (pi.description);
+                        profile->status = card_num_streams_to_status (pi.n_sinks, pi.n_sources);
+                        profile->priority = pi.priority;
+                        list = g_list_prepend (list, profile);
+                }
+                card = gvc_mixer_card_new (control->priv->pa_context,
+                                           info->index);
+                gvc_mixer_card_set_profiles (card, list);
+                is_new = TRUE;
+        }
+
+        gvc_mixer_card_set_name (card, pa_proplist_gets (info->proplist, "device.description"));
+        gvc_mixer_card_set_icon_name (card, pa_proplist_gets (info->proplist, "device.icon_name"));
+        gvc_mixer_card_set_profile (card, info->active_profile->name);
+
+        if (is_new) {
+                g_hash_table_insert (control->priv->cards,
+                                     GUINT_TO_POINTER (info->index),
+                                     g_object_ref (card));
+        }
+        g_signal_emit (G_OBJECT (control),
+                       signals[CARD_ADDED],
+                       0,
+                       info->index);
+}
+
 static void
 _pa_context_get_sink_info_cb (pa_context         *context,
                               const pa_sink_info *i,
@@ -859,7 +1124,6 @@ _pa_context_get_sink_info_cb (pa_context         *context,
 
         update_sink (control, i);
 }
-
 
 static void
 _pa_context_get_source_info_cb (pa_context           *context,
@@ -962,6 +1226,30 @@ _pa_context_get_client_info_cb (pa_context           *context,
 }
 
 static void
+_pa_context_get_card_info_by_index_cb (pa_context *context,
+                                       const pa_card_info *i,
+                                       int eol,
+                                       void *userdata)
+{
+        GvcMixerControl *control = GVC_MIXER_CONTROL (userdata);
+
+        if (eol < 0) {
+                if (pa_context_errno (context) == PA_ERR_NOENTITY)
+                        return;
+
+                g_warning ("Card callback failure");
+                return;
+        }
+
+        if (eol > 0) {
+                dec_outstanding (control);
+                return;
+        }
+
+        update_card (control, i);
+}
+
+static void
 _pa_context_get_server_info_cb (pa_context           *context,
                                 const pa_server_info *i,
                                 void                 *userdata)
@@ -1004,8 +1292,16 @@ update_event_role_stream (GvcMixerControl                  *control,
         is_new = FALSE;
 
         if (!control->priv->event_sink_input_is_set) {
+                pa_channel_map pa_map;
+                GvcChannelMap *map;
+
+                pa_map.channels = 1;
+                pa_map.map[0] = PA_CHANNEL_POSITION_MONO;
+                map = gvc_channel_map_new_from_pa_channel_map (&pa_map);
+
                 stream = gvc_mixer_event_role_new (control->priv->pa_context,
-                                                   info->device);
+                                                   info->device,
+                                                   map);
                 control->priv->event_sink_input_id = gvc_mixer_stream_get_id (stream);
                 control->priv->event_sink_input_is_set = TRUE;
 
@@ -1044,6 +1340,17 @@ _pa_ext_stream_restore_read_cb (pa_context                       *context,
 
         if (eol > 0) {
                 dec_outstanding (control);
+                /* If we don't have an event stream to restore, then
+                 * set one up with a default 100% volume */
+                if (!control->priv->event_sink_input_is_set) {
+                        pa_ext_stream_restore_info info;
+
+                        memset (&info, 0, sizeof(info));
+                        info.name = "sink-input-by-media-role:event";
+                        info.volume.channels = 1;
+                        info.volume.values[0] = PA_VOLUME_NORM;
+                        update_event_role_stream (control, &info);
+                }
                 return;
         }
 
@@ -1103,6 +1410,30 @@ req_update_client_info (GvcMixerControl *control,
 
         if (o == NULL) {
                 g_warning ("pa_context_client_info_list() failed");
+                return;
+        }
+        pa_operation_unref (o);
+}
+
+static void
+req_update_card (GvcMixerControl *control,
+                 int              index)
+{
+        pa_operation *o;
+
+        if (index < 0) {
+                o = pa_context_get_card_info_list (control->priv->pa_context,
+                                                   _pa_context_get_card_info_by_index_cb,
+                                                   control);
+        } else {
+                o = pa_context_get_card_info_by_index (control->priv->pa_context,
+                                                       index,
+                                                       _pa_context_get_card_info_by_index_cb,
+                                                       control);
+        }
+
+        if (o == NULL) {
+                g_warning ("pa_context_get_card_info_by_index() failed");
                 return;
         }
         pa_operation_unref (o);
@@ -1210,6 +1541,19 @@ remove_client (GvcMixerControl *control,
 {
         g_hash_table_remove (control->priv->clients,
                              GUINT_TO_POINTER (index));
+}
+
+static void
+remove_card (GvcMixerControl *control,
+             guint            index)
+{
+        g_hash_table_remove (control->priv->cards,
+                             GUINT_TO_POINTER (index));
+
+        g_signal_emit (G_OBJECT (control),
+                       signals[CARD_REMOVED],
+                       0,
+                       index);
 }
 
 static void
@@ -1347,6 +1691,14 @@ _pa_context_subscribe_cb (pa_context                  *context,
         case PA_SUBSCRIPTION_EVENT_SERVER:
                 req_update_server_info (control, index);
                 break;
+
+        case PA_SUBSCRIPTION_EVENT_CARD:
+                if ((t & PA_SUBSCRIPTION_EVENT_TYPE_MASK) == PA_SUBSCRIPTION_EVENT_REMOVE) {
+                        remove_card (control, index);
+                } else {
+                        req_update_card (control, index);
+                }
+                break;
         }
 }
 
@@ -1365,7 +1717,8 @@ gvc_mixer_control_ready (GvcMixerControl *control)
                                    PA_SUBSCRIPTION_MASK_SINK_INPUT|
                                    PA_SUBSCRIPTION_MASK_SOURCE_OUTPUT|
                                    PA_SUBSCRIPTION_MASK_CLIENT|
-                                   PA_SUBSCRIPTION_MASK_SERVER),
+                                   PA_SUBSCRIPTION_MASK_SERVER|
+                                   PA_SUBSCRIPTION_MASK_CARD),
                                   NULL,
                                   NULL);
 
@@ -1381,6 +1734,7 @@ gvc_mixer_control_ready (GvcMixerControl *control)
         req_update_source_info (control, -1);
         req_update_sink_input_info (control, -1);
         req_update_source_output_info (control, -1);
+        req_update_card (control, -1);
 
         control->priv->n_outstanding = 6;
 
@@ -1396,7 +1750,6 @@ gvc_mixer_control_ready (GvcMixerControl *control)
                                                         _pa_ext_stream_restore_subscribe_cb,
                                                         control);
 
-
                 o = pa_ext_stream_restore_subscribe (control->priv->pa_context,
                                                      1,
                                                      NULL,
@@ -1409,6 +1762,77 @@ gvc_mixer_control_ready (GvcMixerControl *control)
                 g_debug ("Failed to initialized stream_restore extension: %s",
                          pa_strerror (pa_context_errno (control->priv->pa_context)));
         }
+}
+
+static void
+gvc_mixer_new_pa_context (GvcMixerControl *self)
+{
+        pa_proplist     *proplist;
+
+        g_return_if_fail (self);
+        g_return_if_fail (!self->priv->pa_context);
+
+        proplist = pa_proplist_new ();
+        pa_proplist_sets (proplist,
+                          PA_PROP_APPLICATION_NAME,
+                          self->priv->name);
+        pa_proplist_sets (proplist,
+                          PA_PROP_APPLICATION_ID,
+                          "org.gnome.VolumeControl");
+        pa_proplist_sets (proplist,
+                          PA_PROP_APPLICATION_ICON_NAME,
+                          "multimedia-volume-control");
+        pa_proplist_sets (proplist,
+                          PA_PROP_APPLICATION_VERSION,
+                          PACKAGE_VERSION);
+
+        self->priv->pa_context = pa_context_new_with_proplist (self->priv->pa_api, NULL, proplist);
+
+        pa_proplist_free (proplist);
+        g_assert (self->priv->pa_context);
+}
+
+static void
+remove_all_streams (GvcMixerControl *control, GHashTable *hash_table)
+{
+        GHashTableIter iter;
+        gpointer key, value;
+
+        g_hash_table_iter_init (&iter, hash_table);
+        while (g_hash_table_iter_next (&iter, &key, &value)) {
+                remove_stream (control, value);
+                g_hash_table_iter_remove (&iter);
+        }
+}
+
+static gboolean
+idle_reconnect (gpointer data)
+{
+        GvcMixerControl *control = GVC_MIXER_CONTROL (data);
+        GHashTableIter iter;
+        gpointer key, value;
+
+        g_return_val_if_fail (control, FALSE);
+
+        if (control->priv->pa_context) {
+                pa_context_unref (control->priv->pa_context);
+                control->priv->pa_context = NULL;
+                gvc_mixer_new_pa_context (control);
+        }
+
+        remove_all_streams (control, control->priv->sinks);
+        remove_all_streams (control, control->priv->sources);
+        remove_all_streams (control, control->priv->sink_inputs);
+        remove_all_streams (control, control->priv->source_outputs);
+
+        g_hash_table_iter_init (&iter, control->priv->clients);
+        while (g_hash_table_iter_next (&iter, &key, &value))
+                g_hash_table_iter_remove (&iter);
+
+        gvc_mixer_control_open (control); /* cannot fail */
+
+        control->priv->reconnect_id = 0;
+        return FALSE;
 }
 
 static void
@@ -1429,8 +1853,9 @@ _pa_context_state_cb (pa_context *context,
                 break;
 
         case PA_CONTEXT_FAILED:
-                g_warning ("PA Connection failed");
-                g_signal_emit (G_OBJECT (control), signals[CONNECTION_FAILED], 0);
+                g_warning ("Connection failed, reconnecting...");
+                if (control->priv->reconnect_id == 0)
+                        control->priv->reconnect_id = g_timeout_add_seconds (RECONNECT_DELAY, idle_reconnect, control);
                 break;
 
         case PA_CONTEXT_TERMINATED:
@@ -1453,7 +1878,8 @@ gvc_mixer_control_open (GvcMixerControl *control)
                                        _pa_context_state_cb,
                                        control);
 
-        res = pa_context_connect (control->priv->pa_context, NULL, (pa_context_flags_t) 0, NULL);
+        g_signal_emit (G_OBJECT (control), signals[CONNECTING], 0);
+        res = pa_context_connect (control->priv->pa_context, NULL, (pa_context_flags_t) PA_CONTEXT_NOFAIL, NULL);
         if (res < 0) {
                 g_warning ("Failed to connect context: %s",
                            pa_strerror (pa_context_errno (control->priv->pa_context)));
@@ -1521,9 +1947,52 @@ gvc_mixer_control_dispose (GObject *object)
                 g_hash_table_destroy (control->priv->clients);
                 control->priv->clients = NULL;
         }
+        if (control->priv->cards != NULL) {
+                g_hash_table_destroy (control->priv->cards);
+                control->priv->cards = NULL;
+        }
 
         G_OBJECT_CLASS (gvc_mixer_control_parent_class)->dispose (object);
 }
+
+static void
+gvc_mixer_control_set_property (GObject       *object,
+                                guint          prop_id,
+                                const GValue  *value,
+                                GParamSpec    *pspec)
+{
+        GvcMixerControl *self = GVC_MIXER_CONTROL (object);
+
+        switch (prop_id) {
+        case PROP_NAME:
+                g_free (self->priv->name);
+                self->priv->name = g_value_dup_string (value);
+                g_object_notify (G_OBJECT (self), "name");
+                break;
+        default:
+                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+                break;
+        }
+}
+
+static void
+gvc_mixer_control_get_property (GObject     *object,
+                                guint        prop_id,
+                                GValue      *value,
+                                GParamSpec  *pspec)
+{
+        GvcMixerControl *self = GVC_MIXER_CONTROL (object);
+
+        switch (prop_id) {
+        case PROP_NAME:
+                g_value_set_string (value, self->priv->name);
+                break;
+        default:
+                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+                break;
+        }
+}
+
 
 static GObject *
 gvc_mixer_control_constructor (GType                  type,
@@ -1536,8 +2005,8 @@ gvc_mixer_control_constructor (GType                  type,
         object = G_OBJECT_CLASS (gvc_mixer_control_parent_class)->constructor (type, n_construct_properties, construct_params);
 
         self = GVC_MIXER_CONTROL (object);
-        
-        _create_mixer_context (self);
+
+        gvc_mixer_new_pa_context (self);
 
         return object;
 }
@@ -1550,17 +2019,27 @@ gvc_mixer_control_class_init (GvcMixerControlClass *klass)
         object_class->constructor = gvc_mixer_control_constructor;
         object_class->dispose = gvc_mixer_control_dispose;
         object_class->finalize = gvc_mixer_control_finalize;
+        object_class->set_property = gvc_mixer_control_set_property;
+        object_class->get_property = gvc_mixer_control_get_property;
 
-        signals [READY] =
-                g_signal_new ("ready",
+        g_object_class_install_property (object_class,
+                                         PROP_NAME,
+                                         g_param_spec_string ("name",
+                                                              "Name",
+                                                              "Name to display for this mixer control",
+                                                              NULL,
+                                                              G_PARAM_READWRITE|G_PARAM_CONSTRUCT_ONLY));
+
+        signals [CONNECTING] =
+                g_signal_new ("connecting",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
-                              G_STRUCT_OFFSET (GvcMixerControlClass, ready),
+                              G_STRUCT_OFFSET (GvcMixerControlClass, connecting),
                               NULL, NULL,
                               g_cclosure_marshal_VOID__VOID,
                               G_TYPE_NONE, 0);
-        signals [CONNECTION_FAILED] =
-                g_signal_new ("connection-failed",
+        signals [READY] =
+                g_signal_new ("ready",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, ready),
@@ -1580,6 +2059,22 @@ gvc_mixer_control_class_init (GvcMixerControlClass *klass)
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (GvcMixerControlClass, stream_removed),
+                              NULL, NULL,
+                              g_cclosure_marshal_VOID__UINT,
+                              G_TYPE_NONE, 1, G_TYPE_UINT);
+        signals [CARD_ADDED] =
+                g_signal_new ("card-added",
+                              G_TYPE_FROM_CLASS (klass),
+                              G_SIGNAL_RUN_LAST,
+                              G_STRUCT_OFFSET (GvcMixerControlClass, card_added),
+                              NULL, NULL,
+                              g_cclosure_marshal_VOID__UINT,
+                              G_TYPE_NONE, 1, G_TYPE_UINT);
+        signals [CARD_REMOVED] =
+                g_signal_new ("card-removed",
+                              G_TYPE_FROM_CLASS (klass),
+                              G_SIGNAL_RUN_LAST,
+                              G_STRUCT_OFFSET (GvcMixerControlClass, card_removed),
                               NULL, NULL,
                               g_cclosure_marshal_VOID__UINT,
                               G_TYPE_NONE, 1, G_TYPE_UINT);
@@ -1619,6 +2114,7 @@ gvc_mixer_control_init (GvcMixerControl *control)
         control->priv->sources = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)g_object_unref);
         control->priv->sink_inputs = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)g_object_unref);
         control->priv->source_outputs = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)g_object_unref);
+        control->priv->cards = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)g_object_unref);
 
         control->priv->clients = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)g_free);
 }
@@ -1632,15 +2128,19 @@ gvc_mixer_control_finalize (GObject *object)
         g_return_if_fail (GVC_IS_MIXER_CONTROL (object));
 
         mixer_control = GVC_MIXER_CONTROL (object);
+        g_free (mixer_control->priv->name);
+        mixer_control->priv->name = NULL;
 
         g_return_if_fail (mixer_control->priv != NULL);
         G_OBJECT_CLASS (gvc_mixer_control_parent_class)->finalize (object);
 }
 
 GvcMixerControl *
-gvc_mixer_control_new (void)
+gvc_mixer_control_new (const char *name)
 {
         GObject *control;
-        control = g_object_new (GVC_TYPE_MIXER_CONTROL, NULL);
+        control = g_object_new (GVC_TYPE_MIXER_CONTROL,
+                                "name", name,
+                                NULL);
         return GVC_MIXER_CONTROL (control);
 }
