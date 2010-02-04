@@ -99,6 +99,9 @@ static void window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin);
 static void meta_display_window_demands_attention_cb (MetaDisplay *display,
                                                       MetaWindow  *mw,
                                                       gpointer     data);
+static void meta_window_demands_attention_cb (MetaWindow         *mw,
+                                              GParamSpec         *spec,
+                                              gpointer            data);
 
 static GQuark actor_data_quark = 0;
 static GQuark notification_quark = 0;
@@ -1334,6 +1337,27 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
   g_signal_handlers_disconnect_by_func (meta_win,
                                         meta_window_fullscreen_notify_cb,
                                         plugin);
+
+  {
+    guint ntf_id;
+
+    if (G_UNLIKELY (notification_quark == 0))
+      notification_quark = g_quark_from_static_string (NOTIFICATION_KEY);
+
+    ntf_id = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (meta_win),
+                                                  notification_quark));
+
+    if (ntf_id)
+      {
+        g_signal_handlers_disconnect_by_func (meta_win,
+                                              meta_window_demands_attention_cb,
+                                              GINT_TO_POINTER (ntf_id));
+
+        moblin_netbook_notify_store_close (priv->notify_store, ntf_id,
+                                           ClosedProgramatically);
+        g_object_set_qdata (G_OBJECT (meta_win), notification_quark, NULL);
+      }
+  }
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
