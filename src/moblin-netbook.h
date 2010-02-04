@@ -38,6 +38,9 @@
 
 #include "mnb-input-manager.h"
 
+#define MNB_DBG_MARK() \
+  g_debug (G_STRLOC ":%s", __FUNCTION__)        \
+
 #define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
 
 #define MAX_WORKSPACES 8
