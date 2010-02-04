@@ -565,15 +565,16 @@ _tp_channel_ready_for_subscribe_cb (TpChannel    *channel,
 }
 
 static void
-_tp_connection_request_channel_for_subscribe_cb (TpConnection *proxy,
-                                                 const gchar  *object_path,
-                                                 const GError  *error_in,
-                                                 gpointer      userdata,
-                                                 GObject      *weak_object)
+_tp_connection_ensure_channel_for_subscribe_cb (TpConnection *proxy,
+                                                gboolean      yours,
+                                                const gchar  *object_path,
+                                                GHashTable   *properties,
+                                                const GError  *error_in,
+                                                gpointer      userdata,
+                                                GObject      *weak_object)
 {
   AnerleyTpFeed *feed = ANERLEY_TP_FEED (weak_object);
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
-  TpHandle handle = GPOINTER_TO_UINT (userdata);
   GError *error = NULL;
 
   if (error_in)
@@ -583,12 +584,10 @@ _tp_connection_request_channel_for_subscribe_cb (TpConnection *proxy,
     return;
   }
 
-  priv->subscribe_channel = tp_channel_new (priv->conn,
-                                            object_path,
-                                            TP_IFACE_CHANNEL_TYPE_CONTACT_LIST,
-                                            TP_HANDLE_TYPE_LIST,
-                                            handle,
-                                            &error);
+  priv->subscribe_channel = tp_channel_new_from_properties (priv->conn,
+                                                            object_path,
+                                                            properties,
+                                                            &error);
 
   if (!priv->subscribe_channel)
   {
@@ -603,62 +602,31 @@ _tp_connection_request_channel_for_subscribe_cb (TpConnection *proxy,
 }
 
 static void
-_tp_connection_request_handle_for_subscribe_cb (TpConnection        *connection,
-                                                TpHandleType         handle_type,
-                                                guint                n_handles,
-                                                const TpHandle      *handles,
-                                                const gchar * const *requested_ids,
-                                                const GError        *error,
-                                                gpointer             userdata,
-                                                GObject             *weak_object)
-{
-  AnerleyTpFeed *feed = ANERLEY_TP_FEED (weak_object);
-  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error requesting handle for subscribe channel: %s",
-               error->message);
-    return;
-  }
-
-  /* Okay now we have the handle then it's party time. Uh...time to actually
-   * request the channel.
-   */
-  tp_cli_connection_call_request_channel (priv->conn,
-                                          -1,
-                                          TP_IFACE_CHANNEL_TYPE_CONTACT_LIST,
-                                          TP_HANDLE_TYPE_LIST,
-                                          handles[0],
-                                          TRUE,
-                                          _tp_connection_request_channel_for_subscribe_cb,
-                                          GUINT_TO_POINTER (handles[0]),
-                                          NULL,
-                                          (GObject *)feed);
-}
-
-static void
 anerley_tp_feed_setup_subscribe_channel (AnerleyTpFeed *feed)
 {
   AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
-  const gchar *channel_names[] = { "subscribe", NULL };
+  GHashTable *map;
 
-  /* Since all we care about right now is the subcribe contact list. Let's
-   * just request that channel directly
-   */
+  map = tp_asv_new (
+      TP_IFACE_CHANNEL ".ChannelType",
+      G_TYPE_STRING,
+      TP_IFACE_CHANNEL_TYPE_CONTACT_LIST,
 
-  /* First we have to look up the handle for the list we want. This is a bit
-   * lame since it involves a round-trip, oh well.
-   */
+      TP_IFACE_CHANNEL ".TargetHandleType",
+      G_TYPE_UINT,
+      TP_HANDLE_TYPE_LIST,
 
-  tp_connection_request_handles (priv->conn,
-                                 -1,           /* use default */
-                                 TP_HANDLE_TYPE_LIST,
-                                 channel_names, 
-                                 _tp_connection_request_handle_for_subscribe_cb,
-                                 NULL,
-                                 NULL,
-                                 (GObject *)feed); /* I love weak objects */
+      TP_IFACE_CHANNEL ".TargetID",
+      G_TYPE_STRING,
+      "subscribe",
+
+      NULL);
+
+  tp_cli_connection_interface_requests_call_ensure_channel (priv->conn, -1,
+      map, _tp_connection_ensure_channel_for_subscribe_cb,
+      NULL, NULL, G_OBJECT (feed));
+
+  g_hash_table_destroy (map);
 }
 
 static void
