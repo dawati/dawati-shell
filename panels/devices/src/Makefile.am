@@ -46,6 +46,8 @@ moblin_panel_devices_SOURCES = \
 	mpd-shell-defines.h \
 	mpd-shutdown-notification.c \
 	mpd-shutdown-notification.h \
+	mpd-volume-tile.c \
+	mpd-volume-tile.h \
 	$(NULL)
 
 servicedir = $(datadir)/dbus-1/services
