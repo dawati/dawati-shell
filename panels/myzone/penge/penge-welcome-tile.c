@@ -83,10 +83,9 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                                       NULL);
   mx_table_set_row_spacing (MX_TABLE (tile), 6);
 
-  label = mx_label_new (_("This is the Myzone,  where your recently "
+  label = mx_label_new (_("This is the Myzone, where your recently "
                           "used files and content from your web feeds will "
-                          "appear. To setup your Web Accounts, head over to "
-                          "the Monocle Man!"));
+                          "appear."));
 
 
   clutter_actor_set_name ((ClutterActor *)label,
