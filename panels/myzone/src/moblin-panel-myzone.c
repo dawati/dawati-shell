@@ -173,8 +173,8 @@ main (int    argc,
                               NULL);
     clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                  (ClutterActor *)grid_view);
-    clutter_actor_set_size ((ClutterActor *)grid_view, 1016, 504);
-    clutter_actor_set_size (stage, 1016, 504);
+    clutter_actor_set_size ((ClutterActor *)grid_view, 1016, 536);
+    clutter_actor_set_size (stage, 1016, 536);
     clutter_actor_show_all (stage);
   }
 
