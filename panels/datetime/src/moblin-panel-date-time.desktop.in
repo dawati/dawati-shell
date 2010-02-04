@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=@VERSION@
+Name=moblin-panel-date-time
+Comment=Date/Time panel for Moblin2
+Exec=moblin_panel_date_time
+Categories=Application
+Icon=moblin_panel_date_time32
+Type=Application
+Terminal=false
+URL=
+StartupNotify=true
+
