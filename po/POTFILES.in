@@ -2,7 +2,6 @@
 capplet/data/moblin-toolbar-properties.desktop.in
 capplet/src/moblin-toolbar-properties.c
 capplet/src/mtp-toolbar.c
-data/moblin-panel-zones.desktop.in
 data/mutter-moblin.schemas.in
 src/moblin-netbook.c
 src/mnb-toolbar.c
@@ -10,3 +9,4 @@ src/notifications/mnb-notification.c
 src/notifications/mnb-notification-cluster.c
 src/switcher/mnb-switcher.c
 src/switcher/mnb-switcher-zone-apps.c
+src/switcher/moblin-panel-zones.desktop.in
