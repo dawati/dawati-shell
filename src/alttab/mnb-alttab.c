@@ -356,7 +356,7 @@ mnb_alttab_overlay_alt_tab_cancel_handler (MetaDisplay    *display,
   MnbAlttabOverlay        *overlay = MNB_ALTTAB_OVERLAY (data);
   MnbAlttabOverlayPrivate *priv    = overlay->priv;
 
-  MNB_DBG_MARK();
+  /* MNB_DBG_MARK(); */
 
   end_kbd_grab (overlay);
 

@@ -252,7 +252,7 @@ mnb_alttab_overlay_kbd_grab_notify_cb (MetaScreen       *screen,
   MnbAlttabOverlayPrivate *priv = overlay->priv;
   gboolean                 grabbed;
 
-  MNB_DBG_MARK();
+  /* MNB_DBG_MARK(); */
 
   if (!priv->in_alt_grab)
     return;
