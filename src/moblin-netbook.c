@@ -449,6 +449,42 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
 }
 
 static void
+moblin_netbook_close_demands_attention_notification (MutterPlugin *plugin,
+                                                     MetaWindow   *mw)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  guint                       ntf_id;
+
+  if (G_UNLIKELY (notification_quark == 0))
+    notification_quark = g_quark_from_static_string (NOTIFICATION_KEY);
+
+  ntf_id = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (mw),
+                                                notification_quark));
+
+  if (ntf_id)
+    {
+      g_signal_handlers_disconnect_by_func (mw,
+                                            meta_window_demands_attention_cb,
+                                            GINT_TO_POINTER (ntf_id));
+
+      moblin_netbook_notify_store_close (priv->notify_store, ntf_id,
+                                         ClosedProgramatically);
+      g_object_set_qdata (G_OBJECT (mw), notification_quark, NULL);
+    }
+}
+
+static void
+moblin_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
+                                               GParamSpec   *spec,
+                                               MutterPlugin *plugin)
+{
+  MetaWindow *mw = meta_display_get_focus_window (display);
+
+  if (mw)
+    moblin_netbook_close_demands_attention_notification (plugin, mw);
+}
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -565,6 +601,11 @@ moblin_netbook_plugin_constructed (GObject *object)
   g_signal_connect (display,
                     "window-created",
                     G_CALLBACK (moblin_netbook_display_window_created_cb),
+                    plugin);
+
+  g_signal_connect (display,
+                    "notify::focus-window",
+                    G_CALLBACK (moblin_netbook_display_focus_window_notify_cb),
                     plugin);
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
@@ -1338,26 +1379,7 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
                                         meta_window_fullscreen_notify_cb,
                                         plugin);
 
-  {
-    guint ntf_id;
-
-    if (G_UNLIKELY (notification_quark == 0))
-      notification_quark = g_quark_from_static_string (NOTIFICATION_KEY);
-
-    ntf_id = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (meta_win),
-                                                  notification_quark));
-
-    if (ntf_id)
-      {
-        g_signal_handlers_disconnect_by_func (meta_win,
-                                              meta_window_demands_attention_cb,
-                                              GINT_TO_POINTER (ntf_id));
-
-        moblin_netbook_notify_store_close (priv->notify_store, ntf_id,
-                                           ClosedProgramatically);
-        g_object_set_qdata (G_OBJECT (meta_win), notification_quark, NULL);
-      }
-  }
+  moblin_netbook_close_demands_attention_notification (plugin, meta_win);
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
