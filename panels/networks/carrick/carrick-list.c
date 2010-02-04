@@ -281,23 +281,19 @@ carrick_list_drag_end (GtkWidget      *widget,
       move_data   *data = NULL;
 
       service = carrick_service_item_get_proxy (CARRICK_SERVICE_ITEM (widget));
+      data = g_slice_new0 (move_data);
+      data->list = GTK_WIDGET (list->priv->box);
+      data->item = widget;
+      data->pos = priv->drag_position;
 
       /* TODO: should ensure favorite status for one or both services ? */
       /* TODO: should do both move_before() and move_after() if possible ? */
       if (priv->drop_position == 0)
         {
-          other_widget = g_list_nth_data (children, 1);
+          other_widget = g_list_nth_data (children, 0);
           other_service = carrick_service_item_get_proxy
                     (CARRICK_SERVICE_ITEM (other_widget));
           path = dbus_g_proxy_get_path (other_service);
-
-          data = g_slice_new0 (move_data);
-          data->list = GTK_WIDGET (list);
-          data->item = widget;
-          gtk_container_child_get (GTK_CONTAINER (priv->box),
-                                   widget,
-                                   "position", &data->pos,
-                                   NULL);;
 
           org_moblin_connman_Service_move_before_async (service,
                                                         path,
@@ -320,14 +316,6 @@ carrick_list_drag_end (GtkWidget      *widget,
           other_service = carrick_service_item_get_proxy
                     (CARRICK_SERVICE_ITEM (other_widget));
           path = dbus_g_proxy_get_path (other_service);
-
-          data = g_slice_new0 (move_data);
-          data->list = GTK_WIDGET (list);
-          data->item = widget;
-          gtk_container_child_get (GTK_CONTAINER (priv->box),
-                                   widget,
-                                   "position", &data->pos,
-                                   NULL);;
 
           org_moblin_connman_Service_move_after_async (service,
                                                        path,
@@ -795,14 +783,14 @@ carrick_list_add (CarrickList *list,
    * Note: DnD will not work in mutter-moblin until MB #5499 is fixed
    * http://bugzilla.moblin.org/show_bug.cgi?id=5499
    */
-  /*
+  
   carrick_service_item_set_draggable (CARRICK_SERVICE_ITEM (widget), TRUE);
   gtk_drag_source_set (widget,
                        GDK_BUTTON1_MASK,
                        carrick_targets,
                        G_N_ELEMENTS (carrick_targets),
                        GDK_ACTION_MOVE);
-  */
+  
   g_signal_connect (widget,
                     "drag-begin",
                     G_CALLBACK (carrick_list_drag_begin),
@@ -816,13 +804,13 @@ carrick_list_add (CarrickList *list,
                     G_CALLBACK (carrick_list_drag_end),
                     list);
   /* Define the service as a drag destination */
-  /*
+  
   gtk_drag_dest_set (widget,
                      GTK_DEST_DEFAULT_ALL,
                      carrick_targets,
                      G_N_ELEMENTS (carrick_targets),
                      GDK_ACTION_MOVE);
-  */
+  
   g_signal_connect (widget,
                     "drag-drop",
                     G_CALLBACK (carrick_list_drag_drop),
