@@ -488,7 +488,8 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
   /* Ensure at least one button is active */
   if (!mx_button_group_get_active_button (priv->button_group))
   {
-    mx_button_group_set_active_button (priv->button_group, button);
+    mx_button_group_set_active_button (priv->button_group,
+                                       MX_BUTTON (button));
   }
 }
 
@@ -512,7 +513,7 @@ mps_feed_switcher_remove_service (MpsFeedSwitcher *switcher,
 
   if (button)
   {
-    mx_button_group_remove (priv->button_group, button);
+    mx_button_group_remove (priv->button_group, MX_BUTTON (button));
     mx_button_group_set_active_button (priv->button_group, NULL);
     clutter_container_remove_actor (CLUTTER_CONTAINER (priv->button_box),
                                     button);
