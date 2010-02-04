@@ -43,6 +43,8 @@
 #include "mnb-alttab-overlay.h"
 #include "mnb-alttab-overlay-private.h"
 #include "../moblin-netbook.h"
+#include "../mnb-toolbar.h"
+
 #include <display.h>
 
 /*
@@ -249,6 +251,14 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
        moblin_netbook_compositor_disabled (plugin)))
     {
       struct alt_tab_show_complete_data *alt_data;
+      MnbToolbar *toolbar;
+      MnbPanel   *panel;
+
+      toolbar = (MnbToolbar*) moblin_netbook_get_toolbar (plugin);
+      panel   = mnb_toolbar_get_active_panel (toolbar);
+
+      if (panel)
+        mnb_panel_hide_with_toolbar (panel);
 
       /*
        * If the alttab is not visible we want to show it; this is, however,
