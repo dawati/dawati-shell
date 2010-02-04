@@ -152,8 +152,8 @@ mpd_battery_tile_init (MpdBatteryTile *self)
   mx_table_add_actor_with_properties (MX_TABLE (self), priv->label,
                                       0, 0,
                                       "y-align", 0.5,
-                                      "y-expand", TRUE,
-                                      "y-fill", TRUE,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
                                       NULL);
 
   priv->icon = clutter_texture_new ();
