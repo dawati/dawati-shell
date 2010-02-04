@@ -116,10 +116,12 @@ static void
 _mixer_control_ready_cb (GvcMixerControl  *control,
                          MpdVolumeTile    *self)
 {
+  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
+
   g_debug (G_STRLOC ": Mixer ready!");
 
-  update_mute_toggle (self);
-  update_volume_slider (self);
+  mpd_volume_tile_set_default_sink (self,
+                                    gvc_mixer_control_get_default_sink (priv->control));
 }
 
 static void
@@ -223,8 +225,6 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (mute_box), priv->mute_toggle);
 
   priv->control = gvc_mixer_control_new (MIXER_CONTROL_NAME);
-  mpd_volume_tile_set_default_sink (self,
-                                    gvc_mixer_control_get_default_sink (priv->control));
   g_signal_connect (priv->control, "default-sink-changed",
                     G_CALLBACK (_mixer_control_default_sink_changed_cb), self);
   g_signal_connect (priv->control, "ready",
@@ -276,6 +276,8 @@ mpd_volume_tile_set_default_sink (MpdVolumeTile   *self,
                       G_CALLBACK (_stream_is_muted_notify_cb), self);
     g_signal_connect (priv->default_sink, "notify::volume",
                       G_CALLBACK (_stream_volume_notify_cb), self);
+    update_mute_toggle (self);
+    update_volume_slider (self);
   }
 }
 
@@ -285,36 +287,35 @@ update_mute_toggle (MpdVolumeTile *self)
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
   gboolean is_muted;
 
-  g_signal_handlers_disconnect_by_func (priv->default_sink,
-                                        _stream_is_muted_notify_cb,
+  g_signal_handlers_disconnect_by_func (priv->mute_toggle,
+                                        _mute_toggle_notify_cb,
                                         self);
 
   is_muted = gvc_mixer_stream_get_is_muted (priv->default_sink);
   mx_toggle_set_active (MX_TOGGLE (priv->mute_toggle), !is_muted);
   // TODO mx_widget_set_sensitive?
-  g_debug ("%s() %d", __FUNCTION__, is_muted);
 
-  g_signal_connect (priv->default_sink, "notify::is-muted",
-                    G_CALLBACK (_stream_is_muted_notify_cb), self);
+  g_signal_connect (priv->mute_toggle, "notify::active",
+                    G_CALLBACK (_mute_toggle_notify_cb), self);
 }
 
 static void
 update_volume_slider (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  guint32 volume;
+  gdouble volume;
+  gdouble progress;
 
-  g_signal_handlers_disconnect_by_func (priv->default_sink,
-                                        _stream_volume_notify_cb,
+  g_signal_handlers_disconnect_by_func (priv->volume_slider,
+                                        _volume_slider_progress_notify_cb,
                                         self);
 
   volume = gvc_mixer_stream_get_volume (priv->default_sink);
-  g_debug ("%s() %.2f", __FUNCTION__, (gdouble) volume / PA_VOLUME_MAX);
-  mx_slider_set_progress (MX_SLIDER (priv->volume_slider),
-                                     (gdouble) volume / PA_VOLUME_MAX);
+  progress = volume / PA_VOLUME_NORM;
+  mx_slider_set_progress (MX_SLIDER (priv->volume_slider), progress);
 
-  g_signal_connect (priv->default_sink, "notify::volume",
-                    G_CALLBACK (_stream_volume_notify_cb), self);
+  g_signal_connect (priv->volume_slider, "notify::progress",
+                    G_CALLBACK (_volume_slider_progress_notify_cb), self);
 }
 
 static void
@@ -328,8 +329,7 @@ update_stream_mute (MpdVolumeTile *self)
                                         self);
 
   is_muted = !mx_toggle_get_active (MX_TOGGLE (priv->mute_toggle));
-  gvc_mixer_stream_set_is_muted (priv->default_sink, is_muted);
-  g_debug ("%s() %d", __FUNCTION__, is_muted);
+  gvc_mixer_stream_change_is_muted (priv->default_sink, is_muted);
 
   g_signal_connect (priv->default_sink, "notify::is-muted",
                     G_CALLBACK (_stream_is_muted_notify_cb), self);
@@ -341,14 +341,18 @@ update_stream_volume (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
   gdouble progress;
+  pa_volume_t volume;
 
   g_signal_handlers_disconnect_by_func (priv->default_sink,
                                         _stream_volume_notify_cb,
                                         self);
 
   progress = mx_slider_get_progress (MX_SLIDER (priv->volume_slider));
-  gvc_mixer_stream_set_volume (priv->default_sink, PA_VOLUME_MAX * progress);
-  g_debug ("%s() %.2f", __FUNCTION__, progress);
+  volume = progress * PA_VOLUME_NORM;
+  if (gvc_mixer_stream_set_volume (priv->default_sink, volume))
+    gvc_mixer_stream_push_volume (priv->default_sink);
+  else
+    g_warning ("gvc_mixer_stream_change_volume() failed");
 
   g_signal_connect (priv->default_sink, "notify::volume",
                     G_CALLBACK (_stream_volume_notify_cb), self);
