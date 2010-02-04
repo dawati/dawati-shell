@@ -20,6 +20,7 @@
 
 #include <glib/gi18n.h>
 #include "mpd-battery-tile.h"
+#include "mpd-disk-tile.h"
 #include "mpd-computer-pane.h"
 #include "config.h"
 
@@ -96,6 +97,9 @@ mpd_computer_pane_init (MpdComputerPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_battery_tile_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+
+  tile = mpd_disk_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   button = mx_button_new_with_label (_("All settings"));

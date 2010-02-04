@@ -29,6 +29,8 @@ moblin_panel_devices_SOURCES = \
 	mpd-computer-pane.h \
 	mpd-disk-device.c \
 	mpd-disk-device.h \
+	mpd-disk-tile.c \
+	mpd-disk-tile.h \
 	mpd-global-key.c \
 	mpd-global-key.h \
 	mpd-folder-button.c \
