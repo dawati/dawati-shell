@@ -1,0 +1,3 @@
+# List of source files containing translatable strings.
+src/moblin-panel-datetime.c
+data/moblin-panel-people.desktop.in.in
