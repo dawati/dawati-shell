@@ -1,25 +1,33 @@
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
-bin_PROGRAMS = moblin-panel-date-time
+AM_CFLAGS = \
+	$(DATETIME_CFLAGS) \
+	$(MPL_CFLAGS) \
+	-DLOCALEDIR=\"$(localedir)\" \
+	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
+	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
+	-Wall -Werror -g3 -O0 -ggdb
+
+moblin_panel_date_time_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
+
+libexec_PROGRAMS = moblin-panel-date-time
+
 moblin_panel_date_time_SOURCES = main.c
 
-desktopentry_DATA = moblin-panel-date-time.desktop
-
-AM_CFLAGS = @MOBLIN_PANEL_DATE_TIME_CFLAGS@ -Wall -Werror -g3 -O0 -ggdb -DPKGDATADIR="\"$(pkgdatadir)\""
-AM_LDFLAGS = @MOBLIN_PANEL_DATE_TIME_LIBS@ 
-
+servicedir = $(datadir)/dbus-1/services
+service_in_files = org.moblin.UX.Shell.Panels.datetime.service.in
+service_DATA = org.moblin.UX.Shell.Panels.datetime.service
 
 #moblin_panel_date_time_LDFLAGS = \
 #			-Wl,--export-dynamic
 
-#moblin_panel_date_time_LDADD = $(ANJAL_LIBS) 
-#
+DISTCLEANFILES = \
+	org.moblin.UX.Shell.Panels.datetime.service
 
-#Example for copying directory to project data directory on "make install"
-#install-data-hook:
-#	$(MKDIR_P) ${pkgdatadir}
-#	cp -R <dir>/* ${pkgdatadir}
+EXTRA_DIST = $(service_in_files) 
 
-#EXTRA_DIST = 
+org.moblin.UX.Shell.Panels.datetime.service: org.moblin.UX.Shell.Panels.datetime.service.in $(top_builddir)/config.log
+	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
-CLEANFILES = *~ moblin-panel-date-time.desktop
+#CLEANFILES = *~ moblin-panel-date-time.desktop
 
