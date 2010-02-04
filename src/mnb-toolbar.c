@@ -200,8 +200,6 @@ struct _MnbToolbarPrivate
   ClutterActor *time; /* The time and date fields, needed for the updates */
   ClutterActor *date;
 
-  MnbPanel     *switcher;
-
   GList        *panels;         /* Panels (the dropdowns) */
 
   guint         max_panels;
@@ -1504,9 +1502,6 @@ mnb_toolbar_dispose_of_panel (MnbToolbar      *toolbar,
 
   tp->panel  = NULL;
 
-  if (panel == priv->switcher)
-    priv->switcher = NULL;
-
   g_signal_handlers_disconnect_matched (panel,
                                         G_SIGNAL_MATCH_DATA,
                                         0, 0, NULL, NULL,
@@ -2700,35 +2695,6 @@ mnb_toolbar_in_transition (MnbToolbar *toolbar)
   MnbToolbarPrivate *priv = toolbar->priv;
 
   return (priv->in_show_animation || priv->in_hide_animation);
-}
-
-/*
- * Returns the switcher zone if it exists.
- *
- * (This is needed because we have to hookup the switcher focus related
- * callbacks plugin so it can maintain accurate switching order list.)
- */
-MnbPanel *
-mnb_toolbar_get_switcher (MnbToolbar *toolbar)
-{
-  MnbToolbarPrivate *priv = toolbar->priv;
-  GList             *l;
-
-  if (G_UNLIKELY (!priv->switcher))
-    {
-      for (l = priv->panels; l; l = l->next)
-        {
-          MnbToolbarPanel *tp = l->data;
-
-          if (tp && tp->name && !strcmp (tp->name, MPL_PANEL_ZONES))
-            {
-              priv->switcher = tp->panel;
-              break;
-            }
-        }
-    }
-
-  return priv->switcher;
 }
 
 /*

@@ -2,7 +2,7 @@
 
 /* mnb-toolbar.c */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Authors: Matthew Allum <matthew.allum@intel.com>
  *          Tomas Frydrych <tf@linux.intel.com>
@@ -84,8 +84,6 @@ void mnb_toolbar_load_panel   (MnbToolbar *toolbar, const gchar *panel_name);
 const gchar * mnb_toolbar_get_active_panel_name (MnbToolbar *toolbar);
 
 gboolean mnb_toolbar_in_transition (MnbToolbar *toolbar);
-
-MnbPanel * mnb_toolbar_get_switcher (MnbToolbar *toolbar);
 
 void mnb_toolbar_set_dont_autohide (MnbToolbar *toolbar, gboolean dont);
 
