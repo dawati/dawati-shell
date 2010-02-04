@@ -1757,6 +1757,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
         }
+      else
+        mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
     }
   /*
    * Anything that might be associated with startup notification needs to be
