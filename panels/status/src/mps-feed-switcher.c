@@ -304,6 +304,9 @@ _button_group_active_button_changed_cb (MxButtonGroup *button_group,
   }
 }
 
+
+void moblin_status_panel_hide (void);
+
 static void
 _new_service_button_clicked_cb (MxButton        *button,
                                 MpsFeedSwitcher *switcher)
@@ -321,6 +324,8 @@ _new_service_button_clicked_cb (MxButton        *button,
     g_warning (G_STRLOC ": Error starting bisho: %s",
                error->message);
     g_clear_error (&error);
+  } else {
+    moblin_status_panel_hide ();
   }
 }
 
