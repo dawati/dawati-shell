@@ -119,6 +119,9 @@ static gboolean
 _has_cap (const gchar **caps,
           const gchar *cap)
 {
+  if (!caps)
+    return FALSE;
+
   while (*caps)
   {
     if (g_str_equal (*caps, cap))
