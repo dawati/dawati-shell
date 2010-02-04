@@ -1,7 +1,7 @@
 noinst_LIBRARIES = libpenge.a
 noinst_PROGRAMS = test-block-container test-everything-pane
 
-libpenge_a_headers = penge-people-pane.h \
+libpenge_a_headers = \
 		   penge-people-tile.h \
 		   penge-recent-file-tile.h \
 		   penge-event-tile.h \
