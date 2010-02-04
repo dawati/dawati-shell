@@ -32,6 +32,8 @@
 #define MNB_SWICHER_APP_ICON_PADDING         5.0
 #define MNB_SWICHER_APP_ICON_SIZE           32.0
 #define MNB_ALTTAB_OVERLAY_APP_WM_DELETE_TIMEOUT 150
+#define MNB_ALTTAB_OVERLAY_APP_INFO_BOX_HEIGHT 38
+#define MNB_ALTTAB_OVERLAY_APP_SPACING 3
 
 static void mnb_alttab_overlay_app_origin_weak_notify (gpointer, GObject *);
 
@@ -40,7 +42,7 @@ struct _MnbAlttabOverlayAppPrivate
   MutterWindow *mcw;     /* MutterWindow we represent */
   ClutterActor *child;
   ClutterActor *icon;
-  ClutterActor *tooltip;
+  ClutterActor *text;
 
   gboolean      disposed : 1; /* disposed guard   */
   gboolean      active   : 1;
@@ -53,7 +55,7 @@ enum
   PROP_MUTTER_WINDOW
 };
 
-G_DEFINE_TYPE (MnbAlttabOverlayApp, mnb_alttab_overlay_app, MX_TYPE_BIN);
+G_DEFINE_TYPE (MnbAlttabOverlayApp, mnb_alttab_overlay_app, MX_TYPE_WIDGET);
 
 #define MNB_ALTTAB_OVERLAY_APP_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_ALTTAB_OVERLAY_APP,\
@@ -68,12 +70,23 @@ mnb_alttab_overlay_app_dispose (GObject *object)
     return;
 
   priv->disposed = TRUE;
-  priv->child = NULL;
 
-  if (priv->tooltip)
+  if (priv->child)
     {
-      clutter_actor_unparent (priv->tooltip);
-      priv->tooltip = NULL;
+      clutter_actor_destroy (priv->child);
+      priv->child = NULL;
+    }
+
+  if (priv->text)
+    {
+      clutter_actor_destroy (priv->text);
+      priv->text = NULL;
+    }
+
+  if (priv->icon)
+    {
+      clutter_actor_destroy (priv->icon);
+      priv->icon = NULL;
     }
 
   g_object_weak_unref (G_OBJECT (priv->mcw),
@@ -174,20 +187,18 @@ mnb_alttab_overlay_app_constructed (GObject *self)
   g_object_set (texture, "keep-aspect-ratio", TRUE, NULL);
 
   c_tx = priv->child = clutter_clone_new (texture);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), c_tx);
+  clutter_actor_set_parent (c_tx, actor);
   clutter_actor_set_reactive (actor, TRUE);
 
   /*
    * Use the window title for tooltip
    */
-  if (title)
-    {
-      priv->tooltip  = g_object_new (MX_TYPE_TOOLTIP, NULL);
-      mx_stylable_set_style_class (MX_STYLABLE (priv->tooltip), "alttab");
-      clutter_actor_set_parent (priv->tooltip, actor);
+  priv->text = clutter_text_new ();
+  clutter_actor_set_parent (priv->text, actor);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (priv->text), PANGO_ELLIPSIZE_END);
 
-      mx_tooltip_set_label (MX_TOOLTIP (priv->tooltip), title);
-    }
+  if (title)
+    clutter_text_set_text (CLUTTER_TEXT (priv->text), title);
 
   g_object_weak_ref (G_OBJECT (priv->mcw),
                      mnb_alttab_overlay_app_origin_weak_notify, self);
@@ -199,6 +210,63 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
                                  ClutterAllocationFlags flags)
 {
   MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (actor)->priv;
+#if 1
+  ClutterActorBox             childbox, avail_box, infobox;
+  gfloat                      label_height, icon_size;
+
+  /*
+   * Let the parent class do it's thing, and then allocate for the icon.
+   */
+  CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->allocate (actor,
+                                                                 box, flags);
+
+  /*
+   * Based on SwWindow, we are aiming for similar looks.
+   */
+  mx_widget_get_available_area (MX_WIDGET (actor), box, &avail_box);
+
+  infobox.x1 = avail_box.x1;
+  infobox.y1 = avail_box.y2 - MNB_ALTTAB_OVERLAY_APP_INFO_BOX_HEIGHT;
+  infobox.x2 = avail_box.x2;
+  infobox.y2 = avail_box.y2;
+
+  if (priv->icon)
+    {
+      icon_size = MNB_SWICHER_APP_ICON_SIZE;
+
+      childbox = infobox;
+      mx_allocate_align_fill (priv->icon, &childbox, MX_ALIGN_START,
+                              MX_ALIGN_MIDDLE, FALSE, FALSE);
+
+      clutter_actor_allocate (priv->icon, &childbox, flags);
+    }
+  else
+    icon_size = 0;
+
+  clutter_actor_get_preferred_height (priv->text, -1, NULL, &label_height);
+
+  childbox.x1 = (int) (avail_box.x1 + icon_size +
+                       MNB_ALTTAB_OVERLAY_APP_SPACING);
+  childbox.y1 = (int) (avail_box.y2 -
+                       (MNB_ALTTAB_OVERLAY_APP_INFO_BOX_HEIGHT / 2)
+                       - (label_height / 2));
+  childbox.x2 = (int) ((avail_box.x2 - avail_box.x1) -
+                       MNB_ALTTAB_OVERLAY_APP_SPACING);
+  childbox.y2 = (int) (childbox.y1 + label_height);
+
+  clutter_actor_allocate (priv->text, &childbox, flags);
+
+  if (priv->child)
+    {
+      mx_widget_get_available_area (MX_WIDGET (actor), box, &childbox);
+      childbox.y2 -= MNB_ALTTAB_OVERLAY_APP_INFO_BOX_HEIGHT +
+        MNB_ALTTAB_OVERLAY_APP_SPACING;
+      mx_allocate_align_fill (priv->child, &childbox, MX_ALIGN_MIDDLE,
+                              MX_ALIGN_MIDDLE, FALSE, FALSE);
+      clutter_actor_allocate (priv->child, &childbox, flags);
+    }
+
+#else
   MxPadding                   padding    = { 0, };
   gfloat                      parent_width;
   gfloat                      parent_height;
@@ -293,37 +361,18 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
 
       clutter_actor_allocate_preferred_size (priv->tooltip, flags);
     }
+#endif
 }
 
+#if 0
 static void
 mnb_alttab_overlay_app_show (ClutterActor *self)
 {
   MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (self)->priv;
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->show (self);
-
-  if (priv->active && priv->tooltip)
-    {
-      /*
-       * This sucks, but the initial allocation of the tooltip is borked
-       * (see also the comment in MxWidget about this).
-       */
-      gfloat          x, y, width, height;
-      ClutterGeometry area;
-
-      clutter_actor_get_transformed_position (self, &x, &y);
-      clutter_actor_get_size (self, &width, &height);
-
-      area.x = x;
-      area.y = y;
-      area.width = width;
-      area.height = height;
-
-      mx_tooltip_set_tip_area ((MxTooltip*)priv->tooltip, &area);
-      mx_tooltip_show ((MxTooltip*)priv->tooltip);
-    }
-
 }
+#endif
 
 static void
 mnb_alttab_overlay_app_map (ClutterActor *self)
@@ -332,11 +381,14 @@ mnb_alttab_overlay_app_map (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->map (self);
 
+  if (priv->child)
+    clutter_actor_map (priv->child);
+
   if (priv->icon)
     clutter_actor_map (priv->icon);
 
-  if (priv->tooltip)
-    clutter_actor_map (priv->tooltip);
+  if (priv->text)
+    clutter_actor_map (priv->text);
 }
 
 static void
@@ -346,11 +398,14 @@ mnb_alttab_overlay_app_unmap (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->unmap (self);
 
+  if (priv->child)
+    clutter_actor_unmap (priv->child);
+
   if (priv->icon)
     clutter_actor_unmap (priv->icon);
 
-  if (priv->tooltip)
-    clutter_actor_unmap (priv->tooltip);
+  if (priv->text)
+    clutter_actor_unmap (priv->text);
 }
 
 static void
@@ -361,8 +416,14 @@ mnb_alttab_overlay_app_pick (ClutterActor *self, const ClutterColor *color)
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->pick (self,
                                                                      color);
 
+  if (priv->child && CLUTTER_ACTOR_IS_MAPPED (priv->child))
+    clutter_actor_paint (priv->child);
+
   if (priv->icon && CLUTTER_ACTOR_IS_MAPPED (priv->icon))
     clutter_actor_paint (priv->icon);
+
+  if (priv->text && CLUTTER_ACTOR_IS_MAPPED (priv->text))
+    clutter_actor_paint (priv->text);
 }
 
 static void
@@ -372,11 +433,14 @@ mnb_alttab_overlay_app_paint (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->paint (self);
 
+  if (priv->child && CLUTTER_ACTOR_IS_MAPPED (priv->child))
+    clutter_actor_paint (priv->child);
+
   if (priv->icon && CLUTTER_ACTOR_IS_MAPPED (priv->icon))
     clutter_actor_paint (priv->icon);
 
-  if (priv->tooltip && CLUTTER_ACTOR_IS_MAPPED (priv->tooltip))
-    clutter_actor_paint (priv->tooltip);
+  if (priv->text && CLUTTER_ACTOR_IS_MAPPED (priv->text))
+    clutter_actor_paint (priv->text);
 }
 
 static void
@@ -419,7 +483,7 @@ mnb_alttab_overlay_app_class_init (MnbAlttabOverlayAppClass *klass)
   actor_class->allocate             = mnb_alttab_overlay_app_allocate;
   actor_class->paint                = mnb_alttab_overlay_app_paint;
   actor_class->pick                 = mnb_alttab_overlay_app_pick;
-  actor_class->show                 = mnb_alttab_overlay_app_show;
+  /* actor_class->show                 = mnb_alttab_overlay_app_show; */
   actor_class->map                  = mnb_alttab_overlay_app_map;
   actor_class->unmap                = mnb_alttab_overlay_app_unmap;
   actor_class->get_preferred_width  = mnb_alttab_overlay_app_get_preferred_width;
@@ -464,16 +528,10 @@ mnb_alttab_overlay_app_set_active (MnbAlttabOverlayApp *app,
   if (active && not_active)
     {
       mx_stylable_set_style_pseudo_class (MX_STYLABLE (app), "active");
-
-      if (priv->tooltip)
-        mx_tooltip_show ((MxTooltip*)priv->tooltip);
     }
   else if (!active && !not_active)
     {
       mx_stylable_set_style_pseudo_class (MX_STYLABLE (app), NULL);
-
-      if (priv->tooltip)
-        mx_tooltip_hide ((MxTooltip*)priv->tooltip);
     }
 
   priv->active = active;

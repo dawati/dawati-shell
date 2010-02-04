@@ -47,7 +47,7 @@ typedef struct _MnbAlttabOverlayAppClass   MnbAlttabOverlayAppClass;
 struct _MnbAlttabOverlayApp
 {
   /*< private >*/
-  MxBin parent;
+  MxWidget parent;
 
   MnbAlttabOverlayAppPrivate *priv;
 };
@@ -55,7 +55,7 @@ struct _MnbAlttabOverlayApp
 struct _MnbAlttabOverlayAppClass
 {
   /*< private >*/
-  MxBinClass parent_class;
+  MxWidgetClass parent_class;
 };
 
 GType mnb_alttab_overlay_app_get_type (void);
