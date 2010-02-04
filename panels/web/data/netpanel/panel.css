@@ -5,7 +5,7 @@ MoblinNetbookNetpanel MxButton {
 
 /* Overrode MnbEntry so we need to redeclare its styles apparently */
 MnbNetpanelBar {
-  border-image: url('mpl-entry-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('mpl-entry-bg.png') 5 5 6 5;
   padding: 7 10 7 10;
 }
 
