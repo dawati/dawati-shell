@@ -19,6 +19,8 @@
 
 #include <libsocialweb-client/sw-client.h>
 #include <glib/gi18n.h>
+#include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "mps-feed-switcher.h"
 #include "mps-feed-pane.h"
@@ -300,6 +302,26 @@ _button_group_active_button_changed_cb (MxButtonGroup *button_group,
 }
 
 static void
+_new_service_button_clicked_cb (MxButton        *button,
+                                MpsFeedSwitcher *switcher)
+{
+  GAppInfo *app_info;
+  GError *error = NULL;
+
+  app_info = (GAppInfo *)g_desktop_app_info_new ("bisho.desktop");
+
+  if (!g_app_info_launch (app_info,
+                          NULL,
+                          NULL,
+                          &error))
+  {
+    g_warning (G_STRLOC ": Error starting bisho: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
 mps_feed_switcher_init (MpsFeedSwitcher *self)
 {
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (self);
@@ -314,6 +336,10 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
   priv->add_new_service_button = mx_button_new_with_label (_("Add new web service"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->add_new_service_button),
                                "mps-switcher-new-service");
+  g_signal_connect (priv->add_new_service_button,
+                    "clicked",
+                    (GCallback)_new_service_button_clicked_cb,
+                    self);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
                                priv->add_new_service_button);
