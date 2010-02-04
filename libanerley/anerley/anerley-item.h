@@ -53,11 +53,13 @@ typedef struct {
   void (*display_name_changed) (AnerleyItem *item);
   void (*avatar_path_changed) (AnerleyItem *item);
   void (*presence_changed) (AnerleyItem *item);
+  void (*unread_messages_changed) (AnerleyItem *item, guint unread);
   const gchar * (*get_display_name) (AnerleyItem *item);
   const gchar * (*get_avatar_path) (AnerleyItem *item);
   const gchar * (*get_presence_status) (AnerleyItem *item);
   const gchar * (*get_presence_message) (AnerleyItem *item);
   const gchar * (*get_sortable_name) (AnerleyItem *item);
+  guint (*get_unread_messages_count) (AnerleyItem *item);
   void (*activate) (AnerleyItem *item);
 } AnerleyItemClass;
 
@@ -72,6 +74,7 @@ const gchar *anerley_item_get_sortable_name (AnerleyItem *item);
 void anerley_item_emit_display_name_changed (AnerleyItem *item);
 void anerley_item_emit_avatar_path_changed (AnerleyItem *item);
 void anerley_item_emit_presence_changed (AnerleyItem *item);
+void anerley_item_emit_unread_messages_changed (AnerleyItem *item, guint unread);
 
 void anerley_item_activate (AnerleyItem *item);
 

@@ -23,6 +23,7 @@
 
 #include <anerley/anerley-feed.h>
 #include <anerley/anerley-item.h>
+#include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-tp-feed.h>
 #include <anerley/anerley-tp-observer.h>
 #include <telepathy-glib/channel.h>
@@ -186,6 +187,8 @@ _observer_new_channel_cb (AnerleyTpObserver *observer,
   g_hash_table_insert (priv->channels_to_items,
                        channel,
                        g_object_ref (item));
+
+  anerley_tp_item_associate_channel (ANERLEY_TP_ITEM (item), channel);
 
   items = g_list_append (items, item);
   g_signal_emit_by_name (monitor_feed,

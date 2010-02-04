@@ -19,9 +19,7 @@
  *
  */
 
-#include <telepathy-glib/channel-dispatcher.h>
-#include <telepathy-glib/channel-request.h>
-#include <telepathy-glib/interfaces.h>
+#include <telepathy-glib/telepathy-glib.h>
 
 #include "anerley-tp-item.h"
 
@@ -46,6 +44,8 @@ struct _AnerleyTpItemPrivate {
   gchar *sortable_name;
 
   const gchar *presence_status;
+
+  GHashTable *pending_messages; /* reffed TpChannel* to GSList of guint */
 };
 
 enum
@@ -123,6 +123,22 @@ anerley_tp_item_dispose (GObject *object)
     g_slist_free (priv->signal_connections);
     priv->signal_connections = NULL;
   }
+
+  if (priv->pending_messages)
+    {
+      GHashTableIter iter;
+      gpointer key, value;
+
+      g_hash_table_iter_init (&iter, priv->pending_messages);
+      while (g_hash_table_iter_next (&iter, &key, &value))
+        {
+          g_object_unref (key);
+          g_slist_free (value);
+        }
+
+      g_hash_table_destroy (priv->pending_messages);
+      priv->pending_messages = NULL;
+    }
 
   G_OBJECT_CLASS (anerley_tp_item_parent_class)->dispose (object);
 }
@@ -249,6 +265,25 @@ _item_activate_ensure_channel_cb (TpChannelDispatcher *proxy,
   g_object_unref (dbus);
 }
 
+static guint
+anerley_tp_item_get_unread_messages_count (AnerleyItem *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  GHashTableIter iter;
+  gpointer key, value;
+  guint total = 0;
+
+  g_return_val_if_fail (ANERLEY_IS_TP_ITEM (item), 0);
+
+  g_hash_table_iter_init (&iter, priv->pending_messages);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      total += g_slist_length (value);
+    }
+
+  return total;
+}
+
 static void
 anerley_tp_item_activate (AnerleyItem *item)
 {
@@ -312,6 +347,7 @@ anerley_tp_item_class_init (AnerleyTpItemClass *klass)
   item_class->get_avatar_path = anerley_tp_item_get_avatar_path;
   item_class->get_presence_status = anerley_tp_item_get_presence_status;
   item_class->get_presence_message = anerley_tp_item_get_presence_message;
+  item_class->get_unread_messages_count = anerley_tp_item_get_unread_messages_count;
   item_class->activate = anerley_tp_item_activate;
 
   pspec = g_param_spec_object ("account",
@@ -337,6 +373,8 @@ anerley_tp_item_init (AnerleyTpItem *self)
 
   priv->channel_requests = NULL;
   priv->signal_connections = NULL;
+
+  priv->pending_messages = g_hash_table_new (NULL, NULL);
 }
 
 AnerleyTpItem *
@@ -513,4 +551,138 @@ anerley_tp_item_set_avatar_path (AnerleyTpItem *item,
   priv->avatar_path = g_strdup (avatar_path);
 
   anerley_item_emit_avatar_path_changed ((AnerleyItem *)item);
+}
+
+static void
+_message_received (TpChannel  *channel,
+                   guint       id,
+                   guint       timestamp,
+                   guint       sender,
+                   guint       type,
+                   guint       flags,
+                   const char *text,
+                   gpointer    user_data,
+                   GObject    *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  GSList *pending;
+
+  pending = g_hash_table_lookup (priv->pending_messages, channel);
+  pending = g_slist_prepend (pending, GUINT_TO_POINTER (id));
+  g_hash_table_insert (priv->pending_messages, channel, pending);
+
+  anerley_item_emit_unread_messages_changed (ANERLEY_ITEM (item),
+      anerley_tp_item_get_unread_messages_count (ANERLEY_ITEM (item)));
+}
+
+static void
+_get_pending_messages (TpChannel       *channel,
+                       const GPtrArray *messages,
+                       const GError    *in_error,
+                       gpointer         user_data,
+                       GObject         *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  GSList *pending;
+  int i;
+
+  pending = g_hash_table_lookup (priv->pending_messages, channel);
+
+  if (in_error != NULL)
+    {
+      g_critical ("Error retrieving pending messages: %s", in_error->message);
+      return;
+    }
+
+  for (i = 0; i < messages->len; i++)
+    {
+      GValueArray *message = g_ptr_array_index (messages, i);
+      guint id = g_value_get_uint (g_value_array_get_nth (message, 0));
+
+      pending = g_slist_prepend (pending, GUINT_TO_POINTER (id));
+    }
+
+  g_hash_table_insert (priv->pending_messages, channel, pending);
+
+  anerley_item_emit_unread_messages_changed (ANERLEY_ITEM (item),
+      anerley_tp_item_get_unread_messages_count (ANERLEY_ITEM (item)));
+}
+
+static void
+_message_acknowledged (TpChannel    *channel,
+                       const GArray *ids,
+                       gpointer      user_data,
+                       GObject      *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  GSList *pending;
+  int i;
+
+  pending = g_hash_table_lookup (priv->pending_messages, channel);
+
+  for (i = 0; i < ids->len; i++)
+    {
+      guint id = g_array_index (ids, guint, i);
+
+      pending = g_slist_remove (pending, GUINT_TO_POINTER (id));
+    }
+
+  g_hash_table_insert (priv->pending_messages, channel, pending);
+
+  anerley_item_emit_unread_messages_changed (ANERLEY_ITEM (item),
+      anerley_tp_item_get_unread_messages_count (ANERLEY_ITEM (item)));
+}
+
+static void
+_channel_closed (TpChannel *channel,
+                 gpointer   user_data,
+                 GObject   *item)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  GSList *pending;
+
+  pending = g_hash_table_lookup (priv->pending_messages, channel);
+  g_slist_free (pending);
+  g_hash_table_remove (priv->pending_messages, channel);
+  g_object_unref (channel);
+
+  anerley_item_emit_unread_messages_changed (ANERLEY_ITEM (item),
+      anerley_tp_item_get_unread_messages_count (ANERLEY_ITEM (item)));
+}
+
+/**
+ * anerley_tp_item_associate_channel:
+ * @item: an #AnerleyTpItem
+ * @channel: a prepared #TpChannel
+ *
+ * Associates this channel with the #AnerleyTpItem to track the unread
+ * messages in the channel.
+ */
+void
+anerley_tp_item_associate_channel (AnerleyTpItem *item,
+                                   TpChannel     *channel)
+{
+  AnerleyTpItemPrivate *priv = GET_PRIVATE (item);
+  GError *error = NULL;
+
+  g_return_if_fail (ANERLEY_IS_TP_ITEM (item));
+
+  g_hash_table_insert (priv->pending_messages, g_object_ref (channel), NULL);
+
+  tp_cli_channel_type_text_connect_to_received (channel, _message_received,
+      NULL, NULL, G_OBJECT (item), &error);
+  g_assert_no_error (error);
+
+  tp_cli_channel_interface_messages_connect_to_pending_messages_removed (
+      channel, _message_acknowledged,
+      NULL, NULL, G_OBJECT (item), &error);
+  g_assert_no_error (error);
+
+  tp_cli_channel_connect_to_closed (channel, _channel_closed,
+      NULL, NULL, G_OBJECT (item), &error);
+  g_assert_no_error (error);
+
+  tp_cli_channel_type_text_call_list_pending_messages (channel, -1, FALSE,
+      _get_pending_messages,
+      NULL, NULL, G_OBJECT (item));
 }

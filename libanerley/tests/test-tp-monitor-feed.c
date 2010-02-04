@@ -26,6 +26,44 @@
 #include <dbus/dbus-glib.h>
 #include <anerley/anerley-aggregate-tp-feed.h>
 #include <anerley/anerley-tp-monitor-feed.h>
+#include <anerley/anerley-item.c>
+
+static void
+_unread_messages_changed (AnerleyItem *item,
+                          guint        count)
+{
+  g_print ("Unread messages: %u\n", count);
+}
+
+static void
+_items_added (AnerleyFeed *monitor,
+              GList       *items)
+{
+  GList *ptr;
+
+  for (ptr = items; ptr != NULL; ptr = ptr->next)
+    {
+      AnerleyItem *item = ANERLEY_ITEM (ptr->data);
+
+      g_signal_connect (item, "unread-messages-changed",
+          G_CALLBACK (_unread_messages_changed), NULL);
+    }
+}
+
+static void
+_items_removed (AnerleyFeed *monitor,
+                GList       *items)
+{
+  GList *ptr;
+
+  for (ptr = items; ptr != NULL; ptr = ptr->next)
+    {
+      AnerleyItem *item = ANERLEY_ITEM (ptr->data);
+
+      g_signal_handlers_disconnect_by_func (item,
+          G_CALLBACK (_unread_messages_changed), NULL);
+    }
+}
 
 static void
 _account_manager_ready_cb (GObject      *source_object,
@@ -39,6 +77,10 @@ _account_manager_ready_cb (GObject      *source_object,
   aggregate = anerley_aggregate_tp_feed_new ();
   monitor = anerley_tp_monitor_feed_new (ANERLEY_AGGREGATE_TP_FEED (aggregate),
                                          "AnerleyTest");
+  g_signal_connect (monitor, "items-added",
+      G_CALLBACK (_items_added), NULL);
+  g_signal_connect (monitor, "items-removed",
+      G_CALLBACK (_items_removed), NULL);
 }
 
 int

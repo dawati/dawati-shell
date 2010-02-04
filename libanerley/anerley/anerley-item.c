@@ -29,6 +29,7 @@ enum
   DISPLAY_NAME_CHANGED,
   AVATAR_PATH_CHANGED,
   PRESENCE_CHANGED,
+  UNREAD_MESSAGES_CHANGED,
   LAST_SIGNAL
 };
 
@@ -68,6 +69,16 @@ anerley_item_class_init (AnerleyItemClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE,
                   0);
+  signals[UNREAD_MESSAGES_CHANGED] =
+    g_signal_new ("unread-messages-changed",
+                  ANERLEY_TYPE_ITEM,
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (AnerleyItemClass, unread_messages_changed),
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__UINT,
+                  G_TYPE_NONE,
+                  1, G_TYPE_UINT);
 }
 
 static void
@@ -105,6 +116,12 @@ anerley_item_get_sortable_name (AnerleyItem *item)
   return ANERLEY_ITEM_GET_CLASS (item)->get_sortable_name (item);
 }
 
+guint
+anerley_item_get_unread_messages_count (AnerleyItem *item)
+{
+  return ANERLEY_ITEM_GET_CLASS (item)->get_unread_messages_count (item);
+}
+
 void
 anerley_item_emit_display_name_changed (AnerleyItem *item)
 {
@@ -121,6 +138,13 @@ void
 anerley_item_emit_presence_changed (AnerleyItem *item)
 {
   g_signal_emit (item, signals[PRESENCE_CHANGED], 0);
+}
+
+void
+anerley_item_emit_unread_messages_changed (AnerleyItem *item,
+                                           guint        unread)
+{
+  g_signal_emit (item, signals[UNREAD_MESSAGES_CHANGED], 0, unread);
 }
 
 void
