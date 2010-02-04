@@ -1,4 +1,4 @@
-#SUBDIRS=theme
+SUBDIRS=theme
 
 @INTLTOOL_DESKTOP_RULE@
 
