@@ -37,7 +37,7 @@ struct _PengeAppsPanePrivate {
   GHashTable *uris_to_actors;
 };
 
-#define ROW_SIZE 4
+#define ROW_SIZE 1
 #define MAX_COUNT 8
 
 static void penge_apps_pane_update (PengeAppsPane *pane);
