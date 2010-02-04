@@ -12,7 +12,7 @@ moblin_panel_date_time_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
 
 libexec_PROGRAMS = moblin-panel-date-time
 
-moblin_panel_date_time_SOURCES = main.c
+moblin_panel_date_time_SOURCES = moblin-panel-datetime.c
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.datetime.service.in
