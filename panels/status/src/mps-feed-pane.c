@@ -255,7 +255,21 @@ _update_button_clicked_cb (MxButton    *button,
 {
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
   const gchar *status_message;
-  gchar *progress_text;
+
+  status_message = mx_entry_get_text (MX_ENTRY (priv->entry));
+
+  sw_client_service_update_status (priv->service,
+                                   _service_update_status_cb,
+                                   status_message,
+                                   pane);
+}
+
+static void
+_entry_activate_cb (ClutterText *text,
+                    MpsFeedPane *pane)
+{
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+  const gchar *status_message;
 
   status_message = mx_entry_get_text (MX_ENTRY (priv->entry));
 
@@ -269,13 +283,19 @@ static void
 mps_feed_pane_init (MpsFeedPane *self)
 {
   MpsFeedPanePrivate *priv = GET_PRIVATE (self);
+  ClutterActor *tmp_text;
 
   /* Actor creation */
   priv->entry = mx_entry_new (NULL);
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry),
                                "mps-status-entry");
-  mx_entry_set_hint_text (priv->entry,
-                          _("Enter your status update..."));
+  mx_entry_set_hint_text (MX_ENTRY (priv->entry),
+                          _("What's happening?"));
+  tmp_text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
+  g_signal_connect (tmp_text,
+                    "activate",
+                    (GCallback)_entry_activate_cb,
+                    self);
 
   priv->update_button = mx_button_new_with_label (_("Update"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->update_button),
