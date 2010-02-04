@@ -864,7 +864,7 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
           tp->pinged = FALSE;
           tp->failed = TRUE;
 
-          tooltip = g_strdup_printf (_("Sorry, %s is broken."),
+          tooltip = g_strdup_printf (_("Sorry, %s is broken"),
                                      tp->tooltip);
 
           mx_widget_set_tooltip_text (MX_WIDGET (tp->button), tooltip);
