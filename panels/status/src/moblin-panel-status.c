@@ -53,6 +53,18 @@ typedef struct _MoblinStatusPanel
   MpsViewBridge *bridge;
 } MoblinStatusPanel;
 
+
+static MoblinStatusPanel *panel;
+
+void
+moblin_status_panel_hide (void)
+{
+  if (panel->panel_client)
+    mpl_panel_client_hide ((MplPanelClient *)panel->panel_client);
+  else
+    g_debug (G_STRLOC ": Would hide the panel");
+}
+
 static void 
 _client_view_opened_cb (SwClient     *client,
                         SwClientView *view,
@@ -153,7 +165,6 @@ static GOptionEntry status_options[] = {
 int
 main (int argc, char *argv[])
 {
-  MoblinStatusPanel *panel;
   GOptionContext *context;
   GError *error = NULL;
 
