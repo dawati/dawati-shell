@@ -45,7 +45,7 @@
 #define LAUNCHER_HEIGHT 64
 
 #include <config.h>
-
+#if 0
 static void
 _client_set_size_cb (MplPanelClient *client,
                      guint           width,
@@ -57,7 +57,7 @@ _client_set_size_cb (MplPanelClient *client,
                           width,
                           height);
 }
-
+#endif
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
@@ -130,8 +130,8 @@ main (int    argc,
     clutter_actor_show_all (stage);
   }
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               (ClutterActor *)people_panel);
+ // clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+   //                            (ClutterActor *)people_panel);
 
 
   clutter_main ();
