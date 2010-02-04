@@ -1,10 +1,3 @@
-@INTLTOOL_DESKTOP_RULE@
-
-desktopfilesdir=$(pkgdatadir)/panels
-desktopfiles_in_files=moblin-panel-zones.desktop.in
-desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
-desktopfiles_DATA = $(desktopfiles_files)
-
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_in_files = mutter-moblin.schemas.in
 schema_DATA = $(schema_in_files:.schemas.in=.schemas)
@@ -133,5 +126,5 @@ uninstall-hook:
 	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_MOBLIN_THEME_DIR)
 endif
 
-CLEANFILES = $(desktopfiles_files) $(schema_DATA)
-EXTRA_DIST = $(desktopfiles_in_files) $(schema_in_files)
+CLEANFILES = $(schema_DATA)
+EXTRA_DIST = $(schema_in_files)

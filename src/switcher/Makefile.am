@@ -1,3 +1,9 @@
+@INTLTOOL_DESKTOP_RULE@
+
+desktopfilesdir=$(pkgdatadir)/panels
+desktopfiles_in_files=moblin-panel-zones.desktop.in
+desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
+desktopfiles_DATA = $(desktopfiles_files)
 
 noinst_LTLIBRARIES = libswitcher.la
 
@@ -26,3 +32,5 @@ libswitcher_la_SOURCES =				\
 libswitcher_la_CPPFLAGS = $(switcher_cflags)
 libswitcher_la_LDFLAGS = $(LDADD)
 
+CLEANFILES = $(desktopfiles_files)
+EXTRA_DIST = $(desktopfiles_in_files)
