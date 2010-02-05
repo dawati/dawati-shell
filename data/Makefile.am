@@ -72,6 +72,11 @@ dist_theme_generic_DATA = \
 	theme/generic/vscroll-handle.png \
 	theme/generic/placeholder-bg.png
 
+theme_alttabdir = $(MUTTER_MOBLIN_THEME_DIR)/alttab
+dist_theme_alttab_DATA = \
+	theme/alttab/application-normal.png \
+	theme/alttab/application-active.png
+
 theme_switcherdir = $(MUTTER_MOBLIN_THEME_DIR)/switcher
 dist_theme_switcher_DATA = \
 	theme/switcher/application-active.png \

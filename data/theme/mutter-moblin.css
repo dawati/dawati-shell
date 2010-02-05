@@ -331,13 +331,14 @@ MnbAlttabOverlay {
 /* switcher overlay */
 MnbAlttabOverlayApp {
   background-color: #fff0;
-  padding: 5;
+  padding: 6;
+  border-image: url('alttab/application-normal.png') 6;
 }
 
 MnbAlttabOverlayApp:active {
-  background-color: #fff;
-  border-image: url("switcher/application-active.png") 4;
-  padding: 5;
+  background-color: #fff0;
+  padding: 6;
+  border-image: url('alttab/application-active.png') 6;
 }
 
 /* drop down */
