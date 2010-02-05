@@ -7,7 +7,6 @@ AM_CFLAGS = \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DICONDIR=\"$(pkgdatadir)/icons\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
-	-DGDU_API_IS_SUBJECT_TO_CHANGE \
 	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
 	$(NULL)
 
@@ -15,10 +14,16 @@ libexec_PROGRAMS = moblin-panel-devices
 
 moblin_panel_devices_LDADD = \
 	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
-	$(top_builddir)/gdu/libgdu.la \
 	$(top_builddir)/gvc/libgvc.la \
 	$(MPD_LIBS) \
   $(NULL)
+
+if HAVE_UDISKS
+
+AM_CFLAGS += -DGDU_API_IS_SUBJECT_TO_CHANGE
+moblin_panel_devices_LDADD += $(top_builddir)/gdu/libgdu.la
+
+endif
 
 moblin_panel_devices_SOURCES = \
 	moblin-panel-devices.c \
