@@ -21,6 +21,8 @@ dist_theme_panel_DATA = \
 	theme/panel/apps-normal.png \
 	theme/panel/bluetooth-coloured.png \
 	theme/panel/bluetooth-normal.png \
+	theme/panel/devices-coloured.png \
+	theme/panel/devices-normal.png \
 	theme/panel/internet-coloured.png \
 	theme/panel/internet-normal.png \
 	theme/panel/media-coloured.png \

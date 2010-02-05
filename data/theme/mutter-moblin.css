@@ -177,6 +177,14 @@ MnbToolbarButton#bluetooth-button:hover, MnbToolbarButton#bluetooth-button:activ
   background-image: url("panel/bluetooth-coloured.png");
 }
 
+/* devices button */
+MnbToolbarButton#devices-button {
+  background-image: url("panel/devices-normal.png");
+}
+MnbToolbarButton#devices-button:hover, MnbToolbarButton#devices-button:active, MnbToolbarButton#devices-button:checked {
+  background-image: url("panel/devices-coloured.png");
+}
+
 /* tooltips */
 MxTooltip {
   color: white;
