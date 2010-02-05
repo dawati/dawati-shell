@@ -1,0 +1,38 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-21 19:02+0000\n"
+"PO-Revision-Date: 2010-02-06 00:49+0100\n"
+"Last-Translator: Petr Novák <peta.en@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../anerley/anerley-tile.c:183
+msgid "Available"
+msgstr "Přítomen"
+
+#: ../anerley/anerley-tile.c:186
+msgid "Busy"
+msgstr "Zaneprázdněn"
+
+#: ../anerley/anerley-tile.c:189
+#: ../anerley/anerley-tile.c:192
+msgid "Away"
+msgstr "Pryč"
+
+#: ../anerley/anerley-tile.c:195
+msgid "Offline"
+msgstr "Odpojen"
+
+#: ../anerley/anerley-econtact-item.c:233
+msgid "Unnamed"
+msgstr "Beze jména"
+
