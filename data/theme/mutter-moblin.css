@@ -316,11 +316,11 @@ MnbSwitcherApp#switcher-application-active {
 }
 
 MxIcon.switcher-application-close-button {
-  x-mx-content-image: url("switcher/application-close-button.png");
+  background-image: url("switcher/application-close-button.png");
 }
 
 MxIcon.switcher-application-close-button:hover {
-  x-mx-content-image: url("switcher/application-close-button-hover.png");
+  background-image: url("switcher/application-close-button-hover.png");
 }
 
 MnbAlttabOverlay {
