@@ -40,6 +40,7 @@
 #include "mtp-jar.h"
 #include "mtp-toolbar.h"
 #include "mtp-toolbar-button.h"
+#include "mtp-space.h"
 
 #define KEY_DIR "/desktop/moblin/toolbar/panels"
 #define KEY_ORDER KEY_DIR "/order"
@@ -221,6 +222,7 @@ construct_contents (GtkWidget    *embed,
   ClutterActor *box = mx_box_layout_new ();
   ClutterActor *jar = mtp_jar_new ();
   GSList       *l;
+  gint          n_on_toolbar, i;
 
   clutter_actor_set_name (jar, "jar");
   clutter_actor_set_height ((ClutterActor*)toolbar, TOOLBAR_HEIGHT);
@@ -240,21 +242,24 @@ construct_contents (GtkWidget    *embed,
   g_object_set (toolbar, "enabled", TRUE, NULL);
   g_object_set (jar, "enabled", TRUE, NULL);
 
-  for (l = panels; l; l = l->next)
+  for (l = panels, n_on_toolbar = 0; l; l = l->next)
     {
-      Panel            *panel = l->data;
-      MtpToolbarButton *button = (MtpToolbarButton*)mtp_toolbar_button_new ();
+      Panel        *panel  = l->data;
+      ClutterActor *button = mtp_toolbar_button_new ();
 
-      mtp_toolbar_button_set_name (button, panel->name);
+      mtp_toolbar_button_set_name ((MtpToolbarButton*)button, panel->name);
 
-      if (!mtp_toolbar_button_is_valid (button))
+      if (!mtp_toolbar_button_is_valid ((MtpToolbarButton*)button))
         {
-          clutter_actor_destroy ((ClutterActor*)button);
+          clutter_actor_destroy (button);
           continue;
         }
 
       if (panel->on_toolbar)
         {
+          if (!mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
+            n_on_toolbar++;
+
           mtp_toolbar_add_button (toolbar, button);
 
           /*
@@ -266,17 +271,23 @@ construct_contents (GtkWidget    *embed,
            * this in the droppable, so that the user can still drag these
            * on the toolbar, but for now this should do.
            */
-          if (!mtp_toolbar_button_is_required (button))
+          if (!mtp_toolbar_button_is_required ((MtpToolbarButton*)button))
             mx_draggable_enable (MX_DRAGGABLE (button));
           else
-            clutter_actor_set_opacity ((ClutterActor*)button, 0x7f);
+            clutter_actor_set_opacity (button, 0x7f);
         }
       else
         {
           mtp_jar_add_button ((MtpJar*)jar, button);
           mx_draggable_enable (MX_DRAGGABLE (button));
         }
+    }
 
+  for (i = 0; i < 8 - n_on_toolbar; ++i)
+    {
+      ClutterActor *space = mtp_space_new ();
+
+      mtp_toolbar_add_button (toolbar, space);
     }
 
   /*

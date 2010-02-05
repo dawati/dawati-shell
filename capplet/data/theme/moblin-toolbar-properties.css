@@ -27,9 +27,19 @@ MtpToolbar {
   border-image: url("panel/panel-background.png") 0 200 0 200 stretch;
 }
 
+MxWidget, MxWidget:hover
+{
+  border-image: none;
+}
+
 MnbToolbarButton {
   padding: 0;
-  border-image: url("panel/toolbar-button-hover.png") 0 stretch;
+  border-image: url("panel/toolbar-button-hover.png") 0;
+}
+
+MnbToolbarButton:hover {
+  padding: 0;
+  border-image: url("panel/toolbar-button-hover.png") 0;
 }
 
 MnbToolbarButton#applications-button {
@@ -70,4 +80,8 @@ MnbToolbarButton#network-button {
 
 MnbToolbarButton#bluetooth-button {
   background-image: url("panel/bluetooth-coloured.png");
+}
+
+MtpSpace {
+  background-color: #4447;
 }

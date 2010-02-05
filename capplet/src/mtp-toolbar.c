@@ -25,6 +25,8 @@
 #include <glib/gi18n.h>
 
 #include "mtp-toolbar.h"
+#include "mtp-toolbar-button.h"
+#include "mtp-space.h"
 
 static void mx_droppable_iface_init (MxDroppableIface *iface);
 
@@ -251,6 +253,41 @@ mtp_toolbar_over_out (MxDroppable *droppable, MxDraggable *draggable)
 }
 
 /*
+ * returns FALSE if no space could be removed.
+ */
+static gboolean
+mtp_toolbar_remove_space (MtpToolbar *toolbar)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+  GList             *children;
+  GList             *last;
+  gboolean           retval = FALSE;
+
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
+
+  last = g_list_last (children);
+
+  if (last)
+    {
+      ClutterActor *actor = last->data;
+
+      if (MTP_IS_SPACE (actor))
+        {
+          retval = TRUE;
+          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                          actor);
+        }
+      else
+        g_warning (G_STRLOC ":%s: no space left on toolbar !!!", __FUNCTION__);
+    }
+
+  g_list_free (children);
+
+  return retval;
+}
+
+/*
  * D&D drop handler
  */
 static void
@@ -303,7 +340,7 @@ mtp_toolbar_drop (MxDroppable         *droppable,
 
     if (target)
       {
-        if (!MTP_IS_TOOLBAR_BUTTON (target))
+        if (!(MTP_IS_TOOLBAR_BUTTON (target)))
           {
             /*
              * We either hit the empty part of the toolbar, or a gap between
@@ -322,12 +359,42 @@ mtp_toolbar_drop (MxDroppable         *droppable,
     mtp_toolbar_button_set_dont_pick (tbutton, FALSE);
   }
 
-  g_object_ref (draggable);
-  clutter_container_remove_actor (CLUTTER_CONTAINER (parent), actor);
+  /*
+   * If we do not have a 'before' button, find the first space.
+   */
+  if (!before)
+    {
+      GList *children, *l;
 
-  mtp_toolbar_insert_button (toolbar, tbutton, before);
+      if (mtp_toolbar_button_is_applet (tbutton))
+        children = clutter_container_get_children (CLUTTER_CONTAINER (
+                                                          priv->applet_area));
+      else
+        children = clutter_container_get_children (CLUTTER_CONTAINER (
+                                                          priv->panel_area));
 
-  g_object_unref (draggable);
+      for (l = children; l; l = l->next)
+        {
+          if (MTP_IS_SPACE (l->data))
+            {
+              before = l->data;
+              break;
+            }
+        }
+
+      g_list_free (children);
+    }
+
+  if (mtp_toolbar_remove_space (toolbar))
+    {
+      g_object_ref (draggable);
+      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), actor);
+
+      mtp_toolbar_insert_button (toolbar,
+                                 (ClutterActor*)tbutton, (ClutterActor*)before);
+
+      g_object_unref (draggable);
+    }
 }
 
 static void
@@ -373,43 +440,68 @@ mtp_toolbar_new (void)
 }
 
 void
-mtp_toolbar_add_button (MtpToolbar *toolbar, MtpToolbarButton *button)
+mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
 
   priv->modified = TRUE;
 
-  if (mtp_toolbar_button_is_applet (button))
-    {
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                   CLUTTER_ACTOR (button));
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
-                                   CLUTTER_ACTOR (button),
-                                   "expand", FALSE, NULL);
-    }
-  else
+  if (MTP_IS_SPACE (button))
     {
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                   CLUTTER_ACTOR (button));
+                                   button);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
-                                   CLUTTER_ACTOR (button),
+                                   button,
                                    "expand", FALSE, NULL);
     }
+  else if (MTP_IS_TOOLBAR_BUTTON (button))
+    {
+      if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
+        {
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                       button);
+          clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
+                                       button,
+                                       "expand", FALSE, NULL);
+        }
+      else
+        {
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                       button);
+          clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
+                                       button,
+                                       "expand", FALSE, NULL);
+        }
+    }
+  else
+    g_warning (G_STRLOC ":%s: unsupported actor type %s",
+               __FUNCTION__, G_OBJECT_TYPE_NAME (button));
 }
 
 void
-mtp_toolbar_remove_button (MtpToolbar *toolbar, MtpToolbarButton *button)
+mtp_toolbar_remove_button (MtpToolbar *toolbar, ClutterActor *button)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
 
   priv->modified = TRUE;
 
-  if (mtp_toolbar_button_is_applet (button))
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                    CLUTTER_ACTOR (button));
+  if (MTP_IS_SPACE (button))
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                      button);
+    }
+  else if (MTP_IS_TOOLBAR_BUTTON (button))
+    {
+      if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                        button);
+      else
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                        button);
+    }
   else
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                    CLUTTER_ACTOR (button));
+    g_warning (G_STRLOC ":%s: unsupported actor type %s",
+               __FUNCTION__, G_OBJECT_TYPE_NAME (button));
 }
 
 /*
@@ -448,13 +540,13 @@ set_depth_for_each (ClutterActor *child, gpointer data)
 }
 
 void
-mtp_toolbar_insert_button (MtpToolbar       *toolbar,
-                           MtpToolbarButton *button,
-                           MtpToolbarButton *before)
+mtp_toolbar_insert_button (MtpToolbar   *toolbar,
+                           ClutterActor *button,
+                           ClutterActor *before)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
   DepthData          ddata;
-  GList             *children;
+  GList             *children = NULL;
 
   if (!before)
     {
@@ -465,26 +557,10 @@ mtp_toolbar_insert_button (MtpToolbar       *toolbar,
   priv->modified = TRUE;
 
   ddata.depth = 0.0;
-  ddata.before = (ClutterActor*)before;
-  ddata.new = (ClutterActor*)button;
+  ddata.before = before;
+  ddata.new = button;
 
-  if (mtp_toolbar_button_is_applet (button))
-    {
-      children =
-        clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));
-
-      g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                   CLUTTER_ACTOR (button));
-
-      clutter_actor_set_depth (ddata.new, ddata.new_depth);
-
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
-                                   CLUTTER_ACTOR (button),
-                                   "expand", FALSE, NULL);
-    }
-  else
+  if (MTP_IS_SPACE (button))
     {
       children =
         clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
@@ -492,13 +568,50 @@ mtp_toolbar_insert_button (MtpToolbar       *toolbar,
       g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                   CLUTTER_ACTOR (button));
+                                   button);
 
       clutter_actor_set_depth (ddata.new, ddata.new_depth);
 
       clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
-                                   CLUTTER_ACTOR (button),
+                                   button,
                                    "expand", FALSE, NULL);
+    }
+  else if (MTP_IS_TOOLBAR_BUTTON (button))
+    {
+      if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
+        {
+          children =
+            clutter_container_get_children (CLUTTER_CONTAINER (
+                                                priv->applet_area));
+
+          g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
+
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                       button);
+
+          clutter_actor_set_depth (ddata.new, ddata.new_depth);
+
+          clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
+                                       button,
+                                       "expand", FALSE, NULL);
+        }
+      else
+        {
+          children =
+            clutter_container_get_children (CLUTTER_CONTAINER (
+                                                        priv->panel_area));
+
+          g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
+
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                       button);
+
+          clutter_actor_set_depth (ddata.new, ddata.new_depth);
+
+          clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
+                                       button,
+                                       "expand", FALSE, NULL);
+        }
     }
 
   g_list_free (children);

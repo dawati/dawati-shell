@@ -27,6 +27,7 @@
 #include "mtp-toolbar-button.h"
 #include "mtp-toolbar.h"
 #include "mtp-jar.h"
+#include "mtp-space.h"
 
 static void mx_draggable_iface_init (MxDraggableIface *iface);
 
@@ -191,6 +192,7 @@ mtp_toolbar_button_drag_begin (MxDraggable         *draggable,
   ClutterActor            *parent;
   ClutterActor            *stage;
   gfloat                   x, y, width, height;
+  ClutterActor            *space;
 
   stage = clutter_actor_get_stage (self);
 
@@ -237,6 +239,12 @@ mtp_toolbar_button_drag_begin (MxDraggable         *draggable,
   clutter_actor_reparent (self, stage);
   clutter_actor_set_position (self, x, y);
   clutter_actor_set_size (self, width, height);
+
+  if (MTP_IS_TOOLBAR (parent))
+    {
+      space = mtp_space_new ();
+      mtp_toolbar_add_button ((MtpToolbar*)parent, space);
+    }
 }
 
 static void
@@ -281,12 +289,11 @@ mtp_toolbar_button_drag_end (MxDraggable *draggable,
 
       if (MTP_IS_JAR (orig_parent))
         {
-          mtp_jar_add_button ((MtpJar*) orig_parent, (MtpToolbarButton*)self);
+          mtp_jar_add_button ((MtpJar*) orig_parent, self);
         }
       else if (MTP_IS_TOOLBAR (orig_parent))
         {
-          mtp_toolbar_add_button ((MtpToolbar*)orig_parent,
-                                  (MtpToolbarButton*)self);
+          mtp_toolbar_add_button ((MtpToolbar*)orig_parent, self);
         }
       else
         g_warning ("Unsupported destination %s",

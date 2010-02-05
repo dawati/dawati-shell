@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* mtp-jar.h */
+/* mtp-toolbar-button.h */
 /*
  * Copyright (c) 2009, 2010 Intel Corp.
  *
@@ -22,51 +22,50 @@
  * 02111-1307, USA.
  */
 
-#ifndef _MTP_JAR
-#define _MTP_JAR
+#ifndef _MTP_SPACE
+#define _MTP_SPACE
 
 #include <mx/mx.h>
 
 G_BEGIN_DECLS
 
-#define MTP_TYPE_JAR mtp_jar_get_type()
+#define MTP_TYPE_SPACE mtp_space_get_type()
 
-#define MTP_JAR(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MTP_TYPE_JAR, MtpJar))
+#define MTP_SPACE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MTP_TYPE_SPACE, MtpSpace))
 
-#define MTP_JAR_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), MTP_TYPE_JAR, MtpJarClass))
+#define MTP_SPACE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MTP_TYPE_SPACE, MtpSpaceClass))
 
-#define MTP_IS_JAR(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MTP_TYPE_JAR))
+#define MTP_IS_SPACE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MTP_TYPE_SPACE))
 
-#define MTP_IS_JAR_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), MTP_TYPE_JAR))
+#define MTP_IS_SPACE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), MTP_TYPE_SPACE))
 
-#define MTP_JAR_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), MTP_TYPE_JAR, MtpJarClass))
+#define MTP_SPACE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), MTP_TYPE_SPACE, MtpSpaceClass))
 
-typedef struct _MtpJarPrivate MtpJarPrivate;
+typedef struct _MtpSpacePrivate MtpSpacePrivate;
 
 typedef struct {
-  MxBoxLayout parent;
+  MxWidget parent;
 
   /*< private >*/
-  MtpJarPrivate *priv;
-} MtpJar;
+  MtpSpacePrivate *priv;
+} MtpSpace;
 
 typedef struct {
-  MxBoxLayoutClass parent_class;
-} MtpJarClass;
+  MxWidgetClass parent_class;
+} MtpSpaceClass;
 
-GType mtp_jar_get_type (void);
+GType mtp_space_get_type (void);
 
-ClutterActor* mtp_jar_new (void);
+ClutterActor* mtp_space_new (void);
 
-void mtp_jar_add_button    (MtpJar *jar, ClutterActor *button);
-void mtp_jar_remove_button (MtpJar *jar, ClutterActor *button);
+void mtp_space_set_dont_pick (MtpSpace *button, gboolean dont);
 
 G_END_DECLS
 
-#endif /* _MTP_JAR */
+#endif /* _MTP_SPACE */
 

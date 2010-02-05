@@ -25,6 +25,7 @@
 #include <glib/gi18n.h>
 
 #include "mtp-jar.h"
+#include "mtp-toolbar-button.h"
 
 static void mx_droppable_iface_init (MxDroppableIface *iface);
 
@@ -187,7 +188,6 @@ mtp_jar_drop (MxDroppable       *droppable,
 {
   MtpJar            *jar = MTP_JAR (droppable);
   MtpJarPrivate     *priv = jar->priv;
-  MtpToolbarButton  *tbutton = MTP_TOOLBAR_BUTTON (draggable);
   ClutterActor      *actor = CLUTTER_ACTOR (draggable);
   ClutterActor      *parent = clutter_actor_get_parent (actor);
 
@@ -204,7 +204,7 @@ mtp_jar_drop (MxDroppable       *droppable,
   g_object_ref (draggable);
   clutter_container_remove_actor (CLUTTER_CONTAINER (parent), actor);
 
-  mtp_jar_add_button (jar, tbutton);
+  mtp_jar_add_button (jar, actor);
 
   g_object_unref (draggable);
 }
@@ -253,11 +253,18 @@ mtp_jar_new (void)
 }
 
 void
-mtp_jar_add_button (MtpJar *jar, MtpToolbarButton *button)
+mtp_jar_add_button (MtpJar *jar, ClutterActor *button)
 {
   MtpJarPrivate *priv = MTP_JAR (jar)->priv;
 
-  if (mtp_toolbar_button_is_applet (button))
+  if (!MTP_IS_TOOLBAR_BUTTON (button))
+    {
+      g_warning (G_STRLOC ":%s: unsupported button type %s",
+                 __FUNCTION__, G_OBJECT_TYPE_NAME (button));
+      return;
+    }
+
+  if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
     {
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
                                    CLUTTER_ACTOR (button));
@@ -270,11 +277,18 @@ mtp_jar_add_button (MtpJar *jar, MtpToolbarButton *button)
 }
 
 void
-mtp_jar_remove_button (MtpJar *jar, MtpToolbarButton *button)
+mtp_jar_remove_button (MtpJar *jar, ClutterActor *button)
 {
   MtpJarPrivate *priv = MTP_JAR (jar)->priv;
 
-  if (mtp_toolbar_button_is_applet (button))
+  if (!MTP_IS_TOOLBAR_BUTTON (button))
+    {
+      g_warning (G_STRLOC ":%s: unsupported button type %s",
+                 __FUNCTION__, G_OBJECT_TYPE_NAME (button));
+      return;
+    }
+
+  if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
     clutter_container_remove_actor (CLUTTER_CONTAINER (priv->applet_area),
                                     CLUTTER_ACTOR (button));
   else

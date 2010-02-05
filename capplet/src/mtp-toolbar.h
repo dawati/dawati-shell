@@ -27,8 +27,6 @@
 
 #include <mx/mx.h>
 
-#include "mtp-toolbar-button.h"
-
 G_BEGIN_DECLS
 
 #define MTP_TYPE_TOOLBAR mtp_toolbar_get_type()
@@ -65,11 +63,11 @@ GType mtp_toolbar_get_type (void);
 
 ClutterActor* mtp_toolbar_new (void);
 
-void mtp_toolbar_add_button    (MtpToolbar *toolbar, MtpToolbarButton *button);
-void mtp_toolbar_remove_button (MtpToolbar *toolbar, MtpToolbarButton *button);
+void mtp_toolbar_add_button    (MtpToolbar *toolbar, ClutterActor *button);
+void mtp_toolbar_remove_button (MtpToolbar *toolbar, ClutterActor *button);
 void mtp_toolbar_insert_button (MtpToolbar       *toolbar,
-                                MtpToolbarButton *button,
-                                MtpToolbarButton *before);
+                                ClutterActor     *button,
+                                ClutterActor     *before);
 gboolean mtp_toolbar_was_modified (MtpToolbar *toolbar);
 void     mtp_toolbar_clear_modified_state (MtpToolbar *toolbar);
 void     mtp_toolbar_mark_modified (MtpToolbar *toolbar);
