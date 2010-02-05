@@ -1,0 +1,64 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+/*
+ * Copyright (C) 2010 Intel Corporation.
+ *
+ * Author: Srinivasa Ragavan <srini@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef _MNP_WORLD_CLOCK
+#define _MNP_WORLD_CLOCK
+
+#include <glib-object.h>
+#include <mx/mx.h>
+#include <moblin-panel/mpl-panel-clutter.h>
+#include <moblin-panel/mpl-panel-common.h>
+
+G_BEGIN_DECLS
+
+#define MBP_TYPE_WORLD_CLOCK mbp_world_clock_get_type()
+
+#define MBP_WORLD_CLOCK(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MBP_TYPE_WORLD_CLOCK, MnpWorldClock))
+
+#define MBP_WORLD_CLOCK_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MBP_TYPE_WORLD_CLOCK, MnpWorldClockClass))
+
+#define MBP_IS_WORLD_CLOCK(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MBP_TYPE_WORLD_CLOCK))
+
+#define MBP_IS_WORLD_CLOCK_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), MBP_TYPE_WORLD_CLOCK))
+
+#define MBP_WORLD_CLOCK_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), MBP_TYPE_WORLD_CLOCK, MnpWorldClockClass))
+
+typedef struct {
+  MxTable parent;
+} MnpWorldClock;
+
+typedef struct {
+  MxTableClass parent_class;
+} MnpWorldClockClass;
+
+GType mbp_world_clock_get_type (void);
+
+ClutterActor *mbp_world_clock_new (void);
+void mbp_world_clock_set_panel_client (MnpWorldClock *world_clock,
+                                        MplPanelClient *panel_client);
+G_END_DECLS
+
+#endif /* _MBP_WORLD_CLOCK */
