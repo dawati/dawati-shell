@@ -292,7 +292,7 @@ update_mute_toggle (MpdVolumeTile *self)
                                         self);
 
   is_muted = gvc_mixer_stream_get_is_muted (priv->default_sink);
-  mx_toggle_set_active (MX_TOGGLE (priv->mute_toggle), !is_muted);
+  mx_toggle_set_active (MX_TOGGLE (priv->mute_toggle), is_muted);
   // TODO mx_widget_set_sensitive?
 
   g_signal_connect (priv->mute_toggle, "notify::active",
@@ -328,7 +328,7 @@ update_stream_mute (MpdVolumeTile *self)
                                         _stream_is_muted_notify_cb,
                                         self);
 
-  is_muted = !mx_toggle_get_active (MX_TOGGLE (priv->mute_toggle));
+  is_muted = mx_toggle_get_active (MX_TOGGLE (priv->mute_toggle));
   gvc_mixer_stream_change_is_muted (priv->default_sink, is_muted);
 
   g_signal_connect (priv->default_sink, "notify::is-muted",
