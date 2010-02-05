@@ -29,22 +29,22 @@
 
 G_BEGIN_DECLS
 
-#define MBP_TYPE_WORLD_CLOCK mbp_world_clock_get_type()
+#define MNP_TYPE_WORLD_CLOCK mnp_world_clock_get_type()
 
-#define MBP_WORLD_CLOCK(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MBP_TYPE_WORLD_CLOCK, MnpWorldClock))
+#define MNP_WORLD_CLOCK(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNP_TYPE_WORLD_CLOCK, MnpWorldClock))
 
-#define MBP_WORLD_CLOCK_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), MBP_TYPE_WORLD_CLOCK, MnpWorldClockClass))
+#define MNP_WORLD_CLOCK_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MNP_TYPE_WORLD_CLOCK, MnpWorldClockClass))
 
-#define MBP_IS_WORLD_CLOCK(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MBP_TYPE_WORLD_CLOCK))
+#define MNP_IS_WORLD_CLOCK(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNP_TYPE_WORLD_CLOCK))
 
-#define MBP_IS_WORLD_CLOCK_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), MBP_TYPE_WORLD_CLOCK))
+#define MNP_IS_WORLD_CLOCK_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), MNP_TYPE_WORLD_CLOCK))
 
-#define MBP_WORLD_CLOCK_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), MBP_TYPE_WORLD_CLOCK, MnpWorldClockClass))
+#define MNP_WORLD_CLOCK_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), MNP_TYPE_WORLD_CLOCK, MnpWorldClockClass))
 
 typedef struct {
   MxTable parent;
@@ -54,11 +54,11 @@ typedef struct {
   MxTableClass parent_class;
 } MnpWorldClockClass;
 
-GType mbp_world_clock_get_type (void);
+GType mnp_world_clock_get_type (void);
 
-ClutterActor *mbp_world_clock_new (void);
-void mbp_world_clock_set_panel_client (MnpWorldClock *world_clock,
+ClutterActor *mnp_world_clock_new (void);
+void mnp_world_clock_set_panel_client (MnpWorldClock *world_clock,
                                         MplPanelClient *panel_client);
 G_END_DECLS
 
-#endif /* _MBP_WORLD_CLOCK */
+#endif /* _MNP_WORLD_CLOCK */

@@ -1,0 +1,40 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+/*
+ * Copyright (C) 2010 Intel Corporation.
+ *
+ * Author: Srinivasa Ragavan <srini@linux.intel.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <clutter/clutter.h>
+#include <mx/mx.h>
+
+#ifndef _MNP_UTILS_H
+#define _MNP_UTILS_H
+
+enum
+{
+    GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME = 0,
+    GWEATHER_LOCATION_ENTRY_COL_LOCATION,
+    GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME,
+    GWEATHER_LOCATION_ENTRY_COL_SORT_NAME,
+    GWEATHER_LOCATION_ENTRY_NUM_COLUMNS
+};
+
+
+ClutterModel * mnp_get_world_timezones (void);
+
+#endif 

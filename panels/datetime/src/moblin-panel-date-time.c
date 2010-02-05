@@ -36,6 +36,7 @@
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-entry.h>
 
+#include "mnp-world-clock.h"
 
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48
@@ -45,7 +46,7 @@
 #define LAUNCHER_HEIGHT 64
 
 #include <config.h>
-#if 0
+
 static void
 _client_set_size_cb (MplPanelClient *client,
                      guint           width,
@@ -57,7 +58,7 @@ _client_set_size_cb (MplPanelClient *client,
                           width,
                           height);
 }
-#endif
+
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
@@ -71,7 +72,7 @@ main (int    argc,
 {
   MplPanelClient *client;
   ClutterActor *stage;
- /* ClutterActor *people_panel; */
+  ClutterActor *world_clock;
   GOptionContext *context;
   GError *error = NULL;
 
@@ -110,12 +111,12 @@ main (int    argc,
     mpl_panel_client_set_height_request (client, 400);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
- //   people_panel = mnb_people_panel_new ();
-  //  mnb_people_panel_set_panel_client (MNB_PEOPLE_PANEL (people_panel), client);
-  //  g_signal_connect (client,
-    //                  "set-size",
-      //                (GCallback)_client_set_size_cb,
-        //              people_panel);
+    world_clock = mnp_world_clock_new ();
+    mnp_world_clock_set_panel_client (MNP_WORLD_CLOCK (world_clock), client);
+    g_signal_connect (client,
+                      "set-size",
+                      (GCallback)_client_set_size_cb,
+                      world_clock);
   } else {
     Window xwin;
 
@@ -124,14 +125,14 @@ main (int    argc,
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
-    //people_panel = mnb_people_panel_new ();
-    //clutter_actor_set_size ((ClutterActor *)people_panel, 1016, 400);
+    world_clock = mnp_world_clock_new ();
+    clutter_actor_set_size ((ClutterActor *)world_clock, 1016, 400);
     clutter_actor_set_size (stage, 1016, 400);
     clutter_actor_show_all (stage);
   }
 
- // clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-   //                            (ClutterActor *)people_panel);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                               (ClutterActor *)world_clock);
 
 
   clutter_main ();
