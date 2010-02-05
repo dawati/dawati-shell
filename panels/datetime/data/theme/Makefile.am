@@ -1,6 +1,8 @@
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA = \
-	panel.css 
+	panel.css \
+	edit-clear.png \
+	edit-find.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
