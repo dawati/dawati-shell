@@ -61,20 +61,14 @@ struct _MnbPeoplePanelPrivate {
   GAppInfo *app_info;
   GtkIconTheme *icon_theme;
   MplPanelClient *panel_client;
-  ClutterActor *primary_button;
-  ClutterActor *secondary_button;
   ClutterActor *tile_view;
   ClutterActor *active_tile_view;
-  ClutterActor *selection_pane;
-  ClutterActor *control_box;
-  ClutterActor *no_people_tile;
-  ClutterActor *selected_tile;
-  ClutterActor *nobody_selected_box;
   ClutterActor *content_table;
   ClutterActor *active_content_table;
   ClutterActor *everybody_offline_tile;
   ClutterActor *offline_banner;
   ClutterActor *header_box;
+  ClutterActor *no_people_tile;
 };
 
 static void
@@ -133,53 +127,6 @@ _entry_text_changed_cb (MplEntry *entry,
                                                 _filter_timeout_cb,
                                                 userdata,
                                                 NULL);
-}
-
-static void
-_update_selected_item (MnbPeoplePanel *people_panel,
-                       AnerleyItem    *item)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
-
-  if (item)
-  {
-    clutter_actor_show (priv->selected_tile);
-    clutter_actor_show (priv->primary_button);
-
-    g_object_set (priv->selected_tile,
-                  "item",
-                  item,
-                  NULL);
-    clutter_actor_show (priv->control_box);
-    clutter_actor_hide (priv->nobody_selected_box);
-  } else {
-    clutter_actor_hide (priv->selected_tile);
-    clutter_actor_hide (priv->primary_button);
-    clutter_actor_hide (priv->secondary_button);
-    clutter_actor_hide (priv->control_box);
-    clutter_actor_show (priv->nobody_selected_box);
-    return;
-  }
-
-  if (ANERLEY_IS_ECONTACT_ITEM (item))
-  {
-    mx_button_set_label (MX_BUTTON (priv->primary_button),
-                         _("Send an email"));
-    mx_button_set_label (MX_BUTTON (priv->secondary_button),
-                         _("Edit details"));
-    clutter_actor_show (priv->secondary_button);
-
-    if (!anerley_econtact_item_get_email (ANERLEY_ECONTACT_ITEM (item)))
-    {
-      clutter_actor_hide (priv->primary_button);
-    }
-  } else if (ANERLEY_IS_TP_ITEM (item)) {
-    mx_button_set_label (MX_BUTTON (priv->primary_button),
-                         _("Send a message"));
-    clutter_actor_hide (priv->secondary_button);
-  } else {
-    g_debug (G_STRLOC ": Unknown item type?");
-  }
 }
 
 static void
@@ -544,28 +491,6 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
 }
 
 static void
-_primary_button_clicked_cb (MxButton *button,
-                            gpointer  userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-  AnerleyItem *item;
-
-  item =
-    anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
-
-  if (!item)
-    item = anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->active_tile_view);
-
-  if (item)
-  {
-    anerley_item_activate (item);
-
-    if (priv->panel_client)
-      mpl_panel_client_hide (priv->panel_client);
-  }
-}
-
-static void
 _edit_contact_action (MnbPeoplePanel *panel,
                       AnerleyItem    *item)
 {
@@ -591,52 +516,6 @@ _edit_contact_action (MnbPeoplePanel *panel,
         mpl_panel_client_hide (priv->panel_client);
     }
   }
-}
-
-static void
-_secondary_button_clicked_cb (MxButton *button,
-                              gpointer  userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-  AnerleyItem *item;
-
-  item =
-    anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
-
-  if (item)
-  {
-    _edit_contact_action (MNB_PEOPLE_PANEL (userdata), item);
-  }
-}
-
-static void
-_tile_view_selection_changed_cb (AnerleyTileView *view,
-                                 gpointer         userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-  AnerleyItem *item;
-
-  anerley_tile_view_clear_selected_item ((AnerleyTileView *)priv->active_tile_view);
-
-  item =
-    anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->tile_view);
-
-  _update_selected_item ((MnbPeoplePanel *)userdata,
-                         item);
-}
-
-static void
-_active_tile_view_selection_changed_cb (AnerleyTileView *view,
-                                        gpointer         userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-  AnerleyItem *item;
-
-  anerley_tile_view_clear_selected_item ((AnerleyTileView *)priv->tile_view);
-
-  item = anerley_tile_view_get_selected_item ((AnerleyTileView *)priv->active_tile_view);
-  _update_selected_item ((MnbPeoplePanel *)userdata,
-                         item);
 }
 
 static void
@@ -678,7 +557,6 @@ _update_placeholder_state (MnbPeoplePanel *self)
 
     /* Ensure content stuff is visible */
     clutter_actor_show (priv->content_table);
-    clutter_actor_show (priv->selection_pane);
 
     /* Have to do this since MxTable now treats invisible actors as zero
      * width and height */
@@ -701,7 +579,6 @@ _update_placeholder_state (MnbPeoplePanel *self)
   } else {
     /* Hide real content stuff */
     clutter_actor_hide (priv->content_table);
-    clutter_actor_hide (priv->selection_pane);
 
     /* Have to do this since MxTable now treats invisible actors as zero
      * width and height */
@@ -948,143 +825,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "row-span", 1,
                                       NULL);
 
-  priv->selection_pane = mx_table_new ();
-  clutter_actor_set_height (priv->selection_pane, 220);
-  clutter_actor_set_name (priv->selection_pane, "people-selection-pane");
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->selection_pane,
-                                      2, 1,
-                                      "x-fill", FALSE,
-                                      "y-fill", FALSE,
-                                      "x-expand", FALSE,
-                                      "y-expand", TRUE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.0,
-                                      NULL);
-
-  label = mx_label_new (_("Selection"));
-  clutter_actor_set_name (label, "people-selection-label");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->selection_pane),
-                                      label,
-                                      0,
-                                      0,
-                                      "x-fill", FALSE,
-                                      "y-fill", FALSE,
-                                      "x-expand", FALSE,
-                                      "y-expand", FALSE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.0,
-                                      NULL);
-
-  priv->control_box = mx_table_new ();
-  mx_table_set_row_spacing (MX_TABLE (priv->control_box), 6);
-  clutter_actor_set_width (priv->control_box, 200);
-  clutter_actor_set_name (priv->control_box, "people-control-box");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->selection_pane),
-                                      priv->control_box,
-                                      1,
-                                      0,
-                                      "x-fill", TRUE,
-                                      "y-fill", TRUE,
-                                      "x-expand", TRUE,
-                                      "y-expand", TRUE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.0,
-                                      NULL);
-
-  priv->nobody_selected_box = mx_frame_new ();
-  clutter_actor_set_width ((ClutterActor *)priv->nobody_selected_box, 200);
-  clutter_actor_set_name ((ClutterActor *)priv->nobody_selected_box,
-                          "people-nobody-selected");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->selection_pane),
-                                      (ClutterActor *)priv->nobody_selected_box,
-                                      1,
-                                      0,
-                                      "x-fill", TRUE,
-                                      "y-fill", TRUE,
-                                      "x-expand", TRUE,
-                                      "y-expand", TRUE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.0,
-                                      NULL);
-  label = mx_label_new (_("Nobody selected"));
-  clutter_actor_set_name ((ClutterActor *)label,
-                          "people-nobody-selected-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->nobody_selected_box),
-                               label);
-  mx_bin_set_alignment (MX_BIN (priv->nobody_selected_box),
-                        MX_ALIGN_MIDDLE,
-                        MX_ALIGN_START);
-  mx_bin_set_fill (MX_BIN (priv->nobody_selected_box),
-                   FALSE,
-                   FALSE);
-
-  priv->selected_tile = anerley_tile_new (NULL);
-  clutter_actor_set_height ((ClutterActor *)priv->selected_tile, 90);
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->selected_tile),
-                          "people-selected-item");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->control_box),
-                                      priv->selected_tile,
-                                      0,
-                                      0,
-                                      "x-fill", TRUE,
-                                      "y-fill", FALSE,
-                                      "x-expand", TRUE,
-                                      "y-expand", FALSE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.0,
-                                      NULL);
-
-  priv->primary_button = mx_button_new_with_label ("");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->primary_button), "people-primary-action");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->control_box),
-                                      priv->primary_button,
-                                      1,
-                                      0,
-                                      "x-fill", TRUE,
-                                      "y-fill", FALSE,
-                                      "x-expand", TRUE,
-                                      "y-expand", FALSE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.0,
-                                      FALSE,
-                                      NULL);
-
-  priv->secondary_button = mx_button_new_with_label ("");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->secondary_button), "people-secondary-action");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->control_box),
-                                      priv->secondary_button,
-                                      2,
-                                      0,
-                                      "x-fill", TRUE,
-                                      "y-fill", FALSE,
-                                      "x-expand", TRUE,
-                                      "y-expand", TRUE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.0,
-                                      NULL);
-
-  _update_selected_item (self, NULL);
-
-  g_signal_connect (priv->primary_button,
-                    "clicked",
-                    (GCallback)_primary_button_clicked_cb,
-                    self);
-
-  g_signal_connect (priv->secondary_button,
-                    "clicked",
-                    (GCallback)_secondary_button_clicked_cb,
-                    self);
-
-  g_signal_connect_after (priv->tile_view,
-                          "selection-changed",
-                          (GCallback)_tile_view_selection_changed_cb,
-                          self);
-  g_signal_connect_after (priv->active_tile_view,
-                          "selection-changed",
-                          (GCallback)_active_tile_view_selection_changed_cb,
-                          self);
-
   g_signal_connect (priv->tile_view,
                     "item-activated",
                     (GCallback)_tile_view_item_activated_cb,
@@ -1096,7 +836,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     self);
 
   /* Put into the no people state */
-  clutter_actor_hide ((ClutterActor *)priv->selection_pane);
   clutter_actor_hide ((ClutterActor *)priv->content_table);
 
   g_signal_connect (priv->model,
