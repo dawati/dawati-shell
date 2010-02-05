@@ -54,7 +54,7 @@ enum
   PROP_ITEM
 };
 
-#define DEFAULT_AVATAR_IMAGE PKG_DATA_DIR "/" "default-avatar-image.png"
+#define DEFAULT_AVATAR_IMAGE PKG_DATA_DIR "/" "avatar_icon.png"
 
 static void
 _item_display_name_changed_cb (AnerleyItem *item,
