@@ -2,6 +2,8 @@ themedir = $(pkgdatadir)/theme
 dist_theme_DATA = \
 	panel.css \
 	avatar-bg.png \
+	avatar_icon.png \
+	avatar_frame.png \
 	grey-backdrop.png \
 	people-search-bg.png \
 	scroll-view-bin-bg.png \
