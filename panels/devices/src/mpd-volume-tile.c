@@ -26,11 +26,11 @@
 #define MIXER_CONTROL_NAME "Moblin Panel Devices"
 
 GvcMixerStream *
-mpd_volume_tile_get_default_sink (MpdVolumeTile   *self);
+mpd_volume_tile_get_sink (MpdVolumeTile   *self);
 
 static void
-mpd_volume_tile_set_default_sink (MpdVolumeTile   *self,
-                                  GvcMixerStream  *stream);
+mpd_volume_tile_set_sink (MpdVolumeTile   *self,
+                          GvcMixerStream  *stream);
 
 static void
 update_mute_toggle (MpdVolumeTile *self);
@@ -49,6 +49,13 @@ G_DEFINE_TYPE (MpdVolumeTile, mpd_volume_tile, MX_TYPE_BOX_LAYOUT)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_VOLUME_TILE, MpdVolumeTilePrivate))
 
+enum
+{
+  PROP_0,
+
+  PROP_SINK
+};
+
 typedef struct
 {
   /* Managed by clutter */
@@ -57,7 +64,7 @@ typedef struct
 
   /* Data */
   GvcMixerControl *control;
-  GvcMixerStream  *default_sink;
+  GvcMixerStream  *sink;
   guint            timeout;
 } MpdVolumeTilePrivate;
 
@@ -108,8 +115,8 @@ _mixer_control_default_sink_changed_cb (GvcMixerControl *control,
                                         guint            id,
                                         MpdVolumeTile   *self)
 {
-  mpd_volume_tile_set_default_sink (self,
-                                    gvc_mixer_control_get_default_sink (control));
+  mpd_volume_tile_set_sink (self,
+                            gvc_mixer_control_get_default_sink (control));
 }
 
 static void
@@ -120,8 +127,8 @@ _mixer_control_ready_cb (GvcMixerControl  *control,
 
   g_debug (G_STRLOC ": Mixer ready!");
 
-  mpd_volume_tile_set_default_sink (self,
-                                    gvc_mixer_control_get_default_sink (priv->control));
+  mpd_volume_tile_set_sink (self,
+                            gvc_mixer_control_get_default_sink (priv->control));
 }
 
 static void
@@ -160,6 +167,38 @@ _mixer_control_connection_failed_cb (GvcMixerControl  *control,
 }
 
 static void
+_get_property (GObject    *object,
+               guint       property_id,
+               GValue     *value,
+               GParamSpec *pspec)
+{
+  switch (property_id) {
+  case PROP_SINK:
+    g_value_set_object (value,
+                        mpd_volume_tile_get_sink (MPD_VOLUME_TILE (object)));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
+_set_property (GObject      *object,
+               guint         property_id,
+               const GValue *value,
+               GParamSpec   *pspec)
+{
+  switch (property_id) {
+  case PROP_SINK:
+    mpd_volume_tile_set_sink (MPD_VOLUME_TILE (object),
+                              g_value_get_object (value));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
 _dispose (GObject *object)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (object);
@@ -183,10 +222,25 @@ static void
 mpd_volume_tile_class_init (MpdVolumeTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamFlags   param_flags;
 
   g_type_class_add_private (klass, sizeof (MpdVolumeTilePrivate));
 
+  object_class->get_property = _get_property;
+  object_class->set_property = _set_property;
   object_class->dispose = _dispose;
+
+  /* Properties */
+
+  param_flags = G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS;
+
+  g_object_class_install_property (object_class,
+                                   PROP_SINK,
+                                   g_param_spec_object ("sink",
+                                                        "Sink",
+                                                        "The mixer stream",
+                                                        GVC_TYPE_MIXER_STREAM,
+                                                        param_flags));
 }
 
 static void
@@ -241,43 +295,51 @@ mpd_volume_tile_new (void)
 }
 
 GvcMixerStream *
-mpd_volume_tile_get_default_sink (MpdVolumeTile *self)
+mpd_volume_tile_get_sink (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
 
   g_return_val_if_fail (MPD_IS_VOLUME_TILE (self), NULL);
 
-  return priv->default_sink;
+  return priv->sink;
 }
 
 static void
-mpd_volume_tile_set_default_sink (MpdVolumeTile   *self,
-                                  GvcMixerStream  *sink)
+mpd_volume_tile_set_sink (MpdVolumeTile   *self,
+                          GvcMixerStream  *sink)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
 
-  if (priv->default_sink)
+  if (priv->sink)
   {
-    g_signal_handlers_disconnect_by_func (priv->default_sink,
+    g_signal_handlers_disconnect_by_func (priv->sink,
                                           _stream_is_muted_notify_cb,
                                           self);
-    g_signal_handlers_disconnect_by_func (priv->default_sink,
+    g_signal_handlers_disconnect_by_func (priv->sink,
                                           _stream_volume_notify_cb,
                                           self);
-    g_object_unref (priv->default_sink);
-    priv->default_sink = NULL;
+    g_object_unref (priv->sink);
+    priv->sink = NULL;
   }
 
   if (sink)
   {
-    priv->default_sink = g_object_ref (sink);
+    priv->sink = g_object_ref (sink);
 
-    g_signal_connect (priv->default_sink, "notify::is-muted",
+    g_signal_connect (priv->sink, "notify::is-muted",
                       G_CALLBACK (_stream_is_muted_notify_cb), self);
-    g_signal_connect (priv->default_sink, "notify::volume",
+    g_signal_connect (priv->sink, "notify::volume",
                       G_CALLBACK (_stream_volume_notify_cb), self);
+
     update_mute_toggle (self);
     update_volume_slider (self);
+  }
+
+  if ((sink && !priv->sink) ||
+      (!sink && priv->sink) ||
+      (sink != priv->sink))
+  {
+    g_object_notify (G_OBJECT (self), "sink");
   }
 }
 
@@ -291,7 +353,7 @@ update_mute_toggle (MpdVolumeTile *self)
                                         _mute_toggle_notify_cb,
                                         self);
 
-  is_muted = gvc_mixer_stream_get_is_muted (priv->default_sink);
+  is_muted = gvc_mixer_stream_get_is_muted (priv->sink);
   mx_toggle_set_active (MX_TOGGLE (priv->mute_toggle), is_muted);
   // TODO mx_widget_set_sensitive?
 
@@ -310,7 +372,7 @@ update_volume_slider (MpdVolumeTile *self)
                                         _volume_slider_progress_notify_cb,
                                         self);
 
-  volume = gvc_mixer_stream_get_volume (priv->default_sink);
+  volume = gvc_mixer_stream_get_volume (priv->sink);
   progress = volume / PA_VOLUME_NORM;
   mx_slider_set_progress (MX_SLIDER (priv->volume_slider), progress);
 
@@ -324,14 +386,14 @@ update_stream_mute (MpdVolumeTile *self)
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
   gboolean is_muted;
 
-  g_signal_handlers_disconnect_by_func (priv->default_sink,
+  g_signal_handlers_disconnect_by_func (priv->sink,
                                         _stream_is_muted_notify_cb,
                                         self);
 
   is_muted = mx_toggle_get_active (MX_TOGGLE (priv->mute_toggle));
-  gvc_mixer_stream_change_is_muted (priv->default_sink, is_muted);
+  gvc_mixer_stream_change_is_muted (priv->sink, is_muted);
 
-  g_signal_connect (priv->default_sink, "notify::is-muted",
+  g_signal_connect (priv->sink, "notify::is-muted",
                     G_CALLBACK (_stream_is_muted_notify_cb), self);
 
 }
@@ -343,17 +405,17 @@ update_stream_volume (MpdVolumeTile *self)
   gdouble progress;
   pa_volume_t volume;
 
-  g_signal_handlers_disconnect_by_func (priv->default_sink,
+  g_signal_handlers_disconnect_by_func (priv->sink,
                                         _stream_volume_notify_cb,
                                         self);
 
   progress = mx_slider_get_progress (MX_SLIDER (priv->volume_slider));
   volume = progress * PA_VOLUME_NORM;
-  if (gvc_mixer_stream_set_volume (priv->default_sink, volume))
-    gvc_mixer_stream_push_volume (priv->default_sink);
+  if (gvc_mixer_stream_set_volume (priv->sink, volume))
+    gvc_mixer_stream_push_volume (priv->sink);
   else
     g_warning ("gvc_mixer_stream_change_volume() failed");
 
-  g_signal_connect (priv->default_sink, "notify::volume",
+  g_signal_connect (priv->sink, "notify::volume",
                     G_CALLBACK (_stream_volume_notify_cb), self);
 }
