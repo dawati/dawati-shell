@@ -629,16 +629,36 @@ GList *
 mtp_toolbar_get_panel_buttons (MtpToolbar *toolbar)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+  GList *children,  *ret = NULL, *l;
 
-  return clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
+
+  for (l = children; l; l = l->next)
+    if (MTP_IS_TOOLBAR_BUTTON (l->data))
+      ret = g_list_append (ret, l->data);
+
+  g_list_free (children);
+
+  return ret;
 }
 
 GList *
 mtp_toolbar_get_applet_buttons (MtpToolbar *toolbar)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+  GList *children, *ret = NULL, *l;
 
-  return clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));
+
+  for (l = children; l; l = l->next)
+    if (MTP_IS_TOOLBAR_BUTTON (l->data))
+      ret = g_list_append (ret, l->data);
+
+  g_list_free (children);
+
+  return ret;
 }
 
 void
