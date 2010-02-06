@@ -231,7 +231,7 @@ msgstr "嚴重錯誤：無效的國家代碼"
 
 #: ../carrick/carrick-service-item.c:50
 msgid "Missing required APN (service plan name)"
-msgstr "遺失需求的 APN (服務計劃名稱)"
+msgstr "遺失需求的 APN (服務方案名稱)"
 
 #: ../carrick/carrick-service-item.c:51
 msgid "Internal Error: Invalid network service"
@@ -426,7 +426,7 @@ msgstr "手動配置"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr "計劃名稱 (需要)："
+msgstr "方案名稱 (需要)："
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
@@ -454,7 +454,7 @@ msgstr "Tertairy DNS:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
-msgstr "選取你的 3G 計劃"
+msgstr "選取你的 3G 方案"
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
