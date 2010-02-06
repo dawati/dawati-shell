@@ -558,13 +558,6 @@ _update_placeholder_state (MnbPeoplePanel *self)
     /* Ensure content stuff is visible */
     clutter_actor_show (priv->content_table);
 
-    /* Have to do this since MxTable now treats invisible actors as zero
-     * width and height */
-    clutter_container_child_set (CLUTTER_CONTAINER (self),
-                                 priv->header_box,
-                                 "col-span", 2,
-                                 NULL);
-
     if (accounts_available > 0 && accounts_online == 0)
     {
       clutter_actor_show (priv->offline_banner);
@@ -579,13 +572,6 @@ _update_placeholder_state (MnbPeoplePanel *self)
   } else {
     /* Hide real content stuff */
     clutter_actor_hide (priv->content_table);
-
-    /* Have to do this since MxTable now treats invisible actors as zero
-     * width and height */
-    clutter_container_child_set (CLUTTER_CONTAINER (self),
-                                 priv->header_box,
-                                 "col-span", 1,
-                                 NULL);
 
     mx_table_set_row_spacing (MX_TABLE (self), 6);
 
@@ -653,7 +639,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       CLUTTER_ACTOR (priv->header_box),
                                       0, 0,
                                       "row-span", 1,
-                                      "col-span", 2,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
                                       "x-fill", TRUE,
@@ -779,7 +764,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-fill", FALSE,
                                       "y-align", 0.0,
                                       "row-span", 1,
-                                      "col-span", 2,
                                       NULL);
 
   /* No people && acounts are online */
@@ -795,7 +779,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-fill", FALSE,
                                       "y-align", 0.0,
                                       "row-span", 1,
-                                      "col-span", 2,
                                       NULL);
 
   priv->offline_banner =
@@ -811,7 +794,6 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-fill", FALSE,
                                       "y-align", 0.0,
                                       "row-span", 1,
-                                      "col-span", 2,
                                       NULL);
 
   /* Real content stuff */
