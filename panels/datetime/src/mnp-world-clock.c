@@ -33,6 +33,7 @@
 
 #include "mnp-world-clock.h"
 #include "mnp-utils.h"
+#include "mnp-button-item.h"
 
 G_DEFINE_TYPE (MnpWorldClock, mnp_world_clock, MX_TYPE_TABLE)
 
@@ -46,10 +47,13 @@ typedef struct _MnpWorldClockPrivate MnpWorldClockPrivate;
 
 struct _MnpWorldClockPrivate {
 	MplPanelClient *panel_client;
+
 	MxEntry *search_location;
 	MxListView *zones_list;
 	ClutterModel *zones_model;
-	MxPopup *popup;
+	ClutterActor *scroll;
+
+	ClutterActor *add_location;
 
 	const char *search_text;
 };
@@ -102,6 +106,8 @@ text_changed_cb (MxEntry *entry, GParamSpec *pspec, void *user_data)
 
 	priv->search_text = mx_entry_get_text (entry);
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");
+	if (priv->search_text && *priv->search_text)
+		clutter_actor_show(priv->scroll);
 }
 
 static char *
@@ -194,42 +200,77 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 }
 
 static void
-clear_btn_clicked_cb (ClutterActor *button, MxEntry *entry)
+clear_btn_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 {
-  mx_entry_set_text (entry, "");
+	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+
+  	mx_entry_set_text (priv->search_location, "");
+  	clutter_actor_hide (priv->scroll);
+}
+
+static void
+add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
+{
+	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+
+  	printf("Selected %s\n", (char *)mx_entry_get_text (priv->search_location));
+}
+
+static void 
+mnp_completion_done (gpointer data, const char *zone)
+{
+	MnpWorldClock *clock = (MnpWorldClock *)data;
+	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
+	
+	clutter_actor_hide (priv->scroll);
+	g_signal_handlers_block_by_func (priv->search_location, text_changed_cb, clock);
+	mx_entry_set_text (priv->search_location, zone);
+	g_signal_handlers_unblock_by_func (priv->search_location, text_changed_cb, clock);
+
 }
 
 static void
 mnp_world_clock_construct (MnpWorldClock *world_clock)
 {
-	ClutterActor *entry, *scroll, *view;
+	ClutterActor *entry, *scroll, *view, *box;
 	MxTable *table = (MxTable *)world_clock;
 	gfloat width, height;
 	ClutterModel *model;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+	MnpButtonItem *button_item;
 
-	mx_table_set_col_spacing (MX_TABLE (table), 10);
-	mx_table_set_row_spacing (MX_TABLE (table), 10);
+	mx_table_set_col_spacing (MX_TABLE (table), 1);
+	mx_table_set_row_spacing (MX_TABLE (table), 1);
+
+	box = mx_box_layout_new ();
+	mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+	mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
 
 	entry = mx_entry_new ("");
 	priv->search_location = (MxEntry *)entry;
 	mx_entry_set_hint_text (MX_ENTRY (entry), _("Enter a country or city"));
-	mx_entry_set_primary_icon_from_file (MX_ENTRY (entry),
-                                         THEMEDIR"/edit-find.png");
 	mx_entry_set_secondary_icon_from_file (MX_ENTRY (entry),
                                            THEMEDIR"/edit-clear.png");
   	g_signal_connect (entry, "secondary-icon-clicked",
-                    	G_CALLBACK (clear_btn_clicked_cb), entry);
+                    	G_CALLBACK (clear_btn_clicked_cb), world_clock);
 
 	/* FIXME: Don't exceed beyond parent */
 	clutter_actor_get_size (entry, &width, &height);
-	clutter_actor_set_size (entry, width, -1);
+	clutter_actor_set_size (entry, width+10, -1);
 	g_signal_connect (G_OBJECT (entry),
                     "notify::text", G_CALLBACK (text_changed_cb), world_clock);
+	
+	clutter_container_add_actor ((ClutterContainer *)box, entry);
+	
+	priv->add_location = mx_button_new ();
+	mx_button_set_label ((MxButton *)priv->add_location, _("Add"));
+	clutter_container_add_actor ((ClutterContainer *)box, priv->add_location);
+  	g_signal_connect (priv->add_location, "clicked",
+                    	G_CALLBACK (add_location_clicked_cb), world_clock);
 
-	mx_table_add_actor (MX_TABLE (table), entry, 0, 0);
+	mx_table_add_actor (MX_TABLE (table), box, 0, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
-                               entry,
+                               box,
                                "x-expand", FALSE, "y-expand", FALSE,
                                NULL);
 
@@ -238,24 +279,28 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	priv->zones_model = model;
 	clutter_model_set_filter (model, filter_zone, world_clock, NULL);
 
-	priv->popup = mx_popup_new ();
 	scroll = mx_scroll_view_new ();
-	clutter_actor_set_size (scroll, width, -1);	
+	clutter_actor_set_name (scroll, "completion-scroll-bin");
+	priv->scroll = scroll;
+	clutter_actor_set_size (scroll, width-20, -1);	
 	mx_table_add_actor (MX_TABLE (table), scroll, 1, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
                                scroll,
                                "x-expand", FALSE, "y-expand", FALSE,
                                NULL);
-	
+	clutter_actor_hide (scroll);
+
 	view = mx_list_view_new ();
+	clutter_actor_set_name (view, "completion-list-view");
 	priv->zones_list = (MxListView *)view;
 
 	clutter_container_add_actor (CLUTTER_CONTAINER (scroll), view);
 	mx_list_view_set_model (MX_LIST_VIEW (view), model);
-	mx_list_view_set_item_type (MX_LIST_VIEW (view), MX_TYPE_LABEL);
-	mx_list_view_add_attribute (MX_LIST_VIEW (view), "text", 0);
 
-	
+	button_item = mnp_button_item_new ((gpointer)world_clock, mnp_completion_done);
+	mx_list_view_set_factory (MX_LIST_VIEW (view), (MxItemFactory *)button_item);
+	mx_list_view_add_attribute (MX_LIST_VIEW (view), "label", 0);
+
 }
 
 ClutterActor *

@@ -96,7 +96,7 @@ main (int    argc,
   MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
-                           THEMEDIR "/panel.css", NULL);
+                           THEMEDIR "/date-panel.css", NULL);
 
   if (!standalone)
   {

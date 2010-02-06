@@ -16,7 +16,10 @@ moblin_panel_date_time_SOURCES = moblin-panel-date-time.c	\
 				 mnp-world-clock.c	\
 				 mnp-world-clock.h	\
 				 mnp-utils.c 		\
-				 mnp-utils.h
+				 mnp-utils.h		\
+				 mnp-button-item.c	\
+				 mnp-button-item.h
+
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.datetime.service.in
