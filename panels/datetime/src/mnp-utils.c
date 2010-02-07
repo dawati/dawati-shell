@@ -19,17 +19,55 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <string.h>
+#include <time.h>
 #include <libxml/xmlreader.h>
 
+#include <glib/gi18n.h>
 #define GWEATHER_I_KNOW_THIS_IS_UNSTABLE
 #include <libgweather/gweather-xml.h>
 #include <libgweather/gweather-location.h>
 #include <libgweather/weather.h>
-
+#include "system-timezone.h"
 #include "mnp-utils.h"
 
 WeatherLocation *gweather_location_to_weather_location (GWeatherLocation *gloc,
 							const char *name);
+struct _pass_data {
+	const char *key;
+	const GWeatherLocation *location;
+};
+
+static gboolean 
+search_locations_in_model (ClutterModel *model, ClutterModelIter *iter, struct _pass_data *pdata)
+{
+	char *clocation;
+	GWeatherLocation *location;
+
+	clutter_model_iter_get (iter, GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, &clocation,
+				GWEATHER_LOCATION_ENTRY_COL_LOCATION, &location, -1);
+
+	if (strcmp(clocation, pdata->key) == 0) {
+		pdata->location = location;
+		g_free (clocation);
+		return FALSE;
+	}
+
+	g_free(clocation);
+
+	return TRUE;
+}
+
+const GWeatherLocation *
+mnp_utils_get_location_from_display (ClutterModel *store, const char *display)
+{
+	struct _pass_data pdata = { NULL, NULL};
+
+	pdata.key = display;
+	clutter_model_foreach (store, (ClutterModelForeachFunc)search_locations_in_model, &pdata);
+
+	return pdata.location;
+}
 
 static void
 fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
@@ -147,7 +185,6 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 	break;
     }
 
-    gweather_location_free_children (loc, children);
 }
 
 ClutterModel *
@@ -167,7 +204,201 @@ mnp_get_world_timezones (void)
 
 
 	fill_location_entry_model(store, world, NULL, NULL);
-    	gweather_location_unref (world);
+    	/* gweather_location_unref (world); */
 
 	return (ClutterModel *)store;
+}
+
+/* Time formatting from gnome-panel */
+
+static const char *
+get_tzname (char *tzid)
+{
+        time_t now_t;
+        struct tm now;
+
+        setenv ("TZ", tzid, 1);
+        tzset();
+
+        now_t = time (NULL);
+        localtime_r (&now_t, &now);
+
+        if (now.tm_isdst > 0) {
+                return tzname[1];
+        } else {
+                return tzname[0];
+        }
+
+	return NULL;
+}
+
+static void
+clock_set_tz (char *tzone)
+{
+        time_t now_t;
+        struct tm now;
+
+        printf("SETENV: %d\n", setenv ("TZ", tzone, 1));
+        tzset();
+
+        now_t = time (NULL);
+        localtime_r (&now_t, &now);
+
+}
+
+#include <sys/time.h>
+
+static void
+clock_unset_tz (SystemTimezone *tzone)
+{
+        const char *env_timezone;
+
+        env_timezone = system_timezone_get_env (tzone);
+
+        if (env_timezone) {
+                setenv ("TZ", env_timezone, 1);
+        } else {
+                unsetenv ("TZ");
+        }
+        tzset();
+}
+
+static void
+clock_location_localtime (SystemTimezone *systz, char *tzone, struct tm *tm)
+{
+        time_t now;
+	struct timeval tval;
+	struct timezone tz1;
+
+        clock_set_tz (tzone);
+
+        time (&now);
+	gettimeofday (&tval, &tz1);
+        localtime_r (&now, tm);
+	
+        clock_unset_tz (systz);
+
+	printf("%ld %ld %d: %s \n", now, tval.tv_sec, tz1.tz_minuteswest, tzone);
+}
+
+static glong
+get_offset (const char *tzone, SystemTimezone *systz)
+{
+        glong sys_timezone, local_timezone;
+	glong offset;
+	time_t t;
+	struct tm *tm;
+
+	t = time (NULL);
+	
+        unsetenv ("TZ");
+        tm = localtime (&t);
+        sys_timezone = timezone;
+
+	if (tm->tm_isdst > 0) {
+		sys_timezone -= 3600;
+	}
+
+        setenv ("TZ", tzone, 1);
+        tm = localtime (&t);
+	local_timezone = timezone;
+
+	if (tm->tm_isdst > 0) {
+		local_timezone -= 3600;
+	}
+
+        offset = -local_timezone;
+
+        clock_unset_tz (systz);
+
+        return offset;
+}
+
+static char *
+format_time (struct tm   *now, 
+             char        *tzname,
+             gboolean  	  twelveh)
+{
+	char buf[256];
+	char *format;
+	time_t local_t;
+	struct tm local_now;
+	char *utf8;	
+	char *tmp;	
+	long hours, minutes;
+
+	time (&local_t);
+	localtime_r (&local_t, &local_now);
+
+	if (local_now.tm_wday != now->tm_wday) {
+		if (twelveh) {
+			/* Translators: This is a strftime format string.
+			 * It is used to display the time in 12-hours format
+			 * (eg, like in the US: 8:10 am), when the local
+			 * weekday differs from the weekday at the location
+			 * (the %A expands to the weekday). The %p expands to
+			 * am/pm. */
+			format = _("%l:%M <small>%p (Yesterday)</small>");
+		}
+		else {
+			/* Translators: This is a strftime format string.
+			 * It is used to display the time in 24-hours format
+			 * (eg, like in France: 20:10), when the local
+			 * weekday differs from the weekday at the location
+			 * (the %A expands to the weekday). */
+			format = _("%H:%M <small>(Yesterday)</small>");
+		}
+	}
+	else {
+		if (twelveh) {
+			/* Translators: This is a strftime format string.
+			 * It is used to display the time in 12-hours format
+			 * (eg, like in the US: 8:10 am). The %p expands to
+			 * am/pm. */
+			format = _("%l:%M <small>%p</small>");
+		}
+		else {
+			/* Translators: This is a strftime format string.
+			 * It is used to display the time in 24-hours format
+			 * (eg, like in France: 20:10). */
+			format = _("%H:%M");
+		}
+	}
+
+	if (strftime (buf, sizeof (buf), format, now) <= 0) {
+		strcpy (buf, "???");
+	}
+
+	tmp = g_strdup_printf ("%s <small>%s</small>", buf, tzname);
+
+	utf8 = g_locale_to_utf8 (tmp, -1, NULL, NULL, NULL);
+
+	g_free (tmp);
+
+	return utf8;
+}
+
+char *
+mnp_format_time_from_location (GWeatherLocation *location)
+{
+	GWeatherTimezone *tzone;
+	char *tzid;
+	char *tzname;
+	static SystemTimezone *systz = NULL; 
+	struct tm now;
+	long offset;
+	char *fmt_time;
+
+	if (!systz)
+		systz = system_timezone_new ();
+
+	tzone =  gweather_location_get_timezone (location);
+	tzid = (char *)gweather_timezone_get_tzid (tzone);
+	tzname = g_strdup (get_tzname(tzid));
+	clock_location_localtime (systz, tzid, &now);
+	fmt_time = format_time (&now, tzname, TRUE);
+
+	g_free(tzname);
+
+	return fmt_time;
 }

@@ -22,6 +22,11 @@
 #include <clutter/clutter.h>
 #include <mx/mx.h>
 
+#define GWEATHER_I_KNOW_THIS_IS_UNSTABLE
+#include <libgweather/gweather-xml.h>
+#include <libgweather/gweather-location.h>
+#include <libgweather/weather.h>
+
 #ifndef _MNP_UTILS_H
 #define _MNP_UTILS_H
 
@@ -36,5 +41,6 @@ enum
 
 
 ClutterModel * mnp_get_world_timezones (void);
+const GWeatherLocation * mnp_utils_get_location_from_display (ClutterModel *store, const char *display);
 
 #endif 

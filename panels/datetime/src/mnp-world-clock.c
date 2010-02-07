@@ -28,9 +28,6 @@
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-entry.h>
 
-#define GWEATHER_I_KNOW_THIS_IS_UNSTABLE
-#include <libgweather/gweather-location.h>
-
 #include "mnp-world-clock.h"
 #include "mnp-utils.h"
 #include "mnp-button-item.h"
@@ -212,8 +209,20 @@ static void
 add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+	const GWeatherLocation *location;
+	GWeatherTimezone *zone;
 
+	priv->search_text = NULL;
+	g_signal_emit_by_name (priv->zones_model, "filter-changed");
+	
   	printf("Selected %s\n", (char *)mx_entry_get_text (priv->search_location));
+	location = mnp_utils_get_location_from_display (priv->zones_model, mx_entry_get_text (priv->search_location));
+	printf("loc %p\n", location); 
+	zone = gweather_location_get_timezone (location);
+
+
+	printf("%s: %s\n", gweather_location_get_city_name (location), gweather_timezone_get_tzid (zone));
+	mnp_format_time_from_location (location);
 }
 
 static void 
