@@ -101,6 +101,18 @@ AnerleyTile *.AnerleyTileSecondaryLabel
   background-color: #ffffffff;
 }
 
+*#clock-tile
+{
+  border-image: url('dp-scroll-view-bin-bg.png') 10;
+  background-color: #7e7e7eff;
+}
+
+*#clock-area
+{
+  background-color: #7e7e7eff;
+}
+
+
 *#completion-list-view
 {
   padding: 8

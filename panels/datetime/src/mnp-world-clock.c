@@ -32,6 +32,10 @@
 #include "mnp-utils.h"
 #include "mnp-button-item.h"
 
+#include "mnp-clock-tile.h"
+#include "mnp-clock-area.h"
+
+
 G_DEFINE_TYPE (MnpWorldClock, mnp_world_clock, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -241,12 +245,14 @@ mnp_completion_done (gpointer data, const char *zone)
 static void
 mnp_world_clock_construct (MnpWorldClock *world_clock)
 {
-	ClutterActor *entry, *scroll, *view, *box;
+	ClutterActor *entry, *scroll, *view, *box, *stage;
 	MxTable *table = (MxTable *)world_clock;
 	gfloat width, height;
 	ClutterModel *model;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	MnpButtonItem *button_item;
+
+	stage = clutter_stage_get_default ();
 
 	mx_table_set_col_spacing (MX_TABLE (table), 1);
 	mx_table_set_row_spacing (MX_TABLE (table), 1);
@@ -309,6 +315,36 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	button_item = mnp_button_item_new ((gpointer)world_clock, mnp_completion_done);
 	mx_list_view_set_factory (MX_LIST_VIEW (view), (MxItemFactory *)button_item);
 	mx_list_view_add_attribute (MX_LIST_VIEW (view), "label", 0);
+
+	/* Test DND */
+	{
+		MnpClockTile *tile;
+		MnpClockArea *area = mnp_clock_area_new ();
+
+		clutter_actor_get_size (box, &width, &height);
+
+		clutter_actor_set_size (area, -1, 500);
+ 	 	clutter_actor_set_position (area, 6, 50);  
+		clutter_actor_set_reactive (area, TRUE);
+  		clutter_actor_set_name (area, "clock-area");
+		clutter_actor_set_size (area, -1, 500);
+
+		tile = mnp_clock_tile_new ();
+		clutter_container_add_actor (tile, mx_label_new("actor1"));		
+		mnp_clock_area_add_tile (area, tile);
+
+		tile = mnp_clock_tile_new ();
+		clutter_container_add_actor (tile, mx_label_new("actor2"));		
+		mnp_clock_area_add_tile (area, tile);
+
+		tile = mnp_clock_tile_new ();
+		clutter_container_add_actor (tile, mx_label_new("actor3"));		
+		mnp_clock_area_add_tile (area, tile);
+		
+		clutter_container_add_actor (stage, area);
+		mx_droppable_enable (area);
+		
+	}
 
 }
 

@@ -18,7 +18,13 @@ moblin_panel_date_time_SOURCES = moblin-panel-date-time.c	\
 				 mnp-utils.c 		\
 				 mnp-utils.h		\
 				 mnp-button-item.c	\
-				 mnp-button-item.h
+				 mnp-button-item.h	\
+				 system-timezone.c	\
+				 system-timezone.h	\
+				 mnp-clock-tile.c	\
+				 mnp-clock-tile.h	\
+				 mnp-clock-area.c	\
+				 mnp-clock-area.h	
 
 
 servicedir = $(datadir)/dbus-1/services
