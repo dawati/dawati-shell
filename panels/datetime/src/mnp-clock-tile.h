@@ -26,6 +26,7 @@
 #include <glib-object.h>
 
 #include <mx/mx.h>
+#include "mnp-utils.h"
 
 G_BEGIN_DECLS
 
@@ -53,7 +54,7 @@ struct _MnpClockTileClass
 };
 
 GType mnp_clock_tile_get_type (void);
-MnpClockTile * mnp_clock_tile_new (void);
+MnpClockTile * mnp_clock_tile_new (GWeatherLocation *);
 
 G_END_DECLS
 

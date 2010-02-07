@@ -112,6 +112,26 @@ AnerleyTile *.AnerleyTileSecondaryLabel
   background-color: #7e7e7eff;
 }
 
+*#mnp-tile-time
+{
+  padding: 10;
+  font-size: 22;
+  font-family: "Droid Sans";
+}
+
+*#mnp-tile-city
+{
+  padding: 6;
+  font-size: 16;
+  font-family: "Droid Sans";
+}
+
+*#mnp-tile-date
+{
+  padding: 2
+  font-size: 10;
+  font-family: "Droid Sans";
+}
 
 *#completion-list-view
 {

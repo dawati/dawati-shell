@@ -57,6 +57,8 @@ struct _MnpWorldClockPrivate {
 	ClutterActor *add_location;
 
 	const char *search_text;
+
+	MnpClockArea *area;
 };
 
 static void
@@ -157,7 +159,7 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 	GWeatherLocation *loc;
 	gboolean is_first_word = TRUE, match;
 	int len;
-	const char *key = priv->search_text;
+	char *key = g_ascii_strdown(priv->search_text, -1);
 
 	if (!priv->search_text || !*priv->search_text)
 		return TRUE;
@@ -170,6 +172,7 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 
     	if (!loc) {
 		g_free (name_mem);
+		g_free (key);
 		return FALSE;
     	}
 
@@ -181,6 +184,7 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 		name = find_word (name, key, len, TRUE, is_first_word);
 		if (!name) {
 	    		g_free (name_mem);
+			g_free (key);
 	    		return FALSE;
 		}
 
@@ -197,6 +201,7 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 	/* The last word in KEY must match a prefix of a following word in NAME */
 	match = find_word (name, key, strlen (key), FALSE, is_first_word) != NULL;
 	g_free (name_mem);
+	g_free (key);
 	return match;
 }
 
@@ -215,18 +220,16 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	const GWeatherLocation *location;
 	GWeatherTimezone *zone;
+	MnpClockTile *tile;
 
 	priv->search_text = NULL;
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");
 	
-  	printf("Selected %s\n", (char *)mx_entry_get_text (priv->search_location));
 	location = mnp_utils_get_location_from_display (priv->zones_model, mx_entry_get_text (priv->search_location));
-	printf("loc %p\n", location); 
-	zone = gweather_location_get_timezone (location);
+	mx_entry_set_text (priv->search_location, "");
 
-
-	printf("%s: %s\n", gweather_location_get_city_name (location), gweather_timezone_get_tzid (zone));
-	mnp_format_time_from_location (location);
+	tile = mnp_clock_tile_new (location);
+	mnp_clock_area_add_tile (priv->area, tile);
 }
 
 static void 
@@ -316,35 +319,18 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_list_view_set_factory (MX_LIST_VIEW (view), (MxItemFactory *)button_item);
 	mx_list_view_add_attribute (MX_LIST_VIEW (view), "label", 0);
 
-	/* Test DND */
-	{
-		MnpClockTile *tile;
-		MnpClockArea *area = mnp_clock_area_new ();
+	priv->area = mnp_clock_area_new ();
+	clutter_actor_get_size (box, &width, &height);
 
-		clutter_actor_get_size (box, &width, &height);
+	clutter_actor_set_size (priv->area, width, 500);
+	clutter_actor_set_position (priv->area, 6, 50);  
+	clutter_actor_set_reactive (priv->area, TRUE);
+	clutter_actor_set_name (priv->area, "clock-area");
 
-		clutter_actor_set_size (area, -1, 500);
- 	 	clutter_actor_set_position (area, 6, 50);  
-		clutter_actor_set_reactive (area, TRUE);
-  		clutter_actor_set_name (area, "clock-area");
-		clutter_actor_set_size (area, -1, 500);
+	clutter_container_add_actor (stage, priv->area);
+	clutter_actor_lower_bottom (priv->area);
+	mx_droppable_enable (priv->area);
 
-		tile = mnp_clock_tile_new ();
-		clutter_container_add_actor (tile, mx_label_new("actor1"));		
-		mnp_clock_area_add_tile (area, tile);
-
-		tile = mnp_clock_tile_new ();
-		clutter_container_add_actor (tile, mx_label_new("actor2"));		
-		mnp_clock_area_add_tile (area, tile);
-
-		tile = mnp_clock_tile_new ();
-		clutter_container_add_actor (tile, mx_label_new("actor3"));		
-		mnp_clock_area_add_tile (area, tile);
-		
-		clutter_container_add_actor (stage, area);
-		mx_droppable_enable (area);
-		
-	}
 
 }
 

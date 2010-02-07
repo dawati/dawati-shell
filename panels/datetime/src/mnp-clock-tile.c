@@ -25,6 +25,7 @@
 #include <glib/gi18n-lib.h>
 
 #include "mnp-clock-tile.h"
+#include "mnp-utils.h"
 
 struct _MnpClockTilePriv {
 	/* Draggable properties */
@@ -36,6 +37,7 @@ struct _MnpClockTilePriv {
 	ClutterActorBox area;
 
 	guint is_enabled : 1;
+	GWeatherLocation *loc;
 };
 
 enum
@@ -74,7 +76,6 @@ mnp_clock_tile_drag_begin (MxDraggable *draggable, gfloat event_x, gfloat event_
 	clutter_actor_get_transformed_position (self, &orig_x, &orig_y);
 	clutter_actor_reparent (self, stage);
 	clutter_actor_set_position (self, orig_x, orig_y);
-
 	g_object_unref (self);
 
 	clutter_actor_animate (self, CLUTTER_EASE_OUT_CUBIC, 250,
@@ -293,12 +294,54 @@ mnp_clock_tile_get_type (void)
 	return type;
 }
 
+static void
+mnp_clock_construct (MnpClockTile *tile)
+{
+	GWeatherTimezone *zone;
+	MnpDateFormat *fmt;
+	ClutterActor *box1, *box2, *label1, *label2, *label3;
+
+	fmt = mnp_format_time_from_location (tile->priv->loc);
+
+	label1 = mx_label_new (fmt->date);
+	clutter_actor_set_name (label1, "mnp-tile-date");
+
+	label2 = mx_label_new (fmt->time);
+	clutter_actor_set_name (label2, "mnp-tile-time");
+
+	label3 = mx_label_new (fmt->city);
+	clutter_actor_set_name (label3, "mnp-tile-city");
+
+
+	box1 = mx_box_layout_new ();
+	clutter_actor_set_name (box1, "mnp-tile-date-city");
+	mx_box_layout_set_vertical ((MxBoxLayout *)box1, TRUE);
+	mx_box_layout_set_pack_start ((MxBoxLayout *)box1, FALSE);
+
+	clutter_container_add_actor (box1, label3);
+	clutter_container_add_actor (box1, label1);
+
+	mx_box_layout_set_vertical ((MxBoxLayout *)tile, FALSE);
+	mx_box_layout_set_pack_start ((MxBoxLayout *)tile, FALSE);
+	clutter_container_add_actor (tile, box1);
+	clutter_container_add_actor (tile, label2);
+
+	clutter_actor_show_all (tile);
+}
+
 MnpClockTile *
-mnp_clock_tile_new (void)
+mnp_clock_tile_new (GWeatherLocation *location)
 {
 	MnpClockTile *tile = g_object_new (MNP_TYPE_CLOCK_TILE, NULL);
 
 	tile->priv = g_new0(MnpClockTilePriv, 1);
 	tile->priv->is_enabled = 1;
+  	tile->priv->threshold = 0;
+	tile->priv->axis = 0;
+  	tile->priv->is_enabled = TRUE;
+	tile->priv->loc = location;
+
+	mnp_clock_construct (tile);
+
 	return tile;
 }

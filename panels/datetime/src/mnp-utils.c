@@ -326,59 +326,59 @@ format_time (struct tm   *now,
 	char *utf8;	
 	char *tmp;	
 	long hours, minutes;
+	MnpDateFormat *fmt = g_new0 (MnpDateFormat, 1);
 
 	time (&local_t);
 	localtime_r (&local_t, &local_now);
 
-	if (local_now.tm_wday != now->tm_wday) {
-		if (twelveh) {
-			/* Translators: This is a strftime format string.
-			 * It is used to display the time in 12-hours format
-			 * (eg, like in the US: 8:10 am), when the local
-			 * weekday differs from the weekday at the location
-			 * (the %A expands to the weekday). The %p expands to
-			 * am/pm. */
-			format = _("%l:%M <small>%p (Yesterday)</small>");
-		}
-		else {
-			/* Translators: This is a strftime format string.
-			 * It is used to display the time in 24-hours format
-			 * (eg, like in France: 20:10), when the local
-			 * weekday differs from the weekday at the location
-			 * (the %A expands to the weekday). */
-			format = _("%H:%M <small>(Yesterday)</small>");
-		}
+	if (twelveh) {
+		/* Translators: This is a strftime format string.
+		 * It is used to display the time in 12-hours format
+		 * (eg, like in the US: 8:10 am), when the local
+		 * weekday differs from the weekday at the location
+		 * (the %A expands to the weekday). The %p expands to
+		 * am/pm. */
+		format = _("%l:%M %p");
 	}
 	else {
-		if (twelveh) {
-			/* Translators: This is a strftime format string.
-			 * It is used to display the time in 12-hours format
-			 * (eg, like in the US: 8:10 am). The %p expands to
-			 * am/pm. */
-			format = _("%l:%M <small>%p</small>");
-		}
-		else {
-			/* Translators: This is a strftime format string.
-			 * It is used to display the time in 24-hours format
-			 * (eg, like in France: 20:10). */
-			format = _("%H:%M");
-		}
+		/* Translators: This is a strftime format string.
+		 * It is used to display the time in 24-hours format
+		 * (eg, like in France: 20:10), when the local
+		 * weekday differs from the weekday at the location
+		 * (the %A expands to the weekday). */
+		format = _("%H:%M <small>(Yesterday)</small>");
+	}
+
+	if (strftime (buf, sizeof (buf), format, now) <= 0) {
+		strcpy (buf, "???");
+	}
+	utf8 = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL);
+	fmt->time = utf8;
+
+	if (local_now.tm_wday != now->tm_wday) {
+		/* Translators: This is a strftime format string.
+		 * It is used to display in Aug 6 (Yesterday) */
+		
+		format = _("%b %d (Yesterday)");
+	}
+	else {
+		/* Translators: This is a strftime format string.
+		 * It is used to display in Aug 6 */
+		
+		format = _("%b %d");
 	}
 
 	if (strftime (buf, sizeof (buf), format, now) <= 0) {
 		strcpy (buf, "???");
 	}
 
-	tmp = g_strdup_printf ("%s <small>%s</small>", buf, tzname);
+	utf8 = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL);
+	fmt->date = utf8;
 
-	utf8 = g_locale_to_utf8 (tmp, -1, NULL, NULL, NULL);
-
-	g_free (tmp);
-
-	return utf8;
+	return fmt;
 }
 
-char *
+MnpDateFormat *
 mnp_format_time_from_location (GWeatherLocation *location)
 {
 	GWeatherTimezone *tzone;
@@ -387,7 +387,7 @@ mnp_format_time_from_location (GWeatherLocation *location)
 	static SystemTimezone *systz = NULL; 
 	struct tm now;
 	long offset;
-	char *fmt_time;
+	MnpDateFormat *fmt;
 
 	if (!systz)
 		systz = system_timezone_new ();
@@ -396,9 +396,10 @@ mnp_format_time_from_location (GWeatherLocation *location)
 	tzid = (char *)gweather_timezone_get_tzid (tzone);
 	tzname = g_strdup (get_tzname(tzid));
 	clock_location_localtime (systz, tzid, &now);
-	fmt_time = format_time (&now, tzname, TRUE);
+	fmt = format_time (&now, tzname, TRUE);
 
+	fmt->city = gweather_location_get_city_name (location);
 	g_free(tzname);
 
-	return fmt_time;
+	return fmt;
 }

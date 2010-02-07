@@ -39,6 +39,11 @@ enum
     GWEATHER_LOCATION_ENTRY_NUM_COLUMNS
 };
 
+typedef struct _mnp_date_fmt {
+	char *date;
+	char *city;
+	char *time;
+}MnpDateFormat;
 
 ClutterModel * mnp_get_world_timezones (void);
 const GWeatherLocation * mnp_utils_get_location_from_display (ClutterModel *store, const char *display);

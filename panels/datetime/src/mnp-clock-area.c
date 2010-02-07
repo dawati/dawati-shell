@@ -68,7 +68,6 @@ mnp_clock_area_accept_drop (MxDroppable *droppable, MxDraggable *draggable)
 static void
 mnp_clock_area_over_in (MxDroppable *droppable, MxDraggable *draggable)
 {
-  g_debug (G_STRLOC ": over-in");
   clutter_actor_animate (CLUTTER_ACTOR (droppable),
                          CLUTTER_EASE_IN_CUBIC,
                          250,
@@ -79,7 +78,6 @@ mnp_clock_area_over_in (MxDroppable *droppable, MxDraggable *draggable)
 static void
 mnp_clock_area_over_out (MxDroppable *droppable, MxDraggable *draggable)
 {
-  g_debug (G_STRLOC ": over-out");
   clutter_actor_animate (CLUTTER_ACTOR (droppable),
                          CLUTTER_EASE_IN_CUBIC,
                          250,
@@ -94,18 +92,18 @@ mnp_clock_area_drop (MxDroppable *droppable, MxDraggable *draggable, gfloat even
   ClutterActor *self = CLUTTER_ACTOR (droppable);
   ClutterActor *child = CLUTTER_ACTOR (draggable);
 
-  g_debug ("%s: dropped %s on '%s' (%s) at %.2f, %.2f",
+ /* g_debug ("%s: dropped %s on '%s' (%s) at %.2f, %.2f",
            G_STRLOC,
            G_OBJECT_TYPE_NAME (draggable),
            clutter_actor_get_name (self),
            G_OBJECT_TYPE_NAME (droppable),
            event_x, event_y);
-
+*/
   g_object_ref (draggable);
 
   clutter_actor_reparent (child, self);
   clutter_actor_set_position (CLUTTER_ACTOR (draggable),
-                              (event_x < 100) ? 50 : 100,
+                              (event_x > 100) ? 50 : 100,
                               (event_y < 100) ? 50 : 100);
 
   g_object_unref (draggable);	
@@ -270,7 +268,9 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	clutter_container_add_actor (clutter_stage_get_default(), tile);
 	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_Y_AXIS);
 	mx_draggable_enable (tile);
-	clutter_actor_set_size (tile, 200, 50);
-	clutter_actor_set_position (tile, 6, area->priv->position);  
-	area->priv->position += 55;
+	clutter_actor_set_size (tile, 200, 100);
+	clutter_actor_set_position (tile, 10, area->priv->position);  
+	area->priv->position += 110;
+
+	area->priv->clock_tiles = g_list_append (area->priv->clock_tiles, tile);
 }
