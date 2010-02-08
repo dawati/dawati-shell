@@ -204,7 +204,6 @@ penge_grid_view_init (PengeGridView *self)
   ClutterActor *div_tex;
   GError *error = NULL;
 
-#if 0
   priv->calendar_pane = g_object_new (PENGE_TYPE_CALENDAR_PANE,
                                       NULL);
   clutter_actor_set_width (priv->calendar_pane, 280);
@@ -221,19 +220,20 @@ penge_grid_view_init (PengeGridView *self)
                                "x-expand", FALSE,
                                "x-fill", FALSE,
                                NULL);
-#endif
 
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
                                             NULL);
 
+  clutter_actor_set_width (priv->favourite_apps_pane, 280);
   mx_table_add_actor (MX_TABLE (self),
                       priv->favourite_apps_pane,
-                      0,
+                      1,
                       0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                priv->favourite_apps_pane,
                                "y-expand", TRUE,
-                               "y-fill", TRUE,
+                               "y-fill", FALSE,
+                               "y-align", 1.0,
                                "x-expand", FALSE,
                                "x-fill", FALSE,
                                NULL);
@@ -257,6 +257,8 @@ penge_grid_view_init (PengeGridView *self)
                                  FALSE,
                                  "x-fill",
                                  FALSE,
+                                 "row-span",
+                                 2,
                                  NULL);
   }
 
@@ -266,6 +268,7 @@ penge_grid_view_init (PengeGridView *self)
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       priv->everything_pane,
                                       0, 2,
+                                      "row-span", 2,
                                       "x-expand", TRUE,
                                       "y-expand", TRUE,
                                       "x-fill", TRUE,
