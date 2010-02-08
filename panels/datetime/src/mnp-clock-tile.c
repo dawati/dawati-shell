@@ -49,6 +49,8 @@ struct _MnpClockTilePriv {
 	MxButton *remove_button;
 	TileRemoveFunc remove_cb;
 	gpointer *remove_data;
+
+	gfloat depth;
 };
 
 enum
@@ -81,11 +83,14 @@ mnp_clock_tile_drag_begin (MxDraggable *draggable, gfloat event_x, gfloat event_
 	ClutterActor *self = CLUTTER_ACTOR (draggable);
 	ClutterActor *stage = clutter_actor_get_stage (self);
 	gfloat orig_x, orig_y;
+	MnpClockTile *tile = (MnpClockTile *)draggable;
 
 	g_object_ref (self);
 
+	tile->priv->depth = clutter_actor_get_depth (self);
 	clutter_actor_get_transformed_position (self, &orig_x, &orig_y);
 	clutter_actor_reparent (self, stage);
+	clutter_actor_raise_top (self);
 	clutter_actor_set_position (self, orig_x, orig_y);
 	g_object_unref (self);
 
@@ -104,10 +109,13 @@ static void
 mnp_clock_tile_drag_end (MxDraggable *draggable, gfloat event_x, gfloat event_y)
 {
 	ClutterActor *self = CLUTTER_ACTOR (draggable);
+	MnpClockTile *tile = (MnpClockTile *)draggable;
 
 	clutter_actor_animate (self, CLUTTER_EASE_OUT_CUBIC, 250,
                          	"opacity", 255,
                          	NULL);	
+	clutter_actor_set_depth (self, tile->priv->depth);
+	tile->priv->depth = 0.0;
 }
 
 static void

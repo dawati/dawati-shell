@@ -31,7 +31,7 @@ struct _MnpClockAreaPriv {
 	ClutterActor *background;
 
 	guint is_enabled : 1;
-	GList *clock_tiles;
+	GPtrArray *clock_tiles;
 	int position;
 	time_t time_now;
 	guint source;
@@ -255,12 +255,12 @@ mnp_clock_area_get_type (void)
 gboolean
 clock_ticks (MnpClockArea *area)
 {
-	GList *tmp = area->priv->clock_tiles;
+	int i;
+	GPtrArray *tmp = area->priv->clock_tiles;
 
 	mnp_clock_area_refresh_time(area);
-	while(tmp) {
-		mnp_clock_tile_refresh ((MnpClockTile *)tmp->data, area->priv->time_now);
-		tmp = tmp->next;
+	for (i=0; i<tmp->len; i++) { 
+		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now);
 	}
 
 	return TRUE;
@@ -273,13 +273,13 @@ mnp_clock_area_new (void)
 
 	area->priv = g_new0(MnpClockAreaPriv, 1);
 	area->priv->is_enabled = 1;
-	area->priv->clock_tiles = NULL;
+	area->priv->clock_tiles = g_ptr_array_new ();
 	area->priv->position = 60;
 	mx_box_layout_set_vertical ((MxBoxLayout *)area, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)area, TRUE);
 	
 	area->priv->time_now = time(NULL);
-
+	mx_box_layout_set_spacing (area, 10);
 	area->priv->source = g_timeout_add (1000, (GSourceFunc)clock_ticks, area);
 
 	return area;
@@ -288,7 +288,7 @@ mnp_clock_area_new (void)
 static void
 mnp_clock_tile_removed (MnpClockTile *tile, MnpClockArea *area)
 {
-	area->priv->clock_tiles = g_list_remove (area->priv->clock_tiles, tile);	
+	g_ptr_array_remove (area->priv->clock_tiles, tile);	
 	
 	area->priv->zone_remove_func (area, mnp_clock_tile_get_location(tile), area->priv->zone_remove_data);
 }
@@ -303,10 +303,9 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_Y_AXIS);
 	mx_draggable_enable (tile);
 	clutter_actor_set_size (tile, 212, 75);
-	clutter_actor_set_position (tile, 15, area->priv->position);  
 	area->priv->position += 85;
-
-	area->priv->clock_tiles = g_list_append (area->priv->clock_tiles, tile);
+	clutter_actor_reparent (tile, area);
+	g_ptr_array_add (area->priv->clock_tiles, tile);
 	mnp_clock_tile_set_remove_cb (tile, (TileRemoveFunc)mnp_clock_tile_removed, (gpointer)area);
 }
 
