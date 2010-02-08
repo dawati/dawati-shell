@@ -3,6 +3,7 @@
  * Copyright (C) 2010, Intel Corporation.
  *
  * Authors: Danielle Madeley <danielle.madeley@collabora.co.uk>
+ *          Rob Bradford <rob@linux.intel.com>
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -37,15 +38,15 @@ typedef struct
 } PresenceTuple;
 
 static const PresenceTuple presences[NUM_TP_CONNECTION_PRESENCE_TYPES] = {
-  { N_("Unset"), NULL, "presence-offline.png"},
-  { N_("Offline"), "offline", "presence-offline.png"},
-  { N_("Available"), "available", "presence-available.png"},
-  { N_("Away"), "away", "presence-away.png"},
-  { N_("Extended Away"), "xa", "presence-away.png"},
-  { N_("Hidden"), "hidden", "presence-offline.png"},
-  { N_("Busy"), "busy", "presence-busy.png"},
-  { N_("Unknown"), "unknown", "presence-offline.png"},
-  { N_("Error"), "error", "presence-offline.png"},
+  { N_("Unset"), NULL, "user-offline"},
+  { N_("Offline"), "offline", "user-offline"},
+  { N_("Available"), "available", "user-available"},
+  { N_("Away"), "away", "user-away"},
+  { N_("Extended Away"), "xa", "user-away"},
+  { N_("Hidden"), "hidden", "user-offline"},
+  { N_("Busy"), "busy", "user-busy"},
+  { N_("Unknown"), "unknown", "user-offline"},
+  { N_("Error"), "error", "user-offline"},
 };
 
 typedef struct
@@ -87,7 +88,7 @@ anerley_presence_chooser_get_icon (TpConnectionPresenceType presence)
 
   p = &presences[presence];
 
-  return g_build_filename (PKG_DATA_DIR, p->icon, NULL);
+  return p->icon;
 }
 
 static void
@@ -193,11 +194,12 @@ _append_presence (MxComboBox               *combo,
 {
   AnerleyPresenceChooserPrivate *priv = GET_PRIVATE (combo);
   ComboEntry entry = { 0, };
-  const gchar *name;
+  const gchar *name, *icon;
 
   name = anerley_presence_chooser_get_default_message (presence);
+  icon = anerley_presence_chooser_get_icon (presence);
 
-  mx_combo_box_append_text (combo, name);
+  mx_combo_box_insert_text_with_icon (combo, -1, name, icon);
 
   entry.presence = presence;
   g_array_append_val (priv->combo_entries, entry);
