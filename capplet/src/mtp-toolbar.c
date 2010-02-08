@@ -496,6 +496,21 @@ mtp_toolbar_new (void)
   return g_object_new (MTP_TYPE_TOOLBAR, NULL);
 }
 
+static void
+mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
+                                  ClutterActor     *old_parent,
+                                  MtpToolbar       *toolbar)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+
+  if (old_parent == priv->panel_area || old_parent == priv->applet_area)
+    mtp_toolbar_fill_space (toolbar);
+
+  g_signal_handlers_disconnect_by_func (button,
+                                        mtp_toolbar_button_parent_set_cb,
+                                        toolbar);
+}
+
 void
 mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
 {
@@ -542,6 +557,10 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
                                        button,
                                        "expand", FALSE, NULL);
         }
+
+      g_signal_connect (button, "parent-set",
+                        G_CALLBACK (mtp_toolbar_button_parent_set_cb),
+                        toolbar);
     }
   else
     g_warning (G_STRLOC ":%s: unsupported actor type %s",
@@ -686,6 +705,10 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
                                        button,
                                        "expand", FALSE, NULL);
         }
+
+      g_signal_connect (button, "parent-set",
+                        G_CALLBACK (mtp_toolbar_button_parent_set_cb),
+                        toolbar);
     }
 
   g_list_free (children);
