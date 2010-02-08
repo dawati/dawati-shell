@@ -112,6 +112,8 @@ mpd_disk_tile_init (MpdDiskTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);
 
   priv->meter = mx_progress_bar_new ();
+  // TODO remove this once mx is fixed.
+  clutter_actor_set_size (priv->meter, 280., 18.);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->meter);
 
   update (self);
