@@ -101,6 +101,7 @@ mpd_disk_tile_init (MpdDiskTile *self)
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
   priv->disk = mpd_disk_device_new ();
   g_signal_connect (priv->disk, "notify::size",

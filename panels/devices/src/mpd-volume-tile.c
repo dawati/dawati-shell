@@ -252,6 +252,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   ClutterActor  *mute_label;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
   label = mx_label_new (_("Netbook volume"));
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
@@ -262,6 +263,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
                     G_CALLBACK (_volume_slider_progress_notify_cb), self);
 
   mute_box = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (mute_box), 6);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), mute_box);
   clutter_container_child_set (CLUTTER_CONTAINER (self), mute_box,
                                "expand", FALSE,

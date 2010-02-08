@@ -1,13 +1,8 @@
 
 /* Theme goes here  */
 
-MxFrame {
+*.frame {
   border-image: url('frame-border.png') 10;
-  padding: 10;
-}
-
-MxSlider MxFrame {
-  border-image: none;
-  padding: 0;
+  padding: 12;
 }
 
