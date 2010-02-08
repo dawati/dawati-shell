@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-10 20:49+0000\n"
-"PO-Revision-Date: 2010-02-07 17:06+0100\n"
+"PO-Revision-Date: 2010-02-08 17:15+0100\n"
 "Last-Translator: Petr Novák <peta.en@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -189,7 +189,7 @@ msgstr "Zabezpečení sítě"
 
 #: ../carrick/carrick-pane.c:701
 msgid "None"
-msgstr "Žádný"
+msgstr "Žádné"
 
 #: ../carrick/carrick-pane.c:715
 msgid "Password"
@@ -212,7 +212,7 @@ msgstr "Přidat nové připojení"
 #: ../carrick/carrick-pane.c:1501
 #: ../carrick/carrick-service-item.c:249
 msgid "Wired"
-msgstr "Drátová"
+msgstr "Drát"
 
 #: ../carrick/carrick-pane.c:1639
 msgid "Offline mode"
