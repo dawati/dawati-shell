@@ -97,12 +97,10 @@ window_workspace_changed (SwWindow   *window,
 
   if (!ws)
     {
-      wnck_screen_change_workspace_count (screen, new_workspace);
-
       g_signal_connect (screen, "workspace-created",
                         G_CALLBACK (workspace_added_for_window), win);
 
-      ws = wnck_screen_get_workspace (screen, new_workspace -1);
+      wnck_screen_change_workspace_count (screen, new_workspace);
     }
   else
     wnck_window_move_to_workspace (win, ws);
