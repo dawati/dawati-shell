@@ -2,13 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-19 09:23+0000\n"
+"POT-Creation-Date: 2009-12-03 23:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ceyhun Alyesil <ceyhunalyesil@gmail.com>\n"
 "Language-Team: \n"
@@ -16,132 +15,116 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
-msgid "Less than a minute ago"
-msgstr "Bir dakikadan önce"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
-msgid "A few minutes ago"
-msgstr "Bir kaç dakika önce"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
-msgid "A couple of hours ago"
-msgstr "Bir kaç saat önce"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
-msgid "Earlier today"
-msgstr "Bugün erken saatlerde"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
-msgid "Yesterday"
-msgstr "Dün"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
-#, c-format
-msgid "On %A"
-msgstr "%A da"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
-msgid "Unknown"
-msgstr "Bilinmiyor"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
-msgid "Last week"
-msgstr "Geçen hafta"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
-msgid "A couple of weeks ago"
-msgstr "Bir kaç hafta önce"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
-msgid "This month"
-msgstr "Bu ay"
-
-#. Now Jan., last used in Dec.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
-msgid "Last month"
-msgstr "Geçen ay"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
-msgid "This year"
-msgstr "Bu yıl"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
-msgid "Last year"
-msgstr "Geçen yıl"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
-msgid "Ages ago"
-msgstr "Asırlar önce"
-
-#: ../src/moblin-netbook.c:305 ../src/mnb-toolbar.c:1341
+#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "Alanlar"
 
-#: ../src/moblin-netbook.c:412
+#: ../src/moblin-netbook.c:621
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook Efektleri"
 
-#: ../src/moblin-netbook.c:416
+#: ../src/moblin-netbook.c:625
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin Netbooklar için Efektler"
 
-#: ../src/mnb-notification.c:266
+#: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
 msgstr "Bırak"
 
-#: ../src/mnb-notification-cluster.c:657
+#: ../src/notifications/mnb-notification-cluster.c:668
 msgid "Dismiss All"
 msgstr "Hepsini Bırak"
+
+#: ../src/switcher/mnb-switcher.c:307
+msgid "No Zones yet"
+msgstr "Şuan alan yok"
+
+#: ../src/switcher/mnb-switcher.c:327
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Kullandığınız uygulamalar burada gösterilecek. Onları istediğiniz gibi değiştiriporganize edebileceksiniz."
+
+#: ../src/switcher/mnb-switcher-zone-apps.c:463
+msgid "No applications on this zone"
+msgstr "Bu alanda bir uygulama yok"
+
+#: ../src/moblin-netbook.c:2543
+msgid "Unknown window"
+msgstr "Bilinmeyen pencere"
+
+#: ../src/moblin-netbook.c:2529
+msgid "Activate"
+msgstr "Etkinleştir"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
+#. 
 #: ../src/mnb-toolbar.c:668
 msgid "%l:%M %P"
-msgstr ""
+msgstr "%l:%M %P"
+
+#: ../src/moblin-netbook.c:2545
+msgid "Is asking for your attention."
+msgstr "dikkatinizi çekiyor"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
+#. 
 #: ../src/mnb-toolbar.c:678
 msgid "%B %e, %Y"
-msgstr ""
+msgstr "%B %e, %Y"
 
-#: ../src/mnb-toolbar.c:1578
-msgid "power & brightness"
-msgstr "güç & parlaklık"
+#~ msgid "Less than a minute ago"
+#~ msgstr "Bir dakikadan önce"
 
-#: ../src/mnb-toolbar.c:1581
-msgid "volume"
-msgstr "ses"
+#~ msgid "A few minutes ago"
+#~ msgstr "Bir kaç dakika önce"
 
-#: ../src/mnb-toolbar.c:1584
-msgid "bluetooth"
-msgstr "bluetooth"
+#~ msgid "A couple of hours ago"
+#~ msgstr "Bir kaç saat önce"
 
-#: ../src/mnb-toolbar.c:1587
-msgid "networks"
-msgstr "ağlar"
+#~ msgid "Earlier today"
+#~ msgstr "Bugün erken saatlerde"
 
-#: ../src/mnb-toolbar.c:1590
-msgid "test"
-msgstr "deneme"
+#~ msgid "Yesterday"
+#~ msgstr "Dün"
 
-#: ../src/switcher/mnb-switcher.c:240
-msgid "No Zones yet"
-msgstr "Şuan alan yok"
+#~ msgid "On %A"
+#~ msgstr "%A da"
 
-#: ../src/switcher/mnb-switcher.c:262
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Kullandığınız uygulamalar burada gösterilecek. Onları istediğiniz gibi değiştirip"
-"organize edebileceksiniz."
+#~ msgid "Last week"
+#~ msgstr "Geçen hafta"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:436
-msgid "No applications on this zone"
-msgstr "Bu alanda bir uygulama yok"
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Bir kaç hafta önce"
+
+#~ msgid "This month"
+#~ msgstr "Bu ay"
+
+#~ msgid "Last month"
+#~ msgstr "Geçen ay"
+
+#~ msgid "This year"
+#~ msgstr "Bu yıl"
+
+#~ msgid "Last year"
+#~ msgstr "Geçen yıl"
+
+#~ msgid "Ages ago"
+#~ msgstr "Asırlar önce"
+
+#~ msgid "power & brightness"
+#~ msgstr "güç & parlaklık"
+
+#~ msgid "volume"
+#~ msgstr "ses"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "ağlar"
+
+#~ msgid "test"
+#~ msgstr "deneme"
