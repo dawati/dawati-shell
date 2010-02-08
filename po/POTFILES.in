@@ -1,7 +1,7 @@
 # List of source files containing translatable strings.
-capplet/data/moblin-toolbar-properties.desktop.in
-capplet/src/moblin-toolbar-properties.c
-capplet/src/mtp-toolbar.c
+#capplet/data/moblin-toolbar-properties.desktop.in
+#capplet/src/moblin-toolbar-properties.c
+#capplet/src/mtp-toolbar.c
 data/mutter-moblin.schemas.in
 src/moblin-netbook.c
 src/mnb-toolbar.c
