@@ -6,7 +6,7 @@
       <owner>mutter-moblin</owner>
       <type>list</type>
       <list_type>string</list_type>
-      <default>[moblin-panel-myzone,moblin-panel-status,moblin-panel-people,moblin-panel-internet,moblin-panel-media,moblin-panel-applications,moblin-panel-zones,carrick,bluetooth-panel]</default>
+      <default>[moblin-panel-myzone,moblin-panel-zones,moblin-panel-applications,moblin-panel-status,moblin-panel-people,moblin-panel-internet,moblin-panel-media,moblin-panel-devices,carrick,bluetooth-panel]</default>
       <locale name="C">
          <short>Order of panels on toolbar</short>
          <long>
