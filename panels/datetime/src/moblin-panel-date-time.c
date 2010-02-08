@@ -59,7 +59,7 @@ _client_set_size_cb (MplPanelClient *client,
                           height);
 }
 
-static gboolean standalone = TRUE;
+static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
   {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL},
