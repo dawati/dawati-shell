@@ -35,11 +35,6 @@ msgstr "Mesaj gönder"
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Üzgünüz, kimseyi bulamadık. Messenger hesabınızı ayarladınız mı?"
 
-#: ../src/mnb-people-panel.c:447
-#, fuzzy
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Üzgünüz, kimseyi bulamadık. Messenger hesabınızı ayarladınız mı?"
-
 #: ../src/mnb-people-panel.c:790
 msgid "People"
 msgstr "Kişiler"
@@ -56,10 +51,6 @@ msgstr "Seçim"
 msgid "Nobody selected"
 msgstr "Kimse seçilmedi"
 
-#: ../src/mnb-people-panel.c:497
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr ""
-
 #: ../src/mnb-people-panel.c:561
 msgid "people - Someone is talking to you"
 msgstr "Kişiler - Birisi sizinle konuşuyor"
@@ -72,3 +63,11 @@ msgstr "Kişiler - %d kişi sizinle konuşuyor"
 #: ../src/mnb-people-panel.c:856
 msgid "People talking to you ..."
 msgstr "Sizinle konuşan kişiler..."
+
+#: ../src/mnb-people-panel.c:447
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Üzgünüz, kimseyi bulamadık. Hepsi çevrimdışı olabilir."
+
+#: ../src/mnb-people-panel.c:497
+msgid "To see your IM contacts, go online in the Status panel."
+msgstr "Kontaklarınızı görmek için, Statü panelinde çevrimiçi olun."
