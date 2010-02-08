@@ -54,7 +54,8 @@ struct _MnpClockTileClass
 };
 
 GType mnp_clock_tile_get_type (void);
-MnpClockTile * mnp_clock_tile_new (GWeatherLocation *);
+MnpClockTile * mnp_clock_tile_new (GWeatherLocation *, time_t time_now);
+void mnp_clock_tile_refresh (MnpClockTile *tile, time_t now);
 
 G_END_DECLS
 

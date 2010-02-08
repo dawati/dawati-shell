@@ -33,6 +33,8 @@ struct _MnpClockAreaPriv {
 	guint is_enabled : 1;
 	GList *clock_tiles;
 	int position;
+	time_t time_now;
+	guint source;
 };
 
 enum
@@ -113,6 +115,8 @@ static void
 mnp_clock_area_finalize (GObject *object)
 {
 	MnpClockArea *area = (MnpClockArea *)object;
+
+	g_source_remove (area->priv->source);
 
 	if (area->priv->background) {
 		clutter_actor_destroy (area->priv->background);
@@ -245,6 +249,20 @@ mnp_clock_area_get_type (void)
 }
 #endif
 
+gboolean
+clock_ticks (MnpClockArea *area)
+{
+	GList *tmp = area->priv->clock_tiles;
+
+	mnp_clock_area_refresh_time(area);
+	while(tmp) {
+		mnp_clock_tile_refresh ((MnpClockTile *)tmp->data, area->priv->time_now);
+		tmp = tmp->next;
+	}
+
+	return TRUE;
+}
+
 MnpClockArea *
 mnp_clock_area_new (void)
 {
@@ -257,6 +275,10 @@ mnp_clock_area_new (void)
 	mx_box_layout_set_vertical ((MxBoxLayout *)area, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)area, TRUE);
 	
+	area->priv->time_now = time(NULL);
+
+	area->priv->source = g_timeout_add (1000, (GSourceFunc)clock_ticks, area);
+
 	return area;
 }
 
@@ -274,4 +296,16 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	area->priv->position += 85;
 
 	area->priv->clock_tiles = g_list_append (area->priv->clock_tiles, tile);
+}
+
+void
+mnp_clock_area_refresh_time (MnpClockArea *area)
+{
+	area->priv->time_now = time(NULL);
+}
+
+time_t
+mnp_clock_area_get_time (MnpClockArea *area)
+{
+	return area->priv->time_now;
 }

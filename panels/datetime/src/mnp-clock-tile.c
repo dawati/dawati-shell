@@ -27,6 +27,8 @@
 #include "mnp-clock-tile.h"
 #include "mnp-utils.h"
 
+#define FREE_DFMT(fmt) g_free(fmt->date); g_free(fmt->city); g_free(fmt->time); g_free(fmt);
+
 struct _MnpClockTilePriv {
 	/* Draggable properties */
 	guint threshold;
@@ -38,6 +40,11 @@ struct _MnpClockTilePriv {
 
 	guint is_enabled : 1;
 	GWeatherLocation *loc;
+	time_t time_now;
+
+	MxEntry *date;
+	MxEntry *time;
+	MxEntry *city;
 };
 
 enum
@@ -116,11 +123,11 @@ mnp_draggable_rectangle_parent_set (ClutterActor *actor,
 {
   ClutterActor *new_parent = clutter_actor_get_parent (actor);
 
-  g_debug ("%s: old_parent: %s, new_parent: %s (%s)",
+  /*g_debug ("%s: old_parent: %s, new_parent: %s (%s)",
            G_STRLOC,
            old_parent ? G_OBJECT_TYPE_NAME (old_parent) : "none",
            new_parent ? clutter_actor_get_name (new_parent) : "Unknown",
-           new_parent ? G_OBJECT_TYPE_NAME (new_parent) : "none");
+           new_parent ? G_OBJECT_TYPE_NAME (new_parent) : "none");*/
 }
 
 static void
@@ -301,15 +308,18 @@ mnp_clock_construct (MnpClockTile *tile)
 	MnpDateFormat *fmt;
 	ClutterActor *box1, *box2, *label1, *label2, *label3;
 
-	fmt = mnp_format_time_from_location (tile->priv->loc);
+	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now);
 
 	label1 = mx_label_new (fmt->date);
+	tile->priv->date = label1;
 	clutter_actor_set_name (label1, "mnp-tile-date");
 
 	label2 = mx_label_new (fmt->time);
+	tile->priv->time = label2;
 	clutter_actor_set_name (label2, "mnp-tile-time");
 
 	label3 = mx_label_new (fmt->city);
+	tile->priv->city = label3;
 	clutter_actor_set_name (label3, "mnp-tile-city");
 	clutter_actor_set_size (label3, 110, -1);
 
@@ -327,10 +337,11 @@ mnp_clock_construct (MnpClockTile *tile)
 	clutter_container_add_actor (tile, label2);
 
 	clutter_actor_show_all (tile);
+	FREE_DFMT(fmt);
 }
 
 MnpClockTile *
-mnp_clock_tile_new (GWeatherLocation *location)
+mnp_clock_tile_new (GWeatherLocation *location, time_t time_now)
 {
 	MnpClockTile *tile = g_object_new (MNP_TYPE_CLOCK_TILE, NULL);
 
@@ -340,8 +351,24 @@ mnp_clock_tile_new (GWeatherLocation *location)
 	tile->priv->axis = 0;
   	tile->priv->is_enabled = TRUE;
 	tile->priv->loc = location;
+	tile->priv->time_now = time_now;
 
 	mnp_clock_construct (tile);
 
 	return tile;
+}
+
+void
+mnp_clock_tile_refresh (MnpClockTile *tile, time_t now)
+{
+	MnpDateFormat *fmt;
+	ClutterActor *box1, *box2, *label1, *label2, *label3;
+
+	tile->priv->time_now = now;
+	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now);
+
+	mx_label_set_text (tile->priv->time, fmt->time);
+	mx_label_set_text (tile->priv->date, fmt->date);
+
+	FREE_DFMT(fmt);
 }

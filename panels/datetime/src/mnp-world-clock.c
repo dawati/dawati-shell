@@ -236,7 +236,7 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 
 	mx_entry_set_text (priv->search_location, "");
 
-	tile = mnp_clock_tile_new (location);
+	tile = mnp_clock_tile_new (location, mnp_clock_area_get_time(priv->area));
 	mnp_clock_area_add_tile (priv->area, tile);
 }
 
@@ -340,15 +340,18 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_droppable_enable (priv->area);
 
 	priv->zones = mnp_load_zones ();
+	mnp_clock_area_refresh_time (priv->area);
+
 	if (priv->zones->len) {
 		int i=0;
 
 		for (i=0; i<priv->zones->len; i++) {
 			GWeatherLocation *location = mnp_utils_get_location_from_display (priv->zones_model, priv->zones->pdata[i]);
-			MnpClockTile *tile = mnp_clock_tile_new (location);
+			MnpClockTile *tile = mnp_clock_tile_new (location, mnp_clock_area_get_time(priv->area));
 			mnp_clock_area_add_tile (priv->area, tile);
 		}
 	}
+
 }
 
 ClutterActor *

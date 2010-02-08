@@ -54,6 +54,9 @@ struct _MnpClockAreaClass
 
 GType mnp_detail_type_get_type (void);
 MnpClockArea * mnp_clock_area_new (void);
+void mnp_clock_area_refresh_time (MnpClockArea *);
+time_t mnp_clock_area_get_time (MnpClockArea *area);
+
 G_END_DECLS
 
 #endif

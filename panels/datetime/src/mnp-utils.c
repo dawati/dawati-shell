@@ -238,7 +238,7 @@ clock_set_tz (char *tzone)
         time_t now_t;
         struct tm now;
 
-        printf("SETENV: %d\n", setenv ("TZ", tzone, 1));
+        setenv ("TZ", tzone, 1);
         tzset();
 
         now_t = time (NULL);
@@ -264,21 +264,15 @@ clock_unset_tz (SystemTimezone *tzone)
 }
 
 static void
-clock_location_localtime (SystemTimezone *systz, char *tzone, struct tm *tm)
+clock_location_localtime (SystemTimezone *systz, char *tzone, struct tm *tm, time_t now)
 {
-        time_t now;
-	struct timeval tval;
 	struct timezone tz1;
 
         clock_set_tz (tzone);
 
-        time (&now);
-	gettimeofday (&tval, &tz1);
         localtime_r (&now, tm);
 	
         clock_unset_tz (systz);
-
-	printf("%ld %ld %d: %s \n", now, tval.tv_sec, tz1.tz_minuteswest, tzone);
 }
 
 static glong
@@ -317,18 +311,17 @@ get_offset (const char *tzone, SystemTimezone *systz)
 static char *
 format_time (struct tm   *now, 
              char        *tzname,
-             gboolean  	  twelveh)
+             gboolean  	  twelveh,
+	     time_t 	 local_t)
 {
 	char buf[256];
 	char *format;
-	time_t local_t;
 	struct tm local_now;
 	char *utf8;	
 	char *tmp;	
 	long hours, minutes;
 	MnpDateFormat *fmt = g_new0 (MnpDateFormat, 1);
 
-	time (&local_t);
 	localtime_r (&local_t, &local_now);
 
 	if (twelveh) {
@@ -379,7 +372,7 @@ format_time (struct tm   *now,
 }
 
 MnpDateFormat *
-mnp_format_time_from_location (GWeatherLocation *location)
+mnp_format_time_from_location (GWeatherLocation *location, time_t time_now)
 {
 	GWeatherTimezone *tzone;
 	char *tzid;
@@ -395,8 +388,9 @@ mnp_format_time_from_location (GWeatherLocation *location)
 	tzone =  gweather_location_get_timezone (location);
 	tzid = (char *)gweather_timezone_get_tzid (tzone);
 	tzname = g_strdup (get_tzname(tzid));
-	clock_location_localtime (systz, tzid, &now);
-	fmt = format_time (&now, tzname, TRUE);
+
+	clock_location_localtime (systz, tzid, &now, time_now);
+	fmt = format_time (&now, tzname, TRUE, time_now);
 
 	fmt->city = gweather_location_get_city_name (location);
 	g_free(tzname);
