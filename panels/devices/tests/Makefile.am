@@ -8,6 +8,7 @@ AM_CFLAGS = \
 noinst_PROGRAMS = \
 	test-battery-device \
 	test-disk-device \
+	test-folder-button \
 	$(NULL)
 
 test_battery_device_LDADD = \
@@ -26,5 +27,14 @@ test_disk_device_LDADD = \
 test_disk_device_SOURCES = \
 	test-disk-device.c \
 	$(top_srcdir)/src/mpd-disk-device.c \
+	$(NULL)
+
+test_folder_button_LDADD = \
+	$(MPD_LIBS) \
+	$(NULL)
+
+test_folder_button_SOURCES = \
+	test-folder-button.c \
+	$(top_srcdir)/src/mpd-folder-button.c \
 	$(NULL)
 
