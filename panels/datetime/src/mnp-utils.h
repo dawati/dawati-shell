@@ -47,5 +47,8 @@ typedef struct _mnp_date_fmt {
 
 ClutterModel * mnp_get_world_timezones (void);
 const GWeatherLocation * mnp_utils_get_location_from_display (ClutterModel *store, const char *display);
+GPtrArray * mnp_load_zones (void);
+void mnp_save_zones (GPtrArray *zones);
+MnpDateFormat * mnp_format_time_from_location (GWeatherLocation *location);
 
 #endif 

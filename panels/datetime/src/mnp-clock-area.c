@@ -104,7 +104,7 @@ mnp_clock_area_drop (MxDroppable *droppable, MxDraggable *draggable, gfloat even
   clutter_actor_reparent (child, self);
   clutter_actor_set_position (CLUTTER_ACTOR (draggable),
                               (event_x > 100) ? 50 : 100,
-                              (event_y < 100) ? 50 : 100);
+                              (event_y < 100) ? 50 : 85);
 
   g_object_unref (draggable);	
 }
@@ -136,6 +136,7 @@ mx_droppable_init (MxDroppableIface *klass)
 	klass->over_in = mnp_clock_area_over_in;
 	klass->over_out = mnp_clock_area_over_out;
 	klass->drop = mnp_clock_area_drop;
+
 }
 
 static void
@@ -252,7 +253,7 @@ mnp_clock_area_new (void)
 	area->priv = g_new0(MnpClockAreaPriv, 1);
 	area->priv->is_enabled = 1;
 	area->priv->clock_tiles = NULL;
-	area->priv->position = 55;
+	area->priv->position = 60;
 	mx_box_layout_set_vertical ((MxBoxLayout *)area, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)area, TRUE);
 	
@@ -268,9 +269,9 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	clutter_container_add_actor (clutter_stage_get_default(), tile);
 	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_Y_AXIS);
 	mx_draggable_enable (tile);
-	clutter_actor_set_size (tile, 200, 100);
-	clutter_actor_set_position (tile, 10, area->priv->position);  
-	area->priv->position += 110;
+	clutter_actor_set_size (tile, 212, 75);
+	clutter_actor_set_position (tile, 15, area->priv->position);  
+	area->priv->position += 85;
 
 	area->priv->clock_tiles = g_list_append (area->priv->clock_tiles, tile);
 }

@@ -403,3 +403,55 @@ mnp_format_time_from_location (GWeatherLocation *location)
 
 	return fmt;
 }
+
+/* Keyfile data */
+GPtrArray *
+mnp_load_zones (void)
+{
+	GKeyFile *kfile;
+	char *pfile;
+	GPtrArray *zones = g_ptr_array_new ();
+	pfile = g_build_filename(g_get_user_config_dir(), "panel-clock-zones.conf", NULL);
+
+	kfile = g_key_file_new ();
+	if (g_key_file_load_from_file(kfile, pfile, G_KEY_FILE_NONE, NULL)) {
+		int len=0, i;
+		char **strs;
+		
+		strs = g_key_file_get_string_list (kfile, "zones-names", "selected-zones", &len, NULL);
+		if (len) {
+			for (i=0; i<len; i++) {
+				g_ptr_array_add (zones, g_strdup(strs[i]));
+			}
+			g_strfreev(strs);
+		}
+	}
+	g_key_file_free(kfile);
+	g_free (pfile);
+
+	return zones;
+}
+
+void
+mnp_save_zones (GPtrArray *zones)
+{
+	GKeyFile *kfile;
+	char *pfile;
+	char *contents;
+	int len=0;
+
+	pfile = g_build_filename(g_get_user_config_dir(), "panel-clock-zones.conf", NULL);
+	
+	kfile = g_key_file_new ();
+	g_key_file_set_string_list (kfile, "zones-names", "selected-zones", zones->pdata, zones->len);
+	contents = g_key_file_to_data (kfile, &len, NULL);
+	
+	if(len) {
+		g_file_set_contents (pfile, contents, len, NULL);
+	}
+
+	g_free(contents);
+	g_key_file_free(kfile);
+	g_free (pfile);
+
+}

@@ -59,6 +59,8 @@ struct _MnpWorldClockPrivate {
 	const char *search_text;
 
 	MnpClockArea *area;
+
+	GPtrArray *zones;
 };
 
 static void
@@ -78,6 +80,8 @@ mnp_world_clock_dispose (GObject *object)
 static void
 mnp_world_clock_finalize (GObject *object)
 {
+  MnpWorldClockPrivate *priv = GET_PRIVATE (object);
+
   G_OBJECT_CLASS (mnp_world_clock_parent_class)->finalize (object);
 }
 
@@ -99,7 +103,7 @@ mnp_world_clock_init (MnpWorldClock *self)
   MnpWorldClockPrivate *priv = GET_PRIVATE (self);
 
   priv->search_text = "";
-
+  priv->zones = NULL;
 }
 
 static void
@@ -159,11 +163,12 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 	GWeatherLocation *loc;
 	gboolean is_first_word = TRUE, match;
 	int len;
-	char *key = g_ascii_strdown(priv->search_text, -1);
+	char *key;
 
 	if (!priv->search_text || !*priv->search_text)
 		return TRUE;
 
+	key = g_ascii_strdown(priv->search_text, -1);
 	clutter_model_iter_get (iter, 
 			GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, &name_mem,
 			GWEATHER_LOCATION_ENTRY_COL_LOCATION, &loc,
@@ -226,6 +231,9 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");
 	
 	location = mnp_utils_get_location_from_display (priv->zones_model, mx_entry_get_text (priv->search_location));
+	g_ptr_array_add (priv->zones, g_strdup(mx_entry_get_text (priv->search_location)));
+	mnp_save_zones(priv->zones);
+
 	mx_entry_set_text (priv->search_location, "");
 
 	tile = mnp_clock_tile_new (location);
@@ -322,7 +330,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	priv->area = mnp_clock_area_new ();
 	clutter_actor_get_size (box, &width, &height);
 
-	clutter_actor_set_size (priv->area, width, 500);
+	clutter_actor_set_size (priv->area, width+20, 500);
 	clutter_actor_set_position (priv->area, 6, 50);  
 	clutter_actor_set_reactive (priv->area, TRUE);
 	clutter_actor_set_name (priv->area, "clock-area");
@@ -331,7 +339,16 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	clutter_actor_lower_bottom (priv->area);
 	mx_droppable_enable (priv->area);
 
+	priv->zones = mnp_load_zones ();
+	if (priv->zones->len) {
+		int i=0;
 
+		for (i=0; i<priv->zones->len; i++) {
+			GWeatherLocation *location = mnp_utils_get_location_from_display (priv->zones_model, priv->zones->pdata[i]);
+			MnpClockTile *tile = mnp_clock_tile_new (location);
+			mnp_clock_area_add_tile (priv->area, tile);
+		}
+	}
 }
 
 ClutterActor *

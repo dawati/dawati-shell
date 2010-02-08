@@ -311,7 +311,7 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	label3 = mx_label_new (fmt->city);
 	clutter_actor_set_name (label3, "mnp-tile-city");
-
+	clutter_actor_set_size (label3, 110, -1);
 
 	box1 = mx_box_layout_new ();
 	clutter_actor_set_name (box1, "mnp-tile-date-city");
