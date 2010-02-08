@@ -1,6 +1,10 @@
 
 /* Theme goes here  */
 
+MpdFolderButton {
+  border-image: none;
+}
+
 *.frame {
   border-image: url('frame-border.png') 10;
   padding: 12;
