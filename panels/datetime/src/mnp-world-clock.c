@@ -357,7 +357,6 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	clutter_container_add_actor (stage, priv->area);
 	clutter_actor_lower_bottom (priv->area);
 	mx_droppable_enable (priv->area);
-	
 
 	priv->zones = mnp_load_zones ();
 	mnp_clock_area_refresh_time (priv->area);

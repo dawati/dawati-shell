@@ -32,7 +32,7 @@ struct _MnpClockAreaPriv {
 
 	guint is_enabled : 1;
 	GPtrArray *clock_tiles;
-	int position;
+	gfloat position;
 	time_t time_now;
 	guint source;
 
@@ -92,24 +92,43 @@ mnp_clock_area_over_out (MxDroppable *droppable, MxDraggable *draggable)
 }
 
 static void
+insert_in_ptr_array (GPtrArray *array, gpointer data, int pos)
+{
+	int i;
+
+	g_ptr_array_add (array, NULL);
+	for (i=array->len-2; i>=pos ; i--) {
+		array->pdata[i+1] = array->pdata[i];
+	}
+	array->pdata[pos] = data;
+}
+
+static void
 mnp_clock_area_drop (MxDroppable *droppable, MxDraggable *draggable, gfloat event_x, gfloat event_y, gint button, ClutterModifierType modifiers)
 {
   ClutterActor *self = CLUTTER_ACTOR (droppable);
   ClutterActor *child = CLUTTER_ACTOR (draggable);
+  MnpClockArea *area = (MnpClockArea *)droppable;
+  GPtrArray *tiles = area->priv->clock_tiles;
+  int i, pos;
 
- /* g_debug ("%s: dropped %s on '%s' (%s) at %.2f, %.2f",
-           G_STRLOC,
-           G_OBJECT_TYPE_NAME (draggable),
-           clutter_actor_get_name (self),
-           G_OBJECT_TYPE_NAME (droppable),
-           event_x, event_y);
-*/
   g_object_ref (draggable);
 
+  pos = event_y / 85;
+  if (pos >= tiles->len)
+	  pos = tiles->len -1;
+ 
   clutter_actor_reparent (child, self);
-  clutter_actor_set_position (CLUTTER_ACTOR (draggable),
-                              (event_x > 100) ? 50 : 100,
-                              (event_y < 100) ? 50 : 85);
+
+  g_ptr_array_remove (tiles, (gpointer) draggable);
+  insert_in_ptr_array (tiles, draggable, pos);
+
+  clutter_actor_set_depth (draggable, ((pos+1) * 0.05) - 0.01);
+ 
+ 
+  for (i=tiles->len-1; i >= 0; i--) {
+	  clutter_actor_set_depth (tiles->pdata[i], (i + 1) * 0.05);
+  }
 
   g_object_unref (draggable);	
 }
@@ -274,10 +293,10 @@ mnp_clock_area_new (void)
 	area->priv = g_new0(MnpClockAreaPriv, 1);
 	area->priv->is_enabled = 1;
 	area->priv->clock_tiles = g_ptr_array_new ();
-	area->priv->position = 60;
+	area->priv->position = 0.05;
 	mx_box_layout_set_vertical ((MxBoxLayout *)area, TRUE);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)area, TRUE);
-	
+	mx_box_layout_set_pack_start ((MxBoxLayout *)area, FALSE);
+	mx_box_layout_set_enable_animations ((MxBoxLayout *)area, TRUE);
 	area->priv->time_now = time(NULL);
 	mx_box_layout_set_spacing (area, 10);
 	area->priv->source = g_timeout_add (1000, (GSourceFunc)clock_ticks, area);
@@ -303,7 +322,8 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_Y_AXIS);
 	mx_draggable_enable (tile);
 	clutter_actor_set_size (tile, 212, 75);
-	area->priv->position += 85;
+	clutter_actor_set_depth (tile, area->priv->position);
+	area->priv->position += 0.05;
 	clutter_actor_reparent (tile, area);
 	g_ptr_array_add (area->priv->clock_tiles, tile);
 	mnp_clock_tile_set_remove_cb (tile, (TileRemoveFunc)mnp_clock_tile_removed, (gpointer)area);

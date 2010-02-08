@@ -95,7 +95,7 @@ mnp_clock_tile_drag_begin (MxDraggable *draggable, gfloat event_x, gfloat event_
 	g_object_unref (self);
 
 	clutter_actor_animate (self, CLUTTER_EASE_OUT_CUBIC, 250,
-				"opacity", 224,
+				"opacity", 150,
 				NULL);
 }
 
@@ -114,7 +114,6 @@ mnp_clock_tile_drag_end (MxDraggable *draggable, gfloat event_x, gfloat event_y)
 	clutter_actor_animate (self, CLUTTER_EASE_OUT_CUBIC, 250,
                          	"opacity", 255,
                          	NULL);	
-	clutter_actor_set_depth (self, tile->priv->depth);
 	tile->priv->depth = 0.0;
 }
 
