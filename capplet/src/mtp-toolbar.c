@@ -708,6 +708,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
     for (i = 0; i < 4 - n_applets; ++i)
     {
       ClutterActor *space = mtp_space_new ();
+      mtp_space_set_is_applet ((MtpSpace*)space, TRUE);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
                                    space);
@@ -716,4 +717,3 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
                                    "expand", FALSE, NULL);
     }
 }
-

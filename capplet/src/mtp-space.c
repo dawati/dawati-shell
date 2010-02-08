@@ -39,6 +39,7 @@ enum
 
 struct _MtpSpacePrivate
 {
+  gboolean applet   : 1;
   gboolean no_pick  : 1;
   gboolean disposed : 1;
 };
@@ -66,22 +67,24 @@ mtp_space_finalize (GObject *object)
 
 static void
 mtp_space_get_preferred_width (ClutterActor *self,
-                                        gfloat        for_height,
-                                        gfloat       *min_width_p,
-                                        gfloat       *natural_width_p)
+                               gfloat        for_height,
+                               gfloat       *min_width_p,
+                               gfloat       *natural_width_p)
 {
+  MtpSpacePrivate *priv = MTP_SPACE (self)->priv;
+
   if (min_width_p)
-    *min_width_p = 70.0;
+    *min_width_p = priv->applet ? 44.0 : 70.0;
 
   if (natural_width_p)
-    *natural_width_p = 70.0;
+    *natural_width_p = priv->applet ? 44.0 : 70.0;
 }
 
 static void
 mtp_space_get_preferred_height (ClutterActor *self,
-                                         gfloat        for_width,
-                                         gfloat       *min_height_p,
-                                         gfloat       *natural_height_p)
+                                gfloat        for_width,
+                                gfloat       *min_height_p,
+                                gfloat       *natural_height_p)
 {
   if (min_height_p)
     *min_height_p = 60.0;
@@ -135,4 +138,12 @@ mtp_space_set_dont_pick (MtpSpace *button, gboolean dont)
   MtpSpacePrivate *priv = MTP_SPACE (button)->priv;
 
   priv->no_pick = dont;
+}
+
+void
+mtp_space_set_is_applet (MtpSpace *button, gboolean applet)
+{
+  MtpSpacePrivate *priv = MTP_SPACE (button)->priv;
+
+  priv->applet = applet;
 }

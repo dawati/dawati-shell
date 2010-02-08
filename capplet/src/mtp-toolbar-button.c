@@ -444,11 +444,13 @@ mtp_toolbar_button_get_preferred_width (ClutterActor *self,
                                         gfloat       *min_width_p,
                                         gfloat       *natural_width_p)
 {
+  MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (self)->priv;
+
   if (min_width_p)
-    *min_width_p = 70.0;
+    *min_width_p = priv->applet ? 44.0 : 70.0;
 
   if (natural_width_p)
-    *natural_width_p = 70.0;
+    *natural_width_p = priv->applet ? 44.0 : 70.0;
 }
 
 static void

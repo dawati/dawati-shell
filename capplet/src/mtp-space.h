@@ -64,6 +64,7 @@ GType mtp_space_get_type (void);
 ClutterActor* mtp_space_new (void);
 
 void mtp_space_set_dont_pick (MtpSpace *button, gboolean dont);
+void mtp_space_set_is_applet (MtpSpace *button, gboolean applet);
 
 G_END_DECLS
 
