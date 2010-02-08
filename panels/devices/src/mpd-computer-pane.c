@@ -88,15 +88,11 @@ mpd_computer_pane_class_init (MpdComputerPaneClass *klass)
 static void
 mpd_computer_pane_init (MpdComputerPane *self)
 {
-  ClutterActor *label;
 /*  ClutterActor *button; */
   ClutterActor *tile;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
-
-  label = mx_label_new (_("Your Computer"));
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_battery_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);

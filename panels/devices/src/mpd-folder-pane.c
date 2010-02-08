@@ -84,6 +84,7 @@ mpd_folder_pane_init (MpdFolderPane *self)
   gchar         *uri;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
 
   store = mpd_folder_store_new ();
 
@@ -126,7 +127,8 @@ mpd_folder_pane_init (MpdFolderPane *self)
   }
 #endif
 
-  label = mx_label_new (_("File Browser"));
+  label = mx_label_new (_("Your computer"));
+  mx_stylable_set_style_class (MX_STYLABLE (label), "panel-title");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   view = mpd_folder_view_new ();
