@@ -369,7 +369,7 @@ format_time (struct tm   *now,
 		 * (eg, like in France: 20:10), when the local
 		 * weekday differs from the weekday at the location
 		 * (the %A expands to the weekday). */
-		format = _("%H:%M <small>(Yesterday)</small>");
+		format = _("%H:%M");
 	}
 
 	if (strftime (buf, sizeof (buf), format, now) <= 0) {
@@ -382,7 +382,10 @@ format_time (struct tm   *now,
 		/* Translators: This is a strftime format string.
 		 * It is used to display in Aug 6 (Yesterday) */
 		
-		format = _("%b %d (Yesterday)");
+		if (local_now.tm_wday > now->tm_wday)
+			format = _("%b %d (Yesterday)");
+		else
+			format = _("%b %d (Tomorrow)");
 	}
 	else {
 		/* Translators: This is a strftime format string.
