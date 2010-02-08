@@ -35,10 +35,17 @@ struct _PengeAppsPanePrivate {
   MplAppBookmarkManager *manager;
 
   GHashTable *uris_to_actors;
+  gboolean vertical;
 };
 
-#define ROW_SIZE 4
+enum
+{
+  PROP_0,
+  PROP_VERTICAL
+};
+
 #define MAX_COUNT 8
+#define ROW_SIZE 4
 
 static void penge_apps_pane_update (PengeAppsPane *pane);
 
@@ -46,7 +53,12 @@ static void
 penge_apps_pane_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  PengeAppsPanePrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_VERTICAL:
+      g_value_set_boolean (value, priv->vertical);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -56,7 +68,13 @@ static void
 penge_apps_pane_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
+  PengeAppsPanePrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_VERTICAL:
+      priv->vertical = g_value_get_boolean (value);
+      penge_apps_pane_update (PENGE_APPS_PANE (object));
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -78,6 +96,7 @@ static void
 penge_apps_pane_class_init (PengeAppsPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (PengeAppsPanePrivate));
 
@@ -85,6 +104,13 @@ penge_apps_pane_class_init (PengeAppsPaneClass *klass)
   object_class->set_property = penge_apps_pane_set_property;
   object_class->dispose = penge_apps_pane_dispose;
   object_class->finalize = penge_apps_pane_finalize;
+
+  pspec = g_param_spec_boolean ("vertical",
+                                "Vertical",
+                                "Vertical mode",
+                                FALSE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_VERTICAL, pspec);
 }
 
 static void
@@ -165,22 +191,41 @@ penge_apps_pane_update (PengeAppsPane *pane)
 
     if (actor)
     {
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   actor,
-                                   "row",
-                                   count / ROW_SIZE,
-                                   "col",
-                                   count % ROW_SIZE,
-                                   NULL);
+      if (!priv->vertical)
+      {
+        clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                     actor,
+                                     "row",
+                                     count / ROW_SIZE,
+                                     "col",
+                                     count % ROW_SIZE,
+                                     NULL);
+      } else {
+        clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                     actor,
+                                     "row",
+                                     count / 1,
+                                     "col",
+                                     count % 1,
+                                     NULL);
+      }
     } else {
       actor = g_object_new (PENGE_TYPE_APP_TILE,
                             "bookmark",
                             uri,
                             NULL);
-      mx_table_add_actor (MX_TABLE (pane),
-                          actor,
-                          count / ROW_SIZE,
-                          count % ROW_SIZE);
+      if (!priv->vertical)
+      {
+        mx_table_add_actor (MX_TABLE (pane),
+                            actor,
+                            count / ROW_SIZE,
+                            count % ROW_SIZE);
+      } else {
+        mx_table_add_actor (MX_TABLE (pane),
+                            actor,
+                            count / 1,
+                            count % 1);
+      }
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
                                    "x-expand",
