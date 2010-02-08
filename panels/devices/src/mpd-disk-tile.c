@@ -31,6 +31,7 @@ typedef struct
 {
   /* Managed by clutter */
   ClutterActor  *label;
+  ClutterActor  *meter;
 
   /* Data */
   MpdDiskDevice *disk;
@@ -58,6 +59,8 @@ update (MpdDiskTile *self)
   mx_label_set_text (MX_LABEL (priv->label), text);
   g_free (text);
   g_free (size_text);
+
+  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter), percentage / 100.);
 }
 
 static void
@@ -107,6 +110,9 @@ mpd_disk_tile_init (MpdDiskTile *self)
 
   priv->label = mx_label_new ("");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);
+
+  priv->meter = mx_progress_bar_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->meter);
 
   update (self);
 }

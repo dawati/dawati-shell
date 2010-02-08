@@ -20,39 +20,26 @@
 
 #include <stdlib.h>
 #include <clutter/clutter.h>
-#include <gtk/gtk.h>
-#include "mpd-folder-button.h"
-
-static void
-_folder_clicked_cb (MpdFolderButton *button,
-                    gpointer         user_data)
-{
-  g_debug ("%s", mpd_folder_button_get_uri (button));
-}
+#include <mx/mx.h>
+#include "mpd-disk-tile.h"
 
 int
 main (int     argc,
       char  **argv)
 {
   ClutterActor *stage;
-  ClutterActor *button;
+  ClutterActor *tile;
 
   clutter_init (&argc, &argv);
-  /* For the icon-theme only. */
-  gtk_init (&argc, &argv);
 
-  stage = clutter_stage_new ();
+  stage = clutter_stage_get_default ();
 
-  button = g_object_new (MPD_TYPE_FOLDER_BUTTON,
-                         "label", "Documents",
-                         "uri", "file:///home/robsta/Documents",
-                         NULL);
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (_folder_clicked_cb), NULL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), button);
+  tile = mpd_disk_tile_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), tile);
 
   clutter_actor_show_all (stage);
   clutter_main ();
-  clutter_actor_destroy (stage);
+
   return EXIT_SUCCESS;
 }
+
