@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 #include <clutter/clutter.h>
+#include <gtk/gtk.h>
 #include "mpd-folder-button.h"
 
 static void
@@ -37,11 +38,13 @@ main (int     argc,
   ClutterActor *button;
 
   clutter_init (&argc, &argv);
+  /* For the icon-theme only. */
+  gtk_init (&argc, &argv);
 
   stage = clutter_stage_new ();
 
   button = g_object_new (MPD_TYPE_FOLDER_BUTTON,
-                         "label", "Documents",
+                         "label", "DocumentsDocuments",
                          "uri", "file:///home/robsta/Documents",
                          NULL);
   g_signal_connect (button, "clicked",
