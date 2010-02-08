@@ -30,7 +30,7 @@
 
 static void mx_droppable_iface_init (MxDroppableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (MtpToolbar, mtp_toolbar, MX_TYPE_BOX_LAYOUT,
+G_DEFINE_TYPE_WITH_CODE (MtpToolbar, mtp_toolbar, MX_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (MX_TYPE_DROPPABLE,
                                                 mx_droppable_iface_init));
 
@@ -49,6 +49,7 @@ struct _MtpToolbarPrivate
 {
   ClutterActor *applet_area;
   ClutterActor *panel_area;
+  ClutterActor *clock;
 
   gboolean enabled  : 1;
   gboolean modified : 1;
@@ -65,21 +66,38 @@ mtp_toolbar_dispose (GObject *object)
 
   priv->disposed = TRUE;
 
+  clutter_actor_destroy (priv->clock);
+  priv->clock = NULL;
+
+  clutter_actor_destroy (priv->panel_area);
+  priv->panel_area = NULL;
+
+  clutter_actor_destroy (priv->applet_area);
+  priv->applet_area = NULL;
+
   G_OBJECT_CLASS (mtp_toolbar_parent_class)->dispose (object);
 }
 
 static void
 mtp_toolbar_map (ClutterActor *actor)
 {
-  /* MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv; */
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->map (actor);
+
+  clutter_actor_map (priv->clock);
+  clutter_actor_map (priv->panel_area);
+  clutter_actor_map (priv->applet_area);
 }
 
 static void
 mtp_toolbar_unmap (ClutterActor *actor)
 {
-  /* MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv; */
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
+
+  clutter_actor_unmap (priv->clock);
+  clutter_actor_unmap (priv->panel_area);
+  clutter_actor_unmap (priv->applet_area);
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->unmap (actor);
 }
@@ -89,12 +107,22 @@ mtp_toolbar_allocate (ClutterActor          *actor,
                       const ClutterActorBox *box,
                       ClutterAllocationFlags flags)
 {
-  /* MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv; */
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
+  MxPadding          padding;
 
   CLUTTER_ACTOR_CLASS (
-             mtp_toolbar_parent_class)->allocate (actor,
-                                                         box,
-                                                         flags);
+             mtp_toolbar_parent_class)->allocate (actor, box, flags);
+
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
+
+  clutter_actor_set_position (priv->clock, padding.left, padding.top);
+  clutter_actor_allocate_preferred_size (priv->clock, flags);
+
+  clutter_actor_set_position (priv->panel_area, 213.0, padding.top);
+  clutter_actor_allocate_preferred_size (priv->panel_area, flags);
+
+  clutter_actor_set_position (priv->applet_area, 793.0, padding.top);
+  clutter_actor_allocate_preferred_size (priv->applet_area, flags);
 }
 
 static void
@@ -133,6 +161,7 @@ static void
 mtp_toolbar_constructed (GObject *self)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (self)->priv;
+  ClutterActor      *actor = CLUTTER_ACTOR (self);
 
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 10);
 
@@ -143,7 +172,7 @@ mtp_toolbar_constructed (GObject *self)
     ClutterActor *date_bin;
     ClutterActor *date;
 
-    clock = clutter_group_new ();
+    priv->clock = clock = clutter_group_new ();
 
     time = mx_label_new ("");
     clutter_actor_set_name (time, "time-label");
@@ -172,22 +201,21 @@ mtp_toolbar_constructed (GObject *self)
                            CLUTTER_ACTOR (date_bin),
                            NULL);
 
-    clutter_container_add_actor (CLUTTER_CONTAINER (self), clock);
+    clutter_actor_set_parent (clock, actor);
   }
 
   priv->panel_area  = mx_box_layout_new ();
   clutter_actor_set_name (priv->panel_area, "panel-area");
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->panel_area), 2);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->panel_area), TRUE);
+  clutter_actor_set_parent (priv->panel_area, actor);
 
   priv->applet_area = mx_box_layout_new ();
   clutter_actor_set_name (priv->applet_area, "applet-area");
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->applet_area), 2);
   mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->applet_area), FALSE);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->applet_area), TRUE);
-
-  clutter_container_add (CLUTTER_CONTAINER (self),
-                         priv->panel_area, priv->applet_area, NULL);
+  clutter_actor_set_parent (priv->applet_area, actor);
 }
 
 static void
@@ -408,6 +436,30 @@ mx_droppable_iface_init (MxDroppableIface *iface)
 }
 
 static void
+mtp_toolbar_pick (ClutterActor *self, const ClutterColor *color)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->pick (self, color);
+
+  clutter_actor_paint (priv->clock);
+  clutter_actor_paint (priv->panel_area);
+  clutter_actor_paint (priv->applet_area);
+}
+
+static void
+mtp_toolbar_paint (ClutterActor *self)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->paint (self);
+
+  clutter_actor_paint (priv->clock);
+  clutter_actor_paint (priv->panel_area);
+  clutter_actor_paint (priv->applet_area);
+}
+
+static void
 mtp_toolbar_class_init (MtpToolbarClass *klass)
 {
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
@@ -418,6 +470,8 @@ mtp_toolbar_class_init (MtpToolbarClass *klass)
   actor_class->allocate           = mtp_toolbar_allocate;
   actor_class->map                = mtp_toolbar_map;
   actor_class->unmap              = mtp_toolbar_unmap;
+  actor_class->paint              = mtp_toolbar_paint;
+  actor_class->pick               = mtp_toolbar_pick;
 
   object_class->constructed       = mtp_toolbar_constructed;
   object_class->dispose           = mtp_toolbar_dispose;

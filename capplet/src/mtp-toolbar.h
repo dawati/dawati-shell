@@ -49,14 +49,14 @@ G_BEGIN_DECLS
 typedef struct _MtpToolbarPrivate MtpToolbarPrivate;
 
 typedef struct {
-  MxBoxLayout parent;
+  MxWidget parent;
 
   /*< private >*/
   MtpToolbarPrivate *priv;
 } MtpToolbar;
 
 typedef struct {
-  MxBoxLayoutClass parent_class;
+  MxWidgetClass parent_class;
 } MtpToolbarClass;
 
 GType mtp_toolbar_get_type (void);
