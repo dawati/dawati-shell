@@ -108,6 +108,11 @@ _account_manager_ready (TpAccountManager *am,
 }
 
 static void
+_combo_index_changed (AnerleyPresenceChooser *self,
+                      GParamSpec             *pspec,
+                      gpointer                user_data);
+
+static void
 _account_manager_presence_changed (TpAccountManager         *am,
                                    TpConnectionPresenceType  presence,
                                    const gchar              *status,
@@ -122,10 +127,31 @@ _account_manager_presence_changed (TpAccountManager         *am,
            status,
            message);
 
+  /* only change the presence if it changes */
+  if (priv->presence == presence)
+    return;
+
   priv->presence = presence;
   message = anerley_presence_chooser_get_default_message (presence);
 
-  mx_combo_box_set_title (combo, message);
+  g_signal_handlers_block_by_func (combo, _combo_index_changed, NULL);
+  switch (presence)
+  {
+    case TP_CONNECTION_PRESENCE_TYPE_AVAILABLE:
+      mx_combo_box_set_index (combo, 0);
+      break;
+    case TP_CONNECTION_PRESENCE_TYPE_BUSY:
+      mx_combo_box_set_index (combo, 1);
+      break;
+    case TP_CONNECTION_PRESENCE_TYPE_AWAY:
+    case TP_CONNECTION_PRESENCE_TYPE_EXTENDED_AWAY:
+      mx_combo_box_set_index (combo, 2);
+      break;
+    default:
+      mx_combo_box_set_index (combo, 3);
+      break;
+  }
+  g_signal_handlers_unblock_by_func (combo, _combo_index_changed, NULL);
 }
 
 static void
