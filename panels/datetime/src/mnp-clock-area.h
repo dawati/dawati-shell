@@ -26,6 +26,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <mx/mx.h>
+#include "mnp-utils.h"
 
 G_BEGIN_DECLS
 
@@ -39,6 +40,8 @@ G_BEGIN_DECLS
 typedef struct _MnpClockArea MnpClockArea;
 typedef struct _MnpClockAreaClass MnpClockAreaClass;
 typedef struct _MnpClockAreaPriv MnpClockAreaPriv;
+
+typedef void (*ZoneRemovedFunc) (MnpClockArea *area, GWeatherLocation *loc, gpointer user_data);
 
 struct _MnpClockArea
 {
@@ -56,6 +59,7 @@ GType mnp_detail_type_get_type (void);
 MnpClockArea * mnp_clock_area_new (void);
 void mnp_clock_area_refresh_time (MnpClockArea *);
 time_t mnp_clock_area_get_time (MnpClockArea *area);
+void mnp_clock_area_set_zone_remove_cb (MnpClockArea *area, ZoneRemovedFunc func, gpointer data);
 
 G_END_DECLS
 

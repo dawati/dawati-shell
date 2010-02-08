@@ -50,5 +50,7 @@ const GWeatherLocation * mnp_utils_get_location_from_display (ClutterModel *stor
 GPtrArray * mnp_load_zones (void);
 void mnp_save_zones (GPtrArray *zones);
 MnpDateFormat * mnp_format_time_from_location (GWeatherLocation *location, time_t time_now);
+char * mnp_utils_get_display_from_location (ClutterModel *store, GWeatherLocation *location);
+
 
 #endif 

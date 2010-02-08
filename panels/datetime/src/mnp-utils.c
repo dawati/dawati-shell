@@ -34,7 +34,7 @@
 WeatherLocation *gweather_location_to_weather_location (GWeatherLocation *gloc,
 							const char *name);
 struct _pass_data {
-	const char *key;
+	char *key;
 	const GWeatherLocation *location;
 };
 
@@ -63,10 +63,40 @@ mnp_utils_get_location_from_display (ClutterModel *store, const char *display)
 {
 	struct _pass_data pdata = { NULL, NULL};
 
-	pdata.key = display;
+	pdata.key = (char *)display;
 	clutter_model_foreach (store, (ClutterModelForeachFunc)search_locations_in_model, &pdata);
 
 	return pdata.location;
+}
+
+static gboolean 
+search_locations_display_in_model (ClutterModel *model, ClutterModelIter *iter, struct _pass_data *pdata)
+{
+	char *clocation;
+	GWeatherLocation *location;
+
+	clutter_model_iter_get (iter, GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, &clocation,
+				GWEATHER_LOCATION_ENTRY_COL_LOCATION, &location, -1);
+
+	if (location == pdata->location) {
+		pdata->key = clocation;
+		return FALSE;
+	}
+
+	g_free(clocation);
+
+	return TRUE;
+}
+
+char *
+mnp_utils_get_display_from_location (ClutterModel *store, GWeatherLocation *location)
+{
+	struct _pass_data pdata = { NULL, NULL};
+
+	pdata.location = location;
+	clutter_model_foreach (store, (ClutterModelForeachFunc)search_locations_display_in_model, &pdata);
+
+	return pdata.key;
 }
 
 static void

@@ -3,7 +3,9 @@ dist_theme_DATA = \
 	date-panel.css \
 	edit-clear.png \
 	edit-find.png \
-	dp-scroll-view-bin-bg.png
+	dp-scroll-view-bin-bg.png \
+	dismiss_button.png \
+	dismiss_button_hover.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE

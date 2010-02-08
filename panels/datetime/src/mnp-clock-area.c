@@ -35,6 +35,9 @@ struct _MnpClockAreaPriv {
 	int position;
 	time_t time_now;
 	guint source;
+
+	ZoneRemovedFunc zone_remove_func;
+	gpointer zone_remove_data;
 };
 
 enum
@@ -282,6 +285,14 @@ mnp_clock_area_new (void)
 	return area;
 }
 
+static void
+mnp_clock_tile_removed (MnpClockTile *tile, MnpClockArea *area)
+{
+	area->priv->clock_tiles = g_list_remove (area->priv->clock_tiles, tile);	
+	
+	area->priv->zone_remove_func (area, mnp_clock_tile_get_location(tile), area->priv->zone_remove_data);
+}
+
 void
 mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 {
@@ -296,6 +307,15 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	area->priv->position += 85;
 
 	area->priv->clock_tiles = g_list_append (area->priv->clock_tiles, tile);
+	mnp_clock_tile_set_remove_cb (tile, (TileRemoveFunc)mnp_clock_tile_removed, (gpointer)area);
+}
+
+void 
+mnp_clock_area_set_zone_remove_cb (MnpClockArea *area, ZoneRemovedFunc func, gpointer data)
+{
+	area->priv->zone_remove_func = func;
+	area->priv->zone_remove_data = data;
+
 }
 
 void

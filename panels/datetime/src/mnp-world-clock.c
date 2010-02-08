@@ -254,6 +254,25 @@ mnp_completion_done (gpointer data, const char *zone)
 }
 
 static void
+zone_removed_cb (MnpClockArea *area, GWeatherLocation *location, MnpWorldClock *clock)
+{
+	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);	
+	char *cloc = mnp_utils_get_display_from_location (priv->zones_model, location);
+	int i;
+
+	for (i=0; i<priv->zones->len; i++) {
+		if (strcmp(cloc, (char *)priv->zones->pdata[i]) == 0) {
+			break;
+		}
+	}
+
+	if (i != priv->zones->len) {
+		g_ptr_array_remove_index (priv->zones, i);
+		mnp_save_zones(priv->zones);
+	}
+}
+
+static void
 mnp_world_clock_construct (MnpWorldClock *world_clock)
 {
 	ClutterActor *entry, *scroll, *view, *box, *stage;
@@ -341,6 +360,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 	priv->zones = mnp_load_zones ();
 	mnp_clock_area_refresh_time (priv->area);
+	mnp_clock_area_set_zone_remove_cb (priv->area, (ZoneRemovedFunc) zone_removed_cb, (gpointer)world_clock);
 
 	if (priv->zones->len) {
 		int i=0;

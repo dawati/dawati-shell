@@ -45,6 +45,10 @@ struct _MnpClockTilePriv {
 	MxEntry *date;
 	MxEntry *time;
 	MxEntry *city;
+
+	MxButton *remove_button;
+	TileRemoveFunc remove_cb;
+	gpointer *remove_data;
 };
 
 enum
@@ -302,13 +306,31 @@ mnp_clock_tile_get_type (void)
 }
 
 static void
+remove_tile (MxButton *button, MnpClockTile *tile)
+{
+	tile->priv->remove_cb(tile, tile->priv->remove_data);
+	clutter_actor_hide(tile);
+}
+
+void
+mnp_clock_tile_set_remove_cb (MnpClockTile *tile, TileRemoveFunc func, gpointer data)
+{
+	tile->priv->remove_cb = func;
+	tile->priv->remove_data = data;
+}
+
+static void
 mnp_clock_construct (MnpClockTile *tile)
 {
 	GWeatherTimezone *zone;
 	MnpDateFormat *fmt;
 	ClutterActor *box1, *box2, *label1, *label2, *label3;
+	ClutterActor *icon;
+	MnpClockTilePriv *priv = tile->priv;
 
 	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now);
+
+ 
 
 	label1 = mx_label_new (fmt->date);
 	tile->priv->date = label1;
@@ -338,6 +360,24 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	clutter_actor_show_all (tile);
 	FREE_DFMT(fmt);
+
+	box2 = mx_box_layout_new ();
+	clutter_actor_set_name (box1, "mnp-tile-remove-button");
+	mx_box_layout_set_vertical ((MxBoxLayout *)box2, TRUE);
+	mx_box_layout_set_pack_start ((MxBoxLayout *)box2, FALSE);	
+ 	
+	priv->remove_button = mx_button_new ();
+	g_signal_connect (priv->remove_button, "clicked", G_CALLBACK(remove_tile), tile);
+	clutter_container_add_actor (box2, priv->remove_button);  	
+	clutter_container_add_actor (tile, box2);	
+	mx_stylable_set_style_class (MX_STYLABLE (priv->remove_button),
+                               			"TileRemoveButton");
+  	icon = (ClutterActor *)mx_icon_new ();
+  	mx_stylable_set_style_class (MX_STYLABLE (icon),
+                               		"TileIcon");
+  	mx_bin_set_child (MX_BIN (priv->remove_button),
+                      		  (ClutterActor *)icon);
+	
 }
 
 MnpClockTile *
@@ -372,3 +412,10 @@ mnp_clock_tile_refresh (MnpClockTile *tile, time_t now)
 
 	FREE_DFMT(fmt);
 }
+
+GWeatherLocation * 
+mnp_clock_tile_get_location (MnpClockTile *tile)
+{
+	return tile->priv->loc;
+}
+
