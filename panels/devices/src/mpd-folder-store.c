@@ -40,40 +40,12 @@ G_DEFINE_TYPE (MpdFolderStore, mpd_folder_store, CLUTTER_TYPE_LIST_MODEL)
 
 typedef struct
 {
-  GFileMonitor *monitor;
+  int dummy;
 } MpdFolderStorePrivate;
-
-static void
-_changed (GFileMonitor      *monitor,
-          GFile             *file,
-          GFile             *other_file,
-          GFileMonitorEvent  event_type,
-          MpdFolderStore    *self)
-{
-  gchar   *path;
-  GError  *error = NULL;
-
-  path = g_file_get_path (file);
-  mpd_folder_store_load_bookmarks_file (self, path, &error);
-  g_free (path);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-}
 
 static void
 _dispose (GObject *object)
 {
-  MpdFolderStorePrivate *priv = GET_PRIVATE (object);
-
-  if (priv->monitor)
-  {
-    g_object_unref (priv->monitor);
-    priv->monitor = NULL;
-  }
-
   G_OBJECT_CLASS (mpd_folder_store_parent_class)->dispose (object);
 }
 
@@ -108,28 +80,37 @@ mpd_folder_store_new (void)
 }
 
 gboolean
+mpd_folder_store_add_user_directory (MpdFolderStore *self,
+                                     GUserDirectory  directory)
+{
+  gchar const *path;
+  gchar       *label;
+  gchar       *uri;
+
+  path = g_get_user_special_dir (directory);
+  g_return_val_if_fail (path, FALSE);
+
+  label = g_path_get_basename (path);
+  uri = g_strdup_printf ("file://%s", path);
+
+  clutter_model_append (CLUTTER_MODEL (self),
+                        0, uri,
+                        1, label,
+                        -1);
+
+  g_free (label);
+  g_free (uri);
+
+  return TRUE;
+}
+
+gboolean
 mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
                                       gchar const      *filename,
                                       GError          **error)
 {
-  MpdFolderStorePrivate *priv = GET_PRIVATE (self);
-  GFile   *file;
   gchar   *contents = NULL;
   gsize    length = 0;
-  GError  *monitor_error = NULL;
-
-  /* Reset store. */
-
-  if (priv->monitor)
-  {
-    g_object_unref (priv->monitor);
-    priv->monitor = NULL;
-  }
-
-  while (clutter_model_get_n_rows (CLUTTER_MODEL (self)) > 0)
-  {
-    clutter_model_remove (CLUTTER_MODEL (self), 0);
-  }
 
   /* Load file. */
 
@@ -183,19 +164,15 @@ mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
     g_free (contents);
   }
 
-  /* Set up monitor. */
-
-  file = g_file_new_for_path (filename);
-  priv->monitor = g_file_monitor (file, G_FILE_MONITOR_NONE, NULL,
-                                  &monitor_error);
-  if (monitor_error)
-  {
-    g_warning ("%s : %s", G_STRLOC, monitor_error->message);
-    g_clear_error (&monitor_error);
-  } else {
-    g_signal_connect (priv->monitor, "changed", G_CALLBACK (_changed), self);
-  }
-
   return TRUE;
+}
+
+void
+mpd_folder_store_clear (MpdFolderStore *self)
+{
+  while (clutter_model_get_n_rows (CLUTTER_MODEL (self)) > 0)
+  {
+    clutter_model_remove (CLUTTER_MODEL (self), 0);
+  }
 }
 
