@@ -290,12 +290,14 @@ mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
   GList             *children;
   GList             *last;
   gboolean           retval = FALSE;
+  ClutterContainer  *container;
 
-  children = applet ?
-    clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area)) :
-    clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
+  container = applet ? CLUTTER_CONTAINER (priv->applet_area) :
+    CLUTTER_CONTAINER (priv->panel_area);
 
-  last = g_list_last (children);
+  children = clutter_container_get_children (container);
+
+  last = applet ? g_list_first (children) : g_list_last (children);
 
   if (last)
     {
@@ -304,8 +306,7 @@ mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
       if (MTP_IS_SPACE (actor))
         {
           retval = TRUE;
-          clutter_container_remove_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                          actor);
+          clutter_container_remove_actor (container, actor);
         }
       else
         g_warning (G_STRLOC ":%s: no space left on toolbar !!!", __FUNCTION__);
