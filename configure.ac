@@ -172,9 +172,6 @@ build/Makefile
 build/autotools/Makefile
 build/autotools/shave
 build/autotools/shave-libtool
-capplet/Makefile
-capplet/data/Makefile
-capplet/src/Makefile
 data/Makefile
 src/Makefile
 src/effects/Makefile
