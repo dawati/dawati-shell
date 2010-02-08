@@ -247,10 +247,14 @@ static void
 mpd_volume_tile_init (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
+  ClutterActor  *label;
   ClutterActor  *mute_box;
   ClutterActor  *mute_label;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
+
+  label = mx_label_new (_("Netbook volume"));
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   priv->volume_slider = mx_slider_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->volume_slider);
