@@ -1,0 +1,87 @@
+SwOverview
+{
+  background-color: gray;
+}
+
+SwZone
+{
+  /* border-image: url('zone-bg-active.png') 4; */
+  background-color: white;
+  padding: 10;
+}
+
+SwZone:active
+{
+  border-image: url('zone-bg-focus.png') 6;
+  background-color:#a1a1a1;
+}
+
+SwZone#new-zone
+{
+  /* border-image: url('') 6; */
+  /* background-color: #fadc81; */
+}
+
+SwZone#new-zone:active
+{
+  background-color: #fadc81;
+}
+
+SwZone#focused-zone
+{
+  background-color: #d6d6d6;
+}
+
+SwWindow
+{
+  padding: 6;
+  border-image: url('thumbnail-active.png') 6;
+}
+
+SwWindow:hover
+{
+  border-image: url('thumbnail-hover.png') 6;
+}
+
+SwWindow#placeholder
+{
+  border-image: url('thumbnail-target.png') 6;
+}
+
+SwWindow#focused-window
+{
+  border-image: url('thumbnail-focused.png') 6;
+}
+
+MxLabel.zone-title
+{
+  color: white;
+  padding: 4;
+  border-image: url('zone-title-normal.png') 4;
+}
+
+MxLabel.zone-title:active
+{
+  color: white;
+  padding: 4;
+  border-image: url('zone-title-hover.png') 4;
+}
+
+SwZone#focused-zone > MxLabel.zone-title
+{
+  color: white;
+  padding: 4;
+  border-image: url('zone-title-focused.png') 4;
+}
+
+
+
+MxIcon#add-icon
+{
+  background-image: url('workspace-title-new-symbol-active.png');
+}
+
+MxButton
+{
+  x-mx-content-image: url('close-button.png');
+}
