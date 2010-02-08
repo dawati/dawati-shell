@@ -21,6 +21,7 @@
 #ifndef MPD_SHELL_DEFINES_H
 #define MPD_SHELL_DEFINES_H
 
+#define MPD_SHELL_PADDING        12
 #define MPD_SHELL_SPACING        24
 #define MPD_COMPUTER_PANE_WIDTH 320
 

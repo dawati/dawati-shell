@@ -58,11 +58,12 @@ _width_notify_cb (MpdShell    *self,
                   gpointer     user_data)
 {
   MpdShellPrivate *priv = GET_PRIVATE (self);
-  gfloat shell_width;
-  gfloat folder_pane_width;
+  gfloat    shell_width;
+  gfloat    folder_pane_width;
 
   shell_width = clutter_actor_get_width (CLUTTER_ACTOR (self));
-  folder_pane_width = shell_width - MPD_SHELL_SPACING - MPD_COMPUTER_PANE_WIDTH;
+  folder_pane_width = shell_width - 2 * MPD_SHELL_PADDING
+                        - MPD_SHELL_SPACING - MPD_COMPUTER_PANE_WIDTH;
   clutter_actor_set_width (priv->folder_pane, folder_pane_width);
 }
 
@@ -104,6 +105,11 @@ mpd_shell_init (MpdShell *self)
   g_signal_connect (priv->folder_pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->folder_pane);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->folder_pane,
+                               "expand", TRUE,
+                               "x-align", MX_ALIGN_START,
+                               "x-fill", TRUE,
+                               NULL);
 
   priv->computer_pane = mpd_computer_pane_new ();
   clutter_actor_set_width (priv->computer_pane, MPD_COMPUTER_PANE_WIDTH);

@@ -5,6 +5,10 @@ MpdFolderButton {
   border-image: none;
 }
 
+MpdShell {
+  padding: 12;
+}
+
 *.frame {
   border-image: url('frame-border.png') 10;
   padding: 12;
