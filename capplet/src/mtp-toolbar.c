@@ -256,14 +256,15 @@ mtp_toolbar_over_out (MxDroppable *droppable, MxDraggable *draggable)
  * returns FALSE if no space could be removed.
  */
 static gboolean
-mtp_toolbar_remove_space (MtpToolbar *toolbar)
+mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
   GList             *children;
   GList             *last;
   gboolean           retval = FALSE;
 
-  children =
+  children = applet ?
+    clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area)) :
     clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
 
   last = g_list_last (children);
@@ -302,6 +303,7 @@ mtp_toolbar_drop (MxDroppable         *droppable,
   MtpToolbarPrivate *priv = toolbar->priv;
   MtpToolbarButton  *tbutton = MTP_TOOLBAR_BUTTON (draggable);
   ClutterActor      *actor = CLUTTER_ACTOR (draggable);
+  ClutterActor      *parent = clutter_actor_get_parent (actor);
   ClutterActor      *stage = clutter_actor_get_stage (actor);
   MtpToolbarButton  *before = NULL;
 
@@ -384,10 +386,16 @@ mtp_toolbar_drop (MxDroppable         *droppable,
       g_list_free (children);
     }
 
-  if (mtp_toolbar_remove_space (toolbar))
+  if (mtp_toolbar_remove_space (toolbar,
+                                mtp_toolbar_button_is_applet (tbutton)))
     {
+      g_object_ref (draggable);
+      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), actor);
+
       mtp_toolbar_insert_button (toolbar,
                                  (ClutterActor*)tbutton, (ClutterActor*)before);
+
+      g_object_unref (draggable);
     }
 }
 
@@ -437,19 +445,13 @@ void
 mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
-  gboolean           has_parent;
 
   priv->modified = TRUE;
 
-  has_parent = (clutter_actor_get_parent (button) != NULL);
-
   if (MTP_IS_SPACE (button))
     {
-      if (has_parent)
-        clutter_actor_reparent (button, priv->panel_area);
-      else
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                     button);
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                   button);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
                                    button,
                                    "expand", FALSE, NULL);
@@ -458,22 +460,16 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
     {
       if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
         {
-          if (has_parent)
-            clutter_actor_reparent (button, priv->applet_area);
-          else
-            clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                         button);
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                       button);
           clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
                                        button,
                                        "expand", FALSE, NULL);
         }
       else
         {
-          if (has_parent)
-            clutter_actor_reparent (button, priv->panel_area);
-          else
-            clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                         button);
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                       button);
           clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
                                        button,
                                        "expand", FALSE, NULL);
@@ -553,7 +549,6 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
   DepthData          ddata;
   GList             *children = NULL;
-  gboolean           has_parent;
 
   if (!before)
     {
@@ -567,8 +562,6 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
   ddata.before = before;
   ddata.new = button;
 
-  has_parent = (clutter_actor_get_parent (button) != NULL);
-
   if (MTP_IS_SPACE (button))
     {
       children =
@@ -576,11 +569,8 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
 
       g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
 
-      if (has_parent)
-        clutter_actor_reparent (button, priv->panel_area);
-      else
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                     button);
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                   button);
 
       clutter_actor_set_depth (ddata.new, ddata.new_depth);
 
@@ -598,10 +588,7 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
 
           g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
 
-          if (has_parent)
-            clutter_actor_reparent (button, priv->applet_area);
-          else
-            clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
                                        button);
 
           clutter_actor_set_depth (ddata.new, ddata.new_depth);
@@ -618,11 +605,8 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
 
           g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
 
-          if (has_parent)
-            clutter_actor_reparent (button, priv->panel_area);
-          else
-            clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                         button);
+          clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                       button);
 
           clutter_actor_set_depth (ddata.new, ddata.new_depth);
 
@@ -693,5 +677,43 @@ mtp_toolbar_mark_modified (MtpToolbar *toolbar)
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
 
   priv->modified = TRUE;
+}
+
+void
+mtp_toolbar_fill_space (MtpToolbar *toolbar)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+  GList             *l;
+  gint               i, n_panels, n_applets;
+
+  l = clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
+  n_panels = g_list_length (l);
+  g_list_free (l);
+
+  l = clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));
+  n_applets = g_list_length (l);
+  g_list_free (l);
+
+    for (i = 0; i < 8 - n_panels; ++i)
+    {
+      ClutterActor *space = mtp_space_new ();
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                   space);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
+                                   space,
+                                   "expand", FALSE, NULL);
+    }
+
+    for (i = 0; i < 4 - n_applets; ++i)
+    {
+      ClutterActor *space = mtp_space_new ();
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                   space);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
+                                   space,
+                                   "expand", FALSE, NULL);
+    }
 }
 

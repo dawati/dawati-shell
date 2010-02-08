@@ -231,7 +231,6 @@ construct_contents (GtkWidget    *embed,
   ClutterActor *box = mx_box_layout_new ();
   ClutterActor *jar = mtp_jar_new ();
   GSList       *l;
-  gint          n_on_toolbar, i;
 
   clutter_actor_set_name (jar, "jar");
   clutter_actor_set_height ((ClutterActor*)toolbar, TOOLBAR_HEIGHT);
@@ -251,7 +250,7 @@ construct_contents (GtkWidget    *embed,
   g_object_set (toolbar, "enabled", TRUE, NULL);
   g_object_set (jar, "enabled", TRUE, NULL);
 
-  for (l = panels, n_on_toolbar = 0; l; l = l->next)
+  for (l = panels; l; l = l->next)
     {
       Panel        *panel  = l->data;
       ClutterActor *button = mtp_toolbar_button_new ();
@@ -270,9 +269,6 @@ construct_contents (GtkWidget    *embed,
 
       if (panel->on_toolbar)
         {
-          if (!mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
-            n_on_toolbar++;
-
           mtp_toolbar_add_button (toolbar, button);
 
           /*
@@ -296,12 +292,7 @@ construct_contents (GtkWidget    *embed,
         }
     }
 
-  for (i = 0; i < 8 - n_on_toolbar; ++i)
-    {
-      ClutterActor *space = mtp_space_new ();
-
-      mtp_toolbar_add_button (toolbar, space);
-    }
+  mtp_toolbar_fill_space (toolbar);
 
   /*
    * Now clear the modified state on the toolbar (set because we were adding

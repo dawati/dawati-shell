@@ -71,9 +71,9 @@ void mtp_toolbar_insert_button (MtpToolbar       *toolbar,
 gboolean mtp_toolbar_was_modified (MtpToolbar *toolbar);
 void     mtp_toolbar_clear_modified_state (MtpToolbar *toolbar);
 void     mtp_toolbar_mark_modified (MtpToolbar *toolbar);
-GList *mtp_toolbar_get_panel_buttons (MtpToolbar *toolbar);
-GList *mtp_toolbar_get_applet_buttons (MtpToolbar *toolbar);
-
+GList   *mtp_toolbar_get_panel_buttons (MtpToolbar *toolbar);
+GList   *mtp_toolbar_get_applet_buttons (MtpToolbar *toolbar);
+void     mtp_toolbar_fill_space (MtpToolbar *toolbar);
 
 G_END_DECLS
 
