@@ -1,3 +1,13 @@
 
 /* Theme goes here  */
 
+MxFrame {
+  border-image: url('frame-border.png') 10;
+  padding: 10;
+}
+
+MxSlider MxFrame {
+  border-image: none;
+  padding: 0;
+}
+

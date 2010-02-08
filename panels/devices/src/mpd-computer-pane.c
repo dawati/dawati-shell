@@ -89,7 +89,8 @@ static void
 mpd_computer_pane_init (MpdComputerPane *self)
 {
   ClutterActor *label;
-  ClutterActor *button;
+/*  ClutterActor *button; */
+  ClutterActor *frame;
   ClutterActor *tile;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
@@ -100,11 +101,15 @@ mpd_computer_pane_init (MpdComputerPane *self)
   tile = mpd_battery_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
+  frame = mx_frame_new ();
   tile = mpd_disk_tile_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+  clutter_container_add_actor (CLUTTER_CONTAINER (frame), tile);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), frame);
 
+  frame = mx_frame_new ();
   tile = mpd_volume_tile_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+  clutter_container_add_actor (CLUTTER_CONTAINER (frame), tile);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), frame);
 
 #if 0 /* "All settings" button, see TODO.  */
   button = mx_button_new_with_label (_("All settings"));
