@@ -36,6 +36,7 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
 
 #define MOBLIN_MYZONE_VERTICAL_APPS "/desktop/moblin/myzone/vertical_apps"
+#define MOBLIN_MYZONE_SHOW_CALENDAR "/desktop/moblin/myzone/show_calendar"
 
 typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 
@@ -47,8 +48,12 @@ struct _PengeGridViewPrivate {
   MplPanelClient *panel_client;
   GConfClient *gconf_client;
   guint vertical_apps_notify_id;
+  guint show_calendar_notify_id;
 
   ClutterActor *div_tex;
+
+  gboolean vertical_apps;
+  gboolean show_calendar_pane;
 };
 
 enum
@@ -211,6 +216,112 @@ penge_grid_view_class_init (PengeGridViewClass *klass)
 }
 
 static void
+_update_layout (PengeGridView *grid_view)
+{
+  PengeGridViewPrivate *priv = GET_PRIVATE (grid_view);
+  gint col = 0;
+
+  if (priv->vertical_apps)
+  {
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->favourite_apps_pane,
+                                 "col", col,
+                                 "row", 0,
+                                 "y-expand", TRUE,
+                                 "y-fill", FALSE,
+                                 "y-align", 0.0,
+                                 "x-align", 0.0,
+                                 "x-expand", FALSE,
+                                 "x-fill", FALSE,
+                                 NULL);
+    col++;
+
+    if (priv->show_calendar_pane)
+    {
+      clutter_actor_show (priv->calendar_pane);
+      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->calendar_pane,
+                                   "col", col,
+                                   "x-expand", FALSE,
+                                   "y-fill", FALSE,
+                                   "y-align", 0.0,
+                                   NULL);
+      col++;
+    } else {
+      clutter_actor_hide (priv->calendar_pane);
+    }
+
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->div_tex,
+                                 "row-span", 1,
+                                 "col", col,
+                                 "x-expand", FALSE,
+                                 NULL);
+    col++;
+
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->everything_pane,
+                                 "row-span", 1,
+                                 "col", col,
+                                 "x-expand", TRUE,
+                                 "x-fill", TRUE,
+                                 "y-expand", TRUE,
+                                 "y-fill", TRUE,
+                                 NULL);
+    g_object_set (priv->favourite_apps_pane,
+                  "vertical", TRUE,
+                  NULL);
+    clutter_actor_queue_relayout (grid_view);
+  } else {
+    if (priv->show_calendar_pane)
+    {
+      clutter_actor_show (priv->calendar_pane);
+      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->calendar_pane,
+                                   "col", col,
+                                   "x-expand", FALSE,
+                                   "y-expand", FALSE,
+                                   "y-fill", FALSE,
+                                   NULL);
+    } else {
+      clutter_actor_hide (priv->calendar_pane);
+    }
+
+
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->favourite_apps_pane,
+                                 "col", col,
+                                 "row", 1,
+                                 "x-expand", FALSE,
+                                 "x-fill", TRUE,
+                                 "y-fill", FALSE,
+                                 "y-align", 1.0,
+                                 NULL);
+    col++;
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->div_tex,
+                                 "row-span", 2,
+                                 "col", col,
+                                 "x-expand", FALSE,
+                                 NULL);
+    col++;
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->everything_pane,
+                                 "row-span", 2,
+                                 "col", col,
+                                 "x-expand", TRUE,
+                                 "x-fill", TRUE,
+                                 "y-expand", TRUE,
+                                 "y-fill", TRUE,
+                                 NULL);
+    g_object_set (priv->favourite_apps_pane,
+                  "vertical", FALSE,
+                  NULL);
+    clutter_actor_queue_relayout (grid_view);
+  }
+}
+
+static void
 _gconf_vertical_apps_notify_cb (GConfClient *client,
                                 guint        cnxn_id,
                                 GConfEntry  *entry,
@@ -222,84 +333,36 @@ _gconf_vertical_apps_notify_cb (GConfClient *client,
 
   value = gconf_entry_get_value (entry);
 
-  if (value && gconf_value_get_bool (value))
+  if (!value)
   {
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->favourite_apps_pane,
-                                 "col", 0,
-                                 "row", 0,
-                                 "y-expand", TRUE,
-                                 "y-fill", FALSE,
-                                 "y-align", 0.0,
-                                 "x-align", 0.0,
-                                 "x-expand", FALSE,
-                                 "x-fill", FALSE,
-                                 NULL);
-
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->calendar_pane,
-                                 "col", 1,
-                                 "x-expand", FALSE,
-                                 "y-fill", FALSE,
-                                 "y-align", 0.0,
-                                 NULL);
-
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->div_tex,
-                                 "row-span", 1,
-                                 "col", 2,
-                                 "x-expand", FALSE,
-                                 NULL);
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->everything_pane,
-                                 "row-span", 1,
-                                 "col", 3,
-                                 "x-expand", TRUE,
-                                 "x-fill", TRUE,
-                                 "y-expand", TRUE,
-                                 "y-fill", TRUE,
-                                 NULL);
-    g_object_set (priv->favourite_apps_pane,
-                  "vertical", TRUE,
-                  NULL);
-    clutter_actor_queue_relayout (grid_view);
+    priv->vertical_apps = FALSE;
   } else {
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->calendar_pane,
-                                 "col", 0,
-                                 "x-expand", FALSE,
-                                 "y-expand", FALSE,
-                                 "y-fill", FALSE,
-                                 NULL);
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->favourite_apps_pane,
-                                 "col", 0,
-                                 "row", 1,
-                                 "x-expand", FALSE,
-                                 "x-fill", TRUE,
-                                 "y-fill", FALSE,
-                                 "y-align", 1.0,
-                                 NULL);
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->div_tex,
-                                 "row-span", 2,
-                                 "col", 1,
-                                 "x-expand", FALSE,
-                                 NULL);
-    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
-                                 priv->everything_pane,
-                                 "row-span", 2,
-                                 "col", 2,
-                                 "x-expand", TRUE,
-                                 "x-fill", TRUE,
-                                 "y-expand", TRUE,
-                                 "y-fill", TRUE,
-                                 NULL);
-    g_object_set (priv->favourite_apps_pane,
-                  "vertical", FALSE,
-                  NULL);
-    clutter_actor_queue_relayout (grid_view);
+    priv->vertical_apps = gconf_value_get_bool (value);
   }
+
+  _update_layout (grid_view);
+}
+
+static void
+_gconf_show_calendar_notify_cb (GConfClient *client,
+                                guint        cnxn_id,
+                                GConfEntry  *entry,
+                                gpointer     userdata)
+{
+  PengeGridView *grid_view = PENGE_GRID_VIEW (userdata);
+  PengeGridViewPrivate *priv = GET_PRIVATE (grid_view);
+  GConfValue *value;
+
+  value = gconf_entry_get_value (entry);
+
+  if (!value)
+  {
+    priv->show_calendar_pane = TRUE;
+  } else {
+    priv->show_calendar_pane = gconf_value_get_bool (value);
+  }
+
+  _update_layout (grid_view);
 }
 
 static void
@@ -370,6 +433,22 @@ penge_grid_view_init (PengeGridView *self)
     g_clear_error (&error);
   } else {
     gconf_client_notify (priv->gconf_client, MOBLIN_MYZONE_VERTICAL_APPS);
+  }
+
+  priv->show_calendar_notify_id = 
+    gconf_client_notify_add (priv->gconf_client,
+                             MOBLIN_MYZONE_SHOW_CALENDAR,
+                             _gconf_show_calendar_notify_cb,
+                             self,
+                             NULL,
+                             &error);
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error setting gconf key notification: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    gconf_client_notify (priv->gconf_client, MOBLIN_MYZONE_SHOW_CALENDAR);
   }
 }
 
