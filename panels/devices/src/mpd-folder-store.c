@@ -79,19 +79,15 @@ mpd_folder_store_new (void)
   return model;
 }
 
-gboolean
-mpd_folder_store_add_user_directory (MpdFolderStore *self,
-                                     GUserDirectory  directory)
+void
+mpt_folder_store_add_directory (MpdFolderStore *self,
+                                gchar const    *uri)
 {
-  gchar const *path;
-  gchar       *label;
-  gchar       *uri;
+  gchar *label;
 
-  path = g_get_user_special_dir (directory);
-  g_return_val_if_fail (path, FALSE);
+  g_return_if_fail (uri);
 
-  label = g_path_get_basename (path);
-  uri = g_strdup_printf ("file://%s", path);
+  label = g_path_get_basename (uri);
 
   clutter_model_append (CLUTTER_MODEL (self),
                         0, uri,
@@ -99,9 +95,6 @@ mpd_folder_store_add_user_directory (MpdFolderStore *self,
                         -1);
 
   g_free (label);
-  g_free (uri);
-
-  return TRUE;
 }
 
 gboolean

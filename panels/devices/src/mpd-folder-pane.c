@@ -81,12 +81,39 @@ mpd_folder_pane_init (MpdFolderPane *self)
   ClutterModel  *store;
   ClutterActor  *label;
   ClutterActor  *view;
-  gchar         *filename;
-  GError        *error = NULL;
+  gchar         *uri;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
 
   store = mpd_folder_store_new ();
+
+  uri = g_strdup_printf ("file://%s",
+                         g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS));
+  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
+  g_free (uri);
+
+  uri = g_strdup_printf ("file://%s",
+                         g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD));
+  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
+  g_free (uri);
+
+  uri = g_strdup_printf ("file://%s",
+                         g_get_user_special_dir (G_USER_DIRECTORY_MUSIC));
+  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
+  g_free (uri);
+
+  uri = g_strdup_printf ("file://%s",
+                         g_get_user_special_dir (G_USER_DIRECTORY_PICTURES));
+  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
+  g_free (uri);
+
+  uri = g_strdup_printf ("file://%s",
+                         g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS));
+  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
+  g_free (uri);
+
+
+#if 0 /* Not showing gtk-bookmarks for now. */
   filename = g_build_filename (g_get_home_dir (), ".gtk-bookmarks", NULL);
   mpd_folder_store_load_bookmarks_file (MPD_FOLDER_STORE (store),
                                         filename,
@@ -97,6 +124,7 @@ mpd_folder_pane_init (MpdFolderPane *self)
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
+#endif
 
   label = mx_label_new (_("File Browser"));
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);

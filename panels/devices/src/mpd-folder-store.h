@@ -64,9 +64,9 @@ mpd_folder_store_get_type (void);
 ClutterModel *
 mpd_folder_store_new (void);
 
-gboolean
-mpt_folder_store_add_user_directory (MpdFolderStore *self,
-                                     GUserDirectory  directory);
+void
+mpt_folder_store_add_directory (MpdFolderStore *self,
+                                gchar const    *uri);
 
 gboolean
 mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
