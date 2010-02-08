@@ -514,11 +514,24 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
     {
       if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
         {
+          gfloat depth = 0.0;
+
+          GList *children = clutter_container_get_children (
+                                       CLUTTER_CONTAINER (priv->applet_area));
+
+          if (children)
+            {
+              depth = clutter_actor_get_depth (children->data) - 0.05;
+
+              g_list_free (children);
+            }
+
           clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
                                        button);
           clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
                                        button,
                                        "expand", FALSE, NULL);
+          clutter_actor_set_depth (button, depth);
         }
       else
         {
@@ -574,6 +587,7 @@ typedef struct _DepthData
   gfloat        new_depth;
   ClutterActor *before;
   ClutterActor *new;
+  gboolean      applets;
 } DepthData;
 
 static void
@@ -615,6 +629,7 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
   ddata.depth = 0.0;
   ddata.before = before;
   ddata.new = button;
+  ddata.applets = FALSE;
 
   if (MTP_IS_SPACE (button))
     {
@@ -636,6 +651,8 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
     {
       if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
         {
+          ddata.applets = TRUE;
+
           children =
             clutter_container_get_children (CLUTTER_CONTAINER (
                                                 priv->applet_area));
@@ -739,6 +756,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
   GList             *l;
   gint               i, n_panels, n_applets;
+  gfloat             applet_depth = 0.0;
 
   l = clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
   n_panels = g_list_length (l);
@@ -746,6 +764,10 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
 
   l = clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));
   n_applets = g_list_length (l);
+
+  if (l)
+    applet_depth = clutter_actor_get_depth (l->data) - 0.05;
+
   g_list_free (l);
 
     for (i = 0; i < 8 - n_panels; ++i)
@@ -769,5 +791,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
       clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
                                    space,
                                    "expand", FALSE, NULL);
+      clutter_actor_set_depth (space, applet_depth);
+      applet_depth -= 0.05;
     }
 }
