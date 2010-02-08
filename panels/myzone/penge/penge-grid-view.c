@@ -18,6 +18,7 @@
  */
 
 #include <moblin-panel/mpl-panel-client.h>
+#include <gconf/gconf-client.h>
 
 #include "penge-grid-view.h"
 
@@ -34,6 +35,8 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
 
+#define MOBLIN_MYZONE_VERTICAL_APPS "/desktop/moblin/myzone/vertical_apps"
+
 typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 
 struct _PengeGridViewPrivate {
@@ -42,6 +45,10 @@ struct _PengeGridViewPrivate {
   ClutterActor *everything_pane;
   ClutterActor *background;
   MplPanelClient *panel_client;
+  GConfClient *gconf_client;
+  guint vertical_apps_notify_id;
+
+  ClutterActor *div_tex;
 };
 
 enum
@@ -97,6 +104,12 @@ penge_grid_view_dispose (GObject *object)
   {
     g_object_unref (priv->panel_client);
     priv->panel_client = NULL;
+  }
+
+  if (priv->gconf_client)
+  {
+    g_object_unref (priv->gconf_client);
+    priv->gconf_client = NULL;
   }
 
   G_OBJECT_CLASS (penge_grid_view_parent_class)->dispose (object);
@@ -198,10 +211,101 @@ penge_grid_view_class_init (PengeGridViewClass *klass)
 }
 
 static void
+_gconf_vertical_apps_notify_cb (GConfClient *client,
+                                guint        cnxn_id,
+                                GConfEntry  *entry,
+                                gpointer     userdata)
+{
+  PengeGridView *grid_view = PENGE_GRID_VIEW (userdata);
+  PengeGridViewPrivate *priv = GET_PRIVATE (grid_view);
+  GConfValue *value;
+
+  value = gconf_entry_get_value (entry);
+
+  if (value && gconf_value_get_bool (value))
+  {
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->favourite_apps_pane,
+                                 "col", 0,
+                                 "row", 0,
+                                 "y-expand", TRUE,
+                                 "y-fill", FALSE,
+                                 "y-align", 0.0,
+                                 "x-align", 0.0,
+                                 "x-expand", FALSE,
+                                 "x-fill", FALSE,
+                                 NULL);
+
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->calendar_pane,
+                                 "col", 1,
+                                 "x-expand", FALSE,
+                                 "y-fill", FALSE,
+                                 "y-align", 0.0,
+                                 NULL);
+
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->div_tex,
+                                 "row-span", 1,
+                                 "col", 2,
+                                 "x-expand", FALSE,
+                                 NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->everything_pane,
+                                 "row-span", 1,
+                                 "col", 3,
+                                 "x-expand", TRUE,
+                                 "x-fill", TRUE,
+                                 "y-expand", TRUE,
+                                 "y-fill", TRUE,
+                                 NULL);
+    g_object_set (priv->favourite_apps_pane,
+                  "vertical", TRUE,
+                  NULL);
+    clutter_actor_queue_relayout (grid_view);
+  } else {
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->calendar_pane,
+                                 "col", 0,
+                                 "x-expand", FALSE,
+                                 "y-expand", FALSE,
+                                 "y-fill", FALSE,
+                                 NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->favourite_apps_pane,
+                                 "col", 0,
+                                 "row", 1,
+                                 "x-expand", FALSE,
+                                 "x-fill", TRUE,
+                                 "y-fill", FALSE,
+                                 "y-align", 1.0,
+                                 NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->div_tex,
+                                 "row-span", 2,
+                                 "col", 1,
+                                 "x-expand", FALSE,
+                                 NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->everything_pane,
+                                 "row-span", 2,
+                                 "col", 2,
+                                 "x-expand", TRUE,
+                                 "x-fill", TRUE,
+                                 "y-expand", TRUE,
+                                 "y-fill", TRUE,
+                                 NULL);
+    g_object_set (priv->favourite_apps_pane,
+                  "vertical", FALSE,
+                  NULL);
+    clutter_actor_queue_relayout (grid_view);
+  }
+}
+
+static void
 penge_grid_view_init (PengeGridView *self)
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (self);
-  ClutterActor *div_tex;
   GError *error = NULL;
 
   priv->calendar_pane = g_object_new (PENGE_TYPE_CALENDAR_PANE,
@@ -212,68 +316,32 @@ penge_grid_view_init (PengeGridView *self)
                       priv->calendar_pane,
                       0,
                       0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               priv->calendar_pane,
-                               "y-expand", TRUE,
-                               "y-fill", FALSE,
-                               "y-align", 0.0,
-                               "x-expand", FALSE,
-                               "x-fill", FALSE,
-                               NULL);
 
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
                                             NULL);
 
-  clutter_actor_set_width (priv->favourite_apps_pane, 280);
   mx_table_add_actor (MX_TABLE (self),
                       priv->favourite_apps_pane,
                       1,
                       0);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               priv->favourite_apps_pane,
-                               "y-expand", TRUE,
-                               "y-fill", FALSE,
-                               "y-align", 1.0,
-                               "x-expand", FALSE,
-                               "x-fill", FALSE,
-                               NULL);
+  priv->div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
 
-
-  div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
-
-  if (!div_tex)
+  if (!priv->div_tex)
   {
     g_warning (G_STRLOC ": Error loading vertical divider: %s",
                error->message);
     g_clear_error (&error);
   } else {
     mx_table_add_actor (MX_TABLE (self),
-                        div_tex,
+                        priv->div_tex,
                         0,
                         1);
-    clutter_container_child_set (CLUTTER_CONTAINER (self),
-                                 div_tex,
-                                 "x-expand",
-                                 FALSE,
-                                 "x-fill",
-                                 FALSE,
-                                 "row-span",
-                                 2,
-                                 NULL);
   }
 
   priv->everything_pane = g_object_new (PENGE_TYPE_EVERYTHING_PANE,
                                         NULL);
 
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->everything_pane,
-                                      0, 2,
-                                      "row-span", 2,
-                                      "x-expand", TRUE,
-                                      "y-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-fill", TRUE,
-                                      NULL);
+  mx_table_add_actor (MX_TABLE (self), priv->everything_pane, 0, 2);
 
   mx_table_set_row_spacing (MX_TABLE (self), 6);
   mx_table_set_col_spacing (MX_TABLE (self), 6);
@@ -285,5 +353,23 @@ penge_grid_view_init (PengeGridView *self)
   priv->background = g_object_new (PENGE_TYPE_VIEW_BACKGROUND, NULL);
   clutter_actor_set_parent (priv->background, (ClutterActor *)self);
   clutter_actor_show (priv->background);
+
+  priv->gconf_client = gconf_client_get_default ();
+  priv->vertical_apps_notify_id =
+    gconf_client_notify_add (priv->gconf_client,
+                             MOBLIN_MYZONE_VERTICAL_APPS,
+                             _gconf_vertical_apps_notify_cb,
+                             self,
+                             NULL,
+                             &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error setting gconf key notification: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    gconf_client_notify (priv->gconf_client, MOBLIN_MYZONE_VERTICAL_APPS);
+  }
 }
 
