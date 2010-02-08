@@ -65,18 +65,7 @@ typedef struct
   /* Data */
   GvcMixerControl *control;
   GvcMixerStream  *sink;
-  guint            timeout;
 } MpdVolumeTilePrivate;
-
-static gboolean
-_reopen_pa_timeout_cb (MpdVolumeTile *self)
-{
-  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-
-  priv->timeout = 0;
-  gvc_mixer_control_open (priv->control);
-  return FALSE;
-}
 
 static void
 _mute_toggle_notify_cb (MxToggle      *toggle,
@@ -132,41 +121,6 @@ _mixer_control_ready_cb (GvcMixerControl  *control,
 }
 
 static void
-_mixer_control_connection_failed_cb (GvcMixerControl  *control,
-                                     MpdVolumeTile    *self)
-{
-  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-
-  g_signal_handlers_disconnect_by_func (priv->control,
-                                        _mixer_control_default_sink_changed_cb,
-                                        self);
-  g_signal_handlers_disconnect_by_func (priv->control,
-                                        _mixer_control_ready_cb,
-                                        self);
-  g_signal_handlers_disconnect_by_func (priv->control,
-                                        _mixer_control_connection_failed_cb,
-                                        self);
-  g_object_unref (priv->control);
-  priv->control = gvc_mixer_control_new (MIXER_CONTROL_NAME);
-  g_signal_connect (priv->control, "default-sink-changed",
-                    G_CALLBACK (_mixer_control_default_sink_changed_cb), self);
-  g_signal_connect (priv->control, "ready",
-                    G_CALLBACK (_mixer_control_ready_cb), self);
-  g_signal_connect (priv->control, "connection-failed",
-                    G_CALLBACK (_mixer_control_connection_failed_cb), self);
-
-  if (priv->timeout)
-  {
-      g_source_remove (priv->timeout);
-      priv->timeout = 0;
-  }
-
-  priv->timeout = g_timeout_add_seconds (10,
-                                        (GSourceFunc) _reopen_pa_timeout_cb,
-                                         self);
-}
-
-static void
 _get_property (GObject    *object,
                guint       property_id,
                GValue     *value,
@@ -202,12 +156,6 @@ static void
 _dispose (GObject *object)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (object);
-
-  if (priv->timeout)
-  {
-    g_source_remove (priv->timeout);
-    priv->timeout = 0;
-  }
 
   if (priv->control)
   {
@@ -289,8 +237,6 @@ mpd_volume_tile_init (MpdVolumeTile *self)
                     G_CALLBACK (_mixer_control_default_sink_changed_cb), self);
   g_signal_connect (priv->control, "ready",
                     G_CALLBACK (_mixer_control_ready_cb), self);
-  g_signal_connect (priv->control, "connection-failed",
-                    G_CALLBACK (_mixer_control_connection_failed_cb), self);
   gvc_mixer_control_open (priv->control);
 }
 
