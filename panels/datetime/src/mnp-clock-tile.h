@@ -59,7 +59,7 @@ GType mnp_clock_tile_get_type (void);
 MnpClockTile * mnp_clock_tile_new (GWeatherLocation *, time_t time_now);
 void mnp_clock_tile_set_remove_cb (MnpClockTile *tile, TileRemoveFunc func, gpointer data);
 void mnp_clock_tile_refresh (MnpClockTile *tile, time_t now);
-GWeather * mnp_clock_tile_get_location (MnpClockTile *tile);
+GWeatherLocation * mnp_clock_tile_get_location (MnpClockTile *tile);
 
 G_END_DECLS
 
