@@ -62,12 +62,12 @@ GType
 mpd_folder_store_get_type (void);
 
 ClutterModel *
-mpd_folder_store_new        (void);
+mpd_folder_store_new (void);
 
 gboolean
-mpd_folder_store_load_file  (MpdFolderStore   *self,
-                             gchar const      *filename,
-                             GError          **error);
+mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
+                                      gchar const      *filename,
+                                      GError          **error);
 
 G_END_DECLS
 

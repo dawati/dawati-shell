@@ -88,7 +88,9 @@ mpd_folder_pane_init (MpdFolderPane *self)
 
   store = mpd_folder_store_new ();
   filename = g_build_filename (g_get_home_dir (), ".gtk-bookmarks", NULL);
-  mpd_folder_store_load_file (MPD_FOLDER_STORE (store), filename, &error);
+  mpd_folder_store_load_bookmarks_file (MPD_FOLDER_STORE (store),
+                                        filename,
+                                        &error);
   g_free (filename);
   if (error)
   {
