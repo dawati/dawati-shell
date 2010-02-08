@@ -214,6 +214,15 @@ window_delete_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
 }
 
 static void
+mtp_toolbar_button_remove_cb (ClutterActor *button, MtpJar *jar)
+{
+  /*
+   * The Jar takes care of the reparent for us.
+   */
+  mtp_jar_add_button (jar, button);
+}
+
+static void
 construct_contents (GtkWidget    *embed,
                     ClutterActor *stage,
                     MtpToolbar   *toolbar,
@@ -254,6 +263,10 @@ construct_contents (GtkWidget    *embed,
           clutter_actor_destroy (button);
           continue;
         }
+
+      g_signal_connect (button, "remove",
+                        G_CALLBACK (mtp_toolbar_button_remove_cb),
+                        jar);
 
       if (panel->on_toolbar)
         {

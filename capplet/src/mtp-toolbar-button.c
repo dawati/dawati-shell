@@ -98,6 +98,15 @@ enum
   PROP_DRAG_ACTOR
 };
 
+enum
+{
+  REMOVE,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
 struct _MtpToolbarButtonPrivate
 {
   gchar *name;
@@ -105,6 +114,8 @@ struct _MtpToolbarButtonPrivate
   gchar *button_style;
   gchar *button_stylesheet;
   gchar *service;
+
+  ClutterActor *close_button;
 
   gboolean no_pick  : 1;
   gboolean applet   : 1;
@@ -134,6 +145,12 @@ mtp_toolbar_button_dispose (GObject *object)
 
   priv->disposed = TRUE;
 
+  if (priv->close_button)
+    {
+      clutter_actor_destroy (priv->close_button);
+      priv->close_button = NULL;
+    }
+
   G_OBJECT_CLASS (mtp_toolbar_button_parent_class)->dispose (object);
 }
 
@@ -154,15 +171,21 @@ mtp_toolbar_button_finalize (GObject *object)
 static void
 mtp_toolbar_button_map (ClutterActor *actor)
 {
-  /* MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv; */
+  MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class)->map (actor);
+
+  if (priv->close_button)
+    clutter_actor_map (priv->close_button);
 }
 
 static void
 mtp_toolbar_button_unmap (ClutterActor *actor)
 {
-  /* MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv; */
+  MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv;
+
+  if (priv->close_button)
+    clutter_actor_unmap (priv->close_button);
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class)->unmap (actor);
 }
@@ -172,12 +195,27 @@ mtp_toolbar_button_allocate (ClutterActor          *actor,
                              const ClutterActorBox *box,
                              ClutterAllocationFlags flags)
 {
-  /* MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv; */
+  MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (
              mtp_toolbar_button_parent_class)->allocate (actor,
                                                          box,
                                                          flags);
+
+  if (priv->close_button)
+    {
+      ClutterActorBox childbox;
+
+      childbox.x1 = 0;
+      childbox.y1 = 0;
+      childbox.x2 = box->x2 - box->x1;
+      childbox.y2 = box->y2 - box->y1;
+
+      mx_allocate_align_fill (priv->close_button, &childbox, MX_ALIGN_END,
+                              MX_ALIGN_START, FALSE, FALSE);
+
+      clutter_actor_allocate (priv->close_button, &childbox, flags);
+    }
 }
 
 static void
@@ -435,6 +473,20 @@ mtp_toolbar_button_pick (ClutterActor *self, const ClutterColor *color)
     return;
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class)->pick (self, color);
+
+  if (priv->close_button)
+    clutter_actor_paint (priv->close_button);
+}
+
+static void
+mtp_toolbar_button_paint (ClutterActor *self)
+{
+  MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (self)->priv;
+
+  CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class)->paint (self);
+
+  if (priv->close_button)
+    clutter_actor_paint (priv->close_button);
 }
 
 static void
@@ -451,6 +503,7 @@ mtp_toolbar_button_class_init (MtpToolbarButtonClass *klass)
   actor_class->get_preferred_width  = mtp_toolbar_button_get_preferred_width;
   actor_class->get_preferred_height = mtp_toolbar_button_get_preferred_height;
   actor_class->pick                 = mtp_toolbar_button_pick;
+  actor_class->paint                = mtp_toolbar_button_paint;
 
   object_class->dispose             = mtp_toolbar_button_dispose;
   object_class->finalize            = mtp_toolbar_button_finalize;
@@ -475,12 +528,54 @@ mtp_toolbar_button_class_init (MtpToolbarButtonClass *klass)
   g_object_class_override_property (object_class,
                                     PROP_DRAG_ACTOR,
                                     "drag-actor");
+
+
+  signals[REMOVE] = g_signal_new ("remove",
+                                  G_TYPE_FROM_CLASS (klass),
+                                  G_SIGNAL_RUN_LAST,
+                                  0, NULL, NULL,
+                                  g_cclosure_marshal_VOID__VOID,
+                                  G_TYPE_NONE, 0);
 }
 
 static void
 mtp_toolbar_button_init (MtpToolbarButton *self)
 {
   self->priv = MTP_TOOLBAR_BUTTON_GET_PRIVATE (self);
+}
+
+static void
+mtp_toolbar_button_cbutton_clicked_cb (ClutterActor     *cbutton,
+                                       MtpToolbarButton *button)
+{
+  g_signal_emit (button, signals[REMOVE], 0);
+}
+
+static void
+mtp_toolbar_button_fixup_close_button (MtpToolbarButton *button)
+{
+  MtpToolbarButtonPrivate *priv = button->priv;
+
+  if (priv->close_button)
+    {
+      ClutterActor *parent = clutter_actor_get_parent ((ClutterActor*)button);
+
+      while (parent && !(MTP_IS_TOOLBAR (parent) || MTP_IS_JAR (parent)))
+        parent = clutter_actor_get_parent (parent);
+
+      if (!parent || !MTP_IS_TOOLBAR (parent))
+        clutter_actor_hide (priv->close_button);
+      else
+        clutter_actor_show (priv->close_button);
+    }
+}
+
+static void
+mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
+                                  ClutterActor     *old_parent,
+                                  gpointer          data)
+{
+  mtp_toolbar_button_fixup_close_button (button);
 }
 
 static void
@@ -521,6 +616,31 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
         priv->required = !b;
       else
         g_clear_error (&error);
+
+      if (!priv->required)
+        {
+          ClutterActor *cbutton;
+
+          g_assert (!priv->close_button);
+
+          cbutton = priv->close_button = mx_button_new ();
+
+          clutter_actor_set_name ((ClutterActor*)cbutton, "close-button");
+
+          clutter_actor_set_parent (cbutton, (ClutterActor*)button);
+
+          g_signal_connect (cbutton, "clicked",
+                            G_CALLBACK (mtp_toolbar_button_cbutton_clicked_cb),
+                            button);
+
+          mtp_toolbar_button_fixup_close_button (button);
+
+          g_signal_connect (button, "parent-set",
+                            G_CALLBACK (mtp_toolbar_button_parent_set_cb),
+                            NULL);
+
+          clutter_actor_queue_relayout ((ClutterActor*)button);
+        }
 
       s = g_key_file_get_locale_string (kfile,
                                         G_KEY_FILE_DESKTOP_GROUP,

@@ -256,6 +256,7 @@ void
 mtp_jar_add_button (MtpJar *jar, ClutterActor *button)
 {
   MtpJarPrivate *priv = MTP_JAR (jar)->priv;
+  gboolean       has_parent;
 
   if (!MTP_IS_TOOLBAR_BUTTON (button))
     {
@@ -264,15 +265,23 @@ mtp_jar_add_button (MtpJar *jar, ClutterActor *button)
       return;
     }
 
+  has_parent = (clutter_actor_get_parent (button) != NULL);
+
   if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
     {
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                   CLUTTER_ACTOR (button));
+      if (has_parent)
+        clutter_actor_reparent (button, priv->applet_area);
+      else
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                     CLUTTER_ACTOR (button));
     }
   else
     {
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                   CLUTTER_ACTOR (button));
+      if (has_parent)
+        clutter_actor_reparent (button, priv->panel_area);
+      else
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                     CLUTTER_ACTOR (button));
     }
 }
 

@@ -82,6 +82,14 @@ MnbToolbarButton#bluetooth-button {
   background-image: url("panel/bluetooth-coloured.png");
 }
 
+MxButton#close-button {
+  background-image: url("switcher/application-close-button.png");
+}
+
+MxButton#close-button:hover {
+  background-image: url("switcher/application-close-button-hover.png");
+}
+
 MtpSpace {
   background-color: #4447;
 }
