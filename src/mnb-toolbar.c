@@ -51,6 +51,7 @@
 #include "mnb-toolbar.h"
 #include "mnb-panel-oop.h"
 #include "mnb-toolbar-button.h"
+#include "mnb-toolbar-icon.h"
 #include "mnb-drop-down.h"
 #include "mnb-spinner.h"
 #include "switcher/mnb-switcher.h"
@@ -163,13 +164,14 @@ struct _MnbToolbarPanel
   ClutterActor *button;
   MnbPanel   *panel;
 
-  gboolean    unloaded : 1;
-  gboolean    applet   : 1;
-  gboolean    builtin  : 1;
-  gboolean    current  : 1;
-  gboolean    pinged   : 1;
-  gboolean    required : 1;
-  gboolean    failed   : 1;
+  gboolean    windowless : 1; /* button-only panel */
+  gboolean    unloaded   : 1;
+  gboolean    applet     : 1;
+  gboolean    builtin    : 1;
+  gboolean    current    : 1;
+  gboolean    pinged     : 1;
+  gboolean    required   : 1;
+  gboolean    failed     : 1;
 };
 
 static void
@@ -1798,6 +1800,18 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
     }
 }
 
+static void
+mnb_toolbar_windowless_button_toggled_cb (MxButton *button,
+                                          GParamSpec *pspec,
+                                          MnbToolbar *toolbar)
+{
+  /*
+   * Windowless buttons cannot be checked.
+   */
+  if (mx_button_get_checked (button))
+    mx_button_set_checked (button, FALSE);
+}
+
 /*
  * Appends a panel
  */
@@ -1861,7 +1875,10 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   if (tp->button)
     clutter_actor_destroy (CLUTTER_ACTOR (tp->button));
 
-  button = tp->button = mnb_toolbar_button_new ();
+  if (!tp->windowless)
+    button = tp->button = mnb_toolbar_button_new ();
+  else
+    button = tp->button = mnb_toolbar_icon_new ();
 
   if (stylesheet && *stylesheet)
     {
@@ -1882,16 +1899,20 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 
   mx_button_set_toggle_mode (MX_BUTTON (button), TRUE);
   mx_widget_set_tooltip_text (MX_WIDGET (button), tooltip);
-  clutter_actor_set_name (CLUTTER_ACTOR (button),
-                          button_style ? button_style : style_id);
+  clutter_actor_set_name (button, button_style ? button_style : style_id);
 
   g_free (button_style);
 
   mnb_toolbar_ensure_button_position (toolbar, tp);
 
-  g_signal_connect (button, "notify::checked",
-                    G_CALLBACK (mnb_toolbar_button_toggled_cb),
-                    toolbar);
+  if (!tp->windowless)
+    g_signal_connect (button, "notify::checked",
+                      G_CALLBACK (mnb_toolbar_button_toggled_cb),
+                      toolbar);
+  else
+    g_signal_connect (button, "notify::checked",
+                      G_CALLBACK (mnb_toolbar_windowless_button_toggled_cb),
+                      toolbar);
 
   if (tp->builtin)
     mnb_toolbar_append_panel_builtin_internal (toolbar, tp);
@@ -3286,6 +3307,20 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
        */
       if (!error)
         tp->required = !b;
+      else
+        g_clear_error (&error);
+
+      b = g_key_file_get_boolean (kfile,
+                                  G_KEY_FILE_DESKTOP_GROUP,
+                                  "X-Moblin-Panel-Windowless",
+                                  &error);
+
+      /*
+       * If the key does not exist (i.e., there is an error), the panel is
+       * not windowless
+       */
+      if (!error)
+        tp->windowless = b;
       else
         g_clear_error (&error);
 

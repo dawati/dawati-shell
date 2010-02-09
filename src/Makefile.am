@@ -28,6 +28,7 @@ source_h =	$(srcdir)/marshal.h			\
 		$(srcdir)/mnb-input-manager.h		\
 		$(srcdir)/mnb-toolbar.h                 \
 		$(srcdir)/mnb-toolbar-button.h          \
+		$(srcdir)/mnb-toolbar-icon.h            \
 		$(srcdir)/mnb-panel.h			\
 		$(srcdir)/mnb-panel-frame.h		\
 		$(srcdir)/mnb-panel-oop.h
@@ -44,6 +45,7 @@ source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/mnb-input-manager.c		\
 		$(srcdir)/mnb-toolbar.c                 \
 		$(srcdir)/mnb-toolbar-button.c          \
+		$(srcdir)/mnb-toolbar-icon.c            \
 		$(srcdir)/mnb-panel.c         		\
 		$(srcdir)/mnb-panel-frame.c         	\
 		$(srcdir)/mnb-panel-oop.c

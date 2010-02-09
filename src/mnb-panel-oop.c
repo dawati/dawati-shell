@@ -2,7 +2,7 @@
 
 /* mnb-panel.c */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -667,45 +667,46 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
    *
    * (We use the wm-class to identify sub-windows.)
    */
-  {
-    Atom r_type;
-    int  r_fmt;
-    unsigned long n_items;
-    unsigned long r_after;
-    char *r_prop;
-    MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
-    MetaDisplay *display;
+  if (xid)
+    {
+      Atom r_type;
+      int  r_fmt;
+      unsigned long n_items;
+      unsigned long r_after;
+      char *r_prop;
+      MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+      MetaDisplay *display;
 
-    display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+      display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
 
-    meta_error_trap_push (display);
+      meta_error_trap_push (display);
 
-    if (Success == XGetWindowProperty (GDK_DISPLAY (), xid, XA_WM_CLASS,
-                                       0, 8192,
-                                       False, XA_STRING,
-                                       &r_type, &r_fmt, &n_items, &r_after,
-                                       (unsigned char **)&r_prop) &&
-        r_type != 0)
-      {
-        if (r_prop)
-          {
-            /*
-             * The property contains two strings separated by \0; we want the
-             * second string.
-             */
-            gint len0 = strlen (r_prop);
+      if (Success == XGetWindowProperty (GDK_DISPLAY (), xid, XA_WM_CLASS,
+                                         0, 8192,
+                                         False, XA_STRING,
+                                         &r_type, &r_fmt, &n_items, &r_after,
+                                         (unsigned char **)&r_prop) &&
+          r_type != 0)
+        {
+          if (r_prop)
+            {
+              /*
+               * The property contains two strings separated by \0; we want the
+               * second string.
+               */
+              gint len0 = strlen (r_prop);
 
-            if (len0 == n_items)
-              len0--;
+              if (len0 == n_items)
+                len0--;
 
-            priv->child_class = g_strdup (r_prop + len0 + 1);
+              priv->child_class = g_strdup (r_prop + len0 + 1);
 
-            XFree (r_prop);
-          }
-      }
+              XFree (r_prop);
+            }
+        }
 
-    meta_error_trap_pop (display, TRUE);
-  }
+      meta_error_trap_pop (display, TRUE);
+    }
 
   priv->dead = FALSE;
   priv->initialized = TRUE;

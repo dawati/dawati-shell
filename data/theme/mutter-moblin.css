@@ -60,6 +60,7 @@ MnbToolbar {
 
 MnbToolbarButton {
   background-color: #fff0;
+  border-image: none;
 }
 
 MnbToolbarButton:checked {
@@ -81,11 +82,6 @@ MxLabel.toolbar-instruction-label {
   font-family: "Droid Sans";
   font-size: 15px;
   color: white;
-}
-
-MnbToolbarButton
-{
-  border-image: none;
 }
 
 /* applications button */
@@ -183,6 +179,10 @@ MnbToolbarButton#devices-button {
 }
 MnbToolbarButton#devices-button:hover, MnbToolbarButton#devices-button:active, MnbToolbarButton#devices-button:checked {
   background-image: url("panel/devices-coloured.png");
+}
+
+MnbToolbarIcon, MnbToolbarIcon:hover, MnbToolbarIcon:active {
+  border-image: none;
 }
 
 /* tooltips */
