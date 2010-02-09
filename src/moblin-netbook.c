@@ -32,6 +32,7 @@
 #include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"
 #include "notifications/mnb-notification-gtk.h"
+#include "presence/mnb-presence.h"
 #include "mnb-panel-frame.h"
 #include "moblin-netbook-constraints.h"
 #include "moblin-netbook-mutter-hints.h"
@@ -706,6 +707,12 @@ moblin_netbook_plugin_constructed (GObject *object)
   clutter_actor_hide (lowlight);
   clutter_actor_hide (CLUTTER_ACTOR(priv->notification_urgent));
   clutter_actor_hide (switcher_overlay);
+
+  /*
+   * Session presence.  In the future we should just use a lean gnome-session,
+   * but for now mutter can be the presence manager.
+   */
+  presence_init (plugin);
 
   /* Keys */
 

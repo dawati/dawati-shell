@@ -114,6 +114,7 @@ moblin_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
 moblin_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				effects/libeffects.la	\
 				alttab/libalttab.la	\
+				presence/libpresence.la	\
 				notifications/libnotifications.la
 
 pkglib_LTLIBRARIES = moblin-netbook.la

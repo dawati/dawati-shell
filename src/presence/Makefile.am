@@ -5,6 +5,8 @@ AM_CFLAGS = \
 
 libpresence_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
 libpresence_la_SOURCES = \
+	mnb-presence.c		\
+	mnb-presence.h		\
 	gs-idle-monitor.c	\
 	gs-idle-monitor.h	\
 	gsm-presence.c		\

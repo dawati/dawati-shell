@@ -35,6 +35,7 @@
 #include "notifications/moblin-netbook-notify-store.h"
 #include "notifications/mnb-notification-cluster.h"
 #include "notifications/mnb-notification-urgent.h"
+#include "presence/gsm-presence.h"
 
 #include "mnb-input-manager.h"
 
@@ -114,6 +115,9 @@ struct _MoblinNetbookPluginPrivate
   MoblinNetbookNotifyStore *notify_store;
 
   MutterWindow          *screen_saver;
+
+  /* Presence manager */
+  GsmPresence           *presence;
 };
 
 GType moblin_netbook_plugin_get_type (void);
