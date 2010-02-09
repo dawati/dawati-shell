@@ -88,8 +88,8 @@ workspace_added_for_window (WnckScreen *screen,
 {
   wnck_window_move_to_workspace (win, ws);
 
-  g_debug ("Window (%s) moved to workspace %d",
-           wnck_window_get_name (win), wnck_workspace_get_number (ws));
+  g_debug ("Workspace %d added for \"%s\"",
+           wnck_workspace_get_number (ws) + 1, wnck_window_get_name (win));
 
   g_signal_handlers_disconnect_by_func (screen, workspace_added_for_window, win);
 }
@@ -103,6 +103,9 @@ window_workspace_changed (SwWindow   *window,
   WnckWorkspace *ws;
 
   ws = wnck_screen_get_workspace (screen, new_workspace -1);
+
+  g_debug ("\"%s\" moved to workspace %d",
+           wnck_window_get_name (win), new_workspace);
 
   if (!ws)
     {
