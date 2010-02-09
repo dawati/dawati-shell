@@ -35,6 +35,7 @@ mkinstalldirs
 omf.make
 /po/POTFILES
 /po/stamp-it
+/po/*.gmo
 stamp-h1
 tags
 xmldocs.make
