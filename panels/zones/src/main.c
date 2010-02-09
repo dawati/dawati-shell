@@ -71,6 +71,12 @@ active_workspace_changed (WnckScreen    *screen,
   if (!data->view)
     return;
 
+  if (!ws)
+    {
+      g_warning ("Active workspace changed, but no active workspace set!");
+      return;
+    }
+
   sw_overview_set_focused_zone (SW_OVERVIEW (data->view),
                                 wnck_workspace_get_number (ws));
 }
