@@ -4,7 +4,7 @@
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
  *          Rob Staudinger <robert.staudinger@intel.com> devkit-power support
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -19,6 +19,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <dbus/dbus-glib.h>
 #include <devkit-power-gobject/devicekit-power.h>
 #include <egg-idletime/egg-idletime.h>
 #include <gconf/gconf-client.h>
@@ -136,24 +137,24 @@ _suspend_idle_time_key_changed_cb (GConfClient *client,
 }
 
 static void
-_idletime_alarm_expired_cb (EggIdletime *idletime,
-                            guint        alarm_id,
-                            gpointer     userdata)
+_idletime_alarm_expired_cb (EggIdletime     *idletime,
+                            guint            alarm_id,
+                            MpdIdleManager  *self)
 {
-  MpdIdleManager *manager = MPD_IDLE_MANAGER (userdata);
-  MpdIdleManagerPrivate *priv = GET_PRIVATE (manager);
   GError *error = NULL;
 
   if (alarm_id == SUSPEND_ALARM_ID)
   {
     g_debug (G_STRLOC ": Got suspend on idle alarm event");
-    dkp_client_suspend (priv->power_client, &error);
+
+    mpd_idle_manager_suspend (self, &error);
     if (error)
     {
       g_warning ("%s : %s", G_STRLOC, error->message);
       g_clear_error (&error);
     }
-    _set_suspend_idle_alarm (manager);
+
+    _set_suspend_idle_alarm (self);
   }
 }
 
@@ -210,4 +211,49 @@ mpd_idle_manager_new (void)
   return g_object_new (MPD_TYPE_IDLE_MANAGER, NULL);
 }
 
+gboolean
+mpd_idle_manager_lock_screen (MpdIdleManager   *self,
+                              GError          **error)
+{
+  DBusGConnection *conn;
+  DBusGProxy *proxy;
+
+  conn = dbus_g_bus_get (DBUS_BUS_SESSION, error);
+  if (error && *error)
+  {
+    return FALSE;
+  }
+
+  proxy = dbus_g_proxy_new_for_name (conn,
+                                     "org.gnome.ScreenSaver",
+                                     "/",
+                                     "org.gnome.ScreenSaver");
+
+  dbus_g_proxy_call_no_reply (proxy, "Lock", G_TYPE_INVALID);
+
+  g_object_unref (proxy);
+  return TRUE;
+}
+
+gboolean
+mpd_idle_manager_suspend (MpdIdleManager   *self,
+                          GError          **error)
+{
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
+  gboolean ret;
+
+  ret = mpd_idle_manager_lock_screen (self, error);
+  if (!ret || (error && *error))
+  {
+    return FALSE;
+  }
+
+  ret = dkp_client_suspend (priv->power_client, error);
+  if (!ret || (error && *error))
+  {
+    return FALSE;
+  }
+
+  return TRUE;
+}
 

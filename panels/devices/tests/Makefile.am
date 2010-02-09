@@ -14,7 +14,7 @@ noinst_PROGRAMS = \
 	test-disk-device \
 	test-disk-tile \
 	test-folder-button \
-	test-screensaver \
+	test-idle-manager \
 	$(NULL)
 
 test_battery_device_SOURCES = \
@@ -38,7 +38,13 @@ test_folder_button_SOURCES = \
 	$(top_srcdir)/src/mpd-folder-button.c \
 	$(NULL)
 
-test_screensaver_SOURCES = \
-	test-screensaver.c \
+test_idle_manager_LDADD = \
+	$(top_builddir)/egg-idletime/libegg-idletime.la \
+	$(MPD_LIBS) \
+	$(NULL)
+
+test_idle_manager_SOURCES = \
+	test-idle-manager.c \
+	$(top_srcdir)/src/mpd-idle-manager.c \
 	$(NULL)
 
