@@ -2,14 +2,13 @@
 TODO
 ====
 
-* Look at Ross's screensaver bug.
-
+* Implement separate battery icon (windowless panel) as discussed.
 * Enable "All settings" button as soon as the unified control center shell is shipping.
-
 * The brightness tile is a compile-time option, off by default.
 
 Done
 ----
 
+* Look at Ross's screensaver bug.
 * Restrict panel height.
 * Integrate dalston-idle-manager.
