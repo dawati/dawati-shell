@@ -414,7 +414,7 @@ _make_offline_banner (MnbPeoplePanel *pane,
   clutter_actor_set_name (tile,
                           "people-pane-you-offline-banner");
   label = mx_label_new (_("To see your IM contacts, "
-                          "go online in the Status panel."));
+                          "you need to go online."));
   clutter_actor_set_name (label,
                           "people-pane-you-offline-label");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
