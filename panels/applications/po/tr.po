@@ -2,13 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-19 09:28+0000\n"
+"POT-Creation-Date: 2009-10-16 11:30+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ceyhun Alyesil <ceyhunalyesil@gmail.com>\n"
 "Language-Team: \n"
@@ -16,22 +15,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/moblin-netbook-launcher.c:857
-msgid "Favourite Applications"
-msgstr "Favori Uygulamalar"
-
-#: ../src/moblin-netbook-launcher.c:1354
+#: ../src/moblin-netbook-launcher.c:1337
 msgid "Applications"
 msgstr "Uygulamalar"
 
-#: ../src/moblin-netbook-launcher.c:1365
+#: ../src/moblin-netbook-launcher.c:1348
 msgid "Search"
 msgstr "Arama"
 
-#: ../src/moblin-panel-applications.c:164
+#: ../src/moblin-panel-applications.c:196
 msgid "applications"
 msgstr "uygulamalar"
+
+#. * Fav apps.
+#. 
+#. Label
+#: ../src/moblin-netbook-launcher.c:813
+msgid "Favorite Applications"
+msgstr "Favori Uygulamalar"
