@@ -1,4 +1,4 @@
-SUBDIRS=effects alttab notifications
+SUBDIRS=effects alttab notifications presence
 
 xmldir = $(pkgdatadir)/dbus-xml
 xml_DATA = 	mnb-panel-dbus.xml	\

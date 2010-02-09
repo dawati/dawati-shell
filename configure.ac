@@ -177,6 +177,7 @@ src/Makefile
 src/effects/Makefile
 src/alttab/Makefile
 src/notifications/Makefile
+src/presence/Makefile
 po/Makefile.in
 tests/Makefile
 libmoblin-panel/Makefile
