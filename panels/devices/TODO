@@ -2,8 +2,14 @@
 TODO
 ====
 
-* Integrate dalston's idle manager, also look at Ross's screensaver bug.
+* Look at Ross's screensaver bug.
 
 * Enable "All settings" button as soon as the unified control center shell is shipping.
 
 * The brightness tile is a compile-time option, off by default.
+
+Done
+----
+
+* Restrict panel height.
+* Integrate dalston-idle-manager.

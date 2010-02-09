@@ -34,6 +34,7 @@
 #include <libnotify/notify.h>
 #include "mpd-global-key.h"
 #include "mpd-shell.h"
+#include "mpd-shell-defines.h"
 #include "mpd-shutdown-notification.h"
 #include "config.h"
 
@@ -203,7 +204,7 @@ main (int     argc,
       g_signal_connect (stage, "notify::height",
                         G_CALLBACK (_stage_height_notify_cb), shell);
 
-      clutter_actor_set_size (stage, 1024, 600);
+      clutter_actor_set_size (stage, MPD_SHELL_WIDTH, MPD_SHELL_HEIGHT);
       clutter_actor_show (stage);
 
     } else {
@@ -217,6 +218,8 @@ main (int     argc,
                                                      TRUE);
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (panel);
+
+      mpl_panel_client_set_height_request (panel, MPD_SHELL_HEIGHT);
 
       stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
       shell = mpd_shell_new ();
