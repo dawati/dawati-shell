@@ -2,7 +2,7 @@
 
 /* mpl-panel-client.h */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -130,6 +130,8 @@ void mpl_panel_client_ready (MplPanelClient *panel);
 
 gboolean mpl_panel_client_set_delayed_ready (MplPanelClient *panel,
                                              gboolean        delayed);
+
+gboolean mpl_panel_client_is_windowless (MplPanelClient *panel);
 
 G_END_DECLS
 

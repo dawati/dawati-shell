@@ -2,7 +2,7 @@
 
 /* mpl-panel-client.c */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -56,7 +56,8 @@ enum
   PROP_BUTTON_STYLE,
   PROP_XID,
   PROP_TOOLBAR_SERVICE,
-  PROP_DELAYED_READY
+  PROP_DELAYED_READY,
+  PROP_WINDOWLESS
 };
 
 enum
@@ -108,6 +109,7 @@ struct _MplPanelClientPrivate
   gboolean         ready_emitted     : 1;
   gboolean         delayed_ready     : 1;
   gboolean         main_loop_running : 1;
+  gboolean         windowless        : 1;
 };
 
 static void
@@ -140,6 +142,9 @@ mpl_panel_client_get_property (GObject    *object,
       break;
     case PROP_DELAYED_READY:
       g_value_set_boolean (value, priv->delayed_ready);
+      break;
+    case PROP_WINDOWLESS:
+      g_value_set_boolean (value, priv->windowless);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -181,6 +186,9 @@ mpl_panel_client_set_property (GObject      *object,
       break;
     case PROP_DELAYED_READY:
       mpl_panel_client_set_delayed_ready (panel, g_value_get_boolean (value));
+      break;
+    case PROP_WINDOWLESS:
+      priv->windowless = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -249,7 +257,7 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
 
   g_debug ("dbus init: %d,%d;%dx%d", x, y, width, height);
 
-  if (!priv->xid)
+  if (!priv->xid && !priv->windowless)
     return FALSE;
 
   *xid          = priv->xid;
@@ -258,33 +266,36 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
   *stylesheet   = g_strdup (priv->stylesheet);
   *button_style = g_strdup (priv->button_style);
 
-  priv->x          = x;
-  priv->y          = y;
-  priv->max_height = height;
-  priv->width      = width;
-
-  if (priv->requested_height > 0 && priv->requested_height < height)
-    real_height = priv->requested_height;
-  else if (priv->requested_height)
+  if (!priv->windowless)
     {
-      g_warning ("Panel requested height %d which is greater than maximum "
-                 "allowable height %d",
-                 priv->requested_height, height);
+      priv->x          = x;
+      priv->y          = y;
+      priv->max_height = height;
+      priv->width      = width;
+
+      if (priv->requested_height > 0 && priv->requested_height < height)
+        real_height = priv->requested_height;
+      else if (priv->requested_height)
+        {
+          g_warning ("Panel requested height %d which is greater than maximum "
+                     "allowable height %d",
+                     priv->requested_height, height);
+        }
+
+      priv->real_height = real_height;
+
+      *alloc_width  = width;
+      *alloc_height = real_height;
+
+      /*
+       * Make sure that the window is hidden (the window can be left mapped, if
+       * the Toolbar died on us, and then bad things happen).
+       */
+      mpl_panel_client_hide (self);
+
+      g_signal_emit (self, signals[SET_POSITION], 0, x, y);
+      g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
     }
-
-  priv->real_height = real_height;
-
-  *alloc_width  = width;
-  *alloc_height = real_height;
-
-  /*
-   * Make sure that the window is hidden (the window can be left mapped, if the
-   * Toolbar died on us, and then bad things happen).
-   */
-  mpl_panel_client_hide (self);
-
-  g_signal_emit (self, signals[SET_POSITION], 0, x, y);
-  g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
 
   if (priv->ready_emitted)
     {
@@ -516,6 +527,15 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                                      "Delayed emission of 'ready' signal",
                                      "Whether emission of 'ready' signal should"
                                      " be delayed until later.",
+                                     FALSE,
+                                     G_PARAM_READWRITE |
+                                     G_PARAM_CONSTRUCT));
+
+  g_object_class_install_property (object_class,
+                                   PROP_WINDOWLESS,
+                                   g_param_spec_boolean ("windowless",
+                                     "Panel without window",
+                                     "Panel without window",
                                      FALSE,
                                      G_PARAM_READWRITE |
                                      G_PARAM_CONSTRUCT));
@@ -1390,4 +1410,16 @@ mpl_panel_client_set_delayed_ready (MplPanelClient *panel, gboolean delayed)
   priv->delayed_ready = delayed;
 
   return TRUE;
+}
+
+gboolean
+mpl_panel_client_is_windowless (MplPanelClient *panel)
+{
+  MplPanelClientPrivate *priv;
+
+  g_return_val_if_fail (MPL_IS_PANEL_CLIENT (panel), FALSE);
+
+  priv = panel->priv;
+
+  return priv->windowless;
 }

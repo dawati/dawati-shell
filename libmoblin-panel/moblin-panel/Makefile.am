@@ -10,6 +10,7 @@ libmoblin_panel_include_HEADERS = \
 	mpl-panel-clutter.h \
 	mpl-panel-common.h \
 	mpl-panel-gtk.h \
+	mpl-panel-windowless.h \
 	mpl-app-bookmark-manager.h \
 	mpl-utils.h
 
@@ -27,6 +28,7 @@ libmoblin_panel_la_SOURCES = \
 	mpl-panel-client.c \
 	mpl-panel-clutter.c \
 	mpl-panel-gtk.c \
+	mpl-panel-windowless.c \
 	mpl-app-bookmark-manager.c \
 	mpl-utils.c \
 	$(DBUS_GLUE) \
