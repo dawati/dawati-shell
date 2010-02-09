@@ -86,3 +86,8 @@ MxButton
   border-image: url('close-button.png');
   x-mx-content-image: url('close-button.png');
 }
+
+MxLabel.no-apps-label
+{
+  color: #fadc81;
+}

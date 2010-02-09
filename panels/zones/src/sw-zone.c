@@ -543,6 +543,14 @@ sw_zone_allocate (ClutterActor           *actor,
       return;
     }
 
+  if (priv->label)
+    {
+      childbox = avail_box;
+      mx_allocate_align_fill (priv->label, &childbox, MX_ALIGN_MIDDLE,
+                              MX_ALIGN_MIDDLE, FALSE, FALSE);
+      clutter_actor_allocate (priv->label, &childbox, flags);
+    }
+
 
   child_height = ((avail_box.y2 - avail_box.y1) / priv->n_children)
                   - (PADDING);
@@ -636,10 +644,13 @@ sw_zone_paint (ClutterActor *actor)
       clutter_actor_paint (child);
     }
 
-  clutter_actor_paint (SW_ZONE (actor)->priv->title);
+  clutter_actor_paint (priv->title);
 
-  if (SW_ZONE (actor)->priv->dummy)
-    clutter_actor_paint (SW_ZONE (actor)->priv->add_icon);
+  if (priv->dummy)
+    clutter_actor_paint (priv->add_icon);
+
+  if (priv->label && !priv->dummy && priv->n_children == 0)
+    clutter_actor_paint (priv->label);
 }
 
 static void
@@ -669,21 +680,37 @@ sw_zone_pick (ClutterActor       *actor,
 static void
 sw_zone_map (ClutterActor *actor)
 {
+  SwZonePrivate *priv = SW_ZONE (actor)->priv;
+
   CLUTTER_ACTOR_CLASS (sw_zone_parent_class)->map (actor);
 
   mx_droppable_enable (MX_DROPPABLE (actor));
 
-  clutter_actor_map (SW_ZONE (actor)->priv->title);
-  clutter_actor_map (SW_ZONE (actor)->priv->add_icon);
+  if (priv->title)
+    clutter_actor_map (priv->title);
+
+  if (priv->add_icon)
+    clutter_actor_map (priv->add_icon);
+
+  if (priv->label)
+    clutter_actor_map (priv->label);
 }
 
 static void
 sw_zone_unmap (ClutterActor *actor)
 {
+  SwZonePrivate *priv = SW_ZONE (actor)->priv;
+
   CLUTTER_ACTOR_CLASS (sw_zone_parent_class)->unmap (actor);
 
-  clutter_actor_unmap (SW_ZONE (actor)->priv->title);
-  clutter_actor_unmap (SW_ZONE (actor)->priv->add_icon);
+  if (priv->title)
+    clutter_actor_unmap (priv->title);
+
+  if (priv->add_icon)
+    clutter_actor_unmap (priv->add_icon);
+
+  if (priv->label)
+    clutter_actor_unmap (priv->label);
 }
 
 
@@ -744,6 +771,11 @@ sw_zone_init (SwZone *self)
 
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (sw_zone_style_changed_cb), NULL);
+
+  self->priv->label = mx_label_new ("No applications on this zone");
+  mx_stylable_set_style_class (MX_STYLABLE (self->priv->label),
+                               "no-apps-label");
+  clutter_actor_set_parent (self->priv->label, CLUTTER_ACTOR (self));
 
 }
 
