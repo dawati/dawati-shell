@@ -228,10 +228,10 @@ penge_apps_pane_update (PengeAppsPane *pane)
       }
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
-                                   "x-expand",
-                                   FALSE,
-                                   "y-expand",
-                                   FALSE,
+                                   "x-expand", TRUE,
+                                   "y-expand", TRUE,
+                                   "x-fill", FALSE,
+                                   "y-fill", FALSE,
                                    NULL);
       g_hash_table_insert (priv->uris_to_actors,
                            g_strdup (uri),
