@@ -61,6 +61,7 @@ struct _MnpWorldClockPrivate {
 	MnpClockArea *area;
 
 	GPtrArray *zones;
+	guint completion_timeout;
 };
 
 static void
@@ -106,15 +107,34 @@ mnp_world_clock_init (MnpWorldClock *self)
   priv->zones = NULL;
 }
 
+static gboolean
+start_search (MnpClockArea *area)
+{
+	MnpWorldClockPrivate *priv = GET_PRIVATE (area);
+	
+	priv->search_text = mx_entry_get_text (priv->search_location);
+
+	if (!priv->search_text || !*priv->search_text)
+		clutter_actor_hide(priv->scroll);
+	
+	g_signal_emit_by_name (priv->zones_model, "filter-changed");
+	if (priv->search_text && *priv->search_text)
+		clutter_actor_show(priv->scroll);
+
+
+	return FALSE;
+}
+
 static void
 text_changed_cb (MxEntry *entry, GParamSpec *pspec, void *user_data)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (user_data);
 
-	priv->search_text = mx_entry_get_text (entry);
-	g_signal_emit_by_name (priv->zones_model, "filter-changed");
-	if (priv->search_text && *priv->search_text)
-		clutter_actor_show(priv->scroll);
+	if (priv->completion_timeout != 0)
+		g_source_remove(priv->completion_timeout);
+
+	priv->completion_timeout = g_timeout_add (500, (GSourceFunc) start_search, user_data);
+
 }
 
 static char *
@@ -240,6 +260,7 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 	mnp_clock_area_add_tile (priv->area, tile);
 }
 
+
 static void 
 mnp_completion_done (gpointer data, const char *zone)
 {
@@ -282,6 +303,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	MnpButtonItem *button_item;
 
+	priv->completion_timeout = 0;
 	stage = clutter_stage_get_default ();
 
 	mx_table_set_col_spacing (MX_TABLE (table), 1);
