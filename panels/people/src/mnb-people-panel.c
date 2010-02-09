@@ -32,6 +32,7 @@
 #include <anerley/anerley-ebook-feed.h>
 #include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-econtact-item.h>
+#include <anerley/anerley-presence-chooser.h>
 
 #include <libebook/e-book.h>
 
@@ -69,6 +70,7 @@ struct _MnbPeoplePanelPrivate {
   ClutterActor *offline_banner;
   ClutterActor *header_box;
   ClutterActor *no_people_tile;
+  ClutterActor *presence_chooser;
 };
 
 static void
@@ -672,6 +674,15 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-fill", FALSE,
                                       "x-align", 0.0,
                                       "y-align", 0.5,
+                                      NULL);
+  priv->presence_chooser = anerley_presence_chooser_new ();
+  mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
+                                      priv->presence_chooser,
+                                      0, 2,
+                                      "x-expand", FALSE,
+                                      "x-fill", FALSE,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
                                       NULL);
   g_signal_connect (priv->entry,
                     "text-changed",
