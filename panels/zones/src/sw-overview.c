@@ -40,6 +40,8 @@ struct _SwOverviewPrivate
   ClutterActor *dummy;
   gulong dummy_added_handler;
   gulong zone_removed_handler;
+
+  gint window_count;
 };
 
 
@@ -166,7 +168,7 @@ sw_overview_renumber_zones (SwOverview   *view)
     }
 
   /* add the new dummy */
-  if (count < 8 && !view->priv->dummy)
+  if (count < 8 && !view->priv->dummy && count < view->priv->window_count)
     sw_overview_add_dummy (view);
 }
 
@@ -294,12 +296,19 @@ window_drag_end (SwOverview *overview)
 }
 
 
+static void
+window_removed (SwWindow   *window,
+                SwOverview *view)
+{
+  view->priv->window_count--;
+}
 
 void
 sw_overview_add_window (SwOverview *overview,
                         SwWindow   *window,
                         gint        index)
 {
+  SwOverviewPrivate *priv = overview->priv;
   GList *children;
   ClutterContainer *zone;
 
@@ -320,6 +329,28 @@ sw_overview_add_window (SwOverview *overview,
                             G_CALLBACK (window_drag_begin), overview);
   g_signal_connect_swapped (window, "drag-end",
                             G_CALLBACK (window_drag_end), overview);
+
+  /* increase window count */
+  priv->window_count++;
+
+  /* decrease window count when the window is deleted */
+  g_signal_connect (window, "destroy",
+                    G_CALLBACK (window_removed), overview);
+
+
+  /* ensure there is no "new zone" if the number of windows is less than or
+   * equal to the zones */
+  if (priv->window_count > priv->n_zones
+      && !priv->dummy)
+    {
+      sw_overview_add_dummy (overview);
+    }
+  else
+    {
+      if (priv->dummy)
+        clutter_actor_destroy (priv->dummy);
+      priv->dummy = NULL;
+    }
 
   g_list_free (children);
 }
