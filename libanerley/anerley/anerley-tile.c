@@ -46,6 +46,8 @@ struct _AnerleyTilePrivate {
   ClutterActor *secondary_label;
   ClutterActor *presence_label;
   ClutterActor *presence_icon;
+
+  guint update_presence_tooltip_idle_id;
 };
 
 enum
@@ -179,6 +181,10 @@ _item_presence_changed_cb (AnerleyItem *item,
     else
       mx_label_set_text ((MxLabel *)priv->presence_label,
                          _("Offline"));
+
+#if MX_CHECK_VERSION (0, 6, 1)
+    mx_widget_set_tooltip_text (MX_WIDGET (priv->presence_label), NULL);
+#endif
   }
 
   clutter_actor_show (priv->presence_label);
@@ -292,6 +298,12 @@ anerley_tile_dispose (GObject *object)
     anerley_tile_update_item (tile, NULL);
   }
 
+  if (priv->update_presence_tooltip_idle_id)
+  {
+    g_source_remove (priv->update_presence_tooltip_idle_id);
+    priv->update_presence_tooltip_idle_id = 0;
+  }
+
   G_OBJECT_CLASS (anerley_tile_parent_class)->dispose (object);
 }
 
@@ -375,6 +387,29 @@ anerley_tile_pick (ClutterActor       *actor,
 
 #define COL_SPACING 6
 #define ROW_SPACING 2
+
+
+static gboolean
+_update_presence_tooltip_idle_cb (gpointer userdata)
+{
+  AnerleyTile *tile = ANERLEY_TILE (userdata);
+  AnerleyTilePrivate *priv = GET_PRIVATE (tile);
+  ClutterActor *tmp_text;
+  PangoLayout *layout;
+
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->presence_label));
+  layout = clutter_text_get_layout (CLUTTER_TEXT (tmp_text));
+  if (pango_layout_is_ellipsized (layout))
+  {
+    mx_widget_set_tooltip_text (MX_WIDGET (priv->presence_label),
+                                anerley_item_get_presence_message (priv->item));
+  } else {
+    mx_widget_set_tooltip_text (MX_WIDGET (priv->presence_label),
+                                NULL);
+  }
+
+  return FALSE;
+}
 
 static void
 anerley_tile_allocate (ClutterActor           *actor,
@@ -487,6 +522,13 @@ anerley_tile_allocate (ClutterActor           *actor,
 
   clutter_actor_allocate (priv->primary_label, &primary_label_box, flags);
 
+#if MX_CHECK_VERSION (0, 6, 1)
+  /* We only want the tooltip if the text is ellipsized. We only get valid
+   * information after the allocate
+   */
+  priv->update_presence_tooltip_idle_id = g_idle_add (_update_presence_tooltip_idle_cb,
+                                                      actor);
+#endif
 }
 
 static void
