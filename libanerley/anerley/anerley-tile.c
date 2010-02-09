@@ -348,9 +348,11 @@ anerley_tile_paint (ClutterActor *actor)
   clutter_actor_paint (priv->avatar_frame);
   clutter_actor_paint (priv->primary_label);
   if (priv->presence_label)
-    clutter_actor_paint (priv->presence_label);
+    if (CLUTTER_ACTOR_IS_VISIBLE (priv->presence_label))
+      clutter_actor_paint (priv->presence_label);
   if (priv->presence_icon)
-    clutter_actor_paint (priv->presence_icon);
+    if (CLUTTER_ACTOR_IS_VISIBLE (priv->presence_icon))
+      clutter_actor_paint (priv->presence_icon);
 }
 
 static void
@@ -364,9 +366,11 @@ anerley_tile_pick (ClutterActor       *actor,
   clutter_actor_paint (priv->avatar_frame);
   clutter_actor_paint (priv->primary_label);
   if (priv->presence_label)
-    clutter_actor_paint (priv->presence_label);
+    if (CLUTTER_ACTOR_IS_VISIBLE (priv->presence_label))
+      clutter_actor_paint (priv->presence_label);
   if (priv->presence_icon)
-    clutter_actor_paint (priv->presence_icon);
+    if (CLUTTER_ACTOR_IS_VISIBLE (priv->presence_icon))
+      clutter_actor_paint (priv->presence_icon);
 }
 
 #define COL_SPACING 6
