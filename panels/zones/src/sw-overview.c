@@ -144,6 +144,8 @@ actor_added_to_dummy (ClutterContainer *zone,
 
   priv->dummy = NULL;
 
+  priv->n_zones++;
+  g_debug ("New zone added (count: %d)", priv->n_zones);
 
   sw_overview_renumber_zones (view);
 }
@@ -174,6 +176,8 @@ sw_overview_constructed (GObject *object)
   SwOverviewPrivate *priv = SW_OVERVIEW (object)->priv;
   gint i;
   ClutterActor *zone;
+
+  g_debug ("Creating a zones panel with %d zones", priv->n_zones);
 
   for (i = 0; i < priv->n_zones; i++)
     {
@@ -225,11 +229,16 @@ sw_overview_add_zone (SwOverview *self)
                                zone, "expand", TRUE, NULL);
 
   sw_overview_renumber_zones (self);
+
+  priv->n_zones++;
+  g_debug ("Added a zone (count: %d)", priv->n_zones);
 }
 
 static void
 zone_removed (SwOverview *overview)
 {
+  overview->priv->n_zones--;
+  g_debug ("Zone removed (count: %d)", overview->priv->n_zones);
   sw_overview_renumber_zones (overview);
 }
 
