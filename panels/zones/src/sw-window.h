@@ -77,6 +77,8 @@ void   sw_window_set_title   (SwWindow *window, const gchar    *title);
 
 void   sw_window_set_thumbnail (SwWindow *window, ClutterActor *thumbnail);
 
+void   sw_window_workspace_changed (SwWindow *window, gint new_workspace);
+
 G_END_DECLS
 
 #endif /* _SW_WINDOW_H */

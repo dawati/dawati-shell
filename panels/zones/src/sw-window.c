@@ -70,6 +70,8 @@ struct _SwWindowPrivate
   ClutterActor *icon;
 
   gulong xid;
+
+  gint workspace;
 };
 
 static void
@@ -158,7 +160,7 @@ sw_window_drag_end (MxDraggable *draggable,
   zone = (SwZone*) clutter_actor_get_parent (CLUTTER_ACTOR (draggable));
   num = sw_zone_get_number (zone);
 
-  g_signal_emit (draggable, window_signals[WORKSPACE_CHANGED], 0, num);
+  sw_window_workspace_changed (SW_WINDOW (draggable), num);
 }
 
 static void
@@ -598,4 +600,17 @@ sw_window_set_title (SwWindow    *window,
                      const gchar *title)
 {
   clutter_text_set_text (CLUTTER_TEXT (window->priv->text), title);
+}
+
+void
+sw_window_workspace_changed (SwWindow *window,
+                             gint      new_workspace)
+{
+  if (new_workspace != window->priv->workspace)
+    {
+      window->priv->workspace = new_workspace;
+
+      g_signal_emit (window, window_signals[WORKSPACE_CHANGED], 0,
+                     new_workspace);
+    }
 }

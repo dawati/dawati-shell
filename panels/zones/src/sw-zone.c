@@ -853,7 +853,7 @@ sw_zone_set_number (SwZone *zone,
 
   for (l = zone->priv->children; l; l = g_list_next (l))
     {
-      g_signal_emit_by_name (l->data, "workspace-changed", number);
+      sw_window_workspace_changed (SW_WINDOW (l->data), number);
     }
 
   switch (number)
