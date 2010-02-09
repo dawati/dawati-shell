@@ -2,8 +2,6 @@
 TODO
 ====
 
-* disk-tile: mx-progress-bar is fixed, review fixed size.
-
 * Integrate dalston's idle manager, also look at Ross's screensaver bug.
 
 * Enable "All settings" button as soon as the unified control center shell is shipping.
