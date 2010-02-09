@@ -2419,8 +2419,7 @@ mnb_toolbar_constructed (GObject *self)
   priv->old_screen_height = screen_height;
 
   priv->max_panels =
-    (screen_width - CLOCK_WIDTH - TRAY_WIDTH - BUTTON_SPACING) /
-    (BUTTON_WIDTH + BUTTON_SPACING);
+    (screen_width - CLOCK_WIDTH - TRAY_WIDTH) / (BUTTON_WIDTH + BUTTON_SPACING);
 
   clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
 
