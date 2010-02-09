@@ -30,3 +30,5 @@ DISTCLEANFILES = org.moblin.UX.Shell.Panels.zones.service
 
 org.moblin.UX.Shell.Panels.zones.service: org.moblin.UX.Shell.Panels.zones.service.in
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
+
+-include $(top_srcdir)/git.mk

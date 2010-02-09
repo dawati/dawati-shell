@@ -29,3 +29,5 @@ dist_theme_DATA = \
 #	rm -f $(texture_cache)
 #	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(pkgdatadir)
 #endif
+
+-include $(top_srcdir)/git.mk

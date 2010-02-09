@@ -14,3 +14,5 @@ endif
 EXTRA_DIST = moblin-panel-zones.desktop.in
 CLEANFILES = moblin-panel-zones.desktop moblin-panel-zones.desktop
 CLEANFILES = moblin-panel-zones.desktop
+
+-include $(top_srcdir)/git.mk
