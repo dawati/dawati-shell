@@ -425,7 +425,7 @@ anerley_tile_allocate (ClutterActor           *actor,
 
   avail_height_for_primary = avatar_box.y2 - avatar_box.y1;
 
-  if (priv->presence_icon)
+  if (priv->presence_icon && CLUTTER_ACTOR_IS_VISIBLE (priv->presence_icon))
   {
     /* The presence icon / label if we have one should subtract the space that
      * can be used for the label. The bottom of the label and icon should line
@@ -448,7 +448,7 @@ anerley_tile_allocate (ClutterActor           *actor,
     clutter_actor_allocate (priv->presence_icon, &presence_icon_box, flags);
   }
 
-  if (priv->presence_label)
+  if (priv->presence_label && CLUTTER_ACTOR_IS_VISIBLE (priv->presence_label))
   {
     gfloat presence_icon_height;
 
