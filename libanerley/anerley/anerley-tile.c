@@ -28,7 +28,7 @@
 
 #include <glib/gi18n.h>
 
-G_DEFINE_TYPE (AnerleyTile, anerley_tile, MX_TYPE_TABLE)
+G_DEFINE_TYPE (AnerleyTile, anerley_tile, MX_TYPE_WIDGET)
 
 #define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), ANERLEY_TYPE_TILE, AnerleyTilePrivate))
@@ -121,25 +121,15 @@ anerley_tile_update_presence_icon (AnerleyTile *tile,
 
   if (priv->presence_icon)
   {
-    clutter_container_remove_actor (CLUTTER_CONTAINER (tile),
-                                    priv->presence_icon);
+    clutter_actor_destroy (priv->presence_icon);
   }
 
   cache = mx_texture_cache_get_default ();
 
   priv->presence_icon = (ClutterActor *)mx_texture_cache_get_texture (cache,
                                                                       path);
+  clutter_actor_set_parent (priv->presence_icon, CLUTTER_ACTOR (tile));
   clutter_actor_set_size (priv->presence_icon, 16, 16);
-  mx_table_add_actor_with_properties (MX_TABLE (tile),
-                                      priv->presence_icon,
-                                      2,
-                                      1,
-                                      "x-fill", FALSE,
-                                      "y-fill", FALSE,
-                                      "x-expand", FALSE,
-                                      "y-expand", TRUE,
-                                      "y-align", 0.0,
-                                      NULL);
 
   clutter_actor_show (priv->presence_icon);
 }
@@ -324,24 +314,175 @@ anerley_tile_map (ClutterActor *actor)
     anerley_item_emit_avatar_path_changed (priv->item);
     anerley_item_emit_presence_changed (priv->item);
   }
+
+  clutter_actor_map (priv->avatar_frame);
+  clutter_actor_map (priv->primary_label);
+  if (priv->presence_label)
+    clutter_actor_map (priv->presence_label);
+  if (priv->presence_icon)
+    clutter_actor_map (priv->presence_icon);
 }
+
+static void
+anerley_tile_unmap (ClutterActor *actor)
+{
+  AnerleyTilePrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (anerley_tile_parent_class)->unmap (actor);
+
+  clutter_actor_unmap (priv->avatar_frame);
+  clutter_actor_unmap (priv->primary_label);
+  if (priv->presence_label)
+    clutter_actor_unmap (priv->presence_label);
+  if (priv->presence_icon)
+    clutter_actor_unmap (priv->presence_icon);
+}
+
+static void
+anerley_tile_paint (ClutterActor *actor)
+{
+  AnerleyTilePrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (anerley_tile_parent_class)->paint (actor);
+
+  clutter_actor_paint (priv->avatar_frame);
+  clutter_actor_paint (priv->primary_label);
+  if (priv->presence_label)
+    clutter_actor_paint (priv->presence_label);
+  if (priv->presence_icon)
+    clutter_actor_paint (priv->presence_icon);
+}
+
+static void
+anerley_tile_pick (ClutterActor       *actor,
+                   const ClutterColor *color)
+{
+  AnerleyTilePrivate *priv = GET_PRIVATE (actor);
+
+  CLUTTER_ACTOR_CLASS (anerley_tile_parent_class)->pick (actor, color);
+
+  clutter_actor_paint (priv->avatar_frame);
+  clutter_actor_paint (priv->primary_label);
+  if (priv->presence_label)
+    clutter_actor_paint (priv->presence_label);
+  if (priv->presence_icon)
+    clutter_actor_paint (priv->presence_icon);
+}
+
+#define COL_SPACING 6
+#define ROW_SPACING 2
 
 static void
 anerley_tile_allocate (ClutterActor           *actor,
                        const ClutterActorBox  *box,
                        ClutterAllocationFlags  flags)
 {
+  AnerleyTilePrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass  *actor_class;
+  ClutterActorBox avatar_box;
+  ClutterActorBox primary_label_box;
+  ClutterActorBox presence_icon_box;
+  ClutterActorBox presence_label_box;
 
+  MxPadding padding;
+  gfloat width, height;
+  gfloat nat_h, min_h, nat_w, min_w;
+  gfloat avail_width, avail_height_for_primary;
 
-  if (CLUTTER_ACTOR_IS_MAPPED (actor))
+  if (!CLUTTER_ACTOR_IS_MAPPED (actor))
   {
-    actor_class = CLUTTER_ACTOR_CLASS (anerley_tile_parent_class);
-  } else {
     actor_class = g_type_class_peek (CLUTTER_TYPE_ACTOR);
+    actor_class->allocate (actor, box, flags);
+    return;
   }
 
-  actor_class->allocate (actor, box, flags);
+  CLUTTER_ACTOR_CLASS (anerley_tile_parent_class)->allocate (actor,
+                                                             box,
+                                                             flags);
+
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
+
+  width = box->x2 - box->x1;
+  height = box->y2 - box->y1;
+
+  /* Avatar frame. Should be vertically centred in the available height */
+  clutter_actor_get_preferred_size (priv->avatar_frame,
+                                    &min_w,
+                                    &min_h,
+                                    &nat_w,
+                                    &nat_h);
+
+  avatar_box.x1 = padding.left;
+  avatar_box.x2 = avatar_box.x1 + nat_w;
+  avatar_box.y1 = (gint)((height - nat_h) / 2);
+  avatar_box.y2 = avatar_box.y1 + nat_h;
+
+  clutter_actor_allocate (priv->avatar_frame, &avatar_box, flags);
+
+  avail_height_for_primary = avatar_box.y2 - avatar_box.y1;
+
+  if (priv->presence_icon)
+  {
+    /* The presence icon / label if we have one should subtract the space that
+     * can be used for the label. The bottom of the label and icon should line
+     * up with the avatar frame
+     */
+
+    clutter_actor_get_preferred_size (priv->presence_icon,
+                                      &min_w,
+                                      &min_h,
+                                      &nat_w,
+                                      &nat_h);
+    avail_height_for_primary -= nat_h;
+    avail_height_for_primary -= ROW_SPACING;
+
+    presence_icon_box.y1 = avatar_box.y2 - nat_h;
+    presence_icon_box.y2 = avatar_box.y2;
+    presence_icon_box.x1 = avatar_box.x2 + COL_SPACING;
+    presence_icon_box.x2 = presence_icon_box.x1 + nat_w;
+
+    clutter_actor_allocate (priv->presence_icon, &presence_icon_box, flags);
+  }
+
+  if (priv->presence_label)
+  {
+    gfloat presence_icon_height;
+
+    avail_width = width - presence_icon_box.x2 - padding.right - COL_SPACING;
+    clutter_actor_get_preferred_height (priv->presence_label,
+                                        avail_width,
+                                        &min_h,
+                                        &nat_h);
+    presence_label_box.x1 = presence_icon_box.x2 + COL_SPACING;
+    presence_label_box.x2 = presence_label_box.x1 + avail_width;
+
+    /* Assumes icon is larger than text! */
+    presence_icon_height = presence_icon_box.y2 - presence_icon_box.y1;
+    presence_label_box.y1 = presence_icon_box.y1 + 
+                            (gint)((presence_icon_height - nat_h) / 2);
+    presence_label_box.y2 = presence_label_box.y1 + nat_h;
+
+    clutter_actor_allocate (priv->presence_label, &presence_label_box, flags);
+  }
+
+  /* The name label should be given all the available width that is left after
+   * the avatar frame is positioned. It should be COL_SPACING pixels to the left
+   * of the avatar frame.
+   */
+  avail_width = width - avatar_box.x2 - padding.right - COL_SPACING;
+  clutter_actor_get_preferred_height (priv->primary_label,
+                                      avail_width,
+                                      &min_h,
+                                      &nat_h);
+
+  primary_label_box.x1 = avatar_box.x2 + COL_SPACING;
+  primary_label_box.x2 = primary_label_box.x1 + avail_width;
+  primary_label_box.y1 = avatar_box.y1;
+  primary_label_box.y2 = primary_label_box.y1 +
+                         CLAMP (nat_h, min_h, avail_height_for_primary);
+
+  clutter_actor_allocate (priv->primary_label, &primary_label_box, flags);
+
 }
 
 static void
@@ -351,9 +492,9 @@ anerley_tile_get_preferred_width (ClutterActor *actor,
                                   gfloat       *pref_width)
 {
   if (min_width)
-    *min_width = 180;
+    *min_width = 210;
   if (pref_width)
-    *pref_width = 180;
+    *pref_width = 210;
 }
 
 static void
@@ -384,9 +525,12 @@ anerley_tile_class_init (AnerleyTileClass *klass)
   object_class->finalize = anerley_tile_finalize;
 
   actor_class->map = anerley_tile_map;
+  actor_class->unmap = anerley_tile_unmap;
   actor_class->allocate = anerley_tile_allocate;
-  actor_class->get_preferred_width = anerley_tile_get_preferred_width;
+  actor_class->paint = anerley_tile_paint;
+  actor_class->pick = anerley_tile_pick;
   actor_class->get_preferred_height = anerley_tile_get_preferred_height;
+  actor_class->get_preferred_width = anerley_tile_get_preferred_width;
 
   pspec = g_param_spec_object ("item",
                                "Item",
@@ -448,69 +592,30 @@ anerley_tile_init (AnerleyTile *self)
   self->priv = priv;
 
   priv->avatar_frame = mx_frame_new ();
+  clutter_actor_set_parent (priv->avatar_frame, CLUTTER_ACTOR (self));
+
   mx_stylable_set_style_class (MX_STYLABLE (priv->avatar_frame),
                                "AnerleyTileAvatar");
 
   priv->avatar = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
+
+  clutter_actor_set_size (priv->avatar, 48, 48);
   /* TODO: Prefill with unknown icon */
   mx_bin_set_child (MX_BIN (priv->avatar_frame), priv->avatar);
-
-  /* add avatar */
-  mx_table_add_actor (MX_TABLE (self),
-                      priv->avatar_frame, 0,
-                      0);
-  mx_table_child_set_x_fill (MX_TABLE (self),
-                             priv->avatar_frame, FALSE);
-  mx_table_child_set_y_fill (MX_TABLE (self),
-                             priv->avatar_frame, FALSE);
-  mx_table_child_set_x_expand (MX_TABLE (self),
-                               priv->avatar_frame, FALSE);
-  mx_table_child_set_y_expand (MX_TABLE (self),
-                               priv->avatar_frame, FALSE);
-  mx_table_child_set_row_span (MX_TABLE (self),
-                               priv->avatar_frame, 3);
 
   priv->primary_label = mx_label_new ("");
   mx_stylable_set_style_class (MX_STYLABLE (priv->primary_label),
                                     "AnerleyTilePrimaryLabel");
+  clutter_actor_set_parent (priv->primary_label, CLUTTER_ACTOR (self));
 
-  mx_table_add_actor (MX_TABLE (self),
-                      priv->primary_label,
-                      0,
-                      1);
-  mx_table_child_set_y_fill (MX_TABLE (self),
-                             priv->primary_label, FALSE);
-  mx_table_child_set_x_expand (MX_TABLE (self),
-                               priv->primary_label, FALSE);
-  mx_table_child_set_col_span (MX_TABLE (self),
-                               priv->primary_label, 2);
-  mx_table_child_set_y_align (MX_TABLE (self),
-                              priv->primary_label, 1.0);
-  mx_table_child_set_x_align (MX_TABLE (self),
-                              priv->primary_label, 0.0);
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->primary_label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text), PANGO_WRAP_WORD);
 
   priv->presence_label = mx_label_new ("");
+  clutter_actor_set_parent (priv->presence_label, CLUTTER_ACTOR (self));
   mx_stylable_set_style_class (MX_STYLABLE (priv->presence_label),
                                "AnerleyTilePresenceLabel");
-
-  mx_table_add_actor (MX_TABLE (self),
-                      (ClutterActor *)priv->presence_label, 2, 2);
-  mx_table_child_set_y_fill (MX_TABLE (self),
-                             priv->presence_label, FALSE);
-  mx_table_child_set_x_fill (MX_TABLE (self),
-                             priv->presence_label, FALSE);
-  mx_table_child_set_y_align (MX_TABLE (self),
-                              priv->presence_label, 0.0);
-  mx_table_child_set_x_align (MX_TABLE (self),
-                              priv->presence_label, 0.0);
-
-  mx_table_set_col_spacing ((MxTable *)self,
-                            4);
-  mx_table_set_row_spacing ((MxTable *)self,
-                            4);
 
   g_signal_connect (self,
                     "button-press-event",

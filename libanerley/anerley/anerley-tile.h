@@ -49,12 +49,12 @@ G_BEGIN_DECLS
 typedef struct _AnerleyTilePrivate AnerleyTilePrivate;
 
 typedef struct {
-  MxTable parent;
+  MxWidget parent;
   AnerleyTilePrivate *priv;
 } AnerleyTile;
 
 typedef struct {
-  MxTableClass parent_class;
+  MxWidgetClass parent_class;
 } AnerleyTileClass;
 
 GType anerley_tile_get_type (void);
