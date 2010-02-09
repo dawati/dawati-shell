@@ -83,5 +83,6 @@ MxIcon#add-icon
 
 MxButton
 {
+  border-image: url('close-button.png');
   x-mx-content-image: url('close-button.png');
 }
