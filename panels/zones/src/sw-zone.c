@@ -862,6 +862,8 @@ sw_zone_remove_window (SwZone *zone,
           clutter_container_remove_actor (CLUTTER_CONTAINER (zone),
                                           CLUTTER_ACTOR (win));
           result = TRUE;
+
+          break;
         }
     }
 

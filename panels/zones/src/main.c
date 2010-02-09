@@ -221,7 +221,8 @@ window_clicked_cb (SwWindow   *window,
   WnckWorkspace *ws;
 
   /* close panel */
-  mpl_panel_client_hide (client);
+  if (client)
+    mpl_panel_client_hide (client);
 
   /* activate the window */
   wnck_window_activate (win, clutter_x11_get_current_event_time ());
