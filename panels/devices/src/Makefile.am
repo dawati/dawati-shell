@@ -38,8 +38,6 @@ moblin_panel_devices_SOURCES = \
 	mpd-disk-device.h \
 	mpd-disk-tile.c \
 	mpd-disk-tile.h \
-	mpd-global-key.c \
-	mpd-global-key.h \
 	mpd-folder-button.c \
 	mpd-folder-button.h \
 	mpd-folder-pane.c \
@@ -48,6 +46,10 @@ moblin_panel_devices_SOURCES = \
 	mpd-folder-store.h \
 	mpd-folder-view.c \
 	mpd-folder-view.h \
+	mpd-global-key.c \
+	mpd-global-key.h \
+	mpd-idle-manager.c \
+	mpd-idle-manager.h \
 	mpd-shell.c \
 	mpd-shell.h \
 	mpd-shell-defines.h \
