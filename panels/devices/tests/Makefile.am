@@ -14,6 +14,7 @@ noinst_PROGRAMS = \
 	test-disk-device \
 	test-disk-tile \
 	test-folder-button \
+	test-screensaver \
 	$(NULL)
 
 test_battery_device_SOURCES = \
@@ -35,5 +36,9 @@ test_disk_tile_SOURCES = \
 test_folder_button_SOURCES = \
 	test-folder-button.c \
 	$(top_srcdir)/src/mpd-folder-button.c \
+	$(NULL)
+
+test_screensaver_SOURCES = \
+	test-screensaver.c \
 	$(NULL)
 
