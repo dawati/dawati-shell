@@ -11,6 +11,6 @@ endif
 %.desktop: %.desktop.in Makefile
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
-#EXTRA_DIST = moblin-panel-zones.desktop.in.in
-#CLEANFILES = moblin-panel-zones.desktop moblin-panel-zones.desktop.in
+EXTRA_DIST = moblin-panel-zones.desktop.in
+CLEANFILES = moblin-panel-zones.desktop moblin-panel-zones.desktop
 CLEANFILES = moblin-panel-zones.desktop
