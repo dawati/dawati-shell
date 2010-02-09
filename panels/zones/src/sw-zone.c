@@ -841,12 +841,13 @@ sw_zone_set_focused_window (SwZone *zone,
     }
 }
 
-void
+gboolean
 sw_zone_remove_window (SwZone *zone,
                        gulong  xid)
 {
   SwZonePrivate *priv;
   GList *l;
+  gboolean result = FALSE;
 
   /* find the window and remove */
 
@@ -857,13 +858,19 @@ sw_zone_remove_window (SwZone *zone,
       SwWindow *win = (SwWindow *) l->data;
 
       if (sw_window_get_xid (win) == xid)
-        clutter_container_remove_actor (CLUTTER_CONTAINER (zone),
-                                        CLUTTER_ACTOR (win));
+        {
+          clutter_container_remove_actor (CLUTTER_CONTAINER (zone),
+                                          CLUTTER_ACTOR (win));
+          result = TRUE;
+        }
     }
 
   /* remove the zone if it no longer has any windows */
   if (!priv->dummy && priv->n_children == 0)
     clutter_actor_destroy (CLUTTER_ACTOR (zone));
+
+  /* return TRUE if a window was removed */
+  return result;
 }
 
 gint

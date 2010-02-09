@@ -396,7 +396,8 @@ sw_overview_remove_window (SwOverview *overview,
 
   for (l = children; l; l = g_list_next (l))
     {
-      sw_zone_remove_window (SW_ZONE (l->data), xid);
+      if (sw_zone_remove_window (SW_ZONE (l->data), xid))
+        break;
     }
 
   g_list_free (children);
