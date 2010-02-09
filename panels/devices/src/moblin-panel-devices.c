@@ -26,7 +26,6 @@
 #include <egg-console-kit/egg-console-kit.h>
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
-#include <gio/gdesktopappinfo.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
 #include <moblin-panel/mpl-panel-clutter.h>
