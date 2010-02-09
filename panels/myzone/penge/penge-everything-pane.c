@@ -669,7 +669,7 @@ _client_get_services_cb (SwClient    *client,
 
   sw_client_open_view (client,
                        (GList *)services,
-                       priv->block_count,
+                       20,
                        _client_open_view_cb,
                        userdata);
 }
