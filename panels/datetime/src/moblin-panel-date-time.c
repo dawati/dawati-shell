@@ -100,10 +100,10 @@ main (int    argc,
 
   if (!standalone)
   {
-    client = mpl_panel_clutter_new ("date-time",
+    client = mpl_panel_clutter_new ("datetime",
                                     _("Date/Time"),
                                     NULL,
-                                    "date-time-button",
+                                    "datetime-button",
                                     TRUE);
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);

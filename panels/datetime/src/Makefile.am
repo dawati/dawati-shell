@@ -8,11 +8,11 @@ AM_CFLAGS = \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
 	-Wall -g3 -O0 -ggdb
 
-moblin_panel_date_time_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
+moblin_panel_datetime_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
 
-libexec_PROGRAMS = moblin-panel-date-time
+libexec_PROGRAMS = moblin-panel-datetime
 
-moblin_panel_date_time_SOURCES = moblin-panel-date-time.c	\
+moblin_panel_datetime_SOURCES = moblin-panel-date-time.c	\
 				 mnp-world-clock.c	\
 				 mnp-world-clock.h	\
 				 mnp-utils.c 		\
@@ -42,5 +42,4 @@ EXTRA_DIST = $(service_in_files)
 org.moblin.UX.Shell.Panels.datetime.service: org.moblin.UX.Shell.Panels.datetime.service.in $(top_builddir)/config.log
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
-#CLEANFILES = *~ moblin-panel-date-time.desktop
 
