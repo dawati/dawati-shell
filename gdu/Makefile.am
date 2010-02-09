@@ -77,23 +77,23 @@ EXTRA_DIST = \
 	$(NULL)
 
 gdu-marshal.h: gdu-marshal.list
-	glib-genmarshal $< --prefix=gdu_marshal --header > $@
+	$(AM_V_GEN)glib-genmarshal $< --prefix=gdu_marshal --header > $@
 
 gdu-marshal.c: gdu-marshal.list
-	echo "#include \"gdu-marshal.h\"" > $@ && glib-genmarshal $< --prefix=gdu_marshal --body >> $@
+	$(AM_V_GEN)echo "#include \"gdu-marshal.h\"" > $@ && glib-genmarshal $< --prefix=gdu_marshal --body >> $@
 
 udisks-daemon-glue.h: $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.xml Makefile.am
-	dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=udisks-daemon-glue.h $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.xml
+	$(AM_V_GEN)dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=$@ $<
 
 udisks-device-glue.h: $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Device.xml Makefile.am
-	dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=udisks-device-glue.h $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Device.xml
+	$(AM_V_GEN)dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=$@ $<
 
 udisks-adapter-glue.h: $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Adapter.xml Makefile.am
-	dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=udisks-adapter-glue.h $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Adapter.xml
+	$(AM_V_GEN)dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=$@ $<
 
 udisks-expander-glue.h: $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Expander.xml Makefile.am
-	dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=udisks-expander-glue.h $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Expander.xml
+	$(AM_V_GEN)dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=$@ $<
 
 udisks-port-glue.h: $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Port.xml Makefile.am
-	dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=udisks-port-glue.h $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Port.xml
+	$(AM_V_GEN)dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=$@ $<
 

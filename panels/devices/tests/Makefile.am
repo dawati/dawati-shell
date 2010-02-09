@@ -5,6 +5,10 @@ AM_CFLAGS = \
 	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
 	$(NULL)
 
+LDADD = \
+	$(MPD_LIBS) \
+	$(NULL)
+
 noinst_PROGRAMS = \
 	test-battery-device \
 	test-disk-device \
@@ -12,17 +16,9 @@ noinst_PROGRAMS = \
 	test-folder-button \
 	$(NULL)
 
-test_battery_device_LDADD = \
-	$(MPD_LIBS) \
-	$(NULL)
-
 test_battery_device_SOURCES = \
 	test-battery-device.c \
 	$(top_srcdir)/src/mpd-battery-device.c \
-	$(NULL)
-
-test_disk_device_LDADD = \
-	$(MPD_LIBS) \
 	$(NULL)
 
 test_disk_device_SOURCES = \
@@ -30,18 +26,10 @@ test_disk_device_SOURCES = \
 	$(top_srcdir)/src/mpd-disk-device.c \
 	$(NULL)
 
-test_disk_tile_LDADD = \
-	$(MPD_LIBS) \
-	$(NULL)
-
 test_disk_tile_SOURCES = \
 	test-disk-tile.c \
 	$(top_srcdir)/src/mpd-disk-device.c \
 	$(top_srcdir)/src/mpd-disk-tile.c \
-	$(NULL)
-
-test_folder_button_LDADD = \
-	$(MPD_LIBS) \
 	$(NULL)
 
 test_folder_button_SOURCES = \

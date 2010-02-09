@@ -68,5 +68,5 @@ EXTRA_DIST = $(service_in_files)
 DISTCLEANFILES = org.moblin.UX.Shell.Panels.devices.service
 
 org.moblin.UX.Shell.Panels.devices.service: org.moblin.UX.Shell.Panels.devices.service.in $(top_builddir)/config.log
-	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
+	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 

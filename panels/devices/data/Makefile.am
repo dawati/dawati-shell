@@ -12,7 +12,7 @@ desktopfiles_DATA = $(desktopfiles_files)
 endif
 
 %.desktop.in: %.desktop.in.in Makefile
-	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
+	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 EXTRA_DIST = moblin-panel-devices.desktop.in.in
 CLEANFILES = moblin-panel-devices.desktop moblin-panel-devices.desktop.in
