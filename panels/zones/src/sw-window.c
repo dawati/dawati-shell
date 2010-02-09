@@ -66,6 +66,7 @@ struct _SwWindowPrivate
 
   ClutterActor *text;
   ClutterActor *texture;
+  ClutterActor *background;
   ClutterActor *close_button;
   ClutterActor *icon;
 
@@ -262,6 +263,12 @@ sw_window_dispose (GObject *object)
       priv->texture = NULL;
     }
 
+  if (priv->background)
+    {
+      clutter_actor_destroy (priv->background);
+      priv->background = NULL;
+    }
+
   if (priv->clone)
     {
       clutter_actor_destroy (priv->clone);
@@ -309,6 +316,9 @@ sw_window_map (ClutterActor *actor)
 
   if (priv->texture)
     clutter_actor_map (priv->texture);
+
+  if (priv->background)
+    clutter_actor_map (priv->background);
 }
 
 static void
@@ -320,6 +330,9 @@ sw_window_unmap (ClutterActor *actor)
 
   if (priv->texture)
     clutter_actor_unmap (priv->texture);
+
+  if (priv->background)
+    clutter_actor_unmap (priv->background);
 
   if (priv->icon)
     clutter_actor_unmap (priv->icon);
@@ -333,6 +346,9 @@ sw_window_paint (ClutterActor *actor)
   SwWindowPrivate *priv = SW_WINDOW (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (sw_window_parent_class)->paint (actor);
+
+  if (priv->background)
+    clutter_actor_paint (priv->background);
 
   if (priv->texture)
     clutter_actor_paint (priv->texture);
@@ -442,10 +458,25 @@ sw_window_allocate (ClutterActor           *actor,
   if (priv->texture)
     {
       mx_widget_get_available_area (MX_WIDGET (actor), box, &childbox);
+
+      /* add a small border */
+      childbox.x1 += 2;
+      childbox.y1 += 2;
+      childbox.x2 -= 2;
+      childbox.y2 -= 2;
+
       childbox.y2 -= INFO_BOX_HEIGHT + SPACING;
       mx_allocate_align_fill (priv->texture, &childbox, MX_ALIGN_MIDDLE,
                               MX_ALIGN_MIDDLE, FALSE, FALSE);
       clutter_actor_allocate (priv->texture, &childbox, flags);
+    }
+
+  /* background */
+  if (priv->background)
+    {
+      mx_widget_get_available_area (MX_WIDGET (actor), box, &childbox);
+      childbox.y2 -= INFO_BOX_HEIGHT + SPACING;
+      clutter_actor_allocate (priv->background, &childbox, flags);
     }
 }
 
@@ -567,6 +598,19 @@ sw_window_set_thumbnail (SwWindow     *window,
 
   priv->texture = thumbnail;
   clutter_actor_set_parent (priv->texture, CLUTTER_ACTOR (window));
+}
+
+void
+sw_window_set_background (SwWindow     *window,
+                          ClutterActor *background)
+{
+  SwWindowPrivate *priv = SW_WINDOW (window)->priv;
+
+  if (priv->background)
+    clutter_actor_destroy (priv->background);
+
+  priv->background = background;
+  clutter_actor_set_parent (priv->background, CLUTTER_ACTOR (window));
 }
 
 void

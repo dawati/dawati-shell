@@ -5,13 +5,16 @@ AM_CFLAGS = \
 	$(MPL_CFLAGS) \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
-	-DSTYLEDIR=\"$(pkgdatadir)/style\"
+	-DSTYLEDIR=\"$(pkgdatadir)/style\" \
+	-DDATADIR=\"$(datadir)\"
 
 libexec_PROGRAMS = moblin-panel-zones
 
 moblin_panel_zones_LDADD = $(ZONES_LIBS) $(MPL_LIBS)
 
 moblin_panel_zones_SOURCES = \
+			     penge-magic-texture.c \
+			     penge-magic-texture.h \
 			     sw-overview.c \
 			     sw-overview.h \
 			     sw-window.c \

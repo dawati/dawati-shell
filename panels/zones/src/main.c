@@ -12,7 +12,11 @@
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
 
+#include "penge-magic-texture.h"
+
 #include <glib/gi18n.h>
+
+#include <gconf/gconf-client.h>
 
 static MplPanelClient *client = NULL;
 
@@ -23,6 +27,9 @@ typedef struct
   gint            width;
   gint            height;
   gboolean        connected;
+  ClutterActor   *background;
+  GConfClient    *gconf_client;
+  WnckScreen     *screen;
 } ZonePanelData;
 
 static void
@@ -42,6 +49,85 @@ static GOptionEntry entries[] = {
   { NULL }
 };
 
+
+/* background loading */
+#define BG_KEY_DIR "/desktop/moblin/background"
+#define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
+#define THEMEDIR DATADIR "/mutter-moblin/theme/"
+
+
+static void
+desktop_filename_changed_cb (GConfClient *client,
+                             guint        cnxn_id,
+                             GConfEntry  *entry,
+                             gpointer     userdata)
+{
+  const gchar  *filename = NULL;
+  GConfValue   *value;
+  ZonePanelData *data = userdata;
+
+  value = gconf_entry_get_value (entry);
+
+  if (value)
+    filename = gconf_value_get_string (value);
+
+  if (!filename || !*filename)
+    filename = THEMEDIR "/panel/background-tile.png";
+
+  if (data->background)
+    {
+      clutter_actor_destroy (data->background);
+      data->background = NULL;
+    }
+
+  data->background = clutter_texture_new_from_file (filename, NULL);
+  clutter_texture_set_repeat (CLUTTER_TEXTURE (data->background), TRUE, TRUE);
+  clutter_actor_set_size (data->background,
+                          wnck_screen_get_width (data->screen),
+                          wnck_screen_get_height (data->screen));
+  clutter_container_add_actor (CLUTTER_CONTAINER (data->stage), data->background);
+  clutter_actor_set_opacity (data->background, 0);
+}
+
+static void
+desktop_background_init (ZonePanelData *data)
+{
+  GError *error = NULL;
+
+  data->gconf_client = gconf_client_get_default ();
+
+
+  gconf_client_add_dir (data->gconf_client,
+                        BG_KEY_DIR,
+                        GCONF_CLIENT_PRELOAD_NONE,
+                        &error);
+
+  if (error)
+    {
+      g_warning (G_STRLOC ": Error when adding directory for notification: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+  gconf_client_notify_add (data->gconf_client,
+                           KEY_BG_FILENAME,
+                           desktop_filename_changed_cb,
+                           data,
+                           NULL,
+                           &error);
+
+  if (error)
+    {
+      g_warning (G_STRLOC ": Error when adding key for notification: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+
+  /*
+   * Read the background via our notify func
+   */
+  gconf_client_notify (data->gconf_client, KEY_BG_FILENAME);
+}
 
 
 static void
@@ -99,8 +185,10 @@ window_workspace_changed (SwWindow   *window,
                           gint        new_workspace,
                           WnckWindow *win)
 {
-  WnckScreen *screen = wnck_screen_get_default ();
   WnckWorkspace *ws;
+  WnckScreen *screen;
+
+  screen = wnck_window_get_screen (win);
 
   ws = wnck_screen_get_workspace (screen, new_workspace -1);
 
@@ -152,6 +240,7 @@ window_opened (WnckScreen    *screen,
   WnckWorkspace *ws;
   gulong xid;
   ClutterActor *thumbnail;
+  ClutterActor *thumbnail_background;
 
   if (!data->view)
     return;
@@ -167,6 +256,18 @@ window_opened (WnckScreen    *screen,
 
   xid = wnck_window_get_xid (window);
   sw_window_set_xid (win, xid);
+
+  if (data->background)
+    {
+      thumbnail_background = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
+                                           "cogl-texture",
+                                           clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (data->background)),
+                                           NULL);
+
+      sw_window_set_background (win, thumbnail_background);
+    }
+  else
+    g_debug ("No background found");
 
   thumbnail = clutter_glx_texture_pixmap_new_with_window (xid);
   clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (thumbnail), TRUE);
@@ -201,15 +302,13 @@ static void
 setup (ZonePanelData *data)
 {
   GList  *windows, *l;
-  WnckScreen *screen;
 
-  screen = wnck_screen_get_default ();
-  wnck_screen_force_update (screen);
+  wnck_screen_force_update (data->screen);
 
-  windows = wnck_screen_get_windows (screen);
+  windows = wnck_screen_get_windows (data->screen);
 
   /* create the overview */
-  data->view = sw_overview_new (wnck_screen_get_workspace_count (screen));
+  data->view = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
   clutter_actor_set_size (data->view, data->width, data->height);
 
   /* add existing windows */
@@ -223,27 +322,27 @@ setup (ZonePanelData *data)
       if (!workspace)
         continue;
 
-      window_opened (screen, win, data);
+      window_opened (data->screen, win, data);
     }
 
   /* ensure the current workspace is marked */
-  active_workspace_changed (screen, NULL, data);
+  active_workspace_changed (data->screen, NULL, data);
 
   if (!data->connected)
     {
       data->connected = TRUE;
 
-      g_signal_connect (screen, "active-window-changed",
+      g_signal_connect (data->screen, "active-window-changed",
                         G_CALLBACK (active_window_changed), data);
 
 
-      g_signal_connect (screen, "active-workspace-changed",
+      g_signal_connect (data->screen, "active-workspace-changed",
                         G_CALLBACK (active_workspace_changed), data);
 
-      g_signal_connect (screen, "window-closed",
+      g_signal_connect (data->screen, "window-closed",
                         G_CALLBACK (window_closed), data);
 
-      g_signal_connect (screen, "window-opened",
+      g_signal_connect (data->screen, "window-opened",
                         G_CALLBACK (window_opened), data);
     }
 }
@@ -291,6 +390,10 @@ main (int argc, char **argv)
   mx_style_load_from_file (mx_style_get_default (),
                            STYLEDIR "/switcher.css", NULL);
 
+  data->screen = wnck_screen_get_default ();
+  wnck_screen_force_update (data->screen);
+
+
   if (!standalone)
     {
       client = mpl_panel_clutter_new ("zones",
@@ -304,6 +407,8 @@ main (int argc, char **argv)
       mpl_panel_client_set_height_request (client, 500);
 
       data->stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
+
+      desktop_background_init (data);
 
       g_signal_connect (client,
                         "set-size",
@@ -323,6 +428,8 @@ main (int argc, char **argv)
       clutter_actor_realize (data->stage);
       xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (data->stage));
 
+      desktop_background_init (data);
+
       setup (data);
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
@@ -335,6 +442,7 @@ main (int argc, char **argv)
     }
 
 
+  clutter_actor_lower_bottom (data->background);
 
   clutter_main ();
 
