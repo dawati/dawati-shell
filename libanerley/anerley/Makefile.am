@@ -25,7 +25,9 @@ libanerley_la_HEADERS = anerley-tp-feed.h \
 			anerley-tp-monitor-feed.h \
 			anerley-presence-chooser.h \
 			anerley-compact-tile.h \
-			anerley-compact-tile-view.h
+			anerley-compact-tile-view.h \
+			anerley-tp-user-avatar.h
+
 libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-feed.c \
 			anerley-item.c \
@@ -41,6 +43,7 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-tp-observer.c \
 			anerley-tp-monitor-feed.c \
 			anerley-presence-chooser.c \
+			anerley-tp-user-avatar.c \
 			anerley-main.c \
 			anerley-compact-tile.c \
 			anerley-compact-tile-view.c \

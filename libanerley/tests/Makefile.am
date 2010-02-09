@@ -1,4 +1,14 @@
-noinst_PROGRAMS = test-tp-feed test-simple-grid-view test-tile-view test-aggregate-tp-feed test-simple-ui test-tp-observer test-tp-monitor-feed test-presence-chooser
+noinst_PROGRAMS = \
+	test-aggregate-tp-feed \
+	test-presence-chooser \
+	test-simple-grid-view \
+	test-simple-ui \
+	test-tile-view \
+	test-tp-feed \
+	test-tp-observer \
+	test-tp-monitor-feed \
+	test-tp-user-avatar \
+	$(NULL)
 
 AM_CFLAGS = $(GLIB_CFLAGS) $(TELEPATHY_CFLAGS) $(MX_CFLAGS) \
 	    -I$(top_srcdir) \
@@ -28,3 +38,7 @@ test_tp_monitor_feed_LDADD = ../anerley/libanerley.la
 
 test_presence_chooser_SOURCES = test-presence-chooser.c
 test_presence_chooser_LDADD = ../anerley/libanerley.la
+
+test_tp_user_avatar_SOURCES = test-tp-user-avatar.c
+test_tp_user_avatar_LDADD = ../anerley/libanerley.la
+
