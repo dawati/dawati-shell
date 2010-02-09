@@ -197,26 +197,16 @@ window_closed (WnckScreen    *screen,
 static void
 setup (ZonePanelData *data)
 {
-  GList  *windows, *l, *workspaces;
-  gint count;
+  GList  *windows, *l;
   WnckScreen *screen;
 
   screen = wnck_screen_get_default ();
-  //wnck_screen_force_update (screen);
+  wnck_screen_force_update (screen);
 
   windows = wnck_screen_get_windows (screen);
-  workspaces = wnck_screen_get_workspaces (screen);
-
-  /* count the number of workspaces and add to switcher */
-  count = 0;
-  for (l = workspaces; l; l = l->next)
-    count++;
-
-  /* start with at least one workspace */
-  count = 1;
 
   /* create the overview */
-  data->view = sw_overview_new (count);
+  data->view = sw_overview_new (wnck_screen_get_workspace_count (screen));
   clutter_actor_set_size (data->view, data->width, data->height);
 
   /* add existing windows */
