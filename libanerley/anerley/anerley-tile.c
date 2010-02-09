@@ -116,20 +116,20 @@ _item_avatar_path_changed_cb (AnerleyItem *item,
 
 static void
 anerley_tile_update_presence_icon (AnerleyTile *tile,
-                                   const gchar *path)
+                                   const gchar *icon_name)
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (tile);
-  MxTextureCache *cache;
+  ClutterTexture *tex;
 
   if (priv->presence_icon)
   {
     clutter_actor_destroy (priv->presence_icon);
   }
 
-  cache = mx_texture_cache_get_default ();
-
-  priv->presence_icon = (ClutterActor *)mx_texture_cache_get_texture (cache,
-                                                                      path);
+  tex = mx_icon_theme_lookup_texture (mx_icon_theme_get_default (),
+                                      icon_name,
+                                      16);
+  priv->presence_icon = CLUTTER_ACTOR (tex);
   clutter_actor_set_parent (priv->presence_icon, CLUTTER_ACTOR (tile));
   clutter_actor_set_size (priv->presence_icon, 16, 16);
 
@@ -146,7 +146,6 @@ _item_presence_changed_cb (AnerleyItem *item,
   const gchar *presence_status;
   const gchar *tmp;
   const gchar *presence_icon_name;
-  gchar *presence_icon_path;
 
   presence_message = anerley_item_get_presence_message (item);
   presence_status = anerley_item_get_presence_status (item);
@@ -190,23 +189,17 @@ _item_presence_changed_cb (AnerleyItem *item,
   clutter_actor_show (priv->presence_label);
 
   if (tmp == g_intern_static_string ("available"))
-    presence_icon_name = "presence-available.png";
+    presence_icon_name = "user-available";
   else if (tmp == g_intern_static_string ("dnd"))
-    presence_icon_name = "presence-busy.png";
+    presence_icon_name = "user-busy";
   else if (tmp == g_intern_static_string ("away"))
-    presence_icon_name = "presence-away.png";
+    presence_icon_name = "user-away";
   else if (tmp == g_intern_static_string ("xa"))
-    presence_icon_name = "presence-away.png";
+    presence_icon_name = "user-away";
   else
-    presence_icon_name = "presence-offline.png";
+    presence_icon_name = "user-offline";
 
-  presence_icon_path = g_build_filename (PKG_DATA_DIR,
-                                         presence_icon_name,
-                                         NULL);
-
-  anerley_tile_update_presence_icon (tile, presence_icon_path);
-
-  g_free (presence_icon_path);
+  anerley_tile_update_presence_icon (tile, presence_icon_name);
 }
 
 static void
