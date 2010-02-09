@@ -88,6 +88,9 @@ workspace_added_for_window (WnckScreen *screen,
 {
   wnck_window_move_to_workspace (win, ws);
 
+  g_debug ("Window (%s) moved to workspace %d",
+           wnck_window_get_name (win), wnck_workspace_get_number (ws));
+
   g_signal_handlers_disconnect_by_func (screen, workspace_added_for_window, win);
 }
 
@@ -103,6 +106,7 @@ window_workspace_changed (SwWindow   *window,
 
   if (!ws)
     {
+      g_debug ("Changing workspace count to %d...", new_workspace);
       g_signal_connect (screen, "workspace-created",
                         G_CALLBACK (workspace_added_for_window), win);
 
@@ -152,7 +156,11 @@ window_opened (WnckScreen    *screen,
   ws = wnck_window_get_workspace (window);
 
   if (!ws)
+  {
+    g_debug ("Could not get workspace for window (%s)",
+             wnck_window_get_name (window));
     return;
+  }
 
   xid = wnck_window_get_xid (window);
   sw_window_set_xid (win, xid);
