@@ -167,9 +167,21 @@ sw_overview_renumber_zones (SwOverview   *view)
         sw_zone_set_number (SW_ZONE (l->data), ++count);
     }
 
+  /* ensure there is at least one zone at all times */
+  if (count == 0)
+    {
+      ClutterActor *zone;
+
+      zone = sw_zone_new ();
+      clutter_container_add_actor (CLUTTER_CONTAINER (view), zone);
+      clutter_container_child_set (CLUTTER_CONTAINER (view),
+                                   zone, "expand", TRUE, NULL);
+    }
+
   /* add the new dummy */
   if (count < 8 && !view->priv->dummy && count < view->priv->window_count)
     sw_overview_add_dummy (view);
+
 }
 
 static void
@@ -237,11 +249,15 @@ sw_overview_add_zone (SwOverview *self)
 }
 
 static void
-zone_removed (SwOverview *overview)
+zone_removed (SwOverview *overview,
+              SwZone     *zone)
 {
-  overview->priv->n_zones--;
-  g_debug ("Zone removed (count: %d)", overview->priv->n_zones);
-  sw_overview_renumber_zones (overview);
+  if (!sw_zone_get_dummy (zone))
+    {
+      overview->priv->n_zones--;
+      g_debug ("Zone removed (count: %d)", overview->priv->n_zones);
+      sw_overview_renumber_zones (overview);
+    }
 }
 
 static void
@@ -298,9 +314,19 @@ window_drag_end (SwOverview *overview)
 
 static void
 window_removed (SwWindow   *window,
-                SwOverview *view)
+                SwOverview *overview)
 {
-  view->priv->window_count--;
+
+  SwOverviewPrivate *priv = overview->priv;
+
+  priv->window_count--;
+
+  if (priv->window_count <= priv->n_zones)
+    {
+      if (priv->dummy)
+        clutter_actor_destroy (priv->dummy);
+      priv->dummy = NULL;
+    }
 }
 
 void
@@ -347,10 +373,15 @@ sw_overview_add_window (SwOverview *overview,
     }
   else
     {
-      if (priv->dummy)
-        clutter_actor_destroy (priv->dummy);
-      priv->dummy = NULL;
+      if (priv->window_count <= priv->n_zones && priv->dummy)
+        {
+          clutter_actor_destroy (priv->dummy);
+          priv->dummy = NULL;
+        }
     }
+
+  g_debug ("Window added (windows: %d; zones: %d)", priv->window_count,
+           priv->n_zones);
 
   g_list_free (children);
 }
