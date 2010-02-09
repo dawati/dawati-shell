@@ -37,13 +37,6 @@ _battery_notify_cb (MpdBatteryDevice  *battery,
   battery_print (battery);
 }
 
-static void
-_battery_changed_cb (MpdBatteryDevice *battery,
-                     gpointer          user_data)
-{
-  battery_print (battery);
-}
-
 int
 main (int     argc,
       char  **argv)
