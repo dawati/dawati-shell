@@ -131,6 +131,8 @@ create_shutdown_key (void)
     shutdown_key = mpd_global_key_new (shutdown_key_code);
     g_signal_connect (shutdown_key, "activated",
                       G_CALLBACK (_shutdown_key_activated_cb), NULL);
+  } else {
+    g_warning ("Failed to query XF86XK_PowerOff key code.");
   }
 
   return shutdown_key;
