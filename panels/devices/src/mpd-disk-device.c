@@ -56,7 +56,7 @@ update (MpdDiskDevice *self)
 {
   struct statvfs fsd = { 0, };
 
-  if (0 == statvfs ("/", &fsd))
+  if (0 == statvfs ("/home", &fsd))
   {
     mpd_disk_device_set_size (self, (guint64) fsd.f_blocks * fsd.f_frsize);
     mpd_disk_device_set_available_size (self, (guint64) fsd.f_bavail * fsd.f_frsize);
