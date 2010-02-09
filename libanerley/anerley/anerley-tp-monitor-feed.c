@@ -179,6 +179,7 @@ _observer_new_channel_cb (AnerleyTpObserver *observer,
   {
     g_warning (G_STRLOC ": Given a channel with no matching item: %s",
                uid);
+    return;
   } else {
     g_debug (G_STRLOC ": Got a valid item for uid %s", uid);
   }
