@@ -12,5 +12,5 @@ Categories=
 OnlyShowIn=MOBLIN;
 X-Moblin-Priority=Low
 X-Moblin-Service=org.moblin.UX.Shell.Panels.zones
-X-Moblin-Panel-Optional=true
+X-Moblin-Panel-Optional=false
 X-Moblin-Panel-Button-Style=zones-button
