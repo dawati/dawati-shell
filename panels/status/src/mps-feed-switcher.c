@@ -377,6 +377,9 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
                                "mps-switcher-placeholder-label");
   mx_bin_set_child (MX_BIN (priv->placeholder_frame),
                     priv->placeholder_label);
+  mx_bin_set_alignment (MX_BIN (priv->placeholder_frame),
+                        MX_ALIGN_START,
+                        MX_ALIGN_START);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->notebook),
                                priv->placeholder_frame);
