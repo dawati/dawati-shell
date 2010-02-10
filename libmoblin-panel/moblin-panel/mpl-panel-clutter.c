@@ -60,6 +60,8 @@ struct _MplPanelClutterPrivate
 
   ClutterActor    *tracked_actor;
   guint            height_notify_cb;
+
+  gboolean         needs_gdk_pump : 1;
 };
 
 static void
@@ -101,6 +103,58 @@ mpl_panel_clutter_finalize (GObject *object)
 }
 
 static void
+mpl_panel_clutter_ensure_window (MplPanelClutter *panel)
+{
+  MplPanelClutterPrivate *priv = panel->priv;
+  Window                  xwin = None;
+  Display                *xdpy;
+  gint32                  myint;
+  Atom                    atom1, atom2;
+
+  if (priv->xwindow)
+    return;
+
+  xdpy = clutter_x11_get_default_display ();
+
+  clutter_actor_realize (priv->stage);
+
+  priv->xwindow = xwin =
+    clutter_x11_get_stage_window (CLUTTER_STAGE (priv->stage));
+
+  g_object_set (panel, "xid", xwin, NULL);
+
+  if (priv->needs_gdk_pump)
+    mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
+
+  MPL_X_ERROR_TRAP ();
+
+  /*
+   * Make dock, sticky and position at the correct place.
+   */
+  atom1 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE", False);
+  atom2 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE_DOCK", False);
+
+  XChangeProperty (xdpy,
+                   xwin,
+                   atom1,
+                   XA_ATOM, 32,
+                   PropModeReplace, (unsigned char *) &atom2, 1);
+
+  atom1 = XInternAtom(xdpy, "_NET_WM_DESKTOP", False);
+  myint = -1;
+
+  XChangeProperty (xdpy,
+                   xwin,
+                   atom1,
+                   XA_CARDINAL, 32,
+                   PropModeReplace, (unsigned char *) &myint, 1);
+
+  XSync (xdpy, False);
+
+  MPL_X_ERROR_UNTRAP ();
+}
+
+static void
 mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
@@ -109,6 +163,10 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
   MplPanelClientClass    *p_class;
 
   p_class = MPL_PANEL_CLIENT_CLASS (mpl_panel_clutter_parent_class);
+
+  clutter_actor_set_size (priv->stage, width, height);
+
+  mpl_panel_clutter_ensure_window ((MplPanelClutter*)self);
 
   hints.min_width = width;
   hints.min_height = height;
@@ -121,7 +179,6 @@ mpl_panel_clutter_set_size (MplPanelClient *self, guint width, guint height)
 
   MPL_X_ERROR_UNTRAP ();
 
-  clutter_actor_set_size (priv->stage, width, height);
   clutter_stage_ensure_viewport (CLUTTER_STAGE (priv->stage));
 
   if (p_class->set_size)
@@ -136,6 +193,8 @@ mpl_panel_clutter_set_position (MplPanelClient *self, gint x, gint y)
   MplPanelClientClass    *p_class;
 
   p_class = MPL_PANEL_CLIENT_CLASS (mpl_panel_clutter_parent_class);
+
+  mpl_panel_clutter_ensure_window ((MplPanelClutter*)self);
 
   MPL_X_ERROR_TRAP ();
 
@@ -219,51 +278,13 @@ mpl_panel_clutter_constructed (GObject *self)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   ClutterActor           *stage = NULL;
-  Window                  xwin = None;
-  Display                *xdpy;
-  gint32                  myint;
-  Atom                    atom1, atom2;
 
   if (G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed)
     G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed (self);
 
   stage = clutter_stage_get_default ();
-  xdpy  = clutter_x11_get_default_display ();
 
   priv->stage = stage;
-
-  clutter_actor_realize (stage);
-
-  priv->xwindow = xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-  g_object_set (self, "xid", xwin, NULL);
-
-  MPL_X_ERROR_TRAP ();
-
-  /*
-   * Make dock, sticky and position at the correct place.
-   */
-   atom1 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE", False);
-   atom2 = XInternAtom(xdpy, "_NET_WM_WINDOW_TYPE_DOCK", False);
-
-   XChangeProperty (xdpy,
-                    xwin,
-                    atom1,
-                    XA_ATOM, 32,
-                    PropModeReplace, (unsigned char *) &atom2, 1);
-
-   atom1 = XInternAtom(xdpy, "_NET_WM_DESKTOP", False);
-   myint = -1;
-
-   XChangeProperty (xdpy,
-                    xwin,
-                    atom1,
-                    XA_CARDINAL, 32,
-                    PropModeReplace, (unsigned char *) &myint, 1);
-
-   XSync (xdpy, False);
-
-   MPL_X_ERROR_UNTRAP ();
 
   /* Load a base style for widgets used in the Mpl panels */
   mpl_panel_clutter_load_base_style ();
@@ -447,16 +468,20 @@ mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid)
 void
 mpl_panel_clutter_setup_events_with_gtk (MplPanelClient *panel)
 {
-    Window xid;
+  MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (panel)->priv;
+  Window xid;
 
-    xid = mpl_panel_client_get_xid (panel);
+  xid = mpl_panel_client_get_xid (panel);
 
-    if (xid == None)
-      g_error ("Panel not properly initialized");
+  if (xid == None)
+    {
+      priv->needs_gdk_pump = TRUE;
+      return;
+    }
 
-    mpl_panel_clutter_setup_events_with_gtk_for_xid (xid);
+  mpl_panel_clutter_setup_events_with_gtk_for_xid (xid);
 
-    mpl_panel_clutter_load_base_style ();
+  mpl_panel_clutter_load_base_style ();
 }
 
 void

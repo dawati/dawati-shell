@@ -257,10 +257,6 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
 
   g_debug ("dbus init: %d,%d;%dx%d", x, y, width, height);
 
-  if (!priv->xid && !priv->windowless)
-    return FALSE;
-
-  *xid          = priv->xid;
   *name         = g_strdup (priv->name);
   *tooltip      = g_strdup (priv->tooltip);
   *stylesheet   = g_strdup (priv->stylesheet);
@@ -293,8 +289,18 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
        */
       mpl_panel_client_hide (self);
 
-      g_signal_emit (self, signals[SET_POSITION], 0, x, y);
       g_signal_emit (self, signals[SET_SIZE], 0, width, real_height);
+      g_signal_emit (self, signals[SET_POSITION], 0, x, y);
+
+      /*
+       * Only query the xid after the size and position have been set. This
+       * allows the subclasses to defer window creation until the initial size
+       * is know.
+       */
+      *xid = priv->xid;
+
+      if (!priv->xid)
+        return FALSE;
     }
 
   if (priv->ready_emitted)
