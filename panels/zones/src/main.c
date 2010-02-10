@@ -32,6 +32,12 @@ typedef struct
   WnckScreen     *screen;
 } ZonePanelData;
 
+typedef struct
+{
+  WnckWindow *wnck_window;
+  SwWindow *sw_window;
+} WindowNotify;
+
 static void
 _client_set_size_cb (MplPanelClient *client,
                      guint           w,
@@ -207,11 +213,45 @@ window_workspace_changed (SwWindow   *window,
     wnck_window_move_to_workspace (win, ws);
 }
 
+
+static void window_clicked_cb (SwWindow *window, WnckWindow *win);
+
+static gboolean
+activate_window (WindowNotify *notify)
+{
+  window_clicked_cb (notify->sw_window, notify->wnck_window);
+
+  /* notify data automatically freed when the timeout is removed */
+  return FALSE;
+}
+
+static void
+remove_window_close_timer (gpointer *data)
+{
+  g_source_remove (GPOINTER_TO_INT (data));
+}
+
 static void
 window_closed_cb (SwWindow   *window,
                   WnckWindow *win)
 {
+  WindowNotify *notify;
+  guint tag;
+
   wnck_window_close (win, clutter_x11_get_current_event_time ());
+
+  /* if this window hasn't closed in 150ms, activate it */
+
+  notify = g_new (WindowNotify, 1);
+  notify->sw_window = window;
+  notify->wnck_window = win;
+  tag = g_timeout_add_full (G_PRIORITY_DEFAULT, 150,
+                            (GSourceFunc) activate_window, notify,
+                            g_free);
+
+  g_signal_connect_swapped (window, "destroy",
+                            G_CALLBACK (remove_window_close_timer),
+                            GINT_TO_POINTER (tag));
 }
 
 static void
