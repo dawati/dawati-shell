@@ -246,6 +246,12 @@ window_opened (WnckScreen    *screen,
   if (!data->view)
     return;
 
+  if (wnck_window_is_skip_pager (window))
+    return;
+
+  if (wnck_window_is_skip_tasklist (window))
+    return;
+
   ws = wnck_window_get_workspace (window);
 
   if (!ws)
