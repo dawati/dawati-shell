@@ -1889,19 +1889,23 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 
   if (stylesheet && *stylesheet)
     {
-      GError  *error = NULL;
-      MxStyle *style = mx_style_new ();
-
-      if (!mx_style_load_from_file (style, stylesheet, &error))
+      if (stylesheet && *stylesheet)
         {
-          if (error)
-            g_warning ("Unable to load stylesheet %s: %s",
-                       stylesheet, error->message);
+          GError  *error = NULL;
 
-          g_error_free (error);
+          if (!mx_style_load_from_file (mx_style_get_default (),
+                                        stylesheet, &error))
+            {
+              if (error)
+                g_warning ("Unable to load stylesheet %s: %s",
+                           stylesheet, error->message);
+
+              g_clear_error (&error);
+
+              g_free (tp->button_stylesheet);
+              tp->button_stylesheet = NULL;
+            }
         }
-      else
-        mx_stylable_set_style (MX_STYLABLE (button), style);
     }
 
   mx_button_set_toggle_mode (MX_BUTTON (button), TRUE);
