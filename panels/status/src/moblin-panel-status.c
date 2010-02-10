@@ -108,10 +108,10 @@ setup_standalone (MoblinStatusPanel *status_panel)
   Window xwin;
 
   status = make_status (status_panel);
-  clutter_actor_set_size (status, 1000, 400);
+  clutter_actor_set_size (status, 1000, 500);
 
   stage = clutter_stage_get_default ();
-  clutter_actor_set_size (stage, 1000, 400);
+  clutter_actor_set_size (stage, 1000, 500);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
 
   clutter_actor_realize (stage);
@@ -139,7 +139,7 @@ setup_panel (MoblinStatusPanel *status_panel)
 
   status = make_status (status_panel);
   mpl_panel_clutter_track_actor_height (MPL_PANEL_CLUTTER (panel), status);
-  clutter_actor_set_height (status, 400);
+  clutter_actor_set_height (status, 500);
 
   stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), status);
