@@ -45,7 +45,7 @@ enum
   PROP_CONTAINER
 };
 
-#define THRESHOLD 10
+#define THRESHOLD 5
 #define CARD_HEIGHT 100.0
 
 static void
