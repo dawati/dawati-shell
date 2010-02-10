@@ -32,6 +32,11 @@ enum
   PROP_N_ZONES = 1
 };
 
+typedef struct
+{
+  SwWindow *window;
+  gulong handler;
+} WindowNotify;
 
 struct _SwOverviewPrivate
 {
@@ -42,6 +47,7 @@ struct _SwOverviewPrivate
   gulong zone_removed_handler;
 
   gint window_count;
+  GList *window_handlers;
 };
 
 
@@ -88,8 +94,24 @@ static void
 sw_overview_dispose (GObject *object)
 {
   SwOverviewPrivate *priv = SW_OVERVIEW (object)->priv;
+  GList *l;
 
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (object), FALSE);
+
+  if (priv->window_handlers)
+    {
+      for (l = priv->window_handlers; l; l = g_list_next (l))
+        {
+          WindowNotify *notify = (WindowNotify *) l->data;
+
+          g_signal_handler_disconnect (notify->window, notify->handler);
+
+          g_free (notify);
+        }
+
+      g_list_free (priv->window_handlers);
+      priv->window_handlers = NULL;
+    }
 
   if (priv->zone_removed_handler)
     {
@@ -316,7 +338,6 @@ static void
 window_removed (SwWindow   *window,
                 SwOverview *overview)
 {
-
   SwOverviewPrivate *priv = overview->priv;
 
   priv->window_count--;
@@ -337,6 +358,7 @@ sw_overview_add_window (SwOverview *overview,
   SwOverviewPrivate *priv = overview->priv;
   GList *children;
   ClutterContainer *zone;
+  WindowNotify *notify;
 
   children = clutter_container_get_children (CLUTTER_CONTAINER (overview));
 
@@ -360,8 +382,11 @@ sw_overview_add_window (SwOverview *overview,
   priv->window_count++;
 
   /* decrease window count when the window is deleted */
-  g_signal_connect (window, "destroy",
-                    G_CALLBACK (window_removed), overview);
+  notify = g_new (WindowNotify, 1);
+  notify->window = window;
+  notify->handler = g_signal_connect (window, "destroy",
+                                      G_CALLBACK (window_removed), overview);
+  priv->window_handlers = g_list_prepend (priv->window_handlers, notify);
 
 
   /* ensure there is no "new zone" if the number of windows is less than or
