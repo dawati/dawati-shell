@@ -42,9 +42,9 @@ struct _MnpClockTilePriv {
 	GWeatherLocation *loc;
 	time_t time_now;
 
-	MxEntry *date;
-	MxEntry *time;
-	MxEntry *city;
+	MxLabel *date;
+	MxLabel *time;
+	MxLabel *city;
 
 	MxButton *remove_button;
 	TileRemoveFunc remove_cb;
@@ -67,6 +67,7 @@ enum
 
 static MxBoxLayoutClass *parent_class = NULL;
 
+#if 0
 static void
 mnp_clock_tile_enable (MxDraggable *draggable)
 {
@@ -76,6 +77,7 @@ static void
 mnp_clock_tile_disable (MxDraggable *draggable)
 {
 }
+#endif
 
 static void
 mnp_clock_tile_drag_begin (MxDraggable *draggable, gfloat event_x, gfloat event_y, gint event_button, ClutterModifierType  modifiers)
@@ -132,7 +134,7 @@ static void
 mnp_draggable_rectangle_parent_set (ClutterActor *actor,
                                 ClutterActor *old_parent)
 {
-  ClutterActor *new_parent = clutter_actor_get_parent (actor);
+  /* ClutterActor *new_parent = clutter_actor_get_parent (actor); */
 
   /*g_debug ("%s: old_parent: %s, new_parent: %s (%s)",
            G_STRLOC,
@@ -315,9 +317,9 @@ mnp_clock_tile_get_type (void)
 static void
 remove_tile (MxButton *button, MnpClockTile *tile)
 {
-	clutter_actor_hide(tile);
+	clutter_actor_hide((ClutterActor *)tile);
 	tile->priv->remove_cb(tile, tile->priv->remove_data);
-	clutter_actor_destroy (tile);
+	clutter_actor_destroy ((ClutterActor *)tile);
 }
 
 void
@@ -330,7 +332,6 @@ mnp_clock_tile_set_remove_cb (MnpClockTile *tile, TileRemoveFunc func, gpointer 
 static void
 mnp_clock_construct (MnpClockTile *tile)
 {
-	GWeatherTimezone *zone;
 	MnpDateFormat *fmt;
 	ClutterActor *box1, *box2, *label1, *label2, *label3;
 	ClutterActor *icon;
@@ -341,15 +342,15 @@ mnp_clock_construct (MnpClockTile *tile)
  
 
 	label1 = mx_label_new (fmt->date);
-	tile->priv->date = label1;
+	tile->priv->date = (MxLabel *)label1;
 	clutter_actor_set_name (label1, "mnp-tile-date");
 
 	label2 = mx_label_new (fmt->time);
-	tile->priv->time = label2;
+	tile->priv->time = (MxLabel *)label2;
 	clutter_actor_set_name (label2, "mnp-tile-time");
 
 	label3 = mx_label_new (fmt->city);
-	tile->priv->city = label3;
+	tile->priv->city = (MxLabel *)label3;
 	clutter_actor_set_name (label3, "mnp-tile-city");
 	clutter_actor_set_size (label3, 110, -1);
 
@@ -358,15 +359,15 @@ mnp_clock_construct (MnpClockTile *tile)
 	mx_box_layout_set_vertical ((MxBoxLayout *)box1, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box1, FALSE);
 
-	clutter_container_add_actor (box1, label3);
-	clutter_container_add_actor (box1, label1);
+	clutter_container_add_actor ((ClutterContainer *)box1, label3);
+	clutter_container_add_actor ((ClutterContainer *)box1, label1);
 
 	mx_box_layout_set_vertical ((MxBoxLayout *)tile, FALSE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)tile, FALSE);
-	clutter_container_add_actor (tile, box1);
-	clutter_container_add_actor (tile, label2);
+	clutter_container_add_actor ((ClutterContainer *)tile, box1);
+	clutter_container_add_actor ((ClutterContainer *)tile, label2);
 
-	clutter_actor_show_all (tile);
+	clutter_actor_show_all ((ClutterActor *)tile);
 	FREE_DFMT(fmt);
 
 	box2 = mx_box_layout_new ();
@@ -374,10 +375,10 @@ mnp_clock_construct (MnpClockTile *tile)
 	mx_box_layout_set_vertical ((MxBoxLayout *)box2, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box2, FALSE);	
  	
-	priv->remove_button = mx_button_new ();
+	priv->remove_button = (MxButton *)mx_button_new ();
 	g_signal_connect (priv->remove_button, "clicked", G_CALLBACK(remove_tile), tile);
-	clutter_container_add_actor (box2, priv->remove_button);  	
-	clutter_container_add_actor (tile, box2);	
+	clutter_container_add_actor ((ClutterContainer *)box2, (ClutterActor *)priv->remove_button);  	
+	clutter_container_add_actor ((ClutterContainer *)tile, box2);	
 	mx_stylable_set_style_class (MX_STYLABLE (priv->remove_button),
                                			"TileRemoveButton");
   	icon = (ClutterActor *)mx_icon_new ();
@@ -410,13 +411,12 @@ void
 mnp_clock_tile_refresh (MnpClockTile *tile, time_t now)
 {
 	MnpDateFormat *fmt;
-	ClutterActor *box1, *box2, *label1, *label2, *label3;
 
 	tile->priv->time_now = now;
 	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now);
 
-	mx_label_set_text (tile->priv->time, fmt->time);
-	mx_label_set_text (tile->priv->date, fmt->date);
+	mx_label_set_text ((MxLabel *)tile->priv->time, fmt->time);
+	mx_label_set_text ((MxLabel *)tile->priv->date, fmt->date);
 
 	FREE_DFMT(fmt);
 }

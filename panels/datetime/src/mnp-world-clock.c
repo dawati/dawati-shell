@@ -81,7 +81,7 @@ mnp_world_clock_dispose (GObject *object)
 static void
 mnp_world_clock_finalize (GObject *object)
 {
-  MnpWorldClockPrivate *priv = GET_PRIVATE (object);
+  /* MnpWorldClockPrivate *priv = GET_PRIVATE (object); */
 
   G_OBJECT_CLASS (mnp_world_clock_parent_class)->finalize (object);
 }
@@ -246,7 +246,6 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	const GWeatherLocation *location;
-	GWeatherTimezone *zone;
 	MnpClockTile *tile;
 
 	priv->search_text = NULL;
@@ -258,7 +257,7 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 
 	mx_entry_set_text (priv->search_location, "");
 
-	tile = mnp_clock_tile_new (location, mnp_clock_area_get_time(priv->area));
+	tile = mnp_clock_tile_new ((GWeatherLocation *)location, mnp_clock_area_get_time(priv->area));
 	mnp_clock_area_add_tile (priv->area, tile);
 }
 
@@ -352,8 +351,8 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	clutter_actor_set_name (scroll, "completion-scroll-bin");
 	priv->scroll = scroll;
 	clutter_actor_set_size (scroll, -1, 300);	
-	clutter_container_add_actor (stage, scroll);
-      	clutter_actor_raise_top(scroll);
+	clutter_container_add_actor ((ClutterContainer *)stage, scroll);
+      	clutter_actor_raise_top((ClutterActor *) scroll);
 	clutter_actor_set_position (scroll, 6, 35);  
 	clutter_actor_hide (scroll);
 
@@ -371,18 +370,18 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	priv->area = mnp_clock_area_new ();
 	clutter_actor_get_size (box, &width, &height);
 
-	clutter_actor_set_size (priv->area, width+20, 500);
-	clutter_actor_set_reactive (priv->area, TRUE);
-	clutter_actor_set_name (priv->area, "clock-area");
+	clutter_actor_set_size ((ClutterActor *)priv->area, width+20, 500);
+	clutter_actor_set_reactive ((ClutterActor *)priv->area, TRUE);
+	clutter_actor_set_name ((ClutterActor *)priv->area, "clock-area");
 
-	clutter_container_add_actor (stage, priv->area);
-	clutter_actor_lower_bottom (priv->area);
-	mx_droppable_enable (priv->area);
-	g_object_ref (priv->area);
-	clutter_container_remove_actor (stage, priv->area);
-	mx_table_add_actor (MX_TABLE (table), priv->area, 1, 0);
+	clutter_container_add_actor ((ClutterContainer *)stage, (ClutterActor *)priv->area);
+	clutter_actor_lower_bottom ((ClutterActor *)priv->area);
+	mx_droppable_enable ((MxDroppable *)priv->area);
+	g_object_ref ((GObject *)priv->area);
+	clutter_container_remove_actor ((ClutterContainer *)stage, (ClutterActor *)priv->area);
+	mx_table_add_actor (MX_TABLE (table), (ClutterActor *)priv->area, 1, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
-                               priv->area,
+                               (ClutterActor *)priv->area,
                                "x-expand", FALSE, "y-expand", FALSE,
                                NULL);
 
@@ -395,7 +394,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 		int i=0;
 
 		for (i=0; i<priv->zones->len; i++) {
-			GWeatherLocation *location = mnp_utils_get_location_from_display (priv->zones_model, priv->zones->pdata[i]);
+			GWeatherLocation *location = (GWeatherLocation *)mnp_utils_get_location_from_display (priv->zones_model, priv->zones->pdata[i]);
 			MnpClockTile *tile = mnp_clock_tile_new (location, mnp_clock_area_get_time(priv->area));
 			mnp_clock_area_add_tile (priv->area, tile);
 		}

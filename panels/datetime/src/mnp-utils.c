@@ -296,8 +296,6 @@ clock_unset_tz (SystemTimezone *tzone)
 static void
 clock_location_localtime (SystemTimezone *systz, char *tzone, struct tm *tm, time_t now)
 {
-	struct timezone tz1;
-
         clock_set_tz (tzone);
 
         localtime_r (&now, tm);
@@ -305,6 +303,7 @@ clock_location_localtime (SystemTimezone *systz, char *tzone, struct tm *tm, tim
         clock_unset_tz (systz);
 }
 
+#if 0
 static glong
 get_offset (const char *tzone, SystemTimezone *systz)
 {
@@ -337,8 +336,9 @@ get_offset (const char *tzone, SystemTimezone *systz)
 
         return offset;
 }
+#endif
 
-static char *
+static MnpDateFormat *
 format_time (struct tm   *now, 
              char        *tzname,
              gboolean  	  twelveh,
@@ -348,8 +348,6 @@ format_time (struct tm   *now,
 	char *format;
 	struct tm local_now;
 	char *utf8;	
-	char *tmp;	
-	long hours, minutes;
 	MnpDateFormat *fmt = g_new0 (MnpDateFormat, 1);
 
 	localtime_r (&local_t, &local_now);
@@ -412,7 +410,6 @@ mnp_format_time_from_location (GWeatherLocation *location, time_t time_now)
 	char *tzname;
 	static SystemTimezone *systz = NULL; 
 	struct tm now;
-	long offset;
 	MnpDateFormat *fmt;
 
 	if (!systz)
@@ -442,7 +439,7 @@ mnp_load_zones (void)
 
 	kfile = g_key_file_new ();
 	if (g_key_file_load_from_file(kfile, pfile, G_KEY_FILE_NONE, NULL)) {
-		int len=0, i;
+		guint len=0, i;
 		char **strs;
 		
 		strs = g_key_file_get_string_list (kfile, "zones-names", "selected-zones", &len, NULL);
@@ -465,12 +462,12 @@ mnp_save_zones (GPtrArray *zones)
 	GKeyFile *kfile;
 	char *pfile;
 	char *contents;
-	int len=0;
+	guint len=0;
 
 	pfile = g_build_filename(g_get_user_config_dir(), "panel-clock-zones.conf", NULL);
 	
 	kfile = g_key_file_new ();
-	g_key_file_set_string_list (kfile, "zones-names", "selected-zones", zones->pdata, zones->len);
+	g_key_file_set_string_list (kfile, "zones-names", "selected-zones", (const gchar * const *)zones->pdata, zones->len);
 	contents = g_key_file_to_data (kfile, &len, NULL);
 	
 	if(len) {

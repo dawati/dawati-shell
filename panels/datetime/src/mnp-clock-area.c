@@ -53,7 +53,7 @@ static void mx_droppable_init (MxDroppableIface *klass);
 G_DEFINE_TYPE_WITH_CODE (MnpClockArea, mnp_clock_area, MX_TYPE_BOX_LAYOUT,
                          G_IMPLEMENT_INTERFACE (MX_TYPE_DROPPABLE,
                                                 mx_droppable_init));
-
+#if 0
 static void
 mnp_clock_area_enable (MxDroppable *droppable)
 {
@@ -69,6 +69,7 @@ mnp_clock_area_accept_drop (MxDroppable *droppable, MxDraggable *draggable)
 {
 	return TRUE;
 }
+#endif
 
 static void
 mnp_clock_area_over_in (MxDroppable *droppable, MxDraggable *draggable)
@@ -123,7 +124,7 @@ mnp_clock_area_drop (MxDroppable *droppable, MxDraggable *draggable, gfloat even
   g_ptr_array_remove (tiles, (gpointer) draggable);
   insert_in_ptr_array (tiles, draggable, pos);
 
-  clutter_actor_set_depth (draggable, ((pos+1) * 0.05) - 0.01);
+  clutter_actor_set_depth ((ClutterActor *)draggable, ((pos+1) * 0.05) - 0.01);
  
  
   for (i=tiles->len-1; i >= 0; i--) {
@@ -147,10 +148,6 @@ mnp_clock_area_finalize (GObject *object)
 
 
 	G_OBJECT_CLASS(G_OBJECT_GET_CLASS(object))->finalize (object);
-}
-static void
-mnp_clock_area_instance_init (GTypeInstance *instance, gpointer g_class)
-{
 }
 
 static void
@@ -230,47 +227,6 @@ mnp_clock_area_init (MnpClockArea *object)
 {
 }
 
-#if 0
-GType
-mnp_clock_area_get_type (void)
-{
-	static GType type = 0;
-	if (G_UNLIKELY(type == 0))
-	{
-		static const GTypeInfo info = 
-		{
-			sizeof (MnpClockAreaClass),
-			NULL,   /* base_init */
-			NULL,   /* base_finalize */
-			(GClassInitFunc) mnp_clock_area_class_init,   /* class_init */
-			NULL,   /* class_finalize */
-			NULL,   /* class_data */
-			sizeof (MnpClockArea),
-			0,      /* n_preallocs */
-			mnp_clock_area_instance_init,    /* instance_init */
-			NULL
-		};
-
-
-		static const GInterfaceInfo mx_droppable_info = 
-		{
-			(GInterfaceInitFunc) mx_droppable_init, /* interface_init */
-			NULL,         /* interface_finalize */
-			NULL          /* interface_data */
-		};
-
-		type = g_type_register_static (MX_TYPE_BOX_LAYOUT,
-			"MnpClockArea",
-			&info, 0);
-
-		g_type_add_interface_static (type, MX_TYPE_DROPPABLE,
-			&mx_droppable_info);
-
-	}
-	return type;
-}
-#endif
-
 gboolean
 clock_ticks (MnpClockArea *area)
 {
@@ -298,7 +254,7 @@ mnp_clock_area_new (void)
 	mx_box_layout_set_pack_start ((MxBoxLayout *)area, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)area, TRUE);
 	area->priv->time_now = time(NULL);
-	mx_box_layout_set_spacing (area, 10);
+	mx_box_layout_set_spacing ((MxBoxLayout *)area, 10);
 	area->priv->source = g_timeout_add (1000, (GSourceFunc)clock_ticks, area);
 
 	return area;
@@ -316,15 +272,15 @@ void
 mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 {
 
-	clutter_actor_set_reactive (tile, TRUE);
-	clutter_actor_set_name (tile, "clock-tile");
-	clutter_container_add_actor (clutter_stage_get_default(), tile);
+	clutter_actor_set_reactive ((ClutterActor *)tile, TRUE);
+	clutter_actor_set_name ((ClutterActor *)tile, "clock-tile");
+	clutter_container_add_actor ((ClutterContainer *)clutter_stage_get_default(), (ClutterActor *)tile);
 	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_Y_AXIS);
-	mx_draggable_enable (tile);
-	clutter_actor_set_size (tile, 212, 75);
-	clutter_actor_set_depth (tile, area->priv->position);
+	mx_draggable_enable ((MxDraggable *)tile);
+	clutter_actor_set_size ((ClutterActor *)tile, 212, 75);
+	clutter_actor_set_depth ((ClutterActor *)tile, area->priv->position);
 	area->priv->position += 0.05;
-	clutter_actor_reparent (tile, area);
+	clutter_actor_reparent ((ClutterActor *)tile, (ClutterActor *)area);
 	g_ptr_array_add (area->priv->clock_tiles, tile);
 	mnp_clock_tile_set_remove_cb (tile, (TileRemoveFunc)mnp_clock_tile_removed, (gpointer)area);
 }

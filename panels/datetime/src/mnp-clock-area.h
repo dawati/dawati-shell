@@ -27,6 +27,7 @@
 #include <glib-object.h>
 #include <mx/mx.h>
 #include "mnp-utils.h"
+#include "mnp-clock-tile.h"
 
 G_BEGIN_DECLS
 
@@ -60,7 +61,7 @@ MnpClockArea * mnp_clock_area_new (void);
 void mnp_clock_area_refresh_time (MnpClockArea *);
 time_t mnp_clock_area_get_time (MnpClockArea *area);
 void mnp_clock_area_set_zone_remove_cb (MnpClockArea *area, ZoneRemovedFunc func, gpointer data);
-
+void mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile);
 G_END_DECLS
 
 #endif

@@ -128,7 +128,7 @@ main (int    argc,
     world_clock = mnp_world_clock_new ();
     clutter_actor_set_size ((ClutterActor *)world_clock, 1016, 400);
     clutter_actor_set_size (stage, 1016, 400);
-    clutter_actor_show_all (stage);
+    clutter_actor_show (stage);
   }
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
