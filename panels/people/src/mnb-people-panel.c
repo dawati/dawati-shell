@@ -41,6 +41,7 @@
 #include <moblin-panel/mpl-entry.h>
 
 #include "mnb-people-panel.h"
+#include "sw-online.h"
 
 G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, MX_TYPE_TABLE)
 
@@ -73,6 +74,9 @@ struct _MnbPeoplePanelPrivate {
   ClutterActor *presence_chooser;
 };
 
+static void _online_notify_cb (gboolean online,
+                               gpointer userdata);
+
 static void
 mnb_people_panel_dispose (GObject *object)
 {
@@ -90,6 +94,8 @@ mnb_people_panel_dispose (GObject *object)
 static void
 mnb_people_panel_finalize (GObject *object)
 {
+  sw_online_remove_notify (_online_notify_cb, object);
+
   G_OBJECT_CLASS (mnb_people_panel_parent_class)->finalize (object);
 }
 
@@ -621,6 +627,19 @@ _model_bulk_changed_end_cb (AnerleyFeedModel *model,
 }
 
 static void
+_update_online_state (MnbPeoplePanel *panel,
+                      gboolean        online)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (panel);
+  if (online)
+  {
+    clutter_actor_show (priv->presence_chooser);
+  } else {
+    clutter_actor_hide (priv->presence_chooser);
+  }
+}
+
+static void
 mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
@@ -852,6 +871,9 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     "notify::accounts-available",
                     (GCallback)_tp_feed_available_notify_cb,
                     self);
+
+  sw_online_add_notify (_online_notify_cb, self);
+  _update_online_state (self, sw_is_online ());
 }
 
 ClutterActor *
@@ -879,4 +901,11 @@ mnb_people_panel_set_panel_client (MnbPeoplePanel *people_panel,
                     people_panel);
 }
 
+static void
+_online_notify_cb (gboolean online,
+                   gpointer userdata)
+{
+  MnbPeoplePanel *panel = MNB_PEOPLE_PANEL (userdata);
 
+  _update_online_state (panel, online);
+}
