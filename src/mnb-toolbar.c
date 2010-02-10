@@ -54,7 +54,6 @@
 #include "mnb-toolbar-icon.h"
 #include "mnb-drop-down.h"
 #include "mnb-spinner.h"
-#include "switcher/mnb-switcher.h"
 
 /* For systray windows stuff */
 #include <gdk/gdkx.h>
@@ -1179,6 +1178,7 @@ mnb_toolbar_panel_show_begin_cb (MnbPanel *panel, MnbToolbar *toolbar)
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
 }
 
+#if 0
 /*
  * Use for any built-in panels, which require the input region to cover the
  * whole panel area.
@@ -1193,6 +1193,7 @@ mnb_toolbar_dropdown_show_completed_full_cb (MnbPanel   *panel,
 
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
 }
+#endif
 
 static void
 mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
@@ -1310,6 +1311,7 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   {
+#if 0
       MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
       MetaDisplay *display = meta_screen_get_display (screen);
 
@@ -1325,6 +1327,7 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
       g_signal_connect (display, "notify::focus-window",
                         G_CALLBACK (mnb_switcher_focus_window_cb),
                         panel);
+#endif
     }
 
   if (!panel)
@@ -1691,12 +1694,6 @@ static void
 mnb_toolbar_panel_destroy_cb (MnbPanel *panel, MnbToolbar *toolbar)
 {
   MnbToolbarPanel *tp;
-
-  if (MNB_IS_SWITCHER (panel))
-    {
-      g_warning ("Cannot remove the Switcher !!!");
-      return;
-    }
 
   if (!MNB_IS_PANEL_OOP (panel))
     {

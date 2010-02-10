@@ -175,7 +175,6 @@ build/autotools/shave-libtool
 data/Makefile
 src/Makefile
 src/effects/Makefile
-src/switcher/Makefile
 src/alttab/Makefile
 src/notifications/Makefile
 po/Makefile.in
