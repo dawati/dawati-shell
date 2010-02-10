@@ -118,8 +118,10 @@ start_search (MnpClockArea *area)
 		clutter_actor_hide(priv->scroll);
 	
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");
-	if (priv->search_text && *priv->search_text)
+	if (priv->search_text && *priv->search_text) {
 		clutter_actor_show(priv->scroll);
+		clutter_actor_raise_top (priv->scroll);
+	}
 
 
 	return FALSE;
@@ -349,12 +351,10 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	scroll = mx_scroll_view_new ();
 	clutter_actor_set_name (scroll, "completion-scroll-bin");
 	priv->scroll = scroll;
-	clutter_actor_set_size (scroll, width-20, -1);	
-	mx_table_add_actor (MX_TABLE (table), scroll, 1, 0);
-	clutter_container_child_set (CLUTTER_CONTAINER (table),
-                               scroll,
-                               "x-expand", FALSE, "y-expand", FALSE,
-                               NULL);
+	clutter_actor_set_size (scroll, -1, 300);	
+	clutter_container_add_actor (stage, scroll);
+      	clutter_actor_raise_top(scroll);
+	clutter_actor_set_position (scroll, 6, 35);  
 	clutter_actor_hide (scroll);
 
 	view = mx_list_view_new ();
@@ -372,13 +372,20 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	clutter_actor_get_size (box, &width, &height);
 
 	clutter_actor_set_size (priv->area, width+20, 500);
-	clutter_actor_set_position (priv->area, 6, 50);  
 	clutter_actor_set_reactive (priv->area, TRUE);
 	clutter_actor_set_name (priv->area, "clock-area");
 
 	clutter_container_add_actor (stage, priv->area);
 	clutter_actor_lower_bottom (priv->area);
 	mx_droppable_enable (priv->area);
+	g_object_ref (priv->area);
+	clutter_container_remove_actor (stage, priv->area);
+	mx_table_add_actor (MX_TABLE (table), priv->area, 1, 0);
+	clutter_container_child_set (CLUTTER_CONTAINER (table),
+                               priv->area,
+                               "x-expand", FALSE, "y-expand", FALSE,
+                               NULL);
+
 
 	priv->zones = mnp_load_zones ();
 	mnp_clock_area_refresh_time (priv->area);
