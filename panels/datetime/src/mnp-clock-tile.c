@@ -120,7 +120,7 @@ mnp_clock_tile_drag_end (MxDraggable *draggable, gfloat event_x, gfloat event_y)
 static void
 mnp_clock_tile_finalize (GObject *object)
 {
-	G_OBJECT_CLASS(G_OBJECT_GET_CLASS(object))->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -315,8 +315,9 @@ mnp_clock_tile_get_type (void)
 static void
 remove_tile (MxButton *button, MnpClockTile *tile)
 {
-	tile->priv->remove_cb(tile, tile->priv->remove_data);
 	clutter_actor_hide(tile);
+	tile->priv->remove_cb(tile, tile->priv->remove_data);
+	clutter_actor_destroy (tile);
 }
 
 void
