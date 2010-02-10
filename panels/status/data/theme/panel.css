@@ -47,15 +47,6 @@ MpsTweetCard.mps-tweet-card-first:active
   font-family: Droid Sans;
 }
 
-*.mps-switcher-new-service:hover
-{
-  border-image: url("add_status_header_hover.png") 4 4 4 4;
-  padding: 6;
-  color: white;
-  font-size: 16pt;
-  font-family: Droid Sans;
-}
-
 *.mps-switcher-button
 {
   border-image: url("alt_status_header.png") 4 4 4 4;
@@ -66,10 +57,21 @@ MpsTweetCard.mps-tweet-card-first:active
 }
 
 *.mps-switcher-button:checked,
-*.mps-switcher-button:active,
-*.mps-switcher-button:hover
+*.mps-switcher-button:active
 {
   border-image: url("current_status_header.png") 4 4 4 4;
+  padding: 6;
+  color: white;
+  font-size: 16pt;
+  font-family: Droid Sans;
+}
+
+*.mps-switcher-button:hover,
+*.mps-switcher-button:active,
+*.mps-switcher-new-service:hover,
+*.mps-switcher-new-service:active
+{
+  border-image: url("status_header_hover.png") 4 4 4 4;
   padding: 6;
   color: white;
   font-size: 16pt;

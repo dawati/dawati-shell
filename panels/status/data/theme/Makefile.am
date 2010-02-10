@@ -3,6 +3,7 @@ dist_theme_DATA = \
 	panel.css \
 	add_status_header.png \
 	add_status_header_hover.png \
+	status_header_hover.png \
 	avatar_icon.png \
 	status_entry_box.png \
 	alt_status_header.png \
