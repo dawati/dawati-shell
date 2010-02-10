@@ -367,8 +367,8 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
   priv->placeholder_label = mx_label_new (_("You don't appear to have any web "
                                             "services configured or there is "
                                             "a problem with their configuration. "
-                                            "Use the button above to open the web "
-                                            "services configuration and set one up."));
+                                            "Use the button above to open the My "
+                                            "Web Accounts and set one up."));
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->placeholder_label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text),
                               TRUE);
