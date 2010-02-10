@@ -87,28 +87,24 @@ mnb_spinner_unmap (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (mnb_spinner_parent_class)->unmap (actor);
 }
 
-static void
-mnb_spinner_show (ClutterActor *actor)
+void
+mnb_spinner_start (MnbSpinner *spinner)
 {
-  MnbSpinnerPrivate *priv = MNB_SPINNER (actor)->priv;
+  MnbSpinnerPrivate *priv = MNB_SPINNER (spinner)->priv;
 
   priv->frame = 0;
 
   if (priv->timeline)
     clutter_timeline_start (priv->timeline);
-
-  CLUTTER_ACTOR_CLASS (mnb_spinner_parent_class)->show (actor);
 }
 
-static void
-mnb_spinner_hide (ClutterActor *actor)
+void
+mnb_spinner_stop (MnbSpinner *spinner)
 {
-  MnbSpinnerPrivate *priv = MNB_SPINNER (actor)->priv;
+  MnbSpinnerPrivate *priv = MNB_SPINNER (spinner)->priv;
 
   if (priv->timeline)
     clutter_timeline_stop (priv->timeline);
-
-  CLUTTER_ACTOR_CLASS (mnb_spinner_parent_class)->hide (actor);
 }
 
 static void
@@ -382,8 +378,6 @@ mnb_spinner_class_init (MnbSpinnerClass *klass)
   actor_class->allocate             = mnb_spinner_allocate;
   actor_class->map                  = mnb_spinner_map;
   actor_class->unmap                = mnb_spinner_unmap;
-  actor_class->show                 = mnb_spinner_show;
-  actor_class->hide                 = mnb_spinner_hide;
   actor_class->get_preferred_width  = mnb_spinner_get_preferred_width;
   actor_class->get_preferred_height = mnb_spinner_get_preferred_height;
   actor_class->pick                 = mnb_spinner_pick;

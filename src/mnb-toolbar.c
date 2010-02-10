@@ -196,6 +196,7 @@ struct _MnbToolbarPrivate
   ClutterActor *hbox; /* This is where all the contents are placed */
   ClutterActor *lowlight;
   ClutterActor *panel_stub;
+  ClutterActor *spinner;
   ClutterActor *shadow;
 
   ClutterActor *time; /* The time and date fields, needed for the updates */
@@ -849,6 +850,8 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
 
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
   clutter_actor_hide (priv->panel_stub);
+  mnb_spinner_stop ((MnbSpinner*)priv->spinner);
+
   priv->stubbed_panel = NULL;
 
   for (l = priv->panels; l; l = l->next)
@@ -900,6 +903,7 @@ mnb_toolbar_show_pending_panel (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   clutter_actor_set_opacity (priv->panel_stub, 0xff);
   clutter_actor_show (priv->panel_stub);
   clutter_actor_raise_top (priv->panel_stub);
+  mnb_spinner_start ((MnbSpinner*)priv->spinner);
   priv->stubbed_panel = tp;
 
   if (priv->panel_stub_timeout_id)
@@ -997,6 +1001,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                     g_source_remove (priv->panel_stub_timeout_id);
                     priv->panel_stub_timeout_id = 0;
                     clutter_actor_hide (priv->panel_stub);
+                    mnb_spinner_stop ((MnbSpinner*)priv->spinner);
                     priv->stubbed_panel = NULL;
                   }
               }
@@ -1213,6 +1218,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
     mnb_input_manager_push_oop_panel (mcw);
 
   clutter_actor_hide (priv->panel_stub);
+  mnb_spinner_stop ((MnbSpinner*)priv->spinner);
   priv->stubbed_panel = NULL;
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
@@ -2450,7 +2456,7 @@ mnb_toolbar_constructed (GObject *self)
   priv->lowlight = lowlight;
 
   {
-    ClutterActor *spinner = mnb_spinner_new ();
+    ClutterActor *spinner = priv->spinner = mnb_spinner_new ();
 
     panel_stub = (ClutterActor*)mx_frame_new ();
     mx_bin_set_child (MX_BIN (panel_stub), spinner);
@@ -2461,6 +2467,7 @@ mnb_toolbar_constructed (GObject *self)
     clutter_actor_set_name (panel_stub, "panel-stub");
     clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), panel_stub);
     clutter_actor_hide (panel_stub);
+    mnb_spinner_stop ((MnbSpinner*)spinner);
     priv->panel_stub = panel_stub;
   }
 

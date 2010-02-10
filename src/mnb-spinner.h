@@ -63,6 +63,9 @@ GType mnb_spinner_get_type (void);
 
 ClutterActor* mnb_spinner_new (void);
 
+void mnb_spinner_start (MnbSpinner *spinner);
+void mnb_spinner_stop  (MnbSpinner *spinner);
+
 G_END_DECLS
 
 #endif /* _MNB_SPINNER */
