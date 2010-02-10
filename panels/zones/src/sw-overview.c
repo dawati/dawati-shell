@@ -338,6 +338,7 @@ static void
 window_removed (SwWindow   *window,
                 SwOverview *overview)
 {
+  GList *l;
   SwOverviewPrivate *priv = overview->priv;
 
   priv->window_count--;
@@ -347,6 +348,21 @@ window_removed (SwWindow   *window,
       if (priv->dummy)
         clutter_actor_destroy (priv->dummy);
       priv->dummy = NULL;
+    }
+
+  /* find the stored handler id and remove it */
+  for (l = priv->window_handlers; l; l = g_list_next (l))
+    {
+      WindowNotify *notify = (WindowNotify*) l->data;
+
+      if (notify->window == window)
+        {
+          g_free (notify);
+
+          priv->window_handlers = g_list_delete_link (priv->window_handlers, l);
+
+          break;
+        }
     }
 }
 
