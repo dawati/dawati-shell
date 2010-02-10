@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Moblin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-11-19 14:56-0800\n"
+"Last-Translator: Margie Foster <margie@linux.intel.com>\n"
+"Language-Team: British English <margie@linux.intel.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zones"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "No applications on this zone"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zones"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zones"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Moblin Netbook Effects"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Effects for Moblin Netbooks"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e %B, %Y"
+
+#~ msgid "Dismiss"
+#~ msgstr "Dismiss"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Dismiss All"
+
+#~ msgid "No Zones yet"
+#~ msgstr "No Zones yet"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organise them to your heart's content."
+
+#~ msgid "Unknown window"
+#~ msgstr "Unknown window"
+
+#~ msgid "Activate"
+#~ msgstr "Activate"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "is asking for your attention."

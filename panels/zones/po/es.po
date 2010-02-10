@@ -1,0 +1,156 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Moblin UX\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+# <mousetip of the top of the screen>
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zonas"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "No hay ninguna aplicación en esta zona"
+
+# <mousetip of the top of the screen>
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zonas"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+# <mousetip of the top of the screen>
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zonas"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Hace menos de un minuto"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Hace unos minutos"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Hace un par de horas"
+
+#~ msgid "Earlier today"
+#~ msgstr "Hoy, pero antes"
+
+#~ msgid "Yesterday"
+#~ msgstr "Ayer"
+
+# <on + date, like "On July 4">
+#~ msgid "On %A"
+#~ msgstr "El %A"
+
+#~ msgid "Unknown"
+#~ msgstr "Desconocido"
+
+#~ msgid "Last week"
+#~ msgstr "La semana pasada"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Hace un par de semanas"
+
+#~ msgid "This month"
+#~ msgstr "Este mes"
+
+#~ msgid "Last month"
+#~ msgstr "El mes pasado"
+
+#~ msgid "This year"
+#~ msgstr "Este año"
+
+#~ msgid "Last year"
+#~ msgstr "El año pasado"
+
+# Long time ago
+#~ msgid "Ages ago"
+#~ msgstr "Hace mucho tiempo"
+
+# Moblin effects in the netbook
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Efectos de Moblin en el miniportátil"
+
+# Effects for netbooks with Mobin
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Efectos para miniportátiles con Moblin"
+
+#~ msgid "Dismiss"
+#~ msgstr "Descartar"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Descartar todo"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Todavía no hay ninguna zona"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Las aplicaciones que se están usando aparecen aquí. Puedes cambiarlas y "
+#~ "organizarlas como te plazca."
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%H.%M h"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e de %B de %Y"
+
+# <mousetip of the top of the screen>
+# electricity(energy) and brightness
+#~ msgid "power & brightness"
+#~ msgstr "energía y brillo"
+
+# <mousetip of the top of the screen>
+#~ msgid "volume"
+#~ msgstr "volumen"
+
+# <mousetip of the top of the screen>
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+# <mousetip of the top of the screen>
+#~ msgid "networks"
+#~ msgstr "redes"
+
+#~ msgid "test"
+#~ msgstr "prueba"

@@ -1,0 +1,232 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: TG\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zones"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Pas d'applications dans cette zone"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zones"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zones"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Effets spéciaux pour netbook utilisant Moblin"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
+
+# For France, use 24-hour clock
+#~ msgid "%l:%M %P"
+#~ msgstr "%H:%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e %B %Y"
+
+#~ msgid "Dismiss"
+#~ msgstr "Supprimer"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Tout supprimer"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Aucune zone n'est définie"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Les applications que vous utilisez vont apparaître ici. Vous pourrez les "
+#~ "organizer et y accéder à votre guise."
+
+#~ msgid "Unknown window"
+#~ msgstr "Fenêtre inconnue"
+
+#~ msgid "Activate"
+#~ msgstr "Activer"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "Requiert votre attention."
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Il y a moins d'une minute"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Il y a quelques minutes"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Il y a quelques heures"
+
+#~ msgid "Earlier today"
+#~ msgstr "Un peu plus tôt aujourd'hui"
+
+#~ msgid "Yesterday"
+#~ msgstr "Hier"
+
+#~ msgid "On %A"
+#~ msgstr "%A"
+
+#~ msgid "Last week"
+#~ msgstr "La semaine dernière"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Il y a quelques semaines"
+
+#~ msgid "This month"
+#~ msgstr "Ce mois"
+
+#~ msgid "Last month"
+#~ msgstr "Le mois dernier"
+
+#~ msgid "This year"
+#~ msgstr "Cette année"
+
+#~ msgid "Last year"
+#~ msgstr "L'année dernière"
+
+#~ msgid "Ages ago"
+#~ msgstr "Ça fait un bail"
+
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "Vous devez avoir écouté de la musique, regardé des photos ou des vidéos "
+#~ "avant de pouvoir consulter votre historique. Pour le moment, vous pouvez "
+#~ "accéder à des fichiers multimédia de démo :"
+
+#~ msgid "Recently played"
+#~ msgstr "Récemment utilisés"
+
+#~ msgid "Search results"
+#~ msgstr "Résultats de recherche"
+
+#~ msgid "Playqueue"
+#~ msgstr "File de lecture"
+
+#~ msgid "Season %u, Episode %u"
+#~ msgstr "Saison %u, épisode %u"
+
+#~ msgid "Previous"
+#~ msgstr "Précédent"
+
+#~ msgid "Next"
+#~ msgstr "Suivant"
+
+#~ msgid "Media"
+#~ msgstr "Fichiers multimédia"
+
+#~ msgid "Search"
+#~ msgstr "Rechercher"
+
+#~ msgid "Season %d Episode %d"
+#~ msgstr "Saison %d épisode %d"
+
+#~ msgid "Season %d"
+#~ msgstr "Saison %d"
+
+#~ msgid "Episode %d"
+#~ msgstr "Épisode %d"
+
+#~ msgid "Year %d"
+#~ msgstr "Année %d"
+
+#~ msgid "media"
+#~ msgstr "fichiers multimédia"
+
+#~ msgid "Favourite Applications"
+#~ msgstr "Applications favorites"
+
+#~ msgid "Applications"
+#~ msgstr "Applications"
+
+#~ msgid "applications"
+#~ msgstr "applications"
+
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "Lorsque vous visitez des pages web, vos pages favorites apparaissent ici "
+#~ "et sur la page Nouvel onglet du navigateur."
+
+#~ msgid "Untitled"
+#~ msgstr "Sans titre"
+
+#~ msgid "New tab"
+#~ msgstr "Nouvel onglet"
+
+#~ msgid "Internet"
+#~ msgstr "Internet"
+
+#~ msgid "Go"
+#~ msgstr "Lancer"
+
+#~ msgid "Tabs"
+#~ msgstr "Onglets"
+
+#~ msgid "Favorite pages"
+#~ msgstr "Pages favorites"
+
+#~ msgid "internet"
+#~ msgstr "Internet"
+
+#~ msgid "Search for %%s on %s"
+#~ msgstr "Chercher %%s dans %s"
+
+#~ msgid "Go to %s"
+#~ msgstr "Aller sur %s"
+
+#~ msgid "Copy"
+#~ msgstr "Copier"

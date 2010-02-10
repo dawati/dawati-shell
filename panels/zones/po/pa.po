@@ -1,0 +1,378 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# A S Alam <aalam@users.sf.net>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin.Moblin2-UI.mutter-moblin-netbook-plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-08-08 07:43+0530\n"
+"Last-Translator: A S Alam <aalam@users.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 0.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "ਨਵਾਂ ਜ਼ੋਨ (0)"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "ਇਸ ਜ਼ੋਨ ਲਈ ਕੋਈ ਐਪਲੀਕੇਸ਼ਨ ਨਹੀਂ"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "ਜ਼ੋਨ"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "ਜ਼ੋਨ"
+
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "ਤੁਹਾਨੂੰ ਆਪਣਾ ਅਤੀਤ ਇੱਥੇ ਵੇਖਣ ਲਈ ਕੁਝ ਸੰਗੀਤ ਚਲਾਉਣਾ ਪਵੇਗਾ, ਕੁਝ ਤਸਵੀਰਾਂ ਜਾਂ ਕੁਝ ਵਿਡੀਓ ਵੇਖਣੀਆਂ "
+#~ "ਪੈਣਗੀਆਂ। ਉਸ ਸਮੇਂ ਤੱਕ ਤੁਸੀਂ ਕੁਝ ਸੈਂਪਲ ਮੀਡਿਆ ਵੇਖ ਸਕਦੇ ਹੋ:"
+
+#~ msgid "Recently played"
+#~ msgstr "ਤਾਜ਼ਾ ਚਲਾਏ"
+
+#~ msgid "Search results"
+#~ msgstr "ਖੋਜ ਨਤੀਜੇ"
+
+#~ msgid "Playqueue"
+#~ msgstr "ਪਲੇਅਕਤਾਰ"
+
+#~ msgid "Season %u, Episode %u"
+#~ msgstr "ਸ਼ੀਜਨ %u, ਕਾਂਡ %u"
+
+#~ msgid "Previous"
+#~ msgstr "ਪਿੱਛੇ"
+
+#~ msgid "Next"
+#~ msgstr "ਅੱਗੇ"
+
+#~ msgid "Media"
+#~ msgstr "ਮੀਡਿਆ"
+
+#~ msgid "Search"
+#~ msgstr "ਖੋਜ"
+
+#~ msgid "Season %d Episode %d"
+#~ msgstr "ਸ਼ੀਜਨ %d ਕਾਂਡ %d"
+
+#~ msgid "Season %d"
+#~ msgstr "ਸੀਜ਼ਨ %d"
+
+#~ msgid "Episode %d"
+#~ msgstr "ਕਾਂਡ %d"
+
+#~ msgid "Year %d"
+#~ msgstr "ਸਾਲ %d"
+
+#~ msgid "media"
+#~ msgstr "ਮੀਡਿਆ"
+
+#~ msgid "Favourite Applications"
+#~ msgstr "ਪਸੰਦੀਦਾ ਐਪਲੀਕੇਸ਼ਨ"
+
+#~ msgid "Applications"
+#~ msgstr "ਐਪਲੀਕੇਸ਼ਨ"
+
+#~ msgid "applications"
+#~ msgstr "ਐਪਲੀਕੇਸ਼ਨ"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਪਹਿਲਾਂ"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "ਕੁਝ ਕੁ ਮਿੰਟ ਪਹਿਲਾਂ"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "ਕੁਝ ਘੰਟੇ ਪਹਿਲਾਂ"
+
+#~ msgid "Earlier today"
+#~ msgstr "ਅੱਜ ਤੜਕੇ"
+
+#~ msgid "Yesterday"
+#~ msgstr "ਕੱਲ੍ਹ"
+
+#~ msgid "On %A"
+#~ msgstr "%A ਉੱਤੇ"
+
+#~ msgid "Unknown"
+#~ msgstr "ਅਣਜਾਣ"
+
+#~ msgid "Last week"
+#~ msgstr "ਪਿਛਲੇ ਹਫ਼ਤੇ"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "ਕੁਝ ਹਫ਼ਤੇ ਪਹਿਲਾਂ"
+
+#~ msgid "This month"
+#~ msgstr "ਇਹ ਮਹੀਨੇ"
+
+#~ msgid "Last month"
+#~ msgstr "ਪਿਛਲੇ ਮਹੀਨੇ"
+
+#~ msgid "This year"
+#~ msgstr "ਇਹ ਸਾਲ"
+
+#~ msgid "Last year"
+#~ msgstr "ਪਿਛਲੇ ਸਾਲ"
+
+#~ msgid "Ages ago"
+#~ msgstr "ਕਈ ਸਾਲ ਪਹਿਲਾਂ"
+
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "ਜਦੋਂ ਤੁਸੀਂ ਵੈੱਬ ਪੇਜ਼ ਖੋਲ੍ਹਦੇ ਹੋ, ਤੁਹਾਡੇ ਪਸੰਦੀਦਾ (favorites) ਇੱਥੇ ਬਰਾਊਜ਼ਰ ਦੇ ਨਵੀਂ ਟੈਬ ਪੇਜ਼ ਉੱਤੇ "
+#~ "ਵੇਖਾਈ ਦੇਣਗੇ।"
+
+#~ msgid "Untitled"
+#~ msgstr "ਬਿਨ-ਟਾਈਟਲ"
+
+#~ msgid "New tab"
+#~ msgstr "ਨਵੀਂ ਟੈਬ"
+
+#~ msgid "Internet"
+#~ msgstr "ਇੰਟਰਨੈੱਟ"
+
+#~ msgid "Go"
+#~ msgstr "ਜਾਓ"
+
+#~ msgid "Tabs"
+#~ msgstr "ਟੈਬਾਂ"
+
+#~ msgid "Favorite pages"
+#~ msgstr "ਪਸੰਦੀਦਾ ਪੇਜ਼"
+
+#~ msgid "internet"
+#~ msgstr "ਇੰਟਰਨੈੱਟ"
+
+#~ msgid "Search for %%s on %s"
+#~ msgstr "%%s ਲਈ %s ਉੱਤੇ ਖੋਜ"
+
+#~ msgid "Go to %s"
+#~ msgstr "%s ਉੱਤੇ ਜਾਓ"
+
+#~ msgid "Copy"
+#~ msgstr "ਕਾਪੀ ਕਰੋ"
+
+#~ msgid "the current selection to pasteboard"
+#~ msgstr "ਮੌਜੂਦਾ ਚੋਣ ਨੂੰ ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ"
+
+#~ msgid "your selection"
+#~ msgstr "ਤੁਹਾਡੀ ਚੋਣ"
+
+#~ msgid "Pasteboard"
+#~ msgstr "ਪੇਸਟਬੋਰਡ"
+
+#~ msgid "You need to copy some text to use Pasteboard"
+#~ msgstr "ਤੁਹਾਨੂੰ ਪੇਸਟਬੋਰਡ ਵਰਤਣ ਲਈ ਕੁਝ ਟੈਕਸਟ ਕਾਪੀ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"
+
+#~ msgid "Clear pasteboard"
+#~ msgstr "ਪੇਸਟਬੋਰਡ ਸਾਫ਼ ਕਰੋ"
+
+#~ msgid "pasteboard"
+#~ msgstr "ਪੇਸਟਬੋਰਡ"
+
+#~ msgid "<b>Appointments</b>"
+#~ msgstr "<b>ਮੁਲਾਕਾਤ</b>"
+
+#~ msgid "No calendar entries this week"
+#~ msgstr "ਇਸ ਹਫ਼ਤੇ ਲਈ ਕੋਈ ਕੈਲੰਡਰ ਐਂਟਰੀ ਨਹੀਂ"
+
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "ਤੁਹਾਡੇ ਦੋਸਤਾਂ ਦੀ ਫੀਡ ਅਤੇ ਵੈੱਬ ਸਰਵਿਸਾਂ ਇੱਥੇ ਵੇਖਾਈ ਦੇਣਗੀਆਂ। ਆਪਣੇ ਅਕਾਊਂਟ ਹੁਣੇ ਐਕਟੀਵੇਟ ਕਰੋ!"
+
+#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+#~ msgstr "<b>ਨੈੱਟਬੁੱਕ ਲਈ ਮੋਬਲਿਨ ੨.੦ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ</b>"
+
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "ਮੋਬਲਿਨ ਹੋਰ ਕੰਪਿਊਟਰ ਤੋਂ ਕੁਝ ਅੱਡ ਹੈ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਮ ਕਰਨ ਲਈ ਮੱਦਦਗਾਰ ਹੋਣ ਵਾਸਤੇ ਬਹੁਤ ਕੁਝ "
+#~ "ਇੱਕਠਾ ਕੀਤਾ ਹੈ। ਅਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹਾਂ ਕਿ ਤੁਸੀਂ ਇਸ ਨਾਲ ਮੌਜਾਂ ਮਾਣੋਗੇ, ਮੋਬਲਿਨ ਟੀਮ"
+
+#~ msgid "Web page"
+#~ msgstr "ਵੈੱਬ ਪੇਜ਼"
+
+#~ msgid "Nothing to do today"
+#~ msgstr "ਅੱਜ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ"
+
+#~ msgid "Due %x"
+#~ msgstr "%x ਨੂੰ ਦੇਣਾ"
+
+#~ msgid "people"
+#~ msgstr "ਲੋਕ"
+
+#~ msgid "Send an email"
+#~ msgstr "ਈਮੇਲ ਭੇਜੋ"
+
+#~ msgid "Edit details"
+#~ msgstr "ਵੇਰਵਾ ਸੋਧ"
+
+#~ msgid "Send a message"
+#~ msgstr "ਸੁਨੇਹਾ ਭੇਜੋ"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਲੋਕ ਨਹੀਂ ਲੱਭ ਸਕੇ ਹਾਂ। ਤੁਸੀਂ ਤੁਸੀਂ ਮੈਸੈਂਜ਼ਰ ਅਕਾਊਂਟ ਸੈਟਅੱਪ ਕੀਤਾ ਹੈ?"
+
+#~ msgid "People"
+#~ msgstr "ਲੋਕ"
+
+#~ msgid "Selection"
+#~ msgstr "ਚੋਣ"
+
+#~ msgid "Nobody selected"
+#~ msgstr "ਕੋਈ ਨਹੀਂ ਚੁਣਿਆ"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਪਰਭਾਵ"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਲਈ ਪਰਭਾਵ"
+
+#~ msgid "Zone %d"
+#~ msgstr "ਜ਼ੋਨ %d"
+
+#~ msgid "Choose zone for application:"
+#~ msgstr "ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਜ਼ੋਨ ਚੁਣੋ:"
+
+#~ msgid "Dismiss"
+#~ msgstr "ਅਣਡਿੱਠਾ"
+
+#~ msgid "Dismiss All"
+#~ msgstr "ਸਭ ਅਣਡਿੱਠੇ"
+
+#~ msgid "No Zones yet"
+#~ msgstr "ਕੋਈ ਜ਼ੋਨ ਹਾਲੇ ਨਹੀਂ ਚੁਣਿਆ"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organise them to your heart's content."
+#~ msgstr ""
+#~ "ਐਪਲੀਕੇਸ਼ਨ, ਜੋ ਤੁਸੀਂ ਵਰਤ ਰਹੇ ਹੋ, ਇੱਥੇ ਵੇਖ ਸਕੋਗੇ। ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਵੇਖ ਅਤੇ ਬਦਲ ਸਕੋਗੇ, ਜਿਵੇਂ ਤੁਹਾਡਾ "
+#~ "ਦਿਲ ਕਰੇ।"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e %B %Y"
+
+#~ msgid "power & brightness"
+#~ msgstr "ਪਾਵਰ ਅਤੇ ਚਮਕ"
+
+#~ msgid "volume"
+#~ msgstr "ਆਵਾਜ਼"
+
+#~ msgid "bluetooth"
+#~ msgstr "ਬਲਿਊਟੁੱਥ"
+
+#~ msgid "networks"
+#~ msgstr "ਨੈੱਟਵਰਕ"
+
+#~ msgid "test"
+#~ msgstr "ਟੈਸਟ"
+
+#~ msgid "To activate the toolbar, move your cursor to the top of the screen"
+#~ msgstr "ਟੂਲਬਾਰ ਐਕਟੀਵੇਟ ਕਰਨ ਵਾਸਤੇ ਆਪਣੇ ਕਰਸਰ ਨੂੰ ਸਕਰੀਨ ਦੇ ਉੱਤੇ ਲੈ ਕੇ ਜਾਉ"
+
+#~ msgid "Offline"
+#~ msgstr "ਆਫਲਾਈਨ"
+
+#~ msgid "Available"
+#~ msgstr "ਉਪਲੱਬਧ"
+
+#~ msgid "Away"
+#~ msgstr "ਦੂਰ"
+
+#~ msgid "Busy"
+#~ msgstr "ਰੁਝੇ"
+
+#~ msgid "Close"
+#~ msgstr "ਬੰਦ ਕਰੋ"
+
+#~ msgid "Change"
+#~ msgstr "ਬਦਲੋ"
+
+#~ msgid "Unknown account"
+#~ msgstr "ਅਣਜਾਣ ਅਕਾਊਂਟ"
+
+#~ msgid "Edit"
+#~ msgstr "ਸੋਧ"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "ਆਪਣੀ %s ਹਾਲਤ ਇੱਥੇ ਦਿਓ..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "ਆਪਣੀ ਮੌਜੂਦਾ ਹਾਲਤ ਏਥੇ ਦਿਓ..."
+
+#~ msgid "Post"
+#~ msgstr "ਪੋਸਟ"
+
+#~ msgid "Your current status"
+#~ msgstr "ਆਪਣੀ ਮੌਜੂਦਾ ਹਾਲਤ"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "ਆਪਣੀ ਮੌਜੂਦਾ ਹਾਲਤ - ਤੁਸੀਂ ਆਫਲਾਈਨ ਹੋ"
+
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "ਤੁਹਾਡੀ ਵੈੱਬ ਹਾਲਤ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ ਲਈ ਤੁਹਾਨੂੰ ਇੱਕ ਵੈੱਬ ਸਰਵਿਸ ਅਕਾਊਂਟ ਇੱਕ ਪਰੋਵਾਇਡਰ ਨਾਲ ਸੈੱਟਅੱਪ "
+#~ "ਕਰਨ ਦੀ ਲੋੜ ਹੈ, ਜੋ ਕਿ ਹਾਲਤ ਸੁਨੇਹੇ ਅੱਪਡੇਟ ਲਈ ਸਹਾਇਕ ਹੈ।"
+
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "ਤੁਹਾਡੇ IM ਹਾਲਤ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ ਵਾਸਤੇ, ਤੁਹਾਨੂੰ ਤੁਰੰਤ ਮੈਸੈਜ਼ਿੰਗ ਅਕਾਊਂਟ ਸੈੱਟਅੱਪ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"
+
+#~ msgid "status"
+#~ msgstr "ਹਾਲਤ"

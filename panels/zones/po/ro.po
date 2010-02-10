@@ -1,0 +1,151 @@
+# Romanian translations for mutter-moblin package.
+# Copyright (C) 2009 The mutter-moblin copyright holder
+# This file is distributed under the same license as the mutter-moblin package.
+# Cosmin Bordeianu <elloxar@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-09-14 14:18+0200\n"
+"Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
+"Language-Team: Moblin Romania <live@moblin.ro>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Romanian\n"
+"X-Poedit-Country: ROMANIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zone"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Nici o aplicație în această zonă"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zone"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zone"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Mai puțin de un minut"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Acum câteva minute"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Acum câteva ore"
+
+#~ msgid "Earlier today"
+#~ msgstr "Mai devreme"
+
+#~ msgid "Yesterday"
+#~ msgstr "Ieri"
+
+#~ msgid "On %A"
+#~ msgstr "Pe %A"
+
+#~ msgid "Unknown"
+#~ msgstr "Necunoscut"
+
+#~ msgid "Last week"
+#~ msgstr "Săptămâna trecută"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Acum câteva săptămâni"
+
+#~ msgid "This month"
+#~ msgstr "Luna aceasta"
+
+#~ msgid "Last month"
+#~ msgstr "Luna trecută"
+
+#~ msgid "This year"
+#~ msgstr "Anul acesta"
+
+#~ msgid "Last year"
+#~ msgstr "Anul trecut"
+
+#~ msgid "Ages ago"
+#~ msgstr "Mai demult"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Efectele Netbook-ului Moblin"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Efecte pentru Netbook-uri Moblin"
+
+#~ msgid "Dismiss"
+#~ msgstr "Înlăturaţi"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Înlăturaţi Totul"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%H:%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e %B %Y"
+
+#~ msgid "power & brightness"
+#~ msgstr "putere & luminozitate"
+
+#~ msgid "volume"
+#~ msgstr "volum"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "rețele"
+
+#~ msgid "test"
+#~ msgstr "test"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Nici o zonă încă"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Aplicațiile folosite vor fi afişate aici. Veți putea să le modificați şi "
+#~ "să le organizați dupa pofta inimii."

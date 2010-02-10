@@ -1,3 +1,6 @@
+
+#include <config.h>
+
 #include <mx/mx.h>
 
 #define WNCK_I_KNOW_THIS_IS_UNSTABLE
@@ -15,6 +18,7 @@
 #include "penge-magic-texture.h"
 
 #include <glib/gi18n.h>
+#include <locale.h>
 
 #include <gconf/gconf-client.h>
 
@@ -416,6 +420,13 @@ main (int argc, char **argv)
   GError *error = NULL;
 
   ZonePanelData *data;
+
+
+  setlocale (LC_ALL, "");
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+
 
   data = g_new0 (ZonePanelData, 1);
 

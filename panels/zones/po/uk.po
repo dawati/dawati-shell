@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Roman Tuz <tuzr@yandex.ru>, 2009.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "зони"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Немає програм в цій зоні"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "зони"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "зони"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Ефекти Moblin Netbook"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Ефекти для Moblin Netbooks"
+
+#~ msgid "Dismiss"
+#~ msgstr "Відхилити"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Відхилити все"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%B %e, %Y"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Ще немає зон"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Програми, що ви їх використовуєте, показані тут. Ви можете "
+#~ "переключатисьміж ними, організовувати на свій смак."

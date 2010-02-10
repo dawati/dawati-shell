@@ -1,0 +1,387 @@
+# Chinese translations for mutter-moblin package
+# mutter-moblin 软件包的简体中文翻译.
+# Copyright Intel (C) 2009
+# This file is distributed under the same license as the mutter-moblin package.
+# Li Jian <jian.li@turbolinux.com.cn>, 2009.
+# Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.27.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-10-13 12:25-0800\n"
+"Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
+"Language-Team: Chinese (simplified)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "新区 (0)"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "本区没有应用程序"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "打开的程序"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "打开的程序"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Moblin Netbook 特效"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Moblin Netbook 特效"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%P %l:%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%Y年%b%e日"
+
+#~ msgid "Dismiss"
+#~ msgstr "忽略"
+
+#~ msgid "Dismiss All"
+#~ msgstr "忽略所有"
+
+#~ msgid "No Zones yet"
+#~ msgstr "尚无区域"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "当前正在运行的程序会显示在这里。您可以在它们之间切换, 还可以按照您自己的方"
+#~ "式去组织它们。"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "一分钟内"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "几分钟前"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "两小时前"
+
+#~ msgid "Earlier today"
+#~ msgstr "更早时候"
+
+#~ msgid "Yesterday"
+#~ msgstr "昨天"
+
+#~ msgid "On %A"
+#~ msgstr "在 %A"
+
+#~ msgid "Unknown"
+#~ msgstr "未知"
+
+#~ msgid "Last week"
+#~ msgstr "上周"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "两周前"
+
+#~ msgid "This month"
+#~ msgstr "本月"
+
+#~ msgid "Last month"
+#~ msgstr "上月"
+
+#~ msgid "This year"
+#~ msgstr "今年"
+
+#~ msgid "Last year"
+#~ msgstr "去年"
+
+#~ msgid "Ages ago"
+#~ msgstr "几年前"
+
+#~ msgid "power & brightness"
+#~ msgstr "电源和屏幕亮度"
+
+#~ msgid "volume"
+#~ msgstr "音量"
+
+#~ msgid "bluetooth"
+#~ msgstr "蓝牙"
+
+#~ msgid "networks"
+#~ msgstr "网络"
+
+#~ msgid "test"
+#~ msgstr "测试"
+
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "这里会显示您播放过的音乐，视频和浏览过的图片。现在，您可以浏览一些媒体样"
+#~ "本："
+
+#~ msgid "Recently played"
+#~ msgstr "最近播放"
+
+#~ msgid "Search results"
+#~ msgstr "搜索结果"
+
+#~ msgid "Playqueue"
+#~ msgstr "播放队列"
+
+#~ msgid "Season %u, Episode %u"
+#~ msgstr "%u 季 %u 集"
+
+#~ msgid "Previous"
+#~ msgstr "上一个"
+
+#~ msgid "Next"
+#~ msgstr "下一个"
+
+#~ msgid "Media"
+#~ msgstr "多媒体"
+
+#~ msgid "Search"
+#~ msgstr "搜索"
+
+#~ msgid "Season %d Episode %d"
+#~ msgstr "%d 季 %d 集"
+
+#~ msgid "Season %d"
+#~ msgstr "%d 季"
+
+#~ msgid "Episode %d"
+#~ msgstr "%d 集"
+
+#~ msgid "Year %d"
+#~ msgstr "%d 年"
+
+#~ msgid "media"
+#~ msgstr "多媒体"
+
+#~ msgid "Favourite Applications"
+#~ msgstr "常用程序"
+
+#~ msgid "Applications"
+#~ msgstr "应用程序"
+
+#~ msgid "applications"
+#~ msgstr "应用程序"
+
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显"
+#~ "示"
+
+#~ msgid "Untitled"
+#~ msgstr "无标题"
+
+#~ msgid "New tab"
+#~ msgstr "新标签"
+
+#~ msgid "Internet"
+#~ msgstr "互联网"
+
+#~ msgid "Go"
+#~ msgstr "出发"
+
+#~ msgid "Tabs"
+#~ msgstr "标签"
+
+#~ msgid "Favorite pages"
+#~ msgstr "常用页面"
+
+#~ msgid "internet"
+#~ msgstr "互联网"
+
+#~ msgid "Search for %%s on %s"
+#~ msgstr "搜索 %%s（在 %s 上）"
+
+#~ msgid "Go to %s"
+#~ msgstr "去 %s.com"
+
+#~ msgid "Copy"
+#~ msgstr "拷贝"
+
+#~ msgid "the current selection to pasteboard"
+#~ msgstr "粘贴板中当前选取的内容"
+
+#~ msgid "your selection"
+#~ msgstr "您的选择"
+
+#~ msgid "Pasteboard"
+#~ msgstr "粘贴板"
+
+#~ msgid "You need to copy some text to use Pasteboard"
+#~ msgstr "您要先复制一些文字才能使用粘贴板"
+
+#~ msgid "Clear pasteboard"
+#~ msgstr "清空粘贴板"
+
+#~ msgid "pasteboard"
+#~ msgstr "粘贴板"
+
+#~ msgid "<b>Appointments</b>"
+#~ msgstr "<b>我的日程安排</b>"
+
+#~ msgid "No calendar entries this week"
+#~ msgstr "本周无日程安排"
+
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr "您朋友的最新情况会在这里显示。现在就开始配置您的账户吧！"
+
+#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+#~ msgstr "<b>欢迎使用 Moblin 2.0 系统</b>"
+
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 "
+#~ "Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
+
+#~ msgid "Web page"
+#~ msgstr "网页"
+
+#~ msgid "Nothing to do today"
+#~ msgstr "今天没有安排"
+
+#~ msgid "Due %x"
+#~ msgstr "%x 到期"
+
+#~ msgid "people"
+#~ msgstr "好友"
+
+#~ msgid "Send an email"
+#~ msgstr "发送一封邮件"
+
+#~ msgid "Edit details"
+#~ msgstr "编写详细信息"
+
+#~ msgid "Send a message"
+#~ msgstr "发送一条消息"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "抱歉，我不能找到任何好友。请确认您已经建立好一个聊天账户？"
+
+#~ msgid "People"
+#~ msgstr "好友"
+
+#~ msgid "Selection"
+#~ msgstr "选择"
+
+#~ msgid "Nobody selected"
+#~ msgstr "没有选择任何人"
+
+#~ msgid "Zone %d"
+#~ msgstr "%d 区"
+
+#~ msgid "Choose zone for application:"
+#~ msgstr "为程序选择一个区域"
+
+#~ msgid "To activate the toolbar, move your cursor to the top of the screen"
+#~ msgstr "移动鼠标到屏幕顶部可以弹出工具栏"
+
+#~ msgid "Offline"
+#~ msgstr "离线"
+
+#~ msgid "Available"
+#~ msgstr "可用"
+
+#~ msgid "Away"
+#~ msgstr "离开"
+
+#~ msgid "Busy"
+#~ msgstr "忙碌"
+
+#~ msgid "Close"
+#~ msgstr "关闭"
+
+#~ msgid "Change"
+#~ msgstr "修改"
+
+#~ msgid "Unknown account"
+#~ msgstr "未知账户"
+
+#~ msgid "Edit"
+#~ msgstr "编辑"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "在这里输入您的 %s 状态 ..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "在这里输入您的当前状态 ..."
+
+#~ msgid "Post"
+#~ msgstr "发送"
+
+#~ msgid "Your current status"
+#~ msgstr "您当前状态"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "当前状态 - 离线"
+
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状"
+#~ "态信息。"
+
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "要更新您的即时通讯状态，需要先建立一个即时通讯账户"
+
+#~ msgid "status"
+#~ msgstr "状态"
+
+#~ msgid "myzone"
+#~ msgstr "首页"
+
+#~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
+#~ msgstr "工作区大小需要 (%i x %i)，重新调整到 (%i x %i)"
+
+#~ msgid "Local"
+#~ msgstr "本机"

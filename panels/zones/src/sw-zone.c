@@ -23,6 +23,8 @@
 #include "sw-window.h"
 #include <mx/mx.h>
 
+#include <glib/gi18n.h>
+
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 static void mx_droppable_iface_init (MxDroppableIface *iface);
 
@@ -758,7 +760,7 @@ sw_zone_init (SwZone *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
-  self->priv->title = mx_label_new ("new zone");
+  self->priv->title = mx_label_new (_("new zone"));
   mx_label_set_x_align (MX_LABEL (self->priv->title), MX_ALIGN_MIDDLE);
   mx_label_set_y_align (MX_LABEL (self->priv->title), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (self->priv->title), "zone-title");
@@ -772,7 +774,7 @@ sw_zone_init (SwZone *self)
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (sw_zone_style_changed_cb), NULL);
 
-  self->priv->label = mx_label_new ("No applications on this zone");
+  self->priv->label = mx_label_new (_("No applications on this zone"));
   mx_stylable_set_style_class (MX_STYLABLE (self->priv->label),
                                "no-apps-label");
   clutter_actor_set_parent (self->priv->label, CLUTTER_ACTOR (self));
@@ -900,35 +902,35 @@ sw_zone_set_number (SwZone *zone,
   switch (number)
     {
   case 1:
-    mx_label_set_text (MX_LABEL (zone->priv->title), "one");
+    mx_label_set_text (MX_LABEL (zone->priv->title), _("one"));
     break;
 
   case 2:
-    mx_label_set_text (MX_LABEL (zone->priv->title), "two");
+    mx_label_set_text (MX_LABEL (zone->priv->title), _("two"));
     break;
 
   case 3:
-    mx_label_set_text (MX_LABEL (zone->priv->title), "three");
+    mx_label_set_text (MX_LABEL (zone->priv->title), _("three"));
     break;
 
   case 4:
-    mx_label_set_text (MX_LABEL (zone->priv->title), "four");
+    mx_label_set_text (MX_LABEL (zone->priv->title), _("four"));
     break;
 
   case 5:
-    mx_label_set_text (MX_LABEL (zone->priv->title), "five");
+    mx_label_set_text (MX_LABEL (zone->priv->title), _("five"));
     break;
 
   case 6:
-    mx_label_set_text (MX_LABEL (zone->priv->title), "six");
+    mx_label_set_text (MX_LABEL (zone->priv->title), _("six"));
     break;
 
   case 7:
-    mx_label_set_text (MX_LABEL (zone->priv->title), "seven");
+    mx_label_set_text (MX_LABEL (zone->priv->title), _("seven"));
     break;
 
   case 8:
-    mx_label_set_text (MX_LABEL (zone->priv->title), "eight");
+    mx_label_set_text (MX_LABEL (zone->priv->title), _("eight"));
     break;
     }
 }

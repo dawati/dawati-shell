@@ -1,0 +1,147 @@
+# Mutter Catalan translation.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the Mutter package.
+# Gil Forcada <gilforcada@guifi.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mutter 2.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-08-21 14:54+0200\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zones"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "No hi ha aplicacions en aquesta zona"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zones"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zones"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Fa menys d'un minut"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Fa uns minuts"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Fa unes hores"
+
+#~ msgid "Earlier today"
+#~ msgstr "Avui"
+
+#~ msgid "Yesterday"
+#~ msgstr "Ahir"
+
+#~ msgid "On %A"
+#~ msgstr "El %A"
+
+#~ msgid "Unknown"
+#~ msgstr "Desconegut"
+
+#~ msgid "Last week"
+#~ msgstr "La setmana passada"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Fa un parell de setmanes"
+
+#~ msgid "This month"
+#~ msgstr "Aquest mes"
+
+#~ msgid "Last month"
+#~ msgstr "El mes passat"
+
+#~ msgid "This year"
+#~ msgstr "Aquest any"
+
+#~ msgid "Last year"
+#~ msgstr "L'any passat"
+
+#~ msgid "Ages ago"
+#~ msgstr "Fa milers d'anys"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Efectes del Moblin"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Efectes per als mini-portàtils Moblin"
+
+#~ msgid "Dismiss"
+#~ msgstr "Descarta"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Descarta-ho tot"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Encara no hi ha cap zona"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i "
+#~ "organitzar-les com més us agradi."
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%H:%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e de %B de %Y"
+
+#~ msgid "power & brightness"
+#~ msgstr "energia i brillantor"
+
+#~ msgid "volume"
+#~ msgstr "volum"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "xarxes"
+
+#~ msgid "test"
+#~ msgstr "test"

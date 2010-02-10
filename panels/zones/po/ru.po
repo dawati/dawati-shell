@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2010-01-20 23:31-0800\n"
+"Last-Translator: Geoff Gustafson <geoff@linux.intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "зоны"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Нет программ в этой зоне."
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "зоны"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "зоны"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Эффекты Moblin Netbook"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Эффекты для Moblin Netbooks"
+
+#~ msgid "Activate"
+#~ msgstr "Активировать"
+
+#~ msgid "Unknown window"
+#~ msgstr "Неизвестное окно"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "Просит обратить внимание."
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%B %e, %Y"
+
+#~ msgid "Dismiss"
+#~ msgstr "Пропустить"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Пропустить"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Нет зон"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Программы, которые будут использоваться, появятся здесь.  Вы сможете "
+#~ "переключать и упорядочить их."

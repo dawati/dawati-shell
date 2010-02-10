@@ -1,0 +1,100 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Xosé <xosecalvo@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-10-14 21:13+0200\n"
+"Last-Translator: Xosé <xosecalvo@gmail.com>\n"
+"Language-Team: Galego <proxecto@trasno.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zonas"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Non hai aplicacións nesta zona"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zonas"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zonas"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Efectos de Moblin Netbook"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Efectos para os netbooks Moblin"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%H.%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e de %B de %Y"
+
+#~ msgid "Dismiss"
+#~ msgstr "Esquecer"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Esquecelo todo"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Aínda non hai zonas"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Os aplicativos que estea a utilizar aparecen aquí. Pode alternar entre "
+#~ "elas e organizalas como lle pete."
+
+#~ msgid "Unknown window"
+#~ msgstr "Xanela descoñecida"
+
+#~ msgid "Activate"
+#~ msgstr "Activar"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "Está a chamar pola súa atención"

@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-10-13 22:40+0100\n"
+"Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zonak"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Aplikaziorik ez zona honetan"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zonak"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zonak"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Moblin Netbook Efektuak"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Moblin Netbook-entzako Efektuak"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%Y %B %e"
+
+#~ msgid "Dismiss"
+#~ msgstr "Arbuiatu"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Guztiak Arbuiatu"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Zonarik Ez oraindik"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Darabiltzazun aplikazioak agertuko dira hemen. Nahi duzun bezala antolatu "
+#~ "ditzakezu."

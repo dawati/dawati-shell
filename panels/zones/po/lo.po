@@ -1,0 +1,231 @@
+# translation of lo.po to Lao
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Anousak Souphavanh <anousak@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: lo\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-08-05 13:54+0700\n"
+"Last-Translator: Anousak Souphavanh <anousak@gmail.com>\n"
+"Language-Team: Lao <lo@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "ເຂດໃຫມ່ (0)"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr ""
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "ເຂດ"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "ເຂດ"
+
+#~ msgid "Search results"
+#~ msgstr "ຜົນການຊອກຫາ"
+
+#~ msgid "Playqueue"
+#~ msgstr "ຄິວຫລີ້ນ"
+
+#~ msgid "Previous"
+#~ msgstr "ພ່ານມາ"
+
+#~ msgid "Next"
+#~ msgstr "ຕໍ່ໄປ"
+
+#~ msgid "Search"
+#~ msgstr "ຊອກຫາ"
+
+#~ msgid "Year %d"
+#~ msgstr "ປີ %d"
+
+#~ msgid "Applications"
+#~ msgstr "ໂປຣເເກຣມ"
+
+#~ msgid "applications"
+#~ msgstr "ໂປຣເເກຣມ"
+
+#~ msgid "Untitled"
+#~ msgstr "ບໍ່ມີຊື່"
+
+#~ msgid "New tab"
+#~ msgstr "ເເທບໃຫມ່"
+
+#~ msgid "Internet"
+#~ msgstr "ອີນເຕີເເນດທ໌"
+
+#~ msgid "Go"
+#~ msgstr "ໄປ"
+
+#~ msgid "Tabs"
+#~ msgstr "ເເທບ"
+
+#~ msgid "internet"
+#~ msgstr "ອີນເຕີເເນດທ໌"
+
+#~ msgid "Search for %%s on %s"
+#~ msgstr "ຊອກຫາສະເພາະ %%s ໃນ %s"
+
+#~ msgid "Go to %s"
+#~ msgstr "ໄປຫາ %s"
+
+#~ msgid "Copy"
+#~ msgstr "ສໍາເນົາ"
+
+#~ msgid "your selection"
+#~ msgstr "ການເລືອກຂອງເຈົ້າ"
+
+#~ msgid "Pasteboard"
+#~ msgstr "ເເຜ່ນວ່າງ"
+
+#~ msgid "Clear pasteboard"
+#~ msgstr "ລົບລ້າງ ເເຜ່ນວ່າງ"
+
+#~ msgid "pasteboard"
+#~ msgstr "ເເຜ່ນວ່າງ"
+
+#~ msgid "<b>Appointments</b>"
+#~ msgstr "<b>ການນັດຫມາຍ</b>"
+
+#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+#~ msgstr "<b>ຍິນດີຕ້ອຍຮັບ ເຂົ້າສູ່ລະບົບ ມອບລີນ ລຸ້ນ 2.0 ຂອງ ເເນດບຸກ</b>"
+
+#~ msgid "Web page"
+#~ msgstr "ຫນ້າເວບ"
+
+#~ msgid "Due %x"
+#~ msgstr " %x"
+
+#~ msgid "Earlier today"
+#~ msgstr "ເຊົ້າມື່ນີ້"
+
+#~ msgid "Yesterday"
+#~ msgstr "ມື້ວານນີ້"
+
+#~ msgid "On %A"
+#~ msgstr "ໃນ %A"
+
+#~ msgid "Unknown"
+#~ msgstr "ບໍ່ຮູ້"
+
+#~ msgid "Last week"
+#~ msgstr "ອາທິດພານມາ"
+
+#~ msgid "This month"
+#~ msgstr "ເດືອນນີ້"
+
+#~ msgid "Last month"
+#~ msgstr "ເດືອນກ່ອນ"
+
+#~ msgid "This year"
+#~ msgstr "ປີນີ້"
+
+#~ msgid "Last year"
+#~ msgstr "ປີກອນ"
+
+#~ msgid "people"
+#~ msgstr "ຄົນ"
+
+#~ msgid "Send an email"
+#~ msgstr "ສົ່ງຈົດຫມາຍ"
+
+#~ msgid "Edit details"
+#~ msgstr "ດັດເເກ້ ລາຍລະອຽດ"
+
+#~ msgid "Send a message"
+#~ msgstr "ສົ່ງຂໍ້ຄວາມ"
+
+#~ msgid "People"
+#~ msgstr "ຄົນ"
+
+#~ msgid "Selection"
+#~ msgstr "ການເລືອກ"
+
+#~ msgid "Nobody selected"
+#~ msgstr "ບໍ່ໃດ້ເລືອກໃຜ"
+
+#~ msgid "Zone %d"
+#~ msgstr "ເຂດ %d"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%B %e, %Y"
+
+#~ msgid "networks"
+#~ msgstr "ເຄື່ອຂ່າຍ"
+
+#~ msgid "test"
+#~ msgstr "ທົດລອງ"
+
+#~ msgid "Offline"
+#~ msgstr "ບໍ່ເສີ່ມສາຍ (offline)"
+
+#~ msgid "Available"
+#~ msgstr "ຍັ່ງວ່າງ"
+
+#~ msgid "Busy"
+#~ msgstr "ຍັ່ງວ່າງ"
+
+#~ msgid "Close"
+#~ msgstr "ປິດ"
+
+#~ msgid "Change"
+#~ msgstr "ປ່ຽນ"
+
+#~ msgid "Edit"
+#~ msgstr "ເເກ້ໃຂ"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "ປ້ອນສະຖານະພາບ %s ຂອງເຈົ້າ ບ່ອນນີ້..."
+
+#~ msgid "Your current status"
+#~ msgstr "ສະຖານະພາບຂອງເຈົ້າ ປະຈຸບັນ"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "ສະຖານະພາບຂອງເຈົ້າ ປະຈຸບັນ - ເຈົ້າບໍ່ເຊີ່ມສາຍ (offline)"
+
+#~ msgid "status"
+#~ msgstr "ສະຖານະພາບ"

@@ -1,0 +1,410 @@
+# Italian translations for mutter-moblin package.
+# Copyright (C) 2009 mutter-moblin's copyright holder.
+# This file is distributed under the same license as the mutter-moblin package.
+# Milo Casagrande <milo@ubuntu.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-12-11 19:55+0100\n"
+"Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
+"Language-Team: Italian <tp@lists.linux.it>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Italian\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "Nuova zona (0)"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Nessuna applicazione in questa zona"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zone"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zone"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Effetti Moblin netbook"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Effetti per i netbook Moblin"
+
+#~ msgid "Activate"
+#~ msgstr "Attiva"
+
+#~ msgid "Unknown window"
+#~ msgstr "Finestra sconosciuta"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "Richiede l'attenzione."
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%H.%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e %B %Y"
+
+#~ msgid "Dismiss"
+#~ msgstr "Ignora"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Ignora tutto"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Zone non definite"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Le applicazioni in uso vengono mostrate qui. È possibile passare da "
+#~ "un'applicazione all'altra e organizzarle come meglio si crede."
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Meno di un minuto fa"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Alcuni minuti fa"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Un paio d'ore fa"
+
+#~ msgid "Earlier today"
+#~ msgstr "Oggi"
+
+#~ msgid "Yesterday"
+#~ msgstr "Ieri"
+
+# (ndt) giorno della settimana
+#~ msgid "On %A"
+#~ msgstr "%A"
+
+#~ msgid "Last week"
+#~ msgstr "La scorsa settimana"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Un paio di settimane fa"
+
+#~ msgid "This month"
+#~ msgstr "Questo mese"
+
+#~ msgid "Last month"
+#~ msgstr "Lo scorso mese"
+
+#~ msgid "This year"
+#~ msgstr "Quest'anno"
+
+#~ msgid "Last year"
+#~ msgstr "Lo scorso anno"
+
+#~ msgid "Ages ago"
+#~ msgstr "Anni fa"
+
+#~ msgid "power & brightness"
+#~ msgstr "alimentazione e luminosità"
+
+#~ msgid "volume"
+#~ msgstr "volume"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "reti"
+
+#~ msgid "test"
+#~ msgstr "test"
+
+# (ndt) leggermente libera...
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "La cronologia personale sarà disponibile solo dopo aver ascoltato della "
+#~ "musica, guardato alcune immagini o dei video. Per il momento sono "
+#~ "mostrati alcuni contenuti di esempio:"
+
+#~ msgid "Recently played"
+#~ msgstr "Riprodotti di recente"
+
+#~ msgid "Search results"
+#~ msgstr "Risultati ricerca"
+
+#~ msgid "Playqueue"
+#~ msgstr "Coda di riproduzione"
+
+#~ msgid "Season %u, Episode %u"
+#~ msgstr "Stagione %u, episodio %u"
+
+#~ msgid "Previous"
+#~ msgstr "Precedente"
+
+#~ msgid "Next"
+#~ msgstr "Successivo"
+
+#~ msgid "Media"
+#~ msgstr "Contenuti"
+
+#~ msgid "Search"
+#~ msgstr "Cerca"
+
+#~ msgid "Season %d Episode %d"
+#~ msgstr "Stagione %d episodio %d"
+
+#~ msgid "Season %d"
+#~ msgstr "Stagione %d"
+
+#~ msgid "Episode %d"
+#~ msgstr "Episodio %d"
+
+#~ msgid "Year %d"
+#~ msgstr "Anno %d"
+
+#~ msgid "media"
+#~ msgstr "contenuti"
+
+#~ msgid "Favourite Applications"
+#~ msgstr "Applicazioni preferite"
+
+#~ msgid "Applications"
+#~ msgstr "Applicazioni"
+
+#~ msgid "applications"
+#~ msgstr "applicazioni"
+
+# (ndt) spero che quel New tab sia quello che c'è
+# un paio di stringhe dopo...
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "Visitando delle pagine web, quelle preferite verranno visualizzate qui e "
+#~ "nella pagina «Nuova scheda» del browser."
+
+#~ msgid "Untitled"
+#~ msgstr "Senza nome"
+
+#~ msgid "New tab"
+#~ msgstr "Nuova scheda"
+
+#~ msgid "Internet"
+#~ msgstr "Internet"
+
+#~ msgid "Go"
+#~ msgstr "Vai"
+
+#~ msgid "Tabs"
+#~ msgstr "Schede"
+
+#~ msgid "Favorite pages"
+#~ msgstr "Pagine preferite"
+
+#~ msgid "internet"
+#~ msgstr "internet"
+
+#~ msgid "Search for %%s on %s"
+#~ msgstr "Cerca %%s con %s"
+
+#~ msgid "Go to %s"
+#~ msgstr "Vai a %s"
+
+# (ndt) pulsante
+#~ msgid "Copy"
+#~ msgstr "Copia"
+
+#~ msgid "the current selection to pasteboard"
+#~ msgstr "la selezione corrente negli appunti"
+
+#~ msgid "your selection"
+#~ msgstr "la selezione personale"
+
+#~ msgid "Pasteboard"
+#~ msgstr "Appunti"
+
+#~ msgid "You need to copy some text to use Pasteboard"
+#~ msgstr "È necessario copiare del testo per usare Appunti"
+
+# (ndt) pulsante
+# Changed from Pulisci to Cancella
+#~ msgid "Clear pasteboard"
+#~ msgstr "Cancella appunti"
+
+# (ndt) se io seleziono del testo, faccio Ctrl-C
+# tale testo compare in questa bella applicazione
+#~ msgid "pasteboard"
+#~ msgstr "appunti"
+
+#~ msgid "<b>Appointments</b>"
+#~ msgstr "<b>Appuntamenti</b>"
+
+# shortening truncated string
+#~ msgid "No calendar entries this week"
+#~ msgstr "Questa settimana nessun appuntamento"
+
+# Edited string
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "Una volta attivati gli account personali, qui verranno mostrate le "
+#~ "notizie degli amici e i servizi web."
+
+#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+#~ msgstr "<b>Benvenuti in Moblin 2.0 per netbook</b>"
+
+# Edited translation.
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Poiché Moblin è un po' diverso rispetto agli altri computer, abiamo "
+#~ "raccolto alcune informazioni per aiutare a comprendere al meglio come "
+#~ "usarlo. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
+
+#~ msgid "Web page"
+#~ msgstr "Pagina web"
+
+# Changed word order to match another string that was shortened
+#~ msgid "Nothing to do today"
+#~ msgstr "Oggi nessuna attività"
+
+#~ msgid "Due %x"
+#~ msgstr "In scadenza il %x"
+
+#~ msgid "people"
+#~ msgstr "persone"
+
+#~ msgid "Send an email"
+#~ msgstr "Invia un'email"
+
+#~ msgid "Edit details"
+#~ msgstr "Modifica dettagli"
+
+#~ msgid "Send a message"
+#~ msgstr "Invia un messaggio"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Non è stata trovata alcuna persona. È stato configurato un account di "
+#~ "messaggistica istantanea?"
+
+#~ msgid "People"
+#~ msgstr "Persone"
+
+#~ msgid "Selection"
+#~ msgstr "Selezione"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Nessuno selezionato"
+
+#~ msgid "Zone %d"
+#~ msgstr "Zona %d"
+
+#~ msgid "Choose zone for application:"
+#~ msgstr "Scegliere una zona per l'applicazione:"
+
+#~ msgid "To activate the toolbar, move your cursor to the top of the screen"
+#~ msgstr ""
+#~ "Per attivare la barra degli strumenti, muovere il puntatore verso la "
+#~ "parte superiore dello schermo"
+
+#~ msgid "Offline"
+#~ msgstr "Fuori rete"
+
+#~ msgid "Available"
+#~ msgstr "Disponibile"
+
+#~ msgid "Away"
+#~ msgstr "Assente"
+
+#~ msgid "Busy"
+#~ msgstr "Occupato"
+
+#~ msgid "Close"
+#~ msgstr "Chiudi"
+
+#~ msgid "Change"
+#~ msgstr "Modifica"
+
+#~ msgid "Unknown account"
+#~ msgstr "Account sconosciuto"
+
+#~ msgid "Edit"
+#~ msgstr "Modifica"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "Scrivere qui il proprio stato per %s..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "Scrivere qui il proprio stato..."
+
+#~ msgid "Post"
+#~ msgstr "Pubblica"
+
+# Edited string
+#~ msgid "Your current status"
+#~ msgstr "Stato attuale"
+
+# Edited string
+#~ msgid "Your current status - you are offline"
+#~ msgstr "Stato attuale - fuori rete"
+
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Per aggiornare il proprio stato è necessario configurare un account di un "
+#~ "Servizio web che supporti i messaggi di stato"
+
+# Edited string, was missing IM
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Per aggiornare il proprio stato IM è necessario configurare un account di "
+#~ "messaggistica istantanea"
+
+#~ msgid "status"
+#~ msgstr "stato"

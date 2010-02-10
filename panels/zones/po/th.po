@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2010-01-19 22:00+0700\n"
+"Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
+"Language-Team: Thai <thai-l10n@google.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Thai\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: THAILAND\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "โซน"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "โปรแกรมไม่มีในโซนนี้"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "โซน"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "โซน"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "เอฟเฟกสำหรับ Moblin Netbook"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "เอฟเฟก Moblin Netbook"
+
+#~ msgid "Unknown window"
+#~ msgstr "หน้าต่างไม่ทราบชื่อ"
+
+#~ msgid "Activate"
+#~ msgstr "เปิดใช้งาน"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "คุณสนใจหรือไม่"
+
+#~ msgid "Dismiss"
+#~ msgstr "ละทิ้ง"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%B %e, %Y"
+
+#~ msgid "No Zones yet"
+#~ msgstr "โซนยังไม่มี"
+
+#~ msgid "Dismiss All"
+#~ msgstr "ละทิ้งทั้งหมด "
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr "โปรแกรมที่คุณใช้จะปรากฏขึ้นที่นี่. คุณจะ สามารถเปลี่ยนและจัดให้เนื้อหาตรงใจของคุณได้."

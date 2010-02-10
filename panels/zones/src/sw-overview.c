@@ -22,6 +22,8 @@
 #include "sw-overview.h"
 #include "sw-zone.h"
 
+#include <glib/gi18n.h>
+
 G_DEFINE_TYPE (SwOverview, sw_overview, MX_TYPE_BOX_LAYOUT)
 
 #define OVERVIEW_PRIVATE(o) \
@@ -212,6 +214,12 @@ sw_overview_constructed (GObject *object)
   SwOverviewPrivate *priv = SW_OVERVIEW (object)->priv;
   gint i;
   ClutterActor *zone;
+  gchar *welcome;
+
+
+  welcome = _("Applications you’re using will show up here. You will be"
+              " able to switch and organize them to your heart's"
+              " content.");
 
   g_debug ("Creating a zones panel with %d zones", priv->n_zones);
 

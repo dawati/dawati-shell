@@ -1,0 +1,153 @@
+# Translation of mutter to Indonesian.
+# Copyright (C) 2009
+# This file is distributed under the same license as the PACKAGE package.
+# Andika Triwidada <andika@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-08-26 04:16+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zona"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Tak ada aplikasi pada zona ini"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zona"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zona"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Efek Netbook Moblin"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Efek-efek untuk Netbook Moblin"
+
+# 24 hrs without am/pm for ID
+#~ msgid "%l:%M %P"
+#~ msgstr "%H:%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%d %B %Y"
+
+#~ msgid "Dismiss"
+#~ msgstr "Bubar"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Bubar Semua"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Belum ada zona"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat "
+#~ "menukar dan mengatur mereka sekehendak anda."
+
+#~ msgid "Unknown window"
+#~ msgstr "Jendela tak dikenal"
+
+#~ msgid "Activate"
+#~ msgstr "Aktifkan"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "Meminta perhatian Anda."
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Kurang dari semenit yang lalu"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Beberapa menit yang lalu"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Beberapa jam yang lalu"
+
+#~ msgid "Earlier today"
+#~ msgstr "Hari ini"
+
+#~ msgid "Yesterday"
+#~ msgstr "Kemarin"
+
+#~ msgid "On %A"
+#~ msgstr "Pada %A"
+
+#~ msgid "Last week"
+#~ msgstr "Minggu lalu"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Beberapa minggu yang lalu"
+
+#~ msgid "This month"
+#~ msgstr "Bulan ini"
+
+#~ msgid "Last month"
+#~ msgstr "Bulan lalu"
+
+#~ msgid "This year"
+#~ msgstr "Tahun ini"
+
+#~ msgid "Last year"
+#~ msgstr "Tahun lalu"
+
+#~ msgid "Ages ago"
+#~ msgstr "Telah lama berlalu"
+
+#~ msgid "power & brightness"
+#~ msgstr "daya & kecerahan"
+
+#~ msgid "volume"
+#~ msgstr "keras suara"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "jaringan"
+
+#~ msgid "test"
+#~ msgstr "uji"

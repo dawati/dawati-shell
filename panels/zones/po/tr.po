@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Ceyhun Alyesil <ceyhunalyesil@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "Alanlar"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Bu alanda bir uygulama yok"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "Alanlar"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "Alanlar"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Moblin Netbook Efektleri"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Moblin Netbooklar için Efektler"
+
+#~ msgid "Dismiss"
+#~ msgstr "Bırak"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Hepsini Bırak"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Şuan alan yok"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Kullandığınız uygulamalar burada gösterilecek. Onları istediğiniz gibi "
+#~ "değiştiriporganize edebileceksiniz."
+
+#~ msgid "Unknown window"
+#~ msgstr "Bilinmeyen pencere"
+
+#~ msgid "Activate"
+#~ msgstr "Etkinleştir"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "dikkatinizi çekiyor"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%B %e, %Y"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Bir dakikadan önce"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Bir kaç dakika önce"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Bir kaç saat önce"
+
+#~ msgid "Earlier today"
+#~ msgstr "Bugün erken saatlerde"
+
+#~ msgid "Yesterday"
+#~ msgstr "Dün"
+
+#~ msgid "On %A"
+#~ msgstr "%A da"
+
+#~ msgid "Last week"
+#~ msgstr "Geçen hafta"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Bir kaç hafta önce"
+
+#~ msgid "This month"
+#~ msgstr "Bu ay"
+
+#~ msgid "Last month"
+#~ msgstr "Geçen ay"
+
+#~ msgid "This year"
+#~ msgstr "Bu yıl"
+
+#~ msgid "Last year"
+#~ msgstr "Geçen yıl"
+
+#~ msgid "Ages ago"
+#~ msgstr "Asırlar önce"
+
+#~ msgid "power & brightness"
+#~ msgstr "güç & parlaklık"
+
+#~ msgid "volume"
+#~ msgstr "ses"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "ağlar"
+
+#~ msgid "test"
+#~ msgstr "deneme"

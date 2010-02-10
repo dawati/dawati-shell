@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2010-01-22 10:50+0100\n"
+"Last-Translator: Gergely Lónyai <aleph@mandriva.org>\n"
+"Language-Team: Hungarian <aleph@mandriva.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Hungarian\n"
+"X-Poedit-Country: HUNGARY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "zónák"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Nincs alkalmazás ebben a zónában"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "zónák"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "zónák"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Moblin Netbook Effektek"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Effektek a Moblin Netbookokra"
+
+#~ msgid "Activate"
+#~ msgstr "Aktiválás"
+
+#~ msgid "Unknown window"
+#~ msgstr "Ismeretlen ablak"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "Állíts be."
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%Y. %b. %e."
+
+#~ msgid "Dismiss"
+#~ msgstr "Elutasít"
+
+#~ msgid "Dismiss All"
+#~ msgstr "MIndet elutasít"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Még nincsenek zónák"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "A használt alkalmazások itt jelennek meg. Itt tudsz átváltani köztük és "
+#~ "kedved szerint szervezheted őket."

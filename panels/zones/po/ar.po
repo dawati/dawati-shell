@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: 2009-11-10 23:16+0200\n"
+"Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
+"Language-Team: ITSOFTEX <info@itsoftex.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Arabic\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "مناطق"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "لا يوجد تطبيقات في هذه المنطقة"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "مناطق"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "مناطق"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "تأثيرات خاصة بأجهزة الانترنت التي تعمل بموبلن"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "تأثيرات لأجهزة الانترنت التي تعمل بموبلن"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e %B, %Y"
+
+#~ msgid "Dismiss"
+#~ msgstr "استبعاد"
+
+#~ msgid "Dismiss All"
+#~ msgstr "استبعاد الكل"
+
+#~ msgid "No Zones yet"
+#~ msgstr "لا مناطق حتى الآن"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "ستعرض هنا التطبيقات التي تستخدمها. سيكون بامكانك تبديلها وترتيبها بحسب "
+#~ "رغبة قلبك."

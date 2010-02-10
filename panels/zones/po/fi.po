@@ -1,0 +1,244 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: GLS <tomas.galicia@intel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Finnish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+
+#: ../src/sw-zone.c:763
+#, fuzzy
+msgid "new zone"
+msgstr "vyöhykkeet"
+
+#: ../src/sw-zone.c:777
+msgid "No applications on this zone"
+msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
+
+#: ../src/sw-zone.c:905
+#, fuzzy
+msgid "one"
+msgstr "vyöhykkeet"
+
+#: ../src/sw-zone.c:909
+msgid "two"
+msgstr ""
+
+#: ../src/sw-zone.c:913
+msgid "three"
+msgstr ""
+
+#: ../src/sw-zone.c:917
+msgid "four"
+msgstr ""
+
+#: ../src/sw-zone.c:921
+msgid "five"
+msgstr ""
+
+#: ../src/sw-zone.c:925
+msgid "six"
+msgstr ""
+
+#: ../src/sw-zone.c:929
+msgid "seven"
+msgstr ""
+
+#: ../src/sw-zone.c:933
+msgid "eight"
+msgstr ""
+
+#: ../src/main.c:458
+msgid "zones"
+msgstr "vyöhykkeet"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Alle minuutti sitten"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Muutama minuutti sitten"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Muutama tunti sitten"
+
+#~ msgid "Earlier today"
+#~ msgstr "Tänään aikaisemmin"
+
+#~ msgid "Yesterday"
+#~ msgstr "Eilen"
+
+#~ msgid "On %A"
+#~ msgstr "Päivämääränä %A"
+
+#~ msgid "Unknown"
+#~ msgstr "Tuntematon"
+
+#~ msgid "Last week"
+#~ msgstr "Viime viikolla"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Pari viikkoa sitten"
+
+#~ msgid "This month"
+#~ msgstr "Tässä kuussa"
+
+#~ msgid "Last month"
+#~ msgstr "Viime kuussa"
+
+#~ msgid "This year"
+#~ msgstr "Tänä vuonna"
+
+#~ msgid "Last year"
+#~ msgstr "Viime vuonna"
+
+#~ msgid "Ages ago"
+#~ msgstr "Aataminaikoina"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Moblin ultrakannettavan tehosteet"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Moblin ultrakannettavien tehosteet"
+
+#~ msgid "Dismiss"
+#~ msgstr "Sivuuta"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Sivuuta kaikki"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%B %e, %Y"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Vyöhykkeitä ei vielä ole"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä "
+#~ "miten haluat."
+
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi "
+#~ "historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
+
+#~ msgid "Recently played"
+#~ msgstr "Äskettäin soitetut"
+
+#~ msgid "Search results"
+#~ msgstr "Etsintätulokset"
+
+#~ msgid "Playqueue"
+#~ msgstr "Soittojono"
+
+#~ msgid "Season %u, Episode %u"
+#~ msgstr "Kausi %u, episodi %u"
+
+#~ msgid "Previous"
+#~ msgstr "Edellinen"
+
+#~ msgid "Next"
+#~ msgstr "Seuraava"
+
+#~ msgid "Media"
+#~ msgstr "Media"
+
+#~ msgid "Search"
+#~ msgstr "Etsi"
+
+#~ msgid "Season %d Episode %d"
+#~ msgstr "Kausi %d, episodi %d"
+
+#~ msgid "Season %d"
+#~ msgstr "Kausi %d"
+
+#~ msgid "Episode %d"
+#~ msgstr "Episodi %d"
+
+#~ msgid "Year %d"
+#~ msgstr "Vuosi %d"
+
+#~ msgid "media"
+#~ msgstr "media"
+
+#~ msgid "Favourite Applications"
+#~ msgstr "Suosikkisovellukset"
+
+#~ msgid "Applications"
+#~ msgstr "Sovellukset"
+
+#~ msgid "applications"
+#~ msgstr "sovellukset"
+
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi "
+#~ "välilehti -sivulla."
+
+#~ msgid "Untitled"
+#~ msgstr "Nimetön"
+
+#~ msgid "New tab"
+#~ msgstr "Uusi välilehti"
+
+#~ msgid "Internet"
+#~ msgstr "Internet"
+
+#~ msgid "Go"
+#~ msgstr "Siirry"
+
+#~ msgid "Tabs"
+#~ msgstr "Välilehdet"
+
+#~ msgid "Favorite pages"
+#~ msgstr "Suosikkisivut"
+
+#~ msgid "internet"
+#~ msgstr "internet"
+
+#~ msgid "Search for %%s on %s"
+#~ msgstr "Etsi '%%s' käyttäen seuraavaa: %s"
+
+#~ msgid "Go to %s"
+#~ msgstr "Siirry osoitteeseen %s"
+
+#~ msgid "Copy"
+#~ msgstr "Kopioi"
+
+#~ msgid "the current selection to pasteboard"
+#~ msgstr "nykyinen valinta liitepöytään"
+
+#~ msgid "your selection"
+#~ msgstr "valintasi"
+
+#~ msgid "Pasteboard"
+#~ msgstr "Liitepöytä"
+
+#~ msgid "You need to copy some text to use Pasteboard"
+#~ msgstr "Kopioi jotain tekstiä, jotta voisit käyttää liitepöytää"
+
+#~ msgid "Clear pasteboard"
+#~ msgstr "Tyhjennä liitepöytä"
+
+#~ msgid "pasteboard"
+#~ msgstr "liitepöytä"
+
+#~ msgid "<b>Appointments</b>"
+#~ msgstr "<b>Tapaamiset</b>"
