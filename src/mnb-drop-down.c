@@ -27,7 +27,6 @@
 #include "mnb-panel.h"
 #include "mnb-toolbar.h"    /* For MNB_IS_TOOLBAR */
 #include "moblin-netbook.h" /* For PANEL_HEIGHT */
-#include "switcher/mnb-switcher.h"
 
 #define SLIDE_DURATION 150
 
