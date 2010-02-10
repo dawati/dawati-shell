@@ -276,6 +276,38 @@ mnp_completion_done (gpointer data, const char *zone)
 }
 
 static void
+insert_in_ptr_array (GPtrArray *array, gpointer data, int pos)
+{
+	int i;
+
+	g_ptr_array_add (array, NULL);
+	for (i=array->len-2; i>=pos ; i--) {
+		array->pdata[i+1] = array->pdata[i];
+	}
+	array->pdata[pos] = data;
+}
+
+static void
+zone_reordered_cb (GWeatherLocation *location, int new_pos, MnpWorldClock *clock)
+{
+	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
+	char *cloc = mnp_utils_get_display_from_location (priv->zones_model, location);
+	int i;
+
+	for (i=0; i<priv->zones->len; i++) {
+		if (strcmp(cloc, (char *)priv->zones->pdata[i]) == 0) {
+			break;
+		}
+		
+	}
+
+	g_ptr_array_remove_index (priv->zones, i);
+	insert_in_ptr_array (priv->zones, (gpointer) cloc, new_pos);
+
+	mnp_save_zones (priv->zones);
+}
+
+static void
 zone_removed_cb (MnpClockArea *area, GWeatherLocation *location, MnpWorldClock *clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);	
@@ -389,6 +421,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	priv->zones = mnp_load_zones ();
 	mnp_clock_area_refresh_time (priv->area);
 	mnp_clock_area_set_zone_remove_cb (priv->area, (ZoneRemovedFunc) zone_removed_cb, (gpointer)world_clock);
+	mnp_clock_area_set_zone_reordered_cb (priv->area, (ClockZoneReorderedFunc) zone_reordered_cb, (gpointer)world_clock);
 
 	if (priv->zones->len) {
 		int i=0;

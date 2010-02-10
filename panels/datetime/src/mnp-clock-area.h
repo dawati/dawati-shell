@@ -43,6 +43,7 @@ typedef struct _MnpClockAreaClass MnpClockAreaClass;
 typedef struct _MnpClockAreaPriv MnpClockAreaPriv;
 
 typedef void (*ZoneRemovedFunc) (MnpClockArea *area, GWeatherLocation *loc, gpointer user_data);
+typedef void (*ClockZoneReorderedFunc) (GWeatherLocation *location, int new_position, gpointer user_data);
 
 struct _MnpClockArea
 {
@@ -56,11 +57,14 @@ struct _MnpClockAreaClass
 	MxBoxLayoutClass parent;
 };
 
+
 GType mnp_detail_type_get_type (void);
 MnpClockArea * mnp_clock_area_new (void);
 void mnp_clock_area_refresh_time (MnpClockArea *);
 time_t mnp_clock_area_get_time (MnpClockArea *area);
 void mnp_clock_area_set_zone_remove_cb (MnpClockArea *area, ZoneRemovedFunc func, gpointer data);
+void mnp_clock_area_set_zone_reordered_cb (MnpClockArea *area, ClockZoneReorderedFunc func, gpointer data);
+
 void mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile);
 G_END_DECLS
 

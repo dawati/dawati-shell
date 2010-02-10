@@ -38,6 +38,9 @@ struct _MnpClockAreaPriv {
 
 	ZoneRemovedFunc zone_remove_func;
 	gpointer zone_remove_data;
+
+	ClockZoneReorderedFunc zone_reorder_func;
+	gpointer zone_reorder_data;
 };
 
 enum
@@ -109,6 +112,7 @@ mnp_clock_area_drop (MxDroppable *droppable, MxDraggable *draggable, gfloat even
 {
   ClutterActor *self = CLUTTER_ACTOR (droppable);
   ClutterActor *child = CLUTTER_ACTOR (draggable);
+  MnpClockTile *tile = (MnpClockTile *)draggable;
   MnpClockArea *area = (MnpClockArea *)droppable;
   GPtrArray *tiles = area->priv->clock_tiles;
   int i, pos;
@@ -130,6 +134,8 @@ mnp_clock_area_drop (MxDroppable *droppable, MxDraggable *draggable, gfloat even
   for (i=tiles->len-1; i >= 0; i--) {
 	  clutter_actor_set_depth (tiles->pdata[i], (i + 1) * 0.05);
   }
+ 
+  area->priv->zone_reorder_func(mnp_clock_tile_get_location(tile), pos, area->priv->zone_reorder_data);
 
   g_object_unref (draggable);	
 }
@@ -292,6 +298,14 @@ mnp_clock_area_set_zone_remove_cb (MnpClockArea *area, ZoneRemovedFunc func, gpo
 	area->priv->zone_remove_data = data;
 
 }
+
+void 
+mnp_clock_area_set_zone_reordered_cb (MnpClockArea *area, ClockZoneReorderedFunc func, gpointer data)
+{
+	area->priv->zone_reorder_func = func;
+	area->priv->zone_reorder_data = data;
+}
+
 
 void
 mnp_clock_area_refresh_time (MnpClockArea *area)
