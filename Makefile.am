@@ -6,7 +6,7 @@ SUBDIRS = build
 SUBDIRS += libmoblin-panel
 
 # extra
-SUBDIRS += src po data tests
+SUBDIRS += src po data capplet tests
 
 EXTRA_DIST =
 
