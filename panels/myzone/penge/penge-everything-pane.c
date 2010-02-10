@@ -40,7 +40,7 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 #define MOBLIN_MYZONE_RATIO "/desktop/moblin/myzone/ratio"
 
 #define TILE_WIDTH 160
-#define TILE_HEIGHT 118
+#define TILE_HEIGHT 116
 
 
 typedef struct _PengeEverythingPanePrivate PengeEverythingPanePrivate;
