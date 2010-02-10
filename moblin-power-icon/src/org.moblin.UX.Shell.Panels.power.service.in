@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.moblin.UX.Shell.Panels.power
+Exec=@libexecdir@/moblin-power-icon
