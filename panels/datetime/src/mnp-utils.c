@@ -381,15 +381,15 @@ format_time (struct tm   *now,
 		 * It is used to display in Aug 6 (Yesterday) */
 		
 		if (local_now.tm_wday > now->tm_wday)
-			format = _("%b %d (Yesterday)");
+			format = _("%b %-d (Yesterday)");
 		else
-			format = _("%b %d (Tomorrow)");
+			format = _("%b %-d (Tomorrow)");
 	}
 	else {
 		/* Translators: This is a strftime format string.
 		 * It is used to display in Aug 6 */
 		
-		format = _("%b %d");
+		format = _("%b %-d");
 	}
 
 	if (strftime (buf, sizeof (buf), format, now) <= 0) {
