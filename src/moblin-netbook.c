@@ -112,6 +112,11 @@ static void     map        (MutterPlugin *plugin,
                             MutterWindow *actor);
 static void     destroy    (MutterPlugin *plugin,
                             MutterWindow *actor);
+static void     switch_workspace (MutterPlugin         *plugin,
+                                  const GList         **actors,
+                                  gint                  from,
+                                  gint                  to,
+                                  MetaMotionDirection   direction);
 static void     maximize   (MutterPlugin *plugin,
                             MutterWindow *actor,
                             gint x, gint y, gint width, gint height);
@@ -785,7 +790,7 @@ moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
   plugin_class->maximize         = maximize;
   plugin_class->unmaximize       = unmaximize;
   plugin_class->destroy          = destroy;
-  plugin_class->switch_workspace = mnb_switch_zones_effect;
+  plugin_class->switch_workspace = switch_workspace;
   plugin_class->kill_effect      = kill_effect;
   plugin_class->plugin_info      = plugin_info;
   plugin_class->xevent_filter    = xevent_filter;
@@ -1909,6 +1914,31 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
 
   handle_window_destruction (mcw, plugin);
   mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+}
+
+static void
+switch_workspace (MutterPlugin         *plugin,
+                  const GList         **actors,
+                  gint                  from,
+                  gint                  to,
+                  MetaMotionDirection   direction)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;;
+
+  /*
+   * We do not run an effect if a panel is visible (as the effect runs above
+   * the panel.
+   */
+  if (mnb_toolbar_get_active_panel (MNB_TOOLBAR (priv->toolbar)))
+    {
+      mutter_plugin_effect_completed (plugin,
+                                      actors ? (*actors)->data : NULL,
+                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+    }
+  else
+    {
+      mnb_switch_zones_effect (plugin, actors, from, to, direction);
+    }
 }
 
 static void
