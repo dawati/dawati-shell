@@ -1,6 +1,4 @@
 
-QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
-
 AM_CFLAGS = \
 	$(APPLICATIONS_CFLAGS) \
 	$(MPL_CFLAGS) \
