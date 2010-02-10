@@ -1622,7 +1622,9 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
         {
           gchar *button_style = NULL;
 
-          if (stylesheet && *stylesheet)
+          if (stylesheet && *stylesheet &&
+              (!tp->button_stylesheet ||
+               strcmp (stylesheet, tp->button_stylesheet)))
             {
               GError  *error = NULL;
 
@@ -1634,6 +1636,11 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
                                stylesheet, error->message);
 
                   g_clear_error (&error);
+                }
+              else
+                {
+                  g_free (tp->button_stylesheet);
+                  tp->button_stylesheet = g_strdup (stylesheet);
                 }
             }
 
