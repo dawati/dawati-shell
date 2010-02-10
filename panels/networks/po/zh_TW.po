@@ -123,7 +123,7 @@ msgstr "抱歉，我們失去你的有線連線"
 #: ../carrick/carrick-notification-manager.c:177
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "抱歉，我們失去你的 %s 連接到 %s"
+msgstr "抱歉，我們失去你的 %s 連線到 %s"
 
 #: ../carrick/carrick-notification-manager.c:183
 #, c-format
@@ -137,32 +137,32 @@ msgstr "網路已變更"
 #: ../carrick/carrick-notification-manager.c:219
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "抱歉，你連接到 %s 的連線中斷。因此我們已將你連接到有線網路。"
+msgstr "抱歉，你連接到 %s 的連線已中斷。因此我們已將你連接到有線網路。"
 
 #: ../carrick/carrick-notification-manager.c:226
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "抱歉，你連接到 %s 的連線中斷。因此我們已將你連接到 %s，一個 %s 網路"
+msgstr "抱歉，你連接到 %s 的連線已中斷。因此我們已將你連接到 %s，一個 %s 網路"
 
 #: ../carrick/carrick-notification-manager.c:234
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "抱歉，你連接到 %s 的連線中斷。因此我們已將你連接到 %s 網路"
+msgstr "抱歉，你連接到 %s 的連線已中斷。因此我們已將你連接到 %s 網路"
 
 #: ../carrick/carrick-notification-manager.c:244
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "抱歉，你的 %s 連線中斷。因此我們已將你連線到有線網路。"
+msgstr "抱歉，你的 %s 連線已中斷。因此我們已將你連線到有線網路。"
 
 #: ../carrick/carrick-notification-manager.c:251
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "抱歉，你的 %s 連線中斷。因此我們已將你連接到 %s，一個 %s 網路"
+msgstr "抱歉，你的 %s 連線已中斷。因此我們已將你連接到 %s，一個 %s 網路"
 
 #: ../carrick/carrick-notification-manager.c:260
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "抱歉，你的 %s 連線中斷。因此我們已將你連接到 %s 網路"
+msgstr "抱歉，你的 %s 連線已中斷。因此我們已將你連接到 %s 網路"
 
 #: ../carrick/carrick-pane.c:633
 msgid "New connection settings"
