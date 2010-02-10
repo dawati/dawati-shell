@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Encoding=UTF-8
+TryExec=@LIBEXECDIR@/moblin-power-icon
+Exec=@LIBEXECDIR@/moblin-power-icon
+Icon=moblin-power-icon
+Terminal=false
+Categories=
+Name=Moblin power icon
+Comment=A power indicator
+GenericName=A power indicator
+NoDisplay=true
+OnlyShowIn=MOBLIN;
+X-GNOME-Autostart-enabled=true
