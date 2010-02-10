@@ -100,7 +100,10 @@ struct _MnbPanelOopPrivate
 {
   DBusGConnection *dbus_conn;
   DBusGProxy      *proxy;
+  DBusGProxy      *proxy_for_owner;
+
   gchar           *dbus_name;
+  gchar           *dbus_path;
 
   gchar           *name;
   gchar           *tooltip;
@@ -333,9 +336,6 @@ mnb_panel_oop_dispose (GObject *self)
 
   if (proxy)
     {
-      g_object_weak_unref (G_OBJECT (proxy),
-                           mnb_panel_oop_dbus_proxy_weak_notify_cb, self);
-
       dbus_g_proxy_disconnect_signal (proxy, "RequestFocus",
                                    G_CALLBACK (mnb_panel_oop_request_focus_cb),
                                    self);
@@ -359,6 +359,10 @@ mnb_panel_oop_dispose (GObject *self)
       priv->proxy = NULL;
     }
 
+  if (priv->proxy_for_owner)
+    g_object_weak_unref (G_OBJECT (priv->proxy_for_owner),
+                         mnb_panel_oop_dbus_proxy_weak_notify_cb, self);
+
   if (priv->dbus_conn)
     {
       dbus_g_connection_unref (priv->dbus_conn);
@@ -381,6 +385,7 @@ mnb_panel_oop_finalize (GObject *object)
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (object)->priv;
 
   g_free (priv->dbus_name);
+  g_free (priv->dbus_path);
 
   g_free (priv->name);
   g_free (priv->tooltip);
@@ -608,7 +613,7 @@ mnb_panel_oop_dbus_proxy_weak_notify_cb (gpointer data, GObject *object)
   MnbPanelOop        *panel = MNB_PANEL_OOP (data);
   MnbPanelOopPrivate *priv  = panel->priv;
 
-  priv->proxy = NULL;
+  priv->proxy_for_owner = NULL;
 
   g_object_ref (panel);
   priv->ready = FALSE;
@@ -637,6 +642,25 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
                  mnb_panel_oop_get_name ((MnbPanel*)panel), error->message);
       g_object_unref (panel);
       return;
+    }
+
+  priv->proxy_for_owner =
+    dbus_g_proxy_new_for_name_owner (priv->dbus_conn,
+                                     priv->dbus_name,
+                                     priv->dbus_path,
+                                     MPL_PANEL_DBUS_INTERFACE,
+                                     &error);
+
+  if (error)
+    {
+      g_warning ("Could not create owner-specif proxy for %s: %s",
+                 priv->dbus_name, error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      g_object_weak_ref (G_OBJECT (priv->proxy_for_owner),
+                         mnb_panel_oop_dbus_proxy_weak_notify_cb, panel);
     }
 
   /*
@@ -758,15 +782,15 @@ mnb_panel_oop_proxy_owner_changed_cb (DBusGProxy *proxy,
   mnb_panel_oop_init_owner (MNB_PANEL_OOP (data));
 }
 
-DBusGProxy *
-mnb_panel_oop_create_dbus_proxy (DBusGConnection *dbus_conn,
-                                 const gchar     *dbus_name)
+static DBusGProxy *
+mnb_panel_oop_create_dbus_proxy (MnbPanelOop *panel)
 {
-  DBusGProxy *proxy;
-  gchar      *dbus_path;
-  gchar      *p;
+  MnbPanelOopPrivate *priv = panel->priv;
+  DBusGProxy         *proxy;
+  gchar              *dbus_path;
+  gchar              *p;
 
-  dbus_path = g_strconcat ("/", dbus_name, NULL);
+  dbus_path = g_strconcat ("/", priv->dbus_name, NULL);
 
   p = dbus_path;
   while (*p)
@@ -777,12 +801,12 @@ mnb_panel_oop_create_dbus_proxy (DBusGConnection *dbus_conn,
       ++p;
     }
 
-  proxy = dbus_g_proxy_new_for_name (dbus_conn,
-                                     dbus_name,
+  priv->dbus_path = dbus_path;
+
+  proxy = dbus_g_proxy_new_for_name (priv->dbus_conn,
+                                     priv->dbus_name,
                                      dbus_path,
                                      MPL_PANEL_DBUS_INTERFACE);
-
-  g_free (dbus_path);
 
   return proxy;
 }
@@ -799,7 +823,7 @@ mnb_panel_oop_setup_proxy (MnbPanelOop *panel)
       return FALSE;
     }
 
-  proxy = mnb_panel_oop_create_dbus_proxy (priv->dbus_conn, priv->dbus_name);
+  proxy = mnb_panel_oop_create_dbus_proxy (panel);
 
   if (!proxy)
     {
@@ -810,9 +834,6 @@ mnb_panel_oop_setup_proxy (MnbPanelOop *panel)
     }
 
   priv->proxy = proxy;
-
-  g_object_weak_ref (G_OBJECT (proxy),
-                     mnb_panel_oop_dbus_proxy_weak_notify_cb, panel);
 
   /*
    * Hook up to the signals the interface defines.
@@ -1146,7 +1167,9 @@ mnb_toolbar_ping_panel_oop (DBusGConnection *dbus_conn, const gchar *dbus_name)
 {
   DBusGProxy  *proxy;
   const gchar *p = dbus_name;
+  gchar       *p2;
   gchar        c;
+  gchar       *dbus_path;
 
   g_return_if_fail (dbus_name);
 
@@ -1188,7 +1211,21 @@ mnb_toolbar_ping_panel_oop (DBusGConnection *dbus_conn, const gchar *dbus_name)
       return;
     }
 
-  proxy = mnb_panel_oop_create_dbus_proxy (dbus_conn, dbus_name);
+  dbus_path = g_strconcat ("/", dbus_name, NULL);
+
+  p2 = dbus_path;
+  while (*p2)
+    {
+      if (*p2 == '.')
+        *p2 = '/';
+
+      ++p2;
+    }
+
+  proxy = dbus_g_proxy_new_for_name (dbus_conn, dbus_name, dbus_path,
+                                     MPL_PANEL_DBUS_INTERFACE);
+
+  g_free (dbus_path);
 
   if (!proxy)
     {
