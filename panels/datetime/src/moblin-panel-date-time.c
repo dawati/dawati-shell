@@ -36,7 +36,7 @@
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-entry.h>
 
-#include "mnp-world-clock.h"
+#include "mnp-datetime.h"
 
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48
@@ -72,7 +72,7 @@ main (int    argc,
 {
   MplPanelClient *client;
   ClutterActor *stage;
-  ClutterActor *world_clock;
+  ClutterActor *datetime;
   GOptionContext *context;
   GError *error = NULL;
 
@@ -111,12 +111,12 @@ main (int    argc,
     mpl_panel_client_set_height_request (client, 400);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
-    world_clock = mnp_world_clock_new ();
-    mnp_world_clock_set_panel_client (MNP_WORLD_CLOCK (world_clock), client);
+    datetime = mnp_datetime_new ();
+    mnp_datetime_set_panel_client (MNP_DATETIME (datetime), client);
     g_signal_connect (client,
                       "set-size",
                       (GCallback)_client_set_size_cb,
-                      world_clock);
+                      datetime);
   } else {
     Window xwin;
 
@@ -125,14 +125,14 @@ main (int    argc,
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
-    world_clock = mnp_world_clock_new ();
-    clutter_actor_set_size ((ClutterActor *)world_clock, 1016, 400);
+    datetime = mnp_datetime_new ();
+    clutter_actor_set_size ((ClutterActor *)datetime, 1017, 400);
     clutter_actor_set_size (stage, 1016, 400);
     clutter_actor_show (stage);
   }
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               (ClutterActor *)world_clock);
+                               (ClutterActor *)datetime);
 
 
   clutter_main ();

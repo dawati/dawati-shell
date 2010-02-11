@@ -47,8 +47,6 @@ G_DEFINE_TYPE (MnpWorldClock, mnp_world_clock, MX_TYPE_TABLE)
 typedef struct _MnpWorldClockPrivate MnpWorldClockPrivate;
 
 struct _MnpWorldClockPrivate {
-	MplPanelClient *panel_client;
-
 	MxEntry *search_location;
 	MxListView *zones_list;
 	ClutterModel *zones_model;
@@ -68,12 +66,6 @@ static void
 mnp_world_clock_dispose (GObject *object)
 {
   MnpWorldClockPrivate *priv = GET_PRIVATE (object);
-
-  if (priv->panel_client)
-  {
-    g_object_unref (priv->panel_client);
-    priv->panel_client = NULL;
-  }
 
   G_OBJECT_CLASS (mnp_world_clock_parent_class)->dispose (object);
 }
@@ -465,24 +457,4 @@ dropdown_hide_cb (MplPanelClient *client,
   /* Reset search. */
   /* mpl_entry_set_text (MPL_ENTRY (priv->entry), ""); */
 }
-
-void
-mnp_world_clock_set_panel_client (MnpWorldClock *world_clock,
-                                   MplPanelClient *panel_client)
-{
-  MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
-
-  priv->panel_client = g_object_ref (panel_client);
-
-  g_signal_connect (panel_client,
-                    "show-end",
-                    (GCallback)dropdown_show_cb,
-                    world_clock);
-
-  g_signal_connect (panel_client,
-                    "hide-end",
-                    (GCallback)dropdown_hide_cb,
-                    world_clock);
-}
-
 
