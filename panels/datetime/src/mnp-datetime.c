@@ -30,6 +30,7 @@
 
 #include "mnp-datetime.h"
 #include "mnp-world-clock.h"
+#include "mnp-alarms.h"
 
 G_DEFINE_TYPE (MnpDatetime, mnp_datetime, MX_TYPE_BOX_LAYOUT)
 
@@ -45,6 +46,7 @@ struct _MnpDatetimePrivate {
 	MplPanelClient *panel_client;
 
 	ClutterActor *world_clock;
+	ClutterActor *second_row;
 	ClutterActor *alarm_area;
 	ClutterActor *cal_area;
 	ClutterActor *task_area;
@@ -94,14 +96,23 @@ mnp_datetime_construct (MnpDatetime *time)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
 
-	mx_box_layout_set_vertical ((MxBoxLayout *)time, TRUE);
+	mx_box_layout_set_vertical ((MxBoxLayout *)time, FALSE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)time, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)time, TRUE);
-
+	mx_box_layout_set_spacing ((MxBoxLayout *)time, 3);
+	clutter_actor_set_name ((ClutterActor *)time, "datetime-panel");
 
 	priv->world_clock = mnp_world_clock_new ();
 	clutter_container_add_actor ((ClutterContainer *)time, priv->world_clock);
+	
+	priv->second_row = mx_box_layout_new();
+	mx_box_layout_set_vertical ((MxBoxLayout *)priv->second_row, TRUE);
+	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->second_row, FALSE);
+	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->second_row, TRUE);
+	clutter_container_add_actor ((ClutterContainer *)time, priv->second_row);
 
+	priv->alarm_area = (ClutterActor *)mnp_alarms_new();
+	clutter_container_add_actor ((ClutterContainer *)priv->second_row, (ClutterActor *)priv->alarm_area);
 }
 
 ClutterActor *

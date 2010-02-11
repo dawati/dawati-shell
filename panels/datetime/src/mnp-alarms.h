@@ -19,44 +19,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MNP_WORLD_CLOCK
-#define _MNP_WORLD_CLOCK
+
+#ifndef _MNP_ALARMS_H
+#define _MNP_ALARMS_H
 
 #include <glib-object.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
 
 G_BEGIN_DECLS
 
-#define MNP_TYPE_WORLD_CLOCK mnp_world_clock_get_type()
+#define MNP_TYPE_ALARMS mnp_alarms_get_type()
 
-#define MNP_WORLD_CLOCK(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNP_TYPE_WORLD_CLOCK, MnpWorldClock))
+#define MNP_ALARMS(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+  MNP_TYPE_ALARMS, MnpAlarms))
 
-#define MNP_WORLD_CLOCK_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), MNP_TYPE_WORLD_CLOCK, MnpWorldClockClass))
+#define MNP_ALARMS_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), \
+  MNP_TYPE_ALARMS, MnpAlarmsClass))
 
-#define MNP_IS_WORLD_CLOCK(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNP_TYPE_WORLD_CLOCK))
+#define MNP_IS_ALARMS(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+  MNP_TYPE_ALARMS))
 
-#define MNP_IS_WORLD_CLOCK_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), MNP_TYPE_WORLD_CLOCK))
+#define MNP_IS_ALARMS_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
+  MNP_TYPE_ALARMS))
 
-#define MNP_WORLD_CLOCK_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), MNP_TYPE_WORLD_CLOCK, MnpWorldClockClass))
+#define MNP_ALARMS_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+  MNP_TYPE_ALARMS, MnpAlarmsClass))
 
 typedef struct {
   MxBoxLayout parent;
-} MnpWorldClock;
+} MnpAlarms;
 
 typedef struct {
   MxBoxLayoutClass parent_class;
-} MnpWorldClockClass;
+} MnpAlarmsClass;
 
-GType mnp_world_clock_get_type (void);
+GType mnp_alarms_get_type (void);
 
-ClutterActor *mnp_world_clock_new (void);
+MnpAlarms* mnp_alarms_new (void);
+
 G_END_DECLS
 
-#endif /* _MNP_WORLD_CLOCK */
+#endif /* _MNP_ALARMS_H */

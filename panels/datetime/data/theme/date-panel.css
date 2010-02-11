@@ -1,3 +1,9 @@
+*#datetime-panel
+{
+  padding: 2 2 2 2;
+  background-color: #ffffffff;
+}
+
 *#completion-scroll-bin
 {
   border-image: url('dp-scroll-view-bin-bg.png') 10;
@@ -9,6 +15,18 @@
   padding: 4 4;	
   border-image: url('dp-scroll-view-bin-bg.png') 10;
   background-color: #7e7e7eff;
+}
+
+*#alarms-tile
+{
+  padding: 4 4;	
+  background-color: #7e7e7eff;
+}
+
+*#new-alarm-tile
+{
+  padding: 4 4;	
+  border-image: url('dp-scroll-view-bin-bg.png') 10;
 }
 
 *#mnp-tile-date-city

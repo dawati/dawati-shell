@@ -36,7 +36,7 @@
 #include "mnp-clock-area.h"
 
 
-G_DEFINE_TYPE (MnpWorldClock, mnp_world_clock, MX_TYPE_TABLE)
+G_DEFINE_TYPE (MnpWorldClock, mnp_world_clock, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNP_TYPE_WORLD_CLOCK, MnpWorldClockPrivate))
@@ -65,7 +65,7 @@ struct _MnpWorldClockPrivate {
 static void
 mnp_world_clock_dispose (GObject *object)
 {
-  MnpWorldClockPrivate *priv = GET_PRIVATE (object);
+  /* MnpWorldClockPrivate *priv = GET_PRIVATE (object); */
 
   G_OBJECT_CLASS (mnp_world_clock_parent_class)->dispose (object);
 }
@@ -322,17 +322,17 @@ static void
 mnp_world_clock_construct (MnpWorldClock *world_clock)
 {
 	ClutterActor *entry, *scroll, *view, *box, *stage;
-	MxTable *table = (MxTable *)world_clock;
+	MxBoxLayout *table = (MxBoxLayout *)world_clock;
 	gfloat width, height;
 	ClutterModel *model;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	MnpButtonItem *button_item;
 
+	mx_box_layout_set_vertical ((MxBoxLayout *)world_clock, TRUE);
+	mx_box_layout_set_pack_start ((MxBoxLayout *)world_clock, FALSE);
+
 	priv->completion_timeout = 0;
 	stage = clutter_stage_get_default ();
-
-	mx_table_set_col_spacing (MX_TABLE (table), 1);
-	mx_table_set_row_spacing (MX_TABLE (table), 1);
 
 	box = mx_box_layout_new ();
 	mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
@@ -360,13 +360,14 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
   	g_signal_connect (priv->add_location, "clicked",
                     	G_CALLBACK (add_location_clicked_cb), world_clock);
 
-	mx_table_add_actor (MX_TABLE (table), box, 0, 0);
+	clutter_container_add_actor (CLUTTER_CONTAINER(table), box);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
                                box,
-                               "x-expand", FALSE, "y-expand", FALSE,
+                               "expand", FALSE,
+			       "y-fill", FALSE,		
+			       "x-fill", FALSE,			       			       
                                NULL);
 
-	clutter_actor_set_position ((ClutterActor *)table, 6, 5);
 	model = mnp_get_world_timezones ();
 	priv->zones_model = model;
 	clutter_model_set_filter (model, filter_zone, world_clock, NULL);
@@ -403,10 +404,12 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_droppable_enable ((MxDroppable *)priv->area);
 	g_object_ref ((GObject *)priv->area);
 	clutter_container_remove_actor ((ClutterContainer *)stage, (ClutterActor *)priv->area);
-	mx_table_add_actor (MX_TABLE (table), (ClutterActor *)priv->area, 1, 0);
+	clutter_container_add_actor (CLUTTER_CONTAINER (table), (ClutterActor *)priv->area);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
                                (ClutterActor *)priv->area,
-                               "x-expand", FALSE, "y-expand", FALSE,
+                               "expand", FALSE,
+			       "y-fill", TRUE,
+			       "x-fill", FALSE,
                                NULL);
 
 
