@@ -1,5 +1,5 @@
 
-themedir = $(pkgdatadir)/theme
+themedir = $(pkgdatadir)/theme/power-icon
 nodist_theme_DATA = power-icon.css
 dist_theme_DATA = \
 	battery-25-active.png \
