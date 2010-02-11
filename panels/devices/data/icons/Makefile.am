@@ -8,5 +8,10 @@ dist_icons_DATA = \
 	dalston-power-100.png \
 	dalston-power-missing.png \
 	dalston-power-plugged.png \
+	directory-documents.png \
+	directory-download.png \
+	directory-music.png \
+	directory-pictures.png \
+	directory-videos.png \
 	$(NULL)
 
