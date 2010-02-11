@@ -1,6 +1,6 @@
 
 themedir = $(pkgdatadir)/theme
-nodist_theme_DATA = toolbar-button.css
+nodist_theme_DATA = power-icon.css
 dist_theme_DATA = \
 	battery-25-active.png \
 	battery-25-normal.png \
@@ -21,10 +21,10 @@ dist_theme_DATA = \
 	$(NULL)
 
 EXTRA_DIST = \
-	toolbar-button.css.in \
+	power-icon.css.in \
 	$(NULL)
 
 DISTCLEANFILES = \
-	toolbar-button.css \
+	power-icon.css \
 	$(NULL)
 

@@ -115,7 +115,7 @@ main (int    argc,
 
   client = mpl_panel_windowless_new (MPL_PANEL_POWER,
                                      _("battery"),
-                                     PKGTHEMEDIR "/toolbar-button.css",
+                                     PKGTHEMEDIR "/power-icon.css",
                                      "unknown",
                                      TRUE);
 

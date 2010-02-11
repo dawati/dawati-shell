@@ -13,5 +13,9 @@ GenericName=A power indicator
 NoDisplay=true
 OnlyShowIn=MOBLIN;
 X-GNOME-Autostart-enabled=true
+X-Moblin-Panel-Optional=false
 X-Moblin-Panel-Type=applet
 X-Moblin-Panel-Windowless=true
+X-Moblin-Priority=Late
+X-Moblin-Service=org.moblin.UX.Shell.Panels.power
+
