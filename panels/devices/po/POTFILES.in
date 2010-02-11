@@ -21,4 +21,5 @@ src/mpd-disk-tile.c
 src/mpd-folder-pane.c
 src/mpd-shutdown-notification.c
 src/mpd-volume-tile.c
+moblin-power-icon/data/moblin-power-icon.desktop.in.in
 moblin-power-icon/src/moblin-power-icon.c

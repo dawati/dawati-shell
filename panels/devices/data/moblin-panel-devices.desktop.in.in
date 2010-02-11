@@ -2,8 +2,8 @@
 Version=1.0
 Encoding=UTF-8
 Type=Application
-Exec=@libexecdir@/moblin-panel-devices
-TryExec=@libexecdir@/moblin-panel-devices
+Exec=@LIBEXECDIR@/moblin-panel-devices
+TryExec=@LIBEXECDIR@/moblin-panel-devices
 _Name=devices
 Icon=moblin-panel-devices
 _Comment=Devices panel

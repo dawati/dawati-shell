@@ -59,14 +59,3 @@ moblin_panel_devices_SOURCES = \
 	mpd-volume-tile.h \
 	$(NULL)
 
-servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.devices.service.in
-service_DATA = org.moblin.UX.Shell.Panels.devices.service
-
-EXTRA_DIST = $(service_in_files)
-
-DISTCLEANFILES = org.moblin.UX.Shell.Panels.devices.service
-
-org.moblin.UX.Shell.Panels.devices.service: org.moblin.UX.Shell.Panels.devices.service.in $(top_builddir)/config.log
-	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
-

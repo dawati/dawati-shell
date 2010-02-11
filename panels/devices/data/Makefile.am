@@ -1,18 +1,26 @@
 
 SUBDIRS = icons theme
 
+autostart_src_files = moblin-panel-devices.desktop.in.in
+autostart_in_files = moblin-panel-devices.desktop.in
+#autostartdir = $(sysconfdir)/xdg/autostart
+autostartdir = $(MOBLIN_PANELS_DIR)
+autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
+
+service_in_files = org.moblin.UX.Shell.Panels.devices.service.in
+servicedir = $(datadir)/dbus-1/services
+service_DATA = org.moblin.UX.Shell.Panels.devices.service
+
+EXTRA_DIST = \
+	$(autostart_src_files) \
+	$(service_in_files) \
+	$(NULL)
+
+DISTCLEANFILES = \
+	$(autostart_in_files) \
+	$(autostart_DATA) \
+	$(service_DATA) \
+	$(NULL)
+
 @INTLTOOL_DESKTOP_RULE@
 
-desktopfiles_in_files=moblin-panel-devices.desktop.in
-desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
-
-if ENABLE_MOBLIN_DESKTOP_FILE
-desktopfilesdir=$(MOBLIN_PANELS_DIR)/
-desktopfiles_DATA = $(desktopfiles_files)
-endif
-
-%.desktop.in: %.desktop.in.in Makefile
-	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
-
-EXTRA_DIST = moblin-panel-devices.desktop.in.in
-CLEANFILES = moblin-panel-devices.desktop moblin-panel-devices.desktop.in

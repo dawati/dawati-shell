@@ -1,11 +1,12 @@
 
 autostart_src_files = moblin-power-icon.desktop.in.in
 autostart_in_files = moblin-power-icon.desktop.in
-autostartdir = $(sysconfdir)/xdg/autostart
+#autostartdir = $(sysconfdir)/xdg/autostart
+autostartdir = $(MOBLIN_PANELS_DIR)
 autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
 
-servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.power.service.in
+servicedir = $(datadir)/dbus-1/services
 service_DATA = org.moblin.UX.Shell.Panels.power.service
 
 EXTRA_DIST = \
@@ -14,12 +15,10 @@ EXTRA_DIST = \
 	$(NULL)
 
 DISTCLEANFILES = \
+	$(autostart_in_files) \
 	$(autostart_DATA) \
 	$(service_DATA) \
 	$(NULL)
 
 @INTLTOOL_DESKTOP_RULE@
-
-%.service: %.service.in
-	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
