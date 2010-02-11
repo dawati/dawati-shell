@@ -125,6 +125,8 @@ main (int    argc,
   g_signal_connect (battery, "notify::state",
                     G_CALLBACK (_device_notify_cb), client);
 
+  update (battery, client);
+
   clutter_main ();
   g_object_unref (battery);
   return EXIT_SUCCESS;
