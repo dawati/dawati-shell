@@ -14,6 +14,7 @@ NoDisplay=true
 OnlyShowIn=MOBLIN;
 X-GNOME-Autostart-enabled=true
 X-Moblin-Panel-Optional=false
+X-Moblin-Panel-Stylesheet=@PKGTHEMEDIR@/toolbar-button.css
 X-Moblin-Panel-Type=applet
 X-Moblin-Panel-Windowless=true
 X-Moblin-Priority=Late
