@@ -73,31 +73,18 @@ mnp_alarm_tile_construct (MnpAlarmTile *btntile)
   mx_box_layout_set_vertical ((MxBoxLayout *)tile, TRUE);
   mx_bin_set_child (MX_BIN (btntile), (ClutterActor *)tile);
   mx_bin_set_fill (MX_BIN (btntile), TRUE, TRUE);
-
+  mx_bin_set_alignment (MX_BIN (btntile), MX_ALIGN_MIDDLE, MX_ALIGN_MIDDLE);
 
   priv->recur = mx_label_new (NULL);
-//  mx_label_set_x_align ((MxLabel *)priv->recur, MX_ALIGN_MIDDLE);  
-//  mx_label_set_y_align ((MxLabel *)priv->recur, MX_ALIGN_MIDDLE);  
   clutter_container_add_actor ((ClutterContainer *)tile, priv->recur);
   clutter_container_child_set ((ClutterContainer *)tile, priv->recur,
-//		  		   "x-fill", TRUE,
-//				   "y-fill", TRUE,
 				   "expand", TRUE,
-//				   "x-align", MX_ALIGN_MIDDLE,
-				   "y-align", MX_ALIGN_MIDDLE,
                                    NULL);
 
-
   priv->title = mx_label_new (NULL);
-//  mx_label_set_x_align ((MxLabel *)priv->title, MX_ALIGN_MIDDLE);
-//  mx_label_set_y_align ((MxLabel *)priv->title, MX_ALIGN_MIDDLE);  
   clutter_container_add_actor ((ClutterContainer *)tile, priv->title);
   clutter_container_child_set ((ClutterContainer *)tile, priv->title,
-//		  		   "x-fill", TRUE,
-//				   "y-fill", TRUE,
 				   "expand", TRUE,
-//				   "x-align", MX_ALIGN_MIDDLE,
-				   "y-align", MX_ALIGN_MIDDLE,				   
                                    NULL);
 
 }
