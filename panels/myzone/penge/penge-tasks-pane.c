@@ -415,16 +415,12 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   GList *l;
   gchar *uid;
   ClutterActor *actor;
-  JanaTask *first_task = NULL;
   ClutterActor *label;
 
   old_actors = g_hash_table_get_values (priv->uid_to_actors);
 
   tasks = g_hash_table_get_values (priv->uid_to_tasks);
   tasks = g_list_sort (tasks, _tasks_list_sort_cb);
-
-  if (tasks)
-    first_task = (JanaTask *)tasks->data;
 
   if (!tasks)
   {

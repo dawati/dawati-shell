@@ -407,9 +407,6 @@ penge_events_pane_update (PengeEventsPane *pane)
   window_end = window_start;
   for (l = window_start; l && count < priv->count; l = l->next)
   {
-    PengeEventData *event_data = (PengeEventData *)l->data;
-    event = (JanaEvent *)event_data->event;
-
     if (l->next)
     {
       window_end = l->next;
@@ -573,11 +570,9 @@ _create_event_list_for_event (PengeEventsPane *pane,
   {
     PengeEventData *event_data;
     JanaEvent *event;
-    gchar *uid;
 
     event = (JanaEvent *)component;
 
-    uid = jana_component_get_uid (component);
     event_data = penge_event_data_new ();
 
     /* Gives us a new reference, no need to ref-up */

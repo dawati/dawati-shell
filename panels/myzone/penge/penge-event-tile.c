@@ -271,7 +271,6 @@ penge_event_tile_init (PengeEventTile *self)
   priv->time_label = mx_label_new ("XX:XX");
   mx_stylable_set_style_class (MX_STYLABLE (priv->time_label),
                                "PengeEventTimeLabel");
-  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->time_label));
 
   mx_bin_set_child (MX_BIN (priv->time_bin),
                     priv->time_label);

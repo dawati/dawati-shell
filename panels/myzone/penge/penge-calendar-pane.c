@@ -313,7 +313,6 @@ penge_calendar_pane_allocate (ClutterActor          *actor,
   child_box.x2 = width - padding.right;
   child_box.y1 = last_y;
   child_box.y2 = child_box.y1 + tasks_available_h;
-  last_y = child_box.y2;
 
   clutter_actor_allocate (CLUTTER_ACTOR (priv->tasks_pane),
                           &child_box,

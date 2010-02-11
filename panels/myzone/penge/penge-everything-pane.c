@@ -665,13 +665,12 @@ _client_get_services_cb (SwClient    *client,
                          gpointer     userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
-  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
 
   sw_client_open_view (client,
                        (GList *)services,
                        20,
                        _client_open_view_cb,
-                       userdata);
+                       pane);
 }
 
 static void

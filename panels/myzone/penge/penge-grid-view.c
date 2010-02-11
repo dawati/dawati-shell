@@ -271,7 +271,7 @@ _update_layout (PengeGridView *grid_view)
     g_object_set (priv->favourite_apps_pane,
                   "vertical", TRUE,
                   NULL);
-    clutter_actor_queue_relayout (grid_view);
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (grid_view));
   } else {
     if (priv->show_calendar_pane)
     {
@@ -317,7 +317,7 @@ _update_layout (PengeGridView *grid_view)
     g_object_set (priv->favourite_apps_pane,
                   "vertical", FALSE,
                   NULL);
-    clutter_actor_queue_relayout (grid_view);
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (grid_view));
   }
 }
 
