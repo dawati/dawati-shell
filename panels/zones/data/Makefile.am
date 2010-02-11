@@ -1,5 +1,7 @@
 SUBDIRS=style
 
+@INTLTOOL_DESKTOP_RULE@
+
 desktopfiles_in_files=moblin-panel-zones.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
@@ -8,11 +10,10 @@ desktopfilesdir=$(MOBLIN_PANELS_DIR)/
 desktopfiles_DATA = $(desktopfiles_files)
 endif
 
-%.desktop: %.desktop.in Makefile
+%.desktop.in: %.desktop.in.in Makefile
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
-EXTRA_DIST = moblin-panel-zones.desktop.in
-CLEANFILES = moblin-panel-zones.desktop moblin-panel-zones.desktop
-CLEANFILES = moblin-panel-zones.desktop
+EXTRA_DIST = moblin-panel-zones.desktop.in.in
+CLEANFILES = moblin-panel-zones.desktop moblin-panel-zones.desktop.in
 
 -include $(top_srcdir)/git.mk
