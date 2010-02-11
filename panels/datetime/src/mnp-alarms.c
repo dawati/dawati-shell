@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+#include <glib/gi18n.h>
 #include "mnp-alarms.h"
 #include "mnp-alarm-tile.h"
 
@@ -103,26 +103,15 @@ mnp_alarms_construct (MnpAlarms *alarms)
 	
   clutter_actor_set_size((ClutterActor *)alarms, 430, 100);
 
-  {
-	  ClutterActor *t1 = mnp_alarm_tile_new ();
-	  clutter_container_add_actor (priv->left_tiles, t1);
-  	  clutter_container_child_set ((ClutterContainer *)priv->left_tiles, t1,
-                                   "x-fill", FALSE,
-                                   "y-fill", TRUE,
-				   "expand", FALSE,
-                                   NULL);
-	  
-	  mnp_alarm_set_text (t1, "Mon - Fri", "7:00 pm");
 
-	  t1 = mnp_alarm_tile_new ();
-	  clutter_container_add_actor (priv->right_tiles, t1);
-clutter_container_child_set ((ClutterContainer *)priv->right_tiles, t1,
+  priv->new_alarm_tile = mnp_alarm_tile_new ();
+  clutter_container_add_actor (priv->right_tiles, priv->new_alarm_tile);
+  clutter_container_child_set ((ClutterContainer *)priv->right_tiles, priv->new_alarm_tile,
                                    "x-fill", TRUE,
                                    "y-fill", TRUE,
 				   "expand", TRUE,				   
                                    NULL);	  
-	  mnp_alarm_set_text (t1, NULL, "New\nAlarm");
-  }
+  mnp_alarm_set_text (priv->new_alarm_tile, NULL, _("New\nAlarm"));
 }
 
 MnpAlarms*
