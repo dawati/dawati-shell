@@ -23,7 +23,8 @@ libanerley_la_HEADERS = anerley-tp-feed.h \
 			anerley-ebook-feed.h \
 			anerley-tp-observer.h \
 			anerley-tp-monitor-feed.h \
-			anerley-presence-chooser.h
+			anerley-presence-chooser.h \
+			anerley-compact-tile.h
 libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-feed.c \
 			anerley-item.c \
@@ -40,6 +41,7 @@ libanerley_la_SOURCES = anerley-tp-feed.c \
 			anerley-tp-monitor-feed.c \
 			anerley-presence-chooser.c \
 			anerley-main.c \
+			anerley-compact-tile.c \
 			$(libanerley_la_HEADERS) \
 			$(BUILT_SOURCES) \
 			penge-magic-texture.c \
