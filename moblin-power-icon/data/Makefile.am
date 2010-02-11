@@ -1,24 +1,26 @@
 
 SUBDIRS = theme
 
-autostart_src_files = moblin-power-icon.desktop.in.in
-autostart_in_files = moblin-power-icon.desktop.in
-#autostartdir = $(sysconfdir)/xdg/autostart
-autostartdir = $(MOBLIN_PANELS_DIR)
-autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
+desktop_in_files = moblin-power-icon.desktop.in.in
+desktop_data = $(desktop_in_files:.desktop.in.in=.desktop)
+
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_DATA = $(desktop_data)
+
+paneldir = $(MOBLIN_PANELS_DIR)
+panel_DATA = $(desktop_data)
 
 service_in_files = org.moblin.UX.Shell.Panels.power.service.in
 servicedir = $(datadir)/dbus-1/services
 service_DATA = org.moblin.UX.Shell.Panels.power.service
 
 EXTRA_DIST = \
-	$(autostart_src_files) \
+	$(desktop_in_files) \
 	$(service_in_files) \
 	$(NULL)
 
 DISTCLEANFILES = \
-	$(autostart_in_files) \
-	$(autostart_DATA) \
+	$(panel_DATA) \
 	$(service_DATA) \
 	$(NULL)
 
