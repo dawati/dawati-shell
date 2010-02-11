@@ -1,0 +1,69 @@
+MnbToolbarButton {
+  background-color: #fff0;
+}
+
+MnbToolbarButton:checked {
+  border-image: url("file://@PKGTHEMEDIR@/toolbar-button-active.png") 0 stretch;
+}
+
+MnbToolbarButton:hover, MnbToolbarButton:active {
+  border-image: url("file://@PKGTHEMEDIR@/toolbar-button-hover.png") 0 stretch;
+}
+
+MnbToolbarButton#state-25 {
+  background-image: url("file://@PKGTHEMEDIR@/battery-25-normal.png");
+}
+
+MnbToolbarButton#state-25:hover, MnbToolbarButton#state-25:active, MnbToolbarButton#state-25:checked  {
+  background-image: url("file://@PKGTHEMEDIR@/battery-25-active.png");
+}
+
+MnbToolbarButton#state-50 {
+  background-image: url("file://@PKGTHEMEDIR@/battery-50-normal.png");
+}
+
+MnbToolbarButton#state-50:hover, MnbToolbarButton#state-50:active, MnbToolbarButton#state-50:checked  {
+  background-image: url("file://@PKGTHEMEDIR@/battery-50-active.png");
+}
+
+MnbToolbarButton#state-75 {
+  background-image: url("file://@PKGTHEMEDIR@/battery-75-normal.png");
+}
+
+MnbToolbarButton#state-75:hover, MnbToolbarButton#state-75:active, MnbToolbarButton#state-75:checked  {
+  background-image: url("file://@PKGTHEMEDIR@/battery-75-active.png");
+}
+
+MnbToolbarButton#state-full {
+  background-image: url("file://@PKGTHEMEDIR@/battery-full-normal.png");
+}
+
+MnbToolbarButton#state-full:hover, MnbToolbarButton#state-full:active, MnbToolbarButton#state-full:checked  {
+  background-image: url("file://@PKGTHEMEDIR@/battery-full-active.png");
+}
+
+MnbToolbarButton#state-missing {
+  background-image: url("file://@PKGTHEMEDIR@/battery-missing-normal.png");
+}
+
+MnbToolbarButton#state-missing:hover, MnbToolbarButton#state-missing:active, MnbToolbarButton#state-missing:checked  {
+  background-image: url("file://@PKGTHEMEDIR@/battery-missing-active.png");
+}
+
+MnbToolbarButton#state-empty {
+  background-image: url("file://@PKGTHEMEDIR@/battery-empty-normal.png");
+}
+
+MnbToolbarButton#state-empty:hover, MnbToolbarButton#state-empty:active, MnbToolbarButton#state-empty:checked  {
+  background-image: url("file://@PKGTHEMEDIR@/battery-empty-active.png");
+}
+
+MnbToolbarButton#state-plugged {
+  background-image: url("file://@PKGTHEMEDIR@/battery-plugged-normal.png");
+}
+
+MnbToolbarButton#state-plugged:hover, MnbToolbarButton#state-plugged:active, MnbToolbarButton#state-plugged:checked  {
+  background-image: url("file://@PKGTHEMEDIR@/battery-plugged-active.png");
+}
+
+

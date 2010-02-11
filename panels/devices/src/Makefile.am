@@ -6,7 +6,7 @@ AM_CFLAGS = \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DICONDIR=\"$(pkgdatadir)/icons\" \
-	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
+	-DPKGTHEMEDIR=\"$(PKGTHEMEDIR)\" \
 	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
 	$(NULL)
 

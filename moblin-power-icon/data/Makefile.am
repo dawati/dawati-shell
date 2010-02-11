@@ -1,4 +1,6 @@
 
+SUBDIRS = theme
+
 autostart_src_files = moblin-power-icon.desktop.in.in
 autostart_in_files = moblin-power-icon.desktop.in
 #autostartdir = $(sysconfdir)/xdg/autostart

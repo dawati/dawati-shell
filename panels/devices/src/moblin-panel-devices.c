@@ -185,7 +185,7 @@ main (int     argc,
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (), MX_CACHE);
   mx_style_load_from_file (mx_style_get_default (),
-                           THEMEDIR "/panel.css", NULL);
+                           PKGTHEMEDIR "/panel.css", NULL);
 
   if (_standalone)
     {
