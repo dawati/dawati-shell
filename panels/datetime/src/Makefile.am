@@ -30,7 +30,9 @@ moblin_panel_datetime_SOURCES = moblin-panel-date-time.c	\
 				 mnp-alarms.c		\
 				 mnp-alarms.h		\
 				 mnp-alarm-tile.c	\
-				 mnp-alarm-tile.h
+				 mnp-alarm-tile.h	\
+				 mnp-alarm-dialog.c	\
+				 mnp-alarm-dialog.h
 
 
 servicedir = $(datadir)/dbus-1/services
