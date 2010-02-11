@@ -208,7 +208,6 @@ _set_avatar_if_present (AnerleyTpFeed *feed,
   const gchar *token;
   gchar *avatar_path = NULL;
   gboolean res = FALSE;
-  TpHandle handle;
 
   /* Only try and find an avatar file if we have an avatar token */
   token = tp_contact_get_avatar_token (contact);
@@ -227,7 +226,6 @@ _set_avatar_if_present (AnerleyTpFeed *feed,
       anerley_tp_item_set_avatar_path (item, avatar_path);
       res = TRUE;
     } else {
-      handle = tp_contact_get_handle (contact);
       res = FALSE;
     }
 

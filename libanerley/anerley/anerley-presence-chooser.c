@@ -132,7 +132,6 @@ _account_manager_presence_changed (TpAccountManager         *am,
     return;
 
   priv->presence = presence;
-  message = anerley_presence_chooser_get_default_message (presence);
 
   g_signal_handlers_block_by_func (combo, _combo_index_changed, NULL);
   switch (presence)
