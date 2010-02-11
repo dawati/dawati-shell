@@ -68,20 +68,21 @@ ClutterModel *
 mpd_folder_store_new (void)
 {
   ClutterModel *model;
-  GType         types[] = { G_TYPE_STRING, G_TYPE_STRING };
+  GType         types[] = { G_TYPE_STRING, G_TYPE_STRING , G_TYPE_STRING };
 
   model = g_object_new (MPD_TYPE_FOLDER_STORE, NULL);
 
   /* Column 0 ... URI
    * Column 1 ... Label or NULL */
-  clutter_model_set_types (model, 2, types);
+  clutter_model_set_types (model, 3, types);
 
   return model;
 }
 
 void
-mpt_folder_store_add_directory (MpdFolderStore *self,
-                                gchar const    *uri)
+mpt_folder_store_add_directory (MpdFolderStore  *self,
+                                gchar const     *uri,
+                                gchar const     *icon_path)
 {
   gchar *label;
 
@@ -92,6 +93,7 @@ mpt_folder_store_add_directory (MpdFolderStore *self,
   clutter_model_append (CLUTTER_MODEL (self),
                         0, uri,
                         1, label,
+                        2, icon_path,
                         -1);
 
   g_free (label);

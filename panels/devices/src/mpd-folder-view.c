@@ -102,6 +102,7 @@ mpd_folder_view_init (MpdFolderView *self)
   mx_item_view_set_factory (MX_ITEM_VIEW (self), MX_ITEM_FACTORY (self));
   mx_item_view_add_attribute (MX_ITEM_VIEW (self), "uri", 0);
   mx_item_view_add_attribute (MX_ITEM_VIEW (self), "label", 1);
+  mx_item_view_add_attribute (MX_ITEM_VIEW (self), "icon-path", 2);
 }
 
 ClutterActor *

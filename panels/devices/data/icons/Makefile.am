@@ -11,6 +11,7 @@ dist_icons_DATA = \
 	directory-documents.png \
 	directory-download.png \
 	directory-music.png \
+	directory-generic.png \
 	directory-pictures.png \
 	directory-videos.png \
 	$(NULL)

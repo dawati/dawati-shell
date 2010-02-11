@@ -43,6 +43,54 @@ typedef struct
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
+gchar *
+uri_from_special_dir (GUserDirectory directory)
+{
+  gchar const *path;
+
+  path = g_get_user_special_dir (directory);
+  g_return_val_if_fail (path, NULL);
+
+  return g_strdup_printf ("file://%s", path);
+}
+
+gchar *
+icon_path_from_special_dir (GUserDirectory directory)
+{
+  gchar *icon_path;
+  guint  i;
+
+  static const struct {
+    GUserDirectory   directory;
+    gchar const     *key;
+  } _map[] = {
+	  { G_USER_DIRECTORY_DOCUMENTS, "documents" },
+	  { G_USER_DIRECTORY_DOWNLOAD, "download" },
+	  { G_USER_DIRECTORY_MUSIC, "music" },
+	  { G_USER_DIRECTORY_PICTURES, "pictures" },
+	  { G_USER_DIRECTORY_VIDEOS, "videos" }
+  };
+
+  icon_path = NULL;
+  for (i = 0; i < G_N_ELEMENTS (_map); i++)
+  {
+    if (directory == _map[i].directory)
+    {
+      icon_path = g_strdup_printf ("%s/directory-%s.png",
+                                   ICONDIR,
+                                   _map[i].key);
+      break;
+    }
+  }
+
+  if (icon_path == NULL)
+  {
+    icon_path = g_strdup_printf ("%s/directory-generic.png", ICONDIR);
+  }
+
+  return icon_path;
+}
+
 static void
 _view_request_hide_cb (MpdFolderView  *folder_view,
                        MpdFolderPane  *self)
@@ -78,41 +126,29 @@ mpd_folder_pane_class_init (MpdFolderPaneClass *klass)
 static void
 mpd_folder_pane_init (MpdFolderPane *self)
 {
+  GUserDirectory directories[] = { G_USER_DIRECTORY_DOCUMENTS,
+                                   G_USER_DIRECTORY_DOWNLOAD,
+                                   G_USER_DIRECTORY_MUSIC,
+                                   G_USER_DIRECTORY_PICTURES,
+                                   G_USER_DIRECTORY_VIDEOS };
   ClutterModel  *store;
   ClutterActor  *label;
   ClutterActor  *view;
-  gchar         *uri;
+  guint          i;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
 
   store = mpd_folder_store_new ();
 
-  uri = g_strdup_printf ("file://%s",
-                         g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS));
-  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
-  g_free (uri);
-
-  uri = g_strdup_printf ("file://%s",
-                         g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD));
-  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
-  g_free (uri);
-
-  uri = g_strdup_printf ("file://%s",
-                         g_get_user_special_dir (G_USER_DIRECTORY_MUSIC));
-  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
-  g_free (uri);
-
-  uri = g_strdup_printf ("file://%s",
-                         g_get_user_special_dir (G_USER_DIRECTORY_PICTURES));
-  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
-  g_free (uri);
-
-  uri = g_strdup_printf ("file://%s",
-                         g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS));
-  mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri);
-  g_free (uri);
-
+  for (i = 0; i < G_N_ELEMENTS (directories); i++)
+  {
+    gchar *uri = uri_from_special_dir (directories[i]);
+    gchar *icon_path = icon_path_from_special_dir (directories[i]);
+    mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri, icon_path);
+    g_free (uri);
+    g_free (icon_path);
+  }
 
 #if 0 /* Not showing gtk-bookmarks for now. */
   filename = g_build_filename (g_get_home_dir (), ".gtk-bookmarks", NULL);

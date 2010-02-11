@@ -60,6 +60,13 @@ ClutterActor *
 mpd_folder_button_new     (void);
 
 gchar const *
+mpd_folder_button_get_icon_path (MpdFolderButton *self);
+
+void
+mpd_folder_button_set_icon_path (MpdFolderButton *self,
+                                 gchar const    *icon_path);
+
+gchar const *
 mpd_folder_button_get_uri (MpdFolderButton const  *self);
 
 void

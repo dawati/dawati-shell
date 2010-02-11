@@ -65,8 +65,9 @@ ClutterModel *
 mpd_folder_store_new (void);
 
 void
-mpt_folder_store_add_directory (MpdFolderStore *self,
-                                gchar const    *uri);
+mpt_folder_store_add_directory (MpdFolderStore  *self,
+                                gchar const     *uri,
+                                gchar const     *icon_path);
 
 gboolean
 mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
