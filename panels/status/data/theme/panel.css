@@ -111,3 +111,7 @@ MpsTweetCard.mps-tweet-card-first:active
   padding: 4px;
 }
 
+MpsFeedSwitcher
+{
+  padding: 0 8 0 8;
+}
