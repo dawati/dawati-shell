@@ -21,6 +21,7 @@
 
 
 #include "mnp-alarms.h"
+#include "mnp-alarm-tile.h"
 
 G_DEFINE_TYPE (MnpAlarms, mnp_alarms, MX_TYPE_BOX_LAYOUT)
 
@@ -78,11 +79,10 @@ mnp_alarms_construct (MnpAlarms *alarms)
   clutter_actor_set_name ((ClutterActor *)priv->left_tiles, "alarms-tile");
   mx_box_layout_set_vertical ((MxBoxLayout *)priv->left_tiles, FALSE);
   mx_box_layout_set_pack_start ((MxBoxLayout *)priv->left_tiles, FALSE);
-  clutter_actor_set_size (priv->left_tiles, 300, 100);
   mx_box_layout_set_spacing ((MxBoxLayout *)priv->left_tiles, 3);
 
   priv->right_tiles = mx_box_layout_new();
-  clutter_actor_set_size (priv->right_tiles, 100, 100);
+  clutter_actor_set_size (priv->right_tiles, 100, -1);
   clutter_actor_set_name ((ClutterActor *)priv->right_tiles, "new-alarm-tile");
   mx_box_layout_set_vertical ((MxBoxLayout *)priv->right_tiles, FALSE);
   mx_box_layout_set_pack_start ((MxBoxLayout *)priv->right_tiles, FALSE);
@@ -92,15 +92,37 @@ mnp_alarms_construct (MnpAlarms *alarms)
   clutter_container_child_set ((ClutterContainer *)alarms, priv->left_tiles,
                                    "x-fill", TRUE,
                                    "y-fill", TRUE,
+				   "expand", TRUE,
                                    NULL);
 
   clutter_container_add_actor ((ClutterContainer *)alarms, priv->right_tiles);
   clutter_container_child_set ((ClutterContainer *)alarms, priv->right_tiles,
                                    "x-fill", FALSE,
-                                   "y-fill", FALSE,
+                                   "y-fill", TRUE,
                                    NULL);
 	
   clutter_actor_set_size((ClutterActor *)alarms, 430, 100);
+
+  {
+	  ClutterActor *t1 = mnp_alarm_tile_new ();
+	  clutter_container_add_actor (priv->left_tiles, t1);
+  	  clutter_container_child_set ((ClutterContainer *)priv->left_tiles, t1,
+                                   "x-fill", FALSE,
+                                   "y-fill", TRUE,
+				   "expand", FALSE,
+                                   NULL);
+	  
+	  mnp_alarm_set_text (t1, "Mon - Fri", "7:00 pm");
+
+	  t1 = mnp_alarm_tile_new ();
+	  clutter_container_add_actor (priv->right_tiles, t1);
+clutter_container_child_set ((ClutterContainer *)priv->right_tiles, t1,
+                                   "x-fill", TRUE,
+                                   "y-fill", TRUE,
+				   "expand", TRUE,				   
+                                   NULL);	  
+	  mnp_alarm_set_text (t1, NULL, "New\nAlarm");
+  }
 }
 
 MnpAlarms*

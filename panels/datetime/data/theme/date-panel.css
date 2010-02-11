@@ -19,14 +19,14 @@
 
 *#alarms-tile
 {
-  padding: 4 4;	
+  padding: 2 2 2 2;	
   background-color: #7e7e7eff;
 }
 
 *#new-alarm-tile
 {
-  padding: 4 4;	
-  border-image: url('dp-scroll-view-bin-bg.png') 10;
+  padding: 2 2 2 2;
+  border-image: url('dp-scroll-view-bin-bg.png') 2 2 2 2;
 }
 
 *#mnp-tile-date-city
