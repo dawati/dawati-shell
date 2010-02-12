@@ -31,6 +31,8 @@
 #include "mnb-netpanel-bar.h"
 #include "mwb-utils.h"
 #include "mwb-ac-list.h"
+#include "chrome-profile-provider.h"
+#include "base/message_loop.h"
 
 G_DEFINE_TYPE (MnbNetpanelBar, mnb_netpanel_bar, MPL_TYPE_ENTRY)
 
@@ -355,24 +357,6 @@ static void
 mnb_netpanel_bar_go (MnbNetpanelBar *self, const gchar *url)
 {
   /* empty */
-}
-
-void
-mnb_netpanel_bar_set_dbcon (GObject *object, void *dbcon)
-{
-  MnbNetpanelBar *self = MNB_NETPANEL_BAR(object);
-  MnbNetpanelBarPrivate *priv = self->priv;
-
-  mwb_ac_list_db_stmt_prepare (MWB_AC_LIST (priv->ac_list), dbcon);
-}
-
-void
-mnb_netpanel_bar_clear_dbcon (GObject *object)
-{
-  MnbNetpanelBar *self = MNB_NETPANEL_BAR(object);
-  MnbNetpanelBarPrivate *priv = self->priv;
-
-  mwb_ac_list_db_stmt_finalize (MWB_AC_LIST (priv->ac_list));
 }
 
 static void

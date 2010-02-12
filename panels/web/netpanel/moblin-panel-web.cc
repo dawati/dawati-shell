@@ -25,8 +25,30 @@
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include "moblin-netbook-netpanel.h"
+#include "chrome-profile-provider.h"
 
 #include <config.h>
+
+// chrome header
+#include "app/app_paths.h"
+#include "app/resource_bundle.h"
+#include "base/at_exit.h"
+#include "base/basictypes.h"
+#include "base/file_path.h"
+#include "base/file_util.h"
+#include "base/i18n/icu_util.h"
+#include "base/message_loop.h"
+#include "base/path_service.h"
+#include "base/scoped_vector.h"
+#include "base/string_util.h"
+#include "base/command_line.h"
+#include "chrome/common/pref_service.h"
+#include "chrome/common/pref_names.h"
+#include "chrome/common/chrome_paths.h"
+#include "chrome/browser/browser_prefs.h"
+#include "chrome/browser/profile.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/browser_process_impl.h"
 
 static void
 _client_set_size_cb (MplPanelClient *client,
@@ -55,6 +77,10 @@ static GOptionEntry entries[] = {
   {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL}
 };
 
+#define CHROME_EXE_PATH "/usr/lib/chromium-browser"
+#define CHROME_BUNDLE_PATH CHROME_EXE_PATH
+#define CHROME_LOCALE_PATH CHROME_EXE_PATH "/locales"
+
 int
 main (int    argc,
       char **argv)
@@ -64,6 +90,27 @@ main (int    argc,
   MoblinNetbookNetpanel *netpanel;
   GOptionContext *context;
   GError *error = NULL;
+
+  // Init chrome environment variables
+  base::AtExitManager at_exit_manager;
+  CommandLine::Init(argc, argv);
+  CommandLine* cmd_line = CommandLine::ForCurrentProcess();
+
+  chrome::RegisterPathProvider();
+  app::RegisterPathProvider();
+
+  FilePath bundle_path(CHROME_BUNDLE_PATH);
+  FilePath locale_path(CHROME_LOCALE_PATH);
+  ResourceBundle::InitSharedInstance(L"en-US", locale_path);
+
+  scoped_ptr<BrowserProcessImpl> browser_process;
+  browser_process.reset(new BrowserProcessImpl(*cmd_line));
+  PrefService* local_state = browser_process->local_state();
+  local_state->RegisterStringPref(prefs::kApplicationLocale, L"");
+
+  // Initialize the prefs of the local state.
+  browser::RegisterLocalState(local_state);
+  g_browser_process->set_application_locale("en-US");
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);

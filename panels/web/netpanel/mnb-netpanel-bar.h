@@ -70,12 +70,9 @@ GType mnb_netpanel_bar_get_type (void);
 MxWidget *mnb_netpanel_bar_new (const gchar *label);
 
 void mnb_netpanel_bar_focus (MnbNetpanelBar *netpanel_bar);
+
 gboolean mnb_netpanel_bar_check_for_search (MnbNetpanelBar *netpanel_bar,
                                             const gchar *url);
-
-void mnb_netpanel_bar_set_dbcon (GObject *object, void *dbcon);
-
-void mnb_netpanel_bar_clear_dbcon (GObject *object);
 
 void mnb_netpanel_bar_button_press_cb(GObject         *obj,
                                       ClutterKeyEvent *event,

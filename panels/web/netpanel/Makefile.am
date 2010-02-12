@@ -4,9 +4,11 @@ AM_CPPFLAGS = \
 	$(GTK_CFLAGS) \
 	$(NETPANEL_CFLAGS) \
 	$(MPL_CFLAGS) \
+	$(CHROME_CFLAGS) \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/netpanel\" \
+	-fno-exceptions -fno-rtti \
 	-I$(top_srcdir)/common
 
 libexec_PROGRAMS = moblin-panel-web
@@ -17,6 +19,7 @@ moblin_panel_web_LDADD = \
 	$(GTK_LIBS) \
 	$(NETPANEL_LIBS) \
 	$(MPL_LIBS) \
+	$(CHROME_LIBS) \
 	$(top_builddir)/common/libcommon.a
 
 moblin_panel_web_SOURCES = \
@@ -26,7 +29,7 @@ moblin_panel_web_SOURCES = \
   mnb-netpanel-bar.cc        \
   mnb-netpanel-bar.h        \
   mnb-netpanel-scrollview.cc \
-  mnb-netpanel-scrollview.h
+  mnb-netpanel-scrollview.h 
 
 moblin_panel_web_DEPENDENCIES = \
   $(top_builddir)/common/libcommon.a
