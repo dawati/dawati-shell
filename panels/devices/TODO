@@ -2,11 +2,9 @@
 TODO
 ====
 
-* Rename toplevel "mobin-power-icon" to "power-icon".
+* Fix acpi to recognise moblin-power-icon (shutdown key and lid).
 * Share strings between panel-devices and power-icon.
-* Move global key handling to power-icon, fix acpi to respect it (lid too).
 * Port dalston battery notifications to power-icon.
-* Link power-icon only to what it really needs (startup time).
 * Implement keyboard navigation in the folder view.
 * Enable "All settings" button as soon as the unified control center shell is shipping.
 * The brightness tile is a compile-time option, off by default.
@@ -14,6 +12,9 @@ TODO
 Done
 ----
 
+* Link power-icon only to what it really needs (startup time).
+* Move global key handling to power-icon
+* Rename toplevel "mobin-power-icon" to "power-icon".
 * Implement separate battery icon (windowless panel) as discussed.
 * Create service files at configure time.
 * Look at Ross's screensaver bug.
