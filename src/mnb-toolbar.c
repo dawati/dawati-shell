@@ -208,6 +208,9 @@ struct _MnbToolbarPrivate
 
   MnbToolbarPanel *stubbed_panel; /* The panel for which we are showing stub */
 
+  gboolean button_click      : 1; /* Used to differentiate programmatic and
+                                   * manual button toggling.
+                                   */
   gboolean no_autoloading    : 1;
   gboolean shown             : 1;
   gboolean shown_myzone      : 1;
@@ -506,6 +509,49 @@ mnb_toolbar_hide_transition_completed_cb (ClutterAnimation *animation,
   clutter_actor_hide (actor);
 
   g_object_unref (actor);
+}
+
+/*
+ * Returns TRUE if windows other than docks and ORs are present.
+ */
+static gboolean
+mnb_toolbar_check_for_windows (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv   = toolbar->priv;
+  MetaScreen        *screen = mutter_plugin_get_screen (priv->plugin);
+  GList             *l;
+  gint               count = 0;
+  gint               max_allowed = 0;
+
+  if (mutter_plugin_debug_mode (priv->plugin))
+    {
+      /*
+       * The don't hide panel/toolbar feature is an absolute PITA to debug
+       * so if we are in debugging mode, increase the threshold to 1.
+       */
+
+      max_allowed = 1;
+    }
+
+  l = mutter_get_windows (screen);
+
+  while (l)
+    {
+      MutterWindow       *m    = l->data;
+      MetaCompWindowType  type = mutter_window_get_window_type (m);
+
+      if (!(type == META_COMP_WINDOW_DOCK    ||
+            type == META_COMP_WINDOW_DESKTOP ||
+            mutter_window_is_override_redirect (m)))
+        {
+          if (++count > max_allowed)
+            return TRUE;
+        }
+
+      l = l->next;
+    }
+
+  return FALSE;
 }
 
 void
@@ -927,6 +973,18 @@ mnb_toolbar_show_pending_panel (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   mnb_toolbar_start_panel_service (toolbar, tp);
 }
 
+static gboolean
+mnb_toolbar_button_button_release_cb (MnbToolbarButton   *button,
+                                      ClutterButtonEvent *event,
+                                      MnbToolbar         *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+
+  priv->button_click = TRUE;
+
+  return FALSE;
+}
+
 /*
  * Toolbar button click handler.
  *
@@ -941,6 +999,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
   MnbToolbarPrivate *priv    = toolbar->priv;
   gboolean           checked;
   GList             *l;
+  gboolean           button_click;
 
   static gboolean    recursion = FALSE;
 
@@ -949,7 +1008,25 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
 
   recursion = TRUE;
 
+  button_click = priv->button_click;
+  priv->button_click = FALSE;
+
   checked = mx_button_get_checked (button);
+
+  /*
+   * If the user clicked on a button to hide a panel, and there are no
+   * meaningful windows present, ignore the click.
+   *
+   * We differentiate here between a human click and a programmatic toggle,
+   * otherwise the button is left in wrong state, for example, when launching
+   * the first application.
+   */
+  if (button_click && !checked && !mnb_toolbar_check_for_windows (toolbar))
+    {
+      mx_button_set_checked (button, TRUE);
+      recursion = FALSE;
+      return;
+    }
 
   /*
    * Clear the autohiding flag -- if the user is clicking on the panel buttons
@@ -1940,9 +2017,15 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   mnb_toolbar_ensure_button_position (toolbar, tp);
 
   if (!tp->windowless)
-    g_signal_connect (button, "notify::checked",
-                      G_CALLBACK (mnb_toolbar_button_toggled_cb),
-                      toolbar);
+    {
+      g_signal_connect (button, "notify::checked",
+                        G_CALLBACK (mnb_toolbar_button_toggled_cb),
+                        toolbar);
+
+      g_signal_connect (button, "button-release-event",
+                        G_CALLBACK (mnb_toolbar_button_button_release_cb),
+                        toolbar);
+    }
   else
     g_signal_connect (button, "notify::checked",
                       G_CALLBACK (mnb_toolbar_windowless_button_toggled_cb),
@@ -2397,7 +2480,13 @@ mnb_toolbar_lowlight_button_press_cb (ClutterActor *lowlight,
       if (!panel || !MNB_IS_PANEL_OOP (panel))
         return FALSE;
 
-      mnb_panel_hide_with_toolbar (panel);
+      /*
+       * If there are no singificant windows, we do not hide the toolbar (we
+       * do not hide the panel either, the user must explicitely switch to a
+       * different panel).
+       */
+      if (mnb_toolbar_check_for_windows (toolbar))
+        mnb_panel_hide_with_toolbar (panel);
 
       return TRUE;
     }
@@ -2889,7 +2978,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
   if ((event->type == CLUTTER_LEAVE) &&
       (priv->waiting_for_panel_show ||
        priv->dont_autohide ||
-       mnb_toolbar_panels_showing (toolbar)))
+       mnb_toolbar_panels_showing (toolbar) ||
+       !mnb_toolbar_check_for_windows (toolbar)))
     {
       /* g_debug (G_STRLOC " leaving early (waiting %d, dont_autohide %d)", */
       /*          priv->waiting_for_panel, priv->dont_autohide); */
@@ -2995,7 +3085,15 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
       if (mnb_toolbar_in_transition (toolbar))
         return FALSE;
 
-      if (CLUTTER_ACTOR_IS_MAPPED (toolbar))
+      if (!CLUTTER_ACTOR_IS_MAPPED (toolbar))
+        return FALSE;
+
+      /*
+       * If there are no singificant windows, we do not hide the toolbar (we
+       * do not hide the panel either, the user must explicitely switch to a
+       * different panel).
+       */
+      if (mnb_toolbar_check_for_windows (toolbar))
         mnb_toolbar_hide (toolbar);
     }
 
