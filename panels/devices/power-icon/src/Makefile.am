@@ -23,6 +23,8 @@ moblin_power_icon_SOURCES = \
 	mpd-global-key.h \
 	mpd-idle-manager.c \
 	mpd-idle-manager.h \
+	mpd-lid-device.c \
+	mpd-lid-device.h \
 	mpd-shutdown-notification.c \
 	mpd-shutdown-notification.h \
 	$(NULL)
