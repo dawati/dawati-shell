@@ -39,6 +39,7 @@
 #include <mx/mx.h>
 
 #include <moblin-panel/mpl-panel-clutter.h>
+#include <moblin-panel/mpl-entry.h>
 #include <moblin-panel/mpl-panel-common.h>
 
 #include "mps-view-bridge.h"
@@ -178,7 +179,7 @@ _service_status_updated_cb (SwClient *service,
   if (success)
   {
     sw_client_view_refresh (priv->view);
-    mx_entry_set_text (MX_ENTRY (priv->entry), NULL);
+    mpl_entry_set_text (MPL_ENTRY (priv->entry), NULL);
   }
 }
 
@@ -311,13 +312,13 @@ _service_update_status_cb (SwClientService *service,
 }
 
 static void
-_update_button_clicked_cb (MxButton    *button,
+_update_button_clicked_cb (MplEntry    *entry,
                            MpsFeedPane *pane)
 {
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
   const gchar *status_message;
 
-  status_message = mx_entry_get_text (MX_ENTRY (priv->entry));
+  status_message = mpl_entry_get_text (MPL_ENTRY (priv->entry));
 
   sw_client_service_update_status (priv->service,
                                    _service_update_status_cb,
@@ -332,7 +333,7 @@ _entry_activate_cb (ClutterText *text,
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
   const gchar *status_message;
 
-  status_message = mx_entry_get_text (MX_ENTRY (priv->entry));
+  status_message = mpl_entry_get_text (MPL_ENTRY (priv->entry));
 
   sw_client_service_update_status (priv->service,
                                    _service_update_status_cb,
@@ -345,22 +346,20 @@ mps_feed_pane_init (MpsFeedPane *self)
 {
   MpsFeedPanePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tmp_text;
+  ClutterActor *entry;
 
   /* Actor creation */
-  priv->entry = mx_entry_new (NULL);
+  priv->entry = (ClutterActor *) mpl_entry_new (_("Update"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry),
                                "mps-status-entry");
-  mx_entry_set_hint_text (MX_ENTRY (priv->entry),
+  entry = (ClutterActor *)mpl_entry_get_mx_entry (MPL_ENTRY (priv->entry));
+  mx_entry_set_hint_text (MX_ENTRY (entry),
                           _("What's happening?"));
-  tmp_text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
+  tmp_text = mx_entry_get_clutter_text (MX_ENTRY (entry));
   g_signal_connect (tmp_text,
                     "activate",
                     (GCallback)_entry_activate_cb,
                     self);
-
-  priv->update_button = mx_button_new_with_label (_("Update"));
-  mx_stylable_set_style_class (MX_STYLABLE (priv->update_button),
-                               "mps-status-update-button");
 
   priv->update_hbox = mx_table_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->update_hbox),
@@ -392,15 +391,6 @@ mps_feed_pane_init (MpsFeedPane *self)
                                       priv->entry,
                                       0, 0,
                                       "x-expand", TRUE,
-                                      "x-fill", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
-
-  mx_table_add_actor_with_properties (MX_TABLE (priv->update_hbox),
-                                      priv->update_button,
-                                      0, 1,
-                                      "x-expand", FALSE,
                                       "x-fill", TRUE,
                                       "y-expand", FALSE,
                                       "y-fill", FALSE,
@@ -439,8 +429,8 @@ mps_feed_pane_init (MpsFeedPane *self)
                     priv->something_wrong_label);
 
   /* Signals */
-  g_signal_connect (priv->update_button,
-                    "clicked",
+  g_signal_connect (priv->entry,
+                    "button-clicked",
                     (GCallback)_update_button_clicked_cb,
                     self);
 

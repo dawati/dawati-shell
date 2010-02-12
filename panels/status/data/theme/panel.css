@@ -78,26 +78,21 @@ MpsTweetCard.mps-tweet-card-first:active
   font-family: Droid Sans;
 }
 
-*.mps-status-update-hbox
+*.mps-status-entry
 {
   border-image: url("status_entry_box.png") 4 4 4 4;
 }
 
-*.mps-status-entry
+*.mps-status-entry *.MplEntryEntry
 {
   font-size: 16pt;
   color: #595959ff;
   border-image:none;
 }
 
-*.mps-status-update-button,
-*.mps-status-update-button:hover,
-*.mps-status-update-button:active
+*.mps-status-entry *.MplEntryButton
 {
   color: #7dbe0cff;
-  font-size: 16pt;
-  border-image:none;
-  padding: 6;
 }
 
 *.mps-switcher-placeholder-label, *.mps-something-wrong-message
