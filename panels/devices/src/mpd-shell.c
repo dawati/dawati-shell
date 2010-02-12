@@ -58,8 +58,8 @@ _width_notify_cb (MpdShell    *self,
                   gpointer     user_data)
 {
   MpdShellPrivate *priv = GET_PRIVATE (self);
-  gfloat    shell_width;
-  gfloat    folder_pane_width;
+  float     shell_width;
+  float     folder_pane_width;
 
   shell_width = clutter_actor_get_width (CLUTTER_ACTOR (self));
   folder_pane_width = shell_width - 2 * MPD_SHELL_PADDING

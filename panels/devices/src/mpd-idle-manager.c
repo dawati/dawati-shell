@@ -97,7 +97,7 @@ static void
 _set_suspend_idle_alarm (MpdIdleManager *manager)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (manager);
-  gint suspend_idle_time_minutes = -1;
+  int suspend_idle_time_minutes = -1;
   GError *error = NULL;
 
   suspend_idle_time_minutes =

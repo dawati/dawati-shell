@@ -42,11 +42,11 @@ static void
 update (MpdBatteryTile *self)
 {
   MpdBatteryTilePrivate *priv = GET_PRIVATE (self);
-  gchar const           *icon_file = NULL;
-  gchar                 *description = NULL;
+  char const            *icon_file = NULL;
+  char                  *description = NULL;
   GError                *error = NULL;
   MpdBatteryDeviceState  state;
-  gint                   percentage;
+  int                    percentage;
 
   state = mpd_battery_device_get_state (priv->device);
   percentage = mpd_battery_device_get_percentage (priv->device);

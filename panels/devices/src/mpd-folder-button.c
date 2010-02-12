@@ -23,12 +23,12 @@
 
 /* Overriding the button's "label" property. */
 
-static gchar const *
+static char const *
 mpd_folder_button_get_label (MpdFolderButton *self);
 
 static void
 mpd_folder_button_set_label (MpdFolderButton  *self,
-                             gchar const      *label);
+                             char const       *label);
 
 G_DEFINE_TYPE (MpdFolderButton, mpd_folder_button, MX_TYPE_BUTTON)
 
@@ -50,8 +50,8 @@ typedef struct
   ClutterActor  *icon;
   ClutterActor  *label;
 
-  gchar *icon_path;
-  gchar *uri;
+  char *icon_path;
+  char *uri;
 } MpdFolderButtonPrivate;
 
 static void
@@ -204,7 +204,7 @@ mpd_folder_button_new (void)
   return g_object_new (MPD_TYPE_FOLDER_BUTTON, NULL);
 }
 
-gchar const *
+char const *
 mpd_folder_button_get_icon_path (MpdFolderButton *self)
 {
   MpdFolderButtonPrivate *priv = GET_PRIVATE (self);
@@ -216,7 +216,7 @@ mpd_folder_button_get_icon_path (MpdFolderButton *self)
 
 void
 mpd_folder_button_set_icon_path (MpdFolderButton *self,
-                                 gchar const     *icon_path)
+                                 char const      *icon_path)
 {
   MpdFolderButtonPrivate *priv = GET_PRIVATE (self);
 
@@ -247,7 +247,7 @@ mpd_folder_button_set_icon_path (MpdFolderButton *self,
   }
 }
 
-static gchar const *
+static char const *
 mpd_folder_button_get_label (MpdFolderButton *self)
 {
   MpdFolderButtonPrivate *priv = GET_PRIVATE (self);
@@ -259,7 +259,7 @@ mpd_folder_button_get_label (MpdFolderButton *self)
 
 static void
 mpd_folder_button_set_label (MpdFolderButton  *self,
-                             gchar const      *text)
+                             char const       *text)
 {
   MpdFolderButtonPrivate *priv = GET_PRIVATE (self);
 
@@ -273,7 +273,7 @@ mpd_folder_button_set_label (MpdFolderButton  *self,
   }
 }
 
-gchar const *
+char const *
 mpd_folder_button_get_uri (MpdFolderButton const *self)
 {
   MpdFolderButtonPrivate *priv = GET_PRIVATE (self);
@@ -285,7 +285,7 @@ mpd_folder_button_get_uri (MpdFolderButton const *self)
 
 void
 mpd_folder_button_set_uri (MpdFolderButton  *self,
-                           gchar const      *uri)
+                           char const       *uri)
 {
   MpdFolderButtonPrivate *priv = GET_PRIVATE (self);
 

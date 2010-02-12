@@ -43,10 +43,10 @@ typedef struct
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-gchar *
+char *
 uri_from_special_dir (GUserDirectory directory)
 {
-  gchar const *path;
+  char const *path;
 
   path = g_get_user_special_dir (directory);
   g_return_val_if_fail (path, NULL);
@@ -54,15 +54,15 @@ uri_from_special_dir (GUserDirectory directory)
   return g_strdup_printf ("file://%s", path);
 }
 
-gchar *
+char *
 icon_path_from_special_dir (GUserDirectory directory)
 {
-  gchar *icon_path;
-  guint  i;
+  char *icon_path;
+  guint i;
 
   static const struct {
     GUserDirectory   directory;
-    gchar const     *key;
+    char const      *key;
   } _map[] = {
 	  { G_USER_DIRECTORY_DOCUMENTS, "documents" },
 	  { G_USER_DIRECTORY_DOWNLOAD, "download" },
@@ -143,8 +143,8 @@ mpd_folder_pane_init (MpdFolderPane *self)
 
   for (i = 0; i < G_N_ELEMENTS (directories); i++)
   {
-    gchar *uri = uri_from_special_dir (directories[i]);
-    gchar *icon_path = icon_path_from_special_dir (directories[i]);
+    char *uri = uri_from_special_dir (directories[i]);
+    char *icon_path = icon_path_from_special_dir (directories[i]);
     mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri, icon_path);
     g_free (uri);
     g_free (icon_path);

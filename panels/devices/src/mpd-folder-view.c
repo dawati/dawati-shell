@@ -53,8 +53,8 @@ static void
 _folder_button_clicked_cb (MpdFolderButton  *button,
                            MpdFolderView    *self)
 {
-  gchar const *uri;
-  gchar       *command_line;
+  char const  *uri;
+  char        *command_line;
   GError      *error = NULL;
 
   uri = mpd_folder_button_get_uri (button);

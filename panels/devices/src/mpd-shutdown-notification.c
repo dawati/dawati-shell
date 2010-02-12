@@ -44,7 +44,7 @@ static guint _signals[LAST_SIGNAL] = { 0, };
 
 static void
 _notification_shutdown_cb (MpdShutdownNotification  *self,
-                           gchar                    *action,
+                           char                     *action,
                            gpointer                  userdata)
 {
   g_debug ("%s()", __FUNCTION__);
@@ -68,8 +68,8 @@ static gboolean
 _timeout_cb (MpdShutdownNotification *self)
 {
   MpdShutdownNotificationPrivate *priv = GET_PRIVATE (self);
-  gchar const *template = _("If you don't decide I'll turn off in %d seconds");
-  gchar       *text = NULL;
+  char const  *template = _("If you don't decide I'll turn off in %d seconds");
+  char        *text = NULL;
   gboolean     proceed;
 
   g_debug ("%s() %d", __FUNCTION__, priv->countdown);
@@ -176,8 +176,8 @@ mpd_shutdown_notification_init (MpdShutdownNotification *self)
 }
 
 NotifyNotification *
-mpd_shutdown_notification_new (gchar const *summary,
-                               gchar const *body)
+mpd_shutdown_notification_new (char const *summary,
+                               char const *body)
 {
   return g_object_new (MPD_TYPE_SHUTDOWN_NOTIFICATION,
                        "summary", summary,

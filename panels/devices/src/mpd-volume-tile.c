@@ -317,8 +317,8 @@ static void
 update_volume_slider (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  gdouble volume;
-  gdouble progress;
+  double volume;
+  double progress;
 
   g_signal_handlers_disconnect_by_func (priv->volume_slider,
                                         _volume_slider_progress_notify_cb,
@@ -354,7 +354,7 @@ static void
 update_stream_volume (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  gdouble progress;
+  double progress;
   pa_volume_t volume;
 
   g_signal_handlers_disconnect_by_func (priv->sink,

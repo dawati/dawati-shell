@@ -62,7 +62,7 @@ window_grab_key (GdkWindow   *window,
 {
   Display *dpy = GDK_DISPLAY ();
   guint    mask = AnyModifier;
-  gint     ret;
+  int      ret;
 
   gdk_error_trap_push ();
 

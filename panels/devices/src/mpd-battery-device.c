@@ -46,7 +46,7 @@ typedef struct
 
 static void
 mpd_battery_device_set_percentage (MpdBatteryDevice       *self,
-                                   gfloat                  percentage);
+                                   float                   percentage);
 static void
 mpd_battery_device_set_state      (MpdBatteryDevice       *self,
                                    MpdBatteryDeviceState   state);
@@ -227,12 +227,12 @@ mpd_battery_device_new (void)
   return g_object_new (MPD_TYPE_BATTERY_DEVICE, NULL);
 }
 
-gfloat
+float
 mpd_battery_device_get_percentage (MpdBatteryDevice *self)
 {
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
-  gdouble energy;
-  gdouble energy_full;
+  double energy;
+  double energy_full;
 
   g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self), -1.);
 
@@ -245,12 +245,12 @@ mpd_battery_device_get_percentage (MpdBatteryDevice *self)
                 "energy-full", &energy_full,
                 NULL);
 
-  return (gfloat) (energy / energy_full * 100);
+  return (float ) (energy / energy_full * 100);
 }
 
 static void
 mpd_battery_device_set_percentage (MpdBatteryDevice *self,
-                                   gfloat            percentage)
+                                   float             percentage)
 {
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
 
@@ -316,7 +316,7 @@ mpd_battery_device_set_state (MpdBatteryDevice       *self,
   }
 }
 
-gchar const *
+char const *
 mpd_battery_device_get_state_text (MpdBatteryDevice *self)
 {
   g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self), NULL);

@@ -81,10 +81,10 @@ mpd_folder_store_new (void)
 
 void
 mpt_folder_store_add_directory (MpdFolderStore  *self,
-                                gchar const     *uri,
-                                gchar const     *icon_path)
+                                char const      *uri,
+                                char const      *icon_path)
 {
-  gchar *label;
+  char *label;
 
   g_return_if_fail (uri);
 
@@ -101,10 +101,10 @@ mpt_folder_store_add_directory (MpdFolderStore  *self,
 
 gboolean
 mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
-                                      gchar const      *filename,
+                                      char const       *filename,
                                       GError          **error)
 {
-  gchar   *contents = NULL;
+  char    *contents = NULL;
   gsize    length = 0;
 
   /* Load file. */
@@ -129,16 +129,16 @@ mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
 
   if (contents)
   {
-    gchar **lines = g_strsplit (contents, "\n", -1);
-    gchar **iter = lines;
+    char **lines = g_strsplit (contents, "\n", -1);
+    char **iter = lines;
 
     while (*iter)
     {
-      gchar **line = g_strsplit (*iter, " ", 2);
+      char **line = g_strsplit (*iter, " ", 2);
       if (line && line[0])
       {
-        const gchar *uri = line[0];
-        gchar       *label = NULL;
+        const char  *uri = line[0];
+        char        *label = NULL;
 
         if (line[1])
           label = g_strdup (line[1]);

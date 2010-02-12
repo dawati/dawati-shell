@@ -31,10 +31,10 @@ static void
 update (MpdBatteryDevice  *battery,
         MplPanelClient    *client)
 {
-  gchar const           *button_style = NULL;
-  gchar                 *description = NULL;
+  char const            *button_style = NULL;
+  char                  *description = NULL;
   MpdBatteryDeviceState  state;
-  gint                   percentage;
+  int                    percentage;
 
   state = mpd_battery_device_get_state (battery);
   percentage = mpd_battery_device_get_percentage (battery);

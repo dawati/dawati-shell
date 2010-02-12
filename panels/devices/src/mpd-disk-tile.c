@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdint.h>
 #include <glib/gi18n.h>
 #include "mpd-disk-device.h"
 #include "mpd-disk-tile.h"
@@ -41,11 +42,11 @@ static void
 update (MpdDiskTile *self)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
-  gchar   *text;
-  gchar   *size_text;
-  guint64  size;
-  guint64  available_size;
-  guint    percentage;
+  char      *text;
+  char      *size_text;
+  uint64_t   size;
+  uint64_t   available_size;
+  guint      percentage;
 
   g_object_get (priv->disk,
                 "size", &size,
