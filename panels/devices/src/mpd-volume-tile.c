@@ -19,6 +19,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <glib/gi18n.h>
 #include <gvc/gvc-mixer-control.h>
 #include "mpd-volume-tile.h"
@@ -199,7 +200,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   ClutterActor  *mute_box;
   ClutterActor  *mute_label;
 
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
+  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
   label = mx_label_new (_("Netbook volume"));
@@ -214,17 +215,17 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (mute_box), 6);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), mute_box);
   clutter_container_child_set (CLUTTER_CONTAINER (self), mute_box,
-                               "expand", FALSE,
+                               "expand", false,
                                "x-align", MX_ALIGN_END,
-                               "x-fill", FALSE,
+                               "x-fill", false,
                                NULL);
 
   mute_label = mx_label_new (_("Mute"));
   clutter_container_add_actor (CLUTTER_CONTAINER (mute_box), mute_label);
   clutter_container_child_set (CLUTTER_CONTAINER (mute_box), mute_label,
-                               "expand", FALSE,
+                               "expand", false,
                                "y-align", MX_ALIGN_MIDDLE,
-                               "y-fill", FALSE,
+                               "y-fill", false,
                                NULL);
 
   priv->mute_toggle = mx_toggle_new ();
@@ -299,7 +300,7 @@ static void
 update_mute_toggle (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  gboolean is_muted;
+  bool is_muted;
 
   g_signal_handlers_disconnect_by_func (priv->mute_toggle,
                                         _mute_toggle_notify_cb,
@@ -336,7 +337,7 @@ static void
 update_stream_mute (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  gboolean is_muted;
+  bool is_muted;
 
   g_signal_handlers_disconnect_by_func (priv->sink,
                                         _stream_is_muted_notify_cb,

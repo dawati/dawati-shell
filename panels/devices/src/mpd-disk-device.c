@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/statvfs.h>
@@ -65,11 +66,11 @@ update (MpdDiskDevice *self)
   }
 }
 
-static gboolean
+static bool
 _update_timeout_cb (MpdDiskDevice *self)
 {
   update (self);
-  return TRUE;
+  return true;
 }
 
 static void

@@ -19,6 +19,7 @@
  *
  */
 
+#include <stdbool.h>
 #include <locale.h>
 #include <stdlib.h>
 #include <X11/XF86keysym.h>
@@ -196,7 +197,7 @@ main (int    argc,
                                      _("battery"),
                                      PKGTHEMEDIR "/power-icon.css",
                                      "unknown",
-                                     TRUE);
+                                     true);
 
   battery = mpd_battery_device_new ();
   g_signal_connect (battery, "notify::percentage",

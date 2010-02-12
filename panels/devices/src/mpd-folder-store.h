@@ -21,6 +21,7 @@
 #ifndef MPD_FOLDER_STORE_H
 #define MPD_FOLDER_STORE_H
 
+#include <stdbool.h>
 #include <glib-object.h>
 #include <clutter/clutter.h>
 
@@ -69,7 +70,7 @@ mpt_folder_store_add_directory (MpdFolderStore  *self,
                                 char const      *uri,
                                 char const      *icon_path);
 
-gboolean
+bool
 mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
                                       char const       *filename,
                                       GError          **error);

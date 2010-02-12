@@ -211,7 +211,7 @@ mpd_idle_manager_new (void)
   return g_object_new (MPD_TYPE_IDLE_MANAGER, NULL);
 }
 
-gboolean
+bool
 mpd_idle_manager_lock_screen (MpdIdleManager   *self,
                               GError          **error)
 {
@@ -221,7 +221,7 @@ mpd_idle_manager_lock_screen (MpdIdleManager   *self,
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, error);
   if (error && *error)
   {
-    return FALSE;
+    return false;
   }
 
   proxy = dbus_g_proxy_new_for_name (conn,
@@ -232,28 +232,28 @@ mpd_idle_manager_lock_screen (MpdIdleManager   *self,
   dbus_g_proxy_call_no_reply (proxy, "Lock", G_TYPE_INVALID);
 
   g_object_unref (proxy);
-  return TRUE;
+  return true;
 }
 
-gboolean
+bool
 mpd_idle_manager_suspend (MpdIdleManager   *self,
                           GError          **error)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
-  gboolean ret;
+  bool ret;
 
   ret = mpd_idle_manager_lock_screen (self, error);
   if (!ret || (error && *error))
   {
-    return FALSE;
+    return false;
   }
 
   ret = dkp_client_suspend (priv->power_client, error);
   if (!ret || (error && *error))
   {
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 

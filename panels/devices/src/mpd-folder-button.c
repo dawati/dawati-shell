@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include "mpd-folder-button.h"
 #include "config.h"
 
@@ -169,19 +170,19 @@ mpd_folder_button_init (MpdFolderButton *self)
 
   /* Box */
   vbox = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), TRUE);
+  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), true);
   mx_bin_set_child (MX_BIN (self), vbox);
 
   /* Icon */
   priv->icon = clutter_texture_new ();
-  clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->icon), TRUE);
+  clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->icon), true);
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->icon);
   clutter_container_child_set (CLUTTER_CONTAINER (vbox), priv->icon,
-                               "expand", FALSE,
+                               "expand", false,
                                "x-align", MX_ALIGN_MIDDLE,
-                               "x-fill", FALSE,
+                               "x-fill", false,
                                "y-align", MX_ALIGN_START,
-                               "y-fill", FALSE,
+                               "y-fill", false,
                                NULL);
 
   /* Label */
@@ -190,11 +191,11 @@ mpd_folder_button_init (MpdFolderButton *self)
   clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD_CHAR);
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->label);
   clutter_container_child_set (CLUTTER_CONTAINER (vbox), priv->label,
-                               "expand", FALSE,
+                               "expand", false,
                                "x-align", MX_ALIGN_MIDDLE,
-                               "x-fill", FALSE,
+                               "x-fill", false,
                                "y-align", MX_ALIGN_START,
-                               "y-fill", FALSE,
+                               "y-fill", false,
                                NULL);
 }
 

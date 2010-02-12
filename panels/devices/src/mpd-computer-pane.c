@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <glib/gi18n.h>
 #include "mpd-battery-tile.h"
 #include "mpd-disk-tile.h"
@@ -91,7 +92,7 @@ mpd_computer_pane_init (MpdComputerPane *self)
 /*  ClutterActor *button; */
   ClutterActor *tile;
 
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
+  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
 
   tile = mpd_battery_tile_new ();

@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include "mpd-folder-button.h"
 #include "mpd-folder-view.h"
 #include "config.h"
@@ -130,12 +131,12 @@ _item_factory_create (MxItemFactory *factory)
 static void
 _item_factory_iface_init (MxItemFactoryIface *iface)
 {
-  static gboolean _is_initialized = FALSE;
+  static bool _is_initialized = false;
 
   if (!_is_initialized)
   {
     iface->create = _item_factory_create;
-    _is_initialized = TRUE;
+    _is_initialized = true;
   }
 }
 

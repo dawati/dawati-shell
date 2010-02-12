@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <glib/gi18n.h>
 #include "mpd-battery-device.h"
 #include "mpd-battery-tile.h"
@@ -148,17 +149,17 @@ mpd_battery_tile_init (MpdBatteryTile *self)
 
   priv->label = mx_label_new ("");
   text = mx_label_get_clutter_text (MX_LABEL (priv->label));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (text), TRUE);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (text), true);
   mx_table_add_actor_with_properties (MX_TABLE (self), priv->label,
                                       0, 0,
                                       "y-align", 0.5,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
+                                      "y-expand", false,
+                                      "y-fill", false,
                                       NULL);
 
   priv->icon = clutter_texture_new ();
   /* Seems not to work huh
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (priv->icon), TRUE); */
+  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (priv->icon), true); */
   clutter_actor_set_height (priv->icon, 65.);
   clutter_actor_set_width (priv->icon, 65.);
   mx_table_add_actor (MX_TABLE (self), priv->icon, 0, 1);

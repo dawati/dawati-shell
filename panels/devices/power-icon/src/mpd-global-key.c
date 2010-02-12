@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <gdk/gdkx.h>
 #include "mpd-global-key.h"
 #include "config.h"
@@ -55,7 +56,7 @@ typedef struct
   guint key_code;
 } MpdGlobalKeyPrivate;
 
-static gboolean
+static bool
 window_grab_key (GdkWindow   *window,
                  guint        key_code,
                  GError     **error)
@@ -77,7 +78,7 @@ window_grab_key (GdkWindow   *window,
                             G_STRLOC, key_code);
     gdk_flush ();
     gdk_error_trap_pop ();
-    return FALSE;
+    return false;
   }
 
   /* grab the lock key if possible */
@@ -92,12 +93,12 @@ window_grab_key (GdkWindow   *window,
                             G_STRLOC, key_code);
     gdk_flush ();
     gdk_error_trap_pop ();
-    return FALSE;
+    return false;
   }
 
   gdk_flush ();
   gdk_error_trap_pop ();
-  return TRUE;
+  return true;
 }
 
 static GdkFilterReturn

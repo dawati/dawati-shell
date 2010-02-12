@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <glib/gi18n.h>
 #include "mpd-disk-device.h"
@@ -101,7 +102,7 @@ mpd_disk_tile_init (MpdDiskTile *self)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
 
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
+  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
   priv->disk = mpd_disk_device_new ();
@@ -116,8 +117,8 @@ mpd_disk_tile_init (MpdDiskTile *self)
   priv->meter = mx_progress_bar_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->meter);
   clutter_container_child_set (CLUTTER_CONTAINER (self), priv->meter,
-                               "expand", TRUE,
-                               "x-fill", TRUE,
+                               "expand", true,
+                               "x-fill", true,
                                NULL);
 
   update (self);

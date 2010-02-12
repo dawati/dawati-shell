@@ -98,7 +98,7 @@ mpt_folder_store_add_directory (MpdFolderStore  *self,
   g_free (label);
 }
 
-gboolean
+bool
 mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
                                       char const       *filename,
                                       GError          **error)
@@ -110,7 +110,7 @@ mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
 
   if (!g_file_get_contents (filename, &contents, &length, error))
   {
-    return FALSE;
+    return false;
   }
 
   if (length == 0)
@@ -121,7 +121,7 @@ mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
                             "%s : Bookmarks file '%s' is empty",
                             G_STRLOC,
                             filename);
-    return FALSE;
+    return false;
   }
 
   /* Parse content. */
@@ -158,7 +158,7 @@ mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
     g_free (contents);
   }
 
-  return TRUE;
+  return true;
 }
 
 void

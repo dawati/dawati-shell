@@ -136,7 +136,7 @@ mpd_folder_pane_init (MpdFolderPane *self)
   ClutterActor  *view;
   guint          i;
 
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), TRUE);
+  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
 
   store = mpd_folder_store_new ();
@@ -169,8 +169,8 @@ mpd_folder_pane_init (MpdFolderPane *self)
 
   view = mpd_folder_view_new ();
   mx_item_view_set_model (MX_ITEM_VIEW (view), store);
-  mx_grid_set_homogenous_rows (MX_GRID (view), TRUE);
-  mx_grid_set_homogenous_columns (MX_GRID (view), TRUE);
+  mx_grid_set_homogenous_rows (MX_GRID (view), true);
+  mx_grid_set_homogenous_columns (MX_GRID (view), true);
   g_signal_connect (view, "request-hide",
                     G_CALLBACK (_view_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), view);

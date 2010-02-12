@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <locale.h>
 #include <stdlib.h>
 #include <clutter/clutter.h>
@@ -70,7 +71,7 @@ int
 main (int     argc,
       char  **argv)
 {
-  static gboolean _standalone = FALSE;
+  static bool _standalone = false;
   static GOptionEntry _options[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone,
       "Do not embed into the mutter-moblin panel", NULL },
@@ -95,7 +96,7 @@ main (int     argc,
       g_critical ("%s %s", G_STRLOC, error->message);
       g_critical ("Starting in standalone mode.");
       g_clear_error (&error);
-      _standalone = TRUE;
+      _standalone = true;
     }
   g_option_context_free (context);
 
@@ -139,7 +140,7 @@ main (int     argc,
                                                      _("devices"),
                                                      /*THEMEDIR "/toolbar-button.css" */ NULL,
                                                      "devices-button",
-                                                     TRUE);
+                                                     true);
 
       mpl_panel_client_set_height_request (panel, MPD_SHELL_HEIGHT);
 

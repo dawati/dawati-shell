@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <glib/gi18n.h>
 #include "mpd-shutdown-notification.h"
 #include "config.h"
@@ -64,13 +65,13 @@ _notification_closed_cb (MpdShutdownNotification *self,
   priv->timeout_id = 0;
 }
 
-static gboolean
+static bool
 _timeout_cb (MpdShutdownNotification *self)
 {
   MpdShutdownNotificationPrivate *priv = GET_PRIVATE (self);
   char const  *template = _("If you don't decide I'll turn off in %d seconds");
   char        *text = NULL;
-  gboolean     proceed;
+  bool         proceed;
 
   g_debug ("%s() %d", __FUNCTION__, priv->countdown);
 
@@ -79,24 +80,24 @@ _timeout_cb (MpdShutdownNotification *self)
     /* Count down in steps of five. */
     priv->countdown -= 5;
     text = g_strdup_printf (template, priv->countdown);
-    proceed = TRUE;
+    proceed = true;
 
     if (priv->countdown == 5) {
       /* Switch to per-second steps. */
       priv->timeout_id = g_timeout_add_seconds (1,
                                                 (GSourceFunc) _timeout_cb,
                                                 self);
-      proceed = FALSE;
+      proceed = false;
     }
 
   } else if (priv->countdown > 0) {
     /* Count down in per-second steps. */
     priv->countdown--;
     text = g_strdup_printf (template, priv->countdown);
-    proceed = TRUE;
+    proceed = true;
   } else {
     g_signal_emit_by_name (self, "shutdown");
-    proceed = FALSE;
+    proceed = false;
   }
 
   if (text)

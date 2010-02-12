@@ -22,6 +22,7 @@
 #ifndef MPD_IDLE_MANAGER_H
 #define MPD_IDLE_MANAGER_H
 
+#include <stdbool.h>
 #include <glib-object.h>
 
 G_BEGIN_DECLS
@@ -61,11 +62,11 @@ mpd_idle_manager_new (void);
 
 /* For testing purpose only. */
 
-gboolean
+bool
 mpd_idle_manager_lock_screen (MpdIdleManager   *self,
                               GError          **error);
 
-gboolean
+bool
 mpd_idle_manager_suspend (MpdIdleManager   *self,
                           GError          **error);
 

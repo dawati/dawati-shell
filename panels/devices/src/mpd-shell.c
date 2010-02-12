@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include "mpd-computer-pane.h"
 #include "mpd-folder-pane.h"
 #include "mpd-shell.h"
@@ -106,9 +107,9 @@ mpd_shell_init (MpdShell *self)
                     G_CALLBACK (_pane_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->folder_pane);
   clutter_container_child_set (CLUTTER_CONTAINER (self), priv->folder_pane,
-                               "expand", TRUE,
+                               "expand", true,
                                "x-align", MX_ALIGN_START,
-                               "x-fill", TRUE,
+                               "x-fill", true,
                                NULL);
 
   priv->computer_pane = mpd_computer_pane_new ();
