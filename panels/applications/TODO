@@ -2,6 +2,22 @@
 TODO
 ====
 
+(17:14:10) pgc: robsta, the autoscroll of categories on click broke
+(17:14:31) pgc: robsta, only noticed this afternoon
+(17:14:52) robsta: pgc: works as specified here :-/
+(17:15:48) robsta: *advertised
+(17:17:25) bob left the room.
+(17:18:25) pgc: robsta, http://www.devel.co.uk/images/tmp/apps-panel.png
+(17:19:08) pgc: robsta, it works sometimes but not always
+(17:19:44) robsta: pgc: i'll try to reproduce with as many fav apps as you have
+
+(17:20:17) pgc: robsta, also it remembers which category was selected but doesn't focus it, when you open / close
+(17:20:44) robsta: pgc: not sure i'm following?
+(17:21:05) robsta: pgc: you mean highlight the first item in it?
+(17:21:06) bob entered the room.
+(17:21:19) pgc: robsta, open settings, close the panel, open the panel, scroll down, settings is still opened
+(17:21:51) robsta: ah that sounds to be a regression
+
 Done
 ----
 
