@@ -17,6 +17,6 @@ X-Moblin-Panel-Optional=false
 X-Moblin-Panel-Stylesheet=@PKGTHEMEDIR@/power-icon/power-icon.css
 X-Moblin-Panel-Type=applet
 X-Moblin-Panel-Windowless=true
-X-Moblin-Priority=Late
+X-Moblin-Priority=High
 X-Moblin-Service=org.moblin.UX.Shell.Panels.power
 
