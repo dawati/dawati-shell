@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"POT-Creation-Date: 2010-02-11 23:57+0000\n"
 "PO-Revision-Date: 2009-10-14 21:13+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -16,23 +16,31 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "zonas"
-
-#: ../src/moblin-netbook.c:621
+#: ../src/moblin-netbook.c:809
 msgid "Moblin Netbook Effects"
 msgstr "Efectos de Moblin Netbook"
 
-#: ../src/moblin-netbook.c:625
+#: ../src/moblin-netbook.c:813
 msgid "Effects for Moblin Netbooks"
 msgstr "Efectos para os netbooks Moblin"
+
+#: ../src/moblin-netbook.c:2848
+msgid "Activate"
+msgstr "Activar"
+
+#: ../src/moblin-netbook.c:2862
+msgid "Unknown window"
+msgstr "Xanela descoñecida"
+
+#: ../src/moblin-netbook.c:2864
+msgid "Is asking for your attention."
+msgstr "Está a chamar pola súa atención"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../src/mnb-toolbar.c:668
+#: ../src/mnb-toolbar.c:752
 msgid "%l:%M %P"
 msgstr "%H.%M"
 
@@ -40,7 +48,7 @@ msgstr "%H.%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../src/mnb-toolbar.c:678
+#: ../src/mnb-toolbar.c:762
 msgid "%B %e, %Y"
 msgstr "%e de %B de %Y"
 
@@ -52,26 +60,27 @@ msgstr "Esquecer"
 msgid "Dismiss All"
 msgstr "Esquecelo todo"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "Aínda non hai zonas"
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determina a orde dos paneis da barra de ferramentas."
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Os aplicativos que estea a utilizar aparecen aquí. Pode alternar entre elas e organizalas como lle pete."
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Orde dos paneis da barra de ferramentas"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Non hai aplicacións nesta zona"
+#: ../src/mnb-toolbar.c:871
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Desculpas; %s está danado"
 
-#: ../src/moblin-netbook.c:2543
-msgid "Unknown window"
-msgstr "Xanela descoñecida"
+#~ msgid "zones"
+#~ msgstr "zonas"
 
-#: ../src/moblin-netbook.c:2529
-msgid "Activate"
-msgstr "Activar"
+#~ msgid "No Zones yet"
+#~ msgstr "Aínda non hai zonas"
 
-#: ../src/moblin-netbook.c:2545
-msgid "Is asking for your attention."
-msgstr "Está a chamar pola súa atención"
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Os aplicativos que estea a utilizar aparecen aquí. Pode alternar entre elas e organizalas como lle pete."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "Non hai aplicacións nesta zona"
