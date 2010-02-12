@@ -83,17 +83,17 @@ update (MpdBatteryTile *self)
   if (!icon_file)
   {
     if (percentage < 0)
-      icon_file = ICONDIR "dalston-power-missing.png";
+      icon_file = ICONDIR "/dalston-power-missing.png";
     else if (percentage < 10)
-      icon_file = ICONDIR "dalston-power-0.png";
+      icon_file = ICONDIR "/dalston-power-0.png";
     else if (percentage < 30)
-      icon_file = ICONDIR "dalston-power-25.png";
+      icon_file = ICONDIR "/dalston-power-25.png";
     else if (percentage < 60)
-      icon_file = ICONDIR "dalston-power-50.png";
+      icon_file = ICONDIR "/dalston-power-50.png";
     else if (percentage < 90)
-      icon_file = ICONDIR "dalston-power-75.png";
+      icon_file = ICONDIR "/dalston-power-75.png";
     else
-      icon_file = ICONDIR "dalston-power-100.png";
+      icon_file = ICONDIR "/dalston-power-100.png";
   }
 
   mx_label_set_text (MX_LABEL (priv->label), description);
