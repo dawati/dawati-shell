@@ -2,7 +2,6 @@
 TODO
 ====
 
-* Fix acpi to recognise moblin-power-icon (shutdown key and lid).
 * Share strings between panel-devices and power-icon.
 * Port dalston battery notifications to power-icon.
 * Implement keyboard navigation in the folder view.
@@ -12,6 +11,7 @@ TODO
 Done
 ----
 
+* Fix acpi to recognise moblin-power-icon (shutdown key and lid).
 * Link power-icon only to what it really needs (startup time).
 * Move global key handling to power-icon
 * Rename toplevel "mobin-power-icon" to "power-icon".
