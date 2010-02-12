@@ -23,12 +23,9 @@
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <glib/gi18n.h>
-#include <gdk/gdkx.h>
-#include <gtk/gtk.h>
 #include <mx/mx.h>
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
-#include <libnotify/notify.h>
 #include "mpd-shell.h"
 #include "mpd-shell-defines.h"
 #include "config.h"
@@ -90,10 +87,9 @@ main (int     argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- Mutter-moblin devices panel");
+  context = g_option_context_new ("- Moblin devices panel");
   g_option_context_add_main_entries (context, _options, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
-  g_option_context_add_group (context, gtk_get_option_group (TRUE));
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       g_critical ("%s %s", G_STRLOC, error->message);
@@ -103,8 +99,7 @@ main (int     argc,
     }
   g_option_context_free (context);
 
-  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
-  notify_init ("Moblin Panel Devices");
+  clutter_init (&argc, &argv);
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
     DATADIR "/icons/moblin/48x48/mx.cache");
@@ -124,8 +119,6 @@ main (int     argc,
       stage = clutter_stage_get_default ();
       clutter_actor_realize (stage);
       xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-
-      MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
 
       shell = mpd_shell_new ();
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
@@ -147,8 +140,6 @@ main (int     argc,
                                                      /*THEMEDIR "/toolbar-button.css" */ NULL,
                                                      "devices-button",
                                                      TRUE);
-
-      MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (panel);
 
       mpl_panel_client_set_height_request (panel, MPD_SHELL_HEIGHT);
 

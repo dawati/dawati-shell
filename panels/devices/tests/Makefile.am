@@ -15,7 +15,6 @@ noinst_PROGRAMS = \
 	test-disk-device \
 	test-disk-tile \
 	test-folder-button \
-	test-idle-manager \
 	$(NULL)
 
 test_battery_device_SOURCES = \
@@ -37,15 +36,5 @@ test_disk_tile_SOURCES = \
 test_folder_button_SOURCES = \
 	test-folder-button.c \
 	$(top_srcdir)/src/mpd-folder-button.c \
-	$(NULL)
-
-test_idle_manager_LDADD = \
-	$(top_builddir)/egg-idletime/libegg-idletime.la \
-	$(MPD_LIBS) \
-	$(NULL)
-
-test_idle_manager_SOURCES = \
-	test-idle-manager.c \
-	$(top_srcdir)/src/mpd-idle-manager.c \
 	$(NULL)
 

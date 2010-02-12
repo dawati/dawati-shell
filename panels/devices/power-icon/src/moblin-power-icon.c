@@ -24,13 +24,16 @@
 #include <X11/XF86keysym.h>
 #include <glib/gi18n.h>
 #include <clutter/clutter.h>
+#include <clutter-gtk/clutter-gtk.h>
 #include <egg-console-kit/egg-console-kit.h>
 #include <gdk/gdkx.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-panel-windowless.h>
 #include <mx/mx.h>
+#include <libnotify/notify.h>
 #include "mpd-battery-device.h"
 #include "mpd-global-key.h"
+#include "mpd-idle-manager.h"
 #include "mpd-shutdown-notification.h"
 #include "config.h"
 
@@ -178,6 +181,7 @@ main (int    argc,
 {
   MplPanelClient    *client;
   MpdBatteryDevice  *battery;
+  MpdIdleManager    *idle_manager;
   MxAction          *shutdown_key;
 
   setlocale (LC_ALL, "");
@@ -185,7 +189,8 @@ main (int    argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  clutter_init (&argc, &argv);
+  gtk_clutter_init (&argc, &argv);
+  notify_init ("Moblin Power Icon");
 
   client = mpl_panel_windowless_new (MPL_PANEL_POWER,
                                      _("battery"),
@@ -201,12 +206,15 @@ main (int    argc,
 
   update (battery, client);
 
+  idle_manager = mpd_idle_manager_new ();
+
   /* Hook up shutdown key. */
   shutdown_key = create_shutdown_key ();
   g_object_ref_sink (shutdown_key);
 
   clutter_main ();
 
+  g_object_unref (idle_manager);
   g_object_unref (battery);
   g_object_unref (shutdown_key);
 
