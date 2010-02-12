@@ -13,7 +13,6 @@ AM_CFLAGS = \
 libexec_PROGRAMS = moblin-panel-devices
 
 moblin_panel_devices_LDADD = \
-	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
 	$(top_builddir)/egg-idletime/libegg-idletime.la \
 	$(top_builddir)/gvc/libgvc.la \
 	$(MPD_LIBS) \
@@ -46,15 +45,11 @@ moblin_panel_devices_SOURCES = \
 	mpd-folder-store.h \
 	mpd-folder-view.c \
 	mpd-folder-view.h \
-	mpd-global-key.c \
-	mpd-global-key.h \
 	mpd-idle-manager.c \
 	mpd-idle-manager.h \
 	mpd-shell.c \
 	mpd-shell.h \
 	mpd-shell-defines.h \
-	mpd-shutdown-notification.c \
-	mpd-shutdown-notification.h \
 	mpd-volume-tile.c \
 	mpd-volume-tile.h \
 	$(NULL)

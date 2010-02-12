@@ -20,10 +20,8 @@
 
 #include <locale.h>
 #include <stdlib.h>
-#include <X11/XF86keysym.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#include <egg-console-kit/egg-console-kit.h>
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
@@ -31,57 +29,9 @@
 #include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
 #include <libnotify/notify.h>
-#include "mpd-global-key.h"
 #include "mpd-shell.h"
 #include "mpd-shell-defines.h"
-#include "mpd-shutdown-notification.h"
 #include "config.h"
-
-static void
-_shutdown_notification_shutdown_cb (NotifyNotification *notification,
-                                    gpointer            userdata)
-{
-  EggConsoleKit *console;
-  GError        *error = NULL;
-
-  console = egg_console_kit_new ();
-  egg_console_kit_stop (console, &error);
-  if (error)
-  {
-    g_critical ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-
-  g_object_unref (console);
-  g_object_unref (notification);
-}
-
-static void
-_shutdown_notification_closed_cb (NotifyNotification *notification,
-                                  gpointer            userdata)
-{
-  g_debug ("%s()", __FUNCTION__);
-
-  g_object_unref (notification);
-}
-
-static void
-_shutdown_key_activated_cb (MxAction  *action,
-                            gpointer   data)
-{
-  NotifyNotification *notification;
-
-  notification = mpd_shutdown_notification_new (
-                        _("Would you like to turn off now?"),
-                        _("If you don't decide I'll turn off in 30 seconds."));
-
-  g_signal_connect (notification, "closed",
-                    G_CALLBACK (_shutdown_notification_closed_cb), NULL);
-  g_signal_connect (notification, "shutdown",
-                    G_CALLBACK (_shutdown_notification_shutdown_cb), NULL);
-
-  mpd_shutdown_notification_run (MPD_SHUTDOWN_NOTIFICATION (notification));
-}
 
 static void
 _shell_request_hide_cb (MpdShell        *shell,
@@ -119,25 +69,6 @@ _panel_set_size_cb (MplPanelClient  *panel,
   clutter_actor_set_size (CLUTTER_ACTOR (shell), width, height);
 }
 
-static MxAction *
-create_shutdown_key (void)
-{
-  MxAction  *shutdown_key = NULL;
-  guint      shutdown_key_code;
-
-  shutdown_key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_PowerOff);
-  if (shutdown_key_code)
-  {
-    shutdown_key = mpd_global_key_new (shutdown_key_code);
-    g_signal_connect (shutdown_key, "activated",
-                      G_CALLBACK (_shutdown_key_activated_cb), NULL);
-  } else {
-    g_warning ("Failed to query XF86XK_PowerOff key code.");
-  }
-
-  return shutdown_key;
-}
-
 int
 main (int     argc,
       char  **argv)
@@ -149,7 +80,6 @@ main (int     argc,
     { NULL }
   };
 
-  MxAction        *shutdown_key;
   ClutterActor    *stage;
   ClutterActor    *shell;
   GOptionContext  *context;
@@ -232,14 +162,7 @@ main (int     argc,
                         G_CALLBACK (_panel_set_size_cb), shell);
     }
 
-  /* Hook up shutdown key. */
-  shutdown_key = create_shutdown_key ();
-  g_object_ref_sink (shutdown_key);
-
   clutter_main ();
-
-  g_object_unref (shutdown_key);
-
   return EXIT_SUCCESS;
 }
 

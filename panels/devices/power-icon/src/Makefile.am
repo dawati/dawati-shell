@@ -11,11 +11,16 @@ AM_CFLAGS = \
 libexec_PROGRAMS = moblin-power-icon
 
 moblin_power_icon_LDADD = \
+	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
 	$(MPD_LIBS) \
   $(NULL)
 
 moblin_power_icon_SOURCES = \
 	$(top_srcdir)/src/mpd-battery-device.c \
 	moblin-power-icon.c \
+	mpd-global-key.c \
+	mpd-global-key.h \
+	mpd-shutdown-notification.c \
+	mpd-shutdown-notification.h \
 	$(NULL)
 
