@@ -113,7 +113,9 @@ _find_alarm (gpointer            key,
              GSIdleMonitorWatch *watch,
              XSyncAlarm         *alarm)
 {
+#if 0
         g_debug ("Searching for %d in %d,%d", (int)*alarm, (int)watch->xalarm_positive, (int)watch->xalarm_negative);
+#endif
         if (watch->xalarm_positive == *alarm
             || watch->xalarm_negative == *alarm) {
                 return TRUE;
@@ -185,20 +187,26 @@ handle_alarm_notify_event (GSIdleMonitor         *monitor,
         gboolean            condition;
 
         if (alarm_event->state == XSyncAlarmDestroyed) {
+#if 0
                 g_debug ("got destroyed alarm %ld", alarm_event->alarm);
+#endif
                 return;
         }
 
         watch = find_watch_for_alarm (monitor, alarm_event->alarm);
 
         if (watch == NULL) {
+#if 0
                 g_debug ("Unable to find watch for alarm %d", (int)alarm_event->alarm);
+#endif
                 return;
         }
 
+#if 0
         g_debug ("Watch %d fired, idle time = %ld",
                  watch->id,
                  _xsyncvalue_to_int64 (alarm_event->counter_value));
+#endif
 
         if (alarm_event->alarm == watch->xalarm_positive) {
                 condition = TRUE;
