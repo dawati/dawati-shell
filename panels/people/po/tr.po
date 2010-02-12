@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:32+0000\n"
+"POT-Creation-Date: 2010-02-11 23:51+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ceyhun Alyesil <ceyhunalyesil@gmail.com>\n"
 "Language-Team: \n"
@@ -15,59 +15,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:493
+#: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "kişiler"
 
-#: ../src/mnb-people-panel.c:166
-msgid "Send an email"
-msgstr "E-Mail gönder"
-
-#: ../src/mnb-people-panel.c:168
-msgid "Edit details"
-msgstr "Detayları düzenle"
-
-#: ../src/mnb-people-panel.c:177
-msgid "Send a message"
-msgstr "Mesaj gönder"
-
-#: ../src/mnb-people-panel.c:311
+#: ../src/mnb-people-panel.c:265
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Üzgünüz, kimseyi bulamadık. Messenger hesabınızı ayarladınız mı?"
 
-#: ../src/mnb-people-panel.c:790
-msgid "People"
-msgstr "Kişiler"
+#: ../src/mnb-people-panel.c:377
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Üzgünüz, kimseyi bulamadık. Hepsi çevrimdışı olabilir."
 
-#: ../src/mnb-people-panel.c:803
-msgid "Search"
-msgstr "Arama"
-
-#: ../src/mnb-people-panel.c:983
-msgid "Selection"
-msgstr "Seçim"
-
-#: ../src/mnb-people-panel.c:1046
-msgid "Nobody selected"
-msgstr "Kimse seçilmedi"
-
-#: ../src/mnb-people-panel.c:561
-msgid "people - Someone is talking to you"
-msgstr "Kişiler - Birisi sizinle konuşuyor"
-
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:474
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "Kişiler - %d kişi sizinle konuşuyor"
 
-#: ../src/mnb-people-panel.c:856
+#: ../src/mnb-people-panel.c:481
+msgid "people - Someone is talking to you"
+msgstr "Kişiler - Birisi sizinle konuşuyor"
+
+#: ../src/mnb-people-panel.c:671
+msgid "People"
+msgstr "Kişiler"
+
+#: ../src/mnb-people-panel.c:684
+msgid "Search"
+msgstr "Arama"
+
+#: ../src/mnb-people-panel.c:747
 msgid "People talking to you ..."
 msgstr "Sizinle konuşan kişiler..."
 
-#: ../src/mnb-people-panel.c:447
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Üzgünüz, kimseyi bulamadık. Hepsi çevrimdışı olabilir."
+#: ../src/mnb-people-panel.c:422
+msgid "To see your IM contacts, you need to go online."
+msgstr "Kontaklarınızı görmek için, çevrimiçi olmalısınız."
 
-#: ../src/mnb-people-panel.c:497
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Kontaklarınızı görmek için, Statü panelinde çevrimiçi olun."
+#: ../data/moblin-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Kişiler paneli"
+
+#~ msgid "Send an email"
+#~ msgstr "E-Mail gönder"
+
+#~ msgid "Edit details"
+#~ msgstr "Detayları düzenle"
+
+#~ msgid "Send a message"
+#~ msgstr "Mesaj gönder"
+
+#~ msgid "Selection"
+#~ msgstr "Seçim"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Kimse seçilmedi"
