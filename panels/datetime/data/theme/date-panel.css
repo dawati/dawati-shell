@@ -19,7 +19,8 @@
 
 *#new-alarm-dialog
 {
-  border-image: url('dp-scroll-view-bin-bg.png') 2;
+  padding: 4 4;
+  border-image: url('dp-scroll-view-bin-bg.png') 4 4;
   background-color: #7e7e7eff;
 }
 
@@ -109,4 +110,10 @@
   background-image: url('dismiss_button_hover.png');
 }
 
+*.AlarmIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('alarm.png');
+}
 

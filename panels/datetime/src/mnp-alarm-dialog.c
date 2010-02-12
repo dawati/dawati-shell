@@ -78,6 +78,12 @@ mnp_alarm_dialog_init (MnpAlarmDialog *self)
 }
 
 static void
+close_dialog (MxButton *btn, MnpAlarmDialog *dialog)
+{
+	clutter_actor_destroy(dialog);
+}
+
+static void
 construct_title_header (MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
@@ -96,6 +102,7 @@ construct_title_header (MnpAlarmDialog *dialog)
                                    NULL);
 
   priv->close_button = mx_button_new ();
+  g_signal_connect(priv->close_button, "clicked", G_CALLBACK(close_dialog), dialog);
   mx_stylable_set_style_class (MX_STYLABLE (priv->close_button),
                                			"AlarmRemoveButton");
   icon = (ClutterActor *)mx_icon_new ();
@@ -119,19 +126,67 @@ construct_title_header (MnpAlarmDialog *dialog)
 }
 
 static void
+construct_on_off_toggle (MnpAlarmDialog *dialog)
+{
+  MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
+  ClutterActor *box = mx_box_layout_new ();
+  ClutterActor *txt, *icon;
+
+  mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+
+  icon = (ClutterActor *)mx_icon_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (icon),
+                               	"AlarmIcon");
+  clutter_actor_set_size (icon, 16, 16);
+  clutter_container_add_actor ((ClutterContainer *)box, icon);
+  clutter_container_child_set ((ClutterContainer *)box, icon,
+                                   "x-fill", FALSE,
+                                   "y-fill", TRUE,
+				   "expand", FALSE,
+                                   NULL);
+  
+ 
+  txt = mx_label_new (_("ON"));
+  clutter_container_add_actor ((ClutterContainer *)box, txt);
+  clutter_container_child_set ((ClutterContainer *)box, txt,
+                                   "x-fill", FALSE,
+                                   "y-fill", TRUE,
+				   "expand", TRUE,
+                                   NULL);
+
+  priv->on_off = mx_button_new ();
+  mx_button_set_toggle_mode (MX_BUTTON (priv->on_off), TRUE);
+  mx_bin_set_child (MX_BIN (priv->on_off),
+                      	(ClutterActor *)box);
+  mx_bin_set_fill (MX_BIN(priv->on_off), TRUE, TRUE);
+
+  clutter_container_add_actor ((ClutterContainer *)dialog, priv->on_off);
+  clutter_container_child_set ((ClutterContainer *)dialog, priv->on_off,
+				   "expand", FALSE,
+				   "x-fill", TRUE,
+                                   NULL);
+  
+
+}
+
+static void
 mnp_alarm_dialog_construct (MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
   
   clutter_actor_set_name (dialog, "new-alarm-dialog");
+  clutter_actor_raise_top (dialog);
   mx_box_layout_set_pack_start ((MxBoxLayout *)dialog, FALSE);
   mx_box_layout_set_vertical ((MxBoxLayout *)dialog, TRUE);
-  
+  mx_box_layout_set_spacing ((MxBoxLayout *)dialog, 3);
+
   construct_title_header(dialog);
+  construct_on_off_toggle(dialog);
 
   clutter_container_add_actor ((ClutterContainer *)clutter_stage_get_default(), dialog);
-  clutter_actor_set_position (dialog, 500,200);
-  clutter_actor_set_size (dialog, 250, 250);
+  clutter_actor_set_position (dialog, 300,105);
+  clutter_actor_set_size (dialog, 300, 300);
 }
 
 MnpAlarmDialog*

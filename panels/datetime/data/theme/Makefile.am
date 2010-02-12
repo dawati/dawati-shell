@@ -5,7 +5,8 @@ dist_theme_DATA = \
 	edit-find.png \
 	dp-scroll-view-bin-bg.png \
 	dismiss_button.png \
-	dismiss_button_hover.png
+	dismiss_button_hover.png \
+	alarm.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
