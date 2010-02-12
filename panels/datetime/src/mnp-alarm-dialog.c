@@ -171,20 +171,70 @@ construct_on_off_toggle (MnpAlarmDialog *dialog)
 }
 
 static void
+construct_time_entry (MnpAlarmDialog *dialog)
+{
+  MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
+  ClutterActor *box;
+
+  box = mx_box_layout_new ();
+  mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_spacing (box, 4);
+
+  priv->hour = mx_spin_entry_new ();
+  priv->minute = mx_spin_entry_new ();
+  priv->am_pm = mx_toggle_new ();
+  
+  clutter_container_add_actor (box, priv->hour);
+  clutter_container_child_set ((ClutterContainer *)box, priv->hour,
+                                   "x-fill", FALSE,
+                                   "y-fill", TRUE,
+				   "expand", FALSE,
+                                   NULL);
+
+  
+  clutter_container_add_actor (box, priv->minute);
+  clutter_container_child_set ((ClutterContainer *)box, priv->minute,
+                                   "x-fill", FALSE,
+                                   "y-fill", TRUE,
+				   "expand", FALSE,
+                                   NULL);
+
+
+  
+  clutter_container_add_actor (box, priv->am_pm);
+  clutter_container_child_set ((ClutterContainer *)box, priv->am_pm,
+                                   "x-fill", FALSE,
+                                   "y-fill", FALSE,
+				   "expand", FALSE,
+                                   NULL);
+
+  
+  clutter_container_add_actor ((ClutterContainer *)dialog, box);
+  clutter_container_child_set ((ClutterContainer *)dialog, box,
+				   "expand", FALSE,
+				   "x-fill", TRUE,
+                                   NULL);
+
+
+}
+
+static void
 mnp_alarm_dialog_construct (MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
   
   clutter_actor_set_name (dialog, "new-alarm-dialog");
-  clutter_actor_raise_top (dialog);
   mx_box_layout_set_pack_start ((MxBoxLayout *)dialog, FALSE);
   mx_box_layout_set_vertical ((MxBoxLayout *)dialog, TRUE);
   mx_box_layout_set_spacing ((MxBoxLayout *)dialog, 3);
 
   construct_title_header(dialog);
   construct_on_off_toggle(dialog);
+  construct_time_entry(dialog);
 
   clutter_container_add_actor ((ClutterContainer *)clutter_stage_get_default(), dialog);
+  clutter_actor_raise_top (dialog);
   clutter_actor_set_position (dialog, 300,105);
   clutter_actor_set_size (dialog, 300, 300);
 }

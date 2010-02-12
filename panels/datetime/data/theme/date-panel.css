@@ -110,10 +110,40 @@
   background-image: url('dismiss_button_hover.png');
 }
 
-*.AlarmIcon
+*.MxSpinEntry *.UpButton,
+*.MxSpinEntry *.UpButton:hover,
+*.MxSpinEntry *.DownButton,
+*.MxSpinEntry *.DownButton:hover
+{
+  background-color: #000000ff;  
+  border-image: none;
+  padding: 0;
+}
+
+*.MxSpinEntry *.UpButton:active,
+*.MxSpinEntry *.DownButton:active
+{
+  background-color: #000000ff;  
+  border-image: none;
+  padding: 1;
+}
+
+*.MxSpinEntry *.UpButton *.UpIcon
 {
   border: 0;
   padding: 0;	
-  background-image: url('alarm.png');
+  background-image: url('up.png');
+}
+
+*.MxSpinEntry *.DownButton *.DownIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('down.png');
+}
+
+MxToggle {
+  padding: 4;
+  background-image: url("toggle-background.png");
 }
 
