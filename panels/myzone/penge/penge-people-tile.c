@@ -23,6 +23,7 @@
 #include "penge-people-tile.h"
 #include "penge-utils.h"
 #include "penge-magic-texture.h"
+#include "penge-clickable-label.h"
 
 G_DEFINE_TYPE (PengePeopleTile, penge_people_tile, PENGE_TYPE_INTERESTING_TILE)
 
@@ -161,6 +162,22 @@ penge_people_tile_activate (PengePeopleTile *tile,
 }
 
 static void
+_label_url_clicked_cb (PengeClickableLabel *label,
+                       const gchar         *url,
+                       PengePeopleTile     *tile)
+{
+  PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
+
+  if (!penge_utils_launch_for_uri ((ClutterActor *)tile, url))
+  {
+    g_warning (G_STRLOC ": Error launching uri: %s",
+               url);
+  } else {
+    penge_utils_signal_activated ((ClutterActor *)tile);
+  }
+}
+
+static void
 penge_people_tile_set_item (PengePeopleTile *tile,
                             SwItem          *item)
 {
@@ -241,7 +258,12 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                         NULL);
     clutter_actor_set_size (avatar, 48, 48);
 
-    label = mx_label_new (content);
+    label = penge_clickable_label_new (content);
+    g_signal_connect (label,
+                      "url-clicked",
+                      (GCallback)_label_url_clicked_cb,
+                      tile);
+
     mx_stylable_set_style_class (MX_STYLABLE (label), "PengePeopleTileContentLabel");
     mx_table_add_actor_with_properties (MX_TABLE (body),
                                         label,
