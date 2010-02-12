@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-02-11 23:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ceyhun Alyesil <ceyhunalyesil@gmail.com>\n"
 "Language-Team: \n"
@@ -15,47 +15,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Randevular</b>"
-
-#: ../penge/penge-events-pane.c:268
-msgid "No calendar entries this week"
-msgstr "Bu hafta için hiç bir takvim girdisi yok"
-
-#: ../penge/penge-recent-file-tile.c:224
-msgid "Web page"
-msgstr "Web sayfası"
-
-#: ../penge/penge-tasks-pane.c:433
-msgid "Nothing to do today"
-msgstr "Bugün bir şey yok"
-
-#: ../penge/penge-task-tile.c:325
-#, c-format
-msgid "Due %x"
-msgstr "%x kadar"
-
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Moblin diğer bilgisayarlara göre biraz farklı, yolunuzu bulmanız içinetrafa çeşitli parçaları yerleştirdik. Umarız beğenirsiniz,Moblin Takımı"
-
-#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
-msgid "Add"
-msgstr "Ekle"
-
-#: ../penge/penge-events-pane.c:59
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Randevu oluşturun"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Ekle"
+
+#: ../penge/penge-events-pane.c:342
+msgid "No calendar entries this week"
+msgstr "Bu hafta için hiç bir takvim girdisi yok"
+
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Arkadaşlarınızın çevrimiçi yaptıkları  burada görüntülenecek. Hesaplarınızı şimdi etkinleştirin!"
+
+#: ../penge/penge-recent-file-tile.c:215
+msgid "Web page"
+msgstr "Web sayfası"
 
 #: ../penge/penge-tasks-pane.c:51
 msgid "Create a new task"
 msgstr "Yeni bir görev oluşturun"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Netbooklar için Moblin 2.1'e Hoşgeldiniz</b>"
+#: ../penge/penge-tasks-pane.c:433
+msgid "Nothing to do today"
+msgstr "Bugün bir şey yok"
+
+#: ../penge/penge-task-tile.c:316
+#, c-format
+msgid "Due %x"
+msgstr "%x kadar"
+
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#, fuzzy
+msgid "Myzone panel"
+msgstr "Myzone paneli"
+
+#: ../penge/penge-calendar-pane.c:474
+msgid "Appointments"
+msgstr "Randevular"
+
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to Moblin"
+msgstr "Moblin e Hoşgeldiniz"
+
+#: ../penge/penge-welcome-tile.c:86
+#, fuzzy
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Burası Myzone; en son kullandığınız dosyaları ve web sayfalarının içerikleri burada görüntülenecek."
+
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Moblin diğer bilgisayarlara göre biraz farklı, yolunuzu bulmanız içinetrafa çeşitli parçaları yerleştirdik. Umarız beğenirsiniz,Moblin Takımı"
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Netbooklar için Moblin 2.1'e Hoşgeldiniz</b>"
