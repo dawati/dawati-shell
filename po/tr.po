@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"POT-Creation-Date: 2010-02-11 23:57+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ceyhun Alyesil <ceyhunalyesil@gmail.com>\n"
 "Language-Team: \n"
@@ -15,17 +15,41 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "Alanlar"
-
-#: ../src/moblin-netbook.c:621
+#: ../src/moblin-netbook.c:809
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook Efektleri"
 
-#: ../src/moblin-netbook.c:625
+#: ../src/moblin-netbook.c:813
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin Netbooklar için Efektler"
+
+#: ../src/moblin-netbook.c:2848
+msgid "Activate"
+msgstr "Etkinleştir"
+
+#: ../src/moblin-netbook.c:2862
+msgid "Unknown window"
+msgstr "Bilinmeyen pencere"
+
+#: ../src/moblin-netbook.c:2864
+msgid "Is asking for your attention."
+msgstr "dikkatinizi çekiyor"
+
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../src/mnb-toolbar.c:752
+msgid "%l:%M %P"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../src/mnb-toolbar.c:762
+msgid "%B %e, %Y"
+msgstr "%B %e, %Y"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -35,45 +59,30 @@ msgstr "Bırak"
 msgid "Dismiss All"
 msgstr "Hepsini Bırak"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "Şuan alan yok"
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Araç çubuğunda panellerin sırasını belirler."
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Kullandığınız uygulamalar burada gösterilecek. Onları istediğiniz gibi değiştiriporganize edebileceksiniz."
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Araç çubuğunda panellerin sırası"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Bu alanda bir uygulama yok"
+#: ../src/mnb-toolbar.c:871
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Üzgünüz, %s çalışmıyor"
 
-#: ../src/moblin-netbook.c:2543
-msgid "Unknown window"
-msgstr "Bilinmeyen pencere"
+#~ msgid "zones"
+#~ msgstr "Alanlar"
 
-#: ../src/moblin-netbook.c:2529
-msgid "Activate"
-msgstr "Etkinleştir"
+#~ msgid "No Zones yet"
+#~ msgstr "Şuan alan yok"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../src/mnb-toolbar.c:668
-msgid "%l:%M %P"
-msgstr "%l:%M %P"
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Kullandığınız uygulamalar burada gösterilecek. Onları istediğiniz gibi değiştiriporganize edebileceksiniz."
 
-#: ../src/moblin-netbook.c:2545
-msgid "Is asking for your attention."
-msgstr "dikkatinizi çekiyor"
-
-#. translators: translate this to a suitable date format for your locale.
-#. * For availabe format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../src/mnb-toolbar.c:678
-msgid "%B %e, %Y"
-msgstr "%B %e, %Y"
+#~ msgid "No applications on this zone"
+#~ msgstr "Bu alanda bir uygulama yok"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Bir dakikadan önce"
