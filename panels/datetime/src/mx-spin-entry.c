@@ -35,6 +35,8 @@ struct _MxSpinEntryPrivate
 	ClutterActor *up;
 	ClutterActor *down;
 
+	gint value;
+
 	gboolean cycle;
 	gint upper;
 	gint lower;
@@ -69,6 +71,48 @@ mx_spin_entry_init (MxSpinEntry *self)
 }
 
 static void
+update_text (MxSpinEntry *spin)
+{
+  MxSpinEntryPrivate *priv = SPIN_ENTRY_PRIVATE(spin);
+  char *txt;
+
+  txt = g_strdup_printf("%.2d", priv->value);
+  mx_entry_set_text(priv->entry, txt);
+  g_free(txt);  
+}
+
+static void
+up_clicked (MxButton *button, MxSpinEntry *spin)
+{
+  MxSpinEntryPrivate *priv = SPIN_ENTRY_PRIVATE(spin);
+
+  priv->value++;
+  if (priv->value > priv->upper) {
+	  if (priv->cycle)
+	  	priv->value = priv->lower;
+	  else
+		priv->value--;
+  }
+  update_text(spin);
+}
+
+static void
+down_clicked (MxButton *button, MxSpinEntry *spin)
+{
+  MxSpinEntryPrivate *priv = SPIN_ENTRY_PRIVATE(spin);
+
+  priv->value--;
+  if (priv->value < priv->lower) {
+	  if (priv->cycle)
+	  	priv->value = priv->upper;
+	  else
+		priv->value++;
+  }
+
+  update_text (spin);
+}
+
+static void
 mx_spin_entry_construct (MxSpinEntry *spin)
 {
   MxSpinEntryPrivate *priv = SPIN_ENTRY_PRIVATE(spin);
@@ -81,17 +125,18 @@ mx_spin_entry_construct (MxSpinEntry *spin)
 
   priv->up = mx_button_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->up), "UpButton");
-
   icon = mx_icon_new ();
   mx_stylable_set_style_class (MX_STYLABLE (icon), "UpIcon");
   mx_bin_set_child ((MxBin *)priv->up, icon);
-
+  g_signal_connect (priv->up, "clicked", G_CALLBACK(up_clicked), spin);
 
   priv->down = mx_button_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->down), "DownButton");
   icon = mx_icon_new ();
   mx_stylable_set_style_class (MX_STYLABLE (icon), "DownIcon");
   mx_bin_set_child ((MxBin *)priv->down, icon);
+  g_signal_connect (priv->down, "clicked", G_CALLBACK(down_clicked), spin);
+
 
   priv->entry = mx_entry_new (NULL);
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry), "SpinEntry");
@@ -118,4 +163,17 @@ mx_spin_entry_set_range (MxSpinEntry *spin, gint lower, gint upper)
 {
 	MxSpinEntryPrivate *priv = SPIN_ENTRY_PRIVATE(spin);
 
+	priv->lower = lower;
+	priv->upper = upper;
+	priv->value = lower;
+
+	update_text (spin);
+}
+
+void
+mx_spin_entry_set_cycle (MxSpinEntry *spin, gboolean cycle)
+{
+	MxSpinEntryPrivate *priv = SPIN_ENTRY_PRIVATE(spin);
+
+	priv->cycle = cycle;
 }

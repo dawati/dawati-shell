@@ -167,7 +167,6 @@ construct_on_off_toggle (MnpAlarmDialog *dialog)
 				   "x-fill", TRUE,
                                    NULL);
   
-
 }
 
 static void
@@ -182,9 +181,15 @@ construct_time_entry (MnpAlarmDialog *dialog)
   mx_box_layout_set_spacing (box, 4);
 
   priv->hour = mx_spin_entry_new ();
+  mx_spin_entry_set_cycle(priv->hour);
+  mx_spin_entry_set_range (priv->hour, 1, 12);
   priv->minute = mx_spin_entry_new ();
+  mx_spin_entry_set_cycle(priv->minute);
+  mx_spin_entry_set_range (priv->minute, 0, 59);
   priv->am_pm = mx_toggle_new ();
-  
+  mx_toggle_set_active (priv->am_pm, TRUE);
+  printf("TOGGLE: %d\n", mx_toggle_get_active(priv->am_pm));
+ 
   clutter_container_add_actor (box, priv->hour);
   clutter_container_child_set ((ClutterContainer *)box, priv->hour,
                                    "x-fill", FALSE,
