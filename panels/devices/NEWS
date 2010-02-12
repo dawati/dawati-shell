@@ -1,3 +1,25 @@
-Version 0.1.4, 2010-02-11
+Version 0.1.4, 2010-02-12
 
+    Implement power icon.
+    Integrate new assets.
+    Various build system tweaks.
+
+Version 0.1.3, 2010-02-09
+
+    Update visual appearance.
+    Fixes: MB#9536
+    Port over idle time handling from dalston.
+    Build system cleanups.
+
+Version 0.1.2, 2010-02-08
+
+    Update visual appearance.
+
+Version 0.1.1, 2010-02-05
+
+    Make udisks dependency optional.
+
+Version 0.1.0, 2010-02-04
+
+    Initial release.
 
