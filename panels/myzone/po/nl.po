@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-02-11 23:48+0000\n"
 "PO-Revision-Date: 2009-08-05 14:41-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -17,47 +17,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Afspraken</b>"
+#: ../penge/penge-events-pane.c:68
+msgid "Create an appointment"
+msgstr "Nieuwe afspraak"
 
-#: ../penge/penge-recent-file-tile.c:224
-msgid "Web page"
-msgstr "Webpagina"
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Toevoegen"
 
-#: ../penge/penge-tasks-pane.c:433
-msgid "Nothing to do today"
-msgstr "Niets te doen vandaag"
+#: ../penge/penge-events-pane.c:342
+msgid "No calendar entries this week"
+msgstr "Deze week geen afspraken"
 
-#: ../penge/penge-task-tile.c:325
-#, c-format
-msgid "Due %x"
-msgstr "Verstrijkt %x"
-
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Welkom bij Moblin 2.1 voor Netbooks</b>"
-
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Moblin is anders dan andere computers. We hebben hier en daar wat dingetjes toegevoegd om je op weg te helpen. We hopen dat je het waardeert, Het Moblin Team."
-
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Dingen die je vrienden online doen verschijnen hier. Activeer je accounts!"
+
+#: ../penge/penge-recent-file-tile.c:215
+msgid "Web page"
+msgstr "Webpagina"
 
 #: ../penge/penge-tasks-pane.c:51
 msgid "Create a new task"
 msgstr "Nieuwe taak"
 
-#: ../penge/penge-events-pane.c:268
-msgid "No calendar entries this week"
-msgstr "Deze week geen afspraken"
+#: ../penge/penge-tasks-pane.c:433
+msgid "Nothing to do today"
+msgstr "Niets te doen vandaag"
 
-#: ../penge/penge-events-pane.c:59
-msgid "Create an appointment"
-msgstr "Nieuwe afspraak"
+#: ../penge/penge-task-tile.c:316
+#, c-format
+msgid "Due %x"
+msgstr "Verstrijkt %x"
 
-#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
-msgid "Add"
-msgstr "Toevoegen"
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone paneel"
+
+#: ../penge/penge-calendar-pane.c:474
+msgid "Appointments"
+msgstr "Afspraken"
+
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to Moblin"
+msgstr "Welkom by Moblin"
+
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Dit is de Myzone, waar je recente bestanden en inhoud van web feeds verschijnen."
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Welkom bij Moblin 2.1 voor Netbooks</b>"
+
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Moblin is anders dan andere computers. We hebben hier en daar wat dingetjes toegevoegd om je op weg te helpen. We hopen dat je het waardeert, Het Moblin Team."
