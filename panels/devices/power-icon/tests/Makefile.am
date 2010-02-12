@@ -1,6 +1,6 @@
 
 AM_CFLAGS = \
-	$(MPD_CFLAGS) \
+	$(MPI_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/power-icon/src \
 	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
@@ -12,7 +12,7 @@ noinst_PROGRAMS = \
 
 test_idle_manager_LDADD = \
 	$(top_builddir)/egg-idletime/libegg-idletime.la \
-	$(MPD_LIBS) \
+	$(MPI_LIBS) \
 	$(NULL)
 
 test_idle_manager_SOURCES = \

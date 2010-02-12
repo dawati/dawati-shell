@@ -1,6 +1,6 @@
 
 AM_CFLAGS = \
-	$(MPD_CFLAGS) \
+	$(MPI_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/src \
 	-DLOCALEDIR=\"$(localedir)\" \
@@ -13,7 +13,7 @@ libexec_PROGRAMS = moblin-power-icon
 moblin_power_icon_LDADD = \
 	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
 	$(top_builddir)/egg-idletime/libegg-idletime.la \
-	$(MPD_LIBS) \
+	$(MPI_LIBS) \
   $(NULL)
 
 moblin_power_icon_SOURCES = \
