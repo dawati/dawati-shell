@@ -37,6 +37,7 @@
 #include "mpl-panel-client.h"
 #include "mpl-panel-common.h"
 #include "marshal.h"
+#include "mnb-enum-types.h"
 
 G_DEFINE_TYPE (MplPanelClient, mpl_panel_client, G_TYPE_OBJECT)
 
@@ -668,7 +669,7 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__ENUM,
                   G_TYPE_NONE, 1,
-                  G_TYPE_ENUM);
+                  MNB_TYPE_BUTTON_STATE);
 
   signals[REQUEST_MODALITY] =
     g_signal_new ("request-modality",
