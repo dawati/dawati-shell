@@ -3023,6 +3023,9 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
 
+  clutter_actor_set_width ((ClutterActor*)toolbar, screen_width);
+  clutter_actor_set_width (priv->shadow, screen_width);
+
   clutter_actor_set_size (priv->lowlight,
                           screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);
 
