@@ -13,6 +13,8 @@ gdu/gdu-util.c
 gdu/gdu-volume-hole.c
 gdu/gdu-volume.c
 gvc/gvc-mixer-control.c
+power-icon/data/moblin-power-icon.desktop.in.in
+power-icon/src/moblin-power-icon.c
 src/moblin-panel-devices.c
 src/mpd-battery-device.c
 src/mpd-battery-tile.c
@@ -21,5 +23,4 @@ src/mpd-disk-tile.c
 src/mpd-folder-pane.c
 src/mpd-shutdown-notification.c
 src/mpd-volume-tile.c
-moblin-power-icon/data/moblin-power-icon.desktop.in.in
-moblin-power-icon/src/moblin-power-icon.c
+
