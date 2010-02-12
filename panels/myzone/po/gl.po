@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-02-11 23:48+0000\n"
 "PO-Revision-Date: 2009-10-14 20:50+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -16,47 +16,57 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Citas</b>"
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr ""
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:68
+msgid "Create an appointment"
+msgstr "Crear unha cita"
+
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Engadir"
+
+#: ../penge/penge-events-pane.c:342
 msgid "No calendar entries this week"
 msgstr "Non hai entradas no calendario para esta semana"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-people-placeholder-tile.c:112
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
+msgstr "Aquí aparece o que andan a facer as súas amizades na Internet. Active agora as súas contas!"
+
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "Páxina web"
+
+#: ../penge/penge-tasks-pane.c:51
+msgid "Create a new task"
+msgstr "Crear unha tarefa nova"
 
 #: ../penge/penge-tasks-pane.c:433
 msgid "Nothing to do today"
 msgstr "Hoxe non hai nada que facer"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "Vence %x"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Reciba a benvida a Moblin 2.1 para netbooks</b>"
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr ""
 
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Dado que o Moblin é un chisco diferente a outros computadores, reunimos algunhas cousiñas para axudar a atopar o que sexa necesario. Agardamos que goce del, o Equipo de Moblin."
+#: ../penge/penge-calendar-pane.c:474
+msgid "Appointments"
+msgstr "Citas"
 
-#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
-msgid "Add"
-msgstr "Engadir"
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to Moblin"
+msgstr "Benvida/o a Moblin"
 
-#: ../penge/penge-events-pane.c:59
-msgid "Create an appointment"
-msgstr "Crear unha cita"
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Reciba a benvida a Moblin 2.1 para netbooks</b>"
 
-#: ../penge/penge-people-placeholder-tile.c:116
-msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "Aquí aparece o que andan a facer as súas amizades na Internet. Active agora as súas contas!"
-
-#: ../penge/penge-tasks-pane.c:51
-msgid "Create a new task"
-msgstr "Crear unha tarefa nova"
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Dado que o Moblin é un chisco diferente a outros computadores, reunimos algunhas cousiñas para axudar a atopar o que sexa necesario. Agardamos que goce del, o Equipo de Moblin."
