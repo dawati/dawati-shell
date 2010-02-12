@@ -494,11 +494,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
   MoblinNetbookPluginPrivate *priv   = plugin->priv;
 
-  guint minimize_timeout          = MINIMIZE_TIMEOUT;
-  guint maximize_timeout          = MAXIMIZE_TIMEOUT;
-  guint map_timeout               = MAP_TIMEOUT;
-  guint switch_timeout            = SWITCH_TIMEOUT;
-
   ClutterActor  *overlay;
   ClutterActor  *toolbar;
   ClutterActor  *switcher_overlay;
@@ -614,17 +609,6 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
                                    &screen_width, &screen_height);
-
-  if (mutter_plugin_debug_mode (MUTTER_PLUGIN (plugin)))
-    {
-      /*
-       * Double the effect duration to make them easier to observe.
-       */
-      minimize_timeout          *= 2;
-      maximize_timeout          *= 2;
-      map_timeout               *= 2;
-      switch_timeout            *= 2;
-    }
 
   overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
 
