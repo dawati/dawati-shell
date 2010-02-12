@@ -22,6 +22,7 @@
 #include <glib/gi18n.h>
 #include "mnp-alarms.h"
 #include "mnp-alarm-tile.h"
+#include "mnp-alarm-dialog.h"
 
 G_DEFINE_TYPE (MnpAlarms, mnp_alarms, MX_TYPE_BOX_LAYOUT)
 
@@ -65,6 +66,12 @@ mnp_alarms_class_init (MnpAlarmsClass *klass)
 static void
 mnp_alarms_init (MnpAlarms *self)
 {
+}
+
+static void
+new_alarm_clicked (MxButton *button, MnpAlarms *alarms)
+{
+	mnp_alarm_dialog_new ();
 }
 
 static void
@@ -112,6 +119,8 @@ mnp_alarms_construct (MnpAlarms *alarms)
 				   "expand", TRUE,				   
                                    NULL);	  
   mnp_alarm_set_text (priv->new_alarm_tile, NULL, _("New\nAlarm"));
+  g_signal_connect (priv->new_alarm_tile, "clicked", G_CALLBACK(new_alarm_clicked), alarms);
+
 }
 
 MnpAlarms*

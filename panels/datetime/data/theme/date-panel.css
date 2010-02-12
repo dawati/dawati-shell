@@ -17,6 +17,12 @@
   background-color: #7e7e7eff;
 }
 
+*#new-alarm-dialog
+{
+  border-image: url('dp-scroll-view-bin-bg.png') 2;
+  background-color: #7e7e7eff;
+}
+
 *#alarms-tile
 {
   padding: 2 2 2 2;	
@@ -80,20 +86,23 @@
 
 *.TileRemoveButton,
 *.TileRemoveButton:hover,
-*.TileRemoveButton:active
+*.TileRemoveButton:active,
+*.AlarmRemoveButton,
+*.AlarmRemoveButton:hover,
+*.AlarmRemoveButton:active
 {
   border-image:none;
   padding:0;
 }
 
-*.TileRemoveButton *.TileIcon
+*.TileRemoveButton *.TileIcon, *.AlarmRemoveButton *.AlarmDelIcon
 {
   border: 0;
   padding: 0;	
   background-image: url('dismiss_button.png');
 }
 
-*.TileRemoveButton:hover *.TileIcon
+*.TileRemoveButton:hover *.TileIcon, *.AlarmRemoveButton:hover *.AlarmDelIcon
 {
   border: 0;
   padding: 0;		
