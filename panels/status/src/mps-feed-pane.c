@@ -178,8 +178,10 @@ _service_status_updated_cb (SwClient *service,
 
   if (success)
   {
+    ClutterActor *entry;
     sw_client_view_refresh (priv->view);
-    mpl_entry_set_text (MPL_ENTRY (priv->entry), NULL);
+    entry = (ClutterActor *)mpl_entry_get_mx_entry (MPL_ENTRY (priv->entry));
+    mx_entry_set_text (MX_ENTRY (entry), NULL);
   }
 }
 
