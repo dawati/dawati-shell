@@ -1,6 +1,5 @@
 noinst_LIBRARIES = libpenge.a
 noinst_PROGRAMS = test-block-container test-everything-pane
-
 libpenge_a_headers = \
 		   penge-people-tile.h \
 		   penge-recent-file-tile.h \
@@ -19,7 +18,8 @@ libpenge_a_headers = \
 		   penge-people-placeholder-tile.h \
 		   penge-interesting-tile.h \
 		   penge-block-container.h \
-		   penge-everything-pane.h
+		   penge-everything-pane.h \
+		   penge-clickable-label.h
 
 libpenge_a_SOURCES = \
 		      $(libpenge_a_headers) \
@@ -40,7 +40,8 @@ libpenge_a_SOURCES = \
 		      penge-people-placeholder-tile.c \
 		      penge-interesting-tile.c \
 		      penge-block-container.c \
-		      penge-everything-pane.c
+		      penge-everything-pane.c \
+		      penge-clickable-label.c
 
 AM_CFLAGS = -Wall \
 	    $(PENGE_CFLAGS) \
