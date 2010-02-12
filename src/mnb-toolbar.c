@@ -359,6 +359,9 @@ mnb_toolbar_show_lowlight (MnbToolbar *toolbar)
 {
   ClutterActor *lowlight = toolbar->priv->lowlight;
 
+  if (CLUTTER_ACTOR_IS_VISIBLE (lowlight))
+    return;
+
   clutter_actor_set_opacity (lowlight, 0);
   clutter_actor_show (lowlight);
 
@@ -375,6 +378,9 @@ mnb_toolbar_hide_lowlight (MnbToolbar *toolbar)
 {
   ClutterActor     *lowlight = toolbar->priv->lowlight;
   ClutterAnimation *anim;
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (lowlight))
+    return;
 
   anim = clutter_actor_animate (CLUTTER_ACTOR(lowlight),
                                 CLUTTER_EASE_IN_SINE,
@@ -402,7 +408,8 @@ mnb_toolbar_show (ClutterActor *actor)
       return;
     }
 
-  mnb_toolbar_show_lowlight (MNB_TOOLBAR (actor));
+  if (moblin_netbook_use_netbook_mode (priv->plugin))
+    mnb_toolbar_show_lowlight (MNB_TOOLBAR (actor));
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -1220,6 +1227,10 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
   clutter_actor_hide (priv->panel_stub);
   mnb_spinner_stop ((MnbSpinner*)priv->spinner);
   priv->stubbed_panel = NULL;
+
+  if (!moblin_netbook_use_netbook_mode (priv->plugin))
+    mnb_toolbar_show_lowlight (toolbar);
+
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
   mnb_toolbar_set_waiting_for_panel_show (toolbar, FALSE, FALSE);
 }
@@ -1229,8 +1240,17 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbPanel *panel, MnbToolbar  *toolbar)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MutterPlugin      *plugin = priv->plugin;
+  MnbPanel          *active;
 
   moblin_netbook_stash_window_focus (plugin, CurrentTime);
+
+  if (!priv->waiting_for_panel_show &&
+      !moblin_netbook_use_netbook_mode (priv->plugin) &&
+      (!(active = mnb_toolbar_get_active_panel (toolbar)) ||
+       active == panel))
+    {
+      mnb_toolbar_hide_lowlight (toolbar);
+    }
 
   priv->panel_input_only = FALSE;
   mnb_toolbar_set_waiting_for_panel_hide (toolbar, FALSE);
