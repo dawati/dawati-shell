@@ -61,9 +61,10 @@ typedef struct {
 GType mx_spin_entry_get_type (void);
 
 MxSpinEntry* mx_spin_entry_new (void);
-gint mx_spin_entry_get_text (MxSpinEntry *spin);
 void mx_spin_entry_set_range (MxSpinEntry *spin, gint lower, gint upper);
 void mx_spin_entry_set_cycle (MxSpinEntry *spin, gboolean cycle);
+void mx_spin_entry_set_value (MxSpinEntry *spin, gint value);
+gint mx_spin_entry_get_value (MxSpinEntry *spin);
 
 G_END_DECLS
 

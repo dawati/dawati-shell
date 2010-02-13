@@ -177,3 +177,25 @@ mx_spin_entry_set_cycle (MxSpinEntry *spin, gboolean cycle)
 
 	priv->cycle = cycle;
 }
+
+gint
+mx_spin_entry_get_value (MxSpinEntry *spin)
+{
+	MxSpinEntryPrivate *priv = SPIN_ENTRY_PRIVATE(spin);
+
+	return priv->value;
+}
+
+void
+mx_spin_entry_set_value (MxSpinEntry *spin, gint value)
+{
+	MxSpinEntryPrivate *priv = SPIN_ENTRY_PRIVATE(spin);
+
+	priv->value = value;
+	if (value > priv->upper)
+		value = priv->upper;
+	else if (value < priv->lower)
+		value = priv->lower;
+
+	update_text(spin);
+}

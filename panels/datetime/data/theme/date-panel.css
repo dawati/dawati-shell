@@ -20,7 +20,6 @@
 *#new-alarm-dialog
 {
   padding: 4 4;
-  border-image: url('dp-scroll-view-bin-bg.png') 4 4;
   background-color: #7e7e7eff;
 }
 
@@ -110,6 +109,13 @@
   background-image: url('dismiss_button_hover.png');
 }
 
+*.AlarmIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('alarm.png');
+}
+
 *.MxSpinEntry *.UpButton,
 *.MxSpinEntry *.UpButton:hover,
 *.MxSpinEntry *.DownButton,
@@ -142,8 +148,12 @@
   background-image: url('down.png');
 }
 
-MxToggle {
+*.AmPmToggle {
   padding: 4;
-  background-image: url("toggle-background.png");
+  background-image: url("am-pm-toggle-background.png");
 }
 
+*.SnoozeToggle {
+  padding: 4;
+  background-image: url("snooze-background.png");
+}

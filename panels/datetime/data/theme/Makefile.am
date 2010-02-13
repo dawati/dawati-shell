@@ -9,7 +9,8 @@ dist_theme_DATA = \
 	alarm.png	\
 	up.png		\
 	down.png	\
-	toggle-background.png
+	am-pm-toggle-background.png \
+	snooze-background.png 
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
