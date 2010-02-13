@@ -442,7 +442,7 @@ mps_feed_pane_init (MpsFeedPane *self)
                                  CLUTTER_CONTAINER (priv->box_layout));
 
   priv->something_wrong_frame = mx_frame_new ();
-  priv->something_wrong_label = mx_label_new (_("Unable to update status: "
+  priv->something_wrong_label = mx_label_new (_("Unable to update status. "
                                                 "The service may be unavailable "
                                                 "or your password could be wrong."));
   mx_stylable_set_style_class (MX_STYLABLE (priv->something_wrong_label),
