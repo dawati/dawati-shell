@@ -22,6 +22,7 @@
 
 #include "mnp-alarm-dialog.h"
 #include <glib/gi18n.h>
+#include <gconf/gconf-client.h>
 
 G_DEFINE_TYPE (MnpAlarmDialog, mnp_alarm_dialog, MX_TYPE_BOX_LAYOUT)
 
@@ -47,6 +48,8 @@ struct _MnpAlarmDialogPrivate
   ClutterActor *snooze;
   ClutterActor *sound;
   ClutterActor *delete;
+  
+  gint id;
 };
 
 struct _sound_table {
@@ -104,17 +107,59 @@ mnp_alarm_dialog_init (MnpAlarmDialog *self)
 }
 
 static void
+update_conf(MnpAlarmDialog *dialog)
+{
+  MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
+  GConfClient *client = gconf_client_get_default();
+  GSList *list = NULL, *tmp, *new_node = NULL;
+  char *newdata;
+
+  list = gconf_client_get_list (client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, NULL);
+  tmp = list;
+  while(tmp) {
+	char *data = (char *)tmp->data;
+	int id, on_off, hour, min, am_pm, recur, snooze, sound;
+
+	sscanf(data, "%d %d %d %d %d %d %d %d", &id, &on_off, &hour, &min, &am_pm, &recur, &snooze, &sound);
+
+	if (id == priv->id) {
+		new_node = tmp;
+		break;
+	}
+		
+  	tmp = tmp->next;
+  }
+
+  newdata = g_strdup_printf("%d %d %d %d %d %d %d %d\n", priv->id,
+		   mx_button_get_checked(priv->on_off),
+		   mx_spin_entry_get_value(priv->hour),
+		   mx_spin_entry_get_value (priv->minute),
+		   mx_toggle_get_active (priv->am_pm),
+		   mx_combo_box_get_index (priv->recur),
+		   mx_toggle_get_active(priv->snooze),
+		   mx_combo_box_get_index(priv->sound));
+
+  if (new_node) {
+	g_free(new_node->data);
+	new_node->data = newdata;
+  } else {
+	list = g_slist_append(list, newdata);
+  } 
+
+  gconf_client_set_list(client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, list, NULL);
+
+  g_slist_foreach(list, (GFunc)g_free, NULL);
+  g_slist_free(list);
+
+  g_object_unref (client);
+}
+
+static void
 close_dialog (MxButton *btn, MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
 
-  printf("ON:%d TIME=%d:%d %s RECUR:%d Snooz:%d  Snd:%d\n", mx_button_get_checked(priv->on_off),
-		   mx_spin_entry_get_value(priv->hour),
-		   mx_spin_entry_get_value (priv->minute),
-		   mx_toggle_get_active (priv->am_pm) ? "AM": "PM",
-		   mx_combo_box_get_index (priv->recur),
-		   mx_toggle_get_active(priv->snooze),
-		   mx_combo_box_get_index(priv->sound));
+  update_conf(dialog);
 
   clutter_actor_destroy(dialog);
 }
@@ -383,7 +428,38 @@ static void
 alarm_del (MxButton *btn, MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
+  GList *list, *tmp, *del_node;
+  GConfClient *client;
 
+  client = gconf_client_get_default();
+
+  list = gconf_client_get_list (client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, NULL);
+  tmp = list;
+  while(tmp) {
+	char *data = (char *)tmp->data;
+	int id, on_off, hour, min, am_pm, recur, snooze, sound;
+
+	sscanf(data, "%d %d %d %d %d %d %d %d", &id, &on_off, &hour, &min, &am_pm, &recur, &snooze, &sound);
+
+	if (id == priv->id) {
+		del_node = tmp;
+		break;
+	}
+		
+  	tmp = tmp->next;
+  }
+
+  if (del_node) {
+  	list = g_list_remove_link (list, del_node);
+  	gconf_client_set_list(client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, list, NULL);	
+	g_free (del_node->data);
+	g_free(del_node);
+  }
+
+  g_slist_foreach(list, (GFunc)g_free, NULL);
+  g_slist_free(list);
+
+  g_object_unref(client);
   clutter_actor_destroy(dialog);
 }
 
@@ -425,6 +501,8 @@ mnp_alarm_dialog_construct (MnpAlarmDialog *dialog)
   clutter_actor_raise_top (dialog);
   clutter_actor_set_position (dialog, 300,105);
   clutter_actor_set_size (dialog, 300, 300);
+  
+  priv->id = g_random_int();
 }
 
 MnpAlarmDialog*

@@ -1,0 +1,20 @@
+<gconfschemafile>
+  <schemalist>
+
+    <schema>
+      <key>/schemas/apps/date-time-panel/alarms</key>
+      <applyto>/apps/date-time-panel/alarms</applyto>
+      <owner>anjal</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[]</default>      
+      <locale name="C">
+        <short>List of alarms in short encoded form</short>
+        <long>
+		Alarms stored in encoded form for use by the alarm notfier.
+        </long>
+      </locale>
+    </schema>
+
+  </schemalist>
+</gconfschemafile>
