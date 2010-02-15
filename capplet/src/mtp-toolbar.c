@@ -109,20 +109,41 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
   MxPadding          padding;
+  ClutterActorBox    childbox;
 
   CLUTTER_ACTOR_CLASS (
              mtp_toolbar_parent_class)->allocate (actor, box, flags);
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-  clutter_actor_set_position (priv->clock, padding.left, padding.top);
-  clutter_actor_allocate_preferred_size (priv->clock, flags);
+  childbox.x1 = padding.left;
+  childbox.y1 = padding.top;
+  childbox.x2 = 213.0;
+  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
 
-  clutter_actor_set_position (priv->panel_area, 213.0, padding.top);
-  clutter_actor_allocate_preferred_size (priv->panel_area, flags);
+  mx_allocate_align_fill (priv->clock, &childbox,
+                          MX_ALIGN_START, MX_ALIGN_MIDDLE,
+                          FALSE, FALSE);
+  clutter_actor_allocate (priv->clock, &childbox, flags);
 
-  clutter_actor_set_position (priv->applet_area, 793.0, padding.top);
-  clutter_actor_allocate_preferred_size (priv->applet_area, flags);
+  childbox.x1 = 213.0;
+  childbox.y1 = padding.top;
+  childbox.x2 = box->x2 - box->x1;
+  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
+
+  mx_allocate_align_fill (priv->panel_area, &childbox,
+                          MX_ALIGN_START, MX_ALIGN_MIDDLE,
+                          FALSE, FALSE);
+  clutter_actor_allocate (priv->panel_area, &childbox, flags);
+
+  childbox.x1 = 793.0;
+  childbox.y1 = padding.top;
+  childbox.x2 = box->x2 - box->x1;
+  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
+  mx_allocate_align_fill (priv->applet_area, &childbox,
+                          MX_ALIGN_START, MX_ALIGN_MIDDLE,
+                          FALSE, FALSE);
+  clutter_actor_allocate (priv->applet_area, &childbox, flags);
 }
 
 static void

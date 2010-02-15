@@ -24,7 +24,7 @@ MtpJar {
 }
 
 MxBoxLayout#panel-area, MxBoxLayout#applet-area {
- padding: 5 0 0 0;
+ padding: 5 0 5 0;
 }
 
 MtpToolbar {
