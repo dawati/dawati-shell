@@ -189,7 +189,6 @@ mtp_jar_drop (MxDroppable       *droppable,
   MtpJar            *jar = MTP_JAR (droppable);
   MtpJarPrivate     *priv = jar->priv;
   ClutterActor      *actor = CLUTTER_ACTOR (draggable);
-  ClutterActor      *parent = clutter_actor_get_parent (actor);
 
   /*
    * Check we are not disabled (we should really not be getting drop events on
@@ -201,12 +200,7 @@ mtp_jar_drop (MxDroppable       *droppable,
       return;
     }
 
-  g_object_ref (draggable);
-  clutter_container_remove_actor (CLUTTER_CONTAINER (parent), actor);
-
   mtp_jar_add_button (jar, actor);
-
-  g_object_unref (draggable);
 }
 
 static void
