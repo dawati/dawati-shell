@@ -64,7 +64,7 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
   mx_stylable_set_style_class (MX_STYLABLE (tile),
                                "PengeWelcomeTile");
 
-  label = mx_label_new (_("Welcome to Moblin"));
+  label = mx_label_new (_("Welcome to MeeGo"));
   clutter_actor_set_name ((ClutterActor *)label,
                           "penge-welcome-primary-text");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
