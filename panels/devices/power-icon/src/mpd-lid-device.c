@@ -94,6 +94,13 @@ _dispose (GObject *object)
 
   if (priv->client)
   {
+    int n_handlers = g_signal_handlers_disconnect_matched (priv->client,
+                                                           G_SIGNAL_MATCH_DATA,
+                                                           0, 0, NULL, NULL,
+                                                           object);
+    g_debug ("%s:%s disconnected %i handlers.",
+             G_STRLOC, __FUNCTION__, n_handlers);
+
     g_object_unref (priv->client);
     priv->client = NULL;
   }

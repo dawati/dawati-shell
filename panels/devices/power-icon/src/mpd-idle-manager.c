@@ -44,7 +44,7 @@ typedef struct
 #define SUSPEND_ALARM_ID 1
 
 static void
-mpd_idle_manager_dispose (GObject *object)
+_dispose (GObject *object)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (object);
 
@@ -69,17 +69,18 @@ mpd_idle_manager_dispose (GObject *object)
 
   if (priv->power_client)
   {
+    int n_handlers = g_signal_handlers_disconnect_matched (priv->power_client,
+                                                           G_SIGNAL_MATCH_DATA,
+                                                           0, 0, NULL, NULL,
+                                                           object);
+    g_debug ("%s:%s disconnected %i handlers.",
+             G_STRLOC, __FUNCTION__, n_handlers);
+
     g_object_unref (priv->power_client);
     priv->power_client = NULL;
   }
 
   G_OBJECT_CLASS (mpd_idle_manager_parent_class)->dispose (object);
-}
-
-static void
-mpd_idle_manager_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (mpd_idle_manager_parent_class)->finalize (object);
 }
 
 static void
@@ -89,8 +90,7 @@ mpd_idle_manager_class_init (MpdIdleManagerClass *klass)
 
   g_type_class_add_private (klass, sizeof (MpdIdleManagerPrivate));
 
-  object_class->dispose = mpd_idle_manager_dispose;
-  object_class->finalize = mpd_idle_manager_finalize;
+  object_class->dispose = _dispose;
 }
 
 static void
