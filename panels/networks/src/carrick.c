@@ -315,7 +315,18 @@ main (int    argc,
 
   applet = carrick_applet_new ();
   pane = carrick_applet_get_pane (applet);
-  if (standalone) {
+
+  if (windowid) {
+    window = gtk_plug_new (windowid);
+    g_signal_connect (window,
+                      "delete-event",
+                      (GCallback) gtk_main_quit,
+                                            NULL);
+    gtk_container_add (GTK_CONTAINER (window),
+                       pane);
+
+    gtk_widget_show (window);
+  } else if (standalone) {
       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
       g_signal_connect (window,
                         "delete-event",
