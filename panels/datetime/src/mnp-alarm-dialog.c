@@ -38,10 +38,8 @@ struct _MnpAlarmDialogPrivate
   ClutterActor *on_off;
 
   ClutterActor *hour;
-  ClutterActor *h_spin_up, *h_spin_down;
 
   ClutterActor *minute;
-  ClutterActor *m_spin_up, *m_spin_down;
   ClutterActor *am_pm;
 
   ClutterActor *recur;
@@ -270,7 +268,6 @@ construct_time_entry (MnpAlarmDialog *dialog)
   mx_spin_entry_set_range (priv->minute, 0, 59);
   mx_spin_entry_set_value (priv->minute, 0);
   priv->am_pm = mx_toggle_new ();
-  mx_toggle_set_active (priv->am_pm, TRUE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->am_pm),
                                	"AmPmToggle");
  
@@ -350,7 +347,6 @@ construct_recur_snooze_entry (MnpAlarmDialog *dialog)
                                    NULL);
  
   priv->snooze = mx_toggle_new ();
-  mx_toggle_set_active (priv->snooze, TRUE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->snooze), "SnoozeToggle");
 
   label = mx_label_new (_("Snooze"));
@@ -450,10 +446,10 @@ alarm_del (MxButton *btn, MnpAlarmDialog *dialog)
   }
 
   if (del_node) {
-  	list = g_list_remove_link (list, del_node);
+  	list = g_slist_remove_link (list, del_node);
   	gconf_client_set_list(client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, list, NULL);	
 	g_free (del_node->data);
-	g_free(del_node);
+	g_slist_free_1 (del_node);
   }
 
   g_slist_foreach(list, (GFunc)g_free, NULL);
@@ -513,4 +509,21 @@ mnp_alarm_dialog_new (void)
   mnp_alarm_dialog_construct(dialog);
 
   return dialog;
+}
+
+void
+mnp_alarm_dialog_set_item (MnpAlarmDialog *dialog, MnpAlarmItem *item)
+{
+  MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
+
+  priv->id = item->id;
+  mx_button_set_checked(priv->on_off, item->on_off);
+  mx_spin_entry_set_value(priv->hour, item->hour);
+  mx_spin_entry_set_value(priv->minute, item->minute);
+
+  mx_toggle_set_active (priv->am_pm, item->am_pm ? TRUE: FALSE);
+
+  mx_combo_box_set_index(priv->recur, item->repeat);
+  mx_toggle_set_active (priv->snooze, item->snooze ? TRUE : FALSE);
+  mx_combo_box_set_index (priv->sound, item->sound);
 }

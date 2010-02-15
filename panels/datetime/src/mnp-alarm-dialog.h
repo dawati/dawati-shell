@@ -25,6 +25,7 @@
 
 #include <glib-object.h>
 #include <mx/mx.h>
+#include "mnp-alarm-tile.h"
 
 G_BEGIN_DECLS
 
@@ -81,7 +82,7 @@ typedef enum {
 }MnpAlarmSound;
 
 MnpAlarmDialog* mnp_alarm_dialog_new (void);
-
+void mnp_alarm_dialog_set_item (MnpAlarmDialog *dialog, MnpAlarmItem *item);
 G_END_DECLS
 
 #endif /* _MNP_ALARM_DIALOG_H */

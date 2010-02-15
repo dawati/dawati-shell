@@ -72,7 +72,17 @@ mnp_alarms_init (MnpAlarms *self)
 static void
 new_alarm_clicked (MxButton *button, MnpAlarms *alarms)
 {
-	mnp_alarm_dialog_new ();
+  mnp_alarm_dialog_new ();
+}
+
+static void
+load_alarm_tile (MxButton *button, MnpAlarmTile *tile)
+{
+  MnpAlarmItem *item = mnp_alarm_tile_get_item(tile);
+  MnpAlarmDialog *dialog;
+
+  dialog = mnp_alarm_dialog_new();
+  mnp_alarm_dialog_set_item (dialog, item);
 }
 
 static void
@@ -84,21 +94,33 @@ load_alarms (MnpAlarms *alarms)
   MnpAlarmItem *item = g_new0(MnpAlarmItem, 1);
   char *data;
 
+  if (priv->alarm_tiles) {
+	  g_list_foreach (priv->alarm_tiles, clutter_actor_destroy, NULL);
+	  g_list_free(priv->alarm_tiles);
+	  priv->alarm_tiles = NULL;
+  }
   list = gconf_client_get_list (client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, NULL);
+  if (g_slist_length(list) > 3)
+	  clutter_actor_hide (priv->right_tiles);
+  else
+	  clutter_actor_show (priv->right_tiles);
   tmp = list;
   while(tmp) {
 	char *data = (char *)tmp->data;
 	MnpAlarmTile *tile = mnp_alarm_tile_new ();
 
+	g_signal_connect (tile, "clicked", G_CALLBACK(load_alarm_tile), tile);
 	sscanf(data, "%d %d %d %d %d %d %d %d", &item->id, &item->on_off, &item->hour, &item->minute, &item->am_pm, &item->repeat, &item->snooze, &item->sound);
 	clutter_container_add_actor (priv->left_tiles, tile);
 	clutter_container_child_set ((ClutterContainer *)priv->left_tiles, tile,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
 				   "expand", FALSE,				   
-                                   NULL);	  
+                                   NULL);
+
 	mnp_alarm_tile_set_item (tile, item);
   	tmp = tmp->next;
+	priv->alarm_tiles = g_list_append (priv->alarm_tiles, tile);
   }
   
   g_slist_foreach(list, (GFunc)g_free, NULL);
@@ -107,10 +129,34 @@ load_alarms (MnpAlarms *alarms)
 
   g_object_unref (client);
 }
+
+static void
+alarms_changed (GConfClient *client,
+		guint cnxn_id,
+		GConfEntry *entry,
+		gpointer user_data)
+{
+	MnpAlarms *alarms = (MnpAlarms *)user_data;
+
+	load_alarms(alarms);
+}
+
+static void
+setup_watcher (MnpAlarms *alarms)
+{
+  GConfClient *client = gconf_client_get_default ();
+
+  gconf_client_add_dir (client, "/apps/date-time-panel", GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
+  gconf_client_notify_add (client, "/apps/date-time-panel/alarms", alarms_changed, alarms, NULL, NULL);
+	
+}
+
 static void
 mnp_alarms_construct (MnpAlarms *alarms)
 {
   MnpAlarmsPrivate *priv = ALARMS_PRIVATE(alarms);
+
+  priv->alarm_tiles = NULL;
 
   mx_box_layout_set_vertical ((MxBoxLayout *)alarms, FALSE);
   mx_box_layout_set_pack_start ((MxBoxLayout *)alarms, FALSE);
@@ -154,6 +200,7 @@ mnp_alarms_construct (MnpAlarms *alarms)
   mnp_alarm_set_text (priv->new_alarm_tile, NULL, _("New\nAlarm"));
   g_signal_connect (priv->new_alarm_tile, "clicked", G_CALLBACK(new_alarm_clicked), alarms);
 
+  setup_watcher (alarms);
   load_alarms(alarms);
 }
 
@@ -166,3 +213,5 @@ mnp_alarms_new (void)
 
   return alarms;
 }
+
+
