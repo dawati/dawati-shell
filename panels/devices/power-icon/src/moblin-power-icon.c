@@ -3,7 +3,8 @@
  * Copyright (C) 2009-2010, Intel Corporation.
  *
  * Author: Robert Staudinger <robert.staudinger@intel.com>
- * 
+ *         Rob Bradford <rob@linux.intel.com>
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -37,6 +38,86 @@
 #include "mpd-lid-device.h"
 #include "mpd-shutdown-notification.h"
 #include "config.h"
+
+typedef enum
+{
+  NOTIFICATION_20_PERCENT,
+  NOTIFICATION_10_PERCENT,
+  NOTIFICATION_5_PERCENT,
+  NOTIFICATION_LAST
+} NotificationLevel;
+
+static const struct
+{
+  const gchar *title;
+  const gchar *message;
+  const gchar *icon;
+} _messages[] = {
+  { N_("Running low on battery"),
+    N_("We've noticed that your battery is running a bit low. " \
+       "If you can it would be a good idea to plug in and top up."),
+    NULL },
+  { N_("Getting close to empty"),
+    N_("You're running quite low on battery. " \
+       "It'd be a good idea to save all your work " \
+       "and plug in as soon as you can"),
+    NULL },
+  { N_("Danger!"),
+    N_("Sorry, your computer is about to run out of battery. " \
+       "We're going to have to turn off now. " \
+       "Please save your work and hope to see you again soon."),
+    NULL }
+};
+
+static int _last_notification_displayed = -1;
+
+static void
+_shutdown_timeout_cb (MpdBatteryDevice *battery)
+{
+  MpdBatteryDeviceState  state;
+  GError                *error = NULL;
+
+  state = mpd_battery_device_get_state (battery);
+  if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
+  {
+    EggConsoleKit *console = egg_console_kit_new ();
+    egg_console_kit_stop (console, &error);
+    if (error)
+    {
+      g_critical ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    }
+    g_object_unref (console);
+  }
+}
+
+static void
+do_notification (NotificationLevel level)
+{
+  NotifyNotification *note;
+  GError *error = NULL;
+
+  note = notify_notification_new (_(_messages[level].title),
+                                  _(_messages[level].message),
+                                  _messages[level].icon,
+                                  NULL);
+
+  notify_notification_set_timeout (note, 10000);
+
+  if (level == NOTIFICATION_10_PERCENT)
+  {
+    notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
+  }
+
+  if (!notify_notification_show (note, &error))
+  {
+    g_warning (G_STRLOC ": Error showing notification: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
+  g_object_unref (note);
+}
 
 static void
 update (MpdBatteryDevice  *battery,
@@ -101,6 +182,37 @@ update (MpdBatteryDevice  *battery,
   g_debug ("%s '%s' %d", description, button_style, percentage);
 
   g_free (description);
+
+  if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
+  {
+    /* Do notifications at various levels */
+    if (percentage > 0 && percentage < 5) {
+      if (_last_notification_displayed != NOTIFICATION_10_PERCENT)
+      {
+        do_notification (NOTIFICATION_10_PERCENT);
+        _last_notification_displayed = NOTIFICATION_10_PERCENT;
+
+        g_timeout_add_seconds (60,
+                               (GSourceFunc) _shutdown_timeout_cb,
+                               battery);
+      }
+    } else if (percentage < 10) {
+      if (_last_notification_displayed != NOTIFICATION_10_PERCENT)
+      {
+        do_notification (NOTIFICATION_10_PERCENT);
+        _last_notification_displayed = NOTIFICATION_10_PERCENT;
+      }
+    } else if (percentage < 20) {
+      if (_last_notification_displayed != NOTIFICATION_20_PERCENT)
+      {
+        do_notification (NOTIFICATION_20_PERCENT);
+        _last_notification_displayed = NOTIFICATION_20_PERCENT;
+      }
+    } else {
+      /* Reset the notification */
+      _last_notification_displayed = -1;
+    }
+  }
 }
 
 static void
@@ -125,7 +237,7 @@ _lid_closed_cb (MpdLidDevice    *lid,
     {
       g_warning ("%s : %s", G_STRLOC, error->message);
       g_clear_error (&error);
-    }  
+    }
   }
 }
 
