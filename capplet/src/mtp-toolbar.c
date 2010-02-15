@@ -306,6 +306,7 @@ mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
       if (MTP_IS_SPACE (actor))
         {
           retval = TRUE;
+          g_debug ("removing space");
           clutter_container_remove_actor (container, actor);
         }
       else
@@ -370,6 +371,8 @@ mtp_toolbar_drop (MxDroppable         *droppable,
 
     if (target)
       {
+        g_debug ("Initial target is %s", G_OBJECT_TYPE_NAME (target));
+
         if (!(MTP_IS_TOOLBAR_BUTTON (target)))
           {
             /*
@@ -379,6 +382,9 @@ mtp_toolbar_drop (MxDroppable         *droppable,
             target = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage),
                                                      CLUTTER_PICK_REACTIVE,
                                                      event_x + 20, event_y);
+
+            g_debug ("secondary target is %s", G_OBJECT_TYPE_NAME (target));
+
             if (!MTP_IS_TOOLBAR_BUTTON (target))
               target = NULL;
           }
@@ -419,6 +425,7 @@ mtp_toolbar_drop (MxDroppable         *droppable,
                                 mtp_toolbar_button_is_applet (tbutton)))
     {
       g_object_ref (draggable);
+      g_debug ("moving child to toolbar");
       clutter_container_remove_actor (CLUTTER_CONTAINER (parent), actor);
 
       mtp_toolbar_insert_button (toolbar,
@@ -662,6 +669,7 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
                                    button);
 
       clutter_actor_set_depth (ddata.new, ddata.new_depth);
+      clutter_container_sort_depth_order (CLUTTER_CONTAINER (priv->panel_area));
 
       clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
                                    button,
@@ -683,6 +691,7 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
                                        button);
 
           clutter_actor_set_depth (ddata.new, ddata.new_depth);
+          clutter_container_sort_depth_order (CLUTTER_CONTAINER (priv->applet_area));
 
           clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
                                        button,
@@ -699,7 +708,10 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
           clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
                                        button);
 
+          g_debug ("button depth %f", ddata.new_depth);
+
           clutter_actor_set_depth (ddata.new, ddata.new_depth);
+          clutter_container_sort_depth_order (CLUTTER_CONTAINER (priv->panel_area));
 
           clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
                                        button,
