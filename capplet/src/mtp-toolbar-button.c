@@ -543,7 +543,13 @@ mtp_toolbar_button_class_init (MtpToolbarButtonClass *klass)
 static void
 mtp_toolbar_button_init (MtpToolbarButton *self)
 {
-  self->priv = MTP_TOOLBAR_BUTTON_GET_PRIVATE (self);
+  MtpToolbarButtonPrivate *priv;
+
+  priv = self->priv = MTP_TOOLBAR_BUTTON_GET_PRIVATE (self);
+
+  priv->threshold = 5;
+  priv->axis = 0;
+  priv->containment = MX_DISABLE_CONTAINMENT;
 }
 
 static void
