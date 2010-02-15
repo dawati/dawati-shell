@@ -163,6 +163,8 @@ mpd_lid_device_set_closed (MpdLidDevice *self,
 
   g_return_if_fail (MPD_IS_LID_DEVICE (self));
 
+  g_debug ("%s() %d %d", __FUNCTION__, closed, priv->closed);
+
   if (closed != priv->closed)
   {
     priv->closed = closed;

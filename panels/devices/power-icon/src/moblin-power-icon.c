@@ -230,6 +230,8 @@ _lid_closed_cb (MpdLidDevice    *lid,
 {
   GError *error = NULL;
 
+  g_debug ("%s() %d", __FUNCTION__, mpd_lid_device_get_closed (lid));
+
   if (mpd_lid_device_get_closed (lid))
   {
     mpd_idle_manager_suspend (idlr, &error);
