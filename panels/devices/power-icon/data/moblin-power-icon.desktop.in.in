@@ -13,6 +13,7 @@ GenericName=A power indicator
 NoDisplay=true
 OnlyShowIn=MOBLIN;
 X-GNOME-Autostart-enable=true
+X-Moblin-Panel-Button-Style=state-75
 X-Moblin-Panel-Optional=false
 X-Moblin-Panel-Stylesheet=@PKGTHEMEDIR@/power-icon/power-icon.css
 X-Moblin-Panel-Type=applet
