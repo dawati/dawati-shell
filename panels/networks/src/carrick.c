@@ -275,10 +275,13 @@ main (int    argc,
   GtkSettings   *settings;
 #endif
   gboolean       standalone = FALSE;
+  GdkNativeWindow windowid = 0;
   GError        *error = NULL;
   GOptionEntry   entries[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
-      _ ("Run in standalone mode"), NULL },
+      _("Run in standalone mode"), NULL },
+    { "embed", 'w', 0, G_OPTION_ARG_INT, &windowid,
+      _("Embed in another window (overrides --standalone)"), NULL },
     { NULL }
   };
 
