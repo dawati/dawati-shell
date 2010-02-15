@@ -86,6 +86,10 @@ MnbToolbarButton#bluetooth-button {
   background-image: url("panel/bluetooth-coloured.png");
 }
 
+MnbToolbarButton#devices-button {
+  background-image: url("panel/devices-coloured.png");
+}
+
 MxButton#close-button {
   background-image: url("switcher/application-close-button.png");
 }
