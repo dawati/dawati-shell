@@ -1,8 +1,8 @@
 
 /*
- * Copyright (C) 2009-2010, Intel Corporation.
+ * Copyright © 2010 Intel Corp.
  *
- * Author: Robert Staudinger <robert.staudinger@intel.com>
+ * Authors: Rob Staudinger <robert.staudinger@intel.com>
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
