@@ -75,7 +75,7 @@ mnb_alttab_overlay_establish_keyboard_grab (MnbAlttabOverlay  *overlay,
       return TRUE;
     }
 
-  g_warning ("Failed to grab keyboard");
+  g_warning (G_STRLOC "%s: Failed to grab keyboard", __FUNCTION__);
 
   return FALSE;
 }
@@ -235,16 +235,57 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
       return;
     }
 
-  priv->alt_tab_down = TRUE;
-
   /* MNB_DBG_MARK(); */
 
   if (!priv->in_alt_grab)
     {
-      mnb_alttab_overlay_establish_keyboard_grab (overlay, display, screen,
-                                                  binding->mask,
-                                                  event->xkey.time);
+      if (!mnb_alttab_overlay_establish_keyboard_grab (overlay, display, screen,
+                                                       binding->mask,
+                                                       event->xkey.time))
+        {
+          /*
+           * We failed to grab keyboard, see for example MB#9735, just exit,
+           * we can't show the overlay without having a grab.
+           */
+
+          priv->alt_tab_down = FALSE;
+
+           /* Some sanity checks -- none of the auxiliary timeouts should be
+           * installed, as the only time this can happen is *before* the whole
+           * machinery is put into place.
+           */
+
+          if (priv->autoscroll_trigger_id)
+            {
+              g_critical (G_STRLOC ":%s: autoscroll trigger timeout should not "
+                          "be installed!", __FUNCTION__);
+
+              g_source_remove (priv->autoscroll_trigger_id);
+              priv->autoscroll_trigger_id = 0;
+            }
+
+          if (priv->autoscroll_advance_id)
+            {
+              g_critical (G_STRLOC ":%s: autoscroll advance timeout should not "
+                          "be installed!", __FUNCTION__);
+              g_source_remove (priv->autoscroll_advance_id);
+
+              priv->autoscroll_advance_id = 0;
+            }
+
+          if (priv->slowdown_timeout_id)
+            {
+              g_critical (G_STRLOC ":%s: slowdown timeout should not "
+                          "be installed!", __FUNCTION__);
+              g_source_remove (priv->slowdown_timeout_id);
+              priv->slowdown_timeout_id = 0;
+            }
+
+          return;
+        }
     }
+
+  priv->alt_tab_down = TRUE;
 
   if (!priv->waiting_for_timeout &&
       (!CLUTTER_ACTOR_IS_VISIBLE (overlay) ||
