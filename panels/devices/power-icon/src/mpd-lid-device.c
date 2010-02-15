@@ -46,7 +46,6 @@ typedef struct
 
 static void
 _client_changed_cb (DkpClient    *client,
-                    DkpDevice    *device,
                     MpdLidDevice *self)
 {
   bool closed;
@@ -172,10 +171,16 @@ mpd_lid_device_set_closed (MpdLidDevice *self,
 
   g_debug ("%s() %d %d", __FUNCTION__, closed, priv->closed);
 
+  /* Always updating and notifying, since lid-opened is flakey. */
+  priv->closed = closed;
+  g_object_notify (G_OBJECT (self), "closed");
+
+#if 0
   if (closed != priv->closed)
   {
     priv->closed = closed;
     g_object_notify (G_OBJECT (self), "closed");
   }
+#endif
 }
 
