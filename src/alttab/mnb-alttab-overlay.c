@@ -197,8 +197,10 @@ mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *self)
 static gboolean
 mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
 {
-  MnbAlttabOverlayPrivate *priv = self->priv;
-  GList                   *l, *filtered = NULL, *active = NULL;
+  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
+  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MnbAlttabOverlayPrivate    *priv = self->priv;
+  GList                      *l, *filtered = NULL, *active = NULL;
 
   filtered = mnb_alttab_overlay_get_app_list (self);
 
@@ -211,7 +213,9 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
   for (l = filtered; l; l = l->next)
     {
       MutterWindow          *m = l->data;
-      MnbAlttabOverlayApp *app = mnb_alttab_overlay_app_new (m);
+      MnbAlttabOverlayApp *app;
+
+      app = mnb_alttab_overlay_app_new (m, ppriv->desktop_tex);
 
       if (!active)
         active = l->next;

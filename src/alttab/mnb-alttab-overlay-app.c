@@ -43,6 +43,8 @@ struct _MnbAlttabOverlayAppPrivate
   ClutterActor *child;
   ClutterActor *icon;
   ClutterActor *text;
+  ClutterActor *background;
+  ClutterActor *bg_clone;
 
   gboolean      disposed : 1; /* disposed guard   */
   gboolean      active   : 1;
@@ -52,7 +54,8 @@ enum
 {
   PROP_0 = 0,
 
-  PROP_MUTTER_WINDOW
+  PROP_MUTTER_WINDOW,
+  PROP_BACKGROUND
 };
 
 G_DEFINE_TYPE (MnbAlttabOverlayApp, mnb_alttab_overlay_app, MX_TYPE_WIDGET);
@@ -89,6 +92,18 @@ mnb_alttab_overlay_app_dispose (GObject *object)
       priv->icon = NULL;
     }
 
+  if (priv->bg_clone)
+    {
+      clutter_actor_destroy (priv->bg_clone);
+      priv->bg_clone = NULL;
+    }
+
+  if (priv->background)
+    {
+      g_object_unref (priv->background);
+      priv->background = NULL;
+    }
+
   g_object_weak_unref (G_OBJECT (priv->mcw),
                        mnb_alttab_overlay_app_origin_weak_notify, object);
 
@@ -108,6 +123,11 @@ mnb_alttab_overlay_app_set_property (GObject      *gobject,
     case PROP_MUTTER_WINDOW:
       priv->mcw = g_value_get_object (value);
       break;
+    case PROP_BACKGROUND:
+      if (priv->background)
+        g_object_unref (priv->background);
+      priv->background = g_value_dup_object (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -126,6 +146,9 @@ mnb_alttab_overlay_app_get_property (GObject    *gobject,
     {
     case PROP_MUTTER_WINDOW:
       g_value_set_object (value, priv->mcw);
+      break;
+    case PROP_BACKGROUND:
+      g_value_set_object (value, priv->background);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -200,6 +223,15 @@ mnb_alttab_overlay_app_constructed (GObject *self)
   if (title)
     clutter_text_set_text (CLUTTER_TEXT (priv->text), title);
 
+  if (priv->background)
+    {
+      ClutterActor *bg;
+
+      bg = priv->bg_clone = clutter_clone_new (priv->background);
+
+      clutter_actor_set_parent (bg, actor);
+    }
+
   g_object_weak_ref (G_OBJECT (priv->mcw),
                      mnb_alttab_overlay_app_origin_weak_notify, self);
 }
@@ -223,6 +255,7 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
   /*
    * Based on SwWindow, we are aiming for similar looks.
    */
+
   mx_widget_get_available_area (MX_WIDGET (actor), box, &avail_box);
 
   infobox.x1 = avail_box.x1;
@@ -259,11 +292,29 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
   if (priv->child)
     {
       mx_widget_get_available_area (MX_WIDGET (actor), box, &childbox);
+
+      /*
+       * Small border, matching SwWindow, not ideal, should be stylable or
+       * something
+       */
+      childbox.x1 += 2;
+      childbox.y1 += 2;
+      childbox.x2 -= 2;
+      childbox.y2 -= 2;
+
       childbox.y2 -= MNB_ALTTAB_OVERLAY_APP_INFO_BOX_HEIGHT +
         MNB_ALTTAB_OVERLAY_APP_SPACING;
       mx_allocate_align_fill (priv->child, &childbox, MX_ALIGN_MIDDLE,
                               MX_ALIGN_MIDDLE, FALSE, FALSE);
       clutter_actor_allocate (priv->child, &childbox, flags);
+    }
+
+  if (priv->bg_clone)
+    {
+      mx_widget_get_available_area (MX_WIDGET (actor), box, &childbox);
+      childbox.y2 -= MNB_ALTTAB_OVERLAY_APP_INFO_BOX_HEIGHT +
+        MNB_ALTTAB_OVERLAY_APP_SPACING;
+      clutter_actor_allocate (priv->bg_clone, &childbox, flags);
     }
 
 #else
@@ -381,6 +432,9 @@ mnb_alttab_overlay_app_map (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->map (self);
 
+  if (priv->bg_clone)
+    clutter_actor_map (priv->bg_clone);
+
   if (priv->child)
     clutter_actor_map (priv->child);
 
@@ -397,6 +451,9 @@ mnb_alttab_overlay_app_unmap (ClutterActor *self)
   MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (self)->priv;
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->unmap (self);
+
+  if (priv->bg_clone)
+    clutter_actor_unmap (priv->bg_clone);
 
   if (priv->child)
     clutter_actor_unmap (priv->child);
@@ -432,6 +489,9 @@ mnb_alttab_overlay_app_paint (ClutterActor *self)
   MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (self)->priv;
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->paint (self);
+
+  if (priv->bg_clone && CLUTTER_ACTOR_IS_MAPPED (priv->bg_clone))
+    clutter_actor_paint (priv->bg_clone);
 
   if (priv->child && CLUTTER_ACTOR_IS_MAPPED (priv->child))
     clutter_actor_paint (priv->child);
@@ -499,6 +559,15 @@ mnb_alttab_overlay_app_class_init (MnbAlttabOverlayAppClass *klass)
                                                         MUTTER_TYPE_COMP_WINDOW,
                                                         G_PARAM_READWRITE |
                                                        G_PARAM_CONSTRUCT_ONLY));
+
+  g_object_class_install_property (object_class,
+                                   PROP_BACKGROUND,
+                                   g_param_spec_object ("background",
+                                                        "Workspace background",
+                                                        "Workspace background.",
+                                                        CLUTTER_TYPE_ACTOR,
+                                                        G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -510,10 +579,12 @@ mnb_alttab_overlay_app_init (MnbAlttabOverlayApp *self)
 }
 
 MnbAlttabOverlayApp *
-mnb_alttab_overlay_app_new (MutterWindow *mw)
+mnb_alttab_overlay_app_new (MutterWindow *mw,
+                            ClutterActor *background)
 {
   return g_object_new (MNB_TYPE_ALTTAB_OVERLAY_APP,
                        "mutter-window", mw,
+                       "background",  background,
                        NULL);
 }
 

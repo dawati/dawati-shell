@@ -60,7 +60,8 @@ struct _MnbAlttabOverlayAppClass
 
 GType mnb_alttab_overlay_app_get_type (void);
 
-MnbAlttabOverlayApp *mnb_alttab_overlay_app_new (MutterWindow   *mw);
+MnbAlttabOverlayApp *mnb_alttab_overlay_app_new (MutterWindow   *mw,
+                                                 ClutterActor   *background);
 
 void          mnb_alttab_overlay_app_set_active (MnbAlttabOverlayApp *app,
                                                  gboolean             active);
