@@ -201,18 +201,6 @@ typedef struct _DeleteData
 
 } DeleteData;
 
-static gboolean
-window_delete_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
-{
-  DeleteData *ddata = data;
-
-  save_toolbar_state (ddata->client, ddata->toolbar);
-
-  gtk_main_quit ();
-
-  return FALSE;
-}
-
 static void
 mtp_toolbar_button_remove_cb (ClutterActor *button, MtpJar *jar)
 {
@@ -223,7 +211,16 @@ mtp_toolbar_button_remove_cb (ClutterActor *button, MtpJar *jar)
 }
 
 static void
-construct_contents (GtkWidget    *embed,
+save_button_clicked_cb (MxButton *button, gpointer data)
+{
+  DeleteData *ddata = data;
+
+  save_toolbar_state (ddata->client, ddata->toolbar);
+}
+
+static void
+construct_contents (GConfClient  *client,
+                    GtkWidget    *embed,
                     ClutterActor *stage,
                     MtpToolbar   *toolbar,
                     GSList       *panels)
@@ -235,8 +232,32 @@ construct_contents (GtkWidget    *embed,
   clutter_actor_set_name (jar, "jar");
   clutter_actor_set_height ((ClutterActor*)toolbar, TOOLBAR_HEIGHT);
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (box), TRUE);
-  clutter_container_add (CLUTTER_CONTAINER (box),
-                         (ClutterActor*)toolbar, jar, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (box), (ClutterActor*)toolbar, NULL);
+
+  {
+    ClutterActor *dummy = mx_label_new ("");
+    ClutterActor *hbox = mx_box_layout_new ();
+    ClutterActor *button = mx_button_new_with_label (_("Save toolbar"));
+    DeleteData   *ddata = g_new0 (DeleteData, 1);
+
+    ddata->client  = client;
+    ddata->toolbar = toolbar;
+
+    clutter_actor_set_name (button, "save-button");
+
+    clutter_container_add (CLUTTER_CONTAINER (box), hbox, NULL);
+    clutter_container_add (CLUTTER_CONTAINER (hbox), dummy, button, NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (hbox), dummy,
+                                 "expand", TRUE, NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (hbox), button,
+                                 "x-align", MX_ALIGN_END, NULL);
+
+    g_signal_connect (button, "clicked",
+                      G_CALLBACK (save_button_clicked_cb),
+                      ddata);
+  }
+
+  clutter_container_add (CLUTTER_CONTAINER (box), jar, NULL);
 
   clutter_container_child_set (CLUTTER_CONTAINER (box), jar,
                                "expand", TRUE, NULL);
@@ -301,6 +322,14 @@ construct_contents (GtkWidget    *embed,
   mtp_toolbar_clear_modified_state (toolbar);
 }
 
+static gboolean
+window_delete_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
+{
+  gtk_main_quit ();
+
+  return FALSE;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -312,7 +341,6 @@ main (int argc, char **argv)
   gint            socket_id = 0;
   GError         *error = NULL;
   GSList         *panels;
-  DeleteData      ddata;
   GOptionContext *context;
   GOptionEntry    cap_options[] =
     {
@@ -379,19 +407,15 @@ main (int argc, char **argv)
 
   toolbar = (MtpToolbar*) mtp_toolbar_new ();
 
-  construct_contents (embed, stage, toolbar, panels);
+  construct_contents (client, embed, stage, toolbar, panels);
 
   gtk_window_set_default_icon_name ("moblin-toolbar");
   gtk_window_set_icon_name (GTK_WINDOW (window), "moblin-toolbar");
 
   gtk_widget_show_all (window);
 
-  ddata.client = client;
-  ddata.toolbar = toolbar;
-
   g_signal_connect (window, "delete-event",
-                    G_CALLBACK (window_delete_event_cb), &ddata);
-
+                    G_CALLBACK (window_delete_event_cb), NULL);
 
   gtk_main ();
 
