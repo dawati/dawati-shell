@@ -45,9 +45,9 @@ typedef struct
 } MpdLidDevicePrivate;
 
 static void
-_client_device_changed_cb (DkpClient    *client,
-                           DkpDevice    *device,
-                           MpdLidDevice *self)
+_client_changed_cb (DkpClient    *client,
+                    DkpDevice    *device,
+                    MpdLidDevice *self)
 {
   bool closed;
 
@@ -139,8 +139,8 @@ mpd_lid_device_init (MpdLidDevice *self)
   MpdLidDevicePrivate *priv = GET_PRIVATE (self);
 
   priv->client = dkp_client_new ();
-  g_signal_connect (priv->client, "device-changed",
-                    G_CALLBACK (_client_device_changed_cb), self);
+  g_signal_connect (priv->client, "changed",
+                    G_CALLBACK (_client_changed_cb), self);
 	g_object_get (priv->client,
                 "lid-is-closed", &priv->closed,
                 NULL);
