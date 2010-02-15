@@ -1,7 +1,10 @@
 
-Version 0.1.5
+Version 0.1.5, 2010-02-15
 
-  Fixes: MB#9673 (0.1.4)
+    Port over low battery notifications from dalston.
+    Implement suspend on lid close.
+    Various code and build system cleanups.
+    Fixes: MB#9673 (0.1.4)
 
 Version 0.1.4, 2010-02-12
 
