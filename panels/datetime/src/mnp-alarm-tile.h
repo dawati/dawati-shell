@@ -49,6 +49,17 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   MNP_TYPE_ALARM_TILE, MnpAlarmTileClass))
 
+typedef struct _MnpAlarmItem {
+  int id;
+  gboolean on_off;
+  int hour;
+  int minute;
+  gboolean am_pm;
+  int repeat;
+  gboolean snooze;
+  int sound;
+}MnpAlarmItem;
+
 typedef struct {
   MxButton parent;
 } MnpAlarmTile;
@@ -60,6 +71,7 @@ typedef struct {
 GType mnp_alarm_tile_get_type (void);
 
 MnpAlarmTile* mnp_alarm_tile_new (void);
+void mnp_alarm_tile_set_item (MnpAlarmTile *, MnpAlarmItem *);
 
 G_END_DECLS
 

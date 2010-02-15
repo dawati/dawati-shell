@@ -23,6 +23,7 @@
 #include "mnp-alarms.h"
 #include "mnp-alarm-tile.h"
 #include "mnp-alarm-dialog.h"
+#include <gconf/gconf-client.h>
 
 G_DEFINE_TYPE (MnpAlarms, mnp_alarms, MX_TYPE_BOX_LAYOUT)
 
@@ -75,6 +76,38 @@ new_alarm_clicked (MxButton *button, MnpAlarms *alarms)
 }
 
 static void
+load_alarms (MnpAlarms *alarms)
+{
+  MnpAlarmsPrivate *priv = ALARMS_PRIVATE(alarms);
+  GConfClient *client = gconf_client_get_default ();
+  GList *list, *tmp;
+  MnpAlarmItem *item = g_new0(MnpAlarmItem, 1);
+  char *data;
+
+  list = gconf_client_get_list (client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, NULL);
+  tmp = list;
+  while(tmp) {
+	char *data = (char *)tmp->data;
+	MnpAlarmTile *tile = mnp_alarm_tile_new ();
+
+	sscanf(data, "%d %d %d %d %d %d %d %d", &item->id, &item->on_off, &item->hour, &item->minute, &item->am_pm, &item->repeat, &item->snooze, &item->sound);
+	clutter_container_add_actor (priv->left_tiles, tile);
+	clutter_container_child_set ((ClutterContainer *)priv->left_tiles, tile,
+                                   "x-fill", FALSE,
+                                   "y-fill", TRUE,
+				   "expand", FALSE,				   
+                                   NULL);	  
+	mnp_alarm_tile_set_item (tile, item);
+  	tmp = tmp->next;
+  }
+  
+  g_slist_foreach(list, (GFunc)g_free, NULL);
+  g_slist_free(list);
+  g_free(item);
+
+  g_object_unref (client);
+}
+static void
 mnp_alarms_construct (MnpAlarms *alarms)
 {
   MnpAlarmsPrivate *priv = ALARMS_PRIVATE(alarms);
@@ -121,6 +154,7 @@ mnp_alarms_construct (MnpAlarms *alarms)
   mnp_alarm_set_text (priv->new_alarm_tile, NULL, _("New\nAlarm"));
   g_signal_connect (priv->new_alarm_tile, "clicked", G_CALLBACK(new_alarm_clicked), alarms);
 
+  load_alarms(alarms);
 }
 
 MnpAlarms*

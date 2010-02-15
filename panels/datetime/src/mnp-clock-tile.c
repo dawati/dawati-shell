@@ -365,8 +365,15 @@ mnp_clock_construct (MnpClockTile *tile)
 	mx_box_layout_set_vertical ((MxBoxLayout *)tile, FALSE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)tile, FALSE);
 	clutter_container_add_actor ((ClutterContainer *)tile, box1);
+	clutter_container_child_set ((ClutterContainer *)tile, box1,
+				   	"expand", FALSE,
+					"x-fill", FALSE,
+                                   	NULL);
 	clutter_container_add_actor ((ClutterContainer *)tile, label2);
-
+	clutter_container_child_set ((ClutterContainer *)tile, label2,
+				   	"expand", TRUE,
+					"x-fill", TRUE,
+                                   	NULL);
 	clutter_actor_show_all ((ClutterActor *)tile);
 	FREE_DFMT(fmt);
 
@@ -378,7 +385,12 @@ mnp_clock_construct (MnpClockTile *tile)
 	priv->remove_button = (MxButton *)mx_button_new ();
 	g_signal_connect (priv->remove_button, "clicked", G_CALLBACK(remove_tile), tile);
 	clutter_container_add_actor ((ClutterContainer *)box2, (ClutterActor *)priv->remove_button);  	
-	clutter_container_add_actor ((ClutterContainer *)tile, box2);	
+	clutter_container_add_actor ((ClutterContainer *)tile, box2);
+  	clutter_container_child_set ((ClutterContainer *)tile, box2,
+				   	"expand", TRUE,
+					"x-fill", FALSE,
+                                   	NULL);
+
 	mx_stylable_set_style_class (MX_STYLABLE (priv->remove_button),
                                			"TileRemoveButton");
   	icon = (ClutterActor *)mx_icon_new ();
