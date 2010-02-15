@@ -200,6 +200,7 @@ mtp_jar_drop (MxDroppable       *droppable,
       return;
     }
 
+  clutter_actor_set_size (actor, -1.0, -1.0);
   mtp_jar_add_button (jar, actor);
 }
 

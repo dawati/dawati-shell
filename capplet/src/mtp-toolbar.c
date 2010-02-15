@@ -439,6 +439,7 @@ mtp_toolbar_drop (MxDroppable         *droppable,
   if (mtp_toolbar_remove_space (toolbar,
                                 mtp_toolbar_button_is_applet (tbutton)))
     {
+      clutter_actor_set_size ((ClutterActor*)tbutton, -1.0, -1.0);
       mtp_toolbar_insert_button (toolbar,
                                  (ClutterActor*)tbutton, (ClutterActor*)before);
     }

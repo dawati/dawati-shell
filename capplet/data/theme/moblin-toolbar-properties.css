@@ -14,6 +14,10 @@ MxLabel#time-label {
   font-size: 19px;
 }
 
+MxLabel#button-label {
+  font-size: 12px;
+}
+
 MxButton#save-button {
   font-size: 19px;
 }
@@ -34,6 +38,16 @@ MtpToolbar {
 MxWidget, MxWidget:hover
 {
   border-image: none;
+}
+
+MtpToolbarButton {
+  padding: 0;
+  background-color: #fff0;
+}
+
+MtpToolbarButton#in-jar {
+  padding: 5;
+  background-color: #ffff;
 }
 
 MnbToolbarButton {

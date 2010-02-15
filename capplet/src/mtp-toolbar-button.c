@@ -29,58 +29,56 @@
 #include "mtp-jar.h"
 #include "mtp-space.h"
 
-static void mx_draggable_iface_init (MxDraggableIface *iface);
+/*
+ * MnbToolbarButton -- a helper widget for MtpToolbarButton
+ */
+#define MNB_TYPE_TOOLBAR_BUTTON mnb_toolbar_button_get_type()
+
+#define MNB_TOOLBAR_BUTTON(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MNB_TYPE_TOOLBAR_BUTTON, MnbToolbarButton))
+
+#define MNB_TOOLBAR_BUTTON_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MNB_TYPE_TOOLBAR_BUTTON, MnbToolbarButtonClass))
+
+#define MNB_IS_TOOLBAR_BUTTON(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MNB_TYPE_TOOLBAR_BUTTON))
+
+#define MNB_IS_TOOLBAR_BUTTON_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), MNB_TYPE_TOOLBAR_BUTTON))
+
+#define MNB_TOOLBAR_BUTTON_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), MNB_TYPE_TOOLBAR_BUTTON, MnbToolbarButtonClass))
+
+typedef struct {
+  MxWidget parent;
+} MnbToolbarButton;
+
+typedef struct {
+  MxWidgetClass parent_class;
+} MnbToolbarButtonClass;
+
+GType mnb_toolbar_button_get_type (void);
+
+G_DEFINE_TYPE (MnbToolbarButton, mnb_toolbar_button, MX_TYPE_WIDGET);
+
+static void
+mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
+{
+}
+
+static void
+mnb_toolbar_button_init (MnbToolbarButton *self)
+{
+}
 
 /*
- * This is hack -- we need to reuse the mutter-moblin and panel styling for
- * MnbToolbarButton, which is generally defined using the type name. So, rather
- * that mixing up the formal object namespace in the capplet, we implement the
- * GObject machinery by hand, using the "MnbToolbarButton" as the type name
- * string.
+ * MtpToolbarButton
  */
-#if 0
+static void mx_draggable_iface_init (MxDraggableIface *iface);
+
 G_DEFINE_TYPE_WITH_CODE (MtpToolbarButton, mtp_toolbar_button, MX_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (MX_TYPE_DRAGGABLE,
                                                 mx_draggable_iface_init));
-#else
-static void mtp_toolbar_button_init (MtpToolbarButton *self);
-static void mtp_toolbar_button_class_init (MtpToolbarButtonClass *klass);
-static gpointer mtp_toolbar_button_parent_class = NULL;
-static void mtp_toolbar_button_class_intern_init (gpointer klass)
-{
-  mtp_toolbar_button_parent_class = g_type_class_peek_parent (klass);
-  mtp_toolbar_button_class_init ((MtpToolbarButtonClass*) klass);
-}
-
-GType
-mtp_toolbar_button_get_type (void)
-{
-  static volatile gsize g_define_type_id__volatile = 0;
-  if (g_once_init_enter (&g_define_type_id__volatile))
-    {
-      GType g_define_type_id =
-        g_type_register_static_simple (MX_TYPE_WIDGET,
-                g_intern_static_string ("MnbToolbarButton"),
-                sizeof (MtpToolbarButtonClass),
-                (GClassInitFunc) mtp_toolbar_button_class_intern_init,
-                sizeof (MtpToolbarButton),
-                (GInstanceInitFunc) mtp_toolbar_button_init,
-                (GTypeFlags) 0);
-      {
-        const GInterfaceInfo g_implement_interface_info = {
-          (GInterfaceInitFunc) mx_draggable_iface_init, NULL, NULL
-        };
-        g_type_add_interface_static (g_define_type_id, MX_TYPE_DRAGGABLE,
-                                     &g_implement_interface_info);
-      }
-
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
-    }
-
-  return g_define_type_id__volatile;
-}
-#endif
-
 
 #define MTP_TOOLBAR_BUTTON_GET_PRIVATE(obj)    \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MTP_TYPE_TOOLBAR_BUTTON, MtpToolbarButtonPrivate))
@@ -115,7 +113,9 @@ struct _MtpToolbarButtonPrivate
   gchar *button_stylesheet;
   gchar *service;
 
+  ClutterActor *real_button;
   ClutterActor *close_button;
+  ClutterActor *label;
 
   gboolean no_pick  : 1;
   gboolean applet   : 1;
@@ -123,6 +123,8 @@ struct _MtpToolbarButtonPrivate
   gboolean required : 1;
   gboolean invalid  : 1;
   gboolean disposed : 1;
+  gboolean in_jar   : 1;
+  gboolean on_stage : 1;
 
   /* Draggable properties */
   gboolean            enabled               : 1; /* dragging enabled */
@@ -175,8 +177,13 @@ mtp_toolbar_button_map (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class)->map (actor);
 
-  if (priv->close_button)
+  clutter_actor_map (priv->real_button);
+
+  if (priv->close_button && !priv->in_jar && !priv->on_stage)
     clutter_actor_map (priv->close_button);
+
+  if (priv->label && priv->in_jar)
+    clutter_actor_map (priv->label);
 }
 
 static void
@@ -184,8 +191,13 @@ mtp_toolbar_button_unmap (ClutterActor *actor)
 {
   MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv;
 
+  clutter_actor_unmap (priv->real_button);
+
   if (priv->close_button)
     clutter_actor_unmap (priv->close_button);
+
+  if (priv->label)
+    clutter_actor_unmap (priv->label);
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class)->unmap (actor);
 }
@@ -196,16 +208,26 @@ mtp_toolbar_button_allocate (ClutterActor          *actor,
                              ClutterAllocationFlags flags)
 {
   MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv;
+  gfloat                   button_width = priv->applet ? 44.0 : 70.0;
+  ClutterActorBox          childbox;
+  MxPadding                padding;
 
   CLUTTER_ACTOR_CLASS (
              mtp_toolbar_button_parent_class)->allocate (actor,
                                                          box,
                                                          flags);
 
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
+
+  childbox.x1 = padding.left;
+  childbox.y1 = padding.top;
+  childbox.x2 = button_width + childbox.x1;
+  childbox.y2 = 60.0 + childbox.y1;
+
+  clutter_actor_allocate (priv->real_button, &childbox, flags);
+
   if (priv->close_button)
     {
-      ClutterActorBox childbox;
-
       childbox.x1 = 0;
       childbox.y1 = 0;
       childbox.x2 = box->x2 - box->x1;
@@ -215,6 +237,19 @@ mtp_toolbar_button_allocate (ClutterActor          *actor,
                               MX_ALIGN_START, FALSE, FALSE);
 
       clutter_actor_allocate (priv->close_button, &childbox, flags);
+    }
+
+  if (priv->label && priv->in_jar)
+    {
+      childbox.x1 = padding.left + button_width + 10.0;
+      childbox.y1 = padding.top;
+      childbox.x2 = box->x2 - box->x1 - padding.left - padding.right;
+      childbox.y2 = box->y2 - box->y1 - padding.bottom;
+
+      mx_allocate_align_fill (priv->label, &childbox, MX_ALIGN_MIDDLE,
+                              MX_ALIGN_MIDDLE, FALSE, FALSE);
+
+      clutter_actor_allocate (priv->label, &childbox, flags);
     }
 }
 
@@ -229,7 +264,7 @@ mtp_toolbar_button_drag_begin (MxDraggable         *draggable,
   ClutterActor            *self  = CLUTTER_ACTOR (draggable);
   ClutterActor            *parent;
   ClutterActor            *stage;
-  gfloat                   x, y, width, height;
+  gfloat                   width, height;
   ClutterActor            *space;
 
   stage = clutter_actor_get_stage (self);
@@ -256,27 +291,22 @@ mtp_toolbar_button_drag_begin (MxDraggable         *draggable,
   priv->orig_parent = parent;
 
   /*
-   * Reparent to stage, preserving size and position
-   */
-  clutter_actor_get_size (self, &width, &height);
-
-  if (!clutter_actor_transform_stage_point (self, event_x, event_y, &x, &y))
-    {
-      x = event_x;
-      y = event_y;
-    }
-  else
-    {
-      x = event_x - x;
-      y = event_y - y;
-    }
-
-  /*
    * Release self from the Zone by reparenting to stage, so we can move about
    */
   clutter_actor_reparent (self, stage);
-  clutter_actor_set_position (self, x, y);
+
+  /*
+   * Reparent to stage, preserving size and position
+   *
+   * FIXME -- this does not work, something somewhere seems to be moving the
+   * draggable to be centered under the pointer, which we do not want, since
+   * our draggable changes size when the drag begins!
+   */
+  clutter_actor_get_preferred_size (self, NULL, NULL, &width, &height);
+
   clutter_actor_set_size (self, width, height);
+  clutter_actor_set_position (self,
+                              event_x - width / 2.0, event_y - height / 2.0);
 
   if (MTP_IS_TOOLBAR (parent))
     {
@@ -317,14 +347,6 @@ mtp_toolbar_button_drag_end (MxDraggable *draggable,
     {
       ClutterContainer *orig_parent = CLUTTER_CONTAINER (priv->orig_parent);
 
-      /*
-       * This is the case where the drop was cancelled; put ourselves back
-       * where we were.
-       */
-      g_object_ref (self);
-
-      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
-
       if (MTP_IS_JAR (orig_parent))
         {
           mtp_jar_add_button ((MtpJar*) orig_parent, self);
@@ -336,8 +358,6 @@ mtp_toolbar_button_drag_end (MxDraggable *draggable,
       else
         g_warning ("Unsupported destination %s",
                    G_OBJECT_TYPE_NAME (orig_parent));
-
-      g_object_unref (self);
     }
   else
     {
@@ -445,12 +465,23 @@ mtp_toolbar_button_get_preferred_width (ClutterActor *self,
                                         gfloat       *natural_width_p)
 {
   MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (self)->priv;
+  gfloat                   width;
+  MxPadding                padding;
+
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
+
+  if (priv->in_jar)
+    width = 200.0;
+  else
+    width = priv->applet ? 44.0 : 70.0;
+
+  width += (padding.left + padding.right);
 
   if (min_width_p)
-    *min_width_p = priv->applet ? 44.0 : 70.0;
+    *min_width_p = width;
 
   if (natural_width_p)
-    *natural_width_p = priv->applet ? 44.0 : 70.0;
+    *natural_width_p = width;
 }
 
 static void
@@ -459,11 +490,18 @@ mtp_toolbar_button_get_preferred_height (ClutterActor *self,
                                          gfloat       *min_height_p,
                                          gfloat       *natural_height_p)
 {
+  gfloat                   height;
+  MxPadding                padding;
+
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
+
+  height = 60.0 + (padding.top + padding.bottom);
+
   if (min_height_p)
-    *min_height_p = 60.0;
+    *min_height_p = height;
 
   if (natural_height_p)
-    *natural_height_p = 60.0;
+    *natural_height_p = height;
 }
 
 static void
@@ -487,8 +525,76 @@ mtp_toolbar_button_paint (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class)->paint (self);
 
-  if (priv->close_button)
+  clutter_actor_paint (priv->real_button);
+
+  if (priv->close_button && CLUTTER_ACTOR_IS_MAPPED (priv->close_button))
     clutter_actor_paint (priv->close_button);
+
+  if (priv->label && CLUTTER_ACTOR_IS_MAPPED (priv->label))
+    clutter_actor_paint (priv->label);
+}
+
+static void
+mtp_toolbar_button_parent_set (ClutterActor *button, ClutterActor *old_parent)
+{
+  MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (button)->priv;
+  ClutterActor            *stables;
+  ClutterActorClass       *klass;
+
+  stables = clutter_actor_get_parent (button);
+
+  while (stables && !(MTP_IS_TOOLBAR (stables) || MTP_IS_JAR (stables)))
+    stables = clutter_actor_get_parent (stables);
+
+  if (!stables)
+    {
+      priv->in_jar   = FALSE;
+      priv->on_stage = TRUE;
+
+      clutter_actor_set_name (button, NULL);
+
+      if (priv->label && CLUTTER_ACTOR_IS_MAPPED (priv->label))
+        clutter_actor_unmap (priv->label);
+
+      if (priv->close_button && CLUTTER_ACTOR_IS_MAPPED (priv->close_button))
+        clutter_actor_unmap (priv->close_button);
+    }
+  else if (MTP_IS_TOOLBAR (stables))
+    {
+      priv->in_jar   = FALSE;
+      priv->on_stage = FALSE;
+
+      clutter_actor_set_name (button, NULL);
+
+      if (priv->label && CLUTTER_ACTOR_IS_MAPPED (priv->label))
+        clutter_actor_unmap (priv->label);
+
+      if (priv->close_button &&
+          CLUTTER_ACTOR_IS_MAPPED (button) &&
+          !CLUTTER_ACTOR_IS_MAPPED (priv->close_button))
+        clutter_actor_map (priv->close_button);
+    }
+  else if (MTP_IS_JAR (stables))
+    {
+      priv->in_jar   = TRUE;
+      priv->on_stage = FALSE;
+
+      clutter_actor_set_name (button, "in-jar");
+
+      if (priv->label && CLUTTER_ACTOR_IS_MAPPED (button) &&
+          !CLUTTER_ACTOR_IS_MAPPED (priv->label))
+        {
+          clutter_actor_map (priv->label);
+        }
+
+      if (priv->close_button && CLUTTER_ACTOR_IS_MAPPED (priv->close_button))
+          clutter_actor_unmap (priv->close_button);
+    }
+
+  klass = CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class);
+
+  if (klass->parent_set)
+    klass->parent_set ((ClutterActor*)button, old_parent);
 }
 
 static void
@@ -506,6 +612,7 @@ mtp_toolbar_button_class_init (MtpToolbarButtonClass *klass)
   actor_class->get_preferred_height = mtp_toolbar_button_get_preferred_height;
   actor_class->pick                 = mtp_toolbar_button_pick;
   actor_class->paint                = mtp_toolbar_button_paint;
+  actor_class->parent_set           = mtp_toolbar_button_parent_set;
 
   object_class->dispose             = mtp_toolbar_button_dispose;
   object_class->finalize            = mtp_toolbar_button_finalize;
@@ -550,6 +657,12 @@ mtp_toolbar_button_init (MtpToolbarButton *self)
   priv->threshold = 5;
   priv->axis = 0;
   priv->containment = MX_DISABLE_CONTAINMENT;
+
+  clutter_actor_set_reactive ((ClutterActor*)self, TRUE);
+
+  priv->real_button = g_object_new (MNB_TYPE_TOOLBAR_BUTTON, NULL);
+  clutter_actor_set_parent (priv->real_button, (ClutterActor*)self);
+  clutter_actor_set_reactive (priv->real_button, TRUE);
 }
 
 static void
@@ -557,33 +670,6 @@ mtp_toolbar_button_cbutton_clicked_cb (ClutterActor     *cbutton,
                                        MtpToolbarButton *button)
 {
   g_signal_emit (button, signals[REMOVE], 0);
-}
-
-static void
-mtp_toolbar_button_fixup_close_button (MtpToolbarButton *button)
-{
-  MtpToolbarButtonPrivate *priv = button->priv;
-
-  if (priv->close_button)
-    {
-      ClutterActor *parent = clutter_actor_get_parent ((ClutterActor*)button);
-
-      while (parent && !(MTP_IS_TOOLBAR (parent) || MTP_IS_JAR (parent)))
-        parent = clutter_actor_get_parent (parent);
-
-      if (!parent || !MTP_IS_TOOLBAR (parent))
-        clutter_actor_hide (priv->close_button);
-      else
-        clutter_actor_show (priv->close_button);
-    }
-}
-
-static void
-mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
-                                  ClutterActor     *old_parent,
-                                  gpointer          data)
-{
-  mtp_toolbar_button_fixup_close_button (button);
 }
 
 static void
@@ -640,12 +726,6 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
           g_signal_connect (cbutton, "clicked",
                             G_CALLBACK (mtp_toolbar_button_cbutton_clicked_cb),
                             button);
-
-          mtp_toolbar_button_fixup_close_button (button);
-
-          g_signal_connect (button, "parent-set",
-                            G_CALLBACK (mtp_toolbar_button_parent_set_cb),
-                            NULL);
 
           clutter_actor_queue_relayout ((ClutterActor*)button);
         }
@@ -732,13 +812,22 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
                 }
             }
 
-          clutter_actor_set_name ((ClutterActor*)button, priv->button_style);
+          clutter_actor_set_name (priv->real_button, priv->button_style);
 
           g_debug ("Loaded desktop file for %s: style %s",
                    name, priv->button_style);
 
           if (priv->tooltip)
-            mx_widget_set_tooltip_text (MX_WIDGET (button), priv->tooltip);
+            {
+              ClutterActor *label = mx_label_new (priv->tooltip);
+
+              priv->label = label;
+
+              clutter_actor_set_name (label, "button-label");
+              clutter_actor_set_parent (label, (ClutterActor*)button);
+
+              mx_widget_set_tooltip_text (MX_WIDGET (button), priv->tooltip);
+            }
         }
     }
 
