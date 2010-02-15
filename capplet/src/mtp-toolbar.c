@@ -306,7 +306,6 @@ mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
       if (MTP_IS_SPACE (actor))
         {
           retval = TRUE;
-          g_debug ("removing space");
           clutter_container_remove_actor (container, actor);
         }
       else
@@ -333,7 +332,6 @@ mtp_toolbar_drop (MxDroppable         *droppable,
   MtpToolbarPrivate *priv = toolbar->priv;
   MtpToolbarButton  *tbutton = MTP_TOOLBAR_BUTTON (draggable);
   ClutterActor      *actor = CLUTTER_ACTOR (draggable);
-  ClutterActor      *parent = clutter_actor_get_parent (actor);
   ClutterActor      *stage = clutter_actor_get_stage (actor);
   MtpToolbarButton  *before = NULL;
 
@@ -371,8 +369,6 @@ mtp_toolbar_drop (MxDroppable         *droppable,
 
     if (target)
       {
-        g_debug ("Initial target is %s", G_OBJECT_TYPE_NAME (target));
-
         if (!(MTP_IS_TOOLBAR_BUTTON (target)))
           {
             /*
@@ -382,8 +378,6 @@ mtp_toolbar_drop (MxDroppable         *droppable,
             target = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage),
                                                      CLUTTER_PICK_REACTIVE,
                                                      event_x + 20, event_y);
-
-            g_debug ("secondary target is %s", G_OBJECT_TYPE_NAME (target));
 
             if (!MTP_IS_TOOLBAR_BUTTON (target))
               target = NULL;
@@ -424,14 +418,8 @@ mtp_toolbar_drop (MxDroppable         *droppable,
   if (mtp_toolbar_remove_space (toolbar,
                                 mtp_toolbar_button_is_applet (tbutton)))
     {
-      g_object_ref (draggable);
-      g_debug ("moving child to toolbar");
-      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), actor);
-
       mtp_toolbar_insert_button (toolbar,
                                  (ClutterActor*)tbutton, (ClutterActor*)before);
-
-      g_object_unref (draggable);
     }
 }
 
@@ -644,12 +632,15 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
   DepthData          ddata;
   GList             *children = NULL;
+  ClutterActor      *parent;
 
   if (!before)
     {
       mtp_toolbar_add_button (toolbar, button);
       return;
     }
+
+  parent = clutter_actor_get_parent (button);
 
   priv->modified = TRUE;
 
@@ -665,8 +656,11 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
 
       g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                   button);
+      if (parent)
+        clutter_actor_reparent (button, priv->panel_area);
+      else
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                     button);
 
       clutter_actor_set_depth (ddata.new, ddata.new_depth);
       clutter_container_sort_depth_order (CLUTTER_CONTAINER (priv->panel_area));
@@ -687,8 +681,11 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
 
           g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
 
-          clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                       button);
+          if (parent)
+            clutter_actor_reparent (button, priv->applet_area);
+          else
+            clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                         button);
 
           clutter_actor_set_depth (ddata.new, ddata.new_depth);
           clutter_container_sort_depth_order (CLUTTER_CONTAINER (priv->applet_area));
@@ -705,10 +702,11 @@ mtp_toolbar_insert_button (MtpToolbar   *toolbar,
 
           g_list_foreach (children, (GFunc)set_depth_for_each, &ddata);
 
-          clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                       button);
-
-          g_debug ("button depth %f", ddata.new_depth);
+          if (parent)
+            clutter_actor_reparent (button, priv->panel_area);
+          else
+            clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                         button);
 
           clutter_actor_set_depth (ddata.new, ddata.new_depth);
           clutter_container_sort_depth_order (CLUTTER_CONTAINER (priv->panel_area));
