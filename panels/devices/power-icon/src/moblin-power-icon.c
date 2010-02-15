@@ -34,6 +34,7 @@
 #include "mpd-battery-device.h"
 #include "mpd-global-key.h"
 #include "mpd-idle-manager.h"
+#include "mpd-lid-device.h"
 #include "mpd-shutdown-notification.h"
 #include "config.h"
 
@@ -111,6 +112,24 @@ _device_notify_cb (MpdBatteryDevice *battery,
 }
 
 static void
+_lid_closed_cb (MpdLidDevice    *lid,
+                GParamSpec      *pspec,
+                MpdIdleManager  *idlr)
+{
+  GError *error = NULL;
+
+  if (mpd_lid_device_get_closed (lid))
+  {
+    mpd_idle_manager_suspend (idlr, &error);
+    if (error)
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    }  
+  }
+}
+
+static void
 _shutdown_notification_shutdown_cb (NotifyNotification *notification,
                                     gpointer            userdata)
 {
@@ -181,6 +200,7 @@ main (int    argc,
 {
   MplPanelClient    *client;
   MpdBatteryDevice  *battery;
+  MpdLidDevice      *lid;
   MpdIdleManager    *idle_manager;
   MxAction          *shutdown_key;
 
@@ -212,10 +232,17 @@ main (int    argc,
   shutdown_key = create_shutdown_key ();
   g_object_ref_sink (shutdown_key);
 
+  /* Hook up lid. */
+  lid = mpd_lid_device_new ();
+  g_object_ref_sink (lid);
+  g_signal_connect (lid, "notify::closed",
+                    G_CALLBACK (_lid_closed_cb), idle_manager);
+
   clutter_main ();
 
   g_object_unref (idle_manager);
   g_object_unref (battery);
+  g_object_unref (lid);
   g_object_unref (shutdown_key);
 
   return EXIT_SUCCESS;

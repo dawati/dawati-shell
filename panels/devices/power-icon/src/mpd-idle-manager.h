@@ -60,8 +60,6 @@ mpd_idle_manager_get_type (void);
 MpdIdleManager *
 mpd_idle_manager_new (void);
 
-/* For testing purpose only. */
-
 bool
 mpd_idle_manager_lock_screen (MpdIdleManager   *self,
                               GError          **error);
