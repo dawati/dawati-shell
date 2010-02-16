@@ -23,6 +23,7 @@
 #include <glib/gi18n.h>
 #include<libnotify/notify.h>
 #include <gconf/gconf-client.h>
+#include <canberra.h>
 
 G_DEFINE_TYPE (MnpAlarmInstance, mnp_alarm_instance, G_TYPE_OBJECT)
 
@@ -313,12 +314,37 @@ alarm_del (MnpAlarmItem *item)
   g_object_unref(client);
 }
 
+static void
+play_music()
+{
+	static ca_context *notification = NULL;
+	const char *file = "/usr/share/sounds/login.wav";
+
+	if (!notification) {
+		ca_context_create(&notification);
+		ca_context_change_props(
+			notification,
+			CA_PROP_APPLICATION_NAME,
+			"Moblin Alarm Notify",
+			NULL);
+	}
+	ca_context_play(notification, 0,
+	CA_PROP_MEDIA_FILENAME, file,
+	NULL);
+}
+
 void
 mnp_alarm_instance_raise (MnpAlarmInstance *alarm)
 {
   MnpAlarmInstancePrivate *priv = ALARM_INSTANCE_PRIVATE(alarm);
+  MnpAlarmItem *item = priv->item;
 
   show_notification(alarm);
+  if (item->sound == MNP_SOUND_BEEP)
+	  gdk_beep();
+  else if(item->sound == MNP_SOUND_MUSIC) {
+	  play_music();
+  }
   if (!priv->repeat) {
 	  /* raised alarm should be deleted */
 	  alarm_del(priv->item);

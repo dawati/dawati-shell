@@ -49,8 +49,7 @@ typedef enum {
 typedef enum {
 	MNP_SOUND_OFF=0,
 	MNP_SOUND_BEEP,
-	MNP_SOUND_MUSIC,
-	MNP_SOUND_MESSAGE
+	MNP_SOUND_MUSIC
 }MnpAlarmSound;
 
 

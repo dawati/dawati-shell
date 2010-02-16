@@ -56,8 +56,7 @@ struct _sound_table {
 } alarm_sound_table [] = {
   { MNP_SOUND_OFF, N_("OFF") },
   { MNP_SOUND_BEEP, N_("Beep") },
-  { MNP_SOUND_MUSIC, N_("Music") },
-  { MNP_SOUND_MESSAGE, N_("Message") }
+  { MNP_SOUND_MUSIC, N_("Music") }
 };
 
 struct _recur_table {

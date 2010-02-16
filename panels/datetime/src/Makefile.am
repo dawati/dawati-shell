@@ -61,7 +61,8 @@ schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 #			-Wl,--export-dynamic
 
 DISTCLEANFILES = \
-	org.moblin.UX.Shell.Panels.datetime.service
+	org.moblin.UX.Shell.Panels.datetime.service\
+	date-time.schemas
 
 EXTRA_DIST = $(service_in_files) \
 	     $(schema_in_files) 	     
