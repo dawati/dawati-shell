@@ -82,23 +82,31 @@ static const struct
 };
 
 static void
-_shutdown_timeout_cb (MpdApplication *self)
+shutdown (MpdApplication *self)
+{
+  EggConsoleKit *console;
+  GError        *error = NULL;
+
+  console = egg_console_kit_new ();
+  egg_console_kit_stop (console, &error);
+  if (error)
+  {
+    g_critical ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+  g_object_unref (console);
+}
+
+static void
+_battery_shutdown_timeout_cb (MpdApplication *self)
 {
   MpdApplicationPrivate *priv = GET_PRIVATE (self);
   MpdBatteryDeviceState  state;
-  GError                *error = NULL;
 
   state = mpd_battery_device_get_state (priv->battery);
   if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
   {
-    EggConsoleKit *console = egg_console_kit_new ();
-    egg_console_kit_stop (console, &error);
-    if (error)
-    {
-      g_critical ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
-    }
-    g_object_unref (console);
+    shutdown (self);
   }
 }
 
@@ -130,6 +138,7 @@ do_notification (MpdApplication     *self,
   }
 
   g_object_unref (priv->battery_note);
+  priv->battery_note = NULL;
 }
 
 static void
@@ -206,7 +215,7 @@ update (MpdApplication *self)
         priv->last_notification_displayed = NOTIFICATION_10_PERCENT;
 
         g_timeout_add_seconds (60,
-                               (GSourceFunc) _shutdown_timeout_cb,
+                               (GSourceFunc) _battery_shutdown_timeout_cb,
                                self);
       }
     } else if (percentage < 10) {
@@ -261,28 +270,24 @@ static void
 _shutdown_notification_shutdown_cb (NotifyNotification  *notification,
                                     MpdApplication      *self)
 {
-  EggConsoleKit *console;
-  GError        *error = NULL;
+  MpdApplicationPrivate *priv = GET_PRIVATE (self);
 
-  console = egg_console_kit_new ();
-  egg_console_kit_stop (console, &error);
-  if (error)
-  {
-    g_critical ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
+  shutdown (self);
 
-  g_object_unref (console);
-  g_object_unref (notification);
+  g_object_unref (priv->shutdown_note);
+  priv->shutdown_note = NULL;
 }
 
 static void
 _shutdown_notification_closed_cb (NotifyNotification  *notification,
                                   MpdApplication      *self)
 {
+  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+
   g_debug ("%s()", __FUNCTION__);
 
-  g_object_unref (notification);
+  g_object_unref (priv->shutdown_note);
+  priv->shutdown_note = NULL;
 }
 
 static void
@@ -291,16 +296,25 @@ _shutdown_key_activated_cb (MxAction        *action,
 {
   MpdApplicationPrivate *priv = GET_PRIVATE (self);
 
-  priv->shutdown_note = mpd_shutdown_notification_new (
+  g_debug ("%s() %p", __FUNCTION__, priv->shutdown_note);
+
+  if (priv->shutdown_note)
+  {
+    /* Power key pressed again with notification up already. */
+    shutdown (self);
+  } else {
+    priv->shutdown_note = mpd_shutdown_notification_new (
                         _("Would you like to turn off now?"),
                         _("If you don't decide I'll turn off in 30 seconds."));
 
-  g_signal_connect (priv->shutdown_note, "closed",
-                    G_CALLBACK (_shutdown_notification_closed_cb), self);
-  g_signal_connect (priv->shutdown_note, "shutdown",
-                    G_CALLBACK (_shutdown_notification_shutdown_cb), self);
+    g_signal_connect (priv->shutdown_note, "closed",
+                      G_CALLBACK (_shutdown_notification_closed_cb), self);
+    g_signal_connect (priv->shutdown_note, "shutdown",
+                      G_CALLBACK (_shutdown_notification_shutdown_cb), self);
 
-  mpd_shutdown_notification_run (MPD_SHUTDOWN_NOTIFICATION (priv->shutdown_note));
+    mpd_shutdown_notification_run (
+                      MPD_SHUTDOWN_NOTIFICATION (priv->shutdown_note));
+  }
 }
 
 static void
