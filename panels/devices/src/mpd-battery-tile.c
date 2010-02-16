@@ -51,38 +51,17 @@ update (MpdBatteryTile *self)
 
   state = mpd_battery_device_get_state (priv->device);
   percentage = mpd_battery_device_get_percentage (priv->device);
+  description = mpd_battery_device_get_state_text (priv->device);
 
   switch (state)
   {
   case MPD_BATTERY_DEVICE_STATE_MISSING:
     icon_file = ICONDIR "/dalston-power-missing.png";
-    description = g_strdup_printf (_("Sorry, you don't appear to have a "
-                                     "battery installed."));
     break;
   case MPD_BATTERY_DEVICE_STATE_CHARGING:
     icon_file = ICONDIR "/dalston-power-plugged.png";
-    description = g_strdup_printf (_("Your battery is charging. "
-                                     "It is about %d%% full."),
-                                   percentage);
     break;
   case MPD_BATTERY_DEVICE_STATE_DISCHARGING:
-    description = g_strdup_printf (_("Your battery is being used. "
-                                     "It is about %d%% full."),
-                                   percentage);
-    break;
-  case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
-    icon_file = ICONDIR "/dalston-power-100.png";
-    description = g_strdup_printf (_("Your battery is fully charged and "
-                                     "you're ready to go."));
-    break;
-  default:
-    icon_file = ICONDIR "/dalston-power-missing.png";
-    description = g_strdup_printf (_("Sorry, it looks like your battery is "
-                                     "broken."));
-  }
-
-  if (!icon_file)
-  {
     if (percentage < 0)
       icon_file = ICONDIR "/dalston-power-missing.png";
     else if (percentage < 10)
@@ -95,6 +74,12 @@ update (MpdBatteryTile *self)
       icon_file = ICONDIR "/dalston-power-75.png";
     else
       icon_file = ICONDIR "/dalston-power-100.png";
+    break;
+  case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
+    icon_file = ICONDIR "/dalston-power-100.png";
+    break;
+  default:
+    icon_file = ICONDIR "/dalston-power-missing.png";
   }
 
   mx_label_set_text (MX_LABEL (priv->label), description);

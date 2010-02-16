@@ -152,38 +152,17 @@ update (MpdPowerIcon *self)
 
   state = mpd_battery_device_get_state (priv->battery);
   percentage = mpd_battery_device_get_percentage (priv->battery);
+  description = mpd_battery_device_get_state_text (priv->battery);
 
   switch (state)
   {
   case MPD_BATTERY_DEVICE_STATE_MISSING:
     button_style = "state-missing";
-    description = g_strdup_printf (_("Sorry, you don't appear to have a "
-                                     "battery installed."));
     break;
   case MPD_BATTERY_DEVICE_STATE_CHARGING:
     button_style = "state-plugged";
-    description = g_strdup_printf (_("Your battery is charging. "
-                                     "It is about %d%% full."),
-                                   percentage);
     break;
   case MPD_BATTERY_DEVICE_STATE_DISCHARGING:
-    description = g_strdup_printf (_("Your battery is being used. "
-                                     "It is about %d%% full."),
-                                   percentage);
-    break;
-  case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
-    button_style = "state-full";
-    description = g_strdup_printf (_("Your battery is fully charged and "
-                                     "you're ready to go."));
-    break;
-  default:
-    button_style = "state-missing";
-    description = g_strdup_printf (_("Sorry, it looks like your battery is "
-                                     "broken."));
-  }
-
-  if (!button_style)
-  {
     if (percentage < 0)
       button_style = "state-missing";
     else if (percentage < 10)
@@ -196,6 +175,11 @@ update (MpdPowerIcon *self)
       button_style = "state-75";
     else
       button_style = "state-full";
+    break;
+  case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
+    button_style = "state-full";
+  default:
+    button_style = "state-missing";
   }
 
   mpl_panel_client_request_button_style (priv->panel, button_style);

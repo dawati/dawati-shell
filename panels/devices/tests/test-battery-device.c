@@ -25,8 +25,11 @@
 static void
 battery_print (MpdBatteryDevice *battery)
 {
-  g_debug ("percentage: %f", mpd_battery_device_get_percentage (battery));
-  g_debug ("state: %s", mpd_battery_device_get_state_text (battery));
+  char *text;
+
+  text = mpd_battery_device_get_state_text (battery);
+  g_debug ("%s", text);
+  g_free (text);
 }
 
 static void

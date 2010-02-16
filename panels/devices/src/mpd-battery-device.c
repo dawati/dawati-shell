@@ -323,27 +323,39 @@ mpd_battery_device_set_state (MpdBatteryDevice       *self,
   }
 }
 
-char const *
+char *
 mpd_battery_device_get_state_text (MpdBatteryDevice *self)
 {
+  MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
+  char *description;
+
   g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self), NULL);
 
-  switch (mpd_battery_device_get_state (self))
+  switch (priv->state)
   {
   case MPD_BATTERY_DEVICE_STATE_MISSING:
-    return _("missing");
+    description = g_strdup_printf (_("Sorry, you don't appear to have a "
+                                     "battery installed."));
     break;
   case MPD_BATTERY_DEVICE_STATE_CHARGING:
-    return _("charging");
+    description = g_strdup_printf (_("Your battery is charging. "
+                                     "It is about %d%% full."),
+                                   priv->percentage);
     break;
   case MPD_BATTERY_DEVICE_STATE_DISCHARGING:
-    return _("discharging");
+    description = g_strdup_printf (_("Your battery is being used. "
+                                     "It is about %d%% full."),
+                                   priv->percentage);
     break;
   case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
-    return _("fully charged");
+    description = g_strdup_printf (_("Your battery is fully charged and "
+                                     "you're ready to go."));
     break;
   default:
-    return _("unknown");
+    description = g_strdup_printf (_("Sorry, it looks like your battery is "
+                                     "broken."));
   }
+
+  return description;
 }
 
