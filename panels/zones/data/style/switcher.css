@@ -87,6 +87,12 @@ MxButton
   x-mx-content-image: url('close-button.png');
 }
 
+MxButton:hover
+{
+  border-image: url('close-button-hover.png');
+  x-mx-content-image: url('close-button-hover.png');
+}
+
 MxLabel.no-apps-label
 {
   color: black;

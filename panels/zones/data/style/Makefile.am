@@ -15,7 +15,8 @@ dist_theme_DATA = \
 	zone-title-focused.png \
 	zone-title-hover.png \
 	zone-title-normal.png \
-	close-button.png
+	close-button.png \
+	close-button-hover.png
 
 # Manage mutter-moblin's texture cache.
 #if ENABLE_CACHE
