@@ -25,8 +25,8 @@
 #include <clutter/x11/clutter-x11.h>
 #include <glib/gi18n.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-panel-clutter.h>
 #include <moblin-panel/mpl-panel-common.h>
+#include "mpd-panel-client.h"
 #include "mpd-shell.h"
 #include "mpd-shell-defines.h"
 #include "config.h"
@@ -141,7 +141,11 @@ main (int     argc,
                                                      /*THEMEDIR "/toolbar-button.css" */ NULL,
                                                      "devices-button",
                                                      true);
-
+#if 0
+      MplPanelClient *panel = mpd_panel_client_new ("devices",
+                                                     _("devices"),
+                                                     "devices-button");
+#endif
       mpl_panel_client_set_height_request (panel, MPD_SHELL_HEIGHT);
 
       stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
