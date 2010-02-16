@@ -49,6 +49,7 @@ typedef struct
   NotifyNotification  *battery_note;
   NotifyNotification  *shutdown_note;
   int                  last_notification_displayed;
+  bool                 in_shutdown;
 } MpdPowerIconPrivate;
 
 typedef enum
@@ -85,8 +86,11 @@ static const struct
 static void
 shutdown (MpdPowerIcon *self)
 {
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   EggConsoleKit *console;
   GError        *error = NULL;
+
+  priv->in_shutdown = true;
 
   console = egg_console_kit_new ();
   egg_console_kit_stop (console, &error);
@@ -240,7 +244,8 @@ _lid_closed_cb (MpdLidDevice    *lid,
 
   g_debug ("%s() %d", __FUNCTION__, mpd_lid_device_get_closed (lid));
 
-  if (mpd_lid_device_get_closed (lid))
+  if (mpd_lid_device_get_closed (lid) &&
+      !priv->in_shutdown)
   {
     mpd_idle_manager_suspend (priv->idle_manager, &error);
     if (error)

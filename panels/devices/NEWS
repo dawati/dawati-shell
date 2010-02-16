@@ -1,4 +1,13 @@
 
+Version 0.1.6, 2010-02-16
+
+    Robust handling of DK's singleton objects.
+    i18n: Share strings between panel and power-icon.
+    Handle double press of power button.
+    Set X-Moblin-Panel-Button-Style for the toolbar capplet.
+    Pull global stuff into power-icon class.
+    Fixes: MB#7852 Closing notebook lid during shutdown results in sleep mode.
+
 Version 0.1.5, 2010-02-15
 
     Port over low battery notifications from dalston.
