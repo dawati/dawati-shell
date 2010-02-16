@@ -20,21 +20,25 @@ noinst_PROGRAMS = \
 test_battery_device_SOURCES = \
 	test-battery-device.c \
 	$(top_srcdir)/src/mpd-battery-device.c \
+	$(top_srcdir)/src/mpd-gobject.c \
 	$(NULL)
 
 test_disk_device_SOURCES = \
 	test-disk-device.c \
 	$(top_srcdir)/src/mpd-disk-device.c \
+	$(top_srcdir)/src/mpd-gobject.c \
 	$(NULL)
 
 test_disk_tile_SOURCES = \
 	test-disk-tile.c \
 	$(top_srcdir)/src/mpd-disk-device.c \
 	$(top_srcdir)/src/mpd-disk-tile.c \
+	$(top_srcdir)/src/mpd-gobject.c \
 	$(NULL)
 
 test_folder_button_SOURCES = \
 	test-folder-button.c \
 	$(top_srcdir)/src/mpd-folder-button.c \
+	$(top_srcdir)/src/mpd-gobject.c \
 	$(NULL)
 
