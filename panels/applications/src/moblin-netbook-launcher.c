@@ -155,7 +155,7 @@ container_get_n_visible_children (ClutterContainer *container)
 
 #define SCROLLVIEW_RESERVED_WIDTH 10
 #define SCROLLBAR_RESERVED_WIDTH  40
-#define SCROLLVIEW_ROW_SIZE       50
+#define SCROLLVIEW_ROW_SIZE       50.0
 #define EXPANDER_GRID_ROW_GAP      8
 
 #define LAUNCHER_GRID_COLUMN_GAP   32
