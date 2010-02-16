@@ -533,7 +533,15 @@ mtp_toolbar_button_parent_set (ClutterActor *button, ClutterActor *old_parent)
   ClutterActor            *stables;
   ClutterActorClass       *klass;
 
+  klass = CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class);
+
+  if (klass->parent_set)
+    klass->parent_set ((ClutterActor*)button, old_parent);
+
   stables = clutter_actor_get_parent (button);
+
+  if (!stables)
+    return;
 
   while (stables && !(MTP_IS_TOOLBAR (stables) || MTP_IS_JAR (stables)))
     stables = clutter_actor_get_parent (stables);
@@ -582,11 +590,6 @@ mtp_toolbar_button_parent_set (ClutterActor *button, ClutterActor *old_parent)
       if (priv->close_button && CLUTTER_ACTOR_IS_MAPPED (priv->close_button))
           clutter_actor_unmap (priv->close_button);
     }
-
-  klass = CLUTTER_ACTOR_CLASS (mtp_toolbar_button_parent_class);
-
-  if (klass->parent_set)
-    klass->parent_set ((ClutterActor*)button, old_parent);
 }
 
 static void
