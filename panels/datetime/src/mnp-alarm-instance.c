@@ -22,6 +22,7 @@
 #include "mnp-alarm-instance.h"
 #include <glib/gi18n.h>
 #include<libnotify/notify.h>
+#include <gconf/gconf-client.h>
 
 G_DEFINE_TYPE (MnpAlarmInstance, mnp_alarm_instance, G_TYPE_OBJECT)
 
@@ -275,11 +276,51 @@ show_notification(MnpAlarmInstance *alarm)
   g_free(string);
 }
 
+static void
+alarm_del (MnpAlarmItem *item)
+{
+  GList *list, *tmp, *del_node;
+  GConfClient *client;
+
+  client = gconf_client_get_default();
+
+  list = gconf_client_get_list (client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, NULL);
+  tmp = list;
+  while(tmp) {
+	char *data = (char *)tmp->data;
+	int id, on_off, hour, min, am_pm, recur, snooze, sound;
+
+	sscanf(data, "%d %d %d %d %d %d %d %d", &id, &on_off, &hour, &min, &am_pm, &recur, &snooze, &sound);
+
+	if (id == item->id) {
+		del_node = tmp;
+		break;
+	}
+		
+  	tmp = tmp->next;
+  }
+
+  if (del_node) {
+  	list = g_slist_remove_link (list, del_node);
+  	gconf_client_set_list(client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, list, NULL);	
+	g_free (del_node->data);
+	g_slist_free_1 (del_node);
+  }
+
+  g_slist_foreach(list, (GFunc)g_free, NULL);
+  g_slist_free(list);
+
+  g_object_unref(client);
+}
+
 void
 mnp_alarm_instance_raise (MnpAlarmInstance *alarm)
 {
   MnpAlarmInstancePrivate *priv = ALARM_INSTANCE_PRIVATE(alarm);
 
   show_notification(alarm);
-
+  if (!priv->repeat) {
+	  /* raised alarm should be deleted */
+	  alarm_del(priv->item);
+  }
 }

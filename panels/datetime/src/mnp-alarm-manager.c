@@ -124,7 +124,7 @@ load_alarms (MnpAlarmManager *man)
 
   } else {
   	gconf_client_add_dir (client, "/apps/date-time-panel", GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
-  	gconf_client_notify_add (client, "/apps/date-time-panel/alarms", alarms_changed, alarms, NULL, NULL);
+  	gconf_client_notify_add (client, "/apps/date-time-panel/alarms", alarms_changed, man, NULL, NULL);
   }
   
   alarms = gconf_client_get_list (client,"/apps/date-time-panel/alarms", GCONF_VALUE_STRING, NULL);
@@ -148,7 +148,8 @@ load_alarms (MnpAlarmManager *man)
   g_object_unref(client);
 
   priv->timeout_source = g_timeout_add_seconds(mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data), mnp_alarm_handler, man);
-
+  now += mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data);
+  printf("\nWake up at %s", ctime(&now));
 }
 
 static void
