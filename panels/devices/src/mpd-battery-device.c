@@ -21,6 +21,7 @@
 #include <glib/gi18n.h>
 #include <devkit-power-gobject/devicekit-power.h>
 #include "mpd-battery-device.h"
+#include "mpd-gobject.h"
 #include "config.h"
 
 G_DEFINE_TYPE (MpdBatteryDevice, mpd_battery_device, G_TYPE_OBJECT)
@@ -167,18 +168,7 @@ _dispose (GObject *object)
 {
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->client)
-  {
-    int n_handlers = g_signal_handlers_disconnect_matched (priv->client,
-                                                           G_SIGNAL_MATCH_DATA,
-                                                           0, 0, NULL, NULL,
-                                                           object);
-    g_debug ("%s:%s disconnected %i handlers.",
-             G_STRLOC, __FUNCTION__, n_handlers);
-
-    g_object_unref (priv->client);
-    priv->client = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->client);
 
   G_OBJECT_CLASS (mpd_battery_device_parent_class)->dispose (object);
 }

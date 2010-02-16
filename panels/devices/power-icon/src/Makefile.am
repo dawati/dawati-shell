@@ -18,6 +18,7 @@ moblin_power_icon_LDADD = \
 
 moblin_power_icon_SOURCES = \
 	$(top_srcdir)/src/mpd-battery-device.c \
+	$(top_srcdir)/src/mpd-gobject.c \
 	moblin-power-icon.c \
 	mpd-global-key.c \
 	mpd-global-key.h \

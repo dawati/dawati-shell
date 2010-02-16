@@ -19,6 +19,7 @@
  */
 
 #include <devkit-power-gobject/devicekit-power.h>
+#include "mpd-gobject.h"
 #include "mpd-lid-device.h"
 #include "config.h"
 
@@ -91,18 +92,7 @@ _dispose (GObject *object)
 {
   MpdLidDevicePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->client)
-  {
-    int n_handlers = g_signal_handlers_disconnect_matched (priv->client,
-                                                           G_SIGNAL_MATCH_DATA,
-                                                           0, 0, NULL, NULL,
-                                                           object);
-    g_debug ("%s:%s disconnected %i handlers.",
-             G_STRLOC, __FUNCTION__, n_handlers);
-
-    g_object_unref (priv->client);
-    priv->client = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->client);
 
   G_OBJECT_CLASS (mpd_lid_device_parent_class)->dispose (object);
 }

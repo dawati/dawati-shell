@@ -23,6 +23,7 @@
 #include <devkit-power-gobject/devicekit-power.h>
 #include <egg-idletime/egg-idletime.h>
 #include <gconf/gconf-client.h>
+#include "mpd-gobject.h"
 #include "mpd-idle-manager.h"
 
 G_DEFINE_TYPE (MpdIdleManager, mpd_idle_manager, G_TYPE_OBJECT)
@@ -48,11 +49,7 @@ _dispose (GObject *object)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (object);
 
-  if (priv->idletime)
-  {
-    g_object_unref (priv->idletime);
-    priv->idletime = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->idletime);
 
   if (priv->suspend_idle_time_notify_id)
   {
@@ -61,24 +58,9 @@ _dispose (GObject *object)
     priv->suspend_idle_time_notify_id = 0;
   }
 
-  if (priv->client)
-  {
-    g_object_unref (priv->client);
-    priv->client = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->client);
 
-  if (priv->power_client)
-  {
-    int n_handlers = g_signal_handlers_disconnect_matched (priv->power_client,
-                                                           G_SIGNAL_MATCH_DATA,
-                                                           0, 0, NULL, NULL,
-                                                           object);
-    g_debug ("%s:%s disconnected %i handlers.",
-             G_STRLOC, __FUNCTION__, n_handlers);
-
-    g_object_unref (priv->power_client);
-    priv->power_client = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->power_client);
 
   G_OBJECT_CLASS (mpd_idle_manager_parent_class)->dispose (object);
 }

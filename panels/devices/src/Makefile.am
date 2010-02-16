@@ -44,6 +44,8 @@ moblin_panel_devices_SOURCES = \
 	mpd-folder-store.h \
 	mpd-folder-view.c \
 	mpd-folder-view.h \
+	mpd-gobject.c \
+	mpd-gobject.h \
 	mpd-panel-client.c \
 	mpd-panel-client.h \
 	mpd-shell.c \

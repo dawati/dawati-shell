@@ -22,6 +22,7 @@
 #include <stdbool.h>
 #include <glib/gi18n.h>
 #include <gvc/gvc-mixer-control.h>
+#include "mpd-gobject.h"
 #include "mpd-volume-tile.h"
 
 #define MIXER_CONTROL_NAME "Moblin Panel Devices"
@@ -158,11 +159,7 @@ _dispose (GObject *object)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->control)
-  {
-    g_object_unref (priv->control);
-    priv->control = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->control);
 
   G_OBJECT_CLASS (mpd_volume_tile_parent_class)->dispose (object);
 }

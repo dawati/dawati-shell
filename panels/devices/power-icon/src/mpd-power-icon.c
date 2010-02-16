@@ -27,6 +27,7 @@
 #include <mx/mx.h>
 #include <libnotify/notify.h>
 #include "mpd-battery-device.h"
+#include "mpd-gobject.h"
 #include "mpd-global-key.h"
 #include "mpd-idle-manager.h"
 #include "mpd-lid-device.h"
@@ -306,29 +307,17 @@ _dispose (GObject *object)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (object);
 
-  if (priv->idle_manager)
-  {
-    g_object_unref (priv->idle_manager);
-    priv->idle_manager = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->idle_manager);
 
-  if (priv->battery)
-  {
-    g_object_unref (priv->battery);
-    priv->battery = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->battery);
 
-  if (priv->lid)
-  {
-    g_object_unref (priv->lid);
-    priv->lid = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->lid);
 
-  if (priv->shutdown_key)
-  {
-    g_object_unref (priv->shutdown_key);
-    priv->shutdown_key = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->shutdown_key);
+
+  mpd_gobject_detach (object, (GObject **) &priv->battery_note);
+
+  mpd_gobject_detach (object, (GObject **) &priv->shutdown_note);
 
   G_OBJECT_CLASS (mpd_power_icon_parent_class)->dispose (object);
 }

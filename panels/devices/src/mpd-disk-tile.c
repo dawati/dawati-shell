@@ -23,6 +23,7 @@
 #include <glib/gi18n.h>
 #include "mpd-disk-device.h"
 #include "mpd-disk-tile.h"
+#include "mpd-gobject.h"
 
 G_DEFINE_TYPE (MpdDiskTile, mpd_disk_tile, MX_TYPE_BOX_LAYOUT)
 
@@ -78,11 +79,7 @@ _dispose (GObject *object)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->disk)
-  {
-    g_object_unref (priv->disk);
-    priv->disk = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->disk);
 
   G_OBJECT_CLASS (mpd_disk_tile_parent_class)->dispose (object);
 }

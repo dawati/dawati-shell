@@ -22,6 +22,7 @@
 #include <glib/gi18n.h>
 #include "mpd-battery-device.h"
 #include "mpd-battery-tile.h"
+#include "mpd-gobject.h"
 #include "config.h"
 
 G_DEFINE_TYPE (MpdBatteryTile, mpd_battery_tile, MX_TYPE_TABLE)
@@ -105,11 +106,7 @@ _dispose (GObject *object)
 {
   MpdBatteryTilePrivate *priv = GET_PRIVATE (object);
 
-  if (priv->device)
-  {
-    g_object_unref (priv->device);
-    priv->device = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->device);
 
   G_OBJECT_CLASS (mpd_battery_tile_parent_class)->dispose (object);
 }
