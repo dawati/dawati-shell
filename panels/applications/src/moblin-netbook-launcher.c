@@ -1118,29 +1118,30 @@ entry_keynav_cb (MnbEntry         *entry,
 
   if (keyval == CLUTTER_Page_Up)
     {
-      MxScrollBar *vscroll = MX_SCROLL_BAR (
-                                  mx_scroll_view_get_vscroll_bar (
-                                    MX_SCROLL_VIEW (priv->scrollview)));
-      MxAdjustment *adjust = mx_scroll_bar_get_adjustment (vscroll);
+      MxAdjustment *adjustment;
       gdouble page_size, value;
-      g_object_get (adjust,
+
+      mx_scrollable_get_adjustments (priv->scrolled_vbox, NULL, &adjustment);
+
+      g_object_get (adjustment,
                     "page-size", &page_size,
                     "value", &value,
                     NULL);
-      mx_adjustment_set_value (adjust, value - page_size);
+      mx_adjustment_set_value (adjustment, value - page_size);
     }
   else if (keyval == CLUTTER_Page_Down)
     {
-      MxScrollBar *vscroll = MX_SCROLL_BAR (
-                                  mx_scroll_view_get_vscroll_bar (
-                                    MX_SCROLL_VIEW (priv->scrollview)));
-      MxAdjustment *adjust = mx_scroll_bar_get_adjustment (vscroll);
+      MxAdjustment *adjustment;
       gdouble page_size, value;
-      g_object_get (adjust,
+
+      mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox), NULL,
+                                     &adjustment);
+
+      g_object_get (adjustment,
                     "page-size", &page_size,
                     "value", &value,
                     NULL);
-      mx_adjustment_set_value (adjust, value + page_size);
+      mx_adjustment_set_value (adjustment, value + page_size);
     }
 
   if (priv->is_filtering)
@@ -1618,7 +1619,6 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   MnbLauncherPrivate  *priv = GET_PRIVATE (self);
   GHashTableIter       iter;
   MxExpander          *expander;
-  MxScrollBar         *vscroll;
   MxAdjustment        *adjust;
 
   mpl_entry_set_text (MPL_ENTRY (priv->filter_entry), "");
@@ -1637,9 +1637,7 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   }
 
   /* Reset scroll position. */
-  vscroll = MX_SCROLL_BAR (mx_scroll_view_get_vscroll_bar (
-                              MX_SCROLL_VIEW (self->priv->scrollview)));
-  adjust = mx_scroll_bar_get_adjustment (vscroll);
+  mx_scrollable_get_adjustments (self->priv->scrolled_vbox, NULL, &adjust);
   mx_adjustment_set_value (adjust, 0.0);
 }
 
