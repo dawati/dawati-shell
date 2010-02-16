@@ -9,8 +9,11 @@ AM_CFLAGS = \
 	-Wall -g3 -O0 -ggdb
 
 moblin_panel_datetime_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
+moblin_alarm_notify_LDADD =  $(DATETIME_LIBS) $(MPL_LIBS)
 
 libexec_PROGRAMS = moblin-panel-datetime
+
+bin_PROGRAMS = moblin-alarm-notify
 
 moblin_panel_datetime_SOURCES = moblin-panel-date-time.c	\
 				 mnp-world-clock.c	\
@@ -34,7 +37,15 @@ moblin_panel_datetime_SOURCES = moblin-panel-date-time.c	\
 				 mnp-alarm-dialog.c	\
 				 mnp-alarm-dialog.h	\
 				 mx-spin-entry.c	\
-				 mx-spin-entry.h
+				 mx-spin-entry.h	\
+				 mnp-alarm-utils.h	
+
+moblin_alarm_notify_SOURCES = moblin-alarm-notify.c 	\
+			      mnp-alarm-manager.c	\
+			      mnp-alarm-manager.h	\
+			      mnp-alarm-instance.c	\
+			      mnp-alarm-instance.h	\
+			      mnp-alarm-utils.h
 
 
 servicedir = $(datadir)/dbus-1/services

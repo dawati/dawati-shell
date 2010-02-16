@@ -19,51 +19,47 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MNP_ALARM_TILE_H
-#define _MNP_ALARM_TILE_H
+#ifndef _MNP_ALARM_MANAGER_H
+#define _MNP_ALARM_MANAGER_H
 
 #include <glib-object.h>
-#include <mx/mx.h>
-#include "mnp-alarm-utils.h"
 
 G_BEGIN_DECLS
 
-#define MNP_TYPE_ALARM_TILE mnp_alarm_tile_get_type()
+#define MNP_TYPE_ALARM_MANAGER mnp_alarm_manager_get_type()
 
-#define MNP_ALARM_TILE(obj) \
+#define MNP_ALARM_MANAGER(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  MNP_TYPE_ALARM_TILE, MnpAlarmTile))
+  MNP_TYPE_ALARM_MANAGER, MnpAlarmManager))
 
-#define MNP_ALARM_TILE_CLASS(klass) \
+#define MNP_ALARM_MANAGER_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  MNP_TYPE_ALARM_TILE, MnpAlarmTileClass))
+  MNP_TYPE_ALARM_MANAGER, MnpAlarmManagerClass))
 
-#define MNP_IS_ALARM_TILE(obj) \
+#define MNP_IS_ALARM_MANAGER(obj) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  MNP_TYPE_ALARM_TILE))
+  MNP_TYPE_ALARM_MANAGER))
 
-#define MNP_IS_ALARM_TILE_CLASS(klass) \
+#define MNP_IS_ALARM_MANAGER_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  MNP_TYPE_ALARM_TILE))
+  MNP_TYPE_ALARM_MANAGER))
 
-#define MNP_ALARM_TILE_GET_CLASS(obj) \
+#define MNP_ALARM_MANAGER_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  MNP_TYPE_ALARM_TILE, MnpAlarmTileClass))
+  MNP_TYPE_ALARM_MANAGER, MnpAlarmManagerClass))
 
 typedef struct {
-  MxButton parent;
-} MnpAlarmTile;
+  GObject parent;
+} MnpAlarmManager;
 
 typedef struct {
-  MxButtonClass parent_class;
-} MnpAlarmTileClass;
+  GObjectClass parent_class;
+} MnpAlarmManagerClass;
 
-GType mnp_alarm_tile_get_type (void);
+GType mnp_alarm_manager_get_type (void);
 
-MnpAlarmTile* mnp_alarm_tile_new (void);
-void mnp_alarm_tile_set_item (MnpAlarmTile *, MnpAlarmItem *);
-MnpAlarmItem * mnp_alarm_tile_get_item (MnpAlarmItem *tile);
+MnpAlarmManager* mnp_alarm_manager_new (void);
 
 G_END_DECLS
 
-#endif /* _MNP_ALARM_TILE_H */
+#endif /* _MNP_ALARM_MANAGER_H */

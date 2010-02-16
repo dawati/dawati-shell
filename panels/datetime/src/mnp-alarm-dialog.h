@@ -25,7 +25,7 @@
 
 #include <glib-object.h>
 #include <mx/mx.h>
-#include "mnp-alarm-tile.h"
+#include "mnp-alarm-utils.h"
 
 G_BEGIN_DECLS
 
@@ -60,26 +60,6 @@ typedef struct {
 } MnpAlarmDialogClass;
 
 GType mnp_alarm_dialog_get_type (void);
-
-typedef enum {
-	MNP_ALARM_NEVER=0,
-	MNP_ALARM_EVERYDAY,
-	MNP_ALARM_WORKWEEK, /* Mon-Fri*/
-	MNP_ALARM_MONDAY,
-	MNP_ALARM_TUESDAY,
-	MNP_ALARM_WEDNESDAY,
-	MNP_ALARM_THURSDAY,
-	MNP_ALARM_FRIDAY,
-	MNP_ALARM_SATURDAY,
-	MNP_ALARM_SUNDAY
-}MnpAlarmRecurrance;
-
-typedef enum {
-	MNP_SOUND_OFF=0,
-	MNP_SOUND_BEEP,
-	MNP_SOUND_MUSIC,
-	MNP_SOUND_MESSAGE
-}MnpAlarmSound;
 
 MnpAlarmDialog* mnp_alarm_dialog_new (void);
 void mnp_alarm_dialog_set_item (MnpAlarmDialog *dialog, MnpAlarmItem *item);

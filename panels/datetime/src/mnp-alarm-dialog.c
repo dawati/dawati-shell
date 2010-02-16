@@ -72,7 +72,7 @@ struct _recur_table {
   { MNP_ALARM_WEDNESDAY, N_("Wednesday") },
   { MNP_ALARM_THURSDAY, N_("Thursday") },
   { MNP_ALARM_FRIDAY, N_("Friday") },
-  { MNP_ALARM_SATURDAY, N_("Satueday") },
+  { MNP_ALARM_SATURDAY, N_("Saturday") },
   { MNP_ALARM_SUNDAY, N_("Sunday") }
 };
 
