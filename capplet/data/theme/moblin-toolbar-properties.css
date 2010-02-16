@@ -15,7 +15,7 @@ MxLabel#time-label {
 }
 
 MxLabel#button-label {
-  font-size: 12px;
+  font-size: 16px;
 }
 
 MxButton#save-button {
@@ -29,6 +29,11 @@ MtpJar {
 
 MxBoxLayout#panel-area, MxBoxLayout#applet-area {
  padding: 5 0 5 0;
+}
+
+MtpBin {
+  padding: 5;
+  background-color: #aaa;
 }
 
 MtpToolbar {

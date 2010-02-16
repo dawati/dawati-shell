@@ -16,4 +16,6 @@ moblin_toolbar_properties_SOURCES =		\
 		mtp-toolbar-button.h		\
 		mtp-space.c			\
 		mtp-space.h			\
+		mtp-bin.c			\
+		mtp-bin.h			\
 		moblin-toolbar-properties.c

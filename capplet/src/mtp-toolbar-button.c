@@ -27,7 +27,6 @@
 #include "mtp-toolbar-button.h"
 #include "mtp-toolbar.h"
 #include "mtp-jar.h"
-#include "mtp-space.h"
 
 /*
  * MnbToolbarButton -- a helper widget for MtpToolbarButton
@@ -265,7 +264,6 @@ mtp_toolbar_button_drag_begin (MxDraggable         *draggable,
   ClutterActor            *parent;
   ClutterActor            *stage;
   gfloat                   width, height;
-  ClutterActor            *space;
 
   stage = clutter_actor_get_stage (self);
 
@@ -307,12 +305,6 @@ mtp_toolbar_button_drag_begin (MxDraggable         *draggable,
   clutter_actor_set_size (self, width, height);
   clutter_actor_set_position (self,
                               event_x - width / 2.0, event_y - height / 2.0);
-
-  if (MTP_IS_TOOLBAR (parent))
-    {
-      space = mtp_space_new ();
-      mtp_toolbar_add_button ((MtpToolbar*)parent, space);
-    }
 }
 
 static void

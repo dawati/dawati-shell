@@ -184,8 +184,6 @@ mtp_toolbar_constructed (GObject *self)
   MtpToolbarPrivate *priv = MTP_TOOLBAR (self)->priv;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 10);
-
   {
     ClutterActor *clock;
     ClutterActor *time_bin;
@@ -327,6 +325,7 @@ mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
       if (MTP_IS_SPACE (actor))
         {
           retval = TRUE;
+
           clutter_container_remove_actor (container, actor);
         }
       else
@@ -519,13 +518,17 @@ mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
                                   MtpToolbar       *toolbar)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+  ClutterActor      *parent;
+
+  parent = clutter_actor_get_parent ((ClutterActor*)button);
 
   if (old_parent == priv->panel_area || old_parent == priv->applet_area)
     mtp_toolbar_fill_space (toolbar);
 
-  g_signal_handlers_disconnect_by_func (button,
-                                        mtp_toolbar_button_parent_set_cb,
-                                        toolbar);
+  if (!(parent == priv->panel_area || parent == priv->applet_area))
+    g_signal_handlers_disconnect_by_func (button,
+                                          mtp_toolbar_button_parent_set_cb,
+                                          toolbar);
 }
 
 void
@@ -826,7 +829,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
 
   g_list_free (l);
 
-    for (i = 0; i < 8 - n_panels; ++i)
+  for (i = 0; i < 8 - n_panels; ++i)
     {
       ClutterActor *space = mtp_space_new ();
 
@@ -837,9 +840,10 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
                                    "expand", FALSE, NULL);
     }
 
-    for (i = 0; i < 4 - n_applets; ++i)
+  for (i = 0; i < 4 - n_applets; ++i)
     {
       ClutterActor *space = mtp_space_new ();
+
       mtp_space_set_is_applet ((MtpSpace*)space, TRUE);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
