@@ -5,7 +5,6 @@ TODO
 (17:19:11) nick@otcchat.org: the turn off and dismiss buttons are the wrong way round
 (17:19:17) nick@otcchat.org: in the shutdown dialogue
 
-* Port dalston battery notifications to power-icon.
 * Implement keyboard navigation in the folder view.
 * Enable "All settings" button as soon as the unified control center shell is shipping.
 * The brightness tile is a compile-time option, off by default.
@@ -13,6 +12,7 @@ TODO
 Done
 ----
 
+* Port dalston battery notifications to power-icon.
 * Share strings between panel-devices and power-icon.
 * Shut down on double press of power button (press when notificonation is up).
 * Fix acpi to recognise moblin-power-icon (shutdown key and lid).
