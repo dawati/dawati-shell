@@ -34,7 +34,7 @@ struct _PengeClickableLabelPrivate {
   GArray *matches;
 };
 
-static const char tweet_url_label_regex[] = "\\b https?://[-\\./\\w]+?(?=\\.?(\\s|$))";
+static const char tweet_url_label_regex[] = "\\b https?://[\\S]+?(?=\\.?(\\s|$))";
 
 typedef struct
 {
