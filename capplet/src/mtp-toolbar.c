@@ -520,6 +520,9 @@ mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
   ClutterActor      *parent;
 
+  if (priv->disposed)
+    return;
+
   parent = clutter_actor_get_parent ((ClutterActor*)button);
 
   if (old_parent == priv->panel_area || old_parent == priv->applet_area)
