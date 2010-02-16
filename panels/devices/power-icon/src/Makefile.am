@@ -19,14 +19,14 @@ moblin_power_icon_LDADD = \
 moblin_power_icon_SOURCES = \
 	$(top_srcdir)/src/mpd-battery-device.c \
 	moblin-power-icon.c \
-	mpd-application.c \
-	mpd-application.h \
 	mpd-global-key.c \
 	mpd-global-key.h \
 	mpd-idle-manager.c \
 	mpd-idle-manager.h \
 	mpd-lid-device.c \
 	mpd-lid-device.h \
+	mpd-power-icon.c \
+	mpd-power-icon.h \
 	mpd-shutdown-notification.c \
 	mpd-shutdown-notification.h \
 	$(NULL)

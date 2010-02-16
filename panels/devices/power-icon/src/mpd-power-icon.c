@@ -30,13 +30,13 @@
 #include "mpd-global-key.h"
 #include "mpd-idle-manager.h"
 #include "mpd-lid-device.h"
+#include "mpd-power-icon.h"
 #include "mpd-shutdown-notification.h"
-#include "mpd-application.h"
 
-G_DEFINE_TYPE (MpdApplication, mpd_application, G_TYPE_OBJECT)
+G_DEFINE_TYPE (MpdPowerIcon, mpd_power_icon, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_APPLICATION, MpdApplicationPrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_POWER_ICON, MpdPowerIconPrivate))
 
 typedef struct
 {
@@ -48,7 +48,7 @@ typedef struct
   NotifyNotification  *battery_note;
   NotifyNotification  *shutdown_note;
   int                  last_notification_displayed;
-} MpdApplicationPrivate;
+} MpdPowerIconPrivate;
 
 typedef enum
 {
@@ -82,7 +82,7 @@ static const struct
 };
 
 static void
-shutdown (MpdApplication *self)
+shutdown (MpdPowerIcon *self)
 {
   EggConsoleKit *console;
   GError        *error = NULL;
@@ -98,9 +98,9 @@ shutdown (MpdApplication *self)
 }
 
 static void
-_battery_shutdown_timeout_cb (MpdApplication *self)
+_battery_shutdown_timeout_cb (MpdPowerIcon *self)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   MpdBatteryDeviceState  state;
 
   state = mpd_battery_device_get_state (priv->battery);
@@ -111,10 +111,10 @@ _battery_shutdown_timeout_cb (MpdApplication *self)
 }
 
 static void
-do_notification (MpdApplication     *self,
+do_notification (MpdPowerIcon       *self,
                  NotificationLevel   level)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
 
   priv->battery_note = notify_notification_new (_(_messages[level].title),
@@ -142,9 +142,9 @@ do_notification (MpdApplication     *self,
 }
 
 static void
-update (MpdApplication *self)
+update (MpdPowerIcon *self)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   char const            *button_style = NULL;
   char                  *description = NULL;
   MpdBatteryDeviceState  state;
@@ -240,7 +240,7 @@ update (MpdApplication *self)
 static void
 _device_notify_cb (MpdBatteryDevice *battery,
                    GParamSpec       *pspec,
-                   MpdApplication   *self)
+                   MpdPowerIcon     *self)
 {
   update (self);
 }
@@ -248,9 +248,9 @@ _device_notify_cb (MpdBatteryDevice *battery,
 static void
 _lid_closed_cb (MpdLidDevice    *lid,
                 GParamSpec      *pspec,
-                MpdApplication  *self)
+                MpdPowerIcon    *self)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
 
   g_debug ("%s() %d", __FUNCTION__, mpd_lid_device_get_closed (lid));
@@ -268,9 +268,9 @@ _lid_closed_cb (MpdLidDevice    *lid,
 
 static void
 _shutdown_notification_shutdown_cb (NotifyNotification  *notification,
-                                    MpdApplication      *self)
+                                    MpdPowerIcon        *self)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
 
   shutdown (self);
 
@@ -280,9 +280,9 @@ _shutdown_notification_shutdown_cb (NotifyNotification  *notification,
 
 static void
 _shutdown_notification_closed_cb (NotifyNotification  *notification,
-                                  MpdApplication      *self)
+                                  MpdPowerIcon        *self)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
 
   g_debug ("%s()", __FUNCTION__);
 
@@ -292,9 +292,9 @@ _shutdown_notification_closed_cb (NotifyNotification  *notification,
 
 static void
 _shutdown_key_activated_cb (MxAction        *action,
-                            MpdApplication  *self)
+                            MpdPowerIcon    *self)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
 
   g_debug ("%s() %p", __FUNCTION__, priv->shutdown_note);
 
@@ -320,7 +320,7 @@ _shutdown_key_activated_cb (MxAction        *action,
 static void
 _dispose (GObject *object)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (object);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (object);
 
   if (priv->idle_manager)
   {
@@ -346,23 +346,23 @@ _dispose (GObject *object)
     priv->shutdown_key = NULL;
   }
 
-  G_OBJECT_CLASS (mpd_application_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mpd_power_icon_parent_class)->dispose (object);
 }
 
 static void
-mpd_application_class_init (MpdApplicationClass *klass)
+mpd_power_icon_class_init (MpdPowerIconClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MpdApplicationPrivate));
+  g_type_class_add_private (klass, sizeof (MpdPowerIconPrivate));
 
   object_class->dispose = _dispose;
 }
 
 static void
-mpd_application_init (MpdApplication *self)
+mpd_power_icon_init (MpdPowerIcon *self)
 {
-  MpdApplicationPrivate *priv = GET_PRIVATE (self);
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   unsigned int shutdown_key_code;
 
   /* Panel */
@@ -402,9 +402,9 @@ mpd_application_init (MpdApplication *self)
                     G_CALLBACK (_lid_closed_cb), self);
 }
 
-MpdApplication *
-mpd_application_new (void)
+MpdPowerIcon *
+mpd_power_icon_new (void)
 {
-  return g_object_new (MPD_TYPE_APPLICATION, NULL);
+  return g_object_new (MPD_TYPE_POWER_ICON, NULL);
 }
 

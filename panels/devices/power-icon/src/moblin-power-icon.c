@@ -26,14 +26,14 @@
 #include <clutter/clutter.h>
 #include <clutter-gtk/clutter-gtk.h>
 #include <libnotify/notify.h>
-#include "mpd-application.h"
+#include "mpd-power-icon.h"
 #include "config.h"
 
 int
 main (int    argc,
       char **argv)
 {
-  MpdApplication *application;
+  MpdPowerIcon *application;
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -43,7 +43,7 @@ main (int    argc,
   gtk_clutter_init (&argc, &argv);
   notify_init (_("Moblin Power Icon"));
 
-  application = mpd_application_new ();
+  application = mpd_power_icon_new ();
 
   clutter_main ();
 
