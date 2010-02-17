@@ -46,6 +46,18 @@ embed_size_allocate_cb (GtkWidget     *embed,
   clutter_actor_set_size (box, allocation->width, allocation->height);
 }
 
+static void
+stage_size_allocation_changed_cb (ClutterActor           *stage,
+                                  ClutterActorBox        *allocation,
+                                  ClutterAllocationFlags  flags,
+                                  ClutterActor           *box)
+{
+  gfloat width  = allocation->x2 - allocation->x1;
+  gfloat height = allocation->y2 - allocation->y1;
+
+  clutter_actor_set_size (box, width, height);
+}
+
 static gboolean
 window_delete_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
 {
@@ -57,7 +69,6 @@ window_delete_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
 int
 main (int argc, char **argv)
 {
-  GtkWidget      *window, *embed;
   ClutterActor   *stage;
   ClutterActor   *bin;
   ClutterColor    clr = {0xff, 0xff, 0xff, 0xff};
@@ -93,7 +104,10 @@ main (int argc, char **argv)
       exit (1);
     }
 
-  gtk_clutter_init (&argc, &argv);
+  if (socket_id)
+    gtk_clutter_init (&argc, &argv);
+  else
+    clutter_init (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/moblin-toolbar-properties.css",
@@ -106,40 +120,53 @@ main (int argc, char **argv)
       g_clear_error (&error);
     }
 
+  bin = mtp_bin_new ();
+
   if (socket_id)
     {
+      GtkWidget *window, *embed;
+
       window = gtk_plug_new ((Window) socket_id);
+      embed = gtk_clutter_embed_new ();
+      gtk_container_add (GTK_CONTAINER (window), embed);
+
+      stage = gtk_clutter_embed_get_stage (GTK_CLUTTER_EMBED (embed));
+
+      g_signal_connect (embed, "size-allocate",
+                        G_CALLBACK (embed_size_allocate_cb),
+                        bin);
+
+      gtk_window_set_default_icon_name ("moblin-toolbar");
+      gtk_window_set_icon_name (GTK_WINDOW (window), "moblin-toolbar");
+
+      gtk_widget_show_all (window);
+
+      g_signal_connect (window, "delete-event",
+                        G_CALLBACK (window_delete_event_cb), NULL);
     }
   else
     {
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_default_size (GTK_WINDOW (window), 1000, 500);
+      stage = clutter_stage_get_default ();
+
+      clutter_actor_set_size (stage, 1024.0, 400.0);
+
+      g_signal_connect (stage, "allocation-changed",
+                        G_CALLBACK (stage_size_allocation_changed_cb),
+                        bin);
     }
 
-  embed = gtk_clutter_embed_new ();
-  gtk_container_add (GTK_CONTAINER (window), embed);
-
-  stage = gtk_clutter_embed_get_stage (GTK_CLUTTER_EMBED (embed));
   clutter_stage_set_color (CLUTTER_STAGE (stage), &clr);
-
-  bin = mtp_bin_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), bin);
 
   mtp_bin_load_contents ((MtpBin *)bin);
 
-  g_signal_connect (embed, "size-allocate",
-                    G_CALLBACK (embed_size_allocate_cb),
-                    bin);
-
-  gtk_window_set_default_icon_name ("moblin-toolbar");
-  gtk_window_set_icon_name (GTK_WINDOW (window), "moblin-toolbar");
-
-  gtk_widget_show_all (window);
-
-  g_signal_connect (window, "delete-event",
-                    G_CALLBACK (window_delete_event_cb), NULL);
-
-  gtk_main ();
+  if (socket_id)
+    gtk_main ();
+  else
+    {
+      clutter_actor_show (stage);
+      clutter_main ();
+    }
 
   return 0;
 }
