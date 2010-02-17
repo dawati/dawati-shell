@@ -1121,7 +1121,9 @@ entry_keynav_cb (MnbEntry         *entry,
       MxAdjustment *adjustment;
       gdouble page_size, value;
 
-      mx_scrollable_get_adjustments (priv->scrolled_vbox, NULL, &adjustment);
+      mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox),
+                                     NULL,
+                                     &adjustment);
 
       g_object_get (adjustment,
                     "page-size", &page_size,
@@ -1134,7 +1136,8 @@ entry_keynav_cb (MnbEntry         *entry,
       MxAdjustment *adjustment;
       gdouble page_size, value;
 
-      mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox), NULL,
+      mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox),
+                                     NULL,
                                      &adjustment);
 
       g_object_get (adjustment,
@@ -1473,7 +1476,8 @@ _constructor (GType                  gtype,
                 "max-stride", 1,
                 NULL);
   mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox),
-                                                NULL, &vadjust);
+                                 NULL,
+                                 &vadjust);
   g_object_set (vadjust,
                 "step-increment", SCROLLVIEW_ROW_SIZE,
                 NULL);
@@ -1637,7 +1641,9 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   }
 
   /* Reset scroll position. */
-  mx_scrollable_get_adjustments (self->priv->scrolled_vbox, NULL, &adjust);
+  mx_scrollable_get_adjustments (MX_SCROLLABLE (self->priv->scrolled_vbox),
+                                 NULL,
+                                 &adjust);
   mx_adjustment_set_value (adjust, 0.0);
 }
 
