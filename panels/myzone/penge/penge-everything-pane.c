@@ -629,6 +629,7 @@ _view_items_changed_cb (SwClientView *view,
     }
   }
 
+  /* Do this because weights might have changed */
   penge_everything_pane_queue_update (pane);
 }
 
