@@ -165,8 +165,6 @@ _label_url_clicked_cb (PengeClickableLabel *label,
                        const gchar         *url,
                        PengePeopleTile     *tile)
 {
-  PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
-
   if (!penge_utils_launch_for_uri ((ClutterActor *)tile, url))
   {
     g_warning (G_STRLOC ": Error launching uri: %s",
@@ -223,14 +221,19 @@ penge_people_tile_set_item (PengePeopleTile *tile,
       g_clear_error (&error);
     }
   } else if (sw_item_has_key (item, "content")) {
+    ClutterActor *inner_table;
     content = sw_item_get_value (item, "content");
-    body = mx_table_new ();
+    body = mx_frame_new ();
+    inner_table = mx_table_new ();
 
-    mx_table_set_col_spacing (MX_TABLE (body), 6);
+    mx_table_set_col_spacing (MX_TABLE (inner_table), 6);
     mx_stylable_set_style_class (MX_STYLABLE (body),
                                  "PengePeopleTileContentBackground");
-
+    mx_bin_set_child (MX_BIN (body), inner_table);
+    mx_bin_set_fill (MX_BIN (body), TRUE, TRUE);
     author_icon = sw_item_get_value (item, "authoricon");
+    mx_stylable_set_style_class (MX_STYLABLE (inner_table),
+                                 "PengePeopleTileInnerTable");
     if (author_icon)
     {
       avatar = clutter_texture_new_from_file (author_icon, NULL);
@@ -243,7 +246,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     mx_bin_set_fill (MX_BIN (avatar_bin), TRUE, TRUE);
     mx_stylable_set_style_class (MX_STYLABLE (avatar_bin),
                                  "PengePeopleTileAvatarBackground");
-    mx_table_add_actor_with_properties (MX_TABLE (body),
+    mx_table_add_actor_with_properties (MX_TABLE (inner_table),
                                         avatar_bin,
                                         0, 0,
                                         "x-expand", FALSE,
@@ -251,7 +254,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                         "x-fill", FALSE,
                                         "y-fill", FALSE,
                                         "x-align", 0.5,
-                                        "y-align", 0.5,
+                                        "y-align", 0.0,
                                         NULL);
     clutter_actor_set_size (avatar, 48, 48);
 
@@ -262,13 +265,13 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                       tile);
 
     mx_stylable_set_style_class (MX_STYLABLE (label), "PengePeopleTileContentLabel");
-    mx_table_add_actor_with_properties (MX_TABLE (body),
+    mx_table_add_actor_with_properties (MX_TABLE (inner_table),
                                         label,
                                         0, 1,
                                         "x-expand", TRUE,
                                         "y-expand", TRUE,
                                         "x-fill", TRUE,
-                                        "y-fill", TRUE,
+                                        "y-fill", FALSE,
                                         "x-align", 0.0,
                                         "y-align", 0.0,
                                         NULL);
