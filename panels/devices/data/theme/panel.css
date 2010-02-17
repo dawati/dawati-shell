@@ -9,6 +9,10 @@ MpdFolderButton:hover {
   border-image: url('directory-highlight.png') 3;
 }
 
+MpdDevicesTile {
+  padding: 12;
+}
+
 MpdShell {
   padding: 12;
 }

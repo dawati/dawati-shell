@@ -18,6 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "mpd-default-device-tile.h"
 #include "mpd-devices-tile.h"
 #include "config.h"
 
@@ -26,10 +27,26 @@ G_DEFINE_TYPE (MpdDevicesTile, mpd_devices_tile, MX_TYPE_BOX_LAYOUT)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_DEVICES_TILE, MpdDevicesTilePrivate))
 
+enum
+{
+  REQUEST_HIDE,
+
+  LAST_SIGNAL
+};
+
 typedef struct
 {
   int dummy;
 } MpdDevicesTilePrivate;
+
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
+
+static void
+_device_tile_request_hide_cb (ClutterActor    *tile,
+                              MpdDevicesTile  *self)
+{
+  g_signal_emit_by_name (self, "request-hide");
+}
 
 static void
 _dispose (GObject *object)
@@ -45,14 +62,29 @@ mpd_devices_tile_class_init (MpdDevicesTileClass *klass)
   g_type_class_add_private (klass, sizeof (MpdDevicesTilePrivate));
 
   object_class->dispose = _dispose;
+
+  /* Signals */
+
+  _signals[REQUEST_HIDE] = g_signal_new ("request-hide",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
 }
 
 static void
 mpd_devices_tile_init (MpdDevicesTile *self)
 {
+  ClutterActor *tile;
+
+  tile = mpd_default_device_tile_new ();
+  g_signal_connect (tile, "request-hide",
+                    G_CALLBACK (_device_tile_request_hide_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 }
 
-MpdDevicesTile *
+ClutterActor *
 mpd_devices_tile_new (void)
 {
   return g_object_new (MPD_TYPE_DEVICES_TILE, NULL);

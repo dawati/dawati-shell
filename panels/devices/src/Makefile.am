@@ -18,13 +18,6 @@ moblin_panel_devices_LDADD = \
 	$(MPD_LIBS) \
 	$(NULL)
 
-if HAVE_UDISKS
-
-AM_CFLAGS += -DGDU_API_IS_SUBJECT_TO_CHANGE
-moblin_panel_devices_LDADD += $(top_builddir)/gdu/libgdu.la
-
-endif
-
 moblin_panel_devices_SOURCES = \
 	moblin-panel-devices.c \
 	mpd-battery-device.c \
@@ -33,6 +26,8 @@ moblin_panel_devices_SOURCES = \
 	mpd-battery-tile.h \
 	mpd-computer-pane.c \
 	mpd-computer-pane.h \
+	mpd-default-device-tile.c \
+	mpd-default-device-tile.h \
 	mpd-devices-tile.c \
 	mpd-devices-tile.h \
 	mpd-disk-device.c \
@@ -59,4 +54,9 @@ moblin_panel_devices_SOURCES = \
 	mpd-volume-tile.c \
 	mpd-volume-tile.h \
 	$(NULL)
+
+if HAVE_UDISKS
+  AM_CFLAGS += -DGDU_API_IS_SUBJECT_TO_CHANGE
+  moblin_panel_devices_LDADD += $(top_builddir)/gdu/libgdu.la
+endif
 

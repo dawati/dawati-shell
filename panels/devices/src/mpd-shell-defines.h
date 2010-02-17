@@ -23,10 +23,12 @@
 
 #define MPD_SHELL_WIDTH         1024.0
 #define MPD_SHELL_HEIGHT         300.0
-
 #define MPD_SHELL_PADDING         12.0
 #define MPD_SHELL_SPACING         24.0
+
 #define MPD_COMPUTER_PANE_WIDTH  320.0
+
+#define MPD_DEVICE_TILE_SPACING 12.0
 
 #endif /* MPD_SHELL_DEFINES_H */
 

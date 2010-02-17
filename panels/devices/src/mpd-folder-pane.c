@@ -22,8 +22,10 @@
 
 #include <glib/gi18n.h>
 
+#include "mpd-devices-tile.h"
 #include "mpd-folder-pane.h"
 #include "mpd-folder-tile.h"
+#include "mpd-shell-defines.h"
 #include "config.h"
 
 G_DEFINE_TYPE (MpdFolderPane, mpd_folder_pane, MX_TYPE_BOX_LAYOUT)
@@ -83,7 +85,7 @@ mpd_folder_pane_init (MpdFolderPane *self)
   ClutterActor *label;
   ClutterActor *tile;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_SHELL_SPACING);
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
 
   label = mx_label_new (_("Your computer"));
@@ -91,6 +93,11 @@ mpd_folder_pane_init (MpdFolderPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_folder_tile_new ();
+  g_signal_connect (tile, "request-hide",
+                    G_CALLBACK (_folder_tile_request_hide_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+
+  tile = mpd_devices_tile_new ();
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_folder_tile_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
