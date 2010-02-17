@@ -19,6 +19,7 @@
  */
 
 #include <stdbool.h>
+#include <glib/gi18n.h>
 #include "mpd-folder-pane.h"
 #include "mpd-folder-tile.h"
 
@@ -76,9 +77,15 @@ mpd_folder_pane_class_init (MpdFolderPaneClass *klass)
 static void
 mpd_folder_pane_init (MpdFolderPane *self)
 {
+  ClutterActor *label;
   ClutterActor *tile;
 
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
+
+  label = mx_label_new (_("Your computer"));
+  mx_stylable_set_style_class (MX_STYLABLE (label), "panel-title");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_folder_tile_new ();
   g_signal_connect (tile, "request-hide",

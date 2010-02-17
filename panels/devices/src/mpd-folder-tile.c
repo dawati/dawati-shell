@@ -18,7 +18,6 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <glib/gi18n.h>
 #include "mpd-folder-store.h"
 #include "mpd-folder-tile.h"
 #include "mpd-folder-view.h"
@@ -132,12 +131,10 @@ mpd_folder_tile_init (MpdFolderTile *self)
                                    G_USER_DIRECTORY_PICTURES,
                                    G_USER_DIRECTORY_VIDEOS };
   ClutterModel  *store;
-  ClutterActor  *label;
   ClutterActor  *view;
   unsigned int   i;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
 
   store = mpd_folder_store_new ();
 
@@ -162,10 +159,6 @@ mpd_folder_tile_init (MpdFolderTile *self)
     g_clear_error (&error);
   }
 #endif
-
-  label = mx_label_new (_("Your computer"));
-  mx_stylable_set_style_class (MX_STYLABLE (label), "panel-title");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   view = mpd_folder_view_new ();
   mx_item_view_set_model (MX_ITEM_VIEW (view), store);
