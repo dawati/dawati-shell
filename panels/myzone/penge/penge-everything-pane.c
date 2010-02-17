@@ -446,8 +446,9 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
         /* Needed to remove from hash when we kill the actor */
         g_object_set_data (G_OBJECT (actor), "data-pointer", sw_item);
-        sw_items_count -= _sw_item_weight (sw_item);
       }
+
+      sw_items_count -= _sw_item_weight (sw_item);
 
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
@@ -475,8 +476,6 @@ penge_everything_pane_update (PengeEverythingPane *pane)
         actor = _add_from_recent_file_info (pane,
                                             recent_file_info,
                                             thumbnail_path);
-        recent_files_count--;
-
         g_free (thumbnail_path);
         g_hash_table_insert (priv->pointer_to_actor,
                              recent_file_info,
@@ -487,6 +486,8 @@ penge_everything_pane_update (PengeEverythingPane *pane)
 
         show_welcome_tile = FALSE;
       }
+
+      recent_files_count--;
 
       gtk_recent_info_unref (recent_file_info);
       recent_file_items = g_list_remove (recent_file_items,
