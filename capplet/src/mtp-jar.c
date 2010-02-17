@@ -96,6 +96,7 @@ static void
 mtp_jar_constructed (GObject *self)
 {
   MtpJarPrivate *priv = MTP_JAR (self)->priv;
+  ClutterActor  *scroll1, *scroll2;
 
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 10);
 
@@ -103,14 +104,17 @@ mtp_jar_constructed (GObject *self)
   clutter_actor_set_name (priv->panel_area, "jar-panel-area");
   mx_grid_set_column_spacing (MX_GRID (priv->panel_area), 2);
   mx_grid_set_row_spacing (MX_GRID (priv->panel_area), 2);
+  scroll1 = mx_scroll_view_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (scroll1), priv->panel_area);
 
   priv->applet_area  = mx_grid_new ();
   clutter_actor_set_name (priv->panel_area, "jar-applet-area");
   mx_grid_set_column_spacing (MX_GRID (priv->applet_area), 2);
   mx_grid_set_row_spacing (MX_GRID (priv->applet_area), 2);
+  scroll2 = mx_scroll_view_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (scroll2), priv->applet_area);
 
-  clutter_container_add (CLUTTER_CONTAINER (self),
-                         priv->panel_area, priv->applet_area, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (self), scroll1, scroll2, NULL);
 }
 
 static void
