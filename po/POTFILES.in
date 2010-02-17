@@ -2,6 +2,7 @@
 capplet/data/moblin-toolbar-properties.desktop.in
 capplet/src/moblin-toolbar-properties.c
 capplet/src/mtp-toolbar.c
+capplet/src/mtp-bin.c
 data/mutter-moblin.schemas.in
 src/moblin-netbook.c
 src/mnb-toolbar.c
