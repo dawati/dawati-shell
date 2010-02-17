@@ -44,7 +44,7 @@ typedef struct
     int dummy;
 } MpdFolderViewPrivate;
 
-static guint _signals[LAST_SIGNAL] = { 0, };
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 /*
  * MpdFolderView.

@@ -43,7 +43,7 @@ typedef struct
   int dummy;
 } MpdComputerPanePrivate;
 
-static guint _signals[LAST_SIGNAL] = { 0, };
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
 _settings_clicked_cb (MxButton        *button,

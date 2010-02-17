@@ -57,9 +57,9 @@ GType
 mpd_global_key_get_type (void);
 
 MxAction *
-mpd_global_key_new          (guint key_code);
+mpd_global_key_new (unsigned int key_code);
 
-guint
+unsigned int
 mpd_global_key_get_key_code (MpdGlobalKey const *self);
 
 G_END_DECLS

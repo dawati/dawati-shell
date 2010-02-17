@@ -56,10 +56,10 @@ typedef struct
 } MpdFolderButtonPrivate;
 
 static void
-_get_property (GObject    *object,
-               guint       property_id,
-               GValue     *value,
-               GParamSpec *pspec)
+_get_property (GObject      *object,
+               unsigned int  property_id,
+               GValue       *value,
+               GParamSpec   *pspec)
 {
   switch (property_id)
   {
@@ -83,7 +83,7 @@ _get_property (GObject    *object,
 
 static void
 _set_property (GObject      *object,
-               guint         property_id,
+               unsigned int  property_id,
                const GValue *value,
                GParamSpec   *pspec)
 {

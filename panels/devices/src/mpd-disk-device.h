@@ -21,6 +21,7 @@
 #ifndef MPD_DISK_DEVICE_H
 #define MPD_DISK_DEVICE_H
 
+#include <stdint.h>
 #include <glib-object.h>
 
 G_BEGIN_DECLS
@@ -58,10 +59,10 @@ mpd_disk_device_get_type (void);
 MpdDiskDevice *
 mpd_disk_device_new (void);
 
-guint64
+uint64_t
 mpd_disk_device_get_size (MpdDiskDevice *self);
 
-guint64
+uint64_t
 mpd_disk_device_get_available_size (MpdDiskDevice *self);
 
 G_END_DECLS

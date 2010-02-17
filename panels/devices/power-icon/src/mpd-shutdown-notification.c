@@ -38,11 +38,11 @@ enum
 
 typedef struct
 {
-  guint timeout_id;
-  guint countdown;
+  unsigned int timeout_id;
+  unsigned int countdown;
 } MpdShutdownNotificationPrivate;
 
-static guint _signals[LAST_SIGNAL] = { 0, };
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
 _notification_shutdown_cb (MpdShutdownNotification  *self,
@@ -115,7 +115,7 @@ _timeout_cb (MpdShutdownNotification *self)
 
 static GObject *
 _constructor (GType                  type,
-              guint                  n_properties,
+              unsigned int           n_properties,
               GObjectConstructParam *properties)
 {
   MpdShutdownNotification *self = (MpdShutdownNotification *)

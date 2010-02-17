@@ -44,7 +44,7 @@ typedef struct
   ClutterActor *computer_pane;
 } MpdShellPrivate;
 
-static guint _signals[LAST_SIGNAL] = { 0, };
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
 _pane_request_hide_cb (ClutterActor *pane,

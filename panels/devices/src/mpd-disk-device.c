@@ -39,18 +39,18 @@ enum
 
 typedef struct
 {
-  guint   update_timeout_id;
-  guint64 size;
-  guint64 available_size;
+  unsigned int  update_timeout_id;
+  uint64_t      size;
+  uint64_t      available_size;
 } MpdDiskDevicePrivate;
 
 static void
 mpd_disk_device_set_size (MpdDiskDevice *self,
-                          guint64        size);
+                          uint64_t       size);
 
 static void
 mpd_disk_device_set_available_size (MpdDiskDevice *self,
-                                    guint64        available_size);
+                                    uint64_t       available_size);
 
 static void
 update (MpdDiskDevice *self)
@@ -59,8 +59,9 @@ update (MpdDiskDevice *self)
 
   if (0 == statvfs ("/home", &fsd))
   {
-    mpd_disk_device_set_size (self, (guint64) fsd.f_blocks * fsd.f_frsize);
-    mpd_disk_device_set_available_size (self, (guint64) fsd.f_bavail * fsd.f_frsize);
+    mpd_disk_device_set_size (self, (uint64_t) fsd.f_blocks * fsd.f_frsize);
+    mpd_disk_device_set_available_size (self,
+                                        (uint64_t) fsd.f_bavail * fsd.f_frsize);
   } else {
     g_warning ("%s : %s", G_STRLOC, strerror (errno));
   }
@@ -74,10 +75,10 @@ _update_timeout_cb (MpdDiskDevice *self)
 }
 
 static void
-_get_property (GObject    *object,
-               guint       property_id,
-               GValue     *value,
-               GParamSpec *pspec)
+_get_property (GObject      *object,
+               unsigned int  property_id,
+               GValue       *value,
+               GParamSpec   *pspec)
 {
   switch (property_id) {
   case PROP_SIZE:
@@ -96,7 +97,7 @@ _get_property (GObject    *object,
 
 static void
 _set_property (GObject      *object,
-               guint         property_id,
+               unsigned int  property_id,
                const GValue *value,
                GParamSpec   *pspec)
 {
@@ -198,7 +199,7 @@ mpd_disk_device_new (void)
   return g_object_new (MPD_TYPE_DISK_DEVICE, NULL);
 }
 
-guint64
+uint64_t
 mpd_disk_device_get_size (MpdDiskDevice *self)
 {
   MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
@@ -210,7 +211,7 @@ mpd_disk_device_get_size (MpdDiskDevice *self)
 
 static void
 mpd_disk_device_set_size (MpdDiskDevice *self,
-                          guint64        size)
+                          uint64_t       size)
 {
   MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
 
@@ -223,7 +224,7 @@ mpd_disk_device_set_size (MpdDiskDevice *self,
   }
 }
 
-guint64
+uint64_t
 mpd_disk_device_get_available_size (MpdDiskDevice *self)
 {
   MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
@@ -235,7 +236,7 @@ mpd_disk_device_get_available_size (MpdDiskDevice *self)
 
 static void
 mpd_disk_device_set_available_size (MpdDiskDevice *self,
-                                    guint64        available_size)
+                                    uint64_t       available_size)
 {
   MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
 

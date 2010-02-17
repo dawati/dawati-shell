@@ -42,7 +42,7 @@ _stage_width_notify_cb (ClutterActor  *stage,
                         GParamSpec    *pspec,
                         MpdShell      *shell)
 {
-  guint width = clutter_actor_get_width (stage);
+  float width = clutter_actor_get_width (stage);
 
   clutter_actor_set_width (CLUTTER_ACTOR (shell), width);
 }
@@ -52,16 +52,16 @@ _stage_height_notify_cb (ClutterActor *stage,
                          GParamSpec   *pspec,
                          MpdShell     *shell)
 {
-  guint height = clutter_actor_get_height (stage);
+  float height = clutter_actor_get_height (stage);
 
   clutter_actor_set_height (CLUTTER_ACTOR (shell), height);
 }
 
 static void
-_panel_set_size_cb (MpdPanel  *panel,
-                    guint      width,
-                    guint      height,
-                    MpdShell  *shell)
+_panel_set_size_cb (MpdPanel      *panel,
+                    unsigned int   width,
+                    unsigned int   height,
+                    MpdShell      *shell)
 {
   clutter_actor_set_size (CLUTTER_ACTOR (shell), width, height);
 }

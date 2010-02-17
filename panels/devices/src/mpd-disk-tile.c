@@ -44,11 +44,11 @@ static void
 update (MpdDiskTile *self)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
-  char      *text;
-  char      *size_text;
-  uint64_t   size;
-  uint64_t   available_size;
-  guint      percentage;
+  char          *text;
+  char          *size_text;
+  uint64_t       size;
+  uint64_t       available_size;
+  unsigned int   percentage;
 
   g_object_get (priv->disk,
                 "size", &size,

@@ -53,17 +53,17 @@ enum
 
 typedef struct
 {
-  guint key_code;
+  unsigned int key_code;
 } MpdGlobalKeyPrivate;
 
 static bool
-window_grab_key (GdkWindow   *window,
-                 guint        key_code,
-                 GError     **error)
+window_grab_key (GdkWindow     *window,
+                 unsigned int   key_code,
+                 GError       **error)
 {
-  Display *dpy = GDK_DISPLAY ();
-  guint    mask = AnyModifier;
-  int      ret;
+  Display       *dpy = GDK_DISPLAY ();
+  unsigned int   mask = AnyModifier;
+  int            ret;
 
   gdk_error_trap_push ();
 
@@ -119,10 +119,10 @@ _event_filter_cb (XEvent        *xev,
 }
 
 static void
-_get_property (GObject    *object,
-               guint       property_id,
-               GValue     *value,
-               GParamSpec *pspec)
+_get_property (GObject      *object,
+               unsigned int  property_id,
+               GValue       *value,
+               GParamSpec   *pspec)
 {
   switch (property_id) {
   case PROP_KEY_CODE:
@@ -136,7 +136,7 @@ _get_property (GObject    *object,
 
 static void
 _set_property (GObject      *object,
-               guint         property_id,
+               unsigned int  property_id,
                const GValue *value,
                GParamSpec   *pspec)
 {
@@ -154,7 +154,7 @@ _set_property (GObject      *object,
 
 static GObject *
 _constructor (GType                  type,
-              guint                  n_properties,
+              unsigned int           n_properties,
               GObjectConstructParam *properties)
 {
   MpdGlobalKey *self = (MpdGlobalKey *)
@@ -241,14 +241,14 @@ mpd_global_key_init (MpdGlobalKey *self)
 }
 
 MxAction *
-mpd_global_key_new (guint key_code)
+mpd_global_key_new (unsigned int key_code)
 {
   return g_object_new (MPD_TYPE_GLOBAL_KEY,
                        "key-code", key_code,
                        NULL);
 }
 
-guint
+unsigned int
 mpd_global_key_get_key_code (MpdGlobalKey const *self)
 {
   MpdGlobalKeyPrivate *priv = GET_PRIVATE (self);

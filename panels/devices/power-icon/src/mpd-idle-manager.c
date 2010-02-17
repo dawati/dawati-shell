@@ -35,7 +35,7 @@ typedef struct
 {
   EggIdletime *idletime;
   GConfClient *client;
-  guint suspend_idle_time_notify_id;
+  unsigned int suspend_idle_time_notify_id;
   DkpClient *power_client;
 } MpdIdleManagerPrivate;
 
@@ -105,10 +105,10 @@ _set_suspend_idle_alarm (MpdIdleManager *manager)
 }
 
 static void
-_suspend_idle_time_key_changed_cb (GConfClient *client,
-                                   guint        cnxn_id,
-                                   GConfEntry  *entry,
-                                   gpointer     userdata)
+_suspend_idle_time_key_changed_cb (GConfClient  *client,
+                                   unsigned int  cnxn_id,
+                                   GConfEntry   *entry,
+                                   gpointer      userdata)
 {
   MpdIdleManager *manager = MPD_IDLE_MANAGER (userdata);
   MpdIdleManagerPrivate *priv = GET_PRIVATE (manager);
@@ -120,7 +120,7 @@ _suspend_idle_time_key_changed_cb (GConfClient *client,
 
 static void
 _idletime_alarm_expired_cb (EggIdletime     *idletime,
-                            guint            alarm_id,
+                            unsigned int     alarm_id,
                             MpdIdleManager  *self)
 {
   GError *error = NULL;

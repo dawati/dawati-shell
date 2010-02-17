@@ -103,7 +103,7 @@ _stream_volume_notify_cb (GObject       *object,
 
 static void
 _mixer_control_default_sink_changed_cb (GvcMixerControl *control,
-                                        guint            id,
+                                        unsigned int     id,
                                         MpdVolumeTile   *self)
 {
   mpd_volume_tile_set_sink (self,
@@ -123,10 +123,10 @@ _mixer_control_ready_cb (GvcMixerControl  *control,
 }
 
 static void
-_get_property (GObject    *object,
-               guint       property_id,
-               GValue     *value,
-               GParamSpec *pspec)
+_get_property (GObject      *object,
+               unsigned int  property_id,
+               GValue       *value,
+               GParamSpec   *pspec)
 {
   switch (property_id) {
   case PROP_SINK:
@@ -140,7 +140,7 @@ _get_property (GObject    *object,
 
 static void
 _set_property (GObject      *object,
-               guint         property_id,
+               unsigned int  property_id,
                const GValue *value,
                GParamSpec   *pspec)
 {

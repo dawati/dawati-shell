@@ -41,7 +41,7 @@ typedef struct
 {
   DkpClient             *client;
   DkpDevice             *device;
-  guint                  percentage;
+  unsigned int           percentage;
   MpdBatteryDeviceState  state;
 } MpdBatteryDevicePrivate;
 
@@ -79,16 +79,16 @@ _client_device_changed_cb (DkpClient        *client,
 
 static GObject *
 _constructor (GType                  type,
-              guint                  n_properties,
+              unsigned int           n_properties,
               GObjectConstructParam *properties)
 {
   MpdBatteryDevice *self = (MpdBatteryDevice *)
                               G_OBJECT_CLASS (mpd_battery_device_parent_class)
                                 ->constructor (type, n_properties, properties);
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
-  GPtrArray *devices;
-  GError    *error = NULL;
-  guint      i;
+  GPtrArray     *devices;
+  GError        *error = NULL;
+  unsigned int   i;
 
   g_return_val_if_fail (priv->client, NULL);
 
@@ -128,10 +128,10 @@ _constructor (GType                  type,
 }
 
 static void
-_get_property (GObject    *object,
-               guint       property_id,
-               GValue     *value,
-               GParamSpec *pspec)
+_get_property (GObject      *object,
+               unsigned int  property_id,
+               GValue       *value,
+               GParamSpec   *pspec)
 {
   switch (property_id)
   {
@@ -152,7 +152,7 @@ _get_property (GObject    *object,
 
 static void
 _set_property (GObject      *object,
-               guint         property_id,
+               unsigned int  property_id,
                const GValue *value,
                GParamSpec   *pspec)
 {
@@ -254,7 +254,7 @@ mpd_battery_device_set_percentage (MpdBatteryDevice *self,
   g_return_if_fail (MPD_IS_BATTERY_DEVICE (self));
 
   /* Filter out changes after the decimal point. */
-  if ((guint) percentage != priv->percentage)
+  if ((unsigned int) percentage != priv->percentage)
   {
     priv->percentage = percentage;
     g_object_notify (G_OBJECT (self), "percentage");

@@ -41,7 +41,7 @@ typedef struct
   int dummy;
 } MpdFolderPanePrivate;
 
-static guint _signals[LAST_SIGNAL] = { 0, };
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 char *
 uri_from_special_dir (GUserDirectory directory)
@@ -57,8 +57,8 @@ uri_from_special_dir (GUserDirectory directory)
 char *
 icon_path_from_special_dir (GUserDirectory directory)
 {
-  char *icon_path;
-  guint i;
+  char          *icon_path;
+  unsigned int   i;
 
   static const struct {
     GUserDirectory   directory;
@@ -134,7 +134,7 @@ mpd_folder_pane_init (MpdFolderPane *self)
   ClutterModel  *store;
   ClutterActor  *label;
   ClutterActor  *view;
-  guint          i;
+  unsigned int   i;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
