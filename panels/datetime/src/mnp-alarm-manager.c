@@ -104,6 +104,28 @@ mnp_alarm_handler(MnpAlarmManager *man)
 }
 
 static void
+alarm_changed (MnpAlarmInstance *alarm, MnpAlarmManager *man)
+{
+  MnpAlarmManagerPrivate *priv = ALARM_MANAGER_PRIVATE(man);
+  time_t now = time(NULL);
+  GList *tmp = priv->alarm_instances;
+
+  while(tmp) {
+	  mnp_alarm_instance_remanipulate ((MnpAlarmInstance *)tmp->data, now);
+	  tmp = tmp->next;
+  }
+
+  priv->alarm_instances = g_list_sort_with_data (priv->alarm_instances, (GCompareDataFunc)instance_sort_func, NULL);
+
+  if (priv->timeout_source)
+	  g_source_remove(priv->timeout_source);
+
+  priv->timeout_source = g_timeout_add_seconds(mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data), mnp_alarm_handler, man);
+  now += mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data);
+  printf("\nRemanipulated: Wake up at %s", ctime(&now));
+}
+
+static void
 load_alarms (MnpAlarmManager *man)
 {
   GConfClient *client;
@@ -121,6 +143,7 @@ load_alarms (MnpAlarmManager *man)
 	  g_list_foreach (priv->alarm_instances, g_object_unref, NULL);
 	  g_list_free(priv->alarm_instances);
 	  priv->alarm_instances = NULL;
+	  g_source_remove(priv->timeout_source);
 
   } else {
   	gconf_client_add_dir (client, "/apps/date-time-panel", GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
@@ -138,6 +161,7 @@ load_alarms (MnpAlarmManager *man)
 	priv->alarm_items = g_list_append(priv->alarm_items, item);
 
 	instance = mnp_alarm_instance_new (item, now);
+	g_signal_connect (instance, "alarm-changed", G_CALLBACK(alarm_changed), man);
 	priv->alarm_instances = g_list_insert_sorted_with_data(priv->alarm_instances, instance, (GCompareDataFunc)instance_sort_func, NULL);
 
 	tmp = tmp->next;

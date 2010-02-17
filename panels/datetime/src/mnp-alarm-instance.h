@@ -56,12 +56,15 @@ typedef struct {
 
 typedef struct {
   GObjectClass parent_class;
+
+  void (*alarm_changed) (MnpAlarmInstance *);
 } MnpAlarmInstanceClass;
 
 GType mnp_alarm_instance_get_type (void);
 
 MnpAlarmInstance* mnp_alarm_instance_new (MnpAlarmItem *, time_t now);
 time_t mnp_alarm_instance_get_time (MnpAlarmInstance *alarm);
+void mnp_alarm_instance_remanipulate (MnpAlarmInstance *alarm, time_t now);
 
 G_END_DECLS
 

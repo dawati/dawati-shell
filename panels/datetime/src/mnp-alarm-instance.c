@@ -30,6 +30,12 @@ G_DEFINE_TYPE (MnpAlarmInstance, mnp_alarm_instance, G_TYPE_OBJECT)
 #define ALARM_INSTANCE_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNP_TYPE_ALARM_INSTANCE, MnpAlarmInstancePrivate))
 
+enum {
+	ALARM_CHANGED,
+	LAST_SIGNAL
+};
+static guint signals[LAST_SIGNAL] = { 0 };
+
 typedef struct _MnpAlarmInstancePrivate MnpAlarmInstancePrivate;
 
 struct _MnpAlarmInstancePrivate
@@ -76,6 +82,16 @@ mnp_alarm_instance_class_init (MnpAlarmInstanceClass *klass)
 
   object_class->dispose = mnp_alarm_instance_dispose;
   object_class->finalize = mnp_alarm_instance_finalize;
+
+  signals[ALARM_CHANGED] =
+		g_signal_new ("alarm-changed",
+			      G_OBJECT_CLASS_TYPE (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (MnpAlarmInstanceClass , alarm_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
+
 }
 
 static void
@@ -144,7 +160,7 @@ get_week_day (time_t now)
 
 }
 
-void
+static void
 manipulate_time (MnpAlarmInstance *alarm, MnpAlarmItem *item, time_t now)
 {
   MnpAlarmInstancePrivate *priv = ALARM_INSTANCE_PRIVATE(alarm);
@@ -221,6 +237,14 @@ manipulate_time (MnpAlarmInstance *alarm, MnpAlarmItem *item, time_t now)
 	  time_t next = now+priv->next_notification_time;
 	  printf("Loading Alarm at %s", ctime(&next));
   }
+}
+
+void
+mnp_alarm_instance_remanipulate (MnpAlarmInstance *alarm, time_t now)
+{
+  MnpAlarmInstancePrivate *priv = ALARM_INSTANCE_PRIVATE(alarm);
+
+  manipulate_time(alarm, priv->item, now);
 }
 
 static void
@@ -348,5 +372,7 @@ mnp_alarm_instance_raise (MnpAlarmInstance *alarm)
   if (!priv->repeat) {
 	  /* raised alarm should be deleted */
 	  alarm_del(priv->item);
+  } else {
+	  g_signal_emit (alarm, signals[ALARM_CHANGED], 0);			
   }
 }
