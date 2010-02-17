@@ -8,13 +8,15 @@ AM_CFLAGS = \
 	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
 	$(NULL)
 
-libexec_PROGRAMS = moblin-power-icon
+libexec_PROGRAMS = \
+	moblin-power-icon \
+	$(NULL)
 
 moblin_power_icon_LDADD = \
 	$(top_builddir)/egg-console-kit/libegg-console-kit.la \
 	$(top_builddir)/egg-idletime/libegg-idletime.la \
 	$(MPI_LIBS) \
-  $(NULL)
+	$(NULL)
 
 moblin_power_icon_SOURCES = \
 	$(top_srcdir)/src/mpd-battery-device.c \

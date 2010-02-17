@@ -100,7 +100,8 @@ main (int     argc,
 
   clutter_init (&argc, &argv);
 
-  mx_texture_cache_load_cache (mx_texture_cache_get_default (), MX_CACHE);
+  mx_texture_cache_load_cache (mx_texture_cache_get_default (),
+                               PKGDATADIR "/mx.cache");
   mx_style_load_from_file (mx_style_get_default (),
                            PKGTHEMEDIR "/panel.css", NULL);
 

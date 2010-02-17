@@ -77,7 +77,7 @@ icon_path_from_special_dir (GUserDirectory directory)
     if (directory == _map[i].directory)
     {
       icon_path = g_strdup_printf ("%s/directory-%s.png",
-                                   ICONDIR,
+                                   PKGICONDIR,
                                    _map[i].key);
       break;
     }
@@ -85,7 +85,7 @@ icon_path_from_special_dir (GUserDirectory directory)
 
   if (icon_path == NULL)
   {
-    icon_path = g_strdup_printf ("%s/directory-generic.png", ICONDIR);
+    icon_path = g_strdup_printf ("%s/directory-generic.png", PKGICONDIR);
   }
 
   return icon_path;

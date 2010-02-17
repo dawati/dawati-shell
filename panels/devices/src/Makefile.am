@@ -2,20 +2,21 @@
 AM_CFLAGS = \
 	$(MPD_CFLAGS) \
 	-I$(top_srcdir) \
-	-DDATADIR=\"$(datadir)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
-	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
-	-DICONDIR=\"$(pkgdatadir)/icons\" \
+	-DPKGDATADIR=\"$(pkgdatadir)\" \
+	-DPKGICONDIR=\"$(pkgdatadir)/icons\" \
 	-DPKGTHEMEDIR=\"$(PKGTHEMEDIR)\" \
 	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
 	$(NULL)
 
-libexec_PROGRAMS = moblin-panel-devices
+libexec_PROGRAMS = \
+	moblin-panel-devices \
+	$(NULL)
 
 moblin_panel_devices_LDADD = \
 	$(top_builddir)/gvc/libgvc.la \
 	$(MPD_LIBS) \
-  $(NULL)
+	$(NULL)
 
 if HAVE_UDISKS
 
