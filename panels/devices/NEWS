@@ -1,4 +1,8 @@
 
+Version 0.1.7
+
+    Pull global stuff into panel class.
+
 Version 0.1.6, 2010-02-16
 
     Robust handling of DK's singleton objects.

@@ -25,8 +25,7 @@
 #include <clutter/x11/clutter-x11.h>
 #include <glib/gi18n.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-panel-common.h>
-#include "mpd-panel-client.h"
+#include "mpd-panel.h"
 #include "mpd-shell.h"
 #include "mpd-shell-defines.h"
 #include "config.h"
@@ -59,10 +58,10 @@ _stage_height_notify_cb (ClutterActor *stage,
 }
 
 static void
-_panel_set_size_cb (MplPanelClient  *panel,
-                    guint            width,
-                    guint            height,
-                    MpdShell        *shell)
+_panel_set_size_cb (MpdPanel  *panel,
+                    guint      width,
+                    guint      height,
+                    MpdShell  *shell)
 {
   clutter_actor_set_size (CLUTTER_ACTOR (shell), width, height);
 }
@@ -71,14 +70,13 @@ int
 main (int     argc,
       char  **argv)
 {
-  static bool _standalone = false;
-  static GOptionEntry _options[] = {
-    { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone,
-      "Do not embed into the mutter-moblin panel", NULL },
+  bool standalone = false;
+  GOptionEntry _options[] = {
+    { "standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
+      "Do not embed into the moblin panel", NULL },
     { NULL }
   };
 
-  ClutterActor    *stage;
   ClutterActor    *shell;
   GOptionContext  *context;
   GError          *error = NULL;
@@ -92,71 +90,47 @@ main (int     argc,
   g_option_context_add_main_entries (context, _options, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   if (!g_option_context_parse (context, &argc, &argv, &error))
-    {
-      g_critical ("%s %s", G_STRLOC, error->message);
-      g_critical ("Starting in standalone mode.");
-      g_clear_error (&error);
-      _standalone = true;
-    }
+  {
+    g_critical ("%s %s", G_STRLOC, error->message);
+    g_critical ("Starting in standalone mode.");
+    g_clear_error (&error);
+    standalone = true;
+  }
   g_option_context_free (context);
 
   clutter_init (&argc, &argv);
-
-  mx_texture_cache_load_cache (mx_texture_cache_get_default (),
-    DATADIR "/icons/moblin/48x48/mx.cache");
-  mx_texture_cache_load_cache (mx_texture_cache_get_default (),
-    DATADIR "/icons/hicolor/48x48/mx.cache");
-  mx_texture_cache_load_cache (mx_texture_cache_get_default (),
-    DATADIR "/mutter-moblin/mx.cache");
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (), MX_CACHE);
   mx_style_load_from_file (mx_style_get_default (),
                            PKGTHEMEDIR "/panel.css", NULL);
 
-  if (_standalone)
-    {
-      Window xwin;
+  if (standalone)
+  {
+    ClutterActor *stage = clutter_stage_get_default ();
 
-      stage = clutter_stage_get_default ();
-      clutter_actor_realize (stage);
-      xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+    shell = mpd_shell_new ();
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
 
-      shell = mpd_shell_new ();
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
+    g_signal_connect (stage, "notify::width",
+                      G_CALLBACK (_stage_width_notify_cb), shell);
+    g_signal_connect (stage, "notify::height",
+                      G_CALLBACK (_stage_height_notify_cb), shell);
 
-      g_signal_connect (stage, "notify::width",
-                        G_CALLBACK (_stage_width_notify_cb), shell);
-      g_signal_connect (stage, "notify::height",
-                        G_CALLBACK (_stage_height_notify_cb), shell);
+    clutter_actor_set_size (stage, MPD_SHELL_WIDTH, MPD_SHELL_HEIGHT);
+    clutter_actor_show_all (stage);
 
-      clutter_actor_set_size (stage, MPD_SHELL_WIDTH, MPD_SHELL_HEIGHT);
-      clutter_actor_show (stage);
+  } else {
 
-    } else {
-
-      /* All button styling goes in mutter-moblin.css for now,
-       * don't pass our own stylesheet. */
-      MplPanelClient *panel = mpl_panel_clutter_new ("devices",
-                                                     _("devices"),
-                                                     /*THEMEDIR "/toolbar-button.css" */ NULL,
-                                                     "devices-button",
-                                                     true);
-#if 0
-      MplPanelClient *panel = mpd_panel_client_new ("devices",
-                                                     _("devices"),
-                                                     "devices-button");
-#endif
-      mpl_panel_client_set_height_request (panel, MPD_SHELL_HEIGHT);
-
-      stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
-      shell = mpd_shell_new ();
-      g_signal_connect (shell, "request-hide",
-                        G_CALLBACK (_shell_request_hide_cb), panel);
-      clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
-
-      g_signal_connect (panel, "set-size",
-                        G_CALLBACK (_panel_set_size_cb), shell);
-    }
+    MplPanelClient *panel = mpd_panel_new ("devices",
+                                           _("devices"),
+                                           "devices-button");
+    shell = mpd_shell_new ();
+    g_signal_connect (shell, "request-hide",
+                      G_CALLBACK (_shell_request_hide_cb), panel);
+    g_signal_connect (panel, "set-size",
+                      G_CALLBACK (_panel_set_size_cb), shell);
+    clutter_container_add_actor (CLUTTER_CONTAINER (panel), shell);
+  }
 
   clutter_main ();
   return EXIT_SUCCESS;
