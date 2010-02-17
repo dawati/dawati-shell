@@ -66,13 +66,13 @@ typedef enum
 } MpdBatteryDeviceState;
 
 MpdBatteryDevice *
-mpd_battery_device_new            (void);
+mpd_battery_device_new (void);
 
 float
 mpd_battery_device_get_percentage (MpdBatteryDevice *self);
 
 MpdBatteryDeviceState
-mpd_battery_device_get_state      (MpdBatteryDevice *self);
+mpd_battery_device_get_state (MpdBatteryDevice *self);
 
 char *
 mpd_battery_device_get_state_text (MpdBatteryDevice *self);

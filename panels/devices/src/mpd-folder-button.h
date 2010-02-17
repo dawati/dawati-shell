@@ -57,7 +57,7 @@ GType
 mpd_folder_button_get_type (void);
 
 ClutterActor *
-mpd_folder_button_new     (void);
+mpd_folder_button_new (void);
 
 char const *
 mpd_folder_button_get_icon_path (MpdFolderButton *self);
