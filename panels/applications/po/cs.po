@@ -7,35 +7,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:30+0000\n"
-"PO-Revision-Date: 2010-02-17 19:25+0100\n"
+"POT-Creation-Date: 2010-02-17 15:12+0000\n"
+"PO-Revision-Date: 2010-02-17 19:31+0100\n"
 "Last-Translator: Petr Novák <peta.en@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
-"X-Poedit-SourceCharset: utf-8\n"
 
 #.
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:813
+#: ../src/moblin-netbook-launcher.c:867
 msgid "Favorite Applications"
 msgstr "Oblíbené aplikace"
 
-#: ../src/moblin-netbook-launcher.c:1337
+#: ../src/moblin-netbook-launcher.c:1427
 msgid "Applications"
 msgstr "Aplikace"
 
-#: ../src/moblin-netbook-launcher.c:1348
+#: ../src/moblin-netbook-launcher.c:1438
 msgid "Search"
 msgstr "Hledat"
 
-#: ../src/moblin-panel-applications.c:196
+#: ../src/moblin-panel-applications.c:197
+#: ../data/moblin-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplikace"
+
+#: ../data/moblin-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Panel aplikací"
 
