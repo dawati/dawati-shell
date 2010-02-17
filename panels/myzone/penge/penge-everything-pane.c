@@ -241,14 +241,6 @@ _add_from_sw_item (PengeEverythingPane *pane,
 
   clutter_container_add_actor (CLUTTER_CONTAINER (pane), actor);
 
-  if (penge_people_tile_is_double_size (PENGE_PEOPLE_TILE (actor)))
-  {
-    clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                 actor,
-                                 "col-span", 2,
-                                 NULL);
-  }
-
   g_signal_connect (actor,
                     "remove-clicked",
                     (GCallback)_people_tile_remove_clicked_cb,
@@ -457,6 +449,11 @@ penge_everything_pane_update (PengeEverythingPane *pane)
         sw_items_count -= _sw_item_weight (sw_item);
       }
 
+      clutter_container_child_set (CLUTTER_CONTAINER (pane),
+                                   actor,
+                                   "col-span", _sw_item_weight (sw_item),
+                                   NULL);
+
       sw_items = g_list_remove (sw_items, sw_item);
 
       show_welcome_tile = FALSE;
@@ -629,8 +626,9 @@ _view_items_changed_cb (SwClientView *view,
                     "item", item,
                     NULL);
     }
-
   }
+
+  penge_everything_pane_queue_update (pane);
 }
 
 static void
