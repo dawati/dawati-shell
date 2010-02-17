@@ -19,6 +19,7 @@
  */
 
 #include <stdbool.h>
+
 #include "mpd-computer-pane.h"
 #include "mpd-folder-pane.h"
 #include "mpd-shell.h"

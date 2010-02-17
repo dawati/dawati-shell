@@ -18,13 +18,15 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <stdbool.h>
 #include <locale.h>
+#include <stdbool.h>
 #include <stdlib.h>
+
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <glib/gi18n.h>
 #include <mx/mx.h>
+
 #include "mpd-panel.h"
 #include "mpd-shell.h"
 #include "mpd-shell-defines.h"

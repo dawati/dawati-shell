@@ -18,11 +18,13 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <stdbool.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <string.h>
 #include <sys/statvfs.h>
+
 #include "mpd-disk-device.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdDiskDevice, mpd_disk_device, G_TYPE_OBJECT)
 

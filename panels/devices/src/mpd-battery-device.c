@@ -18,8 +18,9 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <glib/gi18n.h>
 #include <devkit-power-gobject/devicekit-power.h>
+#include <glib/gi18n.h>
+
 #include "mpd-battery-device.h"
 #include "mpd-gobject.h"
 #include "config.h"

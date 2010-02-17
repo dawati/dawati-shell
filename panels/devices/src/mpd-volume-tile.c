@@ -20,10 +20,13 @@
  */
 
 #include <stdbool.h>
+
 #include <glib/gi18n.h>
 #include <gvc/gvc-mixer-control.h>
+
 #include "mpd-gobject.h"
 #include "mpd-volume-tile.h"
+#include "config.h"
 
 #define MIXER_CONTROL_NAME "Moblin Panel Devices"
 

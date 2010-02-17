@@ -20,7 +20,9 @@
  */
 
 #include <stdbool.h>
+
 #include <glib/gi18n.h>
+
 #include "mpd-shutdown-notification.h"
 #include "config.h"
 

@@ -19,8 +19,10 @@
  */
 
 #include <stdbool.h>
+
 #include "mpd-panel.h"
 #include "mpd-shell-defines.h"
+#include "config.h"
 
 static void _container_iface_init (ClutterContainerIface *iface);
 

@@ -19,6 +19,7 @@
  */
 
 #include <stdbool.h>
+
 #include "mpd-folder-button.h"
 #include "mpd-folder-view.h"
 #include "config.h"

@@ -19,7 +19,9 @@
  */
 
 #include <stdbool.h>
+
 #include <gdk/gdkx.h>
+
 #include "mpd-global-key.h"
 #include "config.h"
 

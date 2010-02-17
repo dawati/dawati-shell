@@ -19,6 +19,7 @@
  */
 
 #include "mpd-devices-tile.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdDevicesTile, mpd_devices_tile, MX_TYPE_BOX_LAYOUT)
 
@@ -27,7 +28,7 @@ G_DEFINE_TYPE (MpdDevicesTile, mpd_devices_tile, MX_TYPE_BOX_LAYOUT)
 
 typedef struct
 {
-    int dummy;
+  int dummy;
 } MpdDevicesTilePrivate;
 
 static void

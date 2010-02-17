@@ -23,8 +23,10 @@
 #include <devkit-power-gobject/devicekit-power.h>
 #include <egg-idletime/egg-idletime.h>
 #include <gconf/gconf-client.h>
+
 #include "mpd-gobject.h"
 #include "mpd-idle-manager.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdIdleManager, mpd_idle_manager, G_TYPE_OBJECT)
 

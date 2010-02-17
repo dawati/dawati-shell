@@ -18,14 +18,14 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <X11/XF86keysym.h>
-#include <glib/gi18n.h>
 #include <egg-console-kit/egg-console-kit.h>
+#include <glib/gi18n.h>
 #include <gdk/gdkx.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <libnotify/notify.h>
 #include <moblin-panel/mpl-panel-windowless.h>
 #include <mx/mx.h>
-#include <libnotify/notify.h>
+#include <X11/XF86keysym.h>
+
 #include "mpd-battery-device.h"
 #include "mpd-gobject.h"
 #include "mpd-global-key.h"
@@ -33,6 +33,7 @@
 #include "mpd-lid-device.h"
 #include "mpd-power-icon.h"
 #include "mpd-shutdown-notification.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdPowerIcon, mpd_power_icon, G_TYPE_OBJECT)
 

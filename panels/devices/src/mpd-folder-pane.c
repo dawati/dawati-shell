@@ -19,9 +19,12 @@
  */
 
 #include <stdbool.h>
+
 #include <glib/gi18n.h>
+
 #include "mpd-folder-pane.h"
 #include "mpd-folder-tile.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdFolderPane, mpd_folder_pane, MX_TYPE_BOX_LAYOUT)
 

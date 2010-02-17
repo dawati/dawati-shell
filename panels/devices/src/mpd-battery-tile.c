@@ -19,7 +19,9 @@
  */
 
 #include <stdbool.h>
+
 #include <glib/gi18n.h>
+
 #include "mpd-battery-device.h"
 #include "mpd-battery-tile.h"
 #include "mpd-gobject.h"

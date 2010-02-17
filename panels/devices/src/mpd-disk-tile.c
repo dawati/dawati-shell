@@ -20,10 +20,13 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+
 #include <glib/gi18n.h>
+
 #include "mpd-disk-device.h"
 #include "mpd-disk-tile.h"
 #include "mpd-gobject.h"
+#include "config.h"
 
 G_DEFINE_TYPE (MpdDiskTile, mpd_disk_tile, MX_TYPE_BOX_LAYOUT)
 

@@ -19,6 +19,7 @@
  */
 
 #include <devkit-power-gobject/devicekit-power.h>
+
 #include "mpd-gobject.h"
 #include "mpd-lid-device.h"
 #include "config.h"

@@ -19,10 +19,12 @@
  */
 
 #include <stdbool.h>
+
 #include <glib/gi18n.h>
+
 #include "mpd-battery-tile.h"
-#include "mpd-disk-tile.h"
 #include "mpd-computer-pane.h"
+#include "mpd-disk-tile.h"
 #include "mpd-volume-tile.h"
 #include "config.h"
 

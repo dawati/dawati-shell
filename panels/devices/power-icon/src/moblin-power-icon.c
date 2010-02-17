@@ -19,13 +19,15 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <stdbool.h>
 #include <locale.h>
+#include <stdbool.h>
 #include <stdlib.h>
+
 #include <glib/gi18n.h>
 #include <clutter/clutter.h>
 #include <clutter-gtk/clutter-gtk.h>
 #include <libnotify/notify.h>
+
 #include "mpd-power-icon.h"
 #include "config.h"
 
@@ -33,7 +35,7 @@ int
 main (int    argc,
       char **argv)
 {
-  MpdPowerIcon *application;
+  MpdPowerIcon *icon;
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -43,11 +45,11 @@ main (int    argc,
   gtk_clutter_init (&argc, &argv);
   notify_init (_("Moblin Power Icon"));
 
-  application = mpd_power_icon_new ();
+  icon = mpd_power_icon_new ();
 
   clutter_main ();
 
-  g_object_unref (application);
+  g_object_unref (icon);
 
   return EXIT_SUCCESS;
 }
