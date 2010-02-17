@@ -33,6 +33,8 @@ moblin_panel_devices_SOURCES = \
 	mpd-battery-tile.h \
 	mpd-computer-pane.c \
 	mpd-computer-pane.h \
+	mpd-devices-tile.c \
+	mpd-devices-tile.h \
 	mpd-disk-device.c \
 	mpd-disk-device.h \
 	mpd-disk-tile.c \
@@ -43,6 +45,8 @@ moblin_panel_devices_SOURCES = \
 	mpd-folder-pane.h \
 	mpd-folder-store.c \
 	mpd-folder-store.h \
+	mpd-folder-tile.c \
+	mpd-folder-tile.h \
 	mpd-folder-view.c \
 	mpd-folder-view.h \
 	mpd-gobject.c \
