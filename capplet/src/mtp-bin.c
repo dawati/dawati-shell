@@ -325,6 +325,16 @@ mtp_bin_constructed (GObject *self)
                       self);
   }
 
+  {
+    ClutterActor *label = mx_label_new (_("Available panels"));
+    ClutterActor *hbox = mx_box_layout_new ();
+
+    clutter_actor_set_name (label, "available-panels");
+
+    clutter_container_add (CLUTTER_CONTAINER (box), hbox, NULL);
+    clutter_container_add (CLUTTER_CONTAINER (hbox), label, NULL);
+  }
+
   clutter_container_add (CLUTTER_CONTAINER (box), jar, NULL);
 
   clutter_container_child_set (CLUTTER_CONTAINER (box), jar,
