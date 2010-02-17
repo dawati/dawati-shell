@@ -17,7 +17,9 @@ libalttab_la_SOURCES =					\
 			mnb-alttab-overlay.h		\
 			mnb-alttab-overlay-private.h	\
 			mnb-alttab-overlay-app.c	\
-			mnb-alttab-overlay-app.h
+			mnb-alttab-overlay-app.h	\
+			penge-magic-texture.c		\
+			penge-magic-texture.h
 
 libalttab_la_CPPFLAGS = $(alttab_cflags)
 libalttab_la_LDFLAGS = $(LDADD)

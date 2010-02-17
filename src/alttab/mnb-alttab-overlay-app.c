@@ -27,6 +27,7 @@
 
 #include "mnb-alttab-overlay.h"
 #include "mnb-alttab-overlay-app.h"
+#include "penge-magic-texture.h"
 #include "../moblin-netbook.h"
 
 #define MNB_SWICHER_APP_ICON_PADDING         5.0
@@ -44,7 +45,6 @@ struct _MnbAlttabOverlayAppPrivate
   ClutterActor *icon;
   ClutterActor *text;
   ClutterActor *background;
-  ClutterActor *bg_clone;
 
   gboolean      disposed : 1; /* disposed guard   */
   gboolean      active   : 1;
@@ -92,15 +92,9 @@ mnb_alttab_overlay_app_dispose (GObject *object)
       priv->icon = NULL;
     }
 
-  if (priv->bg_clone)
-    {
-      clutter_actor_destroy (priv->bg_clone);
-      priv->bg_clone = NULL;
-    }
-
   if (priv->background)
     {
-      g_object_unref (priv->background);
+      clutter_actor_destroy (priv->background);
       priv->background = NULL;
     }
 
@@ -124,9 +118,29 @@ mnb_alttab_overlay_app_set_property (GObject      *gobject,
       priv->mcw = g_value_get_object (value);
       break;
     case PROP_BACKGROUND:
-      if (priv->background)
-        g_object_unref (priv->background);
-      priv->background = g_value_dup_object (value);
+      {
+        ClutterTexture *texture;
+
+        if (priv->background)
+          clutter_actor_destroy (priv->background);
+
+        texture = g_value_get_object (value);
+
+        if (texture && CLUTTER_IS_TEXTURE (texture))
+          {
+            ClutterActor *background;
+            CoglHandle    handle;
+
+            handle = clutter_texture_get_cogl_texture (texture);
+
+            background = g_object_new (PENGE_TYPE_MAGIC_TEXTURE,
+                                       "cogl-texture", handle, NULL);
+
+            priv->background = g_object_ref_sink (background);
+          }
+        else
+          priv->background = NULL;
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -224,13 +238,7 @@ mnb_alttab_overlay_app_constructed (GObject *self)
     clutter_text_set_text (CLUTTER_TEXT (priv->text), title);
 
   if (priv->background)
-    {
-      ClutterActor *bg;
-
-      bg = priv->bg_clone = clutter_clone_new (priv->background);
-
-      clutter_actor_set_parent (bg, actor);
-    }
+    clutter_actor_set_parent (priv->background, actor);
 
   g_object_weak_ref (G_OBJECT (priv->mcw),
                      mnb_alttab_overlay_app_origin_weak_notify, self);
@@ -309,12 +317,12 @@ mnb_alttab_overlay_app_allocate (ClutterActor          *actor,
       clutter_actor_allocate (priv->child, &childbox, flags);
     }
 
-  if (priv->bg_clone)
+  if (priv->background)
     {
       mx_widget_get_available_area (MX_WIDGET (actor), box, &childbox);
       childbox.y2 -= MNB_ALTTAB_OVERLAY_APP_INFO_BOX_HEIGHT +
         MNB_ALTTAB_OVERLAY_APP_SPACING;
-      clutter_actor_allocate (priv->bg_clone, &childbox, flags);
+      clutter_actor_allocate (priv->background, &childbox, flags);
     }
 
 #else
@@ -432,8 +440,8 @@ mnb_alttab_overlay_app_map (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->map (self);
 
-  if (priv->bg_clone)
-    clutter_actor_map (priv->bg_clone);
+  if (priv->background)
+    clutter_actor_map (priv->background);
 
   if (priv->child)
     clutter_actor_map (priv->child);
@@ -452,8 +460,8 @@ mnb_alttab_overlay_app_unmap (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->unmap (self);
 
-  if (priv->bg_clone)
-    clutter_actor_unmap (priv->bg_clone);
+  if (priv->background)
+    clutter_actor_unmap (priv->background);
 
   if (priv->child)
     clutter_actor_unmap (priv->child);
@@ -490,8 +498,8 @@ mnb_alttab_overlay_app_paint (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mnb_alttab_overlay_app_parent_class)->paint (self);
 
-  if (priv->bg_clone && CLUTTER_ACTOR_IS_MAPPED (priv->bg_clone))
-    clutter_actor_paint (priv->bg_clone);
+  if (priv->background && CLUTTER_ACTOR_IS_MAPPED (priv->background))
+    clutter_actor_paint (priv->background);
 
   if (priv->child && CLUTTER_ACTOR_IS_MAPPED (priv->child))
     clutter_actor_paint (priv->child);
