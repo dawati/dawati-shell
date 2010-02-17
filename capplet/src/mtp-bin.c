@@ -89,7 +89,7 @@ save_toolbar_state (GConfClient *client, MtpToolbar *toolbar)
           children = g_slist_prepend (children, (gchar*)name);
         }
 
-      for (dl = applets; dl; dl = dl->next)
+      for (dl = g_list_last (applets); dl; dl = dl->prev)
         {
           MtpToolbarButton *tb   = dl->data;
           const gchar      *name = mtp_toolbar_button_get_name (tb);
