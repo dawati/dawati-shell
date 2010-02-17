@@ -1,7 +1,9 @@
 
-Version 0.1.7
+Version 0.1.7, 2010-02-17
 
     Pull global stuff into panel class.
+    Add infrastructure for pluggable devices tiles.
+    Code and build system cleanups.
 
 Version 0.1.6, 2010-02-16
 
