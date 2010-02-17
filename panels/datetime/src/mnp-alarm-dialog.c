@@ -23,6 +23,7 @@
 #include "mnp-alarm-dialog.h"
 #include <glib/gi18n.h>
 #include <gconf/gconf-client.h>
+#include "mx-spin-entry.h"
 
 G_DEFINE_TYPE (MnpAlarmDialog, mnp_alarm_dialog, MX_TYPE_BOX_LAYOUT)
 
@@ -128,13 +129,13 @@ update_conf(MnpAlarmDialog *dialog)
   }
 
   newdata = g_strdup_printf("%d %d %d %d %d %d %d %d\n", priv->id,
-		   mx_button_get_checked(priv->on_off),
-		   mx_spin_entry_get_value(priv->hour),
-		   mx_spin_entry_get_value (priv->minute),
-		   mx_toggle_get_active (priv->am_pm),
-		   mx_combo_box_get_index (priv->recur),
-		   mx_toggle_get_active(priv->snooze),
-		   mx_combo_box_get_index(priv->sound));
+		   mx_button_get_checked((MxButton *)priv->on_off),
+		   mx_spin_entry_get_value((MxSpinEntry *)priv->hour),
+		   mx_spin_entry_get_value ((MxSpinEntry *)priv->minute),
+		   mx_toggle_get_active ((MxToggle *)priv->am_pm),
+		   mx_combo_box_get_index ((MxComboBox *)priv->recur),
+		   mx_toggle_get_active((MxToggle *)priv->snooze),
+		   mx_combo_box_get_index((MxComboBox *)priv->sound));
 
   if (new_node) {
 	g_free(new_node->data);
@@ -154,11 +155,11 @@ update_conf(MnpAlarmDialog *dialog)
 static void
 close_dialog (MxButton *btn, MnpAlarmDialog *dialog)
 {
-  MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
+ /* MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog); */
 
   update_conf(dialog);
 
-  clutter_actor_destroy(dialog);
+  clutter_actor_destroy((ClutterActor *)dialog);
 }
 
 static void
@@ -256,21 +257,21 @@ construct_time_entry (MnpAlarmDialog *dialog)
   box = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
   mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_spacing (box, 4);
+  mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
-  priv->hour = mx_spin_entry_new ();
-  mx_spin_entry_set_cycle(priv->hour);
-  mx_spin_entry_set_range (priv->hour, 1, 12);
-  mx_spin_entry_set_value (priv->hour, 12);
-  priv->minute = mx_spin_entry_new ();
-  mx_spin_entry_set_cycle(priv->minute);
-  mx_spin_entry_set_range (priv->minute, 0, 59);
-  mx_spin_entry_set_value (priv->minute, 0);
+  priv->hour = (ClutterActor *)mx_spin_entry_new ();
+  mx_spin_entry_set_cycle((MxSpinEntry *)priv->hour, TRUE);
+  mx_spin_entry_set_range ((MxSpinEntry *)priv->hour, 1, 12);
+  mx_spin_entry_set_value ((MxSpinEntry *)priv->hour, 12);
+  priv->minute = (ClutterActor *)mx_spin_entry_new ();
+  mx_spin_entry_set_cycle((MxSpinEntry *)priv->minute, TRUE);
+  mx_spin_entry_set_range ((MxSpinEntry *)priv->minute, 0, 59);
+  mx_spin_entry_set_value ((MxSpinEntry *)priv->minute, 0);
   priv->am_pm = mx_toggle_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->am_pm),
                                	"AmPmToggle");
  
-  clutter_container_add_actor (box, priv->hour);
+  clutter_container_add_actor ((ClutterContainer *)box, priv->hour);
   clutter_container_child_set ((ClutterContainer *)box, priv->hour,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
@@ -278,7 +279,7 @@ construct_time_entry (MnpAlarmDialog *dialog)
                                    NULL);
 
   
-  clutter_container_add_actor (box, priv->minute);
+  clutter_container_add_actor ((ClutterContainer *)box, priv->minute);
   clutter_container_child_set ((ClutterContainer *)box, priv->minute,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
@@ -287,7 +288,7 @@ construct_time_entry (MnpAlarmDialog *dialog)
 
 
   
-  clutter_container_add_actor (box, priv->am_pm);
+  clutter_container_add_actor ((ClutterContainer *)box, priv->am_pm);
   clutter_container_child_set ((ClutterContainer *)box, priv->am_pm,
                                    "x-fill", FALSE,
                                    "y-fill", FALSE,
@@ -314,24 +315,24 @@ construct_recur_snooze_entry (MnpAlarmDialog *dialog)
   priv->recur = mx_combo_box_new ();
 
   for (i=0; i< G_N_ELEMENTS(alarm_recur_table); i++) {
- 	mx_combo_box_append_text(priv->recur, alarm_recur_table[i].name);
+ 	mx_combo_box_append_text((MxComboBox *)priv->recur, alarm_recur_table[i].name);
   }
 
-  mx_combo_box_set_index (priv->recur, MNP_ALARM_NEVER);
+  mx_combo_box_set_index ((MxComboBox *)priv->recur, MNP_ALARM_NEVER);
   label = mx_label_new (_("Repeat"));
 
   box = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
   mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_spacing (box, 4);
+  mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
-  clutter_container_add_actor (box, label);
+  clutter_container_add_actor ((ClutterContainer *)box, label);
   clutter_container_child_set ((ClutterContainer *)box, label,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
 				   "expand", FALSE,
                                    NULL);
-  clutter_container_add_actor (box, priv->recur);
+  clutter_container_add_actor ((ClutterContainer *)box, priv->recur);
   clutter_container_child_set ((ClutterContainer *)box, priv->recur,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
@@ -352,15 +353,15 @@ construct_recur_snooze_entry (MnpAlarmDialog *dialog)
   box = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
   mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_spacing (box, 4);
+  mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
-  clutter_container_add_actor (box, label);
+  clutter_container_add_actor ((ClutterContainer *)box, label);
   clutter_container_child_set ((ClutterContainer *)box, label,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
 				   "expand", FALSE,
                                    NULL);
-  clutter_container_add_actor (box, priv->snooze);
+  clutter_container_add_actor ((ClutterContainer *)box, priv->snooze);
   clutter_container_child_set ((ClutterContainer *)box, priv->snooze,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
@@ -386,23 +387,23 @@ construct_sound_menu (MnpAlarmDialog *dialog)
   priv->sound = mx_combo_box_new ();
 
   for (i=0; i<G_N_ELEMENTS(alarm_sound_table); i++)
-	  mx_combo_box_append_text (priv->sound, alarm_sound_table[i].name);
+	  mx_combo_box_append_text ((MxComboBox *)priv->sound, alarm_sound_table[i].name);
 
-  mx_combo_box_set_index (priv->sound, MNP_SOUND_BEEP);
+  mx_combo_box_set_index ((MxComboBox *)priv->sound, MNP_SOUND_BEEP);
 
   label = mx_label_new (_("Sound"));
   box = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
   mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_spacing (box, 4);
+  mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
-  clutter_container_add_actor (box, label);
+  clutter_container_add_actor ((ClutterContainer *)box, label);
   clutter_container_child_set ((ClutterContainer *)box, label,
                                    "x-fill", TRUE,
                                    "y-fill", TRUE,
 				   "expand", FALSE,
                                    NULL);
-  clutter_container_add_actor (box, priv->sound);
+  clutter_container_add_actor ((ClutterContainer *)box, priv->sound);
   clutter_container_child_set ((ClutterContainer *)box, priv->sound,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
@@ -423,7 +424,7 @@ static void
 alarm_del (MxButton *btn, MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
-  GList *list, *tmp, *del_node;
+  GSList *list, *tmp, *del_node = NULL;
   GConfClient *client;
 
   client = gconf_client_get_default();
@@ -455,7 +456,7 @@ alarm_del (MxButton *btn, MnpAlarmDialog *dialog)
   g_slist_free(list);
 
   g_object_unref(client);
-  clutter_actor_destroy(dialog);
+  clutter_actor_destroy((ClutterActor *)dialog);
 }
 
 static void
@@ -464,7 +465,7 @@ construct_alarm_delete (MnpAlarmDialog *dialog)
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
  
   priv->delete = mx_button_new ();
-  mx_button_set_label (priv->delete, _("Delete alarm"));
+  mx_button_set_label ((MxButton *)priv->delete, _("Delete alarm"));
   
   g_signal_connect (priv->delete, "clicked", G_CALLBACK(alarm_del), dialog);
   clutter_container_add_actor ((ClutterContainer *)dialog, priv->delete);
@@ -480,7 +481,7 @@ mnp_alarm_dialog_construct (MnpAlarmDialog *dialog)
 {
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
   
-  clutter_actor_set_name (dialog, "new-alarm-dialog");
+  clutter_actor_set_name ((ClutterActor *)dialog, "new-alarm-dialog");
   mx_box_layout_set_pack_start ((MxBoxLayout *)dialog, FALSE);
   mx_box_layout_set_vertical ((MxBoxLayout *)dialog, TRUE);
   mx_box_layout_set_spacing ((MxBoxLayout *)dialog, 3);
@@ -492,10 +493,10 @@ mnp_alarm_dialog_construct (MnpAlarmDialog *dialog)
   construct_sound_menu (dialog);
   construct_alarm_delete (dialog);
 
-  clutter_container_add_actor ((ClutterContainer *)clutter_stage_get_default(), dialog);
-  clutter_actor_raise_top (dialog);
-  clutter_actor_set_position (dialog, 300,105);
-  clutter_actor_set_size (dialog, 300, 300);
+  clutter_container_add_actor ((ClutterContainer *)clutter_stage_get_default(), (ClutterActor *)dialog);
+  clutter_actor_raise_top ((ClutterActor *)dialog);
+  clutter_actor_set_position ((ClutterActor *)dialog, 300,105);
+  clutter_actor_set_size ((ClutterActor *)dialog, 300, 300);
   
   priv->id = g_random_int();
 }
@@ -516,13 +517,13 @@ mnp_alarm_dialog_set_item (MnpAlarmDialog *dialog, MnpAlarmItem *item)
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
 
   priv->id = item->id;
-  mx_button_set_checked(priv->on_off, item->on_off);
-  mx_spin_entry_set_value(priv->hour, item->hour);
-  mx_spin_entry_set_value(priv->minute, item->minute);
+  mx_button_set_checked((MxButton *)priv->on_off, item->on_off);
+  mx_spin_entry_set_value((MxSpinEntry *)priv->hour, item->hour);
+  mx_spin_entry_set_value((MxSpinEntry *)priv->minute, item->minute);
 
-  mx_toggle_set_active (priv->am_pm, item->am_pm ? TRUE: FALSE);
+  mx_toggle_set_active ((MxToggle *)priv->am_pm, item->am_pm ? TRUE: FALSE);
 
-  mx_combo_box_set_index(priv->recur, item->repeat);
-  mx_toggle_set_active (priv->snooze, item->snooze ? TRUE : FALSE);
-  mx_combo_box_set_index (priv->sound, item->sound);
+  mx_combo_box_set_index((MxComboBox *)priv->recur, item->repeat);
+  mx_toggle_set_active ((MxToggle *)priv->snooze, item->snooze ? TRUE : FALSE);
+  mx_combo_box_set_index ((MxComboBox *)priv->sound, item->sound);
 }

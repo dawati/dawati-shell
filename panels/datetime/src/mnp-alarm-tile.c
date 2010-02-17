@@ -89,7 +89,7 @@ mnp_alarm_tile_construct (MnpAlarmTile *btntile)
 
   priv->alarm_item = NULL;
 
-  clutter_actor_set_size (btntile, 100, -1);
+  clutter_actor_set_size ((ClutterActor *)btntile, 100, -1);
   tile = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)tile, FALSE);
   mx_box_layout_set_vertical ((MxBoxLayout *)tile, TRUE);
@@ -178,7 +178,7 @@ mnp_alarm_tile_set_item (MnpAlarmTile *tile, MnpAlarmItem *item)
 }
 
 MnpAlarmItem *
-mnp_alarm_tile_get_item (MnpAlarmItem *tile)
+mnp_alarm_tile_get_item (MnpAlarmTile *tile)
 {
   MnpAlarmTilePrivate *priv = ALARM_TILE_PRIVATE(tile);
 

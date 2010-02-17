@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <glib/gstdio.h>
 #include "mnp-alarm-manager.h"
 #include "mnp-alarm-utils.h"
 #include "mnp-alarm-instance.h"
@@ -120,7 +121,7 @@ alarm_changed (MnpAlarmInstance *alarm, MnpAlarmManager *man)
   if (priv->timeout_source)
 	  g_source_remove(priv->timeout_source);
 
-  priv->timeout_source = g_timeout_add_seconds(mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data), mnp_alarm_handler, man);
+  priv->timeout_source = g_timeout_add_seconds(mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data), (GSourceFunc)mnp_alarm_handler, man);
   now += mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data);
   printf("\nRemanipulated: Wake up at %s", ctime(&now));
 }
@@ -137,10 +138,10 @@ load_alarms (MnpAlarmManager *man)
   client = gconf_client_get_default();
   
   if (priv->alarm_items) {
-	  g_list_foreach (priv->alarm_items, g_free, NULL);
+	  g_list_foreach (priv->alarm_items, (GFunc)g_free, NULL);
 	  g_list_free(priv->alarm_items);
 	  priv->alarm_items = NULL;
-	  g_list_foreach (priv->alarm_instances, g_object_unref, NULL);
+	  g_list_foreach (priv->alarm_instances, (GFunc)g_object_unref, NULL);
 	  g_list_free(priv->alarm_instances);
 	  priv->alarm_instances = NULL;
 	  g_source_remove(priv->timeout_source);
@@ -167,11 +168,11 @@ load_alarms (MnpAlarmManager *man)
 	tmp = tmp->next;
   }
 
-  g_slist_foreach(alarms, g_free, NULL);
+  g_slist_foreach(alarms, (GFunc)g_free, NULL);
   g_slist_free(alarms);
   g_object_unref(client);
 
-  priv->timeout_source = g_timeout_add_seconds(mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data), mnp_alarm_handler, man);
+  priv->timeout_source = g_timeout_add_seconds(mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data), (GSourceFunc)mnp_alarm_handler, man);
   now += mnp_alarm_instance_get_time((MnpAlarmInstance *)priv->alarm_instances->data);
   printf("\nWake up at %s", ctime(&now));
 }

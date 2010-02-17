@@ -77,7 +77,7 @@ update_text (MxSpinEntry *spin)
   char *txt;
 
   txt = g_strdup_printf("%.2d", priv->value);
-  mx_entry_set_text(priv->entry, txt);
+  mx_entry_set_text((MxEntry *)priv->entry, txt);
   g_free(txt);  
 }
 
@@ -141,11 +141,11 @@ mx_spin_entry_construct (MxSpinEntry *spin)
   priv->entry = mx_entry_new (NULL);
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry), "SpinEntry");
 
-  clutter_container_add_actor (spin, priv->up);
-  clutter_container_add_actor (spin, priv->entry);
-  clutter_container_add_actor (spin, priv->down);
+  clutter_container_add_actor ((ClutterContainer *)spin, priv->up);
+  clutter_container_add_actor ((ClutterContainer *)spin, priv->entry);
+  clutter_container_add_actor ((ClutterContainer *)spin, priv->down);
 
-  clutter_actor_set_size (spin, 50, -1);
+  clutter_actor_set_size ((ClutterActor *)spin, 50, -1);
 }
 
 MxSpinEntry*

@@ -304,7 +304,7 @@ show_notification(MnpAlarmInstance *alarm)
 static void
 alarm_del (MnpAlarmItem *item)
 {
-  GList *list, *tmp, *del_node;
+  GSList *list, *tmp, *del_node;
   GConfClient *client;
 
   client = gconf_client_get_default();

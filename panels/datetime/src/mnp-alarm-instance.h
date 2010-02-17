@@ -65,7 +65,7 @@ GType mnp_alarm_instance_get_type (void);
 MnpAlarmInstance* mnp_alarm_instance_new (MnpAlarmItem *, time_t now);
 time_t mnp_alarm_instance_get_time (MnpAlarmInstance *alarm);
 void mnp_alarm_instance_remanipulate (MnpAlarmInstance *alarm, time_t now);
-
+void mnp_alarm_instance_raise (MnpAlarmInstance *alarm);
 G_END_DECLS
 
 #endif /* _MNP_ALARM_INSTANCE_H */

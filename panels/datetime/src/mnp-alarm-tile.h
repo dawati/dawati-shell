@@ -62,7 +62,8 @@ GType mnp_alarm_tile_get_type (void);
 
 MnpAlarmTile* mnp_alarm_tile_new (void);
 void mnp_alarm_tile_set_item (MnpAlarmTile *, MnpAlarmItem *);
-MnpAlarmItem * mnp_alarm_tile_get_item (MnpAlarmItem *tile);
+MnpAlarmItem * mnp_alarm_tile_get_item (MnpAlarmTile *tile);
+void mnp_alarm_set_text (MnpAlarmTile *alarm, const char *recur, const char *title);
 
 G_END_DECLS
 

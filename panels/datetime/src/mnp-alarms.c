@@ -90,12 +90,11 @@ load_alarms (MnpAlarms *alarms)
 {
   MnpAlarmsPrivate *priv = ALARMS_PRIVATE(alarms);
   GConfClient *client = gconf_client_get_default ();
-  GList *list, *tmp;
+  GSList *list, *tmp;
   MnpAlarmItem *item = g_new0(MnpAlarmItem, 1);
-  char *data;
 
   if (priv->alarm_tiles) {
-	  g_list_foreach (priv->alarm_tiles, clutter_actor_destroy, NULL);
+	  g_list_foreach (priv->alarm_tiles, (GFunc)clutter_actor_destroy, NULL);
 	  g_list_free(priv->alarm_tiles);
 	  priv->alarm_tiles = NULL;
   }
@@ -111,8 +110,8 @@ load_alarms (MnpAlarms *alarms)
 
 	g_signal_connect (tile, "clicked", G_CALLBACK(load_alarm_tile), tile);
 	sscanf(data, "%d %d %d %d %d %d %d %d", &item->id, &item->on_off, &item->hour, &item->minute, &item->am_pm, &item->repeat, &item->snooze, &item->sound);
-	clutter_container_add_actor (priv->left_tiles, tile);
-	clutter_container_child_set ((ClutterContainer *)priv->left_tiles, tile,
+	clutter_container_add_actor ((ClutterContainer *)priv->left_tiles, (ClutterActor *)tile);
+	clutter_container_child_set ((ClutterContainer *)priv->left_tiles, (ClutterActor *)tile,
                                    "x-fill", FALSE,
                                    "y-fill", TRUE,
 				   "expand", FALSE,				   
@@ -190,14 +189,14 @@ mnp_alarms_construct (MnpAlarms *alarms)
   clutter_actor_set_size((ClutterActor *)alarms, 430, 100);
 
 
-  priv->new_alarm_tile = mnp_alarm_tile_new ();
-  clutter_container_add_actor (priv->right_tiles, priv->new_alarm_tile);
+  priv->new_alarm_tile = (ClutterActor *)mnp_alarm_tile_new ();
+  clutter_container_add_actor ((ClutterContainer *)priv->right_tiles, priv->new_alarm_tile);
   clutter_container_child_set ((ClutterContainer *)priv->right_tiles, priv->new_alarm_tile,
                                    "x-fill", TRUE,
                                    "y-fill", TRUE,
 				   "expand", TRUE,				   
                                    NULL);	  
-  mnp_alarm_set_text (priv->new_alarm_tile, NULL, _("New\nAlarm"));
+  mnp_alarm_set_text ((MnpAlarmTile *)priv->new_alarm_tile, NULL, _("New\nAlarm"));
   g_signal_connect (priv->new_alarm_tile, "clicked", G_CALLBACK(new_alarm_clicked), alarms);
 
   setup_watcher (alarms);
