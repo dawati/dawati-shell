@@ -36,22 +36,26 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
 
 #define MOBLIN_MYZONE_SHOW_CALENDAR "/desktop/moblin/myzone/show_calendar"
+#define MOBLIN_MYZONE_SHOW_EMAIL "/desktop/moblin/myzone/show_email"
 
 typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 
 struct _PengeGridViewPrivate {
   ClutterActor *calendar_pane;
+  ClutterActor *email_pane;
   ClutterActor *favourite_apps_pane;
   ClutterActor *everything_pane;
   ClutterActor *background;
   MplPanelClient *panel_client;
   GConfClient *gconf_client;
   guint show_calendar_notify_id;
+  guint show_email_notify_id;
 
   ClutterActor *div_tex;
 
   gboolean vertical_apps;
   gboolean show_calendar_pane;
+  gboolean show_email_pane;
 };
 
 enum
@@ -249,6 +253,22 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_hide (priv->calendar_pane);
     }
 
+    if (priv->show_email_pane)
+    {
+      clutter_actor_show (priv->email_pane);
+      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->email_pane,
+                                   "col", col,
+                                   "x-expand", FALSE,
+                                   "y-fill", FALSE,
+                                   "y-align", 0.0,
+                                   NULL);
+      col++;
+    } else {
+      clutter_actor_hide (priv->email_pane);
+    }
+
+
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->div_tex,
                                  "row-span", 1,
@@ -285,11 +305,26 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_hide (priv->calendar_pane);
     }
 
+    if (priv->show_email_pane)
+    {
+      clutter_actor_show (priv->email_pane);
+      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->email_pane,
+                                   "col", col,
+                                   "row", 1,
+                                   "x-expand", FALSE,
+                                   "y-fill", FALSE,
+                                   "y-align", 0.0,
+                                   NULL);
+    } else {
+      clutter_actor_hide (priv->email_pane);
+    }
+
 
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->favourite_apps_pane,
                                  "col", col,
-                                 "row", 1,
+                                 "row", 2,
                                  "x-expand", FALSE,
                                  "x-fill", TRUE,
                                  "y-fill", FALSE,
@@ -298,7 +333,7 @@ _update_layout (PengeGridView *grid_view)
     col++;
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->div_tex,
-                                 "row-span", 2,
+                                 "row-span", 3,
                                  "col", col,
                                  "x-expand", FALSE,
                                  NULL);
@@ -344,6 +379,28 @@ _gconf_show_calendar_notify_cb (GConfClient *client,
 }
 
 static void
+_gconf_show_email_notify_cb (GConfClient *client,
+                             guint        cnxn_id,
+                             GConfEntry  *entry,
+                             gpointer     userdata)
+{
+  PengeGridView *grid_view = PENGE_GRID_VIEW (userdata);
+  PengeGridViewPrivate *priv = GET_PRIVATE (grid_view);
+  GConfValue *value;
+
+  value = gconf_entry_get_value (entry);
+
+  if (!value)
+  {
+    priv->show_email_pane = TRUE;
+  } else {
+    priv->show_email_pane = gconf_value_get_bool (value);
+  }
+
+  _update_layout (grid_view);
+}
+
+static void
 penge_grid_view_init (PengeGridView *self)
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (self);
@@ -358,12 +415,21 @@ penge_grid_view_init (PengeGridView *self)
                       0,
                       0);
 
+  priv->email_pane = mx_button_new_with_label ("GMail: 4 new messages");
+
+  clutter_actor_set_width (priv->email_pane, 280);
+
+  mx_table_add_actor (MX_TABLE (self),
+                      priv->email_pane,
+                      1,
+                      0);
+
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
                                             NULL);
 
   mx_table_add_actor (MX_TABLE (self),
                       priv->favourite_apps_pane,
-                      1,
+                      2,
                       0);
   priv->div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
 
@@ -411,5 +477,22 @@ penge_grid_view_init (PengeGridView *self)
   } else {
     gconf_client_notify (priv->gconf_client, MOBLIN_MYZONE_SHOW_CALENDAR);
   }
+
+  priv->show_email_notify_id = 
+    gconf_client_notify_add (priv->gconf_client,
+                             MOBLIN_MYZONE_SHOW_EMAIL,
+                             _gconf_show_email_notify_cb,
+                             self,
+                             NULL,
+                             &error);
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error setting gconf key notification: %s",
+        error->message);
+    g_clear_error (&error);
+  } else {
+    gconf_client_notify (priv->gconf_client, MOBLIN_MYZONE_SHOW_EMAIL);
+  }
+
 }
 
