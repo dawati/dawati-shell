@@ -34,7 +34,6 @@ typedef struct _PengePeopleTilePrivate PengePeopleTilePrivate;
 
 struct _PengePeopleTilePrivate {
   SwItem *item;
-  gboolean double_size;
 };
 
 enum
@@ -205,8 +204,6 @@ penge_people_tile_set_item (PengePeopleTile *tile,
   if (!priv->item)
     return;
 
-  priv->double_size = FALSE;
-
   if (sw_item_has_key (item, "thumbnail"))
   {
     thumbnail = sw_item_get_value (item, "thumbnail");
@@ -287,7 +284,6 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     g_object_set (tile,
                   "body", body,
                   NULL);
-    priv->double_size = TRUE;
   } else {
     if (g_str_equal (item->service, "lastfm"))
     {
@@ -357,12 +353,4 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                   "icon-path", NULL,
                   NULL);
   }
-}
-
-gboolean
-penge_people_tile_is_double_size (PengePeopleTile *tile)
-{
-  PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
-
-  return priv->double_size;
 }

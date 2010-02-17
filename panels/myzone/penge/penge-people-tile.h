@@ -56,7 +56,6 @@ typedef struct {
 GType penge_people_tile_get_type (void);
 void penge_people_tile_activate (PengePeopleTile *tile,
                                  SwItem          *item);
-gboolean penge_people_tile_is_double_size (PengePeopleTile *tile);
 G_END_DECLS
 
 #endif /* _PENGE_PEOPLE_TILE */
