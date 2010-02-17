@@ -136,7 +136,7 @@ mtp_toolbar_allocate (ClutterActor          *actor,
                           FALSE, FALSE);
   clutter_actor_allocate (priv->panel_area, &childbox, flags);
 
-  childbox.x1 = 793.0;
+  childbox.x1 = 825.0;
   childbox.y1 = padding.top;
   childbox.x2 = box->x2 - box->x1;
   childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
