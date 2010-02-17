@@ -1,6 +1,9 @@
 
 Version 0.1.9, 2010-02-17
 
+    Updates for recent mx changes.
+    l10n: Updates to Turkish (tr) translation
+
 Version 0.1.8, 2010-02-10
 
     Use 'padding' everywhere instead of 'padding-left' and friends.
