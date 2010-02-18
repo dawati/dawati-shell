@@ -375,7 +375,7 @@ mnp_clock_construct (MnpClockTile *tile)
 	mx_box_layout_set_pack_start ((MxBoxLayout *)tile, FALSE);
 	clutter_container_add_actor ((ClutterContainer *)tile, box1);
 	clutter_container_child_set ((ClutterContainer *)tile, box1,
-				   	"expand", FALSE,
+				   	"expand", TRUE,
 					"x-fill", TRUE,
                                    	NULL);
 	clutter_container_add_actor ((ClutterContainer *)tile, label2);
