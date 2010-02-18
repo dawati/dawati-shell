@@ -230,8 +230,8 @@ struct _MnbToolbarPrivate
                                    * be included in the panel input region.
                                    */
 
-  MnbShowHideReason reason_for_show;
-  MnbShowHideReason reason_for_hide;
+  MnbShowHideReason reason_for_show; /* Reason for pending Toolbar show */
+  MnbShowHideReason reason_for_hide; /* Reason for pending Toolbar hide */
 
   MnbInputRegion *trigger_region;  /* The show panel trigger region */
   MnbInputRegion *input_region;    /* The panel input region on the region
@@ -616,10 +616,12 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
    * any pending show, we do not hide.
    */
   if (priv->reason_for_show > reason)
-    return;
+    {
+      g_debug ("Not hiding Toolbar, reasons show %d, hide %d",
+               priv->reason_for_show, reason);
 
-  g_debug ("Reason for show %d, reason for hide %d",
-           priv->reason_for_show, reason);
+        return;
+    }
 
   priv->reason_for_hide = reason;
 
@@ -2797,7 +2799,15 @@ mnb_toolbar_activate_panel_internal (MnbToolbar        *toolbar,
               mnb_toolbar_show (toolbar, reason);
             }
           else if (!mx_button_get_checked (MX_BUTTON (tp->button)))
-            mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
+            {
+              /*
+               * We are not calling mnb_toolbar_show() since it is already
+               * visible, but we need to set the reason for the show
+               * to prevent the toolbar from hiding.
+               */
+              priv->reason_for_show = reason;
+              mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
+            }
         }
     }
 }
