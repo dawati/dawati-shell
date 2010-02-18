@@ -359,8 +359,11 @@ mnb_toolbar_show_completed_cb (ClutterAnimation *animation, ClutterActor *actor)
       g_signal_emit (actor, toolbar_signals[SHOW_COMPLETED], 0);
     }
 
-  priv->reason_for_show = _MNB_SHOW_HIDE_UNSET;
   priv->in_show_animation = FALSE;
+
+  if (!priv->waiting_for_panel_show)
+    priv->reason_for_show = _MNB_SHOW_HIDE_UNSET;
+
   g_object_unref (actor);
 
   if (priv->tp_to_activate)
@@ -614,6 +617,9 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
    */
   if (priv->reason_for_show > reason)
     return;
+
+  g_debug ("Reason for show %d, reason for hide %d",
+           priv->reason_for_show, reason);
 
   priv->reason_for_hide = reason;
 
@@ -877,6 +883,7 @@ mnb_toolbar_waiting_for_panel_show_cb (gpointer data)
 
   priv->waiting_for_panel_show       = FALSE;
   priv->waiting_for_panel_show_cb_id = 0;
+  priv->reason_for_show              = _MNB_SHOW_HIDE_UNSET;
 
   return FALSE;
 }
@@ -914,6 +921,9 @@ mnb_toolbar_set_waiting_for_panel_show (MnbToolbar *toolbar,
                              mnb_toolbar_waiting_for_panel_show_cb, toolbar);
 
   priv->waiting_for_panel_show = whether;
+
+  if (!whether)
+    priv->reason_for_show = _MNB_SHOW_HIDE_UNSET;
 }
 
 static void
