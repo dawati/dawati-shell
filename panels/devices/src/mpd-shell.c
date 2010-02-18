@@ -57,7 +57,7 @@ _pane_request_hide_cb (ClutterActor *pane,
 static void
 _width_notify_cb (MpdShell    *self,
                   GParamSpec  *pspec,
-                  gpointer     user_data)
+                  void        *data)
 {
   MpdShellPrivate *priv = GET_PRIVATE (self);
   float     shell_width;

@@ -49,7 +49,7 @@ static unsigned int _signals[LAST_SIGNAL] = { 0, };
 static void
 _notification_shutdown_cb (MpdShutdownNotification  *self,
                            char                     *action,
-                           gpointer                  userdata)
+                           void                     *data)
 {
   g_debug ("%s()", __FUNCTION__);
 
@@ -57,8 +57,8 @@ _notification_shutdown_cb (MpdShutdownNotification  *self,
 }
 
 static void
-_notification_closed_cb (MpdShutdownNotification *self,
-                         gpointer                 userdata)
+_notification_closed_cb (MpdShutdownNotification  *self,
+                         void                     *data)
 {
   MpdShutdownNotificationPrivate *priv = GET_PRIVATE (self);
 

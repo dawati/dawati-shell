@@ -110,9 +110,9 @@ static void
 _suspend_idle_time_key_changed_cb (GConfClient  *client,
                                    unsigned int  cnxn_id,
                                    GConfEntry   *entry,
-                                   gpointer      userdata)
+                                   void         *data)
 {
-  MpdIdleManager *manager = MPD_IDLE_MANAGER (userdata);
+  MpdIdleManager *manager = MPD_IDLE_MANAGER (data);
   MpdIdleManagerPrivate *priv = GET_PRIVATE (manager);
 
   egg_idletime_alarm_remove (priv->idletime, SUSPEND_ALARM_ID);

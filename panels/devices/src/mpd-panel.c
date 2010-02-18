@@ -68,16 +68,16 @@ _container_iface_remove (ClutterContainer *container,
 }
 
 static void
-_container_iface_foreach (ClutterContainer *container,
-                          ClutterCallback   callback,
-                          gpointer          user_data)
+_container_iface_foreach (ClutterContainer  *container,
+                          ClutterCallback    callback,
+                          void              *data)
 {
   ClutterActor *stage;
 
   stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (container));
   g_return_if_fail (stage);
 
-  clutter_container_foreach (CLUTTER_CONTAINER (stage), callback, user_data);
+  clutter_container_foreach (CLUTTER_CONTAINER (stage), callback, data);
 }
 
 static void
