@@ -12,9 +12,9 @@ LDADD = \
 
 noinst_PROGRAMS = \
 	test-battery-device \
-	test-disk-device \
 	test-disk-tile \
 	test-folder-button \
+	test-storage-device \
 	$(NULL)
 
 test_battery_device_SOURCES = \
@@ -23,15 +23,9 @@ test_battery_device_SOURCES = \
 	$(top_srcdir)/src/mpd-gobject.c \
 	$(NULL)
 
-test_disk_device_SOURCES = \
-	test-disk-device.c \
-	$(top_srcdir)/src/mpd-disk-device.c \
-	$(top_srcdir)/src/mpd-gobject.c \
-	$(NULL)
-
 test_disk_tile_SOURCES = \
 	test-disk-tile.c \
-	$(top_srcdir)/src/mpd-disk-device.c \
+	$(top_srcdir)/src/mpd-storage-device.c \
 	$(top_srcdir)/src/mpd-disk-tile.c \
 	$(top_srcdir)/src/mpd-gobject.c \
 	$(NULL)
@@ -40,5 +34,11 @@ test_folder_button_SOURCES = \
 	test-folder-button.c \
 	$(top_srcdir)/src/mpd-folder-button.c \
 	$(top_srcdir)/src/mpd-gobject.c \
+	$(NULL)
+
+test_storage_device_SOURCES = \
+	test-storage-device.c \
+	$(top_srcdir)/src/mpd-gobject.c \
+	$(top_srcdir)/src/mpd-storage-device.c \
 	$(NULL)
 

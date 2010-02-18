@@ -23,9 +23,9 @@
 
 #include <glib/gi18n.h>
 
-#include "mpd-disk-device.h"
 #include "mpd-disk-tile.h"
 #include "mpd-gobject.h"
+#include "mpd-storage-device.h"
 #include "config.h"
 
 G_DEFINE_TYPE (MpdDiskTile, mpd_disk_tile, MX_TYPE_BOX_LAYOUT)
@@ -36,11 +36,11 @@ G_DEFINE_TYPE (MpdDiskTile, mpd_disk_tile, MX_TYPE_BOX_LAYOUT)
 typedef struct
 {
   /* Managed by clutter */
-  ClutterActor  *label;
-  ClutterActor  *meter;
+  ClutterActor      *label;
+  ClutterActor      *meter;
 
   /* Data */
-  MpdDiskDevice *disk;
+  MpdStorageDevice  *storage;
 } MpdDiskTilePrivate;
 
 static void
@@ -53,7 +53,7 @@ update (MpdDiskTile *self)
   uint64_t       available_size;
   unsigned int   percentage;
 
-  g_object_get (priv->disk,
+  g_object_get (priv->storage,
                 "size", &size,
                 "available-size", &available_size,
                 NULL);
@@ -70,9 +70,9 @@ update (MpdDiskTile *self)
 }
 
 static void
-_disk_size_notify_cb (MpdDiskDevice *battery,
-                      GParamSpec    *pspec,
-                      MpdDiskTile   *self)
+_storage_size_notify_cb (MpdStorageDevice  *storage,
+                         GParamSpec        *pspec,
+                         MpdDiskTile       *self)
 {
   update (self);
 }
@@ -82,7 +82,7 @@ _dispose (GObject *object)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (object);
 
-  mpd_gobject_detach (object, (GObject **) &priv->disk);
+  mpd_gobject_detach (object, (GObject **) &priv->storage);
 
   G_OBJECT_CLASS (mpd_disk_tile_parent_class)->dispose (object);
 }
@@ -105,11 +105,11 @@ mpd_disk_tile_init (MpdDiskTile *self)
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
-  priv->disk = mpd_disk_device_new ();
-  g_signal_connect (priv->disk, "notify::size",
-                    G_CALLBACK (_disk_size_notify_cb), self);
-  g_signal_connect (priv->disk, "notify::available-size",
-                    G_CALLBACK (_disk_size_notify_cb), self);
+  priv->storage = mpd_storage_device_new ();
+  g_signal_connect (priv->storage, "notify::size",
+                    G_CALLBACK (_storage_size_notify_cb), self);
+  g_signal_connect (priv->storage, "notify::available-size",
+                    G_CALLBACK (_storage_size_notify_cb), self);
 
   priv->label = mx_label_new ("");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);

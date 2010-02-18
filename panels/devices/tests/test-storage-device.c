@@ -18,28 +18,30 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <clutter/clutter.h>
-#include "mpd-disk-device.h"
+#include "mpd-storage-device.h"
 
 int
 main (int     argc,
       char  **argv)
 {
-  MpdDiskDevice *disk;
-  guint64        size;
-  guint64        available_size;
+  MpdStorageDevice  *storage;
+  int64_t            size;
+  int64_t            available_size;
 
   clutter_init (&argc, &argv);
 
-  disk = mpd_disk_device_new ();
-  g_object_get (disk,
+  storage = mpd_storage_device_new ();
+  g_object_get (storage,
                 "size", &size,
                 "available-size", &available_size,
                 NULL);
 
   g_debug ("Size: %lld, available: %lld", size, available_size);
 
-  g_object_unref (disk);
+  g_object_unref (storage);
   return EXIT_SUCCESS;
 }
+

@@ -23,13 +23,13 @@
 #include <string.h>
 #include <sys/statvfs.h>
 
-#include "mpd-disk-device.h"
+#include "mpd-storage-device.h"
 #include "config.h"
 
-G_DEFINE_TYPE (MpdDiskDevice, mpd_disk_device, G_TYPE_OBJECT)
+G_DEFINE_TYPE (MpdStorageDevice, mpd_storage_device, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_DISK_DEVICE, MpdDiskDevicePrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_STORAGE_DEVICE, MpdStorageDevicePrivate))
 
 enum
 {
@@ -44,33 +44,32 @@ typedef struct
   unsigned int  update_timeout_id;
   uint64_t      size;
   uint64_t      available_size;
-} MpdDiskDevicePrivate;
+} MpdStorageDevicePrivate;
 
 static void
-mpd_disk_device_set_size (MpdDiskDevice *self,
-                          uint64_t       size);
+mpd_storage_device_set_size (MpdStorageDevice  *self,
+                             uint64_t           size);
 
 static void
-mpd_disk_device_set_available_size (MpdDiskDevice *self,
-                                    uint64_t       available_size);
+mpd_storage_device_set_available_size (MpdStorageDevice  *self,
+                                       uint64_t           available_size);
 
 static void
-update (MpdDiskDevice *self)
+update (MpdStorageDevice *self)
 {
   struct statvfs fsd = { 0, };
 
   if (0 == statvfs ("/home", &fsd))
   {
-    mpd_disk_device_set_size (self, (uint64_t) fsd.f_blocks * fsd.f_frsize);
-    mpd_disk_device_set_available_size (self,
-                                        (uint64_t) fsd.f_bavail * fsd.f_frsize);
+    mpd_storage_device_set_size (self, fsd.f_blocks * fsd.f_frsize);
+    mpd_storage_device_set_available_size (self, fsd.f_bavail * fsd.f_frsize);
   } else {
     g_warning ("%s : %s", G_STRLOC, strerror (errno));
   }
 }
 
 static bool
-_update_timeout_cb (MpdDiskDevice *self)
+_update_timeout_cb (MpdStorageDevice *self)
 {
   update (self);
   return true;
@@ -85,12 +84,13 @@ _get_property (GObject      *object,
   switch (property_id) {
   case PROP_SIZE:
     g_value_set_uint64 (value,
-                        mpd_disk_device_get_size (MPD_DISK_DEVICE (object)));
+                        mpd_storage_device_get_size (
+                          MPD_STORAGE_DEVICE (object)));
     break;
   case PROP_AVAILABLE_SIZE:
     g_value_set_uint64 (value,
-                        mpd_disk_device_get_available_size
-                          (MPD_DISK_DEVICE (object)));
+                        mpd_storage_device_get_available_size (
+                          MPD_STORAGE_DEVICE (object)));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -105,12 +105,12 @@ _set_property (GObject      *object,
 {
   switch (property_id) {
   case PROP_SIZE:
-    mpd_disk_device_set_size (MPD_DISK_DEVICE (object),
-                              g_value_get_uint64 (value));
+    mpd_storage_device_set_size (MPD_STORAGE_DEVICE (object),
+                                 g_value_get_uint64 (value));
     break;
   case PROP_AVAILABLE_SIZE:
-    mpd_disk_device_set_available_size (MPD_DISK_DEVICE (object),
-                                        g_value_get_uint64 (value));
+    mpd_storage_device_set_available_size (MPD_STORAGE_DEVICE (object),
+                                           g_value_get_uint64 (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -120,7 +120,7 @@ _set_property (GObject      *object,
 static void
 _dispose (GObject *object)
 {
-  MpdDiskDevicePrivate *priv = GET_PRIVATE (object);
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (object);
 
   if (priv->update_timeout_id)
   {
@@ -128,16 +128,16 @@ _dispose (GObject *object)
     priv->update_timeout_id = 0;
   }
 
-  G_OBJECT_CLASS (mpd_disk_device_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mpd_storage_device_parent_class)->dispose (object);
 }
 
 static void
-mpd_disk_device_class_init (MpdDiskDeviceClass *klass)
+mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamFlags   param_flags;
 
-  g_type_class_add_private (klass, sizeof (MpdDiskDevicePrivate));
+  g_type_class_add_private (klass, sizeof (MpdStorageDevicePrivate));
 
   object_class->get_property = _get_property;
   object_class->set_property = _set_property;
@@ -164,9 +164,9 @@ mpd_disk_device_class_init (MpdDiskDeviceClass *klass)
 }
 
 static void
-mpd_disk_device_init (MpdDiskDevice *self)
+mpd_storage_device_init (MpdStorageDevice *self)
 {
-  MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
   update (self);
   priv->update_timeout_id =
@@ -195,29 +195,29 @@ mpd_disk_device_init (MpdDiskDevice *self)
 #endif
 }
 
-MpdDiskDevice *
-mpd_disk_device_new (void)
+MpdStorageDevice *
+mpd_storage_device_new (void)
 {
-  return g_object_new (MPD_TYPE_DISK_DEVICE, NULL);
+  return g_object_new (MPD_TYPE_STORAGE_DEVICE, NULL);
 }
 
 uint64_t
-mpd_disk_device_get_size (MpdDiskDevice *self)
+mpd_storage_device_get_size (MpdStorageDevice *self)
 {
-  MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
-  g_return_val_if_fail (MPD_IS_DISK_DEVICE (self), 0);
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), 0);
 
   return priv->size;
 }
 
 static void
-mpd_disk_device_set_size (MpdDiskDevice *self,
-                          uint64_t       size)
+mpd_storage_device_set_size (MpdStorageDevice  *self,
+                          uint64_t           size)
 {
-  MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
-  g_return_if_fail (MPD_IS_DISK_DEVICE (self));
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE (self));
 
   if (size != priv->size)
   {
@@ -227,22 +227,22 @@ mpd_disk_device_set_size (MpdDiskDevice *self,
 }
 
 uint64_t
-mpd_disk_device_get_available_size (MpdDiskDevice *self)
+mpd_storage_device_get_available_size (MpdStorageDevice *self)
 {
-  MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
-  g_return_val_if_fail (MPD_IS_DISK_DEVICE (self), 0);
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), 0);
 
   return priv->available_size;
 }
 
 static void
-mpd_disk_device_set_available_size (MpdDiskDevice *self,
-                                    uint64_t       available_size)
+mpd_storage_device_set_available_size (MpdStorageDevice  *self,
+                                       uint64_t           available_size)
 {
-  MpdDiskDevicePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
-  g_return_if_fail (MPD_IS_DISK_DEVICE (self));
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE (self));
 
   if (available_size != priv->available_size)
   {
