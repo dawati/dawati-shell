@@ -36,6 +36,10 @@
 
 #define MNB_LAUNCHER_TREE_CACHE_FILE "moblin-launcher-cache"
 
+/* Set this to include the settings menu.
+  #define MNB_LAUNCHER_TREE_LOAD_SETTINGS
+ */
+
 /*
  * MnbLauncherMonitor.
  */
@@ -69,6 +73,8 @@ applications_menu_changed_cb (GMenuTree           *tree,
                    self, NULL);
 }
 
+#ifdef MNB_LAUNCHER_TREE_LOAD_SETTINGS
+
 static void
 settings_menu_changed_cb (GMenuTree           *tree,
                           MnbLauncherMonitor  *self)
@@ -81,6 +87,8 @@ settings_menu_changed_cb (GMenuTree           *tree,
                    (GSourceFunc) menu_changed_idle_cb,
                    self, NULL);
 }
+
+#endif /* MNB_LAUNCHER_TREE_LOAD_SETTINGS */
 
 static void
 applications_directory_changed_cb (GFileMonitor       *monitor,
@@ -108,10 +116,12 @@ mnb_launcher_monitor_free (MnbLauncherMonitor *self)
                              self);
   gmenu_tree_unref (self->applications);
 
+#ifdef MNB_LAUNCHER_TREE_LOAD_SETTINGS
   gmenu_tree_remove_monitor (self->settings,
-                             (GMenuTreeChangedFunc) settings_menu_changed_cb,
-                             self);
+                              (GMenuTreeChangedFunc) settings_menu_changed_cb,
+                              self);
   gmenu_tree_unref (self->settings);
+#endif /* MNB_LAUNCHER_TREE_LOAD_SETTINGS */
 
   iter = self->monitors;
   while (iter)
@@ -370,8 +380,12 @@ mnb_launcher_tree_create (void)
 
   self->applications = gmenu_tree_lookup ("applications.menu",
                                           GMENU_TREE_FLAGS_NONE);
+
+#ifdef MNB_LAUNCHER_TREE_LOAD_SETTINGS
   self->settings = gmenu_tree_lookup ("settings.menu",
                                       GMENU_TREE_FLAGS_NONE);
+#endif
+
   return self;
 }
 
@@ -407,7 +421,10 @@ mnb_launcher_tree_free (MnbLauncherTree *self)
   g_return_if_fail (self);
 
   gmenu_tree_unref (self->applications);
+
+#ifdef MNB_LAUNCHER_TREE_LOAD_SETTINGS
   gmenu_tree_unref (self->settings);
+#endif /* MNB_LAUNCHER_TREE_LOAD_SETTINGS */
 
   mnb_launcher_tree_free_watch_list (self->watch_list);
 
@@ -893,10 +910,12 @@ mnb_launcher_tree_create_monitor  (MnbLauncherTree            *tree,
                           (GMenuTreeChangedFunc) applications_menu_changed_cb,
                           self);
 
+#ifdef MNB_LAUNCHER_TREE_LOAD_SETTINGS
   self->settings = gmenu_tree_ref (tree->settings);
   gmenu_tree_add_monitor (self->settings,
                           (GMenuTreeChangedFunc) settings_menu_changed_cb,
                           self);
+#endif /* MNB_LAUNCHER_TREE_LOAD_SETTINGS */
 
   /* dir monitors for the cache */
   for (iter = tree->watch_list; iter; iter = iter->next)
