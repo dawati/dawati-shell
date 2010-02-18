@@ -425,16 +425,57 @@ moblin_netbook_compute_screen_size (Display *xdpy,
 }
 
 static void
+moblin_netbook_panel_window_show_cb (MutterWindow *mcw, MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
+  MnbPanel                   *panel;
+  Window                      xwin = mutter_window_get_x_window (mcw);
+
+  if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
+    mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
+
+  g_signal_handlers_disconnect_by_func (mcw,
+                                        moblin_netbook_panel_window_show_cb,
+                                        plugin);
+}
+
+static void
 moblin_netbook_display_window_created_cb (MetaDisplay  *display,
                                           MetaWindow   *win,
                                           MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   MutterWindow               *mcw;
+  MetaCompWindowType          type;
 
   mcw =  (MutterWindow*) meta_window_get_compositor_private (win);
 
   g_return_if_fail (mcw);
+
+  type = mutter_window_get_window_type (mcw);
+
+  if (type == META_COMP_WINDOW_DOCK)
+    {
+      MnbPanel *panel;
+      Window    xwin = mutter_window_get_x_window (mcw);
+
+      if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
+        {
+          /*
+           * Order matters; mnb_panel_show_mutter_window() hides the mcw,
+           * and since the compositor call clutter_actor_show() when a map
+           * effect completes, we have to first let the compositor to do its
+           * thing, and only then impose our will on it.
+           */
+          g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL);
+
+          g_signal_connect (mcw, "show",
+                            G_CALLBACK (moblin_netbook_panel_window_show_cb),
+                            plugin);
+        }
+    }
 
   if (mutter_window_is_override_redirect (mcw))
     {
@@ -1749,7 +1790,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            * effect completes, we have to first let the compositor to do its
            * thing, and only then impose our will on it.
            */
-          g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL);
+          g_signal_handlers_disconnect_by_func (mcw,
+                                           moblin_netbook_panel_window_show_cb,
+                                           plugin);
           mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
           mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
         }
