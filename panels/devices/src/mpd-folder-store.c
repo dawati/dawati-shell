@@ -136,8 +136,8 @@ mpd_folder_store_load_bookmarks_file (MpdFolderStore   *self,
       char **line = g_strsplit (*iter, " ", 2);
       if (line && line[0])
       {
-        const char  *uri = line[0];
-        char        *label = NULL;
+        char const *uri = line[0];
+        char *label = NULL;
 
         if (line[1])
           label = g_strdup (line[1]);

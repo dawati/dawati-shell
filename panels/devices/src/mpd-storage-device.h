@@ -57,7 +57,7 @@ GType
 mpd_storage_device_get_type (void);
 
 MpdStorageDevice *
-mpd_storage_device_new (void);
+mpd_storage_device_new (char const *path);
 
 uint64_t
 mpd_storage_device_get_size (MpdStorageDevice *self);
