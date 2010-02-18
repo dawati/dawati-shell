@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: empathy 2.25.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-15 09:09+0000\n"
-"PO-Revision-Date: 2009-09-19 00:59+0800\n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
+"PO-Revision-Date: 2010-02-18 12:44+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@lists.linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -17,24 +17,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Chinese\n"
 
-#: ../anerley/anerley-tile.c:208
+#: ../anerley/anerley-tile.c:170
+#: ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "有空"
 
-#: ../anerley/anerley-tile.c:211
+#: ../anerley/anerley-tile.c:173
+#: ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../anerley/anerley-tile.c:214
-#: ../anerley/anerley-tile.c:217
+#: ../anerley/anerley-tile.c:176
+#: ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "離開"
 
-#: ../anerley/anerley-tile.c:220
+#: ../anerley/anerley-tile.c:182
+#: ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "離線"
 
-#: ../anerley/anerley-econtact-item.c:312
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "未命名"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "無設置"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "擴展版的離開"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "隱藏"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "未知"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "錯誤"
 
