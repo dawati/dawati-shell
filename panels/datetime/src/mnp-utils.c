@@ -162,7 +162,7 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 						gweather_location_get_sort_name (children[i]),
 						parent_compare_name);
 
-		clutter_model_append(store, 
+		clutter_model_prepend(store, 
 				    GWEATHER_LOCATION_ENTRY_COL_LOCATION, children[i],
 				    GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, display_name,
 				    GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, compare_name,
@@ -183,7 +183,7 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 					    gweather_location_get_sort_name (loc),
 					    parent_compare_name);
 
-	    clutter_model_append(store, 
+	    clutter_model_prepend(store, 
 				GWEATHER_LOCATION_ENTRY_COL_LOCATION, children[0],
 				GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, display_name,
 				GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, compare_name,
@@ -204,7 +204,7 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 	compare_name = g_strdup_printf ("%s, %s",
 					gweather_location_get_sort_name (loc),
 					parent_compare_name);
-	clutter_model_append(store, 		
+	clutter_model_prepend(store, 		
 			    GWEATHER_LOCATION_ENTRY_COL_LOCATION, loc,
 			    GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, display_name,
 			    GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, compare_name,
