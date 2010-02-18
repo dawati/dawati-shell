@@ -325,11 +325,11 @@ moblin_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
        * moves the pointer).
        */
       mnb_toolbar_set_dont_autohide (MNB_TOOLBAR (priv->toolbar), TRUE);
-      clutter_actor_show (priv->toolbar);
+      mnb_toolbar_show (MNB_TOOLBAR (priv->toolbar), MNB_SHOW_HIDE_BY_KEY);
     }
   else
     {
-      mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
+      mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar), MNB_SHOW_HIDE_BY_KEY);
     }
 }
 
@@ -730,7 +730,7 @@ moblin_netbook_panel_frame_footer_cb (MnbPanelFrame *frame, MutterWindow *mcw)
 
   if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
     {
-      mnb_panel_hide_with_toolbar (panel);
+      mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_MOUSE);
     }
 }
 
@@ -1772,7 +1772,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
       /* Hide toolbar etc in presence of modal window */
       if (meta_window_is_blessed_window (mw))
-        mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar));
+        mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar), MNB_SHOW_HIDE_POLICY);
 
       if (type == META_COMP_WINDOW_NORMAL)
         {

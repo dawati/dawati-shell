@@ -2,7 +2,7 @@
 
 /* mnb-panel.h */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -87,6 +87,30 @@ typedef struct {
   void          (*set_button)          (MnbPanel *panel, MxButton *button);
 } MnbPanelIface;
 
+/*
+ * This enum defines the reason for showing or hiding the Toolbar, it is
+ * ordered by priority, the higher the value, the higher priority.
+ *
+ * The underscored values are for internal use and are not to be passed into
+ * the public API
+ */
+typedef enum {
+  _MNB_SHOW_HIDE_UNSET   = 0,
+
+  _MNB_SHOW_HIDE_PROGRAMMATIC,
+
+  MNB_SHOW_HIDE_BY_DBUS,   /* via toolbar dbus API                          */
+  MNB_SHOW_HIDE_BY_PANEL,  /* because panel hid itself (e.g., app launch)   */
+
+  _MNB_SHOW_HIDE_USER_ACTION,
+
+  MNB_SHOW_HIDE_BY_MOUSE,  /* mouse click or motion implying show/hide      */
+  MNB_SHOW_HIDE_BY_KEY,    /* user used a key that implied show/hide        */
+
+  _MNB_SHOW_HIDE_POLICY,
+  MNB_SHOW_HIDE_POLICY     /* policy reasons, e.g., modal window popping up */
+} MnbShowHideReason;
+
 GType mnb_panel_get_type (void);
 
 const gchar *    mnb_panel_get_name          (MnbPanel *panel);
@@ -107,7 +131,8 @@ void             mnb_panel_get_position      (MnbPanel *panel,
                                               gint     *y);
 void             mnb_panel_show              (MnbPanel *panel);
 void             mnb_panel_hide              (MnbPanel *panel);
-void             mnb_panel_hide_with_toolbar (MnbPanel *panel);
+void             mnb_panel_hide_with_toolbar (MnbPanel *panel,
+                                              MnbShowHideReason reason);
 
 gboolean         mnb_panel_is_mapped         (MnbPanel *panel);
 gboolean         mnb_panel_is_modal          (MnbPanel *panel);

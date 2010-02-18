@@ -396,19 +396,30 @@ mnb_panel_set_button (MnbPanel *panel, MxButton *button)
   iface->set_button (panel, button);
 }
 
-static void
-mnb_panel_hide_with_toolbar_hide_completed_cb (MnbPanel    *panel,
-                                               MnbToolbar  *toolbar)
+struct _HideData
 {
+  MnbToolbar *toolbar;
+  MnbShowHideReason reason;
+};
+
+static void
+mnb_panel_hide_with_toolbar_hide_completed_cb (MnbPanel         *panel,
+                                               struct _HideData *data)
+{
+  MnbToolbar        *toolbar = data->toolbar;
+  MnbShowHideReason  reason  = data->reason;
+
   g_signal_handlers_disconnect_by_func (panel,
                                  mnb_panel_hide_with_toolbar_hide_completed_cb,
                                  toolbar);
 
-  mnb_toolbar_hide (toolbar);
+  g_free (data);
+
+  mnb_toolbar_hide (toolbar, reason);
 }
 
 void
-mnb_panel_hide_with_toolbar (MnbPanel *panel)
+mnb_panel_hide_with_toolbar (MnbPanel *panel, MnbShowHideReason reason)
 {
   MutterPlugin *plugin  = moblin_netbook_get_plugin_singleton ();
   ClutterActor *toolbar = moblin_netbook_get_toolbar (plugin);
@@ -416,13 +427,18 @@ mnb_panel_hide_with_toolbar (MnbPanel *panel)
   if (!mnb_panel_is_mapped (panel))
     {
       if (CLUTTER_ACTOR_IS_MAPPED (toolbar))
-        mnb_toolbar_hide (MNB_TOOLBAR (toolbar));
+        mnb_toolbar_hide (MNB_TOOLBAR (toolbar), reason);
     }
   else
     {
+      struct _HideData *data = g_new (struct _HideData, 1);
+
+      data->toolbar = (MnbToolbar*)toolbar;
+      data->reason  = reason;
+
       g_signal_connect (panel, "hide-completed",
                      G_CALLBACK (mnb_panel_hide_with_toolbar_hide_completed_cb),
-                     toolbar);
+                     data);
 
       mnb_panel_hide (panel);
     }

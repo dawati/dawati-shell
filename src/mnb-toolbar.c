@@ -114,7 +114,7 @@ typedef struct _MnbToolbarPanel MnbToolbarPanel;
 
 static void mnb_toolbar_constructed (GObject *self);
 static void mnb_toolbar_real_hide (ClutterActor *actor);
-static void mnb_toolbar_show (ClutterActor *actor);
+static void mnb_toolbar_real_show (ClutterActor *actor);
 static gboolean mnb_toolbar_stage_captured_cb (ClutterActor *stage,
                                                ClutterEvent *event,
                                                gpointer      data);
@@ -227,6 +227,9 @@ struct _MnbToolbarPrivate
   gboolean panel_input_only  : 1; /* Set when the region below panels should not
                                    * be included in the panel input region.
                                    */
+
+  MnbShowHideReason reason_for_show;
+  MnbShowHideReason reason_for_hide;
 
   MnbInputRegion *trigger_region;  /* The show panel trigger region */
   MnbInputRegion *input_region;    /* The panel input region on the region
@@ -353,6 +356,7 @@ mnb_toolbar_show_completed_cb (ClutterAnimation *animation, ClutterActor *actor)
       g_signal_emit (actor, toolbar_signals[SHOW_COMPLETED], 0);
     }
 
+  priv->reason_for_show = _MNB_SHOW_HIDE_UNSET;
   priv->in_show_animation = FALSE;
   g_object_unref (actor);
 }
@@ -397,12 +401,47 @@ mnb_toolbar_hide_lowlight (MnbToolbar *toolbar)
                             lowlight);
 }
 
+void
+mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason)
+{
+  MnbToolbarPrivate  *priv = MNB_TOOLBAR (toolbar)->priv;
+  ClutterActor       *actor = (ClutterActor*)toolbar;
+  ClutterAnimation   *animation;
+
+  if (priv->in_show_animation)
+    {
+      g_signal_stop_emission_by_name (toolbar, "show");
+      return;
+    }
+
+  priv->reason_for_show = reason;
+
+  clutter_actor_show (actor);
+
+  /* set initial width and height */
+  clutter_actor_set_position (actor, 0, -(clutter_actor_get_height (actor)));
+
+  g_object_ref (actor);
+
+  priv->in_show_animation = TRUE;
+
+  /*
+   * Start animation and wait for it to complete.
+   */
+  animation = clutter_actor_animate (actor,
+                                     CLUTTER_LINEAR, 150, "y", 0.0, NULL);
+
+  g_signal_connect (animation,
+                    "completed",
+                    G_CALLBACK (mnb_toolbar_show_completed_cb),
+                    actor);
+}
+
 static void
-mnb_toolbar_show (ClutterActor *actor)
+mnb_toolbar_real_show (ClutterActor *actor)
 {
   MnbToolbarPrivate  *priv = MNB_TOOLBAR (actor)->priv;
   gint                screen_width, screen_height;
-  ClutterAnimation   *animation;
   GList              *l;
 
   if (priv->in_show_animation)
@@ -436,9 +475,6 @@ mnb_toolbar_show (ClutterActor *actor)
    */
   CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->show (actor);
 
-  /* set initial width and height */
-  clutter_actor_set_position (actor, 0, -(clutter_actor_get_height (actor)));
-
   if (priv->input_region)
     mnb_input_manager_remove_region_without_update (priv->input_region);
 
@@ -448,21 +484,6 @@ mnb_toolbar_show (ClutterActor *actor)
 
 
   moblin_netbook_stash_window_focus (priv->plugin, CurrentTime);
-
-  g_object_ref (actor);
-
-  priv->in_show_animation = TRUE;
-
-  /*
-   * Start animation and wait for it to complete.
-   */
-  animation = clutter_actor_animate (actor,
-                                     CLUTTER_LINEAR, 150, "y", 0.0, NULL);
-
-  g_signal_connect (animation,
-                    "completed",
-                    G_CALLBACK (mnb_toolbar_show_completed_cb),
-                    actor);
 }
 
 static void
@@ -501,6 +522,7 @@ mnb_toolbar_hide_transition_completed_cb (ClutterAnimation *animation,
   priv->in_hide_animation = FALSE;
   priv->dont_autohide = FALSE;
   priv->panel_input_only = FALSE;
+  priv->reason_for_hide = _MNB_SHOW_HIDE_UNSET;
 
   moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
@@ -555,7 +577,7 @@ mnb_toolbar_check_for_windows (MnbToolbar *toolbar)
 }
 
 void
-mnb_toolbar_hide (MnbToolbar *toolbar)
+mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
 {
   ClutterActor      *actor = CLUTTER_ACTOR (toolbar);
   MnbToolbarPrivate *priv = toolbar->priv;
@@ -571,6 +593,15 @@ mnb_toolbar_hide (MnbToolbar *toolbar)
 
   if (priv->in_hide_animation)
     return;
+
+  /*
+   * If the reason for us hiding is of a lesser priority than the reason for
+   * any pending show, we do not hide.
+   */
+  if (priv->reason_for_show > reason)
+    return;
+
+  priv->reason_for_hide = reason;
 
   clutter_actor_hide (priv->shadow);
 
@@ -651,14 +682,14 @@ mnb_toolbar_allocate (ClutterActor          *actor,
 static gboolean
 mnb_toolbar_dbus_show_toolbar (MnbToolbar *self, GError **error)
 {
-  clutter_actor_show (CLUTTER_ACTOR (self));
+  mnb_toolbar_show (self, MNB_SHOW_HIDE_BY_DBUS);
   return TRUE;
 }
 
 static gboolean
 mnb_toolbar_dbus_hide_toolbar (MnbToolbar *self, GError **error)
 {
-  mnb_toolbar_hide (self);
+  mnb_toolbar_hide (self, MNB_SHOW_HIDE_BY_DBUS);
   return TRUE;
 }
 
@@ -697,10 +728,10 @@ mnb_toolbar_dbus_hide_panel (MnbToolbar  *self,
   if (!mnb_panel_is_mapped (panel))
     {
       if (hide_toolbar && CLUTTER_ACTOR_IS_MAPPED (self))
-        mnb_toolbar_hide (self);
+        mnb_toolbar_hide (self, MNB_SHOW_HIDE_BY_DBUS);
     }
   else if (hide_toolbar)
-    mnb_panel_hide_with_toolbar (panel);
+    mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_DBUS);
   else
     mnb_panel_hide (panel);
 
@@ -733,7 +764,7 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
   object_class->finalize = mnb_toolbar_finalize;
   object_class->constructed = mnb_toolbar_constructed;
 
-  clutter_class->show = mnb_toolbar_show;
+  clutter_class->show = mnb_toolbar_real_show;
   clutter_class->hide = mnb_toolbar_real_hide;
   clutter_class->allocate = mnb_toolbar_allocate;
   clutter_class->button_press_event = mnb_toolbar_button_press_event;
@@ -2486,7 +2517,7 @@ mnb_toolbar_lowlight_button_press_cb (ClutterActor *lowlight,
        * different panel).
        */
       if (mnb_toolbar_check_for_windows (toolbar))
-        mnb_panel_hide_with_toolbar (panel);
+        mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_MOUSE);
 
       return TRUE;
     }
@@ -2870,7 +2901,7 @@ mnb_toolbar_trigger_timeout_cb (gpointer data)
 {
   MnbToolbar *toolbar = MNB_TOOLBAR (data);
 
-  clutter_actor_show (CLUTTER_ACTOR (toolbar));
+  mnb_toolbar_show (toolbar, MNB_SHOW_HIDE_BY_MOUSE);
   toolbar->priv->trigger_timeout_id = 0;
 
   return FALSE;
@@ -3061,7 +3092,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
                !priv->waiting_for_panel_hide)
         {
           mnb_toolbar_trigger_region_set_height (toolbar, 0);
-          mnb_toolbar_hide (toolbar);
+          mnb_toolbar_hide (toolbar, MNB_SHOW_HIDE_BY_MOUSE);
         }
     }
 
@@ -3094,7 +3125,7 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
        * different panel).
        */
       if (mnb_toolbar_check_for_windows (toolbar))
-        mnb_toolbar_hide (toolbar);
+        mnb_toolbar_hide (toolbar, MNB_SHOW_HIDE_BY_MOUSE);
     }
 
   return FALSE;

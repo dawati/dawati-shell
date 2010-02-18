@@ -95,7 +95,8 @@ MnbPanel * mnb_toolbar_get_active_panel (MnbToolbar *toolbar);
 
 gboolean mnb_toolbar_is_waiting_for_panel (MnbToolbar *toolbar);
 
-void mnb_toolbar_hide (MnbToolbar *toolbar);
+void mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason);
+void mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason);
 
 void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
                                 MnbToolbarCallback callback,

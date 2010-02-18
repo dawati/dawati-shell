@@ -299,7 +299,7 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
       panel   = mnb_toolbar_get_active_panel (toolbar);
 
       if (panel)
-        mnb_panel_hide_with_toolbar (panel);
+        mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_KEY);
 
       /*
        * If the alttab is not visible we want to show it; this is, however,

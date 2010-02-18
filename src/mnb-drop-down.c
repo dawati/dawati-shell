@@ -203,7 +203,7 @@ mnb_drop_down_show (ClutterActor *actor)
                         G_CALLBACK (mnb_toolbar_show_completed_cb),
                         actor);
 
-      clutter_actor_show (toolbar);
+      mnb_toolbar_show ((MnbToolbar*)toolbar, MNB_SHOW_HIDE_BY_PANEL);
       return;
     }
 

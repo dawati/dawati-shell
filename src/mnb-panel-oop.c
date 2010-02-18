@@ -1327,7 +1327,7 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
        * animation.
        */
       clutter_actor_hide (mcw);
-      clutter_actor_show (toolbar);
+      mnb_toolbar_show ((MnbToolbar*)toolbar, MNB_SHOW_HIDE_BY_PANEL);
       return;
     }
 
@@ -1420,7 +1420,7 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
       ClutterActor *toolbar = moblin_netbook_get_toolbar (plugin);
 
       if (toolbar)
-        mnb_toolbar_hide ((MnbToolbar*)toolbar);
+        mnb_toolbar_hide ((MnbToolbar*)toolbar, MNB_SHOW_HIDE_BY_PANEL);
 
       priv->dont_hide_toolbar = FALSE;
     }
