@@ -130,7 +130,9 @@ static MnbToolbarPanel * mnb_toolbar_panel_name_to_panel_internal (MnbToolbar  *
                                                                    const gchar *name);
 static MnbToolbarPanel * mnb_toolbar_panel_to_toolbar_panel (MnbToolbar *toolbar,
                                                              MnbPanel *panel);
-static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar, MnbToolbarPanel *tp);
+static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar,
+                                                 MnbToolbarPanel *tp,
+                                                 MnbShowHideReason reason);
 static void mnb_toolbar_setup_gconf (MnbToolbar *toolbar);
 static gboolean mnb_toolbar_start_panel_service (MnbToolbar *toolbar,
                                                  MnbToolbarPanel *tp);
@@ -242,6 +244,7 @@ struct _MnbToolbarPrivate
   DBusGProxy      *dbus_proxy;
 
   GSList          *pending_panels;
+  MnbToolbarPanel *tp_to_activate;
 
   gint             old_screen_width;
   gint             old_screen_height;
@@ -359,6 +362,17 @@ mnb_toolbar_show_completed_cb (ClutterAnimation *animation, ClutterActor *actor)
   priv->reason_for_show = _MNB_SHOW_HIDE_UNSET;
   priv->in_show_animation = FALSE;
   g_object_unref (actor);
+
+  if (priv->tp_to_activate)
+    {
+      MnbToolbarPanel *tp = priv->tp_to_activate;
+
+      priv->tp_to_activate = NULL;
+
+      if (!mx_button_get_checked (MX_BUTTON (tp->button)))
+        mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
+    }
+
 }
 
 static void
@@ -707,7 +721,7 @@ mnb_toolbar_dbus_show_panel (MnbToolbar *self, gchar *name, GError **error)
 
   if ((tp = mnb_toolbar_panel_to_toolbar_panel (self, panel)))
     {
-      mnb_toolbar_activate_panel_internal (self, tp);
+      mnb_toolbar_activate_panel_internal (self, tp, MNB_SHOW_HIDE_BY_DBUS);
       return TRUE;
     }
 
@@ -2724,8 +2738,9 @@ mnb_toolbar_new (MutterPlugin *plugin)
 }
 
 static void
-mnb_toolbar_activate_panel_internal (MnbToolbar      *toolbar,
-                                     MnbToolbarPanel *tp)
+mnb_toolbar_activate_panel_internal (MnbToolbar        *toolbar,
+                                     MnbToolbarPanel   *tp,
+                                     MnbShowHideReason  reason)
 {
   MnbToolbarPrivate *priv  = toolbar->priv;
   GList             *l;
@@ -2766,20 +2781,27 @@ mnb_toolbar_activate_panel_internal (MnbToolbar      *toolbar,
            *
            * Toggle the Toolbar button.
            */
-          if (!mx_button_get_checked (MX_BUTTON (tp->button)))
+          if (!CLUTTER_ACTOR_IS_VISIBLE (toolbar))
+            {
+              priv->tp_to_activate = tp;
+              mnb_toolbar_show (toolbar, reason);
+            }
+          else if (!mx_button_get_checked (MX_BUTTON (tp->button)))
             mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
         }
     }
 }
 
 void
-mnb_toolbar_activate_panel (MnbToolbar *toolbar, const gchar *panel_name)
+mnb_toolbar_activate_panel (MnbToolbar        *toolbar,
+                            const gchar       *panel_name,
+                            MnbShowHideReason  reason)
 {
   MnbToolbarPanel *tp = mnb_toolbar_panel_name_to_panel_internal (toolbar,
                                                                   panel_name);
 
   if (tp)
-    mnb_toolbar_activate_panel_internal (toolbar, tp);
+    mnb_toolbar_activate_panel_internal (toolbar, tp, reason);
 }
 
 void
@@ -3225,7 +3247,7 @@ mnb_toolbar_alt_f2_key_handler (MetaDisplay    *display,
                                                  "moblin-panel-applications");
 
   if (tp)
-    mnb_toolbar_activate_panel_internal (toolbar, tp);
+    mnb_toolbar_activate_panel_internal (toolbar, tp, MNB_SHOW_HIDE_BY_KEY);
 }
 
 /*

@@ -1190,7 +1190,8 @@ maybe_show_myzone (MutterPlugin *plugin)
 
   if (no_apps)
     mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar),
-                                "moblin-panel-myzone");
+                                "moblin-panel-myzone",
+                                MNB_SHOW_HIDE_POLICY);
 
   return FALSE;
 }
