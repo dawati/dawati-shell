@@ -378,16 +378,25 @@ mnp_clock_construct (MnpClockTile *tile)
 				   	"expand", TRUE,
 					"x-fill", TRUE,
                                    	NULL);
-	clutter_container_add_actor ((ClutterContainer *)tile, label2);
-	clutter_container_child_set ((ClutterContainer *)tile, label2,
+
+
+	box1 = mx_box_layout_new ();
+	mx_box_layout_set_vertical ((MxBoxLayout *)box1, TRUE);
+	mx_box_layout_set_pack_start ((MxBoxLayout *)box1, FALSE);
+	clutter_container_add_actor ((ClutterContainer *)box1, label2);
+	clutter_container_child_set ((ClutterContainer *)box1, label2,
+				   	"expand", TRUE,
+                                   	NULL);
+	
+	clutter_container_add_actor ((ClutterContainer *)tile, box1);
+	clutter_container_child_set ((ClutterContainer *)tile, box1,
 				   	"expand", FALSE,
 					"x-fill", FALSE,
                                    	NULL);
-	clutter_actor_show_all ((ClutterActor *)tile);
 	FREE_DFMT(fmt);
 
 	box2 = mx_box_layout_new ();
-	clutter_actor_set_name (box1, "mnp-tile-remove-button");
+	clutter_actor_set_name (box2, "mnp-tile-remove-button");
 	mx_box_layout_set_vertical ((MxBoxLayout *)box2, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box2, FALSE);	
  	
