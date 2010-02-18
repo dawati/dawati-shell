@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"POT-Creation-Date: 2010-02-11 23:57+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -13,28 +13,31 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-netbook.c:463
-#: ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "區域"
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "決定工具列上的面板順序。"
 
-#: ../src/moblin-netbook.c:621
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "工具列上的面板順序"
+
+#: ../src/moblin-netbook.c:809
 msgid "Moblin Netbook Effects"
 msgstr "Moblin 網路筆電特效"
 
-#: ../src/moblin-netbook.c:625
+#: ../src/moblin-netbook.c:813
 msgid "Effects for Moblin Netbooks"
 msgstr "給 Moblin 網路筆電用的特效"
 
-#: ../src/moblin-netbook.c:2529
+#: ../src/moblin-netbook.c:2848
 msgid "Activate"
 msgstr "啟動"
 
-#: ../src/moblin-netbook.c:2543
+#: ../src/moblin-netbook.c:2862
 msgid "Unknown window"
 msgstr "未知的視窗"
 
-#: ../src/moblin-netbook.c:2545
+#: ../src/moblin-netbook.c:2864
 msgid "Is asking for your attention."
 msgstr "正在要求您的注意。"
 
@@ -42,7 +45,7 @@ msgstr "正在要求您的注意。"
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:668
+#: ../src/mnb-toolbar.c:752
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -50,9 +53,14 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:678
+#: ../src/mnb-toolbar.c:762
 msgid "%B %e, %Y"
 msgstr "%Y年%b%e日"
+
+#: ../src/mnb-toolbar.c:871
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "抱歉，%s 已損毀"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -62,18 +70,17 @@ msgstr "取消"
 msgid "Dismiss All"
 msgstr "取消所有"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "還沒有區域"
-
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "你正在使用的應用程式會在這裡顯示。你也可以隨心所欲來切換以及整理它們。"
-
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "這個區域沒有應用程式"
-
+#~ msgid "zones"
+#~ msgstr "區域"
+#~ msgid "No Zones yet"
+#~ msgstr "還沒有區域"
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "你正在使用的應用程式會在這裡顯示。你也可以隨心所欲來切換以及整理它們。"
+#~ msgid "No applications on this zone"
+#~ msgstr "這個區域沒有應用程式"
 #~ msgid "Less than a minute ago"
 #~ msgstr "少於一分鐘前"
 #~ msgid "A few minutes ago"
