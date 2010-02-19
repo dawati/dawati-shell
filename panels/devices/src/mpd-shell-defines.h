@@ -22,7 +22,7 @@
 #define MPD_SHELL_DEFINES_H
 
 #define MPD_SHELL_WIDTH         1024.0
-#define MPD_SHELL_HEIGHT         300.0
+#define MPD_SHELL_HEIGHT         340.0
 #define MPD_SHELL_PADDING         12.0
 #define MPD_SHELL_SPACING         24.0
 

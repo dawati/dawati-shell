@@ -91,7 +91,7 @@ mpd_computer_pane_class_init (MpdComputerPaneClass *klass)
 static void
 mpd_computer_pane_init (MpdComputerPane *self)
 {
-/*  ClutterActor *button; */
+  ClutterActor *button;
   ClutterActor *tile;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
@@ -108,12 +108,10 @@ mpd_computer_pane_init (MpdComputerPane *self)
   mx_stylable_set_style_class (MX_STYLABLE (tile), "frame");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
-#if 0 /* "All settings" button, see TODO.  */
   button = mx_button_new_with_label (_("All settings"));
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_settings_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
-#endif
 }
 
 ClutterActor *
