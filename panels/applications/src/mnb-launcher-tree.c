@@ -484,9 +484,11 @@ mnb_launcher_tree_list_categories_from_disk (MnbLauncherTree *self)
   gmenu_tree_item_unref (root);
 
   /* Settings. */
+#ifdef MNB_LAUNCHER_TREE_LOAD_SETTINGS
   root = gmenu_tree_get_root_directory (self->settings);
   tree = get_all_applications_from_dir (root, tree, TRUE);
   gmenu_tree_item_unref (root);
+#endif
 
   /* Sort directories. */
   tree = g_list_sort (tree, (GCompareFunc) mnb_launcher_directory_compare);
