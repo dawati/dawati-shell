@@ -613,6 +613,13 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
                            netbook_mode ? "Moblin-Netbook" : "Moblin-Nettop",
                            NULL);
 
+  /*
+   * It seems that sometimes the screen resize gets delayed until something
+   * else 'traumatic' happens, such workspace switch; this is an attempt to
+   * force the size to resize.
+   */
+  clutter_actor_queue_redraw (stage);
+
   if (!netbook_mode &&
       CLUTTER_ACTOR_IS_VISIBLE (stage) &&
       !CLUTTER_ACTOR_IS_VISIBLE (toolbar))
