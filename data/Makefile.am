@@ -43,7 +43,6 @@ dist_theme_panel_DATA = \
 	theme/panel/spaces-normal.png \
 	theme/panel/status-coloured.png \
 	theme/panel/status-normal.png \
-	theme/panel/background-tile.png \
 	theme/panel/toolbar-button-active.png \
 	theme/panel/toolbar-button-hover.png \
 	theme/panel/toolbar-hint.png
