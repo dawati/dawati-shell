@@ -55,7 +55,7 @@ on_account_status_changed (GObject    *object,
 {
   MailmeTelepathyPrivate *priv = GET_PRIVATE (user_data);
   MailmeTelepathyAccount *mm_account = MAILME_TELEPATHY_ACCOUNT (object);
-  TpAccount *tp_account = 
+  TpAccount *tp_account =
     TP_ACCOUNT (mailme_telepathy_account_get_tp_account (mm_account));
   MailmeAccountStatus status;
 
@@ -86,7 +86,7 @@ on_account_prepared (GObject      *source,
   MailmeTelepathy *self = MAILME_TELEPATHY (user_data);
   MailmeTelepathyPrivate *priv = GET_PRIVATE (self);
   MailmeTelepathyAccount *account = MAILME_TELEPATHY_ACCOUNT (source);
-  TpAccount *tp_account = 
+  TpAccount *tp_account =
     TP_ACCOUNT (mailme_telepathy_account_get_tp_account (account));
 
   status = mailme_telepathy_account_prepare_finish (account, result, &error);

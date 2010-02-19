@@ -22,7 +22,8 @@ pengeinclude_HEADERS = \
 		   penge-interesting-tile.h \
 		   penge-block-container.h \
 		   penge-everything-pane.h \
-		   penge-clickable-label.h
+		   penge-clickable-label.h \
+		   penge-email-pane.h
 
 libpenge_la_SOURCES = \
 		      $(pengeinclude_HEADERS) \
@@ -44,7 +45,8 @@ libpenge_la_SOURCES = \
 		      penge-interesting-tile.c \
 		      penge-block-container.c \
 		      penge-everything-pane.c \
-		      penge-clickable-label.c
+		      penge-clickable-label.c \
+		      penge-email-pane.c
 
 AM_CFLAGS = -Wall \
 	    $(PENGE_CFLAGS) \
@@ -55,13 +57,17 @@ AM_CFLAGS = -Wall \
 
 test_block_container_SOURCES = test-block-container.c
 test_block_container_LDADD = libpenge.la \
+			     $(top_builddir)/mailme/libmailme.a \
 			     $(MPL_LIBS) \
-			     $(PENGE_LIBS)
+			     $(PENGE_LIBS) \
+			     $(MAILME_LIBS)
 
 
 
 test_everything_pane_SOURCES = test-everything-pane.c
 test_everything_pane_LDADD = libpenge.la \
+			     $(top_builddir)/mailme/libmailme.a \
 			     $(MPL_LIBS) \
-			     $(PENGE_LIBS)
+			     $(PENGE_LIBS) \
+			     $(MAILME_LIBS)
 

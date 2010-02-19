@@ -25,6 +25,7 @@
 #include "penge-calendar-pane.h"
 #include "penge-everything-pane.h"
 #include "penge-apps-pane.h"
+#include "penge-email-pane.h"
 
 #include "penge-view-background.h"
 
@@ -248,7 +249,6 @@ _update_layout (PengeGridView *grid_view)
                                    "y-fill", FALSE,
                                    "y-align", 0.0,
                                    NULL);
-      col++;
     } else {
       clutter_actor_hide (priv->calendar_pane);
     }
@@ -313,8 +313,9 @@ _update_layout (PengeGridView *grid_view)
                                    "col", col,
                                    "row", 1,
                                    "x-expand", FALSE,
+                                   "y-expand", TRUE,
                                    "y-fill", FALSE,
-                                   "y-align", 0.0,
+                                   "y-align", 1.0,
                                    NULL);
     } else {
       clutter_actor_hide (priv->email_pane);
@@ -326,6 +327,7 @@ _update_layout (PengeGridView *grid_view)
                                  "col", col,
                                  "row", 2,
                                  "x-expand", FALSE,
+                                 "y-expand", FALSE,
                                  "x-fill", TRUE,
                                  "y-fill", FALSE,
                                  "y-align", 1.0,
@@ -340,7 +342,7 @@ _update_layout (PengeGridView *grid_view)
     col++;
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->everything_pane,
-                                 "row-span", 2,
+                                 "row-span", 3,
                                  "col", col,
                                  "x-expand", TRUE,
                                  "x-fill", TRUE,
@@ -415,7 +417,8 @@ penge_grid_view_init (PengeGridView *self)
                       0,
                       0);
 
-  priv->email_pane = mx_button_new_with_label ("GMail: 4 new messages");
+  priv->email_pane = g_object_new (PENGE_TYPE_EMAIL_PANE,
+                                   NULL);
 
   clutter_actor_set_width (priv->email_pane, 280);
 
