@@ -383,8 +383,8 @@ mnb_notification_update (MnbNotification *notification,
       gchar *key, *value;
 
       /*
-       * Remove all buttons, but hold onto the default button and append it
-       * at the end.
+       * Remove all buttons, but hold onto the default button and prepend it
+       * at the start.
        */
       for (l = clutter_container_get_children (CLUTTER_CONTAINER (priv->button_box));
            l;
@@ -396,6 +396,10 @@ mnb_notification_update (MnbNotification *notification,
             clutter_container_remove_actor (CLUTTER_CONTAINER (priv->button_box),
                                             CLUTTER_ACTOR (l->data));
         }
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                   priv->dismiss_button);
+      g_object_unref (priv->dismiss_button);
 
       g_hash_table_iter_init (&iter, details->actions);
       while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value))
@@ -422,10 +426,6 @@ mnb_notification_update (MnbNotification *notification,
               has_action = TRUE;
             }
         }
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
-                                   priv->dismiss_button);
-      g_object_unref (priv->dismiss_button);
     }
 
   if (details->is_urgent)
