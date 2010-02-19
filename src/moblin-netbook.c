@@ -102,6 +102,9 @@ static void meta_display_window_demands_attention_cb (MetaDisplay *display,
 static void meta_window_demands_attention_cb (MetaWindow         *mw,
                                               GParamSpec         *spec,
                                               gpointer            data);
+static void moblin_netbook_handle_screen_size (MutterPlugin *plugin,
+                                               gint         *screen_width,
+                                               gint         *screen_height);
 
 static GQuark actor_data_quark = 0;
 static GQuark notification_quark = 0;
@@ -299,7 +302,7 @@ moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gint                        screen_width, screen_height;
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  moblin_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
   clutter_actor_set_position (priv->notification_cluster,
                               screen_width, screen_height);
@@ -538,30 +541,39 @@ moblin_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
 }
 
 static void
-moblin_netbook_plugin_constructed (GObject *object)
+moblin_netbook_handle_screen_size (MutterPlugin *plugin,
+                                   gint         *screen_width,
+                                   gint         *screen_height)
 {
-  MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
-  MoblinNetbookPluginPrivate *priv   = plugin->priv;
-
-  ClutterActor  *overlay;
-  ClutterActor  *toolbar;
-  ClutterActor  *switcher_overlay;
-  ClutterActor  *lowlight;
-  gint           screen_width, screen_height;
-  gfloat         w, h;
-  ClutterColor   low_clr = { 0, 0, 0, 0x7f };
-  GError        *err = NULL;
+  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   MetaScreen   *screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
   MetaDisplay  *display   = meta_screen_get_display (screen);
-  ClutterActor *stage     = mutter_get_stage_for_screen (screen);
   Display      *xdpy      = meta_display_get_xdisplay (display);
+  ClutterActor *stage     = mutter_get_stage_for_screen (screen);
   guint         screen_no = meta_screen_get_screen_number (screen);
-
   gint          screen_width_mm  = XDisplayWidthMM (xdpy, screen_no);
   gint          screen_height_mm = XDisplayHeightMM (xdpy, screen_no);
-  gboolean      netbook_mode = FALSE;
-  GConfClient  *gconf_client;
+  gchar        *moblin_session;
+  Window        leader_xwin;
+  gboolean      netbook_mode;
+
+  static Atom   atom__MOBLIN = None;
+  static gint   old_screen_width = 0, old_screen_height = 0;
+
+  /*
+   * Because we are hooked into the workareas-changed signal, we get typically
+   * called twice for each change; the first time when the monitor resizes,
+   * and the second time if/when the Toolbar adusts it's struts. So do a check
+   * here that the 'new' state is different from the old one.
+   */
+  mutter_plugin_query_screen_size (plugin, screen_width, screen_height);
+
+  if (old_screen_width == *screen_width && old_screen_height == *screen_height)
+    return;
+
+  old_screen_width  = *screen_width;
+  old_screen_height = *screen_height;
 
   moblin_netbook_compute_screen_size (xdpy,
                                       screen_no,
@@ -572,40 +584,70 @@ moblin_netbook_plugin_constructed (GObject *object)
 
   if (screen_width_mm < 280)
     netbook_mode = priv->netbook_mode = TRUE;
+  else
+    netbook_mode = priv->netbook_mode = FALSE;
+
+  if (!atom__MOBLIN)
+    atom__MOBLIN = XInternAtom (xdpy, "_MOBLIN", False);
+
+  leader_xwin = meta_display_get_leader_window (display);
+
+  moblin_session =
+    g_strdup_printf ("session-type=%s",
+                     netbook_mode ? "small-screen" : "bigger-screen");
+
+  g_debug ("Setting _MOBLIN=%s", moblin_session);
+
+  meta_error_trap_push (display);
+  XChangeProperty (xdpy,
+                   leader_xwin,
+                   atom__MOBLIN,
+                   XA_STRING,
+                   8, PropModeReplace,
+                   (unsigned char*)moblin_session, strlen (moblin_session));
+  meta_error_trap_pop (display, FALSE);
+
+  g_free (moblin_session);
+
+  gconf_client_set_string (priv->gconf_client, KEY_THEME,
+                           netbook_mode ? "Moblin-Netbook" : "Moblin-Nettop",
+                           NULL);
+
+  if (!netbook_mode &&
+      CLUTTER_ACTOR_IS_VISIBLE (stage) &&
+      !CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
+    {
+      mnb_toolbar_show ((MnbToolbar*)priv->toolbar, MNB_SHOW_HIDE_POLICY);
+    }
+}
+
+static void
+moblin_netbook_plugin_constructed (GObject *object)
+{
+  MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
+  MoblinNetbookPluginPrivate *priv   = plugin->priv;
+
+  ClutterActor *overlay;
+  ClutterActor *toolbar;
+  ClutterActor *switcher_overlay;
+  ClutterActor *lowlight;
+  gint          screen_width, screen_height;
+  gfloat        w, h;
+  ClutterColor  low_clr = { 0, 0, 0, 0x7f };
+  GError       *err = NULL;
+
+  MetaScreen   *screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  MetaDisplay  *display   = meta_screen_get_display (screen);
+  ClutterActor *stage     = mutter_get_stage_for_screen (screen);
+
+  GConfClient  *gconf_client;
 
   plugin_singleton = (MutterPlugin*)object;
 
-  {
-    gchar *moblin_session;
-    Atom   atom__MOBLIN;
-    Window leader_xwin;
-
-    atom__MOBLIN = XInternAtom (xdpy, "_MOBLIN", False);
-    leader_xwin = meta_display_get_leader_window (display);
-
-    moblin_session =
-      g_strdup_printf ("session-type=%s",
-                       netbook_mode ? "small-screen" : "bigger-screen");
-
-    g_debug ("Setting _MOBLIN=%s", moblin_session);
-
-    meta_error_trap_push (display);
-    XChangeProperty (xdpy,
-                     leader_xwin,
-                     atom__MOBLIN,
-                     XA_STRING,
-                     8, PropModeReplace,
-                     (unsigned char*)moblin_session, strlen (moblin_session));
-    meta_error_trap_pop (display, FALSE);
-
-    g_free (moblin_session);
-  }
-
   gconf_client = priv->gconf_client = gconf_client_get_default ();
 
-  gconf_client_set_string (gconf_client, KEY_THEME,
-                           netbook_mode ? "Moblin-Netbook" : "Moblin-Nettop",
-                           NULL);
+  moblin_netbook_handle_screen_size (MUTTER_PLUGIN (plugin),
+                                     &screen_width, &screen_height);
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
@@ -655,9 +697,6 @@ moblin_netbook_plugin_constructed (GObject *object)
                     "notify::focus-window",
                     G_CALLBACK (moblin_netbook_display_focus_window_notify_cb),
                     plugin);
-
-  mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
-                                   &screen_width, &screen_height);
 
   overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
 

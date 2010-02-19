@@ -229,6 +229,7 @@ struct _MnbToolbarPrivate
   gboolean panel_input_only  : 1; /* Set when the region below panels should not
                                    * be included in the panel input region.
                                    */
+  gboolean struts_set        : 1;
 
   MnbShowHideReason reason_for_show; /* Reason for pending Toolbar show */
   MnbShowHideReason reason_for_hide; /* Reason for pending Toolbar hide */
@@ -2552,6 +2553,52 @@ mnb_toolbar_lowlight_button_press_cb (ClutterActor *lowlight,
 }
 
 static void
+mnb_toolbar_set_struts (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv           = toolbar->priv;
+  MutterPlugin      *plugin         = priv->plugin;
+  gboolean           netbook_mode   = moblin_netbook_use_netbook_mode (plugin);
+  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen        *screen         = mutter_plugin_get_screen (plugin);
+  MetaDisplay       *display        = meta_screen_get_display (screen);
+  Display           *xdpy           = meta_display_get_xdisplay (display);
+  Window             xwin           = ppriv->focus_xwin;
+  Atom               strut_atom     = meta_display_get_atom (display,
+                                                      META_ATOM__NET_WM_STRUT);
+
+  /*
+   * When not in netbook mode, we need to reserve space for the toolbar.
+   */
+  if (!netbook_mode && !priv->struts_set)
+    {
+      gint32 strut[4] = {0,};
+
+      strut[2] = TOOLBAR_HEIGHT;
+
+      meta_error_trap_push (display);
+
+      XChangeProperty (xdpy, xwin,
+                       strut_atom,
+                       XA_CARDINAL, 32, PropModeReplace,
+                       (unsigned char *) &strut, 4);
+
+      meta_error_trap_pop (display, FALSE);
+
+      priv->struts_set = TRUE;
+    }
+  else if (netbook_mode && priv->struts_set)
+    {
+      meta_error_trap_push (display);
+
+      XDeleteProperty (xdpy, xwin, strut_atom);
+
+      meta_error_trap_pop (display, FALSE);
+
+      priv->struts_set = FALSE;
+    }
+}
+
+static void
 mnb_toolbar_constructed (GObject *self)
 {
   MnbToolbarPrivate *priv = MNB_TOOLBAR (self)->priv;
@@ -2699,32 +2746,7 @@ mnb_toolbar_constructed (GObject *self)
                     G_CALLBACK (mnb_toolbar_stage_input_cb),
                     self);
 
-  /*
-   * When not in netbook mode, we need to reserve space for the toolbar.
-   */
-  if (!netbook_mode)
-    {
-      MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-      MetaDisplay                *display = meta_screen_get_display (screen);
-      Display                    *xdpy = meta_display_get_xdisplay (display);
-      Window                      xwin = ppriv->focus_xwin;
-      Atom                        strut_atom;
-      gint32                      strut[4] = {0,};
-
-      strut[2] = TOOLBAR_HEIGHT;
-
-      strut_atom = meta_display_get_atom (display,
-                                          META_ATOM__NET_WM_STRUT);
-
-      meta_error_trap_push (display);
-
-      XChangeProperty (xdpy, xwin,
-                       strut_atom,
-                       XA_CARDINAL, 32, PropModeReplace,
-                       (unsigned char *) &strut, 4);
-
-      meta_error_trap_pop (display, FALSE);
-    }
+  mnb_toolbar_set_struts (MNB_TOOLBAR (self));
 
   /*
    * Hook into "show" signal on stage, to set up input regions.
@@ -3190,6 +3212,8 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
     {
       return;
     }
+
+  mnb_toolbar_set_struts (toolbar);
 
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
