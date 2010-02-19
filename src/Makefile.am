@@ -19,7 +19,6 @@ dbus_h = 	$(srcdir)/$(DBUS_GLUE) 			\
 
 source_h =	$(srcdir)/marshal.h			\
 		$(srcdir)/../libmoblin-panel/moblin-panel/mpl-panel-common.h \
-		$(srcdir)/mnb-scale-group.h             \
 		$(srcdir)/moblin-netbook.h		\
 		$(srcdir)/moblin-netbook-constraints.h	\
 		$(srcdir)/moblin-netbook-mutter-hints.h	\
@@ -34,7 +33,6 @@ source_h =	$(srcdir)/marshal.h			\
 
 
 source_c = 	$(srcdir)/mnb-enum-types.c		\
-		$(srcdir)/mnb-scale-group.c	        \
 		$(srcdir)/moblin-netbook.c		\
 		$(srcdir)/moblin-netbook-constraints.c	\
 		$(srcdir)/moblin-netbook-mutter-hints.c	\
