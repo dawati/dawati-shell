@@ -2,6 +2,7 @@
 Version 0.1.10, 2010-02-18
 
     Do not load 'settings.menu', the control center has landed.
+    Do not use cache when it is older than the app binary.
 
 Version 0.1.9, 2010-02-17
 
