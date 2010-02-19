@@ -290,12 +290,19 @@ moblin_netbook_workarea_changed_foreach (MnbPanel *panel, gpointer data)
 
 /*
  * If the work area size changes while a panel is present (e.g., a VKB pops up),
- * we need to resize the panel.
+ * we need to resize the panel. We also need to reposition any elements the
+ * position of which is fixed and depends on the screen size.
  */
 static void
 moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gint                        screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  clutter_actor_set_position (priv->notification_cluster,
+                              screen_width, screen_height);
 
   mnb_toolbar_foreach_panel (MNB_TOOLBAR (priv->toolbar),
                              moblin_netbook_workarea_changed_foreach,
