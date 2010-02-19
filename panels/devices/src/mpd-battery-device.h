@@ -77,6 +77,9 @@ mpd_battery_device_get_state (MpdBatteryDevice *self);
 char *
 mpd_battery_device_get_state_text (MpdBatteryDevice *self);
 
+void
+mpd_battery_device_dump (MpdBatteryDevice *self);
+
 G_END_DECLS
 
 #endif /* _MPD_BATTERY_DEVICE */

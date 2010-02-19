@@ -18,42 +18,65 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <clutter/clutter.h>
 #include "mpd-battery-device.h"
 
 static void
-battery_print (MpdBatteryDevice *battery)
+battery_print (MpdBatteryDevice *battery,
+               bool              raw)
 {
-  char *text;
-
-  text = mpd_battery_device_get_state_text (battery);
-  g_debug ("%s", text);
-  g_free (text);
+  if (raw)
+  {
+    mpd_battery_device_dump (battery);
+  } else {
+    char *text = mpd_battery_device_get_state_text (battery);
+    g_debug ("%s", text);
+    g_free (text);
+  }
 }
 
 static void
 _battery_notify_cb (MpdBatteryDevice  *battery,
                     GParamSpec        *pspec,
-                    gpointer           user_data)
+                    bool               raw)
 {
-  battery_print (battery);
+  battery_print (battery, raw);
 }
 
 int
 main (int     argc,
       char  **argv)
 {
-  MpdBatteryDevice *battery;
+  bool raw = false;
+  GOptionEntry _options[] = {
+    { "raw", 'r', 0, G_OPTION_ARG_NONE, &raw,
+      "Display raw battery information", NULL },
+    { NULL }
+  };
+
+  MpdBatteryDevice  *battery;
+  GOptionContext    *context;
+  GError            *error = NULL;
+
+  context = g_option_context_new ("- Test battery device");
+  g_option_context_add_main_entries (context, _options, NULL);
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+  {
+    g_critical ("%s %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+  g_option_context_free (context);
 
   clutter_init (&argc, &argv);
 
   battery = mpd_battery_device_new ();
   g_signal_connect (battery, "notify::percentage",
-                    G_CALLBACK (_battery_notify_cb), NULL);
+                    G_CALLBACK (_battery_notify_cb), (void *) raw);
   g_signal_connect (battery, "notify::state",
-                    G_CALLBACK (_battery_notify_cb), NULL);
-  battery_print (battery);
+                    G_CALLBACK (_battery_notify_cb), (void *) raw);
+  battery_print (battery, raw);
 
   clutter_main ();
   g_object_unref (battery);

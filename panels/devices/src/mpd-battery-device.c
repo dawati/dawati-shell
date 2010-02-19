@@ -350,3 +350,20 @@ mpd_battery_device_get_state_text (MpdBatteryDevice *self)
   return description;
 }
 
+void
+mpd_battery_device_dump (MpdBatteryDevice *self)
+{
+  MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
+  double energy;
+  double energy_full;
+
+  g_return_if_fail (MPD_IS_BATTERY_DEVICE (self));
+
+  g_object_get (priv->device,
+                "energy", &energy,
+                "energy-full", &energy_full,
+                NULL);
+
+  g_debug ("energy: %.2f, full: %.2f", energy, energy_full);
+}
+
