@@ -23,7 +23,12 @@
 #include "config.h"
 #endif
 
+#include <errno.h>
+#include <limits.h>
+#include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
@@ -783,6 +788,8 @@ static gboolean
 mnb_launcher_tree_test_cache (MnbLauncherTree *self,
                               const gchar     *cache_path)
 {
+  gchar        binary_path[PATH_MAX] = { 0, };
+  struct stat  binary_stat;
   struct stat  cache_stat;
   struct stat  watch_stat;
   GSList      *iter;
@@ -797,6 +804,22 @@ mnb_launcher_tree_test_cache (MnbLauncherTree *self,
                   G_STRLOC,
                   cache_path);
       return FALSE;
+    }
+
+  /* Do not use cache when it's older than this binary,
+   * format or something might have changed. */
+  if (0 < readlink ("/proc/self/exe", binary_path, PATH_MAX))
+    {
+      if (0 == stat (binary_path, &binary_stat))
+        {
+          if (binary_stat.st_mtime > cache_stat.st_mtime)
+            {
+              g_debug ("%s Cache miss, '%s' more recent",
+                       G_STRLOC,
+                       binary_path);
+              return FALSE;
+            }
+        }
     }
 
   for (iter = self->watch_list; iter; iter = iter->next)
