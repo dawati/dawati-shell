@@ -206,7 +206,7 @@ msgstr "網路"
 #. New connection button
 #: ../carrick/carrick-pane.c:1423
 msgid "Add new connection"
-msgstr "加入新的連線"
+msgstr "加入新連線"
 
 #: ../carrick/carrick-pane.c:1496
 #: ../carrick/carrick-service-item.c:239
