@@ -547,6 +547,7 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
 {
   MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  MnbToolbar   *toolbar   = (MnbToolbar*)priv->toolbar;
   MetaScreen   *screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
   MetaDisplay  *display   = meta_screen_get_display (screen);
   Display      *xdpy      = meta_display_get_xdisplay (display);
@@ -615,9 +616,28 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
 
   if (!netbook_mode &&
       CLUTTER_ACTOR_IS_VISIBLE (stage) &&
-      !CLUTTER_ACTOR_IS_VISIBLE (priv->toolbar))
+      !CLUTTER_ACTOR_IS_VISIBLE (toolbar))
     {
-      mnb_toolbar_show ((MnbToolbar*)priv->toolbar, MNB_SHOW_HIDE_POLICY);
+      mnb_toolbar_show (toolbar, MNB_SHOW_HIDE_POLICY);
+    }
+  else if (netbook_mode && CLUTTER_ACTOR_IS_VISIBLE (toolbar)
+           && !mnb_toolbar_get_active_panel (toolbar))
+    {
+      gint   x, y, root_x, root_y;
+      Window root, child;
+      guint  mask;
+      Window xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+      meta_error_trap_push (display);
+
+      if (XQueryPointer (xdpy, xwin, &root, &child,
+                         &root_x, &root_y, &x, &y, &mask))
+        {
+          if (root_y > TOOLBAR_HEIGHT)
+            mnb_toolbar_hide (toolbar, MNB_SHOW_HIDE_POLICY);
+        }
+
+      meta_error_trap_pop (display, FALSE);
     }
 }
 
