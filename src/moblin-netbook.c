@@ -620,8 +620,10 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
     {
       mnb_toolbar_show (toolbar, MNB_SHOW_HIDE_POLICY);
     }
-  else if (netbook_mode && CLUTTER_ACTOR_IS_VISIBLE (toolbar)
-           && !mnb_toolbar_get_active_panel (toolbar))
+  else if (netbook_mode &&
+           CLUTTER_ACTOR_IS_VISIBLE (stage) &&
+           CLUTTER_ACTOR_IS_VISIBLE (toolbar) &&
+           !mnb_toolbar_get_active_panel (toolbar))
     {
       gint   x, y, root_x, root_y;
       Window root, child;
