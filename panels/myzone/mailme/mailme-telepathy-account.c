@@ -452,7 +452,7 @@ mailme_telepathy_account_init (MailmeTelepathyAccount *self)
 
 void
 mailme_telepathy_account_prepare_async (MailmeTelepathyAccount *self,
-	                                    	TpAccount              *account,
+	                                    	GObject                *account,
                                         GAsyncReadyCallback     callback,
                                         gpointer                user_data)
 {
@@ -496,9 +496,9 @@ mailme_telepathy_account_prepare_finish (MailmeTelepathyAccount *self,
   return priv->status;
 }
 
-TpAccount *mailme_telepathy_account_get_tp_account (
+GObject *mailme_telepathy_account_get_tp_account (
         MailmeTelepathyAccount *self)
 {
   MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
-  return priv->account;
+  return G_OBJECT (priv->account);
 }

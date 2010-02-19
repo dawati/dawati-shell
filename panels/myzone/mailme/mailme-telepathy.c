@@ -55,7 +55,8 @@ on_account_status_changed (GObject    *object,
 {
   MailmeTelepathyPrivate *priv = GET_PRIVATE (user_data);
   MailmeTelepathyAccount *mm_account = MAILME_TELEPATHY_ACCOUNT (object);
-  TpAccount *tp_account = mailme_telepathy_account_get_tp_account (mm_account);
+  TpAccount *tp_account = 
+    TP_ACCOUNT (mailme_telepathy_account_get_tp_account (mm_account));
   MailmeAccountStatus status;
 
   g_object_get (object, "status", &status, NULL);
@@ -65,27 +66,28 @@ on_account_status_changed (GObject    *object,
   {
     g_hash_table_remove (priv->accounts, tp_account);
     g_hash_table_insert (priv->pending_accounts, tp_account, mm_account);
-    g_signal_emit_by_name (user_data, "account-removed", mm_account);
+    g_signal_emit (user_data, signals[ACCOUNT_REMOVED_SIGNAL], 0, mm_account);
   } else if (status == MAILME_ACCOUNT_SUPPORTED
       && g_hash_table_lookup (priv->pending_accounts, tp_account))
   {
     g_hash_table_remove (priv->pending_accounts, tp_account);
     g_hash_table_insert (priv->accounts, tp_account, mm_account);
-    g_signal_emit_by_name (user_data, "account-added", mm_account);
+    g_signal_emit (user_data, signals[ACCOUNT_ADDED_SIGNAL], 0, mm_account);
   }
 }
 
 static void
 on_account_prepared (GObject      *source,
                      GAsyncResult *result,
-    gpointer user_data)
+                     gpointer      user_data)
 {
   GError *error = NULL;
   MailmeAccountStatus status;
   MailmeTelepathy *self = MAILME_TELEPATHY (user_data);
   MailmeTelepathyPrivate *priv = GET_PRIVATE (self);
   MailmeTelepathyAccount *account = MAILME_TELEPATHY_ACCOUNT (source);
-  TpAccount *tp_account = mailme_telepathy_account_get_tp_account (account);
+  TpAccount *tp_account = 
+    TP_ACCOUNT (mailme_telepathy_account_get_tp_account (account));
 
   status = mailme_telepathy_account_prepare_finish (account, result, &error);
   if (error != NULL)
@@ -96,8 +98,9 @@ on_account_prepared (GObject      *source,
     return;
   }
 
-  g_signal_connect (G_OBJECT (account), "notify::status",
-      G_CALLBACK (on_account_status_changed), self);
+  g_signal_connect (account, "notify::status",
+                    G_CALLBACK (on_account_status_changed),
+                    self);
 
   switch (status)
   {
@@ -126,7 +129,7 @@ foreach_account (TpAccount *tp_account,
 		g_object_new (MAILME_TYPE_TELEPATHY_ACCOUNT, NULL);
 
 	mailme_telepathy_account_prepare_async (mm_account,
-                                          tp_account,
+                                          G_OBJECT (tp_account),
                                           on_account_prepared,
                                           user_data);
 
@@ -151,6 +154,8 @@ on_account_manager_prepared (GObject      *source,
     g_simple_async_result_complete (simple);
     return;
   }
+
+  g_simple_async_result_complete (simple);
 
   accounts = tp_account_manager_get_valid_accounts (manager);
   if (accounts)
@@ -331,12 +336,12 @@ mailme_telepathy_prepare_async (MailmeTelepathy     *self,
                                     on_account_manager_prepared,
                                     result);
 
-  g_signal_connect (G_OBJECT (priv->manager),
+  g_signal_connect (priv->manager,
                     "account-validity-changed",
                     G_CALLBACK (on_account_validity_changed),
                     self);
 
-  g_signal_connect (G_OBJECT (priv->manager),
+  g_signal_connect (priv->manager,
                     "account-removed",
                     G_CALLBACK (on_account_removed),
                     self);

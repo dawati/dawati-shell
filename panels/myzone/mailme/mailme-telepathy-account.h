@@ -23,7 +23,6 @@
 
 #include <glib-object.h>
 #include <gio/gio.h>
-#include <telepathy-glib/account.h>
 
 
 G_BEGIN_DECLS
@@ -64,7 +63,7 @@ typedef struct {
 GType mailme_telepathy_account_get_type (void);
 
 void mailme_telepathy_account_prepare_async (MailmeTelepathyAccount *self,
-		                                     TpAccount              *account,
+		                                     GObject                *account,
                                              GAsyncReadyCallback     callback,
                                              gpointer                user_data);
 
@@ -73,7 +72,7 @@ MailmeAccountStatus mailme_telepathy_account_prepare_finish (
 		GAsyncResult           *result,
         GError                **error);
 
-TpAccount *mailme_telepathy_account_get_tp_account (
+GObject *mailme_telepathy_account_get_tp_account (
         MailmeTelepathyAccount *self);
 
 
