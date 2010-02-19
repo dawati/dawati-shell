@@ -30,7 +30,6 @@
 
 #include <moblin-panel/mpl-panel-common.h>
 
-#include "mnb-drop-down.h"
 #include "mnb-input-manager.h"
 
 G_BEGIN_DECLS

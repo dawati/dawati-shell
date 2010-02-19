@@ -24,7 +24,6 @@ source_h =	$(srcdir)/marshal.h			\
 		$(srcdir)/moblin-netbook-constraints.h	\
 		$(srcdir)/moblin-netbook-mutter-hints.h	\
 		$(srcdir)/mnb-spinner.h			\
-		$(srcdir)/mnb-drop-down.h               \
 		$(srcdir)/mnb-input-manager.h		\
 		$(srcdir)/mnb-toolbar.h                 \
 		$(srcdir)/mnb-toolbar-button.h          \
@@ -41,7 +40,6 @@ source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/moblin-netbook-mutter-hints.c	\
 		$(srcdir)/mnb-spinner.c			\
 		$(srcdir)/marshal.c                   	\
-		$(srcdir)/mnb-drop-down.c               \
 		$(srcdir)/mnb-input-manager.c		\
 		$(srcdir)/mnb-toolbar.c                 \
 		$(srcdir)/mnb-toolbar-button.c          \

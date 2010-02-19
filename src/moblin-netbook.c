@@ -27,7 +27,6 @@
 #endif
 
 #include "moblin-netbook.h"
-#include "mnb-drop-down.h"
 #include "alttab/mnb-alttab-overlay.h"
 #include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"

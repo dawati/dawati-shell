@@ -2,7 +2,7 @@
 
 /* mnb-panel.h */
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -28,7 +28,7 @@
 #include <glib-object.h>
 #include <dbus/dbus-glib.h>
 
-#include "mnb-drop-down.h"
+#include "moblin-netbook.h"
 
 G_BEGIN_DECLS
 

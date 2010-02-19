@@ -24,6 +24,7 @@
 
 #include "mnb-panel-oop.h"
 #include "mnb-toolbar.h"
+
 #include "marshal.h"
 
 #include <string.h>

@@ -52,7 +52,6 @@
 #include "mnb-panel-oop.h"
 #include "mnb-toolbar-button.h"
 #include "mnb-toolbar-icon.h"
-#include "mnb-drop-down.h"
 #include "mnb-spinner.h"
 
 /* For systray windows stuff */
@@ -60,7 +59,6 @@
 
 #include <clutter/x11/clutter-x11.h>
 
-/* FIME -- duplicated from MnbDropDown.c */
 #define SLIDE_DURATION 150
 
 #define KEY_DIR "/desktop/moblin/toolbar/panels"

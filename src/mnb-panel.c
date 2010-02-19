@@ -22,6 +22,8 @@
  * 02111-1307, USA.
  */
 
+#include <mx/mx.h>
+
 #include "mnb-panel.h"
 #include "mnb-toolbar.h"
 #include "mnb-enum-types.h"
