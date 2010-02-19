@@ -15,14 +15,14 @@ servicedir = $(datadir)/dbus-1/services
 service_DATA = org.moblin.UX.Shell.Panels.power.service
 
 EXTRA_DIST = \
-	$(desktop_in_files) \
-	$(service_in_files) \
-	$(NULL)
+  $(desktop_in_files) \
+  $(service_in_files) \
+  $(NULL)
 
 DISTCLEANFILES = \
-	$(panel_DATA) \
-	$(service_DATA) \
-	$(NULL)
+  $(panel_DATA) \
+  $(service_DATA) \
+  $(NULL)
 
 @INTLTOOL_DESKTOP_RULE@
 

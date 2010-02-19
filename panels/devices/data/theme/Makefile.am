@@ -1,13 +1,13 @@
 
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA = \
-	toolbar-button.css \
-	devices-coloured.png \
-	devices-normal.png \
-	directory-highlight.png \
-	frame-border.png \
-	panel.css \
-	$(NULL)
+  toolbar-button.css \
+  devices-coloured.png \
+  devices-normal.png \
+  directory-highlight.png \
+  frame-border.png \
+  panel.css \
+  $(NULL)
 
 # Manage mutter-moblin's texture cache.
 
