@@ -37,7 +37,7 @@ msgstr "這禮拜的行事曆上沒有任何條目"
 
 #: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "你朋友在線上所做的事都會在出現這裡。那麼現在就啟動你的帳戶吧！"
+msgstr "你朋友在線上所做的事都會在出現這裡。那麼現在就啟動你的帳號吧！"
 
 #: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
