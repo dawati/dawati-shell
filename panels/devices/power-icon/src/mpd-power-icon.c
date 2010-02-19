@@ -184,6 +184,7 @@ update (MpdPowerIcon *self)
     break;
   case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
     button_style = "state-full";
+    break;
   default:
     button_style = "state-missing";
   }

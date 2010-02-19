@@ -281,12 +281,17 @@ mpd_battery_device_get_state (MpdBatteryDevice *self)
                 "state", &device_state,
                 NULL);
 
+  g_debug ("power-icon: device state %d, '%s'",
+           device_state,
+           dkp_device_state_to_text (device_state));
+
   switch (device_state)
   {
   case DKP_DEVICE_STATE_CHARGING:
     state = MPD_BATTERY_DEVICE_STATE_CHARGING;
     break;
   case DKP_DEVICE_STATE_DISCHARGING:
+  case DKP_DEVICE_STATE_EMPTY:
     state = MPD_BATTERY_DEVICE_STATE_DISCHARGING;
     break;
   case DKP_DEVICE_STATE_FULLY_CHARGED:
