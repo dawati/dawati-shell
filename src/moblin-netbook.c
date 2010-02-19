@@ -306,6 +306,9 @@ moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
   clutter_actor_set_position (priv->notification_cluster,
                               screen_width, screen_height);
 
+  if (priv->desktop_tex)
+    clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
+
   mnb_toolbar_foreach_panel (MNB_TOOLBAR (priv->toolbar),
                              moblin_netbook_workarea_changed_foreach,
                              NULL);
