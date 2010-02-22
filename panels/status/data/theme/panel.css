@@ -15,28 +15,26 @@ MpsTweetCard.mps-tweet-card-first:hover,
 MpsTweetCard.mps-tweet-card-first:active
 {
   border-image: none;
-  padding: 8;
 }
 
 *.mps-tweet-content-label
 {
   font-family: Droid Sans;
   color: #595959ff;
-  font-size: 16pt;
+  font-size: 14;
 }
 
 *.mps-tweet-secondary-label
 {
   font-family: Droid Sans;
   color: #7dbe0cff;
-  font-size: 8pt;
+  font-size: 12;
 }
 
 *.mps-switcher-notebook
 {
   padding: 16;
 }
-
 
 *.mps-switcher-new-service
 {
