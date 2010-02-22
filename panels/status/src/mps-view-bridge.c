@@ -46,7 +46,7 @@ enum
 };
 
 #define THRESHOLD 5
-#define CARD_HEIGHT 100.0
+#define CARD_HEIGHT 84.0
 
 static void
 mps_view_bridge_get_property (GObject *object, guint property_id,

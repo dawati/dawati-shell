@@ -7,7 +7,7 @@
 MpsTweetCard, MpsTweetCard:hover, MpsTweetCard:active
 {
   border-image: url("status_card_background.png") 4 4 4 4;
-  padding: 8;
+  padding: 16 8 16 0;
 }
 
 MpsTweetCard.mps-tweet-card-first,
