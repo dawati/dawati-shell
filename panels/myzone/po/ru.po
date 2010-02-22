@@ -2,40 +2,48 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
-"PO-Revision-Date: 2009-11-19 12:11+0300\n"
-"Last-Translator: Alexander Mineev <alexander.g.mineev@intel.com>\n"
+"POT-Creation-Date: 2010-02-11 23:48+0000\n"
+"PO-Revision-Date: 2010-02-22 14:16+0200\n"
+"Last-Translator: kkk <kkk@mail.ru>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Russian\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Встречи</b>"
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Панель Myzone"
 
-#: ../penge/penge-events-pane.c:59
+#: ../penge/penge-calendar-pane.c:474
+msgid "Appointments"
+msgstr "Встречи"
+
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Создать встречу"
 
-#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Добавить"
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:342
 msgid "No calendar entries this week"
 msgstr "Нет записей в календаре на этой неделе"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Активности ваших друзей будут отображаться здесь. Активируйте учетную запись сейчас!"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "Веб страница"
 
@@ -47,16 +55,22 @@ msgstr "Создать новую задачу"
 msgid "Nothing to do today"
 msgstr "Заданий на сегодня нет"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "За %x"
 
-#: ../penge/penge-welcome-tile.c:88
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to Moblin"
+msgstr "Добро пожаловать в Moblin"
+
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Это Myzone - место, в котором появятся недавно использованные из веб-каналов файлы и контент."
+
 msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 msgstr "<b>Добро пожаловать в Moblin 2.1</b>"
 
-#: ../penge/penge-welcome-tile.c:108
-#, fuzzy
 msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Так как Moblin немного отличается от других компьютеров, мы расположили вместе некоторые программы, которые помогут Вам ориентироваться. Мы надеемся, что Вам понравится, команда Moblin."
+msgstr "Так как Moblin немного отличается от других компьютеров, мы расположили вместе некоторые программы, которые помогут вам ориентироваться. Мы надеемся, что вам понравится! Команда Moblin."
+
