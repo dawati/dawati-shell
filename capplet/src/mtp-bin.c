@@ -46,6 +46,7 @@ struct _MtpBinPrivate
   GConfClient  *client;
   ClutterActor *toolbar;
   ClutterActor *jar;
+  ClutterActor *err_message;
 
   gboolean disposed : 1;
 };
@@ -290,6 +291,19 @@ mtp_bin_load_contents (MtpBin *bin)
 }
 
 static void
+mtp_bin_toolbar_free_space_cb (MtpToolbar *toolbar,
+                               GParamSpec *pspec,
+                               MtpBin     *self)
+{
+  MtpBinPrivate *priv = MTP_BIN (self)->priv;
+
+  if (!mtp_toolbar_has_free_space (toolbar))
+    clutter_actor_show (priv->err_message);
+  else
+    clutter_actor_hide (priv->err_message);
+}
+
+static void
 mtp_bin_constructed (GObject *self)
 {
   MtpBinPrivate *priv = MTP_BIN (self)->priv;
@@ -313,15 +327,25 @@ mtp_bin_constructed (GObject *self)
 
     clutter_actor_set_name (button, "save-button");
 
+    priv->err_message = mx_label_new (_("Sorry, you'll have to remove a panel "
+                                        "before you can add a new one."));
+
     clutter_container_add (CLUTTER_CONTAINER (box), hbox, NULL);
-    clutter_container_add (CLUTTER_CONTAINER (hbox), dummy, button, NULL);
+    clutter_container_add (CLUTTER_CONTAINER (hbox), priv->err_message,
+                           dummy, button, NULL);
     clutter_container_child_set (CLUTTER_CONTAINER (hbox), dummy,
                                  "expand", TRUE, NULL);
     clutter_container_child_set (CLUTTER_CONTAINER (hbox), button,
                                  "x-align", MX_ALIGN_END, NULL);
 
+    clutter_actor_hide (priv->err_message);
+
     g_signal_connect (button, "clicked",
                       G_CALLBACK (mtp_bin_save_button_clicked_cb),
+                      self);
+
+    g_signal_connect (toolbar, "notify::free-space",
+                      G_CALLBACK (mtp_bin_toolbar_free_space_cb),
                       self);
   }
 

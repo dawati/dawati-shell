@@ -40,6 +40,7 @@ G_DEFINE_TYPE_WITH_CODE (MtpToolbar, mtp_toolbar, MX_TYPE_WIDGET,
 enum
 {
   ZONE_PROP_0 = 0,
+  ZONE_PROP_FREE_SPACE,
 
   /* d&d */
   ZONE_PROP_ENABLED
@@ -51,9 +52,10 @@ struct _MtpToolbarPrivate
   ClutterActor *panel_area;
   ClutterActor *clock;
 
-  gboolean enabled  : 1;
-  gboolean modified : 1;
-  gboolean disposed : 1;
+  gboolean free_space : 1;
+  gboolean enabled    : 1;
+  gboolean modified   : 1;
+  gboolean disposed   : 1;
 };
 
 static void
@@ -274,6 +276,9 @@ mtp_toolbar_get_property (GObject    *gobject,
     case ZONE_PROP_ENABLED:
       g_value_set_boolean (value, priv->enabled);
       break;
+    case ZONE_PROP_FREE_SPACE:
+      g_value_set_boolean (value, priv->free_space);
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -321,6 +326,19 @@ mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
   if (last)
     {
       ClutterActor *actor = last->data;
+
+      if (!applet)
+        {
+          gboolean not_free_space = !priv->free_space;
+
+          if (last->prev && MTP_IS_SPACE (last->prev->data))
+            priv->free_space = TRUE;
+          else
+            priv->free_space = FALSE;
+
+          if ((!priv->free_space) != not_free_space)
+            g_object_notify (G_OBJECT (toolbar), "free-space");
+        }
 
       if (MTP_IS_SPACE (actor))
         {
@@ -496,12 +514,24 @@ mtp_toolbar_class_init (MtpToolbarClass *klass)
   object_class->get_property      = mtp_toolbar_get_property;
 
   g_object_class_override_property (object_class, ZONE_PROP_ENABLED,"enabled");
+
+  g_object_class_install_property (object_class,
+                                   ZONE_PROP_FREE_SPACE,
+                                   g_param_spec_boolean ("free-space",
+                                                         "Free Space",
+                                                         "Free Space",
+                                                         TRUE,
+                                                         G_PARAM_READABLE));
 }
 
 static void
 mtp_toolbar_init (MtpToolbar *self)
 {
-  self->priv = MTP_TOOLBAR_GET_PRIVATE (self);
+  MtpToolbarPrivate *priv;
+
+  priv = self->priv = MTP_TOOLBAR_GET_PRIVATE (self);
+
+  priv->free_space = TRUE;
 
   clutter_actor_set_reactive ((ClutterActor*)self, TRUE);
 }
@@ -526,7 +556,32 @@ mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
   parent = clutter_actor_get_parent ((ClutterActor*)button);
 
   if (old_parent == priv->panel_area || old_parent == priv->applet_area)
-    mtp_toolbar_fill_space (toolbar);
+    {
+      priv->modified = TRUE;
+
+      mtp_toolbar_fill_space (toolbar);
+
+      if (!mtp_toolbar_button_is_applet (button))
+        {
+          gboolean  not_free_space = !priv->free_space;
+          GList    *last;
+
+          GList *children = clutter_container_get_children (
+                                       CLUTTER_CONTAINER (priv->panel_area));
+
+          last = g_list_last (children);
+
+          if (last && MTP_IS_SPACE (last->data))
+            priv->free_space = TRUE;
+          else
+            priv->free_space = FALSE;
+
+          if ((!priv->free_space) != not_free_space)
+            g_object_notify (G_OBJECT (toolbar), "free-space");
+
+          g_list_free (children);
+        }
+    }
 
   if (!(parent == priv->panel_area || parent == priv->applet_area))
     g_signal_handlers_disconnect_by_func (button,
@@ -574,6 +629,21 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
         }
       else
         {
+          gboolean not_free_space = !priv->free_space;
+
+          GList *children = clutter_container_get_children (
+                                       CLUTTER_CONTAINER (priv->panel_area));
+
+          if (g_list_length (children) >= 8 - 1)
+            priv->free_space = FALSE;
+          else
+            priv->free_space = TRUE;
+
+          if ((!priv->free_space) != not_free_space)
+            g_object_notify (G_OBJECT (toolbar), "free-space");
+
+          g_list_free (children);
+
           clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
                                        button);
           clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
@@ -857,4 +927,12 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
       clutter_actor_set_depth (space, applet_depth);
       applet_depth -= 0.05;
     }
+}
+
+gboolean
+mtp_toolbar_has_free_space (MtpToolbar *toolbar)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+
+  return priv->free_space;
 }
