@@ -174,6 +174,7 @@ mps_tweet_card_init (MpsTweetCard *self)
                                       "x-expand", FALSE,
                                       "y-expand", TRUE,
                                       "y-fill", FALSE,
+                                      "y-align", 0.0,
                                       "row-span", 2,
                                       NULL);
 
@@ -188,7 +189,7 @@ mps_tweet_card_init (MpsTweetCard *self)
                                       priv->content_label,
                                       0, 1,
                                       "y-expand", TRUE,
-                                      "y-align", 0.0,
+                                      "y-fill", TRUE,
                                       "x-expand", TRUE,
                                       "x-fill", TRUE,
                                       NULL);
@@ -199,7 +200,9 @@ mps_tweet_card_init (MpsTweetCard *self)
   mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
                                       priv->secondary_label,
                                       1, 1,
-                                      "y-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "y-align", 1.0,
+                                      "y-fill", FALSE,
                                       "x-expand", TRUE,
                                       "x-fill", TRUE,
                                       NULL);
@@ -233,6 +236,7 @@ mps_tweet_card_set_item (MpsTweetCard *card,
   const gchar *content = NULL;
   const gchar *author = NULL;
   gchar *combined_content;
+  gchar *secondary_msg;
   GError *error = NULL;
   ClutterActor *tmp_text;
 
@@ -265,5 +269,10 @@ mps_tweet_card_set_item (MpsTweetCard *card,
   clutter_text_set_markup (CLUTTER_TEXT (tmp_text),
                            combined_content);
   g_free (combined_content);
+
+  secondary_msg = mx_utils_format_time (&(item->date));
+
+  mx_label_set_text (MX_LABEL (priv->secondary_label), secondary_msg);
+  g_free (secondary_msg);
 }
 
