@@ -108,3 +108,50 @@ MpsFeedSwitcher
 {
   padding: 0 8 0 8;
 }
+
+*.mps-tweet-card-reply-button MxIcon
+{
+  x-mx-content-image: url("tweet-reply.png");
+  padding: 0;
+}
+
+*.mps-tweet-card-retweet-button MxIcon
+{
+  x-mx-content-image: url("retweet.png");
+  padding: 0;
+}
+
+*.mps-tweet-card-reply-button:hover MxIcon
+{
+  x-mx-content-image: url("tweet-reply-hover.png");
+  padding: 0;
+}
+
+*.mps-tweet-card-retweet-button:hover MxIcon
+{
+  x-mx-content-image: url("retweet-hover.png");
+  padding: 0;
+}
+
+*.mps-tweet-card-reply-button,
+*.mps-tweet-card-reply-button:active
+{
+  border-image: none;
+  padding: 0;
+}
+
+*.mps-tweet-card-retweet-button,
+*.mps-tweet-card-retweet-button:active
+{
+  border-image: none;
+  padding: 0;
+}
+
+
+*.mps-tweet-card-reply-button:hover,
+*.mps-tweet-card-retweet-button:hover
+{
+  border-image: url("icon-bg-hover.png") 4;
+  padding: 0;
+}
+

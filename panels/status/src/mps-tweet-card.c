@@ -38,6 +38,8 @@ struct _MpsTweetCardPrivate {
 
   ClutterActor *content_label;
   ClutterActor *secondary_label;
+
+  ClutterActor *button_box;
 };
 
 enum
@@ -45,6 +47,15 @@ enum
   PROP_0,
   PROP_ITEM
 };
+
+enum
+{
+  REPLY_CLICKED_SIGNAL,
+  RETWEET_CLICKED_SIGNAL,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = {0, };
 
 #define DEFAULT_AVATAR_PATH THEMEDIR "/avatar_icon.png"
 
@@ -99,9 +110,67 @@ mps_tweet_card_finalize (GObject *object)
 }
 
 static void
+_reply_button_clicked_cb (MxButton     *button,
+                          MpsTweetCard *card)
+{
+  g_signal_emit (card, signals[REPLY_CLICKED_SIGNAL], 0);
+}
+
+static void
+_retweet_button_clicked_cb (MxButton     *button,
+                            MpsTweetCard *card)
+{
+  g_signal_emit (card, signals[RETWEET_CLICKED_SIGNAL], 0);
+}
+
+static void
+mps_tweet_card_constructed (GObject *object)
+{
+  MpsTweetCardPrivate *priv = GET_PRIVATE (object);
+
+  if (g_str_equal (priv->item->service, "twitter"))
+  {
+    ClutterActor *button;
+    ClutterActor *icon;
+
+    button = mx_button_new ();
+    icon = mx_icon_new ();
+    mx_bin_set_child (MX_BIN (button), icon);
+    mx_stylable_set_style_class (MX_STYLABLE (button),
+                                 "mps-tweet-card-reply-button");
+
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                 button);
+
+    g_signal_connect (button,
+                      "clicked",
+                      (GCallback)_reply_button_clicked_cb,
+                      object);
+
+    button = mx_button_new ();
+    icon = mx_icon_new ();
+    mx_bin_set_child (MX_BIN (button), icon);
+    mx_stylable_set_style_class (MX_STYLABLE (button),
+                                 "mps-tweet-card-retweet-button");
+
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                 button);
+    g_signal_connect (button,
+                      "clicked",
+                      (GCallback)_retweet_button_clicked_cb,
+                      object);
+  }
+
+  if (G_OBJECT_CLASS (mps_tweet_card_parent_class)->constructed)
+    G_OBJECT_CLASS (mps_tweet_card_parent_class)->constructed (object);
+}
+
+static void
 mps_tweet_card_class_init (MpsTweetCardClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MpsTweetCardPrivate));
@@ -110,13 +179,34 @@ mps_tweet_card_class_init (MpsTweetCardClass *klass)
   object_class->set_property = mps_tweet_card_set_property;
   object_class->dispose = mps_tweet_card_dispose;
   object_class->finalize = mps_tweet_card_finalize;
+  object_class->constructed = mps_tweet_card_constructed;
 
   pspec = g_param_spec_boxed ("item",
                               "Item",
                               "Item",
                               SW_TYPE_ITEM,
-                              G_PARAM_READWRITE);
+                              G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_ITEM, pspec);
+
+  signals[REPLY_CLICKED_SIGNAL] = g_signal_new ("reply-clicked",
+                                                MPS_TYPE_TWEET_CARD,
+                                                G_SIGNAL_RUN_FIRST,
+                                                0,
+                                                NULL,
+                                                NULL,
+                                                g_cclosure_marshal_VOID__VOID,
+                                                G_TYPE_NONE,
+                                                0);
+
+  signals[RETWEET_CLICKED_SIGNAL] = g_signal_new ("retweet-clicked",
+                                                  MPS_TYPE_TWEET_CARD,
+                                                  G_SIGNAL_RUN_FIRST,
+                                                  0,
+                                                  NULL,
+                                                  NULL,
+                                                  g_cclosure_marshal_VOID__VOID,
+                                                  G_TYPE_NONE,
+                                                  0);
 }
 
 void moblin_status_panel_hide (void);
@@ -211,6 +301,19 @@ mps_tweet_card_init (MpsTweetCard *self)
                     "clicked",
                     (GCallback)_button_clicked_cb,
                     NULL);
+
+  priv->button_box = mx_box_layout_new ();
+  mx_box_layout_set_vertical (MX_BOX_LAYOUT (priv->button_box), TRUE);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box), 8);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
+                                      priv->button_box,
+                                      0, 2,
+                                      "y-expand", TRUE,
+                                      "y-align", 0.0,
+                                      "y-fill", FALSE,
+                                      "x-expand", FALSE,
+                                      "row-span", 2,
+                                      NULL);
 }
 
 ClutterActor *
