@@ -2,13 +2,13 @@
 # Copyright (C) 2009 mutter-moblin's copyright holder.
 # This file is distributed under the same license as the mutter-moblin package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-#
+# 
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-02-11 23:48+0000\n"
 "PO-Revision-Date: 2009-11-03 22:46+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -17,31 +17,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Appuntamenti</b>"
-
-#: ../penge/penge-events-pane.c:59
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Crea un appuntamento"
 
-#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Aggiungi"
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:342
 msgid "No calendar entries this week"
 msgstr "Nessun appuntamento "
 
-#: ../penge/penge-people-placeholder-tile.c:116
-msgid ""
-"Things that your friends do online will appear here. Activate your accounts "
-"now!"
-msgstr ""
-"Qui verranno mostrate le attività svolte in rete dai propri amici. Attivate "
-"i vostri account!"
+#: ../penge/penge-people-placeholder-tile.c:112
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
+msgstr "Qui verranno mostrate le attività svolte in rete dai propri amici. Attivate i vostri account!"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "Pagina web"
 
@@ -53,21 +45,29 @@ msgstr "Crea una nuova attività"
 msgid "Nothing to do today"
 msgstr "Nessuna attività per oggi"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "In scadenza il %x"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Benvenuti in Moblin 2.1 per netbook</b>"
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Pannello myzone"
 
-#: ../penge/penge-welcome-tile.c:108
-msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
-msgstr ""
-"Poiché Moblin è un po' diverso rispetto agli altri computer, sono state "
-"raggruppate alcune informazioni per comprendere al meglio il sistema. "
-"Speriamo troviate tutto di Vostro gradimento, il team Moblin."
+#: ../penge/penge-calendar-pane.c:474
+msgid "Appointments"
+msgstr "<b>Appuntamenti</b>"
+
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to Moblin"
+msgstr "Benvenuto su Moblin"
+
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Questo è il myzone, dove verranno visualizzati i file utilizzati di recente e il contenuto dei tuoi feed web"
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Benvenuti in Moblin 2.1 per netbook</b>"
+
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Poiché Moblin è un po' diverso rispetto agli altri computer, sono state raggruppate alcune informazioni per comprendere al meglio il sistema. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
