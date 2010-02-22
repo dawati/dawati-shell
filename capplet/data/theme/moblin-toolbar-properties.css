@@ -18,6 +18,10 @@ MxLabel#button-label {
   font-size: 16px;
 }
 
+MxLabel#error-message {
+  font-size: 16px;
+}
+
 MxLabel#available-panels {
   font-size: 19px;
 }

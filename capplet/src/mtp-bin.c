@@ -330,6 +330,8 @@ mtp_bin_constructed (GObject *self)
     priv->err_message = mx_label_new (_("Sorry, you'll have to remove a panel "
                                         "before you can add a new one."));
 
+    clutter_actor_set_name (priv->err_message, "error-message");
+
     clutter_container_add (CLUTTER_CONTAINER (box), hbox, NULL);
     clutter_container_add (CLUTTER_CONTAINER (hbox), priv->err_message,
                            dummy, button, NULL);
@@ -337,6 +339,8 @@ mtp_bin_constructed (GObject *self)
                                  "expand", TRUE, NULL);
     clutter_container_child_set (CLUTTER_CONTAINER (hbox), button,
                                  "x-align", MX_ALIGN_END, NULL);
+    clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->err_message,
+                                 "y-align", MX_ALIGN_MIDDLE, NULL);
 
     clutter_actor_hide (priv->err_message);
 
