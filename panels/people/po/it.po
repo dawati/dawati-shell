@@ -2,12 +2,12 @@
 # Copyright (C) 2009 mutter-moblin's copyright holder.
 # This file is distributed under the same license as the mutter-moblin package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"POT-Creation-Date: 2010-02-11 23:51+0000\n"
 "PO-Revision-Date: 2009-10-09 21:39+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -16,74 +16,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#.
-#. * Used as header for a block of the panel showing pending conversations.
-#. * The user will be able to click the tile and answer the pending conversation
-#.
-#: ../src/moblin-panel-people.c:18
-msgid "People talking to you ..."
-msgstr "Persone con cui si sta parlando..."
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:493
+#: ../data/moblin-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "persone"
 
-#.
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#.
-#: ../src/moblin-panel-people.c:23
-msgid "people - Someone is talking to you"
-msgstr "persone - Si sta parlando con qualcuno"
+#: ../src/mnb-people-panel.c:265
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Non è stata trovata alcuna persona. È stato configurato un account di messaggistica istantanea?"
 
-#.
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. * (plural version)
-#.
-#: ../src/moblin-panel-people.c:29
+#: ../src/mnb-people-panel.c:377
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Non è stata trovata alcuna persona. Sembra siano tutti fuori rete."
+
+#: ../src/mnb-people-panel.c:474
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "persone - %d persone con cui si sta parlando"
 
-#: ../src/moblin-panel-people.c:87
-msgid "people"
-msgstr "persone"
+#: ../src/mnb-people-panel.c:481
+msgid "people - Someone is talking to you"
+msgstr "persone - Si sta parlando con qualcuno"
 
-#: ../src/mnb-people-panel.c:50
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr ""
-"Per visualizzare i propri contatti di messaggistica, connettersi tramite il "
-"pannello di stato."
-
-#: ../src/mnb-people-panel.c:51
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Non è stata trovata alcuna persona. Sembra siano tutti fuori rete."
-
-#: ../src/mnb-people-panel.c:164
-msgid "Send an email"
-msgstr "Invia un'email"
-
-#: ../src/mnb-people-panel.c:166
-msgid "Edit details"
-msgstr "Modifica dettagli"
-
-#: ../src/mnb-people-panel.c:175
-msgid "Send a message"
-msgstr "Invia un messaggio"
-
-#: ../src/mnb-people-panel.c:309
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-"Non è stata trovata alcuna persona. È stato configurato un account di "
-"messaggistica istantanea?"
-
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:671
 msgid "People"
 msgstr "Persone"
 
-#: ../src/mnb-people-panel.c:567
+#: ../src/mnb-people-panel.c:684
 msgid "Search"
 msgstr "Cerca"
 
-#: ../src/mnb-people-panel.c:680
-msgid "Selection"
-msgstr "Selezione"
+#: ../src/mnb-people-panel.c:747
+msgid "People talking to you ..."
+msgstr "Persone con cui si sta parlando..."
 
-#: ../src/mnb-people-panel.c:743
-msgid "Nobody selected"
-msgstr "Nessuno selezionato"
+#: ../src/mnb-people-panel.c:422
+msgid "To see your IM contacts, you need to go online."
+msgstr "Per visualizzare i contatti IM, è necessario essere online."
+
+#: ../data/moblin-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Pannello persone"
+
+#~ msgid "Send an email"
+#~ msgstr "Invia un'email"
+
+#~ msgid "Edit details"
+#~ msgstr "Modifica dettagli"
+
+#~ msgid "Send a message"
+#~ msgstr "Invia un messaggio"
+
+#~ msgid "Selection"
+#~ msgstr "Selezione"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Nessuno selezionato"
