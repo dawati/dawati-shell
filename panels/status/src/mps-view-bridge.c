@@ -36,6 +36,9 @@ struct _MpsViewBridgePrivate {
 
   GList *actors_to_animate;
   ClutterTimeline *current_timeline;
+
+  MpsViewBridgeFactoryFunc func;
+  gpointer userdata;
 };
 
 enum
@@ -369,9 +372,15 @@ _view_items_added_cb (SwClientView  *view,
     SwItem *item = (SwItem *)l->data;
     ClutterActor *actor;
 
-    actor = g_object_new (MPS_TYPE_TWEET_CARD,
-                          "item", item,
-                          NULL);
+    if (priv->func)
+    {
+      actor = priv->func (bridge, item, priv->userdata);
+    } else {
+      actor = g_object_new (MPS_TYPE_TWEET_CARD,
+                            "item", item,
+                            NULL);
+    }
+
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->container),
                                  actor);
 
@@ -477,6 +486,17 @@ mps_view_bridge_set_view (MpsViewBridge *bridge,
                     bridge);
 
   sw_client_view_start (priv->view);
+}
+
+void
+mps_view_bridge_set_factory_func (MpsViewBridge            *bridge,
+                                  MpsViewBridgeFactoryFunc  func,
+                                  gpointer                  userdata)
+{
+  MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
+
+  priv->func = func;
+  priv->userdata = userdata;
 }
 
 void

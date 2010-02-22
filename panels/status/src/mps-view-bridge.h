@@ -58,6 +58,12 @@ void mps_view_bridge_set_view (MpsViewBridge    *bridge,
                                SwClientView *view);
 void mps_view_bridge_set_container (MpsViewBridge    *bridge,
                                     ClutterContainer *container);
+typedef ClutterActor *(*MpsViewBridgeFactoryFunc) (MpsViewBridge *bridge,
+                                          SwItem        *item,
+                                          gpointer       userdata);
+void mps_view_bridge_set_factory_func (MpsViewBridge            *bridge,
+                                       MpsViewBridgeFactoryFunc  func,
+                                       gpointer                  userdata);
 SwClientView *mps_view_bridge_get_view (MpsViewBridge *bridge);
 ClutterContainer *mps_view_bridge_get_container (MpsViewBridge *bridge);
 
