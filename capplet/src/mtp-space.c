@@ -105,6 +105,20 @@ mtp_space_pick (ClutterActor *self, const ClutterColor *color)
 }
 
 static void
+mtp_space_paint (ClutterActor *self)
+{
+  MtpSpacePrivate *priv = MTP_SPACE (self)->priv;
+
+  /*
+   * The spaces in the applet area are invisible.
+   */
+  if (priv->applet)
+    return;
+
+  CLUTTER_ACTOR_CLASS (mtp_space_parent_class)->paint (self);
+}
+
+static void
 mtp_space_class_init (MtpSpaceClass *klass)
 {
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
@@ -115,6 +129,7 @@ mtp_space_class_init (MtpSpaceClass *klass)
   actor_class->get_preferred_width  = mtp_space_get_preferred_width;
   actor_class->get_preferred_height = mtp_space_get_preferred_height;
   actor_class->pick                 = mtp_space_pick;
+  actor_class->paint                = mtp_space_paint;
 
   object_class->dispose             = mtp_space_dispose;
   object_class->finalize            = mtp_space_finalize;
