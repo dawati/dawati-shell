@@ -1788,6 +1788,21 @@ moblin_netbook_panel_modal_destroyed_cb (MutterWindow *mcw,
   mnb_panel_oop_set_auto_modal (panel, FALSE);
 }
 
+static gboolean
+moblin_netbook_never_move_window (MetaWindow *mw)
+{
+  const gchar *class    = meta_window_get_wm_class (mw);
+  const char  *instance = meta_window_get_wm_class_instance (mw);
+
+  if (class && instance)
+    {
+      if (!strcmp (class, "Nautilus") && !strcmp (instance, "file_progress"))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 /*
  * Simple map handler: it applies a scale effect which must be reversed on
  * completion).
@@ -1929,7 +1944,8 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
               move_window =
                 (type == META_COMP_WINDOW_NORMAL  &&
                  !meta_window_is_modal (mw)       &&
-                 meta_window_get_transient_for_as_xid (mw) == None);
+                 meta_window_get_transient_for_as_xid (mw) == None &&
+                 !moblin_netbook_never_move_window (mw));
             }
         }
 
