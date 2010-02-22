@@ -2,12 +2,12 @@
 # Copyright (C) 2009 mutter-moblin's copyright holder.
 # This file is distributed under the same license as the mutter-moblin package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"POT-Creation-Date: 2010-02-11 23:57+0000\n"
 "PO-Revision-Date: 2009-12-11 19:55+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -17,43 +17,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Italian\n"
 
-#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "zone"
-
-#: ../src/moblin-netbook.c:621
+#: ../src/moblin-netbook.c:809
 msgid "Moblin Netbook Effects"
 msgstr "Effetti Moblin netbook"
 
-#: ../src/moblin-netbook.c:625
+#: ../src/moblin-netbook.c:813
 msgid "Effects for Moblin Netbooks"
 msgstr "Effetti per i netbook Moblin"
 
-#: ../src/moblin-netbook.c:2529
+#: ../src/moblin-netbook.c:2848
 msgid "Activate"
 msgstr "Attiva"
 
-#: ../src/moblin-netbook.c:2543
+#: ../src/moblin-netbook.c:2862
 msgid "Unknown window"
 msgstr "Finestra sconosciuta"
 
-#: ../src/moblin-netbook.c:2545
+#: ../src/moblin-netbook.c:2864
 msgid "Is asking for your attention."
 msgstr "Richiede l'attenzione."
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:668
+#. 
+#: ../src/mnb-toolbar.c:752
 msgid "%l:%M %P"
 msgstr "%H.%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:678
+#. 
+#: ../src/mnb-toolbar.c:762
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
@@ -65,21 +61,30 @@ msgstr "Ignora"
 msgid "Dismiss All"
 msgstr "Ignora tutto"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "Zone non definite"
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determina l'ordine dei pannelli sulla barra degli strumenti."
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Le applicazioni in uso vengono mostrate qui. È possibile passare da "
-"un'applicazione all'altra e organizzarle come meglio si crede."
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Ordine dei pannelli sulla barra degli strumenti"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Nessuna applicazione in questa zona"
+#: ../src/mnb-toolbar.c:871
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Spiacente, %s non funziona"
+
+#~ msgid "zones"
+#~ msgstr "zone"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Zone non definite"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Le applicazioni in uso vengono mostrate qui. È possibile passare da un'applicazione all'altra e organizzarle come meglio si crede."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "Nessuna applicazione in questa zona"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Meno di un minuto fa"
@@ -96,7 +101,6 @@ msgstr "Nessuna applicazione in questa zona"
 #~ msgid "Yesterday"
 #~ msgstr "Ieri"
 
-# (ndt) giorno della settimana
 #~ msgid "On %A"
 #~ msgstr "%A"
 
@@ -136,15 +140,8 @@ msgstr "Nessuna applicazione in questa zona"
 #~ msgid "test"
 #~ msgstr "test"
 
-# (ndt) leggermente libera...
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "La cronologia personale sarà disponibile solo dopo aver ascoltato della "
-#~ "musica, guardato alcune immagini o dei video. Per il momento sono "
-#~ "mostrati alcuni contenuti di esempio:"
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "La cronologia personale sarà disponibile solo dopo aver ascoltato della musica, guardato alcune immagini o dei video. Per il momento sono mostrati alcuni contenuti di esempio:"
 
 #~ msgid "Recently played"
 #~ msgstr "Riprodotti di recente"
@@ -194,14 +191,8 @@ msgstr "Nessuna applicazione in questa zona"
 #~ msgid "applications"
 #~ msgstr "applicazioni"
 
-# (ndt) spero che quel New tab sia quello che c'è
-# un paio di stringhe dopo...
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Visitando delle pagine web, quelle preferite verranno visualizzate qui e "
-#~ "nella pagina «Nuova scheda» del browser."
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "Visitando delle pagine web, quelle preferite verranno visualizzate qui e nella pagina «Nuova scheda» del browser."
 
 #~ msgid "Untitled"
 #~ msgstr "Senza nome"
@@ -230,7 +221,6 @@ msgstr "Nessuna applicazione in questa zona"
 #~ msgid "Go to %s"
 #~ msgstr "Vai a %s"
 
-# (ndt) pulsante
 #~ msgid "Copy"
 #~ msgstr "Copia"
 
@@ -246,48 +236,30 @@ msgstr "Nessuna applicazione in questa zona"
 #~ msgid "You need to copy some text to use Pasteboard"
 #~ msgstr "È necessario copiare del testo per usare Appunti"
 
-# (ndt) pulsante
-# Changed from Pulisci to Cancella
 #~ msgid "Clear pasteboard"
 #~ msgstr "Cancella appunti"
 
-# (ndt) se io seleziono del testo, faccio Ctrl-C
-# tale testo compare in questa bella applicazione
 #~ msgid "pasteboard"
 #~ msgstr "appunti"
 
 #~ msgid "<b>Appointments</b>"
 #~ msgstr "<b>Appuntamenti</b>"
 
-# shortening truncated string
 #~ msgid "No calendar entries this week"
 #~ msgstr "Questa settimana nessun appuntamento"
 
-# Edited string
-#~ msgid ""
-#~ "Your friends' feeds and web services will appear here. Activate your "
-#~ "accounts now!"
-#~ msgstr ""
-#~ "Una volta attivati gli account personali, qui verranno mostrate le "
-#~ "notizie degli amici e i servizi web."
+#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+#~ msgstr "Una volta attivati gli account personali, qui verranno mostrate le notizie degli amici e i servizi web."
 
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>Benvenuti in Moblin 2.0 per netbook</b>"
 
-# Edited translation.
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "Poiché Moblin è un po' diverso rispetto agli altri computer, abiamo "
-#~ "raccolto alcune informazioni per aiutare a comprendere al meglio come "
-#~ "usarlo. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Poiché Moblin è un po' diverso rispetto agli altri computer, abiamo raccolto alcune informazioni per aiutare a comprendere al meglio come usarlo. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
 
 #~ msgid "Web page"
 #~ msgstr "Pagina web"
 
-# Changed word order to match another string that was shortened
 #~ msgid "Nothing to do today"
 #~ msgstr "Oggi nessuna attività"
 
@@ -306,11 +278,8 @@ msgstr "Nessuna applicazione in questa zona"
 #~ msgid "Send a message"
 #~ msgstr "Invia un messaggio"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Non è stata trovata alcuna persona. È stato configurato un account di "
-#~ "messaggistica istantanea?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Non è stata trovata alcuna persona. È stato configurato un account di messaggistica istantanea?"
 
 #~ msgid "People"
 #~ msgstr "Persone"
@@ -331,9 +300,7 @@ msgstr "Nessuna applicazione in questa zona"
 #~ msgstr "Scegliere una zona per l'applicazione:"
 
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
-#~ msgstr ""
-#~ "Per attivare la barra degli strumenti, muovere il puntatore verso la "
-#~ "parte superiore dello schermo"
+#~ msgstr "Per attivare la barra degli strumenti, muovere il puntatore verso la parte superiore dello schermo"
 
 #~ msgid "Offline"
 #~ msgstr "Fuori rete"
@@ -368,27 +335,17 @@ msgstr "Nessuna applicazione in questa zona"
 #~ msgid "Post"
 #~ msgstr "Pubblica"
 
-# Edited string
 #~ msgid "Your current status"
 #~ msgstr "Stato attuale"
 
-# Edited string
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Stato attuale - fuori rete"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Per aggiornare il proprio stato è necessario configurare un account di un "
-#~ "Servizio web che supporti i messaggi di stato"
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Per aggiornare il proprio stato è necessario configurare un account di un Servizio web che supporti i messaggi di stato"
 
-# Edited string, was missing IM
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Per aggiornare il proprio stato IM è necessario configurare un account di "
-#~ "messaggistica istantanea"
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Per aggiornare il proprio stato IM è necessario configurare un account di messaggistica istantanea"
 
 #~ msgid "status"
 #~ msgstr "stato"
