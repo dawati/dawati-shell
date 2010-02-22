@@ -2,13 +2,13 @@
 # Copyright (C) 2009 the anerley copyright holder
 # This file is distributed under the same license as the anerley package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-#
+# 
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: anerley\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-02 16:06+0000\n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
 "PO-Revision-Date: 2009-10-02 23:00+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -18,22 +18,43 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Italian\n"
 
-#: ../anerley/anerley-tile.c:206
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../anerley/anerley-tile.c:209
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Non disponibile"
 
-#: ../anerley/anerley-tile.c:212 ../anerley/anerley-tile.c:215
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "Assente"
 
-#: ../anerley/anerley-tile.c:218
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "Fuori rete"
 
-#: ../anerley/anerley-econtact-item.c:312
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "Senza nome"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Esteso"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Non impostato"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Nascosto"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Errore"
