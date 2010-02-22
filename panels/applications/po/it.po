@@ -2,12 +2,12 @@
 # Copyright (C) 2009 mutter-moblin's copyright holder.
 # This file is distributed under the same license as the mutter-moblin package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-22 09:29+0000\n"
+"POT-Creation-Date: 2010-02-17 15:12+0000\n"
 "PO-Revision-Date: 2009-08-22 16:38+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -16,22 +16,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#.
 #. * Fav apps.
-#.
+#. 
 #. Label
-#: ../src/moblin-netbook-launcher.c:887
+#: ../src/moblin-netbook-launcher.c:867
 msgid "Favorite Applications"
 msgstr "Applicazioni preferite"
 
-#: ../src/moblin-netbook-launcher.c:1384
+#: ../src/moblin-netbook-launcher.c:1427
 msgid "Applications"
 msgstr "Applicazioni"
 
-#: ../src/moblin-netbook-launcher.c:1395
+#: ../src/moblin-netbook-launcher.c:1438
 msgid "Search"
 msgstr "Cerca"
 
-#: ../src/moblin-panel-applications.c:186
+#: ../src/moblin-panel-applications.c:197
+#: ../data/moblin-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "applicazioni"
+
+#: ../data/moblin-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Pannello applicazioni"
