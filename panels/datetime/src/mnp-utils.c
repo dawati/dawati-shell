@@ -403,9 +403,8 @@ format_time (struct tm   *now,
 }
 
 MnpDateFormat *
-mnp_format_time_from_location (GWeatherLocation *location, time_t time_now)
+mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now)
 {
-	GWeatherTimezone *tzone;
 	char *tzid;
 	char *tzname;
 	static SystemTimezone *systz = NULL; 
@@ -415,14 +414,13 @@ mnp_format_time_from_location (GWeatherLocation *location, time_t time_now)
 	if (!systz)
 		systz = system_timezone_new ();
 
-	tzone =  gweather_location_get_timezone (location);
-	tzid = (char *)gweather_timezone_get_tzid (tzone);
+	tzid = location->tzid;
 	tzname = g_strdup (get_tzname(tzid));
 
 	clock_location_localtime (systz, tzid, &now, time_now);
 	fmt = format_time (&now, tzname, TRUE, time_now);
 
-	fmt->city = gweather_location_get_city_name (location);
+	fmt->city = g_strdup(location->city);
 	g_free(tzname);
 
 	return fmt;
@@ -440,15 +438,19 @@ mnp_load_zones (void)
 	kfile = g_key_file_new ();
 	if (g_key_file_load_from_file(kfile, pfile, G_KEY_FILE_NONE, NULL)) {
 		guint len=0, i;
-		char **strs;
+		char **grps;
 		
-		strs = g_key_file_get_string_list (kfile, "zones-names", "selected-zones", &len, NULL);
-		if (len) {
-			for (i=0; i<len; i++) {
-				g_ptr_array_add (zones, g_strdup(strs[i]));
-			}
-			g_strfreev(strs);
+		grps = g_key_file_get_groups (kfile, &len);
+		for (i=0; i<len; i++) {
+			MnpZoneLocation *loc = g_new0(MnpZoneLocation, 1);
+
+			loc->display = g_strdup (grps[i]);
+			loc->city = g_key_file_get_string (kfile, grps[i], "city", NULL);
+			loc->tzid = g_key_file_get_string (kfile, grps[i], "tzid", NULL);
+			g_ptr_array_add (zones, loc);
 		}
+		
+		g_strfreev(grps);
 	}
 	g_key_file_free(kfile);
 	g_free (pfile);
@@ -463,11 +465,18 @@ mnp_save_zones (GPtrArray *zones)
 	char *pfile;
 	char *contents;
 	guint len=0;
+	int i;
 
 	pfile = g_build_filename(g_get_user_config_dir(), "panel-clock-zones.conf", NULL);
 	
 	kfile = g_key_file_new ();
-	g_key_file_set_string_list (kfile, "zones-names", "selected-zones", (const gchar * const *)zones->pdata, zones->len);
+
+	for (i=0; i<zones->len; i++) {
+		MnpZoneLocation *loc = (MnpZoneLocation *)zones->pdata[i];
+		g_key_file_set_string (kfile, loc->display, "city", loc->city);
+		g_key_file_set_string (kfile, loc->display, "tzid", loc->tzid);
+
+	}
 	contents = g_key_file_to_data (kfile, &len, NULL);
 	
 	if(len) {

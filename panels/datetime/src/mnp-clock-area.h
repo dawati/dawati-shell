@@ -42,8 +42,8 @@ typedef struct _MnpClockArea MnpClockArea;
 typedef struct _MnpClockAreaClass MnpClockAreaClass;
 typedef struct _MnpClockAreaPriv MnpClockAreaPriv;
 
-typedef void (*ZoneRemovedFunc) (MnpClockArea *area, GWeatherLocation *loc, gpointer user_data);
-typedef void (*ClockZoneReorderedFunc) (GWeatherLocation *location, int new_position, gpointer user_data);
+typedef void (*ZoneRemovedFunc) (MnpClockArea *area, char *display, gpointer user_data);
+typedef void (*ClockZoneReorderedFunc) (MnpZoneLocation *location, int new_position, gpointer user_data);
 
 struct _MnpClockArea
 {

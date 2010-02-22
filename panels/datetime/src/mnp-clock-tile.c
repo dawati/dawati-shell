@@ -39,7 +39,7 @@ struct _MnpClockTilePriv {
 	ClutterActorBox area;
 
 	guint is_enabled : 1;
-	GWeatherLocation *loc;
+	MnpZoneLocation *loc;
 	time_t time_now;
 
 	MxLabel *date;
@@ -425,7 +425,7 @@ mnp_clock_construct (MnpClockTile *tile)
 }
 
 MnpClockTile *
-mnp_clock_tile_new (GWeatherLocation *location, time_t time_now)
+mnp_clock_tile_new (MnpZoneLocation *location, time_t time_now)
 {
 	MnpClockTile *tile = g_object_new (MNP_TYPE_CLOCK_TILE, NULL);
 
@@ -456,7 +456,7 @@ mnp_clock_tile_refresh (MnpClockTile *tile, time_t now)
 	FREE_DFMT(fmt);
 }
 
-GWeatherLocation * 
+MnpZoneLocation * 
 mnp_clock_tile_get_location (MnpClockTile *tile)
 {
 	return tile->priv->loc;

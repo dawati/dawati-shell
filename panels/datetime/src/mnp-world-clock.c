@@ -60,7 +60,10 @@ struct _MnpWorldClockPrivate {
 
 	GPtrArray *zones;
 	guint completion_timeout;
+	gboolean completion_inited;
 };
+
+static void construct_completion (MnpWorldClock *world_clock);
 
 static void
 mnp_world_clock_dispose (GObject *object)
@@ -97,13 +100,20 @@ mnp_world_clock_init (MnpWorldClock *self)
 
   priv->search_text = "";
   priv->zones = NULL;
+  priv->completion_inited = FALSE;
 }
 
 static gboolean
-start_search (MnpClockArea *area)
+start_search (MnpWorldClock *area)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (area);
-	
+
+	priv->completion_timeout = 0;
+
+	if (!priv->completion_inited) {
+		priv->completion_inited = TRUE;
+		construct_completion (area);
+	}
 	priv->search_text = mx_entry_get_text (priv->search_location);
 
 	if (!priv->search_text || !*priv->search_text)
@@ -237,19 +247,27 @@ static void
 add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
-	const GWeatherLocation *location;
+	GWeatherLocation *location;
 	MnpClockTile *tile;
+	MnpZoneLocation *loc = g_new0(MnpZoneLocation, 1);
+	const GWeatherTimezone *tzone;
 
 	priv->search_text = NULL;
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");
 	
 	location = mnp_utils_get_location_from_display (priv->zones_model, mx_entry_get_text (priv->search_location));
-	g_ptr_array_add (priv->zones, g_strdup(mx_entry_get_text (priv->search_location)));
+	loc->display = g_strdup(mx_entry_get_text (priv->search_location));
+	loc->city = g_strdup(gweather_location_get_city_name (location));
+	tzone =  gweather_location_get_timezone (location);
+	loc->tzid = g_strdup(gweather_timezone_get_tzid (tzone));
+
+
+	g_ptr_array_add (priv->zones, loc);
 	mnp_save_zones(priv->zones);
 
 	mx_entry_set_text (priv->search_location, "");
 
-	tile = mnp_clock_tile_new ((GWeatherLocation *)location, mnp_clock_area_get_time(priv->area));
+	tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area));
 	mnp_clock_area_add_tile (priv->area, tile);
 }
 
@@ -280,34 +298,36 @@ insert_in_ptr_array (GPtrArray *array, gpointer data, int pos)
 }
 
 static void
-zone_reordered_cb (GWeatherLocation *location, int new_pos, MnpWorldClock *clock)
+zone_reordered_cb (MnpZoneLocation *location, int new_pos, MnpWorldClock *clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
-	char *cloc = mnp_utils_get_display_from_location (priv->zones_model, location);
+	char *cloc = location->display;
 	int i;
 
 	for (i=0; i<priv->zones->len; i++) {
-		if (strcmp(cloc, (char *)priv->zones->pdata[i]) == 0) {
+		MnpZoneLocation *loc = (MnpZoneLocation *)priv->zones->pdata[i];
+		if (strcmp(cloc, loc->display) == 0) {
 			break;
 		}
 		
 	}
 
 	g_ptr_array_remove_index (priv->zones, i);
-	insert_in_ptr_array (priv->zones, (gpointer) cloc, new_pos);
+	insert_in_ptr_array (priv->zones, (gpointer) location, new_pos);
 
 	mnp_save_zones (priv->zones);
 }
 
 static void
-zone_removed_cb (MnpClockArea *area, GWeatherLocation *location, MnpWorldClock *clock)
+zone_removed_cb (MnpClockArea *area, char *display, MnpWorldClock *clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);	
-	char *cloc = mnp_utils_get_display_from_location (priv->zones_model, location);
 	int i;
+	MnpZoneLocation *loc;
 
 	for (i=0; i<priv->zones->len; i++) {
-		if (strcmp(cloc, (char *)priv->zones->pdata[i]) == 0) {
+		loc = (MnpZoneLocation *)priv->zones->pdata[i];		
+		if (strcmp(display, loc->display) == 0) {
 			break;
 		}
 	}
@@ -319,20 +339,55 @@ zone_removed_cb (MnpClockArea *area, GWeatherLocation *location, MnpWorldClock *
 }
 
 static void
+construct_completion (MnpWorldClock *world_clock)
+{
+	ClutterActor *scroll, *view, *stage;
+	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+	ClutterModel *model;
+	MnpButtonItem *button_item;
+
+	stage = clutter_stage_get_default ();
+
+
+	model = mnp_get_world_timezones ();
+	priv->zones_model = model;
+	clutter_model_set_filter (model, filter_zone, world_clock, NULL);
+
+	scroll = mx_scroll_view_new ();
+	clutter_actor_set_name (scroll, "completion-scroll-bin");
+	priv->scroll = scroll;
+	clutter_actor_set_size (scroll, -1, 300);	
+	clutter_container_add_actor ((ClutterContainer *)stage, scroll);
+      	clutter_actor_raise_top((ClutterActor *) scroll);
+	clutter_actor_set_position (scroll, 6, 35);  
+	clutter_actor_hide (scroll);
+
+	view = mx_list_view_new ();
+	clutter_actor_set_name (view, "completion-list-view");
+	priv->zones_list = (MxListView *)view;
+
+	clutter_container_add_actor (CLUTTER_CONTAINER (scroll), view);
+	mx_list_view_set_model (MX_LIST_VIEW (view), model);
+
+	button_item = mnp_button_item_new ((gpointer)world_clock, mnp_completion_done);
+	mx_list_view_set_factory (MX_LIST_VIEW (view), (MxItemFactory *)button_item);
+	mx_list_view_add_attribute (MX_LIST_VIEW (view), "label", 0);
+}
+
+static void
 mnp_world_clock_construct (MnpWorldClock *world_clock)
 {
-	ClutterActor *entry, *scroll, *view, *box, *stage;
+	ClutterActor *entry, *box, *stage;
 	MxBoxLayout *table = (MxBoxLayout *)world_clock;
 	gfloat width, height;
-	ClutterModel *model;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
-	MnpButtonItem *button_item;
+
+	stage = clutter_stage_get_default ();
 
 	mx_box_layout_set_vertical ((MxBoxLayout *)world_clock, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)world_clock, FALSE);
 
 	priv->completion_timeout = 0;
-	stage = clutter_stage_get_default ();
 
 	box = mx_box_layout_new ();
 	mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
@@ -368,29 +423,9 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 			       "x-fill", FALSE,			       			       
                                NULL);
 
-	model = mnp_get_world_timezones ();
-	priv->zones_model = model;
-	clutter_model_set_filter (model, filter_zone, world_clock, NULL);
 
-	scroll = mx_scroll_view_new ();
-	clutter_actor_set_name (scroll, "completion-scroll-bin");
-	priv->scroll = scroll;
-	clutter_actor_set_size (scroll, -1, 300);	
-	clutter_container_add_actor ((ClutterContainer *)stage, scroll);
-      	clutter_actor_raise_top((ClutterActor *) scroll);
-	clutter_actor_set_position (scroll, 6, 35);  
-	clutter_actor_hide (scroll);
 
-	view = mx_list_view_new ();
-	clutter_actor_set_name (view, "completion-list-view");
-	priv->zones_list = (MxListView *)view;
 
-	clutter_container_add_actor (CLUTTER_CONTAINER (scroll), view);
-	mx_list_view_set_model (MX_LIST_VIEW (view), model);
-
-	button_item = mnp_button_item_new ((gpointer)world_clock, mnp_completion_done);
-	mx_list_view_set_factory (MX_LIST_VIEW (view), (MxItemFactory *)button_item);
-	mx_list_view_add_attribute (MX_LIST_VIEW (view), "label", 0);
 
 	priv->area = mnp_clock_area_new ();
 	clutter_actor_get_size (box, &width, &height);
@@ -422,8 +457,8 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 		int i=0;
 
 		for (i=0; i<priv->zones->len; i++) {
-			GWeatherLocation *location = (GWeatherLocation *)mnp_utils_get_location_from_display (priv->zones_model, priv->zones->pdata[i]);
-			MnpClockTile *tile = mnp_clock_tile_new (location, mnp_clock_area_get_time(priv->area));
+			MnpZoneLocation *loc = (MnpZoneLocation *)priv->zones->pdata[i];
+			MnpClockTile *tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area));
 			mnp_clock_area_add_tile (priv->area, tile);
 		}
 	}

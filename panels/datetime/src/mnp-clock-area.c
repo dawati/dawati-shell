@@ -26,6 +26,7 @@
 
 #include "mnp-clock-area.h"
 #include "mnp-clock-tile.h"
+#include "mnp-utils.h"
 
 struct _MnpClockAreaPriv {
 	ClutterActor *background;

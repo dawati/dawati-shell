@@ -45,11 +45,18 @@ typedef struct _mnp_date_fmt {
 	char *time;
 }MnpDateFormat;
 
+typedef struct _mnp_zone_location {
+	char *display;
+	char *city;
+	char *tzid;
+}MnpZoneLocation;
+
+
 ClutterModel * mnp_get_world_timezones (void);
 const GWeatherLocation * mnp_utils_get_location_from_display (ClutterModel *store, const char *display);
 GPtrArray * mnp_load_zones (void);
 void mnp_save_zones (GPtrArray *zones);
-MnpDateFormat * mnp_format_time_from_location (GWeatherLocation *location, time_t time_now);
+MnpDateFormat * mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now);
 char * mnp_utils_get_display_from_location (ClutterModel *store, GWeatherLocation *location);
 
 
