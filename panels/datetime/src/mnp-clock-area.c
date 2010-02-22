@@ -36,6 +36,7 @@ struct _MnpClockAreaPriv {
 	gfloat position;
 	time_t time_now;
 	guint source;
+	gboolean prop_sec_zero;
 
 	ZoneRemovedFunc zone_remove_func;
 	gpointer zone_remove_data;
@@ -244,6 +245,12 @@ clock_ticks (MnpClockArea *area)
 	for (i=0; i<tmp->len; i++) { 
 		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now);
 	}
+	
+	if (!area->priv->prop_sec_zero) {
+		area->priv->prop_sec_zero = TRUE;
+		area->priv->source = g_timeout_add (60 * 1000, (GSourceFunc)clock_ticks, area);
+		return FALSE;
+	}
 
 	return TRUE;
 }
@@ -252,9 +259,11 @@ MnpClockArea *
 mnp_clock_area_new (void)
 {
 	MnpClockArea *area = g_object_new(MNP_TYPE_CLOCK_AREA, NULL);
+	int clk_sec = 60 - (time(NULL)%60);
 
 	area->priv = g_new0(MnpClockAreaPriv, 1);
 	area->priv->is_enabled = 1;
+	area->priv->prop_sec_zero = FALSE;
 	area->priv->clock_tiles = g_ptr_array_new ();
 	area->priv->position = 0.05;
 	mx_box_layout_set_vertical ((MxBoxLayout *)area, TRUE);
@@ -262,7 +271,13 @@ mnp_clock_area_new (void)
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)area, TRUE);
 	area->priv->time_now = time(NULL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)area, 10);
-	area->priv->source = g_timeout_add (1000, (GSourceFunc)clock_ticks, area);
+
+	if (clk_sec) {
+		area->priv->source = g_timeout_add (clk_sec * 1000, (GSourceFunc)clock_ticks, area);
+	} else {
+		area->priv->prop_sec_zero = TRUE;
+		area->priv->source = g_timeout_add (60 * 1000, (GSourceFunc)clock_ticks, area);
+	}
 
 	return area;
 }
