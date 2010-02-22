@@ -17,3 +17,5 @@ dist_icons_DATA = \
   directory-videos.png \
   $(NULL)
 
+
+-include $(top_srcdir)/git.mk

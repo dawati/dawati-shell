@@ -12,3 +12,5 @@ libegg_idletime_la_SOURCES = \
   egg-idletime.c \
   $(NULL)
 
+
+-include $(top_srcdir)/git.mk

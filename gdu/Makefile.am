@@ -101,3 +101,5 @@ udisks-expander-glue.h: $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDis
 udisks-port-glue.h: $(UDISKS_DATADIR)/dbus-1/interfaces/org.freedesktop.UDisks.Port.xml Makefile.am
 	$(AM_V_GEN)dbus-binding-tool --prefix=devkit_disks_daemon --mode=glib-client --output=$@ $<
 
+
+-include $(top_srcdir)/git.mk

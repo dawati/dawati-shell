@@ -60,3 +60,5 @@ if HAVE_UDISKS
   moblin_panel_devices_LDADD += $(top_builddir)/gdu/libgdu.la
 endif
 
+
+-include $(top_srcdir)/git.mk

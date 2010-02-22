@@ -28,3 +28,5 @@ DISTCLEANFILES = \
   power-icon.css \
   $(NULL)
 
+
+-include $(top_srcdir)/git.mk

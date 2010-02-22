@@ -34,3 +34,5 @@ moblin_power_icon_SOURCES = \
   mpd-shutdown-notification.h \
   $(NULL)
 
+
+-include $(top_srcdir)/git.mk

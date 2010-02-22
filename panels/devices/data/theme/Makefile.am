@@ -23,3 +23,5 @@ uninstall-hook:
 	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(pkgdatadir)
 endif
 
+
+-include $(top_srcdir)/git.mk

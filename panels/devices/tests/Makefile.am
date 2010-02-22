@@ -42,3 +42,5 @@ test_storage_device_SOURCES = \
   $(top_srcdir)/src/mpd-storage-device.c \
   $(NULL)
 
+
+-include $(top_srcdir)/git.mk

@@ -22,3 +22,5 @@ test_idle_manager_SOURCES = \
   $(top_srcdir)/src/mpd-gobject.c \
   $(NULL)
 
+
+-include $(top_srcdir)/git.mk

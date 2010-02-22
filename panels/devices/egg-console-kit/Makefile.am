@@ -18,3 +18,5 @@ libegg_console_kit_la_SOURCES = \
   egg-debug.h \
   $(NULL)
 
+
+-include $(top_srcdir)/git.mk
