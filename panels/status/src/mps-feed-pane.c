@@ -43,8 +43,8 @@
 #include <moblin-panel/mpl-panel-common.h>
 
 #include "mps-view-bridge.h"
-
 #include "mps-feed-pane.h"
+#include "mps-tweet-card.h"
 
 G_DEFINE_TYPE (MpsFeedPane, mps_feed_pane, MX_TYPE_TABLE)
 
@@ -344,6 +344,68 @@ _entry_activate_cb (ClutterText *text,
 }
 
 static void
+_card_reply_clicked (MpsTweetCard *card,
+                     gpointer      userdata)
+{
+  MpsFeedPane *pane = MPS_FEED_PANE (userdata);
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+  SwItem *item;
+  gchar *reply_msg;
+
+  item = mps_tweet_card_get_item (card);
+
+  reply_msg = g_strdup_printf ("@%s ",
+                               sw_item_get_value (item, "screen_name"));
+  mpl_entry_set_text (MPL_ENTRY (priv->entry), reply_msg);
+  clutter_actor_grab_key_focus (priv->entry);
+  g_free (reply_msg);
+}
+
+static void
+_card_retweet_clicked (MpsTweetCard *card,
+                       gpointer      userdata)
+{
+  MpsFeedPane *pane = MPS_FEED_PANE (userdata);
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+  SwItem *item;
+  gchar *retweet_msg;
+
+  item = mps_tweet_card_get_item (card);
+
+  retweet_msg = g_strdup_printf ("RT @%s: %s",
+                                 sw_item_get_value (item, "screen_name"),
+                                 sw_item_get_value (item, "content"));
+
+  mpl_entry_set_text (MPL_ENTRY (priv->entry), retweet_msg);
+  clutter_actor_grab_key_focus (priv->entry);
+  g_free (retweet_msg);
+}
+
+static ClutterActor *
+_bridge_factory_func (MpsViewBridge *bridge,
+                      SwItem        *item,
+                      gpointer       userdata)
+{
+  ClutterActor *actor;
+
+  actor = g_object_new (MPS_TYPE_TWEET_CARD,
+                        "item", item,
+                        NULL);
+
+  g_signal_connect (actor,
+                    "reply-clicked",
+                    (GCallback)_card_reply_clicked,
+                    userdata);
+  g_signal_connect (actor,
+                    "retweet-clicked",
+                    (GCallback)_card_retweet_clicked,
+                    userdata);
+
+  return actor;
+}
+
+
+static void
 mps_feed_pane_init (MpsFeedPane *self)
 {
   MpsFeedPanePrivate *priv = GET_PRIVATE (self);
@@ -373,6 +435,9 @@ mps_feed_pane_init (MpsFeedPane *self)
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (priv->box_layout), TRUE);
 
   priv->bridge = mps_view_bridge_new ();
+  mps_view_bridge_set_factory_func (priv->bridge,
+                                    _bridge_factory_func,
+                                    self);
   mps_view_bridge_set_container (priv->bridge,
                                  CLUTTER_CONTAINER (priv->box_layout));
 
