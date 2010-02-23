@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"POT-Creation-Date: 2010-02-11 23:57+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -14,24 +14,32 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "zones"
-
-#: ../src/moblin-netbook.c:621
+#: ../src/moblin-netbook.c:809
 msgid "Moblin Netbook Effects"
 msgstr "Effets spéciaux pour netbook utilisant Moblin"
 
-#: ../src/moblin-netbook.c:625
+#: ../src/moblin-netbook.c:813
 msgid "Effects for Moblin Netbooks"
 msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
+
+#: ../src/moblin-netbook.c:2848
+msgid "Activate"
+msgstr "Activer"
+
+#: ../src/moblin-netbook.c:2862
+msgid "Unknown window"
+msgstr "Fenêtre inconnue"
+
+#: ../src/moblin-netbook.c:2864
+msgid "Is asking for your attention."
+msgstr "Requiert votre attention."
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
 # For France, use 24-hour clock
-#: ../src/mnb-toolbar.c:668
+#: ../src/mnb-toolbar.c:752
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -39,7 +47,7 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../src/mnb-toolbar.c:678
+#: ../src/mnb-toolbar.c:762
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
@@ -51,29 +59,30 @@ msgstr "Supprimer"
 msgid "Dismiss All"
 msgstr "Tout supprimer"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "Aucune zone n'est définie"
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Établit l'ordre des panneaux sur la barre d'outils."
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Les applications que vous utilisez vont apparaître ici. Vous pourrez les organizer et y accéder à votre guise."
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Ordre des panneaux sur la barre d'outils"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Pas d'applications dans cette zone"
+#: ../src/mnb-toolbar.c:871
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Désolé, %s est corrompu"
 
-#: ../src/moblin-netbook.c:2543
-msgid "Unknown window"
-msgstr "Fenêtre inconnue"
+#~ msgid "zones"
+#~ msgstr "zones"
 
-#: ../src/moblin-netbook.c:2529
-msgid "Activate"
-msgstr "Activer"
+#~ msgid "No Zones yet"
+#~ msgstr "Aucune zone n'est définie"
 
-#: ../src/moblin-netbook.c:2545
-msgid "Is asking for your attention."
-msgstr "Requiert votre attention."
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Les applications que vous utilisez vont apparaître ici. Vous pourrez les organizer et y accéder à votre guise."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "Pas d'applications dans cette zone"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Il y a moins d'une minute"
