@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 23:48+0000\n"
+"POT-Creation-Date: 2010-02-17 15:12+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -13,23 +14,26 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#.
 #. * Fav apps.
-#.
+#. 
 #. Label
-#: ../src/moblin-netbook-launcher.c:887
+#: ../src/moblin-netbook-launcher.c:867
 msgid "Favorite Applications"
 msgstr "Favoritenanwendungen"
 
-#: ../src/moblin-netbook-launcher.c:1384
+#: ../src/moblin-netbook-launcher.c:1427
 msgid "Applications"
 msgstr "Anwendungen"
 
-#: ../src/moblin-netbook-launcher.c:1395
+#: ../src/moblin-netbook-launcher.c:1438
 msgid "Search"
 msgstr "Suchen"
 
-#: ../src/moblin-panel-applications.c:187
+#: ../src/moblin-panel-applications.c:197
+#: ../data/moblin-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "Anwendungen"
 
+#: ../data/moblin-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Panel Anwendungen"
