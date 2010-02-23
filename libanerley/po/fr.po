@@ -53,18 +53,6 @@ msgstr "Déconnecté"
 msgid "Unnamed"
 msgstr "Sans nom"
 
-#: ../anerley/anerley-presence-chooser.c:41
-msgid "Unset"
-msgstr ""
-
-#: ../anerley/anerley-presence-chooser.c:45
-msgid "Extended Away"
-msgstr ""
-
-#: ../anerley/anerley-presence-chooser.c:46
-msgid "Hidden"
-msgstr ""
-
 #: ../anerley/anerley-presence-chooser.c:48
 msgid "Unknown"
 msgstr "Inconnu"
@@ -72,3 +60,15 @@ msgstr "Inconnu"
 #: ../anerley/anerley-presence-chooser.c:49
 msgid "Error"
 msgstr "Erreur"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Absence prolongée"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Non défini"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Caché"
