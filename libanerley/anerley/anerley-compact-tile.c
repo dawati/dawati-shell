@@ -85,8 +85,8 @@ anerley_compact_tile_dispose (GObject *object)
 
   if (priv->item)
   {
-    g_object_unref (priv->item);
-    priv->item = NULL;
+    anerley_compact_tile_set_item (ANERLEY_COMPACT_TILE (object),
+                                   NULL);
   }
 
   G_OBJECT_CLASS (anerley_compact_tile_parent_class)->dispose (object);
