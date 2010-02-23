@@ -7,36 +7,41 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
-"PO-Revision-Date: 2010-01-20 23:31-0800\n"
-"Last-Translator: Geoff Gustafson <geoff@linux.intel.com>\n"
+"POT-Creation-Date: 2010-02-11 23:57+0000\n"
+"PO-Revision-Date: 2010-02-23 12:36+0200\n"
+"Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-netbook.c:463
-#: ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "зоны"
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Определяет порядок панелей на инструментальной панели."
 
-#: ../src/moblin-netbook.c:621
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Порядок панелей на инструментальной панели"
+
+#: ../src/moblin-netbook.c:809
 msgid "Moblin Netbook Effects"
 msgstr "Эффекты Moblin Netbook"
 
-#: ../src/moblin-netbook.c:625
+#: ../src/moblin-netbook.c:813
 msgid "Effects for Moblin Netbooks"
 msgstr "Эффекты для Moblin Netbooks"
 
-#: ../src/moblin-netbook.c:2529
+#: ../src/moblin-netbook.c:2848
 msgid "Activate"
 msgstr "Активировать"
 
-#: ../src/moblin-netbook.c:2543
+#: ../src/moblin-netbook.c:2862
 msgid "Unknown window"
 msgstr "Неизвестное окно"
 
-#: ../src/moblin-netbook.c:2545
+#: ../src/moblin-netbook.c:2864
 msgid "Is asking for your attention."
 msgstr "Просит обратить внимание."
 
@@ -44,7 +49,7 @@ msgstr "Просит обратить внимание."
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:668
+#: ../src/mnb-toolbar.c:752
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -52,9 +57,14 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../src/mnb-toolbar.c:678
+#: ../src/mnb-toolbar.c:762
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
+
+#: ../src/mnb-toolbar.c:871
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Извините, %s поврежден"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -64,15 +74,18 @@ msgstr "Пропустить"
 msgid "Dismiss All"
 msgstr "Пропустить"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "Нет зон"
+#~ msgid "zones"
+#~ msgstr "зоны"
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Программы, которые будут использоваться, появятся здесь.  Вы сможете переключать и упорядочить их."
+#~ msgid "No Zones yet"
+#~ msgstr "Нет зон"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Нет программ в этой зоне."
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Программы, которые будут использоваться, появятся здесь.  Вы сможете "
+#~ "переключать и упорядочить их."
 
+#~ msgid "No applications on this zone"
+#~ msgstr "Нет программ в этой зоне."
