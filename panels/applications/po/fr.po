@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 23:48+0000\n"
+"POT-Creation-Date: 2010-02-17 15:12+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
@@ -14,21 +14,26 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-netbook-launcher.c:1384
-msgid "Applications"
-msgstr "Applications"
-
-#: ../src/moblin-netbook-launcher.c:1395
-msgid "Search"
-msgstr "Rechercher"
-
-#: ../src/moblin-panel-applications.c:187
-msgid "applications"
-msgstr "applications"
-
 #. * Fav apps.
 #. 
 #. Label
-#: ../src/moblin-netbook-launcher.c:887
+#: ../src/moblin-netbook-launcher.c:867
 msgid "Favorite Applications"
 msgstr "Applications favorites"
+
+#: ../src/moblin-netbook-launcher.c:1427
+msgid "Applications"
+msgstr "Applications"
+
+#: ../src/moblin-netbook-launcher.c:1438
+msgid "Search"
+msgstr "Rechercher"
+
+#: ../src/moblin-panel-applications.c:197
+#: ../data/moblin-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr "applications"
+
+#: ../data/moblin-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Panneau des applications"
