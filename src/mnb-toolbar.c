@@ -153,6 +153,13 @@ enum
 
 static guint toolbar_signals[LAST_SIGNAL] = { 0 };
 
+typedef enum
+{
+  MNB_TOOLBAR_PANEL_NORMAL = 0,
+  MNB_TOOLBAR_PANEL_APPLET,
+  MNB_TOOLBAR_PANEL_CLOCK
+} MnbToolbarPanelType;
+
 struct _MnbToolbarPanel
 {
   gchar      *name;
@@ -164,10 +171,10 @@ struct _MnbToolbarPanel
   ClutterActor *button;
   MnbPanel   *panel;
 
+  MnbToolbarPanelType type;
+
   gboolean    windowless : 1; /* button-only panel */
   gboolean    unloaded   : 1;
-  gboolean    applet     : 1;
-  gboolean    builtin    : 1;
   gboolean    current    : 1;
   gboolean    pinged     : 1;
   gboolean    required   : 1;
@@ -226,6 +233,7 @@ struct _MnbToolbarPrivate
                                    * be included in the panel input region.
                                    */
   gboolean struts_set        : 1;
+  gboolean have_clock        : 1;
 
   MnbShowHideReason reason_for_show; /* Reason for pending Toolbar show */
   MnbShowHideReason reason_for_hide; /* Reason for pending Toolbar hide */
@@ -1369,7 +1377,7 @@ mnb_toolbar_get_panel_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
     {
       MnbToolbarPanel *t = l->data;
 
-      if (t->applet)
+      if (t->type == MNB_TOOLBAR_PANEL_APPLET)
         continue;
 
       if (l->data == tp)
@@ -1397,7 +1405,7 @@ mnb_toolbar_get_applet_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
     {
       MnbToolbarPanel *t = l->data;
 
-      if (!t->applet)
+      if (t->type != MNB_TOOLBAR_PANEL_APPLET)
         continue;
 
       if (l->data == tp)
@@ -1411,6 +1419,7 @@ mnb_toolbar_get_applet_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   return -1;
 }
 
+#if 0
 static void
 mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
                                            MnbToolbarPanel *tp)
@@ -1475,6 +1484,7 @@ mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
     mnb_panel_set_button (panel, MX_BUTTON (tp->button));
   mnb_panel_set_position (panel, 0, TOOLBAR_HEIGHT);
 }
+#endif
 
 static void
 mnb_toolbar_panel_request_button_style_cb (MnbPanel    *panel,
@@ -1869,22 +1879,34 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
    * The button size and positioning depends on whether this is a regular
    * zone button, but one of the applet buttons.
    */
-  if (!tp->applet)
+  if (tp->type != MNB_TOOLBAR_PANEL_APPLET)
     {
       gint index = mnb_toolbar_get_panel_index (toolbar, tp);
 
       if (index < priv->max_panels)
         {
           /*
-           * Zone button
+           * FIXME -- need to redo the whole allocation for the Toolbar, this
+           * is too much pain.
            */
-          clutter_actor_set_size (CLUTTER_ACTOR (button),
-                                  BUTTON_WIDTH, BUTTON_HEIGHT);
-
-          clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                      CLOCK_WIDTH + (BUTTON_WIDTH * index)
-                                      + (BUTTON_SPACING * index),
-                                      TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+          if (tp->type != MNB_TOOLBAR_PANEL_CLOCK)
+            {
+              clutter_actor_set_size (CLUTTER_ACTOR (button),
+                                      BUTTON_WIDTH, BUTTON_HEIGHT);
+              clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                          CLOCK_WIDTH + (BUTTON_WIDTH * index)
+                                          + (BUTTON_SPACING * index),
+                                          TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+            }
+          else
+            {
+              /*
+               * FIXME for now, put clock at the fixed position on the left.
+               */
+              clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                           TOOLBAR_X_PADDING,
+                                          TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+            }
 
           mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
                                                 0,
@@ -1961,7 +1983,7 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
   /*
    * Check that we have space to show this panel.
    */
-  if (tp->applet)
+  if (tp->type == MNB_TOOLBAR_PANEL_APPLET)
     {
       index = mnb_toolbar_get_applet_index (toolbar, tp);
 
@@ -1997,17 +2019,22 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
     {
       if (tp->button_style)
         style_id = tp->button_style;
-      else
+      else if (tp->type != MNB_TOOLBAR_PANEL_CLOCK)
         button_style = g_strdup_printf ("%s-button", name);
     }
 
   if (tp->button)
     clutter_actor_destroy (CLUTTER_ACTOR (tp->button));
 
-  if (!tp->windowless)
-    button = tp->button = mnb_toolbar_button_new ();
-  else
+  if (tp->type == MNB_TOOLBAR_PANEL_CLOCK)
+    {
+      button = tp->button = mnb_toolbar_clock_new ();
+      toolbar->priv->have_clock = TRUE;
+    }
+  else if (tp->windowless)
     button = tp->button = mnb_toolbar_icon_new ();
+  else
+    button = tp->button = mnb_toolbar_button_new ();
 
   if (stylesheet && *stylesheet)
     {
@@ -2052,9 +2079,6 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
     g_signal_connect (button, "notify::checked",
                       G_CALLBACK (mnb_toolbar_windowless_button_toggled_cb),
                       toolbar);
-
-  if (tp->builtin)
-    mnb_toolbar_append_panel_builtin_internal (toolbar, tp);
 }
 
 /*
@@ -2570,7 +2594,6 @@ mnb_toolbar_constructed (GObject *self)
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
   ClutterActor      *lowlight, *panel_stub;
-  ClutterActor      *clock;
   ClutterActor      *shadow;
   ClutterTexture    *sh_texture;
   gint               screen_width, screen_height;
@@ -2668,10 +2691,6 @@ mnb_toolbar_constructed (GObject *self)
       priv->shadow = shadow;
     }
 
-  clock = mnb_toolbar_clock_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), clock);
-  clutter_actor_set_position (clock, TOOLBAR_X_PADDING, 4.0);
-
   mx_bin_set_alignment (MX_BIN (self), MX_ALIGN_START, MX_ALIGN_START);
   mx_bin_set_child (MX_BIN (self), hbox);
 
@@ -2702,6 +2721,22 @@ mnb_toolbar_constructed (GObject *self)
                     self);
 
   mnb_toolbar_setup_panels (MNB_TOOLBAR (self));
+
+#if 1
+  /*
+   * Since the datetime panel is not ready yet, we create a temporary clock if
+   * it has not been loaded.
+   */
+  if (!priv->have_clock)
+    {
+      ClutterActor *clock = mnb_toolbar_clock_new ();
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (hbox), clock);
+      clutter_actor_set_position (clock, TOOLBAR_X_PADDING,
+                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+      clutter_actor_set_reactive (clock, FALSE);
+    }
+#endif
 
   g_signal_connect (screen, "restacked",
                     G_CALLBACK (mnb_toolbar_screen_restacked_cb),
@@ -3174,7 +3209,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
       ClutterActor    *button;
       gint             x, y;
 
-      if (!tp || !tp->applet || !tp->button)
+      if (!tp || (tp->type != MNB_TOOLBAR_PANEL_APPLET) || !tp->button)
         continue;
 
       button = (ClutterActor*) tp->button;
@@ -3533,10 +3568,10 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
 
       if (s)
         {
-          if (!strcmp (s, "builtin"))
-            tp->builtin = builtin = TRUE;
-          else if (!strcmp (s, "applet"))
-            tp->applet = TRUE;
+          if (!strcmp (s, "applet"))
+            tp->type = MNB_TOOLBAR_PANEL_APPLET;
+          else if (!strcmp (s, "clock"))
+            tp->type = MNB_TOOLBAR_PANEL_CLOCK;
 
           g_free (s);
         }
