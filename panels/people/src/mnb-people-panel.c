@@ -26,7 +26,9 @@
 #include <anerley/anerley-tp-feed.h>
 #include <anerley/anerley-item.h>
 #include <anerley/anerley-tile-view.h>
+#include <anerley/anerley-compact-tile-view.h>
 #include <anerley/anerley-tile.h>
+#include <anerley/anerley-compact-tile.h>
 #include <anerley/anerley-aggregate-tp-feed.h>
 #include <anerley/anerley-tp-monitor-feed.h>
 #include <anerley/anerley-ebook-feed.h>
@@ -64,7 +66,7 @@ struct _MnbPeoplePanelPrivate {
   GtkIconTheme *icon_theme;
   MplPanelClient *panel_client;
   ClutterActor *tile_view;
-  ClutterActor *active_tile_view;
+  ClutterActor *active_list_view;
   ClutterActor *content_table;
   ClutterActor *active_content_table;
   ClutterActor *everybody_offline_tile;
@@ -644,7 +646,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
   ClutterActor *label;
-  ClutterActor *scroll_view, *scroll_bin, *bin;
+  ClutterActor *scroll_view, *scroll_bin, *bin, *tmp_text;
   AnerleyFeed *feed, *ebook_feed, *active_feed;
   EBook *book;
   GError *error = NULL;
@@ -733,8 +735,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   active_feed = anerley_tp_monitor_feed_new ((AnerleyAggregateTpFeed *)priv->tp_feed);
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
-  priv->active_tile_view = anerley_tile_view_new (priv->active_model);
 
+  priv->active_list_view = anerley_compact_tile_view_new (priv->active_model);
+  scroll_view = mx_scroll_view_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
+                               priv->active_list_view);
   priv->content_table = mx_table_new ();
 
   /* active conversations */
@@ -744,27 +749,29 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_name (priv->active_content_table, "active-content-table");
 
   bin = mx_frame_new ();
-  label = mx_label_new (_("People talking to you ..."));
+  label = mx_label_new (_("You are chatting with:"));
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
+  clutter_text_set_ellipsize (CLUTTER_TEXT(tmp_text), PANGO_ELLIPSIZE_NONE);
   clutter_actor_set_name (label, "active-content-header-label");
   mx_bin_set_child (MX_BIN (bin), label);
   mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
-  mx_bin_set_fill (MX_BIN (bin), FALSE, TRUE);
+  mx_bin_set_fill (MX_BIN (bin), TRUE, TRUE);
   clutter_actor_set_name (bin, "active-content-header");
 
-  mx_table_add_actor (MX_TABLE (priv->active_content_table),
-                      bin,
-                      0,
-                      0);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->active_content_table),
+                                      bin,
+                                      0, 0,
+                                      "y-expand", FALSE,
+                                      NULL);
 
   mx_table_add_actor (MX_TABLE (priv->active_content_table),
-                      priv->active_tile_view,
-                      1,
-                      0);
+                      scroll_view,
+                      1, 0);
 
   mx_table_add_actor (MX_TABLE (priv->content_table),
                       priv->active_content_table,
-                      0,
-                      0);
+                      0, 1);
+
 
   /* main area */
   scroll_view = mx_scroll_view_new ();
@@ -778,7 +785,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                       0);
   mx_table_add_actor (MX_TABLE (priv->content_table),
                       scroll_bin,
-                      1,
+                      0,
                       0);
   clutter_actor_set_name (scroll_bin, "people-scroll-bin");
 
@@ -843,7 +850,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     (GCallback)_tile_view_item_activated_cb,
                     self);
 
-  g_signal_connect (priv->active_tile_view,
+  g_signal_connect (priv->active_list_view,
                     "item-activated",
                     (GCallback)_tile_view_item_activated_cb,
                     self);

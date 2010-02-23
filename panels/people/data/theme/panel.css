@@ -70,7 +70,6 @@ AnerleyTile, AnerleyCompactTile
 
 AnerleyCompactTile
 {
-  border-image: url("avatar_frame.png") 4 4 4 4;
 }
 
 AnerleyTile:hover,
