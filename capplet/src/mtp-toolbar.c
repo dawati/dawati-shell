@@ -539,14 +539,16 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
       else
         {
           gboolean not_free_space = !priv->free_space;
-
+          GList *last;
           GList *children = clutter_container_get_children (
                                        CLUTTER_CONTAINER (priv->panel_area));
 
-          if (g_list_length (children) >= 8 - 1)
-            priv->free_space = FALSE;
-          else
+          last = g_list_last (children);
+
+          if (last && MTP_IS_SPACE (last->data))
             priv->free_space = TRUE;
+          else
+            priv->free_space = FALSE;
 
           if ((!priv->free_space) != not_free_space)
             g_object_notify (G_OBJECT (toolbar), "free-space");
@@ -798,10 +800,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
   GList             *l;
   gint               i, n_panels, n_applets;
   gfloat             applet_depth = 0.0;
-
-  l = clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
-  n_panels = g_list_length (l);
-  g_list_free (l);
+  gboolean           new_space = FALSE;
 
   l = clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));
   n_applets = g_list_length (l);
@@ -811,7 +810,14 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
 
   g_list_free (l);
 
-  for (i = 0; i < 8 - n_panels; ++i)
+  l = clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
+  n_panels = g_list_length (l);
+
+  /*
+   * FIXME -- we need to calculate this from screen size, and taking into
+   * account the size of the clock.
+   */
+  for (i = 0; i < 9 - n_panels; ++i)
     {
       ClutterActor *space = mtp_space_new ();
 
@@ -820,6 +826,8 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
       clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
                                    space,
                                    "expand", FALSE, NULL);
+
+      new_space = TRUE;
     }
 
   for (i = 0; i < 4 - n_applets; ++i)
@@ -836,6 +844,18 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
       clutter_actor_set_depth (space, applet_depth);
       applet_depth -= 0.05;
     }
+
+  if (new_space)
+    {
+      gboolean not_free_space = !priv->free_space;
+
+      priv->free_space = TRUE;
+
+      if (not_free_space)
+        g_object_notify (G_OBJECT (toolbar), "free-space");
+    }
+
+  g_list_free (l);
 }
 
 gboolean
