@@ -47,12 +47,11 @@ enum
 };
 
 typedef enum {
-    MAILME_MAIL_NOTIFICATION_SUPPORTS_UNREAD_MAIL_COUNT = 1,
-    MAILME_MAIL_NOTIFICATION_SUPPORTS_UNREAD_MAILS = 2,
-    MAILME_MAIL_NOTIFICATION_EMITS_MAILS_RECEIVED = 4,
-    MAILME_MAIL_NOTIFICATION_SUPPORTS_REQUEST_INBOX_URL = 8,
-    MAILME_MAIL_NOTIFICATION_SUPPORTS_REQUEST_MAIL_URL = 16,
-    MAILME_MAIL_NOTIFICATION_SUPPORTS_REQUEST_COMPOSE_URL = 32,
+    MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAIL_COUNT = 1,
+    MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAILS = 2,
+    MAILME_MAIL_NOTIFICATION_FLAG_EMITS_MAILS_RECEIVED = 4,
+    MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_INBOX_URL = 8,
+    MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_MAIL_URL = 16,
 } MailmeMailNotificationFlags;
 
 typedef struct _MailmeTelepathyAccountPrivate MailmeTelepathyAccountPrivate;
@@ -96,9 +95,9 @@ check_support_and_save (MailmeTelepathyAccountPrivate *priv,
 
   /* Here we can ignore the validity flag since 0 will lead to unsupported
    * status */
-  capabilities = tp_asv_get_uint32 (out_Properties, "Capabilities", NULL);
-  if ((capabilities & MAILME_MAIL_NOTIFICATION_SUPPORTS_UNREAD_MAIL_COUNT)
-      && (capabilities & MAILME_MAIL_NOTIFICATION_SUPPORTS_REQUEST_INBOX_URL))
+  capabilities = tp_asv_get_uint32 (out_Properties, "MailNotificationFlags", NULL);
+  if ((capabilities & MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAIL_COUNT)
+      && (capabilities & MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_INBOX_URL))
   {
     gboolean valid = FALSE;
     priv->unread_count = tp_asv_get_uint32 (out_Properties,
