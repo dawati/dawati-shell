@@ -49,10 +49,6 @@ msgstr "Rien à faire aujourd'hui"
 msgid "Due %x"
 msgstr "Dû %x"
 
-#: ../penge/penge-welcome-tile.c:86
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr ""
-
 #: ../data/moblin-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Panneau Myzone"
@@ -64,6 +60,10 @@ msgstr "Rendez-vous"
 #: ../penge/penge-welcome-tile.c:67
 msgid "Welcome to Moblin"
 msgstr "Bienvenue sur Moblin"
+
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Ceci est Myzone, là où apparaîtront vos fichiers récents et le contenu de vos flux RSS."
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Moblin 2.1 pour Netbooks vous souhaite la bienvenue</b>"
