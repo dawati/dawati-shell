@@ -23,6 +23,7 @@
 #define _ANERLEY_COMPACT_TILE
 
 #include <mx/mx.h>
+#include <anerley/anerley-item.h>
 
 G_BEGIN_DECLS
 
@@ -52,7 +53,7 @@ typedef struct {
 } AnerleyCompactTileClass;
 
 GType anerley_compact_tile_get_type (void);
-
+AnerleyItem *anerley_compact_tile_get_item (AnerleyCompactTile *tile);
 G_END_DECLS
 
 #endif /* _ANERLEY_COMPACT_TILE */

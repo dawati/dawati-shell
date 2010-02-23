@@ -400,4 +400,10 @@ anerley_compact_tile_set_item (AnerleyCompactTile *tile,
   }
 }
 
+AnerleyItem *
+anerley_compact_tile_get_item (AnerleyCompactTile *tile)
+{
+  AnerleyCompactTilePrivate *priv = GET_PRIVATE (tile);
 
+  return priv->item;
+}
