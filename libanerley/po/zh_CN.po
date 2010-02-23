@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gossip\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 09:22+0000\n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
 "PO-Revision-Date: 2009-07-27 12:00-0800\n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -20,24 +20,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Chinese\n"
 
-#: ../anerley/anerley-tile.c:201
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "在线"
 
-#: ../anerley/anerley-tile.c:204
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../anerley/anerley-tile.c:207
-#: ../anerley/anerley-tile.c:210
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "离开"
 
-#: ../anerley/anerley-tile.c:213
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "离线"
 
-#: ../anerley/anerley-econtact-item.c:290
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "无名"
 
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "离线"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "取消设置"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "未知"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "隐藏"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "错误"
