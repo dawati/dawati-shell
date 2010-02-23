@@ -916,60 +916,51 @@ mwb_ac_list_new (void)
 
 #define THEMEDIR "/usr/share/moblin-panel-web/netpanel/"
 static void
-mwb_ac_list_set_icon (MwbAcList *self, int type)
+mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
 {
-  MwbAcListPrivate *priv = self->priv;
-
   GError *texture_error = NULL;
   const char* icon_path = NULL;
-  guint i;
 
-  /* Set all of the entries that correspond to this URL */
-  for (i = MWB_AC_LIST_N_FIXED_ENTRIES; i < priv->entries->len; i++)
+  if (!entry) 
+    return;
+
+  switch (entry->type)
     {
-      MwbAcListEntry *entry = &g_array_index (priv->entries,
-                                              MwbAcListEntry, i);
-
-      if (entry->type == type) 
+    case AutocompleteMatch::URL_WHAT_YOU_TYPED:     // The input as a URL.
+      icon_path = THEMEDIR "o2_globe.png";
+      break;
+    case AutocompleteMatch::HISTORY_URL:            // A past page whose URL contains the input.
+    case AutocompleteMatch::HISTORY_TITLE:          // A past page whose title contains the input.
+    case AutocompleteMatch::HISTORY_BODY:           // A past page whose body contains the input.
+    case AutocompleteMatch::HISTORY_KEYWORD:        // A past page whose keyword contains the input.
+      icon_path = THEMEDIR "o2_history.png";
+      break;
+    case AutocompleteMatch::NAVSUGGEST:             // A suggested URL.
+    case AutocompleteMatch::SEARCH_WHAT_YOU_TYPED:  // The input as a search query (with the default
+    case AutocompleteMatch::SEARCH_HISTORY:         // A past search (with the default engine)
+    case AutocompleteMatch::SEARCH_SUGGEST:         // A suggested search (with the default engine).
+    case AutocompleteMatch::SEARCH_OTHER_ENGINE:    // A search with a non-default engine.
+      icon_path = THEMEDIR "o2_search.png";
+      break;
+    case AutocompleteMatch::OPEN_HISTORY_PAGE:      // A synthetic 
+      icon_path = THEMEDIR "o2_more.png";
+      break;
+    default:
+      break;
+    }
+  if (icon_path)
+    {
+      entry->texture =  cogl_texture_new_from_file (icon_path, 
+                                                    COGL_TEXTURE_NONE, 
+                                                    COGL_PIXEL_FORMAT_ANY, 
+                                                    &texture_error);
+      if (texture_error)
         {
-          switch (type)
-            {
-            case AutocompleteMatch::URL_WHAT_YOU_TYPED:     // The input as a URL.
-              icon_path = THEMEDIR "o2_globe.png";
-              break;
-            case AutocompleteMatch::HISTORY_URL:            // A past page whose URL contains the input.
-            case AutocompleteMatch::HISTORY_TITLE:          // A past page whose title contains the input.
-            case AutocompleteMatch::HISTORY_BODY:           // A past page whose body contains the input.
-            case AutocompleteMatch::HISTORY_KEYWORD:        // A past page whose keyword contains the input.
-              icon_path = THEMEDIR "o2_history.png";
-              break;
-            case AutocompleteMatch::NAVSUGGEST:             // A suggested URL.
-            case AutocompleteMatch::SEARCH_WHAT_YOU_TYPED:  // The input as a search query (with the default
-            case AutocompleteMatch::SEARCH_HISTORY:         // A past search (with the default engine)
-            case AutocompleteMatch::SEARCH_SUGGEST:         // A suggested search (with the default engine).
-            case AutocompleteMatch::SEARCH_OTHER_ENGINE:    // A search with a non-default engine.
-              icon_path = THEMEDIR "o2_search.png";
-              break;
-            case AutocompleteMatch::OPEN_HISTORY_PAGE:      // A synthetic 
-              icon_path = THEMEDIR "o2_more.png";
-              break;
-            default:
-              break;
-            }
-          if (icon_path)
-            {
-              // It will crash - dont know why..
-              //  entry->texture =  clutter_texture_new_from_file (icon_path,
-              //                                                   &texture_error);
-              if (texture_error)
-                {
-                  g_warning ("[netpanel] unable to open ac-list icon: %s\n",
-                             texture_error->message);
-                  g_error_free (texture_error);
-                }
-              clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-            }
+          g_warning ("[netpanel] unable to open ac-list icon: %s\n",
+                     texture_error->message);
+          g_error_free (texture_error);
         }
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
     }
 }
 
@@ -1071,7 +1062,7 @@ mwb_ac_list_result_received(void       *context,
       entry->type = type;
 
       mwb_ac_list_update_entry (self, entry);
-      mwb_ac_list_set_icon (self, type);
+      mwb_ac_list_set_icon (self, entry);
 
       mwb_ac_list_start_transition (self);
 
