@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:32+0000\n"
+"POT-Creation-Date: 2010-02-11 23:51+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
@@ -14,59 +14,59 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:493
+#: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "relations"
 
-#: ../src/mnb-people-panel.c:166
-msgid "Send an email"
-msgstr "Envoyer un courriel"
-
-#: ../src/mnb-people-panel.c:168
-msgid "Edit details"
-msgstr "Modifier les détails"
-
-#: ../src/mnb-people-panel.c:177
-msgid "Send a message"
-msgstr "Envoyer un message"
-
-#: ../src/mnb-people-panel.c:311
+#: ../src/mnb-people-panel.c:265
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte Messenger ?"
 
-#: ../src/mnb-people-panel.c:447
+#: ../src/mnb-people-panel.c:377
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Désolé, nous n'avons trouvé personne. Il semble que personne n'est connecté."
 
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:474
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "relations - %d personnes en train de vous parler"
 
-#: ../src/mnb-people-panel.c:561
+#: ../src/mnb-people-panel.c:481
 msgid "people - Someone is talking to you"
 msgstr "relations - quelqu'un est en train de vous parler"
 
-#: ../src/mnb-people-panel.c:790
+#: ../src/mnb-people-panel.c:671
 msgid "People"
 msgstr "Relations"
 
-#: ../src/mnb-people-panel.c:803
+#: ../src/mnb-people-panel.c:684
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../src/mnb-people-panel.c:856
+#: ../src/mnb-people-panel.c:747
 msgid "People talking to you ..."
 msgstr "Relations en train de vous parler..."
 
-#: ../src/mnb-people-panel.c:983
-msgid "Selection"
-msgstr "Sélection"
+#: ../src/mnb-people-panel.c:422
+msgid "To see your IM contacts, you need to go online."
+msgstr "Pour voir vos contacts de messagerie instantanée, vous devez vous connecter."
 
-#: ../src/mnb-people-panel.c:1046
-msgid "Nobody selected"
-msgstr "Pas de sélection"
+#: ../data/moblin-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Panneau de relations"
 
-#: ../src/mnb-people-panel.c:497
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Pour voir vos contacts IM, connectez-vous et allez sur le panneau Statuts."
+#~ msgid "Send an email"
+#~ msgstr "Envoyer un courriel"
+
+#~ msgid "Edit details"
+#~ msgstr "Modifier les détails"
+
+#~ msgid "Send a message"
+#~ msgstr "Envoyer un message"
+
+#~ msgid "Selection"
+#~ msgstr "Sélection"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Pas de sélection"
