@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:23+0000\n"
+"POT-Creation-Date: 2010-02-11 23:57+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -13,178 +14,186 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
-msgid "Less than a minute ago"
-msgstr "Vor weniger als einer Minute"
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr ""
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
-msgid "A few minutes ago"
-msgstr "Vor einigen Minuten"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
-msgid "A couple of hours ago"
-msgstr "Vor ein paar Stunden"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
-msgid "Earlier today"
-msgstr "Heute schon früher"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
-msgid "Yesterday"
-msgstr "Gestern"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
-#, c-format
-msgid "On %A"
-msgstr "Am %A"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
-msgid "Unknown"
-msgstr "Unbekannt"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
-msgid "Last week"
-msgstr "Letzte Woche"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
-msgid "A couple of weeks ago"
-msgstr "Vor einigen Wochen"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
-msgid "This month"
-msgstr "Diesen Monat"
-
-#. Now Jan., last used in Dec.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
-msgid "Last month"
-msgstr "Letzten Monat"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
-msgid "This year"
-msgstr "Dieses Jahr"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
-msgid "Last year"
-msgstr "Letztes Jahr"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
-msgid "Ages ago"
-msgstr "Vor einer Ewigkeit"
-
-#: ../src/moblin-netbook.c:305
-#: ../src/mnb-toolbar.c:1348
-msgid "zones"
-msgstr "Zonen"
-
-#: ../src/moblin-netbook.c:412
+#: ../src/moblin-netbook.c:809
 msgid "Moblin Netbook Effects"
 msgstr "Moblin-Effekte auf dem Netbook"
 
-#: ../src/moblin-netbook.c:416
+#: ../src/moblin-netbook.c:813
 msgid "Effects for Moblin Netbooks"
 msgstr "Effekte für Netbooks mit Moblin"
 
-# Since I've come across this in the UI only in connection with a button in notification pop-ups, I think "Ignorieren" (= Ignore) would be the best translation in this context. (User has to click the button to make the notification go away without taking any action.)
-#: ../src/mnb-notification.c:280
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+# example:
+# 14:37
+# (no am/pm needed)
+#: ../src/mnb-toolbar.c:752
+msgid "%l:%M %P"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+# example:
+# 25. Mai 2007
+#: ../src/mnb-toolbar.c:762
+msgid "%B %e, %Y"
+msgstr "%e. %B %Y"
+
+# Since I've come across this in the UI only in connection with a button in
+# notification pop-ups, I think "Ignorieren" (= Ignore) would be the best
+# translation in this context. (User has to click the button to make the
+# notification go away without taking any action.)
+#: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
 msgstr "Ignorieren"
 
 # see note at "Dismiss"...
-#: ../src/mnb-notification-cluster.c:657
+#: ../src/notifications/mnb-notification-cluster.c:668
 msgid "Dismiss All"
 msgstr "Alle ignorieren"
 
-# example:
-# 14:37
-# (no am/pm needed)
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:668
-msgid "%l:%M %P"
-msgstr "%H:%M"
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr ""
 
-# example:
-# 25. Mai 2007
-#. translators: translate this to a suitable date format for your locale.
-#. * For availabe format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:678
-msgid "%B %e, %Y"
-msgstr "%e. %B %Y"
+#: ../src/moblin-netbook.c:2848
+msgid "Activate"
+msgstr "Aktivieren"
 
-#: ../src/mnb-toolbar.c:1585
-msgid "power & brightness"
-msgstr "Energie und Helligkeit"
+#: ../src/moblin-netbook.c:2864
+msgid "Is asking for your attention."
+msgstr "sucht deine Aufmerksamkeit."
 
-#: ../src/mnb-toolbar.c:1588
-msgid "volume"
-msgstr "Lautstärke"
+#: ../src/moblin-netbook.c:2862
+msgid "Unknown window"
+msgstr "Unbekanntes Fenster"
 
-#: ../src/mnb-toolbar.c:1591
-msgid "bluetooth"
-msgstr "Bluetooth"
+#: ../src/mnb-toolbar.c:871
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "%s funktioniert leider nicht."
 
-#: ../src/mnb-toolbar.c:1594
-msgid "networks"
-msgstr "Netzwerke"
+#~ msgid "Less than a minute ago"
+#~ msgstr "Vor weniger als einer Minute"
 
-#: ../src/mnb-toolbar.c:1597
-msgid "test"
-msgstr "Test"
+#~ msgid "A few minutes ago"
+#~ msgstr "Vor einigen Minuten"
 
-#: ../src/switcher/mnb-switcher.c:280
-msgid "No Zones yet"
-msgstr "Noch keine Zonen"
+#~ msgid "A couple of hours ago"
+#~ msgstr "Vor ein paar Stunden"
 
-#: ../src/switcher/mnb-switcher.c:302
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Die von dir benutzten Anwendungen erscheinen hier. Du hast die Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
+#~ msgid "Earlier today"
+#~ msgstr "Heute schon früher"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:408
-msgid "No applications on this zone"
-msgstr "In dieser Zone gibt es keine Anwendungen"
+#~ msgid "Yesterday"
+#~ msgstr "Gestern"
 
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um "
-#~ "deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige "
-#~ "Beispielsdateien ansehen:"
+#~ msgid "On %A"
+#~ msgstr "Am %A"
+
+#~ msgid "Last week"
+#~ msgstr "Letzte Woche"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Vor einigen Wochen"
+
+#~ msgid "This month"
+#~ msgstr "Diesen Monat"
+
+#~ msgid "Last month"
+#~ msgstr "Letzten Monat"
+
+#~ msgid "This year"
+#~ msgstr "Dieses Jahr"
+
+#~ msgid "Last year"
+#~ msgstr "Letztes Jahr"
+
+#~ msgid "Ages ago"
+#~ msgstr "Vor einer Ewigkeit"
+
+#~ msgid "zones"
+#~ msgstr "Zonen"
+
+#~ msgid "power & brightness"
+#~ msgstr "Energie und Helligkeit"
+
+#~ msgid "volume"
+#~ msgstr "Lautstärke"
+
+#~ msgid "bluetooth"
+#~ msgstr "Bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "Netzwerke"
+
+#~ msgid "test"
+#~ msgstr "Test"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Noch keine Zonen"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Die von dir benutzten Anwendungen erscheinen hier. Du hast die Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "In dieser Zone gibt es keine Anwendungen"
+
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige Beispielsdateien ansehen:"
+
 #~ msgid "Recently played"
 #~ msgstr "Vor kurzem abgespielt"
+
 #~ msgid "Search results"
 #~ msgstr "Suchergebnisse"
+
 #~ msgid "Playqueue"
 #~ msgstr "Wiedergabewarteschleife"
+
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "Staffel %u, Folge %u"
+
 #~ msgid "Previous"
 #~ msgstr "Zurück"
+
 #~ msgid "Next"
 #~ msgstr "Weiter"
+
 #~ msgid "Media"
 #~ msgstr "Multimedia"
+
 #~ msgid "Search"
 #~ msgstr "Suchen"
+
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Staffel %d Folge %d"
+
 #~ msgid "Season %d"
 #~ msgstr "Staffel %d"
+
 #~ msgid "Episode %d"
 #~ msgstr "Folge %d"
+
 #~ msgid "Year %d"
 #~ msgstr "Jahr %d"
+
 #~ msgid "media"
 #~ msgstr "Multimedia"
+
 #~ msgid "Favourite Applications"
 #~ msgstr "Lieblingsanwendungen"
+
 #~ msgid "Applications"
 #~ msgstr "Anwendungen"
+
 #~ msgid "applications"
 #~ msgstr "Anwendungen"
-
