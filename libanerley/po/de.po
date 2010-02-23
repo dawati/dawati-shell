@@ -1,7 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -18,24 +20,43 @@ msgstr ""
 # Andre Klapper <ak-47@gmx.net>, 2007, 2008.
 # Jochen Skulj <jochen@jochenskulj.de>, 2008, 2009.
 # Mario BlÃ¤ttermann <mariobl@gnome.org>, 2008, 2009.
-#: ../anerley/anerley-tile.c:201
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Verfügbar"
 
-#: ../anerley/anerley-tile.c:204
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Beschäftigt"
 
-#: ../anerley/anerley-tile.c:207
-#: ../anerley/anerley-tile.c:210
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "Abwesend"
 
-#: ../anerley/anerley-tile.c:213
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "Abgemeldet"
 
-#: ../anerley/anerley-econtact-item.c:290
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "Unbenannt"
 
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr ""
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "nicht festgelegt"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "unbekannt"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "versteckt"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Fehler"
