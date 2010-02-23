@@ -21,7 +21,6 @@
 #ifndef MPD_STORAGE_TILE_H
 #define MPD_STORAGE_TILE_H
 
-#include <gdu/gdu.h>
 #include <glib-object.h>
 #include <mx/mx.h>
 
@@ -57,11 +56,15 @@ typedef struct
 GType
 mpd_storage_tile_get_type (void);
 
-MpdStorageTile *
-mpd_storage_tile_new (GduDevice *device);
+ClutterActor *
+mpd_storage_tile_new (char const *mount_point,
+                      char const *title);
 
-GduDevice *
-mpd_storage_tile_get_device (MpdStorageTile *self);
+char const *
+mpd_storage_tile_get_mount_point (MpdStorageTile *self);
+
+char const *
+mpd_storage_tile_get_title (MpdStorageTile *self);
 
 G_END_DECLS
 

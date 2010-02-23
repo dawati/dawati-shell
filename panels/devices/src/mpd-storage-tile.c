@@ -18,13 +18,20 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
+
 #include <glib/gi18n.h>
+
 #include "mpd-gobject.h"
 #include "mpd-storage-tile.h"
 
 static void
-mpd_storage_tile_set_device (MpdStorageTile *self,
-                             GduDevice      *device);
+mpd_storage_tile_set_mount_point (MpdStorageTile *self,
+                                  char const     *mount_point);
+
+static void
+mpd_storage_tile_set_title (MpdStorageTile *self,
+                            char const     *title);
 
 G_DEFINE_TYPE (MpdStorageTile, mpd_storage_tile, MX_TYPE_BOX_LAYOUT)
 
@@ -35,18 +42,19 @@ enum
 {
   PROP_0,
 
-  PROP_DEVICE
+  PROP_MOUNT_POINT,
+  PROP_TITLE
 };
 
 typedef struct
 {
   /* Managed by clutter */
-  ClutterActor *icon;
-  ClutterActor *title;
-  ClutterActor *description;
-  ClutterActor *meter;
+  ClutterActor  *icon;
+  ClutterActor  *title;
+  ClutterActor  *description;
+  ClutterActor  *meter;
 
-  GduDevice     *device;
+  char          *mount_point;
 } MpdStorageTilePrivate;
 
 static void
@@ -73,11 +81,11 @@ _constructor (GType                  type,
                               ->constructor (type, n_properties, properties);
   MpdStorageTilePrivate *priv = GET_PRIVATE (self);
 
-  if (priv->device == NULL)
+  if (priv->mount_point == NULL)
   {
     g_critical ("%s : %s",
                 G_STRLOC,
-                "Invalid or no device passed to constructor.");
+                "Invalid or no mount-point passed to constructor.");
     g_object_unref (self);
     self = NULL;
   }
@@ -91,10 +99,16 @@ _get_property (GObject      *object,
                GValue       *value, 
                GParamSpec   *pspec)
 {
-  switch (property_id) {
-  case PROP_DEVICE:
-    g_value_set_object (value,
-                        mpd_storage_tile_get_device (MPD_STORAGE_TILE (object)));
+  switch (property_id)
+  {
+  case PROP_MOUNT_POINT:
+    g_value_set_string (value,
+                        mpd_storage_tile_get_mount_point (
+                          MPD_STORAGE_TILE (object)));
+    break;
+  case PROP_TITLE:
+    g_value_set_string (value,
+                        mpd_storage_tile_get_title (MPD_STORAGE_TILE (object)));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -107,10 +121,15 @@ _set_property (GObject      *object,
                const GValue *value, 
                GParamSpec   *pspec)
 {
-  switch (property_id) {
-  case PROP_DEVICE:
-    mpd_storage_tile_set_device (MPD_STORAGE_TILE (object),
-                                 g_value_get_object (value));
+  switch (property_id)
+  {
+  case PROP_MOUNT_POINT:
+    mpd_storage_tile_set_mount_point (MPD_STORAGE_TILE (object),
+                                     g_value_get_string (value));
+    break;
+  case PROP_TITLE:
+    mpd_storage_tile_set_title (MPD_STORAGE_TILE (object),
+                                g_value_get_string (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -122,7 +141,11 @@ _dispose (GObject *object)
 {
   MpdStorageTilePrivate *priv = GET_PRIVATE (object);
 
-  mpd_gobject_detach (object, (GObject **) &priv->device);
+  if (priv->mount_point)
+  {
+    g_free (priv->mount_point);
+    priv->mount_point = NULL;
+  }
 
   G_OBJECT_CLASS (mpd_storage_tile_parent_class)->dispose (object);
 }
@@ -145,11 +168,19 @@ mpd_storage_tile_class_init (MpdStorageTileClass *klass)
   param_flags = G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS;
 
   g_object_class_install_property (object_class,
-                                   PROP_DEVICE,
-                                   g_param_spec_object ("device",
-                                                        "Device",
-                                                        "The device object",
-                                                        GDU_TYPE_DEVICE,
+                                   PROP_MOUNT_POINT,
+                                   g_param_spec_string ("mount-point",
+                                                        "Mount point",
+                                                        "Device mount point",
+                                                        NULL,
+                                                        param_flags | 
+                                                        G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class,
+                                   PROP_TITLE,
+                                   g_param_spec_string ("title",
+                                                        "Title",
+                                                        "Storage device title",
+                                                        NULL,
                                                         param_flags | 
                                                         G_PARAM_CONSTRUCT_ONLY));
 }
@@ -160,15 +191,39 @@ mpd_storage_tile_init (MpdStorageTile *self)
   MpdStorageTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor  *vbox;
   ClutterActor  *button;
+  GError        *error = NULL;
 
   /* 1st column: icon */
   priv->icon = clutter_texture_new ();
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                 PKGICONDIR "/device-usb.png",
+                                 &error);
+  clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->icon), true);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->icon);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->icon,
+                               "expand", false,
+                               "x-align", MX_ALIGN_START,
+                               "x-fill", false,
+                               "y-align", MX_ALIGN_MIDDLE,
+                               "y-fill", false,
+                               NULL);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
 
   /* 2nd column: text, free space */
   vbox = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), TRUE);
+  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), true);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), vbox);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), vbox,
+                               "expand", true,
+                               "x-align", MX_ALIGN_START,
+                               "x-fill", true,
+                               "y-align", MX_ALIGN_START,
+                               "y-fill", false,
+                               NULL);
 
   priv->title = mx_label_new ("");
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->title);
@@ -181,7 +236,7 @@ mpd_storage_tile_init (MpdStorageTile *self)
 
   /* 3rd column: buttons */
   vbox = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), TRUE);
+  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), true);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), vbox);
 
   button = mx_button_new_with_label (_("Eject"));
@@ -195,61 +250,74 @@ mpd_storage_tile_init (MpdStorageTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), button);
 }
 
-MpdStorageTile *
-mpd_storage_tile_new (GduDevice *device)
+ClutterActor *
+mpd_storage_tile_new (char const *mount_point,
+                      char const *title)
 {
   return g_object_new (MPD_TYPE_STORAGE_TILE,
-                       "device", device,
+                       "mount-point", mount_point,
+                       "title", title,
                        NULL);
 }
 
-GduDevice *
-mpd_storage_tile_get_device (MpdStorageTile *self)
+char const *
+mpd_storage_tile_get_mount_point (MpdStorageTile *self)
 {
   MpdStorageTilePrivate *priv = GET_PRIVATE (self);
 
   g_return_val_if_fail (MPD_IS_STORAGE_TILE (self), NULL);
 
-  return priv->device;
+  return priv->mount_point;
 }
 
 static void
-mpd_storage_tile_set_device (MpdStorageTile *self,
-                             GduDevice      *device)
+mpd_storage_tile_set_mount_point (MpdStorageTile *self,
+                                  char const     *mount_point)
 {
   MpdStorageTilePrivate *priv = GET_PRIVATE (self);
 
   g_return_if_fail (MPD_IS_STORAGE_TILE (self));
 
-  if (device != priv->device)
+  if (0 != g_strcmp0 (mount_point, priv->mount_point))
   {
-    if (priv->device)
-      mpd_gobject_detach (G_OBJECT (self), (GObject **) &priv->device);
-
-    if (device)
+    if (priv->mount_point)
     {
-      GError *error = NULL;
-
-      priv->device = g_object_ref (device);
-
-      /* Icon */
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                     PKGICONDIR "/device-usb.png",
-                                     &error);
-      if (error)
-      {
-        g_warning ("%s : %s", G_STRLOC, error->message);
-        g_clear_error (&error);
-      }
-
-      /* Title */
-      mx_label_set_text (MX_LABEL (priv->title),
-                         gdu_device_get_presentation_name (priv->device));
-
-      // todo
+      g_free (priv->mount_point);
+      priv->mount_point = NULL;
     }
 
-    g_object_notify (G_OBJECT (self), "device");
+    if (mount_point)
+    {
+      priv->mount_point = g_strdup (mount_point);
+    }
+
+    g_object_notify (G_OBJECT (self), "mount-point");
+  }
+}
+
+char const *
+mpd_storage_tile_get_title (MpdStorageTile *self)
+{
+  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_val_if_fail (MPD_IS_STORAGE_TILE (self), NULL);
+
+  return mx_label_get_text (MX_LABEL (priv->title));
+}
+
+static void
+mpd_storage_tile_set_title (MpdStorageTile *self,
+                            char const     *title)
+{
+  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_STORAGE_TILE (self));
+
+  if (0 != g_strcmp0 (title, mx_label_get_text (MX_LABEL (priv->title))))
+  {
+    mx_label_set_text (MX_LABEL (priv->title), title);
+
+    g_object_notify (G_OBJECT (self), "title");
   }
 }
 
