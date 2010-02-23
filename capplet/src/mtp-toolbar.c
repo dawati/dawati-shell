@@ -22,8 +22,6 @@
  * 02111-1307, USA.
  */
 
-#include <glib/gi18n.h>
-
 #include "mtp-toolbar.h"
 #include "mtp-toolbar-button.h"
 #include "mtp-space.h"
@@ -50,7 +48,6 @@ struct _MtpToolbarPrivate
 {
   ClutterActor *applet_area;
   ClutterActor *panel_area;
-  ClutterActor *clock;
 
   gboolean free_space : 1;
   gboolean enabled    : 1;
@@ -68,9 +65,6 @@ mtp_toolbar_dispose (GObject *object)
 
   priv->disposed = TRUE;
 
-  clutter_actor_destroy (priv->clock);
-  priv->clock = NULL;
-
   clutter_actor_destroy (priv->panel_area);
   priv->panel_area = NULL;
 
@@ -87,7 +81,6 @@ mtp_toolbar_map (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->map (actor);
 
-  clutter_actor_map (priv->clock);
   clutter_actor_map (priv->panel_area);
   clutter_actor_map (priv->applet_area);
 }
@@ -97,7 +90,6 @@ mtp_toolbar_unmap (ClutterActor *actor)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
 
-  clutter_actor_unmap (priv->clock);
   clutter_actor_unmap (priv->panel_area);
   clutter_actor_unmap (priv->applet_area);
 
@@ -117,16 +109,6 @@ mtp_toolbar_allocate (ClutterActor          *actor,
              mtp_toolbar_parent_class)->allocate (actor, box, flags);
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
-
-  childbox.x1 = padding.left;
-  childbox.y1 = padding.top;
-  childbox.x2 = 213.0;
-  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
-
-  mx_allocate_align_fill (priv->clock, &childbox,
-                          MX_ALIGN_START, MX_ALIGN_MIDDLE,
-                          FALSE, FALSE);
-  clutter_actor_allocate (priv->clock, &childbox, flags);
 
   childbox.x1 = 213.0;
   childbox.y1 = padding.top;
@@ -149,81 +131,10 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 }
 
 static void
-mtp_toolbar_update_time_date (ClutterActor *time_label,
-                              ClutterActor *date_label)
-{
-  time_t         t;
-  struct tm     *tmp;
-  char           time_str[64];
-
-  t = time (NULL);
-  tmp = localtime (&t);
-  if (tmp)
-    /* translators: translate this to a suitable time format for your locale
-     * showing only hours and minutes. For available format specifiers see
-     * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-     */
-    strftime (time_str, 64, _("%l:%M %P"), tmp);
-  else
-    snprintf (time_str, 64, "Time");
-  mx_label_set_text (MX_LABEL (time_label), time_str);
-
-  if (tmp)
-    /* translators: translate this to a suitable date format for your locale.
-     * For availabe format specifiers see
-     * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-     */
-    strftime (time_str, 64, _("%B %e, %Y"), tmp);
-  else
-    snprintf (time_str, 64, "Date");
-
-  mx_label_set_text (MX_LABEL (date_label), time_str);
-}
-
-static void
 mtp_toolbar_constructed (GObject *self)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (self)->priv;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
-
-  {
-    ClutterActor *clock;
-    ClutterActor *time_bin;
-    ClutterActor *time;
-    ClutterActor *date_bin;
-    ClutterActor *date;
-
-    priv->clock = clock = clutter_group_new ();
-
-    time = mx_label_new ("");
-    clutter_actor_set_name (time, "time-label");
-
-    time_bin = mx_frame_new ();
-    mx_bin_set_child (MX_BIN (time_bin), time);
-    clutter_actor_set_position (time_bin, 20.0, 8.0);
-    clutter_actor_set_width (time_bin, 161.0);
-
-    date = mx_label_new ("");
-    clutter_actor_set_name (date, "date-label");
-
-    date_bin = mx_frame_new ();
-    mx_bin_set_child (MX_BIN (date_bin), date);
-    clutter_actor_set_position (date_bin, 20.0, 35.0);
-    clutter_actor_set_size (date_bin, 161.0, 25.0);
-
-    /*
-     * Get the current time / date (though we currently do not bother about
-     * updating it)
-     */
-    mtp_toolbar_update_time_date (time, date);
-
-    clutter_container_add (CLUTTER_CONTAINER (clock),
-                           CLUTTER_ACTOR (time_bin),
-                           CLUTTER_ACTOR (date_bin),
-                           NULL);
-
-    clutter_actor_set_parent (clock, actor);
-  }
 
   priv->panel_area  = mx_box_layout_new ();
   clutter_actor_set_name (priv->panel_area, "panel-area");
@@ -477,7 +388,6 @@ mtp_toolbar_pick (ClutterActor *self, const ClutterColor *color)
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->pick (self, color);
 
-  clutter_actor_paint (priv->clock);
   clutter_actor_paint (priv->panel_area);
   clutter_actor_paint (priv->applet_area);
 }
@@ -489,7 +399,6 @@ mtp_toolbar_paint (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->paint (self);
 
-  clutter_actor_paint (priv->clock);
   clutter_actor_paint (priv->panel_area);
   clutter_actor_paint (priv->applet_area);
 }

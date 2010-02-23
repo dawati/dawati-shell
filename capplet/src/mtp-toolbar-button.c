@@ -27,6 +27,7 @@
 #include "mtp-toolbar-button.h"
 #include "mtp-toolbar.h"
 #include "mtp-jar.h"
+#include "mtp-clock.h"
 
 /*
  * MnbToolbarButton -- a helper widget for MtpToolbarButton
@@ -118,6 +119,7 @@ struct _MtpToolbarButtonPrivate
 
   gboolean no_pick  : 1;
   gboolean applet   : 1;
+  gboolean clock    : 1;
   gboolean builtin  : 1;
   gboolean required : 1;
   gboolean invalid  : 1;
@@ -207,9 +209,12 @@ mtp_toolbar_button_allocate (ClutterActor          *actor,
                              ClutterAllocationFlags flags)
 {
   MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (actor)->priv;
-  gfloat                   button_width = priv->applet ? 44.0 : 70.0;
+  gfloat                   button_width;
   ClutterActorBox          childbox;
   MxPadding                padding;
+
+  button_width =
+    priv->clock && !priv->in_jar ? 193.0 : (priv->applet ? 44.0 : 70.0);
 
   CLUTTER_ACTOR_CLASS (
              mtp_toolbar_button_parent_class)->allocate (actor,
@@ -465,7 +470,7 @@ mtp_toolbar_button_get_preferred_width (ClutterActor *self,
   if (priv->in_jar)
     width = 200.0;
   else
-    width = priv->applet ? 44.0 : 70.0;
+    width = priv->clock ? 193.0 : (priv->applet ? 44.0 : 70.0);
 
   width += (padding.left + padding.right);
 
@@ -677,6 +682,24 @@ mtp_toolbar_button_cbutton_clicked_cb (ClutterActor     *cbutton,
 }
 
 static void
+mtp_toolbar_button_set_child (MtpToolbarButton *button, ClutterActor *child)
+{
+  MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (button)->priv;
+
+  if (priv->real_button)
+    {
+      clutter_actor_destroy (priv->real_button);
+      priv->real_button = NULL;
+    }
+
+  if (child)
+    {
+      priv->real_button = child;
+      clutter_actor_set_parent (child, (ClutterActor*) button);
+    }
+}
+
+static void
 mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
 {
   MtpToolbarButtonPrivate *priv = button->priv;
@@ -768,6 +791,13 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
             priv->builtin = builtin = TRUE;
           else if (!strcmp (s, "applet"))
             priv->applet = TRUE;
+          else if (!strcmp (s, "clock"))
+            {
+              ClutterActor *clock = mtp_clock_new ();
+
+              priv->clock = TRUE;
+              mtp_toolbar_button_set_child (button, clock);
+            }
 
           g_free (s);
         }
@@ -903,3 +933,4 @@ mtp_toolbar_button_set_dont_pick (MtpToolbarButton *button, gboolean dont)
 
   priv->no_pick = dont;
 }
+
