@@ -110,7 +110,7 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-  childbox.x1 = 213.0;
+  childbox.x1 = padding.left;
   childbox.y1 = padding.top;
   childbox.x2 = box->x2 - box->x1;
   childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
