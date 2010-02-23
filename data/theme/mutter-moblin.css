@@ -58,6 +58,22 @@ MnbToolbar {
   border-image: url("panel/panel-background.png") 0 200 0 200 stretch;
 }
 
+MnbToolbarClock {
+  background-color: #fff0;
+  border-image: none;
+  padding: 0 0 8 0;
+}
+
+MnbToolbarClock:checked {
+  border-image: url("panel/toolbar-button-active.png") 12;
+  padding: 0 0 8 0;
+}
+
+MnbToolbarClock:hover, MnbToolbarClock:active {
+  border-image: url("panel/toolbar-button-hover.png") 12;
+  padding: 0 0 8 0;
+}
+
 MnbToolbarButton {
   background-color: #fff0;
   border-image: none;

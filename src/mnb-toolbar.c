@@ -52,6 +52,7 @@
 #include "mnb-panel-oop.h"
 #include "mnb-toolbar-button.h"
 #include "mnb-toolbar-icon.h"
+#include "mnb-toolbar-clock.h"
 #include "mnb-spinner.h"
 
 /* For systray windows stuff */
@@ -198,9 +199,6 @@ struct _MnbToolbarPrivate
   ClutterActor *panel_stub;
   ClutterActor *spinner;
   ClutterActor *shadow;
-
-  ClutterActor *time; /* The time and date fields, needed for the updates */
-  ClutterActor *date;
 
   GList        *panels;         /* Panels (the dropdowns) */
 
@@ -838,38 +836,6 @@ mnb_toolbar_class_init (MnbToolbarClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-}
-
-static gboolean
-mnb_toolbar_update_time_date (MnbToolbarPrivate *priv)
-{
-  time_t         t;
-  struct tm     *tmp;
-  char           time_str[64];
-
-  t = time (NULL);
-  tmp = localtime (&t);
-  if (tmp)
-    /* translators: translate this to a suitable time format for your locale
-     * showing only hours and minutes. For available format specifiers see
-     * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-     */
-    strftime (time_str, 64, _("%l:%M %P"), tmp);
-  else
-    snprintf (time_str, 64, "Time");
-  mx_label_set_text (MX_LABEL (priv->time), time_str);
-
-  if (tmp)
-    /* translators: translate this to a suitable date format for your locale.
-     * For availabe format specifiers see
-     * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-     */
-    strftime (time_str, 64, _("%B %e, %Y"), tmp);
-  else
-    snprintf (time_str, 64, "Date");
-  mx_label_set_text (MX_LABEL (priv->date), time_str);
-
-  return TRUE;
 }
 
 /*
@@ -2604,12 +2570,12 @@ mnb_toolbar_constructed (GObject *self)
   ClutterActor      *actor = CLUTTER_ACTOR (self);
   ClutterActor      *hbox;
   ClutterActor      *lowlight, *panel_stub;
+  ClutterActor      *clock;
   ClutterActor      *shadow;
   ClutterTexture    *sh_texture;
   gint               screen_width, screen_height;
   ClutterColor       low_clr = { 0, 0, 0, 0x7f };
   DBusGConnection   *conn;
-  ClutterActor      *time_bin, *date_bin;
   MetaScreen        *screen = mutter_plugin_get_screen (plugin);
   ClutterActor      *wgroup = mutter_get_window_group_for_screen (screen);
   gboolean           netbook_mode = moblin_netbook_use_netbook_mode (plugin);
@@ -2702,32 +2668,12 @@ mnb_toolbar_constructed (GObject *self)
       priv->shadow = shadow;
     }
 
-  /* create time and date labels */
-  priv->time = mx_label_new ("");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->time), "time-label");
-  time_bin = mx_frame_new ();
-  mx_bin_set_child (MX_BIN (time_bin), (ClutterActor*)priv->time);
-  clutter_actor_set_position ((ClutterActor*)time_bin, 20.0, 8.0);
-  clutter_actor_set_width ((ClutterActor*)time_bin, 161.0);
-
-  priv->date = mx_label_new ("");
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
-  date_bin = mx_frame_new ();
-  mx_bin_set_child (MX_BIN (date_bin), (ClutterActor*)priv->date);
-  clutter_actor_set_position ((ClutterActor*)date_bin, 20.0, 35.0);
-  clutter_actor_set_size ((ClutterActor*)date_bin, 161.0, 25.0);
-
-  clutter_container_add (CLUTTER_CONTAINER (hbox),
-                         CLUTTER_ACTOR (time_bin),
-                         CLUTTER_ACTOR (date_bin),
-                         NULL);
-
-  mnb_toolbar_update_time_date (priv);
+  clock = mnb_toolbar_clock_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), clock);
+  clutter_actor_set_position (clock, TOOLBAR_X_PADDING, 4.0);
 
   mx_bin_set_alignment (MX_BIN (self), MX_ALIGN_START, MX_ALIGN_START);
   mx_bin_set_child (MX_BIN (self), hbox);
-
-  g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_update_time_date, priv);
 
   /*
    * In netbook mode, we need hook to the captured signal to show/hide the
