@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin Panel Status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:48+0000\n"
+"POT-Creation-Date: 2010-02-23 23:45+0000\n"
 "PO-Revision-Date: 2009-12-03 15:53-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -16,91 +16,84 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED KINGDOM\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
 
-#: ../src/mnb-im-status-row.c:109
-#: ../src/mnb-im-status-row.c:110
-#: ../src/mnb-im-status-row.c:830
-#: ../src/moblin-panel-status.c:508
-msgid "Offline"
-msgstr "Offline"
-
-#: ../src/mnb-im-status-row.c:111
-#: ../src/moblin-panel-status.c:512
-msgid "Available"
-msgstr "Available"
-
-#: ../src/mnb-im-status-row.c:112
-#: ../src/mnb-im-status-row.c:113
-#: ../src/moblin-panel-status.c:516
-#: ../src/moblin-panel-status.c:520
-msgid "Away"
-msgstr "Away"
-
-#: ../src/mnb-im-status-row.c:114
-#: ../src/mnb-im-status-row.c:115
-#: ../src/moblin-panel-status.c:524
-#: ../src/moblin-panel-status.c:528
-msgid "Busy"
-msgstr "Busy"
-
-#: ../src/mnb-im-status-row.c:138
-msgid "Close"
-msgstr "Close"
-
-#: ../src/mnb-im-status-row.c:147
-#: ../src/mnb-im-status-row.c:848
-msgid "Change"
-msgstr "Change"
-
-#: ../src/mnb-im-status-row.c:833
-msgid "Unknown account"
-msgstr "Unknown account"
-
-#: ../src/mnb-web-status-entry.c:88
-#: ../src/mnb-web-status-entry.c:641
-#: ../src/mnb-web-status-entry.c:722
-msgid "Edit"
-msgstr "Edit"
-
-#. Translators: %s is the user visible name of the service
-#: ../src/mnb-web-status-entry.c:515
-#, c-format
-msgid "Enter your %s status here..."
-msgstr "Enter your %s status here..."
-
-#: ../src/mnb-web-status-entry.c:519
-#: ../src/mnb-web-status-entry.c:592
-msgid "Enter your current status here..."
-msgstr "Enter your current status here..."
-
-#: ../src/mnb-web-status-entry.c:701
-msgid "Post"
-msgstr "Post"
-
-#: ../src/moblin-panel-status.c:486
-msgid "Your current status"
-msgstr "Your current status"
-
-#: ../src/moblin-panel-status.c:488
-#: ../src/moblin-panel-status.c:953
-msgid "Your current status - you are offline"
-msgstr "Your current status - you are offline"
-
-#: ../src/moblin-panel-status.c:807
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Sorry, we can't find any people. Have you set up a Messenger account?"
-
-#: ../src/moblin-panel-status.c:987
-msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "To update your web status, you need to set up a Web Services account with a provider that supports status messages."
-
-#: ../src/moblin-panel-status.c:1014
-msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr "To update your IM status, you need to set up an Instant Messaging account."
-
-#: ../src/moblin-panel-status.c:1170
+#: ../src/moblin-panel-status.c:132
+#: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
 
+#. Actor creation
+#: ../src/mps-feed-pane.c:416
+msgid "Update"
+msgstr "Update"
+
+#. vim:set ts=8 expandtab
+#: ../data/moblin-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Status panel"
+
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status: The service may be unavailable or your password could be wrong."
+msgstr "Unable to update status: The service may be unavailable or your password could be wrong."
+
+#: ../src/mps-feed-pane.c:421
+msgid "What's happening?"
+msgstr "What's happening?"
+
+#: ../src/mps-feed-switcher.c:367
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "You don't appear to have any web services configured, or there is a problem with the configuration. Use the button above to open the My Web Accounts and set one up."
+
+#: ../src/mps-feed-switcher.c:344
+msgid "Add new web service"
+msgstr "Add new web service"
+
+#~ msgid "Offline"
+#~ msgstr "Offline"
+
+#~ msgid "Available"
+#~ msgstr "Available"
+
+#~ msgid "Away"
+#~ msgstr "Away"
+
+#~ msgid "Busy"
+#~ msgstr "Busy"
+
+#~ msgid "Close"
+#~ msgstr "Close"
+
+#~ msgid "Change"
+#~ msgstr "Change"
+
+#~ msgid "Unknown account"
+#~ msgstr "Unknown account"
+
+#~ msgid "Edit"
+#~ msgstr "Edit"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "Enter your %s status here..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "Enter your current status here..."
+
+#~ msgid "Post"
+#~ msgstr "Post"
+
+#~ msgid "Your current status"
+#~ msgstr "Your current status"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "Your current status - you are offline"
+
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Sorry, we can't find any people. Have you set up a Messenger account?"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "To update your web status, you need to set up a Web Services account with a provider that supports status messages."
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "To update your IM status, you need to set up an Instant Messaging account."
