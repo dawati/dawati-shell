@@ -381,7 +381,11 @@ mtp_toolbar_drop (MxDroppable         *droppable,
 
       for (l = children; l; l = l->next)
         {
-          if (MTP_IS_SPACE (l->data))
+          /*
+           * The first space will be removed, so the space we want to insert
+           * before is the one after it.
+           */
+          if (MTP_IS_SPACE (l->data) && l->next && MTP_IS_SPACE (l->next->data))
             {
               before = l->data;
               break;
@@ -567,7 +571,8 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
     {
       if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
         {
-          gfloat depth = 0.0;
+          ClutterActor *parent = clutter_actor_get_parent (button);
+          gfloat        depth = 0.0;
 
           GList *children = clutter_container_get_children (
                                        CLUTTER_CONTAINER (priv->applet_area));
@@ -579,8 +584,12 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
               g_list_free (children);
             }
 
-          clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                       button);
+          if (parent)
+            clutter_actor_reparent (button, priv->applet_area);
+          else
+            clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                         button);
+
           clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
                                        button,
                                        "expand", FALSE, NULL);
@@ -588,9 +597,11 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
         }
       else
         {
-          gboolean not_free_space = !priv->free_space;
-          GList *last;
-          GList *children = clutter_container_get_children (
+          ClutterActor *parent = clutter_actor_get_parent (button);
+          gfloat        depth = 0.0;
+          gboolean      not_free_space = !priv->free_space;
+          GList        *last;
+          GList        *children = clutter_container_get_children (
                                        CLUTTER_CONTAINER (priv->panel_area));
 
           last = g_list_last (children);
@@ -603,13 +614,21 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
           if ((!priv->free_space) != not_free_space)
             g_object_notify (G_OBJECT (toolbar), "free-space");
 
-          g_list_free (children);
+          if (parent)
+            clutter_actor_reparent (button, priv->panel_area);
+          else
+            clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                         button);
 
-          clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                       button);
+          if (last)
+            depth = clutter_actor_get_depth (last->data) + 0.05;
+
           clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
                                        button,
                                        "expand", FALSE, NULL);
+          clutter_actor_set_depth (button, depth);
+
+          g_list_free (children);
         }
 
       g_signal_connect (button, "parent-set",
