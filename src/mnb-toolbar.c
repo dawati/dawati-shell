@@ -65,7 +65,7 @@
 #define KEY_DIR "/desktop/moblin/toolbar/panels"
 #define KEY_ORDER KEY_DIR "/order"
 
-#define CLOCK_WIDTH 213
+#define CLOCK_WIDTH 164
 #define BUTTON_WIDTH 66
 #define BUTTON_HEIGHT 55
 #define BUTTON_SPACING 10
@@ -1894,7 +1894,8 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
               clutter_actor_set_size (CLUTTER_ACTOR (button),
                                       BUTTON_WIDTH, BUTTON_HEIGHT);
               clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                          CLOCK_WIDTH + (BUTTON_WIDTH * index)
+                                          TOOLBAR_X_PADDING + BUTTON_SPACING +
+                                          (BUTTON_WIDTH * index)
                                           + (BUTTON_SPACING * index),
                                           TOOLBAR_HEIGHT - BUTTON_HEIGHT);
             }
@@ -1904,7 +1905,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                * FIXME for now, put clock at the fixed position on the left.
                */
               clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                           TOOLBAR_X_PADDING,
+                                          660.0,
                                           TOOLBAR_HEIGHT - BUTTON_HEIGHT);
             }
 
@@ -2632,7 +2633,7 @@ mnb_toolbar_constructed (GObject *self)
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
 
-  priv->max_panels =
+  priv->max_panels = 1 + /* for the clock */
     (screen_width - CLOCK_WIDTH - TRAY_WIDTH) / (BUTTON_WIDTH + BUTTON_SPACING);
 
   clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
@@ -2732,7 +2733,7 @@ mnb_toolbar_constructed (GObject *self)
       ClutterActor *clock = mnb_toolbar_clock_new ();
 
       clutter_container_add_actor (CLUTTER_CONTAINER (hbox), clock);
-      clutter_actor_set_position (clock, TOOLBAR_X_PADDING,
+      clutter_actor_set_position (clock, 660.0,
                                   TOOLBAR_HEIGHT - BUTTON_HEIGHT);
       clutter_actor_set_reactive (clock, FALSE);
     }
