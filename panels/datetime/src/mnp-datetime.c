@@ -123,10 +123,18 @@ static void
 construct_calendar_area (MnpDatetime *time)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
-  	JanaTime *now;
+  	JanaTime *start, *end;
+	JanaDuration *duration;
 	ClutterActor *box, *label;
   	
-	now = jana_ecal_utils_time_now_local ();
+      	start = jana_ecal_utils_time_now_local ();
+      	end = jana_ecal_utils_time_now_local ();
+      	jana_time_set_hours (end, 23);
+      	jana_time_set_minutes (end, 59);
+      	jana_time_set_seconds (end, 59);
+
+	
+	duration = jana_duration_new (start, end);
 
 	priv->cal_area = mx_box_layout_new ();
 	mx_stylable_set_style_class (priv->cal_area, "CalendarPane");
@@ -175,11 +183,13 @@ construct_calendar_area (MnpDatetime *time)
                                NULL);	
 	format_label (priv->date_label);
 
-
   	priv->penge_events = g_object_new (PENGE_TYPE_EVENTS_PANE,
-                                    "time",
-                                    now,
+				    "time",
+				    duration->start,
                                     NULL);
+	penge_events_pane_set_duration (priv->penge_events, duration);
+	jana_duration_free (duration);
+
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_area, (ClutterActor *)priv->penge_events);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
                                priv->penge_events,
