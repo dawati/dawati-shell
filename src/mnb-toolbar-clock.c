@@ -98,6 +98,12 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClockPrivate *priv)
     snprintf (time_str, 64, "Date");
   mx_label_set_text (MX_LABEL (priv->date), time_str);
 
+  if (!priv->timeout_id) {
+    priv->timeout_id =
+      g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_clock_update_time_date,
+                             priv);
+    return FALSE;
+  }
   return TRUE;
 }
 
@@ -106,6 +112,7 @@ mnb_toolbar_clock_constructed (GObject *self)
 {
   MnbToolbarClockPrivate *priv = MNB_TOOLBAR_CLOCK (self)->priv;
   ClutterActor           *actor = CLUTTER_ACTOR (self);
+  time_t interval = 60 - (time(NULL) % 60); 
 
   if (G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->constructed (self);
@@ -121,9 +128,15 @@ mnb_toolbar_clock_constructed (GObject *self)
 
   mnb_toolbar_clock_update_time_date (priv);
 
-  priv->timeout_id =
-    g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_clock_update_time_date,
+  if (!interval) {
+    priv->timeout_id =
+      g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_clock_update_time_date,
+                             priv);
+  } else {
+    priv->timeout_id = 0;  
+    g_timeout_add_seconds (interval, (GSourceFunc) mnb_toolbar_clock_update_time_date,
                            priv);
+  }
 }
 
 static void
