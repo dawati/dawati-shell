@@ -99,6 +99,8 @@ penge_events_pane_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (object);
+  JanaTime *start_of_week;
+  JanaTime *end_of_week;
 
   switch (property_id) {
     case PROP_TIME:
@@ -106,6 +108,23 @@ penge_events_pane_set_property (GObject *object, guint property_id,
         g_object_unref (priv->time);
 
       priv->time = g_value_dup_object (value);
+
+      start_of_week = jana_ecal_utils_time_now_local ();
+      jana_time_set_hours (start_of_week, 0);
+      jana_time_set_minutes (start_of_week, 0);
+      jana_time_set_seconds (start_of_week, 0);
+      jana_utils_time_set_start_of_week (start_of_week);
+      end_of_week = jana_ecal_utils_time_now_local ();
+      jana_time_set_hours (end_of_week, 23);
+      jana_time_set_minutes (end_of_week, 59);
+      jana_time_set_seconds (end_of_week, 59);
+      jana_utils_time_set_end_of_week (end_of_week);
+
+      if (priv->duration)
+        jana_duration_free (priv->duration);
+
+      priv->duration = jana_duration_new (start_of_week, end_of_week);
+  
       penge_events_pane_update_durations ((PengeEventsPane *)object);
       penge_events_pane_update ((PengeEventsPane *)object);
       break;
@@ -919,26 +938,9 @@ penge_events_pane_update_duration (PengeEventsPane *pane,
                                    JanaStoreView   *view)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
-  JanaTime *start_of_week;
-  JanaTime *end_of_week;
 
-  start_of_week = jana_ecal_utils_time_now_local ();
-  jana_time_set_hours (start_of_week, 0);
-  jana_time_set_minutes (start_of_week, 0);
-  jana_time_set_seconds (start_of_week, 0);
-  jana_utils_time_set_start_of_week (start_of_week);
-  end_of_week = jana_ecal_utils_time_now_local ();
-  jana_time_set_hours (end_of_week, 23);
-  jana_time_set_minutes (end_of_week, 59);
-  jana_time_set_seconds (end_of_week, 59);
-  jana_utils_time_set_end_of_week (end_of_week);
 
-  if (priv->duration)
-    jana_duration_free (priv->duration);
-
-  priv->duration = jana_duration_new (start_of_week, end_of_week);
-
-  jana_store_view_set_range (view, start_of_week, end_of_week);
+  jana_store_view_set_range (view, priv->duration->start, priv->duration->end);
 }
 
 static void
@@ -985,5 +987,21 @@ penge_event_data_list_free (GList *event_data_list)
     event_data = (PengeEventData *)l->data;
     penge_event_data_free (event_data);
   }
+}
+
+void 
+penge_events_pane_set_duration (PengeEventsPane *pane, JanaDuration *duration)
+{
+  PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
+	
+  if (priv->duration)
+    jana_duration_free (priv->duration);
+
+  priv->duration = jana_duration_new (duration->start, duration->end);
+  if (priv->time)
+    g_object_unref (priv->time);
+  priv->time = g_object_ref(duration->start);
+
+  penge_events_pane_update_durations (pane);
 }
 

@@ -23,6 +23,7 @@
 
 #include <glib-object.h>
 #include <mx/mx.h>
+#include <libjana/jana.h>
 
 G_BEGIN_DECLS
 
@@ -52,6 +53,7 @@ typedef struct {
 } PengeEventsPaneClass;
 
 GType penge_events_pane_get_type (void);
+void penge_events_pane_set_duration (PengeEventsPane *, JanaDuration *);
 
 G_END_DECLS
 
