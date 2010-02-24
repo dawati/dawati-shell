@@ -111,25 +111,25 @@ MpsFeedSwitcher
 
 *.mps-tweet-card-reply-button MxIcon
 {
-  x-mx-content-image: url("tweet-reply.png");
+  -mx-content-image: url("tweet-reply.png");
   padding: 0;
 }
 
 *.mps-tweet-card-retweet-button MxIcon
 {
-  x-mx-content-image: url("retweet.png");
+  -mx-content-image: url("retweet.png");
   padding: 0;
 }
 
 *.mps-tweet-card-reply-button:hover MxIcon
 {
-  x-mx-content-image: url("tweet-reply-hover.png");
+  -mx-content-image: url("tweet-reply-hover.png");
   padding: 0;
 }
 
 *.mps-tweet-card-retweet-button:hover MxIcon
 {
-  x-mx-content-image: url("retweet-hover.png");
+  -mx-content-image: url("retweet-hover.png");
   padding: 0;
 }
 
