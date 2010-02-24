@@ -3,8 +3,10 @@ capplet/data/moblin-toolbar-properties.desktop.in
 capplet/src/moblin-toolbar-properties.c
 capplet/src/mtp-toolbar.c
 capplet/src/mtp-bin.c
+capplet/src/mtp-clock.c
 data/mutter-moblin.schemas.in
 src/moblin-netbook.c
 src/mnb-toolbar.c
+src/mnb-toolbar-clock.c
 src/notifications/mnb-notification.c
 src/notifications/mnb-notification-cluster.c
