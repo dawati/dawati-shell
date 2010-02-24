@@ -48,12 +48,16 @@ _device_changed_cb (GduPool       *pool,
                              (ClutterCallback) _remove_cb,
                              stage);
 
-  g_debug ("%s() mounted: '%d', name: '%s', vendor: '%s', model: '%s'",
+  g_debug ("%s() mounted: '%d', name: '%s', vendor: '%s', model: '%s'\n"
+           "uid: '%s'\n"
+           "ejectable: '%d'",
            __FUNCTION__, 
            gdu_device_is_mounted (device),
            gdu_device_get_presentation_name (device),
            gdu_device_drive_get_vendor (device),
-           gdu_device_drive_get_model (device));
+           gdu_device_drive_get_model (device),
+           gdu_device_id_get_uuid (device),
+           gdu_device_drive_get_is_media_ejectable (device));
 
   if (gdu_device_is_mounted (device))
   {

@@ -49,6 +49,13 @@ enum
   PROP_TITLE
 };
 
+enum
+{
+  REQUEST_HIDE,
+
+  LAST_SIGNAL
+};
+
 typedef struct
 {
   /* Managed by clutter */
@@ -60,6 +67,8 @@ typedef struct
   char              *mount_point;
   MpdStorageDevice  *storage;
 } MpdStorageTilePrivate;
+
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
 update (MpdStorageTile *self)
@@ -106,7 +115,20 @@ static void
 _open_clicked_cb (MxButton       *button,
                   MpdStorageTile *self)
 {
-  // TODO
+  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  char    *command_line;
+  GError  *error = NULL;
+
+  command_line = g_strdup_printf ("nautilus file://%s", priv->mount_point);
+  g_spawn_command_line_async (command_line, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+  g_free (command_line);
+
+  g_signal_emit_by_name (self, "request-hide");
 }
 
 static GObject *
@@ -230,6 +252,15 @@ mpd_storage_tile_class_init (MpdStorageTileClass *klass)
                                                         NULL,
                                                         param_flags | 
                                                         G_PARAM_CONSTRUCT_ONLY));
+
+  /* Signals */
+
+  _signals[REQUEST_HIDE] = g_signal_new ("request-hide",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
 }
 
 static void
