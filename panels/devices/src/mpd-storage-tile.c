@@ -23,7 +23,10 @@
 #include <glib/gi18n.h>
 
 #include "mpd-gobject.h"
+#include "mpd-shell-defines.h"
+#include "mpd-storage-device.h"
 #include "mpd-storage-tile.h"
+#include "config.h"
 
 static void
 mpd_storage_tile_set_mount_point (MpdStorageTile *self,
@@ -49,26 +52,61 @@ enum
 typedef struct
 {
   /* Managed by clutter */
-  ClutterActor  *icon;
-  ClutterActor  *title;
-  ClutterActor  *description;
-  ClutterActor  *meter;
+  ClutterActor      *icon;
+  ClutterActor      *title;
+  ClutterActor      *description;
+  ClutterActor      *meter;
 
-  char          *mount_point;
+  char              *mount_point;
+  MpdStorageDevice  *storage;
 } MpdStorageTilePrivate;
+
+static void
+update (MpdStorageTile *self)
+{
+  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  char          *text;
+  char          *size_text;
+  uint64_t       size;
+  uint64_t       available_size;
+  unsigned int   percentage;
+
+  g_object_get (priv->storage,
+                "size", &size,
+                "available-size", &available_size,
+                NULL);
+
+  percentage = 100 - (double) available_size / size * 100;
+
+  size_text = g_format_size_for_display (size);
+  text = g_strdup_printf (_("Using %d%% of %s"), percentage, size_text);
+  mx_label_set_text (MX_LABEL (priv->description), text);
+  g_free (text);
+  g_free (size_text);
+
+  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter), percentage / 100.);
+}
+
+static void
+_storage_size_notify_cb (MpdStorageDevice  *storage,
+                         GParamSpec        *pspec,
+                         MpdStorageTile    *self)
+{
+  update (self);
+}
 
 static void
 _eject_clicked_cb (MxButton       *button,
                    MpdStorageTile *self)
 {
-
+  // TODO
 }
 
 static void
 _open_clicked_cb (MxButton       *button,
                   MpdStorageTile *self)
 {
-
+  // TODO
 }
 
 static GObject *
@@ -89,6 +127,13 @@ _constructor (GType                  type,
     g_object_unref (self);
     self = NULL;
   }
+
+  priv->storage = mpd_storage_device_new (priv->mount_point);
+  g_signal_connect (priv->storage, "notify::size",
+                    G_CALLBACK (_storage_size_notify_cb), self);
+  g_signal_connect (priv->storage, "notify::available-size",
+                    G_CALLBACK (_storage_size_notify_cb), self);
+  update (self);
 
   return (GObject *) self;
 }
@@ -147,6 +192,8 @@ _dispose (GObject *object)
     priv->mount_point = NULL;
   }
 
+  mpd_gobject_detach (object, (GObject **) &priv->storage);
+
   G_OBJECT_CLASS (mpd_storage_tile_parent_class)->dispose (object);
 }
 
@@ -193,6 +240,8 @@ mpd_storage_tile_init (MpdStorageTile *self)
   ClutterActor  *button;
   GError        *error = NULL;
 
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_STORAGE_TILE_SPACING);
+
   /* 1st column: icon */
   priv->icon = clutter_texture_new ();
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
@@ -221,7 +270,7 @@ mpd_storage_tile_init (MpdStorageTile *self)
                                "expand", true,
                                "x-align", MX_ALIGN_START,
                                "x-fill", true,
-                               "y-align", MX_ALIGN_START,
+                               "y-align", MX_ALIGN_MIDDLE,
                                "y-fill", false,
                                NULL);
 

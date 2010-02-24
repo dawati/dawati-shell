@@ -53,6 +53,7 @@ test_storage_tile_LDADD = \
 test_storage_tile_SOURCES = \
   test-storage-tile.c \
   $(top_srcdir)/src/mpd-gobject.c \
+  $(top_srcdir)/src/mpd-storage-device.c \
   $(top_srcdir)/src/mpd-storage-tile.c \
   $(NULL)
 
