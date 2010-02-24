@@ -92,8 +92,8 @@ mtp_clock_unmap (ClutterActor *actor)
 
 static void
 mtp_clock_allocate (ClutterActor          *actor,
-                            const ClutterActorBox *box,
-                            ClutterAllocationFlags flags)
+                    const ClutterActorBox *box,
+                    ClutterAllocationFlags flags)
 {
   MtpClockPrivate *priv = MTP_CLOCK (actor)->priv;
   ClutterActorBox  childbox;
@@ -136,7 +136,7 @@ mtp_clock_get_preferred_width (ClutterActor *self,
 {
   gfloat width;
 
-  width = 193.0;
+  width = 164.0;
 
   if (min_width_p)
     *min_width_p = width;

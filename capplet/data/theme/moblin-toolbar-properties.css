@@ -128,3 +128,8 @@ MxButton#close-button:hover {
 MtpSpace {
   background-color: #4447;
 }
+
+MtpClock {
+  background-image: url("panel/clock-background.png");
+  padding: 0 0 8 0;
+}

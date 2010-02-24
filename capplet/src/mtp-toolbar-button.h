@@ -66,6 +66,7 @@ ClutterActor* mtp_toolbar_button_new (void);
 void mtp_toolbar_button_set_name (MtpToolbarButton *button, const gchar *name);
 const gchar *mtp_toolbar_button_get_name (MtpToolbarButton *button);
 gboolean mtp_toolbar_button_is_applet (MtpToolbarButton *button);
+gboolean mtp_toolbar_button_is_clock (MtpToolbarButton *button);
 ClutterActor *mnb_toolbar_button_get_pre_drag_parent (MtpToolbarButton *button);
 gboolean mtp_toolbar_button_is_valid (MtpToolbarButton *button);
 gboolean mtp_toolbar_button_is_required (MtpToolbarButton *button);

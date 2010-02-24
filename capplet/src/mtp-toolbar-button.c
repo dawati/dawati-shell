@@ -214,7 +214,7 @@ mtp_toolbar_button_allocate (ClutterActor          *actor,
   MxPadding                padding;
 
   button_width =
-    priv->clock && !priv->in_jar ? 193.0 : (priv->applet ? 44.0 : 70.0);
+    priv->clock && !priv->in_jar ? 164.0 : (priv->applet ? 44.0 : 70.0);
 
   CLUTTER_ACTOR_CLASS (
              mtp_toolbar_button_parent_class)->allocate (actor,
@@ -932,5 +932,13 @@ mtp_toolbar_button_set_dont_pick (MtpToolbarButton *button, gboolean dont)
   MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (button)->priv;
 
   priv->no_pick = dont;
+}
+
+gboolean
+mtp_toolbar_button_is_clock (MtpToolbarButton *button)
+{
+  MtpToolbarButtonPrivate *priv = MTP_TOOLBAR_BUTTON (button)->priv;
+
+  return MTP_IS_CLOCK (priv->real_button);
 }
 

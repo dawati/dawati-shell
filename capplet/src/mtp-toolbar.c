@@ -48,6 +48,7 @@ struct _MtpToolbarPrivate
 {
   ClutterActor *applet_area;
   ClutterActor *panel_area;
+  ClutterActor *clock_area;
 
   gboolean free_space : 1;
   gboolean enabled    : 1;
@@ -71,6 +72,9 @@ mtp_toolbar_dispose (GObject *object)
   clutter_actor_destroy (priv->applet_area);
   priv->applet_area = NULL;
 
+  clutter_actor_destroy (priv->clock_area);
+  priv->clock_area = NULL;
+
   G_OBJECT_CLASS (mtp_toolbar_parent_class)->dispose (object);
 }
 
@@ -82,6 +86,7 @@ mtp_toolbar_map (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->map (actor);
 
   clutter_actor_map (priv->panel_area);
+  clutter_actor_map (priv->clock_area);
   clutter_actor_map (priv->applet_area);
 }
 
@@ -91,6 +96,7 @@ mtp_toolbar_unmap (ClutterActor *actor)
   MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
 
   clutter_actor_unmap (priv->panel_area);
+  clutter_actor_unmap (priv->clock_area);
   clutter_actor_unmap (priv->applet_area);
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->unmap (actor);
@@ -110,15 +116,24 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-  childbox.x1 = padding.left;
+  childbox.x1 = padding.left + 4.0;
   childbox.y1 = padding.top;
-  childbox.x2 = box->x2 - box->x1;
+  childbox.x2 = 659.0;
   childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
 
   mx_allocate_align_fill (priv->panel_area, &childbox,
                           MX_ALIGN_START, MX_ALIGN_MIDDLE,
                           FALSE, FALSE);
   clutter_actor_allocate (priv->panel_area, &childbox, flags);
+
+  childbox.x1 = 660.0;
+  childbox.y1 = padding.top;
+  childbox.x2 = 824.0;
+  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
+  mx_allocate_align_fill (priv->clock_area, &childbox,
+                          MX_ALIGN_START, MX_ALIGN_MIDDLE,
+                          FALSE, FALSE);
+  clutter_actor_allocate (priv->clock_area, &childbox, flags);
 
   childbox.x1 = 825.0;
   childbox.y1 = padding.top;
@@ -141,6 +156,12 @@ mtp_toolbar_constructed (GObject *self)
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->panel_area), 2);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->panel_area), TRUE);
   clutter_actor_set_parent (priv->panel_area, actor);
+
+  priv->clock_area  = mx_box_layout_new ();
+  clutter_actor_set_name (priv->clock_area, "clock-area");
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->clock_area), 2);
+  mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->clock_area), TRUE);
+  clutter_actor_set_parent (priv->clock_area, actor);
 
   priv->applet_area = mx_box_layout_new ();
   clutter_actor_set_name (priv->applet_area, "applet-area");
@@ -294,6 +315,12 @@ mtp_toolbar_drop (MxDroppable         *droppable,
       return;
     }
 
+  if (mtp_toolbar_button_is_clock (tbutton))
+    {
+      mtp_toolbar_add_button (toolbar, actor);
+      return;
+    }
+
   /*
    * We need to work out where on the Toolbar the drop happened; specifically,
    * we are interested which current button is the new button being inserted
@@ -389,6 +416,7 @@ mtp_toolbar_pick (ClutterActor *self, const ClutterColor *color)
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->pick (self, color);
 
   clutter_actor_paint (priv->panel_area);
+  clutter_actor_paint (priv->clock_area);
   clutter_actor_paint (priv->applet_area);
 }
 
@@ -400,6 +428,7 @@ mtp_toolbar_paint (ClutterActor *self)
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->paint (self);
 
   clutter_actor_paint (priv->panel_area);
+  clutter_actor_paint (priv->clock_area);
   clutter_actor_paint (priv->applet_area);
 }
 
@@ -513,6 +542,20 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
                                    button,
                                    "expand", FALSE, NULL);
     }
+  else if (mtp_toolbar_button_is_clock ((MtpToolbarButton*)button))
+    {
+      ClutterActor *parent = clutter_actor_get_parent (button);
+
+      if (parent)
+        clutter_actor_reparent (button, priv->clock_area);
+      else
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->clock_area),
+                                     button);
+
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->clock_area),
+                                   button,
+                                   "expand", FALSE, NULL);
+    }
   else if (MTP_IS_TOOLBAR_BUTTON (button))
     {
       if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
@@ -581,6 +624,11 @@ mtp_toolbar_remove_button (MtpToolbar *toolbar, ClutterActor *button)
   if (MTP_IS_SPACE (button))
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                      button);
+    }
+  else if (mtp_toolbar_button_is_clock ((MtpToolbarButton*)button))
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->clock_area),
                                       button);
     }
   else if (MTP_IS_TOOLBAR_BUTTON (button))
@@ -817,7 +865,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
    * FIXME -- we need to calculate this from screen size, and taking into
    * account the size of the clock.
    */
-  for (i = 0; i < 9 - n_panels; ++i)
+  for (i = 0; i < 8 - n_panels; ++i)
     {
       ClutterActor *space = mtp_space_new ();
 
