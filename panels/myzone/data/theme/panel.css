@@ -183,12 +183,12 @@ PengeWelcomeTile
 
 *.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon
 {
-  x-mx-content-image: url('dismiss_button.png');
+  -mx-content-image: url('dismiss_button.png');
 }
 
 *.PengeInterestingTileRemoveButton:hover *.PengeInterestingTileIcon
 {
-  x-mx-content-image: url('dismiss_button_hover.png');
+  -mx-content-image: url('dismiss_button_hover.png');
 }
 
 *.PengePeopleTileAvatarBackground
