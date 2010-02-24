@@ -98,9 +98,21 @@ mtp_clock_allocate (ClutterActor          *actor,
   MtpClockPrivate *priv = MTP_CLOCK (actor)->priv;
   ClutterActorBox  childbox;
   MxPadding        padding = {0,};
+  ClutterActor    *background;
 
   CLUTTER_ACTOR_CLASS (
              mtp_clock_parent_class)->allocate (actor, box, flags);
+
+  /*
+   * Mx does not cope well with the background when the natural size is bigger
+   * than the real size. Allocate the clock background properly.
+   */
+  if ((background = mx_widget_get_background_image (MX_WIDGET (actor))))
+    {
+      ClutterActorBox frame_box = {0, 0, box->x2 - box->x1, box->y2 - box->y1};
+
+      clutter_actor_allocate (background, &frame_box, flags);
+    }
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
