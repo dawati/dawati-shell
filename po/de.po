@@ -14,10 +14,6 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/mutter-moblin.schemas.in.h:1
-msgid "Determines the order of panels on the toolbar."
-msgstr ""
-
 #: ../src/moblin-netbook.c:809
 msgid "Moblin Netbook Effects"
 msgstr "Moblin-Effekte auf dem Netbook"
@@ -60,10 +56,6 @@ msgstr "Ignorieren"
 msgid "Dismiss All"
 msgstr "Alle ignorieren"
 
-#: ../data/mutter-moblin.schemas.in.h:2
-msgid "Order of panels on toolbar"
-msgstr ""
-
 #: ../src/moblin-netbook.c:2848
 msgid "Activate"
 msgstr "Aktivieren"
@@ -80,6 +72,14 @@ msgstr "Unbekanntes Fenster"
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "%s funktioniert leider nicht."
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Legt die Reihenfolge der Panels auf der Werkzeugleiste fest."
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Reihenfolge der Panels auf der Werkzeugleiste"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Vor weniger als einer Minute"
