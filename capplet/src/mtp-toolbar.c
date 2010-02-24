@@ -493,35 +493,42 @@ mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
 
   parent = clutter_actor_get_parent ((ClutterActor*)button);
 
-  if (old_parent == priv->panel_area || old_parent == priv->applet_area)
+  if (old_parent == priv->panel_area ||
+      old_parent == priv->clock_area ||
+      old_parent == priv->applet_area)
     {
       priv->modified = TRUE;
 
-      mtp_toolbar_fill_space (toolbar);
-
-      if (!mtp_toolbar_button_is_applet (button))
+      if (!mtp_toolbar_button_is_clock (button))
         {
-          gboolean  not_free_space = !priv->free_space;
-          GList    *last;
+          mtp_toolbar_fill_space (toolbar);
 
-          GList *children = clutter_container_get_children (
-                                       CLUTTER_CONTAINER (priv->panel_area));
+          if (!mtp_toolbar_button_is_applet (button))
+            {
+              gboolean  not_free_space = !priv->free_space;
+              GList    *last;
 
-          last = g_list_last (children);
+              GList *children = clutter_container_get_children (
+                                          CLUTTER_CONTAINER (priv->panel_area));
 
-          if (last && MTP_IS_SPACE (last->data))
-            priv->free_space = TRUE;
-          else
-            priv->free_space = FALSE;
+              last = g_list_last (children);
 
-          if ((!priv->free_space) != not_free_space)
-            g_object_notify (G_OBJECT (toolbar), "free-space");
+              if (last && MTP_IS_SPACE (last->data))
+                priv->free_space = TRUE;
+              else
+                priv->free_space = FALSE;
 
-          g_list_free (children);
+              if ((!priv->free_space) != not_free_space)
+                g_object_notify (G_OBJECT (toolbar), "free-space");
+
+              g_list_free (children);
+            }
         }
     }
 
-  if (!(parent == priv->panel_area || parent == priv->applet_area))
+  if (!(parent == priv->panel_area  ||
+        parent == priv->applet_area ||
+        parent == priv->clock_area))
     g_signal_handlers_disconnect_by_func (button,
                                           mtp_toolbar_button_parent_set_cb,
                                           toolbar);
