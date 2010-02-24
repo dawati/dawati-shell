@@ -52,6 +52,7 @@ enum
 enum
 {
   REQUEST_HIDE,
+  EJECT,
 
   LAST_SIGNAL
 };
@@ -108,7 +109,8 @@ static void
 _eject_clicked_cb (MxButton       *button,
                    MpdStorageTile *self)
 {
-  // TODO
+  g_signal_emit_by_name (self, "eject");
+  g_signal_emit_by_name (self, "request-hide");
 }
 
 static void
@@ -261,6 +263,13 @@ mpd_storage_tile_class_init (MpdStorageTileClass *klass)
                                          0, NULL, NULL,
                                          g_cclosure_marshal_VOID__VOID,
                                          G_TYPE_NONE, 0);
+
+  _signals[EJECT] = g_signal_new ("eject",
+                                  G_TYPE_FROM_CLASS (klass),
+                                  G_SIGNAL_RUN_LAST,
+                                  0, NULL, NULL,
+                                  g_cclosure_marshal_VOID__VOID,
+                                  G_TYPE_NONE, 0);
 }
 
 static void
