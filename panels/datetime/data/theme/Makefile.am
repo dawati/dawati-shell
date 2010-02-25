@@ -10,7 +10,10 @@ dist_theme_DATA = \
 	up.png		\
 	down.png	\
 	am-pm-toggle-background.png \
-	snooze-background.png 
+	snooze-background.png \
+	single-div-line.png	\
+	v-div-line.png	\
+	double-div-line.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE

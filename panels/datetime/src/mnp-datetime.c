@@ -44,7 +44,9 @@ G_DEFINE_TYPE (MnpDatetime, mnp_datetime, MX_TYPE_BOX_LAYOUT)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNP_TYPE_DATETIME, MnpDatetimePrivate))
 
-#define TIMEOUT 250
+#define V_DIV_LINE THEMEDIR "/v-div-line.png"
+#define SINGLE_DIV_LINE THEMEDIR "/single-div-line.png"
+#define DOUBLE_DIV_LINE THEMEDIR "/double-div-line.png"
 
 
 typedef struct _MnpDatetimePrivate MnpDatetimePrivate;
@@ -126,6 +128,7 @@ construct_calendar_area (MnpDatetime *time)
   	JanaTime *start, *end;
 	JanaDuration *duration;
 	ClutterActor *box, *label;
+	ClutterActor *div;
   	
       	start = jana_ecal_utils_time_now_local ();
       	end = jana_ecal_utils_time_now_local ();
@@ -161,7 +164,17 @@ construct_calendar_area (MnpDatetime *time)
 			       "y-fill", FALSE,		
 			       "x-fill", TRUE,			       			       
                                NULL);	
-	
+
+	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+	clutter_container_add_actor ((ClutterContainer *)priv->cal_area, div);
+	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
+                               div,
+                               "expand", FALSE,
+			       "y-fill", FALSE,		
+			       "x-fill", TRUE,			       			       
+                               NULL);	
+
+
 	label = mx_label_new(_("Today"));
 	mx_stylable_set_style_class (label, "TodayLabel");
 	clutter_container_add_actor ((ClutterContainer *)box, (ClutterActor *)label);
@@ -204,9 +217,10 @@ static void
 construct_task_area (MnpDatetime *time)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
-	ClutterActor *label;
+	ClutterActor *label, *div;
 
 	priv->task_row = mx_box_layout_new();
+	mx_box_layout_set_spacing ((MxBoxLayout *)priv->task_row, 4);	
 	mx_box_layout_set_vertical ((MxBoxLayout *)priv->task_row, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->task_row, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->task_row, TRUE);
@@ -228,6 +242,15 @@ construct_task_area (MnpDatetime *time)
 			       "x-fill", TRUE,			       			       
                                NULL);
 
+	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+	clutter_container_add_actor ((ClutterContainer *)priv->task_row, div);
+	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
+                               div,
+                               "expand", FALSE,
+			       "y-fill", FALSE,		
+			       "x-fill", TRUE,			       			       
+                               NULL);	
+
 	priv->task_area = g_object_new (PENGE_TYPE_TASKS_PANE,
                                    NULL);
 	clutter_container_add_actor ((ClutterContainer *)priv->task_row, priv->task_area);
@@ -243,24 +266,35 @@ static void
 mnp_datetime_construct (MnpDatetime *time)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
+	ClutterActor *div;
 
 	mx_box_layout_set_vertical ((MxBoxLayout *)time, FALSE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)time, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)time, TRUE);
-	mx_box_layout_set_spacing ((MxBoxLayout *)time, 3);
+	mx_box_layout_set_spacing ((MxBoxLayout *)time, 4);
 	clutter_actor_set_name ((ClutterActor *)time, "datetime-panel");
 
 	priv->world_clock = mnp_world_clock_new ();
 	clutter_container_add_actor ((ClutterContainer *)time, priv->world_clock);
 	
+	div = clutter_texture_new_from_file (V_DIV_LINE, NULL);
+	clutter_container_add_actor ((ClutterContainer *)time, div);
+
 	priv->cal_alarm_row = mx_box_layout_new();
+	mx_box_layout_set_spacing ((MxBoxLayout *)priv->cal_alarm_row, 4);
 	mx_box_layout_set_vertical ((MxBoxLayout *)priv->cal_alarm_row, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->cal_alarm_row, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->cal_alarm_row, TRUE);
 	clutter_container_add_actor ((ClutterContainer *)time, priv->cal_alarm_row);
 
+	div = clutter_texture_new_from_file (V_DIV_LINE, NULL);
+	clutter_container_add_actor ((ClutterContainer *)time, div);
+
 	priv->alarm_area = (ClutterActor *)mnp_alarms_new();
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, (ClutterActor *)priv->alarm_area);
+	
+	div = clutter_texture_new_from_file (DOUBLE_DIV_LINE, NULL);
+	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, (ClutterActor *)div);
 	
 	construct_calendar_area(time);
 
