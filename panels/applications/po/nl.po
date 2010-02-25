@@ -38,4 +38,4 @@ msgstr "applicaties"
 
 #: ../data/moblin-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
-msgstr "Applicaties"
+msgstr "Applicatiespaneel"
