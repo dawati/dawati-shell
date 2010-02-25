@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <SIBO.ATTEMA@GMAIL.COM>, YEAR 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-03 09:21+0000\n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
 "PO-Revision-Date: 2009-08-03 13:52+0100\n"
 "Last-Translator: Sibo Attema <sibo.attema@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,24 +17,43 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-Country: NETHERLANDS\n"
 
-#: ../anerley/anerley-tile.c:208
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Beschikbaar"
 
-#: ../anerley/anerley-tile.c:211
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Bezig"
 
-#: ../anerley/anerley-tile.c:214
-#: ../anerley/anerley-tile.c:217
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "Afwezig"
 
-#: ../anerley/anerley-tile.c:220
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "Offline"
 
-#: ../anerley/anerley-econtact-item.c:312
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "Geen naam"
 
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Absent voor langere tijd"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Niet gezet"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Verborgen"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Fout"
