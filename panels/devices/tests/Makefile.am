@@ -26,6 +26,11 @@ test_battery_device_SOURCES = \
   $(top_srcdir)/src/mpd-gobject.c \
   $(NULL)
 
+test_disk_tile_LDADD = \
+  $(top_builddir)/gdu/libgdu.la \
+  $(MPD_LIBS) \
+  $(NULL)
+
 test_disk_tile_SOURCES = \
   test-disk-tile.c \
   $(top_srcdir)/src/mpd-storage-device.c \
@@ -37,6 +42,11 @@ test_folder_button_SOURCES = \
   test-folder-button.c \
   $(top_srcdir)/src/mpd-folder-button.c \
   $(top_srcdir)/src/mpd-gobject.c \
+  $(NULL)
+
+test_storage_device_LDADD = \
+  $(top_builddir)/gdu/libgdu.la \
+  $(MPD_LIBS) \
   $(NULL)
 
 test_storage_device_SOURCES = \

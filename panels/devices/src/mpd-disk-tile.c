@@ -106,7 +106,7 @@ mpd_disk_tile_init (MpdDiskTile *self)
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
   /* Display size of the volume $HOME is on. */
-  priv->storage = mpd_storage_device_new (g_get_home_dir ());
+  priv->storage = mpd_storage_device_new_for_path (g_get_home_dir ());
   g_signal_connect (priv->storage, "notify::size",
                     G_CALLBACK (_storage_size_notify_cb), self);
   g_signal_connect (priv->storage, "notify::available-size",

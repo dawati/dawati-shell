@@ -152,7 +152,7 @@ _constructor (GType                  type,
     self = NULL;
   }
 
-  priv->storage = mpd_storage_device_new (priv->mount_point);
+  priv->storage = mpd_storage_device_new_for_path (priv->mount_point);
   g_signal_connect (priv->storage, "notify::size",
                     G_CALLBACK (_storage_size_notify_cb), self);
   g_signal_connect (priv->storage, "notify::available-size",
