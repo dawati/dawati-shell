@@ -528,7 +528,7 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
     }
 
   exec = g_strdup_printf ("%s %s \"%s%s\"", 
-                          "chromium-browser", 
+                          "google-chrome", 
                           "",
                           prefix, remaining);
   g_free (prefix);
@@ -1031,7 +1031,7 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
 
   while (priv->session_urls)
     {
-      g_free (priv->session_urls->data);
+      //g_free (priv->session_urls->data);
       priv->session_urls = g_list_delete_link (priv->session_urls,
                                                priv->session_urls);
     }
