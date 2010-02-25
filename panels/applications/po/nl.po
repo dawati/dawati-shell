@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:30+0000\n"
+"POT-Creation-Date: 2010-02-17 15:12+0000\n"
 "PO-Revision-Date: 2009-08-25 16:10-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -16,21 +16,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Dutch\n"
 
-#: ../src/moblin-netbook-launcher.c:1337
-msgid "Applications"
-msgstr "Applicaties"
-
-#: ../src/moblin-panel-applications.c:196
-msgid "applications"
-msgstr "applicaties"
-
 #. * Fav apps.
 #. 
 #. Label
-#: ../src/moblin-netbook-launcher.c:813
+#: ../src/moblin-netbook-launcher.c:867
 msgid "Favorite Applications"
 msgstr "Favoriete applicaties"
 
-#: ../src/moblin-netbook-launcher.c:1348
+#: ../src/moblin-netbook-launcher.c:1427
+msgid "Applications"
+msgstr "Applicaties"
+
+#: ../src/moblin-netbook-launcher.c:1438
 msgid "Search"
 msgstr "Zoeken"
+
+#: ../src/moblin-panel-applications.c:197
+#: ../data/moblin-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr "applicaties"
+
+#: ../data/moblin-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Applicaties"
