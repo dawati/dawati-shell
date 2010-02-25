@@ -110,15 +110,20 @@ mtp_toolbar_allocate (ClutterActor          *actor,
   MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
   MxPadding          padding;
   ClutterActorBox    childbox;
+  gfloat             clock_x;
+  gfloat             tray_x;
 
   CLUTTER_ACTOR_CLASS (
              mtp_toolbar_parent_class)->allocate (actor, box, flags);
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
+  clock_x = box->x2 - box->x1 - 364.0;
+  tray_x  = clock_x + 164.0 + 2.0;
+
   childbox.x1 = padding.left + 4.0;
   childbox.y1 = padding.top;
-  childbox.x2 = 659.0;
+  childbox.x2 = clock_x - 2.0;
   childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
 
   mx_allocate_align_fill (priv->panel_area, &childbox,
@@ -126,16 +131,16 @@ mtp_toolbar_allocate (ClutterActor          *actor,
                           FALSE, FALSE);
   clutter_actor_allocate (priv->panel_area, &childbox, flags);
 
-  childbox.x1 = 660.0;
+  childbox.x1 = clock_x;
   childbox.y1 = padding.top;
-  childbox.x2 = 824.0;
+  childbox.x2 = tray_x - 2.0;
   childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
   mx_allocate_align_fill (priv->clock_area, &childbox,
                           MX_ALIGN_START, MX_ALIGN_MIDDLE,
                           FALSE, FALSE);
   clutter_actor_allocate (priv->clock_area, &childbox, flags);
 
-  childbox.x1 = 825.0;
+  childbox.x1 = tray_x;
   childbox.y1 = padding.top;
   childbox.x2 = box->x2 - box->x1;
   childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
