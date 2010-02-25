@@ -4,6 +4,7 @@ capplet/src/moblin-toolbar-properties.c
 capplet/src/mtp-toolbar.c
 capplet/src/mtp-bin.c
 capplet/src/mtp-clock.c
+capplet/src/mtp-cc-panel.c
 data/mutter-moblin.schemas.in
 src/moblin-netbook.c
 src/mnb-toolbar.c

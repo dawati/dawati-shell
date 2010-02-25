@@ -145,6 +145,11 @@ AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 # control center capplet
 PKG_CHECK_MODULES(CAPPLET, clutter-gtk-0.10 mx-1.0 gconf-2.0)
 
+PKG_CHECK_MODULES(CC, gmodule-export-2.0 libgnome-control-center-extension)
+
+CC_DIR=$($PKG_CONFIG libgnome-control-center-extension --variable=extensiondir)
+AC_SUBST(CC_DIR)
+
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
