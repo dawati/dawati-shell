@@ -18,4 +18,6 @@ autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = $(desktopfiles_files)
 
 EXTRA_DIST = moblin-panel-myzone.desktop.in.in
-CLEANFILES = moblin-panel-myzone.desktop moblin-panel-myzone.desktop.in
+CLEANFILES = moblin-panel-myzone.desktop moblin-panel-myzone.desktop.inuidir = $(pkgdatadir)
+ui_DATA = capplet.ui
+
