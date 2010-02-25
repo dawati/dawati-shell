@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-11 23:51+0000\n"
-"PO-Revision-Date: 2010-02-24 19:26-0800\n"
+"PO-Revision-Date: 2010-02-25 14:56-0800\n"
 "Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr "Personen die met je praten ..."
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
-msgstr "Personen"
+msgstr "Personen-paneel"
 
 #~ msgid "Send an email"
 #~ msgstr "Stuur een e-mail"
