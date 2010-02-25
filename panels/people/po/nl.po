@@ -2,73 +2,75 @@
 # Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the mutter-moblin package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:32+0000\n"
-"PO-Revision-Date: 2009-08-05 14:41-0800\n"
-"Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
+"POT-Creation-Date: 2010-02-11 23:51+0000\n"
+"PO-Revision-Date: 2010-02-24 19:26-0800\n"
+"Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
+#: ../src/moblin-panel-people.c:88
+#: ../src/mnb-people-panel.c:493
+#: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "personen"
 
-#: ../src/mnb-people-panel.c:166
-msgid "Send an email"
-msgstr "Stuur een e-mail"
-
-#: ../src/mnb-people-panel.c:177
-msgid "Send a message"
-msgstr "Stuur een bericht"
-
-#: ../src/mnb-people-panel.c:311
+#: ../src/mnb-people-panel.c:265
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Sorry, we kunnen geen personen vinden. Heb je een Messenger account aangemaakt?"
 
-#: ../src/mnb-people-panel.c:561
-msgid "people - Someone is talking to you"
-msgstr "personen - iemand praat met je"
-
-#: ../src/mnb-people-panel.c:790
-msgid "People"
-msgstr "Personen"
-
-#: ../src/mnb-people-panel.c:983
-msgid "Selection"
-msgstr "Selectie"
-
-#: ../src/mnb-people-panel.c:1046
-msgid "Nobody selected"
-msgstr "Niemand geselecteerd"
-
-#: ../src/mnb-people-panel.c:497
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Ga online in het Status-paneel om je Chat-contacten te zien."
-
-#: ../src/mnb-people-panel.c:447
+#: ../src/mnb-people-panel.c:377
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Sorry, we kunnen geen personen vinden. Het ziet er naar uit dat ze allemaal offline zijn."
 
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:422
+msgid "To see your IM contacts, you need to go online."
+msgstr "Ga online  om je Chat-contacten te zien."
+
+#: ../src/mnb-people-panel.c:474
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "personen - %d personen praten met je"
 
-#: ../src/mnb-people-panel.c:803
+#: ../src/mnb-people-panel.c:481
+msgid "people - Someone is talking to you"
+msgstr "personen - iemand praat met je"
+
+#: ../src/mnb-people-panel.c:671
+msgid "People"
+msgstr "Personen"
+
+#: ../src/mnb-people-panel.c:684
 msgid "Search"
 msgstr "Zoeken"
 
-#: ../src/mnb-people-panel.c:856
+#: ../src/mnb-people-panel.c:747
 msgid "People talking to you ..."
 msgstr "Personen die met je praten ..."
 
-#: ../src/mnb-people-panel.c:168
-msgid "Edit details"
-msgstr "Bewerk details"
+#: ../data/moblin-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Personen"
+
+#~ msgid "Send an email"
+#~ msgstr "Stuur een e-mail"
+
+#~ msgid "Send a message"
+#~ msgstr "Stuur een bericht"
+
+#~ msgid "Selection"
+#~ msgstr "Selectie"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Niemand geselecteerd"
+
+#~ msgid "Edit details"
+#~ msgstr "Bewerk details"
