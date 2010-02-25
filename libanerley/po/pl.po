@@ -43,22 +43,22 @@ msgstr "Rozłączony"
 msgid "Unnamed"
 msgstr "Bez nazwy"
 
-#: ../anerley/anerley-presence-chooser.c:41
-msgid "Unset"
-msgstr ""
-
-#: ../anerley/anerley-presence-chooser.c:45
-msgid "Extended Away"
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
 msgstr ""
 
 #: ../anerley/anerley-presence-chooser.c:48
 msgid "Unknown"
-msgstr "Nieznane"
-
-#: ../anerley/anerley-presence-chooser.c:46
-msgid "Hidden"
-msgstr "Ukryte"
+msgstr ""
 
 #: ../anerley/anerley-presence-chooser.c:49
 msgid "Error"
-msgstr "Błąd"
+msgstr ""
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Przedłużone"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Wycofane zaznaczenie"
