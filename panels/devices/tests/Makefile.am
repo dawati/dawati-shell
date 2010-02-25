@@ -17,7 +17,7 @@ noinst_PROGRAMS = \
   test-disk-tile \
   test-folder-button \
   test-storage-device \
-  test-storage-tile \
+  test-storage-device-tile \
   $(NULL)
 
 test_battery_device_SOURCES = \
@@ -55,16 +55,16 @@ test_storage_device_SOURCES = \
   $(top_srcdir)/src/mpd-storage-device.c \
   $(NULL)
 
-test_storage_tile_LDADD = \
+test_storage_device_tile_LDADD = \
   $(top_builddir)/gdu/libgdu.la \
   $(MPD_LIBS) \
   $(NULL)
 
-test_storage_tile_SOURCES = \
-  test-storage-tile.c \
+test_storage_device_tile_SOURCES = \
+  test-storage-device-tile.c \
   $(top_srcdir)/src/mpd-gobject.c \
   $(top_srcdir)/src/mpd-storage-device.c \
-  $(top_srcdir)/src/mpd-storage-tile.c \
+  $(top_srcdir)/src/mpd-storage-device-tile.c \
   $(NULL)
 
 -include $(top_srcdir)/git.mk

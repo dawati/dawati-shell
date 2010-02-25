@@ -25,21 +25,21 @@
 #include "mpd-gobject.h"
 #include "mpd-shell-defines.h"
 #include "mpd-storage-device.h"
-#include "mpd-storage-tile.h"
+#include "mpd-storage-device-tile.h"
 #include "config.h"
 
 static void
-mpd_storage_tile_set_mount_point (MpdStorageTile *self,
-                                  char const     *mount_point);
+mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
+                                         char const            *mount_point);
 
 static void
-mpd_storage_tile_set_title (MpdStorageTile *self,
-                            char const     *title);
+mpd_storage_device_tile_set_title (MpdStorageDeviceTile  *self,
+                                   char const            *title);
 
-G_DEFINE_TYPE (MpdStorageTile, mpd_storage_tile, MX_TYPE_BOX_LAYOUT)
+G_DEFINE_TYPE (MpdStorageDeviceTile, mpd_storage_device_tile, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_STORAGE_TILE, MpdStorageTilePrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_STORAGE_DEVICE_TILE, MpdStorageDeviceTilePrivate))
 
 enum
 {
@@ -67,14 +67,14 @@ typedef struct
 
   char              *mount_point;
   MpdStorageDevice  *storage;
-} MpdStorageTilePrivate;
+} MpdStorageDeviceTilePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
-update (MpdStorageTile *self)
+update (MpdStorageDeviceTile *self)
 {
-  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
   char          *text;
   char          *size_text;
   uint64_t       size;
@@ -98,26 +98,26 @@ update (MpdStorageTile *self)
 }
 
 static void
-_storage_size_notify_cb (MpdStorageDevice  *storage,
-                         GParamSpec        *pspec,
-                         MpdStorageTile    *self)
+_storage_size_notify_cb (MpdStorageDevice     *storage,
+                         GParamSpec           *pspec,
+                         MpdStorageDeviceTile *self)
 {
   update (self);
 }
 
 static void
-_eject_clicked_cb (MxButton       *button,
-                   MpdStorageTile *self)
+_eject_clicked_cb (MxButton             *button,
+                   MpdStorageDeviceTile *self)
 {
   g_signal_emit_by_name (self, "eject");
   g_signal_emit_by_name (self, "request-hide");
 }
 
 static void
-_open_clicked_cb (MxButton       *button,
-                  MpdStorageTile *self)
+_open_clicked_cb (MxButton              *button,
+                  MpdStorageDeviceTile  *self)
 {
-  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
   char    *command_line;
   GError  *error = NULL;
 
@@ -138,10 +138,10 @@ _constructor (GType                  type,
               unsigned int           n_properties,
               GObjectConstructParam *properties)
 {
-  MpdStorageTile *self = (MpdStorageTile *)
-                            G_OBJECT_CLASS (mpd_storage_tile_parent_class)
-                              ->constructor (type, n_properties, properties);
-  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTile *self = (MpdStorageDeviceTile *)
+                              G_OBJECT_CLASS (mpd_storage_device_tile_parent_class)
+                                ->constructor (type, n_properties, properties);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
   if (priv->mount_point == NULL)
   {
@@ -172,12 +172,13 @@ _get_property (GObject      *object,
   {
   case PROP_MOUNT_POINT:
     g_value_set_string (value,
-                        mpd_storage_tile_get_mount_point (
-                          MPD_STORAGE_TILE (object)));
+                        mpd_storage_device_tile_get_mount_point (
+                          MPD_STORAGE_DEVICE_TILE (object)));
     break;
   case PROP_TITLE:
     g_value_set_string (value,
-                        mpd_storage_tile_get_title (MPD_STORAGE_TILE (object)));
+                        mpd_storage_device_tile_get_title (
+                          MPD_STORAGE_DEVICE_TILE (object)));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -193,12 +194,12 @@ _set_property (GObject      *object,
   switch (property_id)
   {
   case PROP_MOUNT_POINT:
-    mpd_storage_tile_set_mount_point (MPD_STORAGE_TILE (object),
-                                     g_value_get_string (value));
+    mpd_storage_device_tile_set_mount_point (MPD_STORAGE_DEVICE_TILE (object),
+                                             g_value_get_string (value));
     break;
   case PROP_TITLE:
-    mpd_storage_tile_set_title (MPD_STORAGE_TILE (object),
-                                g_value_get_string (value));
+    mpd_storage_device_tile_set_title (MPD_STORAGE_DEVICE_TILE (object),
+                                       g_value_get_string (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -208,7 +209,7 @@ _set_property (GObject      *object,
 static void
 _dispose (GObject *object)
 {
-  MpdStorageTilePrivate *priv = GET_PRIVATE (object);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (object);
 
   if (priv->mount_point)
   {
@@ -218,16 +219,16 @@ _dispose (GObject *object)
 
   mpd_gobject_detach (object, (GObject **) &priv->storage);
 
-  G_OBJECT_CLASS (mpd_storage_tile_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mpd_storage_device_tile_parent_class)->dispose (object);
 }
 
 static void
-mpd_storage_tile_class_init (MpdStorageTileClass *klass)
+mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamFlags   param_flags;
 
-  g_type_class_add_private (klass, sizeof (MpdStorageTilePrivate));
+  g_type_class_add_private (klass, sizeof (MpdStorageDeviceTilePrivate));
 
   object_class->constructor = _constructor;
   object_class->get_property = _get_property;
@@ -273,14 +274,14 @@ mpd_storage_tile_class_init (MpdStorageTileClass *klass)
 }
 
 static void
-mpd_storage_tile_init (MpdStorageTile *self)
+mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 {
-  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor  *vbox;
   ClutterActor  *button;
   GError        *error = NULL;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_STORAGE_TILE_SPACING);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_STORAGE_DEVICE_TILE_SPACING);
 
   /* 1st column: icon */
   priv->icon = clutter_texture_new ();
@@ -340,32 +341,32 @@ mpd_storage_tile_init (MpdStorageTile *self)
 }
 
 ClutterActor *
-mpd_storage_tile_new (char const *mount_point,
-                      char const *title)
+mpd_storage_device_tile_new (char const *mount_point,
+                             char const *title)
 {
-  return g_object_new (MPD_TYPE_STORAGE_TILE,
+  return g_object_new (MPD_TYPE_STORAGE_DEVICE_TILE,
                        "mount-point", mount_point,
                        "title", title,
                        NULL);
 }
 
 char const *
-mpd_storage_tile_get_mount_point (MpdStorageTile *self)
+mpd_storage_device_tile_get_mount_point (MpdStorageDeviceTile *self)
 {
-  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
-  g_return_val_if_fail (MPD_IS_STORAGE_TILE (self), NULL);
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self), NULL);
 
   return priv->mount_point;
 }
 
 static void
-mpd_storage_tile_set_mount_point (MpdStorageTile *self,
-                                  char const     *mount_point)
+mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
+                                  char const            *mount_point)
 {
-  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
-  g_return_if_fail (MPD_IS_STORAGE_TILE (self));
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
 
   if (0 != g_strcmp0 (mount_point, priv->mount_point))
   {
@@ -385,22 +386,22 @@ mpd_storage_tile_set_mount_point (MpdStorageTile *self,
 }
 
 char const *
-mpd_storage_tile_get_title (MpdStorageTile *self)
+mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
 {
-  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
-  g_return_val_if_fail (MPD_IS_STORAGE_TILE (self), NULL);
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self), NULL);
 
   return mx_label_get_text (MX_LABEL (priv->title));
 }
 
 static void
-mpd_storage_tile_set_title (MpdStorageTile *self,
-                            char const     *title)
+mpd_storage_device_tile_set_title (MpdStorageDeviceTile *self,
+                                   char const     *title)
 {
-  MpdStorageTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
-  g_return_if_fail (MPD_IS_STORAGE_TILE (self));
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
 
   if (0 != g_strcmp0 (title, mx_label_get_text (MX_LABEL (priv->title))))
   {

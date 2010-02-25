@@ -23,7 +23,7 @@
 #include <gdu/gdu.h>
 #include <gio/gio.h>
 #include <mx/mx.h>
-#include "mpd-storage-tile.h"
+#include "mpd-storage-device-tile.h"
 
 static void
 _eject_ready_cb (GDrive       *drive,
@@ -62,8 +62,8 @@ _unmount_ready_cb (GMount       *mount,
 */
 
 static void
-_tile_unmount_cb (MpdStorageTile  *tile,
-                  GMount          *mount)
+_tile_unmount_cb (MpdStorageDeviceTile  *tile,
+                  GMount                *mount)
 {
   GDrive *drive;
 
@@ -192,7 +192,8 @@ _mount_added_cb (GVolumeMonitor  *monitor,
     else
       title = g_strdup_printf ("%s %s", vendor, model);
     
-    tile = mpd_storage_tile_new (gdu_device_get_mount_path (device), title);
+    tile = mpd_storage_device_tile_new (gdu_device_get_mount_path (device),
+                                        title);
     g_signal_connect (tile, "eject",
                       G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
     clutter_container_add_actor (CLUTTER_CONTAINER (stage), tile);
