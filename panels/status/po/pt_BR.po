@@ -1,95 +1,94 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
+"POT-Creation-Date: 2010-02-23 23:45+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: williane <williane.tenca@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../src/mnb-im-status-row.c:103 ../src/mnb-im-status-row.c:104
-#: ../src/mnb-im-status-row.c:742
-msgid "Offline"
-msgstr "Offline"
-
-#: ../src/mnb-im-status-row.c:105 ../src/moblin-panel-status.c:536
-msgid "Available"
-msgstr "Disponível"
-
-#: ../src/mnb-im-status-row.c:106 ../src/mnb-im-status-row.c:107
-#: ../src/moblin-panel-status.c:540 ../src/moblin-panel-status.c:544
-msgid "Away"
-msgstr "Ausente"
-
-#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
-#: ../src/moblin-panel-status.c:548 ../src/moblin-panel-status.c:552
-msgid "Busy"
-msgstr "Ocupado"
-
-#: ../src/mnb-im-status-row.c:132
-msgid "Close"
-msgstr "Fechar"
-
-#: ../src/mnb-im-status-row.c:141 ../src/mnb-im-status-row.c:760
-msgid "Change"
-msgstr "Modificar"
-
-#: ../src/mnb-im-status-row.c:745
-msgid "Unknown account"
-msgstr "Conta desconhecida"
-
-#: ../src/mnb-web-status-entry.c:86 ../src/mnb-web-status-entry.c:639
-#: ../src/mnb-web-status-entry.c:720
-msgid "Edit"
-msgstr "Editar"
-
-#. Translators: %s is the user visible name of the service
-#: ../src/mnb-web-status-entry.c:513
-#, c-format
-msgid "Enter your %s status here..."
-msgstr "Digite o seu status %s aqui..."
-
-#: ../src/mnb-web-status-entry.c:517 ../src/mnb-web-status-entry.c:590
-msgid "Enter your current status here..."
-msgstr "Digite o seu status aqui..."
-
-#: ../src/mnb-web-status-entry.c:699
-msgid "Post"
-msgstr "Post"
-
-#: ../src/moblin-panel-status.c:470
-msgid "Your current status"
-msgstr "Seu status atual"
-
-#: ../src/moblin-panel-status.c:472 ../src/moblin-panel-status.c:960
-msgid "Your current status - you are offline"
-msgstr "Seu status atual - você está offline"
-
-#: ../src/moblin-panel-status.c:825
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr ""
-"Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
-
-#: ../src/moblin-panel-status.c:994
-msgid ""
-"To update your web status you need to setup a Web Services account with a "
-"provider that supports status messages"
-msgstr ""
-"Para atualizar seu status na web, configure uma conta de Serviços na web com "
-"provedor que suporta mensagens de status"
-
-#: ../src/moblin-panel-status.c:1021
-msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr ""
-"Para atualizar seu status IM você precisa configurar uma conta Instant "
-"Messaging"
-
-#: ../src/moblin-panel-status.c:1118
+#: ../src/moblin-panel-status.c:132
+#: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:416
+msgid "Update"
+msgstr "Atualizar"
+
+#. vim:set ts=8 expandtab
+#: ../data/moblin-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Painel de status"
+
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status: The service may be unavailable or your password could be wrong."
+msgstr "Impossível atualizar o status: o serviço pode estar indisponível ou sua senha pode estar incorreta."
+
+#: ../src/mps-feed-pane.c:421
+msgid "What's happening?"
+msgstr "O que está acontecendo?"
+
+#: ../src/mps-feed-switcher.c:367
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "Parece que você não tem serviços web configurados ou existe um problema com suas configurações. Use o botão acima para abrir Minhas Contas Web e configure uma."
+
+#: ../src/mps-feed-switcher.c:344
+msgid "Add new web service"
+msgstr "Adicionar novo serviço web"
+
+#~ msgid "Offline"
+#~ msgstr "Offline"
+
+#~ msgid "Available"
+#~ msgstr "Disponível"
+
+#~ msgid "Away"
+#~ msgstr "Ausente"
+
+#~ msgid "Busy"
+#~ msgstr "Ocupado"
+
+#~ msgid "Close"
+#~ msgstr "Fechar"
+
+#~ msgid "Change"
+#~ msgstr "Modificar"
+
+#~ msgid "Unknown account"
+#~ msgstr "Conta desconhecida"
+
+#~ msgid "Edit"
+#~ msgstr "Editar"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "Digite o seu status %s aqui..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "Digite o seu status aqui..."
+
+#~ msgid "Post"
+#~ msgstr "Post"
+
+#~ msgid "Your current status"
+#~ msgstr "Seu status atual"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "Seu status atual - você está offline"
+
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Para atualizar seu status na web, configure uma conta de Serviços na web com provedor que suporta mensagens de status"
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Para atualizar seu status IM você precisa configurar uma conta Instant Messaging"
