@@ -2,12 +2,12 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:29+0000\n"
+"POT-Creation-Date: 2010-02-17 15:12+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Michał Sawicz <michal@sawicz.net>\n"
 "Language-Team: Moblin\n"
@@ -18,23 +18,26 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#.
 #. * Fav apps.
-#.
+#. 
 #. Label
-#: ../src/moblin-netbook-launcher.c:887
+#: ../src/moblin-netbook-launcher.c:867
 msgid "Favorite Applications"
 msgstr "Ulubione aplikacje"
 
-#: ../src/moblin-netbook-launcher.c:1384
+#: ../src/moblin-netbook-launcher.c:1427
 msgid "Applications"
 msgstr "Aplikacje"
 
-#: ../src/moblin-netbook-launcher.c:1395
+#: ../src/moblin-netbook-launcher.c:1438
 msgid "Search"
 msgstr "Szukaj"
 
-#: ../src/moblin-panel-applications.c:186
+#: ../src/moblin-panel-applications.c:197
+#: ../data/moblin-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplikacje"
 
+#: ../data/moblin-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Panel aplikacji"
