@@ -47,6 +47,7 @@ enum
   PROP_0,
 
   PROP_AVAILABLE_SIZE,
+  PROP_LABEL,
   PROP_MODEL,
   PROP_PATH,
   PROP_SIZE,
@@ -174,6 +175,11 @@ _get_property (GObject      *object,
                         mpd_storage_device_get_available_size (
                           MPD_STORAGE_DEVICE (object)));
     break;
+  case PROP_LABEL:
+    g_value_set_string (value,
+                        mpd_storage_device_get_label (
+                          MPD_STORAGE_DEVICE (object)));
+    break;
   case PROP_MODEL:
     g_value_set_string (value,
                         mpd_storage_device_get_model (
@@ -270,6 +276,13 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                                         0, G_MAXUINT64, 0,
                                                         param_flags));
   g_object_class_install_property (object_class,
+                                   PROP_LABEL,
+                                   g_param_spec_string ("label",
+                                                        "Label",
+                                                        "Storage device label",
+                                                        NULL,
+                                                        param_flags));
+  g_object_class_install_property (object_class,
                                    PROP_MODEL,
                                    g_param_spec_string ("model",
                                                         "Model",
@@ -362,6 +375,16 @@ mpd_storage_device_set_available_size (MpdStorageDevice  *self,
     priv->available_size = available_size;
     g_object_notify (G_OBJECT (self), "available-size");
   }
+}
+
+char const *
+mpd_storage_device_get_label (MpdStorageDevice *self)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), NULL);
+
+  return gdu_device_get_presentation_name (priv->device);
 }
 
 char const *

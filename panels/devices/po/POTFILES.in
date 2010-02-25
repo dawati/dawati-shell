@@ -24,6 +24,6 @@ src/mpd-computer-pane.c
 src/mpd-default-device-tile.c
 src/mpd-disk-tile.c
 src/mpd-folder-pane.c
-src/mpd-storage-tile.c
+src/mpd-storage-device-tile.c
 src/mpd-volume-tile.c
 

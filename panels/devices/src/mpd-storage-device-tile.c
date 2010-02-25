@@ -32,9 +32,6 @@ static void
 mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
                                          char const            *mount_point);
 
-static void
-mpd_storage_device_tile_set_title (MpdStorageDeviceTile  *self,
-                                   char const            *title);
 
 G_DEFINE_TYPE (MpdStorageDeviceTile, mpd_storage_device_tile, MX_TYPE_BOX_LAYOUT)
 
@@ -45,8 +42,7 @@ enum
 {
   PROP_0,
 
-  PROP_MOUNT_POINT,
-  PROP_TITLE
+  PROP_MOUNT_POINT
 };
 
 enum
@@ -143,21 +139,39 @@ _constructor (GType                  type,
                                 ->constructor (type, n_properties, properties);
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
-  if (priv->mount_point == NULL)
+  if (priv->mount_point)
   {
+    char const *label;
+    char const *model;
+    char const *vendor;
+    char *title;
+
+    priv->storage = mpd_storage_device_new (priv->mount_point);
+
+    label = mpd_storage_device_get_label (priv->storage);
+    model = mpd_storage_device_get_model (priv->storage);
+    vendor = mpd_storage_device_get_vendor (priv->storage);
+
+    if (label && *label)
+      title = g_strdup_printf ("%s - %s %s", label, vendor, model);
+    else
+      title = g_strdup_printf ("%s %s", vendor, model);
+
+    mx_label_set_text (MX_LABEL (priv->title), title);
+    g_free (title);
+
+    g_signal_connect (priv->storage, "notify::size",
+                      G_CALLBACK (_storage_size_notify_cb), self);
+    g_signal_connect (priv->storage, "notify::available-size",
+                      G_CALLBACK (_storage_size_notify_cb), self);
+    update (self);
+  
+  } else {
     g_critical ("%s : %s",
                 G_STRLOC,
                 "Invalid or no mount-point passed to constructor.");
-    g_object_unref (self);
     self = NULL;
   }
-
-  priv->storage = mpd_storage_device_new (priv->mount_point);
-  g_signal_connect (priv->storage, "notify::size",
-                    G_CALLBACK (_storage_size_notify_cb), self);
-  g_signal_connect (priv->storage, "notify::available-size",
-                    G_CALLBACK (_storage_size_notify_cb), self);
-  update (self);
 
   return (GObject *) self;
 }
@@ -173,11 +187,6 @@ _get_property (GObject      *object,
   case PROP_MOUNT_POINT:
     g_value_set_string (value,
                         mpd_storage_device_tile_get_mount_point (
-                          MPD_STORAGE_DEVICE_TILE (object)));
-    break;
-  case PROP_TITLE:
-    g_value_set_string (value,
-                        mpd_storage_device_tile_get_title (
                           MPD_STORAGE_DEVICE_TILE (object)));
     break;
   default:
@@ -196,10 +205,6 @@ _set_property (GObject      *object,
   case PROP_MOUNT_POINT:
     mpd_storage_device_tile_set_mount_point (MPD_STORAGE_DEVICE_TILE (object),
                                              g_value_get_string (value));
-    break;
-  case PROP_TITLE:
-    mpd_storage_device_tile_set_title (MPD_STORAGE_DEVICE_TILE (object),
-                                       g_value_get_string (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -247,15 +252,6 @@ mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
                                                         NULL,
                                                         param_flags | 
                                                         G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (object_class,
-                                   PROP_TITLE,
-                                   g_param_spec_string ("title",
-                                                        "Title",
-                                                        "Storage device title",
-                                                        NULL,
-                                                        param_flags | 
-                                                        G_PARAM_CONSTRUCT_ONLY));
-
   /* Signals */
 
   _signals[REQUEST_HIDE] = g_signal_new ("request-hide",
@@ -341,12 +337,10 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 }
 
 ClutterActor *
-mpd_storage_device_tile_new (char const *mount_point,
-                             char const *title)
+mpd_storage_device_tile_new (char const *mount_point)
 {
   return g_object_new (MPD_TYPE_STORAGE_DEVICE_TILE,
                        "mount-point", mount_point,
-                       "title", title,
                        NULL);
 }
 
@@ -382,32 +376,6 @@ mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
     }
 
     g_object_notify (G_OBJECT (self), "mount-point");
-  }
-}
-
-char const *
-mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-
-  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self), NULL);
-
-  return mx_label_get_text (MX_LABEL (priv->title));
-}
-
-static void
-mpd_storage_device_tile_set_title (MpdStorageDeviceTile *self,
-                                   char const     *title)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-
-  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
-
-  if (0 != g_strcmp0 (title, mx_label_get_text (MX_LABEL (priv->title))))
-  {
-    mx_label_set_text (MX_LABEL (priv->title), title);
-
-    g_object_notify (G_OBJECT (self), "title");
   }
 }
 

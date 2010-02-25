@@ -57,14 +57,10 @@ GType
 mpd_storage_device_tile_get_type (void);
 
 ClutterActor *
-mpd_storage_device_tile_new (char const *mount_point,
-                             char const *title);
+mpd_storage_device_tile_new (char const *mount_point);
 
 char const *
 mpd_storage_device_tile_get_mount_point (MpdStorageDeviceTile *self);
-
-char const *
-mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self);
 
 G_END_DECLS
 

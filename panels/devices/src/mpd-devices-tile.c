@@ -20,8 +20,12 @@
 
 #include <stdbool.h>
 
+#include <gio/gio.h>
+
 #include "mpd-default-device-tile.h"
 #include "mpd-devices-tile.h"
+#include "mpd-gobject.h"
+#include "mpd-storage-device-tile.h"
 #include "config.h"
 
 G_DEFINE_TYPE (MpdDevicesTile, mpd_devices_tile, MX_TYPE_SCROLL_VIEW)
@@ -38,10 +42,165 @@ enum
 
 typedef struct
 {
-  ClutterActor *vbox;
+  ClutterActor    *vbox;
+
+  GVolumeMonitor  *monitor;
 } MpdDevicesTilePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
+
+static void
+_eject_ready_cb (GDrive         *drive,
+                 GAsyncResult   *result,
+                 MpdDevicesTile *self)
+{
+  GError *error = NULL;
+
+  g_debug ("%s()", __FUNCTION__);
+
+  g_drive_eject_with_operation_finish (drive, result, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+}
+
+static int
+_find_mount_cb (GMount      *mount,
+                char const  *path)
+{
+  GFile *file;
+  char  *mount_path;
+  int    ret;
+
+  file = g_mount_get_root (mount);
+  mount_path = g_file_get_path (file);
+
+  g_debug ("%s() %s", __FUNCTION__, mount_path);
+  ret = g_strcmp0 (mount_path, path);
+
+  g_free (mount_path);
+  g_object_unref (file);
+
+  return ret;
+}
+
+static void
+_tile_eject_cb (MpdStorageDeviceTile  *tile,
+                MpdDevicesTile        *self)
+{
+  MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
+  char const  *path;
+  GList       *mounts;
+  GList       *iter;
+  GDrive      *drive = NULL;
+
+  path = mpd_storage_device_tile_get_mount_point (tile);
+  g_debug ("%s() %s", __FUNCTION__, path);
+
+  mounts = g_volume_monitor_get_mounts (priv->monitor);
+  iter = g_list_find_custom (mounts, path, (GCompareFunc) _find_mount_cb);
+  if (iter)
+  {
+    GMount *mount = G_MOUNT (iter->data);
+    drive = g_mount_get_drive (mount);
+  }
+
+  g_list_foreach (mounts, (GFunc) g_object_unref, NULL);
+  g_list_free (mounts);
+
+  if (drive)
+  {
+    g_drive_eject_with_operation (drive,
+                                  G_MOUNT_UNMOUNT_NONE,
+                                  NULL,
+                                  NULL,
+                                  (GAsyncReadyCallback) _eject_ready_cb,
+                                  tile);
+    g_object_unref (drive);
+  }
+}
+
+static void
+_monitor_mount_added_cb (GVolumeMonitor  *monitor,
+                         GMount          *mount,
+                         MpdDevicesTile  *self)
+{
+  MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
+  GFile         *file;
+  char          *path;
+  ClutterActor  *tile;
+
+  file = g_mount_get_root (mount);
+  path = g_file_get_path (file);
+  g_debug ("%s() %s", __FUNCTION__, path);
+
+  tile = mpd_storage_device_tile_new (path);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
+  g_signal_connect (tile, "eject",
+                    G_CALLBACK (_tile_eject_cb), self);
+
+  g_free (path);
+  g_object_unref (file);
+}
+
+static void
+_monitor_mount_changed_cb (GVolumeMonitor *monitor,
+                           GMount         *mount,
+                           MpdDevicesTile *self)
+{
+  g_debug ("%s()", __FUNCTION__);
+}
+
+typedef struct
+{
+  char          *path;
+  ClutterActor  *tile;
+} find_tile_t;
+
+static void
+_find_tile_cb (ClutterActor *tile,
+               find_tile_t  *find_tile)
+{
+  if (MPD_IS_STORAGE_DEVICE_TILE (tile))
+  {
+    char const *path = mpd_storage_device_tile_get_mount_point (
+                        MPD_STORAGE_DEVICE_TILE (tile));
+    g_debug ("%s() %s", __FUNCTION__, path);
+
+    if (0 == g_strcmp0 (path, find_tile->path))
+      find_tile->tile = CLUTTER_ACTOR (tile);
+  }
+}
+
+static void
+_monitor_mount_removed_cb (GVolumeMonitor  *monitor,
+                           GMount          *mount,
+                           MpdDevicesTile  *self)
+{
+  MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
+  GFile         *file;
+  find_tile_t    find_tile = { 0, };
+
+  file = g_mount_get_root (mount);
+  find_tile.path = g_file_get_path (file);
+  g_debug ("%s() %s", __FUNCTION__, find_tile.path);
+
+  clutter_container_foreach (CLUTTER_CONTAINER (priv->vbox),
+                             (ClutterCallback) _find_tile_cb,
+                             &find_tile);
+  if (find_tile.tile)
+  {
+    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
+                                    find_tile.tile);
+  } else {
+    g_warning ("%s : Could not find mount path '%s'", G_STRLOC, find_tile.path);
+  }
+
+  g_free (find_tile.path);
+  g_object_unref (file);
+}
 
 static void
 _device_tile_request_hide_cb (ClutterActor    *tile,
@@ -53,6 +212,10 @@ _device_tile_request_hide_cb (ClutterActor    *tile,
 static void
 _dispose (GObject *object)
 {
+  MpdDevicesTilePrivate *priv = GET_PRIVATE (object);
+
+  mpd_gobject_detach (object, (GObject **) &priv->monitor);
+
   G_OBJECT_CLASS (mpd_devices_tile_parent_class)->dispose (object);
 }
 
@@ -81,6 +244,14 @@ mpd_devices_tile_init (MpdDevicesTile *self)
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *tile;
 
+  priv->monitor = g_volume_monitor_get ();
+  g_signal_connect (priv->monitor, "mount-added",
+                    G_CALLBACK (_monitor_mount_added_cb), self);
+  g_signal_connect (priv->monitor, "mount-changed",
+                    G_CALLBACK (_monitor_mount_changed_cb), self);
+  g_signal_connect (priv->monitor, "mount-removed",
+                    G_CALLBACK (_monitor_mount_removed_cb), self);
+
   priv->vbox = mx_box_layout_new ();
   mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->vbox), true);
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (priv->vbox), true);
@@ -90,6 +261,8 @@ mpd_devices_tile_init (MpdDevicesTile *self)
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_device_tile_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
+
+  /* TODO find existing mounts. */
 }
 
 ClutterActor *

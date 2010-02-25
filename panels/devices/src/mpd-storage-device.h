@@ -66,6 +66,9 @@ uint64_t
 mpd_storage_device_get_available_size (MpdStorageDevice *self);
 
 char const *
+mpd_storage_device_get_label (MpdStorageDevice *self);
+
+char const *
 mpd_storage_device_get_model (MpdStorageDevice *self);
 
 char const *

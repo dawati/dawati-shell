@@ -182,24 +182,12 @@ _mount_added_cb (GVolumeMonitor  *monitor,
   if (gdu_device_is_mounted (device))
   {
     ClutterActor *tile;
-    char *title;
-    char const *name = gdu_device_get_presentation_name (device);
-    char const *vendor = gdu_device_drive_get_vendor (device);
-    char const *model = gdu_device_drive_get_model (device);
 
-    if (name && *name)
-      title = g_strdup_printf ("%s - %s %s", name, vendor, model);
-    else
-      title = g_strdup_printf ("%s %s", vendor, model);
-    
-    tile = mpd_storage_device_tile_new (gdu_device_get_mount_path (device),
-                                        title);
+    tile = mpd_storage_device_tile_new (gdu_device_get_mount_path (device));
     g_signal_connect (tile, "eject",
                       G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
     clutter_container_add_actor (CLUTTER_CONTAINER (stage), tile);
     clutter_actor_set_width (tile, 480.0);
-
-    g_free (title);  
   }
 }
 
