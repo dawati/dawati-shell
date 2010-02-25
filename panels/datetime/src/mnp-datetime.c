@@ -176,7 +176,7 @@ construct_calendar_area (MnpDatetime *time)
 
 
 	label = mx_label_new(_("Today"));
-	mx_stylable_set_style_class (label, "TodayLabel");
+	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleToday");
 	clutter_container_add_actor ((ClutterContainer *)box, (ClutterActor *)label);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
@@ -186,7 +186,7 @@ construct_calendar_area (MnpDatetime *time)
                                NULL);	
 	
 	priv->date_label = mx_label_new (NULL);
-	mx_stylable_set_style_class (label, "DateLabel");
+	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleDate");
 	clutter_container_add_actor ((ClutterContainer *)box, (ClutterActor *)priv->date_label);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->date_label,
@@ -233,7 +233,7 @@ construct_task_area (MnpDatetime *time)
                                NULL);
 
 	label = mx_label_new(_("Tasks"));
-	mx_stylable_set_style_class (label, "TasksLabel");
+	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleTasks");
 	clutter_container_add_actor ((ClutterContainer *)priv->task_row, label);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
                                label,

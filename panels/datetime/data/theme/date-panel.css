@@ -157,3 +157,80 @@
   padding: 4;
   background-image: url("snooze-background.png");
 }
+
+PengeCalendarPane
+{
+  border-image: url('backdrop.png') 5 5 5 5;
+  padding: 2;
+}
+
+MxLabel.PengeCalendarPaneTitle,
+MxLabel.PengeCalendarPaneTitleToday,
+MxLabel.PengeCalendarPaneTitleDate,
+MxLabel.PengeCalendarPaneTitleTasks
+{
+  font-size: 17;
+  font-weight: bold;
+  font-family: "Droid Sans", "Sans";
+  color: #3e3e3eff;
+}
+
+PengeEventTile, PengeTaskTile
+{
+  background-color: #fff0;
+  padding: 6;
+  border-image: none;
+}
+
+PengeEventTile:hover, PengeTaskTile:hover,
+PengeEventTile:active, PengeTaskTile:active
+{
+  border-image: url('card_frame_hover.png') 5;
+  padding: 6;
+}
+
+
+MxButton.PengeTaskToggleButton
+{
+  border-image: url('check_box.png') 0;
+}
+
+MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
+{
+  border-image: url('checked_box.png') 0;
+}
+
+
+MxLabel.PengeEventTimeLabel
+{
+  color: white;
+  font-size:12;
+  font-family: "Droid Sans", "Sans";
+  padding: 8;
+}
+
+MxLabel.PengeEventTimeLabel:past
+{
+  color: white;
+  font-size:12;
+  font-family: "Droid Sans", "Sans";
+  padding: 8;
+}
+
+*.PengeEventTimeBin
+{
+  border-image: url('time-bg.png') 0;
+}
+
+*.PengeEventTimeBin:past
+{
+  border-image: url('time-bg-past.png') 0;
+}
+
+PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
+{
+  font-size: 16;
+  font-family: "Droid Sans", "Sans";
+  color: #2c2c2cff;
+}
+

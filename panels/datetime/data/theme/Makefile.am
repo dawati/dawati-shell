@@ -13,7 +13,13 @@ dist_theme_DATA = \
 	snooze-background.png \
 	single-div-line.png	\
 	v-div-line.png	\
-	double-div-line.png
+	double-div-line.png	\
+	time-bg.png	\
+	time-bg-past.png	\
+	check_box.png	\
+	checked_box.png	\
+	card_frame_hover.png	\
+	backdrop.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
