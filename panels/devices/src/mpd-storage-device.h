@@ -22,7 +22,6 @@
 #define MPD_STORAGE_DEVICE_H
 
 #include <stdint.h>
-#include <gio/gio.h>
 #include <glib-object.h>
 
 G_BEGIN_DECLS
@@ -58,10 +57,7 @@ GType
 mpd_storage_device_get_type (void);
 
 MpdStorageDevice *
-mpd_storage_device_new_for_mount (GMount *mount);
-
-MpdStorageDevice *
-mpd_storage_device_new_for_path (char const *path);
+mpd_storage_device_new (char const *path);
 
 uint64_t
 mpd_storage_device_get_size (MpdStorageDevice *self);

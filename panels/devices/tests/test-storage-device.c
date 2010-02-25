@@ -33,7 +33,7 @@ main (int     argc,
 
   clutter_init (&argc, &argv);
 
-  storage = mpd_storage_device_new_for_path (g_get_home_dir ());
+  storage = mpd_storage_device_new (g_get_home_dir ());
   g_object_get (storage,
                 "size", &size,
                 "available-size", &available_size,

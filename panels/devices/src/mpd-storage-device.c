@@ -48,7 +48,6 @@ enum
 
   PROP_AVAILABLE_SIZE,
   PROP_MODEL,
-  PROP_MOUNT,
   PROP_PATH,
   PROP_SIZE,
   PROP_VENDOR
@@ -61,10 +60,6 @@ typedef struct
   char          *path;
   uint64_t       size;
   unsigned int   update_timeout_id;
-
-  /* Temporary during construction. */
-  GMount        *mount;
-
 } MpdStorageDevicePrivate;
 
 static void
@@ -132,21 +127,6 @@ _constructor (GType                  type,
                                 ->constructor (type, n_properties, properties);
   MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
-  /* Need either mount or path for construction. */
-  if (priv->mount)
-  {
-    GFile *root = g_mount_get_root (priv->mount);
-    priv->path = g_file_get_path (root);
-    g_object_unref (root);
-    g_object_unref (priv->mount);
-    priv->mount = NULL;
-
-  } else if (NULL == priv->path) {
-      /* This gives illegal mem access.
-     * g_object_unref (self); */
-    self = NULL;
-  }
-
   if (priv->path)
   {
     GduPool *pool = gdu_pool_new ();
@@ -163,6 +143,9 @@ _constructor (GType                  type,
     g_list_foreach (devices, (GFunc) g_object_unref, NULL);
     g_list_free (devices);
     g_object_unref (pool);
+  } else {
+    /* Bail */
+    self = NULL;
   }
 
   if (self)
@@ -196,9 +179,6 @@ _get_property (GObject      *object,
                         mpd_storage_device_get_model (
                           MPD_STORAGE_DEVICE (object)));
     break;
-  case PROP_MOUNT:
-    g_value_set_object (value, priv->mount);
-    break;
   case PROP_PATH:
     g_value_set_string (value, priv->path);
     break;
@@ -230,10 +210,6 @@ _set_property (GObject      *object,
     mpd_storage_device_set_available_size (MPD_STORAGE_DEVICE (object),
                                            g_value_get_uint64 (value));
     break;
-  case PROP_MOUNT:
-    /* Construct-only */
-    priv->mount = g_value_dup_object (value);
-    break;
   case PROP_PATH:
     /* Construct-only */
     priv->path = g_value_dup_string (value);
@@ -253,7 +229,6 @@ _dispose (GObject *object)
   MpdStorageDevicePrivate *priv = GET_PRIVATE (object);
 
   mpd_gobject_detach (object, (GObject **) &priv->device);
-  mpd_gobject_detach (object, (GObject **) &priv->mount);
 
   if (priv->path)
   {
@@ -302,15 +277,6 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                                         NULL,
                                                         param_flags));
   g_object_class_install_property (object_class,
-                                   PROP_MOUNT,
-                                   g_param_spec_object ("mount",
-                                                        "Mount",
-                                                        "GMount object",
-                                                        G_TYPE_MOUNT,
-                                                        param_flags |
-                                                        G_PARAM_CONSTRUCT_ONLY |
-                                                        G_PARAM_WRITABLE));
-  g_object_class_install_property (object_class,
                                    PROP_PATH,
                                    g_param_spec_string ("path",
                                                         "Path",
@@ -338,40 +304,10 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
 static void
 mpd_storage_device_init (MpdStorageDevice *self)
 {
-#if 0
-  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
-  GList *devices;
-  GList *iter;
-
-  priv->pool = gdu_pool_new ();
-  g_return_if_fail (priv->pool);
-
-  devices = gdu_pool_get_devices (priv->pool);
-  for (iter = devices; iter; iter = iter->next)
-  {
-    GduDevice *device = GDU_DEVICE (iter->data);
-    g_debug ("%s", gdu_device_get_device_file (device));
-    if (gdu_device_is_mounted (device) &&
-        0 == g_strcmp0 ("/", gdu_device_get_mount_path (device)))
-    {
-      g_debug ("  / size %lld", gdu_device_get_size (device));
-    }
-  }
-  g_list_foreach (devices, (GFunc) g_object_unref, NULL);
-  g_list_free (devices);
-#endif
 }
 
 MpdStorageDevice *
-mpd_storage_device_new_for_mount (GMount *mount)
-{
-  return g_object_new (MPD_TYPE_STORAGE_DEVICE,
-                       "mount", mount,
-                       NULL);
-}
-
-MpdStorageDevice *
-mpd_storage_device_new_for_path (char const *path)
+mpd_storage_device_new (char const *path)
 {
   return g_object_new (MPD_TYPE_STORAGE_DEVICE,
                        "path", path,
