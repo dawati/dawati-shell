@@ -18,16 +18,6 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-# Depend on context... could also be:
-# <b>Spotkania</b>
-# <b>Grafik</b>
-# <b>Terminarz</b>
-# <b>Plany</b>
-#: ../penge/penge-calendar-pane.c:474
-#, fuzzy
-msgid "Appointments"
-msgstr "<b>Zaplanowane</b>"
-
 #: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Utwórz nowe spotkanie"
@@ -64,6 +54,15 @@ msgstr "Na %x"
 #: ../data/moblin-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Panel Myzone"
+
+# Depend on context... could also be:
+# <b>Spotkania</b>
+# <b>Grafik</b>
+# <b>Terminarz</b>
+# <b>Plany</b>
+#: ../penge/penge-calendar-pane.c:474
+msgid "Appointments"
+msgstr "Zaplanowane"
 
 #: ../penge/penge-welcome-tile.c:67
 msgid "Welcome to Moblin"
