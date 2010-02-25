@@ -45,11 +45,11 @@ msgstr "Bez nazwy"
 
 #: ../anerley/anerley-presence-chooser.c:45
 msgid "Extended Away"
-msgstr "Przedłużone"
+msgstr "Przedłużony"
 
 #: ../anerley/anerley-presence-chooser.c:41
 msgid "Unset"
-msgstr "Wycofane zaznaczenie"
+msgstr "Usunięte ustawienie"
 
 #: ../anerley/anerley-presence-chooser.c:48
 msgid "Unknown"
