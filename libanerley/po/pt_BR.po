@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 22:27+0000\n"
+"POT-Creation-Date: 2010-02-11 22:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -27,25 +28,46 @@ msgstr ""
 # Michel Recondo <michel@recondo.com.br>, 2009.
 # Jonh Wendell <jwendell@gnome.org>, 2009.
 # Vladimir Melo <vmelo@gnome.org>, 2009.
-#
-#: ../anerley/anerley-tile.c:208
+# 
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Disponível"
 
-#: ../anerley/anerley-tile.c:211
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../anerley/anerley-tile.c:214
-#: ../anerley/anerley-tile.c:217
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "Ausente"
 
-#: ../anerley/anerley-tile.c:220
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "Desconectado"
 
-#: ../anerley/anerley-econtact-item.c:312
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "Sem nome"
 
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Estendido"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Não definido"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr ""
+"\r\n"
+"Desconhecido"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Oculto"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Erro"
