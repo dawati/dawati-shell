@@ -36,7 +36,9 @@ mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
 G_DEFINE_TYPE (MpdStorageDeviceTile, mpd_storage_device_tile, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_STORAGE_DEVICE_TILE, MpdStorageDeviceTilePrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
+                                MPD_TYPE_STORAGE_DEVICE_TILE, \
+                                MpdStorageDeviceTilePrivate))
 
 enum
 {
@@ -90,7 +92,8 @@ update (MpdStorageDeviceTile *self)
   g_free (text);
   g_free (size_text);
 
-  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter), percentage / 100.);
+  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter),
+                                percentage / 100.);
 }
 
 static void
@@ -135,8 +138,8 @@ _constructor (GType                  type,
               GObjectConstructParam *properties)
 {
   MpdStorageDeviceTile *self = (MpdStorageDeviceTile *)
-                              G_OBJECT_CLASS (mpd_storage_device_tile_parent_class)
-                                ->constructor (type, n_properties, properties);
+                        G_OBJECT_CLASS (mpd_storage_device_tile_parent_class)
+                          ->constructor (type, n_properties, properties);
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
   if (priv->mount_point)
@@ -281,7 +284,8 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   ClutterActor  *button;
   GError        *error = NULL;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_STORAGE_DEVICE_TILE_SPACING);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self),
+                             MPD_STORAGE_DEVICE_TILE_SPACING);
 
   /* 1st column: icon */
   priv->icon = clutter_texture_new ();
@@ -359,8 +363,8 @@ mpd_storage_device_tile_get_mount_point (MpdStorageDeviceTile *self)
 }
 
 static void
-mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
-                                  char const            *mount_point)
+mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile *self,
+                                         char const           *mount_point)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
