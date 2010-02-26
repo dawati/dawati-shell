@@ -35,7 +35,6 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
 
-#define MOBLIN_MYZONE_VERTICAL_APPS "/desktop/moblin/myzone/vertical_apps"
 #define MOBLIN_MYZONE_SHOW_CALENDAR "/desktop/moblin/myzone/show_calendar"
 
 typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
@@ -47,7 +46,6 @@ struct _PengeGridViewPrivate {
   ClutterActor *background;
   MplPanelClient *panel_client;
   GConfClient *gconf_client;
-  guint vertical_apps_notify_id;
   guint show_calendar_notify_id;
 
   ClutterActor *div_tex;
@@ -322,28 +320,6 @@ _update_layout (PengeGridView *grid_view)
 }
 
 static void
-_gconf_vertical_apps_notify_cb (GConfClient *client,
-                                guint        cnxn_id,
-                                GConfEntry  *entry,
-                                gpointer     userdata)
-{
-  PengeGridView *grid_view = PENGE_GRID_VIEW (userdata);
-  PengeGridViewPrivate *priv = GET_PRIVATE (grid_view);
-  GConfValue *value;
-
-  value = gconf_entry_get_value (entry);
-
-  if (!value)
-  {
-    priv->vertical_apps = FALSE;
-  } else {
-    priv->vertical_apps = gconf_value_get_bool (value);
-  }
-
-  _update_layout (grid_view);
-}
-
-static void
 _gconf_show_calendar_notify_cb (GConfClient *client,
                                 guint        cnxn_id,
                                 GConfEntry  *entry,
@@ -358,8 +334,10 @@ _gconf_show_calendar_notify_cb (GConfClient *client,
   if (!value)
   {
     priv->show_calendar_pane = TRUE;
+    priv->vertical_apps = FALSE;
   } else {
     priv->show_calendar_pane = gconf_value_get_bool (value);
+    priv->vertical_apps = !priv->show_calendar_pane;
   }
 
   _update_layout (grid_view);
@@ -418,23 +396,6 @@ penge_grid_view_init (PengeGridView *self)
   clutter_actor_show (priv->background);
 
   priv->gconf_client = gconf_client_get_default ();
-  priv->vertical_apps_notify_id =
-    gconf_client_notify_add (priv->gconf_client,
-                             MOBLIN_MYZONE_VERTICAL_APPS,
-                             _gconf_vertical_apps_notify_cb,
-                             self,
-                             NULL,
-                             &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error setting gconf key notification: %s",
-               error->message);
-    g_clear_error (&error);
-  } else {
-    gconf_client_notify (priv->gconf_client, MOBLIN_MYZONE_VERTICAL_APPS);
-  }
-
   priv->show_calendar_notify_id = 
     gconf_client_notify_add (priv->gconf_client,
                              MOBLIN_MYZONE_SHOW_CALENDAR,
