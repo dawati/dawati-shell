@@ -1,45 +1,42 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:26+0000\n"
+"POT-Creation-Date: 2010-02-26 03:29+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: tg\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
-
-#: ../src/moblin-netbook.c:391 ../src/mnb-toolbar.c:1427
-msgid "zones"
-msgstr "zonas"
-
-#: ../src/moblin-netbook.c:504
-msgid "Moblin Netbook Effects"
-msgstr "Efeitos de netbook Moblin"
-
-#: ../src/moblin-netbook.c:508
-msgid "Effects for Moblin Netbooks"
-msgstr "Efeitos para Netbooks Moblin"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:675
+#. 
+#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:685
+#. 
+#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
+
+#: ../src/moblin-netbook.c:918
+msgid "Moblin Netbook Effects"
+msgstr "Efeitos de netbook Moblin"
+
+#: ../src/moblin-netbook.c:922
+msgid "Effects for Moblin Netbooks"
+msgstr "Efeitos para Netbooks Moblin"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -49,21 +46,74 @@ msgstr "Ignorar"
 msgid "Dismiss All"
 msgstr "Ignorar tudo"
 
-#: ../src/switcher/mnb-switcher.c:301
-msgid "No Zones yet"
-msgstr "Não há zona ainda"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Definir sua preferências da barra de ferramentas"
 
-#: ../src/switcher/mnb-switcher.c:321
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Os aplicativos que você está usando aparecerão aqui. Você poderá trocar de "
-"um para o outro quando quiser."
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "Socket for embedding"
+msgstr "Soquete para embutir"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Nenhum aplicativo nessa zona"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar"
+msgstr "Barra de ferramentas"
+
+#: ../capplet/src/moblin-toolbar-properties.c:95
+msgid "- Moblin Toolbar Preferences"
+msgstr "- Preferências de barra de ferramentas Moblin"
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "socket"
+msgstr "soquete"
+
+#: ../capplet/src/mtp-bin.c:330
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Desculpe, você tem que remover o painel antes que possa adicionar um novo."
+
+#: ../capplet/src/mtp-bin.c:326
+msgid "Save toolbar"
+msgstr "Salvar barra de ferramentas"
+
+#: ../capplet/src/mtp-bin.c:357
+msgid "Available panels"
+msgstr "Painéis disponíveis"
+
+#: ../src/mnb-toolbar.c:954
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Desculpe. %s está quebrado"
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determina a ordem dos painéis na barra de ferramentas"
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Ordem dos painéis na barra de ferramentas"
+
+#: ../src/moblin-netbook.c:2976
+msgid "Activate"
+msgstr "Ativar"
+
+#: ../src/moblin-netbook.c:2992
+msgid "Is asking for your attention."
+msgstr "Está pedindo a sua atenção"
+
+#: ../src/moblin-netbook.c:2990
+msgid "Unknown window"
+msgstr "Janela desconhecida"
+
+#~ msgid "zones"
+#~ msgstr "zonas"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Não há zona ainda"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Os aplicativos que você está usando aparecerão aqui. Você poderá trocar de um para o outro quando quiser."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "Nenhum aplicativo nessa zona"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Há menos de um minuto atrás"
@@ -82,9 +132,6 @@ msgstr "Nenhum aplicativo nessa zona"
 
 #~ msgid "On %A"
 #~ msgstr "Em: %A"
-
-#~ msgid "Unknown"
-#~ msgstr "Desconhecido"
 
 #~ msgid "Last week"
 #~ msgstr "Semana passada"
@@ -122,14 +169,8 @@ msgstr "Nenhum aplicativo nessa zona"
 #~ msgid "test"
 #~ msgstr "teste"
 
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Você precisa tocar música, ver algumas imagens ou assistir um vídeo para "
-#~ "ver seu histórico aqui. No momento, você pode dar uma olhada em amostras "
-#~ "de mídia:"
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Você precisa tocar música, ver algumas imagens ou assistir um vídeo para ver seu histórico aqui. No momento, você pode dar uma olhada em amostras de mídia:"
 
 #~ msgid "Recently played"
 #~ msgstr "Recentemente tocado"
@@ -179,12 +220,8 @@ msgstr "Nenhum aplicativo nessa zona"
 #~ msgid "applications"
 #~ msgstr "aplicativos"
 
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Ao visitar as páginas na web, seus favoritos aparecerão aqui e na página "
-#~ "Nova guia no seu navegador."
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "Ao visitar as páginas na web, seus favoritos aparecerão aqui e na página Nova guia no seu navegador."
 
 #~ msgid "Untitled"
 #~ msgstr "Sem título"
@@ -240,24 +277,14 @@ msgstr "Nenhum aplicativo nessa zona"
 #~ msgid "No calendar entries this week"
 #~ msgstr "Nenhum item esta semana"
 
-#~ msgid ""
-#~ "Your friends' feeds and web services will appear here. Activate your "
-#~ "accounts now!"
-#~ msgstr ""
-#~ "Os feeds de seus amigos e serviços na web aparecerão aqui. Ative suas "
-#~ "contas agora!"
+#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+#~ msgstr "Os feeds de seus amigos e serviços na web aparecerão aqui. Ative suas contas agora!"
 
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>Bem-vindo ao Moblin 2.0 para Netbooks</b>"
 
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "Como o Moblin é um pouco diferente de outros computadores, temos dicas e "
-#~ "itens para ajudá-lo navegar esta versão. Esperamos que se divirta, a "
-#~ "Equipe Moblin."
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Como o Moblin é um pouco diferente de outros computadores, temos dicas e itens para ajudá-lo navegar esta versão. Esperamos que se divirta, a Equipe Moblin."
 
 #~ msgid "Web page"
 #~ msgstr "Página da web"
@@ -280,10 +307,8 @@ msgstr "Nenhum aplicativo nessa zona"
 #~ msgid "Send a message"
 #~ msgstr "Enviar uma mensagem"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
 
 #~ msgid "People"
 #~ msgstr "Gente"
@@ -308,9 +333,6 @@ msgstr "Nenhum aplicativo nessa zona"
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
-
-#~ msgid "Available"
-#~ msgstr "Disponível"
 
 #~ msgid "Away"
 #~ msgstr "Ausente"
@@ -345,18 +367,11 @@ msgstr "Nenhum aplicativo nessa zona"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Seu status atual - você está offline"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Para atualizar seu status na web, configure uma conta de Serviços na web "
-#~ "com provedor que suporta mensagens de status"
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Para atualizar seu status na web, configure uma conta de Serviços na web com provedor que suporta mensagens de status"
 
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Para atualizar seu status IM você precisa configurar uma conta Instant "
-#~ "Messaging"
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Para atualizar seu status IM você precisa configurar uma conta Instant Messaging"
 
 #~ msgid "status"
 #~ msgstr "status"
@@ -368,5 +383,4 @@ msgstr "Nenhum aplicativo nessa zona"
 #~ msgstr "Local"
 
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-#~ msgstr ""
-#~ "ícone da bandeja requer o tamanho (%i x %i), redimensionado para (%i x %i)"
+#~ msgstr "ícone da bandeja requer o tamanho (%i x %i), redimensionado para (%i x %i)"
