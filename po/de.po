@@ -14,30 +14,6 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr ""
-
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar"
-msgstr ""
-
-#: ../capplet/src/moblin-toolbar-properties.c:85
-msgid "Socket for embedding"
-msgstr ""
-
-#: ../capplet/src/moblin-toolbar-properties.c:85
-msgid "socket"
-msgstr ""
-
-#: ../capplet/src/moblin-toolbar-properties.c:95
-msgid "- Moblin Toolbar Preferences"
-msgstr ""
-
-#: ../capplet/src/mtp-bin.c:326
-msgid "Save toolbar"
-msgstr ""
-
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
@@ -112,6 +88,30 @@ msgstr "Du musst zuerst ein Panel löschen, bevor du ein neues hinzufügen kanns
 #: ../capplet/src/mtp-bin.c:357
 msgid "Available panels"
 msgstr "verfügbare Panels"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Einstellungen der Werkzeugleiste festlegen"
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "Socket for embedding"
+msgstr "Sockel für Embedding"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar"
+msgstr "Werkzeugleiste"
+
+#: ../capplet/src/moblin-toolbar-properties.c:95
+msgid "- Moblin Toolbar Preferences"
+msgstr "Moblin Werkzeugleiste - Einstellungen"
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "socket"
+msgstr "Sockel"
+
+#: ../capplet/src/mtp-bin.c:326
+msgid "Save toolbar"
+msgstr "Werkzeugleiste speichern"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Vor weniger als einer Minute"
