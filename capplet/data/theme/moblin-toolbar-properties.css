@@ -44,7 +44,7 @@ MtpBin {
   background-color: #aaa;
 }
 
-MtpToolbar {
+MtpToolbar, MtpToolbar:hover {
   border-image: url("panel/panel-background.png") 0 200 0 200 stretch;
 }
 

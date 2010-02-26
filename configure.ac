@@ -1,7 +1,7 @@
 m4_define([mutter_version], [2.28.1_0.9])
 m4_define([plugin_major_version], [0])
 m4_define([plugin_minor_version], [68])
-m4_define([plugin_micro_version], [2])
+m4_define([plugin_micro_version], [3])
 m4_define([plugin_version],
           [plugin_major_version.plugin_minor_version.plugin_micro_version])
 
@@ -144,6 +144,11 @@ AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 
 # control center capplet
 PKG_CHECK_MODULES(CAPPLET, clutter-gtk-0.10 mx-1.0 gconf-2.0)
+
+PKG_CHECK_MODULES(CC, gmodule-export-2.0 libgnome-control-center-extension)
+
+CC_DIR=$($PKG_CONFIG libgnome-control-center-extension --variable=extensiondir)
+AC_SUBST(CC_DIR)
 
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`

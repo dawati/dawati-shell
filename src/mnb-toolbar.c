@@ -1905,7 +1905,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                * FIXME for now, put clock at the fixed position on the left.
                */
               clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                          660.0,
+                                          screen_width - 364.0,
                                           TOOLBAR_HEIGHT - BUTTON_HEIGHT);
             }
 
@@ -2733,7 +2733,7 @@ mnb_toolbar_constructed (GObject *self)
       ClutterActor *clock = mnb_toolbar_clock_new ();
 
       clutter_container_add_actor (CLUTTER_CONTAINER (hbox), clock);
-      clutter_actor_set_position (clock, 660.0,
+      clutter_actor_set_position (clock, screen_width - 364.0,
                                   TOOLBAR_HEIGHT - BUTTON_HEIGHT);
       clutter_actor_set_reactive (clock, FALSE);
     }
