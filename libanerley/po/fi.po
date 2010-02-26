@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 09:22+0000\n"
+"POT-Creation-Date: 2010-02-26 03:43+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -19,24 +20,43 @@ msgstr ""
 # Copyright (C) 2006 Samuli SeppÃ¤nen and Henna NykÃ¤nen.
 # Ilkka Tuohela <hile@iki.fi>, 2006-2009.
 # Samuli SeppÃ¤nen & Henna NykÃ¤nen <sjsepp@utu.fi>, 2006.
-#: ../anerley/anerley-tile.c:201
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Tavoitettavissa"
 
-#: ../anerley/anerley-tile.c:204
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Varattu"
 
-#: ../anerley/anerley-tile.c:207
-#: ../anerley/anerley-tile.c:210
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "Poissa"
 
-#: ../anerley/anerley-tile.c:213
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "Poissa linjoilta"
 
-#: ../anerley/anerley-econtact-item.c:290
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "Nimetön"
 
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Jatkettu pois"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Poista asetus"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Piilotettu"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Virhe"
