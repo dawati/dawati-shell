@@ -15,23 +15,23 @@ MxScrollBar {
 }
 
 MxScrollBar > *#backward-stepper {
-  border-image: url("generic/vscroll-backward.png") 2 4 2 2 stretch stretch;
+  border-image: url("generic/vscroll-backward.png") 2 4 2 2;
 }
 
 MxScrollBar > *#backward-stepper:active {
-  border-image: url("generic/vscroll-backward-hover.png") 2 4 2 2 stretch stretch;
+  border-image: url("generic/vscroll-backward-hover.png") 2 4 2 2;
 }
 
 MxScrollBar > *#forward-stepper {
-  border-image: url("generic/vscroll-forward.png") 2 4 2 2 stretch stretch;
+  border-image: url("generic/vscroll-forward.png") 2 4 2 2;
 }
 
 MxScrollBar > *#forward-stepper:active {
-  border-image: url("generic/vscroll-forward-hover.png") 2 4 2 2 stretch stretch;
+  border-image: url("generic/vscroll-forward-hover.png") 2 4 2 2;
 }
 
 MxScrollBar *#handle {
-  border-image: url("generic/vscroll-handle.png") 2 4 2 2 stretch stretch;
+  border-image: url("generic/vscroll-handle.png") 2 4 2 2;
 }
 
 MxTable {
@@ -55,7 +55,7 @@ MnbSwitcher > *#switcher-table {
 }
 
 MnbToolbar {
-  border-image: url("panel/panel-background.png") 0 200 0 200 stretch;
+  border-image: url("panel/panel-background.png") 0 200 0 200;
 }
 
 MnbToolbarClock {
@@ -83,11 +83,11 @@ MnbToolbarButton {
 }
 
 MnbToolbarButton:checked {
-  border-image: url("panel/toolbar-button-active.png") 0 stretch;
+  border-image: url("panel/toolbar-button-active.png") 0;
 }
 
 MnbToolbarButton:hover, MnbToolbarButton:active {
-  border-image: url("panel/toolbar-button-hover.png") 0 stretch;
+  border-image: url("panel/toolbar-button-hover.png") 0;
 }
 
 /* Toolbar usage hint */
@@ -237,7 +237,7 @@ MnbSwitcher *#workspace-title-label-over {
 }
 
 MnbSwitcher *#workspace-no-wins-bin {
-  border-image: url('generic/placeholder-bg.png') 4 stretch;
+  border-image: url('generic/placeholder-bg.png') 4;
   padding: 8;
 }
 
@@ -387,7 +387,7 @@ MnbPanelFrame, MnbDropDown, MnbSwitcher, MxFrame#panel-stub {
 }
 
 MnbEntry {
-  border-image: url('generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('generic/search-entry-bg.png') 5 5 6 5;
   padding: 7 10 7 10;
 }
 
@@ -397,7 +397,7 @@ MnbEntry > *.MnbEntryEntry {
 }
 
 MnbEntry *.MnbEntryButton {
-  border-image: url('generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
+  border-image: url('generic/search-entry-separator.png') 0 0 0 3;
   font-size: 13;
   padding: 0 2 0 10;
 }
@@ -413,7 +413,7 @@ MnbEntry *.MnbEntryClearButton:hover {
 
 
 MplEntry {
-  border-image: url('generic/search-entry-bg.png') 5 5 6 5 stretch stretch;
+  border-image: url('generic/search-entry-bg.png') 5 5 6 5;
   padding: 7 10 7 10;
 }
 
@@ -423,7 +423,7 @@ MplEntry > *.MplEntryEntry {
 }
 
 MplEntry *.MplEntryButton {
-  border-image: url('generic/search-entry-separator.png') 0 0 0 3 stretch stretch;
+  border-image: url('generic/search-entry-separator.png') 0 0 0 3;
   font-size: 13;
   padding: 0 2 0 10;
 }
@@ -493,7 +493,7 @@ MnbFancyBin {
 
 MnbZonesPreview {
   spacing: 16;
-  border-image: url("effects/zone-switch-background.png") 0 stretch stretch;
+  border-image: url("effects/zone-switch-background.png") 0;
 }
 
 MnbSpinner {
