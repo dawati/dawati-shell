@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:57+0000\n"
+"POT-Creation-Date: 2010-02-26 03:29+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -13,6 +13,56 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "設定你的工具列偏好設定"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar"
+msgstr "工具列"
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "Socket for embedding"
+msgstr "用來內嵌的 socket"
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "socket"
+msgstr "socket"
+
+#: ../capplet/src/moblin-toolbar-properties.c:95
+msgid "- Moblin Toolbar Preferences"
+msgstr "- Moblin 工具列偏好設定"
+
+#: ../capplet/src/mtp-bin.c:326
+msgid "Save toolbar"
+msgstr "儲存工具列"
+
+#: ../capplet/src/mtp-bin.c:330
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "很抱歉，在你加入新面板之前，必須先移除一個面板。"
+
+#: ../capplet/src/mtp-bin.c:357
+msgid "Available panels"
+msgstr "可用的面板"
+
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:221
+#: ../src/mnb-toolbar-clock.c:86
+msgid "%l:%M %P"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:231
+#: ../src/mnb-toolbar-clock.c:96
+msgid "%B %e, %Y"
+msgstr "%Y年%b%e日"
+
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
 msgstr "決定工具列上的面板順序。"
@@ -21,43 +71,27 @@ msgstr "決定工具列上的面板順序。"
 msgid "Order of panels on toolbar"
 msgstr "工具列上的面板順序"
 
-#: ../src/moblin-netbook.c:809
+#: ../src/moblin-netbook.c:918
 msgid "Moblin Netbook Effects"
 msgstr "Moblin 網路筆電特效"
 
-#: ../src/moblin-netbook.c:813
+#: ../src/moblin-netbook.c:922
 msgid "Effects for Moblin Netbooks"
 msgstr "給 Moblin 網路筆電用的特效"
 
-#: ../src/moblin-netbook.c:2848
+#: ../src/moblin-netbook.c:2976
 msgid "Activate"
 msgstr "啟動"
 
-#: ../src/moblin-netbook.c:2862
+#: ../src/moblin-netbook.c:2990
 msgid "Unknown window"
 msgstr "未知的視窗"
 
-#: ../src/moblin-netbook.c:2864
+#: ../src/moblin-netbook.c:2992
 msgid "Is asking for your attention."
 msgstr "正在要求您的注意。"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:752
-msgid "%l:%M %P"
-msgstr "%l:%M %P"
-
-#. translators: translate this to a suitable date format for your locale.
-#. * For availabe format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:762
-msgid "%B %e, %Y"
-msgstr "%Y年%b%e日"
-
-#: ../src/mnb-toolbar.c:871
+#: ../src/mnb-toolbar.c:954
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "抱歉，%s 已損毀"
@@ -243,8 +277,6 @@ msgstr "取消所有"
 #~ msgstr "要激活工具欄，移動您的滑鼠到屏面上方"
 #~ msgid "Offline"
 #~ msgstr "下線"
-#~ msgid "Available"
-#~ msgstr "可用"
 #~ msgid "Away"
 #~ msgstr "離開"
 #~ msgid "Busy"
