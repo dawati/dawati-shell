@@ -22,7 +22,7 @@
 #include "chrome/browser/sessions/session_types.h"
 #include "base/singleton.h"
 
-//#define DEBUG_CHROMIUM_API
+#define DEBUG_CHROMIUM_API
 
 using namespace history;
 
@@ -401,8 +401,6 @@ ChromeProfileProvider::GetSessions(void* context,
               if (!pickle.get())
                 continue;
 
-              void* iterator = NULL;
-
               struct ClosedPayload 
               {
                 int id;
@@ -429,8 +427,8 @@ ChromeProfileProvider::GetSessions(void* context,
       tabs.push_back((*i).second);
     }
   // Second reverse scan
-  for (std::vector<TabEntry*>::reverse_iterator i = tabs.rbegin();
-       i < tabs.rend(); i++) 
+  for (std::vector<TabEntry*>::iterator i = tabs.begin();
+       i < tabs.end(); i++) 
     {
       // Dont rely on this way - the session may or may not have thubmail available.
 #if GET_SESSION_THUMB
