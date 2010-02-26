@@ -349,10 +349,6 @@ msgstr "网络 - 错误"
 msgid "Run in standalone mode"
 msgstr "以独立模式运行"
 
-#: ../src/carrick.c:284
-msgid "Embed in another window (overrides --standalone)"
-msgstr ""
-
 #: ../src/carrick.c:295
 msgid "Carrick connectivity applet"
 msgstr "Carrick 连接小程序"
@@ -459,6 +455,10 @@ msgstr "抱歉，无法找到任何网络连接。"
 #, c-format
 msgid "Sorry, we've lost your wired connection"
 msgstr "抱歉，您的有线连接出问题了"
+
+#: ../src/carrick.c:284
+msgid "Embed in another window (overrides --standalone)"
+msgstr "嵌入在另一个窗口（覆盖 - 单机）"
 
 #~ msgid "Manual Config"
 #~ msgstr "手动配置"
