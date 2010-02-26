@@ -26,6 +26,8 @@
 #include "mtp-toolbar-button.h"
 #include "mtp-space.h"
 
+#define TOOLBAR_X_PADDING 4.0
+
 static void mx_droppable_iface_init (MxDroppableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MtpToolbar, mtp_toolbar, MX_TYPE_WIDGET,
@@ -442,10 +444,172 @@ mtp_toolbar_paint (ClutterActor *self)
 }
 
 static void
+mtp_toolbar_paint_border_image (MxTextureFrame *frame)
+{
+  CoglHandle cogl_texture = COGL_INVALID_HANDLE;
+  CoglHandle cogl_material = COGL_INVALID_HANDLE;
+  ClutterActorBox box = { 0, };
+  gfloat width, height;
+  gfloat tex_width, tex_height;
+  gfloat ex, ey;
+  gfloat tx1, ty1, tx2, ty2;
+  gfloat left, right, top, bottom;
+  guint8 opacity;
+  ClutterTexture *parent_texture;
+  gfloat margin;
+
+  parent_texture = mx_texture_frame_get_parent_texture (frame);
+
+  mx_texture_frame_get_frame(frame, &top, &right, &bottom, &left);
+
+  /* no need to paint stuff if we don't have a texture */
+  if (G_UNLIKELY (parent_texture == NULL))
+    return;
+
+  /* parent texture may have been hidden, so need to make sure it gets
+   * realized
+   */
+  if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
+    clutter_actor_realize (CLUTTER_ACTOR (parent_texture));
+
+  cogl_texture = clutter_texture_get_cogl_texture (parent_texture);
+
+  if (cogl_texture == COGL_INVALID_HANDLE)
+    return;
+
+  cogl_material = clutter_texture_get_cogl_material (parent_texture);
+
+  if (cogl_material == COGL_INVALID_HANDLE)
+    return;
+
+  tex_width  = cogl_texture_get_width (cogl_texture);
+  tex_height = cogl_texture_get_height (cogl_texture);
+
+  clutter_actor_get_allocation_box ((ClutterActor*) frame, &box);
+
+  width  = box.x2 - box.x1;
+  height = box.y2 - box.y1;
+
+  margin = TOOLBAR_X_PADDING / tex_width;
+
+  tx1 = left / tex_width;
+  tx2 = (tex_width - right) / tex_width;
+  ty1 = top / tex_height;
+  ty2 = (tex_height - bottom) / tex_height;
+
+  ex = width - right;
+  if (ex < 0)
+    ex = right;           /* FIXME ? */
+
+  ey = height - bottom;
+  if (ey < 0)
+    ey = bottom;          /* FIXME ? */
+
+  opacity = clutter_actor_get_paint_opacity ((ClutterActor*)frame);
+
+  cogl_material_set_color4ub (cogl_material,
+                              opacity, opacity, opacity, opacity);
+  cogl_set_source (cogl_material);
+
+  cogl_material_set_layer_filters (cogl_material,
+                                   0,
+                                   COGL_MATERIAL_FILTER_NEAREST,
+                                   COGL_MATERIAL_FILTER_NEAREST);
+
+  {
+    GLfloat rectangles[] =
+    {
+      /* top left corner */
+      0.0, 0.0, left, top,
+      margin, 0.0,
+      tx1, ty1,
+
+      /* top middle */
+      left, 0.0, ex, top,
+      tx1, 0.0,
+      tx2, ty1,
+
+      /* top right */
+      ex, 0.0, width, top,
+      tx2, 0.0,
+      1.0 - margin, ty1,
+
+      /* mid left */
+      0.0, top, left, ey,
+      margin, ty1,
+      tx1, ty2,
+
+      /* center */
+      left, top, ex, ey,
+      tx1, ty1,
+      tx2, ty2,
+
+      /* mid right */
+      ex, top, width, ey,
+      tx2, ty1,
+      1.0 - margin, ty2,
+
+      /* bottom left */
+      0.0, ey, left, height,
+      margin, ty2,
+      tx1, 1.0,
+
+      /* bottom center */
+      left, ey, ex, height,
+      tx1, ty2,
+      tx2, 1.0,
+
+      /* bottom right */
+      ex, ey, width, height,
+      tx2, ty2,
+      1.0 - margin, 1.0
+    };
+
+    cogl_rectangles_with_texture_coords (rectangles, 9);
+  }
+}
+
+static void
+mtp_toolbar_paint_background (MxWidget           *self,
+                              ClutterActor       *background,
+                              const ClutterColor *color)
+{
+  /* Default implementation just draws the background
+   * colour and the image on top
+   */
+  if (color && color->alpha != 0)
+    {
+      ClutterActor *actor = CLUTTER_ACTOR (self);
+      ClutterActorBox allocation = { 0, };
+      ClutterColor bg_color = *color;
+      gfloat w, h;
+
+      bg_color.alpha = clutter_actor_get_paint_opacity (actor)
+                       * bg_color.alpha
+                       / 255;
+
+      clutter_actor_get_allocation_box (actor, &allocation);
+
+      w = allocation.x2 - allocation.x1;
+      h = allocation.y2 - allocation.y1;
+
+      cogl_set_source_color4ub (bg_color.red,
+                                bg_color.green,
+                                bg_color.blue,
+                                bg_color.alpha);
+      cogl_rectangle (TOOLBAR_X_PADDING, 0, w - TOOLBAR_X_PADDING, h);
+    }
+
+  if (background)
+    mtp_toolbar_paint_border_image (MX_TEXTURE_FRAME (background));
+}
+
+static void
 mtp_toolbar_class_init (MtpToolbarClass *klass)
 {
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
+  MxWidgetClass     *widget_class = MX_WIDGET_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MtpToolbarPrivate));
 
@@ -459,6 +623,8 @@ mtp_toolbar_class_init (MtpToolbarClass *klass)
   object_class->dispose           = mtp_toolbar_dispose;
   object_class->set_property      = mtp_toolbar_set_property;
   object_class->get_property      = mtp_toolbar_get_property;
+
+  widget_class->paint_background  = mtp_toolbar_paint_background;
 
   g_object_class_override_property (object_class, ZONE_PROP_ENABLED,"enabled");
 

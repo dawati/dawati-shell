@@ -55,7 +55,7 @@ MtpBin#frameless {
 }
 
 MtpToolbar, MtpToolbar:hover {
-  border-image: url("panel/panel-background.png") 0 200 0 200 stretch;
+  border-image: url("panel/panel-background.png") 0 200 0 200;
 }
 
 MxWidget, MxWidget:hover
