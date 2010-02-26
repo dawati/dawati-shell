@@ -64,7 +64,7 @@ msgstr "Questo è il myzone, dove verranno visualizzati i file utilizzati di rec
 
 #: ../penge/penge-welcome-tile.c:67
 msgid "Welcome to MeeGo"
-msgstr "Benvenuto su MeeGo"
+msgstr "Benvenuti su MeeGo"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Benvenuti in Moblin 2.1 per netbook</b>"
