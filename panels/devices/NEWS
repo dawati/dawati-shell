@@ -1,4 +1,10 @@
 
+Version 0.1.8, 2010-02-26
+
+    Implement support for pluggable storage devices.
+    Hook up to XF86XK_Sleep key.
+    Use C types where applicable.
+
 Version 0.1.7, 2010-02-17
 
     Pull global stuff into panel class.
