@@ -1633,10 +1633,11 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &expander))
   {
     if (priv->open_first_expander &&
-        expander == priv->first_expander &&
-        !mx_expander_get_expanded (expander))
+        expander == priv->first_expander)
     {
       mx_expander_set_expanded (expander, TRUE);
+    } else {
+      mx_expander_set_expanded (expander, FALSE);
     }
   }
 
