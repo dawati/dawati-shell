@@ -152,10 +152,14 @@ _constructor (GType                  type,
     model = mpd_storage_device_get_model (priv->storage);
     vendor = mpd_storage_device_get_vendor (priv->storage);
 
+#ifdef HAVE_UDISKS
     if (label && *label)
       title = g_strdup_printf ("%s - %s %s", label, vendor, model);
     else
       title = g_strdup_printf ("%s %s", vendor, model);
+#else
+    title = g_path_get_basename (priv->mount_point);
+#endif
 
     mx_label_set_text (MX_LABEL (priv->title), title);
     g_free (title);

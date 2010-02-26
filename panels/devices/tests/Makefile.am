@@ -4,7 +4,6 @@ AM_CFLAGS = \
   -I$(top_srcdir) \
   -I$(top_srcdir)/src \
   -DPKGICONDIR=\"$(pkgdatadir)/icons\" \
-  -DGDU_API_IS_SUBJECT_TO_CHANGE \
   -DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
   $(NULL)
 
@@ -14,10 +13,7 @@ LDADD = \
 
 noinst_PROGRAMS = \
   test-battery-device \
-  test-disk-tile \
   test-folder-button \
-  test-storage-device \
-  test-storage-device-tile \
   $(NULL)
 
 test_battery_device_SOURCES = \
@@ -66,6 +62,15 @@ test_storage_device_tile_SOURCES = \
   $(top_srcdir)/src/mpd-storage-device.c \
   $(top_srcdir)/src/mpd-storage-device-tile.c \
   $(NULL)
+
+if HAVE_UDISKS
+  AM_CFLAGS += -DGDU_API_IS_SUBJECT_TO_CHANGE
+  noinst_PROGRAMS += \
+    test-disk-tile \
+    test-storage-device \
+    test-storage-device-tile \
+    $(NULL)
+endif
 
 -include $(top_srcdir)/git.mk
 

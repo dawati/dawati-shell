@@ -23,11 +23,13 @@
 #include <string.h>
 #include <sys/statvfs.h>
 
-#include <gdu/gdu.h>
-
 #include "mpd-gobject.h"
 #include "mpd-storage-device.h"
 #include "config.h"
+
+#ifdef HAVE_UDISKS
+  #include <gdu/gdu.h>
+#endif
 
 static void
 mpd_storage_device_set_size (MpdStorageDevice  *self,
@@ -56,7 +58,9 @@ enum
 
 typedef struct
 {
+#ifdef HAVE_UDISKS
   GduDevice     *device;
+#endif
   uint64_t       available_size;
   char          *path;
   uint64_t       size;
@@ -86,6 +90,8 @@ _update_timeout_cb (MpdStorageDevice *self)
   update (self);
   return true;
 }
+
+#ifdef HAVE_UDISKS
 
 static int
 _find_device_cb (GduDevice  *device,
@@ -118,6 +124,8 @@ find_device_for_path (GList       *devices,
   return device;
 }
 
+#endif /* HAVE_UDISKS */
+
 static GObject *
 _constructor (GType                  type,
               unsigned int           n_properties,
@@ -130,6 +138,7 @@ _constructor (GType                  type,
 
   if (priv->path)
   {
+#ifdef HAVE_UDISKS
     GduPool *pool = gdu_pool_new ();
     GList *devices = gdu_pool_get_devices (pool);
     priv->device = find_device_for_path (devices, priv->path);
@@ -144,6 +153,7 @@ _constructor (GType                  type,
     g_list_foreach (devices, (GFunc) g_object_unref, NULL);
     g_list_free (devices);
     g_object_unref (pool);
+#endif
   } else {
     /* Bail */
     self = NULL;
@@ -234,7 +244,9 @@ _dispose (GObject *object)
 {
   MpdStorageDevicePrivate *priv = GET_PRIVATE (object);
 
+#ifdef HAVE_UDISKS
   mpd_gobject_detach (object, (GObject **) &priv->device);
+#endif
 
   if (priv->path)
   {
@@ -380,21 +392,29 @@ mpd_storage_device_set_available_size (MpdStorageDevice  *self,
 char const *
 mpd_storage_device_get_label (MpdStorageDevice *self)
 {
+#ifdef HAVE_UDISKS
   MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
   g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), NULL);
 
   return gdu_device_get_presentation_name (priv->device);
+#else
+  return NULL;
+#endif
 }
 
 char const *
 mpd_storage_device_get_model (MpdStorageDevice *self)
 {
+#ifdef HAVE_UDISKS
   MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
   g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), NULL);
 
   return gdu_device_drive_get_model (priv->device);
+#else
+  return NULL;
+#endif
 }
 
 char const *
@@ -410,8 +430,12 @@ mpd_storage_device_get_path (MpdStorageDevice *self)
 char const *
 mpd_storage_device_get_vendor (MpdStorageDevice *self)
 {
+#ifdef HAVE_UDISKS
   MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
   return gdu_device_drive_get_vendor (priv->device);
+#else
+  return NULL;
+#endif
 }
 
