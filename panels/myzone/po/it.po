@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:48+0000\n"
+"POT-Creation-Date: 2010-02-26 03:46+0000\n"
 "PO-Revision-Date: 2009-11-03 22:46+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -16,6 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Pannello myzone"
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "<b>Appuntamenti</b>"
 
 #: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
@@ -25,7 +33,7 @@ msgstr "Crea un appuntamento"
 msgid "Add"
 msgstr "Aggiungi"
 
-#: ../penge/penge-events-pane.c:342
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "Nessun appuntamento "
 
@@ -41,7 +49,7 @@ msgstr "Pagina web"
 msgid "Create a new task"
 msgstr "Crea una nuova attività"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "Nessuna attività per oggi"
 
@@ -50,21 +58,13 @@ msgstr "Nessuna attività per oggi"
 msgid "Due %x"
 msgstr "In scadenza il %x"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
-msgid "Myzone panel"
-msgstr "Pannello myzone"
-
-#: ../penge/penge-calendar-pane.c:474
-msgid "Appointments"
-msgstr "<b>Appuntamenti</b>"
-
-#: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to Moblin"
-msgstr "Benvenuto su Moblin"
-
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Questo è il myzone, dove verranno visualizzati i file utilizzati di recente e il contenuto dei tuoi feed web"
+
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Benvenuto su MeeGo"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Benvenuti in Moblin 2.1 per netbook</b>"
