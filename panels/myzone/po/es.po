@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-02-11 23:48+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: GLS_ESPX <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12,28 +12,32 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Citas</b>"
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "MyZone"
 
-#: ../penge/penge-events-pane.c:59
+#: ../penge/penge-calendar-pane.c:474
+msgid "Appointments"
+msgstr "Citas"
+
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Crear una cita"
 
-#: ../penge/penge-events-pane.c:60
+#: ../penge/penge-events-pane.c:69
 #: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Agregar"
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:342
 msgid "No calendar entries this week"
 msgstr "No hay notas esta semana"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Aquí verás lo que hacen tus amigos en línea. ¡Activa tus cuentas!"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "Página web"
 
@@ -47,18 +51,18 @@ msgid "Nothing to do today"
 msgstr "Nada que hacer hoy"
 
 # (this task) is for %x
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "Es para %x"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Bienvenido a Moblin 2.1 para miniportátiles</b>"
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to Moblin"
+msgstr "Bienvenido a Moblin"
 
-# Because Moblin is a bit different, we have put a few things together to help you navigate this Beta version. We hope you'll enjoy it.
-# The Moblin Team
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Como Moblin es un poco diferente, hemos juntado algunas cosillas para ayudarte a navegar por él. Esperamos que te guste. El equipo de Moblin."
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Esta es MyZone, en donde aparecerán los archivos usados recientemente y el contenido de noticias de tus sitios web."
 
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Bienvenido a Moblin 2.1 para miniportátiles</b>"
