@@ -47,6 +47,7 @@ typedef struct
   MpdLidDevice        *lid;
   MpdIdleManager      *idle_manager;
   MxAction            *shutdown_key;
+  MxAction            *sleep_key;
   NotifyNotification  *battery_note;
   NotifyNotification  *shutdown_note;
   int                  last_notification_displayed;
@@ -283,8 +284,8 @@ _shutdown_notification_closed_cb (NotifyNotification  *notification,
 }
 
 static void
-_shutdown_key_activated_cb (MxAction        *action,
-                            MpdPowerIcon    *self)
+_shutdown_key_activated_cb (MxAction      *action,
+                            MpdPowerIcon  *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
 
@@ -310,6 +311,21 @@ _shutdown_key_activated_cb (MxAction        *action,
 }
 
 static void
+_sleep_key_activated_cb (MxAction     *action,
+                         MpdPowerIcon *self)
+{
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
+  GError  *error = NULL;
+
+  mpd_idle_manager_suspend (priv->idle_manager, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
 _dispose (GObject *object)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (object);
@@ -321,6 +337,8 @@ _dispose (GObject *object)
   mpd_gobject_detach (object, (GObject **) &priv->lid);
 
   mpd_gobject_detach (object, (GObject **) &priv->shutdown_key);
+
+  mpd_gobject_detach (object, (GObject **) &priv->sleep_key);
 
   mpd_gobject_detach (object, (GObject **) &priv->battery_note);
 
@@ -343,7 +361,7 @@ static void
 mpd_power_icon_init (MpdPowerIcon *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  unsigned int shutdown_key_code;
+  unsigned int key_code;
 
   /* Panel */
   priv->panel = mpl_panel_windowless_new (MPL_PANEL_POWER,
@@ -365,13 +383,25 @@ mpd_power_icon_init (MpdPowerIcon *self)
   priv->idle_manager = mpd_idle_manager_new ();
 
   /* Shutdown key. */
-  shutdown_key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_PowerOff);
-  if (shutdown_key_code)
+  key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_PowerOff);
+  if (key_code)
   {
-    priv->shutdown_key = mpd_global_key_new (shutdown_key_code);
+    priv->shutdown_key = mpd_global_key_new (key_code);
     g_object_ref_sink (priv->shutdown_key);
     g_signal_connect (priv->shutdown_key, "activated",
                       G_CALLBACK (_shutdown_key_activated_cb), self);
+  } else {
+    g_warning ("Failed to query XF86XK_PowerOff key code.");
+  }
+
+  /* Sleep key. */
+  key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_Sleep);
+  if (key_code)
+  {
+    priv->sleep_key = mpd_global_key_new (key_code);
+    g_object_ref_sink (priv->sleep_key);
+    g_signal_connect (priv->sleep_key, "activated",
+                      G_CALLBACK (_sleep_key_activated_cb), self);
   } else {
     g_warning ("Failed to query XF86XK_PowerOff key code.");
   }
