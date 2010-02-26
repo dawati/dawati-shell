@@ -52,6 +52,12 @@ typedef enum
     MAILME_ACCOUNT_NUM_STATUS
 } MailmeAccountStatus;
 
+typedef enum
+{
+  MAILME_INBOX_URI,
+  MAILME_INBOX_COMMAND_LINE,
+} MailmeInboxOpenFormat;
+
 typedef struct {
   GObject parent;
 } MailmeTelepathyAccount;
@@ -75,7 +81,16 @@ MailmeAccountStatus mailme_telepathy_account_prepare_finish (
 GObject *mailme_telepathy_account_get_tp_account (
         MailmeTelepathyAccount *self);
 
+void mailme_telepathy_account_get_inbox_async (
+                                             MailmeTelepathyAccount *self,
+                                             GAsyncReadyCallback     callback,
+                                             gpointer                user_data);
 
+gchar *mailme_telepathy_account_get_inbox_finish (
+                                             MailmeTelepathyAccount *self,
+                                             GAsyncResult           *result,
+                                             MailmeInboxOpenFormat  *format,
+                                             GError                **error);
 G_END_DECLS
 
 

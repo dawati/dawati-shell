@@ -62,6 +62,34 @@ on_account_changed (GObject *object,
 }
 
 static void
+on_received_inbox_open_info (GObject *source,
+    GAsyncResult *result,
+    gpointer user_data)
+{
+  GError *error = NULL;
+  MailmeInboxOpenFormat format;
+  gchar *value;
+
+  value = mailme_telepathy_account_get_inbox_finish (
+                                        MAILME_TELEPATHY_ACCOUNT (source),
+                                        result,
+                                        &format,
+                                        &error);
+
+  if (error)
+  {
+    g_warning ("Failed to get inbox information: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  g_debug ("Inbox reachable through %s: %s",
+           format == MAILME_INBOX_URI ? "URI" : "command line",
+           value);
+  g_free (value);
+}
+
+static void
 on_account_added (MailmeTelepathy *tp_provider,
     MailmeTelepathyAccount *account,
     gpointer user_data)
@@ -75,6 +103,11 @@ on_account_added (MailmeTelepathy *tp_provider,
   g_free(display_name);
 
   print_status (account);
+
+  mailme_telepathy_account_get_inbox_async (
+      account,
+      on_received_inbox_open_info,
+      NULL);
 
   g_signal_connect (account,
                     "notify::unread-count",

@@ -64,6 +64,12 @@ struct _MailmeTelepathyAccountPrivate {
   gchar *email_addr;
 };
 
+struct _InboxOpenInfo
+{
+  MailmeInboxOpenFormat format;
+  gchar *value;
+};
+
 static GQuark
 mailme_get_mail_notification_interface ()
 {
@@ -364,6 +370,88 @@ on_account_status_changed (TpAccount  *account,
 }
 
 static void
+_inbox_open_info_free (struct _InboxOpenInfo *inbox)
+{
+  if (inbox)
+  {
+    g_free (inbox->value);
+    g_free (inbox);
+  }
+}
+
+static void
+on_received_inbox_url (DBusGProxy       *proxy,
+                      DBusGProxyCall   *call_id,
+                      void             *user_data)
+{
+  GError *error = NULL;
+  GSimpleAsyncResult *async_result = G_SIMPLE_ASYNC_RESULT (user_data);
+  //MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (user_data);
+  GValueArray *result;
+  const gchar *url;
+  guint method;
+  struct _InboxOpenInfo *inbox = NULL;
+
+  dbus_g_proxy_end_call (proxy, call_id, &error,
+      dbus_g_type_get_struct ("GValueArray",
+        G_TYPE_STRING,
+        G_TYPE_UINT,
+        dbus_g_type_get_collection ("GPtrArray",
+          dbus_g_type_get_struct ("GValueArray",
+            G_TYPE_STRING,
+            G_TYPE_STRING,
+            G_TYPE_INVALID)),
+        G_TYPE_INVALID),
+      &result,
+      G_TYPE_INVALID);
+
+  if (error)
+  {
+    g_simple_async_result_set_from_error (async_result, error);
+    goto complete;
+  }
+
+  url = g_value_get_string (g_value_array_get_nth (result, 0));
+  method = g_value_get_uint (g_value_array_get_nth (result, 1));
+
+  inbox = g_new0 (struct _InboxOpenInfo, 1);
+
+  switch (method)
+  {
+    case 0: /* Method GET */
+      inbox->format = MAILME_INBOX_URI;
+      inbox->value = g_strdup (url);
+      break;
+
+    case 1: /* Method POST */
+      inbox->format = MAILME_INBOX_URI;
+      /* TODO Create HTML file to handle POST data */
+      inbox->value = g_strdup (url);
+      break;
+
+    default:
+      {
+        GError cm_error = { MAILME_ERRORS, 0,
+          "Connection Manager sent and invalid HTTP method value."};
+        g_simple_async_result_set_from_error (async_result, &cm_error);
+        g_free (inbox);
+        inbox = NULL;
+      }
+  }
+
+  g_value_array_free (result);
+
+complete:
+  g_simple_async_result_set_op_res_gpointer (
+      async_result,
+      inbox,
+      (GDestroyNotify)_inbox_open_info_free);
+
+  g_simple_async_result_complete (async_result);
+  g_object_unref (async_result);
+}
+
+static void
 mailme_telepathy_account_get_property (GObject    *object,
                                    		 guint       property_id,
                                        GValue     *value,
@@ -500,4 +588,54 @@ GObject *mailme_telepathy_account_get_tp_account (
 {
   MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
   return G_OBJECT (priv->account);
+}
+
+void
+mailme_telepathy_account_get_inbox_async (MailmeTelepathyAccount *self,
+                                          GAsyncReadyCallback     callback,
+                                          gpointer                user_data)
+{
+  GSimpleAsyncResult *result;
+  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (priv->account != NULL);
+
+  result = g_simple_async_result_new (G_OBJECT (self),
+			                                callback, user_data,
+                                      mailme_telepathy_account_get_inbox_finish);
+
+  dbus_g_proxy_begin_call (priv->mail_proxy,
+                           "RequestInboxURL",
+                           on_received_inbox_url,
+                           result,
+                           NULL,
+                           G_TYPE_INVALID);
+}
+
+gchar *
+mailme_telepathy_account_get_inbox_finish (MailmeTelepathyAccount *self,
+	                                    	   GAsyncResult           *result,
+                                           MailmeInboxOpenFormat  *format,
+                                           GError                **error)
+{
+  GSimpleAsyncResult *simple;
+  struct _InboxOpenInfo *inbox;
+  gchar *value;
+
+  if (!g_simple_async_result_is_valid (result,
+                                   G_OBJECT (self),
+                                   mailme_telepathy_account_get_inbox_finish))
+    return NULL;
+
+  simple = G_SIMPLE_ASYNC_RESULT (result);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
+  inbox = g_simple_async_result_get_op_res_gpointer (simple);
+  *format = inbox->format;
+  value = inbox->value;
+  inbox->value = NULL;
+
+  return value;
 }
