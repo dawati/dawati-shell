@@ -77,9 +77,9 @@ penge_email_pane_class_init (PengeEmailPaneClass *klass)
 }
 
 static void
-_tp_provider_prepared (GObject *source,
-    GAsyncResult *result,
-    gpointer user_data)
+_tp_provider_prepared (GObject      *source,
+                       GAsyncResult *result,
+                       gpointer      user_data)
 {
   GError *error = NULL;
   if (!mailme_telepathy_prepare_finish (MAILME_TELEPATHY (source), result,
@@ -97,7 +97,7 @@ _new_label (GObject *account)
   gchar *label;
   gchar *display_name = NULL;
   guint unread_count = 0;
-  
+
   g_object_get (account, "display-name", &display_name, NULL);
   g_object_get (account, "unread-count", &unread_count, NULL);
 
@@ -111,13 +111,13 @@ _new_label (GObject *account)
 }
 
 static void
-_account_changed_cb (GObject *object,
-    GParamSpec *pspec,
-    gpointer user_data)
+_account_changed_cb (GObject    *object,
+                     GParamSpec *pspec,
+                     gpointer    user_data)
 {
   GObject *widget = G_OBJECT (user_data);
   gchar *label;
-  
+
   label = _new_label (object);
   g_object_set (widget, "label", label, NULL);
   g_free (label);
@@ -192,7 +192,7 @@ _account_added_cb (MailmeTelepathy        *provider,
   PengeEmailPanePrivate *priv = GET_PRIVATE (user_data);
   ClutterActor *widget;
   gchar *label;
-  
+
   label = _new_label (G_OBJECT (account));
   widget = mx_button_new_with_label (label);
   g_free (label);
@@ -223,14 +223,14 @@ _account_added_cb (MailmeTelepathy        *provider,
 }
 
 static void
-_account_removed_cb (MailmeTelepathy *provider,
-    MailmeTelepathyAccount *account,
-    gpointer user_data)
+_account_removed_cb (MailmeTelepathy        *provider,
+                     MailmeTelepathyAccount *account,
+                     gpointer                user_data)
 {
   PengeEmailPanePrivate *priv = GET_PRIVATE (user_data);
   ClutterActor *widget = g_hash_table_lookup (priv->account_to_widget,
                                               account);
-  
+
   if (widget != NULL)
   {
     g_signal_handlers_disconnect_by_func (account,

@@ -38,9 +38,9 @@ print_status (MailmeTelepathyAccount *account)
 }
 
 static void
-on_tp_provider_prepared (GObject *source,
-    GAsyncResult *result,
-    gpointer user_data)
+on_tp_provider_prepared (GObject      *source,
+                         GAsyncResult *result,
+                         gpointer      user_data)
 {
   GMainLoop *loop = user_data;
   GError *error = NULL;
@@ -54,17 +54,17 @@ on_tp_provider_prepared (GObject *source,
 }
 
 static void
-on_account_changed (GObject *object,
-    GParamSpec *pspec,
-    gpointer user_data)
+on_account_changed (GObject    *object,
+                    GParamSpec *pspec,
+                    gpointer    user_data)
 {
    print_status (MAILME_TELEPATHY_ACCOUNT (object));
 }
 
 static void
-on_received_inbox_open_info (GObject *source,
-    GAsyncResult *result,
-    gpointer user_data)
+on_received_inbox_open_info (GObject      *source,
+                             GAsyncResult *result,
+                             gpointer      user_data)
 {
   GError *error = NULL;
   MailmeInboxOpenFormat format;
@@ -90,9 +90,9 @@ on_received_inbox_open_info (GObject *source,
 }
 
 static void
-on_account_added (MailmeTelepathy *tp_provider,
-    MailmeTelepathyAccount *account,
-    gpointer user_data)
+on_account_added (MailmeTelepathy        *tp_provider,
+                  MailmeTelepathyAccount *account,
+                  gpointer                user_data)
 {
   gchar *display_name = NULL;
 
@@ -121,9 +121,9 @@ on_account_added (MailmeTelepathy *tp_provider,
 }
 
 static void
-on_account_removed (MailmeTelepathy *tp_provider,
-    MailmeTelepathyAccount *account,
-    gpointer user_data)
+on_account_removed (MailmeTelepathy        *tp_provider,
+                    MailmeTelepathyAccount *account,
+                    gpointer                user_data)
 {
   gchar *display_name = NULL;
 
