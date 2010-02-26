@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:48+0000\n"
+"POT-Creation-Date: 2010-02-26 03:46+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 msgid "Myzone panel"
 msgstr "Myzone 面板"
 
-#: ../penge/penge-calendar-pane.c:474
+#: ../penge/penge-calendar-pane.c:473
 msgid "Appointments"
 msgstr "約會"
 
@@ -31,7 +31,7 @@ msgstr "建立一項約會"
 msgid "Add"
 msgstr "加入"
 
-#: ../penge/penge-events-pane.c:342
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "這禮拜的行事曆上沒有任何條目"
 
@@ -47,7 +47,7 @@ msgstr "網頁"
 msgid "Create a new task"
 msgstr "建立一份新工作"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "今天沒有待辦的事"
 
@@ -57,8 +57,8 @@ msgid "Due %x"
 msgstr "%x 到期"
 
 #: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to Moblin"
-msgstr "歡迎來到 Molbin"
+msgid "Welcome to MeeGo"
+msgstr "歡迎來到 MeeGo"
 
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
