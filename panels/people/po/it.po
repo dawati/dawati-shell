@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:51+0000\n"
+"POT-Creation-Date: 2010-02-26 03:49+0000\n"
 "PO-Revision-Date: 2009-10-09 21:39+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -16,47 +16,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:493
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:495
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "persone"
 
-#: ../src/mnb-people-panel.c:265
+#: ../src/mnb-people-panel.c:267
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Non è stata trovata alcuna persona. È stato configurato un account di messaggistica istantanea?"
 
-#: ../src/mnb-people-panel.c:377
+#: ../src/mnb-people-panel.c:379
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Non è stata trovata alcuna persona. Sembra siano tutti fuori rete."
 
-#: ../src/mnb-people-panel.c:474
+#: ../src/mnb-people-panel.c:424
+msgid "To see your IM contacts, you need to go online."
+msgstr "Per visualizzare i contatti IM, è necessario essere online."
+
+#: ../src/mnb-people-panel.c:476
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "persone - %d persone con cui si sta parlando"
 
-#: ../src/mnb-people-panel.c:481
+#: ../src/mnb-people-panel.c:483
 msgid "people - Someone is talking to you"
 msgstr "persone - Si sta parlando con qualcuno"
 
-#: ../src/mnb-people-panel.c:671
+#: ../src/mnb-people-panel.c:673
 msgid "People"
 msgstr "Persone"
 
-#: ../src/mnb-people-panel.c:684
+#: ../src/mnb-people-panel.c:686
 msgid "Search"
 msgstr "Cerca"
-
-#: ../src/mnb-people-panel.c:747
-msgid "People talking to you ..."
-msgstr "Persone con cui si sta parlando..."
-
-#: ../src/mnb-people-panel.c:422
-msgid "To see your IM contacts, you need to go online."
-msgstr "Per visualizzare i contatti IM, è necessario essere online."
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Pannello persone"
+
+#: ../src/mnb-people-panel.c:752
+msgid "You are chatting with:"
+msgstr "Sei in chat con:"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Persone con cui si sta parlando..."
 
 #~ msgid "Send an email"
 #~ msgstr "Invia un'email"
