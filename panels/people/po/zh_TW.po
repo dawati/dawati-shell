@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:51+0000\n"
+"POT-Creation-Date: 2010-02-26 03:49+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -15,48 +15,50 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:493
+#: ../src/mnb-people-panel.c:495
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "朋友"
 
-#: ../src/mnb-people-panel.c:265
+#: ../src/mnb-people-panel.c:267
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "很抱歉，我們找不到任何朋友的資料。你已經設立好通訊程式的帳號了嗎？"
 
-#: ../src/mnb-people-panel.c:377
+#: ../src/mnb-people-panel.c:379
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "抱歉，我們找不到任何朋友。似乎大家都離線了。"
 
-#: ../src/mnb-people-panel.c:422
+#: ../src/mnb-people-panel.c:424
 msgid "To see your IM contacts, you need to go online."
 msgstr "若要查看你的即時通訊連絡人，你需要先上線。"
 
-#: ../src/mnb-people-panel.c:474
+#: ../src/mnb-people-panel.c:476
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "朋友- %d 位朋友正在和你對話"
 
-#: ../src/mnb-people-panel.c:481
+#: ../src/mnb-people-panel.c:483
 msgid "people - Someone is talking to you"
 msgstr "朋友 - 有人正在和你對話"
 
-#: ../src/mnb-people-panel.c:671
+#: ../src/mnb-people-panel.c:673
 msgid "People"
 msgstr "朋友"
 
-#: ../src/mnb-people-panel.c:684
+#: ../src/mnb-people-panel.c:686
 msgid "Search"
 msgstr "搜尋"
 
-#: ../src/mnb-people-panel.c:747
-msgid "People talking to you ..."
-msgstr "和你對話的朋友..."
+#: ../src/mnb-people-panel.c:752
+msgid "You are chatting with:"
+msgstr "你正在和他聊天："
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "朋友面板"
 
+#~ msgid "People talking to you ..."
+#~ msgstr "和你對話的朋友..."
 #~ msgid "Send an email"
 #~ msgstr "發送電子郵件"
 #~ msgid "Edit details"
