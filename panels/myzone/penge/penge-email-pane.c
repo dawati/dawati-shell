@@ -18,11 +18,15 @@
  */
 
 
-#include <gtk/gtk.h>
 
 #include "penge-email-pane.h"
+
+#include <gtk/gtk.h>
+
 #include <mailme/mailme-telepathy.h>
 #include <mailme/mailme-telepathy-account.h>
+
+#include "penge-utils.h"
 
 G_DEFINE_TYPE (PengeEmailPane, penge_email_pane, MX_TYPE_TABLE)
 
@@ -120,6 +124,67 @@ _account_changed_cb (GObject *object,
 }
 
 static void
+_received_inbox_open_info_cb (GObject      *source,
+                              GAsyncResult *result,
+                              gpointer      user_data)
+{
+  GError *error = NULL;
+  MailmeInboxOpenFormat format;
+  gchar *value;
+  ClutterActor *actor = CLUTTER_ACTOR (user_data);
+
+  value = mailme_telepathy_account_get_inbox_finish (
+                                        MAILME_TELEPATHY_ACCOUNT (source),
+                                        result,
+                                        &format,
+                                        &error);
+
+  if (error)
+  {
+    g_warning ("Failed to get inbox information: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  switch (format)
+  {
+    case MAILME_INBOX_URI:
+      if (!penge_utils_launch_for_uri (actor, value))
+      {
+        g_warning (G_STRLOC ": Error launching: %s", value);
+      } else {
+        penge_utils_signal_activated (actor);
+      }
+      break;
+
+    case MAILME_INBOX_COMMAND_LINE:
+      if (!penge_utils_launch_by_command_line (actor, value))
+      {
+        g_warning (G_STRLOC ": Error launching: %s", value);
+      } else {
+        penge_utils_signal_activated (actor);
+      }
+      break;
+
+    default:
+      g_warning ("Unknown inbox open format.");
+  }
+}
+
+
+static void
+_account_button_clicked_cb (MxButton *button,
+                            gpointer  user_data)
+{
+  MailmeTelepathyAccount *account = MAILME_TELEPATHY_ACCOUNT (user_data);
+
+  mailme_telepathy_account_get_inbox_async (
+      account,
+      _received_inbox_open_info_cb,
+      button);
+}
+
+static void
 _account_added_cb (MailmeTelepathy        *provider,
                    MailmeTelepathyAccount *account,
                    gpointer                user_data)
@@ -150,6 +215,11 @@ _account_added_cb (MailmeTelepathy        *provider,
                     "notify::display-name",
                     G_CALLBACK (_account_changed_cb),
                     widget);
+
+  g_signal_connect (G_OBJECT (widget),
+                    "clicked",
+                    G_CALLBACK (_account_button_clicked_cb),
+                    account);
 }
 
 static void
