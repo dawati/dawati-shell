@@ -18,7 +18,8 @@ msgstr ""
 msgid "Create an appointment"
 msgstr "Termin erstellen"
 
-#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Zufügen"
 
@@ -62,10 +63,10 @@ msgstr "Willkommen bei Moblin"
 
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Das ist Myzone, wo deine zuletzt benutzte Dateien und Inhalt von deinen Webfeeds angezeigt werden."
+msgstr "Das ist Myzone, wo deine zuletzt benutzten Dateien und Inhalt von deinen Webfeeds angezeigt werden."
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Willkommen bei Moblin 2.1 für Netbooks</b>"
-
 #~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 #~ msgstr "Da Moblin ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich zurechtzufinden. Wir hoffen, es gefällt dir. Das Moblin Team."
+
