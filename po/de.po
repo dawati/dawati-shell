@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:57+0000\n"
+"POT-Creation-Date: 2010-02-26 03:29+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -14,13 +14,29 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-netbook.c:809
-msgid "Moblin Netbook Effects"
-msgstr "Moblin-Effekte auf dem Netbook"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr ""
 
-#: ../src/moblin-netbook.c:813
-msgid "Effects for Moblin Netbooks"
-msgstr "Effekte für Netbooks mit Moblin"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar"
+msgstr ""
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "Socket for embedding"
+msgstr ""
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "socket"
+msgstr ""
+
+#: ../capplet/src/moblin-toolbar-properties.c:95
+msgid "- Moblin Toolbar Preferences"
+msgstr ""
+
+#: ../capplet/src/mtp-bin.c:326
+msgid "Save toolbar"
+msgstr ""
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
@@ -29,7 +45,7 @@ msgstr "Effekte für Netbooks mit Moblin"
 # example:
 # 14:37
 # (no am/pm needed)
-#: ../src/mnb-toolbar.c:752
+#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -39,9 +55,42 @@ msgstr "%H:%M"
 #. 
 # example:
 # 25. Mai 2007
-#: ../src/mnb-toolbar.c:762
+#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
 msgid "%B %e, %Y"
 msgstr "%e. %B %Y"
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Legt die Reihenfolge der Panels auf der Werkzeugleiste fest."
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Reihenfolge der Panels auf der Werkzeugleiste"
+
+#: ../src/moblin-netbook.c:918
+msgid "Moblin Netbook Effects"
+msgstr "Moblin-Effekte auf dem Netbook"
+
+#: ../src/moblin-netbook.c:922
+msgid "Effects for Moblin Netbooks"
+msgstr "Effekte für Netbooks mit Moblin"
+
+#: ../src/moblin-netbook.c:2976
+msgid "Activate"
+msgstr "Aktivieren"
+
+#: ../src/moblin-netbook.c:2990
+msgid "Unknown window"
+msgstr "Unbekanntes Fenster"
+
+#: ../src/moblin-netbook.c:2992
+msgid "Is asking for your attention."
+msgstr "sucht deine Aufmerksamkeit."
+
+#: ../src/mnb-toolbar.c:954
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "%s funktioniert leider nicht."
 
 # Since I've come across this in the UI only in connection with a button in
 # notification pop-ups, I think "Ignorieren" (= Ignore) would be the best
@@ -56,30 +105,13 @@ msgstr "Ignorieren"
 msgid "Dismiss All"
 msgstr "Alle ignorieren"
 
-#: ../src/moblin-netbook.c:2848
-msgid "Activate"
-msgstr "Aktivieren"
+#: ../capplet/src/mtp-bin.c:330
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Du musst zuerst ein Panel löschen, bevor du ein neues hinzufügen kannst."
 
-#: ../src/moblin-netbook.c:2864
-msgid "Is asking for your attention."
-msgstr "sucht deine Aufmerksamkeit."
-
-#: ../src/moblin-netbook.c:2862
-msgid "Unknown window"
-msgstr "Unbekanntes Fenster"
-
-#: ../src/mnb-toolbar.c:871
-#, c-format
-msgid "Sorry, %s is broken"
-msgstr "%s funktioniert leider nicht."
-
-#: ../data/mutter-moblin.schemas.in.h:1
-msgid "Determines the order of panels on the toolbar."
-msgstr "Legt die Reihenfolge der Panels auf der Werkzeugleiste fest."
-
-#: ../data/mutter-moblin.schemas.in.h:2
-msgid "Order of panels on toolbar"
-msgstr "Reihenfolge der Panels auf der Werkzeugleiste"
+#: ../capplet/src/mtp-bin.c:357
+msgid "Available panels"
+msgstr "verfügbare Panels"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Vor weniger als einer Minute"
