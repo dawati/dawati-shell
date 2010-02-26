@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:48+0000\n"
+"POT-Creation-Date: 2010-02-26 03:46+0000\n"
 "PO-Revision-Date: 2009-10-22 23:22-0500\n"
 "Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <l10n@moblin.org>\n"
@@ -13,6 +13,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
+
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Painel Myzone"
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "Compromissos"
 
 #: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
@@ -22,7 +30,7 @@ msgstr "Criar um compromisso"
 msgid "Add"
 msgstr "Adicionar"
 
-#: ../penge/penge-events-pane.c:342
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "Nenhum compromisso esta semana"
 
@@ -38,7 +46,7 @@ msgstr "Página web"
 msgid "Create a new task"
 msgstr "Criar uma nova tarefa"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "Nada para fazer hoje"
 
@@ -47,21 +55,13 @@ msgstr "Nada para fazer hoje"
 msgid "Due %x"
 msgstr "Prazo %x"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
-msgid "Myzone panel"
-msgstr "Painel Myzone"
-
-#: ../penge/penge-calendar-pane.c:474
-msgid "Appointments"
-msgstr "Compromissos"
-
-#: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to Moblin"
-msgstr "Bem-vindo a Moblin"
-
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Este é Myzone, onde seus arquivos recentemente usados e conteúdo de sua web feed vai aparecer."
+
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Bem-vindo a MeeGo"
 
 #~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 #~ msgstr "Como o Moblin é um pouco diferente de outros computadores, nós juntamos algumas dicas e itens para ajudá-lo a navegar pelo sistema. Esperamos que se divirta, a Equipe Moblin."
