@@ -41,10 +41,6 @@ msgstr "Abgemeldet"
 msgid "Unnamed"
 msgstr "Unbenannt"
 
-#: ../anerley/anerley-presence-chooser.c:45
-msgid "Extended Away"
-msgstr ""
-
 #: ../anerley/anerley-presence-chooser.c:41
 msgid "Unset"
 msgstr "nicht festgelegt"
@@ -60,3 +56,7 @@ msgstr "versteckt"
 #: ../anerley/anerley-presence-chooser.c:49
 msgid "Error"
 msgstr "Fehler"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Länger abwesend"
