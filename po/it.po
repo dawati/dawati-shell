@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:57+0000\n"
+"POT-Creation-Date: 2010-02-26 03:29+0000\n"
 "PO-Revision-Date: 2009-12-11 19:55+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -17,31 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Italian\n"
 
-#: ../src/moblin-netbook.c:809
-msgid "Moblin Netbook Effects"
-msgstr "Effetti Moblin netbook"
-
-#: ../src/moblin-netbook.c:813
-msgid "Effects for Moblin Netbooks"
-msgstr "Effetti per i netbook Moblin"
-
-#: ../src/moblin-netbook.c:2848
-msgid "Activate"
-msgstr "Attiva"
-
-#: ../src/moblin-netbook.c:2862
-msgid "Unknown window"
-msgstr "Finestra sconosciuta"
-
-#: ../src/moblin-netbook.c:2864
-msgid "Is asking for your attention."
-msgstr "Richiede l'attenzione."
-
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../src/mnb-toolbar.c:752
+#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
 msgid "%l:%M %P"
 msgstr "%H.%M"
 
@@ -49,17 +29,9 @@ msgstr "%H.%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../src/mnb-toolbar.c:762
+#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
-
-#: ../src/notifications/mnb-notification.c:262
-msgid "Dismiss"
-msgstr "Ignora"
-
-#: ../src/notifications/mnb-notification-cluster.c:668
-msgid "Dismiss All"
-msgstr "Ignora tutto"
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -69,10 +41,70 @@ msgstr "Determina l'ordine dei pannelli sulla barra degli strumenti."
 msgid "Order of panels on toolbar"
 msgstr "Ordine dei pannelli sulla barra degli strumenti"
 
-#: ../src/mnb-toolbar.c:871
+#: ../src/moblin-netbook.c:918
+msgid "Moblin Netbook Effects"
+msgstr "Effetti Moblin netbook"
+
+#: ../src/moblin-netbook.c:922
+msgid "Effects for Moblin Netbooks"
+msgstr "Effetti per i netbook Moblin"
+
+#: ../src/moblin-netbook.c:2976
+msgid "Activate"
+msgstr "Attiva"
+
+#: ../src/moblin-netbook.c:2990
+msgid "Unknown window"
+msgstr "Finestra sconosciuta"
+
+#: ../src/moblin-netbook.c:2992
+msgid "Is asking for your attention."
+msgstr "Richiede l'attenzione."
+
+#: ../src/mnb-toolbar.c:954
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Spiacente, %s non funziona"
+
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Ignora"
+
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Ignora tutto"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Imposta le preferenze della barra degli strumenti"
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "Socket for embedding"
+msgstr "Presa per l'incorporamento"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar"
+msgstr "Barra degli strumenti"
+
+#: ../capplet/src/moblin-toolbar-properties.c:95
+msgid "- Moblin Toolbar Preferences"
+msgstr "Preferenze della barra degli strumenti Moblin"
+
+#: ../capplet/src/moblin-toolbar-properties.c:85
+msgid "socket"
+msgstr "presa"
+
+#: ../capplet/src/mtp-bin.c:330
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Spiacenti, è necessario rimuovere un pannello prima di poter aggiungerne uno nuovo."
+
+#: ../capplet/src/mtp-bin.c:326
+msgid "Save toolbar"
+msgstr "Salva barra degli strumenti"
+
+#: ../capplet/src/mtp-bin.c:357
+msgid "Available panels"
+msgstr "Pannelli disponibili"
 
 #~ msgid "zones"
 #~ msgstr "zone"
@@ -304,9 +336,6 @@ msgstr "Spiacente, %s non funziona"
 
 #~ msgid "Offline"
 #~ msgstr "Fuori rete"
-
-#~ msgid "Available"
-#~ msgstr "Disponibile"
 
 #~ msgid "Away"
 #~ msgstr "Assente"
