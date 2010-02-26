@@ -123,9 +123,15 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
 }
 
 static void
-_monitor_mount_added_cb (GVolumeMonitor  *monitor,
-                         GMount          *mount,
-                         MpdDevicesTile  *self)
+_device_tile_request_hide_cb (ClutterActor    *tile,
+                              MpdDevicesTile  *self)
+{
+  g_signal_emit_by_name (self, "request-hide");
+}
+
+static void
+add_tile_from_mount (MpdDevicesTile *self,
+                     GMount         *mount)
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
   GFile         *file;
@@ -137,12 +143,22 @@ _monitor_mount_added_cb (GVolumeMonitor  *monitor,
   g_debug ("%s() %s", __FUNCTION__, path);
 
   tile = mpd_storage_device_tile_new (path);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_eject_cb), self);
+  g_signal_connect (tile, "request-hide",
+                    G_CALLBACK (_device_tile_request_hide_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
 
   g_free (path);
   g_object_unref (file);
+}
+
+static void
+_monitor_mount_added_cb (GVolumeMonitor  *monitor,
+                         GMount          *mount,
+                         MpdDevicesTile  *self)
+{
+  add_tile_from_mount (self, mount);
 }
 
 static void
@@ -203,13 +219,6 @@ _monitor_mount_removed_cb (GVolumeMonitor  *monitor,
 }
 
 static void
-_device_tile_request_hide_cb (ClutterActor    *tile,
-                              MpdDevicesTile  *self)
-{
-  g_signal_emit_by_name (self, "request-hide");
-}
-
-static void
 _dispose (GObject *object)
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (object);
@@ -239,18 +248,18 @@ mpd_devices_tile_class_init (MpdDevicesTileClass *klass)
 }
 
 static void
+_add_mount_cb (GMount         *mount,
+               MpdDevicesTile *self)
+{
+  add_tile_from_mount (self, mount);
+}
+
+static void
 mpd_devices_tile_init (MpdDevicesTile *self)
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
-  ClutterActor *tile;
-
-  priv->monitor = g_volume_monitor_get ();
-  g_signal_connect (priv->monitor, "mount-added",
-                    G_CALLBACK (_monitor_mount_added_cb), self);
-  g_signal_connect (priv->monitor, "mount-changed",
-                    G_CALLBACK (_monitor_mount_changed_cb), self);
-  g_signal_connect (priv->monitor, "mount-removed",
-                    G_CALLBACK (_monitor_mount_removed_cb), self);
+  ClutterActor  *tile;
+  GList         *mounts;
 
   priv->vbox = mx_box_layout_new ();
   mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->vbox), true);
@@ -258,11 +267,19 @@ mpd_devices_tile_init (MpdDevicesTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->vbox);
 
   tile = mpd_default_device_tile_new ();
-  g_signal_connect (tile, "request-hide",
-                    G_CALLBACK (_device_tile_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
 
-  /* TODO find existing mounts. */
+  priv->monitor = g_volume_monitor_get ();
+  mounts = g_volume_monitor_get_mounts (priv->monitor);
+  g_list_foreach (mounts, (GFunc) _add_mount_cb, self);
+  g_list_foreach (mounts, (GFunc) g_object_unref, NULL);
+  g_list_free (mounts);
+  g_signal_connect (priv->monitor, "mount-added",
+                    G_CALLBACK (_monitor_mount_added_cb), self);
+  g_signal_connect (priv->monitor, "mount-changed",
+                    G_CALLBACK (_monitor_mount_changed_cb), self);
+  g_signal_connect (priv->monitor, "mount-removed",
+                    G_CALLBACK (_monitor_mount_removed_cb), self);
 }
 
 ClutterActor *
