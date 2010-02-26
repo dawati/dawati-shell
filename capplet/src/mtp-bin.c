@@ -325,6 +325,7 @@ mtp_bin_constructed (GObject *self)
     ClutterActor *hbox = mx_box_layout_new ();
     ClutterActor *button = mx_button_new_with_label (_("Save toolbar"));
 
+    clutter_actor_set_name (hbox, "message-box");
     clutter_actor_set_name (button, "save-button");
 
     priv->err_message = mx_label_new (_("Sorry, you'll have to remove a panel "
@@ -338,7 +339,8 @@ mtp_bin_constructed (GObject *self)
     clutter_container_child_set (CLUTTER_CONTAINER (hbox), dummy,
                                  "expand", TRUE, NULL);
     clutter_container_child_set (CLUTTER_CONTAINER (hbox), button,
-                                 "x-align", MX_ALIGN_END, NULL);
+                                 "x-align", MX_ALIGN_END,
+                                 "y-align", MX_ALIGN_MIDDLE, NULL);
     clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->err_message,
                                  "y-align", MX_ALIGN_MIDDLE, NULL);
 

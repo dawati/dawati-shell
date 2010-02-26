@@ -78,7 +78,7 @@ mtp_cc_panel_make_contents (MtpCcPanel *panel)
     }
 
   priv->bin = bin = mtp_bin_new ();
-
+  clutter_actor_set_name (bin, "frameless");
 
   embed = gtk_clutter_embed_new ();
 

@@ -28,11 +28,16 @@ MxLabel#available-panels {
 
 MxButton#save-button {
   font-size: 19px;
+  background-color: #bbbf;
 }
 
 MtpJar {
-  background-color: #aaa;
+  background-color: #fff0;
   padding: 10 0 10 0;
+}
+
+MxBoxLayout#message-box {
+ padding: 5 0 5 0;
 }
 
 MxBoxLayout#panel-area, MxBoxLayout#applet-area {
@@ -41,7 +46,12 @@ MxBoxLayout#panel-area, MxBoxLayout#applet-area {
 
 MtpBin {
   padding: 5;
-  background-color: #aaa;
+  background-color: #fff0;
+}
+
+MtpBin#frameless {
+  padding: 0;
+  background-color: #fff0;
 }
 
 MtpToolbar, MtpToolbar:hover {
@@ -60,7 +70,7 @@ MtpToolbarButton {
 
 MtpToolbarButton#in-jar {
   padding: 5;
-  background-color: #ffff;
+  background-color: #bbbf;
 }
 
 MnbToolbarButton {
