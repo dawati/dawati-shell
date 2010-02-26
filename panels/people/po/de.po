@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:51+0000\n"
+"POT-Creation-Date: 2010-02-26 03:49+0000\n"
 "PO-Revision-Date: 2009-11-02 16:31-0800\n"
 "Last-Translator: Clara <steiner-jay.clarax@intel.com>\n"
 "Language-Team: <>\n"
@@ -14,47 +14,50 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:493
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:495
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "Leute"
 
-#: ../src/mnb-people-panel.c:265
+#: ../src/mnb-people-panel.c:267
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Wir können leider keine Leute finden. Hast du ein Messenger-Konto eingerichtet?"
 
-#: ../src/mnb-people-panel.c:377
+#: ../src/mnb-people-panel.c:379
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Wir können leider keine Leute finden. Es sieht danach aus, als ob sie alle offline sind."
 
-#: ../src/mnb-people-panel.c:474
+#: ../src/mnb-people-panel.c:424
+msgid "To see your IM contacts, you need to go online."
+msgstr "Um deine IM-Kontakte zu sehen, gehe bitte online."
+
+#: ../src/mnb-people-panel.c:476
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "Leute - %d Leute reden mit dir"
 
-#: ../src/mnb-people-panel.c:481
+#: ../src/mnb-people-panel.c:483
 msgid "people - Someone is talking to you"
 msgstr "Leute - Jemand redet mit dir"
 
-#: ../src/mnb-people-panel.c:671
+#: ../src/mnb-people-panel.c:673
 msgid "People"
 msgstr "Leute"
 
-#: ../src/mnb-people-panel.c:684
+#: ../src/mnb-people-panel.c:686
 msgid "Search"
 msgstr "Suchen"
-
-#: ../src/mnb-people-panel.c:747
-msgid "People talking to you ..."
-msgstr "Diese Leute reden mit dir ..."
-
-#: ../src/mnb-people-panel.c:422
-msgid "To see your IM contacts, you need to go online."
-msgstr "Um deine IM-Kontakte zu sehen, gehe bitte online."
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panel Leute"
+
+#: ../src/mnb-people-panel.c:752
+msgid "You are chatting with:"
+msgstr "Du sprichst mit"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Diese Leute reden mit dir ..."
 
 #~ msgid "Send an email"
 #~ msgstr "Eine E-Mail abschicken"
