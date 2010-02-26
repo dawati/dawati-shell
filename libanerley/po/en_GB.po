@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin Anerley\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-09 23:54+0000\n"
+"POT-Creation-Date: 2010-02-26 03:43+0000\n"
 "PO-Revision-Date: 2009-11-19 14:59-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -19,22 +19,43 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: UNITED KINGDOM\n"
 
-#: ../anerley/anerley-tile.c:212 ../anerley/anerley-tile.c:215
-msgid "Away"
-msgstr "Away"
-
-#: ../anerley/anerley-tile.c:206
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Available"
 
-#: ../anerley/anerley-tile.c:209
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Busy"
 
-#: ../anerley/anerley-econtact-item.c:307
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
+msgid "Away"
+msgstr "Away"
+
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+msgid "Offline"
+msgstr "Offline"
+
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "Unnamed"
 
-#: ../anerley/anerley-tile.c:218
-msgid "Offline"
-msgstr "Offline"
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Extended Away"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Unset"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Unknown"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Hidden"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Error"
