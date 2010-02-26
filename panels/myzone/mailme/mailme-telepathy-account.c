@@ -47,11 +47,11 @@ enum
 };
 
 typedef enum {
-    MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAIL_COUNT = 1,
-    MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAILS = 2,
-    MAILME_MAIL_NOTIFICATION_FLAG_EMITS_MAILS_RECEIVED = 4,
-    MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_INBOX_URL = 8,
-    MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_MAIL_URL = 16,
+  MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAIL_COUNT = 1,
+  MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAILS = 2,
+  MAILME_MAIL_NOTIFICATION_FLAG_EMITS_MAILS_RECEIVED = 4,
+  MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_INBOX_URL = 8,
+  MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_MAIL_URL = 16,
 } MailmeMailNotificationFlags;
 
 typedef struct _MailmeTelepathyAccountPrivate MailmeTelepathyAccountPrivate;
@@ -381,8 +381,8 @@ _inbox_open_info_free (struct _InboxOpenInfo *inbox)
 
 static void
 on_received_inbox_url (DBusGProxy       *proxy,
-                      DBusGProxyCall   *call_id,
-                      void             *user_data)
+                       DBusGProxyCall   *call_id,
+                       void             *user_data)
 {
   GError *error = NULL;
   GSimpleAsyncResult *async_result = G_SIMPLE_ASYNC_RESULT (user_data);
@@ -583,8 +583,8 @@ mailme_telepathy_account_prepare_finish (MailmeTelepathyAccount *self,
   return priv->status;
 }
 
-GObject *mailme_telepathy_account_get_tp_account (
-        MailmeTelepathyAccount *self)
+GObject *
+mailme_telepathy_account_get_tp_account (MailmeTelepathyAccount *self)
 {
   MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
   return G_OBJECT (priv->account);

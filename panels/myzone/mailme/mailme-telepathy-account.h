@@ -46,10 +46,10 @@ G_BEGIN_DECLS
 
 typedef enum
 {
-    MAILME_ACCOUNT_DISCONNECTED,
-    MAILME_ACCOUNT_UNSUPPORTED,
-    MAILME_ACCOUNT_SUPPORTED,
-    MAILME_ACCOUNT_NUM_STATUS
+  MAILME_ACCOUNT_DISCONNECTED,
+  MAILME_ACCOUNT_UNSUPPORTED,
+  MAILME_ACCOUNT_SUPPORTED,
+  MAILME_ACCOUNT_NUM_STATUS
 } MailmeAccountStatus;
 
 typedef enum
@@ -69,13 +69,13 @@ typedef struct {
 GType mailme_telepathy_account_get_type (void);
 
 void mailme_telepathy_account_prepare_async (MailmeTelepathyAccount *self,
-		                                     GObject                *account,
+		                                         GObject                *account,
                                              GAsyncReadyCallback     callback,
                                              gpointer                user_data);
 
 MailmeAccountStatus mailme_telepathy_account_prepare_finish (
         MailmeTelepathyAccount *self,
-		GAsyncResult           *result,
+        GAsyncResult           *result,
         GError                **error);
 
 GObject *mailme_telepathy_account_get_tp_account (
