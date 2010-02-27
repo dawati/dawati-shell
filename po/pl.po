@@ -2,14 +2,14 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"POT-Creation-Date: 2010-02-27 10:28+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
+"Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,33 +18,78 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "strefy"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Ustaw preferencje paska narzędzi"
 
-#: ../src/moblin-netbook.c:621
-msgid "Moblin Netbook Effects"
-msgstr "Efekty Moblina na netbooku"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Pasek narzędzi"
 
-#: ../src/moblin-netbook.c:625
-msgid "Effects for Moblin Netbooks"
-msgstr "Efekty dla Netbooków z Moblinem"
+#: ../capplet/src/mtp-bin.c:326
+msgid "Save toolbar"
+msgstr "Zapisz pasek narzędzi"
+
+#: ../capplet/src/mtp-bin.c:331
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Niestety, należy usunąć panel przed dodaniem nowego."
+
+#: ../capplet/src/mtp-bin.c:359
+msgid "Available panels"
+msgstr "Dostępne panele"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../src/mnb-toolbar.c:668
+#.
+#: ../capplet/src/mtp-clock.c:221
+#: ../src/mnb-toolbar-clock.c:86
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../src/mnb-toolbar.c:678
+#.
+#: ../capplet/src/mtp-clock.c:231
+#: ../src/mnb-toolbar-clock.c:96
 msgid "%B %e, %Y"
 msgstr "%-d %B %Y"
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Określa kolejność paneli na pasku narzędzi."
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Kolejność paneli na pasku narzędzi"
+
+#: ../src/moblin-netbook.c:918
+msgid "Moblin Netbook Effects"
+msgstr "Efekty Moblina na netbooku"
+
+#: ../src/moblin-netbook.c:922
+msgid "Effects for Moblin Netbooks"
+msgstr "Efekty dla Netbooków z Moblinem"
+
+#: ../src/moblin-netbook.c:2976
+msgid "Activate"
+msgstr "Aktywuj"
+
+#: ../src/moblin-netbook.c:2990
+msgid "Unknown window"
+msgstr "Nieznane okno"
+
+#: ../src/moblin-netbook.c:2992
+msgid "Is asking for your attention."
+msgstr "Prosi o Twoją uwagę."
+
+# Is %s a panel here? I assumed it is.
+#: ../src/mnb-toolbar.c:954
+#, fuzzy, c-format
+msgid "Sorry, %s is broken"
+msgstr "Niestety, panel %s jest uszkodzony"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -54,306 +99,16 @@ msgstr "Zamknij"
 msgid "Dismiss All"
 msgstr "Ucisz wszystkie"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "Na razie brak Stref"
-
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał możliwość przełączać się między nimi i organizować je tak jak Ci się podoba."
-
-# "na tej strefie" is also a possiblity
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Brak aplikacji w tej strefie"
-
-#: ../src/moblin-netbook.c:2543
-msgid "Unknown window"
-msgstr "Nieznane okno"
-
-#: ../src/moblin-netbook.c:2529
-msgid "Activate"
-msgstr "Aktywuj"
-
-#: ../src/moblin-netbook.c:2545
-msgid "Is asking for your attention."
-msgstr "Prosi o Twoją uwagę."
-
-#~ msgid "Less than a minute ago"
-#~ msgstr "Mniej niż minutę temu"
-
-#~ msgid "A few minutes ago"
-#~ msgstr "Parę minut temu"
-
-#~ msgid "A couple of hours ago"
-#~ msgstr "Kilka godzin temu"
-
-#~ msgid "Earlier today"
-#~ msgstr "Kilkanaście godzin temu"
-
-#~ msgid "Yesterday"
-#~ msgstr "Wczoraj"
-
-#~ msgid "On %A"
-#~ msgstr "Dnia %A"
-
-#~ msgid "Last week"
-#~ msgstr "Zeszły tydzień"
-
-#~ msgid "A couple of weeks ago"
-#~ msgstr "Parę tygodni temu"
-
-#~ msgid "This month"
-#~ msgstr "W tym miesiącu"
-
-#~ msgid "Last month"
-#~ msgstr "W zeszłym miesiącu"
-
-#~ msgid "This year"
-#~ msgstr "W tym roku"
-
-#~ msgid "Last year"
-#~ msgstr "W zeszłym roku"
-
-#~ msgid "Ages ago"
-#~ msgstr "Wieki temu"
-
-#~ msgid "power & brightness"
-#~ msgstr "zasilanie i jasność"
-
-#~ msgid "volume"
-#~ msgstr "głośność"
-
-#~ msgid "bluetooth"
-#~ msgstr "bluetooth"
-
-#~ msgid "networks"
-#~ msgstr "sieci"
-
-#~ msgid "test"
-#~ msgstr "test"
-
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "Historia przeglądania będzie widoczna tutaj kiedy posłuchasz muzyki, rzucisz okiem na zdjęcia lub obejrzysz film. Dostępne przykładowe materiały na dobry początek:"
-
-#~ msgid "Recently played"
-#~ msgstr "Ostatnio odtwarzane"
-
-#~ msgid "Search results"
-#~ msgstr "Wyniki wyszukiwania"
-
-#~ msgid "Playqueue"
-#~ msgstr "Playlista"
-
-#~ msgid "Season %u, Episode %u"
-#~ msgstr "Część %u, Odcinek %u"
-
-#~ msgid "Previous"
-#~ msgstr "Poprzedni"
-
-#~ msgid "Next"
-#~ msgstr "Następny"
-
-#~ msgid "Media"
-#~ msgstr "Muzyka, filmy, dokumenty"
-
-#~ msgid "Search"
-#~ msgstr "Szukaj"
-
-#~ msgid "Season %d Episode %d"
-#~ msgstr "Seria %d Odcinek %d"
-
-#~ msgid "Season %d"
-#~ msgstr "Seria %d"
-
-#~ msgid "Episode %d"
-#~ msgstr "Odcinek %d"
-
-#~ msgid "Year %d"
-#~ msgstr "Rok %d"
-
-#~ msgid "media"
-#~ msgstr "media"
-
-#~ msgid "Favourite Applications"
-#~ msgstr "Ulubione aplikacje"
-
-#~ msgid "Applications"
-#~ msgstr "Aplikacje"
-
-#~ msgid "applications"
-#~ msgstr "aplikacje"
-
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "Twoje ulubione strony będą pojawiać się tutaj oraz w nowych zakładkach w miarę jak przeglądasz sieć."
-
-#~ msgid "Untitled"
-#~ msgstr "Bez tytułu"
-
-#~ msgid "New tab"
-#~ msgstr "Nowa zakładka"
-
-#~ msgid "Internet"
-#~ msgstr "Internet"
-
-#~ msgid "Go"
-#~ msgstr "Przejdź"
-
-#~ msgid "Tabs"
-#~ msgstr "Zakładki"
-
-#~ msgid "Favorite pages"
-#~ msgstr "Ulubione strony"
-
-#~ msgid "internet"
-#~ msgstr "internet"
-
-#~ msgid "Search for %%s on %s"
-#~ msgstr "Wyszukaj %%s na %s"
-
-#~ msgid "Go to %s"
-#~ msgstr "Załaduj %s"
-
-#~ msgid "Copy"
-#~ msgstr "Skopiuj"
-
-#~ msgid "the current selection to pasteboard"
-#~ msgstr "zaznaczenie do schowka"
-
-#~ msgid "your selection"
-#~ msgstr "Twoje zaznaczenie"
-
-#~ msgid "Pasteboard"
-#~ msgstr "Schowek"
-
-#~ msgid "You need to copy some text to use Pasteboard"
-#~ msgstr "Skopiuj tekst zanim skorzystasz ze Schowka"
-
-#~ msgid "Clear pasteboard"
-#~ msgstr "Wyczyść schowek"
-
-#~ msgid "pasteboard"
-#~ msgstr "schowek"
-
-#~ msgid "<b>Appointments</b>"
-#~ msgstr "<b>Zaplanowane</b>"
-
-#~ msgid "No calendar entries this week"
-#~ msgstr "Brak wpisów w kalendarzu na ten tydzień"
-
-#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-#~ msgstr "Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj Twoje konta!"
-
-#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-#~ msgstr "<b>Witamy na Moblinie 2.0 na netbooki</b>"
-
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin różni się od innych komputerów w wielu aspektach, pozbieraliśmy więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team Moblin"
-
-#~ msgid "Web page"
-#~ msgstr "Strona"
-
-#~ msgid "Nothing to do today"
-#~ msgstr "Brak zadań na dziś"
-
-#~ msgid "Due %x"
-#~ msgstr "Na %x"
-
-#~ msgid "people"
-#~ msgstr "osoby"
-
-#~ msgid "Send an email"
-#~ msgstr "Wyślij e-mail"
-
-#~ msgid "Edit details"
-#~ msgstr "Ustaw dane"
-
-#~ msgid "Send a message"
-#~ msgstr "Wyślij wiadomość"
-
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Niestety nie znaleziono znajomych. Czy konto Komunikatora jest skonfigurowane?"
-
-#~ msgid "People"
-#~ msgstr "Osoby"
-
-#~ msgid "Selection"
-#~ msgstr "Zaznaczenie"
-
-#~ msgid "Nobody selected"
-#~ msgstr "Nie wybrano adresatów"
-
-#~ msgid "Zone %d"
-#~ msgstr "Strefa %d"
-
-#~ msgid "New zone (0)"
-#~ msgstr "Nowa strefa (0)"
-
-#~ msgid "Choose zone for application:"
-#~ msgstr "Wybierz strefę dla aplikacji:"
-
-#~ msgid "To activate the toolbar, move your cursor to the top of the screen"
-#~ msgstr "Aby skorzystać z paska narzędzi, dojedź kursorem do górnej krawędzi"
-
-#~ msgid "Offline"
-#~ msgstr "Rozłączony"
-
-#~ msgid "Available"
-#~ msgstr "Dostępny"
-
-#~ msgid "Away"
-#~ msgstr "Nie przy komputerze"
-
-#~ msgid "Busy"
-#~ msgstr "Zajęty"
-
-#~ msgid "Close"
-#~ msgstr "Zamknij"
-
-#~ msgid "Change"
-#~ msgstr "Zmień"
-
-#~ msgid "Unknown account"
-#~ msgstr "Nieznane konto"
-
-#~ msgid "Edit"
-#~ msgstr "Edycja"
-
-#~ msgid "Enter your %s status here..."
-#~ msgstr "Wprowadź tu swój status na %s..."
-
-#~ msgid "Enter your current status here..."
-#~ msgstr "Wprowadź tu swój aktualny status..."
-
-#~ msgid "Post"
-#~ msgstr "Wyślij"
-
-#~ msgid "Your current status"
-#~ msgstr "Twój aktualny stan"
-
-#~ msgid "Your current status - you are offline"
-#~ msgstr "Twój aktualny stan - rozłączony"
-
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "Żeby aktualizować swój stan należy ustawić konto Web-serwisu u dostawcy, który ma opcję powiadamiania o stanach"
-
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Aby aktualizować status w Komunikatorze potrzebujesz skonfigurowanego konta"
-
-#~ msgid "status"
-#~ msgstr "stan"
-
-#~ msgid "myzone"
-#~ msgstr "myzone"
-
-#~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-#~ msgstr "ikonka panelu wymaga rozmiaru (%i x %i) i będzie przeskalowana do (%i x %i)"
-
-#~ msgid "Local"
-#~ msgstr "Lokalne"
-
-#~ msgid "Email %s"
-#~ msgstr "Wyślij %s"
-
-#~ msgid "IM %s"
-#~ msgstr "Prześlij %s komunikatorem"
+#~ msgid "zones"
+#~ msgstr "strefy"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Na razie brak Stref"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał "
+#~ "możliwość przełączać się między nimi i organizować je tak jak Ci się "
+#~ "podoba."
