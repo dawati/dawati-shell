@@ -25,6 +25,16 @@ autostart_DATA = $(desktopfiles_files)
 uidir = $(pkgdatadir)
 ui_DATA = capplet.ui
 
+schemadir = $(GCONF_SCHEMA_FILE_DIR)
+schema_DATA = moblin-panel-myzone.schemas
+
+install-data-local:
+if GCONF_SCHEMAS_INSTALL
+	if test -z "$(DESTDIR)" ; then \
+		GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(schema_DATA) 2>&1 > /dev/null; \
+	fi
+endif
+
 EXTRA_DIST = moblin-panel-myzone.desktop.in.in myzone.in.in
 CLEANFILES = moblin-panel-myzone.desktop moblin-panel-myzone.desktop.in \
 	     myzone.desktop myzone.desktop.in
