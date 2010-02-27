@@ -11,5 +11,15 @@
         <short/>
       </locale>
     </schema>
+   <schema>
+      <key>/schemas/desktop/moblin/myzone/ratio</key>
+      <applyto>/desktop/moblin/myzone/ratio</applyto>
+      <owner>moblin-panel-myzone</owner>
+      <type>float</type>
+      <default>0.5</default>
+      <locale name="C">
+        <short/>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>
