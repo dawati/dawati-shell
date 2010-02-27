@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"POT-Creation-Date: 2010-02-27 10:28+0000\n"
 "PO-Revision-Date: 2009-08-26 04:16+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,24 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "zona"
-
-#: ../src/moblin-netbook.c:621
-msgid "Moblin Netbook Effects"
-msgstr "Efek Netbook Moblin"
-
-#: ../src/moblin-netbook.c:625
-msgid "Effects for Moblin Netbooks"
-msgstr "Efek-efek untuk Netbook Moblin"
-
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
 # 24 hrs without am/pm for ID
-#: ../src/mnb-toolbar.c:668
+#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -39,9 +27,29 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../src/mnb-toolbar.c:678
+#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
 msgid "%B %e, %Y"
 msgstr "%d %B %Y"
+
+#: ../src/moblin-netbook.c:918
+msgid "Moblin Netbook Effects"
+msgstr "Efek Netbook Moblin"
+
+#: ../src/moblin-netbook.c:922
+msgid "Effects for Moblin Netbooks"
+msgstr "Efek-efek untuk Netbook Moblin"
+
+#: ../src/moblin-netbook.c:2976
+msgid "Activate"
+msgstr "Aktifkan"
+
+#: ../src/moblin-netbook.c:2990
+msgid "Unknown window"
+msgstr "Jendela tak dikenal"
+
+#: ../src/moblin-netbook.c:2992
+msgid "Is asking for your attention."
+msgstr "Meminta perhatian Anda."
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -51,29 +59,51 @@ msgstr "Bubar"
 msgid "Dismiss All"
 msgstr "Bubar Semua"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "Belum ada zona"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Tata preferensi toolbar Anda"
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat menukar dan mengatur mereka sekehendak anda."
+#: ../capplet/src/mtp-bin.c:326
+msgid "Save toolbar"
+msgstr "Simpan toolbar"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Tak ada aplikasi pada zona ini"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Toolbar"
 
-#: ../src/moblin-netbook.c:2543
-msgid "Unknown window"
-msgstr "Jendela tak dikenal"
+#: ../capplet/src/mtp-bin.c:359
+msgid "Available panels"
+msgstr "Panel tersedia"
 
-#: ../src/moblin-netbook.c:2529
-msgid "Activate"
-msgstr "Aktifkan"
+#: ../capplet/src/mtp-bin.c:331
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Maaf, Anda mesti menghapus suatu panel sebelum dapat menambah yang baru."
 
-#: ../src/moblin-netbook.c:2545
-msgid "Is asking for your attention."
-msgstr "Meminta perhatian Anda."
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Urutan panel pada toolbar"
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Menentukan urutan panel pada toolbar."
+
+#: ../src/mnb-toolbar.c:954
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Maaf, %s rusak"
+
+#~ msgid "zones"
+#~ msgstr "zona"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Belum ada zona"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat menukar dan mengatur mereka sekehendak anda."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "Tak ada aplikasi pada zona ini"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Kurang dari semenit yang lalu"
