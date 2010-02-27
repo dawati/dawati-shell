@@ -37,6 +37,6 @@ if GCONF_SCHEMAS_INSTALL
 	fi
 endif
 
-EXTRA_DIST = moblin-panel-myzone.desktop.in.in myzone.in.in
+EXTRA_DIST = moblin-panel-myzone.desktop.in.in myzone.desktop.in.in moblin-panel-myzone.schemas.in capplet.ui
 CLEANFILES = moblin-panel-myzone.desktop moblin-panel-myzone.desktop.in \
 	     myzone.desktop myzone.desktop.in
