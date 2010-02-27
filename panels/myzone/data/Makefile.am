@@ -11,7 +11,7 @@ panelfiles_DATA = $(desktopfiles_files)
 endif
 
 settingsfiles_in_files=myzone.desktop.in
-settingsfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
+settingsfiles_files=$(settingsfiles_in_files:.desktop.in=.desktop)
 settingsdir = $(datadir)/applications
 settings_DATA = $(settingsfiles_files)
 
