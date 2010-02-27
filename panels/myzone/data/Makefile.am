@@ -22,8 +22,10 @@ settings_DATA = $(settingsfiles_files)
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = $(desktopfiles_files)
 
+if ENABLE_CAPPLET
 uidir = $(pkgdatadir)
 ui_DATA = capplet.ui
+endif
 
 schemadir = $(GCONF_SCHEMA_FILE_DIR)
 schema_DATA = moblin-panel-myzone.schemas
