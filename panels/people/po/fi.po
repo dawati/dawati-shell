@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"POT-Creation-Date: 2010-02-26 03:49+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Anu McDougall <anu.mcdougall@ptiglobal.net>\n"
+"Last-Translator: Eija <eija@wimma.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,70 +13,63 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#.
-#. * Used as header for a block of the panel showing pending conversations.
-#. * The user will be able to click the tile and answer the pending conversation
-#.
-#: ../src/moblin-panel-people.c:18
-msgid "People talking to you ..."
-msgstr "Sinulle jutellaan ... "
+#: ../src/moblin-panel-people.c:88
+#: ../src/mnb-people-panel.c:495
+#: ../data/moblin-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "ihmiset"
 
-#.
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#.
-#: ../src/moblin-panel-people.c:23
-msgid "people - Someone is talking to you"
-msgstr "ihmiset - Joku juttelee kanssasi"
+#: ../src/mnb-people-panel.c:267
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
 
-#.
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. * (plural version)
-#.
-#: ../src/moblin-panel-people.c:29
+#: ../src/mnb-people-panel.c:379
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Emme valitettavasti löydä ketään. Kukaan ei näytä olevan netissä."
+
+#: ../src/mnb-people-panel.c:424
+msgid "To see your IM contacts, you need to go online."
+msgstr "Nähdäksesi IM kontaktisi, mene nettiin."
+
+#: ../src/mnb-people-panel.c:476
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "ihmiset - %d ihmistä juttelee kanssasi"
 
-#: ../src/moblin-panel-people.c:87
-msgid "people"
-msgstr "ihmiset"
+#: ../src/mnb-people-panel.c:483
+msgid "people - Someone is talking to you"
+msgstr "ihmiset - Joku juttelee kanssasi"
 
-#: ../src/mnb-people-panel.c:50
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Nähdäksesi IM kontaktisi, mene nettiin Tila palkissa."
-
-#: ../src/mnb-people-panel.c:51
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Emme valitettavasti löydä ketään. Kukaan ei näytä olevan netissä."
-
-#: ../src/mnb-people-panel.c:164
-msgid "Send an email"
-msgstr "Lähetä sähköpostiviesti"
-
-#: ../src/mnb-people-panel.c:166
-msgid "Edit details"
-msgstr "Muokkaa tietoja"
-
-#: ../src/mnb-people-panel.c:175
-msgid "Send a message"
-msgstr "Lähetä viesti"
-
-#: ../src/mnb-people-panel.c:309
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
-
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:673
 msgid "People"
 msgstr "Ihmiset"
 
-#: ../src/mnb-people-panel.c:567
+#: ../src/mnb-people-panel.c:686
 msgid "Search"
 msgstr "Etsi"
 
-#: ../src/mnb-people-panel.c:680
-msgid "Selection"
-msgstr "Valinta"
+#: ../src/mnb-people-panel.c:752
+msgid "You are chatting with:"
+msgstr "Chattailet:"
 
-#: ../src/mnb-people-panel.c:743
-msgid "Nobody selected"
-msgstr "Ei ketään valittuna"
+#: ../data/moblin-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Ihmiset-paneeli"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Sinulle jutellaan ... "
+
+#~ msgid "Send an email"
+#~ msgstr "Lähetä sähköpostiviesti"
+
+#~ msgid "Edit details"
+#~ msgstr "Muokkaa tietoja"
+
+#~ msgid "Send a message"
+#~ msgstr "Lähetä viesti"
+
+#~ msgid "Selection"
+#~ msgstr "Valinta"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Ei ketään valittuna"
