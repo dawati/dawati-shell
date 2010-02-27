@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-02-26 03:46+0000\n"
 "PO-Revision-Date: 2009-08-26 08:21+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,47 +14,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../penge/penge-events-pane.c:268
-msgid "No calendar entries this week"
-msgstr "Tidak ada entri kalender minggu ini"
-
-#: ../penge/penge-recent-file-tile.c:224
-msgid "Web page"
-msgstr "Halaman web"
-
-#: ../penge/penge-tasks-pane.c:433
-msgid "Nothing to do today"
-msgstr "Tak ada yang perlu dilakukan hari ini"
-
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Selamat Datang ke Moblin 2.1 untuk Netbook</b>"
-
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Karena Moblin agak berbeda daripada komputer lain, kami telah mengumpulkan beberapa hal kecil untuk membantu anda mengenali lingkungan. Kami berharap anda menikmatinya, Tim Moblin."
-
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Janji Temu</b>"
-
-#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
-msgid "Add"
-msgstr "Tambah"
-
-#: ../penge/penge-events-pane.c:59
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Buat suatu janji pertemuan"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+msgid "Add"
+msgstr "Tambah"
+
+#: ../penge/penge-events-pane.c:361
+msgid "No calendar entries this week"
+msgstr "Tidak ada entri kalender minggu ini"
+
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Hal-hal yang dilakukan teman-teman Anda daring akan muncul di sini. Aktifkan akun Anda sekarang!"
+
+#: ../penge/penge-recent-file-tile.c:215
+msgid "Web page"
+msgstr "Halaman web"
 
 #: ../penge/penge-tasks-pane.c:51
 msgid "Create a new task"
 msgstr "Buat tugas baru"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-tasks-pane.c:429
+msgid "Nothing to do today"
+msgstr "Tak ada yang perlu dilakukan hari ini"
+
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "Jatuh tempo %x"
+
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Panel Myzone"
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "<b>Janji Temu</b>"
+
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Selamat datang ke MeeGo"
+
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Ini adalah Myzone, dimana berkas yang baru-baru ini dipakai dan isi dari asupan web akan muncul."
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Selamat Datang ke Moblin 2.1 untuk Netbook</b>"
+
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Karena Moblin agak berbeda daripada komputer lain, kami telah mengumpulkan beberapa hal kecil untuk membantu anda mengenali lingkungan. Kami berharap anda menikmatinya, Tim Moblin."
