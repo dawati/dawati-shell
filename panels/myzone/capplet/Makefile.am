@@ -1,4 +1,4 @@
-AM_LDFLAGS=-rdynamic
+if ENABLE_CAPPLET
 ccmodulesdir = $(EXTENSIONSDIR)
 ccmodules_LTLIBRARIES = libmyzone.la
 
@@ -7,3 +7,4 @@ libmyzone_la_LIBADD = $(CAPPLET_LIBS)
 libmyzone_la_CFLAGS = $(CAPPLET_CFLAGS) \
 		      -DUI_DIR=\"$(pkgdatadir)\" \
 		      -DLOCALEDIR=\""$(datadir)/locale"\"
+endif
