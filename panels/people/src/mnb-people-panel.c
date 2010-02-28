@@ -721,6 +721,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll_view),
                                priv->active_list_view);
   priv->content_table = mx_table_new ();
+  clutter_actor_set_name (priv->content_table, "content-table");
 
   /* active conversations */
   priv->active_content_table = mx_table_new ();
