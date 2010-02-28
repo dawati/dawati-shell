@@ -398,9 +398,8 @@ msgid "Run in standalone mode"
 msgstr "スタンドアロン モードで実行する"
 
 #: ../src/carrick.c:284
-#, fuzzy
 msgid "Embed in another window (overrides --standalone)"
-msgstr "他のウィンドウに組み込む (上書 --standalone)"
+msgstr "他のウィンドウに組み込む (--standalone を上書き)"
 
 #: ../src/carrick.c:295
 msgid "Carrick connectivity applet"
