@@ -12,8 +12,7 @@ dist_theme_DATA = \
 	selection-empty.png \
 	selection-full.png \
 	tile-bg-hover.png \
-	active-conversations-header.png \
-	presence_combobox.png
+	active-conversations-header.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
