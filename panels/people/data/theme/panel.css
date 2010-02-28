@@ -94,6 +94,12 @@ AnerleyTile *.AnerleyTilePrimaryLabel
   padding: 8;
 }
 
+*#active-content-table
+{
+  border-image: url('active-content-table-bg.png') 2;
+  padding: 8;
+}
+
 *#active-content-header
 {
   border-image: url('active-conversations-header.png') 1;
