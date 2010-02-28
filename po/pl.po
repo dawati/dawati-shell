@@ -85,9 +85,8 @@ msgstr "Nieznane okno"
 msgid "Is asking for your attention."
 msgstr "Prosi o Twoją uwagę."
 
-# Is %s a panel here? I assumed it is.
 #: ../src/mnb-toolbar.c:954
-#, fuzzy, c-format
+#, c-format
 msgid "Sorry, %s is broken"
 msgstr "Niestety, panel %s jest uszkodzony"
 
