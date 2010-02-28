@@ -100,40 +100,7 @@ AnerleyTile *.AnerleyTilePrimaryLabel
   padding: 8;
 }
 
-*#people-selection-pane
-{
-  border-image: url('selection-border.png') 7;
-  padding: 8;
-}
-
-*#people-selection-label
-{
-  font-family: "Droid Sans";
-  font-size: 16;
-  color: #7e7e7eff;
-}
-
-*#people-selection-pane AnerleyTile:hover
-{
-  border-image: none;
-}
-
-*#people-control-box
-{
-  border-image: url('selection-full.png') 5;
-  padding-top: 6;
-  padding-bottom: 6;
-  padding-right: 5;
-  padding-left: 6;
-}
-
-*#people-nobody-selected
-{
-  border-image: url('selection-empty.png') 5;
-  padding: 6;
-}
-
-*#people-nobody-selected-label, *#active-content-header-label
+*#active-content-header-label
 {
   font-family: "Droid Sans";
   font-size: 16;
