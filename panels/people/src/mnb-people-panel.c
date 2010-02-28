@@ -31,7 +31,6 @@
 #include <anerley/anerley-compact-tile.h>
 #include <anerley/anerley-aggregate-tp-feed.h>
 #include <anerley/anerley-tp-monitor-feed.h>
-#include <anerley/anerley-ebook-feed.h>
 #include <anerley/anerley-tp-item.h>
 #include <anerley/anerley-econtact-item.h>
 #include <anerley/anerley-presence-chooser.h>
@@ -647,9 +646,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (self);
   ClutterActor *label;
   ClutterActor *scroll_view, *scroll_bin, *bin, *tmp_text;
-  AnerleyFeed *feed, *ebook_feed, *active_feed;
-  EBook *book;
-  GError *error = NULL;
+  AnerleyFeed *active_feed;
 
   mx_table_set_col_spacing (MX_TABLE (self), 4);
   mx_table_set_row_spacing (MX_TABLE (self), 6);
@@ -711,26 +708,9 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                     (GCallback)_entry_text_changed_cb,
                     self);
 
-  feed = anerley_aggregate_feed_new ();
-
   priv->tp_feed = anerley_aggregate_tp_feed_new ();
-  anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (feed),
-                                   priv->tp_feed);
 
-  book = e_book_new_default_addressbook (&error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error getting default addressbook: %s",
-               error->message);
-    g_clear_error (&error);
-  } else {
-    ebook_feed = anerley_ebook_feed_new (book);
-    anerley_aggregate_feed_add_feed (ANERLEY_AGGREGATE_FEED (feed),
-                                     ebook_feed);
-  }
-
-  priv->model = (AnerleyFeedModel *)anerley_feed_model_new (feed);
+  priv->model = (AnerleyFeedModel *)anerley_feed_model_new (priv->tp_feed);
   priv->tile_view = anerley_tile_view_new (priv->model);
 
   active_feed = anerley_tp_monitor_feed_new ((AnerleyAggregateTpFeed *)priv->tp_feed);
