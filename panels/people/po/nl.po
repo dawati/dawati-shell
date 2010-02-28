@@ -2,13 +2,13 @@
 # Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the mutter-moblin package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-#
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:51+0000\n"
+"POT-Creation-Date: 2010-02-27 10:46+0000\n"
 "PO-Revision-Date: 2010-02-25 14:56-0800\n"
 "Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
@@ -17,48 +17,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:493
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:495
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "personen"
 
-#: ../src/mnb-people-panel.c:265
+#: ../src/mnb-people-panel.c:267
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Sorry, we kunnen geen personen vinden. Heb je een Messenger account aangemaakt?"
 
-#: ../src/mnb-people-panel.c:377
+#: ../src/mnb-people-panel.c:379
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Sorry, we kunnen geen personen vinden. Het ziet er naar uit dat ze allemaal offline zijn."
 
-#: ../src/mnb-people-panel.c:422
+#: ../src/mnb-people-panel.c:424
 msgid "To see your IM contacts, you need to go online."
 msgstr "Ga online  om je Chat-contacten te zien."
 
-#: ../src/mnb-people-panel.c:474
+#: ../src/mnb-people-panel.c:476
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "personen - %d personen praten met je"
 
-#: ../src/mnb-people-panel.c:481
+#: ../src/mnb-people-panel.c:483
 msgid "people - Someone is talking to you"
 msgstr "personen - iemand praat met je"
 
-#: ../src/mnb-people-panel.c:671
+#: ../src/mnb-people-panel.c:673
 msgid "People"
 msgstr "Personen"
 
-#: ../src/mnb-people-panel.c:684
+#: ../src/mnb-people-panel.c:686
 msgid "Search"
 msgstr "Zoeken"
-
-#: ../src/mnb-people-panel.c:747
-msgid "People talking to you ..."
-msgstr "Personen die met je praten ..."
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Personen-paneel"
+
+#: ../src/mnb-people-panel.c:752
+msgid "You are chatting with:"
+msgstr "Je bent aan het chatten met:"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Personen die met je praten ..."
 
 #~ msgid "Send an email"
 #~ msgstr "Stuur een e-mail"
