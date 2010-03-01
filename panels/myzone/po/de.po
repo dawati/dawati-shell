@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:46+0000\n"
+"POT-Creation-Date: 2010-03-01 10:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Clara <steiner-jay.clarax@intel.com>\n"
 "Language-Team: \n"
@@ -56,13 +56,54 @@ msgstr "Heute gibt es nichts zu tun."
 msgid "Due %x"
 msgstr "Fällig %x"
 
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Willkommen bei MeeGo"
+
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Das ist Myzone, wo deine zuletzt benutzten Dateien und Inhalt von deinen Webfeeds angezeigt werden."
 
-#: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to MeeGo"
-msgstr "Willkommen bei MeeGo"
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Myzone Einstellungen"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Myzone Hintergrund und Inhalt ändern"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Alle weiteren Fehler werden nur am Terminal angezeigt"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf Fehler: %s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Hauptsächlich Webservice-Content anzeigen"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "So viel Webservice-Content wie möglich anzeigeh"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Hauptsächlich neueste Dateien anzeigen"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Halb und Halb anzeigen"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Panel Myzone"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "So viel neueste Dateien wie möglich anzeigen"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Willkommen bei Moblin 2.1 für Netbooks</b>"
