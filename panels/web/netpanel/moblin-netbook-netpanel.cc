@@ -528,7 +528,7 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
     }
 
   exec = g_strdup_printf ("%s %s \"%s%s\"", 
-                          "chromium-browser", 
+                          "google-chrome", 
                           "",
                           prefix, remaining);
   g_free (prefix);
@@ -562,11 +562,148 @@ fav_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
 }
 
 static void
+pipe_sendv (GIOChannel *channel, va_list args)
+{
+  GType type;
+
+  /* FIXME: Add error handling */
+  /*g_debug ("Sending command: %d", command_id);*/
+
+  if (!channel)
+    {
+      g_warning ("Trying to send with NULL channel");
+      return;
+    }
+
+  while ((type = va_arg (args, GType)) != G_TYPE_INVALID)
+    {
+      gint int_val;
+      glong long_val;
+      gint64 int64_val;
+      gdouble double_val;
+      const gchar *buffer = NULL;
+      gssize size = 0;
+
+      switch (type)
+        {
+        case G_TYPE_UINT :
+        case G_TYPE_INT :
+        case G_TYPE_BOOLEAN :
+          int_val = va_arg (args, gint);
+          size = sizeof (gint);
+          buffer = (const gchar *)(&int_val);
+          break;
+
+        case G_TYPE_ULONG :
+        case G_TYPE_LONG :
+          long_val = va_arg (args, glong);
+          size = sizeof (glong);
+          buffer = (const gchar *)(&long_val);
+          break;
+
+        case G_TYPE_UINT64 :
+        case G_TYPE_INT64 :
+          int64_val = va_arg (args, gint64);
+          size = sizeof (gint64);
+          buffer = (const gchar *)(&int64_val);
+          break;
+
+        case G_TYPE_DOUBLE :
+          double_val = va_arg (args, gdouble);
+          size = sizeof (gdouble);
+          buffer = (const gchar *)(&double_val);
+          break;
+
+        case G_TYPE_STRING :
+          buffer = (gchar*)va_arg (args, gpointer);
+          if (buffer)
+            size = strlen (buffer) + 1;
+          else
+            size = 0;
+          g_io_channel_write_chars (channel,
+                                    (gchar *)(&size),
+                                    sizeof (size),
+                                    NULL,
+                                    NULL);
+          break;
+
+        case G_TYPE_NONE:
+          size = va_arg (args, gsize);
+          buffer = (const gchar *)va_arg (args, gpointer);
+          break;
+
+        default:
+          g_warning ("Trying to send unknown type");
+        }
+
+      if (!buffer)
+        {
+          g_warning ("No data to send");
+          continue;
+        }
+
+      if (size)
+        g_io_channel_write_chars (channel,
+                                  buffer,
+                                  size,
+                                  NULL,
+                                  NULL);
+    }
+
+  g_io_channel_flush (channel, NULL);
+}
+
+void
+pipe_send (GIOChannel *channel, ...)
+{
+  va_list args;
+
+  va_start (args, channel);
+
+  pipe_sendv (channel, args);
+
+  va_end (args);
+}
+
+static void
 session_tab_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
 {
-  gchar *url = (gchar *)g_object_get_data (G_OBJECT (button), "url");
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
 
-  moblin_netbook_netpanel_launch_url (self, url, TRUE);
+  gchar *url = (gchar *)g_object_get_data (G_OBJECT (button), "url");
+  guint tab_id = (guint)g_object_get_data (G_OBJECT (button), "tab_id");
+
+  //moblin_netbook_netpanel_launch_url (self, url, TRUE);
+  gchar *plugin_pipe = g_strdup_printf ("%s/chrome-moblin-plugin.fifo",
+                                         g_get_tmp_dir ());
+
+  if (g_file_test (plugin_pipe, G_FILE_TEST_EXISTS))
+    {
+      GError *error = NULL;
+      gint fd = open(plugin_pipe, O_WRONLY | O_NONBLOCK);
+      GIOChannel * output = g_io_channel_unix_new(fd);
+      g_io_channel_set_encoding (output, NULL, NULL);
+      g_io_channel_set_buffered (output, FALSE);
+      g_io_channel_set_close_on_unref (output, TRUE);
+
+      pipe_send (output, G_TYPE_UINT, tab_id, G_TYPE_INVALID);
+      
+      if (g_io_channel_shutdown (output, FALSE, &error) ==
+          G_IO_STATUS_ERROR)
+        {
+          g_warning ("Error closing IO channel: %s", error->message);
+          g_error_free (error);
+        }
+
+      g_io_channel_unref (output);
+      output = NULL;
+      mpl_panel_client_hide (priv->panel_client);
+    }
+  else {
+    moblin_netbook_netpanel_launch_url (self, url, TRUE);
+  }
+
+  g_free(plugin_pipe);
 }
 
 static void
@@ -740,16 +877,19 @@ static void tabs_received(void* context, int tab_id,
         }
 
         gchar *prev_url = (gchar *)malloc(strlen(url) + 3 + 8);
-        sprintf(prev_url, "%s#%d,%d", url, tab_id, navigation_index);
+        //sprintf(prev_url, "%s#%d,%d", url, tab_id, navigation_index);
+        sprintf(prev_url, "%s", url);
+        
         button = add_thumbnail_to_scrollview (scrollview, url, title);
-        free(prev_url);
+        //free(prev_url);
 
         if (button)
         {
-            g_object_set_data (G_OBJECT (button), "url", (char*)url);
+            g_object_set_data (G_OBJECT (button), "url", (char*)prev_url);
+            g_object_set_data (G_OBJECT (button), "tab_id", (void*)tab_id);
             g_signal_connect (button, "clicked",
                               G_CALLBACK (session_tab_button_clicked_cb), self);
-            priv->session_urls = g_list_prepend (priv->session_urls, (char*)url);
+            priv->session_urls = g_list_prepend (priv->session_urls, (char*)prev_url);
         }
     }
 }

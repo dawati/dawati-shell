@@ -12,6 +12,7 @@
 #define NVALGRIND
 
 #include <glib.h>
+#include <gio/gio.h>
 #include <stdio.h>
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/thumbnail_store.h"
@@ -21,19 +22,49 @@
 #include "chrome/browser/sessions/session_types.h"
 #include "base/singleton.h"
 
+//#define DEBUG_CHROMIUM_API
+
 using namespace history;
 
 int 
 ChromeProfileProvider::Initialize(service_type type)
 {
-  // Get Chrome default profile
+  // Make a copy and get Chrome default profile
+  /*
   PathService::Get(chrome::DIR_USER_DATA, &user_data_dir_);
+  */
 
+  gchar* chrome_profile_path = NULL;
+  chrome_profile_path = g_build_filename (g_get_home_dir(),
+                                          ".config",
+                                          "google-chrome",
+                                          "Default",
+                                          NULL);
+  
+  gchar* panel_profile_path = NULL;
+  panel_profile_path = g_build_filename (g_get_home_dir(),
+                                         ".config",
+                                         "web-panel",
+                                         NULL);
+  
+  g_mkdir_with_parents (panel_profile_path, 0755);
+  
+  std::string cmd_line = "cp " + std::string(chrome_profile_path) + " " + std::string(panel_profile_path) + " -a";
+
+  //printf("command line: %s\n", cmd_line.c_str());
+  
+  g_spawn_command_line_sync (cmd_line.c_str(), NULL, NULL, NULL, NULL);
+  
+  user_data_dir_ = FilePath(panel_profile_path);
+
+  g_free(chrome_profile_path);
+  g_free(panel_profile_path);
+  
 #ifndef USE_SESSION_SERVICE
   if (!(type & PROVIDER_SESSION))
 #endif
     {
-      profile_ = Profile::CreateProfile(user_data_dir_.AppendASCII("Default.backup"));
+      profile_ = Profile::CreateProfile(user_data_dir_.AppendASCII("Default"));
       if (!profile_) 
         return (-1);
     }
@@ -319,14 +350,15 @@ ChromeProfileProvider::GetSessions(void* context,
 #ifdef USE_SESSION_SERVICE
   session_service_->GetLastSession(&cancelable_consumer,
                                    NewCallback(this, 
-                                               &ChromeProfileProvider::
+                      
+                         &ChromeProfileProvider::
                                                OnGotPreviousSession));
 
   MessageLoop::current()->Run();
 
 #else
   SessionFileReader session_reader(user_data_dir_.
-                                   AppendASCII("Default.backup/Current Session"));
+                                   AppendASCII("Default/Current Session"));
 
   std::vector<SessionCommand*> commands;
   session_reader.Read(BaseSessionService::SESSION_RESTORE, &commands);
@@ -334,41 +366,69 @@ ChromeProfileProvider::GetSessions(void* context,
   std::bitset<256> bitmap(0);
   std::vector<TabEntry*> tabs;
 
+  std::map<int, TabEntry*> tabs_map;
+  
   Reset();
 
-  // First reverse scan - mask
-  for (std::vector<SessionCommand*>::reverse_iterator i = commands.rbegin();
-       i < commands.rend(); i++) 
-    {
-      if ((*i) && (*i)->id() == kCommandUpdateTabNavigation) 
+  for (std::vector<SessionCommand*>::iterator i = commands.begin();
+       i < commands.end(); i++) 
+    {      
+      if ((*i))
         {
-          scoped_ptr<Pickle> pickle((*i)->PayloadAsPickle());
-          if (!pickle.get())
-            continue;
-
-          void* iterator = NULL;
-          TabEntry *tab_entry = new TabEntry();
-
-          if (!pickle->ReadInt(&iterator, &tab_entry->tab_id) ||
-              !pickle->ReadInt(&iterator, &tab_entry->navigation_index) ||
-              !pickle->ReadString(&iterator, &tab_entry->url_spec) ||
-              !pickle->ReadString16(&iterator, &tab_entry->title))
+          if ((*i)->id() == kCommandUpdateTabNavigation)
             {
-              continue;
+              scoped_ptr<Pickle> pickle((*i)->PayloadAsPickle());
+              if (!pickle.get())
+                continue;
+
+              //printf("command id = %d\n", (*i)->id());
+
+              void* iterator = NULL;
+              TabEntry *tab_entry = new TabEntry();
+
+              if (!pickle->ReadInt(&iterator, &tab_entry->tab_id) ||
+                  !pickle->ReadInt(&iterator, &tab_entry->navigation_index) ||
+                  !pickle->ReadString(&iterator, &tab_entry->url_spec) ||
+                  !pickle->ReadString16(&iterator, &tab_entry->title))
+                {
+                  continue;
+                }
+              tabs_map[tab_entry->tab_id] = tab_entry;
             }
-
-          if (!bitmap.test(tab_entry->tab_id)) 
+          else if ((*i)->id() == 3) // for closed tabs
             {
-              bitmap.set(tab_entry->tab_id);
-              tabs.push_back(tab_entry);
+              scoped_ptr<Pickle> pickle((*i)->PayloadAsPickle());
+              if (!pickle.get())
+                continue;
+
+              struct ClosedPayload 
+              {
+                int id;
+                int64 time;
+              };
+
+              ClosedPayload payload;
+              
+              if(!(*i)->GetPayload(&payload, sizeof(payload)))
+                continue;
+              
+              
+              std::map<int, TabEntry*>::iterator it = tabs_map.find(payload.id);
+              
+              if (it != tabs_map.end())
+                tabs_map.erase(it);
             }
         }
     }
-
-
+  
+  for (std::map<int, TabEntry*>::iterator i = tabs_map.begin();
+       i != tabs_map.end(); i++)
+    {
+      tabs.push_back((*i).second);
+    }
   // Second reverse scan
-  for (std::vector<TabEntry*>::reverse_iterator i = tabs.rbegin();
-       i < tabs.rend(); i++) 
+  for (std::vector<TabEntry*>::iterator i = tabs.begin();
+       i < tabs.end(); i++) 
     {
       // Dont rely on this way - the session may or may not have thubmail available.
 #if GET_SESSION_THUMB

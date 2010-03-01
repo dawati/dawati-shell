@@ -77,8 +77,8 @@ static GOptionEntry entries[] = {
   {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL}
 };
 
-#define CHROME_EXE_PATH "/usr/lib/chromium-browser"
-#define CHROME_BUNDLE_PATH CHROME_EXE_PATH
+#define CHROME_EXE_PATH "/opt/google/chrome/"
+#define CHROME_BUNDLE_PATH CHROME_EXE_PATH "/chrome.pak"
 #define CHROME_LOCALE_PATH CHROME_EXE_PATH "/locales"
 
 int
@@ -101,7 +101,8 @@ main (int    argc,
 
   FilePath bundle_path(CHROME_BUNDLE_PATH);
   FilePath locale_path(CHROME_LOCALE_PATH);
-  ResourceBundle::InitSharedInstance(L"en-US", locale_path);
+  ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
+  //ResourceBundle::InitSharedInstance(L"en-US" );
 
   scoped_ptr<BrowserProcessImpl> browser_process;
   browser_process.reset(new BrowserProcessImpl(*cmd_line));
