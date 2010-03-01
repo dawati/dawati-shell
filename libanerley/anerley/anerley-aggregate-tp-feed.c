@@ -165,6 +165,9 @@ _account_manager_account_enabled_cb (TpAccountManager *account_manager,
   AnerleyAggregateTpFeed *aggregate = ANERLEY_AGGREGATE_TP_FEED (userdata);
 
   _add_feed_from_account (aggregate, account);
+
+  g_object_notify (G_OBJECT (userdata), "accounts-available");
+  g_object_notify (G_OBJECT (userdata), "accounts-online");
 }
 
 static void
