@@ -465,7 +465,7 @@ sw_window_allocate (ClutterActor           *actor,
       childbox.x2 -= 2;
       childbox.y2 -= 2;
 
-      childbox.y2 -= INFO_BOX_HEIGHT + SPACING;
+      childbox.y2 = MAX (childbox.y1, childbox.y2 - INFO_BOX_HEIGHT - SPACING);
       mx_allocate_align_fill (priv->texture, &childbox, MX_ALIGN_MIDDLE,
                               MX_ALIGN_MIDDLE, FALSE, FALSE);
       clutter_actor_allocate (priv->texture, &childbox, flags);
@@ -475,7 +475,7 @@ sw_window_allocate (ClutterActor           *actor,
   if (priv->background)
     {
       mx_widget_get_available_area (MX_WIDGET (actor), box, &childbox);
-      childbox.y2 -= INFO_BOX_HEIGHT + SPACING;
+      childbox.y2 = MAX (childbox.y1, childbox.y2 - INFO_BOX_HEIGHT - SPACING);
       clutter_actor_allocate (priv->background, &childbox, flags);
     }
 }
