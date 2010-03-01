@@ -30,7 +30,7 @@ G_DEFINE_TYPE_WITH_CODE (SwWindow, sw_window, MX_TYPE_WIDGET,
 #define WINDOW_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), SW_TYPE_WINDOW, SwWindowPrivate))
 
-#define INFO_BOX_HEIGHT 38
+#define INFO_BOX_HEIGHT 32
 #define SPACING 3
 
 enum
