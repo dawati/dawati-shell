@@ -21,6 +21,7 @@
 #include <stdbool.h>
 
 #include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 #include "mpd-gobject.h"
 #include "mpd-shell-defines.h"
@@ -122,17 +123,23 @@ _open_clicked_cb (MxButton              *button,
                   MpdStorageDeviceTile  *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char    *command_line;
+  char    *uri;
   GError  *error = NULL;
 
-  command_line = g_strdup_printf ("nautilus file://%s", priv->mount_point);
-  g_spawn_command_line_async (command_line, &error);
+  uri = g_filename_to_uri (priv->mount_point, NULL, &error);
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
+  } else {
+    gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error);
+    if (error)
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    }
   }
-  g_free (command_line);
+  g_free (uri);
 
   g_signal_emit_by_name (self, "request-hide");
 }
