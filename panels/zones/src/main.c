@@ -72,9 +72,10 @@ desktop_filename_changed_cb (GConfClient *client,
                              GConfEntry  *entry,
                              gpointer     userdata)
 {
-  const gchar  *filename = NULL;
-  GConfValue   *value;
+  const gchar   *filename = NULL;
+  GConfValue    *value;
   ZonePanelData *data = userdata;
+  GError        *err = NULL;
 
   value = gconf_entry_get_value (entry);
 
@@ -90,7 +91,15 @@ desktop_filename_changed_cb (GConfClient *client,
       data->background = NULL;
     }
 
-  data->background = clutter_texture_new_from_file (filename, NULL);
+  data->background = clutter_texture_new_from_file (filename, &err);
+
+  if (err)
+    {
+      g_warning ("Could not load background image: %s", err->message);
+      g_error_free (err);
+      return;
+    }
+
   clutter_texture_set_repeat (CLUTTER_TEXTURE (data->background), TRUE, TRUE);
   clutter_actor_set_size (data->background,
                           wnck_screen_get_width (data->screen),
