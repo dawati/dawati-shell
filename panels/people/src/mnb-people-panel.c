@@ -605,11 +605,35 @@ _update_placeholder_state (MnbPeoplePanel *self)
 }
 
 static void
+_update_presence_chooser_state (MnbPeoplePanel *panel)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (panel);
+  gint accounts_available;
+
+  g_object_get (priv->tp_feed,
+                "accounts-available", &accounts_available,
+                NULL);
+
+  if (accounts_available == 0)
+  {
+    clutter_actor_hide (priv->presence_chooser);
+  } else {
+    if (sw_is_online ())
+    {
+      clutter_actor_show (priv->presence_chooser);
+    } else {
+      clutter_actor_hide (priv->presence_chooser);
+    }
+  }
+}
+
+static void
 _tp_feed_online_notify_cb (GObject    *object,
                            GParamSpec *pspec,
                            gpointer    userdata)
 {
   _update_placeholder_state (MNB_PEOPLE_PANEL (userdata));
+  _update_presence_chooser_state (MNB_PEOPLE_PANEL (userdata));
 }
 
 static void
@@ -618,6 +642,7 @@ _tp_feed_available_notify_cb (GObject    *object,
                               gpointer    userdata)
 {
   _update_placeholder_state (MNB_PEOPLE_PANEL (userdata));
+  _update_presence_chooser_state (MNB_PEOPLE_PANEL (userdata));
 }
 
 static void
@@ -631,13 +656,7 @@ static void
 _update_online_state (MnbPeoplePanel *panel,
                       gboolean        online)
 {
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (panel);
-  if (online)
-  {
-    clutter_actor_show (priv->presence_chooser);
-  } else {
-    clutter_actor_hide (priv->presence_chooser);
-  }
+  _update_presence_chooser_state (panel);
 }
 
 static void
