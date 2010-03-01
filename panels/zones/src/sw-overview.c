@@ -416,7 +416,8 @@ sw_overview_add_window (SwOverview *overview,
   /* ensure there is no "new zone" if the number of windows is less than or
    * equal to the zones */
   if (priv->window_count > priv->n_zones
-      && !priv->dummy)
+      && !priv->dummy
+      && priv->n_zones < 8)
     {
       sw_overview_add_dummy (overview);
     }
