@@ -112,6 +112,13 @@ mpd_computer_pane_init (MpdComputerPane *self)
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_settings_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
+                               "expand", true,
+                               "x-align", MX_ALIGN_START,
+                               "x-fill", true,
+                               "y-align", MX_ALIGN_END,
+                               "y-fill", false,
+                               NULL);
 }
 
 ClutterActor *
