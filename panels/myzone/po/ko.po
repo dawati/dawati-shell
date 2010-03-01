@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-03-01 10:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -13,28 +14,23 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>일정</b>"
-
-#: ../penge/penge-events-pane.c:59
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "일정 계획하기"
 
-#: ../penge/penge-events-pane.c:60
-#: ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "추가"
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "이 주에는 캘린더 엔트리가 없습니다."
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "친구들과의 웹 사이트 활동이 여기에 나타날 것입니다. 지금 계정을 여십시오!"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "웹 페이지"
 
@@ -42,20 +38,74 @@ msgstr "웹 페이지"
 msgid "Create a new task"
 msgstr "새 작업 만들기"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "오늘 예정된 일정 없음"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "%x까지"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Moblin 2.0 넷북에 오신것을 환영합니다.</b>   "
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "MeeGo에 오신 것을 환영합니다."
 
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Moblin은 다른 컴퓨터와 차이가 있으며, 당신이 이에 잘 적응할 수 있도록 여러가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Moblin 팀."
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "이 Myzone에서 최근 사용된 파일과 웹피드의 콘텐츠가 표시됩니다."
 
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone 패널"
+
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Myzone 설정"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Myzone 배경과 내용을 변경"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "다른 모든 오류는 단말기에서만 표시됩니다."
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf 오류: %s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "대부분 웹 서비스 콘텐츠 표시"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "웹 서비스 콘텐츠를 가능한 한 많이 표시"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "거의 최근 파일 표시"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "반반씩 표시"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "최신 파일을 가능한 한 많이 표시 "
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "약속"
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Moblin 2.0 넷북에 오신것을 환영합니다.</b>   "
+
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Moblin은 다른 컴퓨터와 차이가 있으며, 당신이 이에 잘 적응할 수 있도록 여러가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Moblin 팀."
