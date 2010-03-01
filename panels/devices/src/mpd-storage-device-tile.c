@@ -29,6 +29,9 @@
 #include "config.h"
 
 static void
+mpd_storage_device_tile_set_icon_file (MpdStorageDeviceTile  *self,
+                                       char const            *icon_file);
+static void
 mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
                                          char const            *mount_point);
 
@@ -44,6 +47,7 @@ enum
 {
   PROP_0,
 
+  PROP_ICON_FILE,
   PROP_MOUNT_POINT
 };
 
@@ -63,6 +67,7 @@ typedef struct
   ClutterActor      *description;
   ClutterActor      *meter;
 
+  char              *icon_file;
   char              *mount_point;
   MpdStorageDevice  *storage;
 } MpdStorageDeviceTilePrivate;
@@ -141,6 +146,24 @@ _constructor (GType                  type,
                         G_OBJECT_CLASS (mpd_storage_device_tile_parent_class)
                           ->constructor (type, n_properties, properties);
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+  GError *error = NULL;
+
+  if (priv->icon_file &&
+      g_file_test (priv->icon_file, G_FILE_TEST_IS_REGULAR))
+  {
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                   priv->icon_file,
+                                   &error);
+  } else {
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                   PKGICONDIR "/device-usb.png",
+                                   &error);
+  }
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
 
   if (priv->mount_point)
   {
@@ -172,7 +195,7 @@ _constructor (GType                  type,
     g_signal_connect (priv->storage, "notify::available-size",
                       G_CALLBACK (_storage_size_notify_cb), self);
     update (self);
-  
+
   } else {
     g_critical ("%s : %s",
                 G_STRLOC,
@@ -186,11 +209,16 @@ _constructor (GType                  type,
 static void
 _get_property (GObject      *object,
                unsigned int  property_id,
-               GValue       *value, 
+               GValue       *value,
                GParamSpec   *pspec)
 {
   switch (property_id)
   {
+  case PROP_ICON_FILE:
+    g_value_set_string (value,
+                        mpd_storage_device_tile_get_icon_file (
+                          MPD_STORAGE_DEVICE_TILE (object)));
+    break;
   case PROP_MOUNT_POINT:
     g_value_set_string (value,
                         mpd_storage_device_tile_get_mount_point (
@@ -204,11 +232,15 @@ _get_property (GObject      *object,
 static void
 _set_property (GObject      *object,
                unsigned int  property_id,
-               const GValue *value, 
+               const GValue *value,
                GParamSpec   *pspec)
 {
   switch (property_id)
   {
+  case PROP_ICON_FILE:
+    mpd_storage_device_tile_set_icon_file (MPD_STORAGE_DEVICE_TILE (object),
+                                           g_value_get_string (value));
+    break;
   case PROP_MOUNT_POINT:
     mpd_storage_device_tile_set_mount_point (MPD_STORAGE_DEVICE_TILE (object),
                                              g_value_get_string (value));
@@ -222,6 +254,12 @@ static void
 _dispose (GObject *object)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->icon_file)
+  {
+    g_free (priv->icon_file);
+    priv->icon_file = NULL;
+  }
 
   if (priv->mount_point)
   {
@@ -252,13 +290,22 @@ mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
   param_flags = G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS;
 
   g_object_class_install_property (object_class,
+                                   PROP_ICON_FILE,
+                                   g_param_spec_string ("icon-file",
+                                                        "Icon file",
+                                                        "Icon file path",
+                                                        NULL,
+                                                        param_flags |
+                                                        G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class,
                                    PROP_MOUNT_POINT,
                                    g_param_spec_string ("mount-point",
                                                         "Mount point",
                                                         "Device mount point",
                                                         NULL,
-                                                        param_flags | 
+                                                        param_flags |
                                                         G_PARAM_CONSTRUCT_ONLY));
+
   /* Signals */
 
   _signals[REQUEST_HIDE] = g_signal_new ("request-hide",
@@ -282,17 +329,15 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor  *vbox;
   ClutterActor  *button;
-  GError        *error = NULL;
 
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self),
                              MPD_STORAGE_DEVICE_TILE_SPACING);
 
   /* 1st column: icon */
   priv->icon = clutter_texture_new ();
-  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
-                                 PKGICONDIR "/device-usb.png",
-                                 &error);
-  clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->icon), true);
+  clutter_actor_set_size (priv->icon,
+                          MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
+                          MPD_STORAGE_DEVICE_TILE_ICON_SIZE);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->icon);
   clutter_container_child_set (CLUTTER_CONTAINER (self), priv->icon,
                                "expand", false,
@@ -301,11 +346,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                "y-align", MX_ALIGN_MIDDLE,
                                "y-fill", false,
                                NULL);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
 
   /* 2nd column: text, free space */
   vbox = mx_box_layout_new ();
@@ -345,11 +385,48 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 }
 
 ClutterActor *
-mpd_storage_device_tile_new (char const *mount_point)
+mpd_storage_device_tile_new (char const *mount_point,
+                             char const *icon_file)
 {
   return g_object_new (MPD_TYPE_STORAGE_DEVICE_TILE,
                        "mount-point", mount_point,
+                       "icon-file", icon_file,
                        NULL);
+}
+
+char const *
+mpd_storage_device_tile_get_icon_file (MpdStorageDeviceTile *self)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self), NULL);
+
+  return priv->icon_file;
+}
+
+static void
+mpd_storage_device_tile_set_icon_file (MpdStorageDeviceTile  *self,
+                                       char const            *icon_file)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
+
+  if (0 != g_strcmp0 (icon_file, priv->icon_file))
+  {
+    if (priv->icon_file)
+    {
+      g_free (priv->icon_file);
+      priv->icon_file = NULL;
+    }
+
+    if (icon_file)
+    {
+      priv->icon_file = g_strdup (icon_file);
+    }
+
+    g_object_notify (G_OBJECT (self), "icon-file");
+  }
 }
 
 char const *

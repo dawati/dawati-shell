@@ -57,7 +57,11 @@ GType
 mpd_storage_device_tile_get_type (void);
 
 ClutterActor *
-mpd_storage_device_tile_new (char const *mount_point);
+mpd_storage_device_tile_new (char const *mount_point,
+                             char const *icon_file);
+
+char const *
+mpd_storage_device_tile_get_icon_file (MpdStorageDeviceTile *self);
 
 char const *
 mpd_storage_device_tile_get_mount_point (MpdStorageDeviceTile *self);

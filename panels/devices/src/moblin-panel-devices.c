@@ -25,6 +25,7 @@
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <glib/gi18n.h>
+#include <gtk/gtk.h>
 #include <mx/mx.h>
 
 #include "mpd-panel.h"
@@ -105,6 +106,8 @@ main (int     argc,
   g_option_context_free (context);
 
   clutter_init (&argc, &argv);
+  /* Just for icon theme, no widgets. */
+  gtk_init (&argc, &argv);
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
                                PKGDATADIR "/mx.cache");

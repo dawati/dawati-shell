@@ -21,10 +21,12 @@
 #include <stdbool.h>
 
 #include <gio/gio.h>
+#include <gtk/gtk.h>
 
 #include "mpd-default-device-tile.h"
 #include "mpd-devices-tile.h"
 #include "mpd-gobject.h"
+#include "mpd-shell-defines.h"
 #include "mpd-storage-device-tile.h"
 #include "config.h"
 
@@ -136,19 +138,34 @@ add_tile_from_mount (MpdDevicesTile *self,
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
   GFile         *file;
   char          *path;
+  GIcon         *icon;
+  GtkIconInfo   *icon_info;
+  char const    *icon_file;
   ClutterActor  *tile;
 
+  /* Mount point */
   file = g_mount_get_root (mount);
   path = g_file_get_path (file);
   g_debug ("%s() %s", __FUNCTION__, path);
 
-  tile = mpd_storage_device_tile_new (path);
+  /* Icon */
+  icon = g_mount_get_icon (mount);
+  icon_info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+                                              icon,
+                                              MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
+                                              GTK_ICON_LOOKUP_NO_SVG);
+  icon_file = gtk_icon_info_get_filename (icon_info);
+  g_debug ("%s() %s", __FUNCTION__, icon_file);
+
+  tile = mpd_storage_device_tile_new (path, icon_file);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_device_tile_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
 
+  gtk_icon_info_free (icon_info);
+  g_object_unref (icon);
   g_free (path);
   g_object_unref (file);
 }

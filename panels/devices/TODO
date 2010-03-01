@@ -2,13 +2,13 @@
 TODO
 ====
 
-* devices-pane: get icon from mount and pass to storage-device-pane.
 * Implement keyboard navigation in the folder view.
 * The brightness tile is a compile-time option, off by default.
 
 Done
 ----
 
+* devices-pane: get icon from mount and pass to storage-device-pane.
 * Enable "All settings" button as soon as the unified control center shell is shipping.
 * Port dalston battery notifications to power-icon.
 * Share strings between panel-devices and power-icon.
