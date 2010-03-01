@@ -17,7 +17,12 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <telepathy-glib/telepathy-glib.h>
 #include <telepathy-glib/dbus.h>
 #include <telepathy-glib/proxy-subclass.h>
@@ -380,16 +385,124 @@ _inbox_open_info_free (struct _InboxOpenInfo *inbox)
 }
 
 static void
+_unlink_tmp_html_file (gpointer user_data)
+{
+  gchar *file_uri = user_data;
+  g_unlink (file_uri + 7);
+  g_free (file_uri);
+}
+
+static gboolean
+_unlink_tmp_html_file_cb (gpointer user_data)
+{
+  _unlink_tmp_html_file (user_data);
+  return FALSE;
+}
+
+static gchar *
+_create_html_file_and_timeout (const char *url,
+                               GPtrArray *post_data,
+                               GError **error)
+{
+  const char *html_part1 =
+    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n"
+    "  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+    "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
+    "<head>\n"
+    "  <title>MyZone Mailme redirect page</title>\n"
+    "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n"
+    "</head>\n"
+    "<body onload=\"submitForm()\">\n"
+    "  <form method=\"post\" action=\"";
+  const char *html_part2 = "\" name=\"myForm\" id=\"myForm\">\n";
+  const char *html_part3 =
+    "  </form>\n"
+    "  <script type=\"text/javascript\">document.myForm.submit();</script>\n"
+    "</body>\n"
+    "</html>";
+  gchar *file_uri, *escaped_str;;
+  gint fd;
+  guint i;
+
+  file_uri = g_strdup ("file:///tmp/mailme-XXXXXX.html");
+
+  /* g_mkstemp need a unix filename, so we skip strlen ("file://"), which is
+   * 7 characters, and then pass it to mkstemp that will replace the XXXXXX with the
+   * choosen name for the returned tempory file. */
+  fd = g_mkstemp (file_uri + 7);
+
+  if (fd < 0)
+    goto io_error;
+
+  if (write (fd, html_part1, strlen (html_part1)) < 0)
+    goto io_error;
+
+  escaped_str = g_markup_escape_text (url, -1);
+
+  if (write (fd, url, strlen (url)) < 0)
+  {
+    g_free (escaped_str);
+    goto io_error;
+  }
+
+  g_free (escaped_str);
+
+  if (write (fd, html_part2, strlen (html_part2)) < 0)
+    goto io_error;
+
+  for (i = 0; i < post_data->len; i++)
+  {
+    GValueArray *item = g_ptr_array_index (post_data, i);
+    const gchar *key = g_value_get_string (g_value_array_get_nth (item, 0));
+    const gchar *value = g_value_get_string (g_value_array_get_nth (item, 1));
+    gchar *html_input;
+
+    html_input = g_markup_printf_escaped (
+        "    <input type=\"hidden\" name=\"%s\" value=\"%s\" />\n",
+        key,
+        value);
+
+    if (write (fd, html_input, strlen (html_input)) < 0)
+    {
+      g_free (html_input);
+      goto io_error;
+    }
+  }
+
+  if (write (fd, html_part3, strlen (html_part3)) < 0)
+    goto io_error;
+
+  g_timeout_add_full (G_PRIORITY_DEFAULT,
+                      30000,
+                      _unlink_tmp_html_file_cb,
+                      g_strdup (file_uri),
+                      _unlink_tmp_html_file);
+
+  close (fd);
+  return file_uri;
+
+io_error:
+  *error = g_error_new (G_IO_ERROR,
+                        g_io_error_from_errno (errno),
+                        "Failed building redirecting HTML: %s",
+                        strerror (errno));
+  close (fd);
+  _unlink_tmp_html_file (file_uri);
+
+  return NULL;
+}
+
+static void
 on_received_inbox_url (DBusGProxy       *proxy,
                        DBusGProxyCall   *call_id,
                        void             *user_data)
 {
   GError *error = NULL;
   GSimpleAsyncResult *async_result = G_SIMPLE_ASYNC_RESULT (user_data);
-  //MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (user_data);
   GValueArray *result;
   const gchar *url;
   guint method;
+  GPtrArray *post_data;
   struct _InboxOpenInfo *inbox = NULL;
 
   dbus_g_proxy_end_call (proxy, call_id, &error,
@@ -413,6 +526,7 @@ on_received_inbox_url (DBusGProxy       *proxy,
 
   url = g_value_get_string (g_value_array_get_nth (result, 0));
   method = g_value_get_uint (g_value_array_get_nth (result, 1));
+  post_data = g_value_get_boxed (g_value_array_get_nth (result, 2));
 
   inbox = g_new0 (struct _InboxOpenInfo, 1);
 
@@ -424,9 +538,25 @@ on_received_inbox_url (DBusGProxy       *proxy,
       break;
 
     case 1: /* Method POST */
-      inbox->format = MAILME_INBOX_URI;
-      /* TODO Create HTML file to handle POST data */
-      inbox->value = g_strdup (url);
+      {
+        GError *error = NULL;
+        gchar *uri;
+
+        uri = _create_html_file_and_timeout (url, post_data, &error);
+
+        if (error)
+        {
+          g_simple_async_result_set_from_error (async_result, error);
+          g_error_free (error);
+          g_free (inbox);
+          inbox = NULL;
+        }
+        else
+        {
+          inbox->format = MAILME_INBOX_URI;
+          inbox->value = uri;
+        }
+      }
       break;
 
     default:
