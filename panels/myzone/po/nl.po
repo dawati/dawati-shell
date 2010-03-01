@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:43+0000\n"
+"POT-Creation-Date: 2010-03-01 10:36+0000\n"
 "PO-Revision-Date: 2009-08-05 14:41-0800\n"
 "Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
 "Language-Team: Dutch\n"
@@ -58,13 +58,54 @@ msgstr "Niets te doen vandaag"
 msgid "Due %x"
 msgstr "Verstrijkt %x"
 
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Welkom by MeeGo"
+
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Dit is de Myzone, waar je recente bestanden en inhoud van web feeds verschijnen."
 
-#: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to MeeGo"
-msgstr "Welkom by MeeGo"
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Myzone insellingen"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Verander de MyZONE achtergrond en inhoud"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Alle verdere fouten alleen op de terminal weergegeven."
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf fout: %s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Overwegend web service inhoud weergeven"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Zo veel mogelijk web service inhoud weergeven"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Meest recente bestanden weergeven"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Half en half weergeven"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Zo veel mogelijk recente bestanden weergeven"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Welkom bij Moblin 2.1 voor Netbooks</b>"
