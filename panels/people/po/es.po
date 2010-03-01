@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:51+0000\n"
+"POT-Creation-Date: 2010-03-01 10:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -15,51 +15,54 @@ msgstr ""
 
 # <mousetip of the top of the screen>
 #: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:493
+#: ../src/mnb-people-panel.c:494
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "gente"
 
 # We didn't find anybody. Do you already have an account in any Instant
 # Messenger (service)?
-#: ../src/mnb-people-panel.c:265
+#: ../src/mnb-people-panel.c:266
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Lo sentimos, no encontramos a nadie. ¿Tienes ya una cuenta en Messenger?"
 
 # We didn't find anybody. Do you already have an account in any Instant
 # Messenger (service)?
-#: ../src/mnb-people-panel.c:377
+#: ../src/mnb-people-panel.c:378
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Lo sentimos, no encontramos a nadie. Parece que están todos fuera de línea."
 
-#: ../src/mnb-people-panel.c:422
+#: ../src/mnb-people-panel.c:423
 msgid "To see your IM contacts, you need to go online."
 msgstr "Para ver tus contactos en IM, ponte en línea."
 
-#: ../src/mnb-people-panel.c:474
+#: ../src/mnb-people-panel.c:475
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "gente - personas conversando contigo: %d"
 
-#: ../src/mnb-people-panel.c:481
+#: ../src/mnb-people-panel.c:482
 msgid "people - Someone is talking to you"
 msgstr "gente - hay alguien conversando contigo"
 
-#: ../src/mnb-people-panel.c:671
+#: ../src/mnb-people-panel.c:670
 msgid "People"
 msgstr "Gente"
 
-#: ../src/mnb-people-panel.c:684
+#: ../src/mnb-people-panel.c:683
 msgid "Search"
 msgstr "Búsqueda"
 
-#: ../src/mnb-people-panel.c:747
-msgid "People talking to you ..."
-msgstr "Hay gente conversando contigo..."
+#: ../src/mnb-people-panel.c:733
+msgid "You are chatting with:"
+msgstr "Estás chateando con:"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Gente"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Hay gente conversando contigo..."
 
 #~ msgid "Send an email"
 #~ msgstr "Enviar un correo electrónico"
