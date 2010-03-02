@@ -108,6 +108,8 @@ load_alarms (MnpAlarms *alarms)
 	char *data = (char *)tmp->data;
 	MnpAlarmTile *tile = mnp_alarm_tile_new ();
 
+	mx_stylable_set_style_class (MX_STYLABLE(tile), "alarm-tile");
+
 	g_signal_connect (tile, "clicked", G_CALLBACK(load_alarm_tile), tile);
 	sscanf(data, "%d %d %d %d %d %d %d %d", &item->id, &item->on_off, &item->hour, &item->minute, &item->am_pm, &item->repeat, &item->snooze, &item->sound);
 	clutter_container_add_actor ((ClutterContainer *)priv->left_tiles, (ClutterActor *)tile);
@@ -161,14 +163,14 @@ mnp_alarms_construct (MnpAlarms *alarms)
   mx_box_layout_set_pack_start ((MxBoxLayout *)alarms, FALSE);
   
   priv->left_tiles = mx_box_layout_new();
-  clutter_actor_set_name ((ClutterActor *)priv->left_tiles, "alarms-tile");
+  clutter_actor_set_name ((ClutterActor *)priv->left_tiles, "alarms-tile-area");
   mx_box_layout_set_vertical ((MxBoxLayout *)priv->left_tiles, FALSE);
   mx_box_layout_set_pack_start ((MxBoxLayout *)priv->left_tiles, FALSE);
   mx_box_layout_set_spacing ((MxBoxLayout *)priv->left_tiles, 3);
 
   priv->right_tiles = mx_box_layout_new();
   clutter_actor_set_size (priv->right_tiles, 100, -1);
-  clutter_actor_set_name ((ClutterActor *)priv->right_tiles, "new-alarm-tile");
+  clutter_actor_set_name ((ClutterActor *)priv->right_tiles, "new-alarm-tile-area");
   mx_box_layout_set_vertical ((MxBoxLayout *)priv->right_tiles, FALSE);
   mx_box_layout_set_pack_start ((MxBoxLayout *)priv->right_tiles, FALSE);
   mx_box_layout_set_spacing ((MxBoxLayout *)priv->right_tiles, 3);
@@ -198,6 +200,7 @@ mnp_alarms_construct (MnpAlarms *alarms)
                                    NULL);	  
   mnp_alarm_set_text ((MnpAlarmTile *)priv->new_alarm_tile, NULL, _("New\nAlarm"));
   g_signal_connect (priv->new_alarm_tile, "clicked", G_CALLBACK(new_alarm_clicked), alarms);
+  mx_stylable_set_style_class (MX_STYLABLE(priv->new_alarm_tile), "new-alarm-tile");
 
   setup_watcher (alarms);
   load_alarms(alarms);

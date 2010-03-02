@@ -359,7 +359,7 @@ construct_completion (MnpWorldClock *world_clock)
 	clutter_actor_set_size (scroll, -1, 300);	
 	clutter_container_add_actor ((ClutterContainer *)stage, scroll);
       	clutter_actor_raise_top((ClutterActor *) scroll);
-	clutter_actor_set_position (scroll, 6, 35);  
+	clutter_actor_set_position (scroll, 6, 40);  
 	clutter_actor_hide (scroll);
 
 	view = mx_list_view_new ();
@@ -386,13 +386,15 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 	mx_box_layout_set_vertical ((MxBoxLayout *)world_clock, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)world_clock, FALSE);
+	mx_box_layout_set_spacing ((MxBoxLayout *)world_clock, 4);
 
 	priv->completion_timeout = 0;
 
 	box = mx_box_layout_new ();
 	mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
-
+	mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
+	
 	entry = mx_entry_new ("");
 	priv->search_location = (MxEntry *)entry;
 	mx_entry_set_hint_text (MX_ENTRY (entry), _("Enter a country or city"));
@@ -401,7 +403,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
   	g_signal_connect (entry, "secondary-icon-clicked",
                     	G_CALLBACK (clear_btn_clicked_cb), world_clock);
 
-	/* FIXME: Don't exceed beyond parent */
+	/* Set just size more than the hint text */
 	clutter_actor_get_size (entry, &width, &height);
 	clutter_actor_set_size (entry, width+10, -1);
 	g_signal_connect (G_OBJECT (entry),
@@ -420,7 +422,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
                                box,
                                "expand", FALSE,
 			       "y-fill", FALSE,		
-			       "x-fill", FALSE,			       			       
+			       "x-fill", TRUE,			       			       
                                NULL);
 
 
@@ -428,13 +430,12 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 
 	priv->area = mnp_clock_area_new ();
-	clutter_actor_get_size (box, &width, &height);
 
-	clutter_actor_set_size ((ClutterActor *)priv->area, width+20, 500);
 	clutter_actor_set_reactive ((ClutterActor *)priv->area, TRUE);
 	clutter_actor_set_name ((ClutterActor *)priv->area, "clock-area");
 
 	clutter_container_add_actor ((ClutterContainer *)stage, (ClutterActor *)priv->area);
+	
 	clutter_actor_lower_bottom ((ClutterActor *)priv->area);
 	mx_droppable_enable ((MxDroppable *)priv->area);
 	g_object_ref ((GObject *)priv->area);
@@ -442,9 +443,9 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	clutter_container_add_actor (CLUTTER_CONTAINER (table), (ClutterActor *)priv->area);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
                                (ClutterActor *)priv->area,
-                               "expand", FALSE,
+                               "expand", TRUE,
 			       "y-fill", TRUE,
-			       "x-fill", FALSE,
+			       "x-fill", TRUE,
                                NULL);
 
 

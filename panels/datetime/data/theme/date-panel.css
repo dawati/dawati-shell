@@ -1,6 +1,6 @@
 *#datetime-panel
 {
-  padding: 2 2 2 2;
+  padding: 4 4 4 4;
   background-color: #ffffffff;
 }
 
@@ -14,7 +14,7 @@
 {
   padding: 4 4;	
   border-image: url('dp-scroll-view-bin-bg.png') 10;
-  background-color: #7e7e7eff;
+  background-color: #ffffffff;
 }
 
 *#new-alarm-dialog
@@ -23,32 +23,50 @@
   background-color: #7e7e7eff;
 }
 
-*#alarms-tile
+*#alarms-tile-area
 {
   padding: 2 2 2 2;	
+  background-color: #ffffffff;
+}
+
+*#new-alarm-tile-area
+{
+  padding: 2 2 2 2;
+  background-color: #ffffffff;  
+}
+
+MxButton.alarms-tile
+{
   background-color: #7e7e7eff;
 }
 
-*#new-alarm-tile
+MxButton.new-alarm-tile
 {
-  padding: 2 2 2 2;
-  border-image: url('dp-scroll-view-bin-bg.png') 2 2 2 2;
+  background-color: #7e7e7eff;
 }
 
 *#mnp-tile-date-city
 {
   padding: 4 4;	
+  background-color: #7e7e7eff;  
+}
+
+*#mnp-tile-time
+{
+  padding: 4 4;	
+  background-color: #7e7e7eff;  
 }
 
 *#mnp-tile-remove-button
 {
   padding: 0 0 4 0;	
+  background-color: #7e7e7eff;    
 }
 
 *#clock-area
 {
-  padding: 10 10;
-  background-color: #7e7e7eff;
+  padding: 5 5;
+  background-color: #ffffffff;
 }
 
 *#mnp-tile-time
