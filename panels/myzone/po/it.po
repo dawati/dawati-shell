@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:46+0000\n"
+"POT-Creation-Date: 2010-03-01 10:36+0000\n"
 "PO-Revision-Date: 2009-11-03 22:46+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -58,13 +58,54 @@ msgstr "Nessuna attività per oggi"
 msgid "Due %x"
 msgstr "In scadenza il %x"
 
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Benvenuti su MeeGo"
+
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Questo è il myzone, dove verranno visualizzati i file utilizzati di recente e il contenuto dei tuoi feed web"
 
-#: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to MeeGo"
-msgstr "Benvenuti su MeeGo"
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Impostazioni myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Cambia lo sfondo e il contenuto myzone"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Tutti gli ulteriori errori verranno mostrati solo sul terminale."
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Errore GConf: %s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Mostra principalmente contenuto per servizi web"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Mostra il maggior numero possibile di contenuto per servizi web"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Mostra principalmente file recenti"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Mostra metà e metà"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Mostra il maggior numero possibile di file recenti"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Benvenuti in Moblin 2.1 per netbook</b>"
