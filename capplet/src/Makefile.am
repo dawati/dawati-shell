@@ -41,7 +41,8 @@ moblin_toolbar_properties_LDADD   = libmtp-common.la
 moblin_toolbar_properties_SOURCES = moblin-toolbar-properties.c
 
 ccmodulesdir = $(CC_DIR)
-ccmodules_LTLIBRARIES = libmtp.la
+ccmodules_LTLIBRARIES = libmtp.la libsystray.la
+
 libmtp_la_SOURCES = \
 	module.c \
 	mtp-cc-panel.h \
@@ -49,3 +50,11 @@ libmtp_la_SOURCES = \
 libmtp_la_CPPFLAGS = $(AM_CPPFLAGS) $(CC_CFLAGS)
 libmtp_la_LIBADD = $(CC_LIBS) libmtp-common.la
 libmtp_la_LDFLAGS = $(AM_LDFLAGS) -module -avoid-version
+
+libsystray_la_SOURCES = \
+	syst-module.c \
+	syst-cc-panel.h \
+	syst-cc-panel.c
+libsystray_la_CPPFLAGS = $(AM_CPPFLAGS) $(CC_CFLAGS) $(SYSTRAY_CFLAGS)
+libsystray_la_LIBADD = $(CC_LIBS) $(SYSTRAY_LIBS)
+libsystray_la_LDFLAGS = $(AM_LDFLAGS) -module -avoid-version

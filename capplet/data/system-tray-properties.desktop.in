@@ -1,0 +1,9 @@
+[Desktop Entry]
+_Name=System Tray
+_Comment=Set your system-tray preferences
+Exec=system-tray-properties
+Icon=system-tray-properties
+Terminal=false
+Type=Application
+StartupNotify=false
+Categories=GNOME;Settings;DesktopSettings;

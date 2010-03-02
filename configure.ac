@@ -144,6 +144,7 @@ AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 
 # control center capplet
 PKG_CHECK_MODULES(CAPPLET, mx-1.0 gconf-2.0)
+PKG_CHECK_MODULES(SYSTRAY, mx-gtk-1.0)
 
 PKG_CHECK_MODULES(CC, gmodule-export-2.0 libgnome-control-center-extension clutter-gtk-0.10)
 
