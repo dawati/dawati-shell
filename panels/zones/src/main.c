@@ -268,21 +268,46 @@ window_closed_cb (SwWindow   *window,
 }
 
 static void
-window_clicked_cb (SwWindow   *window,
-                   WnckWindow *win)
+switch_to (WnckWindow *win)
 {
   WnckWorkspace *ws;
 
-  /* close panel */
-  if (client)
-    mpl_panel_client_hide (client);
+  ws = wnck_window_get_workspace (win);
 
   /* activate the window */
   wnck_window_activate (win, clutter_x11_get_current_event_time ());
 
   /* move to the workspace */
-  ws = wnck_window_get_workspace (win);
   wnck_workspace_activate (ws, clutter_x11_get_current_event_time ());
+}
+
+static void
+hide_end (MplPanelClient *client,
+          WnckWindow *window)
+{
+  switch_to (window);
+
+  g_signal_handlers_disconnect_by_func (client, hide_end, window);
+}
+
+static void
+window_clicked_cb (SwWindow   *window,
+                   WnckWindow *win)
+{
+
+  /* close panel */
+  if (client)
+    {
+      /* delayed switch */
+      mpl_panel_client_hide (client);
+
+      g_signal_connect (client, "hide-end",
+                        G_CALLBACK (hide_end), win);
+
+      return;
+    }
+
+  switch_to (win);
 }
 
 static void
