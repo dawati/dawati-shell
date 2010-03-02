@@ -80,7 +80,8 @@ sw_zone_start_animation (SwZone *zone)
 {
   SwZonePrivate *priv = zone->priv;
 
-  if (priv->is_animating)
+  if (priv->is_animating
+      || !CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (zone)))
       return;
 
   priv->is_animating = TRUE;
