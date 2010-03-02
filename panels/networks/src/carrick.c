@@ -271,9 +271,6 @@ main (int    argc,
   CarrickApplet *applet;
   GtkWidget     *window;
   GtkWidget     *pane;
-#if WITH_MOBLIN
-  GtkSettings   *settings;
-#endif
   gboolean       standalone = FALSE;
   GdkNativeWindow windowid = 0;
   GError        *error = NULL;
@@ -303,15 +300,6 @@ main (int    argc,
       g_error_free (error);
       return 1;
     }
-
-  /* Force to correct theme */
-#if WITH_MOBLIN
-  settings = gtk_settings_get_default ();
-  gtk_settings_set_string_property (settings,
-                                    "gtk-theme-name",
-                                    "Moblin-Netbook",
-                                    NULL);
-#endif
 
   applet = carrick_applet_new ();
   pane = carrick_applet_get_pane (applet);
