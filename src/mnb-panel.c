@@ -413,7 +413,7 @@ mnb_panel_hide_with_toolbar_hide_completed_cb (MnbPanel         *panel,
 
   g_signal_handlers_disconnect_by_func (panel,
                                  mnb_panel_hide_with_toolbar_hide_completed_cb,
-                                 toolbar);
+                                 data);
 
   g_free (data);
 
