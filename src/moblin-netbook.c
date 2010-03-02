@@ -470,8 +470,9 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
 
   if (type == META_COMP_WINDOW_DOCK)
     {
-      MnbPanel *panel;
-      Window    xwin = mutter_window_get_x_window (mcw);
+      MnbPanel    *panel;
+      Window       xwin = mutter_window_get_x_window (mcw);
+      const gchar *wm_class;
 
       if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
         {
@@ -486,6 +487,11 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
           g_signal_connect (mcw, "show",
                             G_CALLBACK (moblin_netbook_panel_window_show_cb),
                             plugin);
+        }
+      else if ((wm_class = meta_window_get_wm_class (win)) &&
+               !strcmp (wm_class, "Matchbox-panel"))
+        {
+          g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL);
         }
     }
 
