@@ -22,7 +22,9 @@
 #include <clutter/clutter.h>
 #include <gdu/gdu.h>
 #include <gio/gio.h>
+#include <gtk/gtk.h>
 #include <mx/mx.h>
+#include "mpd-shell-defines.h"
 #include "mpd-storage-device-tile.h"
 
 static void
@@ -181,13 +183,37 @@ _mount_added_cb (GVolumeMonitor  *monitor,
 
   if (gdu_device_is_mounted (device))
   {
-    ClutterActor *tile;
+    GFile         *file;
+    char          *path;
+    GIcon         *icon;
+    GtkIconInfo   *icon_info;
+    char const    *icon_file;
+    ClutterActor  *tile;
 
-    tile = mpd_storage_device_tile_new (gdu_device_get_mount_path (device));
+    /* Mount point */
+    file = g_mount_get_root (mount);
+    path = g_file_get_path (file);
+    g_debug ("%s() %s", __FUNCTION__, path);
+
+    /* Icon */
+    icon = g_mount_get_icon (mount);
+    icon_info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+                                                icon,
+                                                MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
+                                                GTK_ICON_LOOKUP_NO_SVG);
+    icon_file = gtk_icon_info_get_filename (icon_info);
+    g_debug ("%s() %s", __FUNCTION__, icon_file);
+
+    tile = mpd_storage_device_tile_new (path, icon_file);
     g_signal_connect (tile, "eject",
                       G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
     clutter_container_add_actor (CLUTTER_CONTAINER (stage), tile);
     clutter_actor_set_width (tile, 480.0);
+
+    gtk_icon_info_free (icon_info);
+    g_object_unref (icon);
+    g_free (path);
+    g_object_unref (file);
   }
 }
 
@@ -223,6 +249,8 @@ main (int     argc,
   GVolumeMonitor  *monitor;
 
   clutter_init (&argc, &argv);
+  /* Just for icon theme, no widgets. */
+  gtk_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
 
