@@ -159,6 +159,11 @@ sw_window_drag_end (MxDraggable *draggable,
 
 
   zone = (SwZone*) clutter_actor_get_parent (CLUTTER_ACTOR (draggable));
+
+  /* the parent may be NULL if the zone was destroyed */
+  if (!zone)
+    return;
+
   num = sw_zone_get_number (zone);
 
   sw_window_workspace_changed (SW_WINDOW (draggable), num);
