@@ -3210,10 +3210,17 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
       ClutterActor    *button;
       gint             x, y;
 
-      if (!tp || (tp->type != MNB_TOOLBAR_PANEL_APPLET) || !tp->button)
+      if (!tp || !tp->button)
         continue;
 
       button = (ClutterActor*) tp->button;
+
+      if (tp->type == MNB_TOOLBAR_PANEL_CLOCK)
+        clutter_actor_set_position (CLUTTER_ACTOR (button),
+                                    screen_width - 364.0,
+                                    TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+      else if (tp->type != MNB_TOOLBAR_PANEL_APPLET)
+        continue;
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
       x = screen_width - (applet_index + 1) *
