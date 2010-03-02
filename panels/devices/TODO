@@ -2,6 +2,8 @@
 TODO
 ====
 
+* Is the volume slider supposed to make a sound when dragging?
+* Implement label on volume slider.
 * Implement keyboard navigation in the folder view.
 * The brightness tile is a compile-time option, off by default.
 
