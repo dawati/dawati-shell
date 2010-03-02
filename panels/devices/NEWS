@@ -1,4 +1,10 @@
 
+Version 0.1.9, 2010-03-02
+
+    Load storage device icons from gtk icon theme.
+    Escape device mount point and open using gtk_show_uri().
+    Increase panel height to allow for 2 devices without scrolling.
+
 Version 0.1.8, 2010-02-26
 
     Implement support for pluggable storage devices.
