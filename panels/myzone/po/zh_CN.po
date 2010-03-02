@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:46+0000\n"
+"POT-Creation-Date: 2010-03-01 10:36+0000\n"
 "PO-Revision-Date: 2010-02-24 10:11-0800\n"
 "Last-Translator: \n"
 "Language-Team: Chinese (simplified)\n"
@@ -60,13 +60,54 @@ msgstr "今天没有安排"
 msgid "Due %x"
 msgstr "%x 到期"
 
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "MeeGo 欢迎您"
+
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "这是 Myzone，您最近使用过的文件和网页内容资讯将在这里出现。"
 
-#: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to MeeGo"
-msgstr "MeeGo 欢迎您"
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Myzone 设置"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "更改 Myzone 背景和内容"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "所有其它的错误仅显示在终端。"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf 错误：%s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "显示大部分网络服务内容"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "显示尽可能多的网络服务内容"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "显示最近的文件"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "显示一半一半"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "显示尽可能多的最近的文件"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>欢迎使用 Moblin 2.1 上网本</b>"
