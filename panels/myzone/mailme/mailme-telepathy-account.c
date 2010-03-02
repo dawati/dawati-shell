@@ -395,7 +395,8 @@ _unlink_tmp_html_file (gpointer user_data)
 static gboolean
 _unlink_tmp_html_file_cb (gpointer user_data)
 {
-  _unlink_tmp_html_file (user_data);
+  /* The GDestroyNotify function attached with this timeout will deal with
+   * freeing everything. */
   return FALSE;
 }
 
