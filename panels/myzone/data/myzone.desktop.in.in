@@ -5,5 +5,5 @@ Type=Application
 _Name=Myzone settings
 _Comment=Change the Myzone background and content
 Exec=myzone
-Icon=myzone-settings
+Icon=preferences-myzone
 Categories=GTK;Settings;DesktopSettings;
