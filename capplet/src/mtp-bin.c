@@ -150,7 +150,18 @@ load_panels (GConfClient *client)
   GDir         *panels_dir;
   GError       *error = NULL;
   GSList       *panels = NULL;
+  gint          i;
   const gchar  *file_name;
+
+  /*
+   * NB -- This should match the same list in mnb-toolbar.c; the problem here
+   *       is that if there is some gconf screwup, we still want these on the
+   *       toolbar.
+   */
+  const gchar  *required[4] = {"moblin-panel-myzone",
+                               "moblin-panel-applications",
+                               "moblin-panel-zones",
+                               "carrick"};
 
   /*
    * First load the panels that should be on the toolbar from gconf prefs.
@@ -165,10 +176,28 @@ load_panels (GConfClient *client)
       panel->name = l->data;
       panel->on_toolbar = TRUE;
 
-      panels = g_slist_prepend (panels, panel);
+      panels = g_slist_append (panels, panel);
     }
 
-  panels = g_slist_reverse (panels);
+  /*
+   * Ensure that the required panels are in the list; if not, we insert them
+   * at the end.
+   */
+  for (i = 0; i < G_N_ELEMENTS (required); ++i)
+    {
+      GSList *l = g_slist_find_custom (panels,
+                                       required[i],
+                                       (GCompareFunc)compare_panel_to_name);
+
+      if (!l)
+        {
+          Panel *panel = g_slice_new0 (Panel);
+
+          panel->name = g_strdup (required[i]);
+          panel->on_toolbar = TRUE;
+          panels = g_slist_append (panels, panel);
+        }
+    }
 
   g_slist_free (order);
 
