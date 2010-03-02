@@ -78,7 +78,7 @@ SwZone#focused-zone > MxLabel.zone-title
 
 MxIcon#add-icon
 {
-  background-image: url('workspace-title-new-symbol-active.png');
+  -mx-content-image: url('workspace-title-new-symbol-active.png');
 }
 
 MxButton
