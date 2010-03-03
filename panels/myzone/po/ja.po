@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:43+0000\n"
+"POT-Creation-Date: 2010-03-01 10:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: takashi <takashi.kazami@novuscom.net>\n"
 "Language-Team: \n"
@@ -15,7 +15,48 @@ msgstr ""
 
 #: ../data/moblin-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
-msgstr "マイゾーン・パネル"
+msgstr "Myzone パネル"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Myzone の背景とコンテンツを変更"
+
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Myzone 設定"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf エラー: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "その他のエラーは全て端末に表示されます。"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "できるだけ多くの Web サービスを表示"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Web サービスを中心に表示"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "半分づつ表示"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "もっとも最新のファイルを表示"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "最近のファイルをできるだけ多く表示"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
 
 #: ../penge/penge-calendar-pane.c:473
 msgid "Appointments"
@@ -61,7 +102,7 @@ msgstr "ようこそ MeeGo へ"
 
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "ここはマイゾーンです。Web フィードから最近使用したファイルやコンテンツが表示されます。"
+msgstr "ここは Myzone です。Web フィードから最近使用したファイルやコンテンツが表示されます。"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>ネットブック Moblin 2.1 にようこそ</b>"
