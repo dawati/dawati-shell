@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:46+0000\n"
+"POT-Creation-Date: 2010-03-01 10:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: glsfra_Sophie <sophiex.marchese@intel.com>\n"
 "Language-Team: \n"
@@ -17,6 +17,39 @@ msgstr ""
 #: ../data/moblin-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Panneau Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr ""
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr ""
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr ""
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr ""
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr ""
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr ""
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr ""
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr ""
 
 #: ../penge/penge-calendar-pane.c:473
 msgid "Appointments"
@@ -57,13 +90,21 @@ msgstr "Rien à faire aujourd'hui"
 msgid "Due %x"
 msgstr "Dû %x"
 
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Bienvenue sur MeeGo"
+
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Ceci est Myzone, là où apparaîtront vos fichiers récents et le contenu de vos flux RSS."
 
-#: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to MeeGo"
-msgstr "Bienvenue sur MeeGo"
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Paramètres Myzone"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Moblin 2.1 pour Netbooks vous souhaite la bienvenue</b>"
