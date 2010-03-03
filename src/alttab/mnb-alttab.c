@@ -199,6 +199,44 @@ alt_tab_initial_timeout_cb (gpointer data)
   return FALSE;
 }
 
+static gboolean
+applications_present (void)
+{
+  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
+  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  gint                        count  = 0;
+  GList                      *l;
+
+  /*
+   * Check for running applications; we do this by checking if any
+   * application-type windows are present.
+   */
+  l = mutter_get_windows (screen);
+
+  while (l)
+    {
+      MutterWindow       *m    = l->data;
+      MetaCompWindowType  type = mutter_window_get_window_type (m);
+
+      /*
+       * Ignore desktop, docs, and panel windows
+       *
+       * (Panel windows are currently of type META_COMP_WINDOW_OVERRIDE_OTHER)
+       */
+      if (!(type == META_COMP_WINDOW_DESKTOP        ||
+            type == META_COMP_WINDOW_DOCK           ||
+            type == META_COMP_WINDOW_OVERRIDE_OTHER))
+        {
+          if (++count >= 2)
+            break;
+        }
+
+      l = l->next;
+    }
+
+  return (count >= 2);
+}
+
 /*
  * The handler for Alt+Tab that we register with metacity.
  *
@@ -239,6 +277,9 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
 
   if (!priv->in_alt_grab)
     {
+      if (!applications_present ())
+        return;
+
       if (!mnb_alttab_overlay_establish_keyboard_grab (overlay, display, screen,
                                                        binding->mask,
                                                        event->xkey.time))
