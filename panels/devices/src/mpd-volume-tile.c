@@ -304,6 +304,9 @@ mpd_volume_tile_set_sink (MpdVolumeTile   *self,
                           GvcMixerStream  *sink)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
+  bool do_notify;
+
+  do_notify = sink != priv->sink;
 
   if (priv->sink)
   {
@@ -330,9 +333,7 @@ mpd_volume_tile_set_sink (MpdVolumeTile   *self,
     update_volume_slider (self);
   }
 
-  if ((sink && !priv->sink) ||
-      (!sink && priv->sink) ||
-      (sink != priv->sink))
+  if (do_notify)
   {
     g_object_notify (G_OBJECT (self), "sink");
   }
