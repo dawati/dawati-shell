@@ -33,7 +33,7 @@
 #define BUTTON_WIDTH 66
 #define BUTTON_SPACING 10
 
-#define TRAY_WIDTH 200
+#define TRAY_WIDTH 170
 #define TRAY_PADDING   3
 #define TRAY_BUTTON_WIDTH 44
 
@@ -130,7 +130,7 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-  clock_x = box->x2 - box->x1 - 364.0;
+  clock_x = box->x2 - box->x1 - 334.0;
   tray_x  = clock_x + 164.0 + 2.0;
 
   childbox.x1 = padding.left + 4.0;
