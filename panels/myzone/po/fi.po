@@ -1,41 +1,37 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-03-03 10:38+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anu McDougall <anu.mcdougall@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Tapaamiset</b>"
-
-#: ../penge/penge-events-pane.c:59
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Luo tapaaminen"
 
-#: ../penge/penge-events-pane.c:60
-#: ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Lisää"
 
 # took off "calendar" in order to fix a truncation
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "Tällä viikolla ei ole tapahtumia"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Kaveriesi päivitykset ja verkkopalvelut näkyvät täällä. Aktivoi tilisi nyt!"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "Verkkosivu"
 
@@ -43,21 +39,74 @@ msgstr "Verkkosivu"
 msgid "Create a new task"
 msgstr "Luo uusi tehtävä"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "Tänään ei ole mitään tekemistä!"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "Määräaika: %x"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Moblin 2.1 ultrakannettaville toivottaa sinut tervetulleeksi!</b>"
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Terveteloa MeeGo-sovellukseen"
 
-# Took "we hope you enjoy it" off in order to fix a truncation in the UI
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Koska Moblin on vähän erilainen kuin muut käyttöjärjestelmät, olemme keränneet muutamia vinkkejä käytön helpottamiseksi. -Moblin tiimi"
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Tämä on Myzone, jossa viimeksi käyttämäsi tiedostot ja web-syötteidesi sisällöt näkyvät."
 
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone-paneeli"
+
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Myzone-asetukset"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Vaihda Myzonen taustaa ja sisältöä"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Kaikki virheet tämän lisäksi näytetään vain päätteellä. "
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf-virhe: %s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Näytä suurin osa web-palvelun sisällöstä."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Näytä niin paljon webäpalvelun sisältöä kuin mahdollista."
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Näytä viimeisimmät tiedostot"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Näytä puolet ja puolet"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Näytä mahdollisimman monta viimeisintä tiedostoa"
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "<b>Tapaamiset</b>"
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Moblin 2.1 ultrakannettaville toivottaa sinut tervetulleeksi!</b>"
+
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Koska Moblin on vähän erilainen kuin muut käyttöjärjestelmät, olemme keränneet muutamia vinkkejä käytön helpottamiseksi. -Moblin tiimi"
