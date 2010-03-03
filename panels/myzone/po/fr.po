@@ -18,10 +18,6 @@ msgstr ""
 msgid "Myzone panel"
 msgstr "Panneau Myzone"
 
-#: ../capplet/myzone-cc-panel.c:49
-msgid "Show mostly web service content"
-msgstr ""
-
 #: ../penge/penge-calendar-pane.c:473
 msgid "Appointments"
 msgstr "Rendez-vous"
@@ -105,6 +101,10 @@ msgstr "Afficher le maximum de fichiers récents"
 #: ../capplet/myzone-cc-panel.c:53
 msgid "Show mostly recent files"
 msgstr "Afficher principalement les fichiers récents"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Afficher principalement le contenu des services web"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Moblin 2.1 pour Netbooks vous souhaite la bienvenue</b>"
