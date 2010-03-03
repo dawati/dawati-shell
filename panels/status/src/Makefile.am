@@ -28,7 +28,7 @@ mnb-status-marshal.c: mnb-status-marshal.h
 	&& rm -f xgen-mc
 
 libexec_PROGRAMS = moblin-panel-status
-
+noinst_PROGRAMS = test-geotag-pane
 BUILT_SOURCES = mnb-status-marshal.h mnb-status-marshal.c
 
 moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
@@ -44,7 +44,17 @@ moblin_panel_status_SOURCES  = 	\
 	mps-feed-pane.c \
 	mps-feed-pane.h \
 	mps-feed-switcher.c \
-	mps-feed-switcher.h
+	mps-feed-switcher.h \
+	mps-geotag-pane.c \
+	mps-geotag-pane.h
+
+test_geotag_pane_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
+test_geotag_pane_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
+test_geotag_pane_SOURCES  = test-geotag-pane.c \
+			    mps-geotag-pane.c \
+			    mps-geotag-pane.h
+
+
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.status.service.in

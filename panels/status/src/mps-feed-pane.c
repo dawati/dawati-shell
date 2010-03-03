@@ -45,6 +45,7 @@
 #include "mps-view-bridge.h"
 #include "mps-feed-pane.h"
 #include "mps-tweet-card.h"
+#include "mps-geotag-pane.h"
 
 G_DEFINE_TYPE (MpsFeedPane, mps_feed_pane, MX_TYPE_TABLE)
 
@@ -70,6 +71,12 @@ struct _MpsFeedPanePrivate {
   ClutterActor *box_layout;
 
   ClutterActor *progress_label;
+
+  ClutterActor *location_hbox;
+  ClutterActor *main_notebook;
+  ClutterActor *geotag_pane;
+  ClutterActor *location_button;
+  ClutterActor *location_label;
 };
 
 enum
@@ -343,6 +350,64 @@ _entry_activate_cb (ClutterText *text,
                                    pane);
 }
 
+
+static void
+_update_location_label (MpsFeedPane *pane)
+{
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+  gboolean geotag_enabled, guess_location;
+  gdouble latitude, longitude;
+
+  g_object_get (priv->geotag_pane,
+                "geotag-enabled", &geotag_enabled,
+                "guess-location", &guess_location,
+                "latitude", &latitude,
+                "longitude", &longitude,
+                NULL);
+
+  if (geotag_enabled)
+  {
+    gchar *message;
+
+    if (guess_location)
+    {
+      message = g_strdup_printf (_("We guessed your location as: %f %f"),
+                                   latitude,
+                                   longitude);
+    } else {
+      message = g_strdup_printf (_("Your location is being shared as: %f %f "),
+                                   latitude,
+                                   longitude);
+    }
+    mx_label_set_text (MX_LABEL (priv->location_label), message);
+    g_free (message);
+  } else {
+    mx_label_set_text (MX_LABEL (priv->location_label), _("Your location is not being shared"));
+  }
+}
+
+static void
+_location_button_clicked_cb (MxButton    *button,
+                             MpsFeedPane *pane)
+{
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+
+  clutter_actor_hide (priv->scroll_view);
+  clutter_actor_show (priv->geotag_pane);
+}
+
+static void
+_geotag_pane_location_chosen (MpsGeotagPane *geotag_pane,
+                              MpsFeedPane   *pane)
+{
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+
+  _update_location_label (pane);
+
+  clutter_actor_hide (priv->geotag_pane);
+  clutter_actor_show (priv->scroll_view);
+}
+
 static void
 _card_reply_clicked (MpsTweetCard *card,
                      gpointer      userdata)
@@ -452,6 +517,23 @@ mps_feed_pane_init (MpsFeedPane *self)
 
   mx_table_set_row_spacing (MX_TABLE (self), 8);
 
+  priv->geotag_pane = mps_geotag_pane_new ();
+
+  priv->location_hbox = mx_table_new ();
+  priv->location_label = mx_label_new ("");
+  mx_table_add_actor_with_properties (MX_TABLE (priv->location_hbox),
+                                      priv->location_label,
+                                      0, 0,
+                                      "x-expand", TRUE,
+                                      NULL);
+
+  priv->location_button = mx_button_new_with_label (_("Change"));
+  mx_table_add_actor_with_properties (MX_TABLE (priv->location_hbox),
+                                      priv->location_button,
+                                      0, 1,
+                                      "x-expand", FALSE,
+                                      NULL);
+
   /* Container population */
 
   mx_table_add_actor_with_properties (MX_TABLE (priv->update_hbox),
@@ -481,13 +563,32 @@ mps_feed_pane_init (MpsFeedPane *self)
                                       NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (self),
-                                      priv->scroll_view,
+                                      priv->location_hbox,
                                       1, 0,
+                                      "x-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
+
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->scroll_view,
+                                      2, 0,
                                       "x-expand", TRUE,
                                       "x-fill", TRUE,
                                       "y-expand", TRUE,
                                       "y-fill", TRUE,
                                       NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->geotag_pane,
+                                      2, 0,
+                                      "x-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-expand", TRUE,
+                                      "y-fill", TRUE,
+                                      NULL);
+
+  clutter_actor_hide (priv->geotag_pane);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->scroll_view),
                                priv->box_layout);
@@ -501,7 +602,19 @@ mps_feed_pane_init (MpsFeedPane *self)
                     (GCallback)_update_button_clicked_cb,
                     self);
 
+  g_signal_connect (priv->location_button,
+                    "clicked",
+                    (GCallback)_location_button_clicked_cb,
+                    self);
+
+  g_signal_connect (priv->geotag_pane,
+                    "location-chosen",
+                    (GCallback)_geotag_pane_location_chosen,
+                    self);
+
   clutter_actor_hide (priv->something_wrong_frame);
+
+  _update_location_label (self);
 }
 
 ClutterActor *
