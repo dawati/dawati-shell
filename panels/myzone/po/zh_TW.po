@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:46+0000\n"
+"POT-Creation-Date: 2010-03-03 10:38+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -26,8 +26,7 @@ msgstr "約會"
 msgid "Create an appointment"
 msgstr "建立一項約會"
 
-#: ../penge/penge-events-pane.c:69
-#: ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "加入"
 
@@ -64,13 +63,49 @@ msgstr "歡迎來到 MeeGo"
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "這是 Myzone，您最近使用過的檔案與您的網路消息來源內容會在這裡顯現。"
 
+#: ../data/myzone.desktop.in.in.h:2
+msgid "Myzone settings"
+msgstr "Myzone 設定"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "更改 Myzone 的背景和內容"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "所有其他的錯誤只在終端機顯示。"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GCof 錯誤：%s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "顯示大部分網路服務內容"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "盡可能顯示網路服務內容"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "顯示最近的文件"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "分類顯示"
+
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone 面板"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "盡可能顯示最近的文件"
+
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>歡迎來到專為網路筆電所設計的 Moblin 2.1</b>"
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "由於 Moblin 和其他電腦有些不同，我們把一些東西湊在一塊來協助你上手。我們希"
-#~ "望你能盡情地享受 Moblin，Moblin 團隊敬上。"
 
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "由於 Moblin 和其他電腦有些不同，我們把一些東西湊在一塊來協助你上手。我們希望你能盡情地享受 Moblin，Moblin 團隊敬上。"
