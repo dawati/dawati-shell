@@ -103,7 +103,7 @@ mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
   clutter_container_child_set (CLUTTER_CONTAINER (self), label,
                                 "expand", true,
                                 "x-align", MX_ALIGN_START,
-                                "x-fill", TRUE,
+                                "x-fill", true,
                                 "y-align", MX_ALIGN_MIDDLE,
                                 "y-fill", false,
                                 NULL);
