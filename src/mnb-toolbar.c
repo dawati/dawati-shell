@@ -220,6 +220,7 @@ struct _MnbToolbarPrivate
   GList        *panels;         /* Panels (the dropdowns) */
 
   guint         max_panels;
+  guint         n_applets;
 
   MnbToolbarPanel *stubbed_panel; /* The panel for which we are showing stub */
 
@@ -1877,6 +1878,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   MutterPlugin      *plugin = priv->plugin;
   gint               screen_width, screen_height;
   ClutterActor      *button;
+  ClutterActor      *clock = priv->dummy_clock;
 
   if (!tp || !tp->button)
     return;
@@ -1908,22 +1910,18 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
                                           (BUTTON_WIDTH * index)
                                           + (BUTTON_SPACING * index),
                                           TOOLBAR_HEIGHT - BUTTON_HEIGHT);
-            }
-          else
-            {
-              /*
-               * FIXME for now, put clock at the fixed position on the left.
-               */
-              clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                          screen_width - 364.0,
-                                          TOOLBAR_HEIGHT - BUTTON_HEIGHT);
-            }
 
-          mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+              mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
                                                 0,
                                                 -(TOOLBAR_HEIGHT-BUTTON_HEIGHT),
                                                 BUTTON_WIDTH,
                                                 TOOLBAR_HEIGHT);
+
+            }
+          else
+            {
+              clock = button;
+            }
 
           if (!clutter_actor_get_parent (button))
             clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
@@ -1959,6 +1957,17 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
             clutter_container_add_actor (CLUTTER_CONTAINER (priv->hbox),
                                          button);
         }
+    }
+
+  if (clock)
+    {
+      gfloat x, y;
+
+      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+      x = screen_width-(priv->n_applets+1)*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
+      x -= (BUTTON_SPACING + CLOCK_WIDTH);
+
+      clutter_actor_set_position (clock, x, y);
     }
 }
 
@@ -2007,6 +2016,9 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 
           return;
         }
+
+      if (index > priv->n_applets)
+        priv->n_applets = index;
     }
   else
     {
@@ -2748,13 +2760,18 @@ mnb_toolbar_constructed (GObject *self)
   if (!priv->have_clock)
     {
       ClutterActor *clock = mnb_toolbar_clock_new ();
+      gfloat        x, y;
 
       clutter_container_add_actor (CLUTTER_CONTAINER (hbox), clock);
-      clutter_actor_set_position (clock, screen_width - 364.0,
-                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
       clutter_actor_set_reactive (clock, FALSE);
 
       priv->dummy_clock = clock;
+
+      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+      x = screen_width-(priv->n_applets+1)*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
+      x -= (BUTTON_SPACING + CLOCK_WIDTH);
+
+      clutter_actor_set_position (clock, x, y);
     }
 #endif
 
@@ -3203,6 +3220,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
   gint               screen_width, screen_height;
   gint               applet_index = 0;
   GList             *l;
+  ClutterActor      *clock = priv->dummy_clock;
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -3235,9 +3253,10 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
       button = (ClutterActor*) tp->button;
 
       if (tp->type == MNB_TOOLBAR_PANEL_CLOCK)
-        clutter_actor_set_position (button,
-                                    screen_width - 364.0,
-                                    TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+        {
+          clock = button;
+          continue;
+        }
       else if (tp->type != MNB_TOOLBAR_PANEL_APPLET)
         continue;
 
@@ -3258,11 +3277,15 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
       applet_index++;
     }
 
-  if (priv->dummy_clock)
+  if (clock)
     {
-      clutter_actor_set_position (priv->dummy_clock,
-                                  screen_width - 364.0,
-                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+      gfloat x, y;
+
+      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+      x = screen_width-(priv->n_applets+1)*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
+      x -= (BUTTON_SPACING + CLOCK_WIDTH);
+
+      clutter_actor_set_position (clock, x, y);
     }
 
   for (l = priv->panels; l; l = l->next)
