@@ -207,6 +207,16 @@ struct _MnbToolbarPrivate
   ClutterActor *spinner;
   ClutterActor *shadow;
 
+  /*
+   * TODO -- The proper clock is a toolbar button associated with a panel,
+   * like any other button, and can be removed/added via the Toolbar capplet.
+   * As such, we rely on a desktop file, and expect an associated dbus service,
+   * etc. So, while we are waiting for the Date & Time panel to be ready for
+   * release, we use a dummy clock object in its place; once the panel is ready
+   * we should remove this.
+   */
+  ClutterActor *dummy_clock;
+
   GList        *panels;         /* Panels (the dropdowns) */
 
   guint         max_panels;
@@ -1970,13 +1980,14 @@ mnb_toolbar_windowless_button_toggled_cb (MxButton *button,
 static void
 mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 {
-  ClutterActor *button;
-  gchar        *button_style = NULL;
-  const gchar  *name;
-  const gchar  *tooltip;
-  const gchar  *stylesheet = NULL;
-  const gchar  *style_id = NULL;
-  gint          index;
+  MnbToolbarPrivate *priv   = toolbar->priv;
+  ClutterActor      *button;
+  gchar             *button_style = NULL;
+  const gchar       *name;
+  const gchar       *tooltip;
+  const gchar       *stylesheet = NULL;
+  const gchar       *style_id = NULL;
+  gint               index;
 
   if (!tp)
     return;
@@ -2031,6 +2042,12 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
     {
       button = tp->button = mnb_toolbar_clock_new ();
       toolbar->priv->have_clock = TRUE;
+
+      if (priv->dummy_clock)
+        {
+          clutter_actor_destroy (priv->dummy_clock);
+          priv->dummy_clock = NULL;
+        }
     }
   else if (tp->windowless)
     button = tp->button = mnb_toolbar_icon_new ();
@@ -2736,6 +2753,8 @@ mnb_toolbar_constructed (GObject *self)
       clutter_actor_set_position (clock, screen_width - 364.0,
                                   TOOLBAR_HEIGHT - BUTTON_HEIGHT);
       clutter_actor_set_reactive (clock, FALSE);
+
+      priv->dummy_clock = clock;
     }
 #endif
 
@@ -3216,7 +3235,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
       button = (ClutterActor*) tp->button;
 
       if (tp->type == MNB_TOOLBAR_PANEL_CLOCK)
-        clutter_actor_set_position (CLUTTER_ACTOR (button),
+        clutter_actor_set_position (button,
                                     screen_width - 364.0,
                                     TOOLBAR_HEIGHT - BUTTON_HEIGHT);
       else if (tp->type != MNB_TOOLBAR_PANEL_APPLET)
@@ -3237,6 +3256,13 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
                                             TOOLBAR_HEIGHT);
 
       applet_index++;
+    }
+
+  if (priv->dummy_clock)
+    {
+      clutter_actor_set_position (priv->dummy_clock,
+                                  screen_width - 364.0,
+                                  TOOLBAR_HEIGHT - BUTTON_HEIGHT);
     }
 
   for (l = priv->panels; l; l = l->next)
