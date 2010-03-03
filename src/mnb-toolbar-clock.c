@@ -234,7 +234,7 @@ mnb_toolbar_clock_get_preferred_height (ClutterActor *self,
 {
   gfloat height;
 
-  height = 54.0;
+  height = 55.0;
 
   if (min_height_p)
     *min_height_p = height;
