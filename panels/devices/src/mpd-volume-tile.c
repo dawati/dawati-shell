@@ -65,12 +65,46 @@ typedef struct
 {
   /* Managed by clutter */
   ClutterActor    *volume_slider;
+  ClutterActor    *volume_label_slide;
+  ClutterActor    *volume_label;
   ClutterActor    *mute_toggle;
 
   /* Data */
   GvcMixerControl *control;
   GvcMixerStream  *sink;
 } MpdVolumeTilePrivate;
+
+/*
+ * Volume is a value from 0.0 to 1.0
+ */
+static char *
+volume_to_string (double volume)
+{
+  char *volume_string;
+
+  g_debug ("%s () %.1f", __FUNCTION__, volume);
+
+  if (volume == 1.0)
+    volume_string = g_strdup (_("Turned up to 11"));
+  else if (volume >= 0.90)
+    volume_string = g_strdup (_("Very loud"));
+  else if (volume >= 0.75)
+    volume_string = g_strdup (_("Loud"));
+  else if (volume > 0.50)
+    volume_string = g_strdup (_("Fairly loud"));
+  else if (volume == 0.50)
+    volume_string = g_strdup (_("Middle of the road"));
+  else if (volume >= 0.25)
+    volume_string = g_strdup (_("Fairly quiet"));
+  else if (volume >= 0.10)
+    volume_string = g_strdup (_("Quiet"));
+  else if (volume > 0.0)
+    volume_string = g_strdup (_("Very quiet"));
+  else
+    volume_string = g_strdup (_("Silent"));
+
+  return volume_string;
+}
 
 static void
 _mute_toggle_notify_cb (MxToggle      *toggle,
@@ -211,6 +245,14 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   g_signal_connect (priv->volume_slider, "notify::progress",
                     G_CALLBACK (_volume_slider_progress_notify_cb), self);
 
+  priv->volume_label = mx_label_new ("");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->volume_label);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->volume_label,
+                               "expand", false,
+                               "x-align", MX_ALIGN_MIDDLE,
+                               "x-fill", false,
+                               NULL);
+
   mute_box = mx_box_layout_new ();
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (mute_box), 6);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), mute_box);
@@ -318,8 +360,9 @@ static void
 update_volume_slider (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  double volume;
-  double progress;
+  double   volume;
+  double   progress;
+  char    *volume_string;
 
   g_signal_handlers_disconnect_by_func (priv->volume_slider,
                                         _volume_slider_progress_notify_cb,
@@ -331,6 +374,11 @@ update_volume_slider (MpdVolumeTile *self)
 
   g_signal_connect (priv->volume_slider, "notify::progress",
                     G_CALLBACK (_volume_slider_progress_notify_cb), self);
+
+  /* Volume label */
+  volume_string = volume_to_string (progress);
+  mx_label_set_text (MX_LABEL (priv->volume_label), volume_string);
+  g_free (volume_string);
 }
 
 static void
@@ -355,8 +403,9 @@ static void
 update_stream_volume (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  double progress;
-  pa_volume_t volume;
+  double       progress;
+  pa_volume_t  volume;
+  char        *volume_string;
 
   g_signal_handlers_disconnect_by_func (priv->sink,
                                         _stream_volume_notify_cb,
@@ -371,4 +420,9 @@ update_stream_volume (MpdVolumeTile *self)
 
   g_signal_connect (priv->sink, "notify::volume",
                     G_CALLBACK (_stream_volume_notify_cb), self);
+
+  /* Volume label */
+  volume_string = volume_to_string (progress);
+  mx_label_set_text (MX_LABEL (priv->volume_label), volume_string);
+  g_free (volume_string);
 }
