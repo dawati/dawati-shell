@@ -1964,7 +1964,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
       gfloat x, y;
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width-(priv->n_applets+1)*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
+      x = screen_width-priv->n_applets*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
       x -= (BUTTON_SPACING + CLOCK_WIDTH);
 
       clutter_actor_set_position (clock, x, y);
@@ -2017,8 +2017,40 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
           return;
         }
 
-      if (index > priv->n_applets)
-        priv->n_applets = index;
+      if (index >= priv->n_applets)
+        {
+          ClutterActor *clock = priv->dummy_clock;
+
+          priv->n_applets = index + 1;
+
+          if (priv->have_clock)
+            {
+              GList *l;
+
+              for (l = priv->panels; l; l = l->next)
+                {
+                  MnbToolbarPanel *t = l->data;
+
+                  if (t->type == MNB_TOOLBAR_PANEL_CLOCK)
+                    {
+                      clock = t->button;
+                      break;
+                    }
+                }
+            }
+
+          if (clock)
+            {
+              gfloat x, y;
+
+              y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+              x = priv->old_screen_width -
+                priv->n_applets * (TRAY_BUTTON_WIDTH + TRAY_PADDING) - 4;
+              x -= (BUTTON_SPACING + CLOCK_WIDTH);
+
+              clutter_actor_set_position (clock, x, y);
+            }
+        }
     }
   else
     {
@@ -2768,7 +2800,7 @@ mnb_toolbar_constructed (GObject *self)
       priv->dummy_clock = clock;
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width-(priv->n_applets+1)*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
+      x = screen_width-priv->n_applets*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
       x -= (BUTTON_SPACING + CLOCK_WIDTH);
 
       clutter_actor_set_position (clock, x, y);
@@ -3282,7 +3314,7 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
       gfloat x, y;
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width-(priv->n_applets+1)*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
+      x = screen_width-priv->n_applets*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
       x -= (BUTTON_SPACING + CLOCK_WIDTH);
 
       clutter_actor_set_position (clock, x, y);
