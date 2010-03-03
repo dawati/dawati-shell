@@ -28,6 +28,15 @@
 
 #define TOOLBAR_X_PADDING 4.0
 
+#define CLOCK_WIDTH 164
+
+#define BUTTON_WIDTH 66
+#define BUTTON_SPACING 10
+
+#define TRAY_WIDTH 200
+#define TRAY_PADDING   3
+#define TRAY_BUTTON_WIDTH 44
+
 static void mx_droppable_iface_init (MxDroppableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (MtpToolbar, mtp_toolbar, MX_TYPE_WIDGET,
@@ -1043,9 +1052,21 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
   GList             *l;
-  gint               i, n_panels, n_applets;
+  gint               i, n_panels, n_applets, max_panels = 8;
   gfloat             applet_depth = 0.0;
   gboolean           new_space = FALSE;
+  ClutterActor      *stage;
+
+  stage = clutter_actor_get_stage ((ClutterActor*)toolbar);
+
+  if (stage)
+    {
+      gint screen_width = clutter_actor_get_width (stage);
+
+      max_panels = 1 + /* for the clock */
+        (screen_width-CLOCK_WIDTH-TRAY_WIDTH) / (BUTTON_WIDTH+BUTTON_SPACING);
+
+    }
 
   l = clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));
   n_applets = g_list_length (l);
@@ -1058,11 +1079,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
   l = clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
   n_panels = g_list_length (l);
 
-  /*
-   * FIXME -- we need to calculate this from screen size, and taking into
-   * account the size of the clock.
-   */
-  for (i = 0; i < 8 - n_panels; ++i)
+  for (i = 0; i < max_panels - n_panels; ++i)
     {
       ClutterActor *space = mtp_space_new ();
 
