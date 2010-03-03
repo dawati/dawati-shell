@@ -118,7 +118,8 @@ mtp_toolbar_allocate (ClutterActor          *actor,
                       const ClutterActorBox *box,
                       ClutterAllocationFlags flags)
 {
-  MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
+  MtpToolbar        *toolbar = MTP_TOOLBAR (actor);
+  MtpToolbarPrivate *priv = toolbar->priv;
   MxPadding          padding;
   ClutterActorBox    childbox;
   gfloat             clock_x;
@@ -159,6 +160,8 @@ mtp_toolbar_allocate (ClutterActor          *actor,
                           MX_ALIGN_START, MX_ALIGN_MIDDLE,
                           FALSE, FALSE);
   clutter_actor_allocate (priv->applet_area, &childbox, flags);
+
+  mtp_toolbar_fill_space (toolbar);
 }
 
 static void
