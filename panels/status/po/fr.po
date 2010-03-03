@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:30+0000\n"
+"POT-Creation-Date: 2010-03-01 10:38+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
@@ -14,76 +14,81 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/mnb-im-status-row.c:103 ../src/mnb-im-status-row.c:104
-#: ../src/mnb-im-status-row.c:742
-msgid "Offline"
-msgstr "Déconnecté"
-
-#: ../src/mnb-im-status-row.c:105 ../src/moblin-panel-status.c:536
-msgid "Available"
-msgstr "Disponible"
-
-#: ../src/mnb-im-status-row.c:106 ../src/mnb-im-status-row.c:107
-#: ../src/moblin-panel-status.c:540 ../src/moblin-panel-status.c:544
-msgid "Away"
-msgstr "Absent"
-
-#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
-#: ../src/moblin-panel-status.c:548 ../src/moblin-panel-status.c:552
-msgid "Busy"
-msgstr "Occupé"
-
-#: ../src/mnb-im-status-row.c:132
-msgid "Close"
-msgstr "Fermer"
-
-#: ../src/mnb-im-status-row.c:141 ../src/mnb-im-status-row.c:760
-msgid "Change"
-msgstr "Changer"
-
-#: ../src/mnb-im-status-row.c:745
-msgid "Unknown account"
-msgstr "Compte inconnu"
-
-#: ../src/mnb-web-status-entry.c:88 ../src/mnb-web-status-entry.c:641
-#: ../src/mnb-web-status-entry.c:722
-msgid "Edit"
-msgstr "Éditer"
-
-#. Translators: %s is the user visible name of the service
-#: ../src/mnb-web-status-entry.c:515
-#, c-format
-msgid "Enter your %s status here..."
-msgstr "Saisissez votre statut pour %s ici..."
-
-#: ../src/mnb-web-status-entry.c:519 ../src/mnb-web-status-entry.c:592
-msgid "Enter your current status here..."
-msgstr "Saisissez votre statut actuel ici..."
-
-#: ../src/moblin-panel-status.c:470
-msgid "Your current status"
-msgstr "Votre statut actuel"
-
-#: ../src/moblin-panel-status.c:472 ../src/moblin-panel-status.c:960
-msgid "Your current status - you are offline"
-msgstr "Votre statut actuel - vous êtes déconnecté"
-
-#: ../src/moblin-panel-status.c:825
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte Messenger ?"
-
-#: ../src/moblin-panel-status.c:994
-msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "Pour mettre à jour votre statut Web, configurez un compte de services Web avec un fournisseur qui autorise de tels messages"
-
-#: ../src/moblin-panel-status.c:1021
-msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr "Installez un compte de  messagerie instantanée pour mettre à jour votre statut"
-
-#: ../src/moblin-panel-status.c:1118
+#: ../src/moblin-panel-status.c:132
+#: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "statuts"
 
-#: ../src/mnb-web-status-entry.c:701
-msgid "Post"
-msgstr "Actualiser"
+#. Actor creation
+#: ../src/mps-feed-pane.c:416
+msgid "Update"
+msgstr "Mise à jour"
+
+#. vim:set ts=8 expandtab
+#: ../data/moblin-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Panneau de statut"
+
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status: The service may be unavailable or your password could be wrong."
+msgstr "Impossible de mettre à jour le statut : le service est peut être indisponible ou votre mot de passe est erroné."
+
+#: ../src/mps-feed-pane.c:421
+msgid "What's happening?"
+msgstr "Que se passe-t-il ?"
+
+#: ../src/mps-feed-switcher.c:367
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "Vos services web ne semblent pas être configurés ou bien il y a un problème avec leur configuration. Utilisez le bouton ci-dessus pour ouvrir Mes Comptes Web et en configurer un."
+
+#: ../src/mps-feed-switcher.c:344
+msgid "Add new web service"
+msgstr "Ajouter un nouveau service web"
+
+#~ msgid "Offline"
+#~ msgstr "Déconnecté"
+
+#~ msgid "Available"
+#~ msgstr "Disponible"
+
+#~ msgid "Away"
+#~ msgstr "Absent"
+
+#~ msgid "Busy"
+#~ msgstr "Occupé"
+
+#~ msgid "Close"
+#~ msgstr "Fermer"
+
+#~ msgid "Change"
+#~ msgstr "Changer"
+
+#~ msgid "Unknown account"
+#~ msgstr "Compte inconnu"
+
+#~ msgid "Edit"
+#~ msgstr "Éditer"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "Saisissez votre statut pour %s ici..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "Saisissez votre statut actuel ici..."
+
+#~ msgid "Your current status"
+#~ msgstr "Votre statut actuel"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "Votre statut actuel - vous êtes déconnecté"
+
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte Messenger ?"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Pour mettre à jour votre statut Web, configurez un compte de services Web avec un fournisseur qui autorise de tels messages"
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Installez un compte de  messagerie instantanée pour mettre à jour votre statut"
+
+#~ msgid "Post"
+#~ msgstr "Actualiser"
