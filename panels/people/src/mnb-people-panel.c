@@ -768,9 +768,11 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                       scroll_view,
                       1, 0);
 
-  mx_table_add_actor (MX_TABLE (priv->content_table),
-                      priv->active_content_table,
-                      0, 1);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->content_table),
+                                      priv->active_content_table,
+                                      0, 1,
+                                      "x-expand", FALSE,
+                                      NULL);
 
 
   /* main area */
