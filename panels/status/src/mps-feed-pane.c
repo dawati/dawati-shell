@@ -321,33 +321,57 @@ _service_update_status_cb (SwClientService *service,
 }
 
 static void
-_update_button_clicked_cb (MplEntry    *entry,
-                           MpsFeedPane *pane)
+_send_status_message (MpsFeedPane *pane)
 {
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
   const gchar *status_message;
+  gboolean geotag_enabled;
+  gdouble latitude, longitude;
+  GHashTable *fields;
 
   status_message = mpl_entry_get_text (MPL_ENTRY (priv->entry));
 
-  sw_client_service_update_status (priv->service,
-                                   _service_update_status_cb,
-                                   status_message,
-                                   pane);
+  fields = g_hash_table_new_full (g_str_hash,
+                                  g_str_equal,
+                                  NULL,
+                                  g_free);
+
+  g_object_get (priv->geotag_pane,
+                "geotag-enabled", &geotag_enabled,
+                "latitude", &latitude,
+                "longitude", &longitude,
+                NULL);
+
+  if (geotag_enabled)
+  {
+    g_hash_table_insert (fields,
+                         "latitude",
+                         g_strdup_printf ("%f", latitude));
+    g_hash_table_insert (fields,
+                         "longitude",
+                         g_strdup_printf ("%f", longitude));
+  }
+
+  sw_client_service_update_status_with_fields (priv->service,
+                                               _service_update_status_cb,
+                                               status_message,
+                                               fields,
+                                               pane);
+  g_hash_table_destroy (fields);
+}
+
+static void
+_update_button_clicked_cb (MplEntry    *entry,
+                           MpsFeedPane *pane)
+{
+  _send_status_message (pane);
 }
 
 static void
 _entry_activate_cb (ClutterText *text,
                     MpsFeedPane *pane)
 {
-  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
-  const gchar *status_message;
-
-  status_message = mpl_entry_get_text (MPL_ENTRY (priv->entry));
-
-  sw_client_service_update_status (priv->service,
-                                   _service_update_status_cb,
-                                   status_message,
-                                   pane);
+  _send_status_message (pane);
 }
 
 
