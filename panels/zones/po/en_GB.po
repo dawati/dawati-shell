@@ -19,11 +19,6 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: UNITED KINGDOM\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
-#, fuzzy
-msgid "Zones panel"
-msgstr "No Zones yet"
-
 #: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
 msgid "zones"
 msgstr "zones"
@@ -32,19 +27,9 @@ msgstr "zones"
 msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
 msgstr "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
 
-#: ../src/sw-zone.c:764
-#, fuzzy
-msgid "new zone"
-msgstr "zones"
-
 #: ../src/sw-zone.c:778
 msgid "No applications on this zone"
 msgstr "No applications on this zone"
-
-#: ../src/sw-zone.c:906
-#, fuzzy
-msgid "one"
-msgstr "zones"
 
 #: ../src/sw-zone.c:910
 msgid "two"
@@ -73,6 +58,18 @@ msgstr "eight"
 #: ../src/sw-zone.c:930
 msgid "seven"
 msgstr "seven"
+
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Zones panel"
+
+#: ../src/sw-zone.c:764
+msgid "new zone"
+msgstr "new zone"
+
+#: ../src/sw-zone.c:906
+msgid "one"
+msgstr "one"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin Netbook Effects"
