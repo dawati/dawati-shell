@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-06 18:44+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
+"Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgstr "Personer som talar med dig...."
 #.
 #: ../src/moblin-panel-people.c:23
 msgid "people - Someone is talking to you"
-msgstr "personer - Någon talar med dig"
+msgstr "personer - någon talar med dig"
 
 #.
 #. * Used for the tooltip for the hover state for the icon in the toolbar
@@ -43,13 +43,11 @@ msgstr "personer "
 
 #: ../src/mnb-people-panel.c:50
 msgid "To see your IM contacts, go online in the Status panel."
-msgstr "För att se dina IM-kontakter, koppla upp dig i statuspanelen."
+msgstr "Koppla upp dig i statuspanelen för att se dina IM-kontakter."
 
 #: ../src/mnb-people-panel.c:51
 msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr ""
-"Ursäkta, men vi hittar inga personer. Det verkar som de inte är uppkopplade "
-"just nu."
+msgstr "Vi kan inte hitta någon person. Det verkar som ingen är uppkopplad just nu."
 
 #: ../src/mnb-people-panel.c:164
 msgid "Send an email"
@@ -65,7 +63,7 @@ msgstr "Skicka ett meddelande"
 
 #: ../src/mnb-people-panel.c:309
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
+msgstr "Vi kan inte hitta någon person. Har du konfigurerat ett IM-konto?"
 
 #: ../src/mnb-people-panel.c:554
 msgid "People"
@@ -82,3 +80,4 @@ msgstr "Val"
 #: ../src/mnb-people-panel.c:743
 msgid "Nobody selected"
 msgstr "Ingen vald"
+
