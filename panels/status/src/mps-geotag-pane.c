@@ -495,6 +495,7 @@ mps_geotag_pane_init (MpsGeotagPane *self)
   priv->current_location_label = mx_label_new ("");
 
   priv->button_box = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box), 6);
   priv->use_location_button = mx_button_new_with_label (_("Use location"));
   priv->dont_use_location_button = mx_button_new_with_label (_("Don't use location"));
 
@@ -539,6 +540,9 @@ mps_geotag_pane_init (MpsGeotagPane *self)
                                       "col-span", 2,
                                       "y-expand", FALSE,
                                       NULL);
+
+  mx_table_set_col_spacing (MX_TABLE (self), 6);
+  mx_table_set_row_spacing (MX_TABLE (self), 6);
 
   priv->geo_position = geoclue_position_new ("org.freedesktop.Geoclue.Providers.Hostip",
                                              "/org/freedesktop/Geoclue/Providers/Hostip");
