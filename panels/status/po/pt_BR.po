@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-23 23:45+0000\n"
+"POT-Creation-Date: 2010-03-03 10:40+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: williane <williane.tenca@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -19,31 +19,31 @@ msgstr ""
 msgid "status"
 msgstr "status"
 
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "Atualizar"
-
 #. vim:set ts=8 expandtab
 #: ../data/moblin-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Painel de status"
 
-#: ../src/mps-feed-pane.c:445
-msgid "Unable to update status: The service may be unavailable or your password could be wrong."
-msgstr "Impossível atualizar o status: o serviço pode estar indisponível ou sua senha pode estar incorreta."
+#. Actor creation
+#: ../src/mps-feed-pane.c:416
+msgid "Update"
+msgstr "Atualizar"
 
 #: ../src/mps-feed-pane.c:421
 msgid "What's happening?"
 msgstr "O que está acontecendo?"
 
+#: ../src/mps-feed-switcher.c:344
+msgid "Add new web service"
+msgstr "Adicionar novo serviço web"
+
 #: ../src/mps-feed-switcher.c:367
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Parece que você não tem serviços web configurados ou existe um problema com suas configurações. Use o botão acima para abrir Minhas Contas Web e configure uma."
 
-#: ../src/mps-feed-switcher.c:344
-msgid "Add new web service"
-msgstr "Adicionar novo serviço web"
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Impossível atualizar o status. O serviço pode estar indisponível ou sua senha pode estar incorreta."
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
