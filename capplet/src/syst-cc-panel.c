@@ -194,6 +194,9 @@ syst_cc_panel_make_contents (SystCcPanel *panel)
   gtk_widget_show (button);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
+  if (is_panel_running () > -1)
+    mx_gtk_light_switch_set_active (MX_GTK_LIGHT_SWITCH (button), TRUE);
+
   g_signal_connect (button, "switch-flipped",
                     G_CALLBACK (syst_cc_panel_switch_flipped_cb),
                     panel);
