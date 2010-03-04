@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-01 10:38+0000\n"
+"POT-Creation-Date: 2010-03-03 10:40+0000\n"
 "PO-Revision-Date: 2009-10-09 12:45-0800\n"
 "Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -22,31 +22,31 @@ msgstr ""
 msgid "status"
 msgstr "状态"
 
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "更新"
-
 #. vim:set ts=8 expandtab
 #: ../data/moblin-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "状态面板"
 
-#: ../src/mps-feed-pane.c:445
-msgid "Unable to update status: The service may be unavailable or your password could be wrong."
-msgstr "无法更新状态：服务不可用或您的密码可能是错误的。"
+#. Actor creation
+#: ../src/mps-feed-pane.c:416
+msgid "Update"
+msgstr "更新"
 
 #: ../src/mps-feed-pane.c:421
 msgid "What's happening?"
 msgstr "这是怎么回事？"
 
+#: ../src/mps-feed-switcher.c:344
+msgid "Add new web service"
+msgstr "添加新的网络服务"
+
 #: ../src/mps-feed-switcher.c:367
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "您似乎没有配置任何网络服务，或者您的配置有问题。请使用上面的按钮，打开我的网络帐户，开始配置。"
 
-#: ../src/mps-feed-switcher.c:344
-msgid "Add new web service"
-msgstr "添加新的网络服务"
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "无法更新状态。服务不可用或您的密码可能是错误的。"
 
 #~ msgid "Offline"
 #~ msgstr "离线"
