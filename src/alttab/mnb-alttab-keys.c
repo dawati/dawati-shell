@@ -146,4 +146,7 @@ mnb_alttab_overlay_setup_metacity_keybindings (MnbAlttabOverlay *overlay)
   meta_keybindings_set_custom_handler ("toggle_shadow",
                                        mnb_alttab_nop_key_handler,
                                        overlay, NULL);
+  meta_keybindings_set_custom_handler ("close",
+                                       mnb_alttab_nop_key_handler,
+                                       overlay, NULL);
 }
