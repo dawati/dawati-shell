@@ -21,6 +21,7 @@
 
 #include <stdbool.h>
 
+#include <canberra-gtk.h>
 #include <glib/gi18n.h>
 #include <gvc/gvc-mixer-control.h>
 
@@ -29,6 +30,7 @@
 #include "config.h"
 
 #define MIXER_CONTROL_NAME "Moblin Panel Devices"
+#define VOLUME_CHANGED_EVENT "audio-volume-change"
 
 GvcMixerStream *
 mpd_volume_tile_get_sink (MpdVolumeTile   *self);
@@ -72,7 +74,19 @@ typedef struct
   /* Data */
   GvcMixerControl *control;
   GvcMixerStream  *sink;
+  int              playing_event_sound;
 } MpdVolumeTilePrivate;
+
+static void
+_play_sound_completed_cb (ca_context *context,
+                          uint32_t       id,
+                          int            res,
+                          MpdVolumeTile *self)
+{
+  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
+
+  (void) g_atomic_int_dec_and_test (&priv->playing_event_sound);
+}
 
 /*
  * Volume is a value from 0.0 to 1.0
@@ -82,12 +96,16 @@ update_volume_label (MpdVolumeTile  *self,
                      double          volume)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  float label_width;
-  float slider_width;
-  float x;
+  char const  *level;
+  float        label_width;
+  float        slider_width;
+  float        x;
 
   g_return_if_fail (0.0 <= volume && volume <= 1.0);
 
+  level = mx_label_get_text (MX_LABEL (priv->volume_label));
+
+  /* Label text */
   if (volume == 1.0)
     mx_label_set_text (MX_LABEL (priv->volume_label), _("Turned up to 11"));
   else if (volume >= 0.90)
@@ -107,12 +125,46 @@ update_volume_label (MpdVolumeTile  *self,
   else
     mx_label_set_text (MX_LABEL (priv->volume_label), _("Silent"));
 
+  /* Label position */
   label_width = clutter_actor_get_width (priv->volume_label);
   slider_width = clutter_actor_get_width (priv->volume_slider);
   x = slider_width * volume - label_width / 2;
   x = CLAMP (x, 0.0, slider_width - label_width);
   clutter_actor_set_x (priv->volume_label, x);
-  g_debug ("%s() %.1f (%.1f %.1f)", __FUNCTION__, x, slider_width, label_width);
+
+  /* Notification */
+  if (0 != g_strcmp0 (level,
+                      mx_label_get_text (MX_LABEL (priv->volume_label))))
+  {
+    gint res;
+    ca_proplist *proplist;
+    ca_context *context;
+
+    if (g_atomic_int_get (&priv->playing_event_sound) > 0)
+      return;
+
+    context = ca_gtk_context_get ();
+
+    ca_proplist_create (&proplist);
+    ca_proplist_sets (proplist,
+                      CA_PROP_EVENT_ID,
+                      VOLUME_CHANGED_EVENT);
+
+    res = ca_context_play_full (context,
+                                1,
+                                proplist,
+                                (ca_finish_callback_t )_play_sound_completed_cb,
+                                self);
+    ca_proplist_destroy (proplist);
+
+    if (res != CA_SUCCESS)
+    {
+      g_warning (G_STRLOC ": Error playing test sound: %s",
+                 ca_strerror (res));
+    } else {
+      g_atomic_int_inc (&priv->playing_event_sound);
+    }
+  }
 }
 
 static void
