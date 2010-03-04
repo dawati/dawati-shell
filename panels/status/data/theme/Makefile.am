@@ -14,7 +14,8 @@ dist_theme_DATA = \
 	retweet-hover.png \
 	tweet-reply.png \
 	tweet-reply-hover.png \
-	icon-bg-hover.png
+	icon-bg-hover.png \
+	location-box-bg.png
 
 # Manage mutter-moblin's texture cache.
 

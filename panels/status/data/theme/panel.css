@@ -155,3 +155,45 @@ MpsFeedSwitcher
   padding: 0;
 }
 
+*.mps-feed-location-hbox
+{
+  border-image: url("location-box-bg.png") 4;
+  padding: 6;
+}
+
+*.mps-feed-location-change-button,
+*.mps-feed-location-change-button:hover,
+*.mps-feed-location-change-button:active
+{
+  border-image: none;
+  padding: 0;
+  font-size:16pt;
+  color: #7dbe0cff;
+}
+
+*.mps-feed-location-label
+{
+  font-size:16px;
+  font-family: "Droid Sans";
+  color: #595959ff;
+}
+
+*.mps-geo-search-entry
+{
+  padding: 2;
+  border-image: url("status_entry_box.png") 4 4 4 4;
+}
+
+*.mps-geo-search-entry *.MplEntryEntry
+{
+  font-size: 16pt;
+  color: #595959ff;
+  border-image:none;
+}
+
+*.mps-geo-search-entry *.MplEntryButton
+{
+  color: #7dbe0cff;
+}
+
+
