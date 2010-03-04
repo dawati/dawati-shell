@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:26+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
+"Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,66 +20,70 @@ msgstr ""
 #. * The conjunction 'or' will be at the end of a choice of disabled
 #. technologies,
 #. * for example 'WiFi, WiMAX or 3G.
-#. 
+#.
 #: ../carrick/carrick-list.c:859
 msgid " or "
-msgstr "eller"
+msgstr " eller "
 
 #. * Translator note: the comma ',' will be used to join the different
 #. disabled technologies
 #. * as in the above example; 'WiFi, WiMAX or 3G'
-#. 
+#.
 #: ../carrick/carrick-list.c:864
 msgid ", "
 msgstr ", "
 
 #: ../carrick/carrick-list.c:865
 msgid "wired"
-msgstr "Uttagsansluten"
+msgstr "uttagsansluten"
 
-#: ../carrick/carrick-list.c:866 ../carrick/carrick-pane.c:1445
+#: ../carrick/carrick-list.c:866
+#: ../carrick/carrick-pane.c:1445
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:867 ../carrick/carrick-pane.c:1539
+#: ../carrick/carrick-list.c:867
+#: ../carrick/carrick-pane.c:1539
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:868 ../carrick/carrick-pane.c:1508
+#: ../carrick/carrick-list.c:868
+#: ../carrick/carrick-pane.c:1508
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:869 ../carrick/carrick-pane.c:1571
+#: ../carrick/carrick-list.c:869
+#: ../carrick/carrick-pane.c:1571
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
-#. 
+#.
 #: ../carrick/carrick-list.c:882
 msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Anslutningshanteraren verkar inte fungera. Du kan försöka starta om din  dator"
+msgstr "Vi kan inte hitta några tillgängliga nätverk. Anslutningshanteraren verkar inte fungera. Försök starta om datorn."
 
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
-#. 
+#.
 #: ../carrick/carrick-list.c:892
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Du kan försöka inaktivera frånkopplingsläget."
+msgstr "Vi kan inte hitta några tillgängliga nätverk. Försök lämna läget offline."
 
 #: ../carrick/carrick-list.c:1029
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Ursäkta, vi kan inte hitta några tillgängliga nätverk. Du kan försöka aktivera %s."
+msgstr "Vi kan inte hitta några tillgängliga nätverk. Försök aktivera %s."
 
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
-#. 
+#.
 #: ../carrick/carrick-list.c:1043
 msgid "Sorry, we can't find any networks"
-msgstr "Ursäkta vi kan inte hitta några tillgängliga nätverk"
+msgstr "Vi kan inte hitta några tillgängliga nätverk"
 
 #: ../carrick/carrick-notification-manager.c:103
 msgid "Network connected"
@@ -93,7 +97,7 @@ msgstr "Du är nu ansluten till ett fast nätverk"
 #: ../carrick/carrick-notification-manager.c:141
 #, c-format
 msgid "You're now connected to %s, a %s network"
-msgstr "Du är nu ansluten till %s ett %s nätverk"
+msgstr "Du är nu ansluten till %s som är ett %s nätverk"
 
 #: ../carrick/carrick-notification-manager.c:147
 #, c-format
@@ -107,17 +111,17 @@ msgstr "Nätverk borttappat"
 #: ../carrick/carrick-notification-manager.c:172
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "Ursäkta, vi tappade din fasta anslutning "
+msgstr "Avbruten anslutning"
 
 #: ../carrick/carrick-notification-manager.c:176
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "Ursäkta, vi tappade din %s anslutning till %s"
+msgstr "Din %s anslutning till %s avbröts"
 
 #: ../carrick/carrick-notification-manager.c:182
 #, c-format
 msgid "Sorry, we've lost your %s connection"
-msgstr "Ursäkta, vi tappade din %s anslutning "
+msgstr "Din %s anslutning avbröts"
 
 #: ../carrick/carrick-notification-manager.c:199
 msgid "Network changed"
@@ -126,32 +130,32 @@ msgstr "Nätverk ändrat"
 #: ../carrick/carrick-notification-manager.c:218
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Ursäkta, din anslutning till %s avbröts. Så vi har anslutit dig till ett fast nätverk"
+msgstr "Din anslutning till %s avbröts. Vi har istället anslutit dig till ett fast nätverk"
 
 #: ../carrick/carrick-notification-manager.c:225
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "Ursäkta, din anslutning till %s avbröts. Så vi har anslutit dig till ett %s, ett %s nätverk"
+msgstr "Din anslutning till %s avbröts. Vi har istället anslutit dig till %s som är ett %s nätverk"
 
 #: ../carrick/carrick-notification-manager.c:233
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "Ursäkta, din anslutning till %s avbröts. Så vi har anslutit dig till ett %s nätverk"
+msgstr "Din anslutning till %s avbröts. Vi har istället anslutit dig till ett %s nätverk"
 
 #: ../carrick/carrick-notification-manager.c:243
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Ursäkta, din %s anslutning avbröts. Så vi har anslutit dig till ett fast nätverk"
+msgstr "Din %s anslutning avbröts. Vi har istället anslutit dig till ett fast nätverk"
 
 #: ../carrick/carrick-notification-manager.c:250
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "Ursäkta, din %s anslutning avbröts. Så vi har anslutit dig till ett %s , ett %s nätverk"
+msgstr "Din %s anslutning avbröts. Vi har istället anslutit dig till %s som är ett %s nätverk"
 
 #: ../carrick/carrick-notification-manager.c:259
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "Ursäkta, din %s anslutning avbröts. Så vi har anslutit dig till ett %s nätverk"
+msgstr "Din %s anslutning avbröts. Vi har istället anslutit dig till ett %s nätverk"
 
 #: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
@@ -163,9 +167,9 @@ msgid ""
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"Ange namnent på nätverket du vill\n"
-" ansluta till och när det krävs\n"
-" ange lösenord och säkerhetstyp."
+"Ange namnet på nätverket du vill\n"
+"ansluta till och om så krävs, ange\n"
+"lösenord och säkerhetstyp."
 
 #: ../carrick/carrick-pane.c:676
 msgid "Network name"
@@ -183,7 +187,8 @@ msgstr "Ingen"
 msgid "Password"
 msgstr "Lösenord"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1279
+#: ../carrick/carrick-pane.c:727
+#: ../carrick/carrick-service-item.c:1279
 msgid "Show password"
 msgstr "Visa lösenord"
 
@@ -196,22 +201,23 @@ msgstr "Nätverk"
 msgid "Add new connection"
 msgstr "Lägg till ny anslutning"
 
-#: ../carrick/carrick-pane.c:1477 ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-pane.c:1477
+#: ../carrick/carrick-service-item.c:241
 msgid "Wired"
-msgstr "Använder ett uttag"
+msgstr "Använder uttag"
 
 #: ../carrick/carrick-pane.c:1615
 msgid "Offline mode"
-msgstr "Frånkopplingsläge"
+msgstr "Offline"
 
 #: ../carrick/carrick-pane.c:1640
 msgid "This will disable all your connections"
-msgstr "Detta avslutar alla dina anslutningar"
+msgstr "Detta inaktiverar alla dina anslutningar"
 
 #. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
-#. 
+#.
 #: ../carrick/carrick-service-item.c:47
 msgid "Critical Error: Invalid country code"
 msgstr "Kritiskt fel: Ogiltig landskod"
@@ -230,11 +236,11 @@ msgstr "Kritiskt fel: Kan inte hitta Anslutningshanteraren "
 
 #: ../carrick/carrick-service-item.c:51
 msgid "ERROR: No 3G Hardware detected"
-msgstr "FEL: Hittar inte någon 3G hårdvara"
+msgstr "FEL: Hittar inte någon 3G maskinvara"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#. 
+#.
 #: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
@@ -246,42 +252,45 @@ msgstr "Koppla från"
 
 #: ../carrick/carrick-service-item.c:275
 msgid "Connected"
-msgstr "Ansluten!"
+msgstr "Ansluten"
 
-#: ../carrick/carrick-service-item.c:282 ../carrick/carrick-service-item.c:291
+#: ../carrick/carrick-service-item.c:282
+#: ../carrick/carrick-service-item.c:291
 #, c-format
 msgid "Cancel"
 msgstr "Avbryt"
 
 #: ../carrick/carrick-service-item.c:285
 msgid "Configuring"
-msgstr "Konfigurering"
+msgstr "Konfigurerar"
 
 #: ../carrick/carrick-service-item.c:294
 msgid "Associating"
 msgstr "Associerar"
 
-#: ../carrick/carrick-service-item.c:303 ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-service-item.c:303
+#: ../carrick/carrick-service-item.c:328
 #: ../carrick/carrick-service-item.c:1268
 msgid "Connect"
 msgstr "Anslut"
 
 #: ../carrick/carrick-service-item.c:331
 msgid "Connection failed"
-msgstr "Anslutningen misslyckades"
+msgstr "Anslutningsfel"
 
 #: ../carrick/carrick-service-item.c:334
 msgid "Sorry, the connection failed. You could try again."
-msgstr "Ursäkta, anslutningen misslyckades. Du kan försöka igen."
+msgstr "Anslutningsfel. Du kan försöka igen."
 
-#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:343
+#: ../carrick/carrick-service-item.c:340
+#: ../carrick/carrick-service-item.c:343
 #, c-format
 msgid "Disconnecting"
 msgstr "Kopplar från"
 
 #: ../carrick/carrick-service-item.c:401
 msgid "Type password here"
-msgstr "Ange lösenord "
+msgstr "Ange lösenord här"
 
 #: ../carrick/carrick-service-item.c:484
 msgid "Really remove?"
@@ -294,34 +303,34 @@ msgid ""
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-"Vill du radera %s %s nätverk? Detta gör att\n"
+"Vill du radera %s %s nätverket? Det gör att\n"
 "lösenordet glöms bort och du kommer inte\n"
-"längre automatiskt anslutas till %s."
+"längre automatiskt att anslutas till %s."
 
 #: ../carrick/carrick-service-item.c:664
 #, c-format
 msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
-msgstr "Ditt lösenord har inte rätt längd. För en WEPanslutning behöver det vara antingen 10 eller 26 tecken, du har %i."
+msgstr "Ditt lösenord har inte rätt längd. För en WEP-anslutning måste det vara antingen 10 eller 26 tecken, du har %i."
 
 #: ../carrick/carrick-service-item.c:674
 #, c-format
 msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Ditt lösenord är för kort. För en WPAanslutning behöver det vara minst 8 tecken långt, du har %i."
+msgstr "Ditt lösenord är för kort. För en WPA-anslutning måste det vara minst 8 tecken långt, du har %i."
 
 #: ../carrick/carrick-service-item.c:678
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Ditt lösenord är för långt. För en WPAanslutning behöver det vara färre än 63 tecken långt, du har %i"
+msgstr "Ditt lösenord är för långt. För en WPA-anslutning måste det vara färre än 63 tecken långt, du har %i"
 
 #: ../carrick/carrick-service-item.c:686
 #, c-format
 msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Ditt lösenord är för kort. För en WPA2anslutning behöver det vara minst 8 tecken långt, du har %i."
+msgstr "Ditt lösenord är för kort. För en WPA2-anslutning måste det vara minst 8 tecken långt, du har %i."
 
 #: ../carrick/carrick-service-item.c:690
 #, c-format
 msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Ditt lösenord är för långt. För en WPA2anslutning behöver det vara färre än 63 tecken långt, du har %i"
+msgstr "Ditt lösenord är för långt. För en WPA2-anslutning måste det vara färre än 63 tecken långt, du har %i"
 
 #: ../carrick/carrick-service-item.c:1204
 msgid "Scanning"
@@ -333,7 +342,7 @@ msgstr "Skannar"
 #. It should look like the ones below network name in the UI
 #: ../carrick/carrick-service-item.c:1223
 msgid "WPA2 encrypted"
-msgstr "WPA2 krypterat"
+msgstr "WPA2-krypterat"
 
 #: ../src/carrick.c:62
 msgid "networks - not connected"
@@ -345,7 +354,7 @@ msgstr "nätverk - ansluter"
 
 #: ../src/carrick.c:74
 msgid "networks - wired"
-msgstr "nätverk - väggurtag"
+msgstr "nätverk - uttag"
 
 #: ../src/carrick.c:82
 #, c-format
@@ -357,17 +366,18 @@ msgstr "nätverk - %s - 3G"
 msgid "networks - %s - bluetooth"
 msgstr "nätverk - %s - bluetooth"
 
-#: ../src/carrick.c:88 ../src/carrick.c:100
+#: ../src/carrick.c:88
+#: ../src/carrick.c:100
 msgid "networks"
 msgstr "nätverk"
 
 #: ../src/carrick.c:95
 msgid "networks - error"
-msgstr "nätverk - felmeddelande"
+msgstr "nätverk - fel"
 
 #: ../src/carrick.c:127
 msgid "Run in standalone mode"
-msgstr "Kör i självständigt läge "
+msgstr "Kör i fristående läge "
 
 #: ../src/carrick.c:138
 msgid "Carrick connectivity applet"
@@ -382,11 +392,12 @@ msgid "network"
 msgstr "nätverk"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
-msgstr "Anslutningsguide för mobiltelefoninformation"
+msgstr "Anslutningsguide för mobidata"
 
 #: ../callouts/3g/ggg-country-dialog.c:93
 msgid "Select Country"
@@ -394,11 +405,11 @@ msgstr "Välj land"
 
 #: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
-msgstr "manuell konfigurering"
+msgstr "Manuell konfigurering"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr "Plan namn: (obligatoriskt)"
+msgstr "Plannamn: (obligatoriskt)"
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
@@ -410,23 +421,23 @@ msgstr "Lösenord:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:103
 msgid "Gateway:"
-msgstr "Förmedlingsnod:"
+msgstr "Gateway:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
-msgstr "Primär DNS:"
+msgstr "Primärt DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
-msgstr "Sekundär DNS:"
+msgstr "Sekundärt DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
-msgstr "Tertiär DNS:"
+msgstr "Tertiärt DNS:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
-msgstr "Välj din 3G plan"
+msgstr "Välj din 3G-plan"
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
@@ -435,11 +446,11 @@ msgstr "Välj leverantör"
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
 msgid "%s (Roaming)"
-msgstr "%s (Roaming)"
+msgstr "%s (roaming)"
 
 #: ../callouts/3g/ggg-service-dialog.c:125
 msgid "Select 3G Service"
-msgstr "Välj 3G tjänst"
+msgstr "Välj 3G-tjänst"
 
 #: ../src/carrick.c:79
 #, c-format
