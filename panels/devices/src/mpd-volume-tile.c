@@ -77,33 +77,42 @@ typedef struct
 /*
  * Volume is a value from 0.0 to 1.0
  */
-static char *
-volume_to_string (double volume)
+static void
+update_volume_label (MpdVolumeTile  *self,
+                     double          volume)
 {
-  char *volume_string;
+  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
+  float label_width;
+  float slider_width;
+  float x;
 
-  g_debug ("%s () %.1f", __FUNCTION__, volume);
+  g_return_if_fail (0.0 <= volume && volume <= 1.0);
 
   if (volume == 1.0)
-    volume_string = g_strdup (_("Turned up to 11"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Turned up to 11"));
   else if (volume >= 0.90)
-    volume_string = g_strdup (_("Very loud"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Very loud"));
   else if (volume >= 0.75)
-    volume_string = g_strdup (_("Loud"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Loud"));
   else if (volume > 0.50)
-    volume_string = g_strdup (_("Fairly loud"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Fairly loud"));
   else if (volume == 0.50)
-    volume_string = g_strdup (_("Middle of the road"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Middle of the road"));
   else if (volume >= 0.25)
-    volume_string = g_strdup (_("Fairly quiet"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Fairly quiet"));
   else if (volume >= 0.10)
-    volume_string = g_strdup (_("Quiet"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Quiet"));
   else if (volume > 0.0)
-    volume_string = g_strdup (_("Very quiet"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Very quiet"));
   else
-    volume_string = g_strdup (_("Silent"));
+    mx_label_set_text (MX_LABEL (priv->volume_label), _("Silent"));
 
-  return volume_string;
+  label_width = clutter_actor_get_width (priv->volume_label);
+  slider_width = clutter_actor_get_width (priv->volume_slider);
+  x = slider_width * volume - label_width / 2;
+  x = CLAMP (x, 0.0, slider_width - label_width);
+  clutter_actor_set_x (priv->volume_label, x);
+  g_debug ("%s() %.1f (%.1f %.1f)", __FUNCTION__, x, slider_width, label_width);
 }
 
 static void
@@ -230,29 +239,46 @@ static void
 mpd_volume_tile_init (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  ClutterActor  *label;
-  ClutterActor  *mute_box;
-  ClutterActor  *mute_label;
+  ClutterLayoutManager  *manager;
+  ClutterActor          *label;
+  ClutterActor          *mute_box;
+  ClutterActor          *mute_label;
+  ClutterText           *text;
 
   mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
+  /* Tile label */
   label = mx_label_new (_("Netbook volume"));
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
+  /* Slider */
   priv->volume_slider = mx_slider_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->volume_slider);
   g_signal_connect (priv->volume_slider, "notify::progress",
                     G_CALLBACK (_volume_slider_progress_notify_cb), self);
 
-  priv->volume_label = mx_label_new ("");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->volume_label);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->volume_label,
-                               "expand", false,
-                               "x-align", MX_ALIGN_MIDDLE,
+  /* Volume label */
+  manager = clutter_fixed_layout_new ();
+  priv->volume_label_slide = clutter_box_new (manager);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self),
+                               priv->volume_label_slide);
+  clutter_container_child_set (CLUTTER_CONTAINER (self),
+                               priv->volume_label_slide,
+                               "expand", true,
+                               "x-align", MX_ALIGN_START,
                                "x-fill", false,
+                               "y-align", MX_ALIGN_START,
+                               "y-fill", false,
                                NULL);
 
+  priv->volume_label = mx_label_new ("");
+  text = CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (priv->volume_label)));
+  clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_NONE);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->volume_label_slide),
+                               priv->volume_label);
+
+  /* Mute button */
   mute_box = mx_box_layout_new ();
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (mute_box), 6);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), mute_box);
@@ -363,7 +389,6 @@ update_volume_slider (MpdVolumeTile *self)
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
   double   volume;
   double   progress;
-  char    *volume_string;
 
   g_signal_handlers_disconnect_by_func (priv->volume_slider,
                                         _volume_slider_progress_notify_cb,
@@ -376,10 +401,7 @@ update_volume_slider (MpdVolumeTile *self)
   g_signal_connect (priv->volume_slider, "notify::progress",
                     G_CALLBACK (_volume_slider_progress_notify_cb), self);
 
-  /* Volume label */
-  volume_string = volume_to_string (progress);
-  mx_label_set_text (MX_LABEL (priv->volume_label), volume_string);
-  g_free (volume_string);
+  update_volume_label (self, progress);
 }
 
 static void
@@ -406,7 +428,6 @@ update_stream_volume (MpdVolumeTile *self)
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
   double       progress;
   pa_volume_t  volume;
-  char        *volume_string;
 
   g_signal_handlers_disconnect_by_func (priv->sink,
                                         _stream_volume_notify_cb,
@@ -422,8 +443,6 @@ update_stream_volume (MpdVolumeTile *self)
   g_signal_connect (priv->sink, "notify::volume",
                     G_CALLBACK (_stream_volume_notify_cb), self);
 
-  /* Volume label */
-  volume_string = volume_to_string (progress);
-  mx_label_set_text (MX_LABEL (priv->volume_label), volume_string);
-  g_free (volume_string);
+  update_volume_label (self, progress);
 }
+
