@@ -159,7 +159,8 @@ update_volume_label (MpdVolumeTile  *self,
 
     if (res != CA_SUCCESS)
     {
-      g_warning (G_STRLOC ": Error playing test sound: %s",
+      g_warning ("%s: Error playing test sound: %s",
+                 G_STRLOC,
                  ca_strerror (res));
     } else {
       g_atomic_int_inc (&priv->playing_event_sound);
@@ -491,7 +492,7 @@ update_stream_volume (MpdVolumeTile *self)
   if (gvc_mixer_stream_set_volume (priv->sink, volume))
     gvc_mixer_stream_push_volume (priv->sink);
   else
-    g_warning ("gvc_mixer_stream_change_volume() failed");
+    g_warning ("%s() failed", __FUNCTION__);
 
   g_signal_connect (priv->sink, "notify::volume",
                     G_CALLBACK (_stream_volume_notify_cb), self);
