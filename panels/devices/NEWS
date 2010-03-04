@@ -1,4 +1,9 @@
 
+Version 0.1.10
+
+    Add moving label to the volume tile.
+    Add volume change notification sound.
+
 Version 0.1.9, 2010-03-02
 
     Load storage device icons from gtk icon theme.
