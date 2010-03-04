@@ -29,10 +29,6 @@ msgstr "更新"
 msgid "Status panel"
 msgstr "狀態面板"
 
-#: ../src/mps-feed-pane.c:445
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "無法更新狀態。此服務可能無法使用或密碼可能是錯誤的。"
-
 #: ../src/mps-feed-pane.c:421
 msgid "What's happening?"
 msgstr "發生什麼事？"
@@ -44,6 +40,10 @@ msgstr "你似乎沒有任何網路服務的配置，或者網路服務配置有
 #: ../src/mps-feed-switcher.c:344
 msgid "Add new web service"
 msgstr "新增網路服務"
+
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "無法更新狀態：此服務可能無法使用或密碼可能是錯誤的。"
 
 #~ msgid "Offline"
 #~ msgstr "離線"
