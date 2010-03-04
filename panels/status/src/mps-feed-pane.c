@@ -520,7 +520,11 @@ mps_feed_pane_init (MpsFeedPane *self)
   priv->geotag_pane = mps_geotag_pane_new ();
 
   priv->location_hbox = mx_table_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->location_hbox),
+                               "mps-feed-location-hbox");
   priv->location_label = mx_label_new ("");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->location_label),
+                               "mps-feed-location-label");
   mx_table_add_actor_with_properties (MX_TABLE (priv->location_hbox),
                                       priv->location_label,
                                       0, 0,
@@ -528,6 +532,8 @@ mps_feed_pane_init (MpsFeedPane *self)
                                       NULL);
 
   priv->location_button = mx_button_new_with_label (_("Change"));
+  mx_stylable_set_style_class (MX_STYLABLE (priv->location_button),
+                               "mps-feed-location-change-button");
   mx_table_add_actor_with_properties (MX_TABLE (priv->location_hbox),
                                       priv->location_button,
                                       0, 1,
