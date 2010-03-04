@@ -2,7 +2,7 @@
 Version=1.0
 Encoding=UTF-8
 Type=Application
-_Name=Myzone settings
+_Name=Myzone
 _Comment=Change the Myzone background and content
 Exec=myzone
 Icon=preferences-myzone
