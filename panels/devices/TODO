@@ -3,25 +3,7 @@ TODO
 ====
 
 * Make sure suspend-on-idle actually works, gconf should come from ux-settings, Ross is looking into it.
-* Is the volume slider supposed to make a sound when dragging?
-* Implement label on volume slider.
+* Improve label on volume slider -- patch MX.
 * Implement keyboard navigation in the folder view.
 * The brightness tile is a compile-time option, off by default.
 
-Done
-----
-
-* devices-pane: get icon from mount and pass to storage-device-pane.
-* Enable "All settings" button as soon as the unified control center shell is shipping.
-* Port dalston battery notifications to power-icon.
-* Share strings between panel-devices and power-icon.
-* Shut down on double press of power button (press when notificonation is up).
-* Fix acpi to recognise moblin-power-icon (shutdown key and lid).
-* Link power-icon only to what it really needs (startup time).
-* Move global key handling to power-icon
-* Rename toplevel "mobin-power-icon" to "power-icon".
-* Implement separate battery icon (windowless panel) as discussed.
-* Create service files at configure time.
-* Look at Ross's screensaver bug.
-* Restrict panel height.
-* Integrate dalston-idle-manager.
