@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-24 09:23+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLS <tomas.galicia@intel.com>\n"
+"Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +40,7 @@ msgstr "På %A"
 
 #: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
 msgid "Unknown"
-msgstr "Okänd enhet"
+msgstr "Okänt"
 
 #: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
 msgid "Last week"
@@ -65,11 +65,11 @@ msgstr "Innevarande år"
 
 #: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
 msgid "Last year"
-msgstr "Föregående år"
+msgstr "Förra året"
 
 #: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
 msgid "Ages ago"
-msgstr "För länge sedan"
+msgstr "För länge sen"
 
 #: ../src/moblin-netbook.c:305
 #: ../src/mnb-toolbar.c:1348
@@ -110,7 +110,7 @@ msgstr "%e %B, %Y"
 
 #: ../src/mnb-toolbar.c:1585
 msgid "power & brightness"
-msgstr "Ljusstyrka och batteri"
+msgstr "energi och ljusstyrka"
 
 #: ../src/mnb-toolbar.c:1588
 msgid "volume"
@@ -134,7 +134,7 @@ msgstr "Inga zoner ännu"
 
 #: ../src/switcher/mnb-switcher.c:302
 msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Program du använder kommer visas här. Du kan byta och organisera dem bäst du vill."
+msgstr "Program du använder visas här. Du kan byta och organisera dem bäst du vill."
 
 #: ../src/switcher/mnb-switcher-zone-apps.c:408
 msgid "No applications on this zone"
@@ -147,88 +147,126 @@ msgstr "Inga program i denna zon"
 #~ msgstr ""
 #~ "Du behöver spela musik, titta på bilder eller video för att se din "
 #~ "historia här. Under tiden kan du titta på litet test media:"
+
 #~ msgid "Recently played"
 #~ msgstr "Tidigare spelade"
+
 #~ msgid "Search results"
 #~ msgstr "Sökresultat"
+
 #~ msgid "Playqueue"
 #~ msgstr "Spelkö"
+
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "Säsong %u Avsnitt %u"
+
 #~ msgid "Previous"
 #~ msgstr "Tidigare"
+
 #~ msgid "Next"
 #~ msgstr "Nästa"
+
 #~ msgid "Media"
 #~ msgstr "Media"
+
 #~ msgid "Search"
 #~ msgstr "Sök"
+
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Säsong %d Avsnitt %d"
+
 #~ msgid "Season %d"
 #~ msgstr "Säsong %d"
+
 #~ msgid "Episode %d"
 #~ msgstr "Avsnitt %d"
+
 #~ msgid "Year %d"
 #~ msgstr "År %d"
+
 #~ msgid "media"
 #~ msgstr "Media"
+
 #~ msgid "Favourite Applications"
 #~ msgstr "Favoritprogram"
+
 #~ msgid "Applications"
 #~ msgstr "Program"
+
 #~ msgid "applications"
 #~ msgstr "Program"
+
 #~ msgid ""
 #~ "As you visit web pages, your favorites will appear here and on the New "
 #~ "tab page in the browser."
 #~ msgstr ""
 #~ "När du besöker webbsidor kommer dina favoriter visas här och på den nya "
 #~ "fliken i webbläsaren."
+
 #~ msgid "Untitled"
 #~ msgstr "Namnlös"
+
 #~ msgid "New tab"
 #~ msgstr "Ny zon"
+
 #~ msgid "Internet"
 #~ msgstr "Internet"
+
 #~ msgid "Go"
 #~ msgstr "Gå till"
+
 #~ msgid "Tabs"
 #~ msgstr "Flikar"
+
 #~ msgid "Favorite pages"
 #~ msgstr "Favoritsidor"
+
 #~ msgid "internet"
 #~ msgstr "Internet"
+
 #~ msgid "Search for %%s on %s"
 #~ msgstr "Sök efter %%s på %s"
+
 #~ msgid "Go to %s"
 #~ msgstr "Gå till %s"
+
 #~ msgid "Copy"
 #~ msgstr "Kopiera"
+
 #~ msgid "the current selection to pasteboard"
 #~ msgstr "Infoga aktuellt dokument till klipp-klistrafönstret"
+
 #~ msgid "your selection"
 #~ msgstr "Dina val"
+
 #~ msgid "Pasteboard"
 #~ msgstr "Klipp-klistrafönstret"
+
 #~ msgid "You need to copy some text to use Pasteboard"
 #~ msgstr "Du behöver kopiera texten för att använda klipp-klistrafönstret"
+
 #~ msgid "Clear pasteboard"
 #~ msgstr "Rensa klipp-klistrafönstret"
+
 #~ msgid "pasteboard"
 #~ msgstr "Klipp-klistrafönstret"
+
 #~ msgid "<b>Appointments</b>"
 #~ msgstr "<b>Möten</b>"
+
 #~ msgid "No calendar entries this week"
 #~ msgstr "Inget i kalendern denna vecka"
+
 #~ msgid ""
 #~ "Your friends' feeds and web services will appear here. Activate your "
 #~ "accounts now!"
 #~ msgstr ""
 #~ "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina "
 #~ "konton nu!"
+
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>Välkommen till Moblin 2.0 för netbooks</b>"
+
 #~ msgid ""
 #~ "As Moblin is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
@@ -237,82 +275,115 @@ msgstr "Inga program i denna zon"
 #~ "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del "
 #~ "tips för att underlätta för dig att hitta allt. Hoppas du gillar det! "
 #~ "Team Moblin."
+
 #~ msgid "Web page"
 #~ msgstr "Webbplats"
+
 #~ msgid "Nothing to do today"
 #~ msgstr "Inget schemalagt idag"
+
 #~ msgid "Due %x"
 #~ msgstr "Färdig %x"
+
 #~ msgid "people"
 #~ msgstr "Personer "
+
 #~ msgid "Send an email"
 #~ msgstr "Skicka ett email"
+
 #~ msgid "Edit details"
 #~ msgstr "Redigera detaljer"
+
 #~ msgid "Send a message"
 #~ msgstr "Skicka ett meddelande"
+
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr ""
 #~ "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
+
 #~ msgid "People"
 #~ msgstr "Personer "
+
 #~ msgid "Selection"
 #~ msgstr "Val"
+
 #~ msgid "Nobody selected"
 #~ msgstr "Ingen vald"
+
 #~ msgid "Zone %d"
 #~ msgstr "Zon%d"
+
 #~ msgid "New zone (0)"
 #~ msgstr "Ny zon (0)"
+
 #~ msgid "Choose zone for application:"
 #~ msgstr "Välj zon för detta program:"
+
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
 #~ msgstr ""
 #~ "För att aktivera listen, flytta din markör till översta delen av skärmen"
+
 #~ msgid "Offline"
 #~ msgstr "Frånkopplad"
+
 #~ msgid "Available"
 #~ msgstr "Tillgänglig"
+
 #~ msgid "Away"
 #~ msgstr "Borta"
+
 #~ msgid "Busy"
 #~ msgstr "Upptagen"
+
 #~ msgid "Close"
 #~ msgstr "Stäng"
+
 #~ msgid "Change"
 #~ msgstr "Ändra"
+
 #~ msgid "Unknown account"
 #~ msgstr "Okänt konto"
+
 #~ msgid "Edit"
 #~ msgstr "Redigera"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Ange din egna %s status här... "
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "Ange din nuvarande status här..."
+
 #~ msgid "Post"
 #~ msgstr "Efteruppgradering"
+
 #~ msgid "Your current status"
 #~ msgstr "Din nuvarande status"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Din nuvarande status - du är frånkopplad"
+
 #~ msgid ""
 #~ "To update your web status you need to setup a Web Services account with a "
 #~ "provider that supports status messages"
 #~ msgstr ""
 #~ "För att uppdatera din webbstatus behöver du installera ett "
 #~ "webbtjänstkonto med ett företag som stödjer statusmeddelanden"
+
 #~ msgid ""
 #~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "För att uppdatera din IM status behöver du installera ett IM konto"
+
 #~ msgid "status"
 #~ msgstr "Status"
+
 #~ msgid "myzone"
 #~ msgstr "MyZone"
+
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
 #~ msgstr ""
 #~ "Fältikonen har efterfrågat en storlek motsvarande (%i x %i), ändrar till "
 #~ "(%i x %i)"
+
 #~ msgid "Local"
 #~ msgstr "Lokal "
-
