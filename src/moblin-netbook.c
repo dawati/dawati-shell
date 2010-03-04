@@ -461,6 +461,7 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   MutterWindow               *mcw;
   MetaCompWindowType          type;
+  MnbPanel                   *panel;
 
   mcw =  (MutterWindow*) meta_window_get_compositor_private (win);
 
@@ -509,6 +510,13 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
                             G_CALLBACK (window_destroyed_cb),
                             plugin);
         }
+    }
+
+  if ((panel = mnb_toolbar_get_active_panel (toolbar)) &&
+      MNB_IS_PANEL_OOP (panel) &&
+      mnb_panel_oop_owns_window ((MnbPanelOop*)panel, mcw))
+    {
+      mnb_input_manager_push_window (mcw, MNB_INPUT_LAYER_PANEL);
     }
 }
 
