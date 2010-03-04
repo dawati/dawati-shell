@@ -96,14 +96,14 @@ update_volume_label (MpdVolumeTile  *self,
                      double          volume)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  char const  *level;
-  float        label_width;
-  float        slider_width;
-  float        x;
+  char  *old_level;
+  float  label_width;
+  float  slider_width;
+  float  x;
 
   g_return_if_fail (0.0 <= volume && volume <= 1.0);
 
-  level = mx_label_get_text (MX_LABEL (priv->volume_label));
+  old_level = g_strdup (mx_label_get_text (MX_LABEL (priv->volume_label)));
 
   /* Label text */
   if (volume == 1.0)
@@ -133,7 +133,7 @@ update_volume_label (MpdVolumeTile  *self,
   clutter_actor_set_x (priv->volume_label, x);
 
   /* Notification */
-  if (0 != g_strcmp0 (level,
+  if (0 != g_strcmp0 (old_level,
                       mx_label_get_text (MX_LABEL (priv->volume_label))))
   {
     gint res;
@@ -165,6 +165,7 @@ update_volume_label (MpdVolumeTile  *self,
       g_atomic_int_inc (&priv->playing_event_sound);
     }
   }
+  g_free (old_level);
 }
 
 static void
