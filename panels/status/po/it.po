@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-01 10:38+0000\n"
+"POT-Creation-Date: 2010-03-03 10:40+0000\n"
 "PO-Revision-Date: 2009-10-02 23:06+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -21,31 +21,31 @@ msgstr ""
 msgid "status"
 msgstr "stato"
 
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "Aggiorna"
-
 #. vim:set ts=8 expandtab
 #: ../data/moblin-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Pannello stato"
 
-#: ../src/mps-feed-pane.c:445
-msgid "Unable to update status: The service may be unavailable or your password could be wrong."
-msgstr "Impossibile aggiornare lo stato. Il servizio potrebbe non essere disponibile o la tua password potrebbe essere sbagliata."
+#. Actor creation
+#: ../src/mps-feed-pane.c:416
+msgid "Update"
+msgstr "Aggiorna"
 
 #: ../src/mps-feed-pane.c:421
 msgid "What's happening?"
 msgstr "Che succede?"
 
+#: ../src/mps-feed-switcher.c:344
+msgid "Add new web service"
+msgstr "Aggiungi nuovo servizio web"
+
 #: ../src/mps-feed-switcher.c:367
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Sembra che non hai servizi web configurati o è possibile che ci sia un problema con la loro configurazione. Utilizzare il pulsante in alto per aprire il mio account Web e crearne uno."
 
-#: ../src/mps-feed-switcher.c:344
-msgid "Add new web service"
-msgstr "Aggiungi nuovo servizio web"
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Impossibile aggiornare lo stato. Il servizio potrebbe non essere disponibile o la tua password potrebbe essere sbagliata."
 
 #~ msgid "Offline"
 #~ msgstr "Fuori rete"
