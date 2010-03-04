@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-03 10:40+0000\n"
-"PO-Revision-Date: 2010-03-03 17:41-0800\n"
+"PO-Revision-Date: 2010-03-03 17:51-0800\n"
 "Last-Translator: Namfon Thasanon <namfonx.thasanon@intel.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "Wat gebeurt er?"
 
 #: ../src/mps-feed-pane.c:445
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "Kan de status niet updaten: de service kan niet beschikbaar zijn of uw wachtwoord is verkeerd."
+msgstr "Kan de status niet updaten. De service kan niet beschikbaar zijn of uw wachtwoord is verkeerd."
 
 #: ../src/mps-feed-switcher.c:344
 msgid "Add new web service"
