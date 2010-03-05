@@ -86,6 +86,8 @@
 #define TOOLBAR_PANEL_STUB_TIMEOUT 6        /* in seconds */
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
+#define CLOSE_BUTTON_GUARD_WIDTH 35
+
 #if 0
 /*
  * TODO
@@ -3108,6 +3110,12 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
     }
 
   if (!(event->type == CLUTTER_ENTER || event->type == CLUTTER_LEAVE))
+    {
+      /* g_debug (G_STRLOC " leaving early"); */
+      return FALSE;
+    }
+
+  if (event->crossing.x > priv->old_screen_width - CLOSE_BUTTON_GUARD_WIDTH)
     {
       /* g_debug (G_STRLOC " leaving early"); */
       return FALSE;
