@@ -2,6 +2,8 @@
 TODO
 ====
 
+"About MeeGo" can't be removed, possible because there's no "plain" counterpart? Debug launcher-button where FAV_TOGGLED signal is emitted.
+
 (17:14:10) pgc: robsta, the autoscroll of categories on click broke
 (17:14:31) pgc: robsta, only noticed this afternoon
 (17:14:52) robsta: pgc: works as specified here :-/
