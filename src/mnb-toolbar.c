@@ -77,6 +77,7 @@
 #define TRAY_BUTTON_WIDTH 44
 
 #define TOOLBAR_TRIGGER_THRESHOLD       1
+#define TOOLBAR_TRIGGER_ADJUSTMENT      2
 #define TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT 500
 #define TOOLBAR_LOWLIGHT_FADE_DURATION 300
 #define TOOLBAR_AUTOSTART_DELAY 15
@@ -3118,6 +3119,13 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
       return FALSE;
     }
 
+  if ((event->type == CLUTTER_ENTER) &&
+      event->crossing.y > TOOLBAR_TRIGGER_THRESHOLD+TOOLBAR_TRIGGER_ADJUSTMENT)
+    {
+      /* g_debug (G_STRLOC " leaving early"); */
+      return FALSE;
+    }
+
   if ((event->type == CLUTTER_LEAVE) &&
       (priv->waiting_for_panel_show ||
        priv->dont_autohide ||
@@ -3174,7 +3182,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
            * Increase sensitivity -- increasing size of the trigger zone while
            * the timeout reduces the effect of a shaking hand.
            */
-          mnb_toolbar_trigger_region_set_height (toolbar, 2);
+          mnb_toolbar_trigger_region_set_height (toolbar,
+                                                 TOOLBAR_TRIGGER_ADJUSTMENT);
 
           priv->trigger_timeout_id =
             g_timeout_add (TOOLBAR_TRIGGER_THRESHOLD_TIMEOUT,
