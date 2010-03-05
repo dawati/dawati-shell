@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define NOT_TOO_SMALL_BORDER 20    /* space around the resized window */
+#define NOT_TOO_SMALL_BORDER 0     /* space around the resized window */
 #define NOT_TOO_SMALL_TRIGGER 0.60 /* percentage of screen size below which
                                     * the NOT_TOO_SMALL constraint triggers
                                     */
