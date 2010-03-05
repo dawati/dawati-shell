@@ -32,7 +32,7 @@
 
 #define SYST_PATH "/home/tomas/.local/.config"
 #define SYST_UID  {0x6aa9c364, 0x7620a0c3, 0x666f2075, 0x35392720, 0}
-#define SYST_CMD "matchbox-panel --geometry=200x36-0-0 --reserve-extra-height=4 --center-horizontally --start-applets=systray"
+#define SYST_CMD "matchbox-panel --geometry=200x36+0-0 --reserve-extra-height=4 --fullscreen --start-applets=systray"
 
 struct _SystCcPanelPrivate
 {
