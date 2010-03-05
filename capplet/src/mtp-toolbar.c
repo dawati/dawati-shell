@@ -274,32 +274,40 @@ mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
 
   last = applet ? g_list_first (children) : g_list_last (children);
 
+  while (last && !MTP_IS_SPACE (last->data))
+    {
+      last = applet ? last->next : last->prev;
+    }
+
+  if (last && !applet)
+    {
+      GList    *penult = last->prev;
+      gboolean  not_free_space = !priv->free_space;
+
+      while (penult && !MTP_IS_SPACE (penult->data))
+        {
+          penult = penult->prev;
+        }
+
+      if (penult)
+        priv->free_space = TRUE;
+      else
+        priv->free_space = FALSE;
+
+      if ((!priv->free_space) != not_free_space)
+        g_object_notify (G_OBJECT (toolbar), "free-space");
+    }
+
   if (last)
     {
       ClutterActor *actor = last->data;
 
-      if (!applet)
-        {
-          gboolean not_free_space = !priv->free_space;
+      retval = TRUE;
 
-          if (last->prev && MTP_IS_SPACE (last->prev->data))
-            priv->free_space = TRUE;
-          else
-            priv->free_space = FALSE;
-
-          if ((!priv->free_space) != not_free_space)
-            g_object_notify (G_OBJECT (toolbar), "free-space");
-        }
-
-      if (MTP_IS_SPACE (actor))
-        {
-          retval = TRUE;
-
-          clutter_container_remove_actor (container, actor);
-        }
-      else
-        g_warning (G_STRLOC ":%s: no space left on toolbar !!!", __FUNCTION__);
+      clutter_container_remove_actor (container, actor);
     }
+  else
+    g_warning (G_STRLOC ":%s: no space left on toolbar !!!", __FUNCTION__);
 
   g_list_free (children);
 
