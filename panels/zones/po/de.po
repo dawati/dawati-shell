@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"POT-Creation-Date: 2010-03-04 14:56+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -13,51 +14,57 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/sw-zone.c:763
-#, fuzzy
-msgid "new zone"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+msgid "zones"
 msgstr "Zonen"
 
-#: ../src/sw-zone.c:777
+#: ../src/sw-overview.c:220
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Die von dir benutzten Anwendungen erscheinen hier. Du hast die Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
+
+#: ../src/sw-zone.c:778
 msgid "No applications on this zone"
 msgstr "In dieser Zone gibt es keine Anwendungen"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
-msgid "one"
-msgstr "Zonen"
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Panel Zonen"
 
-#: ../src/sw-zone.c:909
+#: ../src/sw-zone.c:764
+msgid "new zone"
+msgstr "Neue Zone"
+
+#: ../src/sw-zone.c:910
 msgid "two"
-msgstr ""
+msgstr "zwei"
 
-#: ../src/sw-zone.c:913
-msgid "three"
-msgstr ""
+#: ../src/sw-zone.c:906
+msgid "one"
+msgstr "eine"
 
-#: ../src/sw-zone.c:917
+#: ../src/sw-zone.c:918
 msgid "four"
-msgstr ""
+msgstr "vier"
 
-#: ../src/sw-zone.c:921
-msgid "five"
-msgstr ""
+#: ../src/sw-zone.c:914
+msgid "three"
+msgstr "drei"
 
-#: ../src/sw-zone.c:925
+#: ../src/sw-zone.c:926
 msgid "six"
-msgstr ""
+msgstr "sechs"
 
-#: ../src/sw-zone.c:929
-msgid "seven"
-msgstr ""
+#: ../src/sw-zone.c:922
+msgid "five"
+msgstr "fünf"
 
-#: ../src/sw-zone.c:933
+#: ../src/sw-zone.c:934
 msgid "eight"
-msgstr ""
+msgstr "acht"
 
-#: ../src/main.c:458
-msgid "zones"
-msgstr "Zonen"
+#: ../src/sw-zone.c:930
+msgid "seven"
+msgstr "sieben"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Vor weniger als einer Minute"
@@ -107,22 +114,15 @@ msgstr "Zonen"
 #~ msgid "Effects for Moblin Netbooks"
 #~ msgstr "Effekte für Netbooks mit Moblin"
 
-# Since I've come across this in the UI only in connection with a button in notification pop-ups, I think "Ignorieren" (= Ignore) would be the best translation in this context. (User has to click the button to make the notification go away without taking any action.)
 #~ msgid "Dismiss"
 #~ msgstr "Ignorieren"
 
-# see note at "Dismiss"...
 #~ msgid "Dismiss All"
 #~ msgstr "Alle ignorieren"
 
-# example:
-# 14:37
-# (no am/pm needed)
 #~ msgid "%l:%M %P"
 #~ msgstr "%H:%M"
 
-# example:
-# 25. Mai 2007
 #~ msgid "%B %e, %Y"
 #~ msgstr "%e. %B %Y"
 
@@ -141,24 +141,8 @@ msgstr "Zonen"
 #~ msgid "test"
 #~ msgstr "Test"
 
-#~ msgid "No Zones yet"
-#~ msgstr "Noch keine Zonen"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Die von dir benutzten Anwendungen erscheinen hier. Du hast die "
-#~ "Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
-
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um "
-#~ "deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige "
-#~ "Beispielsdateien ansehen:"
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige Beispielsdateien ansehen:"
 
 #~ msgid "Recently played"
 #~ msgstr "Vor kurzem abgespielt"
