@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:57+0000\n"
+"POT-Creation-Date: 2010-03-06 10:40+0000\n"
 "PO-Revision-Date: 2009-10-14 21:13+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -16,31 +16,27 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../src/moblin-netbook.c:809
-msgid "Moblin Netbook Effects"
-msgstr "Efectos de Moblin Netbook"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr ""
 
-#: ../src/moblin-netbook.c:813
-msgid "Effects for Moblin Netbooks"
-msgstr "Efectos para os netbooks Moblin"
+#: ../capplet/src/mtp-bin.c:355
+msgid "Save toolbar"
+msgstr ""
 
-#: ../src/moblin-netbook.c:2848
-msgid "Activate"
-msgstr "Activar"
+#: ../capplet/src/mtp-bin.c:360
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr ""
 
-#: ../src/moblin-netbook.c:2862
-msgid "Unknown window"
-msgstr "Xanela descoñecida"
-
-#: ../src/moblin-netbook.c:2864
-msgid "Is asking for your attention."
-msgstr "Está a chamar pola súa atención"
+#: ../capplet/src/mtp-bin.c:388
+msgid "Available panels"
+msgstr ""
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../src/mnb-toolbar.c:752
+#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
 msgid "%l:%M %P"
 msgstr "%H.%M"
 
@@ -48,17 +44,30 @@ msgstr "%H.%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../src/mnb-toolbar.c:762
+#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
 msgid "%B %e, %Y"
 msgstr "%e de %B de %Y"
 
-#: ../src/notifications/mnb-notification.c:262
-msgid "Dismiss"
-msgstr "Esquecer"
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr ""
 
-#: ../src/notifications/mnb-notification-cluster.c:668
-msgid "Dismiss All"
-msgstr "Esquecelo todo"
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr ""
+
+#: ../capplet/src/syst-cc-panel.c:167
+msgid "System tray"
+msgstr ""
+
+#: ../capplet/src/syst-cc-panel.c:183
+msgid "Show system tray"
+msgstr ""
+
+#: ../capplet/src/syst-cc-panel.c:204
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr ""
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -68,10 +77,43 @@ msgstr "Determina a orde dos paneis da barra de ferramentas."
 msgid "Order of panels on toolbar"
 msgstr "Orde dos paneis da barra de ferramentas"
 
-#: ../src/mnb-toolbar.c:871
+#: ../src/moblin-netbook.c:932
+msgid "Moblin Netbook Effects"
+msgstr "Efectos de Moblin Netbook"
+
+#: ../src/moblin-netbook.c:936
+msgid "Effects for Moblin Netbooks"
+msgstr "Efectos para os netbooks Moblin"
+
+#: ../src/moblin-netbook.c:2990
+msgid "Activate"
+msgstr "Activar"
+
+#: ../src/moblin-netbook.c:3004
+msgid "Unknown window"
+msgstr "Xanela descoñecida"
+
+#: ../src/moblin-netbook.c:3006
+msgid "Is asking for your attention."
+msgstr "Está a chamar pola súa atención"
+
+#: ../src/mnb-toolbar.c:968
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Desculpas; %s está danado"
+
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Esquecer"
+
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Esquecelo todo"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Barra de ferramentas"
 
 #~ msgid "zones"
 #~ msgstr "zonas"
