@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:28+0000\n"
+"POT-Creation-Date: 2010-03-06 10:40+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: takashi <takashi.kazami@novuscom.net>\n"
 "Language-Team: \n"
@@ -22,15 +22,15 @@ msgstr "ツールバーを設定します"
 msgid "Toolbar"
 msgstr "ツールバー"
 
-#: ../capplet/src/mtp-bin.c:326
+#: ../capplet/src/mtp-bin.c:355
 msgid "Save toolbar"
 msgstr "ツールバーの保存"
 
-#: ../capplet/src/mtp-bin.c:331
+#: ../capplet/src/mtp-bin.c:360
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "新規に 1 つ追加するには、パネルを 1 つ削除する必要があります。"
 
-#: ../capplet/src/mtp-bin.c:359
+#: ../capplet/src/mtp-bin.c:388
 msgid "Available panels"
 msgstr "使用可能なパネル"
 
@@ -52,6 +52,27 @@ msgstr "%P%l:%M"
 msgid "%B %e, %Y"
 msgstr "%Y年%B%e日"
 
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "システム・トレイを設定します"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr "システム・トレイ"
+
+#: ../capplet/src/syst-cc-panel.c:167
+msgid "System tray"
+msgstr "システム・トレイ"
+
+#: ../capplet/src/syst-cc-panel.c:183
+msgid "Show system tray"
+msgstr "システム・トレイに表示します"
+
+#: ../capplet/src/syst-cc-panel.c:204
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "システム・トレイは、一部の旧式のアプリケーションが利用する概念で、何かが発生したことを通知したり、閉じたアプリケーションを実行させたままにしておくことができます。"
+
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
 msgstr "ツールバー上のパネルの順番を決定します。"
@@ -60,27 +81,27 @@ msgstr "ツールバー上のパネルの順番を決定します。"
 msgid "Order of panels on toolbar"
 msgstr "ツールバー上のパネルの順番"
 
-#: ../src/moblin-netbook.c:918
+#: ../src/moblin-netbook.c:932
 msgid "Moblin Netbook Effects"
 msgstr "Moblin ネットブックのエフェクター"
 
-#: ../src/moblin-netbook.c:922
+#: ../src/moblin-netbook.c:936
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin ネットブックのエフェクター"
 
-#: ../src/moblin-netbook.c:2976
+#: ../src/moblin-netbook.c:2990
 msgid "Activate"
 msgstr "有効"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3004
 msgid "Unknown window"
 msgstr "不明なウィンドウ"
 
-#: ../src/moblin-netbook.c:2992
+#: ../src/moblin-netbook.c:3006
 msgid "Is asking for your attention."
 msgstr "呼びかけてます。"
 
-#: ../src/mnb-toolbar.c:954
+#: ../src/mnb-toolbar.c:968
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "%s は壊れています"
@@ -104,9 +125,6 @@ msgstr "すべて閉じる"
 
 #~ msgid "Earlier today"
 #~ msgstr "今日"
-
-#~ msgid "Yesterday"
-#~ msgstr "昨日"
 
 #~ msgid "On %A"
 #~ msgstr "%A"
