@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:57+0000\n"
-"PO-Revision-Date: 2010-02-23 12:36+0200\n"
+"POT-Creation-Date: 2010-03-08 10:25+0000\n"
+"PO-Revision-Date: 2010-03-08 23:44+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Russian\n"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Настроить параметры панели инструментов"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Панель инструментов"
+
+#: ../capplet/src/mtp-bin.c:355
+msgid "Save toolbar"
+msgstr "Сохранить панель инструментов"
+
+#: ../capplet/src/mtp-bin.c:360
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Перед добавлением новой панели инструментов удалите старую."
+
+#: ../capplet/src/mtp-bin.c:388
+msgid "Available panels"
+msgstr "Доступные панели"
+
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:221
+#: ../src/mnb-toolbar-clock.c:86
+msgid "%l:%M %P"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:231
+#: ../src/mnb-toolbar-clock.c:96
+msgid "%B %e, %Y"
+msgstr "%B %e, %Y"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Установить настройки области уведомлений"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr "Область уведомлений"
+
+#: ../capplet/src/syst-cc-panel.c:167
+msgid "System tray"
+msgstr "Область уведомлений"
+
+#: ../capplet/src/syst-cc-panel.c:183
+msgid "Show system tray"
+msgstr "Показать область уведомлений"
+
+#: ../capplet/src/syst-cc-panel.c:204
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "Область уведомлений используется некоторыми более старыми приложениями для информирования пользователя в случае возникновения какого-то события или продолжения работы после их закрытия."
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -25,43 +86,27 @@ msgstr "Определяет порядок панелей на инструме
 msgid "Order of panels on toolbar"
 msgstr "Порядок панелей на инструментальной панели"
 
-#: ../src/moblin-netbook.c:809
+#: ../src/moblin-netbook.c:932
 msgid "Moblin Netbook Effects"
 msgstr "Эффекты Moblin Netbook"
 
-#: ../src/moblin-netbook.c:813
+#: ../src/moblin-netbook.c:936
 msgid "Effects for Moblin Netbooks"
 msgstr "Эффекты для Moblin Netbooks"
 
-#: ../src/moblin-netbook.c:2848
+#: ../src/moblin-netbook.c:2990
 msgid "Activate"
 msgstr "Активировать"
 
-#: ../src/moblin-netbook.c:2862
+#: ../src/moblin-netbook.c:3004
 msgid "Unknown window"
 msgstr "Неизвестное окно"
 
-#: ../src/moblin-netbook.c:2864
+#: ../src/moblin-netbook.c:3006
 msgid "Is asking for your attention."
 msgstr "Просит обратить внимание."
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:752
-msgid "%l:%M %P"
-msgstr "%l:%M %P"
-
-#. translators: translate this to a suitable date format for your locale.
-#. * For availabe format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:762
-msgid "%B %e, %Y"
-msgstr "%B %e, %Y"
-
-#: ../src/mnb-toolbar.c:871
+#: ../src/mnb-toolbar.c:968
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Извините, %s поврежден"
