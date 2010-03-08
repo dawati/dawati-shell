@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 14:54-0700\n"
+"POT-Creation-Date: 2010-03-08 10:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -13,81 +14,81 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/mnb-im-status-row.c:103 ../src/mnb-im-status-row.c:104
-#: ../src/mnb-im-status-row.c:742
-msgid "Offline"
-msgstr "오프라인 "
-
-#: ../src/mnb-im-status-row.c:105 ../src/moblin-panel-status.c:536
-msgid "Available"
-msgstr "사용 가능"
-
-#: ../src/mnb-im-status-row.c:106 ../src/mnb-im-status-row.c:107
-#: ../src/moblin-panel-status.c:540 ../src/moblin-panel-status.c:544
-msgid "Away"
-msgstr "자리 비움"
-
-#: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
-#: ../src/moblin-panel-status.c:548 ../src/moblin-panel-status.c:552
-msgid "Busy"
-msgstr "다른 용무 중"
-
-#: ../src/mnb-im-status-row.c:132
-msgid "Close"
-msgstr "닫기"
-
-#: ../src/mnb-im-status-row.c:141 ../src/mnb-im-status-row.c:760
-msgid "Change"
-msgstr "변경"
-
-#: ../src/mnb-im-status-row.c:745
-msgid "Unknown account"
-msgstr "알 수 없는 계정 "
-
-#: ../src/mnb-web-status-entry.c:86 ../src/mnb-web-status-entry.c:639
-#: ../src/mnb-web-status-entry.c:720
-msgid "Edit"
-msgstr "편집"
-
-#. Translators: %s is the user visible name of the service
-#: ../src/mnb-web-status-entry.c:513
-#, c-format
-msgid "Enter your %s status here..."
-msgstr "%s 상태을 입력하세요"
-
-#: ../src/mnb-web-status-entry.c:517 ../src/mnb-web-status-entry.c:590
-msgid "Enter your current status here..."
-msgstr "여기에 지금 상태를 입력하십시오..."
-
-#: ../src/mnb-web-status-entry.c:699
-msgid "Post"
-msgstr "게시"
-
-#: ../src/moblin-panel-status.c:470
-msgid "Your current status"
-msgstr "현재 상태"
-
-#: ../src/moblin-panel-status.c:472 ../src/moblin-panel-status.c:960
-msgid "Your current status - you are offline"
-msgstr "현재 상태 - 오프라인"
-
-#: ../src/moblin-panel-status.c:825
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "죄송합니다. 아무도 찾을수 없습니다. 메신저 계정을 설정 하셨습니까?"
-
-#: ../src/moblin-panel-status.c:994
-msgid ""
-"To update your web status you need to setup a Web Services account with a "
-"provider that supports status messages"
-msgstr ""
-"귀하의 웹 상태를 업데이트 하려면 상태 메세지 지원하는 웹 서비스 계정을 설정해"
-"야 합니다. "
-
-#: ../src/moblin-panel-status.c:1021
-msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr ""
-"귀하의 IM 상태를 업데이트 하려면 인스턴트 메시징 계정을 설치 하셔야합니다.  "
-
-#: ../src/moblin-panel-status.c:1118
+#: ../src/moblin-panel-status.c:132
+#: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "상태"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:416
+msgid "Update"
+msgstr "업데이트"
+
+#. vim:set ts=8 expandtab
+#: ../data/moblin-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "상태 패널"
+
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "상태를 업데이트할 수 없습니다. 서비스를 사용할 수 없거나 암호가 틀립니다."
+
+#: ../src/mps-feed-pane.c:421
+msgid "What's happening?"
+msgstr "현재 상황"
+
+#: ../src/mps-feed-switcher.c:367
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "웹 서비스가 구성되지 않았거나 구성에 문제가 있습니다. 위의 단추를 사용하여 내 웹 계정을 열고 설정하십시오."
+
+#: ../src/mps-feed-switcher.c:344
+msgid "Add new web service"
+msgstr "새로운 웹 서비스 추가"
+
+#~ msgid "Offline"
+#~ msgstr "오프라인 "
+
+#~ msgid "Available"
+#~ msgstr "사용 가능"
+
+#~ msgid "Away"
+#~ msgstr "자리 비움"
+
+#~ msgid "Busy"
+#~ msgstr "다른 용무 중"
+
+#~ msgid "Close"
+#~ msgstr "닫기"
+
+#~ msgid "Change"
+#~ msgstr "변경"
+
+#~ msgid "Unknown account"
+#~ msgstr "알 수 없는 계정 "
+
+#~ msgid "Edit"
+#~ msgstr "편집"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "%s 상태을 입력하세요"
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "여기에 지금 상태를 입력하십시오..."
+
+#~ msgid "Post"
+#~ msgstr "게시"
+
+#~ msgid "Your current status"
+#~ msgstr "현재 상태"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "현재 상태 - 오프라인"
+
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "죄송합니다. 아무도 찾을수 없습니다. 메신저 계정을 설정 하셨습니까?"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "귀하의 웹 상태를 업데이트 하려면 상태 메세지 지원하는 웹 서비스 계정을 설정해야 합니다. "
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "귀하의 IM 상태를 업데이트 하려면 인스턴트 메시징 계정을 설치 하셔야합니다.  "
