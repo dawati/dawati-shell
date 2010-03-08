@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:29+0000\n"
+"POT-Creation-Date: 2010-03-06 10:40+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -18,30 +18,19 @@ msgid "Set your toolbar preferences"
 msgstr "設定你的工具列偏好設定"
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
 msgstr "工具列"
 
-#: ../capplet/src/moblin-toolbar-properties.c:85
-msgid "Socket for embedding"
-msgstr "用來內嵌的 socket"
-
-#: ../capplet/src/moblin-toolbar-properties.c:85
-msgid "socket"
-msgstr "socket"
-
-#: ../capplet/src/moblin-toolbar-properties.c:95
-msgid "- Moblin Toolbar Preferences"
-msgstr "- Moblin 工具列偏好設定"
-
-#: ../capplet/src/mtp-bin.c:326
+#: ../capplet/src/mtp-bin.c:355
 msgid "Save toolbar"
 msgstr "儲存工具列"
 
-#: ../capplet/src/mtp-bin.c:330
+#: ../capplet/src/mtp-bin.c:360
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "很抱歉，在你加入新面板之前，必須先移除一個面板。"
 
-#: ../capplet/src/mtp-bin.c:357
+#: ../capplet/src/mtp-bin.c:388
 msgid "Available panels"
 msgstr "可用的面板"
 
@@ -63,6 +52,27 @@ msgstr "%l:%M %P"
 msgid "%B %e, %Y"
 msgstr "%Y年%b%e日"
 
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "設定你的系統匣偏好設定"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr "系統匣昨天"
+
+#: ../capplet/src/syst-cc-panel.c:167
+msgid "System tray"
+msgstr "系統匣"
+
+#: ../capplet/src/syst-cc-panel.c:183
+msgid "Show system tray"
+msgstr "顯示系統匣"
+
+#: ../capplet/src/syst-cc-panel.c:204
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "系統匣是種某些舊一代應用程式所使用的概念，它能讓你瞭解什麼時候應用程式發生什麼事；或是當你關閉應用程式後，讓它們繼續在系統匣內保持執行。"
+
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
 msgstr "決定工具列上的面板順序。"
@@ -71,27 +81,27 @@ msgstr "決定工具列上的面板順序。"
 msgid "Order of panels on toolbar"
 msgstr "工具列上的面板順序"
 
-#: ../src/moblin-netbook.c:918
+#: ../src/moblin-netbook.c:932
 msgid "Moblin Netbook Effects"
 msgstr "Moblin 網路筆電特效"
 
-#: ../src/moblin-netbook.c:922
+#: ../src/moblin-netbook.c:936
 msgid "Effects for Moblin Netbooks"
 msgstr "給 Moblin 網路筆電用的特效"
 
-#: ../src/moblin-netbook.c:2976
+#: ../src/moblin-netbook.c:2990
 msgid "Activate"
 msgstr "啟動"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3004
 msgid "Unknown window"
 msgstr "未知的視窗"
 
-#: ../src/moblin-netbook.c:2992
+#: ../src/moblin-netbook.c:3006
 msgid "Is asking for your attention."
 msgstr "正在要求您的注意。"
 
-#: ../src/mnb-toolbar.c:954
+#: ../src/mnb-toolbar.c:968
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "抱歉，%s 已損毀"
@@ -104,6 +114,12 @@ msgstr "取消"
 msgid "Dismiss All"
 msgstr "取消所有"
 
+#~ msgid "Socket for embedding"
+#~ msgstr "用來內嵌的 socket"
+#~ msgid "socket"
+#~ msgstr "socket"
+#~ msgid "- Moblin Toolbar Preferences"
+#~ msgstr "- Moblin 工具列偏好設定"
 #~ msgid "zones"
 #~ msgstr "區域"
 #~ msgid "No Zones yet"
@@ -123,8 +139,6 @@ msgstr "取消所有"
 #~ msgstr "幾小時前"
 #~ msgid "Earlier today"
 #~ msgstr "更早之前的今天"
-#~ msgid "Yesterday"
-#~ msgstr "昨天"
 #~ msgid "On %A"
 #~ msgstr "在 %A"
 #~ msgid "Last week"
