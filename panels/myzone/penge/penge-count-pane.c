@@ -122,6 +122,8 @@ penge_count_pane_set_compact (PengeCountPane *self,
     clutter_actor_set_width (CLUTTER_ACTOR (self), -1);
     
     g_object_ref (priv->count_label);
+    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->table),
+                                    priv->count_label);
     clutter_actor_unparent (priv->count_label);
     mx_bin_set_child (MX_BIN (self), priv->count_label);
 
