@@ -237,10 +237,11 @@ _update_layout (PengeGridView *grid_view)
                                  "x-expand", FALSE,
                                  "x-fill", FALSE,
                                  NULL);
-    col++;
 
     if (priv->show_calendar_pane)
     {
+      col++;
+
       clutter_actor_show (priv->calendar_pane);
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->calendar_pane,
@@ -254,14 +255,18 @@ _update_layout (PengeGridView *grid_view)
     }
 
     if (priv->show_email_pane)
-    {
+    { 
       clutter_actor_show (priv->email_pane);
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->email_pane,
                                    "col", col,
-                                   "x-expand", FALSE,
+                                   "row", 1,
+                                   "y-expand", TRUE,
                                    "y-fill", FALSE,
                                    "y-align", 0.0,
+                                   "x-align", 0.0,
+                                   "x-expand", FALSE,
+                                   "x-fill", FALSE,
                                    NULL);
       col++;
     } else {
@@ -286,9 +291,20 @@ _update_layout (PengeGridView *grid_view)
                                  "y-expand", TRUE,
                                  "y-fill", TRUE,
                                  NULL);
+
     g_object_set (priv->favourite_apps_pane,
                   "vertical", TRUE,
                   NULL);
+
+    if (!priv->show_calendar_pane)
+      g_object_set (priv->email_pane,
+                    "vertical", TRUE,
+                    NULL);
+    else
+      g_object_set (priv->email_pane,
+                    "vertical", FALSE,
+                    NULL);
+
     clutter_actor_queue_relayout (CLUTTER_ACTOR (grid_view));
   } else {
     if (priv->show_calendar_pane)
@@ -350,6 +366,9 @@ _update_layout (PengeGridView *grid_view)
                                  "y-fill", TRUE,
                                  NULL);
     g_object_set (priv->favourite_apps_pane,
+                  "vertical", FALSE,
+                  NULL);
+    g_object_set (priv->email_pane,
                   "vertical", FALSE,
                   NULL);
     clutter_actor_queue_relayout (CLUTTER_ACTOR (grid_view));
@@ -419,8 +438,6 @@ penge_grid_view_init (PengeGridView *self)
 
   priv->email_pane = g_object_new (PENGE_TYPE_EMAIL_PANE,
                                    NULL);
-
-  clutter_actor_set_width (priv->email_pane, 280);
 
   mx_table_add_actor (MX_TABLE (self),
                       priv->email_pane,
