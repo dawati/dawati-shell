@@ -9,59 +9,66 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
-"PO-Revision-Date: 2009-10-13 12:25-0800\n"
-"Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-03-08 10:36+0000\n"
+"PO-Revision-Date: 2010-03-08 15:23-0800\n"
+"Last-Translator: \n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/sw-zone.c:763
-#, fuzzy
-msgid "new zone"
-msgstr "新区 (0)"
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "区面板"
 
-#: ../src/sw-zone.c:777
+#: ../data/moblin-panel-zones.desktop.in.in.h:2
+#: ../src/main.c:492
+msgid "zones"
+msgstr "区"
+
+#: ../src/sw-overview.c:220
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "当前正在运行的程序会显示在这里。您可以在它们之间切换，还可以按照您自己的方式去组织它们。"
+
+#: ../src/sw-zone.c:764
+msgid "new zone"
+msgstr "新区"
+
+#: ../src/sw-zone.c:778
 msgid "No applications on this zone"
 msgstr "本区没有应用程序"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
+#: ../src/sw-zone.c:906
 msgid "one"
-msgstr "打开的程序"
+msgstr "一"
 
-#: ../src/sw-zone.c:909
+#: ../src/sw-zone.c:910
 msgid "two"
-msgstr ""
+msgstr "二"
 
-#: ../src/sw-zone.c:913
+#: ../src/sw-zone.c:914
 msgid "three"
-msgstr ""
+msgstr "三"
 
-#: ../src/sw-zone.c:917
+#: ../src/sw-zone.c:918
 msgid "four"
-msgstr ""
+msgstr "四"
 
-#: ../src/sw-zone.c:921
+#: ../src/sw-zone.c:922
 msgid "five"
-msgstr ""
+msgstr "五"
 
-#: ../src/sw-zone.c:925
+#: ../src/sw-zone.c:926
 msgid "six"
-msgstr ""
+msgstr "六"
 
-#: ../src/sw-zone.c:929
+#: ../src/sw-zone.c:930
 msgid "seven"
-msgstr ""
+msgstr "七"
 
-#: ../src/sw-zone.c:933
+#: ../src/sw-zone.c:934
 msgid "eight"
-msgstr ""
-
-#: ../src/main.c:458
-msgid "zones"
-msgstr "打开的程序"
+msgstr "八"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin Netbook 特效"
@@ -80,16 +87,6 @@ msgstr "打开的程序"
 
 #~ msgid "Dismiss All"
 #~ msgstr "忽略所有"
-
-#~ msgid "No Zones yet"
-#~ msgstr "尚无区域"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "当前正在运行的程序会显示在这里。您可以在它们之间切换, 还可以按照您自己的方"
-#~ "式去组织它们。"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "一分钟内"
