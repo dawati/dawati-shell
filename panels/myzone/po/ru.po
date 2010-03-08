@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:48+0000\n"
-"PO-Revision-Date: 2010-02-22 14:16+0200\n"
-"Last-Translator: kkk <kkk@mail.ru>\n"
+"POT-Creation-Date: 2010-03-08 10:30+0000\n"
+"PO-Revision-Date: 2010-03-08 23:36+0200\n"
+"Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +22,45 @@ msgstr ""
 msgid "Myzone panel"
 msgstr "Панель Myzone"
 
-#: ../penge/penge-calendar-pane.c:474
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Изменить фон и содержание Myzone"
+
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Ошибка GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Все дальнейшие ошибки отображаются только на терминале."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Показать максимально возможное количество содержимого веб-сервиса"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Показать большую часть содержимого веб-сервиса"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Показать поровну"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Показать самые последние файлы"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Показать максимально возможное количество последних файлов"
+
+#: ../penge/penge-calendar-pane.c:473
 msgid "Appointments"
 msgstr "Встречи"
 
@@ -35,7 +73,7 @@ msgstr "Создать встречу"
 msgid "Add"
 msgstr "Добавить"
 
-#: ../penge/penge-events-pane.c:342
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "Нет записей в календаре на этой неделе"
 
@@ -51,7 +89,7 @@ msgstr "Веб страница"
 msgid "Create a new task"
 msgstr "Создать новую задачу"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "Заданий на сегодня нет"
 
@@ -61,16 +99,21 @@ msgid "Due %x"
 msgstr "За %x"
 
 #: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to Moblin"
-msgstr "Добро пожаловать в Moblin"
+msgid "Welcome to MeeGo"
+msgstr "Приветствуем вас в MeeGo!"
 
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Это Myzone - место, в котором появятся недавно использованные из веб-каналов файлы и контент."
 
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Добро пожаловать в Moblin 2.1</b>"
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Добро пожаловать в Moblin 2.1</b>"
 
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Так как Moblin немного отличается от других компьютеров, мы расположили вместе некоторые программы, которые помогут вам ориентироваться. Мы надеемся, что вам понравится! Команда Moblin."
-
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Так как Moblin немного отличается от других компьютеров, мы расположили "
+#~ "вместе некоторые программы, которые помогут вам ориентироваться. Мы "
+#~ "надеемся, что вам понравится! Команда Moblin."
