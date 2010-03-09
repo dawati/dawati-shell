@@ -7,64 +7,72 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"POT-Creation-Date: 2010-03-08 10:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Andrzej Zaborowski <andrew.zaborowski@intel.com>\n"
+"Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/sw-zone.c:763
-#, fuzzy
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Panel stref"
+
+#: ../data/moblin-panel-zones.desktop.in.in.h:2
+#: ../src/main.c:492
+msgid "zones"
+msgstr "strefy"
+
+#: ../src/sw-overview.c:220
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał możliwość przełączać się między nimi i organizować je tak jak Ci się podoba."
+
+#: ../src/sw-zone.c:764
 msgid "new zone"
-msgstr "Nowa strefa (0)"
+msgstr "nowa strefa"
 
 # "na tej strefie" is also a possiblity
-#: ../src/sw-zone.c:777
+#: ../src/sw-zone.c:778
 msgid "No applications on this zone"
 msgstr "Brak aplikacji w tej strefie"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
+# If this applies to number of zones, then it has to be "jedna"
+#: ../src/sw-zone.c:906
 msgid "one"
-msgstr "strefy"
+msgstr "jeden"
 
-#: ../src/sw-zone.c:909
+# If this applies to number of zones, then it has to be "dwie"
+#: ../src/sw-zone.c:910
 msgid "two"
-msgstr ""
+msgstr "dwa"
 
-#: ../src/sw-zone.c:913
+#: ../src/sw-zone.c:914
 msgid "three"
-msgstr ""
+msgstr "trzy"
 
-#: ../src/sw-zone.c:917
+#: ../src/sw-zone.c:918
 msgid "four"
-msgstr ""
+msgstr "cztery"
 
-#: ../src/sw-zone.c:921
+#: ../src/sw-zone.c:922
 msgid "five"
-msgstr ""
+msgstr "pięć"
 
-#: ../src/sw-zone.c:925
+#: ../src/sw-zone.c:926
 msgid "six"
-msgstr ""
+msgstr "sześć"
 
-#: ../src/sw-zone.c:929
+#: ../src/sw-zone.c:930
 msgid "seven"
-msgstr ""
+msgstr "siedem"
 
-#: ../src/sw-zone.c:933
+#: ../src/sw-zone.c:934
 msgid "eight"
-msgstr ""
-
-#: ../src/main.c:458
-msgid "zones"
-msgstr "strefy"
+msgstr "osiem"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Efekty Moblina na netbooku"
@@ -83,17 +91,6 @@ msgstr "strefy"
 
 #~ msgid "Dismiss All"
 #~ msgstr "Ucisz wszystkie"
-
-#~ msgid "No Zones yet"
-#~ msgstr "Na razie brak Stref"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał "
-#~ "możliwość przełączać się między nimi i organizować je tak jak Ci się "
-#~ "podoba."
 
 #~ msgid "Unknown window"
 #~ msgstr "Nieznane okno"
