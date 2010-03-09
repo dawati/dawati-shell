@@ -51,6 +51,8 @@ mnb_toolbar_clock_dispose (GObject *object)
   if (priv->disposed)
     return;
 
+  priv->disposed = TRUE;
+
   if (priv->timeout_id)
     {
       g_source_remove (priv->timeout_id);
@@ -62,8 +64,6 @@ mnb_toolbar_clock_dispose (GObject *object)
 
   clutter_actor_destroy (priv->date);
   priv->date = NULL;
-
-  priv->disposed = TRUE;
 }
 
 static gboolean
