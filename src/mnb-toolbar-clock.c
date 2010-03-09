@@ -64,6 +64,8 @@ mnb_toolbar_clock_dispose (GObject *object)
 
   clutter_actor_destroy (priv->date);
   priv->date = NULL;
+
+  G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->dispose (object);
 }
 
 static gboolean
