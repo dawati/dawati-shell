@@ -2787,7 +2787,7 @@ mnb_toolbar_constructed (GObject *self)
 
   mnb_toolbar_setup_panels (MNB_TOOLBAR (self));
 
-#if 1
+#if 0
   /*
    * Since the datetime panel is not ready yet, we create a temporary clock if
    * it has not been loaded.
