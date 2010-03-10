@@ -287,7 +287,7 @@ mnp_clock_tile_removed (MnpClockTile *tile, MnpClockArea *area)
 {
 	g_ptr_array_remove (area->priv->clock_tiles, tile);	
 	
-	area->priv->zone_remove_func (area, mnp_clock_tile_get_location(tile), area->priv->zone_remove_data);
+	area->priv->zone_remove_func (area, mnp_clock_tile_get_location(tile)->display, area->priv->zone_remove_data);
 }
 
 void
