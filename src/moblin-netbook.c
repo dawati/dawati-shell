@@ -41,6 +41,7 @@
 #include <prefs.h>
 #include <keybindings.h>
 #include <errors.h>
+#include <X11/extensions/scrnsaver.h>
 
 /*
  * Including mutter's errors.h defines the i18n macros, so undefine them before
@@ -87,6 +88,7 @@ typedef struct
 
 static void desktop_background_init (MutterPlugin *plugin);
 static void setup_focus_window (MutterPlugin *plugin);
+static void setup_screen_saver (MutterPlugin *plugin);
 
 static void fullscreen_app_added (MutterPlugin *, MetaWindow *);
 static void fullscreen_app_removed (MutterPlugin *, MetaWindow *);
@@ -383,7 +385,7 @@ moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gboolean on;
 
-  if (priv->screen_saver)
+  if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
 
   on = !moblin_netbook_fullscreen_apps_present_on_workspace (plugin, to);
@@ -503,7 +505,7 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
       if (wm_class && !strcmp (wm_class, "Gnome-screensaver"))
         {
           g_debug ("Gnome screensaver window mapped");
-          priv->screen_saver = mcw;
+          priv->screen_saver_mcw = mcw;
           moblin_netbook_toggle_compositor (plugin, FALSE);
 
           g_signal_connect (mcw, "window-destroyed",
@@ -757,6 +759,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   mnb_input_manager_create (MUTTER_PLUGIN (plugin));
 
   setup_focus_window (MUTTER_PLUGIN (plugin));
+  setup_screen_saver (MUTTER_PLUGIN (plugin));
 
   /*
    * This also creates the launcher.
@@ -1531,16 +1534,22 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
         }
     }
 
-  if (priv->screen_saver == mcw)
+  if (priv->screen_saver_mcw == mcw)
     {
-      gboolean on;
+      priv->screen_saver_mcw = NULL;
 
-      priv->screen_saver = NULL;
+      if (!priv->screen_saver_dpms)
+        {
+          gboolean on;
 
-      on = !moblin_netbook_fullscreen_apps_present (plugin);
+          on = !moblin_netbook_fullscreen_apps_present (plugin);
 
-      if (on)
-        moblin_netbook_toggle_compositor (plugin, on);
+          if (on)
+            {
+              g_debug ("Enabling compositor (gnome-screensaver)");
+              moblin_netbook_toggle_compositor (plugin, on);
+            }
+        }
     }
 
   /*
@@ -1611,7 +1620,7 @@ fullscreen_app_added (MutterPlugin *plugin, MetaWindow *mw)
 
   priv->fullscreen_wins = g_list_prepend (priv->fullscreen_wins, mw);
 
-  if (priv->screen_saver)
+  if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
 
   compositor_on = !moblin_netbook_fullscreen_apps_present (plugin);
@@ -1626,7 +1635,7 @@ fullscreen_app_removed (MutterPlugin *plugin, MetaWindow *mw)
 
   priv->fullscreen_wins = g_list_remove (priv->fullscreen_wins, mw);
 
-  if (priv->screen_saver)
+  if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
 
   compositor_on = !moblin_netbook_fullscreen_apps_present (plugin);
@@ -2185,6 +2194,39 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
+  if (priv->saver_base && xev->type == priv->saver_base + ScreenSaverNotify)
+    {
+      XScreenSaverNotifyEvent *sn = (XScreenSaverNotifyEvent*)xev;
+
+      if (sn->state == ScreenSaverOn)
+        {
+          priv->screen_saver_dpms = TRUE;
+
+          if (!priv->compositor_disabled)
+            {
+              g_debug ("disabling compositor (DPMS)");
+              moblin_netbook_toggle_compositor (plugin, FALSE);
+            }
+        }
+      else
+        {
+          priv->screen_saver_dpms = FALSE;
+
+          if (priv->compositor_disabled && !priv->screen_saver_mcw)
+            {
+              gboolean on;
+
+              on = !moblin_netbook_fullscreen_apps_present (plugin);
+
+              if (on)
+                {
+                  g_debug ("enabling compositor (DPMS)");
+                  moblin_netbook_toggle_compositor (plugin, on);
+                }
+            }
+        }
+    }
+
   /*
    * Avoid any unnecessary procesing here, as this function is called all the
    * time.
@@ -2299,6 +2341,25 @@ setup_focus_window (MutterPlugin *plugin)
   XMapWindow (xdpy, xwin);
 
   priv->focus_xwin = xwin;
+}
+
+static void
+setup_screen_saver (MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
+  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaDisplay                *display = meta_screen_get_display (screen);
+  Window                      xroot;
+
+  xroot = RootWindow (xdpy, meta_screen_get_screen_number (screen));
+
+  meta_error_trap_push (display);
+
+  if (XScreenSaverQueryExtension (xdpy, &priv->saver_base, &priv->saver_error))
+    XScreenSaverSelectInput (xdpy, xroot, ScreenSaverNotifyMask);
+
+  meta_error_trap_pop (display, FALSE);
 }
 
 GdkRegion *mutter_window_get_obscured_region (MutterWindow *cw);

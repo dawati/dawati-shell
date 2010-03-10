@@ -95,6 +95,7 @@ struct _MoblinNetbookPluginPrivate
   gboolean               holding_focus       : 1;
   gboolean               compositor_disabled : 1;
   gboolean               netbook_mode        : 1;
+  gboolean               screen_saver_dpms   : 1;
 
   /* Background desktop texture */
   ClutterActor          *desktop_tex;
@@ -114,10 +115,13 @@ struct _MoblinNetbookPluginPrivate
 
   MoblinNetbookNotifyStore *notify_store;
 
-  MutterWindow          *screen_saver;
+  MutterWindow          *screen_saver_mcw;
 
   /* Presence manager */
   GsmPresence           *presence;
+
+  int                    saver_base;
+  int                    saver_error;
 };
 
 GType moblin_netbook_plugin_get_type (void);
