@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
+"POT-Creation-Date: 2010-03-10 10:30+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -13,28 +14,23 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Möten</b>"
-
-#: ../penge/penge-events-pane.c:59
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Skapa ett möte"
 
-#: ../penge/penge-events-pane.c:60
-#: ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Lägg till"
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "Inget i kalendern denna vecka"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Vad dina vänner gör på internvet visas här. Aktivera dina konton nu!"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "Webbplats"
 
@@ -42,20 +38,70 @@ msgstr "Webbplats"
 msgid "Create a new task"
 msgstr "Skapa en ny uppgift"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "Inget schemalagt idag"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "Färdig %x"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Välkommen till Moblin 2.1 för netbooks</b>"
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Välkommen till MeeGo"
 
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Moblin."
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Detta är Myzone där dina nyligen använda filer och innehåll från webbmatningar visas."
 
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone-panel"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Ändra bakgrund och innehåll i Myzone"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Alla ytterligare fel visas bara på terminal."
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf-fel: %s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Visa mestadels webbtjänstinnehåll"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Visa så mycket webbtjänstinnehåll som möjligt"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Visa mestadels nyligen använda filer"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Visa hälften-hälften"
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "Möten"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Visa så många av nyligen använda filer som möjligt"
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Välkommen till Moblin 2.1 för netbooks</b>"
+
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Moblin."
