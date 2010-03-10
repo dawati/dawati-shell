@@ -1021,6 +1021,15 @@ mtp_toolbar_get_panel_buttons (MtpToolbar *toolbar)
 
   g_list_free (children);
 
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (priv->clock_area));
+
+  for (l = children; l; l = l->next)
+    if (MTP_IS_TOOLBAR_BUTTON (l->data))
+      ret = g_list_append (ret, l->data);
+
+    g_list_free (children);
+
   return ret;
 }
 
