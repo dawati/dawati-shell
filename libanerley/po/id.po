@@ -2,12 +2,11 @@
 # Copyright (C) 2009 Andika Triwidada
 # This file is distributed under the same license as the PACKAGE package.
 # Andika Triwidada <andika@gmail.com>, 2009.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: anerley\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:29+0000\n"
+"POT-Creation-Date: 2010-03-10 10:29+0000\n"
 "PO-Revision-Date: 2009-08-25 16:34+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -15,22 +14,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../anerley/anerley-tile.c:208
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Ada"
 
-#: ../anerley/anerley-tile.c:211
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Sibuk"
 
-#: ../anerley/anerley-tile.c:214 ../anerley/anerley-tile.c:217
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "Pergi"
 
-#: ../anerley/anerley-tile.c:220
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "Terputus"
 
-#: ../anerley/anerley-econtact-item.c:312
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "Tak bernama"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Pergi Lama"
+
+#: ../anerley/anerley-presence-chooser.c:41
+#, fuzzy
+msgid "Unset"
+msgstr "Nirtata"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Tak dikenal"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Tersembunyi"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Galat"
