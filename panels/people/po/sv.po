@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"POT-Creation-Date: 2010-03-10 10:31+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -13,71 +14,62 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#.
-#. * Used as header for a block of the panel showing pending conversations.
-#. * The user will be able to click the tile and answer the pending conversation
-#.
-#: ../src/moblin-panel-people.c:18
-msgid "People talking to you ..."
-msgstr "Personer som talar med dig...."
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:494
+#: ../data/moblin-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "personer "
 
-#.
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#.
-#: ../src/moblin-panel-people.c:23
-msgid "people - Someone is talking to you"
-msgstr "personer - någon talar med dig"
+#: ../src/mnb-people-panel.c:266
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Vi kan inte hitta någon person. Har du konfigurerat ett IM-konto?"
 
-#.
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. * (plural version)
-#.
-#: ../src/moblin-panel-people.c:29
+#: ../src/mnb-people-panel.c:378
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Vi kan inte hitta någon person. Det verkar som ingen är uppkopplad just nu."
+
+#: ../src/mnb-people-panel.c:475
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "personer - %d personer talar med dig"
 
-#: ../src/moblin-panel-people.c:87
-msgid "people"
-msgstr "personer "
+#: ../src/mnb-people-panel.c:482
+msgid "people - Someone is talking to you"
+msgstr "personer - någon talar med dig"
 
-#: ../src/mnb-people-panel.c:50
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Koppla upp dig i statuspanelen för att se dina IM-kontakter."
-
-#: ../src/mnb-people-panel.c:51
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Vi kan inte hitta någon person. Det verkar som ingen är uppkopplad just nu."
-
-#: ../src/mnb-people-panel.c:164
-msgid "Send an email"
-msgstr "Skicka ett email"
-
-#: ../src/mnb-people-panel.c:166
-msgid "Edit details"
-msgstr "Redigera detaljer"
-
-#: ../src/mnb-people-panel.c:175
-msgid "Send a message"
-msgstr "Skicka ett meddelande"
-
-#: ../src/mnb-people-panel.c:309
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Vi kan inte hitta någon person. Har du konfigurerat ett IM-konto?"
-
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:689
 msgid "People"
 msgstr "Personer "
 
-#: ../src/mnb-people-panel.c:567
+#: ../src/mnb-people-panel.c:702
 msgid "Search"
 msgstr "Sök"
 
-#: ../src/mnb-people-panel.c:680
-msgid "Selection"
-msgstr "Val"
+#: ../src/mnb-people-panel.c:423
+msgid "To see your IM contacts, you need to go online."
+msgstr "Du måste koppla upp dig för att se dina IM-kontakter."
 
-#: ../src/mnb-people-panel.c:743
-msgid "Nobody selected"
-msgstr "Ingen vald"
+#: ../src/mnb-people-panel.c:752
+msgid "You are chatting with:"
+msgstr "Du chattar med:"
 
+#: ../data/moblin-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Personpanel"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Personer som talar med dig...."
+
+#~ msgid "Send an email"
+#~ msgstr "Skicka ett email"
+
+#~ msgid "Edit details"
+#~ msgstr "Redigera detaljer"
+
+#~ msgid "Send a message"
+#~ msgstr "Skicka ett meddelande"
+
+#~ msgid "Selection"
+#~ msgstr "Val"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Ingen vald"
