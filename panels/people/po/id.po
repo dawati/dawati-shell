@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-06 18:44+0000\n"
+"POT-Creation-Date: 2010-03-10 10:31+0000\n"
 "PO-Revision-Date: 2009-08-26 08:39+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,68 +14,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. * Used as header for a block of the panel showing pending conversations.
-#. * The user will be able to click the tile and answer the pending
-#. conversation
-#. 
-#: ../src/moblin-panel-people.c:18
-msgid "People talking to you ..."
-msgstr "Orang sedang bicara padamu..."
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:494
+#: ../data/moblin-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "orang"
 
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. 
-#: ../src/moblin-panel-people.c:23
-msgid "people - Someone is talking to you"
-msgstr "orang - Seseorang sedang bicara padamu"
+#: ../src/mnb-people-panel.c:266
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Maaf, kami tak menemukan seorangpun. Sudahkah anda menyiapkan akun Messenger?"
 
-#. * Used for the tooltip for the hover state for the icon in the toolbar
-#. * (plural version)
-#. 
-#: ../src/moblin-panel-people.c:29
+#: ../src/mnb-people-panel.c:378
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Maaf, kami tak menemukan seorangpun. Sepertinya mereka semua terputus."
+
+#: ../src/mnb-people-panel.c:475
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "orang - %d orang sedang bicara padamu"
 
-#: ../src/moblin-panel-people.c:87
-msgid "people"
-msgstr "orang"
+#: ../src/mnb-people-panel.c:482
+msgid "people - Someone is talking to you"
+msgstr "orang - Seseorang sedang bicara padamu"
 
-#: ../src/mnb-people-panel.c:164
-msgid "Send an email"
-msgstr "Kirim sebuah email"
-
-#: ../src/mnb-people-panel.c:166
-msgid "Edit details"
-msgstr "Sunting rincian"
-
-#: ../src/mnb-people-panel.c:175
-msgid "Send a message"
-msgstr "Kirim sebuah pesan"
-
-#: ../src/mnb-people-panel.c:309
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Maaf, kami tak menemukan seorangpun. Sudahkah anda menyiapkan akun Messenger?"
-
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:689
 msgid "People"
 msgstr "Orang"
 
-#: ../src/mnb-people-panel.c:567
+#: ../src/mnb-people-panel.c:702
 msgid "Search"
 msgstr "Cari"
 
-#: ../src/mnb-people-panel.c:680
-msgid "Selection"
-msgstr "Pilihan"
+#: ../src/mnb-people-panel.c:423
+msgid "To see your IM contacts, you need to go online."
+msgstr "Untuk melihat kontak IM Anda, Anda perlu daring."
 
-#: ../src/mnb-people-panel.c:743
-msgid "Nobody selected"
-msgstr "Tak seorangpun dipilih"
+#: ../src/mnb-people-panel.c:752
+msgid "You are chatting with:"
+msgstr "Anda sedang mengobrol dengan:"
 
-#: ../src/mnb-people-panel.c:50
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Untuk melihat kontak IM Anda, menyambunglah di panel Status."
+#: ../data/moblin-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Panel orang"
 
-#: ../src/mnb-people-panel.c:51
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Maaf, kami tak menemukan seorangpun. Sepertinya mereka semua terputus."
+#~ msgid "People talking to you ..."
+#~ msgstr "Orang sedang bicara padamu..."
+
+#~ msgid "Send an email"
+#~ msgstr "Kirim sebuah email"
+
+#~ msgid "Edit details"
+#~ msgstr "Sunting rincian"
+
+#~ msgid "Send a message"
+#~ msgstr "Kirim sebuah pesan"
+
+#~ msgid "Selection"
+#~ msgstr "Pilihan"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Tak seorangpun dipilih"
