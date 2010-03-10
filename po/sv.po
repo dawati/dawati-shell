@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-24 09:23+0000\n"
+"POT-Creation-Date: 2010-03-10 10:24+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -13,140 +14,170 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
-msgid "Less than a minute ago"
-msgstr "Mindre än för en minut sedan"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
-msgid "A few minutes ago"
-msgstr "Ett par minuter sedan"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
-msgid "A couple of hours ago"
-msgstr "Ett par timmar sedan"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
-msgid "Earlier today"
-msgstr "Tidigare idag"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
-msgid "Yesterday"
-msgstr "Igår"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
-#, c-format
-msgid "On %A"
-msgstr "På %A"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
-msgid "Unknown"
-msgstr "Okänt"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
-msgid "Last week"
-msgstr "Förra veckan"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
-msgid "A couple of weeks ago"
-msgstr "Ett par veckor sedan"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
-msgid "This month"
-msgstr "Denna månad"
-
-#. Now Jan., last used in Dec.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
-msgid "Last month"
-msgstr "Förra månaden"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
-msgid "This year"
-msgstr "Innevarande år"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
-msgid "Last year"
-msgstr "Förra året"
-
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
-msgid "Ages ago"
-msgstr "För länge sen"
-
-#: ../src/moblin-netbook.c:305
-#: ../src/mnb-toolbar.c:1348
-msgid "zones"
-msgstr "Zoner"
-
-#: ../src/moblin-netbook.c:412
-msgid "Moblin Netbook Effects"
-msgstr "Moblin netbookeffekter"
-
-#: ../src/moblin-netbook.c:416
-msgid "Effects for Moblin Netbooks"
-msgstr "Effekter för Moblin netbooks"
-
-#: ../src/mnb-notification.c:280
-msgid "Dismiss"
-msgstr "Avvisa"
-
-#: ../src/mnb-notification-cluster.c:657
-msgid "Dismiss All"
-msgstr "Avvisa alla"
-
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:668
+#. 
+#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:88
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:678
+#. 
+#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:98
 msgid "%B %e, %Y"
 msgstr "%e %B, %Y"
 
-#: ../src/mnb-toolbar.c:1585
-msgid "power & brightness"
-msgstr "energi och ljusstyrka"
+#: ../src/moblin-netbook.c:932
+msgid "Moblin Netbook Effects"
+msgstr "Moblin netbookeffekter"
 
-#: ../src/mnb-toolbar.c:1588
-msgid "volume"
-msgstr "volym"
+#: ../src/moblin-netbook.c:936
+msgid "Effects for Moblin Netbooks"
+msgstr "Effekter för Moblin netbooks"
 
-#: ../src/mnb-toolbar.c:1591
-msgid "bluetooth"
-msgstr "bluetooth"
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr "Avvisa"
 
-#: ../src/mnb-toolbar.c:1594
-msgid "networks"
-msgstr "nätverk"
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr "Avvisa alla"
 
-#: ../src/mnb-toolbar.c:1597
-msgid "test"
-msgstr "testa"
+#: ../src/mnb-toolbar.c:968
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "%s fungerar inte"
 
-#: ../src/switcher/mnb-switcher.c:280
-msgid "No Zones yet"
-msgstr "Inga zoner ännu"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Ange dina inställningar för verktygsfältet"
 
-#: ../src/switcher/mnb-switcher.c:302
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Program du använder visas här. Du kan byta och organisera dem bäst du vill."
+#: ../capplet/src/mtp-bin.c:355
+msgid "Save toolbar"
+msgstr "Spara verktygsfält"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:408
-msgid "No applications on this zone"
-msgstr "Inga program i denna zon"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Verktygsfält"
 
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Du behöver spela musik, titta på bilder eller video för att se din "
-#~ "historia här. Under tiden kan du titta på litet test media:"
+#: ../capplet/src/mtp-bin.c:388
+msgid "Available panels"
+msgstr "Tillgängliga paneler"
+
+#: ../capplet/src/mtp-bin.c:360
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Du måste ta bort en panel innan du kan lägga till en ny."
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr "Systemfält"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Ange dina inställningar för systemfältet"
+
+#: ../src/moblin-netbook.c:3006
+msgid "Is asking for your attention."
+msgstr "Ber om din uppmärksamhet."
+
+#: ../src/moblin-netbook.c:3004
+msgid "Unknown window"
+msgstr "Okänt fönster"
+
+#: ../capplet/src/syst-cc-panel.c:183
+msgid "Show system tray"
+msgstr "Visa systemfält"
+
+#: ../capplet/src/syst-cc-panel.c:167
+msgid "System tray"
+msgstr "Systemfält"
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Avgör panelordningen i verktygsfältet."
+
+#: ../capplet/src/syst-cc-panel.c:204
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "Systemfältet är ett koncept som används av vissa, äldre, program för att informera dig när något händer eller för att förbli aktiva när du stänger dem."
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Panelordning i verktygsfältet"
+
+#: ../src/moblin-netbook.c:2990
+msgid "Activate"
+msgstr "Aktivera"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Mindre än för en minut sedan"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Ett par minuter sedan"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Ett par timmar sedan"
+
+#~ msgid "Earlier today"
+#~ msgstr "Tidigare idag"
+
+#~ msgid "On %A"
+#~ msgstr "På %A"
+
+#~ msgid "Last week"
+#~ msgstr "Förra veckan"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Ett par veckor sedan"
+
+#~ msgid "This month"
+#~ msgstr "Denna månad"
+
+#~ msgid "Last month"
+#~ msgstr "Förra månaden"
+
+#~ msgid "This year"
+#~ msgstr "Innevarande år"
+
+#~ msgid "Last year"
+#~ msgstr "Förra året"
+
+#~ msgid "Ages ago"
+#~ msgstr "För länge sen"
+
+#~ msgid "zones"
+#~ msgstr "Zoner"
+
+#~ msgid "power & brightness"
+#~ msgstr "energi och ljusstyrka"
+
+#~ msgid "volume"
+#~ msgstr "volym"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "nätverk"
+
+#~ msgid "test"
+#~ msgstr "testa"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Inga zoner ännu"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Program du använder visas här. Du kan byta och organisera dem bäst du vill."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "Inga program i denna zon"
+
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Du behöver spela musik, titta på bilder eller video för att se din historia här. Under tiden kan du titta på litet test media:"
 
 #~ msgid "Recently played"
 #~ msgstr "Tidigare spelade"
@@ -196,12 +227,8 @@ msgstr "Inga program i denna zon"
 #~ msgid "applications"
 #~ msgstr "Program"
 
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "När du besöker webbsidor kommer dina favoriter visas här och på den nya "
-#~ "fliken i webbläsaren."
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "När du besöker webbsidor kommer dina favoriter visas här och på den nya fliken i webbläsaren."
 
 #~ msgid "Untitled"
 #~ msgstr "Namnlös"
@@ -257,24 +284,14 @@ msgstr "Inga program i denna zon"
 #~ msgid "No calendar entries this week"
 #~ msgstr "Inget i kalendern denna vecka"
 
-#~ msgid ""
-#~ "Your friends' feeds and web services will appear here. Activate your "
-#~ "accounts now!"
-#~ msgstr ""
-#~ "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina "
-#~ "konton nu!"
+#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+#~ msgstr "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina konton nu!"
 
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>Välkommen till Moblin 2.0 för netbooks</b>"
 
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del "
-#~ "tips för att underlätta för dig att hitta allt. Hoppas du gillar det! "
-#~ "Team Moblin."
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Moblin."
 
 #~ msgid "Web page"
 #~ msgstr "Webbplats"
@@ -297,10 +314,8 @@ msgstr "Inga program i denna zon"
 #~ msgid "Send a message"
 #~ msgstr "Skicka ett meddelande"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
 
 #~ msgid "People"
 #~ msgstr "Personer "
@@ -321,14 +336,10 @@ msgstr "Inga program i denna zon"
 #~ msgstr "Välj zon för detta program:"
 
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
-#~ msgstr ""
-#~ "För att aktivera listen, flytta din markör till översta delen av skärmen"
+#~ msgstr "För att aktivera listen, flytta din markör till översta delen av skärmen"
 
 #~ msgid "Offline"
 #~ msgstr "Frånkopplad"
-
-#~ msgid "Available"
-#~ msgstr "Tillgänglig"
 
 #~ msgid "Away"
 #~ msgstr "Borta"
@@ -363,15 +374,10 @@ msgstr "Inga program i denna zon"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Din nuvarande status - du är frånkopplad"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "För att uppdatera din webbstatus behöver du installera ett "
-#~ "webbtjänstkonto med ett företag som stödjer statusmeddelanden"
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "För att uppdatera din webbstatus behöver du installera ett webbtjänstkonto med ett företag som stödjer statusmeddelanden"
 
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "För att uppdatera din IM status behöver du installera ett IM konto"
 
 #~ msgid "status"
@@ -381,9 +387,7 @@ msgstr "Inga program i denna zon"
 #~ msgstr "MyZone"
 
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-#~ msgstr ""
-#~ "Fältikonen har efterfrågat en storlek motsvarande (%i x %i), ändrar till "
-#~ "(%i x %i)"
+#~ msgstr "Fältikonen har efterfrågat en storlek motsvarande (%i x %i), ändrar till (%i x %i)"
 
 #~ msgid "Local"
 #~ msgstr "Lokal "
