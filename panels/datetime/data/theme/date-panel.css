@@ -51,7 +51,7 @@ MxButton.new-alarm-tile
   background-color: #7e7e7eff;  
 }
 
-*#mnp-tile-time
+*#mnp-tile-time-box
 {
   padding: 4 4;	
   background-color: #7e7e7eff;  
@@ -116,14 +116,14 @@ MxButton.new-alarm-tile
 *.TileRemoveButton *.TileIcon, *.AlarmRemoveButton *.AlarmDelIcon
 {
   border: 0;
-  padding: 10;	
+  padding: 60 10 10 20;	
   background-image: url('dismiss_button.png');
 }
 
 *.TileRemoveButton:hover *.TileIcon, *.AlarmRemoveButton:hover *.AlarmDelIcon
 {
   border: 0;
-  padding: 10;		
+  padding: 60 10 10 20;		
   background-image: url('dismiss_button_hover.png');
 }
 

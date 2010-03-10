@@ -381,7 +381,7 @@ mnp_clock_construct (MnpClockTile *tile)
 
 
 	box1 = mx_box_layout_new ();
-	clutter_actor_set_name (box1, "mnp-tile-time");		
+	clutter_actor_set_name (box1, "mnp-tile-time-box");		
 	mx_box_layout_set_vertical ((MxBoxLayout *)box1, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box1, FALSE);
 	clutter_container_add_actor ((ClutterContainer *)box1, label2);
