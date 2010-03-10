@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:28+0000\n"
+"POT-Creation-Date: 2010-03-10 10:24+0000\n"
 "PO-Revision-Date: 2009-08-26 04:16+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,12 +14,33 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Tata preferensi toolbar Anda"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Toolbar"
+
+#: ../capplet/src/mtp-bin.c:355
+msgid "Save toolbar"
+msgstr "Simpan toolbar"
+
+#: ../capplet/src/mtp-bin.c:360
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Maaf, Anda mesti menghapus suatu panel sebelum dapat menambah yang baru."
+
+#: ../capplet/src/mtp-bin.c:388
+msgid "Available panels"
+msgstr "Panel tersedia"
+
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
 # 24 hrs without am/pm for ID
-#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
+#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:88
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -27,29 +48,42 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
+#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:98
 msgid "%B %e, %Y"
 msgstr "%d %B %Y"
 
-#: ../src/moblin-netbook.c:918
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Menentukan urutan panel pada toolbar."
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Urutan panel pada toolbar"
+
+#: ../src/moblin-netbook.c:932
 msgid "Moblin Netbook Effects"
 msgstr "Efek Netbook Moblin"
 
-#: ../src/moblin-netbook.c:922
+#: ../src/moblin-netbook.c:936
 msgid "Effects for Moblin Netbooks"
 msgstr "Efek-efek untuk Netbook Moblin"
 
-#: ../src/moblin-netbook.c:2976
+#: ../src/moblin-netbook.c:2990
 msgid "Activate"
 msgstr "Aktifkan"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3004
 msgid "Unknown window"
 msgstr "Jendela tak dikenal"
 
-#: ../src/moblin-netbook.c:2992
+#: ../src/moblin-netbook.c:3006
 msgid "Is asking for your attention."
 msgstr "Meminta perhatian Anda."
+
+#: ../src/mnb-toolbar.c:968
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Maaf, %s rusak"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -59,39 +93,26 @@ msgstr "Bubar"
 msgid "Dismiss All"
 msgstr "Bubar Semua"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "Tata preferensi toolbar Anda"
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr "Baki Sistem"
 
-#: ../capplet/src/mtp-bin.c:326
-msgid "Save toolbar"
-msgstr "Simpan toolbar"
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Tata preferensi baki-sistem Anda"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-#: ../capplet/src/mtp-cc-panel.c:118
-msgid "Toolbar"
-msgstr "Toolbar"
+#: ../capplet/src/syst-cc-panel.c:183
+msgid "Show system tray"
+msgstr "Tampilkan baki sistem"
 
-#: ../capplet/src/mtp-bin.c:359
-msgid "Available panels"
-msgstr "Panel tersedia"
+#: ../capplet/src/syst-cc-panel.c:167
+msgid "System tray"
+msgstr "Baki sistem"
 
-#: ../capplet/src/mtp-bin.c:331
-msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "Maaf, Anda mesti menghapus suatu panel sebelum dapat menambah yang baru."
-
-#: ../data/mutter-moblin.schemas.in.h:2
-msgid "Order of panels on toolbar"
-msgstr "Urutan panel pada toolbar"
-
-#: ../data/mutter-moblin.schemas.in.h:1
-msgid "Determines the order of panels on the toolbar."
-msgstr "Menentukan urutan panel pada toolbar."
-
-#: ../src/mnb-toolbar.c:954
-#, c-format
-msgid "Sorry, %s is broken"
-msgstr "Maaf, %s rusak"
+#: ../capplet/src/syst-cc-panel.c:204
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "Baki sistem adalah suatu konsep yang dipakai oleh beberapa aplikasi lebih tua, untuk memberitahu Anda ketika terjadi sesuatu, atau untuk tetap berjalan ketika Anda menutupnya."
 
 #~ msgid "zones"
 #~ msgstr "zona"
@@ -116,9 +137,6 @@ msgstr "Maaf, %s rusak"
 
 #~ msgid "Earlier today"
 #~ msgstr "Hari ini"
-
-#~ msgid "Yesterday"
-#~ msgstr "Kemarin"
 
 #~ msgid "On %A"
 #~ msgstr "Pada %A"
