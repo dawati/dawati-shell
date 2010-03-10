@@ -116,11 +116,12 @@ start_search (MnpWorldClock *area)
 	}
 	priv->search_text = mx_entry_get_text (priv->search_location);
 
-	if (!priv->search_text || !*priv->search_text)
+	if (!priv->search_text || (strlen(priv->search_text) < 3))
 		clutter_actor_hide(priv->scroll);
 	
-	g_signal_emit_by_name (priv->zones_model, "filter-changed");
-	if (priv->search_text && *priv->search_text) {
+	if (priv->search_text && (strlen(priv->search_text) > 2))
+		g_signal_emit_by_name (priv->zones_model, "filter-changed");
+	if (priv->search_text && (strlen(priv->search_text) > 2)) {
 		clutter_actor_show(priv->scroll);
 		clutter_actor_raise_top (priv->scroll);
 	}
@@ -252,6 +253,8 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 	MnpZoneLocation *loc = g_new0(MnpZoneLocation, 1);
 	const GWeatherTimezone *tzone;
 
+	mx_list_view_set_model (MX_LIST_VIEW (priv->zones_list), NULL);
+
 	priv->search_text = NULL;
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");
 	
@@ -269,6 +272,11 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 
 	tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area));
 	mnp_clock_area_add_tile (priv->area, tile);
+
+	priv->search_text = "asd";
+	g_signal_emit_by_name (priv->zones_model, "filter-changed");	
+	mx_list_view_set_model (MX_LIST_VIEW (priv->zones_list), priv->zones_model);
+
 }
 
 
@@ -352,6 +360,7 @@ construct_completion (MnpWorldClock *world_clock)
 	model = mnp_get_world_timezones ();
 	priv->zones_model = model;
 	clutter_model_set_filter (model, filter_zone, world_clock, NULL);
+	priv->search_text = "asd";
 
 	scroll = mx_scroll_view_new ();
 	clutter_actor_set_name (scroll, "completion-scroll-bin");
