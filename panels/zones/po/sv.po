@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"POT-Creation-Date: 2010-03-10 10:35+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLS <tomas.galicia@intel.com>\n"
+"Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,51 +13,58 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/sw-zone.c:763
-#, fuzzy
-msgid "new zone"
-msgstr "Ny zon (0)"
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Panelen Zoner"
 
-#: ../src/sw-zone.c:777
+#: ../data/moblin-panel-zones.desktop.in.in.h:2
+#: ../src/main.c:492
+msgid "zones"
+msgstr "zoner"
+
+#: ../src/sw-overview.c:220
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Program du använder visas här. Du kan byta och organisera dem bäst du vill."
+
+#: ../src/sw-zone.c:764
+msgid "new zone"
+msgstr "ny zon"
+
+#: ../src/sw-zone.c:778
 msgid "No applications on this zone"
 msgstr "Inga program i denna zon"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
+#: ../src/sw-zone.c:906
 msgid "one"
-msgstr "Zoner"
+msgstr "en"
 
-#: ../src/sw-zone.c:909
+#: ../src/sw-zone.c:910
 msgid "two"
-msgstr ""
+msgstr "två"
 
-#: ../src/sw-zone.c:913
+#: ../src/sw-zone.c:914
 msgid "three"
-msgstr ""
+msgstr "tre"
 
-#: ../src/sw-zone.c:917
+#: ../src/sw-zone.c:918
 msgid "four"
-msgstr ""
+msgstr "fyra"
 
-#: ../src/sw-zone.c:921
+#: ../src/sw-zone.c:922
 msgid "five"
-msgstr ""
+msgstr "fem"
 
-#: ../src/sw-zone.c:925
+#: ../src/sw-zone.c:926
 msgid "six"
-msgstr ""
+msgstr "sex"
 
-#: ../src/sw-zone.c:929
+#: ../src/sw-zone.c:930
 msgid "seven"
-msgstr ""
+msgstr "sju"
 
-#: ../src/sw-zone.c:933
+#: ../src/sw-zone.c:934
 msgid "eight"
-msgstr ""
-
-#: ../src/main.c:458
-msgid "zones"
-msgstr "Zoner"
+msgstr "åtta"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Mindre än för en minut sedan"
@@ -133,16 +140,6 @@ msgstr "Zoner"
 
 #~ msgid "test"
 #~ msgstr "testa"
-
-#~ msgid "No Zones yet"
-#~ msgstr "Inga zoner ännu"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Program du använder kommer visas här. Du kan byta och organisera dem bäst "
-#~ "du vill."
 
 #~ msgid ""
 #~ "You need to play some music, look at some pictures or watch some video to "
