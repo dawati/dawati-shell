@@ -6,13 +6,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:46+0000\n"
+"POT-Creation-Date: 2010-03-10 10:30+0000\n"
 "PO-Revision-Date: 2009-08-26 08:21+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Panel Myzone"
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "<b>Janji Temu</b>"
 
 #: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
@@ -47,14 +55,6 @@ msgstr "Tak ada yang perlu dilakukan hari ini"
 msgid "Due %x"
 msgstr "Jatuh tempo %x"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
-msgid "Myzone panel"
-msgstr "Panel Myzone"
-
-#: ../penge/penge-calendar-pane.c:473
-msgid "Appointments"
-msgstr "<b>Janji Temu</b>"
-
 #: ../penge/penge-welcome-tile.c:67
 msgid "Welcome to MeeGo"
 msgstr "Selamat datang ke MeeGo"
@@ -62,6 +62,43 @@ msgstr "Selamat datang ke MeeGo"
 #: ../penge/penge-welcome-tile.c:86
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Ini adalah Myzone, dimana berkas yang baru-baru ini dipakai dan isi dari asupan web akan muncul."
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:137
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Ubah latar belakang dan isi Myzone"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Galat selanjutnya hanya ditampilkan pada terminal."
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Galat GConf: %s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Tampilkan lebih banyak isi layanan web"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Tampilkan isi layanan web sebanyak mungkin"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Tampilkan lebih banyak berkas terkini"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Tampilkan separuh separuh"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Tampilkan berkas terkini sebanyak mungkin"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Selamat Datang ke Moblin 2.1 untuk Netbook</b>"
