@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:47+0000\n"
+"POT-Creation-Date: 2010-03-10 10:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
@@ -39,8 +39,8 @@ msgid "What's happening?"
 msgstr "Co się dzieje?"
 
 #: ../src/mps-feed-pane.c:445
-msgid "Unable to update status: The service may be unavailable or your password could be wrong."
-msgstr "Nie można zaktualizować stanu: Usługa może być niedostępna, lub hasło może być błędne."
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Nie można zaktualizować stanu. Usługa może być niedostępna, lub hasło może być błędne."
 
 #: ../src/mps-feed-switcher.c:344
 msgid "Add new web service"
