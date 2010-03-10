@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:28+0000\n"
+"POT-Creation-Date: 2010-03-10 10:24+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
@@ -27,15 +27,15 @@ msgstr "Ustaw preferencje paska narzędzi"
 msgid "Toolbar"
 msgstr "Pasek narzędzi"
 
-#: ../capplet/src/mtp-bin.c:326
+#: ../capplet/src/mtp-bin.c:355
 msgid "Save toolbar"
 msgstr "Zapisz pasek narzędzi"
 
-#: ../capplet/src/mtp-bin.c:331
+#: ../capplet/src/mtp-bin.c:360
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Niestety, należy usunąć panel przed dodaniem nowego."
 
-#: ../capplet/src/mtp-bin.c:359
+#: ../capplet/src/mtp-bin.c:388
 msgid "Available panels"
 msgstr "Dostępne panele"
 
@@ -44,7 +44,7 @@ msgstr "Dostępne panele"
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
 #: ../capplet/src/mtp-clock.c:221
-#: ../src/mnb-toolbar-clock.c:86
+#: ../src/mnb-toolbar-clock.c:88
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -53,9 +53,30 @@ msgstr "%H:%M"
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
 #: ../capplet/src/mtp-clock.c:231
-#: ../src/mnb-toolbar-clock.c:96
+#: ../src/mnb-toolbar-clock.c:98
 msgid "%B %e, %Y"
 msgstr "%-d %B %Y"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Ustaw preferencje paska systemowego"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr "Pasek systemowy"
+
+#: ../capplet/src/syst-cc-panel.c:167
+msgid "System tray"
+msgstr "Pasek systemowy"
+
+#: ../capplet/src/syst-cc-panel.c:183
+msgid "Show system tray"
+msgstr "Pokaż pasek systemowy"
+
+#: ../capplet/src/syst-cc-panel.c:204
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "Pasek systemowy jest używany przez niektóre starsze aplikacje w celu informowania o zdarzeniach, lub aby aplikacja pozostała uruchomiona po jej zamknięciu."
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -65,27 +86,27 @@ msgstr "Określa kolejność paneli na pasku narzędzi."
 msgid "Order of panels on toolbar"
 msgstr "Kolejność paneli na pasku narzędzi"
 
-#: ../src/moblin-netbook.c:918
+#: ../src/moblin-netbook.c:932
 msgid "Moblin Netbook Effects"
 msgstr "Efekty Moblina na netbooku"
 
-#: ../src/moblin-netbook.c:922
+#: ../src/moblin-netbook.c:936
 msgid "Effects for Moblin Netbooks"
 msgstr "Efekty dla Netbooków z Moblinem"
 
-#: ../src/moblin-netbook.c:2976
+#: ../src/moblin-netbook.c:2990
 msgid "Activate"
 msgstr "Aktywuj"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3004
 msgid "Unknown window"
 msgstr "Nieznane okno"
 
-#: ../src/moblin-netbook.c:2992
+#: ../src/moblin-netbook.c:3006
 msgid "Is asking for your attention."
 msgstr "Prosi o Twoją uwagę."
 
-#: ../src/mnb-toolbar.c:954
+#: ../src/mnb-toolbar.c:968
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Niestety, panel %s jest uszkodzony"
