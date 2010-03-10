@@ -102,10 +102,11 @@ mnp_utils_get_display_from_location (ClutterModel *store, GWeatherLocation *loca
 static void
 fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 			   const char *parent_display_name,
-			   const char *parent_compare_name)
+			   const char *parent_compare_name,
+			   const char *parent_sort_name)
 {
     GWeatherLocation **children;
-    char *display_name, *compare_name;
+    char *display_name, *compare_name, *sort_name;
     int i;
 
     children = gweather_location_get_children (loc);
@@ -120,7 +121,8 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 	for (i = 0; children[i]; i++) {
 	    fill_location_entry_model (store, children[i],
 				       parent_display_name,
-				       parent_compare_name);
+				       parent_compare_name,
+				       parent_sort_name);
 	}
 	break;
 
@@ -129,6 +131,7 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 	for (i = 0; children[i]; i++) {
 	    fill_location_entry_model (store, children[i],
 				       gweather_location_get_name (loc),
+				       gweather_location_get_sort_name (loc),
 				       gweather_location_get_sort_name (loc));
 	}
 	break;
@@ -140,7 +143,7 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 
 	for (i = 0; children[i]; i++) {
 	    fill_location_entry_model (store, children[i],
-				       display_name, compare_name);
+				       display_name, compare_name, parent_sort_name);
 	}
 
 	g_free (display_name);
@@ -152,6 +155,7 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 	    /* If there are multiple (<location>) children, add a line
 	     * for each of them.
 	     */
+
 	    for (i = 0; children[i]; i++) {
 		display_name = g_strdup_printf ("%s (%s), %s",
 						gweather_location_get_name (loc),
@@ -162,10 +166,15 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 						gweather_location_get_sort_name (children[i]),
 						parent_compare_name);
 
+	    	sort_name = g_strdup_printf ("%s:%s",
+					    gweather_location_get_sort_name (loc),
+					    parent_sort_name);
+
 		clutter_model_prepend(store, 
 				    GWEATHER_LOCATION_ENTRY_COL_LOCATION, children[i],
 				    GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, display_name,
 				    GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, compare_name,
+				    GWEATHER_LOCATION_ENTRY_COL_SORT_NAME, sort_name,
 				    -1);
 
 		g_free (display_name);
@@ -182,11 +191,15 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 	    compare_name = g_strdup_printf ("%s, %s",
 					    gweather_location_get_sort_name (loc),
 					    parent_compare_name);
+	    sort_name = g_strdup_printf ("%s:%s",
+					    gweather_location_get_sort_name (loc),
+					    parent_sort_name);
 
 	    clutter_model_prepend(store, 
 				GWEATHER_LOCATION_ENTRY_COL_LOCATION, children[0],
 				GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, display_name,
 				GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, compare_name,
+				GWEATHER_LOCATION_ENTRY_COL_SORT_NAME, sort_name,
 				-1);
 
 	    g_free (display_name);
@@ -208,12 +221,56 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 			    GWEATHER_LOCATION_ENTRY_COL_LOCATION, loc,
 			    GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, display_name,
 			    GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, compare_name,
+			    GWEATHER_LOCATION_ENTRY_COL_SORT_NAME, parent_sort_name,
 			    -1);
 
 	g_free (display_name);
 	g_free (compare_name);
 	break;
     }
+
+}
+
+static gint 
+sort_weather_model (ClutterModel *model, const GValue *a, const GValue *b, gpointer user_data)
+{
+	const char *loc1, *loc2;
+	const char **city1, **city2;
+	int ret = 0;
+
+	loc1 = g_value_get_string (a);
+	loc2 = g_value_get_string (b);
+
+	city1 = g_strsplit(loc1, ":", 2);
+	city2 = g_strsplit(loc2, ":", 2);
+
+	if (strcmp(city1[0], "paris") == 0) {
+		if (strcmp(city1[1], "france") == 0)
+			ret = -1;
+		else 
+			ret = strcmp(loc1, loc2);
+	} else if (strcmp(city1[0], "london") == 0) {
+		if (strcmp(city1[1], "united kingdom") == 0)
+			ret = -1;
+		else 
+			ret = strcmp(loc1, loc2);
+	} else if (strcmp(city2[0], "paris") == 0) {
+		if (strcmp(city2[1], "france") == 0)
+			ret = 1;
+		else 
+			ret = strcmp(loc1, loc2);
+	} else if (strcmp(city2[0], "london") == 0) {
+		if (strcmp(city2[1], "united kingdom") == 0)
+			ret = 1;
+		else 
+			ret = strcmp(loc1, loc2);
+	}
+	else
+		ret = strcmp(loc1, loc2);
+	g_strfreev(city1);
+	g_strfreev(city2);
+
+	return ret;
 
 }
 
@@ -233,9 +290,10 @@ mnp_get_world_timezones (void)
 					G_TYPE_STRING, "SortName");
 
 
-	fill_location_entry_model(store, world, NULL, NULL);
+	fill_location_entry_model(store, world, NULL, NULL, NULL);
     	/* gweather_location_unref (world); */
 
+	clutter_model_set_sort (store, 3, sort_weather_model, NULL, NULL);
 	return (ClutterModel *)store;
 }
 
