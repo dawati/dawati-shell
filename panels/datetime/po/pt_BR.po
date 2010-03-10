@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:37+0000\n"
+"POT-Creation-Date: 2010-03-10 10:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
 "Language-Team: \n"
@@ -102,7 +102,7 @@ msgstr "Repetir"
 
 #: ../src/mnp-alarm-dialog.c:352
 msgid "Snooze"
-msgstr "Adormecido"
+msgstr "Suspender"
 
 #: ../src/mnp-alarm-dialog.c:394
 msgid "Sound"
