@@ -116,14 +116,14 @@ MxButton.new-alarm-tile
 *.TileRemoveButton *.TileIcon, *.AlarmRemoveButton *.AlarmDelIcon
 {
   border: 0;
-  padding: 0;	
+  padding: 10;	
   background-image: url('dismiss_button.png');
 }
 
 *.TileRemoveButton:hover *.TileIcon, *.AlarmRemoveButton:hover *.AlarmDelIcon
 {
   border: 0;
-  padding: 0;		
+  padding: 10;		
   background-image: url('dismiss_button_hover.png');
 }
 
