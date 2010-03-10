@@ -1,17 +1,18 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-27 22:27+0000\n"
+"POT-Creation-Date: 2010-03-10 10:29+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Swedish\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 # Derived from Empathy
 # Swedish messages for Empathy.
@@ -19,24 +20,43 @@ msgstr ""
 # Richard Hult <richard@imendio.com>, 2002, 2003.
 # Christian Rose <menthos@menthos.com>, 2003, 2004.
 # Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009.
-#: ../anerley/anerley-tile.c:208
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Tillgänglig"
 
-#: ../anerley/anerley-tile.c:211
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Upptagen"
 
-#: ../anerley/anerley-tile.c:214
-#: ../anerley/anerley-tile.c:217
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "Frånvarande"
 
-#: ../anerley/anerley-tile.c:220
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "Frånkopplad"
 
-#: ../anerley/anerley-econtact-item.c:312
+#: ../anerley/anerley-econtact-item.c:233
 msgid "Unnamed"
 msgstr "Inget namn"
 
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Längre frånvaro"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Ej angivet"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Okänt"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Dolt"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Fel"
