@@ -281,6 +281,7 @@ mnp_datetime_construct (MnpDatetime *time)
 	clutter_container_add_actor ((ClutterContainer *)time, div);
 
 	priv->cal_alarm_row = mx_box_layout_new();
+	clutter_actor_set_size((ClutterActor *)priv->cal_alarm_row, 350, -1);
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->cal_alarm_row, 4);
 	mx_box_layout_set_vertical ((MxBoxLayout *)priv->cal_alarm_row, TRUE);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->cal_alarm_row, FALSE);
@@ -289,13 +290,13 @@ mnp_datetime_construct (MnpDatetime *time)
 
 	div = clutter_texture_new_from_file (V_DIV_LINE, NULL);
 	clutter_container_add_actor ((ClutterContainer *)time, div);
-
+#if 0
 	priv->alarm_area = (ClutterActor *)mnp_alarms_new();
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, (ClutterActor *)priv->alarm_area);
 	
 	div = clutter_texture_new_from_file (DOUBLE_DIV_LINE, NULL);
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, (ClutterActor *)div);
-	
+#endif	
 	construct_calendar_area(time);
 
 	construct_task_area (time);
