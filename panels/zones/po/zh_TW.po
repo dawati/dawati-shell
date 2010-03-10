@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"POT-Creation-Date: 2010-03-10 10:35+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -13,51 +14,57 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/sw-zone.c:763
-#, fuzzy
-msgid "new zone"
-msgstr "新區域(0)"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+msgid "zones"
+msgstr "區域"
 
-#: ../src/sw-zone.c:777
+#: ../src/sw-overview.c:220
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "你正在使用的應用程式會在這裡顯示。你也可以隨心所欲來切換以及整理它們。"
+
+#: ../src/sw-zone.c:778
 msgid "No applications on this zone"
 msgstr "這個區域沒有應用程式"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
-msgid "one"
-msgstr "區域"
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "區域面板"
 
-#: ../src/sw-zone.c:909
+#: ../src/sw-zone.c:764
+msgid "new zone"
+msgstr "新區域"
+
+#: ../src/sw-zone.c:910
 msgid "two"
-msgstr ""
+msgstr "第二區"
 
-#: ../src/sw-zone.c:913
-msgid "three"
-msgstr ""
+#: ../src/sw-zone.c:906
+msgid "one"
+msgstr "第一區"
 
-#: ../src/sw-zone.c:917
+#: ../src/sw-zone.c:918
 msgid "four"
-msgstr ""
+msgstr "第四區"
 
-#: ../src/sw-zone.c:921
-msgid "five"
-msgstr ""
+#: ../src/sw-zone.c:914
+msgid "three"
+msgstr "第三區"
 
-#: ../src/sw-zone.c:925
+#: ../src/sw-zone.c:926
 msgid "six"
-msgstr ""
+msgstr "第六區"
 
-#: ../src/sw-zone.c:929
-msgid "seven"
-msgstr ""
+#: ../src/sw-zone.c:922
+msgid "five"
+msgstr "第五區"
 
-#: ../src/sw-zone.c:933
+#: ../src/sw-zone.c:934
 msgid "eight"
-msgstr ""
+msgstr "第八區"
 
-#: ../src/main.c:458
-msgid "zones"
-msgstr "區域"
+#: ../src/sw-zone.c:930
+msgid "seven"
+msgstr "第七區"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin 網路筆電特效"
@@ -85,15 +92,6 @@ msgstr "區域"
 
 #~ msgid "Dismiss All"
 #~ msgstr "取消所有"
-
-#~ msgid "No Zones yet"
-#~ msgstr "還沒有區域"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "你正在使用的應用程式會在這裡顯示。你也可以隨心所欲來切換以及整理它們。"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "少於一分鐘前"
@@ -149,13 +147,8 @@ msgstr "區域"
 #~ msgid "test"
 #~ msgstr "測試"
 
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "您要播放音樂、瀏覽照片或觀看影片來顯示您的歷史紀錄。現在，您可以瀏覽一些媒"
-#~ "體樣本："
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "您要播放音樂、瀏覽照片或觀看影片來顯示您的歷史紀錄。現在，您可以瀏覽一些媒體樣本："
 
 #~ msgid "Recently played"
 #~ msgstr "最近播放"
@@ -205,11 +198,8 @@ msgstr "區域"
 #~ msgid "applications"
 #~ msgstr "應用程式"
 
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "正如您所訪問的網頁，您的收藏夾會在這裡出現，您在瀏覽器中的新標籤頁。"
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "正如您所訪問的網頁，您的收藏夾會在這裡出現，您在瀏覽器中的新標籤頁。"
 
 #~ msgid "Untitled"
 #~ msgstr "無標題"
@@ -265,21 +255,14 @@ msgstr "區域"
 #~ msgid "No calendar entries this week"
 #~ msgstr "這禮拜行事曆上沒有任何項目"
 
-#~ msgid ""
-#~ "Your friends' feeds and web services will appear here. Activate your "
-#~ "accounts now!"
+#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 #~ msgstr "您朋友的文章和網路服務會出現在這裡。起動您的帳戶！"
 
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>歡迎來到 Moblin 2.0 隨身型易網機</b>"
 
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "由於 Moblin 和其他電腦有些不同，我們將一些東西湊在一起以幫助您更快熟悉 "
-#~ "Moblin。希望您喜歡我們的 Moblin。Moblin 小組。"
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "由於 Moblin 和其他電腦有些不同，我們將一些東西湊在一起以幫助您更快熟悉 Moblin。希望您喜歡我們的 Moblin。Moblin 小組。"
 
 #~ msgid "Web page"
 #~ msgstr "網頁"
@@ -302,8 +285,7 @@ msgstr "區域"
 #~ msgid "Send a message"
 #~ msgstr "發送訊息"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "很抱歉，我們無法找到任何人。您成立了一個 Messenger 的帳戶？"
 
 #~ msgid "People"
@@ -363,15 +345,10 @@ msgstr "區域"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "您目前狀態 - 您未上線"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "要更新您的網路狀態，您必須設定一個網路服務帳戶，提供此帳戶的一方須能支援狀"
-#~ "態訊息"
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "要更新您的網路狀態，您必須設定一個網路服務帳戶，提供此帳戶的一方須能支援狀態訊息"
 
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "要更新您的 IM 狀態，您必須要設定一個 IM 帳戶"
 
 #~ msgid "status"
