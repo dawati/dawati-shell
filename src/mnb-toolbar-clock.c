@@ -119,6 +119,8 @@ mnb_toolbar_clock_constructed (GObject *self)
   if (G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->constructed (self);
 
+  clutter_actor_push_internal (actor);
+
   /* create time and date labels */
   priv->time = mx_label_new ("");
   clutter_actor_set_name (priv->time, "time-label");
@@ -127,6 +129,8 @@ mnb_toolbar_clock_constructed (GObject *self)
   priv->date = mx_label_new ("");
   clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
   clutter_actor_set_parent (priv->date, actor);
+
+  clutter_actor_pop_internal (actor);
 
   mnb_toolbar_clock_update_time_date (priv);
 
