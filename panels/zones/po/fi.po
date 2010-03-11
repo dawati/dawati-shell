@@ -1,63 +1,70 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"POT-Creation-Date: 2010-03-10 10:35+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../src/sw-zone.c:763
-#, fuzzy
-msgid "new zone"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+msgid "zones"
 msgstr "vyöhykkeet"
 
-#: ../src/sw-zone.c:777
+#: ../src/sw-overview.c:220
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä miten haluat."
+
+#: ../src/sw-zone.c:778
 msgid "No applications on this zone"
 msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
-msgid "one"
-msgstr "vyöhykkeet"
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Vyöhyke-paneeli"
 
-#: ../src/sw-zone.c:909
+#: ../src/sw-zone.c:764
+msgid "new zone"
+msgstr "uusi vyöhyke"
+
+#: ../src/sw-zone.c:910
 msgid "two"
-msgstr ""
+msgstr "kaksi"
 
-#: ../src/sw-zone.c:913
-msgid "three"
-msgstr ""
+#: ../src/sw-zone.c:906
+msgid "one"
+msgstr "yksi"
 
-#: ../src/sw-zone.c:917
+#: ../src/sw-zone.c:918
 msgid "four"
-msgstr ""
+msgstr "neljä"
 
-#: ../src/sw-zone.c:921
-msgid "five"
-msgstr ""
+#: ../src/sw-zone.c:914
+msgid "three"
+msgstr "kolme"
 
-#: ../src/sw-zone.c:925
+#: ../src/sw-zone.c:926
 msgid "six"
-msgstr ""
+msgstr "kuusi"
 
-#: ../src/sw-zone.c:929
-msgid "seven"
-msgstr ""
+#: ../src/sw-zone.c:922
+msgid "five"
+msgstr "viisi"
 
-#: ../src/sw-zone.c:933
+#: ../src/sw-zone.c:934
 msgid "eight"
-msgstr ""
+msgstr "kahdeksan"
 
-#: ../src/main.c:458
-msgid "zones"
-msgstr "vyöhykkeet"
+#: ../src/sw-zone.c:930
+msgid "seven"
+msgstr "seitsemän"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Alle minuutti sitten"
@@ -119,23 +126,8 @@ msgstr "vyöhykkeet"
 #~ msgid "%B %e, %Y"
 #~ msgstr "%B %e, %Y"
 
-#~ msgid "No Zones yet"
-#~ msgstr "Vyöhykkeitä ei vielä ole"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä "
-#~ "miten haluat."
-
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi "
-#~ "historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
 
 #~ msgid "Recently played"
 #~ msgstr "Äskettäin soitetut"
@@ -185,12 +177,8 @@ msgstr "vyöhykkeet"
 #~ msgid "applications"
 #~ msgstr "sovellukset"
 
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi "
-#~ "välilehti -sivulla."
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi välilehti -sivulla."
 
 #~ msgid "Untitled"
 #~ msgstr "Nimetön"
