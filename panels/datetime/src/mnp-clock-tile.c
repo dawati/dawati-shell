@@ -51,6 +51,8 @@ struct _MnpClockTilePriv {
 	gpointer *remove_data;
 
 	gfloat depth;
+
+	ClutterActor *clone;
 };
 
 enum
@@ -64,6 +66,14 @@ enum
   DRAG_PROP_ENABLED,
   DRAG_PROP_ACTOR,
 };
+
+
+enum {
+        DRAG_Y_POS,
+        LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
 
 static MxBoxLayoutClass *parent_class = NULL;
 
@@ -86,25 +96,51 @@ mnp_clock_tile_drag_begin (MxDraggable *draggable, gfloat event_x, gfloat event_
 	ClutterActor *stage = clutter_actor_get_stage (self);
 	gfloat orig_x, orig_y;
 	MnpClockTile *tile = (MnpClockTile *)draggable;
-
+	gfloat width, height;
+	MnpClockTilePriv *priv = tile->priv;
+	clutter_actor_get_size (self, &width, &height);
+	
 	g_object_ref (self);
+
+	if (priv->clone)
+		clutter_actor_destroy (priv->clone);
+	
+	priv->clone = clutter_clone_new (self);
 
 	tile->priv->depth = clutter_actor_get_depth (self);
 	clutter_actor_get_transformed_position (self, &orig_x, &orig_y);
-	clutter_actor_reparent (self, stage);
-	clutter_actor_raise_top (self);
-	clutter_actor_set_position (self, orig_x, orig_y);
+	//clutter_actor_reparent (self, stage);
+	//clutter_actor_set_size (self, width, -1);
+	//clutter_actor_raise_top (self);
+	//clutter_actor_set_position (self, orig_x, orig_y);
+	
+	clutter_container_add_actor (CLUTTER_CONTAINER (stage), priv->clone);
+	clutter_actor_set_position (priv->clone, orig_x, orig_y);
+	clutter_actor_set_size (priv->clone, width, height);
+	
 	g_object_unref (self);
 
 	clutter_actor_animate (self, CLUTTER_EASE_OUT_CUBIC, 250,
-				"opacity", 150,
+				"opacity", 0,
 				NULL);
 }
 
 static void
 mnp_clock_tile_drag_motion (MxDraggable *draggable, gfloat delta_x, gfloat delta_y)
 {
-	clutter_actor_move_by (CLUTTER_ACTOR (draggable), delta_x, delta_y);	
+	gfloat orig_x, orig_y;
+	MnpClockTile *tile = (MnpClockTile *)draggable;
+	MnpClockTilePriv *priv = tile->priv;
+
+	clutter_actor_get_transformed_position (CLUTTER_ACTOR (draggable),
+                                          	  &orig_x, &orig_y);
+
+	clutter_actor_set_position (CLUTTER_ACTOR (priv->clone), orig_x + delta_x,
+                              	      orig_y + delta_y);
+	
+	g_signal_emit (G_OBJECT (draggable), signals[DRAG_Y_POS], 0, (int)orig_y+(int)delta_y);
+		
+	//clutter_actor_move_by (CLUTTER_ACTOR (draggable), delta_x, delta_y);	
 }
 
 static void
@@ -112,6 +148,16 @@ mnp_clock_tile_drag_end (MxDraggable *draggable, gfloat event_x, gfloat event_y)
 {
 	ClutterActor *self = CLUTTER_ACTOR (draggable);
 	MnpClockTile *tile = (MnpClockTile *)draggable;
+	MnpClockTilePriv *priv = tile->priv;
+  	gfloat x, y, width, height;
+
+	clutter_actor_destroy (priv->clone);
+  	priv->clone = NULL;
+
+	clutter_actor_get_size (CLUTTER_ACTOR (draggable), &width, &height);
+	clutter_actor_get_transformed_position (CLUTTER_ACTOR (draggable), &x, &y);
+	
+	clutter_actor_set_opacity (CLUTTER_ACTOR (draggable), 0xff);
 
 	clutter_actor_animate (self, CLUTTER_EASE_OUT_CUBIC, 250,
                          	"opacity", 255,
@@ -274,6 +320,16 @@ mnp_clock_tile_class_init (MnpClockTileClass *klass)
 	g_object_class_override_property (object_class,
                                     DRAG_PROP_ACTOR,
                                     "drag-actor");	
+
+	signals[DRAG_Y_POS] = g_signal_new ("drag-y-pos",
+			G_TYPE_FROM_CLASS (klass),
+			G_SIGNAL_RUN_FIRST,
+			G_STRUCT_OFFSET (MnpClockTileClass, drag_y_pos),
+			NULL, NULL,
+			g_cclosure_marshal_VOID__INT,
+			G_TYPE_NONE, 1,
+			G_TYPE_INT);
+
 }
 GType
 mnp_clock_tile_get_type (void)
@@ -438,6 +494,7 @@ mnp_clock_tile_new (MnpZoneLocation *location, time_t time_now)
   	tile->priv->is_enabled = TRUE;
 	tile->priv->loc = location;
 	tile->priv->time_now = time_now;
+	tile->priv->clone = NULL;
 
 	mnp_clock_construct (tile);
 

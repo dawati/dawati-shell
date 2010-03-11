@@ -110,6 +110,35 @@ insert_in_ptr_array (GPtrArray *array, gpointer data, int pos)
 }
 
 static void
+tile_drag_run (MnpClockTile *tile, int ypos, MnpClockArea *area)
+{
+  ClutterActor *self = CLUTTER_ACTOR (area);
+  ClutterActor *child = CLUTTER_ACTOR (tile);
+  GPtrArray *tiles = area->priv->clock_tiles;
+  int i, pos;
+
+  g_object_ref (tile);
+
+  pos = ypos / 85;
+  if (pos >= tiles->len)
+	  pos = tiles->len -1;
+ 
+ // clutter_actor_reparent (child, self);
+
+  g_ptr_array_remove (tiles, (gpointer) tile);
+  insert_in_ptr_array (tiles, tile, pos);
+
+  clutter_actor_set_depth ((ClutterActor *)tile, ((pos+1) * 0.05) - 0.01);
+ 
+ 
+  for (i=tiles->len-1; i >= 0; i--) {
+	  clutter_actor_set_depth (tiles->pdata[i], (i + 1) * 0.05);
+  }
+ 
+  g_object_unref (tile);		
+}
+
+static void
 mnp_clock_area_drop (MxDroppable *droppable, MxDraggable *draggable, gfloat event_x, gfloat event_y, gint button, ClutterModifierType modifiers)
 {
   ClutterActor *self = CLUTTER_ACTOR (droppable);
@@ -305,6 +334,8 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	clutter_actor_reparent ((ClutterActor *)tile, (ClutterActor *)area);
 	g_ptr_array_add (area->priv->clock_tiles, tile);
 	mnp_clock_tile_set_remove_cb (tile, (TileRemoveFunc)mnp_clock_tile_removed, (gpointer)area);
+
+	g_signal_connect (tile, "drag-y-pos", G_CALLBACK(tile_drag_run), area);
 }
 
 void 

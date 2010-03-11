@@ -51,6 +51,8 @@ struct _MnpClockTile
 struct _MnpClockTileClass 
 {
 	MxBoxLayoutClass parent;
+	void (* drag_y_pos) (MnpClockTile *tile, gint pos);
+	
 };
 
 typedef void (*TileRemoveFunc) (MnpClockTile *, gpointer data);
