@@ -52,11 +52,6 @@ msgstr "%H:%M"
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-#, fuzzy
-msgid "Set your system-tray preferences"
-msgstr "Définir les préférences de la barre d’outils"
-
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
 msgstr "Établit l'ordre des panneaux sur la barre d'outils."
@@ -98,26 +93,26 @@ msgstr "Supprimer"
 msgid "Dismiss All"
 msgstr "Tout supprimer"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:250
-#, fuzzy
-msgid "System Tray"
-msgstr "Zone de notification"
-
 #: ../capplet/src/syst-cc-panel.c:183
-#, fuzzy
 msgid "Show system tray"
-msgstr "Montrer la zone de notification"
+msgstr "Montrer la barre d'état"
 
 #: ../capplet/src/syst-cc-panel.c:167
-#, fuzzy
 msgid "System tray"
-msgstr "Zone de notification"
+msgstr "Barre d'état"
 
 #: ../capplet/src/syst-cc-panel.c:204
-#, fuzzy
 msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "La zone de notification est un concept utilisé, par d'anciennes applications, pour vous permettre de savoir quand quelque chose se passe ou pour rester en exécution lorsque vous les fermez."
+msgstr "La barre d'état est un concept utilisé, par d'anciennes applications, pour vous permettre de savoir quand quelque chose se passe ou pour rester en exécution lorsque vous les fermez."
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Définir les préférences de la barre d’état"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr "Barre d'état"
 
 #~ msgid "Socket for embedding"
 #~ msgstr "Socket pour l’intégration"
