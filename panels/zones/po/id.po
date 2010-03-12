@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"POT-Creation-Date: 2010-03-10 10:35+0000\n"
 "PO-Revision-Date: 2009-08-26 04:16+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,51 +14,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/sw-zone.c:763
-#, fuzzy
-msgid "new zone"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+msgid "zones"
 msgstr "zona"
 
-#: ../src/sw-zone.c:777
+#: ../src/sw-overview.c:220
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat menukar dan mengatur mereka sekehendak anda."
+
+#: ../src/sw-zone.c:778
 msgid "No applications on this zone"
 msgstr "Tak ada aplikasi pada zona ini"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
-msgid "one"
-msgstr "zona"
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "영역 패널"
 
-#: ../src/sw-zone.c:909
+#: ../src/sw-zone.c:764
+msgid "new zone"
+msgstr "새로운 영역"
+
+#: ../src/sw-zone.c:910
 msgid "two"
-msgstr ""
+msgstr "둘"
 
-#: ../src/sw-zone.c:913
-msgid "three"
-msgstr ""
+#: ../src/sw-zone.c:906
+msgid "one"
+msgstr "하나"
 
-#: ../src/sw-zone.c:917
+#: ../src/sw-zone.c:918
 msgid "four"
-msgstr ""
+msgstr "넷"
 
-#: ../src/sw-zone.c:921
-msgid "five"
-msgstr ""
+#: ../src/sw-zone.c:914
+msgid "three"
+msgstr "셋"
 
-#: ../src/sw-zone.c:925
+#: ../src/sw-zone.c:926
 msgid "six"
-msgstr ""
+msgstr "여섯"
 
-#: ../src/sw-zone.c:929
-msgid "seven"
-msgstr ""
+#: ../src/sw-zone.c:922
+msgid "five"
+msgstr "다섯"
 
-#: ../src/sw-zone.c:933
+#: ../src/sw-zone.c:934
 msgid "eight"
-msgstr ""
+msgstr "여덟"
 
-#: ../src/main.c:458
-msgid "zones"
-msgstr "zona"
+#: ../src/sw-zone.c:930
+msgid "seven"
+msgstr "일곱"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Efek Netbook Moblin"
@@ -66,7 +72,6 @@ msgstr "zona"
 #~ msgid "Effects for Moblin Netbooks"
 #~ msgstr "Efek-efek untuk Netbook Moblin"
 
-# 24 hrs without am/pm for ID
 #~ msgid "%l:%M %P"
 #~ msgstr "%H:%M"
 
@@ -78,16 +83,6 @@ msgstr "zona"
 
 #~ msgid "Dismiss All"
 #~ msgstr "Bubar Semua"
-
-#~ msgid "No Zones yet"
-#~ msgstr "Belum ada zona"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat "
-#~ "menukar dan mengatur mereka sekehendak anda."
 
 #~ msgid "Unknown window"
 #~ msgstr "Jendela tak dikenal"
