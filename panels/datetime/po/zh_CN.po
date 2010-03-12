@@ -1,0 +1,245 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-10 10:36+0000\n"
+"PO-Revision-Date: 2010-03-11 16:43-0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: ../src/moblin-panel-date-time.c:104
+msgid "Date/Time"
+msgstr "日期/时间"
+
+#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr "日期和时间面板"
+
+#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+msgid "date and time"
+msgstr "日期和时间"
+
+#: ../src/mnp-alarm-dialog.c:58
+msgid "OFF"
+msgstr "关闭"
+
+#: ../src/mnp-alarm-dialog.c:59
+msgid "Beep"
+msgstr "Beep"
+
+#: ../src/mnp-alarm-dialog.c:60
+msgid "Music"
+msgstr "音乐"
+
+#: ../src/mnp-alarm-dialog.c:67
+#: ../src/mnp-alarm-instance.c:52
+msgid "Never"
+msgstr "从不"
+
+#: ../src/mnp-alarm-dialog.c:68
+#: ../src/mnp-alarm-instance.c:53
+#: ../src/mnp-alarm-tile.c:36
+msgid "Everyday"
+msgstr "每天"
+
+#: ../src/mnp-alarm-dialog.c:69
+#: ../src/mnp-alarm-instance.c:54
+msgid "Monday - Friday"
+msgstr "星期一——星期五"
+
+#: ../src/mnp-alarm-dialog.c:70
+#: ../src/mnp-alarm-instance.c:55
+msgid "Monday"
+msgstr "星期一"
+
+#: ../src/mnp-alarm-dialog.c:71
+#: ../src/mnp-alarm-instance.c:56
+msgid "Tuesday"
+msgstr "星期二"
+
+#: ../src/mnp-alarm-dialog.c:72
+#: ../src/mnp-alarm-instance.c:57
+msgid "Wednesday"
+msgstr "星期三"
+
+#: ../src/mnp-alarm-dialog.c:73
+#: ../src/mnp-alarm-instance.c:58
+msgid "Thursday"
+msgstr "星期四"
+
+#: ../src/mnp-alarm-dialog.c:74
+#: ../src/mnp-alarm-instance.c:59
+msgid "Friday"
+msgstr "星期五"
+
+#: ../src/mnp-alarm-dialog.c:75
+#: ../src/mnp-alarm-instance.c:60
+msgid "Saturday"
+msgstr "星期六"
+
+#: ../src/mnp-alarm-dialog.c:76
+#: ../src/mnp-alarm-instance.c:61
+msgid "Sunday"
+msgstr "星期日"
+
+#: ../src/mnp-alarm-dialog.c:175
+msgid "Alarm settings"
+msgstr "闹钟设置"
+
+#: ../src/mnp-alarm-dialog.c:229
+msgid "ON"
+msgstr "打开"
+
+#: ../src/mnp-alarm-dialog.c:322
+msgid "Repeat"
+msgstr "重复"
+
+#: ../src/mnp-alarm-dialog.c:352
+msgid "Snooze"
+msgstr "打盹"
+
+#: ../src/mnp-alarm-dialog.c:394
+msgid "Sound"
+msgstr "声音"
+
+#: ../src/mnp-alarm-dialog.c:468
+msgid "Delete alarm"
+msgstr "删除闹钟"
+
+#: ../src/mnp-alarms.c:201
+msgid ""
+"New\n"
+"Alarm"
+msgstr ""
+"新的\n"
+"闹钟"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../src/mnp-utils.c:362
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#: ../src/mnp-utils.c:370
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../src/mnp-utils.c:384
+msgid "%b %-d (Yesterday)"
+msgstr "%b %-d（昨天）"
+
+#: ../src/mnp-utils.c:386
+msgid "%b %-d (Tomorrow)"
+msgstr "%b %-d（明天）"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display in Aug 6
+#: ../src/mnp-utils.c:392
+msgid "%b %-d"
+msgstr "%b %-d"
+
+#: ../src/mnp-alarm-instance.c:290
+msgid "Alarm Notify"
+msgstr "闹钟通知"
+
+#: ../src/mnp-alarm-instance.c:293
+#, c-format
+msgid "Alarm at %d:%.2d %s"
+msgstr "闹钟时间 %d:%.2d %s"
+
+#: ../src/mnp-alarm-instance.c:293
+msgid "am"
+msgstr "上午"
+
+#: ../src/mnp-alarm-instance.c:293
+msgid "pm"
+msgstr "下午"
+
+#: ../src/mnp-alarm-instance.c:294
+msgid "Moblin Alarm Notify"
+msgstr "Moblin 的闹钟通知"
+
+#: ../src/mnp-alarm-instance.c:296
+msgid "AlarmNotifications"
+msgstr "闹钟通知"
+
+#: ../src/mnp-alarm-tile.c:37
+msgid "MON-FRI"
+msgstr "星期一——星期五"
+
+#: ../src/mnp-alarm-tile.c:38
+msgid "MONDAYS"
+msgstr "星期一"
+
+#: ../src/mnp-alarm-tile.c:39
+msgid "TUESDAYS"
+msgstr "星期二"
+
+#: ../src/mnp-alarm-tile.c:40
+msgid "WEDNESDAYS"
+msgstr "星期三"
+
+#: ../src/mnp-alarm-tile.c:41
+msgid "THURSDAYS"
+msgstr "星期四"
+
+#: ../src/mnp-alarm-tile.c:42
+msgid "FRIDAYS"
+msgstr "星期五"
+
+#: ../src/mnp-alarm-tile.c:43
+msgid "SATURDAYS"
+msgstr "星期六"
+
+#: ../src/mnp-alarm-tile.c:44
+msgid "SUNDAYS"
+msgstr "星期日"
+
+#: ../src/mnp-world-clock.c:400
+msgid "Enter a country or city"
+msgstr "输入一个国家或城市"
+
+#: ../src/mnp-world-clock.c:415
+msgid "Add"
+msgstr "添加"
+
+#: ../src/mnp-datetime.c:178
+msgid "Today"
+msgstr "今天"
+
+#: ../src/mnp-datetime.c:235
+msgid "Tasks"
+msgstr "任务"
+
+#: ../src/moblin-alarm-notify.c:43
+msgid "Moblin alarm notify"
+msgstr "Moblin 闹钟通知"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr "由闹钟通知使用的编码形式储存的闹钟。"
+
+#: ../src/date-time.schemas.in.h:2
+msgid "List of alarms in short encoded form"
+msgstr "短编码形式的闹钟列表"
+
