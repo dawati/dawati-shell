@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -12,110 +13,122 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+#: ../src/mnp-alarm-tile.c:44
+msgid "SUNDAYS"
+msgstr "SUNNUNTAIT"
+
+#: ../src/mnp-datetime.c:235
+msgid "Tasks"
+msgstr "Tehtävät"
+
+#: ../src/moblin-alarm-notify.c:43
+msgid "Moblin alarm notify"
+msgstr "Mobilin-herätysilmoitus"
+
+#: ../src/mnp-world-clock.c:415
+msgid "Add"
+msgstr "Lisää"
+
+#: ../src/mnp-datetime.c:178
+msgid "Today"
+msgstr "Tänään"
+
+#: ../src/mnp-world-clock.c:400
+msgid "Enter a country or city"
+msgstr "Anna maa tai kaupunki"
+
+#: ../src/mnp-alarm-tile.c:42
+msgid "FRIDAYS"
+msgstr "PERJANTAIT"
+
+#: ../src/mnp-alarm-tile.c:43
+msgid "SATURDAYS"
+msgstr "LAUANTAIT"
+
 #: ../src/moblin-panel-date-time.c:104
 msgid "Date/Time"
-msgstr ""
-
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
-msgid "Date and Time panel"
-msgstr ""
+msgstr "Pvm/Aika"
 
 #: ../data/moblin-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
-msgstr ""
+msgstr "pvm ja aika"
 
-#: ../src/mnp-alarm-dialog.c:58
-msgid "OFF"
-msgstr ""
+#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr "Pvm ja aikapaneeli"
 
 #: ../src/mnp-alarm-dialog.c:59
 msgid "Beep"
-msgstr ""
+msgstr "Piippaus"
+
+#: ../src/mnp-alarm-dialog.c:58
+msgid "OFF"
+msgstr "POIS PÄÄLTÄ"
+
+#: ../src/mnp-alarm-dialog.c:67 ../src/mnp-alarm-instance.c:52
+msgid "Never"
+msgstr "Ei koskaan"
 
 #: ../src/mnp-alarm-dialog.c:60
 msgid "Music"
-msgstr ""
+msgstr "Musiikki"
 
-#: ../src/mnp-alarm-dialog.c:67
-#: ../src/mnp-alarm-instance.c:52
-msgid "Never"
-msgstr ""
+#: ../src/mnp-alarm-dialog.c:69 ../src/mnp-alarm-instance.c:54
+msgid "Monday - Friday"
+msgstr "Maanantai - perjantai"
 
-#: ../src/mnp-alarm-dialog.c:68
-#: ../src/mnp-alarm-instance.c:53
+#: ../src/mnp-alarm-dialog.c:68 ../src/mnp-alarm-instance.c:53
 #: ../src/mnp-alarm-tile.c:36
 msgid "Everyday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:69
-#: ../src/mnp-alarm-instance.c:54
-msgid "Monday - Friday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:70
-#: ../src/mnp-alarm-instance.c:55
-msgid "Monday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:71
-#: ../src/mnp-alarm-instance.c:56
-msgid "Tuesday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:72
-#: ../src/mnp-alarm-instance.c:57
-msgid "Wednesday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:73
-#: ../src/mnp-alarm-instance.c:58
-msgid "Thursday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:74
-#: ../src/mnp-alarm-instance.c:59
-msgid "Friday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:75
-#: ../src/mnp-alarm-instance.c:60
-msgid "Saturday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:76
-#: ../src/mnp-alarm-instance.c:61
-msgid "Sunday"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:175
-msgid "Alarm settings"
-msgstr ""
-
-#: ../src/mnp-alarm-dialog.c:229
-msgid "ON"
-msgstr ""
+msgstr "Joka päivä"
 
 #: ../src/mnp-alarm-dialog.c:322
 msgid "Repeat"
-msgstr ""
+msgstr "Toista"
 
-#: ../src/mnp-alarm-dialog.c:352
-msgid "Snooze"
-msgstr ""
+#: ../src/mnp-alarm-dialog.c:229
+msgid "ON"
+msgstr "PÄÄLLÄ"
 
-#: ../src/mnp-alarm-dialog.c:394
-msgid "Sound"
-msgstr ""
+#: ../src/mnp-alarm-dialog.c:71 ../src/mnp-alarm-instance.c:56
+msgid "Tuesday"
+msgstr "Tiistai"
 
-#: ../src/mnp-alarm-dialog.c:468
-msgid "Delete alarm"
-msgstr ""
+#: ../src/mnp-alarm-dialog.c:70 ../src/mnp-alarm-instance.c:55
+msgid "Monday"
+msgstr "Maanantai"
 
-#: ../src/mnp-alarms.c:201
-msgid ""
-"New\n"
-"Alarm"
-msgstr ""
+#: ../src/mnp-alarm-dialog.c:73 ../src/mnp-alarm-instance.c:58
+msgid "Thursday"
+msgstr "Torstai"
+
+#: ../src/mnp-alarm-dialog.c:72 ../src/mnp-alarm-instance.c:57
+msgid "Wednesday"
+msgstr "Keskiviikko"
+
+#: ../src/mnp-alarm-dialog.c:75 ../src/mnp-alarm-instance.c:60
+msgid "Saturday"
+msgstr "Lauantai"
+
+#: ../src/mnp-alarm-dialog.c:74 ../src/mnp-alarm-instance.c:59
+msgid "Friday"
+msgstr "Perjantai"
+
+#: ../src/mnp-alarm-dialog.c:175
+msgid "Alarm settings"
+msgstr "Herätysasetukset"
+
+#: ../src/mnp-alarm-dialog.c:76 ../src/mnp-alarm-instance.c:61
+msgid "Sunday"
+msgstr "Sunnuntai"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr "Koodatussa muodossa tallennetut herätykset herätysilmoittajan käyttöön."
+
+#: ../src/date-time.schemas.in.h:2
+msgid "List of alarms in short encoded form"
+msgstr "Herätysten luettelo lyhyessä koodatussa muodossa"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format
@@ -125,7 +138,7 @@ msgstr ""
 #. * am/pm.
 #: ../src/mnp-utils.c:362
 msgid "%l:%M %p"
-msgstr ""
+msgstr "%l:%M %p"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 24-hours format
@@ -134,104 +147,83 @@ msgstr ""
 #. * (the %A expands to the weekday).
 #: ../src/mnp-utils.c:370
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #: ../src/mnp-utils.c:384
 msgid "%b %-d (Yesterday)"
-msgstr ""
+msgstr "%b %-d (Eilen)"
 
 #: ../src/mnp-utils.c:386
 msgid "%b %-d (Tomorrow)"
+msgstr "%b %-d (Huomenna)"
+
+#: ../src/mnp-alarm-dialog.c:352
+msgid "Snooze"
+msgstr "Torkku"
+
+#: ../src/mnp-alarm-dialog.c:394
+msgid "Sound"
+msgstr "Ääni"
+
+#: ../src/mnp-alarm-dialog.c:468
+msgid "Delete alarm"
+msgstr "Poista herätys"
+
+#: ../src/mnp-alarms.c:201
+msgid ""
+"New\n"
+"Alarm"
 msgstr ""
+"Uusi\n"
+"Herätys"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display in Aug 6
 #: ../src/mnp-utils.c:392
 msgid "%b %-d"
-msgstr ""
+msgstr "%b %-d"
 
 #: ../src/mnp-alarm-instance.c:290
 msgid "Alarm Notify"
-msgstr ""
+msgstr "Herätysilmoitus"
+
+#: ../src/mnp-alarm-instance.c:294
+msgid "Moblin Alarm Notify"
+msgstr "Moblin-herätysilmoitus"
+
+#: ../src/mnp-alarm-instance.c:293
+msgid "pm"
+msgstr "pm."
+
+#: ../src/mnp-alarm-instance.c:293
+msgid "am"
+msgstr "am."
 
 #: ../src/mnp-alarm-instance.c:293
 #, c-format
 msgid "Alarm at %d:%.2d %s"
-msgstr ""
-
-#: ../src/mnp-alarm-instance.c:293
-msgid "am"
-msgstr ""
-
-#: ../src/mnp-alarm-instance.c:293
-msgid "pm"
-msgstr ""
-
-#: ../src/mnp-alarm-instance.c:294
-msgid "Moblin Alarm Notify"
-msgstr ""
-
-#: ../src/mnp-alarm-instance.c:296
-msgid "AlarmNotifications"
-msgstr ""
-
-#: ../src/mnp-alarm-tile.c:37
-msgid "MON-FRI"
-msgstr ""
-
-#: ../src/mnp-alarm-tile.c:38
-msgid "MONDAYS"
-msgstr ""
+msgstr "Herätys %d:%.2d %s"
 
 #: ../src/mnp-alarm-tile.c:39
 msgid "TUESDAYS"
-msgstr ""
+msgstr "TIISTAIT"
 
-#: ../src/mnp-alarm-tile.c:40
-msgid "WEDNESDAYS"
-msgstr ""
+#: ../src/mnp-alarm-tile.c:38
+msgid "MONDAYS"
+msgstr "MAANANTAIT"
+
+#: ../src/mnp-alarm-tile.c:37
+msgid "MON-FRI"
+msgstr "MA-PE"
+
+#: ../src/mnp-alarm-instance.c:296
+msgid "AlarmNotifications"
+msgstr "HerätysIlmoitukset"
 
 #: ../src/mnp-alarm-tile.c:41
 msgid "THURSDAYS"
-msgstr ""
+msgstr "TORSTAIT"
 
-#: ../src/mnp-alarm-tile.c:42
-msgid "FRIDAYS"
-msgstr ""
-
-#: ../src/mnp-alarm-tile.c:43
-msgid "SATURDAYS"
-msgstr ""
-
-#: ../src/mnp-alarm-tile.c:44
-msgid "SUNDAYS"
-msgstr ""
-
-#: ../src/mnp-world-clock.c:400
-msgid "Enter a country or city"
-msgstr ""
-
-#: ../src/mnp-world-clock.c:415
-msgid "Add"
-msgstr ""
-
-#: ../src/mnp-datetime.c:178
-msgid "Today"
-msgstr ""
-
-#: ../src/mnp-datetime.c:235
-msgid "Tasks"
-msgstr ""
-
-#: ../src/moblin-alarm-notify.c:43
-msgid "Moblin alarm notify"
-msgstr ""
-
-#: ../src/date-time.schemas.in.h:1
-msgid "Alarms stored in encoded form for use by the alarm notfier."
-msgstr ""
-
-#: ../src/date-time.schemas.in.h:2
-msgid "List of alarms in short encoded form"
-msgstr ""
-
+#: ../src/mnp-alarm-tile.c:40
+msgid "WEDNESDAYS"
+msgstr "KESKIVIIKOT"
