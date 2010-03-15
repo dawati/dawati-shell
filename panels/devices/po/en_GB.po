@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MeeGo Panel Devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-04 15:08+0000\n"
-"PO-Revision-Date: 2010-03-04 09:09-0800\n"
+"POT-Creation-Date: 2010-03-15 09:37+0000\n"
+"PO-Revision-Date: 2010-03-15 16:06-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -375,100 +375,100 @@ msgstr "Peripheral Devices"
 
 #: ../gdu/gdu-pool.c:908
 msgid "USB, Firewire and other peripherals"
-msgstr ""
+msgstr "USB, Firewire, and other peripherals"
 
 #: ../gdu/gdu-pool.c:2090
 #, c-format
 msgid "Error enumerating devices: %s"
-msgstr ""
+msgstr "Error enumerating devices: %s"
 
 #: ../gdu/gdu-pool.c:2116
 #, c-format
 msgid "Error enumerating adapters: %s"
-msgstr ""
+msgstr "Error enumerating adapters: %s"
 
 #: ../gdu/gdu-pool.c:2139
 #, c-format
 msgid "Error enumerating expanders: %s"
-msgstr ""
+msgstr "Error enumerating expanders: %s"
 
 #: ../gdu/gdu-pool.c:2162
 #, c-format
 msgid "Error enumerating ports: %s"
-msgstr ""
+msgstr "Error enumerating ports: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:292
 #, c-format
 msgid "Error listening to address `localhost:%d': %s: %s\n"
-msgstr ""
+msgstr "Error listening to address `localhost:%d': %s: %s\n"
 
 #: ../gdu/gdu-ssh-bridge.c:307
 #, c-format
 msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
-msgstr ""
+msgstr "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
 
 #: ../gdu/gdu-ssh-bridge.c:322
 #, c-format
 msgid "Error setting auth mechanisms on local DBusServer\n"
-msgstr ""
+msgstr "Error setting auth mechanisms on local DBusServer\n"
 
 #: ../gdu/gdu-ssh-bridge.c:347
 #, c-format
 msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-msgstr ""
+msgstr "Unable to parse command-line `%s' (Malformed address?): %s"
 
 #: ../gdu/gdu-ssh-bridge.c:369
 #, c-format
 msgid "Unable to spawn ssh program: %s"
-msgstr ""
+msgstr "Unable to spawn ssh program: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:398
 #: ../gdu/gdu-ssh-bridge.c:510
 #, c-format
 msgid "Error reading stderr output: %s"
-msgstr ""
+msgstr "Error reading stderr output: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:405
 msgid "Error reading stderr output: No content"
-msgstr ""
+msgstr "Error reading stderr output: No content"
 
 #: ../gdu/gdu-ssh-bridge.c:471
 msgid "Error logging in"
-msgstr ""
+msgstr "Error logging in"
 
 #: ../gdu/gdu-ssh-bridge.c:491
 #, c-format
 msgid "Error sending `%s': %s"
-msgstr ""
+msgstr "Error sending `%s': %s"
 
 #: ../gdu/gdu-ssh-bridge.c:519
 #, c-format
 msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
-msgstr ""
+msgstr "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
 
 #: ../gdu/gdu-ssh-bridge.c:536
 #, c-format
 msgid "Error passing authorization secret: %s"
-msgstr ""
+msgstr "Error passing authorisation secret: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:557
 #, c-format
 msgid "Error reading stderr from: %s"
-msgstr ""
+msgstr "Error reading stderr from: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:566
 #, c-format
 msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
-msgstr ""
+msgstr "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
 
 #: ../gdu/gdu-ssh-bridge.c:585
 #, c-format
 msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
-msgstr ""
+msgstr "The udisks-tcp-bridge program failed to prove it was authorised: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:592
 msgid "The udisks-tcp-bridge program failed to prove it was authorized"
-msgstr ""
+msgstr "The udisks-tcp-bridge program failed to prove it was authorised"
 
 #. Translators: The first %s is the size in power-of-2 units, e.g. '64 KiB'
 #. * the second %s is the size as a number e.g. '65,536 bytes'
@@ -480,12 +480,12 @@ msgstr ""
 #: ../gdu/gdu-util.c:140
 #, c-format
 msgid "%s (%s bytes)"
-msgstr ""
+msgstr "%s (%s bytes)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:175
 msgid "FAT (12-bit version)"
-msgstr ""
+msgstr "FAT (12-bit version)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:178
@@ -1971,11 +1971,11 @@ msgid "Silent"
 msgstr ""
 
 #. Tile label
-#: ../src/mpd-volume-tile.c:304
+#: ../src/mpd-volume-tile.c:306
 msgid "Netbook volume"
 msgstr ""
 
-#: ../src/mpd-volume-tile.c:343
+#: ../src/mpd-volume-tile.c:345
 msgid "Mute"
 msgstr ""
 
