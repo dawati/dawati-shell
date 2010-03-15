@@ -22,8 +22,8 @@
 
 #include "penge-view-background.h"
 
-#define KEY_DIR "/desktop/gnome/background"
-#define KEY_BG_FILENAME KEY_DIR "/picture_filename"
+#define KEY_DIR "/desktop/moblin/myzone"
+#define KEY_BG_FILENAME KEY_DIR "/background_filename"
 
 G_DEFINE_TYPE (PengeViewBackground, penge_view_background, PENGE_TYPE_MAGIC_TEXTURE)
 
