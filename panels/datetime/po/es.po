@@ -1,0 +1,245 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-15 09:37+0000\n"
+"PO-Revision-Date: 2010-03-15 12:13-0800\n"
+"Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/moblin-panel-date-time.c:104
+msgid "Date/Time"
+msgstr "Fecha/Hora"
+
+#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr "Panel de fecha y hora"
+
+#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+msgid "date and time"
+msgstr "fecha y hora"
+
+#: ../src/mnp-alarm-dialog.c:58
+msgid "OFF"
+msgstr "APAGADO"
+
+#: ../src/mnp-alarm-dialog.c:59
+msgid "Beep"
+msgstr "Pitido"
+
+#: ../src/mnp-alarm-dialog.c:60
+msgid "Music"
+msgstr "Música"
+
+#: ../src/mnp-alarm-dialog.c:67
+#: ../src/mnp-alarm-instance.c:52
+msgid "Never"
+msgstr "Nunca"
+
+#: ../src/mnp-alarm-dialog.c:68
+#: ../src/mnp-alarm-instance.c:53
+#: ../src/mnp-alarm-tile.c:36
+msgid "Everyday"
+msgstr "Cada día"
+
+#: ../src/mnp-alarm-dialog.c:69
+#: ../src/mnp-alarm-instance.c:54
+msgid "Monday - Friday"
+msgstr "lunes -viernes"
+
+#: ../src/mnp-alarm-dialog.c:70
+#: ../src/mnp-alarm-instance.c:55
+msgid "Monday"
+msgstr "lunes"
+
+#: ../src/mnp-alarm-dialog.c:71
+#: ../src/mnp-alarm-instance.c:56
+msgid "Tuesday"
+msgstr "martes"
+
+#: ../src/mnp-alarm-dialog.c:72
+#: ../src/mnp-alarm-instance.c:57
+msgid "Wednesday"
+msgstr "miércoles"
+
+#: ../src/mnp-alarm-dialog.c:73
+#: ../src/mnp-alarm-instance.c:58
+msgid "Thursday"
+msgstr "jueves"
+
+#: ../src/mnp-alarm-dialog.c:74
+#: ../src/mnp-alarm-instance.c:59
+msgid "Friday"
+msgstr "viernes"
+
+#: ../src/mnp-alarm-dialog.c:75
+#: ../src/mnp-alarm-instance.c:60
+msgid "Saturday"
+msgstr "sábado"
+
+#: ../src/mnp-alarm-dialog.c:76
+#: ../src/mnp-alarm-instance.c:61
+msgid "Sunday"
+msgstr "domingo"
+
+#: ../src/mnp-alarm-dialog.c:175
+msgid "Alarm settings"
+msgstr "Configuración de alarma"
+
+#: ../src/mnp-alarm-dialog.c:229
+msgid "ON"
+msgstr "ENCENDIDO"
+
+#: ../src/mnp-alarm-dialog.c:322
+msgid "Repeat"
+msgstr "Repetir"
+
+#: ../src/mnp-alarm-dialog.c:352
+msgid "Snooze"
+msgstr "Temporizador"
+
+#: ../src/mnp-alarm-dialog.c:394
+msgid "Sound"
+msgstr "Sonido"
+
+#: ../src/mnp-alarm-dialog.c:468
+msgid "Delete alarm"
+msgstr "Borrar alarma"
+
+#: ../src/mnp-alarms.c:201
+msgid ""
+"New\n"
+"Alarm"
+msgstr ""
+"Nueva\n"
+"Alarma"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../src/mnp-utils.c:420
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#: ../src/mnp-utils.c:428
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../src/mnp-utils.c:442
+msgid "%b %-d (Yesterday)"
+msgstr "%b %-d (Ayer)"
+
+#: ../src/mnp-utils.c:444
+msgid "%b %-d (Tomorrow)"
+msgstr "%b %-d (Mañana)"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display in Aug 6
+#: ../src/mnp-utils.c:450
+msgid "%b %-d"
+msgstr "%b %-d"
+
+#: ../src/mnp-alarm-instance.c:290
+msgid "Alarm Notify"
+msgstr "No"
+
+#: ../src/mnp-alarm-instance.c:293
+#, c-format
+msgid "Alarm at %d:%.2d %s"
+msgstr "Alarma en %d:%.2d %s"
+
+#: ../src/mnp-alarm-instance.c:293
+msgid "am"
+msgstr "am"
+
+#: ../src/mnp-alarm-instance.c:293
+msgid "pm"
+msgstr "pm"
+
+#: ../src/mnp-alarm-instance.c:294
+msgid "Moblin Alarm Notify"
+msgstr "Notificar Alarma de Moblin"
+
+#: ../src/mnp-alarm-instance.c:296
+msgid "AlarmNotifications"
+msgstr "Notificaciones de alarma"
+
+#: ../src/mnp-alarm-tile.c:37
+msgid "MON-FRI"
+msgstr "LUN-VIE"
+
+#: ../src/mnp-alarm-tile.c:38
+msgid "MONDAYS"
+msgstr "LUNES"
+
+#: ../src/mnp-alarm-tile.c:39
+msgid "TUESDAYS"
+msgstr "MARTES"
+
+#: ../src/mnp-alarm-tile.c:40
+msgid "WEDNESDAYS"
+msgstr "MIÉRCOLES"
+
+#: ../src/mnp-alarm-tile.c:41
+msgid "THURSDAYS"
+msgstr "JUEVES"
+
+#: ../src/mnp-alarm-tile.c:42
+msgid "FRIDAYS"
+msgstr "VIERNES"
+
+#: ../src/mnp-alarm-tile.c:43
+msgid "SATURDAYS"
+msgstr "SÁBADOS"
+
+#: ../src/mnp-alarm-tile.c:44
+msgid "SUNDAYS"
+msgstr "DOMINGOS"
+
+#: ../src/mnp-world-clock.c:409
+msgid "Enter a country or city"
+msgstr "Ingresa un país o una ciudad"
+
+#: ../src/mnp-world-clock.c:424
+msgid "Add"
+msgstr "Agregar"
+
+#: ../src/mnp-datetime.c:178
+msgid "Today"
+msgstr "Hoy"
+
+#: ../src/mnp-datetime.c:235
+msgid "Tasks"
+msgstr "Tareas"
+
+#: ../src/moblin-alarm-notify.c:43
+msgid "Moblin alarm notify"
+msgstr "Notificar alarma Moblin"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr "Alarmas guardadas en forma codificada para uso por el notificador de alarma."
+
+#: ../src/date-time.schemas.in.h:2
+msgid "List of alarms in short encoded form"
+msgstr "Lista de alarmas en forma de codificación corta"
+
