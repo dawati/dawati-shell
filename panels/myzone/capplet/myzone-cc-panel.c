@@ -27,7 +27,7 @@
 #include <gio/gdesktopappinfo.h>
 
 #define MYZONE_KEY_DIR "/desktop/moblin/myzone"
-#define MYZONE_KEY_DIR "/background_filename"
+#define BG_KEY_BG_FILENAME MYZONE_KEY_DIR "/background_filename"
 #define MYZONE_RATIO MYZONE_KEY_DIR "/ratio"
 #define MOBLIN_MYZONE_SHOW_CALENDAR MYZONE_KEY_DIR "/show_calendar"
 #define UI_FILE UI_DIR "/capplet.ui"
@@ -197,11 +197,6 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
                              NULL);
 
   main_vbox = (GtkWidget *)gtk_builder_get_object (builder, "main_vbox");
-
-  gconf_client_add_dir (client,
-                        BG_KEY_DIR,
-                        GCONF_CLIENT_PRELOAD_ONELEVEL,
-                        NULL);
 
   gconf_client_add_dir (client,
                         MYZONE_KEY_DIR,
