@@ -21,5 +21,15 @@
         <short/>
       </locale>
     </schema>
+   <schema>
+      <key>/schemas/desktop/moblin/myzone/background_filename</key>
+      <applyto>/desktop/moblin/myzone/background_filename</applyto>
+      <owner>moblin-panel-myzone</owner>
+      <type>string</type>
+      <default>/usr/share/backgrounds/images/myzone-default-background.png</default>
+      <locale name="C">
+        <short/>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>
