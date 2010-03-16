@@ -1339,6 +1339,7 @@ check_for_empty_workspace (MutterPlugin *plugin,
   MetaScreen *screen = mutter_plugin_get_screen (plugin);
   gboolean    workspace_empty = TRUE;
   GList      *l;
+  Window      xwin = None;
 
   /*
    * Mutter now treats all OR windows as sticky, and the -1 will trigger
@@ -1347,19 +1348,29 @@ check_for_empty_workspace (MutterPlugin *plugin,
   if (workspace < 0)
     return;
 
+  if (ignore)
+    xwin = meta_window_get_xwindow (ignore);
+
   l = mutter_get_windows (screen);
 
   while (l)
     {
-      MutterWindow *m = l->data;
+      MutterWindow *m  = l->data;
       MetaWindow   *mw = mutter_window_get_meta_window (m);
+      Window        xt = meta_window_get_transient_for_as_xid (mw);
 
       /*
-       * We need to check this window is not the window we are too ignore. If
-       * the ingore window was not destroyed (i.e., it was moved to a different
-       * workspace, we have to ignore its transients in the test, (because when
-       * a window is moved to a different workspace, the WM automatically moves
-       * its transients too).
+       * We need to check this window is not the window we are too ignore.
+       *
+       * If the ignore window was not destroyed (i.e., it was moved to a
+       * different workspace, we have to ignore its transients in the test,
+       * (because when a window is moved to a different workspace, the WM
+       * automatically moves its transients too).
+       *
+       * If the ignore window was destroyed, we ignore any windows that are
+       * claiming to be directly transient to this window (this is to work
+       * around broken apps like eog that will destroy their top level window
+       * _before_ destroying their transients).
        *
        * We skip over windows that are on all workspaces (they are irrelevant
        * for our purposes, and also because their workspace is the active
@@ -1369,7 +1380,9 @@ check_for_empty_workspace (MutterPlugin *plugin,
        */
       if (mw != ignore &&
           !meta_window_is_on_all_workspaces (mw) &&
-          (win_destroyed || !meta_window_is_ancestor_of_transient (ignore, mw)))
+          ((win_destroyed && xwin != xt) ||
+           (!win_destroyed && !meta_window_is_ancestor_of_transient (ignore,
+                                                                     mw))))
         {
           /* g_debug ("querying workspace for [%s]", */
           /*          mutter_window_get_description (m)); */
