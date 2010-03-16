@@ -342,7 +342,7 @@ mtp_toolbar_button_drag_end (MxDraggable *draggable,
 
   if (parent == stage)
     {
-      ClutterContainer *orig_parent = CLUTTER_CONTAINER (priv->orig_parent);
+      ClutterActor *orig_parent = priv->orig_parent;
 
       if (MTP_IS_JAR (orig_parent))
         {
