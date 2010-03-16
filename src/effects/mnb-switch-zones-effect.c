@@ -27,12 +27,29 @@
 #include "mnb-zones-preview.h"
 
 static ClutterActor *zones_preview = NULL;
-static MutterWindow *window_actor_for_completed_cb = NULL;
 static gint          running = 0;
+
+static MutterWindow *
+get_mcw_for_completed_cb (MutterPlugin *plugin)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  GList      *l;
+
+  l = mutter_get_windows (screen);
+
+  if (l)
+    return l->data;
+
+  g_critical (G_STRLOC ": nothing to pass to mutter_plugin_effect_completed()");
+
+  return NULL;
+}
 
 static void
 mnb_switch_zones_completed_cb (MnbZonesPreview *preview, MutterPlugin *plugin)
 {
+  MutterWindow *mcw = get_mcw_for_completed_cb (plugin);
+
   clutter_actor_destroy (zones_preview);
   zones_preview = NULL;
 
@@ -42,8 +59,11 @@ mnb_switch_zones_completed_cb (MnbZonesPreview *preview, MutterPlugin *plugin)
       running = 0;
     }
 
-  mutter_plugin_effect_completed (plugin, window_actor_for_completed_cb,
-                                  MUTTER_PLUGIN_SWITCH_WORKSPACE);
+  if (mcw)
+    {
+      mutter_plugin_effect_completed (plugin, mcw,
+                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+    }
 }
 
 /*
@@ -60,6 +80,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   gint width, height;
   MetaScreen *screen;
   ClutterActor *window_group;
+  MutterWindow *mcw = get_mcw_for_completed_cb (plugin);
 
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -75,11 +96,12 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
           running = 0;
         }
 
-      mutter_plugin_effect_completed (plugin, window_actor_for_completed_cb,
-                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+      if (mcw)
+        {
+          mutter_plugin_effect_completed (plugin, mcw,
+                                          MUTTER_PLUGIN_SWITCH_WORKSPACE);
+        }
     }
-
-  window_actor_for_completed_cb = actors ? (*actors)->data : NULL;
 
   if ((from == to) && !zones_preview)
     {
@@ -89,8 +111,12 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
           running = 0;
         }
 
-      mutter_plugin_effect_completed (plugin, window_actor_for_completed_cb,
-                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+      if (mcw)
+        {
+          mutter_plugin_effect_completed (plugin, mcw,
+                                          MUTTER_PLUGIN_SWITCH_WORKSPACE);
+        }
+
       return;
     }
 
