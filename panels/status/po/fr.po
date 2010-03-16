@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-01 10:38+0000\n"
+"POT-Creation-Date: 2010-03-15 09:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
@@ -19,31 +19,31 @@ msgstr ""
 msgid "status"
 msgstr "statuts"
 
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "Mise à jour"
-
 #. vim:set ts=8 expandtab
 #: ../data/moblin-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Panneau de statut"
 
-#: ../src/mps-feed-pane.c:445
-msgid "Unable to update status: The service may be unavailable or your password could be wrong."
-msgstr "Impossible de mettre à jour le statut : le service est peut être indisponible ou votre mot de passe est erroné."
+#. Actor creation
+#: ../src/mps-feed-pane.c:416
+msgid "Update"
+msgstr "Mise à jour"
 
 #: ../src/mps-feed-pane.c:421
 msgid "What's happening?"
 msgstr "Que se passe-t-il ?"
 
+#: ../src/mps-feed-switcher.c:344
+msgid "Add new web service"
+msgstr "Ajouter un nouveau service web"
+
 #: ../src/mps-feed-switcher.c:367
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Vos services web ne semblent pas être configurés ou bien il y a un problème avec leur configuration. Utilisez le bouton ci-dessus pour ouvrir Mes Comptes Web et en configurer un."
 
-#: ../src/mps-feed-switcher.c:344
-msgid "Add new web service"
-msgstr "Ajouter un nouveau service web"
+#: ../src/mps-feed-pane.c:445
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Impossible de mettre à jour le statut : le service est peut être indisponible ou votre mot de passe est erroné."
 
 #~ msgid "Offline"
 #~ msgstr "Déconnecté"
