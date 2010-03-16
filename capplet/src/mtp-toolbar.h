@@ -68,6 +68,7 @@ void mtp_toolbar_remove_button (MtpToolbar *toolbar, ClutterActor *button);
 void mtp_toolbar_insert_button (MtpToolbar       *toolbar,
                                 ClutterActor     *button,
                                 ClutterActor     *before);
+void mtp_toolbar_readd_button  (MtpToolbar *toolbar, ClutterActor *button);
 gboolean mtp_toolbar_was_modified (MtpToolbar *toolbar);
 void     mtp_toolbar_clear_modified_state (MtpToolbar *toolbar);
 void     mtp_toolbar_mark_modified (MtpToolbar *toolbar);

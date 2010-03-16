@@ -350,7 +350,7 @@ mtp_toolbar_button_drag_end (MxDraggable *draggable,
         }
       else if (MTP_IS_TOOLBAR (orig_parent))
         {
-          mtp_toolbar_add_button ((MtpToolbar*)orig_parent, self);
+          mtp_toolbar_readd_button ((MtpToolbar*)orig_parent, self);
         }
       else
         g_warning ("Unsupported destination %s",

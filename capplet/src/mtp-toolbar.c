@@ -832,6 +832,105 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
 }
 
 void
+mtp_toolbar_readd_button (MtpToolbar *toolbar, ClutterActor *button)
+{
+  MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
+
+  if (!MTP_IS_TOOLBAR_BUTTON (button))
+    {
+      g_warning (G_STRLOC ": only buttons can be readded back");
+      return;
+    }
+
+  if (mtp_toolbar_button_is_clock ((MtpToolbarButton*)button))
+    {
+      ClutterActor *parent = clutter_actor_get_parent (button);
+
+      if (parent)
+        clutter_actor_reparent (button, priv->clock_area);
+      else
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->clock_area),
+                                     button);
+
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->clock_area),
+                                   button,
+                                   "expand", FALSE, NULL);
+    }
+  else if (MTP_IS_TOOLBAR_BUTTON (button))
+    {
+      if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
+        {
+          if (mtp_toolbar_remove_space (toolbar, TRUE))
+            {
+              ClutterActor *parent = clutter_actor_get_parent (button);
+
+              if (parent)
+                clutter_actor_reparent (button, priv->applet_area);
+              else
+                clutter_container_add_actor (CLUTTER_CONTAINER (
+                                                             priv->applet_area),
+                                             button);
+
+              clutter_container_child_set (CLUTTER_CONTAINER (
+                                                             priv->applet_area),
+                                           button,
+                                           "expand", FALSE, NULL);
+
+              clutter_container_sort_depth_order (CLUTTER_CONTAINER (
+                                                            priv->applet_area));
+            }
+          else
+            {
+              g_warning (G_STRLOC ": no space to remove!");
+            }
+        }
+      else
+        {
+          if (mtp_toolbar_remove_space (toolbar, FALSE))
+            {
+              ClutterActor *parent = clutter_actor_get_parent (button);
+              gboolean      not_free_space = !priv->free_space;
+              GList        *last;
+              GList        *children = clutter_container_get_children (
+                                         CLUTTER_CONTAINER (priv->panel_area));
+
+              last = g_list_last (children);
+
+              if (last && MTP_IS_SPACE (last->data))
+                priv->free_space = TRUE;
+              else
+                priv->free_space = FALSE;
+
+              if ((!priv->free_space) != not_free_space)
+                g_object_notify (G_OBJECT (toolbar), "free-space");
+
+              if (parent)
+                clutter_actor_reparent (button, priv->panel_area);
+              else
+                clutter_container_add_actor (CLUTTER_CONTAINER (
+                                                             priv->panel_area),
+                                             button);
+
+
+              clutter_container_sort_depth_order (CLUTTER_CONTAINER (
+                                                             priv->panel_area));
+            }
+          else
+            {
+              g_warning (G_STRLOC ": no space to remove!");
+            }
+        }
+
+      g_signal_connect (button, "parent-set",
+                        G_CALLBACK (mtp_toolbar_button_parent_set_cb),
+                        toolbar);
+    }
+  else
+    g_warning (G_STRLOC ":%s: unsupported actor type %s",
+               __FUNCTION__, G_OBJECT_TYPE_NAME (button));
+}
+
+void
 mtp_toolbar_remove_button (MtpToolbar *toolbar, ClutterActor *button)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;
