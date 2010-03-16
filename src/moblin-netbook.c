@@ -2811,12 +2811,13 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
     {
       gint          screen_width, screen_height;
       MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+      MetaDisplay  *display = meta_screen_get_display (screen);
       ClutterActor *stage   = mutter_get_stage_for_screen (screen);
       Window        xwin;
       guint32       timestamp;
 
       xwin      = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-      timestamp = clutter_x11_get_current_event_time ();
+      timestamp = meta_display_get_current_time_roundtrip (display);
 
       mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
