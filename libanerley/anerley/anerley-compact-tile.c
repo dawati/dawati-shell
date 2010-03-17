@@ -33,6 +33,7 @@ struct _AnerleyCompactTilePrivate {
   AnerleyItem *item;
   ClutterActor *contact_name_label;
   ClutterActor *presence_icon;
+  ClutterActor *message_count_label;
 };
 
 enum
@@ -106,10 +107,12 @@ anerley_compact_tile_allocate (ClutterActor           *actor,
                                ClutterAllocationFlags  flags)
 {
   AnerleyCompactTilePrivate *priv = GET_PRIVATE (actor);
-  ClutterActorBox icon_box, label_box;
+  ClutterActorBox icon_box, label_box, count_label_box;
   gfloat width, height;
   gfloat icon_nat_w, icon_min_w, label_nat_w, label_min_w;
+  gfloat count_label_nat_w, count_label_min_w;
   gfloat icon_nat_h, icon_min_h, label_nat_h, label_min_h;
+  gfloat count_label_nat_h, count_label_min_h;
   MxPadding padding;
 
   CLUTTER_ACTOR_CLASS (anerley_compact_tile_parent_class)->allocate (actor,
@@ -139,11 +142,24 @@ anerley_compact_tile_allocate (ClutterActor           *actor,
                                     &label_nat_w,
                                     &label_nat_h);
 
+  clutter_actor_get_preferred_size (priv->message_count_label,
+                                    &count_label_min_w,
+                                    &count_label_min_h,
+                                    &count_label_nat_w,
+                                    &count_label_nat_h);
+
   label_box.x1 = icon_box.x2 + SPACING;
-  label_box.x2 = width - padding.right;
+  label_box.x2 = width - (SPACING + padding.right + count_label_nat_w);
   label_box.y1 = (gint)((height - label_nat_h) / 2);
   label_box.y2 = label_box.y1 + label_nat_h;
   clutter_actor_allocate (priv->contact_name_label, &label_box, flags);
+
+  count_label_box.x1 = label_box.x2 + SPACING;
+  count_label_box.x2 = count_label_box.x1 + count_label_nat_w;
+  count_label_box.y1 = (gint)((height - count_label_nat_h) / 2);
+  count_label_box.y2 = count_label_box.y1 + count_label_nat_h;
+  clutter_actor_allocate (priv->message_count_label, &count_label_box, flags);
+
 }
 
 static void
@@ -155,6 +171,7 @@ anerley_compact_tile_get_preferred_width (ClutterActor *actor,
   AnerleyCompactTilePrivate *priv = GET_PRIVATE (actor);
   MxPadding padding;
   gfloat icon_nat_w, icon_min_w, label_nat_w, label_min_w;
+  gfloat count_label_nat_w, count_label_min_w;
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
@@ -166,15 +183,19 @@ anerley_compact_tile_get_preferred_width (ClutterActor *actor,
                                      for_height,
                                      &label_min_w,
                                      &label_nat_w);
+  clutter_actor_get_preferred_width (priv->message_count_label,
+                                     for_height,
+                                     &count_label_min_w,
+                                     &count_label_nat_w);
 
   if (min_width)
   {
-    *min_width = padding.left + icon_min_w + SPACING + label_min_w + padding.right;
+    *min_width = padding.left + icon_min_w + SPACING + label_min_w + SPACING + count_label_min_w + padding.right;
   }
 
   if (nat_width)
   {
-    *nat_width = padding.left + icon_nat_w + SPACING + label_nat_w + padding.right;
+    *nat_width = padding.left + icon_nat_w + SPACING + label_nat_w + SPACING + count_label_nat_w + padding.right;
   }
 }
 
@@ -221,6 +242,7 @@ anerley_compact_tile_map (ClutterActor *actor)
 
   clutter_actor_map (priv->presence_icon);
   clutter_actor_map (priv->contact_name_label);
+  clutter_actor_map (priv->message_count_label);
 }
 
 static void
@@ -232,6 +254,7 @@ anerley_compact_tile_unmap (ClutterActor *actor)
 
   clutter_actor_unmap (priv->presence_icon);
   clutter_actor_unmap (priv->contact_name_label);
+  clutter_actor_unmap (priv->message_count_label);
 }
 
 static void
@@ -248,6 +271,9 @@ anerley_compact_tile_paint (ClutterActor *actor)
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->contact_name_label))
     clutter_actor_paint (priv->contact_name_label);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->message_count_label))
+    clutter_actor_paint (priv->message_count_label);
 }
 
 static void
@@ -263,6 +289,9 @@ anerley_compact_tile_pick (ClutterActor       *actor,
 
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->contact_name_label))
     clutter_actor_paint (priv->contact_name_label);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->message_count_label))
+    clutter_actor_paint (priv->message_count_label);
 }
 
 static void
@@ -307,6 +336,17 @@ anerley_compact_tile_init (AnerleyCompactTile *self)
   priv->presence_icon = clutter_texture_new ();
   clutter_actor_set_size (priv->presence_icon, 16, 16);
   clutter_actor_set_parent (priv->presence_icon, CLUTTER_ACTOR (self));
+
+  priv->message_count_label = mx_label_new ("");
+  mx_stylable_set_style_class (MX_STYLABLE (priv->message_count_label),
+                               "AnerleyCompactTileMessageCount");
+  clutter_actor_set_size (priv->message_count_label, 20, 20);
+  mx_label_set_x_align (MX_LABEL (priv->message_count_label),
+                        MX_ALIGN_MIDDLE);
+  mx_label_set_y_align (MX_LABEL (priv->message_count_label),
+                        MX_ALIGN_MIDDLE);
+  clutter_actor_set_parent (priv->message_count_label,
+                            CLUTTER_ACTOR (self));
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 }
@@ -363,6 +403,26 @@ _item_display_name_changed_cb (AnerleyItem *item,
 }
 
 static void
+_item_unread_messages_changed_cb (AnerleyItem *item,
+                                  guint        count,
+                                  gpointer     userdata)
+{
+  AnerleyCompactTilePrivate *priv = GET_PRIVATE (userdata);
+  gchar *count_str;
+
+  if (count > 0)
+  {
+    count_str = g_strdup_printf ("%d", count);
+    mx_label_set_text (MX_LABEL (priv->message_count_label),
+                     count_str);
+    g_free (count_str);
+    clutter_actor_show (priv->message_count_label);
+  } else {
+    clutter_actor_hide (priv->message_count_label);
+  }
+}
+
+static void
 anerley_compact_tile_set_item (AnerleyCompactTile *tile,
                                AnerleyItem        *item)
 {
@@ -379,6 +439,9 @@ anerley_compact_tile_set_item (AnerleyCompactTile *tile,
     g_signal_handlers_disconnect_by_func (priv->item,
                                           _item_presence_changed_cb,
                                           tile);
+    g_signal_handlers_disconnect_by_func (priv->item,
+                                          _item_unread_messages_changed_cb,
+                                          tile);
     g_object_unref (priv->item);
     priv->item = NULL;
   }
@@ -394,9 +457,14 @@ anerley_compact_tile_set_item (AnerleyCompactTile *tile,
                       "presence-changed",
                       (GCallback)_item_presence_changed_cb,
                       tile);
+    g_signal_connect (priv->item,
+                      "unread-messages-changed",
+                      (GCallback)_item_unread_messages_changed_cb,
+                      tile);
 
     anerley_item_emit_display_name_changed (item);
     anerley_item_emit_presence_changed (item);
+    anerley_item_emit_unread_messages_changed (item, 0);
   }
 }
 
