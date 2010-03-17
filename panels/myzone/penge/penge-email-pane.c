@@ -28,7 +28,7 @@
 #include <glib/gi18n.h>
 
 #include "penge-utils.h"
-#include "penge-count-pane.h"
+#include "penge-count-tile.h"
 
 G_DEFINE_TYPE (PengeEmailPane, penge_email_pane, MX_TYPE_BOX_LAYOUT)
 
@@ -274,7 +274,7 @@ _account_added_cb (MailmeTelepathy        *provider,
   PengeEmailPanePrivate *priv = GET_PRIVATE (user_data);
   ClutterActor *widget;
 
-  widget = g_object_new (PENGE_TYPE_COUNT_PANE, NULL);
+  widget = g_object_new (PENGE_TYPE_COUNT_TILE, NULL);
   _update_count_pane (widget, account);
 
   g_object_set (widget, "compact", priv->vertical, NULL);

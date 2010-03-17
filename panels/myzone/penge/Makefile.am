@@ -24,7 +24,7 @@ pengeinclude_HEADERS = \
 		   penge-everything-pane.h \
 		   penge-clickable-label.h \
 		   penge-email-pane.h \
-		   penge-count-pane.h
+		   penge-count-tile.h
 
 libpenge_la_SOURCES = \
 		      $(pengeinclude_HEADERS) \
@@ -48,7 +48,7 @@ libpenge_la_SOURCES = \
 		      penge-everything-pane.c \
 		      penge-clickable-label.c \
 		      penge-email-pane.c \
-		      penge-count-pane.c
+		      penge-count-tile.c
 
 AM_CFLAGS = -Wall \
 	    $(PENGE_CFLAGS) \

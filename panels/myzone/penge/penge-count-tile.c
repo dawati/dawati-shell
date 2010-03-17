@@ -18,13 +18,13 @@
  * Author: Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>
  */
 
-#include "penge-count-pane.h"
+#include "penge-count-tile.h"
 
-G_DEFINE_TYPE (PengeCountPane, penge_count_pane, MX_TYPE_BUTTON)
+G_DEFINE_TYPE (PengeCountTile, penge_count_tile, MX_TYPE_BUTTON)
 
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
-                          PENGE_TYPE_COUNT_PANE,\
-                          PengeCountPanePrivate))
+                          PENGE_TYPE_COUNT_TILE,\
+                          PengeCountTilePrivate))
 
 enum
 {
@@ -35,7 +35,7 @@ enum
   PROP_COMPACT
 };
 
-struct _PengeCountPanePrivate
+struct _PengeCountTilePrivate
 {
   ClutterActor *table;
   ClutterActor *count_label;
@@ -46,13 +46,13 @@ struct _PengeCountPanePrivate
 };
 
 static GObject *
-penge_count_pane_constructor (GType                  type,
+penge_count_tile_constructor (GType                  type,
                               guint                  n_construct_params,
                               GObjectConstructParam *construct_params)
 {
   GObject *object;
 
-  object = G_OBJECT_CLASS (penge_count_pane_parent_class)->constructor (type,
+  object = G_OBJECT_CLASS (penge_count_tile_parent_class)->constructor (type,
                                                        n_construct_params,
                                                        construct_params);
 
@@ -62,27 +62,27 @@ penge_count_pane_constructor (GType                  type,
 }
 
 static void
-penge_count_pane_set_message (PengeCountPane *self,
+penge_count_tile_set_message (PengeCountTile *self,
                               const gchar    *message)
 {
-  PengeCountPanePrivate *priv = self->priv;
+  PengeCountTilePrivate *priv = self->priv;
   mx_label_set_text (MX_LABEL (priv->message_label), message);
 }
 
 static void
-penge_count_pane_set_account (PengeCountPane *self,
+penge_count_tile_set_account (PengeCountTile *self,
                               const gchar    *account)
 {
-  PengeCountPanePrivate *priv = self->priv;
+  PengeCountTilePrivate *priv = self->priv;
   mx_label_set_text (MX_LABEL (priv->account_label), account);
 }
 
 static void
-penge_count_pane_set_count (PengeCountPane *self,
+penge_count_tile_set_count (PengeCountTile *self,
                             guint           count)
 {
   gchar *count_str;
-  PengeCountPanePrivate *priv = self->priv;
+  PengeCountTilePrivate *priv = self->priv;
 
   priv->count = count;
 
@@ -105,10 +105,10 @@ penge_count_pane_set_count (PengeCountPane *self,
 }
 
 static void
-penge_count_pane_set_compact (PengeCountPane *self,
+penge_count_tile_set_compact (PengeCountTile *self,
                               gboolean        compact)
 {
-  PengeCountPanePrivate *priv = self->priv;
+  PengeCountTilePrivate *priv = self->priv;
 
   if (priv->compact == compact)
     return;
@@ -150,12 +150,12 @@ penge_count_pane_set_compact (PengeCountPane *self,
 }
 
 static void
-penge_count_pane_get_property (GObject    *gobject,
+penge_count_tile_get_property (GObject    *gobject,
                                guint       prop_id,
                                GValue     *value,
                                GParamSpec *pspec)
 {
-  PengeCountPanePrivate *priv = PENGE_COUNT_PANE (gobject)->priv;
+  PengeCountTilePrivate *priv = PENGE_COUNT_TILE (gobject)->priv;
 
   switch (prop_id)
   {
@@ -184,7 +184,7 @@ penge_count_pane_get_property (GObject    *gobject,
 }
 
 static void
-penge_count_pane_set_property (GObject      *gobject,
+penge_count_tile_set_property (GObject      *gobject,
                                guint         prop_id,
                                const GValue *value,
                                GParamSpec   *pspec)
@@ -192,22 +192,22 @@ penge_count_pane_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_MESSAGE:
-      penge_count_pane_set_message (PENGE_COUNT_PANE (gobject),
+      penge_count_tile_set_message (PENGE_COUNT_TILE (gobject),
                                     g_value_get_string (value));
       break;
 
     case PROP_ACCOUNT:
-      penge_count_pane_set_account (PENGE_COUNT_PANE (gobject),
+      penge_count_tile_set_account (PENGE_COUNT_TILE (gobject),
                                     g_value_get_string (value));
       break;
 
     case PROP_COUNT:
-      penge_count_pane_set_count (PENGE_COUNT_PANE (gobject),
+      penge_count_tile_set_count (PENGE_COUNT_TILE (gobject),
                                   g_value_get_uint (value));
       break;
 
     case PROP_COMPACT:
-      penge_count_pane_set_compact (PENGE_COUNT_PANE (gobject),
+      penge_count_tile_set_compact (PENGE_COUNT_TILE (gobject),
                                     g_value_get_boolean (value));
       break;
 
@@ -218,9 +218,9 @@ penge_count_pane_set_property (GObject      *gobject,
 }
 
 static void
-penge_count_pane_dispose (GObject *object)
+penge_count_tile_dispose (GObject *object)
 {
-  PengeCountPanePrivate *priv = PENGE_COUNT_PANE (object)->priv;
+  PengeCountTilePrivate *priv = PENGE_COUNT_TILE (object)->priv;
 
   if (priv->table)
   {
@@ -233,20 +233,20 @@ penge_count_pane_dispose (GObject *object)
   priv->message_label = NULL;
   priv->account_label = NULL;
 
-  G_OBJECT_CLASS (penge_count_pane_parent_class)->dispose (object);
+  G_OBJECT_CLASS (penge_count_tile_parent_class)->dispose (object);
 }
 
 static void
-penge_count_pane_class_init (PengeCountPaneClass *klass)
+penge_count_tile_class_init (PengeCountTileClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->constructor = penge_count_pane_constructor;
-  gobject_class->dispose = penge_count_pane_dispose;
-  gobject_class->get_property = penge_count_pane_get_property;
-  gobject_class->set_property = penge_count_pane_set_property;
+  gobject_class->constructor = penge_count_tile_constructor;
+  gobject_class->dispose = penge_count_tile_dispose;
+  gobject_class->get_property = penge_count_tile_get_property;
+  gobject_class->set_property = penge_count_tile_set_property;
 
-  g_type_class_add_private (gobject_class, sizeof (PengeCountPanePrivate));
+  g_type_class_add_private (gobject_class, sizeof (PengeCountTilePrivate));
 
   g_object_class_install_property
           (gobject_class,
@@ -288,10 +288,10 @@ penge_count_pane_class_init (PengeCountPaneClass *klass)
 }
 
 static void
-penge_count_pane_init (PengeCountPane *self)
+penge_count_tile_init (PengeCountTile *self)
 {
   ClutterActor *tmp_text;
-  PengeCountPanePrivate *priv = GET_PRIVATE (self);
+  PengeCountTilePrivate *priv = GET_PRIVATE (self);
 
   self->priv = priv;
   priv->table = mx_table_new ();
@@ -308,7 +308,7 @@ penge_count_pane_init (PengeCountPane *self)
                 "y-align", MX_ALIGN_MIDDLE,
                 NULL);
 
-  penge_count_pane_set_count (self, 0);
+  penge_count_tile_set_count (self, 0);
 
   clutter_actor_show (priv->count_label);
   mx_table_add_actor_with_properties (MX_TABLE (priv->table),
@@ -357,8 +357,8 @@ penge_count_pane_init (PengeCountPane *self)
 }
 
 
-MxWidget *penge_count_pane_new (void)
+MxWidget *penge_count_tile_new (void)
 {
-  return g_object_new (PENGE_TYPE_COUNT_PANE, NULL);
+  return g_object_new (PENGE_TYPE_COUNT_TILE, NULL);
 }
 
