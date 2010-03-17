@@ -52,6 +52,7 @@
                     <child>
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
+                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Show calendar and tasks:</property>
                       </object>
                       <packing>
@@ -68,6 +69,32 @@
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="email_button_hbox">
+                    <property name="visible">True</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel" id="label4">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Show unread email notification:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
@@ -108,7 +135,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">2</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </object>
@@ -195,5 +222,11 @@
     <child>
       <placeholder/>
     </child>
+  </object>
+  <object class="GtkSizeGroup" id="sizegroup1">
+    <widgets>
+      <widget name="label4"/>
+      <widget name="label2"/>
+    </widgets>
   </object>
 </interface>

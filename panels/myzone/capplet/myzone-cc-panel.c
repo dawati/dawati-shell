@@ -30,6 +30,7 @@
 #define BG_KEY_BG_FILENAME MYZONE_KEY_DIR "/background_filename"
 #define MYZONE_RATIO MYZONE_KEY_DIR "/ratio"
 #define MOBLIN_MYZONE_SHOW_CALENDAR MYZONE_KEY_DIR "/show_calendar"
+#define MOBLIN_MYZONE_SHOW_EMAIL MYZONE_KEY_DIR "/show_email"
 #define UI_FILE UI_DIR "/capplet.ui"
 
 G_DEFINE_DYNAMIC_TYPE (MyzoneCcPanel, myzone_cc_panel, CC_TYPE_PANEL)
@@ -230,6 +231,23 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
                         2);
     gconf_bridge_bind_property_full (bridge,
                                      MOBLIN_MYZONE_SHOW_CALENDAR,
+                                     (GObject *)toggle,
+                                     "active",
+                                     FALSE);
+  }
+
+  {
+    GtkWidget *toggle;
+
+    toggle = mx_gtk_light_switch_new ();
+    gtk_box_pack_start (GTK_BOX (gtk_builder_get_object (builder,
+                                                         "email_button_hbox")),
+                        toggle,
+                        FALSE,
+                        FALSE,
+                        2);
+    gconf_bridge_bind_property_full (bridge,
+                                     MOBLIN_MYZONE_SHOW_EMAIL,
                                      (GObject *)toggle,
                                      "active",
                                      FALSE);
