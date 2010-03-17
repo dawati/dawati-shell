@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MeeGo Panel Devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-15 09:37+0000\n"
-"PO-Revision-Date: 2010-03-15 16:06-0800\n"
+"POT-Creation-Date: 2010-03-17 19:45+0000\n"
+"PO-Revision-Date: 2010-03-17 16:00-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -494,452 +494,452 @@ msgstr "FAT (12-bit version)"
 #: ../gdu/gdu-util.c:196
 #: ../gdu/gdu-util.c:198
 msgid "FAT"
-msgstr ""
+msgstr "FAT"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:183
 msgid "FAT (16-bit version)"
-msgstr ""
+msgstr "FAT (16-bit version)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:190
 msgid "FAT (32-bit version)"
-msgstr ""
+msgstr "FAT (32-bit version)"
 
 #. Translators: NTFS is a filesystem type
 #: ../gdu/gdu-util.c:205
 #, c-format
 msgid "NTFS (version %s)"
-msgstr ""
+msgstr "NTFS (version %s)"
 
 #. Translators: NTFS is a filesystem type
 #: ../gdu/gdu-util.c:208
 #: ../gdu/gdu-util.c:210
 #, c-format
 msgid "NTFS"
-msgstr ""
+msgstr "NTFS"
 
 #. Translators: HFS is a filesystem type
 #: ../gdu/gdu-util.c:215
 #: ../gdu/gdu-util.c:217
 msgid "HFS"
-msgstr ""
+msgstr "HFS"
 
 #. Translators: HFS+ is a filesystem type
 #: ../gdu/gdu-util.c:222
 #: ../gdu/gdu-util.c:224
 msgid "HFS+"
-msgstr ""
+msgstr "HFS+"
 
 #: ../gdu/gdu-util.c:228
 msgid "Linux Unified Key Setup"
-msgstr ""
+msgstr "Linux Unified Key Setup"
 
 #. Translators: LUKS is 'Linux Unified Key Setup', a disk encryption format
 #: ../gdu/gdu-util.c:231
 msgid "LUKS"
-msgstr ""
+msgstr "LUKS"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:237
 #, c-format
 msgid "Ext2 (version %s)"
-msgstr ""
+msgstr "Ext2 (version %s)"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:240
 #, c-format
 msgid "Ext2"
-msgstr ""
+msgstr "Ext2"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:243
 msgid "ext2"
-msgstr ""
+msgstr "ext2"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:249
 #, c-format
 msgid "Ext3 (version %s)"
-msgstr ""
+msgstr "Ext3 (version %s)"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:252
 #, c-format
 msgid "Ext3"
-msgstr ""
+msgstr "Ext3"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:255
 msgid "ext3"
-msgstr ""
+msgstr "ext3"
 
 #. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
 #: ../gdu/gdu-util.c:261
 #, c-format
 msgid "Journal for Ext3 (version %s)"
-msgstr ""
+msgstr "Journal for Ext3 (version %s)"
 
 #. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
 #: ../gdu/gdu-util.c:264
 #, c-format
 msgid "Journal for Ext3"
-msgstr ""
+msgstr "Journal for Ext3"
 
 #. Translators: jbd is a filesystem type
 #: ../gdu/gdu-util.c:267
 msgid "jbd"
-msgstr ""
+msgstr "jbd"
 
 #. Translators: ext4 is a filesystem type
 #: ../gdu/gdu-util.c:273
 #, c-format
 msgid "Ext4 (version %s)"
-msgstr ""
+msgstr "Ext4 (version %s)"
 
 #. Translators: ext4 is a filesystem type
 #: ../gdu/gdu-util.c:276
 #, c-format
 msgid "Ext4"
-msgstr ""
+msgstr "Ext4"
 
 #. Translators: Ext4 is a filesystem type
 #: ../gdu/gdu-util.c:279
 msgid "ext4"
-msgstr ""
+msgstr "ext4"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:285
 #, c-format
 msgid "XFS (version %s)"
-msgstr ""
+msgstr "XFS (version %s)"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:288
 #, c-format
 msgid "XFS"
-msgstr ""
+msgstr "XFS"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:291
 msgid "xfs"
-msgstr ""
+msgstr "xfs"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:297
 #, c-format
 msgid "ReiserFS (version %s)"
-msgstr ""
+msgstr "ReiserFS (version %s)"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:300
 #, c-format
 msgid "ReiserFS"
-msgstr ""
+msgstr "ReiserFS"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:303
 msgid "reiserfs"
-msgstr ""
+msgstr "reiserfs"
 
 #. Translators: iso9660 is a filesystem type
 #: ../gdu/gdu-util.c:308
 msgid "ISO 9660"
-msgstr ""
+msgstr "ISO 9660"
 
 #. Translators: iso9660 is a filesystem type
 #: ../gdu/gdu-util.c:311
 msgid "iso9660"
-msgstr ""
+msgstr "iso9660"
 
 #. Translators: udf is a filesystem type
 #: ../gdu/gdu-util.c:316
 msgid "Universal Disk Format"
-msgstr ""
+msgstr "Universal Disk Format"
 
 #. Translators: udf is a filesystem type
 #: ../gdu/gdu-util.c:319
 msgid "udf"
-msgstr ""
+msgstr "udf"
 
 #: ../gdu/gdu-util.c:323
 msgid "Swap Space"
-msgstr ""
+msgstr "Swap Space"
 
 #. Translators: filesystem type for swap space
 #: ../gdu/gdu-util.c:326
 msgid "swap"
-msgstr ""
+msgstr "swap"
 
 #: ../gdu/gdu-util.c:331
 #, c-format
 msgid "LVM2 Physical Volume (version %s)"
-msgstr ""
+msgstr "LVM2 Physical Volume (version %s)"
 
 #: ../gdu/gdu-util.c:333
 #, c-format
 msgid "LVM2 Physical Volume"
-msgstr ""
+msgstr "LVM2 Physical Volume"
 
 #. Translators: short name for LVM2 Physical Volume
 #: ../gdu/gdu-util.c:336
 msgid "lvm2_pv"
-msgstr ""
+msgstr "lvm2_pv"
 
 #: ../gdu/gdu-util.c:342
 #, c-format
 msgid "RAID Component (version %s)"
-msgstr ""
+msgstr "RAID Component (version %s)"
 
 #: ../gdu/gdu-util.c:344
 #, c-format
 msgid "RAID Component"
-msgstr ""
+msgstr "RAID Component"
 
 #. Translators: short name for 'RAID Component'
 #: ../gdu/gdu-util.c:347
 msgid "raid"
-msgstr ""
+msgstr "raid"
 
 #. Translators: long filesystem type for minix
 #: ../gdu/gdu-util.c:352
 msgid "Minix"
-msgstr ""
+msgstr "Minix"
 
 #. Translators: filesystem type for minix
 #: ../gdu/gdu-util.c:355
 msgid "minix"
-msgstr ""
+msgstr "minix"
 
 #: ../gdu/gdu-util.c:369
 msgid "Creating File System"
-msgstr ""
+msgstr "Creating File System"
 
 #: ../gdu/gdu-util.c:371
 msgid "Mounting File System"
-msgstr ""
+msgstr "Mounting File System"
 
 #: ../gdu/gdu-util.c:373
 msgid "Unmounting File System"
-msgstr ""
+msgstr "Unmounting File System"
 
 #: ../gdu/gdu-util.c:375
 msgid "Checking File System"
-msgstr ""
+msgstr "Checking File System"
 
 #: ../gdu/gdu-util.c:377
 msgid "Creating LUKS Device"
-msgstr ""
+msgstr "Creating LUKS Device"
 
 #: ../gdu/gdu-util.c:379
 msgid "Unlocking LUKS Device"
-msgstr ""
+msgstr "Unlocking LUKS Device"
 
 #: ../gdu/gdu-util.c:381
 msgid "Locking LUKS Device"
-msgstr ""
+msgstr "Locking LUKS Device"
 
 #: ../gdu/gdu-util.c:383
 msgid "Creating Partition Table"
-msgstr ""
+msgstr "Creating Partition Table"
 
 #: ../gdu/gdu-util.c:385
 msgid "Deleting Partition"
-msgstr ""
+msgstr "Deleting Partition"
 
 #: ../gdu/gdu-util.c:387
 msgid "Creating Partition"
-msgstr ""
+msgstr "Creating Partition"
 
 #: ../gdu/gdu-util.c:389
 msgid "Modifying Partition"
-msgstr ""
+msgstr "Modifying Partition"
 
 #: ../gdu/gdu-util.c:391
 msgid "Setting Label for Device"
-msgstr ""
+msgstr "Setting Label for Device"
 
 #: ../gdu/gdu-util.c:393
 msgid "Changing Passphrase for Encrypted LUKS Device"
-msgstr ""
+msgstr "Changing Passphrase for Encrypted LUKS Device"
 
 #: ../gdu/gdu-util.c:395
 msgid "Adding Component to RAID Array"
-msgstr ""
+msgstr "Adding Component to RAID Array"
 
 #: ../gdu/gdu-util.c:397
 msgid "Removing Component from RAID Array"
-msgstr ""
+msgstr "Removing Component from RAID Array"
 
 #: ../gdu/gdu-util.c:399
 msgid "Stopping RAID Array"
-msgstr ""
+msgstr "Stopping RAID Array"
 
 #: ../gdu/gdu-util.c:401
 msgid "Starting RAID Array"
-msgstr ""
+msgstr "Starting RAID Array"
 
 #: ../gdu/gdu-util.c:403
 msgid "Checking RAID Array"
-msgstr ""
+msgstr "Checking RAID Array"
 
 #: ../gdu/gdu-util.c:405
 msgid "Repairing RAID Array"
-msgstr ""
+msgstr "Repairing RAID Array"
 
 #: ../gdu/gdu-util.c:407
 msgid "Running Short SMART Self-Test"
-msgstr ""
+msgstr "Running Short SMART Self-Test"
 
 #: ../gdu/gdu-util.c:409
 msgid "Running Extended SMART Self-Test"
-msgstr ""
+msgstr "Running Extended SMART Self-Test"
 
 #: ../gdu/gdu-util.c:411
 msgid "Running Conveyance SMART Self-Test"
-msgstr ""
+msgstr "Running Conveyance SMART Self-Test"
 
 #: ../gdu/gdu-util.c:413
 msgid "Ejecting Media"
-msgstr ""
+msgstr "Ejecting Media"
 
 #: ../gdu/gdu-util.c:415
 msgid "Detaching Device"
-msgstr ""
+msgstr "Detaching Device"
 
 #: ../gdu/gdu-util.c:417
 msgid "Forcibly Unmounting Filesystem"
-msgstr ""
+msgstr "Forcibly Unmounting Filesystem"
 
 #: ../gdu/gdu-util.c:419
 msgid "Forcibly Locking LUKS device"
-msgstr ""
+msgstr "Forcibly Locking LUKS device"
 
 #. see http://en.wikipedia.org/wiki/GUID_Partition_Table
 #. Linux
 #: ../gdu/gdu-util.c:435
 msgid "Linux Basic Data Partition"
-msgstr ""
+msgstr "Linux Basic Data Partition"
 
 #. Same as MS BDP
 #: ../gdu/gdu-util.c:436
 msgid "Linux RAID Partition"
-msgstr ""
+msgstr "Linux RAID Partition"
 
 #: ../gdu/gdu-util.c:437
 msgid "Linux Swap Partition"
-msgstr ""
+msgstr "Linux Swap Partition"
 
 #: ../gdu/gdu-util.c:438
 msgid "Linux LVM Partition"
-msgstr ""
+msgstr "Linux LVM Partition"
 
 #: ../gdu/gdu-util.c:439
 msgid "Linux Reserved Partition"
-msgstr ""
+msgstr "Linux Reserved Partition"
 
 #. Not associated with any OS
 #: ../gdu/gdu-util.c:441
 msgid "MBR Partition Scheme"
-msgstr ""
+msgstr "MBR Partition Scheme"
 
 #: ../gdu/gdu-util.c:442
 msgid "EFI System Partition"
-msgstr ""
+msgstr "EFI System Partition"
 
 #: ../gdu/gdu-util.c:443
 msgid "BIOS Boot Partition"
-msgstr ""
+msgstr "BIOS Boot Partition"
 
 #. Microsoft
 #: ../gdu/gdu-util.c:445
 msgid "Microsoft Reserved Partition"
-msgstr ""
+msgstr "Microsoft Reserved Partition"
 
 #: ../gdu/gdu-util.c:446
 msgid "Microsoft Basic Data Partition"
-msgstr ""
+msgstr "Microsoft Basic Data Partition"
 
 #. Same as Linux BDP
 #: ../gdu/gdu-util.c:447
 msgid "Microsoft LDM Metadata Partition"
-msgstr ""
+msgstr "Microsoft LDM Metadata Partition"
 
 #: ../gdu/gdu-util.c:448
 msgid "Microsoft LDM Data Partition"
-msgstr ""
+msgstr "Microsoft LDM Data Partition"
 
 #: ../gdu/gdu-util.c:449
 msgid "Microsoft Windows Recovery Environment"
-msgstr ""
+msgstr "Microsoft Windows Recovery Environment"
 
 #. HP-UX
 #: ../gdu/gdu-util.c:451
 msgid "HP-UX Data Partition"
-msgstr ""
+msgstr "HP-UX Data Partition"
 
 #: ../gdu/gdu-util.c:452
 msgid "HP-UX Service Partition"
-msgstr ""
+msgstr "HP-UX Service Partition"
 
 #. FreeBSD
 #: ../gdu/gdu-util.c:454
 msgid "FreeBSD Boot Partition"
-msgstr ""
+msgstr "FreeBSD Boot Partition"
 
 #: ../gdu/gdu-util.c:455
 msgid "FreeBSD Data Partition"
-msgstr ""
+msgstr "FreeBSD Data Partition"
 
 #: ../gdu/gdu-util.c:456
 msgid "FreeBSD Swap Partition"
-msgstr ""
+msgstr "FreeBSD Swap Partition"
 
 #: ../gdu/gdu-util.c:457
 msgid "FreeBSD UFS Partition"
-msgstr ""
+msgstr "FreeBSD UFS Partition"
 
 #: ../gdu/gdu-util.c:458
 msgid "FreeBSD Vinum Partition"
-msgstr ""
+msgstr "FreeBSD Vinum Partition"
 
 #: ../gdu/gdu-util.c:459
 msgid "FreeBSD ZFS Partition"
-msgstr ""
+msgstr "FreeBSD ZFS Partition"
 
 #. Solaris
 #: ../gdu/gdu-util.c:461
 msgid "Solaris Boot Partition"
-msgstr ""
+msgstr "Solaris Boot Partition"
 
 #: ../gdu/gdu-util.c:462
 msgid "Solaris Root Partition"
-msgstr ""
+msgstr "Solaris Root Partition"
 
 #: ../gdu/gdu-util.c:463
 msgid "Solaris Swap Partition"
-msgstr ""
+msgstr "Solaris Swap Partition"
 
 #: ../gdu/gdu-util.c:464
 msgid "Solaris Backup Partition"
-msgstr ""
+msgstr "Solaris Backup Partition"
 
 #: ../gdu/gdu-util.c:465
 msgid "Solaris /usr Partition"
-msgstr ""
+msgstr "Solaris /usr Partition"
 
 #. Same as Apple ZFS
 #: ../gdu/gdu-util.c:466
 msgid "Solaris /var Partition"
-msgstr ""
+msgstr "Solaris /var Partition"
 
 #: ../gdu/gdu-util.c:467
 msgid "Solaris /home Partition"
-msgstr ""
+msgstr "Solaris /home Partition"
 
 #: ../gdu/gdu-util.c:468
 msgid "Solaris Alternate Sector Partition"
-msgstr ""
+msgstr "Solaris Alternate Sector Partition"
 
 #: ../gdu/gdu-util.c:469
 msgid "Solaris Reserved Partition"
