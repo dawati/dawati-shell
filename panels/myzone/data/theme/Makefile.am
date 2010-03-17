@@ -59,7 +59,9 @@ dist_theme_DATA = \
 	card_frame.png \
 	card_frame_hover.png \
 	dismiss_button.png \
-	dismiss_button_hover.png
+	dismiss_button_hover.png \
+	count-frame.png \
+	count-frame-zero.png
 
 
 if ENABLE_CACHE
