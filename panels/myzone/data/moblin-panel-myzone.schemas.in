@@ -11,6 +11,16 @@
         <short/>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/desktop/moblin/myzone/show_email</key>
+      <applyto>/desktop/moblin/myzone/show_email</applyto>
+      <owner>moblin-panel-myzone</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+        <short/>
+      </locale>
+    </schema>
    <schema>
       <key>/schemas/desktop/moblin/myzone/ratio</key>
       <applyto>/desktop/moblin/myzone/ratio</applyto>
