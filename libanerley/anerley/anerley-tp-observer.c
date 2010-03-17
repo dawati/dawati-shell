@@ -55,6 +55,7 @@ struct _AnerleyTpObserverPrivate {
   gchar *bus_name;
   GHashTable *connections;
   TpDBusDaemon *bus;
+  gchar *client_name;
 };
 
 enum
@@ -62,6 +63,7 @@ enum
   PROP_0,
   PROP_CHANNEL_FILTER,
   PROP_INTERFACES,
+  PROP_CLIENT_NAME
 };
 
 enum
@@ -90,6 +92,9 @@ anerley_tp_observer_get_property (GObject *object, guint property_id,
     case PROP_INTERFACES:
       g_value_set_boxed (value, anerley_tp_observer_interfaces);
       break;
+    case PROP_CLIENT_NAME:
+      g_value_set_string (value, priv->client_name);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -99,7 +104,12 @@ static void
 anerley_tp_observer_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
+  AnerleyTpObserverPrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_CLIENT_NAME:
+      priv->client_name = g_value_dup_string (value);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -131,11 +141,39 @@ anerley_tp_observer_finalize (GObject *object)
 {
   AnerleyTpObserverPrivate *priv = GET_PRIVATE (object);
 
+  g_free (priv->client_name);
   g_free (priv->bus_name);
   g_boxed_free (TP_ARRAY_TYPE_CHANNEL_CLASS_LIST, priv->filters);
 
 
   G_OBJECT_CLASS (anerley_tp_observer_parent_class)->finalize (object);
+}
+
+static void
+anerley_tp_observer_constructed (GObject *object)
+{
+  AnerleyTpObserverPrivate *priv = GET_PRIVATE (object);
+  gchar *object_path;
+
+  priv->bus_name = g_strdup_printf (TP_CLIENT_BUS_NAME_BASE "%s",
+                                    priv->client_name);
+  object_path = g_strdup_printf (TP_CLIENT_OBJECT_PATH_BASE "%s",
+                                 priv->client_name);
+
+  g_debug ("Ding ding on the bus: %s", priv->bus_name);
+  tp_dbus_daemon_request_name (priv->bus,
+                               priv->bus_name,
+                               TRUE,
+                               NULL);
+
+  dbus_g_connection_register_g_object (tp_get_bus (),
+                                       object_path,
+                                       G_OBJECT (object));
+
+  g_free (object_path);
+
+  if (G_OBJECT_CLASS (anerley_tp_observer_parent_class)->constructed)
+    G_OBJECT_CLASS (anerley_tp_observer_parent_class)->constructed (object);
 }
 
 static void
@@ -174,6 +212,7 @@ anerley_tp_observer_class_init (AnerleyTpObserverClass *klass)
   object_class->set_property = anerley_tp_observer_set_property;
   object_class->dispose = anerley_tp_observer_dispose;
   object_class->finalize = anerley_tp_observer_finalize;
+  object_class->constructed = anerley_tp_observer_constructed;
 
   klass->dbus_props_class.interfaces = prop_interfaces;
   tp_dbus_properties_mixin_class_init (object_class,
@@ -195,6 +234,13 @@ anerley_tp_observer_class_init (AnerleyTpObserverClass *klass)
                               G_PARAM_READABLE);
   g_object_class_install_property (object_class, PROP_CHANNEL_FILTER, pspec);
 
+  pspec = g_param_spec_string ("client-name",
+                               "Client name",
+                               "Name for Telepathy client",
+                               NULL,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_CLIENT_NAME, pspec);
+
   signals[NEW_CHANNEL_SIGNAL] = g_signal_new ("new-channel",
                                               ANERLEY_TYPE_TP_OBSERVER,
                                               G_SIGNAL_RUN_LAST,
@@ -213,7 +259,6 @@ anerley_tp_observer_init (AnerleyTpObserver *self)
 {
   AnerleyTpObserverPrivate *priv = GET_PRIVATE (self);
   GHashTable *asv;
-  gchar *object_path;
 
   priv->filters = g_ptr_array_new ();
 
@@ -227,23 +272,6 @@ anerley_tp_observer_init (AnerleyTpObserver *self)
 
   priv->bus = tp_dbus_daemon_dup (NULL);
 
-  priv->bus_name = g_strdup_printf (TP_CLIENT_BUS_NAME_BASE "Anerley%d",
-                                    (gint)getpid());
-  object_path = g_strdup_printf (TP_CLIENT_OBJECT_PATH_BASE "Anerley%d",
-                                 (gint)getpid());
-
-  g_debug ("Ding ding on the bus: %s", priv->bus_name);
-  tp_dbus_daemon_request_name (priv->bus,
-                               priv->bus_name,
-                               TRUE,
-                               NULL);
-
-  dbus_g_connection_register_g_object (tp_get_bus (),
-                                       object_path,
-                                       G_OBJECT (self));
-
-  g_free (object_path);
-
   priv->connections = g_hash_table_new_full (g_str_hash,
                                              g_str_equal,
                                              g_free,
@@ -251,9 +279,11 @@ anerley_tp_observer_init (AnerleyTpObserver *self)
 }
 
 AnerleyTpObserver *
-anerley_tp_observer_new (void)
+anerley_tp_observer_new (const gchar *client_name)
 {
-  return g_object_new (ANERLEY_TYPE_TP_OBSERVER, NULL);
+  return g_object_new (ANERLEY_TYPE_TP_OBSERVER, 
+                       "client-name", client_name,
+                       NULL);
 }
 
 typedef struct

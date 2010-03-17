@@ -42,19 +42,26 @@ struct _AnerleyTpMonitorFeedPrivate {
   AnerleyAggregateTpFeed *aggregate_feed;
   AnerleyTpObserver *observer;
   GHashTable *channels_to_items;
+  gchar *client_name;
 };
 
 enum
 {
   PROP_0,
-  PROP_AGREGGATE_FEED
+  PROP_AGREGGATE_FEED,
+  PROP_CLIENT_NAME
 };
 
 static void
 anerley_tp_monitor_feed_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
+  AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (object);
+
   switch (property_id) {
+    case PROP_CLIENT_NAME:
+      g_value_set_string (value, priv->client_name);
+      break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -69,6 +76,9 @@ anerley_tp_monitor_feed_set_property (GObject *object, guint property_id,
   switch (property_id) {
     case PROP_AGREGGATE_FEED:
       priv->aggregate_feed = g_value_dup_object (value);
+      break;
+    case PROP_CLIENT_NAME:
+      priv->client_name = g_value_dup_string (value);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -98,28 +108,10 @@ anerley_tp_monitor_feed_dispose (GObject *object)
 static void
 anerley_tp_monitor_feed_finalize (GObject *object)
 {
+  AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (object);
+
+  g_free (priv->client_name);
   G_OBJECT_CLASS (anerley_tp_monitor_feed_parent_class)->finalize (object);
-}
-
-static void
-anerley_tp_monitor_feed_class_init (AnerleyTpMonitorFeedClass *klass)
-{
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
-
-  g_type_class_add_private (klass, sizeof (AnerleyTpMonitorFeedPrivate));
-
-  object_class->get_property = anerley_tp_monitor_feed_get_property;
-  object_class->set_property = anerley_tp_monitor_feed_set_property;
-  object_class->dispose = anerley_tp_monitor_feed_dispose;
-  object_class->finalize = anerley_tp_monitor_feed_finalize;
-
-  pspec = g_param_spec_object ("aggregate-feed",
-                               "Aggregate feed",
-                               "The feed to look items up in",
-                               ANERLEY_TYPE_AGGREGATE_TP_FEED,
-                               G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY);
-  g_object_class_install_property (object_class, PROP_AGREGGATE_FEED, pspec);
 }
 
 static void
@@ -201,17 +193,54 @@ _observer_new_channel_cb (AnerleyTpObserver *observer,
                          items);
 }
 
+static void
+anerley_tp_monitor_feed_constructed (GObject *object)
+{
+  AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (object);
+
+  priv->observer = anerley_tp_observer_new (priv->client_name);
+  g_signal_connect (priv->observer,
+                    "new-channel",
+                    (GCallback)_observer_new_channel_cb,
+                    object);
+
+  if (G_OBJECT_CLASS (anerley_tp_monitor_feed_parent_class)->constructed)
+    G_OBJECT_CLASS (anerley_tp_monitor_feed_parent_class)->constructed (object);
+}
+
+static void
+anerley_tp_monitor_feed_class_init (AnerleyTpMonitorFeedClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
+
+  g_type_class_add_private (klass, sizeof (AnerleyTpMonitorFeedPrivate));
+
+  object_class->get_property = anerley_tp_monitor_feed_get_property;
+  object_class->set_property = anerley_tp_monitor_feed_set_property;
+  object_class->dispose = anerley_tp_monitor_feed_dispose;
+  object_class->finalize = anerley_tp_monitor_feed_finalize;
+  object_class->constructed = anerley_tp_monitor_feed_constructed;
+
+  pspec = g_param_spec_object ("aggregate-feed",
+                               "Aggregate feed",
+                               "The feed to look items up in",
+                               ANERLEY_TYPE_AGGREGATE_TP_FEED,
+                               G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_AGREGGATE_FEED, pspec);
+
+  pspec = g_param_spec_string ("client-name",
+                               "Client name",
+                               "Name for the Telepathy client",
+                               NULL,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_CLIENT_NAME, pspec);
+}
 
 static void
 anerley_tp_monitor_feed_init (AnerleyTpMonitorFeed *self)
 {
   AnerleyTpMonitorFeedPrivate *priv = GET_PRIVATE (self);
-
-  priv->observer = anerley_tp_observer_new ();
-  g_signal_connect (priv->observer,
-                    "new-channel",
-                    (GCallback)_observer_new_channel_cb,
-                    self);
 
   priv->channels_to_items = g_hash_table_new_full (g_direct_hash,
                                                    g_direct_equal,
@@ -220,10 +249,12 @@ anerley_tp_monitor_feed_init (AnerleyTpMonitorFeed *self)
 }
 
 AnerleyFeed *
-anerley_tp_monitor_feed_new (AnerleyAggregateTpFeed *aggregate)
+anerley_tp_monitor_feed_new (AnerleyAggregateTpFeed *aggregate,
+                             const gchar            *client_name)
 {
   return g_object_new (ANERLEY_TYPE_TP_MONITIOR_FEED,
                        "aggregate-feed", aggregate,
+                       "client-name", client_name,
                        NULL);
 }
 

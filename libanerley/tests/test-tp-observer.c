@@ -47,7 +47,7 @@ main (int    argc,
   main_loop = g_main_loop_new (NULL, FALSE);
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
 
-  observer = anerley_tp_observer_new ();
+  observer = anerley_tp_observer_new ("AnerleyTest");
 
   g_signal_connect (observer,
                     "new-channel",

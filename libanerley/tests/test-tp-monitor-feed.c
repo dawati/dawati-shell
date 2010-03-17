@@ -37,7 +37,8 @@ _account_manager_ready_cb (GObject      *source_object,
   AnerleyFeed *monitor;
 
   aggregate = anerley_aggregate_tp_feed_new ();
-  monitor = anerley_tp_monitor_feed_new (ANERLEY_AGGREGATE_TP_FEED (aggregate));
+  monitor = anerley_tp_monitor_feed_new (ANERLEY_AGGREGATE_TP_FEED (aggregate),
+                                         "AnerleyTest");
 }
 
 int

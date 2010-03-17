@@ -54,7 +54,8 @@ typedef struct {
 
 GType anerley_tp_monitor_feed_get_type (void);
 
-AnerleyFeed *anerley_tp_monitor_feed_new (AnerleyAggregateTpFeed *feed);
+AnerleyFeed *anerley_tp_monitor_feed_new (AnerleyAggregateTpFeed *feed,
+                                          const gchar            *client_name);
 
 G_END_DECLS
 

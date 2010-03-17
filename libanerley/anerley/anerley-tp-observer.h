@@ -55,7 +55,7 @@ typedef struct {
 
 GType anerley_tp_observer_get_type (void);
 
-AnerleyTpObserver *anerley_tp_observer_new (void);
+AnerleyTpObserver *anerley_tp_observer_new (const gchar *client_name);
 
 G_END_DECLS
 
