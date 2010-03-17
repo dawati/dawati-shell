@@ -12,7 +12,9 @@ libexec_PROGRAMS = moblin-panel-myzone
 
 moblin_panel_myzone_LDADD = \
 			    $(top_builddir)/penge/libpenge.la \
+			    $(top_builddir)/mailme/libmailme.a \
 			    $(PENGE_LIBS) \
+			    $(MAILME_LIBS) \
 			    $(MPL_LIBS)
 
 moblin_panel_myzone_SOURCES = \
