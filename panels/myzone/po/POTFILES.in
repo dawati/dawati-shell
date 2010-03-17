@@ -15,3 +15,4 @@ penge/penge-task-tile.c
 penge/penge-utils.c
 penge/penge-welcome-tile.c
 penge/penge-everything-pane.c
+penge/penge-email-pane.c
