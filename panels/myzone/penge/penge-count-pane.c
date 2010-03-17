@@ -45,8 +45,6 @@ struct _PengeCountPanePrivate
   gboolean compact;
 };
 
-static ClutterColor grey_color = { 0xa7, 0xa7, 0xa7, 0xff };
-
 static GObject *
 penge_count_pane_constructor (GType                  type,
                               guint                  n_construct_params,
@@ -304,7 +302,6 @@ penge_count_pane_init (PengeCountPane *self)
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->count_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_NONE);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
-  clutter_text_set_color (CLUTTER_TEXT (tmp_text), &grey_color);
 
   g_object_set (G_OBJECT (priv->count_label),
                 "x-align", MX_ALIGN_MIDDLE,
@@ -342,7 +339,6 @@ penge_count_pane_init (PengeCountPane *self)
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->account_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
-  clutter_text_set_color (CLUTTER_TEXT (tmp_text), &grey_color);
 
   mx_stylable_set_style_class (MX_STYLABLE (priv->account_label),
                               "PengeCountAccountLabel");
