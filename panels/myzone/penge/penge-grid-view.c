@@ -343,11 +343,19 @@ _update_layout (PengeGridView *grid_view)
                                  "col", col,
                                  "row", 2,
                                  "x-expand", FALSE,
-                                 "y-expand", FALSE,
                                  "x-fill", TRUE,
                                  "y-fill", FALSE,
                                  "y-align", 1.0,
                                  NULL);
+
+    /* If we are showing the email then it is responsible for expanding to fill
+     * the area. Otherwise the favourites app pane is responsible.
+     */
+    clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                 priv->favourite_apps_pane,
+                                 "y-expand", !priv->show_email_pane,
+                                 NULL);
+
     col++;
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->div_tex,
