@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-15 09:37+0000\n"
+"POT-Creation-Date: 2010-03-17 19:45+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,92 +15,92 @@ msgstr ""
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
-msgstr ""
+msgstr "Enhetspanel"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
 #: ../src/moblin-panel-devices.c:135
 msgid "devices"
-msgstr ""
+msgstr "enheter"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:560
 msgid "CompactFlash"
-msgstr ""
+msgstr "CompactFlash"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:563
 msgid "MemoryStick"
-msgstr ""
+msgstr "MemoryStick"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:566
 msgid "SmartMedia"
-msgstr ""
+msgstr "SmartMedia"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:569
 msgid "SecureDigital"
-msgstr ""
+msgstr "SecureDigital"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:572
 msgid "SD High Capacity"
-msgstr ""
+msgstr "SD High Capacity"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:575
 msgid "Floppy"
-msgstr ""
+msgstr "Diskett"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:578
 msgid "Zip"
-msgstr ""
+msgstr "Zip"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:581
 msgid "Jaz"
-msgstr ""
+msgstr "Jaz"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:584
 msgid "Flash"
-msgstr ""
+msgstr "Flash"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:607
 msgid "CD"
-msgstr ""
+msgstr "Cd"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:615
 msgid "DVD"
-msgstr ""
+msgstr "Dvd"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:623
 msgid "Blu-Ray"
-msgstr ""
+msgstr "Blu-Ray"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:631
 msgid "HDDVD"
-msgstr ""
+msgstr "HD DVD"
 
 #. Translators: %s is the media type e.g. 'CD/DVD' or 'CompactFlash'
 #: ../gdu/gdu-drive.c:680
 #: ../gdu/gdu-drive.c:719
 #, c-format
 msgid "%s Drive"
-msgstr ""
+msgstr "%s-enhet"
 
 #. Translators: first %s is the size, second %s is the media type
 #. * e.g. 'CD/DVD' or 'CompactFlash'
@@ -108,7 +108,7 @@ msgstr ""
 #: ../gdu/gdu-drive.c:714
 #, c-format
 msgid "%s %s Drive"
-msgstr ""
+msgstr "%s %s-enhet"
 
 #. Translators: This string is used to describe a hard disk.
 #. * The first %s is the size of the drive e.g. '45 GB'.
@@ -116,14 +116,14 @@ msgstr ""
 #: ../gdu/gdu-drive.c:730
 #, c-format
 msgid "%s Hard Disk"
-msgstr ""
+msgstr "%s-hårddisk"
 
 #. Translators: This string is used to describe a hard disk where the size
 #. * is not known.
 #.
 #: ../gdu/gdu-drive.c:735
 msgid "Hard Disk"
-msgstr ""
+msgstr "Hårddisk"
 
 #. Translators: This string is used to describe a SSD. The first %s is
 #. * the size of the drive e.g. '45 GB'.
@@ -131,14 +131,14 @@ msgstr ""
 #: ../gdu/gdu-drive.c:742
 #, c-format
 msgid "%s Solid-State Disk"
-msgstr ""
+msgstr "%s SSD (Solid-State Disk)"
 
 #. Translators: This string is used to describe a SSD where the size
 #. * is not known.
 #.
 #: ../gdu/gdu-drive.c:748
 msgid "Solid-State Disk"
-msgstr ""
+msgstr "SSD (Solid-State Disk)"
 
 #. Translators: This string is the description of a drive. The first %s is the
 #. * size of the inserted media, for example '45 GB'.
@@ -146,7 +146,7 @@ msgstr ""
 #: ../gdu/gdu-drive.c:789
 #, c-format
 msgid "%s Media"
-msgstr ""
+msgstr "%s-media"
 
 #. Translators: This string is used as a description text when no media has
 #. * been detected for a drive
@@ -154,25 +154,25 @@ msgstr ""
 #: ../gdu/gdu-drive.c:796
 #, c-format
 msgid "No Media Detected"
-msgstr ""
+msgstr "Upptäckte inga medier"
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:807
 #: ../gdu/gdu-linux-md-drive.c:565
 msgid "MBR Partition Table"
-msgstr ""
+msgstr "MBR-partitionstabell"
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:810
 #: ../gdu/gdu-linux-md-drive.c:568
 msgid "GUID Partition Table"
-msgstr ""
+msgstr "GUID-partitionstabell"
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:813
 #: ../gdu/gdu-linux-md-drive.c:571
 msgid "Apple Partition Table"
-msgstr ""
+msgstr "Apple-partitionstabell"
 
 #. Translators: This string is used for conveying the partition table format when
 #. * the format is unknown
@@ -180,59 +180,59 @@ msgstr ""
 #: ../gdu/gdu-drive.c:818
 #: ../gdu/gdu-linux-md-drive.c:576
 msgid "Partitioned"
-msgstr ""
+msgstr "Partitionerad"
 
 #. Translators: This string is used for conveying a device is not partitioned.
 #.
 #: ../gdu/gdu-drive.c:823
 msgid "Not Partitioned"
-msgstr ""
+msgstr "Inte partitionerad"
 
 #. TODO: include type e.g. SATA Port Multiplier, SAS Expander etc
 #: ../gdu/gdu-hub.c:222
 msgid "SAS Expander"
-msgstr ""
+msgstr "SAS-expanderare"
 
 #: ../gdu/gdu-hub.c:230
 msgid "PATA Host Adapter"
-msgstr ""
+msgstr "PATA-värdadapter"
 
 #: ../gdu/gdu-hub.c:232
 msgid "SATA Host Adapter"
-msgstr ""
+msgstr "SATA-värdadapter"
 
 #: ../gdu/gdu-hub.c:234
 msgid "ATA Host Adapter"
-msgstr ""
+msgstr "ATA-värdadapter"
 
 #: ../gdu/gdu-hub.c:236
 msgid "SAS Host Adapter"
-msgstr ""
+msgstr "SAS-värdadapter"
 
 #: ../gdu/gdu-hub.c:238
 msgid "SCSI Host Adapter"
-msgstr ""
+msgstr "SCSI-värdadapter"
 
 #: ../gdu/gdu-hub.c:240
 msgid "Host Adapter"
-msgstr ""
+msgstr "Värdadapter"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume-group.c:351
 #: ../gdu/gdu-linux-lvm2-volume-group.c:355
 msgid "Volume Group"
-msgstr ""
+msgstr "Volymgrupp"
 
 #. Translators: VPD name - first %s is the size e.g. '45 GB'
 #: ../gdu/gdu-linux-lvm2-volume-group.c:359
 #, c-format
 msgid "%s LVM2 Volume Group"
-msgstr ""
+msgstr "%s LVM2-volymgrupp"
 
 #. Translators: VPD name when size is not known
 #: ../gdu/gdu-linux-lvm2-volume-group.c:362
 msgid "LVM2 Volume Group"
-msgstr ""
+msgstr "LVM2-volymgrupp"
 
 #. Translators: label for an unallocated space in a LVM2 volume group.
 #. * %s is the size, formatted like '45 GB'
@@ -244,28 +244,28 @@ msgstr ""
 #: ../gdu/gdu-volume-hole.c:152
 #, c-format
 msgid "%s Free"
-msgstr ""
+msgstr "%s ledigt"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume-hole.c:205
 #: ../gdu/gdu-volume-hole.c:161
 msgid "Unallocated Space"
-msgstr ""
+msgstr "Ej allokerat utrymme"
 
 #. Translators: VPD name
 #: ../gdu/gdu-linux-lvm2-volume-hole.c:208
 msgid "LVM2 VG Unallocated Space"
-msgstr ""
+msgstr "LVM2 VG ej allokerat utrymme"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume.c:331
 msgid "Logical Volume"
-msgstr ""
+msgstr "Logisk volym"
 
 #. Translators: VPD name
 #: ../gdu/gdu-linux-lvm2-volume.c:334
 msgid "LVM2 Logical Volume"
-msgstr ""
+msgstr "LVM2 Logisk volym"
 
 #. Translators: First %s is the size, second %s is a RAID level, e.g. 'RAID-5'
 #. Translators: first %s is the size e.g. '45 GB', second %s is the level e.g. 'RAID-5'
@@ -273,7 +273,7 @@ msgstr ""
 #: ../gdu/gdu-linux-md-drive.c:621
 #, c-format
 msgid "%s %s Array"
-msgstr ""
+msgstr "%s %s-kedja"
 
 #. Translators: %s is a RAID level, e.g. 'RAID-5'
 #. Translators: %s is the level e.g. 'RAID-5'
@@ -281,7 +281,7 @@ msgstr ""
 #: ../gdu/gdu-linux-md-drive.c:626
 #, c-format
 msgid "%s Array"
-msgstr ""
+msgstr "%s-kedja"
 
 #. Translators: First %s is a device file such as /dev/sda4
 #. * second %s is the state of the device
@@ -289,180 +289,180 @@ msgstr ""
 #: ../gdu/gdu-linux-md-drive.c:596
 #, c-format
 msgid "RAID Array %s (%s)"
-msgstr ""
+msgstr "RAID-kedja %s (%s)"
 
 #. Translators: %s is a device file such as /dev/sda4
 #: ../gdu/gdu-linux-md-drive.c:603
 #, c-format
 msgid "RAID device %s"
-msgstr ""
+msgstr "RAID-enhet %s"
 
 #. Translators: fallback for level
 #: ../gdu/gdu-linux-md-drive.c:609
 msgctxt "RAID Level fallback"
 msgid "RAID"
-msgstr ""
+msgstr "RAID"
 
 #: ../gdu/gdu-linux-md-drive.c:614
 msgid "RAID Array"
-msgstr ""
+msgstr "RAID-kedja"
 
 #: ../gdu/gdu-linux-md-drive.c:1112
 msgctxt "Linux MD slave state"
 msgid "Not Attached"
-msgstr ""
+msgstr "Inte ansluten"
 
 #: ../gdu/gdu-linux-md-drive.c:1115
 msgctxt "Linux MD slave state"
 msgid "Faulty"
-msgstr ""
+msgstr "Fel"
 
 #: ../gdu/gdu-linux-md-drive.c:1120
 msgctxt "Linux MD slave state"
 msgid "Fully Synchronized"
-msgstr ""
+msgstr "Helt synkroniserad"
 
 #: ../gdu/gdu-linux-md-drive.c:1122
 msgctxt "Linux MD slave state"
 msgid "Writemostly"
-msgstr ""
+msgstr "Writemostly"
 
 #: ../gdu/gdu-linux-md-drive.c:1124
 msgctxt "Linux MD slave state"
 msgid "Blocked"
-msgstr ""
+msgstr "Blockerad"
 
 #: ../gdu/gdu-linux-md-drive.c:1126
 msgctxt "Linux MD slave state"
 msgid "Spare"
-msgstr ""
+msgstr "Reserv"
 
 #: ../gdu/gdu-machine.c:151
 msgid "Local Storage"
-msgstr ""
+msgstr "Lokalt lager"
 
 #. TODO: use display-hostname
 #: ../gdu/gdu-machine.c:154
 #, c-format
 msgid "Storage on %s"
-msgstr ""
+msgstr "Lager på %s"
 
 #: ../gdu/gdu-pool.c:885
 msgid "Multipath Devices"
-msgstr ""
+msgstr "Enheter med flera sökvägar"
 
 #: ../gdu/gdu-pool.c:886
 msgid "Drives with multiple I/O paths"
-msgstr ""
+msgstr "Enheter med flera I/O-sökvägar"
 
 #: ../gdu/gdu-pool.c:896
 msgid "Multi-disk Devices"
-msgstr ""
+msgstr "Multidiskenheter"
 
 #: ../gdu/gdu-pool.c:897
 msgid "RAID, LVM and other logical drives"
-msgstr ""
+msgstr "RAID, LVM och andra logiska enheter"
 
 #: ../gdu/gdu-pool.c:907
 msgid "Peripheral Devices"
-msgstr ""
+msgstr "Kringutrustningsenheter"
 
 #: ../gdu/gdu-pool.c:908
 msgid "USB, Firewire and other peripherals"
-msgstr ""
+msgstr "USB, Firewire och annan kringutrustning"
 
 #: ../gdu/gdu-pool.c:2090
 #, c-format
 msgid "Error enumerating devices: %s"
-msgstr ""
+msgstr "Fel vid uppräkning av enheter: %s"
 
 #: ../gdu/gdu-pool.c:2116
 #, c-format
 msgid "Error enumerating adapters: %s"
-msgstr ""
+msgstr "Fel vid uppräkning av adaptrar: %s"
 
 #: ../gdu/gdu-pool.c:2139
 #, c-format
 msgid "Error enumerating expanders: %s"
-msgstr ""
+msgstr "Fel vid uppräkning av expanderare: %s"
 
 #: ../gdu/gdu-pool.c:2162
 #, c-format
 msgid "Error enumerating ports: %s"
-msgstr ""
+msgstr "Fel vid uppräkning av portar: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:292
 #, c-format
 msgid "Error listening to address `localhost:%d': %s: %s\n"
-msgstr ""
+msgstr "Fel vid lyssning till adress 'lokalvärd:%d': %s: %s\n"
 
 #: ../gdu/gdu-ssh-bridge.c:307
 #, c-format
 msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
-msgstr ""
+msgstr "Fel vid skapande av lokal TCP-server, provade bindning till portar 9000-10000 på lokalvärd"
 
 #: ../gdu/gdu-ssh-bridge.c:322
 #, c-format
 msgid "Error setting auth mechanisms on local DBusServer\n"
-msgstr ""
+msgstr "Fel vid inställning av aukt-mekanismer på lokal DBusServer\n"
 
 #: ../gdu/gdu-ssh-bridge.c:347
 #, c-format
 msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-msgstr ""
+msgstr "Kan inte tolka kommandorad %s (fel adressformat?): %s"
 
 #: ../gdu/gdu-ssh-bridge.c:369
 #, c-format
 msgid "Unable to spawn ssh program: %s"
-msgstr ""
+msgstr "Kan inte skapa ssh-program: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:398
 #: ../gdu/gdu-ssh-bridge.c:510
 #, c-format
 msgid "Error reading stderr output: %s"
-msgstr ""
+msgstr "Fel vid läsning av stderr-utmatning: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:405
 msgid "Error reading stderr output: No content"
-msgstr ""
+msgstr "Fel vid läsning av stderr-utmatning: inget innehåll"
 
 #: ../gdu/gdu-ssh-bridge.c:471
 msgid "Error logging in"
-msgstr ""
+msgstr "Fel vid inloggning"
 
 #: ../gdu/gdu-ssh-bridge.c:491
 #, c-format
 msgid "Error sending `%s': %s"
-msgstr ""
+msgstr "Fel vid sändning av %s: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:519
 #, c-format
 msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
-msgstr ""
+msgstr "Oväntad stderr-utmatning - förväntade 'udisks-tcp-bridge: Väntar på hemlighet', men fick %s"
 
 #: ../gdu/gdu-ssh-bridge.c:536
 #, c-format
 msgid "Error passing authorization secret: %s"
-msgstr ""
+msgstr "Fel vid sändning av auktoriseringshemlighet: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:557
 #, c-format
 msgid "Error reading stderr from: %s"
-msgstr ""
+msgstr "Fel vid läsning av stderr från: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:566
 #, c-format
 msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
-msgstr ""
+msgstr "Oväntad stderr-utmatning - förväntade 'udisks-tcp-bridge': Försöker ansluta till port %d' men fick %s"
 
 #: ../gdu/gdu-ssh-bridge.c:585
 #, c-format
 msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
-msgstr ""
+msgstr "Programmet udisks-tcp-bridge kunde inte bevisa att det var auktoriserat: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:592
 msgid "The udisks-tcp-bridge program failed to prove it was authorized"
-msgstr ""
+msgstr "Programmet udisks-tcp-bridge kunde inte bevisa att det var auktoriserat"
 
 #. Translators: The first %s is the size in power-of-2 units, e.g. '64 KiB'
 #. * the second %s is the size as a number e.g. '65,536 bytes'
@@ -474,12 +474,12 @@ msgstr ""
 #: ../gdu/gdu-util.c:140
 #, c-format
 msgid "%s (%s bytes)"
-msgstr ""
+msgstr "%s (%s byte)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:175
 msgid "FAT (12-bit version)"
-msgstr ""
+msgstr "FAT (12-bitarsversion)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:178
@@ -488,733 +488,733 @@ msgstr ""
 #: ../gdu/gdu-util.c:196
 #: ../gdu/gdu-util.c:198
 msgid "FAT"
-msgstr ""
+msgstr "FAT"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:183
 msgid "FAT (16-bit version)"
-msgstr ""
+msgstr "FAT (16-bitarsversion)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:190
 msgid "FAT (32-bit version)"
-msgstr ""
+msgstr "FAT (32-bitarsversion)"
 
 #. Translators: NTFS is a filesystem type
 #: ../gdu/gdu-util.c:205
 #, c-format
 msgid "NTFS (version %s)"
-msgstr ""
+msgstr "NTFS (version %s)"
 
 #. Translators: NTFS is a filesystem type
 #: ../gdu/gdu-util.c:208
 #: ../gdu/gdu-util.c:210
 #, c-format
 msgid "NTFS"
-msgstr ""
+msgstr "NTFS"
 
 #. Translators: HFS is a filesystem type
 #: ../gdu/gdu-util.c:215
 #: ../gdu/gdu-util.c:217
 msgid "HFS"
-msgstr ""
+msgstr "HFS"
 
 #. Translators: HFS+ is a filesystem type
 #: ../gdu/gdu-util.c:222
 #: ../gdu/gdu-util.c:224
 msgid "HFS+"
-msgstr ""
+msgstr "HFS+"
 
 #: ../gdu/gdu-util.c:228
 msgid "Linux Unified Key Setup"
-msgstr ""
+msgstr "Linux Unified Key Setup"
 
 #. Translators: LUKS is 'Linux Unified Key Setup', a disk encryption format
 #: ../gdu/gdu-util.c:231
 msgid "LUKS"
-msgstr ""
+msgstr "LUKS"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:237
 #, c-format
 msgid "Ext2 (version %s)"
-msgstr ""
+msgstr "Ext2 (version %s)"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:240
 #, c-format
 msgid "Ext2"
-msgstr ""
+msgstr "Ext2"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:243
 msgid "ext2"
-msgstr ""
+msgstr "ext2"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:249
 #, c-format
 msgid "Ext3 (version %s)"
-msgstr ""
+msgstr "Ext3 (version %s)"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:252
 #, c-format
 msgid "Ext3"
-msgstr ""
+msgstr "Ext3"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:255
 msgid "ext3"
-msgstr ""
+msgstr "ext3"
 
 #. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
 #: ../gdu/gdu-util.c:261
 #, c-format
 msgid "Journal for Ext3 (version %s)"
-msgstr ""
+msgstr "Journal för Ext3 (version %s)"
 
 #. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
 #: ../gdu/gdu-util.c:264
 #, c-format
 msgid "Journal for Ext3"
-msgstr ""
+msgstr "Journal för Ext3"
 
 #. Translators: jbd is a filesystem type
 #: ../gdu/gdu-util.c:267
 msgid "jbd"
-msgstr ""
+msgstr "jbd"
 
 #. Translators: ext4 is a filesystem type
 #: ../gdu/gdu-util.c:273
 #, c-format
 msgid "Ext4 (version %s)"
-msgstr ""
+msgstr "Ext4 (version %s)"
 
 #. Translators: ext4 is a filesystem type
 #: ../gdu/gdu-util.c:276
 #, c-format
 msgid "Ext4"
-msgstr ""
+msgstr "Ext4"
 
 #. Translators: Ext4 is a filesystem type
 #: ../gdu/gdu-util.c:279
 msgid "ext4"
-msgstr ""
+msgstr "ext4"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:285
 #, c-format
 msgid "XFS (version %s)"
-msgstr ""
+msgstr "XFS (version %s)"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:288
 #, c-format
 msgid "XFS"
-msgstr ""
+msgstr "XFS"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:291
 msgid "xfs"
-msgstr ""
+msgstr "xfs"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:297
 #, c-format
 msgid "ReiserFS (version %s)"
-msgstr ""
+msgstr "ReiserFS (version %s)"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:300
 #, c-format
 msgid "ReiserFS"
-msgstr ""
+msgstr "ReiserFS"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:303
 msgid "reiserfs"
-msgstr ""
+msgstr "reiserfs"
 
 #. Translators: iso9660 is a filesystem type
 #: ../gdu/gdu-util.c:308
 msgid "ISO 9660"
-msgstr ""
+msgstr "ISO 9660"
 
 #. Translators: iso9660 is a filesystem type
 #: ../gdu/gdu-util.c:311
 msgid "iso9660"
-msgstr ""
+msgstr "iso9660"
 
 #. Translators: udf is a filesystem type
 #: ../gdu/gdu-util.c:316
 msgid "Universal Disk Format"
-msgstr ""
+msgstr "Universal Disk Format"
 
 #. Translators: udf is a filesystem type
 #: ../gdu/gdu-util.c:319
 msgid "udf"
-msgstr ""
+msgstr "udf"
 
 #: ../gdu/gdu-util.c:323
 msgid "Swap Space"
-msgstr ""
+msgstr "Växlingsutrymme"
 
 #. Translators: filesystem type for swap space
 #: ../gdu/gdu-util.c:326
 msgid "swap"
-msgstr ""
+msgstr "swap"
 
 #: ../gdu/gdu-util.c:331
 #, c-format
 msgid "LVM2 Physical Volume (version %s)"
-msgstr ""
+msgstr "LVM2 fysisk volym (version %s)"
 
 #: ../gdu/gdu-util.c:333
 #, c-format
 msgid "LVM2 Physical Volume"
-msgstr ""
+msgstr "LVM2 fysisk volym"
 
 #. Translators: short name for LVM2 Physical Volume
 #: ../gdu/gdu-util.c:336
 msgid "lvm2_pv"
-msgstr ""
+msgstr "lvm2_pv"
 
 #: ../gdu/gdu-util.c:342
 #, c-format
 msgid "RAID Component (version %s)"
-msgstr ""
+msgstr "RAID-komponent (version %s)"
 
 #: ../gdu/gdu-util.c:344
 #, c-format
 msgid "RAID Component"
-msgstr ""
+msgstr "RAID-komponent"
 
 #. Translators: short name for 'RAID Component'
 #: ../gdu/gdu-util.c:347
 msgid "raid"
-msgstr ""
+msgstr "raid"
 
 #. Translators: long filesystem type for minix
 #: ../gdu/gdu-util.c:352
 msgid "Minix"
-msgstr ""
+msgstr "Minix"
 
 #. Translators: filesystem type for minix
 #: ../gdu/gdu-util.c:355
 msgid "minix"
-msgstr ""
+msgstr "minix"
 
 #: ../gdu/gdu-util.c:369
 msgid "Creating File System"
-msgstr ""
+msgstr "Skapar filsystem"
 
 #: ../gdu/gdu-util.c:371
 msgid "Mounting File System"
-msgstr ""
+msgstr "Monterar filsystem"
 
 #: ../gdu/gdu-util.c:373
 msgid "Unmounting File System"
-msgstr ""
+msgstr "Demonterar filsystem"
 
 #: ../gdu/gdu-util.c:375
 msgid "Checking File System"
-msgstr ""
+msgstr "Kontrollerar filsystem"
 
 #: ../gdu/gdu-util.c:377
 msgid "Creating LUKS Device"
-msgstr ""
+msgstr "Skapar LUKS-enhet"
 
 #: ../gdu/gdu-util.c:379
 msgid "Unlocking LUKS Device"
-msgstr ""
+msgstr "Låser upp LUKS-enhet"
 
 #: ../gdu/gdu-util.c:381
 msgid "Locking LUKS Device"
-msgstr ""
+msgstr "Låser LUKS-enhet"
 
 #: ../gdu/gdu-util.c:383
 msgid "Creating Partition Table"
-msgstr ""
+msgstr "Skapar partitionstabell"
 
 #: ../gdu/gdu-util.c:385
 msgid "Deleting Partition"
-msgstr ""
+msgstr "Tar bort partition"
 
 #: ../gdu/gdu-util.c:387
 msgid "Creating Partition"
-msgstr ""
+msgstr "Skapar partition"
 
 #: ../gdu/gdu-util.c:389
 msgid "Modifying Partition"
-msgstr ""
+msgstr "Modifierar partition"
 
 #: ../gdu/gdu-util.c:391
 msgid "Setting Label for Device"
-msgstr ""
+msgstr "Anger etikett för enhet"
 
 #: ../gdu/gdu-util.c:393
 msgid "Changing Passphrase for Encrypted LUKS Device"
-msgstr ""
+msgstr "Ändrar lösenordsfras för krypterad LUKS-enhet"
 
 #: ../gdu/gdu-util.c:395
 msgid "Adding Component to RAID Array"
-msgstr ""
+msgstr "Lägger till komponent i RAID-kedja"
 
 #: ../gdu/gdu-util.c:397
 msgid "Removing Component from RAID Array"
-msgstr ""
+msgstr "Tar bort komponent från RAID-kedja"
 
 #: ../gdu/gdu-util.c:399
 msgid "Stopping RAID Array"
-msgstr ""
+msgstr "Stoppar RAID-kedja"
 
 #: ../gdu/gdu-util.c:401
 msgid "Starting RAID Array"
-msgstr ""
+msgstr "Startar RAID-kedja"
 
 #: ../gdu/gdu-util.c:403
 msgid "Checking RAID Array"
-msgstr ""
+msgstr "Kontrollerar RAID-kedja"
 
 #: ../gdu/gdu-util.c:405
 msgid "Repairing RAID Array"
-msgstr ""
+msgstr "Reparerar RAID-kedja"
 
 #: ../gdu/gdu-util.c:407
 msgid "Running Short SMART Self-Test"
-msgstr ""
+msgstr "Kör kort SMART-självtest"
 
 #: ../gdu/gdu-util.c:409
 msgid "Running Extended SMART Self-Test"
-msgstr ""
+msgstr "Kör utökad SMART-självtest"
 
 #: ../gdu/gdu-util.c:411
 msgid "Running Conveyance SMART Self-Test"
-msgstr ""
+msgstr "Kör conveyance-SMART-självtest"
 
 #: ../gdu/gdu-util.c:413
 msgid "Ejecting Media"
-msgstr ""
+msgstr "Matar ut medier"
 
 #: ../gdu/gdu-util.c:415
 msgid "Detaching Device"
-msgstr ""
+msgstr "Kopplar bort enhet"
 
 #: ../gdu/gdu-util.c:417
 msgid "Forcibly Unmounting Filesystem"
-msgstr ""
+msgstr "Framtvingar demontering av filsystem"
 
 #: ../gdu/gdu-util.c:419
 msgid "Forcibly Locking LUKS device"
-msgstr ""
+msgstr "Framtvingar låsning av LUKS-enhet"
 
 #. see http://en.wikipedia.org/wiki/GUID_Partition_Table
 #. Linux
 #: ../gdu/gdu-util.c:435
 msgid "Linux Basic Data Partition"
-msgstr ""
+msgstr "Linux-partition med grunddata"
 
 #. Same as MS BDP
 #: ../gdu/gdu-util.c:436
 msgid "Linux RAID Partition"
-msgstr ""
+msgstr "Linux RAID-partition"
 
 #: ../gdu/gdu-util.c:437
 msgid "Linux Swap Partition"
-msgstr ""
+msgstr "Linux växlingspartition"
 
 #: ../gdu/gdu-util.c:438
 msgid "Linux LVM Partition"
-msgstr ""
+msgstr "Linux LVM-partition"
 
 #: ../gdu/gdu-util.c:439
 msgid "Linux Reserved Partition"
-msgstr ""
+msgstr "Linux reserverad partition"
 
 #. Not associated with any OS
 #: ../gdu/gdu-util.c:441
 msgid "MBR Partition Scheme"
-msgstr ""
+msgstr "MBR-partitionsschema"
 
 #: ../gdu/gdu-util.c:442
 msgid "EFI System Partition"
-msgstr ""
+msgstr "EFI-systempartition"
 
 #: ../gdu/gdu-util.c:443
 msgid "BIOS Boot Partition"
-msgstr ""
+msgstr "BIOS-startpartition"
 
 #. Microsoft
 #: ../gdu/gdu-util.c:445
 msgid "Microsoft Reserved Partition"
-msgstr ""
+msgstr "Microsoft-reserverad partition"
 
 #: ../gdu/gdu-util.c:446
 msgid "Microsoft Basic Data Partition"
-msgstr ""
+msgstr "Microsoft-partition med grunddata"
 
 #. Same as Linux BDP
 #: ../gdu/gdu-util.c:447
 msgid "Microsoft LDM Metadata Partition"
-msgstr ""
+msgstr "Microsoft LDM-metadatapartition"
 
 #: ../gdu/gdu-util.c:448
 msgid "Microsoft LDM Data Partition"
-msgstr ""
+msgstr "Microsoft LDM-datapartition"
 
 #: ../gdu/gdu-util.c:449
 msgid "Microsoft Windows Recovery Environment"
-msgstr ""
+msgstr "Microsoft Windows Återställningsmiljö"
 
 #. HP-UX
 #: ../gdu/gdu-util.c:451
 msgid "HP-UX Data Partition"
-msgstr ""
+msgstr "HP-UX-datapartition"
 
 #: ../gdu/gdu-util.c:452
 msgid "HP-UX Service Partition"
-msgstr ""
+msgstr "HP-UX-servicepartition"
 
 #. FreeBSD
 #: ../gdu/gdu-util.c:454
 msgid "FreeBSD Boot Partition"
-msgstr ""
+msgstr "FreeBSD-startpartition"
 
 #: ../gdu/gdu-util.c:455
 msgid "FreeBSD Data Partition"
-msgstr ""
+msgstr "FreeBSD-datapartition"
 
 #: ../gdu/gdu-util.c:456
 msgid "FreeBSD Swap Partition"
-msgstr ""
+msgstr "FreeBSD-växlingspartition"
 
 #: ../gdu/gdu-util.c:457
 msgid "FreeBSD UFS Partition"
-msgstr ""
+msgstr "FreeBSD UFS-partition"
 
 #: ../gdu/gdu-util.c:458
 msgid "FreeBSD Vinum Partition"
-msgstr ""
+msgstr "FreeBSD Vinum-partition"
 
 #: ../gdu/gdu-util.c:459
 msgid "FreeBSD ZFS Partition"
-msgstr ""
+msgstr "FreeBSD ZFS-partition"
 
 #. Solaris
 #: ../gdu/gdu-util.c:461
 msgid "Solaris Boot Partition"
-msgstr ""
+msgstr "Solaris-startpartition"
 
 #: ../gdu/gdu-util.c:462
 msgid "Solaris Root Partition"
-msgstr ""
+msgstr "Solaris-rotpartition"
 
 #: ../gdu/gdu-util.c:463
 msgid "Solaris Swap Partition"
-msgstr ""
+msgstr "Solaris-växlingspartition"
 
 #: ../gdu/gdu-util.c:464
 msgid "Solaris Backup Partition"
-msgstr ""
+msgstr "Solaris-säkerhetskopieringspartition"
 
 #: ../gdu/gdu-util.c:465
 msgid "Solaris /usr Partition"
-msgstr ""
+msgstr "Solaris /usr-partition"
 
 #. Same as Apple ZFS
 #: ../gdu/gdu-util.c:466
 msgid "Solaris /var Partition"
-msgstr ""
+msgstr "Solaris /var-partition"
 
 #: ../gdu/gdu-util.c:467
 msgid "Solaris /home Partition"
-msgstr ""
+msgstr "Solaris /home-partition"
 
 #: ../gdu/gdu-util.c:468
 msgid "Solaris Alternate Sector Partition"
-msgstr ""
+msgstr "Solaris alternativ sektorpartition"
 
 #: ../gdu/gdu-util.c:469
 msgid "Solaris Reserved Partition"
-msgstr ""
+msgstr "Solaris-reserverad partition"
 
 #: ../gdu/gdu-util.c:470
 msgid "Solaris Reserved Partition (2)"
-msgstr ""
+msgstr "Solaris-reserverad partition (2)"
 
 #: ../gdu/gdu-util.c:471
 msgid "Solaris Reserved Partition (3)"
-msgstr ""
+msgstr "Solaris-reserverad partition (3)"
 
 #: ../gdu/gdu-util.c:472
 msgid "Solaris Reserved Partition (4)"
-msgstr ""
+msgstr "Solaris-reserverad partition (4)"
 
 #: ../gdu/gdu-util.c:473
 msgid "Solaris Reserved Partition (5)"
-msgstr ""
+msgstr "Solaris-reserverad partition (5)"
 
 #. Mac OS X
 #: ../gdu/gdu-util.c:475
 #: ../gdu/gdu-util.c:494
 msgid "Apple HFS/HFS+ Partition"
-msgstr ""
+msgstr "Apple HFS/HFS+-partition"
 
 #. see http://developer.apple.com/documentation/mac/Devices/Devices-126.html
 #. *     http://lists.apple.com/archives/Darwin-drivers/2003/May/msg00021.html
 #: ../gdu/gdu-util.c:476
 #: ../gdu/gdu-util.c:493
 msgid "Apple UFS Partition"
-msgstr ""
+msgstr "Apple UFS-partition"
 
 #: ../gdu/gdu-util.c:477
 msgid "Apple ZFS Partition"
-msgstr ""
+msgstr "Apple ZFS-partition"
 
 #. Same as Solaris /usr
 #: ../gdu/gdu-util.c:478
 msgid "Apple RAID Partition"
-msgstr ""
+msgstr "Apple RAID-partition"
 
 #: ../gdu/gdu-util.c:479
 msgid "Apple RAID Partition (Offline)"
-msgstr ""
+msgstr "Apple RAID-partition (offline)"
 
 #: ../gdu/gdu-util.c:480
 msgid "Apple Boot Partition"
-msgstr ""
+msgstr "Apple-startpartition"
 
 #: ../gdu/gdu-util.c:481
 msgid "Apple Label Partition"
-msgstr ""
+msgstr "Apple-etikettpartition"
 
 #: ../gdu/gdu-util.c:482
 msgid "Apple TV Recovery Partition"
-msgstr ""
+msgstr "Apple TV-återställningspartition"
 
 #. NetBSD
 #: ../gdu/gdu-util.c:484
 msgid "NetBSD Swap Partition"
-msgstr ""
+msgstr "NetBSD-växlingspartition"
 
 #: ../gdu/gdu-util.c:485
 msgid "NetBSD FFS Partition"
-msgstr ""
+msgstr "NetBSD FFS-partition"
 
 #: ../gdu/gdu-util.c:486
 msgid "NetBSD LFS Partition"
-msgstr ""
+msgstr "NetBSD LFS-partition"
 
 #: ../gdu/gdu-util.c:487
 msgid "NetBSD RAID Partition"
-msgstr ""
+msgstr "NetBSD RAID-partition"
 
 #: ../gdu/gdu-util.c:488
 msgid "NetBSD Concatenated  Partition"
-msgstr ""
+msgstr "NetBSD-sammanlänkad partition"
 
 #: ../gdu/gdu-util.c:489
 msgid "NetBSD Encrypted Partition"
-msgstr ""
+msgstr "NetBSD-krypterad partition"
 
 #: ../gdu/gdu-util.c:495
 msgid "Apple Partition Map"
-msgstr ""
+msgstr "Apple-partitionskarta"
 
 #: ../gdu/gdu-util.c:496
 msgid "Unused Partition"
-msgstr ""
+msgstr "Oanvänd partition"
 
 #: ../gdu/gdu-util.c:497
 msgid "Empty Partition"
-msgstr ""
+msgstr "Tom partition"
 
 #: ../gdu/gdu-util.c:498
 msgid "Driver Partition"
-msgstr ""
+msgstr "Drivrutinspartition"
 
 #: ../gdu/gdu-util.c:499
 msgid "Driver 4.3 Partition"
-msgstr ""
+msgstr "Drivrutin 4.3-partition"
 
 #: ../gdu/gdu-util.c:500
 msgid "ProDOS file system"
-msgstr ""
+msgstr "ProDOS-filsystem"
 
 #: ../gdu/gdu-util.c:501
 msgid "FAT 12"
-msgstr ""
+msgstr "FAT 12"
 
 #: ../gdu/gdu-util.c:502
 msgid "FAT 16"
-msgstr ""
+msgstr "FAT 16"
 
 #: ../gdu/gdu-util.c:503
 msgid "FAT 32"
-msgstr ""
+msgstr "FAT 32"
 
 #: ../gdu/gdu-util.c:504
 msgid "FAT 16 (Windows)"
-msgstr ""
+msgstr "FAT 16 (Windows)"
 
 #: ../gdu/gdu-util.c:505
 msgid "FAT 32 (Windows)"
-msgstr ""
+msgstr "FAT 32 (Windows)"
 
 #. see http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
 #: ../gdu/gdu-util.c:508
 msgid "Empty (0x00)"
-msgstr ""
+msgstr "Tom (0x00)"
 
 #: ../gdu/gdu-util.c:509
 msgid "FAT12 (0x01)"
-msgstr ""
+msgstr "FAT12 (0x01)"
 
 #: ../gdu/gdu-util.c:510
 msgid "FAT16 <32M (0x04)"
-msgstr ""
+msgstr "FAT16 <32M (0x04)"
 
 #: ../gdu/gdu-util.c:511
 msgid "Extended (0x05)"
-msgstr ""
+msgstr "Utökad (0x05)"
 
 #: ../gdu/gdu-util.c:512
 msgid "FAT16 (0x06)"
-msgstr ""
+msgstr "FAT16 (0x06)"
 
 #: ../gdu/gdu-util.c:513
 msgid "HPFS/NTFS (0x07)"
-msgstr ""
+msgstr "HPFS/NTFS (0x07)"
 
 #: ../gdu/gdu-util.c:514
 msgid "W95 FAT32 (0x0b)"
-msgstr ""
+msgstr "W95 FAT32 (0x0b)"
 
 #: ../gdu/gdu-util.c:515
 msgid "W95 FAT32 (LBA) (0x0c)"
-msgstr ""
+msgstr "W95 FAT32 (LBA) (0x0c)"
 
 #: ../gdu/gdu-util.c:516
 msgid "W95 FAT16 (LBA) (0x0e)"
-msgstr ""
+msgstr "W95 FAT16 (LBA) (0x0e)"
 
 #: ../gdu/gdu-util.c:517
 msgid "W95 Ext d (LBA) (0x0f)"
-msgstr ""
+msgstr "W95 Ext d (LBA) (0x0f)"
 
 #: ../gdu/gdu-util.c:518
 msgid "OPUS (0x10)"
-msgstr ""
+msgstr "OPUS (0x10)"
 
 #: ../gdu/gdu-util.c:519
 msgid "Hidden FAT12 (0x11)"
-msgstr ""
+msgstr "Dold FAT12 (0x11)"
 
 #: ../gdu/gdu-util.c:520
 msgid "Compaq diagnostics (0x12)"
-msgstr ""
+msgstr "Compaq-diagnostik (0x12)"
 
 #: ../gdu/gdu-util.c:521
 msgid "Hidden FAT16 <32M (0x14)"
-msgstr ""
+msgstr "Dold FAT16 <32M (0x14)"
 
 #: ../gdu/gdu-util.c:522
 msgid "Hidden FAT16 (0x16)"
-msgstr ""
+msgstr "Dold FAT16 (0x16)"
 
 #: ../gdu/gdu-util.c:523
 msgid "Hidden HPFS/NTFS (0x17)"
-msgstr ""
+msgstr "Dold HPFS/NTFS (0x17)"
 
 #: ../gdu/gdu-util.c:524
 msgid "Hidden W95 FAT32 (0x1b)"
-msgstr ""
+msgstr "Dold W95 FAT32 (0x1b)"
 
 #: ../gdu/gdu-util.c:525
 msgid "Hidden W95 FAT32 (LBA) (0x1c)"
-msgstr ""
+msgstr "Dold W95 FAT32 (LBA) (0x1c)"
 
 #: ../gdu/gdu-util.c:526
 msgid "Hidden W95 FAT16 (LBA) (0x1e)"
-msgstr ""
+msgstr "Dold W95 FAT16 (LBA) (0x1e)"
 
 #: ../gdu/gdu-util.c:527
 msgid "PartitionMagic (0x3c)"
-msgstr ""
+msgstr "PartitionMagic (0x3c)"
 
 #: ../gdu/gdu-util.c:528
 msgid "Minix (0x81)"
-msgstr ""
+msgstr "Minix (0x81)"
 
 #. cf. http://en.wikipedia.org/wiki/MINIX_file_system
 #: ../gdu/gdu-util.c:529
 msgid "Linux swap (0x82)"
-msgstr ""
+msgstr "Linux-växling (0x82)"
 
 #: ../gdu/gdu-util.c:530
 msgid "Linux (0x83)"
-msgstr ""
+msgstr "Linux (0x83)"
 
 #: ../gdu/gdu-util.c:531
 msgid "Hibernation (0x84)"
-msgstr ""
+msgstr "Viloläge (0x84)"
 
 #: ../gdu/gdu-util.c:532
 msgid "Linux Extended (0x85)"
-msgstr ""
+msgstr "Linux utökat (0x85)"
 
 #: ../gdu/gdu-util.c:533
 msgid "Linux LVM (0x8e)"
-msgstr ""
+msgstr "Linux LVM (0x8e)"
 
 #: ../gdu/gdu-util.c:534
 msgid "Hibernation (0xa0)"
-msgstr ""
+msgstr "Viloläge (0xa0)"
 
 #: ../gdu/gdu-util.c:535
 msgid "FreeBSD (0xa5)"
-msgstr ""
+msgstr "FreeBSD (0xa5)"
 
 #: ../gdu/gdu-util.c:536
 msgid "OpenBSD (0xa6)"
-msgstr ""
+msgstr "OpenBSD (0xa6)"
 
 #: ../gdu/gdu-util.c:537
 msgid "Mac OS X (0xa8)"
-msgstr ""
+msgstr "Mac OS X (0xa8)"
 
 #: ../gdu/gdu-util.c:538
 msgid "Mac OS X (0xaf)"
-msgstr ""
+msgstr "Mac OS X (0xaf)"
 
 #: ../gdu/gdu-util.c:539
 msgid "Solaris boot (0xbe)"
-msgstr ""
+msgstr "Solaris-start (0xbe)"
 
 #: ../gdu/gdu-util.c:540
 msgid "Solaris (0xbf)"
-msgstr ""
+msgstr "Solaris (0xbf)"
 
 #: ../gdu/gdu-util.c:541
 msgid "BeOS BFS (0xeb)"
-msgstr ""
+msgstr "BeOS BFS (0xeb)"
 
 #: ../gdu/gdu-util.c:542
 msgid "SkyOS SkyFS (0xec)"
-msgstr ""
+msgstr "SkyOS SkyFS (0xec)"
 
 #: ../gdu/gdu-util.c:543
 msgid "EFI GPT (0xee)"
-msgstr ""
+msgstr "EFI GPT (0xee)"
 
 #: ../gdu/gdu-util.c:544
 msgid "EFI (FAT-12/16/32 (0xef)"
-msgstr ""
+msgstr "EFI (FAT-12/16/32 (0xef)"
 
 #: ../gdu/gdu-util.c:545
 msgid "Linux RAID autodetect (0xfd)"
-msgstr ""
+msgstr "Linux RAID-autoidentifiering (0xfd)"
 
 #. Translators: Shown for unknown partition types.
 #. * %s is the partition type name
@@ -1222,126 +1222,126 @@ msgstr ""
 #: ../gdu/gdu-util.c:572
 #, c-format
 msgid "Unknown (%s)"
-msgstr ""
+msgstr "Okänt (%s)"
 
 #: ../gdu/gdu-util.c:582
 msgid "A popular format compatible with almost any device or system, typically used for file exchange."
-msgstr ""
+msgstr "Ett populärt format som är kompatibelt med nästan valfri enhet och valfritt system, används vanligtvis för filutbyte."
 
 #: ../gdu/gdu-util.c:586
 msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
-msgstr ""
+msgstr "Detta filsystem är endast kompatibelt med Linux-system och tillhandahåller klassiskt stöd för UNIX-filbehörigheter. Detta filsystem använder ingen journal."
 
 #: ../gdu/gdu-util.c:592
 msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
-msgstr ""
+msgstr "Detta filsystem är endast kompatibelt med Linux-system och tillhandahåller klassiskt stöd för UNIX-filbehörigheter."
 
 #: ../gdu/gdu-util.c:596
 msgid "Swap area used by the operating system for virtual memory."
-msgstr ""
+msgstr "Växlingsområdet används av operativsystemet för virtuellt minne."
 
 #: ../gdu/gdu-util.c:599
 msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
-msgstr ""
+msgstr "Ursprungligt Windows-filsystem. Inte allmänt kompatibelt med andra operativsystem än Windows."
 
 #: ../gdu/gdu-util.c:603
 msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
-msgstr ""
+msgstr "Enkelt filsystem som upptar lite utrymme och stöd för UNIX-behörigheter. Inte allmänt kompatibelt med andra operativsystem än Linux och Minix."
 
 #: ../gdu/gdu-util.c:607
 msgid "No file system will be created."
-msgstr ""
+msgstr "Det skapas inget filsystem."
 
 #: ../gdu/gdu-util.c:610
 msgid "Create an Extended Partition for logical partitions."
-msgstr ""
+msgstr "Skapa en utökad partition för logiska partitioner."
 
 #: ../gdu/gdu-util.c:623
 msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
-msgstr ""
+msgstr "MBR-schemat (Master Boot Record) är kompatibelt med nästan valfri enhet eller valfritt system men har ett antal begränsningar vad gäller diskstorlek och antal partitioner."
 
 #: ../gdu/gdu-util.c:628
 msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
-msgstr ""
+msgstr "Ett äldre schema som är inkompatibelt med flertalet system förutom Apple-system och flertalet Linux-system. Rekommenderas inte för flyttbara medier."
 
 #: ../gdu/gdu-util.c:633
 msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
-msgstr ""
+msgstr "GUID-schemat är kompatibelt med flertalet moderna system men kan vara inkompatibelt med vissa enheter och äldre system."
 
 #: ../gdu/gdu-util.c:637
 msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
-msgstr ""
+msgstr "Markerar hela disken som oanvänd. Använd endast detta alternativ om du vill undvika partitionering av disken exempelvis för att använda hela disken eller disketter/Zip-diskar."
 
 #: ../gdu/gdu-util.c:828
 #, c-format
 msgid "LUKS Passphrase for UUID %s"
-msgstr ""
+msgstr "LUKS-lösenordsfras för UUID %s"
 
 #: ../gdu/gdu-util.c:888
 #, c-format
 msgid "%.1f KB/s"
-msgstr ""
+msgstr "%.1f KB/s"
 
 #: ../gdu/gdu-util.c:891
 #, c-format
 msgid "%.1f MB/s"
-msgstr ""
+msgstr "%.1f MB/s"
 
 #: ../gdu/gdu-util.c:894
 #, c-format
 msgid "%.1f GB/s"
-msgstr ""
+msgstr "%.1f GB/s"
 
 #. Translators: interface name for serial ATA disks
 #: ../gdu/gdu-util.c:910
 msgid "SATA"
-msgstr ""
+msgstr "SATA"
 
 #. Translators: interface name for serial ATA disks
 #: ../gdu/gdu-util.c:913
 msgid "eSATA"
-msgstr ""
+msgstr "eSATA"
 
 #. Translators: interface name for parallel ATA disks
 #: ../gdu/gdu-util.c:916
 msgid "PATA"
-msgstr ""
+msgstr "PATA"
 
 #. Translators: interface name for ATA disks
 #: ../gdu/gdu-util.c:919
 msgid "ATA"
-msgstr ""
+msgstr "ATA"
 
 #. Translators: interface name for SCSI disks
 #: ../gdu/gdu-util.c:922
 msgid "SCSI"
-msgstr ""
+msgstr "SCSI"
 
 #. Translators: interface name for USB disks
 #: ../gdu/gdu-util.c:925
 msgid "USB"
-msgstr ""
+msgstr "USB"
 
 #. Translators: interface name for firewire disks
 #: ../gdu/gdu-util.c:928
 msgid "Firewire"
-msgstr ""
+msgstr "Firewire"
 
 #. Translators: interface name for SDIO disks
 #: ../gdu/gdu-util.c:931
 msgid "SDIO"
-msgstr ""
+msgstr "SDIO"
 
 #. Translators: interface name for virtual disks
 #: ../gdu/gdu-util.c:934
 msgid "Virtual"
-msgstr ""
+msgstr "Virtuellt"
 
 #. Translators: name shown for unknown disk connection interfaces
 #: ../gdu/gdu-util.c:940
 msgctxt "connection name"
 msgid "Unknown"
-msgstr ""
+msgstr "Okänt"
 
 #. Translators: Connection with speed information.
 #. * First %s is the connection name, like 'SATA' or 'USB'
@@ -1350,126 +1350,126 @@ msgstr ""
 #: ../gdu/gdu-util.c:950
 #, c-format
 msgid "%s at %s"
-msgstr ""
+msgstr "%s på %s"
 
 #: ../gdu/gdu-util.c:969
 msgctxt "RAID level"
 msgid "Stripe (RAID-0)"
-msgstr ""
+msgstr "Stripe (RAID-0)"
 
 #: ../gdu/gdu-util.c:971
 msgctxt "RAID level"
 msgid "RAID-0"
-msgstr ""
+msgstr "RAID-0"
 
 #: ../gdu/gdu-util.c:974
 msgctxt "RAID level"
 msgid "Mirror (RAID-1)"
-msgstr ""
+msgstr "Spegel (RAID-1)"
 
 #: ../gdu/gdu-util.c:976
 msgctxt "RAID level"
 msgid "RAID-1"
-msgstr ""
+msgstr "RAID-1"
 
 #: ../gdu/gdu-util.c:979
 msgctxt "RAID level"
 msgid "Parity Disk (RAID-4)"
-msgstr ""
+msgstr "Paritetsdisk (RAID-4)"
 
 #: ../gdu/gdu-util.c:981
 msgctxt "RAID level"
 msgid "RAID-4"
-msgstr ""
+msgstr "RAID-4"
 
 #: ../gdu/gdu-util.c:984
 msgctxt "RAID level"
 msgid "Distributed Parity (RAID-5)"
-msgstr ""
+msgstr "Distribuerad paritet (RAID-5)"
 
 #: ../gdu/gdu-util.c:986
 msgctxt "RAID level"
 msgid "RAID-5"
-msgstr ""
+msgstr "RAID-5"
 
 #: ../gdu/gdu-util.c:989
 msgctxt "RAID level"
 msgid "Dual Distributed Parity (RAID-6)"
-msgstr ""
+msgstr "Dubbelt distribuerad paritet (RAID-6)"
 
 #: ../gdu/gdu-util.c:991
 msgctxt "RAID level"
 msgid "RAID-6"
-msgstr ""
+msgstr "RAID-6"
 
 #: ../gdu/gdu-util.c:994
 msgctxt "RAID level"
 msgid "Stripe of Mirrors (RAID-10)"
-msgstr ""
+msgstr "Stripe med speglar (RAID-10)"
 
 #: ../gdu/gdu-util.c:996
 msgctxt "RAID level"
 msgid "RAID-10"
-msgstr ""
+msgstr "RAID-10"
 
 #: ../gdu/gdu-util.c:999
 msgctxt "RAID level"
 msgid "Concatenated (Linear)"
-msgstr ""
+msgstr "Sammanläkad (linjär)"
 
 #: ../gdu/gdu-util.c:1001
 msgctxt "RAID level"
 msgid "Linear"
-msgstr ""
+msgstr "Linjär"
 
 #: ../gdu/gdu-util.c:1015
 msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
-msgstr ""
+msgstr "Stripe-uppsättning utan paritet. Tillhandahåller förbättrade prestanda men ingen feltolerans. Om en enda disk i kedjan misslyckas, misslyckas hela RAID-0-kedjan."
 
 #: ../gdu/gdu-util.c:1019
 msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
-msgstr ""
+msgstr "Speglad uppsättning utan paritet. Tillhandahåller feltolerans och förbättrade prestanda för läsning. RAID-1-kedjor kan klara av att alla diskar utom en disk går sönder."
 
 #: ../gdu/gdu-util.c:1023
 msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
-msgstr ""
+msgstr "Stripe-uppsättning med paritet på en enda disk. Tillhandahåller förbättrade prestanda och feltolerans. RAID-4-kedjor kan klara av att en enda disk går sönder."
 
 #: ../gdu/gdu-util.c:1027
 msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
-msgstr ""
+msgstr "Stripe-uppsättning med distribuerad paritet. Tillhandahåller förbättrade prestanda och feltolerans. RAID-5-kedjor kan klara av att en enda disk går sönder."
 
 #: ../gdu/gdu-util.c:1031
 msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
-msgstr ""
+msgstr "Stripe-uppsättning med dubbel distribuerad paritet. Tillhandahåller förbättrade prestanda och feltolerans. RAID-6-kedjor kan klara av att två diskar går sönder."
 
 #: ../gdu/gdu-util.c:1035
 msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
-msgstr ""
+msgstr "Stripe-uppsättning med distribuerad paritet. Tillhandahåller förbättrade prestanda och feltolerans. RAID-10-kedjor kan klara av att förlora flera diskar under förutsättning att ingen spegel förlorar alla sina enheter."
 
 #: ../gdu/gdu-util.c:1041
 #, c-format
 msgid "Unknown RAID level %s."
-msgstr ""
+msgstr "Okänd RAID-nivå %s."
 
 #. Translators: Overall description of the GOOD status
 #: ../gdu/gdu-util.c:1077
 msgid "Disk is healthy"
-msgstr ""
+msgstr "Disken är frisk"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
 #: ../gdu/gdu-util.c:1081
 msgid "Disk was used outside of design parameters in the past"
-msgstr ""
+msgstr "Disk användes utanför designparametrarna tidigare"
 
 #. Translators: Overall description of the BAD_SECTOR status
 #: ../gdu/gdu-util.c:1085
 msgid "Disk has a few bad sectors"
-msgstr ""
+msgstr "Disken har ett par ogiltiga sektorer"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_NOW status
 #: ../gdu/gdu-util.c:1089
 msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
-msgstr ""
+msgstr "DISK ANVÄNDS UTANFÖR DESIGNPARAMETRAR"
 
 #. Translators: Suggested action for the BAD_ATTRIBUTE_NOW status
 #. Translators: Suggested action for the BAD_SECTOR_MANY status
@@ -1478,181 +1478,181 @@ msgstr ""
 #: ../gdu/gdu-util.c:1099
 #: ../gdu/gdu-util.c:1105
 msgid "Backup all data and replace the disk"
-msgstr ""
+msgstr "Säkerhetskopiera alla data och byt ut disken"
 
 #. Translators: Overall description of the BAD_SECTOR_MANY status
 #: ../gdu/gdu-util.c:1096
 msgid "DISK HAS MANY BAD SECTORS"
-msgstr ""
+msgstr "DISK HAR MÅNGA OGILTIGA SEKTORER"
 
 #. Translators: Overall description of the BAD_STATUS status
 #: ../gdu/gdu-util.c:1103
 msgid "DISK FAILURE IS IMMINENT"
-msgstr ""
+msgstr "ÖVERHÄNGANDE DISKFEL"
 
 #. Translators: Description when the overall SMART status is unknown
 #: ../gdu/gdu-util.c:1110
 msgid "Unknown"
-msgstr ""
+msgstr "Okänt"
 
 #. Translator: The word "blank" is used as an adjective, e.g. we are decsribing discs that are already blank
 #: ../gdu/gdu-volume.c:75
 msgid "CD-ROM Disc"
-msgstr ""
+msgstr "CD-ROM-skiva"
 
 #: ../gdu/gdu-volume.c:75
 msgid "Blank CD-ROM Disc"
-msgstr ""
+msgstr "Tom CD-ROM-skiva"
 
 #: ../gdu/gdu-volume.c:76
 msgid "CD-R Disc"
-msgstr ""
+msgstr "CD-R-skiva"
 
 #: ../gdu/gdu-volume.c:76
 msgid "Blank CD-R Disc"
-msgstr ""
+msgstr "Tom CD-R-skiva"
 
 #: ../gdu/gdu-volume.c:77
 msgid "CD-RW Disc"
-msgstr ""
+msgstr "CD-RW-skiva"
 
 #: ../gdu/gdu-volume.c:77
 msgid "Blank CD-RW Disc"
-msgstr ""
+msgstr "Tom CD-RW-skiva"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
 msgid "DVD-ROM Disc"
-msgstr ""
+msgstr "DVD-ROM-skiva"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
 msgid "Blank DVD-ROM Disc"
-msgstr ""
+msgstr "Tom DVD-ROM-skiva"
 
 #: ../gdu/gdu-volume.c:80
 msgid "DVD-RW Disc"
-msgstr ""
+msgstr "DVD-RW-skiva"
 
 #: ../gdu/gdu-volume.c:80
 msgid "Blank DVD-RW Disc"
-msgstr ""
+msgstr "Tom DVD-RW-skiva"
 
 #: ../gdu/gdu-volume.c:81
 msgid "DVD-RAM Disc"
-msgstr ""
+msgstr "DVD-RAM-skiva"
 
 #: ../gdu/gdu-volume.c:81
 msgid "Blank DVD-RAM Disc"
-msgstr ""
+msgstr "Tom DVD-RAM-skiva"
 
 #: ../gdu/gdu-volume.c:82
 msgid "DVD+R Disc"
-msgstr ""
+msgstr "DVD+R-skiva"
 
 #: ../gdu/gdu-volume.c:82
 msgid "Blank DVD+R Disc"
-msgstr ""
+msgstr "Tom DVD+R-skiva"
 
 #: ../gdu/gdu-volume.c:83
 msgid "DVD+RW Disc"
-msgstr ""
+msgstr "DVD+RW-skiva"
 
 #: ../gdu/gdu-volume.c:83
 msgid "Blank DVD+RW Disc"
-msgstr ""
+msgstr "Tom DVD+RW-skiva"
 
 #: ../gdu/gdu-volume.c:84
 msgid "DVD+R DL Disc"
-msgstr ""
+msgstr "DVD+R DL-skiva"
 
 #: ../gdu/gdu-volume.c:84
 msgid "Blank DVD+R DL Disc"
-msgstr ""
+msgstr "Tom DVD+R DL-skiva"
 
 #: ../gdu/gdu-volume.c:85
 msgid "DVD+RW DL Disc"
-msgstr ""
+msgstr "DVD+RW DL-skiva"
 
 #: ../gdu/gdu-volume.c:85
 msgid "Blank DVD+RW DL Disc"
-msgstr ""
+msgstr "Tom DVD+RW DL-skiva"
 
 #: ../gdu/gdu-volume.c:86
 msgid "Blu-Ray Disc"
-msgstr ""
+msgstr "Blu-Ray-skiva"
 
 #: ../gdu/gdu-volume.c:86
 msgid "Blank Blu-Ray Disc"
-msgstr ""
+msgstr "Tom Blu-Ray-skiva"
 
 #: ../gdu/gdu-volume.c:87
 msgid "Blu-Ray R Disc"
-msgstr ""
+msgstr "Blu-Ray R-skiva"
 
 #: ../gdu/gdu-volume.c:87
 msgid "Blank Blu-Ray R Disc"
-msgstr ""
+msgstr "Tom Blu-Ray R-skiva"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blu-Ray RW Disc"
-msgstr ""
+msgstr "Blu-Ray RW-skiva"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blank Blu-Ray RW Disc"
-msgstr ""
+msgstr "Tom Blu-Ray RW-skiva"
 
 #: ../gdu/gdu-volume.c:89
 msgid "HD DVD Disc"
-msgstr ""
+msgstr "HD DVD-skiva"
 
 #: ../gdu/gdu-volume.c:89
 msgid "Blank HD DVD Disc"
-msgstr ""
+msgstr "Tom HD DVD-skiva"
 
 #: ../gdu/gdu-volume.c:90
 msgid "HD DVD-R Disc"
-msgstr ""
+msgstr "HD DVD-R-skiva"
 
 #: ../gdu/gdu-volume.c:90
 msgid "Blank HD DVD-R Disc"
-msgstr ""
+msgstr "Tom HD DVD-R-skiva"
 
 #: ../gdu/gdu-volume.c:91
 msgid "HD DVD-RW Disc"
-msgstr ""
+msgstr "HD DVD-RW-skiva"
 
 #: ../gdu/gdu-volume.c:91
 msgid "Blank HD DVD-RW Disc"
-msgstr ""
+msgstr "Tom HD DVD-RW-skiva"
 
 #: ../gdu/gdu-volume.c:92
 msgid "MO Disc"
-msgstr ""
+msgstr "MO-skiva"
 
 #: ../gdu/gdu-volume.c:92
 msgid "Blank MO Disc"
-msgstr ""
+msgstr "Tom MO-skiva"
 
 #: ../gdu/gdu-volume.c:93
 msgid "MRW Disc"
-msgstr ""
+msgstr "MRW-skiva"
 
 #: ../gdu/gdu-volume.c:93
 msgid "Blank MRW Disc"
-msgstr ""
+msgstr "Tom MRW-skiva"
 
 #: ../gdu/gdu-volume.c:94
 msgid "MRW/W Disc"
-msgstr ""
+msgstr "MRW/W-skiva"
 
 #: ../gdu/gdu-volume.c:94
 msgid "Blank MRW/W Disc"
-msgstr ""
+msgstr "Tom MRW/W-skiva"
 
 #: ../gdu/gdu-volume.c:276
 msgid "Blank Optical Disc"
-msgstr ""
+msgstr "Tom optisk skiva"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
@@ -1660,11 +1660,11 @@ msgstr ""
 #: ../gdu/gdu-volume.c:286
 #, c-format
 msgid "%s Extended"
-msgstr ""
+msgstr "%s utökat"
 
 #: ../gdu/gdu-volume.c:287
 msgid "Contains logical partitions"
-msgstr ""
+msgstr "Innehåller logiska partitioner"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
@@ -1672,11 +1672,11 @@ msgstr ""
 #: ../gdu/gdu-volume.c:302
 #, c-format
 msgid "%s Encrypted"
-msgstr ""
+msgstr "%s krypterat"
 
 #: ../gdu/gdu-volume.c:312
 msgid "Optical Disc"
-msgstr ""
+msgstr "Optisk skiva"
 
 #. Translators: Label for a partition with a filesystem
 #. * %s is the size, formatted like '45 GB'
@@ -1684,7 +1684,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:318
 #, c-format
 msgid "%s Filesystem"
-msgstr ""
+msgstr "%s-filsystem"
 
 #. Translators: Label for a partition table
 #. * %s is the size, formatted like '45 GB'
@@ -1692,7 +1692,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:324
 #, c-format
 msgid "%s Partition Table"
-msgstr ""
+msgstr "%s-partitionstabell"
 
 #. Translators: Label for a LVM volume
 #. * %s is the size, formatted like '45 GB'
@@ -1700,13 +1700,13 @@ msgstr ""
 #: ../gdu/gdu-volume.c:330
 #, c-format
 msgid "%s LVM2 Physical Volume"
-msgstr ""
+msgstr "%s LVM2 fysisk volym"
 
 #. Translators: Used if no specific RAID level could be determined
 #: ../gdu/gdu-volume.c:343
 msgctxt "RAID level"
 msgid "RAID"
-msgstr ""
+msgstr "RAID"
 
 #. Translators: label for a RAID component
 #. * First %s is the size, formatted like '45 GB'
@@ -1716,7 +1716,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:361
 #, c-format
 msgid "%s %s Component"
-msgstr ""
+msgstr "%s %s-komponent"
 
 #. Translators: description for a RAID component
 #. * First %s is the array name, e.g. 'My Photos RAID',
@@ -1724,7 +1724,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:354
 #, c-format
 msgid "Part of \"%s\" array"
-msgstr ""
+msgstr "Del av \"%s\"-kedja"
 
 #. Translators: label for a swap partition
 #. * %s is the size, formatted like '45 GB'
@@ -1732,7 +1732,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:372
 #, c-format
 msgid "%s Swap Space"
-msgstr ""
+msgstr "%s-växlingsutrymme"
 
 #. Translators: label for a data partition
 #. * %s is the size, formatted like '45 GB'
@@ -1740,7 +1740,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:377
 #, c-format
 msgid "%s Data"
-msgstr ""
+msgstr "%s-data"
 
 #. Translators: label for a volume of unrecognized use
 #. * %s is the size, formatted like '45 GB'
@@ -1749,12 +1749,12 @@ msgstr ""
 #: ../gdu/gdu-volume.c:399
 #, c-format
 msgid "%s Unrecognized"
-msgstr ""
+msgstr "%s ej igenkänt"
 
 #. Translators: description for a volume of unrecognized use
 #: ../gdu/gdu-volume.c:385
 msgid "Unknown or Unused"
-msgstr ""
+msgstr "Okänt eller oanvänt"
 
 #. Translators: label for a partition
 #. * %s is the size, formatted like '45 GB'
@@ -1763,7 +1763,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:394
 #, c-format
 msgid "%s Partition"
-msgstr ""
+msgstr "%s-partition"
 
 #. Translators: The VPD name for a volume. The %d is the partition number
 #. * and the %s is the VPD name for the drive.
@@ -1771,14 +1771,14 @@ msgstr ""
 #: ../gdu/gdu-volume.c:430
 #, c-format
 msgid "Partition %d of %s"
-msgstr ""
+msgstr "Partition %d av %s"
 
 #. Translators: The VPD name for a volume. The %d is the partition number.
 #.
 #: ../gdu/gdu-volume.c:436
 #, c-format
 msgid "Partition %d"
-msgstr ""
+msgstr "Partition %d"
 
 #. Translators: The VPD name for a whole-disk volume.
 #. * The %s is the VPD name for the drive.
@@ -1786,19 +1786,19 @@ msgstr ""
 #: ../gdu/gdu-volume.c:444
 #, c-format
 msgid "Whole-disk volume on %s"
-msgstr ""
+msgstr "Heldiskvolym på %s"
 
 #. Translators: The VPD name for a whole-disk volume.
 #.
 #: ../gdu/gdu-volume.c:449
 msgid "Whole-disk volume"
-msgstr ""
+msgstr "Heldiskvolym"
 
 #. translators:
 #. * The device has been disabled
 #: ../gvc/gvc-mixer-control.c:1003
 msgid "Disabled"
-msgstr ""
+msgstr "Inaktiverad"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1806,8 +1806,8 @@ msgstr ""
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u utmatning"
+msgstr[1] "%u utmatningar"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1815,161 +1815,163 @@ msgstr[1] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u inmatning"
+msgstr[1] "%u inmatningar"
 
 #: ../gvc/gvc-mixer-control.c:1316
 msgid "System Sounds"
-msgstr ""
+msgstr "Systemljud"
 
 #: ../power-icon/src/moblin-power-icon.c:46
 msgid "Moblin Power Icon"
-msgstr ""
+msgstr "Moblin-strömikon"
 
 #: ../power-icon/src/mpd-power-icon.c:72
 msgid "Running low on battery"
-msgstr ""
+msgstr "Batteriet börjar ta slut"
 
 #: ../power-icon/src/mpd-power-icon.c:73
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr ""
+msgstr "Vi har märkt att ditt batteri börjar ta slut. Om du kan vore det en bra idé att ladda det snart."
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Getting close to empty"
-msgstr ""
+msgstr "Nu är det nästan slut"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr ""
+msgstr "Nu är ditt batteri nästan helt slut. Det vore en god idé att spara allt ditt arbete och ansluta så snart du kan"
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Danger!"
-msgstr ""
+msgstr "Fara!"
 
 #: ../power-icon/src/mpd-power-icon.c:82
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr ""
+msgstr "Batteriet i datorn är nästan slut. Vi måste stänga av datorn nu. Spara ditt arbete, hoppas vi ses igen snart."
 
 #: ../power-icon/src/mpd-power-icon.c:300
 msgid "Would you like to turn off now?"
-msgstr ""
+msgstr "Vill du stänga av nu?"
 
 #: ../power-icon/src/mpd-power-icon.c:301
 msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr ""
+msgstr "Om du inte bestämmer dig snart stänger jag av datorn om 30 sekunder."
 
 #: ../power-icon/src/mpd-power-icon.c:368
 msgid "battery"
-msgstr ""
+msgstr "batteri"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:75
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr ""
+msgstr "Om du inte bestämmer dig snart stänger jag av datorn om %d sekunder."
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
 msgid "Turn off"
-msgstr ""
+msgstr "Stäng av"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr ""
+msgstr "Det verkar inte som om du har installerat ett batteri."
 
 #: ../src/mpd-battery-device.c:337
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr ""
+msgstr "Ditt batteri laddas. Det är ungefär %d%% fullt."
 
 #: ../src/mpd-battery-device.c:342
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr ""
+msgstr "Ditt batteri används. Det är ungefär %d%% fullt."
 
 #: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr ""
+msgstr "Ditt batteri är helt laddat och du kan börja."
 
 #: ../src/mpd-battery-device.c:351
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr ""
+msgstr "Det verkar som om ditt batteri gått sönder."
 
 #: ../src/mpd-computer-pane.c:111
 msgid "All settings"
-msgstr ""
+msgstr "Alla inställningar"
 
 #: ../src/mpd-default-device-tile.c:100
 msgid ""
 "Plug in a device\n"
 "and it will be automatically detected."
 msgstr ""
+"Koppla in en enhet\n"
+"så identifieras den automatiskt."
 
 #: ../src/mpd-disk-tile.c:64
 #, c-format
 msgid "You are using %d%% of %s"
-msgstr ""
+msgstr "Du använder %d%% av %s"
 
 #: ../src/mpd-folder-pane.c:91
 msgid "Your computer"
-msgstr ""
+msgstr "Din dator"
 
 #: ../src/mpd-storage-device-tile.c:96
 #, c-format
 msgid "Using %d%% of %s"
-msgstr ""
+msgstr "Använder %d%% av %s"
 
 #: ../src/mpd-storage-device-tile.c:383
 msgid "Eject"
-msgstr ""
+msgstr "Mata ut"
 
 #: ../src/mpd-storage-device-tile.c:388
 msgid "Open"
-msgstr ""
+msgstr "Öppna"
 
 #: ../src/mpd-volume-tile.c:110
 msgid "Turned up to 11"
-msgstr ""
+msgstr "Allra högsta volym"
 
 #: ../src/mpd-volume-tile.c:112
 msgid "Very loud"
-msgstr ""
+msgstr "Mycket hög"
 
 #: ../src/mpd-volume-tile.c:114
 msgid "Loud"
-msgstr ""
+msgstr "Hög"
 
 #: ../src/mpd-volume-tile.c:116
 msgid "Fairly loud"
-msgstr ""
+msgstr "Ganska hög"
 
 #: ../src/mpd-volume-tile.c:118
 msgid "Middle of the road"
-msgstr ""
+msgstr "Lagom"
 
 #: ../src/mpd-volume-tile.c:120
 msgid "Fairly quiet"
-msgstr ""
+msgstr "Ganska tyst"
 
 #: ../src/mpd-volume-tile.c:122
 msgid "Quiet"
-msgstr ""
+msgstr "Tyst"
 
 #: ../src/mpd-volume-tile.c:124
 msgid "Very quiet"
-msgstr ""
+msgstr "Mycket tyst"
 
 #: ../src/mpd-volume-tile.c:126
 msgid "Silent"
-msgstr ""
+msgstr "Helt tyst"
 
 #. Tile label
 #: ../src/mpd-volume-tile.c:306
 msgid "Netbook volume"
-msgstr ""
+msgstr "Netbook-volym"
 
 #: ../src/mpd-volume-tile.c:345
 msgid "Mute"
-msgstr ""
+msgstr "Ljud avstängt"
 
