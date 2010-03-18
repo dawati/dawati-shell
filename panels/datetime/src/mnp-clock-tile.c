@@ -316,7 +316,7 @@ mnp_clock_tile_class_init (MnpClockTileClass *klass)
                                     "containment-area");
 	g_object_class_override_property (object_class,
                                     DRAG_PROP_ENABLED,
-                                    "enabled");
+                                    "drag-enabled");
 	g_object_class_override_property (object_class,
                                     DRAG_PROP_ACTOR,
                                     "drag-actor");	
@@ -397,22 +397,22 @@ mnp_clock_construct (MnpClockTile *tile)
 
  
 
-	label1 = mx_label_new (fmt->date);
+	label1 = mx_label_new_with_text (fmt->date);
 	tile->priv->date = (MxLabel *)label1;
 	clutter_actor_set_name (label1, "mnp-tile-date");
 
-	label2 = mx_label_new (fmt->time);
+	label2 = mx_label_new_with_text (fmt->time);
 	tile->priv->time = (MxLabel *)label2;
 	clutter_actor_set_name (label2, "mnp-tile-time");
 
-	label3 = mx_label_new (fmt->city);
+	label3 = mx_label_new_with_text (fmt->city);
 	tile->priv->city = (MxLabel *)label3;
 	clutter_actor_set_name (label3, "mnp-tile-city");
 	clutter_actor_set_size (label3, 110, -1);
 
 	box1 = mx_box_layout_new ();
 	clutter_actor_set_name (box1, "mnp-tile-date-city");
-	mx_box_layout_set_vertical ((MxBoxLayout *)box1, TRUE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box1, MX_VERTICAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box1, FALSE);
 
 	clutter_container_add_actor ((ClutterContainer *)box1, label3);
@@ -427,7 +427,7 @@ mnp_clock_construct (MnpClockTile *tile)
 					"y-fill", FALSE,
                                    	NULL);
 
-	mx_box_layout_set_vertical ((MxBoxLayout *)tile, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)tile, MX_HORIZONTAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)tile, FALSE);
 	clutter_container_add_actor ((ClutterContainer *)tile, box1);
 	clutter_container_child_set ((ClutterContainer *)tile, box1,
@@ -438,7 +438,7 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	box1 = mx_box_layout_new ();
 	clutter_actor_set_name (box1, "mnp-tile-time-box");		
-	mx_box_layout_set_vertical ((MxBoxLayout *)box1, TRUE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box1, MX_VERTICAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box1, FALSE);
 	clutter_container_add_actor ((ClutterContainer *)box1, label2);
 	clutter_container_child_set ((ClutterContainer *)box1, label2,
@@ -454,7 +454,7 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	box2 = mx_box_layout_new ();
 	clutter_actor_set_name (box2, "mnp-tile-remove-button");
-	mx_box_layout_set_vertical ((MxBoxLayout *)box2, TRUE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box2, MX_VERTICAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box2, FALSE);	
  	
 	priv->remove_button = (MxButton *)mx_button_new ();

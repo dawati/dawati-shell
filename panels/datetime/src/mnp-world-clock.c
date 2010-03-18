@@ -393,18 +393,18 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 	stage = clutter_stage_get_default ();
 
-	mx_box_layout_set_vertical ((MxBoxLayout *)world_clock, TRUE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)world_clock, MX_VERTICAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)world_clock, FALSE);
 	mx_box_layout_set_spacing ((MxBoxLayout *)world_clock, 4);
 
 	priv->completion_timeout = 0;
 
 	box = mx_box_layout_new ();
-	mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 	
-	entry = mx_entry_new ("");
+	entry = mx_entry_new ();
 	priv->search_location = (MxEntry *)entry;
 	mx_entry_set_hint_text (MX_ENTRY (entry), _("Enter a country or city"));
 	mx_entry_set_secondary_icon_from_file (MX_ENTRY (entry),

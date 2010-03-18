@@ -159,19 +159,19 @@ mnp_alarms_construct (MnpAlarms *alarms)
 
   priv->alarm_tiles = NULL;
 
-  mx_box_layout_set_vertical ((MxBoxLayout *)alarms, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)alarms, MX_HORIZONTAL);
   mx_box_layout_set_pack_start ((MxBoxLayout *)alarms, FALSE);
   
   priv->left_tiles = mx_box_layout_new();
   clutter_actor_set_name ((ClutterActor *)priv->left_tiles, "alarms-tile-area");
-  mx_box_layout_set_vertical ((MxBoxLayout *)priv->left_tiles, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)priv->left_tiles, MX_HORIZONTAL);
   mx_box_layout_set_pack_start ((MxBoxLayout *)priv->left_tiles, FALSE);
   mx_box_layout_set_spacing ((MxBoxLayout *)priv->left_tiles, 3);
 
   priv->right_tiles = mx_box_layout_new();
   clutter_actor_set_size (priv->right_tiles, 100, -1);
   clutter_actor_set_name ((ClutterActor *)priv->right_tiles, "new-alarm-tile-area");
-  mx_box_layout_set_vertical ((MxBoxLayout *)priv->right_tiles, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)priv->right_tiles, MX_HORIZONTAL);
   mx_box_layout_set_pack_start ((MxBoxLayout *)priv->right_tiles, FALSE);
   mx_box_layout_set_spacing ((MxBoxLayout *)priv->right_tiles, 3);
 

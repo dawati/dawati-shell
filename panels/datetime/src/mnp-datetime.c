@@ -142,7 +142,7 @@ construct_calendar_area (MnpDatetime *time)
 	priv->cal_area = mx_box_layout_new ();
 	mx_stylable_set_style_class (priv->cal_area, "CalendarPane");
 	mx_box_layout_set_spacing (priv->cal_area, 6);	
-	mx_box_layout_set_vertical ((MxBoxLayout *)priv->cal_area, TRUE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)priv->cal_area, MX_VERTICAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->cal_area, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->cal_area, TRUE);
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, priv->cal_area);
@@ -155,7 +155,7 @@ construct_calendar_area (MnpDatetime *time)
 	/* format date */
 	box = mx_box_layout_new ();
 	mx_box_layout_set_spacing (box, 20);
-	mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_area, (ClutterActor *)box);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
@@ -175,7 +175,7 @@ construct_calendar_area (MnpDatetime *time)
                                NULL);	
 
 
-	label = mx_label_new(_("Today"));
+	label = mx_label_new_with_text(_("Today"));
 	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleToday");
 	clutter_container_add_actor ((ClutterContainer *)box, (ClutterActor *)label);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
@@ -185,7 +185,7 @@ construct_calendar_area (MnpDatetime *time)
 			       "x-fill", FALSE,			       			       
                                NULL);	
 	
-	priv->date_label = mx_label_new (NULL);
+	priv->date_label = mx_label_new ();
 	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleDate");
 	clutter_container_add_actor ((ClutterContainer *)box, (ClutterActor *)priv->date_label);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
@@ -221,7 +221,7 @@ construct_task_area (MnpDatetime *time)
 
 	priv->task_row = mx_box_layout_new();
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->task_row, 4);	
-	mx_box_layout_set_vertical ((MxBoxLayout *)priv->task_row, TRUE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)priv->task_row, MX_VERTICAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->task_row, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->task_row, TRUE);
 	clutter_container_add_actor ((ClutterContainer *)time, priv->task_row);
@@ -232,7 +232,7 @@ construct_task_area (MnpDatetime *time)
 			       "x-fill", TRUE,			       			       
                                NULL);
 
-	label = mx_label_new(_("Tasks"));
+	label = mx_label_new_with_text (_("Tasks"));
 	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleTasks");
 	clutter_container_add_actor ((ClutterContainer *)priv->task_row, label);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
@@ -268,7 +268,7 @@ mnp_datetime_construct (MnpDatetime *time)
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
 	ClutterActor *div;
 
-	mx_box_layout_set_vertical ((MxBoxLayout *)time, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)time, MX_HORIZONTAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)time, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)time, TRUE);
 	mx_box_layout_set_spacing ((MxBoxLayout *)time, 4);
@@ -283,7 +283,7 @@ mnp_datetime_construct (MnpDatetime *time)
 	priv->cal_alarm_row = mx_box_layout_new();
 	clutter_actor_set_size((ClutterActor *)priv->cal_alarm_row, 350, -1);
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->cal_alarm_row, 4);
-	mx_box_layout_set_vertical ((MxBoxLayout *)priv->cal_alarm_row, TRUE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)priv->cal_alarm_row, MX_VERTICAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->cal_alarm_row, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->cal_alarm_row, TRUE);
 	clutter_container_add_actor ((ClutterContainer *)time, priv->cal_alarm_row);

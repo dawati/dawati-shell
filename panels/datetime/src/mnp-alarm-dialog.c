@@ -170,9 +170,9 @@ construct_title_header (MnpAlarmDialog *dialog)
   ClutterActor *txt, *icon;
 
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
 
-  txt = mx_label_new (_("Alarm settings"));
+  txt = mx_label_new_with_text (_("Alarm settings"));
   clutter_container_add_actor ((ClutterContainer *)box, txt);
   clutter_container_child_set ((ClutterContainer *)box, txt,
                                    "x-fill", TRUE,
@@ -212,7 +212,7 @@ construct_on_off_toggle (MnpAlarmDialog *dialog)
   ClutterActor *txt, *icon;
 
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
 
   icon = (ClutterActor *)mx_icon_new ();
   mx_stylable_set_style_class (MX_STYLABLE (icon),
@@ -226,7 +226,7 @@ construct_on_off_toggle (MnpAlarmDialog *dialog)
                                    NULL);
   
  
-  txt = mx_label_new (_("ON"));
+  txt = mx_label_new_with_text (_("ON"));
   clutter_container_add_actor ((ClutterContainer *)box, txt);
   clutter_container_child_set ((ClutterContainer *)box, txt,
                                    "x-fill", FALSE,
@@ -256,7 +256,7 @@ construct_time_entry (MnpAlarmDialog *dialog)
 
   box = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
   mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
   priv->hour = (ClutterActor *)mx_spin_entry_new ();
@@ -319,11 +319,11 @@ construct_recur_snooze_entry (MnpAlarmDialog *dialog)
   }
 
   mx_combo_box_set_index ((MxComboBox *)priv->recur, MNP_ALARM_NEVER);
-  label = mx_label_new (_("Repeat"));
+  label = mx_label_new_with_text (_("Repeat"));
 
   box = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
   mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
   clutter_container_add_actor ((ClutterContainer *)box, label);
@@ -349,10 +349,10 @@ construct_recur_snooze_entry (MnpAlarmDialog *dialog)
   priv->snooze = mx_toggle_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->snooze), "SnoozeToggle");
 
-  label = mx_label_new (_("Snooze"));
+  label = mx_label_new_with_text (_("Snooze"));
   box = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
   mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
   clutter_container_add_actor ((ClutterContainer *)box, label);
@@ -391,10 +391,10 @@ construct_sound_menu (MnpAlarmDialog *dialog)
 
   mx_combo_box_set_index ((MxComboBox *)priv->sound, MNP_SOUND_BEEP);
 
-  label = mx_label_new (_("Sound"));
+  label = mx_label_new_with_text (_("Sound"));
   box = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)box, FALSE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
   mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
   clutter_container_add_actor ((ClutterContainer *)box, label);
@@ -483,7 +483,7 @@ mnp_alarm_dialog_construct (MnpAlarmDialog *dialog)
   
   clutter_actor_set_name ((ClutterActor *)dialog, "new-alarm-dialog");
   mx_box_layout_set_pack_start ((MxBoxLayout *)dialog, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)dialog, TRUE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)dialog, MX_VERTICAL);
   mx_box_layout_set_spacing ((MxBoxLayout *)dialog, 3);
 
   construct_title_header(dialog);
@@ -517,7 +517,7 @@ mnp_alarm_dialog_set_item (MnpAlarmDialog *dialog, MnpAlarmItem *item)
   MnpAlarmDialogPrivate *priv = ALARM_DIALOG_PRIVATE(dialog);
 
   priv->id = item->id;
-  mx_button_set_checked((MxButton *)priv->on_off, item->on_off);
+  mx_button_set_toggled ((MxButton *)priv->on_off, item->on_off);
   mx_spin_entry_set_value((MxSpinEntry *)priv->hour, item->hour);
   mx_spin_entry_set_value((MxSpinEntry *)priv->minute, item->minute);
 

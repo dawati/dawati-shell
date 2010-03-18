@@ -256,7 +256,7 @@ mnp_clock_area_class_init (MnpClockAreaClass *klass)
 
 	g_object_class_override_property (object_class,
         	                            DROP_PROP_ENABLED,
-                	                    "enabled");	
+                	                    "drop-enabled");	
 }
 
 static void
@@ -295,7 +295,7 @@ mnp_clock_area_new (void)
 	area->priv->prop_sec_zero = FALSE;
 	area->priv->clock_tiles = g_ptr_array_new ();
 	area->priv->position = 0.05;
-	mx_box_layout_set_vertical ((MxBoxLayout *)area, TRUE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)area, MX_VERTICAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)area, FALSE);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)area, TRUE);
 	area->priv->time_now = time(NULL);

@@ -120,7 +120,7 @@ mx_spin_entry_construct (MxSpinEntry *spin)
 
   mx_stylable_set_style_class (MX_STYLABLE (spin), "MxSpinEntry");
   mx_box_layout_set_pack_start ((MxBoxLayout *)spin, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)spin, TRUE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)spin, MX_VERTICAL);
   mx_box_layout_set_spacing ((MxBoxLayout *)spin, 0);
 
   priv->up = mx_button_new ();
@@ -138,7 +138,7 @@ mx_spin_entry_construct (MxSpinEntry *spin)
   g_signal_connect (priv->down, "clicked", G_CALLBACK(down_clicked), spin);
 
 
-  priv->entry = mx_entry_new (NULL);
+  priv->entry = mx_entry_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry), "SpinEntry");
 
   clutter_container_add_actor ((ClutterContainer *)spin, priv->up);

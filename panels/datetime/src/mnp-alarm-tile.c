@@ -92,19 +92,19 @@ mnp_alarm_tile_construct (MnpAlarmTile *btntile)
   clutter_actor_set_size ((ClutterActor *)btntile, 100, -1);
   tile = mx_box_layout_new ();
   mx_box_layout_set_pack_start ((MxBoxLayout *)tile, FALSE);
-  mx_box_layout_set_vertical ((MxBoxLayout *)tile, TRUE);
+  mx_box_layout_set_orientation ((MxBoxLayout *)tile, MX_VERTICAL);
   mx_bin_set_fill (MX_BIN (btntile), TRUE, TRUE);
   mx_bin_set_alignment (MX_BIN (btntile), MX_ALIGN_MIDDLE, MX_ALIGN_MIDDLE);
   mx_bin_set_child (MX_BIN (btntile), (ClutterActor *)tile);
 
-  priv->recur = mx_label_new (NULL);
+  priv->recur = mx_label_new ();
   clutter_container_add_actor ((ClutterContainer *)tile, priv->recur);
   clutter_container_child_set ((ClutterContainer *)tile, priv->recur,
 				   "expand", TRUE,
 				   "y-fill", TRUE,
                                    NULL);
 
-  priv->title = mx_label_new (NULL);
+  priv->title = mx_label_new ();
   clutter_container_add_actor ((ClutterContainer *)tile, priv->title);
   clutter_container_child_set ((ClutterContainer *)tile, priv->title,
 				   "expand", TRUE,
