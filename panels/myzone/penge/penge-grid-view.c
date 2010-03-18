@@ -263,7 +263,7 @@ _update_layout (PengeGridView *grid_view)
                                    "row", 1,
                                    "y-expand", TRUE,
                                    "y-fill", FALSE,
-                                   "y-align", 0.0,
+                                   "y-align", 1.0,
                                    "x-align", 0.0,
                                    "x-expand", FALSE,
                                    "x-fill", FALSE,
@@ -280,6 +280,7 @@ _update_layout (PengeGridView *grid_view)
                                  "col", col,
                                  "x-expand", FALSE,
                                  NULL);
+
     col++;
 
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
@@ -291,6 +292,27 @@ _update_layout (PengeGridView *grid_view)
                                  "y-expand", TRUE,
                                  "y-fill", TRUE,
                                  NULL);
+
+    if (priv->show_email_pane)
+    {
+      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->everything_pane,
+                                   "row-span", 2,
+                                   NULL);
+      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->div_tex,
+                                   "row-span", 2,
+                                   NULL);
+    } else {
+      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->everything_pane,
+                                   "row-span", 1,
+                                   NULL);
+      clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
+                                   priv->div_tex,
+                                   "row-span", 1,
+                                   NULL);
+    }
 
     g_object_set (priv->favourite_apps_pane,
                   "vertical", TRUE,
