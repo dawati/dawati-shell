@@ -48,14 +48,6 @@ dist_theme_panel_DATA = \
 	theme/panel/toolbar-button-hover.png \
 	theme/panel/toolbar-hint.png
 
-theme_chooserdir = $(MUTTER_MOBLIN_THEME_DIR)/chooser
-dist_theme_chooser_DATA = \
-	theme/chooser/background.png		\
-	theme/chooser/thumb-selected.png	\
-	theme/chooser/thumb-unselected.png	\
-	theme/chooser/space-selected.png	\
-	theme/chooser/space-unselected.png
-
 theme_genericdir = $(MUTTER_MOBLIN_THEME_DIR)/generic
 dist_theme_generic_DATA = \
 	theme/generic/checkbox.png	\
@@ -79,34 +71,8 @@ dist_theme_alttab_DATA = \
 	theme/alttab/application-normal.png \
 	theme/alttab/application-active.png
 
-theme_switcherdir = $(MUTTER_MOBLIN_THEME_DIR)/switcher
-dist_theme_switcher_DATA = \
-	theme/switcher/application-active.png \
-	theme/switcher/application-close-button.png \
-	theme/switcher/application-close-button-hover.png \
-	theme/switcher/application-inactive.png \
-	theme/switcher/workspace-background-active.png \
-	theme/switcher/workspace-background-new.png \
-	theme/switcher/workspace-background-new-active.png \
-	theme/switcher/workspace-background-new-over.png \
-	theme/switcher/workspace-background-new-disabled.png \
-	theme/switcher/workspace-background.png \
-	theme/switcher/workspace-title-active.png \
-	theme/switcher/workspace-title-new.png \
-	theme/switcher/workspace-title-new-active.png \
-	theme/switcher/workspace-title-new-over.png \
-	theme/switcher/workspace-title-new-disabled.png \
-	theme/switcher/workspace-title-new-symbol-active.png \
-	theme/switcher/workspace-title-new-symbol-over.png \
-	theme/switcher/workspace-title-new-symbol-disabled.png \
-	theme/switcher/workspace-title.png
-
 theme_dropdowndir = $(MUTTER_MOBLIN_THEME_DIR)/drop-down
 dist_theme_dropdown_DATA = \
-	theme/drop-down/panel_arrow.png \
-	theme/drop-down/panel_arrow_hover.png \
-	theme/drop-down/panel_up_button.png \
-	theme/drop-down/panel_up_button_hover.png \
 	theme/drop-down/panel_shadow.png
 
 theme_notifiersdir = $(MUTTER_MOBLIN_THEME_DIR)/notifiers

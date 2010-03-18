@@ -48,12 +48,6 @@ MxLabel#date-label {
   font-size: 12px;
 }
 
-/* spaces switcher table */
-MnbSwitcher > *#switcher-table {
-  background-color: #ffff;
-  padding: 1 5 5 5;
-}
-
 MnbToolbar {
   border-image: url("panel/panel-background.png") 0 200 0 200;
 }
@@ -217,139 +211,6 @@ MxTooltip.alttab {
   background-image: none;
 }
 
-/* workspace switcher */
-MnbSwitcher *.workspace-title-label {
-  font-family: "Droid Sans Bold";
-  font-size: 18;
-  color: white;
-}
-
-MnbSwitcher *#workspace-title-label-active {
-  font-family: "Droid Sans Bold";
-  font-size: 18;
-  color: white;
-}
-
-MnbSwitcher *#workspace-title-label-over {
-  font-family: "Droid Sans Bold";
-  font-size: 18;
-  color: #e87208ff;
-}
-
-MnbSwitcher *#workspace-no-wins-bin {
-  border-image: url('generic/placeholder-bg.png') 4;
-  padding: 8;
-}
-
-MnbSwitcher *#workspace-no-wins-label {
-  font-size:16px;
-  color: #595959ff;
-}
-
-MnbSwitcher *.workspace-title {
-  border-image: url("switcher/workspace-title.png") 4;
-  padding: 4;
-  color: white;
-}
-
-MnbSwitcher *#workspace-title-active {
-  border-image: url("switcher/workspace-title-active.png") 4;
-  padding: 4;
-  color: white;
-}
-
-MnbSwitcher *.workspace-title-new {
-  border-image: url("switcher/workspace-title-new.png") 4;
-  padding: 4;
-  color: white;
-}
-
-MnbSwitcher *#workspace-title-new-active {
-  border-image: url("switcher/workspace-title-new-active.png") 4;
-  padding: 4;
-  color: white;
-}
-
-MnbSwitcher *#workspace-title-new-over {
-  border-image: url("switcher/workspace-title-new-over.png") 4;
-  color: white;
-}
-
-MnbSwitcher *#workspace-title-new-disabled {
-  border-image: url("switcher/workspace-title-new-disabled.png") 4;
-  padding: 4;
-  color: white;
-}
-
-MnbSwitcher *.workspace-title-new-symbol {
-}
-
-MnbSwitcher *#workspace-title-new-symbol-active {
-  border-image: url("switcher/workspace-title-new-symbol-active.png") 4;
-  padding: 4;
-  color: white;
-}
-
-MnbSwitcher *#workspace-title-new-symbol-over {
-  border-image: url("switcher/workspace-title-new-symbol-over.png") 4;
-  padding: 4;
-  color: white;
-}
-
-MnbSwitcher *#workspace-title-new-symbol-disabled {
-  border-image: url("switcher/workspace-title-new-symbol-disabled.png") 4;
-  padding: 4;
-  color: white;
-}
-
-MxTable.switcher-workspace {
-  border-image: url("switcher/workspace-background.png") 4;
-  padding: 5;
-}
-
-MxTable#switcher-workspace-active {
-  border-image: url("switcher/workspace-background-active.png") 4;
-  padding: 5;
-}
-
-MxTable.switcher-workspace-new {
-  border-image: url("switcher/workspace-background-new.png") 4;
-  padding: 5;
-}
-
-MxTable#switcher-workspace-new-active {
-  border-image: url("switcher/workspace-background-new-active.png") 4;
-  padding: 5;
-}
-
-MxTable#switcher-workspace-new-over {
-  border-image: url("switcher/workspace-background-new-over.png") 4;
-  padding: 5;
-}
-
-MxTable#switcher-workspace-new-disabled {
-  border-image: url("switcher/workspace-background-new-disabled.png") 4;
-  padding: 5;
-}
-
-MnbSwitcherApp.switcher-application {
-  border-image: url("switcher/application-inactive.png") 4;
-  padding: 2;
-}
-
-MnbSwitcherApp#switcher-application-active {
-  border-image: url("switcher/application-active.png") 4;
-  padding: 2;
-}
-
-MxIcon.switcher-application-close-button {
-  x-mx-content-image: url("switcher/application-close-button.png");
-}
-
-MxIcon.switcher-application-close-button:hover {
-  x-mx-content-image: url("switcher/application-close-button-hover.png");
-}
-
 MnbAlttabOverlay {
   background-color: #44444444;
   padding: 10;
@@ -368,20 +229,7 @@ MnbAlttabOverlayApp:active {
   border-image: url('alttab/application-active.png') 6;
 }
 
-/* drop down */
-*.drop-down-footer {
-  border-image: url("drop-down/panel_up_button.png") 5;
-  background-image: url("drop-down/panel_arrow.png") 5;
-  padding: 15;
-}
-
-*.drop-down-footer:hover {
-  border-image: url("drop-down/panel_up_button_hover.png") 5;
-  background-image: url("drop-down/panel_arrow_hover.png") 5;
-  padding: 15;
-}
-
-MnbPanelFrame, MnbDropDown, MnbSwitcher, MxFrame#panel-stub {
+MnbPanelFrame, MxFrame#panel-stub {
   border-image: url("drop-down/panel_shadow.png") 4 8 14 8;
   padding: 4 4 12 4;
 }
