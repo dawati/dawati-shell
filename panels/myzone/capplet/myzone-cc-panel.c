@@ -62,9 +62,29 @@ clear_recent_files_button_clicked_cb (GtkButton *button,
                                       gpointer   userdata)
 {
   GtkRecentManager *manager;
+  GtkWidget *dialog;
+  GtkWindow *window;
+  gint res;
 
-  manager = gtk_recent_manager_get_default ();
-  gtk_recent_manager_purge_items (manager, NULL);
+  window = (GtkWindow *)gtk_widget_get_toplevel (button);
+  if (!GTK_WIDGET_TOPLEVEL (window))
+    window = NULL;
+
+  dialog = gtk_message_dialog_new (window,
+                                   GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_MESSAGE_OTHER,
+                                   GTK_BUTTONS_YES_NO,
+                                   _("Do you want to clear your recent documents? "
+                                     "This will remove the local content from the Myzone"));
+  res = gtk_dialog_run (dialog);
+
+  if (res == GTK_RESPONSE_YES)
+  {
+    manager = gtk_recent_manager_get_default ();
+    gtk_recent_manager_purge_items (manager, NULL);
+  }
+
+  gtk_widget_destroy (dialog);
 }
 
 static void
