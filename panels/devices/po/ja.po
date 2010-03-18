@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-15 09:37+0000\n"
+"POT-Creation-Date: 2010-03-17 19:45+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
 "Language-Team: \n"
@@ -14,13 +14,11 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
-#, fuzzy
 msgid "Devices panel"
-msgstr "ゾーン・パネル"
+msgstr "デバイス・パネル"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
 #: ../src/moblin-panel-devices.c:135
-#, fuzzy
 msgid "devices"
 msgstr "デバイス"
 
@@ -46,21 +44,18 @@ msgstr "SD カード"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:572
-#, fuzzy
 msgid "SD High Capacity"
-msgstr "ハイファイ再生 (A2DP)"
+msgstr "SDHC カード"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:575
-#, fuzzy
 msgid "Floppy"
-msgstr "フロッピー(_F)"
+msgstr "フロッピー"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:578
-#, fuzzy
 msgid "Zip"
-msgstr "7-zip アーカイブ"
+msgstr "Zip"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:581
@@ -69,15 +64,13 @@ msgstr "Jaz"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:584
-#, fuzzy
 msgid "Flash"
-msgstr "Flash 動画"
+msgstr "ラッシュメモリ"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:607
-#, fuzzy
 msgid "CD"
 msgstr "CD"
 
@@ -85,7 +78,6 @@ msgstr "CD"
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:615
-#, fuzzy
 msgid "DVD"
 msgstr "DVD"
 
@@ -93,9 +85,8 @@ msgstr "DVD"
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:623
-#, fuzzy
 msgid "Blu-Ray"
-msgstr "Blue-ray ビデオディスク"
+msgstr "Blu-Ray"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
@@ -107,86 +98,81 @@ msgstr "HDDVD"
 #. Translators: %s is the media type e.g. 'CD/DVD' or 'CompactFlash'
 #: ../gdu/gdu-drive.c:680
 #: ../gdu/gdu-drive.c:719
-#, fuzzy, c-format
+#, c-format
 msgid "%s Drive"
-msgstr "ソース・ドライブ:"
+msgstr "%s ドライブ"
 
 #. Translators: first %s is the size, second %s is the media type
 #. * e.g. 'CD/DVD' or 'CompactFlash'
 #.
 #: ../gdu/gdu-drive.c:714
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s Drive"
-msgstr "ソース・ドライブ:"
+msgstr "%s %s ドライブ"
 
 #. Translators: This string is used to describe a hard disk.
 #. * The first %s is the size of the drive e.g. '45 GB'.
 #.
 #: ../gdu/gdu-drive.c:730
-#, fuzzy, c-format
+#, c-format
 msgid "%s Hard Disk"
-msgstr "Disk Druid"
+msgstr "%s ハードディスク"
 
 #. Translators: This string is used to describe a hard disk where the size
 #. * is not known.
 #.
 #: ../gdu/gdu-drive.c:735
-#, fuzzy
 msgid "Hard Disk"
-msgstr "Disk Druid"
+msgstr "ハードディスク"
 
 #. Translators: This string is used to describe a SSD. The first %s is
 #. * the size of the drive e.g. '45 GB'.
 #.
 #: ../gdu/gdu-drive.c:742
-#, fuzzy, c-format
+#, c-format
 msgid "%s Solid-State Disk"
-msgstr "ディスク容量の不足"
+msgstr "%s SSD"
 
 #. Translators: This string is used to describe a SSD where the size
 #. * is not known.
 #.
 #: ../gdu/gdu-drive.c:748
-#, fuzzy
 msgid "Solid-State Disk"
-msgstr "ディスク容量の不足"
+msgstr "SSD"
 
 #. Translators: This string is the description of a drive. The first %s is the
 #. * size of the inserted media, for example '45 GB'.
 #.
 #: ../gdu/gdu-drive.c:789
-#, fuzzy, c-format
+#, c-format
 msgid "%s Media"
-msgstr "メディア"
+msgstr "%s メディア"
 
 #. Translators: This string is used as a description text when no media has
 #. * been detected for a drive
 #.
 #: ../gdu/gdu-drive.c:796
-#, fuzzy, c-format
+#, c-format
 msgid "No Media Detected"
-msgstr "メディアが見つかりません。"
+msgstr "メディアが見つかりません"
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:807
 #: ../gdu/gdu-linux-md-drive.c:565
-#, fuzzy
 msgid "MBR Partition Table"
-msgstr "CD の目次"
+msgstr "MBR パーティション・テーブル"
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:810
 #: ../gdu/gdu-linux-md-drive.c:568
-#, fuzzy
 msgid "GUID Partition Table"
-msgstr "CD の目次"
+msgstr "GUID パーティション・テーブル"
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:813
 #: ../gdu/gdu-linux-md-drive.c:571
-#, fuzzy
 msgid "Apple Partition Table"
-msgstr "CD の目次"
+msgstr "Apple パーティション・テーブル"
 
 #. Translators: This string is used for conveying the partition table format when
 #. * the format is unknown
@@ -199,9 +185,8 @@ msgstr "パーティション設定済み"
 #. Translators: This string is used for conveying a device is not partitioned.
 #.
 #: ../gdu/gdu-drive.c:823
-#, fuzzy
 msgid "Not Partitioned"
-msgstr "未実装です"
+msgstr "パーティション未設定"
 
 #. TODO: include type e.g. SATA Port Multiplier, SAS Expander etc
 #: ../gdu/gdu-hub.c:222
@@ -209,53 +194,45 @@ msgid "SAS Expander"
 msgstr "SAS エクスパンダ"
 
 #: ../gdu/gdu-hub.c:230
-#, fuzzy
 msgid "PATA Host Adapter"
-msgstr "無視するホストの一覧"
+msgstr "PATA ホスト・アダプタ"
 
 #: ../gdu/gdu-hub.c:232
-#, fuzzy
 msgid "SATA Host Adapter"
-msgstr "無視するホストの一覧"
+msgstr "SATA ホスト・アダプタ"
 
 #: ../gdu/gdu-hub.c:234
-#, fuzzy
 msgid "ATA Host Adapter"
-msgstr "無視するホストの一覧"
+msgstr "ATA ホスト・アダプタ"
 
 #: ../gdu/gdu-hub.c:236
-#, fuzzy
 msgid "SAS Host Adapter"
-msgstr "無視するホストの一覧"
+msgstr "SAS ホスト・アダプタ"
 
 #: ../gdu/gdu-hub.c:238
-#, fuzzy
 msgid "SCSI Host Adapter"
-msgstr "無視するホストの一覧"
+msgstr "SCSI ホスト・アダプタ"
 
 #: ../gdu/gdu-hub.c:240
-#, fuzzy
 msgid "Host Adapter"
-msgstr "Socks ホスト(_O):"
+msgstr "ホスト・アダプタ"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume-group.c:351
 #: ../gdu/gdu-linux-lvm2-volume-group.c:355
-#, fuzzy
 msgid "Volume Group"
-msgstr "ボリューム・グループ名(_V):"
+msgstr "ボリューム・グループ"
 
 #. Translators: VPD name - first %s is the size e.g. '45 GB'
 #: ../gdu/gdu-linux-lvm2-volume-group.c:359
-#, fuzzy, c-format
+#, c-format
 msgid "%s LVM2 Volume Group"
-msgstr "ボリューム・グループ名(_V):"
+msgstr "%s LVM2 ボリューム・グループ"
 
 #. Translators: VPD name when size is not known
 #: ../gdu/gdu-linux-lvm2-volume-group.c:362
-#, fuzzy
 msgid "LVM2 Volume Group"
-msgstr "ボリューム・グループ名(_V):"
+msgstr "LVM2 ボリューム・グループ"
 
 #. Translators: label for an unallocated space in a LVM2 volume group.
 #. * %s is the size, formatted like '45 GB'
@@ -265,16 +242,15 @@ msgstr "ボリューム・グループ名(_V):"
 #.
 #: ../gdu/gdu-linux-lvm2-volume-hole.c:201
 #: ../gdu/gdu-volume-hole.c:152
-#, fuzzy, c-format
+#, c-format
 msgid "%s Free"
-msgstr "空き"
+msgstr "%s 未使用"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume-hole.c:205
 #: ../gdu/gdu-volume-hole.c:161
-#, fuzzy
 msgid "Unallocated Space"
-msgstr "使用中の領域:"
+msgstr "未割り当て領域"
 
 #. Translators: VPD name
 #: ../gdu/gdu-linux-lvm2-volume-hole.c:208
@@ -283,63 +259,58 @@ msgstr "LVM2 ボリュームグループ未割り当て領域"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume.c:331
-#, fuzzy
 msgid "Logical Volume"
-msgstr "論理ボリュームを作成"
+msgstr "論理ボリューム"
 
 #. Translators: VPD name
 #: ../gdu/gdu-linux-lvm2-volume.c:334
-#, fuzzy
 msgid "LVM2 Logical Volume"
-msgstr "論理ボリュームを作成"
+msgstr "LVM2 論理ボリューム"
 
 #. Translators: First %s is the size, second %s is a RAID level, e.g. 'RAID-5'
 #. Translators: first %s is the size e.g. '45 GB', second %s is the level e.g. 'RAID-5'
 #: ../gdu/gdu-linux-md-drive.c:538
 #: ../gdu/gdu-linux-md-drive.c:621
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s Array"
-msgstr "パッケージ配列ファイル"
+msgstr "%s %s アレイ"
 
 #. Translators: %s is a RAID level, e.g. 'RAID-5'
 #. Translators: %s is the level e.g. 'RAID-5'
 #: ../gdu/gdu-linux-md-drive.c:543
 #: ../gdu/gdu-linux-md-drive.c:626
-#, fuzzy, c-format
+#, c-format
 msgid "%s Array"
-msgstr "パッケージ配列ファイル"
+msgstr "%s アレイ"
 
 #. Translators: First %s is a device file such as /dev/sda4
 #. * second %s is the state of the device
 #.
 #: ../gdu/gdu-linux-md-drive.c:596
-#, fuzzy, c-format
+#, c-format
 msgid "RAID Array %s (%s)"
-msgstr "MD RAID アレイ %s (%-0.f MB)"
+msgstr "RAID アレイ %s (%s)"
 
 #. Translators: %s is a device file such as /dev/sda4
 #: ../gdu/gdu-linux-md-drive.c:603
-#, fuzzy, c-format
+#, c-format
 msgid "RAID device %s"
-msgstr "RAID デバイス"
+msgstr "RAID デバイス %s"
 
 #. Translators: fallback for level
 #: ../gdu/gdu-linux-md-drive.c:609
-#, fuzzy
 msgctxt "RAID Level fallback"
 msgid "RAID"
-msgstr "RAID デバイス"
+msgstr "RAID"
 
 #: ../gdu/gdu-linux-md-drive.c:614
-#, fuzzy
 msgid "RAID Array"
-msgstr "MD RAID アレイ %s (%-0.f MB)"
+msgstr "RAID アレイ"
 
 #: ../gdu/gdu-linux-md-drive.c:1112
-#, fuzzy
 msgctxt "Linux MD slave state"
 msgid "Not Attached"
-msgstr "未実装です"
+msgstr "装着されていません"
 
 #: ../gdu/gdu-linux-md-drive.c:1115
 msgctxt "Linux MD slave state"
@@ -357,10 +328,9 @@ msgid "Writemostly"
 msgstr "Write-mostlyモード"
 
 #: ../gdu/gdu-linux-md-drive.c:1124
-#, fuzzy
 msgctxt "Linux MD slave state"
 msgid "Blocked"
-msgstr "%i 個のブロックされたアップデート"
+msgstr "ブロックされています"
 
 #: ../gdu/gdu-linux-md-drive.c:1126
 msgctxt "Linux MD slave state"
@@ -368,62 +338,58 @@ msgid "Spare"
 msgstr "スペア"
 
 #: ../gdu/gdu-machine.c:151
-#, fuzzy
 msgid "Local Storage"
-msgstr "ストレージの作成"
+msgstr "ローカル・ストレージ"
 
 #. TODO: use display-hostname
 #: ../gdu/gdu-machine.c:154
-#, fuzzy, c-format
+#, c-format
 msgid "Storage on %s"
-msgstr "Bluetooth: 入"
+msgstr "%s のストレージ"
 
 #: ../gdu/gdu-pool.c:885
-#, fuzzy
 msgid "Multipath Devices"
-msgstr "RAID デバイス"
+msgstr "マルチパス・デバイス"
 
 #: ../gdu/gdu-pool.c:886
 msgid "Drives with multiple I/O paths"
 msgstr "マルチプル I/O パスのドライブ"
 
 #: ../gdu/gdu-pool.c:896
-#, fuzzy
 msgid "Multi-disk Devices"
-msgstr "デバイスを検索しています..."
+msgstr "マルチディスク・デバイス"
 
 #: ../gdu/gdu-pool.c:897
 msgid "RAID, LVM and other logical drives"
 msgstr "RAID、LVM、他の論理ドライブ"
 
 #: ../gdu/gdu-pool.c:907
-#, fuzzy
 msgid "Peripheral Devices"
-msgstr "RAID デバイス"
+msgstr "周辺機器"
 
 #: ../gdu/gdu-pool.c:908
 msgid "USB, Firewire and other peripherals"
 msgstr "USB、Firewire、他の周辺機器"
 
 #: ../gdu/gdu-pool.c:2090
-#, fuzzy, c-format
+#, c-format
 msgid "Error enumerating devices: %s"
-msgstr "デバイスを検索しています..."
+msgstr "デバイスの一覧作成中にエラー: %s"
 
 #: ../gdu/gdu-pool.c:2116
-#, fuzzy, c-format
+#, c-format
 msgid "Error enumerating adapters: %s"
-msgstr "アダプタが利用できません"
+msgstr "アダプタの一覧作成中にエラー: %s"
 
 #: ../gdu/gdu-pool.c:2139
-#, fuzzy, c-format
+#, c-format
 msgid "Error enumerating expanders: %s"
-msgstr "'%s' というメッセージを送信する際にエラー: %s"
+msgstr "エクスパンダの一覧作成中にエラー: %s"
 
 #: ../gdu/gdu-pool.c:2162
-#, fuzzy, c-format
+#, c-format
 msgid "Error enumerating ports: %s"
-msgstr "'%s' というメッセージを送信する際にエラー: %s"
+msgstr "ポートの一覧作成中にエラー: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:292
 #, c-format
@@ -431,9 +397,9 @@ msgid "Error listening to address `localhost:%d': %s: %s\n"
 msgstr "アドレス「localhost:%d」のリスン時に次のにエラーが発生しました: %s: %s\n"
 
 #: ../gdu/gdu-ssh-bridge.c:307
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
-msgstr "localhost の 9000-10000 番ポートへバインドを試行しましたが、ローカル TCP サーバーの作成時にエラーが発生しました。"
+msgstr "localhost の 9000-10000 番ポートへバインドを試行しましたが、ローカル TCP サーバーの作成時にエラーが発生しました"
 
 #: ../gdu/gdu-ssh-bridge.c:322
 #, c-format
@@ -452,23 +418,22 @@ msgstr "次の ssh プログラムを起動できませんでした: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:398
 #: ../gdu/gdu-ssh-bridge.c:510
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading stderr output: %s"
-msgstr "ICNS 画像を読み込む際にエラー: %s"
+msgstr "標準エラー出力の読み込み中にエラー: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:405
 msgid "Error reading stderr output: No content"
 msgstr "標準エラー出力の読み込み中にエラー: 内容なし"
 
 #: ../gdu/gdu-ssh-bridge.c:471
-#, fuzzy
 msgid "Error logging in"
-msgstr "iSCSI ノードにログイン中"
+msgstr "ログイン中にエラーが発生しました"
 
 #: ../gdu/gdu-ssh-bridge.c:491
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending `%s': %s"
-msgstr "'%s' というメッセージを送信する際にエラー: %s"
+msgstr "「%s」の送信中にエラー: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:519
 #, c-format
@@ -481,9 +446,9 @@ msgid "Error passing authorization secret: %s"
 msgstr "認証用秘密鍵の受け渡しでエラーが発生しました: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:557
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading stderr from: %s"
-msgstr "ICNS 画像を読み込む際にエラー: %s"
+msgstr "標準エラーを以下より読み込み中にエラー: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:566
 #, c-format
@@ -537,9 +502,9 @@ msgstr "FAT (32 ビット版)"
 
 #. Translators: NTFS is a filesystem type
 #: ../gdu/gdu-util.c:205
-#, fuzzy, c-format
+#, c-format
 msgid "NTFS (version %s)"
-msgstr "インストールされたバージョン"
+msgstr "NTFS (バージョン %s)"
 
 #. Translators: NTFS is a filesystem type
 #: ../gdu/gdu-util.c:208
@@ -571,9 +536,9 @@ msgstr "LUKS"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:237
-#, fuzzy, c-format
+#, c-format
 msgid "Ext2 (version %s)"
-msgstr "インストールされたバージョン"
+msgstr "Ext2 (バージョン %s)"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:240
@@ -588,9 +553,9 @@ msgstr "ext2"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:249
-#, fuzzy, c-format
+#, c-format
 msgid "Ext3 (version %s)"
-msgstr "インストールされたバージョン"
+msgstr "Ext3 (バージョン %s)"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:252
@@ -611,9 +576,9 @@ msgstr "Ext3 ジャーナリング (バージョン %s)"
 
 #. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
 #: ../gdu/gdu-util.c:264
-#, fuzzy, c-format
+#, c-format
 msgid "Journal for Ext3"
-msgstr "デバイスを検索しています..."
+msgstr "Ext3 ジャーナリング"
 
 #. Translators: jbd is a filesystem type
 #: ../gdu/gdu-util.c:267
@@ -622,9 +587,9 @@ msgstr "jbd"
 
 #. Translators: ext4 is a filesystem type
 #: ../gdu/gdu-util.c:273
-#, fuzzy, c-format
+#, c-format
 msgid "Ext4 (version %s)"
-msgstr "インストールされたバージョン"
+msgstr "Ext4 (バージョン %s)"
 
 #. Translators: ext4 is a filesystem type
 #: ../gdu/gdu-util.c:276
@@ -639,9 +604,9 @@ msgstr "ext4"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:285
-#, fuzzy, c-format
+#, c-format
 msgid "XFS (version %s)"
-msgstr "インストールされたバージョン"
+msgstr "XFS (バージョン %s)"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:288
@@ -656,9 +621,9 @@ msgstr "xfs"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:297
-#, fuzzy, c-format
+#, c-format
 msgid "ReiserFS (version %s)"
-msgstr "インストールされたバージョン"
+msgstr "ReiserFS (バージョン %s)"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:300
@@ -673,9 +638,8 @@ msgstr "reiserfs"
 
 #. Translators: iso9660 is a filesystem type
 #: ../gdu/gdu-util.c:308
-#, fuzzy
 msgid "ISO 9660"
-msgstr "ISO 9660 イメージがありません"
+msgstr "ISO 9660"
 
 #. Translators: iso9660 is a filesystem type
 #: ../gdu/gdu-util.c:311
@@ -684,9 +648,8 @@ msgstr "iso9660"
 
 #. Translators: udf is a filesystem type
 #: ../gdu/gdu-util.c:316
-#, fuzzy
 msgid "Universal Disk Format"
-msgstr "swap としてフォーマットしますか?"
+msgstr "Universal Disk Format"
 
 #. Translators: udf is a filesystem type
 #: ../gdu/gdu-util.c:319
@@ -694,15 +657,13 @@ msgid "udf"
 msgstr "udf"
 
 #: ../gdu/gdu-util.c:323
-#, fuzzy
 msgid "Swap Space"
-msgstr "使用中の領域:"
+msgstr "スワップ領域"
 
 #. Translators: filesystem type for swap space
 #: ../gdu/gdu-util.c:326
-#, fuzzy
 msgid "swap"
-msgstr "swap の追加"
+msgstr "スワップ"
 
 #: ../gdu/gdu-util.c:331
 #, c-format
@@ -710,9 +671,9 @@ msgid "LVM2 Physical Volume (version %s)"
 msgstr "LVM2 物理ボリューム (バージョン %s)"
 
 #: ../gdu/gdu-util.c:333
-#, fuzzy, c-format
+#, c-format
 msgid "LVM2 Physical Volume"
-msgstr "LVM 物理ボリューム"
+msgstr "LVM2 物理ボリューム"
 
 #. Translators: short name for LVM2 Physical Volume
 #: ../gdu/gdu-util.c:336
@@ -720,20 +681,19 @@ msgid "lvm2_pv"
 msgstr "lvm2_pv"
 
 #: ../gdu/gdu-util.c:342
-#, fuzzy, c-format
+#, c-format
 msgid "RAID Component (version %s)"
-msgstr "バージョン %s を直ちに実行"
+msgstr "RAID コンポーネント (バージョン %s)"
 
 #: ../gdu/gdu-util.c:344
-#, fuzzy, c-format
+#, c-format
 msgid "RAID Component"
-msgstr "RAID デバイス"
+msgstr "RAID コンポーネント"
 
 #. Translators: short name for 'RAID Component'
 #: ../gdu/gdu-util.c:347
-#, fuzzy
 msgid "raid"
-msgstr "RAID デバイス"
+msgstr "RAID"
 
 #. Translators: long filesystem type for minix
 #: ../gdu/gdu-util.c:352
@@ -746,64 +706,52 @@ msgid "minix"
 msgstr "minix"
 
 #: ../gdu/gdu-util.c:369
-#, fuzzy
 msgid "Creating File System"
-msgstr "ファイルシステム・タイプ(_F):"
+msgstr "ファイル・システムを作成中"
 
 #: ../gdu/gdu-util.c:371
-#, fuzzy
 msgid "Mounting File System"
-msgstr "ファイルシステム・タイプ(_F):"
+msgstr "ファイル・システムをマウント中"
 
 #: ../gdu/gdu-util.c:373
-#, fuzzy
 msgid "Unmounting File System"
-msgstr "ファイルシステム・タイプ(_F):"
+msgstr "ファイル・システムをアンマウント中"
 
 #: ../gdu/gdu-util.c:375
-#, fuzzy
 msgid "Checking File System"
-msgstr "ファイルシステム・タイプ(_F):"
+msgstr "ファイル・システムをチェック中"
 
 #: ../gdu/gdu-util.c:377
-#, fuzzy
 msgid "Creating LUKS Device"
-msgstr "デバイスの設定失敗"
+msgstr "LUKS デバイスを作成中"
 
 #: ../gdu/gdu-util.c:379
-#, fuzzy
 msgid "Unlocking LUKS Device"
-msgstr "デバイスの設定失敗"
+msgstr "LUKS デバイスのロックを解除中"
 
 #: ../gdu/gdu-util.c:381
-#, fuzzy
 msgid "Locking LUKS Device"
-msgstr "デバイスの設定失敗"
+msgstr "LUKS デバイスをロック中"
 
 #: ../gdu/gdu-util.c:383
-#, fuzzy
 msgid "Creating Partition Table"
-msgstr "CD の目次"
+msgstr "パーティション・テーブルを作成中"
 
 #: ../gdu/gdu-util.c:385
-#, fuzzy
 msgid "Deleting Partition"
-msgstr "パーティションの変更(_M)"
+msgstr "パーティションを削除中"
 
 #: ../gdu/gdu-util.c:387
-#, fuzzy
 msgid "Creating Partition"
-msgstr "パーティションの変更(_M)"
+msgstr "パーティションを作成中"
 
 #: ../gdu/gdu-util.c:389
-#, fuzzy
 msgid "Modifying Partition"
-msgstr "パーティションの変更(_M)"
+msgstr "パーティションを変更中"
 
 #: ../gdu/gdu-util.c:391
-#, fuzzy
 msgid "Setting Label for Device"
-msgstr "暗号化されたデバイス用のパスフレーズ"
+msgstr "デバイスのラベルを設定中"
 
 #: ../gdu/gdu-util.c:393
 msgid "Changing Passphrase for Encrypted LUKS Device"
@@ -818,24 +766,20 @@ msgid "Removing Component from RAID Array"
 msgstr "RAID アレイからコンポーネントを取り外し中"
 
 #: ../gdu/gdu-util.c:399
-#, fuzzy
 msgid "Stopping RAID Array"
-msgstr "MD RAID アレイ %s (%-0.f MB)"
+msgstr "RAID アレイを停止中"
 
 #: ../gdu/gdu-util.c:401
-#, fuzzy
 msgid "Starting RAID Array"
-msgstr "MD RAID アレイ %s (%-0.f MB)"
+msgstr "RAID アレイを開始中"
 
 #: ../gdu/gdu-util.c:403
-#, fuzzy
 msgid "Checking RAID Array"
-msgstr "MD RAID アレイ %s (%-0.f MB)"
+msgstr "RAID アレイをチェック中"
 
 #: ../gdu/gdu-util.c:405
-#, fuzzy
 msgid "Repairing RAID Array"
-msgstr "MD RAID アレイ %s (%-0.f MB)"
+msgstr "RAID アレイを修復中"
 
 #: ../gdu/gdu-util.c:407
 msgid "Running Short SMART Self-Test"
@@ -850,19 +794,16 @@ msgid "Running Conveyance SMART Self-Test"
 msgstr "SMART 搬送セルフテストを実行中"
 
 #: ../gdu/gdu-util.c:413
-#, fuzzy
 msgid "Ejecting Media"
-msgstr "メディアプレイヤー"
+msgstr "メディアを取り出し中"
 
 #: ../gdu/gdu-util.c:415
-#, fuzzy
 msgid "Detaching Device"
-msgstr "オーディオデバイス"
+msgstr "デバイスを取り外し中"
 
 #: ../gdu/gdu-util.c:417
-#, fuzzy
 msgid "Forcibly Unmounting Filesystem"
-msgstr "ファイルシステムのリサイズ・エラー"
+msgstr "強制的にファイル・システムをアンマウント中"
 
 #: ../gdu/gdu-util.c:419
 msgid "Forcibly Locking LUKS device"
@@ -876,46 +817,38 @@ msgstr "Linux 基本データ・パーティション"
 
 #. Same as MS BDP
 #: ../gdu/gdu-util.c:436
-#, fuzzy
 msgid "Linux RAID Partition"
-msgstr "EFI システム パーティション"
+msgstr "Linux RAID パーティション"
 
 #: ../gdu/gdu-util.c:437
-#, fuzzy
 msgid "Linux Swap Partition"
-msgstr "swap パーティションのアップグレード"
+msgstr "Linux スワップ・パーティション"
 
 #: ../gdu/gdu-util.c:438
-#, fuzzy
 msgid "Linux LVM Partition"
-msgstr "EFI システム パーティション"
+msgstr "Linux LVM パーティション"
 
 #: ../gdu/gdu-util.c:439
-#, fuzzy
 msgid "Linux Reserved Partition"
-msgstr "EFI システム パーティション"
+msgstr "Linux 予約パーティション"
 
 #. Not associated with any OS
 #: ../gdu/gdu-util.c:441
-#, fuzzy
 msgid "MBR Partition Scheme"
-msgstr "Scheme ソースコード"
+msgstr "MBR パーティション構成"
 
 #: ../gdu/gdu-util.c:442
-#, fuzzy
 msgid "EFI System Partition"
-msgstr "EFI システム パーティション"
+msgstr "EFI システム・パーティション"
 
 #: ../gdu/gdu-util.c:443
-#, fuzzy
 msgid "BIOS Boot Partition"
-msgstr "ブート パーティションの最初のセクター"
+msgstr "BIOS 起動パーティション"
 
 #. Microsoft
 #: ../gdu/gdu-util.c:445
-#, fuzzy
 msgid "Microsoft Reserved Partition"
-msgstr "EFI システム パーティション"
+msgstr "Microsoft 予約パーティション"
 
 #: ../gdu/gdu-util.c:446
 msgid "Microsoft Basic Data Partition"
@@ -945,141 +878,116 @@ msgstr "HP-UX サービス・パーティション"
 
 #. FreeBSD
 #: ../gdu/gdu-util.c:454
-#, fuzzy
 msgid "FreeBSD Boot Partition"
-msgstr "ブート パーティションの最初のセクター"
+msgstr "FreeBSD 起動パーティション"
 
 #: ../gdu/gdu-util.c:455
-#, fuzzy
 msgid "FreeBSD Data Partition"
-msgstr "EFI システム パーティション"
+msgstr "FreeBSD データ・パーティション"
 
 #: ../gdu/gdu-util.c:456
-#, fuzzy
 msgid "FreeBSD Swap Partition"
-msgstr "swap パーティションのアップグレード"
+msgstr "FreeBSD スワップ・パーティション"
 
 #: ../gdu/gdu-util.c:457
-#, fuzzy
 msgid "FreeBSD UFS Partition"
-msgstr "EFI システム パーティション"
+msgstr "FreeBSD UFS パーティション"
 
 #: ../gdu/gdu-util.c:458
-#, fuzzy
 msgid "FreeBSD Vinum Partition"
-msgstr "EFI システム パーティション"
+msgstr "FreeBSD ボリューム・パーティション"
 
 #: ../gdu/gdu-util.c:459
-#, fuzzy
 msgid "FreeBSD ZFS Partition"
-msgstr "EFI システム パーティション"
+msgstr "FreeBSD ZFS パーティション"
 
 #. Solaris
 #: ../gdu/gdu-util.c:461
-#, fuzzy
 msgid "Solaris Boot Partition"
-msgstr "ブート パーティションの最初のセクター"
+msgstr "Solaris 起動パーティション"
 
 #: ../gdu/gdu-util.c:462
-#, fuzzy
 msgid "Solaris Root Partition"
-msgstr "EFI システム パーティション"
+msgstr "Solaris ルート・パーティション"
 
 #: ../gdu/gdu-util.c:463
-#, fuzzy
 msgid "Solaris Swap Partition"
-msgstr "swap パーティションのアップグレード"
+msgstr "Solaris スワップ・パーティション"
 
 #: ../gdu/gdu-util.c:464
-#, fuzzy
 msgid "Solaris Backup Partition"
-msgstr "EFI システム パーティション"
+msgstr "Solaris バックアップ・パーティション"
 
 #: ../gdu/gdu-util.c:465
-#, fuzzy
 msgid "Solaris /usr Partition"
-msgstr "EFI システム パーティション"
+msgstr "Solaris /usr パーティション"
 
 #. Same as Apple ZFS
 #: ../gdu/gdu-util.c:466
-#, fuzzy
 msgid "Solaris /var Partition"
-msgstr "EFI システム パーティション"
+msgstr "Solaris /var パーティション"
 
 #: ../gdu/gdu-util.c:467
-#, fuzzy
 msgid "Solaris /home Partition"
-msgstr "EFI システム パーティション"
+msgstr "Solaris /home パーティション"
 
 #: ../gdu/gdu-util.c:468
-#, fuzzy
 msgid "Solaris Alternate Sector Partition"
-msgstr "ブート パーティションの最初のセクター"
+msgstr "Solaris 代替セクタ・パーティション"
 
 #: ../gdu/gdu-util.c:469
-#, fuzzy
 msgid "Solaris Reserved Partition"
-msgstr "EFI システム パーティション"
+msgstr "Solaris 予約パーティション"
 
 #: ../gdu/gdu-util.c:470
-#, fuzzy
 msgid "Solaris Reserved Partition (2)"
-msgstr "EFI システム パーティション"
+msgstr "Solaris 予約パーティション (2)"
 
 #: ../gdu/gdu-util.c:471
-#, fuzzy
 msgid "Solaris Reserved Partition (3)"
-msgstr "EFI システム パーティション"
+msgstr "Solaris 予約パーティション (3)"
 
 #: ../gdu/gdu-util.c:472
-#, fuzzy
 msgid "Solaris Reserved Partition (4)"
-msgstr "EFI システム パーティション"
+msgstr "Solaris 予約パーティション (4)"
 
 #: ../gdu/gdu-util.c:473
-#, fuzzy
 msgid "Solaris Reserved Partition (5)"
-msgstr "EFI システム パーティション"
+msgstr "Solaris 予約パーティション (5)"
 
 #. Mac OS X
 #: ../gdu/gdu-util.c:475
 #: ../gdu/gdu-util.c:494
-#, fuzzy
 msgid "Apple HFS/HFS+ Partition"
-msgstr "EFI システム パーティション"
+msgstr "Apple HFS/HFS+ パーティション"
 
 #. see http://developer.apple.com/documentation/mac/Devices/Devices-126.html
 #. *     http://lists.apple.com/archives/Darwin-drivers/2003/May/msg00021.html
 #: ../gdu/gdu-util.c:476
 #: ../gdu/gdu-util.c:493
-#, fuzzy
 msgid "Apple UFS Partition"
-msgstr "EFI システム パーティション"
+msgstr "Apple UFS パーティション"
 
 #: ../gdu/gdu-util.c:477
-#, fuzzy
 msgid "Apple ZFS Partition"
-msgstr "EFI システム パーティション"
+msgstr "Apple ZFS パーティション"
 
 #. Same as Solaris /usr
 #: ../gdu/gdu-util.c:478
-#, fuzzy
 msgid "Apple RAID Partition"
-msgstr "EFI システム パーティション"
+msgstr "Apple RAID パーティション"
 
 #: ../gdu/gdu-util.c:479
 msgid "Apple RAID Partition (Offline)"
 msgstr "Apple RAID パーティション (オフライン)"
 
 #: ../gdu/gdu-util.c:480
-#, fuzzy
 msgid "Apple Boot Partition"
-msgstr "ブート パーティションの最初のセクター"
+msgstr "Apple 起動パーティション"
 
 #: ../gdu/gdu-util.c:481
-#, fuzzy
 msgid "Apple Label Partition"
-msgstr "EFI システム パーティション"
+msgstr "Apple ラベル・パーティション"
 
 #: ../gdu/gdu-util.c:482
 msgid "Apple TV Recovery Partition"
@@ -1087,94 +995,77 @@ msgstr "Apple TV リカバリ・パーティション"
 
 #. NetBSD
 #: ../gdu/gdu-util.c:484
-#, fuzzy
 msgid "NetBSD Swap Partition"
-msgstr "swap パーティションのアップグレード"
+msgstr "NetBSD スワップ・パーティション"
 
 #: ../gdu/gdu-util.c:485
-#, fuzzy
 msgid "NetBSD FFS Partition"
-msgstr "EFI システム パーティション"
+msgstr "NetBSD FFS パーティション"
 
 #: ../gdu/gdu-util.c:486
-#, fuzzy
 msgid "NetBSD LFS Partition"
-msgstr "EFI システム パーティション"
+msgstr "NetBSD LFS パーティション"
 
 #: ../gdu/gdu-util.c:487
-#, fuzzy
 msgid "NetBSD RAID Partition"
-msgstr "EFI システム パーティション"
+msgstr "NetBSD RAID パーティション"
 
 #: ../gdu/gdu-util.c:488
-#, fuzzy
 msgid "NetBSD Concatenated  Partition"
-msgstr "EFI システム パーティション"
+msgstr "NetBSD 連結パーティション"
 
 #: ../gdu/gdu-util.c:489
-#, fuzzy
 msgid "NetBSD Encrypted Partition"
-msgstr "暗号化されたパーティション用のパスフレーズを入力してください。"
+msgstr "NetBSD 暗号化パーティション"
 
 #: ../gdu/gdu-util.c:495
-#, fuzzy
 msgid "Apple Partition Map"
-msgstr "地図上の仲間(_M)"
+msgstr "Apple パーティション・マップ"
 
 #: ../gdu/gdu-util.c:496
-#, fuzzy
 msgid "Unused Partition"
-msgstr "パーティションの変更(_M)"
+msgstr "未使用パーティション"
 
 #: ../gdu/gdu-util.c:497
-#, fuzzy
 msgid "Empty Partition"
-msgstr "パーティションの変更(_M)"
+msgstr "空きパーティション"
 
 #: ../gdu/gdu-util.c:498
-#, fuzzy
 msgid "Driver Partition"
-msgstr "パーティションの変更(_M)"
+msgstr "ドライバ・パーティション"
 
 #: ../gdu/gdu-util.c:499
-#, fuzzy
 msgid "Driver 4.3 Partition"
-msgstr "パーティションの変更(_M)"
+msgstr "ドライバ 4.3 パーティション"
 
 #: ../gdu/gdu-util.c:500
-#, fuzzy
 msgid "ProDOS file system"
-msgstr "ファイルシステム・タイプ(_F):"
+msgstr "ProDOS ファイル・システム"
 
 #: ../gdu/gdu-util.c:501
-#, fuzzy
 msgid "FAT 12"
-msgstr "Sans 12"
+msgstr "FAT 12"
 
 #: ../gdu/gdu-util.c:502
-#, fuzzy
 msgid "FAT 16"
-msgstr "補助 16"
+msgstr "FAT 16"
 
 #: ../gdu/gdu-util.c:503
 msgid "FAT 32"
 msgstr "FAT 32"
 
 #: ../gdu/gdu-util.c:504
-#, fuzzy
 msgid "FAT 16 (Windows)"
-msgstr "DOS/Windows 実行ファイル"
+msgstr "FAT 16 (Windows)"
 
 #: ../gdu/gdu-util.c:505
-#, fuzzy
 msgid "FAT 32 (Windows)"
-msgstr "DOS/Windows 実行ファイル"
+msgstr "FAT 32 (Windows)"
 
 #. see http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
 #: ../gdu/gdu-util.c:508
-#, fuzzy
 msgid "Empty (0x00)"
-msgstr "空のドキュメント"
+msgstr "Empty (0x00)"
 
 #: ../gdu/gdu-util.c:509
 msgid "FAT12 (0x01)"
@@ -1185,9 +1076,8 @@ msgid "FAT16 <32M (0x04)"
 msgstr "FAT16 <32M (0x04)"
 
 #: ../gdu/gdu-util.c:511
-#, fuzzy
 msgid "Extended (0x05)"
-msgstr "逃走中"
+msgstr "拡張 (0x05)"
 
 #: ../gdu/gdu-util.c:512
 msgid "FAT16 (0x06)"
@@ -1218,9 +1108,8 @@ msgid "OPUS (0x10)"
 msgstr "OPUS (0x10)"
 
 #: ../gdu/gdu-util.c:519
-#, fuzzy
 msgid "Hidden FAT12 (0x11)"
-msgstr "隠しファイルを表示する(_H)"
+msgstr "隠し属性付き FAT12 (0x11)"
 
 #: ../gdu/gdu-util.c:520
 msgid "Compaq diagnostics (0x12)"
@@ -1231,9 +1120,8 @@ msgid "Hidden FAT16 <32M (0x14)"
 msgstr "隠し属性付き FAT16 <32M (0x14)"
 
 #: ../gdu/gdu-util.c:522
-#, fuzzy
 msgid "Hidden FAT16 (0x16)"
-msgstr "隠しファイルを表示する(_H)"
+msgstr "隠し属性付き FAT16 (0x16)"
 
 #: ../gdu/gdu-util.c:523
 msgid "Hidden HPFS/NTFS (0x17)"
@@ -1261,28 +1149,24 @@ msgstr "Minix (0x81)"
 
 #. cf. http://en.wikipedia.org/wiki/MINIX_file_system
 #: ../gdu/gdu-util.c:529
-#, fuzzy
 msgid "Linux swap (0x82)"
-msgstr "swap としてフォーマットしますか?"
+msgstr "Linux スワップ (0x82)"
 
 #: ../gdu/gdu-util.c:530
-#, fuzzy
 msgid "Linux (0x83)"
-msgstr "Linux スクリーン・リーダ"
+msgstr "Linux (0x83)"
 
 #: ../gdu/gdu-util.c:531
 msgid "Hibernation (0x84)"
 msgstr "ハイバネーション (0x84)"
 
 #: ../gdu/gdu-util.c:532
-#, fuzzy
 msgid "Linux Extended (0x85)"
-msgstr "拡張 VKB パネル"
+msgstr "Linux 拡張領域 (0x85)"
 
 #: ../gdu/gdu-util.c:533
-#, fuzzy
 msgid "Linux LVM (0x8e)"
-msgstr "LVM ボリューム・グループ"
+msgstr "Linux LVM (0x8e)"
 
 #: ../gdu/gdu-util.c:534
 msgid "Hibernation (0xa0)"
@@ -1297,19 +1181,16 @@ msgid "OpenBSD (0xa6)"
 msgstr "OpenBSD (0xa6)"
 
 #: ../gdu/gdu-util.c:537
-#, fuzzy
 msgid "Mac OS X (0xa8)"
-msgstr "Palm OS データベース"
+msgstr "Mac OS X (0xa8)"
 
 #: ../gdu/gdu-util.c:538
-#, fuzzy
 msgid "Mac OS X (0xaf)"
-msgstr "Palm OS データベース"
+msgstr "Mac OS X (0xaf)"
 
 #: ../gdu/gdu-util.c:539
-#, fuzzy
 msgid "Solaris boot (0xbe)"
-msgstr "PPC PReP ブート"
+msgstr "Solaris 起動領域 (0xbe)"
 
 #: ../gdu/gdu-util.c:540
 msgid "Solaris (0xbf)"
@@ -1324,9 +1205,8 @@ msgid "SkyOS SkyFS (0xec)"
 msgstr "SkyOS SkyFS (0xec)"
 
 #: ../gdu/gdu-util.c:543
-#, fuzzy
 msgid "EFI GPT (0xee)"
-msgstr "EFI システム パーティション"
+msgstr "EFI GPT (0xee)"
 
 #: ../gdu/gdu-util.c:544
 msgid "EFI (FAT-12/16/32 (0xef)"
@@ -1340,9 +1220,9 @@ msgstr "Linux RAID 自動検出 (0xfd)"
 #. * %s is the partition type name
 #.
 #: ../gdu/gdu-util.c:572
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown (%s)"
-msgstr "不明"
+msgstr "不明 (%s)"
 
 #: ../gdu/gdu-util.c:582
 msgid "A popular format compatible with almost any device or system, typically used for file exchange."
@@ -1393,24 +1273,24 @@ msgid "Marks the entire disk as unused. Use this option only if you want to avoi
 msgstr "ディスク全体を未使用領域としてマークします。例えば、ディスク全体を使用する場合やフロッピー/Zip ディスクのように、ディスクをパーティション分けしたくない場合のみ、このオプションを使用してください。"
 
 #: ../gdu/gdu-util.c:828
-#, fuzzy, c-format
+#, c-format
 msgid "LUKS Passphrase for UUID %s"
-msgstr "暗号化されたデバイス用のパスフレーズ"
+msgstr "UUID %s の LUKS パスフレーズ"
 
 #: ../gdu/gdu-util.c:888
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f KB/s"
-msgstr "%0.1f GiB"
+msgstr "%.1f KB/s"
 
 #: ../gdu/gdu-util.c:891
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MB/s"
-msgstr "サイズ (MB)(_S):"
+msgstr "%.1f MB/s"
 
 #: ../gdu/gdu-util.c:894
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f GB/s"
-msgstr "GB-Eire"
+msgstr "%.1f GB/s"
 
 #. Translators: interface name for serial ATA disks
 #: ../gdu/gdu-util.c:910
@@ -1434,9 +1314,8 @@ msgstr "ATA"
 
 #. Translators: interface name for SCSI disks
 #: ../gdu/gdu-util.c:922
-#, fuzzy
 msgid "SCSI"
-msgstr "SCSI ドライバーを読み込み中"
+msgstr "SCSI"
 
 #. Translators: interface name for USB disks
 #: ../gdu/gdu-util.c:925
@@ -1455,13 +1334,11 @@ msgstr "SDIO"
 
 #. Translators: interface name for virtual disks
 #: ../gdu/gdu-util.c:934
-#, fuzzy
 msgid "Virtual"
-msgstr "仮想キーボード"
+msgstr "仮想"
 
 #. Translators: name shown for unknown disk connection interfaces
 #: ../gdu/gdu-util.c:940
-#, fuzzy
 msgctxt "connection name"
 msgid "Unknown"
 msgstr "不明"
@@ -1471,57 +1348,49 @@ msgstr "不明"
 #. * second %s is the speed, like '2 Mbit/s'
 #.
 #: ../gdu/gdu-util.c:950
-#, fuzzy, c-format
+#, c-format
 msgid "%s at %s"
-msgstr "%s / %s で %s/s"
+msgstr "%s %s"
 
 #: ../gdu/gdu-util.c:969
-#, fuzzy
 msgctxt "RAID level"
 msgid "Stripe (RAID-0)"
-msgstr "RAID デバイス"
+msgstr "ストライピング (RAID-0)"
 
 #: ../gdu/gdu-util.c:971
-#, fuzzy
 msgctxt "RAID level"
 msgid "RAID-0"
-msgstr "RAID デバイス"
+msgstr "RAID-0"
 
 #: ../gdu/gdu-util.c:974
-#, fuzzy
 msgctxt "RAID level"
 msgid "Mirror (RAID-1)"
-msgstr "RAID デバイス"
+msgstr "ミラー (RAID-1)"
 
 #: ../gdu/gdu-util.c:976
-#, fuzzy
 msgctxt "RAID level"
 msgid "RAID-1"
-msgstr "RAID デバイス"
+msgstr "RAID-1"
 
 #: ../gdu/gdu-util.c:979
-#, fuzzy
 msgctxt "RAID level"
 msgid "Parity Disk (RAID-4)"
-msgstr "RAID デバイスの作成"
+msgstr "パリティディスク (RAID-4)"
 
 #: ../gdu/gdu-util.c:981
-#, fuzzy
 msgctxt "RAID level"
 msgid "RAID-4"
-msgstr "RAID デバイス"
+msgstr "RAID-4"
 
 #: ../gdu/gdu-util.c:984
-#, fuzzy
 msgctxt "RAID level"
 msgid "Distributed Parity (RAID-5)"
-msgstr "RAID デバイスの作成"
+msgstr "分散パリティ (RAID-5)"
 
 #: ../gdu/gdu-util.c:986
-#, fuzzy
 msgctxt "RAID level"
 msgid "RAID-5"
-msgstr "RAID デバイス"
+msgstr "RAID-5"
 
 #: ../gdu/gdu-util.c:989
 msgctxt "RAID level"
@@ -1529,10 +1398,9 @@ msgid "Dual Distributed Parity (RAID-6)"
 msgstr "二重分散パリティ (RAID-6)"
 
 #: ../gdu/gdu-util.c:991
-#, fuzzy
 msgctxt "RAID level"
 msgid "RAID-6"
-msgstr "RAID デバイス"
+msgstr "RAID-6"
 
 #: ../gdu/gdu-util.c:994
 msgctxt "RAID level"
@@ -1540,10 +1408,9 @@ msgid "Stripe of Mirrors (RAID-10)"
 msgstr "ミラーのストライプ (RAID-10)"
 
 #: ../gdu/gdu-util.c:996
-#, fuzzy
 msgctxt "RAID level"
 msgid "RAID-10"
-msgstr "#10 封筒"
+msgstr "RAID-10"
 
 #: ../gdu/gdu-util.c:999
 msgctxt "RAID level"
@@ -1580,15 +1447,14 @@ msgid "Striped set with distributed parity. Provides improved performance and fa
 msgstr "分散パリティを持たせたストライプ・セットです。パフォーマンスに優れ、耐障害性があります。RAID-10 アレイではミラーを構成する全ドライブが故障しない限り、複数のドライブの故障に耐えられます。"
 
 #: ../gdu/gdu-util.c:1041
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown RAID level %s."
-msgstr "[%s:%u] 無効なログ・レベル '%s' です。"
+msgstr "不明な RAID レベル %s です。"
 
 #. Translators: Overall description of the GOOD status
 #: ../gdu/gdu-util.c:1077
-#, fuzzy
 msgid "Disk is healthy"
-msgstr "%s さんはオフラインです。"
+msgstr "ディスクは正常です"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
 #: ../gdu/gdu-util.c:1081
@@ -1621,267 +1487,226 @@ msgstr "ディスクに多数の不良セクタがあります"
 
 #. Translators: Overall description of the BAD_STATUS status
 #: ../gdu/gdu-util.c:1103
-#, fuzzy
 msgid "DISK FAILURE IS IMMINENT"
-msgstr "ディスクに空き領域がありません"
+msgstr "ディスクに故障の兆候があります"
 
 #. Translators: Description when the overall SMART status is unknown
 #: ../gdu/gdu-util.c:1110
-#, fuzzy
 msgid "Unknown"
 msgstr "不明"
 
 #. Translator: The word "blank" is used as an adjective, e.g. we are decsribing discs that are already blank
 #: ../gdu/gdu-volume.c:75
-#, fuzzy
 msgid "CD-ROM Disc"
-msgstr "ブランク CD ディスク"
+msgstr "CD-ROM ディスク"
 
 #: ../gdu/gdu-volume.c:75
-#, fuzzy
 msgid "Blank CD-ROM Disc"
-msgstr "ブランク Blu-ray ディスク"
+msgstr "ブランク CD-ROM ディスク"
 
 #: ../gdu/gdu-volume.c:76
-#, fuzzy
 msgid "CD-R Disc"
-msgstr "ブランク CD ディスク"
+msgstr "CD-R ディスク"
 
 #: ../gdu/gdu-volume.c:76
-#, fuzzy
 msgid "Blank CD-R Disc"
-msgstr "ブランク CD ディスク"
+msgstr "ブランク CD-R ディスク"
 
 #: ../gdu/gdu-volume.c:77
-#, fuzzy
 msgid "CD-RW Disc"
-msgstr "ブランク CD ディスク"
+msgstr "CD-RW ディスク"
 
 #: ../gdu/gdu-volume.c:77
-#, fuzzy
 msgid "Blank CD-RW Disc"
-msgstr "ブランク Blu-ray ディスク"
+msgstr "ブランク CD-RW ディスク"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
-#, fuzzy
 msgid "DVD-ROM Disc"
-msgstr "ブランク DVD ディスク"
+msgstr "DVD-ROM ディスク"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
-#, fuzzy
 msgid "Blank DVD-ROM Disc"
-msgstr "ブランク HD DVD ディスク"
+msgstr "ブランク DVD-ROM ディスク"
 
 #: ../gdu/gdu-volume.c:80
-#, fuzzy
 msgid "DVD-RW Disc"
-msgstr "ブランク DVD ディスク"
+msgstr "DVD-RW ディスク"
 
 #: ../gdu/gdu-volume.c:80
-#, fuzzy
 msgid "Blank DVD-RW Disc"
-msgstr "ブランク HD DVD ディスク"
+msgstr "ブランク DVD-RW ディスク"
 
 #: ../gdu/gdu-volume.c:81
-#, fuzzy
 msgid "DVD-RAM Disc"
-msgstr "ブランク DVD ディスク"
+msgstr "DVD-RAM ディスク"
 
 #: ../gdu/gdu-volume.c:81
-#, fuzzy
 msgid "Blank DVD-RAM Disc"
-msgstr "ブランク HD DVD ディスク"
+msgstr "ブランク DVD-RAM ディスク"
 
 #: ../gdu/gdu-volume.c:82
-#, fuzzy
 msgid "DVD+R Disc"
-msgstr "ブランク DVD ディスク"
+msgstr "DVD+R ディスク"
 
 #: ../gdu/gdu-volume.c:82
-#, fuzzy
 msgid "Blank DVD+R Disc"
-msgstr "ブランク DVD ディスク"
+msgstr "ブランク DVD+R ディスク"
 
 #: ../gdu/gdu-volume.c:83
-#, fuzzy
 msgid "DVD+RW Disc"
-msgstr "ブランク DVD ディスク"
+msgstr "DVD+RW ディスク"
 
 #: ../gdu/gdu-volume.c:83
-#, fuzzy
 msgid "Blank DVD+RW Disc"
-msgstr "ブランク HD DVD ディスク"
+msgstr "ブランク DVD+RW ディスク"
 
 #: ../gdu/gdu-volume.c:84
-#, fuzzy
 msgid "DVD+R DL Disc"
-msgstr "ブランク DVD ディスク"
+msgstr "DVD+R DL ディスク"
 
 #: ../gdu/gdu-volume.c:84
-#, fuzzy
 msgid "Blank DVD+R DL Disc"
-msgstr "ブランク HD DVD ディスク"
+msgstr "ブランク DVD+R DL ディスク"
 
 #: ../gdu/gdu-volume.c:85
-#, fuzzy
 msgid "DVD+RW DL Disc"
-msgstr "HD DVD ビデオディスク"
+msgstr "DVD+RW DL ディスク"
 
 #: ../gdu/gdu-volume.c:85
 msgid "Blank DVD+RW DL Disc"
 msgstr "空の DVD+RW DL ディスク"
 
 #: ../gdu/gdu-volume.c:86
-#, fuzzy
 msgid "Blu-Ray Disc"
-msgstr "Blue-ray ビデオディスク"
+msgstr "Blu-Ray ディスク"
 
 #: ../gdu/gdu-volume.c:86
-#, fuzzy
 msgid "Blank Blu-Ray Disc"
-msgstr "ブランク Blu-ray ディスク"
+msgstr "ブランク Blu-Ray ディスク"
 
 #: ../gdu/gdu-volume.c:87
-#, fuzzy
 msgid "Blu-Ray R Disc"
-msgstr "Blue-ray ビデオディスク"
+msgstr "Blu-Ray R ディスク"
 
 #: ../gdu/gdu-volume.c:87
-#, fuzzy
 msgid "Blank Blu-Ray R Disc"
-msgstr "ブランク Blu-ray ディスク"
+msgstr "ブランク Blu-Ray R ディスク"
 
 #: ../gdu/gdu-volume.c:88
-#, fuzzy
 msgid "Blu-Ray RW Disc"
-msgstr "Blue-ray ビデオディスク"
+msgstr "Blu-Ray RW ディスク"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blank Blu-Ray RW Disc"
 msgstr "空の Blu-Ray RW ディスク"
 
 #: ../gdu/gdu-volume.c:89
-#, fuzzy
 msgid "HD DVD Disc"
-msgstr "HD DVD ビデオディスク"
+msgstr "HD DVD ディスク"
 
 #: ../gdu/gdu-volume.c:89
-#, fuzzy
 msgid "Blank HD DVD Disc"
 msgstr "ブランク HD DVD ディスク"
 
 #: ../gdu/gdu-volume.c:90
-#, fuzzy
 msgid "HD DVD-R Disc"
-msgstr "HD DVD ビデオディスク"
+msgstr "HD DVD-R ディスク"
 
 #: ../gdu/gdu-volume.c:90
-#, fuzzy
 msgid "Blank HD DVD-R Disc"
-msgstr "ブランク HD DVD ディスク"
+msgstr "ブランク HD DVD-R ディスク"
 
 #: ../gdu/gdu-volume.c:91
-#, fuzzy
 msgid "HD DVD-RW Disc"
-msgstr "HD DVD ビデオディスク"
+msgstr "HD DVD-RW ディスク"
 
 #: ../gdu/gdu-volume.c:91
 msgid "Blank HD DVD-RW Disc"
 msgstr "空の HD DVD-RW ディスク"
 
 #: ../gdu/gdu-volume.c:92
-#, fuzzy
 msgid "MO Disc"
-msgstr "ディスクの変更"
+msgstr "MO ディスク"
 
 #: ../gdu/gdu-volume.c:92
-#, fuzzy
 msgid "Blank MO Disc"
-msgstr "ブランク CD ディスク"
+msgstr "ブランク MO ディスク"
 
 #: ../gdu/gdu-volume.c:93
-#, fuzzy
 msgid "MRW Disc"
-msgstr "ディスクの変更"
+msgstr "MRW ディスク"
 
 #: ../gdu/gdu-volume.c:93
-#, fuzzy
 msgid "Blank MRW Disc"
-msgstr "ブランク CD ディスク"
+msgstr "ブランク MRW ディスク"
 
 #: ../gdu/gdu-volume.c:94
-#, fuzzy
 msgid "MRW/W Disc"
-msgstr "ディスクの変更"
+msgstr "MRW/W ディスク"
 
 #: ../gdu/gdu-volume.c:94
-#, fuzzy
 msgid "Blank MRW/W Disc"
-msgstr "ブランク CD ディスク"
+msgstr "ブランク MRW/W ディスク"
 
 #: ../gdu/gdu-volume.c:276
-#, fuzzy
 msgid "Blank Optical Disc"
-msgstr "ブランク CD ディスク"
+msgstr "ブランク光学ディスク"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
 #.
 #: ../gdu/gdu-volume.c:286
-#, fuzzy, c-format
+#, c-format
 msgid "%s Extended"
-msgstr "拡張領域"
+msgstr "拡張領域 %s"
 
 #: ../gdu/gdu-volume.c:287
-#, fuzzy
 msgid "Contains logical partitions"
-msgstr "論理ボリュームを作成"
+msgstr "論理パーティションを含んでいます"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
 #.
 #: ../gdu/gdu-volume.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "%s Encrypted"
-msgstr "暗合化されています： %s"
+msgstr "暗号化パーティション %s"
 
 #: ../gdu/gdu-volume.c:312
-#, fuzzy
 msgid "Optical Disc"
-msgstr "ディスクの変更"
+msgstr "光学ディスク"
 
 #. Translators: Label for a partition with a filesystem
 #. * %s is the size, formatted like '45 GB'
 #.
 #: ../gdu/gdu-volume.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "%s Filesystem"
-msgstr "ファイルシステムのリサイズ・エラー"
+msgstr "ファイル・システム %s"
 
 #. Translators: Label for a partition table
 #. * %s is the size, formatted like '45 GB'
 #.
 #: ../gdu/gdu-volume.c:324
-#, fuzzy, c-format
+#, c-format
 msgid "%s Partition Table"
-msgstr "パーティションの変更(_M)"
+msgstr "パーティション・テーブル %s"
 
 #. Translators: Label for a LVM volume
 #. * %s is the size, formatted like '45 GB'
 #.
 #: ../gdu/gdu-volume.c:330
-#, fuzzy, c-format
+#, c-format
 msgid "%s LVM2 Physical Volume"
-msgstr "LVM 物理ボリューム"
+msgstr "LVM2 物理ボリューム %s"
 
 #. Translators: Used if no specific RAID level could be determined
 #: ../gdu/gdu-volume.c:343
-#, fuzzy
 msgctxt "RAID level"
 msgid "RAID"
-msgstr "RAID デバイス"
+msgstr "RAID"
 
 #. Translators: label for a RAID component
 #. * First %s is the size, formatted like '45 GB'
@@ -1897,25 +1722,25 @@ msgstr "%s %s コンポーネント"
 #. * First %s is the array name, e.g. 'My Photos RAID',
 #.
 #: ../gdu/gdu-volume.c:354
-#, fuzzy, c-format
+#, c-format
 msgid "Part of \"%s\" array"
-msgstr "パッケージ配列ファイル"
+msgstr "\"%s\" アレイの一部"
 
 #. Translators: label for a swap partition
 #. * %s is the size, formatted like '45 GB'
 #.
 #: ../gdu/gdu-volume.c:372
-#, fuzzy, c-format
+#, c-format
 msgid "%s Swap Space"
-msgstr "使用中の領域:"
+msgstr "スワップ領域 %s"
 
 #. Translators: label for a data partition
 #. * %s is the size, formatted like '45 GB'
 #.
 #: ../gdu/gdu-volume.c:377
-#, fuzzy, c-format
+#, c-format
 msgid "%s Data"
-msgstr "<b>データ</b>"
+msgstr "データ %s"
 
 #. Translators: label for a volume of unrecognized use
 #. * %s is the size, formatted like '45 GB'
@@ -1928,53 +1753,50 @@ msgstr "未確認領域 %s"
 
 #. Translators: description for a volume of unrecognized use
 #: ../gdu/gdu-volume.c:385
-#, fuzzy
 msgid "Unknown or Unused"
-msgstr "ペアリング済あるいは認証済"
+msgstr "不明または未使用領域"
 
 #. Translators: label for a partition
 #. * %s is the size, formatted like '45 GB'
 #.
 #: ../gdu/gdu-volume.c:392
 #: ../gdu/gdu-volume.c:394
-#, fuzzy, c-format
+#, c-format
 msgid "%s Partition"
-msgstr "パーティション"
+msgstr "パーティション %s"
 
 #. Translators: The VPD name for a volume. The %d is the partition number
 #. * and the %s is the VPD name for the drive.
 #.
 #: ../gdu/gdu-volume.c:430
-#, fuzzy, c-format
+#, c-format
 msgid "Partition %d of %s"
-msgstr "パーティション"
+msgstr "パーティション %d / %s"
 
 #. Translators: The VPD name for a volume. The %d is the partition number.
 #.
 #: ../gdu/gdu-volume.c:436
-#, fuzzy, c-format
+#, c-format
 msgid "Partition %d"
-msgstr "パーティション"
+msgstr "パーティション %d"
 
 #. Translators: The VPD name for a whole-disk volume.
 #. * The %s is the VPD name for the drive.
 #.
 #: ../gdu/gdu-volume.c:444
-#, fuzzy, c-format
+#, c-format
 msgid "Whole-disk volume on %s"
-msgstr "ディスクに空き領域がありません"
+msgstr "%s の全ディスク・ボリューム"
 
 #. Translators: The VPD name for a whole-disk volume.
 #.
 #: ../gdu/gdu-volume.c:449
-#, fuzzy
 msgid "Whole-disk volume"
-msgstr "論理ボリュームを作成"
+msgstr "全ディスク・ボリューム"
 
 #. translators:
 #. * The device has been disabled
 #: ../gvc/gvc-mixer-control.c:1003
-#, fuzzy
 msgid "Disabled"
 msgstr "無効"
 
@@ -1997,19 +1819,16 @@ msgstr[0] "入力 %u"
 msgstr[1] "入力 %u"
 
 #: ../gvc/gvc-mixer-control.c:1316
-#, fuzzy
 msgid "System Sounds"
-msgstr "システム・エラーです: %s"
+msgstr "システム効果音"
 
 #: ../power-icon/src/moblin-power-icon.c:46
-#, fuzzy
 msgid "Moblin Power Icon"
-msgstr "Bluetooth アイコンを表示(_S)"
+msgstr "Moblin 電源アイコン"
 
 #: ../power-icon/src/mpd-power-icon.c:72
-#, fuzzy
 msgid "Running low on battery"
-msgstr "アップデートが入手可能です (バッテリー駆動)"
+msgstr "バッテリー残量が少なくなっています"
 
 #: ../power-icon/src/mpd-power-icon.c:73
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
@@ -2049,9 +1868,8 @@ msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "このままの状態では、 %d  秒内に電源がオフになります。"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
-#, fuzzy
 msgid "Turn off"
-msgstr "Bluetooth を切る"
+msgstr "電源を切る"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
@@ -2079,9 +1897,8 @@ msgid "Sorry, it looks like your battery is broken."
 msgstr "バッテリーが壊れているようです。"
 
 #: ../src/mpd-computer-pane.c:111
-#, fuzzy
 msgid "All settings"
-msgstr "アラーム設定"
+msgstr "すべての設定"
 
 #: ../src/mpd-default-device-tile.c:100
 msgid ""
@@ -2092,34 +1909,30 @@ msgstr ""
 "自動的に認識されます。"
 
 #: ../src/mpd-disk-tile.c:64
-#, fuzzy, c-format
+#, c-format
 msgid "You are using %d%% of %s"
-msgstr "チャット相手:"
+msgstr "使用量は %d%% / %s です"
 
 #: ../src/mpd-folder-pane.c:91
-#, fuzzy
 msgid "Your computer"
-msgstr "コンピューターの更新"
+msgstr "ご利用中のコンピューター"
 
 #: ../src/mpd-storage-device-tile.c:96
-#, fuzzy, c-format
+#, c-format
 msgid "Using %d%% of %s"
-msgstr "サービスの使用を中止する"
+msgstr "使用量: %d%% / %s"
 
 #: ../src/mpd-storage-device-tile.c:383
-#, fuzzy
 msgid "Eject"
-msgstr "ディスクの取り出し(_E)"
+msgstr "取り出し"
 
 #: ../src/mpd-storage-device-tile.c:388
-#, fuzzy
 msgid "Open"
 msgstr "開く"
 
 #: ../src/mpd-volume-tile.c:110
-#, fuzzy
 msgid "Turned up to 11"
-msgstr "最新情報に保つ"
+msgstr "11 まで上げる"
 
 #: ../src/mpd-volume-tile.c:112
 msgid "Very loud"
@@ -2134,9 +1947,8 @@ msgid "Fairly loud"
 msgstr "少しうるさい"
 
 #: ../src/mpd-volume-tile.c:118
-#, fuzzy
 msgid "Middle of the road"
-msgstr "左の中指"
+msgstr "中間"
 
 #: ../src/mpd-volume-tile.c:120
 msgid "Fairly quiet"
@@ -2156,9 +1968,8 @@ msgstr "無音"
 
 #. Tile label
 #: ../src/mpd-volume-tile.c:306
-#, fuzzy
 msgid "Netbook volume"
-msgstr "ボリューム設定"
+msgstr "ネットブックの音量"
 
 #: ../src/mpd-volume-tile.c:345
 msgid "Mute"
