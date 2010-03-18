@@ -264,7 +264,7 @@ _update_layout (PengeGridView *grid_view)
                                    "y-expand", TRUE,
                                    "y-fill", FALSE,
                                    "y-align", 1.0,
-                                   "x-align", 0.0,
+                                   "x-align", 0.5,
                                    "x-expand", FALSE,
                                    "x-fill", FALSE,
                                    NULL);
