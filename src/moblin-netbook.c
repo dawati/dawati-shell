@@ -854,21 +854,6 @@ moblin_netbook_plugin_constructed (GObject *object)
   meta_prefs_override_no_tab_popup (TRUE);
 }
 
-static void
-moblin_netbook_panel_frame_footer_cb (MnbPanelFrame *frame, MutterWindow *mcw)
-{
-  MutterPlugin               *plugin  = moblin_netbook_get_plugin_singleton ();
-  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Window                      xwin    = mutter_window_get_x_window (mcw);
-  MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
-  MnbPanel                   *panel;
-
-  if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
-    {
-      mnb_panel_hide_with_toolbar (panel, MNB_SHOW_HIDE_BY_MOUSE);
-    }
-}
-
 static MutterShadow *
 moblin_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
 {
@@ -881,11 +866,6 @@ moblin_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
       MutterShadow *shadow = mutter_shadow_new ();
 
       shadow->actor = (ClutterActor*) mnb_panel_frame_new ();
-
-      g_signal_connect (shadow->actor,
-                        "footer-clicked",
-                        G_CALLBACK (moblin_netbook_panel_frame_footer_cb),
-                        mcw);
 
       shadow->attach_left   = -4;
       shadow->attach_top    = -4;

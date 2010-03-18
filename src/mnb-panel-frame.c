@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2009 Intel Corp.
+ * Copyright (c) 2009, 2010 Intel Corp.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
  *
@@ -34,20 +34,8 @@ enum {
   PROP_0,
 };
 
-enum
-{
-  FOOTER_CLICKED,
-
-  LAST_SIGNAL
-};
-
-static guint signals[LAST_SIGNAL] = { 0 };
-
 struct _MnbPanelFramePrivate
 {
-
-  ClutterActor *footer;
-
   gboolean disposed : 1;
 };
 
@@ -87,12 +75,6 @@ mnb_panel_frame_dispose (GObject *object)
 
   priv->disposed = TRUE;
 
-  if (priv->footer)
-    {
-      clutter_actor_destroy (priv->footer);
-      priv->footer = NULL;
-    }
-
   G_OBJECT_CLASS (mnb_panel_frame_parent_class)->dispose (object);
 }
 
@@ -102,79 +84,16 @@ mnb_panel_frame_finalize (GObject *object)
   G_OBJECT_CLASS (mnb_panel_frame_parent_class)->finalize (object);
 }
 
-#if 0
-static void
-mnb_panel_frame_footer_clicked_cb (MxButton *button, MnbPanelFrame *frame)
-{
-  g_object_ref (frame);
-  g_signal_emit (frame, signals[FOOTER_CLICKED], 0);
-  g_object_unref (frame);
-}
-#endif
-
-static void
-mnb_panel_frame_constructed (GObject *object)
-{
-#if 0
-  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (object)->priv;
-  ClutterActor         *footer;
-
-  /* footer with "up" button */
-  footer = mx_button_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (footer), "drop-down-footer");
-
-  clutter_actor_set_parent ((ClutterActor*)footer, CLUTTER_ACTOR (object));
-
-  g_signal_connect (footer, "clicked",
-                    G_CALLBACK (mnb_panel_frame_footer_clicked_cb), object);
-
-  priv->footer = footer;
-#endif
-}
-
-static void
-mnb_panel_frame_allocate (ClutterActor          *self,
-                          const ClutterActorBox *box,
-                          ClutterAllocationFlags flags)
-{
-
-  CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->allocate (self, box,
-                                                                flags);
-
-#if 0
-  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (self)->priv;
-  gfloat                min_height, natural_height;
-  ClutterActorBox allocation = { 0, };
-  MxPadding     padding = { 0, };
-
-  mx_widget_get_padding (MX_WIDGET (self), &padding);
-
-  clutter_actor_get_preferred_height (priv->footer, -1,
-                                      &min_height,
-                                      &natural_height);
-
-  allocation.x1 = padding.left;
-  allocation.x2 = box->x2 - box->x1 - padding.right;
-  allocation.y1 = (box->y2 - box->y1) - (padding.bottom + natural_height);
-  allocation.y2 = allocation.y1 + natural_height;
-
-  clutter_actor_allocate (priv->footer, &allocation, flags);
-#endif
-}
-
 static void
 mnb_panel_frame_get_preferred_width (ClutterActor *self,
                                      gfloat        for_height,
                                      gfloat       *min_width_p,
                                      gfloat       *natural_width_p)
 {
-  gfloat      min_width, natural_width;
-  gfloat      available_height;
+  gfloat    min_width, natural_width;
   MxPadding padding = { 0, };
 
   mx_widget_get_padding (MX_WIDGET (self), &padding);
-
-  available_height = for_height - padding.top - padding.bottom;
 
   min_width = natural_width = padding.left + padding.right;
 
@@ -191,13 +110,10 @@ mnb_panel_frame_get_preferred_height (ClutterActor *self,
                                       gfloat       *min_height_p,
                                       gfloat       *natural_height_p)
 {
-  gfloat      min_height, natural_height;
-  gfloat      available_width;
+  gfloat    min_height, natural_height;
   MxPadding padding = { 0, };
 
   mx_widget_get_padding (MX_WIDGET (self), &padding);
-
-  available_width = for_width - padding.left - padding.right;
 
   min_height = natural_height = padding.top + padding.bottom;
 
@@ -206,50 +122,6 @@ mnb_panel_frame_get_preferred_height (ClutterActor *self,
 
   if (natural_height_p)
     *natural_height_p = natural_height;
-}
-
-static void
-mnb_panel_frame_paint (ClutterActor *self)
-{
-  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->paint (self);
-
-  if (priv->footer)
-    clutter_actor_paint (priv->footer);
-}
-
-static void
-mnb_panel_frame_pick (ClutterActor *self, const ClutterColor *pick_color)
-{
-  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->pick (self, pick_color);
-
-  if (priv->footer)
-    clutter_actor_paint (priv->footer);
-}
-
-static void
-mnb_panel_frame_map (ClutterActor *self)
-{
-  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->map (self);
-
-  if (priv->footer)
-    clutter_actor_map (priv->footer);
-}
-
-static void
-mnb_panel_frame_unmap (ClutterActor *self)
-{
-  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_panel_frame_parent_class)->unmap (self);
-
-  if (priv->footer)
-    clutter_actor_unmap (priv->footer);
 }
 
 static void
@@ -264,24 +136,9 @@ mnb_panel_frame_class_init (MnbPanelFrameClass *klass)
   object_class->set_property = mnb_panel_frame_set_property;
   object_class->dispose      = mnb_panel_frame_dispose;
   object_class->finalize     = mnb_panel_frame_finalize;
-  object_class->constructed  = mnb_panel_frame_constructed;
 
   actor_class->get_preferred_width  = mnb_panel_frame_get_preferred_width;
   actor_class->get_preferred_height = mnb_panel_frame_get_preferred_height;
-  actor_class->allocate             = mnb_panel_frame_allocate;
-  actor_class->paint                = mnb_panel_frame_paint;
-  actor_class->pick                 = mnb_panel_frame_pick;
-  actor_class->map                  = mnb_panel_frame_map;
-  actor_class->unmap                = mnb_panel_frame_unmap;
-
-  signals[FOOTER_CLICKED] =
-    g_signal_new ("footer-clicked",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
 }
 
 static void
