@@ -20,12 +20,14 @@
  */
 
 #include <telepathy-glib/telepathy-glib.h>
+#include "sw-online.h"
 
 static void
 _account_manager_ready_cb (TpAccountManager *am,
                            GAsyncResult     *res,
-                           GMainLoop        *loop)
+                           gpointer          userdata)
 {
+  TpConnectionPresenceType type = (TpConnectionPresenceType)GPOINTER_TO_INT (userdata);
   GError *error = NULL;
 
   if (!tp_account_manager_prepare_finish (am, res, &error))
@@ -33,15 +35,37 @@ _account_manager_ready_cb (TpAccountManager *am,
     g_warning (G_STRLOC ": Error preparing account manager: %s",
                error->message);
     g_error_free (error);
-    g_main_loop_quit (loop);
     return;
   }
 
   tp_account_manager_set_all_requested_presences (am,
-                                                  TP_CONNECTION_PRESENCE_TYPE_AVAILABLE,
+                                                  type,
                                                   NULL,
                                                   NULL);
-   g_main_loop_quit (loop);
+}
+
+static void
+changed_accounts (TpConnectionPresenceType type)
+{
+  TpAccountManager *am;
+
+  am = tp_account_manager_dup ();
+  tp_account_manager_prepare_async (am,
+                                    NULL,
+                                    (GAsyncReadyCallback)_account_manager_ready_cb,
+                                    GINT_TO_POINTER (type));
+  g_object_unref (am);
+}
+
+static void
+_online_notify_cb (gboolean online,
+                   gpointer userdata)
+{
+  g_debug (G_STRLOC ": Online = %s", online ? "yes" : "no");
+  if (online)
+    changed_accounts (TP_CONNECTION_PRESENCE_TYPE_AVAILABLE);
+  else
+    changed_accounts (TP_CONNECTION_PRESENCE_TYPE_OFFLINE);
 }
 
 int
@@ -49,16 +73,20 @@ main (int    argc,
       char **argv)
 {
   GMainLoop *loop;
-  TpAccountManager *am;
+  gboolean online;
 
   g_type_init ();
   loop = g_main_loop_new (NULL, FALSE);
 
-  am = tp_account_manager_dup ();
-  tp_account_manager_prepare_async (am,
-                                    NULL,
-                                    (GAsyncReadyCallback)_account_manager_ready_cb,
-                                    loop);
+  sw_online_add_notify (_online_notify_cb, NULL);
+
+  online = sw_is_online ();
+  if (online)
+  {
+    g_debug (G_STRLOC ": Online = %s", online ? "yes" : "no");
+    changed_accounts (TP_CONNECTION_PRESENCE_TYPE_AVAILABLE);
+  }
+
   g_main_loop_run (loop);
 
   return 0;
