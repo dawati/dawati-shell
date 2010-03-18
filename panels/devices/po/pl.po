@@ -12,6 +12,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Bookmarks: -1,368,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
@@ -349,7 +350,7 @@ msgstr "Zapis na %s"
 
 #: ../gdu/gdu-pool.c:885
 msgid "Multipath Devices"
-msgstr "Urządzenia Multipath"
+msgstr "Urządzenia wielościeżkowe"
 
 #: ../gdu/gdu-pool.c:886
 msgid "Drives with multiple I/O paths"
@@ -527,7 +528,7 @@ msgstr "HFS+"
 
 #: ../gdu/gdu-util.c:228
 msgid "Linux Unified Key Setup"
-msgstr "Konfiguracja zunifikowanego klucza Linux"
+msgstr "Konfiguracja zunifikowanego klucza systemu Linux"
 
 #. Translators: LUKS is 'Linux Unified Key Setup', a disk encryption format
 #: ../gdu/gdu-util.c:231
@@ -572,13 +573,13 @@ msgstr "ext3"
 #: ../gdu/gdu-util.c:261
 #, c-format
 msgid "Journal for Ext3 (version %s)"
-msgstr "Dziennik dla Ext3 (wersja %s)"
+msgstr "Księgowanie dla Ext3 (wersja %s)"
 
 #. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
 #: ../gdu/gdu-util.c:264
 #, c-format
 msgid "Journal for Ext3"
-msgstr "Dziennik dla Ext3"
+msgstr "Księgowanie dla Ext3"
 
 #. Translators: jbd is a filesystem type
 #: ../gdu/gdu-util.c:267
@@ -818,19 +819,19 @@ msgstr "Podstawowa partycja danych Linux"
 #. Same as MS BDP
 #: ../gdu/gdu-util.c:436
 msgid "Linux RAID Partition"
-msgstr "Partycja Linux RAID"
+msgstr "Partycja RAID systemu Linux"
 
 #: ../gdu/gdu-util.c:437
 msgid "Linux Swap Partition"
-msgstr "Partycja wymiany Linux"
+msgstr "Partycja wymiany systemu Linux"
 
 #: ../gdu/gdu-util.c:438
 msgid "Linux LVM Partition"
-msgstr "Partycja Linux LVM"
+msgstr "Partycja LVM systemu Linux"
 
 #: ../gdu/gdu-util.c:439
 msgid "Linux Reserved Partition"
-msgstr "Partycja zarezerwowana Linux"
+msgstr "Partycja zarezerwowana systemu Linux"
 
 #. Not associated with any OS
 #: ../gdu/gdu-util.c:441
@@ -848,20 +849,20 @@ msgstr "Partycja rozruchowa BIOS"
 #. Microsoft
 #: ../gdu/gdu-util.c:445
 msgid "Microsoft Reserved Partition"
-msgstr "Partycja zarezerwowana Microsoft"
+msgstr "Partycja zarezerwowana firmy Microsoft"
 
 #: ../gdu/gdu-util.c:446
 msgid "Microsoft Basic Data Partition"
-msgstr "Podstawowa partycja danych Microsoft"
+msgstr "Podstawowa partycja danych firmy Microsoft"
 
 #. Same as Linux BDP
 #: ../gdu/gdu-util.c:447
 msgid "Microsoft LDM Metadata Partition"
-msgstr "Partycja metadanych LDM Microsoft"
+msgstr "Partycja metadanych LDM firmy Microsoft"
 
 #: ../gdu/gdu-util.c:448
 msgid "Microsoft LDM Data Partition"
-msgstr "Partycja danych LDM Microsoft"
+msgstr "Partycja danych LDM firmy Microsoft"
 
 #: ../gdu/gdu-util.c:449
 msgid "Microsoft Windows Recovery Environment"
@@ -870,351 +871,351 @@ msgstr "Środowisko odzyskiwania systemu Microsoft Windows"
 #. HP-UX
 #: ../gdu/gdu-util.c:451
 msgid "HP-UX Data Partition"
-msgstr "Partycja danych HP-UX"
+msgstr "Partycja danych systemu HP-UX"
 
 #: ../gdu/gdu-util.c:452
 msgid "HP-UX Service Partition"
-msgstr "Partycja serwisowa HP-UX"
+msgstr "Partycja serwisowa systemu HP-UX"
 
 #. FreeBSD
 #: ../gdu/gdu-util.c:454
 msgid "FreeBSD Boot Partition"
-msgstr "Partycja rozruchowa FreeBSD"
+msgstr "Partycja rozruchowa systemu FreeBSD"
 
 #: ../gdu/gdu-util.c:455
 msgid "FreeBSD Data Partition"
-msgstr "Partycja danych FreeBSD"
+msgstr "Partycja danych systemu FreeBSD"
 
 #: ../gdu/gdu-util.c:456
 msgid "FreeBSD Swap Partition"
-msgstr "Partycja wymiany FreeBSD"
+msgstr "Partycja wymiany systemu FreeBSD"
 
 #: ../gdu/gdu-util.c:457
 msgid "FreeBSD UFS Partition"
-msgstr "Partycja UFS FreeBSD"
+msgstr "Partycja UFS systemu FreeBSD"
 
 #: ../gdu/gdu-util.c:458
 msgid "FreeBSD Vinum Partition"
-msgstr "Partycja Vinum FreeBSD"
+msgstr "Partycja Vinum systemu FreeBSD"
 
 #: ../gdu/gdu-util.c:459
 msgid "FreeBSD ZFS Partition"
-msgstr "Partycja ZFS FreeBSD"
+msgstr "Partycja ZFS systemu FreeBSD"
 
 #. Solaris
 #: ../gdu/gdu-util.c:461
 msgid "Solaris Boot Partition"
-msgstr "Partycja rozruchowa Solaris"
+msgstr "Partycja rozruchowa systemu Solaris"
 
 #: ../gdu/gdu-util.c:462
 msgid "Solaris Root Partition"
-msgstr "Partycja główna Solaris"
+msgstr "Partycja główna systemu Solaris"
 
 #: ../gdu/gdu-util.c:463
 msgid "Solaris Swap Partition"
-msgstr "Partycja wymiany Solaris"
+msgstr "Partycja wymiany systemu Solaris"
 
 #: ../gdu/gdu-util.c:464
 msgid "Solaris Backup Partition"
-msgstr "Partycja kopii zapasowej Solaris"
+msgstr "Partycja kopii zapasowej systemu Solaris"
 
 #: ../gdu/gdu-util.c:465
 msgid "Solaris /usr Partition"
-msgstr "Partycja /usr Solaris"
+msgstr "Partycja /usr systemu Solaris"
 
 #. Same as Apple ZFS
 #: ../gdu/gdu-util.c:466
 msgid "Solaris /var Partition"
-msgstr "Partycja /var Solaris"
+msgstr "Partycja /var systemu Solaris"
 
 #: ../gdu/gdu-util.c:467
 msgid "Solaris /home Partition"
-msgstr "Partycja /home Solaris"
+msgstr "Partycja /home systemu Solaris"
 
 #: ../gdu/gdu-util.c:468
 msgid "Solaris Alternate Sector Partition"
-msgstr "Partycja drugiego sektora Solaris"
+msgstr "Partycja drugiego sektora systemu Solaris"
 
 #: ../gdu/gdu-util.c:469
 msgid "Solaris Reserved Partition"
-msgstr "Partycja zarezerwowana Solaris"
+msgstr "Partycja zarezerwowana systemu Solaris"
 
 #: ../gdu/gdu-util.c:470
 msgid "Solaris Reserved Partition (2)"
-msgstr "Partycja zarezerwowana Solaris (2)"
+msgstr "Partycja zarezerwowana systemu Solaris (2)"
 
 #: ../gdu/gdu-util.c:471
 msgid "Solaris Reserved Partition (3)"
-msgstr "Partycja zarezerwowana Solaris (3)"
+msgstr "Partycja zarezerwowana systemu Solaris (3)"
 
 #: ../gdu/gdu-util.c:472
 msgid "Solaris Reserved Partition (4)"
-msgstr "Partycja zarezerwowana Solaris (4)"
+msgstr "Partycja zarezerwowana systemu Solaris (4)"
 
 #: ../gdu/gdu-util.c:473
 msgid "Solaris Reserved Partition (5)"
-msgstr "Partycja zarezerwowana Solaris (5)"
+msgstr "Partycja zarezerwowana systemu Solaris (5)"
 
 #. Mac OS X
 #: ../gdu/gdu-util.c:475
 #: ../gdu/gdu-util.c:494
 msgid "Apple HFS/HFS+ Partition"
-msgstr "Partycja HFS/HFS+ Apple"
+msgstr "Partycja HFS/HFS+ firmy Apple"
 
 #. see http://developer.apple.com/documentation/mac/Devices/Devices-126.html
 #. *     http://lists.apple.com/archives/Darwin-drivers/2003/May/msg00021.html
 #: ../gdu/gdu-util.c:476
 #: ../gdu/gdu-util.c:493
 msgid "Apple UFS Partition"
-msgstr "Partycja UFS Apple"
+msgstr "Partycja UFS firmy Apple"
 
 #: ../gdu/gdu-util.c:477
 msgid "Apple ZFS Partition"
-msgstr "Partycja ZFS Apple"
+msgstr "Partycja ZFS firmy Apple"
 
 #. Same as Solaris /usr
 #: ../gdu/gdu-util.c:478
 msgid "Apple RAID Partition"
-msgstr "Partycja RAID Apple"
+msgstr "Partycja RAID firmy Apple"
 
 #: ../gdu/gdu-util.c:479
 msgid "Apple RAID Partition (Offline)"
-msgstr ""
+msgstr "Partycja RAID firmy Apple (Offline)"
 
 #: ../gdu/gdu-util.c:480
 msgid "Apple Boot Partition"
-msgstr ""
+msgstr "Partycja rozruchowa firmy Apple"
 
 #: ../gdu/gdu-util.c:481
 msgid "Apple Label Partition"
-msgstr ""
+msgstr "Partycja etykiety firmy Apple"
 
 #: ../gdu/gdu-util.c:482
 msgid "Apple TV Recovery Partition"
-msgstr ""
+msgstr "Partycja odzyskiwania TV firmy Apple"
 
 #. NetBSD
 #: ../gdu/gdu-util.c:484
 msgid "NetBSD Swap Partition"
-msgstr ""
+msgstr "Partycja wymiany systemu NetBSD"
 
 #: ../gdu/gdu-util.c:485
 msgid "NetBSD FFS Partition"
-msgstr ""
+msgstr "Partycja FFS systemu NetBSD"
 
 #: ../gdu/gdu-util.c:486
 msgid "NetBSD LFS Partition"
-msgstr ""
+msgstr "Partycja LFS systemu NetBSD"
 
 #: ../gdu/gdu-util.c:487
 msgid "NetBSD RAID Partition"
-msgstr ""
+msgstr "Partycja RAID systemu NetBSD"
 
 #: ../gdu/gdu-util.c:488
 msgid "NetBSD Concatenated  Partition"
-msgstr ""
+msgstr "Partycja połączona systemu NetBSD"
 
 #: ../gdu/gdu-util.c:489
 msgid "NetBSD Encrypted Partition"
-msgstr ""
+msgstr "Partycja zaszyfrowana systemu NetBSD"
 
 #: ../gdu/gdu-util.c:495
 msgid "Apple Partition Map"
-msgstr ""
+msgstr "Mapa partycji firmy Apple"
 
 #: ../gdu/gdu-util.c:496
 msgid "Unused Partition"
-msgstr ""
+msgstr "Nieużywana partycja"
 
 #: ../gdu/gdu-util.c:497
 msgid "Empty Partition"
-msgstr ""
+msgstr "Pusta partycja"
 
 #: ../gdu/gdu-util.c:498
 msgid "Driver Partition"
-msgstr ""
+msgstr "Partycja sterowników"
 
 #: ../gdu/gdu-util.c:499
 msgid "Driver 4.3 Partition"
-msgstr ""
+msgstr "Partycja sterowników 4.3"
 
 #: ../gdu/gdu-util.c:500
 msgid "ProDOS file system"
-msgstr ""
+msgstr "System plików ProDOS"
 
 #: ../gdu/gdu-util.c:501
 msgid "FAT 12"
-msgstr ""
+msgstr "FAT 12"
 
 #: ../gdu/gdu-util.c:502
 msgid "FAT 16"
-msgstr ""
+msgstr "FAT 16"
 
 #: ../gdu/gdu-util.c:503
 msgid "FAT 32"
-msgstr ""
+msgstr "FAT 32"
 
 #: ../gdu/gdu-util.c:504
 msgid "FAT 16 (Windows)"
-msgstr ""
+msgstr "FAT 16 (Windows)"
 
 #: ../gdu/gdu-util.c:505
 msgid "FAT 32 (Windows)"
-msgstr ""
+msgstr "FAT 32 (Windows)"
 
 #. see http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
 #: ../gdu/gdu-util.c:508
 msgid "Empty (0x00)"
-msgstr ""
+msgstr "Pusta (0x00)"
 
 #: ../gdu/gdu-util.c:509
 msgid "FAT12 (0x01)"
-msgstr ""
+msgstr "FAT12 (0x01)"
 
 #: ../gdu/gdu-util.c:510
 msgid "FAT16 <32M (0x04)"
-msgstr ""
+msgstr "FAT16 <32M (0x04)"
 
 #: ../gdu/gdu-util.c:511
 msgid "Extended (0x05)"
-msgstr ""
+msgstr "Rozszerzona (0x05)"
 
 #: ../gdu/gdu-util.c:512
 msgid "FAT16 (0x06)"
-msgstr ""
+msgstr "FAT16 (0x06)"
 
 #: ../gdu/gdu-util.c:513
 msgid "HPFS/NTFS (0x07)"
-msgstr ""
+msgstr "HPFS/NTFS (0x07)"
 
 #: ../gdu/gdu-util.c:514
 msgid "W95 FAT32 (0x0b)"
-msgstr ""
+msgstr "W95 FAT32 (0x0b)"
 
 #: ../gdu/gdu-util.c:515
 msgid "W95 FAT32 (LBA) (0x0c)"
-msgstr ""
+msgstr "W95 FAT32 (LBA) (0x0c)"
 
 #: ../gdu/gdu-util.c:516
 msgid "W95 FAT16 (LBA) (0x0e)"
-msgstr ""
+msgstr "W95 FAT16 (LBA) (0x0e)"
 
 #: ../gdu/gdu-util.c:517
 msgid "W95 Ext d (LBA) (0x0f)"
-msgstr ""
+msgstr "W95 Ext d (LBA) (0x0f)"
 
 #: ../gdu/gdu-util.c:518
 msgid "OPUS (0x10)"
-msgstr ""
+msgstr "OPUS (0x10)"
 
 #: ../gdu/gdu-util.c:519
 msgid "Hidden FAT12 (0x11)"
-msgstr ""
+msgstr "Ukryta FAT12 (0x11)"
 
 #: ../gdu/gdu-util.c:520
 msgid "Compaq diagnostics (0x12)"
-msgstr ""
+msgstr "Diagnostyka firmy Compaq (0x12)"
 
 #: ../gdu/gdu-util.c:521
 msgid "Hidden FAT16 <32M (0x14)"
-msgstr ""
+msgstr "Ukryta FAT16 <32M (0x14)"
 
 #: ../gdu/gdu-util.c:522
 msgid "Hidden FAT16 (0x16)"
-msgstr ""
+msgstr "Ukryta FAT16 (0x16)"
 
 #: ../gdu/gdu-util.c:523
 msgid "Hidden HPFS/NTFS (0x17)"
-msgstr ""
+msgstr "Ukryta HPFS/NTFS (0x17)"
 
 #: ../gdu/gdu-util.c:524
 msgid "Hidden W95 FAT32 (0x1b)"
-msgstr ""
+msgstr "Ukryta W95 FAT32 (0x1b)"
 
 #: ../gdu/gdu-util.c:525
 msgid "Hidden W95 FAT32 (LBA) (0x1c)"
-msgstr ""
+msgstr "Ukryta W95 FAT32 (LBA) (0x1c)"
 
 #: ../gdu/gdu-util.c:526
 msgid "Hidden W95 FAT16 (LBA) (0x1e)"
-msgstr ""
+msgstr "Ukryta W95 FAT16 (LBA) (0x1e)"
 
 #: ../gdu/gdu-util.c:527
 msgid "PartitionMagic (0x3c)"
-msgstr ""
+msgstr "PartitionMagic (0x3c)"
 
 #: ../gdu/gdu-util.c:528
 msgid "Minix (0x81)"
-msgstr ""
+msgstr "Minix (0x81)"
 
 #. cf. http://en.wikipedia.org/wiki/MINIX_file_system
 #: ../gdu/gdu-util.c:529
 msgid "Linux swap (0x82)"
-msgstr ""
+msgstr "Partycja wymiany systemu Linux (0x82)"
 
 #: ../gdu/gdu-util.c:530
 msgid "Linux (0x83)"
-msgstr ""
+msgstr "Linux (0x83)"
 
 #: ../gdu/gdu-util.c:531
 msgid "Hibernation (0x84)"
-msgstr ""
+msgstr "Hibernacja (0x84)"
 
 #: ../gdu/gdu-util.c:532
 msgid "Linux Extended (0x85)"
-msgstr ""
+msgstr "Rozszerzona systemu Linux (0x85)"
 
 #: ../gdu/gdu-util.c:533
 msgid "Linux LVM (0x8e)"
-msgstr ""
+msgstr "LVM systemu Linux (0x8e)"
 
 #: ../gdu/gdu-util.c:534
 msgid "Hibernation (0xa0)"
-msgstr ""
+msgstr "Hibernacja (0xa0)"
 
 #: ../gdu/gdu-util.c:535
 msgid "FreeBSD (0xa5)"
-msgstr ""
+msgstr "FreeBSD (0xa5)"
 
 #: ../gdu/gdu-util.c:536
 msgid "OpenBSD (0xa6)"
-msgstr ""
+msgstr "OpenBSD (0xa6)"
 
 #: ../gdu/gdu-util.c:537
 msgid "Mac OS X (0xa8)"
-msgstr ""
+msgstr "Mac OS X (0xa8)"
 
 #: ../gdu/gdu-util.c:538
 msgid "Mac OS X (0xaf)"
-msgstr ""
+msgstr "Mac OS X (0xaf)"
 
 #: ../gdu/gdu-util.c:539
 msgid "Solaris boot (0xbe)"
-msgstr ""
+msgstr "Rozruchowa systemu Solaris (0xbe)"
 
 #: ../gdu/gdu-util.c:540
 msgid "Solaris (0xbf)"
-msgstr ""
+msgstr "Solaris (0xbf)"
 
 #: ../gdu/gdu-util.c:541
 msgid "BeOS BFS (0xeb)"
-msgstr ""
+msgstr "BeOS BFS (0xeb)"
 
 #: ../gdu/gdu-util.c:542
 msgid "SkyOS SkyFS (0xec)"
-msgstr ""
+msgstr "SkyOS SkyFS (0xec)"
 
 #: ../gdu/gdu-util.c:543
 msgid "EFI GPT (0xee)"
-msgstr ""
+msgstr "EFI GPT (0xee)"
 
 #: ../gdu/gdu-util.c:544
 msgid "EFI (FAT-12/16/32 (0xef)"
-msgstr ""
+msgstr "EFI (FAT-12/16/32) (0xef)"
 
 #: ../gdu/gdu-util.c:545
 msgid "Linux RAID autodetect (0xfd)"
-msgstr ""
+msgstr "Autowykrywanie RAID Linux (0xfd)"
 
 #. Translators: Shown for unknown partition types.
 #. * %s is the partition type name
@@ -1222,60 +1223,60 @@ msgstr ""
 #: ../gdu/gdu-util.c:572
 #, c-format
 msgid "Unknown (%s)"
-msgstr ""
+msgstr "Nieznana (%s)"
 
 #: ../gdu/gdu-util.c:582
 msgid "A popular format compatible with almost any device or system, typically used for file exchange."
-msgstr ""
+msgstr "Popularny format kompatybilny z prawie wszystkimi urządzeniami lub systemami, zwykle używany do wymiany plików."
 
 #: ../gdu/gdu-util.c:586
 msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
-msgstr ""
+msgstr "Ten system plików jest zgodny tylko z systemami Linux i oferuje wsparcie dla klasycznych uprawnień do plików systemu UNIX. Ten system plików nie korzysta z księgowania."
 
 #: ../gdu/gdu-util.c:592
 msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
-msgstr ""
+msgstr "Ten system plików jest zgodny tylko z systemami Linux i oferuje wsparcie dla klasycznych uprawnień do plików systemu UNIX."
 
 #: ../gdu/gdu-util.c:596
 msgid "Swap area used by the operating system for virtual memory."
-msgstr ""
+msgstr "Obszar wymiany używany przez system operacyjny na potrzeby pamięci wirtualnej."
 
 #: ../gdu/gdu-util.c:599
 msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
-msgstr ""
+msgstr "Natywny system plików systemu Windows. Zwykle nie kompatybilny z systemami operacyjnymi innymi niż system Windows."
 
 #: ../gdu/gdu-util.c:603
 msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
-msgstr ""
+msgstr "Prosty system plików z niskim narzutem i wsparciem dla uprawnień systemu UNIX. Zwykle nie kompatybilny z systemami operacyjnymi innymi niż Linux i Minix."
 
 #: ../gdu/gdu-util.c:607
 msgid "No file system will be created."
-msgstr ""
+msgstr "Żaden system plików nie zostanie utworzony."
 
 #: ../gdu/gdu-util.c:610
 msgid "Create an Extended Partition for logical partitions."
-msgstr ""
+msgstr "Utwórz rozszerzoną partycję na partycje logiczne."
 
 #: ../gdu/gdu-util.c:623
 msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
-msgstr ""
+msgstr "Schemat głównego sektora rozruchowego (MBR) jest zgodny z prawie każdym urządzeniem lub systemem, ale posiada szereg ograniczeń związanych z rozmiarem dysku i liczbą partycji."
 
 #: ../gdu/gdu-util.c:628
 msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
-msgstr ""
+msgstr "Schemat historyczny, niekompatybilny z większością systemów z wyjątkiem systemów Apple i większości systemów Linux. Nie zalecany dla nośników wymiennych."
 
 #: ../gdu/gdu-util.c:633
 msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
-msgstr ""
+msgstr "Schemat GUID jest zgodny z większością nowoczesnych systemów, ale może być niekompatybilny z niektórymi urządzeniami i starszymi systemami."
 
 #: ../gdu/gdu-util.c:637
 msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
-msgstr ""
+msgstr "Oznacza cały dysk jako nieużywany. Tej opcji należy użyć tylko w celu uniknięcia partycjonowania dysku, np. w przypadku użycia całego dysku lub dyskietek/ZIP."
 
 #: ../gdu/gdu-util.c:828
 #, c-format
 msgid "LUKS Passphrase for UUID %s"
-msgstr ""
+msgstr "Hasło LUKS dla identyfikatora UUID %s"
 
 #: ../gdu/gdu-util.c:888
 #, c-format
@@ -1335,13 +1336,13 @@ msgstr "SDIO"
 #. Translators: interface name for virtual disks
 #: ../gdu/gdu-util.c:934
 msgid "Virtual"
-msgstr ""
+msgstr "Wirtualny"
 
 #. Translators: name shown for unknown disk connection interfaces
 #: ../gdu/gdu-util.c:940
 msgctxt "connection name"
 msgid "Unknown"
-msgstr ""
+msgstr "Nieznany"
 
 #. Translators: Connection with speed information.
 #. * First %s is the connection name, like 'SATA' or 'USB'
@@ -1350,12 +1351,12 @@ msgstr ""
 #: ../gdu/gdu-util.c:950
 #, c-format
 msgid "%s at %s"
-msgstr ""
+msgstr "%s o szybkości %s"
 
 #: ../gdu/gdu-util.c:969
 msgctxt "RAID level"
 msgid "Stripe (RAID-0)"
-msgstr ""
+msgstr "Przeplot (RAID-0)"
 
 #: ../gdu/gdu-util.c:971
 msgctxt "RAID level"
@@ -1365,7 +1366,7 @@ msgstr "RAID-0"
 #: ../gdu/gdu-util.c:974
 msgctxt "RAID level"
 msgid "Mirror (RAID-1)"
-msgstr ""
+msgstr "Replikacja (RAID-1)"
 
 #: ../gdu/gdu-util.c:976
 msgctxt "RAID level"
@@ -1375,7 +1376,7 @@ msgstr "RAID-1"
 #: ../gdu/gdu-util.c:979
 msgctxt "RAID level"
 msgid "Parity Disk (RAID-4)"
-msgstr ""
+msgstr "Dysk parzystości (RAID-4)"
 
 #: ../gdu/gdu-util.c:981
 msgctxt "RAID level"
@@ -1385,7 +1386,7 @@ msgstr "RAID-4"
 #: ../gdu/gdu-util.c:984
 msgctxt "RAID level"
 msgid "Distributed Parity (RAID-5)"
-msgstr ""
+msgstr "Rozproszona parzystość (RAID-5)"
 
 #: ../gdu/gdu-util.c:986
 msgctxt "RAID level"
@@ -1395,7 +1396,7 @@ msgstr "RAID-5"
 #: ../gdu/gdu-util.c:989
 msgctxt "RAID level"
 msgid "Dual Distributed Parity (RAID-6)"
-msgstr ""
+msgstr "Podwójna rozproszona parzystość (RAID-6)"
 
 #: ../gdu/gdu-util.c:991
 msgctxt "RAID level"
@@ -1405,7 +1406,7 @@ msgstr "RAID-6"
 #: ../gdu/gdu-util.c:994
 msgctxt "RAID level"
 msgid "Stripe of Mirrors (RAID-10)"
-msgstr ""
+msgstr "Przeplot replikacji (RAID-10)"
 
 #: ../gdu/gdu-util.c:996
 msgctxt "RAID level"
@@ -1415,61 +1416,61 @@ msgstr "RAID-10"
 #: ../gdu/gdu-util.c:999
 msgctxt "RAID level"
 msgid "Concatenated (Linear)"
-msgstr ""
+msgstr "Połączony (liniowy)"
 
 #: ../gdu/gdu-util.c:1001
 msgctxt "RAID level"
 msgid "Linear"
-msgstr ""
+msgstr "Liniowy"
 
 #: ../gdu/gdu-util.c:1015
 msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
-msgstr ""
+msgstr "Zestaw z przeplotem, bez parzystości. Oferuje zwiększoną wydajność, ale brak odporności na awarie. Uszkodzenie jednego dysku w macierzy powoduje uszkodzenie całej macierzy RAID-0."
 
 #: ../gdu/gdu-util.c:1019
 msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
-msgstr ""
+msgstr "Zestaw z replikacją, bez parzystości. Oferuje odporność na awarie i zwiększoną wydajność odczytu. Macierze RAID-1 mogą wytrzymać awarię wszystkich dysków, z wyjątkiem jednego."
 
 #: ../gdu/gdu-util.c:1023
 msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
-msgstr ""
+msgstr "Zestaw z przeplotem oraz parzystością na jednym z dysków. Oferuje zwiększoną wydajność i odporność na awarie. Macierze RAID-4 mogą wytrzymać awarię jednego dysku."
 
 #: ../gdu/gdu-util.c:1027
 msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
-msgstr ""
+msgstr "Zestaw z przeplotem oraz rozproszoną parzystością. Oferuje zwiększoną wydajność i odporność na awarie. Macierze RAID-5 mogą wytrzymać awarię jednego dysku."
 
 #: ../gdu/gdu-util.c:1031
 msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
-msgstr ""
+msgstr "Zestaw z przeplotem i podwójną rozproszoną parzystością. Oferuje zwiększoną wydajność i odporność na awarie. Macierze RAID-6 mogą wytrzymać awarię dwóch dysków."
 
 #: ../gdu/gdu-util.c:1035
 msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
-msgstr ""
+msgstr "Zestaw z przeplotem i rozproszoną parzystością. Oferuje zwiększoną wydajność i odporność na awarie. Macierze RAID-10 mogą wytrzymać awarię wielu dysków, pod warunkiem że wszystkie dyski nie ulegną awarii."
 
 #: ../gdu/gdu-util.c:1041
 #, c-format
 msgid "Unknown RAID level %s."
-msgstr ""
+msgstr "Nieznany poziom RAID %s."
 
 #. Translators: Overall description of the GOOD status
 #: ../gdu/gdu-util.c:1077
 msgid "Disk is healthy"
-msgstr ""
+msgstr "Dysk działa poprawnie"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
 #: ../gdu/gdu-util.c:1081
 msgid "Disk was used outside of design parameters in the past"
-msgstr ""
+msgstr "W przeszłości dysk był używany w warunkach wykraczających poza parametry projektowe"
 
 #. Translators: Overall description of the BAD_SECTOR status
 #: ../gdu/gdu-util.c:1085
 msgid "Disk has a few bad sectors"
-msgstr ""
+msgstr "Dysk posiada kilka błędnych sektorów"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_NOW status
 #: ../gdu/gdu-util.c:1089
 msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
-msgstr ""
+msgstr "DYSK JEST UŻYWANY W WARUNKACH WYKRACZAJĄCYCH POZA PARAMETRY PROJEKTOWE"
 
 #. Translators: Suggested action for the BAD_ATTRIBUTE_NOW status
 #. Translators: Suggested action for the BAD_SECTOR_MANY status
@@ -1478,181 +1479,181 @@ msgstr ""
 #: ../gdu/gdu-util.c:1099
 #: ../gdu/gdu-util.c:1105
 msgid "Backup all data and replace the disk"
-msgstr ""
+msgstr "Wykonaj kopię zapasową wszystkich danych i wymień dysk"
 
 #. Translators: Overall description of the BAD_SECTOR_MANY status
 #: ../gdu/gdu-util.c:1096
 msgid "DISK HAS MANY BAD SECTORS"
-msgstr ""
+msgstr "DYSK POSIADA WIELE BŁĘDNYCH SEKTORÓW"
 
 #. Translators: Overall description of the BAD_STATUS status
 #: ../gdu/gdu-util.c:1103
 msgid "DISK FAILURE IS IMMINENT"
-msgstr ""
+msgstr "AWARIA DYSKU JEST NIEUNIKNIONA"
 
 #. Translators: Description when the overall SMART status is unknown
 #: ../gdu/gdu-util.c:1110
 msgid "Unknown"
-msgstr ""
+msgstr "Nieznany"
 
 #. Translator: The word "blank" is used as an adjective, e.g. we are decsribing discs that are already blank
 #: ../gdu/gdu-volume.c:75
 msgid "CD-ROM Disc"
-msgstr ""
+msgstr "Płyta CD-ROM"
 
 #: ../gdu/gdu-volume.c:75
 msgid "Blank CD-ROM Disc"
-msgstr ""
+msgstr "Pusta płyta CD-ROM"
 
 #: ../gdu/gdu-volume.c:76
 msgid "CD-R Disc"
-msgstr ""
+msgstr "Płyta CD-R"
 
 #: ../gdu/gdu-volume.c:76
 msgid "Blank CD-R Disc"
-msgstr ""
+msgstr "Pusta płyta CD-R"
 
 #: ../gdu/gdu-volume.c:77
 msgid "CD-RW Disc"
-msgstr ""
+msgstr "Płyta CD-RW"
 
 #: ../gdu/gdu-volume.c:77
 msgid "Blank CD-RW Disc"
-msgstr ""
+msgstr "Pusta płyta CD-RW"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
 msgid "DVD-ROM Disc"
-msgstr ""
+msgstr "Płyta DVD-ROM"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
 msgid "Blank DVD-ROM Disc"
-msgstr ""
+msgstr "Pusta płyta DVD-ROM"
 
 #: ../gdu/gdu-volume.c:80
 msgid "DVD-RW Disc"
-msgstr ""
+msgstr "Płyta DVD-RW"
 
 #: ../gdu/gdu-volume.c:80
 msgid "Blank DVD-RW Disc"
-msgstr ""
+msgstr "Pusta płyta DVD-RW"
 
 #: ../gdu/gdu-volume.c:81
 msgid "DVD-RAM Disc"
-msgstr ""
+msgstr "Płyta DVD-RAM"
 
 #: ../gdu/gdu-volume.c:81
 msgid "Blank DVD-RAM Disc"
-msgstr ""
+msgstr "Pusta płyta DVD-RAM"
 
 #: ../gdu/gdu-volume.c:82
 msgid "DVD+R Disc"
-msgstr ""
+msgstr "Płyta DVD+R"
 
 #: ../gdu/gdu-volume.c:82
 msgid "Blank DVD+R Disc"
-msgstr ""
+msgstr "Pusta płyta DVD+R"
 
 #: ../gdu/gdu-volume.c:83
 msgid "DVD+RW Disc"
-msgstr ""
+msgstr "Płyta DVD+RW"
 
 #: ../gdu/gdu-volume.c:83
 msgid "Blank DVD+RW Disc"
-msgstr ""
+msgstr "Pusta płyta DVD+RW"
 
 #: ../gdu/gdu-volume.c:84
 msgid "DVD+R DL Disc"
-msgstr ""
+msgstr "Płyta DVD+R DL"
 
 #: ../gdu/gdu-volume.c:84
 msgid "Blank DVD+R DL Disc"
-msgstr ""
+msgstr "Pusta płyta DVD+R DL"
 
 #: ../gdu/gdu-volume.c:85
 msgid "DVD+RW DL Disc"
-msgstr ""
+msgstr "Płyta DVD+RW DL"
 
 #: ../gdu/gdu-volume.c:85
 msgid "Blank DVD+RW DL Disc"
-msgstr ""
+msgstr "Pusta płyta DVD+RW DL"
 
 #: ../gdu/gdu-volume.c:86
 msgid "Blu-Ray Disc"
-msgstr ""
+msgstr "Płyta Blu-Ray"
 
 #: ../gdu/gdu-volume.c:86
 msgid "Blank Blu-Ray Disc"
-msgstr ""
+msgstr "Pusta płyta Blu-Ray"
 
 #: ../gdu/gdu-volume.c:87
 msgid "Blu-Ray R Disc"
-msgstr ""
+msgstr "Płyta Blu-Ray R"
 
 #: ../gdu/gdu-volume.c:87
 msgid "Blank Blu-Ray R Disc"
-msgstr ""
+msgstr "Pusta płyta Blu-Ray R"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blu-Ray RW Disc"
-msgstr ""
+msgstr "Płyta Blu-Ray RW"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blank Blu-Ray RW Disc"
-msgstr ""
+msgstr "Pusta płyta Blu-Ray RW"
 
 #: ../gdu/gdu-volume.c:89
 msgid "HD DVD Disc"
-msgstr ""
+msgstr "Płyta HD DVD"
 
 #: ../gdu/gdu-volume.c:89
 msgid "Blank HD DVD Disc"
-msgstr ""
+msgstr "Pusta płyta HD DVD"
 
 #: ../gdu/gdu-volume.c:90
 msgid "HD DVD-R Disc"
-msgstr ""
+msgstr "Płyta HD DVD-R"
 
 #: ../gdu/gdu-volume.c:90
 msgid "Blank HD DVD-R Disc"
-msgstr ""
+msgstr "Pusta płyta HD DVD-R"
 
 #: ../gdu/gdu-volume.c:91
 msgid "HD DVD-RW Disc"
-msgstr ""
+msgstr "Płyta HD DVD-RW"
 
 #: ../gdu/gdu-volume.c:91
 msgid "Blank HD DVD-RW Disc"
-msgstr ""
+msgstr "Pusta płyta HD DVD-RW"
 
 #: ../gdu/gdu-volume.c:92
 msgid "MO Disc"
-msgstr ""
+msgstr "Płyta MO"
 
 #: ../gdu/gdu-volume.c:92
 msgid "Blank MO Disc"
-msgstr ""
+msgstr "Pusta płyta MO"
 
 #: ../gdu/gdu-volume.c:93
 msgid "MRW Disc"
-msgstr ""
+msgstr "Płyta MRW"
 
 #: ../gdu/gdu-volume.c:93
 msgid "Blank MRW Disc"
-msgstr ""
+msgstr "Pusta płyta MRW"
 
 #: ../gdu/gdu-volume.c:94
 msgid "MRW/W Disc"
-msgstr ""
+msgstr "Płyta MRW/W"
 
 #: ../gdu/gdu-volume.c:94
 msgid "Blank MRW/W Disc"
-msgstr ""
+msgstr "Pusta płyta MRW/W"
 
 #: ../gdu/gdu-volume.c:276
 msgid "Blank Optical Disc"
-msgstr ""
+msgstr "Pusta płyta optyczna"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
@@ -1660,11 +1661,11 @@ msgstr ""
 #: ../gdu/gdu-volume.c:286
 #, c-format
 msgid "%s Extended"
-msgstr ""
+msgstr "%s, rozszerzona"
 
 #: ../gdu/gdu-volume.c:287
 msgid "Contains logical partitions"
-msgstr ""
+msgstr "Zawiera partycje logiczne"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
@@ -1672,11 +1673,11 @@ msgstr ""
 #: ../gdu/gdu-volume.c:302
 #, c-format
 msgid "%s Encrypted"
-msgstr ""
+msgstr "%s, zaszyfrowana"
 
 #: ../gdu/gdu-volume.c:312
 msgid "Optical Disc"
-msgstr ""
+msgstr "Dysk optyczny"
 
 #. Translators: Label for a partition with a filesystem
 #. * %s is the size, formatted like '45 GB'
@@ -1684,7 +1685,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:318
 #, c-format
 msgid "%s Filesystem"
-msgstr ""
+msgstr "%s z systemem plików"
 
 #. Translators: Label for a partition table
 #. * %s is the size, formatted like '45 GB'
@@ -1692,7 +1693,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:324
 #, c-format
 msgid "%s Partition Table"
-msgstr ""
+msgstr "%s, tablica partycji"
 
 #. Translators: Label for a LVM volume
 #. * %s is the size, formatted like '45 GB'
@@ -1700,13 +1701,13 @@ msgstr ""
 #: ../gdu/gdu-volume.c:330
 #, c-format
 msgid "%s LVM2 Physical Volume"
-msgstr ""
+msgstr "%s, wolumin fizyczny LVM2"
 
 #. Translators: Used if no specific RAID level could be determined
 #: ../gdu/gdu-volume.c:343
 msgctxt "RAID level"
 msgid "RAID"
-msgstr ""
+msgstr "RAID"
 
 #. Translators: label for a RAID component
 #. * First %s is the size, formatted like '45 GB'
@@ -1716,7 +1717,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:361
 #, c-format
 msgid "%s %s Component"
-msgstr ""
+msgstr "%s, komponent %s"
 
 #. Translators: description for a RAID component
 #. * First %s is the array name, e.g. 'My Photos RAID',
@@ -1724,7 +1725,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:354
 #, c-format
 msgid "Part of \"%s\" array"
-msgstr ""
+msgstr "Część macierzy \"%s\""
 
 #. Translators: label for a swap partition
 #. * %s is the size, formatted like '45 GB'
@@ -1732,7 +1733,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:372
 #, c-format
 msgid "%s Swap Space"
-msgstr ""
+msgstr "%s, przestrzeń wymiany"
 
 #. Translators: label for a data partition
 #. * %s is the size, formatted like '45 GB'
@@ -1740,7 +1741,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:377
 #, c-format
 msgid "%s Data"
-msgstr ""
+msgstr "%s, dane"
 
 #. Translators: label for a volume of unrecognized use
 #. * %s is the size, formatted like '45 GB'
@@ -1749,12 +1750,12 @@ msgstr ""
 #: ../gdu/gdu-volume.c:399
 #, c-format
 msgid "%s Unrecognized"
-msgstr ""
+msgstr "%s, nierozpoznana"
 
 #. Translators: description for a volume of unrecognized use
 #: ../gdu/gdu-volume.c:385
 msgid "Unknown or Unused"
-msgstr ""
+msgstr "Nieznany lub nieużywany"
 
 #. Translators: label for a partition
 #. * %s is the size, formatted like '45 GB'
@@ -1763,7 +1764,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:394
 #, c-format
 msgid "%s Partition"
-msgstr ""
+msgstr "%s, partycja"
 
 #. Translators: The VPD name for a volume. The %d is the partition number
 #. * and the %s is the VPD name for the drive.
@@ -1771,14 +1772,14 @@ msgstr ""
 #: ../gdu/gdu-volume.c:430
 #, c-format
 msgid "Partition %d of %s"
-msgstr ""
+msgstr "Partycja %d z %s"
 
 #. Translators: The VPD name for a volume. The %d is the partition number.
 #.
 #: ../gdu/gdu-volume.c:436
 #, c-format
 msgid "Partition %d"
-msgstr ""
+msgstr "Partycja %d"
 
 #. Translators: The VPD name for a whole-disk volume.
 #. * The %s is the VPD name for the drive.
@@ -1786,19 +1787,19 @@ msgstr ""
 #: ../gdu/gdu-volume.c:444
 #, c-format
 msgid "Whole-disk volume on %s"
-msgstr ""
+msgstr "Wolumin na całym dysku %s"
 
 #. Translators: The VPD name for a whole-disk volume.
 #.
 #: ../gdu/gdu-volume.c:449
 msgid "Whole-disk volume"
-msgstr ""
+msgstr "Wolumin na całym dysku"
 
 #. translators:
 #. * The device has been disabled
 #: ../gvc/gvc-mixer-control.c:1003
 msgid "Disabled"
-msgstr ""
+msgstr "Wyłączone"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1806,8 +1807,8 @@ msgstr ""
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u wyjście"
+msgstr[1] "%u wyjścia"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1815,161 +1816,163 @@ msgstr[1] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u wejście"
+msgstr[1] "%u wejścia"
 
 #: ../gvc/gvc-mixer-control.c:1316
 msgid "System Sounds"
-msgstr ""
+msgstr "Dźwięki systemowe"
 
 #: ../power-icon/src/moblin-power-icon.c:46
 msgid "Moblin Power Icon"
-msgstr ""
+msgstr "Ikona zasilania systemu Moblin"
 
 #: ../power-icon/src/mpd-power-icon.c:72
 msgid "Running low on battery"
-msgstr ""
+msgstr "Akumulator wyczerpuje się"
 
 #: ../power-icon/src/mpd-power-icon.c:73
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr ""
+msgstr "Zauważyliśmy, że akumulator wyczerpuje się. Dobrze byłoby podłączyć zasilanie i go naładować, jeśli to możliwe."
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Getting close to empty"
-msgstr ""
+msgstr "Akumulator prawie wyczerpany"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr ""
+msgstr "Akumulator jest prawie wyczerpany. Dobrym pomysłem będzie zapisanie pracy i jak najszybsze podłączenie zasilania"
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Danger!"
-msgstr ""
+msgstr "Niebezpieczeństwo!"
 
 #: ../power-icon/src/mpd-power-icon.c:82
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr ""
+msgstr "Przepraszamy, akumulator w komputerze za chwilę się wyczerpie. Musimy teraz wyłączyć komputer. Zapisz pracę. Mamy nadzieję, że wkrótce się zobaczymy."
 
 #: ../power-icon/src/mpd-power-icon.c:300
 msgid "Would you like to turn off now?"
-msgstr ""
+msgstr "Czy chcesz teraz wyłączyć komputer?"
 
 #: ../power-icon/src/mpd-power-icon.c:301
 msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr ""
+msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za 30 sekund."
 
 #: ../power-icon/src/mpd-power-icon.c:368
 msgid "battery"
-msgstr ""
+msgstr "akumulator"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:75
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr ""
+msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za %d sekund"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
 msgid "Turn off"
-msgstr ""
+msgstr "Wyłącz"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr ""
+msgstr "Przepraszamy, w komputerze najwyraźniej nie zainstalowano akumulatora"
 
 #: ../src/mpd-battery-device.c:337
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr ""
+msgstr "Ładowanie akumulatora. Poziom naładowania: %d%%."
 
 #: ../src/mpd-battery-device.c:342
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr ""
+msgstr "Korzystanie z akumulatora. Poziom naładowania: %d%%."
 
 #: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr ""
+msgstr "Akumulator jest wpełni naładowany i gotowy do pracy."
 
 #: ../src/mpd-battery-device.c:351
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr ""
+msgstr "Przepraszamy, najwyraźniej akumulator jest uszkodzony."
 
 #: ../src/mpd-computer-pane.c:111
 msgid "All settings"
-msgstr ""
+msgstr "Wszystkie ustawienia"
 
 #: ../src/mpd-default-device-tile.c:100
 msgid ""
 "Plug in a device\n"
 "and it will be automatically detected."
 msgstr ""
+"Podłącz urządzenie,\n"
+"a zostanie ono automatycznie wykryte."
 
 #: ../src/mpd-disk-tile.c:64
 #, c-format
 msgid "You are using %d%% of %s"
-msgstr ""
+msgstr "Używasz %d%% z %s"
 
 #: ../src/mpd-folder-pane.c:91
 msgid "Your computer"
-msgstr ""
+msgstr "Twój komputer"
 
 #: ../src/mpd-storage-device-tile.c:96
 #, c-format
 msgid "Using %d%% of %s"
-msgstr ""
+msgstr "Używanie %d%% z %s"
 
 #: ../src/mpd-storage-device-tile.c:383
 msgid "Eject"
-msgstr ""
+msgstr "Wysuń"
 
 #: ../src/mpd-storage-device-tile.c:388
 msgid "Open"
-msgstr ""
+msgstr "Otwórz"
 
 #: ../src/mpd-volume-tile.c:110
 msgid "Turned up to 11"
-msgstr ""
+msgstr "Na cały regulator"
 
 #: ../src/mpd-volume-tile.c:112
 msgid "Very loud"
-msgstr ""
+msgstr "Bardzo głośno"
 
 #: ../src/mpd-volume-tile.c:114
 msgid "Loud"
-msgstr ""
+msgstr "Głośno"
 
 #: ../src/mpd-volume-tile.c:116
 msgid "Fairly loud"
-msgstr ""
+msgstr "Umiarkowanie głośno"
 
 #: ../src/mpd-volume-tile.c:118
 msgid "Middle of the road"
-msgstr ""
+msgstr "W połowie skali"
 
 #: ../src/mpd-volume-tile.c:120
 msgid "Fairly quiet"
-msgstr ""
+msgstr "Umiarkowanie cicho"
 
 #: ../src/mpd-volume-tile.c:122
 msgid "Quiet"
-msgstr ""
+msgstr "Cicho"
 
 #: ../src/mpd-volume-tile.c:124
 msgid "Very quiet"
-msgstr ""
+msgstr "Bardzo cicho"
 
 #: ../src/mpd-volume-tile.c:126
 msgid "Silent"
-msgstr ""
+msgstr "Bezgłośnie"
 
 #. Tile label
 #: ../src/mpd-volume-tile.c:306
 msgid "Netbook volume"
-msgstr ""
+msgstr "Głośność notebooka"
 
 #: ../src/mpd-volume-tile.c:345
 msgid "Mute"
-msgstr ""
+msgstr "Wycisz"
 
