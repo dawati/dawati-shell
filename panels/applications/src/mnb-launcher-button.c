@@ -97,8 +97,7 @@ fav_button_clicked_cb (MxButton           *button,
           self->priv->fav_sibling = NULL;
           g_signal_emit (self, _signals[FAV_TOGGLED], 0);
         }
-
-      if (self->priv->plain_sibling)
+      else if (self->priv->plain_sibling)
         {
           /* Remove self from fav apps pane and update sibling. */
           MnbLauncherButton *plain_sibling = self->priv->plain_sibling;
@@ -116,7 +115,20 @@ fav_button_clicked_cb (MxButton           *button,
                                              self);
 
           clutter_actor_destroy (CLUTTER_ACTOR (self));
-          g_signal_emit (plain_sibling, _signals[FAV_TOGGLED], 0);
+          g_signal_emit (self, _signals[FAV_TOGGLED], 0);
+        }
+      else
+        {
+          /* This fav doesn't have a "real" counterpart.
+           * Remove from container but keep alive for the signal emission. */
+          ClutterActor *container = clutter_actor_get_parent (CLUTTER_ACTOR (self));
+          g_object_ref (self);
+          clutter_container_remove_actor (CLUTTER_CONTAINER (container),
+                                          CLUTTER_ACTOR (self));
+
+          g_signal_emit (self, _signals[FAV_TOGGLED], 0);
+
+          clutter_actor_destroy (CLUTTER_ACTOR (self));
         }
     }
 }
