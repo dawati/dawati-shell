@@ -11,4 +11,9 @@ assets_DATA = style.css \
 	      presence-busy.png \
 	      avatar_frame.png
 
-EXTRA_DIST=$(assets_DATA)
+%.desktop.in: %.desktop.in.in Makefile
+	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
+
+EXTRA_DIST=$(assets_DATA) anerley-account-starter.desktop.in
+
+
