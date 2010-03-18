@@ -36,6 +36,7 @@ PKG_CHECK_MODULES(EBOOK, libebook-1.2)
 AC_OUTPUT([
         Makefile
         anerley/Makefile
+        src/Makefile
         tests/Makefile
         data/Makefile
         anerley.pc
