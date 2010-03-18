@@ -77,11 +77,11 @@ MnbToolbarButton {
 }
 
 MnbToolbarButton:checked {
-  border-image: url("panel/toolbar-button-active.png") 0;
+  border-image: url("panel/toolbar-button-active.png") 12;
 }
 
 MnbToolbarButton:hover, MnbToolbarButton:active {
-  border-image: url("panel/toolbar-button-hover.png") 0;
+  border-image: url("panel/toolbar-button-hover.png") 12;
 }
 
 /* Toolbar usage hint */
