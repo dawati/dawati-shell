@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+#include <string.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
@@ -329,7 +329,12 @@ mpl_app_bookmark_manager_load (MplAppBookmarkManager *manager)
     return;
   }
 
-  uris = g_strsplit (contents, " ", -1);
+  /* We switched from ' ' delimiters to '\n' for meego 1.0
+   * but still want to support the old file format. */
+  if (strchr (contents, ' '))
+    uris = g_strsplit (contents, " ", -1);
+  else
+    uris = g_strsplit (contents, "\n", -1);
 
   /* Any leftover bookmarks queued for removal? */
   removed_bookmarks = _list_pending_removals (manager, TRUE);
@@ -376,7 +381,7 @@ mpl_app_bookmark_manager_save (MplAppBookmarkManager *manager)
 
   uris[i] = NULL;
 
-  contents = g_strjoinv (" ", uris);
+  contents = g_strjoinv ("\n", uris);
 
   if (!g_file_set_contents (priv->path,
                             contents,
