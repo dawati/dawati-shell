@@ -774,7 +774,7 @@ mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward)
   /*
    * Must ensure size, otherewise the reported actor size is not acurate.
    */
-  mx_widget_ensure_style (MX_WIDGET (overlay));
+  mx_stylable_style_changed (MX_STYLABLE (overlay), MX_STYLE_CHANGED_FORCE);
 
   clutter_actor_get_size ((ClutterActor*) overlay, &w, &h);
 

@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (c) 2008, 2010 Intel Corp.
  *
  * Author: Matthew Allum <mallum@linux.intel.com>
  *
@@ -672,7 +672,7 @@ mnb_notification_cluster_init (MnbNotificationCluster *self)
   g_signal_connect (widget, "clicked",
                     G_CALLBACK (on_dismiss_all_click), self);
 
-  priv->control_text = mx_label_new ("");
+  priv->control_text = mx_label_new ();
   mx_table_add_actor (MX_TABLE (priv->control),
                         CLUTTER_ACTOR (priv->control_text), 0, 0);
 

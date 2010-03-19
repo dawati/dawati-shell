@@ -346,19 +346,20 @@ mtp_bin_constructed (GObject *self)
 
   clutter_actor_set_name (jar, "jar");
   clutter_actor_set_height ((ClutterActor*)toolbar, TOOLBAR_HEIGHT);
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (box), TRUE);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_VERTICAL);
   clutter_container_add (CLUTTER_CONTAINER (box), (ClutterActor*)toolbar, NULL);
 
   {
-    ClutterActor *dummy = mx_label_new ("");
+    ClutterActor *dummy = mx_label_new ();
     ClutterActor *hbox = mx_box_layout_new ();
     ClutterActor *button = mx_button_new_with_label (_("Save toolbar"));
 
     clutter_actor_set_name (hbox, "message-box");
     clutter_actor_set_name (button, "save-button");
 
-    priv->err_message = mx_label_new (_("Sorry, you'll have to remove a panel "
-                                        "before you can add a new one."));
+    priv->err_message =
+      mx_label_new_with_text (_("Sorry, you'll have to remove a panel "
+                                "before you can add a new one."));
 
     clutter_actor_set_name (priv->err_message, "error-message");
 
@@ -385,7 +386,7 @@ mtp_bin_constructed (GObject *self)
   }
 
   {
-    ClutterActor *label = mx_label_new (_("Available panels"));
+    ClutterActor *label = mx_label_new_with_text (_("Available panels"));
     ClutterActor *hbox = mx_box_layout_new ();
 
     clutter_actor_set_name (label, "available-panels");

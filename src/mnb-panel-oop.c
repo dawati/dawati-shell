@@ -1253,8 +1253,8 @@ mnb_panel_oop_show_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
 
   if (priv->button)
     {
-      if (!mx_button_get_checked (priv->button))
-        mx_button_set_checked (priv->button, TRUE);
+      if (!mx_button_get_toggled (priv->button))
+        mx_button_set_toggled (priv->button, TRUE);
     }
 
   g_signal_emit_by_name (panel, "show-completed");
@@ -1456,8 +1456,8 @@ mnb_panel_oop_hide_animate (MnbPanelOop *panel, MutterWindow *mcw)
 
       if (priv->button)
         {
-          if (mx_button_get_checked (priv->button))
-            mx_button_set_checked (priv->button, FALSE);
+          if (mx_button_get_toggled (priv->button))
+            mx_button_set_toggled (priv->button, FALSE);
         }
     }
 
@@ -1469,8 +1469,8 @@ mnb_panel_oop_hide_animate (MnbPanelOop *panel, MutterWindow *mcw)
       /* hide is hooked into the notify::checked signal from the button, so
        * make sure we don't get into a loop by checking checked first
        */
-      if (mx_button_get_checked (priv->button))
-        mx_button_set_checked (priv->button, FALSE);
+      if (mx_button_get_toggled (priv->button))
+        mx_button_set_toggled (priv->button, FALSE);
     }
 
   animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE,

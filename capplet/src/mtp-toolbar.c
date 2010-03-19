@@ -185,7 +185,7 @@ mtp_toolbar_constructed (GObject *self)
   priv->applet_area = mx_box_layout_new ();
   clutter_actor_set_name (priv->applet_area, "applet-area");
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->applet_area), 2);
-  mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->applet_area), FALSE);
+  /* mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->applet_area), FALSE); */
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->applet_area), TRUE);
   clutter_actor_set_parent (priv->applet_area, actor);
 }

@@ -122,11 +122,11 @@ mnb_toolbar_clock_constructed (GObject *self)
   clutter_actor_push_internal (actor);
 
   /* create time and date labels */
-  priv->time = mx_label_new ("");
+  priv->time = mx_label_new ();
   clutter_actor_set_name (priv->time, "time-label");
   clutter_actor_set_parent (priv->time, actor);
 
-  priv->date = mx_label_new ("");
+  priv->date = mx_label_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
   clutter_actor_set_parent (priv->date, actor);
 

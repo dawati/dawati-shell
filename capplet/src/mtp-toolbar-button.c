@@ -561,7 +561,7 @@ mtp_toolbar_button_parent_set (ClutterActor *button, ClutterActor *old_parent)
       clutter_actor_set_name (button, NULL);
 
       if (priv->tooltip)
-        mx_widget_set_has_tooltip (MX_WIDGET (button), FALSE);
+        mx_widget_set_tooltip_text (MX_WIDGET (button), NULL);
 
       if (priv->label && CLUTTER_ACTOR_IS_MAPPED (priv->label))
         clutter_actor_unmap (priv->label);
@@ -577,7 +577,7 @@ mtp_toolbar_button_parent_set (ClutterActor *button, ClutterActor *old_parent)
       clutter_actor_set_name (button, NULL);
 
       if (priv->tooltip)
-        mx_widget_set_has_tooltip (MX_WIDGET (button), TRUE);
+        mx_widget_set_tooltip_text (MX_WIDGET (button), priv->tooltip);
 
       if (priv->label && CLUTTER_ACTOR_IS_MAPPED (priv->label))
         clutter_actor_unmap (priv->label);
@@ -595,7 +595,7 @@ mtp_toolbar_button_parent_set (ClutterActor *button, ClutterActor *old_parent)
       clutter_actor_set_name (button, "in-jar");
 
       if (priv->tooltip)
-        mx_widget_set_has_tooltip (MX_WIDGET (button), FALSE);
+        mx_widget_set_tooltip_text (MX_WIDGET (button), NULL);
 
       if (priv->label && CLUTTER_ACTOR_IS_MAPPED (button) &&
           !CLUTTER_ACTOR_IS_MAPPED (priv->label))
@@ -855,7 +855,7 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
 
           if (priv->tooltip)
             {
-              ClutterActor *label = mx_label_new (priv->tooltip);
+              ClutterActor *label = mx_label_new_with_text (priv->tooltip);
 
               priv->label = label;
 

@@ -243,11 +243,11 @@ mtp_clock_init (MtpClock *self)
   priv = self->priv = MTP_CLOCK_GET_PRIVATE (self);
 
   /* create time and date labels */
-  priv->time = mx_label_new ("");
+  priv->time = mx_label_new ();
   clutter_actor_set_name (priv->time, "time-label");
   clutter_actor_set_parent (priv->time, (ClutterActor*)self);
 
-  priv->date = mx_label_new ("");
+  priv->date = mx_label_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
   clutter_actor_set_parent (priv->date, (ClutterActor*)self);
 

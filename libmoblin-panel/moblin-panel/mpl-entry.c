@@ -408,7 +408,7 @@ mpl_entry_init (MplEntry *self)
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mpl_entry_style_changed), NULL);
 
-  priv->entry = CLUTTER_ACTOR (mx_entry_new (""));
+  priv->entry = mx_entry_new ();
   clutter_actor_set_parent (priv->entry, CLUTTER_ACTOR (self));
   mx_stylable_set_style_class (MX_STYLABLE (priv->entry),
                                "MplEntryEntry");

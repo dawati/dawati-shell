@@ -159,7 +159,7 @@ static gboolean
 mnb_toolbar_button_enter (ClutterActor *actor, ClutterCrossingEvent *event)
 {
   /* don't show a tooltip when the button is "checked" */
-  if (mx_button_get_checked (MX_BUTTON (actor)))
+  if (mx_button_get_toggled (MX_BUTTON (actor)))
     return TRUE;
   else
     return CLUTTER_ACTOR_CLASS (

@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (c) 2008, 2010 Intel Corp.
  *
  * Author: Matthew Allum <mallum@linux.intel.com>
  *
@@ -202,17 +202,17 @@ mnb_notification_init (MnbNotification *self)
   priv = self->priv = GET_PRIVATE (self);
 
   mx_stylable_set_style_class (MX_STYLABLE (self), "Notification");
-  mx_table_set_col_spacing (MX_TABLE (self), 4);
+  mx_table_set_column_spacing (MX_TABLE (self), 4);
   mx_table_set_row_spacing (MX_TABLE (self), 8);
 
   priv->dismiss_button = mx_button_new ();
   priv->icon           = g_object_ref_sink (clutter_texture_new ());
-  priv->body           = mx_label_new ("");
-  priv->summary        = mx_label_new ("");
+  priv->body           = mx_label_new ();
+  priv->summary        = mx_label_new ();
   priv->title_box      = mx_table_new ();
 
 
-  mx_table_set_col_spacing (MX_TABLE (priv->title_box), 4);
+  mx_table_set_column_spacing (MX_TABLE (priv->title_box), 4);
   mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->title_box), 0, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                CLUTTER_ACTOR (priv->title_box),

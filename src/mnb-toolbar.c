@@ -393,8 +393,8 @@ mnb_toolbar_show_completed_cb (ClutterAnimation *animation, ClutterActor *actor)
 
       priv->tp_to_activate = NULL;
 
-      if (!mx_button_get_checked (MX_BUTTON (tp->button)))
-        mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
+      if (!mx_button_get_toggled (MX_BUTTON (tp->button)))
+        mx_button_set_toggled (MX_BUTTON (tp->button), TRUE);
     }
 
 }
@@ -543,8 +543,8 @@ mnb_toolbar_real_hide (ClutterActor *actor)
         {
           clutter_actor_hide (CLUTTER_ACTOR (panel->button));
 
-          if (mx_button_get_checked (MX_BUTTON (panel->button)))
-            mx_button_set_checked (MX_BUTTON (panel->button), FALSE);
+          if (mx_button_get_toggled (MX_BUTTON (panel->button)))
+            mx_button_set_toggled (MX_BUTTON (panel->button), FALSE);
         }
     }
 }
@@ -958,7 +958,7 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
       if (!tp || tp != stubbed)
         continue;
 
-      if (mx_button_get_checked (MX_BUTTON (tp->button)))
+      if (mx_button_get_toggled (MX_BUTTON (tp->button)))
         {
           gchar *tooltip;
 
@@ -972,7 +972,7 @@ mnb_toolbar_panel_stub_timeout_cb (gpointer data)
 
           g_free (tooltip);
 
-          mx_button_set_checked (MX_BUTTON (tp->button), FALSE);
+          mx_button_set_toggled (MX_BUTTON (tp->button), FALSE);
         }
 
       break;
@@ -1055,7 +1055,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
   button_click = priv->button_click;
   priv->button_click = FALSE;
 
-  checked = mx_button_get_checked (button);
+  checked = mx_button_get_toggled (button);
 
   /*
    * If the user clicked on a button to hide a panel, and there are no
@@ -1067,7 +1067,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
    */
   if (button_click && !checked && !mnb_toolbar_check_for_windows (toolbar))
     {
-      mx_button_set_checked (button, TRUE);
+      mx_button_set_toggled (button, TRUE);
       recursion = FALSE;
       return;
     }
@@ -1087,8 +1087,8 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
 
       if (tp->button != (ClutterActor*)button)
       {
-        if (tp->button && mx_button_get_checked (MX_BUTTON (tp->button)))
-          mx_button_set_checked (MX_BUTTON (tp->button), FALSE);
+        if (tp->button && mx_button_get_toggled (MX_BUTTON (tp->button)))
+          mx_button_set_toggled (MX_BUTTON (tp->button), FALSE);
 
         if (tp->panel)
           {
@@ -1150,7 +1150,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                     g_warning ("Panel %s preiviously failed to load, ingoring",
                                tp->name);
 
-                    mx_button_set_checked (MX_BUTTON (tp->button), FALSE);
+                    mx_button_set_toggled (MX_BUTTON (tp->button), FALSE);
                   }
               }
             else
@@ -1161,7 +1161,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                  * clean.
                  */
                 if (!tp->failed)
-                  mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
+                  mx_button_set_toggled (MX_BUTTON (tp->button), TRUE);
               }
           }
       }
@@ -1979,8 +1979,8 @@ mnb_toolbar_windowless_button_toggled_cb (MxButton *button,
   /*
    * Windowless buttons cannot be checked.
    */
-  if (mx_button_get_checked (button))
-    mx_button_set_checked (button, FALSE);
+  if (mx_button_get_toggled (button))
+    mx_button_set_toggled (button, FALSE);
 }
 
 /*
@@ -2871,7 +2871,7 @@ mnb_toolbar_activate_panel_internal (MnbToolbar        *toolbar,
               priv->tp_to_activate = tp;
               mnb_toolbar_show (toolbar, reason);
             }
-          else if (!mx_button_get_checked (MX_BUTTON (tp->button)))
+          else if (!mx_button_get_toggled (MX_BUTTON (tp->button)))
             {
               /*
                * We are not calling mnb_toolbar_show() since it is already
@@ -2879,7 +2879,7 @@ mnb_toolbar_activate_panel_internal (MnbToolbar        *toolbar,
                * to prevent the toolbar from hiding.
                */
               priv->reason_for_show = reason;
-              mx_button_set_checked (MX_BUTTON (tp->button), TRUE);
+              mx_button_set_toggled (MX_BUTTON (tp->button), TRUE);
             }
         }
     }
