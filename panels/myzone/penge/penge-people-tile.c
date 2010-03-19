@@ -226,7 +226,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     body = mx_frame_new ();
     inner_table = mx_table_new ();
 
-    mx_table_set_col_spacing (MX_TABLE (inner_table), 6);
+    mx_table_set_column_spacing (MX_TABLE (inner_table), 6);
     mx_stylable_set_style_class (MX_STYLABLE (body),
                                  "PengePeopleTileContentBackground");
     mx_bin_set_child (MX_BIN (body), inner_table);

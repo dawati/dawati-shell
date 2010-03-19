@@ -109,8 +109,8 @@ penge_people_placeholder_tile_init (PengePeoplePlaceholderTile *self)
   mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
-  label = mx_label_new (_("Things that your friends do online will appear here. " \
-                          "Activate your accounts now!"));
+  label = mx_label_new_with_text (_("Things that your friends do online will appear here. " \
+                                    "Activate your accounts now!"));
   clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-main-message");
 
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
@@ -162,7 +162,7 @@ penge_people_placeholder_tile_init (PengePeoplePlaceholderTile *self)
                                           NULL);
     }
 
-    label = mx_label_new (g_app_info_get_name (app_info));
+    label = mx_label_new_with_text (g_app_info_get_name (app_info));
     clutter_actor_set_name ((ClutterActor *)label, "penge-no-content-other-message");
     mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
                                         label,

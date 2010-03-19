@@ -23,7 +23,7 @@
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
 #include <glib/gi18n.h>
-#include <ical.h>
+#include <libical/ical.h>
 
 #include "penge-event-tile.h"
 
@@ -358,7 +358,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   {
     if (!priv->no_events_bin)
     {
-      label = mx_label_new (_("No calendar entries this week"));
+      label = mx_label_new_with_text (_("No calendar entries this week"));
       priv->no_events_bin = mx_frame_new ();
       mx_bin_set_child (MX_BIN (priv->no_events_bin),
                         label);

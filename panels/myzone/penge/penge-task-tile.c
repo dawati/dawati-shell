@@ -167,7 +167,7 @@ _check_button_clicked_cb (MxButton *button,
 {
   PengeTaskTilePrivate *priv = GET_PRIVATE (userdata);
 
-  if (mx_button_get_checked (button))
+  if (mx_button_get_toggled (button))
   {
     jana_task_set_completed (priv->task, TRUE);
   } else {
@@ -223,14 +223,14 @@ penge_task_tile_init (PengeTaskTile *self)
                                "PengeTaskToggleButton");
   clutter_actor_set_size ((ClutterActor *)priv->check_button, 21, 21);
 
-  priv->summary_label = mx_label_new ("Summary text");
+  priv->summary_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->summary_label),
                                "PengeTaskSummaryLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->summary_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
-  priv->details_label = mx_label_new ("Details text");
+  priv->details_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->details_label),
                                "PengeTaskDetails");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->details_label));
@@ -273,7 +273,7 @@ penge_task_tile_init (PengeTaskTile *self)
 
   /* Setup spacing and padding */
   mx_table_set_row_spacing (MX_TABLE (priv->inner_table), 4);
-  mx_table_set_col_spacing (MX_TABLE (priv->inner_table), 8);
+  mx_table_set_column_spacing (MX_TABLE (priv->inner_table), 8);
 
   g_signal_connect (priv->check_button,
                    "clicked",
@@ -326,7 +326,7 @@ penge_task_tile_update (PengeTaskTile *tile)
     clutter_actor_hide (CLUTTER_ACTOR (priv->details_label));
   }
 
-  mx_button_set_checked (MX_BUTTON (priv->check_button),
+  mx_button_set_toggled (MX_BUTTON (priv->check_button),
                          jana_task_get_completed (priv->task));
 }
 

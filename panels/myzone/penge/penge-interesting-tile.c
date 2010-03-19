@@ -234,7 +234,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                     priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
-  priv->primary_text = mx_label_new ("Primary text");
+  priv->primary_text = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->primary_text), 
                                "PengeInterestingTilePrimaryLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->primary_text));
@@ -243,7 +243,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);
 
-  priv->secondary_text = mx_label_new ("Secondary text");
+  priv->secondary_text = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->secondary_text), 
                                "PengeInterestingTileSecondaryLabel");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->secondary_text));
@@ -337,7 +337,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                     (GCallback)_remove_button_clicked,
                     self);
 
-  mx_table_set_col_spacing (MX_TABLE (priv->details_overlay), 4);
+  mx_table_set_column_spacing (MX_TABLE (priv->details_overlay), 4);
 
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 

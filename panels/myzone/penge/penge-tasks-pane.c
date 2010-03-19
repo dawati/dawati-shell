@@ -426,7 +426,7 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   {
     if (!priv->no_tasks_bin)
     {
-      label = mx_label_new (_("Nothing to do today"));
+      label = mx_label_new_with_text (_("Nothing to do today"));
       priv->no_tasks_bin = mx_frame_new ();
       mx_bin_set_child (MX_BIN (priv->no_tasks_bin),
                           (ClutterActor *)label);

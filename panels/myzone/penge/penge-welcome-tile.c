@@ -64,7 +64,7 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
   mx_stylable_set_style_class (MX_STYLABLE (tile),
                                "PengeWelcomeTile");
 
-  label = mx_label_new (_("Welcome to MeeGo"));
+  label = mx_label_new_with_text (_("Welcome to MeeGo"));
   clutter_actor_set_name ((ClutterActor *)label,
                           "penge-welcome-primary-text");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
@@ -83,9 +83,9 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                                       NULL);
   mx_table_set_row_spacing (MX_TABLE (tile), 6);
 
-  label = mx_label_new (_("This is the Myzone, where your recently "
-                          "used files and content from your web feeds will "
-                          "appear."));
+  label = mx_label_new_with_text (_("This is the Myzone, where your recently "
+                                    "used files and content from your web feeds will "
+                                    "appear."));
 
 
   clutter_actor_set_name ((ClutterActor *)label,

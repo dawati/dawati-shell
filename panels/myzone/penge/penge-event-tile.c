@@ -268,21 +268,21 @@ penge_event_tile_init (PengeEventTile *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->time_bin),
                                "PengeEventTimeBin");
 
-  priv->time_label = mx_label_new ("XX:XX");
+  priv->time_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->time_label),
                                "PengeEventTimeLabel");
 
   mx_bin_set_child (MX_BIN (priv->time_bin),
                     priv->time_label);
 
-  priv->summary_label = mx_label_new ("Summary text");
+  priv->summary_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->summary_label),
                                "PengeEventSummary");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->summary_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
-  priv->details_label = mx_label_new ("Details text");
+  priv->details_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->details_label),
                                "PengeEventDetails");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->details_label));
@@ -335,7 +335,7 @@ penge_event_tile_init (PengeEventTile *self)
 
   /* Setup spacing and padding */
   mx_table_set_row_spacing (MX_TABLE (priv->inner_table), 4);
-  mx_table_set_col_spacing (MX_TABLE (priv->inner_table), 8);
+  mx_table_set_column_spacing (MX_TABLE (priv->inner_table), 8);
 
   g_signal_connect (self,
                     "enter-event",

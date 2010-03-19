@@ -296,7 +296,7 @@ penge_count_tile_init (PengeCountTile *self)
   priv->table = mx_table_new ();
   g_object_ref (priv->table);
 
-  priv->count_label = mx_label_new ("");
+  priv->count_label = mx_label_new ();
 
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->count_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_NONE);
@@ -317,7 +317,7 @@ penge_count_tile_init (PengeCountTile *self)
                                       "x-expand", FALSE,
                                       NULL);
 
-  priv->message_label = mx_label_new ("Message(s)");
+  priv->message_label = mx_label_new ();
 
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->message_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
@@ -333,7 +333,7 @@ penge_count_tile_init (PengeCountTile *self)
                                       "x-expand", TRUE,
                                       NULL);
 
-  priv->account_label = mx_label_new ("The Account");
+  priv->account_label = mx_label_new ();
 
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->account_label));
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
@@ -348,7 +348,7 @@ penge_count_tile_init (PengeCountTile *self)
                                       1, 1,
                                       "x-expand", TRUE,
                                       NULL);
-  mx_table_set_col_spacing (MX_TABLE (priv->table), 12);
+  mx_table_set_column_spacing (MX_TABLE (priv->table), 12);
   clutter_actor_show (priv->table);
 
   mx_bin_set_child (MX_BIN (self), priv->table);

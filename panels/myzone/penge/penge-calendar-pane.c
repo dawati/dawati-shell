@@ -470,7 +470,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
 
   penge_calendar_pane_update_calendar_icon (self, now);
 
-  label = mx_label_new (_("Appointments"));
+  label = mx_label_new_with_text (_("Appointments"));
   mx_stylable_set_style_class (MX_STYLABLE (label),
                                "PengeCalendarPaneTitle");
   mx_table_add_actor (MX_TABLE (priv->header_table),
