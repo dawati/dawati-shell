@@ -389,7 +389,7 @@ static void
 mnp_clock_construct (MnpClockTile *tile)
 {
 	MnpDateFormat *fmt;
-	ClutterActor *box1, *box2, *label1, *label2, *label3;
+	ClutterActor *box1, *label1, *label2, *label3;
 	ClutterActor *icon;
 	MnpClockTilePriv *priv = tile->priv;
 
@@ -408,7 +408,6 @@ mnp_clock_construct (MnpClockTile *tile)
 	label3 = mx_label_new_with_text (fmt->city);
 	tile->priv->city = (MxLabel *)label3;
 	clutter_actor_set_name (label3, "mnp-tile-city");
-	clutter_actor_set_size (label3, 110, -1);
 
 	box1 = mx_box_layout_new ();
 	clutter_actor_set_name (box1, "mnp-tile-date-city");
@@ -435,41 +434,26 @@ mnp_clock_construct (MnpClockTile *tile)
 					"x-fill", TRUE,
                                    	NULL);
 
-
-	box1 = mx_box_layout_new ();
-	clutter_actor_set_name (box1, "mnp-tile-time-box");		
-	mx_box_layout_set_orientation ((MxBoxLayout *)box1, MX_VERTICAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)box1, FALSE);
-	clutter_container_add_actor ((ClutterContainer *)box1, label2);
-	clutter_container_child_set ((ClutterContainer *)box1, label2,
+	clutter_container_add_actor ((ClutterContainer *)tile, label2);
+	clutter_container_child_set ((ClutterContainer *)tile, label2,
 				   	"expand", TRUE,
-                                   	NULL);
-	
-	clutter_container_add_actor ((ClutterContainer *)tile, box1);
-	clutter_container_child_set ((ClutterContainer *)tile, box1,
-				   	"expand", FALSE,
 					"x-fill", FALSE,
+					"y-fill", FALSE,
+					"y-align", MX_ALIGN_MIDDLE,
+					"x-align", MX_ALIGN_END,					
                                    	NULL);
 	FREE_DFMT(fmt);
 
-	box2 = mx_box_layout_new ();
-	clutter_actor_set_name (box2, "mnp-tile-remove-button");
-	mx_box_layout_set_orientation ((MxBoxLayout *)box2, MX_VERTICAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)box2, FALSE);	
  	
 	priv->remove_button = (MxButton *)mx_button_new ();
 	g_signal_connect (priv->remove_button, "clicked", G_CALLBACK(remove_tile), tile);
-	clutter_container_add_actor ((ClutterContainer *)box2, (ClutterActor *)priv->remove_button);  	
-  	clutter_container_child_set ((ClutterContainer *)box2, (ClutterActor *)priv->remove_button,
+	clutter_container_add_actor ((ClutterContainer *)tile, priv->remove_button);
+  	clutter_container_child_set ((ClutterContainer *)tile, priv->remove_button,
 				   	"expand", FALSE,
 					"x-fill", FALSE,
-					"y-fill", FALSE,
-                                   	NULL);
-
-	clutter_container_add_actor ((ClutterContainer *)tile, box2);
-  	clutter_container_child_set ((ClutterContainer *)tile, box2,
-				   	"expand", FALSE,
-					"x-fill", FALSE,
+					"y-fill", FALSE,					
+					"y-align", MX_ALIGN_MIDDLE,
+					"x-align", MX_ALIGN_END,
                                    	NULL);
 
 	mx_stylable_set_style_class (MX_STYLABLE (priv->remove_button),

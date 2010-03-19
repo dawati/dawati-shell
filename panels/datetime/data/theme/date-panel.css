@@ -51,18 +51,6 @@ MxButton.new-alarm-tile
   background-color: #7e7e7eff;  
 }
 
-*#mnp-tile-time-box
-{
-  padding: 4 4;	
-  background-color: #7e7e7eff;  
-}
-
-*#mnp-tile-remove-button
-{
-  padding: 0 0 4 0;	
-  background-color: #7e7e7eff;    
-}
-
 *#clock-area
 {
   padding: 5 5;
@@ -74,6 +62,8 @@ MxButton.new-alarm-tile
   padding: 14 0;
   font-size: 16;
   font-family: "Droid Sans";
+  background-color: #7e7e7eff;  
+  
 }
 
 *#mnp-tile-city
@@ -81,6 +71,8 @@ MxButton.new-alarm-tile
   padding: 6 0 1 1;
   font-size: 12;
   font-family: "Droid Sans";
+  background-color: #7e7e7eff;  
+
 }
 
 *#mnp-tile-date
@@ -88,6 +80,8 @@ MxButton.new-alarm-tile
   padding: 6 0 1 1;
   font-size: 10;
   font-family: "Droid Sans";
+  background-color: #7e7e7eff;  
+
 }
 
 *#completion-list-view
@@ -111,6 +105,7 @@ MxButton.new-alarm-tile
 {
   border-image:none;
   padding:0;
+  background-color: #7e7e7eff;    
 }
 
 *.TileRemoveButton *.TileIcon, *.AlarmRemoveButton *.AlarmDelIcon
@@ -221,18 +216,18 @@ MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
 
 MxLabel.PengeEventTimeLabel
 {
-  color: white;
+  color: black;
   font-size:12;
+  font-weight: bold;
   font-family: "Droid Sans", "Sans";
-  padding: 8;
 }
 
 MxLabel.PengeEventTimeLabel:past
 {
-  color: white;
+  color: black;
   font-size:12;
+  font-weight: bold;
   font-family: "Droid Sans", "Sans";
-  padding: 8;
 }
 
 *.PengeEventTimeBin

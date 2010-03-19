@@ -290,6 +290,7 @@ mnp_completion_done (gpointer data, const char *zone)
 	g_signal_handlers_block_by_func (priv->search_location, text_changed_cb, clock);
 	mx_entry_set_text (priv->search_location, zone);
 	g_signal_handlers_unblock_by_func (priv->search_location, text_changed_cb, clock);
+	add_location_clicked_cb (NULL, clock);
 
 }
 
@@ -400,6 +401,8 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	priv->completion_timeout = 0;
 
 	box = mx_box_layout_new ();
+	clutter_actor_set_name ((ClutterActor *)box, "search-entry-box");
+	
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
 	mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
@@ -420,11 +423,19 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	
 	clutter_container_add_actor ((ClutterContainer *)box, entry);
 	
-	priv->add_location = mx_button_new ();
-	mx_button_set_label ((MxButton *)priv->add_location, _("Add"));
+	priv->add_location = mx_label_new_with_text (_("Search"));
+	clutter_actor_set_name ((ClutterActor *)box, "search-entry-label");
+	
 	clutter_container_add_actor ((ClutterContainer *)box, priv->add_location);
-  	g_signal_connect (priv->add_location, "clicked",
-                    	G_CALLBACK (add_location_clicked_cb), world_clock);
+  	/* g_signal_connect (priv->add_location, "clicked",
+                    	G_CALLBACK (add_location_clicked_cb), world_clock); */
+	clutter_container_child_set (CLUTTER_CONTAINER (box),
+                               priv->add_location,
+                               "expand", FALSE,
+			       "y-fill", FALSE,
+			       "y-align", MX_ALIGN_MIDDLE,
+                               NULL);
+	
 
 	clutter_container_add_actor (CLUTTER_CONTAINER(table), box);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
