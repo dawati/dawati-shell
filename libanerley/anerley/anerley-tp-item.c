@@ -667,6 +667,12 @@ anerley_tp_item_associate_channel (AnerleyTpItem *item,
 
   g_return_if_fail (ANERLEY_IS_TP_ITEM (item));
 
+  /* We only want to do message counts if we have the Messages interface */
+
+  if (!tp_proxy_has_interface_by_id (channel,
+                                     TP_IFACE_QUARK_CHANNEL_INTERFACE_MESSAGES))
+    return;
+
   g_hash_table_insert (priv->pending_messages, g_object_ref (channel), NULL);
 
   tp_cli_channel_type_text_connect_to_received (channel, _message_received,
