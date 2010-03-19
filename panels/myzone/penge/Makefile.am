@@ -50,6 +50,8 @@ libpenge_la_SOURCES = \
 		      penge-email-pane.c \
 		      penge-count-tile.c
 
+libpenge_la_LIBADD = $(top_builddir)/mailme/libmailme.la
+
 AM_CFLAGS = -Wall \
 	    $(PENGE_CFLAGS) \
 	    $(MPL_CFLAGS) \
@@ -59,7 +61,6 @@ AM_CFLAGS = -Wall \
 
 test_block_container_SOURCES = test-block-container.c
 test_block_container_LDADD = libpenge.la \
-			     $(top_builddir)/mailme/libmailme.a \
 			     $(MPL_LIBS) \
 			     $(PENGE_LIBS) \
 			     $(MAILME_LIBS)
@@ -68,7 +69,6 @@ test_block_container_LDADD = libpenge.la \
 
 test_everything_pane_SOURCES = test-everything-pane.c
 test_everything_pane_LDADD = libpenge.la \
-			     $(top_builddir)/mailme/libmailme.a \
 			     $(MPL_LIBS) \
 			     $(PENGE_LIBS) \
 			     $(MAILME_LIBS)
