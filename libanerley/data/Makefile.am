@@ -11,9 +11,15 @@ assets_DATA = style.css \
 	      presence-busy.png \
 	      avatar_frame.png
 
+desktopfiles_in_files=anerley-account-starter.desktop.in
+desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
+
 %.desktop.in: %.desktop.in.in Makefile
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
-EXTRA_DIST=$(assets_DATA) anerley-account-starter.desktop.in
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_DATA = $(desktopfiles_files)
+
+EXTRA_DIST=$(assets_DATA) $(desktopfiles_in_files)
 
 
