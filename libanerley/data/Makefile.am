@@ -21,5 +21,6 @@ autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = $(desktopfiles_files)
 
 EXTRA_DIST=$(assets_DATA) $(desktopfiles_in_files)
+CLEANFILES=$(desktopfiles_files)
 
 
