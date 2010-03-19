@@ -14,7 +14,7 @@ assets_DATA = style.css \
 desktopfiles_in_files=anerley-account-starter.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
-%.desktop.in: %.desktop.in.in Makefile
+%.desktop: %.desktop.in Makefile
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 autostartdir = $(sysconfdir)/xdg/autostart
