@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anerley\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:29+0000\n"
+"POT-Creation-Date: 2010-03-17 09:32+0000\n"
 "PO-Revision-Date: 2009-08-25 16:34+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -39,19 +39,18 @@ msgstr "Tak bernama"
 msgid "Extended Away"
 msgstr "Pergi Lama"
 
-#: ../anerley/anerley-presence-chooser.c:41
-#, fuzzy
-msgid "Unset"
-msgstr "Nirtata"
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Tersembunyi"
 
 #: ../anerley/anerley-presence-chooser.c:48
 msgid "Unknown"
 msgstr "Tak dikenal"
 
-#: ../anerley/anerley-presence-chooser.c:46
-msgid "Hidden"
-msgstr "Tersembunyi"
-
 #: ../anerley/anerley-presence-chooser.c:49
 msgid "Error"
 msgstr "Galat"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Nirtata"
