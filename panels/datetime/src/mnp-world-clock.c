@@ -51,6 +51,7 @@ struct _MnpWorldClockPrivate {
 	MxListView *zones_list;
 	ClutterModel *zones_model;
 	ClutterActor *scroll;
+	ClutterActor *entry_box;
 
 	ClutterActor *add_location;
 
@@ -276,7 +277,9 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 	priv->search_text = "asd";
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");	
 	mx_list_view_set_model (MX_LIST_VIEW (priv->zones_list), priv->zones_model);
-
+	
+	if (priv->zones->len >= 4)
+		clutter_actor_hide (priv->entry_box);
 }
 
 
@@ -345,6 +348,10 @@ zone_removed_cb (MnpClockArea *area, char *display, MnpWorldClock *clock)
 		g_ptr_array_remove_index (priv->zones, i);
 		mnp_save_zones(priv->zones);
 	}
+
+	if (priv->zones->len < 4)
+		clutter_actor_show (priv->entry_box);
+	
 }
 
 static void
@@ -401,6 +408,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	priv->completion_timeout = 0;
 
 	box = mx_box_layout_new ();
+	priv->entry_box = box;
 	clutter_actor_set_name ((ClutterActor *)box, "search-entry-box");
 	
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
@@ -482,6 +490,8 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 			MnpClockTile *tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area));
 			mnp_clock_area_add_tile (priv->area, tile);
 		}
+		if (priv->zones->len >= 4)
+			clutter_actor_hide (priv->entry_box);
 	}
 
 }
