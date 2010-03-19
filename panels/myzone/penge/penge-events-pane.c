@@ -474,7 +474,7 @@ penge_events_pane_update (PengeEventsPane *pane)
       clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                    actor,
                                    "row", count,
-                                   "col", 0,
+                                   "column", 0,
                                    NULL);
       g_object_set (actor, "time", priv->time, NULL);
 

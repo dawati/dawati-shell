@@ -228,7 +228,7 @@ _update_layout (PengeGridView *grid_view)
   {
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->favourite_apps_pane,
-                                 "col", col,
+                                 "column", col,
                                  "row", 0,
                                  "y-expand", TRUE,
                                  "y-fill", FALSE,
@@ -245,7 +245,7 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_show (priv->calendar_pane);
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->calendar_pane,
-                                   "col", col,
+                                   "column", col,
                                    "x-expand", FALSE,
                                    "y-fill", FALSE,
                                    "y-align", 0.0,
@@ -259,7 +259,7 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_show (priv->email_pane);
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->email_pane,
-                                   "col", col,
+                                   "column", col,
                                    "row", 1,
                                    "y-expand", TRUE,
                                    "y-fill", FALSE,
@@ -277,7 +277,7 @@ _update_layout (PengeGridView *grid_view)
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->div_tex,
                                  "row-span", 1,
-                                 "col", col,
+                                 "column", col,
                                  "x-expand", FALSE,
                                  NULL);
 
@@ -286,7 +286,7 @@ _update_layout (PengeGridView *grid_view)
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->everything_pane,
                                  "row-span", 1,
-                                 "col", col,
+                                 "column", col,
                                  "x-expand", TRUE,
                                  "x-fill", TRUE,
                                  "y-expand", TRUE,
@@ -334,7 +334,7 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_show (priv->calendar_pane);
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->calendar_pane,
-                                   "col", col,
+                                   "column", col,
                                    "x-expand", FALSE,
                                    "y-expand", FALSE,
                                    "y-fill", FALSE,
@@ -348,7 +348,7 @@ _update_layout (PengeGridView *grid_view)
       clutter_actor_show (priv->email_pane);
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->email_pane,
-                                   "col", col,
+                                   "column", col,
                                    "row", 1,
                                    "x-expand", FALSE,
                                    "y-expand", TRUE,
@@ -362,7 +362,7 @@ _update_layout (PengeGridView *grid_view)
 
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->favourite_apps_pane,
-                                 "col", col,
+                                 "column", col,
                                  "row", 2,
                                  "x-expand", FALSE,
                                  "x-fill", TRUE,
@@ -382,14 +382,14 @@ _update_layout (PengeGridView *grid_view)
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->div_tex,
                                  "row-span", 3,
-                                 "col", col,
+                                 "column", col,
                                  "x-expand", FALSE,
                                  NULL);
     col++;
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->everything_pane,
                                  "row-span", 3,
-                                 "col", col,
+                                 "column", col,
                                  "x-expand", TRUE,
                                  "x-fill", TRUE,
                                  "y-expand", TRUE,

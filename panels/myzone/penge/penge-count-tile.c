@@ -137,7 +137,7 @@ penge_count_tile_set_compact (PengeCountTile *self,
     clutter_actor_reparent (priv->count_label, priv->table);
     clutter_container_child_set (CLUTTER_CONTAINER (priv->table),
                                  priv->count_label,
-                                 "col", 0,
+                                 "column", 0,
                                  "row", 0,
                                  "row-span", 2,
                                  "x-expand", FALSE,
