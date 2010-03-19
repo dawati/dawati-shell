@@ -549,11 +549,8 @@ expander_frame_allocated_cb (MxExpander             *expander,
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  if (!priv->first_expansion)
-    {
-      scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
-                                       CLUTTER_ACTOR (expander));
-    }
+  scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
+                                   CLUTTER_ACTOR (expander));
 }
 
 static gboolean
