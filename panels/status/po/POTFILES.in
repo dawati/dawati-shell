@@ -3,3 +3,4 @@ src/moblin-panel-status.c
 data/moblin-panel-status.desktop.in.in
 src/mps-feed-pane.c
 src/mps-feed-switcher.c
+src/mps-geotag-pane.c
