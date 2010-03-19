@@ -1,5 +1,5 @@
 AC_PREREQ(2.53)
-AC_INIT(anerley, 0.2.7)
+AC_INIT(anerley, 0.2.8)
 AM_INIT_AUTOMAKE(1.11)
 AC_CONFIG_MACRO_DIR([m4])
 AM_CONFIG_HEADER(config.h)
