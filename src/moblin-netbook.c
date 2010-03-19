@@ -72,7 +72,7 @@
 #define MYZONE_TIMEOUT              200
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
 #define NOTIFICATION_KEY "MNB-MW-urgent-notification"
-#define BG_KEY_DIR "/desktop/moblin/background"
+#define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
 #define THEME_KEY_DIR "/apps/metacity/general"
 #define KEY_THEME THEME_KEY_DIR "/theme"
