@@ -138,6 +138,8 @@ static void mnb_toolbar_activate_panel_internal (MnbToolbar *toolbar,
 static void mnb_toolbar_setup_gconf (MnbToolbar *toolbar);
 static gboolean mnb_toolbar_start_panel_service (MnbToolbar *toolbar,
                                                  MnbToolbarPanel *tp);
+static void mnb_toolbar_workarea_changed_cb (MetaScreen *screen,
+                                             MnbToolbar *toolbar);
 
 enum {
   PROP_0,
@@ -477,7 +479,6 @@ static void
 mnb_toolbar_real_show (ClutterActor *actor)
 {
   MnbToolbarPrivate  *priv = MNB_TOOLBAR (actor)->priv;
-  gint                screen_width, screen_height;
   GList              *l;
 
   if (priv->in_show_animation)
@@ -488,8 +489,6 @@ mnb_toolbar_real_show (ClutterActor *actor)
 
   if (moblin_netbook_use_netbook_mode (priv->plugin))
     mnb_toolbar_show_lowlight (MNB_TOOLBAR (actor));
-
-  mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
   /*
    * Show all of the buttons -- see comments in _hide_completed_cb() on why we
@@ -515,9 +514,10 @@ mnb_toolbar_real_show (ClutterActor *actor)
     mnb_input_manager_remove_region_without_update (priv->input_region);
 
   priv->input_region =
-    mnb_input_manager_push_region (0, 0, screen_width, TOOLBAR_HEIGHT + 10,
+    mnb_input_manager_push_region (0, 0,
+                                   priv->old_screen_width,
+                                   TOOLBAR_HEIGHT + 10,
                                    FALSE, MNB_INPUT_LAYER_PANEL);
-
 
   moblin_netbook_stash_window_focus (priv->plugin, CurrentTime);
 }
@@ -1677,7 +1677,6 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
   MnbToolbarPrivate *priv;
   MutterPlugin      *plugin;
   gfloat             x, y,w, h;
-  gint               screen_width, screen_height;
   MnbInputRegion    *region;
 
   /*
@@ -1692,8 +1691,6 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
 
   mnb_drop_down_get_footer_geometry (panel, &x, &y, &w, &h);
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
   region = mnb_panel_get_input_region (panel);
 
   if (region)
@@ -1706,7 +1703,7 @@ mnb_toolbar_update_dropdown_input_region (MnbToolbar  *toolbar,
   else
     region = mnb_input_manager_push_region ((gint)x, TOOLBAR_HEIGHT + (gint)y,
                                             (guint)w,
-                                            screen_height -
+                                            priv->old_screen_height -
                                             (TOOLBAR_HEIGHT+(gint)y),
                                             FALSE, MNB_INPUT_LAYER_PANEL);
 
@@ -2152,9 +2149,6 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 static void
 mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
-  MutterPlugin      *plugin = priv->plugin;
-  gint               screen_width, screen_height;
   const gchar       *name;
   const gchar       *service = NULL;
   MnbToolbarPanel   *tp;
@@ -2206,8 +2200,6 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
    * If the respective slot is already occupied, remove the old objects.
    */
   mnb_toolbar_dispose_of_panel (toolbar, tp, FALSE);
-
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   g_signal_connect (panel, "show-completed",
                     G_CALLBACK(mnb_toolbar_dropdown_show_completed_partial_cb),
@@ -2328,16 +2320,12 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 {
   MnbToolbarPrivate *priv = toolbar->priv;
   MnbPanelOop       *panel;
-  gint               screen_width, screen_height;
-
-  mutter_plugin_query_screen_size (priv->plugin,
-                                   &screen_width, &screen_height);
 
   panel = mnb_panel_oop_new (name,
                              TOOLBAR_X_PADDING,
                              TOOLBAR_HEIGHT + 4,
-                             screen_width - TOOLBAR_X_PADDING * 2,
-                             screen_height - TOOLBAR_HEIGHT - 8);
+                             priv->old_screen_width - TOOLBAR_X_PADDING * 2,
+                             priv->old_screen_height - TOOLBAR_HEIGHT - 8);
 
   if (panel)
     {
@@ -2684,6 +2672,10 @@ mnb_toolbar_constructed (GObject *self)
       g_warning (G_STRLOC " DBus connection not available !!!");
     }
 
+  mutter_plugin_query_screen_size (plugin,
+                                   &priv->old_screen_width,
+                                   &priv->old_screen_height);
+
   clutter_actor_set_reactive (CLUTTER_ACTOR (actor), TRUE);
 
   hbox = priv->hbox = clutter_group_new ();
@@ -2692,7 +2684,20 @@ mnb_toolbar_constructed (GObject *self)
                 "show-on-set-parent", FALSE,
                 NULL);
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  {
+    MetaWorkspace *workspace = meta_screen_get_active_workspace (screen);
+
+    mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+    if (workspace)
+      {
+        MetaRectangle  r;
+
+        meta_workspace_get_work_area_all_monitors (workspace, &r);
+
+        screen_height = r.y + r.height;
+      }
+  }
 
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
@@ -2704,12 +2709,7 @@ mnb_toolbar_constructed (GObject *self)
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
 
-  /*
-   * The lowlight has to be tall enough to cover the screen when the toolbar
-   * is fully withdrawn.
-   */
-  clutter_actor_set_size (lowlight,
-                          screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);
+  clutter_actor_set_size (lowlight, screen_width, screen_height);
   clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), lowlight);
   clutter_actor_hide (lowlight);
   clutter_actor_set_reactive (lowlight, TRUE);
@@ -3261,17 +3261,24 @@ mnb_toolbar_stage_input_cb (ClutterActor *stage,
 }
 
 static void
-mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
-                                 GParamSpec   *pspec,
-                                 MnbToolbar   *toolbar)
+mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
 {
-  MnbToolbarPrivate *priv = toolbar->priv;
+  MnbToolbarPrivate *priv      = toolbar->priv;
+  MetaScreen        *screen    = mutter_plugin_get_screen (priv->plugin);
+  MetaWorkspace     *workspace = meta_screen_get_active_workspace (screen);
   gint               screen_width, screen_height;
-  gint               applet_index = 0;
   GList             *l;
-  ClutterActor      *clock = priv->dummy_clock;
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
+
+  if (workspace)
+    {
+      MetaRectangle  r;
+
+      meta_workspace_get_work_area_all_monitors (workspace, &r);
+
+      screen_height = r.y + r.height;
+    }
 
   if (priv->old_screen_width  == screen_width &&
       priv->old_screen_height == screen_height)
@@ -3279,63 +3286,73 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
       return;
     }
 
+  /*
+   * NB: This might trigger another change to the workspace area, but that
+   *     one will become a no-op.
+   */
   mnb_toolbar_set_struts (toolbar);
 
-  priv->old_screen_width  = screen_width;
-  priv->old_screen_height = screen_height;
-
-  clutter_actor_set_width ((ClutterActor*)toolbar, screen_width);
-  clutter_actor_set_width (priv->shadow, screen_width);
-
-  clutter_actor_set_size (priv->lowlight,
-                          screen_width, screen_height + TOOLBAR_SHADOW_HEIGHT);
-
-  for (l = priv->panels; l; l = l->next)
+  /*
+   * First, handle only stuff that depends only on width changes.
+   */
+  if (priv->old_screen_width  != screen_width)
     {
-      MnbToolbarPanel *tp = l->data;
-      ClutterActor    *button;
-      gint             x, y;
+      gint          applet_index = 0;
+      ClutterActor *clock = priv->dummy_clock;
 
-      if (!tp || !tp->button)
-        continue;
+      clutter_actor_set_width ((ClutterActor*)toolbar, screen_width);
+      clutter_actor_set_width (priv->shadow, screen_width);
 
-      button = (ClutterActor*) tp->button;
-
-      if (tp->type == MNB_TOOLBAR_PANEL_CLOCK)
+      for (l = priv->panels; l; l = l->next)
         {
-          clock = button;
-          continue;
+          MnbToolbarPanel *tp = l->data;
+          ClutterActor    *button;
+          gint             x, y;
+
+          if (!tp || !tp->button)
+            continue;
+
+          button = (ClutterActor*) tp->button;
+
+          if (tp->type == MNB_TOOLBAR_PANEL_CLOCK)
+            {
+              clock = button;
+              continue;
+            }
+          else if (tp->type != MNB_TOOLBAR_PANEL_APPLET)
+            continue;
+
+          y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+          x = screen_width - (applet_index + 1) *
+            (TRAY_BUTTON_WIDTH + TRAY_PADDING) - 4;
+
+          clutter_actor_set_size (button,
+                                  TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
+          clutter_actor_set_position (button, (gfloat)x, (gfloat)y);
+
+          mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
+                                                0,
+                                                -(TOOLBAR_HEIGHT -
+                                                  TRAY_BUTTON_HEIGHT),
+                                                TRAY_BUTTON_WIDTH,
+                                                TOOLBAR_HEIGHT);
+
+          applet_index++;
         }
-      else if (tp->type != MNB_TOOLBAR_PANEL_APPLET)
-        continue;
 
-      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width - (applet_index + 1) *
-        (TRAY_BUTTON_WIDTH + TRAY_PADDING) - 4;
+      if (clock)
+        {
+          gfloat x, y;
 
-      clutter_actor_set_size (button, TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
-      clutter_actor_set_position (button, (gfloat)x, (gfloat)y);
+          y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
+          x = screen_width-priv->n_applets*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
+          x -= (BUTTON_SPACING + CLOCK_WIDTH);
 
-      mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
-                                            0,
-                                            -(TOOLBAR_HEIGHT -
-                                              TRAY_BUTTON_HEIGHT),
-                                            TRAY_BUTTON_WIDTH,
-                                            TOOLBAR_HEIGHT);
-
-      applet_index++;
+          clutter_actor_set_position (clock, x, y);
+        }
     }
 
-  if (clock)
-    {
-      gfloat x, y;
-
-      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width-priv->n_applets*(TRAY_BUTTON_WIDTH+TRAY_PADDING)-4;
-      x -= (BUTTON_SPACING + CLOCK_WIDTH);
-
-      clutter_actor_set_position (clock, x, y);
-    }
+  clutter_actor_set_size (priv->lowlight, screen_width, screen_height);
 
   for (l = priv->panels; l; l = l->next)
   {
@@ -3349,11 +3366,46 @@ mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
      * actor includes the shadow, so we need to add the extra bit by which the
      * shadow protrudes below the actor.
      */
-    /* FIXME */
     mnb_panel_set_size (tp->panel,
                         screen_width - TOOLBAR_X_PADDING * 2,
                         screen_height - TOOLBAR_HEIGHT - 8);
   }
+
+  if (priv->input_region)
+    {
+      mnb_input_manager_remove_region_without_update (priv->input_region);
+
+      priv->input_region =
+        mnb_input_manager_push_region (0, 0,
+                                       screen_width,
+                                       TOOLBAR_HEIGHT + 10,
+                                       FALSE, MNB_INPUT_LAYER_PANEL);
+    }
+
+  priv->old_screen_width  = screen_width;
+  priv->old_screen_height = screen_height;
+}
+
+static void
+mnb_toolbar_workarea_changed_cb (MetaScreen *screen, MnbToolbar *toolbar)
+{
+  mnb_toolbar_ensure_size_for_screen (toolbar);
+}
+
+static void
+mnb_toolbar_stage_allocation_cb (ClutterActor *stage,
+                                 GParamSpec   *pspec,
+                                 MnbToolbar   *toolbar)
+{
+  mnb_toolbar_ensure_size_for_screen (toolbar);
+
+  /*
+   * This is a one-off to deal with the inital stage allocation; screen size
+   * changes are handled by the workarea_changed_cb.
+   */
+  g_signal_handlers_disconnect_by_func (stage,
+                                        mnb_toolbar_stage_allocation_cb,
+                                        toolbar);
 }
 
 static void
@@ -3465,6 +3517,15 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
   g_signal_connect (stage, "notify::allocation",
                     G_CALLBACK (mnb_toolbar_stage_allocation_cb),
                     toolbar);
+
+  /*
+   * We need to be called last, after the handler in moblin-netbook.c has
+   * fixed up the screen mode to either small-screen or bigger-screen.
+   */
+  g_signal_connect_after (screen,
+                          "workareas-changed",
+                          G_CALLBACK (mnb_toolbar_workarea_changed_cb),
+                          toolbar);
 
   meta_keybindings_set_custom_handler ("panel_run_dialog",
                                        mnb_toolbar_alt_f2_key_handler,

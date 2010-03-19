@@ -318,14 +318,28 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
   XRectangle       rect;
   Display         *xdpy;
   gint             screen_width, screen_height;
+  MetaScreen      *screen;
+  MetaWorkspace   *workspace;
 
   g_assert (mgr_singleton);
 
   if (!mir)
     return;
 
+  screen    = mutter_plugin_get_screen (mgr_singleton->plugin);
+  workspace = meta_screen_get_active_workspace (screen);
+
   mutter_plugin_query_screen_size (mgr_singleton->plugin,
                                    &screen_width, &screen_height);
+
+  if (workspace)
+    {
+      MetaRectangle  r;
+
+      meta_workspace_get_work_area_all_monitors (workspace, &r);
+
+      screen_height = r.y + r.height;
+    }
 
   xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
 
@@ -336,7 +350,7 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
   rect.x      = 0;
   rect.y      = geom.y + geom.height;
   rect.width  = screen_width;
-  rect.height = screen_height;
+  rect.height = screen_height - (geom.y + geom.height);
 
   XFixesSetRegion (xdpy, mir->region, &rect, 1);
 
@@ -402,11 +416,25 @@ panel_show_cb (ClutterActor *actor, MnbInputLayer layer)
   MnbInputRegion  *mir  = g_object_get_qdata (G_OBJECT (actor), quark_mir);
   Display         *xdpy;
   gint             screen_width, screen_height;
+  MetaScreen      *screen;
+  MetaWorkspace   *workspace;
 
   g_assert (mgr_singleton);
 
+  screen    = mutter_plugin_get_screen (mgr_singleton->plugin);
+  workspace = meta_screen_get_active_workspace (screen);
+
   mutter_plugin_query_screen_size (mgr_singleton->plugin,
                                    &screen_width, &screen_height);
+
+  if (workspace)
+    {
+      MetaRectangle  r;
+
+      meta_workspace_get_work_area_all_monitors (workspace, &r);
+
+      screen_height = r.y + r.height;
+    }
 
   xdpy = mutter_plugin_get_xdisplay (mgr_singleton->plugin);
 
@@ -519,11 +547,25 @@ mnb_input_manager_push_oop_panel (MutterWindow *mcw)
   ClutterGeometry  geom;
   MnbInputRegion  *mir;
   gint             screen_width, screen_height;
+  MetaScreen      *screen;
+  MetaWorkspace   *workspace;
 
   g_assert (mgr_singleton);
 
+  screen    = mutter_plugin_get_screen (mgr_singleton->plugin);
+  workspace = meta_screen_get_active_workspace (screen);
+
   mutter_plugin_query_screen_size (mgr_singleton->plugin,
                                    &screen_width, &screen_height);
+
+  if (workspace)
+    {
+      MetaRectangle  r;
+
+      meta_workspace_get_work_area_all_monitors (workspace, &r);
+
+      screen_height = r.y + r.height;
+    }
 
   mir = g_object_get_qdata (G_OBJECT (actor), quark_mir);
 
@@ -533,7 +575,8 @@ mnb_input_manager_push_oop_panel (MutterWindow *mcw)
   clutter_actor_get_geometry (actor, &geom);
 
   mir = mnb_input_manager_push_region (0, geom.y + geom.height,
-                                       screen_width, screen_height,
+                                       screen_width,
+                                       screen_height - (geom.y + geom.height),
                                        FALSE, MNB_INPUT_LAYER_PANEL);
 
   g_object_set_qdata (G_OBJECT (actor), quark_mir, mir);

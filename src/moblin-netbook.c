@@ -286,12 +286,6 @@ on_urgent_notify_allocation_cb (ClutterActor *notify_urgent,
                               (screen_height - (int)h) / 2);
 }
 
-static void
-moblin_netbook_workarea_changed_foreach (MnbPanel *panel, gpointer data)
-{
-  mnb_panel_ensure_size (panel);
-}
-
 /*
  * If the work area size changes while a panel is present (e.g., a VKB pops up),
  * we need to resize the panel. We also need to reposition any elements the
@@ -310,10 +304,6 @@ moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
 
   if (priv->desktop_tex)
     clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
-
-  mnb_toolbar_foreach_panel (MNB_TOOLBAR (priv->toolbar),
-                             moblin_netbook_workarea_changed_foreach,
-                             NULL);
 }
 
 static void
