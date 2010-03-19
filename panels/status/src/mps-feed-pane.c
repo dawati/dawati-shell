@@ -244,6 +244,23 @@ _service_get_dynamic_caps_cb (SwClientService  *service,
 }
 
 static void
+_service_get_static_caps_cb (SwClientService  *service,
+                             const gchar     **caps,
+                             const GError     *error,
+                             gpointer          userdata)
+{
+  MpsFeedPane *pane = MPS_FEED_PANE (userdata);
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+
+  if (_has_cap (caps, "can-geotag"))
+  {
+    clutter_actor_show (priv->location_hbox);
+  } else {
+    clutter_actor_hide (priv->location_hbox);
+  }
+}
+
+static void
 mps_feed_pane_constructed (GObject *object)
 {
   MpsFeedPane *pane = MPS_FEED_PANE (object);
@@ -263,6 +280,10 @@ mps_feed_pane_constructed (GObject *object)
   sw_client_service_get_dynamic_capabilities (priv->service,
                                               _service_get_dynamic_caps_cb,
                                               pane);
+
+  sw_client_service_get_static_capabilities (priv->service,
+                                             _service_get_static_caps_cb,
+                                             pane);
 
   sw_client_open_view_for_service (priv->client,
                                    service_name,
@@ -544,6 +565,10 @@ mps_feed_pane_init (MpsFeedPane *self)
   priv->geotag_pane = mps_geotag_pane_new ();
 
   priv->location_hbox = mx_table_new ();
+
+  /* Shown if we get the static cap */
+  clutter_actor_hide (priv->location_hbox);
+
   mx_stylable_set_style_class (MX_STYLABLE (priv->location_hbox),
                                "mps-feed-location-hbox");
   priv->location_label = mx_label_new ("");
