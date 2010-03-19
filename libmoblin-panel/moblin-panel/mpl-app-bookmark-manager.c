@@ -341,6 +341,10 @@ mpl_app_bookmark_manager_load (MplAppBookmarkManager *manager)
 
   for (i = 0; uris[i] != NULL; i++)
   {
+    /* g_strsplit doesn't handle trailing '\n' */
+    if (uris[i] == NULL || uris[i][0] == '\0')
+      continue;
+
     /* The list takes ownership. */
     uri = g_strdup (uris[i]);
 
