@@ -408,6 +408,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	priv->completion_timeout = 0;
 
 	box = mx_box_layout_new ();
+	mx_box_layout_set_enable_animations (box, TRUE);
 	priv->entry_box = box;
 	clutter_actor_set_name ((ClutterActor *)box, "search-entry-box");
 	

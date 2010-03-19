@@ -328,7 +328,7 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	clutter_container_add_actor ((ClutterContainer *)clutter_stage_get_default(), (ClutterActor *)tile);
 	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_Y_AXIS);
 	mx_draggable_enable ((MxDraggable *)tile);
-	clutter_actor_set_size ((ClutterActor *)tile, 212, 75);
+	clutter_actor_set_size ((ClutterActor *)tile, 230, 75);
 	clutter_actor_set_depth ((ClutterActor *)tile, area->priv->position);
 	area->priv->position += 0.05;
 	clutter_actor_reparent ((ClutterActor *)tile, (ClutterActor *)area);
