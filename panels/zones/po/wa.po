@@ -40,10 +40,6 @@ msgstr "novele redjon"
 msgid "two"
 msgstr "deus"
 
-#: ../src/sw-zone.c:906
-msgid "one"
-msgstr "ene"
-
 #: ../src/sw-zone.c:918
 msgid "four"
 msgstr "cwate"
@@ -67,6 +63,10 @@ msgstr "ût"
 #: ../src/sw-zone.c:930
 msgid "seven"
 msgstr "sete"
+
+#: ../src/sw-zone.c:906
+msgid "one"
+msgstr "onk"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Efets po Netbook da Moblin"
