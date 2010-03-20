@@ -1,61 +1,56 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Jean Cayron <jean.cayron@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
+"POT-Creation-Date: 2010-03-17 09:26+0000\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 0.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-
-#: ../src/moblin-netbook.c:463
-#: ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "redjons"
-
-#: ../src/moblin-netbook.c:621
-msgid "Moblin Netbook Effects"
-msgstr "Efets po Netbook da Moblin"
-
-#: ../src/moblin-netbook.c:625
-msgid "Effects for Moblin Netbooks"
-msgstr "Efets da Moblin po les Netbooks"
-
-#: ../src/moblin-netbook.c:2529
-msgid "Activate"
-msgstr "Mete en alaedje"
-
-#: ../src/moblin-netbook.c:2543
-msgid "Unknown window"
-msgstr "Purnea nén cnoxhou"
-
-#: ../src/moblin-netbook.c:2545
-msgid "Is asking for your attention."
-msgstr "Vos arinne."
+"X-Generator: Lokalize 0.3\n"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:668
+#. 
+#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:88
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:678
+#. 
+#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:98
 msgid "%B %e, %Y"
 msgstr "li %e di %B %Y"
+
+#: ../src/moblin-netbook.c:935
+msgid "Moblin Netbook Effects"
+msgstr "Efets po Netbook da Moblin"
+
+#: ../src/moblin-netbook.c:939
+msgid "Effects for Moblin Netbooks"
+msgstr "Efets da Moblin po les Netbooks"
+
+#: ../src/moblin-netbook.c:3065
+msgid "Activate"
+msgstr "Mete en alaedje"
+
+#: ../src/moblin-netbook.c:3079
+msgid "Unknown window"
+msgstr "Purnea nén cnoxhou"
+
+#: ../src/moblin-netbook.c:3081
+msgid "Is asking for your attention."
+msgstr "Vos arinne."
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -65,15 +60,69 @@ msgstr "Rinoncî"
 msgid "Dismiss All"
 msgstr "Rinoncî a ttafwait"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "Nén co d' redjon"
+#: ../src/mnb-toolbar.c:968
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Dji rgrete, %s est sketé"
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Definixhoz les preferinces di vosse bår ås usteyes"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "Nou programe dins cisse redjon"
+#: ../capplet/src/mtp-bin.c:355
+msgid "Save toolbar"
+msgstr "Schaper bår ås usteyes"
 
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Bår ås usteyes"
+
+#: ../capplet/src/mtp-bin.c:388
+msgid "Available panels"
+msgstr "Sicriftôrs k' i gn a"
+
+#: ../capplet/src/mtp-bin.c:360
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Dji rgrete mins vos alez dveur oister on scriftôr divant saveur endè radjouter on novea."
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:250
+msgid "System Tray"
+msgstr "Boesse ås imådjetes sistinme"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Definixhoz les preferinces di vosse boesse ås imådjetes do sistinme"
+
+#: ../capplet/src/syst-cc-panel.c:183
+msgid "Show system tray"
+msgstr "Mostrer boesse ås imådjetes sistinme"
+
+#: ../capplet/src/syst-cc-panel.c:167
+msgid "System tray"
+msgstr "Boesse ås imådjetes sistinme"
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Dit l' ôre des scriftôrs sol bår ås usteyes."
+
+#: ../capplet/src/syst-cc-panel.c:204
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "Li boesse ås imådjetes sistinme est ene atuze eployeye pa des, pus vîs, programes po vos dire cwand åk si passe ou po dmorer ovrant cwand vos les cloyoz."
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Ôre des scriftôrs sol bår ås usteyes"
+
+#~ msgid "zones"
+#~ msgstr "redjons"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Nén co d' redjon"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "Nou programe dins cisse redjon"
