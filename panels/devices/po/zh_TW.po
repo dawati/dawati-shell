@@ -1,0 +1,1984 @@
+# Traditional Chinese translation for moblin-panel-devices
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2010, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-devices\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-18 21:56+0000\n"
+"PO-Revision-Date: 2010-03-20 13:25+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: chinese-l10n <chinese-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "裝置面板"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:135
+msgid "devices"
+msgstr "裝置"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:560
+msgid "CompactFlash"
+msgstr "CompactFlash"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:563
+msgid "MemoryStick"
+msgstr "MemoryStick"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:566
+msgid "SmartMedia"
+msgstr "SmartMedia"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:569
+msgid "SecureDigital"
+msgstr "SecureDigital"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:572
+msgid "SD High Capacity"
+msgstr "SD 高容量"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:575
+msgid "Floppy"
+msgstr "磁碟片"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:578
+msgid "Zip"
+msgstr "Zip"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:581
+msgid "Jaz"
+msgstr "Jaz"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:584
+msgid "Flash"
+msgstr "Flash"
+
+#. Translators: This word is used to describe the optical disc type, it may appear
+#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
+#.
+#: ../gdu/gdu-drive.c:607
+msgid "CD"
+msgstr "CD"
+
+#. Translators: This word is used to describe the optical disc type, it may appear
+#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
+#.
+#: ../gdu/gdu-drive.c:615
+msgid "DVD"
+msgstr "DVD"
+
+#. Translators: This word is used to describe the optical disc type, it may appear
+#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
+#.
+#: ../gdu/gdu-drive.c:623
+msgid "Blu-Ray"
+msgstr "藍光"
+
+#. Translators: This word is used to describe the optical disc type, it may appear
+#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
+#.
+#: ../gdu/gdu-drive.c:631
+msgid "HDDVD"
+msgstr "HDDVD"
+
+#. Translators: %s is the media type e.g. 'CD/DVD' or 'CompactFlash'
+#: ../gdu/gdu-drive.c:680
+#: ../gdu/gdu-drive.c:719
+#, c-format
+msgid "%s Drive"
+msgstr "%s 磁碟"
+
+#. Translators: first %s is the size, second %s is the media type
+#. * e.g. 'CD/DVD' or 'CompactFlash'
+#.
+#: ../gdu/gdu-drive.c:714
+#, c-format
+msgid "%s %s Drive"
+msgstr "%s %s 磁碟"
+
+#. Translators: This string is used to describe a hard disk.
+#. * The first %s is the size of the drive e.g. '45 GB'.
+#.
+#: ../gdu/gdu-drive.c:730
+#, c-format
+msgid "%s Hard Disk"
+msgstr "%s 硬碟"
+
+#. Translators: This string is used to describe a hard disk where the size
+#. * is not known.
+#.
+#: ../gdu/gdu-drive.c:735
+msgid "Hard Disk"
+msgstr "硬碟"
+
+#. Translators: This string is used to describe a SSD. The first %s is
+#. * the size of the drive e.g. '45 GB'.
+#.
+#: ../gdu/gdu-drive.c:742
+#, c-format
+msgid "%s Solid-State Disk"
+msgstr "%s 固態硬碟"
+
+#. Translators: This string is used to describe a SSD where the size
+#. * is not known.
+#.
+#: ../gdu/gdu-drive.c:748
+msgid "Solid-State Disk"
+msgstr "固態硬碟"
+
+#. Translators: This string is the description of a drive. The first %s is the
+#. * size of the inserted media, for example '45 GB'.
+#.
+#: ../gdu/gdu-drive.c:789
+#, c-format
+msgid "%s Media"
+msgstr "%s 媒體"
+
+#. Translators: This string is used as a description text when no media has
+#. * been detected for a drive
+#.
+#: ../gdu/gdu-drive.c:796
+#, c-format
+msgid "No Media Detected"
+msgstr "未偵測到媒體"
+
+#. Translators: This string is used for conveying the partition table format
+#: ../gdu/gdu-drive.c:807
+#: ../gdu/gdu-linux-md-drive.c:565
+msgid "MBR Partition Table"
+msgstr "MBR 分割表格"
+
+#. Translators: This string is used for conveying the partition table format
+#: ../gdu/gdu-drive.c:810
+#: ../gdu/gdu-linux-md-drive.c:568
+msgid "GUID Partition Table"
+msgstr "GUID 分割表格"
+
+#. Translators: This string is used for conveying the partition table format
+#: ../gdu/gdu-drive.c:813
+#: ../gdu/gdu-linux-md-drive.c:571
+msgid "Apple Partition Table"
+msgstr "Apple 分割表格"
+
+#. Translators: This string is used for conveying the partition table format when
+#. * the format is unknown
+#.
+#: ../gdu/gdu-drive.c:818
+#: ../gdu/gdu-linux-md-drive.c:576
+msgid "Partitioned"
+msgstr "已分割"
+
+#. Translators: This string is used for conveying a device is not partitioned.
+#.
+#: ../gdu/gdu-drive.c:823
+msgid "Not Partitioned"
+msgstr "未分割"
+
+#. TODO: include type e.g. SATA Port Multiplier, SAS Expander etc
+#: ../gdu/gdu-hub.c:222
+#, fuzzy
+msgid "SAS Expander"
+msgstr "SAS 延展器"
+
+#: ../gdu/gdu-hub.c:230
+msgid "PATA Host Adapter"
+msgstr ""
+
+#: ../gdu/gdu-hub.c:232
+msgid "SATA Host Adapter"
+msgstr ""
+
+#: ../gdu/gdu-hub.c:234
+msgid "ATA Host Adapter"
+msgstr ""
+
+#: ../gdu/gdu-hub.c:236
+msgid "SAS Host Adapter"
+msgstr ""
+
+#: ../gdu/gdu-hub.c:238
+msgid "SCSI Host Adapter"
+msgstr ""
+
+#: ../gdu/gdu-hub.c:240
+msgid "Host Adapter"
+msgstr ""
+
+#. Translators: Description
+#: ../gdu/gdu-linux-lvm2-volume-group.c:351
+#: ../gdu/gdu-linux-lvm2-volume-group.c:355
+msgid "Volume Group"
+msgstr "儲存區群組"
+
+#. Translators: VPD name - first %s is the size e.g. '45 GB'
+#: ../gdu/gdu-linux-lvm2-volume-group.c:359
+#, c-format
+msgid "%s LVM2 Volume Group"
+msgstr "%s LVM2 儲存區群組"
+
+#. Translators: VPD name when size is not known
+#: ../gdu/gdu-linux-lvm2-volume-group.c:362
+msgid "LVM2 Volume Group"
+msgstr "LVM2 儲存區群組"
+
+#. Translators: label for an unallocated space in a LVM2 volume group.
+#. * %s is the size, formatted like '45 GB'
+#.
+#. Translators: label for an unallocated space on a disk
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-linux-lvm2-volume-hole.c:201
+#: ../gdu/gdu-volume-hole.c:152
+#, c-format
+msgid "%s Free"
+msgstr "%s 可用"
+
+#. Translators: Description
+#: ../gdu/gdu-linux-lvm2-volume-hole.c:205
+#: ../gdu/gdu-volume-hole.c:161
+msgid "Unallocated Space"
+msgstr "未分配的空間"
+
+#. Translators: VPD name
+#: ../gdu/gdu-linux-lvm2-volume-hole.c:208
+msgid "LVM2 VG Unallocated Space"
+msgstr "LVM2 VG 未分配的空間"
+
+#. Translators: Description
+#: ../gdu/gdu-linux-lvm2-volume.c:331
+msgid "Logical Volume"
+msgstr "邏輯儲存區"
+
+#. Translators: VPD name
+#: ../gdu/gdu-linux-lvm2-volume.c:334
+msgid "LVM2 Logical Volume"
+msgstr "LVM2 邏輯儲存區"
+
+#. Translators: First %s is the size, second %s is a RAID level, e.g. 'RAID-5'
+#. Translators: first %s is the size e.g. '45 GB', second %s is the level e.g. 'RAID-5'
+#: ../gdu/gdu-linux-md-drive.c:538
+#: ../gdu/gdu-linux-md-drive.c:621
+#, c-format
+msgid "%s %s Array"
+msgstr "%s %s 陣列"
+
+#. Translators: %s is a RAID level, e.g. 'RAID-5'
+#. Translators: %s is the level e.g. 'RAID-5'
+#: ../gdu/gdu-linux-md-drive.c:543
+#: ../gdu/gdu-linux-md-drive.c:626
+#, c-format
+msgid "%s Array"
+msgstr "%s 陣列"
+
+#. Translators: First %s is a device file such as /dev/sda4
+#. * second %s is the state of the device
+#.
+#: ../gdu/gdu-linux-md-drive.c:596
+#, c-format
+msgid "RAID Array %s (%s)"
+msgstr "RAID 陣列 %s (%s)"
+
+#. Translators: %s is a device file such as /dev/sda4
+#: ../gdu/gdu-linux-md-drive.c:603
+#, c-format
+msgid "RAID device %s"
+msgstr "RAID 裝置 %s"
+
+#. Translators: fallback for level
+#: ../gdu/gdu-linux-md-drive.c:609
+msgctxt "RAID Level fallback"
+msgid "RAID"
+msgstr "RAID"
+
+#: ../gdu/gdu-linux-md-drive.c:614
+msgid "RAID Array"
+msgstr "RAID 陣列"
+
+#: ../gdu/gdu-linux-md-drive.c:1112
+msgctxt "Linux MD slave state"
+msgid "Not Attached"
+msgstr "未連接"
+
+#: ../gdu/gdu-linux-md-drive.c:1115
+msgctxt "Linux MD slave state"
+msgid "Faulty"
+msgstr ""
+
+#: ../gdu/gdu-linux-md-drive.c:1120
+msgctxt "Linux MD slave state"
+msgid "Fully Synchronized"
+msgstr "完整同步"
+
+#: ../gdu/gdu-linux-md-drive.c:1122
+msgctxt "Linux MD slave state"
+msgid "Writemostly"
+msgstr ""
+
+#: ../gdu/gdu-linux-md-drive.c:1124
+msgctxt "Linux MD slave state"
+msgid "Blocked"
+msgstr "阻擋"
+
+#: ../gdu/gdu-linux-md-drive.c:1126
+msgctxt "Linux MD slave state"
+msgid "Spare"
+msgstr ""
+
+#: ../gdu/gdu-machine.c:151
+msgid "Local Storage"
+msgstr "本機儲存"
+
+#. TODO: use display-hostname
+#: ../gdu/gdu-machine.c:154
+#, c-format
+msgid "Storage on %s"
+msgstr "於 %s 上的儲存"
+
+#: ../gdu/gdu-pool.c:885
+msgid "Multipath Devices"
+msgstr "多路徑裝置"
+
+#: ../gdu/gdu-pool.c:886
+msgid "Drives with multiple I/O paths"
+msgstr "有多個 I/O 路徑的磁碟"
+
+#: ../gdu/gdu-pool.c:896
+msgid "Multi-disk Devices"
+msgstr "多磁碟裝置"
+
+#: ../gdu/gdu-pool.c:897
+msgid "RAID, LVM and other logical drives"
+msgstr "RAID、LVM 與其他的邏輯磁碟"
+
+#: ../gdu/gdu-pool.c:907
+msgid "Peripheral Devices"
+msgstr "週邊裝置"
+
+#: ../gdu/gdu-pool.c:908
+msgid "USB, Firewire and other peripherals"
+msgstr "USB、Firewire 與其他的週邊裝置"
+
+#: ../gdu/gdu-pool.c:2090
+#, c-format
+msgid "Error enumerating devices: %s"
+msgstr ""
+
+#: ../gdu/gdu-pool.c:2116
+#, c-format
+msgid "Error enumerating adapters: %s"
+msgstr ""
+
+#: ../gdu/gdu-pool.c:2139
+#, c-format
+msgid "Error enumerating expanders: %s"
+msgstr ""
+
+#: ../gdu/gdu-pool.c:2162
+#, c-format
+msgid "Error enumerating ports: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:292
+#, c-format
+msgid "Error listening to address `localhost:%d': %s: %s\n"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:307
+#, c-format
+msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:322
+#, c-format
+msgid "Error setting auth mechanisms on local DBusServer\n"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:347
+#, c-format
+msgid "Unable to parse command-line `%s' (Malformed address?): %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:369
+#, c-format
+msgid "Unable to spawn ssh program: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:398
+#: ../gdu/gdu-ssh-bridge.c:510
+#, c-format
+msgid "Error reading stderr output: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:405
+msgid "Error reading stderr output: No content"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:471
+msgid "Error logging in"
+msgstr "登入時發生錯誤"
+
+#: ../gdu/gdu-ssh-bridge.c:491
+#, c-format
+msgid "Error sending `%s': %s"
+msgstr "送出「%s」時發生錯誤：%s"
+
+#: ../gdu/gdu-ssh-bridge.c:519
+#, c-format
+msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:536
+#, c-format
+msgid "Error passing authorization secret: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:557
+#, c-format
+msgid "Error reading stderr from: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:566
+#, c-format
+msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:585
+#, c-format
+msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:592
+msgid "The udisks-tcp-bridge program failed to prove it was authorized"
+msgstr ""
+
+#. Translators: The first %s is the size in power-of-2 units, e.g. '64 KiB'
+#. * the second %s is the size as a number e.g. '65,536 bytes'
+#.
+#. Translators: The first %s is the size in power-of-10 units, e.g. '100 KB'
+#. * the second %s is the size as a number e.g. '100,000 bytes'
+#.
+#: ../gdu/gdu-util.c:131
+#: ../gdu/gdu-util.c:140
+#, c-format
+msgid "%s (%s bytes)"
+msgstr "%s (%s 位元組)"
+
+#. Translators: FAT is a filesystem type
+#: ../gdu/gdu-util.c:175
+msgid "FAT (12-bit version)"
+msgstr "FAT (12 位元版本)"
+
+#. Translators: FAT is a filesystem type
+#: ../gdu/gdu-util.c:178
+#: ../gdu/gdu-util.c:185
+#: ../gdu/gdu-util.c:192
+#: ../gdu/gdu-util.c:196
+#: ../gdu/gdu-util.c:198
+msgid "FAT"
+msgstr "FAT"
+
+#. Translators: FAT is a filesystem type
+#: ../gdu/gdu-util.c:183
+msgid "FAT (16-bit version)"
+msgstr "FAT (16 位元版本)"
+
+#. Translators: FAT is a filesystem type
+#: ../gdu/gdu-util.c:190
+msgid "FAT (32-bit version)"
+msgstr "FAT (32 位元版本)"
+
+#. Translators: NTFS is a filesystem type
+#: ../gdu/gdu-util.c:205
+#, c-format
+msgid "NTFS (version %s)"
+msgstr "NTFS (版本 %s)"
+
+#. Translators: NTFS is a filesystem type
+#: ../gdu/gdu-util.c:208
+#: ../gdu/gdu-util.c:210
+#, c-format
+msgid "NTFS"
+msgstr "NTFS"
+
+#. Translators: HFS is a filesystem type
+#: ../gdu/gdu-util.c:215
+#: ../gdu/gdu-util.c:217
+msgid "HFS"
+msgstr "HFS"
+
+#. Translators: HFS+ is a filesystem type
+#: ../gdu/gdu-util.c:222
+#: ../gdu/gdu-util.c:224
+msgid "HFS+"
+msgstr "HFS+"
+
+#: ../gdu/gdu-util.c:228
+msgid "Linux Unified Key Setup"
+msgstr ""
+
+#. Translators: LUKS is 'Linux Unified Key Setup', a disk encryption format
+#: ../gdu/gdu-util.c:231
+msgid "LUKS"
+msgstr "LUKS"
+
+#. Translators: Ext2 is a filesystem type
+#: ../gdu/gdu-util.c:237
+#, c-format
+msgid "Ext2 (version %s)"
+msgstr "Ext2 (版本 %s)"
+
+#. Translators: Ext2 is a filesystem type
+#: ../gdu/gdu-util.c:240
+#, c-format
+msgid "Ext2"
+msgstr "Ext2"
+
+#. Translators: Ext2 is a filesystem type
+#: ../gdu/gdu-util.c:243
+msgid "ext2"
+msgstr "ext2"
+
+#. Translators: Ext3 is a filesystem type
+#: ../gdu/gdu-util.c:249
+#, c-format
+msgid "Ext3 (version %s)"
+msgstr "Ext3 (版本 %s)"
+
+#. Translators: Ext3 is a filesystem type
+#: ../gdu/gdu-util.c:252
+#, c-format
+msgid "Ext3"
+msgstr "Ext3"
+
+#. Translators: Ext3 is a filesystem type
+#: ../gdu/gdu-util.c:255
+msgid "ext3"
+msgstr "ext3"
+
+#. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
+#: ../gdu/gdu-util.c:261
+#, c-format
+msgid "Journal for Ext3 (version %s)"
+msgstr "Ext3 的日誌 (版本 %s)"
+
+#. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
+#: ../gdu/gdu-util.c:264
+#, c-format
+msgid "Journal for Ext3"
+msgstr "Ext3 的日誌"
+
+#. Translators: jbd is a filesystem type
+#: ../gdu/gdu-util.c:267
+msgid "jbd"
+msgstr "jbd"
+
+#. Translators: ext4 is a filesystem type
+#: ../gdu/gdu-util.c:273
+#, c-format
+msgid "Ext4 (version %s)"
+msgstr "Ext4 (版本 %s)"
+
+#. Translators: ext4 is a filesystem type
+#: ../gdu/gdu-util.c:276
+#, c-format
+msgid "Ext4"
+msgstr "Ext4"
+
+#. Translators: Ext4 is a filesystem type
+#: ../gdu/gdu-util.c:279
+msgid "ext4"
+msgstr "ext4"
+
+#. Translators: xfs is a filesystem type
+#: ../gdu/gdu-util.c:285
+#, c-format
+msgid "XFS (version %s)"
+msgstr "XFS (版本 %s)"
+
+#. Translators: xfs is a filesystem type
+#: ../gdu/gdu-util.c:288
+#, c-format
+msgid "XFS"
+msgstr "XFS"
+
+#. Translators: xfs is a filesystem type
+#: ../gdu/gdu-util.c:291
+msgid "xfs"
+msgstr "xfs"
+
+#. Translators: reiserfs is a filesystem type
+#: ../gdu/gdu-util.c:297
+#, c-format
+msgid "ReiserFS (version %s)"
+msgstr "ReiserFS (版本 %s)"
+
+#. Translators: reiserfs is a filesystem type
+#: ../gdu/gdu-util.c:300
+#, c-format
+msgid "ReiserFS"
+msgstr "ReiserFS"
+
+#. Translators: reiserfs is a filesystem type
+#: ../gdu/gdu-util.c:303
+msgid "reiserfs"
+msgstr "reiserfs"
+
+#. Translators: iso9660 is a filesystem type
+#: ../gdu/gdu-util.c:308
+msgid "ISO 9660"
+msgstr "ISO 9660"
+
+#. Translators: iso9660 is a filesystem type
+#: ../gdu/gdu-util.c:311
+msgid "iso9660"
+msgstr "iso9660"
+
+#. Translators: udf is a filesystem type
+#: ../gdu/gdu-util.c:316
+msgid "Universal Disk Format"
+msgstr ""
+
+#. Translators: udf is a filesystem type
+#: ../gdu/gdu-util.c:319
+msgid "udf"
+msgstr "udf"
+
+#: ../gdu/gdu-util.c:323
+msgid "Swap Space"
+msgstr "置換空間"
+
+#. Translators: filesystem type for swap space
+#: ../gdu/gdu-util.c:326
+msgid "swap"
+msgstr "swap"
+
+#: ../gdu/gdu-util.c:331
+#, c-format
+msgid "LVM2 Physical Volume (version %s)"
+msgstr "LVM2 實體儲存區 (版本 %s)"
+
+#: ../gdu/gdu-util.c:333
+#, c-format
+msgid "LVM2 Physical Volume"
+msgstr "LVM2 實體儲存區"
+
+#. Translators: short name for LVM2 Physical Volume
+#: ../gdu/gdu-util.c:336
+msgid "lvm2_pv"
+msgstr "lvm2_pv"
+
+#: ../gdu/gdu-util.c:342
+#, c-format
+msgid "RAID Component (version %s)"
+msgstr "RAID 部件 (版本 %s)"
+
+#: ../gdu/gdu-util.c:344
+#, c-format
+msgid "RAID Component"
+msgstr "RAID 部件"
+
+#. Translators: short name for 'RAID Component'
+#: ../gdu/gdu-util.c:347
+msgid "raid"
+msgstr "raid"
+
+#. Translators: long filesystem type for minix
+#: ../gdu/gdu-util.c:352
+msgid "Minix"
+msgstr "Minix"
+
+#. Translators: filesystem type for minix
+#: ../gdu/gdu-util.c:355
+msgid "minix"
+msgstr "minix"
+
+#: ../gdu/gdu-util.c:369
+msgid "Creating File System"
+msgstr "正在建立檔案系統"
+
+#: ../gdu/gdu-util.c:371
+msgid "Mounting File System"
+msgstr "正在掛載檔案系統"
+
+#: ../gdu/gdu-util.c:373
+msgid "Unmounting File System"
+msgstr "正在卸載檔案系統"
+
+#: ../gdu/gdu-util.c:375
+msgid "Checking File System"
+msgstr "正在建立檔案系統"
+
+#: ../gdu/gdu-util.c:377
+msgid "Creating LUKS Device"
+msgstr "正在建立 LUKS 裝置"
+
+#: ../gdu/gdu-util.c:379
+msgid "Unlocking LUKS Device"
+msgstr "正在解除 LUKS 裝置的鎖"
+
+#: ../gdu/gdu-util.c:381
+msgid "Locking LUKS Device"
+msgstr "正在鎖上 LUKS 裝置"
+
+#: ../gdu/gdu-util.c:383
+msgid "Creating Partition Table"
+msgstr "正在建立分割表格"
+
+#: ../gdu/gdu-util.c:385
+msgid "Deleting Partition"
+msgstr "正在刪除分割區"
+
+#: ../gdu/gdu-util.c:387
+msgid "Creating Partition"
+msgstr "正在建立分割區"
+
+#: ../gdu/gdu-util.c:389
+msgid "Modifying Partition"
+msgstr "正在修改分割區"
+
+#: ../gdu/gdu-util.c:391
+msgid "Setting Label for Device"
+msgstr "正在為裝置設定標籤"
+
+#: ../gdu/gdu-util.c:393
+msgid "Changing Passphrase for Encrypted LUKS Device"
+msgstr "正在為已加密的 LUKS 裝置變更密碼"
+
+#: ../gdu/gdu-util.c:395
+msgid "Adding Component to RAID Array"
+msgstr "正在加入部件到 RAID 陣列"
+
+#: ../gdu/gdu-util.c:397
+msgid "Removing Component from RAID Array"
+msgstr "正在從 RAID 陣列移除部件"
+
+#: ../gdu/gdu-util.c:399
+msgid "Stopping RAID Array"
+msgstr "正在停止 RAID 陣列"
+
+#: ../gdu/gdu-util.c:401
+msgid "Starting RAID Array"
+msgstr "正在起始 RAID 陣列"
+
+#: ../gdu/gdu-util.c:403
+msgid "Checking RAID Array"
+msgstr "正在檢查 RAID 陣列"
+
+#: ../gdu/gdu-util.c:405
+msgid "Repairing RAID Array"
+msgstr "正在修復 RAID 陣列"
+
+#: ../gdu/gdu-util.c:407
+msgid "Running Short SMART Self-Test"
+msgstr "正在執行簡短 SMART 自我測試"
+
+#: ../gdu/gdu-util.c:409
+msgid "Running Extended SMART Self-Test"
+msgstr "正在執行擴充的 SMART 自我測試"
+
+#: ../gdu/gdu-util.c:411
+msgid "Running Conveyance SMART Self-Test"
+msgstr ""
+
+#: ../gdu/gdu-util.c:413
+msgid "Ejecting Media"
+msgstr "正在退出媒體"
+
+#: ../gdu/gdu-util.c:415
+msgid "Detaching Device"
+msgstr "正在解除裝置連接"
+
+#: ../gdu/gdu-util.c:417
+msgid "Forcibly Unmounting Filesystem"
+msgstr "強制卸載檔案系統"
+
+#: ../gdu/gdu-util.c:419
+msgid "Forcibly Locking LUKS device"
+msgstr "強制鎖上 LUKS 裝置"
+
+#. see http://en.wikipedia.org/wiki/GUID_Partition_Table
+#. Linux
+#: ../gdu/gdu-util.c:435
+msgid "Linux Basic Data Partition"
+msgstr "Linux 基本資料分割區"
+
+#. Same as MS BDP
+#: ../gdu/gdu-util.c:436
+msgid "Linux RAID Partition"
+msgstr "Linux RAID 分割區"
+
+#: ../gdu/gdu-util.c:437
+msgid "Linux Swap Partition"
+msgstr "Linux 置換分割區"
+
+#: ../gdu/gdu-util.c:438
+msgid "Linux LVM Partition"
+msgstr "Linux LVM 分割區"
+
+#: ../gdu/gdu-util.c:439
+msgid "Linux Reserved Partition"
+msgstr "Linux 保留的分割區"
+
+#. Not associated with any OS
+#: ../gdu/gdu-util.c:441
+msgid "MBR Partition Scheme"
+msgstr "MBR 分割區規劃"
+
+#: ../gdu/gdu-util.c:442
+msgid "EFI System Partition"
+msgstr "EFI 系統分割區"
+
+#: ../gdu/gdu-util.c:443
+msgid "BIOS Boot Partition"
+msgstr "BIOS 開機分割區"
+
+#. Microsoft
+#: ../gdu/gdu-util.c:445
+msgid "Microsoft Reserved Partition"
+msgstr "微軟保留的分割區"
+
+#: ../gdu/gdu-util.c:446
+msgid "Microsoft Basic Data Partition"
+msgstr "微軟基本資料分割區"
+
+#. Same as Linux BDP
+#: ../gdu/gdu-util.c:447
+msgid "Microsoft LDM Metadata Partition"
+msgstr "微軟 LDM 中介資料分割區"
+
+#: ../gdu/gdu-util.c:448
+msgid "Microsoft LDM Data Partition"
+msgstr "微軟 LDM 資料分割區"
+
+#: ../gdu/gdu-util.c:449
+msgid "Microsoft Windows Recovery Environment"
+msgstr "微軟 Windows 還原環境"
+
+#. HP-UX
+#: ../gdu/gdu-util.c:451
+msgid "HP-UX Data Partition"
+msgstr "HP-UX 資料分割區"
+
+#: ../gdu/gdu-util.c:452
+msgid "HP-UX Service Partition"
+msgstr "HP-UX 服務分割區"
+
+#. FreeBSD
+#: ../gdu/gdu-util.c:454
+msgid "FreeBSD Boot Partition"
+msgstr "FreeBSD 開機分割區"
+
+#: ../gdu/gdu-util.c:455
+msgid "FreeBSD Data Partition"
+msgstr "FreeBSD 資料分割區"
+
+#: ../gdu/gdu-util.c:456
+msgid "FreeBSD Swap Partition"
+msgstr "FreeBSD 置換分割區"
+
+#: ../gdu/gdu-util.c:457
+msgid "FreeBSD UFS Partition"
+msgstr "FreeBSD UFS 分割區"
+
+#: ../gdu/gdu-util.c:458
+msgid "FreeBSD Vinum Partition"
+msgstr "FreeBSD Vinum 分割區"
+
+#: ../gdu/gdu-util.c:459
+msgid "FreeBSD ZFS Partition"
+msgstr "FreeBSD ZFS 分割區"
+
+#. Solaris
+#: ../gdu/gdu-util.c:461
+msgid "Solaris Boot Partition"
+msgstr "Solaris 開機分割區"
+
+#: ../gdu/gdu-util.c:462
+msgid "Solaris Root Partition"
+msgstr "Solaris 根分割區"
+
+#: ../gdu/gdu-util.c:463
+msgid "Solaris Swap Partition"
+msgstr "Solaris 置換分割區"
+
+#: ../gdu/gdu-util.c:464
+msgid "Solaris Backup Partition"
+msgstr "Solaris 備份分割區"
+
+#: ../gdu/gdu-util.c:465
+msgid "Solaris /usr Partition"
+msgstr "Solaris /usr 分割區"
+
+#. Same as Apple ZFS
+#: ../gdu/gdu-util.c:466
+msgid "Solaris /var Partition"
+msgstr "Solaris /var 分割區"
+
+#: ../gdu/gdu-util.c:467
+msgid "Solaris /home Partition"
+msgstr "Solaris /home 分割區"
+
+#: ../gdu/gdu-util.c:468
+msgid "Solaris Alternate Sector Partition"
+msgstr "Solaris 替代磁區分割區"
+
+#: ../gdu/gdu-util.c:469
+msgid "Solaris Reserved Partition"
+msgstr "Solaris 保留的分割區"
+
+#: ../gdu/gdu-util.c:470
+msgid "Solaris Reserved Partition (2)"
+msgstr "Solaris 保留的分割區 (2)"
+
+#: ../gdu/gdu-util.c:471
+msgid "Solaris Reserved Partition (3)"
+msgstr "Solaris 保留的分割區 (3)"
+
+#: ../gdu/gdu-util.c:472
+msgid "Solaris Reserved Partition (4)"
+msgstr "Solaris 保留的分割區 (4)"
+
+#: ../gdu/gdu-util.c:473
+msgid "Solaris Reserved Partition (5)"
+msgstr "Solaris 保留的分割區 (5)"
+
+#. Mac OS X
+#: ../gdu/gdu-util.c:475
+#: ../gdu/gdu-util.c:494
+msgid "Apple HFS/HFS+ Partition"
+msgstr "Apple HFS/HFS+ 分割區"
+
+#. see http://developer.apple.com/documentation/mac/Devices/Devices-126.html
+#. *     http://lists.apple.com/archives/Darwin-drivers/2003/May/msg00021.html
+#: ../gdu/gdu-util.c:476
+#: ../gdu/gdu-util.c:493
+msgid "Apple UFS Partition"
+msgstr "Apple UFS 分割區"
+
+#: ../gdu/gdu-util.c:477
+msgid "Apple ZFS Partition"
+msgstr "Apple ZFS 分割區"
+
+#. Same as Solaris /usr
+#: ../gdu/gdu-util.c:478
+msgid "Apple RAID Partition"
+msgstr "Apple RAID 分割區"
+
+#: ../gdu/gdu-util.c:479
+msgid "Apple RAID Partition (Offline)"
+msgstr "Apple RAID 分割區 (離線)"
+
+#: ../gdu/gdu-util.c:480
+msgid "Apple Boot Partition"
+msgstr "Apple 開機分割區"
+
+#: ../gdu/gdu-util.c:481
+msgid "Apple Label Partition"
+msgstr "Apple 標籤分割區"
+
+#: ../gdu/gdu-util.c:482
+msgid "Apple TV Recovery Partition"
+msgstr "Apple TV 還原分割區"
+
+#. NetBSD
+#: ../gdu/gdu-util.c:484
+msgid "NetBSD Swap Partition"
+msgstr "NetBSD 置換分割區"
+
+#: ../gdu/gdu-util.c:485
+msgid "NetBSD FFS Partition"
+msgstr "NetBSD FFS 分割區"
+
+#: ../gdu/gdu-util.c:486
+msgid "NetBSD LFS Partition"
+msgstr "NetBSD LFS 分割區"
+
+#: ../gdu/gdu-util.c:487
+msgid "NetBSD RAID Partition"
+msgstr "NetBSD RAID 分割區"
+
+#: ../gdu/gdu-util.c:488
+msgid "NetBSD Concatenated  Partition"
+msgstr ""
+
+#: ../gdu/gdu-util.c:489
+msgid "NetBSD Encrypted Partition"
+msgstr "NetBSD 加密分割區"
+
+#: ../gdu/gdu-util.c:495
+msgid "Apple Partition Map"
+msgstr "Apple 分割對應表"
+
+#: ../gdu/gdu-util.c:496
+msgid "Unused Partition"
+msgstr "未使用的分割區"
+
+#: ../gdu/gdu-util.c:497
+msgid "Empty Partition"
+msgstr "空的分割區"
+
+#: ../gdu/gdu-util.c:498
+msgid "Driver Partition"
+msgstr "Driver 分割區"
+
+#: ../gdu/gdu-util.c:499
+msgid "Driver 4.3 Partition"
+msgstr "Driver 4.3 分割區"
+
+#: ../gdu/gdu-util.c:500
+msgid "ProDOS file system"
+msgstr "ProDOS 檔案系統"
+
+#: ../gdu/gdu-util.c:501
+msgid "FAT 12"
+msgstr "FAT 12"
+
+#: ../gdu/gdu-util.c:502
+msgid "FAT 16"
+msgstr "FAT 16"
+
+#: ../gdu/gdu-util.c:503
+msgid "FAT 32"
+msgstr "FAT 32"
+
+#: ../gdu/gdu-util.c:504
+msgid "FAT 16 (Windows)"
+msgstr "FAT 16 (Windows)"
+
+#: ../gdu/gdu-util.c:505
+msgid "FAT 32 (Windows)"
+msgstr "FAT 32 (Windows)"
+
+#. see http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
+#: ../gdu/gdu-util.c:508
+msgid "Empty (0x00)"
+msgstr "空的 (0x00)"
+
+#: ../gdu/gdu-util.c:509
+msgid "FAT12 (0x01)"
+msgstr "FAT12 (0x01)"
+
+#: ../gdu/gdu-util.c:510
+msgid "FAT16 <32M (0x04)"
+msgstr "FAT16 <32M (0x04)"
+
+#: ../gdu/gdu-util.c:511
+msgid "Extended (0x05)"
+msgstr "延伸 (0x05)"
+
+#: ../gdu/gdu-util.c:512
+msgid "FAT16 (0x06)"
+msgstr "FAT16 (0x06)"
+
+#: ../gdu/gdu-util.c:513
+msgid "HPFS/NTFS (0x07)"
+msgstr "HPFS/NTFS (0x07)"
+
+#: ../gdu/gdu-util.c:514
+msgid "W95 FAT32 (0x0b)"
+msgstr "W95 FAT32 (0x0b)"
+
+#: ../gdu/gdu-util.c:515
+msgid "W95 FAT32 (LBA) (0x0c)"
+msgstr "W95 FAT32 (LBA) (0x0c)"
+
+#: ../gdu/gdu-util.c:516
+msgid "W95 FAT16 (LBA) (0x0e)"
+msgstr "W95 FAT16 (LBA) (0x0e)"
+
+#: ../gdu/gdu-util.c:517
+msgid "W95 Ext d (LBA) (0x0f)"
+msgstr "W95 Ext d (LBA) (0x0f)"
+
+#: ../gdu/gdu-util.c:518
+msgid "OPUS (0x10)"
+msgstr "OPUS (0x10)"
+
+#: ../gdu/gdu-util.c:519
+msgid "Hidden FAT12 (0x11)"
+msgstr "隱藏的 FAT12 (0x11)"
+
+#: ../gdu/gdu-util.c:520
+msgid "Compaq diagnostics (0x12)"
+msgstr "Compaq 診斷 (0x12)"
+
+#: ../gdu/gdu-util.c:521
+msgid "Hidden FAT16 <32M (0x14)"
+msgstr "隱藏的 FAT16 <32M (0x14)"
+
+#: ../gdu/gdu-util.c:522
+msgid "Hidden FAT16 (0x16)"
+msgstr "隱藏的 FAT16 (0x16)"
+
+#: ../gdu/gdu-util.c:523
+msgid "Hidden HPFS/NTFS (0x17)"
+msgstr "隱藏的 HPFS/NTFS (0x17)"
+
+#: ../gdu/gdu-util.c:524
+msgid "Hidden W95 FAT32 (0x1b)"
+msgstr "隱藏的 W95 FAT32 (0x1b)"
+
+#: ../gdu/gdu-util.c:525
+msgid "Hidden W95 FAT32 (LBA) (0x1c)"
+msgstr "隱藏的 W95 FAT32 (LBA) (0x1c)"
+
+#: ../gdu/gdu-util.c:526
+msgid "Hidden W95 FAT16 (LBA) (0x1e)"
+msgstr "隱藏的 W95 FAT16 (LBA) (0x1e)"
+
+#: ../gdu/gdu-util.c:527
+msgid "PartitionMagic (0x3c)"
+msgstr "PartitionMagic (0x3c)"
+
+#: ../gdu/gdu-util.c:528
+msgid "Minix (0x81)"
+msgstr "Minix (0x81)"
+
+#. cf. http://en.wikipedia.org/wiki/MINIX_file_system
+#: ../gdu/gdu-util.c:529
+msgid "Linux swap (0x82)"
+msgstr "Linux swap (0x82)"
+
+#: ../gdu/gdu-util.c:530
+msgid "Linux (0x83)"
+msgstr "Linux (0x83)"
+
+#: ../gdu/gdu-util.c:531
+msgid "Hibernation (0x84)"
+msgstr "休眠 (0x84)"
+
+#: ../gdu/gdu-util.c:532
+msgid "Linux Extended (0x85)"
+msgstr "Linux 延伸 (0x85)"
+
+#: ../gdu/gdu-util.c:533
+msgid "Linux LVM (0x8e)"
+msgstr "Linux LVM (0x8e)"
+
+#: ../gdu/gdu-util.c:534
+msgid "Hibernation (0xa0)"
+msgstr "休眠 (0xa0)"
+
+#: ../gdu/gdu-util.c:535
+msgid "FreeBSD (0xa5)"
+msgstr "FreeBSD (0xa5)"
+
+#: ../gdu/gdu-util.c:536
+msgid "OpenBSD (0xa6)"
+msgstr "OpenBSD (0xa6)"
+
+#: ../gdu/gdu-util.c:537
+msgid "Mac OS X (0xa8)"
+msgstr "Mac OS X (0xa8)"
+
+#: ../gdu/gdu-util.c:538
+msgid "Mac OS X (0xaf)"
+msgstr "Mac OS X (0xaf)"
+
+#: ../gdu/gdu-util.c:539
+msgid "Solaris boot (0xbe)"
+msgstr "Solaris boot (0xbe)"
+
+#: ../gdu/gdu-util.c:540
+msgid "Solaris (0xbf)"
+msgstr "Solaris (0xbf)"
+
+#: ../gdu/gdu-util.c:541
+msgid "BeOS BFS (0xeb)"
+msgstr "BeOS BFS (0xeb)"
+
+#: ../gdu/gdu-util.c:542
+msgid "SkyOS SkyFS (0xec)"
+msgstr "SkyOS SkyFS (0xec)"
+
+#: ../gdu/gdu-util.c:543
+msgid "EFI GPT (0xee)"
+msgstr "EFI GPT (0xee)"
+
+#: ../gdu/gdu-util.c:544
+msgid "EFI (FAT-12/16/32 (0xef)"
+msgstr "EFI (FAT-12/16/32 (0xef)"
+
+#: ../gdu/gdu-util.c:545
+msgid "Linux RAID autodetect (0xfd)"
+msgstr "Linux RAID 自動偵測 (0xfd)"
+
+#. Translators: Shown for unknown partition types.
+#. * %s is the partition type name
+#.
+#: ../gdu/gdu-util.c:572
+#, c-format
+msgid "Unknown (%s)"
+msgstr "不明 (%s)"
+
+#: ../gdu/gdu-util.c:582
+msgid "A popular format compatible with almost any device or system, typically used for file exchange."
+msgstr ""
+
+#: ../gdu/gdu-util.c:586
+msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
+msgstr ""
+
+#: ../gdu/gdu-util.c:592
+msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
+msgstr ""
+
+#: ../gdu/gdu-util.c:596
+msgid "Swap area used by the operating system for virtual memory."
+msgstr ""
+
+#: ../gdu/gdu-util.c:599
+msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
+msgstr ""
+
+#: ../gdu/gdu-util.c:603
+msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
+msgstr ""
+
+#: ../gdu/gdu-util.c:607
+msgid "No file system will be created."
+msgstr ""
+
+#: ../gdu/gdu-util.c:610
+msgid "Create an Extended Partition for logical partitions."
+msgstr ""
+
+#: ../gdu/gdu-util.c:623
+msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
+msgstr ""
+
+#: ../gdu/gdu-util.c:628
+msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
+msgstr ""
+
+#: ../gdu/gdu-util.c:633
+msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
+msgstr ""
+
+#: ../gdu/gdu-util.c:637
+msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
+msgstr ""
+
+#: ../gdu/gdu-util.c:828
+#, c-format
+msgid "LUKS Passphrase for UUID %s"
+msgstr ""
+
+#: ../gdu/gdu-util.c:888
+#, c-format
+msgid "%.1f KB/s"
+msgstr "%.1f KB/s"
+
+#: ../gdu/gdu-util.c:891
+#, c-format
+msgid "%.1f MB/s"
+msgstr "%.1f MB/s"
+
+#: ../gdu/gdu-util.c:894
+#, c-format
+msgid "%.1f GB/s"
+msgstr "%.1f GB/s"
+
+#. Translators: interface name for serial ATA disks
+#: ../gdu/gdu-util.c:910
+msgid "SATA"
+msgstr "SATA"
+
+#. Translators: interface name for serial ATA disks
+#: ../gdu/gdu-util.c:913
+msgid "eSATA"
+msgstr "eSATA"
+
+#. Translators: interface name for parallel ATA disks
+#: ../gdu/gdu-util.c:916
+msgid "PATA"
+msgstr "PATA"
+
+#. Translators: interface name for ATA disks
+#: ../gdu/gdu-util.c:919
+msgid "ATA"
+msgstr "ATA"
+
+#. Translators: interface name for SCSI disks
+#: ../gdu/gdu-util.c:922
+msgid "SCSI"
+msgstr "SCSI"
+
+#. Translators: interface name for USB disks
+#: ../gdu/gdu-util.c:925
+msgid "USB"
+msgstr "USB"
+
+#. Translators: interface name for firewire disks
+#: ../gdu/gdu-util.c:928
+msgid "Firewire"
+msgstr "Firewire"
+
+#. Translators: interface name for SDIO disks
+#: ../gdu/gdu-util.c:931
+msgid "SDIO"
+msgstr "SDIO"
+
+#. Translators: interface name for virtual disks
+#: ../gdu/gdu-util.c:934
+msgid "Virtual"
+msgstr "虛擬"
+
+#. Translators: name shown for unknown disk connection interfaces
+#: ../gdu/gdu-util.c:940
+msgctxt "connection name"
+msgid "Unknown"
+msgstr "不明"
+
+#. Translators: Connection with speed information.
+#. * First %s is the connection name, like 'SATA' or 'USB'
+#. * second %s is the speed, like '2 Mbit/s'
+#.
+#: ../gdu/gdu-util.c:950
+#, c-format
+msgid "%s at %s"
+msgstr "%s 於 %s"
+
+#: ../gdu/gdu-util.c:969
+msgctxt "RAID level"
+msgid "Stripe (RAID-0)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:971
+msgctxt "RAID level"
+msgid "RAID-0"
+msgstr "RAID-0"
+
+#: ../gdu/gdu-util.c:974
+msgctxt "RAID level"
+msgid "Mirror (RAID-1)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:976
+msgctxt "RAID level"
+msgid "RAID-1"
+msgstr "RAID-1"
+
+#: ../gdu/gdu-util.c:979
+msgctxt "RAID level"
+msgid "Parity Disk (RAID-4)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:981
+msgctxt "RAID level"
+msgid "RAID-4"
+msgstr "RAID-4"
+
+#: ../gdu/gdu-util.c:984
+msgctxt "RAID level"
+msgid "Distributed Parity (RAID-5)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:986
+msgctxt "RAID level"
+msgid "RAID-5"
+msgstr "RAID-5"
+
+#: ../gdu/gdu-util.c:989
+msgctxt "RAID level"
+msgid "Dual Distributed Parity (RAID-6)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:991
+msgctxt "RAID level"
+msgid "RAID-6"
+msgstr "RAID-6"
+
+#: ../gdu/gdu-util.c:994
+msgctxt "RAID level"
+msgid "Stripe of Mirrors (RAID-10)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:996
+msgctxt "RAID level"
+msgid "RAID-10"
+msgstr "RAID-10"
+
+#: ../gdu/gdu-util.c:999
+msgctxt "RAID level"
+msgid "Concatenated (Linear)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:1001
+msgctxt "RAID level"
+msgid "Linear"
+msgstr "線性"
+
+#: ../gdu/gdu-util.c:1015
+msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1019
+msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1023
+msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1027
+msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1031
+msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1035
+msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1041
+#, c-format
+msgid "Unknown RAID level %s."
+msgstr "不明的 RAID 層級 %s。"
+
+#. Translators: Overall description of the GOOD status
+#: ../gdu/gdu-util.c:1077
+msgid "Disk is healthy"
+msgstr "磁碟健康"
+
+#. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
+#: ../gdu/gdu-util.c:1081
+msgid "Disk was used outside of design parameters in the past"
+msgstr ""
+
+#. Translators: Overall description of the BAD_SECTOR status
+#: ../gdu/gdu-util.c:1085
+msgid "Disk has a few bad sectors"
+msgstr ""
+
+#. Translators: Overall description of the BAD_ATTRIBUTE_NOW status
+#: ../gdu/gdu-util.c:1089
+msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
+msgstr ""
+
+#. Translators: Suggested action for the BAD_ATTRIBUTE_NOW status
+#. Translators: Suggested action for the BAD_SECTOR_MANY status
+#. Translators: Suggested action for the BAD_STATUS status
+#: ../gdu/gdu-util.c:1091
+#: ../gdu/gdu-util.c:1099
+#: ../gdu/gdu-util.c:1105
+msgid "Backup all data and replace the disk"
+msgstr ""
+
+#. Translators: Overall description of the BAD_SECTOR_MANY status
+#: ../gdu/gdu-util.c:1096
+msgid "DISK HAS MANY BAD SECTORS"
+msgstr ""
+
+#. Translators: Overall description of the BAD_STATUS status
+#: ../gdu/gdu-util.c:1103
+msgid "DISK FAILURE IS IMMINENT"
+msgstr ""
+
+#. Translators: Description when the overall SMART status is unknown
+#: ../gdu/gdu-util.c:1110
+msgid "Unknown"
+msgstr "不明"
+
+#. Translator: The word "blank" is used as an adjective, e.g. we are decsribing discs that are already blank
+#: ../gdu/gdu-volume.c:75
+msgid "CD-ROM Disc"
+msgstr "CD-ROM 碟片"
+
+#: ../gdu/gdu-volume.c:75
+msgid "Blank CD-ROM Disc"
+msgstr "空白 CD-ROM 碟片"
+
+#: ../gdu/gdu-volume.c:76
+msgid "CD-R Disc"
+msgstr "CD-R 碟片"
+
+#: ../gdu/gdu-volume.c:76
+msgid "Blank CD-R Disc"
+msgstr "空白 CD-R 碟片"
+
+#: ../gdu/gdu-volume.c:77
+msgid "CD-RW Disc"
+msgstr "CD-RW 碟片"
+
+#: ../gdu/gdu-volume.c:77
+msgid "Blank CD-RW Disc"
+msgstr "空白 CD-RW 碟片"
+
+#: ../gdu/gdu-volume.c:78
+#: ../gdu/gdu-volume.c:79
+msgid "DVD-ROM Disc"
+msgstr "DVD-ROM 碟片"
+
+#: ../gdu/gdu-volume.c:78
+#: ../gdu/gdu-volume.c:79
+msgid "Blank DVD-ROM Disc"
+msgstr "空白 DVD-ROM 碟片"
+
+#: ../gdu/gdu-volume.c:80
+msgid "DVD-RW Disc"
+msgstr "DVD-RW 碟片"
+
+#: ../gdu/gdu-volume.c:80
+msgid "Blank DVD-RW Disc"
+msgstr "空白 DVD-RW 碟片"
+
+#: ../gdu/gdu-volume.c:81
+msgid "DVD-RAM Disc"
+msgstr "DVD-RAM 碟片"
+
+#: ../gdu/gdu-volume.c:81
+msgid "Blank DVD-RAM Disc"
+msgstr "空白 DVD-RAM 碟片"
+
+#: ../gdu/gdu-volume.c:82
+msgid "DVD+R Disc"
+msgstr "DVD+R 碟片"
+
+#: ../gdu/gdu-volume.c:82
+msgid "Blank DVD+R Disc"
+msgstr "空白 DVD+R 碟片"
+
+#: ../gdu/gdu-volume.c:83
+msgid "DVD+RW Disc"
+msgstr "DVD+RW 碟片"
+
+#: ../gdu/gdu-volume.c:83
+msgid "Blank DVD+RW Disc"
+msgstr "空白 DVD+RW 碟片"
+
+#: ../gdu/gdu-volume.c:84
+msgid "DVD+R DL Disc"
+msgstr "DVD+R 雙層碟片"
+
+#: ../gdu/gdu-volume.c:84
+msgid "Blank DVD+R DL Disc"
+msgstr "空白 DVD+R 雙層碟片"
+
+#: ../gdu/gdu-volume.c:85
+msgid "DVD+RW DL Disc"
+msgstr "DVD+RW 雙層碟片"
+
+#: ../gdu/gdu-volume.c:85
+msgid "Blank DVD+RW DL Disc"
+msgstr "空白 DVD+RW 雙層碟片"
+
+#: ../gdu/gdu-volume.c:86
+msgid "Blu-Ray Disc"
+msgstr "藍光碟片"
+
+#: ../gdu/gdu-volume.c:86
+msgid "Blank Blu-Ray Disc"
+msgstr "空白藍光碟片"
+
+#: ../gdu/gdu-volume.c:87
+msgid "Blu-Ray R Disc"
+msgstr "藍光 R 碟片"
+
+#: ../gdu/gdu-volume.c:87
+msgid "Blank Blu-Ray R Disc"
+msgstr "空白藍光 R 碟片"
+
+#: ../gdu/gdu-volume.c:88
+msgid "Blu-Ray RW Disc"
+msgstr "藍光 RW 碟片"
+
+#: ../gdu/gdu-volume.c:88
+msgid "Blank Blu-Ray RW Disc"
+msgstr "空白藍光 RW 碟片"
+
+#: ../gdu/gdu-volume.c:89
+msgid "HD DVD Disc"
+msgstr "HD DVD 碟片"
+
+#: ../gdu/gdu-volume.c:89
+msgid "Blank HD DVD Disc"
+msgstr "空白 HD DVD 碟片"
+
+#: ../gdu/gdu-volume.c:90
+msgid "HD DVD-R Disc"
+msgstr "HD DVD-R 碟片"
+
+#: ../gdu/gdu-volume.c:90
+msgid "Blank HD DVD-R Disc"
+msgstr "空白 HD DVD-R 碟片"
+
+#: ../gdu/gdu-volume.c:91
+msgid "HD DVD-RW Disc"
+msgstr "HD DVD-RW 碟片"
+
+#: ../gdu/gdu-volume.c:91
+msgid "Blank HD DVD-RW Disc"
+msgstr "空白 HD DVD-RW 碟片"
+
+#: ../gdu/gdu-volume.c:92
+msgid "MO Disc"
+msgstr "MO 碟片"
+
+#: ../gdu/gdu-volume.c:92
+msgid "Blank MO Disc"
+msgstr "空白 MO 碟片"
+
+#: ../gdu/gdu-volume.c:93
+msgid "MRW Disc"
+msgstr "MRW 碟片"
+
+#: ../gdu/gdu-volume.c:93
+msgid "Blank MRW Disc"
+msgstr "空白 MRW 碟片"
+
+#: ../gdu/gdu-volume.c:94
+msgid "MRW/W Disc"
+msgstr "MRW/W 碟片"
+
+#: ../gdu/gdu-volume.c:94
+msgid "Blank MRW/W Disc"
+msgstr "空白 MRW/W 碟片"
+
+#: ../gdu/gdu-volume.c:276
+msgid "Blank Optical Disc"
+msgstr "空白光碟"
+
+#. Translators: Label for an extended partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:286
+#, c-format
+msgid "%s Extended"
+msgstr "%s 延伸"
+
+#: ../gdu/gdu-volume.c:287
+msgid "Contains logical partitions"
+msgstr "包含邏輯分割區"
+
+#. Translators: Label for an extended partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:302
+#, c-format
+msgid "%s Encrypted"
+msgstr "%s 加密"
+
+#: ../gdu/gdu-volume.c:312
+msgid "Optical Disc"
+msgstr "光碟"
+
+#. Translators: Label for a partition with a filesystem
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:318
+#, c-format
+msgid "%s Filesystem"
+msgstr "%s 檔案系統"
+
+#. Translators: Label for a partition table
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:324
+#, c-format
+msgid "%s Partition Table"
+msgstr "%s 分割表格"
+
+#. Translators: Label for a LVM volume
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:330
+#, c-format
+msgid "%s LVM2 Physical Volume"
+msgstr "%s LVM2 實體儲存區"
+
+#. Translators: Used if no specific RAID level could be determined
+#: ../gdu/gdu-volume.c:343
+msgctxt "RAID level"
+msgid "RAID"
+msgstr "RAID"
+
+#. Translators: label for a RAID component
+#. * First %s is the size, formatted like '45 GB'
+#. * Second %s is the RAID level string, e.g 'RAID-5'
+#.
+#: ../gdu/gdu-volume.c:350
+#: ../gdu/gdu-volume.c:361
+#, c-format
+msgid "%s %s Component"
+msgstr "%s %s 部件"
+
+#. Translators: description for a RAID component
+#. * First %s is the array name, e.g. 'My Photos RAID',
+#.
+#: ../gdu/gdu-volume.c:354
+#, c-format
+msgid "Part of \"%s\" array"
+msgstr "「%s」陣列的部份"
+
+#. Translators: label for a swap partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:372
+#, c-format
+msgid "%s Swap Space"
+msgstr "%s 置換空間"
+
+#. Translators: label for a data partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:377
+#, c-format
+msgid "%s Data"
+msgstr "%s 資料"
+
+#. Translators: label for a volume of unrecognized use
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:383
+#: ../gdu/gdu-volume.c:399
+#, c-format
+msgid "%s Unrecognized"
+msgstr "%s 無法辨識"
+
+#. Translators: description for a volume of unrecognized use
+#: ../gdu/gdu-volume.c:385
+msgid "Unknown or Unused"
+msgstr "不明或未使用"
+
+#. Translators: label for a partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:392
+#: ../gdu/gdu-volume.c:394
+#, c-format
+msgid "%s Partition"
+msgstr "%s 分割區"
+
+#. Translators: The VPD name for a volume. The %d is the partition number
+#. * and the %s is the VPD name for the drive.
+#.
+#: ../gdu/gdu-volume.c:430
+#, c-format
+msgid "Partition %d of %s"
+msgstr "分割區 %d / %s"
+
+#. Translators: The VPD name for a volume. The %d is the partition number.
+#.
+#: ../gdu/gdu-volume.c:436
+#, c-format
+msgid "Partition %d"
+msgstr "分割區 %d"
+
+#. Translators: The VPD name for a whole-disk volume.
+#. * The %s is the VPD name for the drive.
+#.
+#: ../gdu/gdu-volume.c:444
+#, c-format
+msgid "Whole-disk volume on %s"
+msgstr "%s 上的整個磁碟儲存區"
+
+#. Translators: The VPD name for a whole-disk volume.
+#.
+#: ../gdu/gdu-volume.c:449
+msgid "Whole-disk volume"
+msgstr "整個磁碟儲存區"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "已停用"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u 輸出"
+msgstr[1] "%u 輸出"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u 輸入"
+msgstr[1] "%u 輸入"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "系統音效"
+
+#: ../power-icon/src/moblin-power-icon.c:46
+msgid "Moblin Power Icon"
+msgstr "Moblin 電源圖示"
+
+#: ../power-icon/src/mpd-power-icon.c:72
+msgid "Running low on battery"
+msgstr "正在以低電池量執行中"
+
+#: ../power-icon/src/mpd-power-icon.c:73
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "我們注意到你的電池電量有點低。如果可以的話，插入電源線然後將電池充滿會是個好點子。"
+
+#: ../power-icon/src/mpd-power-icon.c:76
+msgid "Getting close to empty"
+msgstr "愈來愈接近沒電"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "你的電池電量相當的低。儲存你所有的工作，然後盡快插入電源線會是個好主意！"
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Danger!"
+msgstr "危險！"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "抱歉，你電腦的電池電量快用光了。我們現在就必須關閉電腦。請儲存你的工作，希望可以很快再見到你。"
+
+#: ../power-icon/src/mpd-power-icon.c:300
+msgid "Would you like to turn off now?"
+msgstr "你現在要關閉電腦嗎？"
+
+#: ../power-icon/src/mpd-power-icon.c:301
+msgid "If you don't decide I'll turn off in 30 seconds."
+msgstr "如果你不決定，我會在 30 秒內關閉。"
+
+#: ../power-icon/src/mpd-power-icon.c:368
+msgid "battery"
+msgstr "電池"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:75
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "如果你不決定，我會在 %d 秒內關閉"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:133
+msgid "Turn off"
+msgstr "關閉"
+
+#: ../src/mpd-battery-device.c:333
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "抱歉，你似乎沒有安裝電池。"
+
+#: ../src/mpd-battery-device.c:337
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "你的電池正在充電。大概充好 %d%%。"
+
+#: ../src/mpd-battery-device.c:342
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "你的電池正在使用中。電量大概有 %d%%。"
+
+#: ../src/mpd-battery-device.c:347
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "您的電池已充飽，可以上路了。"
+
+#: ../src/mpd-battery-device.c:351
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "很抱歉，看起來你的電池好像壞了。"
+
+#: ../src/mpd-computer-pane.c:111
+msgid "All settings"
+msgstr "所有設定"
+
+#: ../src/mpd-default-device-tile.c:100
+msgid ""
+"Plug in a device\n"
+"and it will be automatically detected."
+msgstr ""
+"請插入裝置\n"
+"接著它會被自動偵測。"
+
+#: ../src/mpd-disk-tile.c:64
+#, c-format
+msgid "You are using %d%% of %s"
+msgstr "您正使用 %d%%，共 %s"
+
+#: ../src/mpd-folder-pane.c:91
+msgid "Your computer"
+msgstr "你的電腦"
+
+#: ../src/mpd-storage-device-tile.c:96
+#, c-format
+msgid "Using %d%% of %s"
+msgstr "正使用 %d%%，共 %s"
+
+#: ../src/mpd-storage-device-tile.c:383
+msgid "Eject"
+msgstr "退出"
+
+#: ../src/mpd-storage-device-tile.c:388
+msgid "Open"
+msgstr "開啟"
+
+#: ../src/mpd-volume-tile.c:110
+msgid "Turned up to 11"
+msgstr "超級大聲"
+
+#: ../src/mpd-volume-tile.c:112
+msgid "Very loud"
+msgstr "非常大聲"
+
+#: ../src/mpd-volume-tile.c:114
+msgid "Loud"
+msgstr "大聲"
+
+#: ../src/mpd-volume-tile.c:116
+msgid "Fairly loud"
+msgstr "有點大聲"
+
+#: ../src/mpd-volume-tile.c:118
+msgid "Middle of the road"
+msgstr "剛好"
+
+#: ../src/mpd-volume-tile.c:120
+msgid "Fairly quiet"
+msgstr "有點安靜"
+
+#: ../src/mpd-volume-tile.c:122
+msgid "Quiet"
+msgstr "安靜"
+
+#: ../src/mpd-volume-tile.c:124
+msgid "Very quiet"
+msgstr "非常安靜"
+
+#: ../src/mpd-volume-tile.c:126
+msgid "Silent"
+msgstr "寂靜無聲"
+
+#. Tile label
+#: ../src/mpd-volume-tile.c:306
+msgid "Netbook volume"
+msgstr "網路筆電靜音"
+
+#: ../src/mpd-volume-tile.c:345
+msgid "Mute"
+msgstr "靜音"
+
