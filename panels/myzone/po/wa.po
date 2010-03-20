@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
-"PO-Revision-Date: 2009-11-18 07:29+0100\n"
+"POT-Creation-Date: 2010-03-17 09:34+0000\n"
+"PO-Revision-Date: 2010-03-20 09:54+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,28 +16,70 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Radjoûs</b>"
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Sicriftôr Myzone"
 
-#: ../penge/penge-events-pane.c:59
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Candjî l' fond d' Myzone et çou k' i gn a ddins"
+
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:136
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Aroke GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Totes les ôtes arokes ni sont mostrêyes k' e terminå."
+
+#: ../capplet/myzone-cc-panel.c:46
+msgid "Show as much web service content as possible"
+msgstr "Mostrer ostant d' ådvins d' siervices waibe k' on sait"
+
+#: ../capplet/myzone-cc-panel.c:48
+msgid "Show mostly web service content"
+msgstr "Mostrer sortot les ådvins d' siervice waibe"
+
+#: ../capplet/myzone-cc-panel.c:50
+msgid "Show half and half"
+msgstr "Mostrer mitan d' onk et mitan d' l' ôte"
+
+#: ../capplet/myzone-cc-panel.c:52
+msgid "Show mostly recent files"
+msgstr "Mostrer sortot les fitchîs d' enawaire"
+
+#: ../capplet/myzone-cc-panel.c:54
+msgid "Show as many recent files as possible"
+msgstr "Mostrer ostant d' fitchîs d' enawaire k' on sait"
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "Radjoûs"
+
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Ahiver on radjoû"
 
-#: ../penge/penge-events-pane.c:60
+#: ../penge/penge-events-pane.c:69
 #: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Radjouter"
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "Rén e calindrî cisse samwinne ci"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Il aparexhrè droci les sacwès k' vos soçons fijhnut so fyis. Metoz en alaedje vos contes do côp !"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "Pådje waibe"
 
@@ -45,20 +87,31 @@ msgstr "Pådje waibe"
 msgid "Create a new task"
 msgstr "Ahiver ene novele bouye"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "Rén a fé ådjourdu"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
-msgstr "Divou %x"
+msgstr "A fé pol %x"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Wilicome dins Moblin 2.1 po les Netbooks</b>"
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Bénvnowe dins MeeGo"
 
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Come Moblin est ene miete diferin des ôtes copiutreces, nos avans metou eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. Nos esperans k' vos alez awè do plaijhi, L' ekipe di Moblin."
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Çouchal est Myzone, wice ki vos fitchîs eployîs enawaire eyet l' ådvins d' vos floûs waibe aparexhront."
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Wilicome dins Moblin 2.1 po les Netbooks</b>"
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Come Moblin est ene miete diferin des ôtes copiutreces, nos avans metou "
+#~ "eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. "
+#~ "Nos esperans k' vos alez awè do plaijhi, L' ekipe di Moblin."
 
