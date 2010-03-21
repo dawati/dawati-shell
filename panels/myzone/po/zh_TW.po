@@ -22,7 +22,8 @@ msgstr "Myzone 面板"
 msgid "Change the Myzone background and content"
 msgstr "更改 Myzone 的背景和內容"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:157
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:157
 msgid "Myzone"
 msgstr "Myzone 面板"
 
@@ -57,7 +58,7 @@ msgstr "盡可能顯示最近的文件"
 
 #: ../capplet/myzone-cc-panel.c:77
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr ""
+msgstr "您想要清除您最近的文件嗎？這將會從 Myzone 移除本機的內容"
 
 #: ../penge/penge-calendar-pane.c:473
 msgid "Appointments"
@@ -67,7 +68,8 @@ msgstr "約會"
 msgid "Create an appointment"
 msgstr "建立一項約會"
 
-#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "加入"
 
@@ -106,21 +108,20 @@ msgstr "這是 Myzone，您最近使用過的檔案與您的網路消息來源�
 
 #: ../penge/penge-email-pane.c:191
 msgid "No unread messages"
-msgstr ""
+msgstr "沒有未讀取的訊息"
 
 #: ../penge/penge-email-pane.c:193
 msgid "Unread message"
-msgstr ""
+msgstr "未讀取的訊息"
 
 #: ../penge/penge-email-pane.c:195
 msgid "Unread messages"
-msgstr ""
+msgstr "未讀取的訊息"
 
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
-
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>歡迎來到專為網路筆電所設計的 Moblin 2.1</b>"
-
 #~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 #~ msgstr "由於 Moblin 和其他電腦有些不同，我們把一些東西湊在一塊來協助你上手。我們希望你能盡情地享受 Moblin，Moblin 團隊敬上。"
+
