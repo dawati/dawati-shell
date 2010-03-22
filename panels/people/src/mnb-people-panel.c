@@ -263,8 +263,8 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
   frame = mx_frame_new ();
   clutter_actor_set_name (frame,
                           "people-no-people-message-bin");
-  label = mx_label_new (_("Sorry, we can't find any people. " \
-                          "Have you set up a Messenger account?"));
+  label = mx_label_new_with_text (_("Sorry, we can't find any people. " \
+                                    "Have you set up a Messenger account?"));
   clutter_actor_set_name (label,
                           "people-people-pane-main-label");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
@@ -293,7 +293,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
     hbox = mx_table_new ();
     clutter_actor_set_name (hbox,
                             "people-no-people-launcher");
-    mx_table_set_col_spacing (MX_TABLE (hbox), 8);
+    mx_table_set_column_spacing (MX_TABLE (hbox), 8);
     mx_table_add_actor_with_properties (MX_TABLE (tile),
                                         (ClutterActor *)hbox,
                                         1,
@@ -320,7 +320,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
                                         "y-align", 0.5,
                                         NULL);
 
-    label = mx_label_new (g_app_info_get_description (priv->app_info));
+    label = mx_label_new_with_text (g_app_info_get_description (priv->app_info));
     clutter_actor_set_name (label, "people-no-people-description");
     mx_table_add_actor_with_properties (MX_TABLE (hbox),
                                           (ClutterActor *)label,
@@ -375,8 +375,8 @@ _make_everybody_offline_tile (MnbPeoplePanel *pane)
 
   clutter_actor_set_name ((ClutterActor *)tile,
                           "people-pane-everybody-offline-tile");
-  label = mx_label_new (_("Sorry, we can't find any people. " \
-                          "It looks like they are all offline."));
+  label = mx_label_new_with_text (_("Sorry, we can't find any people. " \
+                                    "It looks like they are all offline."));
   clutter_actor_set_name ((ClutterActor *)label,
                           "people-pane-everybody-offline-label");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
@@ -420,8 +420,8 @@ _make_offline_banner (MnbPeoplePanel *pane,
   clutter_actor_set_width (tile, width);
   clutter_actor_set_name (tile,
                           "people-pane-you-offline-banner");
-  label = mx_label_new (_("To see your IM contacts, "
-                          "you need to go online."));
+  label = mx_label_new_with_text (_("To see your IM contacts, "
+                                    "you need to go online."));
   clutter_actor_set_name (label,
                           "people-pane-you-offline-label");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
@@ -667,13 +667,13 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   ClutterActor *scroll_view, *scroll_bin, *bin, *tmp_text;
   AnerleyFeed *active_feed;
 
-  mx_table_set_col_spacing (MX_TABLE (self), 4);
+  mx_table_set_column_spacing (MX_TABLE (self), 4);
   mx_table_set_row_spacing (MX_TABLE (self), 6);
   clutter_actor_set_name (CLUTTER_ACTOR (self), "people-vbox");
 
   priv->header_box = mx_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (priv->header_box), "people-search");
-  mx_table_set_col_spacing (MX_TABLE (priv->header_box), 20);
+  mx_table_set_column_spacing (MX_TABLE (priv->header_box), 20);
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       CLUTTER_ACTOR (priv->header_box),
                                       0, 0,
@@ -686,7 +686,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-align", 0.0,
                                       NULL);
 
-  label = mx_label_new (_("People"));
+  label = mx_label_new_with_text (_("People"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "people-search-label");
   mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
                                       CLUTTER_ACTOR (label),
@@ -750,7 +750,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   clutter_actor_set_name (priv->active_content_table, "active-content-table");
 
   bin = mx_frame_new ();
-  label = mx_label_new (_("You are chatting with:"));
+  label = mx_label_new_with_text (_("You are chatting with:"));
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
   clutter_text_set_ellipsize (CLUTTER_TEXT(tmp_text), PANGO_ELLIPSIZE_NONE);
   clutter_actor_set_name (label, "active-content-header-label");
