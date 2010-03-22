@@ -2129,7 +2129,7 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
 
   if (!tp->windowless)
     {
-      g_signal_connect (button, "notify::checked",
+      g_signal_connect (button, "notify::toggled",
                         G_CALLBACK (mnb_toolbar_button_toggled_cb),
                         toolbar);
 
@@ -2138,7 +2138,7 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
                         toolbar);
     }
   else
-    g_signal_connect (button, "notify::checked",
+    g_signal_connect (button, "notify::toggled",
                       G_CALLBACK (mnb_toolbar_windowless_button_toggled_cb),
                       toolbar);
 }
