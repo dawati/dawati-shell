@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-datetime master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:36+0000\n"
+"POT-Creation-Date: 2010-03-22 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -36,54 +37,44 @@ msgstr "Bip"
 msgid "Music"
 msgstr "Musik"
 
-#: ../src/mnp-alarm-dialog.c:67
-#: ../src/mnp-alarm-instance.c:52
+#: ../src/mnp-alarm-dialog.c:67 ../src/mnp-alarm-instance.c:52
 msgid "Never"
 msgstr "Tidak pernah"
 
-#: ../src/mnp-alarm-dialog.c:68
-#: ../src/mnp-alarm-instance.c:53
+#: ../src/mnp-alarm-dialog.c:68 ../src/mnp-alarm-instance.c:53
 #: ../src/mnp-alarm-tile.c:36
 msgid "Everyday"
 msgstr "Setiap Hari"
 
-#: ../src/mnp-alarm-dialog.c:69
-#: ../src/mnp-alarm-instance.c:54
+#: ../src/mnp-alarm-dialog.c:69 ../src/mnp-alarm-instance.c:54
 msgid "Monday - Friday"
 msgstr "Senin - Jumat"
 
-#: ../src/mnp-alarm-dialog.c:70
-#: ../src/mnp-alarm-instance.c:55
+#: ../src/mnp-alarm-dialog.c:70 ../src/mnp-alarm-instance.c:55
 msgid "Monday"
 msgstr "Senin"
 
-#: ../src/mnp-alarm-dialog.c:71
-#: ../src/mnp-alarm-instance.c:56
+#: ../src/mnp-alarm-dialog.c:71 ../src/mnp-alarm-instance.c:56
 msgid "Tuesday"
 msgstr "Selasa"
 
-#: ../src/mnp-alarm-dialog.c:72
-#: ../src/mnp-alarm-instance.c:57
+#: ../src/mnp-alarm-dialog.c:72 ../src/mnp-alarm-instance.c:57
 msgid "Wednesday"
 msgstr "Rabu"
 
-#: ../src/mnp-alarm-dialog.c:73
-#: ../src/mnp-alarm-instance.c:58
+#: ../src/mnp-alarm-dialog.c:73 ../src/mnp-alarm-instance.c:58
 msgid "Thursday"
 msgstr "Kamis"
 
-#: ../src/mnp-alarm-dialog.c:74
-#: ../src/mnp-alarm-instance.c:59
+#: ../src/mnp-alarm-dialog.c:74 ../src/mnp-alarm-instance.c:59
 msgid "Friday"
 msgstr "Jumat"
 
-#: ../src/mnp-alarm-dialog.c:75
-#: ../src/mnp-alarm-instance.c:60
+#: ../src/mnp-alarm-dialog.c:75 ../src/mnp-alarm-instance.c:60
 msgid "Saturday"
 msgstr "Sabtu"
 
-#: ../src/mnp-alarm-dialog.c:76
-#: ../src/mnp-alarm-instance.c:61
+#: ../src/mnp-alarm-dialog.c:76 ../src/mnp-alarm-instance.c:61
 msgid "Sunday"
 msgstr "Minggu"
 
@@ -125,7 +116,7 @@ msgstr ""
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:362
+#: ../src/mnp-utils.c:420
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -134,21 +125,21 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:370
+#: ../src/mnp-utils.c:428
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:384
+#: ../src/mnp-utils.c:442
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (Kemarin)"
 
-#: ../src/mnp-utils.c:386
+#: ../src/mnp-utils.c:444
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (Besok)"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display in Aug 6
-#: ../src/mnp-utils.c:392
+#: ../src/mnp-utils.c:450
 msgid "%b %-d"
 msgstr "%b %-d"
 
@@ -209,13 +200,9 @@ msgstr "TIAP SABTU"
 msgid "SUNDAYS"
 msgstr "TIAP MINGGU"
 
-#: ../src/mnp-world-clock.c:400
+#: ../src/mnp-world-clock.c:421
 msgid "Enter a country or city"
 msgstr "Masukkan suatu negara atau kota"
-
-#: ../src/mnp-world-clock.c:415
-msgid "Add"
-msgstr "Tambah"
 
 #: ../src/mnp-datetime.c:178
 msgid "Today"
@@ -237,3 +224,9 @@ msgstr "Alarm disimpan dalam bentuk terkode untuk dipakai oleh pemberitahu alarm
 msgid "List of alarms in short encoded form"
 msgstr "Daftar alarm dalam bentuk terkode pendek"
 
+#: ../src/mnp-world-clock.c:435
+msgid "Search"
+msgstr "Cari"
+
+#~ msgid "Add"
+#~ msgstr "Tambah"
