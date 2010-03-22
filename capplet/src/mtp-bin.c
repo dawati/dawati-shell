@@ -263,8 +263,8 @@ mtp_bin_load_contents (MtpBin *bin)
   MtpJar        *jar     = (MtpJar*)priv->jar;
   GSList        *l, *panels;
 
-  g_object_set (toolbar, "enabled", TRUE, NULL);
-  g_object_set (jar, "enabled", TRUE, NULL);
+  g_object_set (toolbar, "drop-enabled", TRUE, NULL);
+  g_object_set (jar, "drop-enabled", TRUE, NULL);
 
   panels = load_panels (priv->client);
 

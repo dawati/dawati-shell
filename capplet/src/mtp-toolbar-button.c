@@ -615,7 +615,7 @@ mtp_toolbar_button_class_init (MtpToolbarButtonClass *klass)
                                     "axis");
   g_object_class_override_property (object_class,
                                     PROP_ENABLED,
-                                    "enabled");
+                                    "drag-enabled");
   g_object_class_override_property (object_class,
                                     PROP_DRAG_ACTOR,
                                     "drag-actor");

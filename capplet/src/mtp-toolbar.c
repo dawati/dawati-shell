@@ -646,7 +646,8 @@ mtp_toolbar_class_init (MtpToolbarClass *klass)
 
   widget_class->paint_background  = mtp_toolbar_paint_background;
 
-  g_object_class_override_property (object_class, ZONE_PROP_ENABLED,"enabled");
+  g_object_class_override_property (object_class, ZONE_PROP_ENABLED,
+                                    "drop-enabled");
 
   g_object_class_install_property (object_class,
                                    ZONE_PROP_FREE_SPACE,

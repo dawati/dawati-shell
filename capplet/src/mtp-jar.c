@@ -233,7 +233,8 @@ mtp_jar_class_init (MtpJarClass *klass)
   object_class->set_property      = mtp_jar_set_property;
   object_class->get_property      = mtp_jar_get_property;
 
-  g_object_class_override_property (object_class, ZONE_PROP_ENABLED,"enabled");
+  g_object_class_override_property (object_class, ZONE_PROP_ENABLED,
+                                    "drop-enabled");
 }
 
 static void
