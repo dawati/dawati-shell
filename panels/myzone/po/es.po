@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:30+0000\n"
+"POT-Creation-Date: 2010-03-22 09:30+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS_ESPX <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -16,6 +16,43 @@ msgstr ""
 #: ../data/moblin-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "MyZone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Cambia el contenido y el papel tapiz de MyZone"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:157
+msgid "Myzone"
+msgstr "MyZone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Error GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "El resto de los erores sólo se muestra en la pantalla de terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Mostrar el máximo contenido web posible"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Mostrar sobre todo contenido web"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Mostar mitad y mitad"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Mostrar sobre todo archivos recientes"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Mostrar el máximo contenido de archivos recientes"
 
 #: ../penge/penge-calendar-pane.c:473
 msgid "Appointments"
@@ -56,50 +93,29 @@ msgstr "Nada que hacer hoy"
 msgid "Due %x"
 msgstr "Es para %x"
 
-#: ../penge/penge-welcome-tile.c:86
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Esta es MyZone, en donde aparecerán los archivos usados recientemente y el contenido de noticias de tus sitios web."
-
 #: ../penge/penge-welcome-tile.c:67
 msgid "Welcome to MeeGo"
 msgstr "Bienvenido a MeeGo"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:137
-msgid "Myzone"
-msgstr "MyZone"
+#: ../penge/penge-email-pane.c:193
+msgid "Unread message"
+msgstr "Mensaje sin leer"
 
-#: ../data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr "Cambia el contenido y el papel tapiz de MyZone"
+#: ../penge/penge-email-pane.c:195
+msgid "Unread messages"
+msgstr "Mensajes sin leer"
 
-#: ../capplet/gconf-bridge.c:1237
-msgid "All further errors shown only on terminal."
-msgstr "El resto de los erores sólo se muestra en la pantalla de terminal."
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Esta es MyZone, donde verás los archivos usados recientemente y las noticias de tus sitios web."
 
-#: ../capplet/gconf-bridge.c:1232
-#, c-format
-msgid "GConf error: %s"
-msgstr "Error GConf: %s"
+#: ../penge/penge-email-pane.c:191
+msgid "No unread messages"
+msgstr "No hay mensajes sin leer"
 
-#: ../capplet/myzone-cc-panel.c:49
-msgid "Show mostly web service content"
-msgstr "Mostrar sobre todo contenido web"
-
-#: ../capplet/myzone-cc-panel.c:47
-msgid "Show as much web service content as possible"
-msgstr "Mostrar el máximo contenido web posible"
-
-#: ../capplet/myzone-cc-panel.c:53
-msgid "Show mostly recent files"
-msgstr "Mostrar sobre todo archivos recientes"
-
-#: ../capplet/myzone-cc-panel.c:51
-msgid "Show half and half"
-msgstr "Mostar mitad y mitad"
-
-#: ../capplet/myzone-cc-panel.c:55
-msgid "Show as many recent files as possible"
-msgstr "Mostrar el máximo contenido de archivos recientes"
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "¿Quieres limpiar el área de documentos recientes? Esto borrará el contenido local de Myzone."
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Bienvenido a Moblin 2.1 para miniportátiles</b>"
