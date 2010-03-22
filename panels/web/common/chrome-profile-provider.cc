@@ -22,7 +22,7 @@
 #include "chrome/browser/sessions/session_types.h"
 #include "base/singleton.h"
 
-#define DEBUG_CHROMIUM_API
+//#define DEBUG_CHROMIUM_API
 
 using namespace history;
 
