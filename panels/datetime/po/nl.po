@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-13 10:39+0000\n"
+"POT-Creation-Date: 2010-03-22 09:36+0000\n"
 "PO-Revision-Date: 2010-03-14 20:25-0800\n"
 "Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -42,54 +42,44 @@ msgstr "Piep"
 msgid "Music"
 msgstr "Muziek"
 
-#: ../src/mnp-alarm-dialog.c:67
-#: ../src/mnp-alarm-instance.c:52
+#: ../src/mnp-alarm-dialog.c:67 ../src/mnp-alarm-instance.c:52
 msgid "Never"
 msgstr "Nooit"
 
-#: ../src/mnp-alarm-dialog.c:68
-#: ../src/mnp-alarm-instance.c:53
+#: ../src/mnp-alarm-dialog.c:68 ../src/mnp-alarm-instance.c:53
 #: ../src/mnp-alarm-tile.c:36
 msgid "Everyday"
 msgstr "Elke dag"
 
-#: ../src/mnp-alarm-dialog.c:69
-#: ../src/mnp-alarm-instance.c:54
+#: ../src/mnp-alarm-dialog.c:69 ../src/mnp-alarm-instance.c:54
 msgid "Monday - Friday"
 msgstr "Maandag - vrijdag"
 
-#: ../src/mnp-alarm-dialog.c:70
-#: ../src/mnp-alarm-instance.c:55
+#: ../src/mnp-alarm-dialog.c:70 ../src/mnp-alarm-instance.c:55
 msgid "Monday"
 msgstr "Maandag"
 
-#: ../src/mnp-alarm-dialog.c:71
-#: ../src/mnp-alarm-instance.c:56
+#: ../src/mnp-alarm-dialog.c:71 ../src/mnp-alarm-instance.c:56
 msgid "Tuesday"
 msgstr "Dinsdag"
 
-#: ../src/mnp-alarm-dialog.c:72
-#: ../src/mnp-alarm-instance.c:57
+#: ../src/mnp-alarm-dialog.c:72 ../src/mnp-alarm-instance.c:57
 msgid "Wednesday"
 msgstr "Woensdag"
 
-#: ../src/mnp-alarm-dialog.c:73
-#: ../src/mnp-alarm-instance.c:58
+#: ../src/mnp-alarm-dialog.c:73 ../src/mnp-alarm-instance.c:58
 msgid "Thursday"
 msgstr "Donderdag"
 
-#: ../src/mnp-alarm-dialog.c:74
-#: ../src/mnp-alarm-instance.c:59
+#: ../src/mnp-alarm-dialog.c:74 ../src/mnp-alarm-instance.c:59
 msgid "Friday"
 msgstr "Vrijdag"
 
-#: ../src/mnp-alarm-dialog.c:75
-#: ../src/mnp-alarm-instance.c:60
+#: ../src/mnp-alarm-dialog.c:75 ../src/mnp-alarm-instance.c:60
 msgid "Saturday"
 msgstr "Zaterdag"
 
-#: ../src/mnp-alarm-dialog.c:76
-#: ../src/mnp-alarm-instance.c:61
+#: ../src/mnp-alarm-dialog.c:76 ../src/mnp-alarm-instance.c:61
 msgid "Sunday"
 msgstr "Zondag"
 
@@ -215,13 +205,9 @@ msgstr "ZATERDAGS"
 msgid "SUNDAYS"
 msgstr "ZONDAGS"
 
-#: ../src/mnp-world-clock.c:409
+#: ../src/mnp-world-clock.c:421
 msgid "Enter a country or city"
 msgstr "Voer de naam van een land of stad in"
-
-#: ../src/mnp-world-clock.c:424
-msgid "Add"
-msgstr "Toevoegen"
 
 #: ../src/mnp-datetime.c:178
 msgid "Today"
@@ -243,3 +229,9 @@ msgstr "In gecodeerde vorm opgeslagen alarmsignalen voor gebruik door de wekker.
 msgid "List of alarms in short encoded form"
 msgstr "Lijst van alarmen in korte gecodeerde vorm"
 
+#: ../src/mnp-world-clock.c:435
+msgid "Search"
+msgstr "Zoek"
+
+#~ msgid "Add"
+#~ msgstr "Toevoegen"
