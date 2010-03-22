@@ -542,8 +542,8 @@ mps_feed_pane_init (MpsFeedPane *self)
   priv->scroll_view = mx_scroll_view_new ();
 
   priv->box_layout = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (priv->box_layout), TRUE);
-
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->box_layout),
+                                 MX_ORIENTATION_VERTICAL);
   priv->bridge = mps_view_bridge_new ();
   mps_view_bridge_set_factory_func (priv->bridge,
                                     _bridge_factory_func,
@@ -552,9 +552,9 @@ mps_feed_pane_init (MpsFeedPane *self)
                                  CLUTTER_CONTAINER (priv->box_layout));
 
   priv->something_wrong_frame = mx_frame_new ();
-  priv->something_wrong_label = mx_label_new (_("Unable to update status. "
-                                                "The service may be unavailable "
-                                                "or your password could be wrong."));
+  priv->something_wrong_label = mx_label_new_with_text (_("Unable to update status. "
+                                                          "The service may be unavailable "
+                                                          "or your password could be wrong."));
   mx_stylable_set_style_class (MX_STYLABLE (priv->something_wrong_label),
                                "mps-something-wrong-message");
   mx_stylable_set_style_class (MX_STYLABLE (priv->something_wrong_frame),
@@ -571,7 +571,7 @@ mps_feed_pane_init (MpsFeedPane *self)
 
   mx_stylable_set_style_class (MX_STYLABLE (priv->location_hbox),
                                "mps-feed-location-hbox");
-  priv->location_label = mx_label_new ("");
+  priv->location_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->location_label),
                                "mps-feed-location-label");
   mx_table_add_actor_with_properties (MX_TABLE (priv->location_hbox),

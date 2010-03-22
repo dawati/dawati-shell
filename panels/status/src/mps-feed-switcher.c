@@ -364,11 +364,11 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
   priv->placeholder_frame = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_frame),
                                "mps-switcher-placeholder-frame");
-  priv->placeholder_label = mx_label_new (_("You don't appear to have any web "
-                                            "services configured or there is "
-                                            "a problem with their configuration. "
-                                            "Use the button above to open the My "
-                                            "Web Accounts and set one up."));
+  priv->placeholder_label = mx_label_new_with_text (_("You don't appear to have any web "
+                                                      "services configured or there is "
+                                                      "a problem with their configuration. "
+                                                      "Use the button above to open the My "
+                                                      "Web Accounts and set one up."));
   tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->placeholder_label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text),
                               TRUE);
@@ -469,7 +469,7 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
   if (!button)
   {
     button = mx_button_new_with_label (service_name);
-    mx_button_set_toggle_mode (MX_BUTTON (button), TRUE);
+    mx_button_set_is_toggle (MX_BUTTON (button), TRUE);
     mx_button_group_add (priv->button_group, MX_BUTTON (button));
 
     g_hash_table_insert (priv->service_to_buttons,

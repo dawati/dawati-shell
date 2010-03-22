@@ -243,7 +243,7 @@ mps_tweet_card_init (MpsTweetCard *self)
   ClutterActor *tmp_text;
 
   priv->inner_table = mx_table_new ();
-  mx_table_set_col_spacing (MX_TABLE (priv->inner_table), 8);
+  mx_table_set_column_spacing (MX_TABLE (priv->inner_table), 8);
 
   mx_bin_set_child (MX_BIN (self), priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
@@ -268,7 +268,7 @@ mps_tweet_card_init (MpsTweetCard *self)
                                       "row-span", 2,
                                       NULL);
 
-  priv->content_label = mx_label_new ("");
+  priv->content_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->content_label),
                                "mps-tweet-content-label");
 
@@ -284,7 +284,7 @@ mps_tweet_card_init (MpsTweetCard *self)
                                       "x-fill", TRUE,
                                       NULL);
 
-  priv->secondary_label = mx_label_new ("");
+  priv->secondary_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->secondary_label),
                                "mps-tweet-secondary-label");
   mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
@@ -303,7 +303,8 @@ mps_tweet_card_init (MpsTweetCard *self)
                     NULL);
 
   priv->button_box = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (priv->button_box), TRUE);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->button_box),
+                                 MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box), 8);
   mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
                                       priv->button_box,

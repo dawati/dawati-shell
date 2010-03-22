@@ -99,7 +99,7 @@ mps_geotag_pane_get_property (GObject *object, guint property_id,
       break;
     case PROP_GUESS_LOCATION:
       g_value_set_boolean (value,
-                           mx_button_get_checked (MX_BUTTON (priv->guess_location_button)));
+                           mx_button_get_toggled (MX_BUTTON (priv->guess_location_button)));
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -319,7 +319,7 @@ _location_search_button_clicked (MplEntry      *entry,
     g_hash_table_unref (details);
   }
 
-  mx_button_set_checked (MX_BUTTON (priv->guess_location_button), FALSE);
+  mx_button_set_toggled (MX_BUTTON (priv->guess_location_button), FALSE);
 }
 
 static gboolean
@@ -344,7 +344,7 @@ _map_view_button_release_event (ClutterActor  *actor,
     priv->longitude = longitude;
     priv->position_set = TRUE;
     mps_geotag_pane_update_marker (pane, latitude, longitude);
-    mx_button_set_checked (MX_BUTTON (priv->guess_location_button), FALSE);
+    mx_button_set_toggled (MX_BUTTON (priv->guess_location_button), FALSE);
     return TRUE;
   }
   return FALSE;
@@ -357,7 +357,7 @@ _guess_location_checked_notify_cb (MxButton      *button,
 {
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
 
-  if (mx_button_get_checked (button))
+  if (mx_button_get_toggled (button))
   {
     mps_geotag_pane_guess_location (pane);
   } else {
@@ -409,7 +409,7 @@ _gconf_guess_location_notify_cb (GConfClient *client,
   g_signal_handlers_block_by_func (priv->guess_location_button,
                                    _guess_location_checked_notify_cb,
                                    userdata);
-  mx_button_set_checked (MX_BUTTON (priv->guess_location_button),
+  mx_button_set_toggled (MX_BUTTON (priv->guess_location_button),
                          guess_location);
   g_signal_handlers_unblock_by_func (priv->guess_location_button,
                                      _guess_location_checked_notify_cb,
@@ -426,7 +426,7 @@ _use_location_button_clicked (MxButton      *button,
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
   gboolean guess_location;
 
-  guess_location = mx_button_get_checked (MX_BUTTON (priv->guess_location_button));
+  guess_location = mx_button_get_toggled (MX_BUTTON (priv->guess_location_button));
 
   gconf_client_set_bool (priv->gconf_client,
                          STATUS_PANEL_GUESS_LOCATION_KEY,
@@ -490,9 +490,9 @@ mps_geotag_pane_init (MpsGeotagPane *self)
                           _("Where are you?"));
 
   priv->guess_location_button = mx_button_new_with_label (_("Find me"));
-  mx_button_set_toggle_mode (MX_BUTTON (priv->guess_location_button), TRUE);
+  mx_button_set_is_toggle (MX_BUTTON (priv->guess_location_button), TRUE);
 
-  priv->current_location_label = mx_label_new ("");
+  priv->current_location_label = mx_label_new ();
 
   priv->button_box = mx_box_layout_new ();
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box), 6);
@@ -528,7 +528,7 @@ mps_geotag_pane_init (MpsGeotagPane *self)
                                       "x-fill", TRUE,
                                       "y-expand", TRUE,
                                       "y-fill", TRUE,
-                                      "col-span", 2,
+                                      "column-span", 2,
                                       NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (self),
@@ -537,11 +537,11 @@ mps_geotag_pane_init (MpsGeotagPane *self)
                                       "x-expand", TRUE,
                                       "x-align", 1.0,
                                       "x-fill", FALSE,
-                                      "col-span", 2,
+                                      "column-span", 2,
                                       "y-expand", FALSE,
                                       NULL);
 
-  mx_table_set_col_spacing (MX_TABLE (self), 6);
+  mx_table_set_column_spacing (MX_TABLE (self), 6);
   mx_table_set_row_spacing (MX_TABLE (self), 6);
 
   priv->geo_position = geoclue_position_new ("org.freedesktop.Geoclue.Providers.Hostip",
