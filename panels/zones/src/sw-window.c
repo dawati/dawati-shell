@@ -47,8 +47,6 @@ static guint window_signals[LAST_SIGNAL] = { 0, };
 enum
 {
   PROP_ENABLED = 1,
-  PROP_CONTAINMENT_TYPE,
-  PROP_CONTAINMENT_AREA,
   PROP_AXIS,
   PROP_DRAG_ACTOR,
   PROP_DRAG_THRESHOLD
@@ -191,9 +189,6 @@ sw_window_get_property (GObject    *object,
   case PROP_ENABLED:
     g_value_set_boolean (value, priv->is_enabled);
     break;
-  case PROP_CONTAINMENT_TYPE:
-    g_value_set_enum (value, MX_DISABLE_CONTAINMENT);
-    break;
   case PROP_AXIS:
     g_value_set_enum (value, 0);
     break;
@@ -203,11 +198,7 @@ sw_window_get_property (GObject    *object,
   case PROP_DRAG_ACTOR:
     g_value_set_object (value, priv->clone);
     break;
-  case PROP_CONTAINMENT_AREA:
-    g_value_set_boxed (value, &priv->area);
-    break;
-
-    default:
+  default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
@@ -225,16 +216,12 @@ sw_window_set_property (GObject      *object,
   case PROP_ENABLED:
     priv->is_enabled = g_value_get_boolean (value);
     break;
-  case PROP_CONTAINMENT_AREA:
-    priv->area = *((ClutterActorBox*) g_value_get_boxed (value));
-    break;
-  case PROP_CONTAINMENT_TYPE:
   case PROP_AXIS:
   case PROP_DRAG_ACTOR:
   case PROP_DRAG_THRESHOLD:
     break;
 
-    default:
+  default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
@@ -508,11 +495,7 @@ sw_window_class_init (SwWindowClass *klass)
   actor_class->get_preferred_height = sw_window_get_preferred_height;
 
 
-  g_object_class_override_property (object_class, PROP_ENABLED, "enabled");
-  g_object_class_override_property (object_class, PROP_CONTAINMENT_TYPE,
-                                    "containment-type");
-  g_object_class_override_property (object_class, PROP_CONTAINMENT_AREA,
-                                    "containment-area");
+  g_object_class_override_property (object_class, PROP_ENABLED, "drag-enabled");
   g_object_class_override_property (object_class, PROP_AXIS, "axis");
   g_object_class_override_property (object_class, PROP_DRAG_ACTOR,
                                     "drag-actor");

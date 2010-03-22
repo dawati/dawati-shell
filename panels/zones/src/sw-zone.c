@@ -740,18 +740,19 @@ sw_zone_class_init (SwZoneClass *klass)
   actor_class->map = sw_zone_map;
   actor_class->unmap = sw_zone_unmap;
 
-  g_object_class_override_property (object_class, PROP_ENABLED, "enabled");
+  g_object_class_override_property (object_class, PROP_ENABLED, "drop-enabled");
 }
 
 static void
-sw_zone_style_changed_cb (MxStylable *zone)
+sw_zone_style_changed_cb (MxStylable          *zone,
+                          MxStyleChangedFlags  flags)
 {
   MxStylable *title = MX_STYLABLE (SW_ZONE (zone)->priv->title);
   const gchar *pseudo_class = mx_stylable_get_style_pseudo_class (zone);
 
   mx_stylable_set_style_pseudo_class (title, pseudo_class);
 
-  mx_stylable_changed (title);
+  mx_stylable_style_changed (title, flags);
 }
 
 static void
@@ -761,7 +762,7 @@ sw_zone_init (SwZone *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
-  self->priv->title = mx_label_new (_("new zone"));
+  self->priv->title = mx_label_new_with_text (_("new zone"));
   mx_label_set_x_align (MX_LABEL (self->priv->title), MX_ALIGN_MIDDLE);
   mx_label_set_y_align (MX_LABEL (self->priv->title), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (self->priv->title), "zone-title");
@@ -775,7 +776,7 @@ sw_zone_init (SwZone *self)
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (sw_zone_style_changed_cb), NULL);
 
-  self->priv->label = mx_label_new (_("No applications on this zone"));
+  self->priv->label = mx_label_new_with_text (_("No applications on this zone"));
   mx_stylable_set_style_class (MX_STYLABLE (self->priv->label),
                                "no-apps-label");
   clutter_actor_set_parent (self->priv->label, CLUTTER_ACTOR (self));
