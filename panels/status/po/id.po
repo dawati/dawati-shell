@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-17 09:36+0000\n"
-"PO-Revision-Date: 2009-08-24 10:22+0700\n"
+"POT-Creation-Date: 2010-03-20 09:59+0000\n"
+"PO-Revision-Date: 2010-03-22 12:38+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,76 +19,110 @@ msgstr ""
 msgid "status"
 msgstr "status"
 
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "Perbarui"
-
 #. vim:set ts=8 expandtab
 #: ../data/moblin-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Panel status"
 
-#: ../src/mps-feed-pane.c:445
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "Tak bisa memperbarui status. Layanan mungkin tak tersedia atau kata sandi Anda mungkin salah."
+#: ../src/mps-feed-pane.c:419
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "Kami tebak lokasimu pada: %f %f"
 
-#: ../src/mps-feed-pane.c:421
+#: ../src/mps-feed-pane.c:423
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr "Kamu sedang berbagi lokasi sebagai: %f %f"
+
+#: ../src/mps-feed-pane.c:430
+msgid "Your location is not being shared"
+msgstr "Kamu tidak sedang berbagi lokasimu"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:526
+msgid "Update"
+msgstr "Perbarui"
+
+#: ../src/mps-feed-pane.c:531
 msgid "What's happening?"
 msgstr "Apa yang sedang terjadi?"
 
-#: ../src/mps-feed-switcher.c:367
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Sepertinya Anda tak memiliki layanan web yang telah tertata atau ada masalah dengan konfigurasinya. Gunakan tombol di atas untuk membuka Akun Web Saya dan siapkan satu."
+#: ../src/mps-feed-pane.c:555
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Tak bisa memperbarui status. Layanan mungkin tak tersedia atau kata sandi Anda mungkin salah."
+
+#: ../src/mps-feed-pane.c:583
+msgid "Change"
+msgstr "Ubah"
 
 #: ../src/mps-feed-switcher.c:344
 msgid "Add new web service"
 msgstr "Tambahkan layanan web baru"
 
+#: ../src/mps-feed-switcher.c:367
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "Sepertinya Anda tak memiliki layanan web yang telah tertata atau ada masalah dengan konfigurasinya. Gunakan tombol di atas untuk membuka Akun Web Saya dan siapkan satu."
+
+#: ../src/mps-geotag-pane.c:215
+msgid "Your location"
+msgstr "Lokasimu"
+
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "Cari"
+
+#: ../src/mps-geotag-pane.c:490
+msgid "Where are you?"
+msgstr "Dimana kamu?"
+
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "Cari aku"
+
+#: ../src/mps-geotag-pane.c:499
+msgid "Use location"
+msgstr "Gunakan lokasi"
+
+#: ../src/mps-geotag-pane.c:500
+msgid "Don't use location"
+msgstr "Jangan gunakan lokasi"
+
 #~ msgid "Offline"
 #~ msgstr "Terputus"
-
 #~ msgid "Available"
 #~ msgstr "Tersedia"
-
 #~ msgid "Away"
 #~ msgstr "Pergi"
-
 #~ msgid "Busy"
 #~ msgstr "Sibuk"
-
 #~ msgid "Close"
 #~ msgstr "Tutup"
-
-#~ msgid "Change"
-#~ msgstr "Ubah"
-
 #~ msgid "Unknown account"
 #~ msgstr "Akun tak dikenal"
-
 #~ msgid "Edit"
 #~ msgstr "Sunting"
-
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Masukkan status %s anda di sini..."
-
 #~ msgid "Enter your current status here..."
 #~ msgstr "Masukkan status terkini anda di sini..."
-
 #~ msgid "Post"
 #~ msgstr "Kirim"
-
 #~ msgid "Your current status"
 #~ msgstr "Status terkini anda"
-
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Status terkini anda - anda sedang terputus"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Maaf, tidak menemukan seorangpun. Apakah anda telah menata akun Messenger?"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Untuk memperbarui status web anda, anda perlu menyiapkan akun Layanan Web "
+#~ "ke penyedia yang mendukung pesan status"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Untuk memperbarui status IM anda, anda perlu menata akun Pesan Instan"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Maaf, tidak menemukan seorangpun. Apakah anda telah menata akun Messenger?"
-
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "Untuk memperbarui status web anda, anda perlu menyiapkan akun Layanan Web ke penyedia yang mendukung pesan status"
-
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Untuk memperbarui status IM anda, anda perlu menata akun Pesan Instan"
