@@ -90,8 +90,6 @@ enum
   /* d&d properties */
   PROP_DRAG_THRESHOLD,
   PROP_AXIS,
-  PROP_CONTAINMENT_TYPE,
-  PROP_CONTAINMENT_AREA,
   PROP_ENABLED,
   PROP_DRAG_ACTOR
 };
@@ -131,8 +129,6 @@ struct _MtpToolbarButtonPrivate
   gboolean            enabled               : 1; /* dragging enabled */
   guint               threshold;
   MxDragAxis          axis;
-  MxDragContainment   containment;
-  ClutterActorBox     area;
 
   /* our own draggable stuff */
   ClutterActor *orig_parent;
@@ -394,19 +390,6 @@ mtp_toolbar_button_set_property (GObject      *gobject,
     case PROP_AXIS:
       priv->axis = g_value_get_enum (value);
       break;
-    case PROP_CONTAINMENT_TYPE:
-      priv->containment = g_value_get_enum (value);
-      break;
-    case PROP_CONTAINMENT_AREA:
-      {
-        ClutterActorBox *box = g_value_get_boxed (value);
-
-        if (box)
-          priv->area = *box;
-        else
-          memset (&priv->area, 0, sizeof (ClutterActorBox));
-      }
-      break;
     case PROP_ENABLED:
       priv->enabled = g_value_get_boolean (value);
       if (priv->enabled)
@@ -438,12 +421,6 @@ mtp_toolbar_button_get_property (GObject    *gobject,
       break;
     case PROP_AXIS:
       g_value_set_enum (value, priv->axis);
-      break;
-    case PROP_CONTAINMENT_TYPE:
-      g_value_set_enum (value, priv->containment);
-      break;
-    case PROP_CONTAINMENT_AREA:
-      g_value_set_boxed (value, &priv->area);
       break;
     case PROP_ENABLED:
       g_value_set_boolean (value, priv->enabled);
@@ -637,12 +614,6 @@ mtp_toolbar_button_class_init (MtpToolbarButtonClass *klass)
                                     PROP_AXIS,
                                     "axis");
   g_object_class_override_property (object_class,
-                                    PROP_CONTAINMENT_TYPE,
-                                    "containment-type");
-  g_object_class_override_property (object_class,
-                                    PROP_CONTAINMENT_AREA,
-                                    "containment-area");
-  g_object_class_override_property (object_class,
                                     PROP_ENABLED,
                                     "enabled");
   g_object_class_override_property (object_class,
@@ -667,7 +638,6 @@ mtp_toolbar_button_init (MtpToolbarButton *self)
 
   priv->threshold = 5;
   priv->axis = 0;
-  priv->containment = MX_DISABLE_CONTAINMENT;
 
   clutter_actor_set_reactive ((ClutterActor*)self, TRUE);
 
