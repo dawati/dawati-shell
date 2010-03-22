@@ -346,7 +346,7 @@ mtp_bin_constructed (GObject *self)
 
   clutter_actor_set_name (jar, "jar");
   clutter_actor_set_height ((ClutterActor*)toolbar, TOOLBAR_HEIGHT);
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_VERTICAL);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_ORIENTATION_VERTICAL);
   clutter_container_add (CLUTTER_CONTAINER (box), (ClutterActor*)toolbar, NULL);
 
   {

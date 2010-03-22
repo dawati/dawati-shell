@@ -241,7 +241,7 @@ mtp_jar_init (MtpJar *self)
 {
   self->priv = MTP_JAR_GET_PRIVATE (self);
 
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_VERTICAL);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   clutter_actor_set_reactive ((ClutterActor*)self, TRUE);
 }
 
