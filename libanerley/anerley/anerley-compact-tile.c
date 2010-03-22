@@ -329,7 +329,7 @@ anerley_compact_tile_init (AnerleyCompactTile *self)
 {
   AnerleyCompactTilePrivate *priv = GET_PRIVATE (self);
 
-  priv->contact_name_label = mx_label_new ("");
+  priv->contact_name_label = mx_label_new ();
   clutter_actor_set_parent (priv->contact_name_label,
                             CLUTTER_ACTOR (self));
 
@@ -337,7 +337,7 @@ anerley_compact_tile_init (AnerleyCompactTile *self)
   clutter_actor_set_size (priv->presence_icon, 16, 16);
   clutter_actor_set_parent (priv->presence_icon, CLUTTER_ACTOR (self));
 
-  priv->message_count_label = mx_label_new ("");
+  priv->message_count_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->message_count_label),
                                "AnerleyCompactTileMessageCount");
   clutter_actor_set_size (priv->message_count_label, 20, 20);

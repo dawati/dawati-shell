@@ -642,7 +642,7 @@ anerley_tile_init (AnerleyTile *self)
   /* TODO: Prefill with unknown icon */
   mx_bin_set_child (MX_BIN (priv->avatar_frame), priv->avatar);
 
-  priv->primary_label = mx_label_new ("");
+  priv->primary_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->primary_label),
                                     "AnerleyTilePrimaryLabel");
   clutter_actor_set_parent (priv->primary_label, CLUTTER_ACTOR (self));
@@ -651,7 +651,7 @@ anerley_tile_init (AnerleyTile *self)
   clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (tmp_text), PANGO_WRAP_WORD);
 
-  priv->presence_label = mx_label_new ("");
+  priv->presence_label = mx_label_new ();
   clutter_actor_set_parent (priv->presence_label, CLUTTER_ACTOR (self));
   mx_stylable_set_style_class (MX_STYLABLE (priv->presence_label),
                                "AnerleyTilePresenceLabel");

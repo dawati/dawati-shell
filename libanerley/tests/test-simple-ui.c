@@ -88,7 +88,7 @@ main (int    argc,
   icon_view = anerley_tile_view_new (ANERLEY_FEED_MODEL (model));
 
   table = mx_table_new ();
-  entry = mx_entry_new (NULL);
+  entry = mx_entry_new ();
   tmp = mx_entry_get_clutter_text (MX_ENTRY (entry));
   g_signal_connect (tmp,
                     "text-changed",
