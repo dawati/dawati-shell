@@ -53,11 +53,8 @@ scrollable_ensure_box_visible (MxScrollable           *scrollable,
   gdouble        h_page, v_page;
 
   g_object_get (scrollable,
-                "hadjustment", &hadjustment,
-                NULL);
-
-  g_object_get (scrollable,
-                "vadjustment", &vadjustment,
+                "horizontal-adjustment", &hadjustment,
+                "vertical-adjustment", &vadjustment,
                 NULL);
 
   g_object_get (hadjustment,
