@@ -84,7 +84,7 @@ static void
 fav_button_clicked_cb (MxButton           *button,
                        MnbLauncherButton  *self)
 {
-  if (mx_button_get_checked (button))
+  if (mx_button_get_toggled (button))
     {
       g_signal_emit (self, _signals[FAV_TOGGLED], 0);
     }
@@ -108,7 +108,7 @@ fav_button_clicked_cb (MxButton           *button,
           g_signal_handlers_block_by_func (plain_sibling,
                                            fav_button_clicked_cb,
                                            self);
-          mx_button_set_checked (MX_BUTTON (plain_sibling->priv->fav_toggle),
+          mx_button_set_toggled (MX_BUTTON (plain_sibling->priv->fav_toggle),
                                                 FALSE);
           g_signal_handlers_unblock_by_func (plain_sibling,
                                              fav_button_clicked_cb,
@@ -368,7 +368,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   /* "fav app" toggle */
   self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (mx_button_new ()));
-  mx_button_set_toggle_mode (MX_BUTTON (self->priv->fav_toggle), TRUE);
+  mx_button_set_is_toggle (MX_BUTTON (self->priv->fav_toggle), TRUE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->fav_toggle),
                           "mnb-launcher-button-fav-toggle");
   clutter_actor_set_size (self->priv->fav_toggle, FAV_TOGGLE_SIZE, FAV_TOGGLE_SIZE);
@@ -500,7 +500,7 @@ mnb_launcher_button_get_favorite (MnbLauncherButton *self)
 {
   g_return_val_if_fail (self, FALSE);
 
-  return mx_button_get_checked (MX_BUTTON (self->priv->fav_toggle));
+  return mx_button_get_toggled (MX_BUTTON (self->priv->fav_toggle));
 }
 
 void
@@ -509,7 +509,7 @@ mnb_launcher_button_set_favorite (MnbLauncherButton *self,
 {
   g_return_if_fail (self);
 
-  mx_button_set_checked (MX_BUTTON (self->priv->fav_toggle), is_favorite);
+  mx_button_set_toggled (MX_BUTTON (self->priv->fav_toggle), is_favorite);
 }
 
 const gchar *
