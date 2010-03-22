@@ -218,7 +218,7 @@ penge_task_tile_init (PengeTaskTile *self)
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
   priv->check_button = mx_button_new ();
-  mx_button_set_toggle_mode (MX_BUTTON (priv->check_button), TRUE);
+  mx_button_set_is_toggle (MX_BUTTON (priv->check_button), TRUE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->check_button),
                                "PengeTaskToggleButton");
   clutter_actor_set_size ((ClutterActor *)priv->check_button, 21, 21);
