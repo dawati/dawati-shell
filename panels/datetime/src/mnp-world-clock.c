@@ -249,7 +249,7 @@ static void
 add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
-	GWeatherLocation *location;
+	const GWeatherLocation *location;
 	MnpClockTile *tile;
 	MnpZoneLocation *loc = g_new0(MnpZoneLocation, 1);
 	const GWeatherTimezone *tzone;
@@ -263,7 +263,7 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 	loc->display = g_strdup(mx_entry_get_text (priv->search_location));
 	loc->city = g_strdup(gweather_location_get_city_name (location));
 	tzone =  gweather_location_get_timezone (location);
-	loc->tzid = g_strdup(gweather_timezone_get_tzid (tzone));
+	loc->tzid = g_strdup(gweather_timezone_get_tzid ((GWeatherTimezone *)tzone));
 
 
 	g_ptr_array_add (priv->zones, loc);
@@ -401,19 +401,17 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 	stage = clutter_stage_get_default ();
 
-	mx_box_layout_set_orientation ((MxBoxLayout *)world_clock, MX_VERTICAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)world_clock, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)world_clock, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)world_clock, 4);
 
 	priv->completion_timeout = 0;
 
 	box = mx_box_layout_new ();
-	mx_box_layout_set_enable_animations (box, TRUE);
+	mx_box_layout_set_enable_animations ((MxBoxLayout *)box, TRUE);
 	priv->entry_box = box;
 	clutter_actor_set_name ((ClutterActor *)box, "search-entry-box");
 	
-	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 	
 	entry = mx_entry_new ();
@@ -430,12 +428,12 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	g_signal_connect (G_OBJECT (entry),
                     "notify::text", G_CALLBACK (text_changed_cb), world_clock);
 	
-	clutter_container_add_actor ((ClutterContainer *)box, entry);
+	mx_box_layout_add_actor ((MxBoxLayout *)box, entry, 0);
 	
 	priv->add_location = mx_label_new_with_text (_("Search"));
 	clutter_actor_set_name ((ClutterActor *)box, "search-entry-label");
 	
-	clutter_container_add_actor ((ClutterContainer *)box, priv->add_location);
+	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->add_location, 1);
   	/* g_signal_connect (priv->add_location, "clicked",
                     	G_CALLBACK (add_location_clicked_cb), world_clock); */
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
@@ -446,7 +444,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
                                NULL);
 	
 
-	clutter_container_add_actor (CLUTTER_CONTAINER(table), box);
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(table), box, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
                                box,
                                "expand", FALSE,
@@ -469,7 +467,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_droppable_enable ((MxDroppable *)priv->area);
 	g_object_ref ((GObject *)priv->area);
 	clutter_container_remove_actor ((ClutterContainer *)stage, (ClutterActor *)priv->area);
-	clutter_container_add_actor (CLUTTER_CONTAINER (table), (ClutterActor *)priv->area);
+	mx_box_layout_add_actor ((MxBoxLayout *) table, (ClutterActor *)priv->area, 1);
 	clutter_container_child_set (CLUTTER_CONTAINER (table),
                                (ClutterActor *)priv->area,
                                "expand", TRUE,

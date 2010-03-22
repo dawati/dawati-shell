@@ -30,7 +30,8 @@
 
 #include "mnp-datetime.h"
 #include "mnp-world-clock.h"
-#include "mnp-alarms.h"
+
+//#include "mnp-alarms.h"
 
 #include <time.h>
 
@@ -112,13 +113,13 @@ format_label (ClutterActor *label)
 {
 	time_t now = time(NULL);
 	struct tm tim;
-	char *buf[256];
+	char buf[256];
 
 	localtime_r (&now, &tim);
 	
 	strftime (buf, 256, "%d %b %G", &tim);
 
-	mx_label_set_text (label, buf);
+	mx_label_set_text ((MxLabel *)label, buf);
 }
 
 static void
@@ -140,12 +141,11 @@ construct_calendar_area (MnpDatetime *time)
 	duration = jana_duration_new (start, end);
 
 	priv->cal_area = mx_box_layout_new ();
-	mx_stylable_set_style_class (priv->cal_area, "CalendarPane");
-	mx_box_layout_set_spacing (priv->cal_area, 6);	
-	mx_box_layout_set_orientation ((MxBoxLayout *)priv->cal_area, MX_VERTICAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->cal_area, FALSE);
+	mx_stylable_set_style_class ((MxStylable *)priv->cal_area, "CalendarPane");
+	mx_box_layout_set_spacing ((MxBoxLayout *)priv->cal_area, 6);	
+	mx_box_layout_set_orientation ((MxBoxLayout *)priv->cal_area, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->cal_area, TRUE);
-	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, priv->cal_area);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_alarm_row, priv->cal_area, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_alarm_row),
                                priv->cal_area,
                                "expand", TRUE,
@@ -154,10 +154,9 @@ construct_calendar_area (MnpDatetime *time)
                                NULL);
 	/* format date */
 	box = mx_box_layout_new ();
-	mx_box_layout_set_spacing (box, 20);
-	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_HORIZONTAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)box, FALSE);
-	clutter_container_add_actor ((ClutterContainer *)priv->cal_area, (ClutterActor *)box);
+	mx_box_layout_set_spacing ((MxBoxLayout *)box, 20);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, (ClutterActor *)box, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
                                box,
                                "expand", FALSE,
@@ -166,7 +165,7 @@ construct_calendar_area (MnpDatetime *time)
                                NULL);	
 
 	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	clutter_container_add_actor ((ClutterContainer *)priv->cal_area, div);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, div, 1);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
                                div,
                                "expand", FALSE,
@@ -176,8 +175,8 @@ construct_calendar_area (MnpDatetime *time)
 
 
 	label = mx_label_new_with_text(_("Today"));
-	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleToday");
-	clutter_container_add_actor ((ClutterContainer *)box, (ClutterActor *)label);
+	mx_stylable_set_style_class ((MxStylable *)label, "PengeCalendarPaneTitleToday");
+	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, 0 );
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
                                "expand", FALSE,
@@ -186,8 +185,8 @@ construct_calendar_area (MnpDatetime *time)
                                NULL);	
 	
 	priv->date_label = mx_label_new ();
-	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleDate");
-	clutter_container_add_actor ((ClutterContainer *)box, (ClutterActor *)priv->date_label);
+	mx_stylable_set_style_class ((MxStylable *)label, "PengeCalendarPaneTitleDate");
+	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->date_label, 1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->date_label,
                                "expand", FALSE,
@@ -203,7 +202,7 @@ construct_calendar_area (MnpDatetime *time)
 	penge_events_pane_set_duration (priv->penge_events, duration);
 	jana_duration_free (duration);
 
-	clutter_container_add_actor ((ClutterContainer *)priv->cal_area, (ClutterActor *)priv->penge_events);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, (ClutterActor *)priv->penge_events, 2);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
                                priv->penge_events,
                                "expand", FALSE,
@@ -221,10 +220,9 @@ construct_task_area (MnpDatetime *time)
 
 	priv->task_row = mx_box_layout_new();
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->task_row, 4);	
-	mx_box_layout_set_orientation ((MxBoxLayout *)priv->task_row, MX_VERTICAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->task_row, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)priv->task_row, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->task_row, TRUE);
-	clutter_container_add_actor ((ClutterContainer *)time, priv->task_row);
+	mx_box_layout_add_actor ((MxBoxLayout *)time, priv->task_row, 4);
 	clutter_container_child_set (CLUTTER_CONTAINER (time),
                                priv->task_row,
                                "expand", TRUE,
@@ -233,8 +231,8 @@ construct_task_area (MnpDatetime *time)
                                NULL);
 
 	label = mx_label_new_with_text (_("Tasks"));
-	mx_stylable_set_style_class (label, "PengeCalendarPaneTitleTasks");
-	clutter_container_add_actor ((ClutterContainer *)priv->task_row, label);
+	mx_stylable_set_style_class ((MxStylable *)label, "PengeCalendarPaneTitleTasks");
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, label, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
                                label,
                                "expand", FALSE,
@@ -243,7 +241,7 @@ construct_task_area (MnpDatetime *time)
                                NULL);
 
 	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	clutter_container_add_actor ((ClutterContainer *)priv->task_row, div);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, div, 1);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
                                div,
                                "expand", FALSE,
@@ -253,7 +251,7 @@ construct_task_area (MnpDatetime *time)
 
 	priv->task_area = g_object_new (PENGE_TYPE_TASKS_PANE,
                                    NULL);
-	clutter_container_add_actor ((ClutterContainer *)priv->task_row, priv->task_area);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, priv->task_area, 2);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
                                priv->task_area,
                                "expand", FALSE,
@@ -268,28 +266,26 @@ mnp_datetime_construct (MnpDatetime *time)
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
 	ClutterActor *div;
 
-	mx_box_layout_set_orientation ((MxBoxLayout *)time, MX_HORIZONTAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)time, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)time, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)time, TRUE);
 	mx_box_layout_set_spacing ((MxBoxLayout *)time, 4);
 	clutter_actor_set_name ((ClutterActor *)time, "datetime-panel");
 
 	priv->world_clock = mnp_world_clock_new ();
-	clutter_container_add_actor ((ClutterContainer *)time, priv->world_clock);
+	mx_box_layout_add_actor ((MxBoxLayout *) time, priv->world_clock, 0);
 	
 	div = clutter_texture_new_from_file (V_DIV_LINE, NULL);
-	clutter_container_add_actor ((ClutterContainer *)time, div);
+	mx_box_layout_add_actor ((MxBoxLayout *)time, div, 1);
 
 	priv->cal_alarm_row = mx_box_layout_new();
 	clutter_actor_set_size((ClutterActor *)priv->cal_alarm_row, 350, -1);
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->cal_alarm_row, 4);
-	mx_box_layout_set_orientation ((MxBoxLayout *)priv->cal_alarm_row, MX_VERTICAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)priv->cal_alarm_row, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)priv->cal_alarm_row, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->cal_alarm_row, TRUE);
-	clutter_container_add_actor ((ClutterContainer *)time, priv->cal_alarm_row);
+	mx_box_layout_add_actor ((MxBoxLayout *)time, priv->cal_alarm_row, 2);
 
 	div = clutter_texture_new_from_file (V_DIV_LINE, NULL);
-	clutter_container_add_actor ((ClutterContainer *)time, div);
+	mx_box_layout_add_actor ((MxBoxLayout *)time, div, 3);
 #if 0
 	priv->alarm_area = (ClutterActor *)mnp_alarms_new();
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, (ClutterActor *)priv->alarm_area);
@@ -297,11 +293,10 @@ mnp_datetime_construct (MnpDatetime *time)
 	div = clutter_texture_new_from_file (DOUBLE_DIV_LINE, NULL);
 	clutter_container_add_actor ((ClutterContainer *)priv->cal_alarm_row, (ClutterActor *)div);
 #endif	
+	
 	construct_calendar_area(time);
 
 	construct_task_area (time);
-
-
 
 }
 

@@ -235,7 +235,7 @@ static gint
 sort_weather_model (ClutterModel *model, const GValue *a, const GValue *b, gpointer user_data)
 {
 	const char *loc1, *loc2;
-	const char **city1, **city2;
+	gchar **city1, **city2;
 	int ret = 0;
 
 	loc1 = g_value_get_string (a);

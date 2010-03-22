@@ -35,7 +35,7 @@ struct _MnpClockTilePriv {
 
 	MxDragAxis axis;
 
-	MxDragContainment containment;
+	/* MxDragContainment containment; */
 	ClutterActorBox area;
 
 	guint is_enabled : 1;
@@ -61,8 +61,8 @@ enum
 
   DRAG_PROP_DRAG_THRESHOLD,
   DRAG_PROP_AXIS,
-  DRAG_PROP_CONTAINMENT_TYPE,
-  DRAG_PROP_CONTAINMENT_AREA,
+ /* DRAG_PROP_CONTAINMENT_TYPE,
+  DRAG_PROP_CONTAINMENT_AREA, */
   DRAG_PROP_ENABLED,
   DRAG_PROP_ACTOR,
 };
@@ -216,7 +216,7 @@ draggable_rectangle_set_property (GObject      *gobject,
     case DRAG_PROP_AXIS:
       rect->priv->axis = g_value_get_enum (value);
       break;
-
+/*
     case DRAG_PROP_CONTAINMENT_TYPE:
       rect->priv->containment = g_value_get_enum (value);
       break;
@@ -231,7 +231,7 @@ draggable_rectangle_set_property (GObject      *gobject,
           memset (&rect->priv->area, 0, sizeof (ClutterActorBox));
       }
       break;
-
+*/
     case DRAG_PROP_ENABLED:
       rect->priv->is_enabled = g_value_get_boolean (value);
       if (rect->priv->is_enabled)
@@ -266,7 +266,7 @@ draggable_rectangle_get_property (GObject    *gobject,
     case DRAG_PROP_AXIS:
       g_value_set_enum (value, rect->priv->axis);
       break;
-
+/*
     case DRAG_PROP_CONTAINMENT_TYPE:
       g_value_set_enum (value, rect->priv->containment);
       break;
@@ -274,7 +274,7 @@ draggable_rectangle_get_property (GObject    *gobject,
     case DRAG_PROP_CONTAINMENT_AREA:
       g_value_set_boxed (value, &rect->priv->area);
       break;
-
+*/
     case DRAG_PROP_ENABLED:
       g_value_set_boolean (value, rect->priv->is_enabled);
       break;
@@ -308,12 +308,12 @@ mnp_clock_tile_class_init (MnpClockTileClass *klass)
 	g_object_class_override_property (object_class,
                                     DRAG_PROP_AXIS,
                                     "axis");
-	g_object_class_override_property (object_class,
+/*	g_object_class_override_property (object_class,
                                     DRAG_PROP_CONTAINMENT_TYPE,
                                     "containment-type");
 	g_object_class_override_property (object_class,
                                     DRAG_PROP_CONTAINMENT_AREA,
-                                    "containment-area");
+                                    "containment-area"); */
 	g_object_class_override_property (object_class,
                                     DRAG_PROP_ENABLED,
                                     "drag-enabled");
@@ -411,30 +411,28 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	box1 = mx_box_layout_new ();
 	clutter_actor_set_name (box1, "mnp-tile-date-city");
-	mx_box_layout_set_orientation ((MxBoxLayout *)box1, MX_VERTICAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)box1, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box1, MX_ORIENTATION_VERTICAL);
 
-	clutter_container_add_actor ((ClutterContainer *)box1, label3);
+	mx_box_layout_add_actor ((MxBoxLayout *)box1, label3, 0);
 	clutter_container_child_set ((ClutterContainer *)box1, label3,
 				   	"expand", TRUE,
 					"y-fill", FALSE,
                                    	NULL);
 	
-	clutter_container_add_actor ((ClutterContainer *)box1, label1);
+	mx_box_layout_add_actor ((MxBoxLayout *)box1, label1, 1);
 	clutter_container_child_set ((ClutterContainer *)box1, label1,
 				   	"expand", TRUE,
 					"y-fill", FALSE,
                                    	NULL);
 
-	mx_box_layout_set_orientation ((MxBoxLayout *)tile, MX_HORIZONTAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)tile, FALSE);
-	clutter_container_add_actor ((ClutterContainer *)tile, box1);
+	mx_box_layout_set_orientation ((MxBoxLayout *)tile, MX_ORIENTATION_HORIZONTAL);
+	mx_box_layout_add_actor ((MxBoxLayout *)tile, box1, 0);
 	clutter_container_child_set ((ClutterContainer *)tile, box1,
 				   	"expand", TRUE,
 					"x-fill", TRUE,
                                    	NULL);
 
-	clutter_container_add_actor ((ClutterContainer *)tile, label2);
+	mx_box_layout_add_actor ((MxBoxLayout *)tile, label2, 1);
 	clutter_container_child_set ((ClutterContainer *)tile, label2,
 				   	"expand", TRUE,
 					"x-fill", FALSE,
@@ -447,8 +445,8 @@ mnp_clock_construct (MnpClockTile *tile)
  	
 	priv->remove_button = (MxButton *)mx_button_new ();
 	g_signal_connect (priv->remove_button, "clicked", G_CALLBACK(remove_tile), tile);
-	clutter_container_add_actor ((ClutterContainer *)tile, priv->remove_button);
-  	clutter_container_child_set ((ClutterContainer *)tile, priv->remove_button,
+	mx_box_layout_add_actor ((MxBoxLayout *)tile, (ClutterActor *)priv->remove_button, 2);
+  	clutter_container_child_set ((ClutterContainer *)tile, (ClutterActor *)priv->remove_button,
 				   	"expand", FALSE,
 					"x-fill", FALSE,
 					"y-fill", FALSE,					

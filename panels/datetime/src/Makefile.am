@@ -13,7 +13,7 @@ moblin_alarm_notify_LDADD =  $(DATETIME_LIBS) $(MPL_LIBS)
 
 libexec_PROGRAMS = moblin-panel-datetime
 
-bin_PROGRAMS = moblin-alarm-notify
+#bin_PROGRAMS = moblin-alarm-notify
 
 moblin_panel_datetime_SOURCES = moblin-panel-date-time.c	\
 				 mnp-world-clock.c	\
@@ -29,16 +29,17 @@ moblin_panel_datetime_SOURCES = moblin-panel-date-time.c	\
 				 mnp-clock-area.c	\
 				 mnp-clock-area.h	\
 				 mnp-datetime.c		\
-				 mnp-datetime.h		\
-				 mnp-alarms.c		\
-				 mnp-alarms.h		\
-				 mnp-alarm-tile.c	\
-				 mnp-alarm-tile.h	\
-				 mnp-alarm-dialog.c	\
-				 mnp-alarm-dialog.h	\
-				 mx-spin-entry.c	\
-				 mx-spin-entry.h	\
-				 mnp-alarm-utils.h	
+				 mnp-datetime.h		
+
+#				 mnp-alarms.c		\
+#				 mnp-alarms.h		\
+#				 mnp-alarm-tile.c	\
+#				 mnp-alarm-tile.h	\
+#				 mnp-alarm-dialog.c	\
+#				 mnp-alarm-dialog.h	\
+#				 mx-spin-entry.c	\
+#				 mx-spin-entry.h	\
+#				 mnp-alarm-utils.h	
 
 moblin_alarm_notify_SOURCES = moblin-alarm-notify.c 	\
 			      mnp-alarm-manager.c	\

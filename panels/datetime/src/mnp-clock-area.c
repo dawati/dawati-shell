@@ -112,8 +112,8 @@ insert_in_ptr_array (GPtrArray *array, gpointer data, int pos)
 static void
 tile_drag_run (MnpClockTile *tile, int ypos, MnpClockArea *area)
 {
-  ClutterActor *self = CLUTTER_ACTOR (area);
-  ClutterActor *child = CLUTTER_ACTOR (tile);
+  /*ClutterActor *self = CLUTTER_ACTOR (area);
+  ClutterActor *child = CLUTTER_ACTOR (tile); */
   GPtrArray *tiles = area->priv->clock_tiles;
   int i, pos;
 
@@ -295,8 +295,7 @@ mnp_clock_area_new (void)
 	area->priv->prop_sec_zero = FALSE;
 	area->priv->clock_tiles = g_ptr_array_new ();
 	area->priv->position = 0.05;
-	mx_box_layout_set_orientation ((MxBoxLayout *)area, MX_VERTICAL);
-	mx_box_layout_set_pack_start ((MxBoxLayout *)area, FALSE);
+	mx_box_layout_set_orientation ((MxBoxLayout *)area, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)area, TRUE);
 	area->priv->time_now = time(NULL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)area, 10);
@@ -326,7 +325,7 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	clutter_actor_set_reactive ((ClutterActor *)tile, TRUE);
 	clutter_actor_set_name ((ClutterActor *)tile, "clock-tile");
 	clutter_container_add_actor ((ClutterContainer *)clutter_stage_get_default(), (ClutterActor *)tile);
-	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_Y_AXIS);
+	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_DRAG_AXIS_Y);
 	mx_draggable_enable ((MxDraggable *)tile);
 	clutter_actor_set_size ((ClutterActor *)tile, 230, 75);
 	clutter_actor_set_depth ((ClutterActor *)tile, area->priv->position);
