@@ -97,8 +97,8 @@ mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
                                  NULL);
   }
 
-  label = mx_label_new (_("Plug in a device\n"
-                          "and it will be automatically detected."));
+  label = mx_label_new_with_text (_("Plug in a device\n"
+                                    "and it will be automatically detected."));
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
   clutter_container_child_set (CLUTTER_CONTAINER (self), label,
                                 "expand", true,

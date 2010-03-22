@@ -94,7 +94,7 @@ mpd_computer_pane_init (MpdComputerPane *self)
   ClutterActor *button;
   ClutterActor *tile;
 
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
 
   tile = mpd_battery_tile_new ();

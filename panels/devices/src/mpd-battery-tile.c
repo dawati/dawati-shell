@@ -129,9 +129,9 @@ mpd_battery_tile_init (MpdBatteryTile *self)
   MpdBatteryTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *text;
 
-  mx_table_set_col_spacing (MX_TABLE (self), 24);
+  mx_table_set_column_spacing (MX_TABLE (self), 24);
 
-  priv->label = mx_label_new ("");
+  priv->label = mx_label_new ();
   text = mx_label_get_clutter_text (MX_LABEL (priv->label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (text), true);
   mx_table_add_actor_with_properties (MX_TABLE (self), priv->label,

@@ -102,7 +102,7 @@ mpd_disk_tile_init (MpdDiskTile *self)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
 
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
   /* Display size of the volume $HOME is on. */
@@ -112,7 +112,7 @@ mpd_disk_tile_init (MpdDiskTile *self)
   g_signal_connect (priv->storage, "notify::available-size",
                     G_CALLBACK (_storage_size_notify_cb), self);
 
-  priv->label = mx_label_new ("");
+  priv->label = mx_label_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);
 
   priv->meter = mx_progress_bar_new ();

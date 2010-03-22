@@ -134,7 +134,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
   ClutterActor  *view;
   unsigned int   i;
 
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
 
   store = mpd_folder_store_new ();
 

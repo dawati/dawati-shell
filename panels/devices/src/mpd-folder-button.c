@@ -171,7 +171,7 @@ mpd_folder_button_init (MpdFolderButton *self)
 
   /* Box */
   vbox = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
   mx_bin_set_child (MX_BIN (self), vbox);
 
   /* Icon */
@@ -187,7 +187,7 @@ mpd_folder_button_init (MpdFolderButton *self)
                                NULL);
 
   /* Label */
-  priv->label = mx_label_new ("");
+  priv->label = mx_label_new ();
   text = (ClutterText *) mx_label_get_clutter_text (MX_LABEL (priv->label));
   clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD_CHAR);
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->label);

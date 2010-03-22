@@ -1,4 +1,15 @@
 
+Version 0.1.11, 2010-03-22
+
+    Depend on mx-1.0 >= 0.8
+    l10n: Updates to Chinese (Taiwan) translation
+    l10n: Updates to Polish (pl) translation
+    l10n: Updates to Swedish (sv) translation
+    l10n: Updates to Japanese (ja) translation
+    l10n: Updates to Finnish (fi) translation
+    l10n: Updates to Korean (ko) translation
+    l10n: Updates to Russian (ru) translation
+
 Version 0.1.10, 2010-03-04
 
     Add moving label to the volume tile.

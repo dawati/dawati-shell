@@ -162,7 +162,7 @@ add_tile_from_mount (MpdDevicesTile *self,
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_device_tile_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->vbox), tile, -1);
 
   gtk_icon_info_free (icon_info);
   g_object_unref (icon);
@@ -279,8 +279,8 @@ mpd_devices_tile_init (MpdDevicesTile *self)
   GList         *mounts;
 
   priv->vbox = mx_box_layout_new ();
-  mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->vbox), true);
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (priv->vbox), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
+                                 MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->vbox);
 
   tile = mpd_default_device_tile_new ();

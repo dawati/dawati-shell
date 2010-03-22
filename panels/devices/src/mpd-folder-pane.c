@@ -86,9 +86,9 @@ mpd_folder_pane_init (MpdFolderPane *self)
   ClutterActor *tile;
 
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_SHELL_SPACING);
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
 
-  label = mx_label_new (_("Your computer"));
+  label = mx_label_new_with_text (_("Your computer"));
   mx_stylable_set_style_class (MX_STYLABLE (label), "panel-title");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 

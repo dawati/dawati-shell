@@ -356,7 +356,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 
   /* 2nd column: text, free space */
   vbox = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), vbox);
   clutter_container_child_set (CLUTTER_CONTAINER (self), vbox,
                                "expand", true,
@@ -366,10 +366,10 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                "y-fill", false,
                                NULL);
 
-  priv->title = mx_label_new ("");
+  priv->title = mx_label_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->title);
 
-  priv->description = mx_label_new ("");
+  priv->description = mx_label_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->description);
 
   priv->meter = mx_progress_bar_new ();
@@ -377,7 +377,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 
   /* 3rd column: buttons */
   vbox = mx_box_layout_new ();
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (vbox), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), vbox);
 
   button = mx_button_new_with_label (_("Eject"));

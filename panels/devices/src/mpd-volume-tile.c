@@ -299,11 +299,11 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   ClutterActor          *mute_label;
   ClutterText           *text;
 
-  mx_box_layout_set_vertical (MX_BOX_LAYOUT (self), true);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
   /* Tile label */
-  label = mx_label_new (_("Netbook volume"));
+  label = mx_label_new_with_text (_("Netbook volume"));
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   /* Slider */
@@ -326,7 +326,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
                                "y-fill", false,
                                NULL);
 
-  priv->volume_label = mx_label_new ("");
+  priv->volume_label = mx_label_new ();
   text = CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (priv->volume_label)));
   clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_NONE);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->volume_label_slide),
@@ -342,7 +342,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
                                "x-fill", false,
                                NULL);
 
-  mute_label = mx_label_new (_("Mute"));
+  mute_label = mx_label_new_with_text (_("Mute"));
   clutter_container_add_actor (CLUTTER_CONTAINER (mute_box), mute_label);
   clutter_container_child_set (CLUTTER_CONTAINER (mute_box), mute_label,
                                "expand", false,
