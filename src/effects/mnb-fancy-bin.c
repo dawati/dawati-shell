@@ -379,7 +379,9 @@ mx_stylable_iface_init (MxStylableIface *iface)
 }
 
 static void
-mnb_fancy_bin_style_changed_cb (MxStylable *stylable, MnbFancyBin *self)
+mnb_fancy_bin_style_changed_cb (MxStylable          *stylable,
+                                MxStyleChangedFlags  flags,
+                                MnbFancyBin         *self)
 {
   MnbFancyBinPrivate *priv = self->priv;
 

@@ -224,7 +224,8 @@ mpl_entry_pick (ClutterActor       *actor,
 }
 
 static void
-mpl_entry_style_changed (MxWidget *widget)
+mpl_entry_style_changed (MxWidget            *widget,
+                         MxStyleChangedFlags  flags)
 {
   MplEntryPrivate *priv = MPL_ENTRY (widget)->priv;
 
@@ -232,8 +233,8 @@ mpl_entry_style_changed (MxWidget *widget)
    * the internal children on MplEntry, otherwise the style changes
    * will not reach them
    */
-  g_signal_emit_by_name (priv->entry, "style-changed", 0);
-  g_signal_emit_by_name (priv->table, "style-changed", 0);
+  mx_stylable_style_changed (priv->entry, flags);
+  mx_stylable_style_changed (priv->table, flags);
 }
 
 static void

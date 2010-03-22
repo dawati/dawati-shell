@@ -317,7 +317,7 @@ mnb_spinner_constructed (GObject *self)
    * NB: mx_widget_ensure_style() does not work here, because the MxWidget
    *     is_style_dirty flag is cleared at this point.
    */
-  g_signal_emit_by_name (widget, "style-changed", 0);
+  mx_stylable_style_changed (widget, MX_STYLE_CHANGED_FORCE);
 
   if ((background = (ClutterTexture *) mx_widget_get_background_image (widget)))
     {

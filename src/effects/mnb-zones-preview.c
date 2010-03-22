@@ -394,8 +394,9 @@ mx_stylable_iface_init (MxStylableIface *iface)
 }
 
 static void
-mnb_zones_preview_style_changed_cb (MxStylable      *stylable,
-                                    MnbZonesPreview *self)
+mnb_zones_preview_style_changed_cb (MxStylable          *stylable,
+                                    MxStyleChangedFlags  flags,
+                                    MnbZonesPreview     *self)
 {
   MnbZonesPreviewPrivate *priv = self->priv;
 

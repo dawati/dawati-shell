@@ -647,7 +647,8 @@ sw_zone_class_init (SwZoneClass *klass)
 }
 
 static void
-sw_zone_style_changed_cb (MxStylable *zone)
+sw_zone_style_changed_cb (MxStylable          *zone,
+                          MxStyleChangedFlags  flags)
 {
   MxStylable *title = MX_STYLABLE (SW_ZONE (zone)->priv->title);
   const gchar *pseudo_class = mx_stylable_get_style_pseudo_class (zone);

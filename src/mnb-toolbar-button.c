@@ -191,7 +191,8 @@ mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
 }
 
 static void
-mnb_toolbar_button_style_changed (MnbToolbarButton *button)
+mnb_toolbar_button_style_changed (MnbToolbarButton    *button,
+                                  MxStyleChangedFlags  flags)
 {
   mnb_toolbar_button_transition (button);
 }
