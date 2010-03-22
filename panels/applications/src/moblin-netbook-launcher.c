@@ -1624,6 +1624,11 @@ mnb_launcher_clear_filter (MnbLauncher *self)
 
   mpl_entry_set_text (MPL_ENTRY (priv->filter_entry), "");
 
+  /* Hide tooltip on fav apps. */
+  clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
+                             (ClutterCallback) mx_widget_hide_tooltip,
+                             NULL);
+
   /* Close expanders, expand first. */
   priv->first_expansion = TRUE;
   g_hash_table_iter_init (&iter, priv->expanders);
