@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-15 09:37+0000\n"
-"PO-Revision-Date: 2010-03-15 12:13-0800\n"
-"Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-03-22 09:36+0000\n"
+"PO-Revision-Date: 2010-03-22 10:21-0800\n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -215,13 +215,13 @@ msgstr "SÁBADOS"
 msgid "SUNDAYS"
 msgstr "DOMINGOS"
 
-#: ../src/mnp-world-clock.c:409
+#: ../src/mnp-world-clock.c:421
 msgid "Enter a country or city"
 msgstr "Ingresa un país o una ciudad"
 
-#: ../src/mnp-world-clock.c:424
-msgid "Add"
-msgstr "Agregar"
+#: ../src/mnp-world-clock.c:435
+msgid "Search"
+msgstr "Buscar"
 
 #: ../src/mnp-datetime.c:178
 msgid "Today"
@@ -242,4 +242,7 @@ msgstr "Alarmas guardadas en forma codificada para uso por el notificador de ala
 #: ../src/date-time.schemas.in.h:2
 msgid "List of alarms in short encoded form"
 msgstr "Lista de alarmas en forma de codificación corta"
+
+#~ msgid "Add"
+#~ msgstr "Agregar"
 
