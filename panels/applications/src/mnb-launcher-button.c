@@ -336,7 +336,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   self->priv = MNB_LAUNCHER_BUTTON_GET_PRIVATE (self);
 
-  mx_table_set_col_spacing (MX_TABLE (self), COL_SPACING);
+  mx_table_set_column_spacing (MX_TABLE (self), COL_SPACING);
 
   g_signal_connect (self, "enter-event",
                     G_CALLBACK (_enter_event_cb), NULL);
@@ -349,7 +349,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   self->priv->icon = NULL;
 
   /* "app" label */
-  self->priv->title = (MxLabel *) mx_label_new (NULL);
+  self->priv->title = (MxLabel *) mx_label_new ();
   clutter_actor_set_reactive (CLUTTER_ACTOR (self->priv->title), FALSE);
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->title),
                           "mnb-launcher-button-title");

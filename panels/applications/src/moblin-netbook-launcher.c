@@ -861,7 +861,7 @@ mnb_launcher_fill (MnbLauncher     *self)
    */
 
   /* Label */
-  priv->fav_label = CLUTTER_ACTOR (mx_label_new (_("Favorite Applications")));
+  priv->fav_label = mx_label_new_with_text (_("Favorite Applications"));
   clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
                          priv->fav_label, NULL);
   g_object_ref (priv->fav_label);
@@ -1421,10 +1421,10 @@ _constructor (GType                  gtype,
   /* Filter row. */
   priv->filter_hbox = (ClutterActor *) mx_table_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_hbox), "launcher-filter-pane");
-  mx_table_set_col_spacing (MX_TABLE (priv->filter_hbox), 20);
+  mx_table_set_column_spacing (MX_TABLE (priv->filter_hbox), 20);
   mx_table_add_actor (MX_TABLE (vbox), CLUTTER_ACTOR (priv->filter_hbox), 0, 0);
 
-  label = mx_label_new (_("Applications"));
+  label = mx_label_new_with_text (_("Applications"));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "launcher-filter-label");
   mx_table_add_actor_with_properties (MX_TABLE (priv->filter_hbox),
                                         CLUTTER_ACTOR (label),
