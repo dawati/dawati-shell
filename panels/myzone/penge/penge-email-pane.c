@@ -338,7 +338,7 @@ penge_email_pane_init (PengeEmailPane *self)
                                   self);
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self),
-                                 MX_VERTICAL);
+                                 MX_ORIENTATION_VERTICAL);
 
   g_signal_connect (G_OBJECT (priv->provider),
                     "account-added",
