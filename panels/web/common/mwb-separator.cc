@@ -20,7 +20,9 @@
 #include "config.h"
 #endif
 
+extern "C" {
 #include <clutter/clutter.h>
+}
 
 #include "mwb-separator.h"
 

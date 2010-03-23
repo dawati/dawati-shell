@@ -20,8 +20,10 @@
 #define _MWB_AC_LIST_H
 
 #include <glib-object.h>
+extern "C" {
 #include <clutter/clutter.h>
 #include <mx/mx.h>
+}
 
 G_BEGIN_DECLS
 

@@ -19,7 +19,9 @@
 #ifndef _MWB_SEPARATOR_H
 #define _MWB_SEPARATOR_H
 
+extern "C" {
 #include <mx/mx.h>
+}
 
 G_BEGIN_DECLS
 
