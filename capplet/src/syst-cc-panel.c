@@ -29,8 +29,6 @@
 #include <mx/mx-gtk.h>
 
 #include "syst-cc-panel.h"
-
-#define SYST_PATH "/home/tomas/.local/.config"
 #define SYST_UID  {0x6aa9c364, 0x7620a0c3, 0x666f2075, 0x35392720, 0}
 #define SYST_CMD "matchbox-panel --geometry=200x36+0-0 --reserve-extra-height=4 --fullscreen --start-applets=systray"
 
@@ -110,19 +108,22 @@ syst_cc_panel_switch_flipped_cb (MxGtkLightSwitch *sw,
                                  SystCcPanel      *panel)
 {
   static guint32  uid[] = SYST_UID;
-  const gchar    *name  = SYST_PATH "/.legacy-systray";
+  /* $HOME/.config/legacy-systray */
+  gchar *path = g_build_filename (g_get_user_config_dir (),
+                                  "legacy-systray",
+                                  NULL);
 
   if (on)
     {
       pid_t pid;
 
-      if (g_mkdir_with_parents (SYST_PATH, 751) < 0)
+      if (g_mkdir_with_parents (g_get_user_config_dir (), 751) < 0)
         {
-          g_warning ("Could not create directory " SYST_PATH);
+          g_warning ("Could not create directory %s", g_get_user_config_dir ());
         }
       else
         {
-          FILE *f = g_fopen (name, "w");
+          FILE *f = g_fopen (path, "w");
 
           g_fprintf (f, "%s", (char*) &uid[0]);
 
@@ -138,13 +139,15 @@ syst_cc_panel_switch_flipped_cb (MxGtkLightSwitch *sw,
     {
       pid_t pid;
 
-      g_remove (name);
+      g_remove (path);
 
       if ((pid = is_panel_running ()) > -1)
         {
           kill (pid, SIGKILL);
         }
     }
+
+  g_free (path);
 }
 
 static void
