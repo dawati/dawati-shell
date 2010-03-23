@@ -40,7 +40,6 @@ struct _PengeEventTilePrivate {
 
   ClutterActor *time_label;
   ClutterActor *summary_label;
-  ClutterActor *time_bin;
 
   ClutterActor *inner_table;
 };
@@ -261,18 +260,11 @@ penge_event_tile_init (PengeEventTile *self)
   mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
-  priv->time_bin = mx_frame_new ();
-  clutter_actor_set_width (priv->time_bin,
-                           60);
-  mx_stylable_set_style_class (MX_STYLABLE (priv->time_bin),
-                               "PengeEventTimeBin");
-
   priv->time_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->time_label),
                                "PengeEventTimeLabel");
-
-  mx_bin_set_child (MX_BIN (priv->time_bin),
-                    priv->time_label);
+  clutter_actor_set_width (priv->time_label,
+                          60);
 
   priv->summary_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->summary_label),
@@ -283,11 +275,11 @@ penge_event_tile_init (PengeEventTile *self)
 
   /* Populate the table */
   mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->time_bin,
+                      priv->time_label,
                       0,
                       0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               priv->time_bin,
+                               priv->time_label,
                                "x-expand", FALSE,
                                "x-fill", FALSE,
                                "y-expand", FALSE,
@@ -359,12 +351,8 @@ penge_event_tile_update (PengeEventTile *tile)
     {
       mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_label),
                                           "past");
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_bin),
-                                          "past");
     } else {
       mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_label),
-                                          NULL);
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_bin),
                                           NULL);
     }
 

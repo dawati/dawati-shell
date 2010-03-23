@@ -78,28 +78,12 @@ MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
 
 MxLabel.PengeEventTimeLabel
 {
-  color: white;
-  font-size:12;
-  font-family: "Droid Sans", "Sans";
   padding: 8;
 }
 
 MxLabel.PengeEventTimeLabel:past
 {
-  color: white;
-  font-size:12;
-  font-family: "Droid Sans", "Sans";
   padding: 8;
-}
-
-*.PengeEventTimeBin
-{
-  border-image: url('time-bg.png') 0;
-}
-
-*.PengeEventTimeBin:past
-{
-  border-image: url('time-bg-past.png') 0;
 }
 
 PengePeopleTile *.PengeInterestingTilePrimaryLabel,
