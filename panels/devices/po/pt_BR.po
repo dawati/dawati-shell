@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-22 09:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
+"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,92 +16,92 @@ msgstr ""
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
-msgstr ""
+msgstr "Painel de dispositivos"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
 #: ../src/moblin-panel-devices.c:135
 msgid "devices"
-msgstr ""
+msgstr "dispositivos"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:560
 msgid "CompactFlash"
-msgstr ""
+msgstr "CompactFlash"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:563
 msgid "MemoryStick"
-msgstr ""
+msgstr "MemoryStick"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:566
 msgid "SmartMedia"
-msgstr ""
+msgstr "SmartMedia"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:569
 msgid "SecureDigital"
-msgstr ""
+msgstr "SecureDigital"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:572
 msgid "SD High Capacity"
-msgstr ""
+msgstr "SD de alta capacidade"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:575
 msgid "Floppy"
-msgstr ""
+msgstr "Disquete"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:578
 msgid "Zip"
-msgstr ""
+msgstr "Zip"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:581
 msgid "Jaz"
-msgstr ""
+msgstr "Jaz"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:584
 msgid "Flash"
-msgstr ""
+msgstr "Flash"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:607
 msgid "CD"
-msgstr ""
+msgstr "CD"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:615
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:623
 msgid "Blu-Ray"
-msgstr ""
+msgstr "Blu-Ray"
 
 #. Translators: This word is used to describe the optical disc type, it may appear
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:631
 msgid "HDDVD"
-msgstr ""
+msgstr "HDDVD"
 
 #. Translators: %s is the media type e.g. 'CD/DVD' or 'CompactFlash'
 #: ../gdu/gdu-drive.c:680
 #: ../gdu/gdu-drive.c:719
 #, c-format
 msgid "%s Drive"
-msgstr ""
+msgstr "Unidade %s"
 
 #. Translators: first %s is the size, second %s is the media type
 #. * e.g. 'CD/DVD' or 'CompactFlash'
@@ -109,7 +109,7 @@ msgstr ""
 #: ../gdu/gdu-drive.c:714
 #, c-format
 msgid "%s %s Drive"
-msgstr ""
+msgstr "Unidade %s %s "
 
 #. Translators: This string is used to describe a hard disk.
 #. * The first %s is the size of the drive e.g. '45 GB'.
@@ -117,14 +117,14 @@ msgstr ""
 #: ../gdu/gdu-drive.c:730
 #, c-format
 msgid "%s Hard Disk"
-msgstr ""
+msgstr "Disco rigido %s "
 
 #. Translators: This string is used to describe a hard disk where the size
 #. * is not known.
 #.
 #: ../gdu/gdu-drive.c:735
 msgid "Hard Disk"
-msgstr ""
+msgstr "Disco rígido"
 
 #. Translators: This string is used to describe a SSD. The first %s is
 #. * the size of the drive e.g. '45 GB'.
@@ -132,14 +132,14 @@ msgstr ""
 #: ../gdu/gdu-drive.c:742
 #, c-format
 msgid "%s Solid-State Disk"
-msgstr ""
+msgstr "Disco de estado sólido %s"
 
 #. Translators: This string is used to describe a SSD where the size
 #. * is not known.
 #.
 #: ../gdu/gdu-drive.c:748
 msgid "Solid-State Disk"
-msgstr ""
+msgstr "Disco de estado sólido"
 
 #. Translators: This string is the description of a drive. The first %s is the
 #. * size of the inserted media, for example '45 GB'.
@@ -147,7 +147,7 @@ msgstr ""
 #: ../gdu/gdu-drive.c:789
 #, c-format
 msgid "%s Media"
-msgstr ""
+msgstr "Mídia %s"
 
 #. Translators: This string is used as a description text when no media has
 #. * been detected for a drive
@@ -155,25 +155,25 @@ msgstr ""
 #: ../gdu/gdu-drive.c:796
 #, c-format
 msgid "No Media Detected"
-msgstr ""
+msgstr "Nenhuma mídia detectada"
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:807
 #: ../gdu/gdu-linux-md-drive.c:565
 msgid "MBR Partition Table"
-msgstr ""
+msgstr "Tabela de partição MBR"
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:810
 #: ../gdu/gdu-linux-md-drive.c:568
 msgid "GUID Partition Table"
-msgstr ""
+msgstr "Tabela de partição GUID "
 
 #. Translators: This string is used for conveying the partition table format
 #: ../gdu/gdu-drive.c:813
 #: ../gdu/gdu-linux-md-drive.c:571
 msgid "Apple Partition Table"
-msgstr ""
+msgstr "Tabela de partição Apple"
 
 #. Translators: This string is used for conveying the partition table format when
 #. * the format is unknown
@@ -181,59 +181,59 @@ msgstr ""
 #: ../gdu/gdu-drive.c:818
 #: ../gdu/gdu-linux-md-drive.c:576
 msgid "Partitioned"
-msgstr ""
+msgstr "Particionado"
 
 #. Translators: This string is used for conveying a device is not partitioned.
 #.
 #: ../gdu/gdu-drive.c:823
 msgid "Not Partitioned"
-msgstr ""
+msgstr "Não particionado"
 
 #. TODO: include type e.g. SATA Port Multiplier, SAS Expander etc
 #: ../gdu/gdu-hub.c:222
 msgid "SAS Expander"
-msgstr ""
+msgstr "Expansor SAS"
 
 #: ../gdu/gdu-hub.c:230
 msgid "PATA Host Adapter"
-msgstr ""
+msgstr "Adaptador host PATA"
 
 #: ../gdu/gdu-hub.c:232
 msgid "SATA Host Adapter"
-msgstr ""
+msgstr "Adaptador host SATA"
 
 #: ../gdu/gdu-hub.c:234
 msgid "ATA Host Adapter"
-msgstr ""
+msgstr "Adaptador host ATA"
 
 #: ../gdu/gdu-hub.c:236
 msgid "SAS Host Adapter"
-msgstr ""
+msgstr "Adaptador host SAS"
 
 #: ../gdu/gdu-hub.c:238
 msgid "SCSI Host Adapter"
-msgstr ""
+msgstr "Adaptador host SCSI"
 
 #: ../gdu/gdu-hub.c:240
 msgid "Host Adapter"
-msgstr ""
+msgstr "Adaptador host"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume-group.c:351
 #: ../gdu/gdu-linux-lvm2-volume-group.c:355
 msgid "Volume Group"
-msgstr ""
+msgstr "Grupo de volume"
 
 #. Translators: VPD name - first %s is the size e.g. '45 GB'
 #: ../gdu/gdu-linux-lvm2-volume-group.c:359
 #, c-format
 msgid "%s LVM2 Volume Group"
-msgstr ""
+msgstr "Grupo de volume LVM2 %s"
 
 #. Translators: VPD name when size is not known
 #: ../gdu/gdu-linux-lvm2-volume-group.c:362
 msgid "LVM2 Volume Group"
-msgstr ""
+msgstr "Grupo de volume LVM2"
 
 #. Translators: label for an unallocated space in a LVM2 volume group.
 #. * %s is the size, formatted like '45 GB'
@@ -245,28 +245,28 @@ msgstr ""
 #: ../gdu/gdu-volume-hole.c:152
 #, c-format
 msgid "%s Free"
-msgstr ""
+msgstr "%s livre"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume-hole.c:205
 #: ../gdu/gdu-volume-hole.c:161
 msgid "Unallocated Space"
-msgstr ""
+msgstr "Espaço não alocado"
 
 #. Translators: VPD name
 #: ../gdu/gdu-linux-lvm2-volume-hole.c:208
 msgid "LVM2 VG Unallocated Space"
-msgstr ""
+msgstr "Espaço não alocado LVM2 VG"
 
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume.c:331
 msgid "Logical Volume"
-msgstr ""
+msgstr "Volume lógico"
 
 #. Translators: VPD name
 #: ../gdu/gdu-linux-lvm2-volume.c:334
 msgid "LVM2 Logical Volume"
-msgstr ""
+msgstr "Volume lógico LVM2"
 
 #. Translators: First %s is the size, second %s is a RAID level, e.g. 'RAID-5'
 #. Translators: first %s is the size e.g. '45 GB', second %s is the level e.g. 'RAID-5'
@@ -274,7 +274,7 @@ msgstr ""
 #: ../gdu/gdu-linux-md-drive.c:621
 #, c-format
 msgid "%s %s Array"
-msgstr ""
+msgstr "Matriz %s %s"
 
 #. Translators: %s is a RAID level, e.g. 'RAID-5'
 #. Translators: %s is the level e.g. 'RAID-5'
@@ -282,7 +282,7 @@ msgstr ""
 #: ../gdu/gdu-linux-md-drive.c:626
 #, c-format
 msgid "%s Array"
-msgstr ""
+msgstr "Matriz %s"
 
 #. Translators: First %s is a device file such as /dev/sda4
 #. * second %s is the state of the device
@@ -290,166 +290,166 @@ msgstr ""
 #: ../gdu/gdu-linux-md-drive.c:596
 #, c-format
 msgid "RAID Array %s (%s)"
-msgstr ""
+msgstr "Matriz RAID %s %s"
 
 #. Translators: %s is a device file such as /dev/sda4
 #: ../gdu/gdu-linux-md-drive.c:603
 #, c-format
 msgid "RAID device %s"
-msgstr ""
+msgstr "Dispositivo RAID %s"
 
 #. Translators: fallback for level
 #: ../gdu/gdu-linux-md-drive.c:609
 msgctxt "RAID Level fallback"
 msgid "RAID"
-msgstr ""
+msgstr "RAID"
 
 #: ../gdu/gdu-linux-md-drive.c:614
 msgid "RAID Array"
-msgstr ""
+msgstr "Matriz RAID"
 
 #: ../gdu/gdu-linux-md-drive.c:1112
 msgctxt "Linux MD slave state"
 msgid "Not Attached"
-msgstr ""
+msgstr "Não anexado"
 
 #: ../gdu/gdu-linux-md-drive.c:1115
 msgctxt "Linux MD slave state"
 msgid "Faulty"
-msgstr ""
+msgstr "Defeituoso"
 
 #: ../gdu/gdu-linux-md-drive.c:1120
 msgctxt "Linux MD slave state"
 msgid "Fully Synchronized"
-msgstr ""
+msgstr "Sincronizado por completo"
 
 #: ../gdu/gdu-linux-md-drive.c:1122
 msgctxt "Linux MD slave state"
 msgid "Writemostly"
-msgstr ""
+msgstr "Writemostly"
 
 #: ../gdu/gdu-linux-md-drive.c:1124
 msgctxt "Linux MD slave state"
 msgid "Blocked"
-msgstr ""
+msgstr "Bloqueado"
 
 #: ../gdu/gdu-linux-md-drive.c:1126
 msgctxt "Linux MD slave state"
 msgid "Spare"
-msgstr ""
+msgstr "Disponível"
 
 #: ../gdu/gdu-machine.c:151
 msgid "Local Storage"
-msgstr ""
+msgstr "Armazenamento local"
 
 #. TODO: use display-hostname
 #: ../gdu/gdu-machine.c:154
 #, c-format
 msgid "Storage on %s"
-msgstr ""
+msgstr "Armazenamento em %s"
 
 #: ../gdu/gdu-pool.c:885
 msgid "Multipath Devices"
-msgstr ""
+msgstr "Dispositivos múltiplos caminhos"
 
 #: ../gdu/gdu-pool.c:886
 msgid "Drives with multiple I/O paths"
-msgstr ""
+msgstr "Unidades com caminhos múltiplos de E/S"
 
 #: ../gdu/gdu-pool.c:896
 msgid "Multi-disk Devices"
-msgstr ""
+msgstr "Dispositivos multi-disco"
 
 #: ../gdu/gdu-pool.c:897
 msgid "RAID, LVM and other logical drives"
-msgstr ""
+msgstr "RAID, LVM e outras unidades lógicas"
 
 #: ../gdu/gdu-pool.c:907
 msgid "Peripheral Devices"
-msgstr ""
+msgstr "Dispositivos periféricos"
 
 #: ../gdu/gdu-pool.c:908
 msgid "USB, Firewire and other peripherals"
-msgstr ""
+msgstr "USB, Firewire e outros periféricos"
 
 #: ../gdu/gdu-pool.c:2090
 #, c-format
 msgid "Error enumerating devices: %s"
-msgstr ""
+msgstr "Erro ao enumerar dispositivos: %s"
 
 #: ../gdu/gdu-pool.c:2116
 #, c-format
 msgid "Error enumerating adapters: %s"
-msgstr ""
+msgstr "Erro ao enumerar adaptadores: %s"
 
 #: ../gdu/gdu-pool.c:2139
 #, c-format
 msgid "Error enumerating expanders: %s"
-msgstr ""
+msgstr "Erro ao enumerar expansores: %s"
 
 #: ../gdu/gdu-pool.c:2162
 #, c-format
 msgid "Error enumerating ports: %s"
-msgstr ""
+msgstr "Erro ao enumerar portas: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:292
 #, c-format
 msgid "Error listening to address `localhost:%d': %s: %s\n"
-msgstr ""
+msgstr "Erro ao escutar o endereço `localhost:%d': %s: %s\n"
 
 #: ../gdu/gdu-ssh-bridge.c:307
 #, c-format
 msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
-msgstr ""
+msgstr "Erro ao criar um servidor local TCP, tentou associar às portas 9000-10000 no host local"
 
 #: ../gdu/gdu-ssh-bridge.c:322
 #, c-format
 msgid "Error setting auth mechanisms on local DBusServer\n"
-msgstr ""
+msgstr "Erro ao configurar mecanismos de autoria no local DBusServer\n"
 
 #: ../gdu/gdu-ssh-bridge.c:347
 #, c-format
 msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-msgstr ""
+msgstr "Não foi possível analisar linha de comando `%s' (Malformed address?): %s"
 
 #: ../gdu/gdu-ssh-bridge.c:369
 #, c-format
 msgid "Unable to spawn ssh program: %s"
-msgstr ""
+msgstr "Não foi possível gerar programa ssh: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:398
 #: ../gdu/gdu-ssh-bridge.c:510
 #, c-format
 msgid "Error reading stderr output: %s"
-msgstr ""
+msgstr "Erro a ler saída stderr: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:405
 msgid "Error reading stderr output: No content"
-msgstr ""
+msgstr "Erro ao ler saída stderr: nenhum conteúdo"
 
 #: ../gdu/gdu-ssh-bridge.c:471
 msgid "Error logging in"
-msgstr ""
+msgstr "Erro no log in"
 
 #: ../gdu/gdu-ssh-bridge.c:491
 #, c-format
 msgid "Error sending `%s': %s"
-msgstr ""
+msgstr "Erro enviando `%s': %s"
 
 #: ../gdu/gdu-ssh-bridge.c:519
 #, c-format
 msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
-msgstr ""
+msgstr "Saída inesperada stderr - esperada `udisks-tcp-bridge: esperando por segredo' mas recebeu `%s'"
 
 #: ../gdu/gdu-ssh-bridge.c:536
 #, c-format
 msgid "Error passing authorization secret: %s"
-msgstr ""
+msgstr "Erro ao passar segredo de autorização: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:557
 #, c-format
 msgid "Error reading stderr from: %s"
-msgstr ""
+msgstr "Erro ao ler stderr de: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:566
 #, c-format
