@@ -40,7 +40,6 @@ struct _PengeEventTilePrivate {
 
   ClutterActor *time_label;
   ClutterActor *summary_label;
-  ClutterActor *details_label;
   ClutterActor *time_bin;
 
   ClutterActor *inner_table;
@@ -282,13 +281,6 @@ penge_event_tile_init (PengeEventTile *self)
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
   clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
 
-  priv->details_label = mx_label_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (priv->details_label),
-                               "PengeEventDetails");
-  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->details_label));
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_END);
-  clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text), TRUE);
-
   /* Populate the table */
   mx_table_add_actor (MX_TABLE (priv->inner_table),
                       priv->time_bin,
@@ -306,29 +298,13 @@ penge_event_tile_init (PengeEventTile *self)
                       priv->summary_label,
                       0,
                       1);
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->details_label,
-                      1,
-                      1);
-
-  /* Make the time label span two rows */
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               priv->time_bin,
-                               "row-span",
-                               2,
-                               NULL);
 
   /* 
-   * Make the summary and detail labels consume the remaining horizontal
+   * Make the summary label consume the remaining horizontal
    * space
    */
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                priv->summary_label,
-                               "x-expand", TRUE,
-                               "y-fill", FALSE,
-                               NULL);
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               priv->details_label,
                                "x-expand", TRUE,
                                "y-fill", FALSE,
                                NULL);
@@ -359,7 +335,6 @@ penge_event_tile_update (PengeEventTile *tile)
   PengeEventTilePrivate *priv = GET_PRIVATE (tile);
   gchar *time_str;
   gchar *summary_str;
-  gchar *details_str;
   JanaTime *t;
   gchar *p;
 
@@ -412,43 +387,6 @@ penge_event_tile_update (PengeEventTile *tile)
     g_free (summary_str);
   } else {
     mx_label_set_text (MX_LABEL (priv->summary_label), "");
-  }
-
-  details_str = jana_event_get_location (priv->event);
-
-  if (!details_str)
-  {
-    details_str = jana_event_get_description (priv->event);
-  }
-
-  if (!details_str)
-  {
-    mx_label_set_text (MX_LABEL (priv->details_label), "");
-
-    /* 
-     * If we fail to get some kind of description make the summary text
-     * cover both rows in the tile
-     */
-    clutter_actor_hide (CLUTTER_ACTOR (priv->details_label));
-    clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                                 (ClutterActor *)priv->time_bin,
-                                 "row-span",
-                                 1,
-                                 NULL);
-  } else {
-    p = strchr (details_str, '\n');
-    if (p)
-      *p = '\0';
-    mx_label_set_text (MX_LABEL (priv->details_label), details_str);
-    g_free (details_str);
-
-    clutter_actor_show (CLUTTER_ACTOR (priv->details_label));
-    clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                                 (ClutterActor *)priv->time_bin,
-                                 "row-span",
-                                 2,
-                                 NULL);
-
   }
 }
 
