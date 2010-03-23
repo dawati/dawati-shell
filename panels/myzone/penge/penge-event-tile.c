@@ -40,8 +40,11 @@ struct _PengeEventTilePrivate {
 
   ClutterActor *time_label;
   ClutterActor *summary_label;
+  ClutterActor *calendar_indicator;
 
   ClutterActor *inner_table;
+
+  ESource *source;
 };
 
 enum
@@ -53,6 +56,11 @@ enum
 };
 
 static void penge_event_tile_update (PengeEventTile *tile);
+static void penge_event_tile_set_store (PengeEventTile *tile,
+                                        JanaStore      *store);
+
+static void _source_changed_cb (ESource  *source,
+                                gpointer  userdata);
 
 static void
 penge_event_tile_get_property (GObject *object, guint property_id,
@@ -99,7 +107,8 @@ penge_event_tile_set_property (GObject *object, guint property_id,
       penge_event_tile_update ((PengeEventTile *)object);
       break;
     case PROP_STORE:
-      priv->store = g_value_dup_object (value);
+      penge_event_tile_set_store ((PengeEventTile *)object,
+                                  g_value_get_object (value));
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -110,6 +119,15 @@ static void
 penge_event_tile_dispose (GObject *object)
 {
   PengeEventTilePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->source)
+  {
+    g_signal_handlers_disconnect_by_func (priv->source,
+                                          _source_changed_cb,
+                                          object);
+    g_object_unref (priv->source);
+    priv->source = NULL;
+  }
 
   if (priv->event)
   {
@@ -260,6 +278,8 @@ penge_event_tile_init (PengeEventTile *self)
   mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);
   mx_bin_set_fill (MX_BIN (self), TRUE, TRUE);
 
+  priv->calendar_indicator = clutter_cairo_texture_new (20, 20);
+  clutter_actor_set_size (priv->calendar_indicator, 20, 20);
   priv->time_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->time_label),
                                "PengeEventTimeLabel");
@@ -275,9 +295,21 @@ penge_event_tile_init (PengeEventTile *self)
 
   /* Populate the table */
   mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->time_label,
+                      priv->calendar_indicator,
                       0,
                       0);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      priv->time_label,
+                      0,
+                      1);
+
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
+                               priv->calendar_indicator,
+                               "x-expand", FALSE,
+                               "x-fill", FALSE,
+                               "y-expand", FALSE,
+                               "y-fill", FALSE,
+                               NULL);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                priv->time_label,
                                "x-expand", FALSE,
@@ -289,7 +321,7 @@ penge_event_tile_init (PengeEventTile *self)
   mx_table_add_actor (MX_TABLE (priv->inner_table),
                       priv->summary_label,
                       0,
-                      1);
+                      2);
 
   /* 
    * Make the summary label consume the remaining horizontal
@@ -384,4 +416,196 @@ penge_event_tile_get_uid (PengeEventTile *tile)
   PengeEventTilePrivate *priv = GET_PRIVATE (tile);
 
   return jana_component_get_uid (JANA_COMPONENT (priv->event));
+}
+
+/* Copied from Clutter and modified to support weird 16 bit */
+static gboolean
+___clutter_color_from_string (ClutterColor *color,
+                              const gchar  *str)
+{
+  PangoColor pango_color = { 0, };
+
+  g_return_val_if_fail (color != NULL, FALSE);
+  g_return_val_if_fail (str != NULL, FALSE);
+
+  /* if the string contains a color encoded using the hexadecimal
+   * notations (#rrggbbaa or #rgba) we attempt a rough pass at
+   * parsing the color ourselves, as we need the alpha channel that
+   * Pango can't retrieve.
+   */
+  if (str[0] == '#')
+    {
+      gint64 result;
+
+      if (sscanf (str + 1, "%lx", &result))
+        {
+          gsize length = strlen (str);
+
+          switch (length)
+            {
+            case 13: /* rrrrggggbbbb */
+              color->red = ((result >> 40) & 0xff);
+              color->green = ((result >> 24) & 0xff);
+              color->blue = ((result >> 8) & 0xff);
+              color->alpha = 0xff;
+
+              return TRUE;
+
+            case 9: /* rrggbbaa */
+              color->red   = (result >> 24) & 0xff;
+              color->green = (result >> 16) & 0xff;
+              color->blue  = (result >>  8) & 0xff;
+
+              color->alpha = result & 0xff;
+
+              return TRUE;
+
+            case 7: /* #rrggbb */
+              color->red   = (result >> 16) & 0xff;
+              color->green = (result >>  8) & 0xff;
+              color->blue  = result & 0xff;
+
+              color->alpha = 0xff;
+
+              return TRUE;
+
+            case 5: /* #rgba */
+              color->red   = ((result >> 12) & 0xf);
+              color->green = ((result >>  8) & 0xf);
+              color->blue  = ((result >>  4) & 0xf);
+              color->alpha = result & 0xf;
+
+              color->red   = (color->red   << 4) | color->red;
+              color->green = (color->green << 4) | color->green;
+              color->blue  = (color->blue  << 4) | color->blue;
+              color->alpha = (color->alpha << 4) | color->alpha;
+
+              return TRUE;
+
+            case 4: /* #rgb */
+              color->red   = ((result >>  8) & 0xf);
+              color->green = ((result >>  4) & 0xf);
+              color->blue  = result & 0xf;
+
+              color->red   = (color->red   << 4) | color->red;
+              color->green = (color->green << 4) | color->green;
+              color->blue  = (color->blue  << 4) | color->blue;
+
+              color->alpha = 0xff;
+
+              return TRUE;
+
+            default:
+              /* pass through to Pango */
+              break;
+            }
+        }
+    }
+  
+  /* Fall back to pango for named colors */
+  if (pango_color_parse (&pango_color, str))
+    {
+      color->red   = pango_color.red;
+      color->green = pango_color.green;
+      color->blue  = pango_color.blue;
+
+      color->alpha = 0xff;
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+__roundrect (cairo_t *cr,
+             gdouble  x,
+             gdouble  y,
+             gdouble  radius,
+             gdouble  size)
+{
+  cairo_move_to (cr, x, y + radius);
+  cairo_arc (cr, x + radius, y + radius, radius, G_PI, G_PI + G_PI_2);
+  cairo_arc (cr, x + size - radius, y + radius, radius, G_PI + G_PI_2, 2 * G_PI);
+  cairo_arc (cr, x + size - radius, y + size - radius, radius, 0, G_PI_2);
+  cairo_arc (cr, x + radius, y + size - radius, radius, G_PI_2, G_PI);
+  cairo_close_path (cr);
+}
+
+static void
+_update_calendar_indicator (PengeEventTile *tile)
+{
+  PengeEventTilePrivate *priv = GET_PRIVATE (tile);
+  ClutterColor color, light_color;
+  cairo_t *cr;
+  cairo_pattern_t *pat;
+
+  cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (priv->calendar_indicator));
+  ___clutter_color_from_string (&color, e_source_peek_color_spec (priv->source));
+
+  clutter_color_lighten (&color, &light_color);
+
+  __roundrect (cr, 1, 1, 3, 17);
+
+  pat = cairo_pattern_create_linear (0, 3, 0, 16);
+  cairo_pattern_add_color_stop_rgb (pat,
+                                    0,
+                                    light_color.red/255.0,
+                                    light_color.green/255.0,
+                                    light_color.blue/255.0);
+  cairo_pattern_add_color_stop_rgb (pat,
+                                    1,
+                                    color.red/255.0,
+                                    color.green/255.0,
+                                    color.blue/255.0);
+
+  cairo_set_source (cr, pat);
+  cairo_fill (cr);
+  cairo_pattern_destroy (pat);
+
+  __roundrect (cr, 2, 2, 3, 15);
+
+  clutter_color_lighten (&light_color, &color);
+
+  cairo_set_line_width (cr, 2.0);
+  cairo_set_source_rgb (cr, color.red/255.0, color.green/255.0, color.blue/255.0);
+  cairo_stroke (cr);
+
+  __roundrect (cr, 1, 1, 3, 17);
+
+  cairo_set_line_width (cr, 1.0);
+  cairo_set_source_rgb (cr, 0xad/255.0, 0xad/255.0, 0xad/255.0);
+  cairo_stroke (cr);
+
+  cairo_destroy(cr);
+}
+
+static void
+_source_changed_cb (ESource *source,
+                    gpointer userdata)
+{
+  PengeEventTile *tile = (PengeEventTile *)userdata;
+  _update_calendar_indicator (tile);
+}
+
+static void
+penge_event_tile_set_store (PengeEventTile *tile,
+                            JanaStore      *store)
+{
+  PengeEventTilePrivate *priv = GET_PRIVATE (tile);
+  ECal *ecal;
+
+  priv->store = g_object_ref (store);
+
+  g_object_get (store,
+                "ecal", &ecal,
+                NULL);
+
+  priv->source = e_cal_get_source (ecal);
+
+  g_signal_connect (priv->source,
+                    "changed",
+                    (GCallback)_source_changed_cb,
+                    tile);
+  _update_calendar_indicator (tile);
 }
