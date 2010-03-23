@@ -832,11 +832,17 @@ penge_events_pane_setup_stores (PengeEventsPane *pane)
 
     if (!store)
     {
-      gchar *uri;
+      ECal *ecal;
 
-      uri = e_source_get_uri (source);
-      store = jana_ecal_store_new_from_uri (uri,
-                                            JANA_COMPONENT_EVENT);
+      /* Do this to support sources that have more that a URI */
+      ecal = e_cal_new (source, E_CAL_SOURCE_TYPE_EVENT);
+      store = g_object_new (JANA_ECAL_TYPE_STORE,
+                            "ecal", ecal,
+                            "type", JANA_COMPONENT_EVENT,
+                            NULL);
+      g_object_unref (ecal);
+
+
       g_hash_table_insert (priv->stores,
                            g_strdup (uid),
                            store);
@@ -846,7 +852,6 @@ penge_events_pane_setup_stores (PengeEventsPane *pane)
                         (GCallback)_store_opened_cb,
                         pane);
       jana_store_open (store);
-      g_free (uri);
     }
 
     /* Remove from the list so that we can kill old ones */
