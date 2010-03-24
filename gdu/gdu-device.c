@@ -2418,6 +2418,7 @@ gdu_device_op_linux_md_check (GduDevice                           *device,
 
 /* -------------------------------------------------------------------------------- */
 
+/*
 typedef struct {
         GduDevice *device;
         GduDeviceLinuxMdAddComponentCompletedFunc callback;
@@ -2457,6 +2458,7 @@ gdu_device_op_linux_md_add_component (GduDevice                                 
                                                                     op_add_component_to_linux_md_array_cb,
                                                                     data);
 }
+*/
 
 /* -------------------------------------------------------------------------------- */
 

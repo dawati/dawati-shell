@@ -305,11 +305,12 @@ void gdu_device_op_linux_md_check    (GduDevice                           *devic
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Robsta -- prevent build problems, need to update gdu or better yet get rid of it.
 void gdu_device_op_linux_md_add_component (GduDevice                                 *device,
                                            const char                                *component_objpath,
                                            GduDeviceLinuxMdAddComponentCompletedFunc  callback,
                                            gpointer                                   user_data);
-
+*/
 /* ---------------------------------------------------------------------------------------------------- */
 
 void gdu_device_op_linux_md_remove_component (GduDevice                                    *device,
