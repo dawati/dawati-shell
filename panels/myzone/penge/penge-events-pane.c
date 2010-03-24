@@ -27,7 +27,7 @@
 
 #include "penge-event-tile.h"
 
-G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, MX_TYPE_TABLE)
+G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVENTS_PANE, PengeEventsPanePrivate))
@@ -45,8 +45,6 @@ struct _PengeEventsPanePrivate {
   GHashTable *uid_rid_to_actors; /* uid & rid concatenated to actor */
 
   ClutterActor *no_events_bin;
-
-  gint count;
 
   ESourceList *source_list;
 };
@@ -187,58 +185,91 @@ penge_events_pane_constructed (GObject *object)
     G_OBJECT_CLASS (penge_events_pane_parent_class)->constructed (object);
 }
 
-static gboolean
-_update_idle_cb (gpointer userdata)
-{
-  penge_events_pane_update (PENGE_EVENTS_PANE (userdata));
-  return FALSE;
-}
-
+#define SPACING 4.0
 static void
 penge_events_pane_allocate (ClutterActor          *actor,
                             const ClutterActorBox *box,
                             ClutterAllocationFlags flags)
 {
-  PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
-  gfloat height;
-  gint old_count;
+  //PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
+  gfloat width, height;
+  MxPadding padding = { 0, };
+  ClutterActorBox child_box;
+  GList *l;
+  gfloat last_y;
+  GList *children;
 
-  if (CLUTTER_ACTOR_CLASS (penge_events_pane_parent_class)->allocate)
-    CLUTTER_ACTOR_CLASS (penge_events_pane_parent_class)->allocate (actor, box, flags);
+  /* FIXME: Implement container properly ourselves */
 
-  /* Work out how many we can fit in */
+  /* Skip the parent (the MxBoxLayout) and go straight to MxWidget. This is so
+   * we don't have the actors allocated twice
+   */
+  CLUTTER_ACTOR_CLASS (g_type_class_peek (MX_TYPE_WIDGET))->allocate (actor, box, flags);
+
+  width = box->x2 - box->x1;
   height = box->y2 - box->y1;
-  old_count = priv->count;
-  priv->count = height / TILE_HEIGHT;
 
-  if (old_count != priv->count)
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
+
+  last_y = padding.top;
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
+
+  for (l = children; l; l = l->next)
   {
-    /* Must use a high priority idle to avoid redraw artifacts */
-    g_idle_add_full (G_PRIORITY_HIGH_IDLE,
-                     _update_idle_cb,
-                     actor,
-                     NULL);
+    ClutterActor *child = (ClutterActor *)l->data;
+    gfloat child_nat_h;
+
+    clutter_actor_get_preferred_height (child,
+                                        width - (padding.left + padding.right),
+                                        NULL,
+                                        &child_nat_h);
+    child_box.y1 = last_y;
+    child_box.x1 = padding.left;
+    child_box.x2 = width - padding.right;
+    child_box.y2 = child_nat_h + last_y;
+    last_y = child_box.y2;
+
+    if (last_y <= height - padding.bottom)
+      clutter_actor_allocate (child, &child_box, flags);
+
+    last_y += SPACING;
   }
+
+  g_list_free (children);
 }
 
 
-static gint
-_flat_event_count (PengeEventsPane *pane)
+static gfloat
+_calculate_children_height (PengeEventsPane *pane,
+                            gfloat           for_width)
 {
-  PengeEventsPanePrivate *priv = GET_PRIVATE (pane);
-  GList *event_lists, *l;
-  gint count = 0;
+  GList *l, *children;
+  MxPadding padding = { 0, };
+  gfloat height = 0, child_nat_h;
 
-  event_lists = g_hash_table_get_values (priv->uid_to_events_list);
+  mx_widget_get_padding (MX_WIDGET (pane), &padding);
+  height += padding.top + padding.bottom;
 
-  for (l = event_lists; l; l = l->next)
+  children = clutter_container_get_children (CLUTTER_CONTAINER (pane));
+
+  for (l = children; l; l = l->next)
   {
-    count += g_list_length ((GList *)l->data);
+    ClutterActor *child = (ClutterActor *)l->data;
+
+    clutter_actor_get_preferred_height (child,
+                                        for_width,
+                                        NULL,
+                                        &child_nat_h);
+
+    height += child_nat_h;
+
+    /* No SPACING on last */
+    if (l->next != NULL)
+      height += SPACING;
   }
 
-  g_list_free (event_lists);
-
-  return count;
+  return height;
 }
 
 static void
@@ -250,11 +281,14 @@ penge_events_pane_get_preferred_height (ClutterActor *actor,
   PengeEventsPane *pane = PENGE_EVENTS_PANE (actor);
 
   if (min_height_p)
-    *min_height_p = TILE_HEIGHT;
+    *min_height_p = 0;
 
   /* Report our natural height to be our potential maximum */
   if (nat_height_p)
-    *nat_height_p = TILE_HEIGHT * _flat_event_count (pane);
+  {
+    *nat_height_p = _calculate_children_height (pane,
+                                                for_width);
+  }
 }
 
 static void
@@ -362,10 +396,8 @@ penge_events_pane_update (PengeEventsPane *pane)
       priv->no_events_bin = mx_frame_new ();
       mx_bin_set_child (MX_BIN (priv->no_events_bin),
                         label);
-      mx_table_add_actor (MX_TABLE (pane),
-                          priv->no_events_bin,
-                          0,
-                          0);
+      clutter_container_add_actor (CLUTTER_CONTAINER (pane),
+                                   priv->no_events_bin);
       mx_stylable_set_style_class (MX_STYLABLE (label),
                                    "PengeNoMoreEventsLabel");
 
@@ -424,7 +456,7 @@ penge_events_pane_update (PengeEventsPane *pane)
 
   /* Next try and find the end of the window */
   window_end = window_start;
-  for (l = window_start; l && count < priv->count; l = l->next)
+  for (l = window_start; l; l = l->next)
   {
     if (l->next)
     {
@@ -435,17 +467,14 @@ penge_events_pane_update (PengeEventsPane *pane)
   }
 
   /* Try and extend the window forward */
-  if (count < priv->count)
+  for (l = window_start; l; l = l->prev)
   {
-    for (l = window_start; l && count < priv->count; l = l->prev)
+    if (l->prev)
     {
-      if (l->prev)
-      {
-        window_start = l->prev;
-        count++;
-      } else {
-        break;
-      }
+      window_start = l->prev;
+      count++;
+    } else {
+      break;
     }
   }
 
@@ -471,11 +500,6 @@ penge_events_pane_update (PengeEventsPane *pane)
     {
       old_actors = g_list_remove (old_actors, actor);
 
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   actor,
-                                   "row", count,
-                                   "column", 0,
-                                   NULL);
       g_object_set (actor, "time", priv->time, NULL);
 
       /* Free this one here. Other code path takes ownership */
@@ -488,15 +512,14 @@ penge_events_pane_update (PengeEventsPane *pane)
                             "store", event_data->store,
                             NULL);
 
-      clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
-      mx_table_add_actor (MX_TABLE (pane),
-                          actor,
-                          count,
-                          0);
+      clutter_container_add_actor (CLUTTER_CONTAINER (pane),
+                                   actor);
+
       g_hash_table_insert (priv->uid_rid_to_actors,
                            uid_rid, /* Takes ownership */
                            g_object_ref (actor));
     }
+    clutter_actor_raise_top (actor);
 
     count++;
 

@@ -45,11 +45,11 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_EVENTS_PANE, PengeEventsPaneClass))
 
 typedef struct {
-  MxTable parent;
+  MxBoxLayout parent;
 } PengeEventsPane;
 
 typedef struct {
-  MxTableClass parent_class;
+  MxBoxLayoutClass parent_class;
 } PengeEventsPaneClass;
 
 GType penge_events_pane_get_type (void);
