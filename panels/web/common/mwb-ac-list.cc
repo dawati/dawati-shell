@@ -600,7 +600,7 @@ mwb_ac_list_update_entry (MwbAcList *ac_list,
   if (entry->label_actor)
     clutter_actor_unparent (CLUTTER_ACTOR (entry->label_actor));
 
-  entry->label_actor = MX_WIDGET (mx_label_new (entry->label_text));
+  entry->label_actor = MX_WIDGET (mx_label_new_with_text (entry->label_text));
   clutter_actor_set_parent (CLUTTER_ACTOR (entry->label_actor),
                             CLUTTER_ACTOR (ac_list));
 

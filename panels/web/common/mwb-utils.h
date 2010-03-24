@@ -73,8 +73,8 @@ mwb_utils_table_add (MxTable    *table,
 gboolean
 mwb_utils_actor_has_focus (ClutterActor *actor);
 
-void
-mwb_utils_show_popup (MxPopup *popup);
+//void
+//mwb_utils_show_popup (MxPopup *popup);
 
 GdkPixbuf *
 mwb_utils_pixbuf_new_from_stock (const gchar *icon_name, gint size);

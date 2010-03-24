@@ -96,6 +96,7 @@ mwb_utils_actor_has_focus (ClutterActor *actor)
     return FALSE;
 }
 
+/*
 void
 mwb_utils_show_popup (MxPopup *popup)
 {
@@ -119,6 +120,7 @@ mwb_utils_show_popup (MxPopup *popup)
                            NULL);
   g_signal_handlers_disconnect_by_func (animation, (void*)clutter_actor_hide, actor);
 }
+*/
 
 GdkPixbuf *
 mwb_utils_pixbuf_new_from_stock (const gchar *icon_name, gint size)

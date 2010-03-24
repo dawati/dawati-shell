@@ -1196,11 +1196,11 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   MwbRadicalBarPrivate *priv = self->priv = RADICAL_BAR_PRIVATE (self);
 
   priv->table = MX_WIDGET(mx_table_new ());
-  priv->entry = MX_WIDGET(mx_entry_new (""));
-  priv->title = MX_WIDGET(mx_label_new (""));
+  priv->entry = MX_WIDGET(mx_entry_new ());
+  priv->title = MX_WIDGET(mx_label_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (priv->title),
                           "radical-bar-title");
-  priv->instructions = MX_WIDGET(mx_label_new (""));
+  priv->instructions = MX_WIDGET(mx_label_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (priv->instructions),
                           "radical-bar-instructions");
   priv->button = MX_WIDGET(mx_button_new ());

@@ -453,8 +453,8 @@ mnb_netpanel_scrollview_init (MnbNetpanelScrollview *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
-  priv->scroll_adjustment = MX_ADJUSTMENT(mx_adjustment_new (0, 0, 0, 100, 200, 200));
-  priv->scroll_bar = MX_WIDGET(mx_scroll_bar_new (priv->scroll_adjustment));
+  priv->scroll_adjustment = MX_ADJUSTMENT(mx_adjustment_new_with_values (0, 0, 0, 100, 200, 200));
+  priv->scroll_bar = MX_WIDGET(mx_scroll_bar_new_with_adjustment (priv->scroll_adjustment));
   clutter_actor_set_height (CLUTTER_ACTOR (priv->scroll_bar), SCROLLBAR_HEIGHT);
   g_object_unref (priv->scroll_adjustment);
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->scroll_bar),

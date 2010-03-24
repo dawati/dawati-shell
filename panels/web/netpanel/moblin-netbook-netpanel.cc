@@ -761,9 +761,9 @@ create_favs_placeholder (MoblinNetbookNetpanel *self)
   priv->favs_view = bin = MX_WIDGET(mx_frame_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (bin), "netpanel-placeholder-bin");
 
-  label = MX_WIDGET(mx_label_new (_("As you visit web pages, your favorites will "
-                                    "appear here and on the New tab page in the "
-                                    "browser.")));
+  label = MX_WIDGET(mx_label_new_with_text (_("As you visit web pages, your favorites will "
+                                              "appear here and on the New tab page in the "
+                                              "browser.")));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "netpanel-placeholder-label");
   mx_bin_set_child (MX_BIN (bin), CLUTTER_ACTOR (label));
   mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
@@ -801,7 +801,7 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
   if (!title)
     title = url;
 
-  label = MX_WIDGET(mx_label_new (title));
+  label = MX_WIDGET(mx_label_new_with_text (title));
   clutter_actor_set_width (CLUTTER_ACTOR (label), CELL_WIDTH);
 
   tex = clutter_texture_new ();
@@ -1035,7 +1035,7 @@ notify_get_ntabs (DBusGProxy     *proxy,
       g_signal_connect (button, "clicked",
                         G_CALLBACK (new_tab_clicked_cb), self);
 
-      label = MX_WIDGET(mx_label_new (_("New tab")));
+      label = MX_WIDGET(mx_label_new_with_text (_("New tab")));
 
       mnb_netpanel_scrollview_add_item (MNB_NETPANEL_SCROLLVIEW (priv->tabs_view),
                                         0,
@@ -1257,7 +1257,7 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 
   /* Construct entry table widgets */
 
-  label = MX_WIDGET(mx_label_new (_("Internet")));
+  label = MX_WIDGET(mx_label_new_with_text (_("Internet")));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "netpanel-label");
   mx_table_add_actor_with_properties (MX_TABLE (table),
                                         CLUTTER_ACTOR (label),
@@ -1291,12 +1291,12 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
                     G_CALLBACK (netpanel_bar_button_clicked_cb), self);
 
   /* Construct title for tab preview section */
-  priv->tabs_label = label = MX_WIDGET (mx_label_new (_("Tabs")));
+  priv->tabs_label = label = MX_WIDGET (mx_label_new_with_text (_("Tabs")));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "section");
   clutter_actor_set_parent (CLUTTER_ACTOR (label), CLUTTER_ACTOR (self));
 
   /* Construct title for favorite pages section */
-  priv->favs_label = label = MX_WIDGET (mx_label_new (_("Favorite pages")));
+  priv->favs_label = label = MX_WIDGET (mx_label_new_with_text (_("Favorite pages")));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "section");
   clutter_actor_set_parent (CLUTTER_ACTOR (label), CLUTTER_ACTOR (self));
 
