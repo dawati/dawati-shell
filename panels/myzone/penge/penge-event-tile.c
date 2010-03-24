@@ -39,6 +39,7 @@ struct _PengeEventTilePrivate {
   JanaStore *store;
 
   ClutterActor *time_label;
+  ClutterActor *day_label;
   ClutterActor *summary_label;
   ClutterActor *calendar_indicator;
 
@@ -191,57 +192,6 @@ penge_event_tile_class_init (PengeEventTileClass *klass)
   g_object_class_install_property (object_class, PROP_STORE, pspec);
 }
 
-static gboolean
-_enter_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
-  JanaTime *t;
-  gchar *time_str;
-
-  t = jana_event_get_start (priv->event);
-
-  /* Translate this time into local time */
-  jana_time_set_offset (t, jana_time_get_offset (priv->time));
-
-  time_str = jana_utils_strftime (t, "%H:%M");
-
-  mx_label_set_text (MX_LABEL (priv->time_label), time_str);
-  g_object_unref (t);
-  g_free (time_str);
-
-  return FALSE;
-}
-
-static gboolean
-_leave_event_cb (ClutterActor *actor,
-                 ClutterEvent *event,
-                 gpointer      userdata)
-{
-  PengeEventTilePrivate *priv = GET_PRIVATE (userdata);
-  JanaTime *t;
-  gchar *time_str;
-
-  if (priv->time)
-  {
-    t = jana_event_get_start (priv->event);
-
-    /* Translate this time into local time */
-    jana_time_set_offset (t, jana_time_get_offset (priv->time));
-
-    if (jana_time_get_day (priv->time) != jana_time_get_day (t))
-    {
-      time_str = jana_utils_strftime (t, "%a");
-      mx_label_set_text (MX_LABEL (priv->time_label), time_str);
-      g_free (time_str);
-    }
-    g_object_unref (t);
-  }
-
-  return FALSE;
-}
-
 static void
 _button_clicked_cb (MxButton *button,
                     gpointer    userdata)
@@ -280,11 +230,18 @@ penge_event_tile_init (PengeEventTile *self)
 
   priv->calendar_indicator = clutter_cairo_texture_new (20, 20);
   clutter_actor_set_size (priv->calendar_indicator, 20, 20);
+
   priv->time_label = mx_label_new ();
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->time_label));
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_NONE);
   mx_stylable_set_style_class (MX_STYLABLE (priv->time_label),
                                "PengeEventTimeLabel");
-  clutter_actor_set_width (priv->time_label,
-                          60);
+
+  priv->day_label = mx_label_new ();
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->day_label));
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_NONE);
+  mx_stylable_set_style_class (MX_STYLABLE (priv->day_label),
+                               "PengeEventDayLabel");
 
   priv->summary_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->summary_label),
@@ -302,6 +259,14 @@ penge_event_tile_init (PengeEventTile *self)
                       priv->time_label,
                       0,
                       1);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      priv->day_label,
+                      0,
+                      2);
+  mx_table_add_actor (MX_TABLE (priv->inner_table),
+                      priv->summary_label,
+                      0,
+                      3);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                priv->calendar_indicator,
@@ -317,34 +282,25 @@ penge_event_tile_init (PengeEventTile *self)
                                "y-expand", FALSE,
                                "y-fill", FALSE,
                                NULL);
-
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->summary_label,
-                      0,
-                      2);
-
-  /* 
-   * Make the summary label consume the remaining horizontal
-   * space
-   */
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
+                               priv->day_label,
+                               "x-expand", FALSE,
+                               "x-fill", FALSE,
+                               "y-expand", FALSE,
+                               "y-fill", FALSE,
+                               NULL);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                priv->summary_label,
                                "x-expand", TRUE,
+                               "x-fill", TRUE,
+                               "y-expand", FALSE,
                                "y-fill", FALSE,
                                NULL);
 
-  /* Setup spacing and padding */
-  mx_table_set_row_spacing (MX_TABLE (priv->inner_table), 4);
-  mx_table_set_column_spacing (MX_TABLE (priv->inner_table), 8);
 
-  g_signal_connect (self,
-                    "enter-event",
-                    (GCallback)_enter_event_cb,
-                    self);
-  g_signal_connect (self,
-                    "leave-event",
-                    (GCallback)_leave_event_cb,
-                    self);
+  /* Setup spacing and padding */
+  mx_table_set_column_spacing (MX_TABLE (priv->inner_table), 2);
+
   g_signal_connect (self,
                     "clicked",
                     (GCallback)_button_clicked_cb,
@@ -359,6 +315,7 @@ penge_event_tile_update (PengeEventTile *tile)
   PengeEventTilePrivate *priv = GET_PRIVATE (tile);
   gchar *time_str;
   gchar *summary_str;
+  gchar *day_str;
   JanaTime *t;
   gchar *p;
 
@@ -372,14 +329,25 @@ penge_event_tile_update (PengeEventTile *tile)
     /* Translate this time into local time */
     jana_time_set_offset (t, jana_time_get_offset (priv->time));
 
+    time_str = jana_utils_strftime (t, "%H:%M");
+    mx_label_set_text (MX_LABEL (priv->time_label), time_str);
+    g_free (time_str);
+
     if (jana_time_get_day (priv->time) == jana_time_get_day (t))
     {
-      time_str = jana_utils_strftime (t, "%H:%M");
+      mx_label_set_text (MX_LABEL (priv->day_label), "");
+      clutter_actor_hide (priv->day_label);
     } else {
-      time_str = jana_utils_strftime (t, "%a");
+      gchar *tmp_str;
+      tmp_str = jana_utils_strftime (t, "%a");
+      day_str = g_utf8_strup (tmp_str, -1);
+      g_free (tmp_str);
+      mx_label_set_text (MX_LABEL (priv->day_label), day_str);
+      g_free (day_str);
+      clutter_actor_show (priv->day_label);
     }
 
-    if (jana_utils_time_compare (t, priv->time, FALSE) < 0)
+    if (jana_time_get_day (priv->time) != jana_time_get_day (t))
     {
       mx_stylable_set_style_pseudo_class (MX_STYLABLE (priv->time_label),
                                           "past");
@@ -388,9 +356,7 @@ penge_event_tile_update (PengeEventTile *tile)
                                           NULL);
     }
 
-    mx_label_set_text (MX_LABEL (priv->time_label), time_str);
     g_object_unref (t);
-    g_free (time_str);
   }
 
   summary_str = jana_event_get_summary (priv->event);

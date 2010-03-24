@@ -78,12 +78,18 @@ MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
 
 MxLabel.PengeEventTimeLabel
 {
-  padding: 8;
 }
 
 MxLabel.PengeEventTimeLabel:past
 {
-  padding: 8;
+}
+
+MxLabel.PengeEventDayLabel
+{
+}
+
+MxLabel.PengeEventDayLabel:past
+{
 }
 
 PengePeopleTile *.PengeInterestingTilePrimaryLabel,
