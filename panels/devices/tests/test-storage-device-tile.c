@@ -236,7 +236,7 @@ _mount_removed_cb (GVolumeMonitor  *monitor,
                              (ClutterCallback) _remove_cb,
                              stage);
 
-  label = mx_label_new ("Plug in USB storage device ...");
+  label = mx_label_new_with_text ("Plug in USB storage device ...");
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 }
 
@@ -262,7 +262,7 @@ main (int     argc,
   g_signal_connect (monitor, "mount-removed",
                     G_CALLBACK (_mount_removed_cb), stage);
 
-  label = mx_label_new ("Plug in USB storage device ...");
+  label = mx_label_new_with_text ("Plug in USB storage device ...");
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 
   clutter_actor_show_all (stage);
