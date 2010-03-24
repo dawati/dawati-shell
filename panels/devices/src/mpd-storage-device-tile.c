@@ -591,11 +591,20 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
                                  priv->states.ready.meter);
 
     /* Copy button */
-    priv->states.ready.copy = mx_button_new_with_label (_("Copy"));
+    priv->states.ready.copy = mx_button_new_with_label (
+                                _("Copy media to your computer"));
     g_signal_connect (priv->states.ready.copy, "clicked",
                       G_CALLBACK (_copy_clicked_cb), self);
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
                                  priv->states.ready.copy);
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->middle_col),
+                                 priv->states.ready.copy,
+                                 "expand", false,
+                                 "x-align", MX_ALIGN_END,
+                                 "x-fill", false,
+                                 "y-align", MX_ALIGN_MIDDLE,
+                                 "y-fill", false,
+                                 NULL);
 
     /* Eject button */
     priv->states.ready.eject = mx_button_new_with_label (_("Eject"));
