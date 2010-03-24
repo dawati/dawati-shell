@@ -501,6 +501,8 @@ moblin_netbook_netpanel_button_press (MoblinNetbookNetpanel *netpanel)
  * TODO -- we might need dbus API for launching things to retain control over
  * the application workspace; investigate further.
  */
+extern gboolean google_chrome;
+
 static void
 moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
                                     const gchar           *url,
@@ -525,10 +527,16 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
       remaining = ptr + 1;
     }
 
-  exec = g_strdup_printf ("%s %s \"%s%s\"", 
-                          "google-chrome", 
-                          "",
-                          prefix, remaining);
+  if (google_chrome)
+     exec = g_strdup_printf ("%s %s \"%s%s\"", 
+                            "google-chrome", 
+                            "",
+                            prefix, remaining);
+  else
+    exec = g_strdup_printf ("%s %s \"%s%s\"", 
+                            "chromium-browser", 
+                            "",
+                            prefix, remaining);
   g_free (prefix);
 
   if (priv->panel_client)

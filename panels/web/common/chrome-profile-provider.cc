@@ -26,7 +26,7 @@
 
 using namespace history;
 
-extern gint g_browser_type;
+extern gboolean google_chrome;
 
 int 
 ChromeProfileProvider::Initialize(service_type type)
@@ -37,13 +37,13 @@ ChromeProfileProvider::Initialize(service_type type)
   */
 
   gchar* chrome_profile_path = NULL;
-  if (g_browser_type == 0)
+  if (google_chrome)
     chrome_profile_path = g_build_filename (g_get_home_dir(),
                                             ".config",
                                             "google-chrome",
                                             "Default",
                                             NULL);
-  else if (g_browser_type == 1)
+  else
     chrome_profile_path = g_build_filename (g_get_home_dir(),
                                             ".config",
                                             "chromium",

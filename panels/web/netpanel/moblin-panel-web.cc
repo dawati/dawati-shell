@@ -85,10 +85,7 @@ static GOptionEntry entries[] = {
 #define CHROMIUM_BUNDLE_PATH CHROMIUM_EXE_PATH "/chrome.pak"
 #define CHROMIUM_LOCALE_PATH CHROMIUM_EXE_PATH "/locales"
 
-const gint BROWSER_TYPE_CHROME = 0;
-const gint BROWSER_TYPE_CHROMIUM = 1;
-
-gint g_browser_type = BROWSER_TYPE_CHROME;
+gboolean google_chrome = TRUE;
 
 int
 main (int    argc,
@@ -113,14 +110,14 @@ main (int    argc,
     FilePath bundle_path(CHROME_BUNDLE_PATH);
     FilePath locale_path(CHROME_LOCALE_PATH);
     ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
-    g_browser_type = BROWSER_TYPE_CHROME;
+    google_chrome = TRUE;
   }
   else if (g_file_test (CHROMIUM_BUNDLE_PATH, G_FILE_TEST_EXISTS)
      && g_file_test (CHROMIUM_LOCALE_PATH, G_FILE_TEST_EXISTS)) {
     FilePath bundle_path(CHROMIUM_BUNDLE_PATH);
     FilePath locale_path(CHROMIUM_LOCALE_PATH);
     ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
-    g_browser_type = BROWSER_TYPE_CHROMIUM;
+    google_chrome = FALSE;
   }
   else {
     g_warning("Chrome or Chromium browser is not installed\n");
