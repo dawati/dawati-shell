@@ -150,22 +150,30 @@ device_from_mount (GMount *mount)
 }
 
 static void
-_remove_cb (ClutterActor      *actor,
-            ClutterContainer  *container)
+_find_first_cb (ClutterActor   *actor,
+                void          **child)
 {
-  clutter_container_remove_actor (container, actor);
+  if (NULL == *child)
+    *child = actor;
 }
 
 static void
 _mount_added_cb (GVolumeMonitor  *monitor,
                  GMount          *mount,
-                 ClutterActor    *stage)
+                 ClutterActor    *box)
 {
-  GduDevice *device;
+  GduDevice     *device;
+  ClutterActor  *label = NULL;
 
-  clutter_container_foreach (CLUTTER_CONTAINER (stage),
-                             (ClutterCallback) _remove_cb,
-                             stage);
+  clutter_container_foreach (CLUTTER_CONTAINER (box),
+                             (ClutterCallback) _find_first_cb,
+                             &label);
+  if (MX_IS_LABEL (label))
+  {
+    clutter_actor_destroy (label);
+  } else {
+    g_debug ("Not a label");
+  }
 
   device = device_from_mount (mount);
   g_return_if_fail (device);
@@ -173,7 +181,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
   g_debug ("%s() mounted: '%d', name: '%s', vendor: '%s', model: '%s'\n"
            "uid: '%s'\n"
            "ejectable: '%d'",
-           __FUNCTION__, 
+           __FUNCTION__,
            gdu_device_is_mounted (device),
            gdu_device_get_presentation_name (device),
            gdu_device_drive_get_vendor (device),
@@ -207,7 +215,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
     tile = mpd_storage_device_tile_new (path, icon_file);
     g_signal_connect (tile, "eject",
                       G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
-    clutter_container_add_actor (CLUTTER_CONTAINER (stage), tile);
+    mx_box_layout_add_actor (MX_BOX_LAYOUT (box), tile, 0);
     clutter_actor_set_width (tile, 480.0);
 
     gtk_icon_info_free (icon_info);
@@ -220,7 +228,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
 static void
 _mount_changed_cb (GVolumeMonitor *monitor,
                    GMount         *mount,
-                   ClutterActor   *stage)
+                   ClutterActor   *box)
 {
   g_debug ("%s()", __FUNCTION__);
 }
@@ -228,16 +236,42 @@ _mount_changed_cb (GVolumeMonitor *monitor,
 static void
 _mount_removed_cb (GVolumeMonitor  *monitor,
                    GMount          *mount,
-                   ClutterActor    *stage)
+                   ClutterActor    *box)
 {
-  ClutterActor  *label;
+  ClutterActor *actor = NULL;
 
-  clutter_container_foreach (CLUTTER_CONTAINER (stage),
-                             (ClutterCallback) _remove_cb,
-                             stage);
+  clutter_container_foreach (CLUTTER_CONTAINER (box),
+                             (ClutterCallback) _find_first_cb,
+                             &actor);
+  if (MPD_IS_STORAGE_DEVICE_TILE (actor))
+  {
+    clutter_actor_destroy (actor);
+  } else {
+    g_debug ("Not a tile");
+  }
 
-  label = mx_label_new_with_text ("Plug in USB storage device ...");
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+  actor = mx_label_new_with_text ("Plug in USB storage device ...");
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), actor, 0);
+}
+
+static void
+_button_clicked_cb (MxButton    *button,
+                    MxBoxLayout *box)
+{
+  ClutterActor *tile = NULL;
+  MpdStorageDeviceTileState state;
+
+  clutter_container_foreach (CLUTTER_CONTAINER (box),
+                             (ClutterCallback) _find_first_cb,
+                             &tile);
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (tile));
+
+  state = mpd_storage_device_tile_get_state (MPD_STORAGE_DEVICE_TILE (tile));
+  if (state < STATE_DONE)
+  {
+    mpd_storage_device_tile_set_state (MPD_STORAGE_DEVICE_TILE (tile),
+                                       state + 1);
+  }
 }
 
 int
@@ -245,7 +279,9 @@ main (int     argc,
       char  **argv)
 {
   ClutterActor    *stage;
+  ClutterActor    *box;
   ClutterActor    *label;
+  ClutterActor    *button;
   GVolumeMonitor  *monitor;
 
   clutter_init (&argc, &argv);
@@ -253,17 +289,25 @@ main (int     argc,
   gtk_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
+  box = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_ORIENTATION_VERTICAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
   monitor = g_volume_monitor_get ();
   g_signal_connect (monitor, "mount-added",
-                    G_CALLBACK (_mount_added_cb), stage);
+                    G_CALLBACK (_mount_added_cb), box);
   g_signal_connect (monitor, "mount-changed",
-                    G_CALLBACK (_mount_changed_cb), stage);
+                    G_CALLBACK (_mount_changed_cb), box);
   g_signal_connect (monitor, "mount-removed",
-                    G_CALLBACK (_mount_removed_cb), stage);
+                    G_CALLBACK (_mount_removed_cb), box);
 
   label = mx_label_new_with_text ("Plug in USB storage device ...");
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), label);
+
+  button = mx_button_new_with_label ("Next state");
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (_button_clicked_cb), box);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), button);
 
   clutter_actor_show_all (stage);
   clutter_main ();

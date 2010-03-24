@@ -56,6 +56,16 @@ typedef struct
 GType
 mpd_storage_device_tile_get_type (void);
 
+typedef enum
+{
+  STATE_ERROR = -1,
+  STATE_PRISTINE = 0,
+  STATE_SEARCHING,
+  STATE_READY,
+  STATE_UNMOUNTING,
+  STATE_DONE
+} MpdStorageDeviceTileState;
+
 ClutterActor *
 mpd_storage_device_tile_new (char const *mount_point,
                              char const *icon_file);
@@ -65,6 +75,16 @@ mpd_storage_device_tile_get_icon_file (MpdStorageDeviceTile *self);
 
 char const *
 mpd_storage_device_tile_get_mount_point (MpdStorageDeviceTile *self);
+
+MpdStorageDeviceTileState
+mpd_storage_device_tile_get_state (MpdStorageDeviceTile *self);
+
+void
+mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
+                                   MpdStorageDeviceTileState   state);
+
+char *
+mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self);
 
 G_END_DECLS
 
