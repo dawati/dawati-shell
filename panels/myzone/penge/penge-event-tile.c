@@ -53,7 +53,8 @@ enum
   PROP_0,
   PROP_EVENT,
   PROP_TIME,
-  PROP_STORE
+  PROP_STORE,
+  PROP_MULTILINE_SUMMARY
 };
 
 static void penge_event_tile_update (PengeEventTile *tile);
@@ -78,6 +79,16 @@ penge_event_tile_get_property (GObject *object, guint property_id,
       break;
     case PROP_STORE:
       g_value_set_object (value, priv->store);
+      break;
+    case PROP_MULTILINE_SUMMARY:
+      {
+        ClutterActor *tmp_text;
+
+        tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->summary_label));
+
+        g_value_set_boolean (value,
+                             !clutter_text_get_single_line_mode (CLUTTER_TEXT (tmp_text)));
+      }
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -110,6 +121,17 @@ penge_event_tile_set_property (GObject *object, guint property_id,
     case PROP_STORE:
       penge_event_tile_set_store ((PengeEventTile *)object,
                                   g_value_get_object (value));
+      break;
+    case PROP_MULTILINE_SUMMARY:
+      {
+        ClutterActor *tmp_text;
+
+        tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->summary_label));
+        clutter_text_set_single_line_mode (CLUTTER_TEXT (tmp_text),
+                                           !g_value_get_boolean (value));
+        clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text),
+                                    g_value_get_boolean (value));
+      }
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -190,6 +212,13 @@ penge_event_tile_class_init (PengeEventTileClass *klass)
                                JANA_ECAL_TYPE_STORE,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_STORE, pspec);
+
+  pspec = g_param_spec_boolean ("multiline-summary",
+                                "Multiple line summary",
+                                "Whether the summary should be multiple lines",
+                                FALSE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_MULTILINE_SUMMARY, pspec);
 }
 
 static void

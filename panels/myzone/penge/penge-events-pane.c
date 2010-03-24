@@ -47,12 +47,15 @@ struct _PengeEventsPanePrivate {
   ClutterActor *no_events_bin;
 
   ESourceList *source_list;
+
+  gboolean multiline_summary;
 };
 
 enum
 {
   PROP_0,
-  PROP_TIME
+  PROP_TIME,
+  PROP_MULTILINE_SUMMARY
 };
 
 typedef struct {
@@ -86,6 +89,9 @@ penge_events_pane_get_property (GObject *object, guint property_id,
   switch (property_id) {
     case PROP_TIME:
       g_value_set_object (value, priv->time);
+      break;
+    case PROP_MULTILINE_SUMMARY:
+      g_value_set_boolean (value, priv->multiline_summary);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -125,6 +131,9 @@ penge_events_pane_set_property (GObject *object, guint property_id,
   
       penge_events_pane_update_durations ((PengeEventsPane *)object);
       penge_events_pane_update ((PengeEventsPane *)object);
+      break;
+    case PROP_MULTILINE_SUMMARY:
+      priv->multiline_summary = g_value_get_boolean (value);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -315,6 +324,14 @@ penge_events_pane_class_init (PengeEventsPaneClass *klass)
                                JANA_TYPE_TIME,
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_TIME, pspec);
+
+  pspec = g_param_spec_boolean ("multiline-summary",
+                                "Multiple line summary",
+                                "Whether event summaries should use "
+                                "multiple lines",
+                                FALSE,
+                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_MULTILINE_SUMMARY, pspec);
 }
 
 static gint
@@ -510,6 +527,7 @@ penge_events_pane_update (PengeEventsPane *pane)
                             "event", event,
                             "time", priv->time,
                             "store", event_data->store,
+                            "multiline-summary", priv->multiline_summary,
                             NULL);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (pane),
