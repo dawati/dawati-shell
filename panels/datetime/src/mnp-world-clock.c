@@ -189,12 +189,12 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 	GWeatherLocation *loc;
 	gboolean is_first_word = TRUE, match;
 	int len;
-	char *key;
+	char *key, *skey;
 
 	if (!priv->search_text || !*priv->search_text)
 		return TRUE;
 
-	key = g_ascii_strdown(priv->search_text, -1);
+	skey = key = g_ascii_strdown(priv->search_text, -1);
 	clutter_model_iter_get (iter, 
 			GWEATHER_LOCATION_ENTRY_COL_COMPARE_NAME, &name_mem,
 			GWEATHER_LOCATION_ENTRY_COL_LOCATION, &loc,
@@ -232,7 +232,7 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 	/* The last word in KEY must match a prefix of a following word in NAME */
 	match = find_word (name, key, strlen (key), FALSE, is_first_word) != NULL;
 	g_free (name_mem);
-	g_free (key);
+	g_free (skey);
 	return match;
 }
 
