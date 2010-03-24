@@ -596,7 +596,7 @@ penge_event_tile_set_store (PengeEventTile *tile,
                 "ecal", &ecal,
                 NULL);
 
-  priv->source = e_cal_get_source (ecal);
+  priv->source = g_object_ref (e_cal_get_source (ecal));
 
   g_signal_connect (priv->source,
                     "changed",
