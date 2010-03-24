@@ -511,7 +511,7 @@ _update_calendar_indicator (PengeEventTile *tile)
 
   clutter_color_lighten (&color, &light_color);
 
-  __roundrect (cr, 1, 1, 3, 17);
+  __roundrect (cr, 0.5, 0.5, 3, 19);
 
   pat = cairo_pattern_create_linear (0, 3, 0, 16);
   cairo_pattern_add_color_stop_rgb (pat,
@@ -529,15 +529,15 @@ _update_calendar_indicator (PengeEventTile *tile)
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
 
-  __roundrect (cr, 2, 2, 3, 15);
+  __roundrect (cr, 1.0, 1.0, 3, 18);
 
   clutter_color_lighten (&light_color, &color);
 
-  cairo_set_line_width (cr, 2.0);
+  cairo_set_line_width (cr, 1.5);
   cairo_set_source_rgb (cr, color.red/255.0, color.green/255.0, color.blue/255.0);
   cairo_stroke (cr);
 
-  __roundrect (cr, 1, 1, 3, 17);
+  __roundrect (cr, 0.5, 0.5, 3, 19);
 
   cairo_set_line_width (cr, 1.0);
   cairo_set_source_rgb (cr, 0xad/255.0, 0xad/255.0, 0xad/255.0);
