@@ -114,6 +114,20 @@ assign_title (MpdStorageDeviceTile  *self,
   g_free (title);
 }
 
+static ClutterActor *
+description_label_new (void)
+{
+  ClutterActor  *label;
+  ClutterText   *text;
+
+  label = mx_label_new ();
+  text = CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (label)));
+  clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_NONE);
+  clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD);
+
+  return label;
+}
+
 static void
 update (MpdStorageDeviceTile *self)
 {
@@ -427,6 +441,13 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                  MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (self),
                                priv->right_col);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->right_col,
+                               "expand", false,
+                               "x-align", MX_ALIGN_END,
+                               "x-fill", false,
+                               "y-align", MX_ALIGN_START,
+                               "y-fill", true,
+                               NULL);
 }
 
 ClutterActor *
@@ -550,7 +571,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
                                  priv->states.searching.title);
 
     /* Description */
-    priv->states.searching.description = mx_label_new ();
+    priv->states.searching.description = description_label_new ();
     mx_label_set_text (MX_LABEL (priv->states.searching.description),
                        _("Please wait a moment while we search for data on the device ..."));
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
@@ -581,7 +602,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
                                  priv->states.ready.title);
 
     /* Description */
-    priv->states.ready.description = mx_label_new ();
+    priv->states.ready.description = description_label_new ();
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
                                  priv->states.ready.description);
 
@@ -619,6 +640,14 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
                       G_CALLBACK (_open_clicked_cb), self);
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->right_col),
                                  priv->states.ready.open);
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->middle_col),
+                                 priv->states.ready.open,
+                                 "expand", false,
+                                 "x-align", MX_ALIGN_END,
+                                 "x-fill", false,
+                                 "y-align", MX_ALIGN_END,
+                                 "y-fill", false,
+                                 NULL);
 
     g_signal_connect (priv->storage, "notify::size",
                       G_CALLBACK (_storage_size_notify_cb), self);
@@ -643,7 +672,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     title = mpd_storage_device_tile_get_title (self);
     description = g_strdup_printf (_("Please wait whilst your %s is being ejected ..."),
                                    title);
-    priv->states.unmounting.description = mx_label_new ();
+    priv->states.unmounting.description = description_label_new ();
     mx_label_set_text (MX_LABEL (priv->states.unmounting.description),
                        description);
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
@@ -662,7 +691,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     title = mpd_storage_device_tile_get_title (self);
     description = g_strdup_printf (_("It is safe to pull out your %s"),
                                    title);
-    priv->states.done.description = mx_label_new ();
+    priv->states.done.description = description_label_new ();
     mx_label_set_text (MX_LABEL (priv->states.done.description),
                        description);
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
