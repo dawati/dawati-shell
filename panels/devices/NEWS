@@ -1,4 +1,9 @@
 
+Version 0.1.12, 2010-03-25
+
+    Depend on mx-1.0 >= 0.9, fix for API changes
+    l10n: Updates to Brazilian Portuguese (pt_BR) translation
+
 Version 0.1.11, 2010-03-22
 
     Depend on mx-1.0 >= 0.8
