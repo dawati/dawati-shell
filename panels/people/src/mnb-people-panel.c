@@ -282,7 +282,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
                                       "y-expand", FALSE,
                                       "x-fill", TRUE,
                                       "y-fill", FALSE,
-                                      "x-align", 0.0,
+                                      "x-align", MX_ALIGN_START,
                                       NULL);
   mx_bin_set_alignment (MX_BIN (frame), MX_ALIGN_START, MX_ALIGN_MIDDLE);
 
@@ -302,7 +302,7 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
                                         "y-expand", FALSE,
                                         "x-fill", FALSE,
                                         "y-fill", FALSE,
-                                        "x-align", 0.0,
+                                        "x-align", MX_ALIGN_START,
                                         NULL);
 
 
@@ -316,8 +316,8 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
                                         "x-fill", FALSE,
                                         "y-fill", FALSE,
                                         "y-expand", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.5,
+                                        "x-align", MX_ALIGN_START,
+                                        "y-align", MX_ALIGN_MIDDLE,
                                         NULL);
 
     label = mx_label_new_with_text (g_app_info_get_description (priv->app_info));
@@ -330,8 +330,8 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
                                           "x-fill", FALSE,
                                           "y-expand", FALSE,
                                           "y-fill", FALSE,
-                                          "x-align", 0.0,
-                                          "y-align", 0.5,
+                                          "x-align", MX_ALIGN_START,
+                                          "y-align", MX_ALIGN_MIDDLE,
                                           NULL);
 
     priv->icon_theme = gtk_icon_theme_get_default ();
@@ -401,7 +401,7 @@ _make_everybody_offline_tile (MnbPeoplePanel *pane)
                                       "y-expand", FALSE,
                                       "x-fill", TRUE,
                                       "y-fill", FALSE,
-                                      "x-align", 0.0,
+                                      "x-align", MX_ALIGN_START,
                                       NULL);
   return tile;
 }
@@ -446,7 +446,7 @@ _make_offline_banner (MnbPeoplePanel *pane,
                                       "y-expand", FALSE,
                                       "x-fill", TRUE,
                                       "y-fill", FALSE,
-                                      "x-align", 0.0,
+                                      "x-align", MX_ALIGN_START,
                                       NULL);
   return tile;
 }
@@ -682,8 +682,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-expand", FALSE,
                                       "x-fill", TRUE,
                                       "y-fill", TRUE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.0,
+                                      "x-align", MX_ALIGN_START,
+                                      "y-align", MX_ALIGN_START,
                                       NULL);
 
   label = mx_label_new_with_text (_("People"));
@@ -695,8 +695,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-expand", FALSE,
                                       "x-fill", FALSE,
                                       "y-fill", FALSE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.5,
+                                      "x-align", MX_ALIGN_START,
+                                      "y-align", MX_ALIGN_MIDDLE,
                                       NULL);
 
   priv->entry = (ClutterActor *) mpl_entry_new (_("Search"));
@@ -709,8 +709,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "y-expand", FALSE,
                                       "x-fill", FALSE,
                                       "y-fill", FALSE,
-                                      "x-align", 0.0,
-                                      "y-align", 0.5,
+                                      "x-align", MX_ALIGN_START,
+                                      "y-align", MX_ALIGN_MIDDLE,
                                       NULL);
   priv->presence_chooser = anerley_presence_chooser_new ();
   mx_table_add_actor_with_properties (MX_TABLE (priv->header_box),
@@ -718,7 +718,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       0, 2,
                                       "x-expand", TRUE,
                                       "x-fill", FALSE,
-                                      "x-align", 1.0,
+                                      "x-align", MX_ALIGN_END,
                                       "y-expand", TRUE,
                                       "y-fill", TRUE,
                                       NULL);
@@ -803,7 +803,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
                                       "y-fill", FALSE,
-                                      "y-align", 0.0,
+                                      "y-align", MX_ALIGN_START,
                                       "row-span", 1,
                                       NULL);
 
@@ -818,7 +818,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
                                       "y-fill", FALSE,
-                                      "y-align", 0.0,
+                                      "y-align", MX_ALIGN_START,
                                       "row-span", 1,
                                       NULL);
 
@@ -833,7 +833,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
                                       "y-fill", FALSE,
-                                      "y-align", 0.0,
+                                      "y-align", MX_ALIGN_START,
                                       "row-span", 1,
                                       NULL);
 
