@@ -73,7 +73,7 @@ AM_GLIB_GNU_GETTEXT
 # Libmoblin-panel
 PKG_CHECK_MODULES(LIBMPL,
                   dbus-glib-1
-                  mx-1.0 >= 0.5.0
+                  mx-1.0 >= 0.9.0
                   gtk+-2.0
                   gio-unix-2.0)
 
