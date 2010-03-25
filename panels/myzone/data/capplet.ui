@@ -11,6 +11,7 @@
   <object class="GtkVBox" id="main_vbox">
     <property name="visible">True</property>
     <property name="orientation">vertical</property>
+    <property name="spacing">12</property>
     <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
@@ -19,6 +20,7 @@
         <child>
           <object class="GtkAlignment" id="alignment1">
             <property name="visible">True</property>
+            <property name="top_padding">12</property>
             <property name="left_padding">12</property>
             <child>
               <object class="GtkVBox" id="vbox2">
@@ -53,7 +55,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Show calendar and tasks:</property>
+                        <property name="label" translatable="yes">Calendar and tasks:</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -79,7 +81,7 @@
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Show unread email notification:</property>
+                        <property name="label" translatable="yes">Email alerts:</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -145,11 +147,8 @@
         <child type="label">
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Change what is shown in your Myzone</property>
+            <property name="label" translatable="yes">&lt;b&gt;Change what is shown in your Myzone&lt;/b&gt;</property>
             <property name="use_markup">True</property>
-            <attributes>
-              <attribute name="scale" value="1.500000"/>
-            </attributes>
           </object>
         </child>
       </object>
@@ -168,35 +167,42 @@
           <object class="GtkAlignment" id="alignment6">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="top_padding">12</property>
             <property name="left_padding">12</property>
             <child>
-              <object class="GtkHBox" id="hbox2">
+              <object class="GtkAlignment" id="alignment2">
                 <property name="visible">True</property>
-                <property name="spacing">12</property>
+                <property name="xscale">0.5</property>
                 <child>
-                  <object class="GtkFileChooserButton" id="background_chooser_button">
+                  <object class="GtkHBox" id="hbox2">
                     <property name="visible">True</property>
-                    <property name="create_folders">False</property>
-                    <property name="title" translatable="yes">Choose your wallpaper</property>
-                    <signal name="file_set" handler="background_chooser_button_file_set_cb"/>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkFileChooserButton" id="background_chooser_button">
+                        <property name="visible">True</property>
+                        <property name="create_folders">False</property>
+                        <property name="title" translatable="yes">Choose your wallpaper</property>
+                        <signal name="file_set" handler="background_chooser_button_file_set_cb"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="reset_background_button">
+                        <property name="label" translatable="yes">Reset to default</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="reset_background_button_clicked_cb"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="reset_background_button">
-                    <property name="label" translatable="yes">Reset to default</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <signal name="clicked" handler="reset_background_button_clicked_cb"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
             </child>
@@ -205,11 +211,8 @@
         <child type="label">
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Myzone Wallpaper</property>
+            <property name="label" translatable="yes">&lt;b&gt;Myzone Wallpaper&lt;/b&gt;</property>
             <property name="use_markup">True</property>
-            <attributes>
-              <attribute name="scale" value="1.500000"/>
-            </attributes>
           </object>
         </child>
       </object>
@@ -225,8 +228,8 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup1">
     <widgets>
-      <widget name="label4"/>
       <widget name="label2"/>
+      <widget name="label4"/>
     </widgets>
   </object>
 </interface>
