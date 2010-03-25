@@ -160,10 +160,43 @@ penge_interesting_tile_finalize (GObject *object)
   G_OBJECT_CLASS (penge_interesting_tile_parent_class)->finalize (object);
 }
 
+static gboolean
+penge_interesting_tile_enter_event (ClutterActor         *actor,
+                                    ClutterCrossingEvent *event)
+{
+  /* If we are just entering from a child then don't set the hover */
+  if (event->related &&
+      clutter_actor_get_parent (event->related) == actor)
+  {
+    return FALSE;
+  }
+
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor), "hover");
+
+  return FALSE;
+}
+
+static gboolean
+penge_interesting_tile_leave_event (ClutterActor         *actor,
+                                    ClutterCrossingEvent *event)
+{
+  /* If we are just leaving to a child then don't unset the hover */
+  if (event->related &&
+      clutter_actor_get_parent (event->related) == actor)
+  {
+    return FALSE;
+  }
+
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor), "");
+
+  return FALSE;
+}
+
 static void
 penge_interesting_tile_class_init (PengeInterestingTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (PengeInterestingTilePrivate));
@@ -172,6 +205,9 @@ penge_interesting_tile_class_init (PengeInterestingTileClass *klass)
   object_class->set_property = penge_interesting_tile_set_property;
   object_class->dispose = penge_interesting_tile_dispose;
   object_class->finalize = penge_interesting_tile_finalize;
+
+  actor_class->enter_event = penge_interesting_tile_enter_event;
+  actor_class->leave_event = penge_interesting_tile_leave_event;
 
   pspec = g_param_spec_object ("body",
                                "Body",
