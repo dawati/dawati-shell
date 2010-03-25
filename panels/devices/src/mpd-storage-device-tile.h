@@ -59,8 +59,7 @@ mpd_storage_device_tile_get_type (void);
 typedef enum
 {
   STATE_ERROR = -1,
-  STATE_PRISTINE = 0,
-  STATE_SEARCHING,
+  STATE_SEARCHING = 0,
   STATE_READY,
   STATE_UNMOUNTING,
   STATE_DONE

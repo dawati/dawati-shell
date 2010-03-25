@@ -237,6 +237,7 @@ _constructor (GType                  type,
   if (priv->mount_point)
   {
     priv->storage = mpd_storage_device_new (priv->mount_point);
+    mpd_storage_device_tile_set_state (self, STATE_SEARCHING);
 
   } else {
     g_critical ("%s : %s",
@@ -370,9 +371,9 @@ mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
                                    g_param_spec_int ("state",
                                                      "State",
                                                      "Tile state",
-                                                     STATE_PRISTINE,
+                                                     STATE_ERROR,
                                                      STATE_DONE,
-                                                     STATE_PRISTINE,
+                                                     STATE_ERROR,
                                                      param_flags));
   g_object_class_install_property (object_class,
                                    PROP_TITLE,
@@ -404,6 +405,8 @@ static void
 mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  priv->state = STATE_ERROR;
 
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self),
                              MPD_STORAGE_DEVICE_TILE_SPACING);
@@ -558,9 +561,6 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
   {
   case STATE_ERROR:
     /* TODO */
-    break;
-  case STATE_PRISTINE:
-    /* Initial state, nothing to do. */
     break;
   case STATE_SEARCHING:
 
