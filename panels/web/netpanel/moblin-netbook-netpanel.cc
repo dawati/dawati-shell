@@ -680,7 +680,7 @@ session_tab_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
   guint tab_id = (guint)g_object_get_data (G_OBJECT (button), "tab_id");
 
   //moblin_netbook_netpanel_launch_url (self, url, TRUE);
-  gchar *plugin_pipe = g_strdup_printf ("%s/chrome-moblin-plugin.fifo",
+  gchar *plugin_pipe = g_strdup_printf ("%s/chrome-meego-plugin.fifo",
                                          g_get_tmp_dir ());
 
   if (g_file_test (plugin_pipe, G_FILE_TEST_EXISTS))
