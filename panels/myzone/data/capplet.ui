@@ -167,11 +167,13 @@
           <object class="GtkAlignment" id="alignment6">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="xalign">0</property>
             <property name="top_padding">12</property>
             <property name="left_padding">12</property>
             <child>
               <object class="GtkAlignment" id="alignment2">
                 <property name="visible">True</property>
+                <property name="xalign">0</property>
                 <property name="xscale">0.5</property>
                 <child>
                   <object class="GtkHBox" id="hbox2">
@@ -228,8 +230,8 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup1">
     <widgets>
-      <widget name="label2"/>
       <widget name="label4"/>
+      <widget name="label2"/>
     </widgets>
   </object>
 </interface>
