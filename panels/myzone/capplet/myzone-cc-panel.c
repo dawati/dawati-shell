@@ -92,16 +92,28 @@ change_web_accounts_button_clicked_cb (GtkButton *button,
                                        gpointer   userdata)
 {
   GDesktopAppInfo *app_info;
-  GdkAppLaunchContext *context;
+  gchar *args[3] = { NULL, };
+  GError *error = NULL;
 
-  app_info = g_desktop_app_info_new ("bisho.desktop");
-  context = gdk_app_launch_context_new ();
-  g_app_info_launch ((GAppInfo *)app_info,
-                     NULL,
-                     (GAppLaunchContext *)context,
-                     NULL);
+  app_info = g_desktop_app_info_new ("gnome-control-center.desktop");
+  args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
+  args[1] = "bisho.desktop";
+  args[2] = NULL;
 
-  g_object_unref (context);
+  if (!g_spawn_async (NULL,
+                      args,
+                      NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      NULL,
+                      NULL,
+                      NULL,
+                      &error))
+  {
+    g_warning (G_STRLOC ": Error starting control center for bisho: %s",
+               error->message);
+    g_clear_error (&error);
+  }
+
   g_object_unref (app_info);
 }
 
