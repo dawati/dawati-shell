@@ -521,7 +521,7 @@ collect_props (const char *key,
     handled = FALSE;
 
   if (!handled)
-    g_warning ("unhandled property '%s'", key);
+    g_debug ("unhandled property '%s'", key);
 }
 
 static void
