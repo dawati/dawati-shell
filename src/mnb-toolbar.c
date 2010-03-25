@@ -2119,7 +2119,7 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
         }
     }
 
-  mx_button_set_toggle_mode (MX_BUTTON (button), TRUE);
+  mx_button_set_is_toggle (MX_BUTTON (button), TRUE);
   mx_widget_set_tooltip_text (MX_WIDGET (button), tooltip);
   clutter_actor_set_name (button, button_style ? button_style : style_id);
 
