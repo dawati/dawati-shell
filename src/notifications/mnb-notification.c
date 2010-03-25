@@ -263,7 +263,7 @@ mnb_notification_init (MnbNotification *self)
 
   /* create the box for the buttons */
   priv->button_box = mx_grid_new ();
-  mx_grid_set_end_align (MX_GRID (priv->button_box), TRUE);
+  mx_grid_set_line_alignment (MX_GRID (priv->button_box), MX_ALIGN_END);
   mx_grid_set_column_spacing (MX_GRID (priv->button_box), 7);
   mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->button_box),
                         2, 0);

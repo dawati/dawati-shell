@@ -293,8 +293,8 @@ mnb_alttab_overlay_constructed (GObject *self)
 
   mx_grid_set_column_spacing (grid, MNB_ALTTAB_OVERLAY_TILE_SPACING);
   mx_grid_set_row_spacing (grid, MNB_ALTTAB_OVERLAY_TILE_SPACING);
-  mx_grid_set_valign (grid, 0.5);
-  mx_grid_set_halign (grid, 0.5);
+  mx_grid_set_child_x_align (grid, MX_ALIGN_MIDDLE);
+  mx_grid_set_child_y_align (grid, MX_ALIGN_MIDDLE);
 
   mx_stylable_set_style_class (MX_STYLABLE (self),"alttab-overlay");
 
