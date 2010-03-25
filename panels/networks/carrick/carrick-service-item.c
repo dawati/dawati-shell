@@ -156,10 +156,11 @@ _service_item_set_security (CarrickServiceItem *item)
 
   if (security && security[0] != '\0' && g_strcmp0 ("none", security) != 0)
     {
-      if (g_strcmp0 ("rsn", security) == 0)
+      if ((g_strcmp0 ("rsn", security) == 0) ||
+	  (g_strcmp0 ("psk", security) == 0))
         {
           g_free (security);
-          security = g_strdup ("WPA2");
+          security = g_strdup ("WPA");
         }
       else
         {
@@ -171,7 +172,7 @@ _service_item_set_security (CarrickServiceItem *item)
             }
         }
       /* TRANSLATORS: this is a wireless security method, at least WEP,
-       *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+       *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
        */
       security_label = g_strdup_printf (_ ("%s encrypted"),
                                         security);
