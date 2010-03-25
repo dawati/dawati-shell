@@ -463,6 +463,25 @@ static void
 push_dir_async (MpdStorageDevice  *self,
                 GFile             *dir);
 
+static GFile *
+file_new_for_path (char const *path)
+{
+  g_debug ("%s() %s", __FUNCTION__, path);
+  return g_file_new_for_path (path);
+}
+
+static void
+file_destroy (GFile *file)
+{
+  char *path;
+
+  path = g_file_get_path (file);
+  g_debug ("%s() %s (%d)", __FUNCTION__, path,  G_OBJECT (file)->ref_count);
+  g_free (path);
+
+  g_object_unref (file);
+}
+
 static void
 enumerate_dir (MpdStorageDevice  *self)
 {
@@ -489,12 +508,12 @@ enumerate_dir (MpdStorageDevice  *self)
     {
       char const *path = g_object_get_data (G_OBJECT (enumerator), "path");
       char *subpath = g_build_filename (path, g_file_info_get_name (info), NULL);
-      GFile *subdir = g_file_new_for_path (subpath);
+      GFile *subdir = file_new_for_path (subpath);
 
       /* Push and recurse. */
       push_dir_async (self, subdir);
 
-      g_object_unref (subdir);
+      file_destroy (subdir);
       g_free (subpath);
       break;
 
@@ -566,6 +585,7 @@ _push_dir_cb (GFile             *file,
   priv->dir_stack = g_slist_prepend (priv->dir_stack,
                                      g_object_ref (enumerator));
   enumerate_dir (self);
+  g_object_unref (enumerator);
 }
 
 static void
@@ -594,9 +614,9 @@ mpd_storage_device_has_media_async (MpdStorageDevice *self)
 
   g_return_if_fail (MPD_IS_STORAGE_DEVICE (self));
 
-  dir = g_file_new_for_path (priv->path);
+  dir = file_new_for_path (priv->path);
   push_dir_async (self, dir);
-  g_object_unref (dir);
+  file_destroy (dir);
 }
 
 

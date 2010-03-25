@@ -99,6 +99,7 @@ typedef struct
   char                      *icon_file;
   char                      *mount_point;
   MpdStorageDevice          *storage;
+  bool                       storage_has_media;
 } MpdStorageDeviceTilePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -206,6 +207,19 @@ _open_clicked_cb (MxButton              *button,
   g_signal_emit_by_name (self, "request-hide");
 }
 
+static void
+_storage_has_media_cb (MpdStorageDevice     *storage,
+                       bool                  has_media,
+                       MpdStorageDeviceTile *self)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (priv->state == STATE_SEARCHING);
+
+  priv->storage_has_media = has_media;
+  mpd_storage_device_tile_set_state (self, STATE_READY);
+}
+
 static GObject *
 _constructor (GType                  type,
               unsigned int           n_properties,
@@ -238,7 +252,8 @@ _constructor (GType                  type,
   {
     priv->storage = mpd_storage_device_new (priv->mount_point);
     mpd_storage_device_tile_set_state (self, STATE_SEARCHING);
-    // TODO connect signal
+    g_signal_connect (priv->storage, "has-media",
+                      G_CALLBACK (_storage_has_media_cb), self);
     mpd_storage_device_has_media_async (priv->storage);
 
   } else {
@@ -597,6 +612,8 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     clutter_actor_destroy (priv->states.searching.description);
     clutter_actor_destroy (priv->states.searching.eject);
 
+    memset (&priv->states.searching, 0, sizeof (priv->states.searching));
+
     /* Title */
     priv->states.ready.title = mx_label_new ();
     assign_title (self, MX_LABEL (priv->states.ready.title));
@@ -614,20 +631,23 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
                                  priv->states.ready.meter);
 
     /* Copy button */
-    priv->states.ready.copy = mx_button_new_with_label (
-                                _("Copy media to your computer"));
-    g_signal_connect (priv->states.ready.copy, "clicked",
-                      G_CALLBACK (_copy_clicked_cb), self);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
-                                 priv->states.ready.copy);
-    clutter_container_child_set (CLUTTER_CONTAINER (priv->middle_col),
-                                 priv->states.ready.copy,
-                                 "expand", false,
-                                 "x-align", MX_ALIGN_END,
-                                 "x-fill", false,
-                                 "y-align", MX_ALIGN_MIDDLE,
-                                 "y-fill", false,
-                                 NULL);
+    if (priv->storage_has_media)
+    {
+      priv->states.ready.copy = mx_button_new_with_label (
+                                  _("Copy media to your computer"));
+      g_signal_connect (priv->states.ready.copy, "clicked",
+                        G_CALLBACK (_copy_clicked_cb), self);
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+                                   priv->states.ready.copy);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->middle_col),
+                                   priv->states.ready.copy,
+                                   "expand", false,
+                                   "x-align", MX_ALIGN_END,
+                                   "x-fill", false,
+                                   "y-align", MX_ALIGN_MIDDLE,
+                                   "y-fill", false,
+                                   NULL);
+    }
 
     /* Eject button */
     priv->states.ready.eject = mx_button_new_with_label (_("Eject"));
@@ -666,7 +686,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     clutter_actor_destroy (priv->states.ready.title);
     clutter_actor_destroy (priv->states.ready.description);
     clutter_actor_destroy (priv->states.ready.meter);
-    clutter_actor_destroy (priv->states.ready.copy);
+    if (priv->states.ready.copy) clutter_actor_destroy (priv->states.ready.copy);
     clutter_actor_destroy (priv->states.ready.eject);
     clutter_actor_destroy (priv->states.ready.open);
 
