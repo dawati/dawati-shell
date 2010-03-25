@@ -535,7 +535,7 @@ mps_geotag_pane_init (MpsGeotagPane *self)
                                       priv->button_box,
                                       3, 0,
                                       "x-expand", TRUE,
-                                      "x-align", 1.0,
+                                      "x-align", MX_ALIGN_END,
                                       "x-fill", FALSE,
                                       "column-span", 2,
                                       "y-expand", FALSE,

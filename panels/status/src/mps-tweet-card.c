@@ -264,7 +264,7 @@ mps_tweet_card_init (MpsTweetCard *self)
                                       "x-expand", FALSE,
                                       "y-expand", TRUE,
                                       "y-fill", FALSE,
-                                      "y-align", 0.0,
+                                      "y-align", MX_ALIGN_START,
                                       "row-span", 2,
                                       NULL);
 
@@ -291,7 +291,7 @@ mps_tweet_card_init (MpsTweetCard *self)
                                       priv->secondary_label,
                                       1, 1,
                                       "y-expand", TRUE,
-                                      "y-align", 1.0,
+                                      "y-align", MX_ALIGN_END,
                                       "y-fill", FALSE,
                                       "x-expand", TRUE,
                                       "x-fill", TRUE,
@@ -310,7 +310,7 @@ mps_tweet_card_init (MpsTweetCard *self)
                                       priv->button_box,
                                       0, 2,
                                       "y-expand", TRUE,
-                                      "y-align", 0.0,
+                                      "y-align", MX_ALIGN_START,
                                       "y-fill", FALSE,
                                       "x-expand", FALSE,
                                       "row-span", 2,
