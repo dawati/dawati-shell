@@ -238,6 +238,8 @@ _constructor (GType                  type,
   {
     priv->storage = mpd_storage_device_new (priv->mount_point);
     mpd_storage_device_tile_set_state (self, STATE_SEARCHING);
+    // TODO connect signal
+    mpd_storage_device_has_media_async (priv->storage);
 
   } else {
     g_critical ("%s : %s",

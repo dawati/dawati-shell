@@ -77,6 +77,9 @@ mpd_storage_device_get_path (MpdStorageDevice *self);
 char const *
 mpd_storage_device_get_vendor (MpdStorageDevice *self);
 
+bool
+mpd_storage_device_has_media_async (MpdStorageDevice *self);
+
 G_END_DECLS
 
 #endif /* MPD_STORAGE_DEVICE_H */

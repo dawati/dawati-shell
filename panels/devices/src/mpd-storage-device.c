@@ -39,6 +39,14 @@ static void
 mpd_storage_device_set_available_size (MpdStorageDevice  *self,
                                        uint64_t           available_size);
 
+static void
+mpd_storage_device_enumerate_dir_async (MpdStorageDevice  *self,
+                                        GFile             *dir);
+
+static void
+mpd_storage_device_enumerate (MpdStorageDevice  *self,
+                              GFileEnumerator   *enumerator);
+
 G_DEFINE_TYPE (MpdStorageDevice, mpd_storage_device, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
@@ -56,6 +64,13 @@ enum
   PROP_VENDOR
 };
 
+enum
+{
+  HAS_MEDIA,
+
+  LAST_SIGNAL
+};
+
 typedef struct
 {
 #ifdef HAVE_UDISKS
@@ -65,7 +80,11 @@ typedef struct
   char          *path;
   uint64_t       size;
   unsigned int   update_timeout_id;
+
+  GSList        *dir_stack;
 } MpdStorageDevicePrivate;
+
+static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
 update (MpdStorageDevice *self)
@@ -324,6 +343,15 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                                         "Storage device vendor",
                                                         NULL,
                                                         param_flags));
+
+  /* Signals */
+
+  _signals[HAS_MEDIA] = g_signal_new ("has-media",
+                                      G_TYPE_FROM_CLASS (klass),
+                                      G_SIGNAL_RUN_LAST,
+                                      0, NULL, NULL,
+                                      g_cclosure_marshal_VOID__BOOLEAN,
+                                      G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
 }
 
 static void
@@ -437,5 +465,147 @@ mpd_storage_device_get_vendor (MpdStorageDevice *self)
 #else
   return NULL;
 #endif
+}
+
+static bool
+_async_enumeration_pop_cb (MpdStorageDevice *self)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+  GFileEnumerator *enumerator;
+
+  g_return_val_if_fail (priv->dir_stack, false);
+
+  enumerator = G_FILE_ENUMERATOR (priv->dir_stack->data);
+  g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), false);
+
+  priv->dir_stack = g_slist_delete_link (priv->dir_stack, priv->dir_stack);
+
+  mpd_storage_device_enumerate (self, enumerator);
+  g_object_unref (enumerator);
+
+  return false;
+}
+
+static void
+_async_enumerate_children_cb (GFile             *file,
+                              GAsyncResult      *res,
+                              MpdStorageDevice  *self)
+{
+  GFileEnumerator *enumerator;
+  GError          *error = NULL;
+
+  g_return_if_fail (G_IS_FILE (file));
+
+  enumerator = g_file_enumerate_children_finish (file, res, &error);
+  if (error)
+  {
+    g_critical ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+    return;
+  }
+
+  mpd_storage_device_enumerate (self, enumerator);
+  // g_object_unref (enumerator); /* Huh not owning a ref here? */
+}
+
+bool
+mpd_storage_device_has_media_async (MpdStorageDevice *self)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+  GFile *file;
+
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), false);
+
+  file = g_file_new_for_path (priv->path);
+  mpd_storage_device_enumerate_dir_async (self, file);
+  g_object_unref (file);
+
+  return true;
+}
+
+static void
+mpd_storage_device_enumerate_dir_async (MpdStorageDevice  *self,
+                                        GFile             *dir)
+{
+  char *path;
+  bool  is_dir;
+
+  path = g_file_get_path (dir);
+  is_dir = g_file_test (path, G_FILE_TEST_IS_DIR);
+  g_free (path);
+  g_return_if_fail (is_dir);
+
+  g_file_enumerate_children_async (dir, "standard", G_FILE_QUERY_INFO_NONE,
+                                   G_PRIORITY_DEFAULT, NULL,
+                                   (GAsyncReadyCallback) _async_enumerate_children_cb,
+                                   self);
+}
+
+static void
+mpd_storage_device_enumerate (MpdStorageDevice  *self,
+                              GFileEnumerator   *enumerator)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+  GFileInfo *info;
+  bool       has_media = false;
+  GError    *error = NULL;
+
+  while (NULL !=
+         (info = g_file_enumerator_next_file (enumerator, NULL, &error)))
+  {
+    char const *content_type = g_file_info_get_content_type (info);
+
+    if (0 == g_strcmp0 ("inode/directory", content_type))
+    {
+      GFile *dir = g_file_enumerator_get_container (enumerator);
+      GFile *subdir = g_file_get_child (dir, g_file_info_get_name (info));
+
+      /* Push and recurse. */
+      priv->dir_stack = g_slist_prepend (priv->dir_stack,
+                                         g_object_ref (enumerator));
+      g_file_enumerate_children_async (subdir, "standard", G_FILE_QUERY_INFO_NONE,
+                                       G_PRIORITY_DEFAULT, NULL,
+                                       (GAsyncReadyCallback) _async_enumerate_children_cb,
+                                       self);
+      g_object_unref (subdir);
+      g_object_unref (dir);
+      break;
+
+    } else if (0 == g_str_has_prefix ("audio/", content_type) ||
+               0 == g_str_has_prefix ("image/", content_type) ||
+               0 == g_str_has_prefix ("video/", content_type)) {
+
+      has_media = true;
+      break;
+    }
+
+    g_object_unref (info);
+  }
+
+  if (info)
+    g_object_unref (info);
+
+  if (error)
+  {
+    g_critical ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+
+  if (has_media)
+  {
+    /* Done recursing. */
+    g_slist_foreach (priv->dir_stack, (GFunc) g_object_unref, NULL);
+    g_signal_emit_by_name (self, "has-media", true);
+
+  } else if (NULL == priv->dir_stack) {
+
+    /* Done recursing, no media found. */
+    g_signal_emit_by_name (self, "has-media", false);
+
+  } else if (priv->dir_stack && priv->dir_stack->data != enumerator) {
+
+    /* When we don't recurse try to pop. */
+    g_idle_add ((GSourceFunc) _async_enumeration_pop_cb, self);
+  }
 }
 
