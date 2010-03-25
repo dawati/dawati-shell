@@ -311,22 +311,32 @@ static void
 _new_service_button_clicked_cb (MxButton        *button,
                                 MpsFeedSwitcher *switcher)
 {
-  GAppInfo *app_info;
+  GDesktopAppInfo *app_info;
   GError *error = NULL;
+  const gchar *args[3] = { NULL, };
 
-  app_info = (GAppInfo *)g_desktop_app_info_new ("bisho.desktop");
+  app_info = g_desktop_app_info_new ("gnome-control-center.desktop");
+  args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
+  args[1] = "bisho.desktop";
+  args[2] = NULL;
 
-  if (!g_app_info_launch (app_info,
-                          NULL,
-                          NULL,
-                          &error))
+  if (!g_spawn_async (NULL,
+                      (gchar **)args,
+                      NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      NULL,
+                      NULL,
+                      NULL,
+                      &error))
   {
-    g_warning (G_STRLOC ": Error starting bisho: %s",
+    g_warning (G_STRLOC ": Error starting control center for bisho: %s",
                error->message);
     g_clear_error (&error);
   } else {
     moblin_status_panel_hide ();
   }
+
+  g_object_unref (app_info);
 }
 
 static void
