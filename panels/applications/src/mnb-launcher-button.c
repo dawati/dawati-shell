@@ -356,7 +356,7 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                         CLUTTER_ACTOR (self->priv->title),
                                         0, 1,
-                                        "x-align", 0.0,
+                                        "x-align", MX_ALIGN_START,
                                         "x-expand", TRUE,
                                         "x-fill", TRUE,
                                         NULL);
