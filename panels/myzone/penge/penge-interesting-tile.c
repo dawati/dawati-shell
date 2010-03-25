@@ -93,8 +93,8 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
       mx_table_add_actor_with_properties (MX_TABLE (priv->inner_table),
                                           priv->body,
                                           0, 0,
-                                          "y-align", 0.0,
-                                          "x-align", 0.0,
+                                          "y-align", MX_ALIGN_START,
+                                          "x-align", MX_ALIGN_START,
                                           "y-fill", TRUE,
                                           "y-expand", TRUE,
                                           NULL);
@@ -271,7 +271,7 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                "x-expand", TRUE,
                                "y-expand", FALSE,
                                "y-fill", FALSE,
-                               "y-align", 1.0,
+                               "y-align", MX_ALIGN_END,
                                NULL);
 
   mx_table_add_actor (MX_TABLE (priv->details_overlay),
@@ -328,8 +328,8 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                       "y-expand", TRUE,
                                       "x-fill", FALSE,
                                       "y-fill", FALSE,
-                                      "x-align", 1.0,
-                                      "y-align", 0.5,
+                                      "x-align", MX_ALIGN_END,
+                                      "y-align", MX_ALIGN_MIDDLE,
                                       NULL);
 
   g_signal_connect (priv->remove_button,

@@ -485,7 +485,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                "y-fill", FALSE,
                                "x-expand", TRUE,
                                "x-fill", FALSE,
-                               "x-align", 0.0,
+                               "x-align", MX_ALIGN_START,
                                NULL);
 
   priv->single_divider = clutter_texture_new_from_file (SINGLE_DIV_LINE, &error);

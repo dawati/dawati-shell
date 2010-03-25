@@ -232,8 +232,8 @@ _update_layout (PengeGridView *grid_view)
                                  "row", 0,
                                  "y-expand", TRUE,
                                  "y-fill", FALSE,
-                                 "y-align", 0.0,
-                                 "x-align", 0.0,
+                                 "y-align", MX_ALIGN_START,
+                                 "x-align", MX_ALIGN_START,
                                  "x-expand", FALSE,
                                  "x-fill", FALSE,
                                  NULL);
@@ -248,7 +248,7 @@ _update_layout (PengeGridView *grid_view)
                                    "column", col,
                                    "x-expand", FALSE,
                                    "y-fill", FALSE,
-                                   "y-align", 0.0,
+                                   "y-align", MX_ALIGN_START,
                                    NULL);
     } else {
       clutter_actor_hide (priv->calendar_pane);
@@ -263,8 +263,8 @@ _update_layout (PengeGridView *grid_view)
                                    "row", 1,
                                    "y-expand", TRUE,
                                    "y-fill", FALSE,
-                                   "y-align", 1.0,
-                                   "x-align", 0.5,
+                                   "y-align", MX_ALIGN_END,
+                                   "x-align", MX_ALIGN_MIDDLE,
                                    "x-expand", FALSE,
                                    "x-fill", FALSE,
                                    NULL);
@@ -353,7 +353,7 @@ _update_layout (PengeGridView *grid_view)
                                    "x-expand", FALSE,
                                    "y-expand", TRUE,
                                    "y-fill", FALSE,
-                                   "y-align", 1.0,
+                                   "y-align", MX_ALIGN_END,
                                    NULL);
     } else {
       clutter_actor_hide (priv->email_pane);
@@ -367,7 +367,7 @@ _update_layout (PengeGridView *grid_view)
                                  "x-expand", FALSE,
                                  "x-fill", TRUE,
                                  "y-fill", FALSE,
-                                 "y-align", 1.0,
+                                 "y-align", MX_ALIGN_END,
                                  NULL);
 
     /* If we are showing the email then it is responsible for expanding to fill

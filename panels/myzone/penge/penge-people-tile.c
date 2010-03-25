@@ -253,8 +253,8 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                         "y-expand", TRUE,
                                         "x-fill", FALSE,
                                         "y-fill", FALSE,
-                                        "x-align", 0.5,
-                                        "y-align", 0.0,
+                                        "x-align", MX_ALIGN_MIDDLE,
+                                        "y-align", MX_ALIGN_START,
                                         NULL);
     clutter_actor_set_size (avatar, 48, 48);
 
@@ -272,8 +272,8 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                                         "y-expand", TRUE,
                                         "x-fill", TRUE,
                                         "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.0,
+                                        "x-align", MX_ALIGN_START,
+                                        "y-align", MX_ALIGN_START,
                                         NULL);
 
     tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
