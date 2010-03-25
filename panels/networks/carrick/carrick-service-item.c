@@ -277,6 +277,23 @@ _set_state (CarrickServiceItem *self)
       gtk_label_set_text (GTK_LABEL (priv->info_label),
                           "");
     }
+  else if (g_strcmp0 (priv->state, "online") == 0)
+    {
+      if (g_strcmp0 (priv->type, "ethernet") != 0)
+        {
+          /* Only expose delete button for non-ethernet devices */
+          gtk_widget_show (GTK_WIDGET (priv->delete_button));
+          gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
+                                    TRUE);
+        }
+      button = g_strdup (_ ("Disconnect"));
+      label = g_strdup_printf ("%s - %s",
+                               name,
+                               _ ("Online"));
+      priv->failed = FALSE;
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          "");
+    }
   else if (g_strcmp0 (priv->state, "configuration") == 0)
     {
       button = g_strdup_printf (_ ("Cancel"));
@@ -551,7 +568,8 @@ _connect_button_cb (GtkButton          *connect_button,
 
   g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
-  if (g_str_equal (priv->state, "ready") ||
+  if (g_str_equal (priv->state, "online") ||
+      g_str_equal (priv->state, "ready") ||
       g_str_equal (priv->state, "configuration") ||
       g_str_equal (priv->state, "association"))
     {
