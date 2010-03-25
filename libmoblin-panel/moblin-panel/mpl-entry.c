@@ -233,8 +233,8 @@ mpl_entry_style_changed (MxWidget            *widget,
    * the internal children on MplEntry, otherwise the style changes
    * will not reach them
    */
-  mx_stylable_style_changed (priv->entry, flags);
-  mx_stylable_style_changed (priv->table, flags);
+  mx_stylable_style_changed (MX_STYLABLE (priv->entry), flags);
+  mx_stylable_style_changed (MX_STYLABLE (priv->table), flags);
 }
 
 static void
