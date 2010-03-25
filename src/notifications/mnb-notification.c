@@ -225,7 +225,7 @@ mnb_notification_init (MnbNotification *self)
                                CLUTTER_ACTOR (priv->icon),
                                "y-expand", FALSE,
                                "x-expand", FALSE,
-                               "x-align", 0.0,
+                               "x-align", MX_ALIGN_START,
                                "x-fill", FALSE,
                                "y-fill", FALSE,
                                NULL);
@@ -239,8 +239,8 @@ mnb_notification_init (MnbNotification *self)
                                CLUTTER_ACTOR (priv->summary),
                                "y-expand", TRUE,
                                "x-expand", TRUE,
-                               "y-align", 0.5,
-                               "x-align", 0.0,
+                               "y-align", MX_ALIGN_MIDDLE,
+                               "x-align", MX_ALIGN_START,
                                "y-fill", FALSE,
                                "x-fill", FALSE,
                                NULL);
@@ -367,7 +367,7 @@ mnb_notification_update (MnbNotification *notification,
                                    CLUTTER_ACTOR (priv->icon),
                                    "y-expand", FALSE,
                                    "x-expand", FALSE,
-                                   "x-align", 0.0,
+                                   "x-align", MX_ALIGN_START,
                                    "x-fill", FALSE,
                                    "y-fill", FALSE,
                                    NULL);
