@@ -136,7 +136,7 @@ mpd_battery_tile_init (MpdBatteryTile *self)
   clutter_text_set_line_wrap (CLUTTER_TEXT (text), true);
   mx_table_add_actor_with_properties (MX_TABLE (self), priv->label,
                                       0, 0,
-                                      "y-align", 0.5,
+                                      "y-align", MX_ALIGN_MIDDLE,
                                       "y-expand", false,
                                       "y-fill", false,
                                       NULL);
