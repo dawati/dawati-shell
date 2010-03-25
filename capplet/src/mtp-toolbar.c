@@ -480,7 +480,7 @@ mtp_toolbar_paint_border_image (MxTextureFrame *frame)
 
   parent_texture = mx_texture_frame_get_parent_texture (frame);
 
-  mx_texture_frame_get_frame(frame, &top, &right, &bottom, &left);
+  mx_texture_frame_get_border_values (frame, &top, &right, &bottom, &left);
 
   /* no need to paint stuff if we don't have a texture */
   if (G_UNLIKELY (parent_texture == NULL))
