@@ -292,15 +292,11 @@ _button_group_active_button_changed_cb (MxButtonGroup *button_group,
 
   if (button)
   {
-    children = clutter_container_get_children (CLUTTER_CONTAINER (priv->notebook));
     pane = g_object_get_data (G_OBJECT (button), "mps-switcher-pane");
 
-    mx_notebook_set_page (MX_NOTEBOOK (priv->notebook),
-                          g_list_index (children, pane));
+    mx_notebook_set_current_page (MX_NOTEBOOK (priv->notebook),
+                                  pane);
 
-    g_list_free (children);
-  } else {
-    mx_notebook_set_page (MX_NOTEBOOK (priv->notebook), 0);
   }
 }
 
