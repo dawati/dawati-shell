@@ -1,20 +1,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Jean Cayron <jean.cayron@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-17 09:34+0000\n"
+"POT-Creation-Date: 2010-03-24 09:33+0000\n"
 "PO-Revision-Date: 2010-03-20 09:54+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.0\n"
 
 #: ../data/moblin-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
@@ -24,8 +24,7 @@ msgstr "Sicriftôr Myzone"
 msgid "Change the Myzone background and content"
 msgstr "Candjî l' fond d' Myzone et çou k' i gn a ddins"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:136
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:157
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -38,23 +37,23 @@ msgstr "Aroke GConf: %s"
 msgid "All further errors shown only on terminal."
 msgstr "Totes les ôtes arokes ni sont mostrêyes k' e terminå."
 
-#: ../capplet/myzone-cc-panel.c:46
+#: ../capplet/myzone-cc-panel.c:47
 msgid "Show as much web service content as possible"
 msgstr "Mostrer ostant d' ådvins d' siervices waibe k' on sait"
 
-#: ../capplet/myzone-cc-panel.c:48
+#: ../capplet/myzone-cc-panel.c:49
 msgid "Show mostly web service content"
 msgstr "Mostrer sortot les ådvins d' siervice waibe"
 
-#: ../capplet/myzone-cc-panel.c:50
+#: ../capplet/myzone-cc-panel.c:51
 msgid "Show half and half"
 msgstr "Mostrer mitan d' onk et mitan d' l' ôte"
 
-#: ../capplet/myzone-cc-panel.c:52
+#: ../capplet/myzone-cc-panel.c:53
 msgid "Show mostly recent files"
 msgstr "Mostrer sortot les fitchîs d' enawaire"
 
-#: ../capplet/myzone-cc-panel.c:54
+#: ../capplet/myzone-cc-panel.c:55
 msgid "Show as many recent files as possible"
 msgstr "Mostrer ostant d' fitchîs d' enawaire k' on sait"
 
@@ -66,8 +65,7 @@ msgstr "Radjoûs"
 msgid "Create an appointment"
 msgstr "Ahiver on radjoû"
 
-#: ../penge/penge-events-pane.c:69
-#: ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Radjouter"
 
@@ -104,14 +102,24 @@ msgstr "Bénvnowe dins MeeGo"
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Çouchal est Myzone, wice ki vos fitchîs eployîs enawaire eyet l' ådvins d' vos floûs waibe aparexhront."
 
+#: ../penge/penge-email-pane.c:193
+msgid "Unread message"
+msgstr "Messaedje nén léjhou"
+
+#: ../penge/penge-email-pane.c:195
+msgid "Unread messages"
+msgstr "Messaedjes nén léjhous"
+
+#: ../penge/penge-email-pane.c:191
+msgid "No unread messages"
+msgstr "I gn a pont d' messaedje nén léjhou"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "Voloz vs rinetyî vos documints d' enawaire? Ça va oister l' ådvins coinrece del Myzone"
+
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Wilicome dins Moblin 2.1 po les Netbooks</b>"
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "Come Moblin est ene miete diferin des ôtes copiutreces, nos avans metou "
-#~ "eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. "
-#~ "Nos esperans k' vos alez awè do plaijhi, L' ekipe di Moblin."
 
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Come Moblin est ene miete diferin des ôtes copiutreces, nos avans metou eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. Nos esperans k' vos alez awè do plaijhi, L' ekipe di Moblin."
