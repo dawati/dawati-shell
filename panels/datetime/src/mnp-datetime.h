@@ -63,6 +63,9 @@ GType mnp_datetime_get_type (void);
 ClutterActor *mnp_datetime_new (void);
 void mnp_datetime_set_panel_client (MnpDatetime *datetime,
                                         MplPanelClient *panel_client);
+void
+mnp_date_time_set_date_label (MnpDatetime *datetime, ClutterActor *label);
+
 G_END_DECLS
 
 #endif /* _MNP_DATETIME */

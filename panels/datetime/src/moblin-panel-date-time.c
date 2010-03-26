@@ -135,8 +135,9 @@ main (int    argc,
   box = mx_box_layout_new ();
   mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
 
-  label = mx_label_new_with_text ("Thursday 25th March 2010");
+  label = mx_label_new ();
   clutter_actor_set_name (label, "DateHeading");
+  mnp_date_time_set_date_label (datetime, label);
 
   mx_box_layout_add_actor (box, label, -1);
   mx_box_layout_add_actor (box, datetime, -1);

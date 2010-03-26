@@ -71,12 +71,15 @@ struct _MnpDatetimePrivate {
 
 	ClutterActor *cal_date_label;
 	ClutterActor *task_date_label;
+	ClutterActor *top_date_label;
 
 	ClutterActor *cal_launcher_box;
 	ClutterActor *cal_launcher;
 
 	ClutterActor *task_launcher_box;
 	ClutterActor *task_launcher;
+
+	guint date_update_timeout;
 };
 
 static void
@@ -89,6 +92,9 @@ mnp_datetime_dispose (GObject *object)
     g_object_unref (priv->panel_client);
     priv->panel_client = NULL;
   }
+
+  if (priv->date_update_timeout)
+	  g_source_remove(priv->date_update_timeout);
 
   G_OBJECT_CLASS (mnp_datetime_parent_class)->dispose (object);
 }
@@ -127,7 +133,7 @@ format_label (ClutterActor *label)
 
 	localtime_r (&now, &tim);
 	
-	strftime (buf, 256, "%d %b %G", &tim);
+	strftime (buf, 256, "%A %e %B %G", &tim);
 
 	mx_label_set_text ((MxLabel *)label, buf);
 }
@@ -260,6 +266,18 @@ construct_calendar_area (MnpDatetime *time)
                                NULL);	
 	format_label (priv->cal_date_label);
 
+
+	box = mx_box_layout_new ();
+	priv->task_launcher_box = box;
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, box, 3);
+	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
+                               box,
+                               "expand", TRUE,
+			       "y-fill", TRUE,		
+			       "x-fill", TRUE,			       			       
+                               NULL);
+
   	priv->penge_events = g_object_new (PENGE_TYPE_EVENTS_PANE,
 				    "time",
 				    duration->start,
@@ -267,11 +285,11 @@ construct_calendar_area (MnpDatetime *time)
 	penge_events_pane_set_duration (priv->penge_events, duration);
 	jana_duration_free (duration);
 
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, (ClutterActor *)priv->penge_events, 3);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
+	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->penge_events, 3);
+	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->penge_events,
-                               "expand", TRUE,
-			       "y-fill", TRUE,		
+                               "expand", FALSE,
+			       "y-fill", FALSE,		
 			       "x-fill", TRUE,			       			       
                                NULL);
 
@@ -419,13 +437,24 @@ construct_task_area (MnpDatetime *time)
 	format_label (priv->task_date_label);
 
 
-	priv->task_area = g_object_new (PENGE_TYPE_TASKS_PANE,
-                                   NULL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, priv->task_area, 3);
+	box = mx_box_layout_new ();
+	priv->task_launcher_box = box;
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, box, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
-                               priv->task_area,
+                               box,
                                "expand", TRUE,
 			       "y-fill", TRUE,		
+			       "x-fill", TRUE,			       			       
+                               NULL);
+
+	priv->task_area = g_object_new (PENGE_TYPE_TASKS_PANE,
+                                   NULL);
+	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->task_area, 3);
+	clutter_container_child_set (CLUTTER_CONTAINER (box),
+                               priv->task_area,
+                               "expand", FALSE,
+			       "y-fill", FALSE,		
 			       "x-fill", TRUE,			       			       
                                NULL);
 
@@ -536,4 +565,51 @@ mnp_datetime_set_panel_client (MnpDatetime *datetime,
                     datetime);
 }
 
+static time_t
+get_start_of_nextday (time_t now)
+{
+  struct tm tval;
+  time_t start;
+
+  localtime_r(&now, &tval);
+
+  tval.tm_sec = 59;
+  tval.tm_min = 59;
+  tval.tm_hour = 23;
+
+  start = mktime(&tval);
+  start++;
+
+  return start;
+}
+
+static gboolean
+update_date (MnpDatetime *datetime)
+{
+  MnpDatetimePrivate *priv = GET_PRIVATE (datetime);
+  time_t now = time(NULL), tom;
+
+  tom = get_start_of_nextday (now);
+  priv->date_update_timeout = g_timeout_add_seconds(tom-now+1, (GSourceFunc) update_date, datetime); 
+
+  format_label (priv->top_date_label);
+  format_label (priv->cal_date_label);
+  format_label (priv->task_date_label);
+
+  return FALSE;
+}
+
+void
+mnp_date_time_set_date_label (MnpDatetime *datetime, ClutterActor *label)
+{
+  MnpDatetimePrivate *priv = GET_PRIVATE (datetime);
+  time_t now = time(NULL), tom;
+
+  priv->top_date_label = label;
+  format_label (label);
+
+  tom = get_start_of_nextday (now);
+
+  priv->date_update_timeout = g_timeout_add_seconds(tom-now+1, (GSourceFunc) update_date, datetime);
+}
 
