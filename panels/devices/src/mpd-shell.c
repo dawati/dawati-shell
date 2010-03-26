@@ -111,17 +111,11 @@ mpd_shell_init (MpdShell *self)
 
   label = mx_label_new_with_text (_("Devices"));
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), label,
-                              "expand", false,
-                              "x-align", MX_ALIGN_START,
-                              "x-fill", false,
-                              NULL);
 
   hbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox), MX_ORIENTATION_HORIZONTAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_PANE_COLUMN_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), hbox,
-                               "expand", true,
-                               NULL);
 
   pane = mpd_computer_pane_new ();
   g_signal_connect (pane, "request-hide",

@@ -45,12 +45,12 @@ G_BEGIN_DECLS
 
 typedef struct
 {
-  MxTable parent;
+  MxBoxLayout parent;
 } MpdDevicesPane;
 
 typedef struct
 {
-  MxTableClass parent_class;
+  MxBoxLayoutClass parent;
 } MpdDevicesPaneClass;
 
 GType

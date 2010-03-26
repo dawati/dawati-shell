@@ -26,7 +26,7 @@
 #include "mpd-devices-tile.h"
 #include "mpd-shell-defines.h"
 
-G_DEFINE_TYPE (MpdDevicesPane, mpd_devices_pane, MX_TYPE_TABLE)
+G_DEFINE_TYPE (MpdDevicesPane, mpd_devices_pane, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_DEVICES_PANE, MpdDevicesPanePrivate))
@@ -83,21 +83,19 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   ClutterActor  *label;
   ClutterActor  *tile;
 
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_PANE_HEADER_SPACING);
+
   label = mx_label_new_with_text (_("Other devices"));
-  mx_table_add_actor_with_properties (MX_TABLE (self), label, 0, 0,
-                                      "x-align", MX_ALIGN_START,
-                                      "y-align", MX_ALIGN_START,
-                                      NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_devices_tile_new ();
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
-  mx_table_add_actor_with_properties (MX_TABLE (self), tile, 1, 0,
-                                      "x-align", MX_ALIGN_START,
-                                      "x-expand", true,
-                                      "y-align", MX_ALIGN_START,
-                                      "y-expand", true,
-                                      NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
+                               "expand", true,
+                               NULL);
 }
 
 ClutterActor *

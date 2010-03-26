@@ -18,6 +18,8 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <stdbool.h>
+
 #include <glib/gi18n.h>
 
 #include "mpd-computer-pane.h"
@@ -25,7 +27,7 @@
 #include "mpd-folder-tile.h"
 #include "mpd-shell-defines.h"
 
-G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_TABLE)
+G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_BOX_LAYOUT)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_COMPUTER_PANE, MpdComputerPanePrivate))
@@ -80,24 +82,39 @@ static void
 mpd_computer_pane_init (MpdComputerPane *self)
 {
   ClutterActor  *label;
+  ClutterActor  *hbox;
   ClutterActor  *tile;
 
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_PANE_HEADER_SPACING);
+
   label = mx_label_new_with_text (_("Your computer"));
-  mx_table_add_actor_with_properties (MX_TABLE (self), label, 0, 0,
-                                      "column-span", 2,
-                                      NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
+
+  hbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox), MX_ORIENTATION_HORIZONTAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_COMPUTER_PANE_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
 
   tile = mpd_computer_tile_new ();
-  clutter_actor_set_width (tile, MPD_COMPUTER_TILE_WIDTH);
+  clutter_actor_set_width (tile,  MPD_COMPUTER_TILE_WIDTH);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
-  mx_table_add_actor (MX_TABLE (self), tile, 1, 0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
 
+/*
   tile = mpd_folder_tile_new ();
-  clutter_actor_set_width (tile, MPD_FOLDER_TILE_WIDTH);
+  clutter_actor_set_width (tile,  MPD_FOLDER_TILE_WIDTH);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
-  mx_table_add_actor (MX_TABLE (self), tile, 1, 1);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
+*/
+  tile = mx_button_new_with_label ("Folders go here");
+  clutter_actor_set_width (tile,  MPD_FOLDER_TILE_WIDTH);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), tile,
+                               "expand", false,
+                               NULL);
 }
 
 ClutterActor *

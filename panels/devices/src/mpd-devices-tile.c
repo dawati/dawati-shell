@@ -162,7 +162,7 @@ add_tile_from_mount (MpdDevicesTile *self,
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_device_tile_request_hide_cb), self);
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->vbox), tile, -1);
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->vbox), tile, 0);
 
   gtk_icon_info_free (icon_info);
   g_object_unref (icon);
