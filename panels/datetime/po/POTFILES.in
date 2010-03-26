@@ -1,20 +1,13 @@
 # List of source files containing translatable strings.
 src/moblin-panel-date-time.c
 data/moblin-panel-datetime.desktop.in.in
-src/mnp-alarm-dialog.c
-src/mnp-alarms.c
 src/mnp-clock-area.c
 src/mnp-utils.c
 src/moblin-panel-date-time.c
-src/mnp-alarm-instance.c
-src/mnp-alarm-tile.c
 src/mnp-clock-tile.c
 src/mnp-world-clock.c
-src/mx-spin-entry.c
-src/mnp-alarm-manager.c
 src/mnp-button-item.c
 src/mnp-datetime.c
-src/moblin-alarm-notify.c
 src/system-timezone.c
 src/org.moblin.UX.Shell.Panels.datetime.service.in
 src/date-time.schemas.in
