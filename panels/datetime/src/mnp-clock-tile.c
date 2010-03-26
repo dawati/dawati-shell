@@ -26,6 +26,7 @@
 
 #include "mnp-clock-tile.h"
 #include "mnp-utils.h"
+#include <gconf/gconf-client.h>
 
 #define FREE_DFMT(fmt) g_free(fmt->date); g_free(fmt->city); g_free(fmt->time); g_free(fmt);
 
@@ -392,9 +393,14 @@ mnp_clock_construct (MnpClockTile *tile)
 	ClutterActor *box1, *label1, *label2, *label3;
 	ClutterActor *icon;
 	MnpClockTilePriv *priv = tile->priv;
+	GConfClient *client = gconf_client_get_default();
 
-	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now);
+	fmt = mnp_format_time_from_location (tile->priv->loc, 
+					     tile->priv->time_now,
+					     gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL)
+					     );
 
+	g_object_unref(client);
  
 
 	label1 = mx_label_new_with_text (fmt->date);
@@ -487,12 +493,12 @@ mnp_clock_tile_new (MnpZoneLocation *location, time_t time_now)
 }
 
 void
-mnp_clock_tile_refresh (MnpClockTile *tile, time_t now)
+mnp_clock_tile_refresh (MnpClockTile *tile, time_t now, gboolean tfh)
 {
 	MnpDateFormat *fmt;
 
 	tile->priv->time_now = now;
-	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now);
+	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now, tfh);
 
 	mx_label_set_text ((MxLabel *)tile->priv->time, fmt->time);
 	mx_label_set_text ((MxLabel *)tile->priv->date, fmt->date);

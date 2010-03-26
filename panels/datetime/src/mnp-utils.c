@@ -405,10 +405,12 @@ format_time (struct tm   *now,
 	char buf[256];
 	char *format;
 	struct tm local_now;
+	time_t now_t;
 	char *utf8;	
 	MnpDateFormat *fmt = g_new0 (MnpDateFormat, 1);
 
 	localtime_r (&local_t, &local_now);
+	now_t = mktime(now);
 
 	if (twelveh) {
 		/* Translators: This is a strftime format string.
@@ -447,8 +449,10 @@ format_time (struct tm   *now,
 	else {
 		/* Translators: This is a strftime format string.
 		 * It is used to display in Aug 6 */
-		
-		format = _("%b %-d");
+		if (now_t == local_t) 
+			format = _("%b %-d (local)");
+		else
+			format = _("%b %-d");
 	}
 
 	if (strftime (buf, sizeof (buf), format, now) <= 0) {
@@ -462,7 +466,7 @@ format_time (struct tm   *now,
 }
 
 MnpDateFormat *
-mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now)
+mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now, gboolean tfh)
 {
 	char *tzid;
 	char *tzname;
@@ -477,7 +481,7 @@ mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now)
 	tzname = g_strdup (get_tzname(tzid));
 
 	clock_location_localtime (systz, tzid, &now, time_now);
-	fmt = format_time (&now, tzname, TRUE, time_now);
+	fmt = format_time (&now, tzname, !tfh, time_now);
 
 	fmt->city = g_strdup(location->city);
 	g_free(tzname);

@@ -27,6 +27,7 @@
 #include "mnp-clock-area.h"
 #include "mnp-clock-tile.h"
 #include "mnp-utils.h"
+#include <gconf/gconf-client.h>
 
 struct _MnpClockAreaPriv {
 	ClutterActor *background;
@@ -43,6 +44,7 @@ struct _MnpClockAreaPriv {
 
 	ClockZoneReorderedFunc zone_reorder_func;
 	gpointer zone_reorder_data;
+	gboolean tfh;
 };
 
 enum
@@ -270,7 +272,7 @@ clock_ticks (MnpClockArea *area)
 
 	mnp_clock_area_refresh_time(area);
 	for (i=0; i<tmp->len; i++) { 
-		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now);
+		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now, area->priv->tfh);
 	}
 	
 	if (!area->priv->prop_sec_zero) {
@@ -282,11 +284,31 @@ clock_ticks (MnpClockArea *area)
 	return TRUE;
 }
 
+static void
+clock_fmt_changed (GConfClient *client,
+			guint cnxn_id,
+			GConfEntry *entry,
+			gpointer user_data)
+{
+	MnpClockArea *area = (MnpClockArea *)user_data;
+	int i;
+	GPtrArray *tmp = area->priv->clock_tiles;
+
+	area->priv->tfh = gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL);
+	
+	mnp_clock_area_refresh_time(area);
+	for (i=0; i<tmp->len; i++) { 
+		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now, area->priv->tfh);
+	}
+
+}
+
 MnpClockArea *
 mnp_clock_area_new (void)
 {
 	MnpClockArea *area = g_object_new(MNP_TYPE_CLOCK_AREA, NULL);
 	int clk_sec = 60 - (time(NULL)%60);
+	GConfClient *client = gconf_client_get_default ();
 
 	area->priv = g_new0(MnpClockAreaPriv, 1);
 	area->priv->is_enabled = 1;
@@ -304,6 +326,13 @@ mnp_clock_area_new (void)
 		area->priv->prop_sec_zero = TRUE;
 		area->priv->source = g_timeout_add (60 * 1000, (GSourceFunc)clock_ticks, area);
 	}
+
+  	gconf_client_add_dir (client, "/apps/date-time-panel", GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
+  	gconf_client_notify_add (client, "/apps/date-time-panel/24_h_clock", clock_fmt_changed, area, NULL, NULL);
+	
+	area->priv->tfh = gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL);
+
+	g_object_unref(client);
 
 	return area;
 }

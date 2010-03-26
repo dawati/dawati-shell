@@ -34,6 +34,7 @@
 
 #include "mnp-clock-tile.h"
 #include "mnp-clock-area.h"
+#include <gconf/gconf-client.h>
 
 #define SINGLE_DIV_LINE THEMEDIR "/single-div-line.png"
 
@@ -399,11 +400,26 @@ construct_completion (MnpWorldClock *world_clock)
 }
 
 static void
+hour_clock_changed (ClutterActor *button, MnpWorldClock *world_clock)
+{
+	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+	gboolean tfh;
+	GConfClient *client = gconf_client_get_default();
+
+	tfh = mx_button_get_toggled (button);
+
+	gconf_client_set_bool (client, "/apps/date-time-panel/24_h_clock", tfh, NULL);
+	g_object_unref(client);
+}
+
+static void
 construct_heading_and_top_area (MnpWorldClock *world_clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	ClutterActor *box, *icon, *check_button, *text;
 	ClutterActor *div;
+	GConfClient *client = gconf_client_get_default ();
+	gboolean tfh;
 
 	/* Time title */
 	box = mx_box_layout_new ();
@@ -460,9 +476,14 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 	
+	tfh = gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL);
+	g_object_unref(client);
 	check_button = mx_button_new ();
 	priv->tfh_clock = check_button;
 	mx_button_set_is_toggle (MX_BUTTON (check_button), TRUE);
+	mx_button_set_toggled(MX_BUTTON (check_button), tfh);
+
+	g_signal_connect(priv->tfh_clock, "clicked", G_CALLBACK(hour_clock_changed), world_clock);
 	mx_stylable_set_style_class (MX_STYLABLE (check_button),
                                		"TwelveHourToggleButton");
 	clutter_actor_set_size ((ClutterActor *)check_button, 21, 21);
