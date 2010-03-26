@@ -138,15 +138,32 @@ format_label (ClutterActor *label)
 	mx_label_set_text ((MxLabel *)label, buf);
 }
 
-static void
-construct_calendar_area (MnpDatetime *time)
+static gboolean
+events_pane_update (MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
-  	JanaTime *start, *end;
+	JanaTime *now;
+
+	now = jana_ecal_utils_time_now_local ();
+	g_object_set (priv->penge_events,
+			"time",
+			now,
+			NULL);	
+	g_object_unref (now);
+
+	return TRUE;
+}
+
+static void
+construct_calendar_area (MnpDatetime *dtime)
+{
+  	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
+  	JanaTime *start, *end, *now;
 	JanaDuration *duration;
 	ClutterActor *box, *label;
 	ClutterActor *div, *icon;
   	
+	/*
       	start = jana_ecal_utils_time_now_local ();
       	end = jana_ecal_utils_time_now_local ();
       	jana_time_set_hours (end, 23);
@@ -154,20 +171,21 @@ construct_calendar_area (MnpDatetime *time)
       	jana_time_set_seconds (end, 59);
 
 	
-	duration = jana_duration_new (start, end);
+	duration = jana_duration_new (start, end); */
 
 	priv->cal_area = mx_box_layout_new ();
 	clutter_actor_set_name (priv->cal_area, "CalendarPane");
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->cal_area, 0);	
 	mx_box_layout_set_orientation ((MxBoxLayout *)priv->cal_area, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->cal_area, TRUE);
-	mx_box_layout_add_actor ((MxBoxLayout *)time, priv->cal_area, -1);
-	clutter_container_child_set (CLUTTER_CONTAINER (time),
+	mx_box_layout_add_actor ((MxBoxLayout *)dtime, priv->cal_area, -1);
+	clutter_container_child_set (CLUTTER_CONTAINER (dtime),
                                priv->cal_area,
-                               "expand", TRUE,
+                               "expand", FALSE,
 			       "y-fill", TRUE,		
-			       "x-fill", TRUE,			       			       
+			       "x-fill", FALSE,			       			       
                                NULL);
+	clutter_actor_set_size (priv->cal_area, 350, -1);
 
 	/* Events header */
 	box = mx_box_layout_new ();
@@ -278,12 +296,15 @@ construct_calendar_area (MnpDatetime *time)
 			       "x-fill", TRUE,			       			       
                                NULL);
 
+	now = jana_ecal_utils_time_now_local ();	
   	priv->penge_events = g_object_new (PENGE_TYPE_EVENTS_PANE,
 				    "time",
-				    duration->start,
+				    now,
                                     NULL);
-	penge_events_pane_set_duration (priv->penge_events, duration);
-	jana_duration_free (duration);
+	g_object_unref(now);
+	/* penge_events_pane_set_duration (priv->penge_events, duration);
+	jana_duration_free (duration); */
+	g_timeout_add_seconds (60 * 10, (GSourceFunc)events_pane_update, dtime);
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->penge_events, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
