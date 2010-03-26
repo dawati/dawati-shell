@@ -102,19 +102,11 @@ mpd_computer_pane_init (MpdComputerPane *self)
                     G_CALLBACK (_tile_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
 
-/*
   tile = mpd_folder_tile_new ();
   clutter_actor_set_width (tile,  MPD_FOLDER_TILE_WIDTH);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
-*/
-  tile = mx_button_new_with_label ("Folders go here");
-  clutter_actor_set_width (tile,  MPD_FOLDER_TILE_WIDTH);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
-  clutter_container_child_set (CLUTTER_CONTAINER (hbox), tile,
-                               "expand", false,
-                               NULL);
 }
 
 ClutterActor *

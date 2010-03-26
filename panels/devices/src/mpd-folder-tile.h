@@ -45,12 +45,12 @@ G_BEGIN_DECLS
 
 typedef struct
 {
-  MxBoxLayout parent;
+  MxTable parent;
 } MpdFolderTile;
 
 typedef struct
 {
-  MxBoxLayoutClass parent;
+  MxTableClass parent;
 } MpdFolderTileClass;
 
 GType

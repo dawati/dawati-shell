@@ -18,12 +18,15 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "mpd-folder-store.h"
+#include <stdbool.h>
+
+#include <gtk/gtk.h>
+
+#include "mpd-folder-button.h"
 #include "mpd-folder-tile.h"
-#include "mpd-folder-view.h"
 #include "config.h"
 
-G_DEFINE_TYPE (MpdFolderTile, mpd_folder_tile, MX_TYPE_BOX_LAYOUT)
+G_DEFINE_TYPE (MpdFolderTile, mpd_folder_tile, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_FOLDER_TILE, MpdFolderTilePrivate))
@@ -91,10 +94,21 @@ icon_path_from_special_dir (GUserDirectory directory)
 }
 
 static void
-_view_request_hide_cb (MpdFolderView  *folder_view,
-                       MpdFolderTile  *self)
+_button_clicked_cb (MpdFolderButton  *button,
+                    MpdFolderTile    *self)
 {
-  g_signal_emit_by_name (self, "request-hide");
+  char const  *uri;
+  GError      *error = NULL;
+
+  uri = mpd_folder_button_get_uri (button);
+  gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  } else {
+    g_signal_emit_by_name (self, "request-hide");
+  }
 }
 
 static void
@@ -130,19 +144,27 @@ mpd_folder_tile_init (MpdFolderTile *self)
                                    G_USER_DIRECTORY_MUSIC,
                                    G_USER_DIRECTORY_PICTURES,
                                    G_USER_DIRECTORY_VIDEOS };
-  ClutterModel  *store;
-  ClutterActor  *view;
-  unsigned int   i;
-
-  store = mpd_folder_store_new ();
+  unsigned int i;
+  unsigned int row, col;
 
   for (i = 0; i < G_N_ELEMENTS (directories); i++)
   {
     char *uri = uri_from_special_dir (directories[i]);
+    char *label = g_path_get_basename (uri);
     char *icon_path = icon_path_from_special_dir (directories[i]);
-    mpt_folder_store_add_directory (MPD_FOLDER_STORE (store), uri, icon_path);
-    g_free (uri);
+
+    ClutterActor *button = g_object_new (MPD_TYPE_FOLDER_BUTTON,
+                                         "uri", uri,
+                                         "label", label,
+                                         "icon-path", icon_path,
+                                         NULL);
+    g_signal_connect (button, "clicked",
+                      G_CALLBACK (_button_clicked_cb), self);
+    mx_table_add_actor (MX_TABLE (self), button, i / 2, i % 2);
+
     g_free (icon_path);
+    g_free (label);
+    g_free (uri);
   }
 
 #if 0 /* Not showing gtk-bookmarks for now. */
@@ -157,16 +179,6 @@ mpd_folder_tile_init (MpdFolderTile *self)
     g_clear_error (&error);
   }
 #endif
-
-  view = mpd_folder_view_new ();
-  mx_item_view_set_model (MX_ITEM_VIEW (view), store);
-  mx_grid_set_homogenous_rows (MX_GRID (view), true);
-  mx_grid_set_homogenous_columns (MX_GRID (view), true);
-  g_signal_connect (view, "request-hide",
-                    G_CALLBACK (_view_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), view);
-
-  g_object_unref (store);
 }
 
 ClutterActor *
