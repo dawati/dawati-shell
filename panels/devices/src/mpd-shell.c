@@ -20,8 +20,10 @@
 
 #include <stdbool.h>
 
+#include <glib/gi18n.h>
+
 #include "mpd-computer-pane.h"
-#include "mpd-folder-pane.h"
+#include "mpd-devices-tile.h"
 #include "mpd-shell.h"
 #include "mpd-shell-defines.h"
 #include "config.h"
@@ -40,9 +42,7 @@ enum
 
 typedef struct
 {
-  /* Managed by Clutter. */
-  ClutterActor *folder_pane;
-  ClutterActor *computer_pane;
+
 } MpdShellPrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -59,6 +59,7 @@ _width_notify_cb (MpdShell    *self,
                   GParamSpec  *pspec,
                   void        *data)
 {
+/* TODO
   MpdShellPrivate *priv = GET_PRIVATE (self);
   float     shell_width;
   float     folder_pane_width;
@@ -67,6 +68,7 @@ _width_notify_cb (MpdShell    *self,
   folder_pane_width = shell_width - 2 * MPD_SHELL_PADDING
                         - MPD_SHELL_SPACING - MPD_COMPUTER_PANE_WIDTH;
   clutter_actor_set_width (priv->folder_pane, folder_pane_width);
+*/
 }
 
 static void
@@ -98,26 +100,51 @@ static void
 mpd_shell_init (MpdShell *self)
 {
   MpdShellPrivate *priv = GET_PRIVATE (self);
+  ClutterActor  *label;
+  ClutterActor  *hbox;
+  ClutterActor  *pane;
 
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_SHELL_SPACING);
   g_signal_connect (self, "notify::width",
                     G_CALLBACK (_width_notify_cb), NULL);
 
+  label = mx_label_new_with_text (_("Devices"));
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), label,
+                              "expand", false,
+                              "x-align", MX_ALIGN_START,
+                              "x-fill", false,
+                              NULL);
+
+  hbox = mx_box_layout_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), hbox,
+                               "expand", true,
+                               NULL);
+
+  pane = mpd_computer_pane_new ();
+  clutter_actor_set_width (pane, MPD_COMPUTER_PANE_WIDTH);
+  g_signal_connect (pane, "request-hide",
+                    G_CALLBACK (_pane_request_hide_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
+
+  pane = mpd_devices_tile_new ();
+  g_signal_connect (pane, "request-hide",
+                    G_CALLBACK (_pane_request_hide_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
+
+/*
   priv->folder_pane = mpd_folder_pane_new ();
   g_signal_connect (priv->folder_pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->folder_pane);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->folder_pane,
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->folder_pane);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->folder_pane,
                                "expand", true,
                                "x-align", MX_ALIGN_START,
                                "x-fill", true,
                                NULL);
-
-  priv->computer_pane = mpd_computer_pane_new ();
-  clutter_actor_set_width (priv->computer_pane, MPD_COMPUTER_PANE_WIDTH);
-  g_signal_connect (priv->computer_pane, "request-hide",
-                    G_CALLBACK (_pane_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->computer_pane);
+*/
 }
 
 ClutterActor *

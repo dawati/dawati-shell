@@ -96,18 +96,6 @@ mpd_folder_pane_init (MpdFolderPane *self)
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_folder_tile_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-
-  tile = mpd_devices_tile_new ();
-  g_signal_connect (tile, "request-hide",
-                    G_CALLBACK (_folder_tile_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
-                               "expand", true,
-                               "x-align", MX_ALIGN_START,
-                               "x-fill", true,
-                               "y-align", MX_ALIGN_START,
-                               "y-fill", true,
-                               NULL);
 }
 
 ClutterActor *
