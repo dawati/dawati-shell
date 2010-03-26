@@ -18,17 +18,14 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <stdbool.h>
-
 #include <glib/gi18n.h>
 
-#include "mpd-battery-tile.h"
 #include "mpd-computer-pane.h"
-#include "mpd-disk-tile.h"
-#include "mpd-volume-tile.h"
-#include "config.h"
+#include "mpd-computer-tile.h"
+#include "mpd-folder-tile.h"
+#include "mpd-shell-defines.h"
 
-G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_BOX_LAYOUT)
+G_DEFINE_TYPE (MpdComputerPane, mpd_computer_pane, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_COMPUTER_PANE, MpdComputerPanePrivate))
@@ -42,25 +39,16 @@ enum
 
 typedef struct
 {
-  int dummy;
+    int dummy;
 } MpdComputerPanePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
-_settings_clicked_cb (MxButton        *button,
-                      MpdComputerPane *self)
+_tile_request_hide_cb (ClutterActor     *tile,
+                       MpdComputerPane  *self)
 {
-  GError *error = NULL;
-
-  g_spawn_command_line_async ("gnome-control-center", &error);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-
-  g_signal_emit_by_name (self, "request-hide");
+  g_debug ("%s()", __FUNCTION__);
 }
 
 static void
@@ -91,34 +79,25 @@ mpd_computer_pane_class_init (MpdComputerPaneClass *klass)
 static void
 mpd_computer_pane_init (MpdComputerPane *self)
 {
-  ClutterActor *button;
-  ClutterActor *tile;
+  ClutterActor  *label;
+  ClutterActor  *tile;
 
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
+  label = mx_label_new_with_text (_("Your computer"));
+  mx_table_add_actor_with_properties (MX_TABLE (self), label, 0, 0,
+                                      "column-span", 2,
+                                      NULL);
 
-  tile = mpd_battery_tile_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+  tile = mpd_computer_tile_new ();
+  clutter_actor_set_width (tile, MPD_COMPUTER_TILE_WIDTH);
+  g_signal_connect (tile, "request-hide",
+                    G_CALLBACK (_tile_request_hide_cb), self);
+  mx_table_add_actor (MX_TABLE (self), tile, 1, 0);
 
-  tile = mpd_disk_tile_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (tile), "frame");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-
-  tile = mpd_volume_tile_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (tile), "frame");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-
-  button = mx_button_new_with_label (_("All settings"));
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (_settings_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
-                               "expand", true,
-                               "x-align", MX_ALIGN_START,
-                               "x-fill", true,
-                               "y-align", MX_ALIGN_END,
-                               "y-fill", false,
-                               NULL);
+  tile = mpd_folder_tile_new ();
+  clutter_actor_set_width (tile, MPD_FOLDER_TILE_WIDTH);
+  g_signal_connect (tile, "request-hide",
+                    G_CALLBACK (_tile_request_hide_cb), self);
+  mx_table_add_actor (MX_TABLE (self), tile, 1, 1);
 }
 
 ClutterActor *

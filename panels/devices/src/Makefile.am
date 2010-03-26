@@ -26,16 +26,18 @@ moblin_panel_devices_SOURCES = \
   mpd-battery-tile.h \
   mpd-computer-pane.c \
   mpd-computer-pane.h \
+  mpd-computer-tile.c \
+  mpd-computer-tile.h \
   mpd-default-device-tile.c \
   mpd-default-device-tile.h \
+  mpd-devices-pane.c \
+  mpd-devices-pane.h \
   mpd-devices-tile.c \
   mpd-devices-tile.h \
   mpd-disk-tile.c \
   mpd-disk-tile.h \
   mpd-folder-button.c \
   mpd-folder-button.h \
-  mpd-folder-pane.c \
-  mpd-folder-pane.h \
   mpd-folder-store.c \
   mpd-folder-store.h \
   mpd-folder-tile.c \

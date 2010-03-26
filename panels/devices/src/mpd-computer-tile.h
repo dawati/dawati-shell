@@ -18,48 +18,48 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef MPD_COMPUTER_PANE_H
-#define MPD_COMPUTER_PANE_H
+#ifndef MPD_COMPUTER_TILE_H
+#define MPD_COMPUTER_TILE_H
 
 #include <glib-object.h>
 #include <mx/mx.h>
 
 G_BEGIN_DECLS
 
-#define MPD_TYPE_COMPUTER_PANE mpd_computer_pane_get_type()
+#define MPD_TYPE_COMPUTER_TILE mpd_computer_tile_get_type()
 
-#define MPD_COMPUTER_PANE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MPD_TYPE_COMPUTER_PANE, MpdComputerPane))
+#define MPD_COMPUTER_TILE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MPD_TYPE_COMPUTER_TILE, MpdComputerPane))
 
-#define MPD_COMPUTER_PANE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), MPD_TYPE_COMPUTER_PANE, MpdComputerPaneClass))
+#define MPD_COMPUTER_TILE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), MPD_TYPE_COMPUTER_TILE, MpdComputerPaneClass))
 
-#define MPD_IS_COMPUTER_PANE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MPD_TYPE_COMPUTER_PANE))
+#define MPD_IS_COMPUTER_TILE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MPD_TYPE_COMPUTER_TILE))
 
-#define MPD_IS_COMPUTER_PANE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), MPD_TYPE_COMPUTER_PANE))
+#define MPD_IS_COMPUTER_TILE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), MPD_TYPE_COMPUTER_TILE))
 
-#define MPD_COMPUTER_PANE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), MPD_TYPE_COMPUTER_PANE, MpdComputerPaneClass))
-
-typedef struct
-{
-  MxTable parent;
-} MpdComputerPane;
+#define MPD_COMPUTER_TILE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), MPD_TYPE_COMPUTER_TILE, MpdComputerTileClass))
 
 typedef struct
 {
-  MxTableClass parent_class;
-} MpdComputerPaneClass;
+  MxBoxLayout parent;
+} MpdComputerTile;
+
+typedef struct
+{
+  MxBoxLayoutClass parent;
+} MpdComputerTileClass;
 
 GType
-mpd_computer_pane_get_type (void);
+mpd_computer_tile_get_type (void);
 
 ClutterActor *
-mpd_computer_pane_new (void);
+mpd_computer_tile_new (void);
 
 G_END_DECLS
 
-#endif /* MPD_COMPUTER_PANE_H */
+#endif /* MPD_COMPUTER_TILE_H */
 

@@ -22,16 +22,14 @@
 
 #include <glib/gi18n.h>
 
+#include "mpd-devices-pane.h"
 #include "mpd-devices-tile.h"
-#include "mpd-folder-pane.h"
-#include "mpd-folder-tile.h"
 #include "mpd-shell-defines.h"
-#include "config.h"
 
-G_DEFINE_TYPE (MpdFolderPane, mpd_folder_pane, MX_TYPE_BOX_LAYOUT)
+G_DEFINE_TYPE (MpdDevicesPane, mpd_devices_pane, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_FOLDER_PANE, MpdFolderPanePrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_DEVICES_PANE, MpdDevicesPanePrivate))
 
 enum
 {
@@ -42,14 +40,14 @@ enum
 
 typedef struct
 {
-  int dummy;
-} MpdFolderPanePrivate;
+    int dummy;
+} MpdDevicesPanePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
-_folder_tile_request_hide_cb (MpdFolderTile  *tile,
-                              MpdFolderPane  *self)
+_tile_request_hide_cb (ClutterActor     *tile,
+                       MpdDevicesPane  *self)
 {
   g_signal_emit_by_name (self, "request-hide");
 }
@@ -57,15 +55,15 @@ _folder_tile_request_hide_cb (MpdFolderTile  *tile,
 static void
 _dispose (GObject *object)
 {
-  G_OBJECT_CLASS (mpd_folder_pane_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mpd_devices_pane_parent_class)->dispose (object);
 }
 
 static void
-mpd_folder_pane_class_init (MpdFolderPaneClass *klass)
+mpd_devices_pane_class_init (MpdDevicesPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MpdFolderPanePrivate));
+  g_type_class_add_private (klass, sizeof (MpdDevicesPanePrivate));
 
   object_class->dispose = _dispose;
 
@@ -80,27 +78,32 @@ mpd_folder_pane_class_init (MpdFolderPaneClass *klass)
 }
 
 static void
-mpd_folder_pane_init (MpdFolderPane *self)
+mpd_devices_pane_init (MpdDevicesPane *self)
 {
-  ClutterActor *label;
-  ClutterActor *tile;
+  ClutterActor  *label;
+  ClutterActor  *tile;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_SHELL_SPACING);
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+  label = mx_label_new_with_text (_("Other devices"));
+  mx_table_add_actor_with_properties (MX_TABLE (self), label, 0, 0,
+                                      "x-align", MX_ALIGN_START,
+                                      "y-align", MX_ALIGN_START,
+                                      NULL);
 
-  label = mx_label_new_with_text (_("Your computer"));
-  mx_stylable_set_style_class (MX_STYLABLE (label), "panel-title");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
-
-  tile = mpd_folder_tile_new ();
+  tile = mpd_devices_tile_new ();
   g_signal_connect (tile, "request-hide",
-                    G_CALLBACK (_folder_tile_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+                    G_CALLBACK (_tile_request_hide_cb), self);
+  mx_table_add_actor_with_properties (MX_TABLE (self), tile, 1, 0,
+                                      "x-align", MX_ALIGN_START,
+                                      "x-expand", true,
+                                      "y-align", MX_ALIGN_START,
+                                      "y-expand", true,
+                                      NULL);
 }
 
 ClutterActor *
-mpd_folder_pane_new (void)
+mpd_devices_pane_new (void)
 {
-  return g_object_new (MPD_TYPE_FOLDER_PANE, NULL);
+  return g_object_new (MPD_TYPE_DEVICES_PANE, NULL);
 }
+
 

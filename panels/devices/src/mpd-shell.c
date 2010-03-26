@@ -23,7 +23,7 @@
 #include <glib/gi18n.h>
 
 #include "mpd-computer-pane.h"
-#include "mpd-devices-tile.h"
+#include "mpd-devices-pane.h"
 #include "mpd-shell.h"
 #include "mpd-shell-defines.h"
 #include "config.h"
@@ -42,7 +42,7 @@ enum
 
 typedef struct
 {
-
+  int dummy;
 } MpdShellPrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -124,27 +124,14 @@ mpd_shell_init (MpdShell *self)
                                NULL);
 
   pane = mpd_computer_pane_new ();
-  clutter_actor_set_width (pane, MPD_COMPUTER_PANE_WIDTH);
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
 
-  pane = mpd_devices_tile_new ();
+  pane = mpd_devices_pane_new ();
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
-
-/*
-  priv->folder_pane = mpd_folder_pane_new ();
-  g_signal_connect (priv->folder_pane, "request-hide",
-                    G_CALLBACK (_pane_request_hide_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->folder_pane);
-  clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->folder_pane,
-                               "expand", true,
-                               "x-align", MX_ALIGN_START,
-                               "x-fill", true,
-                               NULL);
-*/
 }
 
 ClutterActor *
