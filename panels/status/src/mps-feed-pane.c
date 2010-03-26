@@ -224,6 +224,13 @@ _update_from_caps (MpsFeedPane  *pane,
     clutter_actor_hide (priv->update_hbox);
     clutter_actor_show (priv->something_wrong_frame);
   }
+
+  if (_has_cap (caps, "can-geotag"))
+  {
+    clutter_actor_show (priv->location_hbox);
+  } else {
+    clutter_actor_hide (priv->location_hbox);
+  }
 }
 
 static void
@@ -241,23 +248,6 @@ _service_get_dynamic_caps_cb (SwClientService  *service,
                               gpointer          userdata)
 {
   _update_from_caps (MPS_FEED_PANE (userdata), caps);
-}
-
-static void
-_service_get_static_caps_cb (SwClientService  *service,
-                             const gchar     **caps,
-                             const GError     *error,
-                             gpointer          userdata)
-{
-  MpsFeedPane *pane = MPS_FEED_PANE (userdata);
-  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
-
-  if (_has_cap (caps, "can-geotag"))
-  {
-    clutter_actor_show (priv->location_hbox);
-  } else {
-    clutter_actor_hide (priv->location_hbox);
-  }
 }
 
 static void
@@ -280,10 +270,6 @@ mps_feed_pane_constructed (GObject *object)
   sw_client_service_get_dynamic_capabilities (priv->service,
                                               _service_get_dynamic_caps_cb,
                                               pane);
-
-  sw_client_service_get_static_capabilities (priv->service,
-                                             _service_get_static_caps_cb,
-                                             pane);
 
   sw_client_open_view_for_service (priv->client,
                                    service_name,
