@@ -75,6 +75,7 @@ main (int    argc,
   ClutterActor *datetime;
   GOptionContext *context;
   GError *error = NULL;
+  ClutterActor *box, *label;
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -108,7 +109,7 @@ main (int    argc,
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
 
-    mpl_panel_client_set_height_request (client, 400);
+    mpl_panel_client_set_height_request (client, 450);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     datetime = mnp_datetime_new ();
@@ -126,13 +127,24 @@ main (int    argc,
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
     datetime = mnp_datetime_new ();
-    clutter_actor_set_size ((ClutterActor *)datetime, 1017, 400);
-    clutter_actor_set_size (stage, 1016, 400);
+    clutter_actor_set_size ((ClutterActor *)datetime, 1016, 405);
+    clutter_actor_set_size (stage, 1016, 450);
     clutter_actor_show (stage);
   }
 
+  box = mx_box_layout_new ();
+  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
+
+  label = mx_label_new_with_text ("Thursday 25th March 2010");
+  clutter_actor_set_name (label, "DateHeading");
+
+  mx_box_layout_add_actor (box, label, -1);
+  mx_box_layout_add_actor (box, datetime, -1);
+
+  clutter_actor_set_name ((ClutterActor *)box, "datetime-panel");
+
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               (ClutterActor *)datetime);
+                               (ClutterActor *)box);
 
 
   clutter_main ();

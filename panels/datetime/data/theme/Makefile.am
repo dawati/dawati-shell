@@ -19,7 +19,20 @@ dist_theme_DATA = \
 	check_box.png	\
 	checked_box.png	\
 	card_frame_hover.png	\
-	backdrop.png
+	backdrop.png	\
+	panel-header-bar.png	\
+	clock.png	\
+	time-panel.png	\
+	panel-header-widget-bar.png	\
+	main-panel.png	\
+	button.png	\
+	clock-day.png	\
+	clock-night.png \
+	drop-down-panel.png 	\
+	panel-background.png	\
+	appointments-icon.png	\
+	tasks-icon.png
+
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE

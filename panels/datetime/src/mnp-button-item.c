@@ -46,7 +46,7 @@ mnp_button_item_create (MxItemFactory *factory)
 {
 	ClutterActor *actor = mx_button_new ();
 
-	clutter_actor_set_name (actor, "completion-list-button");
+	mx_stylable_set_style_class (MX_STYLABLE(actor), "CompletionListButton");
   	g_signal_connect (actor, "clicked", G_CALLBACK (button_clicked_cb),
                     factory);
 

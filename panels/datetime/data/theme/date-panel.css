@@ -1,19 +1,18 @@
 *#datetime-panel
 {
-  padding: 4 4 4 4;
-  background-color: #ffffffff;
+  border-image: url('panel-background.png') 15;
+  padding: 6 0 2 0;
 }
 
-*#completion-scroll-bin
+*#CompletionScrollView
 {
-  border-image: url('dp-scroll-view-bin-bg.png') 10;
-  background-color: #ffffffff;
+  border-image: url('drop-down-panel.png') 10;
 }
 
 *#clock-tile
 {
   padding: 4 4;	
-  border-image: url('dp-scroll-view-bin-bg.png') 10;
+  border-image: url('time-panel.png') 10;
   background-color: #ffffffff;
 }
 
@@ -45,10 +44,18 @@ MxButton.new-alarm-tile
   background-color: #7e7e7eff;
 }
 
-*#mnp-tile-date-city
+*#TileDateCityBox
 {
-  padding: 4 4;	
-  background-color: #7e7e7eff;  
+  padding: 4 4 10 15;	
+}
+
+*#DateHeading
+{
+  font-size: 22;
+  font-family: "Droid Sans";
+  font-weight: bold;
+  color: #31c2eeff;
+  padding: 4 4 2 15;
 }
 
 *#clock-area
@@ -62,7 +69,6 @@ MxButton.new-alarm-tile
   padding: 14 0;
   font-size: 16;
   font-family: "Droid Sans";
-  background-color: #7e7e7eff;  
   
 }
 
@@ -71,7 +77,7 @@ MxButton.new-alarm-tile
   padding: 6 0 1 1;
   font-size: 12;
   font-family: "Droid Sans";
-  background-color: #7e7e7eff;  
+  font-weight: bold;
 
 }
 
@@ -80,21 +86,22 @@ MxButton.new-alarm-tile
   padding: 6 0 1 1;
   font-size: 10;
   font-family: "Droid Sans";
-  background-color: #7e7e7eff;  
 
 }
 
 *#completion-list-view
 {
-  padding: 8
 }
 
-*#completion-list-button
+MxButton.CompletionListButton
 {
-  padding: 6;
-  background-color: #7e7e7eff;
+  border-image: none;
 }
 
+MxButton.CompletionListButton:hover
+{
+  border-image: url('button.png') 10;
+}
 
 *.TileRemoveButton,
 *.TileRemoveButton:hover,
@@ -105,7 +112,6 @@ MxButton.new-alarm-tile
 {
   border-image:none;
   padding:0;
-  background-color: #7e7e7eff;    
 }
 
 *.TileRemoveButton *.TileIcon, *.AlarmRemoveButton *.AlarmDelIcon
@@ -128,6 +134,28 @@ MxButton.new-alarm-tile
   padding: 0;	
   background-image: url('alarm.png');
 }
+
+*.ClockIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('clock.png');
+}
+
+*.EventIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('appointments-icon.png');
+}
+
+*.TaskIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('tasks-icon.png');
+}
+
 
 *.MxSpinEntry *.UpButton,
 *.MxSpinEntry *.UpButton:hover,
@@ -171,18 +199,44 @@ MxButton.new-alarm-tile
   background-image: url("snooze-background.png");
 }
 
+*#TimeTitleBox, *#EventsTitleBox, *#TasksTitleBox
+{
+  border-image: url('panel-header-bar.png') 5 5 5 5;
+  padding: 2 0 2 8;
+}
+
+*#TimeTitle, *#EventPaneTitle, *#TaskPaneTitle
+{
+  font-size: 16;
+  font-weight: bold;
+}
+*#TwelveHourButtonBox , *#DateTimeLauncherBox, *#EventButtonBox, *#TaskButtonBox
+{
+  border-image: url('panel-header-widget-bar.png') 5 5 5 5;	
+  padding: 6 0 6 12;
+}
+
+*.SearchEntryBox 
+{
+  padding: 0 0 0 0;
+}
+
+MxEntry.SearchEntry
+{
+}
+
 PengeCalendarPane
 {
   border-image: url('backdrop.png') 5 5 5 5;
   padding: 2;
 }
 
-MxLabel.PengeCalendarPaneTitle,
-MxLabel.PengeCalendarPaneTitleToday,
-MxLabel.PengeCalendarPaneTitleDate,
-MxLabel.PengeCalendarPaneTitleTasks
+*#CalendarPaneTitleToday,
+*#CalendarPaneTitleDate,
+*#TaskPaneTitleToday,
+*#TaskPaneTitleDate
 {
-  font-size: 17;
+  font-size: 14;
   font-weight: bold;
   font-family: "Droid Sans", "Sans";
   color: #3e3e3eff;
@@ -247,3 +301,38 @@ PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
   color: #2c2c2cff;
 }
 
+MxButton.TwelveHourToggleButton 
+{
+  border-image: url('check_box.png') 0;
+}
+
+MxButton.TwelveHourToggleButton:hover, MxButton.TwelveHourToggleButton:checked
+{
+  border-image: url('checked_box.png') 0;
+}
+
+MxButton.SearchEntryAddButton, MxButton.DateTimeLauncherButton
+{
+  border-image: url('button.png') 6;
+  color: #31c2eeff;
+}
+
+*#MnpTileTime
+{
+  border-image: url('clock-day.png') 10;
+  padding: 6 8 3 5;
+  color: #31c2eeff;
+  font-weight: bold;
+  font-size: 16;
+}
+
+*#TimePane, *#CalendarPane, *#TaskPane
+{
+  border-image: url('main-panel.png') 6;
+  padding: 4;
+}
+
+*#HourClockLabel
+{
+  font-weight: bold;
+}

@@ -403,26 +403,28 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	label2 = mx_label_new_with_text (fmt->time);
 	tile->priv->time = (MxLabel *)label2;
-	clutter_actor_set_name (label2, "mnp-tile-time");
+	clutter_actor_set_name (label2, "MnpTileTime");
 
 	label3 = mx_label_new_with_text (fmt->city);
 	tile->priv->city = (MxLabel *)label3;
 	clutter_actor_set_name (label3, "mnp-tile-city");
 
 	box1 = mx_box_layout_new ();
-	clutter_actor_set_name (box1, "mnp-tile-date-city");
+	clutter_actor_set_name (box1, "TileDateCityBox");
 	mx_box_layout_set_orientation ((MxBoxLayout *)box1, MX_ORIENTATION_VERTICAL);
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box1, label3, 0);
 	clutter_container_child_set ((ClutterContainer *)box1, label3,
-				   	"expand", TRUE,
+				   	"expand", FALSE,
 					"y-fill", FALSE,
+					"y-align", MX_ALIGN_END,
                                    	NULL);
 	
 	mx_box_layout_add_actor ((MxBoxLayout *)box1, label1, 1);
 	clutter_container_child_set ((ClutterContainer *)box1, label1,
 				   	"expand", TRUE,
 					"y-fill", FALSE,
+					"y-align", MX_ALIGN_START,
                                    	NULL);
 
 	mx_box_layout_set_orientation ((MxBoxLayout *)tile, MX_ORIENTATION_HORIZONTAL);
@@ -430,6 +432,7 @@ mnp_clock_construct (MnpClockTile *tile)
 	clutter_container_child_set ((ClutterContainer *)tile, box1,
 				   	"expand", TRUE,
 					"x-fill", TRUE,
+					"y-fill", FALSE,
                                    	NULL);
 
 	mx_box_layout_add_actor ((MxBoxLayout *)tile, label2, 1);
