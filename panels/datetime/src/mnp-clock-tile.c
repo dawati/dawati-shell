@@ -403,7 +403,7 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	label2 = mx_label_new_with_text (fmt->time);
 	tile->priv->time = (MxLabel *)label2;
-	clutter_actor_set_name (label2, "MnpTileTime");
+	clutter_actor_set_name (label2, fmt->day ? "MnpTileTimeDay" : "MnpTileTimeNight");
 
 	label3 = mx_label_new_with_text (fmt->city);
 	tile->priv->city = (MxLabel *)label3;
@@ -496,6 +496,7 @@ mnp_clock_tile_refresh (MnpClockTile *tile, time_t now)
 
 	mx_label_set_text ((MxLabel *)tile->priv->time, fmt->time);
 	mx_label_set_text ((MxLabel *)tile->priv->date, fmt->date);
+	clutter_actor_set_name (tile->priv->time, fmt->day ? "MnpTileTimeDay" : "MnpTileTimeNight");
 
 	FREE_DFMT(fmt);
 }

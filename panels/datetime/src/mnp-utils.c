@@ -433,6 +433,7 @@ format_time (struct tm   *now,
 	}
 	utf8 = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL);
 	fmt->time = utf8;
+	fmt->day = ((now->tm_hour >= 6) && (now->tm_hour < 19)) ? TRUE: FALSE;
 
 	if (local_now.tm_wday != now->tm_wday) {
 		/* Translators: This is a strftime format string.

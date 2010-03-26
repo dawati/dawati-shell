@@ -318,9 +318,18 @@ MxButton.TasksLauncherButton, MxButton.EventLauncherButton
   color: #31c2eeff;
 }
 
-*#MnpTileTime
+*#MnpTileTimeDay
 {
   border-image: url('clock-day.png') 10;
+  padding: 6 8 3 5;
+  color: #31c2eeff;
+  font-weight: bold;
+  font-size: 16;
+}
+
+*#MnpTileTimeNight
+{
+  border-image: url('clock-night.png') 10;
   padding: 6 8 3 5;
   color: #31c2eeff;
   font-weight: bold;

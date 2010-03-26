@@ -43,6 +43,7 @@ typedef struct _mnp_date_fmt {
 	char *date;
 	char *city;
 	char *time;
+	gboolean day;
 }MnpDateFormat;
 
 typedef struct _mnp_zone_location {
