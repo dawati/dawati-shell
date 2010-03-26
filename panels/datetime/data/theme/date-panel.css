@@ -13,7 +13,7 @@
 {
   padding: 4 4;	
   border-image: url('time-panel.png') 10;
-  background-color: #ffffffff;
+
 }
 
 *#new-alarm-dialog
@@ -61,7 +61,6 @@ MxButton.new-alarm-tile
 *#clock-area
 {
   padding: 5 5;
-  background-color: #ffffffff;
 }
 
 *#mnp-tile-time
@@ -210,7 +209,8 @@ MxButton.CompletionListButton:hover
   font-size: 16;
   font-weight: bold;
 }
-*#TwelveHourButtonBox , *#DateTimeLauncherBox, *#EventButtonBox, *#TaskButtonBox
+*#TwelveHourButtonBox , *#DateTimeLauncherBox, *#EventButtonBox, *#TaskButtonBox,
+*#TasksLauncherBox, *#EventLauncherBox
 {
   border-image: url('panel-header-widget-bar.png') 5 5 5 5;	
   padding: 6 0 6 12;
@@ -311,7 +311,8 @@ MxButton.TwelveHourToggleButton:hover, MxButton.TwelveHourToggleButton:checked
   border-image: url('checked_box.png') 0;
 }
 
-MxButton.SearchEntryAddButton, MxButton.DateTimeLauncherButton
+MxButton.SearchEntryAddButton, MxButton.DateTimeLauncherButton,
+MxButton.TasksLauncherButton, MxButton.EventLauncherButton
 {
   border-image: url('button.png') 6;
   color: #31c2eeff;

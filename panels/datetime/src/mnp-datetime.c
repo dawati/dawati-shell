@@ -71,6 +71,12 @@ struct _MnpDatetimePrivate {
 
 	ClutterActor *cal_date_label;
 	ClutterActor *task_date_label;
+
+	ClutterActor *cal_launcher_box;
+	ClutterActor *cal_launcher;
+
+	ClutterActor *task_launcher_box;
+	ClutterActor *task_launcher;
 };
 
 static void
@@ -264,10 +270,36 @@ construct_calendar_area (MnpDatetime *time)
 	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, (ClutterActor *)priv->penge_events, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
                                priv->penge_events,
-                               "expand", FALSE,
-			       "y-fill", FALSE,		
+                               "expand", TRUE,
+			       "y-fill", TRUE,		
 			       "x-fill", TRUE,			       			       
                                NULL);
+
+	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->cal_area), div, -1);		
+
+	/* Launcher */
+	box = mx_box_layout_new ();
+	clutter_actor_set_name (box, "EventLauncherBox");
+	priv->cal_launcher_box = box;
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
+	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
+	
+	priv->cal_launcher = mx_button_new ();
+	mx_button_set_label (priv->cal_launcher, _("Open Appointments"));
+	mx_stylable_set_style_class (MX_STYLABLE(priv->cal_launcher), "EventLauncherButton");
+
+	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->cal_launcher, -1);
+	clutter_container_child_set (CLUTTER_CONTAINER (box),
+                               (ClutterActor *)priv->cal_launcher,
+                               "expand", FALSE,
+			       "y-fill", FALSE,
+			       "x-fill", FALSE,
+			       "x-align", MX_ALIGN_END,
+                               NULL);
+
+	mx_box_layout_add_actor (priv->cal_area, box, -1);
+	
 
 }
 
@@ -392,10 +424,36 @@ construct_task_area (MnpDatetime *time)
 	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, priv->task_area, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
                                priv->task_area,
-                               "expand", FALSE,
-			       "y-fill", FALSE,		
+                               "expand", TRUE,
+			       "y-fill", TRUE,		
 			       "x-fill", TRUE,			       			       
                                NULL);
+
+	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->task_row), div, -1);		
+
+	/* Launcher */
+	box = mx_box_layout_new ();
+	clutter_actor_set_name (box, "TasksLauncherBox");
+	priv->task_launcher_box = box;
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
+	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
+	
+	priv->task_launcher = mx_button_new ();
+	mx_button_set_label (priv->task_launcher, _("Open Tasks"));
+	mx_stylable_set_style_class (MX_STYLABLE(priv->task_launcher), "TasksLauncherButton");
+
+	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->task_launcher, -1);
+	clutter_container_child_set (CLUTTER_CONTAINER (box),
+                               (ClutterActor *)priv->task_launcher,
+                               "expand", FALSE,
+			       "y-fill", FALSE,
+			       "x-fill", FALSE,
+			       "x-align", MX_ALIGN_END,
+                               NULL);
+
+	mx_box_layout_add_actor (priv->task_row, box, -1);
+	
 }
 
 static void
