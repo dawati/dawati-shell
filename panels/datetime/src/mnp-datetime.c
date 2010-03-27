@@ -142,14 +142,26 @@ static gboolean
 events_pane_update (MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
-	JanaTime *now;
+ 	JanaTime *start, *end;
+	JanaDuration *duration;
 
-	now = jana_ecal_utils_time_now_local ();
+	/*now = jana_ecal_utils_time_now_local ();
 	g_object_set (priv->penge_events,
 			"time",
 			now,
 			NULL);	
-	g_object_unref (now);
+	g_object_unref (now); */
+
+      	start = jana_ecal_utils_time_now_local ();
+      	end = jana_ecal_utils_time_now_local ();
+      	jana_time_set_hours (end, 23);
+      	jana_time_set_minutes (end, 59);
+      	jana_time_set_seconds (end, 59);
+
+	duration = jana_duration_new (start, end);
+	penge_events_pane_set_duration (priv->penge_events, duration);
+	jana_duration_free (duration);
+
 
 	return TRUE;
 }
@@ -158,13 +170,12 @@ static void
 construct_calendar_area (MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
-	JanaTime *now;
- /* 	JanaTime *start, *end;
-	JanaDuration *duration; */
+/*	JanaTime *now; */
+ 	JanaTime *start, *end;
+	JanaDuration *duration;
 	ClutterActor *box, *label;
 	ClutterActor *div, *icon;
   	
-	/*
       	start = jana_ecal_utils_time_now_local ();
       	end = jana_ecal_utils_time_now_local ();
       	jana_time_set_hours (end, 23);
@@ -172,7 +183,7 @@ construct_calendar_area (MnpDatetime *dtime)
       	jana_time_set_seconds (end, 59);
 
 	
-	duration = jana_duration_new (start, end); */
+	duration = jana_duration_new (start, end);
 
 	priv->cal_area = mx_box_layout_new ();
 	clutter_actor_set_name (priv->cal_area, "CalendarPane");
@@ -287,7 +298,6 @@ construct_calendar_area (MnpDatetime *dtime)
 
 
 	box = mx_box_layout_new ();
-	priv->task_launcher_box = box;
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, box, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
@@ -297,15 +307,13 @@ construct_calendar_area (MnpDatetime *dtime)
 			       "x-fill", TRUE,			       			       
                                NULL);
 
-	now = jana_ecal_utils_time_now_local ();	
   	priv->penge_events = g_object_new (PENGE_TYPE_EVENTS_PANE,
 				    "time",
-				    now,
+				    duration->start,
                                     NULL);
-	g_object_unref(now);
-	/* penge_events_pane_set_duration (priv->penge_events, duration);
-	jana_duration_free (duration); */
-	g_timeout_add_seconds (60 * 10, (GSourceFunc)events_pane_update, dtime);
+	penge_events_pane_set_duration (priv->penge_events, duration);
+	jana_duration_free (duration);
+	g_timeout_add_seconds (10, (GSourceFunc)events_pane_update, dtime);
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->penge_events, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
@@ -339,7 +347,12 @@ construct_calendar_area (MnpDatetime *dtime)
                                NULL);
 
 	mx_box_layout_add_actor ((MxBoxLayout *) priv->cal_area, box, -1);
-	
+	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
+                               (ClutterActor *)box,
+                               "expand", FALSE,
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);	
 
 }
 
@@ -460,7 +473,6 @@ construct_task_area (MnpDatetime *time)
 
 
 	box = mx_box_layout_new ();
-	priv->task_launcher_box = box;
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, box, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
