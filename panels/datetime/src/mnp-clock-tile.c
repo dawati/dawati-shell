@@ -502,7 +502,7 @@ mnp_clock_tile_refresh (MnpClockTile *tile, time_t now, gboolean tfh)
 
 	mx_label_set_text ((MxLabel *)tile->priv->time, fmt->time);
 	mx_label_set_text ((MxLabel *)tile->priv->date, fmt->date);
-	clutter_actor_set_name (tile->priv->time, fmt->day ? "MnpTileTimeDay" : "MnpTileTimeNight");
+	clutter_actor_set_name ((ClutterActor *)tile->priv->time, fmt->day ? "MnpTileTimeDay" : "MnpTileTimeNight");
 
 	FREE_DFMT(fmt);
 }

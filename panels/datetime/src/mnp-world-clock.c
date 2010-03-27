@@ -402,11 +402,11 @@ construct_completion (MnpWorldClock *world_clock)
 static void
 hour_clock_changed (ClutterActor *button, MnpWorldClock *world_clock)
 {
-	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+/*	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock); */
 	gboolean tfh;
 	GConfClient *client = gconf_client_get_default();
 
-	tfh = mx_button_get_toggled (button);
+	tfh = mx_button_get_toggled ((MxButton *)button);
 
 	gconf_client_set_bool (client, "/apps/date-time-panel/24_h_clock", tfh, NULL);
 	g_object_unref(client);
@@ -539,7 +539,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 	mx_box_layout_set_orientation ((MxBoxLayout *)world_clock, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)world_clock, 0);
-	clutter_actor_set_name ((world_clock), "TimePane");
+	clutter_actor_set_name (CLUTTER_ACTOR(world_clock), "TimePane");
 
 	construct_heading_and_top_area (world_clock);
 
@@ -582,7 +582,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
                                NULL);
 
 	priv->add_location = mx_button_new ();
-	mx_button_set_label (priv->add_location, _("Add"));
+	mx_button_set_label ((MxButton *)priv->add_location, _("Add"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->add_location), "SearchEntryAddButton");
 	
 	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->add_location, 1);
@@ -608,7 +608,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	/* Clock Area */
 
 	priv->area = mnp_clock_area_new ();
-	clutter_actor_set_size (priv->area, 300, -1);
+	clutter_actor_set_size ((ClutterActor *)priv->area, 300, -1);
 
 	clutter_actor_set_reactive ((ClutterActor *)priv->area, TRUE);
 	clutter_actor_set_name ((ClutterActor *)priv->area, "clock-area");
@@ -655,7 +655,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
 	
 	priv->launcher = mx_button_new ();
-	mx_button_set_label (priv->launcher, _("Set Time & Date"));
+	mx_button_set_label ((MxButton *) priv->launcher, _("Set Time & Date"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->launcher), "DateTimeLauncherButton");
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->launcher, -1);

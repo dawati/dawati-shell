@@ -141,7 +141,7 @@ format_label (ClutterActor *label)
 static gboolean
 events_pane_update (MnpDatetime *dtime)
 {
-  	MnpDatetimePrivate *priv = GET_PRIVATE (time);
+  	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
 	JanaTime *now;
 
 	now = jana_ecal_utils_time_now_local ();
@@ -158,8 +158,9 @@ static void
 construct_calendar_area (MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
-  	JanaTime *start, *end, *now;
-	JanaDuration *duration;
+	JanaTime *now;
+ /* 	JanaTime *start, *end;
+	JanaDuration *duration; */
 	ClutterActor *box, *label;
 	ClutterActor *div, *icon;
   	
@@ -325,7 +326,7 @@ construct_calendar_area (MnpDatetime *dtime)
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
 	
 	priv->cal_launcher = mx_button_new ();
-	mx_button_set_label (priv->cal_launcher, _("Open Appointments"));
+	mx_button_set_label ((MxButton *) priv->cal_launcher, _("Open Appointments"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->cal_launcher), "EventLauncherButton");
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->cal_launcher, -1);
@@ -337,7 +338,7 @@ construct_calendar_area (MnpDatetime *dtime)
 			       "x-align", MX_ALIGN_END,
                                NULL);
 
-	mx_box_layout_add_actor (priv->cal_area, box, -1);
+	mx_box_layout_add_actor ((MxBoxLayout *) priv->cal_area, box, -1);
 	
 
 }
@@ -490,7 +491,7 @@ construct_task_area (MnpDatetime *time)
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
 	
 	priv->task_launcher = mx_button_new ();
-	mx_button_set_label (priv->task_launcher, _("Open Tasks"));
+	mx_button_set_label ((MxButton *)priv->task_launcher, _("Open Tasks"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->task_launcher), "TasksLauncherButton");
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->task_launcher, -1);
@@ -502,7 +503,7 @@ construct_task_area (MnpDatetime *time)
 			       "x-align", MX_ALIGN_END,
                                NULL);
 
-	mx_box_layout_add_actor (priv->task_row, box, -1);
+	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, box, -1);
 	
 }
 
@@ -510,7 +511,6 @@ static void
 mnp_datetime_construct (MnpDatetime *time)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
-	ClutterActor *div;
 
 	mx_box_layout_set_orientation ((MxBoxLayout *)time, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)time, TRUE);

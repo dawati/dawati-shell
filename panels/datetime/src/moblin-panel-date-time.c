@@ -137,10 +137,10 @@ main (int    argc,
 
   label = mx_label_new ();
   clutter_actor_set_name (label, "DateHeading");
-  mnp_date_time_set_date_label (datetime, label);
+  mnp_date_time_set_date_label ((MnpDatetime *)datetime, label);
 
-  mx_box_layout_add_actor (box, label, -1);
-  mx_box_layout_add_actor (box, datetime, -1);
+  mx_box_layout_add_actor ((MxBoxLayout *)box, label, -1);
+  mx_box_layout_add_actor ((MxBoxLayout *)box, datetime, -1);
 
   clutter_actor_set_name ((ClutterActor *)box, "datetime-panel");
 
