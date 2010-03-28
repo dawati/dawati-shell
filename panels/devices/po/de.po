@@ -1,0 +1,2144 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-27 09:44+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#, fuzzy
+msgid "Devices panel"
+msgstr "Panel _einschließen"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:135
+#, fuzzy
+msgid "devices"
+msgstr "Geräte"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:560
+msgid "CompactFlash"
+msgstr ""
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:563
+msgid "MemoryStick"
+msgstr ""
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:566
+msgid "SmartMedia"
+msgstr ""
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:569
+msgid "SecureDigital"
+msgstr ""
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:572
+msgid "SD High Capacity"
+msgstr ""
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:575
+msgid "Floppy"
+msgstr ""
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:578
+#, fuzzy
+msgid "Zip"
+msgstr "Postleit_zahl:"
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:581
+msgid "Jaz"
+msgstr ""
+
+#. Translators: This word is used to describe the media inserted into a device
+#: ../gdu/gdu-drive.c:584
+#, fuzzy
+msgid "Flash"
+msgstr "Fensterleiste _blinken"
+
+#. Translators: This word is used to describe the optical disc type, it may appear
+#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
+#.
+#: ../gdu/gdu-drive.c:607
+#, fuzzy
+msgid "CD"
+msgstr "CD"
+
+#. Translators: This word is used to describe the optical disc type, it may appear
+#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
+#.
+#: ../gdu/gdu-drive.c:615
+#, fuzzy
+msgid "DVD"
+msgstr "DVD"
+
+#. Translators: This word is used to describe the optical disc type, it may appear
+#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
+#.
+#: ../gdu/gdu-drive.c:623
+msgid "Blu-Ray"
+msgstr ""
+
+#. Translators: This word is used to describe the optical disc type, it may appear
+#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
+#.
+#: ../gdu/gdu-drive.c:631
+msgid "HDDVD"
+msgstr ""
+
+#. Translators: %s is the media type e.g. 'CD/DVD' or 'CompactFlash'
+#: ../gdu/gdu-drive.c:680
+#: ../gdu/gdu-drive.c:719
+#, fuzzy, c-format
+msgid "%s Drive"
+msgstr "Quell-Festplatte:"
+
+#. Translators: first %s is the size, second %s is the media type
+#. * e.g. 'CD/DVD' or 'CompactFlash'
+#.
+#: ../gdu/gdu-drive.c:714
+#, fuzzy, c-format
+msgid "%s %s Drive"
+msgstr "Quell-Festplatte:"
+
+#. Translators: This string is used to describe a hard disk.
+#. * The first %s is the size of the drive e.g. '45 GB'.
+#.
+#: ../gdu/gdu-drive.c:730
+#, fuzzy, c-format
+msgid "%s Hard Disk"
+msgstr "Disk Druid"
+
+#. Translators: This string is used to describe a hard disk where the size
+#. * is not known.
+#.
+#: ../gdu/gdu-drive.c:735
+#, fuzzy
+msgid "Hard Disk"
+msgstr "Disk Druid"
+
+#. Translators: This string is used to describe a SSD. The first %s is
+#. * the size of the drive e.g. '45 GB'.
+#.
+#: ../gdu/gdu-drive.c:742
+#, fuzzy, c-format
+msgid "%s Solid-State Disk"
+msgstr "ungenügend Plattenspeicher"
+
+#. Translators: This string is used to describe a SSD where the size
+#. * is not known.
+#.
+#: ../gdu/gdu-drive.c:748
+#, fuzzy
+msgid "Solid-State Disk"
+msgstr "ungenügend Plattenspeicher"
+
+#. Translators: This string is the description of a drive. The first %s is the
+#. * size of the inserted media, for example '45 GB'.
+#.
+#: ../gdu/gdu-drive.c:789
+#, fuzzy, c-format
+msgid "%s Media"
+msgstr "Medien"
+
+#. Translators: This string is used as a description text when no media has
+#. * been detected for a drive
+#.
+#: ../gdu/gdu-drive.c:796
+#, fuzzy, c-format
+msgid "No Media Detected"
+msgstr "Kein Medium gefunden"
+
+#. Translators: This string is used for conveying the partition table format
+#: ../gdu/gdu-drive.c:807
+#: ../gdu/gdu-linux-md-drive.c:565
+#, fuzzy
+msgid "MBR Partition Table"
+msgstr "EFI System-Partition"
+
+#. Translators: This string is used for conveying the partition table format
+#: ../gdu/gdu-drive.c:810
+#: ../gdu/gdu-linux-md-drive.c:568
+#, fuzzy
+msgid "GUID Partition Table"
+msgstr "EFI System-Partition"
+
+#. Translators: This string is used for conveying the partition table format
+#: ../gdu/gdu-drive.c:813
+#: ../gdu/gdu-linux-md-drive.c:571
+#, fuzzy
+msgid "Apple Partition Table"
+msgstr "EFI System-Partition"
+
+#. Translators: This string is used for conveying the partition table format when
+#. * the format is unknown
+#.
+#: ../gdu/gdu-drive.c:818
+#: ../gdu/gdu-linux-md-drive.c:576
+msgid "Partitioned"
+msgstr ""
+
+#. Translators: This string is used for conveying a device is not partitioned.
+#.
+#: ../gdu/gdu-drive.c:823
+#, fuzzy
+msgid "Not Partitioned"
+msgstr "%s nicht gefunden"
+
+#. TODO: include type e.g. SATA Port Multiplier, SAS Expander etc
+#: ../gdu/gdu-hub.c:222
+msgid "SAS Expander"
+msgstr ""
+
+#: ../gdu/gdu-hub.c:230
+#, fuzzy
+msgid "PATA Host Adapter"
+msgstr "Ignorierte Rechnerliste"
+
+#: ../gdu/gdu-hub.c:232
+#, fuzzy
+msgid "SATA Host Adapter"
+msgstr "Ignorierte Rechnerliste"
+
+#: ../gdu/gdu-hub.c:234
+#, fuzzy
+msgid "ATA Host Adapter"
+msgstr "Ignorierte Rechnerliste"
+
+#: ../gdu/gdu-hub.c:236
+#, fuzzy
+msgid "SAS Host Adapter"
+msgstr "Ignorierte Rechnerliste"
+
+#: ../gdu/gdu-hub.c:238
+#, fuzzy
+msgid "SCSI Host Adapter"
+msgstr "Ignorierte Rechnerliste"
+
+#: ../gdu/gdu-hub.c:240
+#, fuzzy
+msgid "Host Adapter"
+msgstr "S_ocks-Rechner:"
+
+#. Translators: Description
+#: ../gdu/gdu-linux-lvm2-volume-group.c:351
+#: ../gdu/gdu-linux-lvm2-volume-group.c:355
+#, fuzzy
+msgid "Volume Group"
+msgstr "_Volume Group-Name"
+
+#. Translators: VPD name - first %s is the size e.g. '45 GB'
+#: ../gdu/gdu-linux-lvm2-volume-group.c:359
+#, fuzzy, c-format
+msgid "%s LVM2 Volume Group"
+msgstr "_Volume Group-Name"
+
+#. Translators: VPD name when size is not known
+#: ../gdu/gdu-linux-lvm2-volume-group.c:362
+#, fuzzy
+msgid "LVM2 Volume Group"
+msgstr "_Volume Group-Name"
+
+#. Translators: label for an unallocated space in a LVM2 volume group.
+#. * %s is the size, formatted like '45 GB'
+#.
+#. Translators: label for an unallocated space on a disk
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-linux-lvm2-volume-hole.c:201
+#: ../gdu/gdu-volume-hole.c:152
+#, fuzzy, c-format
+msgid "%s Free"
+msgstr "_Frei"
+
+#. Translators: Description
+#: ../gdu/gdu-linux-lvm2-volume-hole.c:205
+#: ../gdu/gdu-volume-hole.c:161
+#, fuzzy
+msgid "Unallocated Space"
+msgstr "Verwendeter Platz:"
+
+#. Translators: VPD name
+#: ../gdu/gdu-linux-lvm2-volume-hole.c:208
+msgid "LVM2 VG Unallocated Space"
+msgstr ""
+
+#. Translators: Description
+#: ../gdu/gdu-linux-lvm2-volume.c:331
+#, fuzzy
+msgid "Logical Volume"
+msgstr "Logischen Datenträger (Logical Volume) anlegen"
+
+#. Translators: VPD name
+#: ../gdu/gdu-linux-lvm2-volume.c:334
+#, fuzzy
+msgid "LVM2 Logical Volume"
+msgstr "Logischen Datenträger (Logical Volume) anlegen"
+
+#. Translators: First %s is the size, second %s is a RAID level, e.g. 'RAID-5'
+#. Translators: first %s is the size e.g. '45 GB', second %s is the level e.g. 'RAID-5'
+#: ../gdu/gdu-linux-md-drive.c:538
+#: ../gdu/gdu-linux-md-drive.c:621
+#, fuzzy, c-format
+msgid "%s %s Array"
+msgstr "Paketgruppen-Dateien"
+
+#. Translators: %s is a RAID level, e.g. 'RAID-5'
+#. Translators: %s is the level e.g. 'RAID-5'
+#: ../gdu/gdu-linux-md-drive.c:543
+#: ../gdu/gdu-linux-md-drive.c:626
+#, fuzzy, c-format
+msgid "%s Array"
+msgstr "Paketgruppen-Dateien"
+
+#. Translators: First %s is a device file such as /dev/sda4
+#. * second %s is the state of the device
+#.
+#: ../gdu/gdu-linux-md-drive.c:596
+#, fuzzy, c-format
+msgid "RAID Array %s (%s)"
+msgstr "MD RAID ARRAY %s (%-0.f MB)"
+
+#. Translators: %s is a device file such as /dev/sda4
+#: ../gdu/gdu-linux-md-drive.c:603
+#, fuzzy, c-format
+msgid "RAID device %s"
+msgstr "RAID-Gerät"
+
+#. Translators: fallback for level
+#: ../gdu/gdu-linux-md-drive.c:609
+#, fuzzy
+msgctxt "RAID Level fallback"
+msgid "RAID"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-linux-md-drive.c:614
+#, fuzzy
+msgid "RAID Array"
+msgstr "MD RAID ARRAY %s (%-0.f MB)"
+
+#: ../gdu/gdu-linux-md-drive.c:1112
+#, fuzzy
+msgctxt "Linux MD slave state"
+msgid "Not Attached"
+msgstr "%s nicht gefunden"
+
+#: ../gdu/gdu-linux-md-drive.c:1115
+msgctxt "Linux MD slave state"
+msgid "Faulty"
+msgstr ""
+
+#: ../gdu/gdu-linux-md-drive.c:1120
+msgctxt "Linux MD slave state"
+msgid "Fully Synchronized"
+msgstr ""
+
+#: ../gdu/gdu-linux-md-drive.c:1122
+msgctxt "Linux MD slave state"
+msgid "Writemostly"
+msgstr ""
+
+#: ../gdu/gdu-linux-md-drive.c:1124
+#, fuzzy
+msgctxt "Linux MD slave state"
+msgid "Blocked"
+msgstr "%i blockierte Aktualisierung"
+
+#: ../gdu/gdu-linux-md-drive.c:1126
+msgctxt "Linux MD slave state"
+msgid "Spare"
+msgstr ""
+
+#: ../gdu/gdu-machine.c:151
+#, fuzzy
+msgid "Local Storage"
+msgstr "Speicher erstellen"
+
+#. TODO: use display-hostname
+#: ../gdu/gdu-machine.c:154
+#, fuzzy, c-format
+msgid "Storage on %s"
+msgstr "Abgeschlossen am %-d %B, %Y, %H:%M"
+
+#: ../gdu/gdu-pool.c:885
+#, fuzzy
+msgid "Multipath Devices"
+msgstr "Geräte ignorieren"
+
+#: ../gdu/gdu-pool.c:886
+msgid "Drives with multiple I/O paths"
+msgstr ""
+
+#: ../gdu/gdu-pool.c:896
+#, fuzzy
+msgid "Multi-disk Devices"
+msgstr "Keine Gerät gefunden"
+
+#: ../gdu/gdu-pool.c:897
+msgid "RAID, LVM and other logical drives"
+msgstr ""
+
+#: ../gdu/gdu-pool.c:907
+#, fuzzy
+msgid "Peripheral Devices"
+msgstr "Geräte ignorieren"
+
+#: ../gdu/gdu-pool.c:908
+msgid "USB, Firewire and other peripherals"
+msgstr ""
+
+#: ../gdu/gdu-pool.c:2090
+#, fuzzy, c-format
+msgid "Error enumerating devices: %s"
+msgstr "Keine Gerät gefunden"
+
+#: ../gdu/gdu-pool.c:2116
+#, fuzzy, c-format
+msgid "Error enumerating adapters: %s"
+msgstr "Ein interner Fehler ist aufgetreten"
+
+#: ../gdu/gdu-pool.c:2139
+#, fuzzy, c-format
+msgid "Error enumerating expanders: %s"
+msgstr "Ein interner Fehler ist aufgetreten"
+
+#: ../gdu/gdu-pool.c:2162
+#, fuzzy, c-format
+msgid "Error enumerating ports: %s"
+msgstr "Ein interner Fehler ist aufgetreten"
+
+#: ../gdu/gdu-ssh-bridge.c:292
+#, c-format
+msgid "Error listening to address `localhost:%d': %s: %s\n"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:307
+#, c-format
+msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:322
+#, c-format
+msgid "Error setting auth mechanisms on local DBusServer\n"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:347
+#, c-format
+msgid "Unable to parse command-line `%s' (Malformed address?): %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:369
+#, c-format
+msgid "Unable to spawn ssh program: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:398
+#: ../gdu/gdu-ssh-bridge.c:510
+#, fuzzy, c-format
+msgid "Error reading stderr output: %s"
+msgstr "Fehler beim Lesen des Inhalts der Kickstart-Datei %s: %m"
+
+#: ../gdu/gdu-ssh-bridge.c:405
+msgid "Error reading stderr output: No content"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:471
+#, fuzzy
+msgid "Error logging in"
+msgstr "Anmeldung bei iSCSI Knoten"
+
+#: ../gdu/gdu-ssh-bridge.c:491
+#, fuzzy, c-format
+msgid "Error sending `%s': %s"
+msgstr "E-Mail wird gesendet"
+
+#: ../gdu/gdu-ssh-bridge.c:519
+#, c-format
+msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:536
+#, c-format
+msgid "Error passing authorization secret: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:557
+#, fuzzy, c-format
+msgid "Error reading stderr from: %s"
+msgstr "Fehler beim Lesen des Inhalts der Kickstart-Datei %s: %m"
+
+#: ../gdu/gdu-ssh-bridge.c:566
+#, c-format
+msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:585
+#, c-format
+msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
+msgstr ""
+
+#: ../gdu/gdu-ssh-bridge.c:592
+msgid "The udisks-tcp-bridge program failed to prove it was authorized"
+msgstr ""
+
+#. Translators: The first %s is the size in power-of-2 units, e.g. '64 KiB'
+#. * the second %s is the size as a number e.g. '65,536 bytes'
+#.
+#. Translators: The first %s is the size in power-of-10 units, e.g. '100 KB'
+#. * the second %s is the size as a number e.g. '100,000 bytes'
+#.
+#: ../gdu/gdu-util.c:131
+#: ../gdu/gdu-util.c:140
+#, c-format
+msgid "%s (%s bytes)"
+msgstr ""
+
+#. Translators: FAT is a filesystem type
+#: ../gdu/gdu-util.c:175
+msgid "FAT (12-bit version)"
+msgstr ""
+
+#. Translators: FAT is a filesystem type
+#: ../gdu/gdu-util.c:178
+#: ../gdu/gdu-util.c:185
+#: ../gdu/gdu-util.c:192
+#: ../gdu/gdu-util.c:196
+#: ../gdu/gdu-util.c:198
+msgid "FAT"
+msgstr ""
+
+#. Translators: FAT is a filesystem type
+#: ../gdu/gdu-util.c:183
+msgid "FAT (16-bit version)"
+msgstr ""
+
+#. Translators: FAT is a filesystem type
+#: ../gdu/gdu-util.c:190
+msgid "FAT (32-bit version)"
+msgstr ""
+
+#. Translators: NTFS is a filesystem type
+#: ../gdu/gdu-util.c:205
+#, fuzzy, c-format
+msgid "NTFS (version %s)"
+msgstr "(API Version: %s)"
+
+#. Translators: NTFS is a filesystem type
+#: ../gdu/gdu-util.c:208
+#: ../gdu/gdu-util.c:210
+#, c-format
+msgid "NTFS"
+msgstr ""
+
+#. Translators: HFS is a filesystem type
+#: ../gdu/gdu-util.c:215
+#: ../gdu/gdu-util.c:217
+msgid "HFS"
+msgstr ""
+
+#. Translators: HFS+ is a filesystem type
+#: ../gdu/gdu-util.c:222
+#: ../gdu/gdu-util.c:224
+msgid "HFS+"
+msgstr ""
+
+#: ../gdu/gdu-util.c:228
+msgid "Linux Unified Key Setup"
+msgstr ""
+
+#. Translators: LUKS is 'Linux Unified Key Setup', a disk encryption format
+#: ../gdu/gdu-util.c:231
+msgid "LUKS"
+msgstr ""
+
+#. Translators: Ext2 is a filesystem type
+#: ../gdu/gdu-util.c:237
+#, fuzzy, c-format
+msgid "Ext2 (version %s)"
+msgstr "(API Version: %s)"
+
+#. Translators: Ext2 is a filesystem type
+#: ../gdu/gdu-util.c:240
+#, c-format
+msgid "Ext2"
+msgstr ""
+
+#. Translators: Ext2 is a filesystem type
+#: ../gdu/gdu-util.c:243
+msgid "ext2"
+msgstr ""
+
+#. Translators: Ext3 is a filesystem type
+#: ../gdu/gdu-util.c:249
+#, fuzzy, c-format
+msgid "Ext3 (version %s)"
+msgstr "(API Version: %s)"
+
+#. Translators: Ext3 is a filesystem type
+#: ../gdu/gdu-util.c:252
+#, c-format
+msgid "Ext3"
+msgstr ""
+
+#. Translators: Ext3 is a filesystem type
+#: ../gdu/gdu-util.c:255
+msgid "ext3"
+msgstr ""
+
+#. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
+#: ../gdu/gdu-util.c:261
+#, c-format
+msgid "Journal for Ext3 (version %s)"
+msgstr ""
+
+#. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
+#: ../gdu/gdu-util.c:264
+#, fuzzy, c-format
+msgid "Journal for Ext3"
+msgstr "Auf _Aktualisierungen prüfen:"
+
+#. Translators: jbd is a filesystem type
+#: ../gdu/gdu-util.c:267
+msgid "jbd"
+msgstr ""
+
+#. Translators: ext4 is a filesystem type
+#: ../gdu/gdu-util.c:273
+#, fuzzy, c-format
+msgid "Ext4 (version %s)"
+msgstr "(API Version: %s)"
+
+#. Translators: ext4 is a filesystem type
+#: ../gdu/gdu-util.c:276
+#, c-format
+msgid "Ext4"
+msgstr ""
+
+#. Translators: Ext4 is a filesystem type
+#: ../gdu/gdu-util.c:279
+msgid "ext4"
+msgstr ""
+
+#. Translators: xfs is a filesystem type
+#: ../gdu/gdu-util.c:285
+#, fuzzy, c-format
+msgid "XFS (version %s)"
+msgstr "(API Version: %s)"
+
+#. Translators: xfs is a filesystem type
+#: ../gdu/gdu-util.c:288
+#, c-format
+msgid "XFS"
+msgstr ""
+
+#. Translators: xfs is a filesystem type
+#: ../gdu/gdu-util.c:291
+msgid "xfs"
+msgstr ""
+
+#. Translators: reiserfs is a filesystem type
+#: ../gdu/gdu-util.c:297
+#, fuzzy, c-format
+msgid "ReiserFS (version %s)"
+msgstr "(API Version: %s)"
+
+#. Translators: reiserfs is a filesystem type
+#: ../gdu/gdu-util.c:300
+#, c-format
+msgid "ReiserFS"
+msgstr ""
+
+#. Translators: reiserfs is a filesystem type
+#: ../gdu/gdu-util.c:303
+msgid "reiserfs"
+msgstr ""
+
+#. Translators: iso9660 is a filesystem type
+#: ../gdu/gdu-util.c:308
+#, fuzzy
+msgid "ISO 9660"
+msgstr "Fehlendes ISO-9660-Abbild"
+
+#. Translators: iso9660 is a filesystem type
+#: ../gdu/gdu-util.c:311
+msgid "iso9660"
+msgstr ""
+
+#. Translators: udf is a filesystem type
+#: ../gdu/gdu-util.c:316
+#, fuzzy
+msgid "Universal Disk Format"
+msgstr "Als Swap formatieren?"
+
+#. Translators: udf is a filesystem type
+#: ../gdu/gdu-util.c:319
+msgid "udf"
+msgstr ""
+
+#: ../gdu/gdu-util.c:323
+#, fuzzy
+msgid "Swap Space"
+msgstr "Verwendeter Platz:"
+
+#. Translators: filesystem type for swap space
+#: ../gdu/gdu-util.c:326
+#, fuzzy
+msgid "swap"
+msgstr "Swap hinzufügen"
+
+#: ../gdu/gdu-util.c:331
+#, c-format
+msgid "LVM2 Physical Volume (version %s)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:333
+#, fuzzy, c-format
+msgid "LVM2 Physical Volume"
+msgstr "LVM Physischer Datenträger"
+
+#. Translators: short name for LVM2 Physical Volume
+#: ../gdu/gdu-util.c:336
+msgid "lvm2_pv"
+msgstr ""
+
+#: ../gdu/gdu-util.c:342
+#, fuzzy, c-format
+msgid "RAID Component (version %s)"
+msgstr "RAID-Gerät erstellen"
+
+#: ../gdu/gdu-util.c:344
+#, fuzzy, c-format
+msgid "RAID Component"
+msgstr "RAID-Gerät"
+
+#. Translators: short name for 'RAID Component'
+#: ../gdu/gdu-util.c:347
+#, fuzzy
+msgid "raid"
+msgstr "RAID-Gerät"
+
+#. Translators: long filesystem type for minix
+#: ../gdu/gdu-util.c:352
+msgid "Minix"
+msgstr ""
+
+#. Translators: filesystem type for minix
+#: ../gdu/gdu-util.c:355
+msgid "minix"
+msgstr ""
+
+#: ../gdu/gdu-util.c:369
+#, fuzzy
+msgid "Creating File System"
+msgstr "_Dateisystemtyp:"
+
+#: ../gdu/gdu-util.c:371
+#, fuzzy
+msgid "Mounting File System"
+msgstr "_Dateisystemtyp:"
+
+#: ../gdu/gdu-util.c:373
+#, fuzzy
+msgid "Unmounting File System"
+msgstr "_Dateisystemtyp:"
+
+#: ../gdu/gdu-util.c:375
+#, fuzzy
+msgid "Checking File System"
+msgstr "_Dateisystemtyp:"
+
+#: ../gdu/gdu-util.c:377
+#, fuzzy
+msgid "Creating LUKS Device"
+msgstr "Grössenänderung gescheitert"
+
+#: ../gdu/gdu-util.c:379
+#, fuzzy
+msgid "Unlocking LUKS Device"
+msgstr "Grössenänderung gescheitert"
+
+#: ../gdu/gdu-util.c:381
+#, fuzzy
+msgid "Locking LUKS Device"
+msgstr "Grössenänderung gescheitert"
+
+#: ../gdu/gdu-util.c:383
+#, fuzzy
+msgid "Creating Partition Table"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:385
+#, fuzzy
+msgid "Deleting Partition"
+msgstr "Partition _modifizieren"
+
+#: ../gdu/gdu-util.c:387
+#, fuzzy
+msgid "Creating Partition"
+msgstr "Partition _modifizieren"
+
+#: ../gdu/gdu-util.c:389
+#, fuzzy
+msgid "Modifying Partition"
+msgstr "Partition _modifizieren"
+
+#: ../gdu/gdu-util.c:391
+#, fuzzy
+msgid "Setting Label for Device"
+msgstr "Passwortsatz für das verschlüsselte Gerät"
+
+#: ../gdu/gdu-util.c:393
+msgid "Changing Passphrase for Encrypted LUKS Device"
+msgstr ""
+
+#: ../gdu/gdu-util.c:395
+msgid "Adding Component to RAID Array"
+msgstr ""
+
+#: ../gdu/gdu-util.c:397
+msgid "Removing Component from RAID Array"
+msgstr ""
+
+#: ../gdu/gdu-util.c:399
+#, fuzzy
+msgid "Stopping RAID Array"
+msgstr "MD RAID ARRAY %s (%-0.f MB)"
+
+#: ../gdu/gdu-util.c:401
+#, fuzzy
+msgid "Starting RAID Array"
+msgstr "MD RAID ARRAY %s (%-0.f MB)"
+
+#: ../gdu/gdu-util.c:403
+#, fuzzy
+msgid "Checking RAID Array"
+msgstr "MD RAID ARRAY %s (%-0.f MB)"
+
+#: ../gdu/gdu-util.c:405
+#, fuzzy
+msgid "Repairing RAID Array"
+msgstr "MD RAID ARRAY %s (%-0.f MB)"
+
+#: ../gdu/gdu-util.c:407
+msgid "Running Short SMART Self-Test"
+msgstr ""
+
+#: ../gdu/gdu-util.c:409
+msgid "Running Extended SMART Self-Test"
+msgstr ""
+
+#: ../gdu/gdu-util.c:411
+msgid "Running Conveyance SMART Self-Test"
+msgstr ""
+
+#: ../gdu/gdu-util.c:413
+#, fuzzy
+msgid "Ejecting Media"
+msgstr "Media-Player"
+
+#: ../gdu/gdu-util.c:415
+#, fuzzy
+msgid "Detaching Device"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:417
+#, fuzzy
+msgid "Forcibly Unmounting Filesystem"
+msgstr "Fehler bei der Grössenänderung des Dateisystems"
+
+#: ../gdu/gdu-util.c:419
+msgid "Forcibly Locking LUKS device"
+msgstr ""
+
+#. see http://en.wikipedia.org/wiki/GUID_Partition_Table
+#. Linux
+#: ../gdu/gdu-util.c:435
+msgid "Linux Basic Data Partition"
+msgstr ""
+
+#. Same as MS BDP
+#: ../gdu/gdu-util.c:436
+#, fuzzy
+msgid "Linux RAID Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:437
+#, fuzzy
+msgid "Linux Swap Partition"
+msgstr "Swap-Partition aktualisieren"
+
+#: ../gdu/gdu-util.c:438
+#, fuzzy
+msgid "Linux LVM Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:439
+#, fuzzy
+msgid "Linux Reserved Partition"
+msgstr "EFI System-Partition"
+
+#. Not associated with any OS
+#: ../gdu/gdu-util.c:441
+#, fuzzy
+msgid "MBR Partition Scheme"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:442
+#, fuzzy
+msgid "EFI System Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:443
+#, fuzzy
+msgid "BIOS Boot Partition"
+msgstr "Erster Sektor der Bootpartition"
+
+#. Microsoft
+#: ../gdu/gdu-util.c:445
+#, fuzzy
+msgid "Microsoft Reserved Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:446
+msgid "Microsoft Basic Data Partition"
+msgstr ""
+
+#. Same as Linux BDP
+#: ../gdu/gdu-util.c:447
+msgid "Microsoft LDM Metadata Partition"
+msgstr ""
+
+#: ../gdu/gdu-util.c:448
+msgid "Microsoft LDM Data Partition"
+msgstr ""
+
+#: ../gdu/gdu-util.c:449
+msgid "Microsoft Windows Recovery Environment"
+msgstr ""
+
+#. HP-UX
+#: ../gdu/gdu-util.c:451
+msgid "HP-UX Data Partition"
+msgstr ""
+
+#: ../gdu/gdu-util.c:452
+msgid "HP-UX Service Partition"
+msgstr ""
+
+#. FreeBSD
+#: ../gdu/gdu-util.c:454
+#, fuzzy
+msgid "FreeBSD Boot Partition"
+msgstr "Erster Sektor der Bootpartition"
+
+#: ../gdu/gdu-util.c:455
+#, fuzzy
+msgid "FreeBSD Data Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:456
+#, fuzzy
+msgid "FreeBSD Swap Partition"
+msgstr "Swap-Partition aktualisieren"
+
+#: ../gdu/gdu-util.c:457
+#, fuzzy
+msgid "FreeBSD UFS Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:458
+#, fuzzy
+msgid "FreeBSD Vinum Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:459
+#, fuzzy
+msgid "FreeBSD ZFS Partition"
+msgstr "EFI System-Partition"
+
+#. Solaris
+#: ../gdu/gdu-util.c:461
+#, fuzzy
+msgid "Solaris Boot Partition"
+msgstr "Erster Sektor der Bootpartition"
+
+#: ../gdu/gdu-util.c:462
+#, fuzzy
+msgid "Solaris Root Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:463
+#, fuzzy
+msgid "Solaris Swap Partition"
+msgstr "Swap-Partition aktualisieren"
+
+#: ../gdu/gdu-util.c:464
+#, fuzzy
+msgid "Solaris Backup Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:465
+#, fuzzy
+msgid "Solaris /usr Partition"
+msgstr "EFI System-Partition"
+
+#. Same as Apple ZFS
+#: ../gdu/gdu-util.c:466
+#, fuzzy
+msgid "Solaris /var Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:467
+#, fuzzy
+msgid "Solaris /home Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:468
+#, fuzzy
+msgid "Solaris Alternate Sector Partition"
+msgstr "Erster Sektor der Bootpartition"
+
+#: ../gdu/gdu-util.c:469
+#, fuzzy
+msgid "Solaris Reserved Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:470
+#, fuzzy
+msgid "Solaris Reserved Partition (2)"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:471
+#, fuzzy
+msgid "Solaris Reserved Partition (3)"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:472
+#, fuzzy
+msgid "Solaris Reserved Partition (4)"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:473
+#, fuzzy
+msgid "Solaris Reserved Partition (5)"
+msgstr "EFI System-Partition"
+
+#. Mac OS X
+#: ../gdu/gdu-util.c:475
+#: ../gdu/gdu-util.c:494
+#, fuzzy
+msgid "Apple HFS/HFS+ Partition"
+msgstr "EFI System-Partition"
+
+#. see http://developer.apple.com/documentation/mac/Devices/Devices-126.html
+#. *     http://lists.apple.com/archives/Darwin-drivers/2003/May/msg00021.html
+#: ../gdu/gdu-util.c:476
+#: ../gdu/gdu-util.c:493
+#, fuzzy
+msgid "Apple UFS Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:477
+#, fuzzy
+msgid "Apple ZFS Partition"
+msgstr "EFI System-Partition"
+
+#. Same as Solaris /usr
+#: ../gdu/gdu-util.c:478
+#, fuzzy
+msgid "Apple RAID Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:479
+msgid "Apple RAID Partition (Offline)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:480
+#, fuzzy
+msgid "Apple Boot Partition"
+msgstr "Erster Sektor der Bootpartition"
+
+#: ../gdu/gdu-util.c:481
+#, fuzzy
+msgid "Apple Label Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:482
+msgid "Apple TV Recovery Partition"
+msgstr ""
+
+#. NetBSD
+#: ../gdu/gdu-util.c:484
+#, fuzzy
+msgid "NetBSD Swap Partition"
+msgstr "Swap-Partition aktualisieren"
+
+#: ../gdu/gdu-util.c:485
+#, fuzzy
+msgid "NetBSD FFS Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:486
+#, fuzzy
+msgid "NetBSD LFS Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:487
+#, fuzzy
+msgid "NetBSD RAID Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:488
+#, fuzzy
+msgid "NetBSD Concatenated  Partition"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:489
+#, fuzzy
+msgid "NetBSD Encrypted Partition"
+msgstr "Geben Sie das Passwortsatz für die verschlüsselte Partition ein"
+
+#: ../gdu/gdu-util.c:495
+#, fuzzy
+msgid "Apple Partition Map"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:496
+#, fuzzy
+msgid "Unused Partition"
+msgstr "Partition _modifizieren"
+
+#: ../gdu/gdu-util.c:497
+#, fuzzy
+msgid "Empty Partition"
+msgstr "Partition _modifizieren"
+
+#: ../gdu/gdu-util.c:498
+#, fuzzy
+msgid "Driver Partition"
+msgstr "Partition _modifizieren"
+
+#: ../gdu/gdu-util.c:499
+#, fuzzy
+msgid "Driver 4.3 Partition"
+msgstr "Partition _modifizieren"
+
+#: ../gdu/gdu-util.c:500
+#, fuzzy
+msgid "ProDOS file system"
+msgstr "_Dateisystemtyp:"
+
+#: ../gdu/gdu-util.c:501
+msgid "FAT 12"
+msgstr ""
+
+#: ../gdu/gdu-util.c:502
+msgid "FAT 16"
+msgstr ""
+
+#: ../gdu/gdu-util.c:503
+msgid "FAT 32"
+msgstr ""
+
+#: ../gdu/gdu-util.c:504
+#, fuzzy
+msgid "FAT 16 (Windows)"
+msgstr "Super (»_Windows-Taste«)"
+
+#: ../gdu/gdu-util.c:505
+#, fuzzy
+msgid "FAT 32 (Windows)"
+msgstr "Super (»_Windows-Taste«)"
+
+#. see http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
+#: ../gdu/gdu-util.c:508
+#, fuzzy
+msgid "Empty (0x00)"
+msgstr "Akku ist fast leer"
+
+#: ../gdu/gdu-util.c:509
+msgid "FAT12 (0x01)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:510
+msgid "FAT16 <32M (0x04)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:511
+#, fuzzy
+msgid "Extended (0x05)"
+msgstr "Länger abwesend"
+
+#: ../gdu/gdu-util.c:512
+msgid "FAT16 (0x06)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:513
+msgid "HPFS/NTFS (0x07)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:514
+msgid "W95 FAT32 (0x0b)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:515
+msgid "W95 FAT32 (LBA) (0x0c)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:516
+msgid "W95 FAT16 (LBA) (0x0e)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:517
+msgid "W95 Ext d (LBA) (0x0f)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:518
+msgid "OPUS (0x10)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:519
+msgid "Hidden FAT12 (0x11)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:520
+msgid "Compaq diagnostics (0x12)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:521
+msgid "Hidden FAT16 <32M (0x14)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:522
+msgid "Hidden FAT16 (0x16)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:523
+msgid "Hidden HPFS/NTFS (0x17)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:524
+msgid "Hidden W95 FAT32 (0x1b)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:525
+msgid "Hidden W95 FAT32 (LBA) (0x1c)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:526
+msgid "Hidden W95 FAT16 (LBA) (0x1e)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:527
+msgid "PartitionMagic (0x3c)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:528
+msgid "Minix (0x81)"
+msgstr ""
+
+#. cf. http://en.wikipedia.org/wiki/MINIX_file_system
+#: ../gdu/gdu-util.c:529
+#, fuzzy
+msgid "Linux swap (0x82)"
+msgstr "Als Swap formatieren?"
+
+#: ../gdu/gdu-util.c:530
+#, fuzzy
+msgid "Linux (0x83)"
+msgstr "Linux-Bildschirmleser"
+
+#: ../gdu/gdu-util.c:531
+msgid "Hibernation (0x84)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:532
+#, fuzzy
+msgid "Linux Extended (0x85)"
+msgstr "_Erweitertes VKB-Panel"
+
+#: ../gdu/gdu-util.c:533
+#, fuzzy
+msgid "Linux LVM (0x8e)"
+msgstr "LVM Datenträgergruppen"
+
+#: ../gdu/gdu-util.c:534
+msgid "Hibernation (0xa0)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:535
+msgid "FreeBSD (0xa5)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:536
+msgid "OpenBSD (0xa6)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:537
+#, fuzzy
+msgid "Mac OS X (0xa8)"
+msgstr "Paket für inkorrektes OS"
+
+#: ../gdu/gdu-util.c:538
+#, fuzzy
+msgid "Mac OS X (0xaf)"
+msgstr "Paket für inkorrektes OS"
+
+#: ../gdu/gdu-util.c:539
+#, fuzzy
+msgid "Solaris boot (0xbe)"
+msgstr "PPC PReP Boot"
+
+#: ../gdu/gdu-util.c:540
+msgid "Solaris (0xbf)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:541
+msgid "BeOS BFS (0xeb)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:542
+msgid "SkyOS SkyFS (0xec)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:543
+#, fuzzy
+msgid "EFI GPT (0xee)"
+msgstr "EFI System-Partition"
+
+#: ../gdu/gdu-util.c:544
+msgid "EFI (FAT-12/16/32 (0xef)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:545
+msgid "Linux RAID autodetect (0xfd)"
+msgstr ""
+
+#. Translators: Shown for unknown partition types.
+#. * %s is the partition type name
+#.
+#: ../gdu/gdu-util.c:572
+#, fuzzy, c-format
+msgid "Unknown (%s)"
+msgstr "Unbekannt"
+
+#: ../gdu/gdu-util.c:582
+msgid "A popular format compatible with almost any device or system, typically used for file exchange."
+msgstr ""
+
+#: ../gdu/gdu-util.c:586
+msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
+msgstr ""
+
+#: ../gdu/gdu-util.c:592
+msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
+msgstr ""
+
+#: ../gdu/gdu-util.c:596
+msgid "Swap area used by the operating system for virtual memory."
+msgstr ""
+
+#: ../gdu/gdu-util.c:599
+msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
+msgstr ""
+
+#: ../gdu/gdu-util.c:603
+msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
+msgstr ""
+
+#: ../gdu/gdu-util.c:607
+msgid "No file system will be created."
+msgstr ""
+
+#: ../gdu/gdu-util.c:610
+msgid "Create an Extended Partition for logical partitions."
+msgstr ""
+
+#: ../gdu/gdu-util.c:623
+msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
+msgstr ""
+
+#: ../gdu/gdu-util.c:628
+msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
+msgstr ""
+
+#: ../gdu/gdu-util.c:633
+msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
+msgstr ""
+
+#: ../gdu/gdu-util.c:637
+msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
+msgstr ""
+
+#: ../gdu/gdu-util.c:828
+#, fuzzy, c-format
+msgid "LUKS Passphrase for UUID %s"
+msgstr "Passwortsatz für das verschlüsselte Gerät"
+
+#: ../gdu/gdu-util.c:888
+#, fuzzy, c-format
+msgid "%.1f KB/s"
+msgstr "%s\t%5.1fms (%4.1f%%)\n"
+
+#: ../gdu/gdu-util.c:891
+#, fuzzy, c-format
+msgid "%.1f MB/s"
+msgstr "_Grösse (MB):"
+
+#: ../gdu/gdu-util.c:894
+#, fuzzy, c-format
+msgid "%.1f GB/s"
+msgstr "%s\t%5.1fms (%4.1f%%)\n"
+
+#. Translators: interface name for serial ATA disks
+#: ../gdu/gdu-util.c:910
+msgid "SATA"
+msgstr ""
+
+#. Translators: interface name for serial ATA disks
+#: ../gdu/gdu-util.c:913
+msgid "eSATA"
+msgstr ""
+
+#. Translators: interface name for parallel ATA disks
+#: ../gdu/gdu-util.c:916
+msgid "PATA"
+msgstr ""
+
+#. Translators: interface name for ATA disks
+#: ../gdu/gdu-util.c:919
+msgid "ATA"
+msgstr ""
+
+#. Translators: interface name for SCSI disks
+#: ../gdu/gdu-util.c:922
+#, fuzzy
+msgid "SCSI"
+msgstr "SCSI-Treiber wird geladen"
+
+#. Translators: interface name for USB disks
+#: ../gdu/gdu-util.c:925
+#, fuzzy
+msgid "USB"
+msgstr " U - USB suspend einschalten"
+
+#. Translators: interface name for firewire disks
+#: ../gdu/gdu-util.c:928
+msgid "Firewire"
+msgstr ""
+
+#. Translators: interface name for SDIO disks
+#: ../gdu/gdu-util.c:931
+msgid "SDIO"
+msgstr ""
+
+#. Translators: interface name for virtual disks
+#: ../gdu/gdu-util.c:934
+#, fuzzy
+msgid "Virtual"
+msgstr "Virtuelle Tastatur"
+
+#. Translators: name shown for unknown disk connection interfaces
+#: ../gdu/gdu-util.c:940
+#, fuzzy
+msgctxt "connection name"
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#. Translators: Connection with speed information.
+#. * First %s is the connection name, like 'SATA' or 'USB'
+#. * second %s is the speed, like '2 Mbit/s'
+#.
+#: ../gdu/gdu-util.c:950
+#, fuzzy, c-format
+msgid "%s at %s"
+msgstr "Beim Starten _ausführen"
+
+#: ../gdu/gdu-util.c:969
+#, fuzzy
+msgctxt "RAID level"
+msgid "Stripe (RAID-0)"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:971
+#, fuzzy
+msgctxt "RAID level"
+msgid "RAID-0"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:974
+#, fuzzy
+msgctxt "RAID level"
+msgid "Mirror (RAID-1)"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:976
+#, fuzzy
+msgctxt "RAID level"
+msgid "RAID-1"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:979
+#, fuzzy
+msgctxt "RAID level"
+msgid "Parity Disk (RAID-4)"
+msgstr "RAID-Gerät erstellen"
+
+#: ../gdu/gdu-util.c:981
+#, fuzzy
+msgctxt "RAID level"
+msgid "RAID-4"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:984
+#, fuzzy
+msgctxt "RAID level"
+msgid "Distributed Parity (RAID-5)"
+msgstr "RAID-Gerät erstellen"
+
+#: ../gdu/gdu-util.c:986
+#, fuzzy
+msgctxt "RAID level"
+msgid "RAID-5"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:989
+msgctxt "RAID level"
+msgid "Dual Distributed Parity (RAID-6)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:991
+#, fuzzy
+msgctxt "RAID level"
+msgid "RAID-6"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:994
+msgctxt "RAID level"
+msgid "Stripe of Mirrors (RAID-10)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:996
+#, fuzzy
+msgctxt "RAID level"
+msgid "RAID-10"
+msgstr "RAID-Gerät"
+
+#: ../gdu/gdu-util.c:999
+msgctxt "RAID level"
+msgid "Concatenated (Linear)"
+msgstr ""
+
+#: ../gdu/gdu-util.c:1001
+msgctxt "RAID level"
+msgid "Linear"
+msgstr ""
+
+#: ../gdu/gdu-util.c:1015
+msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1019
+msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1023
+msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1027
+msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1031
+msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1035
+msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
+msgstr ""
+
+#: ../gdu/gdu-util.c:1041
+#, fuzzy, c-format
+msgid "Unknown RAID level %s."
+msgstr "RAID-Gerät erstellen"
+
+#. Translators: Overall description of the GOOD status
+#: ../gdu/gdu-util.c:1077
+#, fuzzy
+msgid "Disk is healthy"
+msgstr "Paket ist fehlerhaft"
+
+#. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
+#: ../gdu/gdu-util.c:1081
+msgid "Disk was used outside of design parameters in the past"
+msgstr ""
+
+#. Translators: Overall description of the BAD_SECTOR status
+#: ../gdu/gdu-util.c:1085
+msgid "Disk has a few bad sectors"
+msgstr ""
+
+#. Translators: Overall description of the BAD_ATTRIBUTE_NOW status
+#: ../gdu/gdu-util.c:1089
+msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
+msgstr ""
+
+#. Translators: Suggested action for the BAD_ATTRIBUTE_NOW status
+#. Translators: Suggested action for the BAD_SECTOR_MANY status
+#. Translators: Suggested action for the BAD_STATUS status
+#: ../gdu/gdu-util.c:1091
+#: ../gdu/gdu-util.c:1099
+#: ../gdu/gdu-util.c:1105
+msgid "Backup all data and replace the disk"
+msgstr ""
+
+#. Translators: Overall description of the BAD_SECTOR_MANY status
+#: ../gdu/gdu-util.c:1096
+msgid "DISK HAS MANY BAD SECTORS"
+msgstr ""
+
+#. Translators: Overall description of the BAD_STATUS status
+#: ../gdu/gdu-util.c:1103
+#, fuzzy
+msgid "DISK FAILURE IS IMMINENT"
+msgstr "Kein Speicherplatz auf der Festplatte verfügbar"
+
+#. Translators: Description when the overall SMART status is unknown
+#: ../gdu/gdu-util.c:1110
+#, fuzzy
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#. Translator: The word "blank" is used as an adjective, e.g. we are decsribing discs that are already blank
+#: ../gdu/gdu-volume.c:75
+#, fuzzy
+msgid "CD-ROM Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:75
+msgid "Blank CD-ROM Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:76
+#, fuzzy
+msgid "CD-R Disc"
+msgstr "Datenträger wechseln"
+
+#: ../gdu/gdu-volume.c:76
+#, fuzzy
+msgid "Blank CD-R Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:77
+#, fuzzy
+msgid "CD-RW Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:77
+msgid "Blank CD-RW Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:78
+#: ../gdu/gdu-volume.c:79
+#, fuzzy
+msgid "DVD-ROM Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:78
+#: ../gdu/gdu-volume.c:79
+msgid "Blank DVD-ROM Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:80
+#, fuzzy
+msgid "DVD-RW Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:80
+msgid "Blank DVD-RW Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:81
+#, fuzzy
+msgid "DVD-RAM Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:81
+msgid "Blank DVD-RAM Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:82
+#, fuzzy
+msgid "DVD+R Disc"
+msgstr "Datenträger wechseln"
+
+#: ../gdu/gdu-volume.c:82
+#, fuzzy
+msgid "Blank DVD+R Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:83
+#, fuzzy
+msgid "DVD+RW Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:83
+msgid "Blank DVD+RW Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:84
+#, fuzzy
+msgid "DVD+R DL Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:84
+msgid "Blank DVD+R DL Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:85
+msgid "DVD+RW DL Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:85
+msgid "Blank DVD+RW DL Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:86
+#, fuzzy
+msgid "Blu-Ray Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:86
+msgid "Blank Blu-Ray Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:87
+#, fuzzy
+msgid "Blu-Ray R Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:87
+msgid "Blank Blu-Ray R Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:88
+msgid "Blu-Ray RW Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:88
+msgid "Blank Blu-Ray RW Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:89
+#, fuzzy
+msgid "HD DVD Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:89
+msgid "Blank HD DVD Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:90
+#, fuzzy
+msgid "HD DVD-R Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:90
+msgid "Blank HD DVD-R Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:91
+msgid "HD DVD-RW Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:91
+msgid "Blank HD DVD-RW Disc"
+msgstr ""
+
+#: ../gdu/gdu-volume.c:92
+#, fuzzy
+msgid "MO Disc"
+msgstr "Datenträger wechseln"
+
+#: ../gdu/gdu-volume.c:92
+#, fuzzy
+msgid "Blank MO Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:93
+#, fuzzy
+msgid "MRW Disc"
+msgstr "Datenträger wechseln"
+
+#: ../gdu/gdu-volume.c:93
+#, fuzzy
+msgid "Blank MRW Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:94
+#, fuzzy
+msgid "MRW/W Disc"
+msgstr "Datenträger wechseln"
+
+#: ../gdu/gdu-volume.c:94
+#, fuzzy
+msgid "Blank MRW/W Disc"
+msgstr "Datenträger nicht gefunden"
+
+#: ../gdu/gdu-volume.c:276
+#, fuzzy
+msgid "Blank Optical Disc"
+msgstr "Datenträger nicht gefunden"
+
+#. Translators: Label for an extended partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:286
+#, fuzzy, c-format
+msgid "%s Extended"
+msgstr "Erweitert"
+
+#: ../gdu/gdu-volume.c:287
+#, fuzzy
+msgid "Contains logical partitions"
+msgstr "Logischen Datenträger (Logical Volume) anlegen"
+
+#. Translators: Label for an extended partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:302
+#, fuzzy, c-format
+msgid "%s Encrypted"
+msgstr "Verschlüsselt"
+
+#: ../gdu/gdu-volume.c:312
+#, fuzzy
+msgid "Optical Disc"
+msgstr "Datenträger wechseln"
+
+#. Translators: Label for a partition with a filesystem
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:318
+#, fuzzy, c-format
+msgid "%s Filesystem"
+msgstr "Fehler bei der Grössenänderung des Dateisystems"
+
+#. Translators: Label for a partition table
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:324
+#, fuzzy, c-format
+msgid "%s Partition Table"
+msgstr "Partition _modifizieren"
+
+#. Translators: Label for a LVM volume
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:330
+#, fuzzy, c-format
+msgid "%s LVM2 Physical Volume"
+msgstr "LVM Physischer Datenträger"
+
+#. Translators: Used if no specific RAID level could be determined
+#: ../gdu/gdu-volume.c:343
+#, fuzzy
+msgctxt "RAID level"
+msgid "RAID"
+msgstr "RAID-Gerät"
+
+#. Translators: label for a RAID component
+#. * First %s is the size, formatted like '45 GB'
+#. * Second %s is the RAID level string, e.g 'RAID-5'
+#.
+#: ../gdu/gdu-volume.c:350
+#: ../gdu/gdu-volume.c:361
+#, c-format
+msgid "%s %s Component"
+msgstr ""
+
+#. Translators: description for a RAID component
+#. * First %s is the array name, e.g. 'My Photos RAID',
+#.
+#: ../gdu/gdu-volume.c:354
+#, fuzzy, c-format
+msgid "Part of \"%s\" array"
+msgstr "Paketgruppen-Dateien"
+
+#. Translators: label for a swap partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:372
+#, fuzzy, c-format
+msgid "%s Swap Space"
+msgstr "Verwendeter Platz:"
+
+#. Translators: label for a data partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:377
+#, fuzzy, c-format
+msgid "%s Data"
+msgstr "Dateien anfordern"
+
+#. Translators: label for a volume of unrecognized use
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:383
+#: ../gdu/gdu-volume.c:399
+#, c-format
+msgid "%s Unrecognized"
+msgstr ""
+
+#. Translators: description for a volume of unrecognized use
+#: ../gdu/gdu-volume.c:385
+#, fuzzy
+msgid "Unknown or Unused"
+msgstr "Hinzufügen/entfernen"
+
+#. Translators: label for a partition
+#. * %s is the size, formatted like '45 GB'
+#.
+#: ../gdu/gdu-volume.c:392
+#: ../gdu/gdu-volume.c:394
+#, fuzzy, c-format
+msgid "%s Partition"
+msgstr "Partition"
+
+#. Translators: The VPD name for a volume. The %d is the partition number
+#. * and the %s is the VPD name for the drive.
+#.
+#: ../gdu/gdu-volume.c:430
+#, fuzzy, c-format
+msgid "Partition %d of %s"
+msgstr "Partition"
+
+#. Translators: The VPD name for a volume. The %d is the partition number.
+#.
+#: ../gdu/gdu-volume.c:436
+#, fuzzy, c-format
+msgid "Partition %d"
+msgstr "Partition"
+
+#. Translators: The VPD name for a whole-disk volume.
+#. * The %s is the VPD name for the drive.
+#.
+#: ../gdu/gdu-volume.c:444
+#, fuzzy, c-format
+msgid "Whole-disk volume on %s"
+msgstr "Kein Speicherplatz auf der Festplatte verfügbar"
+
+#. Translators: The VPD name for a whole-disk volume.
+#.
+#: ../gdu/gdu-volume.c:449
+#, fuzzy
+msgid "Whole-disk volume"
+msgstr "GNOME-Lautstärkeregler"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, fuzzy, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "Ausgabeordner:"
+msgstr[1] ""
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, fuzzy, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "_Eingabefelder:"
+msgstr[1] ""
+
+#: ../gvc/gvc-mixer-control.c:1316
+#, fuzzy
+msgid "System Sounds"
+msgstr "Systemklänge"
+
+#: ../power-icon/src/moblin-power-icon.c:46
+#, fuzzy
+msgid "Moblin Power Icon"
+msgstr "_Dieses Symbol verstecken"
+
+#: ../power-icon/src/mpd-power-icon.c:72
+#, fuzzy
+msgid "Running low on battery"
+msgstr "Der Akku wird schwach"
+
+#: ../power-icon/src/mpd-power-icon.c:73
+#, fuzzy
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Wir haben festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstecken und Aufladen jetzt eine gute Idee."
+
+#: ../power-icon/src/mpd-power-icon.c:76
+#, fuzzy
+msgid "Getting close to empty"
+msgstr "Akku ist fast leer"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+#, fuzzy
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Dein Akku ist ziemlich schwach. Es wäre wirklich eine gute Idee, alles zu speichern und dann unverzüglich aufzuladen."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Danger!"
+msgstr "Gefahr!"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+#, fuzzy
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Leider hat dein Computer keinen Saft mehr. Wir müssen jetzt abschalten. Bitte speichere alles Wichtige und wir hoffen dich bald wiederzusehen."
+
+#: ../power-icon/src/mpd-power-icon.c:300
+#, fuzzy
+msgid "Would you like to turn off now?"
+msgstr "Möchtest du jetzt abschalten?"
+
+#: ../power-icon/src/mpd-power-icon.c:301
+#, fuzzy
+msgid "If you don't decide I'll turn off in 30 seconds."
+msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
+
+#: ../power-icon/src/mpd-power-icon.c:368
+msgid "battery"
+msgstr "Akku"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:75
+#, fuzzy, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Wenn  keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:133
+msgid "Turn off"
+msgstr "Abschalten"
+
+#: ../src/mpd-battery-device.c:333
+#, fuzzy, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Leider scheinst du keinen Akku installiert zu haben."
+
+#: ../src/mpd-battery-device.c:337
+#, fuzzy, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Dein Akku wird geladen. Er ist etwa <b>%d</b>%% voll."
+
+#: ../src/mpd-battery-device.c:342
+#, fuzzy, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Dein Akku wird genutzt. Er ist etwa <b>%d</b>%% voll."
+
+#: ../src/mpd-battery-device.c:347
+#, fuzzy, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Dein Akku ist voll geladen und du kannst loslegen."
+
+#: ../src/mpd-battery-device.c:351
+#, fuzzy, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Leider scheint dein Akku defekt zu sein."
+
+#: ../src/mpd-computer-pane.c:111
+#, fuzzy
+msgid "All settings"
+msgstr "Aktualisierungs-Einstellungen"
+
+#: ../src/mpd-default-device-tile.c:100
+msgid ""
+"Plug in a device\n"
+"and it will be automatically detected."
+msgstr ""
+
+#: ../src/mpd-disk-tile.c:64
+#, fuzzy, c-format
+msgid "You are using %d%% of %s"
+msgstr "Wo bist du?"
+
+#: ../src/mpd-folder-pane.c:91
+#, fuzzy
+msgid "Your computer"
+msgstr "Rechner neu starten"
+
+#: ../src/mpd-storage-device-tile.c:96
+#, fuzzy, c-format
+msgid "Using %d%% of %s"
+msgstr "Service nicht mehr benutzen"
+
+#: ../src/mpd-storage-device-tile.c:383
+msgid "Eject"
+msgstr "Auswerfen"
+
+#: ../src/mpd-storage-device-tile.c:388
+msgid "Open"
+msgstr "Öffnen"
+
+#: ../src/mpd-volume-tile.c:110
+msgid "Turned up to 11"
+msgstr "Ohrenbetäubend"
+
+#: ../src/mpd-volume-tile.c:112
+msgid "Very loud"
+msgstr "Sehr laut"
+
+#: ../src/mpd-volume-tile.c:114
+msgid "Loud"
+msgstr "Laut"
+
+#: ../src/mpd-volume-tile.c:116
+msgid "Fairly loud"
+msgstr "Etwas laut"
+
+#: ../src/mpd-volume-tile.c:118
+msgid "Middle of the road"
+msgstr "Die goldene Mitte"
+
+#: ../src/mpd-volume-tile.c:120
+msgid "Fairly quiet"
+msgstr "Etwas leise"
+
+#: ../src/mpd-volume-tile.c:122
+msgid "Quiet"
+msgstr "Leise"
+
+#: ../src/mpd-volume-tile.c:124
+msgid "Very quiet"
+msgstr "Sehr leise"
+
+#: ../src/mpd-volume-tile.c:126
+msgid "Silent"
+msgstr "Still"
+
+#. Tile label
+#: ../src/mpd-volume-tile.c:306
+#, fuzzy
+msgid "Netbook volume"
+msgstr "Wiedergabelautstärke"
+
+#: ../src/mpd-volume-tile.c:345
+msgid "Mute"
+msgstr "Stumm"
+
