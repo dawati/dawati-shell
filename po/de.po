@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:29+0000\n"
+"POT-Creation-Date: 2010-03-27 09:27+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: TG\n"
+"Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,26 +14,70 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Einstellungen der Werkzeugleiste festlegen"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Werkzeugleiste"
+
+#: ../capplet/src/mtp-bin.c:355
+msgid "Save toolbar"
+msgstr "Werkzeugleiste speichern"
+
+#: ../capplet/src/mtp-bin.c:361
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Du musst zuerst ein Panel löschen, bevor du ein neues hinzufügen kannst."
+
+#: ../capplet/src/mtp-bin.c:389
+msgid "Available panels"
+msgstr "verfügbare Panels"
+
 # example:
 # 14:37
 # (no am/pm needed)
-#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:221
+#: ../src/mnb-toolbar-clock.c:88
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
+# example:
+# 25. Mai 2007
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# example:
-# 25. Mai 2007
-#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
+#.
+#: ../capplet/src/mtp-clock.c:231
+#: ../src/mnb-toolbar-clock.c:98
 msgid "%B %e, %Y"
 msgstr "%e. %B %Y"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Infobereich-Einstellungen festlegen"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:253
+msgid "System Tray"
+msgstr "Infobereich"
+
+#: ../capplet/src/syst-cc-panel.c:170
+msgid "System tray"
+msgstr "Infobereich"
+
+#: ../capplet/src/syst-cc-panel.c:186
+msgid "Show system tray"
+msgstr "Infobereich anzeigen"
+
+#: ../capplet/src/syst-cc-panel.c:207
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "Der Infobereich ist ein Konzept, das von einigen (älteren) Anwendungen benutzt wird, um dich auf etwas aufmerksam zu machen oder nach dem Schließen im Hintergrund weiterzulaufen."
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -43,27 +87,27 @@ msgstr "Legt die Reihenfolge der Panels auf der Werkzeugleiste fest."
 msgid "Order of panels on toolbar"
 msgstr "Reihenfolge der Panels auf der Werkzeugleiste"
 
-#: ../src/moblin-netbook.c:918
+#: ../src/moblin-netbook.c:905
 msgid "Moblin Netbook Effects"
 msgstr "Moblin-Effekte auf dem Netbook"
 
-#: ../src/moblin-netbook.c:922
+#: ../src/moblin-netbook.c:909
 msgid "Effects for Moblin Netbooks"
 msgstr "Effekte für Netbooks mit Moblin"
 
-#: ../src/moblin-netbook.c:2976
+#: ../src/moblin-netbook.c:3035
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3049
 msgid "Unknown window"
 msgstr "Unbekanntes Fenster"
 
-#: ../src/moblin-netbook.c:2992
+#: ../src/moblin-netbook.c:3051
 msgid "Is asking for your attention."
 msgstr "sucht deine Aufmerksamkeit."
 
-#: ../src/mnb-toolbar.c:954
+#: ../src/mnb-toolbar.c:968
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "%s funktioniert leider nicht."
@@ -81,151 +125,96 @@ msgstr "Ignorieren"
 msgid "Dismiss All"
 msgstr "Alle ignorieren"
 
-#: ../capplet/src/mtp-bin.c:330
-msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "Du musst zuerst ein Panel löschen, bevor du ein neues hinzufügen kannst."
-
-#: ../capplet/src/mtp-bin.c:357
-msgid "Available panels"
-msgstr "verfügbare Panels"
-
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "Einstellungen der Werkzeugleiste festlegen"
-
-#: ../capplet/src/moblin-toolbar-properties.c:85
-msgid "Socket for embedding"
-msgstr "Sockel für Embedding"
-
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar"
-msgstr "Werkzeugleiste"
-
-#: ../capplet/src/moblin-toolbar-properties.c:95
-msgid "- Moblin Toolbar Preferences"
-msgstr "Moblin Werkzeugleiste - Einstellungen"
-
-#: ../capplet/src/moblin-toolbar-properties.c:85
-msgid "socket"
-msgstr "Sockel"
-
-#: ../capplet/src/mtp-bin.c:326
-msgid "Save toolbar"
-msgstr "Werkzeugleiste speichern"
-
+#~ msgid "Socket for embedding"
+#~ msgstr "Sockel für Embedding"
+#~ msgid "- Moblin Toolbar Preferences"
+#~ msgstr "Moblin Werkzeugleiste - Einstellungen"
+#~ msgid "socket"
+#~ msgstr "Sockel"
 #~ msgid "Less than a minute ago"
 #~ msgstr "Vor weniger als einer Minute"
-
 #~ msgid "A few minutes ago"
 #~ msgstr "Vor einigen Minuten"
-
 #~ msgid "A couple of hours ago"
 #~ msgstr "Vor ein paar Stunden"
-
 #~ msgid "Earlier today"
 #~ msgstr "Heute schon früher"
-
-#~ msgid "Yesterday"
-#~ msgstr "Gestern"
-
 #~ msgid "On %A"
 #~ msgstr "Am %A"
-
 #~ msgid "Last week"
 #~ msgstr "Letzte Woche"
-
 #~ msgid "A couple of weeks ago"
 #~ msgstr "Vor einigen Wochen"
-
 #~ msgid "This month"
 #~ msgstr "Diesen Monat"
-
 #~ msgid "Last month"
 #~ msgstr "Letzten Monat"
-
 #~ msgid "This year"
 #~ msgstr "Dieses Jahr"
-
 #~ msgid "Last year"
 #~ msgstr "Letztes Jahr"
-
 #~ msgid "Ages ago"
 #~ msgstr "Vor einer Ewigkeit"
-
 #~ msgid "zones"
 #~ msgstr "Zonen"
-
 #~ msgid "power & brightness"
 #~ msgstr "Energie und Helligkeit"
-
 #~ msgid "volume"
 #~ msgstr "Lautstärke"
-
 #~ msgid "bluetooth"
 #~ msgstr "Bluetooth"
-
 #~ msgid "networks"
 #~ msgstr "Netzwerke"
-
 #~ msgid "test"
 #~ msgstr "Test"
-
 #~ msgid "No Zones yet"
 #~ msgstr "Noch keine Zonen"
-
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Die von dir benutzten Anwendungen erscheinen hier. Du hast die Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
-
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Die von dir benutzten Anwendungen erscheinen hier. Du hast die "
+#~ "Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
 #~ msgid "No applications on this zone"
 #~ msgstr "In dieser Zone gibt es keine Anwendungen"
-
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige Beispielsdateien ansehen:"
-
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um "
+#~ "deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige "
+#~ "Beispielsdateien ansehen:"
 #~ msgid "Recently played"
 #~ msgstr "Vor kurzem abgespielt"
-
 #~ msgid "Search results"
 #~ msgstr "Suchergebnisse"
-
 #~ msgid "Playqueue"
 #~ msgstr "Wiedergabewarteschleife"
-
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "Staffel %u, Folge %u"
-
 #~ msgid "Previous"
 #~ msgstr "Zurück"
-
 #~ msgid "Next"
 #~ msgstr "Weiter"
-
 #~ msgid "Media"
 #~ msgstr "Multimedia"
-
 #~ msgid "Search"
 #~ msgstr "Suchen"
-
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Staffel %d Folge %d"
-
 #~ msgid "Season %d"
 #~ msgstr "Staffel %d"
-
 #~ msgid "Episode %d"
 #~ msgstr "Folge %d"
-
 #~ msgid "Year %d"
 #~ msgstr "Jahr %d"
-
 #~ msgid "media"
 #~ msgstr "Multimedia"
-
 #~ msgid "Favourite Applications"
 #~ msgstr "Lieblingsanwendungen"
-
 #~ msgid "Applications"
 #~ msgstr "Anwendungen"
-
 #~ msgid "applications"
 #~ msgstr "Anwendungen"
+
