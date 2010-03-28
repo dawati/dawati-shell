@@ -1,6 +1,14 @@
 
 /* Theme goes here  */
 
+MxLabel {
+  color: #606261;
+}
+
+MxButton {
+  color: #775aaa;
+}
+
 MpdFolderButton {
   border-image: none;
 }
@@ -35,6 +43,10 @@ MpdComputerPane, MpdDevicesPane {
 
 MpdBatteryTile, MpdDiskTile, MpdVolumeTile {
   padding: 10 10 10 18;
+}
+
+MpdDefaultDeviceTile, MpdStorageDeviceTile {
+  padding: 20 0 20 20;
 }
 
 #volume-tile-label {
