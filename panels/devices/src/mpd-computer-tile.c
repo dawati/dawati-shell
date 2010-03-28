@@ -101,24 +101,15 @@ mpd_computer_tile_init (MpdComputerTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   tile = mpd_disk_tile_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (tile), "frame");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   tile = mpd_volume_tile_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (tile), "frame");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   button = mx_button_new_with_label (_("All settings"));
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_settings_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
-                               "expand", true,
-                               "x-align", MX_ALIGN_START,
-                               "x-fill", true,
-                               "y-align", MX_ALIGN_END,
-                               "y-fill", false,
-                               NULL);
 }
 
 ClutterActor *

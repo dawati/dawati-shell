@@ -13,11 +13,6 @@ MpdShell {
   padding: 5;
 }
 
-*.frame {
-  border-image: url('frame-border.png') 10;
-  padding: 12;
-}
-
 #panel-label {
   color: #775aaa;
   font-size: 18;
@@ -33,7 +28,7 @@ MpdShell {
   padding: 10 10 10 18;
 }
 
-*.pane-content {
+MpdBatteryTile, MpdDiskTile {
   padding: 10 10 10 18;
 }
 

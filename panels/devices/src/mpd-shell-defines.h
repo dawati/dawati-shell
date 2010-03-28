@@ -21,6 +21,8 @@
 #ifndef MPD_SHELL_DEFINES_H
 #define MPD_SHELL_DEFINES_H
 
+#define TEXT_COLOR             "#775aaa"
+
 #define MPD_SHELL_WIDTH         1024.0
 #define MPD_SHELL_HEIGHT         480.0
 #define MPD_SHELL_PADDING         12.0
@@ -28,7 +30,7 @@
 #define MPD_PANE_COLUMN_SPACING   24.0
 #define MPD_PANE_HEADER_SPACING   12.0
 
-#define MPD_COMPUTER_TILE_WIDTH  285.0
+#define MPD_COMPUTER_TILE_WIDTH  310.0
 #define MPD_COMPUTER_PANE_SPACING 14.0
 
 #define MPD_FOLDER_TILE_WIDTH    280.0

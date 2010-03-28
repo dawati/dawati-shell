@@ -25,6 +25,7 @@
 
 #include "mpd-disk-tile.h"
 #include "mpd-gobject.h"
+#include "mpd-shell-defines.h"
 #include "mpd-storage-device.h"
 #include "config.h"
 
@@ -47,7 +48,7 @@ static void
 update (MpdDiskTile *self)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
-  char          *text;
+  char          *markup;
   char          *size_text;
   uint64_t       size;
   uint64_t       available_size;
@@ -61,9 +62,14 @@ update (MpdDiskTile *self)
   percentage = 100 - (double) available_size / size * 100;
 
   size_text = g_format_size_for_display (size);
-  text = g_strdup_printf (_("You are using %d%% of %s"), percentage, size_text);
-  mx_label_set_text (MX_LABEL (priv->label), text);
-  g_free (text);
+  markup = g_strdup_printf (_("<span font-weight='bold'>You are using</span> "
+                              "<span color='%s'>%d%% of %s</span>"),
+                            TEXT_COLOR,
+                            percentage,
+                            size_text);
+  clutter_text_set_markup (CLUTTER_TEXT (mx_label_get_clutter_text (
+                            MX_LABEL (priv->label))), markup);
+  g_free (markup);
   g_free (size_text);
 
   mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter), percentage / 100.);
@@ -101,9 +107,35 @@ static void
 mpd_disk_tile_init (MpdDiskTile *self)
 {
   MpdDiskTilePrivate *priv = GET_PRIVATE (self);
+  ClutterActor  *icon;
+  ClutterActor  *vbox;
+  GError        *error = NULL;
 
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_SPACING);
+  mx_stylable_set_style_class (MX_STYLABLE (self), "pane-content");
+
+  icon = clutter_texture_new_from_file (PKGTHEMEDIR "/computer-icon.png",
+                                        &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  } else {
+    clutter_texture_set_sync_size (CLUTTER_TEXTURE (icon), true);
+    clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
+  }
+
+  vbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), vbox);
+
+  priv->label = mx_label_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->label);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (mx_label_get_clutter_text (
+                                MX_LABEL (priv->label))), PANGO_ELLIPSIZE_NONE);
+
+  priv->meter = mx_progress_bar_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->meter);
 
   /* Display size of the volume $HOME is on. */
   priv->storage = mpd_storage_device_new (g_get_home_dir ());
@@ -111,17 +143,6 @@ mpd_disk_tile_init (MpdDiskTile *self)
                     G_CALLBACK (_storage_size_notify_cb), self);
   g_signal_connect (priv->storage, "notify::available-size",
                     G_CALLBACK (_storage_size_notify_cb), self);
-
-  priv->label = mx_label_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);
-
-  priv->meter = mx_progress_bar_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->meter);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->meter,
-                               "expand", true,
-                               "x-fill", true,
-                               NULL);
-
   update (self);
 }
 
