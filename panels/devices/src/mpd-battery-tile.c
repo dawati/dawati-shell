@@ -25,6 +25,7 @@
 #include "mpd-battery-device.h"
 #include "mpd-battery-tile.h"
 #include "mpd-gobject.h"
+#include "mpd-shell-defines.h"
 #include "config.h"
 
 G_DEFINE_TYPE (MpdBatteryTile, mpd_battery_tile, MX_TYPE_TABLE)
@@ -129,24 +130,23 @@ mpd_battery_tile_init (MpdBatteryTile *self)
   MpdBatteryTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *text;
 
-  mx_table_set_column_spacing (MX_TABLE (self), 24);
+  mx_table_set_column_spacing (MX_TABLE (self), MPD_TILE_SPACING);
+  mx_stylable_set_style_class (MX_STYLABLE (self), "pane-content");
+
+  priv->icon = clutter_texture_new ();
+  clutter_actor_set_height (priv->icon, 65.);
+  clutter_actor_set_width (priv->icon, 65.);
+  mx_table_add_actor (MX_TABLE (self), priv->icon, 0, 0);
 
   priv->label = mx_label_new ();
   text = mx_label_get_clutter_text (MX_LABEL (priv->label));
   clutter_text_set_line_wrap (CLUTTER_TEXT (text), true);
   mx_table_add_actor_with_properties (MX_TABLE (self), priv->label,
-                                      0, 0,
+                                      0, 1,
                                       "y-align", MX_ALIGN_MIDDLE,
                                       "y-expand", false,
                                       "y-fill", false,
                                       NULL);
-
-  priv->icon = clutter_texture_new ();
-  /* Seems not to work huh
-  clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (priv->icon), true); */
-  clutter_actor_set_height (priv->icon, 65.);
-  clutter_actor_set_width (priv->icon, 65.);
-  mx_table_add_actor (MX_TABLE (self), priv->icon, 0, 1);
 
   priv->device = mpd_battery_device_new ();
   g_signal_connect (priv->device, "notify::percentage",

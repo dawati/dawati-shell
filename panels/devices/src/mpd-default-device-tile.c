@@ -77,7 +77,7 @@ mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
   ClutterActor  *label;
   GError        *error = NULL;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_DEVICE_TILE_SPACING);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_SPACING);
 
   icon = clutter_texture_new_from_file (PKGICONDIR "/device-usb.png",
                                         &error);
