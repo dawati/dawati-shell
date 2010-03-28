@@ -69,8 +69,7 @@ typedef struct
 {
   /* Managed by clutter */
   ClutterActor              *icon;
-  ClutterActor              *middle_col;
-  ClutterActor              *right_col;
+  ClutterActor              *vbox;
 
   MpdStorageDeviceTileState  state;
   union {
@@ -83,6 +82,8 @@ typedef struct
       ClutterActor          *title;
       ClutterActor          *description;
       ClutterActor          *meter;
+      ClutterActor          *button_box;
+      /* Managed by button_box. */
       ClutterActor          *eject;
       ClutterActor          *open;
       ClutterActor          *copy;
@@ -438,35 +439,23 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                "expand", false,
                                "x-align", MX_ALIGN_START,
                                "x-fill", false,
-                               "y-align", MX_ALIGN_MIDDLE,
+                               "y-align", MX_ALIGN_START,
                                "y-fill", false,
                                NULL);
 
   /* 2nd column: text, free space */
-  priv->middle_col = mx_box_layout_new ();
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->middle_col),
+  priv->vbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->vbox),
+                             MPD_STORAGE_DEVICE_TILE_VBOX_SPACING);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
                                  MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->middle_col);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->middle_col,
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->vbox);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->vbox,
                                "expand", true,
                                "x-align", MX_ALIGN_START,
                                "x-fill", true,
                                "y-align", MX_ALIGN_MIDDLE,
                                "y-fill", false,
-                               NULL);
-
-  /* 3rd column: buttons */
-  priv->right_col = mx_box_layout_new ();
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->right_col),
-                                 MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self),
-                               priv->right_col);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->right_col,
-                               "expand", false,
-                               "x-align", MX_ALIGN_END,
-                               "x-fill", false,
-                               "y-align", MX_ALIGN_START,
-                               "y-fill", true,
                                NULL);
 }
 
@@ -584,22 +573,27 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     /* Title */
     priv->states.searching.title = mx_label_new ();
     assign_title (self, MX_LABEL (priv->states.searching.title));
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                  priv->states.searching.title);
 
     /* Description */
     priv->states.searching.description = description_label_new ();
     mx_label_set_text (MX_LABEL (priv->states.searching.description),
                        _("Please wait a moment while we search for data on the device ..."));
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                  priv->states.searching.description);
 
     /* Eject button */
     priv->states.searching.eject = mx_button_new_with_label (_("Eject"));
     g_signal_connect (priv->states.searching.eject, "clicked",
                       G_CALLBACK (_eject_clicked_cb), self);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->right_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                  priv->states.searching.eject);
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->vbox),
+                                 priv->states.searching.eject,
+                                 "expand", false,
+                                 "x-align", MX_ALIGN_END,
+                                 NULL);
 
     /* TODO search */
 
@@ -617,35 +611,39 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     /* Title */
     priv->states.ready.title = mx_label_new ();
     assign_title (self, MX_LABEL (priv->states.ready.title));
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                  priv->states.ready.title);
 
     /* Description */
     priv->states.ready.description = description_label_new ();
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                  priv->states.ready.description);
 
     /* Progress bar */
     priv->states.ready.meter = mx_progress_bar_new ();
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                  priv->states.ready.meter);
+
+    /* Button box */
+    priv->states.ready.button_box = mx_box_layout_new ();
+    mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->states.ready.button_box),
+                               MPD_STORAGE_DEVICE_TILE_BUTTON_BOX_SPACING);
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
+                                 priv->states.ready.button_box);
 
     /* Copy button */
     if (priv->storage_has_media)
     {
       priv->states.ready.copy = mx_button_new_with_label (
-                                  _("Copy media to your computer"));
+                                  _("Import data"));
       g_signal_connect (priv->states.ready.copy, "clicked",
                         G_CALLBACK (_copy_clicked_cb), self);
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->states.ready.button_box),
                                    priv->states.ready.copy);
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->middle_col),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->states.ready.button_box),
                                    priv->states.ready.copy,
-                                   "expand", false,
-                                   "x-align", MX_ALIGN_END,
-                                   "x-fill", false,
-                                   "y-align", MX_ALIGN_MIDDLE,
-                                   "y-fill", false,
+                                   "expand", true,
+                                   "x-fill", true,
                                    NULL);
     }
 
@@ -653,23 +651,25 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     priv->states.ready.eject = mx_button_new_with_label (_("Eject"));
     g_signal_connect (priv->states.ready.eject, "clicked",
                       G_CALLBACK (_eject_clicked_cb), self);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->right_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->states.ready.button_box),
                                  priv->states.ready.eject);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->states.ready.button_box),
+                                   priv->states.ready.eject,
+                                   "expand", true,
+                                   "x-fill", true,
+                                   NULL);
 
     /* Open button */
     priv->states.ready.open = mx_button_new_with_label (_("Open"));
     g_signal_connect (priv->states.ready.eject, "clicked",
                       G_CALLBACK (_open_clicked_cb), self);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->right_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->states.ready.button_box),
                                  priv->states.ready.open);
-    clutter_container_child_set (CLUTTER_CONTAINER (priv->middle_col),
-                                 priv->states.ready.open,
-                                 "expand", false,
-                                 "x-align", MX_ALIGN_END,
-                                 "x-fill", false,
-                                 "y-align", MX_ALIGN_END,
-                                 "y-fill", false,
-                                 NULL);
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->states.ready.button_box),
+                                   priv->states.ready.open,
+                                   "expand", true,
+                                   "x-fill", true,
+                                   NULL);
 
     g_signal_connect (priv->storage, "notify::size",
                       G_CALLBACK (_storage_size_notify_cb), self);
@@ -686,9 +686,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     clutter_actor_destroy (priv->states.ready.title);
     clutter_actor_destroy (priv->states.ready.description);
     clutter_actor_destroy (priv->states.ready.meter);
-    if (priv->states.ready.copy) clutter_actor_destroy (priv->states.ready.copy);
-    clutter_actor_destroy (priv->states.ready.eject);
-    clutter_actor_destroy (priv->states.ready.open);
+    clutter_actor_destroy (priv->states.ready.button_box);
 
     /* Description */
     title = mpd_storage_device_tile_get_title (self);
@@ -697,7 +695,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     priv->states.unmounting.description = description_label_new ();
     mx_label_set_text (MX_LABEL (priv->states.unmounting.description),
                        description);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                  priv->states.unmounting.description);
     g_free (description);
     g_free (title);
@@ -716,7 +714,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     priv->states.done.description = description_label_new ();
     mx_label_set_text (MX_LABEL (priv->states.done.description),
                        description);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->middle_col),
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                  priv->states.done.description);
     g_free (description);
     g_free (title);

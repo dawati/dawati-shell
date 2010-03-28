@@ -46,7 +46,7 @@ MpdBatteryTile, MpdDiskTile, MpdVolumeTile {
 }
 
 MpdDefaultDeviceTile, MpdStorageDeviceTile {
-  padding: 20 0 20 20;
+  padding: 20 15 20 20;
 }
 
 #volume-tile-label {
