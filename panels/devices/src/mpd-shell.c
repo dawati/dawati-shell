@@ -105,11 +105,11 @@ mpd_shell_init (MpdShell *self)
   ClutterActor  *pane;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_SHELL_SPACING);
   g_signal_connect (self, "notify::width",
                     G_CALLBACK (_width_notify_cb), NULL);
 
   label = mx_label_new_with_text (_("Devices"));
+  clutter_actor_set_name (label, "panel-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   hbox = mx_box_layout_new ();

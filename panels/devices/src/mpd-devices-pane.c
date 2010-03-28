@@ -85,8 +85,10 @@ mpd_devices_pane_init (MpdDevicesPane *self)
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_PANE_HEADER_SPACING);
+  mx_stylable_set_style_class (MX_STYLABLE (self), "pane");
 
   label = mx_label_new_with_text (_("Other devices"));
+  clutter_actor_set_name (label, "pane-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_devices_tile_new ();

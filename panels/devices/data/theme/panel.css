@@ -9,12 +9,8 @@ MpdFolderButton:hover {
   border-image: url('directory-highlight.png') 3;
 }
 
-MpdDevicesTile {
-  padding: 12;
-}
-
 MpdShell {
-  padding: 12;
+  padding: 5;
 }
 
 *.frame {
@@ -22,6 +18,22 @@ MpdShell {
   padding: 12;
 }
 
-*.panel-title {
+#panel-label {
+  color: #775aaa;
   font-size: 18;
+  font-weight: bold;
+  padding: 6 6 6 18;
 }
+
+#pane-label {
+  background-color: #e1e3e0;
+  color: #606261;
+  font-size: 14;
+  font-weight: bold;
+  padding: 10 10 10 18;
+}
+
+*.pane-content {
+  padding: 10 10 10 18;
+}
+
