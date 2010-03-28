@@ -112,7 +112,6 @@ mpd_disk_tile_init (MpdDiskTile *self)
   GError        *error = NULL;
 
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_SPACING);
-  mx_stylable_set_style_class (MX_STYLABLE (self), "pane-content");
 
   icon = clutter_texture_new_from_file (PKGTHEMEDIR "/computer-icon.png",
                                         &error);

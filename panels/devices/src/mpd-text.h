@@ -18,29 +18,11 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef MPD_SHELL_DEFINES_H
-#define MPD_SHELL_DEFINES_H
+#ifndef MPD_TEXT_H
+#define MPD_TEXT_H
 
-#define TEXT_COLOR             "#775aaa"
+#define GET_CLUTTER_TEXT(label_) \
+          ((ClutterText *) mx_label_get_clutter_text (MX_LABEL (label_)));
 
-#define MPD_SHELL_WIDTH         1024.0
-#define MPD_SHELL_HEIGHT         480.0
-#define MPD_SHELL_PADDING         12.0
-
-#define MPD_PANE_COLUMN_SPACING   24.0
-#define MPD_PANE_HEADER_SPACING   12.0
-
-#define MPD_COMPUTER_TILE_WIDTH  310.0
-#define MPD_COMPUTER_PANE_SPACING 14.0
-
-#define MPD_VOLUME_TILE_HEADER_SPACING 12.0
-
-#define MPD_FOLDER_TILE_WIDTH    280.0
-
-#define MPD_TILE_SPACING          15.0
-
-#define MPD_STORAGE_DEVICE_TILE_ICON_SIZE 48
-#define MPD_STORAGE_DEVICE_TILE_SPACING   12.0
-
-#endif /* MPD_SHELL_DEFINES_H */
+#endif /* MPD_TEXT_H */
 

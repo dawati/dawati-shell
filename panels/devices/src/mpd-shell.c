@@ -99,7 +99,7 @@ mpd_shell_class_init (MpdShellClass *klass)
 static void
 mpd_shell_init (MpdShell *self)
 {
-  MpdShellPrivate *priv = GET_PRIVATE (self);
+  /* MpdShellPrivate *priv = GET_PRIVATE (self); */
   ClutterActor  *label;
   ClutterActor  *hbox;
   ClutterActor  *pane;

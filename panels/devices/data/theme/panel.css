@@ -33,7 +33,11 @@ MpdComputerPane, MpdDevicesPane {
   background-color: white;
 }
 
-MpdBatteryTile, MpdDiskTile {
+MpdBatteryTile, MpdDiskTile, MpdVolumeTile {
   padding: 10 10 10 18;
+}
+
+#volume-tile-label {
+  font-weight: bold;
 }
 

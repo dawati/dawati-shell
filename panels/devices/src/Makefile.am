@@ -55,6 +55,7 @@ moblin_panel_devices_SOURCES = \
   mpd-storage-device.h \
   mpd-storage-device-tile.c \
   mpd-storage-device-tile.h \
+  mpd-text.h \
   mpd-volume-tile.c \
   mpd-volume-tile.h \
   $(NULL)

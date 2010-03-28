@@ -131,7 +131,6 @@ mpd_battery_tile_init (MpdBatteryTile *self)
   ClutterActor *text;
 
   mx_table_set_column_spacing (MX_TABLE (self), MPD_TILE_SPACING);
-  mx_stylable_set_style_class (MX_STYLABLE (self), "pane-content");
 
   priv->icon = clutter_texture_new ();
   clutter_actor_set_height (priv->icon, 65.);

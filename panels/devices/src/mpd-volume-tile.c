@@ -26,6 +26,8 @@
 #include <gvc/gvc-mixer-control.h>
 
 #include "mpd-gobject.h"
+#include "mpd-shell-defines.h"
+#include "mpd-text.h"
 #include "mpd-volume-tile.h"
 #include "config.h"
 
@@ -66,9 +68,9 @@ enum
 typedef struct
 {
   /* Managed by clutter */
+  ClutterActor    *volume_icon;
+  ClutterActor    *volume_bars;
   ClutterActor    *volume_slider;
-  ClutterActor    *volume_label_slide;
-  ClutterActor    *volume_label;
   ClutterActor    *mute_toggle;
 
   /* Data */
@@ -77,6 +79,7 @@ typedef struct
   int              playing_event_sound;
 } MpdVolumeTilePrivate;
 
+#if 0
 static void
 _play_sound_completed_cb (ca_context *context,
                           uint32_t       id,
@@ -87,6 +90,7 @@ _play_sound_completed_cb (ca_context *context,
 
   (void) g_atomic_int_dec_and_test (&priv->playing_event_sound);
 }
+#endif
 
 /*
  * Volume is a value from 0.0 to 1.0
@@ -95,6 +99,9 @@ static void
 update_volume_label (MpdVolumeTile  *self,
                      double          volume)
 {
+  /* TODO we probably need to bring back the notifications even if the
+   * sliding label is gone. */
+#if 0
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
   char  *old_level;
   float  label_width;
@@ -167,6 +174,7 @@ update_volume_label (MpdVolumeTile  *self,
     }
   }
   g_free (old_level);
+#endif
 }
 
 static void
@@ -293,68 +301,75 @@ static void
 mpd_volume_tile_init (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  ClutterLayoutManager  *manager;
-  ClutterActor          *label;
-  ClutterActor          *mute_box;
-  ClutterActor          *mute_label;
-  ClutterText           *text;
+  ClutterActor  *hbox;
+  ClutterActor  *label;
+  ClutterActor  *mute_label;
+  ClutterActor  *vbox;
+  GError        *error = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
 
-  /* Tile label */
+  /* First row. */
+  hbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_VOLUME_TILE_HEADER_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
+
   label = mx_label_new_with_text (_("Netbook volume"));
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
+  clutter_actor_set_name (label, "volume-tile-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
 
-  /* Slider */
+  priv->mute_toggle = mx_toggle_new ();
+  clutter_actor_set_width (priv->mute_toggle, 16.0);
+  g_signal_connect (priv->mute_toggle, "notify::active",
+                    G_CALLBACK (_mute_toggle_notify_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->mute_toggle);
+
+  mute_label = mx_label_new_with_text (_("Mute"));
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), mute_label);
+
+  /* Second row. */
+  hbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_TILE_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
+
+  /* TODO do icon depending on actual volume. */
+  priv->volume_icon = clutter_texture_new_from_file (PKGTHEMEDIR "/volume-icon-100.png",
+                                                     &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  } else {
+    clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->volume_icon), true);
+    clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->volume_icon);
+    clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->volume_icon,
+                                 "expand", false,
+                                 "x-fill", false,
+                                 "y-fill", false,
+                                 NULL);
+  }
+
+  vbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), vbox);
+
+  priv->volume_bars = clutter_texture_new_from_file (PKGTHEMEDIR "/volume-bars-0.png",
+                                                     &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  } else {
+    clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->volume_bars), true);
+    clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->volume_bars);
+  }
+
   priv->volume_slider = mx_slider_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->volume_slider);
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->volume_slider);
   g_signal_connect (priv->volume_slider, "notify::progress",
                     G_CALLBACK (_volume_slider_progress_notify_cb), self);
 
-  /* Volume label */
-  manager = clutter_fixed_layout_new ();
-  priv->volume_label_slide = clutter_box_new (manager);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self),
-                               priv->volume_label_slide);
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
-                               priv->volume_label_slide,
-                               "expand", true,
-                               "x-align", MX_ALIGN_START,
-                               "x-fill", false,
-                               "y-align", MX_ALIGN_START,
-                               "y-fill", false,
-                               NULL);
-
-  priv->volume_label = mx_label_new ();
-  text = CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (priv->volume_label)));
-  clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_NONE);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->volume_label_slide),
-                               priv->volume_label);
-
-  /* Mute button */
-  mute_box = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (mute_box), 6);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), mute_box);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), mute_box,
-                               "expand", false,
-                               "x-align", MX_ALIGN_END,
-                               "x-fill", false,
-                               NULL);
-
-  mute_label = mx_label_new_with_text (_("Mute"));
-  clutter_container_add_actor (CLUTTER_CONTAINER (mute_box), mute_label);
-  clutter_container_child_set (CLUTTER_CONTAINER (mute_box), mute_label,
-                               "expand", false,
-                               "y-align", MX_ALIGN_MIDDLE,
-                               "y-fill", false,
-                               NULL);
-
-  priv->mute_toggle = mx_toggle_new ();
-  g_signal_connect (priv->mute_toggle, "notify::active",
-                    G_CALLBACK (_mute_toggle_notify_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (mute_box), priv->mute_toggle);
-
+  /* Control */
   priv->control = gvc_mixer_control_new (MIXER_CONTROL_NAME);
   g_signal_connect (priv->control, "default-sink-changed",
                     G_CALLBACK (_mixer_control_default_sink_changed_cb), self);
