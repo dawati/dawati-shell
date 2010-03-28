@@ -110,6 +110,12 @@ mpd_computer_tile_init (MpdComputerTile *self)
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_settings_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
+                               "expand", false,
+                               "x-align", MX_ALIGN_END,
+                               "x-fill", false,
+                               "y-fill", false,
+                               NULL);
 }
 
 ClutterActor *
