@@ -14,15 +14,13 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
-#, fuzzy
 msgid "Devices panel"
-msgstr "Panel _einschließen"
+msgstr "Geräte-Panel"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
 #: ../src/moblin-panel-devices.c:135
-#, fuzzy
 msgid "devices"
-msgstr "Geräte"
+msgstr "devices"
 
 #. Translators: This word is used to describe the media inserted into a device
 #: ../gdu/gdu-drive.c:560
@@ -75,7 +73,6 @@ msgstr "Fensterleiste _blinken"
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:607
-#, fuzzy
 msgid "CD"
 msgstr "CD"
 
@@ -83,7 +80,6 @@ msgstr "CD"
 #. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
 #.
 #: ../gdu/gdu-drive.c:615
-#, fuzzy
 msgid "DVD"
 msgstr "DVD"
 
@@ -104,33 +100,32 @@ msgstr ""
 #. Translators: %s is the media type e.g. 'CD/DVD' or 'CompactFlash'
 #: ../gdu/gdu-drive.c:680
 #: ../gdu/gdu-drive.c:719
-#, fuzzy, c-format
+#, c-format
 msgid "%s Drive"
-msgstr "Quell-Festplatte:"
+msgstr "%s-Laufwerk"
 
 #. Translators: first %s is the size, second %s is the media type
 #. * e.g. 'CD/DVD' or 'CompactFlash'
 #.
 #: ../gdu/gdu-drive.c:714
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s Drive"
-msgstr "Quell-Festplatte:"
+msgstr "%s %s-Laufwerk"
 
 #. Translators: This string is used to describe a hard disk.
 #. * The first %s is the size of the drive e.g. '45 GB'.
 #.
 #: ../gdu/gdu-drive.c:730
-#, fuzzy, c-format
+#, c-format
 msgid "%s Hard Disk"
-msgstr "Disk Druid"
+msgstr "%s Festplatte"
 
 #. Translators: This string is used to describe a hard disk where the size
 #. * is not known.
 #.
 #: ../gdu/gdu-drive.c:735
-#, fuzzy
 msgid "Hard Disk"
-msgstr "Disk Druid"
+msgstr "Festplatte"
 
 #. Translators: This string is used to describe a SSD. The first %s is
 #. * the size of the drive e.g. '45 GB'.
@@ -506,12 +501,12 @@ msgstr ""
 #: ../gdu/gdu-util.c:140
 #, c-format
 msgid "%s (%s bytes)"
-msgstr ""
+msgstr "%s (%s Byte)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:175
 msgid "FAT (12-bit version)"
-msgstr ""
+msgstr "FAT (12-Bit Version)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:178
@@ -520,17 +515,17 @@ msgstr ""
 #: ../gdu/gdu-util.c:196
 #: ../gdu/gdu-util.c:198
 msgid "FAT"
-msgstr ""
+msgstr "FAT"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:183
 msgid "FAT (16-bit version)"
-msgstr ""
+msgstr "FAT (16-Bit Version)"
 
 #. Translators: FAT is a filesystem type
 #: ../gdu/gdu-util.c:190
 msgid "FAT (32-bit version)"
-msgstr ""
+msgstr "FAT (32-Bit Version)"
 
 #. Translators: NTFS is a filesystem type
 #: ../gdu/gdu-util.c:205
@@ -543,28 +538,28 @@ msgstr "(API Version: %s)"
 #: ../gdu/gdu-util.c:210
 #, c-format
 msgid "NTFS"
-msgstr ""
+msgstr "NTFS"
 
 #. Translators: HFS is a filesystem type
 #: ../gdu/gdu-util.c:215
 #: ../gdu/gdu-util.c:217
 msgid "HFS"
-msgstr ""
+msgstr "HFS"
 
 #. Translators: HFS+ is a filesystem type
 #: ../gdu/gdu-util.c:222
 #: ../gdu/gdu-util.c:224
 msgid "HFS+"
-msgstr ""
+msgstr "HFS+"
 
 #: ../gdu/gdu-util.c:228
 msgid "Linux Unified Key Setup"
-msgstr ""
+msgstr "Linux Unified Key Setup"
 
 #. Translators: LUKS is 'Linux Unified Key Setup', a disk encryption format
 #: ../gdu/gdu-util.c:231
 msgid "LUKS"
-msgstr ""
+msgstr "LUKS"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:237
@@ -576,12 +571,12 @@ msgstr "(API Version: %s)"
 #: ../gdu/gdu-util.c:240
 #, c-format
 msgid "Ext2"
-msgstr ""
+msgstr "Ext2"
 
 #. Translators: Ext2 is a filesystem type
 #: ../gdu/gdu-util.c:243
 msgid "ext2"
-msgstr ""
+msgstr "ext2"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:249
@@ -593,18 +588,18 @@ msgstr "(API Version: %s)"
 #: ../gdu/gdu-util.c:252
 #, c-format
 msgid "Ext3"
-msgstr ""
+msgstr "Ext3"
 
 #. Translators: Ext3 is a filesystem type
 #: ../gdu/gdu-util.c:255
 msgid "ext3"
-msgstr ""
+msgstr "ext3"
 
 #. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
 #: ../gdu/gdu-util.c:261
 #, c-format
 msgid "Journal for Ext3 (version %s)"
-msgstr ""
+msgstr "Journal für Ext3 (Version %s)"
 
 #. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
 #: ../gdu/gdu-util.c:264
@@ -615,7 +610,7 @@ msgstr "Auf _Aktualisierungen prüfen:"
 #. Translators: jbd is a filesystem type
 #: ../gdu/gdu-util.c:267
 msgid "jbd"
-msgstr ""
+msgstr "jbd"
 
 #. Translators: ext4 is a filesystem type
 #: ../gdu/gdu-util.c:273
@@ -627,12 +622,12 @@ msgstr "(API Version: %s)"
 #: ../gdu/gdu-util.c:276
 #, c-format
 msgid "Ext4"
-msgstr ""
+msgstr "Ext4"
 
 #. Translators: Ext4 is a filesystem type
 #: ../gdu/gdu-util.c:279
 msgid "ext4"
-msgstr ""
+msgstr "ext4"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:285
@@ -644,12 +639,12 @@ msgstr "(API Version: %s)"
 #: ../gdu/gdu-util.c:288
 #, c-format
 msgid "XFS"
-msgstr ""
+msgstr "XFS"
 
 #. Translators: xfs is a filesystem type
 #: ../gdu/gdu-util.c:291
 msgid "xfs"
-msgstr ""
+msgstr "xfs"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:297
@@ -661,12 +656,12 @@ msgstr "(API Version: %s)"
 #: ../gdu/gdu-util.c:300
 #, c-format
 msgid "ReiserFS"
-msgstr ""
+msgstr "ReiserFS"
 
 #. Translators: reiserfs is a filesystem type
 #: ../gdu/gdu-util.c:303
 msgid "reiserfs"
-msgstr ""
+msgstr "reiserfs"
 
 #. Translators: iso9660 is a filesystem type
 #: ../gdu/gdu-util.c:308
@@ -677,7 +672,7 @@ msgstr "Fehlendes ISO-9660-Abbild"
 #. Translators: iso9660 is a filesystem type
 #: ../gdu/gdu-util.c:311
 msgid "iso9660"
-msgstr ""
+msgstr "iso9660"
 
 #. Translators: udf is a filesystem type
 #: ../gdu/gdu-util.c:316
@@ -688,7 +683,7 @@ msgstr "Als Swap formatieren?"
 #. Translators: udf is a filesystem type
 #: ../gdu/gdu-util.c:319
 msgid "udf"
-msgstr ""
+msgstr "udf"
 
 #: ../gdu/gdu-util.c:323
 #, fuzzy
@@ -735,12 +730,12 @@ msgstr "RAID-Gerät"
 #. Translators: long filesystem type for minix
 #: ../gdu/gdu-util.c:352
 msgid "Minix"
-msgstr ""
+msgstr "Minix"
 
 #. Translators: filesystem type for minix
 #: ../gdu/gdu-util.c:355
 msgid "minix"
-msgstr ""
+msgstr "minix"
 
 #: ../gdu/gdu-util.c:369
 #, fuzzy
@@ -1145,15 +1140,15 @@ msgstr "_Dateisystemtyp:"
 
 #: ../gdu/gdu-util.c:501
 msgid "FAT 12"
-msgstr ""
+msgstr "FAT 12"
 
 #: ../gdu/gdu-util.c:502
 msgid "FAT 16"
-msgstr ""
+msgstr "FAT 16"
 
 #: ../gdu/gdu-util.c:503
 msgid "FAT 32"
-msgstr ""
+msgstr "FAT 32"
 
 #: ../gdu/gdu-util.c:504
 #, fuzzy
@@ -1173,11 +1168,11 @@ msgstr "Akku ist fast leer"
 
 #: ../gdu/gdu-util.c:509
 msgid "FAT12 (0x01)"
-msgstr ""
+msgstr "FAT12 (0x01)"
 
 #: ../gdu/gdu-util.c:510
 msgid "FAT16 <32M (0x04)"
-msgstr ""
+msgstr "FAT16 <32M (0x04)"
 
 #: ../gdu/gdu-util.c:511
 #, fuzzy
@@ -1186,71 +1181,71 @@ msgstr "Länger abwesend"
 
 #: ../gdu/gdu-util.c:512
 msgid "FAT16 (0x06)"
-msgstr ""
+msgstr "FAT16 (0x06)"
 
 #: ../gdu/gdu-util.c:513
 msgid "HPFS/NTFS (0x07)"
-msgstr ""
+msgstr "HPFS/NTFS (0x07)"
 
 #: ../gdu/gdu-util.c:514
 msgid "W95 FAT32 (0x0b)"
-msgstr ""
+msgstr "W95 FAT32 (0x0b)"
 
 #: ../gdu/gdu-util.c:515
 msgid "W95 FAT32 (LBA) (0x0c)"
-msgstr ""
+msgstr "W95 FAT32 (LBA) (0x0c)"
 
 #: ../gdu/gdu-util.c:516
 msgid "W95 FAT16 (LBA) (0x0e)"
-msgstr ""
+msgstr "W95 FAT16 (LBA) (0x0e)"
 
 #: ../gdu/gdu-util.c:517
 msgid "W95 Ext d (LBA) (0x0f)"
-msgstr ""
+msgstr "W95 Ext d (LBA) (0x0f)"
 
 #: ../gdu/gdu-util.c:518
 msgid "OPUS (0x10)"
-msgstr ""
+msgstr "OPUS (0x10)"
 
 #: ../gdu/gdu-util.c:519
 msgid "Hidden FAT12 (0x11)"
-msgstr ""
+msgstr "Hidden FAT12 (0x11)"
 
 #: ../gdu/gdu-util.c:520
 msgid "Compaq diagnostics (0x12)"
-msgstr ""
+msgstr "Compaq diagnostics (0x12)"
 
 #: ../gdu/gdu-util.c:521
 msgid "Hidden FAT16 <32M (0x14)"
-msgstr ""
+msgstr "Hidden FAT16 <32M (0x14)"
 
 #: ../gdu/gdu-util.c:522
 msgid "Hidden FAT16 (0x16)"
-msgstr ""
+msgstr "Hidden FAT16 (0x16)"
 
 #: ../gdu/gdu-util.c:523
 msgid "Hidden HPFS/NTFS (0x17)"
-msgstr ""
+msgstr "Hidden HPFS/NTFS (0x17)"
 
 #: ../gdu/gdu-util.c:524
 msgid "Hidden W95 FAT32 (0x1b)"
-msgstr ""
+msgstr "Hidden W95 FAT32 (0x1b)"
 
 #: ../gdu/gdu-util.c:525
 msgid "Hidden W95 FAT32 (LBA) (0x1c)"
-msgstr ""
+msgstr "Hidden W95 FAT32 (LBA) (0x1c)"
 
 #: ../gdu/gdu-util.c:526
 msgid "Hidden W95 FAT16 (LBA) (0x1e)"
-msgstr ""
+msgstr "Hidden W95 FAT16 (LBA) (0x1e)"
 
 #: ../gdu/gdu-util.c:527
 msgid "PartitionMagic (0x3c)"
-msgstr ""
+msgstr "PartitionMagic (0x3c)"
 
 #: ../gdu/gdu-util.c:528
 msgid "Minix (0x81)"
-msgstr ""
+msgstr "Minix (0x81)"
 
 #. cf. http://en.wikipedia.org/wiki/MINIX_file_system
 #: ../gdu/gdu-util.c:529
@@ -1265,7 +1260,7 @@ msgstr "Linux-Bildschirmleser"
 
 #: ../gdu/gdu-util.c:531
 msgid "Hibernation (0x84)"
-msgstr ""
+msgstr "Hibernation (0x84)"
 
 #: ../gdu/gdu-util.c:532
 #, fuzzy
@@ -1279,15 +1274,15 @@ msgstr "LVM Datenträgergruppen"
 
 #: ../gdu/gdu-util.c:534
 msgid "Hibernation (0xa0)"
-msgstr ""
+msgstr "Hibernation (0xa0)"
 
 #: ../gdu/gdu-util.c:535
 msgid "FreeBSD (0xa5)"
-msgstr ""
+msgstr "FreeBSD (0xa5)"
 
 #: ../gdu/gdu-util.c:536
 msgid "OpenBSD (0xa6)"
-msgstr ""
+msgstr "OpenBSD (0xa6)"
 
 #: ../gdu/gdu-util.c:537
 #, fuzzy
@@ -1306,15 +1301,15 @@ msgstr "PPC PReP Boot"
 
 #: ../gdu/gdu-util.c:540
 msgid "Solaris (0xbf)"
-msgstr ""
+msgstr "Solaris (0xbf)"
 
 #: ../gdu/gdu-util.c:541
 msgid "BeOS BFS (0xeb)"
-msgstr ""
+msgstr "BeOS BFS (0xeb)"
 
 #: ../gdu/gdu-util.c:542
 msgid "SkyOS SkyFS (0xec)"
-msgstr ""
+msgstr "SkyOS SkyFS (0xec)"
 
 #: ../gdu/gdu-util.c:543
 #, fuzzy
@@ -1323,11 +1318,11 @@ msgstr "EFI System-Partition"
 
 #: ../gdu/gdu-util.c:544
 msgid "EFI (FAT-12/16/32 (0xef)"
-msgstr ""
+msgstr "EFI (FAT-12/16/32 (0xef)"
 
 #: ../gdu/gdu-util.c:545
 msgid "Linux RAID autodetect (0xfd)"
-msgstr ""
+msgstr "Linux RAID autodetect (0xfd)"
 
 #. Translators: Shown for unknown partition types.
 #. * %s is the partition type name
@@ -1408,22 +1403,22 @@ msgstr "%s\t%5.1fms (%4.1f%%)\n"
 #. Translators: interface name for serial ATA disks
 #: ../gdu/gdu-util.c:910
 msgid "SATA"
-msgstr ""
+msgstr "SATA"
 
 #. Translators: interface name for serial ATA disks
 #: ../gdu/gdu-util.c:913
 msgid "eSATA"
-msgstr ""
+msgstr "eSATA"
 
 #. Translators: interface name for parallel ATA disks
 #: ../gdu/gdu-util.c:916
 msgid "PATA"
-msgstr ""
+msgstr "PATA"
 
 #. Translators: interface name for ATA disks
 #: ../gdu/gdu-util.c:919
 msgid "ATA"
-msgstr ""
+msgstr "ATA"
 
 #. Translators: interface name for SCSI disks
 #: ../gdu/gdu-util.c:922
@@ -1440,7 +1435,7 @@ msgstr " U - USB suspend einschalten"
 #. Translators: interface name for firewire disks
 #: ../gdu/gdu-util.c:928
 msgid "Firewire"
-msgstr ""
+msgstr "Firewire"
 
 #. Translators: interface name for SDIO disks
 #: ../gdu/gdu-util.c:931
@@ -1976,32 +1971,26 @@ msgstr[0] "_Eingabefelder:"
 msgstr[1] ""
 
 #: ../gvc/gvc-mixer-control.c:1316
-#, fuzzy
 msgid "System Sounds"
 msgstr "Systemklänge"
 
 #: ../power-icon/src/moblin-power-icon.c:46
-#, fuzzy
 msgid "Moblin Power Icon"
-msgstr "_Dieses Symbol verstecken"
+msgstr "Moblin Energiesymbol"
 
 #: ../power-icon/src/mpd-power-icon.c:72
-#, fuzzy
 msgid "Running low on battery"
 msgstr "Der Akku wird schwach"
 
 #: ../power-icon/src/mpd-power-icon.c:73
-#, fuzzy
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Wir haben festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstecken und Aufladen jetzt eine gute Idee."
 
 #: ../power-icon/src/mpd-power-icon.c:76
-#, fuzzy
 msgid "Getting close to empty"
 msgstr "Akku ist fast leer"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-#, fuzzy
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Dein Akku ist ziemlich schwach. Es wäre wirklich eine gute Idee, alles zu speichern und dann unverzüglich aufzuladen."
 
@@ -2010,17 +1999,14 @@ msgid "Danger!"
 msgstr "Gefahr!"
 
 #: ../power-icon/src/mpd-power-icon.c:82
-#, fuzzy
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Leider hat dein Computer keinen Saft mehr. Wir müssen jetzt abschalten. Bitte speichere alles Wichtige und wir hoffen dich bald wiederzusehen."
 
 #: ../power-icon/src/mpd-power-icon.c:300
-#, fuzzy
 msgid "Would you like to turn off now?"
 msgstr "Möchtest du jetzt abschalten?"
 
 #: ../power-icon/src/mpd-power-icon.c:301
-#, fuzzy
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
 
@@ -2029,43 +2015,42 @@ msgid "battery"
 msgstr "Akku"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:75
-#, fuzzy, c-format
+#, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Wenn  keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
+msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
 msgid "Turn off"
 msgstr "Abschalten"
 
 #: ../src/mpd-battery-device.c:333
-#, fuzzy, c-format
+#, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Leider scheinst du keinen Akku installiert zu haben."
 
 #: ../src/mpd-battery-device.c:337
-#, fuzzy, c-format
+#, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr "Dein Akku wird geladen. Er ist etwa <b>%d</b>%% voll."
+msgstr "Dein Akku wird geladen. Er ist etwa %d%% voll."
 
 #: ../src/mpd-battery-device.c:342
-#, fuzzy, c-format
+#, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr "Dein Akku wird genutzt. Er ist etwa <b>%d</b>%% voll."
+msgstr "Dein Akku wird genutzt. Er ist etwa %d%% voll."
 
 #: ../src/mpd-battery-device.c:347
-#, fuzzy, c-format
+#, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Dein Akku ist voll geladen und du kannst loslegen."
 
 #: ../src/mpd-battery-device.c:351
-#, fuzzy, c-format
+#, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Leider scheint dein Akku defekt zu sein."
 
 #: ../src/mpd-computer-pane.c:111
-#, fuzzy
 msgid "All settings"
-msgstr "Aktualisierungs-Einstellungen"
+msgstr "Alle Einstellungen"
 
 #: ../src/mpd-default-device-tile.c:100
 msgid ""
@@ -2079,9 +2064,8 @@ msgid "You are using %d%% of %s"
 msgstr "Wo bist du?"
 
 #: ../src/mpd-folder-pane.c:91
-#, fuzzy
 msgid "Your computer"
-msgstr "Rechner neu starten"
+msgstr "Dein Computer"
 
 #: ../src/mpd-storage-device-tile.c:96
 #, fuzzy, c-format
@@ -2134,9 +2118,8 @@ msgstr "Still"
 
 #. Tile label
 #: ../src/mpd-volume-tile.c:306
-#, fuzzy
 msgid "Netbook volume"
-msgstr "Wiedergabelautstärke"
+msgstr "Netbook-Lautstärke"
 
 #: ../src/mpd-volume-tile.c:345
 msgid "Mute"
