@@ -8,6 +8,7 @@ dist_theme_DATA = \
   directory-highlight.png \
   frame-border.png \
   panel.css \
+  panel-background.png \
   $(NULL)
 
 # Manage mutter-moblin's texture cache.
