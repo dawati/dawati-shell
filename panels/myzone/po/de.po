@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-01 10:36+0000\n"
+"POT-Creation-Date: 2010-03-27 09:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Clara <steiner-jay.clarax@intel.com>\n"
+"Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,6 +18,48 @@ msgstr ""
 msgid "Myzone panel"
 msgstr "Panel Myzone"
 
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Myzone Hintergrund und Inhalt ändern"
+
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Panel Myzone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf Fehler: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Alle weiteren Fehler werden nur am Terminal angezeigt"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "So viel Webservice-Content wie möglich anzeigen"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Hauptsächlich Webservice-Content anzeigen"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Halb und Halb anzeigen"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Hauptsächlich neueste Dateien anzeigen"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "So viel neueste Dateien wie möglich anzeigen"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "Möchtest du die Liste der zuletzt benutzten Dokumente löschen? Damit werden lokale Inhalte von Myzone entfernt."
+
 #: ../penge/penge-calendar-pane.c:473
 msgid "Appointments"
 msgstr "Termine"
@@ -26,7 +68,8 @@ msgstr "Termine"
 msgid "Create an appointment"
 msgstr "Termin erstellen"
 
-#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Zufügen"
 
@@ -64,49 +107,28 @@ msgstr "Willkommen bei MeeGo"
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Das ist Myzone, wo deine zuletzt benutzten Dateien und Inhalt von deinen Webfeeds angezeigt werden."
 
-#: ../data/myzone.desktop.in.in.h:2
-msgid "Myzone settings"
-msgstr "Myzone Einstellungen"
+#: ../penge/penge-email-pane.c:191
+msgid "No unread messages"
+msgstr "Keine ungelesenen Nachrichten"
 
-#: ../data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr "Myzone Hintergrund und Inhalt ändern"
+#: ../penge/penge-email-pane.c:193
+msgid "Unread message"
+msgstr "Ungelesene Nachricht"
 
-#: ../capplet/gconf-bridge.c:1237
-msgid "All further errors shown only on terminal."
-msgstr "Alle weiteren Fehler werden nur am Terminal angezeigt"
+#: ../penge/penge-email-pane.c:195
+msgid "Unread messages"
+msgstr "Ungelesene Nachrichten"
 
-#: ../capplet/gconf-bridge.c:1232
-#, c-format
-msgid "GConf error: %s"
-msgstr "GConf Fehler: %s"
-
-#: ../capplet/myzone-cc-panel.c:49
-msgid "Show mostly web service content"
-msgstr "Hauptsächlich Webservice-Content anzeigen"
-
-#: ../capplet/myzone-cc-panel.c:47
-msgid "Show as much web service content as possible"
-msgstr "So viel Webservice-Content wie möglich anzeigeh"
-
-#: ../capplet/myzone-cc-panel.c:53
-msgid "Show mostly recent files"
-msgstr "Hauptsächlich neueste Dateien anzeigen"
-
-#: ../capplet/myzone-cc-panel.c:51
-msgid "Show half and half"
-msgstr "Halb und Halb anzeigen"
-
-#: ../capplet/myzone-cc-panel.c:137
-msgid "Myzone"
-msgstr "Panel Myzone"
-
-#: ../capplet/myzone-cc-panel.c:55
-msgid "Show as many recent files as possible"
-msgstr "So viel neueste Dateien wie möglich anzeigen"
-
+#~ msgid "Myzone settings"
+#~ msgstr "Myzone Einstellungen"
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Willkommen bei Moblin 2.1 für Netbooks</b>"
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Da Moblin ein bisschen anders ist, haben wir ein paar Dinge "
+#~ "zusammengestellt, die dir dabei helfen sollen, dich zurechtzufinden. Wir "
+#~ "hoffen, es gefällt dir. Das Moblin Team."
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Da Moblin ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich zurechtzufinden. Wir hoffen, es gefällt dir. Das Moblin Team."
