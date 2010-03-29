@@ -60,7 +60,7 @@ servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.status.service.in
 service_DATA = org.moblin.UX.Shell.Panels.status.service
 
-EXTRA_DIST = $(service_in_files) mnb-status-marshal.list
+EXTRA_DIST = $(service_in_files) mnb-status-marshal.list sw-marshals.list
 
 CLEANFILES = stamp-mnb-status-marshal.h
 
