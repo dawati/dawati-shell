@@ -44,7 +44,6 @@ enum
 struct _MtpClockPrivate
 {
   ClutterActor *time;
-  ClutterActor *date;
 
   gboolean disposed : 1;
 };
@@ -62,9 +61,6 @@ mtp_clock_dispose (GObject *object)
   clutter_actor_destroy (priv->time);
   priv->time = NULL;
 
-  clutter_actor_destroy (priv->date);
-  priv->date = NULL;
-
   G_OBJECT_CLASS (mtp_clock_parent_class)->dispose (object);
 }
 
@@ -76,7 +72,6 @@ mtp_clock_map (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (mtp_clock_parent_class)->map (actor);
 
   clutter_actor_map (priv->time);
-  clutter_actor_map (priv->date);
 }
 
 static void
@@ -85,7 +80,6 @@ mtp_clock_unmap (ClutterActor *actor)
   MtpClockPrivate *priv = MTP_CLOCK (actor)->priv;
 
   clutter_actor_unmap (priv->time);
-  clutter_actor_unmap (priv->date);
 
   CLUTTER_ACTOR_CLASS (mtp_clock_parent_class)->unmap (actor);
 }
@@ -123,20 +117,9 @@ mtp_clock_allocate (ClutterActor          *actor,
 
   mx_allocate_align_fill (priv->time, &childbox,
                           MX_ALIGN_MIDDLE,
-                          MX_ALIGN_START, FALSE, FALSE);
+                          MX_ALIGN_MIDDLE, FALSE, FALSE);
 
   clutter_actor_allocate (priv->time, &childbox, flags);
-
-  childbox.x1 = padding.left;
-  childbox.y1 = padding.top;
-  childbox.x2 = (gfloat)((gint)(box->x2 - box->x1 - padding.right));
-  childbox.y2 = (gfloat)((gint)(box->y2 - box->y1 - padding.bottom));
-
-  mx_allocate_align_fill (priv->date, &childbox,
-                          MX_ALIGN_MIDDLE,
-                          MX_ALIGN_END, FALSE, FALSE);
-
-  clutter_actor_allocate (priv->date, &childbox, flags);
 }
 
 
@@ -182,7 +165,6 @@ mtp_clock_paint (ClutterActor *self)
   CLUTTER_ACTOR_CLASS (mtp_clock_parent_class)->paint (self);
 
   clutter_actor_paint (priv->time);
-  clutter_actor_paint (priv->date);
 }
 
 static void
@@ -204,12 +186,12 @@ mtp_clock_class_init (MtpClockClass *klass)
 }
 
 static void
-mtp_clock_update_time_date (ClutterActor *time_label,
-                            ClutterActor *date_label)
+mtp_clock_update_time_date (MtpClock *clock)
 {
-  time_t         t;
-  struct tm     *tmp;
-  char           time_str[64];
+  MtpClockPrivate *priv = clock->priv;
+  time_t           t;
+  struct tm       *tmp;
+  char             time_str[64];
 
   t = time (NULL);
   tmp = localtime (&t);
@@ -221,8 +203,10 @@ mtp_clock_update_time_date (ClutterActor *time_label,
     strftime (time_str, 64, _("%l:%M %P"), tmp);
   else
     snprintf (time_str, 64, "Time");
-  mx_label_set_text (MX_LABEL (time_label), time_str);
 
+  mx_label_set_text (MX_LABEL (priv->time), time_str);
+
+#if 0
   if (tmp)
     /* translators: translate this to a suitable date format for your locale.
      * For availabe format specifiers see
@@ -232,7 +216,8 @@ mtp_clock_update_time_date (ClutterActor *time_label,
   else
     snprintf (time_str, 64, "Date");
 
-  mx_label_set_text (MX_LABEL (date_label), time_str);
+  mx_widget_set_tooltip_text (MX_WIDGET (clock), time_str);
+#endif
 }
 
 static void
@@ -247,11 +232,7 @@ mtp_clock_init (MtpClock *self)
   clutter_actor_set_name (priv->time, "time-label");
   clutter_actor_set_parent (priv->time, (ClutterActor*)self);
 
-  priv->date = mx_label_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
-  clutter_actor_set_parent (priv->date, (ClutterActor*)self);
-
-  mtp_clock_update_time_date (priv->time, priv->date);
+  mtp_clock_update_time_date (self);
 }
 
 ClutterActor*
