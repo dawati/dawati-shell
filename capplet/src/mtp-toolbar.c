@@ -59,7 +59,6 @@ struct _MtpToolbarPrivate
 {
   ClutterActor *applet_area;
   ClutterActor *panel_area;
-  ClutterActor *clock_area;
 
   gboolean free_space : 1;
   gboolean enabled    : 1;
@@ -83,9 +82,6 @@ mtp_toolbar_dispose (GObject *object)
   clutter_actor_destroy (priv->applet_area);
   priv->applet_area = NULL;
 
-  clutter_actor_destroy (priv->clock_area);
-  priv->clock_area = NULL;
-
   G_OBJECT_CLASS (mtp_toolbar_parent_class)->dispose (object);
 }
 
@@ -97,7 +93,6 @@ mtp_toolbar_map (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->map (actor);
 
   clutter_actor_map (priv->panel_area);
-  clutter_actor_map (priv->clock_area);
   clutter_actor_map (priv->applet_area);
 }
 
@@ -107,7 +102,6 @@ mtp_toolbar_unmap (ClutterActor *actor)
   MtpToolbarPrivate *priv = MTP_TOOLBAR (actor)->priv;
 
   clutter_actor_unmap (priv->panel_area);
-  clutter_actor_unmap (priv->clock_area);
   clutter_actor_unmap (priv->applet_area);
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->unmap (actor);
@@ -122,7 +116,6 @@ mtp_toolbar_allocate (ClutterActor          *actor,
   MtpToolbarPrivate *priv = toolbar->priv;
   MxPadding          padding;
   ClutterActorBox    childbox;
-  gfloat             clock_x;
   gfloat             tray_x;
 
   CLUTTER_ACTOR_CLASS (
@@ -130,27 +123,17 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-  clock_x = box->x2 - box->x1 - 334.0;
-  tray_x  = clock_x + 164.0 + 2.0;
+  tray_x = box->x2 - box->x1 - 334.0;
 
   childbox.x1 = padding.left + 4.0;
   childbox.y1 = padding.top;
-  childbox.x2 = clock_x - 2.0;
+  childbox.x2 = tray_x - 2.0;
   childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
 
   mx_allocate_align_fill (priv->panel_area, &childbox,
                           MX_ALIGN_START, MX_ALIGN_MIDDLE,
                           FALSE, FALSE);
   clutter_actor_allocate (priv->panel_area, &childbox, flags);
-
-  childbox.x1 = clock_x;
-  childbox.y1 = padding.top;
-  childbox.x2 = tray_x - 2.0;
-  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
-  mx_allocate_align_fill (priv->clock_area, &childbox,
-                          MX_ALIGN_START, MX_ALIGN_MIDDLE,
-                          FALSE, FALSE);
-  clutter_actor_allocate (priv->clock_area, &childbox, flags);
 
   childbox.x1 = tray_x;
   childbox.y1 = padding.top;
@@ -175,12 +158,6 @@ mtp_toolbar_constructed (GObject *self)
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->panel_area), 2);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->panel_area), TRUE);
   clutter_actor_set_parent (priv->panel_area, actor);
-
-  priv->clock_area  = mx_box_layout_new ();
-  clutter_actor_set_name (priv->clock_area, "clock-area");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->clock_area), 2);
-  mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->clock_area), TRUE);
-  clutter_actor_set_parent (priv->clock_area, actor);
 
   priv->applet_area = mx_box_layout_new ();
   clutter_actor_set_name (priv->applet_area, "applet-area");
@@ -447,7 +424,6 @@ mtp_toolbar_pick (ClutterActor *self, const ClutterColor *color)
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->pick (self, color);
 
   clutter_actor_paint (priv->panel_area);
-  clutter_actor_paint (priv->clock_area);
   clutter_actor_paint (priv->applet_area);
 }
 
@@ -459,7 +435,6 @@ mtp_toolbar_paint (ClutterActor *self)
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->paint (self);
 
   clutter_actor_paint (priv->panel_area);
-  clutter_actor_paint (priv->clock_area);
   clutter_actor_paint (priv->applet_area);
 }
 
@@ -690,7 +665,6 @@ mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
   parent = clutter_actor_get_parent ((ClutterActor*)button);
 
   if (old_parent == priv->panel_area ||
-      old_parent == priv->clock_area ||
       old_parent == priv->applet_area)
     {
       priv->modified = TRUE;
@@ -722,9 +696,7 @@ mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
         }
     }
 
-  if (!(parent == priv->panel_area  ||
-        parent == priv->applet_area ||
-        parent == priv->clock_area))
+  if (!(parent == priv->panel_area  || parent == priv->applet_area))
     g_signal_handlers_disconnect_by_func (button,
                                           mtp_toolbar_button_parent_set_cb,
                                           toolbar);
@@ -750,12 +722,12 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
       ClutterActor *parent = clutter_actor_get_parent (button);
 
       if (parent)
-        clutter_actor_reparent (button, priv->clock_area);
+        clutter_actor_reparent (button, priv->applet_area);
       else
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->clock_area),
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
                                      button);
 
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->clock_area),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
                                    button,
                                    "expand", FALSE, NULL);
     }
@@ -848,12 +820,12 @@ mtp_toolbar_readd_button (MtpToolbar *toolbar, ClutterActor *button)
       ClutterActor *parent = clutter_actor_get_parent (button);
 
       if (parent)
-        clutter_actor_reparent (button, priv->clock_area);
+        clutter_actor_reparent (button, priv->applet_area);
       else
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->clock_area),
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
                                      button);
 
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->clock_area),
+      clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
                                    button,
                                    "expand", FALSE, NULL);
     }
@@ -945,7 +917,7 @@ mtp_toolbar_remove_button (MtpToolbar *toolbar, ClutterActor *button)
     }
   else if (mtp_toolbar_button_is_clock ((MtpToolbarButton*)button))
     {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->clock_area),
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->applet_area),
                                       button);
     }
   else if (MTP_IS_TOOLBAR_BUTTON (button))
@@ -1120,15 +1092,6 @@ mtp_toolbar_get_panel_buttons (MtpToolbar *toolbar)
       ret = g_list_append (ret, l->data);
 
   g_list_free (children);
-
-  children =
-    clutter_container_get_children (CLUTTER_CONTAINER (priv->clock_area));
-
-  for (l = children; l; l = l->next)
-    if (MTP_IS_TOOLBAR_BUTTON (l->data))
-      ret = g_list_append (ret, l->data);
-
-    g_list_free (children);
 
   return ret;
 }
