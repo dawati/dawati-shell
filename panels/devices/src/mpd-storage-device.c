@@ -75,6 +75,7 @@ typedef struct
 
   GSList        *dir_stack;
   GSList        *media_files;
+  size_t         media_files_size;
 } MpdStorageDevicePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -533,6 +534,7 @@ enumerate_dir (MpdStorageDevice  *self)
       char const *path = g_object_get_data (G_OBJECT (enumerator), "path");
       char *filename = g_build_filename (path, g_file_info_get_name (info), NULL);
       priv->media_files = g_slist_prepend (priv->media_files, filename);
+      priv->media_files_size += g_file_info_get_size (info);
     }
 
     g_object_unref (info);
