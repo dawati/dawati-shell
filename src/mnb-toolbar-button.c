@@ -178,16 +178,52 @@ mnb_toolbar_button_hide (ClutterActor *actor)
 }
 
 static void
+mnb_toolbar_button_get_preferred_width (ClutterActor *self,
+                                        gfloat        for_height,
+                                        gfloat       *min_width_p,
+                                        gfloat       *natural_width_p)
+{
+  gfloat width;
+
+  width = 66.0;
+
+  if (min_width_p)
+    *min_width_p = width;
+
+  if (natural_width_p)
+    *natural_width_p = width;
+}
+
+static void
+mnb_toolbar_button_get_preferred_height (ClutterActor *self,
+                                         gfloat        for_width,
+                                         gfloat       *min_height_p,
+                                         gfloat       *natural_height_p)
+{
+  gfloat height;
+
+  height = 55.0;
+
+  if (min_height_p)
+    *min_height_p = height;
+
+  if (natural_height_p)
+    *natural_height_p = height;
+}
+
+static void
 mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbToolbarButtonPrivate));
 
-  actor_class->pick               = mnb_toolbar_button_pick;
-  actor_class->button_press_event = mnb_toolbar_button_press;
-  actor_class->enter_event        = mnb_toolbar_button_enter;
-  actor_class->hide               = mnb_toolbar_button_hide;
+  actor_class->pick                 = mnb_toolbar_button_pick;
+  actor_class->button_press_event   = mnb_toolbar_button_press;
+  actor_class->enter_event          = mnb_toolbar_button_enter;
+  actor_class->hide                 = mnb_toolbar_button_hide;
+  actor_class->get_preferred_width  = mnb_toolbar_button_get_preferred_width;
+  actor_class->get_preferred_height = mnb_toolbar_button_get_preferred_height;
 }
 
 static void
