@@ -123,7 +123,7 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-  tray_x = box->x2 - box->x1 - 334.0;
+  tray_x = box->x2 - box->x1 - 324.0;
 
   childbox.x1 = padding.left + 4.0;
   childbox.y1 = padding.top;
