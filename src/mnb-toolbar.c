@@ -1566,7 +1566,7 @@ mnb_toolbar_panel_request_tooltip_cb (MnbPanel    *panel,
   if (!tp || !tp->button)
     return;
 
-  if (tp->button)
+  if (tp->button && tp->type != MNB_TOOLBAR_PANEL_CLOCK)
     mx_widget_set_tooltip_text (MX_WIDGET (tp->button), tooltip);
 }
 
@@ -1803,7 +1803,9 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
                 button_style = g_strdup_printf ("%s-button", name);
             }
 
-          mx_widget_set_tooltip_text (MX_WIDGET (button), tooltip);
+          if (tp->type != MNB_TOOLBAR_PANEL_CLOCK)
+            mx_widget_set_tooltip_text (MX_WIDGET (button), tooltip);
+
           clutter_actor_set_name (CLUTTER_ACTOR (button),
                                   button_style ? button_style : style_id);
 
@@ -2120,7 +2122,10 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
     }
 
   mx_button_set_is_toggle (MX_BUTTON (button), TRUE);
-  mx_widget_set_tooltip_text (MX_WIDGET (button), tooltip);
+
+  if (tp->type != MNB_TOOLBAR_PANEL_CLOCK)
+    mx_widget_set_tooltip_text (MX_WIDGET (button), tooltip);
+
   clutter_actor_set_name (button, button_style ? button_style : style_id);
 
   g_free (button_style);
