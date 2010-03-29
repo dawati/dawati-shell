@@ -641,6 +641,9 @@ _client_open_view_cb (SwClient     *client,
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
 
+  if (!view)
+    return;
+
   priv->view = view;
 
   g_signal_connect (view,
