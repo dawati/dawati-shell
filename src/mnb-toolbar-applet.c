@@ -59,7 +59,7 @@ mnb_toolbar_applet_get_preferred_width (ClutterActor *self,
 {
   gfloat width;
 
-  width = 44.0;
+  width = TRAY_BUTTON_WIDTH;
 
   if (min_width_p)
     *min_width_p = width;
@@ -76,7 +76,7 @@ mnb_toolbar_applet_get_preferred_height (ClutterActor *self,
 {
   gfloat height;
 
-  height = 55.0;
+  height = TRAY_BUTTON_HEIGHT;
 
   if (min_height_p)
     *min_height_p = height;

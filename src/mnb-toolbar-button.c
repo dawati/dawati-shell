@@ -185,7 +185,7 @@ mnb_toolbar_button_get_preferred_width (ClutterActor *self,
 {
   gfloat width;
 
-  width = 66.0;
+  width = BUTTON_WIDTH;
 
   if (min_width_p)
     *min_width_p = width;
@@ -202,7 +202,7 @@ mnb_toolbar_button_get_preferred_height (ClutterActor *self,
 {
   gfloat height;
 
-  height = 55.0;
+  height = BUTTON_HEIGHT;
 
   if (min_height_p)
     *min_height_p = height;

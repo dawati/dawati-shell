@@ -33,6 +33,11 @@
 #include "mnb-panel-oop.h"
 #include "moblin-netbook.h"
 
+#define BUTTON_WIDTH       66
+#define BUTTON_HEIGHT      55
+#define TRAY_BUTTON_WIDTH  50
+#define TRAY_BUTTON_HEIGHT 55
+
 G_BEGIN_DECLS
 
 #define MNB_TYPE_TOOLBAR mnb_toolbar_get_type()
