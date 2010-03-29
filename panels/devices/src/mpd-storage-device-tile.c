@@ -733,7 +733,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
 
     /* Open button */
     priv->states.ready.open = mx_button_new_with_label (_("Open"));
-    g_signal_connect (priv->states.ready.eject, "clicked",
+    g_signal_connect (priv->states.ready.open, "clicked",
                       G_CALLBACK (_open_clicked_cb), self);
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->states.ready.button_box),
                                  priv->states.ready.open);

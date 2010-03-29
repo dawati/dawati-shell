@@ -192,6 +192,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
   if (gdu_device_is_mounted (device))
   {
     GFile         *file;
+    char          *name;
     char          *path;
     GIcon         *icon;
     GtkIconInfo   *icon_info;
@@ -201,7 +202,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
     /* Mount point */
     file = g_mount_get_root (mount);
     path = g_file_get_path (file);
-    g_debug ("%s() %s", __FUNCTION__, path);
+    name = g_mount_get_name (mount);
 
     /* Icon */
     icon = g_mount_get_icon (mount);
@@ -212,7 +213,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
     icon_file = gtk_icon_info_get_filename (icon_info);
     g_debug ("%s() %s", __FUNCTION__, icon_file);
 
-    tile = mpd_storage_device_tile_new (path, icon_file);
+    tile = mpd_storage_device_tile_new (name, path, icon_file);
     g_signal_connect (tile, "eject",
                       G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
     mx_box_layout_add_actor (MX_BOX_LAYOUT (box), tile, 0);
@@ -220,6 +221,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
 
     gtk_icon_info_free (icon_info);
     g_object_unref (icon);
+    g_free (name);
     g_free (path);
     g_object_unref (file);
   }

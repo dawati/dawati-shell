@@ -74,6 +74,7 @@ typedef struct
   unsigned int   update_timeout_id;
 
   GSList        *dir_stack;
+  GSList        *media_files;
 } MpdStorageDevicePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -269,6 +270,13 @@ _dispose (GObject *object)
   {
     g_source_remove (priv->update_timeout_id);
     priv->update_timeout_id = 0;
+  }
+
+  if (priv->media_files)
+  {
+    g_slist_foreach (priv->media_files, (GFunc) g_free, NULL);
+    g_slist_free (priv->media_files);
+    priv->media_files = NULL;
   }
 
   G_OBJECT_CLASS (mpd_storage_device_parent_class)->dispose (object);
@@ -521,10 +529,10 @@ enumerate_dir (MpdStorageDevice  *self)
                g_str_has_prefix (content_type, "image/") ||
                g_str_has_prefix (content_type, "video/")) {
 
-      /* Done recursing. */
-      g_slist_foreach (priv->dir_stack, (GFunc) g_object_unref, NULL);
-      g_signal_emit_by_name (self, "has-media", true);
-      break;
+      /* Media found. */
+      char const *path = g_object_get_data (G_OBJECT (enumerator), "path");
+      char *filename = g_build_filename (path, g_file_info_get_name (info), NULL);
+      priv->media_files = g_slist_prepend (priv->media_files, filename);
     }
 
     g_object_unref (info);
@@ -541,9 +549,12 @@ enumerate_dir (MpdStorageDevice  *self)
     g_object_unref (enumerator);
     priv->dir_stack = g_slist_delete_link (priv->dir_stack, priv->dir_stack);
     if (priv->dir_stack)
+    {
       enumerate_dir (self);
-    else
-      g_signal_emit_by_name (self, "has-media", false);
+    } else {
+      /* Done iterating. */
+      g_signal_emit_by_name (self, "has-media", (bool) priv->media_files);
+    }
   }
 
   if (error)
