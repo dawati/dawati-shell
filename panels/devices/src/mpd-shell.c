@@ -36,6 +36,7 @@ G_DEFINE_TYPE (MpdShell, mpd_shell, MX_TYPE_BOX_LAYOUT)
 enum
 {
   REQUEST_HIDE,
+  REQUEST_SHOW,
 
   LAST_SIGNAL
 };
@@ -52,6 +53,13 @@ _pane_request_hide_cb (ClutterActor *pane,
                        MpdShell     *self)
 {
   g_signal_emit_by_name (self, "request-hide");
+}
+
+static void
+_pane_request_show_cb (ClutterActor *pane,
+                       MpdShell     *self)
+{
+  g_signal_emit_by_name (self, "request-show");
 }
 
 static void
@@ -94,6 +102,13 @@ mpd_shell_class_init (MpdShellClass *klass)
                                          0, NULL, NULL,
                                          g_cclosure_marshal_VOID__VOID,
                                          G_TYPE_NONE, 0);
+
+  _signals[REQUEST_SHOW] = g_signal_new ("request-show",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
 }
 
 static void
@@ -125,6 +140,8 @@ mpd_shell_init (MpdShell *self)
   pane = mpd_devices_pane_new ();
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
+  g_signal_connect (pane, "request-show",
+                    G_CALLBACK (_pane_request_show_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
 }
 

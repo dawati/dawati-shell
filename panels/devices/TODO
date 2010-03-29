@@ -2,6 +2,7 @@
 TODO
 ====
 
+* Implement remaining notifications.
 * Make sure suspend-on-idle actually works, gconf should come from ux-settings, Ross is looking into it.
 * Improve label on volume slider -- patch MX.
 * Implement keyboard navigation in the folder view.

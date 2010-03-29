@@ -38,6 +38,7 @@ G_DEFINE_TYPE (MpdDevicesTile, mpd_devices_tile, MX_TYPE_SCROLL_VIEW)
 enum
 {
   REQUEST_HIDE,
+  REQUEST_SHOW,
 
   LAST_SIGNAL
 };
@@ -132,6 +133,13 @@ _device_tile_request_hide_cb (ClutterActor    *tile,
 }
 
 static void
+_device_tile_request_show_cb (ClutterActor    *tile,
+                              MpdDevicesTile  *self)
+{
+  g_signal_emit_by_name (self, "request-show");
+}
+
+static void
 add_tile_from_mount (MpdDevicesTile *self,
                      GMount         *mount)
 {
@@ -176,6 +184,8 @@ add_tile_from_mount (MpdDevicesTile *self,
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_device_tile_request_hide_cb), self);
+  g_signal_connect (tile, "request-show",
+                    G_CALLBACK (_device_tile_request_show_cb), self);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->vbox), tile, 0);
 
   gtk_icon_info_free (icon_info);
@@ -271,6 +281,13 @@ mpd_devices_tile_class_init (MpdDevicesTileClass *klass)
   /* Signals */
 
   _signals[REQUEST_HIDE] = g_signal_new ("request-hide",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
+
+  _signals[REQUEST_SHOW] = g_signal_new ("request-show",
                                          G_TYPE_FROM_CLASS (klass),
                                          G_SIGNAL_RUN_LAST,
                                          0, NULL, NULL,

@@ -41,6 +41,13 @@ _shell_request_hide_cb (MpdShell        *shell,
 }
 
 static void
+_shell_request_show_cb (MpdShell        *shell,
+                        MplPanelClient  *panel)
+{
+  mpl_panel_client_show (panel);
+}
+
+static void
 _stage_width_notify_cb (ClutterActor  *stage,
                         GParamSpec    *pspec,
                         MpdShell      *shell)
@@ -137,6 +144,8 @@ main (int     argc,
     shell = mpd_shell_new ();
     g_signal_connect (shell, "request-hide",
                       G_CALLBACK (_shell_request_hide_cb), panel);
+    g_signal_connect (shell, "request-show",
+                      G_CALLBACK (_shell_request_show_cb), panel);
     g_signal_connect (panel, "set-size",
                       G_CALLBACK (_panel_set_size_cb), shell);
     clutter_container_add_actor (CLUTTER_CONTAINER (panel), shell);

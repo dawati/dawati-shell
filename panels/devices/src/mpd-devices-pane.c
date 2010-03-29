@@ -34,6 +34,7 @@ G_DEFINE_TYPE (MpdDevicesPane, mpd_devices_pane, MX_TYPE_BOX_LAYOUT)
 enum
 {
   REQUEST_HIDE,
+  REQUEST_SHOW,
 
   LAST_SIGNAL
 };
@@ -46,10 +47,17 @@ typedef struct
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
-_tile_request_hide_cb (ClutterActor     *tile,
-                       MpdDevicesPane  *self)
+_tile_request_hide_cb (ClutterActor   *tile,
+                       MpdDevicesPane *self)
 {
   g_signal_emit_by_name (self, "request-hide");
+}
+
+static void
+_tile_request_show_cb (ClutterActor   *tile,
+                       MpdDevicesPane *self)
+{
+  g_signal_emit_by_name (self, "request-show");
 }
 
 static void
@@ -75,6 +83,13 @@ mpd_devices_pane_class_init (MpdDevicesPaneClass *klass)
                                          0, NULL, NULL,
                                          g_cclosure_marshal_VOID__VOID,
                                          G_TYPE_NONE, 0);
+
+  _signals[REQUEST_SHOW] = g_signal_new ("request-show",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
 }
 
 static void
@@ -94,6 +109,8 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   tile = mpd_devices_tile_new ();
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
+  g_signal_connect (tile, "request-show",
+                    G_CALLBACK (_tile_request_show_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
   clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
                                "expand", true,

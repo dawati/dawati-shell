@@ -22,6 +22,7 @@
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
+#include <libnotify/notify.h>
 
 #include "mpd-gobject.h"
 #include "mpd-shell-defines.h"
@@ -66,6 +67,7 @@ enum
 enum
 {
   REQUEST_HIDE,
+  REQUEST_SHOW,
   EJECT,
 
   LAST_SIGNAL
@@ -212,6 +214,15 @@ _storage_has_media_cb (MpdStorageDevice     *storage,
   mpd_storage_device_tile_set_state (self, STATE_READY);
 }
 
+static void
+_show_panel_cb (NotifyNotification    *notification,
+                gchar                 *action,
+                MpdStorageDeviceTile  *self)
+{
+  g_debug ("%s()", __FUNCTION__);
+  g_signal_emit_by_name (self, "request-show");
+}
+
 static GObject *
 _constructor (GType                  type,
               unsigned int           n_properties,
@@ -221,7 +232,9 @@ _constructor (GType                  type,
                         G_OBJECT_CLASS (mpd_storage_device_tile_parent_class)
                           ->constructor (type, n_properties, properties);
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  GError *error = NULL;
+  NotifyNotification  *notification;
+  char                *body;
+  GError              *error = NULL;
 
   if (priv->icon_file &&
       g_file_test (priv->icon_file, G_FILE_TEST_IS_REGULAR))
@@ -254,6 +267,21 @@ _constructor (GType                  type,
                 "Invalid or no mount-point passed to constructor.");
     self = NULL;
   }
+
+  body = g_strdup_printf (_("%s nas been plugged in. "
+                            "You can use the Devices panel interact with it"),
+                          priv->name);
+  notification = notify_notification_new (_("USB plugged in"), body, NULL, NULL);
+  notify_notification_add_action (notification, "show", _("Show"),
+                                  (NotifyActionCallback) _show_panel_cb, self,
+                                  NULL);
+  notify_notification_show (notification, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+  g_object_unref (notification);
 
   return (GObject *) self;
 }
@@ -419,6 +447,13 @@ mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
   /* Signals */
 
   _signals[REQUEST_HIDE] = g_signal_new ("request-hide",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__VOID,
+                                         G_TYPE_NONE, 0);
+
+  _signals[REQUEST_SHOW] = g_signal_new ("request-show",
                                          G_TYPE_FROM_CLASS (klass),
                                          G_SIGNAL_RUN_LAST,
                                          0, NULL, NULL,
