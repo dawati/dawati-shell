@@ -343,6 +343,8 @@ mps_tweet_card_set_item (MpsTweetCard *card,
   gchar *secondary_msg;
   GError *error = NULL;
   ClutterActor *tmp_text;
+  const gchar *place_fullname;
+  gchar *time_str;
 
   priv->item = sw_item_ref (item);
 
@@ -374,9 +376,26 @@ mps_tweet_card_set_item (MpsTweetCard *card,
                            combined_content);
   g_free (combined_content);
 
-  secondary_msg = mx_utils_format_time (&(item->date));
+  time_str = mx_utils_format_time (&(item->date));
 
-  mx_label_set_text (MX_LABEL (priv->secondary_label), secondary_msg);
-  g_free (secondary_msg);
+  place_fullname = sw_item_get_value (item, "place_full_name");
+
+  if (place_fullname)
+  {
+    /* When the tweet has a location associated with it then this string will
+     * be <human readable time> from <human readable place name>
+     *
+     * e.g. A couple of hours ago from Aldgate, London
+     */
+    secondary_msg = g_strdup_printf (_("%s from %s"),
+                                     time_str,
+                                     place_fullname);
+    mx_label_set_text (MX_LABEL (priv->secondary_label), secondary_msg);
+    g_free (secondary_msg);
+  } else {
+    mx_label_set_text (MX_LABEL (priv->secondary_label), time_str);
+  }
+
+  g_free (time_str);
 }
 
