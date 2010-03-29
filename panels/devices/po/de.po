@@ -220,21 +220,19 @@ msgstr "Hostadapter"
 #. Translators: Description
 #: ../gdu/gdu-linux-lvm2-volume-group.c:351
 #: ../gdu/gdu-linux-lvm2-volume-group.c:355
-#, fuzzy
 msgid "Volume Group"
-msgstr "_Volume Group-Name"
+msgstr "Volume Group"
 
 #. Translators: VPD name - first %s is the size e.g. '45 GB'
 #: ../gdu/gdu-linux-lvm2-volume-group.c:359
-#, fuzzy, c-format
+#, c-format
 msgid "%s LVM2 Volume Group"
-msgstr "_Volume Group-Name"
+msgstr "%s LVM2 Volume Group"
 
 #. Translators: VPD name when size is not known
 #: ../gdu/gdu-linux-lvm2-volume-group.c:362
-#, fuzzy
 msgid "LVM2 Volume Group"
-msgstr "_Volume Group-Name"
+msgstr "LVM2 Volume Group"
 
 #. Translators: label for an unallocated space in a LVM2 volume group.
 #. * %s is the size, formatted like '45 GB'
@@ -328,7 +326,7 @@ msgstr "Voll synchronisiert"
 #: ../gdu/gdu-linux-md-drive.c:1122
 msgctxt "Linux MD slave state"
 msgid "Writemostly"
-msgstr ""
+msgstr "Writemostly"
 
 #: ../gdu/gdu-linux-md-drive.c:1124
 msgctxt "Linux MD slave state"
@@ -356,7 +354,7 @@ msgstr "Multi-Path Geräte"
 
 #: ../gdu/gdu-pool.c:886
 msgid "Drives with multiple I/O paths"
-msgstr ""
+msgstr "Laufwerke mit mehreren Ein-/Ausgabepfaden"
 
 #: ../gdu/gdu-pool.c:896
 msgid "Multi-disk Devices"
@@ -364,7 +362,7 @@ msgstr "Multi-Disk Geräte"
 
 #: ../gdu/gdu-pool.c:897
 msgid "RAID, LVM and other logical drives"
-msgstr ""
+msgstr "RAID, LVM und andere logische Datenträger"
 
 #: ../gdu/gdu-pool.c:907
 msgid "Peripheral Devices"
@@ -372,101 +370,100 @@ msgstr "Peripheriegeräte"
 
 #: ../gdu/gdu-pool.c:908
 msgid "USB, Firewire and other peripherals"
-msgstr ""
+msgstr "USB, Firewire und andere Peripheriegeräte"
 
 #: ../gdu/gdu-pool.c:2090
-#, fuzzy, c-format
+#, c-format
 msgid "Error enumerating devices: %s"
-msgstr "Keine Gerät gefunden"
+msgstr "Fehler beim Aufzählen der Geräte: %s"
 
 #: ../gdu/gdu-pool.c:2116
-#, fuzzy, c-format
+#, c-format
 msgid "Error enumerating adapters: %s"
-msgstr "Ein interner Fehler ist aufgetreten"
+msgstr "Fehler beim Aufzählen der Adapter: %s"
 
 #: ../gdu/gdu-pool.c:2139
-#, fuzzy, c-format
+#, c-format
 msgid "Error enumerating expanders: %s"
-msgstr "Ein interner Fehler ist aufgetreten"
+msgstr "Fehler beim Aufzählen der Expander: %s"
 
 #: ../gdu/gdu-pool.c:2162
-#, fuzzy, c-format
+#, c-format
 msgid "Error enumerating ports: %s"
-msgstr "Ein interner Fehler ist aufgetreten"
+msgstr "Fehler beim Aufzählen der Ports: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:292
 #, c-format
 msgid "Error listening to address `localhost:%d': %s: %s\n"
-msgstr ""
+msgstr "Fehler beim Lauschen auf Adresse 'localhost:%d': %s: %s\n"
 
 #: ../gdu/gdu-ssh-bridge.c:307
 #, c-format
 msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
-msgstr ""
+msgstr "Fehler beim Erstellen eines lokalen TCP-Servers. Es wurde eine Bindung an Ports 9000-10000 auf localhost versucht."
 
 #: ../gdu/gdu-ssh-bridge.c:322
 #, c-format
 msgid "Error setting auth mechanisms on local DBusServer\n"
-msgstr ""
+msgstr "Fehler beim Festlegen von Legitimierungs-Mechanismen auf lokalem DBusServer\n"
 
 #: ../gdu/gdu-ssh-bridge.c:347
 #, c-format
 msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-msgstr ""
+msgstr "Die Befehlszeile '%s' kann nicht verarbeitet werden (Ungültige Adresse?): %s"
 
 #: ../gdu/gdu-ssh-bridge.c:369
 #, c-format
 msgid "Unable to spawn ssh program: %s"
-msgstr ""
+msgstr "Das ssh-Programm kann nicht gestartet werden: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:398
 #: ../gdu/gdu-ssh-bridge.c:510
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading stderr output: %s"
-msgstr "Fehler beim Lesen des Inhalts der Kickstart-Datei %s: %m"
+msgstr "Fehler beim Lesen der stderr-Ausgabe: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:405
 msgid "Error reading stderr output: No content"
-msgstr ""
+msgstr "Fehler beim Lesen der stderr-Ausgabe: Kein Inhalt"
 
 #: ../gdu/gdu-ssh-bridge.c:471
-#, fuzzy
 msgid "Error logging in"
-msgstr "Anmeldung bei iSCSI Knoten"
+msgstr "Fehler bei der Anmeldung"
 
 #: ../gdu/gdu-ssh-bridge.c:491
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending `%s': %s"
-msgstr "E-Mail wird gesendet"
+msgstr "Fehler beim Senden von '%s': %s"
 
 #: ../gdu/gdu-ssh-bridge.c:519
 #, c-format
 msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
-msgstr ""
+msgstr "Unerwartete stderr-Ausgabe - erwartete 'udisks-tcp-bridge: Waiting for secret', aber erhielt '%s'"
 
 #: ../gdu/gdu-ssh-bridge.c:536
 #, c-format
 msgid "Error passing authorization secret: %s"
-msgstr ""
+msgstr "Fehler bei Weitergabe des Legitimierungsgeheimnisses: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:557
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading stderr from: %s"
-msgstr "Fehler beim Lesen des Inhalts der Kickstart-Datei %s: %m"
+msgstr "Fehler beim Lesen des stderr von: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:566
 #, c-format
 msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
-msgstr ""
+msgstr "Unerwartete stderr-Ausgabe - erwartete 'udisks-tcp-bridge: Attempting to connect to port %d', aber erhielt '%s'"
 
 #: ../gdu/gdu-ssh-bridge.c:585
 #, c-format
 msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
-msgstr ""
+msgstr "Das Programm 'udisks-tcp-bridge' konnte seine Legitimierung nicht nachweisen: %s"
 
 #: ../gdu/gdu-ssh-bridge.c:592
 msgid "The udisks-tcp-bridge program failed to prove it was authorized"
-msgstr ""
+msgstr "Das Programm 'udisks-tcp-bridge' konnte seine Legitimierung nicht nachweisen"
 
 #. Translators: The first %s is the size in power-of-2 units, e.g. '64 KiB'
 #. * the second %s is the size as a number e.g. '65,536 bytes'
@@ -672,7 +669,7 @@ msgstr "swap"
 #: ../gdu/gdu-util.c:331
 #, c-format
 msgid "LVM2 Physical Volume (version %s)"
-msgstr ""
+msgstr "LVM2 Physischer Datenträger (Version %s)"
 
 #: ../gdu/gdu-util.c:333
 #, c-format
@@ -681,9 +678,8 @@ msgstr "LVM2 Physischer Datenträger"
 
 #. Translators: short name for LVM2 Physical Volume
 #: ../gdu/gdu-util.c:336
-#, fuzzy
 msgid "lvm2_pv"
-msgstr "LVM2 Logischer Datenträger (Logical Volume)"
+msgstr "lvm2_pv"
 
 #: ../gdu/gdu-util.c:342
 #, c-format
@@ -760,15 +756,15 @@ msgstr "Gerätebezeichnung festlegen"
 
 #: ../gdu/gdu-util.c:393
 msgid "Changing Passphrase for Encrypted LUKS Device"
-msgstr ""
+msgstr "Passwortsatz für verschlüsseltes LUKS-Gerät ändern"
 
 #: ../gdu/gdu-util.c:395
 msgid "Adding Component to RAID Array"
-msgstr ""
+msgstr "Komponente zu RAID-Array zufügen"
 
 #: ../gdu/gdu-util.c:397
 msgid "Removing Component from RAID Array"
-msgstr ""
+msgstr "Komponente von RAID-Array entfernen"
 
 #: ../gdu/gdu-util.c:399
 msgid "Stopping RAID Array"
@@ -788,15 +784,15 @@ msgstr "RAID-Array reparieren"
 
 #: ../gdu/gdu-util.c:407
 msgid "Running Short SMART Self-Test"
-msgstr ""
+msgstr "Kurzen SMART-Selbsttest durchführen"
 
 #: ../gdu/gdu-util.c:409
 msgid "Running Extended SMART Self-Test"
-msgstr ""
+msgstr "Erweiterten SMART-Selbsttest durchführen"
 
 #: ../gdu/gdu-util.c:411
 msgid "Running Conveyance SMART Self-Test"
-msgstr ""
+msgstr "Transport SMART-Selbsttest durchführen"
 
 #: ../gdu/gdu-util.c:413
 msgid "Ejecting Media"
@@ -812,13 +808,13 @@ msgstr "Aushängen des Dateisystems erzwingen"
 
 #: ../gdu/gdu-util.c:419
 msgid "Forcibly Locking LUKS device"
-msgstr ""
+msgstr "Sperrung des LUKS-Gerätes erzwingen"
 
 #. see http://en.wikipedia.org/wiki/GUID_Partition_Table
 #. Linux
 #: ../gdu/gdu-util.c:435
 msgid "Linux Basic Data Partition"
-msgstr ""
+msgstr "Linux Basic Data Partition"
 
 #. Same as MS BDP
 #: ../gdu/gdu-util.c:436
@@ -857,29 +853,29 @@ msgstr "Microsoft Reserved-Partition"
 
 #: ../gdu/gdu-util.c:446
 msgid "Microsoft Basic Data Partition"
-msgstr ""
+msgstr "Microsoft Basic Data Partition"
 
 #. Same as Linux BDP
 #: ../gdu/gdu-util.c:447
 msgid "Microsoft LDM Metadata Partition"
-msgstr ""
+msgstr "Microsoft LDM Partition für Meta-Daten"
 
 #: ../gdu/gdu-util.c:448
 msgid "Microsoft LDM Data Partition"
-msgstr ""
+msgstr "Microsoft LDM Partition für Daten"
 
 #: ../gdu/gdu-util.c:449
 msgid "Microsoft Windows Recovery Environment"
-msgstr ""
+msgstr "Microsoft Windows-Wiederherstellungsumgebung"
 
 #. HP-UX
 #: ../gdu/gdu-util.c:451
 msgid "HP-UX Data Partition"
-msgstr ""
+msgstr "HP-UX Data-Partition"
 
 #: ../gdu/gdu-util.c:452
 msgid "HP-UX Service Partition"
-msgstr ""
+msgstr "HP-UX Service-Partition"
 
 #. FreeBSD
 #: ../gdu/gdu-util.c:454
@@ -984,7 +980,7 @@ msgstr "Apple RAID-Partition"
 
 #: ../gdu/gdu-util.c:479
 msgid "Apple RAID Partition (Offline)"
-msgstr ""
+msgstr "Apple RAID-Partition (Offline)"
 
 #: ../gdu/gdu-util.c:480
 msgid "Apple Boot Partition"
@@ -996,7 +992,7 @@ msgstr "Apple Label-Partition"
 
 #: ../gdu/gdu-util.c:482
 msgid "Apple TV Recovery Partition"
-msgstr ""
+msgstr "Apple TV Recovery-Partition"
 
 #. NetBSD
 #: ../gdu/gdu-util.c:484
@@ -1231,51 +1227,51 @@ msgstr "Unbekannt (%s)"
 
 #: ../gdu/gdu-util.c:582
 msgid "A popular format compatible with almost any device or system, typically used for file exchange."
-msgstr ""
+msgstr "Ein beliebtes Format, das mit fast jedem Gerät oder System kompatibel ist. Wird meist zum Datenaustausch verwendet."
 
 #: ../gdu/gdu-util.c:586
 msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
-msgstr ""
+msgstr "Dieses Dateisystem ist nur mit Linux-Systemen kompatibel und unterstützt klassische UNIX-Dateiberechtigungen. Es verwendet kein Journal."
 
 #: ../gdu/gdu-util.c:592
 msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
-msgstr ""
+msgstr "Dieses Dateisystem ist nur mit Linux-Systemen kompatibel und unterstützt klassische UNIX-Dateiberechtigungen."
 
 #: ../gdu/gdu-util.c:596
 msgid "Swap area used by the operating system for virtual memory."
-msgstr ""
+msgstr "Vom Betriebssystem als virtueller Speicher verwendeter Swap-Bereich"
 
 #: ../gdu/gdu-util.c:599
 msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
-msgstr ""
+msgstr "Das native Windows-Dateisystem. Weitgehend nicht kompatibel mit anderen Betriebssystemen außer Windows."
 
 #: ../gdu/gdu-util.c:603
 msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
-msgstr ""
+msgstr "Einfaches Dateisystem mit wenig Overhead und Untertützung für UNIX-Berechtigungen. Es ist nicht sehr kompatibel mit anderen Betriebssystemen als Linux und Minix."
 
 #: ../gdu/gdu-util.c:607
 msgid "No file system will be created."
-msgstr ""
+msgstr "Es wird kein Dateisystem angelegt."
 
 #: ../gdu/gdu-util.c:610
 msgid "Create an Extended Partition for logical partitions."
-msgstr ""
+msgstr "Eine erweiterte Partition für Logische Partitionen erstellen."
 
 #: ../gdu/gdu-util.c:623
 msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
-msgstr ""
+msgstr "Das Master Boot Record Schema ist mit fast jedem Gerät oder System kompatibel, hat jedoch eine Reihe von Einschränkungen bezüglich der Plattengröße und Partitionenanzahl."
 
 #: ../gdu/gdu-util.c:628
 msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
-msgstr ""
+msgstr "Ein altes Schema, das mit den meisten Systemen nicht kompatibel ist, außer Apple-Systemen und den meisten Linux-Systemen. Es ist nicht für Wechselmedien empfohlen."
 
 #: ../gdu/gdu-util.c:633
 msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
-msgstr ""
+msgstr "Das GUID-Schema ist mit den meisten modernen Systemen kompatibel, aber es könnte mit einigen Geräten und alten Systemen nicht kompatibel sein."
 
 #: ../gdu/gdu-util.c:637
 msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
-msgstr ""
+msgstr "Markiert die ganze Platte als unbenutzt. Verwenden Sie diese Option nur dann, wenn Sie die Partitionierung z. B. für den Gebrauch als ganzes Laufwerk oder für Floppy- bzw. Zip-Disketten verhindern wollen."
 
 #: ../gdu/gdu-util.c:828
 #, c-format
@@ -1335,7 +1331,7 @@ msgstr "Firewire"
 #. Translators: interface name for SDIO disks
 #: ../gdu/gdu-util.c:931
 msgid "SDIO"
-msgstr ""
+msgstr "SDIO"
 
 #. Translators: interface name for virtual disks
 #: ../gdu/gdu-util.c:934
@@ -1400,7 +1396,7 @@ msgstr "RAID-5"
 #: ../gdu/gdu-util.c:989
 msgctxt "RAID level"
 msgid "Dual Distributed Parity (RAID-6)"
-msgstr ""
+msgstr "Zweifach verteilte Parität (RAID-6)"
 
 #: ../gdu/gdu-util.c:991
 msgctxt "RAID level"
@@ -1410,7 +1406,7 @@ msgstr "RAID-6"
 #: ../gdu/gdu-util.c:994
 msgctxt "RAID level"
 msgid "Stripe of Mirrors (RAID-10)"
-msgstr ""
+msgstr "Stripe von Spiegelungen (RAID-10)"
 
 #: ../gdu/gdu-util.c:996
 msgctxt "RAID level"
@@ -1418,39 +1414,38 @@ msgid "RAID-10"
 msgstr "RAID-10"
 
 #: ../gdu/gdu-util.c:999
-#, fuzzy
 msgctxt "RAID level"
 msgid "Concatenated (Linear)"
-msgstr "NetBSD verknüpfte Partition"
+msgstr "Verknüpft (linear)"
 
 #: ../gdu/gdu-util.c:1001
 msgctxt "RAID level"
 msgid "Linear"
-msgstr ""
+msgstr "Linear"
 
 #: ../gdu/gdu-util.c:1015
 msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
-msgstr ""
+msgstr "Stripe-Set ohne Parität. Bietet bessere Leistung aber keine Fehlertoleranz. Wenn eine einzelne Platte des Arrays ausfällt, fällt das ganze RAID-0-Array aus."
 
 #: ../gdu/gdu-util.c:1019
 msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
-msgstr ""
+msgstr "Spiegel-Set ohne Parität. Bietet Fehlertoleranz und bessere Leseleistung. RAID-1-Arrays können den Ausfall aller bis auf einer Platte überstehen."
 
 #: ../gdu/gdu-util.c:1023
 msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
-msgstr ""
+msgstr "Stripe-Set mit Parität auf einer einzigen Platte. Bietet bessere Leistung und Fehlertoleranz. RAID-4-Arrays können den Ausfall einer einzelnen Platte überstehen."
 
 #: ../gdu/gdu-util.c:1027
 msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
-msgstr ""
+msgstr "Stripe-Set mit verteilter Parität. Bietet bessere Leistung und Fehlertoleranz. RAID-5-Arrays können den Ausfall einer einzelnen Platte überstehen."
 
 #: ../gdu/gdu-util.c:1031
 msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
-msgstr ""
+msgstr "Stripe-Set mit zweifach verteilter Parität. Bietet bessere Leistung und Fehlertoleranz. RAID-6-Arrays können den Ausfall von zwei Platten überstehen."
 
 #: ../gdu/gdu-util.c:1035
 msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
-msgstr ""
+msgstr "Stripe-Set mit verteilter Parität. Bietet bessere Leistung und Fehlertoleranz. RAID-10-Arrays können den Ausfall mehrerer Platten überstehen, solange kein Spiegel alle seine Platten verliert."
 
 #: ../gdu/gdu-util.c:1041
 #, c-format
@@ -1465,17 +1460,17 @@ msgstr "Festplatte ist fehlerfrei"
 #. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
 #: ../gdu/gdu-util.c:1081
 msgid "Disk was used outside of design parameters in the past"
-msgstr ""
+msgstr "Die Platte wurde in der Vergangenheit außerhalb der vorgesehenen Parameter betrieben"
 
 #. Translators: Overall description of the BAD_SECTOR status
 #: ../gdu/gdu-util.c:1085
 msgid "Disk has a few bad sectors"
-msgstr ""
+msgstr "Platte hat einige fehlerhafte Sektoren"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_NOW status
 #: ../gdu/gdu-util.c:1089
 msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
-msgstr ""
+msgstr "PLATTE WIRD AUSSERHALB DER VORGESEHENEN PARAMETER BETRIEBEN"
 
 #. Translators: Suggested action for the BAD_ATTRIBUTE_NOW status
 #. Translators: Suggested action for the BAD_SECTOR_MANY status
@@ -1484,18 +1479,17 @@ msgstr ""
 #: ../gdu/gdu-util.c:1099
 #: ../gdu/gdu-util.c:1105
 msgid "Backup all data and replace the disk"
-msgstr ""
+msgstr "Sichern Sie alle Daten und ersetzen Sie die Platte"
 
 #. Translators: Overall description of the BAD_SECTOR_MANY status
 #: ../gdu/gdu-util.c:1096
 msgid "DISK HAS MANY BAD SECTORS"
-msgstr ""
+msgstr "PLATTE HAT VIELE FEHLERHAFTE SEKTOREN"
 
 #. Translators: Overall description of the BAD_STATUS status
 #: ../gdu/gdu-util.c:1103
-#, fuzzy
 msgid "DISK FAILURE IS IMMINENT"
-msgstr "Kein Speicherplatz auf der Festplatte verfügbar"
+msgstr "PLATTENAUSFALL STEHT UNMITTELBAR BEVOR"
 
 #. Translators: Description when the overall SMART status is unknown
 #: ../gdu/gdu-util.c:1110
@@ -1504,184 +1498,162 @@ msgstr "Unbekannt"
 
 #. Translator: The word "blank" is used as an adjective, e.g. we are decsribing discs that are already blank
 #: ../gdu/gdu-volume.c:75
-#, fuzzy
 msgid "CD-ROM Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "CD-ROM"
 
 #: ../gdu/gdu-volume.c:75
 msgid "Blank CD-ROM Disc"
-msgstr ""
+msgstr "CD-ROM-Rohling"
 
 #: ../gdu/gdu-volume.c:76
-#, fuzzy
 msgid "CD-R Disc"
-msgstr "Datenträger wechseln"
+msgstr "CD-R"
 
 #: ../gdu/gdu-volume.c:76
-#, fuzzy
 msgid "Blank CD-R Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "CD-R-Rohling"
 
 #: ../gdu/gdu-volume.c:77
-#, fuzzy
 msgid "CD-RW Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "CD-RW"
 
 #: ../gdu/gdu-volume.c:77
 msgid "Blank CD-RW Disc"
-msgstr ""
+msgstr "CD-RW-Rohling"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
-#, fuzzy
 msgid "DVD-ROM Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "DVD-ROM"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
 msgid "Blank DVD-ROM Disc"
-msgstr ""
+msgstr "DVD-ROM-Rohling"
 
 #: ../gdu/gdu-volume.c:80
-#, fuzzy
 msgid "DVD-RW Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "DVD-RW"
 
 #: ../gdu/gdu-volume.c:80
 msgid "Blank DVD-RW Disc"
-msgstr ""
+msgstr "DVD-RW-Rohling"
 
 #: ../gdu/gdu-volume.c:81
-#, fuzzy
 msgid "DVD-RAM Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "DVD-RAM"
 
 #: ../gdu/gdu-volume.c:81
 msgid "Blank DVD-RAM Disc"
-msgstr ""
+msgstr "DVD-RAM-Rohling"
 
 #: ../gdu/gdu-volume.c:82
-#, fuzzy
 msgid "DVD+R Disc"
-msgstr "Datenträger wechseln"
+msgstr "DVD+R"
 
 #: ../gdu/gdu-volume.c:82
-#, fuzzy
 msgid "Blank DVD+R Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "DVD+R-Rohling"
 
 #: ../gdu/gdu-volume.c:83
-#, fuzzy
 msgid "DVD+RW Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "DVD+RW"
 
 #: ../gdu/gdu-volume.c:83
 msgid "Blank DVD+RW Disc"
-msgstr ""
+msgstr "DVD+RW-Rohling"
 
 #: ../gdu/gdu-volume.c:84
-#, fuzzy
 msgid "DVD+R DL Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "DVD+R DL"
 
 #: ../gdu/gdu-volume.c:84
 msgid "Blank DVD+R DL Disc"
-msgstr ""
+msgstr "DVD+R DL-Rohling"
 
 #: ../gdu/gdu-volume.c:85
 msgid "DVD+RW DL Disc"
-msgstr ""
+msgstr "DVD+RW DL"
 
 #: ../gdu/gdu-volume.c:85
 msgid "Blank DVD+RW DL Disc"
-msgstr ""
+msgstr "DVD+RW DL-Rohling"
 
 #: ../gdu/gdu-volume.c:86
-#, fuzzy
 msgid "Blu-Ray Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "Blu-Ray Disc"
 
 #: ../gdu/gdu-volume.c:86
 msgid "Blank Blu-Ray Disc"
-msgstr ""
+msgstr "Blu-Ray Disc-Rohling"
 
 #: ../gdu/gdu-volume.c:87
-#, fuzzy
 msgid "Blu-Ray R Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "Blu-Ray R Disc"
 
 #: ../gdu/gdu-volume.c:87
 msgid "Blank Blu-Ray R Disc"
-msgstr ""
+msgstr "Blu-Ray R Disc-Rohling"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blu-Ray RW Disc"
-msgstr ""
+msgstr "Blu-Ray RW Disc"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blank Blu-Ray RW Disc"
-msgstr ""
+msgstr "Blu-Ray RW Disc-Rohling"
 
 #: ../gdu/gdu-volume.c:89
-#, fuzzy
 msgid "HD DVD Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "HD DVD"
 
 #: ../gdu/gdu-volume.c:89
 msgid "Blank HD DVD Disc"
-msgstr ""
+msgstr "HD DVD-Rohling"
 
 #: ../gdu/gdu-volume.c:90
-#, fuzzy
 msgid "HD DVD-R Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "HD DVD-R"
 
 #: ../gdu/gdu-volume.c:90
 msgid "Blank HD DVD-R Disc"
-msgstr ""
+msgstr "HD DVD-R-Rohling"
 
 #: ../gdu/gdu-volume.c:91
 msgid "HD DVD-RW Disc"
-msgstr ""
+msgstr "HD DVD-RW"
 
 #: ../gdu/gdu-volume.c:91
 msgid "Blank HD DVD-RW Disc"
-msgstr ""
+msgstr "HD DVD-RW-Rohling"
 
 #: ../gdu/gdu-volume.c:92
-#, fuzzy
 msgid "MO Disc"
-msgstr "Datenträger wechseln"
+msgstr "MO-Disk"
 
 #: ../gdu/gdu-volume.c:92
-#, fuzzy
 msgid "Blank MO Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "MO-Disk-Rohling"
 
 #: ../gdu/gdu-volume.c:93
-#, fuzzy
 msgid "MRW Disc"
-msgstr "Datenträger wechseln"
+msgstr "MRW-Disc"
 
 #: ../gdu/gdu-volume.c:93
-#, fuzzy
 msgid "Blank MRW Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "MRW-Disc-Rohling"
 
 #: ../gdu/gdu-volume.c:94
-#, fuzzy
 msgid "MRW/W Disc"
-msgstr "Datenträger wechseln"
+msgstr "MRW/W-Disc"
 
 #: ../gdu/gdu-volume.c:94
-#, fuzzy
 msgid "Blank MRW/W Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "MRW/W-Disc-Rohling"
 
 #: ../gdu/gdu-volume.c:276
-#, fuzzy
 msgid "Blank Optical Disc"
-msgstr "Datenträger nicht gefunden"
+msgstr "Optischer Datenträgerrohling"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
@@ -1813,16 +1785,15 @@ msgstr "Partition %d"
 #. * The %s is the VPD name for the drive.
 #.
 #: ../gdu/gdu-volume.c:444
-#, fuzzy, c-format
+#, c-format
 msgid "Whole-disk volume on %s"
-msgstr "Kein Platz auf der Festplatte"
+msgstr "Datenträger über ganzes Laufwerk auf %s"
 
 #. Translators: The VPD name for a whole-disk volume.
 #.
 #: ../gdu/gdu-volume.c:449
-#, fuzzy
 msgid "Whole-disk volume"
-msgstr "GNOME-Lautstärkeregler"
+msgstr "Datenträger über ganzes Laufwerk"
 
 #. translators:
 #. * The device has been disabled
@@ -1939,18 +1910,18 @@ msgstr ""
 "und es wird automatisch erkannt."
 
 #: ../src/mpd-disk-tile.c:64
-#, fuzzy, c-format
+#, c-format
 msgid "You are using %d%% of %s"
-msgstr "Wo bist du?"
+msgstr "Sie verwenden %d%% of %s"
 
 #: ../src/mpd-folder-pane.c:91
 msgid "Your computer"
 msgstr "Dein Computer"
 
 #: ../src/mpd-storage-device-tile.c:96
-#, fuzzy, c-format
+#, c-format
 msgid "Using %d%% of %s"
-msgstr "Service nicht mehr benutzen"
+msgstr "%d%% von %s verwendet"
 
 #: ../src/mpd-storage-device-tile.c:383
 msgid "Eject"
