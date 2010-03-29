@@ -47,6 +47,8 @@
 #include "mps-tweet-card.h"
 #include "mps-geotag-pane.h"
 
+#include "sw-online.h"
+
 G_DEFINE_TYPE (MpsFeedPane, mps_feed_pane, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -85,6 +87,16 @@ enum
   PROP_CLIENT,
   PROP_SERVICE
 };
+
+
+#define SOMETHING_WRONG_TEXT _("Unable to update status. " \
+                               "The service may be unavailable " \
+                               "or your password could be wrong.")
+
+#define NOT_ONLINE_TEXT _("Unable to update status: You're not online.")
+
+
+static void _online_notify_cb (gboolean online, gpointer userdata);
 
 static void
 mps_feed_pane_get_property (GObject *object, guint property_id,
@@ -150,6 +162,8 @@ mps_feed_pane_dispose (GObject *object)
     g_object_unref (priv->bridge);
     priv->bridge = NULL;
   }
+
+  sw_online_remove_notify (_online_notify_cb, object);
 
   G_OBJECT_CLASS (mps_feed_pane_parent_class)->dispose (object);
 }
@@ -223,6 +237,16 @@ _update_from_caps (MpsFeedPane  *pane,
   } else {
     clutter_actor_hide (priv->update_hbox);
     clutter_actor_show (priv->something_wrong_frame);
+
+    if (sw_is_online ())
+    {
+      mx_label_set_text (MX_LABEL (priv->something_wrong_label),
+                         SOMETHING_WRONG_TEXT);
+    } else {
+      mx_label_set_text (MX_LABEL (priv->something_wrong_label),
+                         NOT_ONLINE_TEXT);
+
+    }
   }
 
   if (_has_cap (caps, "can-geotag"))
@@ -248,6 +272,18 @@ _service_get_dynamic_caps_cb (SwClientService  *service,
                               gpointer          userdata)
 {
   _update_from_caps (MPS_FEED_PANE (userdata), caps);
+}
+
+
+static void
+_online_notify_cb (gboolean online, gpointer userdata)
+{
+  MpsFeedPane *pane = MPS_FEED_PANE (userdata);
+  MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
+
+  sw_client_service_get_dynamic_capabilities (priv->service,
+                                              _service_get_dynamic_caps_cb,
+                                              pane);
 }
 
 static void
@@ -276,6 +312,9 @@ mps_feed_pane_constructed (GObject *object)
                                    20,
                                    _client_view_opened_cb,
                                    g_object_ref (pane));
+
+  sw_online_add_notify (_online_notify_cb,
+                        object);
 
   if (G_OBJECT_CLASS (mps_feed_pane_parent_class)->constructed)
   {
@@ -538,9 +577,7 @@ mps_feed_pane_init (MpsFeedPane *self)
                                  CLUTTER_CONTAINER (priv->box_layout));
 
   priv->something_wrong_frame = mx_frame_new ();
-  priv->something_wrong_label = mx_label_new_with_text (_("Unable to update status. "
-                                                          "The service may be unavailable "
-                                                          "or your password could be wrong."));
+  priv->something_wrong_label = mx_label_new_with_text (SOMETHING_WRONG_TEXT);
   mx_stylable_set_style_class (MX_STYLABLE (priv->something_wrong_label),
                                "mps-something-wrong-message");
   mx_stylable_set_style_class (MX_STYLABLE (priv->something_wrong_frame),
