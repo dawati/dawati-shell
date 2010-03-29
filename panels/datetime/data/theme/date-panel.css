@@ -1,7 +1,7 @@
 *#datetime-panel
 {
   border-image: url('panel-background.png') 15;
-  padding: 6 0 2 0;
+  padding: 6 2 2 2;
 }
 
 *#CompletionScrollView

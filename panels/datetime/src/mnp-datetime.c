@@ -310,6 +310,8 @@ construct_calendar_area (MnpDatetime *dtime)
   	priv->penge_events = g_object_new (PENGE_TYPE_EVENTS_PANE,
 				    "time",
 				    duration->start,
+				    "multiline-summary", 
+				    TRUE,
                                     NULL);
 	penge_events_pane_set_duration (priv->penge_events, duration);
 	jana_duration_free (duration);
@@ -364,15 +366,17 @@ construct_task_area (MnpDatetime *time)
 
 	priv->task_row = mx_box_layout_new();
 	clutter_actor_set_name (priv->task_row, "TaskPane");
+	clutter_actor_set_size (priv->task_row, 345, -1);
+	
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->task_row, 0);	
 	mx_box_layout_set_orientation ((MxBoxLayout *)priv->task_row, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->task_row, TRUE);
 	mx_box_layout_add_actor ((MxBoxLayout *)time, priv->task_row, 4);
 	clutter_container_child_set (CLUTTER_CONTAINER (time),
                                priv->task_row,
-                               "expand", TRUE,
+                               "expand", FALSE,
 			       "y-fill", TRUE,		
-			       "x-fill", TRUE,			       			       
+			       "x-fill", FALSE,			       			       
                                NULL);
 
 	box = mx_box_layout_new ();
