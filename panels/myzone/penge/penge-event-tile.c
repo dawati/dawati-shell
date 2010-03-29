@@ -39,7 +39,6 @@ struct _PengeEventTilePrivate {
   JanaStore *store;
 
   ClutterActor *time_label;
-  ClutterActor *day_label;
   ClutterActor *summary_label;
   ClutterActor *calendar_indicator;
 
@@ -266,12 +265,6 @@ penge_event_tile_init (PengeEventTile *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->time_label),
                                "PengeEventTimeLabel");
 
-  priv->day_label = mx_label_new ();
-  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->day_label));
-  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_NONE);
-  mx_stylable_set_style_class (MX_STYLABLE (priv->day_label),
-                               "PengeEventDayLabel");
-
   priv->summary_label = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->summary_label),
                                "PengeEventSummary");
@@ -289,13 +282,9 @@ penge_event_tile_init (PengeEventTile *self)
                       0,
                       1);
   mx_table_add_actor (MX_TABLE (priv->inner_table),
-                      priv->day_label,
-                      0,
-                      2);
-  mx_table_add_actor (MX_TABLE (priv->inner_table),
                       priv->summary_label,
                       0,
-                      3);
+                      2);
 
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                priv->calendar_indicator,
@@ -312,13 +301,6 @@ penge_event_tile_init (PengeEventTile *self)
                                "y-fill", FALSE,
                                NULL);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
-                               priv->day_label,
-                               "x-expand", FALSE,
-                               "x-fill", FALSE,
-                               "y-expand", FALSE,
-                               "y-fill", FALSE,
-                               NULL);
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->inner_table),
                                priv->summary_label,
                                "x-expand", TRUE,
                                "x-fill", TRUE,
@@ -328,7 +310,7 @@ penge_event_tile_init (PengeEventTile *self)
 
 
   /* Setup spacing and padding */
-  mx_table_set_column_spacing (MX_TABLE (priv->inner_table), 2);
+  mx_table_set_column_spacing (MX_TABLE (priv->inner_table), 6);
 
   g_signal_connect (self,
                     "clicked",
@@ -344,7 +326,6 @@ penge_event_tile_update (PengeEventTile *tile)
   PengeEventTilePrivate *priv = GET_PRIVATE (tile);
   gchar *time_str;
   gchar *summary_str;
-  gchar *day_str;
   JanaTime *t;
   gchar *p;
 
@@ -358,22 +339,30 @@ penge_event_tile_update (PengeEventTile *tile)
     /* Translate this time into local time */
     jana_time_set_offset (t, jana_time_get_offset (priv->time));
 
-    time_str = jana_utils_strftime (t, "%H:%M");
-    mx_label_set_text (MX_LABEL (priv->time_label), time_str);
-    g_free (time_str);
-
-    if (jana_time_get_day (priv->time) == jana_time_get_day (t))
+    if (jana_time_get_day (priv->time) != jana_time_get_day (t))
     {
-      mx_label_set_text (MX_LABEL (priv->day_label), "");
-      clutter_actor_hide (priv->day_label);
-    } else {
       gchar *tmp_str;
+      gchar *day_str;
+      ClutterActor *tmp_text;
+
       tmp_str = jana_utils_strftime (t, "%a");
       day_str = g_utf8_strup (tmp_str, -1);
       g_free (tmp_str);
-      mx_label_set_text (MX_LABEL (priv->day_label), day_str);
+
+      time_str = jana_utils_strftime (t, "%H:%M");
+      tmp_str = g_strdup_printf ("%s <span size=\"xx-small\">%s</span>",
+                                 time_str,
+                                 day_str);
+      g_free (time_str);
       g_free (day_str);
-      clutter_actor_show (priv->day_label);
+
+      tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->time_label));
+      clutter_text_set_markup (CLUTTER_TEXT (tmp_text), tmp_str);
+      g_free (tmp_str);
+    } else {
+      time_str = jana_utils_strftime (t, "%H:%M");
+      mx_label_set_text (MX_LABEL (priv->time_label), time_str);
+      g_free (time_str);
     }
 
     if (jana_time_get_day (priv->time) != jana_time_get_day (t))

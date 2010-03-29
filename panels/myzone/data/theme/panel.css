@@ -78,17 +78,17 @@ MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
 
 MxLabel.PengeEventTimeLabel
 {
+  font-weight: bold;
+  font-family: "Droid Sans", "Sans";
 }
 
 MxLabel.PengeEventTimeLabel:past
 {
+  font-weight: bold;
+  font-family: "Droid Sans", "Sans";
 }
 
-MxLabel.PengeEventDayLabel
-{
-}
-
-MxLabel.PengeEventDayLabel:past
+MxLabel.PengeEventSummary
 {
 }
 
