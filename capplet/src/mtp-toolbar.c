@@ -319,12 +319,6 @@ mtp_toolbar_drop (MxDroppable         *droppable,
       return;
     }
 
-  if (mtp_toolbar_button_is_clock (tbutton))
-    {
-      mtp_toolbar_add_button (toolbar, actor);
-      return;
-    }
-
   /*
    * We need to work out where on the Toolbar the drop happened; specifically,
    * we are interested which current button is the new button being inserted
@@ -669,7 +663,6 @@ mtp_toolbar_button_parent_set_cb (MtpToolbarButton *button,
     {
       priv->modified = TRUE;
 
-      if (!mtp_toolbar_button_is_clock (button))
         {
           mtp_toolbar_fill_space (toolbar);
 
@@ -714,20 +707,6 @@ mtp_toolbar_add_button (MtpToolbar *toolbar, ClutterActor *button)
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
                                    button);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
-                                   button,
-                                   "expand", FALSE, NULL);
-    }
-  else if (mtp_toolbar_button_is_clock ((MtpToolbarButton*)button))
-    {
-      ClutterActor *parent = clutter_actor_get_parent (button);
-
-      if (parent)
-        clutter_actor_reparent (button, priv->applet_area);
-      else
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                     button);
-
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
                                    button,
                                    "expand", FALSE, NULL);
     }
@@ -815,21 +794,7 @@ mtp_toolbar_readd_button (MtpToolbar *toolbar, ClutterActor *button)
       return;
     }
 
-  if (mtp_toolbar_button_is_clock ((MtpToolbarButton*)button))
-    {
-      ClutterActor *parent = clutter_actor_get_parent (button);
-
-      if (parent)
-        clutter_actor_reparent (button, priv->applet_area);
-      else
-        clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
-                                     button);
-
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->applet_area),
-                                   button,
-                                   "expand", FALSE, NULL);
-    }
-  else if (MTP_IS_TOOLBAR_BUTTON (button))
+  if (MTP_IS_TOOLBAR_BUTTON (button))
     {
       if (mtp_toolbar_button_is_applet ((MtpToolbarButton*)button))
         {
@@ -913,11 +878,6 @@ mtp_toolbar_remove_button (MtpToolbar *toolbar, ClutterActor *button)
   if (MTP_IS_SPACE (button))
     {
       clutter_container_remove_actor (CLUTTER_CONTAINER (priv->panel_area),
-                                      button);
-    }
-  else if (mtp_toolbar_button_is_clock ((MtpToolbarButton*)button))
-    {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->applet_area),
                                       button);
     }
   else if (MTP_IS_TOOLBAR_BUTTON (button))
@@ -1146,7 +1106,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
     {
       gint screen_width = clutter_actor_get_width (stage);
 
-      max_panels = 1 + /* for the clock */
+      max_panels =
         (screen_width-CLOCK_WIDTH-TRAY_WIDTH) / (BUTTON_WIDTH+BUTTON_SPACING);
 
     }

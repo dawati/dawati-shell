@@ -768,6 +768,7 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
               ClutterActor *clock = mtp_clock_new ();
 
               priv->clock = TRUE;
+              priv->applet = TRUE;
               mtp_toolbar_button_set_child (button, clock);
             }
 
