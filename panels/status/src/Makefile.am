@@ -27,8 +27,15 @@ mnb-status-marshal.c: mnb-status-marshal.h
 	&& cp -f xgen-mc mnb-status-marshal.c \
 	&& rm -f xgen-mc
 
+sw-marshals.c: sw-marshals.list Makefile.am
+	$(QUIET_GEN)glib-genmarshal --body --prefix=sw_marshal $< > $@
+
+sw-marshals.h: sw-marshals.list Makefile.am
+	$(QUIET_GEN)glib-genmarshal --header --prefix=sw_marshal $< > $@
+
+
 libexec_PROGRAMS = moblin-panel-status
-BUILT_SOURCES = mnb-status-marshal.h mnb-status-marshal.c
+BUILT_SOURCES = mnb-status-marshal.h mnb-status-marshal.c sw-marshals.c sw-marshals.h
 
 moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
 moblin_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
@@ -45,7 +52,9 @@ moblin_panel_status_SOURCES  = 	\
 	mps-feed-switcher.c \
 	mps-feed-switcher.h \
 	mps-geotag-pane.c \
-	mps-geotag-pane.h
+	mps-geotag-pane.h \
+	sw-online.c \
+	sw-online.h
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.status.service.in
