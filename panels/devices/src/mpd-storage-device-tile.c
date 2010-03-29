@@ -27,6 +27,7 @@
 #include "mpd-shell-defines.h"
 #include "mpd-storage-device.h"
 #include "mpd-storage-device-tile.h"
+#include "mpd-text.h"
 #include "config.h"
 
 static void
@@ -35,6 +36,10 @@ mpd_storage_device_tile_set_icon_file (MpdStorageDeviceTile  *self,
 static void
 mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
                                          char const            *mount_point);
+
+static void
+mpd_storage_device_tile_set_name (MpdStorageDeviceTile *self,
+                                  char const           *name);
 
 static void
 mpd_storage_device_tile_set_title (MpdStorageDeviceTile *self,
@@ -53,6 +58,7 @@ enum
 
   PROP_ICON_FILE,
   PROP_MOUNT_POINT,
+  PROP_NAME,
   PROP_STATE,
   PROP_TITLE
 };
@@ -74,13 +80,11 @@ typedef struct
   MpdStorageDeviceTileState  state;
   union {
     struct {
-      ClutterActor          *title;
-      ClutterActor          *description;
+      ClutterActor          *label;
       ClutterActor          *eject;
     } searching;
     struct {
-      ClutterActor          *title;
-      ClutterActor          *description;
+      ClutterActor          *label;
       ClutterActor          *meter;
       ClutterActor          *button_box;
       /* Managed by button_box. */
@@ -89,32 +93,22 @@ typedef struct
       ClutterActor          *copy;
     } ready;
     struct {
-      ClutterActor          *description;
+      ClutterActor          *label;
     } unmounting;
     struct {
-      ClutterActor          *description;
+      ClutterActor          *label;
     } done;
   } states;
 
   /* Data */
   char                      *icon_file;
   char                      *mount_point;
+  char                      *name;
   MpdStorageDevice          *storage;
   bool                       storage_has_media;
 } MpdStorageDeviceTilePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
-
-static void
-assign_title (MpdStorageDeviceTile  *self,
-              MxLabel               *label)
-{
-  char *title;
-
-  title = mpd_storage_device_tile_get_title (self);
-  mx_label_set_text (label, title);
-  g_free (title);
-}
 
 static ClutterActor *
 description_label_new (void)
@@ -134,13 +128,17 @@ static void
 update (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char          *text;
-  char          *size_text;
+  char          *markup;
   uint64_t       size;
   uint64_t       available_size;
   unsigned int   percentage;
 
   g_return_if_fail (priv->state == STATE_READY);
+
+  markup = mpd_storage_device_tile_get_title (self);
+  clutter_text_set_markup (GET_CLUTTER_TEXT (priv->states.ready.label),
+                           markup);
+  g_free (markup);
 
   g_object_get (priv->storage,
                 "size", &size,
@@ -148,13 +146,6 @@ update (MpdStorageDeviceTile *self)
                 NULL);
 
   percentage = 100 - (double) available_size / size * 100;
-
-  size_text = g_format_size_for_display (size);
-  text = g_strdup_printf (_("Using %d%% of %s"), percentage, size_text);
-  mx_label_set_text (MX_LABEL (priv->states.ready.description), text);
-  g_free (text);
-  g_free (size_text);
-
   mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->states.ready.meter),
                                 percentage / 100.);
 }
@@ -285,6 +276,11 @@ _get_property (GObject      *object,
                         mpd_storage_device_tile_get_mount_point (
                           MPD_STORAGE_DEVICE_TILE (object)));
     break;
+  case PROP_NAME:
+    g_value_set_string (value,
+                        mpd_storage_device_tile_get_name (
+                          MPD_STORAGE_DEVICE_TILE (object)));
+    break;
   case PROP_STATE:
     g_value_set_int (value,
                      mpd_storage_device_tile_get_state (
@@ -316,6 +312,10 @@ _set_property (GObject      *object,
     mpd_storage_device_tile_set_mount_point (MPD_STORAGE_DEVICE_TILE (object),
                                              g_value_get_string (value));
     break;
+  case PROP_NAME:
+    mpd_storage_device_tile_set_name (MPD_STORAGE_DEVICE_TILE (object),
+                                      g_value_get_string (value));
+    break;
   case PROP_STATE:
     mpd_storage_device_tile_set_state (MPD_STORAGE_DEVICE_TILE (object),
                                        g_value_get_int (value));
@@ -344,6 +344,12 @@ _dispose (GObject *object)
   {
     g_free (priv->mount_point);
     priv->mount_point = NULL;
+  }
+
+  if (priv->name)
+  {
+    g_free (priv->name);
+    priv->name = NULL;
   }
 
   mpd_gobject_detach (object, (GObject **) &priv->storage);
@@ -381,6 +387,14 @@ mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
                                    g_param_spec_string ("mount-point",
                                                         "Mount point",
                                                         "Device mount point",
+                                                        NULL,
+                                                        param_flags |
+                                                        G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class,
+                                   PROP_NAME,
+                                   g_param_spec_string ("name",
+                                                        "Name",
+                                                        "Device name",
                                                         NULL,
                                                         param_flags |
                                                         G_PARAM_CONSTRUCT_ONLY));
@@ -460,12 +474,14 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 }
 
 ClutterActor *
-mpd_storage_device_tile_new (char const *mount_point,
+mpd_storage_device_tile_new (char const *name,
+                             char const *mount_point,
                              char const *icon_file)
 {
   return g_object_new (MPD_TYPE_STORAGE_DEVICE_TILE,
-                       "mount-point", mount_point,
                        "icon-file", icon_file,
+                       "mount-point", mount_point,
+                       "name", name,
                        NULL);
 }
 
@@ -539,6 +555,41 @@ mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile *self,
   }
 }
 
+char const *
+mpd_storage_device_tile_get_name (MpdStorageDeviceTile *self)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self), NULL);
+
+  return priv->name;
+}
+
+static void
+mpd_storage_device_tile_set_name (MpdStorageDeviceTile *self,
+                                  char const           *name)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
+
+  if (0 != g_strcmp0 (name, priv->name))
+  {
+    if (priv->name)
+    {
+      g_free (priv->name);
+      priv->name = NULL;
+    }
+
+    if (name)
+    {
+      priv->name = g_strdup (name);
+    }
+
+    g_object_notify (G_OBJECT (self), "name");
+  }
+}
+
 MpdStorageDeviceTileState
 mpd_storage_device_tile_get_state (MpdStorageDeviceTile *self)
 {
@@ -554,8 +605,7 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
                                    MpdStorageDeviceTileState   state)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char *title;
-  char *description;
+  char *label;
 
   g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
   g_return_if_fail (state == priv->state + 1);
@@ -570,18 +620,12 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     break;
   case STATE_SEARCHING:
 
-    /* Title */
-    priv->states.searching.title = mx_label_new ();
-    assign_title (self, MX_LABEL (priv->states.searching.title));
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.searching.title);
-
     /* Description */
-    priv->states.searching.description = description_label_new ();
-    mx_label_set_text (MX_LABEL (priv->states.searching.description),
+    priv->states.searching.label = description_label_new ();
+    mx_label_set_text (MX_LABEL (priv->states.searching.label),
                        _("Please wait a moment while we search for data on the device ..."));
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.searching.description);
+                                 priv->states.searching.label);
 
     /* Eject button */
     priv->states.searching.eject = mx_button_new_with_label (_("Eject"));
@@ -602,22 +646,15 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
   case STATE_READY:
 
     /* Cleanup state "searching". */
-    clutter_actor_destroy (priv->states.searching.title);
-    clutter_actor_destroy (priv->states.searching.description);
+    clutter_actor_destroy (priv->states.searching.label);
     clutter_actor_destroy (priv->states.searching.eject);
 
     memset (&priv->states.searching, 0, sizeof (priv->states.searching));
 
-    /* Title */
-    priv->states.ready.title = mx_label_new ();
-    assign_title (self, MX_LABEL (priv->states.ready.title));
+    /* "Description" is set in update() below. */
+    priv->states.ready.label = description_label_new ();
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.ready.title);
-
-    /* Description */
-    priv->states.ready.description = description_label_new ();
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.ready.description);
+                                 priv->states.searching.label);
 
     /* Progress bar */
     priv->states.ready.meter = mx_progress_bar_new ();
@@ -683,41 +720,34 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
   case STATE_UNMOUNTING:
 
     /* Cleanup state "ready". */
-    clutter_actor_destroy (priv->states.ready.title);
-    clutter_actor_destroy (priv->states.ready.description);
+    clutter_actor_destroy (priv->states.ready.label);
     clutter_actor_destroy (priv->states.ready.meter);
     clutter_actor_destroy (priv->states.ready.button_box);
 
     /* Description */
-    title = mpd_storage_device_tile_get_title (self);
-    description = g_strdup_printf (_("Please wait whilst your %s is being ejected ..."),
-                                   title);
-    priv->states.unmounting.description = description_label_new ();
-    mx_label_set_text (MX_LABEL (priv->states.unmounting.description),
-                       description);
+    label = g_strdup_printf (_("Please wait whilst your %s is being ejected ..."),
+                             priv->name);
+    priv->states.unmounting.label = description_label_new ();
+    mx_label_set_text (MX_LABEL (priv->states.unmounting.label), label);
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.unmounting.description);
-    g_free (description);
-    g_free (title);
+                                 priv->states.unmounting.label);
+    g_free (label);
 
     break;
 
   case STATE_DONE:
 
     /* Cleanup state "unmounting". */
-    clutter_actor_destroy (priv->states.unmounting.description);
+    clutter_actor_destroy (priv->states.unmounting.label);
 
     /* Description */
-    title = mpd_storage_device_tile_get_title (self);
-    description = g_strdup_printf (_("It is safe to pull out your %s"),
-                                   title);
-    priv->states.done.description = description_label_new ();
-    mx_label_set_text (MX_LABEL (priv->states.done.description),
-                       description);
+    label = g_strdup_printf (_("It is safe to pull out your %s"),
+                             priv->name);
+    priv->states.done.label = description_label_new ();
+    mx_label_set_text (MX_LABEL (priv->states.done.label), label);
     clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.done.description);
-    g_free (description);
-    g_free (title);
+                                 priv->states.done.label);
+    g_free (label);
 
     break;
   }
@@ -728,27 +758,31 @@ char *
 mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char const *label;
-  char const *model;
-  char const *vendor;
-  char *title;
+  char          *markup;
+  char          *size_text;
+  uint64_t       size;
+  uint64_t       available_size;
+  unsigned int   percentage;
 
-  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self), NULL);
+  g_return_val_if_fail (priv->state == STATE_READY, NULL);
 
-  label = mpd_storage_device_get_label (priv->storage);
-  model = mpd_storage_device_get_model (priv->storage);
-  vendor = mpd_storage_device_get_vendor (priv->storage);
+  g_object_get (priv->storage,
+                "size", &size,
+                "available-size", &available_size,
+                NULL);
 
-#ifdef HAVE_UDISKS
-  if (label && *label)
-    title = g_strdup_printf ("%s - %s %s", label, vendor, model);
-  else
-    title = g_strdup_printf ("%s %s", vendor, model);
-#else
-  title = g_path_get_basename (priv->mount_point);
-#endif
+  percentage = 100 - (double) available_size / size * 100;
 
-  return title;
+  size_text = g_format_size_for_display (size);
+  markup = g_strdup_printf (_("<span font-weight='bold'>%s</span> using "
+                              "<span color='%s'>%d%% of %s</span>"),
+                              priv->name,
+                              TEXT_COLOR,
+                              percentage,
+                              size_text);
+  g_free (size_text);
+
+  return markup;
 }
 
 static void

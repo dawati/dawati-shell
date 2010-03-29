@@ -22,7 +22,7 @@
 #define MPD_TEXT_H
 
 #define GET_CLUTTER_TEXT(label_) \
-          ((ClutterText *) mx_label_get_clutter_text (MX_LABEL (label_)));
+          ((ClutterText *) mx_label_get_clutter_text (MX_LABEL (label_)))
 
 #endif /* MPD_TEXT_H */
 

@@ -138,6 +138,9 @@ add_tile_from_mount (MpdDevicesTile *self,
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
   GFile         *file;
   char          *path;
+  GVolume       *volume;
+  char          *name;
+  char          *label;
   GIcon         *icon;
   GtkIconInfo   *icon_info;
   char const    *icon_file;
@@ -146,7 +149,18 @@ add_tile_from_mount (MpdDevicesTile *self,
   /* Mount point */
   file = g_mount_get_root (mount);
   path = g_file_get_path (file);
-  g_debug ("%s() %s", __FUNCTION__, path);
+
+  name = g_mount_get_name (mount);
+  volume = g_mount_get_volume (mount);
+  label = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_LABEL);
+  g_debug ("%s() %s %s", __FUNCTION__, name, label);
+  if (label)
+  {
+    g_free (name);
+    name = label;
+    label = NULL;
+  }
+  g_object_unref (volume);
 
   /* Icon */
   icon = g_mount_get_icon (mount);
@@ -157,7 +171,7 @@ add_tile_from_mount (MpdDevicesTile *self,
   icon_file = gtk_icon_info_get_filename (icon_info);
   g_debug ("%s() %s", __FUNCTION__, icon_file);
 
-  tile = mpd_storage_device_tile_new (path, icon_file);
+  tile = mpd_storage_device_tile_new (name, path, icon_file);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
