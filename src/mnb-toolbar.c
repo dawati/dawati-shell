@@ -1906,9 +1906,6 @@ mnb_toolbar_ensure_applet_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 
       if (tp->type != MNB_TOOLBAR_PANEL_CLOCK)
         {
-          clutter_actor_set_size (CLUTTER_ACTOR (button),
-                                  TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
-
           mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
                                                 0, -y,
                                                 TRAY_BUTTON_WIDTH,
@@ -3273,9 +3270,6 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
 
           if (tp->type != MNB_TOOLBAR_PANEL_CLOCK)
             {
-              clutter_actor_set_size (button,
-                                      TRAY_BUTTON_WIDTH, TRAY_BUTTON_HEIGHT);
-
               mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
                                                     0,
                                                     -y,
