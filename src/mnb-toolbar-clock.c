@@ -36,7 +36,6 @@ G_DEFINE_TYPE (MnbToolbarClock, mnb_toolbar_clock, MNB_TYPE_TOOLBAR_BUTTON)
 struct _MnbToolbarClockPrivate
 {
   ClutterActor *time;
-  ClutterActor *date;
 
   guint         timeout_id;
 
@@ -62,15 +61,14 @@ mnb_toolbar_clock_dispose (GObject *object)
   clutter_actor_destroy (priv->time);
   priv->time = NULL;
 
-  clutter_actor_destroy (priv->date);
-  priv->date = NULL;
-
   G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->dispose (object);
 }
 
 static gboolean
-mnb_toolbar_clock_update_time_date (MnbToolbarClockPrivate *priv)
+mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
 {
+  MnbToolbarClockPrivate *priv = clock->priv;
+
   time_t         t;
   struct tm     *tmp;
   char           time_str[64];
@@ -98,12 +96,13 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClockPrivate *priv)
     strftime (time_str, 64, _("%B %e, %Y"), tmp);
   else
     snprintf (time_str, 64, "Date");
-  mx_label_set_text (MX_LABEL (priv->date), time_str);
+
+  mx_widget_set_tooltip_text (MX_WIDGET (clock), time_str);
 
   if (!priv->timeout_id) {
     priv->timeout_id =
       g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_clock_update_time_date,
-                             priv);
+                             clock);
     return FALSE;
   }
   return TRUE;
@@ -126,22 +125,18 @@ mnb_toolbar_clock_constructed (GObject *self)
   clutter_actor_set_name (priv->time, "time-label");
   clutter_actor_set_parent (priv->time, actor);
 
-  priv->date = mx_label_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->date), "date-label");
-  clutter_actor_set_parent (priv->date, actor);
-
   clutter_actor_pop_internal (actor);
 
-  mnb_toolbar_clock_update_time_date (priv);
+  mnb_toolbar_clock_update_time_date (MNB_TOOLBAR_CLOCK (self));
 
   if (!interval) {
     priv->timeout_id =
       g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_clock_update_time_date,
-                             priv);
+                             self);
   } else {
     priv->timeout_id = 0;
     g_timeout_add_seconds (interval, (GSourceFunc) mnb_toolbar_clock_update_time_date,
-                           priv);
+                           self);
   }
 }
 
@@ -153,7 +148,6 @@ mnb_toolbar_clock_map (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (mnb_toolbar_clock_parent_class)->map (actor);
 
   clutter_actor_map (priv->time);
-  clutter_actor_map (priv->date);
 }
 
 static void
@@ -162,7 +156,6 @@ mnb_toolbar_clock_unmap (ClutterActor *actor)
   MnbToolbarClockPrivate *priv = MNB_TOOLBAR_CLOCK (actor)->priv;
 
   clutter_actor_unmap (priv->time);
-  clutter_actor_unmap (priv->date);
 
   CLUTTER_ACTOR_CLASS (mnb_toolbar_clock_parent_class)->unmap (actor);
 }
@@ -188,20 +181,9 @@ mnb_toolbar_clock_allocate (ClutterActor          *actor,
 
   mx_allocate_align_fill (priv->time, &childbox,
                           MX_ALIGN_MIDDLE,
-                          MX_ALIGN_START, FALSE, FALSE);
+                          MX_ALIGN_MIDDLE, FALSE, FALSE);
 
   clutter_actor_allocate (priv->time, &childbox, flags);
-
-  childbox.x1 = padding.left;
-  childbox.y1 = padding.top;
-  childbox.x2 = (gfloat)((gint)(box->x2 - box->x1 - padding.right));
-  childbox.y2 = (gfloat)((gint)(box->y2 - box->y1 - padding.bottom));
-
-  mx_allocate_align_fill (priv->date, &childbox,
-                          MX_ALIGN_MIDDLE,
-                          MX_ALIGN_END, FALSE, FALSE);
-
-  clutter_actor_allocate (priv->date, &childbox, flags);
 }
 
 static void
@@ -212,7 +194,6 @@ mnb_toolbar_clock_paint (ClutterActor *self)
   CLUTTER_ACTOR_CLASS (mnb_toolbar_clock_parent_class)->paint (self);
 
   clutter_actor_paint (priv->time);
-  clutter_actor_paint (priv->date);
 }
 
 static void
