@@ -992,3 +992,11 @@ anerley_tp_feed_get_enabled (AnerleyTpFeed *feed)
 
   return tp_account_is_enabled (priv->account);
 }
+
+TpAccount *
+anerley_tp_feed_peek_account (AnerleyTpFeed *feed)
+{
+  AnerleyTpFeedPrivate *priv = GET_PRIVATE (feed);
+
+  return priv->account;
+}

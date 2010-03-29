@@ -63,6 +63,7 @@ AnerleyItem *anerley_tp_feed_get_item_by_uid (AnerleyTpFeed *feed,
 
 gboolean anerley_tp_feed_get_online (AnerleyTpFeed *feed);
 gboolean anerley_tp_feed_get_enabled (AnerleyTpFeed *feed);
+TpAccount *anerley_tp_feed_peek_account (AnerleyTpFeed *feed);
 G_END_DECLS
 
 #endif /* _ANERLEY_TP_FEED */
