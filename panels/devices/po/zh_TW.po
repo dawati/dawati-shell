@@ -8,11 +8,11 @@ msgstr ""
 "Project-Id-Version: moblin-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-18 21:56+0000\n"
-"PO-Revision-Date: 2010-03-20 13:25+0800\n"
+"PO-Revision-Date: 2010-03-29 20:42+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
-"Language-Team: chinese-l10n <chinese-l10n@googlegroups.com>\n"
+"Language-Team: Traditional Chinese <chinese-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Chinese\n"
@@ -102,8 +102,7 @@ msgid "HDDVD"
 msgstr "HDDVD"
 
 #. Translators: %s is the media type e.g. 'CD/DVD' or 'CompactFlash'
-#: ../gdu/gdu-drive.c:680
-#: ../gdu/gdu-drive.c:719
+#: ../gdu/gdu-drive.c:680 ../gdu/gdu-drive.c:719
 #, c-format
 msgid "%s Drive"
 msgstr "%s 磁碟"
@@ -163,28 +162,24 @@ msgid "No Media Detected"
 msgstr "未偵測到媒體"
 
 #. Translators: This string is used for conveying the partition table format
-#: ../gdu/gdu-drive.c:807
-#: ../gdu/gdu-linux-md-drive.c:565
+#: ../gdu/gdu-drive.c:807 ../gdu/gdu-linux-md-drive.c:565
 msgid "MBR Partition Table"
 msgstr "MBR 分割表格"
 
 #. Translators: This string is used for conveying the partition table format
-#: ../gdu/gdu-drive.c:810
-#: ../gdu/gdu-linux-md-drive.c:568
+#: ../gdu/gdu-drive.c:810 ../gdu/gdu-linux-md-drive.c:568
 msgid "GUID Partition Table"
 msgstr "GUID 分割表格"
 
 #. Translators: This string is used for conveying the partition table format
-#: ../gdu/gdu-drive.c:813
-#: ../gdu/gdu-linux-md-drive.c:571
+#: ../gdu/gdu-drive.c:813 ../gdu/gdu-linux-md-drive.c:571
 msgid "Apple Partition Table"
 msgstr "Apple 分割表格"
 
 #. Translators: This string is used for conveying the partition table format when
 #. * the format is unknown
 #.
-#: ../gdu/gdu-drive.c:818
-#: ../gdu/gdu-linux-md-drive.c:576
+#: ../gdu/gdu-drive.c:818 ../gdu/gdu-linux-md-drive.c:576
 msgid "Partitioned"
 msgstr "已分割"
 
@@ -196,7 +191,6 @@ msgstr "未分割"
 
 #. TODO: include type e.g. SATA Port Multiplier, SAS Expander etc
 #: ../gdu/gdu-hub.c:222
-#, fuzzy
 msgid "SAS Expander"
 msgstr "SAS 延展器"
 
@@ -247,15 +241,13 @@ msgstr "LVM2 儲存區群組"
 #. Translators: label for an unallocated space on a disk
 #. * %s is the size, formatted like '45 GB'
 #.
-#: ../gdu/gdu-linux-lvm2-volume-hole.c:201
-#: ../gdu/gdu-volume-hole.c:152
+#: ../gdu/gdu-linux-lvm2-volume-hole.c:201 ../gdu/gdu-volume-hole.c:152
 #, c-format
 msgid "%s Free"
 msgstr "%s 可用"
 
 #. Translators: Description
-#: ../gdu/gdu-linux-lvm2-volume-hole.c:205
-#: ../gdu/gdu-volume-hole.c:161
+#: ../gdu/gdu-linux-lvm2-volume-hole.c:205 ../gdu/gdu-volume-hole.c:161
 msgid "Unallocated Space"
 msgstr "未分配的空間"
 
@@ -276,16 +268,14 @@ msgstr "LVM2 邏輯儲存區"
 
 #. Translators: First %s is the size, second %s is a RAID level, e.g. 'RAID-5'
 #. Translators: first %s is the size e.g. '45 GB', second %s is the level e.g. 'RAID-5'
-#: ../gdu/gdu-linux-md-drive.c:538
-#: ../gdu/gdu-linux-md-drive.c:621
+#: ../gdu/gdu-linux-md-drive.c:538 ../gdu/gdu-linux-md-drive.c:621
 #, c-format
 msgid "%s %s Array"
 msgstr "%s %s 陣列"
 
 #. Translators: %s is a RAID level, e.g. 'RAID-5'
 #. Translators: %s is the level e.g. 'RAID-5'
-#: ../gdu/gdu-linux-md-drive.c:543
-#: ../gdu/gdu-linux-md-drive.c:626
+#: ../gdu/gdu-linux-md-drive.c:543 ../gdu/gdu-linux-md-drive.c:626
 #, c-format
 msgid "%s Array"
 msgstr "%s 陣列"
@@ -405,7 +395,9 @@ msgstr ""
 
 #: ../gdu/gdu-ssh-bridge.c:307
 #, c-format
-msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
+msgid ""
+"Error creating a local TCP server, tried binding to ports 9000-10000 on "
+"localhost"
 msgstr ""
 
 #: ../gdu/gdu-ssh-bridge.c:322
@@ -423,8 +415,7 @@ msgstr ""
 msgid "Unable to spawn ssh program: %s"
 msgstr ""
 
-#: ../gdu/gdu-ssh-bridge.c:398
-#: ../gdu/gdu-ssh-bridge.c:510
+#: ../gdu/gdu-ssh-bridge.c:398 ../gdu/gdu-ssh-bridge.c:510
 #, c-format
 msgid "Error reading stderr output: %s"
 msgstr ""
@@ -444,7 +435,9 @@ msgstr "送出「%s」時發生錯誤：%s"
 
 #: ../gdu/gdu-ssh-bridge.c:519
 #, c-format
-msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
+msgid ""
+"Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' "
+"but got `%s'"
 msgstr ""
 
 #: ../gdu/gdu-ssh-bridge.c:536
@@ -459,7 +452,9 @@ msgstr ""
 
 #: ../gdu/gdu-ssh-bridge.c:566
 #, c-format
-msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
+msgid ""
+"Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to "
+"connect to port %d' but got `%s'"
 msgstr ""
 
 #: ../gdu/gdu-ssh-bridge.c:585
@@ -477,8 +472,7 @@ msgstr ""
 #. Translators: The first %s is the size in power-of-10 units, e.g. '100 KB'
 #. * the second %s is the size as a number e.g. '100,000 bytes'
 #.
-#: ../gdu/gdu-util.c:131
-#: ../gdu/gdu-util.c:140
+#: ../gdu/gdu-util.c:131 ../gdu/gdu-util.c:140
 #, c-format
 msgid "%s (%s bytes)"
 msgstr "%s (%s 位元組)"
@@ -489,11 +483,8 @@ msgid "FAT (12-bit version)"
 msgstr "FAT (12 位元版本)"
 
 #. Translators: FAT is a filesystem type
-#: ../gdu/gdu-util.c:178
-#: ../gdu/gdu-util.c:185
-#: ../gdu/gdu-util.c:192
-#: ../gdu/gdu-util.c:196
-#: ../gdu/gdu-util.c:198
+#: ../gdu/gdu-util.c:178 ../gdu/gdu-util.c:185 ../gdu/gdu-util.c:192
+#: ../gdu/gdu-util.c:196 ../gdu/gdu-util.c:198
 msgid "FAT"
 msgstr "FAT"
 
@@ -514,21 +505,18 @@ msgid "NTFS (version %s)"
 msgstr "NTFS (版本 %s)"
 
 #. Translators: NTFS is a filesystem type
-#: ../gdu/gdu-util.c:208
-#: ../gdu/gdu-util.c:210
+#: ../gdu/gdu-util.c:208 ../gdu/gdu-util.c:210
 #, c-format
 msgid "NTFS"
 msgstr "NTFS"
 
 #. Translators: HFS is a filesystem type
-#: ../gdu/gdu-util.c:215
-#: ../gdu/gdu-util.c:217
+#: ../gdu/gdu-util.c:215 ../gdu/gdu-util.c:217
 msgid "HFS"
 msgstr "HFS"
 
 #. Translators: HFS+ is a filesystem type
-#: ../gdu/gdu-util.c:222
-#: ../gdu/gdu-util.c:224
+#: ../gdu/gdu-util.c:222 ../gdu/gdu-util.c:224
 msgid "HFS+"
 msgstr "HFS+"
 
@@ -963,15 +951,13 @@ msgid "Solaris Reserved Partition (5)"
 msgstr "Solaris 保留的分割區 (5)"
 
 #. Mac OS X
-#: ../gdu/gdu-util.c:475
-#: ../gdu/gdu-util.c:494
+#: ../gdu/gdu-util.c:475 ../gdu/gdu-util.c:494
 msgid "Apple HFS/HFS+ Partition"
 msgstr "Apple HFS/HFS+ 分割區"
 
 #. see http://developer.apple.com/documentation/mac/Devices/Devices-126.html
 #. *     http://lists.apple.com/archives/Darwin-drivers/2003/May/msg00021.html
-#: ../gdu/gdu-util.c:476
-#: ../gdu/gdu-util.c:493
+#: ../gdu/gdu-util.c:476 ../gdu/gdu-util.c:493
 msgid "Apple UFS Partition"
 msgstr "Apple UFS 分割區"
 
@@ -1232,15 +1218,21 @@ msgid "Unknown (%s)"
 msgstr "不明 (%s)"
 
 #: ../gdu/gdu-util.c:582
-msgid "A popular format compatible with almost any device or system, typically used for file exchange."
+msgid ""
+"A popular format compatible with almost any device or system, typically used "
+"for file exchange."
 msgstr ""
 
 #: ../gdu/gdu-util.c:586
-msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
+msgid ""
+"This file system is compatible with Linux systems only and provides classic "
+"UNIX file permissions support. This file system does not use a journal."
 msgstr ""
 
 #: ../gdu/gdu-util.c:592
-msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
+msgid ""
+"This file system is compatible with Linux systems only and provides classic "
+"UNIX file permissions support."
 msgstr ""
 
 #: ../gdu/gdu-util.c:596
@@ -1248,11 +1240,15 @@ msgid "Swap area used by the operating system for virtual memory."
 msgstr ""
 
 #: ../gdu/gdu-util.c:599
-msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
+msgid ""
+"The native Windows file system. Not widely compatible with other operating "
+"systems than Windows."
 msgstr ""
 
 #: ../gdu/gdu-util.c:603
-msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
+msgid ""
+"Simple filesystem with low overhead and UNIX permissions support. Not widely "
+"compatible with other operating systems than Linux and Minix."
 msgstr ""
 
 #: ../gdu/gdu-util.c:607
@@ -1264,19 +1260,28 @@ msgid "Create an Extended Partition for logical partitions."
 msgstr ""
 
 #: ../gdu/gdu-util.c:623
-msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
+msgid ""
+"The Master Boot Record scheme is compatible with almost any device or system "
+"but has a number of limitations with respect to disk size and number of "
+"partitions."
 msgstr ""
 
 #: ../gdu/gdu-util.c:628
-msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
+msgid ""
+"A legacy scheme that is incompatible with most systems except Apple systems "
+"and most Linux systems. Not recommended for removable media."
 msgstr ""
 
 #: ../gdu/gdu-util.c:633
-msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
+msgid ""
+"The GUID scheme is compatible with most modern systems but may be "
+"incompatible with some devices and legacy systems."
 msgstr ""
 
 #: ../gdu/gdu-util.c:637
-msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
+msgid ""
+"Marks the entire disk as unused. Use this option only if you want to avoid "
+"partitioning the disk for e.g. whole disk use or floppy / Zip disks."
 msgstr ""
 
 #: ../gdu/gdu-util.c:828
@@ -1430,27 +1435,41 @@ msgid "Linear"
 msgstr "線性"
 
 #: ../gdu/gdu-util.c:1015
-msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
+msgid ""
+"Striped set without parity. Provides improved performance but no fault "
+"tolerance. If a single disk in the array fails, the entire RAID-0 array "
+"fails."
 msgstr ""
 
 #: ../gdu/gdu-util.c:1019
-msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
+msgid ""
+"Mirrored set without parity. Provides fault tolerance and improved "
+"performance for reading. RAID-1 arrays can sustain all but one disk failing."
 msgstr ""
 
 #: ../gdu/gdu-util.c:1023
-msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
+msgid ""
+"Striped set with parity on a single disk. Provides improved performance and "
+"fault tolerance. RAID-4 arrays can sustain a single disk failure."
 msgstr ""
 
 #: ../gdu/gdu-util.c:1027
-msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
+msgid ""
+"Striped set with distributed parity. Provides improved performance and fault "
+"tolerance. RAID-5 arrays can sustain a single disk failure."
 msgstr ""
 
 #: ../gdu/gdu-util.c:1031
-msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
+msgid ""
+"Striped set with dual distributed parity. Provides improved performance and "
+"fault tolerance. RAID-6 arrays can sustain two disk failures."
 msgstr ""
 
 #: ../gdu/gdu-util.c:1035
-msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
+msgid ""
+"Striped set with distributed parity. Provides improved performance and fault "
+"tolerance. RAID-10 arrays can sustain multiple drive losses so long as no "
+"mirror loses all its drives."
 msgstr ""
 
 #: ../gdu/gdu-util.c:1041
@@ -1461,7 +1480,7 @@ msgstr "不明的 RAID 層級 %s。"
 #. Translators: Overall description of the GOOD status
 #: ../gdu/gdu-util.c:1077
 msgid "Disk is healthy"
-msgstr "磁碟健康"
+msgstr "磁碟處於健康狀態"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
 #: ../gdu/gdu-util.c:1081
@@ -1471,7 +1490,7 @@ msgstr ""
 #. Translators: Overall description of the BAD_SECTOR status
 #: ../gdu/gdu-util.c:1085
 msgid "Disk has a few bad sectors"
-msgstr ""
+msgstr "磁碟有一些磁區損壞"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_NOW status
 #: ../gdu/gdu-util.c:1089
@@ -1481,16 +1500,14 @@ msgstr ""
 #. Translators: Suggested action for the BAD_ATTRIBUTE_NOW status
 #. Translators: Suggested action for the BAD_SECTOR_MANY status
 #. Translators: Suggested action for the BAD_STATUS status
-#: ../gdu/gdu-util.c:1091
-#: ../gdu/gdu-util.c:1099
-#: ../gdu/gdu-util.c:1105
+#: ../gdu/gdu-util.c:1091 ../gdu/gdu-util.c:1099 ../gdu/gdu-util.c:1105
 msgid "Backup all data and replace the disk"
-msgstr ""
+msgstr "備份所有資料並取代磁碟"
 
 #. Translators: Overall description of the BAD_SECTOR_MANY status
 #: ../gdu/gdu-util.c:1096
 msgid "DISK HAS MANY BAD SECTORS"
-msgstr ""
+msgstr "磁碟有許多磁區損壞"
 
 #. Translators: Overall description of the BAD_STATUS status
 #: ../gdu/gdu-util.c:1103
@@ -1527,13 +1544,11 @@ msgstr "CD-RW 碟片"
 msgid "Blank CD-RW Disc"
 msgstr "空白 CD-RW 碟片"
 
-#: ../gdu/gdu-volume.c:78
-#: ../gdu/gdu-volume.c:79
+#: ../gdu/gdu-volume.c:78 ../gdu/gdu-volume.c:79
 msgid "DVD-ROM Disc"
 msgstr "DVD-ROM 碟片"
 
-#: ../gdu/gdu-volume.c:78
-#: ../gdu/gdu-volume.c:79
+#: ../gdu/gdu-volume.c:78 ../gdu/gdu-volume.c:79
 msgid "Blank DVD-ROM Disc"
 msgstr "空白 DVD-ROM 碟片"
 
@@ -1719,8 +1734,7 @@ msgstr "RAID"
 #. * First %s is the size, formatted like '45 GB'
 #. * Second %s is the RAID level string, e.g 'RAID-5'
 #.
-#: ../gdu/gdu-volume.c:350
-#: ../gdu/gdu-volume.c:361
+#: ../gdu/gdu-volume.c:350 ../gdu/gdu-volume.c:361
 #, c-format
 msgid "%s %s Component"
 msgstr "%s %s 部件"
@@ -1752,8 +1766,7 @@ msgstr "%s 資料"
 #. Translators: label for a volume of unrecognized use
 #. * %s is the size, formatted like '45 GB'
 #.
-#: ../gdu/gdu-volume.c:383
-#: ../gdu/gdu-volume.c:399
+#: ../gdu/gdu-volume.c:383 ../gdu/gdu-volume.c:399
 #, c-format
 msgid "%s Unrecognized"
 msgstr "%s 無法辨識"
@@ -1766,8 +1779,7 @@ msgstr "不明或未使用"
 #. Translators: label for a partition
 #. * %s is the size, formatted like '45 GB'
 #.
-#: ../gdu/gdu-volume.c:392
-#: ../gdu/gdu-volume.c:394
+#: ../gdu/gdu-volume.c:392 ../gdu/gdu-volume.c:394
 #, c-format
 msgid "%s Partition"
 msgstr "%s 分割區"
@@ -1838,32 +1850,43 @@ msgid "Running low on battery"
 msgstr "正在以低電池量執行中"
 
 #: ../power-icon/src/mpd-power-icon.c:73
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "我們注意到你的電池電量有點低。如果可以的話，插入電源線然後將電池充滿會是個好點子。"
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"我們注意到您的電池電量有點低。如果可以的話，插入電源線然後將電池充滿會是個好"
+"點子。"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Getting close to empty"
 msgstr "愈來愈接近沒電"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "你的電池電量相當的低。儲存你所有的工作，然後盡快插入電源線會是個好主意！"
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+"您的電池電量相當的低。儲存您所有的工作，然後盡快插入電源線會是個好主意！"
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Danger!"
 msgstr "危險！"
 
 #: ../power-icon/src/mpd-power-icon.c:82
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "抱歉，你電腦的電池電量快用光了。我們現在就必須關閉電腦。請儲存你的工作，希望可以很快再見到你。"
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"抱歉，您電腦的電池電量快用光了。我們現在就必須關閉電腦。請儲存您的工作，希望"
+"可以很快再見到您。"
 
 #: ../power-icon/src/mpd-power-icon.c:300
 msgid "Would you like to turn off now?"
-msgstr "你現在要關閉電腦嗎？"
+msgstr "您現在要關閉電腦嗎？"
 
 #: ../power-icon/src/mpd-power-icon.c:301
 msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "如果你不決定，我會在 30 秒內關閉。"
+msgstr "如果您不決定，我會在 30 秒內關閉。"
 
 #: ../power-icon/src/mpd-power-icon.c:368
 msgid "battery"
@@ -1872,7 +1895,7 @@ msgstr "電池"
 #: ../power-icon/src/mpd-shutdown-notification.c:75
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "如果你不決定，我會在 %d 秒內關閉"
+msgstr "如果您不決定，我會在 %d 秒內關閉"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
 msgid "Turn off"
@@ -1881,17 +1904,17 @@ msgstr "關閉"
 #: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr "抱歉，你似乎沒有安裝電池。"
+msgstr "抱歉，您似乎沒有安裝電池。"
 
 #: ../src/mpd-battery-device.c:337
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr "你的電池正在充電。大概充好 %d%%。"
+msgstr "您的電池正在充電。大概充好 %d%%。"
 
 #: ../src/mpd-battery-device.c:342
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr "你的電池正在使用中。電量大概有 %d%%。"
+msgstr "您的電池正在使用中。電量大概有 %d%%。"
 
 #: ../src/mpd-battery-device.c:347
 #, c-format
@@ -1901,7 +1924,7 @@ msgstr "您的電池已充飽，可以上路了。"
 #: ../src/mpd-battery-device.c:351
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr "很抱歉，看起來你的電池好像壞了。"
+msgstr "很抱歉，看起來您的電池好像壞了。"
 
 #: ../src/mpd-computer-pane.c:111
 msgid "All settings"
@@ -1922,7 +1945,7 @@ msgstr "您正使用 %d%%，共 %s"
 
 #: ../src/mpd-folder-pane.c:91
 msgid "Your computer"
-msgstr "你的電腦"
+msgstr "您的電腦"
 
 #: ../src/mpd-storage-device-tile.c:96
 #, c-format
@@ -1981,4 +2004,3 @@ msgstr "網路筆電靜音"
 #: ../src/mpd-volume-tile.c:345
 msgid "Mute"
 msgstr "靜音"
-
