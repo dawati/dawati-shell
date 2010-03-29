@@ -40,7 +40,7 @@ MxTable {
 
 MxLabel#time-label {
   color: #c0c0c0;
-  font-size: 19px;
+  font-size: 24px;
 }
 
 MxLabel#date-label {
@@ -53,34 +53,40 @@ MnbToolbar {
 }
 
 MnbToolbarClock {
+  -mx-border-image-transition-duration: 0;
   background-color: #fff0;
-  border-image: none;
-  background-image: url("panel/clock-background.png");
-  padding: 0 0 8 0;
+  border-image: url("panel/toolbar-button-hover.png") 12;
+  background-image: none;
+  padding: 0 0 0 0;
 }
 
 MnbToolbarClock:checked {
+  -mx-border-image-transition-duration: 0;
   border-image: url("panel/toolbar-button-active.png") 12;
   background-image: none;
-  padding: 0 0 8 0;
+  padding: 0 0 0 0;
 }
 
 MnbToolbarClock:hover, MnbToolbarClock:active {
+  -mx-border-image-transition-duration: 0;
   border-image: url("panel/toolbar-button-hover.png") 12;
   background-image: none;
-  padding: 0 0 8 0;
+  padding: 0 0 0 0;
 }
 
 MnbToolbarButton {
+  -mx-border-image-transition-duration: 0;
   background-color: #fff0;
   border-image: none;
 }
 
 MnbToolbarButton:checked {
+  -mx-border-image-transition-duration: 0;
   border-image: url("panel/toolbar-button-active.png") 12;
 }
 
 MnbToolbarButton:hover, MnbToolbarButton:active {
+  -mx-border-image-transition-duration: 0;
   border-image: url("panel/toolbar-button-hover.png") 12;
 }
 
