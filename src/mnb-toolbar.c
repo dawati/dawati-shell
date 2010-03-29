@@ -67,7 +67,7 @@
 #define KEY_ORDER KEY_DIR "/order"
 
 #define CLOCK_WIDTH 164
-#define BUTTON_SPACING 10
+#define BUTTON_SPACING 5
 
 #define MNB_TOOLBAR_MAX_APPLETS 4
 #define TRAY_WIDTH 200
