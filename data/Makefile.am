@@ -51,6 +51,8 @@ dist_theme_panel_DATA = \
 theme_genericdir = $(MUTTER_MOBLIN_THEME_DIR)/generic
 dist_theme_generic_DATA = \
 	theme/generic/checkbox.png	\
+	theme/generic/close-button.png	\
+	theme/generic/close-button-hover.png	\
 	theme/generic/spinner.png	\
 	theme/generic/search-entry-bg.png \
 	theme/generic/search-entry-clear-hover.png \

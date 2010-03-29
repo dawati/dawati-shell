@@ -128,11 +128,11 @@ MnbToolbarButton#devices-button {
 }
 
 MxButton#close-button {
-  background-image: url("switcher/application-close-button.png");
+  background-image: url("generic/close-button.png");
 }
 
 MxButton#close-button:hover {
-  background-image: url("switcher/application-close-button-hover.png");
+  background-image: url("generic/close-button-hover.png");
 }
 
 MtpSpace {
@@ -140,6 +140,7 @@ MtpSpace {
 }
 
 MtpClock {
-  background-image: url("panel/clock-background.png");
-  padding: 0 0 8 0;
+  border-image: url("panel/toolbar-button-hover.png") 12;
+  background-image: none;
+  padding: 0 0 0 0;
 }
