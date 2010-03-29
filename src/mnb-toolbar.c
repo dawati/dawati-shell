@@ -51,6 +51,7 @@
 #include "mnb-toolbar.h"
 #include "mnb-panel-oop.h"
 #include "mnb-toolbar-button.h"
+#include "mnb-toolbar-applet.h"
 #include "mnb-toolbar-icon.h"
 #include "mnb-toolbar-clock.h"
 #include "mnb-spinner.h"
@@ -2060,6 +2061,8 @@ mnb_toolbar_append_button (MnbToolbar  *toolbar, MnbToolbarPanel *tp)
     }
   else if (tp->windowless)
     button = tp->button = mnb_toolbar_icon_new ();
+  else if (tp->type == MNB_TOOLBAR_PANEL_APPLET)
+    button = tp->button = mnb_toolbar_applet_new ();
   else
     button = tp->button = mnb_toolbar_button_new ();
 
