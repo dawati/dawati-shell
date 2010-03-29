@@ -1945,8 +1945,6 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 
       if (index < priv->max_panels)
         {
-          clutter_actor_set_size (CLUTTER_ACTOR (button),
-                                  BUTTON_WIDTH, BUTTON_HEIGHT);
           clutter_actor_set_position (CLUTTER_ACTOR (button),
                                       TOOLBAR_X_PADDING + BUTTON_SPACING +
                                       (BUTTON_WIDTH * index)
