@@ -36,16 +36,12 @@ MtpJar {
   padding: 10 0 10 0;
 }
 
-MxBoxLayout {
- padding: 0;
-}
-
 MxBoxLayout#message-box {
  padding: 5 0 5 0;
 }
 
 MxBoxLayout#panel-area, MxBoxLayout#applet-area {
- padding: 5 0 0 0;
+ padding: 5 0 5 0;
 }
 
 MtpBin {
@@ -60,7 +56,6 @@ MtpBin#frameless {
 
 MtpToolbar, MtpToolbar:hover {
   border-image: url("panel/panel-background.png") 0 200 0 200;
-  padding: 0;
 }
 
 MxWidget, MxWidget:hover
@@ -74,8 +69,8 @@ MtpToolbarButton {
 }
 
 MtpToolbarButton#in-jar {
-  padding: 5 5 0 5;
-  background-color: #bbbf;
+  padding: 5;
+  background-color: #bbb0;
 }
 
 MnbToolbarButton {
