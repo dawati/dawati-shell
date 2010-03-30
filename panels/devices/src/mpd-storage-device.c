@@ -693,11 +693,12 @@ mpd_storage_device_has_media_async (MpdStorageDevice *self)
 }
 
 static GFile *
-ensure_import_subdir (char const *path)
+ensure_import_subdir (char const   *path,
+                      GError      **error)
 {
   GTimeVal   tv = { 0, };
   GDate      date = { 0, };
-  char       template[PATH_MAX] /* whatever */;
+  char       template[PATH_MAX] = { 0, } /* whatever */;
   GFile     *basedir;
   GFile     *subdir;
   unsigned int  i = 0;
@@ -717,6 +718,12 @@ ensure_import_subdir (char const *path)
     g_object_unref (subdir);
     subdir = g_file_get_child (basedir, subdir_name);
     g_free (subdir_name);
+  }
+
+  if (!g_file_make_directory (subdir, NULL, error))
+  {
+    g_object_unref (subdir);
+    subdir = NULL;
   }
 
   g_object_unref (basedir);
@@ -798,8 +805,15 @@ import_file_async (MpdStorageDevice *self)
   {
     if (NULL == priv->music_dir)
     {
-      priv->music_dir = ensure_import_subdir (g_get_user_special_dir (
-                                                G_USER_DIRECTORY_MUSIC));
+      priv->music_dir =
+        ensure_import_subdir (g_get_user_special_dir(G_USER_DIRECTORY_MUSIC),
+                              &error);
+      if (error)
+      {
+        g_signal_emit_by_name (self, "import-error", error);
+        g_clear_error (&error);
+        goto bail;
+      }
     }
     target_dir = priv->music_dir;
 
@@ -807,8 +821,15 @@ import_file_async (MpdStorageDevice *self)
 
     if (NULL == priv->pictures_dir)
     {
-      priv->pictures_dir = ensure_import_subdir (g_get_user_special_dir (
-                                                  G_USER_DIRECTORY_PICTURES));
+      priv->pictures_dir =
+        ensure_import_subdir (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES),
+                              &error);
+      if (error)
+      {
+        g_signal_emit_by_name (self, "import-error", error);
+        g_clear_error (&error);
+        goto bail;
+      }
     }
     target_dir = priv->pictures_dir;
 
@@ -816,8 +837,15 @@ import_file_async (MpdStorageDevice *self)
 
     if (NULL == priv->pictures_dir)
     {
-      priv->videos_dir = ensure_import_subdir (g_get_user_special_dir (
-                                                G_USER_DIRECTORY_VIDEOS));
+      priv->videos_dir =
+        ensure_import_subdir (g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS),
+                              &error);
+      if (error)
+      {
+        g_signal_emit_by_name (self, "import-error", error);
+        g_clear_error (&error);
+        goto bail;
+      }
     }
     target_dir = priv->videos_dir;
 
