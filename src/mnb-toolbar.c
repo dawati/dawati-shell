@@ -1432,6 +1432,29 @@ mnb_toolbar_get_applet_index (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   return -1;
 }
 
+static gint
+mnb_toolbar_get_clock_position_in_tray (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate *priv = toolbar->priv;
+  GList             *l;
+  gint               index;
+
+  for (l = priv->panels, index = 0; l; l = l->next)
+    {
+      MnbToolbarPanel *t = l->data;
+
+      if (t->type == MNB_TOOLBAR_PANEL_NORMAL)
+        continue;
+
+      if (t->type == MNB_TOOLBAR_PANEL_CLOCK)
+        return index;
+
+      ++index;
+    }
+
+  return -1;
+}
+
 #if 0
 static void
 mnb_toolbar_append_panel_builtin_internal (MnbToolbar      *toolbar,
@@ -1892,12 +1915,14 @@ mnb_toolbar_ensure_applet_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 
   if (index < MNB_TOOLBAR_MAX_APPLETS)
     {
-      gint x, y;
+      gint x, y, clock_index;
+
+      clock_index = mnb_toolbar_get_clock_position_in_tray (toolbar);
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
       x = screen_width - (index + 1) * (TRAY_BUTTON_WIDTH+TRAY_PADDING) - 4;
 
-      if (index > 0)
+      if (clock_index >= 0 && index >= clock_index)
         x -= (CLOCK_WIDTH - TRAY_BUTTON_WIDTH);
 
       if (tp->type != MNB_TOOLBAR_PANEL_CLOCK)
@@ -3246,6 +3271,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
           MnbToolbarPanel *tp = l->data;
           ClutterActor    *button;
           gint             x, y;
+          gint             clock_index;
 
           if (!tp || !tp->button)
             continue;
@@ -3255,12 +3281,15 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
           if (tp->type == MNB_TOOLBAR_PANEL_NORMAL)
             continue;
 
+          clock_index = mnb_toolbar_get_clock_position_in_tray (toolbar);
+
           y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
           x = screen_width - (applet_index + 1) *
             (TRAY_BUTTON_WIDTH + TRAY_PADDING) - 4;
 
-          if (applet_index > 0)
+          if (clock_index >= 0 && applet_index >= clock_index)
             x -= (CLOCK_WIDTH - TRAY_BUTTON_WIDTH);
+
 
           if (tp->type != MNB_TOOLBAR_PANEL_CLOCK)
             {
