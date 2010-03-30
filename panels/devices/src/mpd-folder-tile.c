@@ -145,7 +145,6 @@ mpd_folder_tile_init (MpdFolderTile *self)
                                    G_USER_DIRECTORY_PICTURES,
                                    G_USER_DIRECTORY_VIDEOS };
   unsigned int i;
-  unsigned int row, col;
 
   for (i = 0; i < G_N_ELEMENTS (directories); i++)
   {

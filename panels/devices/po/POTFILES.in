@@ -21,9 +21,12 @@ src/moblin-panel-devices.c
 src/mpd-battery-device.c
 src/mpd-battery-tile.c
 src/mpd-computer-pane.c
+src/mpd-computer-tile.c
 src/mpd-default-device-tile.c
+src/mpd-devices-pane.c
 src/mpd-disk-tile.c
-src/mpd-folder-pane.c
+src/mpd-media-import-tile.c
+src/mpd-shell.c
 src/mpd-storage-device-tile.c
 src/mpd-volume-tile.c
 

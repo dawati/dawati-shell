@@ -1,4 +1,9 @@
 
+Version 0.1.13, 2010-03-30
+
+    Depend on mx-1.0 >= 0.9, fix for API changes
+    Adapt to new visual design (still lacking a few assets).
+
 Version 0.1.12, 2010-03-25
 
     Depend on mx-1.0 >= 0.9, fix for API changes
