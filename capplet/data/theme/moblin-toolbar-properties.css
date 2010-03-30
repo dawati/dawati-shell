@@ -36,12 +36,16 @@ MtpJar {
   padding: 10 0 10 0;
 }
 
+MxBoxLayout {
+ padding: 0;
+}
+
 MxBoxLayout#message-box {
  padding: 5 0 5 0;
 }
 
 MxBoxLayout#panel-area, MxBoxLayout#applet-area {
- padding: 5 0 5 0;
+ padding: 5 0 0 0;
 }
 
 MtpBin {
@@ -56,6 +60,7 @@ MtpBin#frameless {
 
 MtpToolbar, MtpToolbar:hover {
   border-image: url("panel/panel-background.png") 0 200 0 200;
+  padding: 0;
 }
 
 MxWidget, MxWidget:hover
@@ -69,18 +74,18 @@ MtpToolbarButton {
 }
 
 MtpToolbarButton#in-jar {
-  padding: 5;
+  padding: 5 5 0 5;
   background-color: #bbbf;
 }
 
 MnbToolbarButton {
   padding: 0;
-  border-image: url("panel/toolbar-button-hover.png") 0;
+  border-image: url("panel/toolbar-button-hover.png") 12;
 }
 
 MnbToolbarButton:hover {
   padding: 0;
-  border-image: url("panel/toolbar-button-hover.png") 0;
+  border-image: url("panel/toolbar-button-hover.png") 12;
 }
 
 MnbToolbarButton#applications-button {
@@ -136,7 +141,8 @@ MxButton#close-button:hover {
 }
 
 MtpSpace {
-  background-color: #4447;
+  padding: 0 0 0 0;
+  border-image: url("panel/toolbar-button-hover.png") 12;
 }
 
 MtpClock {

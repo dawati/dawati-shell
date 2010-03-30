@@ -74,10 +74,10 @@ mtp_space_get_preferred_width (ClutterActor *self,
   MtpSpacePrivate *priv = MTP_SPACE (self)->priv;
 
   if (min_width_p)
-    *min_width_p = priv->applet ? 44.0 : 70.0;
+    *min_width_p = priv->applet ? 50.0 : 70.0;
 
   if (natural_width_p)
-    *natural_width_p = priv->applet ? 44.0 : 70.0;
+    *natural_width_p = priv->applet ? 50.0 : 70.0;
 }
 
 static void
@@ -86,11 +86,29 @@ mtp_space_get_preferred_height (ClutterActor *self,
                                 gfloat       *min_height_p,
                                 gfloat       *natural_height_p)
 {
+  gfloat                   height;
+  MxPadding                padding;
+
+  mx_widget_get_padding (MX_WIDGET (self), &padding);
+
+  height = 64.0 + (padding.top + padding.bottom);
+
   if (min_height_p)
-    *min_height_p = 60.0;
+    *min_height_p = height;
 
   if (natural_height_p)
-    *natural_height_p = 60.0;
+    *natural_height_p = height;
+}
+
+static void
+mtp_space_allocate (ClutterActor          *actor,
+                    const ClutterActorBox *box,
+                    ClutterAllocationFlags flags)
+{
+  CLUTTER_ACTOR_CLASS (
+             mtp_space_parent_class)->allocate (actor,
+                                                box,
+                                                flags);
 }
 
 static void
@@ -126,6 +144,7 @@ mtp_space_class_init (MtpSpaceClass *klass)
 
   g_type_class_add_private (klass, sizeof (MtpSpacePrivate));
 
+  actor_class->allocate             = mtp_space_allocate;
   actor_class->get_preferred_width  = mtp_space_get_preferred_width;
   actor_class->get_preferred_height = mtp_space_get_preferred_height;
   actor_class->pick                 = mtp_space_pick;

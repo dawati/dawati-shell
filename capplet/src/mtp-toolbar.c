@@ -128,7 +128,8 @@ mtp_toolbar_allocate (ClutterActor          *actor,
   childbox.x1 = padding.left + 4.0;
   childbox.y1 = padding.top;
   childbox.x2 = tray_x - 2.0;
-  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
+  childbox.y2 = childbox.y1 +
+    (box->y2 - box->y1 - padding.top - padding.bottom);
 
   mx_allocate_align_fill (priv->panel_area, &childbox,
                           MX_ALIGN_START, MX_ALIGN_MIDDLE,
@@ -138,7 +139,9 @@ mtp_toolbar_allocate (ClutterActor          *actor,
   childbox.x1 = tray_x;
   childbox.y1 = padding.top;
   childbox.x2 = box->x2 - box->x1;
-  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
+  childbox.y2 = childbox.y1 +
+    (box->y2 - box->y1 - padding.top - padding.bottom);
+
   mx_allocate_align_fill (priv->applet_area, &childbox,
                           MX_ALIGN_START, MX_ALIGN_MIDDLE,
                           FALSE, FALSE);
