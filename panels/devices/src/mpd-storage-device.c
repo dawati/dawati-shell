@@ -857,7 +857,7 @@ mpd_storage_device_import_async (MpdStorageDevice  *self,
                 priv->path);
     if (error)
       *error = g_error_new (MPD_STORAGE_DEVICE_ERROR,
-                            MPD_STORAGE_DEVICE_ERROR_INDEXING,
+                            MPD_STORAGE_DEVICE_IMPORT_ERROR_STILL_INDEXING,
                             "%s : %s: Device indexing in progress",
                             G_STRLOC, priv->path);
     return false;
@@ -870,7 +870,7 @@ mpd_storage_device_import_async (MpdStorageDevice  *self,
                 priv->path);
     if (error)
       *error = g_error_new (MPD_STORAGE_DEVICE_ERROR,
-                            MPD_STORAGE_DEVICE_ERROR_NO_MEDIA,
+                            MPD_STORAGE_DEVICE_IMPORT_ERROR_NO_MEDIA,
                             "%s : %s: No media to import",
                             G_STRLOC, priv->path);
     return false;
@@ -890,7 +890,7 @@ mpd_storage_device_import_async (MpdStorageDevice  *self,
                required_text);
     if (error)
       *error = g_error_new (MPD_STORAGE_DEVICE_ERROR,
-                            MPD_STORAGE_DEVICE_INSUFICCIENT_DISK_SPACE,
+                            MPD_STORAGE_DEVICE_IMPORT_ERROR_INSUFICCIENT_DISK_SPACE,
                             "%s : Would need %s on %s but only %s available",
                             G_STRLOC,
                             available_text,

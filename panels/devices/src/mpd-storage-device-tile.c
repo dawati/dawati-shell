@@ -25,6 +25,7 @@
 #include <libnotify/notify.h>
 
 #include "mpd-gobject.h"
+#include "mpd-media-import-tile.h"
 #include "mpd-shell-defines.h"
 #include "mpd-storage-device.h"
 #include "mpd-storage-device-tile.h"
@@ -89,10 +90,12 @@ typedef struct
       ClutterActor          *label;
       ClutterActor          *meter;
       ClutterActor          *button_box;
-      /* Managed by button_box. */
+      /* Inside button_box. */
       ClutterActor          *eject;
       ClutterActor          *open;
-      ClutterActor          *copy;
+      ClutterActor          *import;
+      /* During import. */
+      ClutterActor          *import_tile;
     } ready;
     struct {
       ClutterActor          *label;
@@ -161,10 +164,120 @@ _storage_size_notify_cb (MpdStorageDevice     *storage,
 }
 
 static void
-_copy_clicked_cb (MxButton             *button,
-                  MpdStorageDeviceTile *self)
+_show_panel_cb (NotifyNotification    *notification,
+                gchar                 *action,
+                MpdStorageDeviceTile  *self)
 {
-  // TODO
+  g_debug ("%s()", __FUNCTION__);
+  g_signal_emit_by_name (self, "request-show");
+}
+
+static void
+show_import_error (MpdStorageDeviceTile *self,
+                   GError const         *error)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+  NotifyNotification  *note;
+  char const          *summary;
+  char                *body;
+  GError              *note_error = NULL;
+
+  g_return_if_fail (error);
+
+  switch (error->code)
+  {
+  case MPD_STORAGE_DEVICE_IMPORT_ERROR_STILL_INDEXING:
+    summary = _("Import cancelled");
+    body = g_strdup_printf (_("We are still looking for media files on \"%s\""),
+                            priv->name);
+    break;
+  case MPD_STORAGE_DEVICE_IMPORT_ERROR_NO_MEDIA:
+    summary = _("Import cancelled");
+    body = g_strdup_printf (_("We did not find any media files on \"%s\""),
+                            priv->name);
+    break;
+  case MPD_STORAGE_DEVICE_IMPORT_ERROR_INSUFICCIENT_DISK_SPACE:
+    summary = _("Import cancelled");
+    body = g_strdup_printf (_("Sorry we could not import your media, "
+                              "there is not enough space on your computer. "
+                              "You could remove some files."));
+    break;
+  default:
+    summary = _("Import cancelled");
+    body = g_strdup (error->message);
+  }
+
+  note = notify_notification_new (summary, body, NULL, NULL);
+  notify_notification_add_action (note, "show", _("Show"),
+                                  (NotifyActionCallback) _show_panel_cb, self,
+                                  NULL);
+  notify_notification_show (note, &note_error);
+  if (note_error)
+  {
+    g_warning ("%s : %s", G_STRLOC, note_error->message);
+    g_clear_error (&note_error);
+  }
+  g_object_unref (note);
+
+  g_free (body);
+}
+
+static void
+stop_import (MpdStorageDeviceTile *self)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  mpd_storage_device_stop_import (priv->storage);
+
+  clutter_actor_destroy (priv->states.ready.import_tile);
+
+  clutter_actor_set_reactive (priv->states.ready.import, true);
+  clutter_actor_set_reactive (priv->states.ready.eject, true);
+  clutter_actor_set_reactive (priv->states.ready.open, true);
+}
+
+static void
+_import_error_cb (MpdStorageDevice      *storage,
+                  GError const          *error,
+                  MpdStorageDeviceTile  *self)
+{
+  show_import_error (self, error);
+  stop_import (self);
+}
+
+static void
+_import_stop_cb (MpdMediaImportTile   *import,
+                 MpdStorageDeviceTile *self)
+{
+  stop_import (self);
+}
+
+static void
+_import_clicked_cb (MxButton             *button,
+                    MpdStorageDeviceTile *self)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+  GError *error = NULL;
+
+  g_signal_connect (priv->storage, "import-error",
+                    G_CALLBACK (_import_error_cb), self);
+
+  priv->states.ready.import_tile = mpd_media_import_tile_new (priv->storage);
+  g_signal_connect (priv->states.ready.import_tile, "stop-import",
+                    G_CALLBACK (_import_stop_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
+                               priv->states.ready.import_tile);
+
+  clutter_actor_set_reactive (priv->states.ready.import, false);
+  clutter_actor_set_reactive (priv->states.ready.eject, false);
+  clutter_actor_set_reactive (priv->states.ready.open, false);
+
+  mpd_storage_device_import_async (priv->storage, &error);
+  if (error)
+  {
+    show_import_error (self, error);
+    g_clear_error (&error);
+  }
 }
 
 static void
@@ -212,15 +325,6 @@ _storage_has_media_cb (MpdStorageDevice     *storage,
 
   priv->storage_has_media = has_media;
   mpd_storage_device_tile_set_state (self, STATE_READY);
-}
-
-static void
-_show_panel_cb (NotifyNotification    *notification,
-                gchar                 *action,
-                MpdStorageDeviceTile  *self)
-{
-  g_debug ("%s()", __FUNCTION__);
-  g_signal_emit_by_name (self, "request-show");
 }
 
 static GObject *
@@ -706,14 +810,13 @@ mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
     /* Copy button */
     if (priv->storage_has_media)
     {
-      priv->states.ready.copy = mx_button_new_with_label (
-                                  _("Import data"));
-      g_signal_connect (priv->states.ready.copy, "clicked",
-                        G_CALLBACK (_copy_clicked_cb), self);
+      priv->states.ready.import = mx_button_new_with_label (_("Import data"));
+      g_signal_connect (priv->states.ready.import, "clicked",
+                        G_CALLBACK (_import_clicked_cb), self);
       clutter_container_add_actor (CLUTTER_CONTAINER (priv->states.ready.button_box),
-                                   priv->states.ready.copy);
+                                   priv->states.ready.import);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->states.ready.button_box),
-                                   priv->states.ready.copy,
+                                   priv->states.ready.import,
                                    "expand", true,
                                    "x-fill", true,
                                    NULL);
