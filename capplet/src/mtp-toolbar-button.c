@@ -292,7 +292,7 @@ mtp_toolbar_button_drag_begin (MxDraggable         *draggable,
    */
   clutter_actor_reparent (self, stage);
 
-  clutter_actor_set_opacity (self, 0x7f);
+  clutter_actor_set_opacity (self, 0xbf);
 
   /*
    * Reparent to stage, preserving size and position
