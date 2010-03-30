@@ -2,6 +2,9 @@
 TODO
 ====
 
+* Notify about plugged devices from the devices-tile, do not emit for plugged ones when starting up.
+* Do not index dot-directories on plugged devices.
+* Notify about busy device when trying to eject.
 * Implement passive notification (toolbar icon change).
 * Implement remaining notifications.
 * Make sure suspend-on-idle actually works, gconf should come from ux-settings, Ross is looking into it.

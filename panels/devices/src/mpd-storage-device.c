@@ -23,6 +23,8 @@
 #include <string.h>
 #include <sys/statvfs.h>
 
+#include <gio/gio.h>
+
 #include "mpd-gobject.h"
 #include "mpd-storage-device.h"
 #include "config.h"
@@ -88,13 +90,13 @@ typedef struct
 
   GSList        *dir_stack;
   GSList        *media_files;
-  int64_t        media_files_size;
+  uint64_t       media_files_size;
 
   /* During import */
   GFile         *pictures_dir;
   GFile         *music_dir;
   GFile         *videos_dir;
-  int64_t        imported_size;
+  uint64_t       imported_size;
   GCancellable  *cancellable;
 } MpdStorageDevicePrivate;
 
