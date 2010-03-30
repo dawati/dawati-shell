@@ -27,11 +27,16 @@
 #include "mnb-toolbar-clock.h"
 #include "mnb-toolbar.h"
 
+#define MNB_24H_KEY_DIR "/apps/date-time-panel"
+#define MNB_24H_KEY MNB_24H_KEY_DIR "/24_h_clock"
+
 G_DEFINE_TYPE (MnbToolbarClock, mnb_toolbar_clock, MNB_TYPE_TOOLBAR_BUTTON)
 
 
 #define MNB_TOOLBAR_CLOCK_GET_PRIVATE(obj)    \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_TOOLBAR_CLOCK, MnbToolbarClockPrivate))
+
+static gboolean mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock);
 
 struct _MnbToolbarClockPrivate
 {
@@ -64,28 +69,62 @@ mnb_toolbar_clock_dispose (GObject *object)
   G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->dispose (object);
 }
 
+static void
+mnb_toolbar_clock_format_changed_cb (GConfClient *client,
+                                     guint        cnxn_id,
+                                     GConfEntry  *entry,
+                                     gpointer     data)
+{
+  MnbToolbarClock *clock = MNB_TOOLBAR_CLOCK (data);
+
+  mnb_toolbar_clock_update_time_date (clock);
+}
+
 static gboolean
 mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
 {
   MnbToolbarClockPrivate *priv = clock->priv;
 
-  time_t         t;
-  struct tm     *tmp;
-  char           time_str[64];
+  time_t           t;
+  struct tm       *tmp;
+  char             time_str[64];
+  static gboolean  setup_done = FALSE;
+  GConfClient     *client;
 
   if (priv->disposed)
     return FALSE;
 
+  client = gconf_client_get_default ();
+
   t = time (NULL);
   tmp = localtime (&t);
   if (tmp)
-    /* translators: translate this to a suitable time format for your locale
-     * showing only hours and minutes. For available format specifiers see
-     * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-     */
-    strftime (time_str, 64, _("%l:%M %P"), tmp);
+    {
+      gboolean c24h = gconf_client_get_bool (client, MNB_24H_KEY, NULL);
+
+      if (c24h)
+        {
+
+          /* translators: translate this to a suitable 24 hourt time format for
+           * your locale showing only hours and minutes. For available format
+           * specifiers see
+           * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+           */
+          strftime (time_str, 64, _("%H:%M"), tmp);
+        }
+      else
+        {
+          /* translators: translate this to a suitable default time format for
+           * your locale showing only hours and minutes. For available format
+           * specifiers see
+           * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+           */
+          strftime (time_str, 64, _("%l:%M %P"), tmp);
+        }
+    }
   else
     snprintf (time_str, 64, "Time");
+
   mx_label_set_text (MX_LABEL (priv->time), time_str);
 
   if (tmp)
@@ -98,6 +137,42 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
     snprintf (time_str, 64, "Date");
 
   mx_widget_set_tooltip_text (MX_WIDGET (clock), time_str);
+
+  if (!setup_done)
+    {
+      GError *error = NULL;
+
+      setup_done = TRUE;
+
+      gconf_client_add_dir (client, MNB_24H_KEY_DIR,
+                            GCONF_CLIENT_PRELOAD_NONE,
+                            &error);
+
+      if (error)
+        {
+          g_warning (G_STRLOC ": Error when adding directory "
+                     MNB_24H_KEY_DIR " for notification: %s",
+                     error->message);
+          g_clear_error (&error);
+        }
+
+      gconf_client_notify_add (client,
+                               MNB_24H_KEY,
+                               mnb_toolbar_clock_format_changed_cb,
+                               clock,
+                               NULL,
+                               &error);
+
+      if (error)
+        {
+          g_warning (G_STRLOC ": Error when adding key "
+                     MNB_24H_KEY " for notification: %s",
+                     error->message);
+          g_clear_error (&error);
+        }
+    }
+
+  g_object_unref (client);
 
   if (!priv->timeout_id) {
     priv->timeout_id =

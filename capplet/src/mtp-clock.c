@@ -24,8 +24,11 @@
 
 #include <string.h>
 #include <glib/gi18n.h>
+#include <gconf/gconf-client.h>
 
 #include "mtp-clock.h"
+
+#define MNB_24H_KEY "/apps/date-time-panel/24_h_clock"
 
 /*
  * MtpClock
@@ -195,12 +198,33 @@ mtp_clock_update_time_date (MtpClock *clock)
 
   t = time (NULL);
   tmp = localtime (&t);
+
   if (tmp)
-    /* translators: translate this to a suitable time format for your locale
-     * showing only hours and minutes. For available format specifiers see
-     * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-     */
-    strftime (time_str, 64, _("%l:%M %P"), tmp);
+    {
+      GConfClient* client = gconf_client_get_default ();
+      gboolean     c24h   = gconf_client_get_bool (client, MNB_24H_KEY, NULL);
+
+      if (c24h)
+        {
+
+          /* translators: translate this to a suitable 24 hourt time format for
+           * your locale showing only hours and minutes. For available format
+           * specifiers see
+           * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+           */
+          strftime (time_str, 64, _("%H:%M"), tmp);
+        }
+      else
+        {
+
+          /* translators: translate this to a suitable time format for your
+           * locale showing only hours and minutes. For available format
+           * specifiers see
+           * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+           */
+          strftime (time_str, 64, _("%l:%M %P"), tmp);
+        }
+    }
   else
     snprintf (time_str, 64, "Time");
 
