@@ -66,7 +66,9 @@ _import_progress_cb (MpdStorageDevice   *storage,
   MpdMediaImportTilePrivate *priv = GET_PRIVATE (self);
   char *markup;
 
-  progress = CLAMP (progress, 0, 100);
+  g_debug ("%s() %f", __FUNCTION__, progress);
+
+  progress = CLAMP (progress, 0, 1);
 
   markup = g_strdup_printf (_("<span font-weight='bold'>Importing data</span> "
                               "<span color='%s'>%d%%</span>"),
@@ -200,15 +202,22 @@ mpd_media_import_tile_init (MpdMediaImportTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->label);
 
   hbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_MEDIA_IMPORT_TILE_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
 
   priv->progress = mx_progress_bar_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->progress);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->progress,
+                               "expand", true,
+                               "x-fill", true,
+                               "y-align", MX_ALIGN_END,
+                               "y-fill", false,
+                               NULL);
 
   button = mx_button_new_with_label (_("Stop"));
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_stop_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->progress);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), button);
 }
 
 ClutterActor *

@@ -229,7 +229,9 @@ stop_import (MpdStorageDeviceTile *self)
 
   mpd_storage_device_stop_import (priv->storage);
 
-  clutter_actor_destroy (priv->states.ready.import_tile);
+  // clutter_actor_destroy (priv->states.ready.import_tile);
+
+  // TODO import finished signal, re-enable buttons.
 
   clutter_actor_set_reactive (priv->states.ready.import, true);
   clutter_actor_set_reactive (priv->states.ready.eject, true);

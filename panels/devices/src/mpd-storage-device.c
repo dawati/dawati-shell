@@ -405,7 +405,7 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                             G_SIGNAL_RUN_LAST,
                                             0, NULL, NULL,
                                             g_cclosure_marshal_VOID__FLOAT,
-                                            G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+                                            G_TYPE_NONE, 1, G_TYPE_FLOAT);
 
   _signals[IMPORT_ERROR] = g_signal_new ("import-error",
                                          G_TYPE_FROM_CLASS (klass),
@@ -710,6 +710,13 @@ ensure_import_subdir (char const   *path,
 
   basedir = g_file_new_for_path (path);
   g_date_strftime (template, sizeof (template), "%x", &date);
+  /* We like locale specific dir names but '/' don't work very well.
+   * so fall back to ISO date format. */
+  if (strchr (template, '/'))
+  {
+    memset (template, 0, sizeof (template));
+    g_date_strftime (template, sizeof (template), "%Y-%m-%d", &date);
+  }
 
   subdir = g_file_get_child (basedir, template);
   while (g_file_query_exists (subdir, NULL))
@@ -766,6 +773,8 @@ _file_copy_cb (GFile            *source_file,
   progress = (float) priv->imported_size / priv->media_files_size;
   g_signal_emit_by_name (self, "import-progress", progress);
   g_object_unref (info);
+
+  g_debug ("%s() %f", __FUNCTION__, progress);
 
   /* Next file. */
   if (priv->media_files)
