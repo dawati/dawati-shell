@@ -98,7 +98,7 @@ _constructor (GType                  type,
   g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (priv->storage),
                         (GObject *) self);
 
-  g_signal_connect (priv->storage, "progress",
+  g_signal_connect (priv->storage, "import-progress",
                     G_CALLBACK (_import_progress_cb), self);
 
   return (GObject *) self;

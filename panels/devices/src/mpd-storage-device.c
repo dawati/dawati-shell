@@ -39,6 +39,17 @@ static void
 mpd_storage_device_set_available_size (MpdStorageDevice  *self,
                                        uint64_t           available_size);
 
+#define MPD_STORAGE_DEVICE_ERROR mpd_storage_device_error_quark()
+
+static GQuark
+mpd_storage_device_error_quark (void)
+{
+  static GQuark _quark = 0;
+  if (!_quark)
+    _quark = g_quark_from_static_string ("mpd-storage-device-error");
+  return _quark;
+}
+
 G_DEFINE_TYPE (MpdStorageDevice, mpd_storage_device, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
@@ -59,6 +70,8 @@ enum
 enum
 {
   HAS_MEDIA,
+  IMPORT_PROGRESS,
+  IMPORT_ERROR,
 
   LAST_SIGNAL
 };
@@ -75,7 +88,14 @@ typedef struct
 
   GSList        *dir_stack;
   GSList        *media_files;
-  size_t         media_files_size;
+  int64_t        media_files_size;
+
+  /* During import */
+  GFile         *pictures_dir;
+  GFile         *music_dir;
+  GFile         *videos_dir;
+  int64_t        imported_size;
+  GCancellable  *cancellable;
 } MpdStorageDevicePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -280,6 +300,30 @@ _dispose (GObject *object)
     priv->media_files = NULL;
   }
 
+  if (priv->pictures_dir)
+  {
+    g_object_unref (priv->pictures_dir);
+    priv->pictures_dir = NULL;
+  }
+
+  if (priv->music_dir)
+  {
+    g_object_unref (priv->music_dir);
+    priv->music_dir = NULL;
+  }
+
+  if (priv->videos_dir)
+  {
+    g_object_unref (priv->videos_dir);
+    priv->videos_dir = NULL;
+  }
+
+  if (priv->cancellable)
+  {
+    g_object_unref (priv->cancellable);
+    priv->cancellable = NULL;
+  }
+
   G_OBJECT_CLASS (mpd_storage_device_parent_class)->dispose (object);
 }
 
@@ -353,6 +397,20 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                       0, NULL, NULL,
                                       g_cclosure_marshal_VOID__BOOLEAN,
                                       G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+
+  _signals[IMPORT_PROGRESS] = g_signal_new ("import-progress",
+                                            G_TYPE_FROM_CLASS (klass),
+                                            G_SIGNAL_RUN_LAST,
+                                            0, NULL, NULL,
+                                            g_cclosure_marshal_VOID__FLOAT,
+                                            G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+
+  _signals[IMPORT_ERROR] = g_signal_new ("import-error",
+                                         G_TYPE_FROM_CLASS (klass),
+                                         G_SIGNAL_RUN_LAST,
+                                         0, NULL, NULL,
+                                         g_cclosure_marshal_VOID__POINTER,
+                                         G_TYPE_NONE, 1, G_TYPE_POINTER);
 }
 
 static void
@@ -632,6 +690,227 @@ mpd_storage_device_has_media_async (MpdStorageDevice *self)
   file_destroy (dir);
 }
 
+static GFile *
+ensure_import_subdir (char const *path)
+{
+  GTimeVal   tv = { 0, };
+  GDate      date = { 0, };
+  char       template[PATH_MAX] /* whatever */;
+  GFile     *basedir;
+  GFile     *subdir;
+  unsigned int  i = 0;
 
+  g_return_val_if_fail (g_file_test (path, G_FILE_TEST_IS_DIR), NULL);
 
+  g_get_current_time (&tv);
+  g_date_set_time_val (&date, &tv);
+
+  basedir = g_file_new_for_path (path);
+  g_date_strftime (template, sizeof (template), "%x", &date);
+
+  subdir = g_file_get_child (basedir, template);
+  while (g_file_query_exists (subdir, NULL))
+  {
+    char *subdir_name = g_strdup_printf ("%s (%d)", template, ++i);
+    g_object_unref (subdir);
+    subdir = g_file_get_child (basedir, subdir_name);
+    g_free (subdir_name);
+  }
+
+  g_object_unref (basedir);
+  return subdir;
+}
+
+static void
+import_file_async (MpdStorageDevice *self);
+
+static void
+_file_copy_cb (GFile            *source_file,
+               GAsyncResult     *res,
+               MpdStorageDevice *self)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+  GFileInfo *info;
+  GError    *error = NULL;
+  float      progress;
+
+  g_file_copy_finish (source_file, res, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_signal_emit_by_name (self, "import-error", error);
+    g_clear_error (&error);
+    return;
+  }
+
+  info = g_file_query_info (source_file, "standard", G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_signal_emit_by_name (self, "import-error", error);
+    g_clear_error (&error);
+    return;
+  }
+
+  priv->imported_size += g_file_info_get_size (info);
+  progress = (float) priv->imported_size / priv->media_files_size;
+  g_signal_emit_by_name (self, "import-progress", progress);
+  g_object_unref (info);
+
+  /* Next file. */
+  if (priv->media_files)
+    import_file_async (self);
+}
+
+static void
+import_file_async (MpdStorageDevice *self)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+  char        *source_path = NULL;
+  GFile       *source_file = NULL;
+  GFileInfo   *source_info = NULL;
+  char const  *content_type;
+  GFile       *target_dir = NULL;
+  char        *target_name = NULL;
+  GFile       *target_file = NULL;
+  GError      *error = NULL;
+
+  g_return_if_fail (priv->media_files);
+
+  source_path = (char *) priv->media_files->data;
+  priv->media_files = g_slist_delete_link (priv->media_files, priv->media_files);
+
+  source_file = g_file_new_for_path (source_path);
+  source_info = g_file_query_info (source_file, "standard",
+                                   G_FILE_QUERY_INFO_NONE, NULL, &error);
+  if (error)
+  {
+    g_signal_emit_by_name (self, "import-error", error);
+    g_clear_error (&error);
+    goto bail;
+  }
+
+  content_type = g_file_info_get_content_type (source_info);
+  if (g_str_has_prefix (content_type, "audio/"))
+  {
+    if (NULL == priv->music_dir)
+    {
+      priv->music_dir = ensure_import_subdir (g_get_user_special_dir (
+                                                G_USER_DIRECTORY_MUSIC));
+    }
+    target_dir = priv->music_dir;
+
+  } else if (g_str_has_prefix (content_type, "image/")) {
+
+    if (NULL == priv->pictures_dir)
+    {
+      priv->pictures_dir = ensure_import_subdir (g_get_user_special_dir (
+                                                  G_USER_DIRECTORY_PICTURES));
+    }
+    target_dir = priv->pictures_dir;
+
+  } else if (g_str_has_prefix (content_type, "video/")) {
+
+    if (NULL == priv->pictures_dir)
+    {
+      priv->videos_dir = ensure_import_subdir (g_get_user_special_dir (
+                                                G_USER_DIRECTORY_VIDEOS));
+    }
+    target_dir = priv->videos_dir;
+
+  } else {
+
+    g_warning ("%s : Unhandled content type %s", G_STRLOC, content_type);
+    goto bail;
+  }
+
+  target_name = g_path_get_basename (source_path);
+  target_file = g_file_get_child (target_dir, target_name);
+  g_file_copy_async (source_file, target_file, G_FILE_COPY_NONE,
+                     G_PRIORITY_DEFAULT, priv->cancellable,
+                     NULL, NULL,
+                     (GAsyncReadyCallback) _file_copy_cb, self);
+
+bail:
+  if (target_file) g_object_unref (target_file);
+  if (target_name) g_free (target_name);
+  if (source_info) g_object_unref (source_info);
+  if (source_file) g_object_unref (source_file);
+  if (source_path) g_free (source_path);
+}
+
+bool
+mpd_storage_device_import_async (MpdStorageDevice  *self,
+                                 GError           **error)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDevice *target;
+  uint64_t          target_available;
+
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), false);
+
+  if (priv->dir_stack)
+  {
+    g_warning ("%s : %s: Device indexing in progress",
+                G_STRLOC,
+                priv->path);
+    if (error)
+      *error = g_error_new (MPD_STORAGE_DEVICE_ERROR,
+                            MPD_STORAGE_DEVICE_ERROR_INDEXING,
+                            "%s : %s: Device indexing in progress",
+                            G_STRLOC, priv->path);
+    return false;
+  }
+
+  if (NULL == priv->media_files)
+  {
+    g_warning ("%s : %s: No media to import",
+                G_STRLOC,
+                priv->path);
+    if (error)
+      *error = g_error_new (MPD_STORAGE_DEVICE_ERROR,
+                            MPD_STORAGE_DEVICE_ERROR_NO_MEDIA,
+                            "%s : %s: No media to import",
+                            G_STRLOC, priv->path);
+    return false;
+  }
+
+  target = mpd_storage_device_new (g_get_home_dir ());
+  target_available = mpd_storage_device_get_available_size (target);
+  g_object_unref (target);
+  if (target_available < priv->media_files_size)
+  {
+    char *available_text = g_format_size_for_display (target_available);
+    char *required_text = g_format_size_for_display (priv->media_files_size);
+    g_warning ("%s : Would need %s on %s but only %s available",
+               G_STRLOC,
+               available_text,
+               g_get_home_dir (),
+               required_text);
+    if (error)
+      *error = g_error_new (MPD_STORAGE_DEVICE_ERROR,
+                            MPD_STORAGE_DEVICE_INSUFICCIENT_DISK_SPACE,
+                            "%s : Would need %s on %s but only %s available",
+                            G_STRLOC,
+                            available_text,
+                            g_get_home_dir (),
+                            required_text);
+    g_free (available_text);
+    g_free (required_text);
+    return false;
+  }
+
+  priv->cancellable = g_cancellable_new ();
+  import_file_async (self);
+  return true;
+}
+
+bool
+mpd_storage_device_stop_import (MpdStorageDevice *self)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+  g_cancellable_cancel (priv->cancellable);
+  return true;
+}
 

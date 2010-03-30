@@ -21,6 +21,7 @@
 #ifndef MPD_STORAGE_DEVICE_H
 #define MPD_STORAGE_DEVICE_H
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <glib-object.h>
 
@@ -53,6 +54,13 @@ typedef struct
   GObjectClass parent;
 } MpdStorageDeviceClass;
 
+enum
+{
+  MPD_STORAGE_DEVICE_ERROR_INDEXING,
+  MPD_STORAGE_DEVICE_ERROR_NO_MEDIA,
+  MPD_STORAGE_DEVICE_INSUFICCIENT_DISK_SPACE
+};
+
 GType
 mpd_storage_device_get_type (void);
 
@@ -79,6 +87,13 @@ mpd_storage_device_get_vendor (MpdStorageDevice *self);
 
 void
 mpd_storage_device_has_media_async (MpdStorageDevice *self);
+
+bool
+mpd_storage_device_import_async (MpdStorageDevice  *self,
+                                 GError           **error);
+
+bool
+mpd_storage_device_stop_import (MpdStorageDevice *self);
 
 G_END_DECLS
 
