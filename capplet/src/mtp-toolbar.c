@@ -59,6 +59,7 @@ struct _MtpToolbarPrivate
 {
   ClutterActor *applet_area;
   ClutterActor *panel_area;
+  ClutterActor *shadow;
 
   gboolean free_space : 1;
   gboolean enabled    : 1;
@@ -82,6 +83,9 @@ mtp_toolbar_dispose (GObject *object)
   clutter_actor_destroy (priv->applet_area);
   priv->applet_area = NULL;
 
+  clutter_actor_destroy (priv->shadow);
+  priv->shadow = NULL;
+
   G_OBJECT_CLASS (mtp_toolbar_parent_class)->dispose (object);
 }
 
@@ -94,6 +98,7 @@ mtp_toolbar_map (ClutterActor *actor)
 
   clutter_actor_map (priv->panel_area);
   clutter_actor_map (priv->applet_area);
+  clutter_actor_map (priv->shadow);
 }
 
 static void
@@ -103,6 +108,7 @@ mtp_toolbar_unmap (ClutterActor *actor)
 
   clutter_actor_unmap (priv->panel_area);
   clutter_actor_unmap (priv->applet_area);
+  clutter_actor_unmap (priv->shadow);
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->unmap (actor);
 }
@@ -128,8 +134,7 @@ mtp_toolbar_allocate (ClutterActor          *actor,
   childbox.x1 = padding.left + 4.0;
   childbox.y1 = padding.top;
   childbox.x2 = tray_x - 2.0;
-  childbox.y2 = childbox.y1 +
-    (box->y2 - box->y1 - padding.top - padding.bottom);
+  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
 
   mx_allocate_align_fill (priv->panel_area, &childbox,
                           MX_ALIGN_START, MX_ALIGN_MIDDLE,
@@ -139,13 +144,18 @@ mtp_toolbar_allocate (ClutterActor          *actor,
   childbox.x1 = tray_x;
   childbox.y1 = padding.top;
   childbox.x2 = box->x2 - box->x1;
-  childbox.y2 = childbox.y1 +
-    (box->y2 - box->y1 - padding.top - padding.bottom);
-
+  childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
   mx_allocate_align_fill (priv->applet_area, &childbox,
                           MX_ALIGN_START, MX_ALIGN_MIDDLE,
                           FALSE, FALSE);
   clutter_actor_allocate (priv->applet_area, &childbox, flags);
+
+  childbox.x1 = -TOOLBAR_X_PADDING;
+  childbox.x2 = box->x2 - box->x1 + 2 * TOOLBAR_X_PADDING;
+  childbox.y1 = box->y2 - box->y1;
+  childbox.y2 = childbox.y1 + 37;
+
+  clutter_actor_allocate (priv->shadow, &childbox, flags);
 
   mtp_toolbar_fill_space (toolbar);
 }
@@ -155,6 +165,7 @@ mtp_toolbar_constructed (GObject *self)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (self)->priv;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
+  ClutterTexture    *sh_texture;
 
   priv->panel_area  = mx_box_layout_new ();
   clutter_actor_set_name (priv->panel_area, "panel-area");
@@ -168,6 +179,27 @@ mtp_toolbar_constructed (GObject *self)
   /* mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->applet_area), FALSE); */
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->applet_area), TRUE);
   clutter_actor_set_parent (priv->applet_area, actor);
+
+    /*
+   * The shadow needs to go into the window group, like the lowlight.
+   */
+  sh_texture = mx_texture_cache_get_texture (mx_texture_cache_get_default (),
+                                             THEMEDIR
+                                             "/panel/panel-shadow.png");
+  if (sh_texture)
+    {
+      ClutterActor *shadow;
+
+      shadow = mx_texture_frame_new (sh_texture,
+                                     0,   /* top */
+                                     200, /* right */
+                                     0,   /* bottom */
+                                     200  /* left */);
+
+      priv->shadow = shadow;
+
+      clutter_actor_set_parent (shadow, actor);
+    }
 }
 
 static void
@@ -433,6 +465,7 @@ mtp_toolbar_paint (ClutterActor *self)
 
   clutter_actor_paint (priv->panel_area);
   clutter_actor_paint (priv->applet_area);
+  clutter_actor_paint (priv->shadow);
 }
 
 static void
