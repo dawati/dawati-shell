@@ -465,7 +465,7 @@ update_volume_slider (MpdVolumeTile *self)
 
   volume = gvc_mixer_stream_get_volume (priv->sink);
   progress = volume / PA_VOLUME_NORM;
-  mx_slider_set_progress (MX_SLIDER (priv->volume_slider), progress);
+  mx_slider_set_value (MX_SLIDER (priv->volume_slider), progress);
 
   g_signal_connect (priv->volume_slider, "notify::progress",
                     G_CALLBACK (_volume_slider_progress_notify_cb), self);
@@ -502,7 +502,7 @@ update_stream_volume (MpdVolumeTile *self)
                                         _stream_volume_notify_cb,
                                         self);
 
-  progress = mx_slider_get_progress (MX_SLIDER (priv->volume_slider));
+  progress = mx_slider_get_value (MX_SLIDER (priv->volume_slider));
   volume = progress * PA_VOLUME_NORM;
   if (gvc_mixer_stream_set_volume (priv->sink, volume))
     gvc_mixer_stream_push_volume (priv->sink);

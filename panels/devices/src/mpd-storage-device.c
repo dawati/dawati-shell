@@ -695,6 +695,22 @@ mpd_storage_device_has_media_async (MpdStorageDevice *self)
   file_destroy (dir);
 }
 
+/*
+static GFile *
+ensure_unique_child (GFile      *dir,
+                     char const *template,
+                     bool        account_for_suffix)
+{
+  GFile *child;
+
+  child = g_file_get_child (dir, template);
+  while (g_file_query_exists (child, NULL))
+  {
+  TODO
+  }
+}
+*/
+
 static GFile *
 ensure_import_subdir (char const   *path,
                       GError      **error)
