@@ -298,6 +298,9 @@ mtp_toolbar_button_drag_begin (MxDraggable         *draggable,
 
   clutter_actor_set_opacity (self, 0xbf);
 
+  clutter_actor_set_rotation (self, CLUTTER_Z_AXIS, -10.0, 0.0, 0.0, 0.0);
+  clutter_actor_set_rotation (self, CLUTTER_Y_AXIS, -15.0, 0.0, 0.0, 0.0);
+
   /*
    * Reparent to stage, preserving size and position
    *
@@ -369,6 +372,8 @@ mtp_toolbar_button_drag_end (MxDraggable *draggable,
 
   clutter_actor_set_size (self, -1.0, -1.0);
   clutter_actor_set_opacity (self, 0xff);
+  clutter_actor_set_rotation (self, CLUTTER_Z_AXIS, 0.0, 0.0, 0.0, 0.0);
+  clutter_actor_set_rotation (self, CLUTTER_Y_AXIS, 0.0, 0.0, 0.0, 0.0);
 }
 
 static void
