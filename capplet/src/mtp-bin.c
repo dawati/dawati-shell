@@ -301,7 +301,7 @@ mtp_bin_load_contents (MtpBin *bin)
           if (!mtp_toolbar_button_is_required ((MtpToolbarButton*)button))
             mx_draggable_enable (MX_DRAGGABLE (button));
           else
-            clutter_actor_set_opacity (button, 0x7f);
+            clutter_actor_set_opacity (button, 0x4f);
         }
       else
         {
