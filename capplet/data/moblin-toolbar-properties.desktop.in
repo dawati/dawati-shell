@@ -1,5 +1,5 @@
 [Desktop Entry]
-_Name=Toolbar
+_Name=Toolbar settings
 _Comment=Set your toolbar preferences
 Exec=moblin-toolbar-properties
 Icon=moblin-toolbar-properties
