@@ -1,14 +1,3 @@
-MnbToolbarButton {
-  background-color: #fff0;
-}
-
-MnbToolbarButton:checked {
-  border-image: url("@PKGTHEMEDIR@/power-icon/toolbar-button-active.png") 0 stretch;
-}
-
-MnbToolbarButton:hover, MnbToolbarButton:active {
-  border-image: url("@PKGTHEMEDIR@/power-icon/toolbar-button-hover.png") 0 stretch;
-}
 
 MnbToolbarButton#state-25 {
   background-image: url("@PKGTHEMEDIR@/power-icon/battery-25-normal.png");
