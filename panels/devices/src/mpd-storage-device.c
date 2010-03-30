@@ -567,16 +567,19 @@ enumerate_dir (MpdStorageDevice  *self)
          (info = g_file_enumerator_next_file (enumerator, NULL, &error)))
   {
     char const *content_type = g_file_info_get_content_type (info);
+    char const *name = g_file_info_get_name (info);
 
     /* Debug */
     char *indent = g_strnfill (g_slist_length (priv->dir_stack), ' ');
-    g_debug ("%s%s %s", indent, g_file_info_get_name (info), content_type);
+    g_debug ("%s%s %s", indent, name, content_type);
     g_free (indent);
 
-    if (0 == g_strcmp0 ("inode/directory", content_type))
+    /* Do not recurse into "dot" directories, they are use for trash. */
+    if (0 == g_strcmp0 ("inode/directory", content_type) &&
+        name[0] != '.')
     {
       char const *path = g_object_get_data (G_OBJECT (enumerator), "path");
-      char *subpath = g_build_filename (path, g_file_info_get_name (info), NULL);
+      char *subpath = g_build_filename (path, name, NULL);
       GFile *subdir = file_new_for_path (subpath);
 
       /* Push and recurse. */
@@ -592,7 +595,7 @@ enumerate_dir (MpdStorageDevice  *self)
 
       /* Media found. */
       char const *path = g_object_get_data (G_OBJECT (enumerator), "path");
-      char *filename = g_build_filename (path, g_file_info_get_name (info), NULL);
+      char *filename = g_build_filename (path, name, NULL);
       priv->media_files = g_slist_prepend (priv->media_files, filename);
       priv->media_files_size += g_file_info_get_size (info);
     }
@@ -929,12 +932,12 @@ mpd_storage_device_import_async (MpdStorageDevice  *self,
                required_text);
     if (error)
       *error = g_error_new (MPD_STORAGE_DEVICE_ERROR,
-                            MPD_STORAGE_DEVICE_IMPORT_ERROR_INSUFICCIENT_DISK_SPACE,
-                            "%s : Would need %s on %s but only %s available",
-                            G_STRLOC,
-                            available_text,
-                            g_get_home_dir (),
-                            required_text);
+                        MPD_STORAGE_DEVICE_IMPORT_ERROR_INSUFICCIENT_DISK_SPACE,
+                        "%s : Would need %s on %s but only %s available",
+                        G_STRLOC,
+                        available_text,
+                        g_get_home_dir (),
+                        required_text);
     g_free (available_text);
     g_free (required_text);
     return false;
