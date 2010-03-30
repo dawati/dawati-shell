@@ -71,6 +71,8 @@ void moblin_netbook_netpanel_set_panel_client (MoblinNetbookNetpanel *netpanel,
 
 void moblin_netbook_netpanel_button_press (MoblinNetbookNetpanel *netpanel);
 
+void moblin_netbook_netpanel_set_browser(MoblinNetbookNetpanel *netpanel,
+                                         const char* browser_name);
 G_END_DECLS
 
 #endif /* _MOBLIN_NETBOOK_NETPANEL_H */

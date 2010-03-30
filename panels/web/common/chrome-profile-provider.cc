@@ -26,35 +26,30 @@
 
 using namespace history;
 
-extern gboolean google_chrome;
+static ChromeProfileProvider* g_chrome_profile_provider = NULL;
 
-int 
-ChromeProfileProvider::Initialize(service_type type)
+ChromeProfileProvider* ChromeProfileProvider::GetInstance()
+{
+  if(!g_chrome_profile_provider) {
+    g_chrome_profile_provider = new ChromeProfileProvider;
+  }
+  return g_chrome_profile_provider;
+}
+
+bool
+ChromeProfileProvider::Initialize(const char* config_dir_name)
 {
   // Make a copy and get Chrome default profile
-  /*
-  PathService::Get(chrome::DIR_USER_DATA, &user_data_dir_);
-  */
+  gchar* chrome_profile_path = g_build_filename (g_get_home_dir(),
+                                                 ".config",
+                                                 config_dir_name,
+                                                 "Default",
+                                                 NULL);
 
-  gchar* chrome_profile_path = NULL;
-  if (google_chrome)
-    chrome_profile_path = g_build_filename (g_get_home_dir(),
-                                            ".config",
-                                            "google-chrome",
-                                            "Default",
-                                            NULL);
-  else
-    chrome_profile_path = g_build_filename (g_get_home_dir(),
-                                            ".config",
-                                            "chromium",
-                                            "Default",
-                                            NULL);
-  
-  gchar* panel_profile_path = NULL;
-  panel_profile_path = g_build_filename (g_get_home_dir(),
-                                         ".config",
-                                         "web-panel",
-                                         NULL);
+  gchar* panel_profile_path = g_build_filename (g_get_home_dir(),
+                                                ".config",
+                                                "web-panel",
+                                                NULL);
   
   g_mkdir_with_parents (panel_profile_path, 0755);
   
@@ -69,76 +64,93 @@ ChromeProfileProvider::Initialize(service_type type)
   g_free(chrome_profile_path);
   g_free(panel_profile_path);
   
-#ifndef USE_SESSION_SERVICE
-  if (!(type & PROVIDER_SESSION))
-#endif
-    {
-      profile_ = Profile::CreateProfile(user_data_dir_.AppendASCII("Default"));
-      if (!profile_) 
-        return (-1);
-    }
+  profile_ = Profile::CreateProfile(user_data_dir_.AppendASCII("Default"));
+  if (!profile_)
+    return false;
 
-  if (type & PROVIDER_FAVORITE
-#if USE_SESSION_SERVICE || GET_SESSION_THUMB
-      || type & PROVIDER_SESSION
-#endif
-     ) 
-    {
-      // Get Chrome history service
-      history_service_ = profile_->GetHistoryService(Profile::EXPLICIT_ACCESS);
-    }
+  history_service_ = profile_->GetHistoryService(Profile::EXPLICIT_ACCESS);
 
-#ifdef USE_SESSION_SERVICE
-  if (type & PROVIDER_SESSION) 
-    {
-      // Get Chrome history service
-      session_service_ = profile_->GetSessionService();
-    }
-#endif
+  session_service_ = profile_->GetSessionService();
 
+  registrar_.Add(this, NotificationType::AUTOCOMPLETE_CONTROLLER_RESULT_UPDATED,
+                 NotificationService::AllSources());
 
-  if (type & PROVIDER_AUTOCOMP) {
-    // AUTOCOMPLETE_CONTROLLER_DEFAULT_MATCH_UPDATED
-    registrar_.Add(this, NotificationType::AUTOCOMPLETE_CONTROLLER_RESULT_UPDATED,
-                   NotificationService::AllSources());
+  autocompletion_controller_ = new AutocompleteController(profile_);
 
-    // Create the autocompelet controller
-    autocompletion_controller_ = new AutocompleteController(profile_);
-  }
-
-  return 0;
+  return true;
 }
 
-void 
+void
 ChromeProfileProvider::GetFavoritePages(void* context, 
-                                        FavoriteCallBack* callback)
+                                        FavoriteCallBack* callback,
+                                        ExceptionCallback* expback)
 {
   const int result_count = 8;
-  CancelableRequestConsumer cancelable_consumer;
 
   favorite_context_ = context;
   favorite_callback_ = callback;
+  favorite_expback_ = expback;
 
   // Send query to history service
-  history_service_->QuerySegmentUsageSince(&cancelable_consumer,
-                                   base::Time::Now() - base::TimeDelta::FromDays(90),
-                                   result_count,
-                                   NewCallback(this,
-                                               &ChromeProfileProvider::
-                                               OnSegmentUsageAvailable));
-
-
-  // Trigger the main loop, will be exited from OnSegmentUsageAvailable
-  MessageLoop::current()->Run();
+  history_service_->QuerySegmentUsageSince(&consumer_,
+                                           base::Time::Now() - base::TimeDelta::FromDays(90),
+                                           result_count,
+                                           NewCallback(this,
+                                                       &ChromeProfileProvider::
+                                                       OnSegmentUsageAvailable));
 }
 
-void 
+void
+ChromeProfileProvider::OnSegmentUsageAvailable(CancelableRequestProvider::Handle handle,
+                                               std::vector<PageUsageData*>* page_data)
+{
+  if (page_data->size() == 0) {
+    if (favorite_context_ && favorite_expback_)
+      favorite_expback_ (favorite_context_, 0);
+    return;
+  }
+
+  for (size_t i = 0; i < page_data->size(); i++)
+    {
+      PageUsageData page = *(*page_data)[i];
+
+      thumbnail_urls_.push_back(page.GetURL().spec().c_str());
+
+      if (history_service_->GetPageThumbnail(page.GetURL(),
+                                             &consumer_,
+                                             NewCallback(static_cast<ChromeProfileProvider*>(this),
+                                                         &ChromeProfileProvider::OnThumbnailDataAvailable)))
+        {
+          //nest run message loop to make sure thumbnail data is ready before callback
+          bool old_state = MessageLoop::current()->NestableTasksAllowed();
+          MessageLoop::current()->SetNestableTasksAllowed(true);
+          MessageLoop::current()->Run();
+          MessageLoop::current()->SetNestableTasksAllowed(old_state);
+        }
+      if (favorite_context_ && favorite_callback_)
+        {
+          favorite_callback_ (favorite_context_,
+                              page.GetURL().spec().c_str(),
+                              UTF16ToUTF8(page.GetTitle()).c_str());
+        }
+
+#ifdef DEBUG_CHROMIUM_API
+      g_debug ("Fav: %s, %s",
+               page.GetURL().spec().c_str(),
+               UTF16ToUTF8(page.GetTitle()).c_str());
+#endif
+    }
+}
+
+void
 ChromeProfileProvider::GetAutoCompleteData(const char* keyword, 
                                            void* context, 
-                                           AutoCompletionCallBack* callback)
+                                           AutoCompletionCallBack* callback,
+                                           ExceptionCallback* expback)
 {
   autocompletion_context_ = context;
   autocompletion_callback_ = callback;
+  autocompletion_expback_ = expback;
 
   if (keyword && autocompletion_controller_)
     {
@@ -148,10 +160,15 @@ ChromeProfileProvider::GetAutoCompleteData(const char* keyword,
                          true,            // prevent_inline_autocomplete
                          false,           // prefer_keyword
                          false);          // synchronous_only
-
-      MessageLoop::current()->Run();
     }
 }
+
+void
+ChromeProfileProvider::StopAutoComplete(void)
+{
+  autocompletion_controller_->Stop(false);
+}
+
 
 void 
 ChromeProfileProvider::OnThumbnailDataAvailable(HistoryService::Handle handle,
@@ -203,61 +220,14 @@ ChromeProfileProvider::SaveThumbnail(const char* url,
 }
 
 void 
-ChromeProfileProvider::OnSegmentUsageAvailable(CancelableRequestProvider::Handle handle,
-                                               std::vector<PageUsageData*>* page_data)
-{
-  CancelableRequestConsumer cancelable_consumer;
-
-  Reset();
-
-  for (size_t i = 0; i < page_data->size(); i++)
-    {
-      PageUsageData page = *(*page_data)[i];
-
-      thumbnail_urls_.push_back(page.GetURL().spec().c_str());
-
-      if (history_service_->GetPageThumbnail(page.GetURL(),
-                                 &cancelable_consumer,
-                                 NewCallback(static_cast<ChromeProfileProvider*>(this),
-                                             &ChromeProfileProvider::OnThumbnailDataAvailable)))
-        {
-          bool old_state = MessageLoop::current()->NestableTasksAllowed();
-          MessageLoop::current()->SetNestableTasksAllowed(true);
-          MessageLoop::current()->Run();
-          MessageLoop::current()->SetNestableTasksAllowed(old_state);
-        }
-
-      if (favorite_context_ && favorite_callback_)
-        {
-          favorite_callback_ (favorite_context_, 
-                              page.GetURL().spec().c_str(), 
-                              UTF16ToUTF8(page.GetTitle()).c_str());
-        }
-
-      result_counter_++;
-
-#ifdef DEBUG_CHROMIUM_API
-      g_debug ("Fav: %s, %s", 
-               page.GetURL().spec().c_str(), 
-               UTF16ToUTF8(page.GetTitle()).c_str());
-#endif
-    }
-  MessageLoop::current()->Quit();
-}
-
-void 
 ChromeProfileProvider::Observe(NotificationType type,
                                const NotificationSource& source,
                                const NotificationDetails& details)
 {
-  if (autocompletion_controller_->done() && 
-      type == NotificationType::AUTOCOMPLETE_CONTROLLER_RESULT_UPDATED)
+  if (type == NotificationType::AUTOCOMPLETE_CONTROLLER_RESULT_UPDATED)
     {
       AutocompleteResult result;
       result.CopyFrom(*(Details<const AutocompleteResult>(details).ptr()));
-      MessageLoop::current()->Quit();
-
-      Reset();
 
       for (size_t i = 0; i < result.size(); i++)
         {
@@ -277,8 +247,6 @@ ChromeProfileProvider::Observe(NotificationType type,
                                        description);
             }
 
-          result_counter_++;
-
 #ifdef DEBUG_CHROMIUM_API
           g_debug ("AC: type=%d, url=%s, fill=%ls, contents=%ls, desc=%ls", 
                    match.type, 
@@ -291,7 +259,25 @@ ChromeProfileProvider::Observe(NotificationType type,
     }
 }
 
-extern const SessionCommand::id_type kCommandUpdateTabNavigation = 6;
+// Identifier for commands written to file.
+static const SessionCommand::id_type kCommandSetTabWindow = 0;
+// kCommandSetWindowBounds is no longer used (it's superseded by
+// kCommandSetWindowBounds2). I leave it here to document what it was.
+// static const SessionCommand::id_type kCommandSetWindowBounds = 1;
+static const SessionCommand::id_type kCommandSetTabIndexInWindow = 2;
+static const SessionCommand::id_type kCommandTabClosed = 3;
+static const SessionCommand::id_type kCommandWindowClosed = 4;
+static const SessionCommand::id_type
+  kCommandTabNavigationPathPrunedFromBack = 5;
+static const SessionCommand::id_type kCommandUpdateTabNavigation = 6;
+static const SessionCommand::id_type kCommandSetSelectedNavigationIndex = 7;
+static const SessionCommand::id_type kCommandSetSelectedTabInIndex = 8;
+static const SessionCommand::id_type kCommandSetWindowType = 9;
+static const SessionCommand::id_type kCommandSetWindowBounds2 = 10;
+static const SessionCommand::id_type
+  kCommandTabNavigationPathPrunedFromFront = 11;
+static const SessionCommand::id_type kCommandSetPinnedState = 12;
+static const SessionCommand::id_type kCommandSetAppExtensionID = 13;
 
 struct TabEntry {
   SessionID::id_type tab_id;
@@ -305,10 +291,6 @@ void
 ChromeProfileProvider::OnGotPreviousSession(SessionService::Handle handle,
                                             std::vector<SessionWindow*>* windows)
 {
-  CancelableRequestConsumer cancelable_consumer;
-
-  Reset();
-
   for (std::vector<SessionWindow*>::iterator w = windows->begin();
        w != windows->end(); w++)
     {
@@ -321,7 +303,7 @@ ChromeProfileProvider::OnGotPreviousSession(SessionService::Handle handle,
 
               thumbnail_urls_.push_back(tab_nav->url().spec().c_str());
               if (history_service_->GetPageThumbnail(tab_nav->url(),
-                                                     &cancelable_consumer,
+                                                     &consumer_,
                                                      NewCallback(static_cast
                                                                  <ChromeProfileProvider*>(this),
                                                                  &ChromeProfileProvider::
@@ -340,30 +322,25 @@ ChromeProfileProvider::OnGotPreviousSession(SessionService::Handle handle,
                                     tab_nav->url().spec().c_str(),
                                     UTF16ToUTF8(tab_nav->title()).c_str());
                 }
-
-              result_counter_++;
             }
         }
     }
-  MessageLoop::current()->Quit();
 }
 
-void 
+void
 ChromeProfileProvider::GetSessions(void* context, 
-                                   SessionCallBack* callback) 
+                                   SessionCallBack* callback,
+                                   ExceptionCallback* expback)
 {
-  CancelableRequestConsumer cancelable_consumer;
   session_context_ = context;
   session_callback_ = callback;
+  session_expback_ = expback;
 
 #ifdef USE_SESSION_SERVICE
-  session_service_->GetLastSession(&cancelable_consumer,
-                                   NewCallback(this, 
-                      
-                         &ChromeProfileProvider::
+  session_service_->GetLastSession(&consumer_,
+                                   NewCallback(this,
+                                               &ChromeProfileProvider::
                                                OnGotPreviousSession));
-
-  MessageLoop::current()->Run();
 
 #else
   SessionFileReader session_reader(user_data_dir_.
@@ -377,8 +354,6 @@ ChromeProfileProvider::GetSessions(void* context,
 
   std::map<int, TabEntry*> tabs_map;
   
-  Reset();
-
   for (std::vector<SessionCommand*>::iterator i = commands.begin();
        i < commands.end(); i++) 
     {      
@@ -389,8 +364,6 @@ ChromeProfileProvider::GetSessions(void* context,
               scoped_ptr<Pickle> pickle((*i)->PayloadAsPickle());
               if (!pickle.get())
                 continue;
-
-              //printf("command id = %d\n", (*i)->id());
 
               void* iterator = NULL;
               TabEntry *tab_entry = new TabEntry();
@@ -404,7 +377,7 @@ ChromeProfileProvider::GetSessions(void* context,
                 }
               tabs_map[tab_entry->tab_id] = tab_entry;
             }
-          else if ((*i)->id() == 3) // for closed tabs
+          else if ((*i)->id() == kCommandTabClosed) // for closed tabs
             {
               scoped_ptr<Pickle> pickle((*i)->PayloadAsPickle());
               if (!pickle.get())
@@ -435,23 +408,32 @@ ChromeProfileProvider::GetSessions(void* context,
     {
       tabs.push_back((*i).second);
     }
+
+  if (tabs.size() == 0)
+    {
+      if (session_context_ && session_expback_)
+        session_expback_(session_context_, 0);
+      return;
+    }
+
   // Second reverse scan
   for (std::vector<TabEntry*>::iterator i = tabs.begin();
        i < tabs.end(); i++) 
     {
       // Dont rely on this way - the session may or may not have thubmail available.
-#if GET_SESSION_THUMB
       thumbnail_urls_.push_back((*i)->url_spec.c_str());
       if (history_service_->GetPageThumbnail(GURL((*i)->url_spec),
-                                             &cancelable_consumer,
+                                             &consumer_,
                                              NewCallback(static_cast
                                                          <ChromeProfileProvider*>(this),
                                                          &ChromeProfileProvider::
                                                          OnThumbnailDataAvailable)))
         {
+          bool old_state = MessageLoop::current()->NestableTasksAllowed();
+          MessageLoop::current()->SetNestableTasksAllowed(true);
           MessageLoop::current()->Run();
+          MessageLoop::current()->SetNestableTasksAllowed(old_state);
         }
-#endif
       if (session_context_ && session_callback_)
         {
           session_callback_(session_context_,
@@ -460,8 +442,6 @@ ChromeProfileProvider::GetSessions(void* context,
                             (*i)->url_spec.c_str(),
                             UTF16ToUTF8((*i)->title).c_str());
         }
-
-      result_counter_++;
 
 #ifdef DEBUG_CHROMIUM_API
       g_debug ("tab_id=%d, navigation_index=0x%x, url=%s, title=%s", 

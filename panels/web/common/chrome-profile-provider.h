@@ -32,6 +32,7 @@
 #include "chrome/browser/sessions/session_command.h"
 #include "chrome/browser/sessions/session_backend.h"
 
+// callbacks
 typedef void SessionCallBack        (void*       session_ctx, 
                                      int         tab_id, 
                                      int         navigation_index, 
@@ -48,92 +49,92 @@ typedef void AutoCompletionCallBack (void*       ac_ctx,
                                      const char* content, 
                                      const char* description);
 
-#define PROVIDER_AUTOCOMP 1
-#define PROVIDER_SESSION  2
-#define PROVIDER_FAVORITE 4
+typedef void ExceptionCallback (void* ctx,
+                                int   errno);
 
 class ChromeProfileProvider : public NotificationObserver {
 public:
-    typedef unsigned char service_type;
+  typedef unsigned char service_type;
 
-    ChromeProfileProvider() : 
-        profile_(NULL), 
-        history_service_(NULL),
-        session_service_(NULL),
-        autocompletion_controller_(NULL),
-        session_context_(NULL),
-        session_callback_(NULL),
-        favorite_context_(NULL),
-        favorite_callback_(NULL),
-        autocompletion_context_(NULL),
-        autocompletion_callback_(NULL),
-        result_counter_(0) { }
+  ChromeProfileProvider() :
+    profile_(NULL),
+    history_service_(NULL),
+    session_service_(NULL),
+    autocompletion_controller_(NULL),
+    session_context_(NULL),
+    session_callback_(NULL),
+    session_expback_(NULL),
+    favorite_context_(NULL),
+    favorite_callback_(NULL),
+    favorite_expback_(NULL),
+    autocompletion_context_(NULL),
+    autocompletion_callback_(NULL),
+    autocompletion_expback_(NULL)
+      {}
 
-    ~ChromeProfileProvider() { 
-      if (autocompletion_controller_)
-        delete autocompletion_controller_;
-    }
+  ~ChromeProfileProvider() {
+    if (autocompletion_controller_)
+      delete autocompletion_controller_;
+  }
 
-    Profile* GetProfile()    { return profile_;    }
+  bool Initialize (const char* config_dir_name);
+  static ChromeProfileProvider* GetInstance();
 
-    int Initialize           (service_type            type);
+  Profile* GetProfile()    { return profile_;    }
 
-    void GetFavoritePages    (void*                   context, 
-                              FavoriteCallBack*       callback);
+  void GetFavoritePages (void* context,
+                         FavoriteCallBack* callback,
+                         ExceptionCallback* expback);
 
-    void GetAutoCompleteData (const char*             keyword, 
-                              void*                   context, 
-                              AutoCompletionCallBack* callback);
+  void GetAutoCompleteData (const char*             keyword,
+                            void*                   context,
+                            AutoCompletionCallBack* callback,
+                            ExceptionCallback* expback);
+  void StopAutoComplete(void);
 
-    void GetSessions         (void*                   context, 
-                              SessionCallBack*        callback);
+  void GetSessions         (void*                   context,
+                            SessionCallBack*        callback,
+                            ExceptionCallback* expback);
 
-    int ResultCount()        { return result_counter_; }
+  private:
+  void OnSegmentUsageAvailable (CancelableRequestProvider::Handle handle,
+                                std::vector<PageUsageData*>*      page_data);
 
-    void Reset()             {
-      result_counter_ = 0;
-      thumbnail_urls_.clear();
-    }
+  void OnThumbnailDataAvailable(HistoryService::Handle            handle,
+                                scoped_refptr<RefCountedBytes>    jpeg_data);
 
+  virtual void Observe         (NotificationType                  type,
+                                const NotificationSource&         source,
+                                const NotificationDetails&        details);
 
-private:
-    void OnSegmentUsageAvailable (CancelableRequestProvider::Handle handle,
-                                  std::vector<PageUsageData*>*      page_data);
+  void SaveThumbnail           (const char*                       url,
+                                const unsigned char* data,
+                                size_t len);
 
-    void OnThumbnailDataAvailable(HistoryService::Handle            handle,
-                                  scoped_refptr<RefCountedBytes>    jpeg_data);
+  void OnGotPreviousSession    (SessionService::Handle            handle,
+                                std::vector<SessionWindow*>*      windows);
 
-    virtual void Observe         (NotificationType                  type,
-                                  const NotificationSource&         source,
-                                  const NotificationDetails&        details);
+  DISALLOW_EVIL_CONSTRUCTORS(ChromeProfileProvider);
 
-    void SaveThumbnail           (const char*                       url, 
-                                  const unsigned char* data,
-                                  size_t len);
+  private:
+  Profile*                 profile_;
+  FilePath                 user_data_dir_;
+  HistoryService*          history_service_;
+  SessionService*          session_service_;
+  AutocompleteController*  autocompletion_controller_;
+  NotificationRegistrar    registrar_;
 
-    void OnGotPreviousSession    (SessionService::Handle            handle,
-                                  std::vector<SessionWindow*>*      windows);
+  void*                    session_context_;
+  SessionCallBack*         session_callback_;
+  ExceptionCallback*       session_expback_;
+  void*                    favorite_context_;
+  FavoriteCallBack*        favorite_callback_;
+  ExceptionCallback*       favorite_expback_;
+  void*                    autocompletion_context_;
+  AutoCompletionCallBack*  autocompletion_callback_;
+  ExceptionCallback*       autocompletion_expback_;
 
-    DISALLOW_EVIL_CONSTRUCTORS(ChromeProfileProvider);
+  CancelableRequestConsumer consumer_;
 
-private:
-    Profile*                 profile_;
-    FilePath                 user_data_dir_;
-    HistoryService*          history_service_;
-    SessionService*          session_service_;
-    AutocompleteController*  autocompletion_controller_;
-    NotificationRegistrar    registrar_;
-
-    void*                    session_context_;
-    SessionCallBack*         session_callback_;
-    void*                    favorite_context_;
-    FavoriteCallBack*        favorite_callback_;
-    void*                    autocompletion_context_;
-    AutoCompletionCallBack*  autocompletion_callback_;
-
-    // Create the loop where it use this wrapper
-    //MessageLoopForUI        main_message_loop_;
-    int                      result_counter_;
-    std::vector<const char*> thumbnail_urls_;
+  std::vector<const char*> thumbnail_urls_;
 };
-

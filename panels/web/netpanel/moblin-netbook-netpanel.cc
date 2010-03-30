@@ -38,7 +38,6 @@ extern "C" {
 #include "chrome-profile-provider.h"
 #include "base/message_loop.h"
 
-
 /* Number of favorites columns to display */
 #define NR_FAVORITE_MAX 16
 #define NR_FAVORITE 9
@@ -58,7 +57,6 @@ G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, MX_TYPE_WIDGET)
 
 struct _MoblinNetbookNetpanelPrivate
 {
-  DBusGProxy     *proxy;
   GList          *calls;
 
   MxWidget     *entry_table;
@@ -79,25 +77,13 @@ struct _MoblinNetbookNetpanelPrivate
 
   gchar         **fav_urls;
   gchar         **fav_titles;
+  gchar         *browser_name;
 
   GList          *session_urls;
 
   MplPanelClient *panel_client;
 };
 
-static void
-cancel_dbus_calls (MoblinNetbookNetpanel *self)
-{
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
-
-  /* Cancel any dbus calls */
-  while (priv->calls)
-    {
-      DBusGProxyCall *call = (DBusGProxyCall*)priv->calls->data;
-      dbus_g_proxy_cancel_call (priv->proxy, call);
-      priv->calls = g_list_delete_link (priv->calls, priv->calls);
-    }
-}
 
 static void
 moblin_netbook_netpanel_dispose (GObject *object)
@@ -110,13 +96,6 @@ moblin_netbook_netpanel_dispose (GObject *object)
     {
       g_object_unref (priv->panel_client);
       priv->panel_client = NULL;
-    }
-
-  if (priv->proxy)
-    {
-      cancel_dbus_calls (self);
-      g_object_unref (priv->proxy);
-      priv->proxy = NULL;
     }
 
   if (priv->fav_urls)
@@ -171,6 +150,9 @@ moblin_netbook_netpanel_dispose (GObject *object)
       priv->session_urls = g_list_delete_link (priv->session_urls,
                                                priv->session_urls);
     }
+
+  if (priv->browser_name)
+    g_free (priv->browser_name);
 
   G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->dispose (object);
 }
@@ -501,8 +483,6 @@ moblin_netbook_netpanel_button_press (MoblinNetbookNetpanel *netpanel)
  * TODO -- we might need dbus API for launching things to retain control over
  * the application workspace; investigate further.
  */
-extern gboolean google_chrome;
-
 static void
 moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
                                     const gchar           *url,
@@ -527,16 +507,13 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
       remaining = ptr + 1;
     }
 
-  if (google_chrome)
-     exec = g_strdup_printf ("%s %s \"%s%s\"", 
-                            "google-chrome", 
-                            "",
-                            prefix, remaining);
-  else
-    exec = g_strdup_printf ("%s %s \"%s%s\"", 
-                            "chromium-browser", 
-                            "",
-                            prefix, remaining);
+  exec = g_strdup_printf ("%s %s \"%s%s\"",
+                          priv->browser_name,
+                          "",
+                          prefix, remaining);
+
+  //printf("exec %s\n", exec);
+
   g_free (prefix);
 
   if (priv->panel_client)
@@ -836,8 +813,16 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
 
   mnb_netpanel_scrollview_add_item (scrollview, 0, CLUTTER_ACTOR (button),
                                     CLUTTER_ACTOR (label));
-
   return button;
+}
+
+static void
+favs_exception (void *context, int errno)
+{
+  MoblinNetbookNetpanel *self = (MoblinNetbookNetpanel*)context;
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+
+  create_favs_placeholder(self);
 }
 
 static void
@@ -850,6 +835,7 @@ favs_received (void *context, const char* url, const char *title)
   MnbNetpanelScrollview *scrollview;
 
   scrollview = MNB_NETPANEL_SCROLLVIEW (priv->favs_view);
+
   button = add_thumbnail_to_scrollview (scrollview, url, title);
 
   if (button) 
@@ -862,6 +848,43 @@ favs_received (void *context, const char* url, const char *title)
                         G_CALLBACK (fav_button_clicked_cb), self);
       priv->n_favs++;
     }
+}
+
+static void tabs_exception(void* context, int errno)
+{
+  MoblinNetbookNetpanel* self = (MoblinNetbookNetpanel*)context;
+  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
+
+  MxWidget *label;
+  MxWidget *button;
+  ClutterActor *tex;
+  GError *error = NULL;
+
+  tex = clutter_texture_new_from_file (THEMEDIR "/newtab-thumbnail.png",
+                                       &error);
+  if (error)
+    {
+      g_warning ("[netpanel] unable to open new tab thumbnail: %s\n",
+                 error->message);
+      g_error_free (error);
+    }
+
+  button = MX_WIDGET(mx_button_new ());
+  mx_stylable_set_style_class ((MxStylable*)button, "weblink");
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (button),
+                               CLUTTER_ACTOR (tex));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (new_tab_clicked_cb), self);
+
+  label = MX_WIDGET(mx_label_new_with_text (_("New tab")));
+
+  mnb_netpanel_scrollview_add_item (MNB_NETPANEL_SCROLLVIEW (priv->tabs_view),
+                                    0,
+                                    CLUTTER_ACTOR (button),
+                                    CLUTTER_ACTOR (label));
+
 }
 
 static void tabs_received(void* context, int tab_id,
@@ -900,149 +923,19 @@ static void tabs_received(void* context, int tab_id,
     }
 }
 
-static gboolean
-load_session (MoblinNetbookNetpanel *self, MnbNetpanelScrollview *scrollview)
-{
-  char *session_file;
-  int fd;
-  gboolean opened_something = FALSE;
-  GKeyFile *keys;
-  char **groups;
-  int i;
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
-
-  session_file = g_build_filename (g_get_home_dir (), 
-                                   ".mozilla/moblin-web-browser",
-                                   "session", NULL);
-
-  if (!g_file_test (session_file, G_FILE_TEST_EXISTS))
-    {
-      g_free (session_file);
-      return FALSE;
-    }
-
-  fd = g_open (session_file, O_RDONLY);
-  if (fd == -1)
-    {
-      g_warning ("Failed to open session file %s", session_file);
-      g_free (session_file);
-      return FALSE;
-    }
-
-  keys = g_key_file_new ();
-
-  if (!g_key_file_load_from_file (keys, session_file, (GKeyFileFlags)0, NULL))
-    {
-      g_warning ("Failed to load keys from session file %s", session_file);
-      g_free (session_file);
-      g_key_file_free (keys);
-      return FALSE;
-    }
-
-  groups = g_key_file_get_groups (keys, NULL);
-  for (i = 0; groups[i]; i++)
-    {
-      gchar *url = g_key_file_get_string (keys, groups[i], "url", NULL);
-      gchar *title = g_key_file_get_string (keys, groups[i], "title", NULL);
-
-      if (url)
-        {
-          MxWidget *button;
-
-          if (!strcmp (url, "NULL") || (url[0] == '\0'))
-            {
-              g_free (url);
-              url = g_strdup (START_PAGE);
-            }
-
-          gchar *prev_url = g_strdup(url);
-          gchar *delim = g_strrstr(prev_url, "###");
-          if (delim)
-              *delim = '\0';
-          button = add_thumbnail_to_scrollview (scrollview, prev_url, title);
-          g_free(prev_url);
-
-          if (button)
-            {
-              g_object_set_data (G_OBJECT (button), "url", url);
-              g_signal_connect (button, "clicked",
-                                G_CALLBACK (session_tab_button_clicked_cb), self);
-              priv->session_urls = g_list_prepend (priv->session_urls, url);
-              opened_something = TRUE;
-            }
-        }
-
-      g_free (title);
-    }
-  g_strfreev (groups);
-
-  g_key_file_free (keys);
-  g_free (session_file);
-
-  close (fd);
-
-  return opened_something;
-}
-
 static void
-notify_get_ntabs (DBusGProxy     *proxy,
-                  DBusGProxyCall *call_id,
-                  void           *user_data)
+create_tabs(MoblinNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanel *self = MOBLIN_NETBOOK_NETPANEL (user_data);
   MoblinNetbookNetpanelPrivate *priv = self->priv;
-  MxWidget *label;
-
   /* Create tabs table */
   create_tabs_view (self);
 
   if (!priv->favs_view)
     create_favs_placeholder (self);
 
-  priv->calls = g_list_remove (priv->calls, call_id);
-
-  int tabs_count = 0;
-  /* Call chrome sessions reader */
-    {
-      ChromeProfileProvider chrome_profile_provider;
-      chrome_profile_provider.Initialize(PROVIDER_SESSION);
-
-      chrome_profile_provider.GetSessions(self, tabs_received);
-      tabs_count = chrome_profile_provider.ResultCount();
-    }
-
-  /* Add a new tab thumbnail */
-  if (tabs_count == 0)
-    {
-      MxWidget *button;
-      ClutterActor *tex;
-      GError *error = NULL;
-
-      tex = clutter_texture_new_from_file (THEMEDIR "/newtab-thumbnail.png",
-                                           &error);
-      if (error)
-        {
-          g_warning ("[netpanel] unable to open new tab thumbnail: %s\n",
-                     error->message);
-          g_error_free (error);
-        }
-
-      button = MX_WIDGET(mx_button_new ());
-      mx_stylable_set_style_class ((MxStylable*)button, "weblink");
-
-      clutter_container_add_actor (CLUTTER_CONTAINER (button),
-                                   CLUTTER_ACTOR (tex));
-      g_signal_connect (button, "clicked",
-                        G_CALLBACK (new_tab_clicked_cb), self);
-
-      label = MX_WIDGET(mx_label_new_with_text (_("New tab")));
-
-      mnb_netpanel_scrollview_add_item (MNB_NETPANEL_SCROLLVIEW (priv->tabs_view),
-                                        0,
-                                        CLUTTER_ACTOR (button),
-                                        CLUTTER_ACTOR (label));
-    }
+  ChromeProfileProvider::GetInstance()->GetSessions(self, tabs_received, tabs_exception);
 }
+
 
 static void
 create_history (MoblinNetbookNetpanel *self)
@@ -1074,17 +967,7 @@ create_history (MoblinNetbookNetpanel *self)
   priv->fav_titles = (gchar**)g_malloc0 (NR_FAVORITE_MAX * sizeof (gchar*));
   priv->n_favs = 0;
 
-  /* Call chrome history service */
-    {
-      ChromeProfileProvider chrome_profile_provider;
-      MessageLoopForUI main_message_loop;
-      chrome_profile_provider.Initialize(PROVIDER_FAVORITE);
-
-      chrome_profile_provider.GetFavoritePages(self, favs_received);
-    }
-
-  if (priv->n_favs == 0)
-      create_favs_placeholder (self);
+  ChromeProfileProvider::GetInstance()->GetFavoritePages(self, favs_received, favs_exception);
 }
 
 static void
@@ -1095,14 +978,7 @@ request_live_previews (MoblinNetbookNetpanel *self)
   priv->display_tab = 0;
   priv->display_fav = 0;
 
-  if (!priv->proxy)
-    return;
-
-  /* Get the number of tabs */
-  priv->calls = g_list_prepend (priv->calls,
-    dbus_g_proxy_begin_call (priv->proxy, "GetNTabs", notify_get_ntabs,
-                             g_object_ref (self), g_object_unref,
-                             G_TYPE_INVALID));
+  create_tabs(self);
   create_history (self);
 }
 
@@ -1162,7 +1038,6 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   priv->n_favs = 0;
 
   /* Destroy tab table */
-  cancel_dbus_calls (netpanel);
   if (priv->tabs_view)
     {
       clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_view));
@@ -1249,7 +1124,7 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 
   /* Construct entry table */
   priv->entry_table = table = MX_WIDGET (mx_table_new ());
-  mx_table_set_col_spacing (MX_TABLE (table), COL_SPACING);
+  mx_table_set_column_spacing (MX_TABLE (table), COL_SPACING);
   mx_table_set_row_spacing (MX_TABLE (table), ROW_SPACING);
 
   clutter_actor_set_name (CLUTTER_ACTOR (table), "netpanel-entrytable");
@@ -1300,21 +1175,9 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   clutter_actor_set_name (CLUTTER_ACTOR (label), "section");
   clutter_actor_set_parent (CLUTTER_ACTOR (label), CLUTTER_ACTOR (self));
 
-  /* Connect to DBus */
-  connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-  if (!connection)
-    {
-      g_warning ("Failed to connect to session bus: %s", error->message);
-      g_error_free (error);
-    }
-  else
-    {
-      priv->proxy = dbus_g_proxy_new_for_name (connection,
-                                               "org.moblin.MoblinWebBrowser",
-                                               "/org/moblin/MoblinWebBrowser",
-                                               "org.moblin.MoblinWebBrowser");
-    }
+  priv->browser_name = NULL;
 }
+
 
 MxWidget*
 moblin_netbook_netpanel_new (void)
@@ -1322,6 +1185,17 @@ moblin_netbook_netpanel_new (void)
   return (MxWidget*)g_object_new (MOBLIN_TYPE_NETBOOK_NETPANEL,
                                   "visible", FALSE,
                                   NULL);
+}
+
+void
+moblin_netbook_netpanel_set_browser(MoblinNetbookNetpanel *netpanel,
+                                    const char* browser_name)
+{
+  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+
+  if(priv->browser_name)
+    g_free(priv->browser_name);
+  priv->browser_name = g_strdup(browser_name);
 }
 
 void

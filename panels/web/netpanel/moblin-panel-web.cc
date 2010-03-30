@@ -49,6 +49,7 @@
 #include "chrome/browser/profile.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browser_process_impl.h"
+#include "chrome/browser/chrome_thread.h"
 
 static void
 _client_set_size_cb (MplPanelClient *client,
@@ -71,6 +72,16 @@ stage_button_press_event (ClutterStage          *stage,
   return TRUE;
 }
 
+static gboolean
+stage_delete_event (ClutterStage *stage,
+                    ClutterEvent *event,
+                    gpointer* userdata)
+{
+  MessageLoopForUI::current()->Quit();
+  return TRUE;
+}
+
+
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
@@ -85,8 +96,6 @@ static GOptionEntry entries[] = {
 #define CHROMIUM_BUNDLE_PATH CHROMIUM_EXE_PATH "/chrome.pak"
 #define CHROMIUM_LOCALE_PATH CHROMIUM_EXE_PATH "/locales"
 
-gboolean google_chrome = TRUE;
-
 int
 main (int    argc,
       char **argv)
@@ -95,6 +104,7 @@ main (int    argc,
   ClutterActor *stage;
   MoblinNetbookNetpanel *netpanel;
   GOptionContext *context;
+  std::string browser_name;
   GError *error = NULL;
 
   // Init chrome environment variables
@@ -110,27 +120,39 @@ main (int    argc,
     FilePath bundle_path(CHROME_BUNDLE_PATH);
     FilePath locale_path(CHROME_LOCALE_PATH);
     ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
-    google_chrome = TRUE;
+    browser_name = "google-chrome";
   }
   else if (g_file_test (CHROMIUM_BUNDLE_PATH, G_FILE_TEST_EXISTS)
      && g_file_test (CHROMIUM_LOCALE_PATH, G_FILE_TEST_EXISTS)) {
     FilePath bundle_path(CHROMIUM_BUNDLE_PATH);
     FilePath locale_path(CHROMIUM_LOCALE_PATH);
     ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
-    google_chrome = FALSE;
+    browser_name = "chromium";
   }
   else {
     g_warning("Chrome or Chromium browser is not installed\n");
   }
 
+  g_thread_init(NULL);
+  g_type_init();
+
+  MessageLoop main_message_loop(MessageLoop::TYPE_UI);
+
   scoped_ptr<BrowserProcessImpl> browser_process;
   browser_process.reset(new BrowserProcessImpl(*cmd_line));
+
   PrefService* local_state = browser_process->local_state();
   local_state->RegisterStringPref(prefs::kApplicationLocale, L"");
 
   // Initialize the prefs of the local state.
   browser::RegisterLocalState(local_state);
   g_browser_process->SetApplicationLocale("en-US");
+
+  ChromeProfileProvider* profile_provider = ChromeProfileProvider::GetInstance();
+  profile_provider->Initialize(browser_name.c_str());
+
+  if (browser_name == "chromium")
+    browser_name.append("-browser");
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -170,6 +192,7 @@ main (int    argc,
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     netpanel = MOBLIN_NETBOOK_NETPANEL (moblin_netbook_netpanel_new ());
+    moblin_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
     clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                  CLUTTER_ACTOR (netpanel));
     moblin_netbook_netpanel_set_panel_client (netpanel, client);
@@ -186,6 +209,7 @@ main (int    argc,
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
     netpanel = MOBLIN_NETBOOK_NETPANEL (moblin_netbook_netpanel_new ());
+    moblin_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
     clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                  CLUTTER_ACTOR (netpanel));
     clutter_actor_set_size ((ClutterActor *)netpanel, 1016, 500);
@@ -197,8 +221,13 @@ main (int    argc,
                     "button-press-event",
                     (GCallback)stage_button_press_event,
                     netpanel);
+  g_signal_connect (stage,
+                    "delete-event",
+                    (GCallback)stage_delete_event,
+                    NULL);
 
-  clutter_main ();
+  // run chromium's message loop
+  MessageLoopForUI::current()->Run(NULL);
 
   return 0;
 }
