@@ -200,7 +200,7 @@ MnbToolbarButton#status-button:hover, MnbToolbarButton#status-button:active, Mnb
 
 /* network button */
 MnbToolbarButton#network-button {
-  background-image: url("panel/network-normal.png");
+  background-image: url("panel/network-coloured.png");
 }
 MnbToolbarButton#network-button:hover, MnbToolbarButton#network-button:active, MnbToolbarButton#network-button:checked {
   background-image: url("panel/network-coloured.png");
@@ -208,7 +208,7 @@ MnbToolbarButton#network-button:hover, MnbToolbarButton#network-button:active, M
 
 /* bluetooth button */
 MnbToolbarButton#bluetooth-button {
-  background-image: url("panel/bluetooth-normal.png");
+  background-image: url("panel/bluetooth-coloured.png");
 }
 MnbToolbarButton#bluetooth-button:hover, MnbToolbarButton#bluetooth-button:active, MnbToolbarButton#bluetooth-button:checked {
   background-image: url("panel/bluetooth-coloured.png");
