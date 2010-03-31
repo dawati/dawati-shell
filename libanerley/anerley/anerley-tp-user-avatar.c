@@ -35,6 +35,7 @@ struct _AnerleyTpUserAvatarPrivate
   TpAccountManager *am;
   GList *account_ptr;
   TpProxySignalConnection *avatar_changed_signal;
+  TpAccount *monitored_account;
 };
 
 static void _get_next_avatar (AnerleyTpUserAvatar *self);
@@ -137,6 +138,14 @@ _get_avatar_cb (GObject *account,
   /* watch for avatar changes */
   if (priv->avatar_changed_signal != NULL)
     tp_proxy_signal_connection_disconnect (priv->avatar_changed_signal);
+
+  if (priv->monitored_account)
+  {
+    g_object_unref (priv->monitored_account);
+    priv->monitored_account = NULL;
+  }
+
+  priv->monitored_account = g_object_ref (account);
 
   priv->avatar_changed_signal =
     tp_cli_account_interface_avatar_connect_to_avatar_changed (
@@ -272,6 +281,12 @@ anerley_tp_user_avatar_dispose (GObject *self)
     priv->account_ptr = g_list_first (priv->account_ptr);
     g_list_free (priv->account_ptr);
     priv->account_ptr = NULL;
+  }
+
+  if (priv->monitored_account)
+  {
+    g_object_unref (priv->monitored_account);
+    priv->monitored_account = NULL;
   }
 }
 
