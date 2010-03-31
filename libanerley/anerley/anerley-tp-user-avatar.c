@@ -148,12 +148,27 @@ out:
 }
 
 static void
-_get_next_avatar (AnerleyTpUserAvatar *self)
+_account_ready_cb (TpAccount    *account,
+                   GAsyncResult *res,
+                   gpointer      userdata)
 {
-  AnerleyTpUserAvatarPrivate *priv = GET_PRIVATE (self);
+  AnerleyTpUserAvatarPrivate *priv = GET_PRIVATE (userdata);
+  GError *error = NULL;
+
+  tp_account_prepare_finish (account, res, &error);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error preparing account: %s",
+               error->message);
+    g_clear_error (&error);
+    _get_next_avatar (ANERLEY_TP_USER_AVATAR (userdata));
+    return;
+  }
 
   tp_account_get_avatar_async (TP_ACCOUNT (priv->account_ptr->data),
-      _get_avatar_cb, self);
+                               _get_avatar_cb,
+                               userdata);
 
   if (priv->account_ptr->next != NULL)
     {
@@ -167,6 +182,17 @@ _get_next_avatar (AnerleyTpUserAvatar *self)
       g_list_free (priv->account_ptr);
       priv->account_ptr = NULL;
     }
+}
+
+static void
+_get_next_avatar (AnerleyTpUserAvatar *self)
+{
+  AnerleyTpUserAvatarPrivate *priv = GET_PRIVATE (self);
+
+  tp_account_prepare_async (TP_ACCOUNT (priv->account_ptr->data),
+                            NULL,
+                            (GAsyncReadyCallback)_account_ready_cb,
+                            self);
 }
 
 static void
