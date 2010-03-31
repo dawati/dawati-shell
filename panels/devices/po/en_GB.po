@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MeeGo Panel Devices\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-27 09:44+0000\n"
-"PO-Revision-Date: 2010-03-31 11:24-0800\n"
+"PO-Revision-Date: 2010-03-31 12:38-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -1347,7 +1347,7 @@ msgstr "Virtual"
 #: ../gdu/gdu-util.c:940
 msgctxt "connection name"
 msgid "Unknown"
-msgstr ""
+msgstr "Unknown"
 
 #. Translators: Connection with speed information.
 #. * First %s is the connection name, like 'SATA' or 'USB'
@@ -1356,126 +1356,126 @@ msgstr ""
 #: ../gdu/gdu-util.c:950
 #, c-format
 msgid "%s at %s"
-msgstr ""
+msgstr "%s at %s"
 
 #: ../gdu/gdu-util.c:969
 msgctxt "RAID level"
 msgid "Stripe (RAID-0)"
-msgstr ""
+msgstr "Stripe (RAID-0)"
 
 #: ../gdu/gdu-util.c:971
 msgctxt "RAID level"
 msgid "RAID-0"
-msgstr ""
+msgstr "RAID-0"
 
 #: ../gdu/gdu-util.c:974
 msgctxt "RAID level"
 msgid "Mirror (RAID-1)"
-msgstr ""
+msgstr "Mirror (RAID-1)"
 
 #: ../gdu/gdu-util.c:976
 msgctxt "RAID level"
 msgid "RAID-1"
-msgstr ""
+msgstr "RAID-1"
 
 #: ../gdu/gdu-util.c:979
 msgctxt "RAID level"
 msgid "Parity Disk (RAID-4)"
-msgstr ""
+msgstr "Parity Disk (RAID-4)"
 
 #: ../gdu/gdu-util.c:981
 msgctxt "RAID level"
 msgid "RAID-4"
-msgstr ""
+msgstr "RAID-4"
 
 #: ../gdu/gdu-util.c:984
 msgctxt "RAID level"
 msgid "Distributed Parity (RAID-5)"
-msgstr ""
+msgstr "Distributed Parity (RAID-5)"
 
 #: ../gdu/gdu-util.c:986
 msgctxt "RAID level"
 msgid "RAID-5"
-msgstr ""
+msgstr "RAID-5"
 
 #: ../gdu/gdu-util.c:989
 msgctxt "RAID level"
 msgid "Dual Distributed Parity (RAID-6)"
-msgstr ""
+msgstr "Dual Distributed Parity (RAID-6)"
 
 #: ../gdu/gdu-util.c:991
 msgctxt "RAID level"
 msgid "RAID-6"
-msgstr ""
+msgstr "RAID-6"
 
 #: ../gdu/gdu-util.c:994
 msgctxt "RAID level"
 msgid "Stripe of Mirrors (RAID-10)"
-msgstr ""
+msgstr "Stripe of Mirrors (RAID-10)"
 
 #: ../gdu/gdu-util.c:996
 msgctxt "RAID level"
 msgid "RAID-10"
-msgstr ""
+msgstr "RAID-10"
 
 #: ../gdu/gdu-util.c:999
 msgctxt "RAID level"
 msgid "Concatenated (Linear)"
-msgstr ""
+msgstr "Concatenated (Linear)"
 
 #: ../gdu/gdu-util.c:1001
 msgctxt "RAID level"
 msgid "Linear"
-msgstr ""
+msgstr "Linear"
 
 #: ../gdu/gdu-util.c:1015
 msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
-msgstr ""
+msgstr "Striped set without parity, which provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
 
 #: ../gdu/gdu-util.c:1019
 msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
-msgstr ""
+msgstr "Mirrored set without parity, which provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
 
 #: ../gdu/gdu-util.c:1023
 msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
-msgstr ""
+msgstr "Striped set with parity on a single disk, which provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
 
 #: ../gdu/gdu-util.c:1027
 msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
-msgstr ""
+msgstr "Striped set with distributed parity, which provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
 
 #: ../gdu/gdu-util.c:1031
 msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
-msgstr ""
+msgstr "Striped set with dual distributed parity, which provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
 
 #: ../gdu/gdu-util.c:1035
 msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
-msgstr ""
+msgstr "Striped set with distributed parity, which provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
 
 #: ../gdu/gdu-util.c:1041
 #, c-format
 msgid "Unknown RAID level %s."
-msgstr ""
+msgstr "Unknown RAID level %s."
 
 #. Translators: Overall description of the GOOD status
 #: ../gdu/gdu-util.c:1077
 msgid "Disk is healthy"
-msgstr ""
+msgstr "Disk is healthy"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
 #: ../gdu/gdu-util.c:1081
 msgid "Disk was used outside of design parameters in the past"
-msgstr ""
+msgstr "Disk was used outside of design parameters in the past"
 
 #. Translators: Overall description of the BAD_SECTOR status
 #: ../gdu/gdu-util.c:1085
 msgid "Disk has a few bad sectors"
-msgstr ""
+msgstr "Disk has a few bad sectors"
 
 #. Translators: Overall description of the BAD_ATTRIBUTE_NOW status
 #: ../gdu/gdu-util.c:1089
 msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
-msgstr ""
+msgstr "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
 
 #. Translators: Suggested action for the BAD_ATTRIBUTE_NOW status
 #. Translators: Suggested action for the BAD_SECTOR_MANY status
@@ -1484,181 +1484,181 @@ msgstr ""
 #: ../gdu/gdu-util.c:1099
 #: ../gdu/gdu-util.c:1105
 msgid "Backup all data and replace the disk"
-msgstr ""
+msgstr "Back up all data and replace the disk"
 
 #. Translators: Overall description of the BAD_SECTOR_MANY status
 #: ../gdu/gdu-util.c:1096
 msgid "DISK HAS MANY BAD SECTORS"
-msgstr ""
+msgstr "DISK HAS MANY BAD SECTORS"
 
 #. Translators: Overall description of the BAD_STATUS status
 #: ../gdu/gdu-util.c:1103
 msgid "DISK FAILURE IS IMMINENT"
-msgstr ""
+msgstr "DISK FAILURE IS IMMINENT"
 
 #. Translators: Description when the overall SMART status is unknown
 #: ../gdu/gdu-util.c:1110
 msgid "Unknown"
-msgstr ""
+msgstr "Unknown"
 
 #. Translator: The word "blank" is used as an adjective, e.g. we are decsribing discs that are already blank
 #: ../gdu/gdu-volume.c:75
 msgid "CD-ROM Disc"
-msgstr ""
+msgstr "CD-ROM Disc"
 
 #: ../gdu/gdu-volume.c:75
 msgid "Blank CD-ROM Disc"
-msgstr ""
+msgstr "Blank CD-ROM Disc"
 
 #: ../gdu/gdu-volume.c:76
 msgid "CD-R Disc"
-msgstr ""
+msgstr "CD-R Disc"
 
 #: ../gdu/gdu-volume.c:76
 msgid "Blank CD-R Disc"
-msgstr ""
+msgstr "Blank CD-R Disc"
 
 #: ../gdu/gdu-volume.c:77
 msgid "CD-RW Disc"
-msgstr ""
+msgstr "CD-RW Disc"
 
 #: ../gdu/gdu-volume.c:77
 msgid "Blank CD-RW Disc"
-msgstr ""
+msgstr "Blank CD-RW Disc"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
 msgid "DVD-ROM Disc"
-msgstr ""
+msgstr "DVD-ROM Disc"
 
 #: ../gdu/gdu-volume.c:78
 #: ../gdu/gdu-volume.c:79
 msgid "Blank DVD-ROM Disc"
-msgstr ""
+msgstr "Blank DVD-ROM Disc"
 
 #: ../gdu/gdu-volume.c:80
 msgid "DVD-RW Disc"
-msgstr ""
+msgstr "DVD-RW Disc"
 
 #: ../gdu/gdu-volume.c:80
 msgid "Blank DVD-RW Disc"
-msgstr ""
+msgstr "Blank DVD-RW Disc"
 
 #: ../gdu/gdu-volume.c:81
 msgid "DVD-RAM Disc"
-msgstr ""
+msgstr "DVD-RAM Disc"
 
 #: ../gdu/gdu-volume.c:81
 msgid "Blank DVD-RAM Disc"
-msgstr ""
+msgstr "Blank DVD-RAM Disc"
 
 #: ../gdu/gdu-volume.c:82
 msgid "DVD+R Disc"
-msgstr ""
+msgstr "DVD+R Disc"
 
 #: ../gdu/gdu-volume.c:82
 msgid "Blank DVD+R Disc"
-msgstr ""
+msgstr "Blank DVD+R Disc"
 
 #: ../gdu/gdu-volume.c:83
 msgid "DVD+RW Disc"
-msgstr ""
+msgstr "DVD+RW Disc"
 
 #: ../gdu/gdu-volume.c:83
 msgid "Blank DVD+RW Disc"
-msgstr ""
+msgstr "Blank DVD+RW Disc"
 
 #: ../gdu/gdu-volume.c:84
 msgid "DVD+R DL Disc"
-msgstr ""
+msgstr "DVD+R DL Disc"
 
 #: ../gdu/gdu-volume.c:84
 msgid "Blank DVD+R DL Disc"
-msgstr ""
+msgstr "Blank DVD+R DL Disc"
 
 #: ../gdu/gdu-volume.c:85
 msgid "DVD+RW DL Disc"
-msgstr ""
+msgstr "DVD+RW DL Disc"
 
 #: ../gdu/gdu-volume.c:85
 msgid "Blank DVD+RW DL Disc"
-msgstr ""
+msgstr "Blank DVD+RW DL Disc"
 
 #: ../gdu/gdu-volume.c:86
 msgid "Blu-Ray Disc"
-msgstr ""
+msgstr "Blu-Ray Disc"
 
 #: ../gdu/gdu-volume.c:86
 msgid "Blank Blu-Ray Disc"
-msgstr ""
+msgstr "Blank Blu-Ray Disc"
 
 #: ../gdu/gdu-volume.c:87
 msgid "Blu-Ray R Disc"
-msgstr ""
+msgstr "Blu-Ray R Disc"
 
 #: ../gdu/gdu-volume.c:87
 msgid "Blank Blu-Ray R Disc"
-msgstr ""
+msgstr "Blank Blu-Ray R Disc"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blu-Ray RW Disc"
-msgstr ""
+msgstr "Blu-Ray RW Disc"
 
 #: ../gdu/gdu-volume.c:88
 msgid "Blank Blu-Ray RW Disc"
-msgstr ""
+msgstr "Blank Blu-Ray RW Disc"
 
 #: ../gdu/gdu-volume.c:89
 msgid "HD DVD Disc"
-msgstr ""
+msgstr "HD DVD Disc"
 
 #: ../gdu/gdu-volume.c:89
 msgid "Blank HD DVD Disc"
-msgstr ""
+msgstr "Blank HD DVD Disc"
 
 #: ../gdu/gdu-volume.c:90
 msgid "HD DVD-R Disc"
-msgstr ""
+msgstr "HD DVD-R Disc"
 
 #: ../gdu/gdu-volume.c:90
 msgid "Blank HD DVD-R Disc"
-msgstr ""
+msgstr "Blank HD DVD-R Disc"
 
 #: ../gdu/gdu-volume.c:91
 msgid "HD DVD-RW Disc"
-msgstr ""
+msgstr "HD DVD-RW Disc"
 
 #: ../gdu/gdu-volume.c:91
 msgid "Blank HD DVD-RW Disc"
-msgstr ""
+msgstr "Blank HD DVD-RW Disc"
 
 #: ../gdu/gdu-volume.c:92
 msgid "MO Disc"
-msgstr ""
+msgstr "MO Disc"
 
 #: ../gdu/gdu-volume.c:92
 msgid "Blank MO Disc"
-msgstr ""
+msgstr "Blank MO Disc"
 
 #: ../gdu/gdu-volume.c:93
 msgid "MRW Disc"
-msgstr ""
+msgstr "MRW Disc"
 
 #: ../gdu/gdu-volume.c:93
 msgid "Blank MRW Disc"
-msgstr ""
+msgstr "Blank MRW Disc"
 
 #: ../gdu/gdu-volume.c:94
 msgid "MRW/W Disc"
-msgstr ""
+msgstr "MRW/W Disc"
 
 #: ../gdu/gdu-volume.c:94
 msgid "Blank MRW/W Disc"
-msgstr ""
+msgstr "Blank MRW/W Disc"
 
 #: ../gdu/gdu-volume.c:276
 msgid "Blank Optical Disc"
-msgstr ""
+msgstr "Blank Optical Disc"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
@@ -1666,11 +1666,11 @@ msgstr ""
 #: ../gdu/gdu-volume.c:286
 #, c-format
 msgid "%s Extended"
-msgstr ""
+msgstr "%s Extended"
 
 #: ../gdu/gdu-volume.c:287
 msgid "Contains logical partitions"
-msgstr ""
+msgstr "Contains logical partitions"
 
 #. Translators: Label for an extended partition
 #. * %s is the size, formatted like '45 GB'
@@ -1678,11 +1678,11 @@ msgstr ""
 #: ../gdu/gdu-volume.c:302
 #, c-format
 msgid "%s Encrypted"
-msgstr ""
+msgstr "%s Encrypted"
 
 #: ../gdu/gdu-volume.c:312
 msgid "Optical Disc"
-msgstr ""
+msgstr "Optical Disc"
 
 #. Translators: Label for a partition with a filesystem
 #. * %s is the size, formatted like '45 GB'
@@ -1690,7 +1690,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:318
 #, c-format
 msgid "%s Filesystem"
-msgstr ""
+msgstr "%s Filesystem"
 
 #. Translators: Label for a partition table
 #. * %s is the size, formatted like '45 GB'
@@ -1698,7 +1698,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:324
 #, c-format
 msgid "%s Partition Table"
-msgstr ""
+msgstr "%s Partition Table"
 
 #. Translators: Label for a LVM volume
 #. * %s is the size, formatted like '45 GB'
@@ -1706,13 +1706,13 @@ msgstr ""
 #: ../gdu/gdu-volume.c:330
 #, c-format
 msgid "%s LVM2 Physical Volume"
-msgstr ""
+msgstr "%s LVM2 Physical Volume"
 
 #. Translators: Used if no specific RAID level could be determined
 #: ../gdu/gdu-volume.c:343
 msgctxt "RAID level"
 msgid "RAID"
-msgstr ""
+msgstr "RAID"
 
 #. Translators: label for a RAID component
 #. * First %s is the size, formatted like '45 GB'
@@ -1722,7 +1722,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:361
 #, c-format
 msgid "%s %s Component"
-msgstr ""
+msgstr "%s %s Component"
 
 #. Translators: description for a RAID component
 #. * First %s is the array name, e.g. 'My Photos RAID',
@@ -1730,7 +1730,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:354
 #, c-format
 msgid "Part of \"%s\" array"
-msgstr ""
+msgstr "Part of \"%s\" array"
 
 #. Translators: label for a swap partition
 #. * %s is the size, formatted like '45 GB'
@@ -1738,7 +1738,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:372
 #, c-format
 msgid "%s Swap Space"
-msgstr ""
+msgstr "%s Swap Space"
 
 #. Translators: label for a data partition
 #. * %s is the size, formatted like '45 GB'
@@ -1746,7 +1746,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:377
 #, c-format
 msgid "%s Data"
-msgstr ""
+msgstr "%s Data"
 
 #. Translators: label for a volume of unrecognized use
 #. * %s is the size, formatted like '45 GB'
@@ -1755,12 +1755,12 @@ msgstr ""
 #: ../gdu/gdu-volume.c:399
 #, c-format
 msgid "%s Unrecognized"
-msgstr ""
+msgstr "%s Unrecognised"
 
 #. Translators: description for a volume of unrecognized use
 #: ../gdu/gdu-volume.c:385
 msgid "Unknown or Unused"
-msgstr ""
+msgstr "Unknown or Unused"
 
 #. Translators: label for a partition
 #. * %s is the size, formatted like '45 GB'
@@ -1769,7 +1769,7 @@ msgstr ""
 #: ../gdu/gdu-volume.c:394
 #, c-format
 msgid "%s Partition"
-msgstr ""
+msgstr "%s Partition"
 
 #. Translators: The VPD name for a volume. The %d is the partition number
 #. * and the %s is the VPD name for the drive.
@@ -1777,14 +1777,14 @@ msgstr ""
 #: ../gdu/gdu-volume.c:430
 #, c-format
 msgid "Partition %d of %s"
-msgstr ""
+msgstr "Partition %d of %s"
 
 #. Translators: The VPD name for a volume. The %d is the partition number.
 #.
 #: ../gdu/gdu-volume.c:436
 #, c-format
 msgid "Partition %d"
-msgstr ""
+msgstr "Partition %d"
 
 #. Translators: The VPD name for a whole-disk volume.
 #. * The %s is the VPD name for the drive.
@@ -1792,19 +1792,19 @@ msgstr ""
 #: ../gdu/gdu-volume.c:444
 #, c-format
 msgid "Whole-disk volume on %s"
-msgstr ""
+msgstr "Whole-disk volume on %s"
 
 #. Translators: The VPD name for a whole-disk volume.
 #.
 #: ../gdu/gdu-volume.c:449
 msgid "Whole-disk volume"
-msgstr ""
+msgstr "Whole-disk volume"
 
 #. translators:
 #. * The device has been disabled
 #: ../gvc/gvc-mixer-control.c:1003
 msgid "Disabled"
-msgstr ""
+msgstr "Disabled"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -1812,8 +1812,8 @@ msgstr ""
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u Output"
+msgstr[1] "%u Outputs"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1821,161 +1821,163 @@ msgstr[1] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u Input"
+msgstr[1] "%u Inputs"
 
 #: ../gvc/gvc-mixer-control.c:1316
 msgid "System Sounds"
-msgstr ""
+msgstr "System Sounds"
 
 #: ../power-icon/src/moblin-power-icon.c:46
 msgid "Moblin Power Icon"
-msgstr ""
+msgstr "MeeGo Power Icon"
 
 #: ../power-icon/src/mpd-power-icon.c:72
 msgid "Running low on battery"
-msgstr ""
+msgstr "Running low on battery"
 
 #: ../power-icon/src/mpd-power-icon.c:73
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr ""
+msgstr "We've noticed that your battery is running a bit low. It would be a good idea to plug in and top up."
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Getting close to empty"
-msgstr ""
+msgstr "Getting close to empty"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr ""
+msgstr "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Danger!"
-msgstr ""
+msgstr "Danger!"
 
 #: ../power-icon/src/mpd-power-icon.c:82
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr ""
+msgstr "Sorry, your computer is about to run out of battery. We're going to turn off now. Please save your work and hope to see you again soon."
 
 #: ../power-icon/src/mpd-power-icon.c:300
 msgid "Would you like to turn off now?"
-msgstr ""
+msgstr "Would you like to turn off now?"
 
 #: ../power-icon/src/mpd-power-icon.c:301
 msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr ""
+msgstr "If you don't decide I'll turn off in 30 seconds."
 
 #: ../power-icon/src/mpd-power-icon.c:368
 msgid "battery"
-msgstr ""
+msgstr "battery"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:75
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr ""
+msgstr "If you don't decide, I'll turn off in %d seconds."
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
 msgid "Turn off"
-msgstr ""
+msgstr "Turn off"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr ""
+msgstr "Sorry, you don't appear to have a battery installed."
 
 #: ../src/mpd-battery-device.c:337
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr ""
+msgstr "Your battery is charging. It is about %d%% full."
 
 #: ../src/mpd-battery-device.c:342
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr ""
+msgstr "Your battery is being used. It is about %d%% full."
 
 #: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr ""
+msgstr "Your battery is fully charged and you're ready to go."
 
 #: ../src/mpd-battery-device.c:351
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr ""
+msgstr "Sorry, it looks like your battery is broken."
 
 #: ../src/mpd-computer-pane.c:111
 msgid "All settings"
-msgstr ""
+msgstr "All settings"
 
 #: ../src/mpd-default-device-tile.c:100
 msgid ""
 "Plug in a device\n"
 "and it will be automatically detected."
 msgstr ""
+"Plug in a device\n"
+"and it will automatically be detected."
 
 #: ../src/mpd-disk-tile.c:64
 #, c-format
 msgid "You are using %d%% of %s"
-msgstr ""
+msgstr "You are using %d%% of %s"
 
 #: ../src/mpd-folder-pane.c:91
 msgid "Your computer"
-msgstr ""
+msgstr "Your computer"
 
 #: ../src/mpd-storage-device-tile.c:96
 #, c-format
 msgid "Using %d%% of %s"
-msgstr ""
+msgstr "Using %d%% of %s"
 
 #: ../src/mpd-storage-device-tile.c:383
 msgid "Eject"
-msgstr ""
+msgstr "Eject"
 
 #: ../src/mpd-storage-device-tile.c:388
 msgid "Open"
-msgstr ""
+msgstr "Open"
 
 #: ../src/mpd-volume-tile.c:110
 msgid "Turned up to 11"
-msgstr ""
+msgstr "Turned up to 11"
 
 #: ../src/mpd-volume-tile.c:112
 msgid "Very loud"
-msgstr ""
+msgstr "Very loud"
 
 #: ../src/mpd-volume-tile.c:114
 msgid "Loud"
-msgstr ""
+msgstr "Loud"
 
 #: ../src/mpd-volume-tile.c:116
 msgid "Fairly loud"
-msgstr ""
+msgstr "Fairly loud"
 
 #: ../src/mpd-volume-tile.c:118
 msgid "Middle of the road"
-msgstr ""
+msgstr "Middle of the road"
 
 #: ../src/mpd-volume-tile.c:120
 msgid "Fairly quiet"
-msgstr ""
+msgstr "Fairly quiet"
 
 #: ../src/mpd-volume-tile.c:122
 msgid "Quiet"
-msgstr ""
+msgstr "Quiet"
 
 #: ../src/mpd-volume-tile.c:124
 msgid "Very quiet"
-msgstr ""
+msgstr "Very quiet"
 
 #: ../src/mpd-volume-tile.c:126
 msgid "Silent"
-msgstr ""
+msgstr "Silent"
 
 #. Tile label
 #: ../src/mpd-volume-tile.c:306
 msgid "Netbook volume"
-msgstr ""
+msgstr "Netbook volume"
 
 #: ../src/mpd-volume-tile.c:345
 msgid "Mute"
-msgstr ""
+msgstr "Mute"
 
