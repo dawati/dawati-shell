@@ -3,6 +3,7 @@ capplet/data/moblin-toolbar-properties.desktop.in
 capplet/src/moblin-toolbar-properties.c
 capplet/src/mtp-toolbar.c
 capplet/src/mtp-bin.c
+capplet/src/mtp-jar.c
 capplet/src/mtp-clock.c
 capplet/src/mtp-cc-panel.c
 capplet/data/system-tray-properties.desktop.in
