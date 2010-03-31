@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MeeGo Panel Devices\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-27 09:44+0000\n"
-"PO-Revision-Date: 2010-03-31 10:40-0800\n"
+"PO-Revision-Date: 2010-03-31 11:24-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -1099,128 +1099,128 @@ msgstr "W95 FAT32 (0x0b)"
 
 #: ../gdu/gdu-util.c:515
 msgid "W95 FAT32 (LBA) (0x0c)"
-msgstr ""
+msgstr "W95 FAT32 (LBA) (0x0c)"
 
 #: ../gdu/gdu-util.c:516
 msgid "W95 FAT16 (LBA) (0x0e)"
-msgstr ""
+msgstr "W95 FAT16 (LBA) (0x0e)"
 
 #: ../gdu/gdu-util.c:517
 msgid "W95 Ext d (LBA) (0x0f)"
-msgstr ""
+msgstr "W95 Ext d (LBA) (0x0f)"
 
 #: ../gdu/gdu-util.c:518
 msgid "OPUS (0x10)"
-msgstr ""
+msgstr "OPUS (0x10)"
 
 #: ../gdu/gdu-util.c:519
 msgid "Hidden FAT12 (0x11)"
-msgstr ""
+msgstr "Hidden FAT12 (0x11)"
 
 #: ../gdu/gdu-util.c:520
 msgid "Compaq diagnostics (0x12)"
-msgstr ""
+msgstr "Compaq diagnostics (0x12)"
 
 #: ../gdu/gdu-util.c:521
 msgid "Hidden FAT16 <32M (0x14)"
-msgstr ""
+msgstr "Hidden FAT16 <32M (0x14)"
 
 #: ../gdu/gdu-util.c:522
 msgid "Hidden FAT16 (0x16)"
-msgstr ""
+msgstr "Hidden FAT16 (0x16)"
 
 #: ../gdu/gdu-util.c:523
 msgid "Hidden HPFS/NTFS (0x17)"
-msgstr ""
+msgstr "Hidden HPFS/NTFS (0x17)"
 
 #: ../gdu/gdu-util.c:524
 msgid "Hidden W95 FAT32 (0x1b)"
-msgstr ""
+msgstr "Hidden W95 FAT32 (0x1b)"
 
 #: ../gdu/gdu-util.c:525
 msgid "Hidden W95 FAT32 (LBA) (0x1c)"
-msgstr ""
+msgstr "Hidden W95 FAT32 (LBA) (0x1c)"
 
 #: ../gdu/gdu-util.c:526
 msgid "Hidden W95 FAT16 (LBA) (0x1e)"
-msgstr ""
+msgstr "Hidden W95 FAT16 (LBA) (0x1e)"
 
 #: ../gdu/gdu-util.c:527
 msgid "PartitionMagic (0x3c)"
-msgstr ""
+msgstr "PartitionMagic (0x3c)"
 
 #: ../gdu/gdu-util.c:528
 msgid "Minix (0x81)"
-msgstr ""
+msgstr "Minix (0x81)"
 
 #. cf. http://en.wikipedia.org/wiki/MINIX_file_system
 #: ../gdu/gdu-util.c:529
 msgid "Linux swap (0x82)"
-msgstr ""
+msgstr "Linux swap (0x82)"
 
 #: ../gdu/gdu-util.c:530
 msgid "Linux (0x83)"
-msgstr ""
+msgstr "Linux (0x83)"
 
 #: ../gdu/gdu-util.c:531
 msgid "Hibernation (0x84)"
-msgstr ""
+msgstr "Hibernation (0x84)"
 
 #: ../gdu/gdu-util.c:532
 msgid "Linux Extended (0x85)"
-msgstr ""
+msgstr "Linux Extended (0x85)"
 
 #: ../gdu/gdu-util.c:533
 msgid "Linux LVM (0x8e)"
-msgstr ""
+msgstr "Linux LVM (0x8e)"
 
 #: ../gdu/gdu-util.c:534
 msgid "Hibernation (0xa0)"
-msgstr ""
+msgstr "Hibernation (0xa0)"
 
 #: ../gdu/gdu-util.c:535
 msgid "FreeBSD (0xa5)"
-msgstr ""
+msgstr "FreeBSD (0xa5)"
 
 #: ../gdu/gdu-util.c:536
 msgid "OpenBSD (0xa6)"
-msgstr ""
+msgstr "OpenBSD (0xa6)"
 
 #: ../gdu/gdu-util.c:537
 msgid "Mac OS X (0xa8)"
-msgstr ""
+msgstr "Mac OS X (0xa8)"
 
 #: ../gdu/gdu-util.c:538
 msgid "Mac OS X (0xaf)"
-msgstr ""
+msgstr "Mac OS X (0xaf)"
 
 #: ../gdu/gdu-util.c:539
 msgid "Solaris boot (0xbe)"
-msgstr ""
+msgstr "Solaris boot (0xbe)"
 
 #: ../gdu/gdu-util.c:540
 msgid "Solaris (0xbf)"
-msgstr ""
+msgstr "Solaris (0xbf)"
 
 #: ../gdu/gdu-util.c:541
 msgid "BeOS BFS (0xeb)"
-msgstr ""
+msgstr "BeOS BFS (0xeb)"
 
 #: ../gdu/gdu-util.c:542
 msgid "SkyOS SkyFS (0xec)"
-msgstr ""
+msgstr "SkyOS SkyFS (0xec)"
 
 #: ../gdu/gdu-util.c:543
 msgid "EFI GPT (0xee)"
-msgstr ""
+msgstr "EFI GPT (0xee)"
 
 #: ../gdu/gdu-util.c:544
 msgid "EFI (FAT-12/16/32 (0xef)"
-msgstr ""
+msgstr "EFI (FAT-12/16/32 (0xef)"
 
 #: ../gdu/gdu-util.c:545
 msgid "Linux RAID autodetect (0xfd)"
-msgstr ""
+msgstr "Linux RAID autodetect (0xfd)"
 
 #. Translators: Shown for unknown partition types.
 #. * %s is the partition type name
@@ -1228,120 +1228,120 @@ msgstr ""
 #: ../gdu/gdu-util.c:572
 #, c-format
 msgid "Unknown (%s)"
-msgstr ""
+msgstr "Unknown (%s)"
 
 #: ../gdu/gdu-util.c:582
 msgid "A popular format compatible with almost any device or system, typically used for file exchange."
-msgstr ""
+msgstr "A popular format compatible with almost any device or system, typically used for file exchange."
 
 #: ../gdu/gdu-util.c:586
 msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
-msgstr ""
+msgstr "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
 
 #: ../gdu/gdu-util.c:592
 msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
-msgstr ""
+msgstr "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
 
 #: ../gdu/gdu-util.c:596
 msgid "Swap area used by the operating system for virtual memory."
-msgstr ""
+msgstr "Swap area used by the operating system for virtual memory."
 
 #: ../gdu/gdu-util.c:599
 msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
-msgstr ""
+msgstr "The native Windows file system. Not widely compatible with other operating systems than Windows."
 
 #: ../gdu/gdu-util.c:603
 msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
-msgstr ""
+msgstr "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
 
 #: ../gdu/gdu-util.c:607
 msgid "No file system will be created."
-msgstr ""
+msgstr "No file system will be created."
 
 #: ../gdu/gdu-util.c:610
 msgid "Create an Extended Partition for logical partitions."
-msgstr ""
+msgstr "Create an Extended Partition for logical partitions."
 
 #: ../gdu/gdu-util.c:623
 msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
-msgstr ""
+msgstr "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
 
 #: ../gdu/gdu-util.c:628
 msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
-msgstr ""
+msgstr "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
 
 #: ../gdu/gdu-util.c:633
 msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
-msgstr ""
+msgstr "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
 
 #: ../gdu/gdu-util.c:637
 msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
-msgstr ""
+msgstr "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for example, whole disk use or floppy / Zip disks."
 
 #: ../gdu/gdu-util.c:828
 #, c-format
 msgid "LUKS Passphrase for UUID %s"
-msgstr ""
+msgstr "LUKS Passphrase for UUID %s"
 
 #: ../gdu/gdu-util.c:888
 #, c-format
 msgid "%.1f KB/s"
-msgstr ""
+msgstr "%.1f KB/s"
 
 #: ../gdu/gdu-util.c:891
 #, c-format
 msgid "%.1f MB/s"
-msgstr ""
+msgstr "%.1f MB/s"
 
 #: ../gdu/gdu-util.c:894
 #, c-format
 msgid "%.1f GB/s"
-msgstr ""
+msgstr "%.1f GB/s"
 
 #. Translators: interface name for serial ATA disks
 #: ../gdu/gdu-util.c:910
 msgid "SATA"
-msgstr ""
+msgstr "SATA"
 
 #. Translators: interface name for serial ATA disks
 #: ../gdu/gdu-util.c:913
 msgid "eSATA"
-msgstr ""
+msgstr "eSATA"
 
 #. Translators: interface name for parallel ATA disks
 #: ../gdu/gdu-util.c:916
 msgid "PATA"
-msgstr ""
+msgstr "PATA"
 
 #. Translators: interface name for ATA disks
 #: ../gdu/gdu-util.c:919
 msgid "ATA"
-msgstr ""
+msgstr "ATA"
 
 #. Translators: interface name for SCSI disks
 #: ../gdu/gdu-util.c:922
 msgid "SCSI"
-msgstr ""
+msgstr "SCSI"
 
 #. Translators: interface name for USB disks
 #: ../gdu/gdu-util.c:925
 msgid "USB"
-msgstr ""
+msgstr "USB"
 
 #. Translators: interface name for firewire disks
 #: ../gdu/gdu-util.c:928
 msgid "Firewire"
-msgstr ""
+msgstr "Firewire"
 
 #. Translators: interface name for SDIO disks
 #: ../gdu/gdu-util.c:931
 msgid "SDIO"
-msgstr ""
+msgstr "SDIO"
 
 #. Translators: interface name for virtual disks
 #: ../gdu/gdu-util.c:934
 msgid "Virtual"
-msgstr ""
+msgstr "Virtual"
 
 #. Translators: name shown for unknown disk connection interfaces
 #: ../gdu/gdu-util.c:940
