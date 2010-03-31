@@ -66,12 +66,11 @@
 #define KEY_DIR "/desktop/moblin/toolbar/panels"
 #define KEY_ORDER KEY_DIR "/order"
 
-#define CLOCK_WIDTH 164
-#define BUTTON_SPACING 5
-
+#define BUTTON_SPACING 20
+#define BUTTON_SPACING_INITIAL 13
 #define MNB_TOOLBAR_MAX_APPLETS 4
 #define TRAY_WIDTH 200
-#define TRAY_PADDING   0
+#define TRAY_PADDING   4
 
 #define TOOLBAR_TRIGGER_THRESHOLD       1
 #define TOOLBAR_TRIGGER_ADJUSTMENT      2
@@ -1966,10 +1965,16 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 
       if (index < priv->max_panels)
         {
-          clutter_actor_set_position (CLUTTER_ACTOR (button),
-                                      TOOLBAR_X_PADDING + BUTTON_SPACING +
-                                      (BUTTON_WIDTH * index)
-                                      + (BUTTON_SPACING * index),
+          gfloat spacing = BUTTON_SPACING_INITIAL +
+            (BUTTON_WIDTH * index);
+
+          if (index > 0)
+            spacing += BUTTON_SPACING_INITIAL + BUTTON_SPACING / 2;
+
+          if (index > 1)
+            spacing += (index - 1) * BUTTON_SPACING;
+
+          clutter_actor_set_position (CLUTTER_ACTOR (button), spacing,
                                       TOOLBAR_HEIGHT - BUTTON_HEIGHT);
 
           mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
@@ -2689,8 +2694,10 @@ mnb_toolbar_constructed (GObject *self)
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
 
-  priv->max_panels = 1 + /* for the clock */
-    (screen_width - CLOCK_WIDTH - TRAY_WIDTH) / (BUTTON_WIDTH + BUTTON_SPACING);
+  priv->max_panels =
+    (screen_width - TRAY_WIDTH -
+     TOOLBAR_X_PADDING - BUTTON_SPACING_INITIAL) /
+    (BUTTON_WIDTH + BUTTON_SPACING);
 
   clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
 

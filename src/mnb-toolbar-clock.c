@@ -279,7 +279,7 @@ mnb_toolbar_clock_get_preferred_width (ClutterActor *self,
 {
   gfloat width;
 
-  width = 164.0;
+  width = CLOCK_WIDTH;
 
   if (min_width_p)
     *min_width_p = width;

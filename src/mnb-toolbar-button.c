@@ -185,7 +185,7 @@ mnb_toolbar_button_get_preferred_width (ClutterActor *self,
 {
   gfloat width;
 
-  width = BUTTON_WIDTH;
+  width = BUTTON_WIDTH + BUTTON_INTERNAL_PADDING;
 
   if (min_width_p)
     *min_width_p = width;
