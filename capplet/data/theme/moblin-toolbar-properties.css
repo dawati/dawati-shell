@@ -16,24 +16,28 @@ MxLabel#time-label {
 
 MxLabel#button-label {
   font-size: 16px;
+  color: #505050;
 }
 
 MxLabel#error-message {
   font-size: 16px;
+  color: #4b4b4b;
 }
 
 MxLabel#available-panels {
   font-size: 19px;
+  color: #4c4e4b;
 }
 
 MxButton#save-button {
   font-size: 19px;
   background-color: #bbb0;
+  color: #31c2ee;
 }
 
 MtpJar {
-  background-color: #fff0;
-  padding: 10 0 10 0;
+  background-color: #f8f8f8;
+  padding: 10 10 10 10;
 }
 
 MxBoxLayout#message-box {
@@ -45,13 +49,13 @@ MxBoxLayout#panel-area, MxBoxLayout#applet-area {
 }
 
 MtpBin {
-  padding: 5;
-  background-color: #fff0;
+  padding: 0 7 7 7;
+  background-color: #f3f3f3;
 }
 
 MtpBin#frameless {
-  padding: 0;
-  background-color: #fff0;
+  padding: 0 7 7 7;
+  background-color: #f3f3f3;
 }
 
 MtpToolbar, MtpToolbar:hover {
