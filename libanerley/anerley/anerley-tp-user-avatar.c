@@ -27,6 +27,8 @@
 
 G_DEFINE_TYPE (AnerleyTpUserAvatar, anerley_tp_user_avatar, CLUTTER_TYPE_TEXTURE);
 
+#define DEFAULT_AVATAR_IMAGE PKG_DATA_DIR "/" "avatar_icon.png"
+
 typedef struct _AnerleyTpUserAvatarPrivate AnerleyTpUserAvatarPrivate;
 struct _AnerleyTpUserAvatarPrivate
 {
@@ -49,6 +51,10 @@ anerley_tp_user_avatar_get_first_avatar (AnerleyTpUserAvatar *self)
 
   if (priv->account_ptr)
     _get_next_avatar (self);
+  else
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (self),
+                                   DEFAULT_AVATAR_IMAGE,
+                                   NULL);
 }
 
 static void
@@ -183,6 +189,9 @@ _account_ready_cb (TpAccount    *account,
       priv->account_ptr = g_list_first (priv->account_ptr);
       g_list_free (priv->account_ptr);
       priv->account_ptr = NULL;
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (userdata),
+                                     DEFAULT_AVATAR_IMAGE,
+                                     NULL);
     }
 }
 
