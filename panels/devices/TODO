@@ -3,10 +3,8 @@ TODO
 ====
 
 * Get rid of gdu code, udisks conditional.
-* ensure_unique_child() before copying.
 * Set font sizes according to "Design Audit.pdf"
 * Split out box widget and move into libmoblin-panel.
-* When importing make sure target filename does not exist yet.
 * Notify about plugged devices from the devices-tile, do not emit for plugged ones when starting up.
 * Notify about busy device when trying to eject.
 * Implement passive notification (toolbar icon change).

@@ -695,21 +695,45 @@ mpd_storage_device_has_media_async (MpdStorageDevice *self)
   file_destroy (dir);
 }
 
-/*
 static GFile *
 ensure_unique_child (GFile      *dir,
                      char const *template,
-                     bool        account_for_suffix)
+                     bool        test_suffix)
 {
-  GFile *child;
+  GFile       *child;
+  char        *basename = NULL;
+  char const  *suffix = NULL;
+  unsigned int i = 0;
+
+  g_return_val_if_fail (dir, NULL);
+  g_return_val_if_fail (template, NULL);
+
+  if (test_suffix)
+  {
+    suffix = strrchr (template, '.');
+    if (NULL == suffix ||
+        0 == g_strcmp0 (template, suffix))
+    {
+      /* No suffix found. */
+      test_suffix = false;
+    } else {
+      basename = g_strndup (template, strlen (template) - strlen (suffix));
+    }
+  }
 
   child = g_file_get_child (dir, template);
   while (g_file_query_exists (child, NULL))
   {
-  TODO
+    char *filename = g_strdup_printf ("%s (%d)%s", basename, ++i, suffix);
+    g_object_unref (child);
+    child = g_file_get_child (dir, filename);
+    g_free (filename);
   }
+
+  g_free (basename);
+
+  return child;
 }
-*/
 
 static GFile *
 ensure_import_subdir (char const   *path,
@@ -720,7 +744,6 @@ ensure_import_subdir (char const   *path,
   char       template[PATH_MAX] = { 0, } /* whatever */;
   GFile     *basedir;
   GFile     *subdir;
-  unsigned int  i = 0;
 
   g_return_val_if_fail (g_file_test (path, G_FILE_TEST_IS_DIR), NULL);
 
@@ -737,15 +760,7 @@ ensure_import_subdir (char const   *path,
     g_date_strftime (template, sizeof (template), "%Y-%m-%d", &date);
   }
 
-  subdir = g_file_get_child (basedir, template);
-  while (g_file_query_exists (subdir, NULL))
-  {
-    char *subdir_name = g_strdup_printf ("%s (%d)", template, ++i);
-    g_object_unref (subdir);
-    subdir = g_file_get_child (basedir, subdir_name);
-    g_free (subdir_name);
-  }
-
+  subdir = ensure_unique_child (basedir, template, false);
   if (!g_file_make_directory (subdir, NULL, error))
   {
     g_object_unref (subdir);
@@ -884,7 +899,7 @@ import_file_async (MpdStorageDevice *self)
   }
 
   target_name = g_path_get_basename (source_path);
-  target_file = g_file_get_child (target_dir, target_name);
+  target_file = ensure_unique_child (target_dir, target_name, true);
   g_file_copy_async (source_file, target_file, G_FILE_COPY_NONE,
                      G_PRIORITY_DEFAULT, priv->cancellable,
                      NULL, NULL,
