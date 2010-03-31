@@ -46,7 +46,9 @@ anerley_tp_user_avatar_get_first_avatar (AnerleyTpUserAvatar *self)
   AnerleyTpUserAvatarPrivate *priv = GET_PRIVATE (self);
 
   priv->account_ptr = tp_account_manager_get_valid_accounts (priv->am);
-  _get_next_avatar (self);
+
+  if (priv->account_ptr)
+    _get_next_avatar (self);
 }
 
 static void
