@@ -93,7 +93,7 @@ _get_avatar_cb (GObject *account,
   if (data->len == 0)
     {
       g_debug ("No avatar for %s",
-               tp_proxy_get_object_path (priv->account_ptr->data));
+               tp_proxy_get_object_path (account));
 
       if (priv->account_ptr != NULL)
         _get_next_avatar (self);
