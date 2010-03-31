@@ -28,14 +28,14 @@
 
 #define TOOLBAR_X_PADDING 4.0
 
-#define CLOCK_WIDTH 164
+#define CLOCK_WIDTH 120
 
-#define BUTTON_WIDTH 66
+#define BUTTON_WIDTH 60
 #define BUTTON_SPACING 10
 
 #define TRAY_WIDTH 170
-#define TRAY_PADDING   3
-#define TRAY_BUTTON_WIDTH 44
+#define TRAY_PADDING   4
+#define TRAY_BUTTON_WIDTH 40
 
 static void mx_droppable_iface_init (MxDroppableIface *iface);
 
@@ -129,7 +129,7 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-  tray_x = box->x2 - box->x1 - 324.0;
+  tray_x = box->x2 - box->x1 - 270.0;
 
   childbox.x1 = padding.left + 4.0;
   childbox.y1 = padding.top;
@@ -175,7 +175,7 @@ mtp_toolbar_constructed (GObject *self)
 
   priv->applet_area = mx_box_layout_new ();
   clutter_actor_set_name (priv->applet_area, "applet-area");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->applet_area), 2);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->applet_area), 0);
   /* mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->applet_area), FALSE); */
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->applet_area), TRUE);
   clutter_actor_set_parent (priv->applet_area, actor);

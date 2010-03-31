@@ -134,7 +134,7 @@ mtp_clock_get_preferred_width (ClutterActor *self,
 {
   gfloat width;
 
-  width = 164.0;
+  width = 120.0;
 
   if (min_width_p)
     *min_width_p = width;
@@ -195,6 +195,7 @@ mtp_clock_update_time_date (MtpClock *clock)
   time_t           t;
   struct tm       *tmp;
   char             time_str[64];
+  char             *time_ptr;
 
   t = time (NULL);
   tmp = localtime (&t);
@@ -228,7 +229,15 @@ mtp_clock_update_time_date (MtpClock *clock)
   else
     snprintf (time_str, 64, "Time");
 
-  mx_label_set_text (MX_LABEL (priv->time), time_str);
+  /*
+   * Strip leading space
+   */
+  if (time_str[0] == ' ')
+    time_ptr = &time_str[1];
+  else
+    time_ptr = &time_str[0];
+
+  mx_label_set_text (MX_LABEL (priv->time), time_ptr);
 
 #if 0
   if (tmp)
