@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin myzone panel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
-"PO-Revision-Date: 2009-11-19 16:24-0800\n"
+"POT-Creation-Date: 2010-03-31 09:30+0000\n"
+"PO-Revision-Date: 2010-03-31 12:43-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,28 +19,74 @@ msgstr ""
 "X-Poedit-Country: UNITED KINGDOM\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>Appointments</b>"
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone panel"
 
-#: ../penge/penge-events-pane.c:59
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Change the Myzone background and content"
+
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf error: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "All further errors shown only on terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Show as much web service content as possible"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Show mostly web service content"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Show half and half"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Show mostly recent files"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Show as many recent files as possible"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "Do you want to clear your recent documents? This will remove the local content from Myzone."
+
+#: ../penge/penge-calendar-pane.c:473
+msgid "Appointments"
+msgstr "Appointments"
+
+#: ../penge/penge-events-pane.c:68
 msgid "Create an appointment"
 msgstr "Create an appointment"
 
-#: ../penge/penge-events-pane.c:60
+#: ../penge/penge-events-pane.c:69
 #: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Add"
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:361
 msgid "No calendar entries this week"
 msgstr "No calendar entries this week"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
 msgstr "Things that your friends do online will appear here. Activate your accounts now!"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "Web page"
 
@@ -48,20 +94,43 @@ msgstr "Web page"
 msgid "Create a new task"
 msgstr "Create a new task"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "Nothing to do today"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "Due %x"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#: ../penge/penge-welcome-tile.c:67
+msgid "Welcome to MeeGo"
+msgstr "Welcome to MeeGo"
 
-#: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "As Moblin is a bit different from other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it. The Moblin Team."
+#: ../penge/penge-welcome-tile.c:86
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "This is Myzone, where your recently used files and content from your web feeds appear."
+
+#: ../penge/penge-email-pane.c:191
+msgid "No unread messages"
+msgstr "No unread messages"
+
+#: ../penge/penge-email-pane.c:193
+msgid "Unread message"
+msgstr "Unread message"
+
+#: ../penge/penge-email-pane.c:195
+msgid "Unread messages"
+msgstr "Unread messages"
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "As Moblin is a bit different from other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it. The Moblin Team."
 
