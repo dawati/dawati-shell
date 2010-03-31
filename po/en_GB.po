@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
@@ -39,38 +39,25 @@ msgstr "Sorry, you'll have to remove a panel before you can add a new one."
 msgid "Available panels"
 msgstr "Available panels"
 
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:215
-#: ../src/mnb-toolbar-clock.c:113
-#, fuzzy
-msgid "%H:%M"
-msgstr "%l:%M %P"
-
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
+#. 
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:225
-#: ../src/mnb-toolbar-clock.c:122
+#. 
+#: ../capplet/src/mtp-clock.c:225 ../src/mnb-toolbar-clock.c:122
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:239
-#: ../src/mnb-toolbar-clock.c:135
+#. 
+#: ../capplet/src/mtp-clock.c:239 ../src/mnb-toolbar-clock.c:135
 msgid "%B %e, %Y"
 msgstr "%e %B, %Y"
 
@@ -140,16 +127,23 @@ msgstr "Dismiss"
 msgid "Dismiss All"
 msgstr "Dismiss All"
 
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:215 ../src/mnb-toolbar-clock.c:113
+msgid "%H:%M"
+msgstr "%l:%M %P"
+
 #~ msgid "zones"
 #~ msgstr "zones"
+
 #~ msgid "No Zones yet"
 #~ msgstr "No Zones yet"
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organise them to your heart's content."
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
+
 #~ msgid "No applications on this zone"
 #~ msgstr "No applications on this zone"
-
