@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "mtp-space.h"
+#include "mtp-jar.h"
 
 G_DEFINE_TYPE (MtpSpace, mtp_space, MX_TYPE_WIDGET);
 
@@ -41,6 +42,7 @@ struct _MtpSpacePrivate
 {
   gboolean applet   : 1;
   gboolean no_pick  : 1;
+  gboolean in_jar   : 1;
   gboolean disposed : 1;
 };
 
@@ -72,12 +74,15 @@ mtp_space_get_preferred_width (ClutterActor *self,
                                gfloat       *natural_width_p)
 {
   MtpSpacePrivate *priv = MTP_SPACE (self)->priv;
+  gfloat           width;
+
+  width = priv->in_jar ? 200.0 : (priv->applet ? 50.0 : 70.0);
 
   if (min_width_p)
-    *min_width_p = priv->applet ? 50.0 : 70.0;
+    *min_width_p = width;
 
   if (natural_width_p)
-    *natural_width_p = priv->applet ? 50.0 : 70.0;
+    *natural_width_p = width;
 }
 
 static void
@@ -137,6 +142,36 @@ mtp_space_paint (ClutterActor *self)
 }
 
 static void
+mtp_space_parent_set (ClutterActor *space, ClutterActor *old_parent)
+{
+  MtpSpacePrivate   *priv = MTP_SPACE (space)->priv;
+  ClutterActor      *stables;
+  ClutterActorClass *klass;
+
+  klass = CLUTTER_ACTOR_CLASS (mtp_space_parent_class);
+
+  if (klass->parent_set)
+    klass->parent_set (space, old_parent);
+
+  stables = clutter_actor_get_parent (space);
+
+  if (!stables)
+    return;
+
+  while (stables && !MTP_IS_JAR (stables))
+    stables = clutter_actor_get_parent (stables);
+
+  if (!stables || !MTP_IS_JAR (stables))
+    {
+      priv->in_jar = FALSE;
+    }
+  else
+    {
+      priv->in_jar   = TRUE;
+    }
+}
+
+static void
 mtp_space_class_init (MtpSpaceClass *klass)
 {
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
@@ -149,6 +184,7 @@ mtp_space_class_init (MtpSpaceClass *klass)
   actor_class->get_preferred_height = mtp_space_get_preferred_height;
   actor_class->pick                 = mtp_space_pick;
   actor_class->paint                = mtp_space_paint;
+  actor_class->parent_set           = mtp_space_parent_set;
 
   object_class->dispose             = mtp_space_dispose;
   object_class->finalize            = mtp_space_finalize;
