@@ -46,7 +46,10 @@ struct _MtpBinPrivate
   GConfClient  *client;
   ClutterActor *toolbar;
   ClutterActor *jar;
-  ClutterActor *err_message;
+  ClutterActor *message;
+
+  gchar *normal_msg;
+  gchar *err_msg;
 
   gboolean disposed : 1;
 };
@@ -327,9 +330,9 @@ mtp_bin_toolbar_free_space_cb (MtpToolbar *toolbar,
   MtpBinPrivate *priv = MTP_BIN (self)->priv;
 
   if (!mtp_toolbar_has_free_space (toolbar))
-    clutter_actor_show (priv->err_message);
+    mx_label_set_text (MX_LABEL (priv->message), priv->err_msg);
   else
-    clutter_actor_hide (priv->err_message);
+    mx_label_set_text (MX_LABEL (priv->message), priv->normal_msg);
 }
 
 static void
@@ -357,24 +360,25 @@ mtp_bin_constructed (GObject *self)
     clutter_actor_set_name (hbox, "message-box");
     clutter_actor_set_name (button, "save-button");
 
-    priv->err_message =
-      mx_label_new_with_text (_("Sorry, you'll have to remove a panel "
-                                "before you can add a new one."));
+    priv->err_msg = _("Sorry, you'll have to remove a panel before you can "
+                      "add a new one.");
+    priv->normal_msg = _("You can add, remove and reorder many of the panels "
+                         "in your toolbar.");
 
-    clutter_actor_set_name (priv->err_message, "error-message");
+    priv->message = mx_label_new_with_text (priv->normal_msg);
+
+    clutter_actor_set_name (priv->message, "error-message");
 
     clutter_container_add (CLUTTER_CONTAINER (box), hbox, NULL);
-    clutter_container_add (CLUTTER_CONTAINER (hbox), priv->err_message,
+    clutter_container_add (CLUTTER_CONTAINER (hbox), priv->message,
                            dummy, button, NULL);
     clutter_container_child_set (CLUTTER_CONTAINER (hbox), dummy,
                                  "expand", TRUE, NULL);
     clutter_container_child_set (CLUTTER_CONTAINER (hbox), button,
                                  "x-align", MX_ALIGN_END,
                                  "y-align", MX_ALIGN_MIDDLE, NULL);
-    clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->err_message,
+    clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->message,
                                  "y-align", MX_ALIGN_MIDDLE, NULL);
-
-    clutter_actor_hide (priv->err_message);
 
     g_signal_connect (button, "clicked",
                       G_CALLBACK (mtp_bin_save_button_clicked_cb),
