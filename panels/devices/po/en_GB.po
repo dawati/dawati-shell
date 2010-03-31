@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MeeGo Panel Devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-17 19:45+0000\n"
-"PO-Revision-Date: 2010-03-17 16:00-0800\n"
+"POT-Creation-Date: 2010-03-27 09:44+0000\n"
+"PO-Revision-Date: 2010-03-31 10:40-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -943,159 +943,159 @@ msgstr "Solaris Alternate Sector Partition"
 
 #: ../gdu/gdu-util.c:469
 msgid "Solaris Reserved Partition"
-msgstr ""
+msgstr "Solaris Reserved Partition"
 
 #: ../gdu/gdu-util.c:470
 msgid "Solaris Reserved Partition (2)"
-msgstr ""
+msgstr "Solaris Reserved Partition (2)"
 
 #: ../gdu/gdu-util.c:471
 msgid "Solaris Reserved Partition (3)"
-msgstr ""
+msgstr "Solaris Reserved Partition (3)"
 
 #: ../gdu/gdu-util.c:472
 msgid "Solaris Reserved Partition (4)"
-msgstr ""
+msgstr "Solaris Reserved Partition (4)"
 
 #: ../gdu/gdu-util.c:473
 msgid "Solaris Reserved Partition (5)"
-msgstr ""
+msgstr "Solaris Reserved Partition (5)"
 
 #. Mac OS X
 #: ../gdu/gdu-util.c:475
 #: ../gdu/gdu-util.c:494
 msgid "Apple HFS/HFS+ Partition"
-msgstr ""
+msgstr "Apple HFS/HFS+ Partition"
 
 #. see http://developer.apple.com/documentation/mac/Devices/Devices-126.html
 #. *     http://lists.apple.com/archives/Darwin-drivers/2003/May/msg00021.html
 #: ../gdu/gdu-util.c:476
 #: ../gdu/gdu-util.c:493
 msgid "Apple UFS Partition"
-msgstr ""
+msgstr "Apple UFS Partition"
 
 #: ../gdu/gdu-util.c:477
 msgid "Apple ZFS Partition"
-msgstr ""
+msgstr "Apple ZFS Partition"
 
 #. Same as Solaris /usr
 #: ../gdu/gdu-util.c:478
 msgid "Apple RAID Partition"
-msgstr ""
+msgstr "Apple RAID Partition"
 
 #: ../gdu/gdu-util.c:479
 msgid "Apple RAID Partition (Offline)"
-msgstr ""
+msgstr "Apple RAID Partition (Offline)"
 
 #: ../gdu/gdu-util.c:480
 msgid "Apple Boot Partition"
-msgstr ""
+msgstr "Apple Boot Partition"
 
 #: ../gdu/gdu-util.c:481
 msgid "Apple Label Partition"
-msgstr ""
+msgstr "Apple Label Partition"
 
 #: ../gdu/gdu-util.c:482
 msgid "Apple TV Recovery Partition"
-msgstr ""
+msgstr "Apple TV Recovery Partition"
 
 #. NetBSD
 #: ../gdu/gdu-util.c:484
 msgid "NetBSD Swap Partition"
-msgstr ""
+msgstr "NetBSD Swap Partition"
 
 #: ../gdu/gdu-util.c:485
 msgid "NetBSD FFS Partition"
-msgstr ""
+msgstr "NetBSD FFS Partition"
 
 #: ../gdu/gdu-util.c:486
 msgid "NetBSD LFS Partition"
-msgstr ""
+msgstr "NetBSD LFS Partition"
 
 #: ../gdu/gdu-util.c:487
 msgid "NetBSD RAID Partition"
-msgstr ""
+msgstr "NetBSD RAID Partition"
 
 #: ../gdu/gdu-util.c:488
 msgid "NetBSD Concatenated  Partition"
-msgstr ""
+msgstr "NetBSD Concatenated  Partition"
 
 #: ../gdu/gdu-util.c:489
 msgid "NetBSD Encrypted Partition"
-msgstr ""
+msgstr "NetBSD Encrypted Partition"
 
 #: ../gdu/gdu-util.c:495
 msgid "Apple Partition Map"
-msgstr ""
+msgstr "Apple Partition Map"
 
 #: ../gdu/gdu-util.c:496
 msgid "Unused Partition"
-msgstr ""
+msgstr "Unused Partition"
 
 #: ../gdu/gdu-util.c:497
 msgid "Empty Partition"
-msgstr ""
+msgstr "Empty Partition"
 
 #: ../gdu/gdu-util.c:498
 msgid "Driver Partition"
-msgstr ""
+msgstr "Driver Partition"
 
 #: ../gdu/gdu-util.c:499
 msgid "Driver 4.3 Partition"
-msgstr ""
+msgstr "Driver 4.3 Partition"
 
 #: ../gdu/gdu-util.c:500
 msgid "ProDOS file system"
-msgstr ""
+msgstr "ProDOS file system"
 
 #: ../gdu/gdu-util.c:501
 msgid "FAT 12"
-msgstr ""
+msgstr "FAT 12"
 
 #: ../gdu/gdu-util.c:502
 msgid "FAT 16"
-msgstr ""
+msgstr "FAT 16"
 
 #: ../gdu/gdu-util.c:503
 msgid "FAT 32"
-msgstr ""
+msgstr "FAT 32"
 
 #: ../gdu/gdu-util.c:504
 msgid "FAT 16 (Windows)"
-msgstr ""
+msgstr "FAT 16 (Windows)"
 
 #: ../gdu/gdu-util.c:505
 msgid "FAT 32 (Windows)"
-msgstr ""
+msgstr "FAT 32 (Windows)"
 
 #. see http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
 #: ../gdu/gdu-util.c:508
 msgid "Empty (0x00)"
-msgstr ""
+msgstr "Empty (0x00)"
 
 #: ../gdu/gdu-util.c:509
 msgid "FAT12 (0x01)"
-msgstr ""
+msgstr "FAT12 (0x01)"
 
 #: ../gdu/gdu-util.c:510
 msgid "FAT16 <32M (0x04)"
-msgstr ""
+msgstr "FAT16 <32M (0x04)"
 
 #: ../gdu/gdu-util.c:511
 msgid "Extended (0x05)"
-msgstr ""
+msgstr "Extended (0x05)"
 
 #: ../gdu/gdu-util.c:512
 msgid "FAT16 (0x06)"
-msgstr ""
+msgstr "FAT16 (0x06)"
 
 #: ../gdu/gdu-util.c:513
 msgid "HPFS/NTFS (0x07)"
-msgstr ""
+msgstr "HPFS/NTFS (0x07)"
 
 #: ../gdu/gdu-util.c:514
 msgid "W95 FAT32 (0x0b)"
-msgstr ""
+msgstr "W95 FAT32 (0x0b)"
 
 #: ../gdu/gdu-util.c:515
 msgid "W95 FAT32 (LBA) (0x0c)"
