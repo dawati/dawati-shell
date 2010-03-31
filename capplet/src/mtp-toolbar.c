@@ -343,6 +343,7 @@ mtp_toolbar_drop (MxDroppable         *droppable,
   ClutterActor      *actor = CLUTTER_ACTOR (draggable);
   ClutterActor      *stage = clutter_actor_get_stage (actor);
   MtpToolbarButton  *before = NULL;
+  GList             *area_children = NULL;
 
   /*
    * Check we are not disabled (we should really not be getting drop events on
@@ -398,21 +399,47 @@ mtp_toolbar_drop (MxDroppable         *droppable,
     mtp_toolbar_button_set_dont_pick (tbutton, FALSE);
   }
 
+  if (mtp_toolbar_button_is_applet (tbutton))
+    area_children = clutter_container_get_children (CLUTTER_CONTAINER (
+                                                            priv->applet_area));
+  else
+    area_children = clutter_container_get_children (CLUTTER_CONTAINER (
+                                                            priv->panel_area));
+
+  /*
+   * If the button the drop landed on was required, we only allow the drop
+   * to proceed if it is not the very first button, the position of which
+   * is fixed in stone per the design.
+   */
+  if (before && MTP_IS_TOOLBAR_BUTTON (before) &&
+      mtp_toolbar_button_is_required (before))
+    {
+      GList *l;
+
+      for (l = area_children; l; l = l->next)
+        {
+          if (l->data == before)
+            {
+              if (!l->prev)
+                {
+                  g_list_free (area_children);
+                  g_debug ("Ingoring drop on Myzone button");
+                  return;
+                }
+
+              break;
+            }
+        }
+    }
+
   /*
    * If we do not have a 'before' button, find the first space.
    */
   if (!before)
     {
-      GList *children, *l;
+      GList *l;
 
-      if (mtp_toolbar_button_is_applet (tbutton))
-        children = clutter_container_get_children (CLUTTER_CONTAINER (
-                                                          priv->applet_area));
-      else
-        children = clutter_container_get_children (CLUTTER_CONTAINER (
-                                                          priv->panel_area));
-
-      for (l = children; l; l = l->next)
+      for (l = area_children; l; l = l->next)
         {
           /*
            * The first space will be removed, so the space we want to insert
@@ -424,9 +451,9 @@ mtp_toolbar_drop (MxDroppable         *droppable,
               break;
             }
         }
-
-      g_list_free (children);
     }
+
+  g_list_free (area_children);
 
   if (mtp_toolbar_remove_space (toolbar,
                                 mtp_toolbar_button_is_applet (tbutton)))
