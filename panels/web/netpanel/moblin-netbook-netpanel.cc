@@ -473,7 +473,6 @@ moblin_netbook_netpanel_button_press (MoblinNetbookNetpanel *netpanel)
     return;
 
   MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
-
   if (priv->entry)
     mnb_netpanel_bar_button_press_cb(NULL, NULL,
                                      MNB_NETPANEL_BAR (priv->entry));
@@ -507,8 +506,12 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
       remaining = ptr + 1;
     }
 
+  std::string browser_exec(priv->browser_name);
+  if (browser_exec == "chromium")
+    browser_exec.append("-browser");
+
   exec = g_strdup_printf ("%s %s \"%s%s\"",
-                          priv->browser_name,
+                          browser_exec.c_str(),
                           "",
                           prefix, remaining);
 
@@ -988,6 +991,8 @@ moblin_netbook_netpanel_show (ClutterActor *actor)
   MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
 
+  ChromeProfileProvider::GetInstance()->Initialize(priv->browser_name);
+
   moblin_netbook_netpanel_focus (netpanel);
 
   request_live_previews (netpanel);
@@ -1001,6 +1006,8 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
   guint i;
+
+  ChromeProfileProvider::GetInstance()->Uninitialize();
 
   moblin_netbook_netpanel_clear (netpanel);
 

@@ -56,28 +56,12 @@ class ChromeProfileProvider : public NotificationObserver {
 public:
   typedef unsigned char service_type;
 
-  ChromeProfileProvider() :
-    profile_(NULL),
-    history_service_(NULL),
-    session_service_(NULL),
-    autocompletion_controller_(NULL),
-    session_context_(NULL),
-    session_callback_(NULL),
-    session_expback_(NULL),
-    favorite_context_(NULL),
-    favorite_callback_(NULL),
-    favorite_expback_(NULL),
-    autocompletion_context_(NULL),
-    autocompletion_callback_(NULL),
-    autocompletion_expback_(NULL)
-      {}
-
-  ~ChromeProfileProvider() {
-    if (autocompletion_controller_)
-      delete autocompletion_controller_;
-  }
+  ChromeProfileProvider();
+  ~ChromeProfileProvider();
 
   bool Initialize (const char* config_dir_name);
+  void Uninitialize ();
+
   static ChromeProfileProvider* GetInstance();
 
   Profile* GetProfile()    { return profile_;    }
@@ -86,11 +70,11 @@ public:
                          FavoriteCallBack* callback,
                          ExceptionCallback* expback);
 
-  void GetAutoCompleteData (const char*             keyword,
+  void StartAutoComplete   (const char*             keyword,
                             void*                   context,
                             AutoCompletionCallBack* callback,
                             ExceptionCallback* expback);
-  void StopAutoComplete(void);
+  void StopAutoComplete    (void);
 
   void GetSessions         (void*                   context,
                             SessionCallBack*        callback,

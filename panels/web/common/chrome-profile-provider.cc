@@ -22,7 +22,7 @@
 #include "chrome/browser/sessions/session_types.h"
 #include "base/singleton.h"
 
-//#define DEBUG_CHROMIUM_API
+#define DEBUG_CHROMIUM_API
 
 using namespace history;
 
@@ -36,10 +36,36 @@ ChromeProfileProvider* ChromeProfileProvider::GetInstance()
   return g_chrome_profile_provider;
 }
 
+ChromeProfileProvider::ChromeProfileProvider() :
+  profile_(NULL),
+  history_service_(NULL),
+  session_service_(NULL),
+  autocompletion_controller_(NULL),
+  session_context_(NULL),
+  session_callback_(NULL),
+  session_expback_(NULL),
+  favorite_context_(NULL),
+  favorite_callback_(NULL),
+  favorite_expback_(NULL),
+  autocompletion_context_(NULL),
+  autocompletion_callback_(NULL),
+  autocompletion_expback_(NULL)
+{
+}
+
+ChromeProfileProvider::~ChromeProfileProvider() {
+  if (autocompletion_controller_)
+    delete autocompletion_controller_;
+}
+
 bool
 ChromeProfileProvider::Initialize(const char* config_dir_name)
 {
-  // Make a copy and get Chrome default profile
+  if (profile_)
+    return false;
+
+  // TODO: improve the performance
+  // Sync the chrome default profile
   gchar* chrome_profile_path = g_build_filename (g_get_home_dir(),
                                                  ".config",
                                                  config_dir_name,
@@ -53,7 +79,7 @@ ChromeProfileProvider::Initialize(const char* config_dir_name)
   
   g_mkdir_with_parents (panel_profile_path, 0755);
   
-  std::string cmd_line = "cp " + std::string(chrome_profile_path) + " " + std::string(panel_profile_path) + " -a";
+  std::string cmd_line = "rsync -av " + std::string(chrome_profile_path) + " " + std::string(panel_profile_path) + " -a";
 
   //printf("command line: %s\n", cmd_line.c_str());
   
@@ -63,21 +89,33 @@ ChromeProfileProvider::Initialize(const char* config_dir_name)
 
   g_free(chrome_profile_path);
   g_free(panel_profile_path);
-  
+
   profile_ = Profile::CreateProfile(user_data_dir_.AppendASCII("Default"));
   if (!profile_)
     return false;
 
   history_service_ = profile_->GetHistoryService(Profile::EXPLICIT_ACCESS);
-
   session_service_ = profile_->GetSessionService();
 
-  registrar_.Add(this, NotificationType::AUTOCOMPLETE_CONTROLLER_RESULT_UPDATED,
-                 NotificationService::AllSources());
-
-  autocompletion_controller_ = new AutocompleteController(profile_);
+  if (!autocompletion_controller_) {
+    autocompletion_controller_ = new AutocompleteController(profile_);
+    registrar_.Add(this, NotificationType::AUTOCOMPLETE_CONTROLLER_RESULT_UPDATED,
+                   NotificationService::AllSources());
+  }
+  else
+    autocompletion_controller_->SetProfile(profile_);
 
   return true;
+}
+
+void
+ChromeProfileProvider::Uninitialize()
+{
+  if (profile_){
+    // delete profile will destroy the services
+    delete profile_;
+  }
+  profile_ = NULL;
 }
 
 void
@@ -143,10 +181,10 @@ ChromeProfileProvider::OnSegmentUsageAvailable(CancelableRequestProvider::Handle
 }
 
 void
-ChromeProfileProvider::GetAutoCompleteData(const char* keyword, 
-                                           void* context, 
-                                           AutoCompletionCallBack* callback,
-                                           ExceptionCallback* expback)
+ChromeProfileProvider::StartAutoComplete(const char* keyword,
+                                         void* context,
+                                         AutoCompletionCallBack* callback,
+                                         ExceptionCallback* expback)
 {
   autocompletion_context_ = context;
   autocompletion_callback_ = callback;
@@ -157,7 +195,7 @@ ChromeProfileProvider::GetAutoCompleteData(const char* keyword,
       // Fire ac event to UI thread
       autocompletion_controller_->Start(UTF8ToWide(keyword),
                          std::wstring(),  // desired_tld
-                         true,            // prevent_inline_autocomplete
+                         false,            // prevent_inline_autocomplete
                          false,           // prefer_keyword
                          false);          // synchronous_only
     }
@@ -224,10 +262,19 @@ ChromeProfileProvider::Observe(NotificationType type,
                                const NotificationSource& source,
                                const NotificationDetails& details)
 {
-  if (type == NotificationType::AUTOCOMPLETE_CONTROLLER_RESULT_UPDATED)
+  // should check if controller is done to avoid duplicate results
+  if (autocompletion_controller_->done() &&
+      type == NotificationType::AUTOCOMPLETE_CONTROLLER_RESULT_UPDATED)
     {
       AutocompleteResult result;
       result.CopyFrom(*(Details<const AutocompleteResult>(details).ptr()));
+
+      if (result.size() == 0)
+        if (autocompletion_context_ && autocompletion_expback_)
+          {
+            autocompletion_expback_(autocompletion_context_, 0);
+            return;
+          }
 
       for (size_t i = 0; i < result.size(); i++)
         {

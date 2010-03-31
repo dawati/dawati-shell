@@ -50,6 +50,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/chrome_thread.h"
+#include "chrome/browser/user_data_manager.h"
 
 static void
 _client_set_size_cb (MplPanelClient *client,
@@ -141,18 +142,27 @@ main (int    argc,
   scoped_ptr<BrowserProcessImpl> browser_process;
   browser_process.reset(new BrowserProcessImpl(*cmd_line));
 
+  ChromeThread main_thread(ChromeThread::UI, MessageLoop::current());
+
   PrefService* local_state = browser_process->local_state();
   local_state->RegisterStringPref(prefs::kApplicationLocale, L"");
+
+  scoped_ptr<UserDataManager> user_data_manager(UserDataManager::Create());
 
   // Initialize the prefs of the local state.
   browser::RegisterLocalState(local_state);
   g_browser_process->SetApplicationLocale("en-US");
 
-  ChromeProfileProvider* profile_provider = ChromeProfileProvider::GetInstance();
-  profile_provider->Initialize(browser_name.c_str());
+  // Create the child threads.  We need to do this since ChromeThread::PostTask
+  // silently deletes a posted task if the target message loop isn't created.
+  browser_process->db_thread();
+  browser_process->file_thread();
+  browser_process->process_launcher_thread();
+  browser_process->io_thread();
 
-  if (browser_name == "chromium")
-    browser_name.append("-browser");
+  // XXX: have to init chrome profile prover after thread creation
+  // Init chrome profile provider
+  ChromeProfileProvider::GetInstance()->Initialize(browser_name.c_str());
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);

@@ -33,10 +33,6 @@ extern "C" {
 #include "chrome-profile-provider.h"
 #include "base/message_loop.h"
 
-extern ChromeProfileProvider *g_chrome_favorite_provider;
-extern ChromeProfileProvider *g_chrome_session_provider;
-extern ChromeProfileProvider *g_chrome_ac_provider;
-
 G_DEFINE_TYPE (MwbAcList, mwb_ac_list, MX_TYPE_WIDGET);
 
 #define MWB_AC_LIST_PRIVATE(o) \
@@ -811,6 +807,7 @@ mwb_ac_list_unmap (ClutterActor *actor)
       clutter_actor_unmap (CLUTTER_ACTOR (entry->label_actor));
       clutter_actor_unmap (CLUTTER_ACTOR (entry->highlight_widget));
     }
+
   ChromeProfileProvider::GetInstance()->StopAutoComplete();
 }
 
@@ -1018,9 +1015,8 @@ static void
 mwb_ac_list_result_exception(void *context,
                              int errno)
 {
-  MwbAcList* self = (MwbAcList*)context;
-  MwbAcListPrivate *priv = self->priv;
-
+  //MwbAcList* self = (MwbAcList*)context;
+  //MwbAcListPrivate *priv = self->priv;
   return;
 }
 
@@ -1382,6 +1378,7 @@ mwb_ac_list_set_search_text (MwbAcList *self,
        */
       if (priv->clear_timeout)
         g_source_remove (priv->clear_timeout);
+
       priv->clear_timeout = g_timeout_add (100, (GSourceFunc)
                                            mwb_ac_list_clear_timeout_cb,
                                            self);
@@ -1391,9 +1388,9 @@ mwb_ac_list_set_search_text (MwbAcList *self,
       if (search_text_len == 0)
         return;
 
-      ChromeProfileProvider::GetInstance()->GetAutoCompleteData(search_text, self,
-                                                                mwb_ac_list_result_received,
-                                                                mwb_ac_list_result_exception);
+      ChromeProfileProvider::GetInstance()->StartAutoComplete(search_text, self,
+                                                              mwb_ac_list_result_received,
+                                                              mwb_ac_list_result_exception);
     }
 }
 
