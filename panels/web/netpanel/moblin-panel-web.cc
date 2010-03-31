@@ -157,7 +157,6 @@ main (int    argc,
   // silently deletes a posted task if the target message loop isn't created.
   browser_process->db_thread();
   browser_process->file_thread();
-  browser_process->process_launcher_thread();
   browser_process->io_thread();
 
   // XXX: have to init chrome profile prover after thread creation
