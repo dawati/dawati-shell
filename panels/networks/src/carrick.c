@@ -326,24 +326,46 @@ main (int    argc,
       gtk_widget_show (window);
   } else {
 #if WITH_MOBLIN
-      panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
-                                                        _("network"),
-                                                        THEME_DIR "/network-applet.css",
-                                                        "offline",
-                                                        TRUE);
-      g_signal_connect (panel_client,
-                        "set-size",
-                        (GCallback) _client_set_size_cb,
-                        applet);
-      window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
-      gtk_container_add (GTK_CONTAINER (window), pane);
+    GdkScreen *screen;
+    GtkWidget *box, *label;
+    char *s;
 
-      g_signal_connect (pane,
-                        "connection-changed",
-                        (GCallback) _connection_changed_cb,
-                        panel_client);
+    panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
+                                      _("network"),
+                                      THEME_DIR "/network-applet.css",
+                                      "offline",
+                                      TRUE);
+    g_signal_connect (panel_client,
+                      "set-size",
+                      (GCallback) _client_set_size_cb,
+                      applet);
+    window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
 
-      gtk_widget_show_all (pane);
+    box = gtk_vbox_new (FALSE, 0);
+    gtk_container_add (GTK_CONTAINER (window), box);
+
+    label = gtk_label_new (NULL);
+    screen = gdk_screen_get_default ();
+    s = g_strdup_printf ("<span foreground=\"#31c2ee\" weight=\"bold\" size=\"%d\">%s</span>",
+                         (int)(PANGO_SCALE * (22 * 72 / gdk_screen_get_resolution (screen))),
+                         _("Networks"));
+    g_object_set (label,
+                  "label", s,
+                  "use-markup", TRUE,
+                  "xalign", 0.0f,
+                  "xpad", 16,
+                  "ypad", 8,
+                  NULL);
+    g_free (s);
+    gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
+
+    gtk_box_pack_start (GTK_BOX (box), pane, TRUE, TRUE, 0);
+    g_signal_connect (pane,
+                      "connection-changed",
+                      (GCallback) _connection_changed_cb,
+                      panel_client);
+
+    gtk_widget_show_all (box);
 #else
       panel_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
       gtk_window_set_decorated (GTK_WINDOW (panel_window), FALSE);
