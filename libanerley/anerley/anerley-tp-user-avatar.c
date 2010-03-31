@@ -257,9 +257,29 @@ _account_manager_ready (GObject *am,
 }
 
 static void
+anerley_tp_user_avatar_dispose (GObject *self)
+{
+  AnerleyTpUserAvatarPrivate *priv = GET_PRIVATE (self);
+
+  if (priv->am)
+  {
+    g_object_unref (priv->am);
+    priv->am = NULL;
+  }
+
+  if (priv->account_ptr)
+  {
+    priv->account_ptr = g_list_first (priv->account_ptr);
+    g_list_free (priv->account_ptr);
+    priv->account_ptr = NULL;
+  }
+}
+
+static void
 anerley_tp_user_avatar_class_init (AnerleyTpUserAvatarClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  gobject_class->dispose = anerley_tp_user_avatar_dispose;
 
   g_type_class_add_private (gobject_class, sizeof (AnerleyTpUserAvatarPrivate));
 }
