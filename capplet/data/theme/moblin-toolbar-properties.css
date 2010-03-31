@@ -28,7 +28,7 @@ MxLabel#available-panels {
 
 MxButton#save-button {
   font-size: 19px;
-  background-color: #bbbf;
+  background-color: #bbb0;
 }
 
 MtpJar {
@@ -56,11 +56,6 @@ MtpBin#frameless {
 
 MtpToolbar, MtpToolbar:hover {
   border-image: url("panel/panel-background.png") 0 200 0 200;
-}
-
-MxWidget, MxWidget:hover
-{
-  border-image: none;
 }
 
 MtpToolbarButton {
@@ -129,10 +124,12 @@ MnbToolbarButton#devices-button {
 
 MxButton#close-button {
   background-image: url("generic/close-button.png");
+  border-image:none;
 }
 
 MxButton#close-button:hover {
   background-image: url("generic/close-button-hover.png");
+  border-image:none;
 }
 
 MtpSpace {
