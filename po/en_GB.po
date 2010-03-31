@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 23:44+0000\n"
-"PO-Revision-Date: 2009-11-19 14:56-0800\n"
+"POT-Creation-Date: 2010-03-31 09:24+0000\n"
+"PO-Revision-Date: 2010-03-31 12:46-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,33 +19,118 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: UNITED KINGDOM\n"
 
-#: ../src/moblin-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
-msgid "zones"
-msgstr "zones"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Set your toolbar preferences"
 
-#: ../src/moblin-netbook.c:621
-msgid "Moblin Netbook Effects"
-msgstr "Moblin Netbook Effects"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Toolbar settings"
 
-#: ../src/moblin-netbook.c:625
-msgid "Effects for Moblin Netbooks"
-msgstr "Effects for Moblin Netbooks"
+#: ../capplet/src/mtp-bin.c:355
+msgid "Save toolbar"
+msgstr "Save toolbar"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#: ../capplet/src/mtp-bin.c:361
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Sorry, you'll have to remove a panel before you can add a new one."
+
+#: ../capplet/src/mtp-bin.c:389
+msgid "Available panels"
+msgstr "Available panels"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../src/mnb-toolbar.c:668
+#.
+#: ../capplet/src/mtp-clock.c:215
+#: ../src/mnb-toolbar-clock.c:113
+#, fuzzy
+msgid "%H:%M"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:225
+#: ../src/mnb-toolbar-clock.c:122
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../src/mnb-toolbar.c:678
+#.
+#: ../capplet/src/mtp-clock.c:239
+#: ../src/mnb-toolbar-clock.c:135
 msgid "%B %e, %Y"
 msgstr "%e %B, %Y"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Toolbar"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Set your system-tray preferences"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:253
+msgid "System Tray"
+msgstr "System Tray"
+
+#: ../capplet/src/syst-cc-panel.c:170
+msgid "System tray"
+msgstr "System tray"
+
+#: ../capplet/src/syst-cc-panel.c:186
+msgid "Show system tray"
+msgstr "Show system tray"
+
+#: ../capplet/src/syst-cc-panel.c:207
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "The system tray is a concept used by some older applications to let you know when something happens, or to stay running when you close them."
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determines the order of panels on the toolbar."
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Order of panels on toolbar"
+
+#: ../src/moblin-netbook.c:905
+msgid "Moblin Netbook Effects"
+msgstr "Moblin Netbook Effects"
+
+#: ../src/moblin-netbook.c:909
+msgid "Effects for Moblin Netbooks"
+msgstr "Effects for Moblin Netbooks"
+
+#: ../src/moblin-netbook.c:3035
+msgid "Activate"
+msgstr "Activate"
+
+#: ../src/moblin-netbook.c:3049
+msgid "Unknown window"
+msgstr "Unknown window"
+
+#: ../src/moblin-netbook.c:3051
+msgid "Is asking for your attention."
+msgstr "is asking for your attention."
+
+#: ../src/mnb-toolbar.c:965
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Sorry, %s is broken"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -55,26 +140,16 @@ msgstr "Dismiss"
 msgid "Dismiss All"
 msgstr "Dismiss All"
 
-#: ../src/switcher/mnb-switcher.c:307
-msgid "No Zones yet"
-msgstr "No Zones yet"
+#~ msgid "zones"
+#~ msgstr "zones"
+#~ msgid "No Zones yet"
+#~ msgstr "No Zones yet"
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organise them to your heart's content."
+#~ msgid "No applications on this zone"
+#~ msgstr "No applications on this zone"
 
-#: ../src/switcher/mnb-switcher.c:327
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
-
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "No applications on this zone"
-
-#: ../src/moblin-netbook.c:2543
-msgid "Unknown window"
-msgstr "Unknown window"
-
-#: ../src/moblin-netbook.c:2529
-msgid "Activate"
-msgstr "Activate"
-
-#: ../src/moblin-netbook.c:2545
-msgid "Is asking for your attention."
-msgstr "is asking for your attention."
