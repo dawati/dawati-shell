@@ -26,6 +26,7 @@
 
 #include "mtp-jar.h"
 #include "mtp-toolbar-button.h"
+#include "mtp-space.h"
 
 static void mx_droppable_iface_init (MxDroppableIface *iface);
 
@@ -49,6 +50,7 @@ struct _MtpJarPrivate
   ClutterActor *panel_area;
   ClutterActor *applet_area;
   ClutterActor *label;
+  ClutterActor *space;
 
   gboolean enabled  : 1;
   gboolean disposed : 1;
@@ -63,6 +65,8 @@ mtp_jar_dispose (GObject *object)
     return;
 
   priv->disposed = TRUE;
+
+  g_object_unref (priv->space);
 
   G_OBJECT_CLASS (mtp_jar_parent_class)->dispose (object);
 }
@@ -120,6 +124,10 @@ mtp_jar_constructed (GObject *self)
 
   clutter_container_add (CLUTTER_CONTAINER (self),
                          priv->label, scroll1, scroll2, NULL);
+
+  priv->space = mtp_space_new ();
+  g_object_ref_sink (priv->space);
+
 }
 
 static void
@@ -170,18 +178,43 @@ static void
 mtp_jar_over_in (MxDroppable *droppable, MxDraggable *draggable)
 {
   MtpJarPrivate *priv = MTP_JAR (droppable)->priv;
+  MtpToolbarButton *button = MTP_TOOLBAR_BUTTON (draggable);
+  ClutterActor *parent;
 
   if (!priv->enabled)
     return;
+
+  parent = clutter_actor_get_parent (priv->space);
+
+  if (parent)
+    {
+      g_warning (G_STRLOC " Should not have parent here ...");
+      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), priv->space);
+    }
+
+  if (mtp_toolbar_button_is_applet (button))
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->applet_area),
+                                 priv->space);
+  else
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel_area),
+                                 priv->space);
 }
 
 static void
 mtp_jar_over_out (MxDroppable *droppable, MxDraggable *draggable)
 {
   MtpJarPrivate *priv = MTP_JAR (droppable)->priv;
+  ClutterActor  *parent;
 
   if (!priv->enabled)
     return;
+
+  parent = clutter_actor_get_parent (priv->space);
+
+  if (parent)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), priv->space);
+    }
 }
 
 /*
@@ -198,6 +231,7 @@ mtp_jar_drop (MxDroppable       *droppable,
   MtpJar            *jar = MTP_JAR (droppable);
   MtpJarPrivate     *priv = jar->priv;
   ClutterActor      *actor = CLUTTER_ACTOR (draggable);
+  ClutterActor  *parent;
 
   /*
    * Check we are not disabled (we should really not be getting drop events on
@@ -207,6 +241,13 @@ mtp_jar_drop (MxDroppable       *droppable,
     {
       g_warning ("Bug: received a drop on a disabled droppable -- ignoring");
       return;
+    }
+
+  parent = clutter_actor_get_parent (priv->space);
+
+  if (parent)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (parent), priv->space);
     }
 
   clutter_actor_set_size (actor, -1.0, -1.0);
