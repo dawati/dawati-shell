@@ -198,6 +198,27 @@ _get_next_avatar (AnerleyTpUserAvatar *self)
 }
 
 static void
+_account_manager_account_validity_changed_cb (TpAccountManager *am,
+                                              TpAccount        *account,
+                                              gboolean          valid,
+                                              gpointer          userdata)
+{
+  AnerleyTpUserAvatar *self = ANERLEY_TP_USER_AVATAR (userdata);
+
+  anerley_tp_user_avatar_get_first_avatar (self);
+}
+
+static void
+_account_manager_account_removed_cb (TpAccountManager *am,
+                                     TpAccount        *account,
+                                     gpointer          userdata)
+{
+  AnerleyTpUserAvatar *self = ANERLEY_TP_USER_AVATAR (userdata);
+
+  anerley_tp_user_avatar_get_first_avatar (self);
+}
+
+static void
 _account_manager_ready (GObject *am,
                         GAsyncResult *res,
                         gpointer user_data)
@@ -215,6 +236,15 @@ _account_manager_ready (GObject *am,
   g_debug ("Account Manager ready\n");
 
   anerley_tp_user_avatar_get_first_avatar (self);
+
+  g_signal_connect (am,
+                    "account-validity-changed",
+                    (GCallback)_account_manager_account_validity_changed_cb,
+                    user_data);
+  g_signal_connect (am,
+                    "account-removed",
+                    (GCallback)_account_manager_account_removed_cb,
+                    user_data);
 }
 
 static void
