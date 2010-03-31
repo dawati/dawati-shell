@@ -1,58 +1,86 @@
-*#people-vbox {
-  background-color: #ffff;
-  padding: 1 5 5 5;
-}
-
-*#people-search {
-  border-image: url('people-search-bg.png') 4 stretch;
+MnbPeoplePanel
+{
+  border-image: url("panel-background.png") 8 8 8;
   padding: 4;
 }
 
-*#people-search-label {
-  font-family: "Droid Sans";
-  font-size: 18px;
-  padding-left: 12;
-  color: #3e3e3eff;
+*#people-panel-header-label
+{
+  color: #febf00ff;
+  font-size: 22pt;
   font-weight: bold;
+  font-family: "Droid Sans";
 }
 
-/* why does people-search-entry no longer work ?*/
-*#people-search *.MplEntryButton {
-  color: #fba40b;
+*#people-panel-content-header-label,
+*#people-panel-side-box-header-label
+{
+  color: #616261ff;
+  font-size: 16pt;
+  font-weight: bold;
+  font-family: "Droid Sans";
 }
+
+*#people-panel-active-content-header-label
+{
+  color: #616261ff;
+  font-size: 14pt;
+  font-family: "Droid Sans";
+}
+
+*#people-panel-content-header,
+*#people-panel-side-box-header
+{
+  border-image: url("frame-header-background.png") 5;
+  padding: 8;
+}
+
+*#people-panel-me-box
+{
+  border-image: url("box-background.png") 5;
+  padding: 6;
+}
+
+*#people-panel-content-box,
+*#people-panel-side-box
+{
+  border-image: url("frame-background.png") 5;
+  padding: 3;
+}
+
+*#people-panel-me-avatar-frame
+{
+  border-image: url("avatar_frame.png") 4 4 4 4;
+  padding: 2 2 2 2;
+}
+
+*#people-panel-me-label
+{
+  color: #616261ff;
+  font-size: 16pt;
+  font-family: "Droid Sans";
+}
+
 
 *#people-no-people-message-bin,
 *#people-pane-everybody-offline-bin,
 *#people-pane-you-offline-bin
 {
-  border-image: url('grey-backdrop.png') 4;
   padding: 8;
 }
 
-*#people-people-pane-main-label,
+*#people-no-people-message-label,
 *#people-pane-everybody-offline-label,
 *#people-pane-you-offline-label
 {
-  font-size:16px;
+  font-size:16pt;
   font-family: "Droid Sans";
-  color: #595959ff;
+  color: #616261ff;
 }
 
-*#people-no-people-description {
-  font-size:15px;
-  font-family: "Droid Sans";
-  color: #2c2c2cff;
-}
-
-*#people-no-people-launcher
+*#people-panel-messenger-launcher-tile, *#people-panel-settings-launcher-tile
 {
-  padding: 6;
-}
-
-*#people-no-people-launcher:hover
-{
-  border-image: url("tile-bg-hover.png") 4 4 4 4;
-  padding: 6;
+  padding: 12;
 }
 
 /* Anerley */
@@ -120,3 +148,5 @@ AnerleyTile *.AnerleyTilePrimaryLabel
   font-size: 11;
   border-image: url('unread-message-bubble-bg.png') 7 7 7 7;
 }
+
+*/

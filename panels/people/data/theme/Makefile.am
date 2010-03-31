@@ -14,7 +14,11 @@ dist_theme_DATA = \
 	tile-bg-hover.png \
 	active-conversations-header.png \
 	active-content-table-bg.png \
-	unread-message-bubble-bg.png
+	unread-message-bubble-bg.png \
+	box-background.png \
+	frame-header-background.png \
+	frame-background.png \
+	panel-background.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
