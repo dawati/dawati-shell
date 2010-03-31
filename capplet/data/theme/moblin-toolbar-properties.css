@@ -36,8 +36,9 @@ MxButton#save-button {
 }
 
 MtpJar {
-  background-color: #f8f8f8;
+  background-color: #f8f8f800;
   padding: 10 10 10 10;
+  border-image: url("capplet/content-background.png") 40 6 6 6;
 }
 
 MxBoxLayout#message-box {
@@ -59,7 +60,7 @@ MtpBin#frameless {
 }
 
 MtpToolbar, MtpToolbar:hover {
-  border-image: url("panel/panel-background.png") 0 200 0 200;
+  border-image: url("capplet/toolbar-background.png") 0 200 0 200;
 }
 
 MtpToolbarButton {
@@ -127,18 +128,23 @@ MnbToolbarButton#devices-button {
 }
 
 MxButton#close-button {
-  background-image: url("generic/close-button.png");
+  background-image: url("capplet/close-icon.png");
   border-image:none;
 }
 
 MxButton#close-button:hover {
-  background-image: url("generic/close-button-hover.png");
+  background-image: url("capplet/close-icon-hover.png");
   border-image:none;
 }
 
 MtpSpace {
   padding: 0 0 0 0;
   border-image: url("panel/toolbar-button-hover.png") 12;
+}
+
+MtpSpace#in-jar {
+  padding: 0 0 0 0;
+  border-image: url("capplet/drop-target-area.png") 12;
 }
 
 MtpClock {

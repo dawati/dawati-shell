@@ -59,7 +59,6 @@ struct _MtpToolbarPrivate
 {
   ClutterActor *applet_area;
   ClutterActor *panel_area;
-  ClutterActor *shadow;
 
   gboolean free_space : 1;
   gboolean enabled    : 1;
@@ -83,9 +82,6 @@ mtp_toolbar_dispose (GObject *object)
   clutter_actor_destroy (priv->applet_area);
   priv->applet_area = NULL;
 
-  clutter_actor_destroy (priv->shadow);
-  priv->shadow = NULL;
-
   G_OBJECT_CLASS (mtp_toolbar_parent_class)->dispose (object);
 }
 
@@ -98,7 +94,6 @@ mtp_toolbar_map (ClutterActor *actor)
 
   clutter_actor_map (priv->panel_area);
   clutter_actor_map (priv->applet_area);
-  clutter_actor_map (priv->shadow);
 }
 
 static void
@@ -108,7 +103,6 @@ mtp_toolbar_unmap (ClutterActor *actor)
 
   clutter_actor_unmap (priv->panel_area);
   clutter_actor_unmap (priv->applet_area);
-  clutter_actor_unmap (priv->shadow);
 
   CLUTTER_ACTOR_CLASS (mtp_toolbar_parent_class)->unmap (actor);
 }
@@ -150,13 +144,6 @@ mtp_toolbar_allocate (ClutterActor          *actor,
                           FALSE, FALSE);
   clutter_actor_allocate (priv->applet_area, &childbox, flags);
 
-  childbox.x1 = -TOOLBAR_X_PADDING;
-  childbox.x2 = box->x2 - box->x1 + 2 * TOOLBAR_X_PADDING;
-  childbox.y1 = box->y2 - box->y1;
-  childbox.y2 = childbox.y1 + 37;
-
-  clutter_actor_allocate (priv->shadow, &childbox, flags);
-
   mtp_toolbar_fill_space (toolbar);
 }
 
@@ -165,7 +152,6 @@ mtp_toolbar_constructed (GObject *self)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (self)->priv;
   ClutterActor      *actor = CLUTTER_ACTOR (self);
-  ClutterTexture    *sh_texture;
 
   priv->panel_area  = mx_box_layout_new ();
   clutter_actor_set_name (priv->panel_area, "panel-area");
@@ -179,27 +165,6 @@ mtp_toolbar_constructed (GObject *self)
   /* mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->applet_area), FALSE); */
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->applet_area), TRUE);
   clutter_actor_set_parent (priv->applet_area, actor);
-
-    /*
-   * The shadow needs to go into the window group, like the lowlight.
-   */
-  sh_texture = mx_texture_cache_get_texture (mx_texture_cache_get_default (),
-                                             THEMEDIR
-                                             "/panel/panel-shadow.png");
-  if (sh_texture)
-    {
-      ClutterActor *shadow;
-
-      shadow = mx_texture_frame_new (sh_texture,
-                                     0,   /* top */
-                                     200, /* right */
-                                     0,   /* bottom */
-                                     200  /* left */);
-
-      priv->shadow = shadow;
-
-      clutter_actor_set_parent (shadow, actor);
-    }
 }
 
 static void
@@ -491,168 +456,6 @@ mtp_toolbar_paint (ClutterActor *self)
 
   clutter_actor_paint (priv->panel_area);
   clutter_actor_paint (priv->applet_area);
-  clutter_actor_paint (priv->shadow);
-}
-
-static void
-mtp_toolbar_paint_border_image (MxTextureFrame *frame)
-{
-  CoglHandle cogl_texture = COGL_INVALID_HANDLE;
-  CoglHandle cogl_material = COGL_INVALID_HANDLE;
-  ClutterActorBox box = { 0, };
-  gfloat width, height;
-  gfloat tex_width, tex_height;
-  gfloat ex, ey;
-  gfloat tx1, ty1, tx2, ty2;
-  gfloat left, right, top, bottom;
-  guint8 opacity;
-  ClutterTexture *parent_texture;
-  gfloat margin;
-
-  parent_texture = mx_texture_frame_get_parent_texture (frame);
-
-  mx_texture_frame_get_border_values (frame, &top, &right, &bottom, &left);
-
-  /* no need to paint stuff if we don't have a texture */
-  if (G_UNLIKELY (parent_texture == NULL))
-    return;
-
-  /* parent texture may have been hidden, so need to make sure it gets
-   * realized
-   */
-  if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
-    clutter_actor_realize (CLUTTER_ACTOR (parent_texture));
-
-  cogl_texture = clutter_texture_get_cogl_texture (parent_texture);
-
-  if (cogl_texture == COGL_INVALID_HANDLE)
-    return;
-
-  cogl_material = clutter_texture_get_cogl_material (parent_texture);
-
-  if (cogl_material == COGL_INVALID_HANDLE)
-    return;
-
-  tex_width  = cogl_texture_get_width (cogl_texture);
-  tex_height = cogl_texture_get_height (cogl_texture);
-
-  clutter_actor_get_allocation_box ((ClutterActor*) frame, &box);
-
-  width  = box.x2 - box.x1;
-  height = box.y2 - box.y1;
-
-  margin = TOOLBAR_X_PADDING / tex_width;
-
-  tx1 = left / tex_width;
-  tx2 = (tex_width - right) / tex_width;
-  ty1 = top / tex_height;
-  ty2 = (tex_height - bottom) / tex_height;
-
-  ex = width - right;
-  if (ex < 0)
-    ex = right;           /* FIXME ? */
-
-  ey = height - bottom;
-  if (ey < 0)
-    ey = bottom;          /* FIXME ? */
-
-  opacity = clutter_actor_get_paint_opacity ((ClutterActor*)frame);
-
-  cogl_material_set_color4ub (cogl_material,
-                              opacity, opacity, opacity, opacity);
-  cogl_set_source (cogl_material);
-
-  cogl_material_set_layer_filters (cogl_material,
-                                   0,
-                                   COGL_MATERIAL_FILTER_NEAREST,
-                                   COGL_MATERIAL_FILTER_NEAREST);
-
-  {
-    GLfloat rectangles[] =
-    {
-      /* top left corner */
-      0.0, 0.0, left, top,
-      margin, 0.0,
-      tx1, ty1,
-
-      /* top middle */
-      left, 0.0, ex, top,
-      tx1, 0.0,
-      tx2, ty1,
-
-      /* top right */
-      ex, 0.0, width, top,
-      tx2, 0.0,
-      1.0 - margin, ty1,
-
-      /* mid left */
-      0.0, top, left, ey,
-      margin, ty1,
-      tx1, ty2,
-
-      /* center */
-      left, top, ex, ey,
-      tx1, ty1,
-      tx2, ty2,
-
-      /* mid right */
-      ex, top, width, ey,
-      tx2, ty1,
-      1.0 - margin, ty2,
-
-      /* bottom left */
-      0.0, ey, left, height,
-      margin, ty2,
-      tx1, 1.0,
-
-      /* bottom center */
-      left, ey, ex, height,
-      tx1, ty2,
-      tx2, 1.0,
-
-      /* bottom right */
-      ex, ey, width, height,
-      tx2, ty2,
-      1.0 - margin, 1.0
-    };
-
-    cogl_rectangles_with_texture_coords (rectangles, 9);
-  }
-}
-
-static void
-mtp_toolbar_paint_background (MxWidget           *self,
-                              ClutterActor       *background,
-                              const ClutterColor *color)
-{
-  /* Default implementation just draws the background
-   * colour and the image on top
-   */
-  if (color && color->alpha != 0)
-    {
-      ClutterActor *actor = CLUTTER_ACTOR (self);
-      ClutterActorBox allocation = { 0, };
-      ClutterColor bg_color = *color;
-      gfloat w, h;
-
-      bg_color.alpha = clutter_actor_get_paint_opacity (actor)
-                       * bg_color.alpha
-                       / 255;
-
-      clutter_actor_get_allocation_box (actor, &allocation);
-
-      w = allocation.x2 - allocation.x1;
-      h = allocation.y2 - allocation.y1;
-
-      cogl_set_source_color4ub (bg_color.red,
-                                bg_color.green,
-                                bg_color.blue,
-                                bg_color.alpha);
-      cogl_rectangle (TOOLBAR_X_PADDING, 0, w - TOOLBAR_X_PADDING, h);
-    }
-
-  if (background)
-    mtp_toolbar_paint_border_image (MX_TEXTURE_FRAME (background));
 }
 
 static void
@@ -660,7 +463,6 @@ mtp_toolbar_class_init (MtpToolbarClass *klass)
 {
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
   GObjectClass      *object_class = G_OBJECT_CLASS (klass);
-  MxWidgetClass     *widget_class = MX_WIDGET_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MtpToolbarPrivate));
 
@@ -674,8 +476,6 @@ mtp_toolbar_class_init (MtpToolbarClass *klass)
   object_class->dispose           = mtp_toolbar_dispose;
   object_class->set_property      = mtp_toolbar_set_property;
   object_class->get_property      = mtp_toolbar_get_property;
-
-  widget_class->paint_background  = mtp_toolbar_paint_background;
 
   g_object_class_override_property (object_class, ZONE_PROP_ENABLED,
                                     "drop-enabled");

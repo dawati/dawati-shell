@@ -164,10 +164,12 @@ mtp_space_parent_set (ClutterActor *space, ClutterActor *old_parent)
   if (!stables || !MTP_IS_JAR (stables))
     {
       priv->in_jar = FALSE;
+      clutter_actor_set_name (space, NULL);
     }
   else
     {
       priv->in_jar   = TRUE;
+      clutter_actor_set_name (space, "in-jar");
     }
 }
 

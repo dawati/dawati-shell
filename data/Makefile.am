@@ -77,6 +77,14 @@ theme_dropdowndir = $(MUTTER_MOBLIN_THEME_DIR)/drop-down
 dist_theme_dropdown_DATA = \
 	theme/drop-down/panel_shadow.png
 
+theme_cappletdir = $(MUTTER_MOBLIN_THEME_DIR)/capplet
+dist_theme_capplet_DATA = \
+	theme/capplet/close-icon.png		\
+	theme/capplet/close-icon-hover.png	\
+	theme/capplet/content-background.png	\
+	theme/capplet/drop-target-area.png	\
+	theme/capplet/toolbar-background.png
+
 theme_notifiersdir = $(MUTTER_MOBLIN_THEME_DIR)/notifiers
 dist_theme_notifiers_DATA = \
 	theme/notifiers/notification-bg.png	\
