@@ -423,7 +423,6 @@ mtp_toolbar_drop (MxDroppable         *droppable,
               if (!l->prev)
                 {
                   g_list_free (area_children);
-                  g_debug ("Ingoring drop on Myzone button");
                   return;
                 }
 
@@ -1160,6 +1159,7 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
   GList             *l;
   gint               i, n_panels, n_applets, max_panels = 8;
   gfloat             applet_depth = 0.0;
+  gfloat             panel_depth = 0.0;
   gboolean           new_space = FALSE;
   ClutterActor      *stage;
 
@@ -1185,6 +1185,9 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
   l = clutter_container_get_children (CLUTTER_CONTAINER (priv->panel_area));
   n_panels = g_list_length (l);
 
+  if (l)
+    panel_depth = clutter_actor_get_depth (g_list_last (l)->data) + 0.05;
+
   for (i = 0; i < max_panels - n_panels; ++i)
     {
       ClutterActor *space = mtp_space_new ();
@@ -1194,6 +1197,9 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
       clutter_container_child_set (CLUTTER_CONTAINER (priv->panel_area),
                                    space,
                                    "expand", FALSE, NULL);
+
+      clutter_actor_set_depth (space, panel_depth);
+      panel_depth += 0.05;
 
       new_space = TRUE;
     }
