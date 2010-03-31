@@ -61,7 +61,8 @@ dist_theme_DATA = \
 	dismiss_button.png \
 	dismiss_button_hover.png \
 	count-frame.png \
-	count-frame-zero.png
+	count-frame-zero.png \
+	frame-header.png
 
 
 if ENABLE_CACHE

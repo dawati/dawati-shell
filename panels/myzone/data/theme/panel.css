@@ -5,17 +5,24 @@ PengeGridView
 
 PengeCalendarPane
 {
-  border-image: url('backdrop.png') 5 5 5 5;
-  padding: 2;
+  border-image: url('card_frame.png') 5 5 5 5;
+  padding: 4;
 }
 
 PengeAppsPane
 {
-  border-image: url('backdrop.png') 5 5 5 5;
+  border-image: url('card_frame.png') 5 5 5 5;
+  padding: 4;
+}
+
+*.PengeEventsPaneHeader, *.PengeTasksPaneHeader
+{
+  border-image: url('frame-header.png') 4 4 4;
   padding: 2;
 }
 
-MxLabel.PengeCalendarPaneTitle
+
+MxLabel.PengeEventsPaneTitle, MxLabel.PengeTasksPaneTitle
 {
   font-size: 17;
   font-weight: bold;
