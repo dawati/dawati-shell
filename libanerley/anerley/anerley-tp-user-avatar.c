@@ -48,6 +48,11 @@ anerley_tp_user_avatar_get_first_avatar (AnerleyTpUserAvatar *self)
 {
   AnerleyTpUserAvatarPrivate *priv = GET_PRIVATE (self);
 
+  /* free the account list */
+  priv->account_ptr = g_list_first (priv->account_ptr);
+  g_list_free (priv->account_ptr);
+  priv->account_ptr = NULL;
+
   priv->account_ptr = tp_account_manager_get_valid_accounts (priv->am);
 
   if (priv->account_ptr)
@@ -92,24 +97,15 @@ _get_avatar_cb (GObject *account,
 
   if (data->len == 0)
     {
-      g_debug ("No avatar for %s",
+      g_debug (G_STRLOC ": No avatar for %s",
                tp_proxy_get_object_path (account));
 
-      if (priv->account_ptr != NULL)
-        _get_next_avatar (self);
-      else
-        anerley_tp_user_avatar_get_first_avatar (self);
-
+      _get_next_avatar (self);
       return;
     }
 
   g_debug ("Account %s has %u byte avatar",
       tp_proxy_get_object_path (account), data->len);
-
-  /* free the account list */
-  priv->account_ptr = g_list_first (priv->account_ptr);
-  g_list_free (priv->account_ptr);
-  priv->account_ptr = NULL;
 
   /* it would be secretly brilliant here if ClutterTexture accepted an inline
    * data stream */
@@ -169,7 +165,6 @@ _account_ready_cb (TpAccount    *account,
                    GAsyncResult *res,
                    gpointer      userdata)
 {
-  AnerleyTpUserAvatarPrivate *priv = GET_PRIVATE (userdata);
   GError *error = NULL;
 
   tp_account_prepare_finish (account, res, &error);
@@ -183,25 +178,9 @@ _account_ready_cb (TpAccount    *account,
     return;
   }
 
-  tp_account_get_avatar_async (TP_ACCOUNT (priv->account_ptr->data),
+  tp_account_get_avatar_async (account,
                                _get_avatar_cb,
                                userdata);
-
-  if (priv->account_ptr->next != NULL)
-    {
-      priv->account_ptr = priv->account_ptr->next;
-    }
-  else
-    {
-      g_debug ("no more accounts to try");
-
-      priv->account_ptr = g_list_first (priv->account_ptr);
-      g_list_free (priv->account_ptr);
-      priv->account_ptr = NULL;
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (userdata),
-                                     DEFAULT_AVATAR_IMAGE,
-                                     NULL);
-    }
 }
 
 static void
@@ -209,17 +188,26 @@ _get_next_avatar (AnerleyTpUserAvatar *self)
 {
   AnerleyTpUserAvatarPrivate *priv = GET_PRIVATE (self);
 
-  tp_account_prepare_async (TP_ACCOUNT (priv->account_ptr->data),
-                            NULL,
-                            (GAsyncReadyCallback)_account_ready_cb,
-                            self);
+  if (priv->account_ptr)
+  {
+    TpAccount *account = priv->account_ptr->data;
+    priv->account_ptr = priv->account_ptr->next;
+
+    tp_account_prepare_async (account,
+                              NULL,
+                              (GAsyncReadyCallback)_account_ready_cb,
+                              self);
+  } else {
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (self),
+                                   DEFAULT_AVATAR_IMAGE,
+                                   NULL);
+  }
 }
 
 static void
-_account_manager_account_validity_changed_cb (TpAccountManager *am,
-                                              TpAccount        *account,
-                                              gboolean          valid,
-                                              gpointer          userdata)
+_account_manager_account_enabled_cb (TpAccountManager *am,
+                                     TpAccount        *account,
+                                     gpointer          userdata)
 {
   AnerleyTpUserAvatar *self = ANERLEY_TP_USER_AVATAR (userdata);
 
@@ -237,9 +225,9 @@ _account_manager_account_removed_cb (TpAccountManager *am,
 }
 
 static void
-_account_manager_ready (GObject *am,
+_account_manager_ready (GObject      *am,
                         GAsyncResult *res,
-                        gpointer user_data)
+                        gpointer      user_data)
 {
   AnerleyTpUserAvatar *self = ANERLEY_TP_USER_AVATAR (user_data);
   GError *error = NULL;
@@ -256,8 +244,8 @@ _account_manager_ready (GObject *am,
   anerley_tp_user_avatar_get_first_avatar (self);
 
   g_signal_connect (am,
-                    "account-validity-changed",
-                    (GCallback)_account_manager_account_validity_changed_cb,
+                    "account-enabled",
+                    (GCallback)_account_manager_account_enabled_cb,
                     user_data);
   g_signal_connect (am,
                     "account-removed",
