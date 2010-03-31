@@ -2315,9 +2315,9 @@ mnb_toolbar_handle_dbus_name (MnbToolbar *toolbar, const gchar *name)
 
   panel = mnb_panel_oop_new (name,
                              TOOLBAR_X_PADDING,
-                             TOOLBAR_HEIGHT + 4,
+                             TOOLBAR_HEIGHT + 6,
                              priv->old_screen_width - TOOLBAR_X_PADDING * 2,
-                             priv->old_screen_height - TOOLBAR_HEIGHT - 8);
+                             priv->old_screen_height - TOOLBAR_HEIGHT - 12);
 
   if (panel)
     {
@@ -3329,7 +3329,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
      */
     mnb_panel_set_size (tp->panel,
                         screen_width - TOOLBAR_X_PADDING * 2,
-                        screen_height - TOOLBAR_HEIGHT - 8);
+                        screen_height - TOOLBAR_HEIGHT - 12);
   }
 
   if (priv->input_region)
