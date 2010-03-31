@@ -21,6 +21,7 @@
 #include "penge-magic-texture.h"
 
 #include <gio/gio.h>
+#include <glib/gi18n.h>
 
 G_DEFINE_TYPE (MpsTweetCard, mps_tweet_card, MX_TYPE_BUTTON)
 
