@@ -90,6 +90,7 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
   char             time_str[64];
   static gboolean  setup_done = FALSE;
   GConfClient     *client;
+  char            *time_ptr;
 
   if (priv->disposed)
     return FALSE;
@@ -125,7 +126,15 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
   else
     snprintf (time_str, 64, "Time");
 
-  mx_label_set_text (MX_LABEL (priv->time), time_str);
+  /*
+   * Strip leading space, if any.
+   */
+  if (time_str[0] == ' ')
+    time_ptr = &time_str[1];
+  else
+    time_ptr = &time_str[0];
+
+  mx_label_set_text (MX_LABEL (priv->time), time_ptr);
 
   if (tmp)
     /* translators: translate this to a suitable date format for your locale.
