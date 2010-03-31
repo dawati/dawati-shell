@@ -48,6 +48,7 @@ struct _MtpJarPrivate
 {
   ClutterActor *panel_area;
   ClutterActor *applet_area;
+  ClutterActor *label;
 
   gboolean enabled  : 1;
   gboolean disposed : 1;
@@ -100,6 +101,9 @@ mtp_jar_constructed (GObject *self)
 
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 10);
 
+  priv->label = mx_label_new_with_text (_("Available panels"));
+  clutter_actor_set_name (priv->label, "available-panels");
+
   priv->panel_area  = mx_grid_new ();
   clutter_actor_set_name (priv->panel_area, "jar-panel-area");
   mx_grid_set_column_spacing (MX_GRID (priv->panel_area), 2);
@@ -114,7 +118,8 @@ mtp_jar_constructed (GObject *self)
   scroll2 = mx_scroll_view_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll2), priv->applet_area);
 
-  clutter_container_add (CLUTTER_CONTAINER (self), scroll1, scroll2, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (self),
+                         priv->label, scroll1, scroll2, NULL);
 }
 
 static void
