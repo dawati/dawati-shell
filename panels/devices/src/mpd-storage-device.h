@@ -74,13 +74,15 @@ uint64_t
 mpd_storage_device_get_available_size (MpdStorageDevice *self);
 
 char const *
+mpd_storage_device_get_path (MpdStorageDevice *self);
+
+#if 0 /* Volume crawling code etc. */
+
+char const *
 mpd_storage_device_get_label (MpdStorageDevice *self);
 
 char const *
 mpd_storage_device_get_model (MpdStorageDevice *self);
-
-char const *
-mpd_storage_device_get_path (MpdStorageDevice *self);
 
 char const *
 mpd_storage_device_get_vendor (MpdStorageDevice *self);
@@ -94,6 +96,8 @@ mpd_storage_device_import_async (MpdStorageDevice  *self,
 
 bool
 mpd_storage_device_stop_import (MpdStorageDevice *self);
+
+#endif
 
 G_END_DECLS
 

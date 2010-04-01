@@ -15,7 +15,10 @@ LDADD = \
 noinst_PROGRAMS = \
   test-battery-device \
   test-content-pane \
+  test-disk-tile \
   test-folder-button \
+  test-storage-device \
+  test-storage-device-tile \
   $(NULL)
 
 test_battery_device_SOURCES = \
@@ -27,11 +30,6 @@ test_battery_device_SOURCES = \
 test_content_pane_SOURCES = \
   test-content-pane.c \
   $(top_srcdir)/src/mpl-content-pane.c \
-  $(NULL)
-
-test_disk_tile_LDADD = \
-  $(top_builddir)/gdu/libgdu.la \
-  $(MPD_LIBS) \
   $(NULL)
 
 test_disk_tile_SOURCES = \
@@ -47,20 +45,10 @@ test_folder_button_SOURCES = \
   $(top_srcdir)/src/mpd-gobject.c \
   $(NULL)
 
-test_storage_device_LDADD = \
-  $(top_builddir)/gdu/libgdu.la \
-  $(MPD_LIBS) \
-  $(NULL)
-
 test_storage_device_SOURCES = \
   test-storage-device.c \
   $(top_srcdir)/src/mpd-gobject.c \
   $(top_srcdir)/src/mpd-storage-device.c \
-  $(NULL)
-
-test_storage_device_tile_LDADD = \
-  $(top_builddir)/gdu/libgdu.la \
-  $(MPD_LIBS) \
   $(NULL)
 
 test_storage_device_tile_SOURCES = \
@@ -70,15 +58,6 @@ test_storage_device_tile_SOURCES = \
   $(top_srcdir)/src/mpd-storage-device.c \
   $(top_srcdir)/src/mpd-storage-device-tile.c \
   $(NULL)
-
-if HAVE_UDISKS
-  AM_CFLAGS += -DGDU_API_IS_SUBJECT_TO_CHANGE
-  noinst_PROGRAMS += \
-    test-disk-tile \
-    test-storage-device \
-    test-storage-device-tile \
-    $(NULL)
-endif
 
 -include $(top_srcdir)/git.mk
 

@@ -65,7 +65,9 @@ main (int     argc,
   {
     g_signal_connect (storage, "has-media",
                       G_CALLBACK (_has_media_cb), NULL);
+#if 0
     mpd_storage_device_has_media_async (storage);
+#endif
     clutter_main ();
   }
 

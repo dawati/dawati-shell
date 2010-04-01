@@ -29,10 +29,6 @@
 #include "mpd-storage-device.h"
 #include "config.h"
 
-#ifdef HAVE_UDISKS
-  #include <gdu/gdu.h>
-#endif
-
 static void
 mpd_storage_device_set_size (MpdStorageDevice  *self,
                              uint64_t           size);
@@ -40,17 +36,6 @@ mpd_storage_device_set_size (MpdStorageDevice  *self,
 static void
 mpd_storage_device_set_available_size (MpdStorageDevice  *self,
                                        uint64_t           available_size);
-
-#define MPD_STORAGE_DEVICE_ERROR mpd_storage_device_error_quark()
-
-static GQuark
-mpd_storage_device_error_quark (void)
-{
-  static GQuark _quark = 0;
-  if (!_quark)
-    _quark = g_quark_from_static_string ("mpd-storage-device-error");
-  return _quark;
-}
 
 G_DEFINE_TYPE (MpdStorageDevice, mpd_storage_device, G_TYPE_OBJECT)
 
@@ -62,11 +47,13 @@ enum
   PROP_0,
 
   PROP_AVAILABLE_SIZE,
-  PROP_LABEL,
-  PROP_MODEL,
   PROP_PATH,
   PROP_SIZE,
+#if 0
+  PROP_LABEL,
+  PROP_MODEL,
   PROP_VENDOR
+#endif
 };
 
 enum
@@ -80,9 +67,6 @@ enum
 
 typedef struct
 {
-#ifdef HAVE_UDISKS
-  GduDevice     *device;
-#endif
   uint64_t       available_size;
   char          *path;
   uint64_t       size;
@@ -126,41 +110,6 @@ _update_timeout_cb (MpdStorageDevice *self)
   return true;
 }
 
-#ifdef HAVE_UDISKS
-
-static int
-_find_device_cb (GduDevice  *device,
-                 char const *path)
-{
-  char const *mount_path;
-
-  mount_path = gdu_device_get_mount_path (device);
-  return g_strcmp0 (path, mount_path);
-}
-
-GduDevice *
-find_device_for_path (GList       *devices,
-                      char const  *path)
-{
-  GList     *iter;
-  GduDevice *device;
-
-  iter = g_list_find_custom (devices, path, (GCompareFunc) _find_device_cb);
-
-  if (iter)
-  {
-    device = GDU_DEVICE (iter->data);
-  } else {
-    char *parent = g_path_get_dirname (path);
-    device = find_device_for_path (devices, parent);
-    g_free (parent);
-  }
-
-  return device;
-}
-
-#endif /* HAVE_UDISKS */
-
 static GObject *
 _constructor (GType                  type,
               unsigned int           n_properties,
@@ -173,34 +122,13 @@ _constructor (GType                  type,
 
   if (priv->path)
   {
-#ifdef HAVE_UDISKS
-    GduPool *pool = gdu_pool_new ();
-    GList *devices = gdu_pool_get_devices (pool);
-    priv->device = find_device_for_path (devices, priv->path);
-    if (priv->device)
-    {
-      g_object_ref (priv->device);
-    } else {
-      /* Bail */
-      g_critical ("%s : Could not find device for '%s'", G_STRLOC, priv->path);
-      self = NULL;
-    }
-    g_list_foreach (devices, (GFunc) g_object_unref, NULL);
-    g_list_free (devices);
-    g_object_unref (pool);
-#endif
-  } else {
-    /* Bail */
-    self = NULL;
-  }
-
-  if (self)
-  {
     update (self);
     priv->update_timeout_id =
                   g_timeout_add_seconds (60,
                                          (GSourceFunc) _update_timeout_cb,
                                          self);
+  } else {
+    g_critical ("%s : No mount path set", G_STRLOC);
   }
 
   return (GObject *) self;
@@ -220,6 +148,15 @@ _get_property (GObject      *object,
                         mpd_storage_device_get_available_size (
                           MPD_STORAGE_DEVICE (object)));
     break;
+  case PROP_PATH:
+    g_value_set_string (value, priv->path);
+    break;
+  case PROP_SIZE:
+    g_value_set_uint64 (value,
+                        mpd_storage_device_get_size (
+                          MPD_STORAGE_DEVICE (object)));
+    break;
+#if 0
   case PROP_LABEL:
     g_value_set_string (value,
                         mpd_storage_device_get_label (
@@ -230,19 +167,12 @@ _get_property (GObject      *object,
                         mpd_storage_device_get_model (
                           MPD_STORAGE_DEVICE (object)));
     break;
-  case PROP_PATH:
-    g_value_set_string (value, priv->path);
-    break;
-  case PROP_SIZE:
-    g_value_set_uint64 (value,
-                        mpd_storage_device_get_size (
-                          MPD_STORAGE_DEVICE (object)));
-    break;
   case PROP_VENDOR:
     g_value_set_string (value,
                         mpd_storage_device_get_vendor (
                           MPD_STORAGE_DEVICE (object)));
     break;
+#endif
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -278,10 +208,6 @@ static void
 _dispose (GObject *object)
 {
   MpdStorageDevicePrivate *priv = GET_PRIVATE (object);
-
-#ifdef HAVE_UDISKS
-  mpd_gobject_detach (object, (GObject **) &priv->device);
-#endif
 
   if (priv->path)
   {
@@ -354,20 +280,6 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                                         0, G_MAXUINT64, 0,
                                                         param_flags));
   g_object_class_install_property (object_class,
-                                   PROP_LABEL,
-                                   g_param_spec_string ("label",
-                                                        "Label",
-                                                        "Storage device label",
-                                                        NULL,
-                                                        param_flags));
-  g_object_class_install_property (object_class,
-                                   PROP_MODEL,
-                                   g_param_spec_string ("model",
-                                                        "Model",
-                                                        "Storage device model",
-                                                        NULL,
-                                                        param_flags));
-  g_object_class_install_property (object_class,
                                    PROP_PATH,
                                    g_param_spec_string ("path",
                                                         "Path",
@@ -383,6 +295,21 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                                         "Disk size",
                                                         0, G_MAXUINT64, 0,
                                                         param_flags));
+#if 0
+  g_object_class_install_property (object_class,
+                                   PROP_LABEL,
+                                   g_param_spec_string ("label",
+                                                        "Label",
+                                                        "Storage device label",
+                                                        NULL,
+                                                        param_flags));
+  g_object_class_install_property (object_class,
+                                   PROP_MODEL,
+                                   g_param_spec_string ("model",
+                                                        "Model",
+                                                        "Storage device model",
+                                                        NULL,
+                                                        param_flags));
   g_object_class_install_property (object_class,
                                    PROP_VENDOR,
                                    g_param_spec_string ("vendor",
@@ -390,7 +317,7 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                                         "Storage device vendor",
                                                         NULL,
                                                         param_flags));
-
+#endif
   /* Signals */
 
   _signals[HAS_MEDIA] = g_signal_new ("has-media",
@@ -479,6 +406,29 @@ mpd_storage_device_set_available_size (MpdStorageDevice  *self,
 }
 
 char const *
+mpd_storage_device_get_path (MpdStorageDevice *self)
+{
+  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
+
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), NULL);
+
+  return priv->path;
+}
+
+#if 0 /* Volume crawling code etc. */
+
+#define MPD_STORAGE_DEVICE_ERROR mpd_storage_device_error_quark()
+
+static GQuark
+mpd_storage_device_error_quark (void)
+{
+  static GQuark _quark = 0;
+  if (!_quark)
+    _quark = g_quark_from_static_string ("mpd-storage-device-error");
+  return _quark;
+}
+
+char const *
 mpd_storage_device_get_label (MpdStorageDevice *self)
 {
 #ifdef HAVE_UDISKS
@@ -504,16 +454,6 @@ mpd_storage_device_get_model (MpdStorageDevice *self)
 #else
   return NULL;
 #endif
-}
-
-char const *
-mpd_storage_device_get_path (MpdStorageDevice *self)
-{
-  MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
-
-  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE (self), NULL);
-
-  return priv->path;
 }
 
 char const *
@@ -987,3 +927,4 @@ mpd_storage_device_stop_import (MpdStorageDevice *self)
   return true;
 }
 
+#endif

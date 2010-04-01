@@ -61,7 +61,6 @@ enum
   PROP_ICON_FILE,
   PROP_MOUNT_POINT,
   PROP_NAME,
-  PROP_STATE,
   PROP_TITLE
 };
 
@@ -79,31 +78,13 @@ typedef struct
   /* Managed by clutter */
   ClutterActor              *icon;
   ClutterActor              *vbox;
-
-  MpdStorageDeviceTileState  state;
-  union {
-    struct {
-      ClutterActor          *label;
-      ClutterActor          *eject;
-    } searching;
-    struct {
-      ClutterActor          *label;
-      ClutterActor          *meter;
-      ClutterActor          *button_box;
-      /* Inside button_box. */
-      ClutterActor          *eject;
-      ClutterActor          *open;
-      ClutterActor          *import;
-      /* During import. */
-      ClutterActor          *import_tile;
-    } ready;
-    struct {
-      ClutterActor          *label;
-    } unmounting;
-    struct {
-      ClutterActor          *label;
-    } done;
-  } states;
+  ClutterActor              *label;
+  ClutterActor              *meter;
+  ClutterActor              *button_box;
+  /* Inside button_box. */
+  ClutterActor              *eject;
+  ClutterActor              *open;
+  ClutterActor              *import;
 
   /* Data */
   char                      *icon_file;
@@ -115,20 +96,6 @@ typedef struct
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
-static ClutterActor *
-description_label_new (void)
-{
-  ClutterActor  *label;
-  ClutterText   *text;
-
-  label = mx_label_new ();
-  text = CLUTTER_TEXT (mx_label_get_clutter_text (MX_LABEL (label)));
-  clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_NONE);
-  clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD);
-
-  return label;
-}
-
 static void
 update (MpdStorageDeviceTile *self)
 {
@@ -138,10 +105,8 @@ update (MpdStorageDeviceTile *self)
   uint64_t       available_size;
   unsigned int   percentage;
 
-  g_return_if_fail (priv->state == STATE_READY);
-
   markup = mpd_storage_device_tile_get_title (self);
-  clutter_text_set_markup (GET_CLUTTER_TEXT (priv->states.ready.label),
+  clutter_text_set_markup (GET_CLUTTER_TEXT (priv->label),
                            markup);
   g_free (markup);
 
@@ -151,7 +116,7 @@ update (MpdStorageDeviceTile *self)
                 NULL);
 
   percentage = 100 - (double) available_size / size * 100;
-  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->states.ready.meter),
+  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter),
                                 percentage / 100.);
 }
 
@@ -173,113 +138,10 @@ _show_panel_cb (NotifyNotification    *notification,
 }
 
 static void
-show_import_error (MpdStorageDeviceTile *self,
-                   GError const         *error)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  NotifyNotification  *note;
-  char const          *summary;
-  char                *body;
-  GError              *note_error = NULL;
-
-  g_return_if_fail (error);
-
-  switch (error->code)
-  {
-  case MPD_STORAGE_DEVICE_IMPORT_ERROR_STILL_INDEXING:
-    summary = _("Import cancelled");
-    body = g_strdup_printf (_("We are still looking for media files on \"%s\""),
-                            priv->name);
-    break;
-  case MPD_STORAGE_DEVICE_IMPORT_ERROR_NO_MEDIA:
-    summary = _("Import cancelled");
-    body = g_strdup_printf (_("We did not find any media files on \"%s\""),
-                            priv->name);
-    break;
-  case MPD_STORAGE_DEVICE_IMPORT_ERROR_INSUFICCIENT_DISK_SPACE:
-    summary = _("Import cancelled");
-    body = g_strdup_printf (_("Sorry we could not import your media, "
-                              "there is not enough space on your computer. "
-                              "You could remove some files."));
-    break;
-  default:
-    summary = _("Import cancelled");
-    body = g_strdup (error->message);
-  }
-
-  note = notify_notification_new (summary, body, NULL, NULL);
-  notify_notification_add_action (note, "show", _("Show"),
-                                  (NotifyActionCallback) _show_panel_cb, self,
-                                  NULL);
-  notify_notification_show (note, &note_error);
-  if (note_error)
-  {
-    g_warning ("%s : %s", G_STRLOC, note_error->message);
-    g_clear_error (&note_error);
-  }
-  g_object_unref (note);
-
-  g_free (body);
-}
-
-static void
-stop_import (MpdStorageDeviceTile *self)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-
-  mpd_storage_device_stop_import (priv->storage);
-
-  // clutter_actor_destroy (priv->states.ready.import_tile);
-
-  // TODO import finished signal, re-enable buttons.
-
-  clutter_actor_set_reactive (priv->states.ready.import, true);
-  clutter_actor_set_reactive (priv->states.ready.eject, true);
-  clutter_actor_set_reactive (priv->states.ready.open, true);
-}
-
-static void
-_import_error_cb (MpdStorageDevice      *storage,
-                  GError const          *error,
-                  MpdStorageDeviceTile  *self)
-{
-  show_import_error (self, error);
-  stop_import (self);
-}
-
-static void
-_import_stop_cb (MpdMediaImportTile   *import,
-                 MpdStorageDeviceTile *self)
-{
-  stop_import (self);
-}
-
-static void
 _import_clicked_cb (MxButton             *button,
                     MpdStorageDeviceTile *self)
 {
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  GError *error = NULL;
-
-  g_signal_connect (priv->storage, "import-error",
-                    G_CALLBACK (_import_error_cb), self);
-
-  priv->states.ready.import_tile = mpd_media_import_tile_new (priv->storage);
-  g_signal_connect (priv->states.ready.import_tile, "stop-import",
-                    G_CALLBACK (_import_stop_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                               priv->states.ready.import_tile);
-
-  clutter_actor_set_reactive (priv->states.ready.import, false);
-  clutter_actor_set_reactive (priv->states.ready.eject, false);
-  clutter_actor_set_reactive (priv->states.ready.open, false);
-
-  mpd_storage_device_import_async (priv->storage, &error);
-  if (error)
-  {
-    show_import_error (self, error);
-    g_clear_error (&error);
-  }
+  // TODO
 }
 
 static void
@@ -316,19 +178,6 @@ _open_clicked_cb (MxButton              *button,
   g_signal_emit_by_name (self, "request-hide");
 }
 
-static void
-_storage_has_media_cb (MpdStorageDevice     *storage,
-                       bool                  has_media,
-                       MpdStorageDeviceTile *self)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-
-  g_return_if_fail (priv->state == STATE_SEARCHING);
-
-  priv->storage_has_media = has_media;
-  mpd_storage_device_tile_set_state (self, STATE_READY);
-}
-
 static GObject *
 _constructor (GType                  type,
               unsigned int           n_properties,
@@ -362,11 +211,11 @@ _constructor (GType                  type,
   if (priv->mount_point)
   {
     priv->storage = mpd_storage_device_new (priv->mount_point);
-    mpd_storage_device_tile_set_state (self, STATE_SEARCHING);
-    g_signal_connect (priv->storage, "has-media",
-                      G_CALLBACK (_storage_has_media_cb), self);
-    mpd_storage_device_has_media_async (priv->storage);
-
+    g_signal_connect (priv->storage, "notify::size",
+                      G_CALLBACK (_storage_size_notify_cb), self);
+    g_signal_connect (priv->storage, "notify::available-size",
+                      G_CALLBACK (_storage_size_notify_cb), self);
+    update (self);
   } else {
     g_critical ("%s : %s",
                 G_STRLOC,
@@ -415,11 +264,6 @@ _get_property (GObject      *object,
                         mpd_storage_device_tile_get_name (
                           MPD_STORAGE_DEVICE_TILE (object)));
     break;
-  case PROP_STATE:
-    g_value_set_int (value,
-                     mpd_storage_device_tile_get_state (
-                      MPD_STORAGE_DEVICE_TILE (object)));
-    break;
   case PROP_TITLE:
     g_value_take_string (value,
                          mpd_storage_device_tile_get_title (
@@ -449,10 +293,6 @@ _set_property (GObject      *object,
   case PROP_NAME:
     mpd_storage_device_tile_set_name (MPD_STORAGE_DEVICE_TILE (object),
                                       g_value_get_string (value));
-    break;
-  case PROP_STATE:
-    mpd_storage_device_tile_set_state (MPD_STORAGE_DEVICE_TILE (object),
-                                       g_value_get_int (value));
     break;
   case PROP_TITLE:
     mpd_storage_device_tile_set_title (MPD_STORAGE_DEVICE_TILE (object),
@@ -533,15 +373,6 @@ mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
                                                         param_flags |
                                                         G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (object_class,
-                                   PROP_STATE,
-                                   g_param_spec_int ("state",
-                                                     "State",
-                                                     "Tile state",
-                                                     STATE_ERROR,
-                                                     STATE_DONE,
-                                                     STATE_ERROR,
-                                                     param_flags));
-  g_object_class_install_property (object_class,
                                    PROP_TITLE,
                                    g_param_spec_string ("title",
                                                         "Title",
@@ -579,8 +410,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
 
-  priv->state = STATE_ERROR;
-
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self),
                              MPD_STORAGE_DEVICE_TILE_SPACING);
 
@@ -611,6 +440,57 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                "x-fill", true,
                                "y-align", MX_ALIGN_MIDDLE,
                                "y-fill", false,
+                               NULL);
+
+  priv->label = mx_label_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
+                               priv->label);
+
+  /* Progress bar */
+  priv->meter = mx_progress_bar_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
+                               priv->meter);
+
+  /* Button box */
+  priv->button_box = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box),
+                             MPD_STORAGE_DEVICE_TILE_BUTTON_BOX_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
+                               priv->button_box);
+
+  priv->import = mx_button_new_with_label (_("Import data"));
+  g_signal_connect (priv->import, "clicked",
+                    G_CALLBACK (_import_clicked_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                priv->import);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
+                                priv->import,
+                                "expand", true,
+                                "x-fill", true,
+                                NULL);
+
+  /* Eject button */
+  priv->eject = mx_button_new_with_label (_("Eject"));
+  g_signal_connect (priv->eject, "clicked",
+                    G_CALLBACK (_eject_clicked_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                               priv->eject);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
+                               priv->eject,
+                               "expand", true,
+                               "x-fill", true,
+                               NULL);
+
+  /* Open button */
+  priv->open = mx_button_new_with_label (_("Open"));
+  g_signal_connect (priv->open, "clicked",
+                    G_CALLBACK (_open_clicked_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                               priv->open);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
+                               priv->open,
+                               "expand", true,
+                               "x-fill", true,
                                NULL);
 }
 
@@ -731,169 +611,6 @@ mpd_storage_device_tile_set_name (MpdStorageDeviceTile *self,
   }
 }
 
-MpdStorageDeviceTileState
-mpd_storage_device_tile_get_state (MpdStorageDeviceTile *self)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-
-  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self), STATE_ERROR);
-
-  return priv->state;
-}
-
-void
-mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
-                                   MpdStorageDeviceTileState   state)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char *label;
-
-  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
-  g_return_if_fail (state == priv->state + 1);
-
-  g_debug ("%s() %d", __FUNCTION__, state);
-
-  priv->state = state;
-  switch (priv->state)
-  {
-  case STATE_ERROR:
-    /* TODO */
-    break;
-  case STATE_SEARCHING:
-
-    /* Description */
-    priv->states.searching.label = description_label_new ();
-    mx_label_set_text (MX_LABEL (priv->states.searching.label),
-                       _("Please wait a moment while we search for data on the device ..."));
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.searching.label);
-
-    /* Eject button */
-    priv->states.searching.eject = mx_button_new_with_label (_("Eject"));
-    g_signal_connect (priv->states.searching.eject, "clicked",
-                      G_CALLBACK (_eject_clicked_cb), self);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.searching.eject);
-    clutter_container_child_set (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.searching.eject,
-                                 "expand", false,
-                                 "x-align", MX_ALIGN_END,
-                                 NULL);
-
-    /* TODO search */
-
-    break;
-
-  case STATE_READY:
-
-    /* Cleanup state "searching". */
-    clutter_actor_destroy (priv->states.searching.label);
-    clutter_actor_destroy (priv->states.searching.eject);
-
-    memset (&priv->states.searching, 0, sizeof (priv->states.searching));
-
-    /* "Description" is set in update() below. */
-    priv->states.ready.label = description_label_new ();
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.searching.label);
-
-    /* Progress bar */
-    priv->states.ready.meter = mx_progress_bar_new ();
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.ready.meter);
-
-    /* Button box */
-    priv->states.ready.button_box = mx_box_layout_new ();
-    mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->states.ready.button_box),
-                               MPD_STORAGE_DEVICE_TILE_BUTTON_BOX_SPACING);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.ready.button_box);
-
-    /* Copy button */
-    if (priv->storage_has_media)
-    {
-      priv->states.ready.import = mx_button_new_with_label (_("Import data"));
-      g_signal_connect (priv->states.ready.import, "clicked",
-                        G_CALLBACK (_import_clicked_cb), self);
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->states.ready.button_box),
-                                   priv->states.ready.import);
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->states.ready.button_box),
-                                   priv->states.ready.import,
-                                   "expand", true,
-                                   "x-fill", true,
-                                   NULL);
-    }
-
-    /* Eject button */
-    priv->states.ready.eject = mx_button_new_with_label (_("Eject"));
-    g_signal_connect (priv->states.ready.eject, "clicked",
-                      G_CALLBACK (_eject_clicked_cb), self);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->states.ready.button_box),
-                                 priv->states.ready.eject);
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->states.ready.button_box),
-                                   priv->states.ready.eject,
-                                   "expand", true,
-                                   "x-fill", true,
-                                   NULL);
-
-    /* Open button */
-    priv->states.ready.open = mx_button_new_with_label (_("Open"));
-    g_signal_connect (priv->states.ready.open, "clicked",
-                      G_CALLBACK (_open_clicked_cb), self);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->states.ready.button_box),
-                                 priv->states.ready.open);
-      clutter_container_child_set (CLUTTER_CONTAINER (priv->states.ready.button_box),
-                                   priv->states.ready.open,
-                                   "expand", true,
-                                   "x-fill", true,
-                                   NULL);
-
-    g_signal_connect (priv->storage, "notify::size",
-                      G_CALLBACK (_storage_size_notify_cb), self);
-    g_signal_connect (priv->storage, "notify::available-size",
-                      G_CALLBACK (_storage_size_notify_cb), self);
-
-    update (self);
-
-    break;
-
-  case STATE_UNMOUNTING:
-
-    /* Cleanup state "ready". */
-    clutter_actor_destroy (priv->states.ready.label);
-    clutter_actor_destroy (priv->states.ready.meter);
-    clutter_actor_destroy (priv->states.ready.button_box);
-
-    /* Description */
-    label = g_strdup_printf (_("Please wait whilst your %s is being ejected ..."),
-                             priv->name);
-    priv->states.unmounting.label = description_label_new ();
-    mx_label_set_text (MX_LABEL (priv->states.unmounting.label), label);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.unmounting.label);
-    g_free (label);
-
-    break;
-
-  case STATE_DONE:
-
-    /* Cleanup state "unmounting". */
-    clutter_actor_destroy (priv->states.unmounting.label);
-
-    /* Description */
-    label = g_strdup_printf (_("It is safe to pull out your %s"),
-                             priv->name);
-    priv->states.done.label = description_label_new ();
-    mx_label_set_text (MX_LABEL (priv->states.done.label), label);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                                 priv->states.done.label);
-    g_free (label);
-
-    break;
-  }
-  g_object_notify (G_OBJECT (self), "state");
-}
-
 char *
 mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
 {
@@ -903,8 +620,6 @@ mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
   uint64_t       size;
   uint64_t       available_size;
   unsigned int   percentage;
-
-  g_return_val_if_fail (priv->state == STATE_READY, NULL);
 
   g_object_get (priv->storage,
                 "size", &size,

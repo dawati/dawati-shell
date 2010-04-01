@@ -64,10 +64,4 @@ moblin_panel_devices_SOURCES = \
   mpl-content-pane.h \
   $(NULL)
 
-if HAVE_UDISKS
-  AM_CFLAGS += -DGDU_API_IS_SUBJECT_TO_CHANGE
-  moblin_panel_devices_LDADD += $(top_builddir)/gdu/libgdu.la
-endif
-
-
 -include $(top_srcdir)/git.mk
