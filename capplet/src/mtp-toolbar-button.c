@@ -217,7 +217,7 @@ mtp_toolbar_button_allocate (ClutterActor          *actor,
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   button_width = priv->in_jar ? (priv->clock ? 120.0 :
-                                 (priv->applet ? 50.0 : 70.0)) :
+                                 (priv->applet ? 40.0 : 60.0)) :
     box->x2 - box->x1 - padding.left - padding.right;
 
   childbox.x1 = padding.left;
@@ -459,7 +459,7 @@ mtp_toolbar_button_get_preferred_width (ClutterActor *self,
   if (priv->in_jar)
     width = 200.0;
   else
-    width = priv->clock ? 120.0 : (priv->applet ? 50.0 : 70.0);
+    width = priv->clock ? 120.0 : (priv->applet ? 40.0 : 60.0);
 
   width += (padding.left + padding.right);
 

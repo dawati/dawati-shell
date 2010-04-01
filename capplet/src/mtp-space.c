@@ -76,7 +76,7 @@ mtp_space_get_preferred_width (ClutterActor *self,
   MtpSpacePrivate *priv = MTP_SPACE (self)->priv;
   gfloat           width;
 
-  width = priv->in_jar ? 200.0 : (priv->applet ? 50.0 : 70.0);
+  width = priv->in_jar ? 200.0 : (priv->applet ? 40.0 : 60.0);
 
   if (min_width_p)
     *min_width_p = width;
