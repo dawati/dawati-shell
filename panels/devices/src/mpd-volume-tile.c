@@ -69,7 +69,7 @@ typedef struct
 {
   /* Managed by clutter */
   ClutterActor    *icon;
-  ClutterActor    *volume_bars;
+  ClutterActor    *bars;
   ClutterActor    *volume_slider;
   ClutterActor    *mute_toggle;
 
@@ -172,6 +172,49 @@ update_volume_label (MpdVolumeTile  *self,
   g_free (old_level);
 }
 #endif
+
+static char *
+build_icon_name_15 (char const *template,
+                    float       value,
+                    char const *suffix)
+{
+  char *name;
+
+  value = CLAMP (value, 0.0, 1.0);
+
+  if (value < 0.067)
+    name = g_strdup_printf ("%s7.%s", template, suffix);
+  else if (value < 0.133)
+    name = g_strdup_printf ("%s13.%s", template, suffix);
+  else if (value < 0.200)
+    name = g_strdup_printf ("%s20.%s", template, suffix);
+  else if (value < 0.267)
+    name = g_strdup_printf ("%s27.%s", template, suffix);
+  else if (value < 0.333)
+    name = g_strdup_printf ("%s33.%s", template, suffix);
+  else if (value < 0.400)
+    name = g_strdup_printf ("%s40.%s", template, suffix);
+  else if (value < 0.467)
+    name = g_strdup_printf ("%s47.%s", template, suffix);
+  else if (value < 0.533)
+    name = g_strdup_printf ("%s53.%s", template, suffix);
+  else if (value < 0.600)
+    name = g_strdup_printf ("%s60.%s", template, suffix);
+  else if (value < 0.667)
+    name = g_strdup_printf ("%s67.%s", template, suffix);
+  else if (value < 0.733)
+    name = g_strdup_printf ("%s73.%s", template, suffix);
+  else if (value < 0.800)
+    name = g_strdup_printf ("%s80.%s", template, suffix);
+  else if (value < 0.867)
+    name = g_strdup_printf ("%s87.%s", template, suffix);
+  else if (value < 0.933)
+    name = g_strdup_printf ("%s93.%s", template, suffix);
+  else
+    name = g_strdup_printf ("%s100.%s", template, suffix);
+
+  return name;
+}
 
 static void
 _mute_toggle_notify_cb (MxToggle      *toggle,
@@ -349,16 +392,9 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), vbox);
 
-  priv->volume_bars = clutter_texture_new_from_file (PKGTHEMEDIR "/volume-bars-0.png",
-                                                     &error);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  } else {
-    clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->volume_bars), true);
-    clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->volume_bars);
-  }
+  priv->bars = clutter_texture_new ();
+  clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->bars), true);
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->bars);
 
   priv->volume_slider = mx_slider_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->volume_slider);
@@ -437,6 +473,7 @@ update_volume_icon (MpdVolumeTile *self)
   bool     is_muted;
   double   volume;
   double   value;
+  char    *icon_file;
   GError  *error = NULL;
 
   is_muted = gvc_mixer_stream_get_is_muted (priv->sink);
@@ -468,6 +505,18 @@ update_volume_icon (MpdVolumeTile *self)
                                      &error);
     }
   }
+
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+
+  icon_file = build_icon_name_15 (PKGICONDIR "/volume-bars-", value, "png");
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->bars),
+                                 icon_file,
+                                 &error);
+  g_free (icon_file);
 
   if (error)
   {
