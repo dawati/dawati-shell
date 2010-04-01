@@ -1054,6 +1054,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
   /* active conversations */
   priv->active_content_table = mx_table_new ();
+  clutter_actor_set_name (priv->active_content_table,
+                          "people-panel-active-content-box");
 
   bin = mx_frame_new ();
   clutter_actor_set_name (bin, "people-panel-active-content-header");
