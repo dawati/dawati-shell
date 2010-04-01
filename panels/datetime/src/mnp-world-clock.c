@@ -224,7 +224,7 @@ filter_zone (ClutterModel *model, ClutterModelIter *iter, gpointer user_data)
 		name = find_word (name, key, len, TRUE, is_first_word);
 		if (!name) {
 	    		g_free (name_mem);
-			g_free (key);
+			g_free (skey);
 	    		return FALSE;
 		}
 
