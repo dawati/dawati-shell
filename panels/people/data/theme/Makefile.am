@@ -20,7 +20,8 @@ dist_theme_DATA = \
 	frame-background.png \
 	panel-background.png \
 	content-panel-background.png \
-	content-panel-header-grey.png
+	content-panel-header-grey.png \
+	box-background-border-bottom.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE

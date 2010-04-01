@@ -116,27 +116,6 @@ mnb_people_panel_class_init (MnbPeoplePanelClass *klass)
   object_class->finalize = mnb_people_panel_finalize;
 }
 
-static void
-dropdown_show_cb (MplPanelClient *client,
-                  gpointer        userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-
-  /* give focus to the actor */
-  clutter_actor_grab_key_focus (priv->entry);
-}
-
-
-static void
-dropdown_hide_cb (MplPanelClient *client,
-                  gpointer        userdata)
-{
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
-
-  /* Reset search. */
-  mpl_entry_set_text (MPL_ENTRY (priv->entry), "");
-}
-
 #define ICON_SIZE 48
 
 static gboolean
@@ -360,10 +339,13 @@ _make_messenger_launcher_tile (MnbPeoplePanel *panel)
   ClutterActor *button;
   GAppInfo *app_info;
   gchar *button_str;
-  
+  ClutterActor *bin;
+
+  bin = mx_frame_new ();
+  clutter_actor_set_name (bin, "people-panel-messenger-launcher-tile");
   table = mx_table_new ();
+  mx_bin_set_child (MX_BIN (bin), table);
   mx_table_set_column_spacing (MX_TABLE (table), 16);
-  clutter_actor_set_name (table, "people-panel-messenger-launcher-tile");
   app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
 
   icon_tex = g_object_new (MX_TYPE_ICON,
@@ -396,7 +378,7 @@ _make_messenger_launcher_tile (MnbPeoplePanel *panel)
 
   g_object_unref (app_info);
 
-  return table;
+  return bin;
 }
 
 static void
@@ -1055,7 +1037,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       1, 0,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
-                                      "x-fill", FALSE,
+                                      "x-fill", TRUE,
                                       "y-fill", FALSE,
                                       NULL);
 
@@ -1151,16 +1133,6 @@ mnb_people_panel_set_panel_client (MnbPeoplePanel *people_panel,
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
 
   priv->panel_client = g_object_ref (panel_client);
-
-  g_signal_connect (panel_client,
-                    "show-end",
-                    (GCallback)dropdown_show_cb,
-                    people_panel);
-
-  g_signal_connect (panel_client,
-                    "hide-end",
-                    (GCallback)dropdown_hide_cb,
-                    people_panel);
 }
 
 static void
