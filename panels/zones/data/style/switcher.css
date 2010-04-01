@@ -1,13 +1,13 @@
 SwOverview
 {
-  background-color: gray;
+  background-color: white;
 }
 
 SwZone
 {
-  /* border-image: url('zone-bg-active.png') 4; */
+  border-image: url('content-panel-background.png') 4;
   background-color: white;
-  padding: 10;
+  padding: 3;
 }
 
 SwZone:active
@@ -57,7 +57,10 @@ MxLabel.zone-title
 {
   color: white;
   padding: 4;
-  border-image: url('zone-title-normal.png') 4;
+  border-image: url('content-panel-header-grey.png') 4;
+  font-size: 16;
+  font-weight: bold;
+  font-family: "Droid Sans";
 }
 
 MxLabel.zone-title:active
@@ -71,7 +74,7 @@ SwZone#focused-zone > MxLabel.zone-title
 {
   color: white;
   padding: 4;
-  border-image: url('zone-title-focused.png') 4;
+  border-image: url('content-panel-header-orange.png') 4;
 }
 
 

@@ -1,5 +1,8 @@
 themedir = $(pkgdatadir)/style
 dist_theme_DATA = \
+	content-panel-background.png \
+	content-panel-header-grey.png \
+	content-panel-header-orange.png \
 	new-zone-title-active.png \
 	new-zone-title-focus.png \
 	new-zone-title-hover.png \

@@ -295,7 +295,7 @@ sw_overview_init (SwOverview *self)
 {
   self->priv = OVERVIEW_PRIVATE (self);
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 1);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 9);
 
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (self), TRUE);
 
