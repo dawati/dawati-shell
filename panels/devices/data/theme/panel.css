@@ -5,8 +5,8 @@ MxLabel {
   color: #606261;
 }
 
-MxButton {
-  color: #775aaa;
+MxIcon.separator {
+  background-image: url('seperator.png');
 }
 
 MpdFolderButton {

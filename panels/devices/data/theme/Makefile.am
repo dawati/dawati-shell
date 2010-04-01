@@ -8,6 +8,7 @@ dist_theme_DATA = \
   frame-border.png \
   panel.css \
   panel-background.png \
+  seperator.png \
   volume-bars-0.png \
   $(NULL)
 

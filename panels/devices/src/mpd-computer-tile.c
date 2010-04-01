@@ -25,6 +25,7 @@
 #include "mpd-battery-tile.h"
 #include "mpd-computer-tile.h"
 #include "mpd-disk-tile.h"
+#include "mpd-shell-defines.h"
 #include "mpd-volume-tile.h"
 #include "config.h"
 
@@ -88,23 +89,42 @@ mpd_computer_tile_class_init (MpdComputerTileClass *klass)
                                          G_TYPE_NONE, 0);
 }
 
+static ClutterActor *
+create_seperator (void)
+{
+  ClutterActor *separator;
+
+  separator = mx_icon_new ();
+
+  clutter_actor_set_height (separator, 1.0);
+  mx_stylable_set_style_class (MX_STYLABLE (separator), "separator");
+
+  return separator;
+}
+
 static void
 mpd_computer_tile_init (MpdComputerTile *self)
 {
-  ClutterActor *button;
-  ClutterActor *tile;
+  ClutterActor  *button;
+  ClutterActor  *tile;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_COMPUTER_TILE_SPACING);
 
   tile = mpd_battery_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
+
   tile = mpd_disk_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
+
   tile = mpd_volume_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
 
   button = mx_button_new_with_label (_("All settings"));
   g_signal_connect (button, "clicked",
