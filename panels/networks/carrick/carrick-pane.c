@@ -36,6 +36,7 @@
 #include "carrick-notification-manager.h"
 #include "carrick-network-model.h"
 #include "carrick-shell.h"
+#include "carrick-banner.h"
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_HBOX)
 
@@ -1272,16 +1273,13 @@ static void
 carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv;
-  GtkWidget          *switch_bin;
-  GtkWidget          *flight_bin;
-  GtkWidget          *net_list_bin;
+  GtkWidget          *settings_frame;
+  GtkWidget          *net_list_frame;
   GtkWidget          *switch_box;
   GtkWidget          *column;
-  GtkWidget          *vbox;
+  GtkWidget          *banner;
   GtkWidget          *switch_label;
-  GtkWidget          *frame_title;
   GtkWidget          *offline_mode_label;
-  gchar              *label = NULL;
   GError             *error = NULL;
   DBusGConnection    *connection;
   DBusGProxy         *bus_proxy;
@@ -1374,34 +1372,27 @@ carrick_pane_init (CarrickPane *self)
                                                    pane_manager_get_properties_cb,
                                                    self);
 
-  switch_bin = mx_gtk_frame_new ();
-  gtk_widget_show (switch_bin);
-  flight_bin = mx_gtk_frame_new ();
-  gtk_widget_show (flight_bin);
-  net_list_bin = mx_gtk_frame_new ();
-  gtk_widget_show (net_list_bin);
-
   /* Set box (self) up */
-  gtk_box_set_spacing (GTK_BOX (self),
-                       4);
-  gtk_container_set_border_width (GTK_CONTAINER (self),
-                                  4);
+  gtk_box_set_spacing (GTK_BOX (self), 4);
+  gtk_container_set_border_width (GTK_CONTAINER (self), 4);
 
   /*
    * Left column
    */
+  settings_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (settings_frame), GTK_SHADOW_OUT);
+  gtk_widget_show (settings_frame);
+
   column = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (column);
 
-  /* Switches */
-  vbox = gtk_vbox_new (TRUE,
-                       0);
-  gtk_widget_show (vbox);
-  gtk_container_add (GTK_CONTAINER (switch_bin),
-                     vbox);
+  banner = carrick_banner_new ();
+  carrick_banner_set_text (CARRICK_BANNER (banner), _("Settings"));
+  gtk_widget_show (banner);
+  gtk_box_pack_start (GTK_BOX (column), banner, FALSE, FALSE, 0);
 
-  switch_box = gtk_hbox_new (TRUE,
-                             0);
+  /* Switches */
+  switch_box = gtk_hbox_new (TRUE, 0);
   gtk_widget_show (switch_box);
 
   priv->wifi_switch = mx_gtk_light_switch_new ();
@@ -1423,7 +1414,7 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       6);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (column),
                       switch_box,
                       FALSE,
                       FALSE,
@@ -1454,7 +1445,7 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       6);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (column),
                       switch_box,
                       FALSE,
                       FALSE,
@@ -1485,7 +1476,7 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       6);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (column),
                       switch_box,
                       FALSE,
                       FALSE,
@@ -1517,7 +1508,7 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       6);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (column),
                       switch_box,
                       FALSE,
                       FALSE,
@@ -1549,7 +1540,7 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       6);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (column),
                       switch_box,
                       FALSE,
                       FALSE,
@@ -1559,21 +1550,9 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_bluetooth_switch_callback),
                     self);
 
-  gtk_box_pack_start (GTK_BOX (column),
-                      switch_bin,
-                      TRUE,
-                      TRUE,
-                      0);
-
-  vbox = gtk_vbox_new (TRUE,
-                       0);
-  gtk_widget_show (vbox);
-  gtk_container_add (GTK_CONTAINER (flight_bin),
-                     vbox);
   priv->offline_mode_switch = mx_gtk_light_switch_new ();
   gtk_widget_show (priv->offline_mode_switch);
-  switch_box = gtk_hbox_new (TRUE,
-                             0);
+  switch_box = gtk_hbox_new (TRUE, 0);
   gtk_widget_show (switch_box);
   switch_label = gtk_label_new (_ ("Offline mode"));
   gtk_widget_show (switch_label);
@@ -1594,9 +1573,9 @@ carrick_pane_init (CarrickPane *self)
                       TRUE,
                       TRUE,
                       6);
-  gtk_box_pack_start (GTK_BOX (vbox),
+  gtk_box_pack_start (GTK_BOX (column),
                       switch_box,
-                      TRUE,
+                      FALSE,
                       FALSE,
                       6);
   offline_mode_label = gtk_label_new
@@ -1607,19 +1586,14 @@ carrick_pane_init (CarrickPane *self)
                           0.5,
                           0.0);
   gtk_widget_show (offline_mode_label);
-  gtk_box_pack_start (GTK_BOX (vbox),
-                      offline_mode_label,
-                      TRUE,
-                      TRUE,
-                      0);
   gtk_box_pack_start (GTK_BOX (column),
-                      flight_bin,
-                      TRUE,
-                      TRUE,
-                      8);
-
+                      offline_mode_label,
+                      FALSE,
+                      FALSE,
+                      0);
+  gtk_container_add (GTK_CONTAINER (settings_frame), column);
   gtk_box_pack_start (GTK_BOX (self),
-                      column,
+                      settings_frame,
                       FALSE,
                       FALSE,
                       0);
@@ -1630,34 +1604,24 @@ carrick_pane_init (CarrickPane *self)
   /*
    * Right column
    */
+  net_list_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (net_list_frame), GTK_SHADOW_OUT);
+  gtk_widget_show (net_list_frame);
+
   column = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (column);
 
+  banner = carrick_banner_new ();
+  carrick_banner_set_text (CARRICK_BANNER (banner), _("Networks"));
+  gtk_widget_show (banner);
+  gtk_box_pack_start (GTK_BOX (column), banner, FALSE, FALSE, 0);
+
   /* Network list */
-  label = g_strdup_printf ("<span font_desc=\"Liberation Sans Bold 18px\""
-                           "foreground=\"#3e3e3e\">%s</span>",
-                           _ ("Networks"));
-
-  frame_title = gtk_label_new ("");
-  gtk_widget_show (frame_title);
-  gtk_label_set_markup (GTK_LABEL (frame_title),
-                        label);
-  g_free (label);
-  gtk_frame_set_label_widget (GTK_FRAME (net_list_bin),
-                              frame_title);
-
   priv->service_list = carrick_list_new (priv->icon_factory,
                                          priv->notes,
                                          CARRICK_NETWORK_MODEL (model));
-  gtk_container_add (GTK_CONTAINER (net_list_bin),
-                     priv->service_list);
   gtk_widget_show (priv->service_list);
-
-  gtk_box_pack_start (GTK_BOX (column),
-                      net_list_bin,
-                      TRUE,
-                      TRUE,
-                      4);
+  gtk_box_pack_start (GTK_BOX (column), priv->service_list, FALSE, FALSE, 0);
 
   /* New connection button */
   priv->new_conn_button = gtk_button_new_with_label (_ ("Add new connection"));
@@ -1674,8 +1638,9 @@ carrick_pane_init (CarrickPane *self)
                       FALSE,
                       8);
 
+  gtk_container_add (GTK_CONTAINER (net_list_frame), column);
   gtk_box_pack_start (GTK_BOX (self),
-                      column,
+                      net_list_frame,
                       TRUE,
                       TRUE,
                       0);
