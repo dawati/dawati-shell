@@ -136,7 +136,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
   icon_file = gtk_icon_info_get_filename (icon_info);
   g_debug ("%s() %s", __FUNCTION__, icon_file);
 
-  tile = mpd_storage_device_tile_new (name, path, icon_file);
+  tile = mpd_storage_device_tile_new (name, path, NULL, icon_file);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
   mx_box_layout_add_actor (MX_BOX_LAYOUT (box), tile, 0);
