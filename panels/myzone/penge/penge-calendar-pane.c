@@ -418,17 +418,18 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   JanaTime *on_the_next_hour;
   glong next_timeout_seconds;
   ClutterActor *label;
-  ClutterActor *tasks_tex;
+  ClutterActor *tasks_icon;
 
   now = jana_ecal_utils_time_now_local ();
 
   /* Events header */
   priv->events_header_table = mx_table_new ();
+  mx_table_set_column_spacing (MX_TABLE (priv->events_header_table), 8);
   mx_stylable_set_style_class (MX_STYLABLE (priv->events_header_table),
                                "PengeEventsPaneHeader");
   priv->calendar_tex = clutter_texture_new ();
   /* Need to fix the size to avoid being squashed */
-  clutter_actor_set_size (priv->calendar_tex, 30, 31);
+  clutter_actor_set_size (priv->calendar_tex, 27, 28);
 
   mx_table_add_actor_with_properties (MX_TABLE (priv->events_header_table),
                                       priv->calendar_tex,
@@ -455,12 +456,15 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                       NULL);
   /* Tasks header */
   priv->tasks_header_table = mx_table_new ();
+  mx_table_set_column_spacing (MX_TABLE (priv->tasks_header_table), 8);
+
   mx_stylable_set_style_class (MX_STYLABLE (priv->tasks_header_table),
                                "PengeTasksPaneHeader");
-  tasks_tex = clutter_texture_new ();
+  tasks_icon = mx_icon_new ();
+  clutter_actor_set_name (tasks_icon, "tasks-icon");
 
-  mx_table_add_actor_with_properties (MX_TABLE (priv->events_header_table),
-                                      tasks_tex,
+  mx_table_add_actor_with_properties (MX_TABLE (priv->tasks_header_table),
+                                      tasks_icon,
                                       0, 0,
                                       "x-expand", FALSE,
                                       "x-fill", FALSE,

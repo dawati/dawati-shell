@@ -6,7 +6,7 @@ PengeGridView
 PengeCalendarPane
 {
   border-image: url('content-panel-background.png') 5 5 5 5;
-  padding: 4;
+  padding: 3;
 }
 
 PengeAppsPane
@@ -18,16 +18,15 @@ PengeAppsPane
 *.PengeEventsPaneHeader, *.PengeTasksPaneHeader
 {
   border-image: url('content-panel-header-grey.png') 4 4 4;
-  padding: 2;
+  padding: 6;
 }
 
 
 MxLabel.PengeEventsPaneTitle, MxLabel.PengeTasksPaneTitle
 {
-  font-size: 17;
+  font-size: 16pt;
   font-weight: bold;
-  font-family: "Droid Sans", "Sans";
-  color: #3e3e3eff;
+  color: #616261ff;
 }
 
 PengeEventTile, PengeTaskTile, PengeAppTile
@@ -86,13 +85,11 @@ MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
 MxLabel.PengeEventTimeLabel
 {
   font-weight: bold;
-  font-family: "Droid Sans", "Sans";
 }
 
 MxLabel.PengeEventTimeLabel:past
 {
   font-weight: bold;
-  font-family: "Droid Sans", "Sans";
 }
 
 MxLabel.PengeEventSummary
@@ -103,19 +100,19 @@ PengePeopleTile *.PengeInterestingTilePrimaryLabel,
 PengeRecentFileTile *.PengeInterestingTilePrimaryLabel
 {
   color: #3e3e3eff;
+  font-size: 14pt;
 }
 
 PengePeopleTile *.PengeInterestingTileSecondaryLabel,
 PengeRecentFileTile *.PengeInterestingTileSecondaryLabel
 {
   color: #3e3e3eff;
-  font-size: 11;
+  font-size: 11pt;
 }
 
 PengePeopleTile *.PengePeopleTileContentLabel
 {
-  font-size: 12;
-  font-family: "Droid Sans", "Sans";
+  font-size: 11pt;
 }
 
 PengePeopleTile *.PengePeopleTileContentBackground
@@ -126,8 +123,7 @@ PengePeopleTile *.PengePeopleTileContentBackground
 
 PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 {
-  font-size: 16;
-  font-family: "Droid Sans", "Sans";
+  font-size: 14pt;
   color: #2c2c2cff;
 }
 
@@ -139,14 +135,12 @@ MxTable.PengeInterestingTileDetails
 PengePeoplePlaceholderTile *#penge-no-content-main-message
 {
   font-size:15px;
-  font-family: "Droid Sans", "Sans";
   color: #2c2c2cff;
 }
 
 PengePeoplePlaceholderTile *#penge-no-content-other-message
 {
-  font-size:14px;
-  font-family: "Droid Sans", "Sans";
+  font-size:14pt;
   color: #2c2c2cff;
 }
 
@@ -171,15 +165,13 @@ PengeWelcomeTile
 *#penge-welcome-primary-text
 {
   color: #009bceff;
-  font-size:19;
+  font-size:22pt;
   font-weight: bold;
-  font-family: "Droid Sans", "Sans";
 }
 
 *#penge-welcome-secondary-text
 {
-  font-size:14;
-  font-family: "Droid Sans", "Sans";
+  font-size:14pt;
   color: #2c2c2cff;
 }
 
@@ -209,8 +201,7 @@ PengeWelcomeTile
 
 MxLabel.PengeZeroCountLabel
 {
-  font-size: 21;
-  font-family: "Droid Sans";
+  font-size: 22pt;
   color: #a7a7a7ff;
   border-image: url('count-frame-zero.png') 12;
   padding: 5 6;
@@ -218,8 +209,7 @@ MxLabel.PengeZeroCountLabel
 
 MxLabel.PengeCountLabel
 {
-  font-size: 21;
-  font-family: "Droid Sans";
+  font-size: 22pt;
   color: #000000ff;
   border-image: url('count-frame.png') 12;
   padding: 5 6;
@@ -228,12 +218,15 @@ MxLabel.PengeCountLabel
 MxLabel.PengeCountMessageLabel
 {
   font-size: 14;
-  font-family: "Droid Sans";
 }
 
 MxLabel.PengeCountAccountLabel
 {
-  font-size: 11;
-  font-family: "Droid Sans";
+  font-size: 11pt;
   color: #7a7a7aff;
+}
+
+*#tasks-icon
+{
+  -mx-content-image: url("tasks-icon.png");
 }
