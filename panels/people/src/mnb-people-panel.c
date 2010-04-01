@@ -445,14 +445,14 @@ _active_model_bulk_change_end_cb (AnerleyFeedModel *model,
 
       if (number_active_people > 1)
       {
-        tooltip = g_strdup_printf (_("people - %d people are talking to you"),
+        tooltip = g_strdup_printf (_("people - you are chatting with %d people"),
                                    number_active_people);
         mpl_panel_client_request_tooltip (priv->panel_client,
                                           tooltip);
         g_free (tooltip);
       } else {
         mpl_panel_client_request_tooltip (priv->panel_client,
-                                          _("people - Someone is talking to you"));
+                                          _("people - you are chatting with someone"));
       }
     }
   } else {
