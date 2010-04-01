@@ -32,6 +32,14 @@ struct _PengeWelcomeTilePrivate {
   gpointer dummy;
 };
 
+#define NEW_PLACEHOLDER_TEXT _("When you’ve set up your web " \
+"accounts and used some files they " \
+"will appear here on the Myzone " \
+"for easy access whenever you " \
+"want. "
+
+#define TMP_PLACEHOLDER _("Play intro video")
+
 static void
 penge_welcome_tile_dispose (GObject *object)
 {
