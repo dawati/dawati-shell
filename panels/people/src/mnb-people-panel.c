@@ -53,6 +53,11 @@ G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, MX_TYPE_TABLE)
 #define TIMEOUT 250
 
 
+#define NEW_PLACEHOLDER_TEXT _("Hello! This is the People panel. " \
+"When you have a web service configured"\
+"(like Messenger) this is where you chat to"\
+"people.")
+
 typedef struct _MnbPeoplePanelPrivate MnbPeoplePanelPrivate;
 
 struct _MnbPeoplePanelPrivate {
