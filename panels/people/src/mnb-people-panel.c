@@ -54,7 +54,7 @@ G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, MX_TYPE_TABLE)
 
 
 #define NEW_PLACEHOLDER_TEXT _("Hello! This is the People panel. " \
-"When you have a web service configured"\
+"When you have an IM service configured "\
 "(like Messenger) this is where you chat to"\
 "people.")
 
