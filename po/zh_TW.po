@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-06 10:40+0000\n"
+"POT-Creation-Date: 2010-03-31 09:24+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -18,28 +18,43 @@ msgid "Set your toolbar preferences"
 msgstr "設定你的工具列偏好設定"
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-#: ../capplet/src/mtp-cc-panel.c:118
-msgid "Toolbar"
-msgstr "工具列"
+msgid "Toolbar settings"
+msgstr "工具列設定"
 
 #: ../capplet/src/mtp-bin.c:355
 msgid "Save toolbar"
 msgstr "儲存工具列"
 
-#: ../capplet/src/mtp-bin.c:360
+#: ../capplet/src/mtp-bin.c:361
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "很抱歉，在你加入新面板之前，必須先移除一個面板。"
 
-#: ../capplet/src/mtp-bin.c:388
+#: ../capplet/src/mtp-bin.c:389
 msgid "Available panels"
 msgstr "可用的面板"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:221
-#: ../src/mnb-toolbar-clock.c:86
+#: ../capplet/src/mtp-clock.c:215
+#: ../src/mnb-toolbar-clock.c:113
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:225
+#: ../src/mnb-toolbar-clock.c:122
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -47,29 +62,33 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:231
-#: ../src/mnb-toolbar-clock.c:96
+#: ../capplet/src/mtp-clock.c:239
+#: ../src/mnb-toolbar-clock.c:135
 msgid "%B %e, %Y"
 msgstr "%Y年%b%e日"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "工具列"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
 msgstr "設定你的系統匣偏好設定"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:250
+#: ../capplet/src/syst-cc-panel.c:253
 msgid "System Tray"
 msgstr "系統匣昨天"
 
-#: ../capplet/src/syst-cc-panel.c:167
+#: ../capplet/src/syst-cc-panel.c:170
 msgid "System tray"
 msgstr "系統匣"
 
-#: ../capplet/src/syst-cc-panel.c:183
+#: ../capplet/src/syst-cc-panel.c:186
 msgid "Show system tray"
 msgstr "顯示系統匣"
 
-#: ../capplet/src/syst-cc-panel.c:204
+#: ../capplet/src/syst-cc-panel.c:207
 msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
 msgstr "系統匣是種某些舊一代應用程式所使用的概念，它能讓你瞭解什麼時候應用程式發生什麼事；或是當你關閉應用程式後，讓它們繼續在系統匣內保持執行。"
 
@@ -81,27 +100,27 @@ msgstr "決定工具列上的面板順序。"
 msgid "Order of panels on toolbar"
 msgstr "工具列上的面板順序"
 
-#: ../src/moblin-netbook.c:932
+#: ../src/moblin-netbook.c:905
 msgid "Moblin Netbook Effects"
 msgstr "Moblin 網路筆電特效"
 
-#: ../src/moblin-netbook.c:936
+#: ../src/moblin-netbook.c:909
 msgid "Effects for Moblin Netbooks"
 msgstr "給 Moblin 網路筆電用的特效"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3035
 msgid "Activate"
 msgstr "啟動"
 
-#: ../src/moblin-netbook.c:3004
+#: ../src/moblin-netbook.c:3049
 msgid "Unknown window"
 msgstr "未知的視窗"
 
-#: ../src/moblin-netbook.c:3006
+#: ../src/moblin-netbook.c:3051
 msgid "Is asking for your attention."
 msgstr "正在要求您的注意。"
 
-#: ../src/mnb-toolbar.c:968
+#: ../src/mnb-toolbar.c:965
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "抱歉，%s 已損毀"
