@@ -126,16 +126,21 @@ mpd_computer_tile_init (MpdComputerTile *self)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
 
-  button = mx_button_new_with_label (_("All settings"));
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (_settings_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
+  /* Put button inside Bin so we can have right hand side spacing */
+  tile = mx_frame_new ();
+  clutter_actor_set_name (tile, "settings-button-tile");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
                                "expand", false,
                                "x-align", MX_ALIGN_END,
                                "x-fill", false,
                                "y-fill", false,
                                NULL);
+
+  button = mx_button_new_with_label (_("All settings"));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (_settings_clicked_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (tile), button);
 }
 
 ClutterActor *
