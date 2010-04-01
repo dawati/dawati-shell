@@ -47,6 +47,8 @@ struct _PengeGridViewPrivate {
   ClutterActor *favourite_apps_pane;
   ClutterActor *everything_pane;
   ClutterActor *background;
+  ClutterActor *header_label;
+
   MplPanelClient *panel_client;
   GConfClient *gconf_client;
   guint show_calendar_notify_id;
@@ -229,7 +231,7 @@ _update_layout (PengeGridView *grid_view)
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->favourite_apps_pane,
                                  "column", col,
-                                 "row", 0,
+                                 "row", 1,
                                  "y-expand", TRUE,
                                  "y-fill", FALSE,
                                  "y-align", MX_ALIGN_START,
@@ -260,7 +262,6 @@ _update_layout (PengeGridView *grid_view)
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->email_pane,
                                    "column", col,
-                                   "row", 1,
                                    "y-expand", TRUE,
                                    "y-fill", FALSE,
                                    "y-align", MX_ALIGN_END,
@@ -349,7 +350,6 @@ _update_layout (PengeGridView *grid_view)
       clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                    priv->email_pane,
                                    "column", col,
-                                   "row", 1,
                                    "x-expand", FALSE,
                                    "y-expand", TRUE,
                                    "y-fill", FALSE,
@@ -363,7 +363,7 @@ _update_layout (PengeGridView *grid_view)
     clutter_container_child_set (CLUTTER_CONTAINER (grid_view),
                                  priv->favourite_apps_pane,
                                  "column", col,
-                                 "row", 2,
+                                 "row", 3,
                                  "x-expand", FALSE,
                                  "x-fill", TRUE,
                                  "y-fill", FALSE,
@@ -457,13 +457,24 @@ penge_grid_view_init (PengeGridView *self)
   PengeGridViewPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
 
+  priv->header_label = mx_label_new_with_text ("Myzone");
+  clutter_actor_set_name (priv->header_label, "myzone-panel-header-label");
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->header_label,
+                                      0, 0,
+                                      "x-expand", FALSE,
+                                      "y-expand", FALSE,
+                                      "column-span", 3,
+                                      NULL);
+
   priv->calendar_pane = g_object_new (PENGE_TYPE_CALENDAR_PANE,
                                       NULL);
   clutter_actor_set_width (priv->calendar_pane, 280);
 
+
   mx_table_add_actor (MX_TABLE (self),
                       priv->calendar_pane,
-                      0,
+                      1,
                       0);
 
   priv->email_pane = g_object_new (PENGE_TYPE_EMAIL_PANE,
@@ -471,7 +482,7 @@ penge_grid_view_init (PengeGridView *self)
 
   mx_table_add_actor (MX_TABLE (self),
                       priv->email_pane,
-                      1,
+                      2,
                       0);
 
   priv->favourite_apps_pane = g_object_new (PENGE_TYPE_APPS_PANE,
@@ -479,7 +490,7 @@ penge_grid_view_init (PengeGridView *self)
 
   mx_table_add_actor (MX_TABLE (self),
                       priv->favourite_apps_pane,
-                      2,
+                      3,
                       0);
   priv->div_tex = clutter_texture_new_from_file (V_DIV_LINE, &error);
 
@@ -491,14 +502,14 @@ penge_grid_view_init (PengeGridView *self)
   } else {
     mx_table_add_actor (MX_TABLE (self),
                         priv->div_tex,
-                        0,
+                        1,
                         1);
   }
 
   priv->everything_pane = g_object_new (PENGE_TYPE_EVERYTHING_PANE,
                                         NULL);
 
-  mx_table_add_actor (MX_TABLE (self), priv->everything_pane, 0, 2);
+  mx_table_add_actor (MX_TABLE (self), priv->everything_pane, 1, 2);
 
   mx_table_set_row_spacing (MX_TABLE (self), 6);
   mx_table_set_column_spacing (MX_TABLE (self), 6);

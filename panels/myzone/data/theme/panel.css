@@ -1,3 +1,10 @@
+*#myzone-panel-header-label
+{
+  color: #31c2eeff;
+  font-size: 22pt;
+  font-weight: bold;
+}
+
 PengeGridView
 {
   padding: 2 2 2 2;
