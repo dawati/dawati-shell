@@ -1,13 +1,13 @@
 
 iconsdir = $(pkgdatadir)/icons
 dist_icons_DATA = \
-  dalston-power-0.png \
-  dalston-power-25.png \
-  dalston-power-50.png \
-  dalston-power-75.png \
-  dalston-power-100.png \
-  dalston-power-missing.png \
-  dalston-power-plugged.png \
+  battery-icon-0.png \
+  battery-icon-25.png \
+  battery-icon-50.png \
+  battery-icon-75.png \
+  battery-icon-100.png \
+  battery-icon-missing.png \
+  battery-icon-plugged.png \
   device-usb.png \
   directory-documents.png \
   directory-download.png \
@@ -17,5 +17,5 @@ dist_icons_DATA = \
   directory-videos.png \
   $(NULL)
 
-
 -include $(top_srcdir)/git.mk
+

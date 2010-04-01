@@ -60,30 +60,30 @@ update (MpdBatteryTile *self)
   switch (state)
   {
   case MPD_BATTERY_DEVICE_STATE_MISSING:
-    icon_file = PKGICONDIR "/dalston-power-missing.png";
+    icon_file = PKGICONDIR "/battery-icon-missing.png";
     break;
   case MPD_BATTERY_DEVICE_STATE_CHARGING:
-    icon_file = PKGICONDIR "/dalston-power-plugged.png";
+    icon_file = PKGICONDIR "/battery-icon-plugged.png";
     break;
   case MPD_BATTERY_DEVICE_STATE_DISCHARGING:
     if (percentage < 0)
-      icon_file = PKGICONDIR "/dalston-power-missing.png";
+      icon_file = PKGICONDIR "/battery-icon-missing.png";
     else if (percentage < 10)
-      icon_file = PKGICONDIR "/dalston-power-0.png";
+      icon_file = PKGICONDIR "/battery-icon-0.png";
     else if (percentage < 30)
-      icon_file = PKGICONDIR "/dalston-power-25.png";
+      icon_file = PKGICONDIR "/battery-icon-25.png";
     else if (percentage < 60)
-      icon_file = PKGICONDIR "/dalston-power-50.png";
+      icon_file = PKGICONDIR "/battery-icon-50.png";
     else if (percentage < 90)
-      icon_file = PKGICONDIR "/dalston-power-75.png";
+      icon_file = PKGICONDIR "/battery-icon-75.png";
     else
-      icon_file = PKGICONDIR "/dalston-power-100.png";
+      icon_file = PKGICONDIR "/battery-icon-100.png";
     break;
   case MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED:
-    icon_file = PKGICONDIR "/dalston-power-100.png";
+    icon_file = PKGICONDIR "/battery-icon-100.png";
     break;
   default:
-    icon_file = PKGICONDIR "/dalston-power-missing.png";
+    icon_file = PKGICONDIR "/battery-icon-missing.png";
   }
 
   mx_label_set_text (MX_LABEL (priv->label), description);
