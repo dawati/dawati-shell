@@ -1,3 +1,22 @@
+*#status-panel-header-label
+{
+  color: #a0da00ff;
+  font-size: 22pt;
+  font-weight: bold;
+}
+
+*#status-panel
+{
+  border-image: url("panel-background.png") 15;
+  padding: 4;
+}
+
+MpsFeedSwitcher
+{
+  padding: 8;
+  border-image: url("content-panel-background.png") 5;
+}
+
 *.mps-tweet-avatar-frame
 {
   border-image: url("avatar_frame.png") 4 4 4 4;
@@ -19,14 +38,12 @@ MpsTweetCard.mps-tweet-card-first:active
 
 *.mps-tweet-content-label
 {
-  font-family: Droid Sans;
   color: #595959ff;
   font-size: 14;
 }
 
 *.mps-tweet-secondary-label
 {
-  font-family: Droid Sans;
   color: #7dbe0cff;
   font-size: 12;
 }
@@ -40,9 +57,15 @@ MpsTweetCard.mps-tweet-card-first:active
 {
   border-image: url("add_status_header.png") 4 4 4 4;
   padding: 6;
-  color: white;
   font-size: 16pt;
-  font-family: Droid Sans;
+}
+
+*.mps-switcher-new-service:hover,
+*.mps-switcher-new-service:active
+{
+  border-image: url("add_status_header_hover.png") 4 4 4 4;
+  padding: 6;
+  font-size: 16pt;
 }
 
 *.mps-switcher-button
@@ -51,29 +74,23 @@ MpsTweetCard.mps-tweet-card-first:active
   padding: 6;
   color: white;
   font-size: 16pt;
-  font-family: Droid Sans;
 }
 
-*.mps-switcher-button:checked,
-*.mps-switcher-button:active
+*.mps-switcher-button:checked
 {
   border-image: url("current_status_header.png") 4 4 4 4;
   padding: 6;
   color: white;
   font-size: 16pt;
-  font-family: Droid Sans;
 }
 
 *.mps-switcher-button:hover,
-*.mps-switcher-button:active,
-*.mps-switcher-new-service:hover,
-*.mps-switcher-new-service:active
+*.mps-switcher-button:active
 {
-  border-image: url("status_header_hover.png") 4 4 4 4;
+  border-image: url("alt_status_header_hover.png") 4 4 4 4;
   padding: 6;
   color: white;
   font-size: 16pt;
-  font-family: Droid Sans;
 }
 
 *.mps-status-entry

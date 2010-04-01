@@ -7,6 +7,7 @@ dist_theme_DATA = \
 	avatar_icon.png \
 	status_entry_box.png \
 	alt_status_header.png \
+	alt_status_header_hover.png \
 	current_status_header.png \
 	avatar_frame.png \
 	status_card_background.png \
@@ -15,7 +16,9 @@ dist_theme_DATA = \
 	tweet-reply.png \
 	tweet-reply-hover.png \
 	icon-bg-hover.png \
-	location-box-bg.png
+	location-box-bg.png \
+	content-panel-background.png \
+	panel-background.png
 
 # Manage mutter-moblin's texture cache.
 

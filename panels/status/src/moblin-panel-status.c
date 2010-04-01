@@ -79,6 +79,8 @@ static ClutterActor *
 make_status (MoblinStatusPanel *status_panel)
 {
   ClutterActor *pane;
+  ClutterActor *table;
+  ClutterActor *label;
 
   status_panel->client = sw_client_new ();
 #if 0
@@ -87,9 +89,27 @@ make_status (MoblinStatusPanel *status_panel)
                                                    "twitter"));
 #endif
 
-  pane = mps_feed_switcher_new (status_panel->client);
+  table = mx_table_new ();
+  clutter_actor_set_name (table, "status-panel");
+  label = mx_label_new_with_text (_("Status"));
+  clutter_actor_set_name (label, "status-panel-header-label");
+  mx_table_add_actor_with_properties (MX_TABLE (table),
+                      label,
+                      0, 0,
+                      "x-expand", FALSE,
+                      "y-expand", FALSE,
+                      NULL);
 
-  return pane;
+  pane = mps_feed_switcher_new (status_panel->client);
+  mx_table_add_actor_with_properties (MX_TABLE (table),
+                      pane,
+                      1, 0,
+                      "x-expand", TRUE,
+                      "y-expand", TRUE,
+                      "x-fill", TRUE,
+                      "y-fill", TRUE,
+                      NULL);
+  return table;
 }
 
 static void
