@@ -83,7 +83,8 @@ dist_theme_capplet_DATA = \
 	theme/capplet/close-icon-hover.png	\
 	theme/capplet/content-background.png	\
 	theme/capplet/drop-target-area.png	\
-	theme/capplet/toolbar-background.png
+	theme/capplet/toolbar-background.png	\
+	theme/capplet/button-background.png
 
 theme_notifiersdir = $(MUTTER_MOBLIN_THEME_DIR)/notifiers
 dist_theme_notifiers_DATA = \

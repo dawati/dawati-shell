@@ -75,12 +75,12 @@ MtpToolbarButton#in-jar {
 
 MnbToolbarButton {
   padding: 0;
-  border-image: url("panel/toolbar-button-hover.png") 12;
+  border-image: url("capplet/button-background.png") 12;
 }
 
 MnbToolbarButton:hover {
   padding: 0;
-  border-image: url("panel/toolbar-button-hover.png") 12;
+  border-image: url("capplet/button-background.png") 12;
 }
 
 MnbToolbarButton#applications-button {
@@ -139,7 +139,7 @@ MxButton#close-button:hover {
 
 MtpSpace {
   padding: 0 0 0 0;
-  border-image: url("panel/toolbar-button-hover.png") 12;
+  border-image: url("capplet/button-background.png") 12;
 }
 
 MtpSpace#in-jar {
@@ -148,7 +148,7 @@ MtpSpace#in-jar {
 }
 
 MtpClock {
-  border-image: url("panel/toolbar-button-hover.png") 12;
+  border-image: url("capplet/button-background.png") 12;
   background-image: none;
   padding: 0 0 0 0;
 }
