@@ -29,16 +29,17 @@ MpdShell {
   padding: 6 6 6 18;
 }
 
+MpdComputerPane, MpdDevicesPane {
+  border-image: url('content-pane-background.png') 5;
+  padding: 3;
+}
+
 #pane-label {
-  background-color: #e1e3e0;
+  border-image: url('content-pane-header.png') 2;
   color: #606261;
   font-size: 14;
   font-weight: bold;
   padding: 10 10 10 18;
-}
-
-MpdComputerPane, MpdDevicesPane {
-  background-color: white;
 }
 
 MpdBatteryTile, MpdDiskTile, MpdVolumeTile {

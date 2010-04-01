@@ -2,6 +2,8 @@
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA = \
   toolbar-button.css \
+  content-pane-background.png \
+  content-pane-header.png \
   devices-coloured.png \
   devices-normal.png \
   directory-highlight.png \
