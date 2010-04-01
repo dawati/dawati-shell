@@ -83,6 +83,7 @@ dist_theme_capplet_DATA = \
 	theme/capplet/close-icon.png		\
 	theme/capplet/close-icon-hover.png	\
 	theme/capplet/content-background.png	\
+	theme/capplet/content-header.png	\
 	theme/capplet/drop-target-area.png	\
 	theme/capplet/toolbar-background.png	\
 	theme/capplet/button-background.png

@@ -102,11 +102,17 @@ mtp_jar_constructed (GObject *self)
 {
   MtpJarPrivate *priv = MTP_JAR (self)->priv;
   ClutterActor  *scroll1, *scroll2;
+  ClutterActor  *bin;
 
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 10);
 
   priv->label = mx_label_new_with_text (_("Available panels"));
   clutter_actor_set_name (priv->label, "available-panels");
+
+  bin = mx_frame_new ();
+  mx_bin_set_alignment (MX_BIN (bin), MX_ALIGN_START, MX_ALIGN_MIDDLE);
+  clutter_actor_set_name (bin, "content-header");
+  clutter_container_add_actor (CLUTTER_CONTAINER (bin), priv->label);
 
   priv->panel_area  = mx_grid_new ();
   clutter_actor_set_name (priv->panel_area, "jar-panel-area");
@@ -123,7 +129,7 @@ mtp_jar_constructed (GObject *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (scroll2), priv->applet_area);
 
   clutter_container_add (CLUTTER_CONTAINER (self),
-                         priv->label, scroll1, scroll2, NULL);
+                         bin, scroll1, scroll2, NULL);
 
   priv->space = mtp_space_new ();
   g_object_ref_sink (priv->space);

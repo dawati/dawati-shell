@@ -232,7 +232,7 @@ mtp_toolbar_button_allocate (ClutterActor          *actor,
     {
       childbox.x1 = 0;
       childbox.y1 = 0;
-      childbox.x2 = box->x2 - box->x1 - 8.0;
+      childbox.x2 = box->x2 - box->x1 - 0.0;
       childbox.y2 = box->y2 - box->y1;
 
       mx_allocate_align_fill (priv->close_button, &childbox, MX_ALIGN_END,

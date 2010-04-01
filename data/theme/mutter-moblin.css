@@ -40,7 +40,8 @@ MxTable {
 
 MxLabel#time-label {
   color: #31c2ee;
-  font-size: 22px;
+  font-size: 18pt;
+  font-weight: bold;
 }
 
 MxLabel#date-label {
