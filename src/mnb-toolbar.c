@@ -998,6 +998,8 @@ mnb_toolbar_show_pending_panel (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   mutter_plugin_query_screen_size (priv->plugin,
                                    &screen_width, &screen_height);
 
+  screen_width -= TOOLBAR_X_PADDING * 2;
+
   clutter_actor_set_size (priv->panel_stub, screen_width, screen_height / 3);
 
   /*
@@ -2751,7 +2753,7 @@ mnb_toolbar_constructed (GObject *self)
 
     clutter_actor_set_size (panel_stub,
                             screen_width, screen_height / 3);
-    clutter_actor_set_position (panel_stub, 0, TOOLBAR_HEIGHT);
+    clutter_actor_set_position (panel_stub, TOOLBAR_X_PADDING, TOOLBAR_HEIGHT);
     clutter_actor_set_name (panel_stub, "panel-stub");
     clutter_container_add_actor (CLUTTER_CONTAINER (wgroup), panel_stub);
     clutter_actor_hide (panel_stub);
