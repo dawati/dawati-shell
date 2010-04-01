@@ -68,10 +68,14 @@ typedef enum
 ClutterActor *
 mpd_storage_device_tile_new (char const *name,
                              char const *mount_point,
+                             char const *mime_type,
                              char const *icon_file);
 
 char const *
 mpd_storage_device_tile_get_icon_file (MpdStorageDeviceTile *self);
+
+char const *
+mpd_storage_device_tile_get_mime_type (MpdStorageDeviceTile *self);
 
 char const *
 mpd_storage_device_tile_get_mount_point (MpdStorageDeviceTile *self);

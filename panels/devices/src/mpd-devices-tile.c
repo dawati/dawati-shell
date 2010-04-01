@@ -149,10 +149,12 @@ add_tile_from_mount (MpdDevicesTile *self,
   GVolume       *volume;
   char          *name;
   char          *label;
+  char         **mime_types;
   GIcon         *icon;
   GtkIconInfo   *icon_info;
   char const    *icon_file;
   ClutterActor  *tile;
+  GError        *error = NULL;
 
   /* Mount point */
   file = g_mount_get_root (mount);
@@ -170,6 +172,17 @@ add_tile_from_mount (MpdDevicesTile *self,
   }
   g_object_unref (volume);
 
+  mime_types = g_mount_guess_content_type_sync (mount, false, NULL, &error);
+  for (int i = 0; mime_types[i]; i++)
+  {
+    g_debug ("%s", mime_types[i]);
+  }
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+
   /* Icon */
   icon = g_mount_get_icon (mount);
   icon_info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
@@ -179,7 +192,7 @@ add_tile_from_mount (MpdDevicesTile *self,
   icon_file = gtk_icon_info_get_filename (icon_info);
   g_debug ("%s() %s", __FUNCTION__, icon_file);
 
-  tile = mpd_storage_device_tile_new (name, path, icon_file);
+  tile = mpd_storage_device_tile_new (name, path, mime_types[0], icon_file);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
@@ -190,6 +203,7 @@ add_tile_from_mount (MpdDevicesTile *self,
 
   gtk_icon_info_free (icon_info);
   g_object_unref (icon);
+  g_strfreev (mime_types);
   g_free (path);
   g_object_unref (file);
 }

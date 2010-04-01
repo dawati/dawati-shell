@@ -36,6 +36,10 @@ static void
 mpd_storage_device_tile_set_icon_file (MpdStorageDeviceTile  *self,
                                        char const            *icon_file);
 static void
+mpd_storage_device_tile_set_mime_type (MpdStorageDeviceTile *self,
+                                       char const           *mime_type);
+
+static void
 mpd_storage_device_tile_set_mount_point (MpdStorageDeviceTile  *self,
                                          char const            *mount_point);
 
@@ -59,6 +63,7 @@ enum
   PROP_0,
 
   PROP_ICON_FILE,
+  PROP_MIME_TYPE,
   PROP_MOUNT_POINT,
   PROP_NAME,
   PROP_TITLE
@@ -88,6 +93,7 @@ typedef struct
 
   /* Data */
   char                      *icon_file;
+  char                      *mime_type;
   char                      *mount_point;
   char                      *name;
   MpdStorageDevice          *storage;
@@ -141,7 +147,34 @@ static void
 _import_clicked_cb (MxButton             *button,
                     MpdStorageDeviceTile *self)
 {
-  // TODO
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+  char    *command_line;
+  GError  *error = NULL;
+
+  if (0 == g_strcmp0 ("x-content/image-dcf", priv->mime_type))
+  {
+    command_line = g_strdup ("gthumb --import-photos");
+  } else {
+    command_line = g_strdup_printf ("banshee --import-media %s",
+                                    priv->mount_point);
+  }
+
+  g_spawn_command_line_async (command_line, &error);
+  if (error)
+  {
+    char *message = g_strdup_printf (_("Could not run %s"), command_line);
+    NotifyNotification *note = notify_notification_new (_("Import error"),
+                                                        message,
+                                                        NULL,
+                                                        NULL);
+    notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
+    notify_notification_show (note, NULL);
+    g_object_unref (note);
+    g_free (message);
+    g_clear_error (&error);
+  }
+
+  g_free (command_line);  
 }
 
 static void
@@ -254,6 +287,11 @@ _get_property (GObject      *object,
                         mpd_storage_device_tile_get_icon_file (
                           MPD_STORAGE_DEVICE_TILE (object)));
     break;
+  case PROP_MIME_TYPE:
+    g_value_set_string (value,
+                        mpd_storage_device_tile_get_mime_type (
+                          MPD_STORAGE_DEVICE_TILE (object)));
+    break;
   case PROP_MOUNT_POINT:
     g_value_set_string (value,
                         mpd_storage_device_tile_get_mount_point (
@@ -286,6 +324,10 @@ _set_property (GObject      *object,
     mpd_storage_device_tile_set_icon_file (MPD_STORAGE_DEVICE_TILE (object),
                                            g_value_get_string (value));
     break;
+  case PROP_MIME_TYPE:
+    mpd_storage_device_tile_set_mime_type (MPD_STORAGE_DEVICE_TILE (object),
+                                           g_value_get_string (value));
+    break;
   case PROP_MOUNT_POINT:
     mpd_storage_device_tile_set_mount_point (MPD_STORAGE_DEVICE_TILE (object),
                                              g_value_get_string (value));
@@ -312,6 +354,12 @@ _dispose (GObject *object)
   {
     g_free (priv->icon_file);
     priv->icon_file = NULL;
+  }
+
+  if (priv->mime_type)
+  {
+    g_free (priv->mime_type);
+    priv->mime_type = NULL;
   }
 
   if (priv->mount_point)
@@ -353,6 +401,14 @@ mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
                                    g_param_spec_string ("icon-file",
                                                         "Icon file",
                                                         "Icon file path",
+                                                        NULL,
+                                                        param_flags |
+                                                        G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class,
+                                   PROP_MIME_TYPE,
+                                   g_param_spec_string ("mime-type",
+                                                        "Mime type",
+                                                        "Device mime type",
                                                         NULL,
                                                         param_flags |
                                                         G_PARAM_CONSTRUCT_ONLY));
@@ -497,10 +553,12 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 ClutterActor *
 mpd_storage_device_tile_new (char const *name,
                              char const *mount_point,
+                             char const *mime_type,
                              char const *icon_file)
 {
   return g_object_new (MPD_TYPE_STORAGE_DEVICE_TILE,
                        "icon-file", icon_file,
+                       "mime-type", mime_type,
                        "mount-point", mount_point,
                        "name", name,
                        NULL);
@@ -538,6 +596,41 @@ mpd_storage_device_tile_set_icon_file (MpdStorageDeviceTile  *self,
     }
 
     g_object_notify (G_OBJECT (self), "icon-file");
+  }
+}
+
+char const *
+mpd_storage_device_tile_get_mime_type (MpdStorageDeviceTile *self)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_val_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self), NULL);
+
+  return priv->mime_type;
+}
+
+static void
+mpd_storage_device_tile_set_mime_type (MpdStorageDeviceTile *self,
+                                       char const           *mime_type)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
+
+  if (0 != g_strcmp0 (mime_type, priv->mime_type))
+  {
+    if (priv->mime_type)
+    {
+      g_free (priv->mime_type);
+      priv->mime_type = NULL;
+    }
+
+    if (mime_type)
+    {
+      priv->mime_type = g_strdup (mime_type);
+    }
+
+    g_object_notify (G_OBJECT (self), "mime-type");
   }
 }
 
