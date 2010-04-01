@@ -1393,62 +1393,6 @@ carrick_pane_init (CarrickPane *self)
   column = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (column);
 
-  /* Network list */
-  label = g_strdup_printf ("<span font_desc=\"Liberation Sans Bold 18px\""
-                           "foreground=\"#3e3e3e\">%s</span>",
-                           _ ("Networks"));
-
-  frame_title = gtk_label_new ("");
-  gtk_widget_show (frame_title);
-  gtk_label_set_markup (GTK_LABEL (frame_title),
-                        label);
-  g_free (label);
-  gtk_frame_set_label_widget (GTK_FRAME (net_list_bin),
-                              frame_title);
-
-  priv->service_list = carrick_list_new (priv->icon_factory,
-                                         priv->notes,
-                                         CARRICK_NETWORK_MODEL (model));
-  gtk_container_add (GTK_CONTAINER (net_list_bin),
-                     priv->service_list);
-  gtk_widget_show (priv->service_list);
-
-  gtk_box_pack_start (GTK_BOX (column),
-                      net_list_bin,
-                      TRUE,
-                      TRUE,
-                      4);
-
-  /* New connection button */
-  priv->new_conn_button = gtk_button_new_with_label (_ ("Add new connection"));
-  gtk_widget_set_sensitive (priv->new_conn_button,
-                            FALSE);
-  gtk_widget_show (priv->new_conn_button);
-  g_signal_connect (GTK_BUTTON (priv->new_conn_button),
-                    "clicked",
-                    G_CALLBACK (_new_connection_cb),
-                    self);
-  gtk_box_pack_start (GTK_BOX (column),
-                      priv->new_conn_button,
-                      FALSE,
-                      FALSE,
-                      8);
-
-  gtk_box_pack_start (GTK_BOX (self),
-                      column,
-                      TRUE,
-                      TRUE,
-                      0);
-  /*
-   * End of left column
-   */
-
-  /*
-   * Right column
-   */
-  column = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (column);
-
   /* Switches */
   vbox = gtk_vbox_new (TRUE,
                        0);
@@ -1678,6 +1622,62 @@ carrick_pane_init (CarrickPane *self)
                       column,
                       FALSE,
                       FALSE,
+                      0);
+  /*
+   * End of left column
+   */
+
+  /*
+   * Right column
+   */
+  column = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (column);
+
+  /* Network list */
+  label = g_strdup_printf ("<span font_desc=\"Liberation Sans Bold 18px\""
+                           "foreground=\"#3e3e3e\">%s</span>",
+                           _ ("Networks"));
+
+  frame_title = gtk_label_new ("");
+  gtk_widget_show (frame_title);
+  gtk_label_set_markup (GTK_LABEL (frame_title),
+                        label);
+  g_free (label);
+  gtk_frame_set_label_widget (GTK_FRAME (net_list_bin),
+                              frame_title);
+
+  priv->service_list = carrick_list_new (priv->icon_factory,
+                                         priv->notes,
+                                         CARRICK_NETWORK_MODEL (model));
+  gtk_container_add (GTK_CONTAINER (net_list_bin),
+                     priv->service_list);
+  gtk_widget_show (priv->service_list);
+
+  gtk_box_pack_start (GTK_BOX (column),
+                      net_list_bin,
+                      TRUE,
+                      TRUE,
+                      4);
+
+  /* New connection button */
+  priv->new_conn_button = gtk_button_new_with_label (_ ("Add new connection"));
+  gtk_widget_set_sensitive (priv->new_conn_button,
+                            FALSE);
+  gtk_widget_show (priv->new_conn_button);
+  g_signal_connect (GTK_BUTTON (priv->new_conn_button),
+                    "clicked",
+                    G_CALLBACK (_new_connection_cb),
+                    self);
+  gtk_box_pack_start (GTK_BOX (column),
+                      priv->new_conn_button,
+                      FALSE,
+                      FALSE,
+                      8);
+
+  gtk_box_pack_start (GTK_BOX (self),
+                      column,
+                      TRUE,
+                      TRUE,
                       0);
   /*
    * End right column
