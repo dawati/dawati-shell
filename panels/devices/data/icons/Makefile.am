@@ -8,6 +8,7 @@ dist_icons_DATA = \
   battery-icon-100.png \
   battery-icon-missing.png \
   battery-icon-plugged.png \
+  computer-icon.png \
   device-usb.png \
   directory-documents.png \
   directory-download.png \

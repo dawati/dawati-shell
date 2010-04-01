@@ -133,8 +133,11 @@ mpd_battery_tile_init (MpdBatteryTile *self)
   mx_table_set_column_spacing (MX_TABLE (self), MPD_TILE_SPACING);
 
   priv->icon = clutter_texture_new ();
-  clutter_actor_set_height (priv->icon, 65.);
-  clutter_actor_set_width (priv->icon, 65.);
+  /* I'd really like to know why that doesn't work here,
+   * is it because of the table around? 
+   * clutter_texture_set_sync_size (CLUTTER_TEXTURE (icon), true); */
+  clutter_actor_set_height (priv->icon, 49.0);
+  clutter_actor_set_width (priv->icon, 55.0);
   mx_table_add_actor (MX_TABLE (self), priv->icon, 0, 0);
 
   priv->label = mx_label_new ();
