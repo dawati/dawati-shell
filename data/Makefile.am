@@ -46,6 +46,7 @@ dist_theme_panel_DATA = \
 	theme/panel/status-normal.png \
 	theme/panel/toolbar-button-active.png \
 	theme/panel/toolbar-button-hover.png \
+	theme/panel/toolbar-button-tray.png \
 	theme/panel/toolbar-hint.png
 
 theme_genericdir = $(MUTTER_MOBLIN_THEME_DIR)/generic

@@ -55,7 +55,7 @@ MnbToolbar {
 MnbToolbarClock {
   -mx-border-image-transition-duration: 0;
   background-color: #fff0;
-  border-image: url("panel/toolbar-button-hover.png") 12;
+  border-image: url("panel/toolbar-button-tray.png") 12;
   background-image: none;
   padding: 0 0 0 0;
 }
@@ -77,7 +77,7 @@ MnbToolbarClock:hover, MnbToolbarClock:active {
 MnbToolbarApplet {
   -mx-border-image-transition-duration: 0;
   background-color: #fff0;
-  border-image: url("panel/toolbar-button-hover.png") 12;
+  border-image: url("panel/toolbar-button-tray.png") 12;
   background-image: none;
   padding: 0 0 0 0;
 }
