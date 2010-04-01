@@ -118,32 +118,38 @@ mnb_people_panel_class_init (MnbPeoplePanelClass *klass)
 
 #define ICON_SIZE 48
 
-static gboolean
-_no_people_tile_button_press_event_cb (ClutterActor *actor,
-                                       ClutterEvent *event,
-                                       gpointer      userdata)
+static void
+_settings_launcher_button_clicked_cb (MxButton *button,
+                                      gpointer  userdata)
 {
   MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  GDesktopAppInfo *app_info;
   GError *error = NULL;
-  GAppLaunchContext *context;
+  const gchar *args[3] = { NULL, };
 
-  context = G_APP_LAUNCH_CONTEXT (gdk_app_launch_context_new ());
+  app_info = g_desktop_app_info_new ("gnome-control-center.desktop");
+  args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
+  args[1] = "empathy-accounts.desktop";
+  args[2] = NULL;
 
-  if (g_app_info_launch (priv->app_info, NULL, context, &error))
+  if (!g_spawn_async (NULL,
+                      (gchar **)args,
+                      NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      NULL,
+                      NULL,
+                      NULL,
+                      &error))
   {
+    g_warning (G_STRLOC ": Error starting control center for empathy-accounts: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
     if (priv->panel_client)
       mpl_panel_client_hide (priv->panel_client);
   }
 
-  if (error)
-  {
-    g_warning (G_STRLOC ": Error launching application): %s",
-                 error->message);
-    g_clear_error (&error);
-  }
-
-  g_object_unref (context);
-  return TRUE;
+  g_object_unref (app_info);
 }
 
 
@@ -219,6 +225,10 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
 
   button = mx_button_new_with_label (button_str);
   g_free (button_str);
+  g_signal_connect (button,
+                    "clicked",
+                    (GCallback)_settings_launcher_button_clicked_cb,
+                    people_panel);
 
   mx_table_add_actor_with_properties (MX_TABLE (table),
                                       button,
@@ -331,6 +341,31 @@ _make_offline_banner (MnbPeoplePanel *pane,
   return tile;
 }
 
+static void
+_messenger_launcher_button_clicked_cb (MxButton *button,
+                                       gpointer  userdata)
+{
+  MnbPeoplePanelPrivate *priv = GET_PRIVATE (userdata);
+  GAppInfo *app_info;
+  GError *error = NULL;
+
+  app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
+
+  if (!g_app_info_launch (app_info,
+                          NULL,
+                          NULL,
+                          &error))
+  {
+    g_warning (G_STRLOC ": Error starting empathy: %s", error->message);
+    g_clear_error (&error);
+  } else {
+    if (priv->panel_client)
+      mpl_panel_client_hide (priv->panel_client);
+  }
+
+  g_object_unref (app_info);
+}
+
 static ClutterActor *
 _make_messenger_launcher_tile (MnbPeoplePanel *panel)
 {
@@ -366,6 +401,10 @@ _make_messenger_launcher_tile (MnbPeoplePanel *panel)
 
   button = mx_button_new_with_label (button_str);
   g_free (button_str);
+  g_signal_connect (button,
+                    "clicked",
+                    (GCallback)_messenger_launcher_button_clicked_cb,
+                    panel);
 
   mx_table_add_actor_with_properties (MX_TABLE (table),
                                       button,
