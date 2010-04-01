@@ -60,6 +60,8 @@ moblin_panel_devices_SOURCES = \
   mpd-text.h \
   mpd-volume-tile.c \
   mpd-volume-tile.h \
+  mpl-content-pane.c \
+  mpl-content-pane.h \
   $(NULL)
 
 if HAVE_UDISKS

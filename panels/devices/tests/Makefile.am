@@ -14,6 +14,7 @@ LDADD = \
 
 noinst_PROGRAMS = \
   test-battery-device \
+  test-content-pane \
   test-folder-button \
   $(NULL)
 
@@ -21,6 +22,11 @@ test_battery_device_SOURCES = \
   test-battery-device.c \
   $(top_srcdir)/src/mpd-battery-device.c \
   $(top_srcdir)/src/mpd-gobject.c \
+  $(NULL)
+
+test_content_pane_SOURCES = \
+  test-content-pane.c \
+  $(top_srcdir)/src/mpl-content-pane.c \
   $(NULL)
 
 test_disk_tile_LDADD = \
