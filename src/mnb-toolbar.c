@@ -68,6 +68,18 @@
 
 #define BUTTON_SPACING 20
 #define BUTTON_SPACING_INITIAL 13
+
+/*
+ * According to the latest MeeGo 1.0 designs, on the bigger screen the Toolbar
+ * does not have any shadow on its sides, nor the rounded corners. This is done
+ * by making the Toolbar wider than the screen by 2 * BIG_SCREEN_PAD and moving
+ * it to the left by BIG_SCREEN_PAD. The BIG_SCREEN_BUTTON_SHIFT is the amount
+ * by which the panel buttons have to be moved left so that the myzone button
+ * fits into the middle of the space which is embossed into the Toolbar asset.
+ */
+#define BIG_SCREEN_PAD 10
+#define BIG_SCREEN_BUTTON_SHIFT 4
+
 #define MNB_TOOLBAR_MAX_APPLETS 4
 #define TRAY_WIDTH 200
 #define TRAY_PADDING   4
@@ -453,7 +465,7 @@ mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason)
   clutter_actor_show (actor);
 
   /* set initial width and height */
-  clutter_actor_set_position (actor, 0, -(clutter_actor_get_height (actor)));
+  clutter_actor_set_y (actor, -(clutter_actor_get_height (actor)));
 
   g_object_ref (actor);
 
@@ -1915,11 +1927,15 @@ mnb_toolbar_ensure_applet_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
   if (index < MNB_TOOLBAR_MAX_APPLETS)
     {
       gint x, y, clock_index;
+      gint width = screen_width;
+
+      if (!moblin_netbook_use_netbook_mode (plugin))
+        width += BIG_SCREEN_PAD;
 
       clock_index = mnb_toolbar_get_clock_position_in_tray (toolbar);
 
       y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = screen_width - (index + 1) * (TRAY_BUTTON_WIDTH+TRAY_PADDING) - 4;
+      x = width - (index + 1) * (TRAY_BUTTON_WIDTH+TRAY_PADDING) - 4;
 
       if (clock_index >= 0 && index >= clock_index)
         x -= (CLOCK_WIDTH - TRAY_BUTTON_WIDTH);
@@ -1973,6 +1989,9 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 
           if (index > 1)
             spacing += (index - 1) * BUTTON_SPACING;
+
+          if (!moblin_netbook_use_netbook_mode (plugin))
+            spacing += BIG_SCREEN_BUTTON_SHIFT;
 
           clutter_actor_set_position (CLUTTER_ACTOR (button), spacing,
                                       TOOLBAR_HEIGHT - BUTTON_HEIGHT);
@@ -2668,7 +2687,7 @@ mnb_toolbar_constructed (GObject *self)
                                    &priv->old_screen_width,
                                    &priv->old_screen_height);
 
-  clutter_actor_set_reactive (CLUTTER_ACTOR (actor), TRUE);
+  clutter_actor_set_reactive (actor, TRUE);
 
   hbox = priv->hbox = clutter_group_new ();
 
@@ -2699,7 +2718,17 @@ mnb_toolbar_constructed (GObject *self)
      TOOLBAR_X_PADDING - BUTTON_SPACING_INITIAL) /
     (BUTTON_WIDTH + BUTTON_SPACING);
 
-  clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
+  g_debug ("Consructing, netbook_mode %d", netbook_mode);
+
+  if (!netbook_mode)
+    {
+      clutter_actor_set_x (actor, -BIG_SCREEN_PAD);
+      clutter_actor_set_size (actor,
+                              screen_width + 2 * BIG_SCREEN_PAD,
+                              TOOLBAR_HEIGHT);
+    }
+  else
+    clutter_actor_set_size (actor, screen_width, TOOLBAR_HEIGHT);
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
 
@@ -3239,6 +3268,10 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   MetaWorkspace     *workspace = meta_screen_get_active_workspace (screen);
   gint               screen_width, screen_height;
   GList             *l;
+  gboolean           netbook_mode;
+  gint               width = priv->old_screen_width;
+
+  netbook_mode = moblin_netbook_use_netbook_mode (priv->plugin);
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -3268,9 +3301,20 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
    */
   if (priv->old_screen_width != screen_width)
     {
-      gint          applet_index = 0;
+      gint   applet_index = 0;
 
-      clutter_actor_set_width ((ClutterActor*)toolbar, screen_width);
+      width = screen_width;
+
+      if (!netbook_mode)
+        {
+          g_debug ("Moving Toolbar to %d for bigger screen", BIG_SCREEN_PAD);
+
+          width += BIG_SCREEN_PAD * 2;
+          clutter_actor_set_x ((ClutterActor*)toolbar, -BIG_SCREEN_PAD);
+        }
+      else
+
+      clutter_actor_set_width ((ClutterActor*)toolbar, width);
       clutter_actor_set_width (priv->shadow, screen_width);
 
       for (l = priv->panels; l; l = l->next)
@@ -3291,7 +3335,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
           clock_index = mnb_toolbar_get_clock_position_in_tray (toolbar);
 
           y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-          x = screen_width - (applet_index + 1) *
+          x = width - (applet_index + 1) *
             (TRAY_BUTTON_WIDTH + TRAY_PADDING) - 4;
 
           if (clock_index >= 0 && applet_index >= clock_index)
