@@ -35,6 +35,7 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_GRID_VIEW, PengeGridViewPrivate))
 
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
+#define FADE_BG THEMEDIR "/top-fade.png"
 
 #define MOBLIN_MYZONE_SHOW_CALENDAR "/desktop/moblin/myzone/show_calendar"
 #define MOBLIN_MYZONE_SHOW_EMAIL "/desktop/moblin/myzone/show_email"
@@ -47,6 +48,7 @@ struct _PengeGridViewPrivate {
   ClutterActor *favourite_apps_pane;
   ClutterActor *everything_pane;
   ClutterActor *background;
+  ClutterActor *background_fade;
   ClutterActor *header_label;
 
   MplPanelClient *panel_client;
@@ -138,6 +140,7 @@ penge_grid_view_paint (ClutterActor *actor)
 
   /* Paint the background */
   clutter_actor_paint (priv->background);
+  clutter_actor_paint (priv->background_fade);
 
   CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->paint (actor);
 }
@@ -150,6 +153,7 @@ penge_grid_view_map (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->map (actor);
 
   clutter_actor_map (priv->background);
+  clutter_actor_map (priv->background_fade);
 }
 
 static void
@@ -160,6 +164,7 @@ penge_grid_view_unmap (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->unmap (actor);
 
   clutter_actor_unmap (priv->background);
+  clutter_actor_unmap (priv->background_fade);
 }
 
 static void
@@ -169,6 +174,7 @@ penge_grid_view_allocate (ClutterActor          *actor,
 {
   PengeGridViewPrivate *priv = GET_PRIVATE (actor);
   ClutterActorBox child_box;
+  gint fade_height;
 
   /* Allocate the background to be the same area as the grid view */
   child_box.x1 = 0;
@@ -176,6 +182,16 @@ penge_grid_view_allocate (ClutterActor          *actor,
   child_box.x2 = box->x2 - box->x1;
   child_box.y2 = box->y2 - box->y1;
   clutter_actor_allocate (priv->background, &child_box, flags);
+
+
+  clutter_texture_get_base_size (CLUTTER_TEXTURE (priv->background_fade),
+                                 NULL,
+                                 &fade_height);
+  child_box.x1 = 0;
+  child_box.y1 = 0;
+  child_box.x2 = box->x2 - box->x1;
+  child_box.y2 = fade_height;
+  clutter_actor_allocate (priv->background_fade, &child_box, flags);
 
   CLUTTER_ACTOR_CLASS (penge_grid_view_parent_class)->allocate (actor,
                                                                 box,
@@ -521,6 +537,11 @@ penge_grid_view_init (PengeGridView *self)
   priv->background = g_object_new (PENGE_TYPE_VIEW_BACKGROUND, NULL);
   clutter_actor_set_parent (priv->background, (ClutterActor *)self);
   clutter_actor_show (priv->background);
+
+  priv->background_fade = clutter_texture_new_from_file (FADE_BG,
+                                                         NULL);
+  clutter_actor_set_parent (priv->background_fade, (ClutterActor *)self);
+  clutter_actor_show (priv->background_fade);
 
   priv->gconf_client = gconf_client_get_default ();
   priv->show_calendar_notify_id = 
