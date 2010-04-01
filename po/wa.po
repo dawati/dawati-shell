@@ -120,10 +120,6 @@ msgstr "Rinoncî"
 msgid "Dismiss All"
 msgstr "Rinoncî a ttafwait"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar settings"
-msgstr "Tuzes del bår ås usteyes"
-
 #. translators: translate this to a suitable 24 hourt time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
@@ -132,6 +128,10 @@ msgstr "Tuzes del bår ås usteyes"
 #: ../capplet/src/mtp-clock.c:215 ../src/mnb-toolbar-clock.c:113
 msgid "%H:%M"
 msgstr "%H:%M"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Tchuzes del bår ås usteyes"
 
 #~ msgid "zones"
 #~ msgstr "redjons"
