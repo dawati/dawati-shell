@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-20 09:59+0000\n"
+"POT-Creation-Date: 2010-03-31 09:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -24,42 +24,46 @@ msgstr "狀態"
 msgid "Status panel"
 msgstr "狀態面板"
 
-#: ../src/mps-feed-pane.c:419
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "無法更新狀態：此服務可能無法使用或密碼可能是錯誤的。"
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "無法更新狀態：您未上線。"
+
+#: ../src/mps-feed-pane.c:444
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "我們推測您的地理位置為：%f %f"
 
-#: ../src/mps-feed-pane.c:423
+#: ../src/mps-feed-pane.c:448
 #, c-format
 msgid "Your location is being shared as: %f %f "
 msgstr "您的地理位置正被分享：%f %f "
 
-#: ../src/mps-feed-pane.c:430
+#: ../src/mps-feed-pane.c:455
 msgid "Your location is not being shared"
 msgstr "您的地理位置沒有被分享"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:526
+#: ../src/mps-feed-pane.c:551
 msgid "Update"
 msgstr "更新"
 
-#: ../src/mps-feed-pane.c:531
+#: ../src/mps-feed-pane.c:556
 msgid "What's happening?"
 msgstr "發生什麼事？"
 
-#: ../src/mps-feed-pane.c:555
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "無法更新狀態：此服務可能無法使用或密碼可能是錯誤的。"
-
-#: ../src/mps-feed-pane.c:583
+#: ../src/mps-feed-pane.c:606
 msgid "Change"
 msgstr "變更"
 
-#: ../src/mps-feed-switcher.c:344
+#: ../src/mps-feed-switcher.c:354
 msgid "Add new web service"
 msgstr "新增網路服務"
 
-#: ../src/mps-feed-switcher.c:367
+#: ../src/mps-feed-switcher.c:377
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "你似乎沒有任何網路服務的配置，或者網路服務配置有問題。使用上面的按鈕，打開「我的網站帳戶」並設置一個帳戶。"
 
