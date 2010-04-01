@@ -1,4 +1,11 @@
 
+Version 0.1.14, 2010-04-01
+
+    More work on the new visual design.
+    Remove udisks dependency.
+    Switch to using external importers.
+    l10n: Lots of translation update.
+
 Version 0.1.13, 2010-03-30
 
     Depend on mx-1.0 >= 0.9, fix for API changes

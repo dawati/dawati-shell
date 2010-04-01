@@ -73,11 +73,18 @@ mpd_default_device_tile_class_init (MpdDefaultDeviceTileClass *klass)
 static void
 mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
 {
+  ClutterActor  *hbox;
   ClutterActor  *icon;
   ClutterActor  *label;
+  ClutterActor  *separator;
   GError        *error = NULL;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_SPACING);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+
+  hbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox),
+                             MPD_STORAGE_DEVICE_TILE_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
 
   icon = clutter_texture_new_from_file (PKGICONDIR "/device-usb.png",
                                         &error);
@@ -87,8 +94,8 @@ mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
     g_clear_error (&error);
   } else {
     clutter_texture_set_sync_size (CLUTTER_TEXTURE (icon), true);
-    clutter_container_add_actor (CLUTTER_CONTAINER (self), icon);
-    clutter_container_child_set (CLUTTER_CONTAINER (self), icon,
+    clutter_container_add_actor (CLUTTER_CONTAINER (hbox), icon);
+    clutter_container_child_set (CLUTTER_CONTAINER (hbox), icon,
                                  "expand", false,
                                  "x-align", MX_ALIGN_START,
                                  "x-fill", false,
@@ -99,14 +106,20 @@ mpd_default_device_tile_init (MpdDefaultDeviceTile *self)
 
   label = mx_label_new_with_text (_("Plug in a device\n"
                                     "and it will be automatically detected."));
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), label,
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), label,
                                 "expand", true,
                                 "x-align", MX_ALIGN_START,
                                 "x-fill", true,
                                 "y-align", MX_ALIGN_MIDDLE,
                                 "y-fill", false,
                                 NULL);
+
+  /* Separator */
+  separator = mx_icon_new ();
+  clutter_actor_set_height (separator, 1.0);
+  mx_stylable_set_style_class (MX_STYLABLE (separator), "separator");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), separator);
 }
 
 ClutterActor *

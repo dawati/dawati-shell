@@ -465,17 +465,23 @@ static void
 mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+  ClutterActor  *hbox;
+  ClutterActor  *separator;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self),
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+
+  hbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox),
                              MPD_STORAGE_DEVICE_TILE_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
 
   /* 1st column: icon */
   priv->icon = clutter_texture_new ();
   clutter_actor_set_size (priv->icon,
                           MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
                           MPD_STORAGE_DEVICE_TILE_ICON_SIZE);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->icon);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->icon,
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->icon);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->icon,
                                "expand", false,
                                "x-align", MX_ALIGN_START,
                                "x-fill", false,
@@ -489,8 +495,8 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                              MPD_STORAGE_DEVICE_TILE_VBOX_SPACING);
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
                                  MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->vbox);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), priv->vbox,
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->vbox);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->vbox,
                                "expand", true,
                                "x-align", MX_ALIGN_START,
                                "x-fill", true,
@@ -548,6 +554,12 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                "expand", true,
                                "x-fill", true,
                                NULL);
+
+  /* Separator */
+  separator = mx_icon_new ();
+  clutter_actor_set_height (separator, 1.0);
+  mx_stylable_set_style_class (MX_STYLABLE (separator), "separator");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), separator);
 }
 
 ClutterActor *
