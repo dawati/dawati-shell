@@ -217,9 +217,10 @@ sw_overview_constructed (GObject *object)
   gchar *welcome;
 
 
-  welcome = _("Applications you’re using will show up here. You will be"
-              " able to switch and organize them to your heart's"
-              " content.");
+  welcome = _("Hello! This is the Zones panel."
+              " When you have applications open"
+              " you will be able to view, manage and"
+              " access them here.");
 
   g_debug ("Creating a zones panel with %d zones", priv->n_zones);
 
