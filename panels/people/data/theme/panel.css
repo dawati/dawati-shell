@@ -31,7 +31,7 @@ MnbPeoplePanel
 *#people-panel-content-header,
 *#people-panel-side-box-header
 {
-  border-image: url("frame-header-background.png") 5;
+  border-image: url("content-panel-header-grey.png") 5;
   padding: 8;
 }
 
@@ -44,7 +44,7 @@ MnbPeoplePanel
 *#people-panel-content-box,
 *#people-panel-side-box
 {
-  border-image: url("frame-background.png") 5;
+  border-image: url("content-panel-background.png") 5;
   padding: 3;
 }
 
