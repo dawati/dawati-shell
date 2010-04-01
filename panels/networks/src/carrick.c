@@ -49,7 +49,7 @@ get_tip_and_icon_state (const gchar      *connection_type,
       tip = g_strdup (_("networks - connecting"));
       *icon_state = ICON_CONNECTING;
     }
-  else if (g_str_equal (state, "ready"))
+  else if (g_str_equal (state, "ready") || g_str_equal (state, "online"))
     {
       if (g_str_equal (connection_type, "ethernet"))
         tip = g_strdup (_("networks - wired"));
