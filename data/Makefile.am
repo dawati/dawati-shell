@@ -80,6 +80,7 @@ dist_theme_dropdown_DATA = \
 
 theme_cappletdir = $(MUTTER_MOBLIN_THEME_DIR)/capplet
 dist_theme_capplet_DATA = \
+	theme/capplet/capplet-background.png	\
 	theme/capplet/close-icon.png		\
 	theme/capplet/close-icon-hover.png	\
 	theme/capplet/content-background.png	\

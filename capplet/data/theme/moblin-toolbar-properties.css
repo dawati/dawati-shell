@@ -23,6 +23,7 @@ MxLabel#button-label {
 MxLabel#error-message {
   font-size: 14pt;
   color: #4b4b4b;
+  padding: 10 0 0 0;
 }
 
 MxLabel#available-panels {
@@ -33,7 +34,7 @@ MxLabel#available-panels {
 
 MxFrame#content-header {
   border-image: url("capplet/content-header.png") 6 6 6 6;
-  padding: 5 0 5 10;
+  padding: 10 0 10 10;
 }
 
 MxButton#save-button {
@@ -44,12 +45,12 @@ MxButton#save-button {
 
 MtpJar {
   background-color: #f8f8f800;
-  padding: 3 3 3 3;
+  padding: 2 2 2 2;
   border-image: url("capplet/content-background.png") 6 6 6 6;
 }
 
 MxBoxLayout#message-box {
- padding: 5 0 5 0;
+ padding: 5 20 5 20;
 }
 
 MxBoxLayout#panel-area, MxBoxLayout#applet-area {
@@ -59,11 +60,13 @@ MxBoxLayout#panel-area, MxBoxLayout#applet-area {
 MtpBin {
   padding: 0 7 7 7;
   background-color: #f3f3f3;
+  border-image: url("capplet/capplet-background.png") 0;
 }
 
 MtpBin#frameless {
   padding: 0 7 7 7;
   background-color: #f3f3f3;
+  border-image: url("capplet/capplet-background.png") 0;
 }
 
 MtpToolbar, MtpToolbar:hover {
