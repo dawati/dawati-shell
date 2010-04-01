@@ -68,7 +68,7 @@ enum
 typedef struct
 {
   /* Managed by clutter */
-  ClutterActor    *volume_icon;
+  ClutterActor    *icon;
   ClutterActor    *volume_bars;
   ClutterActor    *volume_slider;
   ClutterActor    *mute_toggle;
@@ -90,7 +90,6 @@ _play_sound_completed_cb (ca_context *context,
 
   (void) g_atomic_int_dec_and_test (&priv->playing_event_sound);
 }
-#endif
 
 /*
  * Volume is a value from 0.0 to 1.0
@@ -99,9 +98,6 @@ static void
 update_volume_label (MpdVolumeTile  *self,
                      double          volume)
 {
-  /* TODO we probably need to bring back the notifications even if the
-   * sliding label is gone. */
-#if 0
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
   char  *old_level;
   float  label_width;
@@ -174,8 +170,8 @@ update_volume_label (MpdVolumeTile  *self,
     }
   }
   g_free (old_level);
-#endif
 }
+#endif
 
 static void
 _mute_toggle_notify_cb (MxToggle      *toggle,
@@ -186,9 +182,9 @@ _mute_toggle_notify_cb (MxToggle      *toggle,
 }
 
 static void
-_volume_slider_progress_notify_cb (MxSlider      *slider,
-                                   GParamSpec    *pspec,
-                                   MpdVolumeTile *self)
+_volume_slider_value_notify_cb (MxSlider      *slider,
+                                GParamSpec    *pspec,
+                                MpdVolumeTile *self)
 {
   update_stream_volume (self);
 }
@@ -332,21 +328,21 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_TILE_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
 
-  /* TODO do icon depending on actual volume. */
-  priv->volume_icon = clutter_texture_new_from_file (PKGTHEMEDIR "/volume-icon-100.png",
-                                                     &error);
+  priv->icon = clutter_texture_new ();
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   } else {
-    clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->volume_icon), true);
-    clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->volume_icon);
-    clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->volume_icon,
+    clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->icon), true);
+    clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->icon);
+    /*
+    clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->icon,
                                  "expand", false,
                                  "x-fill", false,
                                  "y-fill", false,
                                  NULL);
+    */
   }
 
   vbox = mx_box_layout_new ();
@@ -366,8 +362,8 @@ mpd_volume_tile_init (MpdVolumeTile *self)
 
   priv->volume_slider = mx_slider_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->volume_slider);
-  g_signal_connect (priv->volume_slider, "notify::progress",
-                    G_CALLBACK (_volume_slider_progress_notify_cb), self);
+  g_signal_connect (priv->volume_slider, "notify::value",
+                    G_CALLBACK (_volume_slider_value_notify_cb), self);
 
   /* Control */
   priv->control = gvc_mixer_control_new (MIXER_CONTROL_NAME);
@@ -435,6 +431,52 @@ mpd_volume_tile_set_sink (MpdVolumeTile   *self,
 }
 
 static void
+update_volume_icon (MpdVolumeTile *self)
+{
+  MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
+  bool     is_muted;
+  double   volume;
+  double   value;
+  GError  *error = NULL;
+
+  is_muted = gvc_mixer_stream_get_is_muted (priv->sink);
+  volume = gvc_mixer_stream_get_volume (priv->sink);
+  value = volume / PA_VOLUME_NORM;
+
+  if (is_muted)
+  {
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                   PKGICONDIR "/volume-icon-mute.png",
+                                   &error);
+  } else {
+    if (value < 0.166)
+    {
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                     PKGICONDIR "/volume-icon-0.png",
+                                     &error);
+    } else if (value < 0.5) {
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                     PKGICONDIR "/volume-icon-33.png",
+                                     &error);
+    } else if (value < 0.833) {
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                     PKGICONDIR "/volume-icon-66.png",
+                                     &error);
+    } else {
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
+                                     PKGICONDIR "/volume-icon-100.png",
+                                     &error);
+    }
+  }
+
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
 update_mute_toggle (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
@@ -446,31 +488,32 @@ update_mute_toggle (MpdVolumeTile *self)
 
   is_muted = gvc_mixer_stream_get_is_muted (priv->sink);
   mx_toggle_set_active (MX_TOGGLE (priv->mute_toggle), is_muted);
-  // TODO mx_widget_set_sensitive?
 
   g_signal_connect (priv->mute_toggle, "notify::active",
                     G_CALLBACK (_mute_toggle_notify_cb), self);
+
+  update_volume_icon (self);
 }
 
 static void
 update_volume_slider (MpdVolumeTile *self)
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
-  double   volume;
-  double   progress;
+  double  volume;
+  double  value;
 
   g_signal_handlers_disconnect_by_func (priv->volume_slider,
-                                        _volume_slider_progress_notify_cb,
+                                        _volume_slider_value_notify_cb,
                                         self);
 
   volume = gvc_mixer_stream_get_volume (priv->sink);
-  progress = volume / PA_VOLUME_NORM;
-  mx_slider_set_value (MX_SLIDER (priv->volume_slider), progress);
+  value = volume / PA_VOLUME_NORM;
+  mx_slider_set_value (MX_SLIDER (priv->volume_slider), value);
 
-  g_signal_connect (priv->volume_slider, "notify::progress",
-                    G_CALLBACK (_volume_slider_progress_notify_cb), self);
+  g_signal_connect (priv->volume_slider, "notify::value",
+                    G_CALLBACK (_volume_slider_value_notify_cb), self);
 
-  update_volume_label (self, progress);
+  update_volume_icon (self);
 }
 
 static void
@@ -489,6 +532,7 @@ update_stream_mute (MpdVolumeTile *self)
   g_signal_connect (priv->sink, "notify::is-muted",
                     G_CALLBACK (_stream_is_muted_notify_cb), self);
 
+  update_volume_icon (self);
 }
 
 static void
@@ -512,6 +556,6 @@ update_stream_volume (MpdVolumeTile *self)
   g_signal_connect (priv->sink, "notify::volume",
                     G_CALLBACK (_stream_volume_notify_cb), self);
 
-  update_volume_label (self, progress);
+  update_volume_icon (self);
 }
 

@@ -16,6 +16,11 @@ dist_icons_DATA = \
   directory-generic.png \
   directory-pictures.png \
   directory-videos.png \
+  volume-icon-0.png \
+  volume-icon-100.png \
+  volume-icon-33.png \
+  volume-icon-66.png \
+  volume-icon-mute.png \
   $(NULL)
 
 -include $(top_srcdir)/git.mk

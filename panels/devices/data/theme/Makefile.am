@@ -9,7 +9,6 @@ dist_theme_DATA = \
   panel.css \
   panel-background.png \
   volume-bars-0.png \
-  volume-icon-100.png \
   $(NULL)
 
 # Manage mutter-moblin's texture cache.
