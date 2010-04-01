@@ -62,7 +62,10 @@ dist_theme_DATA = \
 	dismiss_button_hover.png \
 	count-frame.png \
 	count-frame-zero.png \
-	frame-header.png
+	frame-header.png \
+	content-panel-background-highlight.png \
+	content-panel-background.png \
+	content-panel-header-grey.png
 
 
 if ENABLE_CACHE

@@ -5,19 +5,19 @@ PengeGridView
 
 PengeCalendarPane
 {
-  border-image: url('card_frame.png') 5 5 5 5;
+  border-image: url('content-panel-background.png') 5 5 5 5;
   padding: 4;
 }
 
 PengeAppsPane
 {
-  border-image: url('card_frame.png') 5 5 5 5;
+  border-image: url('content-panel-background.png') 5 5 5 5;
   padding: 4;
 }
 
 *.PengeEventsPaneHeader, *.PengeTasksPaneHeader
 {
-  border-image: url('frame-header.png') 4 4 4;
+  border-image: url('content-panel-header-grey.png') 4 4 4;
   padding: 2;
 }
 
@@ -40,14 +40,14 @@ PengeEventTile, PengeTaskTile, PengeAppTile
 PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover,
 PengeEventTile:active, PengeTaskTile:active, PengeAppTile:active
 {
-  border-image: url('card_frame_hover.png') 5;
+  border-image: url('content-panel-background-highlight.png') 5;
   padding: 6;
 }
 
 
 PengeRecentFileTile, PengePeopleTile
 {
-  border-image: url('card_frame.png') 5;
+  border-image: url('content-panel-background.png') 5;
   padding: 4 4 4 4;
 }
 
@@ -55,7 +55,7 @@ PengeRecentFileTile, PengePeopleTile
 PengeRecentFileTile:hover, PengePeopleTile:hover,
 PengeRecentFileTile:active, PengePeopleTile:active
 {
-  border-image: url('card_frame_hover.png') 5;
+  border-image: url('content-panel-background-highlight.png') 5;
   padding: 4 4 4 4;
 }
 
@@ -66,14 +66,14 @@ MxButton.PengeTaskToggleButton
 
 PengeCountTile
 {
-  border-image: url('card_frame.png') 5;
+  border-image: url('content-panel-background.png') 5;
   padding: 6;
 }
 
 PengeCountTile:hover,
 PengeCountTile:active
 {
-  border-image: url('card_frame_hover.png') 5;
+  border-image: url('content-panel-background-highlight.png') 5;
   padding: 6;
 }
 
