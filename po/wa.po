@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-17 09:26+0000\n"
+"POT-Creation-Date: 2010-03-31 09:24+0000\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -16,11 +16,33 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 0.3\n"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Definixhoz les preferinces di vosse bår ås usteyes"
+
+#: ../capplet/src/mtp-bin.c:355
+msgid "Save toolbar"
+msgstr "Schaper bår ås usteyes"
+
+#: ../capplet/src/mtp-bin.c:361
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Dji rgrete mins vos alez dveur oister on scriftôr divant saveur endè radjouter on novea."
+
+#: ../capplet/src/mtp-bin.c:389
+msgid "Available panels"
+msgstr "Sicriftôrs k' i gn a"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:88
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:225 ../src/mnb-toolbar-clock.c:122
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -28,29 +50,67 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:98
+#: ../capplet/src/mtp-clock.c:239 ../src/mnb-toolbar-clock.c:135
 msgid "%B %e, %Y"
 msgstr "li %e di %B %Y"
 
-#: ../src/moblin-netbook.c:935
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Bår ås usteyes"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Definixhoz les preferinces di vosse boesse ås imådjetes do sistinme"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:253
+msgid "System Tray"
+msgstr "Boesse ås imådjetes sistinme"
+
+#: ../capplet/src/syst-cc-panel.c:170
+msgid "System tray"
+msgstr "Boesse ås imådjetes sistinme"
+
+#: ../capplet/src/syst-cc-panel.c:186
+msgid "Show system tray"
+msgstr "Mostrer boesse ås imådjetes sistinme"
+
+#: ../capplet/src/syst-cc-panel.c:207
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "Li boesse ås imådjetes sistinme est ene atuze eployeye pa des, pus vîs, programes po vos dire cwand åk si passe ou po dmorer ovrant cwand vos les cloyoz."
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr "Dit l' ôre des scriftôrs sol bår ås usteyes."
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr "Ôre des scriftôrs sol bår ås usteyes"
+
+#: ../src/moblin-netbook.c:905
 msgid "Moblin Netbook Effects"
 msgstr "Efets po Netbook da Moblin"
 
-#: ../src/moblin-netbook.c:939
+#: ../src/moblin-netbook.c:909
 msgid "Effects for Moblin Netbooks"
 msgstr "Efets da Moblin po les Netbooks"
 
-#: ../src/moblin-netbook.c:3065
+#: ../src/moblin-netbook.c:3035
 msgid "Activate"
 msgstr "Mete en alaedje"
 
-#: ../src/moblin-netbook.c:3079
+#: ../src/moblin-netbook.c:3049
 msgid "Unknown window"
 msgstr "Purnea nén cnoxhou"
 
-#: ../src/moblin-netbook.c:3081
+#: ../src/moblin-netbook.c:3051
 msgid "Is asking for your attention."
 msgstr "Vos arinne."
+
+#: ../src/mnb-toolbar.c:965
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Dji rgrete, %s est sketé"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
@@ -60,60 +120,18 @@ msgstr "Rinoncî"
 msgid "Dismiss All"
 msgstr "Rinoncî a ttafwait"
 
-#: ../src/mnb-toolbar.c:968
-#, c-format
-msgid "Sorry, %s is broken"
-msgstr "Dji rgrete, %s est sketé"
-
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "Definixhoz les preferinces di vosse bår ås usteyes"
-
-#: ../capplet/src/mtp-bin.c:355
-msgid "Save toolbar"
-msgstr "Schaper bår ås usteyes"
-
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-#: ../capplet/src/mtp-cc-panel.c:118
-msgid "Toolbar"
-msgstr "Bår ås usteyes"
+msgid "Toolbar settings"
+msgstr "Tuzes del bår ås usteyes"
 
-#: ../capplet/src/mtp-bin.c:388
-msgid "Available panels"
-msgstr "Sicriftôrs k' i gn a"
-
-#: ../capplet/src/mtp-bin.c:360
-msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "Dji rgrete mins vos alez dveur oister on scriftôr divant saveur endè radjouter on novea."
-
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:250
-msgid "System Tray"
-msgstr "Boesse ås imådjetes sistinme"
-
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
-msgstr "Definixhoz les preferinces di vosse boesse ås imådjetes do sistinme"
-
-#: ../capplet/src/syst-cc-panel.c:183
-msgid "Show system tray"
-msgstr "Mostrer boesse ås imådjetes sistinme"
-
-#: ../capplet/src/syst-cc-panel.c:167
-msgid "System tray"
-msgstr "Boesse ås imådjetes sistinme"
-
-#: ../data/mutter-moblin.schemas.in.h:1
-msgid "Determines the order of panels on the toolbar."
-msgstr "Dit l' ôre des scriftôrs sol bår ås usteyes."
-
-#: ../capplet/src/syst-cc-panel.c:204
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "Li boesse ås imådjetes sistinme est ene atuze eployeye pa des, pus vîs, programes po vos dire cwand åk si passe ou po dmorer ovrant cwand vos les cloyoz."
-
-#: ../data/mutter-moblin.schemas.in.h:2
-msgid "Order of panels on toolbar"
-msgstr "Ôre des scriftôrs sol bår ås usteyes"
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:215 ../src/mnb-toolbar-clock.c:113
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #~ msgid "zones"
 #~ msgstr "redjons"
