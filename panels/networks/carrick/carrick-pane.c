@@ -702,8 +702,6 @@ _new_connection_cb (GtkButton *button,
                              "WEP");
   gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
                              "WPA");
-  gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
-                             "WPA2");
   gtk_combo_box_set_active (GTK_COMBO_BOX (security_combo),
                             0);
   gtk_table_attach_defaults (GTK_TABLE (table),
@@ -755,10 +753,10 @@ _new_connection_cb (GtkButton *button,
           g_free (security);
           security = g_strdup ("none");
         }
-      else if (g_strcmp0 (security, "WPA2") == 0)
+      else if (g_strcmp0 (security, "WPA") == 0)
         {
           g_free (security);
-          security = g_strdup ("rsn");
+          security = g_strdup ("psk");
         }
       else
         {
