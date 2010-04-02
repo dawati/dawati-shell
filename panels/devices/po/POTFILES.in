@@ -8,6 +8,7 @@ power-icon/src/mpd-shutdown-notification.c
 src/moblin-panel-devices.c
 src/mpd-battery-device.c
 src/mpd-battery-tile.c
+src/mpd-brightness-tile.c
 src/mpd-computer-pane.c
 src/mpd-computer-tile.c
 src/mpd-default-device-tile.c
