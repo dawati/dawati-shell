@@ -496,13 +496,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
                                  MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->vbox);
-  clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->vbox,
-                               "expand", true,
-                               "x-align", MX_ALIGN_START,
-                               "x-fill", true,
-                               "y-align", MX_ALIGN_MIDDLE,
-                               "y-fill", false,
-                               NULL);
 
   priv->label = mx_label_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
@@ -520,6 +513,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                priv->button_box);
 
+  /* Import button */
   priv->import = mx_button_new_with_label (_("Import data"));
   g_signal_connect (priv->import, "clicked",
                     G_CALLBACK (_import_clicked_cb), self);
@@ -527,7 +521,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                 priv->import);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
                                 priv->import,
-                                "expand", true,
                                 "x-fill", true,
                                 NULL);
 
@@ -539,7 +532,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                priv->eject);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
                                priv->eject,
-                               "expand", true,
                                "x-fill", true,
                                NULL);
 
@@ -551,7 +543,6 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                priv->open);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
                                priv->open,
-                               "expand", true,
                                "x-fill", true,
                                NULL);
 
