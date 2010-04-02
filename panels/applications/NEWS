@@ -1,4 +1,8 @@
 
+Version 0.1.17, 2010-04-02
+
+    Rough implementation of new visual design.
+
 Version 0.1.16, 2010-03-25
 
     Depend on mx-1.0 >= 0.9, fix for API changes.

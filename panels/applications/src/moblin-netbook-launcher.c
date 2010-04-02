@@ -167,9 +167,7 @@ container_get_n_visible_children (ClutterContainer *container)
 #define SCROLLVIEW_OUTER_HEIGHT(self_)                                         \
           (clutter_actor_get_height (CLUTTER_ACTOR (self_)) -                  \
            clutter_actor_get_height (self_->priv->filter_hbox) - 35)
-#define SCROLLVIEW_INNER_WIDTH(self_)                                          \
-          (clutter_actor_get_width (CLUTTER_ACTOR (self_)) -                   \
-           SCROLLBAR_RESERVED_WIDTH)
+#define SCROLLVIEW_INNER_WIDTH(self_) 735.0
 
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
@@ -198,7 +196,7 @@ enum
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbLauncher, mnb_launcher, MX_TYPE_FRAME);
+G_DEFINE_TYPE (MnbLauncher, mnb_launcher, MX_TYPE_BOX_LAYOUT);
 
 /*
  * Helper struct that contains all the info needed to switch between
@@ -246,9 +244,6 @@ struct MnbLauncherPrivate_ {
 
 static void mnb_launcher_monitor_cb        (MnbLauncherMonitor *monitor,
                                              MnbLauncher        *self);
-
-static void mnb_launcher_set_show_fav_apps (MnbLauncher        *self,
-                                             gboolean            show);
 
 static void
 entry_set_focus (MnbLauncher *self,
@@ -366,10 +361,6 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
                         G_CALLBACK (launcher_button_activated_cb),
                         self);
 
-      /* Make sure fav apps show up. */
-      if (!priv->is_filtering)
-        mnb_launcher_set_show_fav_apps (self, TRUE);
-
       /* Update bookmarks. */
       uri = g_strdup_printf ("file://%s",
               mnb_launcher_button_get_desktop_file_path (
@@ -385,12 +376,6 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
                 MNB_LAUNCHER_BUTTON (launcher)));
       mpl_app_bookmark_manager_remove_uri (priv->manager,
                                            uri);
-
-      /* Hide fav apps after last one removed. */
-      if (!container_has_children (CLUTTER_CONTAINER (priv->fav_grid)))
-        {
-          mnb_launcher_set_show_fav_apps (self, FALSE);
-        }
     }
 
   if (error)
@@ -683,24 +668,6 @@ mnb_launcher_reset (MnbLauncher     *self)
     }
 }
 
-static void
-mnb_launcher_set_show_fav_apps (MnbLauncher     *self,
-                                 gboolean         show)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  if (show)
-    {
-      clutter_actor_show (priv->fav_label);
-      clutter_actor_show (priv->fav_grid);
-    }
-  else
-    {
-      clutter_actor_hide (priv->fav_label);
-      clutter_actor_hide (priv->fav_grid);
-    }
-}
-
 static gboolean
 mnb_launcher_fill_category (MnbLauncher     *self)
 {
@@ -803,8 +770,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         mx_expander_set_label (MX_EXPANDER (expander),
                                   directory->name);
         clutter_actor_set_width (expander, SCROLLVIEW_INNER_WIDTH (self));
-        clutter_container_add (CLUTTER_CONTAINER (priv->apps_grid),
-                                expander, NULL);
+        clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
+                                     expander);
         g_hash_table_insert (priv->expanders,
                               g_strdup (directory->name), expander);
         clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
@@ -857,30 +824,11 @@ mnb_launcher_fill (MnbLauncher     *self)
    * Fav apps.
    */
 
-  /* Label */
-  priv->fav_label = mx_label_new_with_text (_("Favorite Applications"));
-  clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
-                         priv->fav_label, NULL);
-  g_object_ref (priv->fav_label);
-  clutter_actor_set_name (priv->fav_label, "launcher-group-label");
-
-  /* Grid */
-  priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-  clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
-                         priv->fav_grid, NULL);
-  mx_grid_set_row_spacing (MX_GRID (priv->fav_grid), LAUNCHER_GRID_ROW_GAP);
-  mx_grid_set_column_spacing (MX_GRID (priv->fav_grid), LAUNCHER_GRID_COLUMN_GAP);
-  clutter_actor_set_width (priv->fav_grid, SCROLLVIEW_INNER_WIDTH (self));
-  clutter_actor_set_name (priv->fav_grid, "launcher-fav-grid");
-  g_object_ref (priv->fav_grid);
-
   have_fav_apps = FALSE;
   fav_apps = mpl_app_bookmark_manager_get_bookmarks (priv->manager);
   if (fav_apps)
     {
       GList *fav_apps_iter;
-
-      mnb_launcher_set_show_fav_apps (self, TRUE);
 
       for (fav_apps_iter = fav_apps;
            fav_apps_iter;
@@ -929,9 +877,6 @@ mnb_launcher_fill (MnbLauncher     *self)
         }
       g_list_free (fav_apps);
     }
-
-  if (!have_fav_apps)
-    mnb_launcher_set_show_fav_apps (self, FALSE);
 
   /*
    * Apps browser.
@@ -992,7 +937,6 @@ mnb_launcher_filter_cb (MnbLauncher *self)
           ClutterActor    *expander;
 
           priv->is_filtering = TRUE;
-          mnb_launcher_set_show_fav_apps (self, FALSE);
 
           mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
                                  LAUNCHER_GRID_ROW_GAP);
@@ -1049,9 +993,6 @@ mnb_launcher_filter_cb (MnbLauncher *self)
       mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
                                EXPANDER_GRID_ROW_GAP);
       mx_grid_set_column_spacing (MX_GRID (priv->apps_grid), 0);
-
-      if (container_has_children (CLUTTER_CONTAINER (priv->fav_grid)))
-        mnb_launcher_set_show_fav_apps (self, TRUE);
 
       /* Reparent launchers into expanders. */
       for (iter = priv->launchers; iter; iter = iter->next)
@@ -1368,37 +1309,6 @@ _key_focus_in (ClutterActor *actor)
   entry_set_focus (MNB_LAUNCHER (actor), TRUE);
 }
 
-static void
-_width_notify_cb (MnbLauncher   *self,
-                  GParamSpec    *pspec,
-                  gpointer       user_data)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  GHashTableIter      iter;
-  ClutterActor       *expander;
-
-  clutter_actor_set_width (priv->scrollview, SCROLLVIEW_OUTER_WIDTH (self));
-
-  clutter_actor_set_width (priv->fav_grid, SCROLLVIEW_INNER_WIDTH (self));
-  clutter_actor_set_width (priv->apps_grid, SCROLLVIEW_INNER_WIDTH (self));
-
-  g_hash_table_iter_init (&iter, priv->expanders);
-  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &expander))
-    {
-      clutter_actor_set_width (expander, SCROLLVIEW_INNER_WIDTH (self));
-    }
-}
-
-static void
-_height_notify_cb (MnbLauncher   *self,
-                   GParamSpec    *pspec,
-                   gpointer       user_data)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  clutter_actor_set_height (priv->scrollview, SCROLLVIEW_OUTER_HEIGHT (self));
-}
-
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1408,56 +1318,80 @@ _constructor (GType                  gtype,
                                         ->constructor (gtype, n_properties, properties);
 
   MnbLauncherPrivate *priv = self->priv = REAL_GET_PRIVATE (self);
-  ClutterActor  *vbox, *label;
+  ClutterActor  *content_pane;
+  ClutterActor  *columns;
+  ClutterActor  *left_column;
+  ClutterActor  *label;
   MxAdjustment  *vadjust = NULL;
 
-  vbox = mx_table_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (vbox), "launcher-vbox");
-  mx_bin_set_child (MX_BIN (self), CLUTTER_ACTOR (vbox));
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+
+  /* Panel label */
+  label = mx_label_new_with_text (_("Applications"));
+  clutter_actor_set_name (label, "panel-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
+
+  content_pane = mx_box_layout_new ();
+  clutter_actor_set_name (content_pane, "pane");
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (content_pane), MX_ORIENTATION_VERTICAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), content_pane);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), content_pane,
+                               "expand", TRUE,
+                               "x-fill", TRUE,
+                               "y-fill", TRUE,
+                               NULL);
+
+  label = mx_label_new_with_text (_("Your applications"));
+  clutter_actor_set_name (label, "pane-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (content_pane), label);
+
+  columns = mx_box_layout_new ();
+  clutter_actor_set_name (columns, "pane-content");
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), 20.0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (content_pane), columns);
+  clutter_container_child_set (CLUTTER_CONTAINER (content_pane), columns,
+                               "expand", TRUE,
+                               "x-fill", TRUE,
+                               "y-fill", TRUE,
+                               NULL);
+
+  left_column = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (left_column), 20.0);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (left_column), MX_ORIENTATION_VERTICAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (columns), left_column);
 
   /* Filter row. */
-  priv->filter_hbox = (ClutterActor *) mx_table_new ();
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_hbox), "launcher-filter-pane");
-  mx_table_set_column_spacing (MX_TABLE (priv->filter_hbox), 20);
-  mx_table_add_actor (MX_TABLE (vbox), CLUTTER_ACTOR (priv->filter_hbox), 0, 0);
+  priv->filter_hbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->filter_hbox), 10.0);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->filter_hbox),
+                                 MX_ORIENTATION_VERTICAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (left_column), priv->filter_hbox);
 
-  label = mx_label_new_with_text (_("Applications"));
-  clutter_actor_set_name (CLUTTER_ACTOR (label), "launcher-filter-label");
-  mx_table_add_actor_with_properties (MX_TABLE (priv->filter_hbox),
-                                        CLUTTER_ACTOR (label),
-                                        0, 0,
-                                        "y-align", MX_ALIGN_MIDDLE,
-                                        "x-expand", FALSE,
-                                        "y-expand", TRUE,
-                                        "y-fill", FALSE,
-                                        NULL);
+  label = mx_label_new_with_text (_("Search for applications"));
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->filter_hbox), label);
 
   priv->filter_entry = mnb_entry_new (_("Search"));
-  clutter_actor_set_name (CLUTTER_ACTOR (priv->filter_entry), "launcher-search-entry");
-  clutter_actor_set_width (CLUTTER_ACTOR (priv->filter_entry),
-                           FILTER_ENTRY_WIDTH);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->filter_hbox),
-                                        CLUTTER_ACTOR (priv->filter_entry),
-                                        0, 1,
-                                        "y-align", MX_ALIGN_MIDDLE,
-                                        "x-expand", FALSE,
-                                        "y-expand", TRUE,
-                                        "y-fill", FALSE,
-                                        NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->filter_hbox), priv->filter_entry);
+
+  /* Fav apps */
+
+  label = mx_label_new_with_text (_("Favorite applications"));
+  clutter_container_add_actor (CLUTTER_CONTAINER (left_column), label);
+
+  priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
+  mx_grid_set_max_stride (MX_GRID (priv->fav_grid), 1);
+  clutter_container_add_actor (CLUTTER_CONTAINER (left_column), priv->fav_grid);
 
   /*
    * Applications
    */
   priv->scrollview = CLUTTER_ACTOR (mx_scroll_view_new ());
-  clutter_actor_set_size (priv->scrollview,
-                          SCROLLVIEW_OUTER_WIDTH (self), /* account for padding */
-                          SCROLLVIEW_OUTER_HEIGHT (self));
-  mx_table_add_actor_with_properties (MX_TABLE (vbox), priv->scrollview, 1, 0,
-                                        "x-expand", TRUE,
-                                        "x-fill", TRUE,
-                                        "y-expand", TRUE,
-                                        "y-fill", TRUE,
-                                        NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (columns), priv->scrollview);
+  clutter_container_child_set (CLUTTER_CONTAINER (columns), priv->scrollview,
+                               "expand", TRUE,
+                               "x-fill", TRUE,
+                               "y-fill", TRUE,
+                               NULL);
 
   priv->theme = gtk_icon_theme_get_default ();
   g_signal_connect (priv->theme, "changed",
@@ -1479,12 +1413,6 @@ _constructor (GType                  gtype,
                          priv->scrolled_vbox, NULL);
 
   mnb_launcher_fill (self);
-
-  /* Track own size. */
-  g_signal_connect (self, "notify::width",
-                    G_CALLBACK (_width_notify_cb), NULL);
-  g_signal_connect (self, "notify::height",
-                    G_CALLBACK (_height_notify_cb), NULL);
 
   /* Hook up search. */
 /*
