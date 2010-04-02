@@ -98,6 +98,11 @@ main (int    argc,
 
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/date-panel.css", NULL);
+  box = mx_box_layout_new ();
+  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
+  clutter_actor_set_name ((ClutterActor *)box, "datetime-panel");
+
+
 
   if (!standalone)
   {
@@ -113,11 +118,13 @@ main (int    argc,
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     datetime = mnp_datetime_new ();
+    clutter_actor_set_size ((ClutterActor *)datetime, 1016, 405);
+    
     mnp_datetime_set_panel_client (MNP_DATETIME (datetime), client);
     g_signal_connect (client,
                       "set-size",
                       (GCallback)_client_set_size_cb,
-                      datetime);
+                      box);
   } else {
     Window xwin;
 
@@ -132,20 +139,29 @@ main (int    argc,
     clutter_actor_show (stage);
   }
 
-  box = mx_box_layout_new ();
-  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                               (ClutterActor *)box);
+
 
   label = mx_label_new ();
   clutter_actor_set_name (label, "DateHeading");
   mnp_date_time_set_date_label ((MnpDatetime *)datetime, label);
-
+  
   mx_box_layout_add_actor ((MxBoxLayout *)box, label, -1);
+  clutter_container_child_set (CLUTTER_CONTAINER (box),
+                               (ClutterActor *)label,
+                               "expand", FALSE,
+			       "y-fill", FALSE,
+			       "x-fill", TRUE,
+                               NULL);  
   mx_box_layout_add_actor ((MxBoxLayout *)box, datetime, -1);
-
-  clutter_actor_set_name ((ClutterActor *)box, "datetime-panel");
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               (ClutterActor *)box);
+  clutter_container_child_set (CLUTTER_CONTAINER (box),
+                               (ClutterActor *)datetime,
+                               "expand", TRUE,
+			       "y-fill", TRUE,
+			       "x-fill", TRUE,
+                               NULL);
 
 
   clutter_main ();
