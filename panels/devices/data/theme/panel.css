@@ -42,7 +42,7 @@ MpdComputerPane, MpdDevicesPane {
   padding: 10 10 10 18;
 }
 
-MpdBatteryTile, MpdDiskTile, MpdVolumeTile {
+MpdBatteryTile, MpdBrightnessTile, MpdDiskTile, MpdVolumeTile {
   padding: 10 10 10 18;
 }
 
@@ -54,7 +54,7 @@ MpdDefaultDeviceTile > MxBoxLayout, MpdStorageDeviceTile > MxBoxLayout {
   padding: 15 15 15 20;
 }
 
-#volume-tile-label {
+#volume-tile-label, #brightness-tile-label {
   font-weight: bold;
 }
 

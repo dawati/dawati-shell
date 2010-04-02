@@ -19,11 +19,18 @@ moblin_panel_devices_LDADD = \
   $(NULL)
 
 moblin_panel_devices_SOURCES = \
+  egg-discrete.c \
+  egg-discrete.h \
+  gpm-brightness-xrandr.c \
+  gpm-brightness-xrandr.h \
+  \
   moblin-panel-devices.c \
   mpd-battery-device.c \
   mpd-battery-device.h \
   mpd-battery-tile.c \
   mpd-battery-tile.h \
+  mpd-brightness-tile.c \
+  mpd-brightness-tile.h \
   mpd-computer-pane.c \
   mpd-computer-pane.h \
   mpd-computer-tile.c \

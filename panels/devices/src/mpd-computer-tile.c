@@ -23,6 +23,7 @@
 #include <glib/gi18n.h>
 
 #include "mpd-battery-tile.h"
+#include "mpd-brightness-tile.h"
 #include "mpd-computer-tile.h"
 #include "mpd-disk-tile.h"
 #include "mpd-shell-defines.h"
@@ -125,6 +126,19 @@ mpd_computer_tile_init (MpdComputerTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
+
+  if (g_getenv ("MOBLIN_PANEL_DEVICES_SHOW_BRIGHTNESS"))
+  {
+    tile = mpd_brightness_tile_new ();
+    clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
+    clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
+                                 "expand", true,
+                                 "x-fill", true,
+                                 "y-fill", false,
+                                 NULL);
+
+    clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
+  }
 
   /* Put button inside Bin so we can have right hand side spacing */
   tile = mx_frame_new ();
