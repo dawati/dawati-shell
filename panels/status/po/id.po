@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 09:32+0000\n"
+"POT-Creation-Date: 2010-04-03 09:32+0000\n"
 "PO-Revision-Date: 2010-03-22 12:38+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
@@ -27,6 +27,10 @@ msgstr "Panel status"
 #: ../src/mps-feed-pane.c:92
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
 msgstr "Tak bisa memperbarui status. Layanan mungkin tak tersedia atau kata sandi Anda mungkin salah."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Tak bisa perbarui status: Anda tidak daring."
 
 #: ../src/mps-feed-pane.c:444
 #, c-format
@@ -55,11 +59,11 @@ msgstr "Apa yang sedang terjadi?"
 msgid "Change"
 msgstr "Ubah"
 
-#: ../src/mps-feed-switcher.c:354
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Tambahkan layanan web baru"
 
-#: ../src/mps-feed-switcher.c:377
+#: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Sepertinya Anda tak memiliki layanan web yang telah tertata atau ada masalah dengan konfigurasinya. Gunakan tombol di atas untuk membuka Akun Web Saya dan siapkan satu."
 
@@ -87,9 +91,23 @@ msgstr "Gunakan lokasi"
 msgid "Don't use location"
 msgstr "Jangan gunakan lokasi"
 
-#: ../src/mps-feed-pane.c:96
-msgid "Unable to update status: You're not online."
-msgstr "Tak bisa perbarui status: Anda tidak daring."
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s dari %s"
+
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "Halo! Ini adalah panel Status. Ketika Anda telah menata akun web (seperti Twitter), Anda akan dapat melihat feed Anda dan memutakhirkan status Anda disini."
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Status"
 
 #~ msgid "Offline"
 #~ msgstr "Terputus"
