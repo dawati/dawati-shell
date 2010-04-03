@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:35+0000\n"
+"POT-Creation-Date: 2010-04-03 09:36+0000\n"
 "PO-Revision-Date: 2009-08-26 04:16+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,57 +14,60 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
-msgid "zones"
-msgstr "zona"
-
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat menukar dan mengatur mereka sekehendak anda."
-
-#: ../src/sw-zone.c:778
-msgid "No applications on this zone"
-msgstr "Tak ada aplikasi pada zona ini"
-
 #: ../data/moblin-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "영역 패널"
 
-#: ../src/sw-zone.c:764
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+msgid "zones"
+msgstr "zona"
+
+#: ../src/sw-zone.c:765
 msgid "new zone"
 msgstr "새로운 영역"
 
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "둘"
+#: ../src/sw-zone.c:779
+msgid "No applications on this zone"
+msgstr "Tak ada aplikasi pada zona ini"
 
-#: ../src/sw-zone.c:906
+#: ../src/sw-zone.c:907
 msgid "one"
 msgstr "하나"
 
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "넷"
+#: ../src/sw-zone.c:911
+msgid "two"
+msgstr "둘"
 
-#: ../src/sw-zone.c:914
+#: ../src/sw-zone.c:915
 msgid "three"
 msgstr "셋"
 
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "여섯"
+#: ../src/sw-zone.c:919
+msgid "four"
+msgstr "넷"
 
-#: ../src/sw-zone.c:922
+#: ../src/sw-zone.c:923
 msgid "five"
 msgstr "다섯"
 
-#: ../src/sw-zone.c:934
+#: ../src/sw-zone.c:927
+msgid "six"
+msgstr "여섯"
+
+#: ../src/sw-zone.c:931
+msgid "seven"
+msgstr "일곱"
+
+#: ../src/sw-zone.c:935
 msgid "eight"
 msgstr "여덟"
 
-#: ../src/sw-zone.c:930
-msgid "seven"
-msgstr "일곱"
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Halo! Ini adalah panel Zones. Ketika Anda membuka aplikasi, Anda akan dapat melihat, mengelola, dan mengakses mereka disini."
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat menukar dan mengatur mereka sekehendak anda."
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Efek Netbook Moblin"
