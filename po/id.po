@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 09:24+0000\n"
+"POT-Creation-Date: 2010-04-03 09:24+0000\n"
 "PO-Revision-Date: 2009-08-26 04:16+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -18,17 +18,31 @@ msgstr ""
 msgid "Set your toolbar preferences"
 msgstr "Tata preferensi toolbar Anda"
 
-#: ../capplet/src/mtp-bin.c:355
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Tatanan toolbar"
+
+#: ../capplet/src/mtp-bin.c:361
 msgid "Save toolbar"
 msgstr "Simpan toolbar"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/src/mtp-bin.c:366
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Maaf, Anda mesti menghapus suatu panel sebelum dapat menambah yang baru."
 
-#: ../capplet/src/mtp-bin.c:389
+#: ../capplet/src/mtp-jar.c:109
 msgid "Available panels"
 msgstr "Panel tersedia"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+# 24 hrs without am/pm for ID
+#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
@@ -41,7 +55,7 @@ msgstr "Panel tersedia"
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
 # 24 hrs without am/pm for ID
-#: ../capplet/src/mtp-clock.c:225 ../src/mnb-toolbar-clock.c:122
+#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:123
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -49,7 +63,7 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:239 ../src/mnb-toolbar-clock.c:135
+#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:144
 msgid "%B %e, %Y"
 msgstr "%d %B %Y"
 
@@ -106,7 +120,7 @@ msgstr "Jendela tak dikenal"
 msgid "Is asking for your attention."
 msgstr "Meminta perhatian Anda."
 
-#: ../src/mnb-toolbar.c:965
+#: ../src/mnb-toolbar.c:976
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Maaf, %s rusak"
@@ -119,19 +133,9 @@ msgstr "Bubar"
 msgid "Dismiss All"
 msgstr "Bubar Semua"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar settings"
-msgstr "Tatanan toolbar"
-
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# 24 hrs without am/pm for ID
-#: ../capplet/src/mtp-clock.c:215 ../src/mnb-toolbar-clock.c:113
-msgid "%H:%M"
-msgstr "%H:%M"
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "Anda dapat menambah, menghapus, dan menata ulang banyak panel pada toolbar Anda."
 
 #~ msgid "zones"
 #~ msgstr "zona"
