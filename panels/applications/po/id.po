@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-apps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:44+0000\n"
+"POT-Creation-Date: 2010-04-03 09:29+0000\n"
 "PO-Revision-Date: 2009-08-26 07:24+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,18 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. * Fav apps.
-#. 
-#. Label
-#: ../src/moblin-netbook-launcher.c:867
-msgid "Favorite Applications"
-msgstr "Aplikasi Favorit"
-
-#: ../src/moblin-netbook-launcher.c:1430
+#. Panel label
+#: ../src/moblin-netbook-launcher.c:1330
 msgid "Applications"
 msgstr "Aplikasi"
 
-#: ../src/moblin-netbook-launcher.c:1441
+#: ../src/moblin-netbook-launcher.c:1373
 msgid "Search"
 msgstr "Cari"
 
@@ -37,3 +31,16 @@ msgstr "aplikasi"
 #: ../data/moblin-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel aplikasi"
+
+#: ../src/moblin-netbook-launcher.c:1370
+msgid "Search for applications"
+msgstr "Cari aplikasi"
+
+#: ../src/moblin-netbook-launcher.c:1344
+msgid "Your applications"
+msgstr "Aplikasi Anda"
+
+#. Fav apps
+#: ../src/moblin-netbook-launcher.c:1378
+msgid "Favorite applications"
+msgstr "Aplikasi favorit"
