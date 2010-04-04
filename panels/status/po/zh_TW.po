@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 09:32+0000\n"
+"POT-Creation-Date: 2010-04-03 09:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "狀態"
@@ -59,11 +59,11 @@ msgstr "發生什麼事？"
 msgid "Change"
 msgstr "變更"
 
-#: ../src/mps-feed-switcher.c:354
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "新增網路服務"
 
-#: ../src/mps-feed-switcher.c:377
+#: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "你似乎沒有任何網路服務的配置，或者網路服務配置有問題。使用上面的按鈕，打開「我的網站帳戶」並設置一個帳戶。"
 
@@ -91,39 +91,65 @@ msgstr "使用地理位置"
 msgid "Don't use location"
 msgstr "不要使用地理位置"
 
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:391
+#, c-format, fuzzy
+msgid "%s from %s"
+msgstr "%s 來自 %s"
+
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "嗨！這裡是狀態面板。當您設定好網路帳號 (像是 Twitter) 後，您可以從這裡檢視您的消息來源，並從這裡更新您的狀態。"
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "狀態"
+
 #~ msgid "Offline"
 #~ msgstr "離線"
+
 #~ msgid "Available"
 #~ msgstr "有空"
+
 #~ msgid "Away"
 #~ msgstr "離開"
+
 #~ msgid "Busy"
 #~ msgstr "忙碌"
+
 #~ msgid "Close"
 #~ msgstr "關閉"
+
 #~ msgid "Unknown account"
 #~ msgstr "未知的帳戶"
+
 #~ msgid "Edit"
 #~ msgstr "編輯"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "在這裡輸入你的 %s 狀態..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "在這裡輸入你目前的狀態..."
+
 #~ msgid "Post"
 #~ msgstr "貼出"
+
 #~ msgid "Your current status"
 #~ msgstr "你目前的狀態"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "你目前的狀態 - 你是離線"
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "抱歉，我們找不到任何朋友的資料。你已經設立好通訊程式的帳戶了嗎？"
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "要更新你的網路狀態，你需要設置一個支援狀態訊息的廠商所提供的網路服務帳戶。"
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "要更新你即時通訊的狀態，你需要設置一個即時通訊帳戶"
 
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "抱歉，我們找不到任何朋友的資料。你已經設立好通訊程式的帳戶了嗎？"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "要更新你的網路狀態，你需要設置一個支援狀態訊息的廠商所提供的網路服務帳戶。"
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "要更新你即時通訊的狀態，你需要設置一個即時通訊帳戶"
