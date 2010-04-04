@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:35+0000\n"
+"POT-Creation-Date: 2010-04-03 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -14,57 +14,60 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
-msgid "zones"
-msgstr "區域"
-
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "你正在使用的應用程式會在這裡顯示。你也可以隨心所欲來切換以及整理它們。"
-
-#: ../src/sw-zone.c:778
-msgid "No applications on this zone"
-msgstr "這個區域沒有應用程式"
-
 #: ../data/moblin-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "區域面板"
 
-#: ../src/sw-zone.c:764
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+msgid "zones"
+msgstr "區域"
+
+#: ../src/sw-zone.c:765
 msgid "new zone"
 msgstr "新區域"
 
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "第二區"
+#: ../src/sw-zone.c:779
+msgid "No applications on this zone"
+msgstr "這個區域沒有應用程式"
 
-#: ../src/sw-zone.c:906
+#: ../src/sw-zone.c:907
 msgid "one"
 msgstr "第一區"
 
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "第四區"
+#: ../src/sw-zone.c:911
+msgid "two"
+msgstr "第二區"
 
-#: ../src/sw-zone.c:914
+#: ../src/sw-zone.c:915
 msgid "three"
 msgstr "第三區"
 
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "第六區"
+#: ../src/sw-zone.c:919
+msgid "four"
+msgstr "第四區"
 
-#: ../src/sw-zone.c:922
+#: ../src/sw-zone.c:923
 msgid "five"
 msgstr "第五區"
 
-#: ../src/sw-zone.c:934
+#: ../src/sw-zone.c:927
+msgid "six"
+msgstr "第六區"
+
+#: ../src/sw-zone.c:931
+msgid "seven"
+msgstr "第七區"
+
+#: ../src/sw-zone.c:935
 msgid "eight"
 msgstr "第八區"
 
-#: ../src/sw-zone.c:930
-msgid "seven"
-msgstr "第七區"
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "嗨！這裡是區塊面板。當您開啟應用程式後，您可以從這裡來檢視、管理並存取它們。"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "你正在使用的應用程式會在這裡顯示。你也可以隨心所欲來切換以及整理它們。"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin 網路筆電特效"
