@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-20 09:56+0000\n"
+"POT-Creation-Date: 2010-04-03 09:31+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -22,8 +22,7 @@ msgstr "Myzone 面板"
 msgid "Change the Myzone background and content"
 msgstr "更改 Myzone 的背景和內容"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:157
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone 面板"
 
@@ -60,20 +59,19 @@ msgstr "盡可能顯示最近的文件"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "您想要清除您最近的文件嗎？這將會從 Myzone 移除本機的內容"
 
-#: ../penge/penge-calendar-pane.c:473
+#: ../penge/penge-calendar-pane.c:445
 msgid "Appointments"
 msgstr "約會"
 
-#: ../penge/penge-events-pane.c:68
+#: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "建立一項約會"
 
-#: ../penge/penge-events-pane.c:69
-#: ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "加入"
 
-#: ../penge/penge-events-pane.c:361
+#: ../penge/penge-events-pane.c:412
 msgid "No calendar entries this week"
 msgstr "這禮拜的行事曆上沒有任何條目"
 
@@ -98,11 +96,11 @@ msgstr "今天沒有待辦的事"
 msgid "Due %x"
 msgstr "%x 到期"
 
-#: ../penge/penge-welcome-tile.c:67
+#: ../penge/penge-welcome-tile.c:75
 msgid "Welcome to MeeGo"
 msgstr "歡迎來到 MeeGo"
 
-#: ../penge/penge-welcome-tile.c:86
+#: ../penge/penge-welcome-tile.c:94
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "這是 Myzone，您最近使用過的檔案與您的網路消息來源內容會在這裡顯現。"
 
@@ -118,10 +116,23 @@ msgstr "未讀取的訊息"
 msgid "Unread messages"
 msgstr "未讀取的訊息"
 
+#: ../penge/penge-calendar-pane.c:475
+msgid "Tasks"
+msgstr "工作"
+
+#: ../penge/penge-welcome-tile.c:35
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "當您設置好您的網路帳號，並使用一些檔案後，它們會顯現在 Myzone 的這裡來讓您在任何想要的時候輕鬆存取。"
+
+#: ../penge/penge-welcome-tile.c:41
+msgid "Play intro video"
+msgstr "播放簡介影片"
+
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
+
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>歡迎來到專為網路筆電所設計的 Moblin 2.1</b>"
+
 #~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 #~ msgstr "由於 Moblin 和其他電腦有些不同，我們把一些東西湊在一塊來協助你上手。我們希望你能盡情地享受 Moblin，Moblin 團隊敬上。"
-
