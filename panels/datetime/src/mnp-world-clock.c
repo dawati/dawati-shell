@@ -71,6 +71,8 @@ struct _MnpWorldClockPrivate {
 	GPtrArray *zones;
 	guint completion_timeout;
 	gboolean completion_inited;
+
+	MplPanelClient *panel_client;
 };
 
 static void construct_completion (MnpWorldClock *world_clock);
@@ -682,23 +684,51 @@ mnp_world_clock_new (void)
 }
 
 static void
+launch_date_config (ClutterActor *actor, MnpWorldClock *clock)
+{
+  	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
+
+	mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/system-config-date");
+}
+
+static void
 dropdown_show_cb (MplPanelClient *client,
                   gpointer        userdata)
 {
-  //MnpWorldClockPrivate *priv = GET_PRIVATE (userdata);
+ /* MnpDatetimePrivate *priv = GET_PRIVATE (userdata); */
 
-  /* give focus to the actor */
-  /*clutter_actor_grab_key_focus (priv->entry);*/
 }
 
 
 static void
 dropdown_hide_cb (MplPanelClient *client,
-                  gpointer        userdata)
+                  MnpWorldClock   *world_clock)
 {
-  //MnpWorldClockPrivate *priv = GET_PRIVATE (userdata);
+  MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 
-  /* Reset search. */
-  /* mpl_entry_set_text (MPL_ENTRY (priv->entry), ""); */
+  mx_entry_set_text (priv->search_location, "");
+  clutter_actor_hide (priv->scroll);	
+}
+
+void
+mnp_world_clock_set_client (MnpWorldClock *clock, MplPanelClient *client)
+{
+  MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
+
+  priv->panel_client = client;
+  g_signal_connect (priv->launcher, 
+		    "clicked", 
+		    G_CALLBACK(launch_date_config), 
+		    clock);
+
+  g_signal_connect (client,
+                    "show-end",
+                    (GCallback)dropdown_show_cb,
+                    clock);
+
+  g_signal_connect (client,
+                    "hide-end",
+                    (GCallback)dropdown_hide_cb,
+                    clock);
 }
 

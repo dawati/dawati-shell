@@ -195,7 +195,7 @@ _first_refresh_timeout_cb (gpointer userdata)
 {
   MnpDatetimePrivate *priv = GET_PRIVATE (userdata);
 
-  penge_calendar_pane_update ((MnpDatetimePrivate *)userdata);
+  penge_calendar_pane_update ((MnpDatetime *)userdata);
 
   /* refresxh every ten minutes to handle timezone changes */
   g_timeout_add_seconds (10 * 60,
@@ -205,6 +205,17 @@ _first_refresh_timeout_cb (gpointer userdata)
 }
 
 /* End from myzone */
+
+static void
+launch_cal (ClutterActor *actor, MnpDatetime *dtime)
+{
+  	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
+
+	if (priv->panel_client)
+		mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/evolution  --express -c calendar");
+
+}
+
 static void
 construct_calendar_area (MnpDatetime *dtime)
 {
@@ -413,6 +424,7 @@ construct_calendar_area (MnpDatetime *dtime)
 	priv->cal_launcher = mx_button_new ();
 	mx_button_set_label ((MxButton *) priv->cal_launcher, _("Open Appointments"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->cal_launcher), "EventLauncherButton");
+	g_signal_connect (priv->cal_launcher, "clicked", G_CALLBACK(launch_cal), dtime);
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->cal_launcher, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
@@ -434,9 +446,19 @@ construct_calendar_area (MnpDatetime *dtime)
 }
 
 static void
-construct_task_area (MnpDatetime *time)
+launch_tasks (ClutterActor *actor, MnpDatetime *dtime)
 {
-  	MnpDatetimePrivate *priv = GET_PRIVATE (time);
+  	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
+
+	if (priv->panel_client)
+		mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/tasks");
+
+}
+
+static void
+construct_task_area (MnpDatetime *dtime)
+{
+  	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
 	ClutterActor *label, *div, *box, *icon;
 
 	priv->task_row = mx_box_layout_new();
@@ -446,8 +468,8 @@ construct_task_area (MnpDatetime *time)
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->task_row, 0);	
 	mx_box_layout_set_orientation ((MxBoxLayout *)priv->task_row, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->task_row, TRUE);
-	mx_box_layout_add_actor ((MxBoxLayout *)time, priv->task_row, 4);
-	clutter_container_child_set (CLUTTER_CONTAINER (time),
+	mx_box_layout_add_actor ((MxBoxLayout *)dtime, priv->task_row, 4);
+	clutter_container_child_set (CLUTTER_CONTAINER (dtime),
                                priv->task_row,
                                "expand", FALSE,
 			       "y-fill", TRUE,		
@@ -584,7 +606,7 @@ construct_task_area (MnpDatetime *time)
 	priv->task_launcher = mx_button_new ();
 	mx_button_set_label ((MxButton *)priv->task_launcher, _("Open Tasks"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->task_launcher), "TasksLauncherButton");
-
+	g_signal_connect (priv->task_launcher, "clicked", G_CALLBACK(launch_tasks), dtime);
 	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->task_launcher, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                (ClutterActor *)priv->task_launcher,
@@ -602,6 +624,8 @@ static void
 mnp_datetime_construct (MnpDatetime *time)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
+
+	priv->panel_client = NULL;
 
 	mx_box_layout_set_orientation ((MxBoxLayout *)time, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)time, TRUE);
@@ -665,6 +689,8 @@ mnp_datetime_set_panel_client (MnpDatetime *datetime,
   MnpDatetimePrivate *priv = GET_PRIVATE (datetime);
 
   priv->panel_client = g_object_ref (panel_client);
+
+  mnp_world_clock_set_client (priv->world_clock, panel_client);
 
   g_signal_connect (panel_client,
                     "show-end",

@@ -57,6 +57,8 @@ typedef struct {
 GType mnp_world_clock_get_type (void);
 
 ClutterActor *mnp_world_clock_new (void);
+void mnp_world_clock_set_client (MnpWorldClock *clock, MplPanelClient *client);
+
 G_END_DECLS
 
 #endif /* _MNP_WORLD_CLOCK */
