@@ -50,7 +50,6 @@ G_DEFINE_TYPE (MnpDatetime, mnp_datetime, MX_TYPE_BOX_LAYOUT)
 #define DOUBLE_DIV_LINE THEMEDIR "/double-div-line.png"
 
 
-typedef struct _MnpDatetimePrivate MnpDatetimePrivate;
 
 struct _MnpDatetimePrivate {
 	MplPanelClient *panel_client;
@@ -138,6 +137,7 @@ format_label (ClutterActor *label)
 	mx_label_set_text ((MxLabel *)label, buf);
 }
 
+#if 0 
 static gboolean
 events_pane_update (MnpDatetime *dtime)
 {
@@ -165,26 +165,72 @@ events_pane_update (MnpDatetime *dtime)
 
 	return TRUE;
 }
+#endif
 
+/* From myzone */
+static void
+penge_calendar_pane_update (MnpDatetime *pane)
+{
+  MnpDatetimePrivate *priv = GET_PRIVATE (pane);
+  JanaTime *now;
+
+  now = jana_ecal_utils_time_now_local ();
+  g_object_set (priv->penge_events,
+                "time",
+                now,
+                NULL);
+  g_object_unref (now);
+}
+
+static gboolean
+_refresh_timeout_cb (gpointer userdata)
+{
+  penge_calendar_pane_update ((MnpDatetime *)userdata);
+
+  return TRUE;
+}
+
+static gboolean
+_first_refresh_timeout_cb (gpointer userdata)
+{
+  MnpDatetimePrivate *priv = GET_PRIVATE (userdata);
+
+  penge_calendar_pane_update ((MnpDatetimePrivate *)userdata);
+
+  /* refresxh every ten minutes to handle timezone changes */
+  g_timeout_add_seconds (10 * 60,
+			_refresh_timeout_cb,
+			userdata);
+  return FALSE;
+}
+
+/* End from myzone */
 static void
 construct_calendar_area (MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
-/*	JanaTime *now; */
- 	JanaTime *start, *end;
+#if 0
+	JanaTime *start, *end;
 	JanaDuration *duration;
+#endif
 	ClutterActor *box, *label;
 	ClutterActor *div, *icon;
-  	
+  
+	JanaTime *now;
+	JanaTime *on_the_next_hour;
+	glong next_timeout_seconds;
+	
+	now = jana_ecal_utils_time_now_local ();
+
+#if 0	
       	start = jana_ecal_utils_time_now_local ();
       	end = jana_ecal_utils_time_now_local ();
       	jana_time_set_hours (end, 23);
       	jana_time_set_minutes (end, 59);
       	jana_time_set_seconds (end, 59);
-
 	
 	duration = jana_duration_new (start, end);
-
+#endif
 	priv->cal_area = mx_box_layout_new ();
 	clutter_actor_set_name (priv->cal_area, "CalendarPane");
 	mx_box_layout_set_spacing ((MxBoxLayout *)priv->cal_area, 0);	
@@ -309,13 +355,42 @@ construct_calendar_area (MnpDatetime *dtime)
 
   	priv->penge_events = g_object_new (PENGE_TYPE_EVENTS_PANE,
 				    "time",
-				    duration->start,
+				    now,
+//				    duration->start,
 				    "multiline-summary", 
 				    TRUE,
                                     NULL);
+#if 0	
 	penge_events_pane_set_duration (priv->penge_events, duration);
 	jana_duration_free (duration);
 	g_timeout_add_seconds (10, (GSourceFunc)events_pane_update, dtime);
+#endif
+  	on_the_next_hour = jana_ecal_utils_time_now_local ();
+  	jana_time_set_minutes (on_the_next_hour, 0);
+  	jana_time_set_seconds (on_the_next_hour, 0);
+
+  	jana_utils_time_adjust (on_the_next_hour,
+        	                0,
+               		        0,
+				0,
+				1,
+                          	0,
+                          	0);
+  	jana_utils_time_diff (now,
+                        	on_the_next_hour,
+                        	NULL,
+                        	NULL,
+                        	NULL,
+                        	NULL,
+                        	NULL,
+                        	&next_timeout_seconds);
+
+    	g_timeout_add_seconds (next_timeout_seconds % (60 * 10),
+                           	_first_refresh_timeout_cb,
+                           	dtime);
+
+  	g_object_unref (now);
+  	g_object_unref (on_the_next_hour);
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->penge_events, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
@@ -629,7 +704,7 @@ update_date (MnpDatetime *datetime)
   tom = get_start_of_nextday (now);
   priv->date_update_timeout = g_timeout_add_seconds(tom-now+1, (GSourceFunc) update_date, datetime); 
 
-  format_label (priv->top_date_label);
+  /* format_label (priv->top_date_label); */
   format_label (priv->cal_date_label);
   format_label (priv->task_date_label);
 
@@ -643,7 +718,7 @@ mnp_date_time_set_date_label (MnpDatetime *datetime, ClutterActor *label)
   time_t now = time(NULL), tom;
 
   priv->top_date_label = label;
-  format_label (label);
+  /* format_label (label); */
 
   tom = get_start_of_nextday (now);
 

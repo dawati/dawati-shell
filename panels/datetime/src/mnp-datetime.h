@@ -46,12 +46,12 @@ G_BEGIN_DECLS
 #define MNP_DATETIME_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MNP_TYPE_DATETIME, MnpDatetimeClass))
 
-typedef struct _MnpDatetimePriv MnpDatetimePriv;
+typedef struct _MnpDatetimePrivate MnpDatetimePrivate;
 
 typedef struct {
   MxBoxLayout parent;
 
-  MnpDatetimePriv *priv;
+  MnpDatetimePrivate *priv;
 } MnpDatetime;
 
 typedef struct {

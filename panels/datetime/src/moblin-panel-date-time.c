@@ -144,7 +144,7 @@ main (int    argc,
                                (ClutterActor *)box);
 
 
-  label = mx_label_new ();
+  label = mx_label_new_with_text ("Time and Date");
   clutter_actor_set_name (label, "DateHeading");
   mnp_date_time_set_date_label ((MnpDatetime *)datetime, label);
   
