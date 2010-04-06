@@ -57,19 +57,9 @@ msgstr "%b %-d（昨天）"
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d（明天）"
 
-#: ../src/mnp-utils.c:453
-#, fuzzy
-msgid "%b %-d (local)"
-msgstr "%b %-d（明天）"
-
 #: ../src/mnp-utils.c:455
 msgid "%b %-d"
 msgstr "%b %-d"
-
-#: ../src/mnp-world-clock.c:445
-#, fuzzy
-msgid "Time"
-msgstr "日期/时间"
 
 #: ../src/mnp-world-clock.c:562
 msgid "Enter a country or city"
@@ -118,6 +108,14 @@ msgstr "设置时间 & 日期"
 #: ../src/mnp-datetime.c:339
 msgid "Open Appointments"
 msgstr "打开约会"
+
+#: ../src/mnp-utils.c:453
+msgid "%b %-d (local)"
+msgstr "%b %-d（本地）"
+
+#: ../src/mnp-world-clock.c:445
+msgid "Time"
+msgstr "时间"
 
 #~ msgid "OFF"
 #~ msgstr "关闭"
