@@ -555,18 +555,6 @@ penge_events_pane_update (PengeEventsPane *pane)
     }
   }
 
-  /* Try and extend the window forward */
-  for (l = window_start; l; l = l->prev)
-  {
-    if (l->prev)
-    {
-      window_start = l->prev;
-      count++;
-    } else {
-      break;
-    }
-  }
-
   count = 0;
   for (l = window_start; l; l = l->next)
   {
@@ -594,7 +582,6 @@ penge_events_pane_update (PengeEventsPane *pane)
       /* Free this one here. Other code path takes ownership */
       g_free (uid_rid);
     } else {
-
       actor = g_object_new (PENGE_TYPE_EVENT_TILE,
                             "event", event,
                             "time", priv->time,
