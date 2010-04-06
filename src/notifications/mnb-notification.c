@@ -360,7 +360,7 @@ mnb_notification_update (MnbNotification *notification,
                                    "col", 0,
                                    NULL);
     }
-  else if (!clutter_actor_get_parent (priv->icon))
+  else if (!no_icon && !clutter_actor_get_parent (priv->icon))
     {
       mx_table_add_actor (MX_TABLE (priv->title_box), priv->icon, 0, 0);
       clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
