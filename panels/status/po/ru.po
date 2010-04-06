@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: panel status ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:32+0000\n"
-"PO-Revision-Date: 2010-03-09 11:40+0200\n"
+"POT-Creation-Date: 2010-04-05 09:34+0000\n"
+"PO-Revision-Date: 2010-04-06 16:12+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,15 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "Приветствуем вас! Это панель Status. После создания учетной веб-записи (например, Twitter) вы сможете здесь просматривать свои темы и обновлять статус"
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Статус"
+
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "статус"
@@ -29,26 +37,82 @@ msgstr "статус"
 msgid "Status panel"
 msgstr "Панель статуса"
 
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "Обновить"
-
-#: ../src/mps-feed-pane.c:421
-msgid "What's happening?"
-msgstr "Что происходит?"
-
-#: ../src/mps-feed-pane.c:445
+#: ../src/mps-feed-pane.c:92
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
 msgstr "Не удается обновить статус. Возможно, сервис недоступен, либо вы ввели неправильный пароль."
 
-#: ../src/mps-feed-switcher.c:344
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Невозможно обновить статус: вы не в режиме онлайн."
+
+#: ../src/mps-feed-pane.c:444
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "Возможно, ваше местоположение: %f %f"
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr "Ваше местоположение указывается как: %f %f "
+
+#: ../src/mps-feed-pane.c:455
+msgid "Your location is not being shared"
+msgstr "Ваше местоположение не указывается"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:551
+msgid "Update"
+msgstr "Обновить"
+
+#: ../src/mps-feed-pane.c:556
+msgid "What's happening?"
+msgstr "Что происходит?"
+
+#: ../src/mps-feed-pane.c:606
+msgid "Change"
+msgstr "Изменить"
+
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Добавить новый веб-сервис"
 
-#: ../src/mps-feed-switcher.c:367
+#: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "У вас не настроен ни один веб-сервис или их параметры указаны неверно. Воспользуйтесь расположенной выше кнопкой для открытия страницы Мои учетные записи и настройки одной из них."
+
+#: ../src/mps-geotag-pane.c:215
+msgid "Your location"
+msgstr "Ваше местоположение"
+
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "Поиск"
+
+#: ../src/mps-geotag-pane.c:490
+msgid "Where are you?"
+msgstr "Где вы находитесь?"
+
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "Найти меня"
+
+#: ../src/mps-geotag-pane.c:499
+msgid "Use location"
+msgstr "Использовать местоположение"
+
+#: ../src/mps-geotag-pane.c:500
+msgid "Don't use location"
+msgstr "Не использовать местоположение"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s из %s"
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
@@ -64,9 +128,6 @@ msgstr "У вас не настроен ни один веб-сервис или
 
 #~ msgid "Close"
 #~ msgstr "Закрыть"
-
-#~ msgid "Change"
-#~ msgstr "Изменить"
 
 #~ msgid "Unknown account"
 #~ msgstr "Неизвестная учётная запись"
