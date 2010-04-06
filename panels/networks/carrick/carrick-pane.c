@@ -1627,7 +1627,7 @@ carrick_pane_init (CarrickPane *self)
                                          priv->notes,
                                          CARRICK_NETWORK_MODEL (model));
   gtk_widget_show (priv->service_list);
-  gtk_box_pack_start (GTK_BOX (column), priv->service_list, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (column), priv->service_list, TRUE, TRUE, 0);
 
   /* New connection button */
   priv->new_conn_button = gtk_button_new_with_label (_ ("Add new connection"));
