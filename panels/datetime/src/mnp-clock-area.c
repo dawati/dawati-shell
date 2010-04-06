@@ -29,6 +29,13 @@
 #include "mnp-utils.h"
 #include <gconf/gconf-client.h>
 
+enum {
+	TIME_CHANGED,
+	LAST_SIGNAL
+};
+static guint signals[LAST_SIGNAL] = { 0 };
+
+
 struct _MnpClockAreaPriv {
 	ClutterActor *background;
 
@@ -45,6 +52,7 @@ struct _MnpClockAreaPriv {
 	ClockZoneReorderedFunc zone_reorder_func;
 	gpointer zone_reorder_data;
 	gboolean tfh;
+	time_t last_time;
 };
 
 enum
@@ -257,6 +265,15 @@ mnp_clock_area_class_init (MnpClockAreaClass *klass)
 	g_object_class_override_property (object_class,
         	                            DROP_PROP_ENABLED,
                 	                    "drop-enabled");	
+  	signals[TIME_CHANGED] =
+		g_signal_new ("time-changed",
+			      G_OBJECT_CLASS_TYPE (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (MnpClockAreaClass, time_changed),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
+	
 }
 
 static void
@@ -270,6 +287,8 @@ clock_ticks (MnpClockArea *area)
 	int i;
 	GPtrArray *tmp = area->priv->clock_tiles;
 
+	if (!area->priv->prop_sec_zero)
+		area->priv->last_time = 0;
 	mnp_clock_area_refresh_time(area);
 	for (i=0; i<tmp->len; i++) { 
 		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now, area->priv->tfh);
@@ -311,6 +330,7 @@ mnp_clock_area_new (void)
 	GConfClient *client = gconf_client_get_default ();
 
 	area->priv = g_new0(MnpClockAreaPriv, 1);
+	area->priv->last_time = 0;
 	area->priv->is_enabled = 1;
 	area->priv->prop_sec_zero = FALSE;
 	area->priv->clock_tiles = g_ptr_array_new ();
@@ -384,6 +404,24 @@ void
 mnp_clock_area_refresh_time (MnpClockArea *area)
 {
 	area->priv->time_now = time(NULL);
+	if (area->priv->last_time) {
+		time_t difference = area->priv->time_now - area->priv->last_time;
+		if (difference != 60) {
+			int clk_sec = 60 - (area->priv->time_now%60);
+
+			/* There is a time change in some order, lets alert others */
+			g_signal_emit (area, signals[TIME_CHANGED], 0);
+			g_source_remove (area->priv->source);
+			if (clk_sec) {
+				area->priv->source = g_timeout_add (clk_sec * 1000, (GSourceFunc)clock_ticks, area);
+				area->priv->prop_sec_zero = FALSE;
+			} else {
+				area->priv->prop_sec_zero = TRUE;
+				area->priv->source = g_timeout_add (60 * 1000, (GSourceFunc)clock_ticks, area);
+			}			
+		}
+	}
+	area->priv->last_time = area->priv->time_now;
 }
 
 time_t

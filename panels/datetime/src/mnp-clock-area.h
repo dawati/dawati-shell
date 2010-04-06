@@ -55,6 +55,7 @@ struct _MnpClockArea
 struct _MnpClockAreaClass 
 {
 	MxBoxLayoutClass parent;
+	void (*time_changed) (MnpClockArea *);
 };
 
 
