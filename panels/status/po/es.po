@@ -13,10 +13,6 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr ""
-
 # <mousetip of the top of the screen>
 #: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
@@ -109,6 +105,10 @@ msgstr "Usar esta ubicación"
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Parece que no tienes ningún servicio de web configurado o hay un problema con su configuración. Utiliza el botón de arriba para abrir Mis cuentas Web y configurar uno."
+
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "¡Hola! Éste es el panel de estado. Cuando tienes configurada una cuenta Web (como Twitter) podrás ver las actualizaciones del estado de tus contactos y actualizar el tuyo aquí."
 
 #~ msgid "Offline"
 #~ msgstr "Fuera de línea"
