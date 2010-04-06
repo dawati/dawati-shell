@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:27+0000\n"
+"POT-Creation-Date: 2010-04-05 09:24+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: takashi <takashi.kazami@novuscom.net>\n"
+"Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -196,11 +196,12 @@ msgid "Password"
 msgstr "パスワード"
 
 #: ../carrick/carrick-pane.c:726
-#: ../carrick/carrick-service-item.c:1284
+#: ../carrick/carrick-service-item.c:1303
 msgid "Show password"
 msgstr "パスワードの表示"
 
 #: ../carrick/carrick-pane.c:1399
+#: ../src/carrick.c:351
 msgid "Networks"
 msgstr "ネットワーク"
 
@@ -210,7 +211,7 @@ msgid "Add new connection"
 msgstr "新規接続の追加"
 
 #: ../carrick/carrick-pane.c:1496
-#: ../carrick/carrick-service-item.c:240
+#: ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "有線接続"
 
@@ -247,64 +248,69 @@ msgid "ERROR: No 3G Hardware detected"
 msgstr "エラー： 3G ハードウェアが検出されません"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
-#. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:176
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
 msgstr "暗合化されています： %s"
 
-#: ../carrick/carrick-service-item.c:271
+#: ../carrick/carrick-service-item.c:272
+#: ../carrick/carrick-service-item.c:289
 msgid "Disconnect"
 msgstr "切断する"
 
-#: ../carrick/carrick-service-item.c:274
+#: ../carrick/carrick-service-item.c:275
 msgid "Connected"
 msgstr "接続中"
 
-#: ../carrick/carrick-service-item.c:281
-#: ../carrick/carrick-service-item.c:290
+#: ../carrick/carrick-service-item.c:292
+msgid "Online"
+msgstr "オンライン"
+
+#: ../carrick/carrick-service-item.c:299
+#: ../carrick/carrick-service-item.c:308
 #, c-format
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ../carrick/carrick-service-item.c:284
+#: ../carrick/carrick-service-item.c:302
 msgid "Configuring"
 msgstr "設定中"
 
-#: ../carrick/carrick-service-item.c:293
+#: ../carrick/carrick-service-item.c:311
 msgid "Associating"
 msgstr "関連付け中"
 
-#: ../carrick/carrick-service-item.c:302
-#: ../carrick/carrick-service-item.c:327
-#: ../carrick/carrick-service-item.c:1273
+#: ../carrick/carrick-service-item.c:320
+#: ../carrick/carrick-service-item.c:345
+#: ../carrick/carrick-service-item.c:1292
 msgid "Connect"
 msgstr "接続する"
 
-#: ../carrick/carrick-service-item.c:330
+#: ../carrick/carrick-service-item.c:348
 msgid "Connection failed"
 msgstr "接続に失敗しました"
 
-#: ../carrick/carrick-service-item.c:333
+#: ../carrick/carrick-service-item.c:351
 msgid "Sorry, the connection failed. You could try again."
 msgstr "接続に失敗しました。再度接続してみてください。"
 
-#: ../carrick/carrick-service-item.c:339
-#: ../carrick/carrick-service-item.c:342
+#: ../carrick/carrick-service-item.c:357
+#: ../carrick/carrick-service-item.c:360
 #, c-format
 msgid "Disconnecting"
 msgstr "切断中"
 
-#: ../carrick/carrick-service-item.c:400
+#: ../carrick/carrick-service-item.c:418
 msgid "Type password here"
 msgstr "パスワードを入力する"
 
-#: ../carrick/carrick-service-item.c:463
+#: ../carrick/carrick-service-item.c:481
 msgid "Really remove?"
 msgstr "削除しますか？"
 
-#: ../carrick/carrick-service-item.c:483
+#: ../carrick/carrick-service-item.c:501
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -315,32 +321,32 @@ msgstr ""
 "削除するとパスワードが忘れられ、\n"
 "%s に自動接続されなくなります。"
 
-#: ../carrick/carrick-service-item.c:667
+#: ../carrick/carrick-service-item.c:686
 #, c-format
 msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
 msgstr "パスワードの長さが正しくありません。WEP 接続には、10 文字または 28 文字必要ですが、これは %i 文字です。"
 
-#: ../carrick/carrick-service-item.c:678
+#: ../carrick/carrick-service-item.c:697
 #, c-format
 msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
 msgstr "パスワードが短すぎます。WPA 接続には、少なくとも 8 文字必要ですが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:682
+#: ../carrick/carrick-service-item.c:701
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "パスワードが長すぎます。WPA 接続には、62 文字より少なくなければなりませんが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:691
+#: ../carrick/carrick-service-item.c:710
 #, c-format
 msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
 msgstr "パスワードが短すぎます。WPA2 接続には、少なくとも 8 文字必要ですが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:695
+#: ../carrick/carrick-service-item.c:714
 #, c-format
 msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "パスワードが長すぎます。WPA2 接続には、62 文字より少なくなければなりませんが、これは %i 文字です。"
 
-#: ../carrick/carrick-service-item.c:1209
+#: ../carrick/carrick-service-item.c:1228
 msgid "Scanning"
 msgstr "スキャン中"
 
@@ -348,7 +354,7 @@ msgstr "スキャン中"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1228
+#: ../carrick/carrick-service-item.c:1247
 msgid "WPA2 encrypted"
 msgstr "WPA2 暗合化"
 
@@ -393,23 +399,23 @@ msgstr "ネットワーク"
 msgid "networks - error"
 msgstr "ネットワーク - エラー"
 
-#: ../src/carrick.c:282
+#: ../src/carrick.c:279
 msgid "Run in standalone mode"
 msgstr "スタンドアロン モードで実行する"
 
-#: ../src/carrick.c:284
+#: ../src/carrick.c:281
 msgid "Embed in another window (overrides --standalone)"
 msgstr "他のウィンドウに組み込む (--standalone を上書き)"
 
-#: ../src/carrick.c:295
+#: ../src/carrick.c:292
 msgid "Carrick connectivity applet"
 msgstr "Carrick 接続アプレット"
 
-#: ../src/carrick.c:296
+#: ../src/carrick.c:293
 msgid "- Moblin connectivity applet"
 msgstr "- Moblin 接続アプレット"
 
-#: ../src/carrick.c:342
+#: ../src/carrick.c:334
 #: ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "ネットワーク"
