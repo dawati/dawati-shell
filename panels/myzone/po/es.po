@@ -17,10 +17,6 @@ msgstr ""
 msgid "Myzone panel"
 msgstr "MyZone"
 
-#: ../data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr "Cambia el contenido y el papel tapiz de MyZone"
-
 #: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "MyZone"
@@ -29,10 +25,6 @@ msgstr "MyZone"
 #, c-format
 msgid "GConf error: %s"
 msgstr "Error GConf: %s"
-
-#: ../capplet/gconf-bridge.c:1237
-msgid "All further errors shown only on terminal."
-msgstr "El resto de los erores sólo se muestra en la pantalla de terminal."
 
 #: ../capplet/myzone-cc-panel.c:47
 msgid "Show as much web service content as possible"
@@ -54,10 +46,6 @@ msgstr "Mostrar sobre todo archivos recientes"
 msgid "Show as many recent files as possible"
 msgstr "Mostrar el máximo contenido de archivos recientes"
 
-#: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "¿Quieres limpiar el área de documentos recientes? Esto borrará el contenido local de Myzone."
-
 #: ../penge/penge-calendar-pane.c:445
 msgid "Appointments"
 msgstr "Citas"
@@ -73,10 +61,6 @@ msgstr "Agregar"
 #: ../penge/penge-events-pane.c:412
 msgid "No calendar entries this week"
 msgstr "No hay notas esta semana"
-
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "Aquí verás lo que hacen tus amigos en línea. ¡Activa tus cuentas!"
 
 #: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
@@ -128,6 +112,22 @@ msgstr "Cuando hayas configurado tus cuentas Web y utilizado algunos archivos, e
 #: ../penge/penge-welcome-tile.c:41
 msgid "Play intro video"
 msgstr "Reproducir vídeo de introducción"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Cambia el contenido y el papel tapiz de MyZone"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "El resto de los errores sólo se muestra en la pantalla de terminal."
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "¿Quieres limpiar el área de documentos recientes? Esto borrará el contenido local de Myzone."
+
+#: ../penge/penge-people-placeholder-tile.c:112
+msgid "Things that your friends do online will appear here. Activate your accounts now!"
+msgstr "Aquí verás lo que hacen tus amigos en línea. ¡Activa tus cuentas!"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Bienvenido a Moblin 2.1 para miniportátiles</b>"
