@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:29+0000\n"
+"POT-Creation-Date: 2010-04-05 09:25+0000\n"
 "PO-Revision-Date: 2009-10-13 12:25-0800\n"
 "Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -17,13 +17,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "设置您工具栏的选择"
+
+#: ../capplet/src/mtp-bin.c:361
+msgid "Save toolbar"
+msgstr "保存工具栏"
+
+#: ../capplet/src/mtp-bin.c:366
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "抱歉，你添加新面板之前必须先移除一个面板。"
+
+#: ../capplet/src/mtp-jar.c:109
+msgid "Available panels"
+msgstr "可用的面板"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:123
 msgid "%l:%M %P"
 msgstr "%P %l:%M"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:144
+msgid "%B %e, %Y"
+msgstr "%Y年%b月%e日"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "工具栏"
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -33,23 +67,27 @@ msgstr "确定工具栏上面板的顺序。"
 msgid "Order of panels on toolbar"
 msgstr "工具栏上面板的顺序"
 
-#: ../src/moblin-netbook.c:918
+#: ../src/moblin-netbook.c:905
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook 特效"
 
-#: ../src/moblin-netbook.c:922
+#: ../src/moblin-netbook.c:909
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin Netbook 特效"
 
-#: ../src/moblin-netbook.c:2976
+#: ../src/moblin-netbook.c:3035
 msgid "Activate"
 msgstr "激活"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3049
 msgid "Unknown window"
 msgstr "未知的窗口"
 
-#: ../src/mnb-toolbar.c:954
+#: ../src/moblin-netbook.c:3051
+msgid "Is asking for your attention."
+msgstr "正在寻求您的关注。"
+
+#: ../src/mnb-toolbar.c:976
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "抱歉。%s 坏掉了"
@@ -62,49 +100,52 @@ msgstr "忽略"
 msgid "Dismiss All"
 msgstr "忽略所有"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "设置您工具栏的选择"
-
-#: ../capplet/src/moblin-toolbar-properties.c:85
-msgid "Socket for embedding"
-msgstr "嵌入式插槽"
-
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar"
-msgstr "工具栏"
+msgid "Toolbar settings"
+msgstr "工具栏设置"
 
-#: ../capplet/src/moblin-toolbar-properties.c:95
-msgid "- Moblin Toolbar Preferences"
-msgstr "- Moblin 工具栏选项"
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "您可以添加、删除和重新排列工具栏中的很多面板。"
 
-#: ../capplet/src/moblin-toolbar-properties.c:85
-msgid "socket"
-msgstr "插槽"
-
-#: ../capplet/src/mtp-bin.c:330
-msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "抱歉，你添加新面板之前必须先移除一个面板。"
-
-#: ../capplet/src/mtp-bin.c:326
-msgid "Save toolbar"
-msgstr "保存工具栏"
-
-#: ../capplet/src/mtp-bin.c:357
-msgid "Available panels"
-msgstr "可用的面板"
-
-#. translators: translate this to a suitable date format for your locale.
-#. * For availabe format specifiers see
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
-msgid "%B %e, %Y"
-msgstr "%Y年%b月%e日"
+#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%H:%M"
 
-#: ../src/moblin-netbook.c:2992
-msgid "Is asking for your attention."
-msgstr "正在寻求您的关注。"
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "设置您系统托盘的选项"
+
+#: ../capplet/src/syst-cc-panel.c:170
+msgid "System tray"
+msgstr "系统托盘"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:253
+msgid "System Tray"
+msgstr "系统托盘"
+
+#: ../capplet/src/syst-cc-panel.c:207
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "系统托盘保存某些程序或您使用过的程序，以便在有情况发生时通知您；或您关闭它们时，程序仍能继续运行。"
+
+#: ../capplet/src/syst-cc-panel.c:186
+msgid "Show system tray"
+msgstr "显示系统托盘"
+
+#~ msgid "Socket for embedding"
+#~ msgstr "嵌入式插槽"
+
+#~ msgid "- Moblin Toolbar Preferences"
+#~ msgstr "- Moblin 工具栏选项"
+
+#~ msgid "socket"
+#~ msgstr "插槽"
 
 #~ msgid "zones"
 #~ msgstr "打开的程序"
@@ -129,9 +170,6 @@ msgstr "正在寻求您的关注。"
 
 #~ msgid "Earlier today"
 #~ msgstr "更早时候"
-
-#~ msgid "Yesterday"
-#~ msgstr "昨天"
 
 #~ msgid "On %A"
 #~ msgstr "在 %A"
