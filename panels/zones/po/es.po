@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:36+0000\n"
+"POT-Creation-Date: 2010-04-05 09:39+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -13,60 +13,63 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Panel zonas"
+
 # <mousetip of the top of the screen>
 #: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
 msgid "zones"
 msgstr "zonas"
 
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Las aplicaciones que se están usando aparecen aquí. Puedes cambiarlas y organizarlas como te plazca."
+# <mousetip of the top of the screen>
+#: ../src/sw-zone.c:765
+msgid "new zone"
+msgstr "nueva zona"
 
-#: ../src/sw-zone.c:778
+#: ../src/sw-zone.c:779
 msgid "No applications on this zone"
 msgstr "No hay ninguna aplicación en esta zona"
 
 # <mousetip of the top of the screen>
-#: ../src/sw-zone.c:764
-msgid "new zone"
-msgstr "nueva zona"
-
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "dos"
-
-# <mousetip of the top of the screen>
-#: ../src/sw-zone.c:906
+#: ../src/sw-zone.c:907
 msgid "one"
 msgstr "uno"
 
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "cuatro"
+#: ../src/sw-zone.c:911
+msgid "two"
+msgstr "dos"
 
-#: ../src/sw-zone.c:914
+#: ../src/sw-zone.c:915
 msgid "three"
 msgstr "tres"
 
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "seis"
+#: ../src/sw-zone.c:919
+msgid "four"
+msgstr "cuatro"
 
-#: ../src/sw-zone.c:922
+#: ../src/sw-zone.c:923
 msgid "five"
 msgstr "cinco"
 
-#: ../src/sw-zone.c:934
-msgid "eight"
-msgstr "ocho"
+#: ../src/sw-zone.c:927
+msgid "six"
+msgstr "seis"
 
-#: ../src/sw-zone.c:930
+#: ../src/sw-zone.c:931
 msgid "seven"
 msgstr "siete"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
-msgid "Zones panel"
-msgstr "Panel zonas"
+#: ../src/sw-zone.c:935
+msgid "eight"
+msgstr "ocho"
+
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "¡Hola! Éste es el panel de zonas. Cuando tienes aplicaciones abiertas podrás verlas, manejarlas y acceder a ellas aquí."
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Las aplicaciones que se están usando aparecen aquí. Puedes cambiarlas y organizarlas como te plazca."
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Hace menos de un minuto"
