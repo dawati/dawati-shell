@@ -1,13 +1,14 @@
-*#myzone-panel-header-label
+MxLabel#myzone-panel-header-label
 {
   color: #31c2eeff;
   font-size: 22pt;
   font-weight: bold;
+  padding: 0 0 0 15;
 }
 
 PengeGridView
 {
-  padding: 2 2 2 2;
+  padding: 5;
 }
 
 PengeCalendarPane
