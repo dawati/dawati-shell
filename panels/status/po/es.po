@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-22 09:31+0000\n"
+"POT-Creation-Date: 2010-04-05 09:34+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -13,8 +13,12 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr ""
+
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "estado"
@@ -24,68 +28,87 @@ msgstr "estado"
 msgid "Status panel"
 msgstr "Panel de estado"
 
-#. Actor creation
-#: ../src/mps-feed-pane.c:526
-msgid "Update"
-msgstr "Actualizar"
-
-#: ../src/mps-feed-pane.c:531
-msgid "What's happening?"
-msgstr "¿Qué está sucediendo?"
-
-#: ../src/mps-feed-pane.c:583
-msgid "Change"
-msgstr "Cambiar"
-
-#: ../src/mps-feed-pane.c:419
+#: ../src/mps-feed-pane.c:444
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Creemos que estás aquí: %f %f"
 
-#: ../src/mps-feed-pane.c:430
-msgid "Your location is not being shared"
-msgstr "No estás compartiendo tu ubicación"
-
-#: ../src/mps-feed-pane.c:423
+#: ../src/mps-feed-pane.c:448
 #, c-format
 msgid "Your location is being shared as: %f %f "
 msgstr "Tu ubicación aparece como: %f %f"
 
-#: ../src/mps-feed-pane.c:555
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "No se puede actualizar el estado: O el servicio no está disponible o tu contraseña es incorrecta."
+#. Actor creation
+#: ../src/mps-feed-pane.c:551
+msgid "Update"
+msgstr "Actualizar"
 
-#: ../src/mps-feed-switcher.c:367
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Parece que no tienes ningún servicio de web configurado o hay un problema con su configuración. Utiliza el botón de arriba para abrir Mis cuentas Web y configurar uno."
+#: ../src/mps-feed-pane.c:556
+msgid "What's happening?"
+msgstr "¿Qué está sucediendo?"
 
-#: ../src/mps-feed-switcher.c:344
+#: ../src/mps-feed-pane.c:606
+msgid "Change"
+msgstr "Cambiar"
+
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Agregar un nuevo servicio web"
-
-#: ../src/mps-geotag-pane.c:485
-msgid "Search"
-msgstr "Buscar"
 
 #: ../src/mps-geotag-pane.c:215
 msgid "Your location"
 msgstr "Tu ubicación"
 
-#: ../src/mps-geotag-pane.c:492
-msgid "Find me"
-msgstr "Búscame"
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "Buscar"
 
 #: ../src/mps-geotag-pane.c:490
 msgid "Where are you?"
 msgstr "¿Dónde estás?"
 
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "Búscame"
+
 #: ../src/mps-geotag-pane.c:500
 msgid "Don't use location"
 msgstr "No usar esta ubicación"
 
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr " \t%s de %s"
+
+# <mousetip of the top of the screen>
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Estado"
+
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "No se puede actualizar el estado: O el servicio no está disponible o tu contraseña es incorrecta."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "No se puede actualizar el estado: No estás en línea"
+
+#: ../src/mps-feed-pane.c:455
+msgid "Your location is not being shared"
+msgstr "No estás mostrando tu ubicación"
+
 #: ../src/mps-geotag-pane.c:499
 msgid "Use location"
 msgstr "Usar esta ubicación"
+
+#: ../src/mps-feed-switcher.c:373
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "Parece que no tienes ningún servicio de web configurado o hay un problema con su configuración. Utiliza el botón de arriba para abrir Mis cuentas Web y configurar uno."
 
 #~ msgid "Offline"
 #~ msgstr "Fuera de línea"
