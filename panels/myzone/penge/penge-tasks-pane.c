@@ -476,10 +476,13 @@ penge_tasks_pane_update (PengeTasksPane *pane)
                             NULL);
 
       clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
-      mx_table_add_actor (MX_TABLE (pane),
-                          actor,
-                          count,
-                          0);
+      mx_table_add_actor_with_properties (MX_TABLE (pane),
+                                          actor,
+                                          count, 0,
+                                          "y-expand", FALSE,
+                                          "y-align", MX_ALIGN_START,
+                                          "y-fill", FALSE,
+                                          NULL);
       g_hash_table_insert (priv->uid_to_actors,
                            jana_component_get_uid (JANA_COMPONENT (task)),
                            g_object_ref (actor));
