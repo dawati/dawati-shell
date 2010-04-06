@@ -101,3 +101,16 @@ MxLabel.no-apps-label
 {
   color: black;
 }
+
+MxLabel#zones-title-label
+{
+  color: #e87208;
+  font-size: 22;
+  font-weight: bold;
+  padding: 0 0 0 15;
+}
+
+MxBoxLayout#zones-panel-toplevel
+{
+  padding: 5;
+}

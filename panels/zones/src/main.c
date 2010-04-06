@@ -27,7 +27,8 @@ static MplPanelClient *client = NULL;
 typedef struct
 {
   ClutterActor   *stage;
-  ClutterActor   *view;
+  ClutterActor   *overview;
+  ClutterActor   *toplevel;
   gint            width;
   gint            height;
   gboolean        connected;
@@ -156,13 +157,13 @@ active_window_changed (WnckScreen    *screen,
 {
   WnckWindow *win = wnck_screen_get_active_window (screen);
 
-  if (!data->view)
+  if (!data->overview)
     return;
 
   if (!win)
     return;
 
-  sw_overview_set_focused_window (SW_OVERVIEW (data->view),
+  sw_overview_set_focused_window (SW_OVERVIEW (data->overview),
                                   wnck_window_get_xid (win));
 }
 
@@ -173,7 +174,7 @@ active_workspace_changed (WnckScreen    *screen,
 {
   WnckWorkspace *ws = wnck_screen_get_active_workspace (screen);
 
-  if (!data->view)
+  if (!data->overview)
     return;
 
   if (!ws)
@@ -182,7 +183,7 @@ active_workspace_changed (WnckScreen    *screen,
       return;
     }
 
-  sw_overview_set_focused_zone (SW_OVERVIEW (data->view),
+  sw_overview_set_focused_zone (SW_OVERVIEW (data->overview),
                                 wnck_workspace_get_number (ws));
 }
 
@@ -321,7 +322,7 @@ window_opened (WnckScreen    *screen,
   ClutterActor *thumbnail;
   ClutterActor *thumbnail_background;
 
-  if (!data->view)
+  if (!data->overview)
     return;
 
   if (wnck_window_is_skip_pager (window))
@@ -362,7 +363,7 @@ window_opened (WnckScreen    *screen,
   sw_window_set_icon (win, (ClutterTexture*)
                       gtk_clutter_texture_new_from_pixbuf (wnck_window_get_icon (window)));
 
-  sw_overview_add_window (SW_OVERVIEW (data->view), win,
+  sw_overview_add_window (SW_OVERVIEW (data->overview), win,
                           wnck_workspace_get_number (ws));
 
   g_signal_connect (win, "workspace-changed",
@@ -378,8 +379,8 @@ window_closed (WnckScreen    *screen,
                WnckWindow    *window,
                ZonePanelData *data)
 {
-  if (data->view)
-    sw_overview_remove_window (SW_OVERVIEW (data->view),
+  if (data->overview)
+    sw_overview_remove_window (SW_OVERVIEW (data->overview),
                                wnck_window_get_xid (window));
 }
 
@@ -387,14 +388,31 @@ static void
 setup (ZonePanelData *data)
 {
   GList  *windows, *l;
+  ClutterActor *box_layout, *title, *overview;
+
+  box_layout = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (box_layout),
+                                 MX_ORIENTATION_VERTICAL);
+  clutter_actor_set_name (box_layout, "zones-panel-toplevel");
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (box_layout), 12);
+
+  data->toplevel = box_layout;
+  clutter_actor_set_size (data->toplevel, data->width, data->height);
+
+
+  title = mx_label_new_with_text (_("Zones"));
+  clutter_actor_set_name (title, "zones-title-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (box_layout), title);
+
 
   wnck_screen_force_update (data->screen);
 
   windows = wnck_screen_get_windows (data->screen);
 
   /* create the overview */
-  data->view = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
-  clutter_actor_set_size (data->view, data->width, data->height);
+  overview = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
+  clutter_container_add_actor (CLUTTER_CONTAINER (box_layout), overview);
+  data->overview = overview;
 
   /* add existing windows */
   for (l = windows; l; l = g_list_next (l))
@@ -436,15 +454,16 @@ static void
 show (ZonePanelData *data)
 {
   setup (data);
-  clutter_actor_show_all (data->view);
-  clutter_container_add_actor (CLUTTER_CONTAINER (data->stage), data->view);
+  clutter_actor_show_all (data->toplevel);
+  clutter_container_add_actor (CLUTTER_CONTAINER (data->stage), data->toplevel);
 }
 
 static void
 hide (ZonePanelData *data)
 {
-  clutter_actor_destroy (data->view);
-  data->view = NULL;
+  clutter_actor_destroy (data->toplevel);
+  data->toplevel = NULL;
+  data->overview = NULL;
 }
 
 int
@@ -525,12 +544,12 @@ main (int argc, char **argv)
       setup (data);
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
-      clutter_actor_set_size ((ClutterActor *) data->view, 1016, 500);
+      clutter_actor_set_size ((ClutterActor *) data->toplevel, 1016, 500);
       clutter_actor_set_size (data->stage, 1016, 500);
       clutter_actor_show_all (data->stage);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (data->stage),
-                                   (ClutterActor *) data->view);
+                                   (ClutterActor *) data->toplevel);
     }
 
 
