@@ -1,7 +1,7 @@
 MnbPeoplePanel
 {
   border-image: url("panel-background.png") 15;
-  padding: 4;
+  padding: 5;
 }
 
 *#people-panel-header-label
@@ -10,6 +10,7 @@ MnbPeoplePanel
   font-size: 22pt;
   font-weight: bold;
   font-family: "Droid Sans";
+  padding: 0 0 0 15;
 }
 
 *#people-panel-content-header-label,
