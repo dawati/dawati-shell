@@ -41,6 +41,8 @@ G_DEFINE_TYPE_WITH_CODE (SwZone, sw_zone, MX_TYPE_WIDGET,
 #define DUMMY_MAX_WIDTH 200.0
 #define DUMMY_MIN_WIDTH 100.0
 
+#define WINDOW_EDGE_PADDING 18.0
+
 enum
 {
   PROP_DUMMY = 1,
@@ -442,14 +444,19 @@ sw_zone_get_preferred_width (ClutterActor *actor,
                              gfloat       *pref_width)
 {
   SwZonePrivate *priv = SW_ZONE (actor)->priv;
+  MxPadding padding;
+
+  mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
   if (priv->dummy)
     {
+      clutter_actor_get_preferred_width (priv->title, -1,
+                                         min_width, pref_width);
       if (min_width)
-        *min_width = priv->dummy_size;
+        *min_width += padding.left + padding.right;
 
       if (pref_width)
-        *pref_width = priv->dummy_size;
+        *pref_width += padding.left + padding.right;
     }
   else
     {
@@ -530,6 +537,10 @@ sw_zone_allocate (ClutterActor           *actor,
   if (priv->dummy)
     {
       childbox = avail_box;
+
+      avail_box.x1 += WINDOW_EDGE_PADDING;
+      avail_box.x2 -= WINDOW_EDGE_PADDING;
+
       mx_allocate_align_fill (priv->add_icon, &childbox, MX_ALIGN_MIDDLE,
                               MX_ALIGN_MIDDLE, FALSE, FALSE);
       clutter_actor_allocate (priv->add_icon, &childbox, flags);
@@ -578,8 +589,8 @@ sw_zone_allocate (ClutterActor           *actor,
 
       childbox.y1 = start;
       childbox.y2 = start + child_height;
-      childbox.x1 = avail_box.x1;
-      childbox.x2 = (avail_box.x2 - avail_box.x1);
+      childbox.x1 = avail_box.x1 + WINDOW_EDGE_PADDING;
+      childbox.x2 = (avail_box.x2 - avail_box.x1) - WINDOW_EDGE_PADDING;
 
       mx_allocate_align_fill (child, &childbox, MX_ALIGN_MIDDLE,
                               MX_ALIGN_MIDDLE, FALSE, FALSE);

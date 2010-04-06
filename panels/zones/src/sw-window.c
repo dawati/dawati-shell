@@ -31,7 +31,8 @@ G_DEFINE_TYPE_WITH_CODE (SwWindow, sw_window, MX_TYPE_WIDGET,
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), SW_TYPE_WINDOW, SwWindowPrivate))
 
 #define INFO_BOX_HEIGHT 32
-#define SPACING 3
+#define SPACING 14
+#define LABEL_SPACING 8
 
 enum
 {
@@ -438,10 +439,10 @@ sw_window_allocate (ClutterActor           *actor,
   /* label */
   clutter_actor_get_preferred_height (priv->text, -1, NULL, &label_height);
 
-  childbox.x1 = (int) (avail_box.x1 + icon_size + SPACING);
+  childbox.x1 = (int) (avail_box.x1 + icon_size + LABEL_SPACING);
   childbox.y1 = (int) (avail_box.y2 - (INFO_BOX_HEIGHT / 2)
                        - (label_height / 2));
-  childbox.x2 = (int) ((avail_box.x2 - avail_box.x1) - button_w - SPACING);
+  childbox.x2 = (int) MAX (childbox.x1 + 1, (avail_box.x2 - button_w - LABEL_SPACING));
   childbox.y2 = (int) (childbox.y1 + label_height);
 
   clutter_actor_allocate (priv->text, &childbox, flags);
