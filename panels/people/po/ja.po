@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:46+0000\n"
+"POT-Creation-Date: 2010-04-05 09:33+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: takashi <takashi.kazami@novuscom.net>\n"
+"Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,47 +14,79 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
 #: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:495
+#: ../src/mnb-people-panel.c:466
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "ピープル"
 
-#: ../src/mnb-people-panel.c:267
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
+msgstr "やあ! ここは [ピープル] パネルです。(メッセンジャーなどの) IM サービスを設定していれば、ここでピープルとチャットできます。"
+
+#: ../src/mnb-people-panel.c:185
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "誰も見つかりません。メッセンジャーのアカウントが設定されていますか？"
 
-#: ../src/mnb-people-panel.c:379
+#: ../src/mnb-people-panel.c:228
+#: ../src/mnb-people-panel.c:404
+#, c-format
+msgid "Open %s"
+msgstr "%s を開く"
+
+#: ../src/mnb-people-panel.c:273
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "誰も見つかりません。全員オフラインのようです。"
 
-#: ../src/mnb-people-panel.c:424
+#: ../src/mnb-people-panel.c:318
 msgid "To see your IM contacts, you need to go online."
 msgstr "IM コンタクトを表示するには、オンラインになる必要あります。"
 
-#: ../src/mnb-people-panel.c:476
+#: ../src/mnb-people-panel.c:448
 #, c-format
-msgid "people - %d people are talking to you"
-msgstr "ピープル - ピープルが話しかけています： %d"
+msgid "people - you are chatting with %d people"
+msgstr "ピープル - %d 人とチャット中です"
 
-#: ../src/mnb-people-panel.c:483
-msgid "people - Someone is talking to you"
-msgstr "ピープル - 誰かさんが話しかけています"
+#: ../src/mnb-people-panel.c:455
+msgid "people - you are chatting with someone"
+msgstr "ピープル - 誰かとチャット中です"
 
-#: ../src/mnb-people-panel.c:673
+#. Populate header
+#: ../src/mnb-people-panel.c:666
+#: ../src/mnb-people-panel.c:919
 msgid "People"
 msgstr "ピープル"
 
-#: ../src/mnb-people-panel.c:686
+#: ../src/mnb-people-panel.c:679
 msgid "Search"
 msgstr "検索"
 
-#: ../src/mnb-people-panel.c:752
+#: ../src/mnb-people-panel.c:730
+#: ../src/mnb-people-panel.c:1106
 msgid "You are chatting with:"
 msgstr "チャット相手:"
+
+#: ../src/mnb-people-panel.c:936
+msgid "Me and my people"
+msgstr "自分とピープル"
+
+#: ../src/mnb-people-panel.c:974
+msgid "Me"
+msgstr "自分"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1063
+msgid "My conversations"
+msgstr "自分の会話"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "ピープル・パネル"
+
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "ピープル - ピープルが話しかけています： %d"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "ピープル - 誰かさんが話しかけています"
 
 #~ msgid "People talking to you ..."
 #~ msgstr "話しかけているピープル..."
