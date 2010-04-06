@@ -15,7 +15,7 @@ msgstr ""
 
 #: ../src/moblin-panel-status.c:48
 msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr "やあ! ここは [ステータス] パネルです。(Twitter などの) Web アカウントを設定しているなら、ここでフィードを見たりステータスを更新できます。"
+msgstr "やあ! ここは [ステータス] パネルです。(Twitter などの) Web アカウントを設定していれば、ここでフィードを見たりステータスを更新できます。"
 
 #: ../src/moblin-panel-status.c:99
 msgid "Status"
