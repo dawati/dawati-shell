@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:36+0000\n"
+"POT-Creation-Date: 2010-04-05 09:39+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
 "Language-Team: \n"
@@ -23,56 +23,63 @@ msgid "zones"
 msgstr "ゾーン"
 
 #: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "ここには使用中のアプリケーションが表示されます。よく使うコンテンツの切り替えや整理をすることができます。"
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "やあ! ここは [ゾーン] パネルです。アプリケーションを開いていれば、ここでそのアプリケーションの表示や管理、アクセスができます。"
 
-#: ../src/sw-zone.c:764
+#: ../src/sw-zone.c:765
 msgid "new zone"
 msgstr "新規ゾーン"
 
-#: ../src/sw-zone.c:778
+#: ../src/sw-zone.c:779
 msgid "No applications on this zone"
 msgstr "このゾーンにはアプリケーションがありません"
 
 # believe that this is a "zone number name", not number of pieces, so I did not put "個"
-#: ../src/sw-zone.c:906
+#: ../src/sw-zone.c:907
 msgid "one"
 msgstr "1"
 
 # believe that this is a "zone number name", not number of pieces, so I did not put "個"
-#: ../src/sw-zone.c:910
+#: ../src/sw-zone.c:911
 msgid "two"
 msgstr "2"
 
 # believe that this is a "zone number name", not number of pieces, so I did not put "個"
-#: ../src/sw-zone.c:914
+#: ../src/sw-zone.c:915
 msgid "three"
 msgstr "3"
 
 # believe that this is a "zone number name", not number of pieces, so I did not put "個"
-#: ../src/sw-zone.c:918
+#: ../src/sw-zone.c:919
 msgid "four"
 msgstr "4"
 
 # believe that this is a "zone number name", not number of pieces, so I did not put "個"
-#: ../src/sw-zone.c:922
+#: ../src/sw-zone.c:923
 msgid "five"
 msgstr "5"
 
 # believe that this is a "zone number name", not number of pieces, so I did not put "個"
-#: ../src/sw-zone.c:926
+#: ../src/sw-zone.c:927
 msgid "six"
 msgstr "6"
 
 # believe that this is a "zone number name", not number of pieces, so I did not put "個"
-#: ../src/sw-zone.c:930
+#: ../src/sw-zone.c:931
 msgid "seven"
 msgstr "7"
 
 # believe that this is a "zone number name", not number of pieces, so I did not put "個"
-#: ../src/sw-zone.c:934
+#: ../src/sw-zone.c:935
 msgid "eight"
 msgstr "8"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "ここには使用中のアプリケーションが表示されます。よく使うコンテンツの切り替"
+#~ "えや整理をすることができます。"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "1分以内"
