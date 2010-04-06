@@ -762,7 +762,7 @@ sw_zone_init (SwZone *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
-  self->priv->title = mx_label_new_with_text (_("new zone"));
+  self->priv->title = mx_label_new_with_text (_("New Zone"));
   mx_label_set_x_align (MX_LABEL (self->priv->title), MX_ALIGN_MIDDLE);
   mx_label_set_y_align (MX_LABEL (self->priv->title), MX_ALIGN_MIDDLE);
   mx_stylable_set_style_class (MX_STYLABLE (self->priv->title), "zone-title");
@@ -890,6 +890,7 @@ sw_zone_set_number (SwZone *zone,
                     gint    number)
 {
   GList *l;
+  gchar *zone_title;
 
   if (zone->priv->number == number)
     return;
@@ -901,40 +902,11 @@ sw_zone_set_number (SwZone *zone,
       sw_window_workspace_changed (SW_WINDOW (l->data), number);
     }
 
-  switch (number)
-    {
-  case 1:
-    mx_label_set_text (MX_LABEL (zone->priv->title), _("one"));
-    break;
 
-  case 2:
-    mx_label_set_text (MX_LABEL (zone->priv->title), _("two"));
-    break;
+  zone_title = g_strdup_printf (_("Zone %d"), number);
+  mx_label_set_text (MX_LABEL (zone->priv->title), zone_title);
+  g_free (zone_title);
 
-  case 3:
-    mx_label_set_text (MX_LABEL (zone->priv->title), _("three"));
-    break;
-
-  case 4:
-    mx_label_set_text (MX_LABEL (zone->priv->title), _("four"));
-    break;
-
-  case 5:
-    mx_label_set_text (MX_LABEL (zone->priv->title), _("five"));
-    break;
-
-  case 6:
-    mx_label_set_text (MX_LABEL (zone->priv->title), _("six"));
-    break;
-
-  case 7:
-    mx_label_set_text (MX_LABEL (zone->priv->title), _("seven"));
-    break;
-
-  case 8:
-    mx_label_set_text (MX_LABEL (zone->priv->title), _("eight"));
-    break;
-    }
 }
 
 void
