@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:24+0000\n"
+"POT-Creation-Date: 2010-04-05 09:25+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
@@ -23,28 +23,47 @@ msgid "Set your toolbar preferences"
 msgstr "Ustaw preferencje paska narzędzi"
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-#: ../capplet/src/mtp-cc-panel.c:118
-msgid "Toolbar"
-msgstr "Pasek narzędzi"
+msgid "Toolbar settings"
+msgstr "Ustawienia paska narzędzi"
 
-#: ../capplet/src/mtp-bin.c:355
+#: ../capplet/src/mtp-bin.c:361
 msgid "Save toolbar"
 msgstr "Zapisz pasek narzędzi"
 
-#: ../capplet/src/mtp-bin.c:360
+#: ../capplet/src/mtp-bin.c:366
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Niestety, należy usunąć panel przed dodaniem nowego."
 
-#: ../capplet/src/mtp-bin.c:388
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "Panele na pasku narzędzi można dodawać, usuwać oraz zmieniać ich kolejność."
+
+#: ../capplet/src/mtp-jar.c:109
 msgid "Available panels"
 msgstr "Dostępne panele"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:221
-#: ../src/mnb-toolbar-clock.c:88
+#: ../capplet/src/mtp-clock.c:216
+#: ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:226
+#: ../src/mnb-toolbar-clock.c:123
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -52,29 +71,33 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:231
-#: ../src/mnb-toolbar-clock.c:98
+#: ../capplet/src/mtp-clock.c:248
+#: ../src/mnb-toolbar-clock.c:144
 msgid "%B %e, %Y"
 msgstr "%-d %B %Y"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Pasek narzędzi"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
 msgstr "Ustaw preferencje paska systemowego"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:250
+#: ../capplet/src/syst-cc-panel.c:253
 msgid "System Tray"
 msgstr "Pasek systemowy"
 
-#: ../capplet/src/syst-cc-panel.c:167
+#: ../capplet/src/syst-cc-panel.c:170
 msgid "System tray"
 msgstr "Pasek systemowy"
 
-#: ../capplet/src/syst-cc-panel.c:183
+#: ../capplet/src/syst-cc-panel.c:186
 msgid "Show system tray"
 msgstr "Pokaż pasek systemowy"
 
-#: ../capplet/src/syst-cc-panel.c:204
+#: ../capplet/src/syst-cc-panel.c:207
 msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
 msgstr "Pasek systemowy jest używany przez niektóre starsze aplikacje w celu informowania o zdarzeniach, lub aby aplikacja pozostała uruchomiona po jej zamknięciu."
 
@@ -86,27 +109,27 @@ msgstr "Określa kolejność paneli na pasku narzędzi."
 msgid "Order of panels on toolbar"
 msgstr "Kolejność paneli na pasku narzędzi"
 
-#: ../src/moblin-netbook.c:932
+#: ../src/moblin-netbook.c:905
 msgid "Moblin Netbook Effects"
 msgstr "Efekty Moblina na netbooku"
 
-#: ../src/moblin-netbook.c:936
+#: ../src/moblin-netbook.c:909
 msgid "Effects for Moblin Netbooks"
 msgstr "Efekty dla Netbooków z Moblinem"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3035
 msgid "Activate"
 msgstr "Aktywuj"
 
-#: ../src/moblin-netbook.c:3004
+#: ../src/moblin-netbook.c:3049
 msgid "Unknown window"
 msgstr "Nieznane okno"
 
-#: ../src/moblin-netbook.c:3006
+#: ../src/moblin-netbook.c:3051
 msgid "Is asking for your attention."
 msgstr "Prosi o Twoją uwagę."
 
-#: ../src/mnb-toolbar.c:968
+#: ../src/mnb-toolbar.c:976
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Niestety, panel %s jest uszkodzony"
@@ -121,10 +144,8 @@ msgstr "Ucisz wszystkie"
 
 #~ msgid "zones"
 #~ msgstr "strefy"
-
 #~ msgid "No Zones yet"
 #~ msgstr "Na razie brak Stref"
-
 #~ msgid ""
 #~ "Applications you’re using will show up here. You will be able to switch "
 #~ "and organize them to your heart's content."
@@ -132,3 +153,4 @@ msgstr "Ucisz wszystkie"
 #~ "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał "
 #~ "możliwość przełączać się między nimi i organizować je tak jak Ci się "
 #~ "podoba."
+
