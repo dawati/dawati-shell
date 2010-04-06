@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-22 09:30+0000\n"
+"POT-Creation-Date: 2010-04-05 09:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS_ESPX <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -21,7 +21,7 @@ msgstr "MyZone"
 msgid "Change the Myzone background and content"
 msgstr "Cambia el contenido y el papel tapiz de MyZone"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:157
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "MyZone"
 
@@ -54,19 +54,23 @@ msgstr "Mostrar sobre todo archivos recientes"
 msgid "Show as many recent files as possible"
 msgstr "Mostrar el máximo contenido de archivos recientes"
 
-#: ../penge/penge-calendar-pane.c:473
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "¿Quieres limpiar el área de documentos recientes? Esto borrará el contenido local de Myzone."
+
+#: ../penge/penge-calendar-pane.c:445
 msgid "Appointments"
 msgstr "Citas"
 
-#: ../penge/penge-events-pane.c:68
+#: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "Crear una cita"
 
-#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Agregar"
 
-#: ../penge/penge-events-pane.c:361
+#: ../penge/penge-events-pane.c:412
 msgid "No calendar entries this week"
 msgstr "No hay notas esta semana"
 
@@ -93,9 +97,17 @@ msgstr "Nada que hacer hoy"
 msgid "Due %x"
 msgstr "Es para %x"
 
-#: ../penge/penge-welcome-tile.c:67
+#: ../penge/penge-welcome-tile.c:75
 msgid "Welcome to MeeGo"
 msgstr "Bienvenido a MeeGo"
+
+#: ../penge/penge-welcome-tile.c:94
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Esta es MyZone, donde verás los archivos usados recientemente y las noticias de tus sitios web."
+
+#: ../penge/penge-email-pane.c:191
+msgid "No unread messages"
+msgstr "No hay mensajes sin leer"
 
 #: ../penge/penge-email-pane.c:193
 msgid "Unread message"
@@ -105,17 +117,17 @@ msgstr "Mensaje sin leer"
 msgid "Unread messages"
 msgstr "Mensajes sin leer"
 
-#: ../penge/penge-welcome-tile.c:86
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Esta es MyZone, donde verás los archivos usados recientemente y las noticias de tus sitios web."
+#: ../penge/penge-calendar-pane.c:475
+msgid "Tasks"
+msgstr "Tareas"
 
-#: ../penge/penge-email-pane.c:191
-msgid "No unread messages"
-msgstr "No hay mensajes sin leer"
+#: ../penge/penge-welcome-tile.c:35
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "Cuando hayas configurado tus cuentas Web y utilizado algunos archivos, estos aparecerán aquí en MyZone para un fácil acceso cuando quieras."
 
-#: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "¿Quieres limpiar el área de documentos recientes? Esto borrará el contenido local de Myzone."
+#: ../penge/penge-welcome-tile.c:41
+msgid "Play intro video"
+msgstr "Reproducir vídeo de introducción"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Bienvenido a Moblin 2.1 para miniportátiles</b>"
