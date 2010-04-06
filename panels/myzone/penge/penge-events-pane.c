@@ -598,6 +598,14 @@ penge_events_pane_update (PengeEventsPane *pane)
     }
     clutter_actor_raise_top (actor);
 
+
+    if (count == 0)
+    {
+      mx_stylable_set_style_class (MX_STYLABLE (actor), "FirstTile");
+    } else {
+      mx_stylable_set_style_class (MX_STYLABLE (actor), NULL);
+    }
+
     count++;
 
     if (l == window_end)

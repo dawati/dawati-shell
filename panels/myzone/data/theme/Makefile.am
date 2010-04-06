@@ -67,7 +67,8 @@ dist_theme_DATA = \
 	content-panel-background.png \
 	content-panel-header-grey.png \
 	tasks-icon.png \
-	top-fade.png
+	top-fade.png \
+	event-task-tile-bg.png
 
 
 if ENABLE_CACHE

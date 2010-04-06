@@ -37,15 +37,41 @@ MxLabel.PengeEventsPaneTitle, MxLabel.PengeTasksPaneTitle
   color: #616261ff;
 }
 
-PengeEventTile, PengeTaskTile, PengeAppTile
+PengeEventTile, PengeTaskTile
+{
+  padding: 6;
+  border-image: url('event-task-tile-bg.png') 4;
+}
+
+PengeEventTile.FirstTile, PengeTaskTile.FirstTile
+{
+  border-image: none;
+  padding: 6;
+}
+
+PengeAppTile
 {
   background-color: #fff0;
   padding: 6;
   border-image: none;
 }
 
-PengeEventTile:hover, PengeTaskTile:hover, PengeAppTile:hover,
-PengeEventTile:active, PengeTaskTile:active, PengeAppTile:active
+PengeEventTile:hover, PengeTaskTile:hover
+PengeEventTile:active, PengeTaskTile:active
+{
+  border-image: url('event-task-tile-bg.png') 4;
+  padding: 6;
+}
+
+PengeEventTile.FirstTile:hover, PengeTaskTile.FirstTile:hover
+PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active
+{
+  border-image: none;
+  padding: 6;
+}
+
+PengeAppTile:hover,
+PengeAppTile:active
 {
   border-image: url('content-panel-background-highlight.png') 5;
   padding: 6;

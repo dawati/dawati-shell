@@ -488,6 +488,13 @@ penge_tasks_pane_update (PengeTasksPane *pane)
                            g_object_ref (actor));
     }
 
+    if (count == 0)
+    {
+      mx_stylable_set_style_class (MX_STYLABLE (actor), "FirstTile");
+    } else {
+      mx_stylable_set_style_class (MX_STYLABLE (actor), NULL);
+    }
+
     count++;
   }
 
