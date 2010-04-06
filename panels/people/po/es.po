@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-01 10:37+0000\n"
+"POT-Creation-Date: 2010-04-05 09:33+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -14,52 +14,80 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:494
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:466
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "gente"
 
-# We didn't find anybody. Do you already have an account in any Instant
-# Messenger (service)?
-#: ../src/mnb-people-panel.c:266
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Lo sentimos, no encontramos a nadie. ¿Tienes ya una cuenta en Messenger?"
-
-# We didn't find anybody. Do you already have an account in any Instant
-# Messenger (service)?
-#: ../src/mnb-people-panel.c:378
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Lo sentimos, no encontramos a nadie. Parece que están todos fuera de línea."
-
-#: ../src/mnb-people-panel.c:423
-msgid "To see your IM contacts, you need to go online."
-msgstr "Para ver tus contactos en IM, ponte en línea."
-
-#: ../src/mnb-people-panel.c:475
-#, c-format
-msgid "people - %d people are talking to you"
-msgstr "gente - personas conversando contigo: %d"
-
-#: ../src/mnb-people-panel.c:482
-msgid "people - Someone is talking to you"
-msgstr "gente - hay alguien conversando contigo"
-
-#: ../src/mnb-people-panel.c:670
+#. Populate header
+#: ../src/mnb-people-panel.c:666 ../src/mnb-people-panel.c:919
 msgid "People"
 msgstr "Gente"
 
-#: ../src/mnb-people-panel.c:683
+#: ../src/mnb-people-panel.c:679
 msgid "Search"
 msgstr "Búsqueda"
 
-#: ../src/mnb-people-panel.c:733
+#: ../src/mnb-people-panel.c:730 ../src/mnb-people-panel.c:1106
 msgid "You are chatting with:"
 msgstr "Estás chateando con:"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Gente"
+
+# We didn't find anybody. Do you already have an account in any Instant
+# Messenger (service)?
+#: ../src/mnb-people-panel.c:185
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Lo sentimos, no encontramos a nadie. ¿Tienes ya una cuenta en Messenger?"
+
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
+msgstr "¡Hola! Éste es el panel gente. Cuando tienes configurado un servicio IM (como Messenger) aquí es donde podrás chatear."
+
+# We didn't find anybody. Do you already have an account in any Instant
+# Messenger (service)?
+#: ../src/mnb-people-panel.c:273
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Lo sentimos, no encontramos a nadie. Parece que están todos fuera de línea."
+
+#: ../src/mnb-people-panel.c:228 ../src/mnb-people-panel.c:404
+#, c-format
+msgid "Open %s"
+msgstr "Abrir %s"
+
+#: ../src/mnb-people-panel.c:448
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "Estás chateando con %d personas"
+
+#: ../src/mnb-people-panel.c:318
+msgid "To see your IM contacts, you need to go online."
+msgstr "Para ver tus contactos en IM, ponte en línea."
+
+#: ../src/mnb-people-panel.c:455
+msgid "people - you are chatting with someone"
+msgstr "Estás chateando con alguien"
+
+#: ../src/mnb-people-panel.c:974
+msgid "Me"
+msgstr "Yo"
+
+#: ../src/mnb-people-panel.c:936
+msgid "Me and my people"
+msgstr "Mi gente y yo"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1063
+msgid "My conversations"
+msgstr "Mis conversaciones"
+
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "gente - personas conversando contigo: %d"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "gente - hay alguien conversando contigo"
 
 #~ msgid "People talking to you ..."
 #~ msgstr "Hay gente conversando contigo..."
