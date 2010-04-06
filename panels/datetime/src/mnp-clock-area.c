@@ -286,15 +286,14 @@ clock_ticks (MnpClockArea *area)
 {
 	int i;
 	GPtrArray *tmp = area->priv->clock_tiles;
+	gboolean ret;
 
-	if (!area->priv->prop_sec_zero)
-		area->priv->last_time = 0;
-	mnp_clock_area_refresh_time(area);
+	ret = mnp_clock_area_refresh_time(area, FALSE);
 	for (i=0; i<tmp->len; i++) { 
 		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now, area->priv->tfh);
 	}
 	
-	if (!area->priv->prop_sec_zero) {
+	if (!ret && !area->priv->prop_sec_zero) {
 		area->priv->prop_sec_zero = TRUE;
 		area->priv->source = g_timeout_add (60 * 1000, (GSourceFunc)clock_ticks, area);
 		return FALSE;
@@ -315,7 +314,7 @@ clock_fmt_changed (GConfClient *client,
 
 	area->priv->tfh = gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL);
 	
-	mnp_clock_area_refresh_time(area);
+	mnp_clock_area_refresh_time(area, TRUE);
 	for (i=0; i<tmp->len; i++) { 
 		mnp_clock_tile_refresh ((MnpClockTile *)tmp->pdata[i], area->priv->time_now, area->priv->tfh);
 	}
@@ -330,7 +329,6 @@ mnp_clock_area_new (void)
 	GConfClient *client = gconf_client_get_default ();
 
 	area->priv = g_new0(MnpClockAreaPriv, 1);
-	area->priv->last_time = 0;
 	area->priv->is_enabled = 1;
 	area->priv->prop_sec_zero = FALSE;
 	area->priv->clock_tiles = g_ptr_array_new ();
@@ -338,6 +336,8 @@ mnp_clock_area_new (void)
 	mx_box_layout_set_orientation ((MxBoxLayout *)area, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_enable_animations ((MxBoxLayout *)area, TRUE);
 	area->priv->time_now = time(NULL);
+	area->priv->last_time = area->priv->time_now - 60 + clk_sec;
+
 	mx_box_layout_set_spacing ((MxBoxLayout *)area, 4);
 
 	if (clk_sec) {
@@ -400,14 +400,18 @@ mnp_clock_area_set_zone_reordered_cb (MnpClockArea *area, ClockZoneReorderedFunc
 }
 
 
-void
-mnp_clock_area_refresh_time (MnpClockArea *area)
+gboolean
+mnp_clock_area_refresh_time (MnpClockArea *area, gboolean manual)
 {
+	int clk_sec = 0;
+	gboolean ret = FALSE;
+
 	area->priv->time_now = time(NULL);
-	if (area->priv->last_time) {
+	if (area->priv->last_time && !manual) {
 		time_t difference = area->priv->time_now - area->priv->last_time;
+
 		if (difference != 60) {
-			int clk_sec = 60 - (area->priv->time_now%60);
+			clk_sec = 60 - (area->priv->time_now%60);
 
 			/* There is a time change in some order, lets alert others */
 			g_signal_emit (area, signals[TIME_CHANGED], 0);
@@ -415,13 +419,19 @@ mnp_clock_area_refresh_time (MnpClockArea *area)
 			if (clk_sec) {
 				area->priv->source = g_timeout_add (clk_sec * 1000, (GSourceFunc)clock_ticks, area);
 				area->priv->prop_sec_zero = FALSE;
+				area->priv->last_time = area->priv->time_now - 60 + clk_sec;
+				ret = TRUE;
 			} else {
 				area->priv->prop_sec_zero = TRUE;
 				area->priv->source = g_timeout_add (60 * 1000, (GSourceFunc)clock_ticks, area);
 			}			
 		}
+
 	}
-	area->priv->last_time = area->priv->time_now;
+	if(!clk_sec && !manual)
+		area->priv->last_time = area->priv->time_now;
+
+	return ret;
 }
 
 time_t

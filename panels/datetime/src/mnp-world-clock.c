@@ -45,6 +45,12 @@ G_DEFINE_TYPE (MnpWorldClock, mnp_world_clock, MX_TYPE_BOX_LAYOUT)
 
 #define TIMEOUT 250
 
+enum {
+	TIME_CHANGED,
+	LAST_SIGNAL
+};
+static guint signals[LAST_SIGNAL] = { 0 };
+	
 
 typedef struct _MnpWorldClockPrivate MnpWorldClockPrivate;
 
@@ -102,6 +108,16 @@ mnp_world_clock_class_init (MnpWorldClockClass *klass)
 
   object_class->dispose = mnp_world_clock_dispose;
   object_class->finalize = mnp_world_clock_finalize;
+  
+  signals[TIME_CHANGED] =
+	g_signal_new ("time-changed",
+			G_OBJECT_CLASS_TYPE (object_class),
+			G_SIGNAL_RUN_FIRST,      
+			G_STRUCT_OFFSET (MnpWorldClockClass, time_changed),
+			NULL, NULL,
+			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE, 0);
+  
 }
 
 
@@ -530,6 +546,12 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 }
 
 static void
+time_changed (MnpClockArea *area, MnpWorldClock *clock)
+{
+	g_signal_emit (clock, signals[TIME_CHANGED], 0);
+}
+
+static void
 mnp_world_clock_construct (MnpWorldClock *world_clock)
 {
 	ClutterActor *entry, *box, *stage, *div;
@@ -610,6 +632,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	/* Clock Area */
 
 	priv->area = mnp_clock_area_new ();
+	g_signal_connect (priv->area, "time-changed", G_CALLBACK(time_changed), world_clock);
 	clutter_actor_set_size ((ClutterActor *)priv->area, 300, -1);
 
 	clutter_actor_set_reactive ((ClutterActor *)priv->area, TRUE);
@@ -631,7 +654,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 
 	priv->zones = mnp_load_zones ();
-	mnp_clock_area_refresh_time (priv->area);
+	mnp_clock_area_refresh_time (priv->area, TRUE);
 	mnp_clock_area_set_zone_remove_cb (priv->area, (ZoneRemovedFunc) zone_removed_cb, (gpointer)world_clock);
 	mnp_clock_area_set_zone_reordered_cb (priv->area, (ClockZoneReorderedFunc) zone_reordered_cb, (gpointer)world_clock);
 

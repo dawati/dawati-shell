@@ -49,6 +49,7 @@ G_DEFINE_TYPE (MnpDatetime, mnp_datetime, MX_TYPE_BOX_LAYOUT)
 #define SINGLE_DIV_LINE THEMEDIR "/single-div-line.png"
 #define DOUBLE_DIV_LINE THEMEDIR "/double-div-line.png"
 
+static gboolean update_date (MnpDatetime *datetime);
 
 
 struct _MnpDatetimePrivate {
@@ -621,6 +622,15 @@ construct_task_area (MnpDatetime *dtime)
 }
 
 static void
+time_changed_now (MnpWorldClock *clock, MnpDatetime *dtime)
+{
+  	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
+	
+	g_source_remove (priv->date_update_timeout);
+	update_date(dtime);
+}
+
+static void
 mnp_datetime_construct (MnpDatetime *time)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (time);
@@ -632,6 +642,8 @@ mnp_datetime_construct (MnpDatetime *time)
 	mx_box_layout_set_spacing ((MxBoxLayout *)time, 4);
 
 	priv->world_clock = mnp_world_clock_new ();
+	g_signal_connect (priv->world_clock, "time-changed", G_CALLBACK(time_changed_now), time);
+
 	mx_box_layout_add_actor ((MxBoxLayout *) time, priv->world_clock, 0);
 	clutter_container_child_set (CLUTTER_CONTAINER (time),
                                (ClutterActor *)priv->world_clock,

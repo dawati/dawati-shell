@@ -52,6 +52,7 @@ typedef struct {
 
 typedef struct {
   MxBoxLayoutClass parent_class;
+  void (*time_changed) (MnpWorldClock *);
 } MnpWorldClockClass;
 
 GType mnp_world_clock_get_type (void);

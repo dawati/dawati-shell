@@ -61,7 +61,7 @@ struct _MnpClockAreaClass
 
 GType mnp_detail_type_get_type (void);
 MnpClockArea * mnp_clock_area_new (void);
-void mnp_clock_area_refresh_time (MnpClockArea *);
+gboolean mnp_clock_area_refresh_time (MnpClockArea *, gboolean manual);
 time_t mnp_clock_area_get_time (MnpClockArea *area);
 void mnp_clock_area_set_zone_remove_cb (MnpClockArea *area, ZoneRemovedFunc func, gpointer data);
 void mnp_clock_area_set_zone_reordered_cb (MnpClockArea *area, ClockZoneReorderedFunc func, gpointer data);
