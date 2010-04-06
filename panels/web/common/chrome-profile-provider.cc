@@ -229,7 +229,18 @@ ChromeProfileProvider::SaveThumbnail(const char* url,
 {
   gchar *thumbnail_path;  
   gchar *thumbnail_filename;
+  gchar *thumbnail_dir;
   gchar *csum;  
+
+  // create dir if it doesn't exist
+  thumbnail_dir = g_build_filename (g_get_home_dir (),
+                                    ".thumbnails",
+                                    "large",
+                                    NULL);
+  if (!g_file_test(thumbnail_dir, G_FILE_TEST_IS_DIR)) {
+    g_mkdir_with_parents (thumbnail_dir, 0755);
+  }
+  g_free (thumbnail_dir);
 
   csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, url, -1);  
 
