@@ -407,8 +407,8 @@ construct_calendar_area (MnpDatetime *dtime)
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->penge_events, 3);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->penge_events,
-                               "expand", FALSE,
-			       "y-fill", FALSE,		
+                               "expand", TRUE,
+			       "y-fill", TRUE,		
 			       "x-fill", TRUE,			       			       
                                NULL);
 
