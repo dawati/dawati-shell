@@ -717,6 +717,12 @@ sw_zone_unmap (ClutterActor *actor)
 }
 
 
+static gboolean
+sw_zone_button_press_event (ClutterActor       *actor,
+                            ClutterButtonEvent *event)
+{
+  return TRUE;
+}
 
 static void
 sw_zone_class_init (SwZoneClass *klass)
@@ -736,6 +742,7 @@ sw_zone_class_init (SwZoneClass *klass)
   actor_class->allocate = sw_zone_allocate;
   actor_class->paint = sw_zone_paint;
   actor_class->pick = sw_zone_pick;
+  actor_class->button_press_event = sw_zone_button_press_event;
 
   actor_class->map = sw_zone_map;
   actor_class->unmap = sw_zone_unmap;
