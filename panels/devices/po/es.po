@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-06 02:15+0000\n"
-"PO-Revision-Date: 2010-04-06 13:33-0800\n"
-"Last-Translator: Gonzalo Velasquez <gonzalox.e.velasquez@intel.com>\n"
+"PO-Revision-Date: 2010-04-06 16:42-0800\n"
+"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
-msgstr "Panel dispositivos"
+msgstr "Panel de dispositivos"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
 #: ../src/moblin-panel-devices.c:144
@@ -48,8 +48,8 @@ msgstr[1] "Salidas %u"
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] "Ingreso %u"
-msgstr[1] "Ingresos %u"
+msgstr[0] "Entrada %u"
+msgstr[1] "Entradas %u"
 
 #: ../gvc/gvc-mixer-control.c:1316
 msgid "System Sounds"
@@ -61,19 +61,19 @@ msgstr "Icono de energía Moblin"
 
 #: ../power-icon/src/mpd-power-icon.c:72
 msgid "Running low on battery"
-msgstr "Funcionando con poca batería "
+msgstr "Queda poca batería "
 
 #: ../power-icon/src/mpd-power-icon.c:73
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Hemos notado que tu batería está un poco baja. Si puedes, sería una buena idea enchufarla y cargarla."
+msgstr "Hemos notado que la batería está un poco baja. Si puedes, enchúfala para cargarla."
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Getting close to empty"
-msgstr "Quedándose casi vacía"
+msgstr "Casi vacía"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "Estás trabajando con muy poco batería. Sería una buena idea guardar todo tu trabajo y enchufar tan pronto como puedas"
+msgstr "Casi no queda batería. Guarda el trabajo y enchúfala en cuanto puedas."
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Danger!"
@@ -81,15 +81,15 @@ msgstr "¡Peligro!"
 
 #: ../power-icon/src/mpd-power-icon.c:82
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Lo sentimos, tu equipo se va a quedar sin batería. Vamos a tener que apagar el equipo. Por favor guarda tu trabajo y esperamos verte pronto."
+msgstr "El equipo se va a quedar sin batería de un momento a otro. Vamos a tener que apagarlo. Guarda tu trabajo. Esperamos verte pronto."
 
 #: ../power-icon/src/mpd-power-icon.c:300
 msgid "Would you like to turn off now?"
-msgstr "¿Deseas apagar ahora?"
+msgstr "¿Deseas apagar el equipo ahora?"
 
 #: ../power-icon/src/mpd-power-icon.c:301
 msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "Si no decides, me apagaré en 30 segundos"
+msgstr "Si no decides, lo apagaremos en 30 segundos"
 
 #: ../power-icon/src/mpd-power-icon.c:368
 msgid "battery"
@@ -98,7 +98,7 @@ msgstr "batería"
 #: ../power-icon/src/mpd-shutdown-notification.c:75
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Si no decides, me apagaré en %d segundos"
+msgstr "Si no decides, lo apagaremos en %d segundos"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
 msgid "Turn off"
@@ -106,32 +106,32 @@ msgstr "Apagar"
 
 #: ../src/moblin-panel-devices.c:117
 msgid "Moblin Devices Panel"
-msgstr "Panel dispositivos de Moblin"
+msgstr "Panel de dispositivos de Moblin"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr "Lo sentimos, parece que no tienes una batería instalada."
+msgstr "Lo sentimos, parece que no hay ninguna batería instalada."
 
 #: ../src/mpd-battery-device.c:337
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr "Tu batería está cargando. Está a un %d%% de su capacidad."
+msgstr "Se está cargando la batería. Está a un %d%% de su capacidad."
 
 #: ../src/mpd-battery-device.c:342
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr "Tu batería está siendo utilizada. Está a un %d%% de su capacidad."
+msgstr "La batería está en uso. Está a un %d%% de su capacidad."
 
 #: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "Tu batería esta completamente cargada y estás listo para comenzar."
+msgstr "La batería está completamente cargada y lista."
 
 #: ../src/mpd-battery-device.c:351
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr "Lo sentimos, parece que tu batería está dañada."
+msgstr "Lo sentimos, parece que la batería está dañada."
 
 #: ../src/mpd-computer-pane.c:93
 msgid "Your computer"
@@ -146,8 +146,8 @@ msgid ""
 "Plug in a device and it will\n"
 "be automatically detected."
 msgstr ""
-"Conecta un dispositivo\n"
-"y será detectado automáticamente."
+"Conecta un dispositivo y se\n"
+"detectará automáticamente."
 
 #: ../src/mpd-devices-pane.c:105
 msgid "Other devices"
@@ -156,7 +156,7 @@ msgstr "Otros dispositivos"
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>Estás usando</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Estás usando</span> <span color='%s'>%d%% de %s</span>"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -178,12 +178,12 @@ msgstr "No se pudo ejecutar %s"
 
 #: ../src/mpd-storage-device-tile.c:166
 msgid "Import error"
-msgstr "Error al importar"
+msgstr "Error durante la importación"
 
 #: ../src/mpd-storage-device-tile.c:259
 #, c-format
 msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-msgstr "%s ha sido conectado. Puedes usar el panel dispositivos para interactuar con él."
+msgstr "Se ha conectado %s. Puedes acceder a él en el panel de dispositivos."
 
 #: ../src/mpd-storage-device-tile.c:262
 msgid "USB plugged in"
@@ -211,7 +211,7 @@ msgstr "Abierto"
 #: ../src/mpd-storage-device-tile.c:728
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% de %s</span>"
 
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
@@ -251,7 +251,7 @@ msgstr "Callado"
 
 #: ../src/mpd-volume-tile.c:356
 msgid "Netbook volume"
-msgstr "Volumen de Netbook"
+msgstr "Volumen del miniordenador"
 
 #: ../src/mpd-volume-tile.c:366
 msgid "Mute"
