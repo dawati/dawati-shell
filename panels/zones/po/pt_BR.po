@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:35+0000\n"
+"POT-Creation-Date: 2010-04-05 09:39+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
+"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,49 +24,55 @@ msgid "zones"
 msgstr "zonas"
 
 #: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Os aplicativos que você está usando aparecerão aqui. Você poderá mudar de um para o outro e organizá-los quando quiser."
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Olá! Este é o painel de Zonas. Se você tiver aplicativos abertos você poderá ver, gerenciar e acessá-los aqui."
 
-#: ../src/sw-zone.c:764
+#: ../src/sw-zone.c:765
 msgid "new zone"
 msgstr "nova zona"
 
-#: ../src/sw-zone.c:778
+#: ../src/sw-zone.c:779
 msgid "No applications on this zone"
 msgstr "Nenhum aplicativo nesta zona"
 
-#: ../src/sw-zone.c:906
+#: ../src/sw-zone.c:907
 msgid "one"
 msgstr "um"
 
-#: ../src/sw-zone.c:910
+#: ../src/sw-zone.c:911
 msgid "two"
 msgstr "dois"
 
-#: ../src/sw-zone.c:914
+#: ../src/sw-zone.c:915
 msgid "three"
 msgstr "tres"
 
-#: ../src/sw-zone.c:918
+#: ../src/sw-zone.c:919
 msgid "four"
 msgstr "quatro"
 
-#: ../src/sw-zone.c:922
+#: ../src/sw-zone.c:923
 msgid "five"
 msgstr "cinco"
 
-#: ../src/sw-zone.c:926
+#: ../src/sw-zone.c:927
 msgid "six"
 msgstr "seis"
 
-#: ../src/sw-zone.c:930
+#: ../src/sw-zone.c:931
 msgid "seven"
 msgstr "sete"
 
-#: ../src/sw-zone.c:934
+#: ../src/sw-zone.c:935
 msgid "eight"
 msgstr "oito"
 
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Os aplicativos que você está usando aparecerão aqui. Você poderá mudar de "
+#~ "um para o outro e organizá-los quando quiser."
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Efeitos de netbook Moblin"
 #~ msgid "Effects for Moblin Netbooks"
