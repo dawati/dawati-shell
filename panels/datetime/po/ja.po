@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:37+0000\n"
+"POT-Creation-Date: 2010-04-05 09:40+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
 "Language-Team: \n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../src/moblin-panel-date-time.c:104
+#: ../src/moblin-panel-date-time.c:110
 msgid "Date/Time"
 msgstr "日付/時間"
 
@@ -25,108 +25,13 @@ msgstr "日付と時間パネル"
 msgid "date and time"
 msgstr "日付と時間"
 
-#: ../src/mnp-alarm-dialog.c:58
-msgid "OFF"
-msgstr "オフ"
-
-#: ../src/mnp-alarm-dialog.c:59
-msgid "Beep"
-msgstr "ビープ"
-
-#: ../src/mnp-alarm-dialog.c:60
-msgid "Music"
-msgstr "曲"
-
-#: ../src/mnp-alarm-dialog.c:67
-#: ../src/mnp-alarm-instance.c:52
-msgid "Never"
-msgstr "なし"
-
-#: ../src/mnp-alarm-dialog.c:68
-#: ../src/mnp-alarm-instance.c:53
-#: ../src/mnp-alarm-tile.c:36
-msgid "Everyday"
-msgstr "毎日"
-
-#: ../src/mnp-alarm-dialog.c:69
-#: ../src/mnp-alarm-instance.c:54
-msgid "Monday - Friday"
-msgstr "月曜日 - 金曜日"
-
-#: ../src/mnp-alarm-dialog.c:70
-#: ../src/mnp-alarm-instance.c:55
-msgid "Monday"
-msgstr "月曜日"
-
-#: ../src/mnp-alarm-dialog.c:71
-#: ../src/mnp-alarm-instance.c:56
-msgid "Tuesday"
-msgstr "火曜日"
-
-#: ../src/mnp-alarm-dialog.c:72
-#: ../src/mnp-alarm-instance.c:57
-msgid "Wednesday"
-msgstr "水曜日"
-
-#: ../src/mnp-alarm-dialog.c:73
-#: ../src/mnp-alarm-instance.c:58
-msgid "Thursday"
-msgstr "木曜日"
-
-#: ../src/mnp-alarm-dialog.c:74
-#: ../src/mnp-alarm-instance.c:59
-msgid "Friday"
-msgstr "金曜日"
-
-#: ../src/mnp-alarm-dialog.c:75
-#: ../src/mnp-alarm-instance.c:60
-msgid "Saturday"
-msgstr "土曜日"
-
-#: ../src/mnp-alarm-dialog.c:76
-#: ../src/mnp-alarm-instance.c:61
-msgid "Sunday"
-msgstr "日曜日"
-
-#: ../src/mnp-alarm-dialog.c:175
-msgid "Alarm settings"
-msgstr "アラーム設定"
-
-#: ../src/mnp-alarm-dialog.c:229
-msgid "ON"
-msgstr "オン"
-
-#: ../src/mnp-alarm-dialog.c:322
-msgid "Repeat"
-msgstr "リピート"
-
-#: ../src/mnp-alarm-dialog.c:352
-msgid "Snooze"
-msgstr "休止"
-
-#: ../src/mnp-alarm-dialog.c:394
-msgid "Sound"
-msgstr "サウンド"
-
-#: ../src/mnp-alarm-dialog.c:468
-msgid "Delete alarm"
-msgstr "アラームを削除"
-
-#: ../src/mnp-alarms.c:201
-msgid ""
-"New\n"
-"Alarm"
-msgstr ""
-"新規\n"
-"アラーム"
-
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format
 #. * (eg, like in the US: 8:10 am), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:362
+#: ../src/mnp-utils.c:422
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -135,106 +40,184 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:370
+#: ../src/mnp-utils.c:430
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:384
+#: ../src/mnp-utils.c:445
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (昨日)"
 
-#: ../src/mnp-utils.c:386
+#: ../src/mnp-utils.c:447
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (明日)"
 
-#. Translators: This is a strftime format string.
-#. * It is used to display in Aug 6
-#: ../src/mnp-utils.c:392
+#: ../src/mnp-utils.c:453
+msgid "%b %-d (local)"
+msgstr "%b %-d (現地時間)"
+
+#: ../src/mnp-utils.c:455
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-alarm-instance.c:290
-msgid "Alarm Notify"
-msgstr "アラーム通知"
+#: ../src/mnp-world-clock.c:445
+msgid "Time"
+msgstr "時刻"
 
-#: ../src/mnp-alarm-instance.c:293
-#, c-format
-msgid "Alarm at %d:%.2d %s"
-msgstr "%d:%.2d %s にアラーム"
+#: ../src/mnp-world-clock.c:499
+msgid "24 hour clock"
+msgstr "24時間制"
 
-#: ../src/mnp-alarm-instance.c:293
-msgid "am"
-msgstr "午前"
-
-#: ../src/mnp-alarm-instance.c:293
-msgid "pm"
-msgstr "午後"
-
-#: ../src/mnp-alarm-instance.c:294
-msgid "Moblin Alarm Notify"
-msgstr "Moblin アラーム通知"
-
-#: ../src/mnp-alarm-instance.c:296
-msgid "AlarmNotifications"
-msgstr "AlarmNotifications"
-
-#: ../src/mnp-alarm-tile.c:37
-msgid "MON-FRI"
-msgstr "月 - 金"
-
-#: ../src/mnp-alarm-tile.c:38
-msgid "MONDAYS"
-msgstr "月曜日"
-
-#: ../src/mnp-alarm-tile.c:39
-msgid "TUESDAYS"
-msgstr "火曜日"
-
-#: ../src/mnp-alarm-tile.c:40
-msgid "WEDNESDAYS"
-msgstr "水曜日"
-
-#: ../src/mnp-alarm-tile.c:41
-msgid "THURSDAYS"
-msgstr "木曜日"
-
-#: ../src/mnp-alarm-tile.c:42
-msgid "FRIDAYS"
-msgstr "金曜日"
-
-#: ../src/mnp-alarm-tile.c:43
-msgid "SATURDAYS"
-msgstr "土曜日"
-
-#: ../src/mnp-alarm-tile.c:44
-msgid "SUNDAYS"
-msgstr "日曜日"
-
-#: ../src/mnp-world-clock.c:400
+#: ../src/mnp-world-clock.c:562
 msgid "Enter a country or city"
 msgstr "国名または都市名を入力してください"
 
-#: ../src/mnp-world-clock.c:415
+#: ../src/mnp-world-clock.c:585
 msgid "Add"
 msgstr "追加"
 
-#: ../src/mnp-datetime.c:178
+#: ../src/mnp-world-clock.c:658
+msgid "Set Time & Date"
+msgstr "日付と時間の設定"
+
+#: ../src/mnp-datetime.c:230
+msgid "Appointments"
+msgstr "予定"
+
+#: ../src/mnp-datetime.c:278
+#: ../src/mnp-datetime.c:457
 msgid "Today"
 msgstr "今日"
 
-#: ../src/mnp-datetime.c:235
+#: ../src/mnp-datetime.c:339
+msgid "Open Appointments"
+msgstr "予定を開く"
+
+#: ../src/mnp-datetime.c:408
 msgid "Tasks"
 msgstr "タスク"
 
-#: ../src/moblin-alarm-notify.c:43
-msgid "Moblin alarm notify"
-msgstr "Moblin アラーム通知"
+#: ../src/mnp-datetime.c:510
+msgid "Open Tasks"
+msgstr "タスクを開く"
 
 #: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "24時間制または12時間制"
+
+#: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
 msgstr "アラームは、アラーム通知で使用できるようにエンコード形式で保存されました。"
 
-#: ../src/date-time.schemas.in.h:2
+#: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "短いエンコード形式のアラーム一覧"
 
+#~ msgid "OFF"
+#~ msgstr "オフ"
+
+#~ msgid "Beep"
+#~ msgstr "ビープ"
+
+#~ msgid "Music"
+#~ msgstr "曲"
+
+#~ msgid "Never"
+#~ msgstr "なし"
+
+#~ msgid "Everyday"
+#~ msgstr "毎日"
+
+#~ msgid "Monday - Friday"
+#~ msgstr "月曜日 - 金曜日"
+
+#~ msgid "Monday"
+#~ msgstr "月曜日"
+
+#~ msgid "Tuesday"
+#~ msgstr "火曜日"
+
+#~ msgid "Wednesday"
+#~ msgstr "水曜日"
+
+#~ msgid "Thursday"
+#~ msgstr "木曜日"
+
+#~ msgid "Friday"
+#~ msgstr "金曜日"
+
+#~ msgid "Saturday"
+#~ msgstr "土曜日"
+
+#~ msgid "Sunday"
+#~ msgstr "日曜日"
+
+#~ msgid "Alarm settings"
+#~ msgstr "アラーム設定"
+
+#~ msgid "ON"
+#~ msgstr "オン"
+
+#~ msgid "Repeat"
+#~ msgstr "リピート"
+
+#~ msgid "Snooze"
+#~ msgstr "休止"
+
+#~ msgid "Sound"
+#~ msgstr "サウンド"
+
+#~ msgid "Delete alarm"
+#~ msgstr "アラームを削除"
+
+#~ msgid ""
+#~ "New\n"
+#~ "Alarm"
+#~ msgstr ""
+#~ "新規\n"
+#~ "アラーム"
+
+#~ msgid "Alarm Notify"
+#~ msgstr "アラーム通知"
+
+#~ msgid "Alarm at %d:%.2d %s"
+#~ msgstr "%d:%.2d %s にアラーム"
+
+#~ msgid "am"
+#~ msgstr "午前"
+
+#~ msgid "pm"
+#~ msgstr "午後"
+
+#~ msgid "Moblin Alarm Notify"
+#~ msgstr "Moblin アラーム通知"
+
+#~ msgid "AlarmNotifications"
+#~ msgstr "AlarmNotifications"
+
+#~ msgid "MON-FRI"
+#~ msgstr "月 - 金"
+
+#~ msgid "MONDAYS"
+#~ msgstr "月曜日"
+
+#~ msgid "TUESDAYS"
+#~ msgstr "火曜日"
+
+#~ msgid "WEDNESDAYS"
+#~ msgstr "水曜日"
+
+#~ msgid "THURSDAYS"
+#~ msgstr "木曜日"
+
+#~ msgid "FRIDAYS"
+#~ msgstr "金曜日"
+
+#~ msgid "SATURDAYS"
+#~ msgstr "土曜日"
+
+#~ msgid "SUNDAYS"
+#~ msgstr "日曜日"
+
+#~ msgid "Moblin alarm notify"
+#~ msgstr "Moblin アラーム通知"
