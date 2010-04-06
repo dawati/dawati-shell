@@ -1,4 +1,11 @@
 
+Version 0.1.18, 2010-04-06
+
+    Fixes: BMC#475
+    l10n: Updates to Japanese (ja) translation
+    l10n: Updates to Chinese (Taiwan) (zh_TW) translation
+    l10n: Updates to Indonesian (id) translation
+
 Version 0.1.17, 2010-04-02
 
     Rough implementation of new visual design.
