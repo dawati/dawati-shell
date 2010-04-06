@@ -204,6 +204,7 @@ penge_events_pane_allocate (ClutterActor          *actor,
   gfloat width, height;
   MxPadding padding = { 0, };
   ClutterActorBox child_box;
+  ClutterActorBox zero_box = { 0, };
   GList *l;
   gfloat last_y;
   GList *children;
@@ -241,8 +242,77 @@ penge_events_pane_allocate (ClutterActor          *actor,
 
     if (last_y <= height - padding.bottom)
       clutter_actor_allocate (child, &child_box, flags);
+    else
+      clutter_actor_allocate (child, &zero_box, flags);
 
     last_y += SPACING;
+  }
+
+  g_list_free (children);
+}
+
+
+static void
+penge_events_pane_paint (ClutterActor *actor)
+{
+  //PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
+  GList *children, *l;
+
+  /* FIXME: Implement container properly ourselves */
+
+  /* Skip the parent (the MxBoxLayout) and go straight to MxWidget. This is so
+   * we don't have the actors painted twice
+   */
+  CLUTTER_ACTOR_CLASS (g_type_class_peek (MX_TYPE_WIDGET))->paint (actor);
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
+
+  for (l = children; l; l = l->next)
+  {
+    ClutterActor *child = (ClutterActor *)l->data;
+    ClutterActorBox box;
+
+    clutter_actor_get_allocation_box (child,
+                                      &box);
+
+    if (box.x2 - box.x1 > 0 && box.y2 - box.y1 > 0)
+    {
+      clutter_actor_paint (child);
+    }
+  }
+
+  g_list_free (children);
+}
+
+
+static void
+penge_events_pane_pick (ClutterActor       *actor,
+                        const ClutterColor *color)
+{
+  //PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
+  GList *children, *l;
+
+  /* FIXME: Implement container properly ourselves */
+
+  /* Skip the parent (the MxBoxLayout) and go straight to MxWidget. This is so
+   * we don't have the actors painted twice
+   */
+  CLUTTER_ACTOR_CLASS (g_type_class_peek (MX_TYPE_WIDGET))->pick (actor, color);
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
+
+  for (l = children; l; l = l->next)
+  {
+    ClutterActor *child = (ClutterActor *)l->data;
+    ClutterActorBox box;
+
+    clutter_actor_get_allocation_box (child,
+                                      &box);
+
+    if (box.x2 - box.x1 > 0 && box.y2 - box.y1 > 0)
+    {
+      clutter_actor_paint (child);
+    }
   }
 
   g_list_free (children);
@@ -316,6 +386,8 @@ penge_events_pane_class_init (PengeEventsPaneClass *klass)
   object_class->constructed = penge_events_pane_constructed;
 
   actor_class->allocate = penge_events_pane_allocate;
+  actor_class->paint = penge_events_pane_paint;
+  actor_class->pick = penge_events_pane_pick;
   actor_class->get_preferred_height = penge_events_pane_get_preferred_height;
 
   pspec = g_param_spec_object ("time",
