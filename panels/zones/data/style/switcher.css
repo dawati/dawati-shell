@@ -12,19 +12,13 @@ SwZone
 
 SwZone:active
 {
-  border-image: url('zone-bg-focus.png') 6;
-  background-color:#a1a1a1;
+  border-image: url('content-panel-background-highlight-orange.png') 6;
 }
 
 SwZone#new-zone
 {
   /* border-image: url('') 6; */
   /* background-color: #fadc81; */
-}
-
-SwZone#new-zone:active
-{
-  background-color: #fadc81;
 }
 
 SwZone#focused-zone
@@ -34,23 +28,18 @@ SwZone#focused-zone
 
 SwWindow
 {
-  padding: 6;
-  border-image: url('thumbnail-active.png') 6;
+  padding: 12;
+  border-image: url('app-background-panel.png') 4 4 51 4;
 }
 
 SwWindow:hover
 {
-  border-image: url('thumbnail-hover.png') 6;
-}
-
-SwWindow#placeholder
-{
-  border-image: url('thumbnail-target.png') 6;
+  border-image: url('app-background-panel-highlight.png') 4 4 51 4;
 }
 
 SwWindow#focused-window
 {
-  border-image: url('thumbnail-focused.png') 6;
+  /* border-image: url('thumbnail-focused.png') 6; */
 }
 
 MxLabel.zone-title
@@ -61,13 +50,6 @@ MxLabel.zone-title
   font-size: 16;
   font-weight: bold;
   font-family: "Droid Sans";
-}
-
-MxLabel.zone-title:active
-{
-  color: white;
-  padding: 4;
-  border-image: url('zone-title-hover.png') 4;
 }
 
 SwZone#focused-zone > MxLabel.zone-title

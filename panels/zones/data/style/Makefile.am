@@ -1,23 +1,13 @@
 themedir = $(pkgdatadir)/style
 dist_theme_DATA = \
+	app-background-panel.png \
+	app-background-panel-highlight.png \
 	content-panel-background.png \
+	content-panel-background-highlight-orange.png \
 	content-panel-header-grey.png \
 	content-panel-header-orange.png \
-	new-zone-title-active.png \
-	new-zone-title-focus.png \
-	new-zone-title-hover.png \
 	switcher.css \
-	thumbnail-active.png \
-	thumbnail-focused.png \
-	thumbnail-hover.png \
-	thumbnail-target.png \
 	workspace-title-new-symbol-active.png \
-	zone-bg-active.png \
-	zone-bg-focus.png \
-	zone-bg-hover.png \
-	zone-title-focused.png \
-	zone-title-hover.png \
-	zone-title-normal.png \
 	close-button.png \
 	close-button-hover.png
 
