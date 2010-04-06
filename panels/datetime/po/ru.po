@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-04 16:34+0000\n"
-"PO-Revision-Date: 2010-03-07 19:48+0200\n"
+"POT-Creation-Date: 2010-04-05 09:40+0000\n"
+"PO-Revision-Date: 2010-04-06 15:08+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:104
+#: ../src/moblin-panel-date-time.c:110
 msgid "Date/Time"
 msgstr "Дата/время"
 
@@ -30,108 +30,13 @@ msgstr "Панель даты и времени"
 msgid "date and time"
 msgstr "дата и время"
 
-#: ../src/mnp-alarm-dialog.c:58
-msgid "OFF"
-msgstr "ОТКЛ"
-
-#: ../src/mnp-alarm-dialog.c:59
-msgid "Beep"
-msgstr "Сигнал"
-
-#: ../src/mnp-alarm-dialog.c:60
-msgid "Music"
-msgstr "Музыка"
-
-#: ../src/mnp-alarm-dialog.c:67
-#: ../src/mnp-alarm-instance.c:52
-msgid "Never"
-msgstr "Никогда"
-
-#: ../src/mnp-alarm-dialog.c:68
-#: ../src/mnp-alarm-instance.c:53
-#: ../src/mnp-alarm-tile.c:36
-msgid "Everyday"
-msgstr "Каждый день"
-
-#: ../src/mnp-alarm-dialog.c:69
-#: ../src/mnp-alarm-instance.c:54
-msgid "Monday - Friday"
-msgstr "Понедельник - пятница"
-
-#: ../src/mnp-alarm-dialog.c:70
-#: ../src/mnp-alarm-instance.c:55
-msgid "Monday"
-msgstr "Понедельник"
-
-#: ../src/mnp-alarm-dialog.c:71
-#: ../src/mnp-alarm-instance.c:56
-msgid "Tuesday"
-msgstr "Вторник"
-
-#: ../src/mnp-alarm-dialog.c:72
-#: ../src/mnp-alarm-instance.c:57
-msgid "Wednesday"
-msgstr "Среда"
-
-#: ../src/mnp-alarm-dialog.c:73
-#: ../src/mnp-alarm-instance.c:58
-msgid "Thursday"
-msgstr "Четверг"
-
-#: ../src/mnp-alarm-dialog.c:74
-#: ../src/mnp-alarm-instance.c:59
-msgid "Friday"
-msgstr "Пятница"
-
-#: ../src/mnp-alarm-dialog.c:75
-#: ../src/mnp-alarm-instance.c:60
-msgid "Saturday"
-msgstr "Суббота"
-
-#: ../src/mnp-alarm-dialog.c:76
-#: ../src/mnp-alarm-instance.c:61
-msgid "Sunday"
-msgstr "Воскресенье"
-
-#: ../src/mnp-alarm-dialog.c:175
-msgid "Alarm settings"
-msgstr "Настройки сигнала"
-
-#: ../src/mnp-alarm-dialog.c:229
-msgid "ON"
-msgstr "ВКЛ"
-
-#: ../src/mnp-alarm-dialog.c:322
-msgid "Repeat"
-msgstr "Повтор"
-
-#: ../src/mnp-alarm-dialog.c:352
-msgid "Snooze"
-msgstr "Отложить"
-
-#: ../src/mnp-alarm-dialog.c:394
-msgid "Sound"
-msgstr "Звук"
-
-#: ../src/mnp-alarm-dialog.c:468
-msgid "Delete alarm"
-msgstr "Удалить установку сигнала"
-
-#: ../src/mnp-alarms.c:201
-msgid ""
-"New\n"
-"Alarm"
-msgstr ""
-"Новый\n"
-"сигнал"
-
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format
 #. * (eg, like in the US: 8:10 am), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:362
+#: ../src/mnp-utils.c:422
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -140,106 +45,184 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:370
+#: ../src/mnp-utils.c:430
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:384
+#: ../src/mnp-utils.c:445
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (Вчера)"
 
-#: ../src/mnp-utils.c:386
+#: ../src/mnp-utils.c:447
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (Завтра)"
 
-#. Translators: This is a strftime format string.
-#. * It is used to display in Aug 6
-#: ../src/mnp-utils.c:392
+#: ../src/mnp-utils.c:453
+msgid "%b %-d (local)"
+msgstr "%b %-d (местный)"
+
+#: ../src/mnp-utils.c:455
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-alarm-instance.c:290
-msgid "Alarm Notify"
-msgstr "Сигнал-уведомление"
+#: ../src/mnp-world-clock.c:445
+msgid "Time"
+msgstr "Время"
 
-#: ../src/mnp-alarm-instance.c:293
-#, c-format
-msgid "Alarm at %d:%.2d %s"
-msgstr "Сигнал в %d:%.2d %s"
+#: ../src/mnp-world-clock.c:499
+msgid "24 hour clock"
+msgstr "Формат времени 24 часа"
 
-#: ../src/mnp-alarm-instance.c:293
-msgid "am"
-msgstr "до полудня"
-
-#: ../src/mnp-alarm-instance.c:293
-msgid "pm"
-msgstr "после полудня"
-
-#: ../src/mnp-alarm-instance.c:294
-msgid "Moblin Alarm Notify"
-msgstr "Сигнал-оповещение Moblin"
-
-#: ../src/mnp-alarm-instance.c:296
-msgid "AlarmNotifications"
-msgstr "Сигналы-оповещения"
-
-#: ../src/mnp-alarm-tile.c:37
-msgid "MON-FRI"
-msgstr "ПН-ПТ"
-
-#: ../src/mnp-alarm-tile.c:38
-msgid "MONDAYS"
-msgstr "ПОНЕДЕЛЬНИКИ"
-
-#: ../src/mnp-alarm-tile.c:39
-msgid "TUESDAYS"
-msgstr "ВТОРНИКИ"
-
-#: ../src/mnp-alarm-tile.c:40
-msgid "WEDNESDAYS"
-msgstr "СРЕДЫ"
-
-#: ../src/mnp-alarm-tile.c:41
-msgid "THURSDAYS"
-msgstr "ЧЕТВЕРГИ"
-
-#: ../src/mnp-alarm-tile.c:42
-msgid "FRIDAYS"
-msgstr "ПЯТНИЦЫ"
-
-#: ../src/mnp-alarm-tile.c:43
-msgid "SATURDAYS"
-msgstr "СУББОТЫ"
-
-#: ../src/mnp-alarm-tile.c:44
-msgid "SUNDAYS"
-msgstr "ВОСКРЕСЕНЬЯ"
-
-#: ../src/mnp-world-clock.c:400
+#: ../src/mnp-world-clock.c:562
 msgid "Enter a country or city"
 msgstr "Ввести страну или город"
 
-#: ../src/mnp-world-clock.c:415
+#: ../src/mnp-world-clock.c:585
 msgid "Add"
 msgstr "Добавить"
 
-#: ../src/mnp-datetime.c:178
+#: ../src/mnp-world-clock.c:658
+msgid "Set Time & Date"
+msgstr "Установить время и дату"
+
+#: ../src/mnp-datetime.c:230
+msgid "Appointments"
+msgstr "Встречи"
+
+#: ../src/mnp-datetime.c:278
+#: ../src/mnp-datetime.c:457
 msgid "Today"
 msgstr "Сегодня"
 
-#: ../src/mnp-datetime.c:235
+#: ../src/mnp-datetime.c:339
+msgid "Open Appointments"
+msgstr "Текущие встречи"
+
+#: ../src/mnp-datetime.c:408
 msgid "Tasks"
 msgstr "Задания"
 
-#: ../src/moblin-alarm-notify.c:43
-msgid "Moblin alarm notify"
-msgstr "Сигнал-оповещение Moblin"
+#: ../src/mnp-datetime.c:510
+msgid "Open Tasks"
+msgstr "Текущие задания"
 
 #: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "Формат времени 12 или 24 часа"
+
+#: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
 msgstr "Сигналы хранятся в зашифрованном виде для использования при оповещении."
 
-#: ../src/date-time.schemas.in.h:2
+#: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "Список сигналов в краткой зашифрованной форме"
 
+#~ msgid "OFF"
+#~ msgstr "ОТКЛ"
+
+#~ msgid "Beep"
+#~ msgstr "Сигнал"
+
+#~ msgid "Music"
+#~ msgstr "Музыка"
+
+#~ msgid "Never"
+#~ msgstr "Никогда"
+
+#~ msgid "Everyday"
+#~ msgstr "Каждый день"
+
+#~ msgid "Monday - Friday"
+#~ msgstr "Понедельник - пятница"
+
+#~ msgid "Monday"
+#~ msgstr "Понедельник"
+
+#~ msgid "Tuesday"
+#~ msgstr "Вторник"
+
+#~ msgid "Wednesday"
+#~ msgstr "Среда"
+
+#~ msgid "Thursday"
+#~ msgstr "Четверг"
+
+#~ msgid "Friday"
+#~ msgstr "Пятница"
+
+#~ msgid "Saturday"
+#~ msgstr "Суббота"
+
+#~ msgid "Sunday"
+#~ msgstr "Воскресенье"
+
+#~ msgid "Alarm settings"
+#~ msgstr "Настройки сигнала"
+
+#~ msgid "ON"
+#~ msgstr "ВКЛ"
+
+#~ msgid "Repeat"
+#~ msgstr "Повтор"
+
+#~ msgid "Snooze"
+#~ msgstr "Отложить"
+
+#~ msgid "Sound"
+#~ msgstr "Звук"
+
+#~ msgid "Delete alarm"
+#~ msgstr "Удалить установку сигнала"
+
+#~ msgid ""
+#~ "New\n"
+#~ "Alarm"
+#~ msgstr ""
+#~ "Новый\n"
+#~ "сигнал"
+
+#~ msgid "Alarm Notify"
+#~ msgstr "Сигнал-уведомление"
+
+#~ msgid "Alarm at %d:%.2d %s"
+#~ msgstr "Сигнал в %d:%.2d %s"
+
+#~ msgid "am"
+#~ msgstr "до полудня"
+
+#~ msgid "pm"
+#~ msgstr "после полудня"
+
+#~ msgid "Moblin Alarm Notify"
+#~ msgstr "Сигнал-оповещение Moblin"
+
+#~ msgid "AlarmNotifications"
+#~ msgstr "Сигналы-оповещения"
+
+#~ msgid "MON-FRI"
+#~ msgstr "ПН-ПТ"
+
+#~ msgid "MONDAYS"
+#~ msgstr "ПОНЕДЕЛЬНИКИ"
+
+#~ msgid "TUESDAYS"
+#~ msgstr "ВТОРНИКИ"
+
+#~ msgid "WEDNESDAYS"
+#~ msgstr "СРЕДЫ"
+
+#~ msgid "THURSDAYS"
+#~ msgstr "ЧЕТВЕРГИ"
+
+#~ msgid "FRIDAYS"
+#~ msgstr "ПЯТНИЦЫ"
+
+#~ msgid "SATURDAYS"
+#~ msgstr "СУББОТЫ"
+
+#~ msgid "SUNDAYS"
+#~ msgstr "ВОСКРЕСЕНЬЯ"
+
+#~ msgid "Moblin alarm notify"
+#~ msgstr "Сигнал-оповещение Moblin"
