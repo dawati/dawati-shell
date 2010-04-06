@@ -148,6 +148,8 @@ container_get_n_visible_children (ClutterContainer *container)
 #define LAUNCHER_MIN_WIDTH   790
 #define LAUNCHER_MIN_HEIGHT  400
 
+#define LEFT_COLUMN_WIDTH    240.0
+
 #define FILTER_ENTRY_WIDTH        600
 
 #define SCROLLVIEW_RESERVED_WIDTH 10
@@ -155,7 +157,7 @@ container_get_n_visible_children (ClutterContainer *container)
 #define SCROLLVIEW_ROW_SIZE       50.0
 #define EXPANDER_GRID_ROW_GAP      8
 
-#define LAUNCHER_GRID_COLUMN_GAP   32
+#define LAUNCHER_GRID_COLUMN_GAP   12
 #define LAUNCHER_GRID_ROW_GAP      12
 #define LAUNCHER_BUTTON_WIDTH     210
 #define LAUNCHER_BUTTON_HEIGHT     79
@@ -167,7 +169,7 @@ container_get_n_visible_children (ClutterContainer *container)
 #define SCROLLVIEW_OUTER_HEIGHT(self_)                                         \
           (clutter_actor_get_height (CLUTTER_ACTOR (self_)) -                  \
            clutter_actor_get_height (self_->priv->filter_hbox) - 35)
-#define SCROLLVIEW_INNER_WIDTH(self_) 735.0
+#define SCROLLVIEW_INNER_WIDTH(self_) 700.0
 
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
@@ -1322,6 +1324,7 @@ _constructor (GType                  gtype,
   ClutterActor  *columns;
   ClutterActor  *left_column;
   ClutterActor  *label;
+  ClutterActor  *fav_scroll;
   MxAdjustment  *vadjust = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
@@ -1356,6 +1359,7 @@ _constructor (GType                  gtype,
                                NULL);
 
   left_column = mx_box_layout_new ();
+  clutter_actor_set_width (left_column, LEFT_COLUMN_WIDTH);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (left_column), 20.0);
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (left_column), MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (columns), left_column);
@@ -1378,9 +1382,14 @@ _constructor (GType                  gtype,
   label = mx_label_new_with_text (_("Favorite applications"));
   clutter_container_add_actor (CLUTTER_CONTAINER (left_column), label);
 
+  fav_scroll = mx_scroll_view_new ();
+  mx_scroll_view_set_scroll_policy (MX_SCROLL_VIEW (fav_scroll),
+                                    MX_SCROLL_POLICY_VERTICAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (left_column), fav_scroll);
+
   priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   mx_grid_set_max_stride (MX_GRID (priv->fav_grid), 1);
-  clutter_container_add_actor (CLUTTER_CONTAINER (left_column), priv->fav_grid);
+  clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll), priv->fav_grid);
 
   /*
    * Applications
