@@ -148,15 +148,14 @@ _import_clicked_cb (MxButton             *button,
                     MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char    *command_line;
-  GError  *error = NULL;
+  char const  *command_line;
+  GError      *error = NULL;
 
   if (0 == g_strcmp0 ("x-content/image-dcf", priv->mime_type))
   {
-    command_line = g_strdup ("gthumb --import-photos");
+    command_line = "gthumb --import-photos";
   } else {
-    command_line = g_strdup_printf ("banshee --import-media %s",
-                                    priv->mount_point);
+    command_line = "banshee --show-import-media";
   }
 
   g_spawn_command_line_async (command_line, &error);
@@ -173,8 +172,6 @@ _import_clicked_cb (MxButton             *button,
     g_free (message);
     g_clear_error (&error);
   }
-
-  g_free (command_line);  
 }
 
 static void
@@ -260,7 +257,7 @@ _constructor (GType                  type,
                             "You can use the Devices panel interact with it"),
                           priv->name);
   notification = notify_notification_new (_("USB plugged in"), body, NULL, NULL);
-  notify_notification_add_action (notification, "show", _("Show"),
+  notify_notification_add_action (notification, "show-panel", _("Show"),
                                   (NotifyActionCallback) _show_panel_cb, self,
                                   NULL);
   notify_notification_show (notification, &error);
