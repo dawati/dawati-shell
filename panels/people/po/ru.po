@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:31+0000\n"
-"PO-Revision-Date: 2010-03-08 23:38+0200\n"
+"POT-Creation-Date: 2010-04-05 09:33+0000\n"
+"PO-Revision-Date: 2010-04-06 15:39+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,47 +19,79 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:494
+#: ../src/mnb-people-panel.c:466
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "люди"
 
-#: ../src/mnb-people-panel.c:266
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
+msgstr "Приветствуем вас! Это панель People. После настройки службы общения через Интернет (например, Messenger) здесь вы можете общаться с другими людьми."
+
+#: ../src/mnb-people-panel.c:185
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Извините, невозможно найти людей. Вы настроили учетную запись?"
 
-#: ../src/mnb-people-panel.c:378
+#: ../src/mnb-people-panel.c:228
+#: ../src/mnb-people-panel.c:404
+#, c-format
+msgid "Open %s"
+msgstr "Открыть %s"
+
+#: ../src/mnb-people-panel.c:273
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Извините, невозможно найти людей. Похоже, что Вы находитесь не в сети."
 
-#: ../src/mnb-people-panel.c:423
+#: ../src/mnb-people-panel.c:318
 msgid "To see your IM contacts, you need to go online."
 msgstr "Для просмотра своих контактов IM передите в режим онлайн."
 
-#: ../src/mnb-people-panel.c:475
+#: ../src/mnb-people-panel.c:448
 #, c-format
-msgid "people - %d people are talking to you"
-msgstr "люди - %d людей общаются с Вами"
+msgid "people - you are chatting with %d people"
+msgstr "собеседники - у вас %d собеседников"
 
-#: ../src/mnb-people-panel.c:482
-msgid "people - Someone is talking to you"
-msgstr "люди - Кто-то общается с Вами"
+#: ../src/mnb-people-panel.c:455
+msgid "people - you are chatting with someone"
+msgstr "собеседники - вы общаетесь с кем-то"
 
-#: ../src/mnb-people-panel.c:689
+#. Populate header
+#: ../src/mnb-people-panel.c:666
+#: ../src/mnb-people-panel.c:919
 msgid "People"
 msgstr "Люди"
 
-#: ../src/mnb-people-panel.c:702
+#: ../src/mnb-people-panel.c:679
 msgid "Search"
 msgstr "Поиск"
 
-#: ../src/mnb-people-panel.c:752
+#: ../src/mnb-people-panel.c:730
+#: ../src/mnb-people-panel.c:1106
 msgid "You are chatting with:"
 msgstr "Вы общаетесь с:"
+
+#: ../src/mnb-people-panel.c:936
+msgid "Me and my people"
+msgstr "Я и мои собеседники"
+
+#: ../src/mnb-people-panel.c:974
+msgid "Me"
+msgstr "Я"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1063
+msgid "My conversations"
+msgstr "Мои беседы"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Панель контактов"
+
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "люди - %d людей общаются с Вами"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "люди - Кто-то общается с Вами"
 
 #~ msgid "People talking to you ..."
 #~ msgstr "Люди общаются с Вами..."
