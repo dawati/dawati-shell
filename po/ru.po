@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:25+0000\n"
-"PO-Revision-Date: 2010-03-08 23:44+0200\n"
+"POT-Creation-Date: 2010-04-05 09:25+0000\n"
+"PO-Revision-Date: 2010-04-06 16:16+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,28 +23,47 @@ msgid "Set your toolbar preferences"
 msgstr "Настроить параметры панели инструментов"
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-#: ../capplet/src/mtp-cc-panel.c:118
-msgid "Toolbar"
-msgstr "Панель инструментов"
+msgid "Toolbar settings"
+msgstr "Настройки панели инструментов"
 
-#: ../capplet/src/mtp-bin.c:355
+#: ../capplet/src/mtp-bin.c:361
 msgid "Save toolbar"
 msgstr "Сохранить панель инструментов"
 
-#: ../capplet/src/mtp-bin.c:360
+#: ../capplet/src/mtp-bin.c:366
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Перед добавлением новой панели инструментов удалите старую."
 
-#: ../capplet/src/mtp-bin.c:388
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "Вы можете добавить, удалить или изменить положение многих панелей на своей панели инструментов."
+
+#: ../capplet/src/mtp-jar.c:109
 msgid "Available panels"
 msgstr "Доступные панели"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:221
-#: ../src/mnb-toolbar-clock.c:86
+#: ../capplet/src/mtp-clock.c:216
+#: ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:226
+#: ../src/mnb-toolbar-clock.c:123
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -52,29 +71,33 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:231
-#: ../src/mnb-toolbar-clock.c:96
+#: ../capplet/src/mtp-clock.c:248
+#: ../src/mnb-toolbar-clock.c:144
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Панель инструментов"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
 msgstr "Установить настройки области уведомлений"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:250
+#: ../capplet/src/syst-cc-panel.c:253
 msgid "System Tray"
 msgstr "Область уведомлений"
 
-#: ../capplet/src/syst-cc-panel.c:167
+#: ../capplet/src/syst-cc-panel.c:170
 msgid "System tray"
 msgstr "Область уведомлений"
 
-#: ../capplet/src/syst-cc-panel.c:183
+#: ../capplet/src/syst-cc-panel.c:186
 msgid "Show system tray"
 msgstr "Показать область уведомлений"
 
-#: ../capplet/src/syst-cc-panel.c:204
+#: ../capplet/src/syst-cc-panel.c:207
 msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
 msgstr "Область уведомлений используется некоторыми более старыми приложениями для информирования пользователя в случае возникновения какого-то события или продолжения работы после их закрытия."
 
@@ -86,27 +109,27 @@ msgstr "Определяет порядок панелей на инструме
 msgid "Order of panels on toolbar"
 msgstr "Порядок панелей на инструментальной панели"
 
-#: ../src/moblin-netbook.c:932
+#: ../src/moblin-netbook.c:905
 msgid "Moblin Netbook Effects"
 msgstr "Эффекты Moblin Netbook"
 
-#: ../src/moblin-netbook.c:936
+#: ../src/moblin-netbook.c:909
 msgid "Effects for Moblin Netbooks"
 msgstr "Эффекты для Moblin Netbooks"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3035
 msgid "Activate"
 msgstr "Активировать"
 
-#: ../src/moblin-netbook.c:3004
+#: ../src/moblin-netbook.c:3049
 msgid "Unknown window"
 msgstr "Неизвестное окно"
 
-#: ../src/moblin-netbook.c:3006
+#: ../src/moblin-netbook.c:3051
 msgid "Is asking for your attention."
 msgstr "Просит обратить внимание."
 
-#: ../src/mnb-toolbar.c:968
+#: ../src/mnb-toolbar.c:976
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Извините, %s поврежден"
