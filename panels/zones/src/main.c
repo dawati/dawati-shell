@@ -411,7 +411,7 @@ setup (ZonePanelData *data)
 
   /* create the overview */
   overview = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
-  mx_box_layout_add_actor_with_properties (CLUTTER_CONTAINER (box_layout),
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (box_layout),
                                            overview, -1,
                                            "expand", TRUE,
                                            NULL);
