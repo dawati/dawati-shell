@@ -106,8 +106,14 @@ get_notification (MoblinNetbookNotifyStore *notify,
     {
       /* Found an existing notification, clear it */
       g_free (notification->summary);
+      notification->summary = NULL;
+
       g_free (notification->body);
+      notification->body = NULL;
+
       g_free (notification->icon_name);
+      notification->icon_name = NULL;
+
       g_hash_table_remove_all (notification->actions);
     }
   else
