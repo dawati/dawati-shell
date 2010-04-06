@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:24+0000\n"
-"PO-Revision-Date: 2010-03-08 23:29+0200\n"
+"POT-Creation-Date: 2010-04-05 09:24+0000\n"
+"PO-Revision-Date: 2010-04-06 11:42+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -199,11 +199,12 @@ msgid "Password"
 msgstr "Пароль"
 
 #: ../carrick/carrick-pane.c:726
-#: ../carrick/carrick-service-item.c:1284
+#: ../carrick/carrick-service-item.c:1303
 msgid "Show password"
 msgstr "Показать пароль"
 
 #: ../carrick/carrick-pane.c:1399
+#: ../src/carrick.c:351
 msgid "Networks"
 msgstr "Сетевые подключения"
 
@@ -213,7 +214,7 @@ msgid "Add new connection"
 msgstr "Добавить новое подключение"
 
 #: ../carrick/carrick-pane.c:1496
-#: ../carrick/carrick-service-item.c:240
+#: ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "Проводная"
 
@@ -250,64 +251,69 @@ msgid "ERROR: No 3G Hardware detected"
 msgstr "ОШИБКА: 3G-устройства не обнаружены"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
-#. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:176
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
 msgstr "%s зашифровано"
 
-#: ../carrick/carrick-service-item.c:271
+#: ../carrick/carrick-service-item.c:272
+#: ../carrick/carrick-service-item.c:289
 msgid "Disconnect"
 msgstr "Отключить"
 
-#: ../carrick/carrick-service-item.c:274
+#: ../carrick/carrick-service-item.c:275
 msgid "Connected"
 msgstr "Подключено"
 
-#: ../carrick/carrick-service-item.c:281
-#: ../carrick/carrick-service-item.c:290
+#: ../carrick/carrick-service-item.c:292
+msgid "Online"
+msgstr "Онлайн"
+
+#: ../carrick/carrick-service-item.c:299
+#: ../carrick/carrick-service-item.c:308
 #, c-format
 msgid "Cancel"
 msgstr "Отменить"
 
-#: ../carrick/carrick-service-item.c:284
+#: ../carrick/carrick-service-item.c:302
 msgid "Configuring"
 msgstr "Настройка"
 
-#: ../carrick/carrick-service-item.c:293
+#: ../carrick/carrick-service-item.c:311
 msgid "Associating"
 msgstr "Ассоциирование"
 
-#: ../carrick/carrick-service-item.c:302
-#: ../carrick/carrick-service-item.c:327
-#: ../carrick/carrick-service-item.c:1273
+#: ../carrick/carrick-service-item.c:320
+#: ../carrick/carrick-service-item.c:345
+#: ../carrick/carrick-service-item.c:1292
 msgid "Connect"
 msgstr "Подключить"
 
-#: ../carrick/carrick-service-item.c:330
+#: ../carrick/carrick-service-item.c:348
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: ../carrick/carrick-service-item.c:333
+#: ../carrick/carrick-service-item.c:351
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Сбой подключения, повторите попытку."
 
-#: ../carrick/carrick-service-item.c:339
-#: ../carrick/carrick-service-item.c:342
+#: ../carrick/carrick-service-item.c:357
+#: ../carrick/carrick-service-item.c:360
 #, c-format
 msgid "Disconnecting"
 msgstr "Отключение"
 
-#: ../carrick/carrick-service-item.c:400
+#: ../carrick/carrick-service-item.c:418
 msgid "Type password here"
 msgstr "Введите пароль здесь"
 
-#: ../carrick/carrick-service-item.c:463
+#: ../carrick/carrick-service-item.c:481
 msgid "Really remove?"
 msgstr "Действительно удалить?"
 
-#: ../carrick/carrick-service-item.c:483
+#: ../carrick/carrick-service-item.c:501
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -318,32 +324,32 @@ msgstr ""
 "приведет к утрате пароля и невозможности\n"
 "автоматического подключения к %s."
 
-#: ../carrick/carrick-service-item.c:667
+#: ../carrick/carrick-service-item.c:686
 #, c-format
 msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
 msgstr "Пароль содержит неправильное количество символов. Для подключения WEP он должен содержать 10 или 26 символов, у вас %i."
 
-#: ../carrick/carrick-service-item.c:678
+#: ../carrick/carrick-service-item.c:697
 #, c-format
 msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
 msgstr "Слишком короткий пароль. Для подключения WPA он должен состоять минимум из 8 символов, у вас %i"
 
-#: ../carrick/carrick-service-item.c:682
+#: ../carrick/carrick-service-item.c:701
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "Слишком длинный пароль. Для под подключения WPA  пароль должен быть не длиннее 63 символов, у вас %i"
 
-#: ../carrick/carrick-service-item.c:691
+#: ../carrick/carrick-service-item.c:710
 #, c-format
 msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
 msgstr "Слишком короткий пароль. Для подключения WPA2 он должен состоять минимум из 8 символов, у вас %i"
 
-#: ../carrick/carrick-service-item.c:695
+#: ../carrick/carrick-service-item.c:714
 #, c-format
 msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "Слишком длинный пароль. Для под подключения WPA2 пароль должен быть не длиннее 63 символов, у вас %i"
 
-#: ../carrick/carrick-service-item.c:1209
+#: ../carrick/carrick-service-item.c:1228
 msgid "Scanning"
 msgstr "Проверка"
 
@@ -351,7 +357,7 @@ msgstr "Проверка"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1228
+#: ../carrick/carrick-service-item.c:1247
 msgid "WPA2 encrypted"
 msgstr "WPA2 зашифровано"
 
@@ -396,23 +402,23 @@ msgstr "сети"
 msgid "networks - error"
 msgstr "сети - ошибка"
 
-#: ../src/carrick.c:282
+#: ../src/carrick.c:279
 msgid "Run in standalone mode"
 msgstr "Запуск в автономном режиме"
 
-#: ../src/carrick.c:284
+#: ../src/carrick.c:281
 msgid "Embed in another window (overrides --standalone)"
 msgstr "Добавлено в другом окне (замещает --отдельный)"
 
-#: ../src/carrick.c:295
+#: ../src/carrick.c:292
 msgid "Carrick connectivity applet"
 msgstr "Приложение для подключения Carrick"
 
-#: ../src/carrick.c:296
+#: ../src/carrick.c:293
 msgid "- Moblin connectivity applet"
 msgstr "- Приложение для подключения Moblin"
 
-#: ../src/carrick.c:342
+#: ../src/carrick.c:334
 #: ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "сеть"
