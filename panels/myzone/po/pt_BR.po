@@ -1,13 +1,13 @@
 # GLSPTB_Gabor <gaborx.k.becht@intel.com>, 2009.
 # Og Maciel <ogmaciel@gnome.org>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-01 10:36+0000\n"
-"PO-Revision-Date: 2009-10-22 23:22-0500\n"
-"Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
+"POT-Creation-Date: 2010-04-05 09:32+0000\n"
+"PO-Revision-Date: 2010-04-06 09:54-0800\n"
+"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <l10n@moblin.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,19 +18,66 @@ msgstr ""
 msgid "Myzone panel"
 msgstr "Painel Myzone"
 
-#: ../penge/penge-calendar-pane.c:473
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Modifique o fundo e conteúdo do Myzone"
+
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Erro GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Todos os demais erros são mostrados apenas no terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Mostrar o máximo de conteúdo de serviço na web possível"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Mostrar principalmente conteúdo de serviço na web "
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Mostrar metade-metade"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Mostrar principalmente os arquivos mais recentes"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Mostrar o maior número de arquivos recentes"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "Você quer limpar seus documentos recentes? Isto removerá o conteúdo local do MyZone"
+
+#: ../penge/penge-calendar-pane.c:445
 msgid "Appointments"
 msgstr "Compromissos"
 
-#: ../penge/penge-events-pane.c:68
+#: ../penge/penge-calendar-pane.c:475
+msgid "Tasks"
+msgstr "Tarefas"
+
+#: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "Criar um compromisso"
 
-#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70
+#: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Adicionar"
 
-#: ../penge/penge-events-pane.c:361
+#: ../penge/penge-events-pane.c:412
 msgid "No calendar entries this week"
 msgstr "Nenhum compromisso esta semana"
 
@@ -55,57 +102,44 @@ msgstr "Nada para fazer hoje"
 msgid "Due %x"
 msgstr "Prazo %x"
 
-#: ../penge/penge-welcome-tile.c:67
+#: ../penge/penge-welcome-tile.c:41
+msgid "Play intro video"
+msgstr "Reproduzir vídeo de introdução"
+
+#: ../penge/penge-welcome-tile.c:75
 msgid "Welcome to MeeGo"
 msgstr "Bem-vindo a MeeGo"
 
-#: ../penge/penge-welcome-tile.c:86
+#: ../penge/penge-welcome-tile.c:94
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Este é Myzone, onde seus arquivos recentemente usados e conteúdo de sua web feed vai aparecer."
 
-#: ../data/myzone.desktop.in.in.h:2
-msgid "Myzone settings"
-msgstr "Configurações Myzone"
+#: ../penge/penge-welcome-tile.c:35
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "Se você configurou suas contas da web e usou alguns do arquivos, eles irão aparecer aqui no Myzone para acesso fácil quando você quiser."
 
-#: ../data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr "Modifique o fundo e conteúdo do Myzone"
+#: ../penge/penge-email-pane.c:191
+msgid "No unread messages"
+msgstr "Nenhuma mensagem não lida"
 
-#: ../capplet/gconf-bridge.c:1237
-msgid "All further errors shown only on terminal."
-msgstr "Todos os demais erros são mostrados apenas no terminal."
+#: ../penge/penge-email-pane.c:193
+msgid "Unread message"
+msgstr "Mensagem não lida"
 
-#: ../capplet/gconf-bridge.c:1232
-#, c-format
-msgid "GConf error: %s"
-msgstr "Erro GConf: %s"
+#: ../penge/penge-email-pane.c:195
+msgid "Unread messages"
+msgstr "Mensagens não lidas"
 
-#: ../capplet/myzone-cc-panel.c:49
-msgid "Show mostly web service content"
-msgstr "Mostrar principalmente conteúdo de serviço na web "
-
-#: ../capplet/myzone-cc-panel.c:47
-msgid "Show as much web service content as possible"
-msgstr "Mostrar o máximo de conteúdo de serviço na web possível"
-
-#: ../capplet/myzone-cc-panel.c:53
-msgid "Show mostly recent files"
-msgstr "Mostrar principalmente os arquivos mais recentes"
-
-#: ../capplet/myzone-cc-panel.c:51
-msgid "Show half and half"
-msgstr "Mostrar metade-metade"
-
-#: ../capplet/myzone-cc-panel.c:137
-msgid "Myzone"
-msgstr "Myzone"
-
-#: ../capplet/myzone-cc-panel.c:55
-msgid "Show as many recent files as possible"
-msgstr "Mostrar o maior número de arquivos recentes"
-
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Como o Moblin é um pouco diferente de outros computadores, nós juntamos algumas dicas e itens para ajudá-lo a navegar pelo sistema. Esperamos que se divirta, a Equipe Moblin."
-
+#~ msgid "Myzone settings"
+#~ msgstr "Configurações Myzone"
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Como o Moblin é um pouco diferente de outros computadores, nós juntamos "
+#~ "algumas dicas e itens para ajudá-lo a navegar pelo sistema. Esperamos que "
+#~ "se divirta, a Equipe Moblin."
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Bem-vindo ao Moblin 2.1 para Netbooks</b>"
+
