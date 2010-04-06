@@ -1,4 +1,8 @@
 
+Version 0.1.16, 2010-04-06
+
+    Fixes: MBC#497 - Wrong arguments used for launching banshee
+
 Version 0.1.15, 2010-04-02
 
     Add simple brightnes tile.
