@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:49+0000\n"
+"POT-Creation-Date: 2010-04-05 09:33+0000\n"
 "PO-Revision-Date: 2009-10-07 14:21-0800\n"
 "Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -17,47 +17,76 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:495
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:466
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "好友"
 
-#: ../src/mnb-people-panel.c:267
+#: ../src/mnb-people-panel.c:185
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "抱歉，我不能找到任何联系人。您已经建立好一个聊天账户了吗？"
 
-#: ../src/mnb-people-panel.c:379
+#: ../src/mnb-people-panel.c:273
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "抱歉，找到任何联系人。看起来他们都下线了。"
 
-#: ../src/mnb-people-panel.c:424
+#: ../src/mnb-people-panel.c:318
 msgid "To see your IM contacts, you need to go online."
 msgstr "要查看您的 IM 联系人，请上线。"
 
-#: ../src/mnb-people-panel.c:476
-#, c-format
-msgid "people - %d people are talking to you"
-msgstr "好友 - %d 有人正在跟您讲话"
-
-#: ../src/mnb-people-panel.c:483
-msgid "people - Someone is talking to you"
-msgstr "好友 - 有人正在跟您讲话"
-
-#: ../src/mnb-people-panel.c:673
+#. Populate header
+#: ../src/mnb-people-panel.c:666 ../src/mnb-people-panel.c:919
 msgid "People"
 msgstr "好友"
 
-#: ../src/mnb-people-panel.c:686
+#: ../src/mnb-people-panel.c:679
 msgid "Search"
 msgstr "搜索"
+
+#: ../src/mnb-people-panel.c:730 ../src/mnb-people-panel.c:1106
+msgid "You are chatting with:"
+msgstr "您正在聊天的对象："
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "好友"
 
-#: ../src/mnb-people-panel.c:752
-msgid "You are chatting with:"
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
+msgstr "Hello! 这是好友面板。当您的 IM 服务配置好时（例如 Messenger），这里就是您和好友聊天的地方。"
+
+#: ../src/mnb-people-panel.c:228 ../src/mnb-people-panel.c:404
+#, c-format
+msgid "Open %s"
+msgstr "打开 %s"
+
+#: ../src/mnb-people-panel.c:448
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "您正在聊天的对象：%d 人"
+
+#: ../src/mnb-people-panel.c:455
+msgid "people - you are chatting with someone"
 msgstr "您正在聊天的对象："
+
+#: ../src/mnb-people-panel.c:974
+msgid "Me"
+msgstr "我"
+
+#: ../src/mnb-people-panel.c:936
+msgid "Me and my people"
+msgstr "我和好友"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1063
+msgid "My conversations"
+msgstr "我的对话"
+
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "好友 - %d 有人正在跟您讲话"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "好友 - 有人正在跟您讲话"
 
 #~ msgid "People talking to you ..."
 #~ msgstr "有人正在跟您讲话……"
