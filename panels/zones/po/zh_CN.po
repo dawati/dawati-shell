@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:39+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: 2010-03-08 15:23-0800\n"
 "Last-Translator: \n"
 "Language-Team: Chinese (simplified)\n"
@@ -21,53 +21,54 @@ msgstr ""
 msgid "Zones panel"
 msgstr "区面板"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
 msgid "zones"
 msgstr "区"
-
-#: ../src/sw-zone.c:765
-msgid "new zone"
-msgstr "新区"
-
-#: ../src/sw-zone.c:779
-msgid "No applications on this zone"
-msgstr "本区没有应用程序"
-
-#: ../src/sw-zone.c:907
-msgid "one"
-msgstr "一"
-
-#: ../src/sw-zone.c:911
-msgid "two"
-msgstr "二"
-
-#: ../src/sw-zone.c:915
-msgid "three"
-msgstr "三"
-
-#: ../src/sw-zone.c:919
-msgid "four"
-msgstr "四"
-
-#: ../src/sw-zone.c:923
-msgid "five"
-msgstr "五"
-
-#: ../src/sw-zone.c:927
-msgid "six"
-msgstr "六"
-
-#: ../src/sw-zone.c:931
-msgid "seven"
-msgstr "七"
-
-#: ../src/sw-zone.c:935
-msgid "eight"
-msgstr "八"
 
 #: ../src/sw-overview.c:220
 msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
 msgstr "Hello! 这是区面板。当您有应用程序打开时，您可以从这里查看、管理和访问。"
+
+#: ../src/sw-zone.c:797
+msgid "No applications on this zone"
+msgstr "本区没有应用程序"
+
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "%d 区"
+
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "区"
+
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "新区"
+
+#~ msgid "one"
+#~ msgstr "一"
+
+#~ msgid "two"
+#~ msgstr "二"
+
+#~ msgid "three"
+#~ msgstr "三"
+
+#~ msgid "four"
+#~ msgstr "四"
+
+#~ msgid "five"
+#~ msgstr "五"
+
+#~ msgid "six"
+#~ msgstr "六"
+
+#~ msgid "seven"
+#~ msgstr "七"
+
+#~ msgid "eight"
+#~ msgstr "八"
 
 #~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
 #~ msgstr "当前正在运行的程序会显示在这里。您可以在它们之间切换，还可以按照您自己的方式去组织它们。"
@@ -296,9 +297,6 @@ msgstr "Hello! 这是区面板。当您有应用程序打开时，您可以从�
 
 #~ msgid "Nobody selected"
 #~ msgstr "没有选择任何人"
-
-#~ msgid "Zone %d"
-#~ msgstr "%d 区"
 
 #~ msgid "Choose zone for application:"
 #~ msgstr "为程序选择一个区域"
