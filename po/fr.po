@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:24+0000\n"
+"POT-Creation-Date: 2010-04-05 09:25+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -18,29 +18,41 @@ msgstr ""
 msgid "Set your toolbar preferences"
 msgstr "Définir les préférences de la barre d’outils"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-#: ../capplet/src/mtp-cc-panel.c:118
-msgid "Toolbar"
-msgstr "Barre d’outils"
-
-#: ../capplet/src/mtp-bin.c:355
+#: ../capplet/src/mtp-bin.c:361
 msgid "Save toolbar"
 msgstr "Sauvegarder la barre d’outils"
 
-#: ../capplet/src/mtp-bin.c:360
+#: ../capplet/src/mtp-bin.c:366
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Désolé, vous devez supprimer un panneau avant d’en rajouter un nouveau."
 
-#: ../capplet/src/mtp-bin.c:388
+#: ../capplet/src/mtp-jar.c:109
 msgid "Available panels"
 msgstr "Panneaux disponibles"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
 # For France, use 24-hour clock
-#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:88
+#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
+#, fuzzy
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+# For France, use 24-hour clock
+#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:123
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -48,9 +60,34 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:98
+#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:144
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Barre d’outils"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Définir les préférences de la barre d’état"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:253
+msgid "System Tray"
+msgstr "Barre d'état"
+
+#: ../capplet/src/syst-cc-panel.c:170
+msgid "System tray"
+msgstr "Barre d'état"
+
+#: ../capplet/src/syst-cc-panel.c:186
+msgid "Show system tray"
+msgstr "Montrer la barre d'état"
+
+#: ../capplet/src/syst-cc-panel.c:207
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "La barre d'état est un concept utilisé, par d'anciennes applications, pour vous permettre de savoir quand quelque chose se passe ou pour rester en exécution lorsque vous les fermez."
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -60,27 +97,27 @@ msgstr "Établit l'ordre des panneaux sur la barre d'outils."
 msgid "Order of panels on toolbar"
 msgstr "Ordre des panneaux sur la barre d'outils"
 
-#: ../src/moblin-netbook.c:932
+#: ../src/moblin-netbook.c:905
 msgid "Moblin Netbook Effects"
 msgstr "Effets spéciaux pour netbook utilisant Moblin"
 
-#: ../src/moblin-netbook.c:936
+#: ../src/moblin-netbook.c:909
 msgid "Effects for Moblin Netbooks"
 msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3035
 msgid "Activate"
 msgstr "Activer"
 
-#: ../src/moblin-netbook.c:3004
+#: ../src/moblin-netbook.c:3049
 msgid "Unknown window"
 msgstr "Fenêtre inconnue"
 
-#: ../src/moblin-netbook.c:3006
+#: ../src/moblin-netbook.c:3051
 msgid "Is asking for your attention."
 msgstr "Requiert votre attention."
 
-#: ../src/mnb-toolbar.c:968
+#: ../src/mnb-toolbar.c:976
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Désolé, %s est corrompu"
@@ -93,26 +130,13 @@ msgstr "Supprimer"
 msgid "Dismiss All"
 msgstr "Tout supprimer"
 
-#: ../capplet/src/syst-cc-panel.c:183
-msgid "Show system tray"
-msgstr "Montrer la barre d'état"
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Paramètres de la barre d’outils"
 
-#: ../capplet/src/syst-cc-panel.c:167
-msgid "System tray"
-msgstr "Barre d'état"
-
-#: ../capplet/src/syst-cc-panel.c:204
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "La barre d'état est un concept utilisé, par d'anciennes applications, pour vous permettre de savoir quand quelque chose se passe ou pour rester en exécution lorsque vous les fermez."
-
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
-msgstr "Définir les préférences de la barre d’état"
-
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:250
-msgid "System Tray"
-msgstr "Barre d'état"
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "Vous pouvez ajouter, supprimer ou réorganiser la plupart des panneaux dans votre barre d’outils."
 
 #~ msgid "Socket for embedding"
 #~ msgstr "Socket pour l’intégration"
