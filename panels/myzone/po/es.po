@@ -90,11 +90,6 @@ msgstr "Página web"
 msgid "Create a new task"
 msgstr "Crear una tarea"
 
-# Today, you don't have any pending tasks
-#: ../penge/penge-tasks-pane.c:429
-msgid "Nothing to do today"
-msgstr "Nada que hacer hoy"
-
 # (this task) is for %x
 #: ../penge/penge-task-tile.c:316
 #, c-format
@@ -128,6 +123,11 @@ msgstr "Mensajes sin leer"
 #: ../penge/penge-welcome-tile.c:94
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Esto es MyZone, donde verás los archivos usados recientemente y las noticias de tus sitios web."
+
+# Today, you don't have any pending tasks
+#: ../penge/penge-tasks-pane.c:429
+msgid "Nothing to do today"
+msgstr "No hay tareas para hoy"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Bienvenido a Moblin 2.1 para miniportátiles</b>"
