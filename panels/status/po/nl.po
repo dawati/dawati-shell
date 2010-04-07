@@ -9,17 +9,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-24 09:34+0000\n"
-"PO-Revision-Date: 2010-03-24 11:10-0800\n"
-"Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
+"POT-Creation-Date: 2010-04-05 09:34+0000\n"
+"PO-Revision-Date: 2010-04-06 18:57-0800\n"
+"Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1\n"
 "X-Poedit-Language: Dutch\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "Hallo. Dit is het Status paneel. Wanneer je jouw web accounts (bijv. Twitter) hebt geconfigureerd dan kan je hier jouw webfeeds zien en je status updaten."
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Status"
+
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
@@ -29,42 +38,46 @@ msgstr "status"
 msgid "Status panel"
 msgstr "Status paneel"
 
-#: ../src/mps-feed-pane.c:419
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Kan de status niet updaten. De service kan niet beschikbaar zijn of uw wachtwoord is verkeerd."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Kan status niet updaten: je bent niet online."
+
+#: ../src/mps-feed-pane.c:444
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Jouw lokatie wordt gegist als: %f %f"
 
-#: ../src/mps-feed-pane.c:423
+#: ../src/mps-feed-pane.c:448
 #, c-format
 msgid "Your location is being shared as: %f %f "
 msgstr "Jouw lokatie word gedeeld als: %f %f"
 
-#: ../src/mps-feed-pane.c:430
+#: ../src/mps-feed-pane.c:455
 msgid "Your location is not being shared"
 msgstr "Jouw lokatie word niet gedeeld"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:526
+#: ../src/mps-feed-pane.c:551
 msgid "Update"
 msgstr "Update"
 
-#: ../src/mps-feed-pane.c:531
+#: ../src/mps-feed-pane.c:556
 msgid "What's happening?"
 msgstr "Wat gebeurt er?"
 
-#: ../src/mps-feed-pane.c:555
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "Kan de status niet updaten. De service kan niet beschikbaar zijn of uw wachtwoord is verkeerd."
-
-#: ../src/mps-feed-pane.c:583
+#: ../src/mps-feed-pane.c:606
 msgid "Change"
 msgstr "Wijzig"
 
-#: ../src/mps-feed-switcher.c:344
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Voeg een nieuwe webdienst toe"
 
-#: ../src/mps-feed-switcher.c:367
+#: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Je hebt blijkbaar geen web services geconfigureerd of er is een probleem met die configuratie. Gebruik de knop hierboven om een My Web Accounts service in te stellen."
 
@@ -92,43 +105,66 @@ msgstr "Lokatie gebruiken"
 msgid "Don't use location"
 msgstr "Lokatie niet gebruiken"
 
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s uit %s"
+
 #~ msgid "Offline"
 #~ msgstr "Niet verbonden"
+
 #~ msgid "Available"
 #~ msgstr "Beschikbaar"
+
 #~ msgid "Away"
 #~ msgstr "Weg"
+
 #~ msgid "Busy"
 #~ msgstr "Bezig"
+
 #~ msgid "Close"
 #~ msgstr "Sluit"
+
 #~ msgid "Unknown account"
 #~ msgstr "Onbekende account"
+
 #~ msgid "Edit"
 #~ msgstr "Bewerk"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Vul hier je %s status in..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "Vul hier je huidige status in..."
+
 #~ msgid "Post"
 #~ msgstr "Verstuur"
+
 #~ msgid "Your current status"
 #~ msgstr "Je huidige status"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Je huidige status - je bent niet verbonden"
+
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr ""
 #~ "Sorry, we kunnen geen personen vinden. Heb je een Messenger account "
 #~ "aangemaakt?"
+
 #~ msgid ""
 #~ "To update your web status you need to setup a Web Services account with a "
 #~ "provider that supports status messages"
 #~ msgstr ""
 #~ "Om je internet status te wijzigen moet je een web services account "
 #~ "opzetten met een provider die status berichten ondersteund"
+
 #~ msgid ""
 #~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr ""
 #~ "Om je IM status te wijzigen moet je een Instant Messaging account opzetten"
-
