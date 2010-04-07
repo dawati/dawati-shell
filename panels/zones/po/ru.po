@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:39+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: 2010-04-06 17:00+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
@@ -22,8 +22,7 @@ msgstr ""
 msgid "Zones panel"
 msgstr "Панель зон"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2
-#: ../src/main.c:492
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
 msgid "zones"
 msgstr "зоны"
 
@@ -31,52 +30,46 @@ msgstr "зоны"
 msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
 msgstr "Приветствуем вас! Это панель Zones. После запуска приложений вы сможете просматривать, настраивать и получать доступ к ним здесь."
 
-#: ../src/sw-zone.c:765
-msgid "new zone"
-msgstr "новая зона"
-
-#: ../src/sw-zone.c:779
+#: ../src/sw-zone.c:797
 msgid "No applications on this zone"
 msgstr "Нет программ в этой зоне."
 
-#: ../src/sw-zone.c:907
-msgid "one"
-msgstr "один"
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Зоны"
 
-#: ../src/sw-zone.c:911
-msgid "two"
-msgstr "два"
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Новая зона"
 
-#: ../src/sw-zone.c:915
-msgid "three"
-msgstr "три"
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Зона %d"
 
-#: ../src/sw-zone.c:919
-msgid "four"
-msgstr "четыре"
+#~ msgid "two"
+#~ msgstr "два"
 
-#: ../src/sw-zone.c:923
-msgid "five"
-msgstr "пять"
+#~ msgid "three"
+#~ msgstr "три"
 
-#: ../src/sw-zone.c:927
-msgid "six"
-msgstr "шесть"
+#~ msgid "four"
+#~ msgstr "четыре"
 
-#: ../src/sw-zone.c:931
-msgid "seven"
-msgstr "семь"
+#~ msgid "five"
+#~ msgstr "пять"
 
-#: ../src/sw-zone.c:935
-msgid "eight"
-msgstr "восемь"
+#~ msgid "six"
+#~ msgstr "шесть"
 
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Программы, которые будут использоваться, появятся здесь.  Вы сможете "
-#~ "переключать и упорядочить их."
+#~ msgid "seven"
+#~ msgstr "семь"
+
+#~ msgid "eight"
+#~ msgstr "восемь"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Программы, которые будут использоваться, появятся здесь.  Вы сможете переключать и упорядочить их."
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Эффекты Moblin Netbook"
