@@ -6,15 +6,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: carrick-ng moblin2\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-05 09:24+0000\n"
-"PO-Revision-Date: 2010-04-06 16:25-0800\n"
+"PO-Revision-Date: 2010-04-06 17:27-0800\n"
 "Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
-"Language-Team: Dutch\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #.
 #. * Translator note: The disabled technologies available to be turned on is put together at
@@ -37,13 +40,13 @@ msgstr ","
 #: ../carrick/carrick-list.c:853
 #: ../carrick/carrick-util.c:34
 msgid "wired"
-msgstr "Wired"
+msgstr "bedraad"
 
 #: ../carrick/carrick-list.c:854
 #: ../carrick/carrick-pane.c:1464
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
-msgstr "Wifi"
+msgstr "Wi-Fi"
 
 #: ../carrick/carrick-list.c:855
 #: ../carrick/carrick-pane.c:1558
@@ -70,7 +73,7 @@ msgstr "Bluetooth"
 #.
 #: ../carrick/carrick-list.c:870
 msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Sorry, geen netwerken gevonden. De verbindings beheer lijkt niet actief te zijn. Je kunt proberen het apparaat opnieuw op te starten."
+msgstr "Sorry, geen netwerken gevonden. Het verbindingsbeheer lijkt niet actief te zijn. Je kunt proberen het apparaat opnieuw op te starten."
 
 #.
 #. * Hint display if we detect that the system is in
@@ -101,7 +104,7 @@ msgstr "Netwerk verbonden"
 #: ../carrick/carrick-notification-manager.c:112
 #, c-format
 msgid "You're now connected to a wired network"
-msgstr "Je bent verbonden met een Wired netwerk"
+msgstr "Je bent verbonden met een bedraad netwerk"
 
 #: ../carrick/carrick-notification-manager.c:142
 #, c-format
@@ -120,7 +123,7 @@ msgstr "Netwerk verloren"
 #: ../carrick/carrick-notification-manager.c:173
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "Sorry, de Wired verbinding was verbroken"
+msgstr "Sorry, de bedraade verbinding was verbroken"
 
 #: ../carrick/carrick-notification-manager.c:177
 #, c-format
@@ -139,7 +142,7 @@ msgstr "Netwerk gewijzigd"
 #: ../carrick/carrick-notification-manager.c:219
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een Wired netwerk"
+msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een bedraad netwerk"
 
 #: ../carrick/carrick-notification-manager.c:226
 #, c-format
@@ -154,7 +157,7 @@ msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met ee
 #: ../carrick/carrick-notification-manager.c:244
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een wired netwerk"
+msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een bedraad netwerk"
 
 #: ../carrick/carrick-notification-manager.c:251
 #, c-format
@@ -178,7 +181,7 @@ msgid ""
 msgstr ""
 "Geef de naam op van het netwerk dat je\n"
 "mee wil verbinden en, waar nodig, het\n"
-"wachtwoord en beveiligings type."
+"wachtwoord en beveiligingstype."
 
 #: ../carrick/carrick-pane.c:675
 msgid "Network name"
@@ -214,7 +217,7 @@ msgstr "Nieuwe verbinding toevoegen"
 #: ../carrick/carrick-pane.c:1496
 #: ../carrick/carrick-service-item.c:241
 msgid "Wired"
-msgstr "Wired"
+msgstr "Bedraad"
 
 #: ../carrick/carrick-pane.c:1634
 msgid "Offline mode"
@@ -281,7 +284,7 @@ msgstr "Configureren"
 
 #: ../carrick/carrick-service-item.c:311
 msgid "Associating"
-msgstr "AssociÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ«ren"
+msgstr "associëren"
 
 #: ../carrick/carrick-service-item.c:320
 #: ../carrick/carrick-service-item.c:345
@@ -295,7 +298,7 @@ msgstr "Verbindingsfout"
 
 #: ../carrick/carrick-service-item.c:351
 msgid "Sorry, the connection failed. You could try again."
-msgstr "Sorry, kon geen verbinding maken. Je kunt het nogmaals proberen."
+msgstr "Sorry, kon geen verbinding maken. Probeer het nogmaals."
 
 #: ../carrick/carrick-service-item.c:357
 #: ../carrick/carrick-service-item.c:360
@@ -305,7 +308,7 @@ msgstr "Verbinding wordt verbroken"
 
 #: ../carrick/carrick-service-item.c:418
 msgid "Type password here"
-msgstr "Geef wachtwoord hier"
+msgstr "Geef wachtwoord hier op"
 
 #: ../carrick/carrick-service-item.c:481
 msgid "Really remove?"
@@ -369,17 +372,17 @@ msgstr "netwerken - verbinden"
 
 #: ../src/carrick.c:55
 msgid "networks - wired"
-msgstr "netwerken - wired"
+msgstr "netwerken - bedraad"
 
 #: ../src/carrick.c:57
 #, c-format
 msgid "networks - %s - wifi"
-msgstr "netwerken - %s - wifi"
+msgstr "netwerken - %s - Wi-Fi"
 
 #: ../src/carrick.c:60
 #, c-format
 msgid "networks - %s - wimax"
-msgstr "netwerken - %s - wimax"
+msgstr "netwerken - %s - WiMAX"
 
 #: ../src/carrick.c:63
 #, c-format
@@ -389,7 +392,7 @@ msgstr "netwerken - %s - 3G"
 #: ../src/carrick.c:66
 #, c-format
 msgid "networks - %s - bluetooth"
-msgstr "netwerken - %s - bluetooth"
+msgstr "netwerken - %s - Bluetooth"
 
 #: ../src/carrick.c:69
 #: ../src/carrick.c:81
@@ -455,15 +458,15 @@ msgstr "Gateway:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
-msgstr "Primary DNS:"
+msgstr "Primaire DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
-msgstr "Secondary DNS:"
+msgstr "Secundaire DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
-msgstr "Tertiare DNS:"
+msgstr "Tertiaire DNS:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
