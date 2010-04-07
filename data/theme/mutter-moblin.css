@@ -259,7 +259,7 @@ MnbAlttabOverlayApp:active {
 }
 
 MnbPanelFrame, MxFrame#panel-stub {
-  border-image: url("drop-down/panel_shadow.png") 6;
+  border-image: url("drop-down/panel_shadow.png") 6 6 465 6;
   padding: 6;
 }
 
