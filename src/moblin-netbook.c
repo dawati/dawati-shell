@@ -893,10 +893,10 @@ moblin_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
 
       shadow->actor = (ClutterActor*) mnb_panel_frame_new ();
 
-      shadow->attach_left   =  0;
-      shadow->attach_top    = -6;
-      shadow->attach_right  =  0;
-      shadow->attach_bottom =  6;
+      shadow->attach_left   = -4;
+      shadow->attach_top    = -4;
+      shadow->attach_right  =  4;
+      shadow->attach_bottom = 12;
 
       return shadow;
     }
