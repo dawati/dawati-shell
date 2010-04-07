@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-06 02:15+0000\n"
+"POT-Creation-Date: 2010-04-07 09:47+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgid "Devices panel"
 msgstr "Painel de dispositivos"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:144
+#: ../src/moblin-panel-devices.c:146
 msgid "devices"
 msgstr "dispositivos"
 
@@ -100,7 +100,7 @@ msgstr "Se não puder decidir, vou desligar dentro de %d segundos."
 msgid "Turn off"
 msgstr "Desligar"
 
-#: ../src/moblin-panel-devices.c:117
+#: ../src/moblin-panel-devices.c:119
 msgid "Moblin Devices Panel"
 msgstr "Painel de dispositivos Moblin"
 
@@ -128,6 +128,10 @@ msgstr "Sua bateria está completamente carregado e pronto para usar."
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sinto muito, parece que sua bateria está quebrada."
+
+#: ../src/mpd-brightness-tile.c:90
+msgid "Netbook brightness"
+msgstr "Brilho do netbook"
 
 #: ../src/mpd-computer-pane.c:93
 msgid "Your computer"
@@ -167,44 +171,44 @@ msgstr "Parar"
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:164
 #, c-format
 msgid "Could not run %s"
 msgstr "Não pôde executar %s"
 
-#: ../src/mpd-storage-device-tile.c:166
+#: ../src/mpd-storage-device-tile.c:165
 msgid "Import error"
 msgstr "Erro de importação"
 
-#: ../src/mpd-storage-device-tile.c:259
+#: ../src/mpd-storage-device-tile.c:256
 #, c-format
 msgid "%s nas been plugged in. You can use the Devices panel interact with it"
 msgstr "%s foi conectado. Você pode usar o painel de Dispositivos par interagir com ele"
 
-#: ../src/mpd-storage-device-tile.c:262
+#: ../src/mpd-storage-device-tile.c:259
 msgid "USB plugged in"
 msgstr "USB conectado"
 
-#: ../src/mpd-storage-device-tile.c:263
+#: ../src/mpd-storage-device-tile.c:260
 msgid "Show"
 msgstr "Mostrar"
 
 #. Import button
-#: ../src/mpd-storage-device-tile.c:517
+#: ../src/mpd-storage-device-tile.c:514
 msgid "Import data"
 msgstr "Importar dados"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:528
+#: ../src/mpd-storage-device-tile.c:525
 msgid "Eject"
 msgstr "Ejetar"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:539
+#: ../src/mpd-storage-device-tile.c:536
 msgid "Open"
 msgstr "Abrir"
 
-#: ../src/mpd-storage-device-tile.c:728
+#: ../src/mpd-storage-device-tile.c:725
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% of %s</span>"
