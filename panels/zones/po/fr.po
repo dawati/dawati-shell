@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:39+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -18,53 +18,54 @@ msgstr ""
 msgid "Zones panel"
 msgstr "Panneau des zones"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
 msgid "zones"
 msgstr "zones"
-
-#: ../src/sw-zone.c:765
-msgid "new zone"
-msgstr "nouvelle zone"
-
-#: ../src/sw-zone.c:779
-msgid "No applications on this zone"
-msgstr "Pas d'applications dans cette zone"
-
-#: ../src/sw-zone.c:907
-msgid "one"
-msgstr "un"
-
-#: ../src/sw-zone.c:911
-msgid "two"
-msgstr "deux"
-
-#: ../src/sw-zone.c:915
-msgid "three"
-msgstr "trois"
-
-#: ../src/sw-zone.c:919
-msgid "four"
-msgstr "quatre"
-
-#: ../src/sw-zone.c:923
-msgid "five"
-msgstr "cinq"
-
-#: ../src/sw-zone.c:927
-msgid "six"
-msgstr "six"
-
-#: ../src/sw-zone.c:931
-msgid "seven"
-msgstr "sept"
-
-#: ../src/sw-zone.c:935
-msgid "eight"
-msgstr "huit"
 
 #: ../src/sw-overview.c:220
 msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
 msgstr "Bonjour ! Voici le panneau Zones. Lorsque vous avez des applications ouvertes vous pourrez les voir, gérer et accéder d’ici."
+
+#: ../src/sw-zone.c:797
+msgid "No applications on this zone"
+msgstr "Pas d'applications dans cette zone"
+
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Zones"
+
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Nouvelle Zone"
+
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Zone %d"
+
+#~ msgid "one"
+#~ msgstr "un"
+
+#~ msgid "two"
+#~ msgstr "deux"
+
+#~ msgid "three"
+#~ msgstr "trois"
+
+#~ msgid "four"
+#~ msgstr "quatre"
+
+#~ msgid "five"
+#~ msgstr "cinq"
+
+#~ msgid "six"
+#~ msgstr "six"
+
+#~ msgid "seven"
+#~ msgstr "sept"
+
+#~ msgid "eight"
+#~ msgstr "huit"
 
 #~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
 #~ msgstr "Les applications que vous utilisez vont apparaître ici. Vous pourrez les organizer et y accéder à votre guise."
@@ -164,9 +165,6 @@ msgstr "Bonjour ! Voici le panneau Zones. Lorsque vous avez des applications ouv
 
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Saison %d épisode %d"
-
-#~ msgid "Season %d"
-#~ msgstr "Saison %d"
 
 #~ msgid "Episode %d"
 #~ msgstr "Épisode %d"
