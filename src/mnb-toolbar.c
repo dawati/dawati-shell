@@ -1068,6 +1068,29 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
   checked = mx_button_get_toggled (button);
 
   /*
+   * If the user clicked on a button to show panel, but currently focused
+   * window is system-modal, ignore the click.
+   */
+  if (button_click && checked)
+    {
+      MutterPlugin               *plugin = priv->plugin;
+      MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      MetaWindow                 *focus  = ppriv->last_focused;
+
+      if (focus && meta_window_is_modal (focus))
+        {
+          MetaWindow *p = meta_window_find_root_ancestor (focus);
+
+          if (p == focus)
+            {
+              mx_button_set_toggled (button, FALSE);
+              recursion = FALSE;
+              return;
+            }
+        }
+    }
+
+  /*
    * If the user clicked on a button to hide a panel, and there are no
    * meaningful windows present, ignore the click.
    *
@@ -1170,7 +1193,7 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
                  * This is not very nice to the user maybe, but simple and
                  * clean.
                  */
-                if (!tp->failed)
+                if (button_click && !tp->failed)
                   mx_button_set_toggled (MX_BUTTON (tp->button), TRUE);
               }
           }
