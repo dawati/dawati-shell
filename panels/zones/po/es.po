@@ -119,10 +119,10 @@ msgstr "Zona %d"
 #~ msgstr "Efectos para miniportátiles con Moblin"
 
 #~ msgid "Dismiss"
-#~ msgstr "Descartar"
+#~ msgstr "Cerrar"
 
 #~ msgid "Dismiss All"
-#~ msgstr "Descartar todo"
+#~ msgstr "Cerrar todo"
 
 #~ msgid "%l:%M %P"
 #~ msgstr "%H.%M h"
