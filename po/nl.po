@@ -7,76 +7,102 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin moblin2\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-24 09:27+0000\n"
-"PO-Revision-Date: 2010-03-24 11:01-0800\n"
-"Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
+"POT-Creation-Date: 2010-04-05 09:25+0000\n"
+"PO-Revision-Date: 2010-04-06 18:36-0800\n"
+"Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Dutch\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Voorkeuren werkbalk instellen"
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-#: ../capplet/src/mtp-cc-panel.c:118
-msgid "Toolbar"
-msgstr "Toolbar"
+msgid "Toolbar settings"
+msgstr "Toolbar instellingen"
 
-#: ../capplet/src/mtp-bin.c:355
+#: ../capplet/src/mtp-bin.c:361
 msgid "Save toolbar"
 msgstr "Toolbar opslaan"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/src/mtp-bin.c:366
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Sorry, je moet een panel verwijderen voordat je een nieuwe kunt toevoegen."
 
-#: ../capplet/src/mtp-bin.c:389
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "U kunt veel panelen op de toolbar toevoegen, verwijderen en opnieuw ordenen."
+
+#: ../capplet/src/mtp-jar.c:109
 msgid "Available panels"
 msgstr "Beschikbare panelen"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:221
-#: ../src/mnb-toolbar-clock.c:88
+#: ../capplet/src/mtp-clock.c:216
+#: ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%H.%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:226
+#: ../src/mnb-toolbar-clock.c:123
 msgid "%l:%M %P"
 msgstr "%k:%M"
 
+# Dutch date format is like this: 12 maart 2010 (no comma between month and year)
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:231
-#: ../src/mnb-toolbar-clock.c:98
+#: ../capplet/src/mtp-clock.c:248
+#: ../src/mnb-toolbar-clock.c:144
 msgid "%B %e, %Y"
-msgstr "%e %D, %Y"
+msgstr "%e %B %Y"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Toolbar"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
 msgstr "Notificatiepaneel instellen"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:250
+#: ../capplet/src/syst-cc-panel.c:253
 msgid "System Tray"
 msgstr "Notificatiepaneel"
 
-#: ../capplet/src/syst-cc-panel.c:167
+#: ../capplet/src/syst-cc-panel.c:170
 msgid "System tray"
 msgstr "Notificatiepaneel"
 
-#: ../capplet/src/syst-cc-panel.c:183
+#: ../capplet/src/syst-cc-panel.c:186
 msgid "Show system tray"
 msgstr "Notificatiepaneel weergeven"
 
-#: ../capplet/src/syst-cc-panel.c:204
+#: ../capplet/src/syst-cc-panel.c:207
 msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "Het Notificatiepaneel is een concept in gebruik door sommige applicaties om mededelingen te geven of om in de achtergrond te blijven als he het hoofdvenster van de applicatie sluit."
+msgstr "Het Notificatiepaneel is een concept in gebruik door sommige applicaties om mededelingen te geven of om in de achtergrond te blijven als het hoofdvenster van de applicatie sluit."
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -106,7 +132,7 @@ msgstr "Onbekend venster"
 msgid "Is asking for your attention."
 msgstr "Vraagt om uw aandacht."
 
-#: ../src/mnb-toolbar.c:968
+#: ../src/mnb-toolbar.c:976
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Sorry, %s is gebroken"
@@ -123,50 +149,71 @@ msgstr "Alle afwijzen"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Minder dan een minuut geleden"
+
 #~ msgid "A few minutes ago"
 #~ msgstr "Een paar minuten geleden"
+
 #~ msgid "A couple of hours ago"
 #~ msgstr "Een paar uur geleden"
+
 #~ msgid "Earlier today"
 #~ msgstr "Eerder vandaag"
+
 #~ msgid "On %A"
 #~ msgstr "Op %A"
+
 #~ msgid "Last week"
 #~ msgstr "Vorige week"
+
 #~ msgid "A couple of weeks ago"
 #~ msgstr "Een paar weken geleden"
+
 #~ msgid "This month"
 #~ msgstr "Deze maand"
+
 #~ msgid "Last month"
 #~ msgstr "Vorige maand"
+
 #~ msgid "This year"
 #~ msgstr "Dit jaar"
+
 #~ msgid "Last year"
 #~ msgstr "Vorig jaar"
+
 #~ msgid "Ages ago"
 #~ msgstr "Lang lang geleden"
+
 #~ msgid "zones"
 #~ msgstr "zones"
+
 #~ msgid "No Zones yet"
 #~ msgstr "Nog geen zones"
+
 #~ msgid ""
 #~ "Applications you’re using will show up here. You will be able to switch "
 #~ "and organize them to your heart's content."
 #~ msgstr ""
 #~ "Applicaties die je gebruikt komen hier te staan. Je kunt ze verplaatsen "
 #~ "en reorganiseren wat je wil."
+
 #~ msgid "No applications on this zone"
 #~ msgstr "Geen applicaties in deze zone"
+
 #~ msgid "power & brightness"
 #~ msgstr "Stroomverbruik en schermverlichtingsintensiteit"
+
 #~ msgid "volume"
 #~ msgstr "volume"
+
 #~ msgid "bluetooth"
 #~ msgstr "Bluetooth"
+
 #~ msgid "networks"
 #~ msgstr "netwerken"
+
 #~ msgid "test"
 #~ msgstr "test"
+
 #~ msgid ""
 #~ "You need to play some music, look at some pictures or watch some video to "
 #~ "see your history here. In the meantime, you could take a look at some "
@@ -175,88 +222,126 @@ msgstr "Alle afwijzen"
 #~ "Je moet wat muziek afspelen, naar foto's kijken of een video afspelen om "
 #~ "hier je afspeel geschiedenis te zien. Tot die tijd kun je hier voorbeeld "
 #~ "media vinden:"
+
 #~ msgid "Recently played"
 #~ msgstr "Recent gespeeld"
+
 #~ msgid "Search results"
 #~ msgstr "Zoekresultaten"
+
 #~ msgid "Playqueue"
 #~ msgstr "Afspeellijst"
+
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "Seizoen %u, Episode %u"
+
 #~ msgid "Previous"
 #~ msgstr "Vorige"
+
 #~ msgid "Next"
 #~ msgstr "Volgende"
+
 #~ msgid "Media"
 #~ msgstr "Media"
+
 #~ msgid "Search"
 #~ msgstr "Zoek"
+
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Seizoen %d Episode %d"
+
 #~ msgid "Season %d"
 #~ msgstr "Seizoen %d"
+
 #~ msgid "Episode %d"
 #~ msgstr "Episide %d"
+
 #~ msgid "Year %d"
 #~ msgstr "Jaar %d"
+
 #~ msgid "media"
 #~ msgstr "media"
+
 #~ msgid "Favourite Applications"
 #~ msgstr "Favoriete applicaties"
+
 #~ msgid "Applications"
 #~ msgstr "Applicaties"
+
 #~ msgid "applications"
 #~ msgstr "applicaties"
+
 #~ msgid ""
 #~ "As you visit web pages, your favorites will appear here and on the New "
 #~ "tab page in the browser."
 #~ msgstr ""
 #~ "Wanneer je web pagina's bezoekt, zullen je favoriete pagina's hier "
 #~ "verschijnen, en ook in nieuwe web browser tabbladen."
+
 #~ msgid "Untitled"
 #~ msgstr "Zonder titel"
+
 #~ msgid "New tab"
 #~ msgstr "Nieuw tabblad"
+
 #~ msgid "Internet"
 #~ msgstr "Internet"
+
 #~ msgid "Go"
 #~ msgstr "Ga"
+
 #~ msgid "Tabs"
 #~ msgstr "Tabbladen"
+
 #~ msgid "Favorite pages"
 #~ msgstr "Favoriete pagina's"
+
 #~ msgid "internet"
 #~ msgstr "internet"
+
 #~ msgid "Search for %%s on %s"
 #~ msgstr "Zoek voor %%s op %s"
+
 #~ msgid "Go to %s"
 #~ msgstr "Ga naar %s"
+
 #~ msgid "Copy"
 #~ msgstr "Kopieer"
+
 #~ msgid "the current selection to pasteboard"
 #~ msgstr "de selectie naar het plakbord"
+
 #~ msgid "your selection"
 #~ msgstr "jouw selectie"
+
 #~ msgid "Pasteboard"
 #~ msgstr "plakbord"
+
 #~ msgid "You need to copy some text to use Pasteboard"
 #~ msgstr "Je moet iets kopieeren om het plakbord te gebruiken"
+
 #~ msgid "Clear pasteboard"
 #~ msgstr "Wis plakbord"
+
 #~ msgid "pasteboard"
 #~ msgstr "prikbord"
+
 #~ msgid "<b>Appointments</b>"
 #~ msgstr "<b>Afspraken</b>"
+
 #~ msgid "No calendar entries this week"
 #~ msgstr "Geen afspraken deze week"
+
 #~ msgid ""
 #~ "Your friends' feeds and web services will appear here. Activate your "
 #~ "accounts now!"
 #~ msgstr ""
 #~ "Je vrienden hun web feeds en web services verschijnen hier. Activeer je "
 #~ "accounts nu!"
+
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>Welkom bij Moblin 2.0 voor Netbooks</b>"
+
 #~ msgid ""
 #~ "As Moblin is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
@@ -265,75 +350,104 @@ msgstr "Alle afwijzen"
 #~ "Moblin is anders dan traditionele computers. We hebben alles samengevoegd "
 #~ "om makkelijker je weg te kunnen vinden. We hopen dat je het waardeert. "
 #~ "Het Moblin Team."
+
 #~ msgid "Web page"
 #~ msgstr "Webpagina"
+
 #~ msgid "Nothing to do today"
 #~ msgstr "Niets te doen vandaag"
+
 #~ msgid "Due %x"
 #~ msgstr "Verstrijkt %x"
+
 #~ msgid "people"
 #~ msgstr "personen"
+
 #~ msgid "Send an email"
 #~ msgstr "Stuur een e-mail"
+
 #~ msgid "Edit details"
 #~ msgstr "bewerk details"
+
 #~ msgid "Send a message"
 #~ msgstr "Stuur een bericht"
+
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr ""
 #~ "Sorry, we kunnen geen personen vinden. Heb je een Messenger account "
 #~ "aangemaakt?"
+
 #~ msgid "People"
 #~ msgstr "Personen"
+
 #~ msgid "Selection"
 #~ msgstr "Selectie"
+
 #~ msgid "Nobody selected"
 #~ msgstr "Niemand geselecteerd"
+
 #~ msgid "Zone %d"
 #~ msgstr "Zone %d"
+
 #~ msgid "New zone (0)"
 #~ msgstr "Nieuwe zone (0)"
+
 #~ msgid "Choose zone for application:"
 #~ msgstr "Kies zone voor applicatie:"
+
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
 #~ msgstr ""
 #~ "Beweeg de cursor naar de bovenzijde van het scherm om de toolbalk te "
 #~ "laten zien"
+
 #~ msgid "Offline"
 #~ msgstr "Niet verbonden"
+
 #~ msgid "Away"
 #~ msgstr "Weg"
+
 #~ msgid "Busy"
 #~ msgstr "Bezig"
+
 #~ msgid "Close"
 #~ msgstr "Sluit"
+
 #~ msgid "Change"
 #~ msgstr "Wijzig"
+
 #~ msgid "Unknown account"
 #~ msgstr "Onbekende account"
+
 #~ msgid "Edit"
 #~ msgstr "Bewerk"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Vul hier je %s status in..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "Vul hier je huidige status in..."
+
 #~ msgid "Post"
 #~ msgstr "Verstuur"
+
 #~ msgid "Your current status"
 #~ msgstr "Je huidige status"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Je huidige status - je bent niet verbonden"
+
 #~ msgid ""
 #~ "To update your web status you need to setup a Web Services account with a "
 #~ "provider that supports status messages"
 #~ msgstr ""
 #~ "Om je internet status te wijzigen moet je een web services account "
 #~ "opzetten met een provider die status berichten ondersteund"
+
 #~ msgid ""
 #~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr ""
 #~ "Om je IM status te wijzigen moet je een Instant Messaging account opzetten"
+
 #~ msgid "status"
 #~ msgstr "status"
-
