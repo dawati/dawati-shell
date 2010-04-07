@@ -890,13 +890,19 @@ moblin_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
   if (type == META_COMP_WINDOW_DOCK)
     {
       MutterShadow *shadow = mutter_shadow_new ();
+      MxPadding     padding;
 
       shadow->actor = (ClutterActor*) mnb_panel_frame_new ();
 
-      shadow->attach_left   = -4;
-      shadow->attach_top    = -4;
-      shadow->attach_right  =  4;
-      shadow->attach_bottom = 12;
+      mx_stylable_style_changed (MX_STYLABLE (shadow->actor),
+                                 MX_STYLE_CHANGED_FORCE);
+
+      mx_widget_get_padding (MX_WIDGET (shadow->actor), &padding);
+
+      shadow->attach_left   = -padding.left;
+      shadow->attach_top    = -padding.top;
+      shadow->attach_right  =  padding.right;
+      shadow->attach_bottom =  padding.bottom;
 
       return shadow;
     }
