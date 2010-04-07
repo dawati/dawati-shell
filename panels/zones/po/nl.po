@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:36+0000\n"
-"PO-Revision-Date: 2010-03-09 17:38-0800\n"
+"POT-Creation-Date: 2010-04-05 09:39+0000\n"
+"PO-Revision-Date: 2010-04-06 17:39-0800\n"
 "Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -30,48 +30,55 @@ msgid "zones"
 msgstr "zones"
 
 #: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Applicaties die je gebruikt komen hier te staan. Je kunt ze verplaatsen en reorganiseren wat je wil."
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Hallo. Dit is het Zones paneel. Toepassingen die u hebt geopend kunt u hier zien, beheren en toegang toe krijgen."
 
-#: ../src/sw-zone.c:764
+#: ../src/sw-zone.c:765
 msgid "new zone"
 msgstr "nieuwe zone"
 
-#: ../src/sw-zone.c:778
+#: ../src/sw-zone.c:779
 msgid "No applications on this zone"
 msgstr "Geen applicaties in deze zone"
 
-#: ../src/sw-zone.c:906
+#: ../src/sw-zone.c:907
 msgid "one"
 msgstr "een"
 
-#: ../src/sw-zone.c:910
+#: ../src/sw-zone.c:911
 msgid "two"
 msgstr "twee"
 
-#: ../src/sw-zone.c:914
+#: ../src/sw-zone.c:915
 msgid "three"
 msgstr "drie"
 
-#: ../src/sw-zone.c:918
+#: ../src/sw-zone.c:919
 msgid "four"
 msgstr "vier"
 
-#: ../src/sw-zone.c:922
+#: ../src/sw-zone.c:923
 msgid "five"
 msgstr "vijf"
 
-#: ../src/sw-zone.c:926
+#: ../src/sw-zone.c:927
 msgid "six"
 msgstr "zes"
 
-#: ../src/sw-zone.c:930
+#: ../src/sw-zone.c:931
 msgid "seven"
 msgstr "zeven"
 
-#: ../src/sw-zone.c:934
+#: ../src/sw-zone.c:935
 msgid "eight"
 msgstr "acht"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Applicaties die je gebruikt komen hier te staan. Je kunt ze verplaatsen "
+#~ "en reorganiseren wat je wil."
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Minder dan een minuut geleden"
