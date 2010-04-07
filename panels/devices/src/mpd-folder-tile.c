@@ -20,6 +20,7 @@
 
 #include <stdbool.h>
 
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "mpd-folder-button.h"
@@ -144,6 +145,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
                                    G_USER_DIRECTORY_MUSIC,
                                    G_USER_DIRECTORY_PICTURES,
                                    G_USER_DIRECTORY_VIDEOS };
+  ClutterActor *button;
   unsigned int i;
 
   for (i = 0; i < G_N_ELEMENTS (directories); i++)
@@ -152,11 +154,11 @@ mpd_folder_tile_init (MpdFolderTile *self)
     char *label = g_path_get_basename (uri);
     char *icon_path = icon_path_from_special_dir (directories[i]);
 
-    ClutterActor *button = g_object_new (MPD_TYPE_FOLDER_BUTTON,
-                                         "uri", uri,
-                                         "label", label,
-                                         "icon-path", icon_path,
-                                         NULL);
+    button = g_object_new (MPD_TYPE_FOLDER_BUTTON,
+                           "uri", uri,
+                           "label", label,
+                           "icon-path", icon_path,
+                           NULL);
     g_signal_connect (button, "clicked",
                       G_CALLBACK (_button_clicked_cb), self);
     mx_table_add_actor (MX_TABLE (self), button, i / 2, i % 2);
@@ -165,6 +167,16 @@ mpd_folder_tile_init (MpdFolderTile *self)
     g_free (label);
     g_free (uri);
   }
+
+  /* Add trash bin. */
+  button = g_object_new (MPD_TYPE_FOLDER_BUTTON,
+                         "uri", "trash:///",
+                         "label", _("Trash"),
+                         "icon-path", PKGICONDIR "/directory-trash.png",
+                         NULL);
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (_button_clicked_cb), self);
+  mx_table_add_actor (MX_TABLE (self), button, i / 2, i % 2);
 
 #if 0 /* Not showing gtk-bookmarks for now. */
   filename = g_build_filename (g_get_home_dir (), ".gtk-bookmarks", NULL);

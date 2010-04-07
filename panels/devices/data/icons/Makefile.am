@@ -15,6 +15,7 @@ dist_icons_DATA = \
   directory-music.png \
   directory-generic.png \
   directory-pictures.png \
+  directory-trash.png \
   directory-videos.png \
   volume-bars-100.png \
   volume-bars-13.png \
