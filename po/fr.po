@@ -30,17 +30,6 @@ msgstr "Désolé, vous devez supprimer un panneau avant d’en rajouter un nouve
 msgid "Available panels"
 msgstr "Panneaux disponibles"
 
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# For France, use 24-hour clock
-#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
-#, fuzzy
-msgid "%H:%M"
-msgstr "%H:%M"
-
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
@@ -137,6 +126,16 @@ msgstr "Paramètres de la barre d’outils"
 #: ../capplet/src/mtp-bin.c:368
 msgid "You can add, remove and reorder many of the panels in your toolbar."
 msgstr "Vous pouvez ajouter, supprimer ou réorganiser la plupart des panneaux dans votre barre d’outils."
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+# For France, use 24-hour clock
+#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #~ msgid "Socket for embedding"
 #~ msgstr "Socket pour l’intégration"
