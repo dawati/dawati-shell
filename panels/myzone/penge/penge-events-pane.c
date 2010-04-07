@@ -465,7 +465,6 @@ penge_events_pane_update (PengeEventsPane *pane)
   gchar *uid, *rid, *uid_rid;
   GList *old_actors;
   JanaTime *on_the_hour;
-  GList *window_start = NULL, *window_end = NULL;
   JanaTime *t = NULL;
   ClutterActor *label;
 
@@ -506,60 +505,20 @@ penge_events_pane_update (PengeEventsPane *pane)
   jana_time_set_minutes (on_the_hour, 0);
   jana_time_set_seconds (on_the_hour, 0);
 
-  /* Find the first approx. of the window. We try and find the first event after
-   * the current time or if we are on the same hour the current events */
-
-  /* Ideally we should show ongoing events and stuff like that. Kinda hard. */
-  window_start = events;
+  count = 0;
   for (l = events; l; l = l->next)
   {
     event_data = (PengeEventData *)l->data;
-    event = (JanaEvent *)event_data->event;
+    event = event_data->event;
 
-    t = jana_event_get_start (event);
-
+    /* Skip events that are already finished */
+    t = jana_event_get_end (event);
     if (jana_utils_time_compare (t, on_the_hour, FALSE) < 0)
     {
-      if (l->next)
-      {
-        window_start = l->next;
-      } else {
-        window_start = l;
-      }
-    } else if (jana_utils_time_compare (t, on_the_hour, FALSE) == 0) {
-      window_start = l;
       g_object_unref (t);
-      break;
-    } else {
-      window_start = l;
-      g_object_unref (t);
-      break;
+      continue;
     }
-
     g_object_unref (t);
-  }
-
-  /* We have at least one thing */
-  if (window_start)
-    count++;
-
-  /* Next try and find the end of the window */
-  window_end = window_start;
-  for (l = window_start; l; l = l->next)
-  {
-    if (l->next)
-    {
-      window_end = l->next;
-      count++;
-    } else {
-    }
-  }
-
-  count = 0;
-  for (l = window_start; l; l = l->next)
-  {
-    event_data = (PengeEventData *)l->data;
-    event = event_data->event;
 
     uid = jana_component_get_uid (JANA_COMPONENT (event));
     rid = jana_ecal_component_get_recurrence_id (JANA_ECAL_COMPONENT (event));
@@ -607,9 +566,6 @@ penge_events_pane_update (PengeEventsPane *pane)
     }
 
     count++;
-
-    if (l == window_end)
-      break;
   }
 
   /* Kill off the old actors */
@@ -809,8 +765,7 @@ _store_view_modified_cb (JanaStoreView *view,
                            g_strdup (uid),
                            events_list);
     } else {
-      g_warning (G_STRLOC ": Told to modify an unknown event with uid: %s",
-                 uid);
+      /* Our range contains events that we might not have actors for */
     }
 
     for (ll = events_list; ll; ll = ll->next)
@@ -833,7 +788,7 @@ _store_view_modified_cb (JanaStoreView *view,
                       "event", component,
                       NULL);
       } else {
-        g_warning (G_STRLOC ": Told to modify unknown actor.");
+        /* Our range contains events we might not have actors for */
       }
 
       g_free (uid_rid);
@@ -864,8 +819,7 @@ _store_view_removed_cb (JanaStoreView *view,
     if (!g_hash_table_remove (priv->uid_to_events_list,
                               uid))
     {
-      g_warning (G_STRLOC ": Asked to remove event for unknown uid:%s",
-                 uid);
+      /* Our range might contain events that we aren't presenting */
     }
   }
 
