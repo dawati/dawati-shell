@@ -76,7 +76,8 @@ dist_theme_alttab_DATA = \
 
 theme_dropdowndir = $(MUTTER_MOBLIN_THEME_DIR)/drop-down
 dist_theme_dropdown_DATA = \
-	theme/drop-down/panel_shadow.png
+	theme/drop-down/panel_shadow.png	\
+	theme/drop-down/panel_stub_shadow.png
 
 theme_cappletdir = $(MUTTER_MOBLIN_THEME_DIR)/capplet
 dist_theme_capplet_DATA = \
