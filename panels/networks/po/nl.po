@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:24+0000\n"
-"PO-Revision-Date: 2010-04-06 17:27-0800\n"
+"POT-Creation-Date: 2010-04-07 17:04+0000\n"
+"PO-Revision-Date: 2010-04-07 12:51-0800\n"
 "Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -43,25 +43,25 @@ msgid "wired"
 msgstr "bedraad"
 
 #: ../carrick/carrick-list.c:854
-#: ../carrick/carrick-pane.c:1464
+#: ../carrick/carrick-pane.c:1405
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "Wi-Fi"
 
 #: ../carrick/carrick-list.c:855
-#: ../carrick/carrick-pane.c:1558
+#: ../carrick/carrick-pane.c:1499
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
 #: ../carrick/carrick-list.c:856
-#: ../carrick/carrick-pane.c:1527
+#: ../carrick/carrick-pane.c:1468
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
 #: ../carrick/carrick-list.c:857
-#: ../carrick/carrick-pane.c:1590
+#: ../carrick/carrick-pane.c:1531
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -169,11 +169,11 @@ msgstr "Sorry, je %s verbinding was verbroken. We hebben je verbonden met %s, ee
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "Sorry, je %s verbinding was verbroken. We hebben je verbonden met een %s netwerk"
 
-#: ../carrick/carrick-pane.c:627
+#: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
 msgstr "Nieuwe verbinding instellingen"
 
-#: ../carrick/carrick-pane.c:665
+#: ../carrick/carrick-pane.c:668
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -183,49 +183,53 @@ msgstr ""
 "mee wil verbinden en, waar nodig, het\n"
 "wachtwoord en beveiligingstype."
 
-#: ../carrick/carrick-pane.c:675
+#: ../carrick/carrick-pane.c:678
 msgid "Network name"
 msgstr "Netwerk naam"
 
-#: ../carrick/carrick-pane.c:687
+#: ../carrick/carrick-pane.c:690
 msgid "Network security"
 msgstr "Netwerk beveiliging"
 
-#: ../carrick/carrick-pane.c:697
+#: ../carrick/carrick-pane.c:700
 msgid "None"
 msgstr "Geen"
 
-#: ../carrick/carrick-pane.c:711
+#: ../carrick/carrick-pane.c:712
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: ../carrick/carrick-pane.c:726
+#: ../carrick/carrick-pane.c:727
 #: ../carrick/carrick-service-item.c:1303
 msgid "Show password"
 msgstr "Geef wachtwoord weer"
 
-#: ../carrick/carrick-pane.c:1399
+#: ../carrick/carrick-pane.c:1396
+msgid "Settings"
+msgstr "Instellingen"
+
+#: ../carrick/carrick-pane.c:1437
+#: ../carrick/carrick-service-item.c:241
+msgid "Wired"
+msgstr "Bedraad"
+
+#: ../carrick/carrick-pane.c:1563
+msgid "Offline mode"
+msgstr "Offline mode"
+
+#: ../carrick/carrick-pane.c:1588
+msgid "This will disable all your connections"
+msgstr "Dit maakt alle verbindingen inactief"
+
+#: ../carrick/carrick-pane.c:1621
 #: ../src/carrick.c:351
 msgid "Networks"
 msgstr "netwerken"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1423
+#: ../carrick/carrick-pane.c:1633
 msgid "Add new connection"
 msgstr "Nieuwe verbinding toevoegen"
-
-#: ../carrick/carrick-pane.c:1496
-#: ../carrick/carrick-service-item.c:241
-msgid "Wired"
-msgstr "Bedraad"
-
-#: ../carrick/carrick-pane.c:1634
-msgid "Offline mode"
-msgstr "Offline mode"
-
-#: ../carrick/carrick-pane.c:1659
-msgid "This will disable all your connections"
-msgstr "Dit maakt alle verbindingen inactief"
 
 #. Translators:
 #. The following are potential errors that a user might see while
