@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:39+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -19,54 +19,47 @@ msgid "Zones panel"
 msgstr "Painel zonas"
 
 #: ../data/moblin-panel-zones.desktop.in.in.h:2
-#: ../src/main.c:492
+#: ../src/main.c:514
 msgid "zones"
 msgstr "zonas"
+
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Zonas"
 
 #: ../src/sw-overview.c:220
 msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
 msgstr "Olá! Este é o painel de Zonas. Se você tiver aplicativos abertos você poderá ver, gerenciar e acessá-los aqui."
 
-#: ../src/sw-zone.c:765
-msgid "new zone"
-msgstr "nova zona"
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Nova zona"
 
-#: ../src/sw-zone.c:779
+#: ../src/sw-zone.c:797
 msgid "No applications on this zone"
 msgstr "Nenhum aplicativo nesta zona"
 
-#: ../src/sw-zone.c:907
-msgid "one"
-msgstr "um"
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Zona %d"
 
-#: ../src/sw-zone.c:911
-msgid "two"
-msgstr "dois"
-
-#: ../src/sw-zone.c:915
-msgid "three"
-msgstr "tres"
-
-#: ../src/sw-zone.c:919
-msgid "four"
-msgstr "quatro"
-
-#: ../src/sw-zone.c:923
-msgid "five"
-msgstr "cinco"
-
-#: ../src/sw-zone.c:927
-msgid "six"
-msgstr "seis"
-
-#: ../src/sw-zone.c:931
-msgid "seven"
-msgstr "sete"
-
-#: ../src/sw-zone.c:935
-msgid "eight"
-msgstr "oito"
-
+#~ msgid "one"
+#~ msgstr "um"
+#~ msgid "two"
+#~ msgstr "dois"
+#~ msgid "three"
+#~ msgstr "tres"
+#~ msgid "four"
+#~ msgstr "quatro"
+#~ msgid "five"
+#~ msgstr "cinco"
+#~ msgid "six"
+#~ msgstr "seis"
+#~ msgid "seven"
+#~ msgstr "sete"
+#~ msgid "eight"
+#~ msgstr "oito"
 #~ msgid ""
 #~ "Applications you’re using will show up here. You will be able to switch "
 #~ "and organize them to your heart's content."
@@ -245,8 +238,6 @@ msgstr "oito"
 #~ msgstr "Seleção  "
 #~ msgid "Nobody selected"
 #~ msgstr "Ninguém selecionado"
-#~ msgid "Zone %d"
-#~ msgstr "Zona %d"
 #~ msgid "Choose zone for application:"
 #~ msgstr "Escolha uma zona para o aplicativo:"
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
