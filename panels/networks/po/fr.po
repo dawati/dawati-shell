@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:26+0000\n"
+"POT-Creation-Date: 2010-04-07 17:04+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: lpdufres <loic.dufresne.de.virel@intel.com>\n"
@@ -37,22 +37,22 @@ msgstr ", "
 msgid "wired"
 msgstr "par câble"
 
-#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1464
+#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1405
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1558
+#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1499
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1527
+#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1468
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1590
+#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1531
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -157,11 +157,11 @@ msgstr "Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "Désolé, nous avons perdu votre connexion %s. Nous vous avons connecté à un réseau %s "
 
-#: ../carrick/carrick-pane.c:627
+#: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
 msgstr "Paramètres de la nouvelle connexion"
 
-#: ../carrick/carrick-pane.c:665
+#: ../carrick/carrick-pane.c:668
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -171,47 +171,47 @@ msgstr ""
 "voulez vous connecter et, si nécessaire\n"
 "le mot de passe et le type de sécurité."
 
-#: ../carrick/carrick-pane.c:675
+#: ../carrick/carrick-pane.c:678
 msgid "Network name"
 msgstr "Nom de réseau"
 
-#: ../carrick/carrick-pane.c:687
+#: ../carrick/carrick-pane.c:690
 msgid "Network security"
 msgstr "Securité du réseau"
 
-#: ../carrick/carrick-pane.c:697
+#: ../carrick/carrick-pane.c:700
 msgid "None"
 msgstr "Aucun"
 
-#: ../carrick/carrick-pane.c:711
+#: ../carrick/carrick-pane.c:712
 msgid "Password"
 msgstr "Mot de passe"
 
-#: ../carrick/carrick-pane.c:726 ../carrick/carrick-service-item.c:1284
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1303
 msgid "Show password"
 msgstr "Montrer le mot de passe"
 
-#: ../carrick/carrick-pane.c:1399
-msgid "Networks"
-msgstr "Réseaux"
-
-#. New connection button
-#: ../carrick/carrick-pane.c:1423
-msgid "Add new connection"
-msgstr "Ajouter une nouvelle connexion"
-
-#: ../carrick/carrick-pane.c:1496 ../carrick/carrick-service-item.c:240
+#: ../carrick/carrick-pane.c:1437 ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "Par câble"
 
 # "Offline" lack of space
-#: ../carrick/carrick-pane.c:1634
+#: ../carrick/carrick-pane.c:1563
 msgid "Offline mode"
 msgstr "Hors-ligne"
 
-#: ../carrick/carrick-pane.c:1659
+#: ../carrick/carrick-pane.c:1588
 msgid "This will disable all your connections"
 msgstr "Ceci désactivera vos connexions"
+
+#: ../carrick/carrick-pane.c:1621 ../src/carrick.c:351
+msgid "Networks"
+msgstr "Réseaux"
+
+#. New connection button
+#: ../carrick/carrick-pane.c:1633
+msgid "Add new connection"
+msgstr "Ajouter une nouvelle connexion"
 
 #. Translators:
 #. The following are potential errors that a user might see while
@@ -238,61 +238,65 @@ msgid "ERROR: No 3G Hardware detected"
 msgstr "ERREUR : Pas de matériel 3G détecté"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
-#. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
+#. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #. 
-#: ../carrick/carrick-service-item.c:176
+#: ../carrick/carrick-service-item.c:177
 #, c-format
 msgid "%s encrypted"
 msgstr "Encrypté %s"
 
-#: ../carrick/carrick-service-item.c:271
+#: ../carrick/carrick-service-item.c:272 ../carrick/carrick-service-item.c:289
 msgid "Disconnect"
 msgstr "Déconnecter"
 
-#: ../carrick/carrick-service-item.c:274
+#: ../carrick/carrick-service-item.c:275
 msgid "Connected"
 msgstr "Connecté"
 
-#: ../carrick/carrick-service-item.c:281 ../carrick/carrick-service-item.c:290
+#: ../carrick/carrick-service-item.c:292
+msgid "Online"
+msgstr "En ligne"
+
+#: ../carrick/carrick-service-item.c:299 ../carrick/carrick-service-item.c:308
 #, c-format
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ../carrick/carrick-service-item.c:284
+#: ../carrick/carrick-service-item.c:302
 msgid "Configuring"
 msgstr "En cours de configuration"
 
-#: ../carrick/carrick-service-item.c:293
+#: ../carrick/carrick-service-item.c:311
 msgid "Associating"
 msgstr "En cours d'association"
 
-#: ../carrick/carrick-service-item.c:302 ../carrick/carrick-service-item.c:327
-#: ../carrick/carrick-service-item.c:1273
+#: ../carrick/carrick-service-item.c:320 ../carrick/carrick-service-item.c:345
+#: ../carrick/carrick-service-item.c:1292
 msgid "Connect"
 msgstr "Connecter"
 
-#: ../carrick/carrick-service-item.c:330
+#: ../carrick/carrick-service-item.c:348
 msgid "Connection failed"
 msgstr "Connexion non établie"
 
-#: ../carrick/carrick-service-item.c:333
+#: ../carrick/carrick-service-item.c:351
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Désolé, la connexion a échoué. Vous pouvez réessayer plus tard."
 
-#: ../carrick/carrick-service-item.c:339 ../carrick/carrick-service-item.c:342
+#: ../carrick/carrick-service-item.c:357 ../carrick/carrick-service-item.c:360
 #, c-format
 msgid "Disconnecting"
 msgstr "En cours de déconnexion"
 
-#: ../carrick/carrick-service-item.c:400
+#: ../carrick/carrick-service-item.c:418
 msgid "Type password here"
 msgstr "Tapez ici votre mot de passe"
 
-#: ../carrick/carrick-service-item.c:463
+#: ../carrick/carrick-service-item.c:481
 msgid "Really remove?"
 msgstr "Supprimer pour de vrai ?"
 
-#: ../carrick/carrick-service-item.c:483
+#: ../carrick/carrick-service-item.c:501
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -303,32 +307,32 @@ msgstr ""
 "éliminera le mot de passe et vous ne serez plus\n"
 "automatiquement connecté à %s."
 
-#: ../carrick/carrick-service-item.c:667
+#: ../carrick/carrick-service-item.c:686
 #, c-format
 msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
 msgstr "Votre mot de passe n'est pas de la bonne longueur. Pour une connexion WEP, il doit contenir 10 ou 26 caractères, au lieu de %i."
 
-#: ../carrick/carrick-service-item.c:678
+#: ../carrick/carrick-service-item.c:697
 #, c-format
 msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
 msgstr "Votre mot de passe est trop court. Pour une connexion WPA, il doit contenir au moins 8 caractères, au lieu de %i"
 
-#: ../carrick/carrick-service-item.c:682
+#: ../carrick/carrick-service-item.c:701
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "Votre mot de passe est trop long. Pour une connexion WPA, il doit contenir moins de 63 caractères, au lieu de %i"
 
-#: ../carrick/carrick-service-item.c:691
+#: ../carrick/carrick-service-item.c:710
 #, c-format
 msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
 msgstr "Votre mot de passe est trop court. Pour une connexion WPA2, il doit contenir au moins 8 caractères, au lieu de %i"
 
-#: ../carrick/carrick-service-item.c:695
+#: ../carrick/carrick-service-item.c:714
 #, c-format
 msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "Votre mot de passe est trop long. Pour une connexion WPA2, il doit contenir moins de 63 caractères, au lieu de %i"
 
-#: ../carrick/carrick-service-item.c:1209
+#: ../carrick/carrick-service-item.c:1228
 msgid "Scanning"
 msgstr "En cours d'analyse"
 
@@ -336,7 +340,7 @@ msgstr "En cours d'analyse"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1228
+#: ../carrick/carrick-service-item.c:1247
 msgid "WPA2 encrypted"
 msgstr "Encrypté WPA2"
 
@@ -380,19 +384,23 @@ msgstr "réseaux"
 msgid "networks - error"
 msgstr "réseaux - erreur"
 
-#: ../src/carrick.c:282
+#: ../src/carrick.c:279
 msgid "Run in standalone mode"
 msgstr "Exécuter en mode autonome"
 
-#: ../src/carrick.c:295
+#: ../src/carrick.c:281
+msgid "Embed in another window (overrides --standalone)"
+msgstr "Intégrer dans une autre fenêtre (annule autonome)"
+
+#: ../src/carrick.c:292
 msgid "Carrick connectivity applet"
 msgstr "applette de connectivité Carrick"
 
-#: ../src/carrick.c:296
+#: ../src/carrick.c:293
 msgid "- Moblin connectivity applet"
 msgstr "- applette de connectivité Moblin"
 
-#: ../src/carrick.c:342 ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:334 ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "réseau"
 
@@ -460,9 +468,9 @@ msgstr "Sélectionner le service 3G"
 msgid "Network settings"
 msgstr "Paramètres réseau"
 
-#: ../src/carrick.c:284
-msgid "Embed in another window (overrides --standalone)"
-msgstr "Intégrer dans une autre fenêtre (annule autonome)"
+#: ../carrick/carrick-pane.c:1396
+msgid "Settings"
+msgstr "Paramètres"
 
 #~ msgid "Manual Config"
 #~ msgstr "Config manuelle"
@@ -529,9 +537,6 @@ msgstr "Intégrer dans une autre fenêtre (annule autonome)"
 
 #~ msgid "No active connection."
 #~ msgstr "Pas de connexion active."
-
-#~ msgid "Online"
-#~ msgstr "En ligne"
 
 #~ msgid "Now online and connected to %s."
 #~ msgstr "En ligne et connecté à %s."
