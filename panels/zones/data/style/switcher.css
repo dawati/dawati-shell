@@ -1,12 +1,6 @@
-SwOverview
-{
-  background-color: white;
-}
-
 SwZone
 {
   border-image: url('content-panel-background.png') 4;
-  background-color: white;
   padding: 3;
 }
 
@@ -94,5 +88,6 @@ MxLabel#zones-title-label
 
 MxBoxLayout#zones-panel-toplevel
 {
+  border-image: url('panel-background.png') 0 0 465 0;
   padding: 5;
 }
