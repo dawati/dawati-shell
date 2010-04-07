@@ -107,6 +107,8 @@ static void moblin_netbook_handle_screen_size (MutterPlugin *plugin,
                                                gint         *screen_width,
                                                gint         *screen_height);
 
+static void last_focus_weak_notify_cb (gpointer data, GObject *meta_win);
+
 static GQuark actor_data_quark = 0;
 static GQuark notification_quark = 0;
 
@@ -542,7 +544,41 @@ moblin_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
                                                GParamSpec   *spec,
                                                MutterPlugin *plugin)
 {
-  MetaWindow *mw = meta_display_get_focus_window (display);
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaWindow                 *mw   = meta_display_get_focus_window (display);
+
+  if (mw && priv->last_focused != mw)
+    {
+      MutterWindow       *mcw;
+      MetaCompWindowType  type;
+      Window              xwin;
+
+      mcw  = (MutterWindow*) meta_window_get_compositor_private (mw);
+      type = mutter_window_get_window_type (mcw);
+      xwin = meta_window_get_xwindow (mw);
+
+      /*
+       * Ignore panels and the toolbar focus window.
+       */
+      if (type != META_COMP_WINDOW_DOCK &&
+          xwin != priv->focus_xwin      &&
+          !meta_display_xwindow_is_a_no_focus_window (display, xwin))
+        {
+          if (priv->last_focused)
+            {
+              g_object_weak_unref (G_OBJECT (priv->last_focused),
+                                   last_focus_weak_notify_cb, plugin);
+
+              priv->last_focused = NULL;
+            }
+
+          priv->last_focused = mw;
+
+          if (mw)
+            g_object_weak_ref (G_OBJECT (mw),
+                               last_focus_weak_notify_cb, plugin);
+        }
+    }
 
   if (mw)
     moblin_netbook_close_demands_attention_notification (plugin, mw);
@@ -2084,92 +2120,8 @@ last_focus_weak_notify_cb (gpointer data, GObject *meta_win)
       priv->last_focused = NULL;
 
       /* FIXME */
-      g_warning ("just lost the last focused window during grab!\n");
+      g_warning ("just lost the last focused window!\n");
     }
-}
-
-void
-moblin_netbook_unfocus_stage (MutterPlugin *plugin, guint32 timestamp)
-{
-  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay                *display = meta_screen_get_display (screen);
-  MetaWindow                 *focus;
-
-  if (timestamp == CurrentTime)
-    timestamp = clutter_x11_get_current_event_time ();
-
-  /*
-   * Work out what we should focus next.
-   *
-   * First, we tray to get the window from metacity tablist, if that fails
-   * fall back on the cached last_focused window.
-   */
-  focus = meta_display_get_tab_current (display,
-                                        META_TAB_LIST_NORMAL,
-                                        screen,
-                                        NULL);
-
-
-  if (!focus)
-    focus = priv->last_focused;
-
-  if (priv->last_focused)
-    {
-      g_object_weak_unref (G_OBJECT (priv->last_focused),
-                           last_focus_weak_notify_cb, plugin);
-
-      priv->last_focused = NULL;
-    }
-
-  priv->holding_focus = FALSE;
-
-  if (focus)
-    meta_display_set_input_focus_window (display, focus, FALSE, timestamp);
-}
-
-static void
-focus_xwin (MutterPlugin *plugin, guint xid)
-{
-  MetaDisplay *display;
-
-  display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
-
-  meta_error_trap_push (display);
-
-  XSetInputFocus (meta_display_get_xdisplay (display), xid,
-                  RevertToPointerRoot, CurrentTime);
-
-  meta_error_trap_pop (display, TRUE);
-}
-
-void
-moblin_netbook_focus_stage (MutterPlugin *plugin, guint32 timestamp)
-{
-  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay                *display = meta_screen_get_display (screen);
-
-  if (timestamp == CurrentTime)
-    timestamp = clutter_x11_get_current_event_time ();
-
-
-  /*
-   * Map the input blocker window so keystrokes, etc., are not reaching apps.
-   */
-  if (priv->last_focused)
-    g_object_weak_unref (G_OBJECT (priv->last_focused),
-                         last_focus_weak_notify_cb, plugin);
-
-  priv->last_focused = meta_display_get_focus_window (display);
-
-  if (priv->last_focused)
-    g_object_weak_ref (G_OBJECT (priv->last_focused),
-                       last_focus_weak_notify_cb, plugin);
-
-  priv->holding_focus = TRUE;
-
-  focus_xwin (plugin, priv->focus_xwin);
 }
 
 static gboolean
@@ -2682,34 +2634,28 @@ plugin_info (MutterPlugin *plugin)
   return &priv->info;
 }
 
+static void
+focus_xwin (MutterPlugin *plugin, guint xid)
+{
+  MetaDisplay *display;
+
+  display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+
+  meta_error_trap_push (display);
+
+  XSetInputFocus (meta_display_get_xdisplay (display), xid,
+                  RevertToPointerRoot, CurrentTime);
+
+  meta_error_trap_pop (display, TRUE);
+}
+
 void
 moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 {
   MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay                *display = meta_screen_get_display (screen);
-  MetaWindow                 *mutter_last_focused;
 
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
-
-  /*
-   * Only change the stored last_focused window if Mutter gives us something
-   * meaningful to work with, otherwise, we stick wit what we have.
-   */
-  mutter_last_focused = meta_display_get_focus_window (display);
-
-  if (mutter_last_focused && (mutter_last_focused != priv->last_focused))
-    {
-      if (priv->last_focused)
-        g_object_weak_unref (G_OBJECT (priv->last_focused),
-                             last_focus_weak_notify_cb, plugin);
-
-      priv->last_focused = mutter_last_focused;
-
-      g_object_weak_ref (G_OBJECT (mutter_last_focused),
-                         last_focus_weak_notify_cb, plugin);
-    }
 
   focus_xwin (plugin, priv->focus_xwin);
 }
@@ -2754,14 +2700,6 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 
   if (!focus)
     focus = priv->last_focused;
-
-  if (priv->last_focused)
-    {
-      g_object_weak_unref (G_OBJECT (priv->last_focused),
-                           last_focus_weak_notify_cb, plugin);
-
-      priv->last_focused = NULL;
-    }
 
   /*
    * If we have something to focus, than do so; otherwise we focus the Mutter
