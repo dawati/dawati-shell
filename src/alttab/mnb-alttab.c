@@ -255,6 +255,7 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
   MnbAlttabOverlayPrivate    *priv    = overlay->priv;
   MutterPlugin               *plugin  = moblin_netbook_get_plugin_singleton ();
   MoblinNetbookPluginPrivate *ppriv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaWindow                 *focus;
 
   if (CLUTTER_ACTOR_IS_MAPPED (ppriv->notification_urgent))
     {
@@ -271,6 +272,31 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
         }
 
       return;
+    }
+
+  /*
+   * Ignore if the focused window is system-modal
+   */
+  if ((focus = meta_display_get_focus_window (display)))
+    {
+      if (meta_window_is_modal (focus))
+        {
+          MetaWindow *p = meta_window_find_root_ancestor (focus);
+
+          if (p == focus)
+            {
+              if (priv->in_alt_grab)
+                {
+                  if (CLUTTER_ACTOR_IS_VISIBLE (overlay))
+                    mnb_alttab_overlay_hide (overlay);
+
+                  end_kbd_grab (overlay);
+                  priv->alt_tab_down = FALSE;
+                }
+
+              return;
+            }
+        }
     }
 
   /* MNB_DBG_MARK(); */
