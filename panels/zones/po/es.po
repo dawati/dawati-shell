@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:39+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -13,60 +13,59 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
-msgid "Zones panel"
-msgstr "Panel zonas"
-
 # <mousetip of the top of the screen>
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
 msgid "zones"
 msgstr "zonas"
 
-# <mousetip of the top of the screen>
-#: ../src/sw-zone.c:765
-msgid "new zone"
-msgstr "nueva zona"
-
-#: ../src/sw-zone.c:779
+#: ../src/sw-zone.c:797
 msgid "No applications on this zone"
 msgstr "No hay ninguna aplicación en esta zona"
 
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Panel de zonas"
+
 # <mousetip of the top of the screen>
-#: ../src/sw-zone.c:907
-msgid "one"
-msgstr "uno"
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Zonas"
 
-#: ../src/sw-zone.c:911
-msgid "two"
-msgstr "dos"
-
-#: ../src/sw-zone.c:915
-msgid "three"
-msgstr "tres"
-
-#: ../src/sw-zone.c:919
-msgid "four"
-msgstr "cuatro"
-
-#: ../src/sw-zone.c:923
-msgid "five"
-msgstr "cinco"
-
-#: ../src/sw-zone.c:927
-msgid "six"
-msgstr "seis"
-
-#: ../src/sw-zone.c:931
-msgid "seven"
-msgstr "siete"
-
-#: ../src/sw-zone.c:935
-msgid "eight"
-msgstr "ocho"
+# <mousetip of the top of the screen>
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Nueva zona"
 
 #: ../src/sw-overview.c:220
 msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "¡Hola! Éste es el panel de zonas. Cuando tienes aplicaciones abiertas podrás verlas, manejarlas y acceder a ellas aquí."
+msgstr "¡Hola! Éste es el panel de zonas. Cuando tengas aplicaciones abiertas, podrás verlas y acceder a ellas desde aquí."
+
+# <mousetip of the top of the screen>
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Zona %d"
+
+#~ msgid "two"
+#~ msgstr "dos"
+
+#~ msgid "three"
+#~ msgstr "tres"
+
+#~ msgid "four"
+#~ msgstr "cuatro"
+
+#~ msgid "five"
+#~ msgstr "cinco"
+
+#~ msgid "six"
+#~ msgstr "seis"
+
+#~ msgid "seven"
+#~ msgstr "siete"
+
+#~ msgid "eight"
+#~ msgstr "ocho"
 
 #~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
 #~ msgstr "Las aplicaciones que se están usando aparecen aquí. Puedes cambiarlas y organizarlas como te plazca."
