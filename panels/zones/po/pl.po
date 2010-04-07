@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:36+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
@@ -23,388 +23,37 @@ msgid "Zones panel"
 msgstr "Panel stref"
 
 #: ../data/moblin-panel-zones.desktop.in.in.h:2
-#: ../src/main.c:492
+#: ../src/main.c:514
 msgid "zones"
 msgstr "strefy"
 
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał możliwość przełączać się między nimi i organizować je tak jak Ci się podoba."
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Strefy"
 
-#: ../src/sw-zone.c:764
-msgid "new zone"
-msgstr "nowa strefa"
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Witaj! To jest panel Strefy. Można tu wyświetlać, zarządzać i uzyskiwać dostęp do otwartych aplikacji."
+
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Nowa strefa"
 
 # "na tej strefie" is also a possiblity
-#: ../src/sw-zone.c:778
+#: ../src/sw-zone.c:797
 msgid "No applications on this zone"
 msgstr "Brak aplikacji w tej strefie"
 
-# If this applies to number of zones, then it has to be "jedna"
-#: ../src/sw-zone.c:906
-msgid "one"
-msgstr "jeden"
-
-# If this applies to number of zones, then it has to be "dwie"
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "dwa"
-
-#: ../src/sw-zone.c:914
-msgid "three"
-msgstr "trzy"
-
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "cztery"
-
-#: ../src/sw-zone.c:922
-msgid "five"
-msgstr "pięć"
-
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "sześć"
-
-#: ../src/sw-zone.c:930
-msgid "seven"
-msgstr "siedem"
-
-#: ../src/sw-zone.c:934
-msgid "eight"
-msgstr "osiem"
-
-#~ msgid "Moblin Netbook Effects"
-#~ msgstr "Efekty Moblina na netbooku"
-
-#~ msgid "Effects for Moblin Netbooks"
-#~ msgstr "Efekty dla Netbooków z Moblinem"
-
-#~ msgid "%l:%M %P"
-#~ msgstr "%H:%M"
-
-#~ msgid "%B %e, %Y"
-#~ msgstr "%-d %B %Y"
-
-#~ msgid "Dismiss"
-#~ msgstr "Zamknij"
-
-#~ msgid "Dismiss All"
-#~ msgstr "Ucisz wszystkie"
-
-#~ msgid "Unknown window"
-#~ msgstr "Nieznane okno"
-
-#~ msgid "Activate"
-#~ msgstr "Aktywuj"
-
-#~ msgid "Is asking for your attention."
-#~ msgstr "Prosi o Twoją uwagę."
-
-#~ msgid "Less than a minute ago"
-#~ msgstr "Mniej niż minutę temu"
-
-#~ msgid "A few minutes ago"
-#~ msgstr "Parę minut temu"
-
-#~ msgid "A couple of hours ago"
-#~ msgstr "Kilka godzin temu"
-
-#~ msgid "Earlier today"
-#~ msgstr "Kilkanaście godzin temu"
-
-#~ msgid "Yesterday"
-#~ msgstr "Wczoraj"
-
-#~ msgid "On %A"
-#~ msgstr "Dnia %A"
-
-#~ msgid "Last week"
-#~ msgstr "Zeszły tydzień"
-
-#~ msgid "A couple of weeks ago"
-#~ msgstr "Parę tygodni temu"
-
-#~ msgid "This month"
-#~ msgstr "W tym miesiącu"
-
-#~ msgid "Last month"
-#~ msgstr "W zeszłym miesiącu"
-
-#~ msgid "This year"
-#~ msgstr "W tym roku"
-
-#~ msgid "Last year"
-#~ msgstr "W zeszłym roku"
-
-#~ msgid "Ages ago"
-#~ msgstr "Wieki temu"
-
-#~ msgid "power & brightness"
-#~ msgstr "zasilanie i jasność"
-
-#~ msgid "volume"
-#~ msgstr "głośność"
-
-#~ msgid "bluetooth"
-#~ msgstr "bluetooth"
-
-#~ msgid "networks"
-#~ msgstr "sieci"
-
-#~ msgid "test"
-#~ msgstr "test"
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Strefa %d"
 
 #~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
 #~ msgstr ""
-#~ "Historia przeglądania będzie widoczna tutaj kiedy posłuchasz muzyki, "
-#~ "rzucisz okiem na zdjęcia lub obejrzysz film. Dostępne przykładowe "
-#~ "materiały na dobry początek:"
+#~ "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał "
+#~ "możliwość przełączać się między nimi i organizować je tak jak Ci się "
+#~ "podoba."
 
-#~ msgid "Recently played"
-#~ msgstr "Ostatnio odtwarzane"
-
-#~ msgid "Search results"
-#~ msgstr "Wyniki wyszukiwania"
-
-#~ msgid "Playqueue"
-#~ msgstr "Playlista"
-
-#~ msgid "Season %u, Episode %u"
-#~ msgstr "Część %u, Odcinek %u"
-
-#~ msgid "Previous"
-#~ msgstr "Poprzedni"
-
-#~ msgid "Next"
-#~ msgstr "Następny"
-
-#~ msgid "Media"
-#~ msgstr "Muzyka, filmy, dokumenty"
-
-#~ msgid "Search"
-#~ msgstr "Szukaj"
-
-#~ msgid "Season %d Episode %d"
-#~ msgstr "Seria %d Odcinek %d"
-
-#~ msgid "Season %d"
-#~ msgstr "Seria %d"
-
-#~ msgid "Episode %d"
-#~ msgstr "Odcinek %d"
-
-#~ msgid "Year %d"
-#~ msgstr "Rok %d"
-
-#~ msgid "media"
-#~ msgstr "media"
-
-#~ msgid "Favourite Applications"
-#~ msgstr "Ulubione aplikacje"
-
-#~ msgid "Applications"
-#~ msgstr "Aplikacje"
-
-#~ msgid "applications"
-#~ msgstr "aplikacje"
-
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Twoje ulubione strony będą pojawiać się tutaj oraz w nowych zakładkach w "
-#~ "miarę jak przeglądasz sieć."
-
-#~ msgid "Untitled"
-#~ msgstr "Bez tytułu"
-
-#~ msgid "New tab"
-#~ msgstr "Nowa zakładka"
-
-#~ msgid "Internet"
-#~ msgstr "Internet"
-
-#~ msgid "Go"
-#~ msgstr "Przejdź"
-
-#~ msgid "Tabs"
-#~ msgstr "Zakładki"
-
-#~ msgid "Favorite pages"
-#~ msgstr "Ulubione strony"
-
-#~ msgid "internet"
-#~ msgstr "internet"
-
-#~ msgid "Search for %%s on %s"
-#~ msgstr "Wyszukaj %%s na %s"
-
-#~ msgid "Go to %s"
-#~ msgstr "Załaduj %s"
-
-#~ msgid "Copy"
-#~ msgstr "Skopiuj"
-
-#~ msgid "the current selection to pasteboard"
-#~ msgstr "zaznaczenie do schowka"
-
-#~ msgid "your selection"
-#~ msgstr "Twoje zaznaczenie"
-
-#~ msgid "Pasteboard"
-#~ msgstr "Schowek"
-
-#~ msgid "You need to copy some text to use Pasteboard"
-#~ msgstr "Skopiuj tekst zanim skorzystasz ze Schowka"
-
-#~ msgid "Clear pasteboard"
-#~ msgstr "Wyczyść schowek"
-
-#~ msgid "pasteboard"
-#~ msgstr "schowek"
-
-#~ msgid "<b>Appointments</b>"
-#~ msgstr "<b>Zaplanowane</b>"
-
-#~ msgid "No calendar entries this week"
-#~ msgstr "Brak wpisów w kalendarzu na ten tydzień"
-
-#~ msgid ""
-#~ "Your friends' feeds and web services will appear here. Activate your "
-#~ "accounts now!"
-#~ msgstr ""
-#~ "Kanały i web-serwisy Twoich znajomych będą pojawiać się tutaj. Aktywuj "
-#~ "Twoje konta!"
-
-#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-#~ msgstr "<b>Witamy na Moblinie 2.0 na netbooki</b>"
-
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "Moblin różni się od innych komputerów w wielu aspektach, pozbieraliśmy "
-#~ "więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, "
-#~ "Team Moblin"
-
-#~ msgid "Web page"
-#~ msgstr "Strona"
-
-#~ msgid "Nothing to do today"
-#~ msgstr "Brak zadań na dziś"
-
-#~ msgid "Due %x"
-#~ msgstr "Na %x"
-
-#~ msgid "people"
-#~ msgstr "osoby"
-
-#~ msgid "Send an email"
-#~ msgstr "Wyślij e-mail"
-
-#~ msgid "Edit details"
-#~ msgstr "Ustaw dane"
-
-#~ msgid "Send a message"
-#~ msgstr "Wyślij wiadomość"
-
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Niestety nie znaleziono znajomych. Czy konto Komunikatora jest "
-#~ "skonfigurowane?"
-
-#~ msgid "People"
-#~ msgstr "Osoby"
-
-#~ msgid "Selection"
-#~ msgstr "Zaznaczenie"
-
-#~ msgid "Nobody selected"
-#~ msgstr "Nie wybrano adresatów"
-
-#~ msgid "Zone %d"
-#~ msgstr "Strefa %d"
-
-#~ msgid "Choose zone for application:"
-#~ msgstr "Wybierz strefę dla aplikacji:"
-
-#~ msgid "To activate the toolbar, move your cursor to the top of the screen"
-#~ msgstr "Aby skorzystać z paska narzędzi, dojedź kursorem do górnej krawędzi"
-
-#~ msgid "Offline"
-#~ msgstr "Rozłączony"
-
-#~ msgid "Available"
-#~ msgstr "Dostępny"
-
-#~ msgid "Away"
-#~ msgstr "Nie przy komputerze"
-
-#~ msgid "Busy"
-#~ msgstr "Zajęty"
-
-#~ msgid "Close"
-#~ msgstr "Zamknij"
-
-#~ msgid "Change"
-#~ msgstr "Zmień"
-
-#~ msgid "Unknown account"
-#~ msgstr "Nieznane konto"
-
-#~ msgid "Edit"
-#~ msgstr "Edycja"
-
-#~ msgid "Enter your %s status here..."
-#~ msgstr "Wprowadź tu swój status na %s..."
-
-#~ msgid "Enter your current status here..."
-#~ msgstr "Wprowadź tu swój aktualny status..."
-
-#~ msgid "Post"
-#~ msgstr "Wyślij"
-
-#~ msgid "Your current status"
-#~ msgstr "Twój aktualny stan"
-
-#~ msgid "Your current status - you are offline"
-#~ msgstr "Twój aktualny stan - rozłączony"
-
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Żeby aktualizować swój stan należy ustawić konto Web-serwisu u dostawcy, "
-#~ "który ma opcję powiadamiania o stanach"
-
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Aby aktualizować status w Komunikatorze potrzebujesz skonfigurowanego "
-#~ "konta"
-
-#~ msgid "status"
-#~ msgstr "stan"
-
-#~ msgid "myzone"
-#~ msgstr "myzone"
-
-#~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-#~ msgstr ""
-#~ "ikonka panelu wymaga rozmiaru (%i x %i) i będzie przeskalowana do (%i x %"
-#~ "i)"
-
-#~ msgid "Local"
-#~ msgstr "Lokalne"
-
-#~ msgid "Email %s"
-#~ msgstr "Wyślij %s"
-
-#~ msgid "IM %s"
-#~ msgstr "Prześlij %s komunikatorem"
