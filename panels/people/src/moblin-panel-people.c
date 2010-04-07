@@ -92,7 +92,7 @@ main (int    argc,
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
 
-    mpl_panel_client_set_height_request (client, 400);
+    mpl_panel_client_set_height_request (client, 600);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     people_panel = mnb_people_panel_new ();
@@ -110,8 +110,8 @@ main (int    argc,
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
     people_panel = mnb_people_panel_new ();
-    clutter_actor_set_size ((ClutterActor *)people_panel, 1016, 400);
-    clutter_actor_set_size (stage, 1016, 400);
+    clutter_actor_set_size ((ClutterActor *)people_panel, 1016, 600);
+    clutter_actor_set_size (stage, 1016, 600);
     clutter_actor_show_all (stage);
   }
 
