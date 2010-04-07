@@ -1,6 +1,6 @@
 MnbPeoplePanel
 {
-  border-image: url("panel-background.png") 15;
+  border-image: url("panel-background.png") 0 0 465 0;
   padding: 5;
 }
 
