@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:25+0000\n"
+"POT-Creation-Date: 2010-04-07 09:32+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -17,6 +17,10 @@ msgstr ""
 msgid "Set your toolbar preferences"
 msgstr "Configura las preferencias tu barra de herramientas"
 
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Configuración de la Barra de herramientas"
+
 #: ../capplet/src/mtp-bin.c:361
 msgid "Save toolbar"
 msgstr "Guardar barra de herramientas"
@@ -25,9 +29,22 @@ msgstr "Guardar barra de herramientas"
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Lo sentimos, debes de primero remover un panel antes de agregar uno nuevo."
 
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "Puedes agregar, eliminar o reordenar muchos de los paneles en tu barra de herramientas."
+
 #: ../capplet/src/mtp-jar.c:109
 msgid "Available panels"
 msgstr "Paneles disponibles"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%H.%M h"
 
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
@@ -113,28 +130,11 @@ msgstr "Lo sentimos, %s no funciona"
 
 #: ../src/notifications/mnb-notification.c:262
 msgid "Dismiss"
-msgstr "Descartar"
+msgstr "Cerrar"
 
 #: ../src/notifications/mnb-notification-cluster.c:668
 msgid "Dismiss All"
-msgstr "Descartar todo"
-
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar settings"
-msgstr "Configuración de la Barra de herramientas"
-
-#: ../capplet/src/mtp-bin.c:368
-msgid "You can add, remove and reorder many of the panels in your toolbar."
-msgstr "Puedes agregar, eliminar o reordenar muchos de los paneles en tu barra de herramientas."
-
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
-msgid "%H:%M"
-msgstr "%H.%M h"
+msgstr "Cerrar todo"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Hace menos de un minuto"
