@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-27 10:46+0000\n"
+"POT-Creation-Date: 2010-04-07 09:41+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
@@ -19,62 +19,88 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:495
+#: ../src/mnb-people-panel.c:466
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "osoby"
 
-#: ../src/mnb-people-panel.c:267
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
+msgstr "Witaj! To jest panel Osoby. Jeśli masz skonfigurowaną usługę IM (taką jak Messenger), jest to miejsce, w którym możesz rozmawiać z ludźmi."
+
+#: ../src/mnb-people-panel.c:185
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Niestety nikogo nie znaleziono. Czy skonfigurowano jakieś konto komunikatora?"
 
-#: ../src/mnb-people-panel.c:379
+#: ../src/mnb-people-panel.c:228
+#: ../src/mnb-people-panel.c:404
+#, c-format
+msgid "Open %s"
+msgstr "Otwórz %s"
+
+#: ../src/mnb-people-panel.c:273
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Niestety nikogo nie znaleziono. Wygląda na to, że wszyscy są niedostępni."
 
-#: ../src/mnb-people-panel.c:424
+#: ../src/mnb-people-panel.c:318
 msgid "To see your IM contacts, you need to go online."
 msgstr "Aby zobaczyć swoje kontakty, zmień swój status na dostępny."
 
-#: ../src/mnb-people-panel.c:476
+#: ../src/mnb-people-panel.c:448
 #, c-format
-msgid "people - %d people are talking to you"
-msgstr "osoby - %d osób pisze do ciebie"
+msgid "people - you are chatting with %d people"
+msgstr "osoby - rozmawiasz z %d osobami"
 
-#: ../src/mnb-people-panel.c:483
-msgid "people - Someone is talking to you"
-msgstr "osoby - ktoś pisze do ciebie"
+#: ../src/mnb-people-panel.c:455
+msgid "people - you are chatting with someone"
+msgstr "osoby - rozmawiasz z kimś"
 
-#: ../src/mnb-people-panel.c:673
+#. Populate header
+#: ../src/mnb-people-panel.c:666
+#: ../src/mnb-people-panel.c:919
 msgid "People"
 msgstr "Osoby"
 
-#: ../src/mnb-people-panel.c:686
+#: ../src/mnb-people-panel.c:679
 msgid "Search"
 msgstr "Szukaj"
 
-#: ../src/mnb-people-panel.c:752
+#: ../src/mnb-people-panel.c:730
+#: ../src/mnb-people-panel.c:1106
 msgid "You are chatting with:"
 msgstr "Rozmawiasz z:"
+
+#: ../src/mnb-people-panel.c:936
+msgid "Me and my people"
+msgstr "Ja i moi znajomi"
+
+#: ../src/mnb-people-panel.c:974
+msgid "Me"
+msgstr "Ja"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1063
+msgid "My conversations"
+msgstr "Moje rozmowy"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panel Osoby"
 
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "osoby - %d osób pisze do ciebie"
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "osoby - ktoś pisze do ciebie"
 #~ msgid "People talking to you ..."
 #~ msgstr "Osoby piszące do ciebie..."
-
 #~ msgid "Send an email"
 #~ msgstr "Wyślij e-mail"
-
 #~ msgid "Edit details"
 #~ msgstr "Ustaw dane"
-
 #~ msgid "Send a message"
 #~ msgstr "Wyślij wiadomość"
-
 #~ msgid "Selection"
 #~ msgstr "Zaznaczenie"
-
 #~ msgid "Nobody selected"
 #~ msgstr "Nie wybrano adresatów"
+
