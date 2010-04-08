@@ -23,12 +23,6 @@ msgstr "Sovellukset"
 msgid "Search"
 msgstr "Etsi"
 
-#. Fav apps
-#: ../src/moblin-netbook-launcher.c:1382
-#, fuzzy
-msgid "Favorite applications"
-msgstr "Suosikkisovellukset"
-
 #: ../src/moblin-panel-applications.c:197
 #: ../data/moblin-panel-applications.desktop.in.in.h:2
 msgid "applications"
@@ -45,3 +39,8 @@ msgstr "Hae sovelluksia"
 #: ../src/moblin-netbook-launcher.c:1347
 msgid "Your applications"
 msgstr "Sovelluksesi"
+
+#. Fav apps
+#: ../src/moblin-netbook-launcher.c:1382
+msgid "Favorite applications"
+msgstr "Suosikkisovellukset"
