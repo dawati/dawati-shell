@@ -101,14 +101,13 @@ msgstr "%s von %s"
 msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
 msgstr "Hallo! Dies ist das Panel Status. Wenn du ein Web-Konto (z.B. Twitter) konfiguriert hast, kannst du hier deine Feeds anzeigen und deinen Status aktualisieren."
 
-#: ../src/moblin-panel-status.c:99
-#, fuzzy
-msgid "Status"
-msgstr "Status"
-
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
 msgstr "Status kann nicht aktualisiert werden: Du bist nicht online."
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Status"
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
