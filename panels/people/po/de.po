@@ -76,7 +76,6 @@ msgstr "Ich und meine Leute"
 
 #. Side table
 #: ../src/mnb-people-panel.c:1063
-#, fuzzy
 msgid "My conversations"
 msgstr "Meine Gespräche"
 
