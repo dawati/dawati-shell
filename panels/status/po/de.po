@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 09:38+0000\n"
+"POT-Creation-Date: 2010-04-07 09:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
 "Language-Team: \n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "Status"
@@ -24,42 +24,42 @@ msgstr "Status"
 msgid "Status panel"
 msgstr "Status-Panel"
 
-#: ../src/mps-feed-pane.c:405
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Status kann nicht aktualisiert werden. Der Service ist vielleicht nicht verfügbar oder das Kennwort ist falsch."
+
+#: ../src/mps-feed-pane.c:444
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Dein geschätzter Ort: %f %f"
 
-#: ../src/mps-feed-pane.c:409
+#: ../src/mps-feed-pane.c:448
 #, c-format
 msgid "Your location is being shared as: %f %f "
 msgstr "Dein Ort wird bekanntgegeben als: %f %f "
 
-#: ../src/mps-feed-pane.c:416
+#: ../src/mps-feed-pane.c:455
 msgid "Your location is not being shared"
 msgstr "Dein Ort wird nicht bekanntgegeben"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:512
+#: ../src/mps-feed-pane.c:551
 msgid "Update"
 msgstr "Aktualisierung"
 
-#: ../src/mps-feed-pane.c:517
+#: ../src/mps-feed-pane.c:556
 msgid "What's happening?"
 msgstr "Was ist los?"
 
-#: ../src/mps-feed-pane.c:541
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "Status kann nicht aktualisiert werden. Der Service ist vielleicht nicht verfügbar oder das Kennwort ist falsch."
-
-#: ../src/mps-feed-pane.c:569
+#: ../src/mps-feed-pane.c:606
 msgid "Change"
 msgstr "Ändern"
 
-#: ../src/mps-feed-switcher.c:354
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Neuen Web-Service zufügen"
 
-#: ../src/mps-feed-switcher.c:377
+#: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Es ist kein Web-Service konfiguriert oder es gibt ein Problem mit der Konfiguration. Benutze die Schaltfläche oben, um My Web Accounts zu öffnen und ein Konto einzurichten."
 
@@ -87,44 +87,70 @@ msgstr "Ort verwenden"
 msgid "Don't use location"
 msgstr "Ort nicht verwenden"
 
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s von %s"
+
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "Hallo! Dies ist das Panel Status. Wenn du ein Web-Konto (z.B. Twitter) konfiguriert hast, kannst du hier deine Feeds anzeigen und deinen Status aktualisieren."
+
+#: ../src/moblin-panel-status.c:99
+#, fuzzy
+msgid "Status"
+msgstr "Status"
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Status kann nicht aktualisiert werden: Du bist nicht online."
+
 #~ msgid "Offline"
 #~ msgstr "Offline"
+
 #~ msgid "Available"
 #~ msgstr "Verfügbar"
+
 #~ msgid "Away"
 #~ msgstr "Abwesend"
+
 #~ msgid "Busy"
 #~ msgstr "Beschäftigt"
+
 #~ msgid "Close"
 #~ msgstr "Schließen"
+
 #~ msgid "Unknown account"
 #~ msgstr "Unbekanntes Konto"
+
 #~ msgid "Edit"
 #~ msgstr "Bearbeiten"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Wähle hier deinen Status für %s aus..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "Wähle hier deinen gegenwärtigen Status aus..."
+
 #~ msgid "Post"
 #~ msgstr "Abschicken"
+
 #~ msgid "Your current status"
 #~ msgstr "Dein gegenwärtiger Status"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Dein gegenwärtiger Status: offline"
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Wir können leider keine Leute finden. Hast du ein Messenger-Konto "
-#~ "eingerichtet?"
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Um deinen Web-Status zu aktualisieren, musst du ein Webservice-Konto mit "
-#~ "einem Anbieter haben, der Statusmeldungen unterstützt"
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Um deinen IM-Status zu aktualisieren, musst du ein Instant Messaging-"
-#~ "Konto einrichten."
 
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Wir können leider keine Leute finden. Hast du ein Messenger-Konto eingerichtet?"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Um deinen Web-Status zu aktualisieren, musst du ein Webservice-Konto mit einem Anbieter haben, der Statusmeldungen unterstützt"
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Um deinen IM-Status zu aktualisieren, musst du ein Instant Messaging-Konto einrichten."
