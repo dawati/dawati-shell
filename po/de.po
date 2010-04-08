@@ -30,19 +30,6 @@ msgstr "Du musst zuerst ein Panel löschen, bevor du ein neues hinzufügen kanns
 msgid "Available panels"
 msgstr "verfügbare Panels"
 
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# example:
-# 14:37
-# (no am/pm needed)
-#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
-#, fuzzy
-msgid "%H:%M"
-msgstr "%H:%M"
-
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
@@ -148,6 +135,18 @@ msgstr "Einstellungen der Symbolleiste"
 #: ../capplet/src/mtp-bin.c:368
 msgid "You can add, remove and reorder many of the panels in your toolbar."
 msgstr "Sie können viele der Panels in der Symbolleiste hinzufügen, entfernen oder neu anordnen."
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+# example:
+# 14:37
+# (no am/pm needed)
+#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%H.%M"
 
 #~ msgid "Socket for embedding"
 #~ msgstr "Sockel für Embedding"
