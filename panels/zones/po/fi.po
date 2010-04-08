@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:35+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -14,57 +14,61 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
-msgid "zones"
-msgstr "vyöhykkeet"
-
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä miten haluat."
-
-#: ../src/sw-zone.c:778
-msgid "No applications on this zone"
-msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
-
 #: ../data/moblin-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Vyöhyke-paneeli"
 
-#: ../src/sw-zone.c:764
-msgid "new zone"
-msgstr "uusi vyöhyke"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+msgid "zones"
+msgstr "vyöhykkeet"
 
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "kaksi"
+#: ../src/sw-zone.c:797
+msgid "No applications on this zone"
+msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
 
-#: ../src/sw-zone.c:906
-msgid "one"
-msgstr "yksi"
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Vyöhykkeet"
 
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "neljä"
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Uusi vyöhyke."
 
-#: ../src/sw-zone.c:914
-msgid "three"
-msgstr "kolme"
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Hei! Tämä on Vyöhykkeet-paneeli. Kun sinulla on sovelluksia avoinna, voi tarkastella, hallita ja käyttää niitä täältä."
 
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "kuusi"
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Vyöhyke %d"
 
-#: ../src/sw-zone.c:922
-msgid "five"
-msgstr "viisi"
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä miten haluat."
 
-#: ../src/sw-zone.c:934
-msgid "eight"
-msgstr "kahdeksan"
+#~ msgid "two"
+#~ msgstr "kaksi"
 
-#: ../src/sw-zone.c:930
-msgid "seven"
-msgstr "seitsemän"
+#~ msgid "one"
+#~ msgstr "yksi"
+
+#~ msgid "four"
+#~ msgstr "neljä"
+
+#~ msgid "three"
+#~ msgstr "kolme"
+
+#~ msgid "six"
+#~ msgstr "kuusi"
+
+#~ msgid "five"
+#~ msgstr "viisi"
+
+#~ msgid "eight"
+#~ msgstr "kahdeksan"
+
+#~ msgid "seven"
+#~ msgstr "seitsemän"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Alle minuutti sitten"
@@ -155,9 +159,6 @@ msgstr "seitsemän"
 
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Kausi %d, episodi %d"
-
-#~ msgid "Season %d"
-#~ msgstr "Kausi %d"
 
 #~ msgid "Episode %d"
 #~ msgstr "Episodi %d"
