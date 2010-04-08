@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-17 09:36+0000\n"
+"POT-Creation-Date: 2010-04-07 09:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -13,7 +13,15 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "Hej! Detta är statuspanelen. När du har ett konfigurerat webbkonto (som Twitter) kan du visa dina feeds och uppdatera din status här"
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Status"
+
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
@@ -23,26 +31,82 @@ msgstr "status"
 msgid "Status panel"
 msgstr "Statuspanel"
 
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "Uppdatering"
-
-#: ../src/mps-feed-pane.c:421
-msgid "What's happening?"
-msgstr "Vad händer?"
-
-#: ../src/mps-feed-pane.c:445
+#: ../src/mps-feed-pane.c:92
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
 msgstr "Kan inte uppdatera status. Tjänsten kan vara otillgänglig eller så kan du ha fel lösenord."
 
-#: ../src/mps-feed-switcher.c:344
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Det går inte att uppdatera status: Du är inte online."
+
+#: ../src/mps-feed-pane.c:444
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "Vi gissade din plats som: %f %f"
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr "Din plats delas som: %f %f "
+
+#: ../src/mps-feed-pane.c:455
+msgid "Your location is not being shared"
+msgstr "Din plats delas inte"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:551
+msgid "Update"
+msgstr "Uppdatering"
+
+#: ../src/mps-feed-pane.c:556
+msgid "What's happening?"
+msgstr "Vad händer?"
+
+#: ../src/mps-feed-pane.c:606
+msgid "Change"
+msgstr "Ändra"
+
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Lägg till ny webbtjänst"
 
-#: ../src/mps-feed-switcher.c:367
+#: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Det verkar inte som om du har några konfigurerade webbtjänster eller så finns det ett konfigurationsproblem. Använd ovanstående knapp för att öppna Mina webbkonton och konfigurera en tjänst."
+
+#: ../src/mps-geotag-pane.c:215
+msgid "Your location"
+msgstr "Din plats"
+
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "Sök"
+
+#: ../src/mps-geotag-pane.c:490
+msgid "Where are you?"
+msgstr "Var är du?"
+
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "Hitta mig"
+
+#: ../src/mps-geotag-pane.c:499
+msgid "Use location"
+msgstr "Använd plats"
+
+#: ../src/mps-geotag-pane.c:500
+msgid "Don't use location"
+msgstr "Använd inte plats"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s från %s"
 
 #~ msgid "Offline"
 #~ msgstr "Frånkopplad"
@@ -58,9 +122,6 @@ msgstr "Det verkar inte som om du har några konfigurerade webbtjänster eller s
 
 #~ msgid "Close"
 #~ msgstr "Stäng"
-
-#~ msgid "Change"
-#~ msgstr "Ändra"
 
 #~ msgid "Unknown account"
 #~ msgstr "Okänt konto"
