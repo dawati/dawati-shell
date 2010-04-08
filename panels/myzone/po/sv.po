@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:30+0000\n"
+"POT-Creation-Date: 2010-04-07 09:40+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -14,15 +14,60 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../penge/penge-events-pane.c:68
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone-panel"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Ändra bakgrund och innehåll i Myzone"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf-fel: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Alla ytterligare fel visas bara på terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Visa så mycket webbtjänstinnehåll som möjligt"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Visa mestadels webbtjänstinnehåll"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Visa hälften-hälften"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Visa mestadels nyligen använda filer"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Visa så många av nyligen använda filer som möjligt"
+
+#: ../penge/penge-calendar-pane.c:445
+msgid "Appointments"
+msgstr "Möten"
+
+#: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "Skapa ett möte"
 
-#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Lägg till"
 
-#: ../penge/penge-events-pane.c:361
+#: ../penge/penge-events-pane.c:484
 msgid "No calendar entries this week"
 msgstr "Inget i kalendern denna vecka"
 
@@ -47,58 +92,41 @@ msgstr "Inget schemalagt idag"
 msgid "Due %x"
 msgstr "Färdig %x"
 
-#: ../penge/penge-welcome-tile.c:67
+#: ../penge/penge-welcome-tile.c:75
 msgid "Welcome to MeeGo"
 msgstr "Välkommen till MeeGo"
 
-#: ../penge/penge-welcome-tile.c:86
+#: ../penge/penge-welcome-tile.c:94
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Detta är Myzone där dina nyligen använda filer och innehåll från webbmatningar visas."
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
-msgid "Myzone panel"
-msgstr "Myzone-panel"
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "Vill du radera dina senaste dokument? Detta tar bort det lokala innehållet från Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:137
-msgid "Myzone"
-msgstr "Myzone"
+#: ../penge/penge-calendar-pane.c:475
+msgid "Tasks"
+msgstr "Uppgifter"
 
-#: ../data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr "Ändra bakgrund och innehåll i Myzone"
+#: ../penge/penge-welcome-tile.c:35
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "När du har konfigurerat dina webbkonton och använt några filer visas de här på Myzone för enkel åtkomst när du vill."
 
-#: ../capplet/gconf-bridge.c:1237
-msgid "All further errors shown only on terminal."
-msgstr "Alla ytterligare fel visas bara på terminal."
+#: ../penge/penge-email-pane.c:191
+msgid "No unread messages"
+msgstr "Inga olästa meddelanden"
 
-#: ../capplet/gconf-bridge.c:1232
-#, c-format
-msgid "GConf error: %s"
-msgstr "GConf-fel: %s"
+#: ../penge/penge-email-pane.c:193
+msgid "Unread message"
+msgstr "Oläst meddelande"
 
-#: ../capplet/myzone-cc-panel.c:49
-msgid "Show mostly web service content"
-msgstr "Visa mestadels webbtjänstinnehåll"
+#: ../penge/penge-welcome-tile.c:41
+msgid "Play intro video"
+msgstr "Spela upp introduktionsvideo"
 
-#: ../capplet/myzone-cc-panel.c:47
-msgid "Show as much web service content as possible"
-msgstr "Visa så mycket webbtjänstinnehåll som möjligt"
-
-#: ../capplet/myzone-cc-panel.c:53
-msgid "Show mostly recent files"
-msgstr "Visa mestadels nyligen använda filer"
-
-#: ../capplet/myzone-cc-panel.c:51
-msgid "Show half and half"
-msgstr "Visa hälften-hälften"
-
-#: ../penge/penge-calendar-pane.c:473
-msgid "Appointments"
-msgstr "Möten"
-
-#: ../capplet/myzone-cc-panel.c:55
-msgid "Show as many recent files as possible"
-msgstr "Visa så många av nyligen använda filer som möjligt"
+#: ../penge/penge-email-pane.c:195
+msgid "Unread messages"
+msgstr "Olästa meddelanden"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Välkommen till Moblin 2.1 för netbooks</b>"
