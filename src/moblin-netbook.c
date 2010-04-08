@@ -2126,8 +2126,7 @@ last_focus_weak_notify_cb (gpointer data, GObject *meta_win)
     {
       priv->last_focused = NULL;
 
-      /* FIXME */
-      g_warning ("just lost the last focused window!\n");
+      g_debug ("just lost the last focused window!\n");
     }
 }
 
