@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:32+0000\n"
+"POT-Creation-Date: 2010-04-07 09:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -14,36 +14,100 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "상태"
-
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "업데이트"
 
 #. vim:set ts=8 expandtab
 #: ../data/moblin-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "상태 패널"
 
-#: ../src/mps-feed-pane.c:445
+#: ../src/mps-feed-pane.c:92
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
 msgstr "상태를 업데이트할 수 없습니다. 서비스를 사용할 수 없거나 암호가 틀립니다."
 
-#: ../src/mps-feed-pane.c:421
+#. Actor creation
+#: ../src/mps-feed-pane.c:551
+msgid "Update"
+msgstr "업데이트"
+
+#: ../src/mps-feed-pane.c:556
 msgid "What's happening?"
 msgstr "현재 상황"
 
-#: ../src/mps-feed-switcher.c:367
+#: ../src/mps-feed-pane.c:606
+msgid "Change"
+msgstr "변경"
+
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web service"
+msgstr "새로운 웹 서비스 추가"
+
+#: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "웹 서비스가 구성되지 않았거나 구성에 문제가 있습니다. 위의 단추를 사용하여 내 웹 계정을 열고 설정하십시오."
 
-#: ../src/mps-feed-switcher.c:344
-msgid "Add new web service"
-msgstr "새로운 웹 서비스 추가"
+#: ../src/mps-geotag-pane.c:500
+msgid "Don't use location"
+msgstr "위치 사용 안 함"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s의 %s"
+
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "안녕하십니까? 이것은 상태 패널입니다. 웹 계정이 구성되면 (Twitter처럼) 여기서 피드를 보거나 상태를 업데이트할 수 있습니다."
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "상태"
+
+#: ../src/mps-feed-pane.c:444
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "우리가 짐작한 귀하의 위치: %f %f"
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "상태를 업데이트할 수 없습니다. 온라인이 아닙니다."
+
+#: ../src/mps-feed-pane.c:455
+msgid "Your location is not being shared"
+msgstr "귀하의 위치가 공유되지 않고 있습니다."
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr "귀하의 위치는 다음과 공유되고 있습니다: %f %f"
+
+#: ../src/mps-geotag-pane.c:499
+msgid "Use location"
+msgstr "위치 사용"
+
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "나를 찾기"
+
+#: ../src/mps-geotag-pane.c:215
+msgid "Your location"
+msgstr "귀하의 위치"
+
+#: ../src/mps-geotag-pane.c:490
+msgid "Where are you?"
+msgstr "어디 계시나요?"
+
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "검색"
 
 #~ msgid "Offline"
 #~ msgstr "오프라인 "
@@ -59,9 +123,6 @@ msgstr "새로운 웹 서비스 추가"
 
 #~ msgid "Close"
 #~ msgstr "닫기"
-
-#~ msgid "Change"
-#~ msgstr "변경"
 
 #~ msgid "Unknown account"
 #~ msgstr "알 수 없는 계정 "
