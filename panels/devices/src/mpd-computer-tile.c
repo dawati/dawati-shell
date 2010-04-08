@@ -21,6 +21,7 @@
 #include <stdbool.h>
 
 #include <glib/gi18n.h>
+#include <gconf/gconf-client.h>
 
 #include "mpd-battery-tile.h"
 #include "mpd-brightness-tile.h"
@@ -29,6 +30,9 @@
 #include "mpd-shell-defines.h"
 #include "mpd-volume-tile.h"
 #include "config.h"
+
+#define MOBLIN_GCONF_DIR "/desktop/moblin/panel-devices"
+#define SHOW_BRIGHTNESS_SETTING_KEY "show_brightness_setting"
 
 G_DEFINE_TYPE (MpdComputerTile, mpd_computer_tile, MX_TYPE_BOX_LAYOUT)
 
@@ -90,7 +94,10 @@ create_seperator (void)
 static void
 mpd_computer_tile_init (MpdComputerTile *self)
 {
-  ClutterActor *tile;
+  ClutterActor  *tile;
+  GConfClient   *client;
+  bool           show_brightness_tile;
+  GError        *error = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_COMPUTER_TILE_SPACING);
@@ -108,8 +115,15 @@ mpd_computer_tile_init (MpdComputerTile *self)
   tile = mpd_volume_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
-  if (g_getenv ("MOBLIN_PANEL_DEVICES_SHOW_BRIGHTNESS"))
+  client = gconf_client_get_default ();
+  show_brightness_tile = gconf_client_get_bool (client,
+                                MOBLIN_GCONF_DIR"/"SHOW_BRIGHTNESS_SETTING_KEY,
+                                &error);
+  if (error)
   {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  } else if (show_brightness_tile) {
     clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
 
     tile = mpd_brightness_tile_new ();
@@ -120,6 +134,7 @@ mpd_computer_tile_init (MpdComputerTile *self)
                                  "y-fill", false,
                                  NULL);
   }
+  g_object_unref (client);
 }
 
 ClutterActor *
