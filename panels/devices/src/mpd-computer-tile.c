@@ -50,22 +50,6 @@ typedef struct
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
-_settings_clicked_cb (MxButton        *button,
-                      MpdComputerTile *self)
-{
-  GError *error = NULL;
-
-  g_spawn_command_line_async ("gnome-control-center", &error);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  }
-
-  g_signal_emit_by_name (self, "request-hide");
-}
-
-static void
 _dispose (GObject *object)
 {
   G_OBJECT_CLASS (mpd_computer_tile_parent_class)->dispose (object);
@@ -150,11 +134,6 @@ mpd_computer_tile_init (MpdComputerTile *self)
                                "x-fill", false,
                                "y-fill", false,
                                NULL);
-
-  button = mx_button_new_with_label (_("All settings"));
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (_settings_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (tile), button);
 }
 
 ClutterActor *

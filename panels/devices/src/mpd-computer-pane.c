@@ -54,6 +54,22 @@ _tile_request_hide_cb (ClutterActor     *tile,
 }
 
 static void
+_settings_clicked_cb (MxButton        *button,
+                      MpdComputerTile *self)
+{
+  GError *error = NULL;
+
+  g_spawn_command_line_async ("gnome-control-center", &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+
+  g_signal_emit_by_name (self, "request-hide");
+}
+
+static void
 _dispose (GObject *object)
 {
   G_OBJECT_CLASS (mpd_computer_pane_parent_class)->dispose (object);
@@ -82,6 +98,7 @@ static void
 mpd_computer_pane_init (MpdComputerPane *self)
 {
   ClutterActor  *label;
+  ClutterActor  *button;
   ClutterActor  *hbox;
   ClutterActor  *tile;
 
@@ -90,10 +107,31 @@ mpd_computer_pane_init (MpdComputerPane *self)
   clutter_actor_set_opacity (CLUTTER_ACTOR (self), 0xff * 0.8); /* 80% */
   clutter_actor_set_width (CLUTTER_ACTOR (self), MPD_COMPUTER_PANE_WIDTH);
 
-  label = mx_label_new_with_text (_("Your computer"));
-  clutter_actor_set_name (label, "pane-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
+  /* Title */
+  hbox = mx_box_layout_new ();
+  clutter_actor_set_name (hbox, "computer-pane-header");
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), hbox,
+                               "expand", false,
+                               "x-fill", true,
+                               "y-fill", false,
+                               NULL);
 
+  label = mx_label_new_with_text (_("Your computer"));
+  clutter_actor_set_name (label, "computer-pane-label");
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), label,
+                               "expand", true,
+                               "x-fill", true,
+                               "y-fill", false,
+                               NULL);
+
+  button = mx_button_new_with_label (_("All settings"));
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (_settings_clicked_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), button);
+
+  /* Content */
   hbox = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox), MX_ORIENTATION_HORIZONTAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_COMPUTER_PANE_SPACING);
