@@ -117,11 +117,6 @@ msgstr "Ungelesene Nachricht"
 msgid "Unread messages"
 msgstr "Ungelesene Nachrichten"
 
-#: ../penge/penge-calendar-pane.c:475
-#, fuzzy
-msgid "Tasks"
-msgstr "Aufgaben"
-
 #: ../penge/penge-welcome-tile.c:35
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "Wenn du deine Web-Konten eingerichtet und einige Dateien benutzt hast, werden sie hier auf MyZone angezeigt, damit du auf sie zugreifen kannst, wann immer du willst."
@@ -129,6 +124,10 @@ msgstr "Wenn du deine Web-Konten eingerichtet und einige Dateien benutzt hast, w
 #: ../penge/penge-welcome-tile.c:41
 msgid "Play intro video"
 msgstr "Intro-Video spielen"
+
+#: ../penge/penge-calendar-pane.c:475
+msgid "Tasks"
+msgstr "Aufgaben"
 
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone Einstellungen"
