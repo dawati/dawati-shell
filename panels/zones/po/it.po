@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-08 10:36+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: 2009-12-11 19:55+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -17,57 +17,61 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Italian\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
-msgid "zones"
-msgstr "zone"
-
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Le applicazioni in uso vengono mostrate qui. È possibile passare da un'applicazione all'altra e organizzarle come meglio si crede."
-
-#: ../src/sw-zone.c:778
-msgid "No applications on this zone"
-msgstr "Nessuna applicazione in questa zona"
-
 #: ../data/moblin-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Pannello zone"
 
-#: ../src/sw-zone.c:764
-msgid "new zone"
-msgstr "nuova zona"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+msgid "zones"
+msgstr "zone"
 
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "due"
+#: ../src/sw-zone.c:797
+msgid "No applications on this zone"
+msgstr "Nessuna applicazione in questa zona"
 
-#: ../src/sw-zone.c:906
-msgid "one"
-msgstr "uno"
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Zona %d"
 
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "quattro"
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Zone"
 
-#: ../src/sw-zone.c:914
-msgid "three"
-msgstr "tre"
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Nuova zona"
 
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "sei"
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai in grado di visualizzarle, gestirle ed effettuare l'accesso da qui."
 
-#: ../src/sw-zone.c:922
-msgid "five"
-msgstr "cinque"
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Le applicazioni in uso vengono mostrate qui. È possibile passare da un'applicazione all'altra e organizzarle come meglio si crede."
 
-#: ../src/sw-zone.c:934
-msgid "eight"
-msgstr "otto"
+#~ msgid "two"
+#~ msgstr "due"
 
-#: ../src/sw-zone.c:930
-msgid "seven"
-msgstr "sette"
+#~ msgid "one"
+#~ msgstr "uno"
+
+#~ msgid "four"
+#~ msgstr "quattro"
+
+#~ msgid "three"
+#~ msgstr "tre"
+
+#~ msgid "six"
+#~ msgstr "sei"
+
+#~ msgid "five"
+#~ msgstr "cinque"
+
+#~ msgid "eight"
+#~ msgstr "otto"
+
+#~ msgid "seven"
+#~ msgstr "sette"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Effetti Moblin netbook"
@@ -299,9 +303,6 @@ msgstr "sette"
 
 #~ msgid "Nobody selected"
 #~ msgstr "Nessuno selezionato"
-
-#~ msgid "Zone %d"
-#~ msgstr "Zona %d"
 
 #~ msgid "Choose zone for application:"
 #~ msgstr "Scegliere una zona per l'applicazione:"
