@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: MediaMonkey 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:36+0000\n"
+"POT-Creation-Date: 2010-04-07 09:47+0000\n"
 "PO-Revision-Date: 2010-03-10 13:59-0500\n"
 "Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:104
+#: ../src/moblin-panel-date-time.c:110
 msgid "Date/Time"
 msgstr "Datum/tid"
 
@@ -30,108 +30,13 @@ msgstr "Panelen Datum/tid"
 msgid "date and time"
 msgstr "datum och tid"
 
-#: ../src/mnp-alarm-dialog.c:58
-msgid "OFF"
-msgstr "AV"
-
-#: ../src/mnp-alarm-dialog.c:59
-msgid "Beep"
-msgstr "Pip"
-
-#: ../src/mnp-alarm-dialog.c:60
-msgid "Music"
-msgstr "Musik"
-
-#: ../src/mnp-alarm-dialog.c:67
-#: ../src/mnp-alarm-instance.c:52
-msgid "Never"
-msgstr "Aldrig"
-
-#: ../src/mnp-alarm-dialog.c:68
-#: ../src/mnp-alarm-instance.c:53
-#: ../src/mnp-alarm-tile.c:36
-msgid "Everyday"
-msgstr "Varje dag"
-
-#: ../src/mnp-alarm-dialog.c:69
-#: ../src/mnp-alarm-instance.c:54
-msgid "Monday - Friday"
-msgstr "måndag - fredag"
-
-#: ../src/mnp-alarm-dialog.c:70
-#: ../src/mnp-alarm-instance.c:55
-msgid "Monday"
-msgstr "måndag"
-
-#: ../src/mnp-alarm-dialog.c:71
-#: ../src/mnp-alarm-instance.c:56
-msgid "Tuesday"
-msgstr "tisdag"
-
-#: ../src/mnp-alarm-dialog.c:72
-#: ../src/mnp-alarm-instance.c:57
-msgid "Wednesday"
-msgstr "onsdag"
-
-#: ../src/mnp-alarm-dialog.c:73
-#: ../src/mnp-alarm-instance.c:58
-msgid "Thursday"
-msgstr "torsdag"
-
-#: ../src/mnp-alarm-dialog.c:74
-#: ../src/mnp-alarm-instance.c:59
-msgid "Friday"
-msgstr "fredag"
-
-#: ../src/mnp-alarm-dialog.c:75
-#: ../src/mnp-alarm-instance.c:60
-msgid "Saturday"
-msgstr "lördag"
-
-#: ../src/mnp-alarm-dialog.c:76
-#: ../src/mnp-alarm-instance.c:61
-msgid "Sunday"
-msgstr "söndag"
-
-#: ../src/mnp-alarm-dialog.c:175
-msgid "Alarm settings"
-msgstr "Väckningsinställningar"
-
-#: ../src/mnp-alarm-dialog.c:229
-msgid "ON"
-msgstr "PÅ"
-
-#: ../src/mnp-alarm-dialog.c:322
-msgid "Repeat"
-msgstr "Upprepa"
-
-#: ../src/mnp-alarm-dialog.c:352
-msgid "Snooze"
-msgstr "Slumra"
-
-#: ../src/mnp-alarm-dialog.c:394
-msgid "Sound"
-msgstr "Ljud"
-
-#: ../src/mnp-alarm-dialog.c:468
-msgid "Delete alarm"
-msgstr "Ta bort väckning"
-
-#: ../src/mnp-alarms.c:201
-msgid ""
-"New\n"
-"Alarm"
-msgstr ""
-"Ny\n"
-"väckning"
-
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format
 #. * (eg, like in the US: 8:10 am), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:362
+#: ../src/mnp-utils.c:422
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -140,107 +45,183 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:370
+#: ../src/mnp-utils.c:430
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:384
+#: ../src/mnp-utils.c:445
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (igår)"
 
-#: ../src/mnp-utils.c:386
+#: ../src/mnp-utils.c:447
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (imorgon)"
 
-#. Translators: This is a strftime format string.
-#. * It is used to display in Aug 6
-#: ../src/mnp-utils.c:392
+#: ../src/mnp-utils.c:455
 msgid "%b %-d"
 msgstr "%b %-d"
 
-# Unsure of what this means
-#: ../src/mnp-alarm-instance.c:290
-msgid "Alarm Notify"
-msgstr "Väckningsinformation"
-
-#: ../src/mnp-alarm-instance.c:293
-#, c-format
-msgid "Alarm at %d:%.2d %s"
-msgstr "Väckning %d:%.2d %s"
-
-#: ../src/mnp-alarm-instance.c:293
-msgid "am"
-msgstr "fm"
-
-#: ../src/mnp-alarm-instance.c:293
-msgid "pm"
-msgstr "em"
-
-#: ../src/mnp-alarm-instance.c:294
-msgid "Moblin Alarm Notify"
-msgstr "Moblin-väckningsinformation"
-
-#: ../src/mnp-alarm-instance.c:296
-msgid "AlarmNotifications"
-msgstr "Väckningsinformation"
-
-#: ../src/mnp-alarm-tile.c:37
-msgid "MON-FRI"
-msgstr "MÅN-FRE"
-
-#: ../src/mnp-alarm-tile.c:38
-msgid "MONDAYS"
-msgstr "MÅNDAGAR"
-
-#: ../src/mnp-alarm-tile.c:39
-msgid "TUESDAYS"
-msgstr "TISDAGAR"
-
-#: ../src/mnp-alarm-tile.c:40
-msgid "WEDNESDAYS"
-msgstr "ONSDAGAR"
-
-#: ../src/mnp-alarm-tile.c:41
-msgid "THURSDAYS"
-msgstr "TORSDAGAR"
-
-#: ../src/mnp-alarm-tile.c:42
-msgid "FRIDAYS"
-msgstr "FREDAGAR"
-
-#: ../src/mnp-alarm-tile.c:43
-msgid "SATURDAYS"
-msgstr "LÖRDAGAR"
-
-#: ../src/mnp-alarm-tile.c:44
-msgid "SUNDAYS"
-msgstr "SÖNDAGAR"
-
-#: ../src/mnp-world-clock.c:400
+#: ../src/mnp-world-clock.c:586
 msgid "Enter a country or city"
 msgstr "Ange land eller ort"
 
-#: ../src/mnp-world-clock.c:415
+#: ../src/mnp-world-clock.c:609
 msgid "Add"
 msgstr "Lägg till"
 
-#: ../src/mnp-datetime.c:178
+#: ../src/mnp-datetime.c:336 ../src/mnp-datetime.c:555
 msgid "Today"
 msgstr "Idag"
 
-#: ../src/mnp-datetime.c:235
+#: ../src/mnp-datetime.c:506
 msgid "Tasks"
 msgstr "Uppgifter"
 
-#: ../src/moblin-alarm-notify.c:43
-msgid "Moblin alarm notify"
-msgstr "Moblin-väckningsinformation"
-
-#: ../src/date-time.schemas.in.h:1
+#: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
 msgstr "Väckningar som lagras i kodad form för användning av väckningsinformationen."
 
-#: ../src/date-time.schemas.in.h:2
+#: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "Lista med väckningar i kort kodad form"
 
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "24- eller 12-timmarsklocka"
+
+#: ../src/mnp-utils.c:453
+msgid "%b %-d (local)"
+msgstr " %b %-d (lokalt)"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "Öppna uppgifter"
+
+#: ../src/mnp-world-clock.c:517
+msgid "24 hour clock"
+msgstr "24-timmarsklocka"
+
+#: ../src/mnp-world-clock.c:463
+msgid "Time"
+msgstr "Tid"
+
+#: ../src/mnp-datetime.c:288
+msgid "Appointments"
+msgstr "Avtalade tider"
+
+#: ../src/mnp-world-clock.c:683
+msgid "Set Time & Date"
+msgstr "Ange tid och datum"
+
+#: ../src/mnp-datetime.c:426
+msgid "Open Appointments"
+msgstr "Öppna avtalade tider"
+
+#~ msgid "OFF"
+#~ msgstr "AV"
+
+#~ msgid "Beep"
+#~ msgstr "Pip"
+
+#~ msgid "Music"
+#~ msgstr "Musik"
+
+#~ msgid "Never"
+#~ msgstr "Aldrig"
+
+#~ msgid "Everyday"
+#~ msgstr "Varje dag"
+
+#~ msgid "Monday - Friday"
+#~ msgstr "måndag - fredag"
+
+#~ msgid "Monday"
+#~ msgstr "måndag"
+
+#~ msgid "Tuesday"
+#~ msgstr "tisdag"
+
+#~ msgid "Wednesday"
+#~ msgstr "onsdag"
+
+#~ msgid "Thursday"
+#~ msgstr "torsdag"
+
+#~ msgid "Friday"
+#~ msgstr "fredag"
+
+#~ msgid "Saturday"
+#~ msgstr "lördag"
+
+#~ msgid "Sunday"
+#~ msgstr "söndag"
+
+#~ msgid "Alarm settings"
+#~ msgstr "Väckningsinställningar"
+
+#~ msgid "ON"
+#~ msgstr "PÅ"
+
+#~ msgid "Repeat"
+#~ msgstr "Upprepa"
+
+#~ msgid "Snooze"
+#~ msgstr "Slumra"
+
+#~ msgid "Sound"
+#~ msgstr "Ljud"
+
+#~ msgid "Delete alarm"
+#~ msgstr "Ta bort väckning"
+
+#~ msgid ""
+#~ "New\n"
+#~ "Alarm"
+#~ msgstr ""
+#~ "Ny\n"
+#~ "väckning"
+
+#~ msgid "Alarm Notify"
+#~ msgstr "Väckningsinformation"
+
+#~ msgid "Alarm at %d:%.2d %s"
+#~ msgstr "Väckning %d:%.2d %s"
+
+#~ msgid "am"
+#~ msgstr "fm"
+
+#~ msgid "pm"
+#~ msgstr "em"
+
+#~ msgid "Moblin Alarm Notify"
+#~ msgstr "Moblin-väckningsinformation"
+
+#~ msgid "AlarmNotifications"
+#~ msgstr "Väckningsinformation"
+
+#~ msgid "MON-FRI"
+#~ msgstr "MÅN-FRE"
+
+#~ msgid "MONDAYS"
+#~ msgstr "MÅNDAGAR"
+
+#~ msgid "TUESDAYS"
+#~ msgstr "TISDAGAR"
+
+#~ msgid "WEDNESDAYS"
+#~ msgstr "ONSDAGAR"
+
+#~ msgid "THURSDAYS"
+#~ msgstr "TORSDAGAR"
+
+#~ msgid "FRIDAYS"
+#~ msgstr "FREDAGAR"
+
+#~ msgid "SATURDAYS"
+#~ msgstr "LÖRDAGAR"
+
+#~ msgid "SUNDAYS"
+#~ msgstr "SÖNDAGAR"
+
+#~ msgid "Moblin alarm notify"
+#~ msgstr "Moblin-väckningsinformation"
