@@ -201,6 +201,8 @@ main (int     argc,
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (panel);
 
+      mpl_panel_client_set_height_request (panel, 600);
+
       launcher = mnb_launcher_new ();
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (launcher_activated_cb), panel);

@@ -1372,6 +1372,7 @@ _constructor (GType                  gtype,
   clutter_container_add_actor (CLUTTER_CONTAINER (left_column), priv->filter_hbox);
 
   label = mx_label_new_with_text (_("Search for applications"));
+  mx_stylable_set_style_class (MX_STYLABLE (label), "tile-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->filter_hbox), label);
 
   priv->filter_entry = mnb_entry_new (_("Search"));
@@ -1380,6 +1381,7 @@ _constructor (GType                  gtype,
   /* Fav apps */
 
   label = mx_label_new_with_text (_("Favorite applications"));
+  mx_stylable_set_style_class (MX_STYLABLE (label), "tile-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (left_column), label);
 
   fav_scroll = mx_scroll_view_new ();

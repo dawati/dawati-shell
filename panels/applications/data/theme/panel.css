@@ -1,14 +1,14 @@
 
 MnbLauncher {
-  border-image: url('panel-background.png') 3;
+  border-image: url("panel-background.png") 0 0 465 0;
   padding: 5;
 }
 
 #panel-label {
   color: #ed2124;
-  font-size: 18;
+  font-size: 22pt;
   font-weight: bold;
-  padding: 6 6 6 18;
+  padding: 6 6 6 15;
 }
 
 #pane {
@@ -19,9 +19,9 @@ MnbLauncher {
 #pane-label {
   border-image: url('content-pane-header.png') 2;
   color: #606261;
-  font-size: 14;
+  font-size: 16pt;
   font-weight: bold;
-  padding: 10 10 10 18;
+  padding: 10 10 10 15;
 }
 
 #pane-content {
@@ -47,11 +47,10 @@ MnbLauncher *#launcher-filter-label {
   color: #3e3e3eff;
 }
 
-MnbLauncher *#launcher-group-label {
+.tile-label {
   font-family: "Droid Sans Bold";
-  font-size: 14;
+  font-size: 14pt;
   color: #7e7e7e;
-  padding: 12 12 6 12;
 }
 
 MnbLauncher *#launcher-fav-grid {
@@ -80,17 +79,17 @@ MnbLauncherButton:hover {
 
 MnbLauncherButton > *#mnb-launcher-button-title {
   color: #3b3b3b;
-  font-size: 13;
+  font-size: 14pt;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-description {
   color: #7e7e7e;
-  font-size: 12;
+  font-size: 14pt;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-comment {
   color: #a2adb6;
-  font-size: 11;
+  font-size: 14pt;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-fav-toggle {
