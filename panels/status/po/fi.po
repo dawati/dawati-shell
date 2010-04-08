@@ -28,24 +28,6 @@ msgstr "Tilapaneeli"
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
 msgstr "Tilaa ei voida päivittää. Palvelu ei ehkä ole käytettävissä tai salasana voi olla väärä."
 
-#: ../src/mps-feed-pane.c:96
-msgid "Unable to update status: You're not online."
-msgstr ""
-
-#: ../src/mps-feed-pane.c:444
-#, c-format
-msgid "We guessed your location as: %f %f"
-msgstr ""
-
-#: ../src/mps-feed-pane.c:448
-#, c-format
-msgid "Your location is being shared as: %f %f "
-msgstr ""
-
-#: ../src/mps-feed-pane.c:455
-msgid "Your location is not being shared"
-msgstr ""
-
 #. Actor creation
 #: ../src/mps-feed-pane.c:551
 msgid "Update"
@@ -67,29 +49,31 @@ msgstr "Lisää uusi web-palvelu"
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Sinulla ei näytä olevan mitään web-palveluja konfiguroituna tai niiden konfiguraatiossa on ongelma. Avaa yllä olevalla painikkeella Omat Web-tilit ja määritä niistä yksi."
 
-#: ../src/mps-geotag-pane.c:215
-msgid "Your location"
-msgstr ""
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "Hei! Tämä on Tila-paneeli. Kun sinulla on web-tili konfiguroituna (kuten Twitter), pystyt täällä tarkastelemaan syötteitä ja päivittämään tilaasi."
 
-#: ../src/mps-geotag-pane.c:485
-msgid "Search"
-msgstr ""
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Tila"
 
-#: ../src/mps-geotag-pane.c:490
-msgid "Where are you?"
-msgstr ""
+#: ../src/mps-feed-pane.c:444
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "Arvelemme, että paikkasi on : %f %f"
 
-#: ../src/mps-geotag-pane.c:492
-msgid "Find me"
-msgstr ""
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Tilaa ei oida päivittää. Et ole verkossa."
 
-#: ../src/mps-geotag-pane.c:499
-msgid "Use location"
-msgstr ""
+#: ../src/mps-feed-pane.c:455
+msgid "Your location is not being shared"
+msgstr "Paikkaasi ei jaeta"
 
-#: ../src/mps-geotag-pane.c:500
-msgid "Don't use location"
-msgstr ""
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr "Paikkasi jaetaan arvolla : %f %f "
 
 #. When the tweet has a location associated with it then this string will
 #. * be <human readable time> from <human readable place name>
@@ -99,15 +83,31 @@ msgstr ""
 #: ../src/mps-tweet-card.c:391
 #, c-format
 msgid "%s from %s"
-msgstr ""
+msgstr " %s kohteesta %s"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr "Hei! Tämä on Tila-paneeli. Kun sinulla on web-tili konfiguroituna (kuten Twitter), pystyt täällä tarkastelemaan syötteitä ja päivittämään tilaasi."
+#: ../src/mps-geotag-pane.c:500
+msgid "Don't use location"
+msgstr "Älä käytä paikkaa"
 
-#: ../src/moblin-panel-status.c:99
-msgid "Status"
-msgstr "Tila"
+#: ../src/mps-geotag-pane.c:215
+msgid "Your location"
+msgstr "Paikkasi"
+
+#: ../src/mps-geotag-pane.c:490
+msgid "Where are you?"
+msgstr "Missä olet?"
+
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "Hae"
+
+#: ../src/mps-geotag-pane.c:499
+msgid "Use location"
+msgstr "Käytä paikkaa"
+
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "Etsi minut"
 
 #~ msgid "Offline"
 #~ msgstr "Poissa linjoilta"
