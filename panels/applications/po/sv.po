@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:29+0000\n"
+"POT-Creation-Date: 2010-04-07 09:39+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -14,18 +14,12 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#. * Fav apps.
-#. 
-#. Label
-#: ../src/moblin-netbook-launcher.c:867
-msgid "Favorite Applications"
-msgstr "Favoritprogram"
-
-#: ../src/moblin-netbook-launcher.c:1430
+#. Panel label
+#: ../src/moblin-netbook-launcher.c:1333
 msgid "Applications"
 msgstr "Program"
 
-#: ../src/moblin-netbook-launcher.c:1441
+#: ../src/moblin-netbook-launcher.c:1377
 msgid "Search"
 msgstr "Sök"
 
@@ -37,3 +31,16 @@ msgstr "program"
 #: ../data/moblin-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Programpanel"
+
+#: ../src/moblin-netbook-launcher.c:1374
+msgid "Search for applications"
+msgstr "Sök efter program"
+
+#: ../src/moblin-netbook-launcher.c:1347
+msgid "Your applications"
+msgstr "Dina program"
+
+#. Fav apps
+#: ../src/moblin-netbook-launcher.c:1382
+msgid "Favorite applications"
+msgstr "Favoritprogram"
