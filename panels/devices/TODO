@@ -2,7 +2,6 @@
 TODO
 ====
 
-* Get rid of gdu code, udisks conditional.
 * Set font sizes according to "Design Audit.pdf"
 * Split out box widget and move into libmoblin-panel.
 * Notify about plugged devices from the devices-tile, do not emit for plugged ones when starting up.
@@ -10,7 +9,5 @@ TODO
 * Implement passive notification (toolbar icon change).
 * Implement remaining notifications.
 * Make sure suspend-on-idle actually works, gconf should come from ux-settings, Ross is looking into it.
-* Improve label on volume slider -- patch MX.
 * Implement keyboard navigation in the folder view.
-* The brightness tile is a compile-time option, off by default.
 

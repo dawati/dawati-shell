@@ -101,6 +101,7 @@ _brightness_changed_cb (GpmBrightnessXRandR *brightness,
                         unsigned int         percentage,
                         MpdBrightnessTile   *self)
 {
+  g_debug ("%s()", __FUNCTION__);
   update_brightness_slider (self);
 }
 
