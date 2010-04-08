@@ -90,7 +90,8 @@ not_too_small (MutterPlugin       *plugin,
       y = (screen_height > height) ? (screen_height - height) / 2 : 0;
     }
 
-  if (info->action_type == ACTION_MOVE_AND_RESIZE)
+  if (info->action_type == ACTION_MOVE ||
+      info->action_type == ACTION_MOVE_AND_RESIZE)
     start_rect = &info->current;
   else
     start_rect = &info->orig;
