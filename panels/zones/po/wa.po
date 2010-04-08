@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-17 09:41+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -16,57 +16,58 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 0.3\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
-msgid "zones"
-msgstr "redjons"
-
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
-
-#: ../src/sw-zone.c:778
-msgid "No applications on this zone"
-msgstr "Nou programe dins cisse redjon"
-
 #: ../data/moblin-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Sicriftôr des redjons"
 
-#: ../src/sw-zone.c:764
-msgid "new zone"
-msgstr "novele redjon"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+msgid "zones"
+msgstr "redjons"
 
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "deus"
+#: ../src/sw-zone.c:797
+msgid "No applications on this zone"
+msgstr "Nou programe dins cisse redjon"
 
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "cwate"
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Redjons"
 
-#: ../src/sw-zone.c:914
-msgid "three"
-msgstr "troes"
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Novele redjon"
 
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "shijh"
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Bondjoû ! Çouchal, c' est l' sicriftôr des Redjons. Cwand vs avoz des programes di drovous, vos les såroz vey, manaedjî eyet î moussî chal."
 
-#: ../src/sw-zone.c:922
-msgid "five"
-msgstr "cénk"
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Redjon %d"
 
-#: ../src/sw-zone.c:934
-msgid "eight"
-msgstr "ût"
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
 
-#: ../src/sw-zone.c:930
-msgid "seven"
-msgstr "sete"
+#~ msgid "two"
+#~ msgstr "deus"
 
-#: ../src/sw-zone.c:906
-msgid "one"
-msgstr "onk"
+#~ msgid "four"
+#~ msgstr "cwate"
+
+#~ msgid "three"
+#~ msgstr "troes"
+
+#~ msgid "six"
+#~ msgstr "shijh"
+
+#~ msgid "five"
+#~ msgstr "cénk"
+
+#~ msgid "eight"
+#~ msgstr "ût"
+
+#~ msgid "seven"
+#~ msgstr "sete"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Efets po Netbook da Moblin"
