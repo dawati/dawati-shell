@@ -18,15 +18,15 @@ MpdFolderButton:hover {
 }
 
 MpdShell {
-  border-image: url('panel-background.png') 3;
+  border-image: url('panel-background.png') 0 0 465 0;
   padding: 5;
 }
 
 #panel-label {
   color: #775aaa;
-  font-size: 18;
+  font-size: 22pt;
   font-weight: bold;
-  padding: 6 6 6 18;
+  padding: 6 6 6 15;
 }
 
 MpdComputerPane, MpdDevicesPane {
@@ -37,9 +37,9 @@ MpdComputerPane, MpdDevicesPane {
 #pane-label {
   border-image: url('content-pane-header.png') 2;
   color: #606261;
-  font-size: 14;
+  font-size: 16pt;
   font-weight: bold;
-  padding: 10 10 10 18;
+  padding: 10 10 10 15;
 }
 
 MpdBatteryTile, MpdBrightnessTile, MpdDiskTile, MpdVolumeTile {

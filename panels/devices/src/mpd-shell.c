@@ -131,6 +131,11 @@ mpd_shell_init (MpdShell *self)
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox), MX_ORIENTATION_HORIZONTAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_PANE_COLUMN_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), hbox,
+                               "expand", true,
+                               "x-fill", true,
+                               "y-fill", true,
+                               NULL);
 
   pane = mpd_computer_pane_new ();
   g_signal_connect (pane, "request-hide",
