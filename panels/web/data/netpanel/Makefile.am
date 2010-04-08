@@ -13,7 +13,12 @@ dist_theme_DATA = \
 	thumbnail_hover.png \
 	thumbnail.png \
 	content-pane-background.png \
-	content-pane-header.png
+	content-pane-header.png \
+	o2_globe.png \
+	o2_history.png \
+	o2_more.png \
+	o2_search.png
+
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
