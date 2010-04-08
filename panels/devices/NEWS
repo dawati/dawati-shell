@@ -1,4 +1,11 @@
 
+Version 0.1.17, 2010-04-08
+
+    Fixes: BMC#556 - Show screen brightness slider depending on gconf value
+    Fixes: MB#477 - [REG] "All Settings" do not open in the front screen
+    Fixes: MBC#427 - No way to access or empty trash from panel
+    l10n: Updates to sv, fi, pl, pt_BR, es, zh_CN
+
 Version 0.1.16, 2010-04-06
 
     Fixes: MBC#497 - Wrong arguments used for launching banshee

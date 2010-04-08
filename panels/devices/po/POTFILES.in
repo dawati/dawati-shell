@@ -14,6 +14,7 @@ src/mpd-computer-tile.c
 src/mpd-default-device-tile.c
 src/mpd-devices-pane.c
 src/mpd-disk-tile.c
+src/mpd-folder-tile.c
 src/mpd-media-import-tile.c
 src/mpd-shell.c
 src/mpd-storage-device-tile.c
