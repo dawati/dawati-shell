@@ -1,21 +1,20 @@
-
+/* Overrode MnbEntry so we need to redeclare its styles apparently */
 MoblinNetbookNetpanel MxButton {
   padding: 7 4;
 }
 
-/* Overrode MnbEntry so we need to redeclare its styles apparently */
 MnbNetpanelBar {
   border-image: url('mpl-entry-bg.png') 5 5 6 5;
-  padding: 7 10 7 10;
+  padding: 0 10 0 10;
 }
 
 MnbNetpanelBar > *.MplEntryEntry {
   border-image: none;
-  font-size: 15;
+  font-size: 13;
 }
 
 MnbNetpanelBar *.MplEntryButton {
-  border-image: url('mpl-entry-separator.png') 0 0 0 3 stretch stretch;
+  border-image: url('mpl-entry-separator.png') 0 0 0 3;
   font-size: 13;
   padding: 0 2 0 10;
   color: #4e3972;
@@ -37,13 +36,14 @@ MnbNetpanelBar *.MplEntryClearButton:hover {
 MoblinNetbookNetpanel
 {
   background-color: #ffffff;
-  padding: 0 5;
+  padding: 1 1;
 }
+
 
 MoblinNetbookNetpanel MxLabel
 {
   font-family: "Droid Sans";
-  font-size: 13px;
+  font-size: 12px;
   color: #6e6e6e;
   padding: 0 4;
 }
@@ -51,7 +51,8 @@ MoblinNetbookNetpanel MxLabel
 MoblinNetbookNetpanel MxLabel#section
 {
   font-family: "Droid Sans Bold";
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: bold;
   color: #6e6e6e;
   padding: 2 16 0;
 }
@@ -59,7 +60,7 @@ MoblinNetbookNetpanel MxLabel#section
 MoblinNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
   font-family: "Droid Sans";
-  font-size: 16px;
+  font-size: 11px;
   color: #595959ff;
   padding: 0 4;
 }
@@ -107,19 +108,40 @@ MoblinNetbookNetpanel MxButton.weblink:active {
 
 MoblinNetbookNetpanel *#netpanel-entrytable
 {
-  background-color: #F5F2FD;
-  padding: 6 24;
-}
-
-MoblinNetbookNetpanel *#netpanel-entrytable > MxLabel
-{
-  font-family: "Droid Sans Bold";
-  font-size: 18px;
-  color: #3e3e3eff;
-  padding: 0 12 0 0;
+  border-image: url('content-pane-header.png') 2;
+  padding: 0 7;
 }
 
 MnbNetpanelScrollview
 {
   padding: 0 12;
+}
+
+#base-pane {
+  border-image: url('panel-background.png') 3;
+  padding: 0 5;
+}
+
+#panel-label {
+  color: #a980ed;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 0 6 6 18;
+}
+
+#pane {
+  border-image: url('content-pane-background.png') 5;
+  padding: 2;
+}
+
+#netpanel-label {
+  border-image: url('content-pane-header.png') 2;
+  color: #606261;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10 12 10 0;
+}
+
+#pane-content {
+  padding: 10 3 10 10;
 }

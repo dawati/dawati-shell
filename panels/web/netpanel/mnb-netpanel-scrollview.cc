@@ -22,9 +22,9 @@
 
 /* FIXME: replace with styles or properties */
 #define MAX_DISPLAY 4
-#define ROW_SPACING 6
-#define COL_SPACING 6
-#define SCROLLBAR_HEIGHT 22
+#define ROW_SPACING 5
+#define COL_SPACING 5
+#define SCROLLBAR_HEIGHT 20
 
 G_DEFINE_TYPE (MnbNetpanelScrollview, mnb_netpanel_scrollview, MX_TYPE_WIDGET)
 

@@ -43,10 +43,10 @@ extern "C" {
 #define NR_FAVORITE 9
 
 /* FIXME: Replace with stylable spacing */
-#define COL_SPACING 6
-#define ROW_SPACING 6
+#define COL_SPACING 5
+#define ROW_SPACING 5
 #define CELL_WIDTH  223
-#define CELL_HEIGHT 111
+#define CELL_HEIGHT 109
 
 #define START_PAGE "moblin://start/"
 
@@ -1139,32 +1139,32 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 
   /* Construct entry table widgets */
 
-  label = MX_WIDGET(mx_label_new_with_text (_("Internet")));
+  label = MX_WIDGET(mx_label_new_with_text (_("Your pages")));
   clutter_actor_set_name (CLUTTER_ACTOR (label), "netpanel-label");
   mx_table_add_actor_with_properties (MX_TABLE (table),
                                         CLUTTER_ACTOR (label),
                                         0, 0,
-                                        "x-expand", FALSE,
+                                        "x-expand", TRUE,
                                         "y-expand", FALSE,
                                         "x-fill", FALSE,
                                         "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.5,
+                                        "x-align", MX_ALIGN_START,
+                                        "y-align", MX_ALIGN_MIDDLE,
                                         NULL);
 
-  priv->entry = mnb_netpanel_bar_new (_("Go"));
+  priv->entry = mnb_netpanel_bar_new (_("Search"));
 
   clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "netpanel-entry");
   clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600);
   mx_table_add_actor_with_properties (MX_TABLE (table),
                                         CLUTTER_ACTOR (priv->entry),
                                         0, 1,
-                                        "x-expand", FALSE,
+                                        "x-expand", TRUE,
                                         "y-expand", FALSE,
                                         "x-fill", FALSE,
                                         "y-fill", FALSE,
-                                        "x-align", 0.0,
-                                        "y-align", 0.5,
+                                        "x-align", MX_ALIGN_END,
+                                        "y-align", MX_ALIGN_MIDDLE,
                                         NULL);
 
   g_signal_connect (priv->entry, "go",

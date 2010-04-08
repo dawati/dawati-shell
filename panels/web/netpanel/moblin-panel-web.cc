@@ -203,15 +203,48 @@ main (int    argc,
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     netpanel = MOBLIN_NETBOOK_NETPANEL (moblin_netbook_netpanel_new ());
     moblin_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
-    clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+
+    ClutterActor  *content_pane;
+    ClutterActor  *base_pane;
+    ClutterActor  *label;
+
+    base_pane = mx_box_layout_new();
+    clutter_actor_set_name (base_pane, "base-pane");
+    mx_box_layout_set_orientation (MX_BOX_LAYOUT (base_pane), MX_ORIENTATION_VERTICAL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage), base_pane);
+
+    label = mx_label_new_with_text (_("Internet"));
+    clutter_actor_set_name (label, "panel-label");
+    clutter_container_add_actor (CLUTTER_CONTAINER (base_pane), label);
+
+    content_pane = mx_box_layout_new ();
+    clutter_actor_set_name (content_pane, "pane");
+    mx_box_layout_set_orientation (MX_BOX_LAYOUT (content_pane), MX_ORIENTATION_VERTICAL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (base_pane), content_pane);
+    clutter_container_child_set (CLUTTER_CONTAINER (base_pane), content_pane,
+                                 "expand", TRUE,
+                                 "x-fill", TRUE,
+                                 "y-fill", TRUE,
+                                 NULL);
+
+    clutter_container_add_actor (CLUTTER_CONTAINER (content_pane),
                                  CLUTTER_ACTOR (netpanel));
+    clutter_container_child_set (CLUTTER_CONTAINER (content_pane), CLUTTER_ACTOR (netpanel),
+                                 "expand", TRUE,
+                                 "x-fill", TRUE,
+                                 "y-fill", TRUE,
+                                 NULL);
+
     moblin_netbook_netpanel_set_panel_client (netpanel, client);
     g_signal_connect (client,
                       "set-size",
                       (GCallback)_client_set_size_cb,
-                      netpanel);
+                      base_pane);
   } else {
     Window xwin;
+    ClutterActor  *content_pane;
+    ClutterActor  *base_pane;
+    ClutterActor  *label;
 
     stage = clutter_stage_get_default ();
     clutter_actor_realize (stage);
@@ -220,10 +253,36 @@ main (int    argc,
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
     netpanel = MOBLIN_NETBOOK_NETPANEL (moblin_netbook_netpanel_new ());
     moblin_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
-    clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+
+    base_pane = mx_box_layout_new();
+    clutter_actor_set_name (base_pane, "base-pane");
+    mx_box_layout_set_orientation (MX_BOX_LAYOUT (base_pane), MX_ORIENTATION_VERTICAL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage), base_pane);
+
+    label = mx_label_new_with_text (_("Internet"));
+    clutter_actor_set_name (label, "panel-label");
+    clutter_container_add_actor (CLUTTER_CONTAINER (base_pane), label);
+
+    content_pane = mx_box_layout_new ();
+    clutter_actor_set_name (content_pane, "pane");
+    mx_box_layout_set_orientation (MX_BOX_LAYOUT (content_pane), MX_ORIENTATION_VERTICAL);
+    clutter_container_add_actor (CLUTTER_CONTAINER (base_pane), content_pane);
+    clutter_container_child_set (CLUTTER_CONTAINER (base_pane), content_pane,
+                                 "expand", TRUE,
+                                 "x-fill", TRUE,
+                                 "y-fill", TRUE,
+                                 NULL);
+
+    clutter_container_add_actor (CLUTTER_CONTAINER (content_pane),
                                  CLUTTER_ACTOR (netpanel));
-    clutter_actor_set_size ((ClutterActor *)netpanel, 1016, 500);
+    clutter_container_child_set (CLUTTER_CONTAINER (content_pane), CLUTTER_ACTOR (netpanel),
+                                 "expand", TRUE,
+                                 "x-fill", TRUE,
+                                 "y-fill", TRUE,
+                                 NULL);
     clutter_actor_set_size (stage, 1016, 500);
+    clutter_actor_set_size (base_pane, 1016, 500);
+    clutter_actor_show (CLUTTER_ACTOR (netpanel));
     clutter_actor_show_all (stage);
   }
 
