@@ -96,6 +96,7 @@ struct _MoblinNetbookPluginPrivate
   gboolean               compositor_disabled : 1;
   gboolean               netbook_mode        : 1;
   gboolean               screen_saver_dpms   : 1;
+  gboolean               scaled_background   : 1;
 
   /* Background desktop texture */
   ClutterActor          *desktop_tex;

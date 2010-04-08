@@ -74,6 +74,7 @@
 #define NOTIFICATION_KEY "MNB-MW-urgent-notification"
 #define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
+#define KEY_BG_OPTIONS BG_KEY_DIR "/picture_options"
 #define THEME_KEY_DIR "/apps/metacity/general"
 #define KEY_THEME THEME_KEY_DIR "/theme"
 
@@ -2384,8 +2385,15 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 {
   static CoglHandle material = COGL_INVALID_HANDLE;
 
+  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
   CoglHandle paint_tex;
   guint tex_width, tex_height;
+  gfloat bw, bh;                /* base texture size        */
+  gfloat aw, ah;                /* allocation texture size  */
+  gfloat vw = 0.5, vh = 0.5;    /* scaled texture half-size */
+
   ClutterActorBox alloc;
   GdkRegion *visible_region;
   gboolean retval = TRUE;
@@ -2403,13 +2411,13 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 
   paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (actor));
 
+  if (paint_tex == COGL_INVALID_HANDLE)
+    goto finish_up;
+
   tex_width = cogl_texture_get_width (paint_tex);
   tex_height = cogl_texture_get_height (paint_tex);
 
   if (tex_width == 0 || tex_height == 0) /* no contents yet */
-    goto finish_up;
-
-  if (paint_tex == COGL_INVALID_HANDLE)
     goto finish_up;
 
   if (material == COGL_INVALID_HANDLE)
@@ -2428,6 +2436,30 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 
   clutter_actor_get_allocation_box (actor, &alloc);
 
+  bw = tex_width;
+  bh = tex_height;
+
+  aw = alloc.x2 - alloc.x1;
+  ah = alloc.y2 - alloc.y1;
+
+  if (priv->scaled_background)
+    {
+      /*
+       * We implement the center, scale without distortion and crop algorithm
+       * that is used in PengeMagicTexture.
+       */
+      if ((float)bw/bh < (float)aw/ah)
+        {
+          /* fit width */
+          vh = (((float)ah * bw) / ((float)aw * bh)) / 2;
+        }
+      else
+        {
+          /* fit height */
+          vw = (((float)aw * bh) / ((float)ah * bw)) / 2;
+        }
+    }
+
   if (!gdk_region_empty (visible_region))
     {
       GdkRectangle *rects;
@@ -2445,6 +2477,23 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
 	{
 	  g_free (rects);
 
+          if (priv->scaled_background)
+            {
+              gfloat tx1, tx2, ty1, ty2;
+
+              tx1 = (0.5 - vw);
+              tx2 = (0.5 + vw);
+              ty1 = (0.5 - vh);
+              ty2 = (0.5 + vh);
+
+              cogl_rectangle_with_texture_coords (0, 0,
+                                                  alloc.x2 - alloc.x1,
+                                                  alloc.y2 - alloc.y1,
+                                                  tx1, ty1,
+                                                  tx2, ty2);
+              return TRUE;
+            }
+
           /*
            * This is the simple case; we return FALSE, allowing the paint to
            * reach the normal texture paint method.
@@ -2454,19 +2503,55 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
       else
 	{
 	  float coords[MAX_RECTS * 8];
-	  for (i = 0; i < n_rects; i++)
-	    {
-	      GdkRectangle *rect = &rects[i];
 
-	      coords[i * 8 + 0] = rect->x;
-	      coords[i * 8 + 1] = rect->y;
-	      coords[i * 8 + 2] = rect->x + rect->width;
-	      coords[i * 8 + 3] = rect->y + rect->height;
-	      coords[i * 8 + 4] = rect->x / (gfloat)tex_width;
-	      coords[i * 8 + 5] = rect->y / (gfloat)tex_height;
-	      coords[i * 8 + 6] = (rect->x + rect->width) / (gfloat)tex_width;
-	      coords[i * 8 + 7] = (rect->y + rect->height) / (gfloat)tex_height;
-	    }
+          if (priv->scaled_background)
+            {
+              for (i = 0; i < n_rects; i++)
+                {
+                  GdkRectangle *rect = &rects[i];
+
+                  /*
+                   * The texture coordinates are first normalized for the
+                   * allocation size, then scaled by the scaled texture width,
+                   * and finally translated by the scaled texture offset (which,
+                   * since the texture is centered, is 1/2 - half_size).
+                   */
+                  gfloat x1 = rect->x / aw;
+                  gfloat x2 = (rect->x + rect->width) / aw;
+                  gfloat y1 = rect->y / ah;
+                  gfloat y2 = (rect->y + rect->height)/ ah;
+
+                  x1 = x1 * 2 * vw + (0.5 - vw);
+                  x2 = x2 * 2 * vw + (0.5 - vw);
+                  y1 = y1 * 2 * vh + (0.5 - vh);
+                  y2 = y2 * 2 * vh + (0.5 - vh);
+
+                  coords[i * 8 + 0] = rect->x;
+                  coords[i * 8 + 1] = rect->y;
+                  coords[i * 8 + 2] = rect->x + rect->width;
+                  coords[i * 8 + 3] = rect->y + rect->height;
+                  coords[i * 8 + 4] = x1;
+                  coords[i * 8 + 5] = y1;
+                  coords[i * 8 + 6] = x2;
+                  coords[i * 8 + 7] = y2;
+                }
+            }
+          else
+            {
+              for (i = 0; i < n_rects; i++)
+                {
+                  GdkRectangle *rect = &rects[i];
+
+                  coords[i * 8 + 0] = rect->x;
+                  coords[i * 8 + 1] = rect->y;
+                  coords[i * 8 + 2] = rect->x + rect->width;
+                  coords[i * 8 + 3] = rect->y + rect->height;
+                  coords[i * 8 + 4] = rect->x / bw;
+                  coords[i * 8 + 5] = rect->y / bh;
+                  coords[i * 8 + 6] = (rect->x + rect->width)  / bw;
+                  coords[i * 8 + 7] = (rect->y + rect->height) / bh;
+                }
+            }
 
 	  g_free (rects);
 
@@ -2570,24 +2655,47 @@ setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
 }
 
 static void
-desktop_filename_changed_cb (GConfClient *client,
-                             guint        cnxn_id,
-                             GConfEntry  *entry,
-                             gpointer     data)
+desktop_background_changed_cb (GConfClient *client,
+                               guint        cnxn_id,
+                               GConfEntry  *entry,
+                               gpointer     data)
 {
-  MutterPlugin *plugin = MUTTER_PLUGIN (data);
-  const gchar  *filename = NULL;
-  GConfValue   *value;
+  MutterPlugin               *plugin = MUTTER_PLUGIN (data);
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  const gchar                *filename = NULL;
+  GConfValue                 *value;
+  const gchar                *key;
 
+  if (!entry)
+    return;
+
+  key   = gconf_entry_get_key (entry);
   value = gconf_entry_get_value (entry);
 
-  if (value)
-    filename = gconf_value_get_string (value);
+  if (!strcmp (key, KEY_BG_FILENAME))
+    {
+      if (value)
+        filename = gconf_value_get_string (value);
 
-  if (!filename || !*filename)
-    filename = THEMEDIR "/panel/background-tile.png";
+      if (!filename || !*filename)
+        filename = THEMEDIR "/panel/background-tile.png";
 
-  setup_desktop_background (plugin, filename);
+      setup_desktop_background (plugin, filename);
+    }
+  else if (value && !strcmp (key, KEY_BG_OPTIONS))
+    {
+      g_return_if_fail (value->type == GCONF_VALUE_STRING);
+
+      const gchar *opt = gconf_value_get_string (value);
+
+      /*
+       * Anything other than 'wallpaper' is scaled
+       */
+      if (strcmp (opt, "wallpaper"))
+        priv->scaled_background = TRUE;
+      else
+        priv->scaled_background = FALSE;
+    }
 }
 
 static void
@@ -2609,11 +2717,12 @@ desktop_background_init (MutterPlugin *plugin)
     }
 
   gconf_client_notify_add (priv->gconf_client,
-                           KEY_BG_FILENAME,
-                           desktop_filename_changed_cb,
+                           BG_KEY_DIR,
+                           desktop_background_changed_cb,
                            plugin,
                            NULL,
                            &error);
+
 
   if (error)
     {
@@ -2626,6 +2735,7 @@ desktop_background_init (MutterPlugin *plugin)
    * Read the background via our notify func
    */
   gconf_client_notify (priv->gconf_client, KEY_BG_FILENAME);
+  gconf_client_notify (priv->gconf_client, KEY_BG_OPTIONS);
 }
 
 /*
