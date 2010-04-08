@@ -22,6 +22,8 @@
 
 #include <gconf/gconf-client.h>
 
+#define ZONES_PANEL_TOOLTIP _("zones")
+
 static MplPanelClient *client = NULL;
 
 typedef struct
@@ -511,7 +513,7 @@ main (int argc, char **argv)
   if (!standalone)
     {
       client = mpl_panel_clutter_new ("zones",
-                                      _("zones"),
+                                      ZONES_PANEL_TOOLTIP,
                                       NULL,
                                       "zones-button",
                                       TRUE);
@@ -529,7 +531,7 @@ main (int argc, char **argv)
                         (GCallback)_client_set_size_cb,
                         data);
 
-      mpl_panel_client_request_tooltip (client, "zones");
+      mpl_panel_client_request_tooltip (client, ZONES_PANEL_TOOLTIP);
 
       g_signal_connect_swapped (data->stage, "hide", G_CALLBACK (hide), data);
       g_signal_connect_swapped (data->stage, "show", G_CALLBACK (show), data);
