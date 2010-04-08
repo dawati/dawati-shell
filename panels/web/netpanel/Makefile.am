@@ -41,6 +41,14 @@ service_DATA = org.moblin.UX.Shell.Panels.internet.service
 autostartdir = $(datadir)/mutter-moblin/panels
 autostart_DATA = moblin-panel-internet.desktop
 
+@INTLTOOL_DESKTOP_RULE@
+
+desktopfiles_in_files=moblin-panel-internet.desktop.in
+desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
+
+%.desktop.in: %.desktop.in.in Makefile
+	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
+
 EXTRA_DIST = $(service_in_files) $(autostart_DATA)
 
 DISTCLEANFILES = org.moblin.UX.Shell.Panels.internet.service
