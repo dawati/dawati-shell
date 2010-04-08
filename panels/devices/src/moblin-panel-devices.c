@@ -38,8 +38,9 @@ static void
 _shell_request_hide_cb (MpdShell        *shell,
                         MplPanelClient  *panel)
 {
-  g_debug ("%s()", __FUNCTION__);
-  mpl_panel_client_hide (panel);
+  g_debug ("%s() panel=%p", __FUNCTION__, panel);
+  if (panel)
+    mpl_panel_client_hide (panel);
 }
 
 static void
@@ -130,14 +131,16 @@ main (int     argc,
     ClutterActor *stage = clutter_stage_get_default ();
 
     shell = mpd_shell_new ();
-    clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
 
+    g_signal_connect (shell, "request-hide",
+                      G_CALLBACK (_shell_request_hide_cb), NULL);
     g_signal_connect (stage, "notify::width",
                       G_CALLBACK (_stage_width_notify_cb), shell);
     g_signal_connect (stage, "notify::height",
                       G_CALLBACK (_stage_height_notify_cb), shell);
 
     clutter_actor_set_size (stage, MPD_SHELL_WIDTH, MPD_SHELL_HEIGHT);
+    clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
     clutter_actor_show_all (stage);
 
   } else {

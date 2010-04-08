@@ -50,7 +50,7 @@ static void
 _tile_request_hide_cb (ClutterActor     *tile,
                        MpdComputerPane  *self)
 {
-  g_debug ("%s()", __FUNCTION__);
+  g_signal_emit_by_name (self, "request-hide");
 }
 
 static void
