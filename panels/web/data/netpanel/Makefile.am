@@ -11,7 +11,9 @@ dist_theme_DATA = \
 	newtab-thumbnail.png \
 	placeholder-bg.png \
 	thumbnail_hover.png \
-	thumbnail.png
+	thumbnail.png \
+	content-pane-background.png \
+	content-pane-header.png
 
 # Manage mutter-moblin's texture cache.
 if ENABLE_CACHE
