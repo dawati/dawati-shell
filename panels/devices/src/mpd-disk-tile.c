@@ -111,7 +111,7 @@ mpd_disk_tile_init (MpdDiskTile *self)
   ClutterActor  *vbox;
   GError        *error = NULL;
 
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_SPACING);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_ICON_SPACING);
 
   icon = clutter_texture_new_from_file (PKGICONDIR "/computer-icon.png",
                                         &error);

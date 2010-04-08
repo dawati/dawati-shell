@@ -90,8 +90,7 @@ create_seperator (void)
 static void
 mpd_computer_tile_init (MpdComputerTile *self)
 {
-  ClutterActor  *button;
-  ClutterActor  *tile;
+  ClutterActor *tile;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_COMPUTER_TILE_SPACING);
@@ -109,10 +108,10 @@ mpd_computer_tile_init (MpdComputerTile *self)
   tile = mpd_volume_tile_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
-
   if (g_getenv ("MOBLIN_PANEL_DEVICES_SHOW_BRIGHTNESS"))
   {
+    clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
+
     tile = mpd_brightness_tile_new ();
     clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
     clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
@@ -120,20 +119,7 @@ mpd_computer_tile_init (MpdComputerTile *self)
                                  "x-fill", true,
                                  "y-fill", false,
                                  NULL);
-
-    clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
   }
-
-  /* Put button inside Bin so we can have right hand side spacing */
-  tile = mx_frame_new ();
-  clutter_actor_set_name (tile, "settings-button-tile");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
-                               "expand", false,
-                               "x-align", MX_ALIGN_END,
-                               "x-fill", false,
-                               "y-fill", false,
-                               NULL);
 }
 
 ClutterActor *

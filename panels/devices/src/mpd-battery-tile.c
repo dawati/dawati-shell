@@ -130,7 +130,7 @@ mpd_battery_tile_init (MpdBatteryTile *self)
   MpdBatteryTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor *text;
 
-  mx_table_set_column_spacing (MX_TABLE (self), MPD_TILE_SPACING);
+  mx_table_set_column_spacing (MX_TABLE (self), MPD_TILE_ICON_SPACING);
 
   priv->icon = clutter_texture_new ();
   /* I'd really like to know why that doesn't work here,

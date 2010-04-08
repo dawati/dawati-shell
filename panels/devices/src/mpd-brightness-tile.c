@@ -25,6 +25,7 @@
 #include "gpm-brightness-xrandr.h"
 #include "mpd-gobject.h"
 #include "mpd-brightness-tile.h"
+#include "mpd-shell-defines.h"
 
 G_DEFINE_TYPE (MpdBrightnessTile, mpd_brightness_tile, MX_TYPE_BOX_LAYOUT)
 
@@ -33,6 +34,7 @@ G_DEFINE_TYPE (MpdBrightnessTile, mpd_brightness_tile, MX_TYPE_BOX_LAYOUT)
 
 typedef struct
 {
+  ClutterActor        *bars;
   MxSlider            *slider;
   GpmBrightnessXRandR *brightness;
 } MpdBrightnessTilePrivate;
@@ -42,6 +44,49 @@ update_display_brightness (MpdBrightnessTile *self);
 
 static void
 update_brightness_slider (MpdBrightnessTile *self);
+
+static char *
+build_icon_name_15 (char const *template,
+                    float       value,
+                    char const *suffix)
+{
+  char *name;
+
+  value = CLAMP (value, 0.0, 1.0);
+
+  if (value < 0.067)
+    name = g_strdup_printf ("%s7.%s", template, suffix);
+  else if (value < 0.133)
+    name = g_strdup_printf ("%s13.%s", template, suffix);
+  else if (value < 0.200)
+    name = g_strdup_printf ("%s20.%s", template, suffix);
+  else if (value < 0.267)
+    name = g_strdup_printf ("%s27.%s", template, suffix);
+  else if (value < 0.333)
+    name = g_strdup_printf ("%s33.%s", template, suffix);
+  else if (value < 0.400)
+    name = g_strdup_printf ("%s40.%s", template, suffix);
+  else if (value < 0.467)
+    name = g_strdup_printf ("%s47.%s", template, suffix);
+  else if (value < 0.533)
+    name = g_strdup_printf ("%s53.%s", template, suffix);
+  else if (value < 0.600)
+    name = g_strdup_printf ("%s60.%s", template, suffix);
+  else if (value < 0.667)
+    name = g_strdup_printf ("%s67.%s", template, suffix);
+  else if (value < 0.733)
+    name = g_strdup_printf ("%s73.%s", template, suffix);
+  else if (value < 0.800)
+    name = g_strdup_printf ("%s80.%s", template, suffix);
+  else if (value < 0.867)
+    name = g_strdup_printf ("%s87.%s", template, suffix);
+  else if (value < 0.933)
+    name = g_strdup_printf ("%s93.%s", template, suffix);
+  else
+    name = g_strdup_printf ("%s100.%s", template, suffix);
+
+  return name;
+}
 
 static void
 _brightness_slider_value_notify_cb (MxSlider          *slider,
@@ -83,20 +128,51 @@ static void
 mpd_brightness_tile_init (MpdBrightnessTile *self)
 {
   MpdBrightnessTilePrivate *priv = GET_PRIVATE (self);
-  ClutterActor *label;
+  ClutterActor  *label;
+  ClutterActor  *hbox;
+  ClutterActor  *icon;
+  ClutterActor  *vbox;
+  GError        *error = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_TILE_HEADER_SPACING);
 
+  /* First row. */
   label = mx_label_new_with_text (_("Netbook brightness"));
   clutter_actor_set_name (label, "brightness-tile-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
+  /* Second row. */
+  hbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_TILE_ICON_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
+
+  icon = clutter_texture_new_from_file (PKGICONDIR "/brightness-icon.png",
+                                        &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  } else {
+    clutter_texture_set_sync_size (CLUTTER_TEXTURE (icon), true);
+    clutter_container_add_actor (CLUTTER_CONTAINER (hbox), icon);
+  }
+
+  vbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (vbox), MPD_TILE_BAR_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), vbox);
+
+  priv->bars = clutter_texture_new ();
+  clutter_texture_set_sync_size (CLUTTER_TEXTURE (priv->bars), true);
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), priv->bars);
+
   priv->slider = (MxSlider *) mx_slider_new ();
   g_signal_connect (priv->slider, "notify::value",
                     G_CALLBACK (_brightness_slider_value_notify_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self),
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox),
                                CLUTTER_ACTOR (priv->slider));
-  clutter_container_child_set (CLUTTER_CONTAINER (self),
+  clutter_container_child_set (CLUTTER_CONTAINER (vbox),
                                CLUTTER_ACTOR (priv->slider),
                                 "expand", true,
                                 "x-fill", true,
@@ -114,6 +190,32 @@ ClutterActor *
 mpd_brightness_tile_new (void)
 {
   return g_object_new (MPD_TYPE_BRIGHTNESS_TILE, NULL);
+}
+
+static void
+update_brightness_bars (MpdBrightnessTile *self)
+{
+  MpdBrightnessTilePrivate *priv = GET_PRIVATE (self);
+  char          *icon_file;
+  GError        *error = NULL;
+  unsigned int   percentage;
+  bool           ret;
+
+  ret = gpm_brightness_xrandr_get (priv->brightness, &percentage);
+  g_return_if_fail (ret);
+
+  icon_file = build_icon_name_15 (PKGICONDIR "/brightness-bars-",
+                                  percentage / 100.0, "png");
+  clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->bars),
+                                 icon_file,
+                                 &error);
+  g_free (icon_file);
+
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
 }
 
 static void
@@ -138,6 +240,7 @@ update_display_brightness (MpdBrightnessTile *self)
   g_signal_connect (priv->brightness, "brightness-changed",
                     G_CALLBACK (_brightness_changed_cb), self);
 
+  update_brightness_bars (self);
 }
 
 static void
@@ -161,5 +264,7 @@ update_brightness_slider (MpdBrightnessTile *self)
 
   g_signal_connect (priv->slider, "notify::value",
                     G_CALLBACK (_brightness_slider_value_notify_cb), self);
+
+  update_brightness_bars (self);
 }
 

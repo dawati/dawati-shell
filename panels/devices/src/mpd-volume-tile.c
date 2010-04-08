@@ -368,7 +368,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
 
   /* Second row. */
   hbox = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_TILE_SPACING);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_TILE_ICON_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
 
   priv->icon = clutter_texture_new ();

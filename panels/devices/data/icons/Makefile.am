@@ -8,6 +8,22 @@ dist_icons_DATA = \
   battery-icon-100.png \
   battery-icon-missing.png \
   battery-icon-plugged.png \
+  brightness-bars-100.png \
+  brightness-bars-13.png \
+  brightness-bars-20.png \
+  brightness-bars-27.png \
+  brightness-bars-33.png \
+  brightness-bars-40.png \
+  brightness-bars-47.png \
+  brightness-bars-53.png \
+  brightness-bars-60.png \
+  brightness-bars-67.png \
+  brightness-bars-73.png \
+  brightness-bars-7.png \
+  brightness-bars-80.png \
+  brightness-bars-87.png \
+  brightness-bars-93.png \
+  brightness-icon.png \
   computer-icon.png \
   device-usb.png \
   directory-documents.png \
