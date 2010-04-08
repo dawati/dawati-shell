@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-10 10:36+0000\n"
+"POT-Creation-Date: 2010-04-08 10:28+0000\n"
 "PO-Revision-Date: 2010-03-12 11:06-0700\n"
 "Last-Translator: KC Lee <kushylee@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-date-time.c:104
+#: ../src/moblin-panel-date-time.c:110
 msgid "Date/Time"
 msgstr "날짜/시간"
 
@@ -27,108 +27,13 @@ msgstr "날짜 및 시간 패널"
 msgid "date and time"
 msgstr "날짜 및 시간"
 
-#: ../src/mnp-alarm-dialog.c:58
-msgid "OFF"
-msgstr "끔"
-
-#: ../src/mnp-alarm-dialog.c:59
-msgid "Beep"
-msgstr "경보"
-
-#: ../src/mnp-alarm-dialog.c:60
-msgid "Music"
-msgstr "음악"
-
-#: ../src/mnp-alarm-dialog.c:67
-#: ../src/mnp-alarm-instance.c:52
-msgid "Never"
-msgstr "결코"
-
-#: ../src/mnp-alarm-dialog.c:68
-#: ../src/mnp-alarm-instance.c:53
-#: ../src/mnp-alarm-tile.c:36
-msgid "Everyday"
-msgstr "매일"
-
-#: ../src/mnp-alarm-dialog.c:69
-#: ../src/mnp-alarm-instance.c:54
-msgid "Monday - Friday"
-msgstr "월-금"
-
-#: ../src/mnp-alarm-dialog.c:70
-#: ../src/mnp-alarm-instance.c:55
-msgid "Monday"
-msgstr "월"
-
-#: ../src/mnp-alarm-dialog.c:71
-#: ../src/mnp-alarm-instance.c:56
-msgid "Tuesday"
-msgstr "화"
-
-#: ../src/mnp-alarm-dialog.c:72
-#: ../src/mnp-alarm-instance.c:57
-msgid "Wednesday"
-msgstr "수"
-
-#: ../src/mnp-alarm-dialog.c:73
-#: ../src/mnp-alarm-instance.c:58
-msgid "Thursday"
-msgstr "목"
-
-#: ../src/mnp-alarm-dialog.c:74
-#: ../src/mnp-alarm-instance.c:59
-msgid "Friday"
-msgstr "금"
-
-#: ../src/mnp-alarm-dialog.c:75
-#: ../src/mnp-alarm-instance.c:60
-msgid "Saturday"
-msgstr "토"
-
-#: ../src/mnp-alarm-dialog.c:76
-#: ../src/mnp-alarm-instance.c:61
-msgid "Sunday"
-msgstr "일"
-
-#: ../src/mnp-alarm-dialog.c:175
-msgid "Alarm settings"
-msgstr "경보 설정"
-
-#: ../src/mnp-alarm-dialog.c:229
-msgid "ON"
-msgstr "켬"
-
-#: ../src/mnp-alarm-dialog.c:322
-msgid "Repeat"
-msgstr "반복"
-
-#: ../src/mnp-alarm-dialog.c:352
-msgid "Snooze"
-msgstr "일시 정지"
-
-#: ../src/mnp-alarm-dialog.c:394
-msgid "Sound"
-msgstr "소리"
-
-#: ../src/mnp-alarm-dialog.c:468
-msgid "Delete alarm"
-msgstr "경보 삭제"
-
-#: ../src/mnp-alarms.c:201
-msgid ""
-"New\n"
-"Alarm"
-msgstr ""
-"새로운\n"
-"경보"
-
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format
 #. * (eg, like in the US: 8:10 am), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:362
+#: ../src/mnp-utils.c:422
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -137,106 +42,183 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:370
+#: ../src/mnp-utils.c:430
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:384
+#: ../src/mnp-utils.c:445
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (어제)"
 
-#: ../src/mnp-utils.c:386
+#: ../src/mnp-utils.c:447
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (내일)"
 
-#. Translators: This is a strftime format string.
-#. * It is used to display in Aug 6
-#: ../src/mnp-utils.c:392
+#: ../src/mnp-utils.c:455
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-alarm-instance.c:290
-msgid "Alarm Notify"
-msgstr "경보 통보"
-
-#: ../src/mnp-alarm-instance.c:293
-#, c-format
-msgid "Alarm at %d:%.2d %s"
-msgstr "경보 시간 %d:%.2d %s"
-
-#: ../src/mnp-alarm-instance.c:293
-msgid "am"
-msgstr "오전"
-
-#: ../src/mnp-alarm-instance.c:293
-msgid "pm"
-msgstr "오후"
-
-#: ../src/mnp-alarm-instance.c:294
-msgid "Moblin Alarm Notify"
-msgstr "Moblin 경보 통보"
-
-#: ../src/mnp-alarm-instance.c:296
-msgid "AlarmNotifications"
-msgstr "AlarmNotifications"
-
-#: ../src/mnp-alarm-tile.c:37
-msgid "MON-FRI"
-msgstr "월-금"
-
-#: ../src/mnp-alarm-tile.c:38
-msgid "MONDAYS"
-msgstr "월요일"
-
-#: ../src/mnp-alarm-tile.c:39
-msgid "TUESDAYS"
-msgstr "화요일"
-
-#: ../src/mnp-alarm-tile.c:40
-msgid "WEDNESDAYS"
-msgstr "수요일"
-
-#: ../src/mnp-alarm-tile.c:41
-msgid "THURSDAYS"
-msgstr "목요일"
-
-#: ../src/mnp-alarm-tile.c:42
-msgid "FRIDAYS"
-msgstr "금요일"
-
-#: ../src/mnp-alarm-tile.c:43
-msgid "SATURDAYS"
-msgstr "토요일"
-
-#: ../src/mnp-alarm-tile.c:44
-msgid "SUNDAYS"
-msgstr "일요일"
-
-#: ../src/mnp-world-clock.c:400
+#: ../src/mnp-world-clock.c:586
 msgid "Enter a country or city"
 msgstr "국가 또는 도시를 입력하십시오."
 
-#: ../src/mnp-world-clock.c:415
+#: ../src/mnp-world-clock.c:609
 msgid "Add"
 msgstr "추가"
 
-#: ../src/mnp-datetime.c:178
+#: ../src/mnp-datetime.c:336 ../src/mnp-datetime.c:555
 msgid "Today"
 msgstr "오늘"
 
-#: ../src/mnp-datetime.c:235
+#: ../src/mnp-datetime.c:506
 msgid "Tasks"
 msgstr "업무"
 
-#: ../src/moblin-alarm-notify.c:43
-msgid "Moblin alarm notify"
-msgstr "Moblin 경보 통보"
-
-#: ../src/date-time.schemas.in.h:1
+#: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
 msgstr "경보가 경보 통보자가 사용할 수 있도록 암호화된 형식으로 저장되었습니다."
 
-#: ../src/date-time.schemas.in.h:2
+#: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "짧은 암호 형식의 경보 목록"
 
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "24시간 시계 또는 12 시간 시계"
+
+#: ../src/mnp-utils.c:453
+msgid "%b %-d (local)"
+msgstr "%b %-d (지역)"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "업무 열기"
+
+#: ../src/mnp-world-clock.c:517
+msgid "24 hour clock"
+msgstr "24 시간 시계"
+
+#: ../src/mnp-world-clock.c:463
+msgid "Time"
+msgstr "시간"
+
+#: ../src/mnp-datetime.c:288
+msgid "Appointments"
+msgstr "약속"
+
+#: ../src/mnp-world-clock.c:683
+msgid "Set Time & Date"
+msgstr "시간 및 날짜 설정"
+
+#: ../src/mnp-datetime.c:426
+msgid "Open Appointments"
+msgstr "약속 열기"
+
+#~ msgid "OFF"
+#~ msgstr "끔"
+
+#~ msgid "Beep"
+#~ msgstr "경보"
+
+#~ msgid "Music"
+#~ msgstr "음악"
+
+#~ msgid "Never"
+#~ msgstr "결코"
+
+#~ msgid "Everyday"
+#~ msgstr "매일"
+
+#~ msgid "Monday - Friday"
+#~ msgstr "월-금"
+
+#~ msgid "Monday"
+#~ msgstr "월"
+
+#~ msgid "Tuesday"
+#~ msgstr "화"
+
+#~ msgid "Wednesday"
+#~ msgstr "수"
+
+#~ msgid "Thursday"
+#~ msgstr "목"
+
+#~ msgid "Friday"
+#~ msgstr "금"
+
+#~ msgid "Saturday"
+#~ msgstr "토"
+
+#~ msgid "Sunday"
+#~ msgstr "일"
+
+#~ msgid "Alarm settings"
+#~ msgstr "경보 설정"
+
+#~ msgid "ON"
+#~ msgstr "켬"
+
+#~ msgid "Repeat"
+#~ msgstr "반복"
+
+#~ msgid "Snooze"
+#~ msgstr "일시 정지"
+
+#~ msgid "Sound"
+#~ msgstr "소리"
+
+#~ msgid "Delete alarm"
+#~ msgstr "경보 삭제"
+
+#~ msgid ""
+#~ "New\n"
+#~ "Alarm"
+#~ msgstr ""
+#~ "새로운\n"
+#~ "경보"
+
+#~ msgid "Alarm Notify"
+#~ msgstr "경보 통보"
+
+#~ msgid "Alarm at %d:%.2d %s"
+#~ msgstr "경보 시간 %d:%.2d %s"
+
+#~ msgid "am"
+#~ msgstr "오전"
+
+#~ msgid "pm"
+#~ msgstr "오후"
+
+#~ msgid "Moblin Alarm Notify"
+#~ msgstr "Moblin 경보 통보"
+
+#~ msgid "AlarmNotifications"
+#~ msgstr "AlarmNotifications"
+
+#~ msgid "MON-FRI"
+#~ msgstr "월-금"
+
+#~ msgid "MONDAYS"
+#~ msgstr "월요일"
+
+#~ msgid "TUESDAYS"
+#~ msgstr "화요일"
+
+#~ msgid "WEDNESDAYS"
+#~ msgstr "수요일"
+
+#~ msgid "THURSDAYS"
+#~ msgstr "목요일"
+
+#~ msgid "FRIDAYS"
+#~ msgstr "금요일"
+
+#~ msgid "SATURDAYS"
+#~ msgstr "토요일"
+
+#~ msgid "SUNDAYS"
+#~ msgstr "일요일"
+
+#~ msgid "Moblin alarm notify"
+#~ msgstr "Moblin 경보 통보"
