@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-04 14:56+0000\n"
+"POT-Creation-Date: 2010-04-07 09:46+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -14,57 +14,61 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
-msgid "zones"
-msgstr "Zonen"
-
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Die von dir benutzten Anwendungen erscheinen hier. Du hast die Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
-
-#: ../src/sw-zone.c:778
-msgid "No applications on this zone"
-msgstr "In dieser Zone gibt es keine Anwendungen"
-
 #: ../data/moblin-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Panel Zonen"
 
-#: ../src/sw-zone.c:764
-msgid "new zone"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+msgid "zones"
+msgstr "Zonen"
+
+#: ../src/sw-zone.c:797
+msgid "No applications on this zone"
+msgstr "In dieser Zone gibt es keine Anwendungen"
+
+#: ../src/main.c:403
+msgid "Zones"
+msgstr "Zonen"
+
+#: ../src/sw-zone.c:783
+msgid "New Zone"
 msgstr "Neue Zone"
 
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "zwei"
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Hallo! Dies ist das Zonen-Panel. Wenn du Anwendungen geöffnet hast, kannst du hier auf sie zugreifen, sie anzeigen und verwalten."
 
-#: ../src/sw-zone.c:906
-msgid "one"
-msgstr "eine"
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Zone %d"
 
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "vier"
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Die von dir benutzten Anwendungen erscheinen hier. Du hast die Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
 
-#: ../src/sw-zone.c:914
-msgid "three"
-msgstr "drei"
+#~ msgid "two"
+#~ msgstr "zwei"
 
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "sechs"
+#~ msgid "one"
+#~ msgstr "eine"
 
-#: ../src/sw-zone.c:922
-msgid "five"
-msgstr "fünf"
+#~ msgid "four"
+#~ msgstr "vier"
 
-#: ../src/sw-zone.c:934
-msgid "eight"
-msgstr "acht"
+#~ msgid "three"
+#~ msgstr "drei"
 
-#: ../src/sw-zone.c:930
-msgid "seven"
-msgstr "sieben"
+#~ msgid "six"
+#~ msgstr "sechs"
+
+#~ msgid "five"
+#~ msgstr "fünf"
+
+#~ msgid "eight"
+#~ msgstr "acht"
+
+#~ msgid "seven"
+#~ msgstr "sieben"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Vor weniger als einer Minute"
@@ -170,9 +174,6 @@ msgstr "sieben"
 
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Staffel %d Folge %d"
-
-#~ msgid "Season %d"
-#~ msgstr "Staffel %d"
 
 #~ msgid "Episode %d"
 #~ msgstr "Folge %d"
