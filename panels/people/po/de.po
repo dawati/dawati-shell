@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-07 09:41+0000\n"
-"PO-Revision-Date: 2009-11-02 16:31-0800\n"
-"Last-Translator: Clara <steiner-jay.clarax@intel.com>\n"
+"PO-Revision-Date: 2010-04-08 10:43-0800\n"
+"Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
 "Language-Team: <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,7 +14,8 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:466
+#: ../src/moblin-panel-people.c:88
+#: ../src/mnb-people-panel.c:466
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "Leute"
@@ -25,14 +26,15 @@ msgstr "Wir können leider keine Leute finden. Hast du ein Messenger-Konto einge
 
 #: ../src/mnb-people-panel.c:273
 msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Wir können leider keine Leute finden. Es sieht danach aus, als ob sie alle offline sind."
+msgstr "Wir können leider keine Leute finden. Es sieht so aus, als ob sie alle offline sind."
 
 #: ../src/mnb-people-panel.c:318
 msgid "To see your IM contacts, you need to go online."
 msgstr "Um deine IM-Kontakte zu sehen, gehe bitte online."
 
 #. Populate header
-#: ../src/mnb-people-panel.c:666 ../src/mnb-people-panel.c:919
+#: ../src/mnb-people-panel.c:666
+#: ../src/mnb-people-panel.c:919
 msgid "People"
 msgstr "Leute"
 
@@ -40,7 +42,8 @@ msgstr "Leute"
 msgid "Search"
 msgstr "Suchen"
 
-#: ../src/mnb-people-panel.c:730 ../src/mnb-people-panel.c:1106
+#: ../src/mnb-people-panel.c:730
+#: ../src/mnb-people-panel.c:1106
 msgid "You are chatting with:"
 msgstr "Du sprichst mit"
 
@@ -50,9 +53,10 @@ msgstr "Panel Leute"
 
 #: ../src/mnb-people-panel.c:56
 msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
-msgstr "Hallo! Dies ist das Leute-Panel. Wenn du einen Chat-Dienst konfiguriert hast (z.B. Messenger), kannst du hier mit Leuten sprechen."
+msgstr "Hallo! Dies ist das Panel Leute. Wenn du einen Chat-Dienst konfiguriert hast (z.B. Messenger), kannst du hier mit Leuten sprechen."
 
-#: ../src/mnb-people-panel.c:228 ../src/mnb-people-panel.c:404
+#: ../src/mnb-people-panel.c:228
+#: ../src/mnb-people-panel.c:404
 #, c-format
 msgid "Open %s"
 msgstr "% s öffnen"
@@ -81,24 +85,18 @@ msgstr "Meine Gespräche"
 
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "Leute - %d Leute reden mit dir"
-
 #~ msgid "people - Someone is talking to you"
 #~ msgstr "Leute - Jemand redet mit dir"
-
 #~ msgid "People talking to you ..."
 #~ msgstr "Diese Leute reden mit dir ..."
-
 #~ msgid "Send an email"
 #~ msgstr "Eine E-Mail abschicken"
-
 #~ msgid "Edit details"
 #~ msgstr "Details bearbeiten"
-
 #~ msgid "Send a message"
 #~ msgstr "Eine Nachricht abschicken"
-
 #~ msgid "Selection"
 #~ msgstr "Auswahl"
-
 #~ msgid "Nobody selected"
 #~ msgstr "Niemand ausgewählt"
+
