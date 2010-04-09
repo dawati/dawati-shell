@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:47+0000\n"
+"POT-Creation-Date: 2010-04-09 11:31+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgid "Devices panel"
 msgstr "Painel de dispositivos"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:146
+#: ../src/moblin-panel-devices.c:149
 msgid "devices"
 msgstr "dispositivos"
 
@@ -100,7 +100,7 @@ msgstr "Se não puder decidir, vou desligar dentro de %d segundos."
 msgid "Turn off"
 msgstr "Desligar"
 
-#: ../src/moblin-panel-devices.c:119
+#: ../src/moblin-panel-devices.c:120
 msgid "Moblin Devices Panel"
 msgstr "Painel de dispositivos Moblin"
 
@@ -129,15 +129,16 @@ msgstr "Sua bateria está completamente carregado e pronto para usar."
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sinto muito, parece que sua bateria está quebrada."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:141
 msgid "Netbook brightness"
 msgstr "Brilho do netbook"
 
-#: ../src/mpd-computer-pane.c:93
+#: ../src/mpd-computer-pane.c:120
 msgid "Your computer"
 msgstr "Seu computador"
 
-#: ../src/mpd-computer-tile.c:154
+#: ../src/mpd-computer-pane.c:129
 msgid "All settings"
 msgstr "Todas as configurações"
 
@@ -156,7 +157,7 @@ msgstr "Outros dispositivos"
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>Você está usando</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Você está usando</span> <span color='%s'>%d%% de %s</span>"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -211,7 +212,7 @@ msgstr "Abrir"
 #: ../src/mpd-storage-device-tile.c:725
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% de %s</span>"
 
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
