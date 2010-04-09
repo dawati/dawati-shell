@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the mutter-moblin package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
 # Hylke Bons <hylke.bons@intel.com>, 2009.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:32+0000\n"
-"PO-Revision-Date: 2010-04-06 17:57-0800\n"
+"POT-Creation-Date: 2010-04-07 09:40+0000\n"
+"PO-Revision-Date: 2010-04-09 11:17-0800\n"
 "Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +28,8 @@ msgstr "Myzone paneel"
 msgid "Change the Myzone background and content"
 msgstr "Verander de Myzone achtergrond en inhoud"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -77,11 +78,12 @@ msgstr "Taken"
 msgid "Create an appointment"
 msgstr "Nieuwe afspraak"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70
+#: ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Toevoegen"
 
-#: ../penge/penge-events-pane.c:412
+#: ../penge/penge-events-pane.c:484
 msgid "No calendar entries this week"
 msgstr "Deze week geen afspraken"
 
@@ -118,6 +120,10 @@ msgstr "Welkom by MeeGo"
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Dit is de Myzone, waar je recente bestanden en inhoud van webfeeds verschijnen."
 
+#: ../penge/penge-welcome-tile.c:35
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "Voor toegangsgemak zullen, als je jouw web accounts hebt ingesteld en een aantal bestanden hebt gebruikt, die hier in Myzone verschijnen."
+
 #: ../penge/penge-email-pane.c:191
 msgid "No unread messages"
 msgstr "Geen ongelezen berichten"
@@ -130,15 +136,17 @@ msgstr "Ongelezen bericht"
 msgid "Unread messages"
 msgstr "Ongelezen berichten"
 
-#: ../penge/penge-welcome-tile.c:35
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "Voor toegangsgemak zullen, wanneer u uw web accounts hebt ingesteld en een aantal bestanden hebt gebruikt, die hier in de Myzone verschijnen."
-
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone insellingen"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Welkom bij Moblin 2.1 voor Netbooks</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin is anders dan andere computers. We hebben hier en daar wat dingetjes toegevoegd om je op weg te helpen. We hopen dat je het waardeert, Het Moblin Team."
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Moblin is anders dan andere computers. We hebben hier en daar wat "
+#~ "dingetjes toegevoegd om je op weg te helpen. We hopen dat je het "
+#~ "waardeert, Het Moblin Team."
