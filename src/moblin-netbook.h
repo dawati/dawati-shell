@@ -51,9 +51,10 @@
 
 typedef enum
 {
-  MNB_OPTION_COMPOSITOR_ALWAYS_ON  = 1 << 0,
-  MNB_OPTION_DISABLE_WS_CLAMP      = 1 << 1,
-  MNB_OPTION_DISABLE_PANEL_RESTART = 1 << 2,
+  MNB_OPTION_COMPOSITOR_ALWAYS_ON      = 1 << 0,
+  MNB_OPTION_DISABLE_WS_CLAMP          = 1 << 1,
+  MNB_OPTION_DISABLE_PANEL_RESTART     = 1 << 2,
+  MNB_OPTION_COMPOSITE_FULLSCREEN_APPS = 1 << 3,
 } MnbOptionFlag;
 
 #define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())

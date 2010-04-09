@@ -82,9 +82,10 @@ static guint32 compositor_options = 0;
 
 static const GDebugKey options_keys[] =
 {
-  { "compositor-always-on",  MNB_OPTION_COMPOSITOR_ALWAYS_ON },
-  { "disable-ws-clamp",      MNB_OPTION_DISABLE_WS_CLAMP },
-  { "disable-panel-restart", MNB_OPTION_DISABLE_PANEL_RESTART },
+  { "compositor-always-on",       MNB_OPTION_COMPOSITOR_ALWAYS_ON },
+  { "disable-ws-clamp",           MNB_OPTION_DISABLE_WS_CLAMP },
+  { "disable-panel-restart",      MNB_OPTION_DISABLE_PANEL_RESTART },
+  { "composite-fullscreen-apps",  MNB_OPTION_COMPOSITE_FULLSCREEN_APPS },
 };
 
 static MutterPlugin *plugin_singleton = NULL;
@@ -386,6 +387,9 @@ moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gboolean on;
+
+  if (compositor_options & MNB_OPTION_COMPOSITE_FULLSCREEN_APPS)
+    return;
 
   if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
@@ -1585,9 +1589,10 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
 
       if (!priv->screen_saver_dpms)
         {
-          gboolean on;
+          gboolean on = TRUE;
 
-          on = !moblin_netbook_fullscreen_apps_present (plugin);
+          if (!(compositor_options & MNB_OPTION_COMPOSITE_FULLSCREEN_APPS))
+            on = !moblin_netbook_fullscreen_apps_present (plugin);
 
           if (on)
             {
@@ -1665,6 +1670,9 @@ fullscreen_app_added (MutterPlugin *plugin, MetaWindow *mw)
 
   priv->fullscreen_wins = g_list_prepend (priv->fullscreen_wins, mw);
 
+  if (compositor_options & MNB_OPTION_COMPOSITE_FULLSCREEN_APPS)
+    return;
+
   if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
 
@@ -1679,6 +1687,9 @@ fullscreen_app_removed (MutterPlugin *plugin, MetaWindow *mw)
   gboolean                    compositor_on;
 
   priv->fullscreen_wins = g_list_remove (priv->fullscreen_wins, mw);
+
+  if (compositor_options & MNB_OPTION_COMPOSITE_FULLSCREEN_APPS)
+    return;
 
   if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
@@ -2177,9 +2188,10 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
           if (priv->compositor_disabled && !priv->screen_saver_mcw)
             {
-              gboolean on;
+              gboolean on = TRUE;
 
-              on = !moblin_netbook_fullscreen_apps_present (plugin);
+              if (!(compositor_options & MNB_OPTION_COMPOSITE_FULLSCREEN_APPS))
+                on = !moblin_netbook_fullscreen_apps_present (plugin);
 
               if (on)
                 {
