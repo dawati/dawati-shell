@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:49+0000\n"
+"POT-Creation-Date: 2010-04-07 09:41+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
@@ -14,47 +14,76 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:495
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:466
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "relations"
 
-#: ../src/mnb-people-panel.c:267
+#: ../src/mnb-people-panel.c:185
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte Messenger ?"
 
-#: ../src/mnb-people-panel.c:379
+#: ../src/mnb-people-panel.c:273
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Désolé, nous n'avons trouvé personne. Il semble que personne n'est connecté."
 
-#: ../src/mnb-people-panel.c:424
+#: ../src/mnb-people-panel.c:318
 msgid "To see your IM contacts, you need to go online."
 msgstr "Pour voir vos contacts de messagerie instantanée, vous devez vous connecter."
 
-#: ../src/mnb-people-panel.c:476
-#, c-format
-msgid "people - %d people are talking to you"
-msgstr "relations - %d personnes en train de vous parler"
-
-#: ../src/mnb-people-panel.c:483
-msgid "people - Someone is talking to you"
-msgstr "relations - quelqu'un est en train de vous parler"
-
-#: ../src/mnb-people-panel.c:673
+#. Populate header
+#: ../src/mnb-people-panel.c:666 ../src/mnb-people-panel.c:919
 msgid "People"
 msgstr "Relations"
 
-#: ../src/mnb-people-panel.c:686
+#: ../src/mnb-people-panel.c:679
 msgid "Search"
 msgstr "Rechercher"
+
+#: ../src/mnb-people-panel.c:730 ../src/mnb-people-panel.c:1106
+msgid "You are chatting with:"
+msgstr "Vous chatter avec :"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panneau de relations"
 
-#: ../src/mnb-people-panel.c:752
-msgid "You are chatting with:"
-msgstr "Vous chatter avec :"
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
+msgstr "Bonjour ! Voici le panneau Relations. Lorsque vous avez un service de messagerie instantanée configuré (comme Messenger) c'est ici que vous dialoguez avec vos proches."
+
+#: ../src/mnb-people-panel.c:228 ../src/mnb-people-panel.c:404
+#, c-format
+msgid "Open %s"
+msgstr "Ouvrir %s"
+
+#: ../src/mnb-people-panel.c:448
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "relations - vous dialoguez avec %d relations"
+
+#: ../src/mnb-people-panel.c:455
+msgid "people - you are chatting with someone"
+msgstr "relations - vous dialoguez avec quelqu'un"
+
+#: ../src/mnb-people-panel.c:974
+msgid "Me"
+msgstr "Moi"
+
+#: ../src/mnb-people-panel.c:936
+msgid "Me and my people"
+msgstr "Moi et mes relations"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1063
+msgid "My conversations"
+msgstr "Mes conversations"
+
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "relations - %d personnes en train de vous parler"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "relations - quelqu'un est en train de vous parler"
 
 #~ msgid "People talking to you ..."
 #~ msgstr "Relations en train de vous parler..."
