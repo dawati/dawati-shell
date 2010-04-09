@@ -77,7 +77,7 @@ msgstr "這禮拜的行事曆上沒有任何條目"
 
 #: ../penge/penge-people-placeholder-tile.c:112
 msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "你朋友在線上所做的事都會在出現這裡。那麼現在就啟動你的帳號吧！"
+msgstr "您朋友在線上所做的事都會在出現這裡。那麼現在就啟動您的帳號吧！"
 
 #: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
@@ -135,4 +135,4 @@ msgstr "播放簡介影片"
 #~ msgstr "<b>歡迎來到專為網路筆電所設計的 Moblin 2.1</b>"
 
 #~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "由於 Moblin 和其他電腦有些不同，我們把一些東西湊在一塊來協助你上手。我們希望你能盡情地享受 Moblin，Moblin 團隊敬上。"
+#~ msgstr "由於 Moblin 和其他電腦有些不同，我們把一些東西湊在一塊來協助您上手。我們希望您能盡情地享受 Moblin，Moblin 團隊敬上。"
