@@ -52,10 +52,6 @@ msgstr "Vos berdelez avou:"
 msgid "People panel"
 msgstr "Sicrifrôr des djins"
 
-#: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
-msgstr "A ! Çouchal est l' sicriftôr des djins. Cwand vs avoz on siervice di MSM d' apontyî (come Messenger), c' est vaila k' vos alez berdeler avou les djins."
-
 #: ../src/mnb-people-panel.c:228 ../src/mnb-people-panel.c:404
 #, c-format
 msgid "Open %s"
@@ -82,6 +78,10 @@ msgstr "Mi et mes djins"
 #: ../src/mnb-people-panel.c:1063
 msgid "My conversations"
 msgstr "Mi berdelaedjes"
+
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
+msgstr "A ! Çouchal, c' est l' sicriftôr des djins. Cwand vs avoz on siervice di MSM d' apontyî (come Messenger), c' est vaila k' vos alez berdeler avou les djins."
 
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "djins - %d djins vs djåznut"
