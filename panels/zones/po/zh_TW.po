@@ -68,7 +68,7 @@ msgstr "新區域"
 #~ msgstr "第八區"
 
 #~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "你正在使用的應用程式會在這裡顯示。你也可以隨心所欲來切換以及整理它們。"
+#~ msgstr "您正在使用的應用程式會在這裡顯示。您也可以隨心所欲來切換以及整理它們。"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin 網路筆電特效"
