@@ -36,7 +36,7 @@
 #include "carrick-notification-manager.h"
 #include "carrick-network-model.h"
 #include "carrick-shell.h"
-#include "carrick-banner.h"
+#include "mux-banner.h"
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_HBOX)
 
@@ -1392,8 +1392,7 @@ carrick_pane_init (CarrickPane *self)
   column = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (column);
 
-  banner = carrick_banner_new ();
-  carrick_banner_set_text (CARRICK_BANNER (banner), _("Settings"));
+  banner = mux_banner_new (_("Settings"));
   gtk_widget_show (banner);
   gtk_box_pack_start (GTK_BOX (column), banner, FALSE, FALSE, 0);
 
@@ -1617,8 +1616,7 @@ carrick_pane_init (CarrickPane *self)
   column = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (column);
 
-  banner = carrick_banner_new ();
-  carrick_banner_set_text (CARRICK_BANNER (banner), _("Networks"));
+  banner = mux_banner_new (_("Networks"));
   gtk_widget_show (banner);
   gtk_box_pack_start (GTK_BOX (column), banner, FALSE, FALSE, 0);
 

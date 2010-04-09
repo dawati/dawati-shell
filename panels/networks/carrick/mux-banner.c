@@ -1,5 +1,5 @@
 /*
- * Carrick - a connection panel for the Moblin Netbook
+ * Mux - a connection panel for the Moblin Netbook
  * Copyright (C) 2010 Intel Corporation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -20,21 +20,22 @@
  */
 
 #include <gtk/gtk.h>
-#include "carrick-banner.h"
+#include "mux-banner.h"
 
-struct _CarrickBannerPrivate {
+struct _MuxBannerPrivate {
   GdkColor colour;
+  GtkWidget *label;
 };
 
-#define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CARRICK_TYPE_BANNER, CarrickBannerPrivate))
-G_DEFINE_TYPE (CarrickBanner, carrick_banner, GTK_TYPE_LABEL);
+#define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MUX_TYPE_BANNER, MuxBannerPrivate))
+G_DEFINE_TYPE (MuxBanner, mux_banner, GTK_TYPE_HBOX);
 
 static void
-carrick_banner_realize (GtkWidget *widget)
+mux_banner_realize (GtkWidget *widget)
 {
-  CarrickBanner *banner = CARRICK_BANNER (widget);
+  MuxBanner *banner = MUX_BANNER (widget);
 
-  GTK_WIDGET_CLASS (carrick_banner_parent_class)->realize (widget);
+  GTK_WIDGET_CLASS (mux_banner_parent_class)->realize (widget);
 
   gdk_color_parse ("#d7d9d6", &banner->priv->colour);
   gdk_colormap_alloc_color (gtk_widget_get_colormap (widget),
@@ -43,9 +44,9 @@ carrick_banner_realize (GtkWidget *widget)
 }
 
 static gboolean
-carrick_banner_expose (GtkWidget *widget, GdkEventExpose *event)
+mux_banner_expose (GtkWidget *widget, GdkEventExpose *event)
 {
-  CarrickBanner *banner = CARRICK_BANNER (widget);
+  MuxBanner *banner = MUX_BANNER (widget);
   GdkGC *gc;
 
   gc = gdk_gc_new (widget->window);
@@ -56,51 +57,50 @@ carrick_banner_expose (GtkWidget *widget, GdkEventExpose *event)
                       event->area.width, event->area.height);
 
 
-  return GTK_WIDGET_CLASS (carrick_banner_parent_class)->expose_event (widget, event);
+  return GTK_WIDGET_CLASS (mux_banner_parent_class)->expose_event (widget, event);
 }
 
 static void
-carrick_banner_constructed (GObject *object)
+mux_banner_class_init (MuxBannerClass *klass)
 {
-  g_object_set (object,
-                "xalign", 0.0f,
-                "yalign", 0.5f,
-                "xpad", 8,
-                "ypad", 8,
-                NULL);
-}
-
-static void
-carrick_banner_class_init (CarrickBannerClass *klass)
-{
-    GObjectClass *o_class = (GObjectClass *)klass;
     GtkWidgetClass *w_class = (GtkWidgetClass *)klass;
 
-    o_class->constructed = carrick_banner_constructed;
-    w_class->realize = carrick_banner_realize;
-    w_class->expose_event = carrick_banner_expose;
+    w_class->realize = mux_banner_realize;
+    w_class->expose_event = mux_banner_expose;
 
-    g_type_class_add_private (klass, sizeof (CarrickBannerPrivate));
+    g_type_class_add_private (klass, sizeof (MuxBannerPrivate));
 }
 
 static void
-carrick_banner_init (CarrickBanner *self)
+mux_banner_init (MuxBanner *self)
 {
   self->priv = GET_PRIVATE (self);
+
+  gtk_container_set_border_width (GTK_CONTAINER (self), 8);
+
+  self->priv->label = gtk_label_new ("");
+  gtk_misc_set_alignment (GTK_MISC (self->priv->label), 0.0f, 0.5f);
+  gtk_widget_show (self->priv->label);
+  gtk_box_pack_start (GTK_BOX (self), self->priv->label, FALSE, FALSE, 8);
 }
 
 GtkWidget *
-carrick_banner_new (void)
+mux_banner_new (const char *text)
 {
-  return g_object_new (CARRICK_TYPE_BANNER, NULL);
+  GtkWidget *widget;
+
+  widget = g_object_new (MUX_TYPE_BANNER, NULL);
+  if (text)
+    mux_banner_set_text ((MuxBanner *)widget, text);
+  return widget;
 }
 
 void
-carrick_banner_set_text (CarrickBanner *banner, const char *text)
+mux_banner_set_text (MuxBanner *banner, const char *text)
 {
   char *s;
 
   s = g_strconcat ("<big><b>", text, "</b></big>", NULL);
-  gtk_label_set_markup (GTK_LABEL (banner), s);
+  gtk_label_set_markup (GTK_LABEL (banner->priv->label), s);
   g_free (s);
 }

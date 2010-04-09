@@ -32,8 +32,8 @@ libcarrick_la_SOURCES = carrick-applet.c \
                         carrick-util.c \
                         carrick-util.h \
 			carrick-shell.h \
-                        carrick-banner.c \
-                        carrick-banner.h \
+                        mux-banner.c \
+                        mux-banner.h \
 			nbtk-gtk-expander.c \
 			nbtk-gtk-expander.h \
                         $(BUILT_SOURCES) \
