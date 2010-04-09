@@ -13,18 +13,6 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
-msgid "Myzone panel"
-msgstr "MyZone"
-
-#: ../data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr "Cambia el contenido y el papel tapiz de MyZone"
-
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
-msgid "Myzone"
-msgstr "MyZone"
-
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
 msgid "GConf error: %s"
@@ -104,10 +92,6 @@ msgstr "Reproducir vídeo de introducción"
 msgid "Welcome to MeeGo"
 msgstr "Bienvenido a MeeGo"
 
-#: ../penge/penge-welcome-tile.c:35
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "Cuando hayas configurado tus cuentas Web y utilizado algunos archivos, estos aparecerán aquí en MyZone para un fácil acceso cuando quieras."
-
 #: ../penge/penge-email-pane.c:191
 msgid "No unread messages"
 msgstr "No hay mensajes sin leer"
@@ -120,14 +104,30 @@ msgstr "Mensaje sin leer"
 msgid "Unread messages"
 msgstr "Mensajes sin leer"
 
-#: ../penge/penge-welcome-tile.c:94
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Esto es MyZone, donde verás los archivos usados recientemente y las noticias de tus sitios web."
-
 # Today, you don't have any pending tasks
 #: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "No hay tareas para hoy"
+
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Cambia el contenido y el papel tapiz de Myzone"
+
+#: ../penge/penge-welcome-tile.c:94
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Esto es Myzone, donde verás los archivos usados recientemente y las noticias de tus sitios web."
+
+#: ../penge/penge-welcome-tile.c:35
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "Cuando hayas configurado tus cuentas Web y utilizado algunos archivos, estos aparecerán aquí en Myzone, para poder acceder a ellos fácilmente."
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Bienvenido a Moblin 2.1 para miniportátiles</b>"
