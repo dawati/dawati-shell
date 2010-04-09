@@ -91,16 +91,6 @@ msgstr "使用地理位置"
 msgid "Don't use location"
 msgstr "不要使用地理位置"
 
-#. When the tweet has a location associated with it then this string will
-#. * be <human readable time> from <human readable place name>
-#. *
-#. * e.g. A couple of hours ago from Aldgate, London
-#. 
-#: ../src/mps-tweet-card.c:391
-#, c-format, fuzzy
-msgid "%s from %s"
-msgstr "%s 來自 %s"
-
 #: ../src/moblin-panel-status.c:48
 msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
 msgstr "嗨！這裡是狀態面板。當您設定好網路帳號 (像是 Twitter) 後，您可以從這裡檢視您的消息來源，並從這裡更新您的狀態。"
@@ -108,6 +98,16 @@ msgstr "嗨！這裡是狀態面板。當您設定好網路帳號 (像是 Twitte
 #: ../src/moblin-panel-status.c:99
 msgid "Status"
 msgstr "狀態"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s 來自 %s"
 
 #~ msgid "Offline"
 #~ msgstr "離線"
