@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-15 09:32+0000\n"
+"POT-Creation-Date: 2010-04-07 09:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "statuts"
@@ -24,26 +24,90 @@ msgstr "statuts"
 msgid "Status panel"
 msgstr "Panneau de statut"
 
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Impossible de mettre à jour le statut : le service est peut être indisponible ou votre mot de passe est erroné."
+
+#: ../src/mps-feed-pane.c:444
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr ""
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr ""
+
 #. Actor creation
-#: ../src/mps-feed-pane.c:416
+#: ../src/mps-feed-pane.c:551
 msgid "Update"
 msgstr "Mise à jour"
 
-#: ../src/mps-feed-pane.c:421
+#: ../src/mps-feed-pane.c:556
 msgid "What's happening?"
 msgstr "Que se passe-t-il ?"
 
-#: ../src/mps-feed-switcher.c:344
+#: ../src/mps-feed-pane.c:606
+msgid "Change"
+msgstr "Changer"
+
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Ajouter un nouveau service web"
 
-#: ../src/mps-feed-switcher.c:367
+#: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Vos services web ne semblent pas être configurés ou bien il y a un problème avec leur configuration. Utilisez le bouton ci-dessus pour ouvrir Mes Comptes Web et en configurer un."
 
-#: ../src/mps-feed-pane.c:445
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "Impossible de mettre à jour le statut : le service est peut être indisponible ou votre mot de passe est erroné."
+#: ../src/mps-geotag-pane.c:500
+msgid "Don't use location"
+msgstr "Utiliser la position"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s de %s"
+
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "Bonjour ! Voici le panneau Statut. Lorsque vous avez un compte web configuré (comme Twitter) vous pourrez voir vos flux et mettre à jour votre statut ici."
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Statut"
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Impossible de mettre à jour votre statut : vous n'êtes pas connecté."
+
+#: ../src/mps-feed-pane.c:455
+msgid "Your location is not being shared"
+msgstr "Votre position n'est pas partagée"
+
+#: ../src/mps-geotag-pane.c:499
+msgid "Use location"
+msgstr "Utiliser la position"
+
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "Me localiser"
+
+#: ../src/mps-geotag-pane.c:215
+msgid "Your location"
+msgstr "Votre position"
+
+#: ../src/mps-geotag-pane.c:490
+msgid "Where are you?"
+msgstr "Où êtes-vous ?"
+
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "Rechercher"
 
 #~ msgid "Offline"
 #~ msgstr "Déconnecté"
@@ -59,9 +123,6 @@ msgstr "Impossible de mettre à jour le statut : le service est peut être indis
 
 #~ msgid "Close"
 #~ msgstr "Fermer"
-
-#~ msgid "Change"
-#~ msgstr "Changer"
 
 #~ msgid "Unknown account"
 #~ msgstr "Compte inconnu"
