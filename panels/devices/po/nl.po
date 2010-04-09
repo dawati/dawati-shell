@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-24 09:39+0000\n"
-"PO-Revision-Date: 2010-03-25 10:40-0800\n"
-"Last-Translator: Auke Kok <auke-jan.h.kok@intel.com>\n"
+"POT-Creation-Date: 2010-04-08 11:11+0000\n"
+"PO-Revision-Date: 2010-04-09 10:29-0800\n"
+"Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -20,2080 +20,1348 @@ msgstr ""
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
-msgstr "Apparaten Panel"
+msgstr "Apparaten paneel"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:135
+#: ../src/moblin-panel-devices.c:149
 msgid "devices"
-msgstr "Apparaten"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:560
-msgid "CompactFlash"
-msgstr "CompactFlash"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:563
-msgid "MemoryStick"
-msgstr "MemoryStick"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:566
-msgid "SmartMedia"
-msgstr "SmartMedia"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:569
-msgid "SecureDigital"
-msgstr "SecureDigital"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:572
-msgid "SD High Capacity"
-msgstr "SD High Capacity"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:575
-msgid "Floppy"
-msgstr "Diskette"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:578
-msgid "Zip"
-msgstr "Zip-schijf"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:581
-msgid "Jaz"
-msgstr "Jaz-schijf"
-
-#. Translators: This word is used to describe the media inserted into a device
-#: ../gdu/gdu-drive.c:584
-msgid "Flash"
-msgstr "Flash"
-
-#. Translators: This word is used to describe the optical disc type, it may appear
-#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
-#.
-#: ../gdu/gdu-drive.c:607
-msgid "CD"
-msgstr "CD"
-
-#. Translators: This word is used to describe the optical disc type, it may appear
-#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
-#.
-#: ../gdu/gdu-drive.c:615
-msgid "DVD"
-msgstr "DVD"
-
-#. Translators: This word is used to describe the optical disc type, it may appear
-#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
-#.
-#: ../gdu/gdu-drive.c:623
-msgid "Blu-Ray"
-msgstr "Blu-ray"
-
-#. Translators: This word is used to describe the optical disc type, it may appear
-#. * in a slash-separated list e.g. 'CD/DVD/Blu-Ray'
-#.
-#: ../gdu/gdu-drive.c:631
-msgid "HDDVD"
-msgstr "Hd-dvd"
-
-#. Translators: %s is the media type e.g. 'CD/DVD' or 'CompactFlash'
-#: ../gdu/gdu-drive.c:680
-#: ../gdu/gdu-drive.c:719
-#, c-format
-msgid "%s Drive"
-msgstr "%s-station"
-
-#. Translators: first %s is the size, second %s is the media type
-#. * e.g. 'CD/DVD' or 'CompactFlash'
-#.
-#: ../gdu/gdu-drive.c:714
-#, c-format
-msgid "%s %s Drive"
-msgstr "%s %s-station"
-
-#. Translators: This string is used to describe a hard disk.
-#. * The first %s is the size of the drive e.g. '45 GB'.
-#.
-#: ../gdu/gdu-drive.c:730
-#, c-format
-msgid "%s Hard Disk"
-msgstr "%s Harde Schijf"
-
-#. Translators: This string is used to describe a hard disk where the size
-#. * is not known.
-#.
-#: ../gdu/gdu-drive.c:735
-msgid "Hard Disk"
-msgstr "Harde Schijf"
-
-#. Translators: This string is used to describe a SSD. The first %s is
-#. * the size of the drive e.g. '45 GB'.
-#.
-#: ../gdu/gdu-drive.c:742
-#, c-format
-msgid "%s Solid-State Disk"
-msgstr "%s Solid-State Schijf"
-
-#. Translators: This string is used to describe a SSD where the size
-#. * is not known.
-#.
-#: ../gdu/gdu-drive.c:748
-msgid "Solid-State Disk"
-msgstr "Solid-State Schijf"
-
-#. Translators: This string is the description of a drive. The first %s is the
-#. * size of the inserted media, for example '45 GB'.
-#.
-#: ../gdu/gdu-drive.c:789
-#, c-format
-msgid "%s Media"
-msgstr "Media van %s"
-
-#. Translators: This string is used as a description text when no media has
-#. * been detected for a drive
-#.
-#: ../gdu/gdu-drive.c:796
-#, c-format
-msgid "No Media Detected"
-msgstr "Geen media in gevonden"
-
-#. Translators: This string is used for conveying the partition table format
-#: ../gdu/gdu-drive.c:807
-#: ../gdu/gdu-linux-md-drive.c:565
-msgid "MBR Partition Table"
-msgstr "MBR Partitie Tabel"
-
-#. Translators: This string is used for conveying the partition table format
-#: ../gdu/gdu-drive.c:810
-#: ../gdu/gdu-linux-md-drive.c:568
-msgid "GUID Partition Table"
-msgstr "GUID Partitie Tabel"
-
-#. Translators: This string is used for conveying the partition table format
-#: ../gdu/gdu-drive.c:813
-#: ../gdu/gdu-linux-md-drive.c:571
-msgid "Apple Partition Table"
-msgstr "Apple Partitie Tabel"
-
-#. Translators: This string is used for conveying the partition table format when
-#. * the format is unknown
-#.
-#: ../gdu/gdu-drive.c:818
-#: ../gdu/gdu-linux-md-drive.c:576
-msgid "Partitioned"
-msgstr ""
-
-#. Translators: This string is used for conveying a device is not partitioned.
-#.
-#: ../gdu/gdu-drive.c:823
-msgid "Not Partitioned"
-msgstr "Niet gepartitioneerd"
-
-#. TODO: include type e.g. SATA Port Multiplier, SAS Expander etc
-#: ../gdu/gdu-hub.c:222
-#, fuzzy
-msgid "SAS Expander"
-msgstr "Uitvouwer kolom"
-
-#: ../gdu/gdu-hub.c:230
-#, fuzzy
-msgid "PATA Host Adapter"
-msgstr "De host heeft de verbinding verbroken"
-
-#: ../gdu/gdu-hub.c:232
-#, fuzzy
-msgid "SATA Host Adapter"
-msgstr "De host heeft de verbinding verbroken"
-
-#: ../gdu/gdu-hub.c:234
-#, fuzzy
-msgid "ATA Host Adapter"
-msgstr "De host heeft de verbinding verbroken"
-
-#: ../gdu/gdu-hub.c:236
-#, fuzzy
-msgid "SAS Host Adapter"
-msgstr "De host heeft de verbinding verbroken"
-
-#: ../gdu/gdu-hub.c:238
-#, fuzzy
-msgid "SCSI Host Adapter"
-msgstr "De host heeft de verbinding verbroken"
-
-#: ../gdu/gdu-hub.c:240
-#, fuzzy
-msgid "Host Adapter"
-msgstr "         %s [-p] [-h computer] [-f naam]\n"
-
-#. Translators: Description
-#: ../gdu/gdu-linux-lvm2-volume-group.c:351
-#: ../gdu/gdu-linux-lvm2-volume-group.c:355
-#, fuzzy
-msgid "Volume Group"
-msgstr "Venstergroep"
-
-#. Translators: VPD name - first %s is the size e.g. '45 GB'
-#: ../gdu/gdu-linux-lvm2-volume-group.c:359
-#, fuzzy, c-format
-msgid "%s LVM2 Volume Group"
-msgstr "Venstergroep-leider"
-
-#. Translators: VPD name when size is not known
-#: ../gdu/gdu-linux-lvm2-volume-group.c:362
-#, fuzzy
-msgid "LVM2 Volume Group"
-msgstr "Venstergroep-leider"
-
-#. Translators: label for an unallocated space in a LVM2 volume group.
-#. * %s is the size, formatted like '45 GB'
-#.
-#. Translators: label for an unallocated space on a disk
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-linux-lvm2-volume-hole.c:201
-#: ../gdu/gdu-volume-hole.c:152
-#, fuzzy, c-format
-msgid "%s Free"
-msgstr "Vrij"
-
-#. Translators: Description
-#: ../gdu/gdu-linux-lvm2-volume-hole.c:205
-#: ../gdu/gdu-volume-hole.c:161
-#, fuzzy
-msgid "Unallocated Space"
-msgstr "Vrije Ruimte:"
-
-#. Translators: VPD name
-#: ../gdu/gdu-linux-lvm2-volume-hole.c:208
-msgid "LVM2 VG Unallocated Space"
-msgstr ""
-
-#. Translators: Description
-#: ../gdu/gdu-linux-lvm2-volume.c:331
-#, fuzzy
-msgid "Logical Volume"
-msgstr "%s verwisselbaar medium"
-
-#. Translators: VPD name
-#: ../gdu/gdu-linux-lvm2-volume.c:334
-#, fuzzy
-msgid "LVM2 Logical Volume"
-msgstr "Deelnummer-overloop"
-
-#. Translators: First %s is the size, second %s is a RAID level, e.g. 'RAID-5'
-#. Translators: first %s is the size e.g. '45 GB', second %s is the level e.g. 'RAID-5'
-#: ../gdu/gdu-linux-md-drive.c:538
-#: ../gdu/gdu-linux-md-drive.c:621
-#, fuzzy, c-format
-msgid "%s %s Array"
-msgstr "Fout tijdens reserveren van blokreeks voor map: %m\n"
-
-#. Translators: %s is a RAID level, e.g. 'RAID-5'
-#. Translators: %s is the level e.g. 'RAID-5'
-#: ../gdu/gdu-linux-md-drive.c:543
-#: ../gdu/gdu-linux-md-drive.c:626
-#, fuzzy, c-format
-msgid "%s Array"
-msgstr "Fout tijdens reserveren van blokreeks voor map: %m\n"
-
-#. Translators: First %s is a device file such as /dev/sda4
-#. * second %s is the state of the device
-#.
-#: ../gdu/gdu-linux-md-drive.c:596
-#, fuzzy, c-format
-msgid "RAID Array %s (%s)"
-msgstr "Linux RAID"
-
-#. Translators: %s is a device file such as /dev/sda4
-#: ../gdu/gdu-linux-md-drive.c:603
-#, fuzzy, c-format
-msgid "RAID device %s"
-msgstr "# %s (apparaat %d, inode [%d,%d,%d]): "
-
-#. Translators: fallback for level
-#: ../gdu/gdu-linux-md-drive.c:609
-msgctxt "RAID Level fallback"
-msgid "RAID"
-msgstr "raid"
-
-#: ../gdu/gdu-linux-md-drive.c:614
-#, fuzzy
-msgid "RAID Array"
-msgstr "Linux RAID"
-
-#: ../gdu/gdu-linux-md-drive.c:1112
-#, fuzzy
-msgctxt "Linux MD slave state"
-msgid "Not Attached"
-msgstr "Protocolstuurprogramma is niet aangehecht"
-
-#: ../gdu/gdu-linux-md-drive.c:1115
-msgctxt "Linux MD slave state"
-msgid "Faulty"
-msgstr ""
-
-#: ../gdu/gdu-linux-md-drive.c:1120
-#, fuzzy
-msgctxt "Linux MD slave state"
-msgid "Fully Synchronized"
-msgstr "Niveau 2 is niet gesynchroniseerd"
-
-#: ../gdu/gdu-linux-md-drive.c:1122
-msgctxt "Linux MD slave state"
-msgid "Writemostly"
-msgstr ""
-
-#: ../gdu/gdu-linux-md-drive.c:1124
-msgctxt "Linux MD slave state"
-msgid "Blocked"
-msgstr "Geblokkeerd"
-
-#: ../gdu/gdu-linux-md-drive.c:1126
-msgctxt "Linux MD slave state"
-msgid "Spare"
-msgstr ""
-
-#: ../gdu/gdu-machine.c:151
-#, fuzzy
-msgid "Local Storage"
-msgstr "Opslagtype"
-
-#. TODO: use display-hostname
-#: ../gdu/gdu-machine.c:154
-#, fuzzy, c-format
-msgid "Storage on %s"
-msgstr "I/O Fout in storage"
-
-#: ../gdu/gdu-pool.c:885
-#, fuzzy
-msgid "Multipath Devices"
-msgstr "Verwisselbare schijven"
-
-#: ../gdu/gdu-pool.c:886
-#, fuzzy
-msgid "Drives with multiple I/O paths"
-msgstr "Meerdere scans: maakt een groep van paden"
-
-#: ../gdu/gdu-pool.c:896
-#, fuzzy
-msgid "Multi-disk Devices"
-msgstr "Invoerapparaten configureren"
-
-#: ../gdu/gdu-pool.c:897
-msgid "RAID, LVM and other logical drives"
-msgstr ""
-
-#: ../gdu/gdu-pool.c:907
-#, fuzzy
-msgid "Peripheral Devices"
-msgstr "Verwisselbare schijven"
-
-#: ../gdu/gdu-pool.c:908
-msgid "USB, Firewire and other peripherals"
-msgstr ""
-
-#: ../gdu/gdu-pool.c:2090
-#, fuzzy, c-format
-msgid "Error enumerating devices: %s"
-msgstr "Invoerapparaten configureren"
-
-#: ../gdu/gdu-pool.c:2116
-#, fuzzy, c-format
-msgid "Error enumerating adapters: %s"
-msgstr "Fout tijdens het maken van map '%s': %s"
-
-#: ../gdu/gdu-pool.c:2139
-#, fuzzy, c-format
-msgid "Error enumerating expanders: %s"
-msgstr "De uitvouwers laten inspringen"
-
-#: ../gdu/gdu-pool.c:2162
-#, fuzzy, c-format
-msgid "Error enumerating ports: %s"
-msgstr "Fout tijdens het maken van map '%s': %s"
-
-#: ../gdu/gdu-ssh-bridge.c:292
-#, c-format
-msgid "Error listening to address `localhost:%d': %s: %s\n"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:307
-#, c-format
-msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:322
-#, c-format
-msgid "Error setting auth mechanisms on local DBusServer\n"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:347
-#, c-format
-msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:369
-#, fuzzy, c-format
-msgid "Unable to spawn ssh program: %s"
-msgstr "Kon SSH-programma niet starten: %s"
-
-#: ../gdu/gdu-ssh-bridge.c:398
-#: ../gdu/gdu-ssh-bridge.c:510
-#, fuzzy, c-format
-msgid "Error reading stderr output: %s"
-msgstr "fout tijdens schrijven van standaarduitvoer (%s)"
-
-#: ../gdu/gdu-ssh-bridge.c:405
-msgid "Error reading stderr output: No content"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:471
-#, fuzzy
-msgid "Error logging in"
-msgstr "Inloggen als %s... "
-
-#: ../gdu/gdu-ssh-bridge.c:491
-#, fuzzy, c-format
-msgid "Error sending `%s': %s"
-msgstr "Fout bij zenden naar ‘file descriptor’: %s"
-
-#: ../gdu/gdu-ssh-bridge.c:519
-#, c-format
-msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:536
-#, c-format
-msgid "Error passing authorization secret: %s"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:557
-#, fuzzy, c-format
-msgid "Error reading stderr from: %s"
-msgstr "Er is een fout opgetreden bij lezen van kind: %s."
-
-#: ../gdu/gdu-ssh-bridge.c:566
-#, c-format
-msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:585
-#, c-format
-msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
-msgstr ""
-
-#: ../gdu/gdu-ssh-bridge.c:592
-msgid "The udisks-tcp-bridge program failed to prove it was authorized"
-msgstr ""
-
-#. Translators: The first %s is the size in power-of-2 units, e.g. '64 KiB'
-#. * the second %s is the size as a number e.g. '65,536 bytes'
-#.
-#. Translators: The first %s is the size in power-of-10 units, e.g. '100 KB'
-#. * the second %s is the size as a number e.g. '100,000 bytes'
-#.
-#: ../gdu/gdu-util.c:131
-#: ../gdu/gdu-util.c:140
-#, fuzzy, c-format
-msgid "%s (%s bytes)"
-msgstr " (%s bytes)"
-
-#. Translators: FAT is a filesystem type
-#: ../gdu/gdu-util.c:175
-msgid "FAT (12-bit version)"
-msgstr "FAT (12-bit versie)"
-
-#. Translators: FAT is a filesystem type
-#: ../gdu/gdu-util.c:178
-#: ../gdu/gdu-util.c:185
-#: ../gdu/gdu-util.c:192
-#: ../gdu/gdu-util.c:196
-#: ../gdu/gdu-util.c:198
-msgid "FAT"
-msgstr "FAT"
-
-#. Translators: FAT is a filesystem type
-#: ../gdu/gdu-util.c:183
-msgid "FAT (16-bit version)"
-msgstr "FAT (16-bit versie)"
-
-#. Translators: FAT is a filesystem type
-#: ../gdu/gdu-util.c:190
-msgid "FAT (32-bit version)"
-msgstr "FAT (32-bit versie)"
-
-#. Translators: NTFS is a filesystem type
-#: ../gdu/gdu-util.c:205
-#, c-format
-msgid "NTFS (version %s)"
-msgstr "NTFS (versie %s)"
-
-#. Translators: NTFS is a filesystem type
-#: ../gdu/gdu-util.c:208
-#: ../gdu/gdu-util.c:210
-#, fuzzy, c-format
-msgid "NTFS"
-msgstr "NTFS"
-
-#. Translators: HFS is a filesystem type
-#: ../gdu/gdu-util.c:215
-#: ../gdu/gdu-util.c:217
-msgid "HFS"
-msgstr "HFS"
-
-#. Translators: HFS+ is a filesystem type
-#: ../gdu/gdu-util.c:222
-#: ../gdu/gdu-util.c:224
-msgid "HFS+"
-msgstr "HFS+"
-
-#: ../gdu/gdu-util.c:228
-msgid "Linux Unified Key Setup"
-msgstr ""
-
-#. Translators: LUKS is 'Linux Unified Key Setup', a disk encryption format
-#: ../gdu/gdu-util.c:231
-msgid "LUKS"
-msgstr "LUKS"
-
-#. Translators: Ext2 is a filesystem type
-#: ../gdu/gdu-util.c:237
-#, c-format
-msgid "Ext2 (version %s)"
-msgstr "Ext2 (versie %s)"
-
-#. Translators: Ext2 is a filesystem type
-#: ../gdu/gdu-util.c:240
-#, c-format
-msgid "Ext2"
-msgstr "Ext2"
-
-#. Translators: Ext2 is a filesystem type
-#: ../gdu/gdu-util.c:243
-msgid "ext2"
-msgstr "ext2"
-
-#. Translators: Ext3 is a filesystem type
-#: ../gdu/gdu-util.c:249
-#, c-format
-msgid "Ext3 (version %s)"
-msgstr "Ext3 (versie %s)"
-
-#. Translators: Ext3 is a filesystem type
-#: ../gdu/gdu-util.c:252
-#, c-format
-msgid "Ext3"
-msgstr "Ext3"
-
-#. Translators: Ext3 is a filesystem type
-#: ../gdu/gdu-util.c:255
-msgid "ext3"
-msgstr "ext3"
-
-#. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
-#: ../gdu/gdu-util.c:261
-#, fuzzy, c-format
-msgid "Journal for Ext3 (version %s)"
-msgstr "tijdens controle van het ext3-journal van %s"
-
-#. Translators: 'Journal' refers to a filesystem technology here, see 'journaling filesystems'
-#: ../gdu/gdu-util.c:264
-#, fuzzy, c-format
-msgid "Journal for Ext3"
-msgstr "tijdens controle van het ext3-journal van %s"
-
-#. Translators: jbd is a filesystem type
-#: ../gdu/gdu-util.c:267
-msgid "jbd"
-msgstr "jbd"
-
-#. Translators: ext4 is a filesystem type
-#: ../gdu/gdu-util.c:273
-#, c-format
-msgid "Ext4 (version %s)"
-msgstr "Ext4 (versie %s)"
-
-#. Translators: ext4 is a filesystem type
-#: ../gdu/gdu-util.c:276
-#, c-format
-msgid "Ext4"
-msgstr "Ext4"
-
-#. Translators: Ext4 is a filesystem type
-#: ../gdu/gdu-util.c:279
-msgid "ext4"
-msgstr "ext4"
-
-#. Translators: xfs is a filesystem type
-#: ../gdu/gdu-util.c:285
-#, c-format
-msgid "XFS (version %s)"
-msgstr "XFS (versie %s)"
-
-#. Translators: xfs is a filesystem type
-#: ../gdu/gdu-util.c:288
-#, c-format
-msgid "XFS"
-msgstr "XFS"
-
-#. Translators: xfs is a filesystem type
-#: ../gdu/gdu-util.c:291
-msgid "xfs"
-msgstr "xfs"
-
-#. Translators: reiserfs is a filesystem type
-#: ../gdu/gdu-util.c:297
-#, c-format
-msgid "ReiserFS (version %s)"
-msgstr "ReiserFS (versie %s)"
-
-#. Translators: reiserfs is a filesystem type
-#: ../gdu/gdu-util.c:300
-#, c-format
-msgid "ReiserFS"
-msgstr "ReiserFS"
-
-#. Translators: reiserfs is a filesystem type
-#: ../gdu/gdu-util.c:303
-msgid "reiserfs"
-msgstr "reiserfs"
-
-#. Translators: iso9660 is a filesystem type
-#: ../gdu/gdu-util.c:308
-msgid "ISO 9660"
-msgstr "ISO 9660"
-
-#. Translators: iso9660 is a filesystem type
-#: ../gdu/gdu-util.c:311
-msgid "iso9660"
-msgstr "iso9660"
-
-#. Translators: udf is a filesystem type
-#: ../gdu/gdu-util.c:316
-#, fuzzy
-msgid "Universal Disk Format"
-msgstr "Schijfindeling wordt niet ondersteund"
-
-#. Translators: udf is a filesystem type
-#: ../gdu/gdu-util.c:319
-msgid "udf"
-msgstr "udf"
-
-#: ../gdu/gdu-util.c:323
-#, fuzzy
-msgid "Swap Space"
-msgstr "Vrije Ruimte:"
-
-#. Translators: filesystem type for swap space
-#: ../gdu/gdu-util.c:326
-#, fuzzy
-msgid "swap"
-msgstr "swap"
-
-#: ../gdu/gdu-util.c:331
-#, c-format
-msgid "LVM2 Physical Volume (version %s)"
-msgstr ""
-
-#: ../gdu/gdu-util.c:333
-#, fuzzy, c-format
-msgid "LVM2 Physical Volume"
-msgstr "Deelnummer-overloop"
-
-#. Translators: short name for LVM2 Physical Volume
-#: ../gdu/gdu-util.c:336
-msgid "lvm2_pv"
-msgstr "lvm2_pv"
-
-#: ../gdu/gdu-util.c:342
-#, fuzzy, c-format
-msgid "RAID Component (version %s)"
-msgstr "Toon versie."
-
-#: ../gdu/gdu-util.c:344
-#, fuzzy, c-format
-msgid "RAID Component"
-msgstr "Echo component"
-
-#. Translators: short name for 'RAID Component'
-#: ../gdu/gdu-util.c:347
-#, fuzzy
-msgid "raid"
-msgstr "raid"
-
-#. Translators: long filesystem type for minix
-#: ../gdu/gdu-util.c:352
-msgid "Minix"
-msgstr "Minix"
-
-#. Translators: filesystem type for minix
-#: ../gdu/gdu-util.c:355
-msgid "minix"
-msgstr "minix"
-
-#: ../gdu/gdu-util.c:369
-#, fuzzy
-msgid "Creating File System"
-msgstr "Backend bestandsysteem"
-
-#: ../gdu/gdu-util.c:371
-#, fuzzy
-msgid "Mounting File System"
-msgstr "Backend bestandsysteem"
-
-#: ../gdu/gdu-util.c:373
-#, fuzzy
-msgid "Unmounting File System"
-msgstr "Backend bestandsysteem"
-
-#: ../gdu/gdu-util.c:375
-#, fuzzy
-msgid "Checking File System"
-msgstr "Backend bestandsysteem"
-
-#: ../gdu/gdu-util.c:377
-#, fuzzy
-msgid "Creating LUKS Device"
-msgstr "Aanmaken van journal op apparaat %s: "
-
-#: ../gdu/gdu-util.c:379
-#, fuzzy
-msgid "Unlocking LUKS Device"
-msgstr "# %s (apparaat %ld, inode %ld): "
-
-#: ../gdu/gdu-util.c:381
-#, fuzzy
-msgid "Locking LUKS Device"
-msgstr "# %s (apparaat %ld, inode %ld): "
-
-#: ../gdu/gdu-util.c:383
-#, fuzzy
-msgid "Creating Partition Table"
-msgstr "   p      de partitietabel weergeven"
-
-#: ../gdu/gdu-util.c:385
-#, fuzzy
-msgid "Deleting Partition"
-msgstr "   d      een partitie verwijderen"
-
-#: ../gdu/gdu-util.c:387
-#, fuzzy
-msgid "Creating Partition"
-msgstr "   d      een partitie verwijderen"
-
-#: ../gdu/gdu-util.c:389
-#, fuzzy
-msgid "Modifying Partition"
-msgstr "   d      een partitie verwijderen"
-
-#: ../gdu/gdu-util.c:391
-#, fuzzy
-msgid "Setting Label for Device"
-msgstr ""
-"\n"
-"BSD-label voor apparaat: %s\n"
-
-#: ../gdu/gdu-util.c:393
-msgid "Changing Passphrase for Encrypted LUKS Device"
-msgstr ""
-
-#: ../gdu/gdu-util.c:395
-msgid "Adding Component to RAID Array"
-msgstr ""
-
-#: ../gdu/gdu-util.c:397
-msgid "Removing Component from RAID Array"
-msgstr ""
-
-#: ../gdu/gdu-util.c:399
-#, fuzzy
-msgid "Stopping RAID Array"
-msgstr "%s: array-verwijzing naar %s\n"
-
-#: ../gdu/gdu-util.c:401
-#, fuzzy
-msgid "Starting RAID Array"
-msgstr "%s: array-verwijzing naar %s\n"
-
-#: ../gdu/gdu-util.c:403
-#, fuzzy
-msgid "Checking RAID Array"
-msgstr "%s: array-verwijzing naar %s\n"
-
-#: ../gdu/gdu-util.c:405
-#, fuzzy
-msgid "Repairing RAID Array"
-msgstr "%s: array-verwijzing naar %s\n"
-
-#: ../gdu/gdu-util.c:407
-msgid "Running Short SMART Self-Test"
-msgstr ""
-
-#: ../gdu/gdu-util.c:409
-msgid "Running Extended SMART Self-Test"
-msgstr ""
-
-#: ../gdu/gdu-util.c:411
-msgid "Running Conveyance SMART Self-Test"
-msgstr ""
-
-#: ../gdu/gdu-util.c:413
-#, fuzzy
-msgid "Ejecting Media"
-msgstr "Smart media"
-
-#: ../gdu/gdu-util.c:415
-#, fuzzy
-msgid "Detaching Device"
-msgstr "# %s (apparaat %d, inode [%d,%d,%d]): "
-
-#: ../gdu/gdu-util.c:417
-#, fuzzy
-msgid "Forcibly Unmounting Filesystem"
-msgstr "Gnome virtueel bestandssysteem"
-
-#: ../gdu/gdu-util.c:419
-msgid "Forcibly Locking LUKS device"
-msgstr ""
-
-#. see http://en.wikipedia.org/wiki/GUID_Partition_Table
-#. Linux
-#: ../gdu/gdu-util.c:435
-#, fuzzy
-msgid "Linux Basic Data Partition"
-msgstr "   b      begin van gegevens in een partitie verplaatsen"
-
-#. Same as MS BDP
-#: ../gdu/gdu-util.c:436
-#, fuzzy
-msgid "Linux RAID Partition"
-msgstr "Linux raidautodetectie"
-
-#: ../gdu/gdu-util.c:437
-#, fuzzy
-msgid "Linux Swap Partition"
-msgstr "Linux wisselgeheugen"
-
-#: ../gdu/gdu-util.c:438
-#, fuzzy
-msgid "Linux LVM Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:439
-#, fuzzy
-msgid "Linux Reserved Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#. Not associated with any OS
-#: ../gdu/gdu-util.c:441
-#, fuzzy
-msgid "MBR Partition Scheme"
-msgstr "Interactieve ontwikkeling in Scheme"
-
-#: ../gdu/gdu-util.c:442
-#, fuzzy
-msgid "EFI System Partition"
-msgstr "   t      systeem-ID van partitie wijzigen"
-
-#: ../gdu/gdu-util.c:443
-#, fuzzy
-msgid "BIOS Boot Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#. Microsoft
-#: ../gdu/gdu-util.c:445
-#, fuzzy
-msgid "Microsoft Reserved Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:446
-#, fuzzy
-msgid "Microsoft Basic Data Partition"
-msgstr "   b      begin van gegevens in een partitie verplaatsen"
-
-#. Same as Linux BDP
-#: ../gdu/gdu-util.c:447
-msgid "Microsoft LDM Metadata Partition"
-msgstr ""
-
-#: ../gdu/gdu-util.c:448
-#, fuzzy
-msgid "Microsoft LDM Data Partition"
-msgstr "   b      begin van gegevens in een partitie verplaatsen"
-
-#: ../gdu/gdu-util.c:449
-msgid "Microsoft Windows Recovery Environment"
-msgstr ""
-
-#. HP-UX
-#: ../gdu/gdu-util.c:451
-#, fuzzy
-msgid "HP-UX Data Partition"
-msgstr "   b      begin van gegevens in een partitie verplaatsen"
-
-#: ../gdu/gdu-util.c:452
-msgid "HP-UX Service Partition"
-msgstr ""
-
-#. FreeBSD
-#: ../gdu/gdu-util.c:454
-#, fuzzy
-msgid "FreeBSD Boot Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:455
-#, fuzzy
-msgid "FreeBSD Data Partition"
-msgstr "   b      begin van gegevens in een partitie verplaatsen"
-
-#: ../gdu/gdu-util.c:456
-#, fuzzy
-msgid "FreeBSD Swap Partition"
-msgstr "   c      SGI-wisselgeheugenpartitie selecteren"
-
-#: ../gdu/gdu-util.c:457
-#, fuzzy
-msgid "FreeBSD UFS Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:458
-#, fuzzy
-msgid "FreeBSD Vinum Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:459
-#, fuzzy
-msgid "FreeBSD ZFS Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#. Solaris
-#: ../gdu/gdu-util.c:461
-#, fuzzy
-msgid "Solaris Boot Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:462
-#, fuzzy
-msgid "Solaris Root Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:463
-#, fuzzy
-msgid "Solaris Swap Partition"
-msgstr "Linux wisselgeheugen"
-
-#: ../gdu/gdu-util.c:464
-#, fuzzy
-msgid "Solaris Backup Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:465
-#, fuzzy
-msgid "Solaris /usr Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#. Same as Apple ZFS
-#: ../gdu/gdu-util.c:466
-#, fuzzy
-msgid "Solaris /var Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:467
-#, fuzzy
-msgid "Solaris /home Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:468
-#, fuzzy
-msgid "Solaris Alternate Sector Partition"
-msgstr "Partitie begint vóór sector 0"
-
-#: ../gdu/gdu-util.c:469
-#, fuzzy
-msgid "Solaris Reserved Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:470
-#, fuzzy
-msgid "Solaris Reserved Partition (2)"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:471
-#, fuzzy
-msgid "Solaris Reserved Partition (3)"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:472
-#, fuzzy
-msgid "Solaris Reserved Partition (4)"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:473
-#, fuzzy
-msgid "Solaris Reserved Partition (5)"
-msgstr "   a      opstartbare partitie selecteren"
-
-#. Mac OS X
-#: ../gdu/gdu-util.c:475
-#: ../gdu/gdu-util.c:494
-#, fuzzy
-msgid "Apple HFS/HFS+ Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#. see http://developer.apple.com/documentation/mac/Devices/Devices-126.html
-#. *     http://lists.apple.com/archives/Darwin-drivers/2003/May/msg00021.html
-#: ../gdu/gdu-util.c:476
-#: ../gdu/gdu-util.c:493
-#, fuzzy
-msgid "Apple UFS Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:477
-#, fuzzy
-msgid "Apple ZFS Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#. Same as Solaris /usr
-#: ../gdu/gdu-util.c:478
-#, fuzzy
-msgid "Apple RAID Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:479
-msgid "Apple RAID Partition (Offline)"
-msgstr ""
-
-#: ../gdu/gdu-util.c:480
-#, fuzzy
-msgid "Apple Boot Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:481
-#, fuzzy
-msgid "Apple Label Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:482
-msgid "Apple TV Recovery Partition"
-msgstr ""
-
-#. NetBSD
-#: ../gdu/gdu-util.c:484
-#, fuzzy
-msgid "NetBSD Swap Partition"
-msgstr "   c      SGI-wisselgeheugenpartitie selecteren"
-
-#: ../gdu/gdu-util.c:485
-#, fuzzy
-msgid "NetBSD FFS Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:486
-#, fuzzy
-msgid "NetBSD LFS Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:487
-#, fuzzy
-msgid "NetBSD RAID Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:488
-#, fuzzy
-msgid "NetBSD Concatenated  Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:489
-#, fuzzy
-msgid "NetBSD Encrypted Partition"
-msgstr "   a      opstartbare partitie selecteren"
-
-#: ../gdu/gdu-util.c:495
-#, fuzzy
-msgid "Apple Partition Map"
-msgstr "Geen geldige partitietabel gevonden."
-
-#: ../gdu/gdu-util.c:496
-#, fuzzy
-msgid "Unused Partition"
-msgstr "   d      een partitie verwijderen"
-
-#: ../gdu/gdu-util.c:497
-#, fuzzy
-msgid "Empty Partition"
-msgstr "Waarschuwing: lege partitie\n"
-
-#: ../gdu/gdu-util.c:498
-#, fuzzy
-msgid "Driver Partition"
-msgstr "   d      een partitie verwijderen"
-
-#: ../gdu/gdu-util.c:499
-#, fuzzy
-msgid "Driver 4.3 Partition"
-msgstr "   d      een partitie verwijderen"
-
-#: ../gdu/gdu-util.c:500
-#, fuzzy
-msgid "ProDOS file system"
-msgstr "Backend bestandsysteem"
-
-#: ../gdu/gdu-util.c:501
-msgid "FAT 12"
-msgstr "FAT 12"
-
-#: ../gdu/gdu-util.c:502
-msgid "FAT 16"
-msgstr "FAT 16"
-
-#: ../gdu/gdu-util.c:503
-msgid "FAT 32"
-msgstr "FAT 32"
-
-#: ../gdu/gdu-util.c:504
-msgid "FAT 16 (Windows)"
-msgstr "FAT 16 (Windows)"
-
-#: ../gdu/gdu-util.c:505
-msgid "FAT 32 (Windows)"
-msgstr "FAT 32 (Windows)"
-
-#. see http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
-#: ../gdu/gdu-util.c:508
-msgid "Empty (0x00)"
-msgstr "Empty (0x00)"
-
-#: ../gdu/gdu-util.c:509
-msgid "FAT12 (0x01)"
-msgstr "FAT12 (0x01)"
-
-#: ../gdu/gdu-util.c:510
-msgid "FAT16 <32M (0x04)"
-msgstr "FAT16 <32M (0x04)"
-
-#: ../gdu/gdu-util.c:511
-msgid "Extended (0x05)"
-msgstr "Extended (0x05)"
-
-#: ../gdu/gdu-util.c:512
-msgid "FAT16 (0x06)"
-msgstr "FAT16 (0x06)"
-
-#: ../gdu/gdu-util.c:513
-msgid "HPFS/NTFS (0x07)"
-msgstr "HPFS/NTFS (0x07)"
-
-#: ../gdu/gdu-util.c:514
-msgid "W95 FAT32 (0x0b)"
-msgstr "W95 FAT32 (0x0b)"
-
-#: ../gdu/gdu-util.c:515
-msgid "W95 FAT32 (LBA) (0x0c)"
-msgstr "W95 FAT32 (LBA) (0x0c)"
-
-#: ../gdu/gdu-util.c:516
-msgid "W95 FAT16 (LBA) (0x0e)"
-msgstr "W95 FAT16 (LBA) (0x0e)"
-
-#: ../gdu/gdu-util.c:517
-msgid "W95 Ext d (LBA) (0x0f)"
-msgstr "W95 Ext d (LBA) (0x0f)"
-
-#: ../gdu/gdu-util.c:518
-msgid "OPUS (0x10)"
-msgstr "OPUS (0x10)"
-
-#: ../gdu/gdu-util.c:519
-msgid "Hidden FAT12 (0x11)"
-msgstr "Hidden FAT12 (0x11)"
-
-#: ../gdu/gdu-util.c:520
-msgid "Compaq diagnostics (0x12)"
-msgstr "Compaq diagnostics (0x12)"
-
-#: ../gdu/gdu-util.c:521
-msgid "Hidden FAT16 <32M (0x14)"
-msgstr "Hidden FAT16 <32M (0x14)"
-
-#: ../gdu/gdu-util.c:522
-msgid "Hidden FAT16 (0x16)"
-msgstr "Hidden FAT16 (0x16)"
-
-#: ../gdu/gdu-util.c:523
-msgid "Hidden HPFS/NTFS (0x17)"
-msgstr "Hidden HPFS/NTFS (0x17)"
-
-#: ../gdu/gdu-util.c:524
-msgid "Hidden W95 FAT32 (0x1b)"
-msgstr "Hidden W95 FAT32 (0x1b)"
-
-#: ../gdu/gdu-util.c:525
-msgid "Hidden W95 FAT32 (LBA) (0x1c)"
-msgstr "Hidden W95 FAT32 (LBA) (0x1c)"
-
-#: ../gdu/gdu-util.c:526
-msgid "Hidden W95 FAT16 (LBA) (0x1e)"
-msgstr "Hidden W95 FAT16 (LBA) (0x1e)"
-
-#: ../gdu/gdu-util.c:527
-msgid "PartitionMagic (0x3c)"
-msgstr "PartitionMagic (0x3c)"
-
-#: ../gdu/gdu-util.c:528
-msgid "Minix (0x81)"
-msgstr "Minix (0x81)"
-
-#. cf. http://en.wikipedia.org/wiki/MINIX_file_system
-#: ../gdu/gdu-util.c:529
-msgid "Linux swap (0x82)"
-msgstr "Linux swap (0x82)"
-
-#: ../gdu/gdu-util.c:530
-msgid "Linux (0x83)"
-msgstr "Linux (0x83)"
-
-#: ../gdu/gdu-util.c:531
-msgid "Hibernation (0x84)"
-msgstr "Hibernation (0x84)"
-
-#: ../gdu/gdu-util.c:532
-msgid "Linux Extended (0x85)"
-msgstr "Linux Extended (0x85)"
-
-#: ../gdu/gdu-util.c:533
-msgid "Linux LVM (0x8e)"
-msgstr "Linux LVM (0x8e)"
-
-#: ../gdu/gdu-util.c:534
-msgid "Hibernation (0xa0)"
-msgstr "Hibernation (0xa0)"
-
-#: ../gdu/gdu-util.c:535
-msgid "FreeBSD (0xa5)"
-msgstr "FreeBSD (0xa5)"
-
-#: ../gdu/gdu-util.c:536
-msgid "OpenBSD (0xa6)"
-msgstr "OpenBSD (0xa6)"
-
-#: ../gdu/gdu-util.c:537
-msgid "Mac OS X (0xa8)"
-msgstr "Mac OS X (0xa8)"
-
-#: ../gdu/gdu-util.c:538
-msgid "Mac OS X (0xaf)"
-msgstr "Mac OS X (0xaf)"
-
-#: ../gdu/gdu-util.c:539
-msgid "Solaris boot (0xbe)"
-msgstr "Solaris boot (0xbe)"
-
-#: ../gdu/gdu-util.c:540
-msgid "Solaris (0xbf)"
-msgstr "Solaris (0xbf)"
-
-#: ../gdu/gdu-util.c:541
-msgid "BeOS BFS (0xeb)"
-msgstr "BeOS BFS (0xeb)"
-
-#: ../gdu/gdu-util.c:542
-msgid "SkyOS SkyFS (0xec)"
-msgstr "SkyOS SkyFS (0xec)"
-
-#: ../gdu/gdu-util.c:543
-msgid "EFI GPT (0xee)"
-msgstr "EFI GPT (0xee)"
-
-#: ../gdu/gdu-util.c:544
-msgid "EFI (FAT-12/16/32 (0xef)"
-msgstr "EFI (FAT-12/16/32 (0xef)"
-
-#: ../gdu/gdu-util.c:545
-msgid "Linux RAID autodetect (0xfd)"
-msgstr "Linux RAID autodetect (0xfd)"
-
-#. Translators: Shown for unknown partition types.
-#. * %s is the partition type name
-#.
-#: ../gdu/gdu-util.c:572
-#, c-format
-msgid "Unknown (%s)"
-msgstr "Onbekend (%s)"
-
-#: ../gdu/gdu-util.c:582
-msgid "A popular format compatible with almost any device or system, typically used for file exchange."
-msgstr ""
-
-#: ../gdu/gdu-util.c:586
-msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
-msgstr ""
-
-#: ../gdu/gdu-util.c:592
-msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
-msgstr ""
-
-#: ../gdu/gdu-util.c:596
-msgid "Swap area used by the operating system for virtual memory."
-msgstr ""
-
-#: ../gdu/gdu-util.c:599
-msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
-msgstr ""
-
-#: ../gdu/gdu-util.c:603
-msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
-msgstr ""
-
-#: ../gdu/gdu-util.c:607
-msgid "No file system will be created."
-msgstr ""
-
-#: ../gdu/gdu-util.c:610
-#, fuzzy
-msgid "Create an Extended Partition for logical partitions."
-msgstr "Kan geen logische partitie buiten de uitgebreide partitie maken."
-
-#: ../gdu/gdu-util.c:623
-msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
-msgstr ""
-
-#: ../gdu/gdu-util.c:628
-msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
-msgstr ""
-
-#: ../gdu/gdu-util.c:633
-msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
-msgstr ""
-
-#: ../gdu/gdu-util.c:637
-msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
-msgstr ""
-
-#: ../gdu/gdu-util.c:828
-#, fuzzy, c-format
-msgid "LUKS Passphrase for UUID %s"
-msgstr "Voer wachtwoordzin voor sleutel in"
-
-#: ../gdu/gdu-util.c:888
-#, c-format
-msgid "%.1f KB/s"
-msgstr "%.1f kB"
-
-#: ../gdu/gdu-util.c:891
-#, c-format
-msgid "%.1f MB/s"
-msgstr "%.1f MB"
-
-#: ../gdu/gdu-util.c:894
-#, c-format
-msgid "%.1f GB/s"
-msgstr "%.1f GB"
-
-#. Translators: interface name for serial ATA disks
-#: ../gdu/gdu-util.c:910
-msgid "SATA"
-msgstr "SATA"
-
-#. Translators: interface name for serial ATA disks
-#: ../gdu/gdu-util.c:913
-msgid "eSATA"
-msgstr "eSATA"
-
-#. Translators: interface name for parallel ATA disks
-#: ../gdu/gdu-util.c:916
-msgid "PATA"
-msgstr "PATA"
-
-#. Translators: interface name for ATA disks
-#: ../gdu/gdu-util.c:919
-msgid "ATA"
-msgstr "ATA"
-
-#. Translators: interface name for SCSI disks
-#: ../gdu/gdu-util.c:922
-msgid "SCSI"
-msgstr "SCSI"
-
-#. Translators: interface name for USB disks
-#: ../gdu/gdu-util.c:925
-msgid "USB"
-msgstr "USB"
-
-#. Translators: interface name for firewire disks
-#: ../gdu/gdu-util.c:928
-msgid "Firewire"
-msgstr "Firewire"
-
-#. Translators: interface name for SDIO disks
-#: ../gdu/gdu-util.c:931
-msgid "SDIO"
-msgstr "SDIO"
-
-#. Translators: interface name for virtual disks
-#: ../gdu/gdu-util.c:934
-#, fuzzy
-msgid "Virtual"
-msgstr "Is virtueel"
-
-#. Translators: name shown for unknown disk connection interfaces
-#: ../gdu/gdu-util.c:940
-#, fuzzy
-msgctxt "connection name"
-msgid "Unknown"
-msgstr "Onbekend"
-
-#. Translators: Connection with speed information.
-#. * First %s is the connection name, like 'SATA' or 'USB'
-#. * second %s is the speed, like '2 Mbit/s'
-#.
-#: ../gdu/gdu-util.c:950
-#, fuzzy, c-format
-msgid "%s at %s"
-msgstr "%s op %s"
-
-#: ../gdu/gdu-util.c:969
-msgctxt "RAID level"
-msgid "Stripe (RAID-0)"
-msgstr "Stripe (RAID-0)"
-
-#: ../gdu/gdu-util.c:971
-msgctxt "RAID level"
-msgid "RAID-0"
-msgstr "RAID-0"
-
-#: ../gdu/gdu-util.c:974
-msgctxt "RAID level"
-msgid "Mirror (RAID-1)"
-msgstr "Mirror (RAID-1)"
-
-#: ../gdu/gdu-util.c:976
-msgctxt "RAID level"
-msgid "RAID-1"
-msgstr "RAID-1"
-
-#: ../gdu/gdu-util.c:979
-msgctxt "RAID level"
-msgid "Parity Disk (RAID-4)"
-msgstr "Parity Disk (RAID-4)"
-
-#: ../gdu/gdu-util.c:981
-msgctxt "RAID level"
-msgid "RAID-4"
-msgstr "RAID-4"
-
-#: ../gdu/gdu-util.c:984
-msgctxt "RAID level"
-msgid "Distributed Parity (RAID-5)"
-msgstr "Distributed Parity (RAID-5)"
-
-#: ../gdu/gdu-util.c:986
-msgctxt "RAID level"
-msgid "RAID-5"
-msgstr "RAID-5"
-
-#: ../gdu/gdu-util.c:989
-msgctxt "RAID level"
-msgid "Dual Distributed Parity (RAID-6)"
-msgstr ""
-
-#: ../gdu/gdu-util.c:991
-msgctxt "RAID level"
-msgid "RAID-6"
-msgstr "RAID-6"
-
-#: ../gdu/gdu-util.c:994
-msgctxt "RAID level"
-msgid "Stripe of Mirrors (RAID-10)"
-msgstr "Stripe of Mirrors (RAID-10)"
-
-#: ../gdu/gdu-util.c:996
-msgctxt "RAID level"
-msgid "RAID-10"
-msgstr "RAID-10"
-
-#: ../gdu/gdu-util.c:999
-#, fuzzy
-msgctxt "RAID level"
-msgid "Concatenated (Linear)"
-msgstr "Lineaire beweging"
-
-#: ../gdu/gdu-util.c:1001
-msgctxt "RAID level"
-msgid "Linear"
-msgstr "Lineair"
-
-#: ../gdu/gdu-util.c:1015
-msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
-msgstr ""
-
-#: ../gdu/gdu-util.c:1019
-msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
-msgstr ""
-
-#: ../gdu/gdu-util.c:1023
-msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
-msgstr ""
-
-#: ../gdu/gdu-util.c:1027
-msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
-msgstr ""
-
-#: ../gdu/gdu-util.c:1031
-msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
-msgstr ""
-
-#: ../gdu/gdu-util.c:1035
-msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
-msgstr ""
-
-#: ../gdu/gdu-util.c:1041
-#, fuzzy, c-format
-msgid "Unknown RAID level %s."
-msgstr "onbekende aanduiding '%s' voor debug-niveau"
-
-#. Translators: Overall description of the GOOD status
-#: ../gdu/gdu-util.c:1077
-#, fuzzy
-msgid "Disk is healthy"
-msgstr "Schijf is in gebruik"
-
-#. Translators: Overall description of the BAD_ATTRIBUTE_IN_THE_PAST status
-#: ../gdu/gdu-util.c:1081
-msgid "Disk was used outside of design parameters in the past"
-msgstr ""
-
-#. Translators: Overall description of the BAD_SECTOR status
-#: ../gdu/gdu-util.c:1085
-msgid "Disk has a few bad sectors"
-msgstr ""
-
-#. Translators: Overall description of the BAD_ATTRIBUTE_NOW status
-#: ../gdu/gdu-util.c:1089
-msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
-msgstr ""
-
-#. Translators: Suggested action for the BAD_ATTRIBUTE_NOW status
-#. Translators: Suggested action for the BAD_SECTOR_MANY status
-#. Translators: Suggested action for the BAD_STATUS status
-#: ../gdu/gdu-util.c:1091
-#: ../gdu/gdu-util.c:1099
-#: ../gdu/gdu-util.c:1105
-msgid "Backup all data and replace the disk"
-msgstr ""
-
-#. Translators: Overall description of the BAD_SECTOR_MANY status
-#: ../gdu/gdu-util.c:1096
-msgid "DISK HAS MANY BAD SECTORS"
-msgstr ""
-
-#. Translators: Overall description of the BAD_STATUS status
-#: ../gdu/gdu-util.c:1103
-#, fuzzy
-msgid "DISK FAILURE IS IMMINENT"
-msgstr "Schijf is in gebruik"
-
-#. Translators: Description when the overall SMART status is unknown
-#: ../gdu/gdu-util.c:1110
-msgid "Unknown"
-msgstr "Onbekend"
-
-#. Translator: The word "blank" is used as an adjective, e.g. we are decsribing discs that are already blank
-#: ../gdu/gdu-volume.c:75
-msgid "CD-ROM Disc"
-msgstr "Cd-rom-schijf"
-
-#: ../gdu/gdu-volume.c:75
-msgid "Blank CD-ROM Disc"
-msgstr "Lege cd-rom-schijf"
-
-#: ../gdu/gdu-volume.c:76
-msgid "CD-R Disc"
-msgstr "Cd-r-schijf"
-
-#: ../gdu/gdu-volume.c:76
-msgid "Blank CD-R Disc"
-msgstr "Lege cd-r-schijf"
-
-#: ../gdu/gdu-volume.c:77
-msgid "CD-RW Disc"
-msgstr "Cd-rw-schijf"
-
-#: ../gdu/gdu-volume.c:77
-msgid "Blank CD-RW Disc"
-msgstr "Lege cd-rw-schijf"
-
-#: ../gdu/gdu-volume.c:78
-#: ../gdu/gdu-volume.c:79
-msgid "DVD-ROM Disc"
-msgstr "Dvd-rom-schijf"
-
-#: ../gdu/gdu-volume.c:78
-#: ../gdu/gdu-volume.c:79
-msgid "Blank DVD-ROM Disc"
-msgstr "Lege dvd-rom-schijf"
-
-#: ../gdu/gdu-volume.c:80
-msgid "DVD-RW Disc"
-msgstr "Dvd-rw-schijf"
-
-#: ../gdu/gdu-volume.c:80
-msgid "Blank DVD-RW Disc"
-msgstr "Lege dvd-rw-schijf"
-
-#: ../gdu/gdu-volume.c:81
-msgid "DVD-RAM Disc"
-msgstr "Dvd-ram-schijf"
-
-#: ../gdu/gdu-volume.c:81
-msgid "Blank DVD-RAM Disc"
-msgstr "Lege dvd-ram-schijf"
-
-#: ../gdu/gdu-volume.c:82
-msgid "DVD+R Disc"
-msgstr "Dvd-r-schijf"
-
-#: ../gdu/gdu-volume.c:82
-msgid "Blank DVD+R Disc"
-msgstr "Lege dvd-r-schijf"
-
-#: ../gdu/gdu-volume.c:83
-msgid "DVD+RW Disc"
-msgstr "Dvd+rw-schijf"
-
-#: ../gdu/gdu-volume.c:83
-msgid "Blank DVD+RW Disc"
-msgstr "Lege dvd+rw-schijf"
-
-#: ../gdu/gdu-volume.c:84
-msgid "DVD+R DL Disc"
-msgstr "Dvd+r DL-schijf"
-
-#: ../gdu/gdu-volume.c:84
-msgid "Blank DVD+R DL Disc"
-msgstr "Lege dvd+r dl-schijf"
-
-#: ../gdu/gdu-volume.c:85
-msgid "DVD+RW DL Disc"
-msgstr "Lege dvd+r dl-schijf"
-
-#: ../gdu/gdu-volume.c:85
-msgid "Blank DVD+RW DL Disc"
-msgstr "Lege hd-dvd-rw-schijf"
-
-#: ../gdu/gdu-volume.c:86
-msgid "Blu-Ray Disc"
-msgstr "Blu-ray-schijf"
-
-#: ../gdu/gdu-volume.c:86
-msgid "Blank Blu-Ray Disc"
-msgstr "Lege Blu-ray-schijf"
-
-#: ../gdu/gdu-volume.c:87
-msgid "Blu-Ray R Disc"
-msgstr "Blu-ray-r-schijf"
-
-#: ../gdu/gdu-volume.c:87
-msgid "Blank Blu-Ray R Disc"
-msgstr "Lege Blu-ray-r-schijf"
-
-#: ../gdu/gdu-volume.c:88
-msgid "Blu-Ray RW Disc"
-msgstr "Blu-ray-rw-schijf"
-
-#: ../gdu/gdu-volume.c:88
-msgid "Blank Blu-Ray RW Disc"
-msgstr "Lege Blu-ray-rw-schijf"
-
-#: ../gdu/gdu-volume.c:89
-msgid "HD DVD Disc"
-msgstr "Hd-dvd-schijf"
-
-#: ../gdu/gdu-volume.c:89
-msgid "Blank HD DVD Disc"
-msgstr "Lege hd-dvd-schijf"
-
-#: ../gdu/gdu-volume.c:90
-msgid "HD DVD-R Disc"
-msgstr "Hd-dvd-r-schijf"
-
-#: ../gdu/gdu-volume.c:90
-msgid "Blank HD DVD-R Disc"
-msgstr "Lege hd-dvd-r-schijf"
-
-#: ../gdu/gdu-volume.c:91
-msgid "HD DVD-RW Disc"
-msgstr "Hd-dvd-rw-schijf"
-
-#: ../gdu/gdu-volume.c:91
-msgid "Blank HD DVD-RW Disc"
-msgstr "Lege hd-dvd-rw-schijf"
-
-#: ../gdu/gdu-volume.c:92
-msgid "MO Disc"
-msgstr "MO-schijf"
-
-#: ../gdu/gdu-volume.c:92
-msgid "Blank MO Disc"
-msgstr "Lege MO-schijf"
-
-#: ../gdu/gdu-volume.c:93
-#, fuzzy
-msgid "MRW Disc"
-msgstr "Blanco %s-schijf"
-
-#: ../gdu/gdu-volume.c:93
-#, fuzzy
-msgid "Blank MRW Disc"
-msgstr "Lege cd-r-schijf"
-
-#: ../gdu/gdu-volume.c:94
-#, fuzzy
-msgid "MRW/W Disc"
-msgstr "Blanco %s-schijf"
-
-#: ../gdu/gdu-volume.c:94
-#, fuzzy
-msgid "Blank MRW/W Disc"
-msgstr "Lege cd-r-schijf"
-
-#: ../gdu/gdu-volume.c:276
-#, fuzzy
-msgid "Blank Optical Disc"
-msgstr "Lege cd-r-schijf"
-
-#. Translators: Label for an extended partition
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:286
-#, c-format
-msgid "%s Extended"
-msgstr "%s Uitgebreid"
-
-#: ../gdu/gdu-volume.c:287
-#, fuzzy
-msgid "Contains logical partitions"
-msgstr "logische partities overlappen"
-
-#. Translators: Label for an extended partition
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:302
-#, fuzzy, c-format
-msgid "%s Encrypted"
-msgstr "Gecodeerd bericht"
-
-#: ../gdu/gdu-volume.c:312
-#, fuzzy
-msgid "Optical Disc"
-msgstr "Blanco %s-schijf"
-
-#. Translators: Label for a partition with a filesystem
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:318
-#, fuzzy, c-format
-msgid "%s Filesystem"
-msgstr "Bestandssysteem"
-
-#. Translators: Label for a partition table
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:324
-#, fuzzy, c-format
-msgid "%s Partition Table"
-msgstr "Partitietabel: %s\n"
-
-#. Translators: Label for a LVM volume
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:330
-#, fuzzy, c-format
-msgid "%s LVM2 Physical Volume"
-msgstr "Deelnummer-overloop"
-
-#. Translators: Used if no specific RAID level could be determined
-#: ../gdu/gdu-volume.c:343
-msgctxt "RAID level"
-msgid "RAID"
-msgstr "RAID"
-
-#. Translators: label for a RAID component
-#. * First %s is the size, formatted like '45 GB'
-#. * Second %s is the RAID level string, e.g 'RAID-5'
-#.
-#: ../gdu/gdu-volume.c:350
-#: ../gdu/gdu-volume.c:361
-#, fuzzy, c-format
-msgid "%s %s Component"
-msgstr "Echo component"
-
-#. Translators: description for a RAID component
-#. * First %s is the array name, e.g. 'My Photos RAID',
-#.
-#: ../gdu/gdu-volume.c:354
-#, fuzzy, c-format
-msgid "Part of \"%s\" array"
-msgstr "Part.type"
-
-#. Translators: label for a swap partition
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:372
-#, fuzzy, c-format
-msgid "%s Swap Space"
-msgstr "Vrije Ruimte:"
-
-#. Translators: label for a data partition
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:377
-#, fuzzy, c-format
-msgid "%s Data"
-msgstr "DATA: "
-
-#. Translators: label for a volume of unrecognized use
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:383
-#: ../gdu/gdu-volume.c:399
-#, fuzzy, c-format
-msgid "%s Unrecognized"
-msgstr "%s: onbekende optie '%c%s'\n"
-
-#. Translators: description for a volume of unrecognized use
-#: ../gdu/gdu-volume.c:385
-#, fuzzy
-msgid "Unknown or Unused"
-msgstr "Onbekende opdracht of onbekend werkwoord"
-
-#. Translators: label for a partition
-#. * %s is the size, formatted like '45 GB'
-#.
-#: ../gdu/gdu-volume.c:392
-#: ../gdu/gdu-volume.c:394
-#, fuzzy, c-format
-msgid "%s Partition"
-msgstr "Partitie (a-%c): "
-
-#. Translators: The VPD name for a volume. The %d is the partition number
-#. * and the %s is the VPD name for the drive.
-#.
-#: ../gdu/gdu-volume.c:430
-#, fuzzy, c-format
-msgid "Partition %d of %s"
-msgstr "Partitie (a-%c): "
-
-#. Translators: The VPD name for a volume. The %d is the partition number.
-#.
-#: ../gdu/gdu-volume.c:436
-#, fuzzy, c-format
-msgid "Partition %d"
-msgstr "Partitie (a-%c): "
-
-#. Translators: The VPD name for a whole-disk volume.
-#. * The %s is the VPD name for the drive.
-#.
-#: ../gdu/gdu-volume.c:444
-#, fuzzy, c-format
-msgid "Whole-disk volume on %s"
-msgstr "Kan geen 'seek' doen op schijf"
-
-#. Translators: The VPD name for a whole-disk volume.
-#.
-#: ../gdu/gdu-volume.c:449
-#, fuzzy
-msgid "Whole-disk volume"
-msgstr "Deelnummer-overloop"
+msgstr "apparaten"
 
 #. translators:
 #. * The device has been disabled
 #: ../gvc/gvc-mixer-control.c:1003
-#, fuzzy
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
 #. translators:
 #. * The number of sound outputs on a particular device
 #: ../gvc/gvc-mixer-control.c:1010
-#, fuzzy, c-format
+#, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] "Uitvoer"
-msgstr[1] ""
+msgstr[0] "%u uitvoer"
+msgstr[1] "%u uitvoeren"
 
 #. translators:
 #. * The number of sound inputs on a particular device
 #: ../gvc/gvc-mixer-control.c:1020
-#, fuzzy, c-format
+#, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] "Invoer"
-msgstr[1] ""
+msgstr[0] "%u invoer"
+msgstr[1] "%u invoeren"
 
 #: ../gvc/gvc-mixer-control.c:1316
-#, fuzzy
 msgid "System Sounds"
-msgstr "Geluiden inschakelen"
+msgstr "Systeemgeluid"
 
 #: ../power-icon/src/moblin-power-icon.c:46
-#, fuzzy
 msgid "Moblin Power Icon"
-msgstr "Pictogrambalkmodel"
+msgstr "Moblin Energie pictogram"
 
 #: ../power-icon/src/mpd-power-icon.c:72
-#, fuzzy
 msgid "Running low on battery"
-msgstr " (controle uitgesteld; op accu draaiend)"
+msgstr "De batterij is bijna leeg"
 
 #: ../power-icon/src/mpd-power-icon.c:73
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr ""
+msgstr "De batterij begint leeg te raken. Dit is een goed moment om de stroom aan te sluiten en de batterij op te laden."
 
 #: ../power-icon/src/mpd-power-icon.c:76
-#, fuzzy
 msgid "Getting close to empty"
-msgstr "Legen van klembord mislukt."
+msgstr "De batterij begint leeg te raken"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr ""
+msgstr "De batterij is erg leeg. Probeer als het kan zo spoedig mogelijk de stroom aan te sluiten, en al je werk op te slaan."
 
 #: ../power-icon/src/mpd-power-icon.c:81
-#, fuzzy
 msgid "Danger!"
-msgstr "Gevaarsignaal"
+msgstr "Gevaar!"
 
 #: ../power-icon/src/mpd-power-icon.c:82
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr ""
+msgstr "Sorry, je batterij is bijna helemaal leeg. We sluiten nu automatisch af. Sla alsjeblieft je werk op. Tot snel!"
 
 #: ../power-icon/src/mpd-power-icon.c:300
 msgid "Would you like to turn off now?"
-msgstr ""
+msgstr "Wil je nu afsluiten?"
 
 #: ../power-icon/src/mpd-power-icon.c:301
 msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr ""
+msgstr "Als je niet beslist sluit ik in 30 seconden af"
 
 #: ../power-icon/src/mpd-power-icon.c:368
 msgid "battery"
-msgstr ""
+msgstr "batterij"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:75
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr ""
+msgstr "Als je niet beslist sluit ik in %d seconden af"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
-#, fuzzy
 msgid "Turn off"
-msgstr "Uitvoerige berichtgeving uitzetten"
+msgstr "Uitschakelen"
+
+#: ../src/moblin-panel-devices.c:120
+msgid "Moblin Devices Panel"
+msgstr "Moblin Apparaten paneel"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr ""
+msgstr "Sorry, er is geen batterij beschikbaar."
 
 #: ../src/mpd-battery-device.c:337
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr ""
+msgstr "Je batterij is aan het opladen. Hij is ongeveer %d%% vol."
 
 #: ../src/mpd-battery-device.c:342
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr ""
+msgstr "Je batterij wordt gebruikt. Hij is ongeveer %d%% vol."
 
 #: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr ""
+msgstr "De batterij is volledig opgeladen en het systeem is klaar voor gebruik."
 
 #: ../src/mpd-battery-device.c:351
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr ""
+msgstr "Sorry, het lijkt erop dat de batterij niet werkt."
 
-#: ../src/mpd-computer-pane.c:111
-#, fuzzy
-msgid "All settings"
-msgstr "Bureaublad Instellingen"
+#: ../src/mpd-brightness-tile.c:90
+msgid "Netbook brightness"
+msgstr "Netbook helderheid"
 
-#: ../src/mpd-default-device-tile.c:100
-msgid ""
-"Plug in a device\n"
-"and it will be automatically detected."
-msgstr ""
-
-#: ../src/mpd-disk-tile.c:64
-#, fuzzy, c-format
-msgid "You are using %d%% of %s"
-msgstr "Je bent uit %s verbannen."
-
-#: ../src/mpd-folder-pane.c:91
-#, fuzzy
+#: ../src/mpd-computer-pane.c:120
 msgid "Your computer"
-msgstr "Informatica"
+msgstr "Jouw computer"
 
-#: ../src/mpd-storage-device-tile.c:96
-#, fuzzy, c-format
-msgid "Using %d%% of %s"
-msgstr "%s wordt gebruikt.\n"
+#: ../src/mpd-computer-pane.c:129
+msgid "All settings"
+msgstr "Alle instellingen"
 
-#: ../src/mpd-storage-device-tile.c:383
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Sluit een apparaat aan en het zal\n"
+"automatisch worden gedetecteerd."
+
+#: ../src/mpd-devices-pane.c:105
+msgid "Other devices"
+msgstr "Andere apparaten"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>U gebruikt</span> <span color='%s'>%d%% of %s</span>"
+
+#: ../src/mpd-media-import-tile.c:73
+#, c-format
+msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+msgstr "<span font-weight='bold'>Gegevens importeren</span> <span color='%s'>%d%%</span>"
+
+#: ../src/mpd-media-import-tile.c:217
+msgid "Stop"
+msgstr "Stoppen"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Apparaten"
+
+#: ../src/mpd-storage-device-tile.c:164
+#, c-format
+msgid "Could not run %s"
+msgstr "Kon %s niet uitvoeren"
+
+#: ../src/mpd-storage-device-tile.c:165
+msgid "Import error"
+msgstr "Importeer fout"
+
+#: ../src/mpd-storage-device-tile.c:256
+#, c-format
+msgid "%s nas been plugged in. You can use the Devices panel interact with it"
+msgstr "%s is nu aangesloten. In het Apparaten paneel kunt u het interactief gebruiken."
+
+#: ../src/mpd-storage-device-tile.c:259
+msgid "USB plugged in"
+msgstr "USB is aangesloten"
+
+#: ../src/mpd-storage-device-tile.c:260
+msgid "Show"
+msgstr "Weergeven"
+
+#. Import button
+#: ../src/mpd-storage-device-tile.c:514
+msgid "Import data"
+msgstr "Gegevens importeren"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:525
 msgid "Eject"
 msgstr "Uitwerpen"
 
-#: ../src/mpd-storage-device-tile.c:388
+#. Open button
+#: ../src/mpd-storage-device-tile.c:536
 msgid "Open"
 msgstr "Openen"
 
-#: ../src/mpd-volume-tile.c:110
-msgid "Turned up to 11"
-msgstr "op 11 gezet"
+# Context is missing; a dev note what is used would have been helpful.
+# Another translation that may fit better in the actual context could be Dutch "met behulp van"
+#: ../src/mpd-storage-device-tile.c:725
+#, c-format
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> gebruik <span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-volume-tile.c:112
+# "Turned up to 11" is US idiom when something is exploited to the utmost, not when something is literally set or turned to 11; see http://en.wikipedia.org/wiki/Up_to_eleven
+# Since this appears to be a word series indicating sound volume settings, Dutch "Knetterhard" conveys the loudest possible setting
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Knetterhard"
+
+#: ../src/mpd-volume-tile.c:115
 msgid "Very loud"
 msgstr "Zeer luid"
 
-#: ../src/mpd-volume-tile.c:114
+#: ../src/mpd-volume-tile.c:117
 msgid "Loud"
 msgstr "Hard"
 
-#: ../src/mpd-volume-tile.c:116
+#: ../src/mpd-volume-tile.c:119
 msgid "Fairly loud"
-msgstr ""
+msgstr "Redelijk luid"
 
-#: ../src/mpd-volume-tile.c:118
+# Since this appears to be a word series indicating sound volume settings, Dutch "Normaal" conveys the average sound loudness setting
+#: ../src/mpd-volume-tile.c:121
 msgid "Middle of the road"
-msgstr "Gouden middenweg"
+msgstr "Normaal"
 
-#: ../src/mpd-volume-tile.c:120
+#: ../src/mpd-volume-tile.c:123
 msgid "Fairly quiet"
 msgstr "Redelijk stil"
 
-#: ../src/mpd-volume-tile.c:122
+#: ../src/mpd-volume-tile.c:125
 msgid "Quiet"
 msgstr "Stil"
 
-#: ../src/mpd-volume-tile.c:124
+#: ../src/mpd-volume-tile.c:127
 msgid "Very quiet"
 msgstr "Zeer stil"
 
-#: ../src/mpd-volume-tile.c:126
+#: ../src/mpd-volume-tile.c:129
 msgid "Silent"
 msgstr "Stil"
 
-#. Tile label
-#: ../src/mpd-volume-tile.c:306
+#: ../src/mpd-volume-tile.c:356
 msgid "Netbook volume"
 msgstr "Netbook volume"
 
-#: ../src/mpd-volume-tile.c:345
+#: ../src/mpd-volume-tile.c:366
 msgid "Mute"
 msgstr "Geluiden dempen"
 
+#~ msgid "CompactFlash"
+#~ msgstr "CompactFlash"
+
+#~ msgid "MemoryStick"
+#~ msgstr "MemoryStick"
+
+#~ msgid "SmartMedia"
+#~ msgstr "SmartMedia"
+
+#~ msgid "SecureDigital"
+#~ msgstr "SecureDigital"
+
+#~ msgid "SD High Capacity"
+#~ msgstr "SD High Capacity"
+
+#~ msgid "Floppy"
+#~ msgstr "Diskette"
+
+#~ msgid "Zip"
+#~ msgstr "Zip-schijf"
+
+#~ msgid "Jaz"
+#~ msgstr "Jaz-schijf"
+
+#~ msgid "Flash"
+#~ msgstr "Flash"
+
+#~ msgid "CD"
+#~ msgstr "CD"
+
+#~ msgid "DVD"
+#~ msgstr "DVD"
+
+#~ msgid "Blu-Ray"
+#~ msgstr "Blu-ray"
+
+#~ msgid "HDDVD"
+#~ msgstr "Hd-dvd"
+
+#~ msgid "%s Drive"
+#~ msgstr "%s-station"
+
+#~ msgid "%s %s Drive"
+#~ msgstr "%s %s-station"
+
+#~ msgid "%s Hard Disk"
+#~ msgstr "%s Harde Schijf"
+
+#~ msgid "Hard Disk"
+#~ msgstr "Harde Schijf"
+
+#~ msgid "%s Solid-State Disk"
+#~ msgstr "%s Solid-State Schijf"
+
+#~ msgid "Solid-State Disk"
+#~ msgstr "Solid-State Schijf"
+
+#~ msgid "%s Media"
+#~ msgstr "Media van %s"
+
+#~ msgid "No Media Detected"
+#~ msgstr "Geen media in gevonden"
+
+#~ msgid "MBR Partition Table"
+#~ msgstr "MBR Partitie Tabel"
+
+#~ msgid "GUID Partition Table"
+#~ msgstr "GUID Partitie Tabel"
+
+#~ msgid "Apple Partition Table"
+#~ msgstr "Apple Partitie Tabel"
+
+#~ msgid "Not Partitioned"
+#~ msgstr "Niet gepartitioneerd"
+
+#, fuzzy
+#~ msgid "SAS Expander"
+#~ msgstr "Uitvouwer kolom"
+
+#, fuzzy
+#~ msgid "PATA Host Adapter"
+#~ msgstr "De host heeft de verbinding verbroken"
+
+#, fuzzy
+#~ msgid "SATA Host Adapter"
+#~ msgstr "De host heeft de verbinding verbroken"
+
+#, fuzzy
+#~ msgid "ATA Host Adapter"
+#~ msgstr "De host heeft de verbinding verbroken"
+
+#, fuzzy
+#~ msgid "SAS Host Adapter"
+#~ msgstr "De host heeft de verbinding verbroken"
+
+#, fuzzy
+#~ msgid "SCSI Host Adapter"
+#~ msgstr "De host heeft de verbinding verbroken"
+
+#, fuzzy
+#~ msgid "Host Adapter"
+#~ msgstr "         %s [-p] [-h computer] [-f naam]\n"
+
+#, fuzzy
+#~ msgid "Volume Group"
+#~ msgstr "Venstergroep"
+
+#, fuzzy
+#~ msgid "%s LVM2 Volume Group"
+#~ msgstr "Venstergroep-leider"
+
+#, fuzzy
+#~ msgid "LVM2 Volume Group"
+#~ msgstr "Venstergroep-leider"
+
+#, fuzzy
+#~ msgid "%s Free"
+#~ msgstr "Vrij"
+
+#, fuzzy
+#~ msgid "Unallocated Space"
+#~ msgstr "Vrije Ruimte:"
+
+#, fuzzy
+#~ msgid "Logical Volume"
+#~ msgstr "%s verwisselbaar medium"
+
+#, fuzzy
+#~ msgid "LVM2 Logical Volume"
+#~ msgstr "Deelnummer-overloop"
+
+#, fuzzy
+#~ msgid "%s %s Array"
+#~ msgstr "Fout tijdens reserveren van blokreeks voor map: %m\n"
+
+#, fuzzy
+#~ msgid "%s Array"
+#~ msgstr "Fout tijdens reserveren van blokreeks voor map: %m\n"
+
+#, fuzzy
+#~ msgid "RAID Array %s (%s)"
+#~ msgstr "Linux RAID"
+
+#, fuzzy
+#~ msgid "RAID device %s"
+#~ msgstr "# %s (apparaat %d, inode [%d,%d,%d]): "
+#~ msgctxt "RAID Level fallback"
+
+#~ msgid "RAID"
+#~ msgstr "raid"
+
+#, fuzzy
+#~ msgid "RAID Array"
+#~ msgstr "Linux RAID"
+
+#, fuzzy
+#~ msgctxt "Linux MD slave state"
+
+#~ msgid "Not Attached"
+#~ msgstr "Protocolstuurprogramma is niet aangehecht"
+
+#, fuzzy
+#~ msgctxt "Linux MD slave state"
+
+#~ msgid "Fully Synchronized"
+#~ msgstr "Niveau 2 is niet gesynchroniseerd"
+#~ msgctxt "Linux MD slave state"
+
+#~ msgid "Blocked"
+#~ msgstr "Geblokkeerd"
+
+#, fuzzy
+#~ msgid "Local Storage"
+#~ msgstr "Opslagtype"
+
+#, fuzzy
+#~ msgid "Storage on %s"
+#~ msgstr "I/O Fout in storage"
+
+#, fuzzy
+#~ msgid "Multipath Devices"
+#~ msgstr "Verwisselbare schijven"
+
+#, fuzzy
+#~ msgid "Drives with multiple I/O paths"
+#~ msgstr "Meerdere scans: maakt een groep van paden"
+
+#, fuzzy
+#~ msgid "Multi-disk Devices"
+#~ msgstr "Invoerapparaten configureren"
+
+#, fuzzy
+#~ msgid "Peripheral Devices"
+#~ msgstr "Verwisselbare schijven"
+
+#, fuzzy
+#~ msgid "Error enumerating devices: %s"
+#~ msgstr "Invoerapparaten configureren"
+
+#, fuzzy
+#~ msgid "Error enumerating adapters: %s"
+#~ msgstr "Fout tijdens het maken van map '%s': %s"
+
+#, fuzzy
+#~ msgid "Error enumerating expanders: %s"
+#~ msgstr "De uitvouwers laten inspringen"
+
+#, fuzzy
+#~ msgid "Error enumerating ports: %s"
+#~ msgstr "Fout tijdens het maken van map '%s': %s"
+
+#, fuzzy
+#~ msgid "Unable to spawn ssh program: %s"
+#~ msgstr "Kon SSH-programma niet starten: %s"
+
+#, fuzzy
+#~ msgid "Error reading stderr output: %s"
+#~ msgstr "fout tijdens schrijven van standaarduitvoer (%s)"
+
+#, fuzzy
+#~ msgid "Error logging in"
+#~ msgstr "Inloggen als %s... "
+
+#, fuzzy
+#~ msgid "Error sending `%s': %s"
+#~ msgstr "Fout bij zenden naar ‘file descriptor’: %s"
+
+#, fuzzy
+#~ msgid "Error reading stderr from: %s"
+#~ msgstr "Er is een fout opgetreden bij lezen van kind: %s."
+
+#, fuzzy
+#~ msgid "%s (%s bytes)"
+#~ msgstr " (%s bytes)"
+
+#~ msgid "FAT (12-bit version)"
+#~ msgstr "FAT (12-bit versie)"
+
+#~ msgid "FAT"
+#~ msgstr "FAT"
+
+#~ msgid "FAT (16-bit version)"
+#~ msgstr "FAT (16-bit versie)"
+
+#~ msgid "FAT (32-bit version)"
+#~ msgstr "FAT (32-bit versie)"
+
+#~ msgid "NTFS (version %s)"
+#~ msgstr "NTFS (versie %s)"
+
+#, fuzzy
+#~ msgid "NTFS"
+#~ msgstr "NTFS"
+
+#~ msgid "HFS"
+#~ msgstr "HFS"
+
+#~ msgid "HFS+"
+#~ msgstr "HFS+"
+
+#~ msgid "LUKS"
+#~ msgstr "LUKS"
+
+#~ msgid "Ext2 (version %s)"
+#~ msgstr "Ext2 (versie %s)"
+
+#~ msgid "Ext2"
+#~ msgstr "Ext2"
+
+#~ msgid "ext2"
+#~ msgstr "ext2"
+
+#~ msgid "Ext3 (version %s)"
+#~ msgstr "Ext3 (versie %s)"
+
+#~ msgid "Ext3"
+#~ msgstr "Ext3"
+
+#~ msgid "ext3"
+#~ msgstr "ext3"
+
+#, fuzzy
+#~ msgid "Journal for Ext3 (version %s)"
+#~ msgstr "tijdens controle van het ext3-journal van %s"
+
+#, fuzzy
+#~ msgid "Journal for Ext3"
+#~ msgstr "tijdens controle van het ext3-journal van %s"
+
+#~ msgid "jbd"
+#~ msgstr "jbd"
+
+#~ msgid "Ext4 (version %s)"
+#~ msgstr "Ext4 (versie %s)"
+
+#~ msgid "Ext4"
+#~ msgstr "Ext4"
+
+#~ msgid "ext4"
+#~ msgstr "ext4"
+
+#~ msgid "XFS (version %s)"
+#~ msgstr "XFS (versie %s)"
+
+#~ msgid "XFS"
+#~ msgstr "XFS"
+
+#~ msgid "xfs"
+#~ msgstr "xfs"
+
+#~ msgid "ReiserFS (version %s)"
+#~ msgstr "ReiserFS (versie %s)"
+
+#~ msgid "ReiserFS"
+#~ msgstr "ReiserFS"
+
+#~ msgid "reiserfs"
+#~ msgstr "reiserfs"
+
+#~ msgid "ISO 9660"
+#~ msgstr "ISO 9660"
+
+#~ msgid "iso9660"
+#~ msgstr "iso9660"
+
+#, fuzzy
+#~ msgid "Universal Disk Format"
+#~ msgstr "Schijfindeling wordt niet ondersteund"
+
+#~ msgid "udf"
+#~ msgstr "udf"
+
+#, fuzzy
+#~ msgid "Swap Space"
+#~ msgstr "Vrije Ruimte:"
+
+#, fuzzy
+#~ msgid "swap"
+#~ msgstr "swap"
+
+#, fuzzy
+#~ msgid "LVM2 Physical Volume"
+#~ msgstr "Deelnummer-overloop"
+
+#~ msgid "lvm2_pv"
+#~ msgstr "lvm2_pv"
+
+#, fuzzy
+#~ msgid "RAID Component (version %s)"
+#~ msgstr "Toon versie."
+
+#, fuzzy
+#~ msgid "RAID Component"
+#~ msgstr "Echo component"
+
+#, fuzzy
+#~ msgid "raid"
+#~ msgstr "raid"
+
+#~ msgid "Minix"
+#~ msgstr "Minix"
+
+#~ msgid "minix"
+#~ msgstr "minix"
+
+#, fuzzy
+#~ msgid "Creating File System"
+#~ msgstr "Backend bestandsysteem"
+
+#, fuzzy
+#~ msgid "Mounting File System"
+#~ msgstr "Backend bestandsysteem"
+
+#, fuzzy
+#~ msgid "Unmounting File System"
+#~ msgstr "Backend bestandsysteem"
+
+#, fuzzy
+#~ msgid "Checking File System"
+#~ msgstr "Backend bestandsysteem"
+
+#, fuzzy
+#~ msgid "Creating LUKS Device"
+#~ msgstr "Aanmaken van journal op apparaat %s: "
+
+#, fuzzy
+#~ msgid "Unlocking LUKS Device"
+#~ msgstr "# %s (apparaat %ld, inode %ld): "
+
+#, fuzzy
+#~ msgid "Locking LUKS Device"
+#~ msgstr "# %s (apparaat %ld, inode %ld): "
+
+#, fuzzy
+#~ msgid "Creating Partition Table"
+#~ msgstr "   p      de partitietabel weergeven"
+
+#, fuzzy
+#~ msgid "Deleting Partition"
+#~ msgstr "   d      een partitie verwijderen"
+
+#, fuzzy
+#~ msgid "Creating Partition"
+#~ msgstr "   d      een partitie verwijderen"
+
+#, fuzzy
+#~ msgid "Modifying Partition"
+#~ msgstr "   d      een partitie verwijderen"
+
+#, fuzzy
+#~ msgid "Setting Label for Device"
+#~ msgstr ""
+#~ "\n"
+#~ "BSD-label voor apparaat: %s\n"
+
+#, fuzzy
+#~ msgid "Stopping RAID Array"
+#~ msgstr "%s: array-verwijzing naar %s\n"
+
+#, fuzzy
+#~ msgid "Starting RAID Array"
+#~ msgstr "%s: array-verwijzing naar %s\n"
+
+#, fuzzy
+#~ msgid "Checking RAID Array"
+#~ msgstr "%s: array-verwijzing naar %s\n"
+
+#, fuzzy
+#~ msgid "Repairing RAID Array"
+#~ msgstr "%s: array-verwijzing naar %s\n"
+
+#, fuzzy
+#~ msgid "Ejecting Media"
+#~ msgstr "Smart media"
+
+#, fuzzy
+#~ msgid "Detaching Device"
+#~ msgstr "# %s (apparaat %d, inode [%d,%d,%d]): "
+
+#, fuzzy
+#~ msgid "Forcibly Unmounting Filesystem"
+#~ msgstr "Gnome virtueel bestandssysteem"
+
+#, fuzzy
+#~ msgid "Linux Basic Data Partition"
+#~ msgstr "   b      begin van gegevens in een partitie verplaatsen"
+
+#, fuzzy
+#~ msgid "Linux RAID Partition"
+#~ msgstr "Linux raidautodetectie"
+
+#, fuzzy
+#~ msgid "Linux Swap Partition"
+#~ msgstr "Linux wisselgeheugen"
+
+#, fuzzy
+#~ msgid "Linux LVM Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Linux Reserved Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "MBR Partition Scheme"
+#~ msgstr "Interactieve ontwikkeling in Scheme"
+
+#, fuzzy
+#~ msgid "EFI System Partition"
+#~ msgstr "   t      systeem-ID van partitie wijzigen"
+
+#, fuzzy
+#~ msgid "BIOS Boot Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Microsoft Reserved Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Microsoft Basic Data Partition"
+#~ msgstr "   b      begin van gegevens in een partitie verplaatsen"
+
+#, fuzzy
+#~ msgid "Microsoft LDM Data Partition"
+#~ msgstr "   b      begin van gegevens in een partitie verplaatsen"
+
+#, fuzzy
+#~ msgid "HP-UX Data Partition"
+#~ msgstr "   b      begin van gegevens in een partitie verplaatsen"
+
+#, fuzzy
+#~ msgid "FreeBSD Boot Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "FreeBSD Data Partition"
+#~ msgstr "   b      begin van gegevens in een partitie verplaatsen"
+
+#, fuzzy
+#~ msgid "FreeBSD Swap Partition"
+#~ msgstr "   c      SGI-wisselgeheugenpartitie selecteren"
+
+#, fuzzy
+#~ msgid "FreeBSD UFS Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "FreeBSD Vinum Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "FreeBSD ZFS Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris Boot Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris Root Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris Swap Partition"
+#~ msgstr "Linux wisselgeheugen"
+
+#, fuzzy
+#~ msgid "Solaris Backup Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris /usr Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris /var Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris /home Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris Alternate Sector Partition"
+#~ msgstr "Partitie begint vóór sector 0"
+
+#, fuzzy
+#~ msgid "Solaris Reserved Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris Reserved Partition (2)"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris Reserved Partition (3)"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris Reserved Partition (4)"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Solaris Reserved Partition (5)"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Apple HFS/HFS+ Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Apple UFS Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Apple ZFS Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Apple RAID Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Apple Boot Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Apple Label Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "NetBSD Swap Partition"
+#~ msgstr "   c      SGI-wisselgeheugenpartitie selecteren"
+
+#, fuzzy
+#~ msgid "NetBSD FFS Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "NetBSD LFS Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "NetBSD RAID Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "NetBSD Concatenated  Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "NetBSD Encrypted Partition"
+#~ msgstr "   a      opstartbare partitie selecteren"
+
+#, fuzzy
+#~ msgid "Apple Partition Map"
+#~ msgstr "Geen geldige partitietabel gevonden."
+
+#, fuzzy
+#~ msgid "Unused Partition"
+#~ msgstr "   d      een partitie verwijderen"
+
+#, fuzzy
+#~ msgid "Empty Partition"
+#~ msgstr "Waarschuwing: lege partitie\n"
+
+#, fuzzy
+#~ msgid "Driver Partition"
+#~ msgstr "   d      een partitie verwijderen"
+
+#, fuzzy
+#~ msgid "Driver 4.3 Partition"
+#~ msgstr "   d      een partitie verwijderen"
+
+#, fuzzy
+#~ msgid "ProDOS file system"
+#~ msgstr "Backend bestandsysteem"
+
+#~ msgid "FAT 12"
+#~ msgstr "FAT 12"
+
+#~ msgid "FAT 16"
+#~ msgstr "FAT 16"
+
+#~ msgid "FAT 32"
+#~ msgstr "FAT 32"
+
+#~ msgid "FAT 16 (Windows)"
+#~ msgstr "FAT 16 (Windows)"
+
+#~ msgid "FAT 32 (Windows)"
+#~ msgstr "FAT 32 (Windows)"
+
+#~ msgid "Empty (0x00)"
+#~ msgstr "Empty (0x00)"
+
+#~ msgid "FAT12 (0x01)"
+#~ msgstr "FAT12 (0x01)"
+
+#~ msgid "FAT16 <32M (0x04)"
+#~ msgstr "FAT16 <32M (0x04)"
+
+#~ msgid "Extended (0x05)"
+#~ msgstr "Extended (0x05)"
+
+#~ msgid "FAT16 (0x06)"
+#~ msgstr "FAT16 (0x06)"
+
+#~ msgid "HPFS/NTFS (0x07)"
+#~ msgstr "HPFS/NTFS (0x07)"
+
+#~ msgid "W95 FAT32 (0x0b)"
+#~ msgstr "W95 FAT32 (0x0b)"
+
+#~ msgid "W95 FAT32 (LBA) (0x0c)"
+#~ msgstr "W95 FAT32 (LBA) (0x0c)"
+
+#~ msgid "W95 FAT16 (LBA) (0x0e)"
+#~ msgstr "W95 FAT16 (LBA) (0x0e)"
+
+#~ msgid "W95 Ext d (LBA) (0x0f)"
+#~ msgstr "W95 Ext d (LBA) (0x0f)"
+
+#~ msgid "OPUS (0x10)"
+#~ msgstr "OPUS (0x10)"
+
+#~ msgid "Hidden FAT12 (0x11)"
+#~ msgstr "Hidden FAT12 (0x11)"
+
+#~ msgid "Compaq diagnostics (0x12)"
+#~ msgstr "Compaq diagnostics (0x12)"
+
+#~ msgid "Hidden FAT16 <32M (0x14)"
+#~ msgstr "Hidden FAT16 <32M (0x14)"
+
+#~ msgid "Hidden FAT16 (0x16)"
+#~ msgstr "Hidden FAT16 (0x16)"
+
+#~ msgid "Hidden HPFS/NTFS (0x17)"
+#~ msgstr "Hidden HPFS/NTFS (0x17)"
+
+#~ msgid "Hidden W95 FAT32 (0x1b)"
+#~ msgstr "Hidden W95 FAT32 (0x1b)"
+
+#~ msgid "Hidden W95 FAT32 (LBA) (0x1c)"
+#~ msgstr "Hidden W95 FAT32 (LBA) (0x1c)"
+
+#~ msgid "Hidden W95 FAT16 (LBA) (0x1e)"
+#~ msgstr "Hidden W95 FAT16 (LBA) (0x1e)"
+
+#~ msgid "PartitionMagic (0x3c)"
+#~ msgstr "PartitionMagic (0x3c)"
+
+#~ msgid "Minix (0x81)"
+#~ msgstr "Minix (0x81)"
+
+#~ msgid "Linux swap (0x82)"
+#~ msgstr "Linux swap (0x82)"
+
+#~ msgid "Linux (0x83)"
+#~ msgstr "Linux (0x83)"
+
+#~ msgid "Hibernation (0x84)"
+#~ msgstr "Hibernation (0x84)"
+
+#~ msgid "Linux Extended (0x85)"
+#~ msgstr "Linux Extended (0x85)"
+
+#~ msgid "Linux LVM (0x8e)"
+#~ msgstr "Linux LVM (0x8e)"
+
+#~ msgid "Hibernation (0xa0)"
+#~ msgstr "Hibernation (0xa0)"
+
+#~ msgid "FreeBSD (0xa5)"
+#~ msgstr "FreeBSD (0xa5)"
+
+#~ msgid "OpenBSD (0xa6)"
+#~ msgstr "OpenBSD (0xa6)"
+
+#~ msgid "Mac OS X (0xa8)"
+#~ msgstr "Mac OS X (0xa8)"
+
+#~ msgid "Mac OS X (0xaf)"
+#~ msgstr "Mac OS X (0xaf)"
+
+#~ msgid "Solaris boot (0xbe)"
+#~ msgstr "Solaris boot (0xbe)"
+
+#~ msgid "Solaris (0xbf)"
+#~ msgstr "Solaris (0xbf)"
+
+#~ msgid "BeOS BFS (0xeb)"
+#~ msgstr "BeOS BFS (0xeb)"
+
+#~ msgid "SkyOS SkyFS (0xec)"
+#~ msgstr "SkyOS SkyFS (0xec)"
+
+#~ msgid "EFI GPT (0xee)"
+#~ msgstr "EFI GPT (0xee)"
+
+#~ msgid "EFI (FAT-12/16/32 (0xef)"
+#~ msgstr "EFI (FAT-12/16/32 (0xef)"
+
+#~ msgid "Linux RAID autodetect (0xfd)"
+#~ msgstr "Linux RAID autodetect (0xfd)"
+
+#~ msgid "Unknown (%s)"
+#~ msgstr "Onbekend (%s)"
+
+#, fuzzy
+#~ msgid "Create an Extended Partition for logical partitions."
+#~ msgstr "Kan geen logische partitie buiten de uitgebreide partitie maken."
+
+#, fuzzy
+#~ msgid "LUKS Passphrase for UUID %s"
+#~ msgstr "Voer wachtwoordzin voor sleutel in"
+
+#~ msgid "%.1f KB/s"
+#~ msgstr "%.1f kB"
+
+#~ msgid "%.1f MB/s"
+#~ msgstr "%.1f MB"
+
+#~ msgid "%.1f GB/s"
+#~ msgstr "%.1f GB"
+
+#~ msgid "SATA"
+#~ msgstr "SATA"
+
+#~ msgid "eSATA"
+#~ msgstr "eSATA"
+
+#~ msgid "PATA"
+#~ msgstr "PATA"
+
+#~ msgid "ATA"
+#~ msgstr "ATA"
+
+#~ msgid "SCSI"
+#~ msgstr "SCSI"
+
+#~ msgid "USB"
+#~ msgstr "USB"
+
+#~ msgid "Firewire"
+#~ msgstr "Firewire"
+
+#~ msgid "SDIO"
+#~ msgstr "SDIO"
+
+#, fuzzy
+#~ msgid "Virtual"
+#~ msgstr "Is virtueel"
+
+#, fuzzy
+#~ msgctxt "connection name"
+
+#~ msgid "Unknown"
+#~ msgstr "Onbekend"
+
+#, fuzzy
+#~ msgid "%s at %s"
+#~ msgstr "%s op %s"
+#~ msgctxt "RAID level"
+
+#~ msgid "Stripe (RAID-0)"
+#~ msgstr "Stripe (RAID-0)"
+#~ msgctxt "RAID level"
+
+#~ msgid "RAID-0"
+#~ msgstr "RAID-0"
+#~ msgctxt "RAID level"
+
+#~ msgid "Mirror (RAID-1)"
+#~ msgstr "Mirror (RAID-1)"
+#~ msgctxt "RAID level"
+
+#~ msgid "RAID-1"
+#~ msgstr "RAID-1"
+#~ msgctxt "RAID level"
+
+#~ msgid "Parity Disk (RAID-4)"
+#~ msgstr "Parity Disk (RAID-4)"
+#~ msgctxt "RAID level"
+
+#~ msgid "RAID-4"
+#~ msgstr "RAID-4"
+#~ msgctxt "RAID level"
+
+#~ msgid "Distributed Parity (RAID-5)"
+#~ msgstr "Distributed Parity (RAID-5)"
+#~ msgctxt "RAID level"
+
+#~ msgid "RAID-5"
+#~ msgstr "RAID-5"
+#~ msgctxt "RAID level"
+
+#~ msgid "RAID-6"
+#~ msgstr "RAID-6"
+#~ msgctxt "RAID level"
+
+#~ msgid "Stripe of Mirrors (RAID-10)"
+#~ msgstr "Stripe of Mirrors (RAID-10)"
+#~ msgctxt "RAID level"
+
+#~ msgid "RAID-10"
+#~ msgstr "RAID-10"
+
+#, fuzzy
+#~ msgctxt "RAID level"
+
+#~ msgid "Concatenated (Linear)"
+#~ msgstr "Lineaire beweging"
+#~ msgctxt "RAID level"
+
+#~ msgid "Linear"
+#~ msgstr "Lineair"
+
+#, fuzzy
+#~ msgid "Unknown RAID level %s."
+#~ msgstr "onbekende aanduiding '%s' voor debug-niveau"
+
+#, fuzzy
+#~ msgid "Disk is healthy"
+#~ msgstr "Schijf is in gebruik"
+
+#, fuzzy
+#~ msgid "DISK FAILURE IS IMMINENT"
+#~ msgstr "Schijf is in gebruik"
+
+#~ msgid "Unknown"
+#~ msgstr "Onbekend"
+
+#~ msgid "CD-ROM Disc"
+#~ msgstr "Cd-rom-schijf"
+
+#~ msgid "Blank CD-ROM Disc"
+#~ msgstr "Lege cd-rom-schijf"
+
+#~ msgid "CD-R Disc"
+#~ msgstr "Cd-r-schijf"
+
+#~ msgid "Blank CD-R Disc"
+#~ msgstr "Lege cd-r-schijf"
+
+#~ msgid "CD-RW Disc"
+#~ msgstr "Cd-rw-schijf"
+
+#~ msgid "Blank CD-RW Disc"
+#~ msgstr "Lege cd-rw-schijf"
+
+#~ msgid "DVD-ROM Disc"
+#~ msgstr "Dvd-rom-schijf"
+
+#~ msgid "Blank DVD-ROM Disc"
+#~ msgstr "Lege dvd-rom-schijf"
+
+#~ msgid "DVD-RW Disc"
+#~ msgstr "Dvd-rw-schijf"
+
+#~ msgid "Blank DVD-RW Disc"
+#~ msgstr "Lege dvd-rw-schijf"
+
+#~ msgid "DVD-RAM Disc"
+#~ msgstr "Dvd-ram-schijf"
+
+#~ msgid "Blank DVD-RAM Disc"
+#~ msgstr "Lege dvd-ram-schijf"
+
+#~ msgid "DVD+R Disc"
+#~ msgstr "Dvd-r-schijf"
+
+#~ msgid "Blank DVD+R Disc"
+#~ msgstr "Lege dvd-r-schijf"
+
+#~ msgid "DVD+RW Disc"
+#~ msgstr "Dvd+rw-schijf"
+
+#~ msgid "Blank DVD+RW Disc"
+#~ msgstr "Lege dvd+rw-schijf"
+
+#~ msgid "DVD+R DL Disc"
+#~ msgstr "Dvd+r DL-schijf"
+
+#~ msgid "Blank DVD+R DL Disc"
+#~ msgstr "Lege dvd+r dl-schijf"
+
+#~ msgid "DVD+RW DL Disc"
+#~ msgstr "Lege dvd+r dl-schijf"
+
+#~ msgid "Blank DVD+RW DL Disc"
+#~ msgstr "Lege hd-dvd-rw-schijf"
+
+#~ msgid "Blu-Ray Disc"
+#~ msgstr "Blu-ray-schijf"
+
+#~ msgid "Blank Blu-Ray Disc"
+#~ msgstr "Lege Blu-ray-schijf"
+
+#~ msgid "Blu-Ray R Disc"
+#~ msgstr "Blu-ray-r-schijf"
+
+#~ msgid "Blank Blu-Ray R Disc"
+#~ msgstr "Lege Blu-ray-r-schijf"
+
+#~ msgid "Blu-Ray RW Disc"
+#~ msgstr "Blu-ray-rw-schijf"
+
+#~ msgid "Blank Blu-Ray RW Disc"
+#~ msgstr "Lege Blu-ray-rw-schijf"
+
+#~ msgid "HD DVD Disc"
+#~ msgstr "Hd-dvd-schijf"
+
+#~ msgid "Blank HD DVD Disc"
+#~ msgstr "Lege hd-dvd-schijf"
+
+#~ msgid "HD DVD-R Disc"
+#~ msgstr "Hd-dvd-r-schijf"
+
+#~ msgid "Blank HD DVD-R Disc"
+#~ msgstr "Lege hd-dvd-r-schijf"
+
+#~ msgid "HD DVD-RW Disc"
+#~ msgstr "Hd-dvd-rw-schijf"
+
+#~ msgid "Blank HD DVD-RW Disc"
+#~ msgstr "Lege hd-dvd-rw-schijf"
+
+#~ msgid "MO Disc"
+#~ msgstr "MO-schijf"
+
+#~ msgid "Blank MO Disc"
+#~ msgstr "Lege MO-schijf"
+
+#, fuzzy
+#~ msgid "MRW Disc"
+#~ msgstr "Blanco %s-schijf"
+
+#, fuzzy
+#~ msgid "Blank MRW Disc"
+#~ msgstr "Lege cd-r-schijf"
+
+#, fuzzy
+#~ msgid "MRW/W Disc"
+#~ msgstr "Blanco %s-schijf"
+
+#, fuzzy
+#~ msgid "Blank MRW/W Disc"
+#~ msgstr "Lege cd-r-schijf"
+
+#, fuzzy
+#~ msgid "Blank Optical Disc"
+#~ msgstr "Lege cd-r-schijf"
+
+#~ msgid "%s Extended"
+#~ msgstr "%s Uitgebreid"
+
+#, fuzzy
+#~ msgid "Contains logical partitions"
+#~ msgstr "logische partities overlappen"
+
+#, fuzzy
+#~ msgid "%s Encrypted"
+#~ msgstr "Gecodeerd bericht"
+
+#, fuzzy
+#~ msgid "Optical Disc"
+#~ msgstr "Blanco %s-schijf"
+
+#, fuzzy
+#~ msgid "%s Filesystem"
+#~ msgstr "Bestandssysteem"
+
+#, fuzzy
+#~ msgid "%s Partition Table"
+#~ msgstr "Partitietabel: %s\n"
+
+#, fuzzy
+#~ msgid "%s LVM2 Physical Volume"
+#~ msgstr "Deelnummer-overloop"
+#~ msgctxt "RAID level"
+
+#~ msgid "RAID"
+#~ msgstr "RAID"
+
+#, fuzzy
+#~ msgid "%s %s Component"
+#~ msgstr "Echo component"
+
+#, fuzzy
+#~ msgid "Part of \"%s\" array"
+#~ msgstr "Part.type"
+
+#, fuzzy
+#~ msgid "%s Swap Space"
+#~ msgstr "Vrije Ruimte:"
+
+#, fuzzy
+#~ msgid "%s Data"
+#~ msgstr "DATA: "
+
+#, fuzzy
+#~ msgid "%s Unrecognized"
+#~ msgstr "%s: onbekende optie '%c%s'\n"
+
+#, fuzzy
+#~ msgid "Unknown or Unused"
+#~ msgstr "Onbekende opdracht of onbekend werkwoord"
+
+#, fuzzy
+#~ msgid "%s Partition"
+#~ msgstr "Partitie (a-%c): "
+
+#, fuzzy
+#~ msgid "Partition %d of %s"
+#~ msgstr "Partitie (a-%c): "
+
+#, fuzzy
+#~ msgid "Partition %d"
+#~ msgstr "Partitie (a-%c): "
+
+#, fuzzy
+#~ msgid "Whole-disk volume on %s"
+#~ msgstr "Kan geen 'seek' doen op schijf"
+
+#, fuzzy
+#~ msgid "Whole-disk volume"
+#~ msgstr "Deelnummer-overloop"
+
+#, fuzzy
+#~ msgid "You are using %d%% of %s"
+#~ msgstr "Je bent uit %s verbannen."
+
+#, fuzzy
+#~ msgid "Using %d%% of %s"
+#~ msgstr "%s wordt gebruikt.\n"
