@@ -16,7 +16,7 @@ msgstr ""
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
-msgstr "設定你的工具列偏好設定"
+msgstr "設定您的工具列偏好設定"
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
@@ -28,7 +28,7 @@ msgstr "儲存工具列"
 
 #: ../capplet/src/mtp-bin.c:366
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "很抱歉，在你加入新面板之前，必須先移除一個面板。"
+msgstr "很抱歉，在您加入新面板之前，必須先移除一個面板。"
 
 #: ../capplet/src/mtp-jar.c:109
 msgid "Available panels"
@@ -71,7 +71,7 @@ msgstr "工具列"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
-msgstr "設定你的系統匣偏好設定"
+msgstr "設定您的系統匣偏好設定"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
 #: ../capplet/src/syst-cc-panel.c:253
@@ -88,7 +88,7 @@ msgstr "顯示系統匣"
 
 #: ../capplet/src/syst-cc-panel.c:207
 msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "系統匣是種某些舊一代應用程式所使用的概念，它能讓你瞭解什麼時候應用程式發生什麼事；或是當你關閉應用程式後，讓它們繼續在系統匣內保持執行。"
+msgstr "系統匣是種某些舊一代應用程式所使用的概念，它能讓您瞭解什麼時候應用程式發生什麼事；或是當您關閉應用程式後，讓它們繼續在系統匣內保持執行。"
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -151,7 +151,7 @@ msgstr "您可以加入、移除，以及重新排序您的工具列中的多個
 #~ msgstr "還沒有區域"
 
 #~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "你正在使用的應用程式會在這裡顯示。你也可以隨心所欲來切換以及整理它們。"
+#~ msgstr "您正在使用的應用程式會在這裡顯示。您也可以隨心所欲來切換以及整理它們。"
 
 #~ msgid "No applications on this zone"
 #~ msgstr "這個區域沒有應用程式"
