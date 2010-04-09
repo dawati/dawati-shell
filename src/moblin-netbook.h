@@ -49,6 +49,13 @@
 #define TOOLBAR_HEIGHT 64
 #define TOOLBAR_X_PADDING 4
 
+typedef enum
+{
+  MNB_OPTION_COMPOSITOR_ALWAYS_ON  = 1 << 0,
+  MNB_OPTION_DISABLE_WS_CLAMP      = 1 << 1,
+  MNB_OPTION_DISABLE_PANEL_RESTART = 1 << 2,
+} MnbOptionFlag;
+
 #define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
 #define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
 #define MOBLIN_NETBOOK_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginClass))
@@ -189,5 +196,8 @@ moblin_netbook_activate_mutter_window (MutterWindow *mcw);
 
 gboolean
 moblin_netbook_use_netbook_mode (MutterPlugin *plugin);
+
+guint32
+moblin_netbook_get_compositor_option_flags (void);
 
 #endif

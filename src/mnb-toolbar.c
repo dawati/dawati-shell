@@ -2280,10 +2280,11 @@ static void
 mnb_toolbar_init (MnbToolbar *self)
 {
   MnbToolbarPrivate *priv;
+  guint32            flags = moblin_netbook_get_compositor_option_flags ();
 
   priv = self->priv = MNB_TOOLBAR_GET_PRIVATE (self);
 
-  if (g_getenv("MUTTER_DISABLE_PANEL_RESTART"))
+  if (flags & MNB_OPTION_DISABLE_PANEL_RESTART)
     priv->no_autoloading = TRUE;
 }
 

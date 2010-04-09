@@ -78,6 +78,15 @@
 #define THEME_KEY_DIR "/apps/metacity/general"
 #define KEY_THEME THEME_KEY_DIR "/theme"
 
+static guint32 compositor_options = 0;
+
+static const GDebugKey options_keys[] =
+{
+  { "compositor-always-on",  MNB_OPTION_COMPOSITOR_ALWAYS_ON },
+  { "disable-ws-clamp",      MNB_OPTION_DISABLE_WS_CLAMP },
+  { "disable-panel-restart", MNB_OPTION_DISABLE_PANEL_RESTART },
+};
+
 static MutterPlugin *plugin_singleton = NULL;
 
 /* callback data for when animations complete */
@@ -724,7 +733,7 @@ moblin_netbook_plugin_constructed (GObject *object)
                                      &screen_width, &screen_height);
 
   /* tweak with env var as then possible to develop in desktop env. */
-  if (!g_getenv("MUTTER_DISABLE_WS_CLAMP"))
+  if (!(compositor_options & MNB_OPTION_DISABLE_WS_CLAMP))
     meta_prefs_set_num_workspaces (1);
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
@@ -942,6 +951,7 @@ static void
 moblin_netbook_plugin_init (MoblinNetbookPlugin *self)
 {
   MoblinNetbookPluginPrivate *priv;
+  const gchar                *options;
 
   self->priv = priv = MOBLIN_NETBOOK_PLUGIN_GET_PRIVATE (self);
 
@@ -954,6 +964,15 @@ moblin_netbook_plugin_init (MoblinNetbookPlugin *self)
   bindtextdomain (GETTEXT_PACKAGE, PLUGIN_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
+
+  if ((options = g_getenv("MUTTER_COMPOSITOR_OPTIONS")))
+    {
+      g_message ("**** COMPOSITOR OPTIONS: %s ****", options);
+
+      compositor_options = g_parse_debug_string (options,
+                                                 options_keys,
+                                                 G_N_ELEMENTS (options_keys));
+    }
 }
 
 /*
@@ -1705,6 +1724,9 @@ moblin_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
   Display                    *xdpy;
   Window                      xroot;
   Window                      overlay;
+
+  if (compositor_options & MNB_OPTION_COMPOSITOR_ALWAYS_ON)
+    return;
 
   if ((priv->compositor_disabled && !on) || (!priv->compositor_disabled && on))
     return;
@@ -3254,4 +3276,10 @@ moblin_netbook_use_netbook_mode (MutterPlugin *plugin)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   return priv->netbook_mode;
+}
+
+guint32
+moblin_netbook_get_compositor_option_flags (void)
+{
+  return compositor_options;
 }
