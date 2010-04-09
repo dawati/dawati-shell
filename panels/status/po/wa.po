@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Meego (Moblin 2.x)\n"
@@ -18,98 +18,97 @@ msgstr ""
 "X-Poedit-Language: Walloon\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr ""
-
-#: ../src/moblin-panel-status.c:99
-msgid "Status"
-msgstr "Estat"
-
-#: ../src/moblin-panel-status.c:157
-#: ../data/moblin-panel-status.desktop.in.in.h:2
-msgid "status"
-msgstr ""
-
-#. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
-msgid "Status panel"
-msgstr ""
-
-#: ../src/mps-feed-pane.c:92
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr ""
-
-#: ../src/mps-feed-pane.c:96
-msgid "Unable to update status: You're not online."
-msgstr ""
-
-#: ../src/mps-feed-pane.c:444
-#, c-format
-msgid "We guessed your location as: %f %f"
-msgstr ""
-
-#: ../src/mps-feed-pane.c:448
-#, c-format
-msgid "Your location is being shared as: %f %f "
-msgstr ""
-
-#: ../src/mps-feed-pane.c:455
-msgid "Your location is not being shared"
-msgstr ""
-
-#. Actor creation
-#: ../src/mps-feed-pane.c:551
-msgid "Update"
-msgstr ""
-
-#: ../src/mps-feed-pane.c:556
-msgid "What's happening?"
-msgstr ""
-
-#: ../src/mps-feed-pane.c:606
-msgid "Change"
-msgstr ""
-
-#: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr ""
-
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr ""
-
-#: ../src/mps-geotag-pane.c:215
-msgid "Your location"
-msgstr ""
-
-#: ../src/mps-geotag-pane.c:485
-msgid "Search"
-msgstr ""
-
-#: ../src/mps-geotag-pane.c:490
-msgid "Where are you?"
-msgstr ""
-
-#: ../src/mps-geotag-pane.c:492
-msgid "Find me"
-msgstr ""
-
-#: ../src/mps-geotag-pane.c:499
-msgid "Use location"
-msgstr ""
-
 #: ../src/mps-geotag-pane.c:500
 msgid "Don't use location"
-msgstr ""
+msgstr "Èn n' nén eployî d' plaece"
 
 #. When the tweet has a location associated with it then this string will
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:391
 #, c-format
 msgid "%s from %s"
-msgstr ""
+msgstr "%s di %s"
 
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "A ! Çouchal, c' est l' sicriftôr des statuts. Si vs avoz on conte sol waibe d' apontyî (come Twitter), vos î såroz vey vos floûs eyet mete a djoû vos statuts."
+
+#: ../src/moblin-panel-status.c:157
+#: ../data/moblin-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr "statuts"
+
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "Statuts"
+
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Dji n' sai mete a djoû l' sitatut. Li siervice est motoit nén disponibe oudonbén vosse sicret est kecfeye mwais."
+
+#. vim:set ts=8 expandtab
+#: ../data/moblin-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Sicriftôr des statuts"
+
+#: ../src/mps-feed-pane.c:444
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "Nos avans adviné vosse plaece come estant : %f %f"
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Dji n' sai mete a djoû l' sitatut : vos n' estoz nén raloyîs."
+
+#: ../src/mps-feed-pane.c:455
+msgid "Your location is not being shared"
+msgstr "Vosse plaece n' est nén pårtaedjeye"
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr "Vosse plaece est pårtaedjeye come estant : %f %f"
+
+#: ../src/mps-geotag-pane.c:499
+msgid "Use location"
+msgstr "Eployî ene plaece"
+
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "Trovez mu"
+
+#: ../src/mps-feed-pane.c:556
+msgid "What's happening?"
+msgstr "Cwè çk' i s' passe ?"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:551
+msgid "Update"
+msgstr "Mete a djoû"
+
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web service"
+msgstr "Radjouter on novea siervice waibe"
+
+#: ../src/mps-feed-pane.c:606
+msgid "Change"
+msgstr "Candjî"
+
+#: ../src/mps-geotag-pane.c:215
+msgid "Your location"
+msgstr "Vosse plaece"
+
+#: ../src/mps-feed-switcher.c:373
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "I m' shonne ki vs n' avoz nou siervice waibe d' apontyî ou k' i gn a on problinme avou leu-z apontiaedje. Siervoz vs do boton chal pa dzeu po drovi \"Mes contes waibes\" eyet nd apontyî onk."
+
+#: ../src/mps-geotag-pane.c:490
+msgid "Where are you?"
+msgstr "Wice estoz vs ?"
+
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "Trover"
