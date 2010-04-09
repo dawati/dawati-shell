@@ -17,18 +17,6 @@ msgstr ""
 msgid "Set your toolbar preferences"
 msgstr "Configura las preferencias tu barra de herramientas"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar settings"
-msgstr "Configuración de la Barra de herramientas"
-
-#: ../capplet/src/mtp-bin.c:361
-msgid "Save toolbar"
-msgstr "Guardar barra de herramientas"
-
-#: ../capplet/src/mtp-bin.c:366
-msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "Lo sentimos, debes de primero remover un panel antes de agregar uno nuevo."
-
 #: ../capplet/src/mtp-bin.c:368
 msgid "You can add, remove and reorder many of the panels in your toolbar."
 msgstr "Puedes agregar, eliminar o reordenar muchos de los paneles en tu barra de herramientas."
@@ -135,6 +123,18 @@ msgstr "Cerrar"
 #: ../src/notifications/mnb-notification-cluster.c:668
 msgid "Dismiss All"
 msgstr "Cerrar todo"
+
+#: ../capplet/src/mtp-bin.c:361
+msgid "Save toolbar"
+msgstr "Guardar la barra de herramientas"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Configuración de la barra de herramientas"
+
+#: ../capplet/src/mtp-bin.c:366
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Lo sentimos, hay que quitar un panel para poder agregar uno nuevo."
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Hace menos de un minuto"
