@@ -28,16 +28,6 @@ msgstr "Panneau de statut"
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
 msgstr "Impossible de mettre à jour le statut : le service est peut être indisponible ou votre mot de passe est erroné."
 
-#: ../src/mps-feed-pane.c:444
-#, c-format
-msgid "We guessed your location as: %f %f"
-msgstr ""
-
-#: ../src/mps-feed-pane.c:448
-#, c-format
-msgid "Your location is being shared as: %f %f "
-msgstr ""
-
 #. Actor creation
 #: ../src/mps-feed-pane.c:551
 msgid "Update"
@@ -108,6 +98,16 @@ msgstr "Où êtes-vous ?"
 #: ../src/mps-geotag-pane.c:485
 msgid "Search"
 msgstr "Rechercher"
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr "Votre position est partagée comme étant : %f %f"
+
+#: ../src/mps-feed-pane.c:444
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "Nous avons deviné votre position comme étant : %f %f"
 
 #~ msgid "Offline"
 #~ msgstr "Déconnecté"
