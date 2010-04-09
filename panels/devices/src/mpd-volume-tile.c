@@ -358,7 +358,8 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
 
   priv->mute_toggle = mx_toggle_new ();
-  clutter_actor_set_width (priv->mute_toggle, 16.0);
+  mx_stylable_set_style_class (MX_STYLABLE (priv->mute_toggle), "mx-check-box");
+//  clutter_actor_set_width (priv->mute_toggle, 16.0);
   g_signal_connect (priv->mute_toggle, "notify::active",
                     G_CALLBACK (_mute_toggle_notify_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->mute_toggle);
