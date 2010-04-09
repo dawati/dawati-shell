@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:24+0000\n"
+"POT-Creation-Date: 2010-04-08 18:55+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -37,22 +37,22 @@ msgstr ", "
 msgid "wired"
 msgstr "alámbrica"
 
-#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1464
+#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1405
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "Wi-Fi"
 
-#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1558
+#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1499
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1527
+#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1468
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1590
+#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1531
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -157,11 +157,11 @@ msgstr "Hemos perdido la conexión %s, así que te hemos conectado a %s, una red
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "Hemos perdido la conexión %s, así que te hemos conectado a una red %s."
 
-#: ../carrick/carrick-pane.c:627
+#: ../carrick/carrick-pane.c:630
 msgid "New connection settings"
 msgstr "Ajustes de una nueva conexión"
 
-#: ../carrick/carrick-pane.c:665
+#: ../carrick/carrick-pane.c:668
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -171,46 +171,46 @@ msgstr ""
 "conectarte y, en su caso, la contraseña\n"
 "y el tipo de seguridad."
 
-#: ../carrick/carrick-pane.c:675
+#: ../carrick/carrick-pane.c:678
 msgid "Network name"
 msgstr "Nombre de la red"
 
-#: ../carrick/carrick-pane.c:687
+#: ../carrick/carrick-pane.c:690
 msgid "Network security"
 msgstr "Seguridad de la red"
 
-#: ../carrick/carrick-pane.c:697
+#: ../carrick/carrick-pane.c:700
 msgid "None"
 msgstr "Ninguna"
 
-#: ../carrick/carrick-pane.c:711
+#: ../carrick/carrick-pane.c:712
 msgid "Password"
 msgstr "Contraseña"
 
-#: ../carrick/carrick-pane.c:726 ../carrick/carrick-service-item.c:1303
+#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1303
 msgid "Show password"
 msgstr "Mostrar la contraseña"
 
-#: ../carrick/carrick-pane.c:1399 ../src/carrick.c:351
+#: ../carrick/carrick-pane.c:1437 ../carrick/carrick-service-item.c:241
+msgid "Wired"
+msgstr "Alámbrica"
+
+#: ../carrick/carrick-pane.c:1563
+msgid "Offline mode"
+msgstr "Modo fuera de línea"
+
+#: ../carrick/carrick-pane.c:1588
+msgid "This will disable all your connections"
+msgstr "Esto deshabilitará todas las conexiones"
+
+#: ../carrick/carrick-pane.c:1621 ../src/carrick.c:351
 msgid "Networks"
 msgstr "Redes"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1423
+#: ../carrick/carrick-pane.c:1633
 msgid "Add new connection"
 msgstr "Agregar una nueva conexión"
-
-#: ../carrick/carrick-pane.c:1496 ../carrick/carrick-service-item.c:241
-msgid "Wired"
-msgstr "Alámbrica"
-
-#: ../carrick/carrick-pane.c:1634
-msgid "Offline mode"
-msgstr "Modo fuera de línea"
-
-#: ../carrick/carrick-pane.c:1659
-msgid "This will disable all your connections"
-msgstr "Esto deshabilitará todas las conexiones"
 
 #. Translators:
 #. The following are potential errors that a user might see while
@@ -343,6 +343,10 @@ msgstr "Buscando"
 msgid "WPA2 encrypted"
 msgstr "Cifrado WPA2"
 
+#: ../src/carrick.c:43
+msgid "networks - not connected"
+msgstr "No hay redes conectadas"
+
 #: ../src/carrick.c:49
 msgid "networks - connecting"
 msgstr "Conectándose a redes"
@@ -463,9 +467,9 @@ msgstr "Selecciona el servicio 3G"
 msgid "Network settings"
 msgstr "Configuración de red"
 
-#: ../src/carrick.c:43
-msgid "networks - not connected"
-msgstr "No hay redes conectadas"
+#: ../carrick/carrick-pane.c:1396
+msgid "Settings"
+msgstr "Ajustes"
 
 #~ msgid "Manual Config"
 #~ msgstr "Configuración manual"
