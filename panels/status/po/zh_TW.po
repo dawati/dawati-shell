@@ -65,7 +65,7 @@ msgstr "新增網路服務"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "你似乎沒有任何網路服務的配置，或者網路服務配置有問題。使用上面的按鈕，打開「我的網站帳戶」並設置一個帳戶。"
+msgstr "您似乎沒有任何網路服務的配置，或者網路服務配置有問題。使用上面的按鈕，打開「我的網站帳戶」並設置一個帳戶。"
 
 #: ../src/mps-geotag-pane.c:215
 msgid "Your location"
@@ -131,25 +131,25 @@ msgstr "狀態"
 #~ msgstr "編輯"
 
 #~ msgid "Enter your %s status here..."
-#~ msgstr "在這裡輸入你的 %s 狀態..."
+#~ msgstr "在這裡輸入您的 %s 狀態..."
 
 #~ msgid "Enter your current status here..."
-#~ msgstr "在這裡輸入你目前的狀態..."
+#~ msgstr "在這裡輸入您目前的狀態..."
 
 #~ msgid "Post"
 #~ msgstr "貼出"
 
 #~ msgid "Your current status"
-#~ msgstr "你目前的狀態"
+#~ msgstr "您目前的狀態"
 
 #~ msgid "Your current status - you are offline"
-#~ msgstr "你目前的狀態 - 你是離線"
+#~ msgstr "您目前的狀態 - 您是離線"
 
 #~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "抱歉，我們找不到任何朋友的資料。你已經設立好通訊程式的帳戶了嗎？"
+#~ msgstr "抱歉，我們找不到任何朋友的資料。您已經設立好通訊程式的帳戶了嗎？"
 
 #~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "要更新你的網路狀態，你需要設置一個支援狀態訊息的廠商所提供的網路服務帳戶。"
+#~ msgstr "要更新您的網路狀態，您需要設置一個支援狀態訊息的廠商所提供的網路服務帳戶。"
 
 #~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "要更新你即時通訊的狀態，你需要設置一個即時通訊帳戶"
+#~ msgstr "要更新您即時通訊的狀態，您需要設置一個即時通訊帳戶"
