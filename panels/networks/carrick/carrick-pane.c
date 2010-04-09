@@ -1281,6 +1281,7 @@ static void
 carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv;
+  GtkSizeGroup       *banner_group;
   GtkWidget          *settings_frame;
   GtkWidget          *net_list_frame;
   GtkWidget          *switch_box;
@@ -1378,6 +1379,8 @@ carrick_pane_init (CarrickPane *self)
                                                    pane_manager_get_properties_cb,
                                                    self);
 
+  banner_group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
+
   /* Set box (self) up */
   gtk_box_set_spacing (GTK_BOX (self), 4);
   gtk_container_set_border_width (GTK_CONTAINER (self), 4);
@@ -1393,6 +1396,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_widget_show (column);
 
   banner = mux_banner_new (_("Settings"));
+  gtk_size_group_add_widget (banner_group, banner);
   gtk_widget_show (banner);
   gtk_box_pack_start (GTK_BOX (column), banner, FALSE, FALSE, 0);
 
@@ -1617,15 +1621,9 @@ carrick_pane_init (CarrickPane *self)
   gtk_widget_show (column);
 
   banner = mux_banner_new (_("Networks"));
+  gtk_size_group_add_widget (banner_group, banner);
   gtk_widget_show (banner);
   gtk_box_pack_start (GTK_BOX (column), banner, FALSE, FALSE, 0);
-
-  /* Network list */
-  priv->service_list = carrick_list_new (priv->icon_factory,
-                                         priv->notes,
-                                         CARRICK_NETWORK_MODEL (model));
-  gtk_widget_show (priv->service_list);
-  gtk_box_pack_start (GTK_BOX (column), priv->service_list, TRUE, TRUE, 0);
 
   /* New connection button */
   priv->new_conn_button = gtk_button_new_with_label (_ ("Add new connection"));
@@ -1636,11 +1634,18 @@ carrick_pane_init (CarrickPane *self)
                     "clicked",
                     G_CALLBACK (_new_connection_cb),
                     self);
-  gtk_box_pack_start (GTK_BOX (column),
+  gtk_box_pack_end (GTK_BOX (banner),
                       priv->new_conn_button,
                       FALSE,
                       FALSE,
-                      8);
+                      0);
+
+  /* Network list */
+  priv->service_list = carrick_list_new (priv->icon_factory,
+                                         priv->notes,
+                                         CARRICK_NETWORK_MODEL (model));
+  gtk_widget_show (priv->service_list);
+  gtk_box_pack_start (GTK_BOX (column), priv->service_list, TRUE, TRUE, 0);
 
   gtk_container_add (GTK_CONTAINER (net_list_frame), column);
   gtk_box_pack_start (GTK_BOX (self),
