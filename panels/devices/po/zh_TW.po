@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-08 11:11+0000\n"
-"PO-Revision-Date: 2010-04-09 12:16-0800\n"
-"Last-Translator: Namfon Thasanon <namfonx.thasanon@intel.com>\n"
+"POT-Creation-Date: 2010-04-09 11:31+0000\n"
+"PO-Revision-Date: 2010-04-10 11:08+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Traditional Chinese <chinese-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -134,7 +134,8 @@ msgstr "您的電池已充飽，可以上路了。"
 msgid "Sorry, it looks like your battery is broken."
 msgstr "很抱歉，看起來您的電池好像壞了。"
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:141
 msgid "Netbook brightness"
 msgstr "筆電螢幕的亮度"
 
