@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-09 11:31+0000\n"
-"PO-Revision-Date: 2010-04-10 11:08+0800\n"
+"POT-Creation-Date: 2010-04-10 10:03+0000\n"
+"PO-Revision-Date: 2010-04-10 23:39+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Traditional Chinese <chinese-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgid "Sorry, it looks like your battery is broken."
 msgstr "很抱歉，看起來您的電池好像壞了。"
 
 #. First row.
-#: ../src/mpd-brightness-tile.c:141
+#: ../src/mpd-brightness-tile.c:142
 msgid "Netbook brightness"
 msgstr "筆電螢幕的亮度"
 
@@ -163,6 +163,10 @@ msgstr "其他裝置"
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>你正在使用</span><span color='%s'>%d%% of %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "回收筒"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -259,7 +263,7 @@ msgstr "寂靜無聲"
 msgid "Netbook volume"
 msgstr "網路筆電靜音"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:367
 msgid "Mute"
 msgstr "靜音"
 
@@ -279,8 +283,6 @@ msgstr "靜音"
 #~ msgstr "Zip"
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-#~ msgid "Flash"
-#~ msgstr "Flash"
 #~ msgid "CD"
 #~ msgstr "CD"
 #~ msgid "DVD"
