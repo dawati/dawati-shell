@@ -1,0 +1,272 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# A S Alam <aalam@users.sf.net>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-09 11:31+0000\n"
+"PO-Revision-Date: 2010-04-10 09:33+0530\n"
+"Last-Translator: A S Alam <aalam@users.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "ਜੰਤਰ ਪੈਨਲ"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:149
+msgid "devices"
+msgstr "ਜੰਤਰ"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "ਬੰਦ"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u ਆਉਟਪੁੱਟ"
+msgstr[1] "%u ਆਉਟਪੁੱਟ"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u ਇੰਪੁੱਟ"
+msgstr[1] "%u ਇੰਪੁੱਟ"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
+
+#: ../power-icon/src/moblin-power-icon.c:46
+msgid "Moblin Power Icon"
+msgstr "ਮੋਬਲਿਨ ਪਾਵਰ ਆਈਕਾਨ"
+
+#: ../power-icon/src/mpd-power-icon.c:72
+msgid "Running low on battery"
+msgstr "ਘੱਟ ਬੈਟਰੀ ਉੱਤੇ ਚੱਲ ਰਿਹਾ ਹੈ"
+
+#: ../power-icon/src/mpd-power-icon.c:73
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:76
+msgid "Getting close to empty"
+msgstr "ਖਾਲੀ ਹੋਣ ਵਾਲੀ ਹੈ"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Danger!"
+msgstr "ਖਤਰਾ!"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:300
+msgid "Would you like to turn off now?"
+msgstr "ਕੀ ਤੁਸੀਂ ਹੁਣ ਬੰਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
+
+#: ../power-icon/src/mpd-power-icon.c:301
+msgid "If you don't decide I'll turn off in 30 seconds."
+msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ ੩੦ ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ।"
+
+#: ../power-icon/src/mpd-power-icon.c:368
+msgid "battery"
+msgstr "ਬੈਟਰੀ"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:75
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ।"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:133
+msgid "Turn off"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#: ../src/moblin-panel-devices.c:120
+msgid "Moblin Devices Panel"
+msgstr "ਮੋਬਾਇਲ ਜੰਤਰ ਪੈਨਲ"
+
+#: ../src/mpd-battery-device.c:333
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੋਲ ਬੈਟਰੀ ਇੰਸਟਾਲ ਨਹੀਂ ਜਾਪਦੀ ਹੈ।"
+
+#: ../src/mpd-battery-device.c:337
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਚਾਰਜ ਹੋ ਰਹੀ ਹੈ। ਇਹ %d%% ਲਗਭਗ ਪੂਰੀ ਹੈ।"
+
+#: ../src/mpd-battery-device.c:342
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr ""
+
+#: ../src/mpd-battery-device.c:347
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr ""
+
+#: ../src/mpd-battery-device.c:351
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੀ ਬੈਟਰੀ ਖਰਾਬ ਜਾਪਦੀ ਹੈ।"
+
+#. First row.
+#: ../src/mpd-brightness-tile.c:141
+msgid "Netbook brightness"
+msgstr "ਨੈੱਟਬੁੱਕ ਚਮਕ"
+
+#: ../src/mpd-computer-pane.c:120
+msgid "Your computer"
+msgstr "ਤੁਹਾਡਾ ਕੰਪਿਊਟਰ"
+
+#: ../src/mpd-computer-pane.c:129
+msgid "All settings"
+msgstr "ਸਭ ਸੈਟਿੰਗ"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"ਜੰਤਰ ਲਗਾਉ ਅਤੇ ਇਹ ਆਟੋਮੈਟਿਕ\n"
+"ਹੀ ਖੋਜਿਆ ਜਾਵੇਗਾ।"
+
+#: ../src/mpd-devices-pane.c:105
+msgid "Other devices"
+msgstr "ਹੋਰ ਜੰਤਰ"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
+"span>"
+msgstr ""
+
+#: ../src/mpd-media-import-tile.c:73
+#, c-format
+msgid ""
+"<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+msgstr ""
+
+#: ../src/mpd-media-import-tile.c:217
+msgid "Stop"
+msgstr "ਰੋਕੋ"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "ਜੰਤਰ"
+
+#: ../src/mpd-storage-device-tile.c:164
+#, c-format
+msgid "Could not run %s"
+msgstr ""
+
+#: ../src/mpd-storage-device-tile.c:165
+msgid "Import error"
+msgstr "ਇੰਪੋਰਟ ਗਲਤੀ"
+
+#: ../src/mpd-storage-device-tile.c:256
+#, c-format
+msgid "%s nas been plugged in. You can use the Devices panel interact with it"
+msgstr ""
+
+#: ../src/mpd-storage-device-tile.c:259
+msgid "USB plugged in"
+msgstr "USB ਪਲੱਗ ਲੱਗਾ"
+
+#: ../src/mpd-storage-device-tile.c:260
+msgid "Show"
+msgstr "ਵੇਖੋ"
+
+#. Import button
+#: ../src/mpd-storage-device-tile.c:514
+msgid "Import data"
+msgstr "ਡਾਟਾ ਇੰਪੋਰਟ ਕਰੋ"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:525
+msgid "Eject"
+msgstr "ਬਾਹਰ ਕੱਢੋ"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:536
+msgid "Open"
+msgstr "ਖੋਲ੍ਹੋ"
+
+#: ../src/mpd-storage-device-tile.c:725
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "ਬਹੁਤ ਉੱਚੀ"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "ਉੱਚੀ"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "ਬਹੁਤ ਸ਼ਾਂਤ"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "ਸ਼ਾਂਤ"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "ਚੁੱਪ"
+
+#: ../src/mpd-volume-tile.c:356
+msgid "Netbook volume"
+msgstr "ਨੈੱਟਬੁੱਕ ਵਾਲੀਅਮ"
+
+#: ../src/mpd-volume-tile.c:366
+msgid "Mute"
+msgstr "ਚੁੱਪ"
+
