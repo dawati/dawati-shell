@@ -1,44 +1,95 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# A S Alam <aalam@users.sf.net>, 2009.
+# A S Alam <aalam@users.sf.net>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:31+0000\n"
-"PO-Revision-Date: 2009-10-17 07:16+0530\n"
+"POT-Creation-Date: 2010-04-07 09:40+0000\n"
+"PO-Revision-Date: 2010-04-10 10:00+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../penge/penge-calendar-pane.c:476
-msgid "<b>Appointments</b>"
-msgstr "<b>ਮੁਲਾਕਾਤ</b>"
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone ਪੈਨਲ"
 
-#: ../penge/penge-events-pane.c:59
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Myzone ਬੈਕਗਰਾਊਂਡ ਅਤੇ ਸਮੱਗਰੀ ਬਦਲੋ"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf ਗਲਤੀ: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "ਸਭ ਹੋਰ ਗਲਤੀਆਂ ਕੇਵਲ ਟਰਮੀਨਲ ਉੱਤੇ ਹੀ ਵੇਖਾਓ।"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "ਜਿੰਨੀ ਵੀ ਸੰਭਵ ਹੋਵੇ ਵੈੱਬ ਸਰਵਿਸ ਸਮਗੱਰੀ ਵੇਖਾਓ"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "ਵੱਧ ਤੋਂ ਵੱਧ ਵੈੱਬ ਸਰਵਿਸ ਸਮੱਗਰੀ ਵੇਖੋ"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "ਅੱਧਾ ਤੇ ਅੱਧਾ ਵੇਖੋ"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "ਸਭ ਤੋਂ ਤਾਜ਼ਾ ਫਾਇਲਾਂ ਵੇਖੋ"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "ਜਿੰਨੀਆਂ ਵੀ ਸੰਭਵ ਹੋਵੇ ਤਾਜ਼ੀਆਂ ਫਾਇਲਾਂ ਵੇਖੋ"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from the Myzone"
+msgstr ""
+
+#: ../penge/penge-calendar-pane.c:445
+msgid "Appointments"
+msgstr "ਮੁਲਾਕਾਤ"
+
+#: ../penge/penge-calendar-pane.c:475
+msgid "Tasks"
+msgstr "ਕੰਮ"
+
+#: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "ਨਵੀਂ ਮੁਲਾਕਾਤ ਬਣਾਓ"
 
-#: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "ਸ਼ਾਮਲ"
 
-#: ../penge/penge-events-pane.c:268
+#: ../penge/penge-events-pane.c:484
 msgid "No calendar entries this week"
 msgstr "ਇਹ ਹਫ਼ਤੇ ਲਈ ਕੋਈ ਕੈਲੰਡਰ ਐਂਟਰੀ ਨਹੀਂ"
 
-#: ../penge/penge-people-placeholder-tile.c:116
+#: ../penge/penge-people-placeholder-tile.c:112
 msgid ""
 "Things that your friends do online will appear here. Activate your accounts "
 "now!"
 msgstr "ਤੁਹਾਡੇ ਦੋਸਤ ਚੀਜ਼ਾਂ ਕਰਨਗੇ, ਉਹ ਇੱਥੇ ਵੇਖਾਈਆਂ ਜਾਣਗੀਆਂ। ਆਪਣਾ ਅਕਾਊਂਟ ਹੁਣੇ ਐਕਟੀਵੇਟ ਕਰੋ!"
 
-#: ../penge/penge-recent-file-tile.c:224
+#: ../penge/penge-recent-file-tile.c:215
 msgid "Web page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
@@ -46,25 +97,57 @@ msgstr "ਵੈੱਬ ਪੇਜ਼"
 msgid "Create a new task"
 msgstr "ਨਵੀਂ ਟਾਸਕ ਬਣਾਓ"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "ਅੱਜ ਲਈ ਕੁਝ ਨਹੀਂ ਹੈ"
 
-#: ../penge/penge-task-tile.c:325
+#: ../penge/penge-task-tile.c:316
 #, c-format
 msgid "Due %x"
 msgstr "%x ਨੂੰ ਚਾਹੀਦਾ"
 
-#: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>ਨੋਟਬੁੱਕ ਲਈ ਮੋਬਲਿਨ ੨.੧ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ</b>"
+#: ../penge/penge-welcome-tile.c:41
+msgid "Play intro video"
+msgstr "ਜਾਣਕਾਰੀ ਵਿਡੀਓ ਚਲਾਓ"
 
-#: ../penge/penge-welcome-tile.c:108
+#: ../penge/penge-welcome-tile.c:75
+msgid "Welcome to MeeGo"
+msgstr "ਮੀਗੋ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ"
+
+#: ../penge/penge-welcome-tile.c:94
 msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
-"of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
+"This is the Myzone, where your recently used files and content from your web "
+"feeds will appear."
 msgstr ""
-"ਮੋਬਲਿਨ ਹੋਰ ਕੰਪਿਊਟਰ ਤੋਂ ਕੁਝ ਅੱਡ ਹੈ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਮ ਕਰਨ ਲਈ ਮੱਦਦਗਾਰ ਹੋਣ ਵਾਸਤੇ ਬਹੁਤ ਕੁਝ "
-"ਇੱਕਠਾ ਕੀਤਾ ਹੈ। ਅਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹਾਂ ਕਿ ਤੁਸੀਂ ਇਸ ਨਾਲ ਮੌਜਾਂ ਮਾਣੋਗੇ, ਮੋਬਲਿਨ ਟੀਮ"
+"ਇਹ Myzone ਹੈ, ਜਿੱਥੇ ਤੁਹਾਡੇ ਵਲੋਂ ਤਾਜ਼ਾ ਵਰਤੀਆਂ ਫਾਇਲਾਂ ਅਤੇ ਤੁਹਾਡੀ ਵੈੱਬ ਫੀਡ ਦੀ ਸਮੱਗਰੀ "
+"ਵੇਖਾਈ "
+"ਦੇਵੇਗੀ।"
 
+#: ../penge/penge-welcome-tile.c:35
+msgid ""
+"When you’ve set up your web accounts and used some files they will appear "
+"here on the Myzone for easy access whenever you want. "
+msgstr ""
+
+#: ../penge/penge-email-pane.c:191
+msgid "No unread messages"
+msgstr "ਕੋਈ ਨਾ-ਪੜ੍ਹਿਆ ਸੁਨੇਹਾ ਨਹੀਂ"
+
+#: ../penge/penge-email-pane.c:193
+msgid "Unread message"
+msgstr "ਨਾ-ਪੜ੍ਹਿਆ ਸੁਨੇਹਾ"
+
+#: ../penge/penge-email-pane.c:195
+msgid "Unread messages"
+msgstr "ਨਾ-ਪੜ੍ਹੇ ਸੁਨੇਹੇ"
+
+#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgstr "<b>ਨੋਟਬੁੱਕ ਲਈ ਮੋਬਲਿਨ ੨.੧ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ</b>"
+
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "ਮੋਬਲਿਨ ਹੋਰ ਕੰਪਿਊਟਰ ਤੋਂ ਕੁਝ ਅੱਡ ਹੈ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਮ ਕਰਨ ਲਈ ਮੱਦਦਗਾਰ ਹੋਣ ਵਾਸਤੇ ਬਹੁਤ ਕੁਝ "
+#~ "ਇੱਕਠਾ ਕੀਤਾ ਹੈ। ਅਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹਾਂ ਕਿ ਤੁਸੀਂ ਇਸ ਨਾਲ ਮੌਜਾਂ ਮਾਣੋਗੇ, ਮੋਬਲਿਨ ਟੀਮ"
