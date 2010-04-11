@@ -18,7 +18,6 @@ pengeinclude_HEADERS = \
 		   penge-task-tile.h \
 		   penge-tasks-pane.h \
 		   penge-welcome-tile.h \
-		   penge-people-placeholder-tile.h \
 		   penge-interesting-tile.h \
 		   penge-block-container.h \
 		   penge-everything-pane.h \
@@ -42,7 +41,6 @@ libpenge_la_SOURCES = \
 		      penge-task-tile.c \
 		      penge-tasks-pane.c \
 		      penge-welcome-tile.c \
-		      penge-people-placeholder-tile.c \
 		      penge-interesting-tile.c \
 		      penge-block-container.c \
 		      penge-everything-pane.c \
