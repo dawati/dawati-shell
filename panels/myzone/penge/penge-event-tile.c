@@ -28,10 +28,11 @@
 
 G_DEFINE_TYPE (PengeEventTile, penge_event_tile, MX_TYPE_BUTTON)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVENT_TILE, PengeEventTilePrivate))
 
-typedef struct _PengeEventTilePrivate PengeEventTilePrivate;
+
+#define GET_PRIVATE(o) ((PengeEventTile *)o)->priv
 
 struct _PengeEventTilePrivate {
   JanaEvent *event;
@@ -249,8 +250,10 @@ _button_clicked_cb (MxButton *button,
 static void
 penge_event_tile_init (PengeEventTile *self)
 {
-  PengeEventTilePrivate *priv = GET_PRIVATE (self);
+  PengeEventTilePrivate *priv = GET_PRIVATE_REAL (self);
   ClutterActor *tmp_text;
+
+  self->priv = priv;
 
   priv->inner_table = mx_table_new ();
   mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);

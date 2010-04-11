@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_EVERYTHING_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_EVERYTHING_PANE, PengeEverythingPaneClass))
 
+typedef struct _PengeEverythingPanePrivate PengeEverythingPanePrivate;
+
 typedef struct {
   PengeBlockContainer parent;
+  PengeEverythingPanePrivate *priv;
 } PengeEverythingPane;
 
 typedef struct {

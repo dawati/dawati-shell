@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_RECENT_FILE_TILE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_RECENT_FILE_TILE, PengeRecentFileTileClass))
 
+typedef struct _PengeRecentFileTilePrivate PengeRecentFileTilePrivate;
+
 typedef struct {
   PengeInterestingTile parent;
+  PengeRecentFileTilePrivate *priv;
 } PengeRecentFileTile;
 
 typedef struct {

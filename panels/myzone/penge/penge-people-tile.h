@@ -45,8 +45,11 @@ G_BEGIN_DECLS
 #define PENGE_PEOPLE_TILE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_PEOPLE_TILE, PengePeopleTileClass))
 
+typedef struct _PengePeopleTilePrivate PengePeopleTilePrivate;
+
 typedef struct {
   PengeInterestingTile parent;
+  PengePeopleTilePrivate *priv;
 } PengePeopleTile;
 
 typedef struct {

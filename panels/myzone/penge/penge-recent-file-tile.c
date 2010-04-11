@@ -29,10 +29,11 @@
 
 G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, PENGE_TYPE_INTERESTING_TILE)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_RECENT_FILE_TILE, PengeRecentFileTilePrivate))
 
-typedef struct _PengeRecentFileTilePrivate PengeRecentFileTilePrivate;
+#define GET_PRIVATE(o) ((PengeRecentFileTile *)o)->priv
+
 
 struct _PengeRecentFileTilePrivate {
   gchar *thumbnail_path;
@@ -258,7 +259,9 @@ penge_recent_file_tile_class_init (PengeRecentFileTileClass *klass)
 static void
 penge_recent_file_tile_init (PengeRecentFileTile *self)
 {
-  PengeRecentFileTilePrivate *priv = GET_PRIVATE (self);
+  PengeRecentFileTilePrivate *priv = GET_PRIVATE_REAL (self);
+
+  self->priv = priv;
 
   priv->tex = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
 

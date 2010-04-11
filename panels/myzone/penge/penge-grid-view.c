@@ -31,16 +31,16 @@
 
 G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_GRID_VIEW, PengeGridViewPrivate))
+
+#define GET_PRIVATE(o) ((PengeGridView *)o)->priv
 
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
 #define FADE_BG THEMEDIR "/top-fade.png"
 
 #define MOBLIN_MYZONE_SHOW_CALENDAR "/desktop/moblin/myzone/show_calendar"
 #define MOBLIN_MYZONE_SHOW_EMAIL "/desktop/moblin/myzone/show_email"
-
-typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
 
 struct _PengeGridViewPrivate {
   ClutterActor *calendar_pane;
@@ -470,8 +470,10 @@ _gconf_show_email_notify_cb (GConfClient *client,
 static void
 penge_grid_view_init (PengeGridView *self)
 {
-  PengeGridViewPrivate *priv = GET_PRIVATE (self);
+  PengeGridViewPrivate *priv = GET_PRIVATE_REAL (self);
   GError *error = NULL;
+
+  self->priv = priv;
 
   priv->header_label = mx_label_new_with_text ("Myzone");
   clutter_actor_set_name (priv->header_label, "myzone-panel-header-label");

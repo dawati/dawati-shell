@@ -26,10 +26,10 @@
 
 G_DEFINE_TYPE (PengeAppsPane, penge_apps_pane, MX_TYPE_TABLE)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_APPS_PANE, PengeAppsPanePrivate))
 
-typedef struct _PengeAppsPanePrivate PengeAppsPanePrivate;
+#define GET_PRIVATE(o) ((PengeAppsPane *)o)->priv
 
 struct _PengeAppsPanePrivate {
   MplAppBookmarkManager *manager;
@@ -123,7 +123,8 @@ _manager_bookmarks_changed_cb (MplAppBookmarkManager *manager,
 static void
 penge_apps_pane_init (PengeAppsPane *self)
 {
-  PengeAppsPanePrivate *priv = GET_PRIVATE (self);
+  PengeAppsPanePrivate *priv = GET_PRIVATE_REAL (self);
+  self->priv = priv;
 
   priv->manager = mpl_app_bookmark_manager_get_default ();
 

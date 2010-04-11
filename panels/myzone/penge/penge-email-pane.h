@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_EMAIL_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_EMAIL_PANE, PengeEmailPaneClass))
 
+typedef struct _PengeEmailPanePrivate PengeEmailPanePrivate;
+
 typedef struct {
   MxTable parent;
+  PengeEmailPanePrivate *priv;
 } PengeEmailPane;
 
 typedef struct {

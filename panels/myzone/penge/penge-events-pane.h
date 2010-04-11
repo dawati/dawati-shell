@@ -44,8 +44,11 @@ G_BEGIN_DECLS
 #define PENGE_EVENTS_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_EVENTS_PANE, PengeEventsPaneClass))
 
+typedef struct _PengeEventsPanePrivate PengeEventsPanePrivate;
+
 typedef struct {
   MxBoxLayout parent;
+  PengeEventsPanePrivate *priv;
 } PengeEventsPane;
 
 typedef struct {

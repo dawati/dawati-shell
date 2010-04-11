@@ -24,10 +24,10 @@
 
 G_DEFINE_TYPE (PengeClickableLabel, penge_clickable_label, MX_TYPE_LABEL)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_CLICKABLE_LABEL, PengeClickableLabelPrivate))
 
-typedef struct _PengeClickableLabelPrivate PengeClickableLabelPrivate;
+#define GET_PRIVATE(o) ((PengeClickableLabel *)o)->priv
 
 struct _PengeClickableLabelPrivate {
   GRegex *url_regex;
@@ -286,8 +286,10 @@ penge_clickable_label_class_init (PengeClickableLabelClass *klass)
 static void
 penge_clickable_label_init (PengeClickableLabel *self)
 {
-  PengeClickableLabelPrivate *priv = GET_PRIVATE (self);
+  PengeClickableLabelPrivate *priv = GET_PRIVATE_REAL (self);
   GError *error = NULL;
+
+  self->priv = priv;
 
   priv->url_regex = g_regex_new (tweet_url_label_regex,
                                  G_REGEX_CASELESS

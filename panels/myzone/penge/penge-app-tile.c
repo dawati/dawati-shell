@@ -28,10 +28,10 @@
 
 G_DEFINE_TYPE (PengeAppTile, penge_app_tile, MX_TYPE_BUTTON)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_APP_TILE, PengeAppTilePrivate))
 
-typedef struct _PengeAppTilePrivate PengeAppTilePrivate;
+#define GET_PRIVATE(o) ((PengeAppTile *)o)->priv
 
 struct _PengeAppTilePrivate {
   ClutterActor *tex;
@@ -275,7 +275,9 @@ _button_clicked_cb (MxButton *button,
 static void
 penge_app_tile_init (PengeAppTile *self)
 {
-  PengeAppTilePrivate *priv = GET_PRIVATE (self);
+  PengeAppTilePrivate *priv = GET_PRIVATE_REAL (self);
+
+  self->priv = priv;
 
   priv->tex = clutter_texture_new ();
   clutter_actor_set_size (priv->tex, ICON_SIZE, ICON_SIZE);

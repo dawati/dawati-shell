@@ -28,10 +28,11 @@
 
 G_DEFINE_TYPE (PengeTasksPane, penge_tasks_pane, MX_TYPE_TABLE)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_TASKS_PANE, PengeTasksPanePrivate))
 
-typedef struct _PengeTasksPanePrivate PengeTasksPanePrivate;
+
+#define GET_PRIVATE(o) ((PengeTasksPane *)o)->priv
 
 struct _PengeTasksPanePrivate {
   JanaStore *store;
@@ -282,7 +283,9 @@ _store_opened_cb (JanaStore *store,
 static void
 penge_tasks_pane_init (PengeTasksPane *self)
 {
-  PengeTasksPanePrivate *priv = GET_PRIVATE (self);
+  PengeTasksPanePrivate *priv = GET_PRIVATE_REAL (self);
+
+  self->priv = priv;
 
   priv->uid_to_tasks = g_hash_table_new_full (g_str_hash,
                                               g_str_equal,

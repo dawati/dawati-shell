@@ -21,7 +21,7 @@
 
 G_DEFINE_TYPE (PengeCountTile, penge_count_tile, MX_TYPE_BUTTON)
 
-#define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+#define GET_PRIVATE_REAL(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                           PENGE_TYPE_COUNT_TILE,\
                           PengeCountTilePrivate))
 
@@ -290,9 +290,10 @@ static void
 penge_count_tile_init (PengeCountTile *self)
 {
   ClutterActor *tmp_text;
-  PengeCountTilePrivate *priv = GET_PRIVATE (self);
+  PengeCountTilePrivate *priv = GET_PRIVATE_REAL (self);
 
   self->priv = priv;
+
   priv->table = mx_table_new ();
   g_object_ref (priv->table);
 

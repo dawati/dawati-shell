@@ -32,12 +32,13 @@
 
 G_DEFINE_TYPE (PengeEmailPane, penge_email_pane, MX_TYPE_BOX_LAYOUT)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o),\
                                 PENGE_TYPE_EMAIL_PANE, \
                                 PengeEmailPanePrivate))
 
-typedef struct _PengeEmailPanePrivate PengeEmailPanePrivate;
+
+#define GET_PRIVATE(o) ((PengeEmailPane *)o)->priv
 
 struct _PengeEmailPanePrivate {
   MailmeTelepathy *provider;
@@ -327,7 +328,9 @@ _account_removed_cb (MailmeTelepathy        *provider,
 static void
 penge_email_pane_init (PengeEmailPane *self)
 {
-  PengeEmailPanePrivate *priv = GET_PRIVATE (self);
+  PengeEmailPanePrivate *priv = GET_PRIVATE_REAL (self);
+
+  self->priv = priv;
 
   priv->account_to_widget = g_hash_table_new (NULL, NULL);
   priv->provider = g_object_new (MAILME_TYPE_TELEPATHY, NULL);

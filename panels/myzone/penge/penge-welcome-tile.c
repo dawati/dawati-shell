@@ -23,15 +23,6 @@
 
 G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, MX_TYPE_TABLE)
 
-#define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_WELCOME_TILE, PengeWelcomeTilePrivate))
-
-typedef struct _PengeWelcomeTilePrivate PengeWelcomeTilePrivate;
-
-struct _PengeWelcomeTilePrivate {
-  gpointer dummy;
-};
-
 #define NEW_PLACEHOLDER_TEXT _("When you’ve set up your web " \
 "accounts and used some files they " \
 "will appear here on the Myzone " \
@@ -56,8 +47,6 @@ static void
 penge_welcome_tile_class_init (PengeWelcomeTileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (PengeWelcomeTilePrivate));
 
   object_class->dispose = penge_welcome_tile_dispose;
   object_class->finalize = penge_welcome_tile_finalize;

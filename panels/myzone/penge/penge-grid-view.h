@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_GRID_VIEW_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_GRID_VIEW, PengeGridViewClass))
 
+typedef struct _PengeGridViewPrivate PengeGridViewPrivate;
+
 typedef struct {
   MxTable parent;
+  PengeGridViewPrivate *priv;
 } PengeGridView;
 
 typedef struct {

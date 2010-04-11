@@ -131,10 +131,11 @@ G_DEFINE_TYPE_WITH_CODE (PengeBlockContainer, penge_block_container, CLUTTER_TYP
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 penge_block_container_iface_init))
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_BLOCK_CONTAINER, PengeBlockContainerPrivate))
 
-typedef struct _PengeBlockContainerPrivate PengeBlockContainerPrivate;
+
+#define GET_PRIVATE(o) ((PengeBlockContainer *)o)->priv
 
 struct _PengeBlockContainerPrivate {
   gfloat prev_height;
@@ -668,6 +669,8 @@ penge_block_container_sort_depth_order (ClutterContainer *container)
 static void
 penge_block_container_init (PengeBlockContainer *self)
 {
+  PengeBlockContainerPrivate *priv = GET_PRIVATE_REAL (self);
+  self->priv = priv;
 }
 
 static void

@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_APP_TILE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_APP_TILE, PengeAppTileClass))
 
+typedef struct _PengeAppTilePrivate PengeAppTilePrivate;
+
 typedef struct {
   MxButton parent;
+  PengeAppTilePrivate *priv;
 } PengeAppTile;
 
 typedef struct {

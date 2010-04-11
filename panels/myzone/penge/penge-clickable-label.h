@@ -42,8 +42,11 @@ G_BEGIN_DECLS
 #define PENGE_CLICKABLE_LABEL_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_CLICKABLE_LABEL, PengeClickableLabelClass))
 
+typedef struct _PengeClickableLabelPrivate PengeClickableLabelPrivate;
+
 typedef struct {
   MxLabel parent;
+  PengeClickableLabelPrivate *priv;
 } PengeClickableLabel;
 
 typedef struct {

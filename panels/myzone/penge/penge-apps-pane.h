@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_APPS_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_APPS_PANE, PengeAppsPaneClass))
 
+typedef struct _PengeAppsPanePrivate PengeAppsPanePrivate;
+
 typedef struct {
   MxTable parent;
+  PengeAppsPanePrivate *priv;
 } PengeAppsPane;
 
 typedef struct {

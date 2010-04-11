@@ -27,10 +27,10 @@
 
 G_DEFINE_TYPE (PengeViewBackground, penge_view_background, PENGE_TYPE_MAGIC_TEXTURE)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_VIEW_BACKGROUND, PengeViewBackgroundPrivate))
 
-typedef struct _PengeViewBackgroundPrivate PengeViewBackgroundPrivate;
+#define GET_PRIVATE(o) ((PengeViewBackground *)o)->priv
 
 struct _PengeViewBackgroundPrivate {
   GConfClient *client;
@@ -118,8 +118,10 @@ bg_filename_changed_cb (GConfClient *client,
 static void
 penge_view_background_init (PengeViewBackground *self)
 {
-  PengeViewBackgroundPrivate *priv = GET_PRIVATE (self);
+  PengeViewBackgroundPrivate *priv = GET_PRIVATE_REAL (self);
   GError *error = NULL;
+
+  self->priv = priv;
 
   priv->client = gconf_client_get_default ();
   gconf_client_add_dir (priv->client,

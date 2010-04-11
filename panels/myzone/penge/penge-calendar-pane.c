@@ -29,12 +29,12 @@
 
 G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, MX_TYPE_WIDGET)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPanePrivate))
 
+#define GET_PRIVATE(o) ((PengeCalendarPane *)o)->priv
 #define CALENDAR_ICON THEMEDIR "/calendar-icon-%d.png"
 
-typedef struct _PengeCalendarPanePrivate PengeCalendarPanePrivate;
 
 struct _PengeCalendarPanePrivate {
   ClutterActor *events_pane;
@@ -413,12 +413,14 @@ _first_refresh_timeout_cb (gpointer userdata)
 static void
 penge_calendar_pane_init (PengeCalendarPane *self)
 {
-  PengeCalendarPanePrivate *priv = GET_PRIVATE (self);
+  PengeCalendarPanePrivate *priv = GET_PRIVATE_REAL (self);
   JanaTime *now;
   JanaTime *on_the_next_hour;
   glong next_timeout_seconds;
   ClutterActor *label;
   ClutterActor *tasks_icon;
+
+  self->priv = priv;
 
   now = jana_ecal_utils_time_now_local ();
 

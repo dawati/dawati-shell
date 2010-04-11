@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_BLOCK_CONTAINER_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_BLOCK_CONTAINER, PengeBlockContainerClass))
 
+typedef struct _PengeBlockContainerPrivate PengeBlockContainerPrivate;
+
 typedef struct {
   ClutterActor parent;
+  PengeBlockContainerPrivate *priv;
 } PengeBlockContainer;
 
 typedef struct {

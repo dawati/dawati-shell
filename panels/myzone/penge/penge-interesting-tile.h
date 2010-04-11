@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_INTERESTING_TILE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_INTERESTING_TILE, PengeInterestingTileClass))
 
+typedef struct _PengeInterestingTilePrivate PengeInterestingTilePrivate;
+
 typedef struct {
   MxButton parent;
+  PengeInterestingTilePrivate *priv;
 } PengeInterestingTile;
 
 typedef struct {

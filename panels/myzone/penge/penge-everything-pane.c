@@ -32,8 +32,10 @@
 
 G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONTAINER)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVERYTHING_PANE, PengeEverythingPanePrivate))
+
+#define GET_PRIVATE(o) ((PengeEverythingPane *)o)->priv;
 
 #define MOBLIN_MYZONE_MIN_TILE_WIDTH "/desktop/moblin/myzone/min_tile_width"
 #define MOBLIN_MYZONE_MIN_TILE_HEIGHT "/desktop/moblin/myzone/min_tile_height"
@@ -41,9 +43,6 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 
 #define TILE_WIDTH 160
 #define TILE_HEIGHT 116
-
-
-typedef struct _PengeEverythingPanePrivate PengeEverythingPanePrivate;
 
 struct _PengeEverythingPanePrivate {
   SwClient *client;
@@ -722,9 +721,11 @@ _gconf_ratio_notify_cb (GConfClient *client,
 static void
 penge_everything_pane_init (PengeEverythingPane *self)
 {
-  PengeEverythingPanePrivate *priv = GET_PRIVATE (self);
+  PengeEverythingPanePrivate *priv = GET_PRIVATE_REAL (self);
   gfloat tile_width, tile_height;
   GError *error = NULL;
+
+  self->priv = priv;
 
   /* pointer to pointer */
   priv->pointer_to_actor = g_hash_table_new (NULL, NULL);

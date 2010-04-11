@@ -27,10 +27,10 @@
 
 G_DEFINE_TYPE (PengeTaskTile, penge_task_tile, MX_TYPE_BUTTON)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_TASK_TILE, PengeTaskTilePrivate))
 
-typedef struct _PengeTaskTilePrivate PengeTaskTilePrivate;
+#define GET_PRIVATE(o) ((PengeTaskTile *)o)->priv
 
 struct _PengeTaskTilePrivate {
     JanaTask *task;
@@ -210,8 +210,10 @@ _button_clicked_cb (MxButton *button,
 static void
 penge_task_tile_init (PengeTaskTile *self)
 {
-  PengeTaskTilePrivate *priv = GET_PRIVATE (self);
+  PengeTaskTilePrivate *priv = GET_PRIVATE_REAL (self);
   ClutterActor *tmp_text;
+
+  self->priv = priv;
 
   priv->inner_table = mx_table_new ();
   mx_bin_set_child (MX_BIN (self), (ClutterActor *)priv->inner_table);

@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_CALENDAR_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_CALENDAR_PANE, PengeCalendarPaneClass))
 
+typedef struct _PengeCalendarPanePrivate PengeCalendarPanePrivate;
+
 typedef struct {
   MxWidget parent;
+  PengeCalendarPanePrivate *priv;
 } PengeCalendarPane;
 
 typedef struct {

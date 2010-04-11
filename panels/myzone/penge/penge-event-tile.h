@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_EVENT_TILE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_EVENT_TILE, PengeEventTileClass))
 
+typedef struct _PengeEventTilePrivate PengeEventTilePrivate;
+
 typedef struct {
   MxButton parent;
+  PengeEventTilePrivate *priv;
 } PengeEventTile;
 
 typedef struct {

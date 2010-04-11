@@ -26,10 +26,10 @@
 
 G_DEFINE_TYPE (PengeInterestingTile, penge_interesting_tile, MX_TYPE_BUTTON)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_INTERESTING_TILE, PengeInterestingTilePrivate))
 
-typedef struct _PengeInterestingTilePrivate PengeInterestingTilePrivate;
+#define GET_PRIVATE(o) ((PengeInterestingTile *)o)->priv
 
 struct _PengeInterestingTilePrivate {
   ClutterActor *inner_table;
@@ -261,9 +261,11 @@ _remove_button_clicked (MxButton *button,
 static void
 penge_interesting_tile_init (PengeInterestingTile *self)
 {
-  PengeInterestingTilePrivate *priv = GET_PRIVATE (self);
+  PengeInterestingTilePrivate *priv = GET_PRIVATE_REAL (self);
   ClutterActor *tmp_text;
   ClutterActor *icon;
+
+  self->priv = priv;
 
   priv->inner_table = mx_table_new ();
   mx_bin_set_child (MX_BIN (self),

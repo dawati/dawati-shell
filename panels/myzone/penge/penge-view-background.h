@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define PENGE_VIEW_BACKGROUND_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), PENGE_TYPE_VIEW_BACKGROUND, PengeViewBackgroundClass))
 
+typedef struct _PengeViewBackgroundPrivate PengeViewBackgroundPrivate;
+
 typedef struct {
   PengeMagicTexture parent;
+  PengeViewBackgroundPrivate *priv;
 } PengeViewBackground;
 
 typedef struct {

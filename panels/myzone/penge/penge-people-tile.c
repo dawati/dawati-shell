@@ -27,10 +27,11 @@
 
 G_DEFINE_TYPE (PengePeopleTile, penge_people_tile, PENGE_TYPE_INTERESTING_TILE)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_PEOPLE_TILE, PengePeopleTilePrivate))
 
-typedef struct _PengePeopleTilePrivate PengePeopleTilePrivate;
+
+#define GET_PRIVATE(o) ((PengePeopleTile *)o)->priv
 
 struct _PengePeopleTilePrivate {
   SwItem *item;
@@ -136,6 +137,10 @@ _clicked_cb (MxButton *button,
 static void
 penge_people_tile_init (PengePeopleTile *self)
 {
+  PengePeopleTilePrivate *priv = GET_PRIVATE_REAL (self);
+
+  self->priv = priv;
+
   g_signal_connect (self,
                     "clicked",
                     (GCallback)_clicked_cb,

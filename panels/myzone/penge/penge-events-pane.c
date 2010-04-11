@@ -29,10 +29,10 @@
 
 G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, MX_TYPE_BOX_LAYOUT)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVENTS_PANE, PengeEventsPanePrivate))
 
-typedef struct _PengeEventsPanePrivate PengeEventsPanePrivate;
+#define GET_PRIVATE(o) ((PengeEventsPane *)o)->priv
 
 struct _PengeEventsPanePrivate {
   GHashTable *stores;
@@ -972,7 +972,9 @@ _source_list_changed_cb (ESourceList *source_list,
 static void
 penge_events_pane_init (PengeEventsPane *self)
 {
-  PengeEventsPanePrivate *priv = GET_PRIVATE (self);
+  PengeEventsPanePrivate *priv = GET_PRIVATE_REAL (self);
+
+  self->priv = priv;
 
   /* Create hashes to store our view membership in */
   priv->uid_to_events_list = g_hash_table_new_full (g_str_hash,
