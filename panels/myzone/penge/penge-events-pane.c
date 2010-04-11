@@ -467,6 +467,7 @@ penge_events_pane_update (PengeEventsPane *pane)
   JanaTime *on_the_hour;
   JanaTime *t = NULL;
   ClutterActor *label;
+  gboolean event_displayed = FALSE;
 
   g_return_if_fail (priv->time);
 
@@ -475,30 +476,6 @@ penge_events_pane_update (PengeEventsPane *pane)
 
   events = penge_events_pane_flatten_events (pane);
   events = g_list_sort (events, _event_compare_func);
-
-  if (!events)
-  {
-    if (!priv->no_events_bin)
-    {
-      label = mx_label_new_with_text (_("No calendar entries this week"));
-      priv->no_events_bin = mx_frame_new ();
-      mx_bin_set_child (MX_BIN (priv->no_events_bin),
-                        label);
-      clutter_container_add_actor (CLUTTER_CONTAINER (pane),
-                                   priv->no_events_bin);
-      mx_stylable_set_style_class (MX_STYLABLE (label),
-                                   "PengeNoMoreEventsLabel");
-
-      clutter_actor_set_height (priv->no_events_bin, 46);
-    }
-  } else {
-    if (priv->no_events_bin)
-    {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                      priv->no_events_bin);
-      priv->no_events_bin = NULL;
-    }
-  }
 
   on_the_hour = jana_time_duplicate (priv->time);
 
@@ -556,7 +533,7 @@ penge_events_pane_update (PengeEventsPane *pane)
                            g_object_ref (actor));
     }
     clutter_actor_raise_top (actor);
-
+    event_displayed = TRUE;
 
     if (count == 0)
     {
@@ -597,6 +574,31 @@ penge_events_pane_update (PengeEventsPane *pane)
       g_free (uid_rid);
     }
   }
+
+  if (!event_displayed)
+  {
+    if (!priv->no_events_bin)
+    {
+      label = mx_label_new_with_text (_("No calendar entries this week"));
+      priv->no_events_bin = mx_frame_new ();
+      mx_bin_set_child (MX_BIN (priv->no_events_bin),
+                        label);
+      clutter_container_add_actor (CLUTTER_CONTAINER (pane),
+                                   priv->no_events_bin);
+      mx_stylable_set_style_class (MX_STYLABLE (label),
+                                   "PengeNoMoreEventsLabel");
+
+      clutter_actor_set_height (priv->no_events_bin, 46);
+    }
+  } else {
+    if (priv->no_events_bin)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                      priv->no_events_bin);
+      priv->no_events_bin = NULL;
+    }
+  }
+
 
   g_list_free (events);
   g_object_unref (on_the_hour);
