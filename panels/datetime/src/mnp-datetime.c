@@ -255,7 +255,7 @@ construct_calendar_area (MnpDatetime *dtime)
 			       "y-fill", TRUE,		
 			       "x-fill", FALSE,			       			       
                                NULL);
-	clutter_actor_set_size (priv->cal_area, 350, -1);
+	clutter_actor_set_size (priv->cal_area, 345, -1);
 
 	/* Events header */
 	box = mx_box_layout_new ();
