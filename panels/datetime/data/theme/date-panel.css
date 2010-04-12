@@ -1,7 +1,6 @@
-*#datetime-panel
-{
-  border-image: url('panel-background.png') 15;
-  padding: 6 2 2 2;
+MnpShell {
+  border-image: url('panel-background.png') 0 0 465 0;
+  padding: 5;
 }
 
 *#CompletionScrollView

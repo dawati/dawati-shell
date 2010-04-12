@@ -36,7 +36,7 @@
 #include <moblin-panel/mpl-panel-common.h>
 #include <moblin-panel/mpl-entry.h>
 
-#include "mnp-datetime.h"
+#include "mnp-shell.h"
 
 #define WIDGET_SPACING 5
 #define ICON_SIZE 48
@@ -75,7 +75,6 @@ main (int    argc,
   ClutterActor *datetime;
   GOptionContext *context;
   GError *error = NULL;
-  ClutterActor *box, *label;
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -98,11 +97,6 @@ main (int    argc,
 
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/date-panel.css", NULL);
-  box = mx_box_layout_new ();
-  mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
-  clutter_actor_set_name ((ClutterActor *)box, "datetime-panel");
-
-
 
   if (!standalone)
   {
@@ -114,17 +108,16 @@ main (int    argc,
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
 
-    mpl_panel_client_set_height_request (client, 450);
+    mpl_panel_client_set_height_request (client, 530);
+    clutter_actor_set_size (datetime, 1016, 530);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
-    datetime = mnp_datetime_new ();
-    clutter_actor_set_size ((ClutterActor *)datetime, 1016, 405);
-    
-    mnp_datetime_set_panel_client (MNP_DATETIME (datetime), client);
+    datetime = mnp_shell_new ();
+    mnp_shell_set_panel_client (MNP_SHELL (datetime), client);
     g_signal_connect (client,
                       "set-size",
                       (GCallback)_client_set_size_cb,
-                      box);
+                      datetime);
   } else {
     Window xwin;
 
@@ -133,36 +126,16 @@ main (int    argc,
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
-    datetime = mnp_datetime_new ();
-    clutter_actor_set_size ((ClutterActor *)datetime, 1016, 405);
-    clutter_actor_set_size (stage, 1016, 450);
+    datetime = mnp_shell_new ();
+    clutter_actor_set_size (stage, 1016, 530);
+    clutter_actor_set_size (datetime, 1016, 530);
+    
     clutter_actor_show (stage);
   }
 
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               (ClutterActor *)box);
-
-
-  label = mx_label_new_with_text ("Time and Date");
-  clutter_actor_set_name (label, "DateHeading");
-  mnp_date_time_set_date_label ((MnpDatetime *)datetime, label);
-  
-  mx_box_layout_add_actor ((MxBoxLayout *)box, label, -1);
-  clutter_container_child_set (CLUTTER_CONTAINER (box),
-                               (ClutterActor *)label,
-                               "expand", FALSE,
-			       "y-fill", FALSE,
-			       "x-fill", TRUE,
-                               NULL);  
-  mx_box_layout_add_actor ((MxBoxLayout *)box, datetime, -1);
-  clutter_container_child_set (CLUTTER_CONTAINER (box),
-                               (ClutterActor *)datetime,
-                               "expand", TRUE,
-			       "y-fill", TRUE,
-			       "x-fill", TRUE,
-                               NULL);
-
+                               (ClutterActor *)datetime);
 
   clutter_main ();
 
