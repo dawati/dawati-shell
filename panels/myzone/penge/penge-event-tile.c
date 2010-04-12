@@ -233,8 +233,8 @@ _button_clicked_cb (MxButton *button,
   g_object_get (priv->store, "ecal", &ecal, NULL);
   uid = jana_component_get_uid ((JanaComponent *)priv->event);
 
-  command_line = g_strdup_printf ("dates --edit-event \"%s %s\"",
-                                  e_cal_get_uri (ecal),
+  command_line = g_strdup_printf ("evolution \"calendar:///?source-uid=%s&amp;comp-uid=%s\"",
+                                  e_source_peek_uid (priv->source),
                                   uid);
   g_free (uid);
 
