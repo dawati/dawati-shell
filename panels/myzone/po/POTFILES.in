@@ -8,7 +8,6 @@ capplet/myzone-cc-panel.c
 src/moblin-panel-myzone.c
 penge/penge-calendar-pane.c
 penge/penge-events-pane.c
-penge/penge-people-placeholder-tile.c
 penge/penge-recent-file-tile.c
 penge/penge-tasks-pane.c
 penge/penge-task-tile.c
