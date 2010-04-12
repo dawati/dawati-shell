@@ -26,7 +26,7 @@
 
 #include "penge-task-tile.h"
 
-G_DEFINE_TYPE (PengeTasksPane, penge_tasks_pane, MX_TYPE_TABLE)
+G_DEFINE_TYPE (PengeTasksPane, penge_tasks_pane, PENGE_TYPE_DYNAMIC_BOX)
 
 #define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_TASKS_PANE, PengeTasksPanePrivate))
@@ -42,8 +42,6 @@ struct _PengeTasksPanePrivate {
   GHashTable *uid_to_actors;
 
   ClutterActor *no_tasks_bin;
-
-  gint count;
 };
 
 #define TILE_WIDTH 216
@@ -87,71 +85,16 @@ penge_tasks_pane_dispose (GObject *object)
   G_OBJECT_CLASS (penge_tasks_pane_parent_class)->dispose (object);
 }
 
-static gboolean
-_update_idle_cb (gpointer userdata)
-{
-  penge_tasks_pane_update (PENGE_TASKS_PANE (userdata));
-  return FALSE;
-}
-
-static void
-penge_tasks_pane_allocate (ClutterActor          *actor,
-                           const ClutterActorBox *box,
-                           ClutterAllocationFlags flags)
-{
-  PengeTasksPanePrivate *priv = GET_PRIVATE (actor);
-  gfloat height;
-  gint old_count;
-
-  if (CLUTTER_ACTOR_CLASS (penge_tasks_pane_parent_class)->allocate)
-    CLUTTER_ACTOR_CLASS (penge_tasks_pane_parent_class)->allocate (actor, box, flags);
-
-  /* Work out how many we can fit in */
-  height = box->y2 - box->y1;
-  old_count = priv->count;
-  priv->count = height / TILE_HEIGHT;
-
-  if (old_count != priv->count)
-  {
-    /* Must use a high priority idle to avoid redraw artifacts */
-    g_idle_add_full (G_PRIORITY_HIGH_IDLE,
-                     _update_idle_cb,
-                     actor,
-                     NULL);
-  }
-}
-
-static void
-penge_tasks_pane_get_preferred_height (ClutterActor *actor,
-                                       gfloat        for_width,
-                                       gfloat       *min_height_p,
-                                       gfloat       *nat_height_p)
-{
-  PengeTasksPanePrivate *priv = GET_PRIVATE (actor);
-
-  if (min_height_p)
-    *min_height_p = TILE_HEIGHT;
-
-  /* Report our natural height to be our potential maximum */
-  if (nat_height_p)
-    *nat_height_p = TILE_HEIGHT * g_hash_table_size (priv->uid_to_tasks);
-}
-
 static void
 penge_tasks_pane_class_init (PengeTasksPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (PengeTasksPanePrivate));
 
   object_class->get_property = penge_tasks_pane_get_property;
   object_class->set_property = penge_tasks_pane_set_property;
   object_class->dispose = penge_tasks_pane_dispose;
-
-  actor_class->allocate = penge_tasks_pane_allocate;
-  actor_class->get_preferred_height = penge_tasks_pane_get_preferred_height;
 }
 
 static void
@@ -419,39 +362,14 @@ penge_tasks_pane_update (PengeTasksPane *pane)
   gchar *uid;
   ClutterActor *actor;
   ClutterActor *label;
+  gboolean task_displayed = FALSE;
 
   old_actors = g_hash_table_get_values (priv->uid_to_actors);
 
   tasks = g_hash_table_get_values (priv->uid_to_tasks);
   tasks = g_list_sort (tasks, _tasks_list_sort_cb);
 
-  if (!tasks)
-  {
-    if (!priv->no_tasks_bin)
-    {
-      label = mx_label_new_with_text (_("Nothing to do today"));
-      priv->no_tasks_bin = mx_frame_new ();
-      mx_bin_set_child (MX_BIN (priv->no_tasks_bin),
-                          (ClutterActor *)label);
-      mx_table_add_actor (MX_TABLE (pane),
-                          priv->no_tasks_bin,
-                          0,
-                          0);
-      mx_stylable_set_style_class (MX_STYLABLE (label),
-                                   "PengeNoMoreTasksLabel");
-
-      clutter_actor_set_height ((ClutterActor *)priv->no_tasks_bin, 46);
-    }
-  } else {
-    if (priv->no_tasks_bin)
-    {
-      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
-                                      (ClutterActor *)priv->no_tasks_bin);
-      priv->no_tasks_bin = NULL;
-    }
-  }
-
-  for (l = tasks; l && count < priv->count; l = l->next)
+  for (l = tasks; l; l = l->next)
   {
     task = (JanaTask *)l->data;
     uid = jana_component_get_uid (JANA_COMPONENT (task));
@@ -463,33 +381,21 @@ penge_tasks_pane_update (PengeTasksPane *pane)
     if (actor)
     {
       old_actors = g_list_remove (old_actors, actor);
-      clutter_container_child_set (CLUTTER_CONTAINER (pane),
-                                   actor,
-                                   "row",
-                                   count,
-                                   "column",
-                                   0,
-                                   NULL);
     } else {
       actor = g_object_new (PENGE_TYPE_TASK_TILE,
-                            "task",
-                            task,
-                            "store",
-                            priv->store,
+                            "task", task,
+                            "store", priv->store,
                             NULL);
 
-      clutter_actor_set_size (actor, TILE_WIDTH, TILE_HEIGHT);
-      mx_table_add_actor_with_properties (MX_TABLE (pane),
-                                          actor,
-                                          count, 0,
-                                          "y-expand", FALSE,
-                                          "y-align", MX_ALIGN_START,
-                                          "y-fill", FALSE,
-                                          NULL);
+      clutter_container_add_actor (CLUTTER_CONTAINER (pane),
+                                   actor);
+
       g_hash_table_insert (priv->uid_to_actors,
                            jana_component_get_uid (JANA_COMPONENT (task)),
                            g_object_ref (actor));
     }
+    clutter_actor_raise_top (actor);
+    task_displayed = TRUE;
 
     if (count == 0)
     {
@@ -511,6 +417,30 @@ penge_tasks_pane_update (PengeTasksPane *pane)
     g_hash_table_remove (priv->uid_to_actors,
                          uid);
     g_free (uid);
+  }
+
+  if (!task_displayed)
+  {
+    if (!priv->no_tasks_bin)
+    {
+      label = mx_label_new_with_text (_("Nothing to do today"));
+      priv->no_tasks_bin = mx_frame_new ();
+      mx_bin_set_child (MX_BIN (priv->no_tasks_bin),
+                          (ClutterActor *)label);
+      clutter_container_add_actor (CLUTTER_CONTAINER (pane),
+                                   priv->no_tasks_bin);
+      mx_stylable_set_style_class (MX_STYLABLE (label),
+                                   "PengeNoMoreTasksLabel");
+
+      clutter_actor_set_height ((ClutterActor *)priv->no_tasks_bin, 46);
+    }
+  } else {
+    if (priv->no_tasks_bin)
+    {
+      clutter_container_remove_actor (CLUTTER_CONTAINER (pane),
+                                      (ClutterActor *)priv->no_tasks_bin);
+      priv->no_tasks_bin = NULL;
+    }
   }
 
   g_list_free (tasks);

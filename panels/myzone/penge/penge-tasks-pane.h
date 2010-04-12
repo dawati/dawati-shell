@@ -24,6 +24,8 @@
 #include <glib-object.h>
 #include <mx/mx.h>
 
+#include <penge/penge-dynamic-box.h>
+
 G_BEGIN_DECLS
 
 #define PENGE_TYPE_TASKS_PANE penge_tasks_pane_get_type()
@@ -46,12 +48,12 @@ G_BEGIN_DECLS
 typedef struct _PengeTasksPanePrivate PengeTasksPanePrivate;
 
 typedef struct {
-  MxTable parent;
+  PengeDynamicBox parent;
   PengeTasksPanePrivate *priv;
 } PengeTasksPane;
 
 typedef struct {
-  MxTableClass parent_class;
+  PengeDynamicBoxClass parent_class;
 } PengeTasksPaneClass;
 
 GType penge_tasks_pane_get_type (void);
