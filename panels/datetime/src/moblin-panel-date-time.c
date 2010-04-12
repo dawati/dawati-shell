@@ -109,10 +109,10 @@ main (int    argc,
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
 
     mpl_panel_client_set_height_request (client, 530);
-    clutter_actor_set_size (datetime, 1016, 530);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     datetime = mnp_shell_new ();
+    clutter_actor_set_size (datetime, 1016, 530);
     mnp_shell_set_panel_client (MNP_SHELL (datetime), client);
     g_signal_connect (client,
                       "set-size",
