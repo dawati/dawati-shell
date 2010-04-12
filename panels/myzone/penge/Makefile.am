@@ -23,7 +23,8 @@ pengeinclude_HEADERS = \
 		   penge-everything-pane.h \
 		   penge-clickable-label.h \
 		   penge-email-pane.h \
-		   penge-count-tile.h
+		   penge-count-tile.h \
+		   penge-dynamic-box.h
 
 libpenge_la_SOURCES = \
 		      $(pengeinclude_HEADERS) \
@@ -46,7 +47,8 @@ libpenge_la_SOURCES = \
 		      penge-everything-pane.c \
 		      penge-clickable-label.c \
 		      penge-email-pane.c \
-		      penge-count-tile.c
+		      penge-count-tile.c \
+		      penge-dynamic-box.c
 
 libpenge_la_LIBADD = $(top_builddir)/mailme/libmailme.la
 
