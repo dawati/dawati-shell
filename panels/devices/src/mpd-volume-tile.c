@@ -342,6 +342,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor  *hbox;
   ClutterActor  *label;
+  ClutterActor  *mute_hbox;
   ClutterActor  *mute_label;
   ClutterActor  *vbox;
   GError        *error = NULL;
@@ -357,15 +358,25 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   clutter_actor_set_name (label, "volume-tile-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
 
-  priv->mute_toggle = mx_toggle_new ();
-  mx_stylable_set_style_class (MX_STYLABLE (priv->mute_toggle), "mx-check-box");
-//  clutter_actor_set_width (priv->mute_toggle, 16.0);
-  g_signal_connect (priv->mute_toggle, "notify::active",
+  mute_hbox = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (mute_hbox),
+                             MPD_VOLUME_TILE_HEADER_MUTE_SPACING);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), mute_hbox);
+
+  priv->mute_toggle = mx_button_new ();
+  mx_button_set_is_toggle (MX_BUTTON (priv->mute_toggle), true);
+  mx_stylable_set_style_class (MX_STYLABLE (priv->mute_toggle), "check-box");
+  g_signal_connect (priv->mute_toggle, "notify::toggled",
                     G_CALLBACK (_mute_toggle_notify_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->mute_toggle);
+  clutter_container_add_actor (CLUTTER_CONTAINER (mute_hbox), priv->mute_toggle);
 
   mute_label = mx_label_new_with_text (_("Mute"));
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), mute_label);
+  clutter_container_add_actor (CLUTTER_CONTAINER (mute_hbox), mute_label);
+  clutter_container_child_set (CLUTTER_CONTAINER (mute_hbox), mute_label,
+                               "expand", false,
+                               "x-align", MX_ALIGN_START,
+                               "y-align", MX_ALIGN_MIDDLE,
+                               NULL);
 
   /* Second row. */
   hbox = mx_box_layout_new ();
@@ -537,9 +548,9 @@ update_mute_toggle (MpdVolumeTile *self)
                                         self);
 
   is_muted = gvc_mixer_stream_get_is_muted (priv->sink);
-  mx_toggle_set_active (MX_TOGGLE (priv->mute_toggle), is_muted);
+  mx_button_set_toggled (MX_BUTTON (priv->mute_toggle), is_muted);
 
-  g_signal_connect (priv->mute_toggle, "notify::active",
+  g_signal_connect (priv->mute_toggle, "notify::toggled",
                     G_CALLBACK (_mute_toggle_notify_cb), self);
 
   update_volume_icon (self);
@@ -576,7 +587,7 @@ update_stream_mute (MpdVolumeTile *self)
                                         _stream_is_muted_notify_cb,
                                         self);
 
-  is_muted = mx_toggle_get_active (MX_TOGGLE (priv->mute_toggle));
+  is_muted = mx_button_get_toggled (MX_BUTTON (priv->mute_toggle));
   gvc_mixer_stream_change_is_muted (priv->sink, is_muted);
 
   g_signal_connect (priv->sink, "notify::is-muted",
