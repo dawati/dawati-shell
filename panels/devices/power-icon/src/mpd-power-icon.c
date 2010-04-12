@@ -48,7 +48,6 @@ typedef struct
   MpdIdleManager      *idle_manager;
   MxAction            *shutdown_key;
   MxAction            *sleep_key;
-  NotifyNotification  *battery_note;
   NotifyNotification  *shutdown_note;
   int                  last_notification_displayed;
   bool                 in_shutdown;
@@ -119,33 +118,28 @@ _battery_shutdown_timeout_cb (MpdPowerIcon *self)
 
 static void
 do_notification (MpdPowerIcon       *self,
-                 NotificationLevel   level)
+                 NotificationLevel   level,
+                 NotifyUrgency       urgency)
 {
-  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  GError *error = NULL;
+  NotifyNotification  *note;
+  GError              *error = NULL;
 
-  priv->battery_note = notify_notification_new (_(_messages[level].title),
-                                                _(_messages[level].message),
-                                                _messages[level].icon,
-                                                NULL);
+  note = notify_notification_new (_(_messages[level].title),
+                                  _(_messages[level].message),
+                                  _messages[level].icon,
+                                  NULL);
 
-  notify_notification_set_timeout (priv->battery_note, 10000);
+  notify_notification_set_timeout (note, 10000);
+  notify_notification_set_urgency (note, urgency);
 
-  if (level == NOTIFICATION_10_PERCENT)
-  {
-    notify_notification_set_urgency (priv->battery_note,
-                                     NOTIFY_URGENCY_CRITICAL);
-  }
-
-  if (!notify_notification_show (priv->battery_note, &error))
+  if (!notify_notification_show (note, &error))
   {
     g_warning (G_STRLOC ": Error showing notification: %s",
                error->message);
     g_clear_error (&error);
   }
 
-  g_object_unref (priv->battery_note);
-  priv->battery_note = NULL;
+  g_object_unref (note);
 }
 
 static void
@@ -201,10 +195,12 @@ update (MpdPowerIcon *self)
   {
     /* Do notifications at various levels */
     if (percentage > 0 && percentage < 5) {
-      if (priv->last_notification_displayed != NOTIFICATION_10_PERCENT)
+      if (priv->last_notification_displayed != NOTIFICATION_5_PERCENT)
       {
-        do_notification (self, NOTIFICATION_10_PERCENT);
-        priv->last_notification_displayed = NOTIFICATION_10_PERCENT;
+        do_notification (self,
+                         NOTIFICATION_5_PERCENT,
+                         NOTIFY_URGENCY_CRITICAL);
+        priv->last_notification_displayed = NOTIFICATION_5_PERCENT;
 
         g_timeout_add_seconds (60,
                                (GSourceFunc) _battery_shutdown_timeout_cb,
@@ -213,13 +209,17 @@ update (MpdPowerIcon *self)
     } else if (percentage < 10) {
       if (priv->last_notification_displayed != NOTIFICATION_10_PERCENT)
       {
-        do_notification (self, NOTIFICATION_10_PERCENT);
+        do_notification (self,
+                         NOTIFICATION_10_PERCENT,
+                         NOTIFY_URGENCY_CRITICAL);
         priv->last_notification_displayed = NOTIFICATION_10_PERCENT;
       }
     } else if (percentage < 20) {
       if (priv->last_notification_displayed != NOTIFICATION_20_PERCENT)
       {
-        do_notification (self, NOTIFICATION_20_PERCENT);
+        do_notification (self,
+                         NOTIFICATION_20_PERCENT,
+                         NOTIFY_URGENCY_NORMAL);
         priv->last_notification_displayed = NOTIFICATION_20_PERCENT;
       }
     } else {
@@ -339,8 +339,6 @@ _dispose (GObject *object)
   mpd_gobject_detach (object, (GObject **) &priv->shutdown_key);
 
   mpd_gobject_detach (object, (GObject **) &priv->sleep_key);
-
-  mpd_gobject_detach (object, (GObject **) &priv->battery_note);
 
   mpd_gobject_detach (object, (GObject **) &priv->shutdown_note);
 
