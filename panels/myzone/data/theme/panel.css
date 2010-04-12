@@ -92,11 +92,6 @@ PengeRecentFileTile:active, PengePeopleTile:active
   padding: 4 4 4 4;
 }
 
-MxButton.PengeTaskToggleButton
-{
-  border-image: url('check_box.png') 0;
-}
-
 PengeCountTile
 {
   border-image: url('content-panel-background.png') 5;
@@ -109,12 +104,6 @@ PengeCountTile:active
   border-image: url('content-panel-background-highlight.png') 5;
   padding: 6;
 }
-
-MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
-{
-  border-image: url('checked_box.png') 0;
-}
-
 
 MxLabel.PengeEventTimeLabel
 {
