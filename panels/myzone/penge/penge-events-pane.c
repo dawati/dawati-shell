@@ -27,7 +27,7 @@
 
 #include "penge-event-tile.h"
 
-G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, MX_TYPE_BOX_LAYOUT)
+G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, PENGE_TYPE_DYNAMIC_BOX)
 
 #define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), PENGE_TYPE_EVENTS_PANE, PengeEventsPanePrivate))
@@ -194,187 +194,10 @@ penge_events_pane_constructed (GObject *object)
     G_OBJECT_CLASS (penge_events_pane_parent_class)->constructed (object);
 }
 
-#define SPACING 4.0
-static void
-penge_events_pane_allocate (ClutterActor          *actor,
-                            const ClutterActorBox *box,
-                            ClutterAllocationFlags flags)
-{
-  //PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
-  gfloat width, height;
-  MxPadding padding = { 0, };
-  ClutterActorBox child_box;
-  ClutterActorBox zero_box = { 0, };
-  GList *l;
-  gfloat last_y;
-  GList *children;
-
-  /* FIXME: Implement container properly ourselves */
-
-  /* Skip the parent (the MxBoxLayout) and go straight to MxWidget. This is so
-   * we don't have the actors allocated twice
-   */
-  CLUTTER_ACTOR_CLASS (g_type_class_peek (MX_TYPE_WIDGET))->allocate (actor, box, flags);
-
-  width = box->x2 - box->x1;
-  height = box->y2 - box->y1;
-
-  mx_widget_get_padding (MX_WIDGET (actor), &padding);
-
-  last_y = padding.top;
-
-  children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
-
-  for (l = children; l; l = l->next)
-  {
-    ClutterActor *child = (ClutterActor *)l->data;
-    gfloat child_nat_h;
-
-    clutter_actor_get_preferred_height (child,
-                                        width - (padding.left + padding.right),
-                                        NULL,
-                                        &child_nat_h);
-    child_box.y1 = last_y;
-    child_box.x1 = padding.left;
-    child_box.x2 = width - padding.right;
-    child_box.y2 = child_nat_h + last_y;
-    last_y = child_box.y2;
-
-    if (last_y <= height - padding.bottom)
-      clutter_actor_allocate (child, &child_box, flags);
-    else
-      clutter_actor_allocate (child, &zero_box, flags);
-
-    last_y += SPACING;
-  }
-
-  g_list_free (children);
-}
-
-
-static void
-penge_events_pane_paint (ClutterActor *actor)
-{
-  //PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
-  GList *children, *l;
-
-  /* FIXME: Implement container properly ourselves */
-
-  /* Skip the parent (the MxBoxLayout) and go straight to MxWidget. This is so
-   * we don't have the actors painted twice
-   */
-  CLUTTER_ACTOR_CLASS (g_type_class_peek (MX_TYPE_WIDGET))->paint (actor);
-
-  children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
-
-  for (l = children; l; l = l->next)
-  {
-    ClutterActor *child = (ClutterActor *)l->data;
-    ClutterActorBox box;
-
-    clutter_actor_get_allocation_box (child,
-                                      &box);
-
-    if (box.x2 - box.x1 > 0 && box.y2 - box.y1 > 0)
-    {
-      clutter_actor_paint (child);
-    }
-  }
-
-  g_list_free (children);
-}
-
-
-static void
-penge_events_pane_pick (ClutterActor       *actor,
-                        const ClutterColor *color)
-{
-  //PengeEventsPanePrivate *priv = GET_PRIVATE (actor);
-  GList *children, *l;
-
-  /* FIXME: Implement container properly ourselves */
-
-  /* Skip the parent (the MxBoxLayout) and go straight to MxWidget. This is so
-   * we don't have the actors painted twice
-   */
-  CLUTTER_ACTOR_CLASS (g_type_class_peek (MX_TYPE_WIDGET))->pick (actor, color);
-
-  children = clutter_container_get_children (CLUTTER_CONTAINER (actor));
-
-  for (l = children; l; l = l->next)
-  {
-    ClutterActor *child = (ClutterActor *)l->data;
-    ClutterActorBox box;
-
-    clutter_actor_get_allocation_box (child,
-                                      &box);
-
-    if (box.x2 - box.x1 > 0 && box.y2 - box.y1 > 0)
-    {
-      clutter_actor_paint (child);
-    }
-  }
-
-  g_list_free (children);
-}
-
-
-static gfloat
-_calculate_children_height (PengeEventsPane *pane,
-                            gfloat           for_width)
-{
-  GList *l, *children;
-  MxPadding padding = { 0, };
-  gfloat height = 0, child_nat_h;
-
-  mx_widget_get_padding (MX_WIDGET (pane), &padding);
-  height += padding.top + padding.bottom;
-
-  children = clutter_container_get_children (CLUTTER_CONTAINER (pane));
-
-  for (l = children; l; l = l->next)
-  {
-    ClutterActor *child = (ClutterActor *)l->data;
-
-    clutter_actor_get_preferred_height (child,
-                                        for_width,
-                                        NULL,
-                                        &child_nat_h);
-
-    height += child_nat_h;
-
-    /* No SPACING on last */
-    if (l->next != NULL)
-      height += SPACING;
-  }
-
-  return height;
-}
-
-static void
-penge_events_pane_get_preferred_height (ClutterActor *actor,
-                                        gfloat        for_width,
-                                        gfloat       *min_height_p,
-                                        gfloat       *nat_height_p)
-{
-  PengeEventsPane *pane = PENGE_EVENTS_PANE (actor);
-
-  if (min_height_p)
-    *min_height_p = 0;
-
-  /* Report our natural height to be our potential maximum */
-  if (nat_height_p)
-  {
-    *nat_height_p = _calculate_children_height (pane,
-                                                for_width);
-  }
-}
-
 static void
 penge_events_pane_class_init (PengeEventsPaneClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (PengeEventsPanePrivate));
@@ -384,11 +207,6 @@ penge_events_pane_class_init (PengeEventsPaneClass *klass)
   object_class->dispose = penge_events_pane_dispose;
   object_class->finalize = penge_events_pane_finalize;
   object_class->constructed = penge_events_pane_constructed;
-
-  actor_class->allocate = penge_events_pane_allocate;
-  actor_class->paint = penge_events_pane_paint;
-  actor_class->pick = penge_events_pane_pick;
-  actor_class->get_preferred_height = penge_events_pane_get_preferred_height;
 
   pspec = g_param_spec_object ("time",
                                "The time",

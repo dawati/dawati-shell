@@ -25,6 +25,8 @@
 #include <mx/mx.h>
 #include <libjana/jana.h>
 
+#include <penge/penge-dynamic-box.h>
+
 G_BEGIN_DECLS
 
 #define PENGE_TYPE_EVENTS_PANE penge_events_pane_get_type()
@@ -47,12 +49,12 @@ G_BEGIN_DECLS
 typedef struct _PengeEventsPanePrivate PengeEventsPanePrivate;
 
 typedef struct {
-  MxBoxLayout parent;
+  PengeDynamicBox parent;
   PengeEventsPanePrivate *priv;
 } PengeEventsPane;
 
 typedef struct {
-  MxBoxLayoutClass parent_class;
+  PengeDynamicBoxClass parent_class;
 } PengeEventsPaneClass;
 
 GType penge_events_pane_get_type (void);
