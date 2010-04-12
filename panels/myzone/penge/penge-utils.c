@@ -59,7 +59,8 @@ penge_utils_signal_activated (ClutterActor *actor)
 {
   while (actor)
   {
-    if (PENGE_IS_GRID_VIEW (actor))
+    if (clutter_actor_get_parent (actor) &&
+        CLUTTER_IS_STAGE (clutter_actor_get_parent (actor)))
     {
       g_signal_emit_by_name (actor, "activated", NULL);
       return;
@@ -76,7 +77,8 @@ penge_utils_get_panel_client (ClutterActor *actor)
 
   while (actor)
   {
-    if (PENGE_IS_GRID_VIEW (actor))
+    if (clutter_actor_get_parent (actor)
+        && CLUTTER_IS_STAGE (clutter_actor_get_parent (actor)))
     {
       g_object_get (actor,
                     "panel-client",
