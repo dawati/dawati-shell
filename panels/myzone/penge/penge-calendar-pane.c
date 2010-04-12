@@ -22,10 +22,11 @@
 
 #include <libjana-ecal/jana-ecal.h>
 #include <libjana/jana.h>
-
+#include <gio/gdesktopappinfo.h>
 #include <glib/gi18n.h>
 #include "penge-events-pane.h"
 #include "penge-tasks-pane.h"
+#include "penge-utils.h"
 
 G_DEFINE_TYPE (PengeCalendarPane, penge_calendar_pane, MX_TYPE_WIDGET)
 
@@ -411,6 +412,40 @@ _first_refresh_timeout_cb (gpointer userdata)
 }
 
 static void
+_launch_desktop_file (ClutterActor *actor,
+                      const gchar  *desktop_id)
+{
+  GDesktopAppInfo *app_info;
+  const gchar *path;
+
+  app_info = g_desktop_app_info_new (desktop_id);
+
+  if (!app_info)
+    return;
+
+  path = g_desktop_app_info_get_filename (app_info);
+
+  if (penge_utils_launch_for_desktop_file (actor, path))
+    penge_utils_signal_activated (actor);
+
+  g_object_unref (app_info);
+}
+
+static void
+_tasks_open_button_clicked_cb (MxButton *button,
+                               gpointer userdata)
+{
+  _launch_desktop_file ((ClutterActor *)button, "tasks.desktop");
+}
+
+static void
+_events_open_button_clicked_cb (MxButton *button,
+                                gpointer  userdata)
+{
+  _launch_desktop_file ((ClutterActor *)button, "evolution-calendar.desktop");
+}
+
+static void
 penge_calendar_pane_init (PengeCalendarPane *self)
 {
   PengeCalendarPanePrivate *priv = GET_PRIVATE_REAL (self);
@@ -419,6 +454,7 @@ penge_calendar_pane_init (PengeCalendarPane *self)
   glong next_timeout_seconds;
   ClutterActor *label;
   ClutterActor *tasks_icon;
+  ClutterActor *button;
 
   self->priv = priv;
 
@@ -456,6 +492,19 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                       "x-fill", FALSE,
                                       "x-align", MX_ALIGN_START,
                                       NULL);
+  button = mx_button_new_with_label (_("Open"));
+  g_signal_connect (button,
+                    "clicked",
+                    (GCallback)_events_open_button_clicked_cb,
+                    NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->events_header_table),
+                                      button,
+                                      0, 2,
+                                      "y-expand", TRUE,
+                                      "y-fill", FALSE,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "x-expand", FALSE,
+                                      NULL);
   /* Tasks header */
   priv->tasks_header_table = mx_table_new ();
   mx_table_set_column_spacing (MX_TABLE (priv->tasks_header_table), 8);
@@ -485,6 +534,19 @@ penge_calendar_pane_init (PengeCalendarPane *self)
                                       "x-expand", TRUE,
                                       "x-fill", FALSE,
                                       "x-align", MX_ALIGN_START,
+                                      NULL);
+  button = mx_button_new_with_label (_("Open"));
+  g_signal_connect (button,
+                    "clicked",
+                    (GCallback)_tasks_open_button_clicked_cb,
+                    NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->tasks_header_table),
+                                      button,
+                                      0, 2,
+                                      "y-expand", TRUE,
+                                      "y-fill", FALSE,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "x-expand", FALSE,
                                       NULL);
 
   priv->events_pane = g_object_new (PENGE_TYPE_EVENTS_PANE,
