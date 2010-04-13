@@ -55,11 +55,10 @@ typedef struct
 
 typedef enum
 {
-  NOTIFICATION_NONE,
+  NOTIFICATION_NONE = 0,
   NOTIFICATION_20_PERCENT,
   NOTIFICATION_10_PERCENT,
-  NOTIFICATION_5_PERCENT,
-  NOTIFICATION_LAST
+  NOTIFICATION_5_PERCENT
 } NotificationLevel;
 
 static const struct
@@ -68,6 +67,7 @@ static const struct
   const gchar *message;
   const gchar *icon;
 } _messages[] = {
+  { NULL, NULL, NULL },
   { N_("Running low on battery"),
     N_("We've noticed that your battery is running a bit low. " \
        "If you can it would be a good idea to plug in and top up."),
@@ -124,6 +124,8 @@ do_notification (MpdPowerIcon       *self,
   NotifyNotification  *note;
   GError              *error = NULL;
 
+  g_return_if_fail (level > NOTIFICATION_NONE);
+
   note = notify_notification_new (_(_messages[level].title),
                                   _(_messages[level].message),
                                   _messages[level].icon,
@@ -142,8 +144,13 @@ do_notification (MpdPowerIcon       *self,
   g_object_unref (note);
 }
 
+/*
+ * Only test_percentage > 0 will be considered,
+ * otherwise system percentage will be used.
+ */
 static void
-update (MpdPowerIcon *self)
+update (MpdPowerIcon *self,
+        int           test_percentage)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   char const            *button_style = NULL;
@@ -152,8 +159,12 @@ update (MpdPowerIcon *self)
   int                    percentage;
 
   state = mpd_battery_device_get_state (priv->battery);
-  percentage = mpd_battery_device_get_percentage (priv->battery);
   description = mpd_battery_device_get_state_text (priv->battery);
+
+  if (test_percentage < 0)
+    percentage = mpd_battery_device_get_percentage (priv->battery);
+  else
+    percentage = test_percentage;
 
   switch (state)
   {
@@ -234,7 +245,7 @@ _device_notify_cb (MpdBatteryDevice *battery,
                    GParamSpec       *pspec,
                    MpdPowerIcon     *self)
 {
-  update (self);
+  update (self, -1);
 }
 
 static void
@@ -375,7 +386,7 @@ mpd_power_icon_init (MpdPowerIcon *self)
   g_signal_connect (priv->battery, "notify::state",
                     G_CALLBACK (_device_notify_cb), self);
 
-  update (self);
+  update (self, -1);
 
   /* Idle manager */
   priv->idle_manager = mpd_idle_manager_new ();
@@ -414,5 +425,14 @@ MpdPowerIcon *
 mpd_power_icon_new (void)
 {
   return g_object_new (MPD_TYPE_POWER_ICON, NULL);
+}
+
+void
+mpd_power_icon_test_notification (MpdPowerIcon *self,
+                                  unsigned int  percentage)
+{
+  g_return_if_fail (MPD_IS_POWER_ICON (self));
+
+  update (self, percentage);
 }
 

@@ -58,6 +58,10 @@ mpd_power_icon_get_type (void);
 MpdPowerIcon *
 mpd_power_icon_new (void);
 
+void
+mpd_power_icon_test_notification (MpdPowerIcon *self,
+                                  unsigned int  percentage);
+
 G_END_DECLS
 
 #endif /* MPD_POWER_ICON_H */
