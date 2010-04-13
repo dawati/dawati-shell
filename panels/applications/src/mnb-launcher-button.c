@@ -81,8 +81,9 @@ static guint _signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE (MnbLauncherButton, mnb_launcher_button, MX_TYPE_TABLE);
 
 static void
-fav_button_clicked_cb (MxButton           *button,
-                       MnbLauncherButton  *self)
+fav_button_notify_toggled_cb (MxButton          *button,
+                              GParamSpec        *pspec,
+                              MnbLauncherButton *self)
 {
   if (mx_button_get_toggled (button))
     {
@@ -106,12 +107,12 @@ fav_button_clicked_cb (MxButton           *button,
             plain_sibling->priv->fav_sibling = NULL;
 
           g_signal_handlers_block_by_func (plain_sibling,
-                                           fav_button_clicked_cb,
+                                           fav_button_notify_toggled_cb,
                                            self);
           mx_button_set_toggled (MX_BUTTON (plain_sibling->priv->fav_toggle),
                                                 FALSE);
           g_signal_handlers_unblock_by_func (plain_sibling,
-                                             fav_button_clicked_cb,
+                                             fav_button_notify_toggled_cb,
                                              self);
 
           clutter_actor_destroy (CLUTTER_ACTOR (self));
@@ -378,8 +379,8 @@ mnb_launcher_button_init (MnbLauncherButton *self)
                                         "row-span", 1,
                                         NULL);
 
-  g_signal_connect (self->priv->fav_toggle, "clicked",
-                    G_CALLBACK (fav_button_clicked_cb), self);
+  g_signal_connect (self->priv->fav_toggle, "notify::toggled",
+                    G_CALLBACK (fav_button_notify_toggled_cb), self);
 
   clutter_actor_set_reactive ((ClutterActor *) self, TRUE);
 }
