@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:47+0000\n"
-"PO-Revision-Date: 2010-04-07 09:00-0800\n"
+"POT-Creation-Date: 2010-04-12 09:44+0000\n"
+"PO-Revision-Date: 2010-04-13 11:17-0800\n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgid "Devices panel"
 msgstr "Panel de dispositivos"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:146
+#: ../src/moblin-panel-devices.c:149
 msgid "devices"
 msgstr "dispositivos"
 
@@ -104,7 +104,7 @@ msgstr "Si no decides, lo apagaremos en %d segundos"
 msgid "Turn off"
 msgstr "Apagar"
 
-#: ../src/moblin-panel-devices.c:119
+#: ../src/moblin-panel-devices.c:120
 msgid "Moblin Devices Panel"
 msgstr "Panel de dispositivos de Moblin"
 
@@ -133,15 +133,16 @@ msgstr "La batería está completamente cargada y lista."
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Lo sentimos, parece que la batería está dañada."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:142
 msgid "Netbook brightness"
 msgstr "Claridad de pantalla"
 
-#: ../src/mpd-computer-pane.c:93
+#: ../src/mpd-computer-pane.c:120
 msgid "Your computer"
 msgstr "Tu ordenador"
 
-#: ../src/mpd-computer-tile.c:154
+#: ../src/mpd-computer-pane.c:129
 msgid "All settings"
 msgstr "Todas las configuraciones"
 
@@ -161,6 +162,10 @@ msgstr "Otros dispositivos"
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Estás usando</span> <span color='%s'>%d%% de %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Papelera"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -257,7 +262,7 @@ msgstr "Callado"
 msgid "Netbook volume"
 msgstr "Volumen del miniordenador"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:367
 msgid "Mute"
 msgstr "Silencio"
 
@@ -277,8 +282,6 @@ msgstr "Silencio"
 #~ msgstr "Zip"
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-#~ msgid "Flash"
-#~ msgstr "Flash"
 #~ msgid "CD"
 #~ msgstr "CD"
 #~ msgid "DVD"
