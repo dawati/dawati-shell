@@ -130,6 +130,10 @@ mpd_computer_pane_init (MpdComputerPane *self)
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_settings_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), button);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), button,
+                               "expand", false,
+                               "y-fill", false,
+                               NULL);
 
   /* Content */
   hbox = mx_box_layout_new ();

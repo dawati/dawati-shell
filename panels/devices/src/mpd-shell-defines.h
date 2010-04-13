@@ -21,7 +21,7 @@
 #ifndef MPD_SHELL_DEFINES_H
 #define MPD_SHELL_DEFINES_H
 
-#define TEXT_COLOR             "#775aaa"
+#define TEXT_COLOR             "#a980ed"
 
 #define MPD_SHELL_WIDTH         1024.0
 #define MPD_SHELL_HEIGHT         520.0

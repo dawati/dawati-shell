@@ -36,13 +36,13 @@ MpdComputerPane, MpdDevicesPane {
 
 #computer-pane-header {
   border-image: url('content-pane-header.png') 2;
+  padding: 6 10 6 15;
 }
 
 #computer-pane-label {
   color: #606261;
   font-size: 16pt;
   font-weight: bold;
-  padding: 10 10 10 15;
 }
 
 #pane-label {
