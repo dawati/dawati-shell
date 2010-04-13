@@ -212,9 +212,10 @@ launch_cal (ClutterActor *actor, MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
 
-	if (priv->panel_client)
+	if (priv->panel_client) {
+		mpl_panel_client_hide (priv->panel_client);
 		mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/evolution  --express -c calendar");
-
+	}
 }
 
 static void
@@ -451,9 +452,10 @@ launch_tasks (ClutterActor *actor, MnpDatetime *dtime)
 {
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
 
-	if (priv->panel_client)
+	if (priv->panel_client) {
+		mpl_panel_client_hide (priv->panel_client);
 		mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/tasks");
-
+	}
 }
 
 static void

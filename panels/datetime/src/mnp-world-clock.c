@@ -711,7 +711,10 @@ launch_date_config (ClutterActor *actor, MnpWorldClock *clock)
 {
   	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
 
-	mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/system-config-date");
+	if (priv->panel_client) {
+		mpl_panel_client_hide(priv->panel_client);
+		mpl_panel_client_launch_application (priv->panel_client, "/usr/bin/system-config-date");
+	}
 }
 
 static void

@@ -59,6 +59,13 @@ _client_set_size_cb (MplPanelClient *client,
                           height);
 }
 
+static void
+_client_activated_cb  (MnpShell *shell,
+                       gpointer       userdata)
+{
+  mpl_panel_client_hide ((MplPanelClient *)userdata);
+}
+
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
@@ -118,6 +125,10 @@ main (int    argc,
                       "set-size",
                       (GCallback)_client_set_size_cb,
                       datetime);
+    g_signal_connect (datetime, 
+		      "activated",
+		      (GCallback)_client_activated_cb,
+		      client)
   } else {
     Window xwin;
 
