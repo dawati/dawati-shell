@@ -7,26 +7,6 @@ INCLUDES = \
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\"
 
-mnb-status-marshal.h: stamp-mnb-status-marshal.h
-	@true
-stamp-mnb-status-marshal.h: mnb-status-marshal.list
-	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
-		--prefix=mnb_status_marshal \
-		--header \
-	$(srcdir)/mnb-status-marshal.list > xgen-mh \
-	&& (cmp -s xgen-mh mnb-status-marshal.h || cp -f xgen-mh mnb-status-marshal.h ) \
-	&& rm -f xgen-mh \
-	&& echo timestamp > $(@F)
-
-mnb-status-marshal.c: mnb-status-marshal.h
-	$(QUIET_GEN)( echo "#include \"mnb-status-marshal.h\"" ; \
-	$(GLIB_GENMARSHAL) \
-		--prefix=mnb_status_marshal \
-		--body \
-	$(srcdir)/mnb-status-marshal.list ) > xgen-mc \
-	&& cp -f xgen-mc mnb-status-marshal.c \
-	&& rm -f xgen-mc
-
 sw-marshals.c: sw-marshals.list Makefile.am
 	$(QUIET_GEN)glib-genmarshal --body --prefix=sw_marshal $< > $@
 
@@ -35,7 +15,7 @@ sw-marshals.h: sw-marshals.list Makefile.am
 
 
 libexec_PROGRAMS = moblin-panel-status
-BUILT_SOURCES = mnb-status-marshal.h mnb-status-marshal.c sw-marshals.c sw-marshals.h
+BUILT_SOURCES = sw-marshals.c sw-marshals.h
 
 moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
 moblin_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
@@ -60,7 +40,7 @@ servicedir = $(datadir)/dbus-1/services
 service_in_files = org.moblin.UX.Shell.Panels.status.service.in
 service_DATA = org.moblin.UX.Shell.Panels.status.service
 
-EXTRA_DIST = $(service_in_files) mnb-status-marshal.list sw-marshals.list
+EXTRA_DIST = $(service_in_files) sw-marshals.list
 
 CLEANFILES = stamp-mnb-status-marshal.h
 
