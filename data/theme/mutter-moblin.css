@@ -263,7 +263,7 @@ MnbPanelFrame {
   padding: 4 4 12 4;
 }
 
-MxFrame#panel-stub {
+MnbPanelFrame#too-small, MxFrame#panel-stub {
   border-image: url("drop-down/panel_stub_shadow.png") 4 9 14 9;
   padding: 4 4 12 4;
 }
