@@ -42,6 +42,51 @@ struct _MnpShellPrivate {
 	ClutterActor *datetime;
 };
 
+enum
+{
+  ACTIVATED_SIGNAL,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
+enum
+{
+  PROP_0,
+  PROP_PANEL_CLIENT
+};
+
+static void
+mnps_get_property (GObject *object, guint property_id,
+                              GValue *value, GParamSpec *pspec)
+{
+  MnpShellPrivate *priv = GET_PRIVATE (object);
+
+  switch (property_id) {
+    case PROP_PANEL_CLIENT:
+      g_value_set_object (value, priv->panel_client);
+      break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
+mnps_set_property (GObject *object, guint property_id,
+                              const GValue *value, GParamSpec *pspec)
+{
+  MnpShellPrivate *priv = GET_PRIVATE (object);
+
+  switch (property_id) {
+    case PROP_PANEL_CLIENT:
+      priv->panel_client = g_value_dup_object (value);
+      break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+
 static void
 mnp_shell_dispose (GObject *object)
 {
@@ -67,11 +112,33 @@ static void
 mnp_shell_class_init (MnpShellClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (MnpShellPrivate));
 
+  object_class->get_property = mnps_get_property;
+  object_class->set_property = mnps_set_property;  
   object_class->dispose = mnp_shell_dispose;
   object_class->finalize = mnp_shell_finalize;
+
+  signals[ACTIVATED_SIGNAL] =
+    g_signal_new ("activated",
+                  MNP_TYPE_SHELL,
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL,
+                  NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE,
+                  0);
+
+  pspec = g_param_spec_object ("panel-client",
+                               "Panel client",
+                               "The panel client",
+                               MPL_TYPE_PANEL_CLIENT,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_PANEL_CLIENT, pspec);
+  
 }
 
 
