@@ -65,7 +65,7 @@ gboolean mnp_clock_area_refresh_time (MnpClockArea *, gboolean manual);
 time_t mnp_clock_area_get_time (MnpClockArea *area);
 void mnp_clock_area_set_zone_remove_cb (MnpClockArea *area, ZoneRemovedFunc func, gpointer data);
 void mnp_clock_area_set_zone_reordered_cb (MnpClockArea *area, ClockZoneReorderedFunc func, gpointer data);
-
+void mnp_clock_area_manual_update (MnpClockArea *area);
 void mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile);
 G_END_DECLS
 

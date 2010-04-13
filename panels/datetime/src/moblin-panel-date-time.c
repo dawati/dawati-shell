@@ -128,7 +128,7 @@ main (int    argc,
     g_signal_connect (datetime, 
 		      "activated",
 		      (GCallback)_client_activated_cb,
-		      client)
+		      client);
   } else {
     Window xwin;
 

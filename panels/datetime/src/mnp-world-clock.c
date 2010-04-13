@@ -721,7 +721,9 @@ static void
 dropdown_show_cb (MplPanelClient *client,
                   gpointer        userdata)
 {
- /* MnpDatetimePrivate *priv = GET_PRIVATE (userdata); */
+  MnpWorldClockPrivate *priv = GET_PRIVATE (userdata); 
+
+  mnp_clock_area_manual_update(priv->area);
 
 }
 
