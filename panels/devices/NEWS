@@ -1,4 +1,10 @@
 
+Version 0.1.19, 2010-04-14
+
+    Fixes MBC#13 - Need a notification when the battery is used out and near...
+    l10n: Updates to es.
+    Theming improvements.
+
 Version 0.1.18, 2010-04-12
 
     Fixes: BMC#480
