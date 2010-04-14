@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-08 11:11+0000\n"
-"PO-Revision-Date: 2010-04-09 10:29-0800\n"
+"POT-Creation-Date: 2010-04-14 09:58+0000\n"
+"PO-Revision-Date: 2010-04-14 13:59-0800\n"
 "Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -56,42 +56,43 @@ msgid "System Sounds"
 msgstr "Systeemgeluid"
 
 #: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
 msgid "Moblin Power Icon"
 msgstr "Moblin Energie pictogram"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:71
 msgid "Running low on battery"
 msgstr "De batterij is bijna leeg"
 
-#: ../power-icon/src/mpd-power-icon.c:73
+#: ../power-icon/src/mpd-power-icon.c:72
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "De batterij begint leeg te raken. Dit is een goed moment om de stroom aan te sluiten en de batterij op te laden."
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:75
 msgid "Getting close to empty"
 msgstr "De batterij begint leeg te raken"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "De batterij is erg leeg. Probeer als het kan zo spoedig mogelijk de stroom aan te sluiten, en al je werk op te slaan."
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Danger!"
 msgstr "Gevaar!"
 
-#: ../power-icon/src/mpd-power-icon.c:82
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sorry, je batterij is bijna helemaal leeg. We sluiten nu automatisch af. Sla alsjeblieft je werk op. Tot snel!"
 
-#: ../power-icon/src/mpd-power-icon.c:300
+#: ../power-icon/src/mpd-power-icon.c:311
 msgid "Would you like to turn off now?"
 msgstr "Wil je nu afsluiten?"
 
-#: ../power-icon/src/mpd-power-icon.c:301
+#: ../power-icon/src/mpd-power-icon.c:312
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Als je niet beslist sluit ik in 30 seconden af"
 
-#: ../power-icon/src/mpd-power-icon.c:368
+#: ../power-icon/src/mpd-power-icon.c:377
 msgid "battery"
 msgstr "batterij"
 
@@ -133,7 +134,8 @@ msgstr "De batterij is volledig opgeladen en het systeem is klaar voor gebruik."
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sorry, het lijkt erop dat de batterij niet werkt."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
 msgid "Netbook brightness"
 msgstr "Netbook helderheid"
 
@@ -160,7 +162,11 @@ msgstr "Andere apparaten"
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>U gebruikt</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>U gebruikt</span> <span color='%s'>%d%% van %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Prullenbak"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -217,7 +223,7 @@ msgstr "Openen"
 #: ../src/mpd-storage-device-tile.c:725
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>%s</span> gebruik <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> gebruik <span color='%s'>%d%% van %s</span>"
 
 # "Turned up to 11" is US idiom when something is exploited to the utmost, not when something is literally set or turned to 11; see http://en.wikipedia.org/wiki/Up_to_eleven
 # Since this appears to be a word series indicating sound volume settings, Dutch "Knetterhard" conveys the loudest possible setting
@@ -258,11 +264,11 @@ msgstr "Zeer stil"
 msgid "Silent"
 msgstr "Stil"
 
-#: ../src/mpd-volume-tile.c:356
+#: ../src/mpd-volume-tile.c:357
 msgid "Netbook volume"
 msgstr "Netbook volume"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:373
 msgid "Mute"
 msgstr "Geluiden dempen"
 
@@ -289,9 +295,6 @@ msgstr "Geluiden dempen"
 
 #~ msgid "Jaz"
 #~ msgstr "Jaz-schijf"
-
-#~ msgid "Flash"
-#~ msgstr "Flash"
 
 #~ msgid "CD"
 #~ msgstr "CD"
