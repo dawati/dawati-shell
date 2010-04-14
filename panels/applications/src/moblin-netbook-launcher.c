@@ -221,7 +221,6 @@ struct MnbLauncherPrivate_ {
   /* "Dynamic" widgets (browser vs. filter mode).
    * These are explicitely ref'd and destroyed. */
   ClutterActor            *scrolled_vbox;
-  ClutterActor            *fav_label;
   ClutterActor            *fav_grid;
   ClutterActor            *apps_grid;
 
@@ -650,12 +649,6 @@ mnb_launcher_reset (MnbLauncher     *self)
 
   clutter_actor_destroy (priv->scrolled_vbox);
   priv->scrolled_vbox = NULL;
-
-  g_object_unref (priv->fav_label);
-  priv->fav_label = NULL;
-
-  g_object_unref (priv->fav_grid);
-  priv->fav_grid = NULL;
 
   g_hash_table_destroy (priv->expanders);
   priv->expanders = NULL;
@@ -1325,7 +1318,6 @@ _constructor (GType                  gtype,
   ClutterActor  *left_column;
   ClutterActor  *label;
   ClutterActor  *fav_scroll;
-  MxAdjustment  *vadjust = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
 
@@ -1408,20 +1400,6 @@ _constructor (GType                  gtype,
   g_signal_connect (priv->theme, "changed",
                     G_CALLBACK (mnb_launcher_theme_changed_cb), self);
   priv->manager = mpl_app_bookmark_manager_get_default ();
-
-
-  priv->scrolled_vbox = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-  g_object_set (priv->scrolled_vbox,
-                "max-stride", 1,
-                NULL);
-  mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox),
-                                 NULL,
-                                 &vadjust);
-  g_object_set (vadjust,
-                "step-increment", SCROLLVIEW_ROW_SIZE,
-                NULL);
-  clutter_container_add (CLUTTER_CONTAINER (priv->scrollview),
-                         priv->scrolled_vbox, NULL);
 
   mnb_launcher_fill (self);
 
