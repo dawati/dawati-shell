@@ -313,7 +313,6 @@ MxButton.TwelveHourToggleButton:hover, MxButton.TwelveHourToggleButton:checked
 MxButton.SearchEntryAddButton, MxButton.DateTimeLauncherButton,
 MxButton.TasksLauncherButton, MxButton.EventLauncherButton
 {
-  border-image: url('button.png') 6;
 }
 
 *#MnpTileTimeDay

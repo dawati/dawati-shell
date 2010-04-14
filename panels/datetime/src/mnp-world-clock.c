@@ -503,7 +503,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 
 	g_signal_connect(priv->tfh_clock, "clicked", G_CALLBACK(hour_clock_changed), world_clock);
 	mx_stylable_set_style_class (MX_STYLABLE (check_button),
-                               		"TwelveHourToggleButton");
+                               		"check-box");
 	clutter_actor_set_size ((ClutterActor *)check_button, 21, 21);
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), check_button, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
