@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 09:24+0000\n"
+"POT-Creation-Date: 2010-04-14 09:28+0000\n"
 "PO-Revision-Date: 2010-03-31 12:46-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -27,17 +27,26 @@ msgstr "Set your toolbar preferences"
 msgid "Toolbar settings"
 msgstr "Toolbar settings"
 
-#: ../capplet/src/mtp-bin.c:355
+#: ../capplet/src/mtp-bin.c:361
 msgid "Save toolbar"
 msgstr "Save toolbar"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/src/mtp-bin.c:366
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Sorry, you'll have to remove a panel before you can add a new one."
 
-#: ../capplet/src/mtp-bin.c:389
+#: ../capplet/src/mtp-jar.c:109
 msgid "Available panels"
 msgstr "Available panels"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
+msgid "%H:%M"
+msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
@@ -49,7 +58,7 @@ msgstr "Available panels"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:225 ../src/mnb-toolbar-clock.c:122
+#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:123
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -57,7 +66,7 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:239 ../src/mnb-toolbar-clock.c:135
+#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:144
 msgid "%B %e, %Y"
 msgstr "%e %B, %Y"
 
@@ -94,27 +103,27 @@ msgstr "Determines the order of panels on the toolbar."
 msgid "Order of panels on toolbar"
 msgstr "Order of panels on toolbar"
 
-#: ../src/moblin-netbook.c:905
+#: ../src/moblin-netbook.c:962
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook Effects"
 
-#: ../src/moblin-netbook.c:909
+#: ../src/moblin-netbook.c:966
 msgid "Effects for Moblin Netbooks"
 msgstr "Effects for Moblin Netbooks"
 
-#: ../src/moblin-netbook.c:3035
+#: ../src/moblin-netbook.c:3122
 msgid "Activate"
 msgstr "Activate"
 
-#: ../src/moblin-netbook.c:3049
+#: ../src/moblin-netbook.c:3136
 msgid "Unknown window"
 msgstr "Unknown window"
 
-#: ../src/moblin-netbook.c:3051
+#: ../src/moblin-netbook.c:3138
 msgid "Is asking for your attention."
 msgstr "is asking for your attention."
 
-#: ../src/mnb-toolbar.c:965
+#: ../src/mnb-toolbar.c:976
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Sorry, %s is broken"
@@ -127,14 +136,9 @@ msgstr "Dismiss"
 msgid "Dismiss All"
 msgstr "Dismiss All"
 
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:215 ../src/mnb-toolbar-clock.c:113
-msgid "%H:%M"
-msgstr "%l:%M %P"
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr " You can add, remove, and reorder many of the panels in your toolbar."
 
 #~ msgid "zones"
 #~ msgstr "zones"
