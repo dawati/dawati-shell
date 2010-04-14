@@ -9,7 +9,6 @@ dist_theme_DATA = \
   directory-highlight.png \
   frame-border.png \
   panel.css \
-  panel-background.png \
   seperator.png \
   volume-bars-0.png \
   $(NULL)
