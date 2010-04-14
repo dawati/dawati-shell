@@ -367,6 +367,22 @@ error:
 }
 
 static void
+_connection_invalidated_cb (TpProxy  *proxy,
+                            guint     domain,
+                            gint      code,
+                            gchar    *message,
+                            gpointer  userdata)
+{
+  AnerleyTpObserverPrivate *priv = GET_PRIVATE (userdata);
+  const gchar *object_path;
+
+  object_path = tp_proxy_get_object_path (proxy);
+
+  g_hash_table_remove (priv->connections,
+                       object_path);
+}
+
+static void
 _observer_observe_channels (TpSvcClientObserver   *observer,
                             const gchar           *account_obj_path,
                             const gchar           *connection_obj_path,
@@ -422,6 +438,12 @@ _observer_observe_channels (TpSvcClientObserver   *observer,
       g_hash_table_insert (priv->connections,
                            g_strdup (connection_obj_path),
                            connection);
+
+      /* Need to track if connection is invalidated and if so remove it */
+      g_signal_connect (connection,
+                        "invalidated",
+                        (GCallback)_connection_invalidated_cb,
+                        observer);
     }
   }
 
