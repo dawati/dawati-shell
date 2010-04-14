@@ -4,6 +4,7 @@ lib_LTLIBRARIES = libmoblin-panel.la
 source_h =	$(srcdir)/mpl-version.h			\
 		$(srcdir)/mpl-entry.h			\
 		$(srcdir)/mpl-icon-theme.h		\
+		$(srcdir)/mpl-panel-background.h	\
 		$(srcdir)/mpl-panel-client.h		\
 		$(srcdir)/mpl-panel-clutter.h		\
 		$(srcdir)/mpl-panel-common.h		\
@@ -15,6 +16,7 @@ source_h =	$(srcdir)/mpl-version.h			\
 source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/mpl-entry.c			\
 		$(srcdir)/mpl-icon-theme.c		\
+		$(srcdir)/mpl-panel-background.c	\
 		$(srcdir)/mpl-panel-client.c		\
 		$(srcdir)/mpl-panel-clutter.c		\
 		$(srcdir)/mpl-panel-gtk.c		\

@@ -25,3 +25,15 @@ MxButton.MplEntryClearButton:hover {
   background-image: url('mpl-entry-clear-hover.png');
   border-image: none;
 }
+
+/* Must be identical to the style defintion for MnbPanelFrame */
+MplPanelBackground {
+  border-image: url("../drop-down/panel_shadow.png") 4 9 473 9;
+  padding: 4 4 12 4;
+}
+
+/* Must be identical to the style defintion for MnbPanelFrame */
+MplPanelBackground#too-small {
+  border-image: url("../drop-down/panel_stub_shadow.png") 4 9 14 9;
+  padding: 4 4 12 4;
+}

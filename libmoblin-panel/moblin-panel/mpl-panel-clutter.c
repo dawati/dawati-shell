@@ -30,6 +30,7 @@
 #include <string.h>
 
 #include "mpl-panel-clutter.h"
+#include "mpl-panel-background.h"
 
 #define MPL_X_ERROR_TRAP() clutter_x11_trap_x_errors()
 
@@ -278,6 +279,7 @@ mpl_panel_clutter_constructed (GObject *self)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (self)->priv;
   ClutterActor           *stage = NULL;
+  ClutterActor           *background;
 
   if (G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed)
     G_OBJECT_CLASS (mpl_panel_clutter_parent_class)->constructed (self);
@@ -288,6 +290,9 @@ mpl_panel_clutter_constructed (GObject *self)
 
   /* Load a base style for widgets used in the Mpl panels */
   mpl_panel_clutter_load_base_style ();
+
+  background = (ClutterActor*)mpl_panel_background_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), background);
 
   clutter_actor_hide (stage);
 }
