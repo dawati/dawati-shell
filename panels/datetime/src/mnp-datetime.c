@@ -244,11 +244,9 @@ construct_calendar_area (MnpDatetime *dtime)
 	
 	duration = jana_duration_new (start, end);
 #endif
-	priv->cal_area = mx_box_layout_new ();
+
+	priv->cal_area = mx_table_new ();
 	clutter_actor_set_name (priv->cal_area, "CalendarPane");
-	mx_box_layout_set_spacing ((MxBoxLayout *)priv->cal_area, 0);	
-	mx_box_layout_set_orientation ((MxBoxLayout *)priv->cal_area, MX_ORIENTATION_VERTICAL);
-	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->cal_area, TRUE);
 	mx_box_layout_add_actor ((MxBoxLayout *)dtime, priv->cal_area, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (dtime),
                                priv->cal_area,
@@ -261,12 +259,12 @@ construct_calendar_area (MnpDatetime *dtime)
 	/* Events header */
 	box = mx_box_layout_new ();
 	clutter_actor_set_name (box, "EventsTitleBox");
-	//mx_box_layout_set_spacing ((MxBoxLayout *)box, 20);
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, (ClutterActor *)box, 0);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
+   	mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                box,
-                               "expand", FALSE,
+                               0, 0,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
 			       "y-fill", FALSE,		
 			       "x-fill", TRUE,			       			       
                                NULL);	
@@ -303,12 +301,13 @@ construct_calendar_area (MnpDatetime *dtime)
 	priv->cal_header = box;
 	clutter_actor_set_name (box, "EventButtonBox");
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, (ClutterActor *)box, 1);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
+   	mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                box,
-                               "expand", FALSE,
+                               1, 0,
+                               "x-expand", TRUE,
+			       "x-fill", TRUE,
+                               "y-expand", FALSE,
 			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
                                NULL);	
 
 
@@ -325,14 +324,14 @@ construct_calendar_area (MnpDatetime *dtime)
                                NULL);	
 
 	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, div, 2);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
+        mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                div,
-                               "expand", FALSE,
-			       "y-fill", FALSE,		
+                               2, 0,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
 			       "x-fill", TRUE,			       			       
-                               NULL);	
-
+                               NULL);
+        clutter_actor_set_height (div, 2);
 
 	label = mx_label_new_with_text(_("Today"));
 	clutter_actor_set_name (label, "CalendarPaneTitleToday");
@@ -356,16 +355,6 @@ construct_calendar_area (MnpDatetime *dtime)
 	format_label (priv->cal_date_label);
 
 
-	box = mx_box_layout_new ();
-	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_area, box, 3);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
-                               box,
-                               "expand", TRUE,
-			       "y-fill", TRUE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);
-
   	priv->penge_events = g_object_new (PENGE_TYPE_EVENTS_PANE,
 				    "time",
 				    now,
@@ -373,6 +362,16 @@ construct_calendar_area (MnpDatetime *dtime)
 				    "multiline-summary", 
 				    TRUE,
                                     NULL);
+	mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+                               priv->penge_events,
+                               3, 0,
+                               "x-expand", TRUE,
+                               "y-expand", TRUE,
+			       "y-fill", TRUE,		
+			       "x-fill", TRUE,			       			       
+                               NULL);
+
+
 #if 0	
 	penge_events_pane_set_duration (priv->penge_events, duration);
 	jana_duration_free (duration);
@@ -405,16 +404,15 @@ construct_calendar_area (MnpDatetime *dtime)
   	g_object_unref (now);
   	g_object_unref (on_the_next_hour);
 
-	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->penge_events, 3);
-	clutter_container_child_set (CLUTTER_CONTAINER (box),
-                               priv->penge_events,
-                               "expand", TRUE,
-			       "y-fill", TRUE,		
+	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+        mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+                               div,
+                               4, 0,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
 			       "x-fill", TRUE,			       			       
                                NULL);
-
-	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->cal_area), div, -1);		
+        clutter_actor_set_height (div, 2);
 
 	/* Launcher */
 	box = mx_box_layout_new ();
@@ -437,13 +435,14 @@ construct_calendar_area (MnpDatetime *dtime)
 			       "x-align", MX_ALIGN_END,
                                NULL);
 
-	mx_box_layout_add_actor ((MxBoxLayout *) priv->cal_area, box, -1);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_area),
-                               (ClutterActor *)box,
-                               "expand", FALSE,
-			       "y-fill", FALSE,
-			       "x-fill", TRUE,
-                               NULL);	
+	mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+                               box,
+                               5, 0,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
+			       "x-fill", TRUE,			       			       
+                               NULL);
+	
 
 }
 
