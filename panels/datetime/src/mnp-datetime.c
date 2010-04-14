@@ -323,7 +323,7 @@ construct_calendar_area (MnpDatetime *dtime)
 			       "x-fill", TRUE,			       			       
                                NULL);	
 
-	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+/*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
         mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                div,
                                2, 0,
@@ -332,7 +332,7 @@ construct_calendar_area (MnpDatetime *dtime)
 			       "x-fill", TRUE,			       			       
                                NULL);
         clutter_actor_set_height (div, 2);
-
+*/
 	label = mx_label_new_with_text(_("Today"));
 	clutter_actor_set_name (label, "CalendarPaneTitleToday");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, 0 );
@@ -364,7 +364,7 @@ construct_calendar_area (MnpDatetime *dtime)
                                     NULL);
 	mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                priv->penge_events,
-                               3, 0,
+                               2, 0,
                                "x-expand", TRUE,
                                "y-expand", TRUE,
 			       "y-fill", TRUE,		
@@ -404,15 +404,17 @@ construct_calendar_area (MnpDatetime *dtime)
   	g_object_unref (now);
   	g_object_unref (on_the_next_hour);
 
+/*	
 	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
         mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                div,
-                               4, 0,
+                               3, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
 			       "x-fill", TRUE,			       			       
                                NULL);
         clutter_actor_set_height (div, 2);
+*/
 
 	/* Launcher */
 	box = mx_box_layout_new ();
@@ -437,7 +439,7 @@ construct_calendar_area (MnpDatetime *dtime)
 
 	mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
                                box,
-                               5, 0,
+                               3, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
 			       "x-fill", TRUE,			       			       
@@ -551,7 +553,7 @@ construct_task_area (MnpDatetime *dtime)
                                NULL);	
 	format_label (priv->task_date_label);
 
-	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+/*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
         mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
                                div,
                                2, 0,
@@ -560,28 +562,28 @@ construct_task_area (MnpDatetime *dtime)
 			       "x-fill", TRUE,			       			       
                                NULL);
         clutter_actor_set_height (div, 2);
-
+*/
 	priv->task_area = g_object_new (PENGE_TYPE_TASKS_PANE,
                                    NULL);
         mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
                                priv->task_area,
-                               3, 0,
+                               2, 0,
                                "x-expand", TRUE,
                                "y-expand", TRUE,
 			       "y-fill", TRUE,		
 			       "x-fill", TRUE,			       			       
                                NULL);
 
-	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+/*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
         mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
                                div,
-                               4, 0,
+                               3, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
 			       "x-fill", TRUE,			       			       
                                NULL);
         clutter_actor_set_height (div, 2);
-
+*/
 	/* Launcher */
 	box = mx_box_layout_new ();
 	clutter_actor_set_name (box, "TasksLauncherBox");
@@ -590,7 +592,7 @@ construct_task_area (MnpDatetime *dtime)
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
         mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
                                box,
-                               5, 0,
+                               3, 0,
                                "x-expand", TRUE,
                                "y-expand", FALSE,
 			       "x-fill", TRUE,			       			       

@@ -208,10 +208,16 @@ MxButton.CompletionListButton:hover
   font-size: 16;
   font-weight: bold;
 }
-*#TwelveHourButtonBox , *#DateTimeLauncherBox, *#EventButtonBox, *#TaskButtonBox,
-*#TasksLauncherBox, *#EventLauncherBox
+
+*#TwelveHourButtonBox , *#EventButtonBox, *#TaskButtonBox
 {
-  border-image: url('panel-header-widget-bar.png') 5 5 5 5;	
+  border-image: url('panel-header-widget-bar-border.png') 5 5 5 5;	
+  padding: 6 0 6 12;
+}
+
+*#DateTimeLauncherBox, *#TasksLauncherBox, *#EventLauncherBox
+{
+  border-image: url('panel-header-widget-bar-border-up.png') 5 5 5 5;	
   padding: 6 0 6 12;
 }
 

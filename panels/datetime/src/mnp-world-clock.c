@@ -540,9 +540,9 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 			       "x-fill", TRUE,			       			       
                                NULL);
 
-	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+/*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), div, -1);		
-
+*/
 }
 
 static void
@@ -669,10 +669,10 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 		if (priv->zones->len >= 4)
 			clutter_actor_hide (priv->entry_box);
 	}
-
-	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+	
+/*	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(world_clock), div, -1);		
-
+*/
 	box = mx_box_layout_new ();
 	clutter_actor_set_name (box, "DateTimeLauncherBox");
 	priv->launcher_box = box;

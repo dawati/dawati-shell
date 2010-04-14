@@ -31,7 +31,9 @@ dist_theme_DATA = \
 	drop-down-panel.png 	\
 	panel-background.png	\
 	appointments-icon.png	\
-	tasks-icon.png
+	tasks-icon.png	\
+	panel-header-widget-bar-border.png	\
+	panel-header-widget-bar-border-up.png
 
 
 # Manage mutter-moblin's texture cache.
