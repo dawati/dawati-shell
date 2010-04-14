@@ -41,7 +41,6 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrandr.h>
 #include <gdk/gdkx.h>
-#include <gtk/gtk.h>
 
 #include "egg-discrete.h"
 #include "gpm-brightness-xrandr.h"

@@ -6,7 +6,7 @@ This package uses code copied from various places:
 
 egg-console-kit - GNOME Power Manager
 egg-idletime - GNOME Power Manager
-gdu - Palimpsest Disk Utility, http://git.gnome.org/gnome-disk-utility
+gpm - GNOME Power Manager
 gvc - GNOME Volume control
 
 Many thanks to those guys for their source code. These blocks of code 

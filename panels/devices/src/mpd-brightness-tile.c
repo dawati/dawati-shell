@@ -22,7 +22,8 @@
 
 #include <glib/gi18n.h>
 
-#include "gpm-brightness-xrandr.h"
+#include <gpm/gpm-brightness-xrandr.h>
+
 #include "mpd-gobject.h"
 #include "mpd-brightness-tile.h"
 #include "mpd-shell-defines.h"

@@ -14,19 +14,17 @@ libexec_PROGRAMS = \
   $(NULL)
 
 moblin_panel_devices_LDADD = \
+  $(top_builddir)/gpm/libgpm.la \
   $(top_builddir)/gvc/libgvc.la \
   $(MPD_LIBS) \
   $(NULL)
 
 moblin_panel_devices_SOURCES = \
-  egg-discrete.c \
-  egg-discrete.h \
-  gpm-brightness-xrandr.c \
-  gpm-brightness-xrandr.h \
-  \
   moblin-panel-devices.c \
   mpd-battery-device.c \
   mpd-battery-device.h \
+  mpd-battery-icon.c \
+  mpd-battery-icon.h \
   mpd-battery-tile.c \
   mpd-battery-tile.h \
   mpd-brightness-tile.c \
@@ -72,3 +70,4 @@ moblin_panel_devices_SOURCES = \
   $(NULL)
 
 -include $(top_srcdir)/git.mk
+
