@@ -68,7 +68,7 @@ main (int     argc,
     g_clear_error (&error);
     return EXIT_FAILURE;
   }
-  mpd_battery_icon_set_fps (MPD_BATTERY_ICON (app.icon), 5);
+  // mpd_battery_icon_set_fps (MPD_BATTERY_ICON (app.icon), 5);
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), app.icon);
 
   button = mx_button_new_with_label ("Animate");
@@ -89,7 +89,7 @@ main (int     argc,
   clutter_actor_show_all (stage);
   clutter_main ();
 
-  g_list_foreach (app.frames, (GFunc) g_object_unref, NULL);
+  g_list_foreach (app.frames, (GFunc) cogl_handle_unref, NULL);
   g_list_free (app.frames);
 
   return EXIT_SUCCESS;

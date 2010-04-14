@@ -67,6 +67,7 @@ dist_battery_icon_plugged_DATA = \
   battery-icon-plugged/battery-icon-plugged-08.png \
   battery-icon-plugged/battery-icon-plugged-09.png \
   battery-icon-plugged/battery-icon-plugged-10.png \
+  battery-icon-plugged/battery-icon-plugged-11.png \
   $(NULL)
 
 -include $(top_srcdir)/git.mk

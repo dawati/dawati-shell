@@ -20,7 +20,6 @@
 
 #include <stdbool.h>
 #include <clutter-gtk/clutter-gtk.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 #include "mpd-battery-icon.h"
 
 G_DEFINE_TYPE (MpdBatteryIcon, mpd_battery_icon, CLUTTER_TYPE_TEXTURE)
@@ -103,7 +102,8 @@ mpd_battery_icon_class_init (MpdBatteryIconClass *klass)
                                                       "Frames per second",
                                                       "Animation speed",
                                                       1, 60, 30,
-                                                      param_flags));
+                                                      param_flags |
+                                                      G_PARAM_CONSTRUCT));
 }
 
 static void
@@ -148,22 +148,13 @@ static bool
 render_frame (MpdBatteryIcon *self)
 {
   MpdBatteryIconPrivate *priv = GET_PRIVATE (self);
-  GError  *error = NULL;
 
   /* At last frame? */
   if (NULL == priv->iter)
     return false;
 
-  gtk_clutter_texture_set_from_pixbuf (CLUTTER_TEXTURE (self),
-                                       GDK_PIXBUF (priv->iter->data),
-                                       &error);
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-    priv->iter = NULL;
-    return false;
-  }
+  clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (self),
+                                    (CoglHandle) priv->iter->data);
 
   priv->iter = priv->iter->next;
   return true;
@@ -192,7 +183,9 @@ mpd_battery_icon_load_frames_from_dir (char const  *path,
 {
   GDir        *dir;
   char const  *entry;
+  GList       *files = NULL;
   GList       *frames = NULL;
+  CoglHandle   handle = COGL_INVALID_HANDLE;
 
   dir = g_dir_open (path, 0, error);
   if (NULL == dir)
@@ -200,24 +193,49 @@ mpd_battery_icon_load_frames_from_dir (char const  *path,
     return NULL;
   }
 
+  /* Read files and sort */
   while (NULL != (entry = g_dir_read_name (dir)))
   {
     if (entry[0] != '.')
     {
       char *filename = g_build_filename (path, entry, NULL);
-      GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file (filename, error);
-      g_free (filename);
-      if (NULL == pixbuf)
-      {
-        return frames;
-      }
+      files = g_list_prepend (files, filename);
+    }
+  }
+  files = g_list_reverse (files);
+  files = g_list_sort (files, (GCompareFunc) g_strcmp0);
+
+  /* Load textures */
+  for (GList const *files_iter = files;
+       files_iter;
+       files_iter = files_iter->next)
+  {
+    handle = cogl_texture_new_from_file ((char *) files_iter->data,
+                                         COGL_TEXTURE_NO_ATLAS,
+                                         COGL_PIXEL_FORMAT_ANY,
+                                         error);
+    if (COGL_INVALID_HANDLE == handle)
+    {
+      break;
+    } else
+    {
       /* List takes reference. */
-      frames = g_list_prepend (frames, pixbuf);
+      frames = g_list_prepend (frames, handle);
     }
   }
 
-  frames = g_list_reverse (frames);
-  frames = g_list_sort (frames, (GCompareFunc) g_strcmp0);
+  if (COGL_INVALID_HANDLE == handle)
+  {
+    /* Clean up after error. */
+    g_list_foreach (frames, (GFunc) cogl_handle_unref, NULL);
+    g_list_free (frames);
+    frames = NULL;
+  } else {
+    frames = g_list_reverse (frames);
+  }
+
+  g_list_foreach (files, (GFunc) g_free, NULL);
+  g_list_free (files);
 
   return frames;
 }
