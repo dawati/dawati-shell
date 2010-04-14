@@ -49,13 +49,6 @@ PengeEventTile.FirstTile, PengeTaskTile.FirstTile
   padding: 6;
 }
 
-PengeAppTile
-{
-  background-color: #fff0;
-  padding: 6;
-  border-image: none;
-}
-
 PengeEventTile:hover, PengeTaskTile:hover
 PengeEventTile:active, PengeTaskTile:active
 {
@@ -68,6 +61,13 @@ PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active
 {
   border-image: none;
   padding: 6;
+}
+
+PengeAppTile
+{
+  background-color: #fff0;
+  padding: 6;
+  border-image: none;
 }
 
 PengeAppTile:hover,
