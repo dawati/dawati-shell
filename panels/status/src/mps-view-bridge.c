@@ -357,6 +357,7 @@ _view_items_added_cb (SwClientView  *view,
   gint item_count = 0;
   GList *l;
   gint i = 0;
+  static ClutterActor *bottom_actor = NULL;
 
   g_debug (G_STRLOC ": %s called", G_STRFUNC);
 
@@ -406,6 +407,12 @@ _view_items_added_cb (SwClientView  *view,
       priv->actors_to_animate = g_list_append (priv->actors_to_animate,
                                                actor);
       clutter_actor_set_opacity (actor, 0);
+    }
+
+    if (!bottom_actor)
+    {
+      bottom_actor = actor;
+      mx_stylable_set_style_class (MX_STYLABLE (actor), "mps-tweet-card-last");
     }
 
     i++;

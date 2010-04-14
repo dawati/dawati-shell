@@ -30,9 +30,9 @@ MpsTweetCard, MpsTweetCard:hover, MpsTweetCard:active
   padding: 16 8 16 0;
 }
 
-MpsTweetCard.mps-tweet-card-first,
-MpsTweetCard.mps-tweet-card-first:hover,
-MpsTweetCard.mps-tweet-card-first:active
+MpsTweetCard.mps-tweet-card-last,
+MpsTweetCard.mps-tweet-card-last:hover,
+MpsTweetCard.mps-tweet-card-last:active
 {
   border-image: none;
 }
