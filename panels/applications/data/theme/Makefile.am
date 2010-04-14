@@ -12,7 +12,6 @@ dist_theme_DATA = \
 	launcher-button-fav-toggle.png \
 	launcher-hover.png \
 	launcher-search-bg.png \
-	panel-background.png \
 	$(NULL)
 
 # Manage mutter-moblin's texture cache.
