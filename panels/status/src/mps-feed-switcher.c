@@ -474,7 +474,10 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
                                 service_name);
   if (!button)
   {
-    button = mx_button_new_with_label (service_name);
+    const gchar *display_name;
+
+    display_name = sw_client_service_get_display_name (service);
+    button = mx_button_new_with_label (display_name);
     mx_button_set_is_toggle (MX_BUTTON (button), TRUE);
     mx_button_group_add (priv->button_group, MX_BUTTON (button));
 
