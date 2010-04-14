@@ -36,7 +36,10 @@ enum {
 
 struct _MnbPanelFramePrivate
 {
-  gboolean disposed : 1;
+  gboolean disposed        : 1;
+  gboolean base_geom_known : 1;
+
+  gfloat base_t, base_r, base_b, base_l;
 };
 
 static void
@@ -129,7 +132,8 @@ mnb_panel_frame_allocate (ClutterActor          *actor,
                           const ClutterActorBox *box,
                           ClutterAllocationFlags flags)
 {
-  ClutterActor *border = mx_widget_get_border_image (MX_WIDGET (actor));
+  MnbPanelFramePrivate *priv = MNB_PANEL_FRAME (actor)->priv;
+  ClutterActor         *border = mx_widget_get_border_image (MX_WIDGET (actor));
 
   /*
    * We need to use different background asset based on the size allocated to
@@ -139,14 +143,26 @@ mnb_panel_frame_allocate (ClutterActor          *actor,
    */
   if (border)
     {
-      const gchar *name= clutter_actor_get_name (actor);
-      gfloat       top, right, bottom, left;
+      const gchar *name = clutter_actor_get_name (actor);
       gboolean     too_small = FALSE;
 
-      mx_texture_frame_get_border_values (MX_TEXTURE_FRAME (border),
-                                          &top, &right, &bottom, &left);
+      /*
+       * Get the dimensions of the base texture (we are guaranteed to be called
+       * first with name == NULL, so this works).
+       */
+      if (!priv->base_geom_known && !name)
+        {
+          mx_texture_frame_get_border_values (MX_TEXTURE_FRAME (border),
+                                              &priv->base_t,
+                                              &priv->base_r,
+                                              &priv->base_b,
+                                              &priv->base_l);
 
-      if (left + right > box->x2 - box->x1 || top + bottom > box->y2 - box->y1)
+          priv->base_geom_known = TRUE;
+        }
+
+      if (priv->base_l + priv->base_r > box->x2 - box->x1 ||
+          priv->base_t + priv->base_b > box->y2 - box->y1)
         {
           too_small = TRUE;
         }
