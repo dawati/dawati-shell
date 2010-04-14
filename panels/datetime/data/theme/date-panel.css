@@ -247,20 +247,32 @@ PengeCalendarPane
   color: #3e3e3eff;
 }
 
+
 PengeEventTile, PengeTaskTile
 {
-  background-color: #fff0;
   padding: 6;
-  border-image: none;
+  border-image: url('event-task-tile-bg.png') 4;
 }
 
-PengeEventTile:hover, PengeTaskTile:hover,
+PengeEventTile.FirstTile, PengeTaskTile.FirstTile
+{
+  border-image: none;
+  padding: 6;
+}
+
+PengeEventTile:hover, PengeTaskTile:hover
 PengeEventTile:active, PengeTaskTile:active
 {
-  border-image: url('card_frame_hover.png') 5;
+  border-image: url('event-task-tile-bg.png') 4;
   padding: 6;
 }
 
+PengeEventTile.FirstTile:hover, PengeTaskTile.FirstTile:hover
+PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active
+{
+  border-image: none;
+  padding: 6;
+}
 
 MxButton.PengeTaskToggleButton
 {

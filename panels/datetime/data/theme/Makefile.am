@@ -18,7 +18,6 @@ dist_theme_DATA = \
 	time-bg-past.png	\
 	check_box.png	\
 	checked_box.png	\
-	card_frame_hover.png	\
 	backdrop.png	\
 	panel-header-bar.png	\
 	clock.png	\
@@ -33,7 +32,8 @@ dist_theme_DATA = \
 	appointments-icon.png	\
 	tasks-icon.png	\
 	panel-header-widget-bar-border.png	\
-	panel-header-widget-bar-border-up.png
+	panel-header-widget-bar-border-up.png	\
+	event-task-tile-bg.png
 
 
 # Manage mutter-moblin's texture cache.
