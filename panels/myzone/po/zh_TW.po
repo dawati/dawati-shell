@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-03 09:31+0000\n"
+"POT-Creation-Date: 2010-04-14 09:39+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -59,74 +59,77 @@ msgstr "盡可能顯示最近的文件"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "您想要清除您最近的文件嗎？這將會從 Myzone 移除本機的內容"
 
-#: ../penge/penge-calendar-pane.c:445
+#: ../penge/penge-calendar-pane.c:483
 msgid "Appointments"
 msgstr "約會"
+
+#: ../penge/penge-calendar-pane.c:526
+msgid "Tasks"
+msgstr "工作"
 
 #: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "建立一項約會"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
 msgid "Add"
 msgstr "加入"
 
-#: ../penge/penge-events-pane.c:412
+#: ../penge/penge-events-pane.c:400
 msgid "No calendar entries this week"
 msgstr "這禮拜的行事曆上沒有任何條目"
 
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "您朋友在線上所做的事都會在出現這裡。那麼現在就啟動您的帳號吧！"
-
-#: ../penge/penge-recent-file-tile.c:215
+#: ../penge/penge-recent-file-tile.c:216
 msgid "Web page"
 msgstr "網頁"
 
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-tasks-pane.c:50
 msgid "Create a new task"
 msgstr "建立一份新工作"
 
-#: ../penge/penge-tasks-pane.c:429
+#: ../penge/penge-tasks-pane.c:426
 msgid "Nothing to do today"
 msgstr "今天沒有待辦的事"
 
-#: ../penge/penge-task-tile.c:316
+#: ../penge/penge-task-tile.c:318
 #, c-format
 msgid "Due %x"
 msgstr "%x 到期"
 
-#: ../penge/penge-welcome-tile.c:75
+#: ../penge/penge-welcome-tile.c:32
+msgid "Play intro video"
+msgstr "播放簡介影片"
+
+#: ../penge/penge-welcome-tile.c:64
 msgid "Welcome to MeeGo"
 msgstr "歡迎來到 MeeGo"
 
-#: ../penge/penge-welcome-tile.c:94
+#: ../penge/penge-welcome-tile.c:83
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "這是 Myzone，您最近使用過的檔案與您的網路消息來源內容會在這裡顯現。"
 
-#: ../penge/penge-email-pane.c:191
-msgid "No unread messages"
-msgstr "沒有未讀取的訊息"
-
-#: ../penge/penge-email-pane.c:193
-msgid "Unread message"
-msgstr "未讀取的訊息"
-
-#: ../penge/penge-email-pane.c:195
-msgid "Unread messages"
-msgstr "未讀取的訊息"
-
-#: ../penge/penge-calendar-pane.c:475
-msgid "Tasks"
-msgstr "工作"
-
-#: ../penge/penge-welcome-tile.c:35
+#: ../penge/penge-welcome-tile.c:26
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "當您設置好您的網路帳號，並使用一些檔案後，它們會顯現在 Myzone 的這裡來讓您在任何想要的時候輕鬆存取。"
 
-#: ../penge/penge-welcome-tile.c:41
-msgid "Play intro video"
-msgstr "播放簡介影片"
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "沒有未讀取的訊息"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "未讀取的訊息"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "未讀取的訊息"
+
+#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
+msgid "Open"
+msgstr "開啟"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "您朋友在線上所做的事都會在出現這裡。那麼現在就啟動您的帳號吧！"
 
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
