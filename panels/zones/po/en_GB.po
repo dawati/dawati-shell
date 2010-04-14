@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-04 14:56+0000\n"
+"POT-Creation-Date: 2010-04-14 19:36+0000\n"
 "PO-Revision-Date: 2009-11-19 14:56-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -19,57 +19,58 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: UNITED KINGDOM\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:492
-msgid "zones"
-msgstr "zones"
-
-#: ../src/sw-overview.c:220
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
-
-#: ../src/sw-zone.c:778
-msgid "No applications on this zone"
-msgstr "No applications on this zone"
-
-#: ../src/sw-zone.c:910
-msgid "two"
-msgstr "two"
-
-#: ../src/sw-zone.c:918
-msgid "four"
-msgstr "four"
-
-#: ../src/sw-zone.c:914
-msgid "three"
-msgstr "three"
-
-#: ../src/sw-zone.c:926
-msgid "six"
-msgstr "six"
-
-#: ../src/sw-zone.c:922
-msgid "five"
-msgstr "five"
-
-#: ../src/sw-zone.c:934
-msgid "eight"
-msgstr "eight"
-
-#: ../src/sw-zone.c:930
-msgid "seven"
-msgstr "seven"
-
 #: ../data/moblin-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Zones panel"
 
-#: ../src/sw-zone.c:764
-msgid "new zone"
-msgstr "new zone"
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+msgid "zones"
+msgstr "zones"
 
-#: ../src/sw-zone.c:906
-msgid "one"
-msgstr "one"
+#: ../src/sw-zone.c:797
+msgid "No applications on this zone"
+msgstr "No applications on this zone"
+
+#: ../src/main.c:405
+msgid "Zones"
+msgstr "Zones"
+
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "New Zone"
+
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "Hello! This is the Zones panel. When you have open applications, you can view, manage, and access them here."
+
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Zone %d"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
+
+#~ msgid "two"
+#~ msgstr "two"
+
+#~ msgid "four"
+#~ msgstr "four"
+
+#~ msgid "three"
+#~ msgstr "three"
+
+#~ msgid "six"
+#~ msgstr "six"
+
+#~ msgid "five"
+#~ msgstr "five"
+
+#~ msgid "eight"
+#~ msgstr "eight"
+
+#~ msgid "seven"
+#~ msgstr "seven"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin Netbook Effects"
