@@ -157,22 +157,68 @@ _settings_launcher_button_clicked_cb (MxButton *button,
   g_object_unref (app_info);
 }
 
-
-static ClutterActor *
-_make_empty_people_tile (MnbPeoplePanel *people_panel)
+ClutterActor *
+_make_settings_launcher (MnbPeoplePanel *people_panel)
 {
-  MnbPeoplePanelPrivate *priv = GET_PRIVATE (people_panel);
-
-  ClutterActor *tile;
-  ClutterActor *frame;
-  ClutterActor *label;
-  ClutterActor *hbox;
-  ClutterActor *tmp_text;
   ClutterActor *table;
   ClutterActor *icon_tex;
   ClutterActor *button;
   GAppInfo *app_info;
   gchar *button_str;
+
+  app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
+
+  
+  table = mx_table_new ();
+  mx_table_set_column_spacing (MX_TABLE (table), 16);
+  app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
+
+  icon_tex = g_object_new (MX_TYPE_ICON,
+                           "icon-name", "moblin-empathy-accounts",
+                           NULL);
+
+  mx_table_add_actor_with_properties (MX_TABLE (table),
+                                      icon_tex,
+                                      0, 0,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
+
+
+
+  button_str = g_strdup_printf (_("Open %s"),
+                                g_app_info_get_name (app_info));
+
+  button = mx_button_new_with_label (button_str);
+  g_free (button_str);
+  g_signal_connect (button,
+                    "clicked",
+                    (GCallback)_settings_launcher_button_clicked_cb,
+                    people_panel);
+
+  mx_table_add_actor_with_properties (MX_TABLE (table),
+                                      button,
+                                      0, 1,
+                                      "x-expand", FALSE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
+  g_object_unref (app_info);
+
+  return table;
+}
+
+static ClutterActor *
+_make_empty_people_tile (MnbPeoplePanel *people_panel)
+{
+  ClutterActor *tile;
+  ClutterActor *frame;
+  ClutterActor *label;
+  ClutterActor *tmp_text;
+  ClutterActor *settings_launcher;
 
   tile = mx_table_new ();
   mx_table_set_row_spacing (MX_TABLE (tile), 8);
@@ -204,48 +250,13 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
                                       NULL);
   mx_bin_set_alignment (MX_BIN (frame), MX_ALIGN_START, MX_ALIGN_MIDDLE);
 
-  app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
+  settings_launcher = _make_settings_launcher (people_panel);
 
-  
-  table = mx_table_new ();
-  mx_table_set_column_spacing (MX_TABLE (table), 16);
-  clutter_actor_set_name (table, "people-panel-settings-launcher-tile");
-  app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
-
-  icon_tex = g_object_new (MX_TYPE_ICON,
-                           "icon-name", "moblin-empathy-accounts",
-                           NULL);
-
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                      icon_tex,
-                                      0, 0,
-                                      "x-expand", FALSE,
-                                      "y-expand", TRUE,
-                                      "x-fill", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
-
-  button_str = g_strdup_printf (_("Open %s"),
-                                g_app_info_get_name (app_info));
-
-  button = mx_button_new_with_label (button_str);
-  g_free (button_str);
-  g_signal_connect (button,
-                    "clicked",
-                    (GCallback)_settings_launcher_button_clicked_cb,
-                    people_panel);
-
-  mx_table_add_actor_with_properties (MX_TABLE (table),
-                                      button,
-                                      0, 1,
-                                      "x-expand", FALSE,
-                                      "y-expand", TRUE,
-                                      "x-fill", FALSE,
-                                      "y-fill", FALSE,
-                                      NULL);
+  clutter_actor_set_name (settings_launcher,
+                          "people-panel-settings-launcher-tile");
 
   mx_table_add_actor_with_properties (MX_TABLE (tile),
-                                      table,
+                                      settings_launcher,
                                       1, 0,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
@@ -253,7 +264,6 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
                                       "y-fill", FALSE,
                                       "x-align", MX_ALIGN_START,
                                       NULL);
-  g_object_unref (app_info);
 
   return tile;
 }
@@ -871,6 +881,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   ClutterActor *label;
   ClutterActor *scroll_view, *bin, *tmp_text;
   AnerleyFeed *active_feed;
+  ClutterActor *settings_launcher;
 
   mx_table_set_column_spacing (MX_TABLE (self), 6);
   mx_table_set_row_spacing (MX_TABLE (self), 6);
@@ -988,6 +999,18 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       "x-align", MX_ALIGN_START,
                                       "y-expand", TRUE,
                                       "y-fill", TRUE,
+                                      NULL);
+
+  settings_launcher = _make_settings_launcher (self);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->me_table),
+                                      settings_launcher,
+                                      0, 2,
+                                      "x-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "x-align", MX_ALIGN_END,
+                                      "y-expand", TRUE,
+                                      "y-fill", FALSE,
+                                      "row-span", 2,
                                       NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (priv->content_table),
