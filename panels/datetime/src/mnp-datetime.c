@@ -464,28 +464,24 @@ construct_task_area (MnpDatetime *dtime)
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
 	ClutterActor *label, *div, *box, *icon;
 
-	priv->task_row = mx_box_layout_new();
+	priv->task_row = mx_table_new ();
 	clutter_actor_set_name (priv->task_row, "TaskPane");
 	clutter_actor_set_size (priv->task_row, 345, -1);
-	
-	mx_box_layout_set_spacing ((MxBoxLayout *)priv->task_row, 0);	
-	mx_box_layout_set_orientation ((MxBoxLayout *)priv->task_row, MX_ORIENTATION_VERTICAL);
-	mx_box_layout_set_enable_animations ((MxBoxLayout *)priv->task_row, TRUE);
-	mx_box_layout_add_actor ((MxBoxLayout *)dtime, priv->task_row, 4);
-	clutter_container_child_set (CLUTTER_CONTAINER (dtime),
-                               priv->task_row,
-                               "expand", FALSE,
-			       "y-fill", TRUE,		
-			       "x-fill", FALSE,			       			       
-                               NULL);
+
+	mx_box_layout_add_actor_with_properties ((MxBoxLayout *)dtime, priv->task_row, 4,
+                                 "expand", FALSE,
+  			         "y-fill", TRUE,		
+ 			         "x-fill", FALSE,			       			       
+                                 NULL);
 
 	box = mx_box_layout_new ();
 	clutter_actor_set_name (box, "TasksTitleBox");
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, (ClutterActor *)box, 0);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
                                box,
-                               "expand", FALSE,
+                               0, 0,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
 			       "y-fill", FALSE,		
 			       "x-fill", TRUE,			       			       
                                NULL);	
@@ -522,38 +518,19 @@ construct_task_area (MnpDatetime *dtime)
 	box = mx_box_layout_new ();
 	priv->task_header = box;
 	clutter_actor_set_name (box, "TaskButtonBox");
+	mx_box_layout_set_spacing ((MxBoxLayout *)box, 10);
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, (ClutterActor *)box, 1);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
                                box,
-                               "expand", FALSE,
+                               1, 0,
+                               "x-expand", TRUE,
+			       "x-fill", TRUE,
+                               "y-expand", FALSE,
 			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
                                NULL);	
 
 
 	/* format date */
-	box = mx_box_layout_new ();
-	mx_box_layout_set_spacing ((MxBoxLayout *)box, 10);
-	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_header, (ClutterActor *)box, 1);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_header),
-                               box,
-                               "expand", FALSE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
-
-	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, div, 2);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
-                               div,
-                               "expand", FALSE,
-			       "y-fill", FALSE,		
-			       "x-fill", TRUE,			       			       
-                               NULL);	
-
-
 	label = mx_label_new_with_text(_("Today"));
 	clutter_actor_set_name (label, "TaskPaneTitleToday");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, 0 );
@@ -575,36 +552,50 @@ construct_task_area (MnpDatetime *dtime)
                                NULL);	
 	format_label (priv->task_date_label);
 
+	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
+                               div,
+                               2, 0,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
+			       "x-fill", TRUE,			       			       
+                               NULL);
+        clutter_actor_set_height (div, 2);
 
-	box = mx_box_layout_new ();
-	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, box, 3);
-	clutter_container_child_set (CLUTTER_CONTAINER (priv->task_row),
-                               box,
-                               "expand", TRUE,
+	priv->task_area = g_object_new (PENGE_TYPE_TASKS_PANE,
+                                   NULL);
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
+                               priv->task_area,
+                               3, 0,
+                               "x-expand", TRUE,
+                               "y-expand", TRUE,
 			       "y-fill", TRUE,		
 			       "x-fill", TRUE,			       			       
                                NULL);
 
-	priv->task_area = g_object_new (PENGE_TYPE_TASKS_PANE,
-                                   NULL);
-	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->task_area, 3);
-	clutter_container_child_set (CLUTTER_CONTAINER (box),
-                               priv->task_area,
-                               "expand", FALSE,
-			       "y-fill", FALSE,		
+	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
+                               div,
+                               4, 0,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
 			       "x-fill", TRUE,			       			       
                                NULL);
-
-	div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->task_row), div, -1);		
+        clutter_actor_set_height (div, 2);
 
 	/* Launcher */
 	box = mx_box_layout_new ();
 	clutter_actor_set_name (box, "TasksLauncherBox");
 	priv->task_launcher_box = box;
-	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_VERTICAL);
+	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
+                               box,
+                               5, 0,
+                               "x-expand", TRUE,
+                               "y-expand", FALSE,
+			       "x-fill", TRUE,			       			       
+                               NULL);
 	
 	priv->task_launcher = mx_button_new ();
 	mx_button_set_label ((MxButton *)priv->task_launcher, _("Open Tasks"));
@@ -613,14 +604,11 @@ construct_task_area (MnpDatetime *dtime)
 	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->task_launcher, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                (ClutterActor *)priv->task_launcher,
-                               "expand", FALSE,
+                               "expand", TRUE,
 			       "y-fill", FALSE,
 			       "x-fill", FALSE,
 			       "x-align", MX_ALIGN_END,
                                NULL);
-
-	mx_box_layout_add_actor ((MxBoxLayout *)priv->task_row, box, -1);
-	
 }
 
 static void
