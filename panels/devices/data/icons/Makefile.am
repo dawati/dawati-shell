@@ -55,5 +55,19 @@ dist_icons_DATA = \
   volume-icon-mute.png \
   $(NULL)
 
+battery_icon_pluggeddir = $(iconsdir)/battery-icon-plugged
+dist_battery_icon_plugged_DATA = \
+  battery-icon-plugged/battery-icon-plugged-01.png \
+  battery-icon-plugged/battery-icon-plugged-02.png \
+  battery-icon-plugged/battery-icon-plugged-03.png \
+  battery-icon-plugged/battery-icon-plugged-04.png \
+  battery-icon-plugged/battery-icon-plugged-05.png \
+  battery-icon-plugged/battery-icon-plugged-06.png \
+  battery-icon-plugged/battery-icon-plugged-07.png \
+  battery-icon-plugged/battery-icon-plugged-08.png \
+  battery-icon-plugged/battery-icon-plugged-09.png \
+  battery-icon-plugged/battery-icon-plugged-10.png \
+  $(NULL)
+
 -include $(top_srcdir)/git.mk
 

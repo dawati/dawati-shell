@@ -56,7 +56,7 @@ typedef struct
 GType
 mpd_battery_icon_get_type (void);
 
-MpdBatteryIcon *
+ClutterActor *
 mpd_battery_icon_new (void);
 
 unsigned int

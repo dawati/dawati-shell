@@ -111,7 +111,7 @@ mpd_battery_icon_init (MpdBatteryIcon *self)
 {
 }
 
-MpdBatteryIcon *
+ClutterActor *
 mpd_battery_icon_new (void)
 {
   return g_object_new (MPD_TYPE_BATTERY_ICON, NULL);
@@ -183,7 +183,7 @@ mpd_battery_icon_animate (MpdBatteryIcon  *self,
 
   priv->iter = frames;
   render_frame (self);
-  g_timeout_add (priv->fps * 1000, (GSourceFunc) _next_frame_cb, self);
+  g_timeout_add (1000 / priv->fps, (GSourceFunc) _next_frame_cb, self);
 }
 
 GList *
