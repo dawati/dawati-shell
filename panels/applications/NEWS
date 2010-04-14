@@ -1,4 +1,11 @@
 
+Version 0.1.19, 2010-04-14
+
+    Fixes: MBC#590 - uninstall local application crashes moblin-panel-application
+    Fixes: MBC#133 - The untoggle of favorite applications in application panel does not sync with myzone
+    l10n: Updates to pa, ko, it, wa, sv, fi, de, nl, pl, fr, zh_CN, es.
+    Theming updates.
+
 Version 0.1.18, 2010-04-06
 
     Fixes: BMC#475
