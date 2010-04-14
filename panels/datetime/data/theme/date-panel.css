@@ -218,7 +218,7 @@ MxButton.CompletionListButton:hover
 *#DateTimeLauncherBox, *#TasksLauncherBox, *#EventLauncherBox
 {
   border-image: url('panel-header-widget-bar-border-up.png') 5 5 5 5;	
-  padding: 6 0 6 12;
+  padding: 6 8 6 12;
 }
 
 *.SearchEntryBox 

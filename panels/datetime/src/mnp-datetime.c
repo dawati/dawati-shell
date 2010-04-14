@@ -56,8 +56,6 @@ struct _MnpDatetimePrivate {
 	MplPanelClient *panel_client;
 
 	ClutterActor *world_clock;
-	ClutterActor *cal_alarm_row;
-	ClutterActor *task_row;
 
 	ClutterActor *alarm_area;
 	ClutterActor *cal_area;
@@ -465,11 +463,11 @@ construct_task_area (MnpDatetime *dtime)
   	MnpDatetimePrivate *priv = GET_PRIVATE (dtime);
 	ClutterActor *label, *div, *box, *icon;
 
-	priv->task_row = mx_table_new ();
-	clutter_actor_set_name (priv->task_row, "TaskPane");
-	clutter_actor_set_size (priv->task_row, 345, -1);
+	priv->task_area = mx_table_new ();
+	clutter_actor_set_name (priv->task_area, "TaskPane");
+	clutter_actor_set_size (priv->task_area, 345, -1);
 
-	mx_box_layout_add_actor_with_properties ((MxBoxLayout *)dtime, priv->task_row, 4,
+	mx_box_layout_add_actor_with_properties ((MxBoxLayout *)dtime, priv->task_area, 4,
                                  "expand", FALSE,
   			         "y-fill", TRUE,		
  			         "x-fill", FALSE,			       			       
@@ -478,7 +476,7 @@ construct_task_area (MnpDatetime *dtime)
 	box = mx_box_layout_new ();
 	clutter_actor_set_name (box, "TasksTitleBox");
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
-        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_area),
                                box,
                                0, 0,
                                "x-expand", TRUE,
@@ -521,7 +519,7 @@ construct_task_area (MnpDatetime *dtime)
 	clutter_actor_set_name (box, "TaskButtonBox");
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 10);
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
-        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_area),
                                box,
                                1, 0,
                                "x-expand", TRUE,
@@ -563,10 +561,10 @@ construct_task_area (MnpDatetime *dtime)
                                NULL);
         clutter_actor_set_height (div, 2);
 */
-	priv->task_area = g_object_new (PENGE_TYPE_TASKS_PANE,
+	priv->penge_tasks = g_object_new (PENGE_TYPE_TASKS_PANE,
                                    NULL);
-        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
-                               priv->task_area,
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_area),
+                               priv->penge_tasks,
                                2, 0,
                                "x-expand", TRUE,
                                "y-expand", TRUE,
@@ -590,7 +588,7 @@ construct_task_area (MnpDatetime *dtime)
 	priv->task_launcher_box = box;
 	mx_box_layout_set_orientation ((MxBoxLayout *)box, MX_ORIENTATION_HORIZONTAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 6);
-        mx_table_add_actor_with_properties (MX_TABLE (priv->task_row),
+        mx_table_add_actor_with_properties (MX_TABLE (priv->task_area),
                                box,
                                3, 0,
                                "x-expand", TRUE,
