@@ -88,6 +88,5 @@ MxLabel#zones-title-label
 
 MxBoxLayout#zones-panel-toplevel
 {
-  border-image: url('panel-background.png') 0 0 465 0;
   padding: 5;
 }

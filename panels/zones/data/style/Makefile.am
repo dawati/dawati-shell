@@ -9,8 +9,7 @@ dist_theme_DATA = \
 	switcher.css \
 	workspace-title-new-symbol-active.png \
 	close-button.png \
-	close-button-hover.png \
-	panel-background.png
+	close-button-hover.png
 
 # Manage mutter-moblin's texture cache.
 #if ENABLE_CACHE
