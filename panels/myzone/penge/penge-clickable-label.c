@@ -22,6 +22,11 @@
 
 #include "penge-clickable-label.h"
 
+/* for pointer cursor support */
+#include <clutter/x11/clutter-x11.h>
+#include <X11/Xlib.h>
+#include <X11/cursorfont.h>
+
 G_DEFINE_TYPE (PengeClickableLabel, penge_clickable_label, MX_TYPE_LABEL)
 
 #define GET_PRIVATE_REAL(o) \
@@ -237,6 +242,19 @@ _motion_event_cb (ClutterActor        *actor,
   PangoLayout *layout;
   const gchar *str;
   gint i = 0, index = 0;
+  Display *dpy;
+  ClutterActor *stage;
+  Window win;
+
+  static Cursor hand = None;
+
+  dpy = clutter_x11_get_default_display ();
+  stage = clutter_actor_get_stage (actor);
+  win = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+  if (hand == None)
+    hand = XCreateFontCursor (dpy, XC_hand2);
+
 
   clutter_actor_transform_stage_point (actor,
                                        bevent->x,
@@ -263,12 +281,15 @@ _motion_event_cb (ClutterActor        *actor,
 
       if (index >= match->start && index < match->end)
       {
+        XDefineCursor (dpy, win, hand);
+
         _update_attributes_from_matches (label, match);
         return FALSE;
       }
     }
   }
 
+  XUndefineCursor (dpy, win);
   _update_attributes_from_matches (label, NULL);
   return FALSE;
 }
@@ -278,6 +299,17 @@ _leave_event_cb (ClutterActor        *actor,
                   ClutterEvent        *event,
                   PengeClickableLabel *label)
 {
+  Display *dpy;
+  ClutterActor *stage;
+  Window win;
+
+  dpy = clutter_x11_get_default_display ();
+  stage = clutter_actor_get_stage (actor);
+  win = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+  /* Remove cursor */
+  XUndefineCursor (dpy, win);
+
   _update_attributes_from_matches (label, NULL);
   return FALSE;
 }
