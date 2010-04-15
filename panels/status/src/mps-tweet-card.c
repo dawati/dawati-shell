@@ -19,7 +19,7 @@
 
 #include "mps-tweet-card.h"
 #include "penge-magic-texture.h"
-
+#include "penge-clickable-label.h"
 #include <gio/gio.h>
 #include <glib/gi18n.h>
 
@@ -382,6 +382,25 @@ _button_release_event_cb (ClutterActor *actor,
 }
 
 static void
+_label_url_clicked_cb (PengeClickableLabel *label,
+                       const gchar         *url,
+                       MpsTweetCard        *card)
+{
+  GError *error = NULL;
+
+  if (!g_app_info_launch_default_for_uri (url,
+                                          NULL,
+                                          &error))
+  {
+    g_warning (G_STRLOC ": Error launching uri: %s",
+               error->message);
+    g_clear_error (&error);
+  } else {
+    moblin_status_panel_hide ();
+  }
+}
+
+static void
 mps_tweet_card_init (MpsTweetCard *self)
 {
   MpsTweetCardPrivate *priv = GET_PRIVATE_REAL (self);
@@ -402,7 +421,11 @@ mps_tweet_card_init (MpsTweetCard *self)
   clutter_actor_set_parent (priv->avatar_frame,
                             CLUTTER_ACTOR (self));
 
-  priv->content_label = mx_label_new ();
+  priv->content_label = penge_clickable_label_new (NULL);
+  g_signal_connect (priv->content_label,
+                    "url-clicked",
+                    (GCallback)_label_url_clicked_cb,
+                    self);
   mx_stylable_set_style_class (MX_STYLABLE (priv->content_label),
                                "mps-tweet-content-label");
   clutter_actor_set_parent (priv->content_label,
