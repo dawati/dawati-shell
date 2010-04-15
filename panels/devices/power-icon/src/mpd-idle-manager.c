@@ -40,6 +40,7 @@ typedef struct
   int suspend_idle_time;
 
   DBusGProxy *presence;
+  DBusGProxy *screensaver;
 
   DkpClient *power_client;
 
@@ -63,6 +64,7 @@ _dispose (GObject *object)
 
   mpd_gobject_detach (object, (GObject **) &priv->client);
   mpd_gobject_detach (object, (GObject **) &priv->presence);
+  mpd_gobject_detach (object, (GObject **) &priv->screensaver);
   mpd_gobject_detach (object, (GObject **) &priv->power_client);
 
   G_OBJECT_CLASS (mpd_idle_manager_parent_class)->dispose (object);
@@ -226,6 +228,12 @@ mpd_idle_manager_init (MpdIdleManager *self)
     dbus_g_proxy_connect_signal (priv->presence, "StatusChanged",
                                  G_CALLBACK (_presence_status_changed),
                                  self, NULL);
+
+    priv->screensaver =
+      dbus_g_proxy_new_for_name (conn,
+                                 "org.gnome.ScreenSaver",
+                                 "/",
+                                 "org.gnome.ScreenSaver");
   }
 
   gconf_client_notify (priv->client, SUSPEND_IDLE_TIME_KEY);
@@ -239,27 +247,17 @@ mpd_idle_manager_new (void)
 
 bool
 mpd_idle_manager_activate_screensaver (MpdIdleManager   *self,
-                                         GError          **error)
+                                       GError          **error)
 {
-  DBusGConnection *conn;
-  DBusGProxy *proxy;
+  MpdIdleManagerPrivate *priv;
 
-  conn = dbus_g_bus_get (DBUS_BUS_SESSION, error);
-  if (error && *error)
-  {
-    return false;
-  }
+  g_return_val_if_fail (MPD_IS_IDLE_MANAGER (self), FALSE);
+  priv = GET_PRIVATE (self);
 
-  proxy = dbus_g_proxy_new_for_name (conn,
-                                     "org.gnome.ScreenSaver",
-                                     "/",
-                                     "org.gnome.ScreenSaver");
-
-  dbus_g_proxy_call_no_reply (proxy, "SetActive",
+  dbus_g_proxy_call_no_reply (priv->screensaver, "SetActive",
                               G_TYPE_BOOLEAN, TRUE,
                               G_TYPE_INVALID);
 
-  g_object_unref (proxy);
   return true;
 }
 
@@ -277,6 +275,8 @@ mpd_idle_manager_suspend (MpdIdleManager   *self,
   }
 
   ret = dkp_client_suspend (priv->power_client, error);
+  dbus_g_proxy_call_no_reply (priv->screensaver, "SimulateUserActivity",
+                              G_TYPE_INVALID);
   if (!ret || (error && *error))
   {
     return false;
