@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Panel-Applications\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-15 09:30+0000\n"
-"PO-Revision-Date: 2010-03-15 08:21-0800\n"
+"POT-Creation-Date: 2010-04-14 09:36+0000\n"
+"PO-Revision-Date: 2010-04-15 13:42-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,21 +19,27 @@ msgstr ""
 "X-Poedit-Country: UNITED KINGDOM\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/moblin-netbook-launcher.c:867
-msgid "Favorite Applications"
-msgstr "Favourite Applications"
-
-#: ../src/moblin-netbook-launcher.c:1430
+#. Panel label
+#: ../src/moblin-netbook-launcher.c:1333
 msgid "Applications"
 msgstr "Applications"
 
-#: ../src/moblin-netbook-launcher.c:1441
+#: ../src/moblin-netbook-launcher.c:1347
+msgid "Your applications"
+msgstr "Your applications"
+
+#: ../src/moblin-netbook-launcher.c:1374
+msgid "Search for applications"
+msgstr "Search for applications"
+
+#: ../src/moblin-netbook-launcher.c:1378
 msgid "Search"
 msgstr "Search"
+
+#. Fav apps
+#: ../src/moblin-netbook-launcher.c:1383
+msgid "Favorite applications"
+msgstr "Favourite applications"
 
 #: ../src/moblin-panel-applications.c:197
 #: ../data/moblin-panel-applications.desktop.in.in.h:2
