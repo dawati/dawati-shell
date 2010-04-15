@@ -240,25 +240,9 @@ penge_clickable_label_constructed (GObject *object)
 
 
 static void
-penge_clickable_label_pick (ClutterActor       *actor,
-                            const ClutterColor *pick_color)
-{
-  ClutterActor *text;
-
-  if (CLUTTER_ACTOR_CLASS (penge_clickable_label_parent_class)->pick)
-    CLUTTER_ACTOR_CLASS (penge_clickable_label_parent_class)->pick (actor,
-                                                                    pick_color);
-
-  text = mx_label_get_clutter_text (MX_LABEL (actor));
-
-  clutter_actor_paint (text);
-}
-
-static void
 penge_clickable_label_class_init (PengeClickableLabelClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (PengeClickableLabelPrivate));
 
@@ -267,9 +251,6 @@ penge_clickable_label_class_init (PengeClickableLabelClass *klass)
   object_class->dispose = penge_clickable_label_dispose;
   object_class->finalize = penge_clickable_label_finalize;
   object_class->constructed = penge_clickable_label_constructed;
-
-  /* See http://bugzilla.moblin.org/show_bug.cgi?id=9680 */
-  actor_class->pick = penge_clickable_label_pick;
 
   signals[URL_CLICKED] = g_signal_new ("url-clicked",
                                        PENGE_TYPE_CLICKABLE_LABEL,
