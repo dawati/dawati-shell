@@ -25,10 +25,9 @@
 
 G_DEFINE_TYPE (MpsTweetCard, mps_tweet_card, MX_TYPE_BUTTON)
 
-#define GET_PRIVATE(o) \
+#define GET_PRIVATE_REAL(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPS_TYPE_TWEET_CARD, MpsTweetCardPrivate))
-
-typedef struct _MpsTweetCardPrivate MpsTweetCardPrivate;
+#define GET_PRIVATE(o) ((MpsTweetCard *)o)->priv
 
 struct _MpsTweetCardPrivate {
   SwItem *item;
@@ -240,8 +239,10 @@ _button_clicked_cb (MxButton *button,
 static void
 mps_tweet_card_init (MpsTweetCard *self)
 {
-  MpsTweetCardPrivate *priv = GET_PRIVATE (self);
+  MpsTweetCardPrivate *priv = GET_PRIVATE_REAL (self);
   ClutterActor *tmp_text;
+
+  self->priv = priv;
 
   priv->inner_table = mx_table_new ();
   mx_table_set_column_spacing (MX_TABLE (priv->inner_table), 8);

@@ -43,8 +43,11 @@ G_BEGIN_DECLS
 #define MPS_TWEET_CARD_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPS_TYPE_TWEET_CARD, MpsTweetCardClass))
 
+typedef struct _MpsTweetCardPrivate MpsTweetCardPrivate;
+
 typedef struct {
   MxButton parent;
+  MpsTweetCardPrivate *priv;
 } MpsTweetCard;
 
 typedef struct {
