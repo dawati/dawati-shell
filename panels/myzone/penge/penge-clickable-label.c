@@ -94,7 +94,8 @@ penge_clickable_label_finalize (GObject *object)
 }
 
 static void
-_update_attributes_from_matches (PengeClickableLabel *label)
+_update_attributes_from_matches (PengeClickableLabel *label,
+                                 _UrlLabelMatch      *match_in)
 {
   PengeClickableLabelPrivate *priv = GET_PRIVATE (label);
   PangoAttrList *attrs;
@@ -113,9 +114,17 @@ _update_attributes_from_matches (PengeClickableLabel *label)
     _UrlLabelMatch *match = &g_array_index (priv->matches,
                                             _UrlLabelMatch,
                                             i);
-    attr = pango_attr_foreground_new ((0x30 * 0xffff) / 0xff,
-                                     (0xac * 0xffff) / 0xff,
-                                     (0xe0 * 0xffff) / 0xff);
+
+    if (match == match_in)
+    {
+      attr = pango_attr_foreground_new ((0xac * 0xffff) / 0xff,
+                                       (0x30 * 0xffff) / 0xff,
+                                       (0xe0 * 0xffff) / 0xff);
+    } else {
+      attr = pango_attr_foreground_new ((0x30 * 0xffff) / 0xff,
+                                       (0xac * 0xffff) / 0xff,
+                                       (0xe0 * 0xffff) / 0xff);
+    }
     attr->start_index = match->start;
     attr->end_index = match->end;
     pango_attr_list_change (attrs, attr);
@@ -164,7 +173,7 @@ _text_changed_notify_cb (ClutterText         *text,
     clutter_actor_set_reactive (CLUTTER_ACTOR (text), TRUE);
   }
 
-  _update_attributes_from_matches (label);
+  _update_attributes_from_matches (label, NULL);
 }
 
 static gboolean
@@ -216,6 +225,65 @@ _button_release_event_cb (ClutterActor        *actor,
   return FALSE;
 }
 
+
+static gboolean
+_motion_event_cb (ClutterActor        *actor,
+                  ClutterEvent        *event,
+                  PengeClickableLabel *label)
+{
+  PengeClickableLabelPrivate *priv = GET_PRIVATE (label);
+  ClutterButtonEvent *bevent = (ClutterButtonEvent *)event;
+  gfloat layout_x, layout_y;
+  PangoLayout *layout;
+  const gchar *str;
+  gint i = 0, index = 0;
+
+  clutter_actor_transform_stage_point (actor,
+                                       bevent->x,
+                                       bevent->y,
+                                       &layout_x,
+                                       &layout_y);
+
+
+  layout = clutter_text_get_layout (CLUTTER_TEXT (actor));
+  str = clutter_text_get_text (CLUTTER_TEXT (actor));
+
+  if (pango_layout_xy_to_index (layout,
+                                layout_x * PANGO_SCALE,
+                                layout_y * PANGO_SCALE,
+                                &index,
+                                NULL))
+  {
+    /* Check whether that byte index is covered by any of the
+       URL matches */
+    for (i = 0; i < priv->matches->len; i++)
+    {
+      _UrlLabelMatch *match;
+      match = &g_array_index (priv->matches, _UrlLabelMatch, i);
+
+      if (index >= match->start && index < match->end)
+      {
+        _update_attributes_from_matches (label, match);
+        return FALSE;
+      }
+    }
+  }
+
+  _update_attributes_from_matches (label, NULL);
+  return FALSE;
+}
+
+static gboolean
+_leave_event_cb (ClutterActor        *actor,
+                  ClutterEvent        *event,
+                  PengeClickableLabel *label)
+{
+  _update_attributes_from_matches (label, NULL);
+  return FALSE;
+}
+
+
+
 static void
 penge_clickable_label_constructed (GObject *object)
 {
@@ -232,6 +300,16 @@ penge_clickable_label_constructed (GObject *object)
   g_signal_connect (text,
                     "button-release-event",
                     (GCallback)_button_release_event_cb,
+                    object);
+
+  g_signal_connect (text,
+                    "motion-event",
+                    (GCallback)_motion_event_cb,
+                    object);
+
+  g_signal_connect (text,
+                    "leave-event",
+                    (GCallback)_leave_event_cb,
                     object);
 
   if (G_OBJECT_CLASS (penge_clickable_label_parent_class)->constructed)
