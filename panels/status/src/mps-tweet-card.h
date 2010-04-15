@@ -46,12 +46,12 @@ G_BEGIN_DECLS
 typedef struct _MpsTweetCardPrivate MpsTweetCardPrivate;
 
 typedef struct {
-  MxButton parent;
+  MxWidget parent;
   MpsTweetCardPrivate *priv;
 } MpsTweetCard;
 
 typedef struct {
-  MxButtonClass parent_class;
+  MxWidgetClass parent_class;
 } MpsTweetCardClass;
 
 GType mps_tweet_card_get_type (void);
