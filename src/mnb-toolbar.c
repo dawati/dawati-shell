@@ -3139,7 +3139,8 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
       return FALSE;
     }
 
-  if (event->crossing.x > priv->old_screen_width - CLOSE_BUTTON_GUARD_WIDTH)
+  if ((event->type == CLUTTER_ENTER) &&
+      (event->crossing.x > priv->old_screen_width - CLOSE_BUTTON_GUARD_WIDTH))
     {
       /* g_debug (G_STRLOC " leaving early"); */
       return FALSE;
