@@ -197,6 +197,7 @@ mpl_content_pane_init (MplContentPane *self)
                                NULL);
 
   priv->title = (MxLabel *) mx_label_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->title), "title");
   mx_box_layout_add_actor (priv->header, (ClutterActor *) priv->title, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->header),
                                (ClutterActor *) priv->title,
