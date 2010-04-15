@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-03 09:31+0000\n"
+"POT-Creation-Date: 2010-04-14 09:39+0000\n"
 "PO-Revision-Date: 2009-08-26 08:21+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -59,74 +59,77 @@ msgstr "Tampilkan berkas terkini sebanyak mungkin"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "Anda ingin membersihkan dokumen terkini? Ini akan menghapus muatan lokal dari Myzone"
 
-#: ../penge/penge-calendar-pane.c:445
+#: ../penge/penge-calendar-pane.c:483
 msgid "Appointments"
 msgstr "<b>Janji Temu</b>"
+
+#: ../penge/penge-calendar-pane.c:526
+msgid "Tasks"
+msgstr "Tugas"
 
 #: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "Buat suatu janji pertemuan"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
 msgid "Add"
 msgstr "Tambah"
 
-#: ../penge/penge-events-pane.c:412
+#: ../penge/penge-events-pane.c:400
 msgid "No calendar entries this week"
 msgstr "Tidak ada entri kalender minggu ini"
 
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "Hal-hal yang dilakukan teman-teman Anda daring akan muncul di sini. Aktifkan akun Anda sekarang!"
-
-#: ../penge/penge-recent-file-tile.c:215
+#: ../penge/penge-recent-file-tile.c:216
 msgid "Web page"
 msgstr "Halaman web"
 
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-tasks-pane.c:50
 msgid "Create a new task"
 msgstr "Buat tugas baru"
 
-#: ../penge/penge-tasks-pane.c:429
+#: ../penge/penge-tasks-pane.c:426
 msgid "Nothing to do today"
 msgstr "Tak ada yang perlu dilakukan hari ini"
 
-#: ../penge/penge-task-tile.c:316
+#: ../penge/penge-task-tile.c:318
 #, c-format
 msgid "Due %x"
 msgstr "Jatuh tempo %x"
 
-#: ../penge/penge-welcome-tile.c:75
+#: ../penge/penge-welcome-tile.c:32
+msgid "Play intro video"
+msgstr "Mainkan video perkenalan"
+
+#: ../penge/penge-welcome-tile.c:64
 msgid "Welcome to MeeGo"
 msgstr "Selamat datang ke MeeGo"
 
-#: ../penge/penge-welcome-tile.c:94
+#: ../penge/penge-welcome-tile.c:83
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Ini adalah Myzone, dimana berkas yang baru-baru ini dipakai dan isi dari asupan web akan muncul."
 
-#: ../penge/penge-email-pane.c:191
-msgid "No unread messages"
-msgstr "Tak ada pesan belum dibaca"
-
-#: ../penge/penge-email-pane.c:193
-msgid "Unread message"
-msgstr "Pesan belum dibaca"
-
-#: ../penge/penge-email-pane.c:195
-msgid "Unread messages"
-msgstr "Pesan-pesan belum dibaca"
-
-#: ../penge/penge-calendar-pane.c:475
-msgid "Tasks"
-msgstr "Tugas"
-
-#: ../penge/penge-welcome-tile.c:35
+#: ../penge/penge-welcome-tile.c:26
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "Ketika Anda telah menata akun web Anda dan memakai beberapa berkas, mereka akan muncul disini pada Myzone untuk pengaksesan yang mudah kapanpun Anda inginkan."
 
-#: ../penge/penge-welcome-tile.c:41
-msgid "Play intro video"
-msgstr "Mainkan video perkenalan"
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "Tak ada pesan belum dibaca"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Pesan belum dibaca"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Pesan-pesan belum dibaca"
+
+#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
+msgid "Open"
+msgstr "Buka"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "Hal-hal yang dilakukan teman-teman Anda daring akan muncul di sini. Aktifkan akun Anda sekarang!"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Selamat Datang ke Moblin 2.1 untuk Netbook</b>"
