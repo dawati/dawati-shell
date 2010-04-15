@@ -2839,13 +2839,10 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
   /*
    * Work out what we should focus next.
    *
-   * First, we try to get the window from metacity tablist, if that fails
-   * fall back on the cached last_focused window.
+   * First, we try the window the WM last requested focus for; if this is
+   * not available, we try the last focused window.
    */
-  focus = meta_display_get_tab_current (display,
-                                        META_TAB_LIST_NORMAL,
-                                        screen,
-                                        NULL);
+  focus = meta_display_get_expected_focus_window (display);
 
   if (!focus)
     focus = priv->last_focused;
