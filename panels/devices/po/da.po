@@ -1,0 +1,268 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-devices\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-14 09:58+0000\n"
+"PO-Revision-Date: 2010-04-15 08:03+0100\n"
+"Last-Translator: Jon Hedemann <tradomusnordic@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Enhedspanel"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:149
+msgid "devices"
+msgstr "enheder"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Deaktiveret"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Output"
+msgstr[1] "%u Outputs"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Input"
+msgstr[1] "%u Inputs"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Systemlyde"
+
+#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
+msgid "Moblin Power Icon"
+msgstr "Moblin-strømforsyningsikon"
+
+#: ../power-icon/src/mpd-power-icon.c:71
+msgid "Running low on battery"
+msgstr "Lav batterikapacitet"
+
+#: ../power-icon/src/mpd-power-icon.c:72
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "Vi har bemærket, at batterikapaciteten er en smule lav. Hvis du har mulighed for det, anbefaler vi, at du oplader batteriet."
+
+#: ../power-icon/src/mpd-power-icon.c:75
+msgid "Getting close to empty"
+msgstr "Meget lav batterikapacitet"
+
+#: ../power-icon/src/mpd-power-icon.c:76
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Batterikapaciteten er meget lav. Vi anbefaler, at du gemmer alt dit arbejde og oplader batteriet hurtigst muligt."
+
+#: ../power-icon/src/mpd-power-icon.c:80
+msgid "Danger!"
+msgstr "Advarsel!"
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Beklager, men din computer er næste løbet tør for batteri. Vi bliver nødt til at lukke computeren ned. Gem venligst alt dit arbejde. På gensyn!"
+
+#: ../power-icon/src/mpd-power-icon.c:311
+msgid "Would you like to turn off now?"
+msgstr "Vil du lukke computeren ned nu?"
+
+#: ../power-icon/src/mpd-power-icon.c:312
+msgid "If you don't decide I'll turn off in 30 seconds."
+msgstr "Hvis du foretager et valg, lukker computeren ned om 30 sekunder."
+
+#: ../power-icon/src/mpd-power-icon.c:377
+msgid "battery"
+msgstr "batteri"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:75
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Hvis du foretager et valg, lukker computeren ned om %d sekunder."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:133
+msgid "Turn off"
+msgstr "Luk ned"
+
+#: ../src/moblin-panel-devices.c:120
+msgid "Moblin Devices Panel"
+msgstr "Moblin-enhedspanel"
+
+#: ../src/mpd-battery-device.c:333
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr ""
+
+#: ../src/mpd-battery-device.c:337
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr ""
+
+#: ../src/mpd-battery-device.c:342
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr ""
+
+#: ../src/mpd-battery-device.c:347
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr ""
+
+#: ../src/mpd-battery-device.c:351
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr ""
+
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
+msgid "Netbook brightness"
+msgstr ""
+
+#: ../src/mpd-computer-pane.c:120
+msgid "Your computer"
+msgstr ""
+
+#: ../src/mpd-computer-pane.c:129
+msgid "All settings"
+msgstr ""
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+
+#: ../src/mpd-devices-pane.c:105
+msgid "Other devices"
+msgstr ""
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr ""
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr ""
+
+#: ../src/mpd-media-import-tile.c:73
+#, c-format
+msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+msgstr ""
+
+#: ../src/mpd-media-import-tile.c:217
+msgid "Stop"
+msgstr ""
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr ""
+
+#: ../src/mpd-storage-device-tile.c:164
+#, c-format
+msgid "Could not run %s"
+msgstr ""
+
+#: ../src/mpd-storage-device-tile.c:165
+msgid "Import error"
+msgstr ""
+
+#: ../src/mpd-storage-device-tile.c:256
+#, c-format
+msgid "%s nas been plugged in. You can use the Devices panel interact with it"
+msgstr ""
+
+#: ../src/mpd-storage-device-tile.c:259
+msgid "USB plugged in"
+msgstr ""
+
+#: ../src/mpd-storage-device-tile.c:260
+msgid "Show"
+msgstr ""
+
+#. Import button
+#: ../src/mpd-storage-device-tile.c:514
+msgid "Import data"
+msgstr ""
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:525
+msgid "Eject"
+msgstr ""
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:536
+msgid "Open"
+msgstr ""
+
+#: ../src/mpd-storage-device-tile.c:725
+#, c-format
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:357
+msgid "Netbook volume"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:373
+msgid "Mute"
+msgstr ""
+
