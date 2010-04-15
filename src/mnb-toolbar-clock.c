@@ -43,6 +43,7 @@ struct _MnbToolbarClockPrivate
   ClutterActor *time;
 
   guint         timeout_id;
+  gulong        toolbar_show_id;
 
   gboolean disposed : 1;
 };
@@ -61,6 +62,15 @@ mnb_toolbar_clock_dispose (GObject *object)
     {
       g_source_remove (priv->timeout_id);
       priv->timeout_id = 0;
+    }
+
+  if (priv->toolbar_show_id)
+    {
+      MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+      MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+      g_signal_handler_disconnect (ppriv->toolbar, priv->toolbar_show_id);
+      priv->toolbar_show_id = 0;
     }
 
   clutter_actor_destroy (priv->time);
@@ -193,11 +203,17 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
 }
 
 static void
+mnb_toolbar_show_cb (MnbToolbar *toolbar, MnbToolbarClock *clock)
+{
+  mnb_toolbar_clock_update_time_date (clock);
+}
+
+static void
 mnb_toolbar_clock_constructed (GObject *self)
 {
-  MnbToolbarClockPrivate *priv = MNB_TOOLBAR_CLOCK (self)->priv;
-  ClutterActor           *actor = CLUTTER_ACTOR (self);
-  time_t interval = 60 - (time(NULL) % 60);
+  MnbToolbarClockPrivate     *priv = MNB_TOOLBAR_CLOCK (self)->priv;
+  ClutterActor               *actor = CLUTTER_ACTOR (self);
+  time_t                      interval = 60 - (time(NULL) % 60);
 
   if (G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_toolbar_clock_parent_class)->constructed (self);
@@ -213,21 +229,43 @@ mnb_toolbar_clock_constructed (GObject *self)
 
   mnb_toolbar_clock_update_time_date (MNB_TOOLBAR_CLOCK (self));
 
-  if (!interval) {
-    priv->timeout_id =
-      g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_clock_update_time_date,
+  if (!interval)
+    {
+      priv->timeout_id =
+        g_timeout_add_seconds (60,
+                               (GSourceFunc) mnb_toolbar_clock_update_time_date,
+                               self);
+    }
+  else
+    {
+      priv->timeout_id = 0;
+      g_timeout_add_seconds (interval,
+                             (GSourceFunc) mnb_toolbar_clock_update_time_date,
                              self);
-  } else {
-    priv->timeout_id = 0;
-    g_timeout_add_seconds (interval, (GSourceFunc) mnb_toolbar_clock_update_time_date,
-                           self);
-  }
+    }
 }
 
 static void
 mnb_toolbar_clock_map (ClutterActor *actor)
 {
   MnbToolbarClockPrivate *priv = MNB_TOOLBAR_CLOCK (actor)->priv;
+
+  /*
+   * The first time we are mapped we connect to the ClutterActor::show signal
+   * on the Toolbar for clock updates on show, MB#776 (we can't connect in the
+   * constructor, as at that point the Toolbar construction is not yet
+   * completed, so we have no way of getting at the object instance.
+   */
+  if (!priv->toolbar_show_id)
+    {
+      MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+      MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+
+      priv->toolbar_show_id =
+        g_signal_connect (ppriv->toolbar, "show",
+                          G_CALLBACK (mnb_toolbar_show_cb),
+                          actor);
+    }
 
   CLUTTER_ACTOR_CLASS (mnb_toolbar_clock_parent_class)->map (actor);
 
