@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin Panel Status\n"
@@ -23,11 +23,6 @@ msgstr ""
 msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
 msgstr "Hello! This is the Status panel.When you have a web account configured (like Twitter) you will be able to view your feeds and update your status here."
 
-#: ../src/moblin-panel-status.c:99
-#, fuzzy
-msgid "Status"
-msgstr "status"
-
 #: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
@@ -37,11 +32,6 @@ msgstr "status"
 #: ../data/moblin-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Status panel"
-
-#: ../src/mps-feed-pane.c:92
-#, fuzzy
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "Unable to update status: The service may be unavailable or your password could be wrong."
 
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
@@ -110,48 +100,61 @@ msgstr "Don't use location"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:391
 #, c-format
 msgid "%s from %s"
 msgstr "%s from %s"
 
+#: ../src/moblin-panel-status.c:99
+msgid "Status"
+msgstr "status"
+
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Unable to update status: The service may be unavailable or your password could be wrong."
+
 #~ msgid "Offline"
 #~ msgstr "Offline"
+
 #~ msgid "Available"
 #~ msgstr "Available"
+
 #~ msgid "Away"
 #~ msgstr "Away"
+
 #~ msgid "Busy"
 #~ msgstr "Busy"
+
 #~ msgid "Close"
 #~ msgstr "Close"
+
 #~ msgid "Unknown account"
 #~ msgstr "Unknown account"
+
 #~ msgid "Edit"
 #~ msgstr "Edit"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Enter your %s status here..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "Enter your current status here..."
+
 #~ msgid "Post"
 #~ msgstr "Post"
+
 #~ msgid "Your current status"
 #~ msgstr "Your current status"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Your current status - you are offline"
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "To update your web status, you need to set up a Web Services account with "
-#~ "a provider that supports status messages."
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "To update your IM status, you need to set up an Instant Messaging account."
 
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Sorry, we can't find any people. Have you set up a Messenger account?"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "To update your web status, you need to set up a Web Services account with a provider that supports status messages."
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "To update your IM status, you need to set up an Instant Messaging account."
