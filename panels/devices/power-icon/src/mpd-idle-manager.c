@@ -21,7 +21,6 @@
 
 #include <dbus/dbus-glib.h>
 #include <devkit-power-gobject/devicekit-power.h>
-#include <egg-idletime/egg-idletime.h>
 #include <gconf/gconf-client.h>
 
 #include "mpd-gobject.h"
@@ -35,23 +34,25 @@ G_DEFINE_TYPE (MpdIdleManager, mpd_idle_manager, G_TYPE_OBJECT)
 
 typedef struct
 {
-  EggIdletime *idletime;
   GConfClient *client;
   unsigned int suspend_idle_time_notify_id;
+
+  int suspend_idle_time;
+
+  DBusGProxy *presence;
+
   DkpClient *power_client;
+
+  guint suspend_source_id;
 } MpdIdleManagerPrivate;
 
 #define MOBLIN_GCONF_DIR "/desktop/moblin"
-#define SUSPEND_IDLE_TIME_KEY "suspend_idle_time"
-
-#define SUSPEND_ALARM_ID 1
+#define SUSPEND_IDLE_TIME_KEY MOBLIN_GCONF_DIR"/suspend_idle_time"
 
 static void
 _dispose (GObject *object)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (object);
-
-  mpd_gobject_detach (object, (GObject **) &priv->idletime);
 
   if (priv->suspend_idle_time_notify_id)
   {
@@ -61,7 +62,7 @@ _dispose (GObject *object)
   }
 
   mpd_gobject_detach (object, (GObject **) &priv->client);
-
+  mpd_gobject_detach (object, (GObject **) &priv->presence);
   mpd_gobject_detach (object, (GObject **) &priv->power_client);
 
   G_OBJECT_CLASS (mpd_idle_manager_parent_class)->dispose (object);
@@ -77,32 +78,78 @@ mpd_idle_manager_class_init (MpdIdleManagerClass *klass)
   object_class->dispose = _dispose;
 }
 
-static void
-_set_suspend_idle_alarm (MpdIdleManager *manager)
+static gboolean
+_suspend_timer_elapsed (gpointer data)
 {
-  MpdIdleManagerPrivate *priv = GET_PRIVATE (manager);
-  int suspend_idle_time_minutes = -1;
+  MpdIdleManager *self;
+  MpdIdleManagerPrivate *priv;
   GError *error = NULL;
 
-  suspend_idle_time_minutes =
-    gconf_client_get_int (priv->client,
-                          MOBLIN_GCONF_DIR"/"SUSPEND_IDLE_TIME_KEY,
-                          &error);
+  g_return_val_if_fail (MPD_IS_IDLE_MANAGER (data), FALSE);
 
-  if (error)
+  self = MPD_IDLE_MANAGER (data);
+  priv = GET_PRIVATE (self);
+
+  priv->suspend_source_id = 0;
+
+  g_debug ("Suspending after %d seconds of idle",
+           priv->suspend_idle_time);
+  if (!mpd_idle_manager_suspend (self, &error))
   {
-    g_warning (G_STRLOC ": Error getting suspend idle time gconf key: %s",
-               error->message);
+    g_warning (G_STRLOC ": Unable to suspend: %s\n", error->message);
     g_clear_error (&error);
-    suspend_idle_time_minutes = -1;
   }
 
+  return FALSE;
+}
 
-  if (suspend_idle_time_minutes > 0)
+
+#define MIN_SUSPEND_DELAY 15
+static void
+_presence_status_changed (DBusGProxy *presence,
+                          guint       status,
+                          gpointer    data)
+{
+  MpdIdleManager *self;
+  MpdIdleManagerPrivate *priv;
+  GError *error = NULL;
+
+  g_return_if_fail (MPD_IS_IDLE_MANAGER (data));
+
+  self = MPD_IDLE_MANAGER (data);
+  priv = GET_PRIVATE (self);
+
+  if (status == 3)
   {
-    egg_idletime_alarm_set (priv->idletime,
-                            SUSPEND_ALARM_ID,
-                            suspend_idle_time_minutes * 60 * 1000);
+    if (priv->suspend_source_id == 0)
+    {
+      /* session just became idle */
+      if (priv->suspend_idle_time >= 0 &&
+          priv->suspend_idle_time < MIN_SUSPEND_DELAY)
+      {
+        /* suspend now but leave a few seconds for gnome-screensaver:
+         * otherwise may get a screensave _after_ resuming. This
+         * also lets screensaver finish any fading it wants to do,
+         * not to mention giving the user a few seconds to break idle */
+        priv->suspend_source_id =
+          g_timeout_add_seconds (MIN_SUSPEND_DELAY,
+                                 _suspend_timer_elapsed,
+                                 data);
+      }
+      else if (priv->suspend_idle_time > 0)
+      {
+        priv->suspend_source_id =
+          g_timeout_add_seconds (priv->suspend_idle_time,
+                                 _suspend_timer_elapsed,
+                                 data);
+      }
+    }
+  }
+  else if (priv->suspend_source_id > 0)
+  {
+    /* session just became non-idle and we have a timer */
+    g_source_remove (priv->suspend_source_id);
+    priv->suspend_source_id = 0;
   }
 }
 
@@ -112,34 +159,14 @@ _suspend_idle_time_key_changed_cb (GConfClient  *client,
                                    GConfEntry   *entry,
                                    void         *data)
 {
-  MpdIdleManager *manager = MPD_IDLE_MANAGER (data);
-  MpdIdleManagerPrivate *priv = GET_PRIVATE (manager);
+  MpdIdleManagerPrivate *priv;
 
-  egg_idletime_alarm_remove (priv->idletime, SUSPEND_ALARM_ID);
+  g_return_if_fail (MPD_IS_IDLE_MANAGER (data));
+  priv = GET_PRIVATE (data);
 
-  _set_suspend_idle_alarm (manager);
-}
-
-static void
-_idletime_alarm_expired_cb (EggIdletime     *idletime,
-                            unsigned int     alarm_id,
-                            MpdIdleManager  *self)
-{
-  GError *error = NULL;
-
-  if (alarm_id == SUSPEND_ALARM_ID)
-  {
-    g_debug (G_STRLOC ": Got suspend on idle alarm event");
-
-    mpd_idle_manager_suspend (self, &error);
-    if (error)
-    {
-      g_warning ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
-    }
-
-    _set_suspend_idle_alarm (self);
-  }
+  priv->suspend_idle_time = gconf_client_get_int (priv->client,
+                                                  SUSPEND_IDLE_TIME_KEY,
+                                                  NULL);
 }
 
 static void
@@ -147,8 +174,10 @@ mpd_idle_manager_init (MpdIdleManager *self)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
+  DBusGConnection *conn;
 
-  priv->idletime = egg_idletime_new ();
+  priv->suspend_idle_time = -1;
+  priv->power_client = dkp_client_new ();
   priv->client = gconf_client_get_default ();
 
   gconf_client_add_dir (priv->client,
@@ -165,12 +194,11 @@ mpd_idle_manager_init (MpdIdleManager *self)
 
   priv->suspend_idle_time_notify_id =
     gconf_client_notify_add (priv->client,
-                             MOBLIN_GCONF_DIR"/"SUSPEND_IDLE_TIME_KEY,
+                             SUSPEND_IDLE_TIME_KEY,
                              _suspend_idle_time_key_changed_cb,
                              g_object_ref (self),
                              g_object_unref,
                              &error);
-
   if (error)
   {
     g_warning (G_STRLOC ": Unable to add gconf client key notify: %s",
@@ -178,15 +206,29 @@ mpd_idle_manager_init (MpdIdleManager *self)
     g_clear_error (&error);
   }
 
-  gconf_client_notify (priv->client,
-                       MOBLIN_GCONF_DIR"/"SUSPEND_IDLE_TIME_KEY);
+  conn = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (!conn)
+  {
+    g_warning (G_STRLOC ": Unable to connect to session bus: %s\n",
+               error->message);
+    g_clear_error (&error);
+  }
+  else
+  {
+    priv->presence =
+      dbus_g_proxy_new_for_name (conn,
+                                 "org.gnome.SessionManager",
+                                 "/org/gnome/SessionManager/Presence",
+                                 "org.gnome.SessionManager.Presence");
 
-  g_signal_connect (priv->idletime,
-                    "alarm-expired",
-                    (GCallback)_idletime_alarm_expired_cb,
-                    self);
+    dbus_g_proxy_add_signal (priv->presence, "StatusChanged",
+                             G_TYPE_UINT, G_TYPE_INVALID);
+    dbus_g_proxy_connect_signal (priv->presence, "StatusChanged",
+                                 G_CALLBACK (_presence_status_changed),
+                                 self, NULL);
+  }
 
-  priv->power_client = dkp_client_new ();
+  gconf_client_notify (priv->client, SUSPEND_IDLE_TIME_KEY);
 }
 
 MpdIdleManager *
