@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin Panel Status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-23 23:45+0000\n"
-"PO-Revision-Date: 2009-12-03 15:53-0800\n"
+"POT-Creation-Date: 2010-04-14 09:43+0000\n"
+"PO-Revision-Date: 2010-04-15 13:23-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,81 +19,139 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: UNITED KINGDOM\n"
 
-#: ../src/moblin-panel-status.c:132
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "Hello! This is the Status panel.When you have a web account configured (like Twitter) you will be able to view your feeds and update your status here."
+
+#: ../src/moblin-panel-status.c:99
+#, fuzzy
+msgid "Status"
+msgstr "status"
+
+#: ../src/moblin-panel-status.c:157
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
-
-#. Actor creation
-#: ../src/mps-feed-pane.c:416
-msgid "Update"
-msgstr "Update"
 
 #. vim:set ts=8 expandtab
 #: ../data/moblin-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Status panel"
 
-#: ../src/mps-feed-pane.c:445
-msgid "Unable to update status: The service may be unavailable or your password could be wrong."
+#: ../src/mps-feed-pane.c:92
+#, fuzzy
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
 msgstr "Unable to update status: The service may be unavailable or your password could be wrong."
 
-#: ../src/mps-feed-pane.c:421
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Unable to update status: You're not online."
+
+#: ../src/mps-feed-pane.c:444
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "We guessed your location as: %f %f"
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "Your location is being shared as: %f %f "
+msgstr "Your location is being shared as: %f %f "
+
+#: ../src/mps-feed-pane.c:455
+msgid "Your location is not being shared"
+msgstr "Your location is not being shared"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:551
+msgid "Update"
+msgstr "Update"
+
+#: ../src/mps-feed-pane.c:556
 msgid "What's happening?"
 msgstr "What's happening?"
 
-#: ../src/mps-feed-switcher.c:367
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "You don't appear to have any web services configured, or there is a problem with the configuration. Use the button above to open the My Web Accounts and set one up."
+#: ../src/mps-feed-pane.c:606
+msgid "Change"
+msgstr "Change"
 
-#: ../src/mps-feed-switcher.c:344
+#: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Add new web service"
 
+#: ../src/mps-feed-switcher.c:373
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "You don't appear to have any web services configured, or there is a problem with the configuration. Use the button above to open My Web Accounts and set one up."
+
+#: ../src/mps-geotag-pane.c:215
+msgid "Your location"
+msgstr "Your location"
+
+#: ../src/mps-geotag-pane.c:485
+msgid "Search"
+msgstr "Search"
+
+#: ../src/mps-geotag-pane.c:490
+msgid "Where are you?"
+msgstr "Where are you?"
+
+#: ../src/mps-geotag-pane.c:492
+msgid "Find me"
+msgstr "Find me"
+
+#: ../src/mps-geotag-pane.c:499
+msgid "Use location"
+msgstr "Use location"
+
+#: ../src/mps-geotag-pane.c:500
+msgid "Don't use location"
+msgstr "Don't use location"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:391
+#, c-format
+msgid "%s from %s"
+msgstr "%s from %s"
+
 #~ msgid "Offline"
 #~ msgstr "Offline"
-
 #~ msgid "Available"
 #~ msgstr "Available"
-
 #~ msgid "Away"
 #~ msgstr "Away"
-
 #~ msgid "Busy"
 #~ msgstr "Busy"
-
 #~ msgid "Close"
 #~ msgstr "Close"
-
-#~ msgid "Change"
-#~ msgstr "Change"
-
 #~ msgid "Unknown account"
 #~ msgstr "Unknown account"
-
 #~ msgid "Edit"
 #~ msgstr "Edit"
-
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Enter your %s status here..."
-
 #~ msgid "Enter your current status here..."
 #~ msgstr "Enter your current status here..."
-
 #~ msgid "Post"
 #~ msgstr "Post"
-
 #~ msgid "Your current status"
 #~ msgstr "Your current status"
-
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Your current status - you are offline"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "To update your web status, you need to set up a Web Services account with "
+#~ "a provider that supports status messages."
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "To update your IM status, you need to set up an Instant Messaging account."
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Sorry, we can't find any people. Have you set up a Messenger account?"
-
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "To update your web status, you need to set up a Web Services account with a provider that supports status messages."
-
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "To update your IM status, you need to set up an Instant Messaging account."
