@@ -30,7 +30,7 @@ _lock_button_clicked_cb (MxButton       *button,
 {
   GError *error = NULL;
 
-  mpd_idle_manager_lock_screen (idlr, &error);
+  mpd_idle_manager_activate_screensaver (idlr, &error);
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);
@@ -72,7 +72,7 @@ main (int     argc,
   box = mx_box_layout_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
-  button = mx_button_new_with_label ("Lock");
+  button = mx_button_new_with_label ("Activate screensaver");
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_lock_button_clicked_cb), idlr);
   clutter_container_add_actor (CLUTTER_CONTAINER (box), button);

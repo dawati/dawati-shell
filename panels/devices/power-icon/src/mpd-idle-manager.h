@@ -60,8 +60,8 @@ MpdIdleManager *
 mpd_idle_manager_new (void);
 
 bool
-mpd_idle_manager_lock_screen (MpdIdleManager   *self,
-                              GError          **error);
+mpd_idle_manager_activate_screensaver (MpdIdleManager   *self,
+                                       GError          **error);
 
 bool
 mpd_idle_manager_suspend (MpdIdleManager   *self,

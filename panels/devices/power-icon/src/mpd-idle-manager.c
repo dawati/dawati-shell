@@ -196,8 +196,8 @@ mpd_idle_manager_new (void)
 }
 
 bool
-mpd_idle_manager_lock_screen (MpdIdleManager   *self,
-                              GError          **error)
+mpd_idle_manager_activate_screensaver (MpdIdleManager   *self,
+                                         GError          **error)
 {
   DBusGConnection *conn;
   DBusGProxy *proxy;
@@ -213,7 +213,9 @@ mpd_idle_manager_lock_screen (MpdIdleManager   *self,
                                      "/",
                                      "org.gnome.ScreenSaver");
 
-  dbus_g_proxy_call_no_reply (proxy, "Lock", G_TYPE_INVALID);
+  dbus_g_proxy_call_no_reply (proxy, "SetActive",
+                              G_TYPE_BOOLEAN, TRUE,
+                              G_TYPE_INVALID);
 
   g_object_unref (proxy);
   return true;
@@ -226,7 +228,7 @@ mpd_idle_manager_suspend (MpdIdleManager   *self,
   MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
   bool ret;
 
-  ret = mpd_idle_manager_lock_screen (self, error);
+  ret = mpd_idle_manager_activate_screensaver (self, error);
   if (!ret || (error && *error))
   {
     return false;
