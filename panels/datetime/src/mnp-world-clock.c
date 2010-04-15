@@ -406,7 +406,7 @@ construct_completion (MnpWorldClock *world_clock)
 	clutter_actor_hide (scroll);
 
 	view = mx_list_view_new ();
-	clutter_actor_set_name (view, "completion-list-view");
+	clutter_actor_set_name (view, "CompletionListView");
 	priv->zones_list = (MxListView *)view;
 
 	clutter_container_add_actor (CLUTTER_CONTAINER (scroll), view);
@@ -577,10 +577,10 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_box_layout_set_spacing ((MxBoxLayout *)box, 4);
 
 	priv->entry_box = box;
-	mx_stylable_set_style_class (MX_STYLABLE(box), "SearchEntryBox");
+	mx_stylable_set_style_class (MX_STYLABLE(box), "ZoneSearchEntryBox");
 	
 	entry = mx_entry_new ();
-	mx_stylable_set_style_class (MX_STYLABLE (entry), "SearchEntry");
+	mx_stylable_set_style_class (MX_STYLABLE (entry), "ZoneSearchEntry");
 
 	priv->search_location = (MxEntry *)entry;
 	mx_entry_set_hint_text (MX_ENTRY (entry), _("Enter a country or city"));
@@ -607,7 +607,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 	priv->add_location = mx_button_new ();
 	mx_button_set_label ((MxButton *)priv->add_location, _("Add"));
-	mx_stylable_set_style_class (MX_STYLABLE(priv->add_location), "SearchEntryAddButton");
+	mx_stylable_set_style_class (MX_STYLABLE(priv->add_location), "ZoneSearchEntryAddButton");
 	
 	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->add_location, 1);
   	/* g_signal_connect (priv->add_location, "clicked",
@@ -636,7 +636,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	clutter_actor_set_size ((ClutterActor *)priv->area, 300, -1);
 
 	clutter_actor_set_reactive ((ClutterActor *)priv->area, TRUE);
-	clutter_actor_set_name ((ClutterActor *)priv->area, "clock-area");
+	clutter_actor_set_name ((ClutterActor *)priv->area, "WorldClockArea");
 
 	clutter_container_add_actor ((ClutterContainer *)stage, (ClutterActor *)priv->area);
 	

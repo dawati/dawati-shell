@@ -384,7 +384,7 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 {
 
 	clutter_actor_set_reactive ((ClutterActor *)tile, TRUE);
-	clutter_actor_set_name ((ClutterActor *)tile, "clock-tile");
+	clutter_actor_set_name ((ClutterActor *)tile, "ClockTile");
 	clutter_container_add_actor ((ClutterContainer *)clutter_stage_get_default(), (ClutterActor *)tile);
 	mx_draggable_set_axis (MX_DRAGGABLE (tile), MX_DRAG_AXIS_Y);
 	mx_draggable_enable ((MxDraggable *)tile);

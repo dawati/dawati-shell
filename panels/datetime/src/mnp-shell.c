@@ -161,7 +161,7 @@ mnp_shell_construct (MnpShell *shell)
   priv->datetime = mnp_datetime_new ();
 
   priv->label = mx_label_new_with_text ("Time and Date");
-  clutter_actor_set_name (priv->label, "DateHeading");
+  clutter_actor_set_name (priv->label, "PanelDateHeading");
   mnp_date_time_set_date_label ((MnpDatetime *)priv->datetime, priv->label);
 
   mx_box_layout_add_actor ((MxBoxLayout *)shell, priv->label, 1);

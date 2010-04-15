@@ -405,18 +405,18 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	label1 = mx_label_new_with_text (fmt->date);
 	tile->priv->date = (MxLabel *)label1;
-	clutter_actor_set_name (label1, "mnp-tile-date");
+	clutter_actor_set_name (label1, "ClockTileDate");
 
 	label2 = mx_label_new_with_text (fmt->time);
 	tile->priv->time = (MxLabel *)label2;
-	clutter_actor_set_name (label2, fmt->day ? "MnpTileTimeDay" : "MnpTileTimeNight");
+	clutter_actor_set_name (label2, fmt->day ? "ClockTileTimeDay" : "ClockTileTimeNight");
 
 	label3 = mx_label_new_with_text (fmt->city);
 	tile->priv->city = (MxLabel *)label3;
-	clutter_actor_set_name (label3, "mnp-tile-city");
+	clutter_actor_set_name (label3, "ClockTileCity");
 
 	box1 = mx_box_layout_new ();
-	clutter_actor_set_name (box1, "TileDateCityBox");
+	clutter_actor_set_name (box1, "ClockTileDateCityBox");
 	mx_box_layout_set_orientation ((MxBoxLayout *)box1, MX_ORIENTATION_VERTICAL);
 
 	mx_box_layout_add_actor ((MxBoxLayout *)box1, label3, 0);
@@ -464,10 +464,10 @@ mnp_clock_construct (MnpClockTile *tile)
                                    	NULL);
 
 	mx_stylable_set_style_class (MX_STYLABLE (priv->remove_button),
-                               			"TileRemoveButton");
+                               			"ClockTileRemoveButton");
   	icon = (ClutterActor *)mx_icon_new ();
   	mx_stylable_set_style_class (MX_STYLABLE (icon),
-                               		"TileIcon");
+                               		"ClockTileRemoveIcon");
   	mx_bin_set_child (MX_BIN (priv->remove_button),
                       		  (ClutterActor *)icon);
 	
@@ -502,7 +502,7 @@ mnp_clock_tile_refresh (MnpClockTile *tile, time_t now, gboolean tfh)
 
 	mx_label_set_text ((MxLabel *)tile->priv->time, fmt->time);
 	mx_label_set_text ((MxLabel *)tile->priv->date, fmt->date);
-	clutter_actor_set_name ((ClutterActor *)tile->priv->time, fmt->day ? "MnpTileTimeDay" : "MnpTileTimeNight");
+	clutter_actor_set_name ((ClutterActor *)tile->priv->time, fmt->day ? "ClockTileTimeDay" : "ClockTileTimeNight");
 
 	FREE_DFMT(fmt);
 }
