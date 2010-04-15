@@ -3,6 +3,8 @@
 themedir = $(MUTTER_MOBLIN_THEME_DIR)/moblin-panel
 dist_theme_DATA = \
 	theme.css \
+	content-pane-background.png \
+  content-pane-header.png \
 	mpl-entry-bg.png \
 	mpl-entry-clear-hover.png \
 	mpl-entry-clear.png \

@@ -1,4 +1,14 @@
 
+MplContentPane {
+  border-image: url('content-pane-background.png') 5;
+  padding: 3;
+}
+
+MplContentPane > .header {
+  border-image: url('content-pane-header.png') 2;
+  padding: 3 10 3 15;
+}
+
 MplEntry {
   border-image: url('mpl-entry-bg.png') 5 5 6 5;
   padding: 7 10 7 10;

@@ -5,11 +5,13 @@ AM_CPPFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	-I$(top_srcdir)/libmoblin-panel \
 	-DDATADIR=\"$(datadir)\" \
-  -DCSS_DIR=\"$(abs_builddir)\"
+  -DCSS_DIR=\"$(abs_builddir)\" \
+	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
 
 LDADD = $(LIBMPL_LIBS)
 
 noinst_PROGRAMS = \
+  test-content-pane \
 	test-entry \
 	test-icon-theme \
 	test-panel-clutter \
@@ -21,6 +23,10 @@ test_entry_CFLAGS = \
 
 # FIXME use this once split out
 # -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
+
+test_content_pane_SOURCES = \
+	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-content-pane.c \
+	test-content-pane.c
 
 test_entry_SOURCES = \
 	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-entry.c \
