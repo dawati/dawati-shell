@@ -35,9 +35,10 @@
 #include <moblin-panel/mpl-icon-theme.h>
 
 #include <moblin-panel/mpl-app-bookmark-manager.h>
+#include <moblin-panel/mpl-content-pane.h>
 
 #include "moblin-netbook-launcher.h"
-#include "mnb-entry.h"
+#include "mnb-filter.h"
 #include "mnb-expander.h"
 #include "mnb-launcher-button.h"
 #include "mnb-launcher-grid.h"
@@ -103,45 +104,6 @@ scrollable_ensure_actor_visible (MxScrollable   *scrollable,
   scrollable_ensure_box_visible (scrollable, &box);
 }
 
-static void
-container_has_children_cb (ClutterActor  *actor,
-                           gboolean      *ret)
-{
-  *ret = TRUE;
-}
-
-static gboolean
-container_has_children (ClutterContainer *container)
-{
-  gboolean ret = FALSE;
-
-  clutter_container_foreach (container,
-                             (ClutterCallback) container_has_children_cb,
-                             &ret);
-
-  return ret;
-}
-
-static void
-container_get_n_visible_children_cb (ClutterActor  *actor,
-                                     guint         *ret)
-{
-  if (CLUTTER_ACTOR_IS_VISIBLE (actor))
-    *ret += 1;
-}
-
-static guint
-container_get_n_visible_children (ClutterContainer *container)
-{
-  guint ret = 0;
-
-  clutter_container_foreach (container,
-                             (ClutterCallback) container_get_n_visible_children_cb,
-                             &ret);
-
-  return ret;
-}
-
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S 2
 
@@ -150,15 +112,15 @@ container_get_n_visible_children (ClutterContainer *container)
 
 #define LEFT_COLUMN_WIDTH    240.0
 
-#define FILTER_ENTRY_WIDTH        600
+#define FILTER_WIDTH 270.0
 
 #define SCROLLVIEW_RESERVED_WIDTH 10
 #define SCROLLBAR_RESERVED_WIDTH  40
 #define SCROLLVIEW_ROW_SIZE       50.0
 #define EXPANDER_GRID_ROW_GAP      8
 
-#define LAUNCHER_GRID_COLUMN_GAP   12
-#define LAUNCHER_GRID_ROW_GAP      12
+#define LAUNCHER_GRID_COLUMN_GAP   6
+#define LAUNCHER_GRID_ROW_GAP      6
 #define LAUNCHER_BUTTON_WIDTH     210
 #define LAUNCHER_BUTTON_HEIGHT     79
 #define LAUNCHER_BUTTON_ICON_SIZE  48
@@ -169,7 +131,7 @@ container_get_n_visible_children (ClutterContainer *container)
 #define SCROLLVIEW_OUTER_HEIGHT(self_)                                         \
           (clutter_actor_get_height (CLUTTER_ACTOR (self_)) -                  \
            clutter_actor_get_height (self_->priv->filter_hbox) - 35)
-#define SCROLLVIEW_INNER_WIDTH(self_) 700.0
+#define SCROLLVIEW_INNER_WIDTH(self_) 690.0
 
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
@@ -215,12 +177,11 @@ struct MnbLauncherPrivate_ {
 
   /* Static widgets, managed by clutter. */
   ClutterActor            *filter_hbox;
-  ClutterActor            *filter_entry;
+  ClutterActor            *filter;
   ClutterActor            *scrollview;
 
   /* "Dynamic" widgets (browser vs. filter mode).
    * These are explicitely ref'd and destroyed. */
-  ClutterActor            *scrolled_vbox;
   ClutterActor            *fav_grid;
   ClutterActor            *apps_grid;
 
@@ -251,34 +212,9 @@ entry_set_focus (MnbLauncher *self,
                  gboolean     focus)
 {
   MnbLauncherPrivate  *priv = GET_PRIVATE (self);
-  MxWidget            *expander;
 
   if (focus)
-    clutter_actor_grab_key_focus (priv->filter_entry);
-
-  mnb_entry_set_has_keyboard_focus (MNB_ENTRY (priv->filter_entry), focus);
-
-  /* Reset highlighed item regardless of focus so we don't end up
-   * with multiple highlighted ones when mixing mouse- and
-   * keyboard-navigation. */
-
-  if (priv->is_filtering)
-    {
-      mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->apps_grid));
-    }
-  else
-    {
-      mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->fav_grid));
-
-      expander = mnb_launcher_grid_find_widget_by_pseudo_class (
-                  MNB_LAUNCHER_GRID (priv->apps_grid),
-                  "active");
-      if (expander)
-        {
-          MxWidget *inner_grid = MX_WIDGET (mx_bin_get_child (MX_BIN (expander)));
-          mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
-        }
-    }
+    clutter_actor_grab_key_focus (priv->filter);
 }
 
 static gboolean
@@ -472,7 +408,7 @@ expander_expand_complete_cb (MxExpander       *expander,
           if (!launcher)
             mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
 
-          scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
+          scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->apps_grid),
                                            CLUTTER_ACTOR (expander));
         }
     }
@@ -532,97 +468,8 @@ expander_frame_allocated_cb (MxExpander             *expander,
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
-  scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
+  scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->apps_grid),
                                    CLUTTER_ACTOR (expander));
-}
-
-static gboolean
-expander_expand_cb (MnbLauncher     *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  priv->expand_timeout_id = 0;
-  mx_expander_set_expanded (priv->expand_expander, TRUE);
-  priv->expand_expander = NULL;
-
-  return FALSE;
-}
-
-static void
-mnb_launcher_hover_expander (MnbLauncher     *self,
-                             MxExpander      *expander)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  if (priv->expand_timeout_id)
-    {
-      g_source_remove (priv->expand_timeout_id);
-      priv->expand_timeout_id = 0;
-      priv->expand_expander = NULL;
-    }
-
-  if (expander)
-    {
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (expander), "hover");
-      priv->expand_expander = expander;
-      priv->expand_timeout_id = g_timeout_add (SEARCH_APPLY_TIMEOUT,
-                                                        (GSourceFunc) expander_expand_cb,
-                                                        self);
-      scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
-                                       CLUTTER_ACTOR (expander));
-    }
-}
-
-static gboolean
-mnb_launcher_keynav_in_grid (MnbLauncher       *self,
-                              MnbLauncherGrid   *grid,
-                              guint              keyval)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  MxWidget *launcher;
-
-  launcher = mnb_launcher_grid_find_widget_by_pseudo_class (grid, "hover");
-  if (launcher)
-    {
-      /* Do the navigation. */
-      launcher = mnb_launcher_grid_keynav (grid, keyval);
-      if (launcher && MNB_IS_LAUNCHER_BUTTON (launcher))
-        {
-          if (keyval == CLUTTER_Return)
-            {
-              launcher_button_activated_cb (MNB_LAUNCHER_BUTTON (launcher),
-                                            self);
-            }
-          else
-            {
-              scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
-                                               CLUTTER_ACTOR (launcher));
-            }
-
-            return TRUE;
-        }
-    }
-  else
-    {
-      /* Nothing focused, jump to first actor. */
-      launcher = mnb_launcher_grid_keynav_first (grid);
-      if (launcher)
-        {
-          /* Activate if it is the only one. */
-          if (container_get_n_visible_children (CLUTTER_CONTAINER (grid)) == 1 &&
-              keyval == CLUTTER_Return)
-            {
-              launcher_button_activated_cb (MNB_LAUNCHER_BUTTON (launcher),
-                                            self);
-            } else {
-              scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
-                                               CLUTTER_ACTOR (launcher));
-            }
-          return TRUE;
-        }
-    }
-
-  return FALSE;
 }
 
 static void
@@ -647,8 +494,8 @@ mnb_launcher_reset (MnbLauncher     *self)
 
   mnb_launcher_cancel_search (self);
 
-  clutter_actor_destroy (priv->scrolled_vbox);
-  priv->scrolled_vbox = NULL;
+  clutter_actor_destroy (priv->apps_grid);
+  priv->apps_grid = NULL;
 
   g_hash_table_destroy (priv->expanders);
   priv->expanders = NULL;
@@ -805,16 +652,6 @@ mnb_launcher_fill (MnbLauncher     *self)
   GList *fav_apps;
   gboolean have_fav_apps;
 
-  if (priv->scrolled_vbox == NULL)
-    {
-      priv->scrolled_vbox = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-      g_object_set (priv->scrolled_vbox,
-                    "max-stride", 1,
-                    NULL);
-      clutter_container_add (CLUTTER_CONTAINER (priv->scrollview),
-                             priv->scrolled_vbox, NULL);
-    }
-
   /*
    * Fav apps.
    */
@@ -879,10 +716,14 @@ mnb_launcher_fill (MnbLauncher     *self)
 
   /* Grid */
   priv->apps_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-  clutter_container_add (CLUTTER_CONTAINER (priv->scrolled_vbox),
-                         priv->apps_grid, NULL);
-  clutter_actor_set_name (priv->apps_grid, "launcher-apps-grid");
-  clutter_actor_set_width (priv->apps_grid, SCROLLVIEW_INNER_WIDTH (self));
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->scrollview),
+                                priv->apps_grid);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->scrollview),
+                                priv->apps_grid,
+                                "expand", TRUE,
+                                "x-fill", TRUE,
+                                "y-fill", TRUE,
+                                NULL);
   mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
                          EXPANDER_GRID_ROW_GAP);
 
@@ -1014,8 +855,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 }
 
 static void
-entry_changed_cb (MnbEntry         *entry,
-                  MnbLauncher      *self)
+_filter_text_notify_cb (MnbFilter     *filter,
+                        GParamSpec    *pspec,
+                        MnbLauncher   *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   gchar *needle;
@@ -1025,7 +867,7 @@ entry_changed_cb (MnbEntry         *entry,
 
   mnb_launcher_cancel_search (self);
 
-  needle = g_strdup (mpl_entry_get_text (MPL_ENTRY (entry)));
+  needle = g_strdup (mnb_filter_get_text (MNB_FILTER (filter)));
   needle = g_strstrip (needle);
 
   if (needle && *needle)
@@ -1035,244 +877,6 @@ entry_changed_cb (MnbEntry         *entry,
                                               self);
 
   g_free (needle);
-}
-
-static void
-entry_keynav_cb (MnbEntry         *entry,
-                 guint             keyval,
-                 MnbLauncher      *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  MxWidget *launcher;
-  MxWidget *expander;
-
-  if (keyval == CLUTTER_Page_Up)
-    {
-      MxAdjustment *adjustment;
-      gdouble page_size, value;
-
-      mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox),
-                                     NULL,
-                                     &adjustment);
-
-      g_object_get (adjustment,
-                    "page-size", &page_size,
-                    "value", &value,
-                    NULL);
-      mx_adjustment_set_value (adjustment, value - page_size);
-    }
-  else if (keyval == CLUTTER_Page_Down)
-    {
-      MxAdjustment *adjustment;
-      gdouble page_size, value;
-
-      mx_scrollable_get_adjustments (MX_SCROLLABLE (priv->scrolled_vbox),
-                                     NULL,
-                                     &adjustment);
-
-      g_object_get (adjustment,
-                    "page-size", &page_size,
-                    "value", &value,
-                    NULL);
-      mx_adjustment_set_value (adjustment, value + page_size);
-    }
-
-  if (priv->is_filtering)
-    {
-      /* First keynav event switches from edit- to nav-mode
-       * and selects first fav app. */
-      if (mnb_entry_get_has_keyboard_focus (entry))
-        entry_set_focus (self, FALSE);
-
-      gboolean keystroke_handled = mnb_launcher_keynav_in_grid (self,
-                                         MNB_LAUNCHER_GRID (priv->apps_grid),
-                                         keyval);
-      if (keystroke_handled)
-        return;
-
-      /* Move focus back to the entry? */
-      if (keyval == CLUTTER_Left ||
-          keyval == CLUTTER_Up)
-        {
-          entry_set_focus (self, TRUE);
-        }
-
-      return;
-    }
-
-  /* First keynav event switches from edit- to nav-mode
-   * and selects first fav app. */
-  if (mnb_entry_get_has_keyboard_focus (entry))
-    {
-      entry_set_focus (self, FALSE);
-
-      launcher = mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (priv->fav_grid));
-      if (launcher)
-        return;
-    }
-
-  /* Favourite apps pane. */
-  launcher = mnb_launcher_grid_find_widget_by_pseudo_class (
-              MNB_LAUNCHER_GRID (priv->fav_grid),
-              "hover");
-  if (launcher)
-    {
-      gboolean keystroke_handled = mnb_launcher_keynav_in_grid (self,
-                                    MNB_LAUNCHER_GRID (priv->fav_grid),
-                                    keyval);
-      if (keystroke_handled)
-        return;
-
-      /* Move focus back to the entry? */
-      if (keyval == CLUTTER_Left ||
-          keyval == CLUTTER_Up)
-        {
-          entry_set_focus (self, TRUE);
-        }
-      else
-      /* Move focus to the expanders? */
-      if (keyval == CLUTTER_Down ||
-          keyval == CLUTTER_Right)
-        {
-          MxPadding padding;
-          mx_widget_get_padding (MX_WIDGET (priv->apps_grid),
-                                    &padding);
-
-          mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (priv->fav_grid));
-          expander = mnb_launcher_grid_find_widget_by_point (
-                      MNB_LAUNCHER_GRID (priv->apps_grid),
-                      padding.left + 1,
-                      padding.top + 1);
-          if (mx_expander_get_expanded (MX_EXPANDER (expander)))
-            {
-              MxWidget *inner_grid = MX_WIDGET (mx_bin_get_child (MX_BIN (expander)));
-              launcher = mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
-              if (launcher)
-                scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
-                                                 CLUTTER_ACTOR (launcher));
-            }
-          else
-            mnb_launcher_hover_expander (self,
-                                         MX_EXPANDER (expander));
-        }
-      return;
-    }
-
-  /* Expander pane - keyboard navigation. */
-  expander = mnb_launcher_grid_find_widget_by_pseudo_class (
-              MNB_LAUNCHER_GRID (priv->apps_grid),
-              "hover");
-  if (expander)
-    {
-      switch (keyval)
-        {
-          case CLUTTER_Up:
-            expander = mnb_launcher_grid_keynav_up (
-                        MNB_LAUNCHER_GRID (priv->apps_grid));
-            if (expander)
-              {
-                mnb_launcher_hover_expander (self,
-                                             MX_EXPANDER (expander));
-              }
-            break;
-          case CLUTTER_Down:
-            expander = mnb_launcher_grid_keynav_down (
-                        MNB_LAUNCHER_GRID (priv->apps_grid));
-            if (expander)
-              {
-                mnb_launcher_hover_expander (self,
-                                             MX_EXPANDER (expander));
-              }
-            break;
-          case CLUTTER_Return:
-            mnb_launcher_hover_expander (self, NULL);
-            mx_expander_set_expanded (MX_EXPANDER (expander), TRUE);
-            break;
-        }
-
-      return;
-    }
-
-
-  expander = mnb_launcher_grid_find_widget_by_pseudo_class (
-              MNB_LAUNCHER_GRID (priv->apps_grid),
-              "active");
-  if (expander)
-    {
-      MxWidget *inner_grid = MX_WIDGET (mx_bin_get_child (MX_BIN (expander)));
-      gboolean keystroke_handled = mnb_launcher_keynav_in_grid (self,
-                                    MNB_LAUNCHER_GRID (inner_grid),
-                                    keyval);
-
-      if (!keystroke_handled &&
-            (keyval == CLUTTER_Up ||
-            keyval == CLUTTER_Left))
-        {
-          gfloat gap = mx_grid_get_row_spacing (MX_GRID (priv->apps_grid));
-          gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
-          gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander));
-
-          expander = mnb_launcher_grid_find_widget_by_point (
-                      MNB_LAUNCHER_GRID (priv->apps_grid),
-                      x + 1,
-                      y - gap - 1);
-          if (MX_IS_EXPANDER (expander))
-            mnb_launcher_hover_expander (self,
-                                         MX_EXPANDER (expander));
-          else
-            {
-              /* Move focus to the fav apps pane. */
-              mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
-              launcher = mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (priv->fav_grid));
-              if (launcher)
-                scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
-                                                 CLUTTER_ACTOR (launcher));
-            }
-        }
-
-      if (!keystroke_handled &&
-            (keyval == CLUTTER_Down ||
-            keyval == CLUTTER_Right))
-        {
-          gfloat gap = mx_grid_get_row_spacing (MX_GRID (priv->apps_grid));
-          gfloat x = clutter_actor_get_x (CLUTTER_ACTOR (expander));
-          gfloat y = clutter_actor_get_y (CLUTTER_ACTOR (expander)) +
-                          clutter_actor_get_height (CLUTTER_ACTOR (expander));
-
-          expander = mnb_launcher_grid_find_widget_by_point (
-                      MNB_LAUNCHER_GRID (priv->apps_grid),
-                      x + 1,
-                      y + gap + 1);
-          mnb_launcher_hover_expander (self,
-                                       MX_EXPANDER (expander));
-        }
-
-      return;
-    }
-
-  /* Nothing is hovered, get first fav app. */
-  if (container_has_children (CLUTTER_CONTAINER (priv->fav_grid)))
-    {
-      launcher = mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (priv->fav_grid));
-      if (launcher)
-        scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->scrolled_vbox),
-                                         CLUTTER_ACTOR (launcher));
-      return;
-    }
-
-  /* Still nothing hovered, get first expander. */
-  {
-    MxPadding padding;
-    mx_widget_get_padding (MX_WIDGET (priv->apps_grid),
-                              &padding);
-    expander = mnb_launcher_grid_find_widget_by_point (
-                MNB_LAUNCHER_GRID (priv->apps_grid),
-                padding.left + 1,
-                padding.top + 1);
-    mnb_launcher_hover_expander (self,
-                                 MX_EXPANDER (expander));
-    return;
-  }
 }
 
 static void
@@ -1304,6 +908,40 @@ _key_focus_in (ClutterActor *actor)
   entry_set_focus (MNB_LAUNCHER (actor), TRUE);
 }
 
+static void
+_apps_pane_width_notify_cb (MplContentPane  *pane,
+                            GParamSpec      *pspec,
+                            MnbLauncher     *self)
+{
+/*
+  MxPadding padding;
+  gfloat    width;
+
+  g_debug ("%s() %.0f", __FUNCTION__, clutter_actor_get_width (CLUTTER_ACTOR (pane)));
+
+  mx_widget_get_padding (MX_WIDGET (pane), &padding);
+  width = clutter_actor_get_width (CLUTTER_ACTOR (pane)) -
+            padding.left - padding.right;
+  clutter_actor_set_width (CLUTTER_ACTOR (self->priv->scrollview), width);
+*/
+}
+
+static void
+_apps_pane_height_notify_cb (MplContentPane  *pane,
+                             GParamSpec      *pspec,
+                             MnbLauncher     *self)
+{
+  MxPadding padding;
+  gfloat    height;
+
+  mx_widget_get_padding (MX_WIDGET (pane), &padding);
+  height = clutter_actor_get_height (CLUTTER_ACTOR (pane)) -
+            2 * padding.top - 2 * padding.right -
+            mx_box_layout_get_spacing (MX_BOX_LAYOUT (pane)) - 32;
+
+  clutter_actor_set_height (CLUTTER_ACTOR (self->priv->scrollview), height);
+}
+
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1313,9 +951,8 @@ _constructor (GType                  gtype,
                                         ->constructor (gtype, n_properties, properties);
 
   MnbLauncherPrivate *priv = self->priv = REAL_GET_PRIVATE (self);
-  ClutterActor  *content_pane;
   ClutterActor  *columns;
-  ClutterActor  *left_column;
+  ClutterActor  *pane;
   ClutterActor  *label;
   ClutterActor  *fav_scroll;
 
@@ -1326,71 +963,64 @@ _constructor (GType                  gtype,
   clutter_actor_set_name (label, "panel-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
-  content_pane = mx_box_layout_new ();
-  clutter_actor_set_name (content_pane, "pane");
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (content_pane), MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), content_pane);
-  clutter_container_child_set (CLUTTER_CONTAINER (self), content_pane,
-                               "expand", TRUE,
-                               "x-fill", TRUE,
-                               "y-fill", TRUE,
-                               NULL);
-
-  label = mx_label_new_with_text (_("Your applications"));
-  clutter_actor_set_name (label, "pane-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (content_pane), label);
-
   columns = mx_box_layout_new ();
-  clutter_actor_set_name (columns, "pane-content");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), 20.0);
-  clutter_container_add_actor (CLUTTER_CONTAINER (content_pane), columns);
-  clutter_container_child_set (CLUTTER_CONTAINER (content_pane), columns,
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (columns), 12.0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (self), columns);
+  clutter_container_child_set (CLUTTER_CONTAINER (self), columns,
                                "expand", TRUE,
                                "x-fill", TRUE,
                                "y-fill", TRUE,
                                NULL);
 
-  left_column = mx_box_layout_new ();
-  clutter_actor_set_width (left_column, LEFT_COLUMN_WIDTH);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (left_column), 20.0);
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (left_column), MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (columns), left_column);
-
-  /* Filter row. */
-  priv->filter_hbox = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->filter_hbox), 10.0);
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->filter_hbox),
-                                 MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (left_column), priv->filter_hbox);
-
-  label = mx_label_new_with_text (_("Search for applications"));
-  mx_stylable_set_style_class (MX_STYLABLE (label), "tile-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->filter_hbox), label);
-
-  priv->filter_entry = mnb_entry_new (_("Search"));
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->filter_hbox), priv->filter_entry);
-
-  /* Fav apps */
-
-  label = mx_label_new_with_text (_("Favorite applications"));
-  mx_stylable_set_style_class (MX_STYLABLE (label), "tile-label");
-  clutter_container_add_actor (CLUTTER_CONTAINER (left_column), label);
+  /*
+   * Fav apps pane
+   */
+  pane = mpl_content_pane_new (_("Favorite applications"));
+  clutter_actor_set_width (pane, 250.0);
+  clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
 
   fav_scroll = mx_scroll_view_new ();
+  clutter_actor_set_name (fav_scroll, "fav-pane-content");
   mx_scroll_view_set_scroll_policy (MX_SCROLL_VIEW (fav_scroll),
                                     MX_SCROLL_POLICY_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (left_column), fav_scroll);
+  clutter_container_add_actor (CLUTTER_CONTAINER (pane), fav_scroll);
+  clutter_container_child_set (CLUTTER_CONTAINER (pane), fav_scroll,
+                               "expand", TRUE,
+                               "x-fill", TRUE,
+                               "y-fill", TRUE,
+                               NULL);
 
   priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
+  mx_stylable_set_style_class (MX_STYLABLE (priv->fav_grid), "fav-grid");
   mx_grid_set_max_stride (MX_GRID (priv->fav_grid), 1);
   clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll), priv->fav_grid);
 
   /*
    * Applications
    */
+
+  pane = mpl_content_pane_new (_("Your applications"));
+  g_signal_connect (pane, "notify::width",
+                    G_CALLBACK (_apps_pane_width_notify_cb), self);
+  g_signal_connect (pane, "notify::height",
+                    G_CALLBACK (_apps_pane_height_notify_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
+  clutter_container_child_set (CLUTTER_CONTAINER (columns), pane,
+                               "expand", TRUE,
+                               "x-fill", TRUE,
+                               "y-fill", TRUE,
+                               NULL);
+
+  /* Filter */
+  priv->filter = mnb_filter_new ();
+  clutter_actor_set_width (priv->filter, FILTER_WIDTH);
+  mpl_content_pane_set_header_actor (MPL_CONTENT_PANE (pane), priv->filter);
+
+  /* Apps */
   priv->scrollview = CLUTTER_ACTOR (mx_scroll_view_new ());
-  clutter_container_add_actor (CLUTTER_CONTAINER (columns), priv->scrollview);
-  clutter_container_child_set (CLUTTER_CONTAINER (columns), priv->scrollview,
+  clutter_actor_set_name (priv->scrollview, "apps-pane-content");
+  clutter_container_add_actor (CLUTTER_CONTAINER (pane), priv->scrollview);
+  clutter_container_child_set (CLUTTER_CONTAINER (pane), priv->scrollview,
                                "expand", TRUE,
                                "x-fill", TRUE,
                                "y-fill", TRUE,
@@ -1409,12 +1039,12 @@ _constructor (GType                  gtype,
                          G_CALLBACK (entry_changed_cb), self,
                          (GClosureNotify) mnb_launcher_free_cb, 0);
 */
-  g_signal_connect (priv->filter_entry, "button-clicked",
-                    G_CALLBACK (mnb_launcher_theme_changed_cb), self);
-  g_signal_connect (priv->filter_entry, "text-changed",
-                    G_CALLBACK (entry_changed_cb), self);
-  g_signal_connect (priv->filter_entry, "keynav-event",
-                    G_CALLBACK (entry_keynav_cb), self);
+  // g_signal_connect (priv->filter, "button-clicked",
+  //                   G_CALLBACK (mnb_launcher_theme_changed_cb), self);
+  g_signal_connect (priv->filter, "notify::text",
+                    G_CALLBACK (_filter_text_notify_cb), self);
+  // g_signal_connect (priv->filter, "keynav-event",
+  //                   G_CALLBACK (entry_keynav_cb), self);
 
   return (GObject *) self;
 }
@@ -1536,7 +1166,7 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   MxExpander          *expander;
   MxAdjustment        *adjust;
 
-  mpl_entry_set_text (MPL_ENTRY (priv->filter_entry), "");
+  mnb_filter_set_text (MNB_FILTER (priv->filter), "");
 
   /* Hide tooltip on fav apps. */
   clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
@@ -1558,7 +1188,7 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   }
 
   /* Reset scroll position. */
-  mx_scrollable_get_adjustments (MX_SCROLLABLE (self->priv->scrolled_vbox),
+  mx_scrollable_get_adjustments (MX_SCROLLABLE (self->priv->apps_grid),
                                  NULL,
                                  &adjust);
   mx_adjustment_set_value (adjust, 0.0);

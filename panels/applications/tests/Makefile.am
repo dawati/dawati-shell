@@ -5,9 +5,14 @@ AM_CFLAGS = \
 LDADD = $(APPLICATIONS_LIBS)
 
 noinst_PROGRAMS = \
+	test-filter \
 	test-launcher-button \
 	test-launcher-monitor \
 	test-launcher-tree
+
+test_filter_SOURCES = \
+	$(top_srcdir)/src/mnb-filter.c \
+	test-filter.c
 
 test_launcher_button_SOURCES = \
 	$(top_srcdir)/src/mnb-launcher-button.c \
