@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-08 11:11+0000\n"
+"POT-Creation-Date: 2010-04-14 09:58+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Lorenzo <lorenzo.gennaro@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -51,42 +51,43 @@ msgid "System Sounds"
 msgstr "Suoni di sistema"
 
 #: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
 msgid "Moblin Power Icon"
 msgstr "Icona di "
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:71
 msgid "Running low on battery"
 msgstr "La battria si sta scaricando"
 
-#: ../power-icon/src/mpd-power-icon.c:73
+#: ../power-icon/src/mpd-power-icon.c:72
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Abbiamo notato che la batteria è quasi scarica. Se possibile, sarebbe una buona idea attaccare la spina e fare il pieno."
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:75
 msgid "Getting close to empty"
 msgstr "Quasi vuota"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "La batteria è quasi scarica. Sarebbe una buona idea salvare tutto il lavoro e attaccare la spina il prima possibile."
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Danger!"
 msgstr "Pericolo!"
 
-#: ../power-icon/src/mpd-power-icon.c:82
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Spiacenti, il computer sta per esaurire la batteria. Stiamo per spegnere. Salvare il lavoro e arrivederci."
 
-#: ../power-icon/src/mpd-power-icon.c:300
+#: ../power-icon/src/mpd-power-icon.c:311
 msgid "Would you like to turn off now?"
 msgstr "Vuoi spegnere ora?"
 
-#: ../power-icon/src/mpd-power-icon.c:301
+#: ../power-icon/src/mpd-power-icon.c:312
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Se non ti decidi mi spengo tra 30 secondi."
 
-#: ../power-icon/src/mpd-power-icon.c:368
+#: ../power-icon/src/mpd-power-icon.c:377
 msgid "battery"
 msgstr "batteria"
 
@@ -128,7 +129,8 @@ msgstr "La batteria è completamente carica e si è pronti a partire."
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Ci dispiace, sembra che la batteria sia rotta."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
 msgid "Netbook brightness"
 msgstr "Luminosità del netbook"
 
@@ -156,6 +158,10 @@ msgstr "Altri dispositivi"
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Stai utilizzando</span> <span color='%s'>%d%% di %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Cestino"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -248,11 +254,11 @@ msgstr "Molto basso"
 msgid "Silent"
 msgstr "In silenzio"
 
-#: ../src/mpd-volume-tile.c:356
+#: ../src/mpd-volume-tile.c:357
 msgid "Netbook volume"
 msgstr "Volume netbook"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:373
 msgid "Mute"
 msgstr "Muto"
 
@@ -272,8 +278,6 @@ msgstr "Muto"
 #~ msgstr "Zip"
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-#~ msgid "Flash"
-#~ msgstr "Flash"
 #~ msgid "CD"
 #~ msgstr "CD"
 #~ msgid "DVD"
