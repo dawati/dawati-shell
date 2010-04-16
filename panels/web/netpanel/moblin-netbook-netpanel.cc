@@ -43,10 +43,10 @@ extern "C" {
 #define NR_FAVORITE 9
 
 /* FIXME: Replace with stylable spacing */
-#define COL_SPACING 5
-#define ROW_SPACING 5
-#define CELL_WIDTH  223
-#define CELL_HEIGHT 109
+#define COL_SPACING 0
+#define ROW_SPACING 0
+#define CELL_WIDTH  210
+#define CELL_HEIGHT 114
 
 #define START_PAGE "moblin://start/"
 

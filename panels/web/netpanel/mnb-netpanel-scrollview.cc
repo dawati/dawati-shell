@@ -22,9 +22,9 @@
 
 /* FIXME: replace with styles or properties */
 #define MAX_DISPLAY 4
-#define ROW_SPACING 5
-#define COL_SPACING 5
-#define SCROLLBAR_HEIGHT 20
+#define ROW_SPACING 0
+#define COL_SPACING 14
+#define SCROLLBAR_HEIGHT 24
 
 G_DEFINE_TYPE (MnbNetpanelScrollview, mnb_netpanel_scrollview, MX_TYPE_WIDGET)
 
@@ -116,7 +116,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
   clutter_actor_get_preferred_height (props->title, -1, NULL, &title_height);
 
   /* Allocate for the items and titles */
-  child_box.x1 = padding.left;
+  child_box.x1 = padding.left + COL_SPACING;
 
   for (item = priv->items; item != NULL; item = item->next)
     {
@@ -128,7 +128,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
       child_box.y2 = child_box.y1 + item_height;
       clutter_actor_allocate (props->item, &child_box, flags);
 
-      child_box.y1 = child_box.y2 + ROW_SPACING;
+      child_box.y1 = child_box.y2;
       child_box.y2 = child_box.y1 + title_height;
       clutter_actor_allocate (props->title, &child_box, flags);
 
@@ -157,7 +157,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
       /* Allocate for the scrollbar */
       child_box.x1 = padding.left;
       child_box.x2 = child_box.x1 + width;
-      child_box.y1 = padding.top + item_height + title_height + 2 * ROW_SPACING;
+      child_box.y1 = padding.top + item_height + title_height;
       child_box.y2 = child_box.y1 + SCROLLBAR_HEIGHT;
       clutter_actor_allocate (CLUTTER_ACTOR (priv->scroll_bar), &child_box,
                               flags);
