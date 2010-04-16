@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-08 11:11+0000\n"
-"PO-Revision-Date: 2010-04-09 10:33+0200\n"
+"POT-Creation-Date: 2010-04-14 09:58+0000\n"
+"PO-Revision-Date: 2010-04-16 14:29+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -57,42 +57,43 @@ msgid "System Sounds"
 msgstr "Системные звуки"
 
 #: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
 msgid "Moblin Power Icon"
 msgstr "Moblin Power Icon"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:71
 msgid "Running low on battery"
 msgstr "Заряд батареи на исходе"
 
-#: ../power-icon/src/mpd-power-icon.c:73
+#: ../power-icon/src/mpd-power-icon.c:72
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Заряд батареи на исходе. При возможности подключите сетевой кабель и зарядите ее."
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:75
 msgid "Getting close to empty"
 msgstr "Заряд практически исчерпан"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Заряд батареии практически исчерпан. Сохраните результаты своей работы и как можно быстрее подключите сетевой кабель."
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Danger!"
 msgstr "Внимание!"
 
-#: ../power-icon/src/mpd-power-icon.c:82
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Заряд батареи компьютера исчерпан, он будет выключен. Сохраните свою работу, и до скорой встречи!"
 
-#: ../power-icon/src/mpd-power-icon.c:300
+#: ../power-icon/src/mpd-power-icon.c:311
 msgid "Would you like to turn off now?"
 msgstr "Отключить питание немедленно?"
 
-#: ../power-icon/src/mpd-power-icon.c:301
+#: ../power-icon/src/mpd-power-icon.c:312
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
 
-#: ../power-icon/src/mpd-power-icon.c:368
+#: ../power-icon/src/mpd-power-icon.c:377
 msgid "battery"
 msgstr "батарея"
 
@@ -134,7 +135,8 @@ msgstr "Батарея заряжена полностью, можете про�
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Похоже, ваша батарея неисправна."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
 msgid "Netbook brightness"
 msgstr "Яркость экрана нетбука"
 
@@ -162,6 +164,10 @@ msgstr "Другие устройства"
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Вы используете</span> <span color='%s'>%d%% из %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Корзина"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -254,11 +260,11 @@ msgstr "Очень тихо"
 msgid "Silent"
 msgstr "Без звука"
 
-#: ../src/mpd-volume-tile.c:356
+#: ../src/mpd-volume-tile.c:357
 msgid "Netbook volume"
 msgstr "Громкость нетбука"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:373
 msgid "Mute"
 msgstr "Без звука"
 
@@ -285,9 +291,6 @@ msgstr "Без звука"
 
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-
-#~ msgid "Flash"
-#~ msgstr "Flash"
 
 #~ msgid "CD"
 #~ msgstr "Компакт-диск"
