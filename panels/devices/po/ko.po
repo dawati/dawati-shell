@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-08 11:11+0000\n"
+"POT-Creation-Date: 2010-04-14 09:58+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: KC Lee <kushylee@yahoo.com>\n"
 "Language-Team: \n"
@@ -51,42 +51,43 @@ msgid "System Sounds"
 msgstr "시스템 음향"
 
 #: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
 msgid "Moblin Power Icon"
 msgstr "Moblin 전원 아이콘"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:71
 msgid "Running low on battery"
 msgstr "배터리 전원이 낮음"
 
-#: ../power-icon/src/mpd-power-icon.c:73
+#: ../power-icon/src/mpd-power-icon.c:72
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "배터리 전원이 낮습니다. 충전하는 것이 좋습니다."
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:75
 msgid "Getting close to empty"
 msgstr "거의 비어 있습니다."
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "배터리 전원이 낮습니다. 작업을 모두 저장한 다음 가능한 빨리 충전하십시오."
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Danger!"
 msgstr "위험!"
 
-#: ../power-icon/src/mpd-power-icon.c:82
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "죄송합니다. 컴퓨터의 배터리 전원이 거의 다 소모되었습니다. 컴퓨터를 지금 꺼야합니다. 작업을 저장한 다음, 곧 다시 뵙겠습니다."
 
-#: ../power-icon/src/mpd-power-icon.c:300
+#: ../power-icon/src/mpd-power-icon.c:311
 msgid "Would you like to turn off now?"
 msgstr "지금 끄시겠습니까?"
 
-#: ../power-icon/src/mpd-power-icon.c:301
+#: ../power-icon/src/mpd-power-icon.c:312
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "결정하지 않으시면 30초 후에 끄겠습니다."
 
-#: ../power-icon/src/mpd-power-icon.c:368
+#: ../power-icon/src/mpd-power-icon.c:377
 msgid "battery"
 msgstr "배터리"
 
@@ -128,7 +129,8 @@ msgstr "배터리가 완전히 충전되었고 이제 사용할 수 있습니다
 msgid "Sorry, it looks like your battery is broken."
 msgstr "죄송합니다. 배터리가 고장난 것 같습니다."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
 msgid "Netbook brightness"
 msgstr "넷북 밝기"
 
@@ -156,6 +158,10 @@ msgstr "기타 장치"
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>사용 중:</span> <span color='%s'>%d%% of %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "쓰레기"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -248,11 +254,11 @@ msgstr "매우 작게"
 msgid "Silent"
 msgstr "음소거"
 
-#: ../src/mpd-volume-tile.c:356
+#: ../src/mpd-volume-tile.c:357
 msgid "Netbook volume"
 msgstr "넷북 볼륨"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:373
 msgid "Mute"
 msgstr "음소거"
 
@@ -279,9 +285,6 @@ msgstr "음소거"
 
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-
-#~ msgid "Flash"
-#~ msgstr "플래시"
 
 #~ msgid "CD"
 #~ msgstr "CD"
