@@ -718,12 +718,6 @@ mnb_launcher_fill (MnbLauncher     *self)
   priv->apps_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->scrollview),
                                 priv->apps_grid);
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->scrollview),
-                                priv->apps_grid,
-                                "expand", TRUE,
-                                "x-fill", TRUE,
-                                "y-fill", TRUE,
-                                NULL);
   mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
                          EXPANDER_GRID_ROW_GAP);
 
@@ -908,40 +902,6 @@ _key_focus_in (ClutterActor *actor)
   entry_set_focus (MNB_LAUNCHER (actor), TRUE);
 }
 
-static void
-_apps_pane_width_notify_cb (MplContentPane  *pane,
-                            GParamSpec      *pspec,
-                            MnbLauncher     *self)
-{
-/*
-  MxPadding padding;
-  gfloat    width;
-
-  g_debug ("%s() %.0f", __FUNCTION__, clutter_actor_get_width (CLUTTER_ACTOR (pane)));
-
-  mx_widget_get_padding (MX_WIDGET (pane), &padding);
-  width = clutter_actor_get_width (CLUTTER_ACTOR (pane)) -
-            padding.left - padding.right;
-  clutter_actor_set_width (CLUTTER_ACTOR (self->priv->scrollview), width);
-*/
-}
-
-static void
-_apps_pane_height_notify_cb (MplContentPane  *pane,
-                             GParamSpec      *pspec,
-                             MnbLauncher     *self)
-{
-  MxPadding padding;
-  gfloat    height;
-
-  mx_widget_get_padding (MX_WIDGET (pane), &padding);
-  height = clutter_actor_get_height (CLUTTER_ACTOR (pane)) -
-            2 * padding.top - 2 * padding.right -
-            mx_box_layout_get_spacing (MX_BOX_LAYOUT (pane)) - 32;
-
-  clutter_actor_set_height (CLUTTER_ACTOR (self->priv->scrollview), height);
-}
-
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1000,10 +960,6 @@ _constructor (GType                  gtype,
    */
 
   pane = mpl_content_pane_new (_("Your applications"));
-  g_signal_connect (pane, "notify::width",
-                    G_CALLBACK (_apps_pane_width_notify_cb), self);
-  g_signal_connect (pane, "notify::height",
-                    G_CALLBACK (_apps_pane_height_notify_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
   clutter_container_child_set (CLUTTER_CONTAINER (columns), pane,
                                "expand", TRUE,
