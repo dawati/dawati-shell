@@ -2,6 +2,12 @@
 TODO
 ====
 
+(17:42:30) ross@otcchat.org: gnome-settings-daemon module on git.moblin.org
+(17:42:36) ross@otcchat.org: has a mount-plugin branch
+(17:42:37) ross@otcchat.org: hack on that
+(17:42:49) ross@otcchat.org: and then generate a diff between head and whatever release is in obs
+(17:43:05) ross@otcchat.org: this way its easy to mantain the patch and we just rebase it when obs upgrades
+
 * Set font sizes according to "Design Audit.pdf"
 * Split out box widget and move into libmoblin-panel.
 * Notify about plugged devices from the devices-tile, do not emit for plugged ones when starting up.

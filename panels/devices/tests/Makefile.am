@@ -15,7 +15,6 @@ LDADD = \
 noinst_PROGRAMS = \
   test-battery-device \
   test-battery-icon \
-  test-content-pane \
   test-disk-tile \
   test-folder-button \
   test-storage-device \
@@ -31,11 +30,6 @@ test_battery_device_SOURCES = \
 test_battery_icon_SOURCES = \
   test-battery-icon.c \
   $(top_srcdir)/src/mpd-battery-icon.c \
-  $(NULL)
-
-test_content_pane_SOURCES = \
-  test-content-pane.c \
-  $(top_srcdir)/src/mpl-content-pane.c \
   $(NULL)
 
 test_disk_tile_SOURCES = \

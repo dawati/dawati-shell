@@ -46,7 +46,7 @@ typedef struct
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
-char *
+static char *
 uri_from_special_dir (GUserDirectory directory)
 {
   char const *path;
@@ -57,7 +57,7 @@ uri_from_special_dir (GUserDirectory directory)
   return g_strdup_printf ("file://%s", path);
 }
 
-char *
+static char *
 icon_path_from_special_dir (GUserDirectory directory)
 {
   char          *icon_path;

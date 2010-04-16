@@ -1,4 +1,17 @@
 
+/* MplContentPane */
+
+MplContentPane {
+  border-image: url('content-pane-background.png') 5;
+  padding: 3;
+}
+
+MplContentPane > .header {
+  border-image: url('content-pane-header.png') 2;
+  padding: 6 10 6 15;
+}
+
+
 /* Theme goes here  */
 
 MxLabel {

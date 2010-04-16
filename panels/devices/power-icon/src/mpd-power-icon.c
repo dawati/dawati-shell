@@ -81,7 +81,8 @@ static const struct
     N_("Sorry, your computer is about to run out of battery. " \
        "We're going to have to turn off now. " \
        "Please save your work and hope to see you again soon."),
-    NULL }
+    NULL },
+  { NULL, NULL, NULL }
 };
 
 static void
@@ -431,8 +432,11 @@ void
 mpd_power_icon_test_notification (MpdPowerIcon *self,
                                   unsigned int  percentage)
 {
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
+
   g_return_if_fail (MPD_IS_POWER_ICON (self));
 
+  priv->last_notification_displayed = NOTIFICATION_NONE;
   update (self, percentage);
 }
 
