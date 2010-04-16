@@ -2,6 +2,7 @@
 Version 0.1.20, 2010-04-16
 
     Land new meego-1.0 layout.
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=609
     l10n: Updates to en_GB, es.
 
 Version 0.1.19, 2010-04-14
