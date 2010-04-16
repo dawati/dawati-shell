@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:47+0000\n"
+"POT-Creation-Date: 2010-04-14 09:58+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Eija <eija@wimma.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgid "Devices panel"
 msgstr "Laitteet-paneeli"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:146
+#: ../src/moblin-panel-devices.c:149
 msgid "devices"
 msgstr "Laitteet"
 
@@ -51,42 +51,43 @@ msgid "System Sounds"
 msgstr "Järjestelmän äänet"
 
 #: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
 msgid "Moblin Power Icon"
 msgstr "Moblin virtakuvake"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:71
 msgid "Running low on battery"
 msgstr "Akku on lähes lopussa"
 
-#: ../power-icon/src/mpd-power-icon.c:73
+#: ../power-icon/src/mpd-power-icon.c:72
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Huomaamme, että akkusi on tyhjentymässä. Jos vain mahdollista, kannattaisi kytkeä pistoke seinään ja ladata akku."
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:75
 msgid "Getting close to empty"
 msgstr "Lähellä tyhjää"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Akkusi on melkein tyhjä. Voisi olla hyvä idea tallentaa kaikki työsi ja kytkeä pistoke seinään mahdollisimman pina."
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Danger!"
 msgstr "Vaara!"
 
-#: ../power-icon/src/mpd-power-icon.c:82
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sorry, tietokoneesi akku on lähes tyhjä. Meidän täytyy nyt kytkeä virta pois päältä. Tallenna työsi ja toivottavasti näemme sinut pian uudelleen."
 
-#: ../power-icon/src/mpd-power-icon.c:300
+#: ../power-icon/src/mpd-power-icon.c:311
 msgid "Would you like to turn off now?"
 msgstr "Haluaisitko sammuttaa nyt?"
 
-#: ../power-icon/src/mpd-power-icon.c:301
+#: ../power-icon/src/mpd-power-icon.c:312
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Jos et tee päätöstä, virta kytkeytyy pois päältä 30 sekunnissa."
 
-#: ../power-icon/src/mpd-power-icon.c:368
+#: ../power-icon/src/mpd-power-icon.c:377
 msgid "battery"
 msgstr "akku"
 
@@ -99,7 +100,7 @@ msgstr "Jos et tee päätöstä, virta kytkeytyy pois päältä %d sekunnissa."
 msgid "Turn off"
 msgstr "Kytke pois päältä"
 
-#: ../src/moblin-panel-devices.c:119
+#: ../src/moblin-panel-devices.c:120
 msgid "Moblin Devices Panel"
 msgstr "Moblin Laitteet-paneeli"
 
@@ -128,15 +129,16 @@ msgstr "Akkusi on täysin ladattu ja olet valmis töihin. "
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sorry, näyttää siltä, että akku on rikki."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
 msgid "Netbook brightness"
 msgstr "Verkon kirkkaus"
 
-#: ../src/mpd-computer-pane.c:93
+#: ../src/mpd-computer-pane.c:120
 msgid "Your computer"
 msgstr "Tietokoneesi"
 
-#: ../src/mpd-computer-tile.c:154
+#: ../src/mpd-computer-pane.c:129
 msgid "All settings"
 msgstr "Kaikki asetukset"
 
@@ -156,6 +158,10 @@ msgstr "Muut laitteet"
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Käytät</span> <span color='%s'>%d%% of %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Roskakori"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -248,11 +254,11 @@ msgstr "Erittäin hiljainen"
 msgid "Silent"
 msgstr "Hiljainen"
 
-#: ../src/mpd-volume-tile.c:356
+#: ../src/mpd-volume-tile.c:357
 msgid "Netbook volume"
 msgstr "Netbook-asema"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:373
 msgid "Mute"
 msgstr "Mykistä"
 
@@ -279,9 +285,6 @@ msgstr "Mykistä"
 
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-
-#~ msgid "Flash"
-#~ msgstr "Flash"
 
 #~ msgid "CD"
 #~ msgstr "CD"
