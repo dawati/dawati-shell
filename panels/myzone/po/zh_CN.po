@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:32+0000\n"
+"POT-Creation-Date: 2010-04-15 22:12+0000\n"
 "PO-Revision-Date: 2010-02-24 10:11-0800\n"
 "Last-Translator: \n"
 "Language-Team: Chinese (simplified)\n"
@@ -60,78 +60,81 @@ msgstr "显示最近的文件"
 msgid "Show as many recent files as possible"
 msgstr "显示尽可能多的最近的文件"
 
-#: ../penge/penge-calendar-pane.c:445
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "您要清除最近的文件吗？这将从 Myzone 移除本地内容。"
+
+#: ../penge/penge-calendar-pane.c:483
 msgid "Appointments"
 msgstr "我的日程安排"
+
+#: ../penge/penge-calendar-pane.c:526
+msgid "Tasks"
+msgstr "任务"
 
 #: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "创建一个日程"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
 msgid "Add"
 msgstr "添加"
 
-#: ../penge/penge-events-pane.c:412
+#: ../penge/penge-events-pane.c:400
 msgid "No calendar entries this week"
 msgstr "本周无日程安排"
 
-#: ../penge/penge-recent-file-tile.c:215
+#: ../penge/penge-recent-file-tile.c:216
 msgid "Web page"
 msgstr "网页"
 
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-tasks-pane.c:50
 msgid "Create a new task"
 msgstr "创建一个新的任务"
 
-#: ../penge/penge-tasks-pane.c:429
+#: ../penge/penge-tasks-pane.c:426
 msgid "Nothing to do today"
 msgstr "今天没有安排"
 
-#: ../penge/penge-task-tile.c:316
+#: ../penge/penge-task-tile.c:318
 #, c-format
 msgid "Due %x"
 msgstr "%x 到期"
 
-#: ../penge/penge-welcome-tile.c:75
-msgid "Welcome to MeeGo"
-msgstr "MeeGo 欢迎您"
-
-#: ../penge/penge-welcome-tile.c:94
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "这是 Myzone，您最近使用过的文件和网页内容资讯将在这里出现。"
-
-#: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "您要清除最近的文件吗？这将从 Myzone 移除本地内容。"
-
-#: ../penge/penge-calendar-pane.c:475
-msgid "Tasks"
-msgstr "任务"
-
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "您朋友的最新情况会在这里显示。现在就激活您的账户吧！"
-
-#: ../penge/penge-welcome-tile.c:35
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "当您设置了您的网络帐号并使用了一些文件后，它们将在 Myzone 的这个地方出现，方便您随时访问。"
-
-#: ../penge/penge-email-pane.c:191
-msgid "No unread messages"
-msgstr "没有新消息"
-
-#: ../penge/penge-email-pane.c:193
-msgid "Unread message"
-msgstr "未读的消息"
-
-#: ../penge/penge-welcome-tile.c:41
+#: ../penge/penge-welcome-tile.c:32
 msgid "Play intro video"
 msgstr "播放介绍视频"
 
-#: ../penge/penge-email-pane.c:195
+#: ../penge/penge-welcome-tile.c:64
+msgid "Welcome to MeeGo"
+msgstr "MeeGo 欢迎您"
+
+#: ../penge/penge-welcome-tile.c:83
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "这是 Myzone，您最近使用过的文件和网页内容资讯将在这里出现。"
+
+#: ../penge/penge-welcome-tile.c:26
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "当您设置了您的网络帐号并使用了一些文件后，它们将在 Myzone 的这个地方出现，方便您随时访问。"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "没有新消息"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "未读的消息"
+
+#: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
 msgstr "已读的消息"
+
+#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
+msgid "Open"
+msgstr "打开"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "您朋友的最新情况会在这里显示。现在就激活您的账户吧！"
 
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 设置"
