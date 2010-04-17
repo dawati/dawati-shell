@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:47+0000\n"
+"POT-Creation-Date: 2010-04-17 10:09+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgid "Devices panel"
 msgstr "Panel urządzeń"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:146
+#: ../src/moblin-panel-devices.c:149
 msgid "devices"
 msgstr "urządzenia"
 
@@ -52,42 +52,43 @@ msgid "System Sounds"
 msgstr "Dźwięki systemowe"
 
 #: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
 msgid "Moblin Power Icon"
 msgstr "Ikona zasilania systemu Moblin"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:71
 msgid "Running low on battery"
 msgstr "Akumulator wyczerpuje się"
 
-#: ../power-icon/src/mpd-power-icon.c:73
+#: ../power-icon/src/mpd-power-icon.c:72
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Zauważyliśmy, że akumulator wyczerpuje się. Dobrze byłoby podłączyć zasilanie i go naładować, jeśli to możliwe."
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:75
 msgid "Getting close to empty"
 msgstr "Akumulator prawie wyczerpany"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Akumulator jest prawie wyczerpany. Dobrym pomysłem będzie zapisanie pracy i jak najszybsze podłączenie zasilania"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Danger!"
 msgstr "Niebezpieczeństwo!"
 
-#: ../power-icon/src/mpd-power-icon.c:82
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Przepraszamy, akumulator w komputerze za chwilę się wyczerpie. Musimy teraz wyłączyć komputer. Zapisz pracę. Mamy nadzieję, że wkrótce się zobaczymy."
 
-#: ../power-icon/src/mpd-power-icon.c:300
+#: ../power-icon/src/mpd-power-icon.c:312
 msgid "Would you like to turn off now?"
 msgstr "Czy chcesz teraz wyłączyć komputer?"
 
-#: ../power-icon/src/mpd-power-icon.c:301
+#: ../power-icon/src/mpd-power-icon.c:313
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za 30 sekund."
 
-#: ../power-icon/src/mpd-power-icon.c:368
+#: ../power-icon/src/mpd-power-icon.c:378
 msgid "battery"
 msgstr "akumulator"
 
@@ -100,7 +101,7 @@ msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za %d sekun
 msgid "Turn off"
 msgstr "Wyłącz"
 
-#: ../src/moblin-panel-devices.c:119
+#: ../src/moblin-panel-devices.c:120
 msgid "Moblin Devices Panel"
 msgstr "Panel urządzeń Moblin"
 
@@ -129,15 +130,16 @@ msgstr "Akumulator jest w pełni naładowany i gotowy do pracy."
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Przepraszamy, najwyraźniej akumulator jest uszkodzony."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
 msgid "Netbook brightness"
 msgstr "Jasność netbooka"
 
-#: ../src/mpd-computer-pane.c:93
+#: ../src/mpd-computer-pane.c:120
 msgid "Your computer"
 msgstr "Twój komputer"
 
-#: ../src/mpd-computer-tile.c:154
+#: ../src/mpd-computer-pane.c:129
 msgid "All settings"
 msgstr "Wszystkie ustawienia"
 
@@ -157,6 +159,10 @@ msgstr "Inne urządzenia"
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Używasz</span> <span color='%s'>%d%% z %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Kosz"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -249,11 +255,11 @@ msgstr "Bardzo cicho"
 msgid "Silent"
 msgstr "Bezgłośnie"
 
-#: ../src/mpd-volume-tile.c:356
+#: ../src/mpd-volume-tile.c:357
 msgid "Netbook volume"
 msgstr "Głośność notebooka"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:373
 msgid "Mute"
 msgstr "Wycisz"
 
@@ -273,8 +279,6 @@ msgstr "Wycisz"
 #~ msgstr "Zip"
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-#~ msgid "Flash"
-#~ msgstr "Flash"
 #~ msgid "CD"
 #~ msgstr "CD"
 #~ msgid "DVD"
