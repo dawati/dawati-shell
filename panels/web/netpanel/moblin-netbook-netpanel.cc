@@ -50,6 +50,12 @@ extern "C" {
 
 #define START_PAGE "moblin://start/"
 
+static gboolean
+moblin_netbook_netpanel_select_tab (MoblinNetbookNetpanel *self, gint tab_id);
+
+static void
+moblin_netbook_netpanel_restore_tab (MoblinNetbookNetpanel *self, gchar* tab_url);
+
 G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, MX_TYPE_WIDGET)
 
 #define NETPANEL_PRIVATE(o) \
@@ -534,8 +540,12 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
 static void
 new_tab_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
 {
-  /* FIXME: remove hardcoded start path */
-  moblin_netbook_netpanel_launch_url (self, START_PAGE, FALSE);
+  // -1 means open New Tab
+  // FIXME: avoid hardcode here
+  if (!moblin_netbook_netpanel_select_tab (self, -1))
+    {
+      moblin_netbook_netpanel_restore_tab (self, "");
+    }
 }
 
 static void
@@ -639,7 +649,7 @@ pipe_sendv (GIOChannel *channel, va_list args)
   g_io_channel_flush (channel, NULL);
 }
 
-void
+static void
 pipe_send (GIOChannel *channel, ...)
 {
   va_list args;
@@ -651,17 +661,15 @@ pipe_send (GIOChannel *channel, ...)
   va_end (args);
 }
 
-static void
-session_tab_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
+#define CMD_SELECT_TAB 1
+
+static gboolean
+moblin_netbook_netpanel_select_tab (MoblinNetbookNetpanel *self, gint tab_id)
 {
   MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
 
-  gchar *url = (gchar *)g_object_get_data (G_OBJECT (button), "url");
-  guint tab_id = (guint)g_object_get_data (G_OBJECT (button), "tab_id");
-
-  //moblin_netbook_netpanel_launch_url (self, url, TRUE);
   gchar *plugin_pipe = g_strdup_printf ("%s/chrome-meego-plugin.fifo",
-                                         g_get_tmp_dir ());
+                                        g_get_tmp_dir ());
 
   if (g_file_test (plugin_pipe, G_FILE_TEST_EXISTS))
     {
@@ -672,7 +680,7 @@ session_tab_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
       g_io_channel_set_buffered (output, FALSE);
       g_io_channel_set_close_on_unref (output, TRUE);
 
-      pipe_send (output, G_TYPE_UINT, tab_id, G_TYPE_INVALID);
+      pipe_send (output, G_TYPE_UINT, CMD_SELECT_TAB, G_TYPE_INT, tab_id, G_TYPE_INVALID);
       
       if (g_io_channel_shutdown (output, FALSE, &error) ==
           G_IO_STATUS_ERROR)
@@ -684,12 +692,49 @@ session_tab_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
       g_io_channel_unref (output);
       output = NULL;
       mpl_panel_client_hide (priv->panel_client);
+      g_free(plugin_pipe);
+      return TRUE;
     }
-  else {
-    moblin_netbook_netpanel_launch_url (self, url, TRUE);
-  }
+  else
+    {
+      g_free(plugin_pipe);
+      return FALSE;
+    }
+}
 
-  g_free(plugin_pipe);
+static void
+moblin_netbook_netpanel_restore_tab (MoblinNetbookNetpanel *self, gchar* tab_url)
+{
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+
+  gchar *plugin_cmd = g_strdup_printf ("%s/chrome-meego-extension.cmd",
+                                        g_get_tmp_dir ());
+
+  // Put the tab id to a startup command file
+  // Chrome extension will executes the commands in this file
+  // and deletes it.
+  // FIXME: need define the protocol of startup command
+  if (!g_file_test (plugin_cmd, G_FILE_TEST_EXISTS))
+    {
+      g_file_set_contents (plugin_cmd, (gchar *)tab_url, strlen(tab_url), NULL);
+    }
+  // Launch the Chrome to restore tabs and execute startup commands
+  moblin_netbook_netpanel_launch_url(self, "", TRUE);
+  g_free (plugin_cmd);
+}
+
+static void
+session_tab_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
+{
+  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+
+  gchar *tab_url = (gchar *)g_object_get_data (G_OBJECT (button), "url");
+  guint tab_id = (guint)g_object_get_data (G_OBJECT (button), "tab_id");
+
+  if (!moblin_netbook_netpanel_select_tab (self, tab_id))
+    {
+      moblin_netbook_netpanel_restore_tab (self, tab_url);
+    }
 }
 
 static void
@@ -839,6 +884,11 @@ favs_received (void *context, const char* url, const char *title)
 
   scrollview = MNB_NETPANEL_SCROLLVIEW (priv->favs_view);
 
+  // it is possible that when this callback is called
+  // the scrollview is destroied by hide
+  if (!scrollview)
+    return;
+
   button = add_thumbnail_to_scrollview (scrollview, url, title);
 
   if (button) 
@@ -898,6 +948,9 @@ static void tabs_received(void* context, int tab_id,
     MoblinNetbookNetpanel* self = (MoblinNetbookNetpanel*)context;
     MoblinNetbookNetpanelPrivate *priv = self->priv;
     MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
+
+    if (!scrollview)
+      return;
 
     if (url)
     {

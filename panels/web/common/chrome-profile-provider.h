@@ -95,7 +95,7 @@ public:
                                 const unsigned char* data,
                                 size_t len);
 
-  void OnGotPreviousSession    (SessionService::Handle            handle,
+  void OnGotSession            (SessionService::Handle            handle,
                                 std::vector<SessionWindow*>*      windows);
 
   DISALLOW_EVIL_CONSTRUCTORS(ChromeProfileProvider);

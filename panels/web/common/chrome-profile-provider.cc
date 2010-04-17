@@ -346,7 +346,7 @@ struct TabEntry {
 
 
 void 
-ChromeProfileProvider::OnGotPreviousSession(SessionService::Handle handle,
+ChromeProfileProvider::OnGotSession(SessionService::Handle handle,
                                             std::vector<SessionWindow*>* windows)
 {
   for (std::vector<SessionWindow*>::iterator w = windows->begin();
@@ -358,7 +358,7 @@ ChromeProfileProvider::OnGotPreviousSession(SessionService::Handle handle,
                t != (*w)->tabs.end(); t++)
             {
               TabNavigation* tab_nav = &(*t)->navigations.at((*t)->current_navigation_index);
-
+              /*
               thumbnail_urls_.push_back(tab_nav->url().spec().c_str());
               if (history_service_->GetPageThumbnail(tab_nav->url(),
                                                      &consumer_,
@@ -372,6 +372,7 @@ ChromeProfileProvider::OnGotPreviousSession(SessionService::Handle handle,
                   MessageLoop::current()->Run();
                   MessageLoop::current()->SetNestableTasksAllowed(old_state);
                 }
+              */
               if (session_context_ && session_callback_)
                 {
                   session_callback_(session_context_, 
@@ -379,11 +380,20 @@ ChromeProfileProvider::OnGotPreviousSession(SessionService::Handle handle,
                                     (*t)->window_id.id(),
                                     tab_nav->url().spec().c_str(),
                                     UTF16ToUTF8(tab_nav->title()).c_str());
+#ifdef DEBUG_CHROMIUM_API
+                  g_debug ("tab_id=%d, url=%s, title=%s",
+                           (*t)->tab_id.id(),
+                           tab_nav->url().spec().c_str(),
+                           UTF16ToUTF8(tab_nav->title()).c_str());
+#endif
+
                 }
             }
         }
     }
 }
+
+//#define USE_SESSION_SERVICE
 
 void
 ChromeProfileProvider::GetSessions(void* context, 
@@ -395,11 +405,10 @@ ChromeProfileProvider::GetSessions(void* context,
   session_expback_ = expback;
 
 #ifdef USE_SESSION_SERVICE
-  session_service_->GetLastSession(&consumer_,
-                                   NewCallback(this,
-                                               &ChromeProfileProvider::
-                                               OnGotPreviousSession));
-
+  session_service_->GetCurrentSession(&consumer_,
+                                      NewCallback(this,
+                                                  &ChromeProfileProvider::
+                                                  OnGotSession));
 #else
   SessionFileReader session_reader(user_data_dir_.
                                    AppendASCII("Default/Current Session"));
