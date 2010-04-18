@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:47+0000\n"
+"POT-Creation-Date: 2010-04-18 10:40+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgid "Devices panel"
 msgstr "Enhetspanel"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:146
+#: ../src/moblin-panel-devices.c:149
 msgid "devices"
 msgstr "enheter"
 
@@ -51,42 +51,43 @@ msgid "System Sounds"
 msgstr "Systemljud"
 
 #: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
 msgid "Moblin Power Icon"
 msgstr "Moblin-strömikon"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:71
 msgid "Running low on battery"
 msgstr "Batteriet börjar ta slut"
 
-#: ../power-icon/src/mpd-power-icon.c:73
+#: ../power-icon/src/mpd-power-icon.c:72
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Vi har märkt att ditt batteri börjar ta slut. Om du kan vore det en bra idé att ladda det snart."
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:75
 msgid "Getting close to empty"
 msgstr "Nu är det nästan slut"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Nu är ditt batteri nästan helt slut. Det vore en god idé att spara allt ditt arbete och ansluta så snart du kan"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Danger!"
 msgstr "Fara!"
 
-#: ../power-icon/src/mpd-power-icon.c:82
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Batteriet i datorn är nästan slut. Vi måste stänga av datorn nu. Spara ditt arbete, hoppas vi ses igen snart."
 
-#: ../power-icon/src/mpd-power-icon.c:300
+#: ../power-icon/src/mpd-power-icon.c:312
 msgid "Would you like to turn off now?"
 msgstr "Vill du stänga av nu?"
 
-#: ../power-icon/src/mpd-power-icon.c:301
+#: ../power-icon/src/mpd-power-icon.c:313
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Om du inte bestämmer dig snart stänger jag av datorn om 30 sekunder."
 
-#: ../power-icon/src/mpd-power-icon.c:368
+#: ../power-icon/src/mpd-power-icon.c:378
 msgid "battery"
 msgstr "batteri"
 
@@ -99,7 +100,7 @@ msgstr "Om du inte bestämmer dig snart stänger jag av datorn om %d sekunder."
 msgid "Turn off"
 msgstr "Stäng av"
 
-#: ../src/moblin-panel-devices.c:119
+#: ../src/moblin-panel-devices.c:120
 msgid "Moblin Devices Panel"
 msgstr "Moblin Enhetspanel"
 
@@ -128,15 +129,16 @@ msgstr "Ditt batteri är helt laddat och du kan börja."
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Det verkar som om ditt batteri gått sönder."
 
-#: ../src/mpd-brightness-tile.c:90
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
 msgid "Netbook brightness"
 msgstr "Netbook-ljusstyrka"
 
-#: ../src/mpd-computer-pane.c:93
+#: ../src/mpd-computer-pane.c:120
 msgid "Your computer"
 msgstr "Din dator"
 
-#: ../src/mpd-computer-tile.c:154
+#: ../src/mpd-computer-pane.c:129
 msgid "All settings"
 msgstr "Alla inställningar"
 
@@ -156,6 +158,10 @@ msgstr "Andra enheter"
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Du använder</span> <span color='%s'>%d%% av %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Papperskorgen"
 
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
@@ -248,11 +254,11 @@ msgstr "Mycket tyst"
 msgid "Silent"
 msgstr "Helt tyst"
 
-#: ../src/mpd-volume-tile.c:356
+#: ../src/mpd-volume-tile.c:357
 msgid "Netbook volume"
 msgstr "Netbook-volym"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:373
 msgid "Mute"
 msgstr "Ljud avstängt"
 
@@ -279,9 +285,6 @@ msgstr "Ljud avstängt"
 
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-
-#~ msgid "Flash"
-#~ msgstr "Flash"
 
 #~ msgid "CD"
 #~ msgstr "Cd"
