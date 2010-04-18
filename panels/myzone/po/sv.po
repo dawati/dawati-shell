@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:40+0000\n"
+"POT-Creation-Date: 2010-04-17 09:52+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -55,78 +55,81 @@ msgstr "Visa mestadels nyligen använda filer"
 msgid "Show as many recent files as possible"
 msgstr "Visa så många av nyligen använda filer som möjligt"
 
-#: ../penge/penge-calendar-pane.c:445
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "Vill du radera dina senaste dokument? Detta tar bort det lokala innehållet från Myzone"
+
+#: ../penge/penge-calendar-pane.c:483
 msgid "Appointments"
 msgstr "Möten"
+
+#: ../penge/penge-calendar-pane.c:526
+msgid "Tasks"
+msgstr "Uppgifter"
 
 #: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "Skapa ett möte"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
 msgid "Add"
 msgstr "Lägg till"
 
-#: ../penge/penge-events-pane.c:484
+#: ../penge/penge-events-pane.c:400
 msgid "No calendar entries this week"
 msgstr "Inget i kalendern denna vecka"
 
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "Vad dina vänner gör på internvet visas här. Aktivera dina konton nu!"
-
-#: ../penge/penge-recent-file-tile.c:215
+#: ../penge/penge-recent-file-tile.c:216
 msgid "Web page"
 msgstr "Webbplats"
 
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-tasks-pane.c:50
 msgid "Create a new task"
 msgstr "Skapa en ny uppgift"
 
-#: ../penge/penge-tasks-pane.c:429
+#: ../penge/penge-tasks-pane.c:426
 msgid "Nothing to do today"
 msgstr "Inget schemalagt idag"
 
-#: ../penge/penge-task-tile.c:316
+#: ../penge/penge-task-tile.c:318
 #, c-format
 msgid "Due %x"
 msgstr "Färdig %x"
 
-#: ../penge/penge-welcome-tile.c:75
-msgid "Welcome to MeeGo"
-msgstr "Välkommen till MeeGo"
-
-#: ../penge/penge-welcome-tile.c:94
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Detta är Myzone där dina nyligen använda filer och innehåll från webbmatningar visas."
-
-#: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "Vill du radera dina senaste dokument? Detta tar bort det lokala innehållet från Myzone"
-
-#: ../penge/penge-calendar-pane.c:475
-msgid "Tasks"
-msgstr "Uppgifter"
-
-#: ../penge/penge-welcome-tile.c:35
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "När du har konfigurerat dina webbkonton och använt några filer visas de här på Myzone för enkel åtkomst när du vill."
-
-#: ../penge/penge-email-pane.c:191
-msgid "No unread messages"
-msgstr "Inga olästa meddelanden"
-
-#: ../penge/penge-email-pane.c:193
-msgid "Unread message"
-msgstr "Oläst meddelande"
-
-#: ../penge/penge-welcome-tile.c:41
+#: ../penge/penge-welcome-tile.c:32
 msgid "Play intro video"
 msgstr "Spela upp introduktionsvideo"
 
-#: ../penge/penge-email-pane.c:195
+#: ../penge/penge-welcome-tile.c:64
+msgid "Welcome to MeeGo"
+msgstr "Välkommen till MeeGo"
+
+#: ../penge/penge-welcome-tile.c:83
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Detta är Myzone där dina nyligen använda filer och innehåll från webbmatningar visas."
+
+#: ../penge/penge-welcome-tile.c:26
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "När du har konfigurerat dina webbkonton och använt några filer visas de här på Myzone för enkel åtkomst när du vill."
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "Inga olästa meddelanden"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Oläst meddelande"
+
+#: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
 msgstr "Olästa meddelanden"
+
+#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
+msgid "Open"
+msgstr "Öppna"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "Vad dina vänner gör på internvet visas här. Aktivera dina konton nu!"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Välkommen till Moblin 2.1 för netbooks</b>"
