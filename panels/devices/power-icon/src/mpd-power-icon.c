@@ -118,6 +118,13 @@ _battery_shutdown_timeout_cb (MpdPowerIcon *self)
 }
 
 static void
+_notification_closed_cb (NotifyNotification *note,
+                         MpdPowerIcon       *self)
+{
+  g_object_unref (note);
+}
+
+static void
 do_notification (MpdPowerIcon       *self,
                  NotificationLevel   level,
                  NotifyUrgency       urgency)
@@ -131,18 +138,18 @@ do_notification (MpdPowerIcon       *self,
                                   _(_messages[level].message),
                                   _messages[level].icon,
                                   NULL);
-
-  notify_notification_set_timeout (note, 10000);
   notify_notification_set_urgency (note, urgency);
+  g_signal_connect (note, "closed",
+                    G_CALLBACK (_notification_closed_cb), self);
 
-  if (!notify_notification_show (note, &error))
+  notify_notification_show (note, &error);
+  if (error)
   {
-    g_warning (G_STRLOC ": Error showing notification: %s",
+    g_warning ("%s : Error showing notification: %s",
+               G_STRLOC,
                error->message);
     g_clear_error (&error);
   }
-
-  g_object_unref (note);
 }
 
 /*

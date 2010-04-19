@@ -208,6 +208,13 @@ _open_clicked_cb (MxButton              *button,
   g_signal_emit_by_name (self, "request-hide");
 }
 
+static void
+_notification_closed_cb (NotifyNotification   *note,
+                         MpdStorageDeviceTile *self)
+{
+  g_object_unref (note);
+}
+
 static GObject *
 _constructor (GType                  type,
               unsigned int           n_properties,
@@ -217,7 +224,7 @@ _constructor (GType                  type,
                         G_OBJECT_CLASS (mpd_storage_device_tile_parent_class)
                           ->constructor (type, n_properties, properties);
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  NotifyNotification  *notification;
+  NotifyNotification  *note;
   char                *body;
   GError              *error = NULL;
 
@@ -256,17 +263,18 @@ _constructor (GType                  type,
   body = g_strdup_printf (_("%s nas been plugged in. "
                             "You can use the Devices panel interact with it"),
                           priv->name);
-  notification = notify_notification_new (_("USB plugged in"), body, NULL, NULL);
-  notify_notification_add_action (notification, "show-panel", _("Show"),
+  note = notify_notification_new (_("USB plugged in"), body, NULL, NULL);
+  notify_notification_add_action (note, "show-panel", _("Show"),
                                   (NotifyActionCallback) _show_panel_cb, self,
                                   NULL);
-  notify_notification_show (notification, &error);
+  g_signal_connect (note, "closed",
+                    G_CALLBACK (_notification_closed_cb), self);
+  notify_notification_show (note, &error);
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
-  g_object_unref (notification);
 
   return (GObject *) self;
 }
