@@ -15,7 +15,6 @@ noinst_PROGRAMS = \
 
 LDADD = \
   $(top_builddir)/egg-console-kit/libegg-console-kit.la \
-  $(top_builddir)/egg-idletime/libegg-idletime.la \
   $(MPI_LIBS) \
   $(NULL)
 

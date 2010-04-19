@@ -114,7 +114,6 @@ _presence_status_changed (DBusGProxy *presence,
 {
   MpdIdleManager *self;
   MpdIdleManagerPrivate *priv;
-  GError *error = NULL;
 
   g_return_if_fail (MPD_IS_IDLE_MANAGER (data));
 

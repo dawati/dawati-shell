@@ -5,7 +5,6 @@ README
 This package uses code copied from various places:
 
 egg-console-kit - GNOME Power Manager
-egg-idletime - GNOME Power Manager
 gpm - GNOME Power Manager
 gvc - GNOME Volume control
 
