@@ -494,6 +494,12 @@ mnb_launcher_reset (MnbLauncher     *self)
 
   mnb_launcher_cancel_search (self);
 
+  /* Clear fav apps */
+  clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
+                             (ClutterCallback) clutter_actor_destroy,
+                             NULL);
+
+  /* Clear apps */
   clutter_actor_destroy (priv->apps_grid);
   priv->apps_grid = NULL;
 
@@ -503,6 +509,7 @@ mnb_launcher_reset (MnbLauncher     *self)
   g_slist_free (priv->launchers);
   priv->launchers = NULL;
 
+  /* Shut down monitoring */
   if (priv->monitor)
     {
       mnb_launcher_monitor_free (priv->monitor);
