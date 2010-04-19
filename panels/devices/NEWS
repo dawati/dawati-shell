@@ -1,11 +1,11 @@
 
 Version 0.1.20, 2010-04-19
 
-  Fixes: http://bugzilla.meego.com/show_bug.cgi?id=529
-  Fixes: http://bugzilla.meego.com/show_bug.cgi?id=330
-  Fixes: http://bugzilla.meego.com/show_bug.cgi?id=818
-  l10n: Updates to zh_CN, sv, pl, ja, fi, ko, pt_BR, it, ru, de, en_GB,
-        da, nl, fr.
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=529
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=330
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=818
+    l10n: Updates to zh_CN, sv, pl, ja, fi, ko, pt_BR, it, ru, de, en_GB,
+          da, nl, fr.
 
 Version 0.1.19, 2010-04-14
 
