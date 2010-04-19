@@ -1060,6 +1060,9 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
   MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
   guint i;
 
+  if (!ChromeProfileProvider::GetInstance()->GetReady())
+    return;
+
   ChromeProfileProvider::GetInstance()->Uninitialize();
 
   moblin_netbook_netpanel_clear (netpanel);

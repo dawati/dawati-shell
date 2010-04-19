@@ -80,6 +80,8 @@ public:
                             SessionCallBack*        callback,
                             ExceptionCallback* expback);
 
+  bool GetReady                 (void);
+
   private:
   void OnSegmentUsageAvailable (CancelableRequestProvider::Handle handle,
                                 std::vector<PageUsageData*>*      page_data);

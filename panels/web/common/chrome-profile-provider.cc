@@ -145,6 +145,9 @@ ChromeProfileProvider::OnSegmentUsageAvailable(CancelableRequestProvider::Handle
   if (page_data->size() == 0) {
     if (favorite_context_ && favorite_expback_)
       favorite_expback_ (favorite_context_, 0);
+    favorite_context_ = NULL;
+    favorite_callback_ = NULL;
+    favorite_expback_ = NULL;
     return;
   }
 
@@ -178,6 +181,9 @@ ChromeProfileProvider::OnSegmentUsageAvailable(CancelableRequestProvider::Handle
                UTF16ToUTF8(page.GetTitle()).c_str());
 #endif
     }
+  favorite_context_ = NULL;
+  favorite_callback_ = NULL;
+  favorite_expback_ = NULL;
 }
 
 void
@@ -391,6 +397,9 @@ ChromeProfileProvider::OnGotSession(SessionService::Handle handle,
             }
         }
     }
+  session_context_ = NULL;
+  session_callback_ = NULL;
+  session_expback_ = NULL;
 }
 
 //#define USE_SESSION_SERVICE
@@ -480,6 +489,9 @@ ChromeProfileProvider::GetSessions(void* context,
     {
       if (session_context_ && session_expback_)
         session_expback_(session_context_, 0);
+      session_context_ = NULL;
+      session_callback_ = NULL;
+      session_expback_ = NULL;
       return;
     }
 
@@ -521,4 +533,13 @@ ChromeProfileProvider::GetSessions(void* context,
       delete *i;
     }
 #endif
+  session_context_ = NULL;
+  session_callback_ = NULL;
+  session_expback_ = NULL;
 }
+
+bool ChromeProfileProvider::GetReady(void)
+{
+  return favorite_context_ == NULL && session_context_ == NULL;
+}
+
