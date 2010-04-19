@@ -1,6 +1,9 @@
 AM_CFLAGS = \
-	    $(APPLICATIONS_CFLAGS) \
-	    -I$(top_srcdir)/src
+	$(APPLICATIONS_CFLAGS) \
+	-I$(top_srcdir)/src \
+	-DDATADIR=\"$(datadir)\" \
+	-DLOCALEDIR=\"$(localedir)\" \
+	$(NULL)
 
 LDADD = $(APPLICATIONS_LIBS)
 

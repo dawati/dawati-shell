@@ -1,10 +1,13 @@
 
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "mnb-launcher-tree.h"
+#include "config.h"
 
 #define ICON_SIZE 48
 
@@ -16,6 +19,11 @@ main (int     argc,
   MnbLauncherTree *tree;
   GList           *directories;
   GList const     *directory_iter;
+
+  setlocale (LC_ALL, "");
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 
   gtk_init (&argc, &argv);
 
