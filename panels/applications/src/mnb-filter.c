@@ -50,6 +50,13 @@ _entry_text_notify_cb (MxEntry    *entry,
 }
 
 static void
+_entry_clear_clicked_cb (MxEntry    *entry,
+                         MnbFilter  *self)
+{
+  mx_entry_set_text (entry, "");
+}
+
+static void
 _key_focus_in (ClutterActor *actor)
 {
   MnbFilterPrivate *priv = GET_PRIVATE (actor);
@@ -138,8 +145,12 @@ mnb_filter_init (MnbFilter *self)
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 12);
 
   priv->entry = (MxEntry *) mx_entry_new ();
+  mx_entry_set_secondary_icon_from_file (priv->entry,
+                                         THEMEDIR"/clear-entry.png");
   g_signal_connect (priv->entry, "notify::text",
                     G_CALLBACK (_entry_text_notify_cb), self);
+  g_signal_connect (priv->entry, "secondary-icon-clicked",
+                    G_CALLBACK (_entry_clear_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), (ClutterActor *) priv->entry);
   clutter_container_child_set (CLUTTER_CONTAINER (self), (ClutterActor *) priv->entry,
                                "expand", TRUE,

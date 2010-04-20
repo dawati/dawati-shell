@@ -3,6 +3,7 @@ AM_CFLAGS = \
 	-I$(top_srcdir)/src \
 	-DDATADIR=\"$(datadir)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
+	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
 	$(NULL)
 
 LDADD = $(APPLICATIONS_LIBS)
