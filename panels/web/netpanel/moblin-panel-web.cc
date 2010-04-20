@@ -284,16 +284,17 @@ main (int    argc,
     clutter_actor_set_size (base_pane, 1016, 500);
     clutter_actor_show (CLUTTER_ACTOR (netpanel));
     clutter_actor_show_all (stage);
+
+    g_signal_connect (stage,
+                    "delete-event",
+                    (GCallback)stage_delete_event,
+                    NULL);
   }
 
   g_signal_connect (stage,
                     "button-press-event",
                     (GCallback)stage_button_press_event,
                     netpanel);
-  g_signal_connect (stage,
-                    "delete-event",
-                    (GCallback)stage_delete_event,
-                    NULL);
 
   // run chromium's message loop
   MessageLoopForUI::current()->Run(NULL);

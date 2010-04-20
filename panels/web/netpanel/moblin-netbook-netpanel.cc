@@ -1039,6 +1039,17 @@ request_live_previews (MoblinNetbookNetpanel *self)
 }
 
 static void
+moblin_netbook_netpanel_unload (ClutterActor *actor)
+{
+  MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
+  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+
+  // mpl_panel_clutter_unload uses clutter_main_quit to quit
+  // which doesn't work for us, use MessageLoopForUI.Quit instead
+  MessageLoopForUI::current()->Quit();
+}
+
+static void
 moblin_netbook_netpanel_show (ClutterActor *actor)
 {
   MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
@@ -1211,7 +1222,7 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
   priv->entry = mnb_netpanel_bar_new (_("Search"));
 
   clutter_actor_set_name (CLUTTER_ACTOR (priv->entry), "netpanel-entry");
-  clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 600);
+  clutter_actor_set_width (CLUTTER_ACTOR (priv->entry), 500);
   mx_table_add_actor_with_properties (MX_TABLE (table),
                                         CLUTTER_ACTOR (priv->entry),
                                         0, 1,
@@ -1288,4 +1299,7 @@ moblin_netbook_netpanel_set_panel_client (MoblinNetbookNetpanel *netpanel,
 
   g_signal_connect_swapped (panel_client, "hide-end",
                             (GCallback)moblin_netbook_netpanel_hide, netpanel);
+
+  g_signal_connect_swapped (panel_client, "unload",
+                            (GCallback)moblin_netbook_netpanel_unload, netpanel);
 }
