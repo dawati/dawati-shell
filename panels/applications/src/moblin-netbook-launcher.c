@@ -1047,11 +1047,6 @@ mnb_launcher_clear_filter (MnbLauncher *self)
 
   mnb_filter_set_text (MNB_FILTER (priv->filter), "");
 
-  /* Hide tooltip on fav apps. */
-  clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                             (ClutterCallback) mx_widget_hide_tooltip,
-                             NULL);
-
   /* Reset scroll position. */
   mx_scrollable_get_adjustments (MX_SCROLLABLE (self->priv->apps_grid),
                                  NULL,

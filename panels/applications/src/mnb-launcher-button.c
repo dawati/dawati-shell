@@ -187,6 +187,7 @@ mnb_launcher_button_button_release_event (ClutterActor       *actor,
       g_signal_emit (self, _signals[ACTIVATED], 0);
 
       mx_stylable_set_style_pseudo_class (MX_STYLABLE (self), NULL);
+      mx_widget_hide_tooltip (MX_WIDGET (self));
 
       return TRUE;
     }
