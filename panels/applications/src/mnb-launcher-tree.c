@@ -178,6 +178,7 @@ mnb_launcher_directory_new (GMenuTreeDirectory *branch)
   g_return_val_if_fail (branch, NULL);
 
   self = g_new0 (MnbLauncherDirectory, 1);
+  self->id = g_strdup (gmenu_tree_directory_get_menu_id (branch));
   self->name = g_strdup (gmenu_tree_directory_get_name (branch));
 
   return self;
@@ -188,13 +189,30 @@ mnb_launcher_directory_new_from_cache (const gchar **attribute_names,
                                        const gchar **attribute_values)
 {
   MnbLauncherDirectory *self;
+  guint i;
+  gboolean have_id = FALSE;
+  gboolean have_name = FALSE;;
 
-  g_return_val_if_fail (attribute_names && attribute_names[0], NULL);
-  g_return_val_if_fail (0 == g_strcmp0 ("name", attribute_names[0]), NULL);
-  g_return_val_if_fail (attribute_values && attribute_values[0], NULL);
+  g_return_val_if_fail (attribute_names, NULL);
+  g_return_val_if_fail (attribute_values, NULL);
 
   self = g_new0 (MnbLauncherDirectory, 1);
-  self->name = g_strdup (attribute_values[0]);
+
+  for (i = 0; attribute_names[i]; i++)
+    {
+      if (0 == g_strcmp0 (attribute_names[i], "id"))
+        {
+          self->id = g_strdup (attribute_values[i]);
+          have_id = TRUE;
+        }
+      else if (0 == g_strcmp0 (attribute_names[i], "name"))
+        {
+          self->name = g_strdup (attribute_values[i]);
+          have_name = TRUE;
+        }
+    }
+
+  g_warn_if_fail (have_id && have_name);
 
   return self;
 }
@@ -204,6 +222,7 @@ mnb_launcher_directory_free (MnbLauncherDirectory *self)
 {
   GList *iter;
 
+  g_free (self->id);
   g_free (self->name);
 
   iter = self->entries;
@@ -237,7 +256,9 @@ mnb_launcher_directory_write_xml (MnbLauncherDirectory const  *self,
   GList const *app_iter;
   gchar       *text;
 
-  text = g_markup_printf_escaped ("  <category name=\"%s\">\n", self->name);
+  text = g_markup_printf_escaped ("  <category id=\"%s\" name=\"%s\">\n",
+                                   self->id,
+                                   self->name);
   fputs (text, fp);
   g_free (text);
   for (app_iter = self->entries;

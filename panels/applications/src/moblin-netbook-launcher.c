@@ -147,8 +147,6 @@ scrollable_ensure_actor_visible (MxScrollable   *scrollable,
 enum
 {
   PROP_0,
-
-  PROP_OPEN_FIRST_EXPANDER
 };
 
 enum
@@ -179,14 +177,12 @@ struct MnbLauncherPrivate_ {
   ClutterActor            *filter_hbox;
   ClutterActor            *filter;
   ClutterActor            *scrollview;
+  MxExpander              *default_expander;
 
   /* "Dynamic" widgets (browser vs. filter mode).
    * These are explicitely ref'd and destroyed. */
   ClutterActor            *fav_grid;
   ClutterActor            *apps_grid;
-
-  /* Data */
-  gboolean                 open_first_expander;
 
   /* While filtering. */
   gboolean                 is_filtering;
@@ -544,9 +540,15 @@ mnb_launcher_fill_category (MnbLauncher     *self)
     {
       /* Last invocation. */
 
+      /* Expand default expander */
+      if (priv->default_expander)
+        mx_expander_set_expanded (priv->default_expander, TRUE);
+      else
+        g_warning ("%s : No default expander 'Internet'", G_STRLOC);
+
       /* Alphabetically sort buttons, so they are in order while filtering. */
       priv->launchers = g_slist_sort (priv->launchers,
-                                               (GCompareFunc) mnb_launcher_button_compare);
+                                      (GCompareFunc) mnb_launcher_button_compare);
 
       /* Create monitor only once. */
       if (!priv->monitor)
@@ -625,13 +627,13 @@ mnb_launcher_fill_category (MnbLauncher     *self)
                               g_strdup (directory->name), expander);
         clutter_container_add (CLUTTER_CONTAINER (expander), inner_grid, NULL);
 
-        /* Remember and open first expander by default. */
-        if (priv->open_first_expander &&
-            priv->directory_iter == priv->directories)
-        {
-          mx_expander_set_expanded (MX_EXPANDER (expander), TRUE);
-          priv->first_expander = MX_EXPANDER (expander);
-        }
+        /* This expander will be opened by default. */
+        if (0 == g_strcmp0 ("Internet", directory->id))
+          {
+            priv->default_expander = MX_EXPANDER (expander);
+            g_object_add_weak_pointer ((GObject *) priv->default_expander,
+                                       (gpointer *) &priv->default_expander);
+          }
 
         g_signal_connect (expander, "notify::expanded",
                           G_CALLBACK (expander_expanded_notify_cb),
@@ -1018,13 +1020,8 @@ _get_property (GObject    *gobject,
                GValue     *value,
                GParamSpec *pspec)
 {
-  MnbLauncherPrivate *priv = GET_PRIVATE (gobject);
-
   switch (prop_id)
     {
-      case PROP_OPEN_FIRST_EXPANDER:
-          g_value_set_boolean (value, priv->open_first_expander);
-        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
         break;
@@ -1037,14 +1034,8 @@ _set_property (GObject      *gobject,
                const GValue *value,
                GParamSpec   *pspec)
 {
-  MnbLauncherPrivate *priv = GET_PRIVATE (gobject);
-
   switch (prop_id)
     {
-      case PROP_OPEN_FIRST_EXPANDER:
-        /* Construct-only, no notification. */
-        priv->open_first_expander = g_value_get_boolean (value);
-        break;
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
         break;
@@ -1054,7 +1045,6 @@ _set_property (GObject      *gobject,
 static void
 mnb_launcher_class_init (MnbLauncherClass *klass)
 {
-  GParamSpec *pspec;
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
@@ -1069,14 +1059,6 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
 
   /* Properties */
 
-  pspec = g_param_spec_boolean ("open-first-expander",
-                                "Open first expander",
-                                "Whether to open the first expander by default",
-                                FALSE,
-                                G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
-  g_object_class_install_property (object_class,
-                                   PROP_OPEN_FIRST_EXPANDER,
-                                   pspec);
 
   /* Signals */
 
@@ -1125,8 +1107,6 @@ void
 mnb_launcher_clear_filter (MnbLauncher *self)
 {
   MnbLauncherPrivate  *priv = GET_PRIVATE (self);
-  GHashTableIter       iter;
-  MxExpander          *expander;
   MxAdjustment        *adjust;
 
   mnb_filter_set_text (MNB_FILTER (priv->filter), "");
@@ -1136,24 +1116,16 @@ mnb_launcher_clear_filter (MnbLauncher *self)
                              (ClutterCallback) mx_widget_hide_tooltip,
                              NULL);
 
-  /* Close expanders, expand first. */
-  priv->first_expansion = TRUE;
-  g_hash_table_iter_init (&iter, priv->expanders);
-  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &expander))
-  {
-    if (priv->open_first_expander &&
-        expander == priv->first_expander)
-    {
-      mx_expander_set_expanded (expander, TRUE);
-    } else {
-      mx_expander_set_expanded (expander, FALSE);
-    }
-  }
-
   /* Reset scroll position. */
   mx_scrollable_get_adjustments (MX_SCROLLABLE (self->priv->apps_grid),
                                  NULL,
                                  &adjust);
   mx_adjustment_set_value (adjust, 0.0);
+
+  /* Expand default expander. */
+  if (priv->default_expander)
+    {
+      mx_expander_set_expanded (priv->default_expander, TRUE);
+    }
 }
 

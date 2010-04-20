@@ -55,6 +55,7 @@ void                  mnb_launcher_tree_free            (MnbLauncherTree        
  * MnbLauncherDirectory represents a "folder" item in the main menu.
  */
 typedef struct {
+  gchar *id;
   gchar *name;
   GList *entries;
 } MnbLauncherDirectory;
