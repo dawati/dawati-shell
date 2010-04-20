@@ -2299,6 +2299,8 @@ setup_focus_window (MutterPlugin *plugin)
   attr.event_mask        = KeyPressMask | KeyReleaseMask | FocusChangeMask;
   attr.override_redirect = False;
 
+  meta_error_trap_push (display);
+
   xwin = XCreateWindow (xdpy,
                         RootWindow (xdpy,
                                     meta_screen_get_screen_number (screen)),
@@ -2314,6 +2316,8 @@ setup_focus_window (MutterPlugin *plugin)
                    1);
 
   XMapWindow (xdpy, xwin);
+
+  meta_error_trap_pop (display, FALSE);
 
   priv->focus_xwin = xwin;
 }
