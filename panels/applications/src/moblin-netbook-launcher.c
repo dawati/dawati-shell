@@ -71,7 +71,7 @@
 #define SCROLLVIEW_OUTER_HEIGHT(self_)                                         \
           (clutter_actor_get_height (CLUTTER_ACTOR (self_)) -                  \
            clutter_actor_get_height (self_->priv->filter_hbox) - 35)
-#define SCROLLVIEW_INNER_WIDTH(self_) 690.0
+#define SCROLLVIEW_INNER_WIDTH(self_) 695.0
 
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))

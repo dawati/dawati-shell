@@ -15,7 +15,7 @@ MnbLauncher {
 }
 
 #apps-pane-content {
-  padding: 3 0 3 15;
+  padding: 3 0 3 3;
 }
 
 .tile-label {
@@ -25,7 +25,7 @@ MnbLauncher {
 }
 
 MnbFilter {
-  padding: 0 30 0 0;
+  padding: 0 29 0 0;
 }
 
 MnbLauncher *#launcher-expander-grid {
