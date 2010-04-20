@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Tomáš Virgl <tomas@virgl.net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: anerley.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-19 09:37+0000\n"
+"PO-Revision-Date: 2010-04-20 17:36+0200\n"
+"Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
+"Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
+msgid "Available"
+msgstr "Prítomný"
+
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
+msgid "Busy"
+msgstr "Zaneprázdnený"
+
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-presence-chooser.c:44
+msgid "Away"
+msgstr "Preč"
+
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+msgid "Offline"
+msgstr "Odhlásený"
+
+#: ../anerley/anerley-econtact-item.c:233
+msgid "Unnamed"
+msgstr "Nepomenovaný"
+
+#: ../anerley/anerley-presence-chooser.c:41
+msgid "Unset"
+msgstr "Nenastavený"
+
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Dlhšie preč"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Hidden"
+msgstr "Skrytý"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Neznámy"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Error"
+msgstr "Chyba"
