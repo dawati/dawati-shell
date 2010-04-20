@@ -1,6 +1,7 @@
 
 Version 0.1.21, 2010-04-20
 
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=1031
     Fixes: http://bugzilla.meego.com/show_bug.cgi?id=529 (panel part)
 
 Version 0.1.20, 2010-04-19
