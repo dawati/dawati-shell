@@ -161,13 +161,18 @@ _suspend_idle_time_key_changed_cb (GConfClient  *client,
                                    void         *data)
 {
   MpdIdleManagerPrivate *priv;
+  GConfValue *val = NULL;
 
   g_return_if_fail (MPD_IS_IDLE_MANAGER (data));
   priv = GET_PRIVATE (data);
 
-  priv->suspend_idle_time = gconf_client_get_int (priv->client,
-                                                  SUSPEND_IDLE_TIME_KEY,
-                                                  NULL);
+  val = gconf_client_get (priv->client, SUSPEND_IDLE_TIME_KEY, NULL);
+  if (!val) {
+    priv->suspend_idle_time = -1;
+  } else {
+    priv->suspend_idle_time = gconf_value_get_int (val);
+    gconf_value_free (val);
+  }
 }
 
 static void
