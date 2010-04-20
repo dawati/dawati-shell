@@ -1,0 +1,48 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Tomáš Virgl <tomas@virgl.net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: panel-apps.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-19 09:38+0000\n"
+"PO-Revision-Date: 2010-04-20 18:29+0200\n"
+"Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
+"Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/mnb-filter.c:150
+msgid "Search"
+msgstr "Hľadať"
+
+#. Panel label
+#: ../src/moblin-netbook-launcher.c:922
+msgid "Applications"
+msgstr "Aplikácie"
+
+#.
+#. * Fav apps pane
+#.
+#: ../src/moblin-netbook-launcher.c:938
+msgid "Favorite applications"
+msgstr "Obľúbené aplikácie"
+
+#.
+#. * Applications
+#.
+#: ../src/moblin-netbook-launcher.c:962
+msgid "Your applications"
+msgstr "Vaše aplikácie"
+
+#: ../src/moblin-panel-applications.c:197
+#: ../data/moblin-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr "aplikácie"
+
+#: ../data/moblin-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Panel aplikácií"
