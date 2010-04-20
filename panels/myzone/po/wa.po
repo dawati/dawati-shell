@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:40+0000\n"
+"POT-Creation-Date: 2010-04-19 09:39+0000\n"
 "PO-Revision-Date: 2010-03-20 09:54+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -61,74 +61,77 @@ msgstr "Mostrer ostant d' fitchîs d' enawaire k' on sait"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "Voloz vs rinetyî vos documints d' enawaire? Ça va oister l' ådvins coinrece del Myzone"
 
-#: ../penge/penge-calendar-pane.c:445
+#: ../penge/penge-calendar-pane.c:483
 msgid "Appointments"
 msgstr "Radjoûs"
+
+#: ../penge/penge-calendar-pane.c:526
+msgid "Tasks"
+msgstr "Bouyes"
 
 #: ../penge/penge-events-pane.c:69
 msgid "Create an appointment"
 msgstr "Ahiver on radjoû"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
 msgid "Add"
 msgstr "Radjouter"
 
-#: ../penge/penge-events-pane.c:484
+#: ../penge/penge-events-pane.c:400
 msgid "No calendar entries this week"
 msgstr "Rén e calindrî cisse samwinne ci"
 
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "Il aparexhrè droci les sacwès k' vos soçons fijhnut so fyis. Metoz en alaedje vos contes do côp !"
-
-#: ../penge/penge-recent-file-tile.c:215
+#: ../penge/penge-recent-file-tile.c:216
 msgid "Web page"
 msgstr "Pådje waibe"
 
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-tasks-pane.c:50
 msgid "Create a new task"
 msgstr "Ahiver ene novele bouye"
 
-#: ../penge/penge-tasks-pane.c:429
+#: ../penge/penge-tasks-pane.c:426
 msgid "Nothing to do today"
 msgstr "Rén a fé ådjourdu"
 
-#: ../penge/penge-task-tile.c:316
+#: ../penge/penge-task-tile.c:318
 #, c-format
 msgid "Due %x"
 msgstr "A fé pol %x"
 
-#: ../penge/penge-welcome-tile.c:75
+#: ../penge/penge-welcome-tile.c:32
+msgid "Play intro video"
+msgstr "Djouwer l' videyo d' adrovaedje"
+
+#: ../penge/penge-welcome-tile.c:64
 msgid "Welcome to MeeGo"
 msgstr "Bénvnowe dins MeeGo"
 
-#: ../penge/penge-welcome-tile.c:94
+#: ../penge/penge-welcome-tile.c:83
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Çouchal est Myzone, wice ki vos fitchîs eployîs enawaire eyet l' ådvins d' vos floûs waibe aparexhront."
 
-#: ../penge/penge-email-pane.c:191
-msgid "No unread messages"
-msgstr "I gn a pont d' messaedje nén léjhou"
-
-#: ../penge/penge-email-pane.c:193
-msgid "Unread message"
-msgstr "Messaedje nén léjhou"
-
-#: ../penge/penge-email-pane.c:195
-msgid "Unread messages"
-msgstr "Messaedjes nén léjhous"
-
-#: ../penge/penge-calendar-pane.c:475
-msgid "Tasks"
-msgstr "Bouyes"
-
-#: ../penge/penge-welcome-tile.c:35
+#: ../penge/penge-welcome-tile.c:26
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "Cwand vs avoz defini vos contes waibes eyet eployî kékès fitchîs, il aparexhront chal sol Myzone pos î moussî  abeydimint cwand vos l' voloz."
 
-#: ../penge/penge-welcome-tile.c:41
-msgid "Play intro video"
-msgstr "Djouwer l' videyo d' adrovaedje"
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "I gn a pont d' messaedje nén léjhou"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Messaedje nén léjhou"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Messaedjes nén léjhous"
+
+#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
+msgid "Open"
+msgstr "Drovi"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "Il aparexhrè droci les sacwès k' vos soçons fijhnut so fyis. Metoz en alaedje vos contes do côp !"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Wilicome dins Moblin 2.1 po les Netbooks</b>"
