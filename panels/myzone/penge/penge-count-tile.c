@@ -61,11 +61,26 @@ penge_count_tile_constructor (GType                  type,
 }
 
 static void
+penge_count_tile_update_tooltip (PengeCountTile *self)
+{
+  PengeCountTilePrivate *priv = self->priv;
+  gchar *tooltip_str;
+  tooltip_str = g_strdup_printf ("%s\n%s",
+                                 mx_label_get_text (MX_LABEL (priv->message_label)),
+                                 mx_label_get_text (MX_LABEL (priv->account_label)));
+  mx_widget_set_tooltip_text (MX_WIDGET (self), tooltip_str);
+  g_free (tooltip_str);
+}
+
+static void
 penge_count_tile_set_message (PengeCountTile *self,
                               const gchar    *message)
 {
   PengeCountTilePrivate *priv = self->priv;
   mx_label_set_text (MX_LABEL (priv->message_label), message);
+
+  if (priv->compact)
+    penge_count_tile_update_tooltip (self);
 }
 
 static void
@@ -74,14 +89,17 @@ penge_count_tile_set_account (PengeCountTile *self,
 {
   PengeCountTilePrivate *priv = self->priv;
   mx_label_set_text (MX_LABEL (priv->account_label), account);
+
+  if (priv->compact)
+    penge_count_tile_update_tooltip (self);
 }
 
 static void
 penge_count_tile_set_count (PengeCountTile *self,
                             guint           count)
 {
-  gchar *count_str;
   PengeCountTilePrivate *priv = self->priv;
+  gchar *count_str;
 
   priv->count = count;
 
@@ -101,6 +119,9 @@ penge_count_tile_set_count (PengeCountTile *self,
   else
     mx_stylable_set_style_class (MX_STYLABLE (priv->count_label),
                                  "PengeCountLabel");
+
+  if (priv->compact)
+    penge_count_tile_update_tooltip (self);
 }
 
 static void
@@ -115,7 +136,6 @@ penge_count_tile_set_compact (PengeCountTile *self,
   priv->compact = compact;
   if (compact)
   {
-    gchar *tooltip_str;
     clutter_actor_set_width (CLUTTER_ACTOR (self), -1);
     
     g_object_ref (priv->count_label);
@@ -124,12 +144,7 @@ penge_count_tile_set_compact (PengeCountTile *self,
     clutter_actor_unparent (priv->count_label);
     mx_bin_set_child (MX_BIN (self), priv->count_label);
 
-    tooltip_str = g_strdup_printf ("%s\n%s",
-                                   mx_label_get_text (MX_LABEL (priv->message_label)),
-                                   mx_label_get_text (MX_LABEL (priv->account_label)));
-    mx_widget_set_tooltip_text (MX_WIDGET (self), tooltip_str);
-    g_free (tooltip_str);
-                                
+    penge_count_tile_update_tooltip (self);
   }
   else
   {
