@@ -670,7 +670,7 @@ _client_get_services_cb (SwClient    *client,
 
   sw_client_open_view (client,
                        (GList *)services,
-                       20,
+                       50,
                        _client_open_view_cb,
                        pane);
 }
