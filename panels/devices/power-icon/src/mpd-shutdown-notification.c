@@ -129,7 +129,7 @@ _constructor (GType                  type,
   notify_notification_set_timeout (NOTIFY_NOTIFICATION (self),
                                    NOTIFY_EXPIRES_NEVER);
   notify_notification_add_action (NOTIFY_NOTIFICATION (self),
-                                  "shutdown",
+                                  "meego:XF86XK_PowerOff",
                                   _("Turn off"),
                                   NOTIFY_ACTION_CALLBACK (_notification_shutdown_cb),
                                   NULL, NULL);
