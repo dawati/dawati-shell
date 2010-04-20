@@ -44,66 +44,6 @@
 #include "mnb-launcher-grid.h"
 #include "mnb-launcher-tree.h"
 
-static void
-scrollable_ensure_box_visible (MxScrollable           *scrollable,
-                               const ClutterActorBox  *box)
-{
-  MxAdjustment  *hadjustment;
-  MxAdjustment  *vadjustment;
-  gdouble        top, right, bottom, left;
-  gdouble        h_page, v_page;
-
-  g_object_get (scrollable,
-                "horizontal-adjustment", &hadjustment,
-                "vertical-adjustment", &vadjustment,
-                NULL);
-
-  g_object_get (hadjustment,
-                "value", &left,
-                "page-size", &h_page,
-                NULL);
-  right = left + h_page;
-
-  g_object_get (vadjustment,
-                "value", &top,
-                "page-size", &v_page,
-                NULL);
-  bottom = top + v_page;
-
-#define SCROLL_TOP_MARGIN 3
-
-  /* Vertical. */
-  if ((box->y1 - SCROLL_TOP_MARGIN) < top)
-  {
-    mx_adjustment_set_value (vadjustment, box->y1 - SCROLL_TOP_MARGIN);
-  } else if (box->y2 > bottom) {
-
-    gdouble height = box->y2 - box->y1;
-    if (height < v_page)
-      mx_adjustment_set_value (vadjustment, box->y2 - v_page + SCROLL_TOP_MARGIN);
-    else
-      mx_adjustment_set_value (vadjustment, box->y1 - SCROLL_TOP_MARGIN);
-  }
-}
-
-static void
-scrollable_ensure_actor_visible (MxScrollable   *scrollable,
-                                 ClutterActor   *actor)
-{
-  ClutterActorBox box;
-  ClutterVertex   allocation[4];
-
-  clutter_actor_get_allocation_vertices (actor,
-                                         CLUTTER_ACTOR (scrollable),
-                                         allocation);
-  box.x1 = allocation[0].x;
-  box.y1 = allocation[0].y;
-  box.x2 = allocation[3].x;
-  box.y2 = allocation[3].y;
-
-  scrollable_ensure_box_visible (scrollable, &box);
-}
-
 #define SEARCH_APPLY_TIMEOUT       500
 #define LAUNCH_REACTIVE_TIMEOUT_S 2
 
@@ -171,7 +111,6 @@ struct MnbLauncherPrivate_ {
   GHashTable              *expanders;
   MxExpander              *first_expander;
   GSList                  *launchers;
-  gboolean                 first_expansion;
 
   /* Static widgets, managed by clutter. */
   ClutterActor            *filter_hbox;
@@ -389,24 +328,17 @@ expander_expand_complete_cb (MxExpander       *expander,
     {
       priv->expand_expander = expander;
 
-      /* On first expansion focus is in the entry, do not highlight anything. */
-      if (priv->first_expansion)
-        {
-          priv->first_expansion = FALSE;
-        }
-      else
-        {
-          /* Do not highlight if the focus has already moved on to fav apps. */
-          ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (priv->expand_expander));
-          ClutterActor *launcher = (ClutterActor *) mnb_launcher_grid_find_widget_by_pseudo_class (
-                                                      MNB_LAUNCHER_GRID (inner_grid),
-                                                      "hover");
-          if (!launcher)
-            mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
+      /* Do not highlight if the focus has already moved on to fav apps. */
+      ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (priv->expand_expander));
+      ClutterActor *launcher = (ClutterActor *) mnb_launcher_grid_find_widget_by_pseudo_class (
+                                                  MNB_LAUNCHER_GRID (inner_grid),
+                                                  "hover");
 
-          scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->apps_grid),
-                                           CLUTTER_ACTOR (expander));
-        }
+      if (!launcher)
+        mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
+
+      /* FIXME Interestingly mx_scroll_view_ensure_visible() on the expander
+       * here totally messes up. */
     }
   else
     {
@@ -463,9 +395,14 @@ expander_frame_allocated_cb (MxExpander             *expander,
                              MnbLauncher            *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  ClutterGeometry geometry;
 
-  scrollable_ensure_actor_visible (MX_SCROLLABLE (priv->apps_grid),
-                                   CLUTTER_ACTOR (expander));
+  geometry.x = box->x1;
+  geometry.y = box->y1;
+  geometry.width = box->x2 - box->x1;
+  geometry.height = box->y2 - box->y1;
+
+  mx_scroll_view_ensure_visible (MX_SCROLL_VIEW (priv->scrollview), &geometry);
 }
 
 static void
@@ -950,6 +887,7 @@ _constructor (GType                  gtype,
 
   fav_scroll = mx_scroll_view_new ();
   clutter_actor_set_name (fav_scroll, "fav-pane-content");
+  g_object_set (fav_scroll, "clip-to-allocation", TRUE, NULL);
   mx_scroll_view_set_scroll_policy (MX_SCROLL_VIEW (fav_scroll),
                                     MX_SCROLL_POLICY_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (pane), fav_scroll);
@@ -984,6 +922,7 @@ _constructor (GType                  gtype,
   /* Apps */
   priv->scrollview = CLUTTER_ACTOR (mx_scroll_view_new ());
   clutter_actor_set_name (priv->scrollview, "apps-pane-content");
+  g_object_set (priv->scrollview, "clip-to-allocation", TRUE, NULL);
   clutter_container_add_actor (CLUTTER_CONTAINER (pane), priv->scrollview);
   clutter_container_child_set (CLUTTER_CONTAINER (pane), priv->scrollview,
                                "expand", TRUE,
@@ -1075,9 +1014,6 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
 static void
 mnb_launcher_init (MnbLauncher *self)
 {
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  priv->first_expansion = TRUE;
 }
 
 ClutterActor *

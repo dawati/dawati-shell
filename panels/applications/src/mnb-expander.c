@@ -62,13 +62,12 @@ _expand_complete_cb (MnbExpander *self,
 }
 
 static void
-_allocate (ClutterActor           *actor,
-           const ClutterActorBox  *box,
-           ClutterAllocationFlags  flags)
+_allocation_changed_cb (ClutterActor            *actor,
+                        ClutterActorBox         *box,
+                        ClutterAllocationFlags   flags,
+                        gpointer                 data)
 {
   MnbExpanderPrivate *priv = GET_PRIVATE (actor);
-
-  CLUTTER_ACTOR_CLASS (mnb_expander_parent_class)->allocate (actor, box, flags);
 
   if (priv->is_animating)
     g_signal_emit (actor, _signals[FRAME_ALLOCATED], 0, box);
@@ -78,11 +77,8 @@ static void
 mnb_expander_class_init (MnbExpanderClass *klass)
 {
   /* GObjectClass *object_class = G_OBJECT_CLASS (klass); */
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbExpanderPrivate));
-
-  actor_class->allocate = _allocate;
 
   _signals[FRAME_ALLOCATED] = g_signal_new ("frame-allocated",
                                            G_TYPE_FROM_CLASS (klass),
@@ -95,6 +91,9 @@ mnb_expander_class_init (MnbExpanderClass *klass)
 static void
 mnb_expander_init (MnbExpander *self)
 {
+  g_signal_connect (self, "allocation-changed",
+                    G_CALLBACK (_allocation_changed_cb), NULL);
+
   g_signal_connect (self, "notify::expanded",
                     G_CALLBACK (_expanded_notify_cb), NULL);
 
