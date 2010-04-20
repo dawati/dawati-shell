@@ -48,6 +48,7 @@ typedef struct
   ClutterActor    *vbox;
 
   GVolumeMonitor  *monitor;
+  GHashTable      *tiles;      /* key=GMount, value=MpdStorageTile */
 } MpdDevicesTilePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -147,8 +148,7 @@ add_tile_from_mount (MpdDevicesTile *self,
   GFile         *file;
   char          *path;
   GVolume       *volume;
-  char          *name;
-  char          *label;
+  char          *name = NULL;
   char         **mime_types;
   GIcon         *icon;
   GtkIconInfo   *icon_info;
@@ -156,21 +156,19 @@ add_tile_from_mount (MpdDevicesTile *self,
   ClutterActor  *tile;
   GError        *error = NULL;
 
+  volume = g_mount_get_volume (mount);
+  if (volume) {
+    name = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_LABEL);
+    g_object_unref (volume);
+  }
+
+  if (!name) {
+    name = g_mount_get_name (mount);
+  }
+
   /* Mount point */
   file = g_mount_get_root (mount);
   path = g_file_get_path (file);
-
-  name = g_mount_get_name (mount);
-  volume = g_mount_get_volume (mount);
-  label = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_LABEL);
-  g_debug ("%s() %s %s", __FUNCTION__, name, label);
-  if (label)
-  {
-    g_free (name);
-    name = label;
-    label = NULL;
-  }
-  g_object_unref (volume);
 
   mime_types = g_mount_guess_content_type_sync (mount, false, NULL, &error);
   for (int i = 0; mime_types[i]; i++)
@@ -201,27 +199,13 @@ add_tile_from_mount (MpdDevicesTile *self,
                     G_CALLBACK (_device_tile_request_show_cb), self);
   mx_box_layout_add_actor (MX_BOX_LAYOUT (priv->vbox), tile, 0);
 
+  g_hash_table_insert (priv->tiles, mount, tile);
+
   gtk_icon_info_free (icon_info);
   g_object_unref (icon);
   g_strfreev (mime_types);
   g_free (path);
   g_object_unref (file);
-}
-
-static void
-_monitor_mount_added_cb (GVolumeMonitor  *monitor,
-                         GMount          *mount,
-                         MpdDevicesTile  *self)
-{
-  add_tile_from_mount (self, mount);
-}
-
-static void
-_monitor_mount_changed_cb (GVolumeMonitor *monitor,
-                           GMount         *mount,
-                           MpdDevicesTile *self)
-{
-  g_debug ("%s()", __FUNCTION__);
 }
 
 typedef struct
@@ -245,38 +229,60 @@ _find_tile_cb (ClutterActor *tile,
   }
 }
 
+
+static void
+_add_mount_cb (GMount         *mount,
+               MpdDevicesTile *self)
+{
+  add_tile_from_mount (self, mount);
+}
+
+
+static void
+_monitor_mount_added_cb (GVolumeMonitor  *monitor,
+                         GMount          *mount,
+                         MpdDevicesTile  *self)
+{
+  add_tile_from_mount (self, mount);
+}
+
+static void
+_monitor_mount_changed_cb (GVolumeMonitor *monitor,
+                           GMount         *mount,
+                           MpdDevicesTile *self)
+{
+  MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
+  MpdStorageDeviceTile *tile;
+
+  tile = g_hash_table_lookup (priv->tiles, mount);
+  if (tile) {
+    /**/
+  }
+}
+
 static void
 _monitor_mount_removed_cb (GVolumeMonitor  *monitor,
                            GMount          *mount,
                            MpdDevicesTile  *self)
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
-  GFile         *file;
-  find_tile_t    find_tile = { 0, };
+  MpdStorageDeviceTile *tile;
 
-  file = g_mount_get_root (mount);
-  find_tile.path = g_file_get_path (file);
-  g_debug ("%s() %s", __FUNCTION__, find_tile.path);
-
-  clutter_container_foreach (CLUTTER_CONTAINER (priv->vbox),
-                             (ClutterCallback) _find_tile_cb,
-                             &find_tile);
-  if (find_tile.tile)
-  {
+  tile = g_hash_table_lookup (priv->tiles, mount);
+  if (tile) {
+    g_hash_table_remove (priv->tiles, mount);
     clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
-                                    find_tile.tile);
-  } else {
-    g_warning ("%s : Could not find mount path '%s'", G_STRLOC, find_tile.path);
+                                    CLUTTER_ACTOR (tile));
   }
-
-  g_free (find_tile.path);
-  g_object_unref (file);
 }
+
 
 static void
 _dispose (GObject *object)
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (object);
+
+  g_hash_table_destroy (priv->tiles);
 
   mpd_gobject_detach (object, (GObject **) &priv->monitor);
 
@@ -310,18 +316,13 @@ mpd_devices_tile_class_init (MpdDevicesTileClass *klass)
 }
 
 static void
-_add_mount_cb (GMount         *mount,
-               MpdDevicesTile *self)
-{
-  add_tile_from_mount (self, mount);
-}
-
-static void
 mpd_devices_tile_init (MpdDevicesTile *self)
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
   ClutterActor  *tile;
-  GList         *mounts;
+  GList *mounts;
+
+  priv->tiles = g_hash_table_new (g_direct_hash, g_direct_equal);
 
   priv->vbox = mx_box_layout_new ();
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
@@ -332,16 +333,16 @@ mpd_devices_tile_init (MpdDevicesTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), tile);
 
   priv->monitor = g_volume_monitor_get ();
-  mounts = g_volume_monitor_get_mounts (priv->monitor);
-  g_list_foreach (mounts, (GFunc) _add_mount_cb, self);
-  g_list_foreach (mounts, (GFunc) g_object_unref, NULL);
-  g_list_free (mounts);
   g_signal_connect (priv->monitor, "mount-added",
                     G_CALLBACK (_monitor_mount_added_cb), self);
   g_signal_connect (priv->monitor, "mount-changed",
                     G_CALLBACK (_monitor_mount_changed_cb), self);
   g_signal_connect (priv->monitor, "mount-removed",
                     G_CALLBACK (_monitor_mount_removed_cb), self);
+
+  mounts = g_volume_monitor_get_mounts (priv->monitor);
+  g_list_foreach (mounts, (GFunc) _add_mount_cb, self);
+  g_list_free (mounts);
 }
 
 ClutterActor *
