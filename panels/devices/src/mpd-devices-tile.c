@@ -140,6 +140,27 @@ _device_tile_request_show_cb (ClutterActor    *tile,
   g_signal_emit_by_name (self, "request-show");
 }
 
+/* return TRUE for all the mounts we want to show */
+static gboolean
+_mount_is_wanted_device (GMount *mount)
+{
+  GDrive *drive;
+  gboolean removable = TRUE;
+
+  /* shadowed mounts are not supposed to be shown to user */
+  if (g_mount_is_shadowed (mount)) {
+    return FALSE;
+  }
+
+  /* we only want to show removable drives */
+  drive = g_mount_get_drive (mount);
+  if (drive) {
+    removable = g_drive_is_media_removable (drive);
+    g_object_unref (drive);
+  }
+  return removable;
+}
+
 static void
 add_tile_from_mount (MpdDevicesTile *self,
                      GMount         *mount)
@@ -234,7 +255,10 @@ static void
 _add_mount_cb (GMount         *mount,
                MpdDevicesTile *self)
 {
-  add_tile_from_mount (self, mount);
+  if (_mount_is_wanted_device (mount)) {
+    add_tile_from_mount (self, mount);
+  }
+  g_object_unref (mount);
 }
 
 
@@ -243,7 +267,9 @@ _monitor_mount_added_cb (GVolumeMonitor  *monitor,
                          GMount          *mount,
                          MpdDevicesTile  *self)
 {
-  add_tile_from_mount (self, mount);
+  if (_mount_is_wanted_device (mount)) {
+    add_tile_from_mount (self, mount);
+  }
 }
 
 static void
@@ -256,7 +282,15 @@ _monitor_mount_changed_cb (GVolumeMonitor *monitor,
 
   tile = g_hash_table_lookup (priv->tiles, mount);
   if (tile) {
-    /**/
+    if (!_mount_is_wanted_device (mount)) {
+      g_hash_table_remove (priv->tiles, mount);
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
+                                      CLUTTER_ACTOR (tile));
+    }
+  } else {
+    if (_mount_is_wanted_device (mount)) {
+      add_tile_from_mount (self, mount);
+    }
   }
 }
 
