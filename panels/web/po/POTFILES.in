@@ -10,3 +10,6 @@ common/mwb-utils.cc
 netpanel/moblin-netbook-netpanel.cc
 netpanel/moblin-panel-web.cc
 netpanel/mnb-netpanel-scrollview.cc
+
+# Desktop
+netpanel/moblin-panel-internet.desktop.in.in
