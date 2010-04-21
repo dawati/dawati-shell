@@ -126,6 +126,9 @@ update (MpdStorageDeviceTile *self)
   percentage = 100 - (double) available_size / size * 100;
   mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter),
                                 percentage / 100.);
+  g_object_set (priv->meter,
+                "visible", available_size > 0,
+                NULL);
 }
 
 static void
@@ -764,14 +767,19 @@ mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
 
   percentage = 100 - (double) available_size / size * 100;
 
-  size_text = g_format_size_for_display (size);
-  markup = g_strdup_printf (_("<span font-weight='bold'>%s</span> using "
-                              "<span color='%s'>%d%% of %s</span>"),
+  if (available_size > 0) {
+    size_text = g_format_size_for_display (size);
+    markup = g_strdup_printf (_("<span font-weight='bold'>%s</span> using "
+                                "<span color='%s'>%d%% of %s</span>"),
                               priv->name,
                               TEXT_COLOR,
                               percentage,
                               size_text);
-  g_free (size_text);
+    g_free (size_text);
+  } else {
+    markup = g_strdup_printf (_("<span font-weight='bold'>%s</span>"),
+                              priv->name);
+  }
 
   return markup;
 }
