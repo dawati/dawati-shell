@@ -26,7 +26,7 @@
 #include <glib/gstdio.h>
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
-#include <mx/mx-gtk.h>
+#include <mx-gtk/mx-gtk.h>
 
 #include "syst-cc-panel.h"
 #define SYST_UID  {0x6aa9c364, 0x7620a0c3, 0x666f2075, 0x35392720, 0}
