@@ -1561,7 +1561,9 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
 
   moblin_netbook_close_demands_attention_notification (plugin, meta_win);
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  if (type == META_COMP_WINDOW_NORMAL ||
+      type == META_COMP_WINDOW_DIALOG ||
+      type == META_COMP_WINDOW_MODAL_DIALOG)
     {
       g_signal_handlers_disconnect_by_func (mcw,
                                             window_destroyed_cb,
@@ -1616,7 +1618,8 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
    */
 
   if ((type == META_COMP_WINDOW_NORMAL ||
-       type == META_COMP_WINDOW_DIALOG ) &&
+       type == META_COMP_WINDOW_DIALOG ||
+       type == META_COMP_WINDOW_MODAL_DIALOG) &&
       !mnb_toolbar_owns_window ((MnbToolbar*)priv->toolbar, mcw))
     check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
 }
@@ -1992,7 +1995,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       if (meta_window_is_blessed_window (mw))
         mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar), MNB_SHOW_HIDE_POLICY);
 
-      if (type == META_COMP_WINDOW_NORMAL)
+      if (type == META_COMP_WINDOW_NORMAL ||
+          type == META_COMP_WINDOW_DIALOG ||
+          type == META_COMP_WINDOW_MODAL_DIALOG)
         {
           g_signal_connect (mcw, "window-destroyed",
                             G_CALLBACK (window_destroyed_cb),
