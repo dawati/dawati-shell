@@ -203,7 +203,7 @@ _import_clicked_cb (MxButton             *button,
   {
     command_line = "gthumb --import-photos";
   } else {
-    command_line = "banshee --show-import-media";
+    command_line = "banshee-1 --show-import-media";
   }
 
   g_spawn_command_line_async (command_line, &error);
