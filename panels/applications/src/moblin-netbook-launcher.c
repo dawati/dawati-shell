@@ -142,16 +142,6 @@ struct MnbLauncherPrivate_ {
 static void mnb_launcher_monitor_cb        (MnbLauncherMonitor *monitor,
                                              MnbLauncher        *self);
 
-static void
-entry_set_focus (MnbLauncher *self,
-                 gboolean     focus)
-{
-  MnbLauncherPrivate  *priv = GET_PRIVATE (self);
-
-  if (focus)
-    clutter_actor_grab_key_focus (priv->filter);
-}
-
 static gboolean
 launcher_button_set_reactive_cb (ClutterActor *launcher)
 {
@@ -802,9 +792,6 @@ _filter_text_notify_cb (MnbFilter     *filter,
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   gchar *needle;
 
-  /* Switch back to edit mode. */
-  entry_set_focus (self, TRUE);
-
   mnb_launcher_cancel_search (self);
 
   needle = g_strdup (mnb_filter_get_text (MNB_FILTER (filter)));
@@ -845,7 +832,9 @@ _dispose (GObject *object)
 static void
 _key_focus_in (ClutterActor *actor)
 {
-  entry_set_focus (MNB_LAUNCHER (actor), TRUE);
+  MnbLauncherPrivate *priv = GET_PRIVATE (actor);
+
+  clutter_actor_grab_key_focus (priv->filter);
 }
 
 static GObject *
