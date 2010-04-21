@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Tomáš Virgl <tomas@virgl.net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-myzone.meego-10\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-21 13:18+0000\n"
+"PO-Revision-Date: 2010-04-20 21:52+0200\n"
+"Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
+"Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Panel Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Zmeniť obsah a pozadie plochy Myzone"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Chyba systému GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Všetky podrobnejšie chyby budú zobrazené iba v termináli."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Zobraziť čo najviac obsahu z webových služieb"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Zobraziť väčšinu obsahu z webových služieb"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Zobraziť polovicu a polovicu"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Zobraziť väčšinu nedávno otvorených súborov"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Zobraziť čo najviac nedávno otvorených súborov"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from the Myzone"
+msgstr ""
+"Chcete vyčistiť zoznam naposledy otvorených dokumentov? Toto odstráni "
+"miestny obsah z Myzone"
+
+#: ../penge/penge-calendar-pane.c:483
+msgid "Appointments"
+msgstr "Stretnutia"
+
+#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
+msgid "Open"
+msgstr "Otvoriť"
+
+#: ../penge/penge-calendar-pane.c:526
+msgid "Tasks"
+msgstr "Úlohy"
+
+#: ../penge/penge-events-pane.c:69
+msgid "Create an appointment"
+msgstr "Vytvoriť stretnutie"
+
+#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
+msgid "Add"
+msgstr "Pridať"
+
+#: ../penge/penge-events-pane.c:400
+msgid "No calendar entries this week"
+msgstr "Na tento týždeň nie je nič v kalendári"
+
+#: ../penge/penge-recent-file-tile.c:216
+msgid "Web page"
+msgstr "Webová stránka"
+
+#: ../penge/penge-tasks-pane.c:50
+msgid "Create a new task"
+msgstr "Vytvoriť novú úlohu"
+
+#: ../penge/penge-tasks-pane.c:426
+msgid "Nothing to do today"
+msgstr "Dnes nie je čo robiť"
+
+#: ../penge/penge-task-tile.c:318
+#, c-format
+msgid "Due %x"
+msgstr "Vďaka %x"
+
+#: ../penge/penge-welcome-tile.c:32
+msgid "Play intro video"
+msgstr "Prehrať úvodné video"
+
+#: ../penge/penge-welcome-tile.c:64
+msgid "Welcome to MeeGo"
+msgstr "Vitajte v MeeGo"
+
+#: ../penge/penge-welcome-tile.c:83
+msgid ""
+"This is the Myzone, where your recently used files and content from your web "
+"feeds will appear."
+msgstr ""
+"Toto je Myzone. Tu sa objavia naposledy otvorené dokumenty a obsah z vašich "
+"webových zdrojov."
+
+#: ../penge/penge-welcome-tile.c:26
+msgid ""
+"When you’ve set up your web accounts and used some files they will appear "
+"here on the Myzone for easy access whenever you want. "
+msgstr ""
+"Keď si nastavíte vaše webové účty a použijete nejaké súbory - objavia sa tu "
+"na Myzone a budete mať k nim prístup kedykoľvek budete chcieť."
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "Žiadne neprečítané správy"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Neprečítaná správa"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Neprečítané správy"
