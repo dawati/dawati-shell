@@ -165,18 +165,6 @@ syst_cc_panel_make_contents (SystCcPanel *panel)
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 10);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
 
-  txt = g_strdup_printf ("<span font_desc=\"Liberation Sans Bold 18px\""
-                           "foreground=\"#3e3e3e\">%s</span>",
-                           _ ("System tray"));
-
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), txt);
-  gtk_widget_show (label);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-
-  g_free (txt);
-
   hbox = gtk_hbox_new (FALSE, 10);
   gtk_widget_show (hbox);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
