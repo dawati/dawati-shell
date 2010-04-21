@@ -3,6 +3,22 @@
  * 
  * Chromium browser APIs wrapper
  */
+/*
+ * Copyright (c) 2010 Intel Corp.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU Lesser General Public License,
+ * version 2.1, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 #include <time.h>
 #include <algorithm>
@@ -323,25 +339,8 @@ ChromeProfileProvider::Observe(NotificationType type,
     }
 }
 
-// Identifier for commands written to file.
-static const SessionCommand::id_type kCommandSetTabWindow = 0;
-// kCommandSetWindowBounds is no longer used (it's superseded by
-// kCommandSetWindowBounds2). I leave it here to document what it was.
-// static const SessionCommand::id_type kCommandSetWindowBounds = 1;
-static const SessionCommand::id_type kCommandSetTabIndexInWindow = 2;
 static const SessionCommand::id_type kCommandTabClosed = 3;
-static const SessionCommand::id_type kCommandWindowClosed = 4;
-static const SessionCommand::id_type
-  kCommandTabNavigationPathPrunedFromBack = 5;
 static const SessionCommand::id_type kCommandUpdateTabNavigation = 6;
-static const SessionCommand::id_type kCommandSetSelectedNavigationIndex = 7;
-static const SessionCommand::id_type kCommandSetSelectedTabInIndex = 8;
-static const SessionCommand::id_type kCommandSetWindowType = 9;
-static const SessionCommand::id_type kCommandSetWindowBounds2 = 10;
-static const SessionCommand::id_type
-  kCommandTabNavigationPathPrunedFromFront = 11;
-static const SessionCommand::id_type kCommandSetPinnedState = 12;
-static const SessionCommand::id_type kCommandSetAppExtensionID = 13;
 
 struct TabEntry {
   SessionID::id_type tab_id;
