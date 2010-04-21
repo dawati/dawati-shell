@@ -17,6 +17,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <config.h>
 
 #include "penge-utils.h"
 
@@ -137,4 +138,19 @@ penge_utils_launch_by_command_line (ClutterActor *actor,
 
   return mpl_panel_client_launch_application (client, command_line);
 }
+
+void
+penge_utils_set_locale (void)
+{
+  static gboolean initialised = FALSE;
+
+  if (!initialised)
+  {
+    bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+    textdomain (GETTEXT_PACKAGE);
+    initialised = TRUE;
+  }
+}
+
 

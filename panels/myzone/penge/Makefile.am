@@ -57,7 +57,8 @@ AM_CFLAGS = -Wall \
 	    $(MPL_CFLAGS) \
 	    -I$(top_srcdir) \
 	    -DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
-	    -DTHEMEDIR=\"$(pkgdatadir)/theme\"
+	    -DTHEMEDIR=\"$(pkgdatadir)/theme\" \
+	    -DLOCALEDIR=\"$(localedir)\"
 
 test_block_container_SOURCES = test-block-container.c
 test_block_container_LDADD = libpenge.la \
