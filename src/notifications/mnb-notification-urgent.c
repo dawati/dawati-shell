@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (c) 2008, 2010 Intel Corp.
  *
  * Author: Matthew Allum <mallum@linux.intel.com>
  *
@@ -220,6 +220,26 @@ mnb_notification_urgent_key_press_event (ClutterActor    *actor,
                                  NULL);
       break;
     default:
+      {
+        GList       *notifiers;
+        GList       *last;
+        KeySym       keysym = event->keyval;
+        const gchar *action;
+
+        notifiers =
+          clutter_container_get_children (CLUTTER_CONTAINER(priv->notifiers));
+
+        last = g_list_last (notifiers);
+
+        if (last &&
+            (action = mnb_notification_find_action_for_keysym (last->data,
+                                                               keysym)))
+          {
+            g_signal_emit_by_name (last->data, "action", action);
+          }
+
+        g_list_free (notifiers);
+      }
       break;
     }
 

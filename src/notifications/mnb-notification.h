@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (c) 2008 Intel Corp.
+ * Copyright (c) 2008, 2010 Intel Corp.
  *
  * Author: Matthew Allum <mallum@linux.intel.com>
  *
@@ -27,6 +27,7 @@
 #include <glib-object.h>
 #include <clutter/clutter.h>
 #include <mx/mx.h>
+#include <X11/Xlib.h>
 
 #include "moblin-netbook-notify-store.h"
 
@@ -75,6 +76,10 @@ mnb_notification_update (MnbNotification *notification,
 
 guint
 mnb_notification_get_id (MnbNotification *notification);
+
+const gchar *
+mnb_notification_find_action_for_keysym (MnbNotification *notification,
+                                         KeySym           keysym);
 
 G_END_DECLS
 

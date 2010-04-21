@@ -28,6 +28,8 @@
 #include "mnb-notification.h"
 #include "moblin-netbook-notify-store.h"
 
+#define MEEGO_KEY_PREFIX "meego:"
+
 G_DEFINE_TYPE (MnbNotification, mnb_notification, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -62,8 +64,10 @@ struct _MnbNotificationPrivate {
 
 
   GHashTable   *hints;
+  GHashTable   *shortcuts;
   gint          timeout;
   guint         timeout_id;
+
 
   gboolean      hide_anim_lock;
 
@@ -110,6 +114,12 @@ mnb_notification_dispose (GObject *object)
     {
       g_object_unref (priv->icon);
       priv->icon = NULL;
+    }
+
+  if (priv->shortcuts)
+    {
+      g_hash_table_destroy (priv->shortcuts);
+      priv->shortcuts = NULL;
     }
 
   G_OBJECT_CLASS (mnb_notification_parent_class)->dispose (object);
@@ -291,6 +301,22 @@ mnb_notification_new (void)
                        NULL);
 }
 
+const gchar *
+mnb_notification_find_action_for_keysym (MnbNotification *notification,
+                                         KeySym           keysym)
+{
+  MnbNotificationPrivate *priv;
+
+  g_return_val_if_fail (MNB_IS_NOTIFICATION (notification), NULL);
+
+  priv = GET_PRIVATE (notification);
+
+  if (!priv->shortcuts)
+    return NULL;
+
+  return g_hash_table_lookup (priv->shortcuts, GINT_TO_POINTER (keysym));
+}
+
 void
 mnb_notification_update (MnbNotification *notification,
                          Notification    *details)
@@ -401,6 +427,12 @@ mnb_notification_update (MnbNotification *notification,
                                    priv->dismiss_button);
       g_object_unref (priv->dismiss_button);
 
+      if (priv->shortcuts)
+        {
+          g_hash_table_destroy (priv->shortcuts);
+          priv->shortcuts = NULL;
+        }
+
       g_hash_table_iter_init (&iter, details->actions);
       while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value))
         {
@@ -409,7 +441,7 @@ mnb_notification_update (MnbNotification *notification,
               ActionData *data;
               ClutterActor *button;
 
-              data = g_slice_new (ActionData);
+              data = g_slice_new0 (ActionData);
               data->notification = notification;
               data->action = g_strdup (key);
 
@@ -424,6 +456,64 @@ mnb_notification_update (MnbNotification *notification,
                                 G_CALLBACK (on_action_click), data);
 
               has_action = TRUE;
+
+              /*
+               * Handle the meego key shortcut protocol for urgent
+               * notifications.
+               */
+              if (details->is_urgent &&
+                  !strncmp (key, MEEGO_KEY_PREFIX, strlen (MEEGO_KEY_PREFIX)))
+                {
+                  const char *k = key + strlen (MEEGO_KEY_PREFIX);
+                  const char *pfx = strstr (k, "XK_");
+                  char       *name;
+
+                  if (pfx)
+                    {
+                      KeySym keysym;
+
+                      if (k == pfx)
+                        {
+                          name = g_strdup (k + 3);
+                        }
+                      else
+                        {
+                          name = g_strdup (k);
+
+                          name [pfx - k] = 0;
+                          strcat (name, pfx + 3);
+                        }
+
+                      keysym = XStringToKeysym (name);
+
+                      if (keysym)
+                        {
+                          if (!priv->shortcuts)
+                            {
+                              priv->shortcuts =
+                                g_hash_table_new_full (g_direct_hash,
+                                                       g_direct_equal,
+                                                       NULL,
+                                                       g_free);
+                            }
+
+                          g_hash_table_insert (priv->shortcuts,
+                                               GINT_TO_POINTER (keysym),
+                                               g_strdup (key));
+                        }
+                      else
+                        g_warning (G_STRLOC ": no keysym found for %s (%s)",
+                                   key, name);
+
+                      g_free (name);
+
+                    }
+                  else
+                    {
+                      g_warning (G_STRLOC ": invalid key %s", key);
+                    }
+                }
+
             }
         }
     }
