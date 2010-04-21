@@ -2419,11 +2419,19 @@ mnb_get_background_visible_region (MetaScreen *screen)
 /*
  * Based on mutter_shaped_texture_paint()
  *
+ * If complete == TRUE the texture is painted in it's entirety, otherwise only
+ * parts not occluded by windows are painted (up to a point; if the partial
+ * paint require more than MAX_RECTS of separate calls to cogl, the whole
+ * texture is painted instead).
+ *
  * Returns TRUE if the texture was painted; if FALSE, regular path for
  * painting textures should be fallen back on.
+ *
  */
 static gboolean
-mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
+mnb_desktop_texture_paint (ClutterActor *actor,
+                           gboolean      complete,
+                           MetaScreen   *screen)
 {
   static CoglHandle material = COGL_INVALID_HANDLE;
 
@@ -2437,16 +2445,19 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
   gfloat vw = 0.5, vh = 0.5;    /* scaled texture half-size */
 
   ClutterActorBox alloc;
-  GdkRegion *visible_region;
+  GdkRegion *visible_region = NULL;
   gboolean retval = TRUE;
 
-  visible_region = mnb_get_background_visible_region (screen);
+  if (!complete)
+    {
+      visible_region = mnb_get_background_visible_region (screen);
 
-  if (!visible_region)
-    return FALSE;
+      if (!visible_region)
+        return FALSE;
 
-  if (gdk_region_empty (visible_region))
-    goto finish_up;
+      if (gdk_region_empty (visible_region))
+        goto finish_up;
+    }
 
   if (!CLUTTER_ACTOR_IS_REALIZED (actor))
     clutter_actor_realize (actor);
@@ -2502,7 +2513,28 @@ mnb_desktop_texture_paint (ClutterActor *actor, MetaScreen *screen)
         }
     }
 
-  if (!gdk_region_empty (visible_region))
+  if (complete)
+    {
+      if (priv->scaled_background)
+        {
+          gfloat tx1, tx2, ty1, ty2;
+
+          tx1 = (0.5 - vw);
+          tx2 = (0.5 + vw);
+          ty1 = (0.5 - vh);
+          ty2 = (0.5 + vh);
+
+          cogl_rectangle_with_texture_coords (0, 0,
+                                              alloc.x2 - alloc.x1,
+                                              alloc.y2 - alloc.y1,
+                                              tx1, ty1,
+                                              tx2, ty2);
+          return TRUE;
+        }
+      else
+        return FALSE;
+    }
+  else if (!gdk_region_empty (visible_region))
     {
       GdkRectangle *rects;
       int           n_rects;
@@ -2615,23 +2647,19 @@ desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
   MetaScreen *screen;
 
   /*
-   * If we are painting a clone, do nothing letting the ClutterTexture paint
-   * kick in.
-   */
-  if (clutter_actor_is_in_clone_paint (background))
-    return;
-
-  /*
    * Don't paint desktop background if fullscreen application is present.
    */
   if (moblin_netbook_fullscreen_apps_present (plugin))
     goto finish_up;
 
   /*
-   * Try to paint only parts of the desktop background
+   * Try to paint only parts of the desktop background; however, we are painting
+   * on behalf of a clone, force complete paint.
    */
   screen = mutter_plugin_get_screen (plugin);
-  if (!mnb_desktop_texture_paint (background, screen))
+  if (!mnb_desktop_texture_paint (background,
+                                  clutter_actor_is_in_clone_paint (background),
+                                  screen))
     {
       /*
        * We have not painted the texture, so we leave without stoping
