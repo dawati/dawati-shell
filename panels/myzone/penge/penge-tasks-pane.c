@@ -228,6 +228,8 @@ penge_tasks_pane_init (PengeTasksPane *self)
 {
   PengeTasksPanePrivate *priv = GET_PRIVATE_REAL (self);
 
+  penge_utils_set_locale ();
+
   self->priv = priv;
 
   priv->uid_to_tasks = g_hash_table_new_full (g_str_hash,

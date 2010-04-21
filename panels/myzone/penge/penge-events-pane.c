@@ -792,6 +792,8 @@ penge_events_pane_init (PengeEventsPane *self)
 {
   PengeEventsPanePrivate *priv = GET_PRIVATE_REAL (self);
 
+  penge_utils_set_locale ();
+
   self->priv = priv;
 
   /* Create hashes to store our view membership in */
