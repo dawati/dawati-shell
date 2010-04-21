@@ -81,7 +81,7 @@
 #define BIG_SCREEN_BUTTON_SHIFT 4
 
 #define MNB_TOOLBAR_MAX_APPLETS 4
-#define TRAY_WIDTH 200
+#define TRAY_WIDTH (3 * TRAY_BUTTON_WIDTH + CLOCK_WIDTH + 4 * TRAY_PADDING + 4)
 #define TRAY_PADDING   4
 
 #define TOOLBAR_TRIGGER_THRESHOLD       1
@@ -95,6 +95,10 @@
 #define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
 
 #define CLOSE_BUTTON_GUARD_WIDTH 35
+
+#define MAX_PANELS(screen_width)                \
+  ((screen_width - TRAY_WIDTH - TOOLBAR_X_PADDING - BUTTON_SPACING_INITIAL) / \
+   (BUTTON_WIDTH + BUTTON_SPACING))
 
 #if 0
 /*
@@ -2737,10 +2741,7 @@ mnb_toolbar_constructed (GObject *self)
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
 
-  priv->max_panels =
-    (screen_width - TRAY_WIDTH -
-     TOOLBAR_X_PADDING - BUTTON_SPACING_INITIAL) /
-    (BUTTON_WIDTH + BUTTON_SPACING);
+  priv->max_panels = MAX_PANELS (screen_width);
 
   g_debug ("Consructing, netbook_mode %d", netbook_mode);
 
@@ -3326,7 +3327,11 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
    */
   if (priv->old_screen_width != screen_width)
     {
+      gint i;
+
       width = screen_width;
+
+      priv->max_panels = MAX_PANELS (screen_width);
 
       if (!netbook_mode)
         {
@@ -3341,14 +3346,54 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
       clutter_actor_set_width ((ClutterActor*)toolbar, width);
       clutter_actor_set_width (priv->shadow, screen_width);
 
-      for (l = priv->panels; l; l = l->next)
+      for (i = 0, l = priv->panels; l; l = l->next)
         {
           MnbToolbarPanel *tp = l->data;
 
           if (!tp || !tp->button)
             continue;
 
-          mnb_toolbar_ensure_button_position (toolbar, tp);
+          if (tp->type != MNB_TOOLBAR_PANEL_NORMAL || i < priv->max_panels)
+            {
+              mnb_toolbar_ensure_button_position (toolbar, tp);
+            }
+          else
+            {
+              if (!tp->panel)
+                {
+                  mnb_toolbar_dispose_of_button (toolbar, tp);
+
+                  /*
+                   * Removing this panel from the list will destroy the current
+                   * link l, so if we point it at the one before, it will get
+                   * correctly advanced in the loop.
+                   */
+                  l = l->prev;
+
+                  priv->panels = g_list_remove (priv->panels, tp);
+
+                  /*
+                   * If we removed the first element in the list, need to
+                   * reset.
+                   */
+                  if (!l)
+                    l = priv->panels;
+
+                  mnb_toolbar_panel_destroy (tp);
+                }
+              else
+                {
+                  /*
+                   * Mark this panel as unloaded internally, and initiate the
+                   * unload sequence.
+                   */
+                  tp->unloaded = TRUE;
+                  mnb_panel_oop_unload (MNB_PANEL_OOP (tp->panel));
+                }
+            }
+
+          if (tp->type == MNB_TOOLBAR_PANEL_NORMAL)
+            ++i;
         }
     }
 
