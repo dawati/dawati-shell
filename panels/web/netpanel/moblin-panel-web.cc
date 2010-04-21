@@ -116,22 +116,15 @@ main (int    argc,
   chrome::RegisterPathProvider();
   app::RegisterPathProvider();
 
-  if(g_file_test (CHROME_BUNDLE_PATH, G_FILE_TEST_EXISTS)
-     && g_file_test (CHROME_LOCALE_PATH, G_FILE_TEST_EXISTS)) {
-    FilePath bundle_path(CHROME_BUNDLE_PATH);
-    FilePath locale_path(CHROME_LOCALE_PATH);
-    ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
-    browser_name = "google-chrome";
-  }
-  else if (g_file_test (CHROMIUM_BUNDLE_PATH, G_FILE_TEST_EXISTS)
+  if (g_file_test (CHROMIUM_BUNDLE_PATH, G_FILE_TEST_EXISTS)
      && g_file_test (CHROMIUM_LOCALE_PATH, G_FILE_TEST_EXISTS)) {
     FilePath bundle_path(CHROMIUM_BUNDLE_PATH);
     FilePath locale_path(CHROMIUM_LOCALE_PATH);
     ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
-    browser_name = "chromium";
+    browser_name = "google-chrome";
   }
   else {
-    g_warning("Chrome or Chromium browser is not installed\n");
+    g_warning("Chrome browser is not installed\n");
   }
 
   g_thread_init(NULL);
