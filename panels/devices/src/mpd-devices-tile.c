@@ -3,6 +3,7 @@
  * Copyright © 2010 Intel Corp.
  *
  * Authors: Rob Staudinger <robert.staudinger@intel.com>
+ *          Jussi Kukkonen <jku@linux.intel.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -54,15 +55,58 @@ typedef struct
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
 static void
-_eject_ready_cb (GDrive         *drive,
-                 GAsyncResult   *result,
-                 MpdDevicesTile *self)
+_drive_eject_cb (GDrive       *drive,
+                 GAsyncResult *result,
+                 gpointer      data)
 {
   GError *error = NULL;
 
-  g_debug ("%s()", __FUNCTION__);
-
   g_drive_eject_with_operation_finish (drive, result, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
+_vol_eject_cb (GVolume      *volume,
+               GAsyncResult *result,
+               gpointer      data)
+{
+  GError *error = NULL;
+
+  g_volume_eject_with_operation_finish (volume, result, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
+_mount_eject_cb (GMount       *mount,
+                 GAsyncResult *result,
+                 gpointer      data)
+{
+  GError *error = NULL;
+
+  g_mount_eject_with_operation_finish (mount, result, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+}
+
+static void
+_mount_unmount_cb (GMount       *mount,
+                   GAsyncResult *result,
+                   gpointer      data)
+{
+  GError *error = NULL;
+
+  g_mount_unmount_with_operation_finish (mount, result, &error);
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);
@@ -98,32 +142,59 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
   char const  *path;
   GList       *mounts;
   GList       *iter;
-  GDrive      *drive = NULL;
 
   path = mpd_storage_device_tile_get_mount_point (tile);
-  g_debug ("%s() %s", __FUNCTION__, path);
 
   mounts = g_volume_monitor_get_mounts (priv->monitor);
   iter = g_list_find_custom (mounts, path, (GCompareFunc) _find_mount_cb);
   if (iter)
   {
     GMount *mount = G_MOUNT (iter->data);
+    gboolean done = FALSE;
+    GDrive *drive;
+    GVolume *vol;
+
     drive = g_mount_get_drive (mount);
+    vol = g_mount_get_volume (mount);
+
+    if (drive && g_drive_can_eject (drive)) {
+      g_debug ("%s() ejecting drive %s", __FUNCTION__, path);
+      g_drive_eject_with_operation (drive,
+                                    G_MOUNT_UNMOUNT_NONE, NULL, NULL,
+                                    (GAsyncReadyCallback)_drive_eject_cb,
+                                    NULL);
+    } else if (vol && g_volume_can_eject (vol)) {
+      g_debug ("%s() ejecting volume %s", __FUNCTION__, path);
+      g_volume_eject_with_operation (vol,
+                                     G_MOUNT_UNMOUNT_NONE, NULL, NULL,
+                                     (GAsyncReadyCallback)_vol_eject_cb,
+                                     NULL);
+    } else if (g_mount_can_eject (mount)) {
+      g_debug ("%s() ejecting mount %s", __FUNCTION__, path);
+      g_mount_eject_with_operation (mount,
+                                    G_MOUNT_UNMOUNT_NONE, NULL, NULL,
+                                    (GAsyncReadyCallback) _mount_eject_cb,
+                                    NULL);
+    } else if (g_mount_can_unmount (mount)) {
+      g_debug ("%s() unmounting mount %s", __FUNCTION__, path);
+      g_mount_unmount_with_operation (mount,
+                                      G_MOUNT_UNMOUNT_NONE, NULL, NULL,
+                                     (GAsyncReadyCallback) _mount_unmount_cb,
+                                     NULL);
+    } else {
+      g_warning ("Eject or unmount not possible");
+    }
+
+    if (drive) {
+      g_object_unref (drive);
+    }
+    if (vol) {
+      g_object_unref (vol);
+    }
   }
 
   g_list_foreach (mounts, (GFunc) g_object_unref, NULL);
   g_list_free (mounts);
-
-  if (drive)
-  {
-    g_drive_eject_with_operation (drive,
-                                  G_MOUNT_UNMOUNT_NONE,
-                                  NULL,
-                                  NULL,
-                                  (GAsyncReadyCallback) _eject_ready_cb,
-                                  tile);
-    g_object_unref (drive);
-  }
 }
 
 static void
@@ -146,9 +217,18 @@ _mount_is_wanted_device (GMount *mount)
 {
   GDrive *drive;
   gboolean removable = TRUE;
+  gboolean removed;
 
   /* shadowed mounts are not supposed to be shown to user */
   if (g_mount_is_shadowed (mount)) {
+    return FALSE;
+  }
+
+  removed = GPOINTER_TO_INT (
+    g_object_get_data (G_OBJECT (mount), "mpd-removed-already"));
+  if (removed) {
+    /* already removed mounts sometimes emit mount-changed. must keep
+     * track of removals here.. */
     return FALSE;
   }
 
@@ -301,6 +381,9 @@ _monitor_mount_removed_cb (GVolumeMonitor  *monitor,
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
   MpdStorageDeviceTile *tile;
+
+  g_object_set_data (G_OBJECT (mount), "mpd-removed-already",
+                     GINT_TO_POINTER (TRUE));
 
   tile = g_hash_table_lookup (priv->tiles, mount);
   if (tile) {
