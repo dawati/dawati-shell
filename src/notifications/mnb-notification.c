@@ -79,6 +79,16 @@ typedef struct {
 } ActionData;
 
 static void
+free_action_data (gpointer action)
+{
+  ActionData *a = (ActionData*)action;
+
+  g_free (a->action);
+
+  g_slice_free (ActionData, action);
+}
+
+static void
 mnb_notification_get_property (GObject *object, guint property_id,
                             GValue *value, GParamSpec *pspec)
 {
@@ -452,8 +462,11 @@ mnb_notification_update (MnbNotification *notification,
               clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
                                            CLUTTER_ACTOR (button));
 
-              g_signal_connect (button, "clicked",
-                                G_CALLBACK (on_action_click), data);
+              g_signal_connect_data (button, "clicked",
+                                     G_CALLBACK (on_action_click),
+                                     data,
+                                     (GClosureNotify) free_action_data,
+                                     0);
 
               has_action = TRUE;
 
