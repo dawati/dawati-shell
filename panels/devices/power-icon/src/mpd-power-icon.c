@@ -50,6 +50,7 @@ typedef struct
   MxAction            *sleep_key;
   NotifyNotification  *shutdown_note;
   int                  last_notification_displayed;
+  unsigned int         shutdown_timeout_id;
   bool                 in_shutdown;
 } MpdPowerIconPrivate;
 
@@ -109,6 +110,8 @@ _battery_shutdown_timeout_cb (MpdPowerIcon *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   MpdBatteryDeviceState  state;
+
+  priv->shutdown_timeout_id = 0;
 
   state = mpd_battery_device_get_state (priv->battery);
   if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
@@ -213,38 +216,54 @@ update (MpdPowerIcon *self,
   if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
   {
     /* Do notifications at various levels */
-    if (percentage > 0 && percentage < 5) {
-      if (priv->last_notification_displayed != NOTIFICATION_5_PERCENT)
-      {
-        do_notification (self,
-                         NOTIFICATION_5_PERCENT,
-                         NOTIFY_URGENCY_CRITICAL);
-        priv->last_notification_displayed = NOTIFICATION_5_PERCENT;
+    if (percentage > 0 && percentage < 5 &&
+        priv->last_notification_displayed != NOTIFICATION_5_PERCENT)
+    {
+      do_notification (self,
+                        NOTIFICATION_5_PERCENT,
+                        NOTIFY_URGENCY_CRITICAL);
+      priv->last_notification_displayed = NOTIFICATION_5_PERCENT;
 
-        g_timeout_add_seconds (60,
-                               (GSourceFunc) _battery_shutdown_timeout_cb,
-                               self);
-      }
-    } else if (percentage < 10) {
-      if (priv->last_notification_displayed != NOTIFICATION_10_PERCENT)
+      if (0 == priv->shutdown_timeout_id)
       {
-        do_notification (self,
-                         NOTIFICATION_10_PERCENT,
-                         NOTIFY_URGENCY_CRITICAL);
-        priv->last_notification_displayed = NOTIFICATION_10_PERCENT;
+        priv->shutdown_timeout_id = g_timeout_add_seconds (
+                                60,
+                                (GSourceFunc) _battery_shutdown_timeout_cb,
+                                self);
       }
-    } else if (percentage < 20) {
-      if (priv->last_notification_displayed != NOTIFICATION_20_PERCENT)
-      {
-        do_notification (self,
-                         NOTIFICATION_20_PERCENT,
-                         NOTIFY_URGENCY_NORMAL);
-        priv->last_notification_displayed = NOTIFICATION_20_PERCENT;
-      }
-    } else {
+    } else if (percentage < 10 &&
+               priv->last_notification_displayed != NOTIFICATION_10_PERCENT)
+    {
+      do_notification (self,
+                        NOTIFICATION_10_PERCENT,
+                        NOTIFY_URGENCY_CRITICAL);
+      priv->last_notification_displayed = NOTIFICATION_10_PERCENT;
+
+    } else if (percentage < 20 &&
+               priv->last_notification_displayed != NOTIFICATION_20_PERCENT)
+    {
+      do_notification (self,
+                        NOTIFICATION_20_PERCENT,
+                        NOTIFY_URGENCY_NORMAL);
+      priv->last_notification_displayed = NOTIFICATION_20_PERCENT;
+
+    } else
+    {
       /* Reset the notification */
       priv->last_notification_displayed = NOTIFICATION_NONE;
     }
+  } else
+  {
+    /* Not discharging, reset so we start over correctly when
+     * plugged out again immediately. */
+
+    if (priv->shutdown_timeout_id)
+    {
+      g_source_remove (priv->shutdown_timeout_id);
+      priv->shutdown_timeout_id = 0;
+    }
+
+    priv->last_notification_displayed = NOTIFICATION_NONE;
   }
 }
 
