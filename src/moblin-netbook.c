@@ -2902,8 +2902,9 @@ moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
                                          FALSE, MNB_INPUT_LAYER_TOP);
 
       /*
-       * Enusre correct stacking position
+       * Enusre correct size and stacking position
        */
+      clutter_actor_set_size (priv->lowlight, screen_width, screen_height);
       clutter_actor_lower (priv->lowlight, priv->notification_urgent);
       clutter_actor_show (priv->lowlight);
       active = TRUE;
