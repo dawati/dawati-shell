@@ -45,12 +45,8 @@ moblin_panel_devices_SOURCES = \
   mpd-disk-tile.h \
   mpd-folder-button.c \
   mpd-folder-button.h \
-  mpd-folder-store.c \
-  mpd-folder-store.h \
   mpd-folder-tile.c \
   mpd-folder-tile.h \
-  mpd-folder-view.c \
-  mpd-folder-view.h \
   mpd-gobject.c \
   mpd-gobject.h \
   mpd-media-import-tile.c \

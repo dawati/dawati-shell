@@ -102,7 +102,7 @@ _button_clicked_cb (MpdFolderButton  *button,
   GError      *error = NULL;
 
   uri = mpd_folder_button_get_uri (button);
-  gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error);
+  gtk_show_uri (NULL, uri, clutter_get_current_event_time (), &error);
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);

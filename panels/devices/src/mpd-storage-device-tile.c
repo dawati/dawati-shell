@@ -243,7 +243,7 @@ _open_clicked_cb (MxButton              *button,
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   } else {
-    gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error);
+    gtk_show_uri (NULL, uri, clutter_get_current_event_time (), &error);
     if (error)
     {
       g_warning ("%s : %s", G_STRLOC, error->message);
