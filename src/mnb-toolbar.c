@@ -3327,12 +3327,17 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
    */
   if (priv->old_screen_width != screen_width)
     {
-      gint i;
+      MutterPlugin               *plugin = priv->plugin;
+      MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
       width = screen_width;
 
       priv->max_panels = MAX_PANELS (screen_width);
 
+      /*
+       * First of all, sort out the size of the Toolbar assets to match the
+       * new screen.
+       */
       if (!netbook_mode)
         {
           g_debug ("Moving Toolbar to %d for bigger screen", BIG_SCREEN_PAD);
@@ -3346,55 +3351,12 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
       clutter_actor_set_width ((ClutterActor*)toolbar, width);
       clutter_actor_set_width (priv->shadow, screen_width);
 
-      for (i = 0, l = priv->panels; l; l = l->next)
-        {
-          MnbToolbarPanel *tp = l->data;
-
-          if (!tp || !tp->button)
-            continue;
-
-          if (tp->type != MNB_TOOLBAR_PANEL_NORMAL || i < priv->max_panels)
-            {
-              mnb_toolbar_ensure_button_position (toolbar, tp);
-            }
-          else
-            {
-              if (!tp->panel)
-                {
-                  mnb_toolbar_dispose_of_button (toolbar, tp);
-
-                  /*
-                   * Removing this panel from the list will destroy the current
-                   * link l, so if we point it at the one before, it will get
-                   * correctly advanced in the loop.
-                   */
-                  l = l->prev;
-
-                  priv->panels = g_list_remove (priv->panels, tp);
-
-                  /*
-                   * If we removed the first element in the list, need to
-                   * reset.
-                   */
-                  if (!l)
-                    l = priv->panels;
-
-                  mnb_toolbar_panel_destroy (tp);
-                }
-              else
-                {
-                  /*
-                   * Mark this panel as unloaded internally, and initiate the
-                   * unload sequence.
-                   */
-                  tp->unloaded = TRUE;
-                  mnb_panel_oop_unload (MNB_PANEL_OOP (tp->panel));
-                }
-            }
-
-          if (tp->type == MNB_TOOLBAR_PANEL_NORMAL)
-            ++i;
-        }
+      /*
+       * Now re-read the gconf key holding the panel order; this ensures that
+       * all the panels that can be loaded are. This will also take care of
+       * the panel positions.
+       */
+      gconf_client_notify (ppriv->gconf_client, KEY_ORDER);
     }
 
   clutter_actor_set_size (priv->lowlight, screen_width, screen_height);
@@ -3845,6 +3807,7 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order, gboolean strings)
   MnbToolbarPrivate *priv  = toolbar->priv;
   GSList            *l;
   GList             *panels = priv->panels;
+  gint               n_panels = 0;
 
   for (l = order; l; l = l->next)
     {
@@ -3886,20 +3849,80 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order, gboolean strings)
   priv->panels = panels;
 
   /*
-   * Destroy any panels that are no longer current
+   * Count how many panels we are trying to put on the toolbar.
+   */
+  while (panels)
+    {
+      MnbToolbarPanel *tp = panels->data;
+
+      if (tp->type == MNB_TOOLBAR_PANEL_NORMAL && (tp->current || tp->required))
+        ++n_panels;
+
+      panels = panels->next;
+    }
+
+  panels = priv->panels;
+
+  /*
+   * Destroy any panels that are no longer current, or panels that do not
+   * fit on the Toolbar, making sure we keep any required panels.
    */
   while (panels)
     {
       MnbToolbarPanel *tp = panels->data;
       MnbPanel        *panel;
+      gboolean         regular;
 
-      if (!tp || tp->current || tp->required)
+      if (!tp)
         {
           panels = panels->next;
           continue;
         }
 
+      /*
+       * if the panel is either not a regular panel, or the current number of
+       * panels we are trying to put on the toolbar is below the max thershold,
+       * move on.
+       */
+      if ((tp->current || tp->required) &&
+          (n_panels <= priv->max_panels ||
+           tp->type != MNB_TOOLBAR_PANEL_NORMAL))
+        {
+          panels = panels->next;
+          continue;
+        }
+
+      /*
+       * If this is a regular panel that is required and we are over the max
+       * threshold, we need to find some other panel to remove in its stead.
+       */
+      if (tp->type == MNB_TOOLBAR_PANEL_NORMAL &&
+          tp->required && n_panels > priv->max_panels)
+        {
+          /*
+           * Find some other panel to remove instead ... the panel list is
+           * at this point in reverse order, so we look for the panel forward.
+           */
+          GList *k = panels->next;
+
+          while (k)
+            {
+              MnbToolbarPanel *t = k->data;
+
+              if (t->type == MNB_TOOLBAR_PANEL_NORMAL &&
+                  !t->required && t->current)
+                {
+                  tp = t;
+                  break;
+                }
+
+              k = k->next;
+            }
+        }
+
       panel = tp->panel;
+
+      regular = (tp->type == MNB_TOOLBAR_PANEL_NORMAL);
 
       mnb_toolbar_dispose_of_button (toolbar, tp);
       mnb_toolbar_dispose_of_panel  (toolbar, tp, FALSE);
@@ -3914,6 +3937,9 @@ mnb_toolbar_fixup_panels (MnbToolbar *toolbar, GSList *order, gboolean strings)
        * Start from the beginning.
        */
       panels = priv->panels;
+
+      if (regular)
+        --n_panels;
     }
 
   panels = priv->panels;
