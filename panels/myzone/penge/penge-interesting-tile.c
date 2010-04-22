@@ -40,6 +40,8 @@ struct _PengeInterestingTilePrivate {
   ClutterActor *secondary_text;
   ClutterActor *details_overlay;
   ClutterActor *remove_button;
+
+  guint tooltip_idle_id;
 };
 
 enum
@@ -151,6 +153,14 @@ penge_interesting_tile_set_property (GObject *object, guint property_id,
 static void
 penge_interesting_tile_dispose (GObject *object)
 {
+  PengeInterestingTilePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->tooltip_idle_id)
+  {
+    g_source_remove (priv->tooltip_idle_id);
+    priv->tooltip_idle_id = 0;
+  }
+
   G_OBJECT_CLASS (penge_interesting_tile_parent_class)->dispose (object);
 }
 
@@ -258,6 +268,50 @@ _remove_button_clicked (MxButton *button,
   g_signal_emit (tile, signals[REMOVE_CLICKED_SIGNAL], 0);
 }
 
+
+static gboolean
+_labels_update_tooltip_idle_cb (PengeInterestingTile *tile)
+{
+  PengeInterestingTilePrivate *priv = GET_PRIVATE (tile);
+  ClutterActor *tmp_text;
+  PangoLayout *layout;
+
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->primary_text));
+  layout = clutter_text_get_layout (CLUTTER_TEXT (tmp_text));
+  if (pango_layout_is_ellipsized (layout))
+    mx_widget_set_tooltip_text (MX_WIDGET (priv->primary_text),
+                                mx_label_get_text (MX_LABEL (priv->primary_text)));
+  else
+    mx_widget_set_tooltip_text (MX_WIDGET (priv->primary_text),
+                                NULL);
+
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->secondary_text));
+  layout = clutter_text_get_layout (CLUTTER_TEXT (tmp_text));
+  if (pango_layout_is_ellipsized (layout))
+    mx_widget_set_tooltip_text (MX_WIDGET (priv->secondary_text),
+                                mx_label_get_text (MX_LABEL (priv->secondary_text)));
+  else
+    mx_widget_set_tooltip_text (MX_WIDGET (priv->secondary_text),
+                                NULL);
+
+  priv->tooltip_idle_id = 0;
+
+
+  return FALSE;
+}
+
+static void
+_label_notify_allocation_cb (MxLabel              *label,
+                             GParamSpec           *pspec,
+                             PengeInterestingTile *tile)
+{
+  PengeInterestingTilePrivate *priv = GET_PRIVATE (tile);
+
+  if (!priv->tooltip_idle_id)
+    priv->tooltip_idle_id = g_idle_add ((GSourceFunc)_labels_update_tooltip_idle_cb,
+                                        tile);
+}
+
 static void
 penge_interesting_tile_init (PengeInterestingTile *self)
 {
@@ -280,6 +334,10 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                    PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);
+  g_signal_connect (priv->primary_text,
+                    "notify::allocation",
+                    (GCallback)_label_notify_allocation_cb,
+                    self);
 
   priv->secondary_text = mx_label_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->secondary_text), 
@@ -289,6 +347,10 @@ penge_interesting_tile_init (PengeInterestingTile *self)
                                    PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), 
                               PANGO_ELLIPSIZE_END);
+  g_signal_connect (priv->secondary_text,
+                    "notify::allocation",
+                    (GCallback)_label_notify_allocation_cb,
+                    self);
 
   priv->icon = clutter_texture_new ();
   clutter_actor_set_size (priv->icon, 28, 28);
