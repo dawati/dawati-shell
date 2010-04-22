@@ -26,6 +26,7 @@
 #include <libical/ical.h>
 
 #include "penge-event-tile.h"
+#include "penge-utils.h"
 
 G_DEFINE_TYPE (PengeEventsPane, penge_events_pane, PENGE_TYPE_DYNAMIC_BOX)
 

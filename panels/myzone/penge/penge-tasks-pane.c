@@ -25,6 +25,7 @@
 #include <glib/gi18n.h>
 
 #include "penge-task-tile.h"
+#include "penge-utils.h"
 
 G_DEFINE_TYPE (PengeTasksPane, penge_tasks_pane, PENGE_TYPE_DYNAMIC_BOX)
 
