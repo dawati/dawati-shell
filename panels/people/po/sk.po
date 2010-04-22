@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Tomáš Virgl <tomas@virgl.net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-people\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-21 09:36+0000\n"
+"PO-Revision-Date: 2010-04-21 04:40+0200\n"
+"Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
+"Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:476
+#: ../data/moblin-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "ľudia"
+
+#: ../src/mnb-people-panel.c:56
+msgid ""
+"Hello! This is the People panel. When you have an IM service configured "
+"(like Messenger) this is where you chat topeople."
+msgstr ""
+"Toto je panel ľudí. Keď si nastavíte službu IM budete môcť hovoriť s ľuďmi."
+
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#, c-format
+msgid "Open %s"
+msgstr "Otvoriť %s"
+
+#: ../src/mnb-people-panel.c:231
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr ""
+"Prepáčte, nie je možné nájsť žiadnych ľudí. Už ste si nastavili komunikátor?"
+
+#: ../src/mnb-people-panel.c:283
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr ""
+"Prepáčte, nie je možné nájsť žiadnych ľudí. Vyzerá to tak,že nikto nie je "
+"pripojený."
+
+#: ../src/mnb-people-panel.c:328
+msgid "To see your IM contacts, you need to go online."
+msgstr "Musíte byť pripojený, aby ste uvideli vaše IM kontakty."
+
+#: ../src/mnb-people-panel.c:458
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "ľudia - hovoríte s %d ľuďmi"
+
+#: ../src/mnb-people-panel.c:465
+msgid "people - you are chatting with someone"
+msgstr "ľudia - hovoríte s niekým"
+
+#. Populate header
+#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
+msgid "People"
+msgstr "Ľudia"
+
+#: ../src/mnb-people-panel.c:689
+msgid "Search"
+msgstr "Hľadať"
+
+#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
+msgid "You are chatting with:"
+msgstr "Hovoríte s:"
+
+#: ../src/mnb-people-panel.c:947
+msgid "Me and my people"
+msgstr "Ja a moji ľudia"
+
+#: ../src/mnb-people-panel.c:985
+msgid "Me"
+msgstr "Ja"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1086
+msgid "My conversations"
+msgstr "Moje rozhovory"
+
+#: ../data/moblin-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Panel ľudí"
