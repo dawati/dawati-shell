@@ -1,0 +1,280 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Tomáš Virgl <tomas@virgl.net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: moblin-panel-devices.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-21 09:44+0000\n"
+"PO-Revision-Date: 2010-04-21 05:50+0200\n"
+"Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
+"Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Panel zariadení"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:149
+msgid "devices"
+msgstr "zariadenia"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Zakazané"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u výstupov"
+msgstr[1] "%u výstup"
+msgstr[2] "%u výstupy"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u vstupov"
+msgstr[1] "%u vstup"
+msgstr[2] "%u vstupy"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Systémové zvuky"
+
+#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/tests/test-battery-notification.c:58
+msgid "Moblin Power Icon"
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:71
+msgid "Running low on battery"
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:72
+msgid ""
+"We've noticed that your battery is running a bit low. If you can it would be "
+"a good idea to plug in and top up."
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:75
+msgid "Getting close to empty"
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:76
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can"
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:80
+msgid "Danger!"
+msgstr "Nebezpečenstvo!"
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid ""
+"Sorry, your computer is about to run out of battery. We're going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:319
+msgid "Would you like to turn off now?"
+msgstr "Chceli by ste vypnúť teraz?"
+
+#: ../power-icon/src/mpd-power-icon.c:320
+msgid "If you don't decide I'll turn off in 30 seconds."
+msgstr "Keď sa nerozhodnete. Vypnem sa za 30 sekúnd."
+
+#: ../power-icon/src/mpd-power-icon.c:385
+msgid "battery"
+msgstr "batéria"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:75
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Keď sa nerozhodnete. Vypnem sa za %d sekúnd."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:133
+msgid "Turn off"
+msgstr "Vypnúť"
+
+#: ../src/moblin-panel-devices.c:120
+msgid "Moblin Devices Panel"
+msgstr ""
+
+#: ../src/mpd-battery-device.c:333
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Prepáčte, vyzerá to ta, že nemáte nainštalovanú batériu."
+
+#: ../src/mpd-battery-device.c:337
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Batéria sa nabíja. Je plná na %d%%"
+
+#: ../src/mpd-battery-device.c:342
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Batéria je používaná. Je plná na %d%%"
+
+#: ../src/mpd-battery-device.c:347
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Batéria je nabitá, môžete ísť."
+
+#: ../src/mpd-battery-device.c:351
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Prepáčte, vyzerá to tak, že batéria je pokazená."
+
+#. First row.
+#: ../src/mpd-brightness-tile.c:143
+msgid "Netbook brightness"
+msgstr ""
+
+#: ../src/mpd-computer-pane.c:120
+msgid "Your computer"
+msgstr ""
+
+#: ../src/mpd-computer-pane.c:129
+msgid "All settings"
+msgstr "Všetky nastavenia"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+
+#: ../src/mpd-devices-pane.c:105
+msgid "Other devices"
+msgstr "Iné zariadenia"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
+"span>"
+msgstr ""
+"<span font-weight='bold'>Používate</span> <span color='%s'>%d%% z %s</span>"
+
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Kôš"
+
+#: ../src/mpd-media-import-tile.c:73
+#, c-format
+msgid ""
+"<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+msgstr ""
+"<span font-weight='bold'>Importujú sa dáta</span> <span color='%s'>%d%%</"
+"span>"
+
+#: ../src/mpd-media-import-tile.c:217
+msgid "Stop"
+msgstr "Zastaviť"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Zariadenia"
+
+#: ../src/mpd-storage-device-tile.c:186
+msgid "Show"
+msgstr "Zobraziť"
+
+#: ../src/mpd-storage-device-tile.c:212
+#, c-format
+msgid "Could not run %s"
+msgstr "Nie je možné spustiť %s"
+
+#: ../src/mpd-storage-device-tile.c:214
+msgid "Import error"
+msgstr "Chyba importu"
+
+#: ../src/mpd-storage-device-tile.c:299
+#, c-format
+msgid "%s nas been plugged in. You can use the Devices panel interact with it"
+msgstr "%s bol pripojený. Použite panel zariadení pre interakciu s ním."
+
+#: ../src/mpd-storage-device-tile.c:302
+msgid "USB plugged in"
+msgstr "USB pripojené"
+
+#. Import button
+#: ../src/mpd-storage-device-tile.c:557
+msgid "Import data"
+msgstr "Importovať dáta"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:568
+msgid "Eject"
+msgstr "Vysunúť"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:579
+msgid "Open"
+msgstr "Otvoriť"
+
+#: ../src/mpd-storage-device-tile.c:768
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+"<span font-weight='bold'>%s</span> používa <span color='%s'>%d%% z %s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr ""
+
+#: ../src/mpd-volume-tile.c:357
+msgid "Netbook volume"
+msgstr "Hlasitosť netbooku"
+
+#: ../src/mpd-volume-tile.c:373
+msgid "Mute"
+msgstr "Stlmiť"
