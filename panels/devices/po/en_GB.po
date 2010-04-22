@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MeeGo Panel Devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 09:58+0000\n"
-"PO-Revision-Date: 2010-04-15 13:40-0800\n"
+"POT-Creation-Date: 2010-04-21 09:44+0000\n"
+"PO-Revision-Date: 2010-04-22 11:26-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -85,15 +85,15 @@ msgstr "Danger!"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sorry, your computer is about to run out of battery. We're going to turn off now. Please save your work and hope to see you again soon."
 
-#: ../power-icon/src/mpd-power-icon.c:311
+#: ../power-icon/src/mpd-power-icon.c:319
 msgid "Would you like to turn off now?"
 msgstr "Would you like to turn off now?"
 
-#: ../power-icon/src/mpd-power-icon.c:312
+#: ../power-icon/src/mpd-power-icon.c:320
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "If you don't decide I'll turn off in 30 seconds."
 
-#: ../power-icon/src/mpd-power-icon.c:377
+#: ../power-icon/src/mpd-power-icon.c:385
 msgid "battery"
 msgstr "battery"
 
@@ -158,7 +158,7 @@ msgstr ""
 
 #: ../src/mpd-devices-pane.c:105
 msgid "Other devices"
-msgstr "devices"
+msgstr "Other devices"
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
@@ -182,44 +182,44 @@ msgstr "Stop"
 msgid "Devices"
 msgstr "devices"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:186
+msgid "Show"
+msgstr "Show"
+
+#: ../src/mpd-storage-device-tile.c:212
 #, c-format
 msgid "Could not run %s"
 msgstr "Could not run %s"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:214
 msgid "Import error"
 msgstr "Import error"
 
-#: ../src/mpd-storage-device-tile.c:256
+#: ../src/mpd-storage-device-tile.c:299
 #, c-format
 msgid "%s nas been plugged in. You can use the Devices panel interact with it"
 msgstr "%s nas been plugged in. You can use the Devices panel interact with it"
 
-#: ../src/mpd-storage-device-tile.c:259
+#: ../src/mpd-storage-device-tile.c:302
 msgid "USB plugged in"
 msgstr "USB plugged in"
 
-#: ../src/mpd-storage-device-tile.c:260
-msgid "Show"
-msgstr "Show"
-
 #. Import button
-#: ../src/mpd-storage-device-tile.c:514
+#: ../src/mpd-storage-device-tile.c:557
 msgid "Import data"
 msgstr "Import data"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:525
+#: ../src/mpd-storage-device-tile.c:568
 msgid "Eject"
 msgstr "Eject"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:536
+#: ../src/mpd-storage-device-tile.c:579
 msgid "Open"
 msgstr "Open"
 
-#: ../src/mpd-storage-device-tile.c:725
+#: ../src/mpd-storage-device-tile.c:768
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
