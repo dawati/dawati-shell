@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Tomáš Virgl <tomas@virgl.net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-21 09:26+0000\n"
+"PO-Revision-Date: 2010-04-21 06:15+0200\n"
+"Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
+"Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr ""
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr ""
+
+#: ../capplet/src/mtp-bin.c:361
+msgid "Save toolbar"
+msgstr ""
+
+#: ../capplet/src/mtp-bin.c:366
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr ""
+
+#: ../capplet/src/mtp-bin.c:368
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr ""
+
+#: ../capplet/src/mtp-jar.c:109
+msgid "Available panels"
+msgstr "Dostupné panely"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:124
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:133
+msgid "%l:%M %P"
+msgstr ""
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:154
+msgid "%B %e, %Y"
+msgstr ""
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr ""
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr ""
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:253
+msgid "System Tray"
+msgstr ""
+
+#: ../capplet/src/syst-cc-panel.c:170
+msgid "System tray"
+msgstr ""
+
+#: ../capplet/src/syst-cc-panel.c:186
+msgid "Show system tray"
+msgstr ""
+
+#: ../capplet/src/syst-cc-panel.c:207
+msgid ""
+"The system tray is a concept used by some, older, applications to let you "
+"know when something happens or to stay running when you close them."
+msgstr ""
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Determines the order of panels on the toolbar."
+msgstr ""
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Order of panels on toolbar"
+msgstr ""
+
+#: ../src/moblin-netbook.c:962
+msgid "Moblin Netbook Effects"
+msgstr ""
+
+#: ../src/moblin-netbook.c:966
+msgid "Effects for Moblin Netbooks"
+msgstr ""
+
+#: ../src/moblin-netbook.c:3128
+msgid "Activate"
+msgstr "Aktivovať"
+
+#: ../src/moblin-netbook.c:3142
+msgid "Unknown window"
+msgstr "Neznáme okno"
+
+#: ../src/moblin-netbook.c:3144
+msgid "Is asking for your attention."
+msgstr ""
+
+#: ../src/mnb-toolbar.c:976
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Prepáčte, %s je pokazený"
+
+#: ../src/notifications/mnb-notification.c:262
+msgid "Dismiss"
+msgstr ""
+
+#: ../src/notifications/mnb-notification-cluster.c:668
+msgid "Dismiss All"
+msgstr ""
