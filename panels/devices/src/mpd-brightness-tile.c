@@ -26,6 +26,7 @@
 
 #include "mpd-gobject.h"
 #include "mpd-brightness-tile.h"
+#include "mpd-display-device.h"
 #include "mpd-shell-defines.h"
 
 G_DEFINE_TYPE (MpdBrightnessTile, mpd_brightness_tile, MX_TYPE_BOX_LAYOUT)
@@ -38,6 +39,7 @@ typedef struct
   ClutterActor        *bars;
   MxSlider            *slider;
   GpmBrightnessXRandR *brightness;
+  MpdDisplayDevice    *display;
 } MpdBrightnessTilePrivate;
 
 static void
@@ -113,6 +115,8 @@ _dispose (GObject *object)
 
   mpd_gobject_detach (object, (GObject **) &priv->brightness);
 
+  mpd_gobject_detach (object, (GObject **) &priv->display);
+
   G_OBJECT_CLASS (mpd_brightness_tile_parent_class)->dispose (object);
 }
 
@@ -134,6 +138,7 @@ mpd_brightness_tile_init (MpdBrightnessTile *self)
   ClutterActor  *hbox;
   ClutterActor  *icon;
   ClutterActor  *vbox;
+  int            percentage;
   GError        *error = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
@@ -185,6 +190,14 @@ mpd_brightness_tile_init (MpdBrightnessTile *self)
   g_signal_connect (priv->brightness, "brightness-changed",
                     G_CALLBACK (_brightness_changed_cb), self);
 
+  priv->display = mpd_display_device_new ();
+  percentage = mpd_display_device_get_percentage (priv->display, &error);
+  if (percentage > -1)
+  {
+    gboolean hw_changed;
+    gpm_brightness_xrandr_set (priv->brightness, percentage, &hw_changed);
+  }
+
   update_brightness_slider (self);
 }
 
@@ -233,6 +246,7 @@ update_display_brightness (MpdBrightnessTile *self)
                                         self);
 
   value = mx_slider_get_value (priv->slider);
+  mpd_display_device_set_percentage (priv->display, value * 100, NULL);
   ret = gpm_brightness_xrandr_set (priv->brightness, value * 100, &hw_changed);
   if (!ret)
   {

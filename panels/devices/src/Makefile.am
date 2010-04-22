@@ -39,6 +39,8 @@ moblin_panel_devices_SOURCES = \
   mpd-devices-pane.h \
   mpd-devices-tile.c \
   mpd-devices-tile.h \
+  mpd-display-device.c \
+  mpd-display-device.h \
   mpd-disk-tile.c \
   mpd-disk-tile.h \
   mpd-folder-button.c \
