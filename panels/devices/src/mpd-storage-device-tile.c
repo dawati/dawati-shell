@@ -226,7 +226,6 @@ _eject_clicked_cb (MxButton             *button,
                    MpdStorageDeviceTile *self)
 {
   g_signal_emit_by_name (self, "eject");
-  g_signal_emit_by_name (self, "request-hide");
 }
 
 static void

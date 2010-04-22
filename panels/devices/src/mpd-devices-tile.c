@@ -61,9 +61,13 @@ _drive_eject_cb (GDrive       *drive,
 {
   GError *error = NULL;
 
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (data));
+
   g_drive_eject_with_operation_finish (drive, result, &error);
   if (error)
   {
+    /* TODO inform user */
+    mx_widget_set_disabled (MX_WIDGET (data), FALSE);
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
@@ -76,9 +80,13 @@ _vol_eject_cb (GVolume      *volume,
 {
   GError *error = NULL;
 
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (data));
+
   g_volume_eject_with_operation_finish (volume, result, &error);
   if (error)
   {
+    /* TODO inform user */
+    mx_widget_set_disabled (MX_WIDGET (data), FALSE);
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
@@ -91,9 +99,13 @@ _mount_eject_cb (GMount       *mount,
 {
   GError *error = NULL;
 
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (data));
+
   g_mount_eject_with_operation_finish (mount, result, &error);
   if (error)
   {
+    /* TODO inform user */
+    mx_widget_set_disabled (MX_WIDGET (data), FALSE);
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
@@ -106,9 +118,13 @@ _mount_unmount_cb (GMount       *mount,
 {
   GError *error = NULL;
 
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (data));
+
   g_mount_unmount_with_operation_finish (mount, result, &error);
   if (error)
   {
+    /* TODO inform user */
+    mx_widget_set_disabled (MX_WIDGET (data), FALSE);
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
   }
@@ -153,6 +169,7 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
     gboolean done = FALSE;
     GDrive *drive;
     GVolume *vol;
+    gboolean ejected = TRUE;
 
     drive = g_mount_get_drive (mount);
     vol = g_mount_get_volume (mount);
@@ -162,28 +179,34 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
       g_drive_eject_with_operation (drive,
                                     G_MOUNT_UNMOUNT_NONE, NULL, NULL,
                                     (GAsyncReadyCallback)_drive_eject_cb,
-                                    NULL);
+                                    tile);
     } else if (vol && g_volume_can_eject (vol)) {
       g_debug ("%s() ejecting volume %s", __FUNCTION__, path);
       g_volume_eject_with_operation (vol,
                                      G_MOUNT_UNMOUNT_NONE, NULL, NULL,
                                      (GAsyncReadyCallback)_vol_eject_cb,
-                                     NULL);
+                                     tile);
     } else if (g_mount_can_eject (mount)) {
       g_debug ("%s() ejecting mount %s", __FUNCTION__, path);
       g_mount_eject_with_operation (mount,
                                     G_MOUNT_UNMOUNT_NONE, NULL, NULL,
                                     (GAsyncReadyCallback) _mount_eject_cb,
-                                    NULL);
+                                    tile);
     } else if (g_mount_can_unmount (mount)) {
       g_debug ("%s() unmounting mount %s", __FUNCTION__, path);
       g_mount_unmount_with_operation (mount,
                                       G_MOUNT_UNMOUNT_NONE, NULL, NULL,
                                      (GAsyncReadyCallback) _mount_unmount_cb,
-                                     NULL);
+                                     tile);
     } else {
+      ejected = FALSE;
       g_warning ("Eject or unmount not possible");
     }
+
+    mx_widget_set_disabled (MX_WIDGET (tile), ejected);
+    /* TODO: inform user of ejection with text inside the tile:
+     * For that (and other reasons) this code really should be inside
+     * MpdStorageDeviceTile  */
 
     if (drive) {
       g_object_unref (drive);
@@ -442,6 +465,8 @@ mpd_devices_tile_init (MpdDevicesTile *self)
   priv->tiles = g_hash_table_new (g_direct_hash, g_direct_equal);
 
   priv->vbox = mx_box_layout_new ();
+  mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->vbox),
+                                       TRUE);
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
                                  MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->vbox);
