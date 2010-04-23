@@ -106,17 +106,17 @@ fav_button_notify_toggled_cb (MxButton          *button,
           if (plain_sibling->priv->fav_sibling)
             plain_sibling->priv->fav_sibling = NULL;
 
-          g_signal_handlers_block_by_func (plain_sibling,
+          g_signal_handlers_block_by_func (plain_sibling->priv->fav_toggle,
                                            fav_button_notify_toggled_cb,
-                                           self);
+                                           plain_sibling);
           mx_button_set_toggled (MX_BUTTON (plain_sibling->priv->fav_toggle),
                                                 FALSE);
-          g_signal_handlers_unblock_by_func (plain_sibling,
+          g_signal_handlers_unblock_by_func (plain_sibling->priv->fav_toggle,
                                              fav_button_notify_toggled_cb,
-                                             self);
+                                             plain_sibling);
 
           clutter_actor_destroy (CLUTTER_ACTOR (self));
-          g_signal_emit (self, _signals[FAV_TOGGLED], 0);
+          g_signal_emit (plain_sibling, _signals[FAV_TOGGLED], 0);
         }
       else
         {
