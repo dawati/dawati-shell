@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:42+0000\n"
+"POT-Creation-Date: 2010-04-21 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -12,6 +12,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/moblin-panel-status.c:48
+msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+msgstr "¡Hola! Éste es el panel de estado. Cuando tienes configurada una cuenta Web (como Twitter) aquí podrás ver las actualizaciones del estado de tus contactos y actualizar el tuyo."
 
 # <mousetip of the top of the screen>
 #: ../src/moblin-panel-status.c:99
@@ -56,10 +60,6 @@ msgstr "No estás mostrando tu ubicación"
 msgid "Update"
 msgstr "Actualizar"
 
-#: ../src/mps-feed-pane.c:556
-msgid "What's happening?"
-msgstr "¿Qué está sucediendo?"
-
 #: ../src/mps-feed-pane.c:606
 msgid "Change"
 msgstr "Cambiar"
@@ -67,6 +67,10 @@ msgstr "Cambiar"
 #: ../src/mps-feed-switcher.c:350
 msgid "Add new web service"
 msgstr "Agregar un nuevo servicio web"
+
+#: ../src/mps-feed-switcher.c:373
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "Parece que no tienes ningún servicio de web configurado o hay un problema con la configuración. Utiliza el botón de arriba para abrir Mis cuentas Web y configurar uno."
 
 #: ../src/mps-geotag-pane.c:215
 msgid "Your location"
@@ -97,18 +101,14 @@ msgstr "No usar esta ubicación"
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
 #. 
-#: ../src/mps-tweet-card.c:391
+#: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr " \t%s de %s"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr "¡Hola! Éste es el panel de estado. Cuando tienes configurada una cuenta Web (como Twitter) aquí podrás ver las actualizaciones del estado de tus contactos y actualizar el tuyo."
-
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Parece que no tienes ningún servicio de web configurado o hay un problema con la configuración. Utiliza el botón de arriba para abrir Mis cuentas Web y configurar uno."
+#: ../src/mps-feed-pane.c:556
+msgid "What's happening?"
+msgstr "¡Ponte al día!"
 
 #~ msgid "Offline"
 #~ msgstr "Fuera de línea"
