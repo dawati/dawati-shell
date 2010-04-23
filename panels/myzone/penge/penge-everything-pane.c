@@ -569,7 +569,7 @@ _view_items_added_cb (SwClientView *view,
   {
     SwItem *item = (SwItem *)l->data;
     g_hash_table_insert (priv->uuid_to_sw_items,
-                         item->uuid,
+                         g_strdup (item->uuid),
                          sw_item_ref (item));
   }
 
@@ -733,7 +733,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
   /* For storing sw items */
   priv->uuid_to_sw_items = g_hash_table_new_full (g_str_hash,
                                                   g_str_equal,
-                                                  NULL,
+                                                  g_free,
                                                   (GDestroyNotify)sw_item_unref);
 
   priv->client = sw_client_new ();
