@@ -40,6 +40,7 @@ test_display_device_LDADD = \
 
 test_display_device_SOURCES = \
   test-display-device.c \
+  $(top_srcdir)/src/mpd-gobject.c \
   $(top_srcdir)/src/mpd-display-device.c \
   $(NULL)
 

@@ -60,17 +60,18 @@ MpdDisplayDevice *
 mpd_display_device_new (void);
 
 bool
-mpd_display_device_is_enabled (MpdDisplayDevice  *self,
-                               GError           **error);
-
-int
-mpd_display_device_get_percentage (MpdDisplayDevice  *self,
-                                   GError           **error);
+mpd_display_device_is_enabled (MpdDisplayDevice  *self);
 
 void
-mpd_display_device_set_percentage (MpdDisplayDevice  *self,
-                                   unsigned int       percentage,
-                                   GError           **error);
+mpd_display_device_set_enabled (MpdDisplayDevice   *self,
+                                bool                enabled);
+
+float
+mpd_display_device_get_brightness (MpdDisplayDevice  *self);
+
+void
+mpd_display_device_set_brightness (MpdDisplayDevice  *self,
+                                   float              brightness);
 
 G_END_DECLS
 

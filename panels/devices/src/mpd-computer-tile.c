@@ -94,7 +94,6 @@ mpd_computer_tile_init (MpdComputerTile *self)
   ClutterActor      *tile;
   MpdDisplayDevice  *display;
   bool               show_brightness_tile;
-  GError            *error = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_COMPUTER_TILE_SPACING);
@@ -113,12 +112,9 @@ mpd_computer_tile_init (MpdComputerTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
 
   display = mpd_display_device_new ();
-  show_brightness_tile = mpd_display_device_is_enabled (display, &error);
-  if (error)
+  show_brightness_tile = mpd_display_device_is_enabled (display);
+  if (show_brightness_tile)
   {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
-  } else if (show_brightness_tile) {
     clutter_container_add_actor (CLUTTER_CONTAINER (self), create_seperator ());
 
     tile = mpd_brightness_tile_new ();
@@ -129,7 +125,10 @@ mpd_computer_tile_init (MpdComputerTile *self)
                                  "y-fill", false,
                                  NULL);
   }
-  g_object_unref (display);
+  /* FIXME: Makes crash when unref'd.
+   * GpmBrightnessXRandR doesn't remove filter from root window in ::finalize()
+   * but doesn't seem to be it.
+   * g_object_unref (display); */
 }
 
 ClutterActor *

@@ -18,6 +18,12 @@ LDADD = \
   $(MPI_LIBS) \
   $(NULL)
 
+test_battery_notification_LDADD = \
+  $(top_builddir)/egg-console-kit/libegg-console-kit.la \
+  $(top_builddir)/gpm/libgpm.la \
+  $(MPI_LIBS) \
+  $(NULL)
+
 test_battery_notification_SOURCES = \
   test-battery-notification.c \
   $(top_srcdir)/power-icon/src/mpd-global-key.c \
@@ -26,6 +32,7 @@ test_battery_notification_SOURCES = \
   $(top_srcdir)/power-icon/src/mpd-power-icon.c \
   $(top_srcdir)/power-icon/src/mpd-shutdown-notification.c \
   $(top_srcdir)/src/mpd-battery-device.c \
+  $(top_srcdir)/src/mpd-display-device.c \
   $(top_srcdir)/src/mpd-gobject.c \
   $(NULL)
 

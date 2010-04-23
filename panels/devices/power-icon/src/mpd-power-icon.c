@@ -27,6 +27,7 @@
 #include <X11/XF86keysym.h>
 
 #include "mpd-battery-device.h"
+#include "mpd-display-device.h"
 #include "mpd-gobject.h"
 #include "mpd-global-key.h"
 #include "mpd-idle-manager.h"
@@ -44,10 +45,13 @@ typedef struct
 {
   MplPanelClient      *panel;
   MpdBatteryDevice    *battery;
+  MpdDisplayDevice    *display;
   MpdLidDevice        *lid;
   MpdIdleManager      *idle_manager;
   MxAction            *shutdown_key;
   MxAction            *sleep_key;
+  MxAction            *brightness_up_key;
+  MxAction            *brightness_down_key;
   NotifyNotification  *shutdown_note;
   int                  last_notification_displayed;
   unsigned int         shutdown_timeout_id;
@@ -364,6 +368,38 @@ _sleep_key_activated_cb (MxAction     *action,
 }
 
 static void
+_brightness_up_key_activated_cb (MxAction     *action,
+                                 MpdPowerIcon *self)
+{
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
+  float brightness;
+
+  g_debug ("%s()", __FUNCTION__);
+
+  brightness = mpd_display_device_get_brightness (priv->display);
+  if (brightness >= 0)
+    mpd_display_device_set_brightness (priv->display, brightness + 0.1);
+  else
+    g_warning ("%s : Brightness is %.1f", G_STRLOC, brightness);
+}
+
+static void
+_brightness_down_key_activated_cb (MxAction     *action,
+                                   MpdPowerIcon *self)
+{
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
+  float brightness;
+
+  g_debug ("%s()", __FUNCTION__);
+
+  brightness = mpd_display_device_get_brightness (priv->display);
+  if (brightness >= 0)
+    mpd_display_device_set_brightness (priv->display, brightness - 0.1);
+  else
+    g_warning ("%s : Brightness is %.1f", G_STRLOC, brightness);
+}
+
+static void
 _dispose (GObject *object)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (object);
@@ -372,11 +408,18 @@ _dispose (GObject *object)
 
   mpd_gobject_detach (object, (GObject **) &priv->battery);
 
+  /* There's some bug in GpmBrightnessXRandR (not freeing the filter?)
+   * so we're leaking this here.
+   * mpd_gobject_detach (object, (GObject **) &priv->display); */
+
   mpd_gobject_detach (object, (GObject **) &priv->lid);
 
   mpd_gobject_detach (object, (GObject **) &priv->shutdown_key);
 
   mpd_gobject_detach (object, (GObject **) &priv->sleep_key);
+
+  mpd_gobject_detach (object, (GObject **) &priv->brightness_up_key);
+  mpd_gobject_detach (object, (GObject **) &priv->brightness_down_key);
 
   mpd_gobject_detach (object, (GObject **) &priv->shutdown_note);
 
@@ -440,6 +483,33 @@ mpd_power_icon_init (MpdPowerIcon *self)
                       G_CALLBACK (_sleep_key_activated_cb), self);
   } else {
     g_warning ("Failed to query XF86XK_PowerOff key code.");
+  }
+
+  /* Display */
+  priv->display = mpd_display_device_new ();
+  if (mpd_display_device_is_enabled (priv->display))
+  {
+    /* Brightness keys. */
+    key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_MonBrightnessUp);
+    if (key_code)
+    {
+      priv->brightness_up_key = mpd_global_key_new (key_code);
+      g_object_ref_sink (priv->brightness_up_key);
+      g_signal_connect (priv->brightness_up_key, "activated",
+                        G_CALLBACK (_brightness_up_key_activated_cb), self);
+    } else {
+      g_warning ("Failed to query XF86XK_MonBrightnessUp key code.");
+    }
+    key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_MonBrightnessDown);
+    if (key_code)
+    {
+      priv->brightness_down_key = mpd_global_key_new (key_code);
+      g_object_ref_sink (priv->brightness_down_key);
+      g_signal_connect (priv->brightness_down_key, "activated",
+                        G_CALLBACK (_brightness_down_key_activated_cb), self);
+    } else {
+      g_warning ("Failed to query XF86XK_MonBrightnessDown key code.");
+    }
   }
 
   /* Lid. */

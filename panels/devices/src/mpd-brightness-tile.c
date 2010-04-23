@@ -22,8 +22,6 @@
 
 #include <glib/gi18n.h>
 
-#include <gpm/gpm-brightness-xrandr.h>
-
 #include "mpd-gobject.h"
 #include "mpd-brightness-tile.h"
 #include "mpd-display-device.h"
@@ -38,7 +36,6 @@ typedef struct
 {
   ClutterActor        *bars;
   MxSlider            *slider;
-  GpmBrightnessXRandR *brightness;
   MpdDisplayDevice    *display;
 } MpdBrightnessTilePrivate;
 
@@ -100,11 +97,10 @@ _brightness_slider_value_notify_cb (MxSlider          *slider,
 }
 
 static void
-_brightness_changed_cb (GpmBrightnessXRandR *brightness,
-                        unsigned int         percentage,
-                        MpdBrightnessTile   *self)
+_display_brightness_notify_cb (MpdDisplayDevice   *display,
+                               GParamSpec         *pspec,
+                               MpdBrightnessTile  *self)
 {
-  g_debug ("%s()", __FUNCTION__);
   update_brightness_slider (self);
 }
 
@@ -112,8 +108,6 @@ static void
 _dispose (GObject *object)
 {
   MpdBrightnessTilePrivate *priv = GET_PRIVATE (object);
-
-  mpd_gobject_detach (object, (GObject **) &priv->brightness);
 
   mpd_gobject_detach (object, (GObject **) &priv->display);
 
@@ -138,7 +132,6 @@ mpd_brightness_tile_init (MpdBrightnessTile *self)
   ClutterActor  *hbox;
   ClutterActor  *icon;
   ClutterActor  *vbox;
-  int            percentage;
   GError        *error = NULL;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
@@ -186,17 +179,10 @@ mpd_brightness_tile_init (MpdBrightnessTile *self)
                                 "y-fill", false,
                                 NULL);
 
-  priv->brightness = gpm_brightness_xrandr_new ();
-  g_signal_connect (priv->brightness, "brightness-changed",
-                    G_CALLBACK (_brightness_changed_cb), self);
 
   priv->display = mpd_display_device_new ();
-  percentage = mpd_display_device_get_percentage (priv->display, &error);
-  if (percentage > -1)
-  {
-    gboolean hw_changed;
-    gpm_brightness_xrandr_set (priv->brightness, percentage, &hw_changed);
-  }
+  g_signal_connect (priv->display, "notify::brightness",
+                    G_CALLBACK (_display_brightness_notify_cb), self);
 
   update_brightness_slider (self);
 }
@@ -208,19 +194,16 @@ mpd_brightness_tile_new (void)
 }
 
 static void
-update_brightness_bars (MpdBrightnessTile *self)
+update_brightness_bars (MpdBrightnessTile *self,
+                        float              brightness)
 {
   MpdBrightnessTilePrivate *priv = GET_PRIVATE (self);
   char          *icon_file;
   GError        *error = NULL;
-  unsigned int   percentage;
-  bool           ret;
-
-  ret = gpm_brightness_xrandr_get (priv->brightness, &percentage);
-  g_return_if_fail (ret);
 
   icon_file = build_icon_name_15 (PKGICONDIR "/brightness-bars-",
-                                  percentage / 100.0, "png");
+                                  brightness,
+                                  "png");
   clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->bars),
                                  icon_file,
                                  &error);
@@ -237,50 +220,40 @@ static void
 update_display_brightness (MpdBrightnessTile *self)
 {
   MpdBrightnessTilePrivate *priv = GET_PRIVATE (self);
-  double    value;
-  gboolean  hw_changed;
-  bool      ret;
+  float brightness;
 
-  g_signal_handlers_disconnect_by_func (priv->brightness,
-                                        _brightness_changed_cb,
+  g_signal_handlers_disconnect_by_func (priv->display,
+                                        _display_brightness_notify_cb,
                                         self);
 
-  value = mx_slider_get_value (priv->slider);
-  mpd_display_device_set_percentage (priv->display, value * 100, NULL);
-  ret = gpm_brightness_xrandr_set (priv->brightness, value * 100, &hw_changed);
-  if (!ret)
-  {
-    g_warning ("%s : Setting brightness failed", G_STRLOC);
-  }
+  brightness = mx_slider_get_value (priv->slider);
+  mpd_display_device_set_brightness (priv->display, brightness);
 
-  g_signal_connect (priv->brightness, "brightness-changed",
-                    G_CALLBACK (_brightness_changed_cb), self);
+  g_signal_connect (priv->display, "notify::brightness",
+                    G_CALLBACK (_display_brightness_notify_cb), self);
 
-  update_brightness_bars (self);
+  update_brightness_bars (self, brightness);
 }
 
 static void
 update_brightness_slider (MpdBrightnessTile *self)
 {
   MpdBrightnessTilePrivate *priv = GET_PRIVATE (self);
-  unsigned int  percentage;
-  bool          ret;
+  float brightness;
 
   g_signal_handlers_disconnect_by_func (priv->slider,
                                         _brightness_slider_value_notify_cb,
                                         self);
 
-  ret = gpm_brightness_xrandr_get (priv->brightness, &percentage);
-  if (ret)
-  {
-    mx_slider_set_value (priv->slider, percentage / (double) 100);
-  } else {
-    g_warning ("%s : Getting brightness failed", G_STRLOC);
-  }
+  brightness = mpd_display_device_get_brightness (priv->display);
+  if (brightness >= 0)
+    mx_slider_set_value (priv->slider, brightness);
+  else
+    g_warning ("%s : Brightness is %.1f", G_STRLOC, brightness);
 
   g_signal_connect (priv->slider, "notify::value",
                     G_CALLBACK (_brightness_slider_value_notify_cb), self);
 
-  update_brightness_bars (self);
+  update_brightness_bars (self, brightness);
 }
 

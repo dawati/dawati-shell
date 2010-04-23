@@ -20,7 +20,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-#include <clutter/clutter.h>
+#include <clutter-gtk/clutter-gtk.h>
 #include "mpd-display-device.h"
 
 static void
@@ -28,15 +28,15 @@ _display_enabled_notify_cb (MpdDisplayDevice  *display,
                             GParamSpec        *pspec,
                             void              *data)
 {
-  g_debug ("enabled: %d", mpd_display_device_is_enabled (display, NULL));
+  g_debug ("enabled: %d", mpd_display_device_is_enabled (display));
 }
 
 static void
-_display_percentage_notify_cb (MpdDisplayDevice  *display,
+_display_brightness_notify_cb (MpdDisplayDevice  *display,
                                GParamSpec        *pspec,
                                void              *data)
 {
-  g_debug ("percentage: %d", mpd_display_device_get_percentage (display, NULL));
+  g_debug ("brightness: %.1f", mpd_display_device_get_brightness (display));
 }
 
 int
@@ -45,17 +45,17 @@ main (int     argc,
 {
   MpdDisplayDevice *display;
 
-  clutter_init (&argc, &argv);
+  gtk_clutter_init (&argc, &argv);
 
   display = mpd_display_device_new ();
-  g_debug ("enabled: %i, percentage, %i",
-           mpd_display_device_is_enabled (display, NULL),
-           mpd_display_device_get_percentage (display, NULL));
+  g_debug ("enabled: %i, brightness, %.1f",
+           mpd_display_device_is_enabled (display),
+           mpd_display_device_get_brightness (display));
 
   g_signal_connect (display, "notify::enabled",
                     G_CALLBACK (_display_enabled_notify_cb), NULL);
-  g_signal_connect (display, "notify::percentage",
-                    G_CALLBACK (_display_percentage_notify_cb), NULL);
+  g_signal_connect (display, "notify::brightness",
+                    G_CALLBACK (_display_brightness_notify_cb), NULL);
 
   clutter_main ();
   g_object_unref (display);

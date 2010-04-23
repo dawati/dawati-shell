@@ -20,11 +20,14 @@
 
 #include <gconf/gconf-client.h>
 
+#include <gpm/gpm-brightness-xrandr.h>
+
 #include "mpd-display-device.h"
+#include "mpd-gobject.h"
 
 #define MPD_GCONF_DIR "/desktop/moblin/panel-devices"
 #define MPD_DISPLAY_BRIGHTNESS_ENABLED "brightness_enabled"
-#define MPD_DISPLAY_BRIGHTNESS_PERCENTAGE "brightness_percentage"
+#define MPD_DISPLAY_BRIGHTNESS_VALUE "brightness_value"
 
 G_DEFINE_TYPE (MpdDisplayDevice, mpd_display_device, G_TYPE_OBJECT)
 
@@ -36,14 +39,24 @@ enum
   PROP_0,
 
   PROP_ENABLED,
-  PROP_PERCENTAGE
+  PROP_BRIGHTNESS
 };
 
 typedef struct
 {
-  GConfClient   *client;
-  unsigned int   client_connection_id;
+  GConfClient         *client;
+  unsigned int         client_connection_id;
+  GpmBrightnessXRandR *brightness;
 } MpdDisplayDevicePrivate;
+
+static void
+_brightness_changed_cb (GpmBrightnessXRandR *brightness,
+                        unsigned int         percentage,
+                        MpdDisplayDevice    *self)
+{
+  g_debug ("%s()", __FUNCTION__);
+  g_object_notify (G_OBJECT (self), "brightness");
+}
 
 static void
 _gconf_notify_cb (GConfClient       *client,
@@ -53,7 +66,8 @@ _gconf_notify_cb (GConfClient       *client,
 {
   char const  *key;
   GConfValue  *value;
-  GError      *error = NULL;
+
+  g_debug ("%s()", __FUNCTION__);
 
   key = gconf_entry_get_key (entry);
   value = gconf_entry_get_value (entry);
@@ -63,16 +77,9 @@ _gconf_notify_cb (GConfClient       *client,
     g_object_notify (G_OBJECT (self), "enabled");
   }
 
-  if (0 == g_strcmp0 (key, MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_PERCENTAGE) &&
-      mpd_display_device_is_enabled (self, &error))
+  if (0 == g_strcmp0 (key, MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_VALUE))
   {
-    g_object_notify (G_OBJECT (self), "percentage");
-  }
-
-  if (error)
-  {
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
+    g_object_notify (G_OBJECT (self), "brightness");
   }
 }
 
@@ -88,27 +95,21 @@ _get_property (GObject      *object,
   case PROP_ENABLED:
     g_value_set_boolean (value,
                          mpd_display_device_is_enabled (
-                          MPD_DISPLAY_DEVICE (object),
-                          &error));
-    if (error)
-    {
-      g_warning ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
-    }
+                            MPD_DISPLAY_DEVICE (object)));
     break;
-  case PROP_PERCENTAGE:
-    g_value_set_int (value,
-                     mpd_display_device_get_percentage (
-                      MPD_DISPLAY_DEVICE (object),
-                      &error));
-    if (error)
-    {
-      g_warning ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
-    }
+  case PROP_BRIGHTNESS:
+    g_value_set_float (value,
+                       mpd_display_device_get_brightness (
+                          MPD_DISPLAY_DEVICE (object)));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
   }
 }
 
@@ -121,30 +122,22 @@ _set_property (GObject      *object,
   GError *error = NULL;
 
   switch (property_id) {
-  /* Read-only
   case PROP_ENABLED:
     mpd_display_device_set_enabled (MPD_DISPLAY_DEVICE (object),
-                                    g_value_get_boolean (value),
-                                    &error);
-    if (error)
-    {
-      g_warning ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
-    }
+                                    g_value_get_boolean (value));
     break;
-  */
-  case PROP_PERCENTAGE:
-    mpd_display_device_set_percentage (MPD_DISPLAY_DEVICE (object),
-                                       g_value_get_int (value),
-                                       &error);
-    if (error)
-    {
-      g_warning ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
-    }
+  case PROP_BRIGHTNESS:
+    mpd_display_device_set_brightness (MPD_DISPLAY_DEVICE (object),
+                                       g_value_get_float (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
   }
 }
 
@@ -159,11 +152,9 @@ _dispose (GObject *object)
     priv->client_connection_id = 0;
   }
 
-  if (priv->client)
-  {
-    g_object_unref (priv->client);
-    priv->client = NULL;
-  }
+  mpd_gobject_detach (object, (GObject **) &priv->client);
+
+  mpd_gobject_detach (object, (GObject **) &priv->brightness);
 
   G_OBJECT_CLASS (mpd_display_device_parent_class)->dispose (object);
 }
@@ -182,7 +173,7 @@ mpd_display_device_class_init (MpdDisplayDeviceClass *klass)
 
   /* Properties */
 
-  param_flags = G_PARAM_READABLE | G_PARAM_STATIC_STRINGS;
+  param_flags = G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS;
 
   g_object_class_install_property (object_class,
                                    PROP_ENABLED,
@@ -193,39 +184,33 @@ mpd_display_device_class_init (MpdDisplayDeviceClass *klass)
                                                          param_flags));
 
   g_object_class_install_property (object_class,
-                                   PROP_PERCENTAGE,
-                                   g_param_spec_int ("percentage",
-                                                     "Percentage",
-                                                     "Display brightess percentage",
-                                                     -1, 100, 100,
-                                                     param_flags |
-                                                     G_PARAM_WRITABLE));
-
+                                   PROP_BRIGHTNESS,
+                                   g_param_spec_float ("brightness",
+                                                       "Brightness",
+                                                       "Display brightess 0 .. 1",
+                                                       -1, 1, 1,
+                                                       param_flags));
 }
 
 static void
 mpd_display_device_init (MpdDisplayDevice *self)
 {
   MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
-  bool     have_dir;
   GError  *error = NULL;
 
-  priv->client = gconf_client_get_default ();
+  priv->brightness = gpm_brightness_xrandr_new ();
 
-  have_dir = gconf_client_dir_exists (priv->client,
-                                      MPD_GCONF_DIR,
-                                      &error);
+  priv->client = gconf_client_get_default ();
+  gconf_client_add_dir (priv->client,
+                        MPD_GCONF_DIR,
+                        GCONF_CLIENT_PRELOAD_ONELEVEL,
+                        &error);
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
-
-  } else if (have_dir)
+  } else
   {
-    gconf_client_add_dir (priv->client,
-                          MPD_GCONF_DIR,
-                          GCONF_CLIENT_PRELOAD_ONELEVEL,
-                          &error);
     priv->client_connection_id = gconf_client_notify_add (
                                       priv->client,
                                       MPD_GCONF_DIR,
@@ -237,9 +222,32 @@ mpd_display_device_init (MpdDisplayDevice *self)
     {
       g_warning ("%s : %s", G_STRLOC, error->message);
       g_clear_error (&error);
-
     }
   }
+
+  if (mpd_display_device_is_enabled (self))
+  {
+    /* Reset stored brightness. */
+    float brightness = gconf_client_get_float (
+                                  priv->client,
+                                  MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_VALUE,
+                                  &error);
+    if (error)
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    } else
+    {
+      gboolean hw_changed;
+      brightness = CLAMP (brightness, 0.0, 1.0);
+      gpm_brightness_xrandr_set (priv->brightness,
+                                 brightness * 100,
+                                 &hw_changed);
+    }
+  }
+
+  g_signal_connect (priv->brightness, "brightness-changed",
+                    G_CALLBACK (_brightness_changed_cb), self);
 }
 
 MpdDisplayDevice *
@@ -249,79 +257,92 @@ mpd_display_device_new (void)
 }
 
 bool
-mpd_display_device_is_enabled (MpdDisplayDevice  *self,
-                               GError           **error)
+mpd_display_device_is_enabled (MpdDisplayDevice  *self)
 {
   MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
+  GError  *error = NULL;
+  bool     ret;
 
   g_return_val_if_fail (MPD_IS_DISPLAY_DEVICE (self), false);
 
-  return gconf_client_get_bool (priv->client,
-                                MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_ENABLED,
-                                error);
-}
-
-int
-mpd_display_device_get_percentage (MpdDisplayDevice  *self,
-                                   GError           **error)
-{
-  MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
-
-  g_return_val_if_fail (MPD_IS_DISPLAY_DEVICE (self), -1);
-
-  if (!mpd_display_device_is_enabled (self, error))
+  ret = gconf_client_get_bool (priv->client,
+                               MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_ENABLED,
+                               &error);
+  if (error)
   {
-    g_warning ("%s : Display brightness is not enabled.", G_STRLOC);
-    return -1;
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
   }
 
-  /* Should fail if the key doesn't exist ... */
-  if (!gconf_client_key_is_writable (
-                            priv->client,
-                            MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_PERCENTAGE,
-                            error))
-  {
-    return -1;
-  }
-
-  return gconf_client_get_int (
-                            priv->client,
-                            MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_PERCENTAGE,
-                            error);
+  return ret;
 }
 
 void
-mpd_display_device_set_percentage (MpdDisplayDevice  *self,
-                                   unsigned int       percentage,
-                                   GError           **error)
+mpd_display_device_set_enabled (MpdDisplayDevice   *self,
+                                bool                enabled)
 {
   MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
+  GError  *error = NULL;
 
   g_return_if_fail (MPD_IS_DISPLAY_DEVICE (self));
 
-  if (!mpd_display_device_is_enabled (self, error))
+  gconf_client_set_bool (priv->client,
+                         MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_ENABLED,
+                         enabled,
+                         &error);
+  if (error)
   {
-    g_warning ("%s : Display brightness is not enabled.", G_STRLOC);
-    return;
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+}
+
+float
+mpd_display_device_get_brightness (MpdDisplayDevice  *self)
+{
+  MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
+  unsigned int  percentage;
+
+  g_return_val_if_fail (MPD_IS_DISPLAY_DEVICE (self), -1);
+
+  if (gpm_brightness_xrandr_get (priv->brightness, &percentage))
+  {
+    return percentage / 100.0;
+  } else
+  {
+    g_warning ("%s : gpm_brightness_xrandr_get() failed", G_STRLOC);
   }
 
-  /* Should fail if the key doesn't exist ... */
-  if (!gconf_client_key_is_writable (
-                        priv->client,
-                        MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_PERCENTAGE,
-                        error))
+  return -1;
+}
+
+void
+mpd_display_device_set_brightness (MpdDisplayDevice  *self,
+                                   float              brightness)
+{
+  MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
+  gboolean hw_changed;
+
+  g_return_if_fail (MPD_IS_DISPLAY_DEVICE (self));
+
+  brightness = CLAMP (brightness, 0.0, 1.0);
+
+  if (gpm_brightness_xrandr_set (priv->brightness, brightness * 100, &hw_changed))
   {
-    g_warning ("%s : GConf key '%s' not writable",
-               G_STRLOC,
-               MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_PERCENTAGE);
-    return;
+    /* Also update gconf */
+    GError *error = NULL;
+    gconf_client_set_float (priv->client,
+                            MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_VALUE,
+                            brightness,
+                            &error);
+    if (error)
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    }
+  } else
+  {
+    g_warning ("%s : Setting brightness failed", G_STRLOC);
   }
-
-  gconf_client_set_int (priv->client,
-                        MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_PERCENTAGE,
-                        percentage,
-                        error);
-
-  /* Notification is done through the gconf monitor. */
 }
 
