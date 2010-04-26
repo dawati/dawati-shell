@@ -91,8 +91,6 @@ typedef struct
   ClutterActor              *open;
   ClutterActor              *import;
 
-  NotifyNotification        *note;
-
   /* Data */
   char                      *icon_file;
   char                      *mime_type;
@@ -142,59 +140,6 @@ _storage_size_notify_cb (MpdStorageDevice     *storage,
 }
 
 static void
-_show_panel_cb (NotifyNotification    *notification,
-                gchar                 *action,
-                MpdStorageDeviceTile  *self)
-{
-  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
-
-  g_debug ("%s()", __FUNCTION__);
-  g_signal_emit_by_name (self, "request-show");
-}
-
-
-static void
-_notification_closed_cb (NotifyNotification   *note,
-                         MpdStorageDeviceTile *self)
-{
-  MpdStorageDeviceTilePrivate *priv;
-
-  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
-  priv = GET_PRIVATE (self);
-
-  priv->note = NULL;
-  g_object_unref (note);
-}
-
-static void
-update_notification (MpdStorageDeviceTile *self,
-                     const char *summary,
-                     const char *body,
-                     gboolean add_action_show_panel,
-                     NotifyUrgency urgency)
-{
-  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-
-  if (priv->note) {
-    notify_notification_close (priv->note, NULL);
-  }
-
-  priv->note = notify_notification_new (summary, body, NULL, NULL);
-  notify_notification_set_urgency (priv->note, urgency);
-
-  g_signal_connect (priv->note, "closed",
-                    G_CALLBACK (_notification_closed_cb), self);
-
-  if (add_action_show_panel) {
-    notify_notification_add_action (priv->note, "show-panel", _("Show"),
-                                    (NotifyActionCallback) _show_panel_cb,
-                                    self, NULL);
-  }
-
-  notify_notification_show (priv->note, NULL);
-}
-
-static void
 _import_clicked_cb (MxButton             *button,
                     MpdStorageDeviceTile *self)
 {
@@ -212,10 +157,16 @@ _import_clicked_cb (MxButton             *button,
   g_spawn_command_line_async (command_line, &error);
   if (error)
   {
+    NotifyNotification *note;
     char *message = g_strdup_printf (_("Could not run %s"), command_line);
 
-    update_notification (self, _("Import error"), message,
-                         FALSE, NOTIFY_URGENCY_CRITICAL);
+    note = notify_notification_new (_("Import error"), message, NULL, NULL);
+    notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
+
+    notify_notification_show (note, NULL);
+    g_signal_connect (note, "closed",
+                      G_CALLBACK (g_object_unref), NULL);
+
     g_free (message);
     g_clear_error (&error);
   } else {
@@ -300,11 +251,6 @@ _constructor (GType                  type,
     self = NULL;
   }
 
-  body = g_strdup_printf (_("%s nas been plugged in. "
-                            "You can use the Devices panel interact with it"),
-                          priv->name);
-  update_notification (self, _("USB plugged in"), body,
-                       TRUE, NOTIFY_URGENCY_NORMAL);
   return (GObject *) self;
 }
 
@@ -406,16 +352,6 @@ _dispose (GObject *object)
   {
     g_free (priv->name);
     priv->name = NULL;
-  }
-
-  if (priv->note) {
-    g_signal_handlers_disconnect_matched (priv->note,
-                                          G_SIGNAL_MATCH_DATA,
-                                          0, 0, NULL, NULL,
-                                          object);
-    notify_notification_close (priv->note, NULL);
-    g_object_unref (priv->note);
-    priv->note = NULL;
   }
 
   mpd_gobject_detach (object, (GObject **) &priv->storage);
@@ -557,6 +493,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                priv->button_box);
 
+  /* TODO: import button should only be shown if the import apps are available */
   /* Import button */
   priv->import = mx_button_new_with_label (_("Import data"));
   g_signal_connect (priv->import, "clicked",
