@@ -2,7 +2,7 @@
 data/moblin-panel-myzone.desktop.in.in
 data/moblin-panel-myzone.schemas.in
 data/myzone.desktop.in.in
-data/capplet.ui
+[type: gettext/glade]data/capplet.ui
 capplet/gconf-bridge.c
 capplet/myzone-cc-panel.c
 src/moblin-panel-myzone.c
