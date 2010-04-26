@@ -22,7 +22,8 @@
  * 02111-1307, USA.
  */
 
-#include <glib/gi18n.h>
+#include <config.h>
+#include <glib/gi18n-lib.h>
 
 #include "mtp-jar.h"
 #include "mtp-toolbar-button.h"
