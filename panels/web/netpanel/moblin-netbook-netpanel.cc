@@ -675,6 +675,13 @@ moblin_netbook_netpanel_select_tab (MoblinNetbookNetpanel *self, gint tab_id)
     {
       GError *error = NULL;
       gint fd = open(plugin_pipe, O_WRONLY | O_NONBLOCK);
+      // pipe file might be not closed properly
+      // it will cause fd is -1. fallback to launch chrome.
+      if (fd == -1)
+        {
+          g_free (plugin_pipe);
+          return FALSE;
+        }
       GIOChannel * output = g_io_channel_unix_new(fd);
       g_io_channel_set_encoding (output, NULL, NULL);
       g_io_channel_set_buffered (output, FALSE);
