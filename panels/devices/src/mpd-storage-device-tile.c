@@ -218,6 +218,8 @@ _import_clicked_cb (MxButton             *button,
                          FALSE, NOTIFY_URGENCY_CRITICAL);
     g_free (message);
     g_clear_error (&error);
+  } else {
+    g_signal_emit_by_name (self, "request-hide");
   }
 }
 
