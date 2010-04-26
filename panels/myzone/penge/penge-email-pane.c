@@ -17,7 +17,8 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-
+#include <config.h>
+#include <glib/gi18n-lib.h>
 
 #include "penge-email-pane.h"
 
@@ -25,7 +26,6 @@
 
 #include <mailme/mailme-telepathy.h>
 #include <mailme/mailme-telepathy-account.h>
-#include <glib/gi18n.h>
 
 #include "penge-utils.h"
 #include "penge-count-tile.h"

@@ -18,12 +18,12 @@
  */
 
 #include <config.h>
+#include <glib/gi18n-lib.h>
 #include "myzone-cc-panel.h"
 #include <gtk/gtk.h>
 #include <mx/mx-gtk.h>
 #include <gconf/gconf-client.h>
 #include "gconf-bridge.h"
-#include <glib/gi18n.h>
 #include <gio/gdesktopappinfo.h>
 
 #define MYZONE_KEY_DIR "/desktop/moblin/myzone"

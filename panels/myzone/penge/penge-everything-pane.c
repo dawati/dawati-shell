@@ -17,10 +17,12 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <config.h>
+#include <glib/gi18n-lib.h>
+
 #include <libsocialweb-client/sw-client.h>
 #include <gtk/gtk.h>
 #include <gio/gio.h>
-#include <glib/gi18n.h>
 #include <moblin-panel/mpl-utils.h>
 #include <gconf/gconf-client.h>
 

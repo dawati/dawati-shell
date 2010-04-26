@@ -18,7 +18,8 @@
  */
 
 #include <locale.h>
-#include <glib/gi18n.h>
+#include <config.h>
+#include <glib/gi18n-lib.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
@@ -29,7 +30,6 @@
 #include <penge/penge-grid-view.h>
 
 #include <gconf/gconf-client.h>
-#include <config.h>
 
 #define MOBLIN_MYZONE_DIR "/desktop/moblin/myzone"
 

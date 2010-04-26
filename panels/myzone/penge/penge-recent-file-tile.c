@@ -17,6 +17,8 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <config.h>
+#include <glib/gi18n-lib.h>
 
 #include <gtk/gtk.h>
 #include <gio/gio.h>
@@ -25,7 +27,6 @@
 #include "penge-magic-texture.h"
 #include "penge-utils.h"
 
-#include <glib/gi18n.h>
 
 G_DEFINE_TYPE (PengeRecentFileTile, penge_recent_file_tile, PENGE_TYPE_INTERESTING_TILE)
 

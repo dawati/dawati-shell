@@ -17,13 +17,14 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <config.h>
+#include <glib/gi18n-lib.h>
 
 #include "penge-task-tile.h"
 #include "penge-utils.h"
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
-#include <glib/gi18n.h>
 
 G_DEFINE_TYPE (PengeTaskTile, penge_task_tile, MX_TYPE_BUTTON)
 

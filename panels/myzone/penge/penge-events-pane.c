@@ -17,12 +17,13 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <config.h>
+#include <glib/gi18n-lib.h>
 
 #include "penge-events-pane.h"
 
 #include <libjana/jana.h>
 #include <libjana-ecal/jana-ecal.h>
-#include <glib/gi18n.h>
 #include <libical/ical.h>
 
 #include "penge-event-tile.h"

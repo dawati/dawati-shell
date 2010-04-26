@@ -18,11 +18,11 @@
  */
 
 #include <config.h>
+#include <glib/gi18n-lib.h>
 
 #include "penge-utils.h"
 
 #include <string.h>
-#include <glib/gi18n.h>
 
 #include <mx/mx.h>
 #include <moblin-panel/mpl-panel-client.h>
