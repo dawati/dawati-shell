@@ -128,10 +128,6 @@ struct MnbLauncherPrivate_ {
   guint                    timeout_id;
   char                    *lcase_needle;
 
-  /* Keyboard navigation. */
-  guint                    expand_timeout_id;
-  MxExpander              *expand_expander;
-
   /* During incremental fill. */
   guint                    fill_id;
   MnbLauncherTree         *tree;
@@ -300,41 +296,43 @@ launcher_button_create_from_entry (MnbLauncherApplication *entry,
   return button;
 }
 
+typedef struct
+{
+  MnbLauncher   *self;
+  ClutterActor  *expander;
+} expander_expand_complete_idle_cb_t;
+
+static gboolean
+expander_expand_complete_idle_cb (expander_expand_complete_idle_cb_t *data)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (data->self);
+
+  if (data->expander)
+    {
+      ClutterGeometry geometry;
+      clutter_actor_get_geometry (data->expander, &geometry);
+      mx_scroll_view_ensure_visible (MX_SCROLL_VIEW (priv->scrollview), &geometry);
+    }
+
+  return FALSE;
+}
+
 static void
 expander_expand_complete_cb (MxExpander       *expander,
                              MnbLauncher      *self)
 {
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  /* Cancel keyboard navigation to not interfere with the mouse. */
-  if (priv->expand_timeout_id)
-    {
-      g_source_remove (priv->expand_timeout_id);
-      priv->expand_timeout_id = 0;
-      priv->expand_expander = NULL;
-    }
-
   if (mx_expander_get_expanded (expander))
     {
-      priv->expand_expander = expander;
-
-      /* Do not highlight if the focus has already moved on to fav apps. */
-      ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (priv->expand_expander));
-      ClutterActor *launcher = (ClutterActor *) mnb_launcher_grid_find_widget_by_pseudo_class (
-                                                  MNB_LAUNCHER_GRID (inner_grid),
-                                                  "hover");
-
-      if (!launcher)
-        mnb_launcher_grid_keynav_first (MNB_LAUNCHER_GRID (inner_grid));
-
-      /* FIXME Interestingly mx_scroll_view_ensure_visible() on the expander
-       * here totally messes up. */
-    }
-  else
-    {
-      ClutterActor *inner_grid;
-      inner_grid = mx_bin_get_child (MX_BIN (expander));
-      mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
+      /* FIXME: For some reason mx_scroll_view_ensure_visible() does not achieve the
+       * desired effect. Using the idle hook works but the animation is not
+       * totally smooth. */
+      expander_expand_complete_idle_cb_t *data = g_new0 (expander_expand_complete_idle_cb_t, 1);
+      data->self = self;
+      data->expander = (ClutterActor *) expander;
+      g_idle_add_full (G_PRIORITY_HIGH_IDLE,
+                       (GSourceFunc) expander_expand_complete_idle_cb,
+                       data,
+                       g_free);
     }
 }
 
@@ -347,14 +345,6 @@ expander_expanded_notify_cb (MxExpander      *expander,
   MxExpander      *e;
   const gchar     *category;
   GHashTableIter   iter;
-
-  /* Cancel keyboard navigation to not interfere with the mouse. */
-  if (priv->expand_timeout_id)
-    {
-      g_source_remove (priv->expand_timeout_id);
-      priv->expand_timeout_id = 0;
-      priv->expand_expander = NULL;
-    }
 
   /* Close other open expander, so that just the newly opended one is expanded. */
   if (mx_expander_get_expanded (expander))
@@ -371,11 +361,6 @@ expander_expanded_notify_cb (MxExpander      *expander,
               mx_expander_set_expanded (e, FALSE);
             }
         }
-    }
-  else
-    {
-      ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (expander));
-      mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
     }
 }
 
@@ -927,17 +912,8 @@ _constructor (GType                  gtype,
   mnb_launcher_fill (self);
 
   /* Hook up search. */
-/*
-  g_signal_connect_data (entry, "button-clicked",
-                         G_CALLBACK (entry_changed_cb), self,
-                         (GClosureNotify) mnb_launcher_free_cb, 0);
-*/
-  // g_signal_connect (priv->filter, "button-clicked",
-  //                   G_CALLBACK (mnb_launcher_theme_changed_cb), self);
   g_signal_connect (priv->filter, "notify::text",
                     G_CALLBACK (_filter_text_notify_cb), self);
-  // g_signal_connect (priv->filter, "keynav-event",
-  //                   G_CALLBACK (entry_keynav_cb), self);
 
   return (GObject *) self;
 }
