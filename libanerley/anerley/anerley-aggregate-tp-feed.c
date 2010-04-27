@@ -193,6 +193,8 @@ _account_manager_account_removed_cb (TpAccountManager *account_manager,
                                      TpAccount        *account,
                                      gpointer          userdata)
 {
+  AnerleyAggregateTpFeedPrivate *priv = GET_PRIVATE (userdata);
+
   /* For TP feeds we don't actually want to remove the feed from aggregator
    * because otherwise the removals get lost when the TP connection gets
    * disconnect on MC account disablement.
@@ -204,6 +206,9 @@ _account_manager_account_removed_cb (TpAccountManager *account_manager,
 
   g_object_notify (G_OBJECT (userdata), "accounts-online");
   g_object_notify (G_OBJECT (userdata), "accounts-available");
+
+  g_hash_table_remove (priv->feeds,
+                       tp_proxy_get_object_path (TP_PROXY (account)));
 }
 
 
