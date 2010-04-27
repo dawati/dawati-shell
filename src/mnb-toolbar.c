@@ -749,22 +749,16 @@ mnb_toolbar_dbus_hide_toolbar (MnbToolbar *self, GError **error)
 static gboolean
 mnb_toolbar_dbus_show_panel (MnbToolbar *self, gchar *name, GError **error)
 {
-  MnbPanel        *panel = mnb_toolbar_panel_name_to_panel (self, name);
   MnbToolbarPanel *tp;
 
-  if (!panel)
+  tp = mnb_toolbar_panel_name_to_panel_internal (self, name);
+
+  if (!tp)
     return FALSE;
 
-  if (mnb_panel_is_mapped(panel))
-    return TRUE;
+  mnb_toolbar_activate_panel_internal (self, tp, MNB_SHOW_HIDE_BY_DBUS);
 
-  if ((tp = mnb_toolbar_panel_to_toolbar_panel (self, panel)))
-    {
-      mnb_toolbar_activate_panel_internal (self, tp, MNB_SHOW_HIDE_BY_DBUS);
-      return TRUE;
-    }
-
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
