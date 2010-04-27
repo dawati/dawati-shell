@@ -2224,6 +2224,16 @@ mnb_toolbar_append_panel (MnbToolbar  *toolbar, MnbPanel *panel)
         }
     }
 
+  /*
+   * Make sure the failed flag is unset, in case a panel just took too long to
+   * start.
+   */
+  if (tp->failed)
+    {
+      g_message (G_STRLOC ": Previously failed panel '%s' appeared", name);
+      tp->failed = FALSE;
+    }
+
   if (panel == tp->panel)
     return;
 
