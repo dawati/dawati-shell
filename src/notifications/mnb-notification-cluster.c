@@ -232,6 +232,8 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
                               &notifier_box, flags);
     }
+
+  g_signal_emit (actor, cluster_signals[SYNC_INPUT_REGION], 0);
 }
 
 static void
@@ -319,14 +321,6 @@ on_action (MnbNotification *notification,
                                       action);
 }
 
-
-static void
-on_control_appear_anim_completed (ClutterAnimation *anim,
-                                  MnbNotificationCluster *cluster)
-{
-  g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
-}
-
 static void
 on_notification_added (MoblinNetbookNotifyStore *store,
                        Notification             *notification,
@@ -387,8 +381,6 @@ on_notification_added (MoblinNetbookNotifyStore *store,
                              FADE_DURATION,
                              "opacity", 0xff,
                              NULL);
-
-      g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
      }
   else if (priv->n_notifiers == 2)
     {
@@ -410,10 +402,6 @@ on_notification_added (MoblinNetbookNotifyStore *store,
                                     "y", clutter_actor_get_height
                                     (CLUTTER_ACTOR(priv->active_notifier))- 30,
                                     NULL);
-      g_signal_connect (anim,
-                        "completed",
-                        G_CALLBACK (on_control_appear_anim_completed),
-                        cluster);
     }
   else
     {
@@ -471,9 +459,6 @@ on_control_disappear_anim_completed (ClutterAnimation *anim,
 
   /* Update flag for any pending animations */
   priv->anim_lock = FALSE;
-
-  /* We may have changed size to resync the input area */
-  g_signal_emit (cluster, cluster_signals[SYNC_INPUT_REGION], 0);
 }
 
 static void

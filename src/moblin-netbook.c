@@ -120,6 +120,10 @@ static void moblin_netbook_handle_screen_size (MutterPlugin *plugin,
 
 static void last_focus_weak_notify_cb (gpointer data, GObject *meta_win);
 
+static void notification_cluster_allocation_notify_cb (ClutterActor *notification,
+                                                       GParamSpec   *spec,
+                                                       MutterPlugin *plugin);
+
 static GQuark actor_data_quark = 0;
 static GQuark notification_quark = 0;
 
@@ -312,8 +316,12 @@ moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
 
   moblin_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
-  clutter_actor_set_position (priv->notification_cluster,
-                              screen_width, screen_height);
+  /*
+   * Pretend we changed allocation on this actor, this will move it to the
+   * correct place.
+   */
+  notification_cluster_allocation_notify_cb (priv->notification_cluster,
+                                             NULL, plugin);
 
   if (priv->desktop_tex)
     clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
@@ -709,6 +717,23 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
 }
 
 static void
+notification_cluster_allocation_notify_cb (ClutterActor *notification,
+                                           GParamSpec   *spec,
+                                           MutterPlugin *plugin)
+{
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  gint                        screen_width, screen_height;
+  gfloat                      w, h;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  clutter_actor_get_size (priv->notification_cluster, &w, &h);
+
+  clutter_actor_set_position (priv->notification_cluster,
+                              screen_width - (int)w,
+                              screen_height - (int)h);
+}
+
+static void
 moblin_netbook_plugin_constructed (GObject *object)
 {
   MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
@@ -823,18 +848,14 @@ moblin_netbook_plugin_constructed (GObject *object)
                     (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster),
                      priv->notify_store);
 
-  clutter_actor_set_anchor_point_from_gravity (priv->notification_cluster,
-                                               CLUTTER_GRAVITY_SOUTH_EAST);
-
-  clutter_actor_set_position (priv->notification_cluster,
-                              screen_width,
-                              screen_height);
+  g_signal_connect (priv->notification_cluster, "notify::allocation",
+                    G_CALLBACK (notification_cluster_allocation_notify_cb),
+                    plugin);
 
   g_signal_connect (priv->notification_cluster,
                     "sync-input-region",
                     G_CALLBACK (sync_notification_input_region_cb),
-                    MUTTER_PLUGIN (plugin));
-
+                    plugin);
 
   priv->notification_urgent = mnb_notification_urgent_new ();
 
