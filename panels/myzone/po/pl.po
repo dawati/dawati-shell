@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-26 09:35+0000\n"
+"POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
@@ -63,56 +63,65 @@ msgstr "Pokaż tyle ostatnich plików, ile to możliwe"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "Czy chcesz wyczyścić listę ostatnio używanych dokumentów? Spowoduje to usunięcie lokalnej zawartości Myzone"
 
-#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
+# Depend on context... could also be:
+# <b>Spotkania</b>
+# <b>Grafik</b>
+# <b>Terminarz</b>
+# <b>Plany</b>
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Spotkania"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../penge/penge-calendar-pane.c:526
+#: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
 msgstr "Zadania"
 
-#: ../penge/penge-events-pane.c:70
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "Utwórz nowe spotkanie"
 
-#: ../penge/penge-events-pane.c:71 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Dodaj"
 
-#: ../penge/penge-events-pane.c:401
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "Brak wpisów w kalendarzu na ten tydzień"
 
-#: ../penge/penge-recent-file-tile.c:216
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "Strona"
 
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "Utwórz nowe zadanie"
 
-#: ../penge/penge-tasks-pane.c:429
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "Brak zadań na dziś"
 
-#: ../penge/penge-task-tile.c:318
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "Na %x"
 
-#: ../penge/penge-welcome-tile.c:32
+#: ../penge/penge-welcome-tile.c:33
 msgid "Play intro video"
 msgstr "Odtwórz film wprowadzający"
 
-#: ../penge/penge-welcome-tile.c:64
+#: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
 msgstr "Witaj w MeeGo"
 
-#: ../penge/penge-welcome-tile.c:83
+#: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "To jest Myzone, gdzie wyświetlane są ostatnio używane pliki i zawartość internetowa."
 
-#: ../penge/penge-welcome-tile.c:26
+#: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "Po skonfigurowaniu kont internetowych i użyciu niektórych plików, zostaną wyświetlone w Myzone, aby umożliwić łatwy do nich dostęp w dowolnej chwili. "
 
@@ -128,14 +137,38 @@ msgstr "Nieodczytana wiadomość"
 msgid "Unread messages"
 msgstr "Nieodczytane wiadomości"
 
-# Depend on context... could also be:
-# <b>Spotkania</b>
-# <b>Grafik</b>
-# <b>Terminarz</b>
-# <b>Plany</b>
-#: ../penge/penge-calendar-pane.c:483
-msgid "Appointments"
-msgstr "Spotkania"
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Tapeta Myzone</b>"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Zmień zawartość Myzone</b>"
+
+#: ../data/capplet.ui.h:4
+#, fuzzy
+msgid "Change My Web Accounts"
+msgstr "Zmień konta internetowe"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Utwórz nowe zadanie:"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Wyczyść ostatnie dokumenty"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Wybierz tapetę"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Ustawienia domyślne"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Powiadomienia email:"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Tutaj pojawią się informacje o aktywności twoich znajomych w sieci. Aktywuj swoje konta!"
