@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 09:58+0000\n"
+"POT-Creation-Date: 2010-04-28 09:43+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -56,39 +56,39 @@ msgstr "Sons de sistema"
 msgid "Moblin Power Icon"
 msgstr "Ícone de energia Moblin"
 
-#: ../power-icon/src/mpd-power-icon.c:71
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
 msgstr "Carga de bateria baixa"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Notamos que sua bateria está com carga baixa. Se possível ligue à tomada para recarregar."
 
-#: ../power-icon/src/mpd-power-icon.c:75
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
 msgstr "Está quase esgotada"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Notamos que sua bateria está com carga muito baixa. Seria bom ligar à tomada o mais rápido possível para recarregar."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:85
 msgid "Danger!"
 msgstr "Perigo!"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sinto muito, seu computador está com bateria quase esgotada. Teremos que desligar agora. Favor salvar o seu trabalho e até a próxima."
 
-#: ../power-icon/src/mpd-power-icon.c:311
+#: ../power-icon/src/mpd-power-icon.c:342
 msgid "Would you like to turn off now?"
 msgstr "Quer desligar agora?"
 
-#: ../power-icon/src/mpd-power-icon.c:312
+#: ../power-icon/src/mpd-power-icon.c:343
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Se não puder decidir, vou desligar dentro de 30 segundos."
 
-#: ../power-icon/src/mpd-power-icon.c:377
+#: ../power-icon/src/mpd-power-icon.c:447
 msgid "battery"
 msgstr "bateria"
 
@@ -131,7 +131,7 @@ msgid "Sorry, it looks like your battery is broken."
 msgstr "Sinto muito, parece que sua bateria está quebrada."
 
 #. First row.
-#: ../src/mpd-brightness-tile.c:143
+#: ../src/mpd-brightness-tile.c:141
 msgid "Netbook brightness"
 msgstr "Brilho do netbook"
 
@@ -177,47 +177,40 @@ msgstr "Parar"
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:161
 #, c-format
 msgid "Could not run %s"
 msgstr "Não pôde executar %s"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:163
 msgid "Import error"
 msgstr "Erro de importação"
 
-#: ../src/mpd-storage-device-tile.c:256
-#, c-format
-msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-msgstr "%s foi conectado. Você pode usar o painel de Dispositivos par interagir com ele"
-
-#: ../src/mpd-storage-device-tile.c:259
-msgid "USB plugged in"
-msgstr "USB conectado"
-
-#: ../src/mpd-storage-device-tile.c:260
-msgid "Show"
-msgstr "Mostrar"
-
+#. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:514
+#: ../src/mpd-storage-device-tile.c:498
 msgid "Import data"
 msgstr "Importar dados"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:525
+#: ../src/mpd-storage-device-tile.c:509
 msgid "Eject"
 msgstr "Ejetar"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:536
+#: ../src/mpd-storage-device-tile.c:520
 msgid "Open"
 msgstr "Abrir"
 
-#: ../src/mpd-storage-device-tile.c:725
+#: ../src/mpd-storage-device-tile.c:710
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% de %s</span>"
+
+#: ../src/mpd-storage-device-tile.c:718
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='negrito'>%s</span>"
 
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
@@ -263,6 +256,15 @@ msgstr "Volume de netbook"
 msgid "Mute"
 msgstr "Mudo"
 
+#~ msgid ""
+#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr ""
+#~ "%s foi conectado. Você pode usar o painel de Dispositivos par interagir "
+#~ "com ele"
+#~ msgid "USB plugged in"
+#~ msgstr "USB conectado"
+#~ msgid "Show"
+#~ msgstr "Mostrar"
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
 #~ msgid "MemoryStick"
