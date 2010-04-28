@@ -71,6 +71,8 @@
 enum
 {
   PROP_0,
+
+  PROP_SHOW_EXPANDERS
 };
 
 enum
@@ -88,23 +90,26 @@ G_DEFINE_TYPE (MnbLauncher, mnb_launcher, MX_TYPE_BOX_LAYOUT);
  * Helper struct that contains all the info needed to switch between
  * browser- and filter-mode.
  */
-struct MnbLauncherPrivate_ {
+struct MnbLauncherPrivate_
+{
+  gboolean                 is_constructed;
   GtkIconTheme            *theme;
   MplAppBookmarkManager   *manager;
   MnbLauncherMonitor      *monitor;
   GHashTable              *expanders;
   MxExpander              *first_expander;
   GSList                  *launchers;
+  gboolean                 show_expanders;
 
   /* Static widgets, managed by clutter. */
   ClutterActor            *filter_hbox;
   ClutterActor            *filter;
   ClutterActor            *scrollview;
   MxExpander              *default_expander;
+  ClutterActor            *fav_grid;
 
   /* "Dynamic" widgets (browser vs. filter mode).
    * These are explicitely ref'd and destroyed. */
-  ClutterActor            *fav_grid;
   ClutterActor            *apps_grid;
 
   /* While filtering. */
@@ -386,19 +391,31 @@ mnb_launcher_reset (MnbLauncher     *self)
   mnb_launcher_cancel_search (self);
 
   /* Clear fav apps */
-  clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                             (ClutterCallback) clutter_actor_destroy,
-                             NULL);
+  if (priv->fav_grid)
+    {
+      clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
+                                 (ClutterCallback) clutter_actor_destroy,
+                                 NULL);
+    }
 
   /* Clear apps */
-  clutter_actor_destroy (priv->apps_grid);
-  priv->apps_grid = NULL;
+  if (priv->apps_grid)
+    {
+      clutter_actor_destroy (priv->apps_grid);
+      priv->apps_grid = NULL;
+    }
 
-  g_hash_table_destroy (priv->expanders);
-  priv->expanders = NULL;
+  if (priv->expanders)
+    {
+      g_hash_table_destroy (priv->expanders);
+      priv->expanders = NULL;
+    }
 
-  g_slist_free (priv->launchers);
-  priv->launchers = NULL;
+  if (priv->launchers)
+    {
+      g_slist_free (priv->launchers);
+      priv->launchers = NULL;
+    }
 
   /* Shut down monitoring */
   if (priv->monitor)
@@ -413,9 +430,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
   MnbLauncherDirectory  *directory;
-  GList                 *entry_iter;
+  GList                 *entries_iter;
   ClutterActor          *inner_grid;
-  MxWidget              *button;
   int                    n_buttons = 0;
 
   if (priv->tree == NULL)
@@ -473,12 +489,12 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   mx_grid_set_row_spacing (MX_GRID (inner_grid), APPS_GRID_ROW_GAP);
   clutter_actor_set_name (inner_grid, "launcher-expander-grid");
 
-  button = NULL;
-  for (entry_iter = directory->entries; entry_iter; entry_iter = entry_iter->next)
+  for (entries_iter = directory->entries; entries_iter; entries_iter = entries_iter->next)
     {
-      button = launcher_button_create_from_entry ((MnbLauncherApplication *) entry_iter->data,
-                                                  directory->name,
-                                                  priv->theme);
+      MnbLauncherApplication *launcher = (MnbLauncherApplication *) entries_iter->data;
+      MxWidget *button = launcher_button_create_from_entry (launcher,
+                                                            directory->name,
+                                                            priv->theme);
       if (button)
         {
           /* Assuming limited number of fav apps, linear search should do for now. */
@@ -547,7 +563,82 @@ mnb_launcher_fill_category (MnbLauncher     *self)
 }
 
 static void
-mnb_launcher_fill (MnbLauncher     *self)
+mnb_launcher_fill_plain (MnbLauncher  *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  MnbLauncherTree *tree;
+  GList           *directories;
+  GList const     *directories_iter;
+  GSList const    *launchers_iter;
+
+  /* Build list of launchers in priv->launchers. */
+
+  tree = mnb_launcher_tree_create ();
+  directories = mnb_launcher_tree_list_entries (tree);
+  for (directories_iter = directories;
+       directories_iter != NULL;
+       directories_iter = directories_iter->next)
+    {
+      MnbLauncherDirectory *directory = (MnbLauncherDirectory *) directories_iter->data;
+      GList const *entries_iter;
+
+      for (entries_iter = directory->entries;
+           entries_iter != NULL;
+           entries_iter = entries_iter->next)
+        {
+          MnbLauncherApplication *launcher = (MnbLauncherApplication *) entries_iter->data;
+          MxWidget *button = launcher_button_create_from_entry (launcher,
+                                                                directory->name,
+                                                                priv->theme);
+          if (button)
+            {
+              /* Assuming limited number of fav apps, linear search should do for now. */
+              if (priv->fav_grid)
+                {
+                  clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
+                                             (ClutterCallback) mnb_launcher_button_sync_if_favorite,
+                                             button);
+                }
+
+              g_signal_connect (button, "hovered",
+                                G_CALLBACK (launcher_button_hovered_cb),
+                                self);
+              g_signal_connect (button, "activated",
+                                G_CALLBACK (launcher_button_activated_cb),
+                                self);
+              g_signal_connect (button, "fav-toggled",
+                                G_CALLBACK (launcher_button_fav_toggled_cb),
+                                self);
+              priv->launchers = g_slist_prepend (priv->launchers, button);
+            }
+        }
+    }
+
+  /* Sort and add to grid */
+
+  priv->launchers = g_slist_sort (priv->launchers,
+                                  (GCompareFunc) mnb_launcher_button_compare);
+  for (launchers_iter = priv->launchers;
+       launchers_iter != NULL;
+       launchers_iter = launchers_iter->next)
+    {
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
+                                   CLUTTER_ACTOR (launchers_iter->data));
+    }
+
+  /* Watch for changes in installed apps */
+
+  priv->monitor = mnb_launcher_tree_create_monitor (
+                        tree,
+                        (MnbLauncherMonitorFunction) mnb_launcher_monitor_cb,
+                        self);
+
+  mnb_launcher_tree_free_entries (directories);
+  mnb_launcher_tree_free (tree);
+}
+
+static void
+mnb_launcher_fill (MnbLauncher  *self)
 {
   MnbLauncherPrivate *priv = GET_PRIVATE (self);
 
@@ -619,18 +710,28 @@ mnb_launcher_fill (MnbLauncher     *self)
   /* Grid */
   priv->apps_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   clutter_actor_set_name (priv->apps_grid, "apps-grid");
-  mnb_launcher_grid_set_x_expand_children (MNB_LAUNCHER_GRID (priv->apps_grid),
-                                           TRUE);
   mx_grid_set_column_spacing (MX_GRID (priv->apps_grid), APPS_GRID_COLUMN_GAP);
   mx_grid_set_row_spacing (MX_GRID (priv->apps_grid), APPS_GRID_ROW_GAP);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->scrollview),
                                priv->apps_grid);
 
-  priv->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                    g_free, NULL);
+  if (priv->show_expanders)
+    {
+      mnb_launcher_grid_set_x_expand_children (MNB_LAUNCHER_GRID (priv->apps_grid),
+                                               TRUE);
 
-  while (mnb_launcher_fill_category (self))
-    ;
+      priv->expanders = g_hash_table_new_full (g_str_hash,
+                                               g_str_equal,
+                                               g_free,
+                                               NULL);
+
+      while (mnb_launcher_fill_category (self))
+        ;
+    }
+  else
+    {
+      mnb_launcher_fill_plain (self);
+    }
 }
 
 static void
@@ -677,24 +778,28 @@ mnb_launcher_filter_cb (MnbLauncher *self)
                             MNB_LAUNCHER_GRID (priv->apps_grid),
                             FALSE);
 
-          /* Hide expanders. */
-          g_hash_table_iter_init (&expander_iter, priv->expanders);
-          while (g_hash_table_iter_next (&expander_iter,
-                                          NULL,
-                                          (gpointer *) &expander))
+          if (priv->show_expanders)
             {
-              clutter_actor_hide (expander);
-            }
+              /* Hide expanders. */
+              g_hash_table_iter_init (&expander_iter, priv->expanders);
+              while (g_hash_table_iter_next (&expander_iter,
+                                              NULL,
+                                              (gpointer *) &expander))
+                {
+                  clutter_actor_hide (expander);
+                }
 
-          /* Reparent launchers onto grid.
-            * Launchers are initially invisible to avoid bogus matches. */
-          for (iter = priv->launchers; iter; iter = iter->next)
-            {
-              MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (iter->data);
-              clutter_actor_hide (CLUTTER_ACTOR (launcher));
-              clutter_actor_reparent (CLUTTER_ACTOR (launcher),
-                                      priv->apps_grid);
-              mx_stylable_set_style_pseudo_class (MX_STYLABLE (launcher), NULL);
+              /* Reparent launchers onto grid.
+                * Launchers are initially invisible to avoid bogus matches. */
+              for (iter = priv->launchers; iter; iter = iter->next)
+                {
+                  MnbLauncherButton *launcher = MNB_LAUNCHER_BUTTON (iter->data);
+                  clutter_actor_hide (CLUTTER_ACTOR (launcher));
+                  clutter_actor_reparent (CLUTTER_ACTOR (launcher),
+                                          priv->apps_grid);
+                  mx_stylable_set_style_pseudo_class (MX_STYLABLE (launcher),
+                                                      NULL);
+                }
             }
         }
 
@@ -724,31 +829,41 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 
       priv->is_filtering = FALSE;
 
-      mnb_launcher_grid_set_x_expand_children (
-                                  MNB_LAUNCHER_GRID (priv->apps_grid),
-                                  TRUE);
-
-      /* Reparent launchers into expanders. */
-      for (iter = priv->launchers; iter; iter = iter->next)
+      if (priv->show_expanders)
         {
-          MnbLauncherButton *launcher   = MNB_LAUNCHER_BUTTON (iter->data);
-          const gchar       *category   = mnb_launcher_button_get_category (launcher);
-          ClutterActor      *e          = g_hash_table_lookup (priv->expanders, category);
-          ClutterActor      *inner_grid = mx_bin_get_child (MX_BIN (e));
+          mnb_launcher_grid_set_x_expand_children (
+                                      MNB_LAUNCHER_GRID (priv->apps_grid),
+                                      TRUE);
 
-          mx_stylable_set_style_pseudo_class (MX_STYLABLE (launcher), NULL);
-          clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
+          /* Reparent launchers into expanders. */
+          for (iter = priv->launchers; iter; iter = iter->next)
+            {
+              MnbLauncherButton *launcher   = MNB_LAUNCHER_BUTTON (iter->data);
+              const gchar       *category   = mnb_launcher_button_get_category (launcher);
+              ClutterActor      *e          = g_hash_table_lookup (priv->expanders, category);
+              ClutterActor      *inner_grid = mx_bin_get_child (MX_BIN (e));
+
+              mx_stylable_set_style_pseudo_class (MX_STYLABLE (launcher), NULL);
+              clutter_actor_reparent (CLUTTER_ACTOR (launcher), inner_grid);
+            }
+
+          /* Show expanders. */
+          g_hash_table_iter_init (&expander_iter, priv->expanders);
+          while (g_hash_table_iter_next (&expander_iter, NULL, (gpointer *) &expander))
+            {
+              clutter_actor_show (expander);
+            }
         }
-
-      /* Show expanders. */
-      g_hash_table_iter_init (&expander_iter, priv->expanders);
-      while (g_hash_table_iter_next (&expander_iter, NULL, (gpointer *) &expander))
+      else
         {
-          clutter_actor_show (expander);
+          for (iter = priv->launchers; iter; iter = iter->next)
+            {
+              ClutterActor *launcher = CLUTTER_ACTOR (iter->data);
+              clutter_actor_show (launcher);
+            }
         }
     }
 
-  clutter_actor_queue_relayout (priv->apps_grid);
   return FALSE;
 }
 
@@ -919,6 +1034,7 @@ _constructor (GType                  gtype,
   g_signal_connect (priv->theme, "changed",
                     G_CALLBACK (mnb_launcher_theme_changed_cb), self);
   priv->manager = mpl_app_bookmark_manager_get_default ();
+  priv->is_constructed = TRUE;
 
   mnb_launcher_fill (self);
 
@@ -930,29 +1046,38 @@ _constructor (GType                  gtype,
 }
 
 static void
-_get_property (GObject    *gobject,
+_get_property (GObject    *object,
                guint       prop_id,
                GValue     *value,
                GParamSpec *pspec)
 {
   switch (prop_id)
     {
+      case PROP_SHOW_EXPANDERS:
+        g_value_set_boolean (value,
+                             mnb_launcher_get_show_expanders (
+                                MNB_LAUNCHER (object)));
+        break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-_set_property (GObject      *gobject,
+_set_property (GObject      *object,
                guint         prop_id,
                const GValue *value,
                GParamSpec   *pspec)
 {
   switch (prop_id)
     {
+      case PROP_SHOW_EXPANDERS:
+        mnb_launcher_set_show_expanders (MNB_LAUNCHER (object),
+                                         g_value_get_boolean (value));
+        break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
@@ -974,6 +1099,14 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
 
   /* Properties */
 
+  g_object_class_install_property (object_class,
+                                   PROP_SHOW_EXPANDERS,
+                                   g_param_spec_boolean ("show-expanders",
+                                                         "Show expanders",
+                                                         "Whether to show expanders",
+                                                         TRUE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT));
 
   /* Signals */
 
@@ -1016,6 +1149,36 @@ mnb_launcher_clear_filter (MnbLauncher *self)
   if (priv->default_expander)
     {
       mx_expander_set_expanded (priv->default_expander, TRUE);
+    }
+}
+
+gboolean
+mnb_launcher_get_show_expanders (MnbLauncher *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+
+  g_return_val_if_fail (MNB_IS_LAUNCHER (self), FALSE);
+
+  return priv->show_expanders;
+}
+
+void
+mnb_launcher_set_show_expanders (MnbLauncher *self,
+                                 gboolean     show_expanders)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MNB_IS_LAUNCHER (self));
+
+  if (show_expanders != priv->show_expanders)
+    {
+      priv->show_expanders = show_expanders;
+      if (priv->is_constructed)
+        {
+          mnb_launcher_reset (self);
+          mnb_launcher_fill (self);
+        }
+      g_object_notify (G_OBJECT (self), "show-expanders");
     }
 }
 

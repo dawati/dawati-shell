@@ -40,7 +40,18 @@ stage_width_notify_cb (ClutterActor  *stage,
 {
   guint width = clutter_actor_get_width (stage);
 
+  mnb_launcher_clear_filter (launcher);
   clutter_actor_set_width (CLUTTER_ACTOR (launcher), width);
+
+  if (width > 1024)
+    {
+      /* Big-screen mode. */
+      mnb_launcher_set_show_expanders (launcher, FALSE);
+    }
+  else
+    {
+      mnb_launcher_set_show_expanders (launcher, TRUE);
+    }
 }
 
 static void
@@ -59,7 +70,18 @@ panel_set_size_cb (MplPanelClient *panel,
                    guint           height,
                    MnbLauncher    *launcher)
 {
+  mnb_launcher_clear_filter (launcher);
   clutter_actor_set_size (CLUTTER_ACTOR (launcher), width, height);
+
+  if (width > 1024)
+    {
+      /* Big-screen mode. */
+      mnb_launcher_set_show_expanders (launcher, FALSE);
+    }
+  else
+    {
+      mnb_launcher_set_show_expanders (launcher, TRUE);
+    }
 }
 
 static void
@@ -178,7 +200,7 @@ main (int     argc,
           clutter_actor_set_size (stage, 1008, 600);
         }
 
-      launcher = g_object_new (MNB_TYPE_LAUNCHER, NULL);
+      launcher = mnb_launcher_new ();
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (standalone_launcher_activated_cb), NULL);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
