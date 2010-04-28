@@ -18,14 +18,14 @@ MnbLauncher {
   padding: 3 0 3 3;
 }
 
+#apps-grid {
+  padding: 0 3 0 0;
+}
+
 .tile-label {
   font-family: "Droid Sans Bold";
   font-size: 14pt;
   color: #7e7e7e;
-}
-
-MnbFilter {
-  padding: 0 29 0 0;
 }
 
 MnbLauncher *#launcher-expander-grid {

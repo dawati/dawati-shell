@@ -76,5 +76,10 @@ MxWidget *  mnb_launcher_grid_find_widget_by_point        (MnbLauncherGrid  *sel
 MxWidget  * mnb_launcher_grid_find_widget_by_pseudo_class (MnbLauncherGrid  *self,
                                                            const gchar      *pseudo_class);
 
+gboolean   mnb_launcher_grid_get_x_expand_children (MnbLauncherGrid *self);
+
+void       mnb_launcher_grid_set_x_expand_children (MnbLauncherGrid *self,
+                                                    gboolean         value);
+
 #endif /* MNB_LAUNCHER_GRID_H */
 

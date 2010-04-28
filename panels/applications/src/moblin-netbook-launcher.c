@@ -45,33 +45,17 @@
 #include "mnb-launcher-tree.h"
 
 #define SEARCH_APPLY_TIMEOUT       500
-#define LAUNCH_REACTIVE_TIMEOUT_S 2
+#define LAUNCH_REACTIVE_TIMEOUT_S    2
 
-#define LAUNCHER_MIN_WIDTH   790
-#define LAUNCHER_MIN_HEIGHT  400
+#define FAV_PANE_WIDTH  250.0
+#define FILTER_WIDTH    270.0
 
-#define LEFT_COLUMN_WIDTH    240.0
+#define APPS_GRID_COLUMN_GAP   6
+#define APPS_GRID_ROW_GAP      6
 
-#define FILTER_WIDTH 270.0
-
-#define SCROLLVIEW_RESERVED_WIDTH 10
-#define SCROLLBAR_RESERVED_WIDTH  40
-#define SCROLLVIEW_ROW_SIZE       50.0
-#define EXPANDER_GRID_ROW_GAP      8
-
-#define LAUNCHER_GRID_COLUMN_GAP   6
-#define LAUNCHER_GRID_ROW_GAP      6
 #define LAUNCHER_BUTTON_WIDTH     210
 #define LAUNCHER_BUTTON_HEIGHT     79
 #define LAUNCHER_BUTTON_ICON_SIZE  48
-
-#define SCROLLVIEW_OUTER_WIDTH(self_)                                          \
-          (clutter_actor_get_width (CLUTTER_ACTOR (self_)) -                   \
-           SCROLLVIEW_RESERVED_WIDTH)
-#define SCROLLVIEW_OUTER_HEIGHT(self_)                                         \
-          (clutter_actor_get_height (CLUTTER_ACTOR (self_)) -                  \
-           clutter_actor_get_height (self_->priv->filter_hbox) - 35)
-#define SCROLLVIEW_INNER_WIDTH(self_) 695.0
 
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
@@ -129,7 +113,6 @@ struct MnbLauncherPrivate_ {
   char                    *lcase_needle;
 
   /* During incremental fill. */
-  guint                    fill_id;
   MnbLauncherTree         *tree;
   GList                   *directories;
   GList const             *directory_iter;
@@ -472,7 +455,6 @@ mnb_launcher_fill_category (MnbLauncher     *self)
                self);
         }
 
-      priv->fill_id = 0;
       mnb_launcher_tree_free_entries (priv->directories);
       priv->directories = NULL;
       priv->directory_iter = NULL;
@@ -487,8 +469,8 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   directory = (MnbLauncherDirectory *) priv->directory_iter->data;
 
   inner_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
-  mx_grid_set_column_spacing (MX_GRID (inner_grid), LAUNCHER_GRID_COLUMN_GAP);
-  mx_grid_set_row_spacing (MX_GRID (inner_grid), LAUNCHER_GRID_ROW_GAP);
+  mx_grid_set_column_spacing (MX_GRID (inner_grid), APPS_GRID_COLUMN_GAP);
+  mx_grid_set_row_spacing (MX_GRID (inner_grid), APPS_GRID_ROW_GAP);
   clutter_actor_set_name (inner_grid, "launcher-expander-grid");
 
   button = NULL;
@@ -532,7 +514,6 @@ mnb_launcher_fill_category (MnbLauncher     *self)
         expander = CLUTTER_ACTOR (mnb_expander_new ());
         mx_expander_set_label (MX_EXPANDER (expander),
                                   directory->name);
-        clutter_actor_set_width (expander, SCROLLVIEW_INNER_WIDTH (self));
         clutter_container_add_actor (CLUTTER_CONTAINER (priv->apps_grid),
                                      expander);
         g_hash_table_insert (priv->expanders,
@@ -637,16 +618,19 @@ mnb_launcher_fill (MnbLauncher     *self)
 
   /* Grid */
   priv->apps_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
+  clutter_actor_set_name (priv->apps_grid, "apps-grid");
+  mnb_launcher_grid_set_x_expand_children (MNB_LAUNCHER_GRID (priv->apps_grid),
+                                           TRUE);
+  mx_grid_set_column_spacing (MX_GRID (priv->apps_grid), APPS_GRID_COLUMN_GAP);
+  mx_grid_set_row_spacing (MX_GRID (priv->apps_grid), APPS_GRID_ROW_GAP);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->scrollview),
-                                priv->apps_grid);
-  mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
-                         EXPANDER_GRID_ROW_GAP);
+                               priv->apps_grid);
 
   priv->expanders = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                     g_free, NULL);
 
-  priv->fill_id = g_idle_add ((GSourceFunc) mnb_launcher_fill_category,
-                              self);
+  while (mnb_launcher_fill_category (self))
+    ;
 }
 
 static void
@@ -689,10 +673,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 
           priv->is_filtering = TRUE;
 
-          mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
-                                 LAUNCHER_GRID_ROW_GAP);
-          mx_grid_set_column_spacing (MX_GRID (priv->apps_grid),
-                                    LAUNCHER_GRID_COLUMN_GAP);
+          mnb_launcher_grid_set_x_expand_children (
+                            MNB_LAUNCHER_GRID (priv->apps_grid),
+                            FALSE);
 
           /* Hide expanders. */
           g_hash_table_iter_init (&expander_iter, priv->expanders);
@@ -741,9 +724,9 @@ mnb_launcher_filter_cb (MnbLauncher *self)
 
       priv->is_filtering = FALSE;
 
-      mx_grid_set_row_spacing (MX_GRID (priv->apps_grid),
-                               EXPANDER_GRID_ROW_GAP);
-      mx_grid_set_column_spacing (MX_GRID (priv->apps_grid), 0);
+      mnb_launcher_grid_set_x_expand_children (
+                                  MNB_LAUNCHER_GRID (priv->apps_grid),
+                                  TRUE);
 
       /* Reparent launchers into expanders. */
       for (iter = priv->launchers; iter; iter = iter->next)
@@ -822,6 +805,32 @@ _key_focus_in (ClutterActor *actor)
   clutter_actor_grab_key_focus (priv->filter);
 }
 
+static void
+_scrollview_allocation_changed_cb (MxScrollView           *scroll,
+                                   ClutterActorBox        *box,
+                                   ClutterAllocationFlags  flags,
+                                   MnbLauncher            *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  gfloat         scroll_width;
+  MxPadding      padding;
+  guint          scrollbar_width;
+  gfloat         width;
+
+  scroll_width = box->x2 - box->x1;
+  mx_widget_get_padding (MX_WIDGET (scroll), &padding);
+  mx_stylable_get (MX_STYLABLE (scroll),
+                   "x-mx-scrollbar-width", &scrollbar_width,
+                   NULL);
+
+  width = scroll_width -
+          scrollbar_width - padding.left - padding.right - 15;
+
+  clutter_actor_set_width (priv->apps_grid, width);
+
+  g_debug ("%s() %.0f", __FUNCTION__, width);
+}
+
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -856,7 +865,7 @@ _constructor (GType                  gtype,
    * Fav apps pane
    */
   pane = mpl_content_pane_new (_("Favorite applications"));
-  clutter_actor_set_width (pane, 250.0);
+  clutter_actor_set_width (pane, FAV_PANE_WIDTH);
   clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
 
   fav_scroll = mx_scroll_view_new ();
@@ -897,6 +906,8 @@ _constructor (GType                  gtype,
   priv->scrollview = CLUTTER_ACTOR (mx_scroll_view_new ());
   clutter_actor_set_name (priv->scrollview, "apps-pane-content");
   g_object_set (priv->scrollview, "clip-to-allocation", TRUE, NULL);
+  g_signal_connect (priv->scrollview, "allocation-changed",
+                    G_CALLBACK (_scrollview_allocation_changed_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (pane), priv->scrollview);
   clutter_container_child_set (CLUTTER_CONTAINER (pane), priv->scrollview,
                                "expand", TRUE,
@@ -984,24 +995,7 @@ mnb_launcher_init (MnbLauncher *self)
 ClutterActor *
 mnb_launcher_new (void)
 {
-  return g_object_new (MNB_TYPE_LAUNCHER,
-                       "min-width", (gfloat) LAUNCHER_MIN_WIDTH,
-                       "min-height", (gfloat) LAUNCHER_MIN_HEIGHT,
-                       NULL);
-}
-
-void
-mnb_launcher_ensure_filled (MnbLauncher *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-
-  /* Force fill if idle-fill in progress. */
-  if (priv->fill_id)
-    {
-      g_source_remove (priv->fill_id);
-      while (mnb_launcher_fill_category (self))
-        ;
-    }
+  return g_object_new (MNB_TYPE_LAUNCHER, NULL);
 }
 
 void

@@ -26,22 +26,115 @@ G_DEFINE_TYPE (MnbLauncherGrid, mnb_launcher_grid, MX_TYPE_GRID)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_LAUNCHER_GRID, MnbLauncherGridPrivate))
 
-typedef struct _MnbLauncherGridPrivate MnbLauncherGridPrivate;
-
-struct _MnbLauncherGridPrivate
+enum
 {
-  int placeholder;
+  PROP_0,
+
+  PROP_X_EXPAND_CHILDREN
 };
+
+typedef struct
+{
+  gboolean x_expand_children;
+} MnbLauncherGridPrivate;
+
+static void
+_set_width_cb (ClutterActor *actor,
+               gfloat const *width)
+{
+  clutter_actor_set_width (actor, *width);
+}
+
+static void
+_allocation_changed_cb (MnbLauncherGrid         *self,
+                        ClutterActorBox         *box,
+                        ClutterAllocationFlags   flags,
+                        gpointer                 data)
+{
+  MnbLauncherGridPrivate *priv = GET_PRIVATE (self);
+
+  if (priv->x_expand_children)
+    {
+      MxPadding padding;
+      gfloat width;
+
+      mx_widget_get_padding (MX_WIDGET (self), &padding);
+
+      width = clutter_actor_get_width ((ClutterActor *) self) -
+              padding.left - padding.right;
+
+      /* Here we would expand the children. */
+      g_debug ("%s() %.0f",
+               __FUNCTION__,
+               width);
+      clutter_container_foreach (CLUTTER_CONTAINER (self),
+                                 (ClutterCallback) _set_width_cb,
+                                 (gpointer) &width);
+    }
+}
+
+static void
+_get_property (GObject    *object,
+               guint       property_id,
+               GValue     *value,
+               GParamSpec *pspec)
+{
+  switch (property_id)
+  {
+  case PROP_X_EXPAND_CHILDREN:
+    g_value_set_boolean (value,
+                         mnb_launcher_grid_get_x_expand_children (
+                            MNB_LAUNCHER_GRID (object)));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
+
+static void
+_set_property (GObject      *object,
+               guint         property_id,
+               const GValue *value,
+               GParamSpec   *pspec)
+{
+  switch (property_id)
+  {
+  case PROP_X_EXPAND_CHILDREN:
+    mnb_launcher_grid_set_x_expand_children (MNB_LAUNCHER_GRID (object),
+                                             g_value_get_boolean (value));
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  }
+}
 
 static void
 mnb_launcher_grid_class_init (MnbLauncherGridClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
   g_type_class_add_private (klass, sizeof (MnbLauncherGridPrivate));
+
+  object_class->get_property = _get_property;
+  object_class->set_property = _set_property;
+
+  /* Properties */
+
+  g_object_class_install_property (object_class,
+                                   PROP_X_EXPAND_CHILDREN,
+                                   g_param_spec_boolean ("x-expand-children",
+                                                         "X-expand children",
+                                                         "Wheter to assign full width to the children",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 }
 
 static void
 mnb_launcher_grid_init (MnbLauncherGrid *self)
-{}
+{
+  g_signal_connect (self, "allocation-changed",
+                    G_CALLBACK (_allocation_changed_cb), NULL);
+}
 
 MxWidget *
 mnb_launcher_grid_new (void)
@@ -369,5 +462,30 @@ mnb_launcher_grid_keynav (MnbLauncherGrid *self,
     }
 
   return widget;
+}
+
+gboolean
+mnb_launcher_grid_get_x_expand_children (MnbLauncherGrid *self)
+{
+  MnbLauncherGridPrivate *priv = GET_PRIVATE (self);
+
+  g_return_val_if_fail (MNB_IS_LAUNCHER_GRID (self), FALSE);
+
+  return priv->x_expand_children;
+}
+
+void
+mnb_launcher_grid_set_x_expand_children (MnbLauncherGrid *self,
+                                         gboolean         value)
+{
+  MnbLauncherGridPrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MNB_IS_LAUNCHER_GRID (self));
+
+  if (value != priv->x_expand_children)
+    {
+      priv->x_expand_children = value;
+      g_object_notify ((G_OBJECT (self)), "x-expand-children");
+    }
 }
 

@@ -72,7 +72,6 @@ GType mnb_launcher_get_type (void) G_GNUC_CONST;
 
 
 ClutterActor *  mnb_launcher_new            (void);
-void            mnb_launcher_ensure_filled  (MnbLauncher *self);
 void            mnb_launcher_clear_filter   (MnbLauncher *self);
 
 G_END_DECLS

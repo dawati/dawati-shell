@@ -93,13 +93,6 @@ standalone_launcher_activated_cb (MnbLauncher    *launcher,
 }
 
 static void
-panel_show_begin_cb (MplPanelClient *panel,
-                     MnbLauncher    *launcher)
-{
-  mnb_launcher_ensure_filled (launcher);
-}
-
-static void
 panel_show_end_cb (MplPanelClient *panel,
                    MnbLauncher    *launcher)
 {
@@ -117,9 +110,13 @@ int
 main (int     argc,
       char  **argv)
 {
-  static gboolean _standalone = FALSE;
+  static gboolean    _standalone = FALSE;
+  static char const *_geometry = NULL;
   static GOptionEntry _options[] = {
-    { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone, "Do not embed into the mutter-moblin panel", NULL },
+    { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone,
+      "Do not embed into the mutter-moblin panel", NULL },
+    { "geometry", 'g', 0, G_OPTION_ARG_STRING, &_geometry,
+      "Window geometry in standalone mode", NULL },
     { NULL }
   };
 
@@ -169,6 +166,18 @@ main (int     argc,
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
 
+      if (_geometry)
+        {
+          int x, y;
+          unsigned int width, height;
+          XParseGeometry (_geometry, &x, &y, &width, &height);
+          clutter_actor_set_size (stage, width, height);
+        }
+      else
+        {
+          clutter_actor_set_size (stage, 1008, 600);
+        }
+
       launcher = g_object_new (MNB_TYPE_LAUNCHER, NULL);
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (standalone_launcher_activated_cb), NULL);
@@ -179,7 +188,6 @@ main (int     argc,
       g_signal_connect (stage, "notify::height",
                         G_CALLBACK (stage_height_notify_cb), launcher);
 
-      clutter_actor_set_size (stage, 1008, 600);
       clutter_actor_show (stage);
       clutter_actor_grab_key_focus (launcher);
 
@@ -203,8 +211,6 @@ main (int     argc,
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (launcher_activated_cb), panel);
 
-      g_signal_connect (panel, "show-begin",
-                        G_CALLBACK (panel_show_begin_cb), launcher);
       g_signal_connect (panel, "show-end",
                         G_CALLBACK (panel_show_end_cb), launcher);
       g_signal_connect (panel, "hide-end",
