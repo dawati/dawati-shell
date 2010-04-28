@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 09:58+0000\n"
+"POT-Creation-Date: 2010-04-28 09:43+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
 "Language-Team: \n"
@@ -56,39 +56,39 @@ msgstr "Systemklänge"
 msgid "Moblin Power Icon"
 msgstr "Moblin Energiesymbol"
 
-#: ../power-icon/src/mpd-power-icon.c:71
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
 msgstr "Der Akku wird schwach"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Wir haben festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstecken und Aufladen jetzt eine gute Idee."
 
-#: ../power-icon/src/mpd-power-icon.c:75
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
 msgstr "Akku ist fast leer"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Dein Akku ist ziemlich schwach. Es wäre wirklich eine gute Idee, alles zu speichern und dann unverzüglich aufzuladen."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:85
 msgid "Danger!"
 msgstr "Gefahr!"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Leider hat dein Computer keinen Saft mehr. Wir müssen jetzt abschalten. Bitte speichere alles Wichtige und wir hoffen dich bald wiederzusehen."
 
-#: ../power-icon/src/mpd-power-icon.c:311
+#: ../power-icon/src/mpd-power-icon.c:342
 msgid "Would you like to turn off now?"
 msgstr "Möchtest du jetzt abschalten?"
 
-#: ../power-icon/src/mpd-power-icon.c:312
+#: ../power-icon/src/mpd-power-icon.c:343
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
 
-#: ../power-icon/src/mpd-power-icon.c:377
+#: ../power-icon/src/mpd-power-icon.c:447
 msgid "battery"
 msgstr "Akku"
 
@@ -131,7 +131,7 @@ msgid "Sorry, it looks like your battery is broken."
 msgstr "Leider scheint dein Akku defekt zu sein."
 
 #. First row.
-#: ../src/mpd-brightness-tile.c:143
+#: ../src/mpd-brightness-tile.c:141
 msgid "Netbook brightness"
 msgstr "Netbook Helligkeit"
 
@@ -160,6 +160,10 @@ msgstr "Andere Geräte"
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Du benutzt</span> <span color='%s'>%d%% von %s</span>"
 
+#: ../src/mpd-folder-tile.c:174
+msgid "Trash"
+msgstr "Abfall"
+
 #: ../src/mpd-media-import-tile.c:73
 #, c-format
 msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
@@ -173,44 +177,32 @@ msgstr "Stop"
 msgid "Devices"
 msgstr "Geräte"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:161
 #, c-format
 msgid "Could not run %s"
 msgstr "%s konnte nicht ausgeführt werden."
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:163
 msgid "Import error"
 msgstr "Fehler beim Importieren"
 
-#: ../src/mpd-storage-device-tile.c:256
-#, c-format
-msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-msgstr "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
-
-#: ../src/mpd-storage-device-tile.c:259
-msgid "USB plugged in"
-msgstr "USB ist angeschlossen"
-
-#: ../src/mpd-storage-device-tile.c:260
-msgid "Show"
-msgstr "Anzeigen"
-
+#. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:514
+#: ../src/mpd-storage-device-tile.c:498
 msgid "Import data"
 msgstr "Daten importieren"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:525
+#: ../src/mpd-storage-device-tile.c:509
 msgid "Eject"
 msgstr "Auswerfen"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:536
+#: ../src/mpd-storage-device-tile.c:520
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../src/mpd-storage-device-tile.c:725
+#: ../src/mpd-storage-device-tile.c:710
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> benutzt <span color='%s'>%d%% von %s</span>"
@@ -259,9 +251,19 @@ msgstr "Netbook-Lautstärke"
 msgid "Mute"
 msgstr "Stumm"
 
-#: ../src/mpd-folder-tile.c:174
-msgid "Trash"
-msgstr "Abfall"
+#: ../src/mpd-storage-device-tile.c:718
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
+
+#~ msgid "USB plugged in"
+#~ msgstr "USB ist angeschlossen"
+
+#~ msgid "Show"
+#~ msgstr "Anzeigen"
 
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
