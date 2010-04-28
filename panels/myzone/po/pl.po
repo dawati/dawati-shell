@@ -2,12 +2,12 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-17 09:52+0000\n"
+"POT-Creation-Date: 2010-04-26 09:35+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
@@ -26,8 +26,7 @@ msgstr "Panel Myzone"
 msgid "Change the Myzone background and content"
 msgstr "Zmień tło i zawartość Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -64,17 +63,7 @@ msgstr "Pokaż tyle ostatnich plików, ile to możliwe"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "Czy chcesz wyczyścić listę ostatnio używanych dokumentów? Spowoduje to usunięcie lokalnej zawartości Myzone"
 
-# Depend on context... could also be:
-# <b>Spotkania</b>
-# <b>Grafik</b>
-# <b>Terminarz</b>
-# <b>Plany</b>
-#: ../penge/penge-calendar-pane.c:483
-msgid "Appointments"
-msgstr "Zaplanowane"
-
-#: ../penge/penge-calendar-pane.c:495
-#: ../penge/penge-calendar-pane.c:538
+#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
 msgid "Open"
 msgstr "Otwórz"
 
@@ -82,16 +71,15 @@ msgstr "Otwórz"
 msgid "Tasks"
 msgstr "Zadania"
 
-#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-events-pane.c:70
 msgid "Create an appointment"
 msgstr "Utwórz nowe spotkanie"
 
-#: ../penge/penge-events-pane.c:70
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-events-pane.c:71 ../penge/penge-tasks-pane.c:52
 msgid "Add"
 msgstr "Dodaj"
 
-#: ../penge/penge-events-pane.c:400
+#: ../penge/penge-events-pane.c:401
 msgid "No calendar entries this week"
 msgstr "Brak wpisów w kalendarzu na ten tydzień"
 
@@ -99,11 +87,11 @@ msgstr "Brak wpisów w kalendarzu na ten tydzień"
 msgid "Web page"
 msgstr "Strona"
 
-#: ../penge/penge-tasks-pane.c:50
+#: ../penge/penge-tasks-pane.c:51
 msgid "Create a new task"
 msgstr "Utwórz nowe zadanie"
 
-#: ../penge/penge-tasks-pane.c:426
+#: ../penge/penge-tasks-pane.c:429
 msgid "Nothing to do today"
 msgstr "Brak zadań na dziś"
 
@@ -140,20 +128,20 @@ msgstr "Nieodczytana wiadomość"
 msgid "Unread messages"
 msgstr "Nieodczytane wiadomości"
 
-#~ msgid ""
-#~ "Things that your friends do online will appear here. Activate your "
-#~ "accounts now!"
-#~ msgstr ""
-#~ "Tutaj pojawią się informacje o aktywności twoich znajomych w sieci. "
-#~ "Aktywuj swoje konta!"
+# Depend on context... could also be:
+# <b>Spotkania</b>
+# <b>Grafik</b>
+# <b>Terminarz</b>
+# <b>Plany</b>
+#: ../penge/penge-calendar-pane.c:483
+msgid "Appointments"
+msgstr "Spotkania"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "Tutaj pojawią się informacje o aktywności twoich znajomych w sieci. Aktywuj swoje konta!"
+
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Witamy w Moblinie 2.1 dla netbooków</b>"
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "Moblin różni się od innych komputerów w paru aspektach, pozbieraliśmy "
-#~ "więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, "
-#~ "Team Moblin"
 
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Moblin różni się od innych komputerów w paru aspektach, pozbieraliśmy więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team Moblin"
