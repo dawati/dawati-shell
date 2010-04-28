@@ -16,10 +16,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
-msgid "Myzone"
-msgstr ""
-
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Citas"
@@ -161,6 +157,10 @@ msgstr "Mensaxe sen ler"
 #: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
 msgstr "Mensaxes sen ler"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "AMiñaZona"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Aquí aparece o que andan a facer as súas amizades na Internet. Active agora as súas contas!"
