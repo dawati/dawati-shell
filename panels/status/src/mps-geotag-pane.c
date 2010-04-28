@@ -20,6 +20,7 @@
 #include <champlain/champlain.h>
 #include <geoclue/geoclue-master.h>
 #include <geoclue/geoclue-geocode.h>
+#include <geoclue/geoclue-reverse-geocode.h>
 #include "mps-geotag-pane.h"
 
 #include <glib/gi18n.h>
@@ -46,7 +47,8 @@ enum
   PROP_LATITUDE,
   PROP_LONGITUDE,
   PROP_GEOTAG_ENABLED,
-  PROP_GUESS_LOCATION
+  PROP_GUESS_LOCATION,
+  PROP_REVERSE_LOCATION
 };
 
 struct _MpsGeotagPanePrivate {
@@ -54,6 +56,7 @@ struct _MpsGeotagPanePrivate {
   ClutterActor *map_view;
   GeocluePosition *geo_position;
   GeoclueGeocode *geo_geocode;
+  GeoclueReverseGeocode *geo_reverse_geocode;
   ChamplainLayer *markers_layer;
   ClutterActor *your_location_marker;
   ClutterActor *entry;
@@ -71,6 +74,8 @@ struct _MpsGeotagPanePrivate {
   ClutterActor *button_box;
   ClutterActor *use_location_button;
   ClutterActor *dont_use_location_button;
+
+  gchar *reverse_location;
 };
 
 static guint signals[LAST_SIGNAL] = { 0, };
@@ -100,6 +105,10 @@ mps_geotag_pane_get_property (GObject *object, guint property_id,
     case PROP_GUESS_LOCATION:
       g_value_set_boolean (value,
                            mx_button_get_toggled (MX_BUTTON (priv->guess_location_button)));
+      break;
+    case PROP_REVERSE_LOCATION:
+      g_value_set_string (value,
+                          priv->reverse_location);
       break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -171,6 +180,14 @@ mps_geotag_pane_class_init (MpsGeotagPaneClass *klass)
                                 FALSE,
                                 G_PARAM_READABLE);
   g_object_class_install_property (object_class, PROP_GUESS_LOCATION, pspec);
+
+  pspec = g_param_spec_string ("reverse-location",
+                               "Reverse geocoded location",
+                               "The human readable location that was the "
+                               "result of reverse geocoding the lat and lon",
+                               NULL,
+                               G_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_REVERSE_LOCATION, pspec);
 
   signals[LOCATION_CHOSEN] = g_signal_new ("location-chosen",
                                            MPS_TYPE_GEOTAG_PANE,
@@ -274,6 +291,57 @@ mps_geotag_pane_guess_location (MpsGeotagPane *pane)
   geoclue_position_get_position_async (priv->geo_position,
                                        _position_get_position_cb,
                                        pane);
+}
+
+static void
+_reverse_geocode_cb (GeoclueReverseGeocode *rev_geocode,
+                     GHashTable            *details,
+                     GeoclueAccuracy       *accuracy,
+                     GError                *error,
+                     gpointer               userdata)
+{
+  MpsGeotagPane *pane = MPS_GEOTAG_PANE (userdata);
+  MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
+
+  if (error)
+  {
+    g_warning (G_STRLOC ": Error reverse geocoding: %s", error->message);
+    g_free (priv->reverse_location);
+    priv->reverse_location = NULL;
+  }
+
+  g_free (priv->reverse_location);
+
+  priv->reverse_location = g_strdup (g_hash_table_lookup (details,
+                                                          GEOCLUE_ADDRESS_KEY_AREA));
+  if (!priv->reverse_location)
+    priv->reverse_location = g_strdup (g_hash_table_lookup (details,
+                                                            GEOCLUE_ADDRESS_KEY_LOCALITY));
+  if (!priv->reverse_location)
+    priv->reverse_location = g_strdup (g_hash_table_lookup (details,
+                                                            GEOCLUE_ADDRESS_KEY_REGION));
+  if (!priv->reverse_location)
+    priv->reverse_location = g_strdup (g_hash_table_lookup (details,
+                                                            GEOCLUE_ADDRESS_KEY_COUNTRY));
+
+  g_object_notify (G_OBJECT (pane), "reverse-location");
+}
+
+static void
+mps_geotag_pane_reverse_point (MpsGeotagPane *pane)
+{
+  MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
+  GeoclueAccuracy *accuracy;
+
+  accuracy = geoclue_accuracy_new (GEOCLUE_ACCURACY_LEVEL_LOCALITY, 0, 0);
+  geoclue_reverse_geocode_position_to_address_async (priv->geo_reverse_geocode,
+                                                     priv->latitude,
+                                                     priv->longitude,
+                                                     accuracy,
+                                                     _reverse_geocode_cb,
+                                                     pane);
+  geoclue_accuracy_free (accuracy);
+
 }
 
 static void
@@ -451,6 +519,7 @@ _use_location_button_clicked (MxButton      *button,
                          NULL);
 
   priv->geotag_enabled = TRUE;
+  mps_geotag_pane_reverse_point (pane);
   g_signal_emit (pane, signals [LOCATION_CHOSEN], 0);
 }
 
@@ -550,6 +619,9 @@ mps_geotag_pane_init (MpsGeotagPane *self)
   priv->geo_geocode = geoclue_geocode_new ("org.freedesktop.Geoclue.Providers.Yahoo",
                                            "/org/freedesktop/Geoclue/Providers/Yahoo");
 
+  priv->geo_reverse_geocode = geoclue_reverse_geocode_new ("org.freedesktop.Geoclue.Providers.Geonames",
+                                                           "/org/freedesktop/Geoclue/Providers/Geonames");
+
   g_signal_connect (priv->entry,
                     "button-clicked",
                     (GCallback)_location_search_button_clicked,
@@ -635,6 +707,7 @@ mps_geotag_pane_init (MpsGeotagPane *self)
 
       mps_geotag_pane_update_marker (self, priv->latitude, priv->longitude);
       mps_geotag_pane_ensure_marker_visible (self);
+      mps_geotag_pane_reverse_point (self);
     } else {
       gconf_client_set_bool (priv->gconf_client,
                              STATUS_PANEL_GUESS_LOCATION_KEY,
