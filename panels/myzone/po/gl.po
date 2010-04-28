@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:48+0000\n"
+"POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: 2009-10-14 20:50+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -20,50 +20,151 @@ msgstr ""
 msgid "Myzone panel"
 msgstr ""
 
-#: ../penge/penge-events-pane.c:68
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr ""
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr ""
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr ""
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr ""
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr ""
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Citas"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr ""
+
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "Crear unha cita"
 
-#: ../penge/penge-events-pane.c:69 ../penge/penge-tasks-pane.c:52
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Engadir"
 
-#: ../penge/penge-events-pane.c:342
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "Non hai entradas no calendario para esta semana"
 
-#: ../penge/penge-people-placeholder-tile.c:112
-msgid "Things that your friends do online will appear here. Activate your accounts now!"
-msgstr "Aquí aparece o que andan a facer as súas amizades na Internet. Active agora as súas contas!"
-
-#: ../penge/penge-recent-file-tile.c:215
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "Páxina web"
 
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "Crear unha tarefa nova"
 
-#: ../penge/penge-tasks-pane.c:433
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "Hoxe non hai nada que facer"
 
-#: ../penge/penge-task-tile.c:316
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "Vence %x"
 
-#: ../penge/penge-welcome-tile.c:86
+#: ../penge/penge-welcome-tile.c:33
+msgid "Play intro video"
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:65
+#, fuzzy
+msgid "Welcome to MeeGo"
+msgstr "Benvida/o a Moblin"
+
+#: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr ""
 
-#: ../penge/penge-calendar-pane.c:474
-msgid "Appointments"
-msgstr "Citas"
+#: ../penge/penge-welcome-tile.c:27
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr ""
 
-#: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to Moblin"
-msgstr "Benvida/o a Moblin"
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr ""
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calendario e tarefas:"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Limpar os documentos recentes"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Escolla o fondo de escritorio"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr ""
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Mostrar todos os ficheiros recentes que for posíbel"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Restaurar ao predefinido"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Alertas por correo electrónico:"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "O resto dos erros móstranse só no terminal."
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Erro de Gconf: %s"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Mostrar principalmente contido de servizos web"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Mostrar todo o contido de servizos web que for posíbel"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Mostrar principalmente os ficheiros recentes"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Mostrar metade e metade"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Abrir"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "Aquí aparece o que andan a facer as súas amizades na Internet. Active agora as súas contas!"
 
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Reciba a benvida a Moblin 2.1 para netbooks</b>"
