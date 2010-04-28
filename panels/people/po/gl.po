@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-06 10:49+0000\n"
+"POT-Creation-Date: 2010-04-28 09:37+0000\n"
 "PO-Revision-Date: 2009-10-14 20:56+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -16,47 +16,76 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:494
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:476
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "persoas"
 
-#: ../src/mnb-people-panel.c:266
+#: ../src/mnb-people-panel.c:231
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Desculpe, non damos atopado ningunha persoa. Configurou unha conta do Messenger?"
 
-#: ../src/mnb-people-panel.c:378
+#: ../src/mnb-people-panel.c:283
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Desculpe, non damos atopado a ninguén. Parece que están todos fóra de liña."
 
-#: ../src/mnb-people-panel.c:475
-#, c-format
-msgid "people - %d people are talking to you"
-msgstr "persoas - estanlle a falar %d persoas"
-
-#: ../src/mnb-people-panel.c:482
-msgid "people - Someone is talking to you"
-msgstr "persoas - Alguén lle está a falar"
-
-#: ../src/mnb-people-panel.c:689
-msgid "People"
-msgstr "Persoas"
-
-#: ../src/mnb-people-panel.c:702
-msgid "Search"
-msgstr "Procurar"
-
-#: ../src/mnb-people-panel.c:423
+#: ../src/mnb-people-panel.c:328
 msgid "To see your IM contacts, you need to go online."
 msgstr "Para ver os seus contactos de mensaxaría instantánea ten que entrar na rede."
 
-#: ../src/mnb-people-panel.c:752
+#. Populate header
+#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
+msgid "People"
+msgstr "Persoas"
+
+#: ../src/mnb-people-panel.c:689
+msgid "Search"
+msgstr "Procurar"
+
+#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
 msgid "You are chatting with:"
 msgstr "Está a parolar con:"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panel Persoas"
+
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#, c-format
+msgid "Open %s"
+msgstr "Abrir %s"
+
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
+msgstr "Ola! Este é o taboleiro de Persoas. Cando ten un servizo de IM configurado (como o Messenger), este é o lugar onde conversa coas persoas."
+
+#: ../src/mnb-people-panel.c:458
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "persoas - está a charlar con% d persoas"
+
+#: ../src/mnb-people-panel.c:465
+msgid "people - you are chatting with someone"
+msgstr "persoas - está a charlar con alguén"
+
+#: ../src/mnb-people-panel.c:985
+msgid "Me"
+msgstr "Eu"
+
+#: ../src/mnb-people-panel.c:947
+msgid "Me and my people"
+msgstr "Eu e a miña xente"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1086
+msgid "My conversations"
+msgstr "As miñas conversas"
+
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "persoas - estanlle a falar %d persoas"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "persoas - Alguén lle está a falar"
 
 #~ msgid "People talking to you ..."
 #~ msgstr "Persoas que lle están a falar..."
