@@ -16,37 +16,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
-msgid "Myzone panel"
-msgstr ""
-
-#: ../data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr ""
-
 #: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
-msgstr ""
-
-#: ../data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
-msgstr ""
-
-#: ../data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
-msgstr ""
-
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
 msgstr ""
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Citas"
-
-#: ../penge/penge-calendar-pane.c:527
-msgid "Tasks"
-msgstr ""
 
 #: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
@@ -77,35 +53,6 @@ msgstr "Hoxe non hai nada que facer"
 msgid "Due %x"
 msgstr "Vence %x"
 
-#: ../penge/penge-welcome-tile.c:33
-msgid "Play intro video"
-msgstr ""
-
-#: ../penge/penge-welcome-tile.c:65
-#, fuzzy
-msgid "Welcome to MeeGo"
-msgstr "Benvida/o a Moblin"
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr ""
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr ""
-
-#: ../penge/penge-email-pane.c:192
-msgid "No unread messages"
-msgstr ""
-
-#: ../penge/penge-email-pane.c:194
-msgid "Unread message"
-msgstr ""
-
-#: ../penge/penge-email-pane.c:196
-msgid "Unread messages"
-msgstr ""
-
 #: ../data/capplet.ui.h:3
 msgid "Calendar and tasks:"
 msgstr "Calendario e tarefas:"
@@ -117,10 +64,6 @@ msgstr "Limpar os documentos recentes"
 #: ../data/capplet.ui.h:5
 msgid "Choose your wallpaper"
 msgstr "Escolla o fondo de escritorio"
-
-#: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr ""
 
 #: ../capplet/myzone-cc-panel.c:55
 msgid "Show as many recent files as possible"
@@ -162,6 +105,62 @@ msgstr "Mostrar metade e metade"
 #: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Abrir"
+
+#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Panel AMiñaZona"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Mudar o fondo e o contido de AMiñaZona"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Fondo de AMiñaZona</b>"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Mudar o que aparece en AMiñaZona</b>"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Mudar as miñas contas web"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Tarefas"
+
+#: ../penge/penge-welcome-tile.c:27
+msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
+msgstr "Cando se teña configurado as contas web e utilizado algúns ficheiros, aparecerán aquí, en AMiñaZona, para acceder doadamente cando se precisaren."
+
+#: ../penge/penge-welcome-tile.c:84
+msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+msgstr "Esta é AMiñaZona, onde aparecen os ficheiros usados recentemente e o contido das fontes web."
+
+#: ../penge/penge-welcome-tile.c:65
+msgid "Welcome to MeeGo"
+msgstr "Benvida/o a MeeGo"
+
+#: ../penge/penge-welcome-tile.c:33
+msgid "Play intro video"
+msgstr "Reproducir o vídeo introdutorio"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgstr "Desexa limpar os documentos recentes? Isto elimina o contido local de AMiñaZona"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "Non hai mensaxes sen ler"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Mensaxe sen ler"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Mensaxes sen ler"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Aquí aparece o que andan a facer as súas amizades na Internet. Active agora as súas contas!"
