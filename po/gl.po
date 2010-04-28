@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-06 10:40+0000\n"
+"POT-Creation-Date: 2010-04-28 09:29+0000\n"
 "PO-Revision-Date: 2009-10-14 21:13+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -16,27 +16,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr ""
-
-#: ../capplet/src/mtp-bin.c:355
-msgid "Save toolbar"
-msgstr ""
-
-#: ../capplet/src/mtp-bin.c:360
-msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr ""
-
-#: ../capplet/src/mtp-bin.c:388
-msgid "Available panels"
-msgstr ""
-
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:221 ../src/mnb-toolbar-clock.c:86
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:133
 msgid "%l:%M %P"
 msgstr "%H.%M"
 
@@ -44,30 +34,13 @@ msgstr "%H.%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:231 ../src/mnb-toolbar-clock.c:96
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:154
 msgid "%B %e, %Y"
 msgstr "%e de %B de %Y"
 
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
-msgstr ""
-
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:250
-msgid "System Tray"
-msgstr ""
-
-#: ../capplet/src/syst-cc-panel.c:167
-msgid "System tray"
-msgstr ""
-
-#: ../capplet/src/syst-cc-panel.c:183
-msgid "Show system tray"
-msgstr ""
-
-#: ../capplet/src/syst-cc-panel.c:204
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr ""
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Barra de ferramentas"
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -77,32 +50,32 @@ msgstr "Determina a orde dos paneis da barra de ferramentas."
 msgid "Order of panels on toolbar"
 msgstr "Orde dos paneis da barra de ferramentas"
 
-#: ../src/moblin-netbook.c:932
+#: ../src/moblin-netbook.c:962
 msgid "Moblin Netbook Effects"
 msgstr "Efectos de Moblin Netbook"
 
-#: ../src/moblin-netbook.c:936
+#: ../src/moblin-netbook.c:966
 msgid "Effects for Moblin Netbooks"
 msgstr "Efectos para os netbooks Moblin"
 
-#: ../src/moblin-netbook.c:2990
+#: ../src/moblin-netbook.c:3164
 msgid "Activate"
 msgstr "Activar"
 
-#: ../src/moblin-netbook.c:3004
+#: ../src/moblin-netbook.c:3178
 msgid "Unknown window"
 msgstr "Xanela descoñecida"
 
-#: ../src/moblin-netbook.c:3006
+#: ../src/moblin-netbook.c:3180
 msgid "Is asking for your attention."
 msgstr "Está a chamar pola súa atención"
 
-#: ../src/mnb-toolbar.c:968
+#: ../src/mnb-toolbar.c:974
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Desculpas; %s está danado"
 
-#: ../src/notifications/mnb-notification.c:262
+#: ../src/notifications/mnb-notification.c:282
 msgid "Dismiss"
 msgstr "Esquecer"
 
@@ -110,10 +83,55 @@ msgstr "Esquecer"
 msgid "Dismiss All"
 msgstr "Esquecelo todo"
 
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Configure as preferencias da barra de ferramentas"
+
+#: ../capplet/src/mtp-bin.c:362
+msgid "Save toolbar"
+msgstr "Gardar a barra de ferramentas"
+
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-#: ../capplet/src/mtp-cc-panel.c:118
-msgid "Toolbar"
-msgstr "Barra de ferramentas"
+msgid "Toolbar settings"
+msgstr "Configuración da barra de ferramentas"
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "Pódense engadir, eliminar e arrumbar moitos dos paneis da barra de ferramentas."
+
+#: ../capplet/src/mtp-bin.c:367
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Perdón, ten que eliminar un panel antes de poder engadir outro."
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:124
+msgid "%H:%M"
+msgstr "%H.%M"
+
+#: ../capplet/src/mtp-jar.c:110
+msgid "Available panels"
+msgstr "Paneis dispoñíbeis"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Configurar as preferencias da bandexa do sistema"
+
+#: ../capplet/src/syst-cc-panel.c:174
+msgid "Show system tray"
+msgstr "Mostrar a bandexa do sistema"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:241
+msgid "System Tray"
+msgstr "Bandexa do sistema"
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgstr "A bandexa do sistema é un concepto empregado por algunhas aplicacións vellas para comunicar cando sucede algo ou para ficar en execución ao se fecharen."
 
 #~ msgid "zones"
 #~ msgstr "zonas"
