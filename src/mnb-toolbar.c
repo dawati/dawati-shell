@@ -3414,6 +3414,8 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
                                        FALSE, MNB_INPUT_LAYER_PANEL);
     }
 
+  mnb_toolbar_trigger_region_set_height (toolbar, 0);
+
   priv->old_screen_width  = screen_width;
   priv->old_screen_height = screen_height;
 }
