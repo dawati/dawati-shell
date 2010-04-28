@@ -150,10 +150,6 @@ msgstr "Wyczyść ostatnie dokumenty"
 msgid "Calendar and tasks:"
 msgstr "Utwórz nowe zadanie:"
 
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
-msgstr "Zmień konta internetowe"
-
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
 msgstr "<b>Zmień zawartość Myzone</b>"
@@ -169,6 +165,11 @@ msgstr "Ustawienia domyślne"
 #: ../data/capplet.ui.h:5
 msgid "Choose your wallpaper"
 msgstr "Wybierz tapetę"
+
+#: ../data/capplet.ui.h:4
+#, fuzzy
+msgid "Change My Web Accounts"
+msgstr "Zmień konta internetowe"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Tutaj pojawią się informacje o aktywności twoich znajomych w sieci. Aktywuj swoje konta!"
