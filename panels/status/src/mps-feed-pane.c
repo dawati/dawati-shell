@@ -427,28 +427,49 @@ _update_location_label (MpsFeedPane *pane)
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
   gboolean geotag_enabled, guess_location;
   gdouble latitude, longitude;
+  gchar *reverse_location;
 
   g_object_get (priv->geotag_pane,
                 "geotag-enabled", &geotag_enabled,
                 "guess-location", &guess_location,
                 "latitude", &latitude,
                 "longitude", &longitude,
+                "reverse-location", &reverse_location,
                 NULL);
 
   if (geotag_enabled)
   {
     gchar *message;
 
-    if (guess_location)
+    if (reverse_location)
     {
-      message = g_strdup_printf (_("We guessed your location as: %f %f"),
+      if (guess_location)
+      {
+        message = g_strdup_printf (_("We guessed your location as: %s (%f, %f)"),
+                                     reverse_location,
+                                     latitude,
+                                     longitude);
+      } else {
+        message = g_strdup_printf (_("Your location is being shared as: %s (%f, %f)"),
+                                   reverse_location,
                                    latitude,
                                    longitude);
+      }
+
+      g_free (reverse_location);
     } else {
-      message = g_strdup_printf (_("Your location is being shared as: %f %f "),
-                                   latitude,
-                                   longitude);
+      if (guess_location)
+      {
+        message = g_strdup_printf (_("We guessed your location as: %f %f"),
+                                     latitude,
+                                     longitude);
+      } else {
+        message = g_strdup_printf (_("Your location is being shared as: %f %f"),
+                                     latitude,
+                                     longitude);
+      }
     }
+
     mx_label_set_text (MX_LABEL (priv->location_label), message);
     g_free (message);
   } else {
@@ -539,6 +560,13 @@ _bridge_factory_func (MpsViewBridge *bridge,
   return actor;
 }
 
+static void
+_geotag_pane_reverse_location_notify_cb (MpsGeotagPane *geotag_pane,
+                                         GParamSpec    *pspec,
+                                         MpsFeedPane   *pane)
+{
+  _update_location_label (pane);
+}
 
 static void
 mps_feed_pane_init (MpsFeedPane *self)
@@ -688,6 +716,10 @@ mps_feed_pane_init (MpsFeedPane *self)
   g_signal_connect (priv->geotag_pane,
                     "location-chosen",
                     (GCallback)_geotag_pane_location_chosen,
+                    self);
+  g_signal_connect (priv->geotag_pane,
+                    "notify::reverse-location",
+                    (GCallback)_geotag_pane_reverse_location_notify_cb,
                     self);
 
   clutter_actor_hide (priv->something_wrong_frame);
