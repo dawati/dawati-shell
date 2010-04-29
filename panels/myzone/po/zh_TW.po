@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 09:39+0000\n"
+"POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -59,56 +59,60 @@ msgstr "盡可能顯示最近的文件"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "您想要清除您最近的文件嗎？這將會從 Myzone 移除本機的內容"
 
-#: ../penge/penge-calendar-pane.c:483
+#: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "約會"
 
-#: ../penge/penge-calendar-pane.c:526
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "開啟"
+
+#: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
 msgstr "工作"
 
-#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "建立一項約會"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "加入"
 
-#: ../penge/penge-events-pane.c:400
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "這禮拜的行事曆上沒有任何條目"
 
-#: ../penge/penge-recent-file-tile.c:216
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "網頁"
 
-#: ../penge/penge-tasks-pane.c:50
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "建立一份新工作"
 
-#: ../penge/penge-tasks-pane.c:426
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "今天沒有待辦的事"
 
-#: ../penge/penge-task-tile.c:318
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "%x 到期"
 
-#: ../penge/penge-welcome-tile.c:32
+#: ../penge/penge-welcome-tile.c:33
 msgid "Play intro video"
 msgstr "播放簡介影片"
 
-#: ../penge/penge-welcome-tile.c:64
+#: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
 msgstr "歡迎來到 MeeGo"
 
-#: ../penge/penge-welcome-tile.c:83
+#: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "這是 Myzone，您最近使用過的檔案與您的網路消息來源內容會在這裡顯現。"
 
-#: ../penge/penge-welcome-tile.c:26
+#: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "當您設置好您的網路帳號，並使用一些檔案後，它們會顯現在 Myzone 的這裡來讓您在任何想要的時候輕鬆存取。"
 
@@ -124,9 +128,37 @@ msgstr "未讀取的訊息"
 msgid "Unread messages"
 msgstr "未讀取的訊息"
 
-#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
-msgid "Open"
-msgstr "開啟"
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "Myzone 背景"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "更改已顯示在您的 Myzone 項目"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "更改我的 Web 帳戶"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "行事曆與工作："
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "清除最近的文件"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "選擇你的背景"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "重設為預設值"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "電子郵件通知："
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "您朋友在線上所做的事都會在出現這裡。那麼現在就啟動您的帳號吧！"
