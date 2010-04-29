@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:33+0000\n"
+"POT-Creation-Date: 2010-04-28 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -14,74 +14,75 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:466
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:476
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "gente"
 
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#, c-format
+msgid "Open %s"
+msgstr "Abrir %s"
+
+# We didn't find anybody. Do you already have an account in any Instant
+# Messenger (service)?
+#: ../src/mnb-people-panel.c:231
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Lo sentimos, no encontramos a nadie. ¿Tienes ya una cuenta en Messenger?"
+
+# We didn't find anybody. Do you already have an account in any Instant
+# Messenger (service)?
+#: ../src/mnb-people-panel.c:283
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Lo sentimos, no encontramos a nadie. Parece que están todos fuera de línea."
+
+#: ../src/mnb-people-panel.c:328
+msgid "To see your IM contacts, you need to go online."
+msgstr "Para ver tus contactos en IM, ponte en línea."
+
+#: ../src/mnb-people-panel.c:458
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "Estás chateando con %d personas"
+
+#: ../src/mnb-people-panel.c:465
+msgid "people - you are chatting with someone"
+msgstr "Estás chateando con alguien"
+
 #. Populate header
-#: ../src/mnb-people-panel.c:666 ../src/mnb-people-panel.c:919
+#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
 msgid "People"
 msgstr "Gente"
 
-#: ../src/mnb-people-panel.c:679
+#: ../src/mnb-people-panel.c:689
 msgid "Search"
 msgstr "Búsqueda"
 
-#: ../src/mnb-people-panel.c:730 ../src/mnb-people-panel.c:1106
+#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
 msgid "You are chatting with:"
 msgstr "Estás chateando con:"
+
+#: ../src/mnb-people-panel.c:947
+msgid "Me and my people"
+msgstr "Mi gente y yo"
+
+#: ../src/mnb-people-panel.c:985
+msgid "Me"
+msgstr "Yo"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1086
+msgid "My conversations"
+msgstr "Mis conversaciones"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Gente"
 
-# We didn't find anybody. Do you already have an account in any Instant
-# Messenger (service)?
-#: ../src/mnb-people-panel.c:185
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Lo sentimos, no encontramos a nadie. ¿Tienes ya una cuenta en Messenger?"
-
 #: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
-msgstr "¡Hola! Éste es el panel gente. Cuando tienes configurado un servicio IM (como Messenger) aquí es donde podrás chatear."
-
-# We didn't find anybody. Do you already have an account in any Instant
-# Messenger (service)?
-#: ../src/mnb-people-panel.c:273
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Lo sentimos, no encontramos a nadie. Parece que están todos fuera de línea."
-
-#: ../src/mnb-people-panel.c:228 ../src/mnb-people-panel.c:404
-#, c-format
-msgid "Open %s"
-msgstr "Abrir %s"
-
-#: ../src/mnb-people-panel.c:448
-#, c-format
-msgid "people - you are chatting with %d people"
-msgstr "Estás chateando con %d personas"
-
-#: ../src/mnb-people-panel.c:318
-msgid "To see your IM contacts, you need to go online."
-msgstr "Para ver tus contactos en IM, ponte en línea."
-
-#: ../src/mnb-people-panel.c:455
-msgid "people - you are chatting with someone"
-msgstr "Estás chateando con alguien"
-
-#: ../src/mnb-people-panel.c:974
-msgid "Me"
-msgstr "Yo"
-
-#: ../src/mnb-people-panel.c:936
-msgid "Me and my people"
-msgstr "Mi gente y yo"
-
-#. Side table
-#: ../src/mnb-people-panel.c:1063
-msgid "My conversations"
-msgstr "Mis conversaciones"
+#, fuzzy
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
+msgstr "¡Hola! Éste es el panel Gente. Cuando tienes configurado un servicio IM (como Messenger) aquí es donde podrás chatear."
 
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "gente - personas conversando contigo: %d"
