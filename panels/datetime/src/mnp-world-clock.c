@@ -610,15 +610,15 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	mx_button_set_label ((MxButton *)priv->add_location, _("Add"));
 	mx_stylable_set_style_class (MX_STYLABLE(priv->add_location), "ZoneSearchEntryAddButton");
 	
-	mx_box_layout_add_actor ((MxBoxLayout *)box, priv->add_location, 1);
+	/* mx_box_layout_add_actor ((MxBoxLayout *)box, priv->add_location, 1); */
   	/* g_signal_connect (priv->add_location, "clicked",
                     	G_CALLBACK (add_location_clicked_cb), world_clock); */
-	clutter_container_child_set (CLUTTER_CONTAINER (box),
+	/*clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->add_location,
                                "expand", FALSE,
 			       "y-fill", FALSE,
 			       "y-align", MX_ALIGN_MIDDLE,
-                               NULL);
+                               NULL);*/
 	
 
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);
