@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 09:39+0000\n"
+"POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS_ESPX <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -58,58 +58,62 @@ msgstr "Mostrar el máximo contenido de archivos recientes"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "¿Quieres limpiar el área de documentos recientes? Esto borrará el contenido local de Myzone."
 
-#: ../penge/penge-calendar-pane.c:483
+#: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Citas"
 
-#: ../penge/penge-calendar-pane.c:526
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Abrir"
+
+#: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
 msgstr "Tareas"
 
-#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "Crear una cita"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Agregar"
 
-#: ../penge/penge-events-pane.c:400
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "No hay notas esta semana"
 
-#: ../penge/penge-recent-file-tile.c:216
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "Página web"
 
-#: ../penge/penge-tasks-pane.c:50
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "Crear una tarea"
 
 # Today, you don't have any pending tasks
-#: ../penge/penge-tasks-pane.c:426
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "No hay tareas para hoy"
 
 # (this task) is for %x
-#: ../penge/penge-task-tile.c:318
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "Es para %x"
 
-#: ../penge/penge-welcome-tile.c:32
+#: ../penge/penge-welcome-tile.c:33
 msgid "Play intro video"
 msgstr "Reproducir vídeo de introducción"
 
-#: ../penge/penge-welcome-tile.c:64
+#: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
 msgstr "Bienvenido a MeeGo"
 
-#: ../penge/penge-welcome-tile.c:83
+#: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Esto es Myzone, donde verás los archivos usados recientemente y las noticias de tus sitios web."
 
-#: ../penge/penge-welcome-tile.c:26
+#: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "Cuando hayas configurado tus cuentas Web y utilizado algunos archivos, estos aparecerán aquí en Myzone, para poder acceder a ellos fácilmente."
 
@@ -125,9 +129,37 @@ msgstr "Mensaje sin leer"
 msgid "Unread messages"
 msgstr "Mensajes sin leer"
 
-#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
-msgid "Open"
-msgstr "Abrir"
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Imagen de escritorio 'Myzone'</b>"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Cambia lo que aparece en tu Myzone</b>"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Cambia tus cuentas 'My Web' "
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calendario y tareas:"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Despejar documentos recientes"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Elige tu imagen de escritorio"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Restaurar valores predeterminados"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Notificaciones de correo electrónico:"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Aquí verás lo que hacen tus amigos en línea. ¡Activa tus cuentas!"
