@@ -2,12 +2,12 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:41+0000\n"
+"POT-Creation-Date: 2010-04-28 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
 "Language-Team: Moblin\n"
@@ -18,68 +18,60 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:466
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:476
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "osoby"
 
-#: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
-msgstr "Witaj! To jest panel Osoby. Jeśli masz skonfigurowaną usługę IM (taką jak Messenger), jest to miejsce, w którym możesz rozmawiać z ludźmi."
-
-#: ../src/mnb-people-panel.c:185
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Niestety nikogo nie znaleziono. Czy skonfigurowano jakieś konto komunikatora?"
-
-#: ../src/mnb-people-panel.c:228
-#: ../src/mnb-people-panel.c:404
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
 #, c-format
 msgid "Open %s"
 msgstr "Otwórz %s"
 
-#: ../src/mnb-people-panel.c:273
+#: ../src/mnb-people-panel.c:231
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Niestety nikogo nie znaleziono. Czy skonfigurowano jakieś konto komunikatora?"
+
+#: ../src/mnb-people-panel.c:283
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Niestety nikogo nie znaleziono. Wygląda na to, że wszyscy są niedostępni."
 
-#: ../src/mnb-people-panel.c:318
+#: ../src/mnb-people-panel.c:328
 msgid "To see your IM contacts, you need to go online."
 msgstr "Aby zobaczyć swoje kontakty, zmień swój status na dostępny."
 
-#: ../src/mnb-people-panel.c:448
+#: ../src/mnb-people-panel.c:458
 #, c-format
 msgid "people - you are chatting with %d people"
 msgstr "osoby - rozmawiasz z %d osobami"
 
-#: ../src/mnb-people-panel.c:455
+#: ../src/mnb-people-panel.c:465
 msgid "people - you are chatting with someone"
 msgstr "osoby - rozmawiasz z kimś"
 
 #. Populate header
-#: ../src/mnb-people-panel.c:666
-#: ../src/mnb-people-panel.c:919
+#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
 msgid "People"
 msgstr "Osoby"
 
-#: ../src/mnb-people-panel.c:679
+#: ../src/mnb-people-panel.c:689
 msgid "Search"
 msgstr "Szukaj"
 
-#: ../src/mnb-people-panel.c:730
-#: ../src/mnb-people-panel.c:1106
+#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
 msgid "You are chatting with:"
 msgstr "Rozmawiasz z:"
 
-#: ../src/mnb-people-panel.c:936
+#: ../src/mnb-people-panel.c:947
 msgid "Me and my people"
 msgstr "Ja i moi znajomi"
 
-#: ../src/mnb-people-panel.c:974
+#: ../src/mnb-people-panel.c:985
 msgid "Me"
 msgstr "Ja"
 
 #. Side table
-#: ../src/mnb-people-panel.c:1063
+#: ../src/mnb-people-panel.c:1086
 msgid "My conversations"
 msgstr "Moje rozmowy"
 
@@ -87,20 +79,30 @@ msgstr "Moje rozmowy"
 msgid "People panel"
 msgstr "Panel Osoby"
 
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
+msgstr "Witaj! To jest panel Osoby. Jeśli masz skonfigurowaną usługę IM (taką jak Messenger), jest to miejsce, w którym możesz rozmawiać z ludźmi."
+
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "osoby - %d osób pisze do ciebie"
+
 #~ msgid "people - Someone is talking to you"
 #~ msgstr "osoby - ktoś pisze do ciebie"
+
 #~ msgid "People talking to you ..."
 #~ msgstr "Osoby piszące do ciebie..."
+
 #~ msgid "Send an email"
 #~ msgstr "Wyślij e-mail"
+
 #~ msgid "Edit details"
 #~ msgstr "Ustaw dane"
+
 #~ msgid "Send a message"
 #~ msgstr "Wyślij wiadomość"
+
 #~ msgid "Selection"
 #~ msgstr "Zaznaczenie"
+
 #~ msgid "Nobody selected"
 #~ msgstr "Nie wybrano adresatów"
-
