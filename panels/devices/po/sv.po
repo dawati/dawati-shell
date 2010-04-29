@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 10:40+0000\n"
+"POT-Creation-Date: 2010-04-28 09:43+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
+"Last-Translator: Anna-Lena Schon <anna-lenax.schon@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,39 +55,39 @@ msgstr "Systemljud"
 msgid "Moblin Power Icon"
 msgstr "Moblin-strömikon"
 
-#: ../power-icon/src/mpd-power-icon.c:71
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
 msgstr "Batteriet börjar ta slut"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "Vi har märkt att ditt batteri börjar ta slut. Om du kan vore det en bra idé att ladda det snart."
 
-#: ../power-icon/src/mpd-power-icon.c:75
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
 msgstr "Nu är det nästan slut"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "Nu är ditt batteri nästan helt slut. Det vore en god idé att spara allt ditt arbete och ansluta så snart du kan"
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:85
 msgid "Danger!"
 msgstr "Fara!"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Batteriet i datorn är nästan slut. Vi måste stänga av datorn nu. Spara ditt arbete, hoppas vi ses igen snart."
 
-#: ../power-icon/src/mpd-power-icon.c:312
+#: ../power-icon/src/mpd-power-icon.c:342
 msgid "Would you like to turn off now?"
 msgstr "Vill du stänga av nu?"
 
-#: ../power-icon/src/mpd-power-icon.c:313
+#: ../power-icon/src/mpd-power-icon.c:343
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Om du inte bestämmer dig snart stänger jag av datorn om 30 sekunder."
 
-#: ../power-icon/src/mpd-power-icon.c:378
+#: ../power-icon/src/mpd-power-icon.c:447
 msgid "battery"
 msgstr "batteri"
 
@@ -130,7 +130,7 @@ msgid "Sorry, it looks like your battery is broken."
 msgstr "Det verkar som om ditt batteri gått sönder."
 
 #. First row.
-#: ../src/mpd-brightness-tile.c:143
+#: ../src/mpd-brightness-tile.c:141
 msgid "Netbook brightness"
 msgstr "Netbook-ljusstyrka"
 
@@ -176,47 +176,40 @@ msgstr "Stopp"
 msgid "Devices"
 msgstr "Enheter"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:161
 #, c-format
 msgid "Could not run %s"
 msgstr "Kunde inte köra %s"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:163
 msgid "Import error"
 msgstr "Importfel"
 
-#: ../src/mpd-storage-device-tile.c:256
-#, c-format
-msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-msgstr "%s har kopplats in. Du kan använda enhetspanelen för samverkan"
-
-#: ../src/mpd-storage-device-tile.c:259
-msgid "USB plugged in"
-msgstr "USB inkopplad"
-
-#: ../src/mpd-storage-device-tile.c:260
-msgid "Show"
-msgstr "Visa"
-
+#. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:514
+#: ../src/mpd-storage-device-tile.c:498
 msgid "Import data"
 msgstr "Importera data"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:525
+#: ../src/mpd-storage-device-tile.c:509
 msgid "Eject"
 msgstr "Mata ut"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:536
+#: ../src/mpd-storage-device-tile.c:520
 msgid "Open"
 msgstr "Öppna"
 
-#: ../src/mpd-storage-device-tile.c:725
+#: ../src/mpd-storage-device-tile.c:710
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> använder <span color='%s'>%d%% av %s</span>"
+
+#: ../src/mpd-storage-device-tile.c:718
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
 
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
@@ -262,773 +255,533 @@ msgstr "Netbook-volym"
 msgid "Mute"
 msgstr "Ljud avstängt"
 
+#~ msgid ""
+#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr "%s har kopplats in. Du kan använda enhetspanelen för samverkan"
+#~ msgid "USB plugged in"
+#~ msgstr "USB inkopplad"
+#~ msgid "Show"
+#~ msgstr "Visa"
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
-
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
-
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
-
 #~ msgid "SecureDigital"
 #~ msgstr "SecureDigital"
-
 #~ msgid "SD High Capacity"
 #~ msgstr "SD High Capacity"
-
 #~ msgid "Floppy"
 #~ msgstr "Diskett"
-
 #~ msgid "Zip"
 #~ msgstr "Zip"
-
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-
 #~ msgid "CD"
 #~ msgstr "Cd"
-
 #~ msgid "DVD"
 #~ msgstr "Dvd"
-
 #~ msgid "Blu-Ray"
 #~ msgstr "Blu-Ray"
-
 #~ msgid "HDDVD"
 #~ msgstr "HD DVD"
-
 #~ msgid "%s Drive"
 #~ msgstr "%s-enhet"
-
 #~ msgid "%s %s Drive"
 #~ msgstr "%s %s-enhet"
-
 #~ msgid "%s Hard Disk"
 #~ msgstr "%s-hårddisk"
-
 #~ msgid "Hard Disk"
 #~ msgstr "Hårddisk"
-
 #~ msgid "%s Solid-State Disk"
 #~ msgstr "%s SSD (Solid-State Disk)"
-
 #~ msgid "Solid-State Disk"
 #~ msgstr "SSD (Solid-State Disk)"
-
 #~ msgid "%s Media"
 #~ msgstr "%s-media"
-
 #~ msgid "No Media Detected"
 #~ msgstr "Upptäckte inga medier"
-
 #~ msgid "MBR Partition Table"
 #~ msgstr "MBR-partitionstabell"
-
 #~ msgid "GUID Partition Table"
 #~ msgstr "GUID-partitionstabell"
-
 #~ msgid "Apple Partition Table"
 #~ msgstr "Apple-partitionstabell"
-
 #~ msgid "Partitioned"
 #~ msgstr "Partitionerad"
-
 #~ msgid "Not Partitioned"
 #~ msgstr "Inte partitionerad"
-
 #~ msgid "SAS Expander"
 #~ msgstr "SAS-expanderare"
-
 #~ msgid "PATA Host Adapter"
 #~ msgstr "PATA-värdadapter"
-
 #~ msgid "SATA Host Adapter"
 #~ msgstr "SATA-värdadapter"
-
 #~ msgid "ATA Host Adapter"
 #~ msgstr "ATA-värdadapter"
-
 #~ msgid "SAS Host Adapter"
 #~ msgstr "SAS-värdadapter"
-
 #~ msgid "SCSI Host Adapter"
 #~ msgstr "SCSI-värdadapter"
-
 #~ msgid "Host Adapter"
 #~ msgstr "Värdadapter"
-
 #~ msgid "Volume Group"
 #~ msgstr "Volymgrupp"
-
 #~ msgid "%s LVM2 Volume Group"
 #~ msgstr "%s LVM2-volymgrupp"
-
 #~ msgid "LVM2 Volume Group"
 #~ msgstr "LVM2-volymgrupp"
-
 #~ msgid "%s Free"
 #~ msgstr "%s ledigt"
-
 #~ msgid "Unallocated Space"
 #~ msgstr "Ej allokerat utrymme"
-
 #~ msgid "LVM2 VG Unallocated Space"
 #~ msgstr "LVM2 VG ej allokerat utrymme"
-
 #~ msgid "Logical Volume"
 #~ msgstr "Logisk volym"
-
 #~ msgid "LVM2 Logical Volume"
 #~ msgstr "LVM2 Logisk volym"
-
 #~ msgid "%s %s Array"
 #~ msgstr "%s %s-kedja"
-
 #~ msgid "%s Array"
 #~ msgstr "%s-kedja"
-
 #~ msgid "RAID Array %s (%s)"
 #~ msgstr "RAID-kedja %s (%s)"
-
 #~ msgid "RAID device %s"
 #~ msgstr "RAID-enhet %s"
 #~ msgctxt "RAID Level fallback"
-
 #~ msgid "RAID"
 #~ msgstr "RAID"
-
 #~ msgid "RAID Array"
 #~ msgstr "RAID-kedja"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Not Attached"
 #~ msgstr "Inte ansluten"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Faulty"
 #~ msgstr "Fel"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Fully Synchronized"
 #~ msgstr "Helt synkroniserad"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Writemostly"
 #~ msgstr "Writemostly"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Blocked"
 #~ msgstr "Blockerad"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Spare"
 #~ msgstr "Reserv"
-
 #~ msgid "Local Storage"
 #~ msgstr "Lokalt lager"
-
 #~ msgid "Storage on %s"
 #~ msgstr "Lager på %s"
-
 #~ msgid "Multipath Devices"
 #~ msgstr "Enheter med flera sökvägar"
-
 #~ msgid "Drives with multiple I/O paths"
 #~ msgstr "Enheter med flera I/O-sökvägar"
-
 #~ msgid "Multi-disk Devices"
 #~ msgstr "Multidiskenheter"
-
 #~ msgid "RAID, LVM and other logical drives"
 #~ msgstr "RAID, LVM och andra logiska enheter"
-
 #~ msgid "Peripheral Devices"
 #~ msgstr "Kringutrustningsenheter"
-
 #~ msgid "USB, Firewire and other peripherals"
 #~ msgstr "USB, Firewire och annan kringutrustning"
-
 #~ msgid "Error enumerating devices: %s"
 #~ msgstr "Fel vid uppräkning av enheter: %s"
-
 #~ msgid "Error enumerating adapters: %s"
 #~ msgstr "Fel vid uppräkning av adaptrar: %s"
-
 #~ msgid "Error enumerating expanders: %s"
 #~ msgstr "Fel vid uppräkning av expanderare: %s"
-
 #~ msgid "Error enumerating ports: %s"
 #~ msgstr "Fel vid uppräkning av portar: %s"
-
 #~ msgid "Error listening to address `localhost:%d': %s: %s\n"
 #~ msgstr "Fel vid lyssning till adress 'lokalvärd:%d': %s: %s\n"
-
 #~ msgid ""
 #~ "Error creating a local TCP server, tried binding to ports 9000-10000 on "
 #~ "localhost"
 #~ msgstr ""
 #~ "Fel vid skapande av lokal TCP-server, provade bindning till portar 9000-"
 #~ "10000 på lokalvärd"
-
 #~ msgid "Error setting auth mechanisms on local DBusServer\n"
 #~ msgstr "Fel vid inställning av aukt-mekanismer på lokal DBusServer\n"
-
 #~ msgid "Unable to parse command-line `%s' (Malformed address?): %s"
 #~ msgstr "Kan inte tolka kommandorad %s (fel adressformat?): %s"
-
 #~ msgid "Unable to spawn ssh program: %s"
 #~ msgstr "Kan inte skapa ssh-program: %s"
-
 #~ msgid "Error reading stderr output: %s"
 #~ msgstr "Fel vid läsning av stderr-utmatning: %s"
-
 #~ msgid "Error reading stderr output: No content"
 #~ msgstr "Fel vid läsning av stderr-utmatning: inget innehåll"
-
 #~ msgid "Error logging in"
 #~ msgstr "Fel vid inloggning"
-
 #~ msgid "Error sending `%s': %s"
 #~ msgstr "Fel vid sändning av %s: %s"
-
 #~ msgid ""
 #~ "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for "
 #~ "secret' but got `%s'"
 #~ msgstr ""
 #~ "Oväntad stderr-utmatning - förväntade 'udisks-tcp-bridge: Väntar på "
 #~ "hemlighet', men fick %s"
-
 #~ msgid "Error passing authorization secret: %s"
 #~ msgstr "Fel vid sändning av auktoriseringshemlighet: %s"
-
 #~ msgid "Error reading stderr from: %s"
 #~ msgstr "Fel vid läsning av stderr från: %s"
-
 #~ msgid ""
 #~ "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to "
 #~ "connect to port %d' but got `%s'"
 #~ msgstr ""
 #~ "Oväntad stderr-utmatning - förväntade 'udisks-tcp-bridge': Försöker "
 #~ "ansluta till port %d' men fick %s"
-
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
 #~ msgstr ""
 #~ "Programmet udisks-tcp-bridge kunde inte bevisa att det var auktoriserat: %"
 #~ "s"
-
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized"
 #~ msgstr ""
 #~ "Programmet udisks-tcp-bridge kunde inte bevisa att det var auktoriserat"
-
 #~ msgid "%s (%s bytes)"
 #~ msgstr "%s (%s byte)"
-
 #~ msgid "FAT (12-bit version)"
 #~ msgstr "FAT (12-bitarsversion)"
-
 #~ msgid "FAT"
 #~ msgstr "FAT"
-
 #~ msgid "FAT (16-bit version)"
 #~ msgstr "FAT (16-bitarsversion)"
-
 #~ msgid "FAT (32-bit version)"
 #~ msgstr "FAT (32-bitarsversion)"
-
 #~ msgid "NTFS (version %s)"
 #~ msgstr "NTFS (version %s)"
-
 #~ msgid "NTFS"
 #~ msgstr "NTFS"
-
 #~ msgid "HFS"
 #~ msgstr "HFS"
-
 #~ msgid "HFS+"
 #~ msgstr "HFS+"
-
 #~ msgid "Linux Unified Key Setup"
 #~ msgstr "Linux Unified Key Setup"
-
 #~ msgid "LUKS"
 #~ msgstr "LUKS"
-
 #~ msgid "Ext2 (version %s)"
 #~ msgstr "Ext2 (version %s)"
-
 #~ msgid "Ext2"
 #~ msgstr "Ext2"
-
 #~ msgid "ext2"
 #~ msgstr "ext2"
-
 #~ msgid "Ext3 (version %s)"
 #~ msgstr "Ext3 (version %s)"
-
 #~ msgid "Ext3"
 #~ msgstr "Ext3"
-
 #~ msgid "ext3"
 #~ msgstr "ext3"
-
 #~ msgid "Journal for Ext3 (version %s)"
 #~ msgstr "Journal för Ext3 (version %s)"
-
 #~ msgid "Journal for Ext3"
 #~ msgstr "Journal för Ext3"
-
 #~ msgid "jbd"
 #~ msgstr "jbd"
-
 #~ msgid "Ext4 (version %s)"
 #~ msgstr "Ext4 (version %s)"
-
 #~ msgid "Ext4"
 #~ msgstr "Ext4"
-
 #~ msgid "ext4"
 #~ msgstr "ext4"
-
 #~ msgid "XFS (version %s)"
 #~ msgstr "XFS (version %s)"
-
 #~ msgid "XFS"
 #~ msgstr "XFS"
-
 #~ msgid "xfs"
 #~ msgstr "xfs"
-
 #~ msgid "ReiserFS (version %s)"
 #~ msgstr "ReiserFS (version %s)"
-
 #~ msgid "ReiserFS"
 #~ msgstr "ReiserFS"
-
 #~ msgid "reiserfs"
 #~ msgstr "reiserfs"
-
 #~ msgid "ISO 9660"
 #~ msgstr "ISO 9660"
-
 #~ msgid "iso9660"
 #~ msgstr "iso9660"
-
 #~ msgid "Universal Disk Format"
 #~ msgstr "Universal Disk Format"
-
 #~ msgid "udf"
 #~ msgstr "udf"
-
 #~ msgid "Swap Space"
 #~ msgstr "Växlingsutrymme"
-
 #~ msgid "swap"
 #~ msgstr "swap"
-
 #~ msgid "LVM2 Physical Volume (version %s)"
 #~ msgstr "LVM2 fysisk volym (version %s)"
-
 #~ msgid "LVM2 Physical Volume"
 #~ msgstr "LVM2 fysisk volym"
-
 #~ msgid "lvm2_pv"
 #~ msgstr "lvm2_pv"
-
 #~ msgid "RAID Component (version %s)"
 #~ msgstr "RAID-komponent (version %s)"
-
 #~ msgid "RAID Component"
 #~ msgstr "RAID-komponent"
-
 #~ msgid "raid"
 #~ msgstr "raid"
-
 #~ msgid "Minix"
 #~ msgstr "Minix"
-
 #~ msgid "minix"
 #~ msgstr "minix"
-
 #~ msgid "Creating File System"
 #~ msgstr "Skapar filsystem"
-
 #~ msgid "Mounting File System"
 #~ msgstr "Monterar filsystem"
-
 #~ msgid "Unmounting File System"
 #~ msgstr "Demonterar filsystem"
-
 #~ msgid "Checking File System"
 #~ msgstr "Kontrollerar filsystem"
-
 #~ msgid "Creating LUKS Device"
 #~ msgstr "Skapar LUKS-enhet"
-
 #~ msgid "Unlocking LUKS Device"
 #~ msgstr "Låser upp LUKS-enhet"
-
 #~ msgid "Locking LUKS Device"
 #~ msgstr "Låser LUKS-enhet"
-
 #~ msgid "Creating Partition Table"
 #~ msgstr "Skapar partitionstabell"
-
 #~ msgid "Deleting Partition"
 #~ msgstr "Tar bort partition"
-
 #~ msgid "Creating Partition"
 #~ msgstr "Skapar partition"
-
 #~ msgid "Modifying Partition"
 #~ msgstr "Modifierar partition"
-
 #~ msgid "Setting Label for Device"
 #~ msgstr "Anger etikett för enhet"
-
 #~ msgid "Changing Passphrase for Encrypted LUKS Device"
 #~ msgstr "Ändrar lösenordsfras för krypterad LUKS-enhet"
-
 #~ msgid "Adding Component to RAID Array"
 #~ msgstr "Lägger till komponent i RAID-kedja"
-
 #~ msgid "Removing Component from RAID Array"
 #~ msgstr "Tar bort komponent från RAID-kedja"
-
 #~ msgid "Stopping RAID Array"
 #~ msgstr "Stoppar RAID-kedja"
-
 #~ msgid "Starting RAID Array"
 #~ msgstr "Startar RAID-kedja"
-
 #~ msgid "Checking RAID Array"
 #~ msgstr "Kontrollerar RAID-kedja"
-
 #~ msgid "Repairing RAID Array"
 #~ msgstr "Reparerar RAID-kedja"
-
 #~ msgid "Running Short SMART Self-Test"
 #~ msgstr "Kör kort SMART-självtest"
-
 #~ msgid "Running Extended SMART Self-Test"
 #~ msgstr "Kör utökad SMART-självtest"
-
 #~ msgid "Running Conveyance SMART Self-Test"
 #~ msgstr "Kör conveyance-SMART-självtest"
-
 #~ msgid "Ejecting Media"
 #~ msgstr "Matar ut medier"
-
 #~ msgid "Detaching Device"
 #~ msgstr "Kopplar bort enhet"
-
 #~ msgid "Forcibly Unmounting Filesystem"
 #~ msgstr "Framtvingar demontering av filsystem"
-
 #~ msgid "Forcibly Locking LUKS device"
 #~ msgstr "Framtvingar låsning av LUKS-enhet"
-
 #~ msgid "Linux Basic Data Partition"
 #~ msgstr "Linux-partition med grunddata"
-
 #~ msgid "Linux RAID Partition"
 #~ msgstr "Linux RAID-partition"
-
 #~ msgid "Linux Swap Partition"
 #~ msgstr "Linux växlingspartition"
-
 #~ msgid "Linux LVM Partition"
 #~ msgstr "Linux LVM-partition"
-
 #~ msgid "Linux Reserved Partition"
 #~ msgstr "Linux reserverad partition"
-
 #~ msgid "MBR Partition Scheme"
 #~ msgstr "MBR-partitionsschema"
-
 #~ msgid "EFI System Partition"
 #~ msgstr "EFI-systempartition"
-
 #~ msgid "BIOS Boot Partition"
 #~ msgstr "BIOS-startpartition"
-
 #~ msgid "Microsoft Reserved Partition"
 #~ msgstr "Microsoft-reserverad partition"
-
 #~ msgid "Microsoft Basic Data Partition"
 #~ msgstr "Microsoft-partition med grunddata"
-
 #~ msgid "Microsoft LDM Metadata Partition"
 #~ msgstr "Microsoft LDM-metadatapartition"
-
 #~ msgid "Microsoft LDM Data Partition"
 #~ msgstr "Microsoft LDM-datapartition"
-
 #~ msgid "Microsoft Windows Recovery Environment"
 #~ msgstr "Microsoft Windows Återställningsmiljö"
-
 #~ msgid "HP-UX Data Partition"
 #~ msgstr "HP-UX-datapartition"
-
 #~ msgid "HP-UX Service Partition"
 #~ msgstr "HP-UX-servicepartition"
-
 #~ msgid "FreeBSD Boot Partition"
 #~ msgstr "FreeBSD-startpartition"
-
 #~ msgid "FreeBSD Data Partition"
 #~ msgstr "FreeBSD-datapartition"
-
 #~ msgid "FreeBSD Swap Partition"
 #~ msgstr "FreeBSD-växlingspartition"
-
 #~ msgid "FreeBSD UFS Partition"
 #~ msgstr "FreeBSD UFS-partition"
-
 #~ msgid "FreeBSD Vinum Partition"
 #~ msgstr "FreeBSD Vinum-partition"
-
 #~ msgid "FreeBSD ZFS Partition"
 #~ msgstr "FreeBSD ZFS-partition"
-
 #~ msgid "Solaris Boot Partition"
 #~ msgstr "Solaris-startpartition"
-
 #~ msgid "Solaris Root Partition"
 #~ msgstr "Solaris-rotpartition"
-
 #~ msgid "Solaris Swap Partition"
 #~ msgstr "Solaris-växlingspartition"
-
 #~ msgid "Solaris Backup Partition"
 #~ msgstr "Solaris-säkerhetskopieringspartition"
-
 #~ msgid "Solaris /usr Partition"
 #~ msgstr "Solaris /usr-partition"
-
 #~ msgid "Solaris /var Partition"
 #~ msgstr "Solaris /var-partition"
-
 #~ msgid "Solaris /home Partition"
 #~ msgstr "Solaris /home-partition"
-
 #~ msgid "Solaris Alternate Sector Partition"
 #~ msgstr "Solaris alternativ sektorpartition"
-
 #~ msgid "Solaris Reserved Partition"
 #~ msgstr "Solaris-reserverad partition"
-
 #~ msgid "Solaris Reserved Partition (2)"
 #~ msgstr "Solaris-reserverad partition (2)"
-
 #~ msgid "Solaris Reserved Partition (3)"
 #~ msgstr "Solaris-reserverad partition (3)"
-
 #~ msgid "Solaris Reserved Partition (4)"
 #~ msgstr "Solaris-reserverad partition (4)"
-
 #~ msgid "Solaris Reserved Partition (5)"
 #~ msgstr "Solaris-reserverad partition (5)"
-
 #~ msgid "Apple HFS/HFS+ Partition"
 #~ msgstr "Apple HFS/HFS+-partition"
-
 #~ msgid "Apple UFS Partition"
 #~ msgstr "Apple UFS-partition"
-
 #~ msgid "Apple ZFS Partition"
 #~ msgstr "Apple ZFS-partition"
-
 #~ msgid "Apple RAID Partition"
 #~ msgstr "Apple RAID-partition"
-
 #~ msgid "Apple RAID Partition (Offline)"
 #~ msgstr "Apple RAID-partition (offline)"
-
 #~ msgid "Apple Boot Partition"
 #~ msgstr "Apple-startpartition"
-
 #~ msgid "Apple Label Partition"
 #~ msgstr "Apple-etikettpartition"
-
 #~ msgid "Apple TV Recovery Partition"
 #~ msgstr "Apple TV-återställningspartition"
-
 #~ msgid "NetBSD Swap Partition"
 #~ msgstr "NetBSD-växlingspartition"
-
 #~ msgid "NetBSD FFS Partition"
 #~ msgstr "NetBSD FFS-partition"
-
 #~ msgid "NetBSD LFS Partition"
 #~ msgstr "NetBSD LFS-partition"
-
 #~ msgid "NetBSD RAID Partition"
 #~ msgstr "NetBSD RAID-partition"
-
 #~ msgid "NetBSD Concatenated  Partition"
 #~ msgstr "NetBSD-sammanlänkad partition"
-
 #~ msgid "NetBSD Encrypted Partition"
 #~ msgstr "NetBSD-krypterad partition"
-
 #~ msgid "Apple Partition Map"
 #~ msgstr "Apple-partitionskarta"
-
 #~ msgid "Unused Partition"
 #~ msgstr "Oanvänd partition"
-
 #~ msgid "Empty Partition"
 #~ msgstr "Tom partition"
-
 #~ msgid "Driver Partition"
 #~ msgstr "Drivrutinspartition"
-
 #~ msgid "Driver 4.3 Partition"
 #~ msgstr "Drivrutin 4.3-partition"
-
 #~ msgid "ProDOS file system"
 #~ msgstr "ProDOS-filsystem"
-
 #~ msgid "FAT 12"
 #~ msgstr "FAT 12"
-
 #~ msgid "FAT 16"
 #~ msgstr "FAT 16"
-
 #~ msgid "FAT 32"
 #~ msgstr "FAT 32"
-
 #~ msgid "FAT 16 (Windows)"
 #~ msgstr "FAT 16 (Windows)"
-
 #~ msgid "FAT 32 (Windows)"
 #~ msgstr "FAT 32 (Windows)"
-
 #~ msgid "Empty (0x00)"
 #~ msgstr "Tom (0x00)"
-
 #~ msgid "FAT12 (0x01)"
 #~ msgstr "FAT12 (0x01)"
-
 #~ msgid "FAT16 <32M (0x04)"
 #~ msgstr "FAT16 <32M (0x04)"
-
 #~ msgid "Extended (0x05)"
 #~ msgstr "Utökad (0x05)"
-
 #~ msgid "FAT16 (0x06)"
 #~ msgstr "FAT16 (0x06)"
-
 #~ msgid "HPFS/NTFS (0x07)"
 #~ msgstr "HPFS/NTFS (0x07)"
-
 #~ msgid "W95 FAT32 (0x0b)"
 #~ msgstr "W95 FAT32 (0x0b)"
-
 #~ msgid "W95 FAT32 (LBA) (0x0c)"
 #~ msgstr "W95 FAT32 (LBA) (0x0c)"
-
 #~ msgid "W95 FAT16 (LBA) (0x0e)"
 #~ msgstr "W95 FAT16 (LBA) (0x0e)"
-
 #~ msgid "W95 Ext d (LBA) (0x0f)"
 #~ msgstr "W95 Ext d (LBA) (0x0f)"
-
 #~ msgid "OPUS (0x10)"
 #~ msgstr "OPUS (0x10)"
-
 #~ msgid "Hidden FAT12 (0x11)"
 #~ msgstr "Dold FAT12 (0x11)"
-
 #~ msgid "Compaq diagnostics (0x12)"
 #~ msgstr "Compaq-diagnostik (0x12)"
-
 #~ msgid "Hidden FAT16 <32M (0x14)"
 #~ msgstr "Dold FAT16 <32M (0x14)"
-
 #~ msgid "Hidden FAT16 (0x16)"
 #~ msgstr "Dold FAT16 (0x16)"
-
 #~ msgid "Hidden HPFS/NTFS (0x17)"
 #~ msgstr "Dold HPFS/NTFS (0x17)"
-
 #~ msgid "Hidden W95 FAT32 (0x1b)"
 #~ msgstr "Dold W95 FAT32 (0x1b)"
-
 #~ msgid "Hidden W95 FAT32 (LBA) (0x1c)"
 #~ msgstr "Dold W95 FAT32 (LBA) (0x1c)"
-
 #~ msgid "Hidden W95 FAT16 (LBA) (0x1e)"
 #~ msgstr "Dold W95 FAT16 (LBA) (0x1e)"
-
 #~ msgid "PartitionMagic (0x3c)"
 #~ msgstr "PartitionMagic (0x3c)"
-
 #~ msgid "Minix (0x81)"
 #~ msgstr "Minix (0x81)"
-
 #~ msgid "Linux swap (0x82)"
 #~ msgstr "Linux-växling (0x82)"
-
 #~ msgid "Linux (0x83)"
 #~ msgstr "Linux (0x83)"
-
 #~ msgid "Hibernation (0x84)"
 #~ msgstr "Viloläge (0x84)"
-
 #~ msgid "Linux Extended (0x85)"
 #~ msgstr "Linux utökat (0x85)"
-
 #~ msgid "Linux LVM (0x8e)"
 #~ msgstr "Linux LVM (0x8e)"
-
 #~ msgid "Hibernation (0xa0)"
 #~ msgstr "Viloläge (0xa0)"
-
 #~ msgid "FreeBSD (0xa5)"
 #~ msgstr "FreeBSD (0xa5)"
-
 #~ msgid "OpenBSD (0xa6)"
 #~ msgstr "OpenBSD (0xa6)"
-
 #~ msgid "Mac OS X (0xa8)"
 #~ msgstr "Mac OS X (0xa8)"
-
 #~ msgid "Mac OS X (0xaf)"
 #~ msgstr "Mac OS X (0xaf)"
-
 #~ msgid "Solaris boot (0xbe)"
 #~ msgstr "Solaris-start (0xbe)"
-
 #~ msgid "Solaris (0xbf)"
 #~ msgstr "Solaris (0xbf)"
-
 #~ msgid "BeOS BFS (0xeb)"
 #~ msgstr "BeOS BFS (0xeb)"
-
 #~ msgid "SkyOS SkyFS (0xec)"
 #~ msgstr "SkyOS SkyFS (0xec)"
-
 #~ msgid "EFI GPT (0xee)"
 #~ msgstr "EFI GPT (0xee)"
-
 #~ msgid "EFI (FAT-12/16/32 (0xef)"
 #~ msgstr "EFI (FAT-12/16/32 (0xef)"
-
 #~ msgid "Linux RAID autodetect (0xfd)"
 #~ msgstr "Linux RAID-autoidentifiering (0xfd)"
-
 #~ msgid "Unknown (%s)"
 #~ msgstr "Okänt (%s)"
-
 #~ msgid ""
 #~ "A popular format compatible with almost any device or system, typically "
 #~ "used for file exchange."
 #~ msgstr ""
 #~ "Ett populärt format som är kompatibelt med nästan valfri enhet och "
 #~ "valfritt system, används vanligtvis för filutbyte."
-
 #~ msgid ""
 #~ "This file system is compatible with Linux systems only and provides "
 #~ "classic UNIX file permissions support. This file system does not use a "
@@ -1037,37 +790,30 @@ msgstr "Ljud avstängt"
 #~ "Detta filsystem är endast kompatibelt med Linux-system och "
 #~ "tillhandahåller klassiskt stöd för UNIX-filbehörigheter. Detta filsystem "
 #~ "använder ingen journal."
-
 #~ msgid ""
 #~ "This file system is compatible with Linux systems only and provides "
 #~ "classic UNIX file permissions support."
 #~ msgstr ""
 #~ "Detta filsystem är endast kompatibelt med Linux-system och "
 #~ "tillhandahåller klassiskt stöd för UNIX-filbehörigheter."
-
 #~ msgid "Swap area used by the operating system for virtual memory."
 #~ msgstr "Växlingsområdet används av operativsystemet för virtuellt minne."
-
 #~ msgid ""
 #~ "The native Windows file system. Not widely compatible with other "
 #~ "operating systems than Windows."
 #~ msgstr ""
 #~ "Ursprungligt Windows-filsystem. Inte allmänt kompatibelt med andra "
 #~ "operativsystem än Windows."
-
 #~ msgid ""
 #~ "Simple filesystem with low overhead and UNIX permissions support. Not "
 #~ "widely compatible with other operating systems than Linux and Minix."
 #~ msgstr ""
 #~ "Enkelt filsystem som upptar lite utrymme och stöd för UNIX-behörigheter. "
 #~ "Inte allmänt kompatibelt med andra operativsystem än Linux och Minix."
-
 #~ msgid "No file system will be created."
 #~ msgstr "Det skapas inget filsystem."
-
 #~ msgid "Create an Extended Partition for logical partitions."
 #~ msgstr "Skapa en utökad partition för logiska partitioner."
-
 #~ msgid ""
 #~ "The Master Boot Record scheme is compatible with almost any device or "
 #~ "system but has a number of limitations with respect to disk size and "
@@ -1076,7 +822,6 @@ msgstr "Ljud avstängt"
 #~ "MBR-schemat (Master Boot Record) är kompatibelt med nästan valfri enhet "
 #~ "eller valfritt system men har ett antal begränsningar vad gäller "
 #~ "diskstorlek och antal partitioner."
-
 #~ msgid ""
 #~ "A legacy scheme that is incompatible with most systems except Apple "
 #~ "systems and most Linux systems. Not recommended for removable media."
@@ -1084,14 +829,12 @@ msgstr "Ljud avstängt"
 #~ "Ett äldre schema som är inkompatibelt med flertalet system förutom Apple-"
 #~ "system och flertalet Linux-system. Rekommenderas inte för flyttbara "
 #~ "medier."
-
 #~ msgid ""
 #~ "The GUID scheme is compatible with most modern systems but may be "
 #~ "incompatible with some devices and legacy systems."
 #~ msgstr ""
 #~ "GUID-schemat är kompatibelt med flertalet moderna system men kan vara "
 #~ "inkompatibelt med vissa enheter och äldre system."
-
 #~ msgid ""
 #~ "Marks the entire disk as unused. Use this option only if you want to "
 #~ "avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
@@ -1099,109 +842,79 @@ msgstr "Ljud avstängt"
 #~ "Markerar hela disken som oanvänd. Använd endast detta alternativ om du "
 #~ "vill undvika partitionering av disken exempelvis för att använda hela "
 #~ "disken eller disketter/Zip-diskar."
-
 #~ msgid "LUKS Passphrase for UUID %s"
 #~ msgstr "LUKS-lösenordsfras för UUID %s"
-
 #~ msgid "%.1f KB/s"
 #~ msgstr "%.1f KB/s"
-
 #~ msgid "%.1f MB/s"
 #~ msgstr "%.1f MB/s"
-
 #~ msgid "%.1f GB/s"
 #~ msgstr "%.1f GB/s"
-
 #~ msgid "SATA"
 #~ msgstr "SATA"
-
 #~ msgid "eSATA"
 #~ msgstr "eSATA"
-
 #~ msgid "PATA"
 #~ msgstr "PATA"
-
 #~ msgid "ATA"
 #~ msgstr "ATA"
-
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
-
 #~ msgid "USB"
 #~ msgstr "USB"
-
 #~ msgid "Firewire"
 #~ msgstr "Firewire"
-
 #~ msgid "SDIO"
 #~ msgstr "SDIO"
-
 #~ msgid "Virtual"
 #~ msgstr "Virtuellt"
 #~ msgctxt "connection name"
-
 #~ msgid "Unknown"
 #~ msgstr "Okänt"
-
 #~ msgid "%s at %s"
 #~ msgstr "%s på %s"
 #~ msgctxt "RAID level"
-
 #~ msgid "Stripe (RAID-0)"
 #~ msgstr "Stripe (RAID-0)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-0"
 #~ msgstr "RAID-0"
 #~ msgctxt "RAID level"
-
 #~ msgid "Mirror (RAID-1)"
 #~ msgstr "Spegel (RAID-1)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-1"
 #~ msgstr "RAID-1"
 #~ msgctxt "RAID level"
-
 #~ msgid "Parity Disk (RAID-4)"
 #~ msgstr "Paritetsdisk (RAID-4)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-4"
 #~ msgstr "RAID-4"
 #~ msgctxt "RAID level"
-
 #~ msgid "Distributed Parity (RAID-5)"
 #~ msgstr "Distribuerad paritet (RAID-5)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-5"
 #~ msgstr "RAID-5"
 #~ msgctxt "RAID level"
-
 #~ msgid "Dual Distributed Parity (RAID-6)"
 #~ msgstr "Dubbelt distribuerad paritet (RAID-6)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-6"
 #~ msgstr "RAID-6"
 #~ msgctxt "RAID level"
-
 #~ msgid "Stripe of Mirrors (RAID-10)"
 #~ msgstr "Stripe med speglar (RAID-10)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-10"
 #~ msgstr "RAID-10"
 #~ msgctxt "RAID level"
-
 #~ msgid "Concatenated (Linear)"
 #~ msgstr "Sammanläkad (linjär)"
 #~ msgctxt "RAID level"
-
 #~ msgid "Linear"
 #~ msgstr "Linjär"
-
 #~ msgid ""
 #~ "Striped set without parity. Provides improved performance but no fault "
 #~ "tolerance. If a single disk in the array fails, the entire RAID-0 array "
@@ -1210,7 +923,6 @@ msgstr "Ljud avstängt"
 #~ "Stripe-uppsättning utan paritet. Tillhandahåller förbättrade prestanda "
 #~ "men ingen feltolerans. Om en enda disk i kedjan misslyckas, misslyckas "
 #~ "hela RAID-0-kedjan."
-
 #~ msgid ""
 #~ "Mirrored set without parity. Provides fault tolerance and improved "
 #~ "performance for reading. RAID-1 arrays can sustain all but one disk "
@@ -1219,7 +931,6 @@ msgstr "Ljud avstängt"
 #~ "Speglad uppsättning utan paritet. Tillhandahåller feltolerans och "
 #~ "förbättrade prestanda för läsning. RAID-1-kedjor kan klara av att alla "
 #~ "diskar utom en disk går sönder."
-
 #~ msgid ""
 #~ "Striped set with parity on a single disk. Provides improved performance "
 #~ "and fault tolerance. RAID-4 arrays can sustain a single disk failure."
@@ -1227,7 +938,6 @@ msgstr "Ljud avstängt"
 #~ "Stripe-uppsättning med paritet på en enda disk. Tillhandahåller "
 #~ "förbättrade prestanda och feltolerans. RAID-4-kedjor kan klara av att en "
 #~ "enda disk går sönder."
-
 #~ msgid ""
 #~ "Striped set with distributed parity. Provides improved performance and "
 #~ "fault tolerance. RAID-5 arrays can sustain a single disk failure."
@@ -1235,7 +945,6 @@ msgstr "Ljud avstängt"
 #~ "Stripe-uppsättning med distribuerad paritet. Tillhandahåller förbättrade "
 #~ "prestanda och feltolerans. RAID-5-kedjor kan klara av att en enda disk "
 #~ "går sönder."
-
 #~ msgid ""
 #~ "Striped set with dual distributed parity. Provides improved performance "
 #~ "and fault tolerance. RAID-6 arrays can sustain two disk failures."
@@ -1243,7 +952,6 @@ msgstr "Ljud avstängt"
 #~ "Stripe-uppsättning med dubbel distribuerad paritet. Tillhandahåller "
 #~ "förbättrade prestanda och feltolerans. RAID-6-kedjor kan klara av att två "
 #~ "diskar går sönder."
-
 #~ msgid ""
 #~ "Striped set with distributed parity. Provides improved performance and "
 #~ "fault tolerance. RAID-10 arrays can sustain multiple drive losses so long "
@@ -1252,211 +960,143 @@ msgstr "Ljud avstängt"
 #~ "Stripe-uppsättning med distribuerad paritet. Tillhandahåller förbättrade "
 #~ "prestanda och feltolerans. RAID-10-kedjor kan klara av att förlora flera "
 #~ "diskar under förutsättning att ingen spegel förlorar alla sina enheter."
-
 #~ msgid "Unknown RAID level %s."
 #~ msgstr "Okänd RAID-nivå %s."
-
 #~ msgid "Disk is healthy"
 #~ msgstr "Disken är frisk"
-
 #~ msgid "Disk was used outside of design parameters in the past"
 #~ msgstr "Disk användes utanför designparametrarna tidigare"
-
 #~ msgid "Disk has a few bad sectors"
 #~ msgstr "Disken har ett par ogiltiga sektorer"
-
 #~ msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
 #~ msgstr "DISK ANVÄNDS UTANFÖR DESIGNPARAMETRAR"
-
 #~ msgid "Backup all data and replace the disk"
 #~ msgstr "Säkerhetskopiera alla data och byt ut disken"
-
 #~ msgid "DISK HAS MANY BAD SECTORS"
 #~ msgstr "DISK HAR MÅNGA OGILTIGA SEKTORER"
-
 #~ msgid "DISK FAILURE IS IMMINENT"
 #~ msgstr "ÖVERHÄNGANDE DISKFEL"
-
 #~ msgid "Unknown"
 #~ msgstr "Okänt"
-
 #~ msgid "CD-ROM Disc"
 #~ msgstr "CD-ROM-skiva"
-
 #~ msgid "Blank CD-ROM Disc"
 #~ msgstr "Tom CD-ROM-skiva"
-
 #~ msgid "CD-R Disc"
 #~ msgstr "CD-R-skiva"
-
 #~ msgid "Blank CD-R Disc"
 #~ msgstr "Tom CD-R-skiva"
-
 #~ msgid "CD-RW Disc"
 #~ msgstr "CD-RW-skiva"
-
 #~ msgid "Blank CD-RW Disc"
 #~ msgstr "Tom CD-RW-skiva"
-
 #~ msgid "DVD-ROM Disc"
 #~ msgstr "DVD-ROM-skiva"
-
 #~ msgid "Blank DVD-ROM Disc"
 #~ msgstr "Tom DVD-ROM-skiva"
-
 #~ msgid "DVD-RW Disc"
 #~ msgstr "DVD-RW-skiva"
-
 #~ msgid "Blank DVD-RW Disc"
 #~ msgstr "Tom DVD-RW-skiva"
-
 #~ msgid "DVD-RAM Disc"
 #~ msgstr "DVD-RAM-skiva"
-
 #~ msgid "Blank DVD-RAM Disc"
 #~ msgstr "Tom DVD-RAM-skiva"
-
 #~ msgid "DVD+R Disc"
 #~ msgstr "DVD+R-skiva"
-
 #~ msgid "Blank DVD+R Disc"
 #~ msgstr "Tom DVD+R-skiva"
-
 #~ msgid "DVD+RW Disc"
 #~ msgstr "DVD+RW-skiva"
-
 #~ msgid "Blank DVD+RW Disc"
 #~ msgstr "Tom DVD+RW-skiva"
-
 #~ msgid "DVD+R DL Disc"
 #~ msgstr "DVD+R DL-skiva"
-
 #~ msgid "Blank DVD+R DL Disc"
 #~ msgstr "Tom DVD+R DL-skiva"
-
 #~ msgid "DVD+RW DL Disc"
 #~ msgstr "DVD+RW DL-skiva"
-
 #~ msgid "Blank DVD+RW DL Disc"
 #~ msgstr "Tom DVD+RW DL-skiva"
-
 #~ msgid "Blu-Ray Disc"
 #~ msgstr "Blu-Ray-skiva"
-
 #~ msgid "Blank Blu-Ray Disc"
 #~ msgstr "Tom Blu-Ray-skiva"
-
 #~ msgid "Blu-Ray R Disc"
 #~ msgstr "Blu-Ray R-skiva"
-
 #~ msgid "Blank Blu-Ray R Disc"
 #~ msgstr "Tom Blu-Ray R-skiva"
-
 #~ msgid "Blu-Ray RW Disc"
 #~ msgstr "Blu-Ray RW-skiva"
-
 #~ msgid "Blank Blu-Ray RW Disc"
 #~ msgstr "Tom Blu-Ray RW-skiva"
-
 #~ msgid "HD DVD Disc"
 #~ msgstr "HD DVD-skiva"
-
 #~ msgid "Blank HD DVD Disc"
 #~ msgstr "Tom HD DVD-skiva"
-
 #~ msgid "HD DVD-R Disc"
 #~ msgstr "HD DVD-R-skiva"
-
 #~ msgid "Blank HD DVD-R Disc"
 #~ msgstr "Tom HD DVD-R-skiva"
-
 #~ msgid "HD DVD-RW Disc"
 #~ msgstr "HD DVD-RW-skiva"
-
 #~ msgid "Blank HD DVD-RW Disc"
 #~ msgstr "Tom HD DVD-RW-skiva"
-
 #~ msgid "MO Disc"
 #~ msgstr "MO-skiva"
-
 #~ msgid "Blank MO Disc"
 #~ msgstr "Tom MO-skiva"
-
 #~ msgid "MRW Disc"
 #~ msgstr "MRW-skiva"
-
 #~ msgid "Blank MRW Disc"
 #~ msgstr "Tom MRW-skiva"
-
 #~ msgid "MRW/W Disc"
 #~ msgstr "MRW/W-skiva"
-
 #~ msgid "Blank MRW/W Disc"
 #~ msgstr "Tom MRW/W-skiva"
-
 #~ msgid "Blank Optical Disc"
 #~ msgstr "Tom optisk skiva"
-
 #~ msgid "%s Extended"
 #~ msgstr "%s utökat"
-
 #~ msgid "Contains logical partitions"
 #~ msgstr "Innehåller logiska partitioner"
-
 #~ msgid "%s Encrypted"
 #~ msgstr "%s krypterat"
-
 #~ msgid "Optical Disc"
 #~ msgstr "Optisk skiva"
-
 #~ msgid "%s Filesystem"
 #~ msgstr "%s-filsystem"
-
 #~ msgid "%s Partition Table"
 #~ msgstr "%s-partitionstabell"
-
 #~ msgid "%s LVM2 Physical Volume"
 #~ msgstr "%s LVM2 fysisk volym"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID"
 #~ msgstr "RAID"
-
 #~ msgid "%s %s Component"
 #~ msgstr "%s %s-komponent"
-
 #~ msgid "Part of \"%s\" array"
 #~ msgstr "Del av \"%s\"-kedja"
-
 #~ msgid "%s Swap Space"
 #~ msgstr "%s-växlingsutrymme"
-
 #~ msgid "%s Data"
 #~ msgstr "%s-data"
-
 #~ msgid "%s Unrecognized"
 #~ msgstr "%s ej igenkänt"
-
 #~ msgid "Unknown or Unused"
 #~ msgstr "Okänt eller oanvänt"
-
 #~ msgid "%s Partition"
 #~ msgstr "%s-partition"
-
 #~ msgid "Partition %d of %s"
 #~ msgstr "Partition %d av %s"
-
 #~ msgid "Partition %d"
 #~ msgstr "Partition %d"
-
 #~ msgid "Whole-disk volume on %s"
 #~ msgstr "Heldiskvolym på %s"
-
 #~ msgid "Whole-disk volume"
 #~ msgstr "Heldiskvolym"
-
 #~ msgid "You are using %d%% of %s"
 #~ msgstr "Du använder %d%% av %s"
-
 #~ msgid "Using %d%% of %s"
 #~ msgstr "Använder %d%% av %s"
+
