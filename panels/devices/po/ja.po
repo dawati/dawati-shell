@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 09:58+0000\n"
+"POT-Creation-Date: 2010-04-28 09:43+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
+"Last-Translator: GLSJPN_Etsuko <etsuko.murozono@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,39 +55,39 @@ msgstr "システム効果音"
 msgid "Moblin Power Icon"
 msgstr "Moblin 電源アイコン"
 
-#: ../power-icon/src/mpd-power-icon.c:71
+#: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
 msgstr "バッテリー残量が少なくなっています"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
 msgstr "バッテリー残量が少なくなっています。電源に接続して、バッテリーを充電してください。"
 
-#: ../power-icon/src/mpd-power-icon.c:75
+#: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
 msgstr "残量がほとんどありません"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
 msgstr "バッテリー残量が非常に少なくなっています。全てのファイルを保存し、できるだけ早めに電源に接続してください。"
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:85
 msgid "Danger!"
 msgstr "危険な状態です!"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "バッテリー残量がまもなくゼロになるので、コンピューターがオフになります。すべてのファイルを保存してください。"
 
-#: ../power-icon/src/mpd-power-icon.c:311
+#: ../power-icon/src/mpd-power-icon.c:342
 msgid "Would you like to turn off now?"
 msgstr "今すぐ電源をオフにしますか?"
 
-#: ../power-icon/src/mpd-power-icon.c:312
+#: ../power-icon/src/mpd-power-icon.c:343
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "このままの状態では、 30  秒内に電源がオフになります。"
 
-#: ../power-icon/src/mpd-power-icon.c:377
+#: ../power-icon/src/mpd-power-icon.c:447
 msgid "battery"
 msgstr "バッテリー"
 
@@ -130,7 +130,7 @@ msgid "Sorry, it looks like your battery is broken."
 msgstr "バッテリーが壊れているようです。"
 
 #. First row.
-#: ../src/mpd-brightness-tile.c:143
+#: ../src/mpd-brightness-tile.c:141
 msgid "Netbook brightness"
 msgstr "ネットブックの明るさ"
 
@@ -176,47 +176,40 @@ msgstr "停止"
 msgid "Devices"
 msgstr "デバイス"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:161
 #, c-format
 msgid "Could not run %s"
 msgstr "%s を実行できませんでした"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:163
 msgid "Import error"
 msgstr "インポート・エラー"
 
-#: ../src/mpd-storage-device-tile.c:256
-#, c-format
-msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-msgstr "%s が取り付けられました。デバイス・パネルで操作できます"
-
-#: ../src/mpd-storage-device-tile.c:259
-msgid "USB plugged in"
-msgstr "取り付けられた USB"
-
-#: ../src/mpd-storage-device-tile.c:260
-msgid "Show"
-msgstr "表示"
-
+#. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:514
+#: ../src/mpd-storage-device-tile.c:498
 msgid "Import data"
 msgstr "データをインポート"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:525
+#: ../src/mpd-storage-device-tile.c:509
 msgid "Eject"
 msgstr "取り出し"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:536
+#: ../src/mpd-storage-device-tile.c:520
 msgid "Open"
 msgstr "開く"
 
-#: ../src/mpd-storage-device-tile.c:725
+#: ../src/mpd-storage-device-tile.c:710
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> は <span color='%s'>%d%% / %s</span> を使用中"
+
+#: ../src/mpd-storage-device-tile.c:718
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
 
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
@@ -262,774 +255,534 @@ msgstr "ネットブックの音量"
 msgid "Mute"
 msgstr "ミュート"
 
+#~ msgid ""
+#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr "%s が取り付けられました。デバイス・パネルで操作できます"
+#~ msgid "USB plugged in"
+#~ msgstr "取り付けられた USB"
+#~ msgid "Show"
+#~ msgstr "表示"
 #~ msgid "CompactFlash"
 #~ msgstr "コンパクトフラッシュ"
-
 #~ msgid "MemoryStick"
 #~ msgstr "メモリースティック"
-
 #~ msgid "SmartMedia"
 #~ msgstr "スマートメディア"
-
 #~ msgid "SecureDigital"
 #~ msgstr "SD カード"
-
 #~ msgid "SD High Capacity"
 #~ msgstr "SDHC カード"
-
 #~ msgid "Floppy"
 #~ msgstr "フロッピー"
-
 #~ msgid "Zip"
 #~ msgstr "Zip"
-
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-
 #~ msgid "CD"
 #~ msgstr "CD"
-
 #~ msgid "DVD"
 #~ msgstr "DVD"
-
 #~ msgid "Blu-Ray"
 #~ msgstr "Blu-Ray"
-
 #~ msgid "HDDVD"
 #~ msgstr "HDDVD"
-
 #~ msgid "%s Drive"
 #~ msgstr "%s ドライブ"
-
 #~ msgid "%s %s Drive"
 #~ msgstr "%s %s ドライブ"
-
 #~ msgid "%s Hard Disk"
 #~ msgstr "%s ハードディスク"
-
 #~ msgid "Hard Disk"
 #~ msgstr "ハードディスク"
-
 #~ msgid "%s Solid-State Disk"
 #~ msgstr "%s SSD"
-
 #~ msgid "Solid-State Disk"
 #~ msgstr "SSD"
-
 #~ msgid "%s Media"
 #~ msgstr "%s メディア"
-
 #~ msgid "No Media Detected"
 #~ msgstr "メディアが見つかりません"
-
 #~ msgid "MBR Partition Table"
 #~ msgstr "MBR パーティション・テーブル"
-
 #~ msgid "GUID Partition Table"
 #~ msgstr "GUID パーティション・テーブル"
-
 #~ msgid "Apple Partition Table"
 #~ msgstr "Apple パーティション・テーブル"
-
 #~ msgid "Partitioned"
 #~ msgstr "パーティション設定済み"
-
 #~ msgid "Not Partitioned"
 #~ msgstr "パーティション未設定"
-
 #~ msgid "SAS Expander"
 #~ msgstr "SAS エクスパンダ"
-
 #~ msgid "PATA Host Adapter"
 #~ msgstr "PATA ホスト・アダプタ"
-
 #~ msgid "SATA Host Adapter"
 #~ msgstr "SATA ホスト・アダプタ"
-
 #~ msgid "ATA Host Adapter"
 #~ msgstr "ATA ホスト・アダプタ"
-
 #~ msgid "SAS Host Adapter"
 #~ msgstr "SAS ホスト・アダプタ"
-
 #~ msgid "SCSI Host Adapter"
 #~ msgstr "SCSI ホスト・アダプタ"
-
 #~ msgid "Host Adapter"
 #~ msgstr "ホスト・アダプタ"
-
 #~ msgid "Volume Group"
 #~ msgstr "ボリューム・グループ"
-
 #~ msgid "%s LVM2 Volume Group"
 #~ msgstr "%s LVM2 ボリューム・グループ"
-
 #~ msgid "LVM2 Volume Group"
 #~ msgstr "LVM2 ボリューム・グループ"
-
 #~ msgid "%s Free"
 #~ msgstr "%s 未使用"
-
 #~ msgid "Unallocated Space"
 #~ msgstr "未割り当て領域"
-
 #~ msgid "LVM2 VG Unallocated Space"
 #~ msgstr "LVM2 ボリュームグループ未割り当て領域"
-
 #~ msgid "Logical Volume"
 #~ msgstr "論理ボリューム"
-
 #~ msgid "LVM2 Logical Volume"
 #~ msgstr "LVM2 論理ボリューム"
-
 #~ msgid "%s %s Array"
 #~ msgstr "%s %s アレイ"
-
 #~ msgid "%s Array"
 #~ msgstr "%s アレイ"
-
 #~ msgid "RAID Array %s (%s)"
 #~ msgstr "RAID アレイ %s (%s)"
-
 #~ msgid "RAID device %s"
 #~ msgstr "RAID デバイス %s"
 #~ msgctxt "RAID Level fallback"
-
 #~ msgid "RAID"
 #~ msgstr "RAID"
-
 #~ msgid "RAID Array"
 #~ msgstr "RAID アレイ"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Not Attached"
 #~ msgstr "装着されていません"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Faulty"
 #~ msgstr "不良"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Fully Synchronized"
 #~ msgstr "完全同期済み"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Writemostly"
 #~ msgstr "Write-mostlyモード"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Blocked"
 #~ msgstr "ブロックされています"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Spare"
 #~ msgstr "スペア"
-
 #~ msgid "Local Storage"
 #~ msgstr "ローカル・ストレージ"
-
 #~ msgid "Storage on %s"
 #~ msgstr "%s のストレージ"
-
 #~ msgid "Multipath Devices"
 #~ msgstr "マルチパス・デバイス"
-
 #~ msgid "Drives with multiple I/O paths"
 #~ msgstr "マルチプル I/O パスのドライブ"
-
 #~ msgid "Multi-disk Devices"
 #~ msgstr "マルチディスク・デバイス"
-
 #~ msgid "RAID, LVM and other logical drives"
 #~ msgstr "RAID、LVM、他の論理ドライブ"
-
 #~ msgid "Peripheral Devices"
 #~ msgstr "周辺機器"
-
 #~ msgid "USB, Firewire and other peripherals"
 #~ msgstr "USB、Firewire、他の周辺機器"
-
 #~ msgid "Error enumerating devices: %s"
 #~ msgstr "デバイスの一覧作成中にエラー: %s"
-
 #~ msgid "Error enumerating adapters: %s"
 #~ msgstr "アダプタの一覧作成中にエラー: %s"
-
 #~ msgid "Error enumerating expanders: %s"
 #~ msgstr "エクスパンダの一覧作成中にエラー: %s"
-
 #~ msgid "Error enumerating ports: %s"
 #~ msgstr "ポートの一覧作成中にエラー: %s"
-
 #~ msgid "Error listening to address `localhost:%d': %s: %s\n"
 #~ msgstr ""
 #~ "アドレス「localhost:%d」のリスン時に次のにエラーが発生しました: %s: %s\n"
-
 #~ msgid ""
 #~ "Error creating a local TCP server, tried binding to ports 9000-10000 on "
 #~ "localhost"
 #~ msgstr ""
 #~ "localhost の 9000-10000 番ポートへバインドを試行しましたが、ローカル TCP "
 #~ "サーバーの作成時にエラーが発生しました"
-
 #~ msgid "Error setting auth mechanisms on local DBusServer\n"
 #~ msgstr ""
 #~ "ローカル DBusServer 上で認証メカニズムを設定中にエラーが発生しました\n"
-
 #~ msgid "Unable to parse command-line `%s' (Malformed address?): %s"
 #~ msgstr "コマンドライン「%s」を解析できませんでした (アドレス間違い?): %s"
-
 #~ msgid "Unable to spawn ssh program: %s"
 #~ msgstr "次の ssh プログラムを起動できませんでした: %s"
-
 #~ msgid "Error reading stderr output: %s"
 #~ msgstr "標準エラー出力の読み込み中にエラー: %s"
-
 #~ msgid "Error reading stderr output: No content"
 #~ msgstr "標準エラー出力の読み込み中にエラー: 内容なし"
-
 #~ msgid "Error logging in"
 #~ msgstr "ログイン中にエラーが発生しました"
-
 #~ msgid "Error sending `%s': %s"
 #~ msgstr "「%s」の送信中にエラー: %s"
-
 #~ msgid ""
 #~ "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for "
 #~ "secret' but got `%s'"
 #~ msgstr ""
 #~ "予期せぬ標準エラー出力 - 「udisks-tcp-bridge: 秘密鍵を待機中」を予期してい"
 #~ "ましたが「%s」でした。"
-
 #~ msgid "Error passing authorization secret: %s"
 #~ msgstr "認証用秘密鍵の受け渡しでエラーが発生しました: %s"
-
 #~ msgid "Error reading stderr from: %s"
 #~ msgstr "標準エラーを以下より読み込み中にエラー: %s"
-
 #~ msgid ""
 #~ "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to "
 #~ "connect to port %d' but got `%s'"
 #~ msgstr ""
 #~ "予期せぬ標準エラー出力 - 「udisks-tcp-bridge: ポート %d への接続を試行中」"
 #~ "を予期していましたが「%s」でした。"
-
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
 #~ msgstr ""
 #~ "プログラム udisks-tcp-bridge が認証されていることの確認に失敗しました: %s"
-
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized"
 #~ msgstr ""
 #~ "プログラム udisks-tcp-bridge が認証されていることの確認に失敗しました"
-
 #~ msgid "%s (%s bytes)"
 #~ msgstr "%s (%s バイト)"
-
 #~ msgid "FAT (12-bit version)"
 #~ msgstr "FAT (12 ビット版)"
-
 #~ msgid "FAT"
 #~ msgstr "FAT"
-
 #~ msgid "FAT (16-bit version)"
 #~ msgstr "FAT (16 ビット版)"
-
 #~ msgid "FAT (32-bit version)"
 #~ msgstr "FAT (32 ビット版)"
-
 #~ msgid "NTFS (version %s)"
 #~ msgstr "NTFS (バージョン %s)"
-
 #~ msgid "NTFS"
 #~ msgstr "NTFS"
-
 #~ msgid "HFS"
 #~ msgstr "HFS"
-
 #~ msgid "HFS+"
 #~ msgstr "HFS+"
-
 #~ msgid "Linux Unified Key Setup"
 #~ msgstr "Linux Unified Key Setup"
-
 #~ msgid "LUKS"
 #~ msgstr "LUKS"
-
 #~ msgid "Ext2 (version %s)"
 #~ msgstr "Ext2 (バージョン %s)"
-
 #~ msgid "Ext2"
 #~ msgstr "Ext2"
-
 #~ msgid "ext2"
 #~ msgstr "ext2"
-
 #~ msgid "Ext3 (version %s)"
 #~ msgstr "Ext3 (バージョン %s)"
-
 #~ msgid "Ext3"
 #~ msgstr "Ext3"
-
 #~ msgid "ext3"
 #~ msgstr "ext3"
-
 #~ msgid "Journal for Ext3 (version %s)"
 #~ msgstr "Ext3 ジャーナリング (バージョン %s)"
-
 #~ msgid "Journal for Ext3"
 #~ msgstr "Ext3 ジャーナリング"
-
 #~ msgid "jbd"
 #~ msgstr "jbd"
-
 #~ msgid "Ext4 (version %s)"
 #~ msgstr "Ext4 (バージョン %s)"
-
 #~ msgid "Ext4"
 #~ msgstr "Ext4"
-
 #~ msgid "ext4"
 #~ msgstr "ext4"
-
 #~ msgid "XFS (version %s)"
 #~ msgstr "XFS (バージョン %s)"
-
 #~ msgid "XFS"
 #~ msgstr "XFS"
-
 #~ msgid "xfs"
 #~ msgstr "xfs"
-
 #~ msgid "ReiserFS (version %s)"
 #~ msgstr "ReiserFS (バージョン %s)"
-
 #~ msgid "ReiserFS"
 #~ msgstr "ReiserFS"
-
 #~ msgid "reiserfs"
 #~ msgstr "reiserfs"
-
 #~ msgid "ISO 9660"
 #~ msgstr "ISO 9660"
-
 #~ msgid "iso9660"
 #~ msgstr "iso9660"
-
 #~ msgid "Universal Disk Format"
 #~ msgstr "Universal Disk Format"
-
 #~ msgid "udf"
 #~ msgstr "udf"
-
 #~ msgid "Swap Space"
 #~ msgstr "スワップ領域"
-
 #~ msgid "swap"
 #~ msgstr "スワップ"
-
 #~ msgid "LVM2 Physical Volume (version %s)"
 #~ msgstr "LVM2 物理ボリューム (バージョン %s)"
-
 #~ msgid "LVM2 Physical Volume"
 #~ msgstr "LVM2 物理ボリューム"
-
 #~ msgid "lvm2_pv"
 #~ msgstr "lvm2_pv"
-
 #~ msgid "RAID Component (version %s)"
 #~ msgstr "RAID コンポーネント (バージョン %s)"
-
 #~ msgid "RAID Component"
 #~ msgstr "RAID コンポーネント"
-
 #~ msgid "raid"
 #~ msgstr "RAID"
-
 #~ msgid "Minix"
 #~ msgstr "Minix"
-
 #~ msgid "minix"
 #~ msgstr "minix"
-
 #~ msgid "Creating File System"
 #~ msgstr "ファイル・システムを作成中"
-
 #~ msgid "Mounting File System"
 #~ msgstr "ファイル・システムをマウント中"
-
 #~ msgid "Unmounting File System"
 #~ msgstr "ファイル・システムをアンマウント中"
-
 #~ msgid "Checking File System"
 #~ msgstr "ファイル・システムをチェック中"
-
 #~ msgid "Creating LUKS Device"
 #~ msgstr "LUKS デバイスを作成中"
-
 #~ msgid "Unlocking LUKS Device"
 #~ msgstr "LUKS デバイスのロックを解除中"
-
 #~ msgid "Locking LUKS Device"
 #~ msgstr "LUKS デバイスをロック中"
-
 #~ msgid "Creating Partition Table"
 #~ msgstr "パーティション・テーブルを作成中"
-
 #~ msgid "Deleting Partition"
 #~ msgstr "パーティションを削除中"
-
 #~ msgid "Creating Partition"
 #~ msgstr "パーティションを作成中"
-
 #~ msgid "Modifying Partition"
 #~ msgstr "パーティションを変更中"
-
 #~ msgid "Setting Label for Device"
 #~ msgstr "デバイスのラベルを設定中"
-
 #~ msgid "Changing Passphrase for Encrypted LUKS Device"
 #~ msgstr "暗号化 LUKS デバイスのパスフレーズを変更中"
-
 #~ msgid "Adding Component to RAID Array"
 #~ msgstr "RAID アレイにコンポーネントを追加中"
-
 #~ msgid "Removing Component from RAID Array"
 #~ msgstr "RAID アレイからコンポーネントを取り外し中"
-
 #~ msgid "Stopping RAID Array"
 #~ msgstr "RAID アレイを停止中"
-
 #~ msgid "Starting RAID Array"
 #~ msgstr "RAID アレイを開始中"
-
 #~ msgid "Checking RAID Array"
 #~ msgstr "RAID アレイをチェック中"
-
 #~ msgid "Repairing RAID Array"
 #~ msgstr "RAID アレイを修復中"
-
 #~ msgid "Running Short SMART Self-Test"
 #~ msgstr "SMART ショート・セルフテストを実行中"
-
 #~ msgid "Running Extended SMART Self-Test"
 #~ msgstr "SMART 拡張セルフテストを実行中"
-
 #~ msgid "Running Conveyance SMART Self-Test"
 #~ msgstr "SMART 搬送セルフテストを実行中"
-
 #~ msgid "Ejecting Media"
 #~ msgstr "メディアを取り出し中"
-
 #~ msgid "Detaching Device"
 #~ msgstr "デバイスを取り外し中"
-
 #~ msgid "Forcibly Unmounting Filesystem"
 #~ msgstr "強制的にファイル・システムをアンマウント中"
-
 #~ msgid "Forcibly Locking LUKS device"
 #~ msgstr "LUKS デバイスを強制ロック中"
-
 #~ msgid "Linux Basic Data Partition"
 #~ msgstr "Linux 基本データ・パーティション"
-
 #~ msgid "Linux RAID Partition"
 #~ msgstr "Linux RAID パーティション"
-
 #~ msgid "Linux Swap Partition"
 #~ msgstr "Linux スワップ・パーティション"
-
 #~ msgid "Linux LVM Partition"
 #~ msgstr "Linux LVM パーティション"
-
 #~ msgid "Linux Reserved Partition"
 #~ msgstr "Linux 予約パーティション"
-
 #~ msgid "MBR Partition Scheme"
 #~ msgstr "MBR パーティション構成"
-
 #~ msgid "EFI System Partition"
 #~ msgstr "EFI システム・パーティション"
-
 #~ msgid "BIOS Boot Partition"
 #~ msgstr "BIOS 起動パーティション"
-
 #~ msgid "Microsoft Reserved Partition"
 #~ msgstr "Microsoft 予約パーティション"
-
 #~ msgid "Microsoft Basic Data Partition"
 #~ msgstr "Microsoft 基本データ・パーティション"
-
 #~ msgid "Microsoft LDM Metadata Partition"
 #~ msgstr "Microsoft LDM メタデータ・パーティション"
-
 #~ msgid "Microsoft LDM Data Partition"
 #~ msgstr "Microsoft LDM データ・パーティション"
-
 #~ msgid "Microsoft Windows Recovery Environment"
 #~ msgstr "Microsoft Windows リカバリ環境"
-
 #~ msgid "HP-UX Data Partition"
 #~ msgstr "HP-UX データ・パーティション"
-
 #~ msgid "HP-UX Service Partition"
 #~ msgstr "HP-UX サービス・パーティション"
-
 #~ msgid "FreeBSD Boot Partition"
 #~ msgstr "FreeBSD 起動パーティション"
-
 #~ msgid "FreeBSD Data Partition"
 #~ msgstr "FreeBSD データ・パーティション"
-
 #~ msgid "FreeBSD Swap Partition"
 #~ msgstr "FreeBSD スワップ・パーティション"
-
 #~ msgid "FreeBSD UFS Partition"
 #~ msgstr "FreeBSD UFS パーティション"
-
 #~ msgid "FreeBSD Vinum Partition"
 #~ msgstr "FreeBSD ボリューム・パーティション"
-
 #~ msgid "FreeBSD ZFS Partition"
 #~ msgstr "FreeBSD ZFS パーティション"
-
 #~ msgid "Solaris Boot Partition"
 #~ msgstr "Solaris 起動パーティション"
-
 #~ msgid "Solaris Root Partition"
 #~ msgstr "Solaris ルート・パーティション"
-
 #~ msgid "Solaris Swap Partition"
 #~ msgstr "Solaris スワップ・パーティション"
-
 #~ msgid "Solaris Backup Partition"
 #~ msgstr "Solaris バックアップ・パーティション"
-
 #~ msgid "Solaris /usr Partition"
 #~ msgstr "Solaris /usr パーティション"
-
 #~ msgid "Solaris /var Partition"
 #~ msgstr "Solaris /var パーティション"
-
 #~ msgid "Solaris /home Partition"
 #~ msgstr "Solaris /home パーティション"
-
 #~ msgid "Solaris Alternate Sector Partition"
 #~ msgstr "Solaris 代替セクタ・パーティション"
-
 #~ msgid "Solaris Reserved Partition"
 #~ msgstr "Solaris 予約パーティション"
-
 #~ msgid "Solaris Reserved Partition (2)"
 #~ msgstr "Solaris 予約パーティション (2)"
-
 #~ msgid "Solaris Reserved Partition (3)"
 #~ msgstr "Solaris 予約パーティション (3)"
-
 #~ msgid "Solaris Reserved Partition (4)"
 #~ msgstr "Solaris 予約パーティション (4)"
-
 #~ msgid "Solaris Reserved Partition (5)"
 #~ msgstr "Solaris 予約パーティション (5)"
-
 #~ msgid "Apple HFS/HFS+ Partition"
 #~ msgstr "Apple HFS/HFS+ パーティション"
-
 #~ msgid "Apple UFS Partition"
 #~ msgstr "Apple UFS パーティション"
-
 #~ msgid "Apple ZFS Partition"
 #~ msgstr "Apple ZFS パーティション"
-
 #~ msgid "Apple RAID Partition"
 #~ msgstr "Apple RAID パーティション"
-
 #~ msgid "Apple RAID Partition (Offline)"
 #~ msgstr "Apple RAID パーティション (オフライン)"
-
 #~ msgid "Apple Boot Partition"
 #~ msgstr "Apple 起動パーティション"
-
 #~ msgid "Apple Label Partition"
 #~ msgstr "Apple ラベル・パーティション"
-
 #~ msgid "Apple TV Recovery Partition"
 #~ msgstr "Apple TV リカバリ・パーティション"
-
 #~ msgid "NetBSD Swap Partition"
 #~ msgstr "NetBSD スワップ・パーティション"
-
 #~ msgid "NetBSD FFS Partition"
 #~ msgstr "NetBSD FFS パーティション"
-
 #~ msgid "NetBSD LFS Partition"
 #~ msgstr "NetBSD LFS パーティション"
-
 #~ msgid "NetBSD RAID Partition"
 #~ msgstr "NetBSD RAID パーティション"
-
 #~ msgid "NetBSD Concatenated  Partition"
 #~ msgstr "NetBSD 連結パーティション"
-
 #~ msgid "NetBSD Encrypted Partition"
 #~ msgstr "NetBSD 暗号化パーティション"
-
 #~ msgid "Apple Partition Map"
 #~ msgstr "Apple パーティション・マップ"
-
 #~ msgid "Unused Partition"
 #~ msgstr "未使用パーティション"
-
 #~ msgid "Empty Partition"
 #~ msgstr "空きパーティション"
-
 #~ msgid "Driver Partition"
 #~ msgstr "ドライバ・パーティション"
-
 #~ msgid "Driver 4.3 Partition"
 #~ msgstr "ドライバ 4.3 パーティション"
-
 #~ msgid "ProDOS file system"
 #~ msgstr "ProDOS ファイル・システム"
-
 #~ msgid "FAT 12"
 #~ msgstr "FAT 12"
-
 #~ msgid "FAT 16"
 #~ msgstr "FAT 16"
-
 #~ msgid "FAT 32"
 #~ msgstr "FAT 32"
-
 #~ msgid "FAT 16 (Windows)"
 #~ msgstr "FAT 16 (Windows)"
-
 #~ msgid "FAT 32 (Windows)"
 #~ msgstr "FAT 32 (Windows)"
-
 #~ msgid "Empty (0x00)"
 #~ msgstr "Empty (0x00)"
-
 #~ msgid "FAT12 (0x01)"
 #~ msgstr "FAT12 (0x01)"
-
 #~ msgid "FAT16 <32M (0x04)"
 #~ msgstr "FAT16 <32M (0x04)"
-
 #~ msgid "Extended (0x05)"
 #~ msgstr "拡張 (0x05)"
-
 #~ msgid "FAT16 (0x06)"
 #~ msgstr "FAT16 (0x06)"
-
 #~ msgid "HPFS/NTFS (0x07)"
 #~ msgstr "HPFS/NTFS (0x07)"
-
 #~ msgid "W95 FAT32 (0x0b)"
 #~ msgstr "W95 FAT32 (0x0b)"
-
 #~ msgid "W95 FAT32 (LBA) (0x0c)"
 #~ msgstr "W95 FAT32 (LBA) (0x0c)"
-
 #~ msgid "W95 FAT16 (LBA) (0x0e)"
 #~ msgstr "W95 FAT16 (LBA) (0x0e)"
-
 #~ msgid "W95 Ext d (LBA) (0x0f)"
 #~ msgstr "W95 拡張 (LBA) (0x0f)"
-
 #~ msgid "OPUS (0x10)"
 #~ msgstr "OPUS (0x10)"
-
 #~ msgid "Hidden FAT12 (0x11)"
 #~ msgstr "隠し属性付き FAT12 (0x11)"
-
 #~ msgid "Compaq diagnostics (0x12)"
 #~ msgstr "Compaq diagnostics (0x12)"
-
 #~ msgid "Hidden FAT16 <32M (0x14)"
 #~ msgstr "隠し属性付き FAT16 <32M (0x14)"
-
 #~ msgid "Hidden FAT16 (0x16)"
 #~ msgstr "隠し属性付き FAT16 (0x16)"
-
 #~ msgid "Hidden HPFS/NTFS (0x17)"
 #~ msgstr "隠し属性付き HPFS/NTFS (0x17)"
-
 #~ msgid "Hidden W95 FAT32 (0x1b)"
 #~ msgstr "隠し属性付き W95 FAT32 (0x1b)"
-
 #~ msgid "Hidden W95 FAT32 (LBA) (0x1c)"
 #~ msgstr "隠し属性付き W95 FAT32 (LBA) (0x1c)"
-
 #~ msgid "Hidden W95 FAT16 (LBA) (0x1e)"
 #~ msgstr "隠し属性付き W95 FAT16 (LBA) (0x1e)"
-
 #~ msgid "PartitionMagic (0x3c)"
 #~ msgstr "パーティションマジック (0x3c)"
-
 #~ msgid "Minix (0x81)"
 #~ msgstr "Minix (0x81)"
-
 #~ msgid "Linux swap (0x82)"
 #~ msgstr "Linux スワップ (0x82)"
-
 #~ msgid "Linux (0x83)"
 #~ msgstr "Linux (0x83)"
-
 #~ msgid "Hibernation (0x84)"
 #~ msgstr "ハイバネーション (0x84)"
-
 #~ msgid "Linux Extended (0x85)"
 #~ msgstr "Linux 拡張領域 (0x85)"
-
 #~ msgid "Linux LVM (0x8e)"
 #~ msgstr "Linux LVM (0x8e)"
-
 #~ msgid "Hibernation (0xa0)"
 #~ msgstr "ハイバネーション (0xa0)"
-
 #~ msgid "FreeBSD (0xa5)"
 #~ msgstr "FreeBSD (0xa5)"
-
 #~ msgid "OpenBSD (0xa6)"
 #~ msgstr "OpenBSD (0xa6)"
-
 #~ msgid "Mac OS X (0xa8)"
 #~ msgstr "Mac OS X (0xa8)"
-
 #~ msgid "Mac OS X (0xaf)"
 #~ msgstr "Mac OS X (0xaf)"
-
 #~ msgid "Solaris boot (0xbe)"
 #~ msgstr "Solaris 起動領域 (0xbe)"
-
 #~ msgid "Solaris (0xbf)"
 #~ msgstr "Solaris (0xbf)"
-
 #~ msgid "BeOS BFS (0xeb)"
 #~ msgstr "BeOS BFS (0xeb)"
-
 #~ msgid "SkyOS SkyFS (0xec)"
 #~ msgstr "SkyOS SkyFS (0xec)"
-
 #~ msgid "EFI GPT (0xee)"
 #~ msgstr "EFI GPT (0xee)"
-
 #~ msgid "EFI (FAT-12/16/32 (0xef)"
 #~ msgstr "EFI (FAT-12/16/32 (0xef)"
-
 #~ msgid "Linux RAID autodetect (0xfd)"
 #~ msgstr "Linux RAID 自動検出 (0xfd)"
-
 #~ msgid "Unknown (%s)"
 #~ msgstr "不明 (%s)"
-
 #~ msgid ""
 #~ "A popular format compatible with almost any device or system, typically "
 #~ "used for file exchange."
 #~ msgstr ""
 #~ "ほとんど全てのデバイスまたはシステムで互換性があり、特にファイル交換に使わ"
 #~ "れる一般的なフォーマットです。"
-
 #~ msgid ""
 #~ "This file system is compatible with Linux systems only and provides "
 #~ "classic UNIX file permissions support. This file system does not use a "
@@ -1038,25 +791,21 @@ msgstr "ミュート"
 #~ "このファイル・システムは Linux システムのみ互換性があり、旧式の UNIX ファ"
 #~ "イル・パーミッションをサポートしています。このファイル・システムはジャーナ"
 #~ "ルを使用しません。"
-
 #~ msgid ""
 #~ "This file system is compatible with Linux systems only and provides "
 #~ "classic UNIX file permissions support."
 #~ msgstr ""
 #~ "このファイル・システムは Linux システムのみ互換性があり、旧式の UNIX ファ"
 #~ "イル・パーミッションをサポートしています。"
-
 #~ msgid "Swap area used by the operating system for virtual memory."
 #~ msgstr ""
 #~ "オペレーティング・システムが仮想メモリとして使用するスワップ領域です。"
-
 #~ msgid ""
 #~ "The native Windows file system. Not widely compatible with other "
 #~ "operating systems than Windows."
 #~ msgstr ""
 #~ "Windows ネイティブのファイル・システムです。Windows 以外のオペレーティン"
 #~ "グ・システムとはあまり互換性がありません。"
-
 #~ msgid ""
 #~ "Simple filesystem with low overhead and UNIX permissions support. Not "
 #~ "widely compatible with other operating systems than Linux and Minix."
@@ -1064,13 +813,10 @@ msgstr "ミュート"
 #~ "オーバーヘッドが低く UNIX パーミッションをサポートしているシンプルなファイ"
 #~ "ル・システムです。Linux と Minix 以外の他のオペレーティングシステムとは、"
 #~ "あまり互換性がありません。"
-
 #~ msgid "No file system will be created."
 #~ msgstr "ファイルシステムは作成されません。"
-
 #~ msgid "Create an Extended Partition for logical partitions."
 #~ msgstr "論理パーティションに拡張パーティションを作成します。"
-
 #~ msgid ""
 #~ "The Master Boot Record scheme is compatible with almost any device or "
 #~ "system but has a number of limitations with respect to disk size and "
@@ -1079,7 +825,6 @@ msgstr "ミュート"
 #~ "マスター・ブート・レコード方式はほぼ全てのデバイスやシステムと互換性があり"
 #~ "ますが、ディスク・サイズやパーティション数に関していくつかの制限がありま"
 #~ "す。"
-
 #~ msgid ""
 #~ "A legacy scheme that is incompatible with most systems except Apple "
 #~ "systems and most Linux systems. Not recommended for removable media."
@@ -1087,14 +832,12 @@ msgstr "ミュート"
 #~ "レガシー方式は、Apple の各種システムやほとんどの Linux システムを除き、ほ"
 #~ "とんどのシステムで互換性がありません。リムーバブル・メディアへの使用はお薦"
 #~ "めしません。"
-
 #~ msgid ""
 #~ "The GUID scheme is compatible with most modern systems but may be "
 #~ "incompatible with some devices and legacy systems."
 #~ msgstr ""
 #~ "GUID 方式は、最近のほとんどのシステムと互換性がありますが、一部のデバイス"
 #~ "や旧式のシステムとは互換性がない可能性があります。"
-
 #~ msgid ""
 #~ "Marks the entire disk as unused. Use this option only if you want to "
 #~ "avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
@@ -1102,109 +845,79 @@ msgstr "ミュート"
 #~ "ディスク全体を未使用領域としてマークします。例えば、ディスク全体を使用する"
 #~ "場合やフロッピー/Zip ディスクのように、ディスクをパーティション分けしたく"
 #~ "ない場合のみ、このオプションを使用してください。"
-
 #~ msgid "LUKS Passphrase for UUID %s"
 #~ msgstr "UUID %s の LUKS パスフレーズ"
-
 #~ msgid "%.1f KB/s"
 #~ msgstr "%.1f KB/s"
-
 #~ msgid "%.1f MB/s"
 #~ msgstr "%.1f MB/s"
-
 #~ msgid "%.1f GB/s"
 #~ msgstr "%.1f GB/s"
-
 #~ msgid "SATA"
 #~ msgstr "SATA"
-
 #~ msgid "eSATA"
 #~ msgstr "eSATA"
-
 #~ msgid "PATA"
 #~ msgstr "PATA"
-
 #~ msgid "ATA"
 #~ msgstr "ATA"
-
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
-
 #~ msgid "USB"
 #~ msgstr "USB"
-
 #~ msgid "Firewire"
 #~ msgstr "Firewire"
-
 #~ msgid "SDIO"
 #~ msgstr "SDIO"
-
 #~ msgid "Virtual"
 #~ msgstr "仮想"
 #~ msgctxt "connection name"
-
 #~ msgid "Unknown"
 #~ msgstr "不明"
-
 #~ msgid "%s at %s"
 #~ msgstr "%s %s"
 #~ msgctxt "RAID level"
-
 #~ msgid "Stripe (RAID-0)"
 #~ msgstr "ストライピング (RAID-0)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-0"
 #~ msgstr "RAID-0"
 #~ msgctxt "RAID level"
-
 #~ msgid "Mirror (RAID-1)"
 #~ msgstr "ミラー (RAID-1)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-1"
 #~ msgstr "RAID-1"
 #~ msgctxt "RAID level"
-
 #~ msgid "Parity Disk (RAID-4)"
 #~ msgstr "パリティディスク (RAID-4)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-4"
 #~ msgstr "RAID-4"
 #~ msgctxt "RAID level"
-
 #~ msgid "Distributed Parity (RAID-5)"
 #~ msgstr "分散パリティ (RAID-5)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-5"
 #~ msgstr "RAID-5"
 #~ msgctxt "RAID level"
-
 #~ msgid "Dual Distributed Parity (RAID-6)"
 #~ msgstr "二重分散パリティ (RAID-6)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-6"
 #~ msgstr "RAID-6"
 #~ msgctxt "RAID level"
-
 #~ msgid "Stripe of Mirrors (RAID-10)"
 #~ msgstr "ミラーのストライプ (RAID-10)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-10"
 #~ msgstr "RAID-10"
 #~ msgctxt "RAID level"
-
 #~ msgid "Concatenated (Linear)"
 #~ msgstr "連結 (リニア)"
 #~ msgctxt "RAID level"
-
 #~ msgid "Linear"
 #~ msgstr "リニア"
-
 #~ msgid ""
 #~ "Striped set without parity. Provides improved performance but no fault "
 #~ "tolerance. If a single disk in the array fails, the entire RAID-0 array "
@@ -1213,7 +926,6 @@ msgstr "ミュート"
 #~ "パリティなしのストライプ・セットです。性能は優れていますが、耐障害性があり"
 #~ "ません。アレイ中の一方のディスクが故障した場合、RAID-0 アレイ全体が破損し"
 #~ "ます。"
-
 #~ msgid ""
 #~ "Mirrored set without parity. Provides fault tolerance and improved "
 #~ "performance for reading. RAID-1 arrays can sustain all but one disk "
@@ -1222,7 +934,6 @@ msgstr "ミュート"
 #~ "パリティなしでミラーリングを行います。耐障害性があり読み込み性能に優れてい"
 #~ "ます。RAID-1 アレイは一方のディスクが故障しても故障してもデータが失われま"
 #~ "せん。"
-
 #~ msgid ""
 #~ "Striped set with parity on a single disk. Provides improved performance "
 #~ "and fault tolerance. RAID-4 arrays can sustain a single disk failure."
@@ -1230,7 +941,6 @@ msgstr "ミュート"
 #~ "1 台のディスクにパリティをもたせたストライプ・セットです。パフォーマンスに"
 #~ "優れ、耐障害性があります。RAID-4 アレイは 1 台のディスクが故障してもデータ"
 #~ "が失われません。"
-
 #~ msgid ""
 #~ "Striped set with distributed parity. Provides improved performance and "
 #~ "fault tolerance. RAID-5 arrays can sustain a single disk failure."
@@ -1238,7 +948,6 @@ msgstr "ミュート"
 #~ "分散パリティを持たせたストライプ・セットです。パフォーマンスに優れ、耐障害"
 #~ "性があります。RAID-5 アレイでは 1 台のディスクが故障してもデータが失われま"
 #~ "せん。"
-
 #~ msgid ""
 #~ "Striped set with dual distributed parity. Provides improved performance "
 #~ "and fault tolerance. RAID-6 arrays can sustain two disk failures."
@@ -1246,7 +955,6 @@ msgstr "ミュート"
 #~ "二重分散パリティを持たせたストライプ・セットです。パフォーマンスに優れ、耐"
 #~ "障害性があります。RAID-6 アレイでは 2 台のディスクが故障してもデータが失わ"
 #~ "れません。"
-
 #~ msgid ""
 #~ "Striped set with distributed parity. Provides improved performance and "
 #~ "fault tolerance. RAID-10 arrays can sustain multiple drive losses so long "
@@ -1255,211 +963,143 @@ msgstr "ミュート"
 #~ "分散パリティを持たせたストライプ・セットです。パフォーマンスに優れ、耐障害"
 #~ "性があります。RAID-10 アレイではミラーを構成する全ドライブが故障しない限"
 #~ "り、複数のドライブの故障に耐えられます。"
-
 #~ msgid "Unknown RAID level %s."
 #~ msgstr "不明な RAID レベル %s です。"
-
 #~ msgid "Disk is healthy"
 #~ msgstr "ディスクは正常です"
-
 #~ msgid "Disk was used outside of design parameters in the past"
 #~ msgstr "ディスクは過去に設計値を超過して使用されたことがあります"
-
 #~ msgid "Disk has a few bad sectors"
 #~ msgstr "ディスクにはほんの数個の不良セクタがあります"
-
 #~ msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
 #~ msgstr "ディスクは設計値を超過して使用されています"
-
 #~ msgid "Backup all data and replace the disk"
 #~ msgstr "すべてのデータをバックアップし、ディスクを交換してください"
-
 #~ msgid "DISK HAS MANY BAD SECTORS"
 #~ msgstr "ディスクに多数の不良セクタがあります"
-
 #~ msgid "DISK FAILURE IS IMMINENT"
 #~ msgstr "ディスクに故障の兆候があります"
-
 #~ msgid "Unknown"
 #~ msgstr "不明"
-
 #~ msgid "CD-ROM Disc"
 #~ msgstr "CD-ROM ディスク"
-
 #~ msgid "Blank CD-ROM Disc"
 #~ msgstr "ブランク CD-ROM ディスク"
-
 #~ msgid "CD-R Disc"
 #~ msgstr "CD-R ディスク"
-
 #~ msgid "Blank CD-R Disc"
 #~ msgstr "ブランク CD-R ディスク"
-
 #~ msgid "CD-RW Disc"
 #~ msgstr "CD-RW ディスク"
-
 #~ msgid "Blank CD-RW Disc"
 #~ msgstr "ブランク CD-RW ディスク"
-
 #~ msgid "DVD-ROM Disc"
 #~ msgstr "DVD-ROM ディスク"
-
 #~ msgid "Blank DVD-ROM Disc"
 #~ msgstr "ブランク DVD-ROM ディスク"
-
 #~ msgid "DVD-RW Disc"
 #~ msgstr "DVD-RW ディスク"
-
 #~ msgid "Blank DVD-RW Disc"
 #~ msgstr "ブランク DVD-RW ディスク"
-
 #~ msgid "DVD-RAM Disc"
 #~ msgstr "DVD-RAM ディスク"
-
 #~ msgid "Blank DVD-RAM Disc"
 #~ msgstr "ブランク DVD-RAM ディスク"
-
 #~ msgid "DVD+R Disc"
 #~ msgstr "DVD+R ディスク"
-
 #~ msgid "Blank DVD+R Disc"
 #~ msgstr "ブランク DVD+R ディスク"
-
 #~ msgid "DVD+RW Disc"
 #~ msgstr "DVD+RW ディスク"
-
 #~ msgid "Blank DVD+RW Disc"
 #~ msgstr "ブランク DVD+RW ディスク"
-
 #~ msgid "DVD+R DL Disc"
 #~ msgstr "DVD+R DL ディスク"
-
 #~ msgid "Blank DVD+R DL Disc"
 #~ msgstr "ブランク DVD+R DL ディスク"
-
 #~ msgid "DVD+RW DL Disc"
 #~ msgstr "DVD+RW DL ディスク"
-
 #~ msgid "Blank DVD+RW DL Disc"
 #~ msgstr "空の DVD+RW DL ディスク"
-
 #~ msgid "Blu-Ray Disc"
 #~ msgstr "Blu-Ray ディスク"
-
 #~ msgid "Blank Blu-Ray Disc"
 #~ msgstr "ブランク Blu-Ray ディスク"
-
 #~ msgid "Blu-Ray R Disc"
 #~ msgstr "Blu-Ray R ディスク"
-
 #~ msgid "Blank Blu-Ray R Disc"
 #~ msgstr "ブランク Blu-Ray R ディスク"
-
 #~ msgid "Blu-Ray RW Disc"
 #~ msgstr "Blu-Ray RW ディスク"
-
 #~ msgid "Blank Blu-Ray RW Disc"
 #~ msgstr "空の Blu-Ray RW ディスク"
-
 #~ msgid "HD DVD Disc"
 #~ msgstr "HD DVD ディスク"
-
 #~ msgid "Blank HD DVD Disc"
 #~ msgstr "ブランク HD DVD ディスク"
-
 #~ msgid "HD DVD-R Disc"
 #~ msgstr "HD DVD-R ディスク"
-
 #~ msgid "Blank HD DVD-R Disc"
 #~ msgstr "ブランク HD DVD-R ディスク"
-
 #~ msgid "HD DVD-RW Disc"
 #~ msgstr "HD DVD-RW ディスク"
-
 #~ msgid "Blank HD DVD-RW Disc"
 #~ msgstr "空の HD DVD-RW ディスク"
-
 #~ msgid "MO Disc"
 #~ msgstr "MO ディスク"
-
 #~ msgid "Blank MO Disc"
 #~ msgstr "ブランク MO ディスク"
-
 #~ msgid "MRW Disc"
 #~ msgstr "MRW ディスク"
-
 #~ msgid "Blank MRW Disc"
 #~ msgstr "ブランク MRW ディスク"
-
 #~ msgid "MRW/W Disc"
 #~ msgstr "MRW/W ディスク"
-
 #~ msgid "Blank MRW/W Disc"
 #~ msgstr "ブランク MRW/W ディスク"
-
 #~ msgid "Blank Optical Disc"
 #~ msgstr "ブランク光学ディスク"
-
 #~ msgid "%s Extended"
 #~ msgstr "拡張領域 %s"
-
 #~ msgid "Contains logical partitions"
 #~ msgstr "論理パーティションを含んでいます"
-
 #~ msgid "%s Encrypted"
 #~ msgstr "暗号化パーティション %s"
-
 #~ msgid "Optical Disc"
 #~ msgstr "光学ディスク"
-
 #~ msgid "%s Filesystem"
 #~ msgstr "ファイル・システム %s"
-
 #~ msgid "%s Partition Table"
 #~ msgstr "パーティション・テーブル %s"
-
 #~ msgid "%s LVM2 Physical Volume"
 #~ msgstr "LVM2 物理ボリューム %s"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID"
 #~ msgstr "RAID"
-
 #~ msgid "%s %s Component"
 #~ msgstr "%s %s コンポーネント"
-
 #~ msgid "Part of \"%s\" array"
 #~ msgstr "\"%s\" アレイの一部"
-
 #~ msgid "%s Swap Space"
 #~ msgstr "スワップ領域 %s"
-
 #~ msgid "%s Data"
 #~ msgstr "データ %s"
-
 #~ msgid "%s Unrecognized"
 #~ msgstr "未確認領域 %s"
-
 #~ msgid "Unknown or Unused"
 #~ msgstr "不明または未使用領域"
-
 #~ msgid "%s Partition"
 #~ msgstr "パーティション %s"
-
 #~ msgid "Partition %d of %s"
 #~ msgstr "パーティション %d / %s"
-
 #~ msgid "Partition %d"
 #~ msgstr "パーティション %d"
-
 #~ msgid "Whole-disk volume on %s"
 #~ msgstr "%s の全ディスク・ボリューム"
-
 #~ msgid "Whole-disk volume"
 #~ msgstr "全ディスク・ボリューム"
-
 #~ msgid "You are using %d%% of %s"
 #~ msgstr "使用量は %d%% / %s です"
-
 #~ msgid "Using %d%% of %s"
 #~ msgstr "使用量: %d%% / %s"
+
