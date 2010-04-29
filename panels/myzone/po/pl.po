@@ -145,11 +145,6 @@ msgstr "<b>Tapeta Myzone</b>"
 msgid "Clear recent documents"
 msgstr "Wyczyść ostatnie dokumenty"
 
-#: ../data/capplet.ui.h:3
-#, fuzzy
-msgid "Calendar and tasks:"
-msgstr "Utwórz nowe zadanie:"
-
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
 msgstr "<b>Zmień zawartość Myzone</b>"
@@ -166,8 +161,11 @@ msgstr "Ustawienia domyślne"
 msgid "Choose your wallpaper"
 msgstr "Wybierz tapetę"
 
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Kalendarz i zadania:"
+
 #: ../data/capplet.ui.h:4
-#, fuzzy
 msgid "Change My Web Accounts"
 msgstr "Zmień konta internetowe"
 
