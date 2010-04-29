@@ -452,6 +452,28 @@ mnb_toolbar_hide_lowlight (MnbToolbar *toolbar)
                             lowlight);
 }
 
+/*
+ * Returns TRUE if currently focused window is system-modal.
+ */
+static gboolean
+mnb_toolbar_system_modal_state (MnbToolbar *toolbar)
+{
+  MnbToolbarPrivate          *priv   = toolbar->priv;
+  MutterPlugin               *plugin = priv->plugin;
+  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaWindow                 *focus  = ppriv->last_focused;
+
+  if (focus && meta_window_is_modal (focus))
+    {
+      MetaWindow *p = meta_window_find_root_ancestor (focus);
+
+      if (p == focus)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 void
 mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason)
 {
@@ -1068,23 +1090,11 @@ mnb_toolbar_button_toggled_cb (MxButton *button,
    * If the user clicked on a button to show panel, but currently focused
    * window is system-modal, ignore the click.
    */
-  if (button_click && checked)
+  if (button_click && checked && mnb_toolbar_system_modal_state (toolbar))
     {
-      MutterPlugin               *plugin = priv->plugin;
-      MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-      MetaWindow                 *focus  = ppriv->last_focused;
-
-      if (focus && meta_window_is_modal (focus))
-        {
-          MetaWindow *p = meta_window_find_root_ancestor (focus);
-
-          if (p == focus)
-            {
-              mx_button_set_toggled (button, FALSE);
-              recursion = FALSE;
-              return;
-            }
-        }
+      mx_button_set_toggled (button, FALSE);
+      recursion = FALSE;
+      return;
     }
 
   /*
