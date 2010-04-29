@@ -19,11 +19,6 @@ msgstr ""
 msgid "people"
 msgstr "Leute"
 
-#: ../src/mnb-people-panel.c:56
-#, fuzzy
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
-msgstr "Hallo! Dies ist das Panel Leute. Wenn du einen Chat-Dienst konfiguriert hast (z.B. Messenger), kannst du hier mit Leuten sprechen."
-
 #: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
 #, c-format
 msgid "Open %s"
@@ -79,6 +74,10 @@ msgstr "Meine Gespräche"
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panel Leute"
+
+#: ../src/mnb-people-panel.c:56
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
+msgstr "Hallo! Dies ist das Panel Leute. Wenn du einen IM-Service konfiguriert hast (z.B. Messenger), kannst du hier mit Leuten sprechen."
 
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "Leute - %d Leute reden mit dir"
