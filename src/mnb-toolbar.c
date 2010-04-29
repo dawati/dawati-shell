@@ -487,6 +487,9 @@ mnb_toolbar_show (MnbToolbar *toolbar, MnbShowHideReason reason)
       return;
     }
 
+  if (mnb_toolbar_system_modal_state (toolbar))
+    return;
+
   priv->reason_for_show = reason;
 
   clutter_actor_show (actor);
