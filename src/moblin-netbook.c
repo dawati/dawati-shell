@@ -77,6 +77,7 @@
 #define KEY_BG_OPTIONS BG_KEY_DIR "/picture_options"
 #define THEME_KEY_DIR "/apps/metacity/general"
 #define KEY_THEME THEME_KEY_DIR "/theme"
+#define KEY_ALLWAYS_SMALL_SCREEN "/desktop/moblin/always_small_screen_mode"
 
 static guint32 compositor_options = 0;
 
@@ -408,10 +409,11 @@ moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
 }
 
 static void
-moblin_netbook_compute_screen_size (Display *xdpy,
-                                    gint     screen_no,
-                                    gint    *width_mm,
-                                    gint    *height_mm)
+moblin_netbook_compute_screen_size (Display  *xdpy,
+                                    gint      screen_no,
+                                    gint     *width_mm,
+                                    gint     *height_mm,
+                                    gboolean *external)
 {
   Window                  xroot = RootWindow (xdpy, screen_no);
   XRRScreenSize          *sizes;
@@ -436,6 +438,29 @@ moblin_netbook_compute_screen_size (Display *xdpy,
   *height_mm = sizes[current].mheight;
 
   XRRFreeScreenConfigInfo (cfg);
+
+  *external = FALSE;
+
+  {
+    XRRScreenResources *res = XRRGetScreenResourcesCurrent (xdpy, xroot);
+    gint i;
+
+    for (i = 0; i < res->noutput; ++i)
+      {
+        XRROutputInfo *info = XRRGetOutputInfo (xdpy, res, res->outputs[i]);
+
+        if (info->connection == RR_Connected)
+          {
+            if (strncmp (info->name, "LVDS", strlen ("LVDS")))
+              *external = TRUE;
+
+            XRRFreeOutputInfo (info);
+          }
+      }
+
+    XRRFreeScreenResources (res);
+  }
+
   return;
 
  fallback:
@@ -624,6 +649,8 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
   gchar        *moblin_session;
   Window        leader_xwin;
   gboolean      netbook_mode;
+  gboolean      external = FALSE;
+  gboolean      force_small_screen = FALSE;
 
   static Atom   atom__MOBLIN = None;
   static gint   old_screen_width = 0, old_screen_height = 0;
@@ -642,14 +669,23 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
   old_screen_width  = *screen_width;
   old_screen_height = *screen_height;
 
-  moblin_netbook_compute_screen_size (xdpy,
-                                      screen_no,
-                                      &screen_width_mm,
-                                      &screen_height_mm);
+  force_small_screen = gconf_client_get_bool (priv->gconf_client,
+                                              KEY_ALLWAYS_SMALL_SCREEN,
+                                              NULL);
 
-  g_debug ("Screen size %dmm x %dmm", screen_width_mm, screen_height_mm);
+  if (!force_small_screen)
+    {
+      moblin_netbook_compute_screen_size (xdpy,
+                                          screen_no,
+                                          &screen_width_mm,
+                                          &screen_height_mm,
+                                          &external);
 
-  if (screen_width_mm < 280)
+      g_debug ("Screen size %dmm x %dmm, external %d",
+               screen_width_mm, screen_height_mm, external);
+    }
+
+  if (force_small_screen || (!external && screen_width_mm < 280))
     netbook_mode = priv->netbook_mode = TRUE;
   else
     netbook_mode = priv->netbook_mode = FALSE;

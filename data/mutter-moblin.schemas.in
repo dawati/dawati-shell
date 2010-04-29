@@ -14,5 +14,19 @@
          </long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/desktop/moblin/always_small_screen_mode</key>
+      <applyto>/desktop/moblin/always_small_screen_mode</applyto>
+      <owner>mutter-moblin</owner>
+      <type>bool</type>
+      <default>FALSE</default>
+      <locale name="C">
+         <short>Always use small screen mode</short>
+         <long>
+		Forces small screen mode to be used even if display size would
+                normally imply bigger screen mode.
+         </long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>
