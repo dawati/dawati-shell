@@ -1,17 +1,18 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-15 22:12+0000\n"
+"POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
 
 #: ../data/moblin-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
@@ -21,8 +22,7 @@ msgstr "Myzone パネル"
 msgid "Change the Myzone background and content"
 msgstr "Myzone の背景とコンテンツを変更"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -59,62 +59,60 @@ msgstr "最近のファイルをできるだけ多く表示"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "最近使用した文書をクリアしますか? この操作ではローカルのコンテンツが Myzone から削除されます"
 
-#: ../penge/penge-calendar-pane.c:483
+#: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "予定"
 
-#: ../penge/penge-calendar-pane.c:495
-#: ../penge/penge-calendar-pane.c:538
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "開く"
 
-#: ../penge/penge-calendar-pane.c:526
+#: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
 msgstr "タスク"
 
-#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "予定を作成します。"
 
-#: ../penge/penge-events-pane.c:70
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "追加"
 
-#: ../penge/penge-events-pane.c:400
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "今週は、予定が入ってません"
 
-#: ../penge/penge-recent-file-tile.c:216
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "Web ページ"
 
-#: ../penge/penge-tasks-pane.c:50
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "新しいタスクを作成します。"
 
-#: ../penge/penge-tasks-pane.c:426
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "今日のイベントは何もありません"
 
-#: ../penge/penge-task-tile.c:318
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "期限：%x"
 
-#: ../penge/penge-welcome-tile.c:32
+#: ../penge/penge-welcome-tile.c:33
 msgid "Play intro video"
 msgstr "イントロ動画の再生"
 
-#: ../penge/penge-welcome-tile.c:64
+#: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
 msgstr "ようこそ MeeGo へ"
 
-#: ../penge/penge-welcome-tile.c:83
+#: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "ここは Myzone です。Web フィードから最近使用したファイルやコンテンツが表示されます。"
 
-#: ../penge/penge-welcome-tile.c:26
+#: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "Web アカウントを設定して使用したファイルは、必要な時にすぐアクセスできるように Myzone のこの場所に表示されます。"
 
@@ -130,11 +128,40 @@ msgstr "未読メッセージ"
 msgid "Unread messages"
 msgstr "未読メッセージ"
 
-#~ msgid ""
-#~ "Things that your friends do online will appear here. Activate your "
-#~ "accounts now!"
-#~ msgstr ""
-#~ "アカウントをアクティブにすると、オンラインの友達がここに表示されます。"
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Myzone の壁紙</b>"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Myzone に表示されている内容を変更</b>"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "マイ Web アカウントを変更"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "カレンダーとタスク："
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "最近の文書をクリア"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "壁紙を選択"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "デフォルトにリセット"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "メールアラート："
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "アカウントをアクティブにすると、オンラインの友達がここに表示されます。"
 
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
@@ -142,10 +169,5 @@ msgstr "未読メッセージ"
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>ネットブック Moblin 2.1 にようこそ</b>"
 
-#~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
-#~ msgstr ""
-#~ "Moblin は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意い"
-#~ "たしました。お楽しみいただけることを願っております。Moblin チーム一同"
+#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+#~ msgstr "Moblin は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Moblin チーム一同"
