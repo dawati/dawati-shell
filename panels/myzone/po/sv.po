@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
+"Last-Translator: Anna-Lena Schon <anna-lenax.schon@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +22,8 @@ msgstr "Myzone-panel"
 msgid "Change the Myzone background and content"
 msgstr "Ändra bakgrund och innehåll i Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -63,7 +64,8 @@ msgstr "Vill du radera dina senaste dokument? Detta tar bort det lokala innehål
 msgid "Appointments"
 msgstr "Möten"
 
-#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Öppna"
 
@@ -75,7 +77,8 @@ msgstr "Uppgifter"
 msgid "Create an appointment"
 msgstr "Skapa ett möte"
 
-#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Lägg till"
 
@@ -134,11 +137,11 @@ msgstr "<b>Min zon skrivbordsunderlägg</b>"
 
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Ändra vad som visas i din Min zon</b>"
+msgstr "<b>Ändra vad som visas i din Myzone</b>"
 
 #: ../data/capplet.ui.h:4
 msgid "Change My Web Accounts"
-msgstr "Ändra mina web konton"
+msgstr "Ändra mina webbkonton"
 
 #: ../data/capplet.ui.h:3
 msgid "Calendar and tasks:"
@@ -162,9 +165,8 @@ msgstr "Email meddelanden"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Vad dina vänner gör på internvet visas här. Aktivera dina konton nu!"
-
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Välkommen till Moblin 2.1 för netbooks</b>"
-
 #~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
 #~ msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Moblin."
+
