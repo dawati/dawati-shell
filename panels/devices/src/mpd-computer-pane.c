@@ -104,7 +104,6 @@ mpd_computer_pane_init (MpdComputerPane *self)
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), MPD_PANE_HEADER_SPACING);
-  clutter_actor_set_opacity (CLUTTER_ACTOR (self), 0xff * 0.8); /* 80% */
   clutter_actor_set_width (CLUTTER_ACTOR (self), MPD_COMPUTER_PANE_WIDTH);
 
   /* Title */

@@ -25,6 +25,7 @@
 
 #include "mpd-folder-button.h"
 #include "mpd-folder-tile.h"
+#include "mpd-shell-defines.h"
 #include "config.h"
 
 G_DEFINE_TYPE (MpdFolderTile, mpd_folder_tile, MX_TYPE_FRAME)
@@ -145,11 +146,16 @@ mpd_folder_tile_init (MpdFolderTile *self)
                                    G_USER_DIRECTORY_MUSIC,
                                    G_USER_DIRECTORY_PICTURES,
                                    G_USER_DIRECTORY_VIDEOS };
-  ClutterActor  *box;
-  ClutterActor  *button;
-  unsigned int   i;
+  ClutterLayoutManager  *layout;
+  ClutterActor          *box;
+  ClutterActor          *button;
+  unsigned int           i;
 
-  box = clutter_box_new (clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
+  layout = clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL);
+  clutter_flow_layout_set_column_spacing (CLUTTER_FLOW_LAYOUT (layout), 2.0);
+  clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout), 2.0);
+
+  box = clutter_box_new (layout);
   mx_bin_set_child (MX_BIN (self), box);
   mx_bin_set_alignment (MX_BIN (self), MX_ALIGN_MIDDLE, MX_ALIGN_START);
 
@@ -164,6 +170,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
                            "label", label,
                            "icon-path", icon_path,
                            NULL);
+    clutter_actor_set_width (button, MPD_FOLDER_BUTTON_WIDTH);
     g_signal_connect (button, "clicked",
                       G_CALLBACK (_button_clicked_cb), self);
     clutter_container_add_actor (CLUTTER_CONTAINER (box), button);
@@ -179,6 +186,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
                          "label", _("Trash"),
                          "icon-path", PKGICONDIR "/directory-trash.png",
                          NULL);
+  clutter_actor_set_width (button, MPD_FOLDER_BUTTON_WIDTH);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_button_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (box), button);
