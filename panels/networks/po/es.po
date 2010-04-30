@@ -457,15 +457,15 @@ msgstr "Estás conectado a una red con cable"
 msgid "Sorry, we've lost your wired connection"
 msgstr "Hemos perdido la conexión con cable"
 
-#: ../carrick/carrick-notification-manager.c:244
-#, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Hemos perdido la conexión %s, así que te hemos a una red con cable."
-
 #: ../carrick/carrick-notification-manager.c:219
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a una red con cable."
+msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a una red cableada."
+
+#: ../carrick/carrick-notification-manager.c:244
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Hemos perdido la conexión %s, así que te hemos a una red cableada."
 
 #: ../carrick/carrick-pane.c:1440 ../carrick/carrick-service-item.c:241
 msgid "Wired"
