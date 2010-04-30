@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:25+0000\n"
+"POT-Creation-Date: 2010-04-28 09:29+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -22,19 +22,19 @@ msgstr "Definir sua preferências da barra de ferramentas"
 msgid "Toolbar settings"
 msgstr "Configurações da barra de ferramentas"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/src/mtp-bin.c:362
 msgid "Save toolbar"
 msgstr "Salvar barra de ferramentas"
 
-#: ../capplet/src/mtp-bin.c:366
+#: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Desculpe, você tem que remover o painel antes que possa adicionar um novo."
 
-#: ../capplet/src/mtp-bin.c:368
+#: ../capplet/src/mtp-bin.c:369
 msgid "You can add, remove and reorder many of the panels in your toolbar."
 msgstr "Você pode adicionar, remover e reordenar muitos dos painéis na sua barra de ferramentas."
 
-#: ../capplet/src/mtp-jar.c:109
+#: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Painéis disponíveis"
 
@@ -43,8 +43,8 @@ msgstr "Painéis disponíveis"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:216
-#: ../src/mnb-toolbar-clock.c:114
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:124
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -58,8 +58,8 @@ msgstr "%H:%M"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:226
-#: ../src/mnb-toolbar-clock.c:123
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:133
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -67,8 +67,8 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:248
-#: ../src/mnb-toolbar-clock.c:144
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:154
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
@@ -81,19 +81,15 @@ msgid "Set your system-tray preferences"
 msgstr "Definir suas preferências da bandeja de sistema"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:253
+#: ../capplet/src/syst-cc-panel.c:241
 msgid "System Tray"
 msgstr "Bandeja de sistema"
 
-#: ../capplet/src/syst-cc-panel.c:170
-msgid "System tray"
-msgstr "Bandeja de sistema"
-
-#: ../capplet/src/syst-cc-panel.c:186
+#: ../capplet/src/syst-cc-panel.c:174
 msgid "Show system tray"
 msgstr "Mostrar bandeja de sistema"
 
-#: ../capplet/src/syst-cc-panel.c:207
+#: ../capplet/src/syst-cc-panel.c:195
 msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
 msgstr "A bandeja de sistema é um conceito usado por alguns aplicativos mais velhos para te avisar quando algo acontecer ou para continuar executando quando você os fechar."
 
@@ -105,32 +101,32 @@ msgstr "Determina a ordem dos painéis na barra de ferramentas."
 msgid "Order of panels on toolbar"
 msgstr "Ordem dos painéis na barra de ferramentas"
 
-#: ../src/moblin-netbook.c:905
+#: ../src/moblin-netbook.c:962
 msgid "Moblin Netbook Effects"
 msgstr "Efeitos de netbook Moblin"
 
-#: ../src/moblin-netbook.c:909
+#: ../src/moblin-netbook.c:966
 msgid "Effects for Moblin Netbooks"
 msgstr "Efeitos para Netbooks Moblin"
 
-#: ../src/moblin-netbook.c:3035
+#: ../src/moblin-netbook.c:3164
 msgid "Activate"
 msgstr "Ativar"
 
-#: ../src/moblin-netbook.c:3049
+#: ../src/moblin-netbook.c:3178
 msgid "Unknown window"
 msgstr "Janela desconhecida"
 
-#: ../src/moblin-netbook.c:3051
+#: ../src/moblin-netbook.c:3180
 msgid "Is asking for your attention."
 msgstr "Está pedindo a sua atenção"
 
-#: ../src/mnb-toolbar.c:976
+#: ../src/mnb-toolbar.c:974
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Desculpe. %s está quebrado"
 
-#: ../src/notifications/mnb-notification.c:262
+#: ../src/notifications/mnb-notification.c:282
 msgid "Dismiss"
 msgstr "Ignorar"
 
@@ -138,6 +134,8 @@ msgstr "Ignorar"
 msgid "Dismiss All"
 msgstr "Ignorar tudo"
 
+#~ msgid "System tray"
+#~ msgstr "Bandeja de sistema"
 #~ msgid "Socket for embedding"
 #~ msgstr "Soquete para embutir"
 #~ msgid "- Moblin Toolbar Preferences"
