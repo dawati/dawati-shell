@@ -59,7 +59,7 @@ struct _MnpWorldClockPrivate {
 	MxEntry *search_location;
 	MxListView *zones_list;
 	ClutterModel *zones_model;
-	ClutterActor *scroll;
+	ClutterActor *completion;
 	ClutterActor *entry_box;
 	ClutterActor *tfh_clock;
 
@@ -146,13 +146,13 @@ start_search (MnpWorldClock *area)
 	priv->search_text = mx_entry_get_text (priv->search_location);
 
 	if (!priv->search_text || (strlen(priv->search_text) < 3))
-		clutter_actor_hide(priv->scroll);
+		clutter_actor_hide(priv->completion);
 	
 	if (priv->search_text && (strlen(priv->search_text) > 2))
 		g_signal_emit_by_name (priv->zones_model, "filter-changed");
 	if (priv->search_text && (strlen(priv->search_text) > 2)) {
-		clutter_actor_show(priv->scroll);
-		clutter_actor_raise_top (priv->scroll);
+		clutter_actor_show(priv->completion);
+		clutter_actor_raise_top (priv->completion);
 	}
 
 
@@ -270,7 +270,7 @@ clear_btn_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 
   	mx_entry_set_text (priv->search_location, "");
-  	clutter_actor_hide (priv->scroll);
+  	clutter_actor_hide (priv->completion);
 }
 
 static void
@@ -317,7 +317,7 @@ mnp_completion_done (gpointer data, const char *zone)
 	MnpWorldClock *clock = (MnpWorldClock *)data;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (clock);
 	
-	clutter_actor_hide (priv->scroll);
+	clutter_actor_hide (priv->completion);
 	g_signal_handlers_block_by_func (priv->search_location, text_changed_cb, clock);
 	mx_entry_set_text (priv->search_location, zone);
 	g_signal_handlers_unblock_by_func (priv->search_location, text_changed_cb, clock);
@@ -385,7 +385,7 @@ zone_removed_cb (MnpClockArea *area, char *display, MnpWorldClock *clock)
 static void
 construct_completion (MnpWorldClock *world_clock)
 {
-	ClutterActor *scroll, *view, *stage;
+	ClutterActor *frame, *scroll, *view, *stage;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	ClutterModel *model;
 	MnpButtonItem *button_item;
@@ -397,14 +397,21 @@ construct_completion (MnpWorldClock *world_clock)
 	clutter_model_set_filter (model, filter_zone, world_clock, NULL);
 	priv->search_text = "asd";
 
+        frame = mx_frame_new ();
+        clutter_actor_set_name (frame, "CompletionFrame");
+        mx_bin_set_fill (MX_BIN (frame), TRUE, TRUE);
+
 	scroll = mx_scroll_view_new ();
 	clutter_actor_set_name (scroll, "CompletionScrollView");
-	priv->scroll = scroll;
+        g_object_set (G_OBJECT (scroll), "clip-to-allocation", TRUE, NULL);
 	clutter_actor_set_size (scroll, -1, 300);	
-	clutter_container_add_actor ((ClutterContainer *)stage, scroll);
-      	clutter_actor_raise_top((ClutterActor *) scroll);
-	clutter_actor_set_position (scroll, 19, 147);  
-	clutter_actor_hide (scroll);
+        mx_bin_set_child (MX_BIN (frame), scroll);
+	clutter_container_add_actor ((ClutterContainer *)stage, frame);
+      	clutter_actor_raise_top((ClutterActor *) frame);
+	clutter_actor_set_position (frame, 19, 147);  
+	clutter_actor_hide (frame);
+
+	priv->completion = frame;
 
 	view = mx_list_view_new ();
 	clutter_actor_set_name (view, "CompletionListView");
@@ -736,7 +743,7 @@ dropdown_hide_cb (MplPanelClient *client,
   MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 
   mx_entry_set_text (priv->search_location, "");
-  clutter_actor_hide (priv->scroll);	
+  clutter_actor_hide (priv->completion);	
 }
 
 void

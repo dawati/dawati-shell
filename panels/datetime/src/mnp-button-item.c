@@ -46,6 +46,7 @@ mnp_button_item_create (MxItemFactory *factory)
 {
 	ClutterActor *actor = mx_button_new ();
 
+        mx_bin_set_alignment (MX_BIN (actor), MX_ALIGN_START, MX_ALIGN_MIDDLE);
 	mx_stylable_set_style_class (MX_STYLABLE(actor), "CompletionListButton");
   	g_signal_connect (actor, "clicked", G_CALLBACK (button_clicked_cb),
                     factory);
