@@ -45,10 +45,10 @@
 #include "mps-view-bridge.h"
 #include "mps-feed-switcher.h"
 
-#define NEW_PLACEHOLDER_TEXT _("Hello! This is the Status panel." \
-"When you have a web account configured" \
-"(like Twitter) you will be able to view your" \
-"feeds and update your status here")
+#define NEW_PLACEHOLDER_TEXT _( \
+"Hello! This is the Status panel. When you have a web account configured (like Twitter), " \
+"you will be able to view your feeds and update your status here." \
+                              )
 
 typedef struct _MoblinStatusPanel
 {
