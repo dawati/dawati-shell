@@ -129,37 +129,37 @@ msgstr "Mensaje sin leer"
 msgid "Unread messages"
 msgstr "Mensajes sin leer"
 
-#: ../data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Imagen de escritorio 'Myzone'</b>"
-
-#: ../data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Cambia lo que aparece en tu Myzone</b>"
-
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
-msgstr "Cambia tus cuentas 'My Web' "
-
 #: ../data/capplet.ui.h:3
 msgid "Calendar and tasks:"
 msgstr "Calendario y tareas:"
-
-#: ../data/capplet.ui.h:6
-msgid "Clear recent documents"
-msgstr "Despejar documentos recientes"
 
 #: ../data/capplet.ui.h:5
 msgid "Choose your wallpaper"
 msgstr "Elige tu imagen de escritorio"
 
-#: ../data/capplet.ui.h:8
-msgid "Reset to default"
-msgstr "Restaurar valores predeterminados"
-
 #: ../data/capplet.ui.h:7
 msgid "Email alerts:"
 msgstr "Notificaciones de correo electrónico:"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Papel tapiz de 'Myzone'</b>"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Limpiar documentos recientes"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Cambia tus cuentas 'My Web' "
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Cambia lo que se muestra en tu Myzone</b>"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Restablecer valores predeterminados"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Aquí verás lo que hacen tus amigos en línea. ¡Activa tus cuentas!"
