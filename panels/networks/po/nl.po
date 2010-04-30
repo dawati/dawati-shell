@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 17:04+0000\n"
-"PO-Revision-Date: 2010-04-07 12:51-0800\n"
-"Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-04-28 09:29+0000\n"
+"PO-Revision-Date: 2010-04-29 18:10-0800\n"
+"Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -27,7 +27,7 @@ msgstr ""
 #.
 #: ../carrick/carrick-list.c:847
 msgid " or "
-msgstr "of"
+msgstr " of "
 
 #.
 #. * Translator note: the comma ',' will be used to join the different disabled technologies
@@ -35,7 +35,7 @@ msgstr "of"
 #.
 #: ../carrick/carrick-list.c:852
 msgid ", "
-msgstr ","
+msgstr ", "
 
 #: ../carrick/carrick-list.c:853
 #: ../carrick/carrick-util.c:34
@@ -43,25 +43,25 @@ msgid "wired"
 msgstr "bedraad"
 
 #: ../carrick/carrick-list.c:854
-#: ../carrick/carrick-pane.c:1405
+#: ../carrick/carrick-pane.c:1408
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "Wi-Fi"
 
 #: ../carrick/carrick-list.c:855
-#: ../carrick/carrick-pane.c:1499
+#: ../carrick/carrick-pane.c:1502
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
 #: ../carrick/carrick-list.c:856
-#: ../carrick/carrick-pane.c:1468
+#: ../carrick/carrick-pane.c:1471
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
 #: ../carrick/carrick-list.c:857
-#: ../carrick/carrick-pane.c:1531
+#: ../carrick/carrick-pane.c:1534
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -86,7 +86,7 @@ msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om Offline mode uit te 
 #: ../carrick/carrick-list.c:1017
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om %s aan te zetten"
+msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om %s aan te zetten."
 
 #.
 #. * Generic message to display if all available networking
@@ -204,30 +204,30 @@ msgstr "Wachtwoord"
 msgid "Show password"
 msgstr "Geef wachtwoord weer"
 
-#: ../carrick/carrick-pane.c:1396
+#: ../carrick/carrick-pane.c:1398
 msgid "Settings"
 msgstr "Instellingen"
 
-#: ../carrick/carrick-pane.c:1437
+#: ../carrick/carrick-pane.c:1440
 #: ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "Bedraad"
 
-#: ../carrick/carrick-pane.c:1563
+#: ../carrick/carrick-pane.c:1566
 msgid "Offline mode"
 msgstr "Offline mode"
 
-#: ../carrick/carrick-pane.c:1588
+#: ../carrick/carrick-pane.c:1591
 msgid "This will disable all your connections"
 msgstr "Dit maakt alle verbindingen inactief"
 
-#: ../carrick/carrick-pane.c:1621
+#: ../carrick/carrick-pane.c:1623
 #: ../src/carrick.c:351
 msgid "Networks"
 msgstr "netwerken"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1633
+#: ../carrick/carrick-pane.c:1629
 msgid "Add new connection"
 msgstr "Nieuwe verbinding toevoegen"
 
@@ -495,21 +495,18 @@ msgstr "Netwerk instellingen"
 
 #~ msgid "Manual Config"
 #~ msgstr "Handmatige Configuratie"
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr ""
 #~ "Sorry, geen netwerken gevonden. Je kunt proberen om WiFi aan te zetten."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
 #~ msgstr ""
 #~ "Sorry, geen netwerken gevonden. Je kunt proberen om WiMAX aan te zetten."
-
 #~ msgid ""
 #~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
 #~ msgstr ""
 #~ "Sorry, geen netwerken gevonden. Je kunt proberen om Bluetooth aan te "
 #~ "zetten."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
 #~ msgstr ""
 #~ "Sorry, geen netwerken gevonden. Je kunt proberen on Wired aan te zetten."
+
