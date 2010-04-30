@@ -32,7 +32,7 @@ MnbPeoplePanel
 *#people-panel-side-box-header
 {
   border-image: url("content-panel-header-grey.png") 5;
-  padding: 8;
+  padding: 8 8 8 10;
 }
 
 *#people-panel-me-box
