@@ -181,7 +181,6 @@ mpl_content_pane_init (MplContentPane *self)
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (self), 6);
-  clutter_actor_set_opacity (CLUTTER_ACTOR (self), 0xff * 0.8); /* 80% */
 
   priv->header = (MxBoxLayout *) mx_box_layout_new ();
   mx_box_layout_set_spacing (priv->header, 12);
