@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-15 22:12+0000\n"
+"POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: KC Lee <kushylee@yahoo.com>\n"
+"Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,6 +26,38 @@ msgstr "Myzone 배경과 내용을 변경"
 #: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr ""
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr ""
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "캘린더 및 작업"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr ""
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr ""
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr ""
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr ""
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr ""
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
@@ -60,62 +92,62 @@ msgstr "최신 파일을 가능한 한 많이 표시 "
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "최근 문서를 지우시겠습니까? 이것은 Myzone에서 지역 콘텐츠를 제거합니다."
 
-#: ../penge/penge-calendar-pane.c:483
+#: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "약속"
 
-#: ../penge/penge-calendar-pane.c:495
-#: ../penge/penge-calendar-pane.c:538
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "열기"
 
-#: ../penge/penge-calendar-pane.c:526
+#: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
 msgstr "업무"
 
-#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "일정 계획하기"
 
-#: ../penge/penge-events-pane.c:70
-#: ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "추가"
 
-#: ../penge/penge-events-pane.c:400
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "이 주에는 캘린더 엔트리가 없습니다."
 
-#: ../penge/penge-recent-file-tile.c:216
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "웹 페이지"
 
-#: ../penge/penge-tasks-pane.c:50
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "새 작업 만들기"
 
-#: ../penge/penge-tasks-pane.c:426
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "오늘 예정된 일정 없음"
 
-#: ../penge/penge-task-tile.c:318
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "%x까지"
 
-#: ../penge/penge-welcome-tile.c:32
+#: ../penge/penge-welcome-tile.c:33
 msgid "Play intro video"
 msgstr "소개 비디오 재생"
 
-#: ../penge/penge-welcome-tile.c:64
+#: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
 msgstr "MeeGo에 오신 것을 환영합니다."
 
-#: ../penge/penge-welcome-tile.c:83
+#: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "이 Myzone에서 최근 사용된 파일과 웹피드의 콘텐츠가 표시됩니다."
 
-#: ../penge/penge-welcome-tile.c:26
+#: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "웹 계정을 설정하고 파일을 사용하면 원할 때마다 쉽게 액세스할 수 있도록 Myzone에 나타납니다."
 
@@ -136,13 +168,10 @@ msgstr "읽지 않은 메시지들"
 #~ "accounts now!"
 #~ msgstr ""
 #~ "친구들과의 웹 사이트 활동이 여기에 나타날 것입니다. 지금 계정을 여십시오!"
-
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 설정"
-
 #~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
 #~ msgstr "<b>Moblin 2.0 넷북에 오신것을 환영합니다.</b>   "
-
 #~ msgid ""
 #~ "As Moblin is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
@@ -150,3 +179,4 @@ msgstr "읽지 않은 메시지들"
 #~ msgstr ""
 #~ "Moblin은 다른 컴퓨터와 차이가 있으며, 당신이 이에 잘 적응할 수 있도록 여러"
 #~ "가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Moblin 팀."
+
