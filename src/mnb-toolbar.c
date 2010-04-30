@@ -66,9 +66,9 @@
 #define KEY_DIR "/desktop/moblin/toolbar/panels"
 #define KEY_ORDER KEY_DIR "/order"
 
-#define BUTTON_SPACING 20
-#define BUTTON_SPACING_INITIAL 13
-
+#define BUTTON_SPACING 6
+#define BUTTON_SPACING_INITIAL (127+TOOLBAR_X_PADDING)
+#define BUTTON_Y 0
 /*
  * According to the latest MeeGo 1.0 designs, on the bigger screen the Toolbar
  * does not have any shadow on its sides, nor the rounded corners. This is done
@@ -78,11 +78,11 @@
  * fits into the middle of the space which is embossed into the Toolbar asset.
  */
 #define BIG_SCREEN_PAD 10
-#define BIG_SCREEN_BUTTON_SHIFT 4
+#define BIG_SCREEN_BUTTON_SHIFT 0
 
 #define MNB_TOOLBAR_MAX_APPLETS 4
-#define TRAY_WIDTH (3 * TRAY_BUTTON_WIDTH + CLOCK_WIDTH + 4 * TRAY_PADDING + 4)
-#define TRAY_PADDING   4
+#define TRAY_WIDTH (3 * TRAY_BUTTON_WIDTH + CLOCK_WIDTH + 4 * TRAY_PADDING - TRAY_BUTTON_INTERNAL_PADDING / 2)
+#define TRAY_PADDING   6
 
 #define TOOLBAR_TRIGGER_THRESHOLD       1
 #define TOOLBAR_TRIGGER_ADJUSTMENT      2
@@ -116,7 +116,7 @@
  * that it does not roll above the edge of the screen during the toolbar hide
  * animation.
  */
-#define TOOLBAR_SHADOW_EXTRA  37
+#define TOOLBAR_SHADOW_EXTRA  20
 #define TOOLBAR_SHADOW_HEIGHT (TOOLBAR_HEIGHT + TOOLBAR_SHADOW_EXTRA)
 
 G_DEFINE_TYPE (MnbToolbar, mnb_toolbar, MX_TYPE_FRAME)
@@ -1965,12 +1965,13 @@ mnb_toolbar_ensure_applet_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
       gint width = screen_width;
 
       if (!moblin_netbook_use_netbook_mode (plugin))
-        width += BIG_SCREEN_PAD;
+        width += 2 * BIG_SCREEN_PAD;
 
       clock_index = mnb_toolbar_get_clock_position_in_tray (toolbar);
 
-      y = TOOLBAR_HEIGHT - TRAY_BUTTON_HEIGHT;
-      x = width - (index + 1) * (TRAY_BUTTON_WIDTH+TRAY_PADDING) - 4;
+      y = BUTTON_Y;
+      x = width - (index + 1) * (TRAY_BUTTON_WIDTH+TRAY_PADDING) - 4 -
+        TRAY_BUTTON_INTERNAL_PADDING / 2;
 
       if (clock_index >= 0 && index >= clock_index)
         x -= (CLOCK_WIDTH - TRAY_BUTTON_WIDTH);
@@ -2016,20 +2017,15 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
 
       if (index < priv->max_panels)
         {
-          gfloat spacing = BUTTON_SPACING_INITIAL +
-            (BUTTON_WIDTH * index);
-
-          if (index > 0)
-            spacing += BUTTON_SPACING_INITIAL + BUTTON_SPACING / 2;
-
-          if (index > 1)
-            spacing += (index - 1) * BUTTON_SPACING;
+          gfloat spacing = BUTTON_SPACING_INITIAL + BUTTON_SPACING / 2
+            - BUTTON_INTERNAL_PADDING / 2 +
+            ((BUTTON_WIDTH + BUTTON_SPACING) * index);
 
           if (!moblin_netbook_use_netbook_mode (plugin))
             spacing += BIG_SCREEN_BUTTON_SHIFT;
 
           clutter_actor_set_position (CLUTTER_ACTOR (button), spacing,
-                                      TOOLBAR_HEIGHT - BUTTON_HEIGHT);
+                                      BUTTON_Y);
 
           mnb_toolbar_button_set_reactive_area (MNB_TOOLBAR_BUTTON (button),
                                                 0,

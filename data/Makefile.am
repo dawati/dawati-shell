@@ -19,8 +19,6 @@ theme_paneldir = $(MUTTER_MOBLIN_THEME_DIR)/panel
 dist_theme_panel_DATA = \
 	theme/panel/apps-coloured.png \
 	theme/panel/apps-normal.png \
-	theme/panel/bluetooth-coloured.png \
-	theme/panel/bluetooth-normal.png \
 	theme/panel/clock-background.png \
 	theme/panel/devices-coloured.png \
 	theme/panel/devices-normal.png \
@@ -44,10 +42,10 @@ dist_theme_panel_DATA = \
 	theme/panel/spaces-normal.png \
 	theme/panel/status-coloured.png \
 	theme/panel/status-normal.png \
+	theme/panel/toolbar-button-normal.png \
 	theme/panel/toolbar-button-active.png \
 	theme/panel/toolbar-button-hover.png \
-	theme/panel/toolbar-button-tray.png \
-	theme/panel/toolbar-hint.png
+	theme/panel/toolbar-button-tray.png
 
 theme_genericdir = $(MUTTER_MOBLIN_THEME_DIR)/generic
 dist_theme_generic_DATA = \

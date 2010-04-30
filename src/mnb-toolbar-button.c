@@ -81,10 +81,24 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
                   "scale-gravity", CLUTTER_GRAVITY_CENTER,
                   NULL);
 
-  if (!g_strcmp0 (pseudo_class, "hover"))
+  if (!pseudo_class)
+    {
+      clutter_actor_animate (bg_image, CLUTTER_LINEAR,
+                             150,
+                             "scale-x", 1.0,
+                             "scale-y", 1.0,
+                             NULL);
+      if (icon)
+        clutter_actor_animate (icon, CLUTTER_LINEAR,
+                               150,
+                               "scale-x", 1.0,
+                               "scale-y", 1.0,
+                               NULL);
+
+    }
+  else if (!g_strcmp0 (pseudo_class, "hover"))
     {
       /* bounce the (semi-transparent) background and icon */
-      clutter_actor_set_opacity (bg_image, 0x26);
       clutter_actor_set_scale_with_gravity (bg_image, 0.5, 0.5,
                                             CLUTTER_GRAVITY_CENTER);
 
@@ -114,10 +128,8 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
                                               CLUTTER_GRAVITY_CENTER);
       clutter_actor_set_scale_with_gravity (bg_image, 1.0, 1.0,
                                             CLUTTER_GRAVITY_CENTER);
-      clutter_actor_set_opacity (bg_image, 0x26);
       clutter_actor_animate (bg_image, CLUTTER_LINEAR,
                              150,
-                             "opacity", 0xff,
                              "scale-x", 0.8,
                              "scale-y", 0.8,
                              NULL);

@@ -33,14 +33,14 @@
 #include "mnb-panel-oop.h"
 #include "moblin-netbook.h"
 
-#define BUTTON_INTERNAL_PADDING 10
-#define BUTTON_WIDTH       60
-#define BUTTON_HEIGHT      55
+#define BUTTON_INTERNAL_PADDING 16
+#define BUTTON_WIDTH       71
+#define BUTTON_HEIGHT      64
 
-#define TRAY_BUTTON_INTERNAL_PADDING 10
-#define TRAY_BUTTON_WIDTH  40
-#define TRAY_BUTTON_HEIGHT 55
-#define CLOCK_WIDTH        120
+#define TRAY_BUTTON_INTERNAL_PADDING 16
+#define TRAY_BUTTON_WIDTH  46
+#define TRAY_BUTTON_HEIGHT 64
+#define CLOCK_WIDTH        106
 
 G_BEGIN_DECLS
 
