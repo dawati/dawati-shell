@@ -3413,7 +3413,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
      */
     mnb_panel_set_size (tp->panel,
                         screen_width - TOOLBAR_X_PADDING * 2,
-                        screen_height - TOOLBAR_HEIGHT - 8);
+                        screen_height - TOOLBAR_HEIGHT - 8 - TOOLBAR_X_PADDING);
   }
 
   if (priv->input_region)

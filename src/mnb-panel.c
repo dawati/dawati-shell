@@ -470,15 +470,15 @@ mnb_panel_ensure_size (MnbPanel *panel)
       mnb_panel_get_size (panel, &w, &h);
 
       /*
-       * Maximum height of the panel is the available working height plus
-       * the height of the panel shadow (we allow the shadow to stretch out
-       * of the available area).
+       * Maximum height of the panel is the available working height plus the
+       * TOOLBAR_X_PADDING (we only allow part of the shadow matching the width
+       * of the shadow on left and right to be visible).
        *
        * When not in netbook mode, the TOOLBAR_HEIGHT is already included in the
        * available space (because we set a strut for it).
        */
       /* FIXME -- devise a way of doing the shadow */
-      max_height = r.height - 8;
+      max_height = r.height - 8 - TOOLBAR_X_PADDING;
 
       if (netbook_mode)
         max_height -= TOOLBAR_HEIGHT;
