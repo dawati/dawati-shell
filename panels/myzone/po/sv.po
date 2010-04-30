@@ -133,7 +133,7 @@ msgstr "Olästa meddelanden"
 
 #: ../data/capplet.ui.h:2
 msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Min zon skrivbordsunderlägg</b>"
+msgstr "<b>Myzone skrivbordsunderlägg</b>"
 
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
