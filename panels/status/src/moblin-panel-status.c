@@ -95,6 +95,7 @@ make_status (MoblinStatusPanel *status_panel)
 #endif
 
   table = mx_table_new ();
+  mx_table_set_row_spacing (MX_TABLE (table), 6);
   clutter_actor_set_name (table, "status-panel");
   label = mx_label_new_with_text (_("Status"));
   clutter_actor_set_name (label, "status-panel-header-label");
