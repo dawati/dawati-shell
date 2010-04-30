@@ -29,11 +29,11 @@ msgstr "Myzone"
 
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
-msgstr ""
+msgstr "<b>Myzone 디스플레이 바꾸기</b>"
 
 #: ../data/capplet.ui.h:2
 msgid "<b>Myzone Wallpaper</b>"
-msgstr ""
+msgstr "<b>바탕화면</b>"
 
 #: ../data/capplet.ui.h:3
 msgid "Calendar and tasks:"
@@ -41,23 +41,23 @@ msgstr "캘린더 및 작업"
 
 #: ../data/capplet.ui.h:4
 msgid "Change My Web Accounts"
-msgstr ""
+msgstr "내 웹 계정 바꾸기"
 
 #: ../data/capplet.ui.h:5
 msgid "Choose your wallpaper"
-msgstr ""
+msgstr "바탕화면 선택"
 
 #: ../data/capplet.ui.h:6
 msgid "Clear recent documents"
-msgstr ""
+msgstr "최신 문서 지우기"
 
 #: ../data/capplet.ui.h:7
 msgid "Email alerts:"
-msgstr ""
+msgstr "이메일 주의보:"
 
 #: ../data/capplet.ui.h:8
 msgid "Reset to default"
-msgstr ""
+msgstr "기본값 재설정"
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
@@ -103,7 +103,7 @@ msgstr "열기"
 
 #: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
-msgstr "업무"
+msgstr "작업"
 
 #: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
@@ -141,11 +141,11 @@ msgstr "소개 비디오 재생"
 
 #: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
-msgstr "MeeGo에 오신 것을 환영합니다."
+msgstr "MeeGo가 당신을 환영합니다."
 
 #: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "이 Myzone에서 최근 사용된 파일과 웹피드의 콘텐츠가 표시됩니다."
+msgstr "Myzone에서 최근 사용된 파일과 웹 피드의 콘텐츠가 표시됩니다."
 
 #: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
