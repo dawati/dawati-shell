@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-08 10:28+0000\n"
+"POT-Creation-Date: 2010-04-28 09:43+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Lorenzo <lorenzo.gennaro@ptiglobal.net>\n"
+"Last-Translator: francesca godani <francesca.godani@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Italian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:110
+#: ../src/moblin-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Data/Ora"
 
@@ -32,7 +32,7 @@ msgstr "data e ora"
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:422
+#: ../src/mnp-utils.c:423
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -41,37 +41,81 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:430
+#: ../src/mnp-utils.c:431
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:445
+#: ../src/mnp-utils.c:446
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (Ieri)"
 
-#: ../src/mnp-utils.c:447
+#: ../src/mnp-utils.c:448
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (Domani)"
 
-#: ../src/mnp-utils.c:455
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr "%b %-d (locale)"
+
+#: ../src/mnp-utils.c:456
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-world-clock.c:586
+#: ../src/mnp-world-clock.c:464
+msgid "Time"
+msgstr "Ora"
+
+#: ../src/mnp-world-clock.c:518
+msgid "24 hour clock"
+msgstr "Orologio 24 ore"
+
+#: ../src/mnp-world-clock.c:587
 msgid "Enter a country or city"
 msgstr "Inserisci un paese o una città"
 
-#: ../src/mnp-world-clock.c:609
+#: ../src/mnp-world-clock.c:610
 msgid "Add"
 msgstr "Aggiungi"
 
-#: ../src/mnp-datetime.c:336 ../src/mnp-datetime.c:555
+#: ../src/mnp-world-clock.c:684
+msgid "Set Time & Date"
+msgstr "Imposta ora e data"
+
+#: ../src/mnp-datetime.c:286
+msgid "Appointments"
+msgstr "Appuntamenti"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#.
+#. format date
+#: ../src/mnp-datetime.c:335
+#: ../src/mnp-datetime.c:534
 msgid "Today"
 msgstr "Oggi"
 
-#: ../src/mnp-datetime.c:506
+#: ../src/mnp-datetime.c:426
+msgid "Open Appointments"
+msgstr "Appuntamenti aperti"
+
+#: ../src/mnp-datetime.c:504
 msgid "Tasks"
 msgstr "Compiti"
+
+#: ../src/mnp-datetime.c:601
+msgid "Open Tasks"
+msgstr "Compiti aperti"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "Orologio 24 o 12 ore"
 
 #: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
@@ -80,38 +124,6 @@ msgstr "Allarmi memorizzati in forma codificata per l'utilizzo da parte del sist
 #: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "Elenco degli allarmi in forma codificata breve"
-
-#: ../src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "Orologio 24 o 12 ore"
-
-#: ../src/mnp-utils.c:453
-msgid "%b %-d (local)"
-msgstr "%b %-d (locale)"
-
-#: ../src/mnp-datetime.c:608
-msgid "Open Tasks"
-msgstr "Compiti aperti"
-
-#: ../src/mnp-world-clock.c:517
-msgid "24 hour clock"
-msgstr "Orologio 24 ore"
-
-#: ../src/mnp-world-clock.c:463
-msgid "Time"
-msgstr "Ora"
-
-#: ../src/mnp-datetime.c:288
-msgid "Appointments"
-msgstr "Appuntementi"
-
-#: ../src/mnp-world-clock.c:683
-msgid "Set Time & Date"
-msgstr "Imposta ora e data"
-
-#: ../src/mnp-datetime.c:426
-msgid "Open Appointments"
-msgstr "Appuntamenti aperti"
 
 #~ msgid "OFF"
 #~ msgstr "OFF"
