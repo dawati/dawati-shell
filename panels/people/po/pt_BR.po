@@ -29,7 +29,7 @@ msgstr "Olá! Este é o painel de Gente. Se você tem um serviço IM configurado
 #: ../src/mnb-people-panel.c:414
 #, c-format
 msgid "Open %s"
-msgstr "Aberto %s"
+msgstr "Abrir %s"
 
 #: ../src/mnb-people-panel.c:231
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
