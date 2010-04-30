@@ -60,6 +60,7 @@ struct _MnpWorldClockPrivate {
 	MxListView *zones_list;
 	ClutterModel *zones_model;
 	ClutterActor *completion;
+        ClutterActor *event_box;
 	ClutterActor *entry_box;
 	ClutterActor *tfh_clock;
 
@@ -382,9 +383,42 @@ zone_removed_cb (MnpClockArea *area, char *display, MnpWorldClock *clock)
 	
 }
 
+static gboolean
+event_box_clicked_cb (ClutterActor  *box,
+                      ClutterEvent  *event,
+                      MnpWorldClock *world_clock)
+{
+        MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+
+        clutter_actor_hide (priv->completion);
+        clutter_actor_hide (box);
+
+        return TRUE;
+}
+
+static void
+completion_show_cb (ClutterActor  *completion,
+                    MnpWorldClock *world_clock)
+{
+        MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+
+        clutter_actor_show (priv->event_box);
+        clutter_actor_lower (priv->event_box, completion);
+}
+
+static void
+completion_hide_cb (ClutterActor  *completion,
+                    MnpWorldClock *world_clock)
+{
+        MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+        clutter_actor_hide (priv->event_box);
+}
+
 static void
 construct_completion (MnpWorldClock *world_clock)
 {
+        const ClutterColor transparent = { 0x00, 0x00, 0x00, 0x00 };
+
 	ClutterActor *frame, *scroll, *view, *stage;
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 	ClutterModel *model;
@@ -392,6 +426,20 @@ construct_completion (MnpWorldClock *world_clock)
 
 	stage = clutter_stage_get_default ();
 	
+        /* Create an event-box to capture input when the completion list
+         * displays.
+         */
+        priv->event_box = clutter_rectangle_new_with_color (&transparent);
+        clutter_actor_set_size (priv->event_box,
+                                clutter_actor_get_width (stage),
+                                clutter_actor_get_height (stage));
+        clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                     priv->event_box);
+        clutter_actor_set_reactive (priv->event_box, TRUE);
+        clutter_actor_hide (priv->event_box);
+        g_signal_connect (priv->event_box, "button-press-event",
+                          G_CALLBACK (event_box_clicked_cb), world_clock);
+
 	model = mnp_get_world_timezones ();
 	priv->zones_model = model;
 	clutter_model_set_filter (model, filter_zone, world_clock, NULL);
@@ -412,6 +460,10 @@ construct_completion (MnpWorldClock *world_clock)
 	clutter_actor_hide (frame);
 
 	priv->completion = frame;
+        g_signal_connect (priv->completion, "show",
+                          G_CALLBACK (completion_show_cb), world_clock);
+        g_signal_connect (priv->completion, "hide",
+                          G_CALLBACK (completion_hide_cb), world_clock);
 
 	view = mx_list_view_new ();
 	clutter_actor_set_name (view, "CompletionListView");
