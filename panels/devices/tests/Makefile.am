@@ -18,6 +18,7 @@ noinst_PROGRAMS = \
   test-display-device \
   test-disk-tile \
   test-folder-button \
+  test-folder-tile \
   test-storage-device \
   test-storage-device-tile \
   $(NULL)
@@ -54,6 +55,13 @@ test_disk_tile_SOURCES = \
 test_folder_button_SOURCES = \
   test-folder-button.c \
   $(top_srcdir)/src/mpd-folder-button.c \
+  $(top_srcdir)/src/mpd-gobject.c \
+  $(NULL)
+
+test_folder_tile_SOURCES = \
+  test-folder-tile.c \
+  $(top_srcdir)/src/mpd-folder-button.c \
+  $(top_srcdir)/src/mpd-folder-tile.c \
   $(top_srcdir)/src/mpd-gobject.c \
   $(NULL)
 

@@ -141,8 +141,14 @@ mpd_shell_init (MpdShell *self)
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), pane);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), pane,
+                               "expand", true,
+                               "x-fill", true,
+                               "y-fill", true,
+                               NULL);
 
   pane = mpd_devices_pane_new ();
+  clutter_actor_set_width (pane, MPD_DEVICES_PANE_WIDTH);
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
   g_signal_connect (pane, "request-show",

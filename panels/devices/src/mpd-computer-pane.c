@@ -152,6 +152,11 @@ mpd_computer_pane_init (MpdComputerPane *self)
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), tile);
+  clutter_container_child_set (CLUTTER_CONTAINER (hbox), tile,
+                               "expand", true,
+                               "x-fill", true,
+                               "y-fill", true,
+                               NULL);
 }
 
 ClutterActor *

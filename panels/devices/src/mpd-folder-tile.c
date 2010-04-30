@@ -27,7 +27,7 @@
 #include "mpd-folder-tile.h"
 #include "config.h"
 
-G_DEFINE_TYPE (MpdFolderTile, mpd_folder_tile, MX_TYPE_TABLE)
+G_DEFINE_TYPE (MpdFolderTile, mpd_folder_tile, MX_TYPE_FRAME)
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPD_TYPE_FOLDER_TILE, MpdFolderTilePrivate))
@@ -145,8 +145,13 @@ mpd_folder_tile_init (MpdFolderTile *self)
                                    G_USER_DIRECTORY_MUSIC,
                                    G_USER_DIRECTORY_PICTURES,
                                    G_USER_DIRECTORY_VIDEOS };
-  ClutterActor *button;
-  unsigned int i;
+  ClutterActor  *box;
+  ClutterActor  *button;
+  unsigned int   i;
+
+  box = clutter_box_new (clutter_flow_layout_new (CLUTTER_FLOW_HORIZONTAL));
+  mx_bin_set_child (MX_BIN (self), box);
+  mx_bin_set_alignment (MX_BIN (self), MX_ALIGN_MIDDLE, MX_ALIGN_START);
 
   for (i = 0; i < G_N_ELEMENTS (directories); i++)
   {
@@ -161,7 +166,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
                            NULL);
     g_signal_connect (button, "clicked",
                       G_CALLBACK (_button_clicked_cb), self);
-    mx_table_add_actor (MX_TABLE (self), button, i / 2, i % 2);
+    clutter_container_add_actor (CLUTTER_CONTAINER (box), button);
 
     g_free (icon_path);
     g_free (label);
@@ -176,7 +181,7 @@ mpd_folder_tile_init (MpdFolderTile *self)
                          NULL);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (_button_clicked_cb), self);
-  mx_table_add_actor (MX_TABLE (self), button, i / 2, i % 2);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), button);
 
 #if 0 /* Not showing gtk-bookmarks for now. */
   filename = g_build_filename (g_get_home_dir (), ".gtk-bookmarks", NULL);

@@ -89,9 +89,12 @@ main (int     argc,
       char  **argv)
 {
   bool standalone = false;
+  char const *geometry = NULL;
   GOptionEntry _options[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
       "Do not embed into the moblin panel", NULL },
+    { "geometry", 'g', 0, G_OPTION_ARG_STRING, &geometry,
+      "Window geometry in standalone mode", NULL },
     { NULL }
   };
 
@@ -130,6 +133,17 @@ main (int     argc,
   {
     ClutterActor *stage = clutter_stage_get_default ();
 
+    if (geometry)
+    {
+      int x, y;
+      unsigned int width, height;
+      XParseGeometry (geometry, &x, &y, &width, &height);
+      clutter_actor_set_size (stage, width, height);
+    } else
+    {
+      clutter_actor_set_size (stage, MPD_SHELL_WIDTH, MPD_SHELL_HEIGHT);
+    }
+
     shell = mpd_shell_new ();
 
     g_signal_connect (shell, "request-hide",
@@ -139,7 +153,6 @@ main (int     argc,
     g_signal_connect (stage, "notify::height",
                       G_CALLBACK (_stage_height_notify_cb), shell);
 
-    clutter_actor_set_size (stage, MPD_SHELL_WIDTH, MPD_SHELL_HEIGHT);
     clutter_container_add_actor (CLUTTER_CONTAINER (stage), shell);
     clutter_actor_show_all (stage);
 

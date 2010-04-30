@@ -8,7 +8,13 @@ MplContentPane {
 
 MplContentPane > .header {
   border-image: url('content-pane-header.png') 2;
-  padding: 6 10 6 15;
+  padding: 3 10 3 15;
+}
+
+MplContentPane > MxBoxLayout > .title {
+  color: #616261;
+  font-size: 16pt;
+  font-weight: bold;
 }
 
 
