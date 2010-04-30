@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-28 09:36+0000\n"
-"PO-Revision-Date: 2010-04-29 11:45-0800\n"
+"PO-Revision-Date: 2010-04-30 10:08-0800\n"
 "Last-Translator: francesca godani <francesca.godani@ptiglobal.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../data/moblin-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
-msgstr "Pannello myzone"
+msgstr "Pannello Myzone"
 
 #: ../data/myzone.desktop.in.in.h:1
 msgid "Change the Myzone background and content"
@@ -69,7 +69,7 @@ msgstr "Vuoi eliminare i documenti recenti? Questo rimuoverà il contenuto local
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
-msgstr "<b>Appuntamenti</b>"
+msgstr "Appuntamenti"
 
 #: ../penge/penge-calendar-pane.c:496
 #: ../penge/penge-calendar-pane.c:539
@@ -116,11 +116,11 @@ msgstr "Avvia il video di introduzione"
 
 #: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
-msgstr "Benvenuti su MeeGo"
+msgstr "Benvenuti in MeeGo"
 
 #: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Questo è il myzone, dove verranno visualizzati i file utilizzati di recente e il contenuto dei tuoi feed web"
+msgstr "Questo è Myzone, dove verranno visualizzati i file utilizzati di recente e il contenuto dei tuoi feed web."
 
 #: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
