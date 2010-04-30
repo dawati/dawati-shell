@@ -43,7 +43,7 @@ main (int    argc,
   textdomain (GETTEXT_PACKAGE);
 
   gtk_clutter_init (&argc, &argv);
-  notify_init (_("Moblin Power Icon"));
+  notify_init (_("MeeGo Power Icon"));
 
   icon = mpd_power_icon_new ();
 

@@ -92,7 +92,7 @@ main (int     argc,
   char const *geometry = NULL;
   GOptionEntry _options[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
-      "Do not embed into the moblin panel", NULL },
+      "Run as standalone app (for testing purpose)", NULL },
     { "geometry", 'g', 0, G_OPTION_ARG_STRING, &geometry,
       "Window geometry in standalone mode", NULL },
     { NULL }
@@ -107,7 +107,7 @@ main (int     argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- Moblin devices panel");
+  context = g_option_context_new ("- MeeGo devices panel");
   g_option_context_add_main_entries (context, _options, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   if (!g_option_context_parse (context, &argc, &argv, &error))
@@ -120,7 +120,7 @@ main (int     argc,
   g_option_context_free (context);
 
   clutter_init (&argc, &argv);
-  notify_init (_("Moblin Devices Panel"));
+  notify_init (_("MeeGo Devices Panel"));
   /* Just for icon theme, no widgets. */
   gtk_init (&argc, &argv);
 

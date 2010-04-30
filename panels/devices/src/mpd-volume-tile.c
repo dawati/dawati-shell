@@ -31,7 +31,7 @@
 #include "mpd-volume-tile.h"
 #include "config.h"
 
-#define MIXER_CONTROL_NAME "Moblin Panel Devices"
+#define MIXER_CONTROL_NAME "MeeGo Panel Devices"
 #define VOLUME_CHANGED_EVENT "audio-volume-change"
 
 GvcMixerStream *
