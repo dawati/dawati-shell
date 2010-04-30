@@ -15,7 +15,7 @@ msgstr ""
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
-msgstr "Panello dispositivi"
+msgstr "Pannello dispositivi"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
 #: ../src/moblin-panel-devices.c:149
@@ -57,7 +57,7 @@ msgstr "Icona di "
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
-msgstr "La battria si sta scaricando"
+msgstr "La batteria si sta scaricando"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
@@ -102,7 +102,7 @@ msgstr "Spegni"
 
 #: ../src/moblin-panel-devices.c:120
 msgid "Moblin Devices Panel"
-msgstr "Panello dispositivi di Moblin"
+msgstr "Pannello dispositivi di Moblin"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
@@ -117,7 +117,7 @@ msgstr "La batteria è in carica. È circa il %d%% piena."
 #: ../src/mpd-battery-device.c:342
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr "La bateria è in uso. È circa il %d%% piena."
+msgstr "La batteria è in uso. È circa il %d%% piena."
 
 #: ../src/mpd-battery-device.c:347
 #, c-format
