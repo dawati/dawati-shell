@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <SIBO.ATTEMA@GMAIL.COM>, YEAR 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 22:48+0000\n"
+"POT-Creation-Date: 2010-04-28 09:35+0000\n"
 "PO-Revision-Date: 2009-08-03 13:52+0100\n"
 "Last-Translator: Sibo Attema <sibo.attema@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,21 +38,21 @@ msgstr "Offline"
 msgid "Unnamed"
 msgstr "Geen naam"
 
-#: ../anerley/anerley-presence-chooser.c:45
-msgid "Extended Away"
-msgstr "Absent voor langere tijd"
-
 #: ../anerley/anerley-presence-chooser.c:41
 msgid "Unset"
 msgstr "Niet gezet"
 
-#: ../anerley/anerley-presence-chooser.c:48
-msgid "Unknown"
-msgstr "Onbekend"
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Absent voor langere tijd"
 
 #: ../anerley/anerley-presence-chooser.c:46
 msgid "Hidden"
 msgstr "Verborgen"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Onbekend"
 
 #: ../anerley/anerley-presence-chooser.c:49
 msgid "Error"
