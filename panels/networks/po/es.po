@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-08 18:55+0000\n"
+"POT-Creation-Date: 2010-04-28 09:29+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -33,26 +33,22 @@ msgstr " o "
 msgid ", "
 msgstr ", "
 
-#: ../carrick/carrick-list.c:853 ../carrick/carrick-util.c:34
-msgid "wired"
-msgstr "alámbrica"
-
-#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1405
+#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1408
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "Wi-Fi"
 
-#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1499
+#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1502
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1468
+#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1471
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1531
+#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1534
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -89,11 +85,6 @@ msgstr "No se encuentra ninguna red. "
 msgid "Network connected"
 msgstr "Red conectada"
 
-#: ../carrick/carrick-notification-manager.c:112
-#, c-format
-msgid "You're now connected to a wired network"
-msgstr "Estás conectado a una red alámbrica"
-
 #: ../carrick/carrick-notification-manager.c:142
 #, c-format
 msgid "You're now connected to %s, a %s network"
@@ -108,16 +99,6 @@ msgstr "Estás conectado a una red %s"
 msgid "Network lost"
 msgstr "Se ha perdido la red"
 
-#: ../carrick/carrick-notification-manager.c:173
-#, c-format
-msgid "Sorry, we've lost your wired connection"
-msgstr "Hemos perdido la conexión alámbrica"
-
-#: ../carrick/carrick-notification-manager.c:177
-#, c-format
-msgid "Sorry we've lost your %s connection to %s"
-msgstr "Hemos perdido la conexión %s a %s"
-
 #: ../carrick/carrick-notification-manager.c:183
 #, c-format
 msgid "Sorry, we've lost your %s connection"
@@ -126,11 +107,6 @@ msgstr "Hemos perdido la conexión %s"
 #: ../carrick/carrick-notification-manager.c:200
 msgid "Network changed"
 msgstr "Ha cambiado la red"
-
-#: ../carrick/carrick-notification-manager.c:219
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a una red alámbrica."
 
 #: ../carrick/carrick-notification-manager.c:226
 #, c-format
@@ -141,11 +117,6 @@ msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a %s, una r
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a una red %s."
-
-#: ../carrick/carrick-notification-manager.c:244
-#, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Hemos perdido la conexión %s, así que te hemos a una red alámbrica."
 
 #: ../carrick/carrick-notification-manager.c:251
 #, c-format
@@ -191,24 +162,24 @@ msgstr "Contraseña"
 msgid "Show password"
 msgstr "Mostrar la contraseña"
 
-#: ../carrick/carrick-pane.c:1437 ../carrick/carrick-service-item.c:241
-msgid "Wired"
-msgstr "Alámbrica"
+#: ../carrick/carrick-pane.c:1398
+msgid "Settings"
+msgstr "Ajustes"
 
-#: ../carrick/carrick-pane.c:1563
+#: ../carrick/carrick-pane.c:1566
 msgid "Offline mode"
 msgstr "Modo fuera de línea"
 
-#: ../carrick/carrick-pane.c:1588
+#: ../carrick/carrick-pane.c:1591
 msgid "This will disable all your connections"
 msgstr "Esto deshabilitará todas las conexiones"
 
-#: ../carrick/carrick-pane.c:1621 ../src/carrick.c:351
+#: ../carrick/carrick-pane.c:1623 ../src/carrick.c:351
 msgid "Networks"
 msgstr "Redes"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1633
+#: ../carrick/carrick-pane.c:1629
 msgid "Add new connection"
 msgstr "Agregar una nueva conexión"
 
@@ -467,9 +438,38 @@ msgstr "Selecciona el servicio 3G"
 msgid "Network settings"
 msgstr "Configuración de red"
 
-#: ../carrick/carrick-pane.c:1396
-msgid "Settings"
-msgstr "Ajustes"
+#: ../carrick/carrick-list.c:853 ../carrick/carrick-util.c:34
+msgid "wired"
+msgstr "Con cable"
+
+#: ../carrick/carrick-notification-manager.c:177
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "Hemos perdido la conexión %s a %s"
+
+#: ../carrick/carrick-notification-manager.c:112
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "Estás conectado a una red con cable"
+
+#: ../carrick/carrick-notification-manager.c:173
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "Hemos perdido la conexión con cable"
+
+#: ../carrick/carrick-notification-manager.c:244
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Hemos perdido la conexión %s, así que te hemos a una red con cable."
+
+#: ../carrick/carrick-notification-manager.c:219
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "Hemos perdido la conexión a %s, así que te hemos conectado a una red con cable."
+
+#: ../carrick/carrick-pane.c:1440 ../carrick/carrick-service-item.c:241
+msgid "Wired"
+msgstr "Con cable"
 
 #~ msgid "Manual Config"
 #~ msgstr "Configuración manual"
