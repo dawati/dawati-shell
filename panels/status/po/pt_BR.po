@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:34+0000\n"
+"POT-Creation-Date: 2010-04-28 09:38+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -15,8 +15,12 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr "Olá! Este é o painel de status. Se você tem uma conta configurada na web (como Twitter) você poderá ver seus feeds e atualizar seu status aqui"
+msgid ""
+"Hello! This is the Status panel.When you have a web account configured(like "
+"Twitter) you will be able to view yourfeeds and update your status here"
+msgstr ""
+"Olá! Este é o painel de status. Se você tem uma conta configurada na web "
+"(como Twitter) você poderá ver seus feeds e atualizar seu status aqui"
 
 #: ../src/moblin-panel-status.c:99
 msgid "Status"
@@ -33,8 +37,12 @@ msgid "Status panel"
 msgstr "Painel de status"
 
 #: ../src/mps-feed-pane.c:92
-msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "Impossível atualizar o status. O serviço pode estar indisponível ou sua senha pode estar incorreta."
+msgid ""
+"Unable to update status. The service may be unavailable or your password "
+"could be wrong."
+msgstr ""
+"Impossível atualizar o status. O serviço pode estar indisponível ou sua "
+"senha pode estar incorreta."
 
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
@@ -72,8 +80,14 @@ msgid "Add new web service"
 msgstr "Adicionar novo serviço web"
 
 #: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Parece que você não tem serviços web configurados ou existe um problema com suas configurações. Use o botão acima para abrir Minhas Contas Web e configure uma."
+msgid ""
+"You don't appear to have any web services configured or there is a problem "
+"with their configuration. Use the button above to open the My Web Accounts "
+"and set one up."
+msgstr ""
+"Parece que você não tem serviços web configurados ou existe um problema com "
+"suas configurações. Use o botão acima para abrir Minhas Contas Web e "
+"configure uma."
 
 #: ../src/mps-geotag-pane.c:215
 msgid "Your location"
@@ -104,48 +118,61 @@ msgstr "Não use o local"
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
 #.
-#: ../src/mps-tweet-card.c:391
+#: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s de %s"
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
+
 #~ msgid "Available"
 #~ msgstr "Disponível"
+
 #~ msgid "Away"
 #~ msgstr "Ausente"
+
 #~ msgid "Busy"
 #~ msgstr "Ocupado"
+
 #~ msgid "Close"
 #~ msgstr "Fechar"
+
 #~ msgid "Unknown account"
 #~ msgstr "Conta desconhecida"
+
 #~ msgid "Edit"
 #~ msgstr "Editar"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Digite o seu status %s aqui..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "Digite o seu status aqui..."
+
 #~ msgid "Post"
 #~ msgstr "Post"
+
 #~ msgid "Your current status"
 #~ msgstr "Seu status atual"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Seu status atual - você está offline"
+
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr ""
 #~ "Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
+
 #~ msgid ""
 #~ "To update your web status you need to setup a Web Services account with a "
 #~ "provider that supports status messages"
 #~ msgstr ""
 #~ "Para atualizar seu status na web, configure uma conta de Serviços na web "
 #~ "com provedor que suporta mensagens de status"
+
 #~ msgid ""
 #~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr ""
 #~ "Para atualizar seu status IM você precisa configurar uma conta Instant "
 #~ "Messaging"
-
