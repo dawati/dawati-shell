@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:30+0000\n"
+"POT-Creation-Date: 2010-04-28 09:35+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -13,24 +13,20 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../anerley/anerley-tile.c:170
-#: ../anerley/anerley-presence-chooser.c:43
+#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
 msgid "Available"
 msgstr "Disponível"
 
-#: ../anerley/anerley-tile.c:173
-#: ../anerley/anerley-presence-chooser.c:47
+#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../anerley/anerley-tile.c:176
-#: ../anerley/anerley-tile.c:179
+#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
 #: ../anerley/anerley-presence-chooser.c:44
 msgid "Away"
 msgstr "Ausente"
 
-#: ../anerley/anerley-tile.c:182
-#: ../anerley/anerley-presence-chooser.c:42
+#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
 msgid "Offline"
 msgstr "Offline"
 
@@ -57,4 +53,3 @@ msgstr "Desconhecido"
 #: ../anerley/anerley-presence-chooser.c:49
 msgid "Error"
 msgstr "Erro"
-
