@@ -20,7 +20,7 @@ msgstr "Laitteet-paneeli"
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
 #: ../src/moblin-panel-devices.c:149
 msgid "devices"
-msgstr "Laitteet"
+msgstr "laitteet"
 
 #. translators:
 #. * The device has been disabled
