@@ -94,7 +94,7 @@ msgstr "Haluatko tyhjentää viimeisimmät asiakirjasi? Tämä poistaa paikallis
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
-msgstr "<b>Tapaamiset</b>"
+msgstr "Tapaamiset"
 
 #: ../penge/penge-calendar-pane.c:496
 #: ../penge/penge-calendar-pane.c:539
