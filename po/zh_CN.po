@@ -4,12 +4,12 @@
 # This file is distributed under the same license as the mutter-moblin package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:25+0000\n"
+"POT-Creation-Date: 2010-04-28 09:29+0000\n"
 "PO-Revision-Date: 2009-10-13 12:25-0800\n"
 "Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -21,43 +21,81 @@ msgstr ""
 msgid "Set your toolbar preferences"
 msgstr "设置您工具栏的选择"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "工具栏设置"
+
+#: ../capplet/src/mtp-bin.c:362
 msgid "Save toolbar"
 msgstr "保存工具栏"
 
-#: ../capplet/src/mtp-bin.c:366
+#: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "抱歉，你添加新面板之前必须先移除一个面板。"
 
-#: ../capplet/src/mtp-jar.c:109
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgstr "您可以添加、删除和重新排列工具栏中的很多面板。"
+
+#: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "可用的面板"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:124
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:123
+#.
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:133
 msgid "%l:%M %P"
 msgstr "%P %l:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:144
+#.
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:154
 msgid "%B %e, %Y"
 msgstr "%Y年%b月%e日"
 
 #: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
 msgstr "工具栏"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "设置您系统托盘的选项"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:241
+msgid "System Tray"
+msgstr "系统托盘"
+
+#: ../capplet/src/syst-cc-panel.c:174
+msgid "Show system tray"
+msgstr "显示系统托盘"
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid ""
+"The system tray is a concept used by some, older, applications to let you "
+"know when something happens or to stay running when you close them."
+msgstr ""
+"系统托盘保存某些程序或您使用过的程序，以便在有情况发生时通知您；或您关闭它们"
+"时，程序仍能继续运行。"
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
@@ -67,32 +105,32 @@ msgstr "确定工具栏上面板的顺序。"
 msgid "Order of panels on toolbar"
 msgstr "工具栏上面板的顺序"
 
-#: ../src/moblin-netbook.c:905
+#: ../src/moblin-netbook.c:962
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook 特效"
 
-#: ../src/moblin-netbook.c:909
+#: ../src/moblin-netbook.c:966
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin Netbook 特效"
 
-#: ../src/moblin-netbook.c:3035
+#: ../src/moblin-netbook.c:3164
 msgid "Activate"
 msgstr "激活"
 
-#: ../src/moblin-netbook.c:3049
+#: ../src/moblin-netbook.c:3178
 msgid "Unknown window"
 msgstr "未知的窗口"
 
-#: ../src/moblin-netbook.c:3051
+#: ../src/moblin-netbook.c:3180
 msgid "Is asking for your attention."
 msgstr "正在寻求您的关注。"
 
-#: ../src/mnb-toolbar.c:976
+#: ../src/mnb-toolbar.c:974
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "抱歉。%s 坏掉了"
 
-#: ../src/notifications/mnb-notification.c:262
+#: ../src/notifications/mnb-notification.c:282
 msgid "Dismiss"
 msgstr "忽略"
 
@@ -100,43 +138,8 @@ msgstr "忽略"
 msgid "Dismiss All"
 msgstr "忽略所有"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar settings"
-msgstr "工具栏设置"
-
-#: ../capplet/src/mtp-bin.c:368
-msgid "You can add, remove and reorder many of the panels in your toolbar."
-msgstr "您可以添加、删除和重新排列工具栏中的很多面板。"
-
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
-msgid "%H:%M"
-msgstr "%H:%M"
-
-#: ../capplet/data/system-tray-properties.desktop.in.h:1
-msgid "Set your system-tray preferences"
-msgstr "设置您系统托盘的选项"
-
-#: ../capplet/src/syst-cc-panel.c:170
-msgid "System tray"
-msgstr "系统托盘"
-
-#: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:253
-msgid "System Tray"
-msgstr "系统托盘"
-
-#: ../capplet/src/syst-cc-panel.c:207
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "系统托盘保存某些程序或您使用过的程序，以便在有情况发生时通知您；或您关闭它们时，程序仍能继续运行。"
-
-#: ../capplet/src/syst-cc-panel.c:186
-msgid "Show system tray"
-msgstr "显示系统托盘"
+#~ msgid "System tray"
+#~ msgstr "系统托盘"
 
 #~ msgid "Socket for embedding"
 #~ msgstr "嵌入式插槽"
@@ -153,8 +156,12 @@ msgstr "显示系统托盘"
 #~ msgid "No Zones yet"
 #~ msgstr "尚无区域"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "当前正在运行的程序会显示在这里。您可以在它们之间切换, 还可以按照您自己的方式去组织它们。"
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "当前正在运行的程序会显示在这里。您可以在它们之间切换, 还可以按照您自己的方"
+#~ "式去组织它们。"
 
 #~ msgid "No applications on this zone"
 #~ msgstr "本区没有应用程序"
@@ -210,8 +217,13 @@ msgstr "显示系统托盘"
 #~ msgid "test"
 #~ msgstr "测试"
 
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "这里会显示您播放过的音乐，视频和浏览过的图片。现在，您可以浏览一些媒体样本："
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "这里会显示您播放过的音乐，视频和浏览过的图片。现在，您可以浏览一些媒体样"
+#~ "本："
 
 #~ msgid "Recently played"
 #~ msgstr "最近播放"
@@ -261,8 +273,12 @@ msgstr "显示系统托盘"
 #~ msgid "applications"
 #~ msgstr "应用程序"
 
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显示"
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显"
+#~ "示"
 
 #~ msgid "Untitled"
 #~ msgstr "无标题"
@@ -313,19 +329,26 @@ msgstr "显示系统托盘"
 #~ msgstr "粘贴板"
 
 #~ msgid "<b>Appointments</b>"
-#~ msgstr "<b>我的日程安排</b>"
+#~ msgstr "<b>日程安排</b>"
 
 #~ msgid "No calendar entries this week"
 #~ msgstr "本周无日程安排"
 
-#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
 #~ msgstr "您朋友的最新情况会在这里显示。现在就开始配置您的账户吧！"
 
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>欢迎使用 Moblin 2.0 系统</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 "
+#~ "Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
 
 #~ msgid "Web page"
 #~ msgstr "网页"
@@ -348,7 +371,8 @@ msgstr "显示系统托盘"
 #~ msgid "Send a message"
 #~ msgstr "发送一条消息"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "抱歉，我不能找到任何好友。请确认您已经建立好一个聊天账户？"
 
 #~ msgid "People"
@@ -408,10 +432,15 @@ msgstr "显示系统托盘"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "当前状态 - 离线"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状态信息。"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状"
+#~ "态信息。"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "要更新您的即时通讯状态，需要先建立一个即时通讯账户"
 
 #~ msgid "status"
