@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-people.master.moblin-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:41+0000\n"
+"POT-Creation-Date: 2010-05-01 09:43+0000\n"
 "PO-Revision-Date: 2009-11-08 10:44+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -18,69 +18,69 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Lokalize 0.3\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:466
+#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:476
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "djins"
 
-#: ../src/mnb-people-panel.c:185
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#, c-format
+msgid "Open %s"
+msgstr "Drovi %s"
+
+#: ../src/mnb-people-panel.c:231
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Dji rgrete, nos n' avans savou trouver d' djin. Avoz apontyî on conte di Messaedjreye?"
 
-#: ../src/mnb-people-panel.c:273
+#: ../src/mnb-people-panel.c:283
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Dji rgrete, nos n' avans savou trouver d' djin. I shonne k' i sont tertos disraloyîs."
 
-#: ../src/mnb-people-panel.c:318
+#: ../src/mnb-people-panel.c:328
 msgid "To see your IM contacts, you need to go online."
 msgstr "Po vey vos soçons do berdelaedje sol moumint, vos dvoz potchîz so fyis."
 
+#: ../src/mnb-people-panel.c:458
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "djins - vos berdelez avou %d dijns"
+
+#: ../src/mnb-people-panel.c:465
+msgid "people - you are chatting with someone"
+msgstr "djins - vos berdelez avou ene dijn"
+
 #. Populate header
-#: ../src/mnb-people-panel.c:666 ../src/mnb-people-panel.c:919
+#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
 msgid "People"
 msgstr "Djins"
 
-#: ../src/mnb-people-panel.c:679
+#: ../src/mnb-people-panel.c:689
 msgid "Search"
 msgstr "Trover"
 
-#: ../src/mnb-people-panel.c:730 ../src/mnb-people-panel.c:1106
+#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
 msgid "You are chatting with:"
 msgstr "Vos berdelez avou:"
+
+#: ../src/mnb-people-panel.c:947
+msgid "Me and my people"
+msgstr "Mi et mes djins"
+
+#: ../src/mnb-people-panel.c:985
+msgid "Me"
+msgstr "Mi"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1086
+msgid "My conversations"
+msgstr "Mi berdelaedjes"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Sicrifrôr des djins"
 
-#: ../src/mnb-people-panel.c:228 ../src/mnb-people-panel.c:404
-#, c-format
-msgid "Open %s"
-msgstr "Drovi %s"
-
-#: ../src/mnb-people-panel.c:448
-#, c-format
-msgid "people - you are chatting with %d people"
-msgstr "djins - vos berdelez avou %d dijns"
-
-#: ../src/mnb-people-panel.c:455
-msgid "people - you are chatting with someone"
-msgstr "djins - vos berdelez avou ene dijn"
-
-#: ../src/mnb-people-panel.c:974
-msgid "Me"
-msgstr "Mi"
-
-#: ../src/mnb-people-panel.c:936
-msgid "Me and my people"
-msgstr "Mi et mes djins"
-
-#. Side table
-#: ../src/mnb-people-panel.c:1063
-msgid "My conversations"
-msgstr "Mi berdelaedjes"
-
-#: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat topeople."
+#: ../src/mnb-people-panel.c:57
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
 msgstr "A ! Çouchal, c' est l' sicriftôr des djins. Cwand vs avoz on siervice di MSM d' apontyî (come Messenger), c' est vaila k' vos alez berdeler avou les djins."
 
 #~ msgid "people - %d people are talking to you"
