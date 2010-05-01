@@ -4,12 +4,12 @@
 # This file is distributed under the same license as the mutter-moblin package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:46+0000\n"
+"POT-Creation-Date: 2010-04-28 09:42+0000\n"
 "PO-Revision-Date: 2010-03-08 15:23-0800\n"
 "Last-Translator: \n"
 "Language-Team: Chinese (simplified)\n"
@@ -21,13 +21,24 @@ msgstr ""
 msgid "Zones panel"
 msgstr "区面板"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "区"
 
+#: ../src/main.c:405
+msgid "Zones"
+msgstr "区"
+
 #: ../src/sw-overview.c:220
-msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "Hello! 这是区面板。当您有应用程序打开时，您可以从这里查看、管理和访问。"
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+"Hello! 这是区面板。当您有应用程序打开时，您可以从这里查看、管理和访问。"
+
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "新区"
 
 #: ../src/sw-zone.c:797
 msgid "No applications on this zone"
@@ -37,14 +48,6 @@ msgstr "本区没有应用程序"
 #, c-format
 msgid "Zone %d"
 msgstr "%d 区"
-
-#: ../src/main.c:403
-msgid "Zones"
-msgstr "区"
-
-#: ../src/sw-zone.c:783
-msgid "New Zone"
-msgstr "新区"
 
 #~ msgid "one"
 #~ msgstr "一"
@@ -70,8 +73,12 @@ msgstr "新区"
 #~ msgid "eight"
 #~ msgstr "八"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "当前正在运行的程序会显示在这里。您可以在它们之间切换，还可以按照您自己的方式去组织它们。"
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "当前正在运行的程序会显示在这里。您可以在它们之间切换，还可以按照您自己的方"
+#~ "式去组织它们。"
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin Netbook 特效"
@@ -148,8 +155,13 @@ msgstr "新区"
 #~ msgid "test"
 #~ msgstr "测试"
 
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "这里会显示您播放过的音乐，视频和浏览过的图片。现在，您可以浏览一些媒体样本："
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "这里会显示您播放过的音乐，视频和浏览过的图片。现在，您可以浏览一些媒体样"
+#~ "本："
 
 #~ msgid "Recently played"
 #~ msgstr "最近播放"
@@ -199,8 +211,12 @@ msgstr "新区"
 #~ msgid "applications"
 #~ msgstr "应用程序"
 
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显示"
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显"
+#~ "示"
 
 #~ msgid "Untitled"
 #~ msgstr "无标题"
@@ -251,19 +267,26 @@ msgstr "新区"
 #~ msgstr "粘贴板"
 
 #~ msgid "<b>Appointments</b>"
-#~ msgstr "<b>我的日程安排</b>"
+#~ msgstr "<b>日程安排</b>"
 
 #~ msgid "No calendar entries this week"
 #~ msgstr "本周无日程安排"
 
-#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
 #~ msgstr "您朋友的最新情况会在这里显示。现在就开始配置您的账户吧！"
 
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>欢迎使用 Moblin 2.0 系统</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 "
+#~ "Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
 
 #~ msgid "Web page"
 #~ msgstr "网页"
@@ -286,7 +309,8 @@ msgstr "新区"
 #~ msgid "Send a message"
 #~ msgstr "发送一条消息"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "抱歉，我不能找到任何好友。请确认您已经建立好一个聊天账户？"
 
 #~ msgid "People"
@@ -343,10 +367,15 @@ msgstr "新区"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "当前状态 - 离线"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状态信息。"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状"
+#~ "态信息。"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "要更新您的即时通讯状态，需要先建立一个即时通讯账户"
 
 #~ msgid "status"
