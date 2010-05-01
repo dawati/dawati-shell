@@ -66,7 +66,7 @@ msgstr "您要清除最近的文件吗？这将从 Myzone 移除本地内容。"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
-msgstr "我的日程安排"
+msgstr "日程安排"
 
 #: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
