@@ -57,7 +57,6 @@ struct _CarrickPanePrivate
   GtkWidget *bluetooth_box;
   GtkWidget *offline_mode_switch;
   GtkWidget *offline_mode_box;
-  GtkWidget *offline_mode_label2;
   GtkWidget *service_list;
   GtkWidget *new_conn_button;
   CarrickIconFactory *icon_factory;
@@ -1063,7 +1062,6 @@ pane_have_daemon (CarrickPane *pane,
   gtk_widget_set_sensitive (priv->service_list, have_daemon);
   gtk_widget_set_sensitive (priv->new_conn_button, have_daemon);
   gtk_widget_set_visible (priv->offline_mode_box, have_daemon);
-  gtk_widget_set_visible (priv->offline_mode_label2, have_daemon);
 
   if (!have_daemon)
     {
@@ -1244,6 +1242,8 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget          *settings_frame;
   GtkWidget          *net_list_frame;
   GtkWidget          *column;
+  GtkWidget          *box;
+  GtkWidget          *offline_mode_label;
   GtkWidget          *banner;
   GError             *error = NULL;
   DBusGConnection    *connection;
@@ -1484,43 +1484,55 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_bluetooth_switch_callback),
                     self);
 
+  priv->offline_mode_box = gtk_vbox_new (TRUE, 0);
+  gtk_widget_show (priv->offline_mode_box);
+  box = gtk_hbox_new (TRUE, 0);
+  gtk_widget_show (box);
   priv->offline_mode_switch = mx_gtk_light_switch_new ();
   gtk_widget_show (priv->offline_mode_switch);
-  priv->offline_mode_box = gtk_hbox_new (TRUE, 0);
-  gtk_widget_show (priv->offline_mode_box);
+
+  offline_mode_label = gtk_label_new
+          (_ ("This will disable all your connections"));
+  gtk_label_set_line_wrap (GTK_LABEL (offline_mode_label),
+                           TRUE);
+  gtk_misc_set_alignment (GTK_MISC (offline_mode_label),
+                          0.5,
+                          0.0);
+  gtk_widget_show (offline_mode_label);
 
   g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
                     "switch-flipped",
                     G_CALLBACK (_offline_mode_switch_callback),
                     self);
+
   gtk_box_pack_start (GTK_BOX (priv->offline_mode_box),
+                      box,
+                      FALSE,
+                      FALSE,
+                      0);
+  gtk_box_pack_start (GTK_BOX (priv->offline_mode_box),
+                      offline_mode_label,
+                      FALSE,
+                      FALSE,
+                      0);
+
+  gtk_box_pack_start (GTK_BOX (box),
                       get_switch_label (_ ("Offline mode")),
                       TRUE,
                       TRUE,
                       6);
-  gtk_box_pack_start (GTK_BOX (priv->offline_mode_box),
+  gtk_box_pack_start (GTK_BOX (box),
                       priv->offline_mode_switch,
                       TRUE,
                       TRUE,
                       6);
-  gtk_box_pack_start (GTK_BOX (column),
-                      priv->offline_mode_box,
-                      FALSE,
-                      FALSE,
-                      6);
-  priv->offline_mode_label2 = gtk_label_new
-          (_ ("This will disable all your connections"));
-  gtk_label_set_line_wrap (GTK_LABEL (priv->offline_mode_label2),
-                           TRUE);
-  gtk_misc_set_alignment (GTK_MISC (priv->offline_mode_label2),
-                          0.5,
-                          0.0);
-  gtk_widget_show (priv->offline_mode_label2);
-  gtk_box_pack_start (GTK_BOX (column),
-                      priv->offline_mode_label2,
-                      FALSE,
-                      FALSE,
-                      0);
+
+  gtk_box_pack_end (GTK_BOX (column),
+                    priv->offline_mode_box,
+                    FALSE,
+                    FALSE,
+                    6);
+
   gtk_container_add (GTK_CONTAINER (settings_frame), column);
   gtk_box_pack_start (GTK_BOX (self),
                       settings_frame,
