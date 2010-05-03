@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-21 09:37+0000\n"
+"POT-Creation-Date: 2010-05-03 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -13,17 +13,13 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr "¡Hola! Éste es el panel de estado. Cuando tienes configurada una cuenta Web (como Twitter) aquí podrás ver las actualizaciones del estado de tus contactos y actualizar el tuyo."
-
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-status.c:99
+#: ../src/moblin-panel-status.c:100
 msgid "Status"
 msgstr "Estado"
 
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-status.c:157
+#: ../src/moblin-panel-status.c:158
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "estado"
@@ -41,26 +37,30 @@ msgstr "No se puede actualizar el estado: O el servicio no está disponible o tu
 msgid "Unable to update status: You're not online."
 msgstr "No se puede actualizar el estado: No estás en línea"
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:463
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Creemos que estás aquí: %f %f"
 
-#: ../src/mps-feed-pane.c:448
-#, c-format
-msgid "Your location is being shared as: %f %f "
+#: ../src/mps-feed-pane.c:467
+#, fuzzy, c-format
+msgid "Your location is being shared as: %f %f"
 msgstr "Tu ubicación aparece como: %f %f"
 
-#: ../src/mps-feed-pane.c:455
+#: ../src/mps-feed-pane.c:476
 msgid "Your location is not being shared"
 msgstr "No estás mostrando tu ubicación"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:551
+#: ../src/mps-feed-pane.c:579
 msgid "Update"
 msgstr "Actualizar"
 
-#: ../src/mps-feed-pane.c:606
+#: ../src/mps-feed-pane.c:584
+msgid "What's happening?"
+msgstr "¡Ponte al día!"
+
+#: ../src/mps-feed-pane.c:634
 msgid "Change"
 msgstr "Cambiar"
 
@@ -72,27 +72,27 @@ msgstr "Agregar un nuevo servicio web"
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Parece que no tienes ningún servicio de web configurado o hay un problema con la configuración. Utiliza el botón de arriba para abrir Mis cuentas Web y configurar uno."
 
-#: ../src/mps-geotag-pane.c:215
+#: ../src/mps-geotag-pane.c:232
 msgid "Your location"
 msgstr "Tu ubicación"
 
-#: ../src/mps-geotag-pane.c:485
+#: ../src/mps-geotag-pane.c:554
 msgid "Search"
 msgstr "Buscar"
 
-#: ../src/mps-geotag-pane.c:490
+#: ../src/mps-geotag-pane.c:559
 msgid "Where are you?"
 msgstr "¿Dónde estás?"
 
-#: ../src/mps-geotag-pane.c:492
+#: ../src/mps-geotag-pane.c:561
 msgid "Find me"
 msgstr "Búscame"
 
-#: ../src/mps-geotag-pane.c:499
+#: ../src/mps-geotag-pane.c:568
 msgid "Use location"
 msgstr "Usar esta ubicación"
 
-#: ../src/mps-geotag-pane.c:500
+#: ../src/mps-geotag-pane.c:569
 msgid "Don't use location"
 msgstr "No usar esta ubicación"
 
@@ -106,9 +106,19 @@ msgstr "No usar esta ubicación"
 msgid "%s from %s"
 msgstr " \t%s de %s"
 
-#: ../src/mps-feed-pane.c:556
-msgid "What's happening?"
-msgstr "¡Ponte al día!"
+#: ../src/moblin-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "¡Hola! Éste es el panel de estado. Cuando tengas configurada una cuenta Web (como Twitter), aquí podrás ver las actualizaciones del estado de tus contactos y actualizar el tuyo."
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Creemos que estás aquí: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:453
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Tu ubicación aparece como: %s (%f, %f)"
 
 #~ msgid "Offline"
 #~ msgstr "Fuera de línea"
