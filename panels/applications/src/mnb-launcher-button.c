@@ -235,6 +235,8 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
   MxPadding          padding;
   ClutterActorBox    icon_box, title_box, pin_box;
+  gfloat             title_height;
+  gfloat             title_width;
 
   CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)
     ->allocate (actor, box, flags);
@@ -245,20 +247,27 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->icon), &icon_box);
   icon_box.y1 = (int) ((box->y2 - box->y1 - self->priv->icon_size) / 2);
-  icon_box.x2 = icon_box.x1 + self->priv->icon_size;
-  icon_box.y2 = icon_box.y1 + self->priv->icon_size;
+  icon_box.x2 = (int) (icon_box.x1 + self->priv->icon_size);
+  icon_box.y2 = (int) (icon_box.y1 + self->priv->icon_size);
+
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &icon_box, flags);
 
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->title), &title_box);
-  title_box.x1 = icon_box.x2 + COL_SPACING;
-  title_box.x2 = (int) (box->x2 - box->x1 - padding.right);
+  title_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
+  clutter_actor_get_preferred_height (CLUTTER_ACTOR (self->priv->title),
+                                      title_width,
+                                      NULL,
+                                      &title_height);
+  title_box.x1 = (int) (icon_box.x2 + COL_SPACING);
+  title_box.x2 = (int) (title_box.x1 + title_width);
+  title_box.y1 = (int) ((box->y2 - box->y1 - title_height) / 2);
+  title_box.y2 = (int) (title_box.y1 + title_height);
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &title_box, flags);
 
   /* Pin location hardcoded, designers want this to fit perfectly. */
-  pin_box.x1 = box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET;
-  pin_box.x2 = pin_box.x1 + FAV_TOGGLE_SIZE;
-  pin_box.y1 = FAV_TOGGLE_Y_OFFSET;
-  pin_box.y2 = pin_box.y1 + FAV_TOGGLE_SIZE;
+  pin_box.x1 = (int) (box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET);
+  pin_box.x2 = (int) (pin_box.x1 + FAV_TOGGLE_SIZE);
+  pin_box.y1 = (int) (FAV_TOGGLE_Y_OFFSET);
+  pin_box.y2 = (int) (pin_box.y1 + FAV_TOGGLE_SIZE);
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->fav_toggle), &pin_box, flags);
 }
 
@@ -412,7 +421,8 @@ mnb_launcher_button_new (const gchar *icon_name,
   if (description)
   {
     self->priv->description = g_strdup (description);
-    mx_widget_set_tooltip_text (MX_WIDGET (self), self->priv->description);
+    /* No tooltips for meego-1.0
+     * mx_widget_set_tooltip_text (MX_WIDGET (self), self->priv->description); */
   }
 
   if (executable)

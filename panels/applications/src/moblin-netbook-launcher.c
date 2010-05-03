@@ -50,11 +50,11 @@
 #define FAV_PANE_WIDTH  250.0
 #define FILTER_WIDTH    270.0
 
-#define APPS_GRID_COLUMN_GAP   6
-#define APPS_GRID_ROW_GAP      6
+#define APPS_GRID_COLUMN_GAP   17
+#define APPS_GRID_ROW_GAP      2
 
 #define LAUNCHER_BUTTON_WIDTH     210
-#define LAUNCHER_BUTTON_HEIGHT     79
+#define LAUNCHER_BUTTON_HEIGHT     65
 #define LAUNCHER_BUTTON_ICON_SIZE  48
 
 #define REAL_GET_PRIVATE(obj) \
@@ -997,6 +997,8 @@ _constructor (GType                  gtype,
 
   priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   mx_stylable_set_style_class (MX_STYLABLE (priv->fav_grid), "fav-grid");
+  mx_grid_set_column_spacing (MX_GRID (priv->fav_grid), APPS_GRID_COLUMN_GAP);
+  mx_grid_set_row_spacing (MX_GRID (priv->fav_grid), APPS_GRID_ROW_GAP);
   mx_grid_set_max_stride (MX_GRID (priv->fav_grid), 1);
   clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll), priv->fav_grid);
 
