@@ -234,12 +234,11 @@ _device_tile_request_show_cb (ClutterActor    *tile,
   g_signal_emit_by_name (self, "request-show");
 }
 
-/* return TRUE for all the mounts we want to show */
+/* NOTE: This function needs to be synchroniced with the one used for
+ * notifications in gnome-settings-daemon mount plugin. */
 static gboolean
 _mount_is_wanted_device (GMount *mount)
 {
-  GDrive *drive;
-  gboolean removable = TRUE;
   gboolean removed;
 
   /* shadowed mounts are not supposed to be shown to user */
@@ -252,16 +251,12 @@ _mount_is_wanted_device (GMount *mount)
   if (removed) {
     /* already removed mounts sometimes emit mount-changed. must keep
      * track of removals here.. */
+    /* TODO the right way to do this would be to just disconnect
+     * the mount-changed signal handler in _monitor_mount_removed_cb() */
     return FALSE;
   }
 
-  /* we only want to show removable drives */
-  drive = g_mount_get_drive (mount);
-  if (drive) {
-    removable = g_drive_is_media_removable (drive);
-    g_object_unref (drive);
-  }
-  return removable;
+  return TRUE;
 }
 
 static void
