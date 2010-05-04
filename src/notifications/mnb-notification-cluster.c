@@ -51,6 +51,8 @@ struct _MnbNotificationClusterPrivate {
 
   ClutterActor *pending_removed;  /* notification pending removal on anim */
   gboolean      anim_lock;
+
+  ClutterActorBox old_box;
 };
 
 typedef struct {
@@ -233,7 +235,15 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
                               &notifier_box, flags);
     }
 
-  g_signal_emit (actor, cluster_signals[SYNC_INPUT_REGION], 0);
+  if (priv->old_box.x1 != box->x1 ||
+      priv->old_box.x2 != box->x2 ||
+      priv->old_box.y1 != box->y1 ||
+      priv->old_box.y2 != box->y2)
+    {
+      g_signal_emit (actor, cluster_signals[SYNC_INPUT_REGION], 0);
+
+      priv->old_box = *box;
+    }
 }
 
 static void
