@@ -114,7 +114,7 @@ msgstr "Приветствуем вас в MeeGo!"
 
 #: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Это Myzone - место, в котором появятся недавно использованные из веб-каналов файлы и контент."
+msgstr "Это Myzone - место, в котором будут отображаться недавно использованные файлы и контент из ваших веб-каналов."
 
 #: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
