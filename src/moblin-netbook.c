@@ -543,7 +543,6 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
 
       if (wm_class && !strcmp (wm_class, "Gnome-screensaver"))
         {
-          g_debug ("Gnome screensaver window mapped");
           priv->screen_saver_mcw = mcw;
           moblin_netbook_toggle_compositor (plugin, FALSE);
 
@@ -2222,8 +2221,6 @@ last_focus_weak_notify_cb (gpointer data, GObject *meta_win)
   if ((MetaWindow*)meta_win == priv->last_focused)
     {
       priv->last_focused = NULL;
-
-      g_debug ("just lost the last focused window!\n");
     }
 }
 
