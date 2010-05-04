@@ -32,8 +32,8 @@
 G_DEFINE_TYPE (MailmeTelepathyAccount, mailme_telepathy_account, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MAILME_TYPE_TELEPATHY_ACCOUNT,\
-								MailmeTelepathyAccountPrivate))
+    (G_TYPE_INSTANCE_GET_PRIVATE ((o), MAILME_TYPE_TELEPATHY_ACCOUNT,\
+                                  MailmeTelepathyAccountPrivate))
 
 #define TP_IFACE_STRING_CONNECTION_INTERFACE_MAIL_NOTIFICATION \
   "org.freedesktop.Telepathy.Connection.Interface.MailNotification.DRAFT"
@@ -45,8 +45,8 @@ G_DEFINE_TYPE (MailmeTelepathyAccount, mailme_telepathy_account, G_TYPE_OBJECT)
 
 enum
 {
-	PROP_0,
-	PROP_DISPLAY_NAME,
+  PROP_0,
+  PROP_DISPLAY_NAME,
   PROP_UNREAD_COUNT,
   PROP_STATUS,
 };
@@ -62,7 +62,7 @@ typedef enum {
 typedef struct _MailmeTelepathyAccountPrivate MailmeTelepathyAccountPrivate;
 
 struct _MailmeTelepathyAccountPrivate {
-	TpAccount *account;
+  TpAccount *account;
   MailmeAccountStatus status;
   DBusGProxy *mail_proxy;
   guint unread_count;
@@ -135,7 +135,7 @@ on_mail_notification_get_all (TpProxy      *proxy,
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (user_data);
   MailmeTelepathyAccount *self = MAILME_TELEPATHY_ACCOUNT (
-			g_async_result_get_source_object (G_ASYNC_RESULT (user_data)));
+      g_async_result_get_source_object (G_ASYNC_RESULT (user_data)));
   MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
 
   if (error != NULL)
@@ -287,14 +287,14 @@ on_account_prepared (GObject      *source,
                      gpointer      user_data)
 {
   GError *error = NULL;
-	GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (user_data);
+  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (user_data);
   MailmeTelepathyAccount *self = MAILME_TELEPATHY_ACCOUNT (
-			g_async_result_get_source_object (G_ASYNC_RESULT (user_data)));
+    g_async_result_get_source_object (G_ASYNC_RESULT (user_data)));
   MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
 
   if (!tp_account_prepare_finish (priv->account, result, &error))
   {
-		g_simple_async_result_set_from_error (simple, error);
+    g_simple_async_result_set_from_error (simple, error);
     goto complete;
   }
 
@@ -315,7 +315,7 @@ on_account_prepared (GObject      *source,
   }
 
 complete:
-	g_simple_async_result_complete (simple);
+  g_simple_async_result_complete (simple);
   g_object_unref (simple);
 }
 
@@ -324,9 +324,6 @@ on_display_name_changed  (GObject    *object,
                           GParamSpec *pspec,
                           gpointer    user_data)
 {
-  TpAccount *account = TP_ACCOUNT (object);
-  g_debug ("An account name changed to %s",
-           tp_account_get_display_name (account));
   g_object_notify (G_OBJECT (user_data), "display-name");
 }
 
@@ -350,24 +347,24 @@ on_mail_notification_get_all_again (TpProxy      *proxy,
 static void
 on_subscribed_again (DBusGProxy       *proxy,
                      DBusGProxyCall   *call_id,
-										 void             *user_data)
+                     void             *user_data)
 {
   GError *error = NULL;
   MailmeTelepathyAccount *self = MAILME_TELEPATHY_ACCOUNT (user_data);
   MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
-	TpConnection *connection = tp_account_get_connection (priv->account);
+  TpConnection *connection = tp_account_get_connection (priv->account);
 
   dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID);
 
   if (error)
   {
-		g_debug ("Failed to subscribe to MailNotification: %s",
-				     error->message);
-		g_error_free (error);
-		return;
+    g_warning ("Failed to subscribe to MailNotification: %s",
+               error->message);
+    g_error_free (error);
+    return;
   }
 
-	tp_cli_dbus_properties_call_get_all (
+  tp_cli_dbus_properties_call_get_all (
         connection,
         -1 /* Default timeout */,
         TP_IFACE_STRING_CONNECTION_INTERFACE_MAIL_NOTIFICATION,
@@ -646,45 +643,45 @@ complete:
 
 static void
 mailme_telepathy_account_get_property (GObject    *object,
-                                   		 guint       property_id,
+                                       guint       property_id,
                                        GValue     *value,
                                        GParamSpec *pspec)
 {
-	MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (object);
+  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (object);
 
-	switch (property_id) {
-		case PROP_DISPLAY_NAME:
-			g_value_set_string (value, tp_account_get_display_name(priv->account));
-			break;
+  switch (property_id) {
+    case PROP_DISPLAY_NAME:
+      g_value_set_string (value, tp_account_get_display_name(priv->account));
+      break;
     case PROP_UNREAD_COUNT:
       g_value_set_uint (value, priv->unread_count);
       break;
     case PROP_STATUS:
       g_value_set_int (value, priv->status);
       break;
-		default:
-			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-	}
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        }
 }
 
 static void
 mailme_telepathy_account_dispose (GObject *object)
 {
-	MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (object);
+  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (object);
 
-	if (priv->account)
-	{
-		g_object_unref (priv->account);
-		priv->account = NULL;
+  if (priv->account)
+  {
+    g_object_unref (priv->account);
+    priv->account = NULL;
     priv->mail_proxy = NULL;
-	}
+  }
   priv->unread_count = 0;
 }
 
 static void
 mailme_telepathy_account_finalize (GObject *object)
 {
-	/* nothing to do */
+  /* nothing to do */
 }
 
 static void
@@ -697,8 +694,8 @@ mailme_telepathy_account_class_init (MailmeTelepathyAccountClass *klass)
   object_class->get_property = mailme_telepathy_account_get_property;
   object_class->dispose = mailme_telepathy_account_dispose;
   object_class->finalize = mailme_telepathy_account_finalize;
-	
-	g_object_class_install_property (object_class, PROP_DISPLAY_NAME,
+
+  g_object_class_install_property (object_class, PROP_DISPLAY_NAME,
       g_param_spec_string ("display-name",
                            "Display Name",
                            "The account display name",
@@ -723,8 +720,8 @@ mailme_telepathy_account_class_init (MailmeTelepathyAccountClass *klass)
 static void
 mailme_telepathy_account_init (MailmeTelepathyAccount *self)
 {
-	MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
-	priv->account = NULL;
+  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
+  priv->account = NULL;
   priv->status = MAILME_ACCOUNT_DISCONNECTED;
   priv->unread_count = 0;
   priv->email_addr = NULL;
@@ -732,21 +729,21 @@ mailme_telepathy_account_init (MailmeTelepathyAccount *self)
 
 void
 mailme_telepathy_account_prepare_async (MailmeTelepathyAccount *self,
-	                                    	GObject                *account,
+                                        GObject                *account,
                                         GAsyncReadyCallback     callback,
                                         gpointer                user_data)
 {
-	GSimpleAsyncResult *result;
-	MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
+  GSimpleAsyncResult *result;
+  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
 
-	g_return_if_fail (account != NULL);
-	priv->account = g_object_ref (account);
+  g_return_if_fail (account != NULL);
+  priv->account = g_object_ref (account);
 
-	result = g_simple_async_result_new (G_OBJECT (self),
-			                                callback, user_data,
+  result = g_simple_async_result_new (G_OBJECT (self),
+                                      callback, user_data,
                                       mailme_telepathy_account_prepare_finish);
 
-	tp_account_prepare_async (priv->account, NULL, on_account_prepared, result);
+  tp_account_prepare_async (priv->account, NULL, on_account_prepared, result);
 
   g_signal_connect (G_OBJECT (priv->account), "notify::display-name",
       G_CALLBACK (on_display_name_changed), self);
@@ -756,9 +753,9 @@ mailme_telepathy_account_prepare_async (MailmeTelepathyAccount *self,
 }
 
 MailmeAccountStatus
-mailme_telepathy_account_prepare_finish (MailmeTelepathyAccount *self,
-	                                    	 GAsyncResult           *result,
-                                         GError                **error)
+mailme_telepathy_account_prepare_finish (MailmeTelepathyAccount  *self,
+                                         GAsyncResult            *result,
+                                         GError                 **error)
 {
   GSimpleAsyncResult *simple;
   MailmeTelepathyAccountPrivate *priv;
@@ -794,7 +791,7 @@ mailme_telepathy_account_get_inbox_async (MailmeTelepathyAccount *self,
   g_return_if_fail (priv->account != NULL);
 
   result = g_simple_async_result_new (G_OBJECT (self),
-			                                callback, user_data,
+                                      callback, user_data,
                                       mailme_telepathy_account_get_inbox_finish);
 
   dbus_g_proxy_begin_call (priv->mail_proxy,
@@ -806,10 +803,10 @@ mailme_telepathy_account_get_inbox_async (MailmeTelepathyAccount *self,
 }
 
 gchar *
-mailme_telepathy_account_get_inbox_finish (MailmeTelepathyAccount *self,
-	                                    	   GAsyncResult           *result,
-                                           MailmeInboxOpenFormat  *format,
-                                           GError                **error)
+mailme_telepathy_account_get_inbox_finish (MailmeTelepathyAccount  *self,
+                                           GAsyncResult            *result,
+                                           MailmeInboxOpenFormat   *format,
+                                           GError                 **error)
 {
   GSimpleAsyncResult *simple;
   struct _InboxOpenInfo *inbox;

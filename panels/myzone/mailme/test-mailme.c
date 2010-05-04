@@ -33,7 +33,6 @@ print_status (MailmeTelepathyAccount *account)
   g_object_get (account, "display-name", &display_name, NULL);
   g_object_get (account, "unread-count", &unread_count, NULL);
 
-  g_debug ("%s: %i unread message(s)", display_name, unread_count);
   g_free (display_name);
 }
 
@@ -47,7 +46,7 @@ on_tp_provider_prepared (GObject      *source,
   if (!mailme_telepathy_prepare_finish (MAILME_TELEPATHY (source), result,
         &error))
   {
-    g_debug ("Failed to prepare Telepathy provider: %s", error->message);
+    g_warning ("Failed to prepare Telepathy provider: %s", error->message);
     g_main_loop_quit (loop);
     return;
   }
@@ -83,9 +82,6 @@ on_received_inbox_open_info (GObject      *source,
     return;
   }
 
-  g_debug ("Inbox reachable through %s: %s",
-           format == MAILME_INBOX_URI ? "URI" : "command line",
-           value);
   g_free (value);
 }
 
@@ -99,7 +95,6 @@ on_account_added (MailmeTelepathy        *tp_provider,
   g_assert (GPOINTER_TO_INT(user_data) == 666);
 
   g_object_get (account, "display-name", &display_name, NULL);
-  g_debug ("Account %s added", display_name);
   g_free(display_name);
 
   print_status (account);
@@ -130,7 +125,6 @@ on_account_removed (MailmeTelepathy        *tp_provider,
   g_assert (GPOINTER_TO_INT(user_data) == 666);
 
   g_object_get (account, "display-name", &display_name, NULL);
-  g_debug ("Account %s removed", display_name);
   g_free(display_name);
 
   g_signal_handlers_disconnect_by_func (account, on_account_changed, NULL);
@@ -142,7 +136,6 @@ gint main (gint argc, gchar **argv)
   MailmeTelepathy *tp_provider;
 
   g_type_init ();
-  g_debug ("GLib initialized");
 
   loop = g_main_loop_new (NULL, FALSE);
 

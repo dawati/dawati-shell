@@ -92,7 +92,7 @@ on_account_prepared (GObject      *source,
   status = mailme_telepathy_account_prepare_finish (account, result, &error);
   if (error != NULL)
   {
-    g_debug ("An account failed to get prepared: %s", error->message);
+    g_warning ("An account failed to get prepared: %s", error->message);
 		g_hash_table_remove (priv->pending_accounts, tp_account);
 		g_object_unref (G_OBJECT (account));
     return;
@@ -190,7 +190,6 @@ on_account_validity_changed (TpAccountManager *manager,
       gchar *display_name;
 
       g_object_get (mm_account, "display-name", &display_name, NULL);
-      g_debug ("Account '%s' removed.", display_name);
       g_free (display_name);
 
       g_hash_table_remove (source, tp_account);

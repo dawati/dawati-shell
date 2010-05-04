@@ -376,8 +376,6 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   gboolean show_welcome_tile = TRUE;
   gint recent_files_count, sw_items_count;
 
-  g_debug (G_STRLOC ": Updating everything pane");
-
   /* Get recent files and sort */
   recent_file_items = gtk_recent_manager_get_items (priv->recent_manager);
   recent_file_items = _filter_out_unshowable_recent_items (pane,
@@ -396,11 +394,6 @@ penge_everything_pane_update (PengeEverythingPane *pane)
     recent_files_count = g_list_length (recent_file_items);
 
   sw_items_count = priv->block_count - recent_files_count;
-
-  g_debug (G_STRLOC " recent_files_count = %d, sw_items_count = %d",
-           recent_files_count,
-           sw_items_count);
-
 
   old_actors = g_hash_table_get_values (priv->pointer_to_actor);
 

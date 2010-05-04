@@ -327,15 +327,6 @@ penge_block_container_generate_counts (PengeBlockContainer *pbc,
                      signals[COUNT_CHANGED_SIGNAL],
                      0,
                      column_count * row_count);
-
-      g_debug (G_STRLOC ": Possible row count = %d, possible column count = %d"
-               " for width = %f and height = %f and child width = %f and height = %f",
-               priv->row_count,
-               priv->column_count,
-               width,
-               height,
-               priv->actual_tile_width,
-               priv->actual_tile_height);
     }
   }
 }
@@ -405,13 +396,6 @@ penge_block_container_allocate (ClutterActor           *actor,
           child_box.y2 = child_box.y1 + priv->actual_tile_height;
 
           clutter_actor_allocate (child, &child_box, flags);
-#if DEBUG
-          g_debug (G_STRLOC ": y_count = %d, x_count = %d, " \
-                   "box = (%f, %f) (%f, %f)",
-                   y_count, x_count,
-                   child_box.x1, child_box.y1,
-                   child_box.x2, child_box.y2);
-#endif
           children = g_list_remove (children, child);
 
           /* Increment with the col-span to take into consideration how many

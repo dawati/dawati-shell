@@ -46,10 +46,6 @@ _client_set_size_cb (MplPanelClient *client,
   clutter_actor_set_size ((ClutterActor *)userdata,
                           width,
                           height);
-
-  g_message (G_STRLOC ": Dimensions for grid view: %d x %d",
-             width,
-             height);
 }
 
 static void
