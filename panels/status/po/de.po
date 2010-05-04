@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:42+0000\n"
+"POT-Creation-Date: 2010-05-03 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
 "Language-Team: \n"
@@ -14,7 +14,11 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:157
+#: ../src/moblin-panel-status.c:100
+msgid "Status"
+msgstr "Status"
+
+#: ../src/moblin-panel-status.c:158
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "Status"
@@ -28,30 +32,29 @@ msgstr "Status-Panel"
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
 msgstr "Status kann nicht aktualisiert werden. Der Service ist vielleicht nicht verfügbar oder das Kennwort ist falsch."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Status kann nicht aktualisiert werden: Du bist nicht online."
+
+#: ../src/mps-feed-pane.c:463
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Dein geschätzter Ort: %f %f"
 
-#: ../src/mps-feed-pane.c:448
-#, c-format
-msgid "Your location is being shared as: %f %f "
-msgstr "Dein Ort wird bekanntgegeben als: %f %f "
-
-#: ../src/mps-feed-pane.c:455
+#: ../src/mps-feed-pane.c:476
 msgid "Your location is not being shared"
 msgstr "Dein Ort wird nicht bekanntgegeben"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:551
+#: ../src/mps-feed-pane.c:579
 msgid "Update"
 msgstr "Aktualisierung"
 
-#: ../src/mps-feed-pane.c:556
+#: ../src/mps-feed-pane.c:584
 msgid "What's happening?"
 msgstr "Was ist los?"
 
-#: ../src/mps-feed-pane.c:606
+#: ../src/mps-feed-pane.c:634
 msgid "Change"
 msgstr "Ändern"
 
@@ -63,27 +66,27 @@ msgstr "Neuen Web-Service zufügen"
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Es ist kein Web-Service konfiguriert oder es gibt ein Problem mit der Konfiguration. Benutze die Schaltfläche oben, um My Web Accounts zu öffnen und ein Konto einzurichten."
 
-#: ../src/mps-geotag-pane.c:215
+#: ../src/mps-geotag-pane.c:232
 msgid "Your location"
 msgstr "Dein Ort"
 
-#: ../src/mps-geotag-pane.c:485
+#: ../src/mps-geotag-pane.c:554
 msgid "Search"
 msgstr "Suchen"
 
-#: ../src/mps-geotag-pane.c:490
+#: ../src/mps-geotag-pane.c:559
 msgid "Where are you?"
 msgstr "Wo bist du?"
 
-#: ../src/mps-geotag-pane.c:492
+#: ../src/mps-geotag-pane.c:561
 msgid "Find me"
 msgstr "Finde mich"
 
-#: ../src/mps-geotag-pane.c:499
+#: ../src/mps-geotag-pane.c:568
 msgid "Use location"
 msgstr "Ort verwenden"
 
-#: ../src/mps-geotag-pane.c:500
+#: ../src/mps-geotag-pane.c:569
 msgid "Don't use location"
 msgstr "Ort nicht verwenden"
 
@@ -92,22 +95,29 @@ msgstr "Ort nicht verwenden"
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
 #. 
-#: ../src/mps-tweet-card.c:391
+#: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s von %s"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+#: ../src/moblin-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "Hallo! Dies ist das Panel Status. Wenn du ein Web-Konto (z.B. Twitter) konfiguriert hast, kannst du hier deine Feeds anzeigen und deinen Status aktualisieren."
 
-#: ../src/mps-feed-pane.c:96
-msgid "Unable to update status: You're not online."
-msgstr "Status kann nicht aktualisiert werden: Du bist nicht online."
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Dein geschätzter Ort: %s (%f, %f)"
 
-#: ../src/moblin-panel-status.c:99
-msgid "Status"
-msgstr "Status"
+#: ../src/mps-feed-pane.c:453
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Dein Ort wird bekanntgegeben als: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:467
+#, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "Dein Ort wird bekanntgegeben als: %f %f "
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
