@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:43+0000\n"
-"PO-Revision-Date: 2010-04-29 21:25+0800\n"
+"POT-Creation-Date: 2010-05-03 09:42+0000\n"
+"PO-Revision-Date: 2010-05-04 13:32+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Traditional Chinese <chinese-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgid "Devices panel"
 msgstr "裝置面板"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:149
+#: ../src/moblin-panel-devices.c:162
 msgid "devices"
 msgstr "裝置"
 
@@ -57,9 +57,8 @@ msgid "System Sounds"
 msgstr "系統音效"
 
 #: ../power-icon/src/moblin-power-icon.c:46
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin 電源圖示"
+msgid "MeeGo Power Icon"
+msgstr "MeeGo 電源圖示"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
@@ -106,9 +105,13 @@ msgstr "如果您不決定，我會在 %d 秒內關閉"
 msgid "Turn off"
 msgstr "關閉"
 
-#: ../src/moblin-panel-devices.c:120
-msgid "Moblin Devices Panel"
-msgstr "Moblin 裝置面板"
+#: ../power-icon/tests/test-battery-notification.c:58
+msgid "Moblin Power Icon"
+msgstr "Moblin 電源圖示"
+
+#: ../src/moblin-panel-devices.c:123
+msgid "MeeGo Devices Panel"
+msgstr "MeeGo 裝置面板"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
@@ -140,11 +143,11 @@ msgstr "很抱歉，看起來您的電池好像壞了。"
 msgid "Netbook brightness"
 msgstr "筆電螢幕的亮度"
 
-#: ../src/mpd-computer-pane.c:120
+#: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
 msgstr "您的電腦"
 
-#: ../src/mpd-computer-pane.c:129
+#: ../src/mpd-computer-pane.c:128
 msgid "All settings"
 msgstr "所有設定"
 
@@ -156,7 +159,7 @@ msgstr ""
 "請插入裝置\n"
 "接著它會被自動偵測。"
 
-#: ../src/mpd-devices-pane.c:105
+#: ../src/mpd-devices-pane.c:104
 msgid "Other devices"
 msgstr "其他裝置"
 
@@ -165,7 +168,7 @@ msgstr "其他裝置"
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>你正在使用</span><span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-folder-tile.c:174
+#: ../src/mpd-folder-tile.c:186
 msgid "Trash"
 msgstr "回收筒"
 
