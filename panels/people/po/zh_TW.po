@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:37+0000\n"
+"POT-Creation-Date: 2010-05-03 09:35+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -14,12 +14,18 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:476
+#: ../src/moblin-panel-people.c:88
+#: ../src/mnb-people-panel.c:476
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "朋友"
 
-#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#: ../src/mnb-people-panel.c:57
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "嗨！這裡是朋友面板。當您設定好即時通服務 (像是 Messenger) 後，這裡就是您與朋友們聊天的地方。"
+
+#: ../src/mnb-people-panel.c:191
+#: ../src/mnb-people-panel.c:414
 #, c-format
 msgid "Open %s"
 msgstr "開啟 %s"
@@ -46,7 +52,8 @@ msgid "people - you are chatting with someone"
 msgstr "朋友 - 您正在和某人聊天"
 
 #. Populate header
-#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
+#: ../src/mnb-people-panel.c:676
+#: ../src/mnb-people-panel.c:930
 msgid "People"
 msgstr "朋友"
 
@@ -54,7 +61,8 @@ msgstr "朋友"
 msgid "Search"
 msgstr "搜尋"
 
-#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
+#: ../src/mnb-people-panel.c:740
+#: ../src/mnb-people-panel.c:1129
 msgid "You are chatting with:"
 msgstr "您正在和他聊天："
 
@@ -75,30 +83,20 @@ msgstr "我的談話內容"
 msgid "People panel"
 msgstr "朋友面板"
 
-#: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
-msgstr "嗨！這裡是朋友面板。當您設定好即時通服務 (像是 Messenger) 後，這裡就是您和朋友們聊天的地方。"
-
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "朋友- %d 位朋友正在和您對話"
-
 #~ msgid "people - Someone is talking to you"
 #~ msgstr "朋友 - 有人正在和您對話"
-
 #~ msgid "People talking to you ..."
 #~ msgstr "和您對話的朋友..."
-
 #~ msgid "Send an email"
 #~ msgstr "發送電子郵件"
-
 #~ msgid "Edit details"
 #~ msgstr "編輯細節"
-
 #~ msgid "Send a message"
 #~ msgstr "發送訊息"
-
 #~ msgid "Selection"
 #~ msgstr "選取"
-
 #~ msgid "Nobody selected"
 #~ msgstr "沒有選取任何人"
+
