@@ -1221,17 +1221,31 @@ pane_name_owner_changed (DBusGProxy  *proxy,
 }
 
 static GtkWidget*
-get_switch_label (const char *name)
+get_technology_box (const char *name, GtkWidget **tech_switch)
 {
+  GtkWidget *tech_box, *box;
   GtkWidget *switch_label;
 
+  tech_box = gtk_vbox_new (TRUE, 0);
+  gtk_widget_show (tech_box);
+  box = gtk_hbox_new (TRUE, 0);
+  gtk_widget_show (box);
+  *tech_switch = mx_gtk_light_switch_new ();
+  gtk_widget_show (*tech_switch);
   switch_label = gtk_label_new (name);
   gtk_misc_set_alignment (GTK_MISC (switch_label),
                           0.2,
                           0.5);
   gtk_widget_show (switch_label);
 
-  return switch_label;
+  gtk_box_pack_start (GTK_BOX (tech_box), box,
+                      TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (box), switch_label,
+                      TRUE, TRUE, 6);
+  gtk_box_pack_start (GTK_BOX (box), *tech_switch,
+                      TRUE, TRUE, 6);
+
+  return tech_box;
 }
 
 static void
@@ -1242,7 +1256,6 @@ carrick_pane_init (CarrickPane *self)
   GtkWidget          *settings_frame;
   GtkWidget          *net_list_frame;
   GtkWidget          *column;
-  GtkWidget          *box;
   GtkWidget          *offline_mode_label;
   GtkWidget          *banner;
   GError             *error = NULL;
@@ -1359,137 +1372,61 @@ carrick_pane_init (CarrickPane *self)
   gtk_box_pack_start (GTK_BOX (column), banner, FALSE, FALSE, 0);
 
   /* Switches */
-  priv->wifi_box = gtk_hbox_new (TRUE, 0);
-  gtk_widget_show (priv->wifi_box);
-  priv->wifi_switch = mx_gtk_light_switch_new ();
-  gtk_widget_show (priv->wifi_switch);
 
-  gtk_box_pack_start (GTK_BOX (priv->wifi_box),
-                      get_switch_label (_ ("WiFi")),
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (priv->wifi_box),
-                      priv->wifi_switch,
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (column),
-                      priv->wifi_box,
-                      FALSE,
-                      FALSE,
-                      6);
+  priv->wifi_box = get_technology_box (_ ("WiFi"),
+                                       &priv->wifi_switch);
+  gtk_box_pack_start (GTK_BOX (column), priv->wifi_box,
+                      FALSE, FALSE, 6);
   g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->wifi_switch),
                     "switch-flipped",
                     G_CALLBACK (_wifi_switch_callback),
                     self);
 
-  priv->ethernet_box = gtk_hbox_new (TRUE, 0);
-  gtk_widget_show (priv->ethernet_box);
-  priv->ethernet_switch = mx_gtk_light_switch_new ();
-  gtk_widget_show (priv->ethernet_switch);
-
-  gtk_box_pack_start (GTK_BOX (priv->ethernet_box),
-                      get_switch_label (_ ("Wired")),
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (priv->ethernet_box),
-                      priv->ethernet_switch,
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (column),
-                      priv->ethernet_box,
-                      FALSE,
-                      FALSE,
-                      6);
+  priv->ethernet_box = get_technology_box (_ ("Wired"),
+                                           &priv->ethernet_switch);
+  gtk_box_pack_start (GTK_BOX (column), priv->ethernet_box,
+                      FALSE, FALSE, 6);
   g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->ethernet_switch),
                     "switch-flipped",
                     G_CALLBACK (_ethernet_switch_callback),
                     self);
 
-  priv->threeg_box = gtk_hbox_new (TRUE, 0);
-  gtk_widget_show (priv->threeg_box);
-  priv->threeg_switch = mx_gtk_light_switch_new ();
-  gtk_widget_show (priv->threeg_switch);
-
-  gtk_box_pack_start (GTK_BOX (priv->threeg_box),
-                      get_switch_label (_ ("3G")),
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (priv->threeg_box),
-                      priv->threeg_switch,
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (column),
-                      priv->threeg_box,
-                      FALSE,
-                      FALSE,
-                      6);
+  priv->threeg_box = get_technology_box (_ ("3G"),
+                                         &priv->threeg_switch);
+  gtk_box_pack_start (GTK_BOX (column), priv->threeg_box,
+                      FALSE, FALSE, 6);
   g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->threeg_switch),
                     "switch-flipped",
                     G_CALLBACK (_threeg_switch_callback),
                     self);
 
-  priv->wimax_box = gtk_hbox_new (TRUE, 0);
-  gtk_widget_show (priv->wimax_box);
-  priv->wimax_switch = mx_gtk_light_switch_new ();
-  gtk_widget_show (priv->wimax_switch);
-
-  gtk_box_pack_start (GTK_BOX (priv->wimax_box),
-                      get_switch_label (_ ("WiMAX")),
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (priv->wimax_box),
-                      priv->wimax_switch,
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (column),
-                      priv->wimax_box,
-                      FALSE,
-                      FALSE,
-                      6);
+  priv->wimax_box = get_technology_box (_ ("WiMAX"),
+                                         &priv->wimax_switch);
+  gtk_box_pack_start (GTK_BOX (column), priv->wimax_box,
+                      FALSE, FALSE, 6);
   g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->wimax_switch),
                     "switch-flipped",
                     G_CALLBACK (_wimax_switch_callback),
                     self);
 
-  priv->bluetooth_box = gtk_hbox_new (TRUE, 0);
-  gtk_widget_show (priv->bluetooth_box);
-  priv->bluetooth_switch = mx_gtk_light_switch_new ();
-  gtk_widget_show (priv->bluetooth_switch);
-
-  gtk_box_pack_start (GTK_BOX (priv->bluetooth_box),
-                      get_switch_label (_ ("Bluetooth")),
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (priv->bluetooth_box),
-                      priv->bluetooth_switch,
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (column),
-                      priv->bluetooth_box,
-                      FALSE,
-                      FALSE,
-                      6);
+  priv->bluetooth_box = get_technology_box (_ ("Bluetooth"),
+                                         &priv->bluetooth_switch);
+  gtk_box_pack_start (GTK_BOX (column), priv->bluetooth_box,
+                      FALSE, FALSE, 6);
   g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
                     "switch-flipped",
                     G_CALLBACK (_bluetooth_switch_callback),
                     self);
 
-  priv->offline_mode_box = gtk_vbox_new (TRUE, 0);
-  gtk_widget_show (priv->offline_mode_box);
-  box = gtk_hbox_new (TRUE, 0);
-  gtk_widget_show (box);
-  priv->offline_mode_switch = mx_gtk_light_switch_new ();
-  gtk_widget_show (priv->offline_mode_switch);
+
+  priv->offline_mode_box = get_technology_box (_ ("Offline mode"),
+                                               &priv->offline_mode_switch);
+  gtk_box_pack_end (GTK_BOX (column), priv->offline_mode_box,
+                    FALSE, FALSE, 6);
+  g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
+                    "switch-flipped",
+                    G_CALLBACK (_offline_mode_switch_callback),
+                    self);
 
   offline_mode_label = gtk_label_new
           (_ ("This will disable all your connections"));
@@ -1499,39 +1436,12 @@ carrick_pane_init (CarrickPane *self)
                           0.5,
                           0.0);
   gtk_widget_show (offline_mode_label);
-
-  g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
-                    "switch-flipped",
-                    G_CALLBACK (_offline_mode_switch_callback),
-                    self);
-
-  gtk_box_pack_start (GTK_BOX (priv->offline_mode_box),
-                      box,
-                      FALSE,
-                      FALSE,
-                      0);
   gtk_box_pack_start (GTK_BOX (priv->offline_mode_box),
                       offline_mode_label,
                       FALSE,
                       FALSE,
                       0);
 
-  gtk_box_pack_start (GTK_BOX (box),
-                      get_switch_label (_ ("Offline mode")),
-                      TRUE,
-                      TRUE,
-                      6);
-  gtk_box_pack_start (GTK_BOX (box),
-                      priv->offline_mode_switch,
-                      TRUE,
-                      TRUE,
-                      6);
-
-  gtk_box_pack_end (GTK_BOX (column),
-                    priv->offline_mode_box,
-                    FALSE,
-                    FALSE,
-                    6);
 
   gtk_container_add (GTK_CONTAINER (settings_frame), column);
   gtk_box_pack_start (GTK_BOX (self),
