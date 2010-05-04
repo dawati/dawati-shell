@@ -274,9 +274,9 @@ mnb_panel_dbus_init_panel (MplPanelClient  *self,
         real_height = priv->requested_height;
       else if (priv->requested_height)
         {
-          g_warning ("Panel requested height %d which is greater than maximum "
-                     "allowable height %d",
-                     priv->requested_height, height);
+          g_debug ("Panel requested height %d which is greater than maximum "
+                   "allowable height %d",
+                   priv->requested_height, height);
         }
 
       priv->real_height = real_height;
@@ -345,9 +345,9 @@ mnb_panel_dbus_set_size (MplPanelClient  *self,
     real_height = priv->requested_height;
   else if (priv->requested_height)
     {
-      g_warning ("Panel requested height %d is greater than maximum "
-                 "allowable height %d",
-                 priv->requested_height, height);
+      g_debug ("Panel requested height %d is greater than maximum "
+               "allowable height %d",
+               priv->requested_height, height);
     }
 
   priv->real_height = real_height;
@@ -371,10 +371,6 @@ mnb_panel_dbus_set_position (MplPanelClient  *self,
   guint old_x = priv->x;
   guint old_y = priv->y;
 
-  g_debug ("%s called: x %d (%d), y %d (%d)",
-           __FUNCTION__, x, priv->x, y, priv->y);
-
-
   if (old_x != priv->x || old_y != priv->y)
     g_signal_emit (self, signals[SET_POSITION], 0, x, y);
 
@@ -384,7 +380,6 @@ mnb_panel_dbus_set_position (MplPanelClient  *self,
 static gboolean
 mnb_panel_dbus_show (MplPanelClient *self, GError **error)
 {
-  g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[SHOW], 0);
   return TRUE;
 }
@@ -392,7 +387,6 @@ mnb_panel_dbus_show (MplPanelClient *self, GError **error)
 static gboolean
 mnb_panel_dbus_show_begin (MplPanelClient *self, GError **error)
 {
-  g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[SHOW_BEGIN], 0);
   return TRUE;
 }
@@ -400,7 +394,6 @@ mnb_panel_dbus_show_begin (MplPanelClient *self, GError **error)
 static gboolean
 mnb_panel_dbus_show_end (MplPanelClient *self, GError **error)
 {
-  g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[SHOW_END], 0);
   return TRUE;
 }
@@ -408,7 +401,6 @@ mnb_panel_dbus_show_end (MplPanelClient *self, GError **error)
 static gboolean
 mnb_panel_dbus_hide (MplPanelClient *self, GError **error)
 {
-  g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[HIDE], 0);
   return TRUE;
 }
@@ -416,7 +408,6 @@ mnb_panel_dbus_hide (MplPanelClient *self, GError **error)
 static gboolean
 mnb_panel_dbus_hide_begin (MplPanelClient *self, GError **error)
 {
-  g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[HIDE_BEGIN], 0);
   return TRUE;
 }
@@ -424,7 +415,6 @@ mnb_panel_dbus_hide_begin (MplPanelClient *self, GError **error)
 static gboolean
 mnb_panel_dbus_hide_end (MplPanelClient *self, GError **error)
 {
-  g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[HIDE_END], 0);
   return TRUE;
 }
@@ -432,14 +422,12 @@ mnb_panel_dbus_hide_end (MplPanelClient *self, GError **error)
 static gboolean
 mnb_panel_dbus_ping (MplPanelClient *self, GError **error)
 {
-  g_debug ("%s called", __FUNCTION__);
   return TRUE;
 }
 
 static gboolean
 mnb_panel_dbus_unload (MplPanelClient *self, GError **error)
 {
-  g_debug ("%s called", __FUNCTION__);
   g_signal_emit (self, signals[UNLOAD], 0);
 
   return TRUE;
@@ -450,7 +438,6 @@ mnb_panel_dbus_unload (MplPanelClient *self, GError **error)
 static void
 mpl_panel_client_real_unload (MplPanelClient *panel)
 {
-  g_debug ("Calling g_main_loop_quit()");
   g_main_loop_quit (NULL);
 }
 
@@ -834,7 +821,7 @@ mpl_panel_client_dbus_toolbar_proxy_weak_notify_cb (gpointer data,
                                G_CALLBACK (mpl_panel_client_noc_cb),
                                panel, NULL);
 
-  g_warning ("Toolbar object died on us\n");
+  g_debug ("Toolbar object died on us\n");
 }
 
 /*
@@ -846,8 +833,6 @@ mpl_panel_client_setup_toolbar_proxy (MplPanelClient *panel)
   MplPanelClientPrivate *priv = panel->priv;
   DBusGProxy            *proxy;
   GError                *error = NULL;
-
-  g_debug ("Setting up toolbar proxy");
 
   /*
    * Set up the proxy to the remote toolbar object
