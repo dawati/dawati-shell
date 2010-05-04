@@ -366,7 +366,7 @@ mtp_bin_constructed (GObject *self)
 
     priv->err_msg = _("Sorry, you'll have to remove a panel before you can "
                       "add a new one.");
-    priv->normal_msg = _("You can add, remove and reorder many of the panels "
+    priv->normal_msg = _("You can add, remove, and reorder many of the panels "
                          "in your toolbar.");
 
     priv->message = mx_label_new_with_text (priv->normal_msg);

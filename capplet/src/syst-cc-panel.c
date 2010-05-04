@@ -192,7 +192,7 @@ syst_cc_panel_make_contents (SystCcPanel *panel)
                     G_CALLBACK (syst_cc_panel_switch_flipped_cb),
                     panel);
 
-  label = gtk_label_new (_("The system tray is a concept used by some, older, "
+  label = gtk_label_new (_("The system tray is a concept used by some older "
                            "applications to let you know when something "
                            "happens or to stay running when you close them."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);

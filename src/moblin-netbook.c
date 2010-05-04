@@ -3231,7 +3231,7 @@ get_demands_attention_notification (MutterPlugin *plugin,
   else
     summary = _("Unknown window");
 
-  body = _("Is asking for your attention.");
+  body = _("is asking for your attention.");
 
   if (!raw)
     {
