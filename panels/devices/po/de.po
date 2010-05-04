@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:43+0000\n"
+"POT-Creation-Date: 2010-05-03 09:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgid "Devices panel"
 msgstr "Panel Geräte"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:149
+#: ../src/moblin-panel-devices.c:162
 msgid "devices"
 msgstr "Geräte"
 
@@ -50,11 +50,6 @@ msgstr[1] "%u Eingänge"
 #: ../gvc/gvc-mixer-control.c:1316
 msgid "System Sounds"
 msgstr "Systemklänge"
-
-#: ../power-icon/src/moblin-power-icon.c:46
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin Energiesymbol"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
@@ -101,9 +96,9 @@ msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
 msgid "Turn off"
 msgstr "Abschalten"
 
-#: ../src/moblin-panel-devices.c:120
-msgid "Moblin Devices Panel"
-msgstr "Moblin Panel Geräte"
+#: ../power-icon/tests/test-battery-notification.c:58
+msgid "Moblin Power Icon"
+msgstr "Moblin Energiesymbol"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
@@ -135,11 +130,11 @@ msgstr "Leider scheint dein Akku defekt zu sein."
 msgid "Netbook brightness"
 msgstr "Netbook Helligkeit"
 
-#: ../src/mpd-computer-pane.c:120
+#: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
 msgstr "Dein Computer"
 
-#: ../src/mpd-computer-pane.c:129
+#: ../src/mpd-computer-pane.c:128
 msgid "All settings"
 msgstr "Alle Einstellungen"
 
@@ -151,7 +146,7 @@ msgstr ""
 "Schließe ein Gerät an\n"
 "und es wird automatisch erkannt."
 
-#: ../src/mpd-devices-pane.c:105
+#: ../src/mpd-devices-pane.c:104
 msgid "Other devices"
 msgstr "Andere Geräte"
 
@@ -160,7 +155,7 @@ msgstr "Andere Geräte"
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Du benutzt</span> <span color='%s'>%d%% von %s</span>"
 
-#: ../src/mpd-folder-tile.c:174
+#: ../src/mpd-folder-tile.c:186
 msgid "Trash"
 msgstr "Abfall"
 
@@ -207,6 +202,11 @@ msgstr "Öffnen"
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> benutzt <span color='%s'>%d%% von %s</span>"
 
+#: ../src/mpd-storage-device-tile.c:718
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
 msgstr "Ohrenbetäubend"
@@ -251,10 +251,13 @@ msgstr "Netbook-Lautstärke"
 msgid "Mute"
 msgstr "Stumm"
 
-#: ../src/mpd-storage-device-tile.c:718
-#, c-format
-msgid "<span font-weight='bold'>%s</span>"
-msgstr "<span font-weight='bold'>%s</span>"
+#: ../power-icon/src/moblin-power-icon.c:46
+msgid "MeeGo Power Icon"
+msgstr "MeeGo Energiesymbol"
+
+#: ../src/moblin-panel-devices.c:123
+msgid "MeeGo Devices Panel"
+msgstr "MeeGo Panel Geräte"
 
 #~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
