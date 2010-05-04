@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:29+0000\n"
+"POT-Creation-Date: 2010-05-03 09:27+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Wen-Hsin Moh <wenhsinm@gmail.com>\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -94,34 +94,42 @@ msgid "The system tray is a concept used by some, older, applications to let you
 msgstr "系統匣是種某些舊一代應用程式所使用的概念，它能讓您瞭解什麼時候應用程式發生什麼事；或是當您關閉應用程式後，讓它們繼續在系統匣內保持執行。"
 
 #: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "總是使用小螢幕模式"
+
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "決定工具列上的面板順序。"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "即使畫面顯示大小需要用到更大的螢幕模式，也強迫它使用小螢幕模式。"
+
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "工具列上的面板順序"
 
-#: ../src/moblin-netbook.c:962
+#: ../src/moblin-netbook.c:1019
 msgid "Moblin Netbook Effects"
 msgstr "Moblin 網路筆電特效"
 
-#: ../src/moblin-netbook.c:966
+#: ../src/moblin-netbook.c:1023
 msgid "Effects for Moblin Netbooks"
 msgstr "給 Moblin 網路筆電用的特效"
 
-#: ../src/moblin-netbook.c:3164
+#: ../src/moblin-netbook.c:3221
 msgid "Activate"
 msgstr "啟動"
 
-#: ../src/moblin-netbook.c:3178
+#: ../src/moblin-netbook.c:3235
 msgid "Unknown window"
 msgstr "未知的視窗"
 
-#: ../src/moblin-netbook.c:3180
+#: ../src/moblin-netbook.c:3237
 msgid "Is asking for your attention."
 msgstr "正在要求您的注意。"
 
-#: ../src/mnb-toolbar.c:974
+#: ../src/mnb-toolbar.c:1000
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "抱歉，%s 已損毀"
@@ -130,7 +138,7 @@ msgstr "抱歉，%s 已損毀"
 msgid "Dismiss"
 msgstr "取消"
 
-#: ../src/notifications/mnb-notification-cluster.c:668
+#: ../src/notifications/mnb-notification-cluster.c:653
 msgid "Dismiss All"
 msgstr "取消所有"
 
