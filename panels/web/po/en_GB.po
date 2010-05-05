@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-web-browser 0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 03:06+0000\n"
 "PO-Revision-Date: 2009-10-02 18:19+0100\n"
 "Last-Translator: Neil Roberts <neil@linux.intel.com>\n"
 "Language-Team: English (British)\n"
@@ -62,22 +62,22 @@ msgid "New tab"
 msgstr "New tab"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
 #, fuzzy
 msgid "Your pages"
 msgstr "Favourite pages"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Search"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Tabs"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Favourite pages"
 
