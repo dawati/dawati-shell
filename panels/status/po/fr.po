@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:38+0000\n"
+"POT-Creation-Date: 2010-05-05 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: David Cicognani <david.cicognani@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -14,15 +14,11 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr "Bonjour ! Voici le panneau Statut. Lorsque vous avez un compte web configuré (comme Twitter) vous pourrez voir vos flux et mettre à jour votre statut ici."
-
-#: ../src/moblin-panel-status.c:99
+#: ../src/moblin-panel-status.c:100
 msgid "Status"
 msgstr "Statut"
 
-#: ../src/moblin-panel-status.c:157
+#: ../src/moblin-panel-status.c:158
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "statut"
@@ -40,30 +36,25 @@ msgstr "Impossible de mettre à jour le statut : le service est peut être indis
 msgid "Unable to update status: You're not online."
 msgstr "Impossible de mettre à jour votre statut : vous n'êtes pas connecté."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:463
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Nous avons deviné votre position comme étant : %f %f"
 
-#: ../src/mps-feed-pane.c:448
-#, c-format
-msgid "Your location is being shared as: %f %f "
-msgstr "Votre position est partagée comme étant : %f %f"
-
-#: ../src/mps-feed-pane.c:455
+#: ../src/mps-feed-pane.c:476
 msgid "Your location is not being shared"
 msgstr "Votre position n'est pas partagée"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:551
+#: ../src/mps-feed-pane.c:579
 msgid "Update"
 msgstr "Mise à jour"
 
-#: ../src/mps-feed-pane.c:556
+#: ../src/mps-feed-pane.c:584
 msgid "What's happening?"
 msgstr "Que se passe-t-il ?"
 
-#: ../src/mps-feed-pane.c:606
+#: ../src/mps-feed-pane.c:634
 msgid "Change"
 msgstr "Changer"
 
@@ -75,27 +66,27 @@ msgstr "Ajouter un nouveau service web"
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Vos services web ne semblent pas être configurés ou bien il y a un problème avec leur configuration. Utilisez le bouton ci-dessus pour ouvrir Mes Comptes Web et en configurer un."
 
-#: ../src/mps-geotag-pane.c:215
+#: ../src/mps-geotag-pane.c:232
 msgid "Your location"
 msgstr "Votre position"
 
-#: ../src/mps-geotag-pane.c:485
+#: ../src/mps-geotag-pane.c:554
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../src/mps-geotag-pane.c:490
+#: ../src/mps-geotag-pane.c:559
 msgid "Where are you?"
 msgstr "Où êtes-vous ?"
 
-#: ../src/mps-geotag-pane.c:492
+#: ../src/mps-geotag-pane.c:561
 msgid "Find me"
 msgstr "Me localiser"
 
-#: ../src/mps-geotag-pane.c:499
+#: ../src/mps-geotag-pane.c:568
 msgid "Use location"
 msgstr "Utiliser la position"
 
-#: ../src/mps-geotag-pane.c:500
+#: ../src/mps-geotag-pane.c:569
 msgid "Don't use location"
 msgstr "Utiliser la position"
 
@@ -103,11 +94,30 @@ msgstr "Utiliser la position"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s de %s"
+
+#: ../src/moblin-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "Bonjour ! Voici le panneau Statut. Lorsque vous avez un compte web configuré (comme Twitter) vous pourrez voir vos flux et mettre à jour votre statut ici."
+
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Nous avons deviné votre position comme étant : %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:453
+#, fuzzy, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Votre position est partagée comme étant : %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:467
+#, fuzzy, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "Votre position est partagée comme étant : %f %f"
 
 #~ msgid "Offline"
 #~ msgstr "Déconnecté"
@@ -142,24 +152,14 @@ msgstr "%s de %s"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Votre statut actuel - vous êtes déconnecté"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte "
-#~ "Messenger ?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte Messenger ?"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Pour mettre à jour votre statut Web, configurez un compte de services Web "
-#~ "avec un fournisseur qui autorise de tels messages"
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Pour mettre à jour votre statut Web, configurez un compte de services Web avec un fournisseur qui autorise de tels messages"
 
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Installez un compte de  messagerie instantanée pour mettre à jour votre "
-#~ "statut"
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Installez un compte de  messagerie instantanée pour mettre à jour votre statut"
 
 #~ msgid "Post"
 #~ msgstr "Actualiser"
