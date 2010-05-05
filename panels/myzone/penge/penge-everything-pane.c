@@ -522,6 +522,12 @@ penge_everything_pane_update (PengeEverythingPane *pane)
   }
 
   g_list_free (sw_items);
+
+  for (l = recent_file_items; l; l = l->next)
+  {
+    GtkRecentInfo *recent_file_info = (GtkRecentInfo *)l->data;
+    gtk_recent_info_unref (recent_file_info);
+  }
   g_list_free (recent_file_items);
 }
 
