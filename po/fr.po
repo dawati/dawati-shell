@@ -92,10 +92,6 @@ msgstr "Établit l'ordre des panneaux sur la barre d'outils."
 msgid "Order of panels on toolbar"
 msgstr "Ordre des panneaux sur la barre d'outils"
 
-#: ../src/moblin-netbook.c:1018
-msgid "Moblin Netbook Effects"
-msgstr "Effets spéciaux pour netbook utilisant Moblin"
-
 #: ../src/moblin-netbook.c:1022
 msgid "Effects for Moblin Netbooks"
 msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
@@ -139,7 +135,11 @@ msgstr "La barre d'état est un concept utilisé par certaines applications pour
 
 #: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-msgstr "Force l'utilisatin dumode petit écran même quand la taille de l'écran pourrait autoriser un mode d'écran plus large."
+msgstr "Force l'utilisation du mode petit écran même quand la taille de l'écran pourrait autoriser un mode d'écran plus large."
+
+#: ../src/moblin-netbook.c:1018
+msgid "Moblin Netbook Effects"
+msgstr "Effets spéciaux pour Netbook utilisant Moblin"
 
 #~ msgid "System tray"
 #~ msgstr "Barre d'état"
