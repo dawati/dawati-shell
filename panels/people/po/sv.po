@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:37+0000\n"
+"POT-Creation-Date: 2010-05-05 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -75,8 +75,8 @@ msgstr "Mina konversationer"
 msgid "People panel"
 msgstr "Personpanel"
 
-#: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
+#: ../src/mnb-people-panel.c:57
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
 msgstr "Hej! Detta är personpanelen. När du har en konfigurerad IM-tjänst (som ett IM-konto) är detta där du chattar med personer."
 
 #~ msgid "people - %d people are talking to you"
