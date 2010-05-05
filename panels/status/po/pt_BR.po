@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:38+0000\n"
+"POT-Creation-Date: 2010-05-05 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -14,15 +14,15 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr "Olá! Este é o painel de status. Se você tem uma conta configurada na web (como Twitter) você poderá ver seus feeds e atualizar seu status aqui"
+#: ../src/moblin-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "Olá! Este é o painel de status. Se você tem uma conta configurada na web (como Twitter) você poderá ver seus feeds e atualizar seu status aqui."
 
-#: ../src/moblin-panel-status.c:99
+#: ../src/moblin-panel-status.c:100
 msgid "Status"
 msgstr "Status"
 
-#: ../src/moblin-panel-status.c:157
+#: ../src/moblin-panel-status.c:158
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
@@ -40,30 +40,40 @@ msgstr "Impossível atualizar o status. O serviço pode estar indisponível ou s
 msgid "Unable to update status: You're not online."
 msgstr "Impossível atualizar o status: Você não está online."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Nós supomos que seu local seja: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:453
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Seu local está sendo compartilhado como: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:463
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Nós supomos que seu local seja: %f %f"
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:467
 #, c-format
-msgid "Your location is being shared as: %f %f "
+msgid "Your location is being shared as: %f %f"
 msgstr "Seu local está sendo compartilhado como: %f %f"
 
-#: ../src/mps-feed-pane.c:455
+#: ../src/mps-feed-pane.c:476
 msgid "Your location is not being shared"
 msgstr "Seu local não está sendo compartilhado"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:551
+#: ../src/mps-feed-pane.c:579
 msgid "Update"
 msgstr "Atualizar"
 
-#: ../src/mps-feed-pane.c:556
+#: ../src/mps-feed-pane.c:584
 msgid "What's happening?"
 msgstr "O que está acontecendo?"
 
-#: ../src/mps-feed-pane.c:606
+#: ../src/mps-feed-pane.c:634
 msgid "Change"
 msgstr "Modificar"
 
@@ -75,27 +85,27 @@ msgstr "Adicionar novo serviço web"
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Parece que você não tem serviços web configurados ou existe um problema com suas configurações. Use o botão acima para abrir Minhas Contas Web e configure uma."
 
-#: ../src/mps-geotag-pane.c:215
+#: ../src/mps-geotag-pane.c:232
 msgid "Your location"
 msgstr "Seu local"
 
-#: ../src/mps-geotag-pane.c:485
+#: ../src/mps-geotag-pane.c:554
 msgid "Search"
 msgstr "Pesquisar"
 
-#: ../src/mps-geotag-pane.c:490
+#: ../src/mps-geotag-pane.c:559
 msgid "Where are you?"
 msgstr "Onde você está?"
 
-#: ../src/mps-geotag-pane.c:492
+#: ../src/mps-geotag-pane.c:561
 msgid "Find me"
 msgstr "Me localize"
 
-#: ../src/mps-geotag-pane.c:499
+#: ../src/mps-geotag-pane.c:568
 msgid "Use location"
 msgstr "Use o local"
 
-#: ../src/mps-geotag-pane.c:500
+#: ../src/mps-geotag-pane.c:569
 msgid "Don't use location"
 msgstr "Não use o local"
 
