@@ -92,7 +92,7 @@ msgstr "Páginas favoritas"
 
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
-msgstr "Panel de internet"
+msgstr "Panel de Internet"
 
 #~ msgid "It's the internet"
 #~ msgstr "Esto es Internet"
