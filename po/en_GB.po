@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:27+0000\n"
-"PO-Revision-Date: 2010-03-31 12:46-0800\n"
+"POT-Creation-Date: 2010-05-05 09:27+0000\n"
+"PO-Revision-Date: 2010-05-04 23:42-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Sorry, you'll have to remove a panel before you can add a new one."
 
 #: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr " You can add, remove, and reorder many of the panels in your toolbar."
 
 #: ../capplet/src/mtp-jar.c:110
@@ -47,8 +47,9 @@ msgstr "Available panels"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:124
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%l:%M %P"
 
@@ -56,21 +57,23 @@ msgstr "%l:%M %P"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:133
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:154
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e %B, %Y"
 
@@ -92,35 +95,43 @@ msgid "Show system tray"
 msgstr "Show system tray"
 
 #: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "The system tray is a concept used by some older applications to let you know when something happens, or to stay running when you close them."
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Always use small screen mode"
 
 #: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determines the order of panels on the toolbar."
 
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+
 #: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Order of panels on toolbar"
 
-#: ../src/moblin-netbook.c:1019
+#: ../src/moblin-netbook.c:1018
 msgid "Moblin Netbook Effects"
 msgstr "Moblin Netbook Effects"
 
-#: ../src/moblin-netbook.c:1023
+#: ../src/moblin-netbook.c:1022
 msgid "Effects for Moblin Netbooks"
 msgstr "Effects for Moblin Netbooks"
 
-#: ../src/moblin-netbook.c:3221
+#: ../src/moblin-netbook.c:3218
 msgid "Activate"
 msgstr "Activate"
 
-#: ../src/moblin-netbook.c:3235
+#: ../src/moblin-netbook.c:3232
 msgid "Unknown window"
 msgstr "Unknown window"
 
-#: ../src/moblin-netbook.c:3237
-msgid "Is asking for your attention."
+#: ../src/moblin-netbook.c:3234
+msgid "is asking for your attention."
 msgstr "is asking for your attention."
 
 #: ../src/mnb-toolbar.c:1000
@@ -132,29 +143,22 @@ msgstr "Sorry, %s is broken"
 msgid "Dismiss"
 msgstr "Dismiss"
 
-#: ../src/notifications/mnb-notification-cluster.c:653
+#: ../src/notifications/mnb-notification-cluster.c:663
 msgid "Dismiss All"
 msgstr "Dismiss All"
 
-#: ../data/mutter-moblin.schemas.in.h:1
-msgid "Always use small screen mode"
-msgstr "Always use small screen mode"
-
-#: ../data/mutter-moblin.schemas.in.h:3
-msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-msgstr "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-
 #~ msgid "System tray"
 #~ msgstr "System tray"
-
 #~ msgid "zones"
 #~ msgstr "zones"
-
 #~ msgid "No Zones yet"
 #~ msgstr "No Zones yet"
-
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
-
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organise them to your heart's content."
 #~ msgid "No applications on this zone"
 #~ msgstr "No applications on this zone"
+
