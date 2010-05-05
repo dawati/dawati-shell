@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Zhang Qiang <qiang.z.zhang@intel.com>, 2009
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 03:06+0000\n"
 "PO-Revision-Date: 2009-10-21 15:59-0800\n"
 "Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
 "Language-Team: zh_CN\n"
@@ -49,34 +49,25 @@ msgstr ""
 "浏览列表"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显示"
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显示"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "新建标签"
 
-#. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
-#, fuzzy
-msgid "Your pages"
-msgstr "书签"
-
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "搜索"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "标签"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "书签"
 
@@ -89,10 +80,14 @@ msgstr "互联网"
 msgid "Internet"
 msgstr "互联网"
 
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
+msgid "Your pages"
+msgstr "你的页面"
+
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "互联网"
+msgstr "互联网面板"
 
 #~ msgid "It's the internet"
 #~ msgstr "连接至互联网"
@@ -127,13 +122,8 @@ msgstr "互联网"
 #~ msgid "Reload page"
 #~ msgstr "刷新页面"
 
-#~ msgid ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
-#~ msgstr ""
-#~ "对不起，看起来 <span color=\"#909090\">%s</span> 造成了此标签崩溃。浏览器"
-#~ "其它部分都安然无恙。您可以尝试重新载入网页，或访问另一个网页。"
+#~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+#~ msgstr "对不起，看起来 <span color=\"#909090\">%s</span> 造成了此标签崩溃。浏览器其它部分都安然无恙。您可以尝试重新载入网页，或访问另一个网页。"
 
 #~ msgid "Download cancelled"
 #~ msgstr "下载已取消"
@@ -204,12 +194,8 @@ msgstr "互联网"
 #~ msgid "Save page"
 #~ msgstr "保存网页"
 
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "您想现在对浏览器进行重置操作吗？这个操作还会同时删除所有您的浏览历史、锁定"
-#~ "的页面和个人设置。"
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "您想现在对浏览器进行重置操作吗？这个操作还会同时删除所有您的浏览历史、锁定的页面和个人设置。"
 
 #~ msgid "Yes, delete"
 #~ msgstr "是的，请删除"
@@ -217,9 +203,7 @@ msgstr "互联网"
 #~ msgid "No, save"
 #~ msgstr "不，保存"
 
-#~ msgid ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
+#~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
 #~ msgstr "没有锁定的页面。在想要记住的网页的地址栏中按下大头针。"
 
 #~ msgid "More pinned pages"
@@ -288,39 +272,24 @@ msgstr "互联网"
 #~ msgid "Trouble connecting?"
 #~ msgstr "连接错误？"
 
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "移动鼠标到屏幕顶部，在显示的工具栏上选择网络面板项。"
 
-#~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "欢迎使用 Moblin Netbook 浏览器。当你要浏览网页时，你最喜欢的网页会先显示在"
-#~ "这里。"
+#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "欢迎使用 Moblin Netbook 浏览器。当你要浏览网页时，你最喜欢的网页会先显示在这里。"
 
 #~ msgid "Getting started"
 #~ msgstr "开始"
 
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "首先，确认您连到互联网！然后点击地址栏，或者按下 Ctrl+L 以快速定位到地址"
-#~ "栏，然后输入您想要的地址或者想搜索的内容。"
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "首先，确认您连到互联网！然后点击地址栏，或者按下 Ctrl+L 以快速定位到地址栏，然后输入您想要的地址或者想搜索的内容。"
 
 #~ msgid "Make this a private tab"
 #~ msgstr "隐藏我在此页面上输入的信息"
 
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
 #~ msgstr ""
-#~ "这是一个隐藏的标签页。您在本页面上进行的一切操作都不会被存储在这台计算机"
-#~ "上。然而，\n"
+#~ "这是一个隐藏的标签页。您在本页面上进行的一切操作都不会被存储在这台计算机上。然而，\n"
 #~ "您所访问的网站仍然有可能保存您的操作记录。"
 
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
@@ -329,9 +298,7 @@ msgstr "互联网"
 #~ msgid "Go"
 #~ msgstr "出发"
 
-#~ msgid ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
 #~ msgstr "<p>点击此图标，向列表中添加新的页面.</p>"
 
 #~ msgid "Fewer pinned pages"
