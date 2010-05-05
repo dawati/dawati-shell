@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 09:39+0000\n"
+"POT-Creation-Date: 2010-05-05 09:34+0000\n"
 "PO-Revision-Date: 2009-08-26 08:21+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -59,56 +59,60 @@ msgstr "Tampilkan berkas terkini sebanyak mungkin"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "Anda ingin membersihkan dokumen terkini? Ini akan menghapus muatan lokal dari Myzone"
 
-#: ../penge/penge-calendar-pane.c:483
+#: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "<b>Janji Temu</b>"
 
-#: ../penge/penge-calendar-pane.c:526
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Buka"
+
+#: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
 msgstr "Tugas"
 
-#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "Buat suatu janji pertemuan"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Tambah"
 
-#: ../penge/penge-events-pane.c:400
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "Tidak ada entri kalender minggu ini"
 
-#: ../penge/penge-recent-file-tile.c:216
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "Halaman web"
 
-#: ../penge/penge-tasks-pane.c:50
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "Buat tugas baru"
 
-#: ../penge/penge-tasks-pane.c:426
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "Tak ada yang perlu dilakukan hari ini"
 
-#: ../penge/penge-task-tile.c:318
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "Jatuh tempo %x"
 
-#: ../penge/penge-welcome-tile.c:32
+#: ../penge/penge-welcome-tile.c:33
 msgid "Play intro video"
 msgstr "Mainkan video perkenalan"
 
-#: ../penge/penge-welcome-tile.c:64
+#: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
 msgstr "Selamat datang ke MeeGo"
 
-#: ../penge/penge-welcome-tile.c:83
+#: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Ini adalah Myzone, dimana berkas yang baru-baru ini dipakai dan isi dari asupan web akan muncul."
 
-#: ../penge/penge-welcome-tile.c:26
+#: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "Ketika Anda telah menata akun web Anda dan memakai beberapa berkas, mereka akan muncul disini pada Myzone untuk pengaksesan yang mudah kapanpun Anda inginkan."
 
@@ -124,9 +128,37 @@ msgstr "Pesan belum dibaca"
 msgid "Unread messages"
 msgstr "Pesan-pesan belum dibaca"
 
-#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
-msgid "Open"
-msgstr "Buka"
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Wallpaper Myzone</b>"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Ubah apa yang ditampilkan di Myzone</b>"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Ubah Akun Webku"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Kalender dan tugas:"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Bersihkan dokumen terkini"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Pilih wallpaper Anda"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Kembalikan ke baku"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Peringatan lewat email:"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Hal-hal yang dilakukan teman-teman Anda daring akan muncul di sini. Aktifkan akun Anda sekarang!"
