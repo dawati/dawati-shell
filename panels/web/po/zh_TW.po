@@ -42,7 +42,7 @@ msgid ""
 "Press down to\n"
 "explore list"
 msgstr ""
-"按下「向下箭頭」鍵來\n"
+"按下「向下」鍵來\n"
 "探索清單"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:789
@@ -73,7 +73,8 @@ msgstr "喜愛的網頁"
 msgid "internet"
 msgstr "網際網路"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/moblin-panel-web.cc:216
+#: ../netpanel/moblin-panel-web.cc:262
 msgid "Internet"
 msgstr "網際網路"
 
@@ -88,247 +89,168 @@ msgstr "網際網路面板"
 
 #~ msgid "It's the internet"
 #~ msgstr "這裡是網際網路"
-
 #~ msgid "Web Browser"
 #~ msgstr "網路瀏覽器"
-
 #~ msgid "Moblin web browser - "
 #~ msgstr "Moblin 網路瀏覽器 - "
-
 #~ msgid "Loading..."
 #~ msgstr "載入中..."
-
 #~ msgid "Untitled"
 #~ msgstr "沒有標題"
-
 #~ msgid "Downloads"
 #~ msgstr "下載"
-
 #~ msgid "Downloads - %d%%"
 #~ msgstr "下載 - %d%%"
-
 #~ msgid "Moblin web browser"
 #~ msgstr "Moblin 網路瀏覽器"
-
 #~ msgid "Oops!"
 #~ msgstr "糟糕！"
-
 #~ msgid "New tab page"
 #~ msgstr "新分頁"
-
 #~ msgid "Reload page"
 #~ msgstr "重新載入頁面"
-
 #~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
 #~ msgstr "抱歉，<span color=\"#909090\">%s</span> 似乎導致這個分頁當掉。剩下的瀏覽器其他部份則不受損害。你可以試著重新載入此頁面或是造訪別的頁面。"
-
 #~ msgid "Download cancelled"
 #~ msgstr "下載已取消"
-
 #~ msgid "Download completed"
 #~ msgstr "下載已完成"
-
 #~ msgid "Open file"
 #~ msgstr "開啟檔案"
-
 #~ msgid "Find in Page"
 #~ msgstr "在頁面中搜尋"
-
 #~ msgid "Type to search"
 #~ msgstr "輸入字串來搜尋"
-
 #~ msgid "Next result"
 #~ msgstr "下個結果"
-
 #~ msgid "Previous result"
 #~ msgstr "上個結果"
-
 #~ msgid "Run the browser in a window"
 #~ msgstr "在視窗內執行瀏覽器"
-
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "將該網址加入最近的檔案清單"
-
 #~ msgid "Moblin Web Browser"
 #~ msgstr "Moblin 網路瀏覽器"
-
 #~ msgid "Open link in new tab"
 #~ msgstr "在新分頁中開啟連結"
-
 #~ msgid "Copy link location"
 #~ msgstr "複製連結位置"
-
 #~ msgid "Save link"
 #~ msgstr "儲存連結"
-
 #~ msgid "View image"
 #~ msgstr "檢視圖案"
-
 #~ msgid "Copy image location"
 #~ msgstr "複製圖案位置"
-
 #~ msgid "Save image"
 #~ msgstr "儲存圖案"
-
 #~ msgid "Copy text"
 #~ msgstr "複製文字"
-
 #~ msgid "Back"
 #~ msgstr "往後"
-
 #~ msgid "Forward"
 #~ msgstr "往前"
-
 #~ msgid "Stop"
 #~ msgstr "停止"
-
 #~ msgid "Reload"
 #~ msgstr "重新載入"
-
 #~ msgid "Pin this page"
 #~ msgstr "釘住此頁面"
-
 #~ msgid "Save page"
 #~ msgstr "儲存頁面"
-
 #~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
 #~ msgstr "你想要重設你的瀏覽器嗎？這會刪除你的網頁歷史紀錄、釘住的頁面與個人設定。"
-
 #~ msgid "Yes, delete"
 #~ msgstr "是，刪除"
-
 #~ msgid "No, save"
 #~ msgstr "不，儲存"
-
 #~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
 #~ msgstr "沒有釘住的頁面。在你想要記住的頁面上，壓下神奇搜尋工具欄內的大頭針圖示。"
-
 #~ msgid "More pinned pages"
 #~ msgstr "較多被釘住的頁面"
-
 #~ msgid "No matching pages were found"
 #~ msgstr "找不到符合的頁面"
-
 #~ msgid "__ wants to know your location."
 #~ msgstr "__ 想知道你現在在哪。"
-
 #~ msgid "Share location"
 #~ msgstr "分享位置"
-
 #~ msgid "Don't share"
 #~ msgstr "不要分享"
-
 #~ msgid "Remember for this site"
 #~ msgstr "在這個網站記住"
-
 #~ msgid "Settings"
 #~ msgstr "設定"
-
 #~ msgid "General"
 #~ msgstr "一般"
-
 #~ msgid "Try to complete domain names in automagic bar"
 #~ msgstr "試著在神奇搜尋工具欄內完成網域名稱"
-
 #~ msgid "Search in automagic bar"
 #~ msgstr "在神奇搜尋工具欄內搜尋"
-
 #~ msgid "Add new search engine"
 #~ msgstr "新增搜尋引擎"
-
 #~ msgid "Privacy"
 #~ msgstr "隱私"
-
 #~ msgid "Remember my passwords"
 #~ msgstr "記住我的密碼"
-
 #~ msgid "Remember what I type into forms"
 #~ msgstr "記住我在表格內輸入的資料"
-
 #~ msgid "Keep my browser history for up to"
 #~ msgstr "保留我的瀏覽器歷史記錄直到"
-
 #~ msgid "1 year"
 #~ msgstr "一年"
-
 #~ msgid "1 month"
 #~ msgstr "一個月"
-
 #~ msgid "1 week"
 #~ msgstr "一個禮拜"
-
 #~ msgid "1 day"
 #~ msgstr "一天"
-
 #~ msgid "Reset my browser now"
 #~ msgstr "立刻重設我的瀏覽器"
-
 #~ msgid "Pinned pages"
 #~ msgstr "釘住的頁面"
-
 #~ msgid "Trouble connecting?"
 #~ msgstr "有連線上的問題嗎？"
-
 #~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "將滑鼠指標移動到螢幕頂端來向下帶出工具列，並選取網路的面板。"
-
 #~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
 #~ msgstr "歡迎來到 Moblin 網路筆電網路瀏覽器。當你造網頁時，你喜愛的網頁會在這裡出現。"
-
 #~ msgid "Getting started"
 #~ msgstr "準備開始"
-
 #~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
 #~ msgstr "首先，確定你有網際網路連線！接著點一下神奇搜尋工具欄或是按下「Ctrl」+「L」來將它快速開啟，然後輸入網址或是你想要搜尋的東西。"
-
 #~ msgid "Make this a private tab"
 #~ msgstr "將此分頁標記為私人的"
-
 #~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
 #~ msgstr "這是一個私人分頁。你在這個分頁內所做的事情都不會在這台電腦上儲存起來。然而，你所瀏覽的網站仍可能會保留住你的動作紀錄。 "
-
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
 #~ msgstr "Moblin 網頁瀏覽器驕傲地建立在 Mozilla 科技之上"
-
 #~ msgid "Go"
 #~ msgstr "Go"
-
 #~ msgid "Push the pin icon in the location bar above to add pages to this list."
 #~ msgstr "在上方的位置列內壓下大頭針的圖示來將頁面加入此清單。"
-
 #~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
 #~ msgstr "<p>在上方的位置列內壓下大頭針的圖示來將頁面加入此清單。</p>"
-
 #~ msgid "Fewer pinned pages"
 #~ msgstr "較少被釘住的頁面"
-
 #~ msgid "Less than a minute ago"
 #~ msgstr "少於一分鐘之前"
-
 #~ msgid "About a minute ago"
 #~ msgid_plural "About __ minutes ago"
 #~ msgstr[0] "最後一次同步是在一分鐘以前"
 #~ msgstr[1] "最後一次同步是在__分鐘以前"
-
 #~ msgid "About an hour ago"
 #~ msgid_plural "About __ hours ago"
 #~ msgstr[0] "最後一次同步是在一小時以前"
 #~ msgstr[1] "最後一次同步是在__小時以前"
-
 #~ msgid "Today at %H:%M"
 #~ msgstr "今天在%H;%M"
-
 #~ msgid "Yesterday at %H:%M"
 #~ msgstr "昨天在%H;%M"
-
 #~ msgid "Last %A at %H:%M"
 #~ msgstr "在%H;%M 上一次 %A"
-
 #~ msgid "%x at %H:%M"
 #~ msgstr "在%H;%M %x"
-
 #~ msgid "Next"
 #~ msgstr "下一個"
-
 #~ msgid "Previous"
 #~ msgstr "上一個"
+
