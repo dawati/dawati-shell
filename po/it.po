@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:32+0000\n"
+"POT-Creation-Date: 2010-05-05 09:27+0000\n"
 "PO-Revision-Date: 2009-12-11 19:55+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -21,17 +21,30 @@ msgstr ""
 msgid "Set your toolbar preferences"
 msgstr "Imposta le preferenze della barra degli strumenti"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Impostazioni della barra degli strumenti"
+
+#: ../capplet/src/mtp-bin.c:362
 msgid "Save toolbar"
 msgstr "Salva barra degli strumenti"
 
-#: ../capplet/src/mtp-bin.c:366
+#: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Spiacenti, è necessario rimuovere un pannello prima di poter aggiungerne uno nuovo."
 
-#: ../capplet/src/mtp-jar.c:109
+#: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Pannelli disponibili"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+msgid "%H:%M"
+msgstr "%H.%M"
 
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
@@ -43,7 +56,7 @@ msgstr "Pannelli disponibili"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:123
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%H.%M"
 
@@ -51,7 +64,7 @@ msgstr "%H.%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:144
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
@@ -59,84 +72,78 @@ msgstr "%e %B %Y"
 msgid "Toolbar"
 msgstr "Barra degli strumenti"
 
-#: ../data/mutter-moblin.schemas.in.h:1
-msgid "Determines the order of panels on the toolbar."
-msgstr "Determina l'ordine dei pannelli sulla barra degli strumenti."
-
-#: ../data/mutter-moblin.schemas.in.h:2
-msgid "Order of panels on toolbar"
-msgstr "Ordine dei pannelli sulla barra degli strumenti"
-
-#: ../src/moblin-netbook.c:905
-msgid "Moblin Netbook Effects"
-msgstr "Effetti Moblin netbook"
-
-#: ../src/moblin-netbook.c:909
-msgid "Effects for Moblin Netbooks"
-msgstr "Effetti per i netbook Moblin"
-
-#: ../src/moblin-netbook.c:3035
-msgid "Activate"
-msgstr "Attiva"
-
-#: ../src/moblin-netbook.c:3049
-msgid "Unknown window"
-msgstr "Finestra sconosciuta"
-
-#: ../src/moblin-netbook.c:3051
-msgid "Is asking for your attention."
-msgstr "Richiede l'attenzione."
-
-#: ../src/mnb-toolbar.c:976
-#, c-format
-msgid "Sorry, %s is broken"
-msgstr "Spiacente, %s non funziona"
-
-#: ../src/notifications/mnb-notification.c:262
-msgid "Dismiss"
-msgstr "Ignora"
-
-#: ../src/notifications/mnb-notification-cluster.c:668
-msgid "Dismiss All"
-msgstr "Ignora tutto"
-
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar settings"
-msgstr "Impostazioni della barra degli strumenti"
-
-#: ../capplet/src/mtp-bin.c:368
-msgid "You can add, remove and reorder many of the panels in your toolbar."
-msgstr "Puoi aggiungere, rimuovere o riorganizzare molti dei pannelli nella barra degli strumenti."
-
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
-msgid "%H:%M"
-msgstr "%H.%M"
-
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
 msgstr "Imposta le preferenze della barra degli strumenti"
 
-#: ../capplet/src/syst-cc-panel.c:170
-msgid "System tray"
-msgstr "Barra degli strumenti del sistema"
-
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:253
+#: ../capplet/src/syst-cc-panel.c:241
 msgid "System Tray"
 msgstr "Barra degli strumenti del sistema"
 
-#: ../capplet/src/syst-cc-panel.c:207
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "La barra degli strumenti del sistema è un concetto usato da alcune applicazioni, anche vecchie, per farti sapere quando succede qualcosa o per rimanere in esecuzione quando si chiudono."
-
-#: ../capplet/src/syst-cc-panel.c:186
+#: ../capplet/src/syst-cc-panel.c:174
 msgid "Show system tray"
 msgstr "Mostra la barra degli strumenti"
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determina l'ordine dei pannelli sulla barra degli strumenti."
+
+#: ../data/mutter-moblin.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "Ordine dei pannelli sulla barra degli strumenti"
+
+#: ../src/moblin-netbook.c:1018
+msgid "Moblin Netbook Effects"
+msgstr "Effetti Moblin netbook"
+
+#: ../src/moblin-netbook.c:1022
+msgid "Effects for Moblin Netbooks"
+msgstr "Effetti per i netbook Moblin"
+
+#: ../src/moblin-netbook.c:3218
+msgid "Activate"
+msgstr "Attiva"
+
+#: ../src/moblin-netbook.c:3232
+msgid "Unknown window"
+msgstr "Finestra sconosciuta"
+
+#: ../src/mnb-toolbar.c:1000
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Spiacente, %s non funziona"
+
+#: ../src/notifications/mnb-notification.c:282
+msgid "Dismiss"
+msgstr "Ignora"
+
+#: ../src/notifications/mnb-notification-cluster.c:663
+msgid "Dismiss All"
+msgstr "Ignora tutto"
+
+#: ../src/moblin-netbook.c:3234
+msgid "is asking for your attention."
+msgstr "Richiede la tua attenzione."
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Puoi aggiungere, rimuovere o riorganizzare molti dei pannelli nella barra degli strumenti."
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Usare sempre la modalità schermo ridotto"
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "La barra degli strumenti del sistema è un concetto usato da alcune vecchie applicazioni per farti sapere quando succede qualcosa o per rimanere in esecuzione quando si chiudono."
+
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del display indicherebbero normalmente la modalità schermo grande."
+
+#~ msgid "System tray"
+#~ msgstr "Barra degli strumenti del sistema"
 
 #~ msgid "Socket for embedding"
 #~ msgstr "Presa per l'incorporamento"
