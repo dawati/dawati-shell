@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:37+0000\n"
+"POT-Creation-Date: 2010-05-05 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
 "Language-Team: \n"
@@ -75,8 +75,8 @@ msgstr "Mes conversations"
 msgid "People panel"
 msgstr "Panneau de relations"
 
-#: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
+#: ../src/mnb-people-panel.c:57
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
 msgstr "Bonjour ! Voici le panneau Relations. Lorsque vous avez un service de messagerie instantanée configuré (comme Messenger), c'est ici que vous dialoguez avec vos proches."
 
 #~ msgid "people - %d people are talking to you"
