@@ -361,6 +361,8 @@ _filter_out_unshowable_recent_items (PengeEverythingPane *pane,
       g_free (thumbnail_path);
       continue;
     }
+
+    g_free (thumbnail_path);
   }
 
   return list;
