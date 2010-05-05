@@ -854,10 +854,15 @@ mnb_alttab_overlay_activate_window (MnbAlttabOverlay *overlay,
 
   priv->in_alt_grab = FALSE;
 
-  next             = mutter_window_get_meta_window (activate);
+  next = mutter_window_get_meta_window (activate);
+
+  g_return_if_fail (next);
+
   screen           = meta_window_get_screen (next);
   workspace        = meta_window_get_workspace (next);
   active_workspace = meta_screen_get_active_workspace (screen);
+
+  g_return_if_fail (workspace);
 
   if (!active_workspace || (active_workspace == workspace))
     {
