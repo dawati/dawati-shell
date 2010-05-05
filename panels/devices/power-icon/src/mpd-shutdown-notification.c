@@ -51,8 +51,6 @@ _notification_shutdown_cb (MpdShutdownNotification  *self,
                            char                     *action,
                            void                     *data)
 {
-  g_debug ("%s()", __FUNCTION__);
-
   g_signal_emit_by_name (self, "shutdown");
 }
 
@@ -61,8 +59,6 @@ _notification_closed_cb (MpdShutdownNotification  *self,
                          void                     *data)
 {
   MpdShutdownNotificationPrivate *priv = GET_PRIVATE (self);
-
-  g_debug ("%s()", __FUNCTION__);
 
   g_source_remove (priv->timeout_id);
   priv->timeout_id = 0;
@@ -75,8 +71,6 @@ _timeout_cb (MpdShutdownNotification *self)
   char const  *template = _("If you don't decide I'll turn off in %d seconds");
   char        *text = NULL;
   bool         proceed;
-
-  g_debug ("%s() %d", __FUNCTION__, priv->countdown);
 
   if (priv->countdown > 5)
   {

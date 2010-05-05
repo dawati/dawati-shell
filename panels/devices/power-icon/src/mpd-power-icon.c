@@ -213,8 +213,6 @@ update (MpdPowerIcon *self,
   mpl_panel_client_request_button_style (priv->panel, button_style);
   mpl_panel_client_request_tooltip (priv->panel, description);
 
-  g_debug ("%s '%s' %d", description, button_style, percentage);
-
   g_free (description);
 
   if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
@@ -287,8 +285,6 @@ _lid_closed_cb (MpdLidDevice    *lid,
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
 
-  g_debug ("%s() %d", __FUNCTION__, mpd_lid_device_get_closed (lid));
-
   if (mpd_lid_device_get_closed (lid) &&
       !priv->in_shutdown)
   {
@@ -319,8 +315,6 @@ _shutdown_notification_closed_cb (NotifyNotification  *notification,
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
 
-  g_debug ("%s()", __FUNCTION__);
-
   g_object_unref (priv->shutdown_note);
   priv->shutdown_note = NULL;
 }
@@ -330,8 +324,6 @@ _shutdown_key_activated_cb (MxAction      *action,
                             MpdPowerIcon  *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-
-  g_debug ("%s() %p", __FUNCTION__, priv->shutdown_note);
 
   if (priv->shutdown_note)
   {

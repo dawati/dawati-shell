@@ -94,8 +94,6 @@ _suspend_timer_elapsed (gpointer data)
 
   priv->suspend_source_id = 0;
 
-  g_debug ("Suspending after %d seconds of idle",
-           priv->suspend_idle_time);
   if (!mpd_idle_manager_suspend (self, &error))
   {
     g_warning (G_STRLOC ": Unable to suspend: %s\n", error->message);

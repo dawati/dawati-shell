@@ -263,8 +263,6 @@ _mixer_control_ready_cb (GvcMixerControl  *control,
 {
   MpdVolumeTilePrivate *priv = GET_PRIVATE (self);
 
-  g_debug (G_STRLOC ": Mixer ready!");
-
   mpd_volume_tile_set_sink (self,
                             gvc_mixer_control_get_default_sink (priv->control));
 }

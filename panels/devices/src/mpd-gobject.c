@@ -35,15 +35,10 @@ mpd_gobject_detach (GObject   *self,
   if (object_ptr && *object_ptr)
   {
     GObject *object = *object_ptr;
-    int n_handlers = g_signal_handlers_disconnect_matched (object,
-                                                           G_SIGNAL_MATCH_DATA,
-                                                           0, 0, NULL, NULL,
-                                                           self);
-    g_debug ("Disconnected %i handlers on %s from %s",
-             n_handlers,
-             G_OBJECT_TYPE_NAME (self),
-             G_OBJECT_TYPE_NAME (object));
-
+    g_signal_handlers_disconnect_matched (object,
+                                          G_SIGNAL_MATCH_DATA,
+                                          0, 0, NULL, NULL,
+                                          self);
     g_object_unref (object);
     *object_ptr = NULL;
   }

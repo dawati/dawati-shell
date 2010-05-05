@@ -49,8 +49,6 @@ moblin_panel_devices_SOURCES = \
   mpd-folder-tile.h \
   mpd-gobject.c \
   mpd-gobject.h \
-  mpd-media-import-tile.c \
-  mpd-media-import-tile.h \
   mpd-panel.c \
   mpd-panel.h \
   mpd-shell.c \

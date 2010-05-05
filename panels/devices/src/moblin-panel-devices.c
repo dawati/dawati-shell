@@ -38,7 +38,6 @@ static void
 _shell_request_hide_cb (MpdShell        *shell,
                         MplPanelClient  *panel)
 {
-  g_debug ("%s() panel=%p", __FUNCTION__, panel);
   if (panel)
     mpl_panel_client_hide (panel);
 }
@@ -47,7 +46,6 @@ static void
 _shell_request_show_cb (MpdShell        *shell,
                         MplPanelClient  *panel)
 {
-  g_debug ("%s()", __FUNCTION__);
   mpl_panel_client_show (panel);
 }
 
