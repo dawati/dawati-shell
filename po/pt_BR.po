@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:29+0000\n"
+"POT-Creation-Date: 2010-05-05 09:27+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -31,7 +31,7 @@ msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Desculpe, você tem que remover o painel antes que possa adicionar um novo."
 
 #: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove and reorder many of the panels in your toolbar."
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr "Você pode adicionar, remover e reordenar muitos dos painéis na sua barra de ferramentas."
 
 #: ../capplet/src/mtp-jar.c:110
@@ -44,7 +44,7 @@ msgstr "Painéis disponíveis"
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
 #: ../capplet/src/mtp-clock.c:217
-#: ../src/mnb-toolbar-clock.c:124
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -59,7 +59,7 @@ msgstr "%H:%M"
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
 #: ../capplet/src/mtp-clock.c:227
-#: ../src/mnb-toolbar-clock.c:133
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -68,7 +68,7 @@ msgstr "%l:%M %P"
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
 #: ../capplet/src/mtp-clock.c:249
-#: ../src/mnb-toolbar-clock.c:154
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
@@ -90,38 +90,46 @@ msgid "Show system tray"
 msgstr "Mostrar bandeja de sistema"
 
 #: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "A bandeja de sistema é um conceito usado por alguns aplicativos mais velhos para te avisar quando algo acontecer ou para continuar executando quando você os fechar."
 
 #: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Sempre usar o modo tela pequena"
+
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina a ordem dos painéis na barra de ferramentas."
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Força o modo tela pequena a ser usado mesmo se o tamanho do monitor normalmente implicaria o modo de tela maior."
+
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordem dos painéis na barra de ferramentas"
 
-#: ../src/moblin-netbook.c:962
+#: ../src/moblin-netbook.c:1018
 msgid "Moblin Netbook Effects"
 msgstr "Efeitos de netbook Moblin"
 
-#: ../src/moblin-netbook.c:966
+#: ../src/moblin-netbook.c:1022
 msgid "Effects for Moblin Netbooks"
 msgstr "Efeitos para Netbooks Moblin"
 
-#: ../src/moblin-netbook.c:3164
+#: ../src/moblin-netbook.c:3218
 msgid "Activate"
 msgstr "Ativar"
 
-#: ../src/moblin-netbook.c:3178
+#: ../src/moblin-netbook.c:3232
 msgid "Unknown window"
 msgstr "Janela desconhecida"
 
-#: ../src/moblin-netbook.c:3180
-msgid "Is asking for your attention."
-msgstr "Está pedindo a sua atenção"
+#: ../src/moblin-netbook.c:3234
+msgid "is asking for your attention."
+msgstr "está pedindo a sua atenção."
 
-#: ../src/mnb-toolbar.c:974
+#: ../src/mnb-toolbar.c:1000
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Desculpe. %s está quebrado"
@@ -130,7 +138,7 @@ msgstr "Desculpe. %s está quebrado"
 msgid "Dismiss"
 msgstr "Ignorar"
 
-#: ../src/notifications/mnb-notification-cluster.c:668
+#: ../src/notifications/mnb-notification-cluster.c:663
 msgid "Dismiss All"
 msgstr "Ignorar tudo"
 
