@@ -110,14 +110,14 @@ msgid "We guessed your location as: %s (%f, %f)"
 msgstr "Nous avons deviné votre position comme étant : %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:453
-#, fuzzy, c-format
+#, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Votre position est partagée comme étant : %s (%f, %f)"
+msgstr "Votre position est partagée comme suit : %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:467
-#, fuzzy, c-format
+#, c-format
 msgid "Your location is being shared as: %f %f"
-msgstr "Votre position est partagée comme étant : %f %f"
+msgstr "Votre position est partagée comme suit : %f %f"
 
 #~ msgid "Offline"
 #~ msgstr "Déconnecté"
