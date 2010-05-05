@@ -225,6 +225,7 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
   client = gconf_bridge_get_client (bridge);
 
   builder = gtk_builder_new ();
+  gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
   gtk_builder_add_from_file (builder,
                              UI_FILE,
                              NULL);
