@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
 "Language-Team: \n"
@@ -45,35 +46,25 @@ msgstr ""
 "för att se lista"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"När du besöker webbsidor kommer dina favoriter visas här och på den nya "
-"fliken i webbläsaren."
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "När du besöker webbsidor kommer dina favoriter visas här och på den nya fliken i webbläsaren."
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Ny flik"
 
-#. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
-#, fuzzy
-msgid "Your pages"
-msgstr "Favoritsidor"
-
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Sök"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Flikar"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Favoritsidor"
 
@@ -86,10 +77,14 @@ msgstr "internet"
 msgid "Internet"
 msgstr "Internet"
 
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
+msgid "Your pages"
+msgstr "Dina sidor"
+
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "Internet"
+msgstr "Internetpanel"
 
 #~ msgid "It's the internet"
 #~ msgstr "Det är internet"
@@ -124,14 +119,8 @@ msgstr "Internet"
 #~ msgid "Reload page"
 #~ msgstr "Ladda om sidan"
 
-#~ msgid ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
-#~ msgstr ""
-#~ "Ursäkta, <span color=\"#909090\">%s</span> verkar ha fått den här fliken "
-#~ "att krascha. Resten av webbläsaren är ok. Du kan ladda om webbsidan eller "
-#~ "besöka en annan.  "
+#~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+#~ msgstr "Ursäkta, <span color=\"#909090\">%s</span> verkar ha fått den här fliken att krascha. Resten av webbläsaren är ok. Du kan ladda om webbsidan eller besöka en annan.  "
 
 #~ msgid "Download cancelled"
 #~ msgstr "Nerladdningen avbruten"
@@ -202,12 +191,8 @@ msgstr "Internet"
 #~ msgid "Save page"
 #~ msgstr "Spara sidan"
 
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "Vill du radera din webbhistoria nu? Det kommer också att ta bort "
-#~ "fastnålade sidor och personliga inställningar."
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "Vill du radera din webbhistoria nu? Det kommer också att ta bort fastnålade sidor och personliga inställningar."
 
 #~ msgid "Yes, delete"
 #~ msgstr "Ja, ta bort"
@@ -215,12 +200,8 @@ msgstr "Internet"
 #~ msgid "No, save"
 #~ msgstr "Nej, spara"
 
-#~ msgid ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
-#~ msgstr ""
-#~ "Inga fastnålade sidor. Klicka på knappnålen i automagi-listen för de "
-#~ "webbsidor du vill komma ihåg."
+#~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+#~ msgstr "Inga fastnålade sidor. Klicka på knappnålen i automagi-listen för de webbsidor du vill komma ihåg."
 
 #~ msgid "More pinned pages"
 #~ msgstr "Fler fastnålade sidor"
@@ -288,43 +269,23 @@ msgstr "Internet"
 #~ msgid "Trouble connecting?"
 #~ msgstr "Problem att ansluta?"
 
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
-#~ msgstr ""
-#~ "Flytta din markör till översta delen av skärmen för att i verktygsfältet "
-#~ "välja Nätverk"
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+#~ msgstr "Flytta din markör till översta delen av skärmen för att i verktygsfältet välja Nätverk"
 
-#~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "Välkommen till Moblin Netbook webbläsare. När du besöker sidor kommer "
-#~ "dina favoriter visas här."
+#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Välkommen till Moblin Netbook webbläsare. När du besöker sidor kommer dina favoriter visas här."
 
 #~ msgid "Getting started"
 #~ msgstr "Börjar"
 
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "Börja med att se att internetanslutningen fungerar! Klicka därefter på "
-#~ "automagi-listen eller tryck på Ctrl+L för att hoppa dit direkt och skriv "
-#~ "in addressen eller sök det du vill."
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "Börja med att se att internetanslutningen fungerar! Klicka därefter på automagi-listen eller tryck på Ctrl+L för att hoppa dit direkt och skriv in addressen eller sök det du vill."
 
 #~ msgid "Make this a private tab"
 #~ msgstr "Skapa en personlig flik"
 
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
-#~ msgstr ""
-#~ "Detta är en personlig flik. Det som du gör under denna flik kommer inte "
-#~ "sparas på datorn. Webbplatser som du besöker kan  fortfarande ha sparat "
-#~ "information beträffande dina aktiviteter."
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+#~ msgstr "Detta är en personlig flik. Det som du gör under denna flik kommer inte sparas på datorn. Webbplatser som du besöker kan  fortfarande ha sparat information beträffande dina aktiviteter."
 
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
 #~ msgstr "Moblin webbläsare är baserad på teknologi från Mozilla"
@@ -357,12 +318,8 @@ msgstr "Internet"
 #~ msgid "%x at %H:%M"
 #~ msgstr "%x vid %H:%M"
 
-#~ msgid ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
-#~ msgstr ""
-#~ "<p>Klicka på knappnålsikonen i listen ovan för att lägga till sidor i "
-#~ "listan.</p>"
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+#~ msgstr "<p>Klicka på knappnålsikonen i listen ovan för att lägga till sidor i listan.</p>"
 
 #~ msgid "Fewer pinned pages"
 #~ msgstr "Färre inlästa sidor"
