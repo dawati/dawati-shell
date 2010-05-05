@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Clara <steiner-jay.clarax@intel.com>\n"
 "Language-Team: \n"
@@ -48,35 +49,25 @@ msgstr ""
 
 # not 100% sure about the "New tab page" thing
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"Während du Webseiten besuchst erscheinen deine Favoriten hier und auf der "
-"Seite 'Neuer Tab' im Browser."
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Während du Webseiten besuchst erscheinen deine Favoriten hier und auf der Seite 'Neuer Tab' im Browser."
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Neuer Tab"
 
-#. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
-#, fuzzy
-msgid "Your pages"
-msgstr "Favoritenseiten"
-
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Suche"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Tabs"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Favoritenseiten"
 
@@ -89,12 +80,15 @@ msgstr "Internet"
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
-msgid "Internet panel"
-msgstr "Internet"
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
+msgid "Your pages"
+msgstr "Deine Seiten"
 
-# literal translation sounds stupid
+#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "Panel Internet"
+
 #~ msgid "It's the internet"
 #~ msgstr "Das Internet!"
 
@@ -128,14 +122,8 @@ msgstr "Internet"
 #~ msgid "Reload page"
 #~ msgstr "Seite neu laden"
 
-#~ msgid ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
-#~ msgstr ""
-#~ "Leider brachte <span color=\"#909090\">%s</span> dieses Tab zum Absturz. "
-#~ "Der Browser ist unbeschädigt. Sie können versuchen, die Seite neu zu "
-#~ "laden oder eine andere besuchen. "
+#~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+#~ msgstr "Leider brachte <span color=\"#909090\">%s</span> dieses Tab zum Absturz. Der Browser ist unbeschädigt. Sie können versuchen, die Seite neu zu laden oder eine andere besuchen. "
 
 #~ msgid "Download cancelled"
 #~ msgstr "Download abgebrochen"
@@ -206,12 +194,8 @@ msgstr "Internet"
 #~ msgid "Save page"
 #~ msgstr "Seite speichern"
 
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "Möchtest du deinen Browser zurücksetzen? Dies löscht deinen "
-#~ "Browserverlauf, festgesteckte Seiten und persönliche Einstellungen."
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "Möchtest du deinen Browser zurücksetzen? Dies löscht deinen Browserverlauf, festgesteckte Seiten und persönliche Einstellungen."
 
 #~ msgid "Yes, delete"
 #~ msgstr "Ja, löschen"
@@ -219,12 +203,8 @@ msgstr "Internet"
 #~ msgid "No, save"
 #~ msgstr "Nein, speichern"
 
-#~ msgid ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
-#~ msgstr ""
-#~ "Keine festgesteckten Seiten. Stecken Sie die Pin in der Automagic-Leiste "
-#~ "auf die Seite, an die Sie erinnert werden wollen."
+#~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+#~ msgstr "Keine festgesteckten Seiten. Stecken Sie die Pin in der Automagic-Leiste auf die Seite, an die Sie erinnert werden wollen."
 
 #~ msgid "More pinned pages"
 #~ msgstr "Mehr festgesteckte Seiten"
@@ -259,7 +239,6 @@ msgstr "Internet"
 #~ msgid "Add new search engine"
 #~ msgstr "Neue Suchmaschine hinzufügen"
 
-# depending on the context, there may be other translations that are a better fit
 #~ msgid "Privacy"
 #~ msgstr "Privatsphäre"
 
@@ -293,43 +272,23 @@ msgstr "Internet"
 #~ msgid "Trouble connecting?"
 #~ msgstr "Probleme beim Verbinden?"
 
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
-#~ msgstr ""
-#~ "Bewege deinen Cursor zum oberen Bildrand, um die Symbolleiste zu öffnen "
-#~ "und wähle dann Netzwerke."
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+#~ msgstr "Bewege deinen Cursor zum oberen Bildrand, um die Symbolleiste zu öffnen und wähle dann Netzwerke."
 
-#~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "Willkommen beim Moblin Netbook Webbrowser. Wenn du Seiten besuchst, "
-#~ "erscheinen hier deine Favoriten."
+#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Willkommen beim Moblin Netbook Webbrowser. Wenn du Seiten besuchst, erscheinen hier deine Favoriten."
 
 #~ msgid "Getting started"
 #~ msgstr "Erste Schritte"
 
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "Stelle zunächst sicher, dass du eine Internet-Verbindung hast! Klicke "
-#~ "dann auf die Automagic-Leiste (oder drücke Strg+L um schnell dorthin zu "
-#~ "gelangen) und gib die gewünschte Adresse oder Suche ein."
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "Stelle zunächst sicher, dass du eine Internet-Verbindung hast! Klicke dann auf die Automagic-Leiste (oder drücke Strg+L um schnell dorthin zu gelangen) und gib die gewünschte Adresse oder Suche ein."
 
 #~ msgid "Make this a private tab"
 #~ msgstr "Dies zu einem privaten Tab machen"
 
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
-#~ msgstr ""
-#~ "Dies ist ein privater Tab. Was du in diesem Tab machst, wird nicht auf "
-#~ "diesem Computer gespeichert. Jedoch können von dir besuchte Websites "
-#~ "dennoch Daten über dich anlegen."
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+#~ msgstr "Dies ist ein privater Tab. Was du in diesem Tab machst, wird nicht auf diesem Computer gespeichert. Jedoch können von dir besuchte Websites dennoch Daten über dich anlegen."
 
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
 #~ msgstr "Moblin Web Browser ist auf Mozilla-Technologie basiert"
