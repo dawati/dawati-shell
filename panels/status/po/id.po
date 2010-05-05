@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-03 09:32+0000\n"
+"POT-Creation-Date: 2010-05-03 09:36+0000\n"
 "PO-Revision-Date: 2010-03-22 12:38+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,7 +14,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-status.c:157
+#: ../src/moblin-panel-status.c:100
+msgid "Status"
+msgstr "Status"
+
+#: ../src/moblin-panel-status.c:158
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
@@ -32,30 +36,25 @@ msgstr "Tak bisa memperbarui status. Layanan mungkin tak tersedia atau kata sand
 msgid "Unable to update status: You're not online."
 msgstr "Tak bisa perbarui status: Anda tidak daring."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:463
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Kami tebak lokasimu pada: %f %f"
 
-#: ../src/mps-feed-pane.c:448
-#, c-format
-msgid "Your location is being shared as: %f %f "
-msgstr "Kamu sedang berbagi lokasi sebagai: %f %f"
-
-#: ../src/mps-feed-pane.c:455
+#: ../src/mps-feed-pane.c:476
 msgid "Your location is not being shared"
 msgstr "Kamu tidak sedang berbagi lokasimu"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:551
+#: ../src/mps-feed-pane.c:579
 msgid "Update"
 msgstr "Perbarui"
 
-#: ../src/mps-feed-pane.c:556
+#: ../src/mps-feed-pane.c:584
 msgid "What's happening?"
 msgstr "Apa yang sedang terjadi?"
 
-#: ../src/mps-feed-pane.c:606
+#: ../src/mps-feed-pane.c:634
 msgid "Change"
 msgstr "Ubah"
 
@@ -67,27 +66,27 @@ msgstr "Tambahkan layanan web baru"
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Sepertinya Anda tak memiliki layanan web yang telah tertata atau ada masalah dengan konfigurasinya. Gunakan tombol di atas untuk membuka Akun Web Saya dan siapkan satu."
 
-#: ../src/mps-geotag-pane.c:215
+#: ../src/mps-geotag-pane.c:232
 msgid "Your location"
 msgstr "Lokasimu"
 
-#: ../src/mps-geotag-pane.c:485
+#: ../src/mps-geotag-pane.c:554
 msgid "Search"
 msgstr "Cari"
 
-#: ../src/mps-geotag-pane.c:490
+#: ../src/mps-geotag-pane.c:559
 msgid "Where are you?"
 msgstr "Dimana kamu?"
 
-#: ../src/mps-geotag-pane.c:492
+#: ../src/mps-geotag-pane.c:561
 msgid "Find me"
 msgstr "Cari aku"
 
-#: ../src/mps-geotag-pane.c:499
+#: ../src/mps-geotag-pane.c:568
 msgid "Use location"
 msgstr "Gunakan lokasi"
 
-#: ../src/mps-geotag-pane.c:500
+#: ../src/mps-geotag-pane.c:569
 msgid "Don't use location"
 msgstr "Jangan gunakan lokasi"
 
@@ -96,18 +95,29 @@ msgstr "Jangan gunakan lokasi"
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
 #. 
-#: ../src/mps-tweet-card.c:391
+#: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s dari %s"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
+#: ../src/moblin-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "Halo! Ini adalah panel Status. Ketika Anda telah menata akun web (seperti Twitter), Anda akan dapat melihat feed Anda dan memutakhirkan status Anda disini."
 
-#: ../src/moblin-panel-status.c:99
-msgid "Status"
-msgstr "Status"
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Kami tebak lokasimu sebagai: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:453
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Kamu sedang berbagi lokasi sebagai: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:467
+#, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "Kamu sedang berbagi lokasi sebagai: %f %f"
 
 #~ msgid "Offline"
 #~ msgstr "Terputus"
