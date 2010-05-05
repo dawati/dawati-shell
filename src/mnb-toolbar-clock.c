@@ -36,7 +36,7 @@ G_DEFINE_TYPE (MnbToolbarClock, mnb_toolbar_clock, MNB_TYPE_TOOLBAR_BUTTON)
 #define MNB_TOOLBAR_CLOCK_GET_PRIVATE(obj)    \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_TOOLBAR_CLOCK, MnbToolbarClockPrivate))
 
-static gboolean mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock);
+static void mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock);
 
 struct _MnbToolbarClockPrivate
 {
@@ -45,7 +45,8 @@ struct _MnbToolbarClockPrivate
   guint         timeout_id;
   gulong        toolbar_show_id;
 
-  gboolean disposed : 1;
+  guint disposed    : 1;
+  guint initialized : 1;
 };
 
 static void
@@ -90,7 +91,7 @@ mnb_toolbar_clock_format_changed_cb (GConfClient *client,
   mnb_toolbar_clock_update_time_date (clock);
 }
 
-static gboolean
+static void
 mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
 {
   MnbToolbarClockPrivate *priv = clock->priv;
@@ -103,7 +104,7 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
   char            *time_ptr;
 
   if (priv->disposed)
-    return FALSE;
+    return;
 
   client = gconf_client_get_default ();
 
@@ -192,13 +193,26 @@ mnb_toolbar_clock_update_time_date (MnbToolbarClock *clock)
     }
 
   g_object_unref (client);
+}
 
-  if (!priv->timeout_id) {
-    priv->timeout_id =
-      g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_clock_update_time_date,
-                             clock);
-    return FALSE;
-  }
+static gboolean
+mnb_toolbar_clock_timeout_cb (MnbToolbarClock *clock)
+{
+  MnbToolbarClockPrivate *priv = clock->priv;
+
+  mnb_toolbar_clock_update_time_date (clock);
+
+  if (!priv->initialized)
+    {
+      priv->initialized = TRUE;
+
+      priv->timeout_id =
+        g_timeout_add_seconds (60, (GSourceFunc) mnb_toolbar_clock_timeout_cb,
+                               clock);
+
+      return FALSE;
+    }
+
   return TRUE;
 }
 
@@ -231,17 +245,18 @@ mnb_toolbar_clock_constructed (GObject *self)
 
   if (!interval)
     {
+      priv->initialized = TRUE;
       priv->timeout_id =
         g_timeout_add_seconds (60,
-                               (GSourceFunc) mnb_toolbar_clock_update_time_date,
+                               (GSourceFunc) mnb_toolbar_clock_timeout_cb,
                                self);
     }
   else
     {
-      priv->timeout_id = 0;
-      g_timeout_add_seconds (interval,
-                             (GSourceFunc) mnb_toolbar_clock_update_time_date,
-                             self);
+      priv->timeout_id =
+        g_timeout_add_seconds (interval,
+                               (GSourceFunc) mnb_toolbar_clock_timeout_cb,
+                               self);
     }
 }
 
