@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:37+0000\n"
+"POT-Creation-Date: 2010-05-05 09:36+0000\n"
 "PO-Revision-Date: 2009-10-09 21:39+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -77,8 +77,8 @@ msgstr "Le mie conversazioni"
 msgid "People panel"
 msgstr "Pannello persone"
 
-#: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
+#: ../src/mnb-people-panel.c:57
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
 msgstr "Ciao! Questo è il pannello Persone. Quando si dispone di un servizio di chat configurato (come Messenger) qui è dove si chatta."
 
 #~ msgid "people - %d people are talking to you"
