@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:43+0000\n"
+"POT-Creation-Date: 2010-05-05 09:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna-Lena Schon <anna-lenax.schon@intel.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgid "Devices panel"
 msgstr "Enhetspanel"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:149
+#: ../src/moblin-panel-devices.c:162
 msgid "devices"
 msgstr "enheter"
 
@@ -51,9 +51,8 @@ msgid "System Sounds"
 msgstr "Systemljud"
 
 #: ../power-icon/src/moblin-power-icon.c:46
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin-strömikon"
+msgid "MeeGo Power Icon"
+msgstr "MeeGo strömikon"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
@@ -100,9 +99,13 @@ msgstr "Om du inte bestämmer dig snart stänger jag av datorn om %d sekunder."
 msgid "Turn off"
 msgstr "Stäng av"
 
-#: ../src/moblin-panel-devices.c:120
-msgid "Moblin Devices Panel"
-msgstr "Moblin Enhetspanel"
+#: ../power-icon/tests/test-battery-notification.c:58
+msgid "Moblin Power Icon"
+msgstr "Moblin-strömikon"
+
+#: ../src/moblin-panel-devices.c:123
+msgid "MeeGo Devices Panel"
+msgstr "MeeGo enhetspanel"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
@@ -134,11 +137,11 @@ msgstr "Det verkar som om ditt batteri gått sönder."
 msgid "Netbook brightness"
 msgstr "Netbook-ljusstyrka"
 
-#: ../src/mpd-computer-pane.c:120
+#: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
 msgstr "Din dator"
 
-#: ../src/mpd-computer-pane.c:129
+#: ../src/mpd-computer-pane.c:128
 msgid "All settings"
 msgstr "Alla inställningar"
 
@@ -150,7 +153,7 @@ msgstr ""
 "Koppla in en enhet\n"
 "så identifieras den automatiskt."
 
-#: ../src/mpd-devices-pane.c:105
+#: ../src/mpd-devices-pane.c:104
 msgid "Other devices"
 msgstr "Andra enheter"
 
@@ -159,7 +162,7 @@ msgstr "Andra enheter"
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Du använder</span> <span color='%s'>%d%% av %s</span>"
 
-#: ../src/mpd-folder-tile.c:174
+#: ../src/mpd-folder-tile.c:186
 msgid "Trash"
 msgstr "Papperskorgen"
 
