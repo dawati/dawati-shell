@@ -74,7 +74,6 @@ test_storage_device_SOURCES = \
 test_storage_device_tile_SOURCES = \
   test-storage-device-tile.c \
   $(top_srcdir)/src/mpd-gobject.c \
-  $(top_srcdir)/src/mpd-media-import-tile.c \
   $(top_srcdir)/src/mpd-storage-device.c \
   $(top_srcdir)/src/mpd-storage-device-tile.c \
   $(NULL)

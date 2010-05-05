@@ -25,7 +25,6 @@
 #include <libnotify/notify.h>
 
 #include "mpd-gobject.h"
-#include "mpd-media-import-tile.h"
 #include "mpd-shell-defines.h"
 #include "mpd-storage-device.h"
 #include "mpd-storage-device-tile.h"

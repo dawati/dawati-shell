@@ -195,11 +195,13 @@ update (MpdPowerIcon *self,
     else if (percentage < 10)
       button_style = "state-empty";
     else if (percentage < 30)
-      button_style = "state-25";
-    else if (percentage < 60)
-      button_style = "state-50";
+      button_style = "state-20";
+    else if (percentage < 50)
+      button_style = "state-40";
+    else if (percentage < 70)
+      button_style = "state-60";
     else if (percentage < 90)
-      button_style = "state-75";
+      button_style = "state-80";
     else
       button_style = "state-full";
     break;

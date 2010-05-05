@@ -1,58 +1,33 @@
 
-MnbToolbarButton#state-25 {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-25-normal.png");
+MnbToolbarButton#state-20 {
+  background-image: url("@PKGTHEMEDIR@/power-icon/battery-20.png");
 }
 
-MnbToolbarButton#state-25:hover, MnbToolbarButton#state-25:active, MnbToolbarButton#state-25:checked  {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-25-active.png");
+MnbToolbarButton#state-40 {
+  background-image: url("@PKGTHEMEDIR@/power-icon/battery-40.png");
 }
 
-MnbToolbarButton#state-50 {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-50-normal.png");
+MnbToolbarButton#state-60 {
+  background-image: url("@PKGTHEMEDIR@/power-icon/battery-60.png");
 }
 
-MnbToolbarButton#state-50:hover, MnbToolbarButton#state-50:active, MnbToolbarButton#state-50:checked  {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-50-active.png");
-}
-
-MnbToolbarButton#state-75 {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-75-normal.png");
-}
-
-MnbToolbarButton#state-75:hover, MnbToolbarButton#state-75:active, MnbToolbarButton#state-75:checked  {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-75-active.png");
+MnbToolbarButton#state-80 {
+  background-image: url("@PKGTHEMEDIR@/power-icon/battery-80.png");
 }
 
 MnbToolbarButton#state-full {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-full-normal.png");
-}
-
-MnbToolbarButton#state-full:hover, MnbToolbarButton#state-full:active, MnbToolbarButton#state-full:checked  {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-full-active.png");
+  background-image: url("@PKGTHEMEDIR@/power-icon/battery-full.png");
 }
 
 MnbToolbarButton#state-missing {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-missing-normal.png");
-}
-
-MnbToolbarButton#state-missing:hover, MnbToolbarButton#state-missing:active, MnbToolbarButton#state-missing:checked  {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-missing-active.png");
+  background-image: url("@PKGTHEMEDIR@/power-icon/battery-missing.png");
 }
 
 MnbToolbarButton#state-empty {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-empty-normal.png");
-}
-
-MnbToolbarButton#state-empty:hover, MnbToolbarButton#state-empty:active, MnbToolbarButton#state-empty:checked  {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-empty-active.png");
+  background-image: url("@PKGTHEMEDIR@/power-icon/battery-empty.png");
 }
 
 MnbToolbarButton#state-plugged {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-plugged-normal.png");
+  background-image: url("@PKGTHEMEDIR@/power-icon/battery-plugged.png");
 }
-
-MnbToolbarButton#state-plugged:hover, MnbToolbarButton#state-plugged:active, MnbToolbarButton#state-plugged:checked  {
-  background-image: url("@PKGTHEMEDIR@/power-icon/battery-plugged-active.png");
-}
-
 
