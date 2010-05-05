@@ -13,21 +13,9 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
-msgid "Set your toolbar preferences"
-msgstr "Configura las preferencias tu barra de herramientas"
-
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar settings"
-msgstr "Configuración de la barra de herramientas"
-
 #: ../capplet/src/mtp-bin.c:362
 msgid "Save toolbar"
 msgstr "Guardar la barra de herramientas"
-
-#: ../capplet/src/mtp-bin.c:367
-msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "Lo sentimos, hay que quitar un panel para poder agregar uno nuevo."
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
@@ -115,11 +103,6 @@ msgstr "Activar"
 msgid "Unknown window"
 msgstr "Ventana desconocida"
 
-#: ../src/mnb-toolbar.c:1000
-#, c-format
-msgid "Sorry, %s is broken"
-msgstr "Lo sentimos, %s no funciona"
-
 #: ../src/notifications/mnb-notification.c:282
 msgid "Dismiss"
 msgstr "Cerrar"
@@ -132,13 +115,30 @@ msgstr "Cerrar todo"
 msgid "is asking for your attention."
 msgstr "está pidiendo tu atención."
 
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "Puedes agregar, eliminar o reordenar muchos de los paneles de la barra de herramientas."
-
 #: ../capplet/src/syst-cc-panel.c:195
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Algunas aplicaciones antiguas emplean la bandeja del sistema para comunicar lo que va ocurriendo o para seguir ejecutándose al cerrarlas."
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Se pueden agregar, eliminar o reordenar muchos de los paneles de la barra de herramientas."
+
+#: ../src/mnb-toolbar.c:1000
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Lo sentimos, %s no funciona."
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Configura las preferencias la barra de herramientas"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Barra de herramientas"
+
+#: ../capplet/src/mtp-bin.c:367
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Lo sentimos, pero hay que quitar un panel para poder agregar uno nuevo."
 
 #~ msgid "System tray"
 #~ msgstr "Bandeja del sistema"
