@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:42+0000\n"
-"PO-Revision-Date: 2010-05-03 16:08-0800\n"
+"POT-Creation-Date: 2010-05-05 09:48+0000\n"
+"PO-Revision-Date: 2010-05-05 12:17-0800\n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -85,11 +85,11 @@ msgstr "El equipo se va a quedar sin batería de un momento a otro. Vamos a tene
 
 #: ../power-icon/src/mpd-power-icon.c:342
 msgid "Would you like to turn off now?"
-msgstr "¿Deseas apagar el equipo ahora?"
+msgstr "¿Apagar el equipo?"
 
 #: ../power-icon/src/mpd-power-icon.c:343
 msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "Si no decides, lo apagaremos en 30 segundos"
+msgstr "Si no se decide nada, se apagará en 30 segundos."
 
 #: ../power-icon/src/mpd-power-icon.c:447
 msgid "battery"
@@ -98,7 +98,7 @@ msgstr "batería"
 #: ../power-icon/src/mpd-shutdown-notification.c:75
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Si no decides, lo apagaremos en %d segundos"
+msgstr "Si no se decide nada, se apagará en %d segundos."
 
 #: ../power-icon/src/mpd-shutdown-notification.c:133
 msgid "Turn off"
@@ -144,7 +144,7 @@ msgstr "Claridad de pantalla"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
-msgstr "Tu ordenador"
+msgstr "El ordenador"
 
 #: ../src/mpd-computer-pane.c:128
 msgid "All settings"
@@ -155,8 +155,8 @@ msgid ""
 "Plug in a device and it will\n"
 "be automatically detected."
 msgstr ""
-"Conecta un dispositivo y se\n"
-"detectará automáticamente."
+"Si se conecta un dispositivo,\n"
+"se detectará automáticamente."
 
 #: ../src/mpd-devices-pane.c:104
 msgid "Other devices"
