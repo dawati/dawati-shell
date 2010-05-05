@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
+"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,12 +45,8 @@ msgstr ""
 "para explorar"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"Ao visitar as páginas na web, seus favoritos aparecerão aqui e na página "
-"Nova guia no seu navegador."
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Ao visitar as páginas na web, seus favoritos aparecerão aqui e na página Nova guia no seu navegador."
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
@@ -58,22 +54,21 @@ msgid "New tab"
 msgstr "Nova guia"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
-#, fuzzy
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
 msgid "Your pages"
-msgstr "Páginas favoritas"
+msgstr "Suas páginas "
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Pesquisar"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Guias"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Páginas favoritas"
 
@@ -82,48 +77,37 @@ msgstr "Páginas favoritas"
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/moblin-panel-web.cc:216
+#: ../netpanel/moblin-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "Internet"
+msgstr "Painel Internet"
 
 #~ msgid "It's the internet"
 #~ msgstr "É a Internet"
-
 #~ msgid "Web Browser"
 #~ msgstr "Navegador na web"
-
 #~ msgid "Moblin web browser - "
 #~ msgstr "Navegador na web Moblin -"
-
 #~ msgid "Loading..."
 #~ msgstr " Carregando..."
-
 #~ msgid "Untitled"
 #~ msgstr "Sem título"
-
 #~ msgid "Downloads"
 #~ msgstr "Downloads"
-
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Downloads - %d%%"
-
 #~ msgid "Moblin web browser"
 #~ msgstr "Navegador na web Moblin"
-
 #~ msgid "Oops!"
 #~ msgstr "Opa!"
-
 #~ msgid "New tab page"
 #~ msgstr "Nova página guia"
-
 #~ msgid "Reload page"
 #~ msgstr "Recarregue a página"
-
 #~ msgid ""
 #~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
 #~ "to crash. The rest of the browser is unharmed. You can try to reload the "
@@ -132,179 +116,126 @@ msgstr "Internet"
 #~ "Sinto muito, <span color=\"#909090\">%s</span> causou o problema com a "
 #~ "guia. O resto do navegador não foi afetado. Você pode tentar recarregar a "
 #~ "página ou visitar uma outra."
-
 #~ msgid "Download cancelled"
 #~ msgstr "Download cancelado"
-
 #~ msgid "Download completed"
 #~ msgstr "Download completo"
-
 #~ msgid "Open file"
 #~ msgstr "Abrir arquivo"
-
 #~ msgid "Find in Page"
 #~ msgstr "Localizar na página"
-
 #~ msgid "Type to search"
 #~ msgstr "Digite para procurar"
-
 #~ msgid "Next result"
 #~ msgstr "Próximo resultado"
-
 #~ msgid "Previous result"
 #~ msgstr "Resultado anterior"
-
 #~ msgid "Run the browser in a window"
 #~ msgstr "Rodar o navegador numa janela"
-
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Adicionar URL à lista de arquivos recentes"
-
 #~ msgid "Moblin Web Browser"
 #~ msgstr "Navegador na web Moblin"
-
 #~ msgid "Open link in new tab"
 #~ msgstr "Abrir link em guia nova"
-
 #~ msgid "Copy link location"
 #~ msgstr "Copiar local do link"
-
 #~ msgid "Save link"
 #~ msgstr "Salvar link"
-
 #~ msgid "View image"
 #~ msgstr "Ver imagem"
-
 #~ msgid "Copy image location"
 #~ msgstr "Copiar local da imagem"
-
 #~ msgid "Save image"
 #~ msgstr "Salvar imagem"
-
 #~ msgid "Copy text"
 #~ msgstr "Copiar texto"
-
 #~ msgid "Back"
 #~ msgstr "Voltar"
-
 #~ msgid "Forward"
 #~ msgstr "Encaminhar"
-
 #~ msgid "Stop"
 #~ msgstr "Parar"
-
 #~ msgid "Reload"
 #~ msgstr "Recarregar"
-
 #~ msgid "Pin this page"
 #~ msgstr "Destacar esta página"
-
 #~ msgid "Save page"
 #~ msgstr "Salvar página"
-
 #~ msgid ""
 #~ "Do you want to reset your browser? This will remove your web history, "
 #~ "pinned pages and personal settings. "
 #~ msgstr ""
 #~ "Quer redefinir seu navegador? Isto também removerá todo o histórico da "
 #~ "web, páginas destacadas e configurações pessoais."
-
 #~ msgid "Yes, delete"
 #~ msgstr "Sim, excluir "
-
 #~ msgid "No, save"
 #~ msgstr "Não, salvar"
-
 #~ msgid ""
 #~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
 #~ "remember."
 #~ msgstr ""
 #~ "Nenhuma página destacada. Pressione o pin na barra automágica da página "
 #~ "que queira lembrar."
-
 #~ msgid "More pinned pages"
 #~ msgstr "Mais páginas destacadas"
-
 #~ msgid "No matching pages were found"
 #~ msgstr "Nenhuma página correspondente foi encontrada"
-
 #~ msgid "__ wants to know your location."
 #~ msgstr "__quer saber seu local."
-
 #~ msgid "Share location"
 #~ msgstr "Compartilhar local"
-
 #~ msgid "Don't share"
 #~ msgstr "Não compartilhar"
-
 #~ msgid "Remember for this site"
 #~ msgstr "Lembrar para este site"
-
 #~ msgid "Settings"
 #~ msgstr "Configurações"
-
 #~ msgid "General"
 #~ msgstr "Geral"
-
 #~ msgid "Try to complete domain names in automagic bar"
 #~ msgstr "Tente completar nomes de domínio na barra automágica"
-
 #~ msgid "Search in automagic bar"
 #~ msgstr "Pesquise na barra automágica"
-
 #~ msgid "Add new search engine"
 #~ msgstr "Adicione novo mecanismo de pesquisa"
-
 #~ msgid "Privacy"
 #~ msgstr "Privacidade"
-
 #~ msgid "Remember my passwords"
 #~ msgstr "Lembre minhas senhas"
-
 #~ msgid "Remember what I type into forms"
 #~ msgstr "Lembre o que digito nos formulários"
-
 #~ msgid "Keep my browser history for up to"
 #~ msgstr "Mantenha histórico do meu navegador até"
-
 #~ msgid "1 year"
 #~ msgstr "1 ano"
-
 #~ msgid "1 month"
 #~ msgstr "1 mês"
-
 #~ msgid "1 week"
 #~ msgstr "1 semana"
-
 #~ msgid "1 day"
 #~ msgstr "1 dia"
-
 #~ msgid "Reset my browser now"
 #~ msgstr "Redefinir meu navegador agora"
-
 #~ msgid "Pinned pages"
 #~ msgstr "Páginas destacadas"
-
 #~ msgid "Trouble connecting?"
 #~ msgstr "Problemas conectando?"
-
 #~ msgid ""
 #~ "Move your pointer to the top of the screen to bring down the toolbar and "
 #~ "choose the Networks panel."
 #~ msgstr ""
 #~ "Move seu cursor para o topo da tela para baixar a barra de ferramentas e "
 #~ "escolha o painel de Redes."
-
 #~ msgid ""
 #~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
 #~ "Bem-vindo ao navegador da web da Moblin Netbook. Se você visitar páginas, "
 #~ "as favoritas aparecem aqui."
-
 #~ msgid "Getting started"
 #~ msgstr "Para começar"
-
 #~ msgid ""
 #~ "First, make sure you have an internet connection! Then click on the "
 #~ "automagic bar or press Ctrl+L to get there quickly and type the address "
@@ -313,10 +244,8 @@ msgstr "Internet"
 #~ "Primeiro, certifique-se que tem uma conexão Internet! A seguir, clique na "
 #~ "barra automágica ou pressione Ctrl+L para acessar rapidamente e digite o "
 #~ "endereço ou pesquisa desejada."
-
 #~ msgid "Make this a private tab"
 #~ msgstr "Tornar em guia particular"
-
 #~ msgid ""
 #~ "This is a private tab. Things you do in this tab will not be stored on "
 #~ "this machine. However, websites you use may still keep records of your "
@@ -325,51 +254,39 @@ msgstr "Internet"
 #~ "Isto é uma guia particular. As coisas que fizer nessa guia não serão "
 #~ "armazenadas neste computador. Todavia, os sites que você usa poderão "
 #~ "manter registros de suas ações."
-
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
 #~ msgstr ""
 #~ "O Navegador web Moblin é orgulhosamente baseado na tecnologia Mozilla"
-
 #~ msgid "Go"
 #~ msgstr "Ir"
-
 #~ msgid "Less than a minute ago"
 #~ msgstr "Menos de um minuto atrás"
-
 #~ msgid "About a minute ago"
 #~ msgid_plural "About __ minutes ago"
 #~ msgstr[0] "Mais ou menos um minuto atrás"
 #~ msgstr[1] "Mais ou menos __ minutos atrás"
-
 #~ msgid "About an hour ago"
 #~ msgid_plural "About __ hours ago"
 #~ msgstr[0] "Mais ou menos uma hora atrás"
 #~ msgstr[1] "Mais um menos __ horas atrás"
-
 #~ msgid "Today at %H:%M"
 #~ msgstr "Hoje às %H:%M"
-
 #~ msgid "Yesterday at %H:%M"
 #~ msgstr "Ontem às %H:%M"
-
 #~ msgid "Last %A at %H:%M"
 #~ msgstr "Recente %A às %H:%M"
-
 #~ msgid "%x at %H:%M"
 #~ msgstr "%x às %H:%M"
-
 #~ msgid ""
 #~ "<p>Push the pin icon in the location bar above to add pages to this list."
 #~ "</p>"
 #~ msgstr ""
 #~ "<p>Pressione o ícone pino na barra de local acima para adicionar páginas "
 #~ "a essa lista.</p>"
-
 #~ msgid "Fewer pinned pages"
 #~ msgstr "Menos páginas destacadas"
-
 #~ msgid "Next"
 #~ msgstr "Próximo"
-
 #~ msgid "Previous"
 #~ msgstr "Anterior"
+
