@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:34+0000\n"
+"POT-Creation-Date: 2010-05-05 09:37+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
+"Last-Translator: ewa zielinska <zielinskaewa@yahoo.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,17 +18,17 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:48
-msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
-msgstr "Witaj! To jest panel Stan. Po skonfigurowaniu konta usługi internetowej (takiej jak Twitter) będzie można wyświetlać tu swoje informacje i aktualizować swój stan"
+#: ../src/moblin-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "Witaj! To jest panel Stan. Po skonfigurowaniu konta usługi internetowej (takiej jak Twitter), będzie można wyświetlać tu swoje informacje i aktualizować swój stan/"
 
 # either "stan" or "status"
-#: ../src/moblin-panel-status.c:99
+#: ../src/moblin-panel-status.c:100
 msgid "Status"
 msgstr "Stan"
 
 # either "stan" or "status"
-#: ../src/moblin-panel-status.c:157
+#: ../src/moblin-panel-status.c:158
 #: ../data/moblin-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "stan"
@@ -46,30 +46,40 @@ msgstr "Nie można zaktualizować stanu. Usługa może być niedostępna, lub ha
 msgid "Unable to update status: You're not online."
 msgstr "Nie można zaktualizować stanu: Nie jesteś w trybie online."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:448
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Odgadliśmy Twoją lokalizację: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:453
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Twoja lokalizacja jest udostępniana jako: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:463
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Odgadliśmy Twoją lokalizację: %f %f"
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:467
 #, c-format
-msgid "Your location is being shared as: %f %f "
+msgid "Your location is being shared as: %f %f"
 msgstr "Twoja lokalizacja jest udostępniana jako: %f %f "
 
-#: ../src/mps-feed-pane.c:455
+#: ../src/mps-feed-pane.c:476
 msgid "Your location is not being shared"
 msgstr "Twoja lokalizacja nie jest udostępniana"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:551
+#: ../src/mps-feed-pane.c:579
 msgid "Update"
 msgstr "Aktualizacja"
 
-#: ../src/mps-feed-pane.c:556
+#: ../src/mps-feed-pane.c:584
 msgid "What's happening?"
 msgstr "Co się dzieje?"
 
-#: ../src/mps-feed-pane.c:606
+#: ../src/mps-feed-pane.c:634
 msgid "Change"
 msgstr "Zmień"
 
@@ -81,27 +91,27 @@ msgstr "Dodaj nową usługę internetową"
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "Nie masz skonfigurowanych żadnych usług internetowych, lub wystąpił problem z ich konfiguracją. Użyj powyższego przycisku, aby otworzyć okno Moje konta internetowe i skonfigurować."
 
-#: ../src/mps-geotag-pane.c:215
+#: ../src/mps-geotag-pane.c:232
 msgid "Your location"
 msgstr "Twoja lokalizacja"
 
-#: ../src/mps-geotag-pane.c:485
+#: ../src/mps-geotag-pane.c:554
 msgid "Search"
 msgstr "Wyszukaj"
 
-#: ../src/mps-geotag-pane.c:490
+#: ../src/mps-geotag-pane.c:559
 msgid "Where are you?"
 msgstr "Gdzie jesteś?"
 
-#: ../src/mps-geotag-pane.c:492
+#: ../src/mps-geotag-pane.c:561
 msgid "Find me"
 msgstr "Odnajdź mnie"
 
-#: ../src/mps-geotag-pane.c:499
+#: ../src/mps-geotag-pane.c:568
 msgid "Use location"
 msgstr "Użyj lokalizacji"
 
-#: ../src/mps-geotag-pane.c:500
+#: ../src/mps-geotag-pane.c:569
 msgid "Don't use location"
 msgstr "Nie używaj lokalizacji"
 
@@ -110,7 +120,7 @@ msgstr "Nie używaj lokalizacji"
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
 #.
-#: ../src/mps-tweet-card.c:391
+#: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s z %s"
