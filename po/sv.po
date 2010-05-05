@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:32+0000\n"
+"POT-Creation-Date: 2010-05-05 09:27+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -18,17 +18,30 @@ msgstr ""
 msgid "Set your toolbar preferences"
 msgstr "Ange dina inställningar för verktygsfältet"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Inställningar för verktygsfält"
+
+#: ../capplet/src/mtp-bin.c:362
 msgid "Save toolbar"
 msgstr "Spara verktygsfält"
 
-#: ../capplet/src/mtp-bin.c:366
+#: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Du måste ta bort en panel innan du kan lägga till en ny."
 
-#: ../capplet/src/mtp-jar.c:109
+#: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Tillgängliga paneler"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
@@ -40,7 +53,7 @@ msgstr "Tillgängliga paneler"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:123
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -48,7 +61,7 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:144
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e %B, %Y"
 
@@ -61,79 +74,73 @@ msgid "Set your system-tray preferences"
 msgstr "Ange dina inställningar för systemfältet"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:253
+#: ../capplet/src/syst-cc-panel.c:241
 msgid "System Tray"
 msgstr "Systemfält"
 
-#: ../capplet/src/syst-cc-panel.c:170
-msgid "System tray"
-msgstr "Systemfält"
-
-#: ../capplet/src/syst-cc-panel.c:186
+#: ../capplet/src/syst-cc-panel.c:174
 msgid "Show system tray"
 msgstr "Visa systemfält"
 
-#: ../capplet/src/syst-cc-panel.c:207
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "Systemfältet är ett koncept som används av vissa, äldre, program för att informera dig när något händer eller för att förbli aktiva när du stänger dem."
-
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Avgör panelordningen i verktygsfältet."
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Panelordning i verktygsfältet"
 
-#: ../src/moblin-netbook.c:905
+#: ../src/moblin-netbook.c:1018
 msgid "Moblin Netbook Effects"
 msgstr "Moblin netbookeffekter"
 
-#: ../src/moblin-netbook.c:909
+#: ../src/moblin-netbook.c:1022
 msgid "Effects for Moblin Netbooks"
 msgstr "Effekter för Moblin netbooks"
 
-#: ../src/moblin-netbook.c:3035
+#: ../src/moblin-netbook.c:3218
 msgid "Activate"
 msgstr "Aktivera"
 
-#: ../src/moblin-netbook.c:3049
+#: ../src/moblin-netbook.c:3232
 msgid "Unknown window"
 msgstr "Okänt fönster"
 
-#: ../src/moblin-netbook.c:3051
-msgid "Is asking for your attention."
-msgstr "Ber om din uppmärksamhet."
-
-#: ../src/mnb-toolbar.c:976
+#: ../src/mnb-toolbar.c:1000
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "%s fungerar inte"
 
-#: ../src/notifications/mnb-notification.c:262
+#: ../src/notifications/mnb-notification.c:282
 msgid "Dismiss"
 msgstr "Avvisa"
 
-#: ../src/notifications/mnb-notification-cluster.c:668
+#: ../src/notifications/mnb-notification-cluster.c:663
 msgid "Dismiss All"
 msgstr "Avvisa alla"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
-msgid "Toolbar settings"
-msgstr "Inställningar för verktygsfält"
+#: ../src/moblin-netbook.c:3234
+msgid "is asking for your attention."
+msgstr "Ber om din uppmärksamhet."
 
-#: ../capplet/src/mtp-bin.c:368
-msgid "You can add, remove and reorder many of the panels in your toolbar."
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr "Du kan lägga till, ta bort och ändra ordningsföljd för många av panelerna i ditt verktygsfält."
 
-#. translators: translate this to a suitable 24 hourt time format for
-#. * your locale showing only hours and minutes. For available format
-#. * specifiers see
-#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:114
-msgid "%H:%M"
-msgstr "%H:%M"
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Använd alltid litet skärm läge"
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "Systemfältet är ett koncept som används av vissa äldre program för att informera dig när något händer eller för att förbli aktiva när du stänger dem."
+
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Tvinga alltid att använda litet skärm läge även om display läge normalt vill använda större skärm läge."
+
+#~ msgid "System tray"
+#~ msgstr "Systemfält"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Mindre än för en minut sedan"
