@@ -2,13 +2,13 @@
 # Copyright (C) 2009 the moblin-web-browser's holder.
 # This file is distributed under the same license as the moblin-web-broser package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-#
+# 
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: 2009-10-02 22:32+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -53,12 +53,8 @@ msgstr ""
 # (ndt) spero che quel New tab sia quello che c'è
 # un paio di stringhe dopo...
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"Visitando delle pagine web, quelle preferite verranno visualizzate qui e "
-"nella pagina «Nuova scheda» del browser."
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Visitando delle pagine web, quelle preferite verranno visualizzate qui e nella pagina «Nuova scheda» del browser."
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
@@ -66,22 +62,22 @@ msgid "New tab"
 msgstr "Nuova scheda"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
 #, fuzzy
 msgid "Your pages"
 msgstr "Pagine preferite"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Cerca"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Schede"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Pagine preferite"
 
@@ -95,9 +91,8 @@ msgid "Internet"
 msgstr "Internet"
 
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "Internet"
+msgstr "Pannello Internet"
 
 #~ msgid "Oops!"
 #~ msgstr "Oops!"
@@ -108,14 +103,8 @@ msgstr "Internet"
 #~ msgid "Reload page"
 #~ msgstr "Ricarica pagina"
 
-#~ msgid ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
-#~ msgstr ""
-#~ "<span color=\"#909090\">%s</span> sembra aver causato il crash di questa "
-#~ "scheda, senza danneggiare il resto del browser. È possibile provare a "
-#~ "ricaricare la pagina o visitarne un'altra."
+#~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+#~ msgstr "<span color=\"#909090\">%s</span> sembra aver causato il crash di questa scheda, senza danneggiare il resto del browser. È possibile provare a ricaricare la pagina o visitarne un'altra."
 
 #~ msgid "It's the internet"
 #~ msgstr "Internet"
@@ -147,7 +136,6 @@ msgstr "Internet"
 #~ msgid "Open file"
 #~ msgstr "Apri file"
 
-# (ndt) descrizione opzione a riga di comando
 #~ msgid "Run the browser in a window"
 #~ msgstr "Esegue il browser in una finestra"
 
@@ -163,12 +151,8 @@ msgstr "Internet"
 #~ msgid "Copy link location"
 #~ msgstr "Copia indirizzo"
 
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "Ripristinare il browser web? Facendo ciò verranno rimosse la cronologia "
-#~ "web, le pagine in evidenza e le impostazioni personali."
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "Ripristinare il browser web? Facendo ciò verranno rimosse la cronologia web, le pagine in evidenza e le impostazioni personali."
 
 #~ msgid "Yes, delete"
 #~ msgstr "Sì, elimina"
@@ -176,14 +160,9 @@ msgstr "Internet"
 #~ msgid "No, save"
 #~ msgstr "No, salva"
 
-#~ msgid ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
-#~ msgstr ""
-#~ "Nessuna pagina in evidenza. Fare clic sull'icona dello spillo nella barra "
-#~ "automagica in una pagina da ricordare."
+#~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+#~ msgstr "Nessuna pagina in evidenza. Fare clic sull'icona dello spillo nella barra automagica in una pagina da ricordare."
 
-# (ndt) usata la stessa traduzione che in tomboy per pinned
 #~ msgid "More pinned pages"
 #~ msgstr "Più pagine in evidenza"
 
@@ -244,50 +223,29 @@ msgstr "Internet"
 #~ msgid "Reset my browser now"
 #~ msgstr "Ripristina il browser ora"
 
-# (ndt) usata la stessa traduzione che in tomboy per pinned
 #~ msgid "Pinned pages"
 #~ msgstr "Pagine in evidenza"
 
 #~ msgid "Trouble connecting?"
 #~ msgstr "Problemi di connessione?"
 
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
-#~ msgstr ""
-#~ "Muovere il puntatore in alto nello schermo per visualizzare la barra "
-#~ "degli strumenti e selezionare la sezione relativa alla rete."
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+#~ msgstr "Muovere il puntatore in alto nello schermo per visualizzare la barra degli strumenti e selezionare la sezione relativa alla rete."
 
-#~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "Benvenuti nel browser web Moblin per netbook. Una volta visitate delle "
-#~ "pagine, le preferite verranno mostrate qui."
+#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Benvenuti nel browser web Moblin per netbook. Una volta visitate delle pagine, le preferite verranno mostrate qui."
 
 #~ msgid "Getting started"
 #~ msgstr "Per iniziare"
 
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "Per prima cosa assicurarsi che la connessione a Internet sia attiva, "
-#~ "quindi fare clic sulla barra automagica o premere Ctrl+L per spostarsi lì "
-#~ "e digitare l'indirizzo o la ricerca desiderato."
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "Per prima cosa assicurarsi che la connessione a Internet sia attiva, quindi fare clic sulla barra automagica o premere Ctrl+L per spostarsi lì e digitare l'indirizzo o la ricerca desiderato."
 
 #~ msgid "Make this a private tab"
 #~ msgstr "Rendi una scheda privata"
 
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
-#~ msgstr ""
-#~ "Questa è una scheda privata. Tutte le attività svolte in questa scheda "
-#~ "non verranno salvate sul computer, ma i siti web visitati potrebbero "
-#~ "mantenere dei dati riguardo le azioni svolte."
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+#~ msgstr "Questa è una scheda privata. Tutte le attività svolte in questa scheda non verranno salvate sul computer, ma i siti web visitati potrebbero mantenere dei dati riguardo le azioni svolte."
 
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
 #~ msgstr "Il browser web Moblin è basato su tecnologia di Mozilla."
@@ -320,14 +278,9 @@ msgstr "Internet"
 #~ msgid "%x at %H:%M"
 #~ msgstr "%x alle %H.%M"
 
-#~ msgid ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
-#~ msgstr ""
-#~ "<p>Fare clic sull'icona dello spillo nella barra delle posizioni per "
-#~ "aggiungere la pagina all'elenco.</p>"
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+#~ msgstr "<p>Fare clic sull'icona dello spillo nella barra delle posizioni per aggiungere la pagina all'elenco.</p>"
 
-# (ndt) usata la stessa traduzione che in tomboy per pinned
 #~ msgid "Fewer pinned pages"
 #~ msgstr "Meno pagine in evidenza"
 
