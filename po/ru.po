@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:27+0000\n"
+"POT-Creation-Date: 2010-05-05 09:27+0000\n"
 "PO-Revision-Date: 2010-04-06 16:16+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
@@ -34,10 +34,6 @@ msgstr "Сохранить панель инструментов"
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Перед добавлением новой панели инструментов удалите старую."
 
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove and reorder many of the panels in your toolbar."
-msgstr "Вы можете добавить, удалить или изменить положение многих панелей на своей панели инструментов."
-
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Доступные панели"
@@ -47,7 +43,7 @@ msgstr "Доступные панели"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:124
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -61,7 +57,7 @@ msgstr "%H:%M"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:133
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
@@ -69,7 +65,7 @@ msgstr "%l:%M %P"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:154
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
 
@@ -90,37 +86,37 @@ msgstr "Область уведомлений"
 msgid "Show system tray"
 msgstr "Показать область уведомлений"
 
-#: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "Область уведомлений используется некоторыми более старыми приложениями для информирования пользователя в случае возникновения какого-то события или продолжения работы после их закрытия."
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Всегда используйте малое разрешение экрана"
 
 #: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Определяет порядок панелей на инструментальной панели."
 
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Принуждает использовать малое разрешение экрана даже тогда, когда размер экрана подразумевает использование большого разрешения."
+
 #: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Порядок панелей на инструментальной панели"
 
-#: ../src/moblin-netbook.c:1019
+#: ../src/moblin-netbook.c:1018
 msgid "Moblin Netbook Effects"
 msgstr "Эффекты Moblin Netbook"
 
-#: ../src/moblin-netbook.c:1023
+#: ../src/moblin-netbook.c:1022
 msgid "Effects for Moblin Netbooks"
 msgstr "Эффекты для Moblin Netbooks"
 
-#: ../src/moblin-netbook.c:3221
+#: ../src/moblin-netbook.c:3218
 msgid "Activate"
 msgstr "Активировать"
 
-#: ../src/moblin-netbook.c:3235
+#: ../src/moblin-netbook.c:3232
 msgid "Unknown window"
 msgstr "Неизвестное окно"
-
-#: ../src/moblin-netbook.c:3237
-msgid "Is asking for your attention."
-msgstr "Просит обратить внимание."
 
 #: ../src/mnb-toolbar.c:1000
 #, c-format
@@ -131,17 +127,21 @@ msgstr "Извините, %s поврежден"
 msgid "Dismiss"
 msgstr "Пропустить"
 
-#: ../src/notifications/mnb-notification-cluster.c:653
+#: ../src/notifications/mnb-notification-cluster.c:663
 msgid "Dismiss All"
 msgstr "Пропустить"
 
-#: ../data/mutter-moblin.schemas.in.h:1
-msgid "Always use small screen mode"
-msgstr "Всегда используйте малое разрешение экрана"
+#: ../src/moblin-netbook.c:3234
+msgid "is asking for your attention."
+msgstr "просит обратить внимание."
 
-#: ../data/mutter-moblin.schemas.in.h:3
-msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-msgstr "Принуждает использовать малое разрешение экрана даже тогда, когда размер экрана подразумевает использование большого разрешения."
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Вы можете добавить, удалить или изменить положение многих панелей на своей панели инструментов."
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "Область уведомлений используется некоторыми более старыми приложениями для информирования пользователя в случае возникновения какого-то события или продолжения работы после их закрытия."
 
 #~ msgid "System tray"
 #~ msgstr "Область уведомлений"
