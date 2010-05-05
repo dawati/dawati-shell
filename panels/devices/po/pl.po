@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:43+0000\n"
+"POT-Creation-Date: 2010-05-05 09:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ewa zielinska <zielinskaewa@yahoo.com>\n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgid "Devices panel"
 msgstr "Panel urządzeń"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:149
+#: ../src/moblin-panel-devices.c:162
 msgid "devices"
 msgstr "urządzenia"
 
@@ -52,9 +52,8 @@ msgid "System Sounds"
 msgstr "Dźwięki systemowe"
 
 #: ../power-icon/src/moblin-power-icon.c:46
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Ikona zasilania systemu Moblin"
+msgid "MeeGo Power Icon"
+msgstr "Ikona zasilania systemu MeeGo"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
@@ -101,9 +100,13 @@ msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za %d sekun
 msgid "Turn off"
 msgstr "Wyłącz"
 
-#: ../src/moblin-panel-devices.c:120
-msgid "Moblin Devices Panel"
-msgstr "Panel urządzeń Moblin"
+#: ../power-icon/tests/test-battery-notification.c:58
+msgid "Moblin Power Icon"
+msgstr "Ikona zasilania systemu Moblin"
+
+#: ../src/moblin-panel-devices.c:123
+msgid "MeeGo Devices Panel"
+msgstr "Panel urządzeń MeeGo"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
@@ -135,11 +138,11 @@ msgstr "Przepraszamy, najwyraźniej akumulator jest uszkodzony."
 msgid "Netbook brightness"
 msgstr "Jasność netbooka"
 
-#: ../src/mpd-computer-pane.c:120
+#: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
 msgstr "Twój komputer"
 
-#: ../src/mpd-computer-pane.c:129
+#: ../src/mpd-computer-pane.c:128
 msgid "All settings"
 msgstr "Wszystkie ustawienia"
 
@@ -151,7 +154,7 @@ msgstr ""
 "Podłącz urządzenie,\n"
 "a zostanie ono automatycznie wykryte."
 
-#: ../src/mpd-devices-pane.c:105
+#: ../src/mpd-devices-pane.c:104
 msgid "Other devices"
 msgstr "Inne urządzenia"
 
@@ -160,7 +163,7 @@ msgstr "Inne urządzenia"
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>Używasz</span> <span color='%s'>%d%% z %s</span>"
 
-#: ../src/mpd-folder-tile.c:174
+#: ../src/mpd-folder-tile.c:186
 msgid "Trash"
 msgstr "Kosz"
 
