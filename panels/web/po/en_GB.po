@@ -3,7 +3,7 @@
 # Copyright (C) 2009 THE moblin-web-browser'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the moblin-web-browser package.
 # Neil Roberts <neil@linux.intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-web-browser 0.0\n"
@@ -49,23 +49,13 @@ msgstr ""
 "explore list"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"As you visit web pages, your favourites will appear here and on the New tab "
-"page in the browser."
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "As you visit web pages, your favourites will appear here and on the New tab page in the browser."
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "New tab"
-
-#. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
-#, fuzzy
-msgid "Your pages"
-msgstr "Favourite pages"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
@@ -90,10 +80,14 @@ msgstr "internet"
 msgid "Internet"
 msgstr "Internet"
 
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
+msgid "Your pages"
+msgstr "Your pages"
+
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "Internet"
+msgstr "Internet panel"
 
 #~ msgid "It's the internet"
 #~ msgstr "It's the internet"
@@ -125,14 +119,8 @@ msgstr "Internet"
 #~ msgid "Reload page"
 #~ msgstr "Reload page"
 
-#~ msgid ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
-#~ msgstr ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
+#~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+#~ msgstr "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
 
 #~ msgid "Download cancelled"
 #~ msgstr "Download cancelled"
@@ -170,12 +158,8 @@ msgstr "Internet"
 #~ msgid "Copy link location"
 #~ msgstr "Copy link location"
 
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
 
 #~ msgid "Yes, delete"
 #~ msgstr "Yes, delete"
@@ -183,12 +167,8 @@ msgstr "Internet"
 #~ msgid "No, save"
 #~ msgstr "No, save"
 
-#~ msgid ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
-#~ msgstr ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
+#~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+#~ msgstr "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
 
 #~ msgid "More pinned pages"
 #~ msgstr "More pinned pages"
@@ -256,43 +236,23 @@ msgstr "Internet"
 #~ msgid "Trouble connecting?"
 #~ msgstr "Trouble connecting?"
 
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
-#~ msgstr ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+#~ msgstr "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 
-#~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your "
-#~ "favourite ones will show up here."
+#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Welcome to Moblin Netbook Web Browser. When you visit pages your favourite ones will show up here."
 
 #~ msgid "Getting started"
 #~ msgstr "Getting started"
 
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
 
 #~ msgid "Make this a private tab"
 #~ msgstr "Make this a private tab"
 
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
-#~ msgstr ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+#~ msgstr "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
 
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
 #~ msgstr "Moblin Web Browser is proudly based on Mozilla technology"
@@ -325,12 +285,8 @@ msgstr "Internet"
 #~ msgid "%x at %H:%M"
 #~ msgstr "%x at %H:%M"
 
-#~ msgid ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
-#~ msgstr ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+#~ msgstr "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
 
 #~ msgid "Fewer pinned pages"
 #~ msgstr "Fewer pinned pages"
