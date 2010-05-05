@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: 2009-10-01 13:43-0800\n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -14,12 +14,12 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-# <%s is the word or sentence you write in the address line>
 #. Translators: This string ends up in the autocomplete list and
 #. is used for searching. '%%s' is the string that the user
 #. typed in to the entry box and '%s' is the name of the search
 #. engine provider (such as 'Yahoo!'). It is safe to swap the
 #. order of these markers if necessary in your language
+# <%s is the word or sentence you write in the address line>
 #: ../common/mwb-ac-list.cc:1311
 #, c-format
 msgid "Search for %%s on %s"
@@ -51,37 +51,27 @@ msgstr ""
 "para ver la lista"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"Tus favoritos se mostrarán aquí y en la página de nuevas pestañas conforme "
-"vayas visitando páginas"
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Tus favoritos se mostrarán aquí y en la página de nuevas pestañas conforme vayas visitando páginas"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Nueva pestaña"
 
-#. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
-#, fuzzy
-msgid "Your pages"
-msgstr "Páginas favoritas"
-
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Buscar"
 
+#. Construct title for tab preview section
 # <Fichas? If "fichas" is better then it needs to replace pestañas in other
 # strings too>
-#. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Pestañas"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Páginas favoritas"
 
@@ -95,10 +85,14 @@ msgstr "internet"
 msgid "Internet"
 msgstr "Internet"
 
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
+msgid "Your pages"
+msgstr "Páginas favoritas"
+
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "Internet"
+msgstr "Panel de internet"
 
 #~ msgid "It's the internet"
 #~ msgstr "Esto es Internet"
@@ -106,7 +100,6 @@ msgstr "Internet"
 #~ msgid "Web Browser"
 #~ msgstr "Navegador de Moblin"
 
-# <don't forget to add space after the dash>
 #~ msgid "Moblin web browser - "
 #~ msgstr "Navegador de Moblin - "
 
@@ -131,14 +124,8 @@ msgstr "Internet"
 #~ msgid "Reload page"
 #~ msgstr "Volver a cargar la página"
 
-#~ msgid ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
-#~ msgstr ""
-#~ "Parece que <span color=\"#909090\">%s</span> ha hecho que esta pestaña "
-#~ "falle. El resto del navegador sigue bien. Vuelve a cargar la página o ve "
-#~ "a otra."
+#~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+#~ msgstr "Parece que <span color=\"#909090\">%s</span> ha hecho que esta pestaña falle. El resto del navegador sigue bien. Vuelve a cargar la página o ve a otra."
 
 #~ msgid "Download cancelled"
 #~ msgstr "Se ha cancelado la descarga"
@@ -164,12 +151,8 @@ msgstr "Internet"
 #~ msgid "Copy link location"
 #~ msgstr "Copiar el vínculo"
 
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "¿Quieres borrar tus ajustes en el navegador? Esto eliminará el historial, "
-#~ "las páginas marcadas y los ajustes personales."
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "¿Quieres borrar tus ajustes en el navegador? Esto eliminará el historial, las páginas marcadas y los ajustes personales."
 
 #~ msgid "Yes, delete"
 #~ msgstr "Sí, borrar"
@@ -177,12 +160,8 @@ msgstr "Internet"
 #~ msgid "No, save"
 #~ msgstr "No, guardar"
 
-#~ msgid ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
-#~ msgstr ""
-#~ "No hay ninguna página marcada. Marca las páginas que quieras recordar "
-#~ "pulsando el alfiler de la barra automágica."
+#~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+#~ msgstr "No hay ninguna página marcada. Marca las páginas que quieras recordar pulsando el alfiler de la barra automágica."
 
 #~ msgid "More pinned pages"
 #~ msgstr "Más páginas marcadas"
@@ -209,8 +188,7 @@ msgstr "Internet"
 #~ msgstr "General"
 
 #~ msgid "Try to complete domain names in automagic bar"
-#~ msgstr ""
-#~ "Intentar completar los nombres de dominio en la barra \"automágica\""
+#~ msgstr "Intentar completar los nombres de dominio en la barra \"automágica\""
 
 #~ msgid "Search in automagic bar"
 #~ msgstr "Buscar en la barra \"automágica\""
@@ -251,43 +229,23 @@ msgstr "Internet"
 #~ msgid "Trouble connecting?"
 #~ msgstr "¿Problemas conectándote?"
 
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
-#~ msgstr ""
-#~ "Lleva el cursor arriba de la pantalla para ver la barra de herramientas y "
-#~ "seleccionar el panel de redes."
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+#~ msgstr "Lleva el cursor arriba de la pantalla para ver la barra de herramientas y seleccionar el panel de redes."
 
-#~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "Bienvenido al navegador de Internet de Moblin. Cuando visites páginas, "
-#~ "tus favoritas aparecerán aquí."
+#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Bienvenido al navegador de Internet de Moblin. Cuando visites páginas, tus favoritas aparecerán aquí."
 
 #~ msgid "Getting started"
 #~ msgstr "Empecemos"
 
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "Primero, asegúrate de tener conexión a internet. Luego, haz clic en la "
-#~ "barra \"automágica\" (o pulsa el atajo Ctrl+L) y escribe la dirección o "
-#~ "búsqueda que quieras."
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "Primero, asegúrate de tener conexión a internet. Luego, haz clic en la barra \"automágica\" (o pulsa el atajo Ctrl+L) y escribe la dirección o búsqueda que quieras."
 
 #~ msgid "Make this a private tab"
 #~ msgstr "Convertir esta pestaña en privada"
 
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
-#~ msgstr ""
-#~ "Esta pestaña es privada. Lo que hagas aquí no se guardará en este equipo, "
-#~ "pero puede que las páginas que visites guarden el historial de tus "
-#~ "acciones."
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+#~ msgstr "Esta pestaña es privada. Lo que hagas aquí no se guardará en este equipo, pero puede que las páginas que visites guarden el historial de tus acciones."
 
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
 #~ msgstr "El navegador de Moblin basado en la tecnología de Mozilla"
@@ -368,12 +326,8 @@ msgstr "Internet"
 #~ msgid "%x at %H:%M"
 #~ msgstr "%x a las %H.%M"
 
-#~ msgid ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
-#~ msgstr ""
-#~ "<p>Haz clic en el icono del alfiler en la barra de arriba para añadir "
-#~ "páginas a esta lista.</p>"
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+#~ msgstr "<p>Haz clic en el icono del alfiler en la barra de arriba para añadir páginas a esta lista.</p>"
 
 #~ msgid "Fewer pinned pages"
 #~ msgstr "Menos páginas marcadas"
