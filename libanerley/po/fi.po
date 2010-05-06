@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-26 03:43+0000\n"
+"POT-Creation-Date: 2010-05-05 09:33+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -41,21 +41,21 @@ msgstr "Poissa linjoilta"
 msgid "Unnamed"
 msgstr "Nimetön"
 
-#: ../anerley/anerley-presence-chooser.c:45
-msgid "Extended Away"
-msgstr "Jatkettu pois"
-
 #: ../anerley/anerley-presence-chooser.c:41
 msgid "Unset"
 msgstr "Poista asetus"
 
-#: ../anerley/anerley-presence-chooser.c:48
-msgid "Unknown"
-msgstr "Tuntematon"
+#: ../anerley/anerley-presence-chooser.c:45
+msgid "Extended Away"
+msgstr "Jatkettu pois"
 
 #: ../anerley/anerley-presence-chooser.c:46
 msgid "Hidden"
 msgstr "Piilotettu"
+
+#: ../anerley/anerley-presence-chooser.c:48
+msgid "Unknown"
+msgstr "Tuntematon"
 
 #: ../anerley/anerley-presence-chooser.c:49
 msgid "Error"
