@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# A S Alam <aalam@users.sf.net>, 2009.
+# A S Alam <aalam@users.sf.net>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-web-browser.Moblin2.moblin-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
-"PO-Revision-Date: 2009-10-17 07:28+0530\n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
+"PO-Revision-Date: 2010-05-06 07:42+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -60,22 +60,21 @@ msgid "New tab"
 msgstr "ਨਵੀਂ ਟੈਬ"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
-#, fuzzy
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
 msgid "Your pages"
-msgstr "ਪਸੰਦੀਦਾ ਪੇਜ਼"
+msgstr "ਤੁਹਾਡੇ ਪੇਜ਼"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "ਖੋਜ"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "ਟੈਬਾਂ"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "ਪਸੰਦੀਦਾ ਪੇਜ਼"
 
@@ -89,9 +88,8 @@ msgid "Internet"
 msgstr "ਇੰਟਰਨੈੱਟ"
 
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "ਇੰਟਰਨੈੱਟ"
+msgstr "ਇੰਟਰਨੈੱਟ ਪੈਨਲ"
 
 #~ msgid "It's the internet"
 #~ msgstr "ਇਹ ਇੰਟਰਨੈੱਟ ਹੈ"
