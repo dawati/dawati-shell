@@ -2,13 +2,13 @@
 # Copyright (C) 2009 THE moblin-web-browser'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the moblin-web-browser package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-#
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-web-browser moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: 2009-08-13 20:04+0100\n"
 "Last-Translator: Sibo Attema <sibo.attema@gmail.com>\n"
 "Language-Team: Dutch\n"
@@ -49,35 +49,25 @@ msgstr ""
 "lijst te openen"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"Als je webpagina's bezoekt, dan komen jou meest bezochte pagina's hier te "
-"staan en in een nieuw tabblad in je web browser."
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Als je webpagina's bezoekt, dan komen jou meest bezochte pagina's hier te staan en in een nieuw tabblad in je web browser."
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Nieuw tabblad"
 
-#. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
-#, fuzzy
-msgid "Your pages"
-msgstr "Favoriete pagina's"
-
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Zoek"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Tab's"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Favoriete pagina's"
 
@@ -90,8 +80,12 @@ msgstr "internet"
 msgid "Internet"
 msgstr "Internet"
 
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
+msgid "Your pages"
+msgstr "Favoriete pagina's"
+
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
 msgstr "Internet"
 
@@ -125,14 +119,8 @@ msgstr "Internet"
 #~ msgid "Reload page"
 #~ msgstr "Herlaad pagina"
 
-#~ msgid ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
-#~ msgstr ""
-#~ "Sorry, <span color=\"#909090\">%s</span> heeft dit tabblad gecrashed. De "
-#~ "rest van de browser is onbeschadigd. Je kunt proberen om de pagina "
-#~ "opnieuw te lezen of een andere pagina te bezoeken."
+#~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+#~ msgstr "Sorry, <span color=\"#909090\">%s</span> heeft dit tabblad gecrashed. De rest van de browser is onbeschadigd. Je kunt proberen om de pagina opnieuw te lezen of een andere pagina te bezoeken."
 
 #~ msgid "Download cancelled"
 #~ msgstr "Download afgebroken"
@@ -158,12 +146,8 @@ msgstr "Internet"
 #~ msgid "Copy link location"
 #~ msgstr "Kopieer link locatie"
 
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "Wil je je browser geschiedenis wissen? Dit zal jou webgeschiedenis, "
-#~ "gepinde pagina's en persoonlijke instellingen wissen."
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "Wil je je browser geschiedenis wissen? Dit zal jou webgeschiedenis, gepinde pagina's en persoonlijke instellingen wissen."
 
 #~ msgid "Yes, delete"
 #~ msgstr "Ja, verwijder"
@@ -171,12 +155,8 @@ msgstr "Internet"
 #~ msgid "No, save"
 #~ msgstr "Nee, sla op"
 
-#~ msgid ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
-#~ msgstr ""
-#~ "Geen gepinde pagina's. Druk de pin in de automagic balk op een pagina die "
-#~ "je wil onthouden."
+#~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+#~ msgstr "Geen gepinde pagina's. Druk de pin in de automagic balk op een pagina die je wil onthouden."
 
 #~ msgid "More pinned pages"
 #~ msgstr "Meer gepinde pagina's"
@@ -244,43 +224,23 @@ msgstr "Internet"
 #~ msgid "Trouble connecting?"
 #~ msgstr "Problemen met verbinden?"
 
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
-#~ msgstr ""
-#~ "Beweeg je muiscursor naar het top van het scherm om de toolbalk en "
-#~ "selecteer het netwerk paneel"
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+#~ msgstr "Beweeg je muiscursor naar het top van het scherm om de toolbalk en selecteer het netwerk paneel"
 
-#~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "Welkom bij de Moblin web browser. Wanneer je pagina's bezoekt komen je "
-#~ "favorieten hier te staan."
+#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Welkom bij de Moblin web browser. Wanneer je pagina's bezoekt komen je favorieten hier te staan."
 
 #~ msgid "Getting started"
 #~ msgstr "Beginnen"
 
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "Eerst, zorg ervoor dat je een Internet verbinding hebt. Klik dan op de "
-#~ "automagic balk of toets control+L om er snel te komen, en toets het adres "
-#~ "of zoekopdracht in."
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "Eerst, zorg ervoor dat je een Internet verbinding hebt. Klik dan op de automagic balk of toets control+L om er snel te komen, en toets het adres of zoekopdracht in."
 
 #~ msgid "Make this a private tab"
 #~ msgstr "Maak dit een prive tabblad"
 
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
-#~ msgstr ""
-#~ "Dit is een prive tabblad. Geen informatie van dit tabblad wordt in de "
-#~ "computer opgeslage. Websites kunnen echter wel gegevens onthouden van je "
-#~ "bezoek."
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+#~ msgstr "Dit is een prive tabblad. Geen informatie van dit tabblad wordt in de computer opgeslage. Websites kunnen echter wel gegevens onthouden van je bezoek."
 
 #~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
 #~ msgstr "Moblin Web Browser is gebaseerd op Mozilla technologie"
@@ -361,12 +321,8 @@ msgstr "Internet"
 #~ msgid "%x at %H:%M"
 #~ msgstr "%x om %H:%M"
 
-#~ msgid ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
-#~ msgstr ""
-#~ "<p>Druk de punaise in de locatiebalk bovenaan om pagina's aan de lijst "
-#~ "toe te voegen</p>"
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+#~ msgstr "<p>Druk de punaise in de locatiebalk bovenaan om pagina's aan de lijst toe te voegen</p>"
 
 #~ msgid "Fewer pinned pages"
 #~ msgstr "Minder gepinde pagina's"
