@@ -531,9 +531,9 @@ anerley_tile_get_preferred_width (ClutterActor *actor,
                                   gfloat       *pref_width)
 {
   if (min_width)
-    *min_width = 180;
+    *min_width = 220;
   if (pref_width)
-    *pref_width = 180;
+    *pref_width = 220;
 }
 
 static void
