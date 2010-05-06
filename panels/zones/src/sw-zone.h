@@ -74,6 +74,7 @@ gint sw_zone_get_number (SwZone *zone);
 void sw_zone_set_focused (SwZone *zone, gboolean focused);
 void sw_zone_set_focused_window (SwZone *zone, gulong xid);
 gboolean sw_zone_remove_window (SwZone *zone, gulong xid);
+void sw_zone_set_is_welcome (SwZone *zone, gboolean welcome);
 
 void sw_zone_set_drag_in_progress (SwZone *zone, gboolean drag_in_progress);
 

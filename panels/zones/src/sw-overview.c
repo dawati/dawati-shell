@@ -234,7 +234,7 @@ sw_overview_constructed (GObject *object)
 
   if (priv->n_zones == 1)
     {
-      sw_zone_set_is_welcome (zone, TRUE);
+      sw_zone_set_is_welcome (SW_ZONE (zone), TRUE);
     }
 
   sw_overview_renumber_zones (SW_OVERVIEW (object));
