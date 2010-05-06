@@ -396,7 +396,7 @@ setup (ZonePanelData *data)
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (box_layout),
                                  MX_ORIENTATION_VERTICAL);
   clutter_actor_set_name (box_layout, "zones-panel-toplevel");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (box_layout), 12);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (box_layout), 6);
 
   data->toplevel = box_layout;
   clutter_actor_set_size (data->toplevel, data->width, data->height);
