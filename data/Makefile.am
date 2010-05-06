@@ -22,6 +22,8 @@ dist_theme_panel_DATA = \
 	theme/panel/clock-background.png \
 	theme/panel/devices-coloured.png \
 	theme/panel/devices-normal.png \
+	theme/panel/devices-active-coloured.png \
+	theme/panel/devices-active-normal.png \
 	theme/panel/internet-coloured.png \
 	theme/panel/internet-normal.png \
 	theme/panel/media-coloured.png \

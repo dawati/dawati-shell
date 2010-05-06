@@ -198,6 +198,13 @@ MnbToolbarButton#devices-button:hover {
   background-image: url("panel/devices-coloured.png");
 }
 
+MnbToolbarButton#devices-button-active, MnbToolbarButton#devices-button-active:active, MnbToolbarButton#devices-button-active:checked {
+  background-image: url("panel/devices-active-normal.png");
+}
+MnbToolbarButton#devices-button-active:hover {
+  background-image: url("panel/devices-active-coloured.png");
+}
+
 MnbToolbarIcon, MnbToolbarIcon:hover, MnbToolbarIcon:active {
   border-image: none;
 }
