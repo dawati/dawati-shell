@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
+"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,35 +48,31 @@ msgstr ""
 "リストへの移動"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
-"Web ページを表示すると、お気に入りのページが、こことブラウザーの新規タブペイ"
-"ンに表示されます。"
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Web ページを表示すると、お気に入りのページが、こことブラウザーの新規タブペインに表示されます。"
 
 #: ../netpanel/moblin-netbook-netpanel.cc:811
 #: ../netpanel/moblin-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "新規タブ"
 
+# translation of "your" is omitted as it sounds funny in JPN to use "your" translation here. May need alternative translation...
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
-#, fuzzy
+#: ../netpanel/moblin-netbook-netpanel.cc:1209
 msgid "Your pages"
-msgstr "お気に入りのページ"
+msgstr "ページ"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/moblin-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "検索"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/moblin-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "タブ"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/moblin-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "お気に入りのページ"
 
@@ -85,305 +81,17 @@ msgstr "お気に入りのページ"
 msgid "internet"
 msgstr "インターネット"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/moblin-panel-web.cc:216
+#: ../netpanel/moblin-panel-web.cc:262
 msgid "Internet"
 msgstr "インターネット"
 
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "インターネット"
+msgstr "インターネット パネル"
 
 #~ msgid "It's the internet"
 #~ msgstr "インターネット"
-
 #~ msgid "Web Browser"
 #~ msgstr "Web ブラウザー"
 
-# colon is used instead of hyphen because the last character looks like hyphen
-#~ msgid "Moblin web browser - "
-#~ msgstr "Moblin Web ブラウザー："
-
-#~ msgid "Loading..."
-#~ msgstr "読み込んでいます..."
-
-#~ msgid "Untitled"
-#~ msgstr "無題"
-
-#~ msgid "Downloads"
-#~ msgstr "ダウンロード"
-
-#~ msgid "Downloads - %d%%"
-#~ msgstr "ダウンロード： %d%%"
-
-#~ msgid "Moblin web browser"
-#~ msgstr "Moblin Web ブラウザー"
-
-#~ msgid "Oops!"
-#~ msgstr "おっと！"
-
-#~ msgid "New tab page"
-#~ msgstr "新規タブペイン"
-
-#~ msgid "Reload page"
-#~ msgstr "再ロードページ"
-
-#~ msgid ""
-#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
-#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
-#~ "page or visit another one."
-#~ msgstr ""
-#~ "「<span color=\"#909090\">%s</span> 」が要因でこのタブがクラッシュしたよう"
-#~ "です。ブラウザーの他の部分は問題ありません。このページを再ロードするか、別"
-#~ "のページに移動してみてください。"
-
-#~ msgid "Download cancelled"
-#~ msgstr "ダウンロードがキャンセルされました"
-
-#~ msgid "Download completed"
-#~ msgstr "ダウンロードが完了しました"
-
-#~ msgid "Open file"
-#~ msgstr "ファイルを開く"
-
-#~ msgid "Find in Page"
-#~ msgstr "ページ内検索"
-
-#~ msgid "Type to search"
-#~ msgstr "タイプして検索する。"
-
-#~ msgid "Next result"
-#~ msgstr "次の検索結果"
-
-#~ msgid "Previous result"
-#~ msgstr "前の検索結果"
-
-#~ msgid "Run the browser in a window"
-#~ msgstr "ウィンドウ内でブラウザーを立ち上げる"
-
-#~ msgid "Add the URL to the recent files list"
-#~ msgstr "最近アクセスしたファイルリストに URL を追加"
-
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Moblin Web ブラウザー"
-
-#~ msgid "Open link in new tab"
-#~ msgstr "新しいタブでリンクを開く"
-
-#~ msgid "Copy link location"
-#~ msgstr "リンク場所をコピー"
-
-#~ msgid "Save link"
-#~ msgstr "リンクを保存"
-
-#~ msgid "View image"
-#~ msgstr "  画像を見ます。"
-
-#~ msgid "Copy image location"
-#~ msgstr "リンク場所をコピー"
-
-#~ msgid "Save image"
-#~ msgstr "画像を保存"
-
-#~ msgid "Copy text"
-#~ msgstr "テキストをコピーします。"
-
-#~ msgid "Back"
-#~ msgstr "戻る"
-
-#~ msgid "Forward"
-#~ msgstr "次へ"
-
-#~ msgid "Stop"
-#~ msgstr "停止"
-
-#~ msgid "Reload"
-#~ msgstr "再ロード"
-
-#~ msgid "Pin this page"
-#~ msgstr "ページをピン固定する。"
-
-#~ msgid "Save page"
-#~ msgstr "ページを保存"
-
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "ブラウザー履歴を今すぐリセットしますか？ウェブの履歴や、ピン固定ページ、個"
-#~ "人設定も削除されます。"
-
-#~ msgid "Yes, delete"
-#~ msgstr "YES - クリア"
-
-#~ msgid "No, save"
-#~ msgstr "NO - 保存"
-
-#~ msgid ""
-#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
-#~ "remember."
-#~ msgstr ""
-#~ "ピン固定ページがありません。記憶したいページのオートマジック・バーでピンを"
-#~ "押してください。"
-
-#~ msgid "More pinned pages"
-#~ msgstr "たくさんのピン固定ページ"
-
-#~ msgid "No matching pages were found"
-#~ msgstr "一致するページが見つかりません"
-
-#~ msgid "__ wants to know your location."
-#~ msgstr "__さんはあなたの現在地を知りたがってます"
-
-#~ msgid "Share location"
-#~ msgstr "現在地を共有する"
-
-#~ msgid "Don't share"
-#~ msgstr "共有しない"
-
-#~ msgid "Remember for this site"
-#~ msgstr "このサイトを記憶する"
-
-#~ msgid "Settings"
-#~ msgstr "設定"
-
-# translated as General Settings to sound more natural
-#~ msgid "General"
-#~ msgstr "一般設定"
-
-# back translation is:
-# show domain name completely in auto input bar
-#~ msgid "Try to complete domain names in automagic bar"
-#~ msgstr "ドメイン名を、完全な形でオートマジック・バーに表示させる"
-
-# "search engine used in auto input bar"
-#~ msgid "Search in automagic bar"
-#~ msgstr "オートマジック・バーで使用するサーチエンジン"
-
-#~ msgid "Add new search engine"
-#~ msgstr "新規サーチエンジンの追加"
-
-# "privacy settings"
-#~ msgid "Privacy"
-#~ msgstr "プライバシー設定"
-
-#~ msgid "Remember my passwords"
-#~ msgstr "パスワードを記憶する"
-
-#~ msgid "Remember what I type into forms"
-#~ msgstr "フォームに入力したテキストを記憶する"
-
-#~ msgid "Keep my browser history for up to"
-#~ msgstr "ブラウザー履歴に、次の期間の記録を残す："
-
-#~ msgid "1 year"
-#~ msgstr "1年間"
-
-#~ msgid "1 month"
-#~ msgstr "1ヶ月間"
-
-#~ msgid "1 week"
-#~ msgstr "1週間"
-
-#~ msgid "1 day"
-#~ msgstr "1日間"
-
-#~ msgid "Reset my browser now"
-#~ msgstr "ブラウザー履歴を今すぐリセットする"
-
-#~ msgid "Pinned pages"
-#~ msgstr "ピン固定ページ"
-
-#~ msgid "Trouble connecting?"
-#~ msgstr "接続にお困りですか？"
-
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
-#~ msgstr ""
-#~ "ポインターをスクリーンの上に持っていくと降りてくるツールバーから、ネット"
-#~ "ワークパネルを選択します。"
-
-#~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "Moblin Web ブラウザーにようこそ。ページを閲覧すると、お気に入りページとし"
-#~ "て、ここに表示されます。"
-
-# "start from here"
-#~ msgid "Getting started"
-#~ msgstr "ここからスタート"
-
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "まず、インターネット接続を確認してください。インターネットに接続できること"
-#~ "を確認したら、オートマジック・バーをクリックするか Ctrl+L を押し、アドレス"
-#~ "を入力するか、検索を始めます。"
-
-#~ msgid "Make this a private tab"
-#~ msgstr "これをプライベートタブにする"
-
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
-#~ msgstr ""
-#~ "これはプライベートタブです。このタブ内で行ったことは、コンピューターに残り"
-#~ "ません。ただし、アクセス先の Web サイトに情報が保存される場合があります。"
-
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Moblin Web ブラウザーは、Mozilla テクノロジーに基づいてます"
-
-#~ msgid "Go"
-#~ msgstr "GO"
-
-#~ msgid ""
-#~ "Push the pin icon in the location bar above to add pages to this list."
-#~ msgstr ""
-#~ "上部のロケーション・バーにあるピンのアイコンを押すと、ページがリストに追加"
-#~ "されます。"
-
-#~ msgid ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
-#~ msgstr ""
-#~ "<p>ロケーション・バーにあるピンのアイコンを押すと、ページがリストに追加さ"
-#~ "れます。</p>"
-
-#~ msgid "Less than a minute ago"
-#~ msgstr "1分前"
-
-#~ msgid "About a minute ago"
-#~ msgid_plural "About __ minutes ago"
-#~ msgstr[0] "約1分前"
-#~ msgstr[1] "約__分前"
-
-#~ msgid "About an hour ago"
-#~ msgid_plural "About __ hours ago"
-#~ msgstr[0] "約1時間前"
-#~ msgstr[1] "約__時間前"
-
-#~ msgid "Today at %H:%M"
-#~ msgstr "今日：%H:%M"
-
-#~ msgid "Yesterday at %H:%M"
-#~ msgstr "昨日：%H:%M"
-
-#~ msgid "Last %A at %H:%M"
-#~ msgstr "前回の %A： %H:%M"
-
-#~ msgid "%x at %H:%M"
-#~ msgstr "%x：%H:%M"
-
-#~ msgid "Fewer pinned pages"
-#~ msgstr "少しのピン固定ページ"
-
-#~ msgid "Next"
-#~ msgstr "次へ"
-
-#~ msgid "Previous"
-#~ msgstr "戻る"
