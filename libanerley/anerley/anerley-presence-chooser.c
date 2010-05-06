@@ -19,10 +19,11 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+#include <config.h>
 
 #include <telepathy-glib/account-manager.h>
 
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include "anerley-presence-chooser.h"
 
@@ -74,7 +75,7 @@ anerley_presence_chooser_get_default_message (TpConnectionPresenceType presence)
                         NULL);
 
   p = &presences[presence];
-  return gettext (p->name);
+  return g_dgettext (GETTEXT_PACKAGE, p->name);
 }
 
 gchar *

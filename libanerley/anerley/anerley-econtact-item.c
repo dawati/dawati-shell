@@ -19,7 +19,8 @@
  *
  */
 
-#include <glib/gi18n.h>
+#include <config.h>
+#include <glib/gi18n-lib.h>
 #include <gio/gio.h>
 
 #include "anerley-econtact-item.h"

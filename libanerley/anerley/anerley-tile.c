@@ -19,6 +19,7 @@
  *
  */
 
+#include <config.h>
 
 #include "penge-magic-texture.h"
 
@@ -26,7 +27,7 @@
 #include "anerley-item.h"
 #include "anerley-tile-view.h"
 
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 G_DEFINE_TYPE (AnerleyTile, anerley_tile, MX_TYPE_WIDGET)
 
