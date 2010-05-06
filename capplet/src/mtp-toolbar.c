@@ -28,8 +28,9 @@
 
 #define TOOLBAR_X_PADDING 4.0
 
-#define BUTTON_WIDTH 60
-#define BUTTON_SPACING 20
+#define BANNER_WIDTH 132
+#define BUTTON_WIDTH 71
+#define BUTTON_SPACING 6
 
 #define TRAY_WIDTH 265
 #define TRAY_PADDING   4
@@ -123,7 +124,7 @@ mtp_toolbar_allocate (ClutterActor          *actor,
 
   tray_x = box->x2 - box->x1 - TRAY_WIDTH;
 
-  childbox.x1 = padding.left + BUTTON_SPACING / 2 + 4.0;
+  childbox.x1 = padding.left + BUTTON_SPACING / 2 + BANNER_WIDTH;
   childbox.y1 = padding.top;
   childbox.x2 = tray_x - 2.0;
   childbox.y2 = box->y2 - box->y1 - padding.top - padding.bottom;
@@ -153,13 +154,13 @@ mtp_toolbar_constructed (GObject *self)
 
   priv->panel_area  = mx_box_layout_new ();
   clutter_actor_set_name (priv->panel_area, "panel-area");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->panel_area), 10);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->panel_area), BUTTON_SPACING);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->panel_area), TRUE);
   clutter_actor_set_parent (priv->panel_area, actor);
 
   priv->applet_area = mx_box_layout_new ();
   clutter_actor_set_name (priv->applet_area, "applet-area");
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->applet_area), 4);
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->applet_area), BUTTON_SPACING);
   /* mx_box_layout_set_pack_start (MX_BOX_LAYOUT (priv->applet_area), FALSE); */
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->applet_area), TRUE);
   clutter_actor_set_parent (priv->applet_area, actor);
@@ -968,8 +969,8 @@ mtp_toolbar_fill_space (MtpToolbar *toolbar)
       gint screen_width = clutter_actor_get_width (stage);
 
       max_panels =
-        (screen_width - TRAY_WIDTH) / (BUTTON_WIDTH+BUTTON_SPACING);
-
+        (screen_width - TRAY_WIDTH - BANNER_WIDTH + 20) /
+        (BUTTON_WIDTH+BUTTON_SPACING);
     }
 
   l = clutter_container_get_children (CLUTTER_CONTAINER (priv->applet_area));

@@ -459,7 +459,7 @@ mtp_toolbar_button_get_preferred_width (ClutterActor *self,
   if (priv->in_jar)
     width = 200.0;
   else
-    width = priv->clock ? 120.0 : (priv->applet ? 40.0 : 60.0);
+    width = priv->clock ? 106.0 : (priv->applet ? 42.0 : 68.0);
 
   width += (padding.left + padding.right);
 
