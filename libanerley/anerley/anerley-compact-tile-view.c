@@ -136,15 +136,11 @@ _tile_button_release_event_cb (ClutterActor *actor,
                                gpointer      userdata)
 {
   AnerleyCompactTileView *compact_tile_view = (AnerleyCompactTileView *)userdata;
-
-  if (((ClutterButtonEvent *)event)->click_count == 2)
-  {
-    AnerleyCompactTile *tile = ANERLEY_COMPACT_TILE (actor);
-    AnerleyItem *item = anerley_compact_tile_get_item (tile);
-    g_signal_emit_by_name (compact_tile_view,
-                           "item-activated",
-                           item);
-  }
+  AnerleyCompactTile *tile = ANERLEY_COMPACT_TILE (actor);
+  AnerleyItem *item = anerley_compact_tile_get_item (tile);
+  g_signal_emit_by_name (compact_tile_view,
+                         "item-activated",
+                         item);
 
   return TRUE;
 }

@@ -580,23 +580,20 @@ anerley_tile_class_init (AnerleyTileClass *klass)
 }
 
 static gboolean
-_button_press_event_cb (ClutterActor *actor,
-                        ClutterEvent *event,
-                        gpointer      userdata)
+_button_release_event_cb (ClutterActor *actor,
+                          ClutterEvent *event,
+                          gpointer      userdata)
 {
   AnerleyTilePrivate *priv = GET_PRIVATE (actor);
   ClutterActor *parent;
 
-  if (((ClutterButtonEvent *)event)->click_count == 2)
-  {
-    parent = clutter_actor_get_parent (actor);
+  parent = clutter_actor_get_parent (actor);
 
-    if (ANERLEY_IS_TILE_VIEW (parent))
-    {
-      g_signal_emit_by_name (parent,
-                             "item-activated",
-                             priv->item);
-    }
+  if (ANERLEY_IS_TILE_VIEW (parent))
+  {
+    g_signal_emit_by_name (parent,
+                           "item-activated",
+                           priv->item);
   }
 
   return TRUE;
@@ -657,8 +654,8 @@ anerley_tile_init (AnerleyTile *self)
                                "AnerleyTilePresenceLabel");
 
   g_signal_connect (self,
-                    "button-press-event",
-                    (GCallback)_button_press_event_cb,
+                    "button-release-event",
+                    (GCallback)_button_release_event_cb,
                     NULL);
 
   g_signal_connect (self,
