@@ -400,7 +400,7 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
       if (g_strcmp0 (priv->queued_type, "all") == 0 ||
           (g_strcmp0 (priv->queued_type, type) == 0 &&
            g_strcmp0 (priv->queued_state, state) == 0 &&
-           g_strcmp0 (priv->queued_name, name)))
+           g_strcmp0 (priv->queued_name, name) == 0))
         {
           /* Remember the event info */
           g_free (priv->last_state);
