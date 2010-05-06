@@ -3,10 +3,10 @@ iconsdir = $(pkgdatadir)/icons
 icons_DATA = \
 	      network-active-hover.png \
 	      network-active.png \
-        network-bluetooth-strong-hover.png \
-        network-bluetooth-strong.png \
-        network-bluetooth-weak-hover.png \
-        network-bluetooth-weak.png \
+	      network-bluetooth-strong-hover.png \
+	      network-bluetooth-strong.png \
+	      network-bluetooth-weak-hover.png \
+	      network-bluetooth-weak.png \
 	      network-connecting-hover.png \
 	      network-connecting.png \
 	      network-error-hover.png \
@@ -26,10 +26,7 @@ icons_DATA = \
 	      network-3g-strong-hover.png \
 	      network-3g-strong.png \
 	      network-3g-weak-hover.png \
-	      network-3g-weak.png \
-        toolbar-button-active.png \
-        toolbar-button-hover.png
-
+	      network-3g-weak.png
 
 EXTRA_DIST = $(icons_DATA)
 -include $(top_srcdir)/git.mk
