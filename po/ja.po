@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:25+0000\n"
+"POT-Creation-Date: 2010-05-05 09:27+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
+"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,19 +21,19 @@ msgstr "ツールバーを設定します"
 msgid "Toolbar settings"
 msgstr "ツールバー設定"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/src/mtp-bin.c:362
 msgid "Save toolbar"
 msgstr "ツールバーの保存"
 
-#: ../capplet/src/mtp-bin.c:366
+#: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "新規に 1 つ追加するには、パネルを 1 つ削除する必要があります。"
+msgstr "パネルを 1 つ追加するには、パネルを 1 つ削除する必要があります。"
 
-#: ../capplet/src/mtp-bin.c:368
-msgid "You can add, remove and reorder many of the panels in your toolbar."
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr "ツールバー内のパネルの多くは、追加や削除、順序の変更ができます。"
 
-#: ../capplet/src/mtp-jar.c:109
+#: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "使用可能なパネル"
 
@@ -42,8 +42,8 @@ msgstr "使用可能なパネル"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:216
-#: ../src/mnb-toolbar-clock.c:114
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -57,8 +57,8 @@ msgstr "%H:%M"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:226
-#: ../src/mnb-toolbar-clock.c:123
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%P%l:%M"
 
@@ -66,8 +66,8 @@ msgstr "%P%l:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #.
-#: ../capplet/src/mtp-clock.c:248
-#: ../src/mnb-toolbar-clock.c:144
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%Y年%B%e日"
 
@@ -77,118 +77,108 @@ msgstr "ツールバー"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
-msgstr "システム・トレイを設定します"
+msgstr "システムトレイを設定します"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:253
+#: ../capplet/src/syst-cc-panel.c:241
 msgid "System Tray"
-msgstr "システム・トレイ"
+msgstr "システムトレイ"
 
-#: ../capplet/src/syst-cc-panel.c:170
-msgid "System tray"
-msgstr "システム・トレイ"
-
-#: ../capplet/src/syst-cc-panel.c:186
+#: ../capplet/src/syst-cc-panel.c:174
 msgid "Show system tray"
-msgstr "システム・トレイに表示します"
+msgstr "システムトレイに表示します"
 
-#: ../capplet/src/syst-cc-panel.c:207
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "システム・トレイは、一部の旧式のアプリケーションが利用する概念で、何かが発生したことを通知したり、閉じたアプリケーションを実行させたままにしておくことができます。"
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "システムトレイは、一部の旧式のアプリケーションが利用する概念で、何かが発生したことを通知したり、閉じたアプリケーションを実行させたままにしておくことができます。"
 
 #: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "常にスモール スクリーン モードを使う"
+
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "ツールバー上のパネルの順番を決定します。"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "ディスプレイ サイズが大きなスクリーンモードを通常設定されていても、スモール スクリーン モードを強制使用します。"
+
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "ツールバー上のパネルの順番"
 
-#: ../src/moblin-netbook.c:905
+#: ../src/moblin-netbook.c:1018
 msgid "Moblin Netbook Effects"
 msgstr "Moblin ネットブックのエフェクター"
 
-#: ../src/moblin-netbook.c:909
+#: ../src/moblin-netbook.c:1022
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin ネットブックのエフェクター"
 
-#: ../src/moblin-netbook.c:3035
+#: ../src/moblin-netbook.c:3218
 msgid "Activate"
-msgstr "有効"
+msgstr "有効にする"
 
-#: ../src/moblin-netbook.c:3049
+#: ../src/moblin-netbook.c:3232
 msgid "Unknown window"
 msgstr "不明なウィンドウ"
 
-#: ../src/moblin-netbook.c:3051
-msgid "Is asking for your attention."
+#: ../src/moblin-netbook.c:3234
+msgid "is asking for your attention."
 msgstr "呼びかけてます。"
 
-#: ../src/mnb-toolbar.c:976
+#: ../src/mnb-toolbar.c:1000
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "%s は壊れています"
 
-#: ../src/notifications/mnb-notification.c:262
+#: ../src/notifications/mnb-notification.c:282
 msgid "Dismiss"
 msgstr "閉じる"
 
-#: ../src/notifications/mnb-notification-cluster.c:668
+#: ../src/notifications/mnb-notification-cluster.c:663
 msgid "Dismiss All"
 msgstr "すべて閉じる"
 
+#~ msgid "System tray"
+#~ msgstr "システム・トレイ"
 #~ msgid "Less than a minute ago"
 #~ msgstr "1分以内"
-
 #~ msgid "A few minutes ago"
 #~ msgstr "数分前"
-
 #~ msgid "A couple of hours ago"
 #~ msgstr "数時間前"
-
 #~ msgid "Earlier today"
 #~ msgstr "今日"
-
 #~ msgid "On %A"
 #~ msgstr "%A"
-
 #~ msgid "Last week"
 #~ msgstr "先週"
-
 #~ msgid "A couple of weeks ago"
 #~ msgstr "数週間前"
-
 #~ msgid "This month"
 #~ msgstr "今月"
-
 #~ msgid "Last month"
 #~ msgstr "先月"
-
 #~ msgid "This year"
 #~ msgstr "今年"
-
 #~ msgid "Last year"
 #~ msgstr "去年"
-
 #~ msgid "Ages ago"
 #~ msgstr "ずいぶんと前"
-
 #~ msgid "zones"
 #~ msgstr "ゾーン"
-
 #~ msgid "No Zones yet"
 #~ msgstr "ゾーンはありません"
-
 #~ msgid ""
 #~ "Applications you’re using will show up here. You will be able to switch "
 #~ "and organize them to your heart's content."
 #~ msgstr ""
 #~ "ここには使用中のアプリケーションが表示されます。よく使うコンテンツの切り替"
 #~ "えや整理をすることができます。"
-
 #~ msgid "No applications on this zone"
 #~ msgstr "このゾーンにはアプリケーションがありません"
-
 #~ msgid ""
 #~ "You need to play some music, look at some pictures or watch some video to "
 #~ "see your history here. In the meantime, you could take a look at some "
@@ -196,119 +186,84 @@ msgstr "すべて閉じる"
 #~ msgstr ""
 #~ "閲覧履歴は、写真の表示後や、音楽・ビデオの再生後に表示されます。表示される"
 #~ "まで、サンプルメディアをお楽しみください。"
-
 #~ msgid "Recently played"
 #~ msgstr "最近再生したファイル"
-
 #~ msgid "Search results"
 #~ msgstr "検索結果"
-
 #~ msgid "Playqueue"
 #~ msgstr "プレイキュー"
-
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "シーズン %u、エピソード %u"
-
 #~ msgid "Previous"
 #~ msgstr "戻る"
-
 #~ msgid "Next"
 #~ msgstr "次へ"
-
 #~ msgid "Media"
 #~ msgstr "メディア"
-
 #~ msgid "Search"
 #~ msgstr "検索"
-
 #~ msgid "Season %d Episode %d"
 #~ msgstr "シーズン %d、エピソード %d"
-
 #~ msgid "Season %d"
 #~ msgstr "シーズン %d"
-
 #~ msgid "Episode %d"
 #~ msgstr "エピソード %d"
-
 #~ msgid "Year %d"
 #~ msgstr "%d年"
-
 #~ msgid "media"
 #~ msgstr "メディア"
-
 #~ msgid "Favourite Applications"
 #~ msgstr "お気に入りのアプリケーション"
-
 #~ msgid "Applications"
 #~ msgstr "アプリケーション"
-
 #~ msgid "applications"
 #~ msgstr "アプリケーション"
-
 #~ msgid ""
 #~ "As you visit web pages, your favorites will appear here and on the New "
 #~ "tab page in the browser."
 #~ msgstr ""
 #~ "Web ページを表示すると、お気に入りのページが、こことブラウザーの新規タブペ"
 #~ "インに表示されます。"
-
 #~ msgid "Untitled"
 #~ msgstr "無題"
-
 #~ msgid "New tab"
 #~ msgstr "新規タブ"
-
 #~ msgid "Internet"
 #~ msgstr "インターネット"
-
 #~ msgid "Go"
 #~ msgstr "GO"
-
 #~ msgid "Tabs"
 #~ msgstr "タブ"
-
 #~ msgid "Favorite pages"
 #~ msgstr "お気に入りのページ"
-
 #~ msgid "internet"
 #~ msgstr "インターネット"
-
 #~ msgid "Search for %%s on %s"
 #~ msgstr "%%s を %s で検索する"
-
 #~ msgid "Go to %s"
 #~ msgstr "%s にアクセス"
-
 #~ msgid "Copy"
 #~ msgstr "コピー"
-
 #~ msgid "the current selection to pasteboard"
 #~ msgstr "現在選択されているエントリーをペーストボードに追加"
-
 #~ msgid "your selection"
 #~ msgstr "選択"
-
 #~ msgid "Pasteboard"
 #~ msgstr "ペーストボード"
-
 #~ msgid "You need to copy some text to use Pasteboard"
 #~ msgstr "テキストをコピーして、ペーストボードを使用します"
-
 #~ msgid "Clear pasteboard"
 #~ msgstr "ペーストボードをクリアー"
-
 #~ msgid "pasteboard"
 #~ msgstr "ペーストボード"
-
 #~ msgid "<b>Appointments</b>"
 #~ msgstr "<b>スケジュール</b>"
-
 #~ msgid "No calendar entries this week"
 #~ msgstr "今週は何も予定が入っていません"
-
 #~ msgid ""
 #~ "Your friends' feeds and web services will appear here. Activate your "
 #~ "accounts now!"
 #~ msgstr ""
 #~ "アカウントを設定すると、ここにお友達のフィードと Web サービスが表示されま"
 #~ "す。"
+
