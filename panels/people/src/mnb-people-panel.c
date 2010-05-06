@@ -553,19 +553,12 @@ _update_placeholder_state (MnbPeoplePanel *self)
     if (accounts_available > 0 && accounts_online == 0)
     {
       clutter_actor_show (priv->offline_banner);
-      mx_table_set_row_spacing (MX_TABLE (self), 6);
     } else {
       clutter_actor_hide (priv->offline_banner);
-      /* Because allocate-hidden=false still causes row spacing to be applied,
-       * so halve it.
-       */
-      mx_table_set_row_spacing (MX_TABLE (self), 3);
     }
   } else {
     /* Hide real content stuff */
     clutter_actor_hide (priv->main_scroll_view);
-
-    mx_table_set_row_spacing (MX_TABLE (self), 6);
 
     if (accounts_online == 0)
     {
