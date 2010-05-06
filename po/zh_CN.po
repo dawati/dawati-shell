@@ -4,14 +4,14 @@
 # This file is distributed under the same license as the mutter-moblin package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:27+0000\n"
-"PO-Revision-Date: 2009-10-13 12:25-0800\n"
-"Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
+"PO-Revision-Date: 2010-05-06 16:30-0800\n"
+"Last-Translator: mackey tian <mackeyx.tian@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,8 +41,9 @@ msgstr "可用的面板"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -50,21 +51,23 @@ msgstr "%H:%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%P %l:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%Y年%b月%e日"
 
@@ -87,7 +90,7 @@ msgstr "显示系统托盘"
 
 #: ../data/mutter-moblin.schemas.in.h:1
 msgid "Always use small screen mode"
-msgstr ""
+msgstr " 总是使用小屏幕模式"
 
 #: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
