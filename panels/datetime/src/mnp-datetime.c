@@ -129,10 +129,17 @@ format_label (ClutterActor *label)
 	time_t now = time(NULL);
 	struct tm tim;
 	char buf[256];
+	static const char *lenv = NULL;
+	const char *fmt = "%A %e %B %G";
 
+	if (!lenv) {
+		lenv = g_getenv("LANG");
+		if (lenv && strncmp(lenv, "en", 2) != 0)
+			fmt = "%x";
+	}
 	localtime_r (&now, &tim);
 	
-	strftime (buf, 256, "%A %e %B %G", &tim);
+	strftime (buf, 256, fmt, &tim);
 
 	mx_label_set_text ((MxLabel *)label, buf);
 }
