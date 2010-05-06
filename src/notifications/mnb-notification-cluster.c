@@ -128,8 +128,6 @@ mnb_notification_cluster_map (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class)->map (actor);
 
-  clutter_actor_map (CLUTTER_ACTOR (priv->control));
-
   if (priv->notifiers)
     clutter_actor_map (CLUTTER_ACTOR (priv->notifiers));
 }
@@ -141,7 +139,8 @@ mnb_notification_cluster_unmap (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class)->unmap (actor);
 
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->control));
+  if (CLUTTER_ACTOR_IS_MAPPED (priv->control))
+    clutter_actor_unmap (CLUTTER_ACTOR (priv->control));
 
   if (priv->notifiers)
     clutter_actor_unmap (CLUTTER_ACTOR (priv->notifiers));
@@ -181,12 +180,13 @@ mnb_notification_cluster_get_preferred_height (ClutterActor *actor,
 
   if (priv->control && CLUTTER_ACTOR_IS_MAPPED (priv->control))
     {
-      *min_height
-           = clutter_actor_get_y (CLUTTER_ACTOR (priv->control))
-           + clutter_actor_get_height (CLUTTER_ACTOR (priv->control));
-      *natural_height
-           = clutter_actor_get_y (CLUTTER_ACTOR (priv->control))
-           + clutter_actor_get_height (CLUTTER_ACTOR (priv->control));
+      gfloat m_height, p_height;
+
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->control),
+                                          CLUSTER_WIDTH, &m_height, &p_height);
+
+      *min_height += m_height - 30;
+      *natural_height += p_height - 30;
     }
 }
 
@@ -198,6 +198,7 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
 {
   MnbNotificationClusterPrivate *priv = GET_PRIVATE (actor);
   ClutterActorClass *klass;
+  gfloat m_height = 0.0, p_height = 0.0;
 
   klass = CLUTTER_ACTOR_CLASS (mnb_notification_cluster_parent_class);
 
@@ -205,35 +206,37 @@ mnb_notification_cluster_allocate (ClutterActor          *actor,
 
   /* <rant>*sigh* and composite actors used to be so simple...</rant> */
 
-  if (priv->control)
-    {
-      ClutterActorBox control_box = {
-        clutter_actor_get_x (CLUTTER_ACTOR(priv->control)),
-        clutter_actor_get_y (CLUTTER_ACTOR(priv->control)),
-        clutter_actor_get_x (CLUTTER_ACTOR(priv->control)) +
-          clutter_actor_get_width (CLUTTER_ACTOR(priv->control)),
-        clutter_actor_get_y (CLUTTER_ACTOR(priv->control)) +
-          clutter_actor_get_height (CLUTTER_ACTOR(priv->control))
-      };
-
-      clutter_actor_allocate (CLUTTER_ACTOR(priv->control),
-                              &control_box, flags);
-    }
-
   if (priv->notifiers)
     {
-      gfloat m_height, p_height;
       ClutterActorBox notifier_box = { 0, };
 
       clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->notifiers),
                                           CLUSTER_WIDTH, &m_height, &p_height);
 
-      notifier_box.x2 = CLUSTER_WIDTH;
+      notifier_box.x2 = box->x2 - box->x1;
       notifier_box.y2 = p_height;
 
       clutter_actor_allocate (CLUTTER_ACTOR(priv->notifiers),
                               &notifier_box, flags);
     }
+
+  if (priv->control && CLUTTER_ACTOR_IS_MAPPED (priv->control))
+    {
+      ClutterActorBox control_box;
+
+      control_box.x1 = 0.0;
+      control_box.y1 = p_height - 30;
+
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (priv->control),
+                                          CLUSTER_WIDTH, &m_height, &p_height);
+
+      control_box.x2 = box->x2 - box->x1;
+      control_box.y2 = control_box.y1 + p_height;
+
+      clutter_actor_allocate (CLUTTER_ACTOR(priv->control),
+                              &control_box, flags);
+    }
+
 
   if (priv->old_box.x1 != box->x1 ||
       priv->old_box.x2 != box->x2 ||
@@ -401,7 +404,7 @@ on_notification_added (MoblinNetbookNotifyStore *store,
       clutter_actor_set_opacity (CLUTTER_ACTOR(priv->control), 0);
       clutter_actor_set_y (CLUTTER_ACTOR(priv->control),
               clutter_actor_get_height (CLUTTER_ACTOR(priv->active_notifier))
-                 - clutter_actor_get_height (CLUTTER_ACTOR(priv->control)));
+                 - clutter_actor_get_height (CLUTTER_ACTOR(priv->control)) - 30);
 
       clutter_actor_show (CLUTTER_ACTOR(priv->control));
 
@@ -469,6 +472,15 @@ on_control_disappear_anim_completed (ClutterAnimation *anim,
 
   /* Update flag for any pending animations */
   priv->anim_lock = FALSE;
+}
+
+static void
+on_control_hide_completed (ClutterAnimation *anim,
+                           MnbNotificationCluster *cluster)
+{
+  MnbNotificationClusterPrivate *priv = GET_PRIVATE (cluster);
+
+  clutter_actor_hide (priv->control);
 }
 
 static void
@@ -583,17 +595,24 @@ on_notification_closed (MoblinNetbookNotifyStore *store,
       else if (priv->n_notifiers == 1)
         {
           /* slide the control out of view */
-          clutter_actor_animate (CLUTTER_ACTOR(priv->control),
-                                 CLUTTER_EASE_IN_SINE,
-                                 FADE_DURATION,
-                                 "opacity", 0x0,
-                                 "y", clutter_actor_get_height
-                                        (CLUTTER_ACTOR(priv->active_notifier))
-                                      - clutter_actor_get_height
-                                        (CLUTTER_ACTOR(priv->control)),
-                                 NULL);
+          ClutterAnimation *anim;
 
-          /* clutter_actor_hide (CLUTTER_ACTOR(priv->control)); */
+          anim = clutter_actor_animate (CLUTTER_ACTOR(priv->control),
+                                        CLUTTER_EASE_IN_SINE,
+                                        FADE_DURATION,
+                                        "opacity", 0x0,
+                                        "y", clutter_actor_get_height
+                                        (CLUTTER_ACTOR(priv->active_notifier))
+                                        - clutter_actor_get_height
+                                        (CLUTTER_ACTOR(priv->control)),
+                                        NULL);
+
+          g_signal_connect (anim,
+                            "completed",
+                            G_CALLBACK
+                            (on_control_hide_completed),
+                            cluster);
+
           /* make need above and input regiion sync from above */
         }
       else

@@ -758,14 +758,15 @@ notification_cluster_allocation_notify_cb (ClutterActor *notification,
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   gint                        screen_width, screen_height;
-  gfloat                      w, h;
+  ClutterActorBox             box;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-  clutter_actor_get_size (priv->notification_cluster, &w, &h);
 
+  clutter_actor_get_allocation_box (notification, &box);
+  
   clutter_actor_set_position (priv->notification_cluster,
-                              screen_width - (int)w,
-                              screen_height - (int)h);
+                              screen_width - (int) (box.x2 - box.x1),
+                              screen_height - (int) (box.y2 - box.y1));
 }
 
 static void
