@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:37+0000\n"
+"POT-Creation-Date: 2010-05-05 09:36+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -20,9 +20,9 @@ msgstr ""
 msgid "people"
 msgstr "사람들"
 
-#: ../src/mnb-people-panel.c:56
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger) this is where you chat to people."
-msgstr "안녕하십니까? 이것은 사람들 패널입니다. IM 서비스가 구성되면 (메신저 기능과 유사) 여기서 사람들과 채팅할 수 있습니다."
+#: ../src/mnb-people-panel.c:57
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "안녕하십니까? 사람들 패널입니다. IM 서비스가 구성되면 (메신저 기능과 유사) 여기서 사람들과 채팅할 수 있습니다."
 
 #: ../src/mnb-people-panel.c:191
 #: ../src/mnb-people-panel.c:414
