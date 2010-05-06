@@ -226,6 +226,8 @@ _populate_variables (CarrickServiceItem *self)
                                &iter,
                                gtk_tree_row_reference_get_path (priv->row)))
     {
+      char *config_method, *config_address, *config_netmask, *config_gateway;
+
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
                           CARRICK_COLUMN_PROXY, &priv->proxy,
                           CARRICK_COLUMN_INDEX, &priv->index,
@@ -241,8 +243,23 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_ADDRESS, &priv->address,
                           CARRICK_COLUMN_NETMASK, &priv->netmask,
                           CARRICK_COLUMN_GATEWAY, &priv->gateway,
+                          CARRICK_COLUMN_CONFIGURED_METHOD, &config_method,
+                          CARRICK_COLUMN_CONFIGURED_ADDRESS, &config_address,
+                          CARRICK_COLUMN_CONFIGURED_NETMASK, &config_netmask,
+                          CARRICK_COLUMN_CONFIGURED_GATEWAY, &config_gateway,
                           CARRICK_COLUMN_FAVORITE, &priv->favorite,
                           -1);
+
+      /* use manually configured values if real values are not available:
+       * this happens e.g. when the service is not connected. */
+      if (!priv->method)
+        priv->method = config_method;
+      if (!priv->address)
+        priv->address = config_address;
+      if (!priv->netmask)
+        priv->netmask = config_netmask;
+      if (!priv->gateway)
+        priv->gateway = config_gateway;
     }
 }
 
