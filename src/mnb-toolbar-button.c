@@ -83,11 +83,6 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
 
   if (!pseudo_class)
     {
-      clutter_actor_animate (bg_image, CLUTTER_LINEAR,
-                             150,
-                             "scale-x", 1.0,
-                             "scale-y", 1.0,
-                             NULL);
       if (icon)
         clutter_actor_animate (icon, CLUTTER_LINEAR,
                                150,
@@ -98,16 +93,6 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
     }
   else if (!g_strcmp0 (pseudo_class, "hover"))
     {
-      /* bounce the (semi-transparent) background and icon */
-      clutter_actor_set_scale_with_gravity (bg_image, 0.5, 0.5,
-                                            CLUTTER_GRAVITY_CENTER);
-
-      clutter_actor_animate (bg_image, CLUTTER_EASE_OUT_ELASTIC,
-                             TRANSITION_DURATION,
-                             "scale-x", 1.0,
-                             "scale-y", 1.0,
-                             NULL);
-
       if (icon)
         {
           clutter_actor_set_scale_with_gravity (icon, 0.5, 0.5,
@@ -124,21 +109,15 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
     {
       /* shrink the background and the icon */
       if (icon)
-        clutter_actor_set_scale_with_gravity (icon, 1.0, 1.0,
-                                              CLUTTER_GRAVITY_CENTER);
-      clutter_actor_set_scale_with_gravity (bg_image, 1.0, 1.0,
-                                            CLUTTER_GRAVITY_CENTER);
-      clutter_actor_animate (bg_image, CLUTTER_LINEAR,
-                             150,
-                             "scale-x", 0.8,
-                             "scale-y", 0.8,
-                             NULL);
-      if (icon)
-        clutter_actor_animate (icon, CLUTTER_LINEAR,
-                               150,
-                               "scale-x", 0.7,
-                               "scale-y", 0.7,
-                               NULL);
+        {
+          clutter_actor_set_scale_with_gravity (icon, 1.0, 1.0,
+                                                CLUTTER_GRAVITY_CENTER);
+          clutter_actor_animate (icon, CLUTTER_LINEAR,
+                                 150,
+                                 "scale-x", 0.7,
+                                 "scale-y", 0.7,
+                                 NULL);
+        }
     }
   /*
    * NB: we do not animate the change to checked because the difference in
