@@ -394,7 +394,7 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	clutter_actor_reparent ((ClutterActor *)tile, (ClutterActor *)area);
   	clutter_container_child_set (CLUTTER_CONTAINER (area),
                                (ClutterActor *)tile,
-                               "expand", TRUE,
+                               "expand", FALSE,
 			       "y-fill", FALSE,
 			       "x-fill", TRUE,
                                NULL);	
