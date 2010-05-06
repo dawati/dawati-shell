@@ -232,6 +232,11 @@ sw_overview_constructed (GObject *object)
                                    zone, "expand", TRUE, NULL);
     }
 
+  if (priv->n_zones == 1)
+    {
+      sw_zone_set_is_welcome (zone, TRUE);
+    }
+
   sw_overview_renumber_zones (SW_OVERVIEW (object));
 }
 
@@ -405,6 +410,14 @@ sw_overview_add_window (SwOverview *overview,
 
   /* increase window count */
   priv->window_count++;
+
+  if (priv->window_count == 1)
+    {
+      GList *l;
+      /* first window is added, ensure there is no welcome screen */
+      for (l = children; l; l = l->next)
+        sw_zone_set_is_welcome (SW_ZONE (l->data), FALSE);
+    }
 
   /* decrease window count when the window is deleted */
   notify = g_new (WindowNotify, 1);

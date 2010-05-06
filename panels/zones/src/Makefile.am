@@ -6,6 +6,7 @@ AM_CFLAGS = \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	-DSTYLEDIR=\"$(pkgdatadir)/style\" \
+	-DPKGDATADIR=\"$(pkgdatadir)\" \
 	-DDATADIR=\"$(datadir)\"
 
 libexec_PROGRAMS = moblin-panel-zones

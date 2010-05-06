@@ -1,5 +1,8 @@
 SUBDIRS=style
 
+assetdir = $(pkgdatadir)
+dist_asset_DATA = people.png
+
 @INTLTOOL_DESKTOP_RULE@
 
 desktopfiles_in_files=moblin-panel-zones.desktop.in

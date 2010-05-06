@@ -72,6 +72,9 @@ struct _SwZonePrivate
   ClutterActor *add_icon;
   ClutterActor *label;
 
+  ClutterActor *welcome;
+  gboolean is_welcome;
+
   gint number;
 };
 
@@ -565,6 +568,17 @@ sw_zone_allocate (ClutterActor           *actor,
       clutter_actor_allocate (priv->label, &childbox, flags);
     }
 
+  if (priv->welcome)
+    {
+      childbox = avail_box;
+      childbox.x1 += 17;
+      childbox.y1 += 37;
+      childbox.x2 -= 60;
+      childbox.y2 -= 60;
+      mx_allocate_align_fill (priv->welcome, &childbox, MX_ALIGN_MIDDLE,
+                              MX_ALIGN_MIDDLE, TRUE, TRUE);
+      clutter_actor_allocate (priv->welcome, &childbox, flags);
+    }
 
   child_height = ((avail_box.y2 - avail_box.y1) / priv->n_children)
                   - (PADDING);
@@ -663,8 +677,12 @@ sw_zone_paint (ClutterActor *actor)
   if (priv->dummy)
     clutter_actor_paint (priv->add_icon);
 
-  if (priv->label && !priv->dummy && priv->n_children == 0)
+  if (priv->label && !priv->is_welcome && !priv->dummy && priv->n_children == 0)
     clutter_actor_paint (priv->label);
+
+  if (priv->welcome && !priv->dummy && priv->is_welcome
+      && priv->n_children == 0)
+    clutter_actor_paint (priv->welcome);
 }
 
 static void
@@ -708,6 +726,9 @@ sw_zone_map (ClutterActor *actor)
 
   if (priv->label)
     clutter_actor_map (priv->label);
+
+  if (priv->welcome)
+    clutter_actor_map (priv->welcome);
 }
 
 static void
@@ -725,6 +746,9 @@ sw_zone_unmap (ClutterActor *actor)
 
   if (priv->label)
     clutter_actor_unmap (priv->label);
+
+  if (priv->welcome)
+    clutter_actor_unmap (priv->welcome);
 }
 
 
@@ -838,7 +862,7 @@ sw_zone_set_focused (SwZone   *zone,
 {
   zone->priv->focused = focused;
 
-  if (focused)
+  if (focused && !zone->priv->is_welcome)
     clutter_actor_set_name (CLUTTER_ACTOR (zone), "focused-zone");
   else
     clutter_actor_set_name (CLUTTER_ACTOR (zone), "");
@@ -921,10 +945,90 @@ sw_zone_set_number (SwZone *zone,
     }
 
 
-  zone_title = g_strdup_printf (_("Zone %d"), number);
-  mx_label_set_text (MX_LABEL (zone->priv->title), zone_title);
-  g_free (zone_title);
 
+  if (zone->priv->n_children > 0)
+    {
+      zone_title = g_strdup_printf (_("Zone %d"), number);
+      mx_label_set_text (MX_LABEL (zone->priv->title), zone_title);
+      g_free (zone_title);
+    }
+
+}
+
+void
+sw_zone_set_is_welcome (SwZone   *zone,
+                        gboolean  welcome)
+{
+  if (zone->priv->is_welcome != welcome)
+    {
+      gchar *welcome_string;
+      gchar *w1, *w2;
+
+      zone->priv->is_welcome = welcome;
+
+      if (welcome)
+        {
+          ClutterActor *actor;
+          ClutterText *text;
+
+          zone->priv->welcome = mx_box_layout_new ();
+          clutter_actor_set_parent (zone->priv->welcome, CLUTTER_ACTOR (zone));
+
+          w1 = _("This is the Zones panel.");
+          w2 = _("When you have applications open"
+                 " you will be able to view, manage and"
+                 " access them here.");
+
+          welcome_string = g_strdup_printf (
+                        "<span foreground='#e87208' font='16' font-weight='bold'>"
+                        "%s</span>\n\n"
+                        "<span foreground='#6a6b6a' font='16'>%s</span>",
+                        w1, w2);
+
+          actor = mx_label_new ();
+          text = (ClutterText*) mx_label_get_clutter_text (MX_LABEL (actor));
+          clutter_text_set_markup (text, welcome_string);
+          g_free (welcome_string);
+          clutter_text_set_line_wrap (text, TRUE);
+          mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (zone->priv->welcome),
+                                                   actor, 0,
+                                                   "y-align", MX_ALIGN_START,
+                                                   "x-align", MX_ALIGN_START,
+                                                   NULL);
+
+          actor = clutter_texture_new_from_file (PKGDATADIR "/people.png", NULL);
+          clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (actor), TRUE);
+
+          mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (zone->priv->welcome),
+                                                   actor, 1,
+                                                   "y-align", MX_ALIGN_END,
+                                                   "x-align", MX_ALIGN_END,
+                                                   "y-fill", FALSE,
+                                                   "x-fill", FALSE,
+                                                   NULL);
+          clutter_actor_set_name (CLUTTER_ACTOR (zone), "welcome");
+          mx_label_set_text (MX_LABEL (zone->priv->title), "");
+        }
+      else
+        {
+          clutter_actor_unparent (CLUTTER_ACTOR (zone->priv->welcome));
+          zone->priv->welcome = NULL;
+          clutter_actor_set_name (CLUTTER_ACTOR (zone), "");
+
+          if (zone->priv->focused && !zone->priv->is_welcome)
+            clutter_actor_set_name (CLUTTER_ACTOR (zone), "focused-zone");
+
+          if (zone->priv->n_children > 0)
+            {
+              gchar *zone_title = g_strdup_printf (_("Zone %d"),
+                                                   zone->priv->number);
+              mx_label_set_text (MX_LABEL (zone->priv->title), zone_title);
+              g_free (zone_title);
+            }
+        }
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (zone));
+    }
 }
 
 void
