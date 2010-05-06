@@ -87,7 +87,7 @@ MnbPeoplePanel
 
 *#people-panel-messenger-launcher-tile
 {
-  border-image: url("box-background-border-bottom.png") 2;
+  border-image: url("box-background.png") 5;
 }
 
 /* Anerley */
