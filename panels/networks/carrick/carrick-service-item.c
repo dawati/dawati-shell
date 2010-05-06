@@ -70,7 +70,7 @@ struct _CarrickServiceItemPrivate
   GtkWidget *connect_box;
   GtkWidget *security_label;
   GtkWidget *connect_button;
-  GtkWidget *advanced_button;
+  GtkWidget *advanced_expander;
   GtkWidget *passphrase_box;
   GtkWidget *passphrase_entry;
   GtkWidget *show_password_check;
@@ -705,10 +705,12 @@ _connect_button_cb (GtkButton          *connect_button,
 }
 
 static void
-_advanced_button_toggled_cb (GtkToggleButton *button,
-                             gpointer         data)
+_advanced_expander_notify_expanded_cb (GObject    *object,
+                                       GParamSpec *param_spec,
+                                       gpointer    data)
 {
   CarrickServiceItemPrivate *priv;
+  gboolean expanded;
 
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (data));
   priv = CARRICK_SERVICE_ITEM (data)->priv;
@@ -716,8 +718,9 @@ _advanced_button_toggled_cb (GtkToggleButton *button,
   g_signal_emit (data, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
   gtk_widget_hide (priv->info_bar);
+  expanded = gtk_expander_get_expanded (GTK_EXPANDER (priv->advanced_expander));
   nbtk_gtk_expander_set_expanded (NBTK_GTK_EXPANDER (priv->expando),
-                                  gtk_toggle_button_get_active (button));
+                                  expanded);
 }
 
 static void
@@ -893,13 +896,13 @@ _unexpand_advanced_settings (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
 
-  g_signal_handlers_block_by_func (priv->advanced_button,
-                                   _advanced_button_toggled_cb,
+  g_signal_handlers_block_by_func (priv->advanced_expander,
+                                   _advanced_expander_notify_expanded_cb,
                                    item);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (priv->advanced_button),
-                                FALSE);
-  g_signal_handlers_unblock_by_func (priv->advanced_button,
-                                     _advanced_button_toggled_cb,
+  gtk_expander_set_expanded (GTK_EXPANDER (priv->advanced_expander),
+                             FALSE);
+  g_signal_handlers_unblock_by_func (priv->advanced_expander,
+                                     _advanced_expander_notify_expanded_cb,
                                      item);
 
   nbtk_gtk_expander_set_expanded (NBTK_GTK_EXPANDER (priv->expando),
@@ -1101,7 +1104,8 @@ carrick_service_item_leave_notify_event (GtkWidget        *widget,
 {
   /* if pointer moves to a child widget, we want to keep the
    * ServiceItem prelighted, but show the normal cursor */
-  if (event->detail == GDK_NOTIFY_INFERIOR)
+  if (event->detail == GDK_NOTIFY_INFERIOR ||
+      event->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL)
     {
       gdk_window_set_cursor (widget->window, NULL);
     }
@@ -1482,6 +1486,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget                 *table;
   GtkWidget                 *label;
   GtkWidget                 *apply_button;
+  GtkWidget                 *align;
   GtkWidget                 *connect_with_pw_button;
   GtkWidget                 *content_area;
   char                      *security_sample;
@@ -1588,19 +1593,24 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE,
                       6);
 
-  /* TRANSLATORS: label for advanced toggle button in a service item */
-  priv->advanced_button = gtk_toggle_button_new_with_label (_("Advanced"));
-  gtk_widget_show (priv->advanced_button);
-  g_signal_connect (priv->advanced_button,
-                    "toggled",
-                    G_CALLBACK (_advanced_button_toggled_cb),
-                    self);
+  align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
+  gtk_widget_show (align);
   gtk_box_pack_start (GTK_BOX (priv->connect_box),
-                      priv->advanced_button,
+                      align,
                       FALSE,
                       FALSE,
                       6);
 
+  /* TRANSLATORS: label for the Advanced expander in a service item */
+  priv->advanced_expander = gtk_expander_new (_("Advanced"));
+  gtk_expander_set_expanded (GTK_EXPANDER (priv->advanced_expander),
+                             FALSE);
+  gtk_widget_show (priv->advanced_expander);
+  g_signal_connect (priv->advanced_expander,
+                    "notify::expanded",
+                    G_CALLBACK (_advanced_expander_notify_expanded_cb),
+                    self);
+  gtk_container_add (GTK_CONTAINER (align), priv->advanced_expander);
 
   priv->connect_button = gtk_button_new_with_label (_("Scanning"));
   gtk_widget_show (priv->connect_button);
