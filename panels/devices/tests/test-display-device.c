@@ -39,11 +39,59 @@ _display_brightness_notify_cb (MpdDisplayDevice  *display,
   g_debug ("brightness: %.1f", mpd_display_device_get_brightness (display));
 }
 
+static bool
+_brightness_down_cb (MpdDisplayDevice *display)
+{
+  float brightness;
+
+  brightness = mpd_display_device_get_brightness (display);
+  g_debug ("%s() %.3f", __FUNCTION__, brightness);
+
+  mpd_display_device_set_brightness (display, brightness - 0.1);
+
+  return false;
+}
+
+static bool
+_brightness_up_cb (MpdDisplayDevice *display)
+{
+  float brightness;
+
+  brightness = mpd_display_device_get_brightness (display);
+  g_debug ("%s() %.3f", __FUNCTION__, brightness);
+
+  mpd_display_device_set_brightness (display, brightness + 0.1);
+
+  return false;
+}
+
 int
 main (int     argc,
       char  **argv)
 {
-  MpdDisplayDevice *display;
+  gboolean down = false;
+  gboolean up = false;
+  GOptionEntry _options[] = {
+    { "brightness-down", 'd', 0, G_OPTION_ARG_NONE, &down,
+      "Decrease screen brightness by one step", NULL },
+    { "brightness-up", 'u', 0, G_OPTION_ARG_NONE, &up,
+      "Increase screen brightness by one step", NULL },
+    { NULL }
+  };
+
+  MpdDisplayDevice  *display;
+  GOptionContext    *context;
+  GError            *error = NULL;
+
+  context = g_option_context_new ("");
+  g_option_context_add_main_entries (context, _options, NULL);
+  g_option_context_add_group (context, clutter_get_option_group_without_init ());
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+  {
+    g_critical ("%s %s", G_STRLOC, error->message);
+    return EXIT_FAILURE;
+  }
+  g_option_context_free (context);
 
   gtk_clutter_init (&argc, &argv);
 
@@ -56,6 +104,14 @@ main (int     argc,
                     G_CALLBACK (_display_enabled_notify_cb), NULL);
   g_signal_connect (display, "notify::brightness",
                     G_CALLBACK (_display_brightness_notify_cb), NULL);
+
+  if (up)
+  {
+    g_idle_add ((GSourceFunc) _brightness_up_cb, display);
+  } else if (down)
+  {
+    g_idle_add ((GSourceFunc) _brightness_down_cb, display);
+  }
 
   clutter_main ();
   g_object_unref (display);
