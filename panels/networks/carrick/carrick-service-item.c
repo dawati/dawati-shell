@@ -1167,6 +1167,19 @@ method_combo_changed_cb (GtkComboBox *combobox,
   gtk_widget_set_sensitive (priv->gateway_entry, !use_dhcp);
   gtk_widget_set_sensitive (priv->dns_text_view, !use_dhcp);
 
+  if (use_dhcp)
+    {
+      /* revert to last received data */
+      gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
+                          priv->address ? priv->address : "");
+
+      gtk_entry_set_text (GTK_ENTRY (priv->netmask_entry),
+                          priv->netmask ? priv->netmask : "");
+
+      gtk_entry_set_text (GTK_ENTRY (priv->gateway_entry),
+                          priv->gateway ? priv->gateway : "");
+    }
+
   gtk_widget_hide (priv->info_bar);
 }
 
