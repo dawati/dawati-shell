@@ -13,12 +13,12 @@ icons_DATA = \
 	      network-error.png \
 	      network-offline-hover.png \
 	      network-offline.png \
-	      network-wireless-signal-good-hover.png \
-	      network-wireless-signal-good.png \
-	      network-wireless-signal-strong-hover.png \
-	      network-wireless-signal-strong.png \
-	      network-wireless-signal-weak-hover.png \
-	      network-wireless-signal-weak.png \
+	      network-wireless-good-hover.png \
+	      network-wireless-good.png \
+	      network-wireless-strong-hover.png \
+	      network-wireless-strong.png \
+	      network-wireless-weak-hover.png \
+	      network-wireless-weak.png \
 	      network-wimax-strong-hover.png \
 	      network-wimax-strong.png \
 	      network-wimax-weak-hover.png \
