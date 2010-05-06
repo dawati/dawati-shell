@@ -763,7 +763,7 @@ notification_cluster_allocation_notify_cb (ClutterActor *notification,
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   clutter_actor_get_allocation_box (notification, &box);
-  
+
   clutter_actor_set_position (priv->notification_cluster,
                               screen_width - (int) (box.x2 - box.x1),
                               screen_height - (int) (box.y2 - box.y1));
@@ -2509,10 +2509,13 @@ mnb_desktop_texture_paint (ClutterActor *actor,
     {
       visible_region = mnb_get_background_visible_region (screen);
 
+      /*
+       * If the visible region is NULL (e.g., effect is running), force
+       * painting of the entire desktop.
+       */
       if (!visible_region)
-        return FALSE;
-
-      if (gdk_region_empty (visible_region))
+        complete = TRUE;
+      else if (gdk_region_empty (visible_region))
         goto finish_up;
     }
 
