@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:43+0000\n"
+"POT-Creation-Date: 2010-05-05 09:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgid "Devices panel"
 msgstr "장치 패널"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:149
+#: ../src/moblin-panel-devices.c:162
 msgid "devices"
 msgstr "장치"
 
@@ -51,9 +51,8 @@ msgid "System Sounds"
 msgstr "시스템 음향"
 
 #: ../power-icon/src/moblin-power-icon.c:46
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin 전원 아이콘"
+msgid "MeeGo Power Icon"
+msgstr "MeeGo 전원 아이콘"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
@@ -100,9 +99,13 @@ msgstr "결정하지 않으시면 %d초 후에 끄겠습니다."
 msgid "Turn off"
 msgstr "끕니다."
 
-#: ../src/moblin-panel-devices.c:120
-msgid "Moblin Devices Panel"
-msgstr "Moblin 장치 패널"
+#: ../power-icon/tests/test-battery-notification.c:58
+msgid "Moblin Power Icon"
+msgstr "Moblin 전원 아이콘"
+
+#: ../src/moblin-panel-devices.c:123
+msgid "MeeGo Devices Panel"
+msgstr "MeeGo 장치 패널"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format
@@ -134,11 +137,11 @@ msgstr "죄송합니다. 배터리가 고장난 것 같습니다."
 msgid "Netbook brightness"
 msgstr "넷북 밝기"
 
-#: ../src/mpd-computer-pane.c:120
+#: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
 msgstr "귀하의 컴퓨터"
 
-#: ../src/mpd-computer-pane.c:129
+#: ../src/mpd-computer-pane.c:128
 msgid "All settings"
 msgstr "모든 설정값"
 
@@ -150,7 +153,7 @@ msgstr ""
 "장치를 플러그인하면\n"
 "자동 탐지됩니다."
 
-#: ../src/mpd-devices-pane.c:105
+#: ../src/mpd-devices-pane.c:104
 msgid "Other devices"
 msgstr "기타 장치"
 
@@ -159,7 +162,7 @@ msgstr "기타 장치"
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>사용 중:</span> <span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-folder-tile.c:174
+#: ../src/mpd-folder-tile.c:186
 msgid "Trash"
 msgstr "쓰레기"
 
