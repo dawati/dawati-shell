@@ -129,6 +129,7 @@ main (int    argc,
 
   g_thread_init(NULL);
   g_type_init();
+  gtk_init(&argc, &argv);
 
   MessageLoop main_message_loop(MessageLoop::TYPE_UI);
 
