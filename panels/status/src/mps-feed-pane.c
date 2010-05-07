@@ -439,39 +439,45 @@ _update_location_label (MpsFeedPane *pane)
 
   if (geotag_enabled)
   {
-    gchar *message;
-
-    if (reverse_location)
+    if (latitude == 0.0 && longitude == 0.0 && guess_location)
     {
-      if (guess_location)
+       mx_label_set_text (MX_LABEL (priv->location_label), _("We were unable to guess your location"));
+    } else {
+      gchar *message;
+
+      if (reverse_location)
       {
-        message = g_strdup_printf (_("We guessed your location as: %s (%f, %f)"),
+        if (guess_location)
+        {
+          message = g_strdup_printf (_("We guessed your location as: %s (%f, %f)"),
+                                       reverse_location,
+                                       latitude,
+                                       longitude);
+
+        } else {
+          message = g_strdup_printf (_("Your location is being shared as: %s (%f, %f)"),
                                      reverse_location,
                                      latitude,
                                      longitude);
+        }
+
+        g_free (reverse_location);
       } else {
-        message = g_strdup_printf (_("Your location is being shared as: %s (%f, %f)"),
-                                   reverse_location,
-                                   latitude,
-                                   longitude);
+        if (guess_location)
+        {
+          message = g_strdup_printf (_("We guessed your location as: %f %f"),
+                                       latitude,
+                                       longitude);
+        } else {
+          message = g_strdup_printf (_("Your location is being shared as: %f %f"),
+                                       latitude,
+                                       longitude);
+        }
       }
 
-      g_free (reverse_location);
-    } else {
-      if (guess_location)
-      {
-        message = g_strdup_printf (_("We guessed your location as: %f %f"),
-                                     latitude,
-                                     longitude);
-      } else {
-        message = g_strdup_printf (_("Your location is being shared as: %f %f"),
-                                     latitude,
-                                     longitude);
-      }
+      mx_label_set_text (MX_LABEL (priv->location_label), message);
+      g_free (message);
     }
-
-    mx_label_set_text (MX_LABEL (priv->location_label), message);
-    g_free (message);
   } else {
     mx_label_set_text (MX_LABEL (priv->location_label), _("Your location is not being shared"));
   }
