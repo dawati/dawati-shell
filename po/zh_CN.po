@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:27+0000\n"
-"PO-Revision-Date: 2010-05-06 16:30-0800\n"
+"PO-Revision-Date: 2010-05-06 17:05-0800\n"
 "Last-Translator: mackey tian <mackeyx.tian@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
@@ -62,6 +62,7 @@ msgstr "%H:%M"
 msgid "%l:%M %P"
 msgstr "%P %l:%M"
 
+# %b comes with month unit, so the physical month unit is removed to avoid duplicate issue.
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
@@ -69,7 +70,7 @@ msgstr "%P %l:%M"
 #: ../capplet/src/mtp-clock.c:249
 #: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
-msgstr "%Y年%b月%e日"
+msgstr "%Y年%b%e日"
 
 #: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
