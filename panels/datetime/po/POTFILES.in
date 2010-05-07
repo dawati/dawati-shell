@@ -8,6 +8,7 @@ src/mnp-clock-tile.c
 src/mnp-world-clock.c
 src/mnp-button-item.c
 src/mnp-datetime.c
+src/mnp-shell.c
 src/system-timezone.c
 src/org.moblin.UX.Shell.Panels.datetime.service.in
 src/date-time.schemas.in
