@@ -366,8 +366,7 @@ _geocode_address_to_position_cb (GeoclueGeocode        *geocode,
 }
 
 static void
-_location_search_button_clicked (MplEntry      *entry,
-                                 MpsGeotagPane *pane)
+_search_for_location (MpsGeotagPane *pane)
 {
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
   GHashTable *details;
@@ -390,10 +389,24 @@ _location_search_button_clicked (MplEntry      *entry,
   mx_button_set_toggled (MX_BUTTON (priv->guess_location_button), FALSE);
 }
 
+static void
+_location_search_button_clicked_cb (MplEntry      *entry,
+                                    MpsGeotagPane *pane)
+{
+  _search_for_location (pane);
+}
+
+static void
+_location_search_entry_activated_cb (ClutterText   *text,
+                                     MpsGeotagPane *pane)
+{
+  _search_for_location (pane);
+}
+
 static gboolean
-_map_view_button_release_event (ClutterActor  *actor,
-                                ClutterEvent  *event,
-                                MpsGeotagPane *pane)
+_map_view_button_release_event_cb (ClutterActor  *actor,
+                                   ClutterEvent  *event,
+                                   MpsGeotagPane *pane)
 {
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
   ClutterButtonEvent *bevent = (ClutterButtonEvent *)event;
@@ -488,8 +501,8 @@ _gconf_guess_location_notify_cb (GConfClient *client,
 }
 
 static void
-_use_location_button_clicked (MxButton      *button,
-                              MpsGeotagPane *pane)
+_use_location_button_clicked_cb (MxButton      *button,
+                                 MpsGeotagPane *pane)
 {
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
   gboolean guess_location;
@@ -524,8 +537,8 @@ _use_location_button_clicked (MxButton      *button,
 }
 
 static void
-_dont_use_location_button_clicked (MxButton      *button,
-                                   MpsGeotagPane *pane)
+_dont_use_location_button_clicked_cb (MxButton      *button,
+                                      MpsGeotagPane *pane)
 {
   MpsGeotagPanePrivate *priv = GET_PRIVATE (pane);
 
@@ -624,12 +637,17 @@ mps_geotag_pane_init (MpsGeotagPane *self)
 
   g_signal_connect (priv->entry,
                     "button-clicked",
-                    (GCallback)_location_search_button_clicked,
+                    (GCallback)_location_search_button_clicked_cb,
+                    self);
+
+  g_signal_connect (mx_entry_get_clutter_text (MX_ENTRY (entry)),
+                    "activate",
+                    (GCallback)_location_search_entry_activated_cb,
                     self);
 
   g_signal_connect (priv->map_view,
                     "button-release-event",
-                    (GCallback)_map_view_button_release_event,
+                    (GCallback)_map_view_button_release_event_cb,
                     self);
 
   g_signal_connect (priv->guess_location_button,
@@ -639,12 +657,12 @@ mps_geotag_pane_init (MpsGeotagPane *self)
 
   g_signal_connect (priv->use_location_button,
                     "clicked",
-                    (GCallback)_use_location_button_clicked,
+                    (GCallback)_use_location_button_clicked_cb,
                     self);
 
   g_signal_connect (priv->dont_use_location_button,
                     "clicked",
-                    (GCallback)_dont_use_location_button_clicked,
+                    (GCallback)_dont_use_location_button_clicked_cb,
                     self);
 
   priv->gconf_client = gconf_client_get_default ();
