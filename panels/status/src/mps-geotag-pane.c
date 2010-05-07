@@ -308,6 +308,7 @@ _reverse_geocode_cb (GeoclueReverseGeocode *rev_geocode,
     g_warning (G_STRLOC ": Error reverse geocoding: %s", error->message);
     g_free (priv->reverse_location);
     priv->reverse_location = NULL;
+    return;
   }
 
   g_free (priv->reverse_location);
