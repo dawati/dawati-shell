@@ -47,12 +47,16 @@ struct _CarrickPanePrivate
 {
   GtkWidget *wifi_switch;
   GtkWidget *wifi_box;
+  GtkWidget *wifi_sep;
   GtkWidget *ethernet_switch;
   GtkWidget *ethernet_box;
+  GtkWidget *ethernet_sep;
   GtkWidget *threeg_switch;
   GtkWidget *threeg_box;
+  GtkWidget *threeg_sep;
   GtkWidget *wimax_switch;
   GtkWidget *wimax_box;
+  GtkWidget *wimax_sep;
   GtkWidget *bluetooth_switch;
   GtkWidget *bluetooth_box;
   GtkWidget *offline_mode_switch;
@@ -953,14 +957,32 @@ pane_update_property (const gchar *property,
 
       gtk_widget_set_visible (priv->wifi_box,
                               priv->have_wifi);
+      gtk_widget_set_visible (priv->wifi_sep,
+                              priv->have_wifi &&
+                              (priv->have_ethernet || priv->have_threeg ||
+                               priv->have_wimax || priv->have_bluetooth));
+
       gtk_widget_set_visible (priv->ethernet_box,
                               priv->have_ethernet);
+      gtk_widget_set_visible (priv->ethernet_sep,
+                              priv->have_ethernet &&
+                              (priv->have_threeg || priv->have_wimax ||
+                               priv->have_bluetooth));
+
       gtk_widget_set_visible (priv->threeg_box,
                               priv->have_threeg);
+      gtk_widget_set_visible (priv->threeg_sep,
+                              priv->have_threeg &&
+                              (priv->have_wimax || priv->have_bluetooth));
+
       gtk_widget_set_visible (priv->wimax_box,
                               priv->have_wimax);
+      gtk_widget_set_visible (priv->wimax_sep,
+                              priv->have_wimax && priv->have_bluetooth);
+
       gtk_widget_set_visible (priv->bluetooth_box,
                               priv->have_bluetooth);
+
     }
   else if (g_str_equal (property, "EnabledTechnologies"))
     {
@@ -1066,9 +1088,13 @@ pane_have_daemon (CarrickPane *pane,
   if (!have_daemon)
     {
       gtk_widget_set_visible (priv->wifi_box, FALSE);
+      gtk_widget_set_visible (priv->wifi_sep, FALSE);
       gtk_widget_set_visible (priv->ethernet_box, FALSE);
+      gtk_widget_set_visible (priv->ethernet_sep, FALSE);
       gtk_widget_set_visible (priv->threeg_box, FALSE);
+      gtk_widget_set_visible (priv->threeg_sep, FALSE);
       gtk_widget_set_visible (priv->wimax_box, FALSE);
+      gtk_widget_set_visible (priv->wimax_sep, FALSE);
       gtk_widget_set_visible (priv->bluetooth_box, FALSE);
 
       carrick_list_set_fallback (CARRICK_LIST (priv->service_list));
@@ -1222,12 +1248,10 @@ pane_name_owner_changed (DBusGProxy  *proxy,
 
 static GtkWidget*
 get_technology_box (const char *name,
-                    gboolean include_separator,
                     GtkWidget **tech_switch)
 {
   GtkWidget *tech_box, *box;
   GtkWidget *switch_label;
-  GtkWidget *sep;
   char *title;
 
   tech_box = gtk_vbox_new (FALSE, 0);
@@ -1251,14 +1275,6 @@ get_technology_box (const char *name,
                       FALSE, FALSE, 0);
   gtk_box_pack_end (GTK_BOX (box), *tech_switch,
                     FALSE, FALSE, 0);
-
-  if (include_separator)
-    {
-      sep = gtk_hseparator_new ();
-      gtk_widget_show (sep);
-      gtk_box_pack_start (GTK_BOX (tech_box), sep,
-                          FALSE, FALSE, 0);
-    }
 
   return tech_box;
 }
@@ -1401,7 +1417,7 @@ carrick_pane_init (CarrickPane *self)
 
   /* Switches */
 
-  priv->wifi_box = get_technology_box (_ ("WiFi"), TRUE,
+  priv->wifi_box = get_technology_box (_ ("WiFi"),
                                        &priv->wifi_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->wifi_box,
                       FALSE, FALSE, 0);
@@ -1410,7 +1426,12 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_wifi_switch_callback),
                     self);
 
-  priv->ethernet_box = get_technology_box (_ ("Wired"), TRUE,
+  priv->wifi_sep = gtk_hseparator_new ();
+  gtk_widget_show (priv->wifi_sep);
+  gtk_box_pack_start (GTK_BOX (box), priv->wifi_sep,
+                      FALSE, FALSE, 0);
+
+  priv->ethernet_box = get_technology_box (_ ("Wired"),
                                            &priv->ethernet_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->ethernet_box,
                       FALSE, FALSE, 0);
@@ -1419,7 +1440,12 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_ethernet_switch_callback),
                     self);
 
-  priv->threeg_box = get_technology_box (_ ("3G"), TRUE,
+  priv->ethernet_sep = gtk_hseparator_new ();
+  gtk_widget_show (priv->ethernet_sep);
+  gtk_box_pack_start (GTK_BOX (box), priv->ethernet_sep,
+                      FALSE, FALSE, 0);
+
+  priv->threeg_box = get_technology_box (_ ("3G"),
                                          &priv->threeg_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->threeg_box,
                       FALSE, FALSE, 0);
@@ -1428,7 +1454,12 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_threeg_switch_callback),
                     self);
 
-  priv->wimax_box = get_technology_box (_ ("WiMAX"), TRUE,
+  priv->threeg_sep = gtk_hseparator_new ();
+  gtk_widget_show (priv->threeg_sep);
+  gtk_box_pack_start (GTK_BOX (box), priv->threeg_sep,
+                      FALSE, FALSE, 0);
+
+  priv->wimax_box = get_technology_box (_ ("WiMAX"),
                                         &priv->wimax_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->wimax_box,
                       FALSE, FALSE, 0);
@@ -1437,7 +1468,12 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_wimax_switch_callback),
                     self);
 
-  priv->bluetooth_box = get_technology_box (_ ("Bluetooth"), FALSE,
+  priv->wimax_sep = gtk_hseparator_new ();
+  gtk_widget_show (priv->wimax_sep);
+  gtk_box_pack_start (GTK_BOX (box), priv->wimax_sep,
+                      FALSE, FALSE, 0);
+
+  priv->bluetooth_box = get_technology_box (_ ("Bluetooth"),
                                             &priv->bluetooth_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->bluetooth_box,
                       FALSE, FALSE, 0);
@@ -1446,6 +1482,7 @@ carrick_pane_init (CarrickPane *self)
                     G_CALLBACK (_bluetooth_switch_callback),
                     self);
 
+  /* wider separator */
   sep = gtk_hseparator_new ();
   gtk_widget_show (sep);
   gtk_box_pack_start (GTK_BOX (column), sep,
@@ -1462,7 +1499,6 @@ carrick_pane_init (CarrickPane *self)
   gtk_container_add (GTK_CONTAINER (align), box);
 
   priv->offline_mode_box = get_technology_box (_ ("Offline mode"),
-                                               FALSE,
                                                &priv->offline_mode_switch);
   gtk_box_pack_end (GTK_BOX (box), priv->offline_mode_box,
                     FALSE, FALSE, 0);
