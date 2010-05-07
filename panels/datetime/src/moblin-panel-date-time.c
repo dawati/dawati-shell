@@ -119,7 +119,7 @@ main (int    argc,
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     datetime = mnp_shell_new ();
-    clutter_actor_set_size (datetime, 1016, 530);
+    clutter_actor_set_size (datetime, -1, 530);
     mnp_shell_set_panel_client (MNP_SHELL (datetime), client);
     g_signal_connect (client,
                       "set-size",

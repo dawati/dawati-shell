@@ -256,11 +256,11 @@ construct_calendar_area (MnpDatetime *dtime)
 	mx_box_layout_add_actor ((MxBoxLayout *)dtime, priv->cal_area, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (dtime),
                                priv->cal_area,
-                               "expand", FALSE,
+                               "expand", TRUE,
 			       "y-fill", TRUE,		
-			       "x-fill", FALSE,			       			       
+			       "x-fill", TRUE,			       			       
                                NULL);
-	clutter_actor_set_size (priv->cal_area, 345, -1);
+	//clutter_actor_set_size (priv->cal_area, 345, -1);
 
 	/* Events header */
 	box = mx_box_layout_new ();
@@ -473,12 +473,12 @@ construct_task_area (MnpDatetime *dtime)
 
 	priv->task_area = mx_table_new ();
 	clutter_actor_set_name (priv->task_area, "TaskPane");
-	clutter_actor_set_size (priv->task_area, 345, -1);
+	//clutter_actor_set_size (priv->task_area, 345, -1);
 
 	mx_box_layout_add_actor_with_properties ((MxBoxLayout *)dtime, priv->task_area, 4,
-                                 "expand", FALSE,
+                                 "expand", TRUE,
   			         "y-fill", TRUE,		
- 			         "x-fill", FALSE,			       			       
+ 			         "x-fill", TRUE,			       			       
                                  NULL);
 
 	box = mx_box_layout_new ();
