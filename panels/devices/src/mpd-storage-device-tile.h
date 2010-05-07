@@ -21,6 +21,7 @@
 #ifndef MPD_STORAGE_DEVICE_TILE_H
 #define MPD_STORAGE_DEVICE_TILE_H
 
+#include <stdbool.h>
 #include <glib-object.h>
 #include <mx/mx.h>
 
@@ -56,15 +57,6 @@ typedef struct
 GType
 mpd_storage_device_tile_get_type (void);
 
-typedef enum
-{
-  STATE_ERROR = -1,
-  STATE_SEARCHING = 0,
-  STATE_READY,
-  STATE_UNMOUNTING,
-  STATE_DONE
-} MpdStorageDeviceTileState;
-
 ClutterActor *
 mpd_storage_device_tile_new (char const *name,
                              char const *mount_point,
@@ -83,15 +75,21 @@ mpd_storage_device_tile_get_mount_point (MpdStorageDeviceTile *self);
 char const *
 mpd_storage_device_tile_get_name (MpdStorageDeviceTile *self);
 
-MpdStorageDeviceTileState
-mpd_storage_device_tile_get_state (MpdStorageDeviceTile *self);
-
-void
-mpd_storage_device_tile_set_state (MpdStorageDeviceTile       *self,
-                                   MpdStorageDeviceTileState   state);
-
 char *
 mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self);
+
+void
+mpd_storage_device_tile_show_message (MpdStorageDeviceTile  *self,
+                                      char const            *message,
+                                      bool                   replace_buttons);
+
+void
+mpd_storage_device_tile_show_message_full (MpdStorageDeviceTile  *self,
+                                           char const            *message,
+                                           bool                   replace_buttons,
+                                           unsigned int           timeout_s,
+                                           GSourceFunc            function,
+                                           void                  *data);
 
 G_END_DECLS
 

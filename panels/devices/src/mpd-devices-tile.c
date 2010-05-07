@@ -21,6 +21,7 @@
 
 #include <stdbool.h>
 
+#include <glib/gi18n.h>
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 
@@ -66,7 +67,11 @@ _drive_eject_cb (GDrive       *drive,
   g_drive_eject_with_operation_finish (drive, result, &error);
   if (error)
   {
-    /* TODO inform user */
+    mpd_storage_device_tile_show_message (
+                            MPD_STORAGE_DEVICE_TILE (data),
+                            _("Ejecting failed, looks like an application is using it"),
+                            false);
+
     mx_widget_set_disabled (MX_WIDGET (data), FALSE);
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
@@ -85,7 +90,11 @@ _vol_eject_cb (GVolume      *volume,
   g_volume_eject_with_operation_finish (volume, result, &error);
   if (error)
   {
-    /* TODO inform user */
+    mpd_storage_device_tile_show_message (
+                            MPD_STORAGE_DEVICE_TILE (data),
+                            _("Ejecting failed, looks like an application is using it"),
+                            false);
+
     mx_widget_set_disabled (MX_WIDGET (data), FALSE);
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
@@ -123,7 +132,11 @@ _mount_unmount_cb (GMount       *mount,
   g_mount_unmount_with_operation_finish (mount, result, &error);
   if (error)
   {
-    /* TODO inform user */
+    mpd_storage_device_tile_show_message (
+                            MPD_STORAGE_DEVICE_TILE (data),
+                            _("Ejecting failed, looks like an application is using it"),
+                            false);
+
     mx_widget_set_disabled (MX_WIDGET (data), FALSE);
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
@@ -166,7 +179,6 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
   if (iter)
   {
     GMount *mount = G_MOUNT (iter->data);
-    gboolean done = FALSE;
     GDrive *drive;
     GVolume *vol;
     gboolean ejected = TRUE;
@@ -207,6 +219,9 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
     /* TODO: inform user of ejection with text inside the tile:
      * For that (and other reasons) this code really should be inside
      * MpdStorageDeviceTile  */
+
+    /* TODO: we want to start a 2s timeout here, and if not done sync'ing when
+     * expired show the message "Ejecting ..." */
 
     if (drive) {
       g_object_unref (drive);
@@ -327,28 +342,6 @@ add_tile_from_mount (MpdDevicesTile *self,
   g_object_unref (file);
 }
 
-typedef struct
-{
-  char          *path;
-  ClutterActor  *tile;
-} find_tile_t;
-
-static void
-_find_tile_cb (ClutterActor *tile,
-               find_tile_t  *find_tile)
-{
-  if (MPD_IS_STORAGE_DEVICE_TILE (tile))
-  {
-    char const *path = mpd_storage_device_tile_get_mount_point (
-                        MPD_STORAGE_DEVICE_TILE (tile));
-    g_debug ("%s() %s", __FUNCTION__, path);
-
-    if (0 == g_strcmp0 (path, find_tile->path))
-      find_tile->tile = CLUTTER_ACTOR (tile);
-  }
-}
-
-
 static void
 _add_mount_cb (GMount         *mount,
                MpdDevicesTile *self)
@@ -370,6 +363,13 @@ _monitor_mount_added_cb (GVolumeMonitor  *monitor,
   }
 }
 
+static bool
+_unmount_message_expiration_cb (MpdStorageDeviceTile *tile)
+{
+  clutter_actor_destroy (CLUTTER_ACTOR (tile));
+  return false;
+}
+
 static void
 _monitor_mount_changed_cb (GVolumeMonitor *monitor,
                            GMount         *mount,
@@ -379,11 +379,20 @@ _monitor_mount_changed_cb (GVolumeMonitor *monitor,
   MpdStorageDeviceTile *tile;
 
   tile = g_hash_table_lookup (priv->tiles, mount);
-  if (tile) {
-    if (!_mount_is_wanted_device (mount)) {
+  if (tile)
+  {
+    if (!_mount_is_wanted_device (mount))
+    {
       g_hash_table_remove (priv->tiles, mount);
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
-                                      CLUTTER_ACTOR (tile));
+      mpd_storage_device_tile_show_message_full (
+                              MPD_STORAGE_DEVICE_TILE (tile),
+                              _("It is safe to unplug this device now"),
+                              true,
+                              15,
+                              (GSourceFunc) _unmount_message_expiration_cb,
+                              tile);
+//      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
+//                                      CLUTTER_ACTOR (tile));
     }
   } else {
     if (_mount_is_wanted_device (mount)) {
@@ -404,10 +413,18 @@ _monitor_mount_removed_cb (GVolumeMonitor  *monitor,
                      GINT_TO_POINTER (TRUE));
 
   tile = g_hash_table_lookup (priv->tiles, mount);
-  if (tile) {
-    g_hash_table_remove (priv->tiles, mount);
-    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
-                                    CLUTTER_ACTOR (tile));
+  if (tile)
+  {
+      g_hash_table_remove (priv->tiles, mount);
+      mpd_storage_device_tile_show_message_full (
+                              MPD_STORAGE_DEVICE_TILE (tile),
+                              _("It is safe to unplug this device now"),
+                              true,
+                              15,
+                              (GSourceFunc) _unmount_message_expiration_cb,
+                              tile);
+//    clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
+//                                    CLUTTER_ACTOR (tile));
   }
 }
 

@@ -89,6 +89,8 @@ typedef struct
   ClutterActor              *eject;
   ClutterActor              *open;
   ClutterActor              *import;
+  /* Alternative to button_box. */
+  ClutterActor              *message;
 
   /* Data */
   char                      *icon_file;
@@ -215,8 +217,7 @@ _constructor (GType                  type,
                         G_OBJECT_CLASS (mpd_storage_device_tile_parent_class)
                           ->constructor (type, n_properties, properties);
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char                *body;
-  GError              *error = NULL;
+  GError  *error = NULL;
 
   if (priv->icon_file &&
       g_file_test (priv->icon_file, G_FILE_TEST_IS_REGULAR))
@@ -470,6 +471,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 
   /* 2nd column: text, free space */
   priv->vbox = mx_box_layout_new ();
+  mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->vbox), true);
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->vbox),
                              MPD_STORAGE_DEVICE_TILE_VBOX_SPACING);
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
@@ -728,3 +730,65 @@ mpd_storage_device_tile_set_title (MpdStorageDeviceTile *self,
   /* Setting title only when changing state. */
   g_warning ("%s() not implemented", __FUNCTION__);
 }
+
+void
+mpd_storage_device_tile_show_message (MpdStorageDeviceTile  *self,
+                                      char const            *message,
+                                      bool                   replace_buttons)
+{
+  mpd_storage_device_tile_show_message_full (self,
+                                             message,
+                                             replace_buttons,
+                                             0,
+                                             NULL,
+                                             NULL);
+}
+
+void
+mpd_storage_device_tile_show_message_full (MpdStorageDeviceTile  *self,
+                                           char const            *message,
+                                           bool                   replace_buttons,
+                                           unsigned int           timeout_s,
+                                           GSourceFunc            function,
+                                           void                  *data)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
+
+  if (replace_buttons)
+  {
+    g_object_set (priv->button_box,
+                  "visible", false,
+                  NULL);
+  }
+
+  if (priv->message == NULL)
+  {
+    ClutterText *text;
+    priv->message = mx_label_new_with_text (message);
+    text = (ClutterText *) mx_label_get_clutter_text (MX_LABEL (priv->message));
+    clutter_text_set_line_wrap (text, true);
+    clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD);
+    clutter_text_set_single_line_mode (text, false);
+    clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_NONE);
+    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), priv->message);
+    clutter_container_child_set (CLUTTER_CONTAINER (priv->vbox), priv->message,
+                                 "expand", true,
+                                 "x-fill", true,
+                                 "y-fill", false,
+                                 NULL);
+  } else
+  {
+    mx_label_set_text (MX_LABEL (priv->message), message);
+    g_object_set (priv->message,
+                  "visible", true,
+                  NULL);
+  }
+
+  if (timeout_s)
+  {
+    g_timeout_add_seconds (timeout_s, function, data);
+  }
+}
+
