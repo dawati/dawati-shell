@@ -1752,10 +1752,17 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_widget_show (vbox);
   gtk_container_add (GTK_CONTAINER (priv->expando), vbox);
 
-  table = gtk_table_new (5, 2, FALSE);
-  gtk_widget_show (table);
-  gtk_box_pack_start (GTK_BOX (vbox), table,
+  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 12, 12);
+  gtk_widget_show (align);
+  gtk_box_pack_start (GTK_BOX (vbox), align,
                       FALSE, FALSE, 0);
+
+  table = gtk_table_new (7, 3, FALSE);
+  gtk_widget_show (table);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 30);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 3);
+  gtk_container_add (GTK_CONTAINER (align), table);
 
   /* TRANSLATORS: label in advanced settings (next to combobox 
    * for DHCP/Static IP) */
@@ -1802,18 +1809,15 @@ carrick_service_item_init (CarrickServiceItem *self)
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox,
-                      FALSE, FALSE, 0);
-
   /* TRANSLATORS: label for apply button in static ip settings */
   apply_button = gtk_button_new_with_label (_("Apply"));
   gtk_widget_show (apply_button);
   g_signal_connect (apply_button, "clicked",
                     G_CALLBACK (apply_button_clicked_cb), self);
-  gtk_box_pack_end (GTK_BOX (hbox), apply_button,
-                    FALSE, FALSE, 0);
+  gtk_table_attach (GTK_TABLE (table), apply_button,
+                    2, 3, 6, 7,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
 }
 
 GtkWidget*
