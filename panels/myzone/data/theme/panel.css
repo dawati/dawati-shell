@@ -181,22 +181,45 @@ PengePeoplePlaceholderTile:hover
 
 PengeWelcomeTile
 {
-  border-image: url('no-content-tile-bg.png') 7 8 9 8;
-  padding: 10 11 12 11;
 }
 
 *#penge-welcome-primary-text
 {
-  color: #009bceff;
+  color: #31c2eeff;
   font-size:22pt;
   font-weight: bold;
 }
 
 *#penge-welcome-secondary-text
 {
-  font-size:14pt;
-  color: #2c2c2cff;
+  font-size:18pt;
+  color: #616261;
+  padding: 0 0 12 0;
 }
+
+*#penge-welcome-launcher
+{
+  border-image: url('content-panel-background.png') 5;
+  padding: 4 4 4 4;
+}
+
+*#penge-welcome-launcher:hover,
+*#penge-welcome-launcher:active
+{
+  border-image: url('content-panel-background-highlight.png') 5;
+  padding: 4 4 4 4;
+}
+
+*#penge-welcome-launcher-thumbnail
+{
+  -mx-content-image: url('intro-video-thumbnail.png');
+}
+
+*#penge-welcome-launcher-play-button
+{
+  -mx-content-image: url('play-button.png');
+}
+
 
 *.PengeInterestingTileRemoveButton,
 *.PengeInterestingTileRemoveButton:hover,

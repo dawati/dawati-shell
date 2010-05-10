@@ -19,18 +19,21 @@
 
 #include <config.h>
 #include <glib/gi18n-lib.h>
+#include <penge/penge-utils.h>
 
 #include "penge-welcome-tile.h"
 
 G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, MX_TYPE_TABLE)
 
-#define NEW_PLACEHOLDER_TEXT _("When you’ve set up your web " \
+#define PLACEHOLDER_TEXT _("When you’ve set up your web " \
 "accounts and used some files they " \
 "will appear here on the Myzone " \
 "for easy access whenever you " \
-"want. "
+"want. ")
 
 #define TMP_PLACEHOLDER _("Play intro video")
+
+#define WELCOME_VIDEO_FILENAME "/usr/share/videos/meego/meego-intro.ogv"
 
 static void
 penge_welcome_tile_dispose (GObject *object)
@@ -51,6 +54,25 @@ penge_welcome_tile_class_init (PengeWelcomeTileClass *klass)
 
   object_class->dispose = penge_welcome_tile_dispose;
   object_class->finalize = penge_welcome_tile_finalize;
+}
+
+static void
+_welcome_launcher_clicked_cb (MxButton *button,
+                              gpointer  userdata)
+{
+  gchar *uri;
+  const gchar *video_path;
+
+  video_path =  WELCOME_VIDEO_FILENAME;
+
+  uri = g_filename_to_uri (video_path, NULL, NULL);
+
+  if (penge_utils_launch_for_uri ((ClutterActor *)button, uri))
+  {
+    penge_utils_signal_activated ((ClutterActor *)button);
+  }
+
+  g_free (uri);
 }
 
 static void
@@ -79,11 +101,9 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                                       "y-expand", FALSE,
                                       "y-fill", TRUE,
                                       NULL);
-  mx_table_set_row_spacing (MX_TABLE (tile), 6);
+  mx_table_set_row_spacing (MX_TABLE (tile), 12);
 
-  label = mx_label_new_with_text (_("This is the Myzone, where your recently "
-                                    "used files and content from your web feeds will "
-                                    "appear."));
+  label = mx_label_new_with_text (PLACEHOLDER_TEXT);
 
 
   clutter_actor_set_name ((ClutterActor *)label,
@@ -102,6 +122,61 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
                                       "y-expand", TRUE,
                                       "y-fill", TRUE,
                                       NULL);
+
+  {
+    gchar *video_path;
+    ClutterActor *launcher;
+    ClutterActor *inner_table;
+    ClutterActor *icon;
+
+    video_path = WELCOME_VIDEO_FILENAME;
+
+    if (g_file_test (video_path, G_FILE_TEST_EXISTS))
+    {
+      launcher = mx_button_new ();
+      clutter_actor_set_name (launcher, "penge-welcome-launcher");
+
+      inner_table = mx_table_new ();
+      mx_bin_set_child (MX_BIN (launcher), inner_table);
+
+      icon = mx_icon_new ();
+      clutter_actor_set_name (icon, "penge-welcome-launcher-thumbnail");
+      mx_table_add_actor_with_properties (MX_TABLE (inner_table),
+                                          icon,
+                                          0, 0,
+                                          "x-expand", TRUE,
+                                          "x-fill", TRUE,
+                                          "y-expand", TRUE,
+                                          "y-fill", TRUE,
+                                          NULL);
+
+      icon = mx_icon_new ();
+      clutter_actor_set_name (icon, "penge-welcome-launcher-play-button");
+      mx_table_add_actor_with_properties (MX_TABLE (inner_table),
+                                          icon,
+                                          0, 0,
+                                          "x-expand", TRUE,
+                                          "x-fill", FALSE,
+                                          "y-expand", TRUE,
+                                          "y-fill", FALSE,
+                                          NULL);
+
+      mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                          launcher,
+                                          2, 0,
+                                          "x-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-expand", FALSE,
+                                          "y-fill", FALSE,
+                                          "x-align", MX_ALIGN_START,
+                                          NULL);
+
+      g_signal_connect (launcher,
+                        "clicked",
+                        (GCallback)_welcome_launcher_clicked_cb,
+                        NULL);
+    }
+  }
 }
 
 ClutterActor *

@@ -519,7 +519,7 @@ penge_everything_pane_update (PengeEverythingPane *pane)
                                  priv->welcome_tile);
     clutter_container_child_set (CLUTTER_CONTAINER (pane),
                                  priv->welcome_tile,
-                                 "col-span", 2,
+                                 "col-span", 3,
                                  NULL);
   }
 
