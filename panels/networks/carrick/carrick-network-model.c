@@ -323,47 +323,47 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
       if (value)
         ipv4 = g_value_get_boxed (value);
 
-      if (ipv4) {
-        value = g_hash_table_lookup (ipv4, "Method");
-        if (value)
-          method = g_value_get_string (value);
+      if (ipv4)
+        {
+          value = g_hash_table_lookup (ipv4, "Method");
+          if (value)
+            method = g_value_get_string (value);
 
+          value = g_hash_table_lookup (ipv4, "Address");
+          if (value)
+            address = g_value_get_string (value);
 
-        value = g_hash_table_lookup (ipv4, "Address");
-        if (value)
-          address = g_value_get_string (value);
+          value = g_hash_table_lookup (ipv4, "Netmask");
+          if (value)
+            netmask = g_value_get_string (value);
 
-        value = g_hash_table_lookup (ipv4, "Netmask");
-        if (value)
-          netmask = g_value_get_string (value);
-
-        value = g_hash_table_lookup (ipv4, "Gateway");
-        if (value)
-          gateway = g_value_get_string (value);
-      }
+          value = g_hash_table_lookup (ipv4, "Gateway");
+          if (value)
+            gateway = g_value_get_string (value);
+        }
 
       value = g_hash_table_lookup (properties, "IPv4.Configuration");
       if (value)
         ipv4_config = g_value_get_boxed (value);
 
-      if (ipv4_config) {
-        value = g_hash_table_lookup (ipv4_config, "Method");
-        if (value)
-          config_method = g_value_get_string (value);
+      if (ipv4_config)
+        {
+          value = g_hash_table_lookup (ipv4_config, "Method");
+          if (value)
+            config_method = g_value_get_string (value);
 
+          value = g_hash_table_lookup (ipv4_config, "Address");
+          if (value)
+            config_address = g_value_get_string (value);
 
-        value = g_hash_table_lookup (ipv4_config, "Address");
-        if (value)
-          config_address = g_value_get_string (value);
+          value = g_hash_table_lookup (ipv4_config, "Netmask");
+          if (value)
+            config_netmask = g_value_get_string (value);
 
-        value = g_hash_table_lookup (ipv4_config, "Netmask");
-        if (value)
-          config_netmask = g_value_get_string (value);
-
-        value = g_hash_table_lookup (ipv4_config, "Gateway");
-        if (value)
-          config_gateway = g_value_get_string (value);
-      }
+          value = g_hash_table_lookup (ipv4_config, "Gateway");
+          if (value)
+            config_gateway = g_value_get_string (value);
+        }
 
       if (network_model_have_service_by_proxy (store,
                                                &iter,
