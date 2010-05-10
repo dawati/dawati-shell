@@ -109,7 +109,15 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                  G_TYPE_STRING, /* security */
                                  G_TYPE_BOOLEAN, /* passphrase required */
                                  G_TYPE_STRING, /* passphrase */
-                                 G_TYPE_BOOLEAN /* setup required */
+                                 G_TYPE_BOOLEAN, /* setup required */
+                                 G_TYPE_STRING, /* method */
+                                 G_TYPE_STRING, /* address */
+                                 G_TYPE_STRING, /* netmask */
+                                 G_TYPE_STRING, /* gateway */
+                                 G_TYPE_STRING, /* manually configured method */
+                                 G_TYPE_STRING, /* manually configured address */
+                                 G_TYPE_STRING, /* manually configured netmask */
+                                 G_TYPE_STRING, /* manually configured gateway */
   };
 
   gtk_list_store_set_column_types (GTK_LIST_STORE (self),
@@ -243,6 +251,8 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 {
   CarrickNetworkModel *self = user_data;
   GtkListStore        *store = GTK_LIST_STORE (self);
+  GHashTable          *ipv4 = NULL;
+  GHashTable          *ipv4_config = NULL;
   guint                strength = 0;
   const gchar         *name = NULL;
   const gchar         *state = NULL;
@@ -251,6 +261,14 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   gboolean             favorite = FALSE;
   gboolean             passphrase_required = FALSE;
   gboolean             setup_required = FALSE;
+  const gchar         *method = NULL;
+  const gchar         *address = NULL;
+  const gchar         *netmask = NULL;
+  const gchar         *gateway = NULL;
+  const gchar         *config_method = NULL;
+  const gchar         *config_address = NULL;
+  const gchar         *config_netmask = NULL;
+  const gchar         *config_gateway = NULL;
   const gchar         *passphrase = NULL;
   GValue              *value;
   GtkTreeIter          iter;
@@ -301,6 +319,52 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
       if (value)
         setup_required = g_value_get_boolean (value);
 
+      value = g_hash_table_lookup (properties, "IPv4");
+      if (value)
+        ipv4 = g_value_get_boxed (value);
+
+      if (ipv4) {
+        value = g_hash_table_lookup (ipv4, "Method");
+        if (value)
+          method = g_value_get_string (value);
+
+
+        value = g_hash_table_lookup (ipv4, "Address");
+        if (value)
+          address = g_value_get_string (value);
+
+        value = g_hash_table_lookup (ipv4, "Netmask");
+        if (value)
+          netmask = g_value_get_string (value);
+
+        value = g_hash_table_lookup (ipv4, "Gateway");
+        if (value)
+          gateway = g_value_get_string (value);
+      }
+
+      value = g_hash_table_lookup (properties, "IPv4.Configuration");
+      if (value)
+        ipv4_config = g_value_get_boxed (value);
+
+      if (ipv4_config) {
+        value = g_hash_table_lookup (ipv4_config, "Method");
+        if (value)
+          config_method = g_value_get_string (value);
+
+
+        value = g_hash_table_lookup (ipv4_config, "Address");
+        if (value)
+          config_address = g_value_get_string (value);
+
+        value = g_hash_table_lookup (ipv4_config, "Netmask");
+        if (value)
+          config_netmask = g_value_get_string (value);
+
+        value = g_hash_table_lookup (ipv4_config, "Gateway");
+        if (value)
+          config_gateway = g_value_get_string (value);
+      }
+
       if (network_model_have_service_by_proxy (store,
                                                &iter,
                                                service))
@@ -315,6 +379,14 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
                               CARRICK_COLUMN_PASSPHRASE_REQUIRED, passphrase_required,
                               CARRICK_COLUMN_PASSPHRASE, passphrase,
                               CARRICK_COLUMN_SETUP_REQUIRED, setup_required,
+                              CARRICK_COLUMN_METHOD, method,
+                              CARRICK_COLUMN_ADDRESS, address,
+                              CARRICK_COLUMN_NETMASK, netmask,
+                              CARRICK_COLUMN_GATEWAY, gateway,
+                              CARRICK_COLUMN_CONFIGURED_METHOD, config_method,
+                              CARRICK_COLUMN_CONFIGURED_ADDRESS, config_address,
+                              CARRICK_COLUMN_CONFIGURED_NETMASK, config_netmask,
+                              CARRICK_COLUMN_CONFIGURED_GATEWAY, config_gateway,
                               -1);
         }
       else
@@ -331,6 +403,14 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
              CARRICK_COLUMN_PASSPHRASE_REQUIRED, passphrase,
              CARRICK_COLUMN_PASSPHRASE, passphrase,
              CARRICK_COLUMN_SETUP_REQUIRED, setup_required,
+             CARRICK_COLUMN_METHOD, method,
+             CARRICK_COLUMN_ADDRESS, address,
+             CARRICK_COLUMN_NETMASK, netmask,
+             CARRICK_COLUMN_GATEWAY, gateway,
+             CARRICK_COLUMN_CONFIGURED_METHOD, config_method,
+             CARRICK_COLUMN_CONFIGURED_ADDRESS, config_address,
+             CARRICK_COLUMN_CONFIGURED_NETMASK, config_netmask,
+             CARRICK_COLUMN_CONFIGURED_GATEWAY, config_gateway,
              -1);
         }
     }
@@ -380,6 +460,82 @@ network_model_service_changed_cb (DBusGProxy  *service,
         (service,
          network_model_service_get_properties_cb,
          self);
+    }
+  else if (g_str_equal (property, "IPv4"))
+    {
+      GHashTable *ipv4;
+
+      ipv4 = g_value_get_boxed (value);
+      if (ipv4)
+        {
+          GValue *ipv4_val;
+
+          ipv4_val = g_hash_table_lookup (ipv4, "Method");
+          if (ipv4_val)
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_METHOD,
+                                g_value_get_string (ipv4_val),
+                                -1);
+
+          ipv4_val = g_hash_table_lookup (ipv4, "Address");
+          if (ipv4_val)
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_ADDRESS,
+                                g_value_get_string (ipv4_val),
+                                -1);
+
+          ipv4_val = g_hash_table_lookup (ipv4, "Netmask");
+          if (ipv4_val)
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_NETMASK,
+                                g_value_get_string (ipv4_val),
+                                -1);
+
+          ipv4_val = g_hash_table_lookup (ipv4, "Gateway");
+          if (ipv4_val)
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_GATEWAY,
+                                g_value_get_string (ipv4_val),
+                                -1);
+        }
+    }
+  else if (g_str_equal (property, "IPv4.Configuration"))
+    {
+      GHashTable *ipv4;
+
+      ipv4 = g_value_get_boxed (value);
+      if (ipv4)
+        {
+          GValue *ipv4_val;
+
+          ipv4_val = g_hash_table_lookup (ipv4, "Method");
+          if (ipv4_val)
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_CONFIGURED_METHOD,
+                                g_value_get_string (ipv4_val),
+                                -1);
+
+          ipv4_val = g_hash_table_lookup (ipv4, "Address");
+          if (ipv4_val)
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_CONFIGURED_ADDRESS,
+                                g_value_get_string (ipv4_val),
+                                -1);
+
+          ipv4_val = g_hash_table_lookup (ipv4, "Netmask");
+          if (ipv4_val)
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_CONFIGURED_NETMASK,
+                                g_value_get_string (ipv4_val),
+                                -1);
+
+          ipv4_val = g_hash_table_lookup (ipv4, "Gateway");
+          if (ipv4_val)
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_CONFIGURED_GATEWAY,
+                                g_value_get_string (ipv4_val),
+                                -1);
+        }
     }
 }
 

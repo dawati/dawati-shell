@@ -103,26 +103,14 @@ nbtk_gtk_expander_expose_event (GtkWidget      *widget,
 
       if (priv->is_open)
         {
-          gint shadow_x, shadow_y;
-
-          shadow_x = rect.x + widget->style->xthickness;
-          shadow_y = rect.y + widget->style->ythickness
-                         + priv->child_padding
-                         + MAX (label_h, priv->indicator_size);
-
-          gtk_paint_box (widget->style,
-                         widget->window,
-                         widget->state,
-                         GTK_SHADOW_IN,
-                         &rect,
-                         widget,
-                         NULL,
-                         shadow_x,
-                         shadow_y,
-                         rect.width - (shadow_x - rect.x) - widget->style->xthickness,
-                         rect.height - (shadow_y - rect.y) - widget->style->ythickness);
+          gtk_paint_hline (widget->style, widget->window,
+                           widget->state,
+                           &event->area, widget, "hseparator",
+                           widget->allocation.x,
+                           widget->allocation.x + widget->allocation.width - 1,
+                           widget->allocation.y + MAX (label_h, priv->indicator_size) + 
+                           widget->style->ythickness / 2);
         }
-
 
       if (priv->has_indicator)
         {
@@ -206,10 +194,10 @@ nbtk_gtk_expander_size_allocate (GtkWidget     *widget,
     {
       gtk_widget_size_request (child, &child_req);
 
-      child_alloc.x = allocation->x + 2 * widget->style->xthickness;
-      child_alloc.y = allocation->y + widget->style->ythickness + label_h
-        + priv->child_padding;
-      child_alloc.width = allocation->width - 4 * widget->style->xthickness;
+      child_alloc.x = allocation->x;
+      child_alloc.y = allocation->y + widget->style->ythickness +
+                      label_h + priv->child_padding;
+      child_alloc.width = allocation->width;
       child_alloc.height = child_req.height;
 
       gtk_widget_size_allocate (child, &child_alloc);
@@ -256,8 +244,8 @@ nbtk_gtk_expander_size_request (GtkWidget      *widget,
       gtk_widget_size_request (child, &req);
 
       requisition->width = MAX (requisition->width,
-                                req.width + widget->style->xthickness * 4);
-      requisition->height += req.height + 2 * widget->style->ythickness;
+                                req.width);
+      requisition->height += req.height + widget->style->ythickness;
     }
 }
 

@@ -16,13 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  *
+ * 
  * Written by - Joshua Lock <josh@linux.intel.com>
+ *              Jussi Kukkonen <jku@linux.intel.com>
+ *
+ * Copyright (C) 2009, 2010 Intel Corporation
  *
  */
 
 #include "carrick-service-item.h"
 
 #include <config.h>
+#include <arpa/inet.h>
 #include <glib/gi18n.h>
 #include <mx/mx-gtk.h>
 #include "nbtk-gtk-expander.h"
@@ -65,11 +70,19 @@ struct _CarrickServiceItemPrivate
   GtkWidget *connect_box;
   GtkWidget *security_label;
   GtkWidget *connect_button;
+  GtkWidget *advanced_expander;
   GtkWidget *passphrase_box;
   GtkWidget *passphrase_entry;
   GtkWidget *show_password_check;
   GtkWidget *delete_button;
   GtkWidget *expando;
+
+  GtkWidget *method_combo;
+  GtkWidget *address_entry;
+  GtkWidget *gateway_entry;
+  GtkWidget *netmask_entry;
+  GtkWidget *dns_text_view;
+
   CarrickIconFactory *icon_factory;
   gboolean failed;
   gboolean passphrase_hint_visible;
@@ -96,6 +109,11 @@ struct _CarrickServiceItemPrivate
   gboolean need_pass;
   gchar *passphrase;
   gboolean setup_required;
+  gchar *method;
+  gchar *address;
+  gchar *netmask;
+  gchar *gateway;
+  gchar **nameservers;
   gboolean favorite;
 
   GtkWidget *info_bar;
@@ -208,6 +226,8 @@ _populate_variables (CarrickServiceItem *self)
                                &iter,
                                gtk_tree_row_reference_get_path (priv->row)))
     {
+      char *config_method, *config_address, *config_netmask, *config_gateway;
+
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
                           CARRICK_COLUMN_PROXY, &priv->proxy,
                           CARRICK_COLUMN_INDEX, &priv->index,
@@ -219,8 +239,27 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_PASSPHRASE_REQUIRED, &priv->need_pass,
                           CARRICK_COLUMN_PASSPHRASE, &priv->passphrase,
                           CARRICK_COLUMN_SETUP_REQUIRED, &priv->setup_required,
+                          CARRICK_COLUMN_METHOD, &priv->method,
+                          CARRICK_COLUMN_ADDRESS, &priv->address,
+                          CARRICK_COLUMN_NETMASK, &priv->netmask,
+                          CARRICK_COLUMN_GATEWAY, &priv->gateway,
+                          CARRICK_COLUMN_CONFIGURED_METHOD, &config_method,
+                          CARRICK_COLUMN_CONFIGURED_ADDRESS, &config_address,
+                          CARRICK_COLUMN_CONFIGURED_NETMASK, &config_netmask,
+                          CARRICK_COLUMN_CONFIGURED_GATEWAY, &config_gateway,
                           CARRICK_COLUMN_FAVORITE, &priv->favorite,
                           -1);
+
+      /* use manually configured values if real values are not available:
+       * this happens e.g. when the service is not connected. */
+      if (!priv->method)
+        priv->method = config_method;
+      if (!priv->address)
+        priv->address = config_address;
+      if (!priv->netmask)
+        priv->netmask = config_netmask;
+      if (!priv->gateway)
+        priv->gateway = config_gateway;
     }
 }
 
@@ -232,6 +271,8 @@ _set_state (CarrickServiceItem *self)
   gchar                     *button = NULL;
   GdkPixbuf                 *pixbuf = NULL;
   gchar                     *name = g_strdup (priv->name);
+  gchar                     *nameservers = NULL;
+  GtkTextBuffer             *buf;
 
   _service_item_set_security (self);
 
@@ -366,6 +407,36 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup (name);
     }
 
+  if (g_strcmp0 (priv->method, "manual") == 0)
+    {
+      gtk_combo_box_set_active (GTK_COMBO_BOX (priv->method_combo), 1);
+    }
+  else
+    {
+      gtk_combo_box_set_active (GTK_COMBO_BOX (priv->method_combo), 0);
+    }
+
+  gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
+                      priv->address ? priv->address : "");
+
+  gtk_entry_set_text (GTK_ENTRY (priv->netmask_entry),
+                      priv->netmask ? priv->netmask : "");
+
+  gtk_entry_set_text (GTK_ENTRY (priv->gateway_entry),
+                      priv->gateway ? priv->gateway : "");
+
+  buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
+  if (priv->nameservers)
+    {
+      nameservers = g_strjoinv ("\n", priv->nameservers);
+      gtk_text_buffer_set_text (buf, nameservers, -1);
+      g_free (nameservers);
+    }
+  else
+    {
+      gtk_text_buffer_set_text (buf, "", -1);
+    }
+
   if (label && label[0] != '\0')
     {
       gtk_label_set_text (GTK_LABEL (priv->name_label),
@@ -398,6 +469,8 @@ _show_pass_toggled_cb (GtkToggleButton    *button,
                        CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
+
+  g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
   if (!priv->passphrase_hint_visible)
     {
@@ -442,6 +515,20 @@ dbus_proxy_notify_cb (DBusGProxy *proxy,
 }
 
 static void
+_connect (CarrickServiceItem *self)
+{
+    /* Set an unusually long timeout because the Connect
+     * method doesn't return until there has been either
+     * success or an error.
+     */
+    dbus_g_proxy_set_default_timeout (self->priv->proxy, 120000);
+    org_moblin_connman_Service_connect_async (self->priv->proxy,
+                                              dbus_proxy_notify_cb,
+                                              self);
+    dbus_g_proxy_set_default_timeout (self->priv->proxy, -1);
+}
+
+static void
 set_passphrase_notify_cb (DBusGProxy *proxy,
                           GError     *error,
                           gpointer    user_data)
@@ -456,15 +543,7 @@ set_passphrase_notify_cb (DBusGProxy *proxy,
     }
   else
     {
-      /* Set an unusually long timeout because the Connect
-       * method doesn't return until there has been either
-       * success or an error.
-       */
-      dbus_g_proxy_set_default_timeout (proxy, 120000);
-      org_moblin_connman_Service_connect_async (proxy,
-                                                dbus_proxy_notify_cb,
-                                                item);
-      dbus_g_proxy_set_default_timeout (proxy, -1);
+      _connect (item);
     }
 }
 
@@ -561,6 +640,61 @@ _delete_button_cb (GtkButton *delete_button,
 }
 
 static void
+_start_connecting (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = item->priv;
+
+  if (priv->security && g_str_equal (priv->security, "none") == FALSE)
+    {
+      if (priv->failed ||
+          (priv->need_pass && priv->passphrase == NULL))
+        {
+          _request_passphrase (item);
+        }
+      else
+        {
+          carrick_notification_manager_queue_event (priv->note,
+                                                    priv->type,
+                                                    "ready",
+                                                    priv->name);
+          _connect (item);
+        }
+    }
+  else
+    {
+      if (priv->setup_required)
+        {
+          GPid pid;
+          gulong flags = G_SPAWN_SEARCH_PATH | \
+                         G_SPAWN_STDOUT_TO_DEV_NULL | \
+                         G_SPAWN_STDERR_TO_DEV_NULL;
+          GError *error = NULL;
+          char *argv[] = {
+              LIBEXECDIR "/carrick-3g-wizard",
+              NULL
+          };
+
+          if (g_spawn_async(NULL, argv, NULL, flags, NULL,
+                            NULL, &pid, &error))
+            {
+              carrick_shell_hide ();
+            } else {
+              g_warning ("Unable to spawn 3g connection wizard");
+              g_error_free(error);
+            }
+        }
+      else
+        {
+          carrick_notification_manager_queue_event (priv->note,
+                                                    priv->type,
+                                                    "ready",
+                                                    priv->name);
+          _connect (item);
+        }
+    }
+}
+
+static void
 _connect_button_cb (GtkButton          *connect_button,
                     CarrickServiceItem *item)
 {
@@ -583,71 +717,27 @@ _connect_button_cb (GtkButton          *connect_button,
     }
   else
     {
-      if (priv->security && g_str_equal (priv->security, "none") == FALSE)
-        {
-          if (priv->failed ||
-              (priv->need_pass && priv->passphrase == NULL))
-            {
-              _request_passphrase (item);
-            }
-          else
-            {
-              carrick_notification_manager_queue_event (priv->note,
-                                                        priv->type,
-                                                        "ready",
-                                                        priv->name);
-              /* Set an unusually long timeout because the Connect
-               * method doesn't return until there has been either
-               * success or an error.
-               */
-              dbus_g_proxy_set_default_timeout (priv->proxy, 120000);
-              org_moblin_connman_Service_connect_async (priv->proxy,
-                                                        dbus_proxy_notify_cb,
-                                                        item);
-	      dbus_g_proxy_set_default_timeout (priv->proxy, -1);
-            }
-        }
-      else
-        {
-	  if (priv->setup_required)
-	  {
-	    GPid pid;
-	    gulong flags = G_SPAWN_SEARCH_PATH | \
-	      G_SPAWN_STDOUT_TO_DEV_NULL | \
-	      G_SPAWN_STDERR_TO_DEV_NULL;
-	    GError *error = NULL;
-	    char *argv[] = {
-              LIBEXECDIR "/carrick-3g-wizard",
-	      NULL
-	    };
-
-	    if (g_spawn_async(NULL, argv, NULL, flags, NULL,
-			       NULL, &pid, &error))
-            {
-              carrick_shell_hide ();
-	    } else {
-	      g_debug("Unable to spawn 3g connection wizard");
-	      g_error_free(error);
-            }
-	  }
-	  else
-	  {
-	    carrick_notification_manager_queue_event (priv->note,
-						      priv->type,
-						      "ready",
-						      priv->name);
-	    /* Set an unusually long timeout because the Connect
-	     * method doesn't return until there has been either
-	     * success or an error.
-	     */
-	    dbus_g_proxy_set_default_timeout (priv->proxy, 120000);
-	    org_moblin_connman_Service_connect_async (priv->proxy,
-						      dbus_proxy_notify_cb,
-						      item);
-	    dbus_g_proxy_set_default_timeout (priv->proxy, -1);
- 	  }
-        }
+      _start_connecting (item);
     }
+}
+
+static void
+_advanced_expander_notify_expanded_cb (GObject    *object,
+                                       GParamSpec *param_spec,
+                                       gpointer    data)
+{
+  CarrickServiceItemPrivate *priv;
+  gboolean expanded;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (data));
+  priv = CARRICK_SERVICE_ITEM (data)->priv;
+
+  g_signal_emit (data, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
+
+  gtk_widget_hide (priv->info_bar);
+  expanded = gtk_expander_get_expanded (GTK_EXPANDER (priv->advanced_expander));
+  nbtk_gtk_expander_set_expanded (NBTK_GTK_EXPANDER (priv->expando),
+                                  expanded);
 }
 
 static void
@@ -818,6 +908,24 @@ carrick_service_item_set_draggable (CarrickServiceItem *item,
   priv->draggable = draggable;
 }
 
+static void
+_unexpand_advanced_settings (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv = item->priv;
+
+  g_signal_handlers_block_by_func (priv->advanced_expander,
+                                   _advanced_expander_notify_expanded_cb,
+                                   item);
+  gtk_expander_set_expanded (GTK_EXPANDER (priv->advanced_expander),
+                             FALSE);
+  g_signal_handlers_unblock_by_func (priv->advanced_expander,
+                                     _advanced_expander_notify_expanded_cb,
+                                     item);
+
+  nbtk_gtk_expander_set_expanded (NBTK_GTK_EXPANDER (priv->expando),
+                                  FALSE);
+}
+
 void
 carrick_service_item_set_active (CarrickServiceItem *item,
                                  gboolean            active)
@@ -831,6 +939,8 @@ carrick_service_item_set_active (CarrickServiceItem *item,
       gtk_widget_hide (priv->passphrase_box);
       gtk_widget_show (priv->connect_box);
       gtk_widget_hide (priv->info_bar);
+
+      _unexpand_advanced_settings (item);
     }
 }
 
@@ -1011,7 +1121,8 @@ carrick_service_item_leave_notify_event (GtkWidget        *widget,
 {
   /* if pointer moves to a child widget, we want to keep the
    * ServiceItem prelighted, but show the normal cursor */
-  if (event->detail == GDK_NOTIFY_INFERIOR)
+  if (event->detail == GDK_NOTIFY_INFERIOR ||
+      event->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL)
     {
       gdk_window_set_cursor (widget->window, NULL);
     }
@@ -1037,6 +1148,265 @@ carrick_service_item_leave_notify_event (GtkWidget        *widget,
     }
 
   return TRUE;
+}
+
+static void
+method_combo_changed_cb (GtkComboBox *combobox,
+                         gpointer     user_data)
+{
+  CarrickServiceItemPrivate *priv;
+  gboolean use_dhcp;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
+
+  use_dhcp = (gtk_combo_box_get_active (combobox) == 0);
+
+  gtk_widget_set_sensitive (priv->address_entry, !use_dhcp);
+  gtk_widget_set_sensitive (priv->netmask_entry, !use_dhcp);
+  gtk_widget_set_sensitive (priv->gateway_entry, !use_dhcp);
+  gtk_widget_set_sensitive (priv->dns_text_view, !use_dhcp);
+
+  if (use_dhcp)
+    {
+      /* revert to last received data */
+      gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
+                          priv->address ? priv->address : "");
+
+      gtk_entry_set_text (GTK_ENTRY (priv->netmask_entry),
+                          priv->netmask ? priv->netmask : "");
+
+      gtk_entry_set_text (GTK_ENTRY (priv->gateway_entry),
+                          priv->gateway ? priv->gateway : "");
+    }
+
+  gtk_widget_hide (priv->info_bar);
+}
+
+static void
+disconnect_for_reconnect_cb (DBusGProxy *proxy,
+                             GError     *error,
+                             gpointer    user_data)
+{
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+
+  if (error)
+    {
+      g_warning ("Error disconnecting service: %s",
+                 error->message);
+      g_error_free (error);
+    }
+
+  _start_connecting (CARRICK_SERVICE_ITEM (user_data));
+}
+
+static void
+set_ipv4_configuration_cb (DBusGProxy *proxy,
+                           GError     *error,
+                           gpointer    user_data)
+
+{
+  CarrickServiceItemPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
+
+  if (error)
+    {
+      /* TODO: errors we should show in UI? */
+
+      g_warning ("Error setting IPv4 configuration: %s",
+                 error->message);
+      g_error_free (error);
+      return;
+    }
+
+  if (g_str_equal (priv->state, "online") ||
+      g_str_equal (priv->state, "ready") ||
+      g_str_equal (priv->state, "configuration") ||
+      g_str_equal (priv->state, "association"))
+    {
+      carrick_notification_manager_queue_event (priv->note,
+                                                priv->type,
+                                                "idle",
+                                                priv->name);
+      org_moblin_connman_Service_disconnect_async (priv->proxy,
+                                                   disconnect_for_reconnect_cb,
+                                                   user_data);
+    }
+  else
+    {
+      _start_connecting (CARRICK_SERVICE_ITEM (user_data));
+    }
+}
+
+static gboolean
+validate_address (const char *address, gboolean allow_empty)
+{
+  unsigned char buf[sizeof (struct in_addr)];
+
+  if (!address || strlen (address) == 0)
+    {
+      return allow_empty;
+    }
+  else if (inet_pton (AF_INET, address, buf) != 1)
+    {
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+validate_static_ip_entries (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv;
+  const char *address;
+  GtkTextBuffer *buf;
+  GtkTextIter start, end;
+  const char *nameservers;
+  char **dnsv, **iter;
+
+  priv = item->priv;
+  address = gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
+  if (!validate_address (address, FALSE))
+    {
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          _("Sorry, it looks like the IP address is not valid"));
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                     GTK_MESSAGE_WARNING);
+      gtk_widget_show (priv->info_bar);
+      gtk_widget_grab_focus (priv->address_entry);
+      return FALSE;
+    }
+
+  address = gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
+  if (!validate_address (address, TRUE))
+    {
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          _("Sorry, it looks like the gateway address is not valid"));
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                     GTK_MESSAGE_WARNING);
+      gtk_widget_show (priv->info_bar);
+      gtk_widget_grab_focus (priv->gateway_entry);
+      return FALSE;
+    }
+
+  address = gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
+  if (!validate_address (address, TRUE))
+    {
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          _("Sorry, it looks like the subnet mask is not valid"));
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                     GTK_MESSAGE_WARNING);
+      gtk_widget_show (priv->info_bar);
+      gtk_widget_grab_focus (priv->netmask_entry);
+      return FALSE;
+    }
+
+  buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
+  gtk_text_buffer_get_start_iter (buf, &start);
+  gtk_text_buffer_get_end_iter (buf, &end);
+  nameservers = gtk_text_buffer_get_text (buf, &start, &end, FALSE);
+  dnsv = g_strsplit_set (nameservers, " ,;\n", -1);
+
+  for (iter = dnsv; *iter; iter++)
+    {
+      if (!validate_address (*iter, FALSE))
+        {
+          char *msg;
+
+          msg = g_strdup_printf (_("Sorry, it looks like the nameserver address '%s' is not valid"),
+                                 *iter);
+          gtk_label_set_text (GTK_LABEL (priv->info_label),
+                              msg);
+          g_free (msg);
+          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                         GTK_MESSAGE_WARNING);
+          gtk_widget_show (priv->info_bar);
+          gtk_widget_grab_focus (priv->dns_text_view);
+
+          g_strfreev (dnsv);
+          return FALSE;
+        }
+    }
+
+  g_strfreev (dnsv);
+
+  return TRUE;
+}
+
+static void
+static_ip_entry_notify_text (GtkEntry   *entry,
+                             GParamSpec *pspec,
+                             gpointer    user_data)
+{
+  CarrickServiceItemPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
+
+  gtk_widget_hide (priv->info_bar);
+}
+
+static void
+apply_button_clicked_cb (GtkButton *button,
+                         gpointer   user_data)
+{
+  CarrickServiceItem *item;
+  CarrickServiceItemPrivate *priv;
+  GValue *value;
+  GHashTable *ipv4;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  item = CARRICK_SERVICE_ITEM (user_data);
+  priv = item->priv;
+
+  ipv4 = g_hash_table_new (g_str_hash, g_str_equal);
+
+  if (gtk_combo_box_get_active (GTK_COMBO_BOX (priv->method_combo)) == 1)
+    {
+      if (!validate_static_ip_entries (item))
+        {
+           g_hash_table_destroy (ipv4);
+           return;
+        }
+
+      g_hash_table_insert (ipv4, "Method", "manual");
+      g_hash_table_insert (ipv4, "Address",
+                           (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry)));
+      g_hash_table_insert (ipv4, "Netmask",
+                           (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry)));
+      g_hash_table_insert (ipv4, "Gateway",
+                           (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry)));
+    }
+  else
+    {
+      g_hash_table_insert (ipv4, "Method", "dhcp");
+    }
+
+  value = g_new0 (GValue, 1);
+  g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
+  g_value_set_boxed (value, ipv4);
+
+  org_moblin_connman_Service_set_property_async (priv->proxy,
+                                                 "IPv4.Configuration",
+                                                 value,
+                                                 set_ipv4_configuration_cb,
+                                                 user_data);  
+
+  g_free (value);
+  g_hash_table_destroy (ipv4);
+
+  _unexpand_advanced_settings (item);
+}
+
+static void
+button_size_request_cb (GtkWidget      *button,
+                        GtkRequisition *requisition,
+                        gpointer        user_data)
+{
+  requisition->width = MAX (requisition->width, CARRICK_MIN_BUTTON_WIDTH);
 }
 
 static void
@@ -1113,12 +1483,48 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
     G_TYPE_NONE, 0);
 }
 
+static GtkWidget*
+add_label_to_table (GtkTable *table, guint row, const char *text)
+{
+  GtkWidget *label;
+
+  label = gtk_label_new (text);
+  gtk_widget_show (label);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_table_attach (table, label,
+                    0, 1, row, row + 1,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+
+  return label;
+}
+
+static GtkWidget*
+add_entry_to_table (GtkTable *table, guint row)
+{
+  GtkWidget *entry;
+
+  entry = gtk_entry_new_with_max_length (15);
+  gtk_widget_show (entry);
+  gtk_entry_set_width_chars (GTK_ENTRY (entry), 12);
+  gtk_table_attach (table, entry,
+                    1, 2, row, row + 1,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+
+  return entry;
+}
+
 static void
 carrick_service_item_init (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv;
   GtkWidget                 *box, *hbox, *vbox;
   GtkWidget                 *image;
+  GtkWidget                 *table;
+  GtkWidget                 *label;
+  GtkWidget                 *apply_button;
+  GtkWidget                 *align;
   GtkWidget                 *connect_with_pw_button;
   GtkWidget                 *content_area;
   char                      *security_sample;
@@ -1225,8 +1631,29 @@ carrick_service_item_init (CarrickServiceItem *self)
                       TRUE,
                       6);
 
+  align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
+  gtk_widget_show (align);
+  gtk_box_pack_start (GTK_BOX (priv->connect_box),
+                      align,
+                      FALSE,
+                      FALSE,
+                      6);
+
+  /* TRANSLATORS: label for the Advanced expander in a service item */
+  priv->advanced_expander = gtk_expander_new (_("Advanced"));
+  gtk_expander_set_expanded (GTK_EXPANDER (priv->advanced_expander),
+                             FALSE);
+  gtk_widget_show (priv->advanced_expander);
+  g_signal_connect (priv->advanced_expander,
+                    "notify::expanded",
+                    G_CALLBACK (_advanced_expander_notify_expanded_cb),
+                    self);
+  gtk_container_add (GTK_CONTAINER (align), priv->advanced_expander);
+
   priv->connect_button = gtk_button_new_with_label (_("Scanning"));
   gtk_widget_show (priv->connect_button);
+  g_signal_connect_after (priv->connect_button, "size-request",
+                          G_CALLBACK (button_size_request_cb), self);
   g_signal_connect (priv->connect_button,
                     "clicked",
                     G_CALLBACK (_connect_button_cb),
@@ -1291,6 +1718,8 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   connect_with_pw_button = gtk_button_new_with_label (_ ("Connect"));
   gtk_widget_show (connect_with_pw_button);
+  g_signal_connect_after (connect_with_pw_button, "size-request",
+                          G_CALLBACK (button_size_request_cb), self);
   g_signal_connect (connect_with_pw_button,
                     "clicked",
                     G_CALLBACK (_connect_with_pw_clicked_cb),
@@ -1328,6 +1757,81 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_box_pack_start (GTK_BOX (vbox),
                       priv->info_bar,
                       FALSE, FALSE, 6);
+
+  /* static IP UI */
+
+  vbox = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox);
+  gtk_container_add (GTK_CONTAINER (priv->expando), vbox);
+
+  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 20, 20);
+  gtk_widget_show (align);
+  gtk_box_pack_start (GTK_BOX (vbox), align,
+                      FALSE, FALSE, 0);
+
+  table = gtk_table_new (7, 3, FALSE);
+  gtk_widget_show (table);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 30);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 3);
+  gtk_container_add (GTK_CONTAINER (align), table);
+
+  /* TRANSLATORS: label in advanced settings (next to combobox 
+   * for DHCP/Static IP) */
+  add_label_to_table (GTK_TABLE (table), 0, _("Connect by:"));
+  /* TRANSLATORS: label in advanced settings */
+  add_label_to_table (GTK_TABLE (table), 1, _("IP address:"));
+  /* TRANSLATORS: label in advanced settings */
+  add_label_to_table (GTK_TABLE (table), 2, _("Subnet mask:"));
+  /* TRANSLATORS: label in advanced settings */
+  add_label_to_table (GTK_TABLE (table), 3, _("Router:"));
+  /* TRANSLATORS: label in advanced settings */
+  label = add_label_to_table (GTK_TABLE (table), 4, _("DNS:"));
+  gtk_widget_hide (label);
+
+  priv->method_combo = gtk_combo_box_new_text ();  
+  /* NOTE: order/index of items in combobox is significant */
+  /* TRANSLATORS: choices in the connection method combobox */
+  gtk_combo_box_append_text (GTK_COMBO_BOX (priv->method_combo),
+                             _("DHCP"));
+  gtk_combo_box_append_text (GTK_COMBO_BOX (priv->method_combo),
+                             _("Static IP"));
+  gtk_widget_show (priv->method_combo);
+  gtk_table_attach (GTK_TABLE (table), priv->method_combo,
+                    1, 2, 0, 1,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  g_signal_connect (priv->method_combo, "changed",
+                    G_CALLBACK (method_combo_changed_cb), self);
+
+  priv->address_entry = add_entry_to_table (GTK_TABLE (table), 1);
+  g_signal_connect (priv->address_entry, "notify::text",
+                    G_CALLBACK (static_ip_entry_notify_text), self);
+  priv->netmask_entry = add_entry_to_table (GTK_TABLE (table), 2);
+  g_signal_connect (priv->netmask_entry, "notify::text",
+                    G_CALLBACK (static_ip_entry_notify_text), self);
+  priv->gateway_entry = add_entry_to_table (GTK_TABLE (table), 3);
+  g_signal_connect (priv->gateway_entry, "notify::text",
+                    G_CALLBACK (static_ip_entry_notify_text), self);
+
+  priv->dns_text_view = gtk_text_view_new ();
+  /* gtk_widget_show (priv->dns_text_view); */
+  gtk_table_attach (GTK_TABLE (table), priv->dns_text_view,
+                    1, 2, 4, 5,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+
+  /* TRANSLATORS: label for apply button in static ip settings */
+  apply_button = gtk_button_new_with_label (_("Apply"));
+  gtk_widget_show (apply_button);
+  g_signal_connect_after (apply_button, "size-request",
+                          G_CALLBACK (button_size_request_cb), self);
+  g_signal_connect (apply_button, "clicked",
+                    G_CALLBACK (apply_button_clicked_cb), self);
+  gtk_table_attach (GTK_TABLE (table), apply_button,
+                    2, 3, 6, 7,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
 }
 
 GtkWidget*
