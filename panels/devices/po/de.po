@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:42+0000\n"
+"POT-Creation-Date: 2010-05-10 09:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgid "Devices panel"
 msgstr "Panel Geräte"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:162
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "Geräte"
 
@@ -51,6 +51,10 @@ msgstr[1] "%u Eingänge"
 msgid "System Sounds"
 msgstr "Systemklänge"
 
+#: ../power-icon/src/moblin-power-icon.c:46
+msgid "MeeGo Power Icon"
+msgstr "MeeGo Energiesymbol"
+
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
 msgstr "Der Akku wird schwach"
@@ -75,24 +79,24 @@ msgstr "Gefahr!"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Leider hat dein Computer keinen Saft mehr. Wir müssen jetzt abschalten. Bitte speichere alles Wichtige und wir hoffen dich bald wiederzusehen."
 
-#: ../power-icon/src/mpd-power-icon.c:342
+#: ../power-icon/src/mpd-power-icon.c:336
 msgid "Would you like to turn off now?"
 msgstr "Möchtest du jetzt abschalten?"
 
-#: ../power-icon/src/mpd-power-icon.c:343
+#: ../power-icon/src/mpd-power-icon.c:337
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
 
-#: ../power-icon/src/mpd-power-icon.c:447
+#: ../power-icon/src/mpd-power-icon.c:441
 msgid "battery"
 msgstr "Akku"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:75
+#: ../power-icon/src/mpd-shutdown-notification.c:71
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
 
-#: ../power-icon/src/mpd-shutdown-notification.c:133
+#: ../power-icon/src/mpd-shutdown-notification.c:127
 msgid "Turn off"
 msgstr "Abschalten"
 
@@ -100,27 +104,31 @@ msgstr "Abschalten"
 msgid "Moblin Power Icon"
 msgstr "Moblin Energiesymbol"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/moblin-panel-devices.c:121
+msgid "MeeGo Devices Panel"
+msgstr "MeeGo Panel Geräte"
+
+#: ../src/mpd-battery-device.c:329
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Leider scheinst du keinen Akku installiert zu haben."
 
-#: ../src/mpd-battery-device.c:337
+#: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Dein Akku wird geladen. Er ist etwa %d%% voll."
 
-#: ../src/mpd-battery-device.c:342
+#: ../src/mpd-battery-device.c:338
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Dein Akku wird genutzt. Er ist etwa %d%% voll."
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:343
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Dein Akku ist voll geladen und du kannst loslegen."
 
-#: ../src/mpd-battery-device.c:351
+#: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Leider scheint dein Akku defekt zu sein."
@@ -159,50 +167,41 @@ msgstr "<span font-weight='bold'>Du benutzt</span> <span color='%s'>%d%% von %s<
 msgid "Trash"
 msgstr "Abfall"
 
-#: ../src/mpd-media-import-tile.c:73
-#, c-format
-msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-msgstr "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%d%%</span>"
-
-#: ../src/mpd-media-import-tile.c:217
-msgid "Stop"
-msgstr "Stop"
-
 #: ../src/mpd-shell.c:126
 msgid "Devices"
 msgstr "Geräte"
 
-#: ../src/mpd-storage-device-tile.c:161
+#: ../src/mpd-storage-device-tile.c:162
 #, c-format
 msgid "Could not run %s"
 msgstr "%s konnte nicht ausgeführt werden."
 
-#: ../src/mpd-storage-device-tile.c:163
+#: ../src/mpd-storage-device-tile.c:164
 msgid "Import error"
 msgstr "Fehler beim Importieren"
 
 #. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:498
+#: ../src/mpd-storage-device-tile.c:499
 msgid "Import data"
 msgstr "Daten importieren"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:509
+#: ../src/mpd-storage-device-tile.c:510
 msgid "Eject"
 msgstr "Auswerfen"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:520
+#: ../src/mpd-storage-device-tile.c:521
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../src/mpd-storage-device-tile.c:710
+#: ../src/mpd-storage-device-tile.c:711
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> benutzt <span color='%s'>%d%% von %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:718
+#: ../src/mpd-storage-device-tile.c:719
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -243,21 +242,28 @@ msgstr "Sehr leise"
 msgid "Silent"
 msgstr "Still"
 
-#: ../src/mpd-volume-tile.c:357
+#: ../src/mpd-volume-tile.c:355
 msgid "Netbook volume"
 msgstr "Netbook-Lautstärke"
 
-#: ../src/mpd-volume-tile.c:373
+#: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Stumm"
 
-#: ../power-icon/src/moblin-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo Energiesymbol"
+#: ../src/mpd-devices-tile.c:389 ../src/mpd-devices-tile.c:421
+msgid "It is safe to unplug this device now"
+msgstr "Dieses Gerät kann jetzt entfernt werden."
 
-#: ../src/moblin-panel-devices.c:123
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo Panel Geräte"
+#: ../src/mpd-devices-tile.c:72 ../src/mpd-devices-tile.c:95
+#: ../src/mpd-devices-tile.c:137
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Auswerfen fehlgeschlagen, es wird wahrscheinlich von einer Anwendung benutzt."
+
+#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+#~ msgstr "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%d%%</span>"
+
+#~ msgid "Stop"
+#~ msgstr "Stop"
 
 #~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
