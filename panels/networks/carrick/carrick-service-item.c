@@ -223,6 +223,7 @@ _populate_variables (CarrickServiceItem *self)
                                gtk_tree_row_reference_get_path (priv->row)))
     {
       char *config_method, *config_address, *config_netmask, *config_gateway;
+      char **config_nameservers;
 
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
                           CARRICK_COLUMN_PROXY, &priv->proxy,
@@ -243,6 +244,8 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_CONFIGURED_ADDRESS, &config_address,
                           CARRICK_COLUMN_CONFIGURED_NETMASK, &config_netmask,
                           CARRICK_COLUMN_CONFIGURED_GATEWAY, &config_gateway,
+                          CARRICK_COLUMN_NAMESERVERS, &priv->nameservers,
+                          CARRICK_COLUMN_CONFIGURED_NAMESERVERS, &config_nameservers,
                           CARRICK_COLUMN_FAVORITE, &priv->favorite,
                           -1);
 
@@ -256,6 +259,8 @@ _populate_variables (CarrickServiceItem *self)
         priv->netmask = config_netmask;
       if (!priv->gateway)
         priv->gateway = config_gateway;
+      if (!priv->nameservers)
+        priv->nameservers = config_nameservers;
     }
 }
 
@@ -1121,6 +1126,8 @@ method_combo_changed_cb (GtkComboBox *combobox,
 
   if (use_dhcp)
     {
+      GtkTextBuffer *buf;
+
       /* revert to last received data */
       gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
                           priv->address ? priv->address : "");
@@ -1130,6 +1137,20 @@ method_combo_changed_cb (GtkComboBox *combobox,
 
       gtk_entry_set_text (GTK_ENTRY (priv->gateway_entry),
                           priv->gateway ? priv->gateway : "");
+
+      buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
+      if (priv->nameservers)
+        {
+          char *nameservers;
+
+          nameservers = g_strjoinv ("\n", priv->nameservers);
+          gtk_text_buffer_set_text (buf, nameservers, -1);
+          g_free (nameservers);
+        }
+      else
+        {
+          gtk_text_buffer_set_text (buf, "", -1);
+        }
     }
 
   gtk_widget_hide (priv->info_bar);
@@ -1263,6 +1284,18 @@ static void
 static_ip_entry_notify_text (GtkEntry   *entry,
                              GParamSpec *pspec,
                              gpointer    user_data)
+{
+  CarrickServiceItemPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
+
+  gtk_widget_hide (priv->info_bar);
+}
+
+static void
+dns_buffer_changed_cb (GtkTextBuffer *textbuffer,
+                       gpointer       user_data)
 {
   CarrickServiceItemPrivate *priv;
 
@@ -1413,7 +1446,8 @@ add_label_to_table (GtkTable *table, guint row, const char *text)
 
   label = gtk_label_new (text);
   gtk_widget_show (label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_misc_set_padding (GTK_MISC (label), 0, 5);
   gtk_table_attach (table, label,
                     0, 1, row, row + 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
@@ -1429,7 +1463,7 @@ add_entry_to_table (GtkTable *table, guint row)
 
   entry = gtk_entry_new_with_max_length (15);
   gtk_widget_show (entry);
-  gtk_entry_set_width_chars (GTK_ENTRY (entry), 12);
+  gtk_widget_set_size_request (entry, 100, -1);
   gtk_table_attach (table, entry,
                     1, 2, row, row + 1,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
@@ -1445,9 +1479,9 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget                 *box, *hbox, *vbox;
   GtkWidget                 *image;
   GtkWidget                 *table;
-  GtkWidget                 *label;
   GtkWidget                 *apply_button;
   GtkWidget                 *align;
+  GtkWidget                 *scrolled_window;
   GtkWidget                 *connect_with_pw_button;
   GtkWidget                 *content_area;
   char                      *security_sample;
@@ -1708,8 +1742,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   /* TRANSLATORS: label in advanced settings */
   add_label_to_table (GTK_TABLE (table), 3, _("Router:"));
   /* TRANSLATORS: label in advanced settings */
-  label = add_label_to_table (GTK_TABLE (table), 4, _("DNS:"));
-  gtk_widget_hide (label);
+  add_label_to_table (GTK_TABLE (table), 4, _("DNS:"));
 
   priv->method_combo = gtk_combo_box_new_text ();  
   /* NOTE: order/index of items in combobox is significant */
@@ -1736,12 +1769,27 @@ carrick_service_item_init (CarrickServiceItem *self)
   g_signal_connect (priv->gateway_entry, "notify::text",
                     G_CALLBACK (static_ip_entry_notify_text), self);
 
-  priv->dns_text_view = gtk_text_view_new ();
-  /* gtk_widget_show (priv->dns_text_view); */
-  gtk_table_attach (GTK_TABLE (table), priv->dns_text_view,
-                    1, 2, 4, 5,
+  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolled_window);
+  gtk_widget_set_size_request (scrolled_window, -1, 45);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_table_attach (GTK_TABLE (table), scrolled_window,
+                    1, 3, 4, 5,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
+
+  priv->dns_text_view = gtk_text_view_new ();
+  gtk_widget_show (priv->dns_text_view);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (priv->dns_text_view),
+                               GTK_WRAP_WORD_CHAR);
+  gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (priv->dns_text_view),
+                                 FALSE);
+  gtk_container_add (GTK_CONTAINER (scrolled_window), priv->dns_text_view);
+  g_signal_connect (gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view)),
+                    "changed",
+                    G_CALLBACK (dns_buffer_changed_cb),
+                    self);
 
   /* TRANSLATORS: label for apply button in static ip settings */
   apply_button = gtk_button_new_with_label (_("Apply"));

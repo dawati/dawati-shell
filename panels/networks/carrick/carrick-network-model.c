@@ -118,6 +118,8 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                  G_TYPE_STRING, /* manually configured address */
                                  G_TYPE_STRING, /* manually configured netmask */
                                  G_TYPE_STRING, /* manually configured gateway */
+                                 G_TYPE_STRV, /* name servers */
+                                 G_TYPE_STRV, /* manually configured name servers */
   };
 
   gtk_list_store_set_column_types (GTK_LIST_STORE (self),
@@ -269,6 +271,8 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   const gchar         *config_address = NULL;
   const gchar         *config_netmask = NULL;
   const gchar         *config_gateway = NULL;
+  const gchar        **nameservers = NULL;
+  const gchar        **config_nameservers = NULL;
   const gchar         *passphrase = NULL;
   GValue              *value;
   GtkTreeIter          iter;
@@ -365,6 +369,14 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
             config_gateway = g_value_get_string (value);
         }
 
+      value = g_hash_table_lookup (properties, "Nameservers");
+      if (value)
+        nameservers = g_value_get_boxed (value);
+
+      value = g_hash_table_lookup (properties, "Nameservers.Configuration");
+      if (value)
+        config_nameservers = g_value_get_boxed (value);
+
       if (network_model_have_service_by_proxy (store,
                                                &iter,
                                                service))
@@ -387,6 +399,8 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
                               CARRICK_COLUMN_CONFIGURED_ADDRESS, config_address,
                               CARRICK_COLUMN_CONFIGURED_NETMASK, config_netmask,
                               CARRICK_COLUMN_CONFIGURED_GATEWAY, config_gateway,
+                              CARRICK_COLUMN_NAMESERVERS, nameservers,
+                              CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
                               -1);
         }
       else
@@ -411,6 +425,8 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
              CARRICK_COLUMN_CONFIGURED_ADDRESS, config_address,
              CARRICK_COLUMN_CONFIGURED_NETMASK, config_netmask,
              CARRICK_COLUMN_CONFIGURED_GATEWAY, config_gateway,
+             CARRICK_COLUMN_NAMESERVERS, nameservers,
+             CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
              -1);
         }
     }
@@ -542,6 +558,20 @@ network_model_service_changed_cb (DBusGProxy  *service,
                                 g_value_get_string (ipv4_val),
                                 -1);
         }
+    }
+  else if (g_str_equal (property, "Nameservers"))
+    {
+      gtk_list_store_set (store, &iter,
+                          CARRICK_COLUMN_NAMESERVERS,
+                          g_value_get_boxed (value),
+                          -1);
+    }
+  else if (g_str_equal (property, "Nameservers.Configuration"))
+    {
+      gtk_list_store_set (store, &iter,
+                          CARRICK_COLUMN_CONFIGURED_NAMESERVERS,
+                          g_value_get_boxed (value),
+                          -1);
     }
 }
 
