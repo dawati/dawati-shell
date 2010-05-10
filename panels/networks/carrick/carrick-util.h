@@ -25,6 +25,8 @@
 
 #include <glib.h>
 
+#define CARRICK_MIN_BUTTON_WIDTH 120
+
 G_BEGIN_DECLS
 
 const char * util_get_service_type_for_display (const char *type);

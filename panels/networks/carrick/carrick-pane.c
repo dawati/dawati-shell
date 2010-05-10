@@ -36,6 +36,7 @@
 #include "carrick-notification-manager.h"
 #include "carrick-network-model.h"
 #include "carrick-shell.h"
+#include "carrick-util.h"
 #include "mux-banner.h"
 
 G_DEFINE_TYPE (CarrickPane, carrick_pane, GTK_TYPE_HBOX)
@@ -1264,6 +1265,14 @@ get_technology_box (const char *name,
 }
 
 static void
+button_size_request_cb (GtkWidget      *button,
+                        GtkRequisition *requisition,
+                        gpointer        user_data)
+{
+  requisition->width = MAX (requisition->width, CARRICK_MIN_BUTTON_WIDTH);
+}
+
+static void
 carrick_pane_init (CarrickPane *self)
 {
   CarrickPanePrivate *priv;
@@ -1515,6 +1524,8 @@ carrick_pane_init (CarrickPane *self)
 
   /* New connection button */
   priv->new_conn_button = gtk_button_new_with_label (_ ("Add new connection"));
+  g_signal_connect_after (priv->new_conn_button, "size-request",
+                          G_CALLBACK (button_size_request_cb), self);
   gtk_widget_set_sensitive (priv->new_conn_button,
                             FALSE);
   gtk_widget_show (priv->new_conn_button);

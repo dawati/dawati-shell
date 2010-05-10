@@ -1402,6 +1402,14 @@ apply_button_clicked_cb (GtkButton *button,
 }
 
 static void
+button_size_request_cb (GtkWidget      *button,
+                        GtkRequisition *requisition,
+                        gpointer        user_data)
+{
+  requisition->width = MAX (requisition->width, CARRICK_MIN_BUTTON_WIDTH);
+}
+
+static void
 carrick_service_item_class_init (CarrickServiceItemClass *klass)
 {
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
@@ -1644,6 +1652,8 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->connect_button = gtk_button_new_with_label (_("Scanning"));
   gtk_widget_show (priv->connect_button);
+  g_signal_connect_after (priv->connect_button, "size-request",
+                          G_CALLBACK (button_size_request_cb), self);
   g_signal_connect (priv->connect_button,
                     "clicked",
                     G_CALLBACK (_connect_button_cb),
@@ -1708,6 +1718,8 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   connect_with_pw_button = gtk_button_new_with_label (_ ("Connect"));
   gtk_widget_show (connect_with_pw_button);
+  g_signal_connect_after (connect_with_pw_button, "size-request",
+                          G_CALLBACK (button_size_request_cb), self);
   g_signal_connect (connect_with_pw_button,
                     "clicked",
                     G_CALLBACK (_connect_with_pw_clicked_cb),
@@ -1812,6 +1824,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   /* TRANSLATORS: label for apply button in static ip settings */
   apply_button = gtk_button_new_with_label (_("Apply"));
   gtk_widget_show (apply_button);
+  g_signal_connect_after (apply_button, "size-request",
+                          G_CALLBACK (button_size_request_cb), self);
   g_signal_connect (apply_button, "clicked",
                     G_CALLBACK (apply_button_clicked_cb), self);
   gtk_table_attach (GTK_TABLE (table), apply_button,
