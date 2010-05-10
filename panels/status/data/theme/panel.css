@@ -18,6 +18,11 @@ MpsFeedSwitcher
   border-image: url("content-panel-background.png") 5;
 }
 
+MpsFeedPane
+{
+  background-color: white;
+}
+
 *.mps-tweet-avatar-frame
 {
   border-image: url("avatar_frame.png") 4 4 4 4;
