@@ -658,6 +658,7 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
   ClutterAnimation  *animation;
   gfloat             height;
   GList             *l;
+  MnbPanel          *panel;
 
   /*
    * Don't allow the toolbar to hide when not in netbook mode.
@@ -678,6 +679,12 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
                priv->reason_for_show, reason);
 
         return;
+    }
+
+  if ((panel = mnb_toolbar_get_active_panel (toolbar)))
+    {
+      mnb_panel_hide_with_toolbar (panel, reason);
+      return;
     }
 
   priv->reason_for_hide = reason;
