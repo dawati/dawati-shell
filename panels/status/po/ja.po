@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:37+0000\n"
+"POT-Creation-Date: 2010-05-10 09:37+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,40 +39,44 @@ msgstr "ステータスを更新できません。サービスが利用できな
 msgid "Unable to update status: You're not online."
 msgstr "ステータスを更新できません。オンラインになってません。"
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "現在位置を推測できませんでした。"
+
+#: ../src/mps-feed-pane.c:452
 #, c-format
 msgid "We guessed your location as: %s (%f, %f)"
 msgstr "現在位置は %s (%f, %f) ですね。"
 
-#: ../src/mps-feed-pane.c:453
+#: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
 msgstr "現在位置は %s (%f, %f) として共有されています。"
 
-#: ../src/mps-feed-pane.c:463
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "現在位置は %f %f ですね。"
 
-#: ../src/mps-feed-pane.c:467
+#: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
 msgstr "現在位置は %f %f として共有されています。"
 
-#: ../src/mps-feed-pane.c:476
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
 msgstr "現在位置は共有されていません。"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:579
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "更新"
 
-#: ../src/mps-feed-pane.c:584
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "どうしました？"
 
-#: ../src/mps-feed-pane.c:634
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "変更"
 
@@ -88,23 +92,23 @@ msgstr "Webサービスを設定してないか、設定に問題がありそう
 msgid "Your location"
 msgstr "現在位置"
 
-#: ../src/mps-geotag-pane.c:554
+#: ../src/mps-geotag-pane.c:568
 msgid "Search"
 msgstr "検索"
 
-#: ../src/mps-geotag-pane.c:559
+#: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
 msgstr "今どこにいますか?"
 
-#: ../src/mps-geotag-pane.c:561
+#: ../src/mps-geotag-pane.c:575
 msgid "Find me"
 msgstr "現在位置の確認"
 
-#: ../src/mps-geotag-pane.c:568
+#: ../src/mps-geotag-pane.c:582
 msgid "Use location"
-msgstr "場所情報を使用"
+msgstr "位置情報を使用"
 
-#: ../src/mps-geotag-pane.c:569
+#: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
 msgstr "位置情報を使用しない"
 
