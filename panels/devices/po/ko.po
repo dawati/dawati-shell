@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:48+0000\n"
+"POT-Creation-Date: 2010-05-10 09:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgid "Devices panel"
 msgstr "장치 패널"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:162
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "장치"
 
@@ -78,24 +78,24 @@ msgstr "위험!"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "죄송합니다. 컴퓨터의 배터리 전원이 거의 다 소모되었습니다. 컴퓨터를 지금 꺼야합니다. 작업을 저장한 다음, 곧 다시 뵙겠습니다."
 
-#: ../power-icon/src/mpd-power-icon.c:342
+#: ../power-icon/src/mpd-power-icon.c:336
 msgid "Would you like to turn off now?"
 msgstr "지금 끄시겠습니까?"
 
-#: ../power-icon/src/mpd-power-icon.c:343
+#: ../power-icon/src/mpd-power-icon.c:337
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "결정하지 않으시면 30초 후에 끄겠습니다."
 
-#: ../power-icon/src/mpd-power-icon.c:447
+#: ../power-icon/src/mpd-power-icon.c:441
 msgid "battery"
 msgstr "배터리"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:75
+#: ../power-icon/src/mpd-shutdown-notification.c:71
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "결정하지 않으시면 %d초 후에 끄겠습니다."
 
-#: ../power-icon/src/mpd-shutdown-notification.c:133
+#: ../power-icon/src/mpd-shutdown-notification.c:127
 msgid "Turn off"
 msgstr "끕니다."
 
@@ -103,31 +103,31 @@ msgstr "끕니다."
 msgid "Moblin Power Icon"
 msgstr "Moblin 전원 아이콘"
 
-#: ../src/moblin-panel-devices.c:123
+#: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo 장치 패널"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:329
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "죄송합니다. 배터리가 설치된 것 같지 않습니다."
 
-#: ../src/mpd-battery-device.c:337
+#: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "배터리를 충전 중입니다. %d%% 충전되었습니다."
 
-#: ../src/mpd-battery-device.c:342
+#: ../src/mpd-battery-device.c:338
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "배터리를 사용 중입니다. %d%% 충전되었습니다."
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:343
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "배터리가 완전히 충전되었고 이제 사용할 수 있습니다."
 
-#: ../src/mpd-battery-device.c:351
+#: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "죄송합니다. 배터리가 고장난 것 같습니다."
@@ -157,6 +157,17 @@ msgstr ""
 msgid "Other devices"
 msgstr "기타 장치"
 
+#: ../src/mpd-devices-tile.c:72
+#: ../src/mpd-devices-tile.c:95
+#: ../src/mpd-devices-tile.c:137
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "꺼내는 동안 오류가 발생, 응용 프로그램이 사용하는것 같습니다."
+
+#: ../src/mpd-devices-tile.c:389
+#: ../src/mpd-devices-tile.c:421
+msgid "It is safe to unplug this device now"
+msgstr "이제 장치를 언플러드해도 안전합니다."
+
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
@@ -166,50 +177,41 @@ msgstr "<span font-weight='bold'>사용 중:</span> <span color='%s'>%d%% of %s<
 msgid "Trash"
 msgstr "쓰레기"
 
-#: ../src/mpd-media-import-tile.c:73
-#, c-format
-msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-msgstr "<span font-weight='bold'>데이터 들여오기</span> <span color='%s'>%d%%</span>"
-
-#: ../src/mpd-media-import-tile.c:217
-msgid "Stop"
-msgstr "정지"
-
 #: ../src/mpd-shell.c:126
 msgid "Devices"
 msgstr "장치"
 
-#: ../src/mpd-storage-device-tile.c:161
+#: ../src/mpd-storage-device-tile.c:162
 #, c-format
 msgid "Could not run %s"
 msgstr "%s을(를) 실행할 수 없습니다."
 
-#: ../src/mpd-storage-device-tile.c:163
+#: ../src/mpd-storage-device-tile.c:164
 msgid "Import error"
 msgstr "들여오기 오류"
 
 #. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:498
+#: ../src/mpd-storage-device-tile.c:499
 msgid "Import data"
 msgstr "데이터 들여오기"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:509
+#: ../src/mpd-storage-device-tile.c:510
 msgid "Eject"
 msgstr "꺼내기"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:520
+#: ../src/mpd-storage-device-tile.c:521
 msgid "Open"
 msgstr "열기"
 
-#: ../src/mpd-storage-device-tile.c:710
+#: ../src/mpd-storage-device-tile.c:711
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> 사용 <span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:718
+#: ../src/mpd-storage-device-tile.c:719
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -250,14 +252,22 @@ msgstr "매우 작게"
 msgid "Silent"
 msgstr "음소거"
 
-#: ../src/mpd-volume-tile.c:357
+#: ../src/mpd-volume-tile.c:355
 msgid "Netbook volume"
 msgstr "넷북 볼륨"
 
-#: ../src/mpd-volume-tile.c:373
+#: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "음소거"
 
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>데이터 들여오기</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgid "Stop"
+#~ msgstr "정지"
 #~ msgid ""
 #~ "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr ""
