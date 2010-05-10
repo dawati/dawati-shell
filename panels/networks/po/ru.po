@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:27+0000\n"
+"POT-Creation-Date: 2010-05-10 09:28+0000\n"
 "PO-Revision-Date: 2010-04-07 20:02+0200\n"
 "Last-Translator: TU <tu@utranslations.com>\n"
 "Language-Team: \n"
@@ -40,22 +40,23 @@ msgstr ", "
 msgid "wired"
 msgstr "проводная"
 
-#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1408
+#. Switches
+#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1420
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1502
+#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1462
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1471
+#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1448
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1534
+#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1476
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -177,11 +178,11 @@ msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "Ваше подключение к %s утрачено. Мы подключили вас к сети %s"
 
-#: ../carrick/carrick-pane.c:630
+#: ../carrick/carrick-pane.c:633
 msgid "New connection settings"
 msgstr "Настройки нового подключения"
 
-#: ../carrick/carrick-pane.c:668
+#: ../carrick/carrick-pane.c:671
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -191,48 +192,48 @@ msgstr ""
 "подключиться, и, при необходимости, пароль\n"
 "и тип безопасности."
 
-#: ../carrick/carrick-pane.c:678
+#: ../carrick/carrick-pane.c:681
 msgid "Network name"
 msgstr "Сетевое имя"
 
-#: ../carrick/carrick-pane.c:690
+#: ../carrick/carrick-pane.c:693
 msgid "Network security"
 msgstr "Тип безопасности сети"
 
-#: ../carrick/carrick-pane.c:700
+#: ../carrick/carrick-pane.c:703
 msgid "None"
 msgstr "Отсутствует"
 
-#: ../carrick/carrick-pane.c:712
+#: ../carrick/carrick-pane.c:715
 msgid "Password"
 msgstr "Пароль"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1303
+#: ../carrick/carrick-pane.c:730 ../carrick/carrick-service-item.c:1303
 msgid "Show password"
 msgstr "Показать пароль"
 
-#: ../carrick/carrick-pane.c:1398
+#: ../carrick/carrick-pane.c:1403
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../carrick/carrick-pane.c:1440 ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-pane.c:1434 ../carrick/carrick-service-item.c:241
 msgid "Wired"
 msgstr "Проводная"
 
-#: ../carrick/carrick-pane.c:1566
+#: ../carrick/carrick-pane.c:1501
 msgid "Offline mode"
 msgstr "Режим Оффлайн"
 
-#: ../carrick/carrick-pane.c:1591
+#: ../carrick/carrick-pane.c:1511
 msgid "This will disable all your connections"
 msgstr "Это отключит все ваши подключения"
 
-#: ../carrick/carrick-pane.c:1623 ../src/carrick.c:351
+#: ../carrick/carrick-pane.c:1547 ../src/carrick.c:351
 msgid "Networks"
 msgstr "Сетевые подключения"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1629
+#: ../carrick/carrick-pane.c:1553
 msgid "Add new connection"
 msgstr "Добавить новое подключение"
 
