@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:48+0000\n"
+"POT-Creation-Date: 2010-05-10 09:42+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +18,7 @@ msgid "Devices panel"
 msgstr "デバイスパネル"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:162
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "デバイス"
 
@@ -79,24 +79,24 @@ msgstr "危険な状態です!"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "バッテリー残量がまもなくゼロになるので、コンピューターがオフになります。すべてのファイルを保存してください。"
 
-#: ../power-icon/src/mpd-power-icon.c:342
+#: ../power-icon/src/mpd-power-icon.c:336
 msgid "Would you like to turn off now?"
 msgstr "今すぐ電源をオフにしますか?"
 
-#: ../power-icon/src/mpd-power-icon.c:343
+#: ../power-icon/src/mpd-power-icon.c:337
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "このままの状態では、30秒内に電源がオフになります。"
 
-#: ../power-icon/src/mpd-power-icon.c:447
+#: ../power-icon/src/mpd-power-icon.c:441
 msgid "battery"
 msgstr "バッテリー"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:75
+#: ../power-icon/src/mpd-shutdown-notification.c:71
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "このままの状態では、%d秒内に電源がオフになります。"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:133
+#: ../power-icon/src/mpd-shutdown-notification.c:127
 msgid "Turn off"
 msgstr "電源を切る"
 
@@ -104,31 +104,31 @@ msgstr "電源を切る"
 msgid "Moblin Power Icon"
 msgstr "Moblin 電源アイコン"
 
-#: ../src/moblin-panel-devices.c:123
+#: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo デバイスパネル"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:329
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "どうやら、バッテリーが取り付けられていないようです。"
 
-#: ../src/mpd-battery-device.c:337
+#: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "バッテリーを充電中です。バッテリー残量：%d%%"
 
-#: ../src/mpd-battery-device.c:342
+#: ../src/mpd-battery-device.c:338
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "バッテリーを使用中です。バッテリー残量：%d%%"
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:343
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "バッテリーは十分に充電され、使用可能な状態です。"
 
-#: ../src/mpd-battery-device.c:351
+#: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "バッテリーが壊れているようです。"
@@ -158,6 +158,17 @@ msgstr ""
 msgid "Other devices"
 msgstr "他のデバイス"
 
+#: ../src/mpd-devices-tile.c:72
+#: ../src/mpd-devices-tile.c:95
+#: ../src/mpd-devices-tile.c:137
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "取り出しに失敗しました。どうやらアプリケーションが使用中です。"
+
+#: ../src/mpd-devices-tile.c:389
+#: ../src/mpd-devices-tile.c:421
+msgid "It is safe to unplug this device now"
+msgstr "デバイスをプラグから抜いても安全です。"
+
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
@@ -167,50 +178,41 @@ msgstr "<span font-weight='bold'><span color='%s'>%d%% / %s</span> を使用し�
 msgid "Trash"
 msgstr "ゴミ箱へ移動する"
 
-#: ../src/mpd-media-import-tile.c:73
-#, c-format
-msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-msgstr "<span font-weight='bold'>データ <span color='%s'>%d%%</span> をインポート中</span>"
-
-#: ../src/mpd-media-import-tile.c:217
-msgid "Stop"
-msgstr "停止"
-
 #: ../src/mpd-shell.c:126
 msgid "Devices"
 msgstr "デバイス"
 
-#: ../src/mpd-storage-device-tile.c:161
+#: ../src/mpd-storage-device-tile.c:162
 #, c-format
 msgid "Could not run %s"
 msgstr "%s を実行できませんでした"
 
-#: ../src/mpd-storage-device-tile.c:163
+#: ../src/mpd-storage-device-tile.c:164
 msgid "Import error"
-msgstr "インポート・エラー"
+msgstr "インポートエラー"
 
 #. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:498
+#: ../src/mpd-storage-device-tile.c:499
 msgid "Import data"
 msgstr "データをインポート"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:509
+#: ../src/mpd-storage-device-tile.c:510
 msgid "Eject"
 msgstr "取り出し"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:520
+#: ../src/mpd-storage-device-tile.c:521
 msgid "Open"
 msgstr "開く"
 
-#: ../src/mpd-storage-device-tile.c:710
+#: ../src/mpd-storage-device-tile.c:711
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> は <span color='%s'>%d%% / %s</span> を使用中"
 
-#: ../src/mpd-storage-device-tile.c:718
+#: ../src/mpd-storage-device-tile.c:719
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -251,14 +253,22 @@ msgstr "非常に静か"
 msgid "Silent"
 msgstr "無音"
 
-#: ../src/mpd-volume-tile.c:357
+#: ../src/mpd-volume-tile.c:355
 msgid "Netbook volume"
 msgstr "ネットブックの音量"
 
-#: ../src/mpd-volume-tile.c:373
+#: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "ミュート"
 
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>データ <span color='%s'>%d%%</span> をインポート"
+#~ "中</span>"
+#~ msgid "Stop"
+#~ msgstr "停止"
 #~ msgid ""
 #~ "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr "%s が取り付けられました。デバイス・パネルで操作できます"
