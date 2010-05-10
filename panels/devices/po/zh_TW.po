@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:42+0000\n"
-"PO-Revision-Date: 2010-05-04 13:32+0800\n"
+"POT-Creation-Date: 2010-05-10 09:42+0000\n"
+"PO-Revision-Date: 2010-05-10 23:41+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Traditional Chinese <chinese-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgid "Devices panel"
 msgstr "裝置面板"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:162
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "裝置"
 
@@ -84,24 +84,24 @@ msgstr "危險！"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "抱歉，您電腦的電池電量快用光了。我們現在就必須關閉電腦。請儲存您的工作，希望可以很快再見到您。"
 
-#: ../power-icon/src/mpd-power-icon.c:342
+#: ../power-icon/src/mpd-power-icon.c:336
 msgid "Would you like to turn off now?"
 msgstr "您現在要關閉電腦嗎？"
 
-#: ../power-icon/src/mpd-power-icon.c:343
+#: ../power-icon/src/mpd-power-icon.c:337
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "如果您不決定，我會在 30 秒內關閉。"
 
-#: ../power-icon/src/mpd-power-icon.c:447
+#: ../power-icon/src/mpd-power-icon.c:441
 msgid "battery"
 msgstr "電池"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:75
+#: ../power-icon/src/mpd-shutdown-notification.c:71
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "如果您不決定，我會在 %d 秒內關閉"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:133
+#: ../power-icon/src/mpd-shutdown-notification.c:127
 msgid "Turn off"
 msgstr "關閉"
 
@@ -109,31 +109,31 @@ msgstr "關閉"
 msgid "Moblin Power Icon"
 msgstr "Moblin 電源圖示"
 
-#: ../src/moblin-panel-devices.c:123
+#: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo 裝置面板"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:329
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "抱歉，您似乎沒有安裝電池。"
 
-#: ../src/mpd-battery-device.c:337
+#: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "您的電池正在充電。大概充好 %d%%。"
 
-#: ../src/mpd-battery-device.c:342
+#: ../src/mpd-battery-device.c:338
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "您的電池正在使用中。電量大概有 %d%%。"
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:343
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "您的電池已充飽，可以上路了。"
 
-#: ../src/mpd-battery-device.c:351
+#: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "很抱歉，看起來您的電池好像壞了。"
@@ -163,6 +163,17 @@ msgstr ""
 msgid "Other devices"
 msgstr "其他裝置"
 
+#: ../src/mpd-devices-tile.c:72
+#: ../src/mpd-devices-tile.c:95
+#: ../src/mpd-devices-tile.c:137
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "退出失敗，似乎有個應用程式正在使用它"
+
+#: ../src/mpd-devices-tile.c:389
+#: ../src/mpd-devices-tile.c:421
+msgid "It is safe to unplug this device now"
+msgstr "現在可以安全拔除此裝置"
+
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
@@ -172,50 +183,41 @@ msgstr "<span font-weight='bold'>你正在使用</span><span color='%s'>%d%% of 
 msgid "Trash"
 msgstr "回收筒"
 
-#: ../src/mpd-media-import-tile.c:73
-#, c-format
-msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-msgstr "<span font-weight='bold'>匯入數據</span> <span color='%s'> %d%%</span> "
-
-#: ../src/mpd-media-import-tile.c:217
-msgid "Stop"
-msgstr "停止"
-
 #: ../src/mpd-shell.c:126
 msgid "Devices"
 msgstr "裝置"
 
-#: ../src/mpd-storage-device-tile.c:161
+#: ../src/mpd-storage-device-tile.c:162
 #, c-format
 msgid "Could not run %s"
 msgstr "無法執行 %s"
 
-#: ../src/mpd-storage-device-tile.c:163
+#: ../src/mpd-storage-device-tile.c:164
 msgid "Import error"
 msgstr "匯入錯誤"
 
 #. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:498
+#: ../src/mpd-storage-device-tile.c:499
 msgid "Import data"
 msgstr "匯入數據"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:509
+#: ../src/mpd-storage-device-tile.c:510
 msgid "Eject"
 msgstr "退出"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:520
+#: ../src/mpd-storage-device-tile.c:521
 msgid "Open"
 msgstr "開啟"
 
-#: ../src/mpd-storage-device-tile.c:710
+#: ../src/mpd-storage-device-tile.c:711
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> 使用<span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:718
+#: ../src/mpd-storage-device-tile.c:719
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -256,14 +258,21 @@ msgstr "非常安靜"
 msgid "Silent"
 msgstr "寂靜無聲"
 
-#: ../src/mpd-volume-tile.c:357
+#: ../src/mpd-volume-tile.c:355
 msgid "Netbook volume"
 msgstr "網路筆電靜音"
 
-#: ../src/mpd-volume-tile.c:373
+#: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "靜音"
 
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>匯入數據</span> <span color='%s'> %d%%</span> "
+#~ msgid "Stop"
+#~ msgstr "停止"
 #~ msgid ""
 #~ "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr "%s 裝置已插入。你可以使用裝置面板與它進行互動"
