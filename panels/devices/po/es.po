@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-10 09:42+0000\n"
-"PO-Revision-Date: 2010-05-10 11:37-0800\n"
+"PO-Revision-Date: 2010-05-10 11:38-0800\n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -166,12 +166,12 @@ msgstr "Otros dispositivos"
 #: ../src/mpd-devices-tile.c:95
 #: ../src/mpd-devices-tile.c:137
 msgid "Ejecting failed, looks like an application is using it"
-msgstr ""
+msgstr "No se ha expulsado, porque parece que hay una aplicación usándolo"
 
 #: ../src/mpd-devices-tile.c:389
 #: ../src/mpd-devices-tile.c:421
 msgid "It is safe to unplug this device now"
-msgstr ""
+msgstr "Ya se puede desconectar este dispositivo sin problemas"
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
