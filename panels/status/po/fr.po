@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:37+0000\n"
+"POT-Creation-Date: 2010-05-10 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: David Cicognani <david.cicognani@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -13,6 +13,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/moblin-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "Bonjour ! Voici le panneau Statut. Lorsque vous avez un compte web configuré (comme Twitter) vous pourrez voir vos flux et mettre à jour votre statut ici."
 
 #: ../src/moblin-panel-status.c:100
 msgid "Status"
@@ -36,25 +40,40 @@ msgstr "Impossible de mettre à jour le statut : le service est peut être indis
 msgid "Unable to update status: You're not online."
 msgstr "Impossible de mettre à jour votre statut : vous n'êtes pas connecté."
 
-#: ../src/mps-feed-pane.c:463
+#: ../src/mps-feed-pane.c:452
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Nous avons deviné votre position comme étant : %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:458
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Votre position est partagée comme suit : %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Nous avons deviné votre position comme étant : %f %f"
 
-#: ../src/mps-feed-pane.c:476
+#: ../src/mps-feed-pane.c:472
+#, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "Votre position est partagée comme suit : %f %f"
+
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
 msgstr "Votre position n'est pas partagée"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:579
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "Mise à jour"
 
-#: ../src/mps-feed-pane.c:584
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "Que se passe-t-il ?"
 
-#: ../src/mps-feed-pane.c:634
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "Changer"
 
@@ -70,23 +89,23 @@ msgstr "Vos services web ne semblent pas être configurés ou bien il y a un pro
 msgid "Your location"
 msgstr "Votre position"
 
-#: ../src/mps-geotag-pane.c:554
+#: ../src/mps-geotag-pane.c:568
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../src/mps-geotag-pane.c:559
+#: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
 msgstr "Où êtes-vous ?"
 
-#: ../src/mps-geotag-pane.c:561
+#: ../src/mps-geotag-pane.c:575
 msgid "Find me"
 msgstr "Me localiser"
 
-#: ../src/mps-geotag-pane.c:568
+#: ../src/mps-geotag-pane.c:582
 msgid "Use location"
 msgstr "Utiliser la position"
 
-#: ../src/mps-geotag-pane.c:569
+#: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
 msgstr "Utiliser la position"
 
@@ -100,24 +119,9 @@ msgstr "Utiliser la position"
 msgid "%s from %s"
 msgstr "%s de %s"
 
-#: ../src/moblin-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Bonjour ! Voici le panneau Statut. Lorsque vous avez un compte web configuré (comme Twitter) vous pourrez voir vos flux et mettre à jour votre statut ici."
-
-#: ../src/mps-feed-pane.c:448
-#, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "Nous avons deviné votre position comme étant : %s (%f, %f)"
-
-#: ../src/mps-feed-pane.c:453
-#, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Votre position est partagée comme suit : %s (%f, %f)"
-
-#: ../src/mps-feed-pane.c:467
-#, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "Votre position est partagée comme suit : %f %f"
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Nous n'avons pas pu deviner votre position"
 
 #~ msgid "Offline"
 #~ msgstr "Déconnecté"
