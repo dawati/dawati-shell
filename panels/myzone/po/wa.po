@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-19 09:39+0000\n"
+"POT-Creation-Date: 2010-05-10 09:35+0000\n"
 "PO-Revision-Date: 2010-03-20 09:54+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -61,56 +61,60 @@ msgstr "Mostrer ostant d' fitchîs d' enawaire k' on sait"
 msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
 msgstr "Voloz vs rinetyî vos documints d' enawaire? Ça va oister l' ådvins coinrece del Myzone"
 
-#: ../penge/penge-calendar-pane.c:483
+#: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Radjoûs"
 
-#: ../penge/penge-calendar-pane.c:526
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Drovi"
+
+#: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
 msgstr "Bouyes"
 
-#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "Ahiver on radjoû"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Radjouter"
 
-#: ../penge/penge-events-pane.c:400
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "Rén e calindrî cisse samwinne ci"
 
-#: ../penge/penge-recent-file-tile.c:216
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "Pådje waibe"
 
-#: ../penge/penge-tasks-pane.c:50
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "Ahiver ene novele bouye"
 
-#: ../penge/penge-tasks-pane.c:426
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "Rén a fé ådjourdu"
 
-#: ../penge/penge-task-tile.c:318
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "A fé pol %x"
 
-#: ../penge/penge-welcome-tile.c:32
+#: ../penge/penge-welcome-tile.c:33
 msgid "Play intro video"
 msgstr "Djouwer l' videyo d' adrovaedje"
 
-#: ../penge/penge-welcome-tile.c:64
+#: ../penge/penge-welcome-tile.c:65
 msgid "Welcome to MeeGo"
 msgstr "Bénvnowe dins MeeGo"
 
-#: ../penge/penge-welcome-tile.c:83
+#: ../penge/penge-welcome-tile.c:84
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Çouchal est Myzone, wice ki vos fitchîs eployîs enawaire eyet l' ådvins d' vos floûs waibe aparexhront."
 
-#: ../penge/penge-welcome-tile.c:26
+#: ../penge/penge-welcome-tile.c:27
 msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
 msgstr "Cwand vs avoz defini vos contes waibes eyet eployî kékès fitchîs, il aparexhront chal sol Myzone pos î moussî  abeydimint cwand vos l' voloz."
 
@@ -126,9 +130,37 @@ msgstr "Messaedje nén léjhou"
 msgid "Unread messages"
 msgstr "Messaedjes nén léjhous"
 
-#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
-msgid "Open"
-msgstr "Drovi"
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Tapisreye di Myzone</b>"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Candjî çou k' est mostré e vosse Myzone</b>"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Candjî mes contes waibe"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calindrî eyet bouyes :"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Netyî les documint d' enawaire"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Tchoezixhoz vosse tapisreye"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Rimete come prémetou"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Abranles emile :"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Il aparexhrè droci les sacwès k' vos soçons fijhnut so fyis. Metoz en alaedje vos contes do côp !"
