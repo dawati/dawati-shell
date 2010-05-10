@@ -1765,7 +1765,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_container_add (GTK_CONTAINER (priv->expando), vbox);
 
   align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 12, 12);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 20, 20);
   gtk_widget_show (align);
   gtk_box_pack_start (GTK_BOX (vbox), align,
                       FALSE, FALSE, 0);
