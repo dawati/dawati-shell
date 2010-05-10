@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:42+0000\n"
+"POT-Creation-Date: 2010-05-10 09:42+0000\n"
 "PO-Revision-Date: 2010-04-16 14:29+0200\n"
 "Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
 "Language-Team: \n"
@@ -24,7 +24,7 @@ msgid "Devices panel"
 msgstr "Панель устройств"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:162
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "устройства"
 
@@ -56,6 +56,10 @@ msgstr[1] "%u вводы"
 msgid "System Sounds"
 msgstr "Системные звуки"
 
+#: ../power-icon/src/moblin-power-icon.c:46
+msgid "MeeGo Power Icon"
+msgstr "Значок электропитания MeeGo"
+
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
 msgstr "Заряд батареи на исходе"
@@ -80,24 +84,24 @@ msgstr "Внимание!"
 msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Заряд батареи компьютера исчерпан, он будет выключен. Сохраните свою работу, и до скорой встречи!"
 
-#: ../power-icon/src/mpd-power-icon.c:342
+#: ../power-icon/src/mpd-power-icon.c:336
 msgid "Would you like to turn off now?"
 msgstr "Отключить питание немедленно?"
 
-#: ../power-icon/src/mpd-power-icon.c:343
+#: ../power-icon/src/mpd-power-icon.c:337
 msgid "If you don't decide I'll turn off in 30 seconds."
 msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
 
-#: ../power-icon/src/mpd-power-icon.c:447
+#: ../power-icon/src/mpd-power-icon.c:441
 msgid "battery"
 msgstr "батарея"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:75
+#: ../power-icon/src/mpd-shutdown-notification.c:71
 #, c-format
 msgid "If you don't decide I'll turn off in %d seconds"
 msgstr "Если вы ничего не предпримите, компьютер отключится через %d секунд."
 
-#: ../power-icon/src/mpd-shutdown-notification.c:133
+#: ../power-icon/src/mpd-shutdown-notification.c:127
 msgid "Turn off"
 msgstr "Отключить"
 
@@ -105,27 +109,31 @@ msgstr "Отключить"
 msgid "Moblin Power Icon"
 msgstr "Moblin Power Icon"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/moblin-panel-devices.c:121
+msgid "MeeGo Devices Panel"
+msgstr "Панель устройств MeeGo"
+
+#: ../src/mpd-battery-device.c:329
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Похоже, у вас отсутствует батарея."
 
-#: ../src/mpd-battery-device.c:337
+#: ../src/mpd-battery-device.c:333
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Батарея заряжается. Ее заряд составляет %d%%."
 
-#: ../src/mpd-battery-device.c:342
+#: ../src/mpd-battery-device.c:338
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Батарея используется. Ее заряд составляет %d%%."
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:343
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Батарея заряжена полностью, можете продолжить работу."
 
-#: ../src/mpd-battery-device.c:351
+#: ../src/mpd-battery-device.c:347
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Похоже, ваша батарея неисправна."
@@ -164,48 +172,44 @@ msgstr "<span font-weight='bold'>Вы используете</span> <span color=
 msgid "Trash"
 msgstr "Корзина"
 
-#: ../src/mpd-media-import-tile.c:73
-#, c-format
-msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-msgstr "<span font-weight='bold'>Импорт данных</span> <span color='%s'>%d%%</span>"
-
-#: ../src/mpd-media-import-tile.c:217
-msgid "Stop"
-msgstr "Стоп"
-
 #: ../src/mpd-shell.c:126
 msgid "Devices"
 msgstr "Устройства"
 
-#: ../src/mpd-storage-device-tile.c:161
+#: ../src/mpd-storage-device-tile.c:162
 #, c-format
 msgid "Could not run %s"
 msgstr "Не удалось запустить %s"
 
-#: ../src/mpd-storage-device-tile.c:163
+#: ../src/mpd-storage-device-tile.c:164
 msgid "Import error"
 msgstr "Ошибка импорта"
 
 #. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:498
+#: ../src/mpd-storage-device-tile.c:499
 msgid "Import data"
 msgstr "Импорт данных"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:509
+#: ../src/mpd-storage-device-tile.c:510
 msgid "Eject"
 msgstr "Извлечь"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:520
+#: ../src/mpd-storage-device-tile.c:521
 msgid "Open"
 msgstr "Открыть"
 
-#: ../src/mpd-storage-device-tile.c:710
+#: ../src/mpd-storage-device-tile.c:711
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> использование <span color='%s'>%d%% из %s</span>"
+
+#: ../src/mpd-storage-device-tile.c:719
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
 
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
@@ -243,26 +247,28 @@ msgstr "Очень тихо"
 msgid "Silent"
 msgstr "Без звука"
 
-#: ../src/mpd-volume-tile.c:357
+#: ../src/mpd-volume-tile.c:355
 msgid "Netbook volume"
 msgstr "Громкость нетбука"
 
-#: ../src/mpd-volume-tile.c:373
+#: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Без звука"
 
-#: ../src/mpd-storage-device-tile.c:718
-#, c-format
-msgid "<span font-weight='bold'>%s</span>"
-msgstr "<span font-weight='bold'>%s</span>"
+#: ../src/mpd-devices-tile.c:389 ../src/mpd-devices-tile.c:421
+msgid "It is safe to unplug this device now"
+msgstr "Сейчас можно безопасно извлечь устройство"
 
-#: ../power-icon/src/moblin-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Значок электропитания MeeGo"
+#: ../src/mpd-devices-tile.c:72 ../src/mpd-devices-tile.c:95
+#: ../src/mpd-devices-tile.c:137
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Операция извлечения была выполнена неудачно так как устройство, скорее всего, используется программным обеспечением"
 
-#: ../src/moblin-panel-devices.c:123
-msgid "MeeGo Devices Panel"
-msgstr "Панель устройств MeeGo"
+#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+#~ msgstr "<span font-weight='bold'>Импорт данных</span> <span color='%s'>%d%%</span>"
+
+#~ msgid "Stop"
+#~ msgstr "Стоп"
 
 #~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr "%s было подключено. Для взаимодействия с ним можно использовать панель Устройства"
