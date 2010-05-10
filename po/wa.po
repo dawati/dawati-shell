@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-01 09:32+0000\n"
+"POT-Creation-Date: 2010-05-10 09:28+0000\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -32,10 +32,6 @@ msgstr "Schaper bår ås usteyes"
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Dji rgrete mins vos alez dveur oister on scriftôr divant saveur endè radjouter on novea."
 
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove and reorder many of the panels in your toolbar."
-msgstr "Vos ploz radjouter, oister oudonbén rirelére bråmint des scriftôrs e vosse båre ås usteyes."
-
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Sicriftôrs k' i gn a"
@@ -45,7 +41,7 @@ msgstr "Sicriftôrs k' i gn a"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:124
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -59,7 +55,7 @@ msgstr "%H:%M"
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:133
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
@@ -67,7 +63,7 @@ msgstr "%H:%M"
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:154
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "li %e di %B %Y"
 
@@ -88,13 +84,17 @@ msgstr "Boesse ås imådjetes sistinme"
 msgid "Show system tray"
 msgstr "Mostrer boesse ås imådjetes sistinme"
 
-#: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some, older, applications to let you know when something happens or to stay running when you close them."
-msgstr "Li boesse ås imådjetes sistinme est ene atuze eployeye pa des, pus vîs, programes po vos dire cwand åk si passe ou po dmorer ovrant cwand vos les cloyoz."
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Tofer si siervi do môde pitite waitroûle"
 
 #: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Dit l' ôre des scriftôrs sol bår ås usteyes."
+
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Fwait k' ons eploye todi l' môde po les ptitès waitroûles minme sel grandeu d' håynaedje a dandjî d' on môde di waitroûle pus grand."
 
 #: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
@@ -108,17 +108,13 @@ msgstr "Efets po Netbook da Moblin"
 msgid "Effects for Moblin Netbooks"
 msgstr "Efets da Moblin po les Netbooks"
 
-#: ../src/moblin-netbook.c:3221
+#: ../src/moblin-netbook.c:3222
 msgid "Activate"
 msgstr "Mete en alaedje"
 
-#: ../src/moblin-netbook.c:3235
+#: ../src/moblin-netbook.c:3236
 msgid "Unknown window"
 msgstr "Purnea nén cnoxhou"
-
-#: ../src/moblin-netbook.c:3237
-msgid "Is asking for your attention."
-msgstr "Vos arinne."
 
 #: ../src/mnb-toolbar.c:1000
 #, c-format
@@ -129,17 +125,21 @@ msgstr "Dji rgrete, %s est sketé"
 msgid "Dismiss"
 msgstr "Rinoncî"
 
-#: ../src/notifications/mnb-notification-cluster.c:653
+#: ../src/notifications/mnb-notification-cluster.c:682
 msgid "Dismiss All"
 msgstr "Rinoncî a ttafwait"
 
-#: ../data/mutter-moblin.schemas.in.h:1
-msgid "Always use small screen mode"
-msgstr "Tofer si siervi do môde pitite waitroûle"
+#: ../src/moblin-netbook.c:3238
+msgid "is asking for your attention."
+msgstr "vos arinne."
 
-#: ../data/mutter-moblin.schemas.in.h:3
-msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-msgstr "Fwait k' ons eploye todi l' môde po les ptitès waitroûles minme sel grandeu d' håynaedje a dandjî d' on môde di waitroûle pus grand."
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Vos ploz radjouter, oister oudon-bén radjinçner bråmint des scriftôrs e vosse båre ås usteyes."
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "Li boesse ås imådjetes sistinme est ene atuze eployeye pa des pus vîs programes po vos dire cwand åk si passe ou po dmorer ovrant cwand vos les cloyoz."
 
 #~ msgid "System tray"
 #~ msgstr "Boesse ås imådjetes sistinme"
