@@ -2,12 +2,12 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:37+0000\n"
+"POT-Creation-Date: 2010-05-10 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ewa zielinska <zielinskaewa@yahoo.com>\n"
 "Language-Team: Moblin\n"
@@ -46,40 +46,40 @@ msgstr "Nie można zaktualizować stanu. Usługa może być niedostępna, lub ha
 msgid "Unable to update status: You're not online."
 msgstr "Nie można zaktualizować stanu: Nie jesteś w trybie online."
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:452
 #, c-format
 msgid "We guessed your location as: %s (%f, %f)"
 msgstr "Odgadliśmy Twoją lokalizację: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:453
+#: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
 msgstr "Twoja lokalizacja jest udostępniana jako: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:463
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Odgadliśmy Twoją lokalizację: %f %f"
 
-#: ../src/mps-feed-pane.c:467
+#: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
 msgstr "Twoja lokalizacja jest udostępniana jako: %f %f "
 
-#: ../src/mps-feed-pane.c:476
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
 msgstr "Twoja lokalizacja nie jest udostępniana"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:579
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "Aktualizacja"
 
-#: ../src/mps-feed-pane.c:584
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "Co się dzieje?"
 
-#: ../src/mps-feed-pane.c:634
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "Zmień"
 
@@ -95,23 +95,23 @@ msgstr "Nie masz skonfigurowanych żadnych usług internetowych, lub wystąpił 
 msgid "Your location"
 msgstr "Twoja lokalizacja"
 
-#: ../src/mps-geotag-pane.c:554
+#: ../src/mps-geotag-pane.c:568
 msgid "Search"
 msgstr "Wyszukaj"
 
-#: ../src/mps-geotag-pane.c:559
+#: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
 msgstr "Gdzie jesteś?"
 
-#: ../src/mps-geotag-pane.c:561
+#: ../src/mps-geotag-pane.c:575
 msgid "Find me"
 msgstr "Odnajdź mnie"
 
-#: ../src/mps-geotag-pane.c:568
+#: ../src/mps-geotag-pane.c:582
 msgid "Use location"
 msgstr "Użyj lokalizacji"
 
-#: ../src/mps-geotag-pane.c:569
+#: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
 msgstr "Nie używaj lokalizacji"
 
@@ -119,9 +119,12 @@ msgstr "Nie używaj lokalizacji"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s z %s"
 
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Odgadliśmy Twoją lokalizację: %f %f"
