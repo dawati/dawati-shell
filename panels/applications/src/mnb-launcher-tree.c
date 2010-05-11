@@ -845,7 +845,14 @@ mnb_launcher_tree_test_cache (MnbLauncherTree *self,
 
   for (iter = self->watch_list; iter; iter = iter->next)
     {
-      if (0 == stat ((const gchar *) iter->data, &watch_stat))
+      /* Skip non-exist dirs, e.g. "~/.local/share/applications" is being
+       * watched even if not existing, so we get notified about the first
+       * per user app install.
+       * FIXME: can this cause problems when entire dirs are removed and we
+       * still hit the cache -- probably not because /usr/share/applications
+       * and friends are rather persistant. */
+      if (g_file_test (iter->data, G_FILE_TEST_IS_DIR) &&
+          0 == stat ((const gchar *) iter->data, &watch_stat))
         {
           if (watch_stat.st_mtime > cache_stat.st_mtime)
             {
