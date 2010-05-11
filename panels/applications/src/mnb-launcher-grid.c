@@ -45,15 +45,12 @@ _set_width_cb (ClutterActor *actor,
   clutter_actor_set_width (actor, *width);
 }
 
-static void
-_allocation_changed_cb (MnbLauncherGrid         *self,
-                        ClutterActorBox         *box,
-                        ClutterAllocationFlags   flags,
-                        gpointer                 data)
+static gboolean
+_allocation_changed_idle_cb (MnbLauncherGrid *self)
 {
   MnbLauncherGridPrivate *priv = GET_PRIVATE (self);
 
-  if (priv->x_expand_children)
+  if (priv && priv->x_expand_children)
     {
       MxPadding padding;
       gfloat width;
@@ -63,14 +60,24 @@ _allocation_changed_cb (MnbLauncherGrid         *self,
       width = clutter_actor_get_width ((ClutterActor *) self) -
               padding.left - padding.right;
 
-      /* Here we would expand the children. */
-      g_debug ("%s() %.0f",
-               __FUNCTION__,
-               width);
       clutter_container_foreach (CLUTTER_CONTAINER (self),
                                  (ClutterCallback) _set_width_cb,
                                  (gpointer) &width);
     }
+
+  return FALSE;
+}
+
+static void
+_allocation_changed_cb (MnbLauncherGrid         *self,
+                        ClutterActorBox         *box,
+                        ClutterAllocationFlags   flags,
+                        gpointer                 data)
+{
+  g_idle_add_full (G_PRIORITY_HIGH_IDLE,
+                   (GSourceFunc) _allocation_changed_idle_cb,
+                   self,
+                   NULL);
 }
 
 static void

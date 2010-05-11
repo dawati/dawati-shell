@@ -920,21 +920,24 @@ _key_focus_in (ClutterActor *actor)
   clutter_actor_grab_key_focus (priv->filter);
 }
 
-static void
-_scrollview_allocation_changed_cb (MxScrollView           *scroll,
-                                   ClutterActorBox        *box,
-                                   ClutterAllocationFlags  flags,
-                                   MnbLauncher            *self)
+typedef struct {
+  MnbLauncher     *self;
+  ClutterActorBox  box;
+} scrollview_allocation_changed_idle_t;
+
+static gboolean
+_scrollview_allocation_changed_idle_cb (scrollview_allocation_changed_idle_t *data)
 {
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  MnbLauncher         *self = data->self;
+  MnbLauncherPrivate  *priv = GET_PRIVATE (self);
   gfloat         scroll_width;
   MxPadding      padding;
   guint          scrollbar_width;
   gfloat         width;
 
-  scroll_width = box->x2 - box->x1;
-  mx_widget_get_padding (MX_WIDGET (scroll), &padding);
-  mx_stylable_get (MX_STYLABLE (scroll),
+  scroll_width = data->box.x2 - data->box.x1;
+  mx_widget_get_padding (MX_WIDGET (priv->scrollview), &padding);
+  mx_stylable_get (MX_STYLABLE (priv->scrollview),
                    "x-mx-scrollbar-width", &scrollbar_width,
                    NULL);
 
@@ -943,7 +946,25 @@ _scrollview_allocation_changed_cb (MxScrollView           *scroll,
 
   clutter_actor_set_width (priv->apps_grid, width);
 
-  g_debug ("%s() %.0f", __FUNCTION__, width);
+  return FALSE;
+}
+
+static void
+_scrollview_allocation_changed_cb (MxScrollView           *scroll,
+                                   ClutterActorBox        *box,
+                                   ClutterAllocationFlags  flags,
+                                   MnbLauncher            *self)
+{
+  scrollview_allocation_changed_idle_t *data;
+
+  data = g_new0 (scrollview_allocation_changed_idle_t, 1);
+  data->self = self;
+  data->box = *box;
+
+  g_idle_add_full (G_PRIORITY_HIGH_IDLE,
+                   (GSourceFunc) _scrollview_allocation_changed_idle_cb,
+                   data,
+                   g_free);
 }
 
 static GObject *
