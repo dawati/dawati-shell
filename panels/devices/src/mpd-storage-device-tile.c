@@ -109,7 +109,7 @@ update (MpdStorageDeviceTile *self)
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
   char          *markup;
   uint64_t       size;
-  uint64_t       available_size;
+  uint64_t       available_size = 0;
   unsigned int   percentage;
 
   markup = mpd_storage_device_tile_get_title (self);
@@ -117,14 +117,17 @@ update (MpdStorageDeviceTile *self)
                            markup);
   g_free (markup);
 
-  g_object_get (priv->storage,
-                "size", &size,
-                "available-size", &available_size,
-                NULL);
+  if (priv->storage)
+  {
+    g_object_get (priv->storage,
+                  "size", &size,
+                  "available-size", &available_size,
+                  NULL);
+    percentage = 100 - (double) available_size / size * 100;
+    mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter),
+                                  percentage / 100.);
+  }
 
-  percentage = 100 - (double) available_size / size * 100;
-  mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter),
-                                percentage / 100.);
   g_object_set (priv->meter,
                 "visible", available_size > 0,
                 NULL);
@@ -186,24 +189,22 @@ static void
 _open_clicked_cb (MxButton              *button,
                   MpdStorageDeviceTile  *self)
 {
+  GError *error = NULL;
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char    *uri;
-  GError  *error = NULL;
 
-  uri = g_filename_to_uri (priv->mount_point, NULL, &error);
+  if (!priv->mount_point)
+  {
+    g_warning ("%s: Mount point uri not set", G_STRLOC);
+    return;
+  }
+
+  gtk_show_uri (NULL, priv->mount_point,
+                clutter_get_current_event_time (), &error);
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
-  } else {
-    gtk_show_uri (NULL, uri, clutter_get_current_event_time (), &error);
-    if (error)
-    {
-      g_warning ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
-    }
   }
-  g_free (uri);
 
   g_signal_emit_by_name (self, "request-hide");
 }
@@ -238,12 +239,31 @@ _constructor (GType                  type,
 
   if (priv->mount_point)
   {
-    priv->storage = mpd_storage_device_new (priv->mount_point);
-    g_signal_connect (priv->storage, "notify::size",
+    char *path;
+
+    path = g_filename_from_uri (priv->mount_point, NULL, &error);
+    if (error)
+    {
+      /* not all uris are file paths, that's ok */
+      if (error->code != G_CONVERT_ERROR_BAD_URI)
+      {
+        g_warning ("%s: Failed to get filename from uri: %s",
+                   G_STRLOC, error->message);
+      }
+      g_clear_error (&error);
+    }
+    if (path)
+    {
+      priv->storage = mpd_storage_device_new (path);
+      g_signal_connect (priv->storage, "notify::size",
                       G_CALLBACK (_storage_size_notify_cb), self);
-    g_signal_connect (priv->storage, "notify::available-size",
+      g_signal_connect (priv->storage, "notify::available-size",
                       G_CALLBACK (_storage_size_notify_cb), self);
+      g_free (path);
+    }
+
     update (self);
+
   } else {
     g_critical ("%s : %s",
                 G_STRLOC,
@@ -396,7 +416,7 @@ mpd_storage_device_tile_class_init (MpdStorageDeviceTileClass *klass)
                                    PROP_MOUNT_POINT,
                                    g_param_spec_string ("mount-point",
                                                         "Mount point",
-                                                        "Device mount point",
+                                                        "Device mount point uri",
                                                         NULL,
                                                         param_flags |
                                                         G_PARAM_CONSTRUCT_ONLY));
@@ -696,15 +716,18 @@ mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
   char          *markup;
   char          *size_text;
   uint64_t       size;
-  uint64_t       available_size;
+  uint64_t       available_size = 0;
   unsigned int   percentage;
 
-  g_object_get (priv->storage,
-                "size", &size,
-                "available-size", &available_size,
-                NULL);
+  if (priv->storage)
+  {
+    g_object_get (priv->storage,
+                  "size", &size,
+                  "available-size", &available_size,
+                  NULL);
 
-  percentage = 100 - (double) available_size / size * 100;
+    percentage = 100 - (double) available_size / size * 100;
+  }
 
   if (available_size > 0) {
     size_text = g_format_size_for_display (size);

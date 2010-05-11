@@ -145,19 +145,19 @@ _mount_unmount_cb (GMount       *mount,
 
 static int
 _find_mount_cb (GMount      *mount,
-                char const  *path)
+                char const  *uri)
 {
   GFile *file;
-  char  *mount_path;
+  char  *mount_uri;
   int    ret;
 
   file = g_mount_get_root (mount);
-  mount_path = g_file_get_path (file);
+  mount_uri = g_file_get_uri (file);
 
-  g_debug ("%s() %s", __FUNCTION__, mount_path);
-  ret = g_strcmp0 (mount_path, path);
+  g_debug ("%s() %s", __FUNCTION__, mount_uri);
+  ret = g_strcmp0 (mount_uri, uri);
 
-  g_free (mount_path);
+  g_free (mount_uri);
   g_object_unref (file);
 
   return ret;
@@ -168,14 +168,14 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
                 MpdDevicesTile        *self)
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
-  char const  *path;
+  char const  *uri;
   GList       *mounts;
   GList       *iter;
 
-  path = mpd_storage_device_tile_get_mount_point (tile);
+  uri = mpd_storage_device_tile_get_mount_point (tile);
 
   mounts = g_volume_monitor_get_mounts (priv->monitor);
-  iter = g_list_find_custom (mounts, path, (GCompareFunc) _find_mount_cb);
+  iter = g_list_find_custom (mounts, uri, (GCompareFunc) _find_mount_cb);
   if (iter)
   {
     GMount *mount = G_MOUNT (iter->data);
@@ -187,25 +187,25 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
     vol = g_mount_get_volume (mount);
 
     if (drive && g_drive_can_eject (drive)) {
-      g_debug ("%s() ejecting drive %s", __FUNCTION__, path);
+      g_debug ("%s() ejecting drive %s", __FUNCTION__, uri);
       g_drive_eject_with_operation (drive,
                                     G_MOUNT_UNMOUNT_NONE, NULL, NULL,
                                     (GAsyncReadyCallback)_drive_eject_cb,
                                     tile);
     } else if (vol && g_volume_can_eject (vol)) {
-      g_debug ("%s() ejecting volume %s", __FUNCTION__, path);
+      g_debug ("%s() ejecting volume %s", __FUNCTION__, uri);
       g_volume_eject_with_operation (vol,
                                      G_MOUNT_UNMOUNT_NONE, NULL, NULL,
                                      (GAsyncReadyCallback)_vol_eject_cb,
                                      tile);
     } else if (g_mount_can_eject (mount)) {
-      g_debug ("%s() ejecting mount %s", __FUNCTION__, path);
+      g_debug ("%s() ejecting mount %s", __FUNCTION__, uri);
       g_mount_eject_with_operation (mount,
                                     G_MOUNT_UNMOUNT_NONE, NULL, NULL,
                                     (GAsyncReadyCallback) _mount_eject_cb,
                                     tile);
     } else if (g_mount_can_unmount (mount)) {
-      g_debug ("%s() unmounting mount %s", __FUNCTION__, path);
+      g_debug ("%s() unmounting mount %s", __FUNCTION__, uri);
       g_mount_unmount_with_operation (mount,
                                       G_MOUNT_UNMOUNT_NONE, NULL, NULL,
                                      (GAsyncReadyCallback) _mount_unmount_cb,
@@ -280,7 +280,7 @@ add_tile_from_mount (MpdDevicesTile *self,
 {
   MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
   GFile         *file;
-  char          *path;
+  char          *uri;
   GVolume       *volume;
   char          *name = NULL;
   char         **mime_types;
@@ -302,7 +302,7 @@ add_tile_from_mount (MpdDevicesTile *self,
 
   /* Mount point */
   file = g_mount_get_root (mount);
-  path = g_file_get_path (file);
+  uri = g_file_get_uri (file);
 
   mime_types = g_mount_guess_content_type_sync (mount, false, NULL, &error);
   for (int i = 0; mime_types[i]; i++)
@@ -324,7 +324,7 @@ add_tile_from_mount (MpdDevicesTile *self,
   icon_file = gtk_icon_info_get_filename (icon_info);
   g_debug ("%s() %s", __FUNCTION__, icon_file);
 
-  tile = mpd_storage_device_tile_new (name, path, mime_types[0], icon_file);
+  tile = mpd_storage_device_tile_new (name, uri, mime_types[0], icon_file);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
@@ -338,7 +338,7 @@ add_tile_from_mount (MpdDevicesTile *self,
   gtk_icon_info_free (icon_info);
   g_object_unref (icon);
   g_strfreev (mime_types);
-  g_free (path);
+  g_free (uri);
   g_object_unref (file);
 }
 
