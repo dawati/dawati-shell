@@ -51,10 +51,10 @@ enum
 
 struct _SwZonePrivate
 {
-  gboolean is_enabled : 1;
-  gboolean dummy : 1;
-  gboolean focused : 1;
-  gboolean drag_in_progress : 1;
+  guint is_enabled : 1;
+  guint dummy : 1;
+  guint focused : 1;
+  guint drag_in_progress : 1;
   gfloat dummy_size;
 
   ClutterActor *placeholder;
