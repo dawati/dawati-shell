@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:37+0000\n"
+"POT-Creation-Date: 2010-05-10 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
@@ -40,40 +40,44 @@ msgstr "Tilaa ei voida päivittää. Palvelu ei ehkä ole käytettävissä tai s
 msgid "Unable to update status: You're not online."
 msgstr "Tilaa ei oida päivittää. Et ole verkossa."
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Sijaintia ei voida tunnistaa"
+
+#: ../src/mps-feed-pane.c:452
 #, c-format
 msgid "We guessed your location as: %s (%f, %f)"
 msgstr "Arvelemme, että sijaintisi on: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:453
+#: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
 msgstr "Sijaintisi jaetaan arvolla: %s (%f, %f) "
 
-#: ../src/mps-feed-pane.c:463
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Arvelemme, että sijaintisi on : %f %f"
 
-#: ../src/mps-feed-pane.c:467
+#: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
 msgstr "Sijaintisi jaetaan arvolla: %f %f "
 
-#: ../src/mps-feed-pane.c:476
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
-msgstr "Paikkaasi ei jaeta"
+msgstr "Sijaintisi ei jaeta"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:579
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "Päivitä"
 
-#: ../src/mps-feed-pane.c:584
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "Mitä tapahtuu?"
 
-#: ../src/mps-feed-pane.c:634
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "Muuta"
 
@@ -89,23 +93,23 @@ msgstr "Sinulla ei näytä olevan mitään web-palveluja konfiguroituna tai niid
 msgid "Your location"
 msgstr "Paikkasi"
 
-#: ../src/mps-geotag-pane.c:554
+#: ../src/mps-geotag-pane.c:568
 msgid "Search"
 msgstr "Hae"
 
-#: ../src/mps-geotag-pane.c:559
+#: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
 msgstr "Missä olet?"
 
-#: ../src/mps-geotag-pane.c:561
+#: ../src/mps-geotag-pane.c:575
 msgid "Find me"
 msgstr "Etsi minut"
 
-#: ../src/mps-geotag-pane.c:568
+#: ../src/mps-geotag-pane.c:582
 msgid "Use location"
 msgstr "Käytä paikkaa"
 
-#: ../src/mps-geotag-pane.c:569
+#: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
 msgstr "Älä käytä paikkaa"
 
@@ -121,39 +125,52 @@ msgstr " %s kohteesta %s"
 
 #~ msgid "Offline"
 #~ msgstr "Poissa linjoilta"
+
 #~ msgid "Available"
 #~ msgstr "Tavoitettavissa"
+
 #~ msgid "Away"
 #~ msgstr "Poissa"
+
 #~ msgid "Busy"
 #~ msgstr "Ei tavoitettavissa"
+
 #~ msgid "Close"
 #~ msgstr "Sulje"
+
 #~ msgid "Unknown account"
 #~ msgstr "Tuntematon tili"
+
 #~ msgid "Edit"
 #~ msgstr "Muokkaa"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Anna %s-palvelusi tila..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "Kirjoita tähän tämänhetkinen tilasi..."
+
 #~ msgid "Post"
 #~ msgstr "Lähetä"
+
 #~ msgid "Your current status"
 #~ msgstr "Tämänhetkinen tilasi"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Tämänhetkinen tilasi: olet poissa linjoilta"
+
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
+
 #~ msgid ""
 #~ "To update your web status you need to setup a Web Services account with a "
 #~ "provider that supports status messages"
 #~ msgstr ""
 #~ "Jotta voisit päivittää tilasi verkossa, sinun pitää määrittää "
 #~ "verkkopalvelutili palveluntarjoajan kanssa, joka tukee tilaviestejä."
+
 #~ msgid ""
 #~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr ""
 #~ "Pikaviestintili pitää määrittää, jotta voit päivittää pikaviestintilaasi."
-
