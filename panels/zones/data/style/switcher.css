@@ -9,6 +9,11 @@ SwZone:active
   border-image: url('content-panel-background-highlight-orange.png') 6;
 }
 
+SwZone#welcome
+{
+  border-image: url('background-gradient.png') 6;
+}
+
 SwZone#new-zone
 {
   /* border-image: url('') 6; */

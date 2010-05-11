@@ -1,5 +1,6 @@
 themedir = $(pkgdatadir)/style
 dist_theme_DATA = \
+	background-gradient.png \
 	app-background-panel.png \
 	app-background-panel-highlight.png \
 	content-panel-background.png \
