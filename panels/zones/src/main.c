@@ -471,6 +471,18 @@ hide (ZonePanelData *data)
   data->overview = NULL;
 }
 
+static void
+key_press (ClutterActor  *actor,
+           ClutterEvent  *event,
+           ZonePanelData *data)
+{
+  if (event->key.keyval != 32)
+    return;
+
+  hide (data);
+  show (data);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -546,15 +558,20 @@ main (int argc, char **argv)
 
       desktop_background_init (data);
 
+      data->width = 1016;
+      data->height = 500;
+
       setup (data);
 
       MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
-      clutter_actor_set_size ((ClutterActor *) data->toplevel, 1016, 500);
       clutter_actor_set_size (data->stage, 1016, 500);
       clutter_actor_show_all (data->stage);
 
       clutter_container_add_actor (CLUTTER_CONTAINER (data->stage),
                                    (ClutterActor *) data->toplevel);
+
+      g_signal_connect (data->stage, "key-release-event",
+                        G_CALLBACK (key_press), data);
     }
 
 
