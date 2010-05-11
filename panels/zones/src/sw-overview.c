@@ -43,6 +43,7 @@ typedef struct
 struct _SwOverviewPrivate
 {
   gint n_zones;
+  gint focused_zone;
 
   ClutterActor *dummy;
   gulong dummy_added_handler;
@@ -187,8 +188,17 @@ sw_overview_renumber_zones (SwOverview   *view)
   count = 0;
   for (l = children; l; l = g_list_next (l))
     {
-      if (!sw_zone_get_dummy (SW_ZONE (l->data)))
-        sw_zone_set_number (SW_ZONE (l->data), ++count);
+      SwZone *zone = SW_ZONE (l->data);
+
+      if (!sw_zone_get_dummy (zone))
+        {
+          sw_zone_set_number (zone, ++count);
+
+          if (count == view->priv->focused_zone)
+            sw_zone_set_focused (zone, TRUE);
+          else
+            sw_zone_set_focused (zone, FALSE);
+        }
     }
 
   /* ensure there is at least one zone at all times */
@@ -196,10 +206,20 @@ sw_overview_renumber_zones (SwOverview   *view)
     {
       ClutterActor *zone;
 
+      /* temporarily disable animations to add to the welcome screen */
+      mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (view), FALSE);
+
       zone = sw_zone_new ();
       clutter_container_add_actor (CLUTTER_CONTAINER (view), zone);
       clutter_container_child_set (CLUTTER_CONTAINER (view),
                                    zone, "expand", TRUE, NULL);
+      sw_zone_set_is_welcome (SW_ZONE (zone), TRUE);
+      sw_zone_set_number (SW_ZONE (zone), 1);
+
+      /* re-enable animations after welcome screen is added */
+      mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (view), TRUE);
+
+      view->priv->n_zones++;
     }
 
   /* add the new dummy */
@@ -482,6 +502,8 @@ sw_overview_set_focused_zone (SwOverview *overview,
       sw_zone_set_focused (SW_ZONE (l->data), (i == index));
       i++;
     }
+
+  overview->priv->focused_zone = index + 1;
 
   g_list_free (children);
 }

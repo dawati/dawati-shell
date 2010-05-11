@@ -77,9 +77,9 @@ MxButton:hover
   -mx-content-image: url('close-button-hover.png');
 }
 
-MxLabel.no-apps-label
+MxLabel#welcome-label
 {
-  color: black;
+  font-size: 16;
 }
 
 MxLabel#zones-title-label
