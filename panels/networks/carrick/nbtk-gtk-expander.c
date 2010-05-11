@@ -89,7 +89,7 @@ nbtk_gtk_expander_expose_event (GtkWidget      *widget,
       rect.height = widget->allocation.height;
       rect.width = widget->allocation.width;
 
-      gtk_paint_box (widget->style,
+      gtk_paint_shadow (widget->style,
                      widget->window,
                      widget->state,
                      GTK_SHADOW_OUT,
