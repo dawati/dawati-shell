@@ -21,7 +21,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <clutter/clutter.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <libnotify/notify.h>
 #include "mpd-power-icon.h"
@@ -55,7 +54,7 @@ main (int     argc,
   percentage = atoi (argv[1]);
 
   clutter_init (&argc, &argv);
-  notify_init (_("Moblin Power Icon"));
+  notify_init ("MeeGo Power Icon");
   /* Needed for egg-idletime's X extensions. */
   gtk_init (&argc, &argv);
 

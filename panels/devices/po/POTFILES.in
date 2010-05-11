@@ -5,7 +5,6 @@ power-icon/data/moblin-power-icon.desktop.in.in
 power-icon/src/moblin-power-icon.c
 power-icon/src/mpd-power-icon.c
 power-icon/src/mpd-shutdown-notification.c
-power-icon/tests/test-battery-notification.c
 src/moblin-panel-devices.c
 src/mpd-battery-device.c
 src/mpd-battery-tile.c
