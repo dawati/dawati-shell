@@ -2,12 +2,12 @@
 # Copyright (C) 2009 mutter-moblin's copyright holder.
 # This file is distributed under the same license as the mutter-moblin package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:46+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: 2009-12-11 19:55+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -21,33 +21,42 @@ msgstr ""
 msgid "Zones panel"
 msgstr "Pannello zone"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zone"
 
-#: ../src/sw-zone.c:797
-msgid "No applications on this zone"
-msgstr "Nessuna applicazione in questa zona"
+#: ../src/main.c:405
+msgid "Zones"
+msgstr "Zone"
 
-#: ../src/sw-zone.c:924
+#: ../src/sw-overview.c:240
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+"Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai in "
+"grado di visualizzarle, gestirle ed effettuare l'accesso da qui."
+
+#: ../src/sw-zone.c:92
+msgid "New Zone"
+msgstr "Nuova zona"
+
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "Zona %d"
 
-#: ../src/main.c:403
-msgid "Zones"
-msgstr "Zone"
+#: ../src/sw-zone.c:848
+msgid "No applications on this zone"
+msgstr "Nessuna applicazione in questa zona"
 
-#: ../src/sw-zone.c:783
-msgid "New Zone"
-msgstr "Nuova zona"
-
-#: ../src/sw-overview.c:220
-msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai in grado di visualizzarle, gestirle ed effettuare l'accesso da qui."
-
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Le applicazioni in uso vengono mostrate qui. È possibile passare da un'applicazione all'altra e organizzarle come meglio si crede."
+#: ../src/sw-zone.c:1004
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Le applicazioni in uso vengono mostrate qui. È possibile passare da "
+"un'applicazione all'altra e organizzarle come meglio si crede."
 
 #~ msgid "two"
 #~ msgstr "due"
@@ -154,8 +163,14 @@ msgstr "Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai 
 #~ msgid "test"
 #~ msgstr "test"
 
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "La cronologia personale sarà disponibile solo dopo aver ascoltato della musica, guardato alcune immagini o dei video. Per il momento sono mostrati alcuni contenuti di esempio:"
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "La cronologia personale sarà disponibile solo dopo aver ascoltato della "
+#~ "musica, guardato alcune immagini o dei video. Per il momento sono "
+#~ "mostrati alcuni contenuti di esempio:"
 
 #~ msgid "Recently played"
 #~ msgstr "Riprodotti di recente"
@@ -205,8 +220,12 @@ msgstr "Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai 
 #~ msgid "applications"
 #~ msgstr "applicazioni"
 
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "Visitando delle pagine web, quelle preferite verranno visualizzate qui e nella pagina «Nuova scheda» del browser."
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "Visitando delle pagine web, quelle preferite verranno visualizzate qui e "
+#~ "nella pagina «Nuova scheda» del browser."
 
 #~ msgid "Untitled"
 #~ msgstr "Senza nome"
@@ -262,14 +281,24 @@ msgstr "Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai 
 #~ msgid "No calendar entries this week"
 #~ msgstr "Questa settimana nessun appuntamento"
 
-#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-#~ msgstr "Una volta attivati gli account personali, qui verranno mostrate le notizie degli amici e i servizi web."
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "Una volta attivati gli account personali, qui verranno mostrate le "
+#~ "notizie degli amici e i servizi web."
 
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>Benvenuti in Moblin 2.0 per netbook</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Poiché Moblin è un po' diverso rispetto agli altri computer, abiamo raccolto alcune informazioni per aiutare a comprendere al meglio come usarlo. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Poiché Moblin è un po' diverso rispetto agli altri computer, abiamo "
+#~ "raccolto alcune informazioni per aiutare a comprendere al meglio come "
+#~ "usarlo. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
 
 #~ msgid "Web page"
 #~ msgstr "Pagina web"
@@ -292,8 +321,11 @@ msgstr "Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai 
 #~ msgid "Send a message"
 #~ msgstr "Invia un messaggio"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Non è stata trovata alcuna persona. È stato configurato un account di messaggistica istantanea?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Non è stata trovata alcuna persona. È stato configurato un account di "
+#~ "messaggistica istantanea?"
 
 #~ msgid "People"
 #~ msgstr "Persone"
@@ -308,7 +340,9 @@ msgstr "Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai 
 #~ msgstr "Scegliere una zona per l'applicazione:"
 
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
-#~ msgstr "Per attivare la barra degli strumenti, muovere il puntatore verso la parte superiore dello schermo"
+#~ msgstr ""
+#~ "Per attivare la barra degli strumenti, muovere il puntatore verso la "
+#~ "parte superiore dello schermo"
 
 #~ msgid "Offline"
 #~ msgstr "Fuori rete"
@@ -349,11 +383,18 @@ msgstr "Ciao! Questo è il pannello Zone. Quando hai applicazioni aperte, sarai 
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Stato attuale - fuori rete"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "Per aggiornare il proprio stato è necessario configurare un account di un Servizio web che supporti i messaggi di stato"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Per aggiornare il proprio stato è necessario configurare un account di un "
+#~ "Servizio web che supporti i messaggi di stato"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Per aggiornare il proprio stato IM è necessario configurare un account di messaggistica istantanea"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Per aggiornare il proprio stato IM è necessario configurare un account di "
+#~ "messaggistica istantanea"
 
 #~ msgid "status"
 #~ msgstr "stato"

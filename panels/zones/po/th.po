@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: 2010-01-19 22:00+0700\n"
 "Last-Translator: Anuchit Chalothorn <anoochit@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@google.com>\n"
@@ -18,51 +18,45 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: THAILAND\n"
 
-#: ../src/sw-zone.c:763
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
 #, fuzzy
-msgid "new zone"
+msgid "Zones panel"
+msgstr "โซนยังไม่มี"
+
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+msgid "zones"
 msgstr "โซน"
 
-#: ../src/sw-zone.c:777
+#: ../src/main.c:405
+#, fuzzy
+msgid "Zones"
+msgstr "โซน"
+
+#: ../src/sw-overview.c:240
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+
+#: ../src/sw-zone.c:92
+#, fuzzy
+msgid "New Zone"
+msgstr "โซน"
+
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#, fuzzy, c-format
+msgid "Zone %d"
+msgstr "โซน"
+
+#: ../src/sw-zone.c:848
 msgid "No applications on this zone"
 msgstr "โปรแกรมไม่มีในโซนนี้"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
-msgid "one"
-msgstr "โซน"
-
-#: ../src/sw-zone.c:909
-msgid "two"
-msgstr ""
-
-#: ../src/sw-zone.c:913
-msgid "three"
-msgstr ""
-
-#: ../src/sw-zone.c:917
-msgid "four"
-msgstr ""
-
-#: ../src/sw-zone.c:921
-msgid "five"
-msgstr ""
-
-#: ../src/sw-zone.c:925
-msgid "six"
-msgstr ""
-
-#: ../src/sw-zone.c:929
-msgid "seven"
-msgstr ""
-
-#: ../src/sw-zone.c:933
-msgid "eight"
-msgstr ""
-
-#: ../src/main.c:458
-msgid "zones"
-msgstr "โซน"
+#: ../src/sw-zone.c:1004
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr "โปรแกรมที่คุณใช้จะปรากฏขึ้นที่นี่. คุณจะ สามารถเปลี่ยนและจัดให้เนื้อหาตรงใจของคุณได้."
 
 #~ msgid "Effects for Moblin Netbooks"
 #~ msgstr "เอฟเฟกสำหรับ Moblin Netbook"
@@ -88,13 +82,5 @@ msgstr "โซน"
 #~ msgid "%B %e, %Y"
 #~ msgstr "%B %e, %Y"
 
-#~ msgid "No Zones yet"
-#~ msgstr "โซนยังไม่มี"
-
 #~ msgid "Dismiss All"
 #~ msgstr "ละทิ้งทั้งหมด "
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr "โปรแกรมที่คุณใช้จะปรากฏขึ้นที่นี่. คุณจะ สามารถเปลี่ยนและจัดให้เนื้อหาตรงใจของคุณได้."

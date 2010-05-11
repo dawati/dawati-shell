@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutter 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-10 15:09+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: 2009-08-21 14:54+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -15,51 +15,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/sw-zone.c:763
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
 #, fuzzy
-msgid "new zone"
+msgid "Zones panel"
+msgstr "Encara no hi ha cap zona"
+
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+msgid "zones"
 msgstr "zones"
 
-#: ../src/sw-zone.c:777
+#: ../src/main.c:405
+#, fuzzy
+msgid "Zones"
+msgstr "zones"
+
+#: ../src/sw-overview.c:240
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+
+#: ../src/sw-zone.c:92
+#, fuzzy
+msgid "New Zone"
+msgstr "zones"
+
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#, fuzzy, c-format
+msgid "Zone %d"
+msgstr "zones"
+
+#: ../src/sw-zone.c:848
 msgid "No applications on this zone"
 msgstr "No hi ha aplicacions en aquesta zona"
 
-#: ../src/sw-zone.c:905
-#, fuzzy
-msgid "one"
-msgstr "zones"
-
-#: ../src/sw-zone.c:909
-msgid "two"
+#: ../src/sw-zone.c:1004
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
 msgstr ""
-
-#: ../src/sw-zone.c:913
-msgid "three"
-msgstr ""
-
-#: ../src/sw-zone.c:917
-msgid "four"
-msgstr ""
-
-#: ../src/sw-zone.c:921
-msgid "five"
-msgstr ""
-
-#: ../src/sw-zone.c:925
-msgid "six"
-msgstr ""
-
-#: ../src/sw-zone.c:929
-msgid "seven"
-msgstr ""
-
-#: ../src/sw-zone.c:933
-msgid "eight"
-msgstr ""
-
-#: ../src/main.c:458
-msgid "zones"
-msgstr "zones"
+"Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i "
+"organitzar-les com més us agradi."
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Fa menys d'un minut"
@@ -114,16 +110,6 @@ msgstr "zones"
 
 #~ msgid "Dismiss All"
 #~ msgstr "Descarta-ho tot"
-
-#~ msgid "No Zones yet"
-#~ msgstr "Encara no hi ha cap zona"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i "
-#~ "organitzar-les com més us agradi."
 
 #~ msgid "%l:%M %P"
 #~ msgstr "%H:%M"

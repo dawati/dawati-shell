@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:46+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -17,38 +17,41 @@ msgstr ""
 msgid "Zones panel"
 msgstr "Panelen Zoner"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2
-#: ../src/main.c:514
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zoner"
 
-#: ../src/main.c:403
+#: ../src/main.c:405
 msgid "Zones"
 msgstr "Zoner"
 
-#: ../src/sw-overview.c:220
-msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "Hej! Detta är zonpanelen. När du har öppna program kan du visa, hantera och nå dem här."
+#: ../src/sw-overview.c:240
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+"Hej! Detta är zonpanelen. När du har öppna program kan du visa, hantera och "
+"nå dem här."
 
-#: ../src/sw-zone.c:783
+#: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "Ny zon"
 
-#: ../src/sw-zone.c:797
-msgid "No applications on this zone"
-msgstr "Inga program i denna zon"
-
-#: ../src/sw-zone.c:924
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "Zon%d"
 
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Program du använder visas här. Du kan byta och organisera dem bäst du "
-#~ "vill."
+#: ../src/sw-zone.c:848
+msgid "No applications on this zone"
+msgstr "Inga program i denna zon"
+
+#: ../src/sw-zone.c:1004
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Program du använder visas här. Du kan byta och organisera dem bäst du vill."
 
 #~ msgid "one"
 #~ msgstr "en"

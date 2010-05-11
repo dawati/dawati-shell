@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 19:36+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: 2009-11-19 14:56-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -27,29 +27,38 @@ msgstr "Zones panel"
 msgid "zones"
 msgstr "zones"
 
-#: ../src/sw-zone.c:797
-msgid "No applications on this zone"
-msgstr "No applications on this zone"
-
 #: ../src/main.c:405
 msgid "Zones"
 msgstr "Zones"
 
-#: ../src/sw-zone.c:783
+#: ../src/sw-overview.c:240
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+"Hello! This is the Zones panel. When you have open applications, you can "
+"view, manage, and access them here."
+
+#: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "New Zone"
 
-#: ../src/sw-overview.c:220
-msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "Hello! This is the Zones panel. When you have open applications, you can view, manage, and access them here."
-
-#: ../src/sw-zone.c:924
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "Zone %d"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Applications you’re using will show up here. You will be able to switch and organise them to your heart's content."
+#: ../src/sw-zone.c:848
+msgid "No applications on this zone"
+msgstr "No applications on this zone"
+
+#: ../src/sw-zone.c:1004
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organise them to your heart's content."
 
 #~ msgid "two"
 #~ msgstr "two"

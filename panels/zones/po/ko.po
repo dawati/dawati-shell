@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:46+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -18,33 +18,42 @@ msgstr ""
 msgid "Zones panel"
 msgstr "영역 패널"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "영역"
 
-#: ../src/sw-zone.c:797
-msgid "No applications on this zone"
-msgstr "이 영역에는 응용 프로그램이 없습니다."
+#: ../src/main.c:405
+msgid "Zones"
+msgstr "영역"
 
-#: ../src/sw-zone.c:924
+#: ../src/sw-overview.c:240
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+"안녕하십니까? 이것은 영역 패널입니다. 응용 프로그램이 열려 있으면 여기서 보거"
+"나 관리하거나 액세스할 수 있습니다."
+
+#: ../src/sw-zone.c:92
+msgid "New Zone"
+msgstr "새로운 영역"
+
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "영역 %d"
 
-#: ../src/main.c:403
-msgid "Zones"
-msgstr "영역"
+#: ../src/sw-zone.c:848
+msgid "No applications on this zone"
+msgstr "이 영역에는 응용 프로그램이 없습니다."
 
-#: ../src/sw-zone.c:783
-msgid "New Zone"
-msgstr "새로운 영역"
-
-#: ../src/sw-overview.c:220
-msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "안녕하십니까? 이것은 영역 패널입니다. 응용 프로그램이 열려 있으면 여기서 보거나 관리하거나 액세스할 수 있습니다."
-
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "사용하고 있는 응용 프로그램이 여기에 나타날 것입니다. 원하는데로 바꿀수도 있고 정리도 가능합니다. "
+#: ../src/sw-zone.c:1004
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"사용하고 있는 응용 프로그램이 여기에 나타날 것입니다. 원하는데로 바꿀수도 있"
+"고 정리도 가능합니다. "
 
 #~ msgid "two"
 #~ msgstr "둘"
@@ -145,8 +154,13 @@ msgstr "안녕하십니까? 이것은 영역 패널입니다. 응용 프로그�
 #~ msgid "test"
 #~ msgstr "테스트"
 
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "음악을 듣고 싶거나 사진을 봐야한다거나 또는 어떤 비디오를 봐야할때 귀하의 기록을 보십시오. 그동안 귀하는 샘플 미디어를 볼 수 있습니다.  "
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "음악을 듣고 싶거나 사진을 봐야한다거나 또는 어떤 비디오를 봐야할때 귀하의 "
+#~ "기록을 보십시오. 그동안 귀하는 샘플 미디어를 볼 수 있습니다.  "
 
 #~ msgid "Recently played"
 #~ msgstr "최근에 재생된"
@@ -196,8 +210,12 @@ msgstr "안녕하십니까? 이것은 영역 패널입니다. 응용 프로그�
 #~ msgid "applications"
 #~ msgstr "응용 프로그램"
 
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "웹 사이트를 방문하시면 귀하의 즐겨 찾기가 여기에 나타나고 새 탭 페이지에있는 브라우저에 표시됩니다."
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "웹 사이트를 방문하시면 귀하의 즐겨 찾기가 여기에 나타나고 새 탭 페이지에있"
+#~ "는 브라우저에 표시됩니다."
 
 #~ msgid "Untitled"
 #~ msgstr "제목 없음"
@@ -253,14 +271,23 @@ msgstr "안녕하십니까? 이것은 영역 패널입니다. 응용 프로그�
 #~ msgid "No calendar entries this week"
 #~ msgstr "이 주에는 캘린더 엔트리가 없습니다."
 
-#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-#~ msgstr "친구들과의 대화와 웹 서비스가 여기에 나타날 것입니다. 지금 계정을 여십시오!"
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "친구들과의 대화와 웹 서비스가 여기에 나타날 것입니다. 지금 계정을 여십시"
+#~ "오!"
 
 #~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
 #~ msgstr "<b>Moblin 2.0 넷북에 오신것을 환영합니다.</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin은 다른 컴퓨터와 차이가 있으며, 당신이 이에 잘 적응할 수 있도록 여러가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Moblin 팀."
+#~ msgid ""
+#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Moblin Team."
+#~ msgstr ""
+#~ "Moblin은 다른 컴퓨터와 차이가 있으며, 당신이 이에 잘 적응할 수 있도록 여러"
+#~ "가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Moblin 팀."
 
 #~ msgid "Web page"
 #~ msgstr "웹 페이지"
@@ -283,7 +310,8 @@ msgstr "안녕하십니까? 이것은 영역 패널입니다. 응용 프로그�
 #~ msgid "Send a message"
 #~ msgstr "메세지 보내기"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "죄송합니다. 아무도 찾을수 없습니다. 메신저 계정을 설정 하셨습니까?"
 
 #~ msgid "People"
@@ -340,11 +368,18 @@ msgstr "안녕하십니까? 이것은 영역 패널입니다. 응용 프로그�
 #~ msgid "Your current status - you are offline"
 #~ msgstr "현재 상태 - 오프라인"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "귀하의 웹 상태를 업데이트 하려면 상태 메세지 지원하는 웹 서비스 계정을 설정해야 합니다. "
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "귀하의 웹 상태를 업데이트 하려면 상태 메세지 지원하는 웹 서비스 계정을 설"
+#~ "정해야 합니다. "
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "귀하의 IM 상태를 업데이트 하려면 인스턴트 메시징 계정을 설치 하셔야합니다.  "
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "귀하의 IM 상태를 업데이트 하려면 인스턴트 메시징 계정을 설치 하셔야합니"
+#~ "다.  "
 
 #~ msgid "status"
 #~ msgstr "상태"
@@ -356,4 +391,6 @@ msgstr "안녕하십니까? 이것은 영역 패널입니다. 응용 프로그�
 #~ msgstr "로컬"
 
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-#~ msgstr "트레이 아이콘이 사이즈 (%i x %i) 를 다시 (%i x %i)로 사이즈를 정하기를 요구했습니다. "
+#~ msgstr ""
+#~ "트레이 아이콘이 사이즈 (%i x %i) 를 다시 (%i x %i)로 사이즈를 정하기를 요"
+#~ "구했습니다. "

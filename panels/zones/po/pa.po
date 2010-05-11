@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.Moblin2-UI.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:46+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: 2010-05-06 07:41+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -28,27 +28,35 @@ msgstr "ਜ਼ੋਨ"
 msgid "Zones"
 msgstr "ਜ਼ੋਨ"
 
-#: ../src/sw-overview.c:220
+#: ../src/sw-overview.c:240
 msgid ""
 "Hello! This is the Zones panel. When you have applications open you will be "
 "able to view, manage and access them here."
 msgstr ""
-"ਹੈਲੋ! ਇਹ ਜ਼ੋਨ ਪੈਨਲ ਹੈ। ਜਦੋਂ ਤੁਹਾਡੇ ਕੋਲ ਐਪਲੀਕੇਸ਼ਨ ਖੁੱਲ੍ਹੀਆਂ ਹੋਣ ਤਾਂ ਤੁਸੀਂ "
-"ਉਹਨਾਂ ਨੂੰ ਇੱਥੇ ਵੇਖ ਸਕਦੇ ਹੋ, "
-"ਪਰਬੰਧ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਵਰਤ ਸਕਦੇ ਹੋ।"
+"ਹੈਲੋ! ਇਹ ਜ਼ੋਨ ਪੈਨਲ ਹੈ। ਜਦੋਂ ਤੁਹਾਡੇ ਕੋਲ ਐਪਲੀਕੇਸ਼ਨ ਖੁੱਲ੍ਹੀਆਂ ਹੋਣ ਤਾਂ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਇੱਥੇ ਵੇਖ ਸਕਦੇ ਹੋ, ਪਰਬੰਧ "
+"ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਵਰਤ ਸਕਦੇ ਹੋ।"
 
-#: ../src/sw-zone.c:783
+#: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "ਨਵਾਂ ਜ਼ੋਨ"
 
-#: ../src/sw-zone.c:797
-msgid "No applications on this zone"
-msgstr "ਇਸ ਜ਼ੋਨ ਲਈ ਕੋਈ ਐਪਲੀਕੇਸ਼ਨ ਨਹੀਂ"
-
-#: ../src/sw-zone.c:924
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "ਜ਼ੋਨ %d"
+
+#: ../src/sw-zone.c:848
+msgid "No applications on this zone"
+msgstr "ਇਸ ਜ਼ੋਨ ਲਈ ਕੋਈ ਐਪਲੀਕੇਸ਼ਨ ਨਹੀਂ"
+
+#: ../src/sw-zone.c:1004
+#, fuzzy
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"ਐਪਲੀਕੇਸ਼ਨ, ਜੋ ਤੁਸੀਂ ਵਰਤ ਰਹੇ ਹੋ, ਇੱਥੇ ਵੇਖ ਸਕੋਗੇ। ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਵੇਖ ਅਤੇ ਬਦਲ ਸਕੋਗੇ, ਜਿਵੇਂ ਤੁਹਾਡਾ ਦਿਲ "
+"ਕਰੇ।"
 
 #, fuzzy
 #~ msgid "one"
@@ -278,13 +286,6 @@ msgstr "ਜ਼ੋਨ %d"
 
 #~ msgid "Dismiss All"
 #~ msgstr "ਸਭ ਅਣਡਿੱਠੇ"
-
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organise them to your heart's content."
-#~ msgstr ""
-#~ "ਐਪਲੀਕੇਸ਼ਨ, ਜੋ ਤੁਸੀਂ ਵਰਤ ਰਹੇ ਹੋ, ਇੱਥੇ ਵੇਖ ਸਕੋਗੇ। ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਵੇਖ ਅਤੇ ਬਦਲ ਸਕੋਗੇ, ਜਿਵੇਂ ਤੁਹਾਡਾ "
-#~ "ਦਿਲ ਕਰੇ।"
 
 #~ msgid "%l:%M %P"
 #~ msgstr "%l:%M %P"

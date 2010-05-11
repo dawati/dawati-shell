@@ -1,12 +1,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Jean Cayron <jean.cayron@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:46+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -20,33 +20,42 @@ msgstr ""
 msgid "Zones panel"
 msgstr "Sicriftôr des redjons"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "redjons"
 
-#: ../src/sw-zone.c:797
-msgid "No applications on this zone"
-msgstr "Nou programe dins cisse redjon"
-
-#: ../src/main.c:403
+#: ../src/main.c:405
 msgid "Zones"
 msgstr "Redjons"
 
-#: ../src/sw-zone.c:783
+#: ../src/sw-overview.c:240
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+"Bondjoû ! Çouchal, c' est l' sicriftôr des Redjons. Cwand vs avoz des "
+"programes di drovous, vos les såroz vey, manaedjî eyet î moussî chal."
+
+#: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "Novele redjon"
 
-#: ../src/sw-overview.c:220
-msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "Bondjoû ! Çouchal, c' est l' sicriftôr des Redjons. Cwand vs avoz des programes di drovous, vos les såroz vey, manaedjî eyet î moussî chal."
-
-#: ../src/sw-zone.c:924
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "Redjon %d"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
+#: ../src/sw-zone.c:848
+msgid "No applications on this zone"
+msgstr "Nou programe dins cisse redjon"
+
+#: ../src/sw-zone.c:1004
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet "
+"les assonrer sorlon çou k' vos veyoz voltî."
 
 #~ msgid "two"
 #~ msgstr "deus"

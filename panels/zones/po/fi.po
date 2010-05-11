@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:46+0000\n"
+"POT-Creation-Date: 2010-05-11 20:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -18,33 +18,42 @@ msgstr ""
 msgid "Zones panel"
 msgstr "Vyöhyke-paneeli"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:514
+#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "vyöhykkeet"
 
-#: ../src/sw-zone.c:797
-msgid "No applications on this zone"
-msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
-
-#: ../src/main.c:403
+#: ../src/main.c:405
 msgid "Zones"
 msgstr "Vyöhykkeet"
 
-#: ../src/sw-zone.c:783
+#: ../src/sw-overview.c:240
+msgid ""
+"Hello! This is the Zones panel. When you have applications open you will be "
+"able to view, manage and access them here."
+msgstr ""
+"Hei! Tämä on Vyöhykkeet-paneeli. Kun sinulla on sovelluksia avoinna, voi "
+"tarkastella, hallita ja käyttää niitä täältä."
+
+#: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "Uusi vyöhyke."
 
-#: ../src/sw-overview.c:220
-msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "Hei! Tämä on Vyöhykkeet-paneeli. Kun sinulla on sovelluksia avoinna, voi tarkastella, hallita ja käyttää niitä täältä."
-
-#: ../src/sw-zone.c:924
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "Vyöhyke %d"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä miten haluat."
+#: ../src/sw-zone.c:848
+msgid "No applications on this zone"
+msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
+
+#: ../src/sw-zone.c:1004
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä "
+"miten haluat."
 
 #~ msgid "two"
 #~ msgstr "kaksi"
@@ -130,8 +139,13 @@ msgstr "Vyöhyke %d"
 #~ msgid "%B %e, %Y"
 #~ msgstr "%B %e, %Y"
 
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi "
+#~ "historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
 
 #~ msgid "Recently played"
 #~ msgstr "Äskettäin soitetut"
@@ -178,8 +192,12 @@ msgstr "Vyöhyke %d"
 #~ msgid "applications"
 #~ msgstr "sovellukset"
 
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi välilehti -sivulla."
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi "
+#~ "välilehti -sivulla."
 
 #~ msgid "Untitled"
 #~ msgstr "Nimetön"
