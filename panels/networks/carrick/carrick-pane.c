@@ -23,7 +23,7 @@
 #include "carrick-pane.h"
 
 #include <config.h>
-#include <mx/mx-gtk.h>
+#include <mx-gtk/mx-gtk.h>
 #include <glib/gi18n.h>
 #include <dbus/dbus-glib.h>
 
