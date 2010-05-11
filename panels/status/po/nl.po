@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:37+0000\n"
-"PO-Revision-Date: 2010-05-06 08:55-0800\n"
+"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"PO-Revision-Date: 2010-05-11 08:25-0800\n"
 "Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -46,40 +46,44 @@ msgstr "Kan de status niet updaten. De service kan niet beschikbaar zijn of uw w
 msgid "Unable to update status: You're not online."
 msgstr "Kan status niet updaten: je bent niet online."
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "We weten niet wat jouw lokatie is"
+
+#: ../src/mps-feed-pane.c:452
 #, c-format
 msgid "We guessed your location as: %s (%f, %f)"
 msgstr "We denken dat dit jouw lokatie is: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:453
+#: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
 msgstr "Jouw lokatie word gedeeld als: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:463
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Jouw lokatie wordt gegist als: %f %f"
 
-#: ../src/mps-feed-pane.c:467
+#: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
 msgstr "Jouw lokatie word gedeeld als: %f %f"
 
-#: ../src/mps-feed-pane.c:476
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
 msgstr "Jouw lokatie word niet gedeeld"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:579
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "Update"
 
-#: ../src/mps-feed-pane.c:584
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "Wat gebeurt er?"
 
-#: ../src/mps-feed-pane.c:634
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "Wijzig"
 
@@ -95,23 +99,23 @@ msgstr "Je hebt blijkbaar geen web services geconfigureerd of er is een probleem
 msgid "Your location"
 msgstr "Jouw lokatie"
 
-#: ../src/mps-geotag-pane.c:554
+#: ../src/mps-geotag-pane.c:568
 msgid "Search"
 msgstr "Zoek"
 
-#: ../src/mps-geotag-pane.c:559
+#: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
 msgstr "Waar ben je?"
 
-#: ../src/mps-geotag-pane.c:561
+#: ../src/mps-geotag-pane.c:575
 msgid "Find me"
 msgstr "Vind mij"
 
-#: ../src/mps-geotag-pane.c:568
+#: ../src/mps-geotag-pane.c:582
 msgid "Use location"
 msgstr "Lokatie gebruiken"
 
-#: ../src/mps-geotag-pane.c:569
+#: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
 msgstr "Lokatie niet gebruiken"
 
