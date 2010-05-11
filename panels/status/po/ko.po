@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:37+0000\n"
+"POT-Creation-Date: 2010-05-10 09:37+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -40,40 +40,44 @@ msgstr "상태를 업데이트할 수 없습니다. 서비스를 사용할 수 �
 msgid "Unable to update status: You're not online."
 msgstr "상태를 업데이트할 수 없습니다. 온라인이 아닙니다."
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "귀하의 위치를 파악하지 못했습니다."
+
+#: ../src/mps-feed-pane.c:452
 #, c-format
 msgid "We guessed your location as: %s (%f, %f)"
 msgstr "짐작되는 귀하의 위치: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:453
+#: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
 msgstr "귀하의 위치는 다음과 공유되고 있습니다: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:463
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "우리가 짐작한 귀하의 위치: %f %f"
 
-#: ../src/mps-feed-pane.c:467
+#: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
 msgstr "귀하의 위치는 다음과 공유되고 있습니다: %f %f"
 
-#: ../src/mps-feed-pane.c:476
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
 msgstr "귀하의 위치가 공유되지 않고 있습니다."
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:579
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "업데이트"
 
-#: ../src/mps-feed-pane.c:584
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "현재 상황"
 
-#: ../src/mps-feed-pane.c:634
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "변경"
 
@@ -89,23 +93,23 @@ msgstr "웹 서비스가 구성되지 않았거나 구성에 문제가 있습니
 msgid "Your location"
 msgstr "귀하의 위치"
 
-#: ../src/mps-geotag-pane.c:554
+#: ../src/mps-geotag-pane.c:568
 msgid "Search"
 msgstr "검색"
 
-#: ../src/mps-geotag-pane.c:559
+#: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
 msgstr "어디 계시나요?"
 
-#: ../src/mps-geotag-pane.c:561
+#: ../src/mps-geotag-pane.c:575
 msgid "Find me"
 msgstr "나를 찾기"
 
-#: ../src/mps-geotag-pane.c:568
+#: ../src/mps-geotag-pane.c:582
 msgid "Use location"
 msgstr "위치 사용"
 
-#: ../src/mps-geotag-pane.c:569
+#: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
 msgstr "위치 사용 안 함"
 
