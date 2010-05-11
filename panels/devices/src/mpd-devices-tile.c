@@ -384,15 +384,8 @@ _monitor_mount_changed_cb (GVolumeMonitor *monitor,
     if (!_mount_is_wanted_device (mount))
     {
       g_hash_table_remove (priv->tiles, mount);
-      mpd_storage_device_tile_show_message_full (
-                              MPD_STORAGE_DEVICE_TILE (tile),
-                              _("It is safe to unplug this device now"),
-                              true,
-                              15,
-                              (GSourceFunc) _unmount_message_expiration_cb,
-                              tile);
-//      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
-//                                      CLUTTER_ACTOR (tile));
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->vbox),
+                                      CLUTTER_ACTOR (tile));
     }
   } else {
     if (_mount_is_wanted_device (mount)) {
