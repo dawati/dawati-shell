@@ -1620,14 +1620,14 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
 
   moblin_netbook_close_demands_attention_notification (plugin, meta_win);
 
+  g_signal_handlers_disconnect_by_func (mcw,
+                                        window_destroyed_cb,
+                                        plugin);
+
   if (type == META_COMP_WINDOW_NORMAL ||
       type == META_COMP_WINDOW_DIALOG ||
       type == META_COMP_WINDOW_MODAL_DIALOG)
     {
-      g_signal_handlers_disconnect_by_func (mcw,
-                                            window_destroyed_cb,
-                                            plugin);
-
       /*
        * If the closed window is one of the main Skype windows, and no other
        * toplevel skype windows are present, kill the application.
@@ -1668,17 +1668,20 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
    *   (Sometimes the splash gets destroyed before the application window
    *   maps, e.g., Gimp.)
    *
-   * * Similarly do not destroy the workspace, if the closing window belongs
-   *   to a Panel.
+   * * Ignore panel windows,
+   *
+   * * Do not destroy the workspace, if the closing window belongs
+   *   to a Panel,
+   *
+   * * For everything else run the empty workspace check.
    *
    * NB: This must come before we notify Mutter that the effect completed,
    *     otherwise the destruction of this window will be completed and the
    *     workspace switch effect will crash.
    */
 
-  if ((type == META_COMP_WINDOW_NORMAL ||
-       type == META_COMP_WINDOW_DIALOG ||
-       type == META_COMP_WINDOW_MODAL_DIALOG) &&
+  if (type != META_COMP_WINDOW_SPLASHSCREEN &&
+      type != META_COMP_WINDOW_DOCK &&
       !mnb_toolbar_owns_window ((MnbToolbar*)priv->toolbar, mcw))
     check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
 }
@@ -2160,7 +2163,16 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
     }
   else
-    mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+    {
+      /*
+       * For any other typed windows, connect to the window-destroyed signal.
+       */
+      g_signal_connect (mcw, "window-destroyed",
+                        G_CALLBACK (window_destroyed_cb),
+                        plugin);
+
+      mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+    }
 }
 
 static void
