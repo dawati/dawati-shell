@@ -87,10 +87,6 @@ struct _CarrickServiceItemPrivate
   gboolean failed;
   gboolean passphrase_hint_visible;
 
-  gboolean hover;
-  GdkColor prelight_color;
-  GdkColor active_color;
-
   CarrickNotificationManager *note;
 
   gboolean draggable;
@@ -280,25 +276,6 @@ _set_state (CarrickServiceItem *self)
     {
       g_free (name);
       name = g_strdup (_ ("Wired"));
-    }
-
-  if (priv->hover)
-    {
-      gtk_widget_modify_bg (priv->expando,
-                            GTK_STATE_NORMAL,
-                            &priv->prelight_color);
-    }
-  else if (g_strcmp0 (priv->state, "ready") == 0)
-    {
-      gtk_widget_modify_bg (priv->expando,
-                            GTK_STATE_NORMAL,
-                            &priv->active_color);
-    }
-  else
-    {
-      gtk_widget_modify_bg (priv->expando,
-                            GTK_STATE_NORMAL,
-                            NULL);
     }
 
   if (g_strcmp0 (priv->state, "ready") == 0)
@@ -1104,11 +1081,6 @@ carrick_service_item_enter_notify_event (GtkWidget        *widget,
   CarrickServiceItem        *item = CARRICK_SERVICE_ITEM (widget);
   CarrickServiceItemPrivate *priv = item->priv;
 
-  priv->hover = TRUE;
-
-  gtk_widget_modify_bg (priv->expando,
-                        GTK_STATE_NORMAL,
-                        &priv->prelight_color);
   if (priv->draggable)
     gdk_window_set_cursor (widget->window, priv->hand_cursor);
 
@@ -1125,26 +1097,6 @@ carrick_service_item_leave_notify_event (GtkWidget        *widget,
       event->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL)
     {
       gdk_window_set_cursor (widget->window, NULL);
-    }
-  else
-    {
-      CarrickServiceItem        *item = CARRICK_SERVICE_ITEM (widget);
-      CarrickServiceItemPrivate *priv = item->priv;
-
-      priv->hover = FALSE;
-
-      if (g_str_equal (priv->state, "ready"))
-        {
-          gtk_widget_modify_bg (priv->expando,
-                                GTK_STATE_NORMAL,
-                                &priv->active_color);
-        }
-      else
-        {
-          gtk_widget_modify_bg (priv->expando,
-                                GTK_STATE_NORMAL,
-                                NULL);
-        }
     }
 
   return TRUE;
@@ -1551,6 +1503,8 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
 
+  gtk_event_box_set_visible_window (GTK_EVENT_BOX (self), FALSE);
+  
   box = gtk_hbox_new (FALSE,
                       6);
   gtk_widget_show (box);
@@ -1562,9 +1516,6 @@ carrick_service_item_init (CarrickServiceItem *self)
   nbtk_gtk_expander_set_has_indicator (NBTK_GTK_EXPANDER (priv->expando),
                                        FALSE);
   gtk_widget_show (priv->expando);
-
-  gdk_color_parse ("#e8e8e8", &priv->active_color);
-  gdk_color_parse ("#cbcbcb", &priv->prelight_color);
 
   priv->icon = gtk_image_new ();
   gtk_widget_show (priv->icon);
