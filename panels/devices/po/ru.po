@@ -204,7 +204,7 @@ msgstr "Открыть"
 #: ../src/mpd-storage-device-tile.c:711
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>%s</span> использование <span color='%s'>%d%% из %s</span>"
+msgstr "<span font-weight='bold'>%s</span> использует <span color='%s'>%d%% из %s</span>"
 
 #: ../src/mpd-storage-device-tile.c:719
 #, c-format
