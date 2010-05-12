@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:29+0000\n"
-"PO-Revision-Date: 2009-10-09 14:39-0800\n"
-"Last-Translator: Yun Nie <yun.nie@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-05-12 09:29+0000\n"
+"PO-Revision-Date: 2010-05-12 13:40-0800\n"
+"Last-Translator: mackey tian <mackeyx.tian@ptiglobal.net>\n"
 "Language-Team: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,26 +33,32 @@ msgstr "或者"
 msgid ", "
 msgstr "，"
 
-#: ../carrick/carrick-list.c:853 ../carrick/carrick-util.c:34
+#: ../carrick/carrick-list.c:853
+#: ../carrick/carrick-util.c:34
 msgid "wired"
 msgstr "有线"
 
-#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1408
+#. Switches
+#: ../carrick/carrick-list.c:854
+#: ../carrick/carrick-pane.c:1429
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1502
+#: ../carrick/carrick-list.c:855
+#: ../carrick/carrick-pane.c:1471
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1471
+#: ../carrick/carrick-list.c:856
+#: ../carrick/carrick-pane.c:1457
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1534
+#: ../carrick/carrick-list.c:857
+#: ../carrick/carrick-pane.c:1485
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "蓝牙"
@@ -63,20 +69,15 @@ msgstr "蓝牙"
 #. * connectivity daemon, is not running.
 #.
 #: ../carrick/carrick-list.c:870
-msgid ""
-"Sorry, we can't find any networks. It appears that the connection manager is "
-"not running. You could try restarting your computer."
-msgstr ""
-"抱歉，我们无法找到任何网络连接。看来连接管理器没有在运行。您可能需要重启电"
-"脑。"
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "抱歉，我们无法找到任何网络连接。看来连接管理器没有在运行。您可能需要重启电脑。"
 
 #.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
 #: ../carrick/carrick-list.c:880
-msgid ""
-"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "抱歉，我们无法找到任何网络连接。您可以尝试关闭离线模式。"
 
 #: ../carrick/carrick-list.c:1017
@@ -137,96 +138,90 @@ msgstr "网络已改变"
 
 #: ../carrick/carrick-notification-manager.c:219
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a wired "
-"network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
 msgstr "抱歉，您连接至 %s 的连接出问题了。所以现在将连接至有线网络。"
 
 #: ../carrick/carrick-notification-manager.c:226
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
-"network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
 msgstr "抱歉，您连接至 %s 的连接出问题了。现在将您连至 %s，一个 %s 网络。"
 
 #: ../carrick/carrick-notification-manager.c:234
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr "抱歉，您连接至 %s 的连接出问题了。现在将您连至一个 %s 网络。"
 
 #: ../carrick/carrick-notification-manager.c:244
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
 msgstr "抱歉，您的 %s 连接出问题了。现在将您连至有线网络。"
 
 #: ../carrick/carrick-notification-manager.c:251
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
-"network"
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
 msgstr "抱歉，您的 %s 连接出问题了。现在将您连至%s，一个 %s 网络。"
 
 #: ../carrick/carrick-notification-manager.c:260
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "抱歉，您的 %s 连接出问题了。现在将您连至一个 %s 网络。"
 
-#: ../carrick/carrick-pane.c:630
+#: ../carrick/carrick-pane.c:634
 msgid "New connection settings"
 msgstr "新连接设置"
 
-#: ../carrick/carrick-pane.c:668
+#: ../carrick/carrick-pane.c:672
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr "输入您想连接的网络的名字，若有必要请输入密码和加密类型。"
 
-#: ../carrick/carrick-pane.c:678
+#: ../carrick/carrick-pane.c:682
 msgid "Network name"
 msgstr "网络名称"
 
-#: ../carrick/carrick-pane.c:690
+#: ../carrick/carrick-pane.c:694
 msgid "Network security"
 msgstr "网络安全"
 
-#: ../carrick/carrick-pane.c:700
+#: ../carrick/carrick-pane.c:704
 msgid "None"
 msgstr "无"
 
-#: ../carrick/carrick-pane.c:712
+#: ../carrick/carrick-pane.c:716
 msgid "Password"
 msgstr "密码"
 
-#: ../carrick/carrick-pane.c:727 ../carrick/carrick-service-item.c:1303
+#: ../carrick/carrick-pane.c:731
+#: ../carrick/carrick-service-item.c:1683
 msgid "Show password"
 msgstr "显示密码"
 
-#: ../carrick/carrick-pane.c:1398
+#: ../carrick/carrick-pane.c:1412
 msgid "Settings"
 msgstr "设置"
 
-#: ../carrick/carrick-pane.c:1440 ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-pane.c:1443
+#: ../carrick/carrick-service-item.c:278
 msgid "Wired"
 msgstr "有线"
 
-#: ../carrick/carrick-pane.c:1566
+#: ../carrick/carrick-pane.c:1510
 msgid "Offline mode"
 msgstr "离线模式"
 
-#: ../carrick/carrick-pane.c:1591
+#: ../carrick/carrick-pane.c:1520
 msgid "This will disable all your connections"
 msgstr "这将关闭您的所有连接"
 
-#: ../carrick/carrick-pane.c:1623 ../src/carrick.c:351
+#: ../carrick/carrick-pane.c:1556
+#: ../src/carrick.c:351
 msgid "Networks"
 msgstr "网络"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1629
+#: ../carrick/carrick-pane.c:1562
 msgid "Add new connection"
 msgstr "添加新连接"
 
@@ -234,86 +229,90 @@ msgstr "添加新连接"
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
 #.
-#: ../carrick/carrick-service-item.c:46
+#: ../carrick/carrick-service-item.c:51
 msgid "Critical Error: Invalid country code"
 msgstr "严重错误：无效的国家代码"
 
-#: ../carrick/carrick-service-item.c:47
+#: ../carrick/carrick-service-item.c:52
 msgid "Missing required APN (service plan name)"
 msgstr "缺少必要的服务计划名称"
 
-#: ../carrick/carrick-service-item.c:48
+#: ../carrick/carrick-service-item.c:53
 msgid "Internal Error: Invalid network service"
 msgstr "内部错误：无效的网络服务"
 
-#: ../carrick/carrick-service-item.c:49
+#: ../carrick/carrick-service-item.c:54
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "严重错误：无法访问连接管理器"
 
-#: ../carrick/carrick-service-item.c:50
+#: ../carrick/carrick-service-item.c:55
 msgid "ERROR: No 3G Hardware detected"
 msgstr "错误：没有检测到 3G 的硬件"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:177
+#: ../carrick/carrick-service-item.c:191
 #, c-format
 msgid "%s encrypted"
 msgstr "%s 已加密"
 
-#: ../carrick/carrick-service-item.c:272 ../carrick/carrick-service-item.c:289
+#: ../carrick/carrick-service-item.c:290
+#: ../carrick/carrick-service-item.c:307
 msgid "Disconnect"
 msgstr "断开连接"
 
-#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:293
 msgid "Connected"
 msgstr "已连接"
 
-#: ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:310
 msgid "Online"
 msgstr "在线"
 
-#: ../carrick/carrick-service-item.c:299 ../carrick/carrick-service-item.c:308
+#: ../carrick/carrick-service-item.c:317
+#: ../carrick/carrick-service-item.c:326
 #, c-format
 msgid "Cancel"
 msgstr "取消"
 
-#: ../carrick/carrick-service-item.c:302
+#: ../carrick/carrick-service-item.c:320
 msgid "Configuring"
 msgstr "配置"
 
-#: ../carrick/carrick-service-item.c:311
+#: ../carrick/carrick-service-item.c:329
 msgid "Associating"
 msgstr "正在连接"
 
-#: ../carrick/carrick-service-item.c:320 ../carrick/carrick-service-item.c:345
-#: ../carrick/carrick-service-item.c:1292
+#: ../carrick/carrick-service-item.c:338
+#: ../carrick/carrick-service-item.c:363
+#: ../carrick/carrick-service-item.c:1670
 msgid "Connect"
 msgstr "连接"
 
-#: ../carrick/carrick-service-item.c:348
+#: ../carrick/carrick-service-item.c:366
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: ../carrick/carrick-service-item.c:351
+#: ../carrick/carrick-service-item.c:369
 msgid "Sorry, the connection failed. You could try again."
 msgstr "抱歉，连接失败。您可以再试一次。"
 
-#: ../carrick/carrick-service-item.c:357 ../carrick/carrick-service-item.c:360
+#: ../carrick/carrick-service-item.c:375
+#: ../carrick/carrick-service-item.c:378
 #, c-format
 msgid "Disconnecting"
 msgstr "断开连接"
 
-#: ../carrick/carrick-service-item.c:418
+#: ../carrick/carrick-service-item.c:468
 msgid "Type password here"
 msgstr "请在此处输入密码"
 
-#: ../carrick/carrick-service-item.c:481
+#: ../carrick/carrick-service-item.c:537
 msgid "Really remove?"
 msgstr "真的要删除吗?"
 
-#: ../carrick/carrick-service-item.c:501
+#: ../carrick/carrick-service-item.c:557
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -323,42 +322,54 @@ msgstr ""
 "您想删除网络连接 %s %s 吗? 这样系统会同时删除为该连接保存\n"
 "的密码，并且您将不再会被自动连接至%s。"
 
-#: ../carrick/carrick-service-item.c:686
+#: ../carrick/carrick-service-item.c:753
 #, c-format
-msgid ""
-"Your password isn't the right length. For a WEP connection it needs to be "
-"either 10 or 26 characters, you have %i."
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
 msgstr "您的密码长度不正确。对于 WEP 连接，需要 10 或 26 个字符，您有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:697
+#: ../carrick/carrick-service-item.c:764
 #, c-format
-msgid ""
-"Your password is too short. For a WPA  connection it needs to be at least 8 "
-"characters long, you have %i"
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
 msgstr "您的密码太短了。对于 WPA 连接，需要至少 8 个字符，您只有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:701
+#: ../carrick/carrick-service-item.c:768
 #, c-format
-msgid ""
-"Your password is too long. For a WPA  connection it needs to have fewer than "
-"63 characters, you have %i"
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "您的密码太长了。对于 WPA 连接，需要少于 63 个字符，您有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:710
+#: ../carrick/carrick-service-item.c:777
 #, c-format
-msgid ""
-"Your password is too short. For a WPA2  connection it needs to be at least 8 "
-"characters long, you have %i"
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
 msgstr "您的密码太短了。对于 WPA2 连接，需要至少 8 个字符，您有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:714
+#: ../carrick/carrick-service-item.c:781
 #, c-format
-msgid ""
-"Your password is too long. For a WPA2  connection it needs to have fewer "
-"than 63 characters, you have %i"
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "您的密码太长了。对于 WPA2 连接，需要少于 63 个字符，您有 %i 个。"
 
-#: ../carrick/carrick-service-item.c:1228
+#: ../carrick/carrick-service-item.c:1227
+msgid "Sorry, it looks like the IP address is not valid"
+msgstr "对不起，IP 地址可能无效"
+
+#: ../carrick/carrick-service-item.c:1239
+msgid "Sorry, it looks like the gateway address is not valid"
+msgstr "对不起，网关地址可能无效"
+
+#: ../carrick/carrick-service-item.c:1251
+msgid "Sorry, it looks like the subnet mask is not valid"
+msgstr "对不起，子网掩码可能无效"
+
+#: ../carrick/carrick-service-item.c:1271
+#, c-format
+msgid "Sorry, it looks like the nameserver address '%s' is not valid"
+msgstr "对不起，域名服务器地址“%s”可能无效"
+
+#. TRANSLATORS: label for the Advanced expander in a service item
+#: ../carrick/carrick-service-item.c:1594
+msgid "Advanced"
+msgstr "高级"
+
+#: ../carrick/carrick-service-item.c:1604
 msgid "Scanning"
 msgstr "正在扫描"
 
@@ -366,9 +377,48 @@ msgstr "正在扫描"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1247
+#: ../carrick/carrick-service-item.c:1625
 msgid "WPA2 encrypted"
 msgstr "WPA2 已加密"
+
+#. TRANSLATORS: label in advanced settings (next to combobox
+#. * for DHCP/Static IP)
+#: ../carrick/carrick-service-item.c:1732
+msgid "Connect by:"
+msgstr "连接："
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1734
+msgid "IP address:"
+msgstr "IP 地址："
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1736
+msgid "Subnet mask:"
+msgstr "子网掩码："
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1738
+msgid "Router:"
+msgstr "路由器："
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1740
+msgid "DNS:"
+msgstr "DNS："
+
+#: ../carrick/carrick-service-item.c:1747
+msgid "DHCP"
+msgstr "DHCP"
+
+#: ../carrick/carrick-service-item.c:1749
+msgid "Static IP"
+msgstr "静态 IP"
+
+#. TRANSLATORS: label for apply button in static ip settings
+#: ../carrick/carrick-service-item.c:1776
+msgid "Apply"
+msgstr "应用"
 
 #: ../src/carrick.c:43
 msgid "networks - not connected"
@@ -402,7 +452,8 @@ msgstr "网络 - %s - 3G"
 msgid "networks - %s - bluetooth"
 msgstr "网络 - %s - 蓝牙"
 
-#: ../src/carrick.c:69 ../src/carrick.c:81
+#: ../src/carrick.c:69
+#: ../src/carrick.c:81
 msgid "networks"
 msgstr "网络"
 
@@ -426,12 +477,14 @@ msgstr "Carrick 连接小程序"
 msgid "- Moblin connectivity applet"
 msgstr "- Moblin 连接小程序"
 
-#: ../src/carrick.c:334 ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:334
+#: ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "网络"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -586,9 +639,6 @@ msgstr "网络设置"
 
 #~ msgid "Close"
 #~ msgstr "关闭"
-
-#~ msgid "Advanced"
-#~ msgstr "高级"
 
 #~ msgid "Just some test content"
 #~ msgstr "一些测试内容"
