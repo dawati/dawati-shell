@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
+"POT-Creation-Date: 2010-05-12 09:29+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,26 +38,27 @@ msgstr "、"
 msgid "wired"
 msgstr "有線接続"
 
+#. Switches
 #: ../carrick/carrick-list.c:854
-#: ../carrick/carrick-pane.c:1368
+#: ../carrick/carrick-pane.c:1429
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "WiFi"
 
 #: ../carrick/carrick-list.c:855
-#: ../carrick/carrick-pane.c:1443
+#: ../carrick/carrick-pane.c:1471
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
 #: ../carrick/carrick-list.c:856
-#: ../carrick/carrick-pane.c:1418
+#: ../carrick/carrick-pane.c:1457
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
 #: ../carrick/carrick-list.c:857
-#: ../carrick/carrick-pane.c:1468
+#: ../carrick/carrick-pane.c:1485
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -165,11 +166,11 @@ msgstr "%s 接続が失われたので、%s (%s ネットワーク) に接続さ
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "%s 接続が失われたので、%s ネットワークに接続されました"
 
-#: ../carrick/carrick-pane.c:629
+#: ../carrick/carrick-pane.c:634
 msgid "New connection settings"
 msgstr "新規コネクション設定"
 
-#: ../carrick/carrick-pane.c:667
+#: ../carrick/carrick-pane.c:672
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -179,43 +180,43 @@ msgstr ""
 "パスワードとセキュリティ タイプが\n"
 "必要な場合もあります。"
 
-#: ../carrick/carrick-pane.c:677
+#: ../carrick/carrick-pane.c:682
 msgid "Network name"
 msgstr "ネットワーク名"
 
-#: ../carrick/carrick-pane.c:689
+#: ../carrick/carrick-pane.c:694
 msgid "Network security"
 msgstr "ネットワーク セキュリティー"
 
-#: ../carrick/carrick-pane.c:699
+#: ../carrick/carrick-pane.c:704
 msgid "None"
 msgstr "なし"
 
-#: ../carrick/carrick-pane.c:711
+#: ../carrick/carrick-pane.c:716
 msgid "Password"
 msgstr "パスワード"
 
-#: ../carrick/carrick-pane.c:726
-#: ../carrick/carrick-service-item.c:1303
+#: ../carrick/carrick-pane.c:731
+#: ../carrick/carrick-service-item.c:1683
 msgid "Show password"
 msgstr "パスワードの表示"
 
-#: ../carrick/carrick-pane.c:1356
+#: ../carrick/carrick-pane.c:1412
 msgid "Settings"
 msgstr "設定"
 
-#: ../carrick/carrick-pane.c:1393
-#: ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-pane.c:1443
+#: ../carrick/carrick-service-item.c:278
 msgid "Wired"
 msgstr "有線接続"
 
-#: ../carrick/carrick-pane.c:1495
-msgid "This will disable all your connections"
-msgstr "接続がすべて無効になります"
-
-#: ../carrick/carrick-pane.c:1520
+#: ../carrick/carrick-pane.c:1510
 msgid "Offline mode"
 msgstr "オフラインモード"
+
+#: ../carrick/carrick-pane.c:1520
+msgid "This will disable all your connections"
+msgstr "接続がすべて無効になります"
 
 #: ../carrick/carrick-pane.c:1556
 #: ../src/carrick.c:351
@@ -231,90 +232,90 @@ msgstr "新規接続の追加"
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
 #.
-#: ../carrick/carrick-service-item.c:46
+#: ../carrick/carrick-service-item.c:51
 msgid "Critical Error: Invalid country code"
 msgstr "重大なエラー： 無効な国コード"
 
-#: ../carrick/carrick-service-item.c:47
+#: ../carrick/carrick-service-item.c:52
 msgid "Missing required APN (service plan name)"
 msgstr "必要な APN がありません（サービスプラン名）"
 
-#: ../carrick/carrick-service-item.c:48
+#: ../carrick/carrick-service-item.c:53
 msgid "Internal Error: Invalid network service"
 msgstr "内部エラー： 無効なネットワークサービス"
 
-#: ../carrick/carrick-service-item.c:49
+#: ../carrick/carrick-service-item.c:54
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "重大なエラー： 接続マネージャーにアクセスできません"
 
-#: ../carrick/carrick-service-item.c:50
+#: ../carrick/carrick-service-item.c:55
 msgid "ERROR: No 3G Hardware detected"
 msgstr "エラー： 3G ハードウェアが検出されません"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:177
+#: ../carrick/carrick-service-item.c:191
 #, c-format
 msgid "%s encrypted"
 msgstr "暗合化されています： %s"
 
-#: ../carrick/carrick-service-item.c:272
-#: ../carrick/carrick-service-item.c:289
+#: ../carrick/carrick-service-item.c:290
+#: ../carrick/carrick-service-item.c:307
 msgid "Disconnect"
 msgstr "切断する"
 
-#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:293
 msgid "Connected"
 msgstr "接続中"
 
-#: ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:310
 msgid "Online"
 msgstr "オンライン"
 
-#: ../carrick/carrick-service-item.c:299
-#: ../carrick/carrick-service-item.c:308
+#: ../carrick/carrick-service-item.c:317
+#: ../carrick/carrick-service-item.c:326
 #, c-format
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ../carrick/carrick-service-item.c:302
+#: ../carrick/carrick-service-item.c:320
 msgid "Configuring"
 msgstr "設定中"
 
-#: ../carrick/carrick-service-item.c:311
+#: ../carrick/carrick-service-item.c:329
 msgid "Associating"
 msgstr "関連付け中"
 
-#: ../carrick/carrick-service-item.c:320
-#: ../carrick/carrick-service-item.c:345
-#: ../carrick/carrick-service-item.c:1292
+#: ../carrick/carrick-service-item.c:338
+#: ../carrick/carrick-service-item.c:363
+#: ../carrick/carrick-service-item.c:1670
 msgid "Connect"
 msgstr "接続する"
 
-#: ../carrick/carrick-service-item.c:348
+#: ../carrick/carrick-service-item.c:366
 msgid "Connection failed"
 msgstr "接続に失敗しました"
 
-#: ../carrick/carrick-service-item.c:351
+#: ../carrick/carrick-service-item.c:369
 msgid "Sorry, the connection failed. You could try again."
 msgstr "接続に失敗しました。再度接続してみてください。"
 
-#: ../carrick/carrick-service-item.c:357
-#: ../carrick/carrick-service-item.c:360
+#: ../carrick/carrick-service-item.c:375
+#: ../carrick/carrick-service-item.c:378
 #, c-format
 msgid "Disconnecting"
 msgstr "切断中"
 
-#: ../carrick/carrick-service-item.c:418
+#: ../carrick/carrick-service-item.c:468
 msgid "Type password here"
 msgstr "パスワードを入力する"
 
-#: ../carrick/carrick-service-item.c:481
+#: ../carrick/carrick-service-item.c:537
 msgid "Really remove?"
 msgstr "削除しますか？"
 
-#: ../carrick/carrick-service-item.c:501
+#: ../carrick/carrick-service-item.c:557
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -325,32 +326,58 @@ msgstr ""
 "削除するとパスワードが忘れられ、\n"
 "%s に自動接続されなくなります。"
 
-#: ../carrick/carrick-service-item.c:686
+#: ../carrick/carrick-service-item.c:753
 #, c-format
 msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
 msgstr "パスワードの長さが正しくありません。WEP 接続には、10 文字または 28 文字必要ですが、これは %i 文字です。"
 
-#: ../carrick/carrick-service-item.c:697
+#: ../carrick/carrick-service-item.c:764
 #, c-format
 msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
 msgstr "パスワードが短すぎます。WPA 接続には、少なくとも 8 文字必要ですが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:701
+#: ../carrick/carrick-service-item.c:768
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "パスワードが長すぎます。WPA 接続には、62 文字より少なくなければなりませんが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:710
+#: ../carrick/carrick-service-item.c:777
 #, c-format
 msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
 msgstr "パスワードが短すぎます。WPA2 接続には、少なくとも 8 文字必要ですが、これは %i 文字です"
 
-#: ../carrick/carrick-service-item.c:714
+#: ../carrick/carrick-service-item.c:781
 #, c-format
 msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
 msgstr "パスワードが長すぎます。WPA2 接続には、62 文字より少なくなければなりませんが、これは %i 文字です。"
 
-#: ../carrick/carrick-service-item.c:1228
+# translation says "invalid IP address". "Sorry" is omitted because it does not translate well into Japanese
+#: ../carrick/carrick-service-item.c:1227
+msgid "Sorry, it looks like the IP address is not valid"
+msgstr "無効な IP アドレスです"
+
+# translation says "invalid gateway address". "Sorry" is omitted because it does not translate well into Japanese
+#: ../carrick/carrick-service-item.c:1239
+msgid "Sorry, it looks like the gateway address is not valid"
+msgstr "無効なゲートウェイ アドレスです"
+
+# translation says "invalid subnet mask address". "Sorry" is omitted because it does not translate well into Japanese
+#: ../carrick/carrick-service-item.c:1251
+msgid "Sorry, it looks like the subnet mask is not valid"
+msgstr "無効なサブネットマスク アドレスです"
+
+# translation says "invalid name server address %s". "Sorry" is omitted because it does not translate well into Japanese
+#: ../carrick/carrick-service-item.c:1271
+#, c-format
+msgid "Sorry, it looks like the nameserver address '%s' is not valid"
+msgstr "無効なネームサーバー アドレス「%s」です"
+
+#. TRANSLATORS: label for the Advanced expander in a service item
+#: ../carrick/carrick-service-item.c:1594
+msgid "Advanced"
+msgstr "詳細"
+
+#: ../carrick/carrick-service-item.c:1604
 msgid "Scanning"
 msgstr "スキャン中"
 
@@ -358,9 +385,48 @@ msgstr "スキャン中"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1247
+#: ../carrick/carrick-service-item.c:1625
 msgid "WPA2 encrypted"
 msgstr "WPA2 暗合化"
+
+#. TRANSLATORS: label in advanced settings (next to combobox
+#. * for DHCP/Static IP)
+#: ../carrick/carrick-service-item.c:1732
+msgid "Connect by:"
+msgstr "次を使用して接続："
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1734
+msgid "IP address:"
+msgstr "IP アドレス："
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1736
+msgid "Subnet mask:"
+msgstr "サブネットマスク："
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1738
+msgid "Router:"
+msgstr "ルーター："
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1740
+msgid "DNS:"
+msgstr "DNS："
+
+#: ../carrick/carrick-service-item.c:1747
+msgid "DHCP"
+msgstr "DHCP"
+
+#: ../carrick/carrick-service-item.c:1749
+msgid "Static IP"
+msgstr "固定 IP"
+
+#. TRANSLATORS: label for apply button in static ip settings
+#: ../carrick/carrick-service-item.c:1776
+msgid "Apply"
+msgstr "適用"
 
 #: ../src/carrick.c:43
 msgid "networks - not connected"
@@ -454,7 +520,7 @@ msgstr "パスワード："
 
 #: ../callouts/3g/ggg-manual-dialog.c:103
 msgid "Gateway:"
-msgstr "Gateway："
+msgstr "ゲートウェイ："
 
 #: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
@@ -653,8 +719,6 @@ msgstr "ネットワークの設定"
 #~ msgstr "宛先："
 #~ msgid "Cc:"
 #~ msgstr "CC："
-#~ msgid "Subject:"
-#~ msgstr "件名："
 #~ msgid "Delete"
 #~ msgstr "削除"
 #~ msgid "Downloading message"
@@ -693,8 +757,6 @@ msgstr "ネットワークの設定"
 #~ msgstr "<span size=\"large\" weight=\"bold\">個人情報の詳細：</span>"
 #~ msgid "Name:"
 #~ msgstr "氏名:"
-#~ msgid "Email address:"
-#~ msgstr "メールアドレス："
 #~ msgid "<span size=\"large\" weight=\"bold\">Receiving details:</span>"
 #~ msgstr "<span size=\"large\" weight=\"bold\">受信の詳細：</span>"
 #~ msgid "Server type:"
