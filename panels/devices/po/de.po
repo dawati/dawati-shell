@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:42+0000\n"
+"POT-Creation-Date: 2010-05-12 09:44+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
 "Language-Team: \n"
@@ -100,10 +100,6 @@ msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
 msgid "Turn off"
 msgstr "Abschalten"
 
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin Energiesymbol"
-
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo Panel Geräte"
@@ -158,6 +154,15 @@ msgstr ""
 msgid "Other devices"
 msgstr "Andere Geräte"
 
+#: ../src/mpd-devices-tile.c:72 ../src/mpd-devices-tile.c:95
+#: ../src/mpd-devices-tile.c:137
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Auswerfen fehlgeschlagen, es wird wahrscheinlich von einer Anwendung benutzt."
+
+#: ../src/mpd-devices-tile.c:389 ../src/mpd-devices-tile.c:421
+msgid "It is safe to unplug this device now"
+msgstr "Dieses Gerät kann jetzt entfernt werden."
+
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
@@ -179,12 +184,6 @@ msgstr "%s konnte nicht ausgeführt werden."
 #: ../src/mpd-storage-device-tile.c:164
 msgid "Import error"
 msgstr "Fehler beim Importieren"
-
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:499
-msgid "Import data"
-msgstr "Daten importieren"
 
 #. Eject button
 #: ../src/mpd-storage-device-tile.c:510
@@ -250,14 +249,14 @@ msgstr "Netbook-Lautstärke"
 msgid "Mute"
 msgstr "Stumm"
 
-#: ../src/mpd-devices-tile.c:389 ../src/mpd-devices-tile.c:421
-msgid "It is safe to unplug this device now"
-msgstr "Dieses Gerät kann jetzt entfernt werden."
+#. TODO: import button should only be shown if the import apps are available
+#. Import button
+#: ../src/mpd-storage-device-tile.c:499
+msgid "Import data"
+msgstr "Importieren"
 
-#: ../src/mpd-devices-tile.c:72 ../src/mpd-devices-tile.c:95
-#: ../src/mpd-devices-tile.c:137
-msgid "Ejecting failed, looks like an application is using it"
-msgstr "Auswerfen fehlgeschlagen, es wird wahrscheinlich von einer Anwendung benutzt."
+#~ msgid "Moblin Power Icon"
+#~ msgstr "Moblin Energiesymbol"
 
 #~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
 #~ msgstr "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%d%%</span>"
