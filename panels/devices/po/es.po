@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:42+0000\n"
-"PO-Revision-Date: 2010-05-10 11:38-0800\n"
+"POT-Creation-Date: 2010-05-12 09:44+0000\n"
+"PO-Revision-Date: 2010-05-12 11:44-0800\n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -104,10 +104,6 @@ msgstr "Si no se decide nada, se apagará en %d segundos."
 msgid "Turn off"
 msgstr "Apagar"
 
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Icono de energía Moblin"
-
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "Panel de dispositivos de MeeGo"
@@ -199,7 +195,7 @@ msgstr "Error durante la importación"
 #. Import button
 #: ../src/mpd-storage-device-tile.c:499
 msgid "Import data"
-msgstr "Importar datos"
+msgstr "Importar"
 
 #. Eject button
 #: ../src/mpd-storage-device-tile.c:510
@@ -209,7 +205,7 @@ msgstr "Expulsar"
 #. Open button
 #: ../src/mpd-storage-device-tile.c:521
 msgid "Open"
-msgstr "Abierto"
+msgstr "Abrir"
 
 #: ../src/mpd-storage-device-tile.c:711
 #, c-format
@@ -265,6 +261,8 @@ msgstr "Volumen del miniordenador"
 msgid "Mute"
 msgstr "Silencio"
 
+#~ msgid "Moblin Power Icon"
+#~ msgstr "Icono de energía Moblin"
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
 #~ "span>"
