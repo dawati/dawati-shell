@@ -967,6 +967,68 @@ _scrollview_allocation_changed_cb (MxScrollView           *scroll,
                    g_free);
 }
 
+typedef struct
+{
+  MnbLauncherButton *button;
+  guint              n_visible;
+} app_grid_find_single_visible_button_t;
+
+static void
+_apps_grid_find_single_visible_button_cb (ClutterActor                          *actor,
+                                          app_grid_find_single_visible_button_t *data)
+{
+  if (MNB_IS_LAUNCHER_BUTTON (actor) &&
+      CLUTTER_ACTOR_IS_REACTIVE (actor) &&
+      CLUTTER_ACTOR_IS_VISIBLE (actor))
+    {
+      data->button = MNB_LAUNCHER_BUTTON (actor);
+      data->n_visible++;
+    }
+}
+
+static gboolean
+_filter_captured_event_cb (ClutterActor *actor,
+                           ClutterEvent *event,
+                           MnbLauncher  *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+
+  if (event->type == CLUTTER_KEY_PRESS)
+    {
+      ClutterKeyEvent *key_event = (ClutterKeyEvent *) event;
+      if (CLUTTER_Return == key_event->keyval)
+        {
+          app_grid_find_single_visible_button_t data = { 0, };
+          clutter_container_foreach (
+                    CLUTTER_CONTAINER (priv->apps_grid),
+                    (ClutterCallback) _apps_grid_find_single_visible_button_cb,
+                    &data);
+          if (data.n_visible == 1)
+            {
+              gchar const *desktop_file_path =
+                        mnb_launcher_button_get_desktop_file_path (data.button);
+
+              /* Disable button for some time to avoid launching multiple times. */
+              clutter_actor_set_reactive (CLUTTER_ACTOR (data.button), FALSE);
+              g_timeout_add_seconds (LAUNCH_REACTIVE_TIMEOUT_S,
+                                     (GSourceFunc) launcher_button_set_reactive_cb,
+                                     data.button);
+              g_signal_emit (self,
+                             _signals[LAUNCHER_ACTIVATED],
+                             0,
+                             desktop_file_path);
+            }
+        }
+      else if (CLUTTER_Escape == key_event->keyval)
+        {
+          /* Clear filter, switch back to browse mode. */
+          mnb_filter_set_text (MNB_FILTER (priv->filter), "");
+        }
+    }
+
+  return FALSE;
+}
+
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1038,6 +1100,8 @@ _constructor (GType                  gtype,
   /* Filter */
   priv->filter = mnb_filter_new ();
   clutter_actor_set_width (priv->filter, FILTER_WIDTH);
+  g_signal_connect (priv->filter, "captured-event",
+                    G_CALLBACK (_filter_captured_event_cb), self);
   mpl_content_pane_set_header_actor (MPL_CONTENT_PANE (pane), priv->filter);
 
   /* Apps */
