@@ -1,0 +1,157 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Moblin UX\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-12 09:30+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: astur <malditoastur@gmail.com>\n"
+"Language-Team: asturian <alministradores@softastur.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: asturian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Configura les preferencies la barra de ferramientes"
+
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Barra de ferramientes"
+
+#: ../capplet/src/mtp-bin.c:362
+msgid "Save toolbar"
+msgstr "Guardar la barra de ferramientes"
+
+#: ../capplet/src/mtp-bin.c:367
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Sentímoslo, pero tienes que desaniciar un panel pa poder amestar ún nuevu."
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Puede amestase, desaniciase o axeitase munchos de los paneles de la barra de ferramientes."
+
+#: ../capplet/src/mtp-jar.c:110
+msgid "Available panels"
+msgstr "Paneles disponibles"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
+msgid "%H:%M"
+msgstr "%H.%M h"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
+msgid "%l:%M %P"
+msgstr "%H.%M h"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
+msgid "%B %e, %Y"
+msgstr "%e de %B de %Y"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Barra de ferramientes"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Configura les preferencies de la bandexa del sistema"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:241
+msgid "System Tray"
+msgstr "Bandexa del sistema"
+
+#: ../capplet/src/syst-cc-panel.c:174
+msgid "Show system tray"
+msgstr "Amosar la bandexa del sistema"
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "Dalgunes aplicaciones antigües empleguen la bandexa del sistema pa comunicar lo que va asocediendo o pa siguir executándose al pesllales."
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Usar siempres el mou de pantalla pequeña"
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determina l'orde de los paneles na barra de ferramientes."
+
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Fuercia'l mou de pantalla pequeña inclusu cuando'l tamañu de la pantalla normalmente implicaría un mou de pantalla mayor."
+
+#: ../data/mutter-moblin.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "Orde de los paneles na barra de ferramientes"
+
+# Moblin effects in the netbook
+#: ../src/moblin-netbook.c:1019
+msgid "Moblin Netbook Effects"
+msgstr "Efeutos de Moblin nel miniportátil"
+
+# Effects for netbooks with Mobin
+#: ../src/moblin-netbook.c:1023
+msgid "Effects for Moblin Netbooks"
+msgstr "Efeutos pa miniportátiles con Moblin"
+
+#: ../src/moblin-netbook.c:3234
+msgid "Activate"
+msgstr "Activar"
+
+#: ../src/moblin-netbook.c:3248
+msgid "Unknown window"
+msgstr "Ventana desconocida"
+
+#: ../src/moblin-netbook.c:3250
+msgid "is asking for your attention."
+msgstr "ta pidiendo la to atención."
+
+#: ../src/mnb-toolbar.c:1007
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Sentímoslo, %s nun funciona."
+
+#: ../src/notifications/mnb-notification.c:282
+msgid "Dismiss"
+msgstr "Zarrar"
+
+#: ../src/notifications/mnb-notification-cluster.c:682
+msgid "Dismiss All"
+msgstr "Zarrar too"
+
+#~ msgid "System tray"
+#~ msgstr "Bandexa del sistema"
+#~ msgid "Less than a minute ago"
+#~ msgstr "Fai menos d'un minutu"
+#~ msgid "A few minutes ago"
+#~ msgstr "Fai unos minutos"
+#~ msgid "A couple of hours ago"
+#~ msgstr "Fai un par d'hores"
+#~ msgid "Earlier today"
+#~ msgstr "Güei, ceo"
+
