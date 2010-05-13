@@ -1,0 +1,142 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Moblin UX\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-12 09:38+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: astur <malditoastur@gmail.com>\n"
+"Language-Team: asturian <alministradores@softastur.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: asturian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../src/moblin-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "¡Hola! Ésti ye'l panel d'estáu. Cuando tengas configurada una cuenta Web (como Twitter), equí podrás ver los anovamientos del estáu de los tos contautos, y tamién anovar el tuyu."
+
+# <mousetip of the top of the screen>
+#: ../src/moblin-panel-status.c:100
+msgid "Status"
+msgstr "Estáu"
+
+# <mousetip of the top of the screen>
+#: ../src/moblin-panel-status.c:158
+#: ../data/moblin-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr "estáu"
+
+#. vim:set ts=8 expandtab
+#: ../data/moblin-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Panel d'estáu"
+
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Nun puede anovase l'estáu: O nun hai serviciu disponible o la to contraseña nun ye correuta."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Nun puede anovase l'estáu: Nun tas en llinia"
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Nun pudimos pescudar aú t'allugues"
+
+#: ../src/mps-feed-pane.c:452
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Creemos que tas equí: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:458
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "El to allugamientu apaez como: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:468
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "Creemos que tas equí: %f %f"
+
+#: ../src/mps-feed-pane.c:472
+#, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "El to allugamientu apaez como: %f %f"
+
+#: ../src/mps-feed-pane.c:482
+msgid "Your location is not being shared"
+msgstr "Nun tas amosando la to llocalización"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:585
+msgid "Update"
+msgstr "Anovar"
+
+#: ../src/mps-feed-pane.c:590
+msgid "What's happening?"
+msgstr "¿Qué ta asocediendo?"
+
+#: ../src/mps-feed-pane.c:640
+msgid "Change"
+msgstr "Camudar"
+
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web service"
+msgstr "Amestar un nuevu serviciu web"
+
+#: ../src/mps-feed-switcher.c:373
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "Paez que nun tienes dengún serviciu web configuráu o hai un problema cola configuración. Usa'l botón d'arriba p'abrir les tos cuentes web y configurar ún."
+
+#: ../src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr "La to llocalización"
+
+#: ../src/mps-geotag-pane.c:568
+msgid "Search"
+msgstr "Guetar"
+
+#: ../src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr "¿Aú tas?"
+
+#: ../src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr "Alcuéntrame"
+
+#: ../src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr "Usar esta llocalización"
+
+#: ../src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr "Nun usar esta llocalización"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:528
+#, c-format
+msgid "%s from %s"
+msgstr "%s de %s"
+
+#~ msgid "Offline"
+#~ msgstr "Fuera de llinia"
+#~ msgid "Available"
+#~ msgstr "Disponible"
+#~ msgid "Away"
+#~ msgstr "Inactivu"
+#~ msgid "Busy"
+#~ msgstr "Ocupáu"
+#~ msgid "Close"
+#~ msgstr "Zarrar"
+#~ msgid "Unknown account"
+#~ msgstr "Cuenta desconocida"
+#~ msgid "Edit"
+#~ msgstr "Editar"
+
