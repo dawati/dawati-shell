@@ -107,7 +107,7 @@ msgstr "Du bist zu einem drahtgebundenen Netzwerk verbunden"
 #: ../carrick/carrick-notification-manager.c:142
 #, c-format
 msgid "You're now connected to %s, a %s network"
-msgstr "Du bist mit %s, ein %s-Netzwerk, verbunden"
+msgstr "Du bist mit %s, einem %s-Netzwerk, verbunden"
 
 #: ../carrick/carrick-notification-manager.c:148
 #, c-format
@@ -179,7 +179,7 @@ msgid ""
 msgstr ""
 "Gib bitte den Namen des Netzwerks,\n"
 "sowie, falls nötig, das Kennwort und\n"
-"den Sicherheitstyp, an."
+"den Sicherheitstyp an."
 
 #: ../carrick/carrick-pane.c:682
 msgid "Network name"
