@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: panel-apps.master.ast\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:30+0000\n"
+"POT-Creation-Date: 2010-05-12 09:35+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: asturian <alministradores@softastur.org>\n"
@@ -12,24 +12,37 @@ msgstr ""
 "X-Poedit-Language: asturian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/moblin-netbook-launcher.c:813
-msgid "Favorite Applications"
-msgstr "Aplicaciones preferíes"
-
-#: ../src/moblin-netbook-launcher.c:1337
-msgid "Applications"
-msgstr "Aplicaciones"
-
-#: ../src/moblin-netbook-launcher.c:1348
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Gueta"
 
+#. Panel label
+#: ../src/moblin-netbook-launcher.c:987
+msgid "Applications"
+msgstr "Aplicaciones"
+
+#.
+#. * Fav apps pane
+#.
+#: ../src/moblin-netbook-launcher.c:1003
+msgid "Favorite applications"
+msgstr "Aplicaciones preferíes"
+
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-applications.c:196
+#.
+#. * Applications
+#.
+#: ../src/moblin-netbook-launcher.c:1030
+msgid "Your applications"
+msgstr "Les tos aplicaciones"
+
+# <mousetip of the top of the screen>
+#: ../src/moblin-panel-applications.c:223
+#: ../data/moblin-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicaciones"
+
+#: ../data/moblin-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Panel aplicaciones"
 
