@@ -64,7 +64,7 @@ static GOptionEntry entries[] = {
 
 
 /* background loading */
-#define BG_KEY_DIR "/desktop/moblin/background"
+#define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
 #define THEMEDIR DATADIR "/mutter-moblin/theme/"
 
@@ -94,7 +94,12 @@ desktop_filename_changed_cb (GConfClient *client,
       data->background = NULL;
     }
 
-  data->background = clutter_texture_new_from_file (filename, &err);
+  if (!data->background)
+    data->background = clutter_texture_new_from_file (filename, &err);
+  else
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (data->background),
+                                   filename, &err);
+
 
   if (err)
     {

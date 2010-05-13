@@ -33,19 +33,14 @@ penge_magic_texture_paint (ClutterActor *actor)
   float aw, ah;
   float v;
   float tx1, tx2, ty1, ty2;
-  float rw, rh;
   guint8 alpha;
 
   clutter_actor_get_allocation_box (actor, &box);
   material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (actor));
   tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (actor));
 
-  bw = 1024; //(float) cogl_texture_get_width (tex); /* base texture width */
-  bh = 600; // (float) cogl_texture_get_height (tex); /* base texture height */
-
-  rw = (float) cogl_texture_get_width (tex); /* base texture width */
-  rh = (float) cogl_texture_get_height (tex); /* base texture height */
-
+  bw = (float) cogl_texture_get_width (tex); /* base texture width */
+  bh = (float) cogl_texture_get_height (tex); /* base texture height */
 
   aw = (float) (box.x2 - box.x1); /* allocation width */
   ah = (float) (box.y2 - box.y1); /* allocation height */
@@ -77,18 +72,10 @@ penge_magic_texture_paint (ClutterActor *actor)
                               alpha);
 
   cogl_set_source (material);
-
-  cogl_rectangle_with_texture_coords (0, 0, aw, ah,
-                                      (bw / rw) * tx1,
-                                      (bh / rh) * ty1,
-                                      (bw / rw) * tx2,
-                                      (bh / rh) * ty2);
-
-  /*
-  cogl_rectangle_with_texture_coords (0, 0, aw, ah,
+  cogl_rectangle_with_texture_coords (0, 0,
+                                      aw, ah,
                                       tx1, ty1,
                                       tx2, ty2);
-                                      */
 }
 
 static void
