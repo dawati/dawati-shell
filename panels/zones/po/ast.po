@@ -1,0 +1,50 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Moblin UX\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-12 09:43+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: astur <malditoastur@gmail.com>\n"
+"Language-Team: asturian <alministradores@softastur.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: asturian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../data/moblin-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Panel de zones"
+
+# <mousetip of the top of the screen>
+#: ../data/moblin-panel-zones.desktop.in.in.h:2
+#: ../src/main.c:25
+msgid "zones"
+msgstr "zones"
+
+# <mousetip of the top of the screen>
+#: ../src/main.c:405
+msgid "Zones"
+msgstr "Zones"
+
+#: ../src/sw-overview.c:220
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "¡Hola! Ésti ye'l panel de zones. Cuando tengas aplicaciones abiertes, podrás veles y acceder a elles dende equí."
+
+# <mousetip of the top of the screen>
+#: ../src/sw-zone.c:783
+msgid "New Zone"
+msgstr "Nueva zona"
+
+#: ../src/sw-zone.c:797
+msgid "No applications on this zone"
+msgstr "Nun hai denguna aplicación nesta zona"
+
+# <mousetip of the top of the screen>
+#: ../src/sw-zone.c:924
+#, c-format
+msgid "Zone %d"
+msgstr "Zona %d"
+
