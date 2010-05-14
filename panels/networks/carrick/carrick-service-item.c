@@ -1256,7 +1256,7 @@ validate_static_ip_entries (CarrickServiceItem *item)
 
   for (iter = dnsv; *iter; iter++)
     {
-      if (!validate_address (*iter, FALSE))
+      if (!validate_address (*iter, TRUE))
         {
           char *msg;
 
