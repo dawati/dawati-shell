@@ -1139,6 +1139,7 @@ method_combo_changed_cb (GtkComboBox *combobox,
                           priv->gateway ? priv->gateway : "");
 
       buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
+
       if (priv->nameservers)
         {
           char *nameservers;
@@ -1154,6 +1155,32 @@ method_combo_changed_cb (GtkComboBox *combobox,
     }
 
   gtk_widget_hide (priv->info_bar);
+}
+
+static void
+set_nameservers_configuration_cb (DBusGProxy *proxy,
+                                  GError     *error,
+                                  gpointer    user_data)
+{
+  CarrickServiceItemPrivate *priv;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
+
+  if (error)
+    {
+      /* TODO: errors we should show in UI? */
+
+      g_warning ("Error setting Nameservers.Configuration: %s",
+                 error->message);
+      g_error_free (error);
+    }
+
+  if (g_str_equal (priv->state, "idle") ||
+      g_str_equal (priv->state, "disconnect"))
+    {
+      _start_connecting (CARRICK_SERVICE_ITEM (user_data));
+    }
 }
 
 static void
@@ -1177,11 +1204,8 @@ set_ipv4_configuration_cb (DBusGProxy *proxy,
       return;
     }
 
-  if (g_str_equal (priv->state, "idle") ||
-      g_str_equal (priv->state, "disconnect"))
-    {
-      _start_connecting (CARRICK_SERVICE_ITEM (user_data));
-    }
+  /* Nothing to do here, set_nameservers_configuration_cb() will
+   * re-connect if needed */
 }
 
 static gboolean
@@ -1313,6 +1337,10 @@ apply_button_clicked_cb (GtkButton *button,
   CarrickServiceItemPrivate *priv;
   GValue *value;
   GHashTable *ipv4;
+  GtkTextBuffer *buf;
+  GtkTextIter start, end;
+  char *nameservers;
+  char **dnsv;
 
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
   item = CARRICK_SERVICE_ITEM (user_data);
@@ -1353,6 +1381,27 @@ apply_button_clicked_cb (GtkButton *button,
 
   g_free (value);
   g_hash_table_destroy (ipv4);
+
+
+  buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
+  gtk_text_buffer_get_start_iter (buf, &start);
+  gtk_text_buffer_get_end_iter (buf, &end);
+  nameservers = gtk_text_buffer_get_text (buf, &start, &end, FALSE);
+  dnsv = g_strsplit_set (nameservers, " ,;\n", -1);
+
+
+  value = g_new0 (GValue, 1);
+  g_value_init (value, G_TYPE_STRV);
+  g_value_set_boxed (value, dnsv);
+
+  org_moblin_connman_Service_set_property_async (priv->proxy,
+                                                 "Nameservers.Configuration",
+                                                 value,
+                                                 set_nameservers_configuration_cb,
+                                                 user_data);
+
+  g_free (value);
+  g_strfreev (dnsv);
 
   _unexpand_advanced_settings (item);
 }
