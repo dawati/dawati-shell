@@ -151,9 +151,11 @@ start_search (MnpWorldClock *area)
 	
 	if (priv->search_text && (strlen(priv->search_text) > 2))
 		g_signal_emit_by_name (priv->zones_model, "filter-changed");
-	if (priv->search_text && (strlen(priv->search_text) > 2)) {
+	if (priv->search_text && (strlen(priv->search_text) > 2) && (clutter_model_get_n_rows(priv->zones_model) > 0)) {
 		clutter_actor_show(priv->completion);
 		clutter_actor_raise_top (priv->completion);
+	} else {
+		clutter_actor_hide(priv->completion);
 	}
 
 
