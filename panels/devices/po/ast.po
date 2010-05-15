@@ -1,0 +1,262 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-15 09:49+0000\n"
+"PO-Revision-Date: 2010-05-15 17:39+0100\n"
+"Last-Translator: astur <malditoastur@gmail.com>\n"
+"Language-Team: asturian <alministradores@softastur.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: asturian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Panel de preseos"
+
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:160
+msgid "devices"
+msgstr "preseos"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Deshabilitáu"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "Salida %u"
+msgstr[1] "Salides %u"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "Entrada %u"
+msgstr[1] "Entraes %u"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Soníos del sistema"
+
+#: ../power-icon/src/moblin-power-icon.c:46
+msgid "MeeGo Power Icon"
+msgstr "Iconu d'enerxía MeeGo"
+
+#: ../power-icon/src/mpd-power-icon.c:76
+msgid "Running low on battery"
+msgstr "Queda poca batería "
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgstr "La batería ta daqué baxa. Si puedes, enchúfala pa recargala."
+
+#: ../power-icon/src/mpd-power-icon.c:80
+msgid "Getting close to empty"
+msgstr "Casi escosada"
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgstr "Cásique nun queda batería. Guarda'l trabayu ya enchúfala en cuantes puedas."
+
+#: ../power-icon/src/mpd-power-icon.c:85
+msgid "Danger!"
+msgstr "¡Peligru!"
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "L'equipu va escosar la batería nun intrín, y va apagase. Guarda's trabayu. Esperamos vete aína."
+
+#: ../power-icon/src/mpd-power-icon.c:336
+msgid "Would you like to turn off now?"
+msgstr "¿Apagar l'equipu?"
+
+#: ../power-icon/src/mpd-power-icon.c:337
+msgid "If you don't decide I'll turn off in 30 seconds."
+msgstr "Si nun se decide un res, va apagase en 30 segundos."
+
+#: ../power-icon/src/mpd-power-icon.c:441
+msgid "battery"
+msgstr "batería"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:71
+#, c-format
+msgid "If you don't decide I'll turn off in %d seconds"
+msgstr "Si nun se decide un res, va apagase en %d segundos."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:127
+msgid "Turn off"
+msgstr "Apagar"
+
+#: ../src/moblin-panel-devices.c:121
+msgid "MeeGo Devices Panel"
+msgstr "Panel de preseos de MeeGo"
+
+#: ../src/mpd-battery-device.c:329
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Sentímoslo, paez que nun hai denguna batería instalada."
+
+#: ../src/mpd-battery-device.c:333
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "La batería ta cargándose. Ta a un %d%% de la capacidá."
+
+#: ../src/mpd-battery-device.c:338
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Batería n'usu. Ta a un %d%% del total."
+
+#: ../src/mpd-battery-device.c:343
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "La batería ta dafechu cargada y llista."
+
+#: ../src/mpd-battery-device.c:347
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Sentímoslo, paez que la batería ta toyida."
+
+#. First row.
+#: ../src/mpd-brightness-tile.c:141
+msgid "Netbook brightness"
+msgstr "Claror de pantalla"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "L'equipu"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Toles configuraciones"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Si coneutes un preséu,\n"
+"va deteutase automáticamente."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Otros preseos"
+
+#: ../src/mpd-devices-tile.c:72
+#: ../src/mpd-devices-tile.c:95
+#: ../src/mpd-devices-tile.c:137
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Nun s'espulsó, porque paez qu'hai otra aplicación usándolu"
+
+#: ../src/mpd-devices-tile.c:414
+msgid "It is safe to unplug this device now"
+msgstr "Yá puedes desconeutar el preséu ensin problemes"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Tas usando</span> <span color='%s'>%d%% de %s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Papelera"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Preseos"
+
+#: ../src/mpd-storage-device-tile.c:165
+#, c-format
+msgid "Could not run %s"
+msgstr "Nun pudo executase %s"
+
+#: ../src/mpd-storage-device-tile.c:167
+msgid "Import error"
+msgstr "Fallu durante la importación"
+
+#. TODO: import button should only be shown if the import apps are available
+#. Import button
+#: ../src/mpd-storage-device-tile.c:519
+msgid "Import data"
+msgstr "Importar"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:530
+msgid "Eject"
+msgstr "Espulsar"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:541
+msgid "Open"
+msgstr "Abrir"
+
+#: ../src/mpd-storage-device-tile.c:734
+#, c-format
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% de %s</span>"
+
+#: ../src/mpd-storage-device-tile.c:742
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Al máximu"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Mui altu"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Altu"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Daqué altu"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Mediu"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Daqué baxu"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Baxu"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Mui baxu"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Silenciu"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Netbook volume"
+msgstr "Volume del miniordenador"
+
+#: ../src/mpd-volume-tile.c:371
+msgid "Mute"
+msgstr "Silenciu"
+
