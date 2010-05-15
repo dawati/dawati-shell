@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-12 09:43+0000\n"
+"POT-Creation-Date: 2010-05-15 09:48+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: asturian <alministradores@softastur.org>\n"
@@ -25,26 +25,31 @@ msgid "zones"
 msgstr "zones"
 
 # <mousetip of the top of the screen>
-#: ../src/main.c:405
+#: ../src/main.c:410
 msgid "Zones"
 msgstr "Zones"
 
-#: ../src/sw-overview.c:220
+#: ../src/sw-overview.c:240
 msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
 msgstr "¡Hola! Ésti ye'l panel de zones. Cuando tengas aplicaciones abiertes, podrás veles y acceder a elles dende equí."
 
 # <mousetip of the top of the screen>
-#: ../src/sw-zone.c:783
+#: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "Nueva zona"
 
-#: ../src/sw-zone.c:797
-msgid "No applications on this zone"
-msgstr "Nun hai denguna aplicación nesta zona"
-
 # <mousetip of the top of the screen>
-#: ../src/sw-zone.c:924
+#: ../src/sw-zone.c:98
+#: ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "Zona %d"
+
+#: ../src/sw-zone.c:848
+msgid "No applications on this zone"
+msgstr "Nun hai denguna aplicación nesta zona"
+
+#: ../src/sw-zone.c:1004
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Les aplicaciones que tas usando van amosase equí. Puedes camudales y organizales como más te preste."
 
