@@ -505,6 +505,11 @@ network_model_service_changed_cb (DBusGProxy  *service,
                                 CARRICK_COLUMN_ADDRESS,
                                 g_value_get_string (ipv4_val),
                                 -1);
+          else
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_ADDRESS,
+                                NULL,
+                                -1);
 
           ipv4_val = g_hash_table_lookup (ipv4, "Netmask");
           if (ipv4_val)
@@ -512,12 +517,22 @@ network_model_service_changed_cb (DBusGProxy  *service,
                                 CARRICK_COLUMN_NETMASK,
                                 g_value_get_string (ipv4_val),
                                 -1);
+          else
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_NETMASK,
+                                NULL,
+                                -1);
 
           ipv4_val = g_hash_table_lookup (ipv4, "Gateway");
           if (ipv4_val)
             gtk_list_store_set (store, &iter,
                                 CARRICK_COLUMN_GATEWAY,
                                 g_value_get_string (ipv4_val),
+                                -1);
+          else
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_GATEWAY,
+                                NULL,
                                 -1);
         }
     }
@@ -543,6 +558,11 @@ network_model_service_changed_cb (DBusGProxy  *service,
                                 CARRICK_COLUMN_CONFIGURED_ADDRESS,
                                 g_value_get_string (ipv4_val),
                                 -1);
+          else
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_CONFIGURED_ADDRESS,
+                                NULL,
+                                -1);
 
           ipv4_val = g_hash_table_lookup (ipv4, "Netmask");
           if (ipv4_val)
@@ -550,12 +570,22 @@ network_model_service_changed_cb (DBusGProxy  *service,
                                 CARRICK_COLUMN_CONFIGURED_NETMASK,
                                 g_value_get_string (ipv4_val),
                                 -1);
+          else
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_CONFIGURED_NETMASK,
+                                NULL,
+                                -1);
 
           ipv4_val = g_hash_table_lookup (ipv4, "Gateway");
           if (ipv4_val)
             gtk_list_store_set (store, &iter,
                                 CARRICK_COLUMN_CONFIGURED_GATEWAY,
                                 g_value_get_string (ipv4_val),
+                                -1);
+          else
+            gtk_list_store_set (store, &iter,
+                                CARRICK_COLUMN_CONFIGURED_GATEWAY,
+                                NULL,
                                 -1);
         }
     }

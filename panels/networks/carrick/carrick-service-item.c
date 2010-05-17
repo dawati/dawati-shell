@@ -223,8 +223,8 @@ _populate_variables (CarrickServiceItem *self)
                                &iter,
                                gtk_tree_row_reference_get_path (priv->row)))
     {
-      char *config_method, *config_address, *config_netmask, *config_gateway;
-      char **config_nameservers;
+      char *method, *address, *netmask, *gateway;
+      char **nameservers;
 
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
                           CARRICK_COLUMN_PROXY, &priv->proxy,
@@ -237,31 +237,34 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_PASSPHRASE_REQUIRED, &priv->need_pass,
                           CARRICK_COLUMN_PASSPHRASE, &priv->passphrase,
                           CARRICK_COLUMN_SETUP_REQUIRED, &priv->setup_required,
-                          CARRICK_COLUMN_METHOD, &priv->method,
-                          CARRICK_COLUMN_ADDRESS, &priv->address,
-                          CARRICK_COLUMN_NETMASK, &priv->netmask,
-                          CARRICK_COLUMN_GATEWAY, &priv->gateway,
-                          CARRICK_COLUMN_CONFIGURED_METHOD, &config_method,
-                          CARRICK_COLUMN_CONFIGURED_ADDRESS, &config_address,
-                          CARRICK_COLUMN_CONFIGURED_NETMASK, &config_netmask,
-                          CARRICK_COLUMN_CONFIGURED_GATEWAY, &config_gateway,
-                          CARRICK_COLUMN_NAMESERVERS, &priv->nameservers,
-                          CARRICK_COLUMN_CONFIGURED_NAMESERVERS, &config_nameservers,
+                          CARRICK_COLUMN_METHOD, &method,
+                          CARRICK_COLUMN_ADDRESS, &address,
+                          CARRICK_COLUMN_NETMASK, &netmask,
+                          CARRICK_COLUMN_GATEWAY, &gateway,
+                          CARRICK_COLUMN_CONFIGURED_METHOD, &priv->method,
+                          CARRICK_COLUMN_CONFIGURED_ADDRESS, &priv->address,
+                          CARRICK_COLUMN_CONFIGURED_NETMASK, &priv->netmask,
+                          CARRICK_COLUMN_CONFIGURED_GATEWAY, &priv->gateway,
+                          CARRICK_COLUMN_NAMESERVERS, &nameservers,
+                          CARRICK_COLUMN_CONFIGURED_NAMESERVERS, &priv->nameservers,
                           CARRICK_COLUMN_FAVORITE, &priv->favorite,
                           -1);
 
-      /* use manually configured values if real values are not available:
-       * this happens e.g. when the service is not connected. */
+      /* use normal values only if manually configured values are not available:
+       * Two reasons:
+       * 1. sometimes normal values are not available (e.g. when not connected).
+       * 2. don't show "old" values while connman is still applying manually set ones
+       */
       if (!priv->method)
-        priv->method = config_method;
+        priv->method = method;
       if (!priv->address)
-        priv->address = config_address;
+        priv->address = address;
       if (!priv->netmask)
-        priv->netmask = config_netmask;
+        priv->netmask = netmask;
       if (!priv->gateway)
-        priv->gateway = config_gateway;
+        priv->gateway = gateway;
       if (!priv->nameservers)
-        priv->nameservers = config_nameservers;
+        priv->nameservers = nameservers;
     }
 }
 
