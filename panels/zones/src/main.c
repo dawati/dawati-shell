@@ -363,6 +363,8 @@ window_opened (WnckScreen    *screen,
     g_debug ("No background found");
 
   thumbnail = clutter_glx_texture_pixmap_new_with_window (xid);
+  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (thumbnail),
+                                            TRUE);
   clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (thumbnail), TRUE);
 
   sw_window_set_thumbnail (win, thumbnail);
