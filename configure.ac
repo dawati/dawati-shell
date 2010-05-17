@@ -1,4 +1,4 @@
-m4_define([mutter_version], [2.29.1_0.1])
+m4_define([mutter_version], [2.29.1_1.0])
 m4_define([plugin_major_version], [0])
 m4_define([plugin_minor_version], [76])
 m4_define([plugin_micro_version], [0])

@@ -770,10 +770,9 @@ notification_cluster_allocation_notify_cb (ClutterActor *notification,
 }
 
 static void
-moblin_netbook_plugin_constructed (GObject *object)
+moblin_netbook_plugin_start (MutterPlugin *plugin)
 {
-  MoblinNetbookPlugin        *plugin = MOBLIN_NETBOOK_PLUGIN (object);
-  MoblinNetbookPluginPrivate *priv   = plugin->priv;
+  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   ClutterActor *overlay;
   ClutterActor *toolbar;
@@ -784,18 +783,17 @@ moblin_netbook_plugin_constructed (GObject *object)
   ClutterColor  low_clr = { 0, 0, 0, 0x7f };
   GError       *err = NULL;
 
-  MetaScreen   *screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  MetaScreen   *screen    = mutter_plugin_get_screen (plugin);
   MetaDisplay  *display   = meta_screen_get_display (screen);
   ClutterActor *stage     = mutter_get_stage_for_screen (screen);
 
   GConfClient  *gconf_client;
 
-  plugin_singleton = (MutterPlugin*)object;
+  plugin_singleton = plugin;
 
   gconf_client = priv->gconf_client = gconf_client_get_default ();
 
-  moblin_netbook_handle_screen_size (MUTTER_PLUGIN (plugin),
-                                     &screen_width, &screen_height);
+  moblin_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!(compositor_options & MNB_OPTION_DISABLE_WS_CLAMP))
@@ -846,7 +844,7 @@ moblin_netbook_plugin_constructed (GObject *object)
                     G_CALLBACK (moblin_netbook_display_focus_window_notify_cb),
                     plugin);
 
-  overlay = mutter_plugin_get_overlay_group (MUTTER_PLUGIN (plugin));
+  overlay = mutter_plugin_get_overlay_group (plugin);
 
   lowlight = clutter_rectangle_new_with_color (&low_clr);
   priv->lowlight = lowlight;
@@ -857,23 +855,22 @@ moblin_netbook_plugin_constructed (GObject *object)
                     G_CALLBACK (on_lowlight_button_event),
                     NULL);
 
-  mnb_input_manager_create (MUTTER_PLUGIN (plugin));
+  mnb_input_manager_create (plugin);
 
-  setup_focus_window (MUTTER_PLUGIN (plugin));
-  setup_screen_saver (MUTTER_PLUGIN (plugin));
+  setup_focus_window (plugin);
+  setup_screen_saver (plugin);
 
   /*
    * This also creates the launcher.
    */
-  toolbar = priv->toolbar =
-    CLUTTER_ACTOR (mnb_toolbar_new (MUTTER_PLUGIN (plugin)));
+  toolbar = priv->toolbar = CLUTTER_ACTOR (mnb_toolbar_new (plugin));
 
   switcher_overlay = priv->switcher_overlay =
     CLUTTER_ACTOR (mnb_alttab_overlay_new ());
 
   clutter_set_motion_events_enabled (TRUE);
 
-  desktop_background_init (MUTTER_PLUGIN (plugin));
+  desktop_background_init (plugin);
 
   /* Notifications */
   priv->notify_store = moblin_netbook_notify_store_new ();
@@ -903,7 +900,7 @@ moblin_netbook_plugin_constructed (GObject *object)
   g_signal_connect (priv->notification_urgent,
                     "notify::allocation",
                     G_CALLBACK (on_urgent_notify_allocation_cb),
-                    MUTTER_PLUGIN (plugin));
+                    plugin);
 
   mnb_notification_urgent_set_store
                         (MNB_NOTIFICATION_URGENT(priv->notification_urgent),
@@ -912,12 +909,12 @@ moblin_netbook_plugin_constructed (GObject *object)
   g_signal_connect (priv->notification_urgent,
                     "sync-input-region",
                     G_CALLBACK (sync_notification_input_region_cb),
-                    MUTTER_PLUGIN (plugin));
+                    plugin);
 
   g_signal_connect (priv->notification_urgent,
                     "notify::visible",
                     G_CALLBACK (on_urgent_notifiy_visible_cb),
-                    MUTTER_PLUGIN (plugin));
+                    plugin);
 
   /*
    * Order matters:
@@ -944,7 +941,7 @@ moblin_netbook_plugin_constructed (GObject *object)
    * Session presence.  In the future we should just use a lean gnome-session,
    * but for now mutter can be the presence manager.
    */
-  presence_init (plugin);
+  presence_init ((MoblinNetbookPlugin*)plugin);
 
   /* Keys */
 
@@ -989,7 +986,6 @@ moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
 
   gobject_class->finalize        = moblin_netbook_plugin_finalize;
   gobject_class->dispose         = moblin_netbook_plugin_dispose;
-  gobject_class->constructed     = moblin_netbook_plugin_constructed;
   gobject_class->set_property    = moblin_netbook_plugin_set_property;
   gobject_class->get_property    = moblin_netbook_plugin_get_property;
 
@@ -1004,6 +1000,7 @@ moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
   plugin_class->xevent_filter    = xevent_filter;
   plugin_class->get_shadow       = moblin_netbook_get_shadow;
   plugin_class->constrain_window = moblin_netbook_constrain_window;
+  plugin_class->start            = moblin_netbook_plugin_start;
 
   g_type_class_add_private (gobject_class, sizeof (MoblinNetbookPluginPrivate));
 }
