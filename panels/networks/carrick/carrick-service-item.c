@@ -82,6 +82,7 @@ struct _CarrickServiceItemPrivate
   GtkWidget *gateway_entry;
   GtkWidget *netmask_entry;
   GtkWidget *dns_text_view;
+  gboolean form_modified;
 
   CarrickIconFactory *icon_factory;
   gboolean failed;
@@ -264,6 +265,49 @@ _populate_variables (CarrickServiceItem *self)
     }
 }
 
+
+static void
+_set_form_state (CarrickServiceItem *self)
+{
+  CarrickServiceItemPrivate *priv = self->priv;
+  gchar                     *nameservers = NULL;
+  GtkTextBuffer             *buf;
+
+  if (g_strcmp0 (priv->method, "manual") == 0)
+    {
+      gtk_combo_box_set_active (GTK_COMBO_BOX (priv->method_combo), 1);
+    }
+  else
+    {
+      gtk_combo_box_set_active (GTK_COMBO_BOX (priv->method_combo), 0);
+    }
+
+  gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
+                      priv->address ? priv->address : "");
+
+  gtk_entry_set_text (GTK_ENTRY (priv->netmask_entry),
+                      priv->netmask ? priv->netmask : "");
+
+  gtk_entry_set_text (GTK_ENTRY (priv->gateway_entry),
+                      priv->gateway ? priv->gateway : "");
+
+  buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
+  if (priv->nameservers)
+    {
+      nameservers = g_strjoinv ("\n", priv->nameservers);
+      gtk_text_buffer_set_text (buf, nameservers, -1);
+      g_free (nameservers);
+    }
+  else
+    {
+      gtk_text_buffer_set_text (buf, "", -1);
+    }
+
+  /* need to initialize this after setting the widgets, as their signal
+   * handlers set form_modified to TRUE */
+  priv->form_modified = FALSE;
+}
+
 static void
 _set_state (CarrickServiceItem *self)
 {
@@ -272,8 +316,6 @@ _set_state (CarrickServiceItem *self)
   gchar                     *button = NULL;
   GdkPixbuf                 *pixbuf = NULL;
   gchar                     *name = g_strdup (priv->name);
-  gchar                     *nameservers = NULL;
-  GtkTextBuffer             *buf;
 
   _service_item_set_security (self);
 
@@ -389,36 +431,6 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup (name);
     }
 
-  if (g_strcmp0 (priv->method, "manual") == 0)
-    {
-      gtk_combo_box_set_active (GTK_COMBO_BOX (priv->method_combo), 1);
-    }
-  else
-    {
-      gtk_combo_box_set_active (GTK_COMBO_BOX (priv->method_combo), 0);
-    }
-
-  gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
-                      priv->address ? priv->address : "");
-
-  gtk_entry_set_text (GTK_ENTRY (priv->netmask_entry),
-                      priv->netmask ? priv->netmask : "");
-
-  gtk_entry_set_text (GTK_ENTRY (priv->gateway_entry),
-                      priv->gateway ? priv->gateway : "");
-
-  buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
-  if (priv->nameservers)
-    {
-      nameservers = g_strjoinv ("\n", priv->nameservers);
-      gtk_text_buffer_set_text (buf, nameservers, -1);
-      g_free (nameservers);
-    }
-  else
-    {
-      gtk_text_buffer_set_text (buf, "", -1);
-    }
-
   if (label && label[0] != '\0')
     {
       gtk_label_set_text (GTK_LABEL (priv->name_label),
@@ -440,6 +452,12 @@ _set_state (CarrickServiceItem *self)
     gtk_widget_hide (priv->info_bar);
   else
     gtk_widget_show (priv->info_bar);
+
+  /* only update the entries etc if the user hasn't touched them yet */
+  if (!priv->form_modified)
+    {
+      _set_form_state (self);
+    }
 
   g_free (name);
   g_free (label);
@@ -490,8 +508,8 @@ dbus_proxy_notify_cb (DBusGProxy *proxy,
 {
   if (error)
     {
-      g_debug ("Error when ending call: %s",
-               error->message);
+      g_warning ("Error when ending call: %s",
+                 error->message);
       g_error_free (error);
     }
 }
@@ -519,8 +537,8 @@ set_passphrase_notify_cb (DBusGProxy *proxy,
 
   if (error)
     {
-      g_debug ("Error when ending call: %s",
-               error->message);
+      g_warning ("Error when ending call: %s",
+                 error->message);
       g_error_free (error);
     }
   else
@@ -716,8 +734,15 @@ _advanced_expander_notify_expanded_cb (GObject    *object,
 
   g_signal_emit (data, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
 
-  gtk_widget_hide (priv->info_bar);
   expanded = gtk_expander_get_expanded (GTK_EXPANDER (priv->advanced_expander));
+  if (!expanded)
+    {
+      /* update user changed values with connman data */
+      priv->form_modified = FALSE;
+      _set_state (CARRICK_SERVICE_ITEM (data));
+
+      gtk_widget_hide (priv->info_bar);
+    }
   nbtk_gtk_expander_set_expanded (NBTK_GTK_EXPANDER (priv->expando),
                                   expanded);
 }
@@ -1153,6 +1178,7 @@ method_combo_changed_cb (GtkComboBox *combobox,
         }
     }
 
+  priv->form_modified = TRUE;
   gtk_widget_hide (priv->info_bar);
 }
 
@@ -1270,22 +1296,33 @@ validate_static_ip_entries (CarrickServiceItem *item)
   return TRUE;
 }
 
-static gboolean
-validate_dns_text_view (CarrickServiceItem *item)
+static char**
+get_nameserver_strv (GtkTextView *dns_text_view)
 {
-  CarrickServiceItemPrivate *priv;
   GtkTextBuffer *buf;
   GtkTextIter start, end;
-  const char *nameservers;
-  char **dnsv, **iter;
+  char *nameservers;
+  char **dnsv;
 
-  priv = item->priv;
-
-  buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
+  buf = gtk_text_view_get_buffer (dns_text_view);
   gtk_text_buffer_get_start_iter (buf, &start);
   gtk_text_buffer_get_end_iter (buf, &end);
   nameservers = gtk_text_buffer_get_text (buf, &start, &end, FALSE);
   dnsv = g_strsplit_set (nameservers, " ,;\n", -1);
+
+  g_free (nameservers);
+  return dnsv;
+}
+
+static gboolean
+validate_dns_text_view (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv;
+  char **dnsv, **iter;
+
+  priv = item->priv;
+
+  dnsv = get_nameserver_strv (GTK_TEXT_VIEW (priv->dns_text_view));
 
   for (iter = dnsv; *iter; iter++)
     {
@@ -1323,6 +1360,7 @@ static_ip_entry_notify_text (GtkEntry   *entry,
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
   priv = CARRICK_SERVICE_ITEM (user_data)->priv;
 
+  priv->form_modified = TRUE;
   gtk_widget_hide (priv->info_bar);
 }
 
@@ -1335,6 +1373,7 @@ dns_buffer_changed_cb (GtkTextBuffer *textbuffer,
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
   priv = CARRICK_SERVICE_ITEM (user_data)->priv;
 
+  priv->form_modified = TRUE;
   gtk_widget_hide (priv->info_bar);
 }
 
@@ -1346,44 +1385,42 @@ apply_button_clicked_cb (GtkButton *button,
   CarrickServiceItemPrivate *priv;
   GValue *value;
   GHashTable *ipv4;
-  GtkTextBuffer *buf;
-  GtkTextIter start, end;
-  char *nameservers;
   char **dnsv;
 
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
   item = CARRICK_SERVICE_ITEM (user_data);
   priv = item->priv;
 
-  ipv4 = g_hash_table_new (g_str_hash, g_str_equal);
+  if (!validate_dns_text_view (item))
+    return;
 
+  ipv4 = g_hash_table_new (g_str_hash, g_str_equal);
   if (gtk_combo_box_get_active (GTK_COMBO_BOX (priv->method_combo)) == 1)
     {
+      char *address, *netmask, *gateway;
+
       if (!validate_static_ip_entries (item))
         {
            g_hash_table_destroy (ipv4);
            return;
         }
 
+      address = (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
+      netmask = (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
+      gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
+
       g_hash_table_insert (ipv4, "Method", "manual");
-      g_hash_table_insert (ipv4, "Address",
-                           (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry)));
-      g_hash_table_insert (ipv4, "Netmask",
-                           (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry)));
-      g_hash_table_insert (ipv4, "Gateway",
-                           (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry)));
+      g_hash_table_insert (ipv4, "Address", address);
+      g_hash_table_insert (ipv4, "Netmask", netmask);
+      g_hash_table_insert (ipv4, "Gateway", gateway);
     }
   else
     {
       g_hash_table_insert (ipv4, "Method", "dhcp");
     }
 
-  if (!validate_dns_text_view (item))
-    {
-      g_hash_table_destroy (ipv4);
-      return;
-    }
-
+  /* start updating form again based on connman updates */
+  priv->form_modified = FALSE;
 
   value = g_new0 (GValue, 1);
   g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
@@ -1399,15 +1436,9 @@ apply_button_clicked_cb (GtkButton *button,
   g_hash_table_destroy (ipv4);
 
 
-  buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
-  gtk_text_buffer_get_start_iter (buf, &start);
-  gtk_text_buffer_get_end_iter (buf, &end);
-  nameservers = gtk_text_buffer_get_text (buf, &start, &end, FALSE);
-  dnsv = g_strsplit_set (nameservers, " ,;\n", -1);
-
-
   value = g_new0 (GValue, 1);
   g_value_init (value, G_TYPE_STRV);
+  dnsv = get_nameserver_strv (GTK_TEXT_VIEW (priv->dns_text_view));
   g_value_set_boxed (value, dnsv);
 
   org_moblin_connman_Service_set_property_async (priv->proxy,
