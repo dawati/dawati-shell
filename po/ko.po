@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
+"POT-Creation-Date: 2010-05-17 09:33+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -16,15 +16,15 @@ msgstr ""
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
-msgstr "도구 표시줄 사용자 설정"
+msgstr "툴바 사용자 설정"
 
 #: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
-msgstr "도구 표시줄 설정"
+msgstr "툴바 설정"
 
 #: ../capplet/src/mtp-bin.c:362
 msgid "Save toolbar"
-msgstr "도구 표시줄 저장"
+msgstr "툴바 저장"
 
 #: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
@@ -32,7 +32,7 @@ msgstr "죄송합니다만 새로운 패널을 추가하려면 먼저 패널을 
 
 #: ../capplet/src/mtp-bin.c:369
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "도구 표시줄의 패널을 추가, 제거, 재정렬할 수 있습니다. "
+msgstr "툴바의 패널을 추가, 제거, 재정렬할 수 있습니다. "
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
@@ -74,7 +74,7 @@ msgstr "%Y년 %B %e일"
 
 #: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
-msgstr "도구 표시줄"
+msgstr "툴바"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
@@ -99,7 +99,7 @@ msgstr "항상 소형 스크린 모드 사용"
 
 #: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
-msgstr "도구 표시줄의 패널 순서를 지정합니다."
+msgstr "툴바의 패널 순서를 지정합니다."
 
 #: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
@@ -107,29 +107,29 @@ msgstr "보여지는 사이즈가 일반적으로 크게 보이는 화면 모드
 
 #: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
-msgstr "도구 표시줄의 패널 순서"
+msgstr "툴바의 패널 순서"
 
-#: ../src/moblin-netbook.c:1018
+#: ../src/moblin-netbook.c:1016
 msgid "Moblin Netbook Effects"
 msgstr "Moblin 넷북 영향"
 
-#: ../src/moblin-netbook.c:1022
+#: ../src/moblin-netbook.c:1020
 msgid "Effects for Moblin Netbooks"
 msgstr "Moblin 넷북의 영향"
 
-#: ../src/moblin-netbook.c:3218
+#: ../src/moblin-netbook.c:3231
 msgid "Activate"
 msgstr "활성화"
 
-#: ../src/moblin-netbook.c:3232
+#: ../src/moblin-netbook.c:3245
 msgid "Unknown window"
 msgstr "알수 없는 창"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/moblin-netbook.c:3247
 msgid "is asking for your attention."
 msgstr "주의를 기울여 주시길 바랍니다."
 
-#: ../src/mnb-toolbar.c:1000
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "죄송합니다만 %s이(가) 고장났습니다."
@@ -138,7 +138,7 @@ msgstr "죄송합니다만 %s이(가) 고장났습니다."
 msgid "Dismiss"
 msgstr "해제"
 
-#: ../src/notifications/mnb-notification-cluster.c:663
+#: ../src/notifications/mnb-notification-cluster.c:682
 msgid "Dismiss All"
 msgstr "모두 해제"
 
