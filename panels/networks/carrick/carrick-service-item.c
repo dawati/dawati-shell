@@ -1122,7 +1122,6 @@ method_combo_changed_cb (GtkComboBox *combobox,
   gtk_widget_set_sensitive (priv->address_entry, !use_dhcp);
   gtk_widget_set_sensitive (priv->netmask_entry, !use_dhcp);
   gtk_widget_set_sensitive (priv->gateway_entry, !use_dhcp);
-  gtk_widget_set_sensitive (priv->dns_text_view, !use_dhcp);
 
   if (use_dhcp)
     {
@@ -1230,10 +1229,6 @@ validate_static_ip_entries (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv;
   const char *address;
-  GtkTextBuffer *buf;
-  GtkTextIter start, end;
-  const char *nameservers;
-  char **dnsv, **iter;
 
   priv = item->priv;
   address = gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
@@ -1271,6 +1266,20 @@ validate_static_ip_entries (CarrickServiceItem *item)
       gtk_widget_grab_focus (priv->netmask_entry);
       return FALSE;
     }
+
+  return TRUE;
+}
+
+static gboolean
+validate_dns_text_view (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv;
+  GtkTextBuffer *buf;
+  GtkTextIter start, end;
+  const char *nameservers;
+  char **dnsv, **iter;
+
+  priv = item->priv;
 
   buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
   gtk_text_buffer_get_start_iter (buf, &start);
@@ -1368,6 +1377,13 @@ apply_button_clicked_cb (GtkButton *button,
     {
       g_hash_table_insert (ipv4, "Method", "dhcp");
     }
+
+  if (!validate_dns_text_view (item))
+    {
+      g_hash_table_destroy (ipv4);
+      return;
+    }
+
 
   value = g_new0 (GValue, 1);
   g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
@@ -1775,7 +1791,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_box_pack_start (GTK_BOX (vbox), align,
                       FALSE, FALSE, 0);
 
-  table = gtk_table_new (7, 3, FALSE);
+  table = gtk_table_new (7, 2, FALSE);
   gtk_widget_show (table);
   gtk_table_set_col_spacings (GTK_TABLE (table), 30);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
@@ -1820,11 +1836,11 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolled_window);
-  gtk_widget_set_size_request (scrolled_window, -1, 45);
+  gtk_widget_set_size_request (scrolled_window, 230, 55);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_table_attach (GTK_TABLE (table), scrolled_window,
-                    1, 3, 4, 5,
+                    1, 2, 4, 5,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
@@ -1840,6 +1856,12 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (dns_buffer_changed_cb),
                     self);
 
+  align = gtk_alignment_new (1.0, 0.0, 0.0, 0.0);
+  gtk_widget_show (align);
+  gtk_table_attach (GTK_TABLE (table), align,
+                    1, 2, 6, 7,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
   /* TRANSLATORS: label for apply button in static ip settings */
   apply_button = gtk_button_new_with_label (_("Apply"));
   gtk_widget_show (apply_button);
@@ -1847,10 +1869,7 @@ carrick_service_item_init (CarrickServiceItem *self)
                           G_CALLBACK (button_size_request_cb), self);
   g_signal_connect (apply_button, "clicked",
                     G_CALLBACK (apply_button_clicked_cb), self);
-  gtk_table_attach (GTK_TABLE (table), apply_button,
-                    2, 3, 6, 7,
-                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
-                    0, 0);
+  gtk_container_add (GTK_CONTAINER (align), apply_button);
 }
 
 GtkWidget*
