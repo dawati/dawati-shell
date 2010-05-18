@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-05-17 21:52+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,27 +17,25 @@ msgstr ""
 msgid "Zones panel"
 msgstr "ゾーン・パネル"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/moblin-panel-zones.desktop.in.in.h:2
+#: ../src/main.c:25
 msgid "zones"
 msgstr "ゾーン"
 
-#: ../src/main.c:405
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "ゾーン"
 
 #: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
-"やあ! ここは [ゾーン] パネルです。アプリケーションを開いていれば、ここでその"
-"アプリケーションの表示や管理、アクセスができます。"
+msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+msgstr "やあ! ここは [ゾーン] パネルです。アプリケーションを開いていれば、ここでそのアプリケーションの表示や管理、アクセスができます。"
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "新規ゾーン"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98
+#: ../src/sw-zone.c:1042
 #, c-format
 msgid "Zone %d"
 msgstr "ゾーン %d"
@@ -47,7 +45,6 @@ msgid "No applications on this zone"
 msgstr "このゾーンにはアプリケーションがありません"
 
 #: ../src/sw-zone.c:1004
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "使用中のアプリケーションがここに表示されます。自由に並び替えて整理してください。"
+
