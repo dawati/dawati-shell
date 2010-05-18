@@ -225,8 +225,14 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
 			   g_strdup (label));
     }
 
-  /* A timeout of -1 means implementation defined */
-  if (timeout == -1)
+  /*
+   * A timeout of -1 means implementation defined, e.g., default timeout.
+   * We do not allow timeouts greater than our default timeout for non-urgent
+   * notification (this includes requests for notifications that do not timeout
+   * (timeout of 0)
+   */
+  if (timeout < 0 ||
+      (!notification->is_urgent && (timeout == 0 || timeout > DEFAULT_TIMEOUT)))
     timeout = DEFAULT_TIMEOUT;
 
   notification->timeout_ms = timeout;
