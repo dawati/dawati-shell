@@ -177,8 +177,6 @@ carrick_list_drag_begin (GtkWidget      *widget,
   gtk_drag_set_icon_widget (context,
                             priv->drag_window,
                             x, y);
-
-  gtk_widget_set_state (widget, GTK_STATE_SELECTED);
 }
 
 static gboolean
@@ -261,8 +259,6 @@ carrick_list_drag_end (GtkWidget      *widget,
                          widget,
                          priv->drop_position);
   g_object_unref (widget);
-
-  gtk_widget_set_state (widget, GTK_STATE_NORMAL);
 
   if (priv->drop_position == -1)
     {
