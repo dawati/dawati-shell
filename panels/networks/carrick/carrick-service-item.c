@@ -1136,23 +1136,6 @@ method_combo_changed_cb (GtkComboBox *combobox,
 }
 
 static void
-disconnect_for_reconnect_cb (DBusGProxy *proxy,
-                             GError     *error,
-                             gpointer    user_data)
-{
-  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
-
-  if (error)
-    {
-      g_warning ("Error disconnecting service: %s",
-                 error->message);
-      g_error_free (error);
-    }
-
-  _start_connecting (CARRICK_SERVICE_ITEM (user_data));
-}
-
-static void
 set_ipv4_configuration_cb (DBusGProxy *proxy,
                            GError     *error,
                            gpointer    user_data)
@@ -1173,20 +1156,8 @@ set_ipv4_configuration_cb (DBusGProxy *proxy,
       return;
     }
 
-  if (g_str_equal (priv->state, "online") ||
-      g_str_equal (priv->state, "ready") ||
-      g_str_equal (priv->state, "configuration") ||
-      g_str_equal (priv->state, "association"))
-    {
-      carrick_notification_manager_queue_event (priv->note,
-                                                priv->type,
-                                                "idle",
-                                                priv->name);
-      org_moblin_connman_Service_disconnect_async (priv->proxy,
-                                                   disconnect_for_reconnect_cb,
-                                                   user_data);
-    }
-  else
+  if (g_str_equal (priv->state, "idle") ||
+      g_str_equal (priv->state, "disconnect"))
     {
       _start_connecting (CARRICK_SERVICE_ITEM (user_data));
     }
