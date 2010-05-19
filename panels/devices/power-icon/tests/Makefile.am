@@ -11,6 +11,7 @@ AM_CFLAGS = \
 noinst_PROGRAMS = \
   test-battery-notification \
   test-idle-manager \
+  test-xbacklight \
   $(NULL)
 
 LDADD = \
@@ -40,6 +41,15 @@ test_idle_manager_SOURCES = \
   test-idle-manager.c \
   $(top_srcdir)/power-icon/src/mpd-idle-manager.c \
   $(top_srcdir)/src/mpd-gobject.c \
+  $(NULL)
+
+test_xbacklight_LDADD = \
+  $(top_builddir)/gpm/libgpm.la \
+  $(MPI_LIBS) \
+  $(NULL)
+
+test_xbacklight_SOURCES = \
+  test-xbacklight.c \
   $(NULL)
 
 -include $(top_srcdir)/git.mk
