@@ -712,7 +712,7 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
   g_free (moblin_session);
 
   gconf_client_set_string (priv->gconf_client, KEY_THEME,
-                           netbook_mode ? "Moblin-Netbook" : "Moblin-Nettop",
+                           netbook_mode ? "Netbook" : "Nettop",
                            NULL);
 
   /*
