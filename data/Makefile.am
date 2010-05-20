@@ -13,7 +13,8 @@ endif
 
 themedir = $(MUTTER_MOBLIN_THEME_DIR)
 dist_theme_DATA = \
-	theme/mutter-moblin.css
+	theme/mutter-moblin.css \
+	theme/LICENSE
 
 theme_paneldir = $(MUTTER_MOBLIN_THEME_DIR)/panel
 dist_theme_panel_DATA = \
