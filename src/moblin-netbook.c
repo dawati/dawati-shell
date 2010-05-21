@@ -3087,10 +3087,17 @@ moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
        */
       if (meta_window_is_modal (w))
         {
-          gint s = mutter_window_get_workspace (m);
+          if (workspace < 0)
+            {
+              return TRUE;
+            }
+          else
+            {
+              gint s = mutter_window_get_workspace (m);
 
-          if (s < 0 || s == workspace)
-            return TRUE;
+              if (s < 0 || s == workspace)
+                return TRUE;
+            }
         }
 
       l = l->next;
