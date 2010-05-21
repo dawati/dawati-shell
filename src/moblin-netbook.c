@@ -2021,16 +2021,42 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
         {
           /*
-           * Order matters; mnb_panel_show_mutter_window() hides the mcw,
-           * and since the compositor call clutter_actor_show() when a map
-           * effect completes, we have to first let the compositor to do its
-           * thing, and only then impose our will on it.
+           * Because of the async nature of the panel dbus API, the following
+           * sequence of events is possible (see BMC#2019):
+           *
+           *   - Request to show a panel,
+           *   - Random modal window pops up,
+           *   - Hide Toolbar because of the modality,
+           *   - Panel window maps,
+           *   - We try to show the Panel, this needs Toolbar visible,
+           *   - The Toolbar will refuse to show because of the modality,
+           *   - This is where it ends, but the Panel window is already mapped,
+           *     but because of the animation invisible, obscuring the modal
+           *     window.
+           *
+           *     So, we must check for modal windows here, and if one is
+           *     visible, tell the panel to **** off.
            */
           g_signal_handlers_disconnect_by_func (mcw,
                                            moblin_netbook_panel_window_show_cb,
-                                           plugin);
-          mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
-          mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
+                                                plugin);
+
+          if (!moblin_netbook_modal_windows_present (plugin, -1))
+            {
+              /*
+               * Order matters; mnb_panel_show_mutter_window() hides the mcw,
+               * and since the compositor call clutter_actor_show() when a map
+               * effect completes, we have to first let the compositor to do its
+               * thing, and only then impose our will on it.
+               */
+              mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+              mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
+            }
+          else
+            {
+              mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+              mnb_panel_hide (panel);
+            }
         }
       else
         mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
