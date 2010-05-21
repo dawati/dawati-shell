@@ -2,35 +2,47 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:36+0000\n"
+"POT-Creation-Date: 2010-05-19 09:22+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Ceyhun Alyesil <ceyhunalyesil@gmail.com>\n"
-"Language-Team: \n"
+"Last-Translator: Ahmet Özgür Erdemli <dbl2010@gmail.com>\n"
+"Language-Team: MeeGo Türkçe\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Turkish\n"
+"X-Poedit-Country: TURKEY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#. * Fav apps.
-#. 
-#. Label
-#: ../src/moblin-netbook-launcher.c:867
-msgid "Favorite Applications"
-msgstr "Favori Uygulamalar"
-
-#: ../src/moblin-netbook-launcher.c:1426
-msgid "Applications"
-msgstr "Uygulamalar"
-
-#: ../src/moblin-netbook-launcher.c:1437
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Arama"
 
-#: ../src/moblin-panel-applications.c:197
+#. Panel label
+#: ../src/moblin-netbook-launcher.c:1049
+msgid "Applications"
+msgstr "Uygulamalar"
+
+#.
+#. * Fav apps pane
+#.
+#: ../src/moblin-netbook-launcher.c:1065
+msgid "Favorite applications"
+msgstr "Favori uygulamalar"
+
+#.
+#. * Applications
+#.
+#: ../src/moblin-netbook-launcher.c:1092
+msgid "Your applications"
+msgstr "Uygulamalarınız"
+
+#: ../src/moblin-panel-applications.c:223
 #: ../data/moblin-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "uygulamalar"
@@ -38,3 +50,4 @@ msgstr "uygulamalar"
 #: ../data/moblin-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Uygulama paneli"
+
