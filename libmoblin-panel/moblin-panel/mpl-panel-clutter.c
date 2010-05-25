@@ -47,6 +47,7 @@ G_DEFINE_TYPE (MplPanelClutter, mpl_panel_clutter, MPL_TYPE_PANEL_CLIENT)
 #define MPL_PANEL_CLUTTER_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPL_TYPE_PANEL_CLUTTER, MplPanelClutterPrivate))
 
+static void mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid);
 static void mpl_panel_clutter_constructed (GObject *self);
 
 enum
@@ -403,7 +404,7 @@ mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
   mpl_panel_clutter_load_base_style ();
 }
 
-void
+static void
 mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid)
 {
   GdkFilterReturn
@@ -471,12 +472,12 @@ mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid)
 }
 
 void
-mpl_panel_clutter_setup_events_with_gtk (MplPanelClient *panel)
+mpl_panel_clutter_setup_events_with_gtk (MplPanelClutter *panel)
 {
   MplPanelClutterPrivate *priv = MPL_PANEL_CLUTTER (panel)->priv;
   Window xid;
 
-  xid = mpl_panel_client_get_xid (panel);
+  xid = mpl_panel_client_get_xid (MPL_PANEL_CLIENT (panel));
 
   if (xid == None)
     {
