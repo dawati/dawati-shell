@@ -27,6 +27,7 @@
 #include <glib/gi18n.h>
 
 #include "carrick-icon-factory.h"
+#include "carrick-shell.h"
 #include "carrick-util.h"
 
 G_DEFINE_TYPE (CarrickNotificationManager, carrick_notification_manager, G_TYPE_OBJECT)
@@ -78,6 +79,10 @@ _send_note (gchar       *title,
             const gchar *icon)
 {
   NotifyNotification *note;
+
+  /* Don't show a notification if we've got the main window up */
+  if (carrick_shell_is_visible ())
+    return;
 
   note = notify_notification_new (title,
                                   message,
