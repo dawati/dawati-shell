@@ -32,6 +32,15 @@
 #include "mpl-panel-clutter.h"
 #include "mpl-panel-background.h"
 
+/**
+ * SECTION:mpl-panel-clutter
+ * @short_description: Class for panels using Clutter
+ * @title: MplPanelClutter
+ *
+ * #MplPanelClutter is a class for all Panels that implement their UI using
+ * Clutter.
+ */
+
 #define MPL_X_ERROR_TRAP() clutter_x11_trap_x_errors()
 
 #define MPL_X_ERROR_UNTRAP()                            \
@@ -259,6 +268,13 @@ mpl_panel_clutter_init (MplPanelClutter *self)
   priv = self->priv = MPL_PANEL_CLUTTER_GET_PRIVATE (self);
 }
 
+/**
+ * mpl_panel_clutter_load_base_style:
+ *
+ * Loads the base css style for the Panel. This function is called automatically
+ * when the panel is constructed, so it is rarely necessary to call this from
+ * the panel application. Calling this function mutliple times is safe (nop).
+ */
 void
 mpl_panel_clutter_load_base_style (void)
 {
@@ -298,6 +314,19 @@ mpl_panel_clutter_constructed (GObject *self)
   clutter_actor_hide (stage);
 }
 
+/**
+ * mpl_panel_clutter_new:
+ * @name: canonical name of the panel
+ * @tooltip: tooltip for the associated Toolbar button
+ * @stylesheet: stylesheet for the associated Toolbar button
+ * @button_style: css style id for the button style
+ * @with_toolbar_service: whether the panel will be using any Toolbar services
+ * (e.g., the launching API)
+ *
+ * Constructs a new #MplPanelGtk object.
+ *
+ * Return value: new #MplPanelClient object.
+ */
 MplPanelClient *
 mpl_panel_clutter_new (const gchar *name,
                        const gchar *tooltip,
@@ -316,6 +345,14 @@ mpl_panel_clutter_new (const gchar *name,
   return panel;
 }
 
+/**
+ * mpl_panel_clutter_get_stage:
+ * @panel: #MplPanelClutter
+ *
+ * Returns the top-level #ClutterActor of the panel.
+ *
+ * Return value: #ClutterActor.
+ */
 ClutterActor *
 mpl_panel_clutter_get_stage (MplPanelClutter *panel)
 {
@@ -336,7 +373,11 @@ mpl_panel_clutter_actor_height_notify_cb (GObject    *gobject,
   mpl_panel_client_set_height_request (panel, height);
 }
 
-/*
+/**
+ * mpl_panel_clutter_track_actor_height:
+ * @panel: #MplPanelClutter
+ * @actor: #ClutterActor
+ *
  * Sets up the panel for dynamically matching its height to that of the
  * supplied actor (e.g., the top-level panel widget).
  *
@@ -380,6 +421,18 @@ mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
     }
 }
 
+/**
+ * mpl_panel_clutter_init_lib:
+ * @argc: (inout): a pointer to the number of command line arguments
+ * @argv: (array length=argc) (inout) (allow-none): a pointer to the array
+ *   of command line arguments
+ *
+ * Initialializes the libmoblin-panel library when used in a Clutter-based
+ * panel that do not use Gtk (panels that also use Gtk should use
+ * mpl_panel_clutter_init_with_gtk() instead).
+ *
+ * This function calls clutter_init().
+ */
 void
 mpl_panel_clutter_init_lib (gint *argc, gchar ***argv)
 {
@@ -389,6 +442,18 @@ mpl_panel_clutter_init_lib (gint *argc, gchar ***argv)
     }
 }
 
+/**
+ * mpl_panel_clutter_init_with_gtk:
+ * @argc: (inout): a pointer to the number of command line arguments
+ * @argv: (array length=argc) (inout) (allow-none): a pointer to the array
+ *   of command line arguments
+ *
+ * Initialializes the libmoblin-panel library when used in a Clutter-based
+ * panel that also use Gtk (panels that only use Clutter should use
+ * mpl_panel_clutter_init_lib() instead).
+ *
+ * This function calls gtk_init() and clutter_init().
+ */
 void
 mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
 {
@@ -471,6 +536,14 @@ mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid)
                          GINT_TO_POINTER (xid));
 }
 
+/**
+ * mpl_panel_clutter_setup_events_with_gtk:
+ * @panel: #MplPanelClutter
+ *
+ * Sets up X event handling in panels that use both Clutter and Gtk; for such
+ * panel the library needs to be initialized with
+ * mpl_panel_clutter_init_with_gtk().
+ */
 void
 mpl_panel_clutter_setup_events_with_gtk (MplPanelClutter *panel)
 {
@@ -490,6 +563,13 @@ mpl_panel_clutter_setup_events_with_gtk (MplPanelClutter *panel)
   mpl_panel_clutter_load_base_style ();
 }
 
+/**
+ * mpl_panel_clutter_set_child:
+ * @panel: #MplPanelClutter
+ * @child: #ClutterActor
+ *
+ * Sets child as the top-level #ClutterActor.
+ */
 void
 mpl_panel_clutter_set_child (MplPanelClutter *panel, ClutterActor *child)
 {

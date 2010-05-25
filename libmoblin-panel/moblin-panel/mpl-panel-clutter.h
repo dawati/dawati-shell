@@ -53,20 +53,33 @@ G_BEGIN_DECLS
 #define MPL_PANEL_CLUTTER_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPL_TYPE_PANEL_CLUTTER, MplPanelClutterClass))
 
+typedef struct _MplPanelClutter        MplPanelClutter;
+typedef struct _MplPanelClutterClass   MplPanelClutterClass;
 typedef struct _MplPanelClutterPrivate MplPanelClutterPrivate;
 
-typedef struct
+/**
+ * MplPanelClutter:
+ *
+ * Panel object for Clutter-based panels.
+ */
+struct _MplPanelClutter
 {
+  /*<private>*/
   MplPanelClient parent;
 
   MplPanelClutterPrivate *priv;
-} MplPanelClutter;
+};
 
-typedef struct
+/**
+ * MplPanelClutterClass:
+ *
+ * Class struct for #MplPanelClutter.
+ */
+struct _MplPanelClutterClass
 {
+  /*<private>*/
   MplPanelClientClass parent_class;
-
-} MplPanelClutterClass;
+};
 
 GType mpl_panel_clutter_get_type (void);
 
