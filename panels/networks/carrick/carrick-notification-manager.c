@@ -88,10 +88,7 @@ _send_note (gchar       *title,
                                   icon,
                                   NULL);
 
-  notify_notification_set_timeout (note,
-                                   10000);
-  notify_notification_show (note,
-                            NULL);
+  notify_notification_show (note, NULL);
 
   g_object_unref (note);
 }
