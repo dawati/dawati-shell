@@ -27,6 +27,15 @@
 
 #include "mpl-panel-windowless.h"
 
+/**
+ * SECTION:mpl-panel-windowless
+ * @short_description: Class for panels with passive button
+ * @title: MplPanelWindowless
+ *
+ * #MplPanelWindowless is a class for all Panels that use a non-interactive
+ * Toolbar button (e.g., they have no drop-down panel).
+ */
+
 G_DEFINE_TYPE (MplPanelWindowless, mpl_panel_windowless, MPL_TYPE_PANEL_CLIENT)
 
 #define MPL_PANEL_WINDOWLESS_GET_PRIVATE(o) \
@@ -125,6 +134,19 @@ mpl_panel_windowless_init (MplPanelWindowless *self)
   priv = self->priv = MPL_PANEL_WINDOWLESS_GET_PRIVATE (self);
 }
 
+/**
+ * mpl_panel_windowless_new:
+ * @name: canonical name of the panel
+ * @tooltip: tooltip for the associated Toolbar button
+ * @stylesheet: stylesheet for the associated Toolbar button
+ * @button_style: css style id for the button style
+ * @with_toolbar_service: whether the panel will be using any Toolbar services
+ * (e.g., the launching API)
+ *
+ * Constructs a new #MplPanelWindowless object.
+ *
+ * Return value: new #MplPanelClient object.
+ */
 MplPanelClient *
 mpl_panel_windowless_new (const gchar *name,
                           const gchar *tooltip,

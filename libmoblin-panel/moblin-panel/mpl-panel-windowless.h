@@ -46,20 +46,33 @@ G_BEGIN_DECLS
 #define MPL_PANEL_WINDOWLESS_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPL_TYPE_PANEL_WINDOWLESS, MplPanelWindowlessClass))
 
+typedef struct _MplPanelWindowless        MplPanelWindowless;
+typedef struct _MplPanelWindowlessClass MplPanelWindowlessClass;
 typedef struct _MplPanelWindowlessPrivate MplPanelWindowlessPrivate;
 
-typedef struct
+/**
+ * MplPanelWindowless:
+ *
+ * Panel object for non-interactive panels.
+ */
+struct _MplPanelWindowless
 {
+  /*<private>*/
   MplPanelClient parent;
 
   MplPanelWindowlessPrivate *priv;
-} MplPanelWindowless;
+};
 
-typedef struct
+/**
+ * MplPanelWindowlessClass:
+ *
+ * Panel object for non-interactive panels.
+ */
+struct _MplPanelWindowlessClass
 {
+  /*<private>*/
   MplPanelClientClass parent_class;
-
-} MplPanelWindowlessClass;
+};
 
 GType mpl_panel_windowless_get_type (void);
 
