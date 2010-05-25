@@ -990,31 +990,12 @@ mpl_panel_client_constructed (GObject *self)
   g_idle_add (mpl_panel_client_one_off_idle_cb, self);
 }
 
-MplPanelClient *
-mpl_panel_client_new (guint        xid,
-                      const gchar *name,
-                      const gchar *tooltip,
-                      const gchar *stylesheet,
-                      const gchar *button_style)
-{
-  MplPanelClient *panel = g_object_new (MPL_TYPE_PANEL_CLIENT,
-                                        "xid",          xid,
-                                        "name",         name,
-                                        "tooltip",      tooltip,
-                                        "stylesheet",   stylesheet,
-                                        "button-style", button_style,
-                                        NULL);
-
-  if (panel && !panel->priv->constructed)
-    {
-      g_warning ("Panel initialization failed.");
-      g_object_unref (panel);
-      return NULL;
-    }
-
-  return panel;
-}
-
+/**
+ * mpl_panel_client_unload:
+ * @panel: #MplPanelClient
+ *
+ * Unloads the given panel.
+ */
 void
 mpl_panel_client_unload (MplPanelClient *panel)
 {

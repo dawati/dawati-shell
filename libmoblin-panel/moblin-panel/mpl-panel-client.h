@@ -88,12 +88,6 @@ typedef struct
 
 GType mpl_panel_client_get_type (void);
 
-MplPanelClient *mpl_panel_client_new       (guint        xid,
-                                            const gchar *name,
-                                            const gchar *tooltip,
-                                            const gchar *stylesheet,
-                                            const gchar *button_style);
-
 void  mpl_panel_client_unload               (MplPanelClient *panel);
 
 void  mpl_panel_client_set_height_request   (MplPanelClient *panel,
