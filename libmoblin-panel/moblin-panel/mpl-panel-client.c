@@ -39,6 +39,14 @@
 #include "marshal.h"
 #include "mnb-enum-types.h"
 
+/**
+ * SECTION:mpl-panel-client
+ * @short_description: Base abstract class for all panels.
+ * @Title: MplPanelClient
+ *
+ * #MplPanelClient is a base abstract class for all Panels.
+ */
+
 G_DEFINE_TYPE (MplPanelClient, mpl_panel_client, G_TYPE_OBJECT)
 
 #define MPL_PANEL_CLIENT_GET_PRIVATE(o) \
@@ -534,6 +542,13 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                                      G_PARAM_READWRITE |
                                      G_PARAM_CONSTRUCT));
 
+  /**
+   * MplPanelClient::unload:
+   * @panel: panel that received the signal.
+   *
+   * The ::unload signal is emitted when the panel is being unloaded from
+   * memory; the actual unloading is done by the signal closure.
+   */
   signals[UNLOAD] =
     g_signal_new ("unload",
                   G_TYPE_FROM_CLASS (object_class),
@@ -543,6 +558,15 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * MplPanelClient::set-size:
+   * @panel: panel that received the signal
+   * @width: new width of the panel
+   * @height: new height of the panel
+   *
+   * The ::set-size signal is emitted when the panel is being resized; the
+   * actual resizing is implemented by the signal closure.
+   */
   signals[SET_SIZE] =
     g_signal_new ("set-size",
                   G_TYPE_FROM_CLASS (object_class),
@@ -554,6 +578,15 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   G_TYPE_UINT,
                   G_TYPE_UINT);
 
+  /**
+   * MplPanelClient::set-position:
+   * @panel: panel that received the signal
+   * @x: new x coordinate of the panel
+   * @y: new y coordinate of the panel
+   *
+   * The ::set-position signal is emitted when the panel is being moved; the
+   * actual moving of the panel is implemented by the signal closure.
+   */
   signals[SET_POSITION] =
     g_signal_new ("set-position",
                   G_TYPE_FROM_CLASS (object_class),
@@ -565,6 +598,13 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   G_TYPE_INT,
                   G_TYPE_INT);
 
+  /**
+   * MplPanelClient::show-begin:
+   * @panel: panel that received the signal
+   *
+   * The ::show-begin signal is emitted when the Toolbar is about to start the
+   * panel show animation.
+   */
   signals[SHOW_BEGIN] =
     g_signal_new ("show-begin",
                   G_TYPE_FROM_CLASS (object_class),
@@ -574,6 +614,13 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * MplPanelClient::show-end:
+   * @panel: panel that received the signal
+   *
+   * The ::show-end signal is emitted when the panel show animation has
+   * finished.
+   */
   signals[SHOW_END] =
     g_signal_new ("show-end",
                   G_TYPE_FROM_CLASS (object_class),
@@ -583,6 +630,13 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * MplPanelClient::hide-begin:
+   * @panel: panel that received the signal
+   *
+   * The ::hide-begin signal is emitted when the Toolbar is about to start the
+   * panel hide animation.
+   */
   signals[HIDE_BEGIN] =
     g_signal_new ("hide-begin",
                   G_TYPE_FROM_CLASS (object_class),
@@ -592,6 +646,13 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * MplPanelClient::hide-end:
+   * @panel: panel that received the signal
+   *
+   * The ::hide-end signal is emitted when the panel hide animation has
+   * finished.
+   */
   signals[HIDE_END] =
     g_signal_new ("hide-end",
                   G_TYPE_FROM_CLASS (object_class),
@@ -601,6 +662,13 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * MplPanelClient::show:
+   * @panel: panel that received the signal
+   *
+   * The ::show signal is emitted when the panel is about to be shown; the
+   * actual showing is implemented by the signal closure.
+   */
   signals[SHOW] =
     g_signal_new ("show",
                   G_TYPE_FROM_CLASS (object_class),
@@ -610,6 +678,13 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * MplPanelClient::hide:
+   * @panel: panel that received the signal
+   *
+   * The ::show signal is emitted when the panel is about to be hidden; the
+   * actual hiding is implemented by the signal closure.
+   */
   signals[HIDE] =
     g_signal_new ("hide",
                   G_TYPE_FROM_CLASS (object_class),
@@ -619,6 +694,9 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /*
+   * The following signals are here for the Panel dbus interface
+   */
   signals[REQUEST_FOCUS] =
     g_signal_new ("request-focus",
                   G_TYPE_FROM_CLASS (object_class),
@@ -1002,24 +1080,50 @@ mpl_panel_client_unload (MplPanelClient *panel)
   g_signal_emit (panel, signals[UNLOAD], 0);
 }
 
+/**
+ * mpl_panel_client_show:
+ * @panel: #MplPanelClient
+ *
+ * Shows the given panel.
+ */
 void
 mpl_panel_client_show (MplPanelClient *panel)
 {
   g_signal_emit (panel, signals[SHOW], 0);
 }
 
+/**
+ * mpl_panel_client_hide:
+ * @panel: #MplPanelClient
+ *
+ * Hides the given panel.
+ */
 void
 mpl_panel_client_hide (MplPanelClient *panel)
 {
   g_signal_emit (panel, signals[HIDE], 0);
 }
 
+/**
+ * mpl_panel_client_request_focus:
+ * @panel: #MplPanelClient
+ *
+ * Requests that the given panel be given keyboard focus.
+ */
 void
 mpl_panel_client_request_focus (MplPanelClient *panel)
 {
   g_signal_emit (panel, signals[REQUEST_FOCUS], 0);
 }
 
+/**
+ * mpl_panel_client_request_button_style:
+ * @panel: #MplPanelClient
+ * @style: css id of the style.
+ *
+ * Requests that the supplied style is applied to the Toolbar button associated
+ * with the given panel.
+ */
 void
 mpl_panel_client_request_button_style (MplPanelClient *panel,
                                        const gchar    *style)
@@ -1035,6 +1139,14 @@ mpl_panel_client_request_button_style (MplPanelClient *panel,
     }
 }
 
+/**
+ * mpl_panel_client_request_tooltip:
+ * @panel: #MplPanelClient
+ * @tooltip: tooltip
+ *
+ * Requests that the string is used as the tooltip for the Toolbar button
+ * associated with the given panel.
+ */
 void
 mpl_panel_client_request_tooltip (MplPanelClient *panel,
                                   const gchar    *tooltip)
@@ -1047,6 +1159,14 @@ mpl_panel_client_request_tooltip (MplPanelClient *panel,
   g_signal_emit (panel, signals[REQUEST_TOOLTIP], 0, tooltip);
 }
 
+/**
+ * mpl_panel_client_request_button_state:
+ * @panel: #MplPanelClient
+ * @state: #MnbButtonState
+ *
+ * Requests that the Toolbar button associated with the given panel is turned
+ * into the supplied state.
+ */
 void
 mpl_panel_client_request_button_state (MplPanelClient *panel,
                                        MnbButtonState  state)
@@ -1054,6 +1174,14 @@ mpl_panel_client_request_button_state (MplPanelClient *panel,
   g_signal_emit (panel, signals[REQUEST_BUTTON_STATE], 0, state);
 }
 
+/**
+ * mpl_panel_client_request_modality:
+ * @panel: #MplPanelClient
+ * @modal: #gboolean indicating whether panel should be modal
+ *
+ * Requests that the given panel is put into a modal state; while a panel is
+ * in modal state, the user will not be able to close it.
+ */
 void
 mpl_panel_client_request_modality (MplPanelClient *panel, gboolean modal)
 {
@@ -1115,8 +1243,19 @@ mpl_panel_client_launch_application_from_info (GAppInfo *app, GList *files)
   return retval;
 }
 
+/**
+ * mpl_panel_client_launch_application:
+ * @panel: #MplPanelClient
+ * @commandline: commandline
+ *
+ * Launches the program specified by commandline with startup notification
+ * support.
+ *
+ * Return value: %TRUE if there was no error.
+ */
 gboolean
-mpl_panel_client_launch_application (MplPanelClient *panel, const gchar *path)
+mpl_panel_client_launch_application (MplPanelClient *panel,
+                                     const gchar    *commandline)
 {
   GAppInfo *app;
   GError   *error = NULL;
@@ -1124,7 +1263,7 @@ mpl_panel_client_launch_application (MplPanelClient *panel, const gchar *path)
   GKeyFile *key_file;
   gchar    *cmd;
 
-  g_return_val_if_fail (path, FALSE);
+  g_return_val_if_fail (commandline, FALSE);
 
 #if 1
   /*
@@ -1139,7 +1278,7 @@ mpl_panel_client_launch_application (MplPanelClient *panel, const gchar *path)
    * pass through it, we are pretty much screwed anyway. It seemed like this
    * 7LOC hack made more sense than the 800LOC, no less hacky, alternative.
    */
-  cmd = g_strdup_printf ("%s %%u", path);
+  cmd = g_strdup_printf ("%s %%u", commandline);
   key_file = g_key_file_new ();
 
   g_key_file_set_string  (key_file, G_KEY_FILE_DESKTOP_GROUP,
@@ -1163,7 +1302,7 @@ mpl_panel_client_launch_application (MplPanelClient *panel, const gchar *path)
   if (error)
     {
       g_warning ("Failed to create GAppInfo from commnad line %s (%s)",
-                 path, error->message);
+                 commandline, error->message);
 
       g_error_free (error);
       return FALSE;
@@ -1176,6 +1315,16 @@ mpl_panel_client_launch_application (MplPanelClient *panel, const gchar *path)
   return retval;
 }
 
+/**
+ * mpl_panel_client_launch_application_from_desktop_file:
+ * @panel: #MplPanelClient
+ * @desktop: path to desktop file
+ * @files: #GList of files to be passed as arugments, or %NULL
+ *
+ * Launches the program specified by desktop file.
+ *
+ * Return value: %TRUE if there was no error.
+ */
 gboolean
 mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
                                                        const gchar    *desktop,
@@ -1201,6 +1350,15 @@ mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
   return retval;
 }
 
+/**
+ * mpl_panel_client_launch_default_application_for_uri:
+ * @panel: #MplPanelClient
+ * @uri: path to desktop file
+ *
+ * Launches the default program handling the given uri type.
+ *
+ * Return value: %TRUE if there was no error.
+ */
 gboolean
 mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
                                                      const gchar    *uri)
@@ -1257,6 +1415,15 @@ mpl_panel_client_launch_default_application_for_uri (MplPanelClient *panel,
   return retval;
 }
 
+/**
+ * mpl_panel_client_set_height_request:
+ * @panel: #MplPanelClient
+ * @height: height request
+ *
+ * Sets the height request for given panel; this is the size the panel
+ * wishes to be. This is a request only, i.e., the panel can be smaller if the
+ * request cannot be honored due to screen size, etc.
+ */
 void
 mpl_panel_client_set_height_request (MplPanelClient *panel, guint height)
 {
@@ -1287,6 +1454,15 @@ mpl_panel_client_set_height_request (MplPanelClient *panel, guint height)
     }
 }
 
+/**
+ * mpl_panel_client_get_height_request:
+ * @panel: #MplPanelClient
+ *
+ * Returns the height request previously set with
+ * mpl_panel_client_set_height_request().
+ *
+ * Return value: requested height in pixels.
+ */
 guint
 mpl_panel_client_get_height_request (MplPanelClient *panel)
 {
@@ -1295,6 +1471,14 @@ mpl_panel_client_get_height_request (MplPanelClient *panel)
   return panel->priv->requested_height;
 }
 
+/**
+ * mpl_panel_client_get_xid:
+ * @panel: #MplPanelClient
+ *
+ * Returns the xid of the asociated window.
+ *
+ * Return value: associated window xid.
+ */
 Window
 mpl_panel_client_get_xid (MplPanelClient *panel)
 {
@@ -1321,6 +1505,14 @@ mpl_panel_client_request_hide (MplPanelClient *panel)
   mpl_panel_client_hide (panel);
 }
 
+/**
+ * mpl_panel_client_ready:
+ * @panel: #MplPanelClient
+ *
+ * Calling this function indicates to the Toolbar object that the panel is
+ * ready to be shown. This function should be used in conjunction with
+ * mpl_panel_client_set_delayed_ready().
+ */
 void
 mpl_panel_client_ready (MplPanelClient *panel)
 {
@@ -1344,7 +1536,7 @@ mpl_panel_client_ready (MplPanelClient *panel)
 }
 
 /**
- * mpl_panel_client_set_delayed_ready
+ * mpl_panel_client_set_delayed_ready:
  * @panel: a #MplPanelClient
  * @delayed: boolean value for the delayed-ready property.
  *
@@ -1385,6 +1577,15 @@ mpl_panel_client_set_delayed_ready (MplPanelClient *panel, gboolean delayed)
   return TRUE;
 }
 
+/**
+ * mpl_panel_client_is_windowless:
+ * @panel: #MplPanelClient
+ *
+ * Returns %TRUE if the associate panel is windowless (windowless panels have
+ * a non-interactive button on the Toolbar).
+ *
+ * Return value: %TRUE if the panel does not have a panel associated with it.
+ */
 gboolean
 mpl_panel_client_is_windowless (MplPanelClient *panel)
 {

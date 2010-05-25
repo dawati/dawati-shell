@@ -49,21 +49,46 @@ G_BEGIN_DECLS
 #define MPL_PANEL_CLIENT_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPL_TYPE_PANEL_CLIENT, MplPanelClientClass))
 
+typedef struct _MplPanelClient        MplPanelClient;
+typedef struct _MplPanelClientClass   MplPanelClientClass;
 typedef struct _MplPanelClientPrivate MplPanelClientPrivate;
 
-typedef struct
+/**
+ * MplPanelClient:
+ *
+ * Base class for panels.
+ */
+struct _MplPanelClient
 {
+  /*<private>*/
   GObject parent;
 
   MplPanelClientPrivate *priv;
-} MplPanelClient;
+};
 
-typedef struct
+/**
+ * MplPanelClientClass:
+ * @unload: signal closure for the #MplPanelClient::unload signal
+ * @set_size: signal closure for the #MplPanelClient::set-size signal
+ * @set_position: signal closure for the #MplPanelClient::set-position signal
+ * @show: signal closure for the #MplPanelClient::show signal
+ * @show_begin: signal closure for the #MplPanelClient::show_begin signal
+ * @show_end: signal closure for the #MplPanelClient::show_end signal
+ * @hide: signal closure for the #MplPanelClient::hide signal
+ * @hide_begin: signal closure for the #MplPanelClient::hide_begin signal
+ * @hide_end: signal closure for the #MplPanelClient::hide_end signal
+ *
+ * Base class for panels.
+ */
+struct _MplPanelClientClass
 {
+  /*<private>*/
   GObjectClass parent_class;
 
+  /*<public>*/
+
   /*
-   * Public signals -- connect to these from your panel.
+   * Public signal closures.
    */
   void     (*unload)         (MplPanelClient *panel);
   void     (*set_size)       (MplPanelClient *panel, guint width, guint height);
@@ -75,6 +100,7 @@ typedef struct
   void     (*hide_begin)     (MplPanelClient *panel);
   void     (*hide_end)       (MplPanelClient *panel);
 
+  /*<private>*/
   /*
    * Private signals
    * Signals for DBus -- these are the interface signals.
@@ -84,7 +110,7 @@ typedef struct
   void (*request_tooltip)      (MplPanelClient *panel, const gchar *tooltip);
   void (*request_button_state) (MplPanelClient *panel, MnbButtonState state);
   void (*request_modality)     (MplPanelClient *panel, gboolean modal);
-} MplPanelClientClass;
+};
 
 GType mpl_panel_client_get_type (void);
 
@@ -107,7 +133,7 @@ void  mpl_panel_client_request_modality     (MplPanelClient *panel,
                                              gboolean        modal);
 
 gboolean mpl_panel_client_launch_application   (MplPanelClient *panel,
-                                                const gchar    *app);
+                                                const gchar    *commandline);
 
 gboolean
 mpl_panel_client_launch_application_from_desktop_file (MplPanelClient *panel,
@@ -126,6 +152,9 @@ gboolean mpl_panel_client_set_delayed_ready (MplPanelClient *panel,
                                              gboolean        delayed);
 
 gboolean mpl_panel_client_is_windowless (MplPanelClient *panel);
+
+G_GNUC_DEPRECATED void mpl_panel_client_request_show (MplPanelClient *panel);
+G_GNUC_DEPRECATED void mpl_panel_client_request_hide (MplPanelClient *panel);
 
 G_END_DECLS
 
