@@ -37,6 +37,8 @@ G_DEFINE_TYPE (CarrickNotificationManager, carrick_notification_manager, G_TYPE_
 
 struct _CarrickNotificationManagerPrivate
 {
+  NotifyNotification *note;
+
   gchar *last_type;
   gchar *last_name;
   gchar *last_state;
@@ -74,30 +76,50 @@ carrick_notification_manager_queue_event (CarrickNotificationManager *self,
 }
 
 static void
-_send_note (gchar       *title,
-            gchar       *message,
-            const gchar *icon)
+on_note_closed (NotifyNotification *note, gpointer user_data)
 {
-  NotifyNotification *note;
+  CarrickNotificationManager *manager = CARRICK_NOTIFICATION_MANAGER (user_data);
+  CarrickNotificationManagerPrivate *priv = manager->priv;
+
+  if (priv->note) {
+    g_object_unref (priv->note);
+    priv->note = NULL;
+  }
+}
+
+static void
+_send_note (CarrickNotificationManager *self,
+            gchar                      *title,
+            gchar                      *message,
+            const gchar                *icon)
+{
+  CarrickNotificationManagerPrivate *priv = self->priv;
 
   /* Don't show a notification if we've got the main window up */
   if (carrick_shell_is_visible ())
     return;
 
-  note = notify_notification_new (title,
-                                  message,
-                                  icon,
-                                  NULL);
+  if (priv->note) {
+    notify_notification_update (priv->note,
+                                title,
+                                message,
+                                icon);
+  } else {
+    priv->note = notify_notification_new (title,
+                                          message,
+                                          icon,
+                                          NULL);
+    g_signal_connect (priv->note, "closed", G_CALLBACK (on_note_closed), self);
+  }
 
-  notify_notification_show (note, NULL);
-
-  g_object_unref (note);
+  notify_notification_show (priv->note, NULL);
 }
 
 static void
-_tell_online (const gchar *name,
-              const gchar *type,
-              guint        str)
+_tell_online (CarrickNotificationManager *self,
+              const gchar                *name,
+              const gchar                *type,
+              guint                       str)
 {
   gchar       *title = g_strdup (_ ("Network connected"));
   gchar       *message = NULL;
@@ -148,7 +170,7 @@ _tell_online (const gchar *name,
         }
     }
 
-  _send_note (title, message, icon);
+  _send_note (self, title, message, icon);
 
   g_free (title);
   g_free (message);
@@ -182,7 +204,7 @@ _tell_offline (CarrickNotificationManager *self,
                                  util_get_service_type_for_display (priv->last_type));
     }
 
-  _send_note (title, message, icon);
+  _send_note (self, title, message, icon);
 
   g_free (title);
   g_free (message);
@@ -287,7 +309,7 @@ _tell_changed (CarrickNotificationManager *self,
         icon = carrick_icon_factory_get_path_for_state (ICON_3G_WEAK);
     }
 
-  _send_note (title, message, icon);
+  _send_note (self, title, message, icon);
 
   g_free (title);
   g_free (message);
@@ -401,7 +423,7 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
           if (g_strcmp0 (state, "ready") == 0 &&
               g_strcmp0 (priv->last_state, "idle") == 0)
             {
-              _tell_online (name, type, str);
+              _tell_online (self, name, type, str);
             }
           else if (g_strcmp0 (state, "ready") == 0 &&
                    g_strcmp0 (priv->last_state, "ready") == 0
@@ -413,7 +435,7 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
                    * When cable unplugged just tell the user what the
                    * new connection is.
                    */
-                  _tell_online (name, type, str);
+                  _tell_online (self, name, type, str);
                 }
               else
                 {
@@ -431,7 +453,7 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
         {
           /* service same but state changed */
           if (g_strcmp0 (state, "ready") == 0)
-            _tell_online (name, type, str);
+            _tell_online (self, name, type, str);
           else if (g_strcmp0 (state, "idle") == 0)
             _tell_offline (self, name, type);
         }
