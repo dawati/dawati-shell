@@ -159,6 +159,25 @@ fi
 AC_SUBST(CC_DIR)
 AM_CONDITIONAL([HAVE_CAPPLET], [test "$enable_capplet" != "no"])
 
+GTK_DOC_CHECK([1.11])
+
+# we don't want to build the documentation from a Git clone unless we
+# explicitly tell configure to do so; this allows avoiding to recurse into
+# the documentation directory when building inside Poky for a
+# target device that doesn't have gtk-doc installed.
+#
+# we use autogen.sh as it exists only inside the Git clones, and it
+# is not packaged into tarballs.
+AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "autogen.sh"])
+
+# prefixes for fixing gtk-doc references
+CLUTTER_PREFIX="`$PKG_CONFIG --variable=prefix clutter-1.0`"
+GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
+MX_PREFIX="`$PKG_CONFIG --variable=prefix mx-1.0`"
+AC_SUBST(CLUTTER_PREFIX)
+AC_SUBST(GLIB_PREFIX)
+AC_SUBST(MX_PREFIX)
+
 # glib-genmarshal
 GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
@@ -198,6 +217,10 @@ src/presence/Makefile
 po/Makefile.in
 tests/Makefile
 libmoblin-panel/Makefile
+libmoblin-panel/docs/Makefile
+libmoblin-panel/docs/reference/Makefile
+libmoblin-panel/docs/reference/libmoblin-panel/Makefile
+libmoblin-panel/docs/reference/libmoblin-panel/moblin-panel-docs.xml
 libmoblin-panel/moblin-panel.pc
 libmoblin-panel/moblin-panel/Makefile
 libmoblin-panel/moblin-panel/mpl-version.h
@@ -216,6 +239,7 @@ echo "
 	    Debug            :    ${enable_debug}
 	    Profile          :    ${enable_profile}
 	    Scaled background:    ${scale_background}
+            API Reference    :    ${enable_gtk_doc}
 
 	    CFLAGS: ${CFLAGS}
 

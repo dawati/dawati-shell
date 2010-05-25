@@ -1,5 +1,7 @@
 ACLOCAL_AMFLAGS = -I build/autotools
 
+DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc
+
 SUBDIRS = build
 
 # always built

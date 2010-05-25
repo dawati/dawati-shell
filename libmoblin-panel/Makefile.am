@@ -1,7 +1,7 @@
 
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
-SUBDIRS = moblin-panel theme tests
+SUBDIRS = moblin-panel theme tests docs
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = moblin-panel.pc
