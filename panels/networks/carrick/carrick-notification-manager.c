@@ -318,6 +318,16 @@ _tell_changed (CarrickNotificationManager *self,
 static void
 carrick_notification_manager_dispose (GObject *object)
 {
+  CarrickNotificationManager *self = CARRICK_NOTIFICATION_MANAGER (object);
+  CarrickNotificationManagerPrivate *priv = self->priv;
+
+  if (priv->note) {
+    notify_notification_close (priv->note, NULL);
+    g_signal_handlers_disconnect_by_func (priv->note, on_note_closed, self);
+    g_object_unref (priv->note);
+    priv->note = NULL;
+  }
+
   notify_uninit ();
 
   G_OBJECT_CLASS (carrick_notification_manager_parent_class)->dispose (object);
