@@ -29,6 +29,12 @@ void carrick_shell_request_focus (void);
 void carrick_shell_hide (void);
 
 /*
+ * If the shell is focused.
+ */
+gboolean carrick_shell_is_visible (void);
+
+
+/*
  * Close @dialog if the shell is hidden. Specifically, send the DELETE_EVENT
  * response.
  */

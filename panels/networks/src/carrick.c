@@ -29,6 +29,12 @@
 #include "carrick/carrick-applet.h"
 #include "carrick/carrick-pane.h"
 
+/*
+ * The GtkWindow in standalone mode, the GtkPlug in embedded mode, the
+ * undecorated popup window in non-MeeGo mode, or NULL in MeeGo panel mode.
+ */
+static GtkWidget *window = NULL;
+
 static gchar *
 get_tip_and_icon_state (const gchar      *connection_type,
                         const gchar      *connection_name,
@@ -177,7 +183,6 @@ carrick_shell_close_dialog_on_hide (GtkDialog *dialog)
 #else
 
 static GtkStatusIcon *status_icon = NULL;
-static GtkWindow *panel_window = NULL;
 static gboolean dialog_visible = FALSE;
 
 static gboolean
@@ -252,24 +257,37 @@ void _activate_cb (GObject *object, gpointer user_data)
 {
   if (dialog_visible)
     {
-      gtk_widget_hide (GTK_WIDGET (panel_window));
+      gtk_widget_hide (GTK_WIDGET (window));
       dialog_visible = FALSE;
     }
   else
     {
-      popup_window (panel_window, GDK_CURRENT_TIME);
+      popup_window (window, GDK_CURRENT_TIME);
       dialog_visible = TRUE;
     }
 }
 
 #endif
 
+gboolean
+carrick_shell_is_visible (void)
+{
+#if WITH_MOBLIN
+  if (panel_client)
+    return gtk_widget_get_visible (mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client)));
+  else
+#endif
+    if (window)
+      return gtk_widget_get_visible (window);
+    else
+      return TRUE;
+}
+
 int
 main (int    argc,
       char **argv)
 {
   CarrickApplet *applet;
-  GtkWidget     *window;
   GtkWidget     *pane;
   gboolean       standalone = FALSE;
   GdkNativeWindow windowid = 0;
@@ -315,15 +333,15 @@ main (int    argc,
 
     gtk_widget_show (window);
   } else if (standalone) {
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      g_signal_connect (window,
-                        "delete-event",
-                        (GCallback) gtk_main_quit,
-                        NULL);
-      gtk_container_add (GTK_CONTAINER (window),
-                         pane);
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    g_signal_connect (window,
+                      "delete-event",
+                      (GCallback) gtk_main_quit,
+                      NULL);
+    gtk_container_add (GTK_CONTAINER (window),
+                       pane);
 
-      gtk_widget_show (window);
+    gtk_widget_show (window);
   } else {
 #if WITH_MOBLIN
     GdkScreen *screen;
@@ -367,27 +385,26 @@ main (int    argc,
 
     gtk_widget_show_all (box);
 #else
-      panel_window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
-      gtk_window_set_decorated (GTK_WINDOW (panel_window), FALSE);
-      gtk_window_set_deletable (GTK_WINDOW (panel_window), FALSE);
-      gtk_window_set_keep_above (GTK_WINDOW (panel_window), TRUE);
-      gtk_window_set_skip_pager_hint (GTK_WINDOW (panel_window), TRUE);
-      gtk_window_set_skip_taskbar_hint (GTK_WINDOW (panel_window), TRUE);
-      gtk_container_add (GTK_CONTAINER (panel_window),
-                         pane);
+    window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
+    gtk_window_set_decorated (GTK_WINDOW (window), FALSE);
+    gtk_window_set_deletable (GTK_WINDOW (window), FALSE);
+    gtk_window_set_keep_above (GTK_WINDOW (window), TRUE);
+    gtk_window_set_skip_pager_hint (GTK_WINDOW (window), TRUE);
+    gtk_window_set_skip_taskbar_hint (GTK_WINDOW (window), TRUE);
+    gtk_container_add (GTK_CONTAINER (window), pane);
 
-      status_icon = gtk_status_icon_new ();
-      gtk_status_icon_set_visible (status_icon, TRUE);
+    status_icon = gtk_status_icon_new ();
+    gtk_status_icon_set_visible (status_icon, TRUE);
 
-      g_signal_connect (status_icon,
-                        "activate",
-                        (GCallback) _activate_cb,
-                        NULL);
+    g_signal_connect (status_icon,
+                      "activate",
+                      (GCallback) _activate_cb,
+                      NULL);
 
-      g_signal_connect (pane,
-                        "connection-changed",
-                        (GCallback) _connection_changed_cb,
-                        NULL);
+    g_signal_connect (pane,
+                      "connection-changed",
+                      (GCallback) _connection_changed_cb,
+                      NULL);
 #endif
   }
 
