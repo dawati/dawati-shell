@@ -45,10 +45,6 @@ struct _CarrickNotificationManagerPrivate
   gchar *queued_state;
 };
 
-enum {
-  PROP_0,
-};
-
 void
 carrick_notification_manager_queue_event (CarrickNotificationManager *self,
                                           const gchar                *type,
