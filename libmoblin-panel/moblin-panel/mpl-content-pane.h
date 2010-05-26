@@ -43,15 +43,30 @@ G_BEGIN_DECLS
 #define MPL_CONTENT_PANE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPL_TYPE_CONTENT_PANE, MplContentPaneClass))
 
-typedef struct
-{
-  MxBoxLayout parent;
-} MplContentPane;
+typedef struct _MplContentPane      MplContentPane;
+typedef struct _MplContentPaneClass MplContentPaneClass;
 
-typedef struct
+/**
+ * MplContentPane:
+ *
+ * A styled widget implementing a content pane with a header.
+ */
+struct _MplContentPane
 {
+  /*<private>*/
+  MxBoxLayout parent;
+};
+
+/**
+ * MplContentPaneClass:
+ *
+ * Class struct for #MplContentPane
+ */
+struct _MplContentPaneClass
+{
+  /*<private>*/
   MxBoxLayoutClass parent;
-} MplContentPaneClass;
+};
 
 GType
 mpl_content_pane_get_type (void);

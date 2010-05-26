@@ -22,6 +22,16 @@
 
 #include "mpl-content-pane.h"
 
+/**
+ * SECTION:mpl-content-pane
+ * @short_description: Content pane with a header.
+ * @Title: MplContentPane
+ *
+ * #MplContentPane provides a styled content pane widget, which consists of a
+ *  header with a title, an optional header actor packed at the right edge of
+ *  the header, and a content area.
+ */
+
 static void
 _container_interface_init (ClutterContainerIface *interface);
 
@@ -206,6 +216,14 @@ mpl_content_pane_init (MplContentPane *self)
                                NULL);
 }
 
+/**
+ * mpl_content_pane_new:
+ * @title: the panel title
+ *
+ * Constructs a new #MplContentPane with the given title.
+ *
+ * Return value: #ClutterActor
+ */
 ClutterActor *
 mpl_content_pane_new (char const *title)
 {
@@ -214,6 +232,14 @@ mpl_content_pane_new (char const *title)
                        NULL);
 }
 
+/**
+ * mpl_content_pane_get_title:
+ * @self: #MplContentPane
+ *
+ * Returns the current title of the pane.
+ *
+ * Return value: pane title
+ */
 char const *
 mpl_content_pane_get_title (MplContentPane *self)
 {
@@ -224,6 +250,13 @@ mpl_content_pane_get_title (MplContentPane *self)
   return mx_label_get_text (priv->title);
 }
 
+/**
+ * mpl_content_pane_set_title:
+ * @self: #MplContentPane
+ * @title: title
+ *
+ * Sets the title of the pane to the given string.
+ */
 void
 mpl_content_pane_set_title (MplContentPane  *self,
                             char const      *title)
@@ -241,6 +274,14 @@ mpl_content_pane_set_title (MplContentPane  *self,
     g_object_notify ((GObject *) self, "title");
 }
 
+/**
+ * mpl_content_pane_get_child:
+ * @self: #MplContentPane
+ *
+ * Returns the content child of the pane.
+ *
+ * Return value: #ClutterActor
+ */
 ClutterActor *
 mpl_content_pane_get_child (MplContentPane *self)
 {
@@ -251,6 +292,13 @@ mpl_content_pane_get_child (MplContentPane *self)
   return priv->child;
 }
 
+/**
+ * mpl_content_pane_set_child:
+ * @self: #MplContentPane
+ * @child: #ClutterActor
+ *
+ * Sets the content child of the pane to the provided actor.
+ */
 void
 mpl_content_pane_set_child (MplContentPane  *self,
                             ClutterActor    *child)
@@ -262,6 +310,14 @@ mpl_content_pane_set_child (MplContentPane  *self,
   g_object_notify ((GObject *) self, "child");
 }
 
+/**
+ * mpl_content_pane_get_header_actor:
+ * @self: #MplContentPane
+ *
+ * Returns the pane header actor, if set or %NULL.
+ *
+ * Return value: #ClutterActor
+ */
 ClutterActor *
 mpl_content_pane_get_header_actor (MplContentPane  *self)
 {
@@ -272,6 +328,15 @@ mpl_content_pane_get_header_actor (MplContentPane  *self)
   return priv->header_actor;
 }
 
+/**
+ * mpl_content_pane_set_header_actor:
+ * @self: #MplContentPane
+ * @actor: #ClutterActor or %NULL
+ *
+ * Sets the pane header actor. The header actor is an optional actor inserted
+ * into the header and packed from its right edge. It can be used, for example,
+ * to add a close button to the pane.
+ */
 void
 mpl_content_pane_set_header_actor (MplContentPane *self,
                                    ClutterActor   *actor)
@@ -281,7 +346,7 @@ mpl_content_pane_set_header_actor (MplContentPane *self,
   g_return_if_fail (MPL_IS_CONTENT_PANE (self));
 
   if (actor != priv->header_actor)
-  {  
+  {
     if (priv->header_actor)
     {
       clutter_actor_destroy (priv->header_actor);
