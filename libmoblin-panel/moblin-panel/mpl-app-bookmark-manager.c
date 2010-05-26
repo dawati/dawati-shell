@@ -489,11 +489,15 @@ mpl_app_bookmark_manager_get_default (void)
   static MplAppBookmarkManager *manager = NULL;
 
   if (!manager)
-  {
-    manager = g_object_new (MPL_TYPE_APP_BOOKMARK_MANAGER,
-                            NULL);
-    g_object_add_weak_pointer ((GObject *)manager, (gpointer)&manager);
-  }
+    {
+      manager = g_object_new (MPL_TYPE_APP_BOOKMARK_MANAGER,
+                              NULL);
+      g_object_add_weak_pointer ((GObject *)manager, (gpointer)&manager);
+    }
+  else
+    {
+      g_object_ref (manager);
+    }
 
   return manager;
 }
