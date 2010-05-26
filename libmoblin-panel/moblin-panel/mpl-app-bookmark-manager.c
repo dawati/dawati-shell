@@ -24,6 +24,16 @@
 
 #include "mpl-app-bookmark-manager.h"
 
+/**
+ * SECTION:mpl-app-bookmark-manager
+ * @short_description: Application bookmark manager.
+ * @Title: MplAppBookmarkManager
+ *
+ * #MplAppBookmarkManager manages user-bookmarked applications, as shown, for
+ *  example, in the myzone and applications panels. The ::bookmarks-changed
+ *  signal is emitted when the bookmarks have changed.
+ */
+
 G_DEFINE_TYPE (MplAppBookmarkManager, mpl_app_bookmark_manager, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
@@ -267,6 +277,13 @@ mpl_app_bookmark_manager_class_init (MplAppBookmarkManagerClass *klass)
   object_class->dispose = mpl_app_bookmark_manager_dispose;
   object_class->finalize = mpl_app_bookmark_manager_finalize;
 
+  /**
+   * MplAppBookmarkManager::bookmarks-changed:
+   * @manager: manager that received the signal
+   *
+   * The ::bookmarks-changed signal is emitted when user changes their
+   * bookmarked applications.
+   */
   signals[BOOKMARKS_CHANGED] =
     g_signal_new ("bookmarks-changed",
                   MPL_TYPE_APP_BOOKMARK_MANAGER,
@@ -365,6 +382,12 @@ mpl_app_bookmark_manager_load (MplAppBookmarkManager *manager)
   g_strfreev (uris);
 }
 
+/**
+ * mpl_app_bookmark_manager_save:
+ * @manager: #MplAppBookmarkManager
+ *
+ * Saves current bookmarks to disk.
+ */
 void
 mpl_app_bookmark_manager_save (MplAppBookmarkManager *manager)
 {
@@ -482,7 +505,14 @@ mpl_app_bookmark_manager_init (MplAppBookmarkManager *self)
   mpl_app_bookmark_manager_load (self);
 }
 
-
+/**
+ * mpl_app_bookmark_manager_get_default:
+ *
+ * Returns an instance of #MplAppBookmarkManager object.
+ *
+ * Return value: #MplAppBookmarkManager; the caller holds a reference to the
+ * object, and should release it using g_object_unref() when no longer needed.
+ */
 MplAppBookmarkManager *
 mpl_app_bookmark_manager_get_default (void)
 {
@@ -502,6 +532,16 @@ mpl_app_bookmark_manager_get_default (void)
   return manager;
 }
 
+/**
+ * mpl_app_bookmark_manager_get_bookmarks:
+ * @manager: #MplAppBookmarkManager
+ *
+ * Obtains list of current bookmarks.
+ *
+ * Return value: current bookmarks as a #GList of constant strings; the list is
+ * owned by the caller and must be freed with g_list_free() when no longer
+ * needed, however, the list data is owned by the manager and must not be freed.
+ */
 GList *
 mpl_app_bookmark_manager_get_bookmarks (MplAppBookmarkManager *manager)
 {
@@ -510,6 +550,14 @@ mpl_app_bookmark_manager_get_bookmarks (MplAppBookmarkManager *manager)
   return g_list_copy (priv->uris);
 }
 
+/**
+ * mpl_app_bookmark_manager_remove_uri:
+ * @manager: #MplAppBookmarkManager
+ * @uri: the bookmark to remove
+ *
+ * Removes bookmark identified by uri from the manager, and schedules the new
+ * bookmark list to be saved when idle.
+ */
 void
 mpl_app_bookmark_manager_remove_uri (MplAppBookmarkManager *manager,
                                      const gchar           *uri)
@@ -534,6 +582,14 @@ mpl_app_bookmark_manager_remove_uri (MplAppBookmarkManager *manager,
   mpl_app_bookmark_manager_idle_save (manager);
 }
 
+/**
+ * mpl_app_bookmark_manager_add_uri:
+ * @manager: #MplAppBookmarkManager
+ * @uri: the bookmark to add
+ *
+ * Adds bookmark identified by uri to the manager, and schedules the new
+ * bookmark list to be save in the next idle cycle.
+ */
 void
 mpl_app_bookmark_manager_add_uri (MplAppBookmarkManager *manager,
                                   const gchar           *uri_in)

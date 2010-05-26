@@ -42,16 +42,35 @@ G_BEGIN_DECLS
 #define MPL_APP_BOOKMARK_MANAGER_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPL_TYPE_APP_BOOKMARK_MANAGER, MplAppBookmarkManagerClass))
 
-#define MPL_TYPE_APP_BOOKMARK (mpl_app_bookmark_get_type())
+typedef struct _MplAppBookmarkManager      MplAppBookmarkManager;
+typedef struct _MplAppBookmarkManagerClass MplAppBookmarkManagerClass;
 
-typedef struct {
+/**
+ * MplAppBookmarkManager:
+ *
+ * Manager for application bookmarks.
+ */
+struct _MplAppBookmarkManager
+{
+  /*<private>*/
   GObject parent;
-} MplAppBookmarkManager;
+};
 
-typedef struct {
+/**
+ * MplAppBookmarkManagerClass:
+ * @bookmarks_changed: singnal closure for the
+ * MplAppBookmarkManager::bookmarks-changed signal.
+ *
+ * Class struct for #MplAppBookmarkManager.
+ */
+struct _MplAppBookmarkManagerClass
+{
+  /*<private>*/
   GObjectClass parent_class;
+
+  /*<public>*/
   void (*bookmarks_changed)(MplAppBookmarkManager *manager);
-} MplAppBookmarkManagerClass;
+};
 
 GType mpl_app_bookmark_manager_get_type (void);
 
