@@ -65,7 +65,6 @@ struct _MplEntryClass
   /* Signals. */
   void (* button_clicked) (MplEntry *self);
   void (* text_changed)   (MplEntry *self);
-  void (* keynav_event)   (MplEntry *self);
 };
 
 GType mpl_entry_get_type (void) G_GNUC_CONST;
