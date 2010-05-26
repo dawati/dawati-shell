@@ -22,6 +22,25 @@
 
 #include "mpl-utils.h"
 
+/**
+ * SECTION:mpl-utils
+ * @short_description: Various utility functions and macros.
+ * @Title: Utility Functions and Macros
+ *
+ * Miscellaneous utility functions and macros for Panels.
+ */
+
+/**
+ * mpl_utils_get_thumbnail_path:
+ * @uri: image uri
+ *
+ * Retrieves the path to thumbnail for an image identified by uri. The
+ * thumbnails are searched for in ~/.bk-thumbnails, ~/thumbnails/large and
+ * ~/thumbnails/normal, in that order.
+ *
+ * Return value: path to the thumbnail, or %NULL if thumbnail does not exist.
+ * The retured string must be freed with g_free() when no longer needed.
+ */
 gchar *
 mpl_utils_get_thumbnail_path (const gchar *uri)
 {

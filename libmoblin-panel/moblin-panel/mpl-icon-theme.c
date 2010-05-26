@@ -80,15 +80,31 @@ lookup_in_well_known_places (const gchar  **paths,
   return icon_file;
 }
 
+/**
+ * mpl_icon_theme_lookup_icon_file:
+ * @theme: #GtkIconTheme
+ * @icon_name: name of the icon
+ * @icon_size: size of the icon
+ *
+ * Looks up icon of given name and size in the supplied #GtkIconTheme,
+ * prioritizing Moblin-specific icons: if an icon exists that matches 'moblin-'
+ * + icon_name, this is returned instead of an icon for the unprefixed name. If
+ * the icon_name is an absolute path, no lookup is performed, and a copy of
+ * icon_name is returned.
+ *
+ * Return value: path to the icon, or %NULL if suitable icon was not found in
+ * the theme. The returned string must be freed with g_free() when no longer
+ * needed.
+ */
 gchar *
-mpl_icon_theme_lookup_icon_file (GtkIconTheme *self,
+mpl_icon_theme_lookup_icon_file (GtkIconTheme *theme,
                                  const gchar  *icon_name,
                                  gint          icon_size)
 {
   GIcon *icon = NULL;
   gchar *icon_file = NULL;
 
-  g_return_val_if_fail (self, NULL);
+  g_return_val_if_fail (theme, NULL);
 
   if (NULL == icon_name)
   {
@@ -132,7 +148,7 @@ mpl_icon_theme_lookup_icon_file (GtkIconTheme *self,
 
   if (icon)
   {
-    GtkIconInfo *info = gtk_icon_theme_lookup_by_gicon (GTK_ICON_THEME (self),
+    GtkIconInfo *info = gtk_icon_theme_lookup_by_gicon (GTK_ICON_THEME (theme),
                                                         icon,
                                                         icon_size,
                                                         GTK_ICON_LOOKUP_NO_SVG);
@@ -156,7 +172,7 @@ mpl_icon_theme_lookup_icon_file (GtkIconTheme *self,
   /* Lookup fallback icon. */
   if (NULL == icon_file)
   {
-    GtkIconInfo *info = gtk_icon_theme_lookup_icon (GTK_ICON_THEME (self),
+    GtkIconInfo *info = gtk_icon_theme_lookup_icon (GTK_ICON_THEME (theme),
                                                     FALLBACK_ICON,
                                                     icon_size,
                                                     GTK_ICON_LOOKUP_NO_SVG |
