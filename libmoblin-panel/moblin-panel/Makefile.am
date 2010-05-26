@@ -5,7 +5,6 @@ source_h =	$(srcdir)/mpl-version.h			\
 		$(srcdir)/mpl-content-pane.h \
 		$(srcdir)/mpl-entry.h			\
 		$(srcdir)/mpl-icon-theme.h		\
-		$(srcdir)/mpl-panel-background.h	\
 		$(srcdir)/mpl-panel-client.h		\
 		$(srcdir)/mpl-panel-clutter.h		\
 		$(srcdir)/mpl-panel-common.h		\
@@ -13,6 +12,8 @@ source_h =	$(srcdir)/mpl-version.h			\
 		$(srcdir)/mpl-panel-windowless.h	\
 		$(srcdir)/mpl-app-bookmark-manager.h	\
 		$(srcdir)/mpl-utils.h
+
+private_h = 	$(srcdir)/mpl-panel-background.h
 
 source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/mpl-content-pane.c \
@@ -60,10 +61,10 @@ ENUMS = mnb-enum-types.h \
 
 mnb-enum-types.h: stamp-mnb-enum-types.h
 	@true
-stamp-mnb-enum-types.h: $(source_h) Makefile
+stamp-mnb-enum-types.h: $(source_h) $(private_h) Makefile
 	$(QUIET_GEN)( $(GLIB_MKENUMS) \
 		--template $(top_srcdir)/src/mnb-enum-types.h.in \
-	  $(source_h) ) >> xgen-ceth && \
+	  $(source_h) $(private_h)) >> xgen-ceth && \
 	(cmp -s xgen-ceth mnb-enum-types.h || cp xgen-ceth mnb-enum-types.h) && \
 	rm -f xgen-ceth && \
 	echo timestamp > $(@F)
@@ -71,7 +72,7 @@ stamp-mnb-enum-types.h: $(source_h) Makefile
 mnb-enum-types.c: mnb-enum-types.h
 	$(QUIET_GEN)( $(GLIB_MKENUMS) \
 		--template $(top_srcdir)/src/mnb-enum-types.c.in \
-	  $(source_h) ) >> xgen-cetc && \
+	  $(source_h) $(private_h) ) >> xgen-cetc && \
 	cp xgen-cetc mnb-enum-types.c && \
 	rm -f xgen-cetc
 
