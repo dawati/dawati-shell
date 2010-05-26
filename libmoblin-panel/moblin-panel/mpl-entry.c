@@ -28,6 +28,14 @@
 
 #include "mpl-entry.h"
 
+/**
+ * SECTION:mpl-entry
+ * @short_description: Entry widget.
+ * @Title: MplEntry
+ *
+ * #MplEntry is an entry widget for Panels.
+ */
+
 #define MPL_ENTRY_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MPL_TYPE_ENTRY, MplEntryPrivate))
 
@@ -362,6 +370,13 @@ mpl_entry_class_init (MplEntryClass *klass)
                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
+  /**
+   * MplEntry::button-clicked:
+   * @entry: entry that received the signal
+   *
+   * The ::button-clicked signal is emitted when the user clicks on the
+   * entry button.
+   */
   _signals[BUTTON_CLICKED] =
     g_signal_new ("button-clicked",
                   G_TYPE_FROM_CLASS (gobject_class),
@@ -371,6 +386,12 @@ mpl_entry_class_init (MplEntryClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * MplEntry::text-changed:
+   * @entry: entry that received the signal
+   *
+   * The ::text-changed signal is emitted when the text in the entry changes.
+   */
   _signals[TEXT_CHANGED] =
     g_signal_new ("text-changed",
                   G_TYPE_FROM_CLASS (gobject_class),
@@ -461,6 +482,14 @@ mpl_entry_init (MplEntry *self)
                     self);
 }
 
+/**
+ * mpl_entry_new:
+ * @label: entry prompt
+ *
+ * Creates an instance of #MplEntry.
+ *
+ * Return value: #MxWidget
+ */
 MxWidget *
 mpl_entry_new (const char *label)
 {
@@ -469,6 +498,15 @@ mpl_entry_new (const char *label)
                        NULL);
 }
 
+/**
+ * mpl_entry_get_label:
+ * @self: #MplEntry
+ *
+ * Retrieves the text of the entry prompt.
+ *
+ * Return value: pointer to string holding the label; the string is owned by
+ * the entry and must not be freed.
+ */
 const gchar *
 mpl_entry_get_label (MplEntry *self)
 {
@@ -477,15 +515,31 @@ mpl_entry_get_label (MplEntry *self)
   return mx_button_get_label (MX_BUTTON (self->priv->search_button));
 }
 
+/**
+ * mpl_entry_set_label:
+ * @self: #MplEntry
+ * @label: text of the entry propmpt
+ *
+ * Sets the text of the entry prompt.
+ */
 void
 mpl_entry_set_label (MplEntry     *self,
-                     const gchar  *text)
+                     const gchar  *label)
 {
   g_return_if_fail (self);
 
-  mx_button_set_label (MX_BUTTON (self->priv->search_button), text);
+  mx_button_set_label (MX_BUTTON (self->priv->search_button), label);
 }
 
+/**
+ * mpl_entry_get_text:
+ * @self: #MplEntry
+ *
+ * Retrieves the text of the entry.
+ *
+ * Return value: pointer to string holding the text; the string is owned by
+ * the entry and must not be freed.
+ */
 const gchar *
 mpl_entry_get_text (MplEntry *self)
 {
@@ -494,6 +548,13 @@ mpl_entry_get_text (MplEntry *self)
   return mx_entry_get_text (MX_ENTRY (self->priv->entry));
 }
 
+/**
+ * mpl_entry_set_text:
+ * @self: #MplEntry
+ * @text: text to set the entry to
+ *
+ * Sets the text of the entry.
+ */
 void
 mpl_entry_set_text (MplEntry     *self,
                     const gchar  *text)
@@ -504,6 +565,15 @@ mpl_entry_set_text (MplEntry     *self,
     mx_entry_set_text (MX_ENTRY (self->priv->entry), text);
 }
 
+/**
+ * mpl_entry_get_mx_entry:
+ * @self: #MplEntry
+ *
+ * Returns pointer to the actual #MxEntry widget inside #MplEntry.
+ *
+ * Return value: #MxWidget; the entry widget is owned by the entry and no
+ * additional reference is added to it by this function.
+ */
 MxWidget *
 mpl_entry_get_mx_entry (MplEntry *self)
 {
@@ -511,4 +581,3 @@ mpl_entry_get_mx_entry (MplEntry *self)
 
   return MX_WIDGET (self->priv->entry);
 }
-

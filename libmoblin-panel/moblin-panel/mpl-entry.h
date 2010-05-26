@@ -36,17 +36,32 @@ typedef struct _MplEntry          MplEntry;
 typedef struct _MplEntryPrivate   MplEntryPrivate;
 typedef struct _MplEntryClass     MplEntryClass;
 
+/**
+ * MplEntry:
+ *
+ * Entry widget.
+ */
 struct _MplEntry
 {
+  /*<private>*/
   MxFrame parent_instance;
 
   MplEntryPrivate *priv;
 };
 
+/**
+ * MplEntryClass:
+ * @button_clicked: signal closure for the #MplEntry::button-clicked signal
+ * @text_changed: signal closure for the #MplEntry::text-changed signal
+ *
+ * Class struct for #MplEntry.
+ */
 struct _MplEntryClass
 {
+  /*<private>*/
   MxFrameClass parent_class;
 
+  /*<public>*/
   /* Signals. */
   void (* button_clicked) (MplEntry *self);
   void (* text_changed)   (MplEntry *self);
