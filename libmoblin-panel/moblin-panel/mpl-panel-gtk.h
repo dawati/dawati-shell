@@ -50,20 +50,33 @@ G_BEGIN_DECLS
 #define MPL_PANEL_GTK_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), MPL_TYPE_PANEL_GTK, MplPanelGtkClass))
 
+typedef struct _MplPanelGtk        MplPanelGtk;
+typedef struct _MplPanelGtkClass   MplPanelGtkClass;
 typedef struct _MplPanelGtkPrivate MplPanelGtkPrivate;
 
-typedef struct
+/**
+ * MplPanelGtk:
+ *
+ * Panel object for Gtk+-based panels.
+ */
+struct _MplPanelGtk
 {
+  /*<private>*/
   MplPanelClient parent;
 
   MplPanelGtkPrivate *priv;
-} MplPanelGtk;
+};
 
-typedef struct
+/**
+ * MplPanelGtkClass:
+ *
+ * Panel object for Gtk+-based panels.
+ */
+struct _MplPanelGtkClass
 {
+  /*<private>*/
   MplPanelClientClass parent_class;
-
-} MplPanelGtkClass;
+};
 
 GType mpl_panel_gtk_get_type (void);
 

@@ -27,6 +27,14 @@
 
 #include "mpl-panel-gtk.h"
 
+/**
+ * SECTION:mpl-panel-gtk
+ * @short_description: Class for panels using Gtk
+ * @title: MplPanelGtk
+ *
+ * #MplPanelGtk is a class for all Panels that implement their UI using Gtk+.
+ */
+
 G_DEFINE_TYPE (MplPanelGtk, mpl_panel_gtk, MPL_TYPE_PANEL_CLIENT)
 
 #define MPL_PANEL_GTK_GET_PRIVATE(o) \
@@ -184,6 +192,19 @@ mpl_panel_gtk_constructed (GObject *self)
   g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
 }
 
+/**
+ * mpl_panel_gtk_new:
+ * @name: canonical name of the panel
+ * @tooltip: tooltip for the associated Toolbar button
+ * @stylesheet: stylesheet for the associated Toolbar button
+ * @button_style: css style id for the button style
+ * @with_toolbar_service: whether the panel will be using any Toolbar services
+ * (e.g., the launching API)
+ *
+ * Constructs a new #MplPanelGtk object.
+ *
+ * Return value: new #MplPanelClient object.
+ */
 MplPanelClient *
 mpl_panel_gtk_new (const gchar *name,
                    const gchar *tooltip,
@@ -202,6 +223,13 @@ mpl_panel_gtk_new (const gchar *name,
   return panel;
 }
 
+/**
+ * mpl_panel_gtk_set_child:
+ * @panel: MplPanelGtk
+ * @child: #GtkWidget.
+ *
+ * Set's the content widget of the panel to be the provided child widget.
+ */
 void
 mpl_panel_gtk_set_child (MplPanelGtk *panel, GtkWidget *child)
 {
@@ -215,6 +243,14 @@ mpl_panel_gtk_set_child (MplPanelGtk *panel, GtkWidget *child)
   gtk_container_add (GTK_CONTAINER (priv->window), child);
 }
 
+/**
+ * mpl_panel_gtk_get_window:
+ * @panel: #MplPanelGtk
+ *
+ * Returns the top level window of the panel.
+ *
+ * Return value: top level #GtkWidget
+ */
 GtkWidget *
 mpl_panel_gtk_get_window (MplPanelGtk *panel)
 {
