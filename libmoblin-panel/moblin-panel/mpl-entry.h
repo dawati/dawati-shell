@@ -70,7 +70,7 @@ struct _MplEntryClass
 
 GType mpl_entry_get_type (void) G_GNUC_CONST;
 
-MxWidget *  mpl_entry_new       (const char   *label);
+MxWidget *  mpl_entry_new       (const gchar   *label);
 
 const gchar * mpl_entry_get_label (MplEntry     *self);
 void          mpl_entry_set_label (MplEntry     *self,

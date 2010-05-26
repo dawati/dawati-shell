@@ -491,7 +491,7 @@ mpl_entry_init (MplEntry *self)
  * Return value: #MxWidget
  */
 MxWidget *
-mpl_entry_new (const char *label)
+mpl_entry_new (const gchar *label)
 {
   return g_object_new (MPL_TYPE_ENTRY,
                        "label", label,
