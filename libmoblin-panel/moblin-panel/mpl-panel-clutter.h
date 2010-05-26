@@ -31,17 +31,10 @@
 
 G_BEGIN_DECLS
 
-/*
- * These are legacy macros; we should fix up the panels and get rid of them.
- */
-#define MPL_PANEL_CLUTTER_INIT(argc, argv) \
-  mpl_panel_clutter_init_lib (argc, argv);
-#define MPL_PANEL_CLUTTER_INIT_WITH_GTK(argc, argv) \
-  mpl_panel_clutter_init_with_gtk (argc, argv);
-#define MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK(panel) \
-  mpl_panel_clutter_setup_events_with_gtk (panel);
-#define MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID(xid) \
-  mpl_panel_clutter_setup_events_with_gtk_for_xid (xid);
+#define MPL_PANEL_CLUTTER_INIT MPL_PANEL_CLUTTER_INIT_is_replaced_with__mpl_panel_clutter_init_lib
+#define MPL_PANEL_CLUTTER_INIT_WITH_GTK MPL_PANEL_CLUTTER_INIT_WITH_GTK_is_replaced_with__mpl_panel_clutter_init_with_gtk
+#define MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_is_replaced_with__mpl_panel_clutter_setup_events_with_gtk
+#define MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID_is_replaced_with__mpl_panel_clutter_setup_events_with_gtk_for_xid
 
 #define MPL_TYPE_PANEL_CLUTTER mpl_panel_clutter_get_type()
 

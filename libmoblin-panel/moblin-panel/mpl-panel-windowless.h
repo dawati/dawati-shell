@@ -29,9 +29,6 @@
 
 G_BEGIN_DECLS
 
-#define MPL_PANEL_WINDOWLESS_INIT(argc, argv) \
-  windowless_init (argc, argv);               \
-
 #define MPL_TYPE_PANEL_WINDOWLESS mpl_panel_windowless_get_type()
 
 #define MPL_PANEL_WINDOWLESS(obj) \
