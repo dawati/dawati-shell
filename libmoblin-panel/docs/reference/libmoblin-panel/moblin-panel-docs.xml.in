@@ -37,29 +37,46 @@
     </legalnotice>
   </bookinfo>
 
-  <part id="moblinpanelclasses">
-    <title>Panel Classes</title>
+  <xi:include href="xml/overview.xml"/>
 
-    <xi:include href="xml/mpl-panel-client.xml"/>
-    <xi:include href="xml/mpl-panel-clutter.xml"/>
-    <xi:include href="xml/mpl-panel-gtk.xml"/>
-    <xi:include href="xml/mpl-panel-windowless.xml"/>
+  <part id="moblinpanelreference">
 
-  </part>
+    <title>Reference</title>
 
-  <part id="moblinpanelwidgets">
-    <title>Panel Widgets</title>
+    <chapter id="moblinpanelclasses">
+      <title>Panel Classes</title>
 
-    <xi:include href="xml/mpl-app-bookmark-manager.xml"/>
-    <xi:include href="xml/mpl-content-pane.xml"/>
-    <xi:include href="xml/mpl-entry.xml"/>
+      <xi:include href="xml/mpl-panel-client.xml"/>
+      <xi:include href="xml/mpl-panel-clutter.xml"/>
+      <xi:include href="xml/mpl-panel-gtk.xml"/>
+      <xi:include href="xml/mpl-panel-windowless.xml"/>
 
-  </part>
+    </chapter>
 
-  <part id="moblinpanelutility">
-    <title>Miscellaneous</title>
+    <chapter id="moblinpanelwidgets">
+      <title>Panel Widgets</title>
 
-    <xi:include href="xml/mpl-utils.xml"/>
+      <xi:include href="xml/mpl-app-bookmark-manager.xml"/>
+      <xi:include href="xml/mpl-content-pane.xml"/>
+      <xi:include href="xml/mpl-entry.xml"/>
+
+    </chapter>
+
+    <chapter id="moblinpanelutility">
+      <title>Miscellaneous</title>
+
+      <xi:include href="xml/mpl-utils.xml"/>
+    </chapter>
+
+    </chapter>
+
+    <chapter id="moblinpaneldesktop">
+      <title>Panel Desktop File</title>
+
+      <xi:include href="xml/desktopfile.xml"/>
+
+    </chapter>
+
   </part>
 
   <index>
