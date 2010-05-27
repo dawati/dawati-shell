@@ -85,7 +85,6 @@ G_DEFINE_TYPE (MplPanelClutter, mpl_panel_clutter, MPL_TYPE_PANEL_CLIENT)
 #define MPL_PANEL_CLUTTER_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPL_TYPE_PANEL_CLUTTER, MplPanelClutterPrivate))
 
-static void mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid);
 static void mpl_panel_clutter_constructed (GObject *self);
 
 enum
@@ -498,7 +497,20 @@ mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
   mpl_panel_clutter_load_base_style ();
 }
 
-static void
+/**
+ * mpl_panel_clutter_setup_events_with_gtk_for_xid:
+ * @xid: the stage window
+ *
+ * Sets up X event handling in panels that use both Clutter and Gtk; for such
+ * panel the library needs to be initialized with
+ * mpl_panel_clutter_init_with_gtk().
+ *
+ * This is a convenience function for panels that implement stanalone mode
+ * (i.e., without mutter-moblin and the associate panel machinery) for ease
+ * of developement and testing. In normal mode, use
+ * mpl_panel_clutter_setup_events_with_gtk() instead.
+ */
+void
 mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid)
 {
   GdkFilterReturn
