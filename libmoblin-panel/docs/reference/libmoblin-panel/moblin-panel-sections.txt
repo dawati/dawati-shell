@@ -61,6 +61,7 @@ mpl_panel_clutter_load_base_style
 mpl_panel_clutter_init_lib
 mpl_panel_clutter_init_with_gtk
 mpl_panel_clutter_setup_events_with_gtk
+mpl_panel_clutter_setup_events_with_gtk_for_xid
 mpl_panel_clutter_set_child
 <SUBSECTION Standard>
 MPL_PANEL_CLUTTER
