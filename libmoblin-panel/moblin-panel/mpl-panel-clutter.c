@@ -38,7 +38,36 @@
  * @title: MplPanelClutter
  *
  * #MplPanelClutter is a class for all Panels that implement their UI using
- * Clutter.
+ * Clutter. A minimal Panel implementation using #MplPanelClutter would look
+ * as follows:
+ *
+ * <programlisting>
+  #include <moblin-panel/mpl-panel-clutter.h>
+
+  int
+  main (int argc, char **argv)
+  {
+    MplPanelClient *client;
+    ClutterActor   *contents;
+
+    mpl_panel_clutter_init_lib (&argc, &argv);
+
+    client = mpl_panel_clutter_new ("mypanel",
+                                    "this is mypanel",
+                                    "somewhere/mypanel-button.css",
+                                    "mypanel-button",
+                                    FALSE);
+
+    / * create the content actor for your panel * /
+    contents = make_my_panel_conents ();
+
+    mpl_panel_clutter_set_child (MPL_PANEL_CLUTTER (client), contents);
+
+    clutter_main ();
+
+    return 0;
+  }
+</programlisting>
  */
 
 #define MPL_X_ERROR_TRAP() clutter_x11_trap_x_errors()
