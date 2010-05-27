@@ -32,8 +32,36 @@
  * @short_description: Class for panels using Gtk
  * @title: MplPanelGtk
  *
- * #MplPanelGtk is a class for all Panels that implement their UI using Gtk+.
- */
+ * #MplPanelGtk is a class for all Panels that implement their UI using Gtk+. A
+ * minimal Panel implementation using #MplPanelGtk would look as follows:
+ *
+ * <programlisting>
+  #include <moblin-panel/mpl-panel-gtk.h>
+
+  int
+  main (int argc, char **argv)
+  {
+    MplPanelClient *client;
+    GtkWidget      *contents;
+
+    gtk_init (&argc, &argv);
+
+    client = mpl_panel_gtk_new ("mypanel",
+                                "this is mypanel",
+                                "somewhere/mypanel-button.css",
+                                "mypanel-button",
+                                FALSE);
+
+    / * create the content actor for your panel * /
+    contents = make_my_panel_conents ();
+
+    mpl_panel_gtk_set_child (MPL_PANEL_GTK (client), contents);
+
+    gtk_main ();
+
+    return 0;
+  }
+</programlisting> */
 
 G_DEFINE_TYPE (MplPanelGtk, mpl_panel_gtk, MPL_TYPE_PANEL_CLIENT)
 
