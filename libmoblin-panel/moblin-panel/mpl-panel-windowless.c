@@ -33,7 +33,41 @@
  * @title: MplPanelWindowless
  *
  * #MplPanelWindowless is a class for all Panels that use a non-interactive
- * Toolbar button (e.g., they have no drop-down panel).
+ * Toolbar button and have no drop-down panel.
+ *
+ * NB: Since the button is not interactive, windowless panels need to be started
+ * through some other mechanism than the user first clicking the associated
+ * button (e.g., using the system autostart mechanism).
+ *
+ * A minimal Panel implementation using #MplPanelWindowless would look as
+ * follows:
+ *
+ * <programlisting>
+  #include <moblin-panel/mpl-panel-windowless.h>
+
+  int
+  main (int argc, char **argv)
+  {
+    MplPanelClient *client;
+    GMainLoop      *loop;
+
+    loop = g_main_loop_new (NULL, FALSE);
+
+    client = mpl_panel_windowless_new ("mypanel",
+                                       "this is mypanel",
+                                       "somewhere/mypanel-button.css",
+                                       "mypanel-button",
+                                       FALSE);
+
+    / * do something that justifies having a Toolbar button * /
+    setup_my_stuff (client);
+
+    g_main_loop_run (loop);
+    g_main_loop_unref (loop);
+
+    return 0;
+  }
+</programlisting>
  */
 
 G_DEFINE_TYPE (MplPanelWindowless, mpl_panel_windowless, MPL_TYPE_PANEL_CLIENT)
