@@ -84,10 +84,15 @@
 
   </part>
 
-  <index>
-    <title>Index of all symbols</title>
-    <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
-  </index>
+    <part id="moblinpanelindex">
+      <title>Index of all symbols</title>
+
+      <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
+
+    </part>
+
+  <part id="appendices">
+    <title>Appendices</title>
 
   <appendix id="license">
     <title>License</title>
@@ -122,5 +127,7 @@
       </address>
     </para>
   </appendix>
+
+  </part>
 
 </book>
