@@ -26,7 +26,7 @@ AC_CONFIG_MACRO_DIR([build/autotools])
 
 AC_CONFIG_SRCDIR(src/moblin-netbook.c)
 
-AM_INIT_AUTOMAKE([dist-bzip2])
+AM_INIT_AUTOMAKE([tar-ustar dist-bzip2])
 
 PLUGIN_MAJOR_VERSION=plugin_major_version
 PLUGIN_MINOR_VERSION=plugin_minor_version
