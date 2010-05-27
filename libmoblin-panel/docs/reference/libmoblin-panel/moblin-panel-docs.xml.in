@@ -75,6 +75,13 @@
 
     </chapter>
 
+    <chapter id="moblinpanelcss">
+      <title>Panel Button Stylesheet</title>
+
+      <xi:include href="xml/cssfile.xml"/>
+
+    </chapter>
+
   </part>
 
   <index>
