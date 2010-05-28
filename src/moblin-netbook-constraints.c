@@ -20,6 +20,7 @@ not_too_small (MutterPlugin       *plugin,
 {
   gboolean already_satisfied = TRUE;
   gboolean resize = FALSE;
+  gboolean fullscreen = FALSE;
   gint screen_width, screen_height, width, height;
   gint x = 0, y = 0, old_x = 0, old_y;
   MetaRectangle *start_rect;
@@ -29,6 +30,11 @@ not_too_small (MutterPlugin       *plugin,
       info->is_user_action ||        /* Don't mess users about */
       meta_window_is_user_placed (window)   ||
       meta_window_get_window_type (window) != META_WINDOW_NORMAL)
+    return TRUE;
+
+  g_object_get (window, "fullscreen", &fullscreen, NULL);
+
+  if (fullscreen)
     return TRUE;
 
   old_x = info->current.x - info->fgeom->left_width;
