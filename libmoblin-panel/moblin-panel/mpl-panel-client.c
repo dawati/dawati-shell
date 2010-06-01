@@ -734,7 +734,9 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__ENUM,
                   G_TYPE_NONE, 1,
-                  MNB_TYPE_BUTTON_STATE);
+                  G_TYPE_INT); /* really MNB_TYPE_BUTTON_STATE, but dbus
+                                * introspection chokes on enum types
+                                */
 
   signals[REQUEST_MODALITY] =
     g_signal_new ("request-modality",
