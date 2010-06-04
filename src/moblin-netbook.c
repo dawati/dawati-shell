@@ -77,6 +77,7 @@
 #define KEY_BG_OPTIONS BG_KEY_DIR "/picture_options"
 #define THEME_KEY_DIR "/apps/metacity/general"
 #define KEY_THEME THEME_KEY_DIR "/theme"
+#define KEY_BUTTONS THEME_KEY_DIR "/button_layout"
 #define KEY_ALLWAYS_SMALL_SCREEN "/desktop/moblin/always_small_screen_mode"
 
 static guint32 compositor_options = 0;
@@ -713,6 +714,10 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
 
   gconf_client_set_string (priv->gconf_client, KEY_THEME,
                            netbook_mode ? "Netbook" : "Nettop",
+                           NULL);
+
+  gconf_client_set_string (priv->gconf_client, KEY_BUTTONS,
+                           netbook_mode ? ":close" : ":maximize,close",
                            NULL);
 
   /*
