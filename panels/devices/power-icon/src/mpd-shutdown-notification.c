@@ -68,7 +68,7 @@ static bool
 _timeout_cb (MpdShutdownNotification *self)
 {
   MpdShutdownNotificationPrivate *priv = GET_PRIVATE (self);
-  char const  *template = _("If you don't decide I'll turn off in %d seconds");
+  char const  *template = _("If you don't decide, I'll turn off in %d seconds");
   char        *text = NULL;
   bool         proceed;
 

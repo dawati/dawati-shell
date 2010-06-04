@@ -74,17 +74,17 @@ static const struct
 } _messages[] = {
   { NULL, NULL, NULL },
   { N_("Running low on battery"),
-    N_("We've noticed that your battery is running a bit low. " \
-       "If you can it would be a good idea to plug in and top up."),
+    N_("I've noticed that your battery is running a bit low. " \
+       "If you can, it would be a good idea to plug in and top up."),
     NULL },
   { N_("Getting close to empty"),
     N_("You're running quite low on battery. " \
        "It'd be a good idea to save all your work " \
-       "and plug in as soon as you can"),
+       "and plug in as soon as you can."),
     NULL },
   { N_("Danger!"),
     N_("Sorry, your computer is about to run out of battery. " \
-       "We're going to have to turn off now. " \
+       "I'm going to have to turn off now. " \
        "Please save your work and hope to see you again soon."),
     NULL },
   { NULL, NULL, NULL }
@@ -334,7 +334,7 @@ _shutdown_key_activated_cb (MxAction      *action,
   } else {
     priv->shutdown_note = mpd_shutdown_notification_new (
                         _("Would you like to turn off now?"),
-                        _("If you don't decide I'll turn off in 30 seconds."));
+                        _("If you don't decide, I'll turn off in 30 seconds."));
 
     g_signal_connect (priv->shutdown_note, "closed",
                       G_CALLBACK (_shutdown_notification_closed_cb), self);
