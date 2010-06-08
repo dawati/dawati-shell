@@ -18,6 +18,8 @@ libnotifications_la_SOURCES =				\
                         mnb-notification-urgent.h	\
 			mnb-notification-gtk.c		\
 			mnb-notification-gtk.h		\
+			ntf-notification.c		\
+			ntf-notification.h		\
 			ntf-source.c			\
 			ntf-source.h
 
