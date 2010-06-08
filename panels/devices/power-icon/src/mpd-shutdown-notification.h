@@ -57,8 +57,7 @@ GType
 mpd_shutdown_notification_get_type (void);
 
 NotifyNotification *
-mpd_shutdown_notification_new (char const *summary,
-                               char const *body);
+mpd_shutdown_notification_new ();
 
 void
 mpd_shutdown_notification_run (MpdShutdownNotification *self);

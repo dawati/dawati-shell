@@ -68,15 +68,14 @@ static bool
 _timeout_cb (MpdShutdownNotification *self)
 {
   MpdShutdownNotificationPrivate *priv = GET_PRIVATE (self);
-  char const  *template = _("If you don't decide, I'll turn off in %d seconds");
-  char        *text = NULL;
+  char const  *template;
+  char        *text;
   bool         proceed;
 
   if (priv->countdown > 5)
   {
     /* Count down in steps of five. */
     priv->countdown -= 5;
-    text = g_strdup_printf (template, priv->countdown);
     proceed = true;
 
     if (priv->countdown == 5) {
@@ -90,12 +89,16 @@ _timeout_cb (MpdShutdownNotification *self)
   } else if (priv->countdown > 0) {
     /* Count down in per-second steps. */
     priv->countdown--;
-    text = g_strdup_printf (template, priv->countdown);
     proceed = true;
   } else {
     g_signal_emit_by_name (self, "shutdown");
     proceed = false;
   }
+
+  template = ngettext ("If you don't decide, I'll turn off in %d second",
+                       "If you don't decide, I'll turn off in %d seconds",
+                       priv->countdown);
+  text = g_strdup_printf (template, priv->countdown);
 
   if (text)
   {
@@ -178,8 +181,8 @@ mpd_shutdown_notification_new (char const *summary,
                                char const *body)
 {
   return g_object_new (MPD_TYPE_SHUTDOWN_NOTIFICATION,
-                       "summary", summary,
-                       "body", body,
+                       "summary", _("Would you like to turn off now?"),
+                       "body", _("If you don't decide, I'll turn off in 30 seconds."),
                        "icon-name", "system-shutdown",
                        NULL);
 }

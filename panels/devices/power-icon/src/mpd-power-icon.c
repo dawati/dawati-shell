@@ -332,9 +332,7 @@ _shutdown_key_activated_cb (MxAction      *action,
     /* Power key pressed again with notification up already. */
     shutdown (self);
   } else {
-    priv->shutdown_note = mpd_shutdown_notification_new (
-                        _("Would you like to turn off now?"),
-                        _("If you don't decide, I'll turn off in 30 seconds."));
+    priv->shutdown_note = mpd_shutdown_notification_new ();
 
     g_signal_connect (priv->shutdown_note, "closed",
                       G_CALLBACK (_shutdown_notification_closed_cb), self);

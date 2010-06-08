@@ -11,6 +11,7 @@ AM_CFLAGS = \
 noinst_PROGRAMS = \
   test-battery-notification \
   test-idle-manager \
+  test-shutdown-notification \
   test-xbacklight \
   $(NULL)
 
@@ -41,6 +42,11 @@ test_idle_manager_SOURCES = \
   test-idle-manager.c \
   $(top_srcdir)/power-icon/src/mpd-idle-manager.c \
   $(top_srcdir)/src/mpd-gobject.c \
+  $(NULL)
+
+test_shutdown_notification_SOURCES = \
+  test-shutdown-notification.c \
+  $(top_srcdir)/power-icon/src/mpd-shutdown-notification.c \
   $(NULL)
 
 test_xbacklight_LDADD = \
