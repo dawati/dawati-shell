@@ -55,6 +55,12 @@ typedef struct
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
+char const *
+get_eject_failed_message (void)
+{
+  return _("Ejecting failed, looks like an application is using it");
+}
+
 static void
 _drive_eject_cb (GDrive       *drive,
                  GAsyncResult *result,
@@ -69,7 +75,7 @@ _drive_eject_cb (GDrive       *drive,
   {
     mpd_storage_device_tile_show_message (
                             MPD_STORAGE_DEVICE_TILE (data),
-                            _("Ejecting failed, looks like an application is using it"),
+                            get_eject_failed_message (),
                             false);
 
     mx_widget_set_disabled (MX_WIDGET (data), FALSE);
@@ -92,7 +98,7 @@ _vol_eject_cb (GVolume      *volume,
   {
     mpd_storage_device_tile_show_message (
                             MPD_STORAGE_DEVICE_TILE (data),
-                            _("Ejecting failed, looks like an application is using it"),
+                            get_eject_failed_message (),
                             false);
 
     mx_widget_set_disabled (MX_WIDGET (data), FALSE);
@@ -134,7 +140,7 @@ _mount_unmount_cb (GMount       *mount,
   {
     mpd_storage_device_tile_show_message (
                             MPD_STORAGE_DEVICE_TILE (data),
-                            _("Ejecting failed, looks like an application is using it"),
+                            get_eject_failed_message (),
                             false);
 
     mx_widget_set_disabled (MX_WIDGET (data), FALSE);
