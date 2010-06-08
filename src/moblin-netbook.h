@@ -114,6 +114,8 @@ struct _MoblinNetbookPluginPrivate
   /* Notification 'widget' */
   ClutterActor          *notification_cluster;
   ClutterActor          *notification_urgent;
+  ClutterActor          *message_tray;
+  ClutterActor          *message_tray_urgent;
   MnbInputRegion        *notification_cluster_input_region;
   MnbInputRegion        *notification_urgent_input_region;
 

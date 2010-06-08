@@ -25,7 +25,8 @@ libnotifications_la_SOURCES =				\
 			ntf-source.c			\
 			ntf-source.h			\
 			ntf-tray.c			\
-			ntf-tray.h
+			ntf-tray.h			\
+			ntf-libnotify.c
 
 DBUS_GLUE =	notification-manager-glue.h
 
