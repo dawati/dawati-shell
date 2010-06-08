@@ -315,14 +315,14 @@ MxLabel.date-label {
   font-size: 15px;
 }
 
-MnbNotification
+NtfNotification
 {
   border-image: url('notifiers/notification-bg.png') 10 21 33 22;
   padding: 15 26 38 27;
   font-size: 12px;
 }
 
-MnbNotificationCluster *.notification-control
+NtfTray *.notification-control
 {
   border-image: url('notifiers/notification-bg.png') 10 21 33 22;
   padding: 15 26 38 27;
@@ -343,7 +343,7 @@ MnbNotificationCluster *.notification-control
 }
 
 
-MnbNotification > *.NotificationBody
+NtfNotification > *.NotificationBody
 {
     font-family: "Droid Sans";
     font-size: 13px;

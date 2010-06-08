@@ -254,10 +254,9 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
   MnbAlttabOverlay           *overlay = MNB_ALTTAB_OVERLAY (data);
   MnbAlttabOverlayPrivate    *priv    = overlay->priv;
   MutterPlugin               *plugin  = moblin_netbook_get_plugin_singleton ();
-  MoblinNetbookPluginPrivate *ppriv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
   MetaWindow                 *focus;
 
-  if (CLUTTER_ACTOR_IS_MAPPED (ppriv->notification_urgent))
+  if (moblin_netbook_urgent_notification_present (plugin))
     {
       /*
        * Ignore if we have urgent notifications (MB#6036)
@@ -434,14 +433,13 @@ mnb_alttab_overlay_alt_tab_select_handler (MetaDisplay    *display,
   MnbAlttabOverlay           *overlay = MNB_ALTTAB_OVERLAY (data);
   MnbAlttabOverlayPrivate    *priv    = overlay->priv;
   MutterPlugin               *plugin  = moblin_netbook_get_plugin_singleton ();
-  MoblinNetbookPluginPrivate *ppriv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   end_kbd_grab (overlay);
 
   priv->in_alt_grab = FALSE;
   priv->alt_tab_down = FALSE;
 
-  if (CLUTTER_ACTOR_IS_MAPPED (ppriv->notification_urgent))
+  if (moblin_netbook_urgent_notification_present (plugin))
     {
       /*
        * Ignore if we have urgent notifications (MB#6036)

@@ -10,12 +10,6 @@ libnotifications_la_SOURCES =				\
 			$(DBUS_GLUE) 			\
 			moblin-netbook-notify-store.c   \
 			moblin-netbook-notify-store.h   \
-                        mnb-notification.c              \
-                        mnb-notification.h              \
-                        mnb-notification-cluster.c      \
-                        mnb-notification-cluster.h      \
-                        mnb-notification-urgent.c       \
-                        mnb-notification-urgent.h	\
 			mnb-notification-gtk.c		\
 			mnb-notification-gtk.h		\
 			ntf-notification.c		\

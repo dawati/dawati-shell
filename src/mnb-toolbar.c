@@ -3466,12 +3466,10 @@ mnb_toolbar_alt_f2_key_handler (MetaDisplay    *display,
                                 MetaKeyBinding *binding,
                                 gpointer        data)
 {
-  MnbToolbar *toolbar = MNB_TOOLBAR (data);
-  MoblinNetbookPluginPrivate *ppriv =
-    MOBLIN_NETBOOK_PLUGIN (toolbar->priv->plugin)->priv;
+  MnbToolbar      *toolbar = MNB_TOOLBAR (data);
   MnbToolbarPanel *tp;
 
-  if (CLUTTER_ACTOR_IS_MAPPED (ppriv->notification_urgent))
+  if (moblin_netbook_urgent_notification_present (toolbar->priv->plugin))
     return;
 
   tp = mnb_toolbar_panel_name_to_panel_internal (toolbar,

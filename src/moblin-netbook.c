@@ -31,10 +31,12 @@
 #include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"
 #include "notifications/mnb-notification-gtk.h"
+#include "notifications/ntf-overlay.h"
 #include "presence/mnb-presence.h"
 #include "mnb-panel-frame.h"
 #include "moblin-netbook-constraints.h"
 #include "moblin-netbook-mutter-hints.h"
+#include "notifications/ntf-overlay.h"
 
 #include <compositor-mutter.h>
 #include <display.h>
@@ -71,7 +73,6 @@
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define MYZONE_TIMEOUT              200
 #define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
-#define NOTIFICATION_KEY "MNB-MW-urgent-notification"
 #define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
 #define KEY_BG_OPTIONS BG_KEY_DIR "/picture_options"
@@ -110,24 +111,13 @@ static void meta_window_fullscreen_notify_cb (GObject    *object,
                                               gpointer    data);
 static void moblin_netbook_toggle_compositor (MutterPlugin *, gboolean on);
 static void window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin);
-static void meta_display_window_demands_attention_cb (MetaDisplay *display,
-                                                      MetaWindow  *mw,
-                                                      gpointer     data);
-static void meta_window_demands_attention_cb (MetaWindow         *mw,
-                                              GParamSpec         *spec,
-                                              gpointer            data);
 static void moblin_netbook_handle_screen_size (MutterPlugin *plugin,
                                                gint         *screen_width,
                                                gint         *screen_height);
 
 static void last_focus_weak_notify_cb (gpointer data, GObject *meta_win);
 
-static void notification_cluster_allocation_notify_cb (ClutterActor *notification,
-                                                       GParamSpec   *spec,
-                                                       MutterPlugin *plugin);
-
 static GQuark actor_data_quark = 0;
-static GQuark notification_quark = 0;
 
 static void     minimize   (MutterPlugin *plugin,
                             MutterWindow *actor);
@@ -155,12 +145,6 @@ static const MutterPluginInfo * plugin_info (MutterPlugin *plugin);
 static gboolean xevent_filter (MutterPlugin *plugin, XEvent *xev);
 
 MUTTER_PLUGIN_DECLARE (MoblinNetbookPlugin, moblin_netbook_plugin);
-
-static gboolean
-on_lowlight_button_event (ClutterActor *actor,
-                          ClutterEvent *event,
-                          gpointer      user_data);
-
 
 /*
  * Actor private data accessor
@@ -242,69 +226,6 @@ moblin_netbook_plugin_get_property (GObject    *object,
     }
 }
 
-static void
-sync_notification_input_region_cb (ClutterActor        *notify_actor,
-                                   MoblinNetbookPlugin *plugin)
-{
-  MoblinNetbookPluginPrivate  *priv = plugin->priv;
-  MnbInputRegion             **region;
-
-  if (notify_actor == priv->notification_urgent)
-    region = &priv->notification_urgent_input_region;
-  else
-    region = &priv->notification_cluster_input_region;
-
-  if (*region != NULL)
-    {
-      mnb_input_manager_remove_region (*region);
-      *region = NULL;
-    }
-
-  if (CLUTTER_ACTOR_IS_MAPPED (notify_actor))
-    {
-      gfloat x,y;
-      gfloat width,height;
-
-      clutter_actor_get_transformed_position (notify_actor, &x, &y);
-      clutter_actor_get_transformed_size (notify_actor, &width, &height);
-
-      if (width != 0 && height != 0)
-        {
-          *region = mnb_input_manager_push_region (x, y, width, height,
-                                                   FALSE, MNB_INPUT_LAYER_TOP);
-        }
-    }
-}
-
-static void
-on_urgent_notifiy_visible_cb (ClutterActor    *notify_urgent,
-                              GParamSpec      *pspec,
-                              MutterPlugin *plugin)
-{
-  moblin_netbook_set_lowlight (plugin,
-                               CLUTTER_ACTOR_IS_MAPPED(notify_urgent));
-}
-
-
-static void
-on_urgent_notify_allocation_cb (ClutterActor *notify_urgent,
-                                GParamSpec   *pspec,
-                                MutterPlugin *plugin)
-{
-  MoblinNetbookPluginPrivate *priv = ((MoblinNetbookPlugin *)plugin)->priv;
-
-  gint   screen_width, screen_height;
-  gfloat w, h;
-
-  mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
-                                   &screen_width, &screen_height);
-  clutter_actor_get_size (priv->notification_urgent, &w, &h);
-
-  clutter_actor_set_position (priv->notification_urgent,
-                              (screen_width - (int)w) / 2,
-                              (screen_height - (int)h) / 2);
-}
-
 /*
  * If the work area size changes while a panel is present (e.g., a VKB pops up),
  * we need to resize the panel. We also need to reposition any elements the
@@ -318,13 +239,6 @@ moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
 
   moblin_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
-  /*
-   * Pretend we changed allocation on this actor, this will move it to the
-   * correct place.
-   */
-  notification_cluster_allocation_notify_cb (priv->notification_cluster,
-                                             NULL, plugin);
-
   if (priv->desktop_tex)
     clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
 }
@@ -334,7 +248,7 @@ moblin_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
-  if (CLUTTER_ACTOR_IS_MAPPED (priv->notification_urgent))
+  if (moblin_netbook_urgent_notification_present (plugin))
     {
       /*
        * Ignore the overlay key if we have urgent notifications (MB#6036)
@@ -562,31 +476,6 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
 }
 
 static void
-moblin_netbook_close_demands_attention_notification (MutterPlugin *plugin,
-                                                     MetaWindow   *mw)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  guint                       ntf_id;
-
-  if (G_UNLIKELY (notification_quark == 0))
-    notification_quark = g_quark_from_static_string (NOTIFICATION_KEY);
-
-  ntf_id = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (mw),
-                                                notification_quark));
-
-  if (ntf_id)
-    {
-      g_signal_handlers_disconnect_by_func (mw,
-                                            meta_window_demands_attention_cb,
-                                            GINT_TO_POINTER (ntf_id));
-
-      moblin_netbook_notify_store_close (priv->notify_store, ntf_id,
-                                         ClosedProgramatically);
-      g_object_set_qdata (G_OBJECT (mw), notification_quark, NULL);
-    }
-}
-
-static void
 moblin_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
                                                GParamSpec   *spec,
                                                MutterPlugin *plugin)
@@ -626,9 +515,6 @@ moblin_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
                                last_focus_weak_notify_cb, plugin);
         }
     }
-
-  if (mw)
-    moblin_netbook_close_demands_attention_notification (plugin, mw);
 }
 
 static void
@@ -757,24 +643,6 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
 }
 
 static void
-notification_cluster_allocation_notify_cb (ClutterActor *notification,
-                                           GParamSpec   *spec,
-                                           MutterPlugin *plugin)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  gint                        screen_width, screen_height;
-  ClutterActorBox             box;
-
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-  clutter_actor_get_allocation_box (notification, &box);
-
-  clutter_actor_set_position (priv->notification_cluster,
-                              screen_width - (int) (box.x2 - box.x1),
-                              screen_height - (int) (box.y2 - box.y1));
-}
-
-static void
 moblin_netbook_plugin_start (MutterPlugin *plugin)
 {
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
@@ -782,16 +650,13 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
   ClutterActor *overlay;
   ClutterActor *toolbar;
   ClutterActor *switcher_overlay;
-  ClutterActor *lowlight;
+  ClutterActor *message_overlay;
   gint          screen_width, screen_height;
-  gfloat        w, h;
-  ClutterColor  low_clr = { 0, 0, 0, 0x7f };
   GError       *err = NULL;
 
   MetaScreen   *screen    = mutter_plugin_get_screen (plugin);
   MetaDisplay  *display   = meta_screen_get_display (screen);
   ClutterActor *stage     = mutter_get_stage_for_screen (screen);
-
   GConfClient  *gconf_client;
 
   plugin_singleton = plugin;
@@ -831,15 +696,6 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
                     plugin);
 
   g_signal_connect (display,
-                    "window-demands-attention",
-                    G_CALLBACK (meta_display_window_demands_attention_cb),
-                    plugin);
-  g_signal_connect (display,
-                    "window-marked-urgent",
-                    G_CALLBACK (meta_display_window_demands_attention_cb),
-                    plugin);
-
-  g_signal_connect (display,
                     "window-created",
                     G_CALLBACK (moblin_netbook_display_window_created_cb),
                     plugin);
@@ -850,15 +706,6 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
                     plugin);
 
   overlay = mutter_plugin_get_overlay_group (plugin);
-
-  lowlight = clutter_rectangle_new_with_color (&low_clr);
-  priv->lowlight = lowlight;
-  clutter_actor_set_size (lowlight, screen_width, screen_height);
-  clutter_actor_set_reactive (lowlight, TRUE);
-
-  g_signal_connect (priv->lowlight, "captured-event",
-                    G_CALLBACK (on_lowlight_button_event),
-                    NULL);
 
   mnb_input_manager_create (plugin);
 
@@ -877,69 +724,26 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
 
   desktop_background_init (plugin);
 
-  /* Notifications */
-  priv->notify_store = moblin_netbook_notify_store_new ();
-
-  priv->notification_cluster = mnb_notification_cluster_new ();
-
-  mnb_notification_cluster_set_store
-                    (MNB_NOTIFICATION_CLUSTER(priv->notification_cluster),
-                     priv->notify_store);
-
-  g_signal_connect (priv->notification_cluster, "notify::allocation",
-                    G_CALLBACK (notification_cluster_allocation_notify_cb),
-                    plugin);
-
-  g_signal_connect (priv->notification_cluster,
-                    "sync-input-region",
-                    G_CALLBACK (sync_notification_input_region_cb),
-                    plugin);
-
-  priv->notification_urgent = mnb_notification_urgent_new ();
-
-  clutter_actor_get_size (priv->notification_urgent, &w, &h);
-  clutter_actor_set_position (priv->notification_urgent,
-                              (screen_width - (int)w) / 2,
-                              (screen_height - (int)h) / 2);
-
-  g_signal_connect (priv->notification_urgent,
-                    "notify::allocation",
-                    G_CALLBACK (on_urgent_notify_allocation_cb),
-                    plugin);
-
-  mnb_notification_urgent_set_store
-                        (MNB_NOTIFICATION_URGENT(priv->notification_urgent),
-                         priv->notify_store);
-
-  g_signal_connect (priv->notification_urgent,
-                    "sync-input-region",
-                    G_CALLBACK (sync_notification_input_region_cb),
-                    plugin);
-
-  g_signal_connect (priv->notification_urgent,
-                    "notify::visible",
-                    G_CALLBACK (on_urgent_notifiy_visible_cb),
-                    plugin);
+  /*
+   * FIXME -- make both of these screen-sized containers that automatically
+   * resize and position their children.
+   */
+  message_overlay = ntf_overlay_new ();
 
   /*
    * Order matters:
    *
    *  - toolbar hint is below the toolbar (i.e., not visible if panel showing.
-   *  - lowlight is above everything except urgent notifications
    */
   clutter_container_add (CLUTTER_CONTAINER (overlay),
                          toolbar,
                          switcher_overlay,
-                         priv->notification_cluster,
                          NULL);
 
   clutter_container_add (CLUTTER_CONTAINER (stage),
-                         lowlight,
-                         priv->notification_urgent,
+                         message_overlay,
                          NULL);
 
-  clutter_actor_hide (lowlight);
-  clutter_actor_hide (CLUTTER_ACTOR(priv->notification_urgent));
   clutter_actor_hide (switcher_overlay);
 
   /*
@@ -1619,8 +1423,6 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
   g_signal_handlers_disconnect_by_func (meta_win,
                                         meta_window_fullscreen_notify_cb,
                                         plugin);
-
-  moblin_netbook_close_demands_attention_notification (plugin, meta_win);
 
   g_signal_handlers_disconnect_by_func (mcw,
                                         window_destroyed_cb,
@@ -3000,71 +2802,6 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
     meta_display_focus_the_no_focus_window (display, screen, timestamp);
 }
 
-static gboolean
-on_lowlight_button_event (ClutterActor *actor,
-                          ClutterEvent *event,
-                          gpointer      user_data)
-{
-  return TRUE;                  /* Simply block events being handled */
-}
-
-void
-moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on)
-{
-  static MnbInputRegion *input_region = NULL;
-  static gboolean        active       = FALSE;
-
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-
-  if (on && !active)
-    {
-      gint          screen_width, screen_height;
-      MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-      MetaDisplay  *display = meta_screen_get_display (screen);
-      ClutterActor *stage   = mutter_get_stage_for_screen (screen);
-      Window        xwin;
-      guint32       timestamp;
-
-      xwin      = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-      timestamp = meta_display_get_current_time_roundtrip (display);
-
-      mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
-
-      input_region
-        = mnb_input_manager_push_region (0, 0, screen_width, screen_height,
-                                         FALSE, MNB_INPUT_LAYER_TOP);
-
-      /*
-       * Enusre correct size and stacking position
-       */
-      clutter_actor_set_size (priv->lowlight, screen_width, screen_height);
-      clutter_actor_lower (priv->lowlight, priv->notification_urgent);
-      clutter_actor_show (priv->lowlight);
-      active = TRUE;
-      mutter_plugin_begin_modal (plugin, xwin, None,
-                                 META_MODAL_POINTER_ALREADY_GRABBED,
-                                 timestamp);
-
-      mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), TRUE);
-    }
-  else
-    {
-      if (active)
-        {
-          guint32 timestamp;
-
-          timestamp = clutter_x11_get_current_event_time ();
-
-          clutter_actor_hide (priv->lowlight);
-          mnb_input_manager_remove_region (input_region);
-          input_region = NULL;
-          active = FALSE;
-          mnb_toolbar_set_disabled (MNB_TOOLBAR (priv->toolbar), FALSE);
-          mutter_plugin_end_modal (plugin, timestamp);
-        }
-    }
-}
-
 MutterPlugin *
 moblin_netbook_get_plugin_singleton (void)
 {
@@ -3117,246 +2854,6 @@ moblin_netbook_compositor_disabled (MutterPlugin *plugin)
   MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
 
   return priv->compositor_disabled;
-}
-
-/*
- * Shim layer for translating demands-attention hint into notifications.
- */
-
-/*
- * Handle the case where the window demands-attention state is unset
- * (for it being set, we watch centrally on MetaDisplay).
- */
-static void
-meta_window_demands_attention_cb (MetaWindow         *mw,
-                                  GParamSpec         *spec,
-                                  gpointer            data)
-{
-  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  guint                       ntf_id            = GPOINTER_TO_INT (data);
-  gboolean                    demands_attention = FALSE;
-  gboolean                    urgent            = FALSE;
-
-  g_object_get (G_OBJECT (mw),
-                "demands-attention", &demands_attention,
-                "urgent", &urgent,
-                NULL);
-
-  if (!demands_attention && !urgent)
-    moblin_netbook_notify_store_close (priv->notify_store, ntf_id,
-                                       ClosedProgramatically);
-}
-
-/*
- * set_notification_icon is based on notify_notification_set_icon_from_pixbuf()
- * from libnotify
- *
- * Copyright (C) 2006 Christian Hammond
- * Copyright (C) 2006 John Palmieri
- */
-static void
-_gvalue_array_append_int(GValueArray *array, gint i)
-{
-  GValue value = {0};
-
-  g_value_init(&value, G_TYPE_INT);
-  g_value_set_int(&value, i);
-  g_value_array_append(array, &value);
-  g_value_unset(&value);
-}
-
-static void
-_gvalue_array_append_bool(GValueArray *array, gboolean b)
-{
-  GValue value = {0};
-
-  g_value_init(&value, G_TYPE_BOOLEAN);
-  g_value_set_boolean(&value, b);
-  g_value_array_append(array, &value);
-  g_value_unset(&value);
-}
-
-static void
-_gvalue_array_append_byte_array(GValueArray *array, guchar *bytes, gsize len)
-{
-  GArray *byte_array;
-  GValue value = {0};
-
-  byte_array = g_array_sized_new(FALSE, FALSE, sizeof(guchar), len);
-  g_assert(byte_array != NULL);
-  byte_array = g_array_append_vals(byte_array, bytes, len);
-
-  g_value_init(&value, DBUS_TYPE_G_UCHAR_ARRAY);
-  g_value_set_boxed_take_ownership(&value, byte_array);
-  g_value_array_append(array, &value);
-  g_value_unset(&value);
-}
-
-static void
-free_hint (gpointer v)
-{
-  GValue *value = v;
-
-  g_value_unset (value);
-  g_free (value);
-}
-
-static void
-set_notification_icon (GHashTable **hints, GdkPixbuf *icon)
-{
-  gint width;
-  gint height;
-  gint rowstride;
-  gint bits_per_sample;
-  gint n_channels;
-  guchar *image;
-  gsize image_len;
-  GValueArray *image_struct;
-  GValue *value;
-
-  if (!*hints)
-    *hints = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, free_hint);
-
-  width           = gdk_pixbuf_get_width (icon);
-  height          = gdk_pixbuf_get_height (icon);
-  rowstride       = gdk_pixbuf_get_rowstride (icon);
-  n_channels      = gdk_pixbuf_get_n_channels (icon);
-  bits_per_sample = gdk_pixbuf_get_bits_per_sample (icon);
-  image_len       = (height - 1) * rowstride + width *
-    ((n_channels * bits_per_sample + 7) / 8);
-
-  image = gdk_pixbuf_get_pixels (icon);
-
-  image_struct = g_value_array_new (1);
-
-  _gvalue_array_append_int (image_struct, width);
-  _gvalue_array_append_int (image_struct, height);
-  _gvalue_array_append_int (image_struct, rowstride);
-  _gvalue_array_append_bool (image_struct, gdk_pixbuf_get_has_alpha (icon));
-  _gvalue_array_append_int (image_struct, bits_per_sample);
-  _gvalue_array_append_int (image_struct, n_channels);
-  _gvalue_array_append_byte_array (image_struct, image, image_len);
-
-  value = g_new0 (GValue, 1);
-  g_value_init (value, G_TYPE_VALUE_ARRAY);
-  g_value_take_boxed (value, image_struct);
-
-  g_hash_table_insert (*hints, g_strdup("icon_data"), value);
-}
-
-/*
- * Returns notification associated with current window; if the raw paremeter is
- * TRUE, the notification pointer will be returned as is (possibly NULL, if the
- * notification has not been previously created). If raw is FALSE the
- * notification will be created if it previously did not exist, or, the summary
- * and icon will be updated.
- */
-static guint
-get_demands_attention_notification (MutterPlugin *plugin,
-                                    MetaWindow   *mw,
-                                    gboolean      raw)
-{
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  guint                       ntf_id;
-  const gchar                *title  = meta_window_get_title (mw);
-  const gchar                *summary;
-  const gchar                *body;
-  guint                       old_id;
-  const gchar                *actions[3] = {"MNB-urgent-window", NULL, NULL};
-  GHashTable                 *hints = NULL;
-
-  actions[1] = _("Activate");
-
-  if (G_UNLIKELY (notification_quark == 0))
-    notification_quark = g_quark_from_static_string (NOTIFICATION_KEY);
-
-  old_id = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (mw),
-                                                notification_quark));
-
-  if (!old_id && raw)
-    return 0;
-
-  if (title)
-    summary = title;
-  else
-    summary = _("Unknown window");
-
-  body = _("is asking for your attention.");
-
-  if (!raw)
-    {
-      GdkPixbuf *pixbuf = NULL;
-
-      g_object_get (mw, "icon", &pixbuf, NULL);
-
-      if (pixbuf)
-        set_notification_icon (&hints, pixbuf);
-    }
-
-  ntf_id = notification_manager_notify_internal (priv->notify_store,
-                                                 old_id,
-                                                 "mutter-moblin",
-                                                 NULL,
-                                                 summary,
-                                                 body,
-                                                 actions,
-                                                 hints,
-                                                 0,
-                                                 mw);
-
-  if (!ntf_id)
-    {
-      g_warning ("Failed to create notification for %s", summary);
-      return 0;
-    }
-
-  if (old_id != ntf_id)
-    {
-      g_object_set_qdata_full (G_OBJECT (mw), notification_quark,
-                               GINT_TO_POINTER (ntf_id), NULL);
-
-      g_signal_connect (mw, "notify::demands-attention",
-                        G_CALLBACK (meta_window_demands_attention_cb),
-                        GINT_TO_POINTER (ntf_id));
-      g_signal_connect (mw, "notify::urgent",
-                        G_CALLBACK (meta_window_demands_attention_cb),
-                        GINT_TO_POINTER (ntf_id));
-    }
-
-  if (hints)
-    g_hash_table_destroy (hints);
-
-  return ntf_id;
-}
-
-static void
-meta_display_window_demands_attention_cb (MetaDisplay *display,
-                                          MetaWindow  *mw,
-                                          gpointer     data)
-{
-  MutterPlugin        *plugin = MUTTER_PLUGIN (data);
-  MutterWindow        *mcw;
-  MetaCompWindowType   type;
-
-  mcw = (MutterWindow*)meta_window_get_compositor_private (mw);
-
-  g_return_if_fail (mcw);
-
-  /*
-   * Only use notifications for normal windows and dialogues.
-   */
-  type = mutter_window_get_window_type (mcw);
-
-  if (!(type == META_COMP_WINDOW_NORMAL       ||
-        type == META_COMP_WINDOW_MODAL_DIALOG ||
-        type == META_COMP_WINDOW_DIALOG))
-    {
-      return;
-    }
-
-  if (mw != meta_display_get_focus_window (display))
-    get_demands_attention_notification (plugin, mw, FALSE);
 }
 
 void
@@ -3442,3 +2939,10 @@ moblin_netbook_get_compositor_option_flags (void)
 {
   return compositor_options;
 }
+
+gboolean
+moblin_netbook_urgent_notification_present (MutterPlugin *plugin)
+{
+  return ntf_overlay_urgent_notification_present ();
+}
+

@@ -32,9 +32,6 @@
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
 
-#include "notifications/moblin-netbook-notify-store.h"
-#include "notifications/mnb-notification-cluster.h"
-#include "notifications/mnb-notification-urgent.h"
 #include "presence/gsm-presence.h"
 
 #include "mnb-input-manager.h"
@@ -94,7 +91,6 @@ typedef struct ActorPrivate  ActorPrivate;
 struct _MoblinNetbookPluginPrivate
 {
   ClutterActor          *toolbar;
-  ClutterActor          *lowlight;
   ClutterActor          *switcher_overlay;
   MetaWindow            *last_focused;
 
@@ -111,20 +107,10 @@ struct _MoblinNetbookPluginPrivate
 
   MutterPluginInfo       info;
 
-  /* Notification 'widget' */
-  ClutterActor          *notification_cluster;
-  ClutterActor          *notification_urgent;
-  ClutterActor          *message_tray;
-  ClutterActor          *message_tray_urgent;
-  MnbInputRegion        *notification_cluster_input_region;
-  MnbInputRegion        *notification_urgent_input_region;
-
   Window                 focus_xwin;
 
   /* Desktop background stuff */
   GConfClient           *gconf_client;
-
-  MoblinNetbookNotifyStore *notify_store;
 
   MutterWindow          *screen_saver_mcw;
 
@@ -165,9 +151,6 @@ void           moblin_netbook_unfocus_stage (MutterPlugin *plugin,
 void moblin_netbook_notify_init (MutterPlugin *plugin);
 
 void
-moblin_netbook_set_lowlight (MutterPlugin *plugin, gboolean on);
-
-void
 moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp);
 
 void
@@ -202,5 +185,8 @@ moblin_netbook_use_netbook_mode (MutterPlugin *plugin);
 
 guint32
 moblin_netbook_get_compositor_option_flags (void);
+
+gboolean
+moblin_netbook_urgent_notification_present (MutterPlugin *plugin);
 
 #endif
