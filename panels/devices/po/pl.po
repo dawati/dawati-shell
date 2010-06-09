@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:42+0000\n"
+"POT-Creation-Date: 2010-06-08 21:25+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Marcin Sołtysiak <marcin@soltysiak.com>\n"
+"Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Bookmarks: -1,368,-1,-1,-1,-1,-1,-1,-1,-1\n"
@@ -37,6 +37,7 @@ msgid "%u Output"
 msgid_plural "%u Outputs"
 msgstr[0] "%u wyjście"
 msgstr[1] "%u wyjścia"
+msgstr[2] "%u wyjść"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -46,6 +47,7 @@ msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u wejście"
 msgstr[1] "%u wejścia"
+msgstr[2] "%u wejść"
 
 #: ../gvc/gvc-mixer-control.c:1316
 msgid "System Sounds"
@@ -60,15 +62,15 @@ msgid "Running low on battery"
 msgstr "Akumulator wyczerpuje się"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Zauważyliśmy, że akumulator wyczerpuje się. Dobrze byłoby podłączyć zasilanie i go naładować, jeśli to możliwe."
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Zauważyliśmy, że akumulator wyczerpuje się. Jeśli to możliwe, podłącz zasilanie i go naładuj."
 
 #: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
 msgstr "Akumulator prawie wyczerpany"
 
 #: ../power-icon/src/mpd-power-icon.c:81
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "Akumulator jest prawie wyczerpany. Dobrym pomysłem będzie zapisanie pracy i jak najszybsze podłączenie zasilania"
 
 #: ../power-icon/src/mpd-power-icon.c:85
@@ -76,33 +78,32 @@ msgid "Danger!"
 msgstr "Niebezpieczeństwo!"
 
 #: ../power-icon/src/mpd-power-icon.c:86
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Przepraszamy, akumulator w komputerze za chwilę się wyczerpie. Musimy teraz wyłączyć komputer. Zapisz pracę. Mamy nadzieję, że wkrótce się zobaczymy."
 
-#: ../power-icon/src/mpd-power-icon.c:336
-msgid "Would you like to turn off now?"
-msgstr "Czy chcesz teraz wyłączyć komputer?"
-
-#: ../power-icon/src/mpd-power-icon.c:337
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za 30 sekund."
-
-#: ../power-icon/src/mpd-power-icon.c:441
+#: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
 msgstr "akumulator"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:71
+#: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za %d sekund"
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za %d sekundę"
+msgstr[1] "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za %d sekundy"
+msgstr[2] "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za %d sekund"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:127
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "Wyłącz"
 
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Ikona zasilania systemu Moblin"
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Czy chcesz teraz wyłączyć komputer?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za 30 sekund."
 
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
@@ -158,14 +159,11 @@ msgstr ""
 msgid "Other devices"
 msgstr "Inne urządzenia"
 
-#: ../src/mpd-devices-tile.c:72
-#: ../src/mpd-devices-tile.c:95
-#: ../src/mpd-devices-tile.c:137
+#: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "Wysunięcie nieudane. Prawdopodobnie jakaś aplikacja nadal używa tego nośnika."
 
-#: ../src/mpd-devices-tile.c:389
-#: ../src/mpd-devices-tile.c:421
+#: ../src/mpd-devices-tile.c:420
 msgid "It is safe to unplug this device now"
 msgstr "Możesz teraz odłączyć to urządzenie."
 
@@ -182,37 +180,37 @@ msgstr "Kosz"
 msgid "Devices"
 msgstr "Urządzenia"
 
-#: ../src/mpd-storage-device-tile.c:162
+#: ../src/mpd-storage-device-tile.c:165
 #, c-format
 msgid "Could not run %s"
 msgstr "Nie można uruchomić %s"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:167
 msgid "Import error"
 msgstr "Błąd importu"
 
 #. TODO: import button should only be shown if the import apps are available
 #. Import button
-#: ../src/mpd-storage-device-tile.c:499
+#: ../src/mpd-storage-device-tile.c:519
 msgid "Import data"
 msgstr "Importuj dane"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:510
+#: ../src/mpd-storage-device-tile.c:530
 msgid "Eject"
 msgstr "Wysuń"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:521
+#: ../src/mpd-storage-device-tile.c:541
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../src/mpd-storage-device-tile.c:711
+#: ../src/mpd-storage-device-tile.c:734
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> za pomocą <span color='%s'>%d%% z %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:719
+#: ../src/mpd-storage-device-tile.c:742
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -260,6 +258,9 @@ msgstr "Głośność notebooka"
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Wycisz"
+
+#~ msgid "Moblin Power Icon"
+#~ msgstr "Ikona zasilania systemu Moblin"
 
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
