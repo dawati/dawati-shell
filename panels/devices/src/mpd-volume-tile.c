@@ -352,7 +352,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox), MPD_VOLUME_TILE_HEADER_SPACING);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
 
-  label = mx_label_new_with_text (_("Netbook volume"));
+  label = mx_label_new_with_text (_("Computer volume"));
   clutter_actor_set_name (label, "volume-tile-label");
   clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
 
