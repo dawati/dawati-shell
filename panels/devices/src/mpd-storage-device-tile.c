@@ -271,6 +271,15 @@ _constructor (GType                  type,
     self = NULL;
   }
 
+  /* FIXME: import button should only be active if the import app is available,
+   * otherwise show an error. */
+  if (0 == g_strcmp0 ("x-content/image-dcf", priv->mime_type))
+  {
+    mx_button_set_label (MX_BUTTON (priv->import), _("Import photos"));
+  } else {
+    mx_button_set_label (MX_BUTTON (priv->import), _("Import media"));
+  }
+
   return (GObject *) self;
 }
 
@@ -514,9 +523,8 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
                                priv->button_box);
 
-  /* TODO: import button should only be shown if the import apps are available */
   /* Import button */
-  priv->import = mx_button_new_with_label (_("Import data"));
+  priv->import = mx_button_new ();
   g_signal_connect (priv->import, "clicked",
                     G_CALLBACK (_import_clicked_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
