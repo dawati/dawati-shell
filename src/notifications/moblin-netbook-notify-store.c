@@ -39,6 +39,7 @@ static DBusConnection *_dbus_conn = NULL;
 typedef struct {
   guint next_id;
   GList *notifications;
+  DBusGProxy *bus_proxy;
 } MoblinNetbookNotifyStorePrivate;
 
 static guint
@@ -136,6 +137,22 @@ get_notification (MoblinNetbookNotifyStore *notify,
   return notification;
 }
 
+static void
+unix_process_id_reply_cb (DBusGProxy *proxy,
+                          guint       pid,
+                          GError     *error,
+                          gpointer    data)
+{
+  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
+  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  Notification               *notification = data;
+
+  notification->pid = pid;
+
+  g_signal_emit (ppriv->notify_store,
+                 signals[NOTIFICATION_ADDED], 0, notification);
+}
+
 /*
  * Implementation of the dbus notify method
  */
@@ -151,6 +168,7 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
                              gint                       timeout,
                              DBusGMethodInvocation     *context)
 {
+  MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (notify);
   Notification *notification;
   gint          i;
 
@@ -238,9 +256,16 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
   notification->timeout_ms = timeout;
 
   if (context)
-    notification->sender = dbus_g_method_get_sender (context);
+    {
+      notification->sender = dbus_g_method_get_sender (context);
 
-  g_signal_emit (notify, signals[NOTIFICATION_ADDED], 0, notification);
+      org_freedesktop_DBus_get_connection_unix_process_id_async (priv->bus_proxy,
+                                                                 notification->sender,
+                                                                 unix_process_id_reply_cb,
+                                                                 notification);
+    }
+  else
+    g_signal_emit (notify, signals[NOTIFICATION_ADDED], 0, notification);
 
   if (context)
     dbus_g_method_return(context, notification->id);
@@ -379,8 +404,8 @@ moblin_netbook_notify_store_class_init (MoblinNetbookNotifyStoreClass *klass)
 static void
 connect_to_dbus (MoblinNetbookNotifyStore *self)
 {
+  MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (self);
   DBusGConnection *connection;
-  DBusGProxy *bus_proxy;
   GError *error = NULL;
   guint32 request_name_ret;
 
@@ -393,12 +418,12 @@ connect_to_dbus (MoblinNetbookNotifyStore *self)
 
   _dbus_conn = dbus_g_connection_get_connection(connection);
 
-  bus_proxy = dbus_g_proxy_new_for_name (connection,
+  priv->bus_proxy = dbus_g_proxy_new_for_name (connection,
                                          DBUS_SERVICE_DBUS,
                                          DBUS_PATH_DBUS,
                                          DBUS_INTERFACE_DBUS);
 
-  if (!org_freedesktop_DBus_request_name (bus_proxy,
+  if (!org_freedesktop_DBus_request_name (priv->bus_proxy,
                                           "org.freedesktop.Notifications",
                                           DBUS_NAME_FLAG_DO_NOT_QUEUE,
                                           &request_name_ret, &error))

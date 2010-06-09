@@ -40,6 +40,7 @@ typedef struct {
 
   gpointer internal_data;
   GdkPixbuf *icon_pixbuf;
+  gint pid;
 } Notification;
 
 typedef enum {
