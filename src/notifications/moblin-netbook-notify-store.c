@@ -137,20 +137,26 @@ get_notification (MoblinNetbookNotifyStore *notify,
   return notification;
 }
 
+typedef struct _PidData
+{
+  MoblinNetbookNotifyStore  *store;
+  Notification              *notification;
+} PidData;
+
 static void
 unix_process_id_reply_cb (DBusGProxy *proxy,
                           guint       pid,
                           GError     *error,
                           gpointer    data)
 {
-  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
-  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  Notification               *notification = data;
+  PidData *pid_data = data;
 
-  notification->pid = pid;
+  pid_data->notification->pid = pid;
 
-  g_signal_emit (ppriv->notify_store,
-                 signals[NOTIFICATION_ADDED], 0, notification);
+  g_signal_emit (pid_data->store,
+                 signals[NOTIFICATION_ADDED], 0, pid_data->notification);
+
+  g_slice_free (PidData, pid_data);
 }
 
 /*
@@ -257,12 +263,17 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
 
   if (context)
     {
+      PidData *pid_data = g_slice_new0 (PidData);
+
+      pid_data->store        = notify;
+      pid_data->notification = notification;
+
       notification->sender = dbus_g_method_get_sender (context);
 
       org_freedesktop_DBus_get_connection_unix_process_id_async (priv->bus_proxy,
                                                                  notification->sender,
                                                                  unix_process_id_reply_cb,
-                                                                 notification);
+                                                                 pid_data);
     }
   else
     g_signal_emit (notify, signals[NOTIFICATION_ADDED], 0, notification);
