@@ -383,7 +383,7 @@ ChromeProfileProvider::OnGotSession(SessionService::Handle handle,
                   session_callback_(session_context_, 
                                     (*t)->tab_id.id(), 
                                     (*t)->window_id.id(),
-                                    tab_nav->url().spec().c_str(),
+                                    tab_nav->virtual_url().spec().c_str(),
                                     UTF16ToUTF8(tab_nav->title()).c_str());
 #ifdef DEBUG_CHROMIUM_API
                   g_debug ("tab_id=%d, url=%s, title=%s",
