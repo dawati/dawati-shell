@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anerley.master.ast\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-09 23:54+0000\n"
+"POT-Creation-Date: 2010-06-09 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: asturian <alministradores@softastur.org>\n"
@@ -17,24 +17,48 @@ msgstr ""
 # Copyright (C) 2003 Free Software Foundation
 # This file is distributed under the same license as the Gossip package.
 # Astur <malditoastur@gmail.com>, 2009.
-#: ../anerley/anerley-tile.c:206
+#: ../anerley/anerley-tile.c:171
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Available"
 msgstr "Disponible"
 
-#: ../anerley/anerley-tile.c:209
+#: ../anerley/anerley-tile.c:174
+#: ../anerley/anerley-presence-chooser.c:48
 msgid "Busy"
 msgstr "Ocupáu"
 
-#: ../anerley/anerley-tile.c:212
-#: ../anerley/anerley-tile.c:215
+#: ../anerley/anerley-tile.c:177
+#: ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
 msgid "Away"
 msgstr "Ausente"
 
-#: ../anerley/anerley-tile.c:218
+#: ../anerley/anerley-tile.c:183
+#: ../anerley/anerley-presence-chooser.c:43
 msgid "Offline"
 msgstr "Desconeutáu"
 
-#: ../anerley/anerley-econtact-item.c:307
+#: ../anerley/anerley-econtact-item.c:234
 msgid "Unnamed"
 msgstr "Ensin nome"
+
+#: ../anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr "Ensin configurar"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr "Desconeutáu cuantayá"
+
+#: ../anerley/anerley-presence-chooser.c:47
+msgid "Hidden"
+msgstr "Anubríu"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "Desconocíu"
+
+#: ../anerley/anerley-presence-chooser.c:50
+msgid "Error"
+msgstr "Fallu"
 
