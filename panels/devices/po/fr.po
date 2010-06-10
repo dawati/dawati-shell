@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-09 09:24+0000\n"
-"PO-Revision-Date: 2010-06-10 09:14-0800\n"
+"PO-Revision-Date: 2010-06-10 09:21-0800\n"
 "Last-Translator: Martine <martine.landais@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -195,9 +195,8 @@ msgid "Import photos"
 msgstr "Importer des photos"
 
 #: ../src/mpd-storage-device-tile.c:280
-#, fuzzy
 msgid "Import media"
-msgstr "Importer"
+msgstr "Importer des médias"
 
 #. Eject button
 #: ../src/mpd-storage-device-tile.c:538
