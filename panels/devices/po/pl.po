@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-08 21:25+0000\n"
+"POT-Creation-Date: 2010-06-09 09:24+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
 "Language-Team: \n"
@@ -189,28 +189,30 @@ msgstr "Nie można uruchomić %s"
 msgid "Import error"
 msgstr "Błąd importu"
 
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:519
-msgid "Import data"
-msgstr "Importuj dane"
+#: ../src/mpd-storage-device-tile.c:278
+msgid "Import photos"
+msgstr "Importuj zdjęcia"
+
+#: ../src/mpd-storage-device-tile.c:280
+msgid "Import media"
+msgstr "Importuj media"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:530
+#: ../src/mpd-storage-device-tile.c:538
 msgid "Eject"
 msgstr "Wysuń"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:541
+#: ../src/mpd-storage-device-tile.c:549
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../src/mpd-storage-device-tile.c:734
+#: ../src/mpd-storage-device-tile.c:742
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> za pomocą <span color='%s'>%d%% z %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:742
+#: ../src/mpd-storage-device-tile.c:750
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -252,12 +254,15 @@ msgid "Silent"
 msgstr "Bezgłośnie"
 
 #: ../src/mpd-volume-tile.c:355
-msgid "Netbook volume"
-msgstr "Głośność notebooka"
+msgid "Computer volume"
+msgstr "Głośność"
 
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Wycisz"
+
+#~ msgid "Netbook volume"
+#~ msgstr "Głośność notebooka"
 
 #~ msgid "Moblin Power Icon"
 #~ msgstr "Ikona zasilania systemu Moblin"
