@@ -158,6 +158,9 @@ main (int    argc,
   browser_process->process_launcher_thread();
   browser_process->io_thread();
 
+  // Init google url tracker to avoid abort later
+  browser_process->google_url_tracker();
+
   // XXX: have to init chrome profile prover after thread creation
   // Init chrome profile provider
   ChromeProfileProvider::GetInstance()->Initialize(browser_name.c_str());
