@@ -121,7 +121,7 @@ main (int    argc,
     FilePath bundle_path(CHROMIUM_BUNDLE_PATH);
     FilePath locale_path(CHROMIUM_LOCALE_PATH);
     ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
-    if (g_file_test(CHROMIUM_EXE_PATH "chrome", G_FILE_TEST_EXISTS)) {
+    if (g_file_test(CHROME_EXE_PATH "chrome", G_FILE_TEST_EXISTS) == TRUE) {
       browser_name = "google-chrome";
     } else {
       browser_name = "chromium";
