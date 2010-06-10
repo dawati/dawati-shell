@@ -20,6 +20,8 @@ libnotifications_la_SOURCES =				\
 			mnb-notification-gtk.h		\
 			ntf-notification.c		\
 			ntf-notification.h		\
+			ntf-overlay.c			\
+			ntf-overlay.h			\
 			ntf-source.c			\
 			ntf-source.h			\
 			ntf-tray.c			\
