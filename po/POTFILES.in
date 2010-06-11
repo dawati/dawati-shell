@@ -12,5 +12,9 @@ data/mutter-moblin.schemas.in
 src/moblin-netbook.c
 src/mnb-toolbar.c
 src/mnb-toolbar-clock.c
-src/notifications/mnb-notification.c
-src/notifications/mnb-notification-cluster.c
+src/notifications/ntf-notification.c
+src/notifications/ntf-tray.c
+src/notifications/ntf-source.c
+src/notifications/ntf-overlay.c
+src/notifications/ntf-libnotify.c
+src/notifications/ntf-wm.c
