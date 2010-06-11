@@ -234,13 +234,6 @@ sw_overview_constructed (GObject *object)
   SwOverviewPrivate *priv = SW_OVERVIEW (object)->priv;
   gint i;
   ClutterActor *zone;
-  gchar *welcome;
-
-
-  welcome = _("Hello! This is the Zones panel."
-              " When you have applications open"
-              " you will be able to view, manage and"
-              " access them here.");
 
   g_debug ("Creating a zones panel with %d zones", priv->n_zones);
 
@@ -513,11 +506,9 @@ sw_overview_set_focused_window (SwOverview *overview,
                                 gulong      xid)
 {
   GList *children, *l;
-  guint i;
 
   children = clutter_container_get_children (CLUTTER_CONTAINER (overview));
 
-  i = 0;
   for (l = children; l; l = g_list_next (l))
     {
       sw_zone_set_focused_window (SW_ZONE (l->data), xid);

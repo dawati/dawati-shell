@@ -171,14 +171,11 @@ sw_zone_add (ClutterContainer *container,
              ClutterActor     *actor)
 {
   SwZonePrivate *priv = SW_ZONE (container)->priv;
-  ClutterActor *stage;
 
   priv->children = g_list_append (priv->children, actor);
   priv->n_children++;
 
   sw_zone_update_title (SW_ZONE (container));
-
-  stage = clutter_actor_get_stage (actor);
 
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
 
