@@ -216,14 +216,22 @@ ntf_libnotify_update (NtfNotification *ntf, Notification *details)
 
   if (details->actions)
     {
-      GHashTableIter  iter;
-      gchar          *key, *value;
+      GList *action;
+      gchar *key, *value;
 
       ntf_notification_remove_all_buttons (ntf);
 
-      g_hash_table_iter_init (&iter, details->actions);
-      while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value))
+      for (action = details->actions; action;)
         {
+          /*
+           * The action list length is
+           * guaranteed to be % 2 and > 0
+           */
+          key = action->data;
+          action = g_list_next (action);
+          value = action->data;
+          action = g_list_next (action);
+
           if (strcasecmp(key, "default") != 0)
             {
               ActionData   *data;

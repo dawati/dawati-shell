@@ -35,7 +35,7 @@ typedef struct {
   char *icon_name;
   gchar *sender;
   gint  timeout_ms;
-  GHashTable *actions;
+  GList *actions;
   gboolean    is_urgent;
 
   gpointer internal_data;
