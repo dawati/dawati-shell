@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:42+0000\n"
-"PO-Revision-Date: 2010-05-13 14:00-0800\n"
-"Last-Translator: mackey tian <mackeyx.tian@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
+"PO-Revision-Date: 2010-06-14 09:46-0800\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,75 +64,73 @@ msgid "Running low on battery"
 msgstr "电池电量低了"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "我们注意到您的电池电量低了。如果可以，建议您使用电源。"
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "我注意到您的电池电量低了。如果可以，建议您使用电源。"
 
 #: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
 msgstr "快没电了"
 
 #: ../power-icon/src/mpd-power-icon.c:81
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "您的电池快没电了。建议您赶紧保持所有文件，然后尽快使用电源。"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "您的电池快没电了。建议您保存所有文件，然后尽快使用电源。"
 
 #: ../power-icon/src/mpd-power-icon.c:85
 msgid "Danger!"
 msgstr "危险！"
 
 #: ../power-icon/src/mpd-power-icon.c:86
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "抱歉，您电脑的电池即将用完。我们现在不得不关闭电脑。请保存您的文件,咱们 88 啦."
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "抱歉，您电脑的电池即将用完。我现在不得不关闭电脑。请保存您的文件，再见。"
 
-#: ../power-icon/src/mpd-power-icon.c:336
-msgid "Would you like to turn off now?"
-msgstr "您要关闭吗？"
-
-#: ../power-icon/src/mpd-power-icon.c:337
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "如果您再不决定，我会在 30 秒后替您关闭。"
-
-#: ../power-icon/src/mpd-power-icon.c:441
+#: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
 msgstr "电池"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:71
+#: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "如果您再不决定，我会在 %d 秒后替您关闭。"
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "如果您再不决定，我会在 %d 秒后替您关闭。"
+msgstr[1] "如果您再不决定，我会在 %d 秒后替您关闭。"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:127
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "关闭"
 
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin 电源图标"
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "您要关闭吗？"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "如果您再不决定，我会在 30 秒后替您关闭。"
 
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo 设备面板"
 
-#: ../src/mpd-battery-device.c:329
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "抱歉,您似乎没有安装电池。"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "电池正在充电。电量大约还有  %d%%。"
 
-#: ../src/mpd-battery-device.c:338
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "您正在使用电池。电量大约还有 %d%%。"
 
-#: ../src/mpd-battery-device.c:343
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "您的电池已经完全充好电了。"
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "抱歉,看起来您的电池坏掉了。"
@@ -162,14 +160,11 @@ msgstr ""
 msgid "Other devices"
 msgstr "其它设备"
 
-#: ../src/mpd-devices-tile.c:72
-#: ../src/mpd-devices-tile.c:95
-#: ../src/mpd-devices-tile.c:137
+#: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "弹出失败，可能有一个应用程序正在使用它"
 
-#: ../src/mpd-devices-tile.c:389
-#: ../src/mpd-devices-tile.c:421
+#: ../src/mpd-devices-tile.c:420
 msgid "It is safe to unplug this device now"
 msgstr "现在可以安全的卸下此设备"
 
@@ -186,37 +181,39 @@ msgstr "垃圾"
 msgid "Devices"
 msgstr "设备"
 
-#: ../src/mpd-storage-device-tile.c:162
+#: ../src/mpd-storage-device-tile.c:165
 #, c-format
 msgid "Could not run %s"
 msgstr "无法运行 %s"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:167
 msgid "Import error"
 msgstr "导入错误"
 
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:499
-msgid "Import data"
-msgstr "导入数据"
+#: ../src/mpd-storage-device-tile.c:278
+msgid "Import photos"
+msgstr "导入照片"
+
+#: ../src/mpd-storage-device-tile.c:280
+msgid "Import media"
+msgstr "导入媒体文件"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:510
+#: ../src/mpd-storage-device-tile.c:538
 msgid "Eject"
 msgstr "弹出"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:521
+#: ../src/mpd-storage-device-tile.c:549
 msgid "Open"
 msgstr "打开"
 
-#: ../src/mpd-storage-device-tile.c:711
+#: ../src/mpd-storage-device-tile.c:742
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span>使用 <span color='%s'>%d%%，共 %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:719
+#: ../src/mpd-storage-device-tile.c:750
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -258,12 +255,18 @@ msgid "Silent"
 msgstr "沉默"
 
 #: ../src/mpd-volume-tile.c:355
-msgid "Netbook volume"
-msgstr "上网本音量"
+msgid "Computer volume"
+msgstr "电脑音量"
 
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "静音"
+
+#~ msgid "Moblin Power Icon"
+#~ msgstr "Moblin 电源图标"
+
+#~ msgid "Netbook volume"
+#~ msgstr "上网本音量"
 
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
