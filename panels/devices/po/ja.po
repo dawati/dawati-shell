@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-17 21:52+0000\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -60,7 +60,7 @@ msgid "Running low on battery"
 msgstr "バッテリーを充電してください"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "バッテリー残量が少なくなっています。電源に接続して、バッテリーを充電してください。"
 
 #: ../power-icon/src/mpd-power-icon.c:80
@@ -68,7 +68,7 @@ msgid "Getting close to empty"
 msgstr "残量がほとんどありません"
 
 #: ../power-icon/src/mpd-power-icon.c:81
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "バッテリー残量が非常に少なくなっています。全てのファイルを保存し、できるだけ早めに電源に接続してください。"
 
 #: ../power-icon/src/mpd-power-icon.c:85
@@ -76,55 +76,57 @@ msgid "Danger!"
 msgstr "危険な状態です!"
 
 #: ../power-icon/src/mpd-power-icon.c:86
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "バッテリー残量がまもなくゼロになるので、コンピューターがオフになります。すべてのファイルを保存してください。"
 
-#: ../power-icon/src/mpd-power-icon.c:336
-msgid "Would you like to turn off now?"
-msgstr "今すぐ電源をオフにしますか?"
-
-#: ../power-icon/src/mpd-power-icon.c:337
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "このままの状態では、30秒内に電源がオフになります。"
-
-#: ../power-icon/src/mpd-power-icon.c:441
+#: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
 msgstr "バッテリー"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:71
+#: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "このままの状態では、%d秒内に電源がオフになります。"
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "このままの状態では、%d秒後に電源がオフになります。"
+msgstr[1] "このままの状態では、%d秒後に電源がオフになります。"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:127
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "電源を切る"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "今すぐ電源をオフにしますか?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "このままの状態では、30秒後に電源がオフになります。"
 
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo デバイスパネル"
 
-#: ../src/mpd-battery-device.c:329
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "どうやら、バッテリーが取り付けられていないようです。"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "バッテリーを充電中です。バッテリー残量：%d%%"
 
-#: ../src/mpd-battery-device.c:338
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "バッテリーを使用中です。バッテリー残量：%d%%"
 
-#: ../src/mpd-battery-device.c:343
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "バッテリーは十分に充電され、使用可能な状態です。"
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "バッテリーが壊れているようです。"
@@ -154,13 +156,11 @@ msgstr ""
 msgid "Other devices"
 msgstr "他のデバイス"
 
-#: ../src/mpd-devices-tile.c:72
-#: ../src/mpd-devices-tile.c:95
-#: ../src/mpd-devices-tile.c:137
+#: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "取り出しに失敗しました。どうやらアプリケーションが使用中です。"
 
-#: ../src/mpd-devices-tile.c:414
+#: ../src/mpd-devices-tile.c:420
 msgid "It is safe to unplug this device now"
 msgstr "デバイスをプラグから抜いても安全です。"
 
@@ -187,28 +187,31 @@ msgid "Import error"
 msgstr "インポートエラー"
 
 # In UI, only three characters can be displayed with the current button width. Work around to fix the trancation problem, we are instructed to shorten the translation (to "import" if possible), but it would still be truncated in JPN, and that truncation would be too embarrassing for JPN. Keep the whole translation for now.
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:519
-msgid "Import data"
-msgstr "データのインポート"
+#: ../src/mpd-storage-device-tile.c:278
+msgid "Import photos"
+msgstr "写真のインポート"
+
+# In UI, only three characters can be displayed with the current button width. Work around to fix the trancation problem, we are instructed to shorten the translation (to "import" if possible), but it would still be truncated in JPN, and that truncation would be too embarrassing for JPN. Keep the whole translation for now.
+#: ../src/mpd-storage-device-tile.c:280
+msgid "Import media"
+msgstr "メディアのインポート"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:530
+#: ../src/mpd-storage-device-tile.c:538
 msgid "Eject"
 msgstr "取り出し"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:541
+#: ../src/mpd-storage-device-tile.c:549
 msgid "Open"
 msgstr "開く"
 
-#: ../src/mpd-storage-device-tile.c:734
+#: ../src/mpd-storage-device-tile.c:742
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> は <span color='%s'>%d%% / %s</span> を使用中"
 
-#: ../src/mpd-storage-device-tile.c:742
+#: ../src/mpd-storage-device-tile.c:750
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -250,12 +253,15 @@ msgid "Silent"
 msgstr "無音"
 
 #: ../src/mpd-volume-tile.c:355
-msgid "Netbook volume"
-msgstr "ネットブックの音量"
+msgid "Computer volume"
+msgstr "コンピューターのボリューム"
 
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "ミュート"
+
+#~ msgid "Netbook volume"
+#~ msgstr "ネットブックの音量"
 
 #~ msgid "Moblin Power Icon"
 #~ msgstr "Moblin 電源アイコン"
