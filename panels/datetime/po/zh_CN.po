@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:40+0000\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
 "PO-Revision-Date: 2010-03-11 16:43-0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: ../src/moblin-panel-date-time.c:110
+#: ../src/moblin-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "日期/时间"
 
@@ -36,7 +36,7 @@ msgstr "日期和时间"
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:422
+#: ../src/mnp-utils.c:423
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -45,37 +45,80 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:430
+#: ../src/mnp-utils.c:431
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:445
+#: ../src/mnp-utils.c:446
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d（昨天）"
 
-#: ../src/mnp-utils.c:447
+#: ../src/mnp-utils.c:448
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d（明天）"
 
-#: ../src/mnp-utils.c:455
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr "%b %-d（本地）"
+
+#: ../src/mnp-utils.c:456
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-world-clock.c:562
+#: ../src/mnp-world-clock.c:525
+msgid "Time"
+msgstr "时间"
+
+#: ../src/mnp-world-clock.c:579
+msgid "24 hour clock"
+msgstr "24 小时制"
+
+#: ../src/mnp-world-clock.c:648
 msgid "Enter a country or city"
 msgstr "输入一个国家或城市"
 
-#: ../src/mnp-world-clock.c:585
+#: ../src/mnp-world-clock.c:671
 msgid "Add"
 msgstr "添加"
 
-#: ../src/mnp-datetime.c:278 ../src/mnp-datetime.c:457
+#: ../src/mnp-world-clock.c:745
+msgid "Set Time & Date"
+msgstr "设置时间 & 日期"
+
+#: ../src/mnp-datetime.c:293
+msgid "Appointments"
+msgstr "约会"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#. 
+#. format date
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "今天"
 
-#: ../src/mnp-datetime.c:408
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr "打开约会"
+
+#: ../src/mnp-datetime.c:511
 msgid "Tasks"
 msgstr "任务"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "打开任务"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "24 小时制或 12 小时制"
 
 #: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
@@ -85,37 +128,9 @@ msgstr "由闹钟通知使用的编码形式储存的闹钟。"
 msgid "List of alarms in short encoded form"
 msgstr "短编码形式的闹钟列表"
 
-#: ../src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "24 小时制或 12 小时制"
-
-#: ../src/mnp-datetime.c:510
-msgid "Open Tasks"
-msgstr "打开任务"
-
-#: ../src/mnp-world-clock.c:499
-msgid "24 hour clock"
-msgstr "24 小时制"
-
-#: ../src/mnp-datetime.c:230
-msgid "Appointments"
-msgstr "约会"
-
-#: ../src/mnp-world-clock.c:658
-msgid "Set Time & Date"
-msgstr "设置时间 & 日期"
-
-#: ../src/mnp-datetime.c:339
-msgid "Open Appointments"
-msgstr "打开约会"
-
-#: ../src/mnp-utils.c:453
-msgid "%b %-d (local)"
-msgstr "%b %-d（本地）"
-
-#: ../src/mnp-world-clock.c:445
-msgid "Time"
-msgstr "时间"
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "时间 & 日期"
 
 #~ msgid "OFF"
 #~ msgstr "关闭"
