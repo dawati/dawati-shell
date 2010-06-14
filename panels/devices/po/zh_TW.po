@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:42+0000\n"
-"PO-Revision-Date: 2010-05-10 23:41+0800\n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
+"PO-Revision-Date: 2010-06-14 12:00-0800\n"
+"Last-Translator: Wen-Hsin Moh <wenhsinm@gmail.com>\n"
 "Language-Team: Traditional Chinese <chinese-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +65,7 @@ msgid "Running low on battery"
 msgstr "正在以低電池量執行中"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "我們注意到您的電池電量有點低。如果可以的話，插入電源線然後將電池充滿會是個好點子。"
 
 #: ../power-icon/src/mpd-power-icon.c:80
@@ -73,7 +73,7 @@ msgid "Getting close to empty"
 msgstr "愈來愈接近沒電"
 
 #: ../power-icon/src/mpd-power-icon.c:81
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "您的電池電量相當的低。儲存您所有的工作，然後盡快插入電源線會是個好主意！"
 
 #: ../power-icon/src/mpd-power-icon.c:85
@@ -81,59 +81,57 @@ msgid "Danger!"
 msgstr "危險！"
 
 #: ../power-icon/src/mpd-power-icon.c:86
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "抱歉，您電腦的電池電量快用光了。我們現在就必須關閉電腦。請儲存您的工作，希望可以很快再見到您。"
 
-#: ../power-icon/src/mpd-power-icon.c:336
-msgid "Would you like to turn off now?"
-msgstr "您現在要關閉電腦嗎？"
-
-#: ../power-icon/src/mpd-power-icon.c:337
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "如果您不決定，我會在 30 秒內關閉。"
-
-#: ../power-icon/src/mpd-power-icon.c:441
+#: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
 msgstr "電池"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:71
+#: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "如果您不決定，我會在 %d 秒內關閉"
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "如果您不決定，我會在 %d 秒內關閉"
+msgstr[1] "如果您不決定，我會在 %d 秒內關閉"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:127
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "關閉"
 
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin 電源圖示"
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "您現在要關閉電腦嗎？"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "如果您不決定，我會在 30 秒內關閉。"
 
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo 裝置面板"
 
-#: ../src/mpd-battery-device.c:329
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "抱歉，您似乎沒有安裝電池。"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "您的電池正在充電。大概充好 %d%%。"
 
-#: ../src/mpd-battery-device.c:338
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "您的電池正在使用中。電量大概有 %d%%。"
 
-#: ../src/mpd-battery-device.c:343
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "您的電池已充飽，可以上路了。"
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "很抱歉，看起來您的電池好像壞了。"
@@ -163,14 +161,11 @@ msgstr ""
 msgid "Other devices"
 msgstr "其他裝置"
 
-#: ../src/mpd-devices-tile.c:72
-#: ../src/mpd-devices-tile.c:95
-#: ../src/mpd-devices-tile.c:137
+#: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "退出失敗，似乎有個應用程式正在使用它"
 
-#: ../src/mpd-devices-tile.c:389
-#: ../src/mpd-devices-tile.c:421
+#: ../src/mpd-devices-tile.c:420
 msgid "It is safe to unplug this device now"
 msgstr "現在可以安全拔除此裝置"
 
@@ -187,37 +182,39 @@ msgstr "回收筒"
 msgid "Devices"
 msgstr "裝置"
 
-#: ../src/mpd-storage-device-tile.c:162
+#: ../src/mpd-storage-device-tile.c:165
 #, c-format
 msgid "Could not run %s"
 msgstr "無法執行 %s"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:167
 msgid "Import error"
 msgstr "匯入錯誤"
 
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:499
-msgid "Import data"
-msgstr "匯入數據"
+#: ../src/mpd-storage-device-tile.c:278
+msgid "Import photos"
+msgstr "匯入照片"
+
+#: ../src/mpd-storage-device-tile.c:280
+msgid "Import media"
+msgstr "匯入媒體"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:510
+#: ../src/mpd-storage-device-tile.c:538
 msgid "Eject"
 msgstr "退出"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:521
+#: ../src/mpd-storage-device-tile.c:549
 msgid "Open"
 msgstr "開啟"
 
-#: ../src/mpd-storage-device-tile.c:711
+#: ../src/mpd-storage-device-tile.c:742
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> 使用<span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:719
+#: ../src/mpd-storage-device-tile.c:750
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -259,644 +256,956 @@ msgid "Silent"
 msgstr "寂靜無聲"
 
 #: ../src/mpd-volume-tile.c:355
-msgid "Netbook volume"
-msgstr "網路筆電靜音"
+msgid "Computer volume"
+msgstr ""
 
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "靜音"
+
+#~ msgid "Moblin Power Icon"
+#~ msgstr "Moblin 電源圖示"
+
+#~ msgid "Netbook volume"
+#~ msgstr "網路筆電靜音"
 
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
 #~ "span>"
 #~ msgstr ""
 #~ "<span font-weight='bold'>匯入數據</span> <span color='%s'> %d%%</span> "
+
 #~ msgid "Stop"
 #~ msgstr "停止"
+
 #~ msgid ""
 #~ "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr "%s 裝置已插入。你可以使用裝置面板與它進行互動"
+
 #~ msgid "USB plugged in"
 #~ msgstr "USB 裝置已插入"
+
 #~ msgid "Show"
 #~ msgstr "顯示"
+
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
+
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
+
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
+
 #~ msgid "SecureDigital"
 #~ msgstr "SecureDigital"
+
 #~ msgid "SD High Capacity"
 #~ msgstr "SD 高容量"
+
 #~ msgid "Floppy"
 #~ msgstr "磁碟片"
+
 #~ msgid "Zip"
 #~ msgstr "Zip"
+
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
+
 #~ msgid "CD"
 #~ msgstr "CD"
+
 #~ msgid "DVD"
 #~ msgstr "DVD"
+
 #~ msgid "Blu-Ray"
 #~ msgstr "藍光"
+
 #~ msgid "HDDVD"
 #~ msgstr "HDDVD"
+
 #~ msgid "%s Drive"
 #~ msgstr "%s 磁碟"
+
 #~ msgid "%s %s Drive"
 #~ msgstr "%s %s 磁碟"
+
 #~ msgid "%s Hard Disk"
 #~ msgstr "%s 硬碟"
+
 #~ msgid "Hard Disk"
 #~ msgstr "硬碟"
+
 #~ msgid "%s Solid-State Disk"
 #~ msgstr "%s 固態硬碟"
+
 #~ msgid "Solid-State Disk"
 #~ msgstr "固態硬碟"
+
 #~ msgid "%s Media"
 #~ msgstr "%s 媒體"
+
 #~ msgid "No Media Detected"
 #~ msgstr "未偵測到媒體"
+
 #~ msgid "MBR Partition Table"
 #~ msgstr "MBR 分割表格"
+
 #~ msgid "GUID Partition Table"
 #~ msgstr "GUID 分割表格"
+
 #~ msgid "Apple Partition Table"
 #~ msgstr "Apple 分割表格"
+
 #~ msgid "Partitioned"
 #~ msgstr "已分割"
+
 #~ msgid "Not Partitioned"
 #~ msgstr "未分割"
+
 #~ msgid "SAS Expander"
 #~ msgstr "SAS 延展器"
+
 #~ msgid "Volume Group"
 #~ msgstr "儲存區群組"
+
 #~ msgid "%s LVM2 Volume Group"
 #~ msgstr "%s LVM2 儲存區群組"
+
 #~ msgid "LVM2 Volume Group"
 #~ msgstr "LVM2 儲存區群組"
+
 #~ msgid "%s Free"
 #~ msgstr "%s 可用"
+
 #~ msgid "Unallocated Space"
 #~ msgstr "未分配的空間"
+
 #~ msgid "LVM2 VG Unallocated Space"
 #~ msgstr "LVM2 VG 未分配的空間"
+
 #~ msgid "Logical Volume"
 #~ msgstr "邏輯儲存區"
+
 #~ msgid "LVM2 Logical Volume"
 #~ msgstr "LVM2 邏輯儲存區"
+
 #~ msgid "%s %s Array"
 #~ msgstr "%s %s 陣列"
+
 #~ msgid "%s Array"
 #~ msgstr "%s 陣列"
+
 #~ msgid "RAID Array %s (%s)"
 #~ msgstr "RAID 陣列 %s (%s)"
+
 #~ msgid "RAID device %s"
 #~ msgstr "RAID 裝置 %s"
 #~ msgctxt "RAID Level fallback"
+
 #~ msgid "RAID"
 #~ msgstr "RAID"
+
 #~ msgid "RAID Array"
 #~ msgstr "RAID 陣列"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Not Attached"
 #~ msgstr "未連接"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Fully Synchronized"
 #~ msgstr "完整同步"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Blocked"
 #~ msgstr "阻擋"
+
 #~ msgid "Local Storage"
 #~ msgstr "本機儲存"
+
 #~ msgid "Storage on %s"
 #~ msgstr "於 %s 上的儲存"
+
 #~ msgid "Multipath Devices"
 #~ msgstr "多路徑裝置"
+
 #~ msgid "Drives with multiple I/O paths"
 #~ msgstr "有多個 I/O 路徑的磁碟"
+
 #~ msgid "Multi-disk Devices"
 #~ msgstr "多磁碟裝置"
+
 #~ msgid "RAID, LVM and other logical drives"
 #~ msgstr "RAID、LVM 與其他的邏輯磁碟"
+
 #~ msgid "Peripheral Devices"
 #~ msgstr "週邊裝置"
+
 #~ msgid "USB, Firewire and other peripherals"
 #~ msgstr "USB、Firewire 與其他的週邊裝置"
+
 #~ msgid "Error logging in"
 #~ msgstr "登入時發生錯誤"
+
 #~ msgid "Error sending `%s': %s"
 #~ msgstr "送出「%s」時發生錯誤：%s"
+
 #~ msgid "%s (%s bytes)"
 #~ msgstr "%s (%s 位元組)"
+
 #~ msgid "FAT (12-bit version)"
 #~ msgstr "FAT (12 位元版本)"
+
 #~ msgid "FAT"
 #~ msgstr "FAT"
+
 #~ msgid "FAT (16-bit version)"
 #~ msgstr "FAT (16 位元版本)"
+
 #~ msgid "FAT (32-bit version)"
 #~ msgstr "FAT (32 位元版本)"
+
 #~ msgid "NTFS (version %s)"
 #~ msgstr "NTFS (版本 %s)"
+
 #~ msgid "NTFS"
 #~ msgstr "NTFS"
+
 #~ msgid "HFS"
 #~ msgstr "HFS"
+
 #~ msgid "HFS+"
 #~ msgstr "HFS+"
+
 #~ msgid "LUKS"
 #~ msgstr "LUKS"
+
 #~ msgid "Ext2 (version %s)"
 #~ msgstr "Ext2 (版本 %s)"
+
 #~ msgid "Ext2"
 #~ msgstr "Ext2"
+
 #~ msgid "ext2"
 #~ msgstr "ext2"
+
 #~ msgid "Ext3 (version %s)"
 #~ msgstr "Ext3 (版本 %s)"
+
 #~ msgid "Ext3"
 #~ msgstr "Ext3"
+
 #~ msgid "ext3"
 #~ msgstr "ext3"
+
 #~ msgid "Journal for Ext3 (version %s)"
 #~ msgstr "Ext3 的日誌 (版本 %s)"
+
 #~ msgid "Journal for Ext3"
 #~ msgstr "Ext3 的日誌"
+
 #~ msgid "jbd"
 #~ msgstr "jbd"
+
 #~ msgid "Ext4 (version %s)"
 #~ msgstr "Ext4 (版本 %s)"
+
 #~ msgid "Ext4"
 #~ msgstr "Ext4"
+
 #~ msgid "ext4"
 #~ msgstr "ext4"
+
 #~ msgid "XFS (version %s)"
 #~ msgstr "XFS (版本 %s)"
+
 #~ msgid "XFS"
 #~ msgstr "XFS"
+
 #~ msgid "xfs"
 #~ msgstr "xfs"
+
 #~ msgid "ReiserFS (version %s)"
 #~ msgstr "ReiserFS (版本 %s)"
+
 #~ msgid "ReiserFS"
 #~ msgstr "ReiserFS"
+
 #~ msgid "reiserfs"
 #~ msgstr "reiserfs"
+
 #~ msgid "ISO 9660"
 #~ msgstr "ISO 9660"
+
 #~ msgid "iso9660"
 #~ msgstr "iso9660"
+
 #~ msgid "udf"
 #~ msgstr "udf"
+
 #~ msgid "Swap Space"
 #~ msgstr "置換空間"
+
 #~ msgid "swap"
 #~ msgstr "swap"
+
 #~ msgid "LVM2 Physical Volume (version %s)"
 #~ msgstr "LVM2 實體儲存區 (版本 %s)"
+
 #~ msgid "LVM2 Physical Volume"
 #~ msgstr "LVM2 實體儲存區"
+
 #~ msgid "lvm2_pv"
 #~ msgstr "lvm2_pv"
+
 #~ msgid "RAID Component (version %s)"
 #~ msgstr "RAID 部件 (版本 %s)"
+
 #~ msgid "RAID Component"
 #~ msgstr "RAID 部件"
+
 #~ msgid "raid"
 #~ msgstr "raid"
+
 #~ msgid "Minix"
 #~ msgstr "Minix"
+
 #~ msgid "minix"
 #~ msgstr "minix"
+
 #~ msgid "Creating File System"
 #~ msgstr "正在建立檔案系統"
+
 #~ msgid "Mounting File System"
 #~ msgstr "正在掛載檔案系統"
+
 #~ msgid "Unmounting File System"
 #~ msgstr "正在卸載檔案系統"
+
 #~ msgid "Checking File System"
 #~ msgstr "正在建立檔案系統"
+
 #~ msgid "Creating LUKS Device"
 #~ msgstr "正在建立 LUKS 裝置"
+
 #~ msgid "Unlocking LUKS Device"
 #~ msgstr "正在解除 LUKS 裝置的鎖"
+
 #~ msgid "Locking LUKS Device"
 #~ msgstr "正在鎖上 LUKS 裝置"
+
 #~ msgid "Creating Partition Table"
 #~ msgstr "正在建立分割表格"
+
 #~ msgid "Deleting Partition"
 #~ msgstr "正在刪除分割區"
+
 #~ msgid "Creating Partition"
 #~ msgstr "正在建立分割區"
+
 #~ msgid "Modifying Partition"
 #~ msgstr "正在修改分割區"
+
 #~ msgid "Setting Label for Device"
 #~ msgstr "正在為裝置設定標籤"
+
 #~ msgid "Changing Passphrase for Encrypted LUKS Device"
 #~ msgstr "正在為已加密的 LUKS 裝置變更密碼"
+
 #~ msgid "Adding Component to RAID Array"
 #~ msgstr "正在加入部件到 RAID 陣列"
+
 #~ msgid "Removing Component from RAID Array"
 #~ msgstr "正在從 RAID 陣列移除部件"
+
 #~ msgid "Stopping RAID Array"
 #~ msgstr "正在停止 RAID 陣列"
+
 #~ msgid "Starting RAID Array"
 #~ msgstr "正在起始 RAID 陣列"
+
 #~ msgid "Checking RAID Array"
 #~ msgstr "正在檢查 RAID 陣列"
+
 #~ msgid "Repairing RAID Array"
 #~ msgstr "正在修復 RAID 陣列"
+
 #~ msgid "Running Short SMART Self-Test"
 #~ msgstr "正在執行簡短 SMART 自我測試"
+
 #~ msgid "Running Extended SMART Self-Test"
 #~ msgstr "正在執行擴充的 SMART 自我測試"
+
 #~ msgid "Ejecting Media"
 #~ msgstr "正在退出媒體"
+
 #~ msgid "Detaching Device"
 #~ msgstr "正在解除裝置連接"
+
 #~ msgid "Forcibly Unmounting Filesystem"
 #~ msgstr "強制卸載檔案系統"
+
 #~ msgid "Forcibly Locking LUKS device"
 #~ msgstr "強制鎖上 LUKS 裝置"
+
 #~ msgid "Linux Basic Data Partition"
 #~ msgstr "Linux 基本資料分割區"
+
 #~ msgid "Linux RAID Partition"
 #~ msgstr "Linux RAID 分割區"
+
 #~ msgid "Linux Swap Partition"
 #~ msgstr "Linux 置換分割區"
+
 #~ msgid "Linux LVM Partition"
 #~ msgstr "Linux LVM 分割區"
+
 #~ msgid "Linux Reserved Partition"
 #~ msgstr "Linux 保留的分割區"
+
 #~ msgid "MBR Partition Scheme"
 #~ msgstr "MBR 分割區規劃"
+
 #~ msgid "EFI System Partition"
 #~ msgstr "EFI 系統分割區"
+
 #~ msgid "BIOS Boot Partition"
 #~ msgstr "BIOS 開機分割區"
+
 #~ msgid "Microsoft Reserved Partition"
 #~ msgstr "微軟保留的分割區"
+
 #~ msgid "Microsoft Basic Data Partition"
 #~ msgstr "微軟基本資料分割區"
+
 #~ msgid "Microsoft LDM Metadata Partition"
 #~ msgstr "微軟 LDM 中介資料分割區"
+
 #~ msgid "Microsoft LDM Data Partition"
 #~ msgstr "微軟 LDM 資料分割區"
+
 #~ msgid "Microsoft Windows Recovery Environment"
 #~ msgstr "微軟 Windows 還原環境"
+
 #~ msgid "HP-UX Data Partition"
 #~ msgstr "HP-UX 資料分割區"
+
 #~ msgid "HP-UX Service Partition"
 #~ msgstr "HP-UX 服務分割區"
+
 #~ msgid "FreeBSD Boot Partition"
 #~ msgstr "FreeBSD 開機分割區"
+
 #~ msgid "FreeBSD Data Partition"
 #~ msgstr "FreeBSD 資料分割區"
+
 #~ msgid "FreeBSD Swap Partition"
 #~ msgstr "FreeBSD 置換分割區"
+
 #~ msgid "FreeBSD UFS Partition"
 #~ msgstr "FreeBSD UFS 分割區"
+
 #~ msgid "FreeBSD Vinum Partition"
 #~ msgstr "FreeBSD Vinum 分割區"
+
 #~ msgid "FreeBSD ZFS Partition"
 #~ msgstr "FreeBSD ZFS 分割區"
+
 #~ msgid "Solaris Boot Partition"
 #~ msgstr "Solaris 開機分割區"
+
 #~ msgid "Solaris Root Partition"
 #~ msgstr "Solaris 根分割區"
+
 #~ msgid "Solaris Swap Partition"
 #~ msgstr "Solaris 置換分割區"
+
 #~ msgid "Solaris Backup Partition"
 #~ msgstr "Solaris 備份分割區"
+
 #~ msgid "Solaris /usr Partition"
 #~ msgstr "Solaris /usr 分割區"
+
 #~ msgid "Solaris /var Partition"
 #~ msgstr "Solaris /var 分割區"
+
 #~ msgid "Solaris /home Partition"
 #~ msgstr "Solaris /home 分割區"
+
 #~ msgid "Solaris Alternate Sector Partition"
 #~ msgstr "Solaris 替代磁區分割區"
+
 #~ msgid "Solaris Reserved Partition"
 #~ msgstr "Solaris 保留的分割區"
+
 #~ msgid "Solaris Reserved Partition (2)"
 #~ msgstr "Solaris 保留的分割區 (2)"
+
 #~ msgid "Solaris Reserved Partition (3)"
 #~ msgstr "Solaris 保留的分割區 (3)"
+
 #~ msgid "Solaris Reserved Partition (4)"
 #~ msgstr "Solaris 保留的分割區 (4)"
+
 #~ msgid "Solaris Reserved Partition (5)"
 #~ msgstr "Solaris 保留的分割區 (5)"
+
 #~ msgid "Apple HFS/HFS+ Partition"
 #~ msgstr "Apple HFS/HFS+ 分割區"
+
 #~ msgid "Apple UFS Partition"
 #~ msgstr "Apple UFS 分割區"
+
 #~ msgid "Apple ZFS Partition"
 #~ msgstr "Apple ZFS 分割區"
+
 #~ msgid "Apple RAID Partition"
 #~ msgstr "Apple RAID 分割區"
+
 #~ msgid "Apple RAID Partition (Offline)"
 #~ msgstr "Apple RAID 分割區 (離線)"
+
 #~ msgid "Apple Boot Partition"
 #~ msgstr "Apple 開機分割區"
+
 #~ msgid "Apple Label Partition"
 #~ msgstr "Apple 標籤分割區"
+
 #~ msgid "Apple TV Recovery Partition"
 #~ msgstr "Apple TV 還原分割區"
+
 #~ msgid "NetBSD Swap Partition"
 #~ msgstr "NetBSD 置換分割區"
+
 #~ msgid "NetBSD FFS Partition"
 #~ msgstr "NetBSD FFS 分割區"
+
 #~ msgid "NetBSD LFS Partition"
 #~ msgstr "NetBSD LFS 分割區"
+
 #~ msgid "NetBSD RAID Partition"
 #~ msgstr "NetBSD RAID 分割區"
+
 #~ msgid "NetBSD Encrypted Partition"
 #~ msgstr "NetBSD 加密分割區"
+
 #~ msgid "Apple Partition Map"
 #~ msgstr "Apple 分割對應表"
+
 #~ msgid "Unused Partition"
 #~ msgstr "未使用的分割區"
+
 #~ msgid "Empty Partition"
 #~ msgstr "空的分割區"
+
 #~ msgid "Driver Partition"
 #~ msgstr "Driver 分割區"
+
 #~ msgid "Driver 4.3 Partition"
 #~ msgstr "Driver 4.3 分割區"
+
 #~ msgid "ProDOS file system"
 #~ msgstr "ProDOS 檔案系統"
+
 #~ msgid "FAT 12"
 #~ msgstr "FAT 12"
+
 #~ msgid "FAT 16"
 #~ msgstr "FAT 16"
+
 #~ msgid "FAT 32"
 #~ msgstr "FAT 32"
+
 #~ msgid "FAT 16 (Windows)"
 #~ msgstr "FAT 16 (Windows)"
+
 #~ msgid "FAT 32 (Windows)"
 #~ msgstr "FAT 32 (Windows)"
+
 #~ msgid "Empty (0x00)"
 #~ msgstr "空的 (0x00)"
+
 #~ msgid "FAT12 (0x01)"
 #~ msgstr "FAT12 (0x01)"
+
 #~ msgid "FAT16 <32M (0x04)"
 #~ msgstr "FAT16 <32M (0x04)"
+
 #~ msgid "Extended (0x05)"
 #~ msgstr "延伸 (0x05)"
+
 #~ msgid "FAT16 (0x06)"
 #~ msgstr "FAT16 (0x06)"
+
 #~ msgid "HPFS/NTFS (0x07)"
 #~ msgstr "HPFS/NTFS (0x07)"
+
 #~ msgid "W95 FAT32 (0x0b)"
 #~ msgstr "W95 FAT32 (0x0b)"
+
 #~ msgid "W95 FAT32 (LBA) (0x0c)"
 #~ msgstr "W95 FAT32 (LBA) (0x0c)"
+
 #~ msgid "W95 FAT16 (LBA) (0x0e)"
 #~ msgstr "W95 FAT16 (LBA) (0x0e)"
+
 #~ msgid "W95 Ext d (LBA) (0x0f)"
 #~ msgstr "W95 Ext d (LBA) (0x0f)"
+
 #~ msgid "OPUS (0x10)"
 #~ msgstr "OPUS (0x10)"
+
 #~ msgid "Hidden FAT12 (0x11)"
 #~ msgstr "隱藏的 FAT12 (0x11)"
+
 #~ msgid "Compaq diagnostics (0x12)"
 #~ msgstr "Compaq 診斷 (0x12)"
+
 #~ msgid "Hidden FAT16 <32M (0x14)"
 #~ msgstr "隱藏的 FAT16 <32M (0x14)"
+
 #~ msgid "Hidden FAT16 (0x16)"
 #~ msgstr "隱藏的 FAT16 (0x16)"
+
 #~ msgid "Hidden HPFS/NTFS (0x17)"
 #~ msgstr "隱藏的 HPFS/NTFS (0x17)"
+
 #~ msgid "Hidden W95 FAT32 (0x1b)"
 #~ msgstr "隱藏的 W95 FAT32 (0x1b)"
+
 #~ msgid "Hidden W95 FAT32 (LBA) (0x1c)"
 #~ msgstr "隱藏的 W95 FAT32 (LBA) (0x1c)"
+
 #~ msgid "Hidden W95 FAT16 (LBA) (0x1e)"
 #~ msgstr "隱藏的 W95 FAT16 (LBA) (0x1e)"
+
 #~ msgid "PartitionMagic (0x3c)"
 #~ msgstr "PartitionMagic (0x3c)"
+
 #~ msgid "Minix (0x81)"
 #~ msgstr "Minix (0x81)"
+
 #~ msgid "Linux swap (0x82)"
 #~ msgstr "Linux swap (0x82)"
+
 #~ msgid "Linux (0x83)"
 #~ msgstr "Linux (0x83)"
+
 #~ msgid "Hibernation (0x84)"
 #~ msgstr "休眠 (0x84)"
+
 #~ msgid "Linux Extended (0x85)"
 #~ msgstr "Linux 延伸 (0x85)"
+
 #~ msgid "Linux LVM (0x8e)"
 #~ msgstr "Linux LVM (0x8e)"
+
 #~ msgid "Hibernation (0xa0)"
 #~ msgstr "休眠 (0xa0)"
+
 #~ msgid "FreeBSD (0xa5)"
 #~ msgstr "FreeBSD (0xa5)"
+
 #~ msgid "OpenBSD (0xa6)"
 #~ msgstr "OpenBSD (0xa6)"
+
 #~ msgid "Mac OS X (0xa8)"
 #~ msgstr "Mac OS X (0xa8)"
+
 #~ msgid "Mac OS X (0xaf)"
 #~ msgstr "Mac OS X (0xaf)"
+
 #~ msgid "Solaris boot (0xbe)"
 #~ msgstr "Solaris boot (0xbe)"
+
 #~ msgid "Solaris (0xbf)"
 #~ msgstr "Solaris (0xbf)"
+
 #~ msgid "BeOS BFS (0xeb)"
 #~ msgstr "BeOS BFS (0xeb)"
+
 #~ msgid "SkyOS SkyFS (0xec)"
 #~ msgstr "SkyOS SkyFS (0xec)"
+
 #~ msgid "EFI GPT (0xee)"
 #~ msgstr "EFI GPT (0xee)"
+
 #~ msgid "EFI (FAT-12/16/32 (0xef)"
 #~ msgstr "EFI (FAT-12/16/32 (0xef)"
+
 #~ msgid "Linux RAID autodetect (0xfd)"
 #~ msgstr "Linux RAID 自動偵測 (0xfd)"
+
 #~ msgid "Unknown (%s)"
 #~ msgstr "不明 (%s)"
+
 #~ msgid "%.1f KB/s"
 #~ msgstr "%.1f KB/s"
+
 #~ msgid "%.1f MB/s"
 #~ msgstr "%.1f MB/s"
+
 #~ msgid "%.1f GB/s"
 #~ msgstr "%.1f GB/s"
+
 #~ msgid "SATA"
 #~ msgstr "SATA"
+
 #~ msgid "eSATA"
 #~ msgstr "eSATA"
+
 #~ msgid "PATA"
 #~ msgstr "PATA"
+
 #~ msgid "ATA"
 #~ msgstr "ATA"
+
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
+
 #~ msgid "USB"
 #~ msgstr "USB"
+
 #~ msgid "Firewire"
 #~ msgstr "Firewire"
+
 #~ msgid "SDIO"
 #~ msgstr "SDIO"
+
 #~ msgid "Virtual"
 #~ msgstr "虛擬"
 #~ msgctxt "connection name"
+
 #~ msgid "Unknown"
 #~ msgstr "不明"
+
 #~ msgid "%s at %s"
 #~ msgstr "%s 於 %s"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-0"
 #~ msgstr "RAID-0"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-1"
 #~ msgstr "RAID-1"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-4"
 #~ msgstr "RAID-4"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-5"
 #~ msgstr "RAID-5"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-6"
 #~ msgstr "RAID-6"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-10"
 #~ msgstr "RAID-10"
 #~ msgctxt "RAID level"
+
 #~ msgid "Linear"
 #~ msgstr "線性"
+
 #~ msgid "Unknown RAID level %s."
 #~ msgstr "不明的 RAID 層級 %s。"
+
 #~ msgid "Disk is healthy"
 #~ msgstr "磁碟處於健康狀態"
+
 #~ msgid "Disk has a few bad sectors"
 #~ msgstr "磁碟有一些磁區損壞"
+
 #~ msgid "Backup all data and replace the disk"
 #~ msgstr "備份所有資料並取代磁碟"
+
 #~ msgid "DISK HAS MANY BAD SECTORS"
 #~ msgstr "磁碟有許多磁區損壞"
+
 #~ msgid "Unknown"
 #~ msgstr "不明"
+
 #~ msgid "CD-ROM Disc"
 #~ msgstr "CD-ROM 碟片"
+
 #~ msgid "Blank CD-ROM Disc"
 #~ msgstr "空白 CD-ROM 碟片"
+
 #~ msgid "CD-R Disc"
 #~ msgstr "CD-R 碟片"
+
 #~ msgid "Blank CD-R Disc"
 #~ msgstr "空白 CD-R 碟片"
+
 #~ msgid "CD-RW Disc"
 #~ msgstr "CD-RW 碟片"
+
 #~ msgid "Blank CD-RW Disc"
 #~ msgstr "空白 CD-RW 碟片"
+
 #~ msgid "DVD-ROM Disc"
 #~ msgstr "DVD-ROM 碟片"
+
 #~ msgid "Blank DVD-ROM Disc"
 #~ msgstr "空白 DVD-ROM 碟片"
+
 #~ msgid "DVD-RW Disc"
 #~ msgstr "DVD-RW 碟片"
+
 #~ msgid "Blank DVD-RW Disc"
 #~ msgstr "空白 DVD-RW 碟片"
+
 #~ msgid "DVD-RAM Disc"
 #~ msgstr "DVD-RAM 碟片"
+
 #~ msgid "Blank DVD-RAM Disc"
 #~ msgstr "空白 DVD-RAM 碟片"
+
 #~ msgid "DVD+R Disc"
 #~ msgstr "DVD+R 碟片"
+
 #~ msgid "Blank DVD+R Disc"
 #~ msgstr "空白 DVD+R 碟片"
+
 #~ msgid "DVD+RW Disc"
 #~ msgstr "DVD+RW 碟片"
+
 #~ msgid "Blank DVD+RW Disc"
 #~ msgstr "空白 DVD+RW 碟片"
+
 #~ msgid "DVD+R DL Disc"
 #~ msgstr "DVD+R 雙層碟片"
+
 #~ msgid "Blank DVD+R DL Disc"
 #~ msgstr "空白 DVD+R 雙層碟片"
+
 #~ msgid "DVD+RW DL Disc"
 #~ msgstr "DVD+RW 雙層碟片"
+
 #~ msgid "Blank DVD+RW DL Disc"
 #~ msgstr "空白 DVD+RW 雙層碟片"
+
 #~ msgid "Blu-Ray Disc"
 #~ msgstr "藍光碟片"
+
 #~ msgid "Blank Blu-Ray Disc"
 #~ msgstr "空白藍光碟片"
+
 #~ msgid "Blu-Ray R Disc"
 #~ msgstr "藍光 R 碟片"
+
 #~ msgid "Blank Blu-Ray R Disc"
 #~ msgstr "空白藍光 R 碟片"
+
 #~ msgid "Blu-Ray RW Disc"
 #~ msgstr "藍光 RW 碟片"
+
 #~ msgid "Blank Blu-Ray RW Disc"
 #~ msgstr "空白藍光 RW 碟片"
+
 #~ msgid "HD DVD Disc"
 #~ msgstr "HD DVD 碟片"
+
 #~ msgid "Blank HD DVD Disc"
 #~ msgstr "空白 HD DVD 碟片"
+
 #~ msgid "HD DVD-R Disc"
 #~ msgstr "HD DVD-R 碟片"
+
 #~ msgid "Blank HD DVD-R Disc"
 #~ msgstr "空白 HD DVD-R 碟片"
+
 #~ msgid "HD DVD-RW Disc"
 #~ msgstr "HD DVD-RW 碟片"
+
 #~ msgid "Blank HD DVD-RW Disc"
 #~ msgstr "空白 HD DVD-RW 碟片"
+
 #~ msgid "MO Disc"
 #~ msgstr "MO 碟片"
+
 #~ msgid "Blank MO Disc"
 #~ msgstr "空白 MO 碟片"
+
 #~ msgid "MRW Disc"
 #~ msgstr "MRW 碟片"
+
 #~ msgid "Blank MRW Disc"
 #~ msgstr "空白 MRW 碟片"
+
 #~ msgid "MRW/W Disc"
 #~ msgstr "MRW/W 碟片"
+
 #~ msgid "Blank MRW/W Disc"
 #~ msgstr "空白 MRW/W 碟片"
+
 #~ msgid "Blank Optical Disc"
 #~ msgstr "空白光碟"
+
 #~ msgid "%s Extended"
 #~ msgstr "%s 延伸"
+
 #~ msgid "Contains logical partitions"
 #~ msgstr "包含邏輯分割區"
+
 #~ msgid "%s Encrypted"
 #~ msgstr "%s 加密"
+
 #~ msgid "Optical Disc"
 #~ msgstr "光碟"
+
 #~ msgid "%s Filesystem"
 #~ msgstr "%s 檔案系統"
+
 #~ msgid "%s Partition Table"
 #~ msgstr "%s 分割表格"
+
 #~ msgid "%s LVM2 Physical Volume"
 #~ msgstr "%s LVM2 實體儲存區"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID"
 #~ msgstr "RAID"
+
 #~ msgid "%s %s Component"
 #~ msgstr "%s %s 部件"
+
 #~ msgid "Part of \"%s\" array"
 #~ msgstr "「%s」陣列的部份"
+
 #~ msgid "%s Swap Space"
 #~ msgstr "%s 置換空間"
+
 #~ msgid "%s Data"
 #~ msgstr "%s 資料"
+
 #~ msgid "%s Unrecognized"
 #~ msgstr "%s 無法辨識"
+
 #~ msgid "Unknown or Unused"
 #~ msgstr "不明或未使用"
+
 #~ msgid "%s Partition"
 #~ msgstr "%s 分割區"
+
 #~ msgid "Partition %d of %s"
 #~ msgstr "分割區 %d / %s"
+
 #~ msgid "Partition %d"
 #~ msgstr "分割區 %d"
+
 #~ msgid "Whole-disk volume on %s"
 #~ msgstr "%s 上的整個磁碟儲存區"
+
 #~ msgid "Whole-disk volume"
 #~ msgstr "整個磁碟儲存區"
+
 #~ msgid "You are using %d%% of %s"
 #~ msgstr "您正使用 %d%%，共 %s"
+
 #~ msgid "Using %d%% of %s"
 #~ msgstr "正使用 %d%%，共 %s"
-
