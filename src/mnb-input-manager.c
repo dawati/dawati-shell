@@ -348,9 +348,9 @@ panel_allocation_cb (ClutterActor *actor, GParamSpec *pspec, gpointer data)
   clutter_actor_get_geometry (actor, &geom);
 
   rect.x      = 0;
-  rect.y      = geom.y + geom.height;
+  rect.y      = MIN ((geom.y + geom.height), screen_height);
   rect.width  = screen_width;
-  rect.height = screen_height - (geom.y + geom.height);
+  rect.height = screen_height - rect.y;
 
   XFixesSetRegion (xdpy, mir->region, &rect, 1);
 
@@ -547,6 +547,7 @@ mnb_input_manager_push_oop_panel (MutterWindow *mcw)
   ClutterGeometry  geom;
   MnbInputRegion  *mir;
   gint             screen_width, screen_height;
+  gint             y;
   MetaScreen      *screen;
   MetaWorkspace   *workspace;
 
@@ -574,9 +575,11 @@ mnb_input_manager_push_oop_panel (MutterWindow *mcw)
 
   clutter_actor_get_geometry (actor, &geom);
 
-  mir = mnb_input_manager_push_region (0, geom.y + geom.height,
+  y = MIN ((geom.y + geom.height), screen_height);
+
+  mir = mnb_input_manager_push_region (0, y,
                                        screen_width,
-                                       screen_height - (geom.y + geom.height),
+                                       screen_height - y,
                                        FALSE, MNB_INPUT_LAYER_PANEL);
 
   g_object_set_qdata (G_OBJECT (actor), quark_mir, mir);
