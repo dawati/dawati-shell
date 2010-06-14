@@ -127,6 +127,7 @@ mpl_panel_gtk_set_size (MplPanelClient *self, guint width, guint height)
 
   p_class = MPL_PANEL_CLIENT_CLASS (mpl_panel_gtk_parent_class);
 
+  gtk_widget_set_size_request (priv->window, width, height);
   gtk_window_resize (GTK_WINDOW (priv->window), width, height);
 
   if (p_class->set_size)
