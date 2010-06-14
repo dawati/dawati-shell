@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Date_Time\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-21 09:44+0000\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
 "PO-Revision-Date: 2010-03-04 08:42-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -58,17 +58,37 @@ msgstr "%b %-d (Yesterday)"
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (Tomorrow)"
 
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr "%b %-d (local)"
+
 #: ../src/mnp-utils.c:456
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-world-clock.c:587
+#: ../src/mnp-world-clock.c:525
+msgid "Time"
+msgstr "Time"
+
+#: ../src/mnp-world-clock.c:579
+msgid "24 hour clock"
+msgstr "24 hour clock"
+
+#: ../src/mnp-world-clock.c:648
 msgid "Enter a country or city"
 msgstr "Enter a country or city"
 
-#: ../src/mnp-world-clock.c:610
+#: ../src/mnp-world-clock.c:671
 msgid "Add"
 msgstr "Add"
+
+#: ../src/mnp-world-clock.c:745
+msgid "Set Time & Date"
+msgstr "Set Time & Date"
+
+#: ../src/mnp-datetime.c:293
+msgid "Appointments"
+msgstr "Appointments"
 
 #. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
 #. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
@@ -81,13 +101,25 @@ msgstr "Add"
 #. clutter_actor_set_height (div, 2);
 #. 
 #. format date
-#: ../src/mnp-datetime.c:335 ../src/mnp-datetime.c:534
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Today"
 
-#: ../src/mnp-datetime.c:504
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr "Open Appointments"
+
+#: ../src/mnp-datetime.c:511
 msgid "Tasks"
 msgstr "Tasks"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "Open Tasks"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "24 hour clock or 12 hour clock"
 
 #: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
@@ -97,37 +129,9 @@ msgstr "Alarms stored in encoded form for use by the alarm notfier."
 msgid "List of alarms in short encoded form"
 msgstr "List of alarms in short encoded form"
 
-#: ../src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "24 hour clock or 12 hour clock"
-
-#: ../src/mnp-utils.c:454
-msgid "%b %-d (local)"
-msgstr "%b %-d (local)"
-
-#: ../src/mnp-datetime.c:601
-msgid "Open Tasks"
-msgstr "Open Tasks"
-
-#: ../src/mnp-world-clock.c:518
-msgid "24 hour clock"
-msgstr "24 hour clock"
-
-#: ../src/mnp-world-clock.c:464
-msgid "Time"
-msgstr "Time"
-
-#: ../src/mnp-datetime.c:286
-msgid "Appointments"
-msgstr "Appointments"
-
-#: ../src/mnp-world-clock.c:684
-msgid "Set Time & Date"
-msgstr "Set Time & Date"
-
-#: ../src/mnp-datetime.c:426
-msgid "Open Appointments"
-msgstr "Open Appointments"
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Time and Date"
 
 #~ msgid "OFF"
 #~ msgstr "OFF"
