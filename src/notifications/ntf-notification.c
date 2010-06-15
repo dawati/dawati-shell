@@ -70,9 +70,10 @@ struct _NtfNotificationPrivate
 
   gulong source_closed_id;
 
-  guint disposed : 1;
-  guint urgent   : 1;
-  guint closed   : 1;
+  guint disposed          : 1;
+  guint urgent            : 1;
+  guint closed            : 1;
+  guint no_dismiss_button : 1;
 };
 
 enum
@@ -88,6 +89,7 @@ enum
   PROP_SOURCE,
   PROP_ID,
   PROP_SUBSYSTEM,
+  PROP_NO_DISMISS_BUTTON,
 };
 
 static guint signals[N_SIGNALS] = {0};
@@ -175,6 +177,15 @@ ntf_notification_class_init (NtfNotificationClass *klass)
                                                    G_PARAM_READWRITE |
                                                    G_PARAM_CONSTRUCT_ONLY));
 
+  g_object_class_install_property (object_class,
+                                   PROP_NO_DISMISS_BUTTON,
+                                   g_param_spec_boolean ("no-dismiss-button",
+                                                       "No dismiss button",
+                                                       "No dismiss button",
+                                                       FALSE,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY));
+
   signals[CLOSED]
     = g_signal_new ("closed",
                     G_OBJECT_CLASS_TYPE (klass),
@@ -207,12 +218,16 @@ ntf_notification_constructed (GObject *object)
   mx_table_set_column_spacing (MX_TABLE (self), 4);
   mx_table_set_row_spacing (MX_TABLE (self), 8);
 
-  priv->dismiss_button = mx_button_new ();
-  priv->summary        = mx_label_new ();
-  priv->body           = mx_label_new ();
-  priv->title_box      = mx_table_new ();
+  if (!priv->no_dismiss_button)
+    {
+      priv->dismiss_button = mx_button_new ();
+      mx_button_set_label (MX_BUTTON (priv->dismiss_button), _("Dismiss"));
 
+      g_signal_connect (priv->dismiss_button, "clicked",
+                    G_CALLBACK (ntf_notification_dismiss_cb), self);
+    }
 
+  priv->title_box = mx_table_new ();
   mx_table_set_column_spacing (MX_TABLE (priv->title_box), 4);
   mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->title_box), 0, 0);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
@@ -221,6 +236,7 @@ ntf_notification_constructed (GObject *object)
                                "x-expand", TRUE,
                                NULL);
 
+  priv->summary = mx_label_new ();
   txt = CLUTTER_TEXT(mx_label_get_clutter_text(MX_LABEL(priv->summary)));
   clutter_text_set_line_alignment (txt, PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (txt, PANGO_ELLIPSIZE_END);
@@ -236,8 +252,8 @@ ntf_notification_constructed (GObject *object)
                                "x-fill", FALSE,
                                NULL);
 
+  priv->body = mx_label_new ();
   mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->body), 1, 0);
-
   txt = CLUTTER_TEXT(mx_label_get_clutter_text(MX_LABEL(priv->body)));
   clutter_text_set_line_alignment (txt, PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (txt, PANGO_ELLIPSIZE_NONE);
@@ -250,8 +266,6 @@ ntf_notification_constructed (GObject *object)
                                "x-expand", FALSE,
                                NULL);
 
-  mx_button_set_label (MX_BUTTON (priv->dismiss_button), _("Dismiss"));
-
   /* create the box for the buttons */
   priv->button_box = mx_grid_new ();
   mx_grid_set_line_alignment (MX_GRID (priv->button_box), MX_ALIGN_END);
@@ -259,12 +273,12 @@ ntf_notification_constructed (GObject *object)
   mx_table_add_actor (MX_TABLE (self), CLUTTER_ACTOR (priv->button_box),
                         2, 0);
 
-  /* add the dismiss button to the button box */
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
-                               CLUTTER_ACTOR (priv->dismiss_button));
-
-  g_signal_connect (priv->dismiss_button, "clicked",
-                    G_CALLBACK (ntf_notification_dismiss_cb), self);
+  if (priv->dismiss_button)
+    {
+      /* add the dismiss button to the button box */
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                   CLUTTER_ACTOR (priv->dismiss_button));
+    }
 
   mx_stylable_set_style_class (MX_STYLABLE (priv->summary),
                                     "NotificationSummary");
@@ -291,6 +305,9 @@ ntf_notification_get_property (GObject    *object,
       break;
     case PROP_SUBSYSTEM:
       g_value_set_int (value, priv->subsystem);
+      break;
+    case PROP_NO_DISMISS_BUTTON:
+      g_value_set_boolean (value, priv->no_dismiss_button);
       break;
 
     default:
@@ -338,6 +355,9 @@ ntf_notification_set_property (GObject      *object,
       break;
     case PROP_SUBSYSTEM:
       priv->subsystem = g_value_get_int (value);
+      break;
+    case PROP_NO_DISMISS_BUTTON:
+      priv->no_dismiss_button = g_value_get_boolean (value);
       break;
 
     default:
@@ -480,7 +500,8 @@ ntf_notification_remove_all_buttons (NtfNotification *ntf)
    * Remove all buttons, but hold onto the default button and prepend it
    * at the start.
    */
-  g_object_ref (priv->dismiss_button);
+  if (priv->dismiss_button)
+    g_object_ref (priv->dismiss_button);
 
   for (l = clutter_container_get_children(CLUTTER_CONTAINER (priv->button_box));
        l;
@@ -490,10 +511,13 @@ ntf_notification_remove_all_buttons (NtfNotification *ntf)
                                       CLUTTER_ACTOR (l->data));
     }
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
-                               priv->dismiss_button);
+  if (priv->dismiss_button)
+    {
+      clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
+                                   priv->dismiss_button);
 
-  g_object_unref (priv->dismiss_button);
+      g_object_unref (priv->dismiss_button);
+    }
 }
 
 void
@@ -629,18 +653,23 @@ ntf_notification_get_subsystem_id (void)
  * @src: #NtfSource
  * @subsystem: subsystem to which notification belongs
  * @id: numerical id of the notification within its subsystem.
+ * @no_dismiss_button: if %TRUE, no dismiss button is added.
  *
  * Creates a new notification for given subsystem; each subsystem should obtain
  * its id by initially calling ntf_notification_get_subsystem_id().
  */
 NtfNotification *
-ntf_notification_new (NtfSource *src, gint subsystem, gint id)
+ntf_notification_new (NtfSource *src,
+                      gint       subsystem,
+                      gint       id,
+                      gboolean   no_dismiss_button)
 {
   return g_object_new (NTF_TYPE_NOTIFICATION,
                        "source",             src,
                        "subsystem",          subsystem,
                        "id",                 id,
-                       "reactive", TRUE,
+                       "reactive",           TRUE,
+                       "no-dismiss-button",  no_dismiss_button,
                        NULL);
 }
 

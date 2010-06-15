@@ -72,7 +72,10 @@ struct _NtfNotification
 
 GType ntf_notification_get_type (void) G_GNUC_CONST;
 
-NtfNotification *ntf_notification_new (NtfSource *src, gint subsystem, gint id);
+NtfNotification *ntf_notification_new (NtfSource *src,
+                                       gint       subsystem,
+                                       gint       id,
+                                       gboolean   no_dismiss_button);
 
 NtfSource *ntf_notification_get_source         (NtfNotification *ntf);
 void       ntf_notification_close              (NtfNotification *ntf);

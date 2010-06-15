@@ -36,7 +36,9 @@ typedef struct {
   gchar *sender;
   gint  timeout_ms;
   GList *actions;
-  gboolean    is_urgent;
+
+  guint  is_urgent         : 1;
+  guint  no_dismiss_button : 1;
 
   gpointer internal_data;
   GdkPixbuf *icon_pixbuf;

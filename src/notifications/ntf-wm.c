@@ -154,7 +154,7 @@ ntf_wm_handle_demands_attention (MetaWindow *window)
         }
 
       if (src)
-        ntf = ntf_notification_new (src, subsystem_id, id);
+        ntf = ntf_notification_new (src, subsystem_id, id, FALSE);
 
       if (ntf)
         {

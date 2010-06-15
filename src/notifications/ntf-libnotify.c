@@ -103,7 +103,15 @@ ntf_libnotify_notification_added_cb (MoblinNetbookNotifyStore *store,
         }
 
       if (src)
-        ntf = ntf_notification_new (src, subsystem_id, notification->id);
+        {
+          gboolean no_dismiss = (notification->no_dismiss_button != 0);
+
+          ntf = ntf_notification_new (src,
+                                      subsystem_id,
+                                      notification->id,
+                                      no_dismiss);
+        }
+
 
       if (ntf)
         {
