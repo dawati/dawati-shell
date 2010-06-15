@@ -593,11 +593,11 @@ _store_view_modified_cb (JanaStoreView *view,
     for (ll = events_list; ll; ll = ll->next)
     {
       PengeEventData *event_data = (PengeEventData *)ll->data;
-      JanaComponent *comp = (JanaComponent *)event_data->event;
+      JanaComponent *event = (JanaComponent *)event_data->event;
       gchar *rid;
       gchar *uid_rid;
 
-      rid = jana_ecal_component_get_recurrence_id (JANA_ECAL_COMPONENT (comp));
+      rid = jana_ecal_component_get_recurrence_id (JANA_ECAL_COMPONENT (event));
 
       uid_rid = g_strdup_printf ("%s %s", uid, rid);
       g_free (rid);
@@ -607,7 +607,7 @@ _store_view_modified_cb (JanaStoreView *view,
       if (actor)
       {
         g_object_set (actor,
-                      "event", component,
+                      "event", event,
                       NULL);
       } else {
         /* Our range contains events we might not have actors for */
