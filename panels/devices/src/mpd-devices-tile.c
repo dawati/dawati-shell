@@ -157,7 +157,7 @@ _find_mount_cb (GMount      *mount,
   char  *mount_uri;
   int    ret;
 
-  file = g_mount_get_root (mount);
+  file = g_mount_get_default_location (mount);
   mount_uri = g_file_get_uri (file);
 
   g_debug ("%s() %s", __FUNCTION__, mount_uri);
@@ -307,7 +307,7 @@ add_tile_from_mount (MpdDevicesTile *self,
   }
 
   /* Mount point */
-  file = g_mount_get_root (mount);
+  file = g_mount_get_default_location (mount);
   uri = g_file_get_uri (file);
 
   mime_types = g_mount_guess_content_type_sync (mount, false, NULL, &error);
