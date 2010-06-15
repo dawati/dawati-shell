@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MediaMonkey 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:47+0000\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
 "PO-Revision-Date: 2010-03-10 13:59-0500\n"
 "Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:110
+#: ../src/moblin-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Datum/tid"
 
@@ -36,7 +36,7 @@ msgstr "datum och tid"
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:422
+#: ../src/mnp-utils.c:423
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -45,37 +45,80 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:430
+#: ../src/mnp-utils.c:431
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:445
+#: ../src/mnp-utils.c:446
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (igår)"
 
-#: ../src/mnp-utils.c:447
+#: ../src/mnp-utils.c:448
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (imorgon)"
 
-#: ../src/mnp-utils.c:455
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr " %b %-d (lokalt)"
+
+#: ../src/mnp-utils.c:456
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-world-clock.c:586
+#: ../src/mnp-world-clock.c:525
+msgid "Time"
+msgstr "Tid"
+
+#: ../src/mnp-world-clock.c:579
+msgid "24 hour clock"
+msgstr "24-timmarsklocka"
+
+#: ../src/mnp-world-clock.c:648
 msgid "Enter a country or city"
 msgstr "Ange land eller ort"
 
-#: ../src/mnp-world-clock.c:609
+#: ../src/mnp-world-clock.c:671
 msgid "Add"
 msgstr "Lägg till"
 
-#: ../src/mnp-datetime.c:336 ../src/mnp-datetime.c:555
+#: ../src/mnp-world-clock.c:745
+msgid "Set Time & Date"
+msgstr "Ange tid och datum"
+
+#: ../src/mnp-datetime.c:293
+msgid "Appointments"
+msgstr "Avtalade tider"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#. 
+#. format date
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Idag"
 
-#: ../src/mnp-datetime.c:506
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr "Öppna avtalade tider"
+
+#: ../src/mnp-datetime.c:511
 msgid "Tasks"
 msgstr "Uppgifter"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "Öppna uppgifter"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "24- eller 12-timmarsklocka"
 
 #: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
@@ -85,37 +128,9 @@ msgstr "Väckningar som lagras i kodad form för användning av väckningsinform
 msgid "List of alarms in short encoded form"
 msgstr "Lista med väckningar i kort kodad form"
 
-#: ../src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "24- eller 12-timmarsklocka"
-
-#: ../src/mnp-utils.c:453
-msgid "%b %-d (local)"
-msgstr " %b %-d (lokalt)"
-
-#: ../src/mnp-datetime.c:608
-msgid "Open Tasks"
-msgstr "Öppna uppgifter"
-
-#: ../src/mnp-world-clock.c:517
-msgid "24 hour clock"
-msgstr "24-timmarsklocka"
-
-#: ../src/mnp-world-clock.c:463
-msgid "Time"
-msgstr "Tid"
-
-#: ../src/mnp-datetime.c:288
-msgid "Appointments"
-msgstr "Avtalade tider"
-
-#: ../src/mnp-world-clock.c:683
-msgid "Set Time & Date"
-msgstr "Ange tid och datum"
-
-#: ../src/mnp-datetime.c:426
-msgid "Open Appointments"
-msgstr "Öppna avtalade tider"
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Tid och datum"
 
 #~ msgid "OFF"
 #~ msgstr "AV"
