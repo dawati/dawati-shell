@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:48+0000\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgid "Devices panel"
 msgstr "Laitteet-paneeli"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:162
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "laitteet"
 
@@ -59,7 +59,7 @@ msgid "Running low on battery"
 msgstr "Akku on lähes lopussa"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "Huomaamme, että akkusi on tyhjentymässä. Jos vain mahdollista, kannattaisi kytkeä pistoke seinään ja ladata akku."
 
 #: ../power-icon/src/mpd-power-icon.c:80
@@ -67,7 +67,7 @@ msgid "Getting close to empty"
 msgstr "Lähellä tyhjää"
 
 #: ../power-icon/src/mpd-power-icon.c:81
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "Akkusi on melkein tyhjä. Voisi olla hyvä idea tallentaa kaikki työsi ja kytkeä pistoke seinään mahdollisimman pian."
 
 #: ../power-icon/src/mpd-power-icon.c:85
@@ -75,59 +75,57 @@ msgid "Danger!"
 msgstr "Vaara!"
 
 #: ../power-icon/src/mpd-power-icon.c:86
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sorry, tietokoneesi akku on lähes tyhjä. Meidän täytyy nyt kytkeä virta pois päältä. Tallenna työsi ja toivottavasti näemme sinut pian uudelleen."
 
-#: ../power-icon/src/mpd-power-icon.c:342
-msgid "Would you like to turn off now?"
-msgstr "Haluaisitko sammuttaa nyt?"
-
-#: ../power-icon/src/mpd-power-icon.c:343
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "Jos et tee päätöstä, virta kytkeytyy pois päältä 30 sekunnissa."
-
-#: ../power-icon/src/mpd-power-icon.c:447
+#: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
 msgstr "akku"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:75
+#: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Jos et tee päätöstä, virta kytkeytyy pois päältä %d sekunnissa."
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Jos et tee päätöstä, virta kytkeytyy pois päältä %d sekunnissa"
+msgstr[1] "Jos et tee päätöstä, virta kytkeytyy pois päältä %d sekunnissa"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:133
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "Kytke pois päältä"
 
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin virtakuvake"
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Haluaisitko sammuttaa nyt?"
 
-#: ../src/moblin-panel-devices.c:123
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Jos et tee päätöstä, virta kytkeytyy pois päältä 30 sekunnissa."
+
+#: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo laitteet-paneeli"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Sorry, sinulla ei näyttäisi olevan akkua asennettuna."
 
-#: ../src/mpd-battery-device.c:337
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Akkusi latautuu. Se on noin %d%% täysi."
 
-#: ../src/mpd-battery-device.c:342
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Akkuasi käytetään. Se on noin %d%% täysi."
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Akkusi on täysin ladattu ja olet valmis töihin. "
 
-#: ../src/mpd-battery-device.c:351
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sorry, näyttää siltä, että akku on rikki."
@@ -157,6 +155,14 @@ msgstr ""
 msgid "Other devices"
 msgstr "Muut laitteet"
 
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Irrottaminen epäonnistui, jokin sovellus saattaa käyttää sitä"
+
+#: ../src/mpd-devices-tile.c:420
+msgid "It is safe to unplug this device now"
+msgstr "Nyt on turvallista irrottaa tämä laite"
+
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
@@ -166,50 +172,43 @@ msgstr "<span font-weight='bold'>Käytät</span> <span color='%s'>%d%% of %s</sp
 msgid "Trash"
 msgstr "Roskakori"
 
-#: ../src/mpd-media-import-tile.c:73
-#, c-format
-msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-msgstr "<span font-weight='bold'>Tuo tietoja</span> <span color='%s'>%d%%</span>"
-
-#: ../src/mpd-media-import-tile.c:217
-msgid "Stop"
-msgstr "Pysäytä"
-
 #: ../src/mpd-shell.c:126
 msgid "Devices"
 msgstr "Laitteet"
 
-#: ../src/mpd-storage-device-tile.c:161
+#: ../src/mpd-storage-device-tile.c:165
 #, c-format
 msgid "Could not run %s"
 msgstr "Ei voinut suorittaa %s"
 
-#: ../src/mpd-storage-device-tile.c:163
+#: ../src/mpd-storage-device-tile.c:167
 msgid "Import error"
 msgstr "Tuontivirhe"
 
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:498
-msgid "Import data"
-msgstr "Tuo tiedot"
+#: ../src/mpd-storage-device-tile.c:278
+msgid "Import photos"
+msgstr "Tuo kuvat"
+
+#: ../src/mpd-storage-device-tile.c:280
+msgid "Import media"
+msgstr "Tuo media"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:509
+#: ../src/mpd-storage-device-tile.c:538
 msgid "Eject"
 msgstr "Irrota"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:520
+#: ../src/mpd-storage-device-tile.c:549
 msgid "Open"
 msgstr "Avaa"
 
-#: ../src/mpd-storage-device-tile.c:710
+#: ../src/mpd-storage-device-tile.c:742
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> käyttää <span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:718
+#: ../src/mpd-storage-device-tile.c:750
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -250,545 +249,810 @@ msgstr "Erittäin hiljainen"
 msgid "Silent"
 msgstr "Hiljainen"
 
-#: ../src/mpd-volume-tile.c:357
-msgid "Netbook volume"
-msgstr "Netbook-asema"
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Tietokoneen äänenvoimakkuus"
 
-#: ../src/mpd-volume-tile.c:373
+#: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Mykistä"
+
+#~ msgid "Moblin Power Icon"
+#~ msgstr "Moblin virtakuvake"
+
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>Tuo tietoja</span> <span color='%s'>%d%%</span>"
+
+#~ msgid "Stop"
+#~ msgstr "Pysäytä"
+
+#~ msgid "Netbook volume"
+#~ msgstr "Netbook-asema"
 
 #~ msgid ""
 #~ "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr "%s kytketty. Voit käyttää sitä Laitteet-paneelin välityksella"
+
 #~ msgid "USB plugged in"
 #~ msgstr "USB on kytketty sisään"
+
 #~ msgid "Show"
 #~ msgstr "Näytä"
+
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
+
 #~ msgid "MemoryStick"
 #~ msgstr "Muistitikku"
+
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
+
 #~ msgid "SecureDigital"
 #~ msgstr "Suojattu digitaalinen"
+
 #~ msgid "SD High Capacity"
 #~ msgstr "SD-suurikapasiteettinen"
+
 #~ msgid "Floppy"
 #~ msgstr "Levyke"
+
 #~ msgid "Zip"
 #~ msgstr "Zip"
+
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
+
 #~ msgid "CD"
 #~ msgstr "CD"
+
 #~ msgid "DVD"
 #~ msgstr "DVD"
+
 #~ msgid "Blu-Ray"
 #~ msgstr "Blu-Ray"
+
 #~ msgid "HDDVD"
 #~ msgstr "HDDVD"
+
 #~ msgid "%s Drive"
 #~ msgstr "%s ohjain"
+
 #~ msgid "%s %s Drive"
 #~ msgstr "%s %s ohjain"
+
 #~ msgid "%s Hard Disk"
 #~ msgstr "%s kiintolevy"
+
 #~ msgid "Hard Disk"
 #~ msgstr "Kiintolevy"
+
 #~ msgid "%s Solid-State Disk"
 #~ msgstr "%s puolijohdelevyke"
+
 #~ msgid "Solid-State Disk"
 #~ msgstr "Puolijohdelevyke"
+
 #~ msgid "%s Media"
 #~ msgstr "%s tietoväline"
+
 #~ msgid "No Media Detected"
 #~ msgstr "Ei havaittu tietovälinettä"
+
 #~ msgid "MBR Partition Table"
 #~ msgstr "MBR-osiotaulukko"
+
 #~ msgid "GUID Partition Table"
 #~ msgstr "GUID-osiotaulukko"
+
 #~ msgid "Apple Partition Table"
 #~ msgstr "Apple-osiotaulukko"
+
 #~ msgid "Partitioned"
 #~ msgstr "Osioitu"
+
 #~ msgid "Not Partitioned"
 #~ msgstr "Ei osioitu"
+
 #~ msgid "SAS Expander"
 #~ msgstr "SAS-laajennin"
+
 #~ msgid "PATA Host Adapter"
 #~ msgstr "PATA Host Adapter"
+
 #~ msgid "SATA Host Adapter"
 #~ msgstr "SATA Host Adapter"
+
 #~ msgid "ATA Host Adapter"
 #~ msgstr "ATA Host Adapter"
+
 #~ msgid "SAS Host Adapter"
 #~ msgstr "SAS Host Adapter"
+
 #~ msgid "SCSI Host Adapter"
 #~ msgstr "SCSI Host Adapter"
+
 #~ msgid "Host Adapter"
 #~ msgstr "Host Adapter"
+
 #~ msgid "Volume Group"
 #~ msgstr "Asemaryhmä"
+
 #~ msgid "%s LVM2 Volume Group"
 #~ msgstr "%s LVM2-asemaryhmä"
+
 #~ msgid "LVM2 Volume Group"
 #~ msgstr "LVM2-asemaryhmä"
+
 #~ msgid "%s Free"
 #~ msgstr "%s vapaata"
+
 #~ msgid "Unallocated Space"
 #~ msgstr "Kohdistamaton tila"
+
 #~ msgid "LVM2 VG Unallocated Space"
 #~ msgstr "LVM2 VG kohdistamaton tila"
+
 #~ msgid "Logical Volume"
 #~ msgstr "Looginen asema"
+
 #~ msgid "LVM2 Logical Volume"
 #~ msgstr "LVM2 looginen asema"
+
 #~ msgid "%s %s Array"
 #~ msgstr "%s %s matriisi"
+
 #~ msgid "%s Array"
 #~ msgstr "%s matriisi"
+
 #~ msgid "RAID Array %s (%s)"
 #~ msgstr "RAID-matriisi %s (%s)"
+
 #~ msgid "RAID device %s"
 #~ msgstr "RAID-laite %s"
 #~ msgctxt "RAID Level fallback"
+
 #~ msgid "RAID"
 #~ msgstr "RAID"
+
 #~ msgid "RAID Array"
 #~ msgstr "RAID-ryhmä"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Not Attached"
 #~ msgstr "Ei liitetty"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Faulty"
 #~ msgstr "Viallinen"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Fully Synchronized"
 #~ msgstr "Täysin synkattu"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Writemostly"
 #~ msgstr "Kirjoita enimmäkseen"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Blocked"
 #~ msgstr "Estetty"
 #~ msgctxt "Linux MD slave state"
+
 #~ msgid "Spare"
 #~ msgstr "Vara"
+
 #~ msgid "Local Storage"
 #~ msgstr "Paikallinen varasto"
+
 #~ msgid "Storage on %s"
 #~ msgstr "Varasto kohteessa %s"
+
 #~ msgid "Multipath Devices"
 #~ msgstr "Monipolkuiset laitteet"
+
 #~ msgid "Drives with multiple I/O paths"
 #~ msgstr "Ohjaimet useilla I/O-poluilla"
+
 #~ msgid "Multi-disk Devices"
 #~ msgstr "Monilevyiset laitteet"
+
 #~ msgid "RAID, LVM and other logical drives"
 #~ msgstr "RAID, LVM ja muut paikalliset ohjaimet"
+
 #~ msgid "Peripheral Devices"
 #~ msgstr "Oheislaitteet"
+
 #~ msgid "USB, Firewire and other peripherals"
 #~ msgstr "USB, Firewire ja muut oheislaitteet"
+
 #~ msgid "Error enumerating devices: %s"
 #~ msgstr "Virhe laitteiden numeroinnissa: %s"
+
 #~ msgid "Error enumerating adapters: %s"
 #~ msgstr "Virhe adaptereiden luetteloinnissa: %s"
+
 #~ msgid "Error enumerating expanders: %s"
 #~ msgstr "Virhe laajentimien luetteloinnissa: %s"
+
 #~ msgid "Error enumerating ports: %s"
 #~ msgstr "Virhe porttien luetteloinnissa: %s"
+
 #~ msgid "Error listening to address `localhost:%d': %s: %s\n"
 #~ msgstr "Virhe osoitteen kuuntelemisessa `localhost:%d': %s: %s\n"
+
 #~ msgid ""
 #~ "Error creating a local TCP server, tried binding to ports 9000-10000 on "
 #~ "localhost"
 #~ msgstr ""
 #~ "Virhe paikallista TCP-palvelinta luotaessa, yritettiin sitomista "
 #~ "paikallisen isännän portteihin 9000-10000  "
+
 #~ msgid "Error setting auth mechanisms on local DBusServer\n"
 #~ msgstr ""
 #~ "Virhe todentamismekanismien asettamisessa paikallisessa kohteessa "
 #~ "DBusServer\n"
+
 #~ msgid "Unable to parse command-line `%s' (Malformed address?): %s"
 #~ msgstr ""
 #~ "Ei pysty jäsentämään komentoriviä `%s' (Väärin muotoiltu osoite?): %s"
+
 #~ msgid "Unable to spawn ssh program: %s"
 #~ msgstr "ssh-ohjelman käynnistäminen ei onnistunut: %s"
+
 #~ msgid "Error reading stderr output: %s"
 #~ msgstr "Virhe luettaessa stderr-tuotosta: %s"
+
 #~ msgid "Error reading stderr output: No content"
 #~ msgstr "Virhe luettaessa stderr-tuotosta: Ei sisältöä"
+
 #~ msgid "Error logging in"
 #~ msgstr "Virhe sisäänkirjautuessa"
+
 #~ msgid "Error sending `%s': %s"
 #~ msgstr "Virhe lähetettäessä `%s': %s"
+
 #~ msgid ""
 #~ "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for "
 #~ "secret' but got `%s'"
 #~ msgstr ""
 #~ "Odottamaton stderr-tuotoa - odotettu `udisks-tcp-bridge: Odottaa "
 #~ "salaista' mutta sai `%s'"
+
 #~ msgid "Error passing authorization secret: %s"
 #~ msgstr "Virhe välitettäessä valtuutussalaisuutta: %s"
+
 #~ msgid "Error reading stderr from: %s"
 #~ msgstr "Virhe luettaessa stderr kohteesta: %s"
+
 #~ msgid ""
 #~ "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to "
 #~ "connect to port %d' but got `%s'"
 #~ msgstr ""
 #~ "Virhe luettaessa stderr-tuotosta: odotettu `udisks-tcp-bridge: Yritettiin "
 #~ "yhdistää porttiin%d' mutta saatiin `%s'"
+
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
 #~ msgstr ""
 #~ "Udisks-tcp-bridge-ohjelma ei onnistunut osoittamaan, että se oli "
 #~ "hyväksytty: %s"
+
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized"
 #~ msgstr ""
 #~ "Udisks-tcp-bridge-ohjelma ei onnistunut osoittamaan, että se oli "
 #~ "hyväksytty"
+
 #~ msgid "%s (%s bytes)"
 #~ msgstr "%s (%s bittiä)"
+
 #~ msgid "FAT (12-bit version)"
 #~ msgstr "FAT (12-bittinen versio)"
+
 #~ msgid "FAT"
 #~ msgstr "FAT"
+
 #~ msgid "FAT (16-bit version)"
 #~ msgstr "FAT (16-bittinen versio)"
+
 #~ msgid "FAT (32-bit version)"
 #~ msgstr "FAT (32-bittinen versio)"
+
 #~ msgid "NTFS (version %s)"
 #~ msgstr "NTFS (versio %s)"
+
 #~ msgid "NTFS"
 #~ msgstr "NTFS"
+
 #~ msgid "HFS"
 #~ msgstr "HFS"
+
 #~ msgid "HFS+"
 #~ msgstr "HFS+"
+
 #~ msgid "Linux Unified Key Setup"
 #~ msgstr "Linux Unified Key Setup"
+
 #~ msgid "LUKS"
 #~ msgstr "LUKS"
+
 #~ msgid "Ext2 (version %s)"
 #~ msgstr "Laaj2 (versio %s)"
+
 #~ msgid "Ext2"
 #~ msgstr "Laaj2"
+
 #~ msgid "ext2"
 #~ msgstr "laaj2"
+
 #~ msgid "Ext3 (version %s)"
 #~ msgstr "Laaj3 (versio %s)"
+
 #~ msgid "Ext3"
 #~ msgstr "Laaj3"
+
 #~ msgid "ext3"
 #~ msgstr "laaj3"
+
 #~ msgid "Journal for Ext3 (version %s)"
 #~ msgstr "Laaj3:n (versio %s) loki"
+
 #~ msgid "Journal for Ext3"
 #~ msgstr "Laaj3:n loki"
+
 #~ msgid "jbd"
 #~ msgstr "jbd"
+
 #~ msgid "Ext4 (version %s)"
 #~ msgstr "Laaj4 (versio %s)"
+
 #~ msgid "Ext4"
 #~ msgstr "Laaj4"
+
 #~ msgid "ext4"
 #~ msgstr "laaj4"
+
 #~ msgid "XFS (version %s)"
 #~ msgstr "XFS (versio %s)"
+
 #~ msgid "XFS"
 #~ msgstr "XFS"
+
 #~ msgid "xfs"
 #~ msgstr "xfs"
+
 #~ msgid "ReiserFS (version %s)"
 #~ msgstr "ReiserFS (versio %s)"
+
 #~ msgid "ReiserFS"
 #~ msgstr "ReiserFS"
+
 #~ msgid "reiserfs"
 #~ msgstr "reiserfs"
+
 #~ msgid "ISO 9660"
 #~ msgstr "ISO 9660"
+
 #~ msgid "iso9660"
 #~ msgstr "iso9660"
+
 #~ msgid "Universal Disk Format"
 #~ msgstr "Universaali levyn alustusmuoto"
+
 #~ msgid "udf"
 #~ msgstr "udf"
+
 #~ msgid "Swap Space"
 #~ msgstr "Vaihtomuisti"
+
 #~ msgid "swap"
 #~ msgstr "vaihto"
+
 #~ msgid "LVM2 Physical Volume (version %s)"
 #~ msgstr "LVM2 fyysinen asema (versio %s)"
+
 #~ msgid "LVM2 Physical Volume"
 #~ msgstr "LVM2 fyysinen asema"
+
 #~ msgid "lvm2_pv"
 #~ msgstr "lvm2_pv"
+
 #~ msgid "RAID Component (version %s)"
 #~ msgstr "RAID-komponentti (versio %s)"
+
 #~ msgid "RAID Component"
 #~ msgstr "RAID-komponentti"
+
 #~ msgid "raid"
 #~ msgstr "raid"
+
 #~ msgid "Minix"
 #~ msgstr "Minix"
+
 #~ msgid "minix"
 #~ msgstr "minix"
+
 #~ msgid "Creating File System"
 #~ msgstr "Luo tiedostojärjestelmää"
+
 #~ msgid "Mounting File System"
 #~ msgstr "Asennetaan tiedostojärjestelmää"
+
 #~ msgid "Unmounting File System"
 #~ msgstr "Poistetaan tiedostojärjestelmän asennusta"
+
 #~ msgid "Checking File System"
 #~ msgstr "Tarkistetaan tiedostojärjestelmää"
+
 #~ msgid "Creating LUKS Device"
 #~ msgstr "Luodaan LUKS-laitetta"
+
 #~ msgid "Unlocking LUKS Device"
 #~ msgstr "Poistetaan LUKS-laitteen lukitusta"
+
 #~ msgid "Locking LUKS Device"
 #~ msgstr "Lukitaan LUKS-laitetta"
+
 #~ msgid "Creating Partition Table"
 #~ msgstr "Luodaan osiointitaulukkoa"
+
 #~ msgid "Deleting Partition"
 #~ msgstr "Osioinnin poistaminen"
+
 #~ msgid "Creating Partition"
 #~ msgstr "Osioinnin luominen"
+
 #~ msgid "Modifying Partition"
 #~ msgstr "Osioinnin muokkaaminen"
+
 #~ msgid "Setting Label for Device"
 #~ msgstr "Otsikon määrittäminen laitteelle"
+
 #~ msgid "Changing Passphrase for Encrypted LUKS Device"
 #~ msgstr "Tunnuslauseen muuttaminen suojatulle LUKS-laitteelle"
+
 #~ msgid "Adding Component to RAID Array"
 #~ msgstr "Komponentin lisääminen RAID-ryhmään"
+
 #~ msgid "Removing Component from RAID Array"
 #~ msgstr "Komponentin poistaminen RAID-ryhmästä"
+
 #~ msgid "Stopping RAID Array"
 #~ msgstr "RAID-ryhmän pysäyttäminen"
+
 #~ msgid "Starting RAID Array"
 #~ msgstr "RAID-ryhmän käynnistäminen"
+
 #~ msgid "Checking RAID Array"
 #~ msgstr "RAID-ryhmän tarkistaminen"
+
 #~ msgid "Repairing RAID Array"
 #~ msgstr "RAID-ryhmän korjaaminen"
+
 #~ msgid "Running Short SMART Self-Test"
 #~ msgstr "Lyhyen SMART-itsetestauksen suorittaminen "
+
 #~ msgid "Running Extended SMART Self-Test"
 #~ msgstr "Laajennetun SMART-itsetestauksen suorittaminen"
+
 #~ msgid "Running Conveyance SMART Self-Test"
 #~ msgstr "Luovuttamisen SMART-itsetestauksen suorittaminen"
+
 #~ msgid "Ejecting Media"
 #~ msgstr "Tietovälineen irrottaminen"
+
 #~ msgid "Detaching Device"
 #~ msgstr "Laitteen irrottaminen"
+
 #~ msgid "Forcibly Unmounting Filesystem"
 #~ msgstr "Tiedostojärjestelmän irrottaminen voimaa käyttäen"
+
 #~ msgid "Forcibly Locking LUKS device"
 #~ msgstr "LUKS-laitteen lukitseminen voimaa käyttäen"
+
 #~ msgid "Linux Basic Data Partition"
 #~ msgstr "Linuxin perustietojen osiointi"
+
 #~ msgid "Linux RAID Partition"
 #~ msgstr "Linuxin RAID-osiointi"
+
 #~ msgid "Linux Swap Partition"
 #~ msgstr "Linux osioinnin vaihtaminen"
+
 #~ msgid "Linux LVM Partition"
 #~ msgstr "Linux LVM-osiointi"
+
 #~ msgid "Linux Reserved Partition"
 #~ msgstr "Linux varattu osiointi"
+
 #~ msgid "MBR Partition Scheme"
 #~ msgstr "MBR-osioinnin kaava"
+
 #~ msgid "EFI System Partition"
 #~ msgstr "EFI-järjestelmän osiointi"
+
 #~ msgid "BIOS Boot Partition"
 #~ msgstr "BIOS-käynnistyksen osiointi"
+
 #~ msgid "Microsoft Reserved Partition"
 #~ msgstr "Microsoftin varattu osiointi"
+
 #~ msgid "Microsoft Basic Data Partition"
 #~ msgstr "Microsoftin perustietojen osiointi"
+
 #~ msgid "Microsoft LDM Metadata Partition"
 #~ msgstr "Microsoftin LDM metatietojen osiointi"
+
 #~ msgid "Microsoft LDM Data Partition"
 #~ msgstr "Microsoftin LDM metatietojen osiointi"
+
 #~ msgid "Microsoft Windows Recovery Environment"
 #~ msgstr "Microsoft Windowsin palautusympäristö "
+
 #~ msgid "HP-UX Data Partition"
 #~ msgstr "HP-UX tietojen osiointi"
+
 #~ msgid "HP-UX Service Partition"
 #~ msgstr "HP-UX palvelun osiointi"
+
 #~ msgid "FreeBSD Boot Partition"
 #~ msgstr "FreeBSD käynnistyksen osiointi"
+
 #~ msgid "FreeBSD Data Partition"
 #~ msgstr "FreeBSD tietojen osiointi"
+
 #~ msgid "FreeBSD Swap Partition"
 #~ msgstr "FreeBSD vaihdon osiointi"
+
 #~ msgid "FreeBSD UFS Partition"
 #~ msgstr "FreeBSD UFS-osiointi"
+
 #~ msgid "FreeBSD Vinum Partition"
 #~ msgstr "FreeBSD Vinum -osiointi"
+
 #~ msgid "FreeBSD ZFS Partition"
 #~ msgstr "FreeBSD ZFS -osiointi"
+
 #~ msgid "Solaris Boot Partition"
 #~ msgstr "Solaris käynnistyksen osiointi"
+
 #~ msgid "Solaris Root Partition"
 #~ msgstr "Solaris juuren osiointi"
+
 #~ msgid "Solaris Swap Partition"
 #~ msgstr "Solaris vaihdon osiointi"
+
 #~ msgid "Solaris Backup Partition"
 #~ msgstr "Solaris varmuuskopioinnin osiointi"
+
 #~ msgid "Solaris /usr Partition"
 #~ msgstr "Solaris/usr-osiointi"
+
 #~ msgid "Solaris /var Partition"
 #~ msgstr "Solari/var-osiointi"
+
 #~ msgid "Solaris /home Partition"
 #~ msgstr "Solari/etusivu-osiointi"
+
 #~ msgid "Solaris Alternate Sector Partition"
 #~ msgstr "Solaris vaihtoehtoisen osion osiointi"
+
 #~ msgid "Solaris Reserved Partition"
 #~ msgstr "Solaris varattu osiointi"
+
 #~ msgid "Solaris Reserved Partition (2)"
 #~ msgstr "Solaris varattu osiointi (2)"
+
 #~ msgid "Solaris Reserved Partition (3)"
 #~ msgstr "Solaris varattu osiointi (3)"
+
 #~ msgid "Solaris Reserved Partition (4)"
 #~ msgstr "Solaris varattu osiointi (4)"
+
 #~ msgid "Solaris Reserved Partition (5)"
 #~ msgstr "Solaris varattu osiointi (5)"
+
 #~ msgid "Apple HFS/HFS+ Partition"
 #~ msgstr "Apple HFS/HFS+ osiointi"
+
 #~ msgid "Apple UFS Partition"
 #~ msgstr "Apple UFS -osiointi"
+
 #~ msgid "Apple ZFS Partition"
 #~ msgstr "Apple ZFS -osiointi"
+
 #~ msgid "Apple RAID Partition"
 #~ msgstr "Apple RAID -osiointi"
+
 #~ msgid "Apple RAID Partition (Offline)"
 #~ msgstr "Apple RAID -osiointi (offline)"
+
 #~ msgid "Apple Boot Partition"
 #~ msgstr "Apple käynnistysosiointi"
+
 #~ msgid "Apple Label Partition"
 #~ msgstr "Apple otsikon osiointi"
+
 #~ msgid "Apple TV Recovery Partition"
 #~ msgstr "Apple TV palautuksen osiointi"
+
 #~ msgid "NetBSD Swap Partition"
 #~ msgstr "NetBSD vaihdon osiointi"
+
 #~ msgid "NetBSD FFS Partition"
 #~ msgstr "NetBSD FFS -osiointi"
+
 #~ msgid "NetBSD LFS Partition"
 #~ msgstr "NetBSD LFS -osiointi"
+
 #~ msgid "NetBSD RAID Partition"
 #~ msgstr "NetBSD RAID -osiointi"
+
 #~ msgid "NetBSD Concatenated  Partition"
 #~ msgstr "NetBSD yhdistetty osiointi"
+
 #~ msgid "NetBSD Encrypted Partition"
 #~ msgstr "NetBSD salattu osiointi"
+
 #~ msgid "Apple Partition Map"
 #~ msgstr "Apple osiointimääritys"
+
 #~ msgid "Unused Partition"
 #~ msgstr "Käyttämätön osiointi"
+
 #~ msgid "Empty Partition"
 #~ msgstr "Tyhjä osiointi"
+
 #~ msgid "Driver Partition"
 #~ msgstr "Ohjaimen osiointi"
+
 #~ msgid "Driver 4.3 Partition"
 #~ msgstr "Ohjaimen 4.3. osiointi"
+
 #~ msgid "ProDOS file system"
 #~ msgstr "ProDOS-tiedostojärjestelmä"
+
 #~ msgid "FAT 12"
 #~ msgstr "FAT 12"
+
 #~ msgid "FAT 16"
 #~ msgstr "FAT 16"
+
 #~ msgid "FAT 32"
 #~ msgstr "FAT 32"
+
 #~ msgid "FAT 16 (Windows)"
 #~ msgstr "FAT 16 (Windows)"
+
 #~ msgid "FAT 32 (Windows)"
 #~ msgstr "FAT 32 (Windows)"
+
 #~ msgid "Empty (0x00)"
 #~ msgstr "Tyhjä (0x00)"
+
 #~ msgid "FAT12 (0x01)"
 #~ msgstr "FAT12 (0x01)"
+
 #~ msgid "FAT16 <32M (0x04)"
 #~ msgstr "FAT16 <32M (0x04)"
+
 #~ msgid "Extended (0x05)"
 #~ msgstr "Laajennettu (0x05)"
+
 #~ msgid "FAT16 (0x06)"
 #~ msgstr "FAT16 (0x06)"
+
 #~ msgid "HPFS/NTFS (0x07)"
 #~ msgstr "HPFS/NTFS (0x07)"
+
 #~ msgid "W95 FAT32 (0x0b)"
 #~ msgstr "W95 FAT32 (0x0b)"
+
 #~ msgid "W95 FAT32 (LBA) (0x0c)"
 #~ msgstr "W95 FAT32 (LBA) (0x0c)"
+
 #~ msgid "W95 FAT16 (LBA) (0x0e)"
 #~ msgstr "W95 FAT16 (LBA) (0x0e)"
+
 #~ msgid "W95 Ext d (LBA) (0x0f)"
 #~ msgstr "W95 Ext d (LBA) (0x0f)"
+
 #~ msgid "OPUS (0x10)"
 #~ msgstr "OPUS (0x10)"
+
 #~ msgid "Hidden FAT12 (0x11)"
 #~ msgstr "Piilotettu FAT12 (0x11)"
+
 #~ msgid "Compaq diagnostics (0x12)"
 #~ msgstr "Compaq diagnostiikka (0x12)"
+
 #~ msgid "Hidden FAT16 <32M (0x14)"
 #~ msgstr "Piilotettu FAT16 <32M (0x14)"
+
 #~ msgid "Hidden FAT16 (0x16)"
 #~ msgstr "Piilotettu FAT16 (0x16)"
+
 #~ msgid "Hidden HPFS/NTFS (0x17)"
 #~ msgstr "Piilotettu HPFS/NTFS (0x17)"
+
 #~ msgid "Hidden W95 FAT32 (0x1b)"
 #~ msgstr "Piilotettu W95 FAT32 (0x1b)"
+
 #~ msgid "Hidden W95 FAT32 (LBA) (0x1c)"
 #~ msgstr "Piilotettu W95 FAT32 (LBA) (0x1c)"
+
 #~ msgid "Hidden W95 FAT16 (LBA) (0x1e)"
 #~ msgstr "Piilotettu W95 FAT16 (LBA) (0x1e)"
+
 #~ msgid "PartitionMagic (0x3c)"
 #~ msgstr "PartitionMagic (0x3c)"
+
 #~ msgid "Minix (0x81)"
 #~ msgstr "Minix (0x81)"
+
 #~ msgid "Linux swap (0x82)"
 #~ msgstr "Linux-vaihto(0x82)"
+
 #~ msgid "Linux (0x83)"
 #~ msgstr "Linux (0x83)"
+
 #~ msgid "Hibernation (0x84)"
 #~ msgstr "Horrostila (0x84)"
+
 #~ msgid "Linux Extended (0x85)"
 #~ msgstr "Linux laajennettu (0x85)"
+
 #~ msgid "Linux LVM (0x8e)"
 #~ msgstr "Linux LVM (0x8e)"
+
 #~ msgid "Hibernation (0xa0)"
 #~ msgstr "Horrostila (0xa0)"
+
 #~ msgid "FreeBSD (0xa5)"
 #~ msgstr "FreeBSD (0xa5)"
+
 #~ msgid "OpenBSD (0xa6)"
 #~ msgstr "OpenBSD (0xa6)"
+
 #~ msgid "Mac OS X (0xa8)"
 #~ msgstr "Mac OS X (0xa8)"
+
 #~ msgid "Mac OS X (0xaf)"
 #~ msgstr "Mac OS X (0xaf)"
+
 #~ msgid "Solaris boot (0xbe)"
 #~ msgstr "Solaris-käynnistys (0xbe)"
+
 #~ msgid "Solaris (0xbf)"
 #~ msgstr "Solaris (0xbf)"
+
 #~ msgid "BeOS BFS (0xeb)"
 #~ msgstr "BeOS BFS (0xeb)"
+
 #~ msgid "SkyOS SkyFS (0xec)"
 #~ msgstr "SkyOS SkyFS (0xec)"
+
 #~ msgid "EFI GPT (0xee)"
 #~ msgstr "EFI GPT (0xee)"
+
 #~ msgid "EFI (FAT-12/16/32 (0xef)"
 #~ msgstr "EFI (FAT-12/16/32 (0xef)"
+
 #~ msgid "Linux RAID autodetect (0xfd)"
 #~ msgstr "Linux RAID automaattinen tunnistus (0xfd)"
+
 #~ msgid "Unknown (%s)"
 #~ msgstr "Tuntematon (%s)"
+
 #~ msgid ""
 #~ "A popular format compatible with almost any device or system, typically "
 #~ "used for file exchange."
 #~ msgstr ""
 #~ "Suosittu muoto, joka on yhteensopiva lähes kaikkien laitteiden ja "
 #~ "järjstelmien kanssa, käytetään tyypillisesti tiedoston vaihtamiseen."
+
 #~ msgid ""
 #~ "This file system is compatible with Linux systems only and provides "
 #~ "classic UNIX file permissions support. This file system does not use a "
@@ -797,20 +1061,24 @@ msgstr "Mykistä"
 #~ "Tämä tiedosto on yhteensopiva Linux-järjestelmän kanssa ja tarjoaa "
 #~ "klassisen UNIX-tiedoston oikeuksien tuen. Tämä tiedostojäjrestelmä ei "
 #~ "käytä muistiota."
+
 #~ msgid ""
 #~ "This file system is compatible with Linux systems only and provides "
 #~ "classic UNIX file permissions support."
 #~ msgstr ""
 #~ "Tämä tiedosto on yhteensopiva Linux-järjestelmän kanssa ja tarjoaa "
 #~ "klassisen UNIX-tiedoston oikeuksien tuen."
+
 #~ msgid "Swap area used by the operating system for virtual memory."
 #~ msgstr "Käyttöjärjestelmä käyttää vaihtoaluetta virtuaaliselle muistille. "
+
 #~ msgid ""
 #~ "The native Windows file system. Not widely compatible with other "
 #~ "operating systems than Windows."
 #~ msgstr ""
 #~ "Alkuperäinen WIndowsin tiedostojärjestelmä. Ei laajasti yhteensopiva "
 #~ "muiden tiedostojärjestelmien kuten Windowsin kanssa."
+
 #~ msgid ""
 #~ "Simple filesystem with low overhead and UNIX permissions support. Not "
 #~ "widely compatible with other operating systems than Linux and Minix."
@@ -818,10 +1086,13 @@ msgstr "Mykistä"
 #~ "Yksinkertainen tiedostojärjestelmä matalalla kuormituksella ja UNIX-"
 #~ "oikeuksien tuella.  Ei laajasti yhteensopiva muiden tiedostojärjestelmien "
 #~ "kuten Linuxin ja Minixin kanssa."
+
 #~ msgid "No file system will be created."
 #~ msgstr "Tiedostojärjestelmää ei luoda."
+
 #~ msgid "Create an Extended Partition for logical partitions."
 #~ msgstr "Luo laajennettu osiointi loogisille osioinneille."
+
 #~ msgid ""
 #~ "The Master Boot Record scheme is compatible with almost any device or "
 #~ "system but has a number of limitations with respect to disk size and "
@@ -830,6 +1101,7 @@ msgstr "Mykistä"
 #~ "Pääkäynnistystietueen kaava on yhteensopiva melkein kaikkien laitteien "
 #~ "tai järjestelmien kanssa, mutta sillä on joukko rajoituksia levykkeen "
 #~ "kokoon ja osiointien määrään liittyen."
+
 #~ msgid ""
 #~ "A legacy scheme that is incompatible with most systems except Apple "
 #~ "systems and most Linux systems. Not recommended for removable media."
@@ -837,6 +1109,7 @@ msgstr "Mykistä"
 #~ "Vanha malli, joka on yhteensopiva lähes kaikkien järjestelmien paitsi "
 #~ "Apple-järjestelmien ja useimpien Linux-järjestelmien kanssa. Ei "
 #~ "suositella irrotettaville tietovälineille."
+
 #~ msgid ""
 #~ "The GUID scheme is compatible with most modern systems but may be "
 #~ "incompatible with some devices and legacy systems."
@@ -844,6 +1117,7 @@ msgstr "Mykistä"
 #~ "GUID-malli,  joka on yhteensopiva lähes kaikkien modernien järjestelmien "
 #~ "kanssa, saattaa olla yhteensopimaton joidenkin laitteiden ja vanhojen "
 #~ "järjestelmien kanssa."
+
 #~ msgid ""
 #~ "Marks the entire disk as unused. Use this option only if you want to "
 #~ "avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
@@ -851,79 +1125,109 @@ msgstr "Mykistä"
 #~ "Merkitsee koko levykkeen käyttämättömäski. Käytä tätä asetusta "
 #~ "ainoastaan, jos haluat välttää levykkeen osituksen, ts. koko levykeen tai "
 #~ "levykkeiden avulla."
+
 #~ msgid "LUKS Passphrase for UUID %s"
 #~ msgstr "LUKS-tunnuslause UUID:lle %s"
+
 #~ msgid "%.1f KB/s"
 #~ msgstr "%.1f Kt/s"
+
 #~ msgid "%.1f MB/s"
 #~ msgstr "%.1f Mt/s"
+
 #~ msgid "%.1f GB/s"
 #~ msgstr "%.1f Gt/s"
+
 #~ msgid "SATA"
 #~ msgstr "SATA"
+
 #~ msgid "eSATA"
 #~ msgstr "eSATA"
+
 #~ msgid "PATA"
 #~ msgstr "PATA"
+
 #~ msgid "ATA"
 #~ msgstr "ATA"
+
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
+
 #~ msgid "USB"
 #~ msgstr "USB"
+
 #~ msgid "Firewire"
 #~ msgstr "Firewire"
+
 #~ msgid "SDIO"
 #~ msgstr "SDIO"
+
 #~ msgid "Virtual"
 #~ msgstr "Virtuaalinen"
 #~ msgctxt "connection name"
+
 #~ msgid "Unknown"
 #~ msgstr "Tuntematon"
+
 #~ msgid "%s at %s"
 #~ msgstr "%s kohteessa %s"
 #~ msgctxt "RAID level"
+
 #~ msgid "Stripe (RAID-0)"
 #~ msgstr "Raidoitettu (RAID-0)"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-0"
 #~ msgstr "RAID-0"
 #~ msgctxt "RAID level"
+
 #~ msgid "Mirror (RAID-1)"
 #~ msgstr "Peilattu (RAID-1)"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-1"
 #~ msgstr "RAID-1"
 #~ msgctxt "RAID level"
+
 #~ msgid "Parity Disk (RAID-4)"
 #~ msgstr "Pariteettilevyke (RAID-4)"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-4"
 #~ msgstr "RAID-4"
 #~ msgctxt "RAID level"
+
 #~ msgid "Distributed Parity (RAID-5)"
 #~ msgstr "Jaettu pariteetti (RAID-5)"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-5"
 #~ msgstr "RAID-5"
 #~ msgctxt "RAID level"
+
 #~ msgid "Dual Distributed Parity (RAID-6)"
 #~ msgstr "Jaettu kaksoispariteetti (RAID-6)"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-6"
 #~ msgstr "RAID-6"
 #~ msgctxt "RAID level"
+
 #~ msgid "Stripe of Mirrors (RAID-10)"
 #~ msgstr "Peilien raidoitus (RAID-10)"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID-10"
 #~ msgstr "RAID-10"
 #~ msgctxt "RAID level"
+
 #~ msgid "Concatenated (Linear)"
 #~ msgstr "Yhdistetty (lineaarinen)"
 #~ msgctxt "RAID level"
+
 #~ msgid "Linear"
 #~ msgstr "Lineaarinen"
+
 #~ msgid ""
 #~ "Striped set without parity. Provides improved performance but no fault "
 #~ "tolerance. If a single disk in the array fails, the entire RAID-0 array "
@@ -932,6 +1236,7 @@ msgstr "Mykistä"
 #~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon, mutta ei "
 #~ "virhetoleranssia. Jos yksittäinen levyke ryhmässä epäonnistuu, koko RAID-"
 #~ "0-ryhmä epäonnistuu."
+
 #~ msgid ""
 #~ "Mirrored set without parity. Provides fault tolerance and improved "
 #~ "performance for reading. RAID-1 arrays can sustain all but one disk "
@@ -940,6 +1245,7 @@ msgstr "Mykistä"
 #~ "Peilattu asetus ilman pariteettia. Tarjoaa virhetoleranssin ja paremman "
 #~ "tehon lukemiseen. RAID-1-ryhmä voi ylläpitää yhtä lukuunottamatta kaikki "
 #~ "levykkeiden epäonnistumiset."
+
 #~ msgid ""
 #~ "Striped set with parity on a single disk. Provides improved performance "
 #~ "and fault tolerance. RAID-4 arrays can sustain a single disk failure."
@@ -947,6 +1253,7 @@ msgstr "Mykistä"
 #~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja "
 #~ "virhetoleranssin. RAID-4-ryhmä voi ylläpitää yhden levykkeen "
 #~ "epäonnistumisen."
+
 #~ msgid ""
 #~ "Striped set with distributed parity. Provides improved performance and "
 #~ "fault tolerance. RAID-5 arrays can sustain a single disk failure."
@@ -954,6 +1261,7 @@ msgstr "Mykistä"
 #~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja "
 #~ "virhetoleranssin. RAID-5-ryhmä voi ylläpitää yhden levykkeen "
 #~ "epäonnistumisen."
+
 #~ msgid ""
 #~ "Striped set with dual distributed parity. Provides improved performance "
 #~ "and fault tolerance. RAID-6 arrays can sustain two disk failures."
@@ -961,6 +1269,7 @@ msgstr "Mykistä"
 #~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja "
 #~ "virhetoleranssin. RAID-6-ryhmä voi ylläpitää kaksi levykkeiden "
 #~ "epäonnistumista."
+
 #~ msgid ""
 #~ "Striped set with distributed parity. Provides improved performance and "
 #~ "fault tolerance. RAID-10 arrays can sustain multiple drive losses so long "
@@ -969,144 +1278,212 @@ msgstr "Mykistä"
 #~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja "
 #~ "virhetoleranssin. RAID-4-ryhmä voi ylläpitää monia ohjaimien menetyksiä "
 #~ "niin kauakn kuin peili ei menetä kaikki ohjaimiaan."
+
 #~ msgid "Unknown RAID level %s."
 #~ msgstr "Tuntematon RAID-taso %s."
+
 #~ msgid "Disk is healthy"
 #~ msgstr "Levyke on ehjä"
+
 #~ msgid "Disk was used outside of design parameters in the past"
 #~ msgstr ""
 #~ "Levykettä käytettiin menneisyydessä rakenneparametrien ulkopuolella."
+
 #~ msgid "Disk has a few bad sectors"
 #~ msgstr "Levykkeellä on muutamia huonoja sektoreita."
+
 #~ msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
 #~ msgstr "LEVYKETTÄ KÄYTETTIIN RAKENNEPARAMETRIEN ULKOPUOLELLA"
+
 #~ msgid "Backup all data and replace the disk"
 #~ msgstr "Varmuuskopioi kaikki tiedot ja vaihda levyke"
+
 #~ msgid "DISK HAS MANY BAD SECTORS"
 #~ msgstr "LEVYKKEELLÄ ON MONTA HUONOA SEKTORIA"
+
 #~ msgid "DISK FAILURE IS IMMINENT"
 #~ msgstr "LEVYKKEEN KAATUMINEN ON ILMEISTÄ"
+
 #~ msgid "Unknown"
 #~ msgstr "Tuntematon"
+
 #~ msgid "CD-ROM Disc"
 #~ msgstr "CD-ROM-levyke"
+
 #~ msgid "Blank CD-ROM Disc"
 #~ msgstr "Tyhjä CD-ROM-levyke"
+
 #~ msgid "CD-R Disc"
 #~ msgstr "CD-R-levyke"
+
 #~ msgid "Blank CD-R Disc"
 #~ msgstr "Tyhjä CD-R-levyke"
+
 #~ msgid "CD-RW Disc"
 #~ msgstr "CD-RW-levyke"
+
 #~ msgid "Blank CD-RW Disc"
 #~ msgstr "Tyhjä CD-RW-levyke"
+
 #~ msgid "DVD-ROM Disc"
 #~ msgstr "DVD-ROM-levyke"
+
 #~ msgid "Blank DVD-ROM Disc"
 #~ msgstr "Tyhjä DVD-ROM-levyke"
+
 #~ msgid "DVD-RW Disc"
 #~ msgstr "DVD-RW-levyke"
+
 #~ msgid "Blank DVD-RW Disc"
 #~ msgstr "Tyhjä DVD-RW-levyke"
+
 #~ msgid "DVD-RAM Disc"
 #~ msgstr "DVD-RAM-levyke"
+
 #~ msgid "Blank DVD-RAM Disc"
 #~ msgstr "Tyhjä DVD-RAM-levyke"
+
 #~ msgid "DVD+R Disc"
 #~ msgstr "DVD+R-levyke"
+
 #~ msgid "Blank DVD+R Disc"
 #~ msgstr "Tyhjä DVD+R-levyke"
+
 #~ msgid "DVD+RW Disc"
 #~ msgstr "DVD+RW-levyke"
+
 #~ msgid "Blank DVD+RW Disc"
 #~ msgstr "Tyhjä DVD+RW-levyke"
+
 #~ msgid "DVD+R DL Disc"
 #~ msgstr "DVD+R DL-levyke"
+
 #~ msgid "Blank DVD+R DL Disc"
 #~ msgstr "Tyhjä DVD+R DL -levyke"
+
 #~ msgid "DVD+RW DL Disc"
 #~ msgstr "DVD+RW DL -levyke"
+
 #~ msgid "Blank DVD+RW DL Disc"
 #~ msgstr "Tyhjä DVD+RW DL -levyke"
+
 #~ msgid "Blu-Ray Disc"
 #~ msgstr "Blu-Ray-levyke"
+
 #~ msgid "Blank Blu-Ray Disc"
 #~ msgstr "Tyhjä Blu-Ray-levyke"
+
 #~ msgid "Blu-Ray R Disc"
 #~ msgstr "Blu-Ray R -levyke"
+
 #~ msgid "Blank Blu-Ray R Disc"
 #~ msgstr "Tyhjä Blu-Ray R -levyke"
+
 #~ msgid "Blu-Ray RW Disc"
 #~ msgstr "Blu-Ray RW -levyke"
+
 #~ msgid "Blank Blu-Ray RW Disc"
 #~ msgstr "Tyhjä Blu-Ray RW -levyke"
+
 #~ msgid "HD DVD Disc"
 #~ msgstr "HD DVD -levyke"
+
 #~ msgid "Blank HD DVD Disc"
 #~ msgstr "Tyhjä HD DVD -levyke"
+
 #~ msgid "HD DVD-R Disc"
 #~ msgstr "HD DVD-R -levyke"
+
 #~ msgid "Blank HD DVD-R Disc"
 #~ msgstr "Tyhjä HD DVD-R -levyke"
+
 #~ msgid "HD DVD-RW Disc"
 #~ msgstr "HD DVD-RW-levyke"
+
 #~ msgid "Blank HD DVD-RW Disc"
 #~ msgstr "Tyhjä HD DVD-RW-levyke"
+
 #~ msgid "MO Disc"
 #~ msgstr "MO-levyke"
+
 #~ msgid "Blank MO Disc"
 #~ msgstr "Tyhjä MO-levyke"
+
 #~ msgid "MRW Disc"
 #~ msgstr "MRW-levyke"
+
 #~ msgid "Blank MRW Disc"
 #~ msgstr "Tyhjä MRW-levyke"
+
 #~ msgid "MRW/W Disc"
 #~ msgstr "MRW/W-levyke"
+
 #~ msgid "Blank MRW/W Disc"
 #~ msgstr "Blank MRW/W -levyke"
+
 #~ msgid "Blank Optical Disc"
 #~ msgstr "Tyhjä optinen levyke"
+
 #~ msgid "%s Extended"
 #~ msgstr "%s laajennettu"
+
 #~ msgid "Contains logical partitions"
 #~ msgstr "Sisältää loogisia osiointeja"
+
 #~ msgid "%s Encrypted"
 #~ msgstr "%s salattu"
+
 #~ msgid "Optical Disc"
 #~ msgstr "Oprtinen levyke"
+
 #~ msgid "%s Filesystem"
 #~ msgstr "%s tiedostojärjestelmä"
+
 #~ msgid "%s Partition Table"
 #~ msgstr "%s osiointitaulukko"
+
 #~ msgid "%s LVM2 Physical Volume"
 #~ msgstr "%s LVM2 fyysinen asema"
 #~ msgctxt "RAID level"
+
 #~ msgid "RAID"
 #~ msgstr "RAID"
+
 #~ msgid "%s %s Component"
 #~ msgstr "%s %s komponentti"
+
 #~ msgid "Part of \"%s\" array"
 #~ msgstr "Osa \"%s\" ryhmästä"
+
 #~ msgid "%s Swap Space"
 #~ msgstr "%s vaihtotila"
+
 #~ msgid "%s Data"
 #~ msgstr "%s tiedot"
+
 #~ msgid "%s Unrecognized"
 #~ msgstr "%s tunnistamatonta"
+
 #~ msgid "Unknown or Unused"
 #~ msgstr "Tuntematon tai käyttämätön"
+
 #~ msgid "%s Partition"
 #~ msgstr "%s osiointi"
+
 #~ msgid "Partition %d of %s"
 #~ msgstr "Osiointi %d kohteesta %s"
+
 #~ msgid "Partition %d"
 #~ msgstr "Osiointi %d"
+
 #~ msgid "Whole-disk volume on %s"
 #~ msgstr "Koko levykkeen volyymi %s"
+
 #~ msgid "Whole-disk volume"
 #~ msgstr "Koko levuýkkeen volyymi"
+
 #~ msgid "You are using %d%% of %s"
 #~ msgstr "Käytät %d%% kohteesta %s"
+
 #~ msgid "Using %d%% of %s"
 #~ msgstr "Käyttää %d%% kohteesta %s"
-
