@@ -450,6 +450,12 @@ network_model_service_changed_cb (DBusGProxy  *service,
                           CARRICK_COLUMN_STRENGTH, g_value_get_uchar (value),
                           -1);
     }
+  else if (g_str_equal (property, "Name"))
+    {
+      gtk_list_store_set (store, &iter,
+                          CARRICK_COLUMN_NAME, g_value_get_string (value),
+                          -1);
+    }
   else if (g_str_equal (property, "PassphraseRequired") ||
 	  g_str_equal (property, "SetupRequired"))
     {
