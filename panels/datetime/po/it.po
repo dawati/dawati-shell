@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:43+0000\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: francesca godani <francesca.godani@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -61,27 +61,27 @@ msgstr "%b %-d (locale)"
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-world-clock.c:464
+#: ../src/mnp-world-clock.c:525
 msgid "Time"
 msgstr "Ora"
 
-#: ../src/mnp-world-clock.c:518
+#: ../src/mnp-world-clock.c:579
 msgid "24 hour clock"
 msgstr "Orologio 24 ore"
 
-#: ../src/mnp-world-clock.c:587
+#: ../src/mnp-world-clock.c:648
 msgid "Enter a country or city"
 msgstr "Inserisci un paese o una città"
 
-#: ../src/mnp-world-clock.c:610
+#: ../src/mnp-world-clock.c:671
 msgid "Add"
 msgstr "Aggiungi"
 
-#: ../src/mnp-world-clock.c:684
+#: ../src/mnp-world-clock.c:745
 msgid "Set Time & Date"
 msgstr "Imposta ora e data"
 
-#: ../src/mnp-datetime.c:286
+#: ../src/mnp-datetime.c:293
 msgid "Appointments"
 msgstr "Appuntamenti"
 
@@ -96,22 +96,26 @@ msgstr "Appuntamenti"
 #. clutter_actor_set_height (div, 2);
 #.
 #. format date
-#: ../src/mnp-datetime.c:335
-#: ../src/mnp-datetime.c:534
+#: ../src/mnp-datetime.c:342
+#: ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Oggi"
 
-#: ../src/mnp-datetime.c:426
+#: ../src/mnp-datetime.c:433
 msgid "Open Appointments"
 msgstr "Appuntamenti aperti"
 
-#: ../src/mnp-datetime.c:504
+#: ../src/mnp-datetime.c:511
 msgid "Tasks"
 msgstr "Compiti"
 
-#: ../src/mnp-datetime.c:601
+#: ../src/mnp-datetime.c:608
 msgid "Open Tasks"
 msgstr "Compiti aperti"
+
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Ora e data"
 
 #: ../src/date-time.schemas.in.h:1
 msgid "24 hour clock or 12 hour clock"
