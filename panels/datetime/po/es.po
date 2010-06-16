@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:40+0000\n"
-"PO-Revision-Date: 2010-03-22 10:21-0800\n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
+"PO-Revision-Date: 2010-06-16 09:35-0800\n"
+"Last-Translator: Namfon Thasanon <maewbox@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:110
+#: ../src/moblin-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Fecha/Hora"
 
@@ -36,7 +36,7 @@ msgstr "fecha y hora"
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:422
+#: ../src/mnp-utils.c:423
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -45,37 +45,85 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:430
+#: ../src/mnp-utils.c:431
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:445
+#: ../src/mnp-utils.c:446
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (Ayer)"
 
-#: ../src/mnp-utils.c:447
+#: ../src/mnp-utils.c:448
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (Mañana)"
 
-#: ../src/mnp-utils.c:455
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr "%b %-d (local)"
+
+#: ../src/mnp-utils.c:456
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-world-clock.c:562
+#: ../src/mnp-world-clock.c:525
+msgid "Time"
+msgstr "Hora"
+
+#: ../src/mnp-world-clock.c:579
+msgid "24 hour clock"
+msgstr "Formato de 24 horas"
+
+#: ../src/mnp-world-clock.c:648
 msgid "Enter a country or city"
 msgstr "Ingresa un país o una ciudad"
 
-#: ../src/mnp-world-clock.c:585
+#: ../src/mnp-world-clock.c:671
 msgid "Add"
 msgstr "Agregar"
 
-#: ../src/mnp-datetime.c:278 ../src/mnp-datetime.c:457
+#: ../src/mnp-world-clock.c:745
+msgid "Set Time & Date"
+msgstr "Ajustar fecha y hora"
+
+#: ../src/mnp-datetime.c:293
+msgid "Appointments"
+msgstr "Citas"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#.
+#. format date
+#: ../src/mnp-datetime.c:342
+#: ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Hoy"
 
-#: ../src/mnp-datetime.c:408
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr "Abrir citas"
+
+#: ../src/mnp-datetime.c:511
 msgid "Tasks"
 msgstr "Tareas"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "Abrir tareas"
+
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Configurar fecha y hora"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "Formato de 12 o de 24 horas"
 
 #: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
@@ -85,146 +133,80 @@ msgstr "Alarmas guardadas en forma codificada para uso por el notificador de ala
 msgid "List of alarms in short encoded form"
 msgstr "Lista de alarmas en forma de codificación corta"
 
-#: ../src/date-time.schemas.in.h:1
-msgid "24 hour clock or 12 hour clock"
-msgstr "Formato de 12 o de 24 horas"
-
-#: ../src/mnp-utils.c:453
-msgid "%b %-d (local)"
-msgstr "%b %-d (local)"
-
-#: ../src/mnp-datetime.c:510
-msgid "Open Tasks"
-msgstr "Abrir tareas"
-
-#: ../src/mnp-world-clock.c:499
-msgid "24 hour clock"
-msgstr "Formato de 24 horas"
-
-#: ../src/mnp-world-clock.c:445
-msgid "Time"
-msgstr "Hora"
-
-#: ../src/mnp-datetime.c:230
-msgid "Appointments"
-msgstr "Citas"
-
-#: ../src/mnp-world-clock.c:658
-msgid "Set Time & Date"
-msgstr "Ajustar fecha y hora"
-
-#: ../src/mnp-datetime.c:339
-msgid "Open Appointments"
-msgstr "Abrir citas"
-
 #~ msgid "OFF"
 #~ msgstr "APAGADO"
-
 #~ msgid "Beep"
 #~ msgstr "Pitido"
-
 #~ msgid "Music"
 #~ msgstr "Música"
-
 #~ msgid "Never"
 #~ msgstr "Nunca"
-
 #~ msgid "Everyday"
 #~ msgstr "Cada día"
-
 #~ msgid "Monday - Friday"
 #~ msgstr "lunes -viernes"
-
 #~ msgid "Monday"
 #~ msgstr "lunes"
-
 #~ msgid "Tuesday"
 #~ msgstr "martes"
-
 #~ msgid "Wednesday"
 #~ msgstr "miércoles"
-
 #~ msgid "Thursday"
 #~ msgstr "jueves"
-
 #~ msgid "Friday"
 #~ msgstr "viernes"
-
 #~ msgid "Saturday"
 #~ msgstr "sábado"
-
 #~ msgid "Sunday"
 #~ msgstr "domingo"
-
 #~ msgid "Alarm settings"
 #~ msgstr "Configuración de alarma"
-
 #~ msgid "ON"
 #~ msgstr "ENCENDIDO"
-
 #~ msgid "Repeat"
 #~ msgstr "Repetir"
-
 #~ msgid "Snooze"
 #~ msgstr "Temporizador"
-
 #~ msgid "Sound"
 #~ msgstr "Sonido"
-
 #~ msgid "Delete alarm"
 #~ msgstr "Borrar alarma"
-
 #~ msgid ""
 #~ "New\n"
 #~ "Alarm"
 #~ msgstr ""
 #~ "Nueva\n"
 #~ "Alarma"
-
 #~ msgid "Alarm Notify"
 #~ msgstr "No"
-
 #~ msgid "Alarm at %d:%.2d %s"
 #~ msgstr "Alarma en %d:%.2d %s"
-
 #~ msgid "am"
 #~ msgstr "am"
-
 #~ msgid "pm"
 #~ msgstr "pm"
-
 #~ msgid "Moblin Alarm Notify"
 #~ msgstr "Notificar Alarma de Moblin"
-
 #~ msgid "AlarmNotifications"
 #~ msgstr "Notificaciones de alarma"
-
 #~ msgid "MON-FRI"
 #~ msgstr "LUN-VIE"
-
 #~ msgid "MONDAYS"
 #~ msgstr "LUNES"
-
 #~ msgid "TUESDAYS"
 #~ msgstr "MARTES"
-
 #~ msgid "WEDNESDAYS"
 #~ msgstr "MIÉRCOLES"
-
 #~ msgid "THURSDAYS"
 #~ msgstr "JUEVES"
-
 #~ msgid "FRIDAYS"
 #~ msgstr "VIERNES"
-
 #~ msgid "SATURDAYS"
 #~ msgstr "SÁBADOS"
-
 #~ msgid "SUNDAYS"
 #~ msgstr "DOMINGOS"
-
 #~ msgid "Search"
 #~ msgstr "Buscar"
-
 #~ msgid "Moblin alarm notify"
 #~ msgstr "Notificar alarma Moblin"
+
