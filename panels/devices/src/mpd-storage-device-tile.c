@@ -21,7 +21,6 @@
 #include <stdbool.h>
 
 #include <glib/gi18n.h>
-#include <gio/gdesktopappinfo.h>
 #include <gtk/gtk.h>
 #include <libnotify/notify.h>
 
@@ -104,23 +103,6 @@ typedef struct
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
-#define MPD_STORAGE_DEVICE_TILE_ERROR (mpd_storage_device_tile_error_quark ())
-
-enum
-{
-  MPD_STORAGE_DEVICE_TILE_ERROR_DESKTOP_FILE_MISSING,
-  MPD_STORAGE_DEVICE_TILE_ERROR_EXECUTABLE_MISSING
-};
-
-static GQuark
-mpd_storage_device_tile_error_quark (void)
-{
-  static GQuark _quark = 0;
-  if (!_quark)
-    _quark = g_quark_from_static_string ("mpd-storage-device-tile-error");
-  return _quark;
-}
-
 static void
 update (MpdStorageDeviceTile *self)
 {
@@ -161,72 +143,26 @@ _storage_size_notify_cb (MpdStorageDevice     *storage,
   update (self);
 }
 
-static bool
-launch_gthumb (GError **error)
-{
-  GAppInfo *appinfo;
-
-  appinfo = (GAppInfo *) g_desktop_app_info_new ("gthumb-import.desktop");
-  if (NULL == appinfo)
-  {
-    *error = g_error_new (MPD_STORAGE_DEVICE_TILE_ERROR,
-                          MPD_STORAGE_DEVICE_TILE_ERROR_DESKTOP_FILE_MISSING,
-                          "%s : Failed to open \"gthumb-import.desktop\"",
-                          G_STRLOC);
-    return false;
-  }
-
-  return g_app_info_launch (appinfo, NULL, NULL, error);
-}
-
-static bool
-launch_banshee (GError **error)
-{
-  char  *binary;
-
-#define BANSHEE "banshee-1"
-
-  binary = g_find_program_in_path (BANSHEE);
-  if (NULL == binary)
-  {
-    *error = g_error_new (MPD_STORAGE_DEVICE_TILE_ERROR,
-                          MPD_STORAGE_DEVICE_TILE_ERROR_EXECUTABLE_MISSING,
-                          "%s : Failed to find \"%s\" in the path",
-                          G_STRLOC,
-                          BANSHEE);
-    return false;
-  } else
-  {
-    g_free (binary);
-  }
-
-  return g_spawn_command_line_async (BANSHEE " --show-import-media", error);
-
-#undef BANSHEE
-}
-
 static void
 _import_clicked_cb (MxButton             *button,
                     MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char const  *program = NULL;
+  char const  *command_line;
   GError      *error = NULL;
 
-  /* FIXME: get program name from desktop for error message. */
   if (0 == g_strcmp0 ("x-content/image-dcf", priv->mime_type))
   {
-    launch_gthumb (&error);
-    program = "GThumb";
+    command_line = "gthumb --import-photos";
   } else {
-    launch_banshee (&error);
-    program = "Banshee";
+    command_line = "banshee-1 --show-import-media";
   }
 
+  g_spawn_command_line_async (command_line, &error);
   if (error)
   {
     NotifyNotification *note;
-    char *message = g_strdup_printf (_("Could not run %s"), program);
+    char *message = g_strdup_printf (_("Could not run %s"), command_line);
 
     note = notify_notification_new (_("Import error"), message, NULL, NULL);
     notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);

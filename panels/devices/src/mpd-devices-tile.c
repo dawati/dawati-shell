@@ -311,7 +311,7 @@ add_tile_from_mount (MpdDevicesTile *self,
   uri = g_file_get_uri (file);
 
   mime_types = g_mount_guess_content_type_sync (mount, false, NULL, &error);
-  for (int i = 0; mime_types && mime_types[i]; i++)
+  for (int i = 0; mime_types[i]; i++)
   {
     g_debug ("%s", mime_types[i]);
   }
@@ -330,10 +330,7 @@ add_tile_from_mount (MpdDevicesTile *self,
   icon_file = gtk_icon_info_get_filename (icon_info);
   g_debug ("%s() %s", __FUNCTION__, icon_file);
 
-  tile = mpd_storage_device_tile_new (name,
-                                      uri,
-                                      mime_types ? mime_types[0] : NULL,
-                                      icon_file);
+  tile = mpd_storage_device_tile_new (name, uri, mime_types[0], icon_file);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
