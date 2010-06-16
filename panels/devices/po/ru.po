@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:42+0000\n"
-"PO-Revision-Date: 2010-04-16 14:29+0200\n"
-"Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
+"PO-Revision-Date: 2010-06-15 18:48-0800\n"
+"Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,75 +65,73 @@ msgid "Running low on battery"
 msgstr "Заряд батареи на исходе"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Заряд батареи на исходе. При возможности подключите сетевой кабель и зарядите ее."
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Заряд батареи на исходе. При возможности подключите шнур питания и зарядите ее."
 
 #: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
 msgstr "Заряд практически исчерпан"
 
 #: ../power-icon/src/mpd-power-icon.c:81
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "Заряд батареии практически исчерпан. Сохраните результаты своей работы и как можно быстрее подключите сетевой кабель."
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "Заряд батареи практически исчерпан. Сохраните результаты своей работы и как можно быстрее подключите шнур питания."
 
 #: ../power-icon/src/mpd-power-icon.c:85
 msgid "Danger!"
 msgstr "Внимание!"
 
 #: ../power-icon/src/mpd-power-icon.c:86
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Заряд батареи компьютера исчерпан, он будет выключен. Сохраните свою работу, и до скорой встречи!"
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Заряд батареи исчерпан и компьютер будет выключен. Сохраните свою работу, и до скорой встречи!"
 
-#: ../power-icon/src/mpd-power-icon.c:336
-msgid "Would you like to turn off now?"
-msgstr "Отключить питание немедленно?"
-
-#: ../power-icon/src/mpd-power-icon.c:337
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
-
-#: ../power-icon/src/mpd-power-icon.c:441
+#: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
 msgstr "батарея"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:71
+#: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Если вы ничего не предпримите, компьютер отключится через %d секунд."
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Если вы ничего не предпримите, компьютер отключится через %d секунду."
+msgstr[1] "Если вы ничего не предпримите, компьютер отключится через %d секунд."
 
-#: ../power-icon/src/mpd-shutdown-notification.c:127
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "Отключить"
 
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin Power Icon"
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Отключить питание немедленно?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
 
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "Панель устройств MeeGo"
 
-#: ../src/mpd-battery-device.c:329
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Похоже, у вас отсутствует батарея."
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Батарея заряжается. Ее заряд составляет %d%%."
 
-#: ../src/mpd-battery-device.c:338
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Батарея используется. Ее заряд составляет %d%%."
 
-#: ../src/mpd-battery-device.c:343
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Батарея заряжена полностью, можете продолжить работу."
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Похоже, ваша батарея неисправна."
@@ -163,6 +161,14 @@ msgstr ""
 msgid "Other devices"
 msgstr "Другие устройства"
 
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Операция извлечения была выполнена неудачно так как устройство, скорее всего, используется программным обеспечением"
+
+#: ../src/mpd-devices-tile.c:420
+msgid "It is safe to unplug this device now"
+msgstr "Сейчас можно безопасно извлечь устройство"
+
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
@@ -176,37 +182,40 @@ msgstr "Корзина"
 msgid "Devices"
 msgstr "Устройства"
 
-#: ../src/mpd-storage-device-tile.c:162
+#: ../src/mpd-storage-device-tile.c:165
 #, c-format
 msgid "Could not run %s"
 msgstr "Не удалось запустить %s"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:167
 msgid "Import error"
 msgstr "Ошибка импорта"
 
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:499
-msgid "Import data"
-msgstr "Импорт данных"
+# If space is a problem, we can use an equally good alternative "Импорт фото"
+#: ../src/mpd-storage-device-tile.c:278
+msgid "Import photos"
+msgstr "Импорт фотографий"
+
+#: ../src/mpd-storage-device-tile.c:280
+msgid "Import media"
+msgstr "Импорт медиа-данных"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:510
+#: ../src/mpd-storage-device-tile.c:538
 msgid "Eject"
 msgstr "Извлечь"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:521
+#: ../src/mpd-storage-device-tile.c:549
 msgid "Open"
 msgstr "Открыть"
 
-#: ../src/mpd-storage-device-tile.c:711
+#: ../src/mpd-storage-device-tile.c:742
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> использует <span color='%s'>%d%% из %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:719
+#: ../src/mpd-storage-device-tile.c:750
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -247,31 +256,35 @@ msgstr "Очень тихо"
 msgid "Silent"
 msgstr "Без звука"
 
+# Will need to see it in actual UI in order to translate correctly. Is "Volume" an HDD volume (C:\, D:\, etc.) or is it something else?
 #: ../src/mpd-volume-tile.c:355
-msgid "Netbook volume"
-msgstr "Громкость нетбука"
+msgid "Computer volume"
+msgstr "Том компьютера"
 
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Без звука"
 
-#: ../src/mpd-devices-tile.c:389 ../src/mpd-devices-tile.c:421
-msgid "It is safe to unplug this device now"
-msgstr "Сейчас можно безопасно извлечь устройство"
+#~ msgid "Moblin Power Icon"
+#~ msgstr "Moblin Power Icon"
 
-#: ../src/mpd-devices-tile.c:72 ../src/mpd-devices-tile.c:95
-#: ../src/mpd-devices-tile.c:137
-msgid "Ejecting failed, looks like an application is using it"
-msgstr "Операция извлечения была выполнена неудачно так как устройство, скорее всего, используется программным обеспечением"
+#~ msgid "Netbook volume"
+#~ msgstr "Громкость нетбука"
 
-#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-#~ msgstr "<span font-weight='bold'>Импорт данных</span> <span color='%s'>%d%%</span>"
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>Импорт данных</span> <span color='%s'>%d%%</span>"
 
 #~ msgid "Stop"
 #~ msgstr "Стоп"
 
-#~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-#~ msgstr "%s было подключено. Для взаимодействия с ним можно использовать панель Устройства"
+#~ msgid ""
+#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr ""
+#~ "%s было подключено. Для взаимодействия с ним можно использовать панель "
+#~ "Устройства"
 
 #~ msgid "USB plugged in"
 #~ msgstr "USB подключено"
@@ -474,14 +487,20 @@ msgstr "Операция извлечения была выполнена неу
 #~ msgid "Error listening to address `localhost:%d': %s: %s\n"
 #~ msgstr "Ошибка прослушивания адреса `localhost:%d': %s: %s\n"
 
-#~ msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
-#~ msgstr "Ошибка создания локального TCP-сервера, попытка привязки к портам 9000-10000 на рабочей станции"
+#~ msgid ""
+#~ "Error creating a local TCP server, tried binding to ports 9000-10000 on "
+#~ "localhost"
+#~ msgstr ""
+#~ "Ошибка создания локального TCP-сервера, попытка привязки к портам 9000-"
+#~ "10000 на рабочей станции"
 
 #~ msgid "Error setting auth mechanisms on local DBusServer\n"
 #~ msgstr "Ошибка установки механизмов авторизации на локальном DBusServer\n"
 
 #~ msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-#~ msgstr "Невозможно интерпретировать командную строку `%s' (Неправильный адрес?): %s"
+#~ msgstr ""
+#~ "Невозможно интерпретировать командную строку `%s' (Неправильный адрес?): %"
+#~ "s"
 
 #~ msgid "Unable to spawn ssh program: %s"
 #~ msgstr "Невозможно создать программу ssh: %s"
