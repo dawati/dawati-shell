@@ -21,6 +21,7 @@
 #include <stdbool.h>
 
 #include <glib/gi18n.h>
+#include <gio/gdesktopappinfo.h>
 #include <gtk/gtk.h>
 #include <libnotify/notify.h>
 
@@ -103,6 +104,17 @@ typedef struct
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
+#define MPD_STORAGE_DEVICE_TILE_ERROR (mpd_storage_device_tile_error_quark ())
+
+static GQuark
+mpd_storage_device_tile_error_quark (void)
+{
+  static GQuark _quark = 0;
+  if (!_quark)
+    _quark = g_quark_from_static_string ("mpd-storage-device-tile-error");
+  return _quark;
+}
+
 static void
 update (MpdStorageDeviceTile *self)
 {
@@ -143,26 +155,91 @@ _storage_size_notify_cb (MpdStorageDevice     *storage,
   update (self);
 }
 
+static bool
+launch_gthumb_import (MpdStorageDeviceTile  *self,
+                      GError               **error)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+  GAppInfo *appinfo;
+  GList     uris = { NULL, };
+
+  appinfo = (GAppInfo *) g_desktop_app_info_new ("gthumb-import.desktop");
+  if (NULL == appinfo)
+  {
+    *error = g_error_new (MPD_STORAGE_DEVICE_TILE_ERROR,
+                          0,
+                          "%s : Failed to open \"gthumb-import.desktop\"",
+                          G_STRLOC);
+    return false;
+  }
+
+  uris.data = priv->mount_point;
+  g_debug ("gthumb-imported.desktop %s", priv->mount_point);
+
+  return g_app_info_launch_uris (appinfo, &uris, NULL, error);
+}
+
+static bool
+launch_import (MpdStorageDeviceTile   *self,
+               char const             *program,
+               char const             *args,
+               GError                **error)
+{
+  char  *binary;
+  char  *command_line;
+  bool   ret;
+
+  binary = g_find_program_in_path (program);
+  if (NULL == binary)
+  {
+    *error = g_error_new (MPD_STORAGE_DEVICE_TILE_ERROR,
+                          0,
+                          "%s : Failed to find \"%s\" in the path",
+                          G_STRLOC,
+                          program);
+    return false;
+  } else
+  {
+    g_free (binary);
+  }
+
+  command_line = g_strconcat (program, " ", args, NULL);
+  ret = g_spawn_command_line_async (command_line, error);
+  g_free (command_line);
+  return ret;
+}
+
 static void
 _import_clicked_cb (MxButton             *button,
                     MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char const  *command_line;
+  char const  *program = NULL;
   GError      *error = NULL;
 
   if (0 == g_strcmp0 ("x-content/image-dcf", priv->mime_type))
   {
-    command_line = "gthumb --import-photos";
-  } else {
-    command_line = "banshee-1 --show-import-media";
+    /* Photo devices are handled by GThumb.
+     * + gphoto2 devices are launched through gthumb-import.desktop with
+     *   its Exec hack for exclusive device access.
+     * + others (USB cameras) don't work with that hack, so GThumb is
+     *   launched in import mode manually. */
+    char *scheme = g_uri_parse_scheme (priv->mount_point);
+    program = "gthumb";
+    if (0 == g_strcmp0 ("gphoto2", scheme))
+      launch_gthumb_import (self, &error);
+    else
+      launch_import (self, program, "--import-photos", &error);
+  } else
+  {
+    program = "banshee-1";
+    launch_import (self, program, "--show-import-media", &error);
   }
 
-  g_spawn_command_line_async (command_line, &error);
   if (error)
   {
     NotifyNotification *note;
-    char *message = g_strdup_printf (_("Could not run %s"), command_line);
+    char *message = g_strdup_printf (_("Could not run \"%s\""), program);
 
     note = notify_notification_new (_("Import error"), message, NULL, NULL);
     notify_notification_set_urgency (note, NOTIFY_URGENCY_CRITICAL);
