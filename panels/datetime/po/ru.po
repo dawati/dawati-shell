@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-14 09:22+0000\n"
-"PO-Revision-Date: 2010-06-15 18:37-0800\n"
+"PO-Revision-Date: 2010-06-15 18:58-0800\n"
 "Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -117,7 +117,6 @@ msgstr "Задания"
 msgid "Open Tasks"
 msgstr "Открыть Задания"
 
-# Need to see it in actual UI
 #: ../src/mnp-shell.c:164
 msgid "Time and Date"
 msgstr "Время и дата"
