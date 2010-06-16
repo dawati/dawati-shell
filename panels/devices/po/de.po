@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-12 09:44+0000\n"
+"POT-Creation-Date: 2010-06-14 09:22+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
+"Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,15 +60,15 @@ msgid "Running low on battery"
 msgstr "Der Akku wird schwach"
 
 #: ../power-icon/src/mpd-power-icon.c:77
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Wir haben festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstecken und Aufladen jetzt eine gute Idee."
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Ich habe festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstecken und Aufladen jetzt eine gute Idee."
 
 #: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
 msgstr "Akku ist fast leer"
 
 #: ../power-icon/src/mpd-power-icon.c:81
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "Dein Akku ist ziemlich schwach. Es wäre wirklich eine gute Idee, alles zu speichern und dann unverzüglich aufzuladen."
 
 #: ../power-icon/src/mpd-power-icon.c:85
@@ -76,55 +76,57 @@ msgid "Danger!"
 msgstr "Gefahr!"
 
 #: ../power-icon/src/mpd-power-icon.c:86
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Leider hat dein Computer keinen Saft mehr. Wir müssen jetzt abschalten. Bitte speichere alles Wichtige und wir hoffen dich bald wiederzusehen."
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Leider hat dein Computer keinen Saft mehr. Ich muss jetzt abschalten. Bitte speichere alles Wichtige und ich hoffe dich bald wiederzusehen."
 
-#: ../power-icon/src/mpd-power-icon.c:336
-msgid "Would you like to turn off now?"
-msgstr "Möchtest du jetzt abschalten?"
-
-#: ../power-icon/src/mpd-power-icon.c:337
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
-
-#: ../power-icon/src/mpd-power-icon.c:441
+#: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
 msgstr "Akku"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:71
+#: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunde ab."
+msgstr[1] "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
 
-#: ../power-icon/src/mpd-shutdown-notification.c:127
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "Abschalten"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Möchtest du jetzt abschalten?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
 
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo Panel Geräte"
 
-#: ../src/mpd-battery-device.c:329
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Leider scheinst du keinen Akku installiert zu haben."
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Dein Akku wird geladen. Er ist etwa %d%% voll."
 
-#: ../src/mpd-battery-device.c:338
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Dein Akku wird genutzt. Er ist etwa %d%% voll."
 
-#: ../src/mpd-battery-device.c:343
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Dein Akku ist voll geladen und du kannst loslegen."
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Leider scheint dein Akku defekt zu sein."
@@ -154,12 +156,11 @@ msgstr ""
 msgid "Other devices"
 msgstr "Andere Geräte"
 
-#: ../src/mpd-devices-tile.c:72 ../src/mpd-devices-tile.c:95
-#: ../src/mpd-devices-tile.c:137
+#: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "Auswerfen fehlgeschlagen, es wird wahrscheinlich von einer Anwendung benutzt."
 
-#: ../src/mpd-devices-tile.c:389 ../src/mpd-devices-tile.c:421
+#: ../src/mpd-devices-tile.c:420
 msgid "It is safe to unplug this device now"
 msgstr "Dieses Gerät kann jetzt entfernt werden."
 
@@ -176,31 +177,39 @@ msgstr "Abfall"
 msgid "Devices"
 msgstr "Geräte"
 
-#: ../src/mpd-storage-device-tile.c:162
+#: ../src/mpd-storage-device-tile.c:165
 #, c-format
 msgid "Could not run %s"
 msgstr "%s konnte nicht ausgeführt werden."
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:167
 msgid "Import error"
 msgstr "Fehler beim Importieren"
 
+#: ../src/mpd-storage-device-tile.c:278
+msgid "Import photos"
+msgstr "Fotos importieren"
+
+#: ../src/mpd-storage-device-tile.c:280
+msgid "Import media"
+msgstr "Medien importieren"
+
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:510
+#: ../src/mpd-storage-device-tile.c:538
 msgid "Eject"
 msgstr "Auswerfen"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:521
+#: ../src/mpd-storage-device-tile.c:549
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../src/mpd-storage-device-tile.c:711
+#: ../src/mpd-storage-device-tile.c:742
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> benutzt <span color='%s'>%d%% von %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:719
+#: ../src/mpd-storage-device-tile.c:750
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -242,30 +251,33 @@ msgid "Silent"
 msgstr "Still"
 
 #: ../src/mpd-volume-tile.c:355
-msgid "Netbook volume"
-msgstr "Netbook-Lautstärke"
+msgid "Computer volume"
+msgstr "Computerlautstärke"
 
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Stumm"
 
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:499
-msgid "Import data"
-msgstr "Importieren"
+#~ msgid "Netbook volume"
+#~ msgstr "Netbook-Lautstärke"
 
 #~ msgid "Moblin Power Icon"
 #~ msgstr "Moblin Energiesymbol"
 
-#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-#~ msgstr "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%d%%</span>"
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%"
+#~ "d%%</span>"
 
 #~ msgid "Stop"
 #~ msgstr "Stop"
 
-#~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-#~ msgstr "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
+#~ msgid ""
+#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr ""
+#~ "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
 
 #~ msgid "USB plugged in"
 #~ msgstr "USB ist angeschlossen"
