@@ -2656,45 +2656,21 @@ mnb_toolbar_lowlight_button_press_cb (ClutterActor *lowlight,
 static void
 mnb_toolbar_set_struts (MnbToolbar *toolbar)
 {
-  MnbToolbarPrivate *priv           = toolbar->priv;
-  MutterPlugin      *plugin         = priv->plugin;
-  gboolean           netbook_mode   = moblin_netbook_use_netbook_mode (plugin);
-  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen        *screen         = mutter_plugin_get_screen (plugin);
-  MetaDisplay       *display        = meta_screen_get_display (screen);
-  Display           *xdpy           = meta_display_get_xdisplay (display);
-  Window             xwin           = ppriv->focus_xwin;
-  Atom               strut_atom     = meta_display_get_atom (display,
-                                                      META_ATOM__NET_WM_STRUT);
+  MnbToolbarPrivate *priv         = toolbar->priv;
+  MutterPlugin      *plugin       = priv->plugin;
+  gboolean           netbook_mode = moblin_netbook_use_netbook_mode (plugin);
 
   /*
    * When not in netbook mode, we need to reserve space for the toolbar.
    */
   if (!netbook_mode && !priv->struts_set)
     {
-      gint32 strut[4] = {0,};
-
-      strut[2] = TOOLBAR_HEIGHT;
-
-      meta_error_trap_push (display);
-
-      XChangeProperty (xdpy, xwin,
-                       strut_atom,
-                       XA_CARDINAL, 32, PropModeReplace,
-                       (unsigned char *) &strut, 4);
-
-      meta_error_trap_pop (display, FALSE);
-
+      moblin_netbook_set_struts (plugin, -1, -1, TOOLBAR_HEIGHT, -1);
       priv->struts_set = TRUE;
     }
   else if (netbook_mode && priv->struts_set)
     {
-      meta_error_trap_push (display);
-
-      XDeleteProperty (xdpy, xwin, strut_atom);
-
-      meta_error_trap_pop (display, FALSE);
-
+      moblin_netbook_set_struts (plugin, -1, -1, 0, -1);
       priv->struts_set = FALSE;
     }
 }

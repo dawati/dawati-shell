@@ -189,4 +189,11 @@ moblin_netbook_get_compositor_option_flags (void);
 gboolean
 moblin_netbook_urgent_notification_present (MutterPlugin *plugin);
 
+void
+moblin_netbook_set_struts (MutterPlugin *plugin,
+                           gint          left,
+                           gint          right,
+                           gint          top,
+                           gint          bottom);
+
 #endif

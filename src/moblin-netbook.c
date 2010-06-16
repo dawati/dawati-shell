@@ -2946,3 +2946,80 @@ moblin_netbook_urgent_notification_present (MutterPlugin *plugin)
   return ntf_overlay_urgent_notification_present ();
 }
 
+/*
+ * pass -1 for any values not to be used.
+ */
+void
+moblin_netbook_set_struts (MutterPlugin *plugin,
+                           gint          left,
+                           gint          right,
+                           gint          top,
+                           gint          bottom)
+{
+  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MetaScreen        *screen         = mutter_plugin_get_screen (plugin);
+  MetaDisplay       *display        = meta_screen_get_display (screen);
+  Display           *xdpy           = meta_display_get_xdisplay (display);
+  Window             xwin           = ppriv->focus_xwin;
+  Atom               strut_atom     = meta_display_get_atom (display,
+                                                      META_ATOM__NET_WM_STRUT);
+
+  static gint32 struts[4] = {-1, -1, -1, -1};
+
+  if (left   != struts[0] ||
+      right  != struts[1] ||
+      top    != struts[2] ||
+      bottom != struts[3])
+    {
+      if (left >= 0)
+        struts[0] = left;
+
+      if (right >= 0)
+        struts[1] = right;
+
+      if (top >= 0)
+        struts[2] = top;
+
+      if (bottom >= 0)
+        struts[3] = bottom;
+
+      if (struts[0] <= 0 &&
+          struts[1] <= 0 &&
+          struts[2] <= 0 &&
+          struts[3] <= 0)
+        {
+          struts[0] = struts[1] = struts[2] = struts[3] = -1;
+
+          meta_error_trap_push (display);
+
+          XDeleteProperty (xdpy, xwin, strut_atom);
+
+          meta_error_trap_pop (display, FALSE);
+        }
+      else
+        {
+          gint32 new_struts[4] = {0,};
+
+          if (struts[0] > 0)
+            new_struts[0] = struts[0];
+
+          if (struts[1] > 0)
+            new_struts[1] = struts[1];
+
+          if (struts[2] > 0)
+            new_struts[2] = struts[2];
+
+          if (struts[3] > 0)
+            new_struts[3] = struts[3];
+
+          meta_error_trap_push (display);
+
+          XChangeProperty (xdpy, xwin,
+                           strut_atom,
+                           XA_CARDINAL, 32, PropModeReplace,
+                           (unsigned char *) &new_struts, 4);
+
+          meta_error_trap_pop (display, FALSE);
+        }
+    }
+}
