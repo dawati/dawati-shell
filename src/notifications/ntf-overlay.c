@@ -145,6 +145,8 @@ struct _NtfOverlayPrivate
   NtfTray      *tray_urgent;
   ClutterActor *lowlight;
 
+  gulong        stage_allocation_id;
+
   guint disposed : 1;
 };
 
@@ -320,6 +322,40 @@ ntf_overlay_constructor (GType                  type,
 
   return (GObject*)self__;
 }
+
+static void
+ntf_overlay_stage_allocation_cb (GObject      *object,
+                                 GParamSpec   *spec,
+                                 ClutterActor *overlay)
+{
+  clutter_actor_queue_relayout (overlay);
+}
+
+static void
+ntf_overlay_parent_set (ClutterActor *overlay, ClutterActor *old_parent)
+{
+  NtfOverlayPrivate *priv   = NTF_OVERLAY (overlay)->priv;
+  ClutterActorClass *klass  = CLUTTER_ACTOR_CLASS (ntf_overlay_parent_class);
+  ClutterActor      *parent = clutter_actor_get_parent (overlay);
+
+  if (priv->stage_allocation_id)
+    {
+      g_signal_handler_disconnect (old_parent, priv->stage_allocation_id);
+      priv->stage_allocation_id = 0;
+    }
+
+  if (klass->parent_set)
+    klass->parent_set (overlay, old_parent);
+
+  if (parent)
+    {
+      priv->stage_allocation_id =
+        g_signal_connect (parent, "notify::allocation",
+                          G_CALLBACK (ntf_overlay_stage_allocation_cb),
+                          overlay);
+    }
+}
+
 static void
 ntf_overlay_class_init (NtfOverlayClass *klass)
 {
@@ -340,6 +376,7 @@ ntf_overlay_class_init (NtfOverlayClass *klass)
   actor_class->allocate             = ntf_overlay_allocate;
   actor_class->get_preferred_height = ntf_overlay_get_preferred_height;
   actor_class->get_preferred_width  = ntf_overlay_get_preferred_width;
+  actor_class->parent_set           = ntf_overlay_parent_set;
 }
 
 static void
@@ -489,4 +526,3 @@ ntf_overlay_urgent_notification_present (void)
 
   return FALSE;
 }
-
