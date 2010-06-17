@@ -393,7 +393,7 @@ notification_manager_get_capabilities (MoblinNetbookNotifyStore   *notify,
 {
   g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify) && caps, FALSE);
 
-  *caps = g_new0 (gchar *, 6);
+  *caps = g_new0 (gchar *, 7);
 
   (*caps)[0] = g_strdup ("body");
   (*caps)[1] = g_strdup ("body-markup");
