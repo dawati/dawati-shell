@@ -539,6 +539,21 @@ mnb_launcher_application_set_icon (MnbLauncherApplication *self,
 
   g_free (priv->icon);
   priv->icon = g_strdup (icon);
+
+  if (priv->icon && !g_path_is_absolute (priv->icon))
+    {
+      /* Cut off suffix. GDesktopAppInfo does this and we want to be
+       * consistent with the myzone. */
+      gchar *suffix = strrchr (priv->icon, '.');
+      if (suffix &&
+            (0 == g_ascii_strcasecmp (suffix, ".png") ||
+             0 == g_ascii_strcasecmp (suffix, ".svg") ||
+             0 == g_ascii_strcasecmp (suffix, ".xpm")))
+        {
+          *suffix = '\0';
+        }
+    }
+
   g_object_notify (G_OBJECT (self), "icon");
 }
 
