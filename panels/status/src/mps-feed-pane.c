@@ -38,9 +38,9 @@
 #include <libsocialweb-client/sw-client-service.h>
 #include <mx/mx.h>
 
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-entry.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-entry.h>
+#include <meego-panel/mpl-panel-common.h>
 
 #include "mps-view-bridge.h"
 #include "mps-feed-pane.h"

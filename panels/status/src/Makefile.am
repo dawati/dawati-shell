@@ -1,7 +1,6 @@
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 INCLUDES = \
-	-DG_LOG_DOMAIN=\"Mutter-Moblin-Status\" \
 	-DPREFIX=\"$(prefix)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
@@ -14,13 +13,13 @@ sw-marshals.h: sw-marshals.list Makefile.am
 	$(QUIET_GEN)glib-genmarshal --header --prefix=sw_marshal $< > $@
 
 
-libexec_PROGRAMS = moblin-panel-status
+libexec_PROGRAMS = meego-panel-status
 BUILT_SOURCES = sw-marshals.c sw-marshals.h
 
-moblin_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
-moblin_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
-moblin_panel_status_SOURCES  = 	\
-	moblin-panel-status.c \
+meego_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
+meego_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
+meego_panel_status_SOURCES  = 	\
+	meego-panel-status.c \
 	penge-magic-texture.h \
 	penge-magic-texture.c \
 	penge-clickable-label.c \
@@ -39,8 +38,8 @@ moblin_panel_status_SOURCES  = 	\
 	sw-online.h
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.status.service.in
-service_DATA = org.moblin.UX.Shell.Panels.status.service
+service_in_files = com.meego.UX.Shell.Panels.status.service.in
+service_DATA = com.meego.UX.Shell.Panels.status.service
 
 EXTRA_DIST = $(service_in_files) sw-marshals.list
 
@@ -48,5 +47,5 @@ CLEANFILES = stamp-mnb-status-marshal.h
 
 DISTCLEANFILES = $(service_DATA) $(BUILT_SOURCES)
 
-org.moblin.UX.Shell.Panels.status.service: $(service_in_files) Makefile
+com.meego.UX.Shell.Panels.status.service: $(service_in_files) Makefile
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@

@@ -25,7 +25,7 @@
 
 #include <glib/gi18n.h>
 
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-entry.h>
 #include <gconf/gconf-client.h>
 
 G_DEFINE_TYPE (MpsGeotagPane, mps_geotag_pane, MX_TYPE_TABLE)
@@ -80,11 +80,11 @@ struct _MpsGeotagPanePrivate {
 
 static guint signals[LAST_SIGNAL] = { 0, };
 
-#define STATUS_PANEL_GCONF_DIR "/desktop/moblin/status"
-#define STATUS_PANEL_GEOTAG_KEY "/desktop/moblin/status/enable_geotag"
-#define STATUS_PANEL_LATITUDE_KEY "/desktop/moblin/status/saved_latitude"
-#define STATUS_PANEL_LONGITUDE_KEY "/desktop/moblin/status/saved_longitude"
-#define STATUS_PANEL_GUESS_LOCATION_KEY "/desktop/moblin/status/guess_location"
+#define STATUS_PANEL_GCONF_DIR "/desktop/meego/status"
+#define STATUS_PANEL_GEOTAG_KEY "/desktop/meego/status/enable_geotag"
+#define STATUS_PANEL_LATITUDE_KEY "/desktop/meego/status/saved_latitude"
+#define STATUS_PANEL_LONGITUDE_KEY "/desktop/meego/status/saved_longitude"
+#define STATUS_PANEL_GUESS_LOCATION_KEY "/desktop/meego/status/guess_location"
 
 static void
 mps_geotag_pane_get_property (GObject *object, guint property_id,

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/meego-panel-status
+TryExec=@libexecdir@/meego-panel-status
+_Name=status
+Icon=meego-panel-status
+_Comment=Status panel
+Terminal=false
+Categories=
+OnlyShowIn=MEEGO;
+X-Meego-Priority=Low
+X-Meego-Service=com.meego.UX.Shell.Panels.status
+X-Meego-Panel-Optional=true
+X-Meego-Panel-Button-Style=status-button

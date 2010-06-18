@@ -1,19 +1,9 @@
-moblin-panel-status: The Status panel for Moblin 2.0
+meego-panel-status: The Status panel for MeeGo
 
-The moblin-panel-status provides the Status panel for the Moblin 2.0
-shell. Inside the Status panel you can:
+The meego-panel-status provides the Status panel for the MeeGo shell. Inside
+the Status panel you can see and edit your status for Web services
 
-        - see and edit your status for Web services
-        - see and edit your presence for Instant Messaging accounts
-
-Dependencies:
-
-  - Clutter >= 1.0.0
-  - NBTK >= 1.0.0
-  - Mojito >= 0.20.0
-  - Mission-Control >= 4.x
-
-Copyright (C) 2009  Intel Corporation
+Copyright (C) 2010 Intel Corporation
 
 Licensed under the terms of the GNU Lesser General Public Library
 version 2.1

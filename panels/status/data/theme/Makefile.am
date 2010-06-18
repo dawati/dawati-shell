@@ -20,7 +20,7 @@ dist_theme_DATA = \
 	content-panel-background.png \
 	panel-background.png
 
-# Manage mutter-moblin's texture cache.
+# Manage mutter-meego's texture cache.
 
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/nbtk.cache

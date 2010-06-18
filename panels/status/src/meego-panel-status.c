@@ -39,8 +39,8 @@
 #include <libsocialweb-client/sw-client.h>
 #include <mx/mx.h>
 
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
 
 #include "mps-view-bridge.h"
 #include "mps-feed-switcher.h"
@@ -50,19 +50,19 @@
 "you will be able to view your feeds and update your status here." \
                               )
 
-typedef struct _MoblinStatusPanel
+typedef struct _MeegoStatusPanel
 {
   SwClient *client;
   SwClientView *view;
   MplPanelClient *panel_client;
   MpsViewBridge *bridge;
-} MoblinStatusPanel;
+} MeegoStatusPanel;
 
 
-static MoblinStatusPanel *panel;
+static MeegoStatusPanel *panel;
 
 void
-moblin_status_panel_hide (void)
+meego_status_panel_hide (void)
 {
   if (panel->panel_client)
     mpl_panel_client_hide ((MplPanelClient *)panel->panel_client);
@@ -75,13 +75,13 @@ _client_view_opened_cb (SwClient     *client,
                         SwClientView *view,
                         gpointer      userdata)
 {
-  MoblinStatusPanel *status_panel = (MoblinStatusPanel *)userdata;
+  MeegoStatusPanel *status_panel = (MeegoStatusPanel *)userdata;
 
   mps_view_bridge_set_view (status_panel->bridge, view);
 }
 
 static ClutterActor *
-make_status (MoblinStatusPanel *status_panel)
+make_status (MeegoStatusPanel *status_panel)
 {
   ClutterActor *pane;
   ClutterActor *table;
@@ -128,7 +128,7 @@ on_client_set_size (MplPanelClient *client,
 }
 
 static void
-setup_standalone (MoblinStatusPanel *status_panel)
+setup_standalone (MeegoStatusPanel *status_panel)
 {
   ClutterActor *stage, *status;
   Window xwin;
@@ -143,13 +143,13 @@ setup_standalone (MoblinStatusPanel *status_panel)
   clutter_actor_realize (stage);
   xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-  MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
+  mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
 
   clutter_actor_show (stage);
 }
 
 static void
-setup_panel (MoblinStatusPanel *status_panel)
+setup_panel (MeegoStatusPanel *status_panel)
 {
   MplPanelClient *panel;
   ClutterActor *stage, *status;
@@ -161,7 +161,7 @@ setup_panel (MoblinStatusPanel *status_panel)
                                  TRUE);
   status_panel->panel_client = panel;
 
-  MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (panel);
+  mpl_panel_clutter_setup_events_with_gtk ((MplPanelClutter *)panel);
 
   status = make_status (status_panel);
   mpl_panel_client_set_height_request (panel, 600);
@@ -180,7 +180,7 @@ static GOptionEntry status_options[] = {
     "standalone", 's',
     0,
     G_OPTION_ARG_NONE, &status_standalone,
-    "Do not embed into mutter-moblin", NULL
+    "Do not embed into mutter-meego", NULL
   },
 
   { NULL }
@@ -197,7 +197,7 @@ main (int argc, char *argv[])
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- moblin status panel");
+  context = g_option_context_new ("- meego status panel");
   g_option_context_add_main_entries (context, status_options, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, cogl_get_option_group ());
@@ -211,7 +211,7 @@ main (int argc, char *argv[])
 
   g_option_context_free (context);
 
-  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
+  mpl_panel_clutter_init_with_gtk (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/panel.css",
@@ -223,7 +223,7 @@ main (int argc, char *argv[])
       g_clear_error (&error);
     }
 
-  panel = g_new0 (MoblinStatusPanel, 1);
+  panel = g_new0 (MeegoStatusPanel, 1);
 
   if (status_standalone)
     setup_standalone (panel);
