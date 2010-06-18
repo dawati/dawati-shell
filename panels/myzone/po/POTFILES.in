@@ -1,11 +1,11 @@
 # List of source files containing translatable strings.
-data/moblin-panel-myzone.desktop.in.in
-data/moblin-panel-myzone.schemas.in
+data/meego-panel-myzone.desktop.in.in
+data/meego-panel-myzone.schemas.in
 data/myzone.desktop.in.in
 [type: gettext/glade]data/capplet.ui
 capplet/gconf-bridge.c
 capplet/myzone-cc-panel.c
-src/moblin-panel-myzone.c
+src/meego-panel-myzone.c
 penge/penge-calendar-pane.c
 penge/penge-events-pane.c
 penge/penge-recent-file-tile.c

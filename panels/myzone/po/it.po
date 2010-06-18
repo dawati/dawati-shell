@@ -1,12 +1,12 @@
-# Italian translations for mutter-moblin package.
-# Copyright (C) 2009 mutter-moblin's copyright holder.
-# This file is distributed under the same license as the mutter-moblin package.
+# Italian translations for mutter-meego package.
+# Copyright (C) 2009 mutter-meego's copyright holder.
+# This file is distributed under the same license as the mutter-meego package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 #
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin\n"
+"Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: 2010-04-30 10:08-0800\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Pannello Myzone"
 
@@ -172,8 +172,8 @@ msgstr "Notifiche via email:"
 #~ msgid "Myzone settings"
 #~ msgstr "Impostazioni myzone"
 
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-#~ msgstr "<b>Benvenuti in Moblin 2.1 per netbook</b>"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>Benvenuti in Meego 2.1 per netbook</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Poiché Moblin è un po' diverso rispetto agli altri computer, sono state raggruppate alcune informazioni per comprendere al meglio il sistema. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Poiché Meego è un po' diverso rispetto agli altri computer, sono state raggruppate alcune informazioni per comprendere al meglio il sistema. Speriamo troviate tutto di Vostro gradimento, il team Meego."

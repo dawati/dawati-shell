@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone ਪੈਨਲ"
 
@@ -177,13 +177,13 @@ msgstr "ਨਾ-ਪੜ੍ਹੇ ਸੁਨੇਹੇ"
 #~ "accounts now!"
 #~ msgstr "ਤੁਹਾਡੇ ਦੋਸਤ ਚੀਜ਼ਾਂ ਕਰਨਗੇ, ਉਹ ਇੱਥੇ ਵੇਖਾਈਆਂ ਜਾਣਗੀਆਂ। ਆਪਣਾ ਅਕਾਊਂਟ ਹੁਣੇ ਐਕਟੀਵੇਟ ਕਰੋ!"
 
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>ਨੋਟਬੁੱਕ ਲਈ ਮੋਬਲਿਨ ੨.੧ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ</b>"
 
 #~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "As Meego is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
+#~ "enjoy it, The Meego Team."
 #~ msgstr ""
 #~ "ਮੋਬਲਿਨ ਹੋਰ ਕੰਪਿਊਟਰ ਤੋਂ ਕੁਝ ਅੱਡ ਹੈ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਮ ਕਰਨ ਲਈ ਮੱਦਦਗਾਰ ਹੋਣ ਵਾਸਤੇ ਬਹੁਤ ਕੁਝ "
 #~ "ਇੱਕਠਾ ਕੀਤਾ ਹੈ। ਅਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹਾਂ ਕਿ ਤੁਸੀਂ ਇਸ ਨਾਲ ਮੌਜਾਂ ਮਾਣੋਗੇ, ਮੋਬਲਿਨ ਟੀਮ"

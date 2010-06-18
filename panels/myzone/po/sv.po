@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone-panel"
 
@@ -165,8 +165,8 @@ msgstr "Email meddelanden"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Vad dina vänner gör på internvet visas här. Aktivera dina konton nu!"
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-#~ msgstr "<b>Välkommen till Moblin 2.1 för netbooks</b>"
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Moblin."
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>Välkommen till Meego 2.1 för netbooks</b>"
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Då Meego skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Meego."
 

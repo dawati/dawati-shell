@@ -37,12 +37,12 @@ msgid "Due %x"
 msgstr "%x-erako"
 
 #: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Ongietorri Moblin 2.1era</b>"
+msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+msgstr "<b>Ongietorri Meego 2.1era</b>"
 
 #: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "Beste ordenagailuekiko ezberdina denez Moblin, arrasto batzuk jarri dizkizugu han eta hemen, erabiltzen ikasi dezazun. Gozatuko duzula espero dugu, Moblin Taldea."
+msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+msgstr "Beste ordenagailuekiko ezberdina denez Meego, arrasto batzuk jarri dizkizugu han eta hemen, erabiltzen ikasi dezazun. Gozatuko duzula espero dugu, Meego Taldea."
 
 #: ../penge/penge-events-pane.c:60 ../penge/penge-tasks-pane.c:52
 msgid "Add"

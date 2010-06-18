@@ -48,7 +48,7 @@ msgstr "Bugün bir şey yok"
 msgid "Due %x"
 msgstr "%x kadar"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 #, fuzzy
 msgid "Myzone panel"
 msgstr "Myzone paneli"
@@ -58,16 +58,16 @@ msgid "Appointments"
 msgstr "Randevular"
 
 #: ../penge/penge-welcome-tile.c:67
-msgid "Welcome to Moblin"
-msgstr "Moblin e Hoşgeldiniz"
+msgid "Welcome to Meego"
+msgstr "Meego e Hoşgeldiniz"
 
 #: ../penge/penge-welcome-tile.c:86
 #, fuzzy
 msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
 msgstr "Burası Myzone; en son kullandığınız dosyaları ve web sayfalarının içerikleri burada görüntülenecek."
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin diğer bilgisayarlara göre biraz farklı, yolunuzu bulmanız içinetrafa çeşitli parçaları yerleştirdik. Umarız beğenirsiniz,Moblin Takımı"
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Meego diğer bilgisayarlara göre biraz farklı, yolunuzu bulmanız içinetrafa çeşitli parçaları yerleştirdik. Umarız beğenirsiniz,Meego Takımı"
 
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-#~ msgstr "<b>Netbooklar için Moblin 2.1'e Hoşgeldiniz</b>"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>Netbooklar için Meego 2.1'e Hoşgeldiniz</b>"

@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-myzone\n"
+"Project-Id-Version: meego-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:31+0000\n"
 "PO-Revision-Date: 2009-11-13 23:00+0200\n"
@@ -55,10 +55,10 @@ msgid "Due %x"
 msgstr "تاريخ الإستحقاق %x"
 
 #: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
+msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 msgstr "<b>مرحبًا بك بموبلن 2.1 لحواسيب الشبكة</b>"
 
 #: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
+msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
 msgstr "بما أن موبلن تختلف عن الحواسيب الاخرى، فقد جمعنا بعض القطع سويًا لمساعدتك  بايجاد طريقك. نأمل ان تستمتع بذلك، فريق موبلن."
 

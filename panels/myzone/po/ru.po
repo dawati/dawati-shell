@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Панель Myzone"
 
@@ -167,8 +167,8 @@ msgstr "E-mail оповещения:"
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Активности ваших друзей будут отображаться здесь. Активируйте учетную запись сейчас!"
 
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-#~ msgstr "<b>Добро пожаловать в Moblin 2.1</b>"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>Добро пожаловать в Meego 2.1</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Так как Moblin немного отличается от других компьютеров, мы расположили вместе некоторые программы, которые помогут вам ориентироваться. Мы надеемся, что вам понравится! Команда Moblin."
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Так как Meego немного отличается от других компьютеров, мы расположили вместе некоторые программы, которые помогут вам ориентироваться. Мы надеемся, что вам понравится! Команда Meego."

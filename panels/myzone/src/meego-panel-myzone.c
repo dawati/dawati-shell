@@ -25,13 +25,13 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
 #include <penge/penge-grid-view.h>
 
 #include <gconf/gconf-client.h>
 
-#define MOBLIN_MYZONE_DIR "/desktop/moblin/myzone"
+#define MEEGO_MYZONE_DIR "/desktop/meego/myzone"
 
 
 static GTimer *profile_timer = NULL;
@@ -58,7 +58,7 @@ _grid_view_activated_cb (PengeGridView *grid_view,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
   { NULL }
 };
 
@@ -109,7 +109,7 @@ main (int    argc,
   g_thread_init (NULL);
   profile_timer = g_timer_new ();
 
-  context = g_option_context_new ("- mutter-moblin myzone panel");
+  context = g_option_context_new ("- mutter-meego myzone panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, cogl_get_option_group ());
@@ -121,7 +121,7 @@ main (int    argc,
   }
   g_option_context_free (context);
 
-  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
+  mpl_panel_clutter_init_with_gtk (&argc, &argv);
 #if 0
   nbtk_texture_cache_load_cache (nbtk_texture_cache_get_default (),
                                  NBTK_CACHE);
@@ -137,7 +137,7 @@ main (int    argc,
                                     "myzone-button",
                                     TRUE);
 
-    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
+    mpl_panel_clutter_setup_events_with_gtk (client);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
 
@@ -163,7 +163,7 @@ main (int    argc,
     clutter_actor_realize (stage);
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
+    mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
 
     grid_view = g_object_new (PENGE_TYPE_GRID_VIEW,
                               NULL);
@@ -181,7 +181,7 @@ main (int    argc,
 
   gconf_client = gconf_client_get_default ();
   gconf_client_add_dir (gconf_client,
-                        MOBLIN_MYZONE_DIR,
+                        MEEGO_MYZONE_DIR,
                         GCONF_CLIENT_PRELOAD_ONELEVEL,
                         &error);
 

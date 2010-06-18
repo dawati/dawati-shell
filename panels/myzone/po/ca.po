@@ -57,15 +57,15 @@ msgid "Due %x"
 msgstr "Venç al %x"
 
 #: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Benvingut al Moblin 2.1 per a mini portàtils</b>"
+msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+msgstr "<b>Benvingut al Meego 2.1 per a mini portàtils</b>"
 
 #: ../penge/penge-welcome-tile.c:108
 msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
+"As Meego is a bit different to other computers, we've put together a couple "
 "of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
+"The Meego Team."
 msgstr ""
-"Així com el Moblin és diferent d'altres ordinadors, s'han canviat algunes "
+"Així com el Meego és diferent d'altres ordinadors, s'han canviat algunes "
 "parts aquí i allà perquè us sigui més còmode. Esperem que us agradi, "
-"equip del Moblin."
+"equip del Meego."

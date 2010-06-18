@@ -2,9 +2,9 @@
 <gconfschemafile>
   <schemalist>
     <schema>
-      <key>/schemas/desktop/moblin/myzone/show_calendar</key>
-      <applyto>/desktop/moblin/myzone/show_calendar</applyto>
-      <owner>moblin-panel-myzone</owner>
+      <key>/schemas/desktop/meego/myzone/show_calendar</key>
+      <applyto>/desktop/meego/myzone/show_calendar</applyto>
+      <owner>meego-panel-myzone</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -12,9 +12,9 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/desktop/moblin/myzone/show_email</key>
-      <applyto>/desktop/moblin/myzone/show_email</applyto>
-      <owner>moblin-panel-myzone</owner>
+      <key>/schemas/desktop/meego/myzone/show_email</key>
+      <applyto>/desktop/meego/myzone/show_email</applyto>
+      <owner>meego-panel-myzone</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
@@ -22,9 +22,9 @@
       </locale>
     </schema>
    <schema>
-      <key>/schemas/desktop/moblin/myzone/ratio</key>
-      <applyto>/desktop/moblin/myzone/ratio</applyto>
-      <owner>moblin-panel-myzone</owner>
+      <key>/schemas/desktop/meego/myzone/ratio</key>
+      <applyto>/desktop/meego/myzone/ratio</applyto>
+      <owner>meego-panel-myzone</owner>
       <type>float</type>
       <default>0.5</default>
       <locale name="C">
@@ -32,9 +32,9 @@
       </locale>
     </schema>
    <schema>
-      <key>/schemas/desktop/moblin/myzone/background_filename</key>
-      <applyto>/desktop/moblin/myzone/background_filename</applyto>
-      <owner>moblin-panel-myzone</owner>
+      <key>/schemas/desktop/meego/myzone/background_filename</key>
+      <applyto>/desktop/meego/myzone/background_filename</applyto>
+      <owner>meego-panel-myzone</owner>
       <type>string</type>
       <default>/usr/share/backgrounds/images/myzone-default-background.png</default>
       <locale name="C">

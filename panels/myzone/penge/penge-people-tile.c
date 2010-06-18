@@ -17,7 +17,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <moblin-panel/mpl-utils.h>
+#include <meego-panel/mpl-utils.h>
 #include <libsocialweb-client/sw-client.h>
 
 #include "penge-people-tile.h"

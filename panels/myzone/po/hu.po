@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-myzone\n"
+"Project-Id-Version: meego-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-26 06:02+0000\n"
 "PO-Revision-Date: 2009-12-22 21:52+0100\n"
@@ -57,10 +57,10 @@ msgid "Due %x"
 msgstr "Esedékes %x"
 
 #: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-msgstr "<b>Üdvözöl a Moblin 2.1 Netbook verzió</b>"
+msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+msgstr "<b>Üdvözöl a Meego 2.1 Netbook verzió</b>"
 
 #: ../penge/penge-welcome-tile.c:108
-msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-msgstr "A Moblin kicsit különbözik a többi környezettől. Sok-sok apró programot fogsz találni, amik segíteni fognak a célszerű használatban. Jó szórakozást kíván a Moblin csapat!"
+msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+msgstr "A Meego kicsit különbözik a többi környezettől. Sok-sok apró programot fogsz találni, amik segíteni fognak a célszerű használatban. Jó szórakozást kíván a Meego csapat!"
 

@@ -22,7 +22,7 @@
 
 #include "penge-apps-pane.h"
 #include "penge-app-tile.h"
-#include <moblin-panel/mpl-app-bookmark-manager.h>
+#include <meego-panel/mpl-app-bookmark-manager.h>
 
 G_DEFINE_TYPE (PengeAppsPane, penge_apps_pane, MX_TYPE_TABLE)
 

@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone パネル"
 
@@ -166,8 +166,8 @@ msgstr "メールアラート："
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
 
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-#~ msgstr "<b>ネットブック Moblin 2.1 にようこそ</b>"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>ネットブック Meego 2.1 にようこそ</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Moblin チーム一同"
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Meego は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Meego チーム一同"

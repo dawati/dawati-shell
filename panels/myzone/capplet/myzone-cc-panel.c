@@ -26,11 +26,11 @@
 #include "gconf-bridge.h"
 #include <gio/gdesktopappinfo.h>
 
-#define MYZONE_KEY_DIR "/desktop/moblin/myzone"
+#define MYZONE_KEY_DIR "/desktop/meego/myzone"
 #define BG_KEY_BG_FILENAME MYZONE_KEY_DIR "/background_filename"
 #define MYZONE_RATIO MYZONE_KEY_DIR "/ratio"
-#define MOBLIN_MYZONE_SHOW_CALENDAR MYZONE_KEY_DIR "/show_calendar"
-#define MOBLIN_MYZONE_SHOW_EMAIL MYZONE_KEY_DIR "/show_email"
+#define MEEGO_MYZONE_SHOW_CALENDAR MYZONE_KEY_DIR "/show_calendar"
+#define MEEGO_MYZONE_SHOW_EMAIL MYZONE_KEY_DIR "/show_email"
 #define UI_FILE UI_DIR "/capplet.ui"
 
 G_DEFINE_DYNAMIC_TYPE (MyzoneCcPanel, myzone_cc_panel, CC_TYPE_PANEL)
@@ -263,7 +263,7 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
                         FALSE,
                         2);
     gconf_bridge_bind_property_full (bridge,
-                                     MOBLIN_MYZONE_SHOW_CALENDAR,
+                                     MEEGO_MYZONE_SHOW_CALENDAR,
                                      (GObject *)toggle,
                                      "active",
                                      FALSE);
@@ -280,7 +280,7 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
                         FALSE,
                         2);
     gconf_bridge_bind_property_full (bridge,
-                                     MOBLIN_MYZONE_SHOW_EMAIL,
+                                     MEEGO_MYZONE_SHOW_EMAIL,
                                      (GObject *)toggle,
                                      "active",
                                      FALSE);

@@ -1,7 +1,7 @@
-# Chinese translations for mutter-moblin package
-# mutter-moblin 软件包的简体中文翻译.
+# Chinese translations for mutter-meego package
+# mutter-meego 软件包的简体中文翻译.
 # Copyright Intel (C) 2009
-# This file is distributed under the same license as the mutter-moblin package.
+# This file is distributed under the same license as the mutter-meego package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
 # 
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone 面板"
 
@@ -171,8 +171,8 @@ msgstr "电子邮件警告："
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 设置"
 
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-#~ msgstr "<b>欢迎使用 Moblin 2.1 上网本</b>"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>欢迎使用 Meego 2.1 上网本</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin 和其他系统有很大区别，在这个试用版中我们整合了一组工具和特性帮助您尽快熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Meego 和其他系统有很大区别，在这个试用版中我们整合了一组工具和特性帮助您尽快熟悉 Meego。希望您喜欢我们的产品，尽情享受吧！ -- Meego 团队。"

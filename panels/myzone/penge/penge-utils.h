@@ -20,7 +20,7 @@
 
 #include <glib.h>
 #include <clutter/clutter.h>
-#include <moblin-panel/mpl-panel-client.h>
+#include <meego-panel/mpl-panel-client.h>
 
 void penge_utils_load_stylesheet (void);
 void penge_utils_signal_activated (ClutterActor *actor);

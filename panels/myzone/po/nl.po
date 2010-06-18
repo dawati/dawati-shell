@@ -1,13 +1,13 @@
-# Dutch translation of mutter-moblin.
-# Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the mutter-moblin package.
+# Dutch translation of mutter-meego.
+# Copyright (C) 2009 THE mutter-meego'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the mutter-meego package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
 # Hylke Bons <hylke.bons@intel.com>, 2009.
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin moblin2\n"
+"Project-Id-Version: mutter-meego meego2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: 2010-04-29 12:01-0800\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone paneel"
 
@@ -176,14 +176,14 @@ msgstr "Ongelezen berichten"
 #~ "Dingen die je vrienden online doen verschijnen hier. Activeer je accounts!"
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone insellingen"
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-#~ msgstr "<b>Welkom bij Moblin 2.1 voor Netbooks</b>"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>Welkom bij Meego 2.1 voor Netbooks</b>"
 #~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "As Meego is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
+#~ "enjoy it, The Meego Team."
 #~ msgstr ""
-#~ "Moblin is anders dan andere computers. We hebben hier en daar wat "
+#~ "Meego is anders dan andere computers. We hebben hier en daar wat "
 #~ "dingetjes toegevoegd om je op weg te helpen. We hopen dat je het "
-#~ "waardeert, Het Moblin Team."
+#~ "waardeert, Het Meego Team."
 

@@ -1,7 +1,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Moblin UX\n"
+"Project-Id-Version: Meego UX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-28 09:36+0000\n"
 "PO-Revision-Date: \n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-myzone.desktop.in.in.h:1
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone"
 
@@ -164,5 +164,5 @@ msgstr "Restablecer valores predeterminados"
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Aquí verás lo que hacen tus amigos en línea. ¡Activa tus cuentas!"
 
-#~ msgid "<b>Welcome to Moblin 2.1 for Netbooks</b>"
-#~ msgstr "<b>Bienvenido a Moblin 2.1 para miniportátiles</b>"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>Bienvenido a Meego 2.1 para miniportátiles</b>"

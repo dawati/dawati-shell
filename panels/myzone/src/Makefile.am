@@ -8,24 +8,24 @@ AM_CFLAGS = \
 	    -DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	    -DTHEMEDIR=\"$(pkgdatadir)/theme\"
 
-libexec_PROGRAMS = moblin-panel-myzone
+libexec_PROGRAMS = meego-panel-myzone
 
-moblin_panel_myzone_LDADD = \
+meego_panel_myzone_LDADD = \
 			    $(top_builddir)/penge/libpenge.la \
 			    $(PENGE_LIBS) \
 			    $(MAILME_LIBS) \
 			    $(MPL_LIBS)
 
-moblin_panel_myzone_SOURCES = \
-  moblin-panel-myzone.c
+meego_panel_myzone_SOURCES = \
+  meego-panel-myzone.c
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.myzone.service.in
-service_DATA = org.moblin.UX.Shell.Panels.myzone.service
+service_in_files = com.meego.UX.Shell.Panels.myzone.service.in
+service_DATA = com.meego.UX.Shell.Panels.myzone.service
 
 EXTRA_DIST = $(service_in_files)
 
-DISTCLEANFILES = org.moblin.UX.Shell.Panels.myzone.service
+DISTCLEANFILES = com.meego.UX.Shell.Panels.myzone.service
 
-org.moblin.UX.Shell.Panels.myzone.service: org.moblin.UX.Shell.Panels.myzone.service.in
+com.meego.UX.Shell.Panels.myzone.service: com.meego.UX.Shell.Panels.myzone.service.in
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
