@@ -347,7 +347,7 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->button_box),
                                "mps-switcher-button-box");
 
-  priv->add_new_service_button = mx_button_new_with_label (_("Add new web service"));
+  priv->add_new_service_button = mx_button_new_with_label (_("Add new web account"));
   mx_stylable_set_style_class (MX_STYLABLE (priv->add_new_service_button),
                                "mps-switcher-new-service");
   g_signal_connect (priv->add_new_service_button,
