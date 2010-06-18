@@ -1,11 +1,11 @@
-# Italian translations for mutter-moblin package.
-# Copyright (C) 2009 mutter-moblin's copyright holder.
-# This file is distributed under the same license as the mutter-moblin package.
+# Italian translations for mutter-meego package.
+# Copyright (C) 2009 mutter-meego's copyright holder.
+# This file is distributed under the same license as the mutter-meego package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin\n"
+"Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:27+0000\n"
 "PO-Revision-Date: 2009-12-11 19:55+0100\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Italian\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Imposta le preferenze della barra degli strumenti"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Impostazioni della barra degli strumenti"
 
@@ -85,27 +85,27 @@ msgstr "Barra degli strumenti del sistema"
 msgid "Show system tray"
 msgstr "Mostra la barra degli strumenti"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina l'ordine dei pannelli sulla barra degli strumenti."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordine dei pannelli sulla barra degli strumenti"
 
-#: ../src/moblin-netbook.c:1018
-msgid "Moblin Netbook Effects"
-msgstr "Effetti Moblin netbook"
+#: ../src/meego-netbook.c:1018
+msgid "Meego Netbook Effects"
+msgstr "Effetti Meego netbook"
 
-#: ../src/moblin-netbook.c:1022
-msgid "Effects for Moblin Netbooks"
-msgstr "Effetti per i netbook Moblin"
+#: ../src/meego-netbook.c:1022
+msgid "Effects for Meego Netbooks"
+msgstr "Effetti per i netbook Meego"
 
-#: ../src/moblin-netbook.c:3218
+#: ../src/meego-netbook.c:3218
 msgid "Activate"
 msgstr "Attiva"
 
-#: ../src/moblin-netbook.c:3232
+#: ../src/meego-netbook.c:3232
 msgid "Unknown window"
 msgstr "Finestra sconosciuta"
 
@@ -122,7 +122,7 @@ msgstr "Ignora"
 msgid "Dismiss All"
 msgstr "Ignora tutto"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/meego-netbook.c:3234
 msgid "is asking for your attention."
 msgstr "Richiede la tua attenzione."
 
@@ -130,7 +130,7 @@ msgstr "Richiede la tua attenzione."
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr "Puoi aggiungere, rimuovere o riorganizzare molti dei pannelli nella barra degli strumenti."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Usare sempre la modalità schermo ridotto"
 
@@ -138,7 +138,7 @@ msgstr "Usare sempre la modalità schermo ridotto"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "La barra degli strumenti del sistema è un concetto usato da alcune vecchie applicazioni per farti sapere quando succede qualcosa o per rimanere in esecuzione quando si chiudono."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del display indicherebbero normalmente la modalità schermo grande."
 
@@ -148,8 +148,8 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgid "Socket for embedding"
 #~ msgstr "Presa per l'incorporamento"
 
-#~ msgid "- Moblin Toolbar Preferences"
-#~ msgstr "Preferenze della barra degli strumenti Moblin"
+#~ msgid "- Meego Toolbar Preferences"
+#~ msgstr "Preferenze della barra degli strumenti Meego"
 
 #~ msgid "socket"
 #~ msgstr "presa"
@@ -328,11 +328,11 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 #~ msgstr "Una volta attivati gli account personali, qui verranno mostrate le notizie degli amici e i servizi web."
 
-#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-#~ msgstr "<b>Benvenuti in Moblin 2.0 per netbook</b>"
+#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
+#~ msgstr "<b>Benvenuti in Meego 2.0 per netbook</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Poiché Moblin è un po' diverso rispetto agli altri computer, abiamo raccolto alcune informazioni per aiutare a comprendere al meglio come usarlo. Speriamo troviate tutto di Vostro gradimento, il team Moblin."
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Poiché Meego è un po' diverso rispetto agli altri computer, abiamo raccolto alcune informazioni per aiutare a comprendere al meglio come usarlo. Speriamo troviate tutto di Vostro gradimento, il team Meego."
 
 #~ msgid "Web page"
 #~ msgstr "Pagina web"

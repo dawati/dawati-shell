@@ -67,8 +67,8 @@ mnb_toolbar_clock_dispose (GObject *object)
 
   if (priv->toolbar_show_id)
     {
-      MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
-      MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
+      MeegoNetbookPluginPrivate *ppriv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
       g_signal_handler_disconnect (ppriv->toolbar, priv->toolbar_show_id);
       priv->toolbar_show_id = 0;
@@ -273,8 +273,8 @@ mnb_toolbar_clock_map (ClutterActor *actor)
    */
   if (!priv->toolbar_show_id)
     {
-      MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
-      MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
+      MeegoNetbookPluginPrivate *ppriv  = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
       priv->toolbar_show_id =
         g_signal_connect (ppriv->toolbar, "show",

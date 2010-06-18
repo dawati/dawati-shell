@@ -4,7 +4,7 @@
 
 #include <clutter/clutter.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-entry.h>
 
 static void
 button_clicked_cb (MplEntry *entry,

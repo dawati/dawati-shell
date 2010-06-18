@@ -16,7 +16,7 @@
     Apart from different style, the button can be in four different states
     differentiated by the associated pseudo style (normal, hover, active and
     checked state); a suitable style defintion needs to be provided for each of
-    these for each style ID. (NB: As per the current Moblin UI specficiation,
+    these for each style ID. (NB: As per the current Meego UI specficiation,
     the normal, active and checked styles are identical.)
   </para>
 

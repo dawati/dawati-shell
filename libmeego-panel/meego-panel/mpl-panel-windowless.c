@@ -43,7 +43,7 @@
  * follows:
  *
  * <programlisting>
-  #include <moblin-panel/mpl-panel-windowless.h>
+  #include <meego-panel/mpl-panel-windowless.h>
 
   int
   main (int argc, char **argv)

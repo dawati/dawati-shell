@@ -1,8 +1,8 @@
 [Desktop Entry]
 _Name=Toolbar settings
 _Comment=Set your toolbar preferences
-Exec=moblin-toolbar-properties
-Icon=moblin-toolbar-properties
+Exec=meego-toolbar-properties
+Icon=meego-toolbar-properties
 Terminal=false
 Type=Application
 StartupNotify=false

@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Définir les préférences de la barre d’outils"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Paramètres de la barre d’outils"
 
@@ -84,23 +84,23 @@ msgstr "Barre d'état"
 msgid "Show system tray"
 msgstr "Montrer la barre d'état"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Établit l'ordre des panneaux sur la barre d'outils."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordre des panneaux sur la barre d'outils"
 
-#: ../src/moblin-netbook.c:1022
-msgid "Effects for Moblin Netbooks"
-msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
+#: ../src/meego-netbook.c:1022
+msgid "Effects for Meego Netbooks"
+msgstr "Effets spéciaux pour Netbooks utilisant Meego"
 
-#: ../src/moblin-netbook.c:3218
+#: ../src/meego-netbook.c:3218
 msgid "Activate"
 msgstr "Activer"
 
-#: ../src/moblin-netbook.c:3232
+#: ../src/meego-netbook.c:3232
 msgid "Unknown window"
 msgstr "Fenêtre inconnue"
 
@@ -117,7 +117,7 @@ msgstr "Ignorer"
 msgid "Dismiss All"
 msgstr "Tout ignorer"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/meego-netbook.c:3234
 msgid "is asking for your attention."
 msgstr "requiert votre attention."
 
@@ -125,7 +125,7 @@ msgstr "requiert votre attention."
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr "Vous pouvez ajouter, supprimer ou réorganiser la plupart des panneaux dans votre barre d’outils."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Toujours utiliser le mode petit écran"
 
@@ -133,13 +133,13 @@ msgstr "Toujours utiliser le mode petit écran"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "La barre d'état est un concept utilisé par certaines applications pour vous permettre de savoir quand quelque chose se passe ou pour rester en exécution lorsque vous les fermez."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Force l'utilisation du mode petit écran même quand la taille de l'écran pourrait autoriser un mode d'écran plus large."
 
-#: ../src/moblin-netbook.c:1018
-msgid "Moblin Netbook Effects"
-msgstr "Effets spéciaux pour Netbook utilisant Moblin"
+#: ../src/meego-netbook.c:1018
+msgid "Meego Netbook Effects"
+msgstr "Effets spéciaux pour Netbook utilisant Meego"
 
 #~ msgid "System tray"
 #~ msgstr "Barre d'état"
@@ -147,8 +147,8 @@ msgstr "Effets spéciaux pour Netbook utilisant Moblin"
 #~ msgid "Socket for embedding"
 #~ msgstr "Socket pour l’intégration"
 
-#~ msgid "- Moblin Toolbar Preferences"
-#~ msgstr "- Préférences de la barre d’outils Moblin"
+#~ msgid "- Meego Toolbar Preferences"
+#~ msgstr "- Préférences de la barre d’outils Meego"
 
 #~ msgid "socket"
 #~ msgstr "socket"

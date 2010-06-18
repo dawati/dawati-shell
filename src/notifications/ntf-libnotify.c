@@ -25,9 +25,9 @@
 #include <string.h>
 #include <glib/gi18n.h>
 
-#include "moblin-netbook-notify-store.h"
+#include "meego-netbook-notify-store.h"
 #include "ntf-libnotify.h"
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 #include "ntf-notification.h"
 #include "ntf-tray.h"
 #include "ntf-overlay.h"
@@ -35,7 +35,7 @@
 #define MEEGO_KEY_PREFIX "meego:"
 
 static guint32 subsystem_id = 0;
-static MoblinNetbookNotifyStore *store = NULL;
+static MeegoNetbookNotifyStore *store = NULL;
 
 static void
 ntf_libnotify_update (NtfNotification *ntf, Notification *details);
@@ -45,7 +45,7 @@ typedef struct
   NtfNotification *notification;
   gint   id;
   gchar *action;
-  MoblinNetbookNotifyStore *store;
+  MeegoNetbookNotifyStore *store;
 } ActionData;
 
 static void
@@ -61,7 +61,7 @@ free_action_data (gpointer action)
 static void
 ntf_libnotify_action_cb (ClutterActor *button, ActionData *data)
 {
-  moblin_netbook_notify_store_action (data->store,
+  meego_netbook_notify_store_action (data->store,
                                       data->id,
                                       data->action);
 }
@@ -72,13 +72,13 @@ ntf_libnotify_action_cb (ClutterActor *button, ActionData *data)
 static void
 ntf_libnotify_ntf_closed_cb (NtfNotification *ntf, gpointer dummy)
 {
-  moblin_netbook_notify_store_close (store,
+  meego_netbook_notify_store_close (store,
                                      ntf_notification_get_id (ntf),
                                      ClosedDismissed);
 }
 
 static void
-ntf_libnotify_notification_added_cb (MoblinNetbookNotifyStore *store,
+ntf_libnotify_notification_added_cb (MeegoNetbookNotifyStore *store,
                                      Notification             *notification,
                                      gpointer                  data)
 {
@@ -130,7 +130,7 @@ ntf_libnotify_notification_added_cb (MoblinNetbookNotifyStore *store,
 }
 
 static void
-ntf_libnotify_notification_closed_cb (MoblinNetbookNotifyStore *store,
+ntf_libnotify_notification_closed_cb (MeegoNetbookNotifyStore *store,
                                       guint                     id,
                                       guint                     reason,
                                       gpointer                  data)
@@ -156,7 +156,7 @@ ntf_libnotify_notification_closed_cb (MoblinNetbookNotifyStore *store,
 void
 ntf_libnotify_init (void)
 {
-  store = moblin_netbook_notify_store_new ();
+  store = meego_netbook_notify_store_new ();
 
   g_signal_connect (store,
                     "notification-added",

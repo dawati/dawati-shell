@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Definir sua preferências da barra de ferramentas"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Configurações da barra de ferramentas"
 
@@ -90,39 +90,39 @@ msgstr "Mostrar bandeja de sistema"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "A bandeja de sistema é um conceito usado por alguns aplicativos mais velhos para te avisar quando algo acontecer ou para continuar executando quando você os fechar."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Sempre usar o modo tela pequena"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina a ordem dos painéis na barra de ferramentas."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Força o modo tela pequena a ser usado mesmo se o tamanho do monitor normalmente implicaria o modo de tela maior."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordem dos painéis na barra de ferramentas"
 
-#: ../src/moblin-netbook.c:1019
-msgid "Moblin Netbook Effects"
-msgstr "Efeitos de netbook Moblin"
+#: ../src/meego-netbook.c:1019
+msgid "Meego Netbook Effects"
+msgstr "Efeitos de netbook Meego"
 
-#: ../src/moblin-netbook.c:1023
-msgid "Effects for Moblin Netbooks"
-msgstr "Efeitos para Netbooks Moblin"
+#: ../src/meego-netbook.c:1023
+msgid "Effects for Meego Netbooks"
+msgstr "Efeitos para Netbooks Meego"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/meego-netbook.c:3234
 msgid "Activate"
 msgstr "Ativar"
 
-#: ../src/moblin-netbook.c:3248
+#: ../src/meego-netbook.c:3248
 msgid "Unknown window"
 msgstr "Janela desconhecida"
 
-#: ../src/moblin-netbook.c:3250
+#: ../src/meego-netbook.c:3250
 msgid "is asking for your attention."
 msgstr "está pedindo a sua atenção."
 
@@ -145,8 +145,8 @@ msgstr "Desculpe.  %s está quebrado."
 #~ msgid "Socket for embedding"
 #~ msgstr "Soquete para embutir"
 
-#~ msgid "- Moblin Toolbar Preferences"
-#~ msgstr "- Preferências de barra de ferramentas Moblin"
+#~ msgid "- Meego Toolbar Preferences"
+#~ msgstr "- Preferências de barra de ferramentas Meego"
 
 #~ msgid "socket"
 #~ msgstr "soquete"
@@ -325,11 +325,11 @@ msgstr "Desculpe.  %s está quebrado."
 #~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 #~ msgstr "Os feeds de seus amigos e serviços na web aparecerão aqui. Ative suas contas agora!"
 
-#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-#~ msgstr "<b>Bem-vindo ao Moblin 2.0 para Netbooks</b>"
+#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
+#~ msgstr "<b>Bem-vindo ao Meego 2.0 para Netbooks</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Como o Moblin é um pouco diferente de outros computadores, temos dicas e itens para ajudá-lo navegar esta versão. Esperamos que se divirta, a Equipe Moblin."
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Como o Meego é um pouco diferente de outros computadores, temos dicas e itens para ajudá-lo navegar esta versão. Esperamos que se divirta, a Equipe Meego."
 
 #~ msgid "Web page"
 #~ msgstr "Página da web"

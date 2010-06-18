@@ -3,10 +3,10 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CPPFLAGS = \
 	$(LIBMPL_CFLAGS) \
-	-I$(top_srcdir)/libmoblin-panel \
+	-I$(top_srcdir)/libmeego-panel \
 	-DDATADIR=\"$(datadir)\" \
   -DCSS_DIR=\"$(abs_builddir)\" \
-	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel\"
 
 LDADD = $(LIBMPL_LIBS)
 
@@ -18,22 +18,22 @@ noinst_PROGRAMS = \
 	test-panel-gtk
 
 test_entry_CFLAGS = \
-	-DMX_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/mx.cache\" \
-	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
+	-DMX_CACHE=\"$(MUTTER_MEEGO_THEME_DIR)/mx.cache\" \
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel\"
 
 # FIXME use this once split out
-# -DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/$(PACKAGE_NAME)\"
+# -DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/$(PACKAGE_NAME)\"
 
 test_content_pane_SOURCES = \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-content-pane.c \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-content-pane.c \
 	test-content-pane.c
 
 test_entry_SOURCES = \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-entry.c \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-entry.c \
 	test-entry.c
 
 test_icon_theme_SOURCES = \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-icon-theme.c \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-icon-theme.c \
 	test-icon-theme.c
 
 test_panel_clutter_DEPENDENCIES = \
@@ -41,7 +41,7 @@ test_panel_clutter_DEPENDENCIES = \
 	test-panel.css
 
 test_panel_clutter_LDADD = \
-	../moblin-panel/libmoblin-panel.la
+	../meego-panel/libmeego-panel.la
 
 test_panel_clutter_SOURCES = \
 	test-panel-clutter.c
@@ -51,7 +51,7 @@ test_panel_gtk_DEPENDENCIES = \
 	test-panel.css
 
 test_panel_gtk_LDADD = \
-	../moblin-panel/libmoblin-panel.la
+	../meego-panel/libmeego-panel.la
 
 test_panel_gtk_SOURCES = \
 	test-panel-gtk.c

@@ -26,7 +26,7 @@
 #include <display.h>
 #include <mutter-plugin.h>
 
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 #include "mnb-notification-gtk.h"
 
 static GtkWidget *notification = NULL;
@@ -40,7 +40,7 @@ mnb_notification_gtk_click_cb (GtkWidget      *widget,
                                GdkEventButton *event,
                                gpointer        data)
 {
-  MutterPlugin *plugin  = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin *plugin  = meego_netbook_get_plugin_singleton ();
   MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay  *display = meta_screen_get_display (screen);
   MetaWindow   *mw = NULL;
@@ -219,7 +219,7 @@ mnb_notification_gtk_show (void)
 
   if (notification)
     {
-      MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+      MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
       gint          width, height, screen_width, screen_height;
       GtkWindow    *window = GTK_WINDOW (notification);
 

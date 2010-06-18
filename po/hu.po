@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin\n"
+"Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-26 06:43+0000\n"
 "PO-Revision-Date: 2010-01-22 10:50+0100\n"
@@ -18,28 +18,28 @@ msgstr ""
 "X-Poedit-Country: HUNGARY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-netbook.c:462
+#: ../src/meego-netbook.c:462
 #: ../src/mnb-toolbar.c:1427
 msgid "zones"
 msgstr "zónák"
 
-#: ../src/moblin-netbook.c:575
-msgid "Moblin Netbook Effects"
-msgstr "Moblin Netbook Effektek"
+#: ../src/meego-netbook.c:575
+msgid "Meego Netbook Effects"
+msgstr "Meego Netbook Effektek"
 
-#: ../src/moblin-netbook.c:579
-msgid "Effects for Moblin Netbooks"
-msgstr "Effektek a Moblin Netbookokra"
+#: ../src/meego-netbook.c:579
+msgid "Effects for Meego Netbooks"
+msgstr "Effektek a Meego Netbookokra"
 
-#: ../src/moblin-netbook.c:2651
+#: ../src/meego-netbook.c:2651
 msgid "Activate"
 msgstr "Aktiválás"
 
-#: ../src/moblin-netbook.c:2665
+#: ../src/meego-netbook.c:2665
 msgid "Unknown window"
 msgstr "Ismeretlen ablak"
 
-#: ../src/moblin-netbook.c:2667
+#: ../src/meego-netbook.c:2667
 msgid "Is asking for your attention."
 msgstr "Állíts be."
 

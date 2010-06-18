@@ -1,6 +1,6 @@
 
 #include <gtk/gtk.h>
-#include <moblin-panel/mpl-icon-theme.h>
+#include <meego-panel/mpl-icon-theme.h>
 
 int
 main (int     argc,

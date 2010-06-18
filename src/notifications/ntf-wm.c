@@ -26,7 +26,7 @@
 
 #include <display.h>
 
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 #include "ntf-notification.h"
 #include "ntf-tray.h"
 #include "ntf-overlay.h"
@@ -38,7 +38,7 @@ static void ntf_wm_demands_attention_clear (MetaWindow *window);
 static void
 ntf_wm_activate_cb (ClutterActor *button, MetaWindow *window)
 {
-  moblin_netbook_activate_window (window);
+  meego_netbook_activate_window (window);
 }
 
 static void
@@ -243,7 +243,7 @@ ntf_wm_display_focus_window_notify_cb (MetaDisplay  *display,
 void
 ntf_wm_init (void)
 {
-  MutterPlugin *plugin  = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin *plugin  = meego_netbook_get_plugin_singleton ();
   MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay  *display = meta_screen_get_display (screen);
 

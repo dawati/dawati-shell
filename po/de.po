@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Einstellungen der Werkzeugleiste festlegen"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Einstellungen der Werkzeugleiste"
 
@@ -90,27 +90,27 @@ msgstr "Infobereich"
 msgid "Show system tray"
 msgstr "Infobereich anzeigen"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Legt die Reihenfolge der Panels auf der Werkzeugleiste fest."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Reihenfolge der Panels auf der Werkzeugleiste"
 
-#: ../src/moblin-netbook.c:1018
-msgid "Moblin Netbook Effects"
-msgstr "Moblin-Effekte auf dem Netbook"
+#: ../src/meego-netbook.c:1018
+msgid "Meego Netbook Effects"
+msgstr "Meego-Effekte auf dem Netbook"
 
-#: ../src/moblin-netbook.c:1022
-msgid "Effects for Moblin Netbooks"
-msgstr "Effekte für Netbooks mit Moblin"
+#: ../src/meego-netbook.c:1022
+msgid "Effects for Meego Netbooks"
+msgstr "Effekte für Netbooks mit Meego"
 
-#: ../src/moblin-netbook.c:3218
+#: ../src/meego-netbook.c:3218
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: ../src/moblin-netbook.c:3232
+#: ../src/meego-netbook.c:3232
 msgid "Unknown window"
 msgstr "Unbekanntes Fenster"
 
@@ -132,7 +132,7 @@ msgstr "Ignorieren"
 msgid "Dismiss All"
 msgstr "Alle ignorieren"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/meego-netbook.c:3234
 msgid "is asking for your attention."
 msgstr "sucht deine Aufmerksamkeit."
 
@@ -140,7 +140,7 @@ msgstr "sucht deine Aufmerksamkeit."
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr "Du kannst viele der Panels in der Werkzeugleiste hinzufügen, entfernen oder neu anordnen."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Immer den Modus Kleiner Bildschirm verwenden"
 
@@ -148,7 +148,7 @@ msgstr "Immer den Modus Kleiner Bildschirm verwenden"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Der Infobereich ist ein Konzept, das von einigen älteren Anwendungen benutzt wird, um dich auf etwas aufmerksam zu machen oder nach dem Schließen im Hintergrund weiterzulaufen."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Erzwingt, dass der Modus Kleiner Bildschirm verwendet wird, auch wenn die Anzeige normalerweise einen größeren Bildschirmmodus impliziert."
 
@@ -158,8 +158,8 @@ msgstr "Erzwingt, dass der Modus Kleiner Bildschirm verwendet wird, auch wenn di
 #~ msgid "Socket for embedding"
 #~ msgstr "Sockel für Embedding"
 
-#~ msgid "- Moblin Toolbar Preferences"
-#~ msgstr "Moblin Werkzeugleiste - Einstellungen"
+#~ msgid "- Meego Toolbar Preferences"
+#~ msgstr "Meego Werkzeugleiste - Einstellungen"
 
 #~ msgid "socket"
 #~ msgstr "Sockel"

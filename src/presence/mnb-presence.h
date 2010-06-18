@@ -19,6 +19,6 @@
  * 02111-1307, USA.
  */
 
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 
-void presence_init (MoblinNetbookPlugin *plugin);
+void presence_init (MeegoNetbookPlugin *plugin);

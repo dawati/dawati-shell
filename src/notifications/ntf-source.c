@@ -28,7 +28,7 @@
 #include <string.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 
 #include "ntf-source.h"
 
@@ -366,7 +366,7 @@ ntf_source_new_for_window (MetaWindow *window)
 NtfSource *
 ntf_source_new_for_pid (const gchar *machine, gint pid)
 {
-  MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
   MetaScreen   *screen = mutter_plugin_get_screen (plugin);
   gchar        *id;
   NtfSource    *src;

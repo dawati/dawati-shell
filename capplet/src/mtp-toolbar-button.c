@@ -708,7 +708,7 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
 
       b = g_key_file_get_boolean (kfile,
                                   G_KEY_FILE_DESKTOP_GROUP,
-                                  "X-Moblin-Panel-Optional",
+                                  "X-Meego-Panel-Optional",
                                   &error);
 
       /*
@@ -749,12 +749,12 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
 
       s = g_key_file_get_string (kfile,
                                  G_KEY_FILE_DESKTOP_GROUP,
-                                 "X-Moblin-Panel-Button-Style",
+                                 "X-Meego-Panel-Button-Style",
                                  NULL);
 
       if (!s)
         {
-          if (!strcmp (name, "moblin-panel-myzone"))
+          if (!strcmp (name, "meego-panel-myzone"))
             priv->button_style = g_strdup ("myzone-button");
           else
             priv->button_style = g_strdup_printf ("%s-button", name);
@@ -764,7 +764,7 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
 
       s = g_key_file_get_string (kfile,
                                  G_KEY_FILE_DESKTOP_GROUP,
-                                 "X-Moblin-Panel-Type",
+                                 "X-Meego-Panel-Type",
                                  NULL);
 
       if (s)
@@ -789,14 +789,14 @@ mtp_toolbar_apply_name (MtpToolbarButton *button, const gchar *name)
         {
           s = g_key_file_get_string (kfile,
                                      G_KEY_FILE_DESKTOP_GROUP,
-                                     "X-Moblin-Panel-Stylesheet",
+                                     "X-Meego-Panel-Stylesheet",
                                      NULL);
 
           priv->button_stylesheet = stylesheet = s;
 
           s = g_key_file_get_string (kfile,
                                      G_KEY_FILE_DESKTOP_GROUP,
-                                     "X-Moblin-Service",
+                                     "X-Meego-Service",
                                      NULL);
 
           priv->service = s;

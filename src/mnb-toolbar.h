@@ -31,7 +31,7 @@
 
 #include "mnb-panel.h"
 #include "mnb-panel-oop.h"
-#include "moblin-netbook.h"
+#include "meego-netbook.h"
 
 #define BUTTON_INTERNAL_PADDING 16
 #define BUTTON_WIDTH       71

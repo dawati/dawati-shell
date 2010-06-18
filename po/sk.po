@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin.master\n"
+"Project-Id-Version: mutter-meego.master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-21 09:26+0000\n"
 "PO-Revision-Date: 2010-04-21 06:15+0200\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr ""
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr ""
 
@@ -97,31 +97,31 @@ msgid ""
 "know when something happens or to stay running when you close them."
 msgstr ""
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Determines the order of panels on the toolbar."
 msgstr ""
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Order of panels on toolbar"
 msgstr ""
 
-#: ../src/moblin-netbook.c:962
-msgid "Moblin Netbook Effects"
+#: ../src/meego-netbook.c:962
+msgid "Meego Netbook Effects"
 msgstr ""
 
-#: ../src/moblin-netbook.c:966
-msgid "Effects for Moblin Netbooks"
+#: ../src/meego-netbook.c:966
+msgid "Effects for Meego Netbooks"
 msgstr ""
 
-#: ../src/moblin-netbook.c:3128
+#: ../src/meego-netbook.c:3128
 msgid "Activate"
 msgstr "Aktivovať"
 
-#: ../src/moblin-netbook.c:3142
+#: ../src/meego-netbook.c:3142
 msgid "Unknown window"
 msgstr "Neznáme okno"
 
-#: ../src/moblin-netbook.c:3144
+#: ../src/meego-netbook.c:3144
 msgid "Is asking for your attention."
 msgstr ""
 

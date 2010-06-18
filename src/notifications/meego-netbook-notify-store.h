@@ -1,32 +1,32 @@
-#ifndef _MOBLIN_NETBOOK_NOTIFY_STORE
-#define _MOBLIN_NETBOOK_NOTIFY_STORE
+#ifndef _MEEGO_NETBOOK_NOTIFY_STORE
+#define _MEEGO_NETBOOK_NOTIFY_STORE
 
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
-#define MOBLIN_NETBOOK_TYPE_NOTIFY_STORE moblin_netbook_notify_store_get_type()
+#define MEEGO_NETBOOK_TYPE_NOTIFY_STORE meego_netbook_notify_store_get_type()
 
-#define MOBLIN_NETBOOK_NOTIFY_STORE(obj) \
+#define MEEGO_NETBOOK_NOTIFY_STORE(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  MOBLIN_NETBOOK_TYPE_NOTIFY_STORE, MoblinNetbookNotifyStore))
+  MEEGO_NETBOOK_TYPE_NOTIFY_STORE, MeegoNetbookNotifyStore))
 
-#define MOBLIN_NETBOOK_NOTIFY_STORE_CLASS(klass) \
+#define MEEGO_NETBOOK_NOTIFY_STORE_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  MOBLIN_NETBOOK_TYPE_NOTIFY_STORE, MoblinNetbookNotifyStoreClass))
+  MEEGO_NETBOOK_TYPE_NOTIFY_STORE, MeegoNetbookNotifyStoreClass))
 
-#define MOBLIN_NETBOOK_IS_NOTIFY(obj) \
+#define MEEGO_NETBOOK_IS_NOTIFY(obj) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  MOBLIN_NETBOOK_TYPE_NOTIFY_STORE))
+  MEEGO_NETBOOK_TYPE_NOTIFY_STORE))
 
-#define MOBLIN_NETBOOK_IS_NOTIFY_CLASS(klass) \
+#define MEEGO_NETBOOK_IS_NOTIFY_CLASS(klass) \
   (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  MOBLIN_NETBOOK_TYPE_NOTIFY_STORE))
+  MEEGO_NETBOOK_TYPE_NOTIFY_STORE))
 
-#define MOBLIN_NETBOOK_NOTIFY_STORE_GET_CLASS(obj) \
+#define MEEGO_NETBOOK_NOTIFY_STORE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  MOBLIN_NETBOOK_TYPE_NOTIFY_STORE, MoblinNetbookNotifyStoreClass))
+  MEEGO_NETBOOK_TYPE_NOTIFY_STORE, MeegoNetbookNotifyStoreClass))
 
 typedef struct {
   guint id;
@@ -50,34 +50,34 @@ typedef enum {
   ClosedDismissed,
   ClosedProgramatically,
   ClosedUnknown,
-} MoblinNetbookNotifyStoreCloseReason;
+} MeegoNetbookNotifyStoreCloseReason;
 
 typedef struct {
   GObject parent;
-} MoblinNetbookNotifyStore;
+} MeegoNetbookNotifyStore;
 
 typedef struct {
   GObjectClass parent_class;
-  void (*notification_added) (MoblinNetbookNotifyStore *notify, Notification *notification);
-  void (*notification_closed) (MoblinNetbookNotifyStore *notify, guint id, MoblinNetbookNotifyStoreCloseReason reason);
-} MoblinNetbookNotifyStoreClass;
+  void (*notification_added) (MeegoNetbookNotifyStore *notify, Notification *notification);
+  void (*notification_closed) (MeegoNetbookNotifyStore *notify, guint id, MeegoNetbookNotifyStoreCloseReason reason);
+} MeegoNetbookNotifyStoreClass;
 
-GType moblin_netbook_notify_store_get_type (void);
+GType meego_netbook_notify_store_get_type (void);
 
-MoblinNetbookNotifyStore* moblin_netbook_notify_store_new (void);
+MeegoNetbookNotifyStore* meego_netbook_notify_store_new (void);
 
 gboolean
-moblin_netbook_notify_store_close (MoblinNetbookNotifyStore *notify,
+meego_netbook_notify_store_close (MeegoNetbookNotifyStore *notify,
 				   guint id,
-				   MoblinNetbookNotifyStoreCloseReason reason);
+				   MeegoNetbookNotifyStoreCloseReason reason);
 
 void
-moblin_netbook_notify_store_action (MoblinNetbookNotifyStore    *notify,
+meego_netbook_notify_store_action (MeegoNetbookNotifyStore    *notify,
 				    guint                        id,
 				    gchar                       *action);
 
 guint
-notification_manager_notify_internal (MoblinNetbookNotifyStore *notify,
+notification_manager_notify_internal (MeegoNetbookNotifyStore *notify,
                                       guint id,
                                       const gchar *app_name, const gchar *icon,
                                       const gchar *summary, const gchar *body,
@@ -87,4 +87,4 @@ notification_manager_notify_internal (MoblinNetbookNotifyStore *notify,
 
 G_END_DECLS
 
-#endif /* _MOBLIN_NETBOOK_NOTIFY_STORE */
+#endif /* _MEEGO_NETBOOK_NOTIFY_STORE */

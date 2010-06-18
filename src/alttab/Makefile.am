@@ -3,9 +3,9 @@ noinst_LTLIBRARIES = libalttab.la
 
 AM_CFLAGS = \
 	@MUTTER_PLUGIN_CFLAGS@ \
-	-DMX_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/mx.cache\" 	\
-	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\"		\
-	-I$(top_srcdir)/libmoblin-panel
+	-DMX_CACHE=\"$(MUTTER_MEEGO_THEME_DIR)/mx.cache\" 	\
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)\"		\
+	-I$(top_srcdir)/libmeego-panel
 
 libalttab_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
 libalttab_la_SOURCES =					\

@@ -4,7 +4,7 @@
 AUTOMAKE_OPTIONS = 1.6
 
 # The name of the module, e.g. 'glib'.
-DOC_MODULE=moblin-panel
+DOC_MODULE=meego-panel
 
 # Uncomment for versioned docs and specify the version of the module, e.g. '2'.
 #DOC_MODULE_VERSION=$(PLUGIN_VERSION)
@@ -14,7 +14,7 @@ DOC_MODULE=moblin-panel
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 
 # Directories containing the source code, relative to $(srcdir).
-DOC_SOURCE_DIR=../../../../libmoblin-panel
+DOC_SOURCE_DIR=../../../../libmeego-panel
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=
@@ -47,29 +47,29 @@ FIXXREF_OPTIONS= \
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
 HFILE_GLOB= \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-version.h	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-content-pane.h         \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-entry.h		      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-icon-theme.h	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-client.h	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-clutter.h	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-common.h	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-gtk.h	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-windowless.h     \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-app-bookmark-manager.h \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-utils.h
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-version.h	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-content-pane.h         \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-entry.h		      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-icon-theme.h	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-client.h	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-clutter.h	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-common.h	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-gtk.h	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-windowless.h     \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-app-bookmark-manager.h \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-utils.h
 
 CFILE_GLOB= \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mnb-enum-types.c	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-content-pane.c         \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-entry.c		      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-icon-theme.c	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-client.c	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-clutter.c	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-gtk.c	      \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-panel-windowless.c     \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-app-bookmark-manager.c \
-	$(top_srcdir)/libmoblin-panel/moblin-panel/mpl-utils.c
+	$(top_srcdir)/libmeego-panel/meego-panel/mnb-enum-types.c	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-content-pane.c         \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-entry.c		      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-icon-theme.c	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-client.c	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-clutter.c	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-gtk.c	      \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-panel-windowless.c     \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-app-bookmark-manager.c \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-utils.c
 
 # Extra header to include when scanning, which are not under DOC_SOURCE_DIR
 # e.g. EXTRA_HFILES=$(top_srcdir}/contrib/extra.h
@@ -111,8 +111,8 @@ expand_content_files=	\
 # signals and properties.
 # e.g. GTKDOC_CFLAGS=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
-INCLUDES=-I$(top_srcdir)/libmoblin-panel $(LIBMPL_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/libmoblin-panel/moblin-panel/libmoblin-panel.la $(LIBMPL_LIBS)
+INCLUDES=-I$(top_srcdir)/libmeego-panel $(LIBMPL_CFLAGS)
+GTKDOC_LIBS=$(top_builddir)/libmeego-panel/meego-panel/libmeego-panel.la $(LIBMPL_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make

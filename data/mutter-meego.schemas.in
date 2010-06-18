@@ -1,12 +1,12 @@
 <gconfschemafile>
   <schemalist>
     <schema>
-      <key>/schemas/desktop/moblin/toolbar/panels/order</key>
-      <applyto>/desktop/moblin/toolbar/panels/order</applyto>
-      <owner>mutter-moblin</owner>
+      <key>/schemas/desktop/meego/toolbar/panels/order</key>
+      <applyto>/desktop/meego/toolbar/panels/order</applyto>
+      <owner>mutter-meego</owner>
       <type>list</type>
       <list_type>string</list_type>
-      <default>[moblin-panel-myzone,moblin-panel-zones,moblin-panel-applications,moblin-panel-status,moblin-panel-people,moblin-panel-internet,meego-panel-banshee,moblin-panel-devices,moblin-power-icon,moblin-panel-datetime,carrick,bluetooth-panel]</default>
+      <default>[meego-panel-myzone,meego-panel-zones,meego-panel-applications,meego-panel-status,meego-panel-people,meego-panel-internet,meego-panel-banshee,meego-panel-devices,meego-power-icon,meego-panel-datetime,carrick,bluetooth-panel]</default>
       <locale name="C">
          <short>Order of panels on toolbar</short>
          <long>
@@ -15,9 +15,9 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/desktop/moblin/always_small_screen_mode</key>
-      <applyto>/desktop/moblin/always_small_screen_mode</applyto>
-      <owner>mutter-moblin</owner>
+      <key>/schemas/desktop/meego/always_small_screen_mode</key>
+      <applyto>/desktop/meego/always_small_screen_mode</applyto>
+      <owner>mutter-meego</owner>
       <type>bool</type>
       <default>FALSE</default>
       <locale name="C">

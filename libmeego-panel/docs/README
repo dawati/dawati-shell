@@ -1,6 +1,6 @@
 
-libmoblin-panel-clutter and libmoblin-panel-gtk are utility libraries for
-implementing panels for the Moblin Toolbar. They provide the following objects:
+libmeego-panel-clutter and libmeego-panel-gtk are utility libraries for
+implementing panels for the Meego Toolbar. They provide the following objects:
 
 MplEntry
 ========

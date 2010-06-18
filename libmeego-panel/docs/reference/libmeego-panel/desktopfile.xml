@@ -23,17 +23,17 @@
       </varlistentry>
 
       <varlistentry>
-	<term>X‑Moblin‑Service</term>
+	<term>X‑Meego‑Service</term>
 	<listitem>
 	  <para>
 	    The D-Bus service provided by this panel, e.g.,
-	    <emphasis>org.moblin.UX.Shell.Panels.myzone</emphasis>,
+	    <emphasis>org.meego.UX.Shell.Panels.myzone</emphasis>,
 	  </para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term>X‑Moblin‑Panel‑Type</term>
+	<term>X‑Meego‑Panel‑Type</term>
 	<listitem>
 	  <para>
 	    Type of the panel; can be 'normal' for main
@@ -44,7 +44,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term>X‑Moblin‑Panel‑Windowless</term>
+	<term>X‑Meego‑Panel‑Windowless</term>
 	<listitem>
 	  <para>
 	    If set to <emphasis>true</emphasis>
@@ -56,7 +56,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term>X‑Moblin‑Panel‑Stylesheet</term>
+	<term>X‑Meego‑Panel‑Stylesheet</term>
 	<listitem>
 	  <para>
 	    The stylesheet to be use for styling the
@@ -66,7 +66,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term>X‑Moblin‑Panel‑Button‑Style</term>
+	<term>X‑Meego‑Panel‑Button‑Style</term>
 	<listitem>
 	  <para>
 	    The css style id to use for the inital
@@ -76,7 +76,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term>X‑Moblin‑Panel‑Optional</term>
+	<term>X‑Meego‑Panel‑Optional</term>
 	<listitem>
 	  <para>
 	    If set to <emphasis>false</emphasis> the panel cannot be removed by
@@ -99,7 +99,7 @@
       </varlistentry>
 
       <varlistentry>
-	<term>X‑Moblin‑Priority</term>
+	<term>X‑Meego‑Priority</term>
 	<listitem>
 	  <para>
 	    This field can be used by panels that are being autostarted to
@@ -115,10 +115,10 @@
   </para>
 
   <para>
-     The desktop file needs to be installed into the mutter-moblin panel
+     The desktop file needs to be installed into the mutter-meego panel
      directory; this can be obtained from pkg-config via the
-     <varname>moblin_panel_panels_dir</varname> variable, e.g., `pkg-config
-     --variable=moblin_panel_panels_dir moblin-panel`.
+     <varname>meego_panel_panels_dir</varname> variable, e.g., `pkg-config
+     --variable=meego_panel_panels_dir meego-panel`.
   </para>
 
 </section>

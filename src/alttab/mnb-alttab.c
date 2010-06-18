@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Moblin Netbook
+ * Meego Netbook
  * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
@@ -42,7 +42,7 @@
 #include "mnb-alttab.h"
 #include "mnb-alttab-overlay.h"
 #include "mnb-alttab-overlay-private.h"
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 #include "../mnb-toolbar.h"
 
 #include <display.h>
@@ -100,7 +100,7 @@ void
 end_kbd_grab (MnbAlttabOverlay *overlay)
 {
   MnbAlttabOverlayPrivate *priv   = overlay->priv;
-  MutterPlugin            *plugin = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin            *plugin = meego_netbook_get_plugin_singleton ();
 
   if (priv->in_alt_grab)
     {
@@ -146,7 +146,7 @@ alt_tab_initial_timeout_cb (gpointer data)
   ClutterActor              *stage;
   Window                     xwin;
   MnbAlttabOverlayPrivate   *priv = alt_data->overlay->priv;
-  MutterPlugin              *plugin = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin              *plugin = meego_netbook_get_plugin_singleton ();
 
   stage = mutter_get_stage_for_screen (alt_data->screen);
   xwin  = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
@@ -160,7 +160,7 @@ alt_tab_initial_timeout_cb (gpointer data)
    * If the compositor is currently disabled, ignore.
    */
   if (priv->alt_tab_down &&
-      !moblin_netbook_compositor_disabled (plugin))
+      !meego_netbook_compositor_disabled (plugin))
     {
       gboolean backward = FALSE;
 
@@ -202,7 +202,7 @@ alt_tab_initial_timeout_cb (gpointer data)
 static gboolean
 applications_present (void)
 {
-  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin               *plugin = meego_netbook_get_plugin_singleton ();
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   gint                        count  = 0;
   GList                      *l;
@@ -253,10 +253,10 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
 {
   MnbAlttabOverlay           *overlay = MNB_ALTTAB_OVERLAY (data);
   MnbAlttabOverlayPrivate    *priv    = overlay->priv;
-  MutterPlugin               *plugin  = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin               *plugin  = meego_netbook_get_plugin_singleton ();
   MetaWindow                 *focus;
 
-  if (moblin_netbook_urgent_notification_present (plugin))
+  if (meego_netbook_urgent_notification_present (plugin))
     {
       /*
        * Ignore if we have urgent notifications (MB#6036)
@@ -355,13 +355,13 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
 
   if (!priv->waiting_for_timeout &&
       (!CLUTTER_ACTOR_IS_VISIBLE (overlay) ||
-       moblin_netbook_compositor_disabled (plugin)))
+       meego_netbook_compositor_disabled (plugin)))
     {
       struct alt_tab_show_complete_data *alt_data;
       MnbToolbar *toolbar;
       MnbPanel   *panel;
 
-      toolbar = (MnbToolbar*) moblin_netbook_get_toolbar (plugin);
+      toolbar = (MnbToolbar*) meego_netbook_get_toolbar (plugin);
       panel   = mnb_toolbar_get_active_panel (toolbar);
 
       if (panel)
@@ -432,14 +432,14 @@ mnb_alttab_overlay_alt_tab_select_handler (MetaDisplay    *display,
 {
   MnbAlttabOverlay           *overlay = MNB_ALTTAB_OVERLAY (data);
   MnbAlttabOverlayPrivate    *priv    = overlay->priv;
-  MutterPlugin               *plugin  = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin               *plugin  = meego_netbook_get_plugin_singleton ();
 
   end_kbd_grab (overlay);
 
   priv->in_alt_grab = FALSE;
   priv->alt_tab_down = FALSE;
 
-  if (moblin_netbook_urgent_notification_present (plugin))
+  if (meego_netbook_urgent_notification_present (plugin))
     {
       /*
        * Ignore if we have urgent notifications (MB#6036)

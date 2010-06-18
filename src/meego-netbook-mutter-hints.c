@@ -1,4 +1,4 @@
-#include "moblin-netbook-mutter-hints.h"
+#include "meego-netbook-mutter-hints.h"
 #include "window.h"
 
 #include <string.h>
@@ -48,7 +48,7 @@ parse_mutter_hints (const gchar *hints_str, MutterHints *hints, HintFlags flags)
           if (key && value)
             {
               if ((flags & HINT_NEW_WORKSPACE) &&
-                       !strcmp (key, "moblin-on-new-workspace"))
+                       !strcmp (key, "meego-on-new-workspace"))
                 {
                   flags &= ~HINT_NEW_WORKSPACE;
 
@@ -71,7 +71,7 @@ parse_mutter_hints (const gchar *hints_str, MutterHints *hints, HintFlags flags)
 }
 
 MnbThreeState
-moblin_netbook_mutter_hints_on_new_workspace (MetaWindow *window)
+meego_netbook_mutter_hints_on_new_workspace (MetaWindow *window)
 {
   const gchar *hints_str = meta_window_get_mutter_hints (window);
   MutterHints  hints = {0};

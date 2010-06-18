@@ -1,10 +1,10 @@
 
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
-SUBDIRS = moblin-panel theme tests docs
+SUBDIRS = meego-panel theme tests docs
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = moblin-panel.pc
+pkgconfig_DATA = meego-panel.pc
 
-CLEANFILES = moblin-panel-clutter.pc
-EXTRA_DIST = moblin-panel.pc.in
+CLEANFILES = meego-panel-clutter.pc
+EXTRA_DIST = meego-panel.pc.in

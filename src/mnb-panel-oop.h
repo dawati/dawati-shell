@@ -28,7 +28,7 @@
 #include <glib-object.h>
 #include <dbus/dbus-glib.h>
 
-#include "moblin-netbook.h"
+#include "meego-netbook.h"
 
 G_BEGIN_DECLS
 

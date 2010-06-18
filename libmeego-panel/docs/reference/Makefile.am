@@ -2,5 +2,5 @@
 SUBDIRS =
 
 if BUILD_GTK_DOC
-  SUBDIRS += libmoblin-panel
+  SUBDIRS += libmeego-panel
 endif

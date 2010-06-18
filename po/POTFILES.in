@@ -1,6 +1,6 @@
 # List of source files containing translatable strings.
-capplet/data/moblin-toolbar-properties.desktop.in
-capplet/src/moblin-toolbar-properties.c
+capplet/data/meego-toolbar-properties.desktop.in
+capplet/src/meego-toolbar-properties.c
 capplet/src/mtp-toolbar.c
 capplet/src/mtp-bin.c
 capplet/src/mtp-jar.c
@@ -8,8 +8,8 @@ capplet/src/mtp-clock.c
 capplet/src/mtp-cc-panel.c
 capplet/data/system-tray-properties.desktop.in
 capplet/src/syst-cc-panel.c
-data/mutter-moblin.schemas.in
-src/moblin-netbook.c
+data/mutter-meego.schemas.in
+src/meego-netbook.c
 src/mnb-toolbar.c
 src/mnb-toolbar-clock.c
 src/notifications/ntf-notification.c

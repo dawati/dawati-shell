@@ -15,75 +15,75 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+#: ../libmeego-panel/meego-panel/mpl-utils.c:57
 msgid "Less than a minute ago"
 msgstr "Fa menys d'un minut"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+#: ../libmeego-panel/meego-panel/mpl-utils.c:61
 msgid "A few minutes ago"
 msgstr "Fa uns minuts"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+#: ../libmeego-panel/meego-panel/mpl-utils.c:65
 msgid "A couple of hours ago"
 msgstr "Fa unes hores"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+#: ../libmeego-panel/meego-panel/mpl-utils.c:72
 msgid "Earlier today"
 msgstr "Avui"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+#: ../libmeego-panel/meego-panel/mpl-utils.c:75
 msgid "Yesterday"
 msgstr "Ahir"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#: ../libmeego-panel/meego-panel/mpl-utils.c:83
 #, c-format
 msgid "On %A"
 msgstr "El %A"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+#: ../libmeego-panel/meego-panel/mpl-utils.c:89
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+#: ../libmeego-panel/meego-panel/mpl-utils.c:96
 msgid "Last week"
 msgstr "La setmana passada"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+#: ../libmeego-panel/meego-panel/mpl-utils.c:99
 msgid "A couple of weeks ago"
 msgstr "Fa un parell de setmanes"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+#: ../libmeego-panel/meego-panel/mpl-utils.c:105
 msgid "This month"
 msgstr "Aquest mes"
 
 #. Now Jan., last used in Dec.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+#: ../libmeego-panel/meego-panel/mpl-utils.c:109
 msgid "Last month"
 msgstr "El mes passat"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+#: ../libmeego-panel/meego-panel/mpl-utils.c:112
 msgid "This year"
 msgstr "Aquest any"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+#: ../libmeego-panel/meego-panel/mpl-utils.c:115
 msgid "Last year"
 msgstr "L'any passat"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+#: ../libmeego-panel/meego-panel/mpl-utils.c:117
 msgid "Ages ago"
 msgstr "Fa milers d'anys"
 
-#: ../src/moblin-netbook.c:305 ../src/mnb-toolbar.c:1339
+#: ../src/meego-netbook.c:305 ../src/mnb-toolbar.c:1339
 msgid "zones"
 msgstr "zones"
 
-#: ../src/moblin-netbook.c:412
-msgid "Moblin Netbook Effects"
-msgstr "Efectes del Moblin"
+#: ../src/meego-netbook.c:412
+msgid "Meego Netbook Effects"
+msgstr "Efectes del Meego"
 
-#: ../src/moblin-netbook.c:416
-msgid "Effects for Moblin Netbooks"
-msgstr "Efectes per als mini-portàtils Moblin"
+#: ../src/meego-netbook.c:416
+msgid "Effects for Meego Netbooks"
+msgstr "Efectes per als mini-portàtils Meego"
 
 #: ../src/mnb-notification.c:266
 msgid "Dismiss"

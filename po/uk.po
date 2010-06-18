@@ -15,17 +15,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-netbook.c:374 ../src/mnb-toolbar.c:1426
+#: ../src/meego-netbook.c:374 ../src/mnb-toolbar.c:1426
 msgid "zones"
 msgstr "зони"
 
-#: ../src/moblin-netbook.c:484
-msgid "Moblin Netbook Effects"
-msgstr "Ефекти Moblin Netbook"
+#: ../src/meego-netbook.c:484
+msgid "Meego Netbook Effects"
+msgstr "Ефекти Meego Netbook"
 
-#: ../src/moblin-netbook.c:488
-msgid "Effects for Moblin Netbooks"
-msgstr "Ефекти для Moblin Netbooks"
+#: ../src/meego-netbook.c:488
+msgid "Effects for Meego Netbooks"
+msgstr "Ефекти для Meego Netbooks"
 
 #: ../src/mnb-notification.c:257
 msgid "Dismiss"

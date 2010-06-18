@@ -1,6 +1,6 @@
-# Dutch translation of mutter-moblin.
-# Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the mutter-moblin package.
+# Dutch translation of mutter-meego.
+# Copyright (C) 2009 THE mutter-meego'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the mutter-meego package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
 # , fuzzy
 #
@@ -20,11 +20,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Voorkeuren werkbalk instellen"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Toolbar instellingen"
 
@@ -103,39 +103,39 @@ msgstr "Notificatiepaneel weergeven"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Het Notificatiepaneel is een concept in gebruik door sommige oudere applicaties om mededelingen te geven of om in de achtergrond te blijven als het hoofdvenster van de applicatie sluit."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Gebruik altijd kleine scherm modus"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Bepaalt de orde van de panelen op de werkbalk."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Dwingt kleine scherm modus af, zelfs als er normaal gesproken een groetere scherm modus gebruikt zou worden. "
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "De panelen op de werkbalk ordenen"
 
-#: ../src/moblin-netbook.c:1018
-msgid "Moblin Netbook Effects"
-msgstr "Moblin netbook effecten"
+#: ../src/meego-netbook.c:1018
+msgid "Meego Netbook Effects"
+msgstr "Meego netbook effecten"
 
-#: ../src/moblin-netbook.c:1022
-msgid "Effects for Moblin Netbooks"
-msgstr "Effecten voor Moblin netbooks"
+#: ../src/meego-netbook.c:1022
+msgid "Effects for Meego Netbooks"
+msgstr "Effecten voor Meego netbooks"
 
-#: ../src/moblin-netbook.c:3218
+#: ../src/meego-netbook.c:3218
 msgid "Activate"
 msgstr "Activeren"
 
-#: ../src/moblin-netbook.c:3232
+#: ../src/meego-netbook.c:3232
 msgid "Unknown window"
 msgstr "Onbekend venster"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/meego-netbook.c:3234
 msgid "is asking for your attention."
 msgstr "vraagt om uw aandacht."
 
@@ -290,16 +290,16 @@ msgstr "Alle afwijzen"
 #~ msgstr ""
 #~ "Je vrienden hun web feeds en web services verschijnen hier. Activeer je "
 #~ "accounts nu!"
-#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-#~ msgstr "<b>Welkom bij Moblin 2.0 voor Netbooks</b>"
+#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
+#~ msgstr "<b>Welkom bij Meego 2.0 voor Netbooks</b>"
 #~ msgid ""
-#~ "As Moblin is a bit different to other computers, we've put together a "
+#~ "As Meego is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Moblin Team."
+#~ "enjoy it, The Meego Team."
 #~ msgstr ""
-#~ "Moblin is anders dan traditionele computers. We hebben alles samengevoegd "
+#~ "Meego is anders dan traditionele computers. We hebben alles samengevoegd "
 #~ "om makkelijker je weg te kunnen vinden. We hopen dat je het waardeert. "
-#~ "Het Moblin Team."
+#~ "Het Meego Team."
 #~ msgid "Web page"
 #~ msgstr "Webpagina"
 #~ msgid "Nothing to do today"

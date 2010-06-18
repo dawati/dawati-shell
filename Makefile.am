@@ -5,7 +5,7 @@ DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc
 SUBDIRS = build
 
 # always built
-SUBDIRS += libmoblin-panel
+SUBDIRS += libmeego-panel
 
 # extra
 SUBDIRS += src po data tests

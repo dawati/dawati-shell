@@ -1,5 +1,5 @@
 
-lib_LTLIBRARIES = libmoblin-panel.la
+lib_LTLIBRARIES = libmeego-panel.la
 
 source_h =	$(srcdir)/mpl-version.h			\
 		$(srcdir)/mpl-content-pane.h \
@@ -30,17 +30,17 @@ source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(DBUS_BINDINGS)			\
 		$(MARSHALS)
 
-libmoblin_panel_includedir = $(includedir)/libmoblin-panel/moblin-panel
-libmoblin_panel_include_HEADERS = $(source_h)
-libmoblin_panel_la_SOURCES = $(source_c)
+libmeego_panel_includedir = $(includedir)/libmeego-panel/meego-panel
+libmeego_panel_include_HEADERS = $(source_h)
+libmeego_panel_la_SOURCES = $(source_c)
 
-libmoblin_panel_la_CFLAGS =						\
+libmeego_panel_la_CFLAGS =						\
 	$(LIBMPL_CFLAGS) 						\
-	-DMX_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel/mx.cache\" \
+	-DMX_CACHE=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel/mx.cache\" \
 	-DDATADIR=\"$(datadir)\"					\
-	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)/moblin-panel\"
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel\"
 
-libmoblin_panel_la_LDFLAGS = $(LIBMPL_LIBS)
+libmeego_panel_la_LDFLAGS = $(LIBMPL_LIBS)
 
 DBUS_GLUE = $(srcdir)/mnb-panel-dbus-glue.h	\
 	    $(srcdir)/mnb-toolbar-dbus-glue.h
@@ -82,7 +82,7 @@ marshal.h: stamp-marshal.h
 	@true
 stamp-marshal.h: $(top_srcdir)/src/marshal.list
 	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
-		--prefix=moblin_netbook_marshal \
+		--prefix=meego_netbook_marshal \
 		--header \
 	  $(top_srcdir)/src/marshal.list > xgen-cmh \
 	&& (cmp -s xgen-cmh marshal.h || cp xgen-cmh marshal.h ) \
@@ -92,7 +92,7 @@ stamp-marshal.h: $(top_srcdir)/src/marshal.list
 marshal.c: marshal.h Makefile
 	$(QUIET_GEN)( echo "#include \"marshal.h\"" ; \
 	  $(GLIB_GENMARSHAL) \
-		--prefix=moblin_netbook_marshal \
+		--prefix=meego_netbook_marshal \
 		--body \
 	  $(top_srcdir)/src/marshal.list --body ) >> xgen-cmc \
 	&& cp xgen-cmc marshal.c \
@@ -100,9 +100,9 @@ marshal.c: marshal.h Makefile
 
 #%.c: $(top_srcdir)/src/%.list
 #	echo '#include "marshal.h"' > $@ && \
-#	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --body >> $@
+#	$(GLIB_GENMARSHAL) --prefix=meego_netbook_marshal $^ --body >> $@
 #%.h: $(top_srcdir)/src/%.list
-#	$(GLIB_GENMARSHAL) --prefix=moblin_netbook_marshal $^ --header > $@
+#	$(GLIB_GENMARSHAL) --prefix=meego_netbook_marshal $^ --header > $@
 
 BUILT_SOURCES = $(DBUS_GLUE) $(DBUS_BINDINGS) $(MARSHALS) $(ENUMS)
 

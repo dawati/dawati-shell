@@ -1,7 +1,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Moblin UX\n"
+"Project-Id-Version: Meego UX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:27+0000\n"
 "PO-Revision-Date: \n"
@@ -69,37 +69,37 @@ msgstr "Bandeja del sistema"
 msgid "Show system tray"
 msgstr "Mostrar la bandeja del sistema"
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Usar siempre el modo de pantalla pequeña"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina el orden de los paneles en la barra de herramientas."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Fuerza el modo de pantalla pequeña incluso cuando el tamaño de la pantalla normalmente implicaría un modo de pantalla mayor."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Orden de los paneles en la barra de herramientas"
 
-# Moblin effects in the netbook
-#: ../src/moblin-netbook.c:1018
-msgid "Moblin Netbook Effects"
-msgstr "Efectos de Moblin en el miniportátil"
+# Meego effects in the netbook
+#: ../src/meego-netbook.c:1018
+msgid "Meego Netbook Effects"
+msgstr "Efectos de Meego en el miniportátil"
 
 # Effects for netbooks with Mobin
-#: ../src/moblin-netbook.c:1022
-msgid "Effects for Moblin Netbooks"
-msgstr "Efectos para miniportátiles con Moblin"
+#: ../src/meego-netbook.c:1022
+msgid "Effects for Meego Netbooks"
+msgstr "Efectos para miniportátiles con Meego"
 
-#: ../src/moblin-netbook.c:3218
+#: ../src/meego-netbook.c:3218
 msgid "Activate"
 msgstr "Activar"
 
-#: ../src/moblin-netbook.c:3232
+#: ../src/meego-netbook.c:3232
 msgid "Unknown window"
 msgstr "Ventana desconocida"
 
@@ -111,7 +111,7 @@ msgstr "Cerrar"
 msgid "Dismiss All"
 msgstr "Cerrar todo"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/meego-netbook.c:3234
 msgid "is asking for your attention."
 msgstr "está pidiendo tu atención."
 
@@ -128,11 +128,11 @@ msgstr "Se pueden agregar, eliminar o reordenar muchos de los paneles de la barr
 msgid "Sorry, %s is broken"
 msgstr "Lo sentimos, %s no funciona."
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Configura las preferencias la barra de herramientas"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Barra de herramientas"
 

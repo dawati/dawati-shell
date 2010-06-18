@@ -6,8 +6,8 @@
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>Moblin Panel Reference Manual</title>
-    <releaseinfo>For libmoblin-panel &version;</releaseinfo>
+    <title>Meego Panel Reference Manual</title>
+    <releaseinfo>For libmeego-panel &version;</releaseinfo>
 
     <copyright>
       <year>2010</year>
@@ -39,11 +39,11 @@
 
   <xi:include href="xml/overview.xml"/>
 
-  <part id="moblinpanelreference">
+  <part id="meegopanelreference">
 
     <title>Reference</title>
 
-    <chapter id="moblinpanelclasses">
+    <chapter id="meegopanelclasses">
       <title>Panel Classes</title>
 
       <xi:include href="xml/mpl-panel-client.xml"/>
@@ -53,7 +53,7 @@
 
     </chapter>
 
-    <chapter id="moblinpanelwidgets">
+    <chapter id="meegopanelwidgets">
       <title>Panel Widgets</title>
 
       <xi:include href="xml/mpl-app-bookmark-manager.xml"/>
@@ -62,20 +62,20 @@
 
     </chapter>
 
-    <chapter id="moblinpanelutility">
+    <chapter id="meegopanelutility">
       <title>Miscellaneous</title>
 
       <xi:include href="xml/mpl-utils.xml"/>
     </chapter>
 
-    <chapter id="moblinpaneldesktop">
+    <chapter id="meegopaneldesktop">
       <title>Panel Desktop File</title>
 
       <xi:include href="xml/desktopfile.xml"/>
 
     </chapter>
 
-    <chapter id="moblinpanelcss">
+    <chapter id="meegopanelcss">
       <title>Panel Button Stylesheet</title>
 
       <xi:include href="xml/cssfile.xml"/>
@@ -84,7 +84,7 @@
 
   </part>
 
-    <part id="moblinpanelindex">
+    <part id="meegopanelindex">
       <title>Index of all symbols</title>
 
       <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>

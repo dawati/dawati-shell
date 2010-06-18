@@ -26,62 +26,62 @@
 #define __MPL_PANEL_VERSION_H__
 
 /**
- * MOBLIN_PANEL_MAJOR_VERSION:
+ * MEEGO_PANEL_MAJOR_VERSION:
  *
- * The major version of the moblin-panel library (1, if %MOBLIN_PANEL_VERSION is 1.2.3)
+ * The major version of the meego-panel library (1, if %MEEGO_PANEL_VERSION is 1.2.3)
  */
-#define MOBLIN_PANEL_MAJOR_VERSION   (@PLUGIN_MAJOR_VERSION@)
+#define MEEGO_PANEL_MAJOR_VERSION   (@PLUGIN_MAJOR_VERSION@)
 
 /**
- * MOBLIN_PANEL_MINOR_VERSION:
+ * MEEGO_PANEL_MINOR_VERSION:
  *
- * The minor version of the moblin-panel library (2, if %MOBLIN_PANEL_VERSION is 1.2.3)
+ * The minor version of the meego-panel library (2, if %MEEGO_PANEL_VERSION is 1.2.3)
  */
-#define MOBLIN_PANEL_MINOR_VERSION   (@PLUGIN_MINOR_VERSION@)
+#define MEEGO_PANEL_MINOR_VERSION   (@PLUGIN_MINOR_VERSION@)
 
 /**
- * MOBLIN_PANEL_MICRO_VERSION:
+ * MEEGO_PANEL_MICRO_VERSION:
  *
- * The micro version of the moblin-panel library (3, if %MOBLIN_PANEL_VERSION is 1.2.3)
+ * The micro version of the meego-panel library (3, if %MEEGO_PANEL_VERSION is 1.2.3)
  */
-#define MOBLIN_PANEL_MICRO_VERSION   (@PLUGIN_MICRO_VERSION@)
+#define MEEGO_PANEL_MICRO_VERSION   (@PLUGIN_MICRO_VERSION@)
 
 /**
- * MOBLIN_PANEL_VERSION:
+ * MEEGO_PANEL_VERSION:
  *
- * The full version of the moblin-panel library, like 1.2.3
+ * The full version of the meego-panel library, like 1.2.3
  */
-#define MOBLIN_PANEL_VERSION         @PLUGIN_VERSION@
+#define MEEGO_PANEL_VERSION         @PLUGIN_VERSION@
 
 /**
- * MOBLIN_PANEL_VERSION_S:
+ * MEEGO_PANEL_VERSION_S:
  *
- * The full version of the moblin-panel library, in string form (suited for
+ * The full version of the meego-panel library, in string form (suited for
  * string concatenation)
  */
-#define MOBLIN_PANEL_VERSION_S       "@PLUGIN_VERSION@"
+#define MEEGO_PANEL_VERSION_S       "@PLUGIN_VERSION@"
 
 /**
- * MOBLIN_PANEL_VERSION_HEX:
+ * MEEGO_PANEL_VERSION_HEX:
  *
- * Numerically encoded version of the moblin-panel library, like 0x010203
+ * Numerically encoded version of the meego-panel library, like 0x010203
  */
-#define MOBLIN_PANEL_VERSION_HEX     ((PLUGIN_MAJOR_VERSION << 24) | \
+#define MEEGO_PANEL_VERSION_HEX     ((PLUGIN_MAJOR_VERSION << 24) | \
                                  (PLUGIN_MINOR_VERSION << 16) | \
                                  (PLUGIN_MICRO_VERSION << 8))
 
 /**
- * MOBLIN_PANEL_CHECK_VERSION:
+ * MEEGO_PANEL_CHECK_VERSION:
  * @major: major version, like 1 in 1.2.3
  * @minor: minor version, like 2 in 1.2.3
  * @micro: micro version, like 3 in 1.2.3
  *
- * Evaluates to %TRUE if the version of the moblin-panel library is greater
+ * Evaluates to %TRUE if the version of the meego-panel library is greater
  * than @major, @minor and @micro
  */
-#define MOBLIN_PANEL_CHECK_VERSION(major,minor,micro) \
-        (MOBLIN_PANEL_MAJOR_VERSION > (major) || \
-         (MOBLIN_PANEL_MAJOR_VERSION == (major) && MOBLIN_PANEL_MINOR_VERSION > (minor)) || \
-         (MOBLIN_PANEL_MAJOR_VERSION == (major) && MOBLIN_PANEL_MINOR_VERSION == (minor) && MOBLIN_PANEL_MICRO_VERSION >= (micro)))
+#define MEEGO_PANEL_CHECK_VERSION(major,minor,micro) \
+        (MEEGO_PANEL_MAJOR_VERSION > (major) || \
+         (MEEGO_PANEL_MAJOR_VERSION == (major) && MEEGO_PANEL_MINOR_VERSION > (minor)) || \
+         (MEEGO_PANEL_MAJOR_VERSION == (major) && MEEGO_PANEL_MINOR_VERSION == (minor) && MEEGO_PANEL_MICRO_VERSION >= (micro)))
 
 #endif /* __MPL_PANEL_VERSION_H__ */

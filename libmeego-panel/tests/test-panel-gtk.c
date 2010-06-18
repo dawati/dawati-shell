@@ -29,13 +29,13 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
-#include <moblin-panel/mpl-panel-gtk.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-gtk.h>
+#include <meego-panel/mpl-panel-common.h>
 
 /*
  * This is a callback to demonstrate how the application can close the config
  * window; however, you probably should not do that in your applicaiton, as
- * the hiding of the config window is taken care of by the Moblin UI.
+ * the hiding of the config window is taken care of by the Meego UI.
  */
 static void
 button_clicked_cb (GtkButton *button, gpointer data)
@@ -117,7 +117,7 @@ main (int argc, char *argv[])
 
   /*
    * NB: the toolbar service indicates whether this panel requires access
-   *     to the API provided by org.moblin.Mpl.Toolbar -- if you need to do
+   *     to the API provided by org.meego.Mpl.Toolbar -- if you need to do
    *     any application launching, etc., then pass TRUE.
    */
   panel = mpl_panel_gtk_new (MPL_PANEL_TEST,           /* the panel slot */

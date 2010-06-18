@@ -64,13 +64,13 @@ main (int argc, char **argv)
   clutter_init (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
-                           THEMEDIR "/moblin-toolbar-properties.css",
+                           THEMEDIR "/meego-toolbar-properties.css",
                            &error);
 
   if (error)
     {
       g_warning ("Could not load stylesheet" THEMEDIR
-                 "/moblin-toolbar-properties.css: %s", error->message);
+                 "/meego-toolbar-properties.css: %s", error->message);
       g_clear_error (&error);
     }
 

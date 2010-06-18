@@ -16,11 +16,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Configure as preferencias da barra de ferramentas"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Configuración da barra de ferramentas"
 
@@ -84,27 +84,27 @@ msgstr "Bandexa do sistema"
 msgid "Show system tray"
 msgstr "Mostrar a bandexa do sistema"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina a orde dos paneis da barra de ferramentas."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Orde dos paneis da barra de ferramentas"
 
-#: ../src/moblin-netbook.c:1016
-msgid "Moblin Netbook Effects"
-msgstr "Efectos de Moblin Netbook"
+#: ../src/meego-netbook.c:1016
+msgid "Meego Netbook Effects"
+msgstr "Efectos de Meego Netbook"
 
-#: ../src/moblin-netbook.c:1020
-msgid "Effects for Moblin Netbooks"
-msgstr "Efectos para os netbooks Moblin"
+#: ../src/meego-netbook.c:1020
+msgid "Effects for Meego Netbooks"
+msgstr "Efectos para os netbooks Meego"
 
-#: ../src/moblin-netbook.c:3264
+#: ../src/meego-netbook.c:3264
 msgid "Activate"
 msgstr "Activar"
 
-#: ../src/moblin-netbook.c:3278
+#: ../src/meego-netbook.c:3278
 msgid "Unknown window"
 msgstr "Xanela descoñecida"
 
@@ -121,7 +121,7 @@ msgstr "Esquecer"
 msgid "Dismiss All"
 msgstr "Esquecelo todo"
 
-#: ../src/moblin-netbook.c:3280
+#: ../src/meego-netbook.c:3280
 msgid "is asking for your attention."
 msgstr "está a chamar pola súa atención."
 
@@ -129,7 +129,7 @@ msgstr "está a chamar pola súa atención."
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr "Pódense engadir, eliminar e arrumbar moitos dos paneis da barra de ferramentas."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Empregar sempre o modo de pantalla pequena"
 
@@ -137,7 +137,7 @@ msgstr "Empregar sempre o modo de pantalla pequena"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "A bandexa do sistema é un concepto empregado por algunhas aplicacións vellas para comunicar cando sucede algo ou para ficar en execución ao se fecharen."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Obriga a utilizar o modo de pantalla pequena mesmo se o tamaño a exhibir normalmente implicaría un modo de pantalla máis grande."
 

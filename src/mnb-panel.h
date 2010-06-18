@@ -28,7 +28,7 @@
 #include <glib-object.h>
 #include <dbus/dbus-glib.h>
 
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-common.h>
 
 #include "mnb-input-manager.h"
 

@@ -573,7 +573,7 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (MplPanelClientClass, set_size),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__UINT_UINT,
+                  meego_netbook_marshal_VOID__UINT_UINT,
                   G_TYPE_NONE, 2,
                   G_TYPE_UINT,
                   G_TYPE_UINT);
@@ -593,7 +593,7 @@ mpl_panel_client_class_init (MplPanelClientClass *klass)
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (MplPanelClientClass, set_position),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__INT_INT,
+                  meego_netbook_marshal_VOID__INT_INT,
                   G_TYPE_NONE, 2,
                   G_TYPE_INT,
                   G_TYPE_INT);

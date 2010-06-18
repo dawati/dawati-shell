@@ -10,19 +10,19 @@
 #include "config.h"
 #endif
 
-#include "moblin-netbook-notify-store.h"
+#include "meego-netbook-notify-store.h"
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
 #include <string.h>
 #include "../marshal.h"
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 
-G_DEFINE_TYPE (MoblinNetbookNotifyStore, moblin_netbook_notify_store, G_TYPE_OBJECT);
+G_DEFINE_TYPE (MeegoNetbookNotifyStore, meego_netbook_notify_store, G_TYPE_OBJECT);
 
 #define GET_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MOBLIN_NETBOOK_TYPE_NOTIFY_STORE, MoblinNetbookNotifyStorePrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MEEGO_NETBOOK_TYPE_NOTIFY_STORE, MeegoNetbookNotifyStorePrivate))
 
 enum {
   NOTIFICATION_ADDED,
@@ -40,14 +40,14 @@ typedef struct {
   guint next_id;
   GList *notifications;
   DBusGProxy *bus_proxy;
-} MoblinNetbookNotifyStorePrivate;
+} MeegoNetbookNotifyStorePrivate;
 
 static guint
-get_next_id (MoblinNetbookNotifyStore *notify)
+get_next_id (MeegoNetbookNotifyStore *notify)
 {
-  MoblinNetbookNotifyStorePrivate *priv;
+  MeegoNetbookNotifyStorePrivate *priv;
 
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify), 0);
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify), 0);
 
   priv = GET_PRIVATE (notify);
 
@@ -56,15 +56,15 @@ get_next_id (MoblinNetbookNotifyStore *notify)
 }
 
 static gboolean
-find_notification (MoblinNetbookNotifyStore  *notify,
+find_notification (MeegoNetbookNotifyStore  *notify,
                    guint                      id,
                    Notification             **found)
 {
   /* TODO: should this return a GList*? */
-  MoblinNetbookNotifyStorePrivate *priv;
+  MeegoNetbookNotifyStorePrivate *priv;
   GList *l;
 
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify) && id && found,
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify) && id && found,
                         FALSE);
 
   priv = GET_PRIVATE (notify);
@@ -113,15 +113,15 @@ free_notification (Notification *n)
  * is NULL for external notifications.
  */
 static Notification *
-get_notification (MoblinNetbookNotifyStore *notify,
+get_notification (MeegoNetbookNotifyStore *notify,
                   guint                     id,
                   gpointer                  internal_data)
 {
-  MoblinNetbookNotifyStorePrivate *priv;
+  MeegoNetbookNotifyStorePrivate *priv;
   Notification                    *notification;
   GList                           *action;
 
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify), NULL);
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify), NULL);
 
   priv = GET_PRIVATE (notify);
 
@@ -163,7 +163,7 @@ get_notification (MoblinNetbookNotifyStore *notify,
 
 typedef struct _PidData
 {
-  MoblinNetbookNotifyStore  *store;
+  MeegoNetbookNotifyStore  *store;
   Notification              *notification;
 } PidData;
 
@@ -189,7 +189,7 @@ unix_process_id_reply_cb (DBusGProxy *proxy,
  * Implementation of the dbus notify method
  */
 static gboolean
-notification_manager_notify (MoblinNetbookNotifyStore  *notify,
+notification_manager_notify (MeegoNetbookNotifyStore  *notify,
                              const gchar               *app_name,
                              const guint                id,
                              const gchar               *icon,
@@ -200,11 +200,11 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
                              gint                       timeout,
                              DBusGMethodInvocation     *context)
 {
-  MoblinNetbookNotifyStorePrivate *priv;
+  MeegoNetbookNotifyStorePrivate *priv;
   Notification *notification;
   gint          i;
 
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify), FALSE);
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify), FALSE);
 
   /*
    * We will not bother to show a notification that has neither summary, nor
@@ -334,7 +334,7 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
 }
 
 /*
- * Function allowing to pop up notifications internally from mutter-moblin
+ * Function allowing to pop up notifications internally from mutter-meego
  *
  * This is bit of a hack that relies on special action ids, and has the
  * associated actions hardcoded in invoke_action_for_notification().
@@ -342,7 +342,7 @@ notification_manager_notify (MoblinNetbookNotifyStore  *notify,
  * data: the data to pass to the specific internal callback.
  */
 guint
-notification_manager_notify_internal (MoblinNetbookNotifyStore  *notify,
+notification_manager_notify_internal (MeegoNetbookNotifyStore  *notify,
                                       guint                      id,
                                       const gchar               *app_name,
                                       const gchar               *icon,
@@ -355,7 +355,7 @@ notification_manager_notify_internal (MoblinNetbookNotifyStore  *notify,
 {
   Notification *n;
 
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify) && id, 0);
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify) && id, 0);
 
   n = get_notification (notify, id, data);
 
@@ -368,13 +368,13 @@ notification_manager_notify_internal (MoblinNetbookNotifyStore  *notify,
 }
 
 static gboolean
-notification_manager_close_notification (MoblinNetbookNotifyStore  *notify,
+notification_manager_close_notification (MeegoNetbookNotifyStore  *notify,
                                          guint                      id,
                                          GError                   **error)
 {
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify), FALSE);
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify), FALSE);
 
-  if (moblin_netbook_notify_store_close (notify, id, ClosedProgramatically))
+  if (meego_netbook_notify_store_close (notify, id, ClosedProgramatically))
     {
       return TRUE;
     }
@@ -387,11 +387,11 @@ notification_manager_close_notification (MoblinNetbookNotifyStore  *notify,
 }
 
 static gboolean
-notification_manager_get_capabilities (MoblinNetbookNotifyStore   *notify,
+notification_manager_get_capabilities (MeegoNetbookNotifyStore   *notify,
 				       gchar                    ***caps,
                                        GError                     *error)
 {
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify) && caps, FALSE);
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify) && caps, FALSE);
 
   *caps = g_new0 (gchar *, 7);
 
@@ -407,17 +407,17 @@ notification_manager_get_capabilities (MoblinNetbookNotifyStore   *notify,
 }
 
 static gboolean
-notification_manager_get_server_information (MoblinNetbookNotifyStore  *notify,
+notification_manager_get_server_information (MeegoNetbookNotifyStore  *notify,
                                              gchar                    **name,
                                              gchar                    **vendor,
                                              gchar                    **version,
                                              GError                    *error)
 {
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify) &&
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify) &&
                         name && vendor && version, FALSE);
 
-  *name    = g_strdup ("Moblin Netbook Notification Manager");
-  *vendor  = g_strdup ("Moblin Netbook");
+  *name    = g_strdup ("Meego Netbook Notification Manager");
+  *vendor  = g_strdup ("Meego Netbook");
   *version = g_strdup (VERSION);
 
   return TRUE;
@@ -429,31 +429,31 @@ notification_manager_get_server_information (MoblinNetbookNotifyStore  *notify,
  */
 
 static void
-moblin_netbook_notify_store_finalize (GObject *object)
+meego_netbook_notify_store_finalize (GObject *object)
 {
-  MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (object);
+  MeegoNetbookNotifyStorePrivate *priv = GET_PRIVATE (object);
 
   g_list_foreach (priv->notifications, (GFunc)free_notification, NULL);
   g_list_free (priv->notifications);
 
-  G_OBJECT_CLASS (moblin_netbook_notify_store_parent_class)->finalize (object);
+  G_OBJECT_CLASS (meego_netbook_notify_store_parent_class)->finalize (object);
 }
 
 #include "notification-manager-glue.h"
 static void
-moblin_netbook_notify_store_class_init (MoblinNetbookNotifyStoreClass *klass)
+meego_netbook_notify_store_class_init (MeegoNetbookNotifyStoreClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MoblinNetbookNotifyStorePrivate));
+  g_type_class_add_private (klass, sizeof (MeegoNetbookNotifyStorePrivate));
 
-  object_class->finalize = moblin_netbook_notify_store_finalize;
+  object_class->finalize = meego_netbook_notify_store_finalize;
 
   signals[NOTIFICATION_ADDED] =
     g_signal_new ("notification-added",
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MoblinNetbookNotifyStoreClass,
+                  G_STRUCT_OFFSET (MeegoNetbookNotifyStoreClass,
                                    notification_added),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__POINTER,
@@ -463,10 +463,10 @@ moblin_netbook_notify_store_class_init (MoblinNetbookNotifyStoreClass *klass)
     g_signal_new ("notification-closed",
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_FIRST,
-                  G_STRUCT_OFFSET (MoblinNetbookNotifyStoreClass,
+                  G_STRUCT_OFFSET (MeegoNetbookNotifyStoreClass,
                                    notification_closed),
                   NULL, NULL,
-                  moblin_netbook_marshal_VOID__UINT_UINT,
+                  meego_netbook_marshal_VOID__UINT_UINT,
                   G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
 
   dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
@@ -474,9 +474,9 @@ moblin_netbook_notify_store_class_init (MoblinNetbookNotifyStoreClass *klass)
 }
 
 static void
-connect_to_dbus (MoblinNetbookNotifyStore *self)
+connect_to_dbus (MeegoNetbookNotifyStore *self)
 {
-  MoblinNetbookNotifyStorePrivate *priv = GET_PRIVATE (self);
+  MeegoNetbookNotifyStorePrivate *priv = GET_PRIVATE (self);
   DBusGConnection *connection;
   GError *error = NULL;
   guint32 request_name_ret;
@@ -517,7 +517,7 @@ connect_to_dbus (MoblinNetbookNotifyStore *self)
 }
 
 static void
-moblin_netbook_notify_store_init (MoblinNetbookNotifyStore *self)
+meego_netbook_notify_store_init (MeegoNetbookNotifyStore *self)
 {
   connect_to_dbus (self);
 }
@@ -566,26 +566,26 @@ invoke_action_for_notification (Notification *n, const char *key)
        */
       if (!strcmp (key, "MNB-urgent-window"))
         {
-          moblin_netbook_activate_window (n->internal_data);
+          meego_netbook_activate_window (n->internal_data);
         }
     }
 }
 
-MoblinNetbookNotifyStore *
-moblin_netbook_notify_store_new (void)
+MeegoNetbookNotifyStore *
+meego_netbook_notify_store_new (void)
 {
-  return g_object_new (MOBLIN_NETBOOK_TYPE_NOTIFY_STORE, NULL);
+  return g_object_new (MEEGO_NETBOOK_TYPE_NOTIFY_STORE, NULL);
 }
 
 gboolean
-moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify,
+meego_netbook_notify_store_close (MeegoNetbookNotifyStore           *notify,
                                    guint                               id,
-                                   MoblinNetbookNotifyStoreCloseReason reason)
+                                   MeegoNetbookNotifyStoreCloseReason reason)
 {
-  MoblinNetbookNotifyStorePrivate *priv;
+  MeegoNetbookNotifyStorePrivate *priv;
   Notification                    *notification;
 
-  g_return_val_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify), FALSE);
+  g_return_val_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify), FALSE);
 
   priv = GET_PRIVATE (notify);
 
@@ -602,17 +602,17 @@ moblin_netbook_notify_store_close (MoblinNetbookNotifyStore           *notify,
 }
 
 void
-moblin_netbook_notify_store_action (MoblinNetbookNotifyStore *notify,
+meego_netbook_notify_store_action (MeegoNetbookNotifyStore *notify,
 				    guint                     id,
 				    gchar                    *action)
 {
   Notification *notification;
 
-  g_return_if_fail (MOBLIN_NETBOOK_IS_NOTIFY (notify) && id && action);
+  g_return_if_fail (MEEGO_NETBOOK_IS_NOTIFY (notify) && id && action);
 
   if (find_notification (notify, id, &notification))
     {
       invoke_action_for_notification (notification, action);
-      moblin_netbook_notify_store_close (notify, id, ClosedProgramatically);
+      meego_netbook_notify_store_close (notify, id, ClosedProgramatically);
     }
 }

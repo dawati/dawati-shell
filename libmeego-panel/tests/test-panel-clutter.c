@@ -26,8 +26,8 @@
  *
  */
 
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
 
 static void
 make_window_content (MplPanelClutter *panel)
@@ -62,7 +62,7 @@ main (int argc, char *argv[])
 
   /*
    * NB: the toolbar service indicates whether this panel requires access
-   *     to the API provided by org.moblin.Mpl.Toolbar -- if you need to do
+   *     to the API provided by org.meego.Mpl.Toolbar -- if you need to do
    *     any application launching, etc., then pass TRUE.
    */
   panel = mpl_panel_clutter_new (MPL_PANEL_TEST,           /* the panel slot */

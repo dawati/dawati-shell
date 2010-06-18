@@ -1,11 +1,11 @@
 
-#ifndef MOBLIN_CONSTRAINTS_H
-#define MOBLIN_CONSTRAINTS_H
+#ifndef MEEGO_CONSTRAINTS_H
+#define MEEGO_CONSTRAINTS_H
 
-#include "moblin-netbook.h"
+#include "meego-netbook.h"
 
 gboolean
-moblin_netbook_constrain_window (MutterPlugin       *plugin,
+meego_netbook_constrain_window (MutterPlugin       *plugin,
                                  MetaWindow         *window,
                                  ConstraintInfo     *info,
                                  ConstraintPriority  priority,

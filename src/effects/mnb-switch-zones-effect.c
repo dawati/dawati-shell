@@ -82,7 +82,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   ClutterActor *window_group;
   MutterWindow *mcw = get_mcw_for_completed_cb (plugin);
 
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   if (running++)
     {

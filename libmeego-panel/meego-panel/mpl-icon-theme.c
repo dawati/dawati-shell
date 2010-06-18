@@ -25,7 +25,7 @@
 #include "mpl-icon-theme.h"
 
 #define FALLBACK_THEME  "hicolor"
-#define ICON_PREFIX     "moblin"
+#define ICON_PREFIX     "meego"
 
 /* Quite possible that we end up with duplicate entries here,
  * but that shouldn't matter because when we need this something's already
@@ -38,7 +38,7 @@
           NULL
 
 #define FALLBACK_ICON       "applications-other"
-#define FALLBACK_ICON_FILE  "/usr/share/icons/moblin/48x48/categories/applications-other.png"
+#define FALLBACK_ICON_FILE  "/usr/share/icons/meego/48x48/categories/applications-other.png"
 
 static guint
 get_n_parts (const gchar *icon_name)
@@ -87,7 +87,7 @@ lookup_in_well_known_places (const gchar  **paths,
  * @icon_size: size of the icon
  *
  * Looks up icon of given name and size in the supplied #GtkIconTheme,
- * prioritizing Moblin-specific icons: if an icon exists that matches 'moblin-'
+ * prioritizing Meego-specific icons: if an icon exists that matches 'meego-'
  * + icon_name, this is returned instead of an icon for the unprefixed name. If
  * the icon_name is an absolute path, no lookup is performed, and a copy of
  * icon_name is returned.
@@ -118,13 +118,13 @@ mpl_icon_theme_lookup_icon_file (GtkIconTheme *theme,
     return g_strdup (icon_name);
   }
 
-  /* Look up with "moblin-" prefix as requested by hbons. */
+  /* Look up with "meego-" prefix as requested by hbons. */
   if (g_str_has_prefix (icon_name, ICON_PREFIX))
   {
     icon = g_themed_icon_new_with_default_fallbacks (icon_name);
   } else {
 
-    /* +1 for the "moblin-" prefixed name, +1 for NULL terminator. */
+    /* +1 for the "meego-" prefixed name, +1 for NULL terminator. */
     guint n_parts = get_n_parts (icon_name);
     gchar **names = g_new0 (gchar *, n_parts + 2);
     gchar *name = (gchar *) icon_name;

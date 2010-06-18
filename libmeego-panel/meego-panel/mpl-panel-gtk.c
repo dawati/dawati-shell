@@ -36,7 +36,7 @@
  * minimal Panel implementation using #MplPanelGtk would look as follows:
  *
  * <programlisting>
-  #include <moblin-panel/mpl-panel-gtk.h>
+  #include <meego-panel/mpl-panel-gtk.h>
 
   int
   main (int argc, char **argv)

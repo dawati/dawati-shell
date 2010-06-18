@@ -23,7 +23,7 @@
 
 #include <glib/gi18n.h>
 
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 #include "../mnb-input-manager.h"
 
 #include "ntf-tray.h"
@@ -496,9 +496,9 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
 
   priv   = tray->priv;
   ntfa   = CLUTTER_ACTOR (ntf);
-  plugin = moblin_netbook_get_plugin_singleton ();
+  plugin = meego_netbook_get_plugin_singleton ();
 
-  if (moblin_netbook_compositor_disabled (plugin))
+  if (meego_netbook_compositor_disabled (plugin))
     {
       mnb_notification_gtk_show ();
     }

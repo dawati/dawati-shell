@@ -2,14 +2,14 @@ noinst_LTLIBRARIES = libnotifications.la
 
 AM_CFLAGS = \
 	@MUTTER_PLUGIN_CFLAGS@ \
-	-DMX_CACHE=\"$(MUTTER_MOBLIN_THEME_DIR)/mx.cache\" \
-	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\"
+	-DMX_CACHE=\"$(MUTTER_MEEGO_THEME_DIR)/mx.cache\" \
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)\"
 
 libnotifications_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
 libnotifications_la_SOURCES =				\
 			$(DBUS_GLUE) 			\
-			moblin-netbook-notify-store.c   \
-			moblin-netbook-notify-store.h   \
+			meego-netbook-notify-store.c   \
+			meego-netbook-notify-store.h   \
 			mnb-notification-gtk.c		\
 			mnb-notification-gtk.h		\
 			ntf-notification.c		\

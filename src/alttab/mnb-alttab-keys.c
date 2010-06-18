@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Moblin Netbook
+ * Meego Netbook
  * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
@@ -116,7 +116,7 @@ mnb_alttab_overlay_setup_metacity_keybindings (MnbAlttabOverlay *overlay)
                                        overlay, NULL);
 
   /*
-   * Disable various shortcuts other that are not compatible with moblin UI
+   * Disable various shortcuts other that are not compatible with meego UI
    * paradigm -- strictly speaking not alttab related, but for now here.
    */
   meta_keybindings_set_custom_handler ("activate_window_menu",

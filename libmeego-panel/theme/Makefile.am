@@ -1,6 +1,6 @@
-# Use a separate mx.cache for the moblin-panel library generic assets so we
-# don't need to load in all mutter-moblin assets
-themedir = $(MUTTER_MOBLIN_THEME_DIR)/moblin-panel
+# Use a separate mx.cache for the meego-panel library generic assets so we
+# don't need to load in all mutter-meego assets
+themedir = $(MUTTER_MEEGO_THEME_DIR)/meego-panel
 dist_theme_DATA = \
 	theme.css \
 	content-pane-background.png \

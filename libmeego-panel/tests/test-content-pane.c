@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-content-pane.h>
+#include <meego-panel/mpl-content-pane.h>
 
 int
 main (int     argc,

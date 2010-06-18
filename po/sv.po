@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Ange dina inställningar för verktygsfältet"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Inställningar för verktygsfält"
 
@@ -82,27 +82,27 @@ msgstr "Systemfält"
 msgid "Show system tray"
 msgstr "Visa systemfält"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Avgör panelordningen i verktygsfältet."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Panelordning i verktygsfältet"
 
-#: ../src/moblin-netbook.c:1018
-msgid "Moblin Netbook Effects"
-msgstr "Moblin netbookeffekter"
+#: ../src/meego-netbook.c:1018
+msgid "Meego Netbook Effects"
+msgstr "Meego netbookeffekter"
 
-#: ../src/moblin-netbook.c:1022
-msgid "Effects for Moblin Netbooks"
-msgstr "Effekter för Moblin netbooks"
+#: ../src/meego-netbook.c:1022
+msgid "Effects for Meego Netbooks"
+msgstr "Effekter för Meego netbooks"
 
-#: ../src/moblin-netbook.c:3218
+#: ../src/meego-netbook.c:3218
 msgid "Activate"
 msgstr "Aktivera"
 
-#: ../src/moblin-netbook.c:3232
+#: ../src/meego-netbook.c:3232
 msgid "Unknown window"
 msgstr "Okänt fönster"
 
@@ -119,7 +119,7 @@ msgstr "Avvisa"
 msgid "Dismiss All"
 msgstr "Avvisa alla"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/meego-netbook.c:3234
 msgid "is asking for your attention."
 msgstr "Ber om din uppmärksamhet."
 
@@ -127,7 +127,7 @@ msgstr "Ber om din uppmärksamhet."
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr "Du kan lägga till, ta bort och ändra ordningsföljd för många av panelerna i ditt verktygsfält."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Använd alltid litet skärm läge"
 
@@ -135,7 +135,7 @@ msgstr "Använd alltid litet skärm läge"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Systemfältet är ett koncept som används av vissa äldre program för att informera dig när något händer eller för att förbli aktiva när du stänger dem."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Tvinga alltid att använda litet skärm läge även om display läge normalt vill använda större skärm läge."
 
@@ -316,11 +316,11 @@ msgstr "Tvinga alltid att använda litet skärm läge även om display läge nor
 #~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 #~ msgstr "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina konton nu!"
 
-#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-#~ msgstr "<b>Välkommen till Moblin 2.0 för netbooks</b>"
+#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
+#~ msgstr "<b>Välkommen till Meego 2.0 för netbooks</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Då Moblin skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Moblin."
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Då Meego skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Meego."
 
 #~ msgid "Web page"
 #~ msgstr "Webbplats"

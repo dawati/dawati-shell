@@ -26,7 +26,7 @@
 #include "config.h"
 #endif
 
-#include "moblin-netbook.h"
+#include "meego-netbook.h"
 #include "alttab/mnb-alttab-overlay.h"
 #include "mnb-toolbar.h"
 #include "effects/mnb-switch-zones-effect.h"
@@ -34,8 +34,8 @@
 #include "notifications/ntf-overlay.h"
 #include "presence/mnb-presence.h"
 #include "mnb-panel-frame.h"
-#include "moblin-netbook-constraints.h"
-#include "moblin-netbook-mutter-hints.h"
+#include "meego-netbook-constraints.h"
+#include "meego-netbook-mutter-hints.h"
 #include "notifications/ntf-overlay.h"
 
 #include <compositor-mutter.h>
@@ -55,7 +55,7 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
 
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-common.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gmodule.h>
@@ -72,14 +72,14 @@
 #define SWITCH_TIMEOUT              400
 #define WS_SWITCHER_SLIDE_TIMEOUT   250
 #define MYZONE_TIMEOUT              200
-#define ACTOR_DATA_KEY "MCCP-moblin-netbook-actor-data"
+#define ACTOR_DATA_KEY "MCCP-meego-netbook-actor-data"
 #define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
 #define KEY_BG_OPTIONS BG_KEY_DIR "/picture_options"
 #define THEME_KEY_DIR "/apps/metacity/general"
 #define KEY_THEME THEME_KEY_DIR "/theme"
 #define KEY_BUTTONS THEME_KEY_DIR "/button_layout"
-#define KEY_ALLWAYS_SMALL_SCREEN "/desktop/moblin/always_small_screen_mode"
+#define KEY_ALLWAYS_SMALL_SCREEN "/desktop/meego/always_small_screen_mode"
 
 static guint32 compositor_options = 0;
 
@@ -109,9 +109,9 @@ static void fullscreen_app_removed (MutterPlugin *, MetaWindow *);
 static void meta_window_fullscreen_notify_cb (GObject    *object,
                                               GParamSpec *spec,
                                               gpointer    data);
-static void moblin_netbook_toggle_compositor (MutterPlugin *, gboolean on);
+static void meego_netbook_toggle_compositor (MutterPlugin *, gboolean on);
 static void window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin);
-static void moblin_netbook_handle_screen_size (MutterPlugin *plugin,
+static void meego_netbook_handle_screen_size (MutterPlugin *plugin,
                                                gint         *screen_width,
                                                gint         *screen_height);
 
@@ -144,7 +144,7 @@ static const MutterPluginInfo * plugin_info (MutterPlugin *plugin);
 
 static gboolean xevent_filter (MutterPlugin *plugin, XEvent *xev);
 
-MUTTER_PLUGIN_DECLARE (MoblinNetbookPlugin, moblin_netbook_plugin);
+MUTTER_PLUGIN_DECLARE (MeegoNetbookPlugin, meego_netbook_plugin);
 
 /*
  * Actor private data accessor
@@ -177,9 +177,9 @@ get_actor_private (MutterWindow *actor)
 }
 
 static void
-moblin_netbook_plugin_dispose (GObject *object)
+meego_netbook_plugin_dispose (GObject *object)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (object)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (object)->priv;
 
   if (priv->toolbar)
     {
@@ -187,19 +187,19 @@ moblin_netbook_plugin_dispose (GObject *object)
       priv->toolbar = NULL;
     }
 
-  G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->dispose (object);
+  G_OBJECT_CLASS (meego_netbook_plugin_parent_class)->dispose (object);
 }
 
 static void
-moblin_netbook_plugin_finalize (GObject *object)
+meego_netbook_plugin_finalize (GObject *object)
 {
   mnb_input_manager_destroy ();
 
-  G_OBJECT_CLASS (moblin_netbook_plugin_parent_class)->finalize (object);
+  G_OBJECT_CLASS (meego_netbook_plugin_parent_class)->finalize (object);
 }
 
 static void
-moblin_netbook_plugin_set_property (GObject      *object,
+meego_netbook_plugin_set_property (GObject      *object,
                                     guint         prop_id,
                                     const GValue *value,
                                     GParamSpec   *pspec)
@@ -213,7 +213,7 @@ moblin_netbook_plugin_set_property (GObject      *object,
 }
 
 static void
-moblin_netbook_plugin_get_property (GObject    *object,
+meego_netbook_plugin_get_property (GObject    *object,
                                     guint       prop_id,
                                     GValue     *value,
                                     GParamSpec *pspec)
@@ -232,23 +232,23 @@ moblin_netbook_plugin_get_property (GObject    *object,
  * position of which is fixed and depends on the screen size.
  */
 static void
-moblin_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
+meego_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   gint                        screen_width, screen_height;
 
-  moblin_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
+  meego_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
   if (priv->desktop_tex)
     clutter_actor_set_size (priv->desktop_tex, screen_width, screen_height);
 }
 
 static void
-moblin_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
+meego_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
-  if (moblin_netbook_urgent_notification_present (plugin))
+  if (meego_netbook_urgent_notification_present (plugin))
     {
       /*
        * Ignore the overlay key if we have urgent notifications (MB#6036)
@@ -275,10 +275,10 @@ moblin_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
 }
 
 static gboolean
-moblin_netbook_fullscreen_apps_present_on_workspace (MutterPlugin *plugin,
+meego_netbook_fullscreen_apps_present_on_workspace (MutterPlugin *plugin,
                                                      gint          index)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   GList *l;
 
   l = priv->fullscreen_wins;
@@ -303,13 +303,13 @@ moblin_netbook_fullscreen_apps_present_on_workspace (MutterPlugin *plugin,
 }
 
 static void
-moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
+meego_netbook_workspace_switched_cb (MetaScreen          *screen,
                                       gint                 from,
                                       gint                 to,
                                       MetaMotionDirection  dir,
                                       MutterPlugin        *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   gboolean on;
 
   if (compositor_options & MNB_OPTION_COMPOSITE_FULLSCREEN_APPS)
@@ -318,13 +318,13 @@ moblin_netbook_workspace_switched_cb (MetaScreen          *screen,
   if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
 
-  on = !moblin_netbook_fullscreen_apps_present_on_workspace (plugin, to);
+  on = !meego_netbook_fullscreen_apps_present_on_workspace (plugin, to);
 
-  moblin_netbook_toggle_compositor (plugin, on);
+  meego_netbook_toggle_compositor (plugin, on);
 }
 
 static void
-moblin_netbook_compute_screen_size (Display  *xdpy,
+meego_netbook_compute_screen_size (Display  *xdpy,
                                     gint      screen_no,
                                     gint     *width_mm,
                                     gint     *height_mm,
@@ -393,9 +393,9 @@ moblin_netbook_compute_screen_size (Display  *xdpy,
 }
 
 static void
-moblin_netbook_panel_window_show_cb (MutterWindow *mcw, MutterPlugin *plugin)
+meego_netbook_panel_window_show_cb (MutterWindow *mcw, MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   MnbPanel                   *panel;
   Window                      xwin = mutter_window_get_x_window (mcw);
@@ -404,16 +404,16 @@ moblin_netbook_panel_window_show_cb (MutterWindow *mcw, MutterPlugin *plugin)
     mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
 
   g_signal_handlers_disconnect_by_func (mcw,
-                                        moblin_netbook_panel_window_show_cb,
+                                        meego_netbook_panel_window_show_cb,
                                         plugin);
 }
 
 static void
-moblin_netbook_display_window_created_cb (MetaDisplay  *display,
+meego_netbook_display_window_created_cb (MetaDisplay  *display,
                                           MetaWindow   *win,
                                           MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   MutterWindow               *mcw;
   MetaCompWindowType          type;
@@ -442,7 +442,7 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
           g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL);
 
           g_signal_connect (mcw, "show",
-                            G_CALLBACK (moblin_netbook_panel_window_show_cb),
+                            G_CALLBACK (meego_netbook_panel_window_show_cb),
                             plugin);
         }
       else if ((wm_class = meta_window_get_wm_class (win)) &&
@@ -459,7 +459,7 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
       if (wm_class && !strcmp (wm_class, "Gnome-screensaver"))
         {
           priv->screen_saver_mcw = mcw;
-          moblin_netbook_toggle_compositor (plugin, FALSE);
+          meego_netbook_toggle_compositor (plugin, FALSE);
 
           g_signal_connect (mcw, "window-destroyed",
                             G_CALLBACK (window_destroyed_cb),
@@ -476,11 +476,11 @@ moblin_netbook_display_window_created_cb (MetaDisplay  *display,
 }
 
 static void
-moblin_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
+meego_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
                                                GParamSpec   *spec,
                                                MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaWindow                 *mw   = meta_display_get_focus_window (display);
 
   if (mw && priv->last_focused != mw)
@@ -518,11 +518,11 @@ moblin_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
 }
 
 static void
-moblin_netbook_handle_screen_size (MutterPlugin *plugin,
+meego_netbook_handle_screen_size (MutterPlugin *plugin,
                                    gint         *screen_width,
                                    gint         *screen_height)
 {
-  MoblinNetbookPluginPrivate *priv   = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv   = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   MnbToolbar   *toolbar   = (MnbToolbar*)priv->toolbar;
   MetaScreen   *screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
@@ -532,13 +532,13 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
   guint         screen_no = meta_screen_get_screen_number (screen);
   gint          screen_width_mm  = XDisplayWidthMM (xdpy, screen_no);
   gint          screen_height_mm = XDisplayHeightMM (xdpy, screen_no);
-  gchar        *moblin_session;
+  gchar        *meego_session;
   Window        leader_xwin;
   gboolean      netbook_mode;
   gboolean      external = FALSE;
   gboolean      force_small_screen = FALSE;
 
-  static Atom   atom__MOBLIN = None;
+  static Atom   atom__MEEGO = None;
   static gint   old_screen_width = 0, old_screen_height = 0;
 
   /*
@@ -561,7 +561,7 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
 
   if (!force_small_screen)
     {
-      moblin_netbook_compute_screen_size (xdpy,
+      meego_netbook_compute_screen_size (xdpy,
                                           screen_no,
                                           &screen_width_mm,
                                           &screen_height_mm,
@@ -576,27 +576,27 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
   else
     netbook_mode = priv->netbook_mode = FALSE;
 
-  if (!atom__MOBLIN)
-    atom__MOBLIN = XInternAtom (xdpy, "_MOBLIN", False);
+  if (!atom__MEEGO)
+    atom__MEEGO = XInternAtom (xdpy, "_MEEGO", False);
 
   leader_xwin = meta_display_get_leader_window (display);
 
-  moblin_session =
+  meego_session =
     g_strdup_printf ("session-type=%s",
                      netbook_mode ? "small-screen" : "bigger-screen");
 
-  g_debug ("Setting _MOBLIN=%s", moblin_session);
+  g_debug ("Setting _MEEGO=%s", meego_session);
 
   meta_error_trap_push (display);
   XChangeProperty (xdpy,
                    leader_xwin,
-                   atom__MOBLIN,
+                   atom__MEEGO,
                    XA_STRING,
                    8, PropModeReplace,
-                   (unsigned char*)moblin_session, strlen (moblin_session));
+                   (unsigned char*)meego_session, strlen (meego_session));
   meta_error_trap_pop (display, FALSE);
 
-  g_free (moblin_session);
+  g_free (meego_session);
 
   gconf_client_set_string (priv->gconf_client, KEY_THEME,
                            netbook_mode ? "Netbook" : "Nettop",
@@ -643,9 +643,9 @@ moblin_netbook_handle_screen_size (MutterPlugin *plugin,
 }
 
 static void
-moblin_netbook_plugin_start (MutterPlugin *plugin)
+meego_netbook_plugin_start (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   ClutterActor *overlay;
   ClutterActor *toolbar;
@@ -663,7 +663,7 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
 
   gconf_client = priv->gconf_client = gconf_client_get_default ();
 
-  moblin_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
+  meego_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
   /* tweak with env var as then possible to develop in desktop env. */
   if (!(compositor_options & MNB_OPTION_DISABLE_WS_CLAMP))
@@ -672,7 +672,7 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
                                  THEMEDIR "/mx.cache");
   mx_style_load_from_file (mx_style_get_default (),
-                             THEMEDIR "/mutter-moblin.css",
+                             THEMEDIR "/mutter-meego.css",
                              &err);
   if (err)
     {
@@ -682,27 +682,27 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
 
   g_signal_connect (screen,
                     "workareas-changed",
-                    G_CALLBACK (moblin_netbook_workarea_changed_cb),
+                    G_CALLBACK (meego_netbook_workarea_changed_cb),
                     plugin);
 
   g_signal_connect (screen,
                     "workspace-switched",
-                    G_CALLBACK (moblin_netbook_workspace_switched_cb),
+                    G_CALLBACK (meego_netbook_workspace_switched_cb),
                     plugin);
 
   g_signal_connect (display,
                     "overlay-key",
-                    G_CALLBACK (moblin_netbook_overlay_key_cb),
+                    G_CALLBACK (meego_netbook_overlay_key_cb),
                     plugin);
 
   g_signal_connect (display,
                     "window-created",
-                    G_CALLBACK (moblin_netbook_display_window_created_cb),
+                    G_CALLBACK (meego_netbook_display_window_created_cb),
                     plugin);
 
   g_signal_connect (display,
                     "notify::focus-window",
-                    G_CALLBACK (moblin_netbook_display_focus_window_notify_cb),
+                    G_CALLBACK (meego_netbook_display_focus_window_notify_cb),
                     plugin);
 
   overlay = mutter_plugin_get_overlay_group (plugin);
@@ -750,7 +750,7 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
    * Session presence.  In the future we should just use a lean gnome-session,
    * but for now mutter can be the presence manager.
    */
-  presence_init ((MoblinNetbookPlugin*)plugin);
+  presence_init ((MeegoNetbookPlugin*)plugin);
 
   /* Keys */
 
@@ -758,7 +758,7 @@ moblin_netbook_plugin_start (MutterPlugin *plugin)
 }
 
 static MutterShadow *
-moblin_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
+meego_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
 {
   MetaCompWindowType type;
 
@@ -788,15 +788,15 @@ moblin_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
 }
 
 static void
-moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
+meego_netbook_plugin_class_init (MeegoNetbookPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
   MutterPluginClass *plugin_class  = MUTTER_PLUGIN_CLASS (klass);
 
-  gobject_class->finalize        = moblin_netbook_plugin_finalize;
-  gobject_class->dispose         = moblin_netbook_plugin_dispose;
-  gobject_class->set_property    = moblin_netbook_plugin_set_property;
-  gobject_class->get_property    = moblin_netbook_plugin_get_property;
+  gobject_class->finalize        = meego_netbook_plugin_finalize;
+  gobject_class->dispose         = meego_netbook_plugin_dispose;
+  gobject_class->set_property    = meego_netbook_plugin_set_property;
+  gobject_class->get_property    = meego_netbook_plugin_get_property;
 
   plugin_class->map              = map;
   plugin_class->minimize         = minimize;
@@ -807,26 +807,26 @@ moblin_netbook_plugin_class_init (MoblinNetbookPluginClass *klass)
   plugin_class->kill_effect      = kill_effect;
   plugin_class->plugin_info      = plugin_info;
   plugin_class->xevent_filter    = xevent_filter;
-  plugin_class->get_shadow       = moblin_netbook_get_shadow;
-  plugin_class->constrain_window = moblin_netbook_constrain_window;
-  plugin_class->start            = moblin_netbook_plugin_start;
+  plugin_class->get_shadow       = meego_netbook_get_shadow;
+  plugin_class->constrain_window = meego_netbook_constrain_window;
+  plugin_class->start            = meego_netbook_plugin_start;
 
-  g_type_class_add_private (gobject_class, sizeof (MoblinNetbookPluginPrivate));
+  g_type_class_add_private (gobject_class, sizeof (MeegoNetbookPluginPrivate));
 }
 
 static void
-moblin_netbook_plugin_init (MoblinNetbookPlugin *self)
+meego_netbook_plugin_init (MeegoNetbookPlugin *self)
 {
-  MoblinNetbookPluginPrivate *priv;
+  MeegoNetbookPluginPrivate *priv;
   const gchar                *options;
 
-  self->priv = priv = MOBLIN_NETBOOK_PLUGIN_GET_PRIVATE (self);
+  self->priv = priv = MEEGO_NETBOOK_PLUGIN_GET_PRIVATE (self);
 
-  priv->info.name        = _("Moblin Netbook Effects");
+  priv->info.name        = _("Meego Netbook Effects");
   priv->info.version     = "0.1";
   priv->info.author      = "Intel Corp.";
   priv->info.license     = "GPL";
-  priv->info.description = _("Effects for Moblin Netbooks");
+  priv->info.description = _("Effects for Meego Netbooks");
 
   bindtextdomain (GETTEXT_PACKAGE, PLUGIN_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -1036,7 +1036,7 @@ unmaximize (MutterPlugin *plugin, MutterWindow *mcw,
 }
 
 static void
-moblin_netbook_move_window_to_workspace (MutterWindow *mcw,
+meego_netbook_move_window_to_workspace (MutterWindow *mcw,
                                          gint          workspace_index,
                                          guint32       timestamp)
 {
@@ -1082,7 +1082,7 @@ moblin_netbook_move_window_to_workspace (MutterWindow *mcw,
 }
 
 static void
-moblin_netbook_move_window_to_its_workspace (MutterPlugin *plugin,
+meego_netbook_move_window_to_its_workspace (MutterPlugin *plugin,
                                              MutterWindow *mcw,
                                              guint32       timestamp)
 {
@@ -1150,7 +1150,7 @@ moblin_netbook_move_window_to_its_workspace (MutterPlugin *plugin,
         }
     }
 
-  moblin_netbook_move_window_to_workspace (mcw, index, timestamp);
+  meego_netbook_move_window_to_workspace (mcw, index, timestamp);
 }
 
 static void
@@ -1183,7 +1183,7 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
 static gboolean
 maybe_show_myzone (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   gboolean                    no_apps = TRUE;
   GList                      *l;
@@ -1226,7 +1226,7 @@ maybe_show_myzone (MutterPlugin *plugin)
 
   if (no_apps)
     mnb_toolbar_activate_panel (MNB_TOOLBAR (priv->toolbar),
-                                "moblin-panel-myzone",
+                                "meego-panel-myzone",
                                 MNB_SHOW_HIDE_POLICY);
 
   return FALSE;
@@ -1396,7 +1396,7 @@ check_for_windows_of_wm_class_and_name (MutterPlugin *plugin,
 static void
 handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaCompWindowType          type;
   gint                        workspace;
   MetaWindow                 *meta_win;
@@ -1457,12 +1457,12 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
           gboolean on = TRUE;
 
           if (!(compositor_options & MNB_OPTION_COMPOSITE_FULLSCREEN_APPS))
-            on = !moblin_netbook_fullscreen_apps_present (plugin);
+            on = !meego_netbook_fullscreen_apps_present (plugin);
 
           if (on)
             {
               g_debug ("Enabling compositor (gnome-screensaver)");
-              moblin_netbook_toggle_compositor (plugin, on);
+              meego_netbook_toggle_compositor (plugin, on);
             }
         }
     }
@@ -1534,7 +1534,7 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
 static void
 fullscreen_app_added (MutterPlugin *plugin, MetaWindow *mw)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   gboolean                    compositor_on;
 
   priv->fullscreen_wins = g_list_prepend (priv->fullscreen_wins, mw);
@@ -1545,14 +1545,14 @@ fullscreen_app_added (MutterPlugin *plugin, MetaWindow *mw)
   if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
 
-  compositor_on = !moblin_netbook_fullscreen_apps_present (plugin);
-  moblin_netbook_toggle_compositor (plugin, compositor_on);
+  compositor_on = !meego_netbook_fullscreen_apps_present (plugin);
+  meego_netbook_toggle_compositor (plugin, compositor_on);
 }
 
 static void
 fullscreen_app_removed (MutterPlugin *plugin, MetaWindow *mw)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   gboolean                    compositor_on;
 
   priv->fullscreen_wins = g_list_remove (priv->fullscreen_wins, mw);
@@ -1563,23 +1563,23 @@ fullscreen_app_removed (MutterPlugin *plugin, MetaWindow *mw)
   if (priv->screen_saver_dpms || priv->screen_saver_mcw)
     return;
 
-  compositor_on = !moblin_netbook_fullscreen_apps_present (plugin);
-  moblin_netbook_toggle_compositor (plugin, compositor_on);
+  compositor_on = !meego_netbook_fullscreen_apps_present (plugin);
+  meego_netbook_toggle_compositor (plugin, compositor_on);
 }
 
 gboolean
-moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin)
+meego_netbook_fullscreen_apps_present (MutterPlugin *plugin)
 {
   MetaScreen *screen = mutter_plugin_get_screen (plugin);
   gint        active;
 
   active = meta_screen_get_active_workspace_index (screen);
 
-  return moblin_netbook_fullscreen_apps_present_on_workspace (plugin, active);
+  return meego_netbook_fullscreen_apps_present_on_workspace (plugin, active);
 }
 
 static void
-moblin_netbook_detach_mutter_windows (MetaScreen *screen)
+meego_netbook_detach_mutter_windows (MetaScreen *screen)
 {
   GList* l = mutter_get_windows (screen);
 
@@ -1597,9 +1597,9 @@ moblin_netbook_detach_mutter_windows (MetaScreen *screen)
 }
 
 static void
-moblin_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
+meego_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen;
   Display                    *xdpy;
   Window                      xroot;
@@ -1639,7 +1639,7 @@ moblin_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
        * Order matters; mapping the window before redirection seems to be
        * least visually disruptive. The fullscreen application is displayed
        * pretty much immediately at correct size, with correct contents, only
-       * there is brief delay before the Moblin background appears, and the
+       * there is brief delay before the Meego background appears, and the
        * window decoration is drawn.
        *
        * In the oposite order, we get a brief period of random content between
@@ -1650,7 +1650,7 @@ moblin_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
                                     xroot,
                                     CompositeRedirectManual);
       XSync (xdpy, FALSE);
-      moblin_netbook_detach_mutter_windows (screen);
+      meego_netbook_detach_mutter_windows (screen);
     }
 }
 
@@ -1706,7 +1706,7 @@ meta_window_is_blessed_window (MetaWindow *mw)
 }
 
 static gboolean
-moblin_netbook_window_is_modal_for_panel (MnbPanelOop *panel,
+meego_netbook_window_is_modal_for_panel (MnbPanelOop *panel,
                                           MetaWindow  *window)
 {
   MutterWindow *mcw;
@@ -1733,14 +1733,14 @@ moblin_netbook_window_is_modal_for_panel (MnbPanelOop *panel,
 }
 
 static void
-moblin_netbook_panel_modal_destroyed_cb (MutterWindow *mcw,
+meego_netbook_panel_modal_destroyed_cb (MutterWindow *mcw,
                                          MnbPanelOop  *panel)
 {
   mnb_panel_oop_set_auto_modal (panel, FALSE);
 }
 
 static gboolean
-moblin_netbook_never_move_window (MetaWindow *mw)
+meego_netbook_never_move_window (MetaWindow *mw)
 {
   const gchar *class    = meta_window_get_wm_class (mw);
   const char  *instance = meta_window_get_wm_class_instance (mw);
@@ -1761,7 +1761,7 @@ moblin_netbook_never_move_window (MetaWindow *mw)
 static void
 map (MutterPlugin *plugin, MutterWindow *mcw)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   ClutterActor               *actor = CLUTTER_ACTOR (mcw);
   MetaCompWindowType          type;
@@ -1777,11 +1777,11 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   mw           = mutter_window_get_meta_window (mcw);
 
   if (active_panel &&
-      moblin_netbook_window_is_modal_for_panel (active_panel, mw))
+      meego_netbook_window_is_modal_for_panel (active_panel, mw))
     {
       mnb_panel_oop_set_auto_modal ((MnbPanelOop*)active_panel, TRUE);
       g_signal_connect (mcw, "window-destroyed",
-                        G_CALLBACK (moblin_netbook_panel_modal_destroyed_cb),
+                        G_CALLBACK (meego_netbook_panel_modal_destroyed_cb),
                         active_panel);
     }
 
@@ -1845,10 +1845,10 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
            *     visible, tell the panel to **** off.
            */
           g_signal_handlers_disconnect_by_func (mcw,
-                                           moblin_netbook_panel_window_show_cb,
+                                           meego_netbook_panel_window_show_cb,
                                                 plugin);
 
-          if (!moblin_netbook_modal_windows_present (plugin, -1))
+          if (!meego_netbook_modal_windows_present (plugin, -1))
             {
               /*
                * Order matters; mnb_panel_show_mutter_window() hides the mcw,
@@ -1901,9 +1901,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
        *
        *  - only move windows when in netbook mode,
        *
-       *  - always move windows that set moblin-on-new-workspace hint to yes,
+       *  - always move windows that set meego-on-new-workspace hint to yes,
        *
-       *  - never move windows that set moblin-on-new-workspace hint to no,
+       *  - never move windows that set meego-on-new-workspace hint to no,
        *
        *  - apply heuristics when hint is not set:
        *     - only move applications, i.e., _NET_WM_WINDOW_TYPE_NORMAL,
@@ -1912,7 +1912,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       if (priv->netbook_mode)
         {
           MnbThreeState state =
-            moblin_netbook_mutter_hints_on_new_workspace (mw);
+            meego_netbook_mutter_hints_on_new_workspace (mw);
 
           if (state == MNB_STATE_YES)
             {
@@ -1924,7 +1924,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                 (type == META_COMP_WINDOW_NORMAL  &&
                  !meta_window_is_modal (mw)       &&
                  meta_window_get_transient_for_as_xid (mw) == None &&
-                 !moblin_netbook_never_move_window (mw));
+                 !meego_netbook_never_move_window (mw));
             }
         }
 
@@ -1935,7 +1935,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 
           timestamp = meta_display_get_current_time_roundtrip (display);
 
-          moblin_netbook_move_window_to_its_workspace (plugin,
+          meego_netbook_move_window_to_its_workspace (plugin,
                                                        mcw,
                                                        timestamp);
         }
@@ -2008,7 +2008,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
 static void
 destroy (MutterPlugin *plugin, MutterWindow *mcw)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaCompWindowType          type;
   Window                      xwin;
 
@@ -2038,7 +2038,7 @@ switch_workspace (MutterPlugin         *plugin,
                   gint                  to,
                   MetaMotionDirection   direction)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;;
 
   /*
    * We do not run an effect if a panel is visible (as the effect runs above
@@ -2059,7 +2059,7 @@ switch_workspace (MutterPlugin         *plugin,
 static void
 last_focus_weak_notify_cb (gpointer data, GObject *meta_win)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (data)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (data)->priv;
 
   if ((MetaWindow*)meta_win == priv->last_focused)
     {
@@ -2070,7 +2070,7 @@ last_focus_weak_notify_cb (gpointer data, GObject *meta_win)
 static gboolean
 xevent_filter (MutterPlugin *plugin, XEvent *xev)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   if (priv->saver_base && xev->type == priv->saver_base + ScreenSaverNotify)
     {
@@ -2083,7 +2083,7 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
           if (!priv->compositor_disabled)
             {
               g_debug ("disabling compositor (DPMS)");
-              moblin_netbook_toggle_compositor (plugin, FALSE);
+              meego_netbook_toggle_compositor (plugin, FALSE);
             }
         }
       else
@@ -2095,12 +2095,12 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
               gboolean on = TRUE;
 
               if (!(compositor_options & MNB_OPTION_COMPOSITE_FULLSCREEN_APPS))
-                on = !moblin_netbook_fullscreen_apps_present (plugin);
+                on = !meego_netbook_fullscreen_apps_present (plugin);
 
               if (on)
                 {
                   g_debug ("enabling compositor (DPMS)");
-                  moblin_netbook_toggle_compositor (plugin, on);
+                  meego_netbook_toggle_compositor (plugin, on);
                 }
             }
         }
@@ -2189,7 +2189,7 @@ kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
 static void
 setup_focus_window (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   Window                      xwin;
   XSetWindowAttributes        attr;
   Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
@@ -2229,7 +2229,7 @@ setup_focus_window (MutterPlugin *plugin)
 static void
 setup_screen_saver (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
@@ -2334,8 +2334,8 @@ mnb_desktop_texture_paint (ClutterActor *actor,
 {
   static CoglHandle material = COGL_INVALID_HANDLE;
 
-  MutterPlugin               *plugin = moblin_netbook_get_plugin_singleton ();
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MutterPlugin               *plugin = meego_netbook_get_plugin_singleton ();
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   CoglHandle paint_tex;
   guint tex_width, tex_height;
@@ -2551,7 +2551,7 @@ desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
   /*
    * Don't paint desktop background if fullscreen application is present.
    */
-  if (moblin_netbook_fullscreen_apps_present (plugin))
+  if (meego_netbook_fullscreen_apps_present (plugin))
     goto finish_up;
 
   /*
@@ -2577,7 +2577,7 @@ desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
 static void
 setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
   gint                        screen_width, screen_height;
   ClutterActor               *new_texture;
@@ -2656,7 +2656,7 @@ desktop_background_changed_cb (GConfClient *client,
 #if 0
   else if (value && !strcmp (key, KEY_BG_OPTIONS))
     {
-      MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
       g_return_if_fail (value->type == GCONF_VALUE_STRING);
 
@@ -2676,7 +2676,7 @@ desktop_background_changed_cb (GConfClient *client,
 static void
 desktop_background_init (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   GError *error = NULL;
 
   gconf_client_add_dir (priv->gconf_client,
@@ -2722,7 +2722,7 @@ desktop_background_init (MutterPlugin *plugin)
 static const MutterPluginInfo *
 plugin_info (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   return &priv->info;
 }
@@ -2743,9 +2743,9 @@ focus_xwin (MutterPlugin *plugin, guint xid)
 }
 
 void
-moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
+meego_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 {
-  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv    = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   if (timestamp == CurrentTime)
     timestamp = clutter_x11_get_current_event_time ();
@@ -2754,9 +2754,9 @@ moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 }
 
 void
-moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
+meego_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 {
-  MoblinNetbookPluginPrivate *priv    = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv    = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   MetaWindow                 *focus;
@@ -2803,7 +2803,7 @@ moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 }
 
 MutterPlugin *
-moblin_netbook_get_plugin_singleton (void)
+meego_netbook_get_plugin_singleton (void)
 {
   return plugin_singleton;
 }
@@ -2813,7 +2813,7 @@ moblin_netbook_get_plugin_singleton (void)
  * is < 0, returns TRUE if any modal windows are present on any workspace.
  */
 gboolean
-moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
+meego_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
 {
   MetaScreen *screen = mutter_plugin_get_screen (plugin);
   GList      *l      = mutter_get_windows (screen);
@@ -2849,15 +2849,15 @@ moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
 }
 
 gboolean
-moblin_netbook_compositor_disabled (MutterPlugin *plugin)
+meego_netbook_compositor_disabled (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   return priv->compositor_disabled;
 }
 
 void
-moblin_netbook_activate_window (MetaWindow *window)
+meego_netbook_activate_window (MetaWindow *window)
 {
   MetaWorkspace *workspace;
   MetaWorkspace *active_workspace;
@@ -2886,15 +2886,15 @@ moblin_netbook_activate_window (MetaWindow *window)
 }
 
 ClutterActor *
-moblin_netbook_get_toolbar (MutterPlugin *plugin)
+meego_netbook_get_toolbar (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   return priv->toolbar;
 }
 
 gboolean
-moblin_netbook_activate_mutter_window (MutterWindow *mcw)
+meego_netbook_activate_mutter_window (MutterWindow *mcw)
 {
   MetaWindow     *window;
   MetaWorkspace  *workspace;
@@ -2927,21 +2927,21 @@ moblin_netbook_activate_mutter_window (MutterWindow *mcw)
 }
 
 gboolean
-moblin_netbook_use_netbook_mode (MutterPlugin *plugin)
+meego_netbook_use_netbook_mode (MutterPlugin *plugin)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
   return priv->netbook_mode;
 }
 
 guint32
-moblin_netbook_get_compositor_option_flags (void)
+meego_netbook_get_compositor_option_flags (void)
 {
   return compositor_options;
 }
 
 gboolean
-moblin_netbook_urgent_notification_present (MutterPlugin *plugin)
+meego_netbook_urgent_notification_present (MutterPlugin *plugin)
 {
   return ntf_overlay_urgent_notification_present ();
 }
@@ -2950,13 +2950,13 @@ moblin_netbook_urgent_notification_present (MutterPlugin *plugin)
  * pass -1 for any values not to be used.
  */
 void
-moblin_netbook_set_struts (MutterPlugin *plugin,
+meego_netbook_set_struts (MutterPlugin *plugin,
                            gint          left,
                            gint          right,
                            gint          top,
                            gint          bottom)
 {
-  MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *ppriv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen        *screen         = mutter_plugin_get_screen (plugin);
   MetaDisplay       *display        = meta_screen_get_display (screen);
   Display           *xdpy           = meta_display_get_xdisplay (display);

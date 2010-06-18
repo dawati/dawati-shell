@@ -4,7 +4,7 @@
 # A S Alam <aalam@users.sf.net>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin.Moblin2-UI.mutter-moblin-netbook-plugin\n"
+"Project-Id-Version: mutter-meego.Meego2-UI.mutter-meego-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-05 09:20+0000\n"
 "PO-Revision-Date: 2009-08-08 07:43+0530\n"
@@ -57,8 +57,8 @@ msgid "Media"
 msgstr "ਮੀਡਿਆ"
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
-#: ../applications/src/moblin-netbook-launcher.c:1377
-#: ../pasteboard/src/moblin-panel-pasteboard.c:223
+#: ../applications/src/meego-netbook-launcher.c:1377
+#: ../pasteboard/src/meego-panel-pasteboard.c:223
 #: ../people/src/mnb-people-panel.c:568
 msgid "Search"
 msgstr "ਖੋਜ"
@@ -87,7 +87,7 @@ msgstr "ਕਾਂਡ %d"
 msgid "Year %d"
 msgstr "ਸਾਲ %d"
 
-#: ../ahoghill/src/moblin-panel-media.c:138
+#: ../ahoghill/src/meego-panel-media.c:138
 msgid "media"
 msgstr "ਮੀਡਿਆ"
 
@@ -95,77 +95,77 @@ msgstr "ਮੀਡਿਆ"
 #. * Fav apps.
 #.
 #. Label
-#: ../applications/src/moblin-netbook-launcher.c:869
+#: ../applications/src/meego-netbook-launcher.c:869
 msgid "Favourite Applications"
 msgstr "ਪਸੰਦੀਦਾ ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../applications/src/moblin-netbook-launcher.c:1366
+#: ../applications/src/meego-netbook-launcher.c:1366
 msgid "Applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../applications/src/moblin-panel-applications.c:166
+#: ../applications/src/meego-panel-applications.c:166
 msgid "applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:57
+#: ../libmeego-panel/meego-panel/mpl-utils.c:57
 msgid "Less than a minute ago"
 msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਪਹਿਲਾਂ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:61
+#: ../libmeego-panel/meego-panel/mpl-utils.c:61
 msgid "A few minutes ago"
 msgstr "ਕੁਝ ਕੁ ਮਿੰਟ ਪਹਿਲਾਂ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:65
+#: ../libmeego-panel/meego-panel/mpl-utils.c:65
 msgid "A couple of hours ago"
 msgstr "ਕੁਝ ਘੰਟੇ ਪਹਿਲਾਂ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:72
+#: ../libmeego-panel/meego-panel/mpl-utils.c:72
 msgid "Earlier today"
 msgstr "ਅੱਜ ਤੜਕੇ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:75
+#: ../libmeego-panel/meego-panel/mpl-utils.c:75
 msgid "Yesterday"
 msgstr "ਕੱਲ੍ਹ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:83
+#: ../libmeego-panel/meego-panel/mpl-utils.c:83
 #, c-format
 msgid "On %A"
 msgstr "%A ਉੱਤੇ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:89
+#: ../libmeego-panel/meego-panel/mpl-utils.c:89
 msgid "Unknown"
 msgstr "ਅਣਜਾਣ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:96
+#: ../libmeego-panel/meego-panel/mpl-utils.c:96
 msgid "Last week"
 msgstr "ਪਿਛਲੇ ਹਫ਼ਤੇ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:99
+#: ../libmeego-panel/meego-panel/mpl-utils.c:99
 msgid "A couple of weeks ago"
 msgstr "ਕੁਝ ਹਫ਼ਤੇ ਪਹਿਲਾਂ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:105
+#: ../libmeego-panel/meego-panel/mpl-utils.c:105
 msgid "This month"
 msgstr "ਇਹ ਮਹੀਨੇ"
 
 #. Now Jan., last used in Dec.
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:109
+#: ../libmeego-panel/meego-panel/mpl-utils.c:109
 msgid "Last month"
 msgstr "ਪਿਛਲੇ ਮਹੀਨੇ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:112
+#: ../libmeego-panel/meego-panel/mpl-utils.c:112
 msgid "This year"
 msgstr "ਇਹ ਸਾਲ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:115
+#: ../libmeego-panel/meego-panel/mpl-utils.c:115
 msgid "Last year"
 msgstr "ਪਿਛਲੇ ਸਾਲ"
 
-#: ../libmoblin-panel/moblin-panel/mpl-utils.c:117
+#: ../libmeego-panel/meego-panel/mpl-utils.c:117
 msgid "Ages ago"
 msgstr "ਕਈ ਸਾਲ ਪਹਿਲਾਂ"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:588
+#: ../netpanel/src/meego-netbook-netpanel.c:588
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
@@ -174,34 +174,34 @@ msgstr ""
 "ਨਵੀਂ ਟੈਬ ਪੇਜ਼ ਉੱਤੇ ਵੇਖਾਈ "
 "ਦੇਣਗੇ।"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:790
+#: ../netpanel/src/meego-netbook-netpanel.c:790
 msgid "Untitled"
 msgstr "ਬਿਨ-ਟਾਈਟਲ"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:972
+#: ../netpanel/src/meego-netbook-netpanel.c:972
 msgid "New tab"
 msgstr "ਨਵੀਂ ਟੈਬ"
 
 #. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1168
+#: ../netpanel/src/meego-netbook-netpanel.c:1168
 msgid "Internet"
 msgstr "ਇੰਟਰਨੈੱਟ"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:1181
+#: ../netpanel/src/meego-netbook-netpanel.c:1181
 msgid "Go"
 msgstr "ਜਾਓ"
 
 #. Construct title for tab preview section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1202
+#: ../netpanel/src/meego-netbook-netpanel.c:1202
 msgid "Tabs"
 msgstr "ਟੈਬਾਂ"
 
 #. Construct title for favorite pages section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1207
+#: ../netpanel/src/meego-netbook-netpanel.c:1207
 msgid "Favorite pages"
 msgstr "ਪਸੰਦੀਦਾ ਪੇਜ਼"
 
-#: ../netpanel/src/moblin-panel-internet.c:87
+#: ../netpanel/src/meego-panel-internet.c:87
 msgid "internet"
 msgstr "ਇੰਟਰਨੈੱਟ"
 
@@ -216,32 +216,32 @@ msgid "Go to %s"
 msgstr "%s ਉੱਤੇ ਜਾਓ"
 
 #: ../pasteboard/src/mnb-clipboard-item.c:248
-#: ../pasteboard/src/moblin-panel-pasteboard.c:340
+#: ../pasteboard/src/meego-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "ਕਾਪੀ ਕਰੋ"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:140
-#: ../pasteboard/src/moblin-panel-pasteboard.c:355
+#: ../pasteboard/src/meego-panel-pasteboard.c:140
+#: ../pasteboard/src/meego-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr "ਮੌਜੂਦਾ ਚੋਣ ਨੂੰ ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:145
+#: ../pasteboard/src/meego-panel-pasteboard.c:145
 msgid "your selection"
 msgstr "ਤੁਹਾਡੀ ਚੋਣ"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:210
+#: ../pasteboard/src/meego-panel-pasteboard.c:210
 msgid "Pasteboard"
 msgstr "ਪੇਸਟਬੋਰਡ"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:258
+#: ../pasteboard/src/meego-panel-pasteboard.c:258
 msgid "You need to copy some text to use Pasteboard"
 msgstr "ਤੁਹਾਨੂੰ ਪੇਸਟਬੋਰਡ ਵਰਤਣ ਲਈ ਕੁਝ ਟੈਕਸਟ ਕਾਪੀ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:312
+#: ../pasteboard/src/meego-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "ਪੇਸਟਬੋਰਡ ਸਾਫ਼ ਕਰੋ"
 
-#: ../pasteboard/src/moblin-panel-pasteboard.c:444
+#: ../pasteboard/src/meego-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "ਪੇਸਟਬੋਰਡ"
 
@@ -262,14 +262,14 @@ msgstr ""
 "ਐਕਟੀਵੇਟ ਕਰੋ!"
 
 #: ../penge/penge/penge-recent-files-pane.c:202
-msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
+msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
 msgstr "<b>ਨੈੱਟਬੁੱਕ ਲਈ ਮੋਬਲਿਨ ੨.੦ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ</b>"
 
 #: ../penge/penge/penge-recent-files-pane.c:227
 msgid ""
-"As Moblin is a bit different to other computers, we've put together a couple "
+"As Meego is a bit different to other computers, we've put together a couple "
 "of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Moblin Team."
+"The Meego Team."
 msgstr ""
 "ਮੋਬਲਿਨ ਹੋਰ ਕੰਪਿਊਟਰ ਤੋਂ ਕੁਝ ਅੱਡ ਹੈ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਮ ਕਰਨ ਲਈ ਮੱਦਦਗਾਰ "
 "ਹੋਣ ਵਾਸਤੇ ਬਹੁਤ "
@@ -289,7 +289,7 @@ msgstr "ਅੱਜ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ"
 msgid "Due %x"
 msgstr "%x ਨੂੰ ਦੇਣਾ"
 
-#: ../people/src/moblin-panel-people.c:69
+#: ../people/src/meego-panel-people.c:69
 msgid "people"
 msgstr "ਲੋਕ"
 
@@ -306,7 +306,7 @@ msgid "Send a message"
 msgstr "ਸੁਨੇਹਾ ਭੇਜੋ"
 
 #: ../people/src/mnb-people-panel.c:307
-#: ../status/src/moblin-panel-status.c:825
+#: ../status/src/meego-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr ""
 "ਅਫਸੋਸ, ਅਸੀਂ ਲੋਕ ਨਹੀਂ ਲੱਭ ਸਕੇ ਹਾਂ। ਤੁਸੀਂ ਤੁਸੀਂ ਮੈਸੈਂਜ਼ਰ ਅਕਾਊਂਟ ਸੈਟਅੱਪ ਕੀਤਾ ਹੈ?"
@@ -323,28 +323,28 @@ msgstr "ਚੋਣ"
 msgid "Nobody selected"
 msgstr "ਕੋਈ ਨਹੀਂ ਚੁਣਿਆ"
 
-#: ../src/moblin-netbook.c:306 ../src/mnb-toolbar.c:1428
+#: ../src/meego-netbook.c:306 ../src/mnb-toolbar.c:1428
 msgid "zones"
 msgstr "ਜ਼ੋਨ"
 
-#: ../src/moblin-netbook.c:415
-msgid "Moblin Netbook Effects"
+#: ../src/meego-netbook.c:415
+msgid "Meego Netbook Effects"
 msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਪਰਭਾਵ"
 
-#: ../src/moblin-netbook.c:419
-msgid "Effects for Moblin Netbooks"
+#: ../src/meego-netbook.c:419
+msgid "Effects for Meego Netbooks"
 msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਲਈ ਪਰਭਾਵ"
 
-#: ../src/moblin-netbook-chooser.c:790
+#: ../src/meego-netbook-chooser.c:790
 #, c-format
 msgid "Zone %d"
 msgstr "ਜ਼ੋਨ %d"
 
-#: ../src/moblin-netbook-chooser.c:839
+#: ../src/meego-netbook-chooser.c:839
 msgid "New zone (0)"
 msgstr "ਨਵਾਂ ਜ਼ੋਨ (0)"
 
-#: ../src/moblin-netbook-chooser.c:920
+#: ../src/meego-netbook-chooser.c:920
 msgid "Choose zone for application:"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਜ਼ੋਨ ਚੁਣੋ:"
 
@@ -419,19 +419,19 @@ msgid "Offline"
 msgstr "ਆਫਲਾਈਨ"
 
 #: ../status/src/mnb-im-status-row.c:105
-#: ../status/src/moblin-panel-status.c:536
+#: ../status/src/meego-panel-status.c:536
 msgid "Available"
 msgstr "ਉਪਲੱਬਧ"
 
 #: ../status/src/mnb-im-status-row.c:106 ../status/src/mnb-im-status-row.c:107
-#: ../status/src/moblin-panel-status.c:540
-#: ../status/src/moblin-panel-status.c:544
+#: ../status/src/meego-panel-status.c:540
+#: ../status/src/meego-panel-status.c:544
 msgid "Away"
 msgstr "ਦੂਰ"
 
 #: ../status/src/mnb-im-status-row.c:108 ../status/src/mnb-im-status-row.c:109
-#: ../status/src/moblin-panel-status.c:548
-#: ../status/src/moblin-panel-status.c:552
+#: ../status/src/meego-panel-status.c:548
+#: ../status/src/meego-panel-status.c:552
 msgid "Busy"
 msgstr "ਰੁਝੇ"
 
@@ -468,16 +468,16 @@ msgstr "ਆਪਣੀ ਮੌਜੂਦਾ ਹਾਲਤ ਏਥੇ ਦਿਓ..."
 msgid "Post"
 msgstr "ਪੋਸਟ"
 
-#: ../status/src/moblin-panel-status.c:470
+#: ../status/src/meego-panel-status.c:470
 msgid "Your current status"
 msgstr "ਆਪਣੀ ਮੌਜੂਦਾ ਹਾਲਤ"
 
-#: ../status/src/moblin-panel-status.c:472
-#: ../status/src/moblin-panel-status.c:960
+#: ../status/src/meego-panel-status.c:472
+#: ../status/src/meego-panel-status.c:960
 msgid "Your current status - you are offline"
 msgstr "ਆਪਣੀ ਮੌਜੂਦਾ ਹਾਲਤ - ਤੁਸੀਂ ਆਫਲਾਈਨ ਹੋ"
 
-#: ../status/src/moblin-panel-status.c:994
+#: ../status/src/meego-panel-status.c:994
 msgid ""
 "To update your web status you need to setup a Web Services account with a "
 "provider that supports status messages"
@@ -486,13 +486,13 @@ msgstr ""
 "ਪਰੋਵਾਇਡਰ ਨਾਲ ਸੈੱਟਅੱਪ "
 "ਕਰਨ ਦੀ ਲੋੜ ਹੈ, ਜੋ ਕਿ ਹਾਲਤ ਸੁਨੇਹੇ ਅੱਪਡੇਟ ਲਈ ਸਹਾਇਕ ਹੈ।"
 
-#: ../status/src/moblin-panel-status.c:1021
+#: ../status/src/meego-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr ""
 "ਤੁਹਾਡੇ IM ਹਾਲਤ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ ਵਾਸਤੇ, ਤੁਹਾਨੂੰ ਤੁਰੰਤ ਮੈਸੈਜ਼ਿੰਗ ਅਕਾਊਂਟ ਸੈੱਟਅੱਪ "
 "ਕਰਨ ਦੀ ਲੋੜ ਹੈ"
 
-#: ../status/src/moblin-panel-status.c:1118
+#: ../status/src/meego-panel-status.c:1118
 msgid "status"
 msgstr "ਹਾਲਤ"
 

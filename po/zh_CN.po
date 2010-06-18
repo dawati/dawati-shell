@@ -1,7 +1,7 @@
-# Chinese translations for mutter-moblin package
-# mutter-moblin 软件包的简体中文翻译.
+# Chinese translations for mutter-meego package
+# mutter-meego 软件包的简体中文翻译.
 # Copyright Intel (C) 2009
-# This file is distributed under the same license as the mutter-moblin package.
+# This file is distributed under the same license as the mutter-meego package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
 #
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "设置您工具栏的选择"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "工具栏设置"
 
@@ -89,31 +89,31 @@ msgstr "系统托盘"
 msgid "Show system tray"
 msgstr "显示系统托盘"
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr " 总是使用小屏幕模式"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "确定工具栏上面板的顺序。"
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "工具栏上面板的顺序"
 
-#: ../src/moblin-netbook.c:1018
-msgid "Moblin Netbook Effects"
-msgstr "Moblin Netbook 特效"
+#: ../src/meego-netbook.c:1018
+msgid "Meego Netbook Effects"
+msgstr "Meego Netbook 特效"
 
-#: ../src/moblin-netbook.c:1022
-msgid "Effects for Moblin Netbooks"
-msgstr "Moblin Netbook 特效"
+#: ../src/meego-netbook.c:1022
+msgid "Effects for Meego Netbooks"
+msgstr "Meego Netbook 特效"
 
-#: ../src/moblin-netbook.c:3218
+#: ../src/meego-netbook.c:3218
 msgid "Activate"
 msgstr "激活"
 
-#: ../src/moblin-netbook.c:3232
+#: ../src/meego-netbook.c:3232
 msgid "Unknown window"
 msgstr "未知的窗口"
 
@@ -130,7 +130,7 @@ msgstr "忽略"
 msgid "Dismiss All"
 msgstr "忽略所有"
 
-#: ../src/moblin-netbook.c:3234
+#: ../src/meego-netbook.c:3234
 msgid "is asking for your attention."
 msgstr "正在寻求您的关注。"
 
@@ -142,7 +142,7 @@ msgstr "您可以添加、删除和重新排列工具栏中的很多面板。"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "系统托盘是一些老应用使用方式，让您知道某些事情的发生或您关闭它们时程序仍在继续运行。"
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "即使显示大小通常默认为更大的屏幕模式，仍强制使用小屏幕模式。"
 
@@ -152,8 +152,8 @@ msgstr "即使显示大小通常默认为更大的屏幕模式，仍强制使用
 #~ msgid "Socket for embedding"
 #~ msgstr "嵌入式插槽"
 
-#~ msgid "- Moblin Toolbar Preferences"
-#~ msgstr "- Moblin 工具栏选项"
+#~ msgid "- Meego Toolbar Preferences"
+#~ msgstr "- Meego 工具栏选项"
 
 #~ msgid "socket"
 #~ msgstr "插槽"
@@ -332,11 +332,11 @@ msgstr "即使显示大小通常默认为更大的屏幕模式，仍强制使用
 #~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 #~ msgstr "您朋友的最新情况会在这里显示。现在就开始配置您的账户吧！"
 
-#~ msgid "<b>Welcome to Moblin 2.0 for Netbooks</b>"
-#~ msgstr "<b>欢迎使用 Moblin 2.0 系统</b>"
+#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
+#~ msgstr "<b>欢迎使用 Meego 2.0 系统</b>"
 
-#~ msgid "As Moblin is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Moblin Team."
-#~ msgstr "Moblin 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 Moblin。希望您喜欢我们的产品，尽情享受吧！ -- Moblin 团队。"
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Meego 和其他系统有很大区别，为此我们整合了一组工具和特性帮助您尽快熟悉 Meego。希望您喜欢我们的产品，尽情享受吧！ -- Meego 团队。"
 
 #~ msgid "Web page"
 #~ msgstr "网页"

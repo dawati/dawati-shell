@@ -2,7 +2,7 @@ Post multiproc needed work;
 
 * mnb-toolbar;
   - Contains just date/time and systray. Panels to be added externally in
-    moblin-netbook.c. See below for API.
+    meego-netbook.c. See below for API.
   - New public API;
 
   void

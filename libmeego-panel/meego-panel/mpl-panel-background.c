@@ -195,7 +195,7 @@ mpl_panel_background_allocate (ClutterActor          *actor,
    * allows, we change the asset to simpler one.
    *
    * The code here assumes that we either have no name, or are called
-   * 'too-small', but since this is a private widget of libmoblin-panel, we can
+   * 'too-small', but since this is a private widget of libmeego-panel, we can
    * enforce this assumption.
    */
   if (border)

@@ -24,7 +24,7 @@
 #ifndef MNB_SWITCH_ZONES_EFFECT_H
 #define MNB_SWITCH_ZONES_EFFECT_H
 
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 
 void     mnb_switch_zones_effect (MutterPlugin         *plugin,
                                   const GList         **actors,

@@ -1,5 +1,5 @@
 
-This is the Moblin Netbook plugin for Metacity Clutter, aka, Mutter
+This is the Meego Netbook plugin for Metacity Clutter, aka, Mutter
 
 Significant Preferences
 =======================
@@ -45,6 +45,6 @@ The following Metacity preferences are of possible interest:
 
 Dependencies:
 
-MX: git.moblin.org/mx.git
+MX: git.meego.org/mx.git
 jana: svn.gnome.org/svn/jana
-mojito: git.moblin.org/mojito.git
+mojito: git.meego.org/mojito.git

@@ -1,8 +1,8 @@
 
-#ifndef MOBLIN_MUTTER_HINTS_H
-#define MOBLIN_MUTTER_HINTS_H
+#ifndef MEEGO_MUTTER_HINTS_H
+#define MEEGO_MUTTER_HINTS_H
 
-#include "moblin-netbook.h"
+#include "meego-netbook.h"
 
 typedef enum
 {
@@ -11,6 +11,6 @@ typedef enum
   MNB_STATE_NO
 } MnbThreeState;
 
-MnbThreeState moblin_netbook_mutter_hints_on_new_workspace (MetaWindow *window);
+MnbThreeState meego_netbook_mutter_hints_on_new_workspace (MetaWindow *window);
 
 #endif

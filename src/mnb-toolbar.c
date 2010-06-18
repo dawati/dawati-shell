@@ -32,7 +32,7 @@
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus.h>
 #include <gconf/gconf-client.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-common.h>
 #include <display.h>
 #include <keybindings.h>
 #include <errors.h>
@@ -46,7 +46,7 @@
 #include <glib/gi18n.h>
 
 
-#include "moblin-netbook.h"
+#include "meego-netbook.h"
 
 #include "mnb-toolbar.h"
 #include "mnb-panel-oop.h"
@@ -63,7 +63,7 @@
 
 #define SLIDE_DURATION 150
 
-#define KEY_DIR "/desktop/moblin/toolbar/panels"
+#define KEY_DIR "/desktop/meego/toolbar/panels"
 #define KEY_ORDER KEY_DIR "/order"
 
 #define BUTTON_SPACING 6
@@ -92,7 +92,7 @@
 #define TOOLBAR_AUTOSTART_ATTEMPTS 10
 #define TOOLBAR_WAITING_FOR_PANEL_TIMEOUT 1 /* in seconds */
 #define TOOLBAR_PANEL_STUB_TIMEOUT 6        /* in seconds */
-#define MOBLIN_BOOT_COUNT_KEY "/desktop/moblin/myzone/boot_count"
+#define MEEGO_BOOT_COUNT_KEY "/desktop/meego/myzone/boot_count"
 
 #define CLOSE_BUTTON_GUARD_WIDTH 35
 
@@ -103,7 +103,7 @@
 #if 0
 /*
  * TODO
- * This is currently define in moblin-netbook.h, as it is needed by the
+ * This is currently define in meego-netbook.h, as it is needed by the
  * tray manager and MnbDropDown -- this should not be hardcoded, and we need
  * a way for the drop down to query it from the panel.
  */
@@ -460,7 +460,7 @@ mnb_toolbar_system_modal_state (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate          *priv   = toolbar->priv;
   MutterPlugin               *plugin = priv->plugin;
-  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *ppriv  = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   MetaWindow                 *focus  = ppriv->last_focused;
 
   if (focus && meta_window_is_modal (focus))
@@ -525,7 +525,7 @@ mnb_toolbar_real_show (ClutterActor *actor)
       return;
     }
 
-  if (moblin_netbook_use_netbook_mode (priv->plugin))
+  if (meego_netbook_use_netbook_mode (priv->plugin))
     mnb_toolbar_show_lowlight (MNB_TOOLBAR (actor));
 
   /*
@@ -557,7 +557,7 @@ mnb_toolbar_real_show (ClutterActor *actor)
                                    TOOLBAR_HEIGHT + 10,
                                    FALSE, MNB_INPUT_LAYER_PANEL);
 
-  moblin_netbook_stash_window_focus (priv->plugin, CurrentTime);
+  meego_netbook_stash_window_focus (priv->plugin, CurrentTime);
 }
 
 static void
@@ -598,7 +598,7 @@ mnb_toolbar_hide_transition_completed_cb (ClutterAnimation *animation,
   priv->panel_input_only = FALSE;
   priv->reason_for_hide = _MNB_SHOW_HIDE_UNSET;
 
-  moblin_netbook_unstash_window_focus (priv->plugin, CurrentTime);
+  meego_netbook_unstash_window_focus (priv->plugin, CurrentTime);
 
   g_signal_emit (actor, toolbar_signals[HIDE_COMPLETED], 0);
 
@@ -663,7 +663,7 @@ mnb_toolbar_hide (MnbToolbar *toolbar, MnbShowHideReason reason)
   /*
    * Don't allow the toolbar to hide when not in netbook mode.
    */
-  if (!moblin_netbook_use_netbook_mode (priv->plugin))
+  if (!meego_netbook_use_netbook_mode (priv->plugin))
     return;
 
   if (priv->in_hide_animation)
@@ -1399,7 +1399,7 @@ mnb_toolbar_dropdown_show_completed_partial_cb (MnbPanel    *panel,
   mnb_spinner_stop ((MnbSpinner*)priv->spinner);
   priv->stubbed_panel = NULL;
 
-  if (!moblin_netbook_use_netbook_mode (priv->plugin))
+  if (!meego_netbook_use_netbook_mode (priv->plugin))
     mnb_toolbar_show_lowlight (toolbar);
 
   mnb_toolbar_raise_lowlight_for_panel (toolbar, panel);
@@ -1413,10 +1413,10 @@ mnb_toolbar_dropdown_hide_completed_cb (MnbPanel *panel, MnbToolbar  *toolbar)
   MutterPlugin      *plugin = priv->plugin;
   MnbPanel          *active;
 
-  moblin_netbook_stash_window_focus (plugin, CurrentTime);
+  meego_netbook_stash_window_focus (plugin, CurrentTime);
 
   if (!priv->waiting_for_panel_show &&
-      !moblin_netbook_use_netbook_mode (priv->plugin) &&
+      !meego_netbook_use_netbook_mode (priv->plugin) &&
       (!(active = mnb_toolbar_get_active_panel (toolbar)) ||
        active == panel))
     {
@@ -1904,7 +1904,7 @@ mnb_toolbar_panel_ready_cb (MnbPanel *panel, MnbToolbar *toolbar)
         }
       else if (!priv->shown_myzone && priv->shown)
         {
-          if (tp->name && !strcmp (tp->name, "moblin-panel-myzone"))
+          if (tp->name && !strcmp (tp->name, "meego-panel-myzone"))
             {
               mnb_panel_show (panel);
               priv->shown_myzone = TRUE;
@@ -1971,7 +1971,7 @@ mnb_toolbar_ensure_applet_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
       gint x, y, clock_index;
       gint width = screen_width;
 
-      if (!moblin_netbook_use_netbook_mode (plugin))
+      if (!meego_netbook_use_netbook_mode (plugin))
         width += 2 * BIG_SCREEN_PAD;
 
       clock_index = mnb_toolbar_get_clock_position_in_tray (toolbar);
@@ -2028,7 +2028,7 @@ mnb_toolbar_ensure_button_position (MnbToolbar *toolbar, MnbToolbarPanel *tp)
             - BUTTON_INTERNAL_PADDING / 2 +
             ((BUTTON_WIDTH + BUTTON_SPACING) * index);
 
-          if (!moblin_netbook_use_netbook_mode (plugin))
+          if (!meego_netbook_use_netbook_mode (plugin))
             spacing += BIG_SCREEN_BUTTON_SHIFT;
 
           clutter_actor_set_position (CLUTTER_ACTOR (button), spacing,
@@ -2305,7 +2305,7 @@ static void
 mnb_toolbar_init (MnbToolbar *self)
 {
   MnbToolbarPrivate *priv;
-  guint32            flags = moblin_netbook_get_compositor_option_flags ();
+  guint32            flags = meego_netbook_get_compositor_option_flags ();
 
   priv = self->priv = MNB_TOOLBAR_GET_PRIVATE (self);
 
@@ -2658,19 +2658,19 @@ mnb_toolbar_set_struts (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate *priv         = toolbar->priv;
   MutterPlugin      *plugin       = priv->plugin;
-  gboolean           netbook_mode = moblin_netbook_use_netbook_mode (plugin);
+  gboolean           netbook_mode = meego_netbook_use_netbook_mode (plugin);
 
   /*
    * When not in netbook mode, we need to reserve space for the toolbar.
    */
   if (!netbook_mode && !priv->struts_set)
     {
-      moblin_netbook_set_struts (plugin, -1, -1, TOOLBAR_HEIGHT, -1);
+      meego_netbook_set_struts (plugin, -1, -1, TOOLBAR_HEIGHT, -1);
       priv->struts_set = TRUE;
     }
   else if (netbook_mode && priv->struts_set)
     {
-      moblin_netbook_set_struts (plugin, -1, -1, 0, -1);
+      meego_netbook_set_struts (plugin, -1, -1, 0, -1);
       priv->struts_set = FALSE;
     }
 }
@@ -2690,7 +2690,7 @@ mnb_toolbar_constructed (GObject *self)
   DBusGConnection   *conn;
   MetaScreen        *screen = mutter_plugin_get_screen (plugin);
   ClutterActor      *wgroup = mutter_get_window_group_for_screen (screen);
-  gboolean           netbook_mode = moblin_netbook_use_netbook_mode (plugin);
+  gboolean           netbook_mode = meego_netbook_use_netbook_mode (plugin);
 
   /*
    * Make sure our parent gets chance to do what it needs to.
@@ -3201,7 +3201,7 @@ mnb_toolbar_stage_captured_cb (ClutterActor *stage,
       /*
        * If any fullscreen apps are present, then bail out.
        */
-      if (moblin_netbook_fullscreen_apps_present (priv->plugin))
+      if (meego_netbook_fullscreen_apps_present (priv->plugin))
             return FALSE;
 
       /*
@@ -3295,7 +3295,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   gboolean           netbook_mode;
   gint               width = priv->old_screen_width;
 
-  netbook_mode = moblin_netbook_use_netbook_mode (priv->plugin);
+  netbook_mode = meego_netbook_use_netbook_mode (priv->plugin);
 
   mutter_plugin_query_screen_size (priv->plugin, &screen_width, &screen_height);
 
@@ -3345,7 +3345,7 @@ mnb_toolbar_ensure_size_for_screen (MnbToolbar *toolbar)
   if (priv->old_screen_width != screen_width)
     {
       MutterPlugin               *plugin = priv->plugin;
-      MoblinNetbookPluginPrivate *ppriv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+      MeegoNetbookPluginPrivate *ppriv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
       width = screen_width;
 
@@ -3445,11 +3445,11 @@ mnb_toolbar_alt_f2_key_handler (MetaDisplay    *display,
   MnbToolbar      *toolbar = MNB_TOOLBAR (data);
   MnbToolbarPanel *tp;
 
-  if (moblin_netbook_urgent_notification_present (toolbar->priv->plugin))
+  if (meego_netbook_urgent_notification_present (toolbar->priv->plugin))
     return;
 
   tp = mnb_toolbar_panel_name_to_panel_internal (toolbar,
-                                                 "moblin-panel-applications");
+                                                 "meego-panel-applications");
 
   if (tp)
     mnb_toolbar_activate_panel_internal (toolbar, tp, MNB_SHOW_HIDE_BY_KEY);
@@ -3525,7 +3525,7 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
        * should not be an issue, since will automatically hide the Shell when
        * the modal window pops up.
        */
-      if (!moblin_netbook_modal_windows_present (plugin, -1))
+      if (!meego_netbook_modal_windows_present (plugin, -1))
         {
           priv->shown_myzone = TRUE;
           mnb_panel_show (myzone);
@@ -3543,7 +3543,7 @@ mnb_toolbar_stage_show_cb (ClutterActor *stage, MnbToolbar *toolbar)
                     toolbar);
 
   /*
-   * We need to be called last, after the handler in moblin-netbook.c has
+   * We need to be called last, after the handler in meego-netbook.c has
    * fixed up the screen mode to either small-screen or bigger-screen.
    */
   g_signal_connect_after (screen,
@@ -3700,7 +3700,7 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
 
       b = g_key_file_get_boolean (kfile,
                                   G_KEY_FILE_DESKTOP_GROUP,
-                                  "X-Moblin-Panel-Optional",
+                                  "X-Meego-Panel-Optional",
                                   &error);
 
       /*
@@ -3714,7 +3714,7 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
 
       b = g_key_file_get_boolean (kfile,
                                   G_KEY_FILE_DESKTOP_GROUP,
-                                  "X-Moblin-Panel-Windowless",
+                                  "X-Meego-Panel-Windowless",
                                   &error);
 
       /*
@@ -3736,7 +3736,7 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
 
       s = g_key_file_get_string (kfile,
                                  G_KEY_FILE_DESKTOP_GROUP,
-                                 "X-Moblin-Panel-Button-Style",
+                                 "X-Meego-Panel-Button-Style",
                                         NULL);
 
       if (!s)
@@ -3744,7 +3744,7 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
           /*
            * FIXME -- temporary hack
            */
-          if (!strcmp (desktop, "moblin-panel-myzone"))
+          if (!strcmp (desktop, "meego-panel-myzone"))
             tp->button_style = g_strdup ("myzone-button");
           else
             tp->button_style = g_strdup_printf ("%s-button", desktop);
@@ -3754,7 +3754,7 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
 
       s = g_key_file_get_string (kfile,
                                  G_KEY_FILE_DESKTOP_GROUP,
-                                 "X-Moblin-Panel-Type",
+                                 "X-Meego-Panel-Type",
                                  NULL);
 
       if (s)
@@ -3771,14 +3771,14 @@ mnb_toolbar_make_panel_from_desktop (MnbToolbar *toolbar, const gchar *desktop)
         {
           s = g_key_file_get_string (kfile,
                                      G_KEY_FILE_DESKTOP_GROUP,
-                                     "X-Moblin-Panel-Stylesheet",
+                                     "X-Meego-Panel-Stylesheet",
                                      NULL);
 
           tp->button_stylesheet = s;
 
           s = g_key_file_get_string (kfile,
                                      G_KEY_FILE_DESKTOP_GROUP,
-                                     "X-Moblin-Service",
+                                     "X-Meego-Service",
                                      NULL);
 
           tp->service = s;
@@ -4058,13 +4058,13 @@ mnb_toolbar_load_gconf_settings (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate          *priv   = toolbar->priv;
   MutterPlugin               *plugin = priv->plugin;
-  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *ppriv  = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   GConfClient                *client = ppriv->gconf_client;
   GSList                     *order;
   gint                        i;
-  const gchar                *required[4] = {"moblin-panel-myzone",
-                                             "moblin-panel-applications",
-                                             "moblin-panel-zones",
+  const gchar                *required[4] = {"meego-panel-myzone",
+                                             "meego-panel-applications",
+                                             "meego-panel-zones",
                                              "carrick"};
 
   order = gconf_client_get_list (client, KEY_ORDER, GCONF_VALUE_STRING, NULL);
@@ -4099,7 +4099,7 @@ mnb_toolbar_setup_gconf (MnbToolbar *toolbar)
 {
   MnbToolbarPrivate          *priv   = toolbar->priv;
   MutterPlugin               *plugin = priv->plugin;
-  MoblinNetbookPluginPrivate *ppriv  = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *ppriv  = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   GConfClient                *client = ppriv->gconf_client;
   GError                     *error  = NULL;
 

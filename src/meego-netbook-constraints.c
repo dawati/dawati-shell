@@ -1,5 +1,5 @@
-#include "moblin-netbook-constraints.h"
-#include "moblin-netbook-mutter-hints.h"
+#include "meego-netbook-constraints.h"
+#include "meego-netbook-mutter-hints.h"
 
 #include "constraints.h"
 
@@ -113,13 +113,13 @@ not_too_small (MutterPlugin       *plugin,
 }
 
 gboolean
-moblin_netbook_constrain_window (MutterPlugin       *plugin,
+meego_netbook_constrain_window (MutterPlugin       *plugin,
                                  MetaWindow         *window,
                                  ConstraintInfo     *info,
                                  ConstraintPriority  priority,
                                  gboolean            check_only)
 {
-  MoblinNetbookPluginPrivate *priv = MOBLIN_NETBOOK_PLUGIN (plugin)->priv;
+  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
   gboolean satisfied = TRUE;
 
   if (priv->netbook_mode)

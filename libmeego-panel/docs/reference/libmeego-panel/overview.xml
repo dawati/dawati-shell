@@ -3,11 +3,11 @@
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 
 ]>
-<part id="moblinpaneloverview">
-  <title>Moblin Panel Overview</title>
+<part id="meegopaneloverview">
+  <title>Meego Panel Overview</title>
 
     <para>
-      Moblin Panel is an application that inserts a button into the Moblin
+      Meego Panel is an application that inserts a button into the Meego
       Shell Toolbar, optionally associated with a drop-down panel shown when
       the users clicks on the button. The Panel controls the styling of the
       Toolbar button (provided by the Shell), and the associated tooltip. The
@@ -17,8 +17,8 @@
     <para>
       Communication between the Panel and the Toolbar is done over D-Bus: the
       Panel application is required to implement the <emphasis>
-      org.moblin.UX.Shell.Panel</emphasis>interface through which the Toolbar
-      manipulates the Panel; libmoblin-panel encapsulates implementation of this
+      org.meego.UX.Shell.Panel</emphasis>interface through which the Toolbar
+      manipulates the Panel; libmeego-panel encapsulates implementation of this
       interface in the #MplPanelClient class, with subclasses for specific panel
       use-cases and toolkit choice #MplPanelClutter, #MplPanelGtk,
       #MplPanelWindowless. These classes mean that a panel application can be
@@ -27,7 +27,7 @@
 
     <para>
       The position of a panel on the Toolbar is determined by a list stored
-      in GConf under the key <filename>/desktop/moblin/toolbar/panels/order
+      in GConf under the key <filename>/desktop/meego/toolbar/panels/order
       </filename>; this can be altered by the user using the Toolbar settings
       applet.
     </para>

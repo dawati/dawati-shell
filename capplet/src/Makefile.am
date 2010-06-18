@@ -4,8 +4,8 @@ AM_CPPFLAGS = 						\
 	-DPKGLIBDIR=\"$(pkglibdir)\" 			\
 	-DLOCALEDIR=\"$(localedir)\" 			\
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 		\
-	-DPANELSDIR=\"$(MUTTER_MOBLIN_PANELS_DIR)\" 	\
-	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\"	\
+	-DPANELSDIR=\"$(MUTTER_MEEGO_PANELS_DIR)\" 	\
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)\"	\
 	-Wall -Wmissing-declarations
 
 AM_LDFLAGS = \
@@ -30,15 +30,15 @@ libmtp_common_la_SOURCES = \
 		mtp-space.c			\
 		mtp-bin.c
 
-bin_PROGRAMS=moblin-toolbar-properties
+bin_PROGRAMS=meego-toolbar-properties
 
-moblin_toolbar_properties_CFLAGS  = -I.. $(CAPPLET_CFLAGS) 	\
+meego_toolbar_properties_CFLAGS  = -I.. $(CAPPLET_CFLAGS) 	\
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 			\
-	-DPANELSDIR=\"$(MUTTER_MOBLIN_PANELS_DIR)\" 		\
-	-DTHEMEDIR=\"$(MUTTER_MOBLIN_THEME_DIR)\"
+	-DPANELSDIR=\"$(MUTTER_MEEGO_PANELS_DIR)\" 		\
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)\"
 
-moblin_toolbar_properties_LDADD   = libmtp-common.la
-moblin_toolbar_properties_SOURCES = moblin-toolbar-properties.c
+meego_toolbar_properties_LDADD   = libmtp-common.la
+meego_toolbar_properties_SOURCES = meego-toolbar-properties.c
 
 ccmodulesdir = $(CC_DIR)
 ccmodules_LTLIBRARIES = libmtp.la libsystray.la

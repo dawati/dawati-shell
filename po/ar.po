@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin\n"
+"Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:26+0000\n"
 "PO-Revision-Date: 2009-11-10 23:16+0200\n"
@@ -16,17 +16,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../src/moblin-netbook.c:391
+#: ../src/meego-netbook.c:391
 #: ../src/mnb-toolbar.c:1427
 msgid "zones"
 msgstr "مناطق"
 
-#: ../src/moblin-netbook.c:504
-msgid "Moblin Netbook Effects"
+#: ../src/meego-netbook.c:504
+msgid "Meego Netbook Effects"
 msgstr "تأثيرات خاصة بأجهزة الانترنت التي تعمل بموبلن"
 
-#: ../src/moblin-netbook.c:508
-msgid "Effects for Moblin Netbooks"
+#: ../src/meego-netbook.c:508
+msgid "Effects for Meego Netbooks"
 msgstr "تأثيرات لأجهزة الانترنت التي تعمل بموبلن"
 
 #. translators: translate this to a suitable time format for your locale

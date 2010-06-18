@@ -25,7 +25,7 @@
 #include "config.h"
 #endif
 
-#include "../moblin-netbook.h"
+#include "../meego-netbook.h"
 #include "../mnb-input-manager.h"
 #include "ntf-overlay.h"
 #include "ntf-libnotify.h"
@@ -218,7 +218,7 @@ ntf_overlay_get_preferred_width (ClutterActor *actor,
                                  gfloat       *min_width,
                                  gfloat       *natural_width)
 {
-  MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
   gint          screen_width;
   gint          screen_height;
 
@@ -234,7 +234,7 @@ ntf_overlay_get_preferred_height (ClutterActor *actor,
                                gfloat       *min_height,
                                gfloat       *natural_height)
 {
-  MutterPlugin *plugin = moblin_netbook_get_plugin_singleton ();
+  MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
   gint          screen_width;
   gint          screen_height;
 

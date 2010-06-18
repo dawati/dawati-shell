@@ -22,8 +22,8 @@
  * 02111-1307, USA.
  */
 
-#ifndef MOBLIN_NETBOOK_H
-#define MOBLIN_NETBOOK_H
+#ifndef MEEGO_NETBOOK_H
+#define MEEGO_NETBOOK_H
 
 #include <gconf/gconf-client.h>
 #include <mutter-plugin.h>
@@ -39,7 +39,7 @@
 #define MNB_DBG_MARK() \
   g_debug (G_STRLOC ":%s", __FUNCTION__)        \
 
-#define MOBLIN_PANEL_SHORTCUT_KEY XK_Super_L
+#define MEEGO_PANEL_SHORTCUT_KEY XK_Super_L
 
 #define MAX_WORKSPACES 8
 
@@ -54,28 +54,28 @@ typedef enum
   MNB_OPTION_COMPOSITE_FULLSCREEN_APPS = 1 << 3,
 } MnbOptionFlag;
 
-#define MOBLIN_TYPE_NETBOOK_PLUGIN            (moblin_netbook_plugin_get_type ())
-#define MOBLIN_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPlugin))
-#define MOBLIN_NETBOOK_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginClass))
-#define MUTTER_IS_DEFAULT_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MOBLIN_NETBOOK_PLUGIN_TYPE))
-#define MUTTER_IS_DEFAULT_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  MOBLIN_TYPE_NETBOOK_PLUGIN))
-#define MOBLIN_NETBOOK_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginClass))
+#define MEEGO_TYPE_NETBOOK_PLUGIN            (meego_netbook_plugin_get_type ())
+#define MEEGO_NETBOOK_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MEEGO_TYPE_NETBOOK_PLUGIN, MeegoNetbookPlugin))
+#define MEEGO_NETBOOK_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MEEGO_TYPE_NETBOOK_PLUGIN, MeegoNetbookPluginClass))
+#define MUTTER_IS_DEFAULT_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MEEGO_NETBOOK_PLUGIN_TYPE))
+#define MUTTER_IS_DEFAULT_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  MEEGO_TYPE_NETBOOK_PLUGIN))
+#define MEEGO_NETBOOK_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MEEGO_TYPE_NETBOOK_PLUGIN, MeegoNetbookPluginClass))
 
-#define MOBLIN_NETBOOK_PLUGIN_GET_PRIVATE(obj) \
-(G_TYPE_INSTANCE_GET_PRIVATE ((obj), MOBLIN_TYPE_NETBOOK_PLUGIN, MoblinNetbookPluginPrivate))
+#define MEEGO_NETBOOK_PLUGIN_GET_PRIVATE(obj) \
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), MEEGO_TYPE_NETBOOK_PLUGIN, MeegoNetbookPluginPrivate))
 
-typedef struct _MoblinNetbookPlugin        MoblinNetbookPlugin;
-typedef struct _MoblinNetbookPluginClass   MoblinNetbookPluginClass;
-typedef struct _MoblinNetbookPluginPrivate MoblinNetbookPluginPrivate;
+typedef struct _MeegoNetbookPlugin        MeegoNetbookPlugin;
+typedef struct _MeegoNetbookPluginClass   MeegoNetbookPluginClass;
+typedef struct _MeegoNetbookPluginPrivate MeegoNetbookPluginPrivate;
 
-struct _MoblinNetbookPlugin
+struct _MeegoNetbookPlugin
 {
   MutterPlugin parent;
 
-  MoblinNetbookPluginPrivate *priv;
+  MeegoNetbookPluginPrivate *priv;
 };
 
-struct _MoblinNetbookPluginClass
+struct _MeegoNetbookPluginClass
 {
   MutterPluginClass parent_class;
 };
@@ -88,7 +88,7 @@ typedef struct ActorPrivate  ActorPrivate;
 /*
  * Plugin private data that we store in the .plugin_private member.
  */
-struct _MoblinNetbookPluginPrivate
+struct _MeegoNetbookPluginPrivate
 {
   ClutterActor          *toolbar;
   ClutterActor          *switcher_overlay;
@@ -121,7 +121,7 @@ struct _MoblinNetbookPluginPrivate
   int                    saver_error;
 };
 
-GType moblin_netbook_plugin_get_type (void);
+GType meego_netbook_plugin_get_type (void);
 
 /*
  * Per actor private data we attach to each actor.
@@ -142,55 +142,55 @@ struct ActorPrivate
 };
 
 ActorPrivate * get_actor_private (MutterWindow *actor);
-void           moblin_netbook_focus_stage (MutterPlugin *plugin,
+void           meego_netbook_focus_stage (MutterPlugin *plugin,
                                            guint32       timestamp);
 
-void           moblin_netbook_unfocus_stage (MutterPlugin *plugin,
+void           meego_netbook_unfocus_stage (MutterPlugin *plugin,
                                              guint32 timestamp);
 
-void moblin_netbook_notify_init (MutterPlugin *plugin);
+void meego_netbook_notify_init (MutterPlugin *plugin);
 
 void
-moblin_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp);
+meego_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp);
 
 void
-moblin_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp);
+meego_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp);
 
 void
-moblin_netbook_setup_kbd_grabs (MutterPlugin *plugin);
+meego_netbook_setup_kbd_grabs (MutterPlugin *plugin);
 
 gboolean
-moblin_netbook_fullscreen_apps_present (MutterPlugin *plugin);
+meego_netbook_fullscreen_apps_present (MutterPlugin *plugin);
 
 MutterPlugin *
-moblin_netbook_get_plugin_singleton (void);
+meego_netbook_get_plugin_singleton (void);
 
 gboolean
-moblin_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace);
+meego_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace);
 
 gboolean
-moblin_netbook_compositor_disabled (MutterPlugin *plugin);
+meego_netbook_compositor_disabled (MutterPlugin *plugin);
 
 void
-moblin_netbook_activate_window (MetaWindow *window);
+meego_netbook_activate_window (MetaWindow *window);
 
 ClutterActor *
-moblin_netbook_get_toolbar (MutterPlugin *plugin);
+meego_netbook_get_toolbar (MutterPlugin *plugin);
 
 gboolean
-moblin_netbook_activate_mutter_window (MutterWindow *mcw);
+meego_netbook_activate_mutter_window (MutterWindow *mcw);
 
 gboolean
-moblin_netbook_use_netbook_mode (MutterPlugin *plugin);
+meego_netbook_use_netbook_mode (MutterPlugin *plugin);
 
 guint32
-moblin_netbook_get_compositor_option_flags (void);
+meego_netbook_get_compositor_option_flags (void);
 
 gboolean
-moblin_netbook_urgent_notification_present (MutterPlugin *plugin);
+meego_netbook_urgent_notification_present (MutterPlugin *plugin);
 
 void
-moblin_netbook_set_struts (MutterPlugin *plugin,
+meego_netbook_set_struts (MutterPlugin *plugin,
                            gint          left,
                            gint          right,
                            gint          top,

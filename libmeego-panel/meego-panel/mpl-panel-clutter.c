@@ -42,7 +42,7 @@
  * as follows:
  *
  * <programlisting>
-  #include <moblin-panel/mpl-panel-clutter.h>
+  #include <meego-panel/mpl-panel-clutter.h>
 
   int
   main (int argc, char **argv)
@@ -455,7 +455,7 @@ mpl_panel_clutter_track_actor_height (MplPanelClutter *panel,
  * @argv: (array length=argc) (inout) (allow-none): a pointer to the array
  *   of command line arguments
  *
- * Initialializes the libmoblin-panel library when used in a Clutter-based
+ * Initialializes the libmeego-panel library when used in a Clutter-based
  * panel that do not use Gtk (panels that also use Gtk should use
  * mpl_panel_clutter_init_with_gtk() instead).
  *
@@ -476,7 +476,7 @@ mpl_panel_clutter_init_lib (gint *argc, gchar ***argv)
  * @argv: (array length=argc) (inout) (allow-none): a pointer to the array
  *   of command line arguments
  *
- * Initialializes the libmoblin-panel library when used in a Clutter-based
+ * Initialializes the libmeego-panel library when used in a Clutter-based
  * panel that also use Gtk (panels that only use Clutter should use
  * mpl_panel_clutter_init_lib() instead).
  *
@@ -506,7 +506,7 @@ mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
  * mpl_panel_clutter_init_with_gtk().
  *
  * This is a convenience function for panels that implement stanalone mode
- * (i.e., without mutter-moblin and the associate panel machinery) for ease
+ * (i.e., without mutter-meego and the associate panel machinery) for ease
  * of developement and testing. In normal mode, use
  * mpl_panel_clutter_setup_events_with_gtk() instead.
  */
