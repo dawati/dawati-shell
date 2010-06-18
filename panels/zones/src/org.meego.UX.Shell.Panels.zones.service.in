@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.meego.UX.Shell.Panels.zones
+Exec=@libexecdir@/meego-panel-zones
+

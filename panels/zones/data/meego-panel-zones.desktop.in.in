@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/meego-panel-zones
+TryExec=@libexecdir@/meego-panel-zones
+_Name=zones
+Icon=meego-panel-zones
+_Comment=Zones panel
+Terminal=false
+Categories=
+OnlyShowIn=MEEGO;
+X-Meego-Priority=Low
+X-Meego-Service=org.meego.UX.Shell.Panels.zones
+X-Meego-Panel-Optional=false
+X-Meego-Panel-Button-Style=zones-button

@@ -12,8 +12,8 @@
 #include <clutter-gtk/clutter-gtk.h>
 #include <clutter/glx/clutter-glx.h>
 
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
 
 #include "penge-magic-texture.h"
 
@@ -58,7 +58,7 @@ _client_set_size_cb (MplPanelClient *client,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
   { NULL }
 };
 
@@ -66,7 +66,7 @@ static GOptionEntry entries[] = {
 /* background loading */
 #define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
-#define THEMEDIR DATADIR "/mutter-moblin/theme/"
+#define THEMEDIR DATADIR "/mutter-meego/theme/"
 
 
 static void
@@ -507,7 +507,7 @@ main (int argc, char **argv)
 
   data = g_new0 (ZonePanelData, 1);
 
-  context = g_option_context_new ("- mutter-moblin zones panel");
+  context = g_option_context_new ("- mutter-meego zones panel");
   g_option_context_add_main_entries (context, entries, NULL);
   g_option_context_add_group (context,
                               clutter_get_option_group_without_init ());
@@ -520,7 +520,7 @@ main (int argc, char **argv)
 
   g_option_context_free (context);
 
-  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
+  mpl_panel_clutter_init_with_gtk (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
                            STYLEDIR "/switcher.css", NULL);
@@ -537,7 +537,7 @@ main (int argc, char **argv)
                                       "zones-button",
                                       TRUE);
 
-      MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
+      mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
 
       mpl_panel_client_set_height_request (client, 600);
 
@@ -570,7 +570,7 @@ main (int argc, char **argv)
 
       setup (data);
 
-      MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
+      mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
       clutter_actor_set_size (data->stage, 1016, 500);
       clutter_actor_show_all (data->stage);
 

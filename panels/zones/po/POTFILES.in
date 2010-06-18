@@ -1,4 +1,4 @@
-data/moblin-panel-zones.desktop.in.in
+data/meego-panel-zones.desktop.in.in
 src/main.c
 src/sw-overview.c
 src/sw-zone.c

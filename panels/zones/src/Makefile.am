@@ -4,16 +4,15 @@ AM_CFLAGS = \
 	$(ZONES_CFLAGS) \
 	$(MPL_CFLAGS) \
 	-DLOCALEDIR=\"$(localedir)\" \
-	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	-DSTYLEDIR=\"$(pkgdatadir)/style\" \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
 	-DDATADIR=\"$(datadir)\"
 
-libexec_PROGRAMS = moblin-panel-zones
+libexec_PROGRAMS = meego-panel-zones
 
-moblin_panel_zones_LDADD = $(ZONES_LIBS) $(MPL_LIBS)
+meego_panel_zones_LDADD = $(ZONES_LIBS) $(MPL_LIBS)
 
-moblin_panel_zones_SOURCES = \
+meego_panel_zones_SOURCES = \
 			     penge-magic-texture.c \
 			     penge-magic-texture.h \
 			     sw-overview.c \
@@ -25,14 +24,14 @@ moblin_panel_zones_SOURCES = \
 			     main.c
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.zones.service.in
-service_DATA = org.moblin.UX.Shell.Panels.zones.service
+service_in_files = org.meego.UX.Shell.Panels.zones.service.in
+service_DATA = org.meego.UX.Shell.Panels.zones.service
 
 EXTRA_DIST = $(service_in_files)
 
-DISTCLEANFILES = org.moblin.UX.Shell.Panels.zones.service
+DISTCLEANFILES = org.meego.UX.Shell.Panels.zones.service
 
-org.moblin.UX.Shell.Panels.zones.service: org.moblin.UX.Shell.Panels.zones.service.in
+org.meego.UX.Shell.Panels.zones.service: org.meego.UX.Shell.Panels.zones.service.in
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 -include $(top_srcdir)/git.mk
