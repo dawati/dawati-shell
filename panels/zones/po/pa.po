@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.Moblin2-UI.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: 2010-05-06 07:41+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -16,40 +16,32 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "ਜ਼ੋਨ ਪੈਨਲ"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "ਜ਼ੋਨ"
 
-#: ../src/main.c:405
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "ਜ਼ੋਨ"
-
-#: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
-"ਹੈਲੋ! ਇਹ ਜ਼ੋਨ ਪੈਨਲ ਹੈ। ਜਦੋਂ ਤੁਹਾਡੇ ਕੋਲ ਐਪਲੀਕੇਸ਼ਨ ਖੁੱਲ੍ਹੀਆਂ ਹੋਣ ਤਾਂ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਇੱਥੇ ਵੇਖ ਸਕਦੇ ਹੋ, ਪਰਬੰਧ "
-"ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਵਰਤ ਸਕਦੇ ਹੋ।"
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "ਨਵਾਂ ਜ਼ੋਨ"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "ਜ਼ੋਨ %d"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "ਇਸ ਜ਼ੋਨ ਲਈ ਕੋਈ ਐਪਲੀਕੇਸ਼ਨ ਨਹੀਂ"
 
-#: ../src/sw-zone.c:1004
+#: ../src/sw-zone.c:1001
 #, fuzzy
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
@@ -57,6 +49,13 @@ msgid ""
 msgstr ""
 "ਐਪਲੀਕੇਸ਼ਨ, ਜੋ ਤੁਸੀਂ ਵਰਤ ਰਹੇ ਹੋ, ਇੱਥੇ ਵੇਖ ਸਕੋਗੇ। ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਵੇਖ ਅਤੇ ਬਦਲ ਸਕੋਗੇ, ਜਿਵੇਂ ਤੁਹਾਡਾ ਦਿਲ "
 "ਕਰੇ।"
+
+#~ msgid ""
+#~ "Hello! This is the Zones panel. When you have applications open you will "
+#~ "be able to view, manage and access them here."
+#~ msgstr ""
+#~ "ਹੈਲੋ! ਇਹ ਜ਼ੋਨ ਪੈਨਲ ਹੈ। ਜਦੋਂ ਤੁਹਾਡੇ ਕੋਲ ਐਪਲੀਕੇਸ਼ਨ ਖੁੱਲ੍ਹੀਆਂ ਹੋਣ ਤਾਂ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਇੱਥੇ ਵੇਖ ਸਕਦੇ ਹੋ, "
+#~ "ਪਰਬੰਧ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਵਰਤ ਸਕਦੇ ਹੋ।"
 
 #, fuzzy
 #~ msgid "one"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-zones.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: 2010-04-21 02:43+0200\n"
 "Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
 "Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
@@ -15,41 +15,40 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Panel zón"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zóny"
 
-#: ../src/main.c:405
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "Zóny"
-
-#: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
-"Toto je panel zón. Keď budete mať aplikácie otvorené budete ich môcť "
-"prezerať, spravovať a mať k nim prístup."
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "Nová zóna"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "Zóna %d"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "Na tejto zóne nie je žiadna aplikácia"
 
-#: ../src/sw-zone.c:1004
+#: ../src/sw-zone.c:1001
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."
 msgstr ""
+
+#~ msgid ""
+#~ "Hello! This is the Zones panel. When you have applications open you will "
+#~ "be able to view, manage and access them here."
+#~ msgstr ""
+#~ "Toto je panel zón. Keď budete mať aplikácie otvorené budete ich môcť "
+#~ "prezerať, spravovať a mať k nim prístup."

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -16,46 +16,45 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 0.3\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Sicriftôr des redjons"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "redjons"
 
-#: ../src/main.c:405
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "Redjons"
-
-#: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
-"Bondjoû ! Çouchal, c' est l' sicriftôr des Redjons. Cwand vs avoz des "
-"programes di drovous, vos les såroz vey, manaedjî eyet î moussî chal."
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "Novele redjon"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "Redjon %d"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "Nou programe dins cisse redjon"
 
-#: ../src/sw-zone.c:1004
+#: ../src/sw-zone.c:1001
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."
 msgstr ""
 "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet "
 "les assonrer sorlon çou k' vos veyoz voltî."
+
+#~ msgid ""
+#~ "Hello! This is the Zones panel. When you have applications open you will "
+#~ "be able to view, manage and access them here."
+#~ msgstr ""
+#~ "Bondjoû ! Çouchal, c' est l' sicriftôr des Redjons. Cwand vs avoz des "
+#~ "programes di drovous, vos les såroz vey, manaedjî eyet î moussî chal."
 
 #~ msgid "two"
 #~ msgstr "deus"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: 2009-11-19 14:56-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
@@ -19,46 +19,45 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: UNITED KINGDOM\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Zones panel"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zones"
 
-#: ../src/main.c:405
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "Zones"
-
-#: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
-"Hello! This is the Zones panel. When you have open applications, you can "
-"view, manage, and access them here."
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "New Zone"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "Zone %d"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "No applications on this zone"
 
-#: ../src/sw-zone.c:1004
+#: ../src/sw-zone.c:1001
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."
 msgstr ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organise them to your heart's content."
+
+#~ msgid ""
+#~ "Hello! This is the Zones panel. When you have applications open you will "
+#~ "be able to view, manage and access them here."
+#~ msgstr ""
+#~ "Hello! This is the Zones panel. When you have open applications, you can "
+#~ "view, manage, and access them here."
 
 #~ msgid "two"
 #~ msgstr "two"

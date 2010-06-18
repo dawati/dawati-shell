@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: 2010-01-22 10:50+0100\n"
 "Last-Translator: Gergely Lónyai <aleph@mandriva.org>\n"
 "Language-Team: Hungarian <aleph@mandriva.org>\n"
@@ -18,41 +18,35 @@ msgstr ""
 "X-Poedit-Country: HUNGARY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 #, fuzzy
 msgid "Zones panel"
 msgstr "Még nincsenek zónák"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zónák"
 
-#: ../src/main.c:405
+#: ../src/main.c:412
 #, fuzzy
 msgid "Zones"
 msgstr "zónák"
-
-#: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
 
 #: ../src/sw-zone.c:92
 #, fuzzy
 msgid "New Zone"
 msgstr "zónák"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, fuzzy, c-format
 msgid "Zone %d"
 msgstr "zónák"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "Nincs alkalmazás ebben a zónában"
 
-#: ../src/sw-zone.c:1004
+#: ../src/sw-zone.c:1001
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."

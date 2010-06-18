@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: TG\n"
 "Language-Team: \n"
@@ -14,46 +14,45 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Panneau des zones"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zones"
 
-#: ../src/main.c:405
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "Zones"
-
-#: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
-"Bonjour ! Voici le panneau Zones. Lorsque vous avez des applications "
-"ouvertes vous pourrez les voir, gérer et accéder d’ici."
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "Nouvelle Zone"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "Zone %d"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "Pas d'applications dans cette zone"
 
-#: ../src/sw-zone.c:1004
+#: ../src/sw-zone.c:1001
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."
 msgstr ""
 "Les applications que vous utilisez vont apparaître ici. Vous pourrez les "
 "organizer et y accéder à votre guise."
+
+#~ msgid ""
+#~ "Hello! This is the Zones panel. When you have applications open you will "
+#~ "be able to view, manage and access them here."
+#~ msgstr ""
+#~ "Bonjour ! Voici le panneau Zones. Lorsque vous avez des applications "
+#~ "ouvertes vous pourrez les voir, gérer et accéder d’ici."
 
 #~ msgid "one"
 #~ msgstr "un"

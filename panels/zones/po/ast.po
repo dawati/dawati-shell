@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-15 09:48+0000\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: asturian <alministradores@softastur.org>\n"
@@ -14,24 +14,19 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Panel de zones"
 
 # <mousetip of the top of the screen>
-#: ../data/moblin-panel-zones.desktop.in.in.h:2
-#: ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zones"
 
 # <mousetip of the top of the screen>
-#: ../src/main.c:410
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "Zones"
-
-#: ../src/sw-overview.c:240
-msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
-msgstr "¡Hola! Ésti ye'l panel de zones. Cuando tengas aplicaciones abiertes, podrás veles y acceder a elles dende equí."
 
 # <mousetip of the top of the screen>
 #: ../src/sw-zone.c:92
@@ -39,17 +34,26 @@ msgid "New Zone"
 msgstr "Nueva zona"
 
 # <mousetip of the top of the screen>
-#: ../src/sw-zone.c:98
-#: ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "Zona %d"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "Nun hai denguna aplicación nesta zona"
 
-#: ../src/sw-zone.c:1004
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "Les aplicaciones que tas usando van amosase equí. Puedes camudales y organizales como más te preste."
+#: ../src/sw-zone.c:1001
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Les aplicaciones que tas usando van amosase equí. Puedes camudales y "
+"organizales como más te preste."
 
+#~ msgid ""
+#~ "Hello! This is the Zones panel. When you have applications open you will "
+#~ "be able to view, manage and access them here."
+#~ msgstr ""
+#~ "¡Hola! Ésti ye'l panel de zones. Cuando tengas aplicaciones abiertes, "
+#~ "podrás veles y acceder a elles dende equí."

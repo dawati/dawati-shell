@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -13,27 +13,19 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Panel de zonas"
 
 # <mousetip of the top of the screen>
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zonas"
 
 # <mousetip of the top of the screen>
-#: ../src/main.c:405
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "Zonas"
-
-#: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
-"¡Hola! Éste es el panel de zonas. Cuando tengas aplicaciones abiertas, "
-"podrás verlas y acceder a ellas desde aquí."
 
 # <mousetip of the top of the screen>
 #: ../src/sw-zone.c:92
@@ -41,22 +33,29 @@ msgid "New Zone"
 msgstr "Nueva zona"
 
 # <mousetip of the top of the screen>
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "Zona %d"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "No hay ninguna aplicación en esta zona"
 
-#: ../src/sw-zone.c:1004
+#: ../src/sw-zone.c:1001
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."
 msgstr ""
 "Las aplicaciones que se están usando aparecen aquí. Puedes cambiarlas y "
 "organizarlas como te plazca."
+
+#~ msgid ""
+#~ "Hello! This is the Zones panel. When you have applications open you will "
+#~ "be able to view, manage and access them here."
+#~ msgstr ""
+#~ "¡Hola! Éste es el panel de zonas. Cuando tengas aplicaciones abiertas, "
+#~ "podrás verlas y acceder a ellas desde aquí."
 
 #~ msgid "two"
 #~ msgstr "dos"

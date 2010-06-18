@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-11 20:47+0100\n"
+"POT-Creation-Date: 2010-06-18 17:36+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSQA_NamfonYeates <namfon.yeates@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -14,46 +14,45 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:1
+#: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "영역 패널"
 
-#: ../data/moblin-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "영역"
 
-#: ../src/main.c:405
+#: ../src/main.c:412
 msgid "Zones"
 msgstr "영역"
-
-#: ../src/sw-overview.c:240
-msgid ""
-"Hello! This is the Zones panel. When you have applications open you will be "
-"able to view, manage and access them here."
-msgstr ""
-"안녕하십니까? 이것은 영역 패널입니다. 응용 프로그램이 열려 있으면 여기서 보거"
-"나 관리하거나 액세스할 수 있습니다."
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
 msgstr "새로운 영역"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1042
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "영역 %d"
 
-#: ../src/sw-zone.c:848
+#: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "이 영역에는 응용 프로그램이 없습니다."
 
-#: ../src/sw-zone.c:1004
+#: ../src/sw-zone.c:1001
 msgid ""
 "Applications you’re using will show up here. You will be able to switch and "
 "organize them to your heart's content."
 msgstr ""
 "사용하고 있는 응용 프로그램이 여기에 나타날 것입니다. 원하는데로 바꿀수도 있"
 "고 정리도 가능합니다. "
+
+#~ msgid ""
+#~ "Hello! This is the Zones panel. When you have applications open you will "
+#~ "be able to view, manage and access them here."
+#~ msgstr ""
+#~ "안녕하십니까? 이것은 영역 패널입니다. 응용 프로그램이 열려 있으면 여기서 "
+#~ "보거나 관리하거나 액세스할 수 있습니다."
 
 #~ msgid "two"
 #~ msgstr "둘"
