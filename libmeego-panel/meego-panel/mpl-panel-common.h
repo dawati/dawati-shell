@@ -8,7 +8,7 @@
  * Common prefix used by Panel dbus service names. For example, service for
  * panel 'foo' will have the name MPL_PANEL_DBUS_NAME_PREFIX + 'foo'.
  */
-#define MPL_PANEL_DBUS_NAME_PREFIX "org.meego.UX.Shell.Panels."
+#define MPL_PANEL_DBUS_NAME_PREFIX "com.meego.UX.Shell.Panels."
 
 /**
  * MPL_PANEL_DBUS_PATH_PREFIX:
@@ -16,35 +16,35 @@
  * Common prefix used by Panel dbus object paths. For example, the dbus object
  * for panel 'foo' will be found at MPL_PANEL_DBUS_PATH_PREFIX + 'foo'.
  */
-#define MPL_PANEL_DBUS_PATH_PREFIX "/org/meego/UX/Shell/Panels/"
+#define MPL_PANEL_DBUS_PATH_PREFIX "/com/meego/UX/Shell/Panels/"
 
 /**
  * MPL_PANEL_DBUS_INTERFACE:
  *
  * Dbus interface for Panel functionality.
  */
-#define MPL_PANEL_DBUS_INTERFACE   "org.meego.UX.Shell.Panel"
+#define MPL_PANEL_DBUS_INTERFACE   "com.meego.UX.Shell.Panel"
 
 /**
  * MPL_TOOLBAR_DBUS_PATH:
  *
  * Path for the Toolbar dbus object.
  */
-#define MPL_TOOLBAR_DBUS_PATH      "/org/meego/UX/Shell/Toolbar"
+#define MPL_TOOLBAR_DBUS_PATH      "/com/meego/UX/Shell/Toolbar"
 
 /**
  * MPL_TOOLBAR_DBUS_NAME:
  *
  * Name of the dbus Toolbar service.
  */
-#define MPL_TOOLBAR_DBUS_NAME      "org.meego.UX.Shell.Toolbar"
+#define MPL_TOOLBAR_DBUS_NAME      "com.meego.UX.Shell.Toolbar"
 
 /**
  * MPL_TOOLBAR_DBUS_INTERFACE:
  *
  * Dbus interface for Toolbar functionality.
  */
-#define MPL_TOOLBAR_DBUS_INTERFACE "org.meego.UX.Shell.Toolbar"
+#define MPL_TOOLBAR_DBUS_INTERFACE "com.meego.UX.Shell.Toolbar"
 
 /**
  * MPL_PANEL_MYZONE:

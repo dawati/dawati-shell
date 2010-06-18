@@ -537,9 +537,9 @@ mnb_panel_oop_show_begin (MnbPanel *self)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (self)->priv;
 
-  org_meego_UX_Shell_Panel_show_begin_async (priv->proxy,
-                                              mnb_panel_oop_dbus_dumb_reply_cb,
-                                              NULL);
+  com_meego_UX_Shell_Panel_show_begin_async (priv->proxy,
+                                             mnb_panel_oop_dbus_dumb_reply_cb,
+                                             NULL);
 }
 
 static void
@@ -549,9 +549,9 @@ mnb_panel_oop_show_completed (MnbPanel *self)
 
   mnb_panel_oop_focus (MNB_PANEL_OOP (self));
 
-  org_meego_UX_Shell_Panel_show_end_async (priv->proxy,
-                                            mnb_panel_oop_dbus_dumb_reply_cb,
-                                            NULL);
+  com_meego_UX_Shell_Panel_show_end_async (priv->proxy,
+                                           mnb_panel_oop_dbus_dumb_reply_cb,
+                                           NULL);
 }
 
 static void
@@ -567,9 +567,9 @@ mnb_panel_oop_hide_begin (MnbPanel *self)
       return;
     }
 
-  org_meego_UX_Shell_Panel_hide_begin_async (priv->proxy,
-                                              mnb_panel_oop_dbus_dumb_reply_cb,
-                                              NULL);
+  com_meego_UX_Shell_Panel_hide_begin_async (priv->proxy,
+                                             mnb_panel_oop_dbus_dumb_reply_cb,
+                                             NULL);
 }
 
 static void
@@ -585,9 +585,9 @@ mnb_panel_oop_hide_completed (MnbPanel *self)
       return;
     }
 
-  org_meego_UX_Shell_Panel_hide_end_async (priv->proxy,
-                                            mnb_panel_oop_dbus_dumb_reply_cb,
-                                            NULL);
+  com_meego_UX_Shell_Panel_hide_end_async (priv->proxy,
+                                           mnb_panel_oop_dbus_dumb_reply_cb,
+                                           NULL);
 }
 
 static DBusGConnection *
@@ -765,7 +765,7 @@ mnb_panel_oop_init_owner (MnbPanelOop *panel)
    * Now call the remote init_panel_oop() method to obtain the panel name,
    * tooltip and xid.
    */
-  org_meego_UX_Shell_Panel_init_panel_async (priv->proxy,
+  com_meego_UX_Shell_Panel_init_panel_async (priv->proxy,
                                           priv->x,
                                           priv->y,
                                           priv->width, priv->height,
@@ -1093,9 +1093,9 @@ mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
   if (!w_change && !h_change)
     return;
 
-  org_meego_UX_Shell_Panel_set_size_async (priv->proxy, width, height,
-                                            mnb_panel_oop_dbus_dumb_reply_cb,
-                                            NULL);
+  com_meego_UX_Shell_Panel_set_size_async (priv->proxy, width, height,
+                                           mnb_panel_oop_dbus_dumb_reply_cb,
+                                           NULL);
 }
 
 MutterWindow *
@@ -1234,9 +1234,9 @@ mnb_toolbar_ping_panel_oop (DBusGConnection *dbus_conn, const gchar *dbus_name)
       return;
     }
 
-  org_meego_UX_Shell_Panel_ping_async (proxy,
-                                        mnb_panel_oop_dbus_ping_cb,
-                                        g_strdup (dbus_name));
+  com_meego_UX_Shell_Panel_ping_async (proxy,
+                                       mnb_panel_oop_dbus_ping_cb,
+                                       g_strdup (dbus_name));
 
   g_object_unref (proxy);
 }
@@ -1398,9 +1398,9 @@ mnb_panel_oop_show (MnbPanel *panel)
       priv->in_hide_animation = FALSE;
     }
 
-  org_meego_UX_Shell_Panel_show_async (priv->proxy,
-                                        mnb_panel_oop_dbus_dumb_reply_cb,
-                                        NULL);
+  com_meego_UX_Shell_Panel_show_async (priv->proxy,
+                                       mnb_panel_oop_dbus_dumb_reply_cb,
+                                       NULL);
 }
 
 static void
@@ -1507,9 +1507,9 @@ mnb_panel_oop_hide (MnbPanel *panel)
 
   priv->modal  = FALSE;
 
-  org_meego_UX_Shell_Panel_hide_async (priv->proxy,
-                                        mnb_panel_oop_dbus_dumb_reply_cb,
-                                        NULL);
+  com_meego_UX_Shell_Panel_hide_async (priv->proxy,
+                                       mnb_panel_oop_dbus_dumb_reply_cb,
+                                       NULL);
 }
 
 static void
@@ -1617,7 +1617,7 @@ mnb_panel_oop_set_position (MnbPanel *panel, gint x, gint y)
   if (!x_change && !y_change)
     return;
 
-  org_meego_UX_Shell_Panel_set_position_async (priv->proxy, x, y,
+  com_meego_UX_Shell_Panel_set_position_async (priv->proxy, x, y,
                                             mnb_panel_oop_dbus_dumb_reply_cb,
                                             NULL);
 }
@@ -1669,9 +1669,9 @@ mnb_panel_oop_unload (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
 
-  org_meego_UX_Shell_Panel_unload_async (priv->proxy,
-                                          mnb_panel_oop_dbus_dumb_reply_cb,
-                                          NULL);
+  com_meego_UX_Shell_Panel_unload_async (priv->proxy,
+                                         mnb_panel_oop_dbus_dumb_reply_cb,
+                                         NULL);
 }
 
 void

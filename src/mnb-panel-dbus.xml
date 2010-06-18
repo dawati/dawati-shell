@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <node name="/">
-  <interface name="org.meego.UX.Shell.Panel">
+  <interface name="com.meego.UX.Shell.Panel">
     <method name="InitPanel">
       <arg name="x" type="i" direction="in"/>
       <arg name="y" type="i" direction="in"/>
