@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-09 09:24+0000\n"
-"PO-Revision-Date: 2010-06-10 14:16+0100\n"
+"POT-Creation-Date: 2010-06-19 09:25+0000\n"
+"PO-Revision-Date: 2010-06-19 22:26+0100\n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: asturian <alministradores@softastur.org>\n"
 "MIME-Version: 1.0\n"
@@ -110,27 +110,27 @@ msgstr "Si nun se decide un res, va apagase en 30 segundos."
 msgid "MeeGo Devices Panel"
 msgstr "Panel de preseos de MeeGo"
 
-#: ../src/mpd-battery-device.c:329
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Sentímoslo, paez que nun hai denguna batería instalada."
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "La batería ta cargándose. Ta a un %d%% de la capacidá."
 
-#: ../src/mpd-battery-device.c:338
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Batería n'usu. Ta a un %d%% del total."
 
-#: ../src/mpd-battery-device.c:343
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "La batería ta dafechu cargada y llista."
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sentímoslo, paez que la batería ta toyida."
@@ -164,7 +164,7 @@ msgstr "Otros preseos"
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "Nun s'espulsó, porque paez qu'hai otra aplicación usándolu"
 
-#: ../src/mpd-devices-tile.c:420
+#: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
 msgstr "Yá puedes desconeutar el preséu ensin problemes"
 
@@ -181,39 +181,39 @@ msgstr "Papelera"
 msgid "Devices"
 msgstr "Preseos"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:242
 #, c-format
-msgid "Could not run %s"
-msgstr "Nun pudo executase %s"
+msgid "Could not run \"%s\""
+msgstr "Nun pudo executase \"%s\""
 
-#: ../src/mpd-storage-device-tile.c:167
+#: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "Fallu durante la importación"
 
-#: ../src/mpd-storage-device-tile.c:278
+#: ../src/mpd-storage-device-tile.c:355
 msgid "Import photos"
 msgstr "Importar semeyes"
 
-#: ../src/mpd-storage-device-tile.c:280
+#: ../src/mpd-storage-device-tile.c:357
 msgid "Import media"
 msgstr "Importar media"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:538
+#: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
 msgstr "Espulsar"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:549
+#: ../src/mpd-storage-device-tile.c:626
 msgid "Open"
 msgstr "Abrir"
 
-#: ../src/mpd-storage-device-tile.c:742
+#: ../src/mpd-storage-device-tile.c:819
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% de %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:750
+#: ../src/mpd-storage-device-tile.c:827
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
