@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-12 09:30+0000\n"
+"POT-Creation-Date: 2010-06-16 09:23+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: asturian <alministradores@softastur.org>\n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Configura les preferencies la barra de ferramientes"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Barra de ferramientes"
 
@@ -93,56 +93,56 @@ msgstr "Amosar la bandexa del sistema"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Dalgunes aplicaciones antigües empleguen la bandexa del sistema pa comunicar lo que va asocediendo o pa siguir executándose al pesllales."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-moblin.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Usar siempres el mou de pantalla pequeña"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina l'orde de los paneles na barra de ferramientes."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Fuercia'l mou de pantalla pequeña inclusu cuando'l tamañu de la pantalla normalmente implicaría un mou de pantalla mayor."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Orde de los paneles na barra de ferramientes"
 
 # Meego effects in the netbook
-#: ../src/meego-netbook.c:1019
-msgid "Meego Netbook Effects"
-msgstr "Efeutos de Meego nel miniportátil"
+#: ../src/moblin-netbook.c:825
+msgid "Moblin Netbook Effects"
+msgstr "Efeutos de Moblin nel miniportátil"
 
 # Effects for netbooks with Mobin
-#: ../src/meego-netbook.c:1023
-msgid "Effects for Meego Netbooks"
-msgstr "Efeutos pa miniportátiles con Meego"
-
-#: ../src/meego-netbook.c:3234
-msgid "Activate"
-msgstr "Activar"
-
-#: ../src/meego-netbook.c:3248
-msgid "Unknown window"
-msgstr "Ventana desconocida"
-
-#: ../src/meego-netbook.c:3250
-msgid "is asking for your attention."
-msgstr "ta pidiendo la to atención."
+#: ../src/moblin-netbook.c:829
+msgid "Effects for Moblin Netbooks"
+msgstr "Efeutos pa miniportátiles con Moblin"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Sentímoslo, %s nun funciona."
 
-#: ../src/notifications/mnb-notification.c:282
+#: ../src/notifications/ntf-notification.c:224
 msgid "Dismiss"
 msgstr "Zarrar"
 
-#: ../src/notifications/mnb-notification-cluster.c:682
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "Zarrar too"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Ventana desconocida"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "ta pidiendo la to atención."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Activar"
 
 #~ msgid "System tray"
 #~ msgstr "Bandexa del sistema"
