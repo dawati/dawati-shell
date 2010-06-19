@@ -2,14 +2,14 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
+"POT-Creation-Date: 2010-06-16 09:23+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
+"Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
 "Language-Team: Meego\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,11 +18,11 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Ustaw preferencje paska narzędzi"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Ustawienia paska narzędzi"
 
@@ -34,6 +34,10 @@ msgstr "Zapisz pasek narzędzi"
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Niestety, należy usunąć panel przed dodaniem nowego."
 
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Panele na pasku narzędzi można dodawać, usuwać oraz zmieniać ich kolejność."
+
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Dostępne panele"
@@ -42,8 +46,9 @@ msgstr "Dostępne panele"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -51,21 +56,23 @@ msgstr "%H:%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%-d %B %Y"
 
@@ -86,62 +93,58 @@ msgstr "Pasek systemowy"
 msgid "Show system tray"
 msgstr "Pokaż pasek systemowy"
 
-#: ../data/mutter-meego.schemas.in.h:2
-msgid "Determines the order of panels on the toolbar."
-msgstr "Określa kolejność paneli na pasku narzędzi."
-
-#: ../data/mutter-meego.schemas.in.h:4
-msgid "Order of panels on toolbar"
-msgstr "Kolejność paneli na pasku narzędzi"
-
-#: ../src/meego-netbook.c:1018
-msgid "Meego Netbook Effects"
-msgstr "Efekty Meegoa na netbooku"
-
-#: ../src/meego-netbook.c:1022
-msgid "Effects for Meego Netbooks"
-msgstr "Efekty dla Netbooków z Meegoem"
-
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "Aktywuj"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "Nieznane okno"
-
-#: ../src/mnb-toolbar.c:1000
-#, c-format
-msgid "Sorry, %s is broken"
-msgstr "Niestety, panel %s jest uszkodzony"
-
-#: ../src/notifications/mnb-notification.c:282
-msgid "Dismiss"
-msgstr "Zamknij"
-
-#: ../src/notifications/mnb-notification-cluster.c:663
-msgid "Dismiss All"
-msgstr "Ucisz wszystkie"
-
-#: ../src/meego-netbook.c:3234
-msgid "is asking for your attention."
-msgstr "prosi o Twoją uwagę."
-
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "Panele na pasku narzędzi można dodawać, usuwać oraz zmieniać ich kolejność."
-
-#: ../data/mutter-meego.schemas.in.h:1
-msgid "Always use small screen mode"
-msgstr "Zawsze używaj trybu małego ekranu"
-
 #: ../capplet/src/syst-cc-panel.c:195
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Pasek systemowy jest używany przez niektóre starsze aplikacje w celu informowania o zdarzeniach, lub aby aplikacja pozostała uruchomiona po zamknięciu okna."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Zawsze używaj trybu małego ekranu"
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Określa kolejność paneli na pasku narzędzi."
+
+#: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Wymusza tryb małego ekranu nawet jeśli rozmiar wyświetlacza sugeruje duży ekran."
+
+#: ../data/mutter-moblin.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "Kolejność paneli na pasku narzędzi"
+
+#: ../src/moblin-netbook.c:825
+msgid "Moblin Netbook Effects"
+msgstr "Efekty MeeGo na netbooku"
+
+#: ../src/moblin-netbook.c:829
+msgid "Effects for Moblin Netbooks"
+msgstr "Efekty dla Netbooków z MeeGo"
+
+#: ../src/mnb-toolbar.c:1007
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Niestety, panel %s jest uszkodzony"
+
+#: ../src/notifications/ntf-notification.c:224
+msgid "Dismiss"
+msgstr "Zamknij"
+
+#: ../src/notifications/ntf-tray.c:308
+msgid "Dismiss All"
+msgstr "Ucisz wszystkie"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Nieznane okno"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "prosi o Twoją uwagę."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Aktywuj"
 
 #~ msgid "System tray"
 #~ msgstr "Pasek systemowy"
@@ -152,5 +155,10 @@ msgstr "Wymusza tryb małego ekranu nawet jeśli rozmiar wyświetlacza sugeruje 
 #~ msgid "No Zones yet"
 #~ msgstr "Na razie brak Stref"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał możliwość przełączać się między nimi i organizować je tak jak Ci się podoba."
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Tutaj będą pokazywać się używane przez Ciebie aplikacje. Będziesz miał "
+#~ "możliwość przełączać się między nimi i organizować je tak jak Ci się "
+#~ "podoba."
