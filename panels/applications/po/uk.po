@@ -19,18 +19,18 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:887
+#: ../src/meego-netbook-launcher.c:887
 msgid "Favorite Applications"
 msgstr "Улюблені програми"
 
-#: ../src/moblin-netbook-launcher.c:1384
+#: ../src/meego-netbook-launcher.c:1384
 msgid "Applications"
 msgstr "Програми"
 
-#: ../src/moblin-netbook-launcher.c:1395
+#: ../src/meego-netbook-launcher.c:1395
 msgid "Search"
 msgstr "Пошук"
 
-#: ../src/moblin-panel-applications.c:187
+#: ../src/meego-panel-applications.c:187
 msgid "applications"
 msgstr "програми"

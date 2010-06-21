@@ -22,7 +22,7 @@
 #define MNB_ENTRY_H
 
 #include <glib-object.h>
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-entry.h>
 
 G_BEGIN_DECLS
 

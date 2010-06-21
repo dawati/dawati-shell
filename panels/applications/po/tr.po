@@ -24,30 +24,30 @@ msgid "Search"
 msgstr "Arama"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:1049
+#: ../src/meego-netbook-launcher.c:1049
 msgid "Applications"
 msgstr "Uygulamalar"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/moblin-netbook-launcher.c:1065
+#: ../src/meego-netbook-launcher.c:1065
 msgid "Favorite applications"
 msgstr "Favori uygulamalar"
 
 #.
 #. * Applications
 #.
-#: ../src/moblin-netbook-launcher.c:1092
+#: ../src/meego-netbook-launcher.c:1092
 msgid "Your applications"
 msgstr "Uygulamalarınız"
 
-#: ../src/moblin-panel-applications.c:223
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:223
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "uygulamalar"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Uygulama paneli"
 

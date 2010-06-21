@@ -19,24 +19,24 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:867
+#: ../src/meego-netbook-launcher.c:867
 msgid "Favorite Applications"
 msgstr "Oblíbené aplikace"
 
-#: ../src/moblin-netbook-launcher.c:1427
+#: ../src/meego-netbook-launcher.c:1427
 msgid "Applications"
 msgstr "Aplikace"
 
-#: ../src/moblin-netbook-launcher.c:1438
+#: ../src/meego-netbook-launcher.c:1438
 msgid "Search"
 msgstr "Hledat"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplikace"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel aplikací"
 

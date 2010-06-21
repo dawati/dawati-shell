@@ -15,33 +15,33 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:1330
+#: ../src/meego-netbook-launcher.c:1330
 msgid "Applications"
 msgstr "Aplicativos"
 
-#: ../src/moblin-netbook-launcher.c:1344
+#: ../src/meego-netbook-launcher.c:1344
 msgid "Your applications"
 msgstr "Seus aplicativos"
 
-#: ../src/moblin-netbook-launcher.c:1370
+#: ../src/meego-netbook-launcher.c:1370
 msgid "Search for applications"
 msgstr "Pesquisar por aplicativos"
 
-#: ../src/moblin-netbook-launcher.c:1373
+#: ../src/meego-netbook-launcher.c:1373
 msgid "Search"
 msgstr "Pesquisar"
 
 #. Fav apps
-#: ../src/moblin-netbook-launcher.c:1378
+#: ../src/meego-netbook-launcher.c:1378
 msgid "Favorite applications"
 msgstr "Aplicativos favoritos"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicativos"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Painel de aplicativos"
 

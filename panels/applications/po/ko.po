@@ -15,32 +15,32 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:1333
+#: ../src/meego-netbook-launcher.c:1333
 msgid "Applications"
 msgstr "응용 프로그램"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/meego-netbook-launcher.c:1377
 msgid "Search"
 msgstr "검색"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "응용 프로그램"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "응용 프로그램 패널"
 
-#: ../src/moblin-netbook-launcher.c:1374
+#: ../src/meego-netbook-launcher.c:1374
 msgid "Search for applications"
 msgstr "응용 프로그램 찾기"
 
-#: ../src/moblin-netbook-launcher.c:1347
+#: ../src/meego-netbook-launcher.c:1347
 msgid "Your applications"
 msgstr "사용 중인 응용 프로그램"
 
 #. Fav apps
-#: ../src/moblin-netbook-launcher.c:1382
+#: ../src/meego-netbook-launcher.c:1382
 msgid "Favorite applications"
 msgstr "즐겨 찾는 응용 프로그램"

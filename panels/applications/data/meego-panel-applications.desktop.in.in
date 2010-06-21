@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/meego-panel-applications
+TryExec=@libexecdir@/meego-panel-applications
+_Name=applications
+Icon=meego-panel-applications
+_Comment=Applications panel
+Terminal=false
+Categories=
+OnlyShowIn=MEEGO;
+X-Meego-Priority=Low
+X-Meego-Service=org.meego.UX.Shell.Panels.applications
+X-Meego-Panel-Optional=false
+X-Meego-Panel-Button-Style=applications-button

@@ -32,12 +32,12 @@
 
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-icon-theme.h>
+#include <meego-panel/mpl-icon-theme.h>
 
-#include <moblin-panel/mpl-app-bookmark-manager.h>
-#include <moblin-panel/mpl-content-pane.h>
+#include <meego-panel/mpl-app-bookmark-manager.h>
+#include <meego-panel/mpl-content-pane.h>
 
-#include "moblin-netbook-launcher.h"
+#include "meego-netbook-launcher.h"
 #include "mnb-filter.h"
 #include "mnb-expander.h"
 #include "mnb-launcher-button.h"

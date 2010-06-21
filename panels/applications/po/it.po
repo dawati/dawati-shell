@@ -1,11 +1,11 @@
-# Italian translations for mutter-moblin package.
-# Copyright (C) 2009 mutter-moblin's copyright holder.
-# This file is distributed under the same license as the mutter-moblin package.
+# Italian translations for mutter-meego package.
+# Copyright (C) 2009 mutter-meego's copyright holder.
+# This file is distributed under the same license as the mutter-meego package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin\n"
+"Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-07 09:39+0000\n"
 "PO-Revision-Date: 2009-08-22 16:38+0200\n"
@@ -17,32 +17,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:1333
+#: ../src/meego-netbook-launcher.c:1333
 msgid "Applications"
 msgstr "Applicazioni"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/meego-netbook-launcher.c:1377
 msgid "Search"
 msgstr "Cerca"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "applicazioni"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Pannello applicazioni"
 
-#: ../src/moblin-netbook-launcher.c:1374
+#: ../src/meego-netbook-launcher.c:1374
 msgid "Search for applications"
 msgstr "Cerca applicazioni"
 
-#: ../src/moblin-netbook-launcher.c:1347
+#: ../src/meego-netbook-launcher.c:1347
 msgid "Your applications"
 msgstr "Applicazioni"
 
 #. Fav apps
-#: ../src/moblin-netbook-launcher.c:1382
+#: ../src/meego-netbook-launcher.c:1382
 msgid "Favorite applications"
 msgstr "Applicazioni preferite"

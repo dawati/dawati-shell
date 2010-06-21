@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-applications\n"
+"Project-Id-Version: meego-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-07 09:39+0000\n"
 "PO-Revision-Date: 2010-04-07 14:47-0800\n"
@@ -19,33 +19,33 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:1333
+#: ../src/meego-netbook-launcher.c:1333
 msgid "Applications"
 msgstr "Applicaties"
 
-#: ../src/moblin-netbook-launcher.c:1347
+#: ../src/meego-netbook-launcher.c:1347
 msgid "Your applications"
 msgstr "Jouw applicaties"
 
-#: ../src/moblin-netbook-launcher.c:1374
+#: ../src/meego-netbook-launcher.c:1374
 msgid "Search for applications"
 msgstr "Naar applicaties zoeken"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/meego-netbook-launcher.c:1377
 msgid "Search"
 msgstr "Zoeken"
 
 #. Fav apps
-#: ../src/moblin-netbook-launcher.c:1382
+#: ../src/meego-netbook-launcher.c:1382
 msgid "Favorite applications"
 msgstr "Favoriete applicaties"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "applicaties"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Applicaties-paneel"
 

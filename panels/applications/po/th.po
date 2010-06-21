@@ -1,11 +1,11 @@
-# Thai locale moblin-panel-applications.
+# Thai locale meego-panel-applications.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Anuchit Chalothorn <anoochit@gmail.com>, 2009.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-applications 2.x\n"
+"Project-Id-Version: meego-panel-applications 2.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:30+0000\n"
 "PO-Revision-Date: 2009-08-14 16:14+0700\n"
@@ -17,21 +17,21 @@ msgstr ""
 "X-Poedit-Language: Thai\n"
 "X-Poedit-Country: THAILAND\n"
 
-#: ../src/moblin-netbook-launcher.c:1337
+#: ../src/meego-netbook-launcher.c:1337
 msgid "Applications"
 msgstr "โปรแกรมประยุกต์"
 
-#: ../src/moblin-netbook-launcher.c:1348
+#: ../src/meego-netbook-launcher.c:1348
 msgid "Search"
 msgstr "ค้นหา"
 
-#: ../src/moblin-panel-applications.c:196
+#: ../src/meego-panel-applications.c:196
 msgid "applications"
 msgstr "โปรแกรมประยุกต์"
 
 #. * Fav apps.
 #. 
 #. Label
-#: ../src/moblin-netbook-launcher.c:813
+#: ../src/meego-netbook-launcher.c:813
 msgid "Favorite Applications"
 msgstr "โปรแกรมโปรด"

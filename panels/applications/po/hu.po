@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-application\n"
+"Project-Id-Version: meego-panel-application\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-26 05:58+0000\n"
 "PO-Revision-Date: \n"
@@ -17,19 +17,19 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:815
+#: ../src/meego-netbook-launcher.c:815
 msgid "Favorite Applications"
 msgstr "Kedvencek alkalmazások"
 
-#: ../src/moblin-netbook-launcher.c:1339
+#: ../src/meego-netbook-launcher.c:1339
 msgid "Applications"
 msgstr "Alkalmazások"
 
-#: ../src/moblin-netbook-launcher.c:1350
+#: ../src/meego-netbook-launcher.c:1350
 msgid "Search"
 msgstr "Keresés"
 
-#: ../src/moblin-panel-applications.c:196
+#: ../src/meego-panel-applications.c:196
 msgid "applications"
 msgstr "alkalmazások"
 

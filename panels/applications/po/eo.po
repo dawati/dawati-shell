@@ -1,11 +1,11 @@
-# Esperanto translations for moblin-panel-applications package.
-# Copyright (C) 2009 THE moblin-panel-applications'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the moblin-panel-applications package.
+# Esperanto translations for meego-panel-applications package.
+# Copyright (C) 2009 THE meego-panel-applications'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the meego-panel-applications package.
 # Neil Roberts <neil@linux.intel.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-applications 0.0.2\n"
+"Project-Id-Version: meego-panel-applications 0.0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-09-04 09:11+0100\n"
 "PO-Revision-Date: 2009-09-04 09:15+0100\n"
@@ -20,18 +20,18 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/moblin-netbook-launcher.c:857
+#: ../src/meego-netbook-launcher.c:857
 msgid "Favourite Applications"
 msgstr "Ofte uzataj aplikaĵoj"
 
-#: ../src/moblin-netbook-launcher.c:1354
+#: ../src/meego-netbook-launcher.c:1354
 msgid "Applications"
 msgstr "Aplikaĵoj"
 
-#: ../src/moblin-netbook-launcher.c:1365
+#: ../src/meego-netbook-launcher.c:1365
 msgid "Search"
 msgstr "Serĉu"
 
-#: ../src/moblin-panel-applications.c:164
+#: ../src/meego-panel-applications.c:164
 msgid "applications"
 msgstr "aplikaĵoj"

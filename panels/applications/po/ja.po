@@ -18,7 +18,7 @@ msgid "Search"
 msgstr "検索"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:966
+#: ../src/meego-netbook-launcher.c:966
 msgid "Applications"
 msgstr "アプリケーション"
 
@@ -26,23 +26,23 @@ msgstr "アプリケーション"
 #.
 #. * Fav apps pane
 #.
-#: ../src/moblin-netbook-launcher.c:982
+#: ../src/meego-netbook-launcher.c:982
 msgid "Favorite applications"
 msgstr "お気に入り"
 
 #.
 #. * Applications
 #.
-#: ../src/moblin-netbook-launcher.c:1009
+#: ../src/meego-netbook-launcher.c:1009
 msgid "Your applications"
 msgstr "使用アプリケーション"
 
-#: ../src/moblin-panel-applications.c:223
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:223
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "アプリケーション"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "アプリケーション パネル"
 

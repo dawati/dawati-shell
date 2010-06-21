@@ -1,7 +1,7 @@
-# Chinese translations for mutter-moblin package
-# mutter-moblin 软件包的简体中文翻译.
+# Chinese translations for mutter-meego package
+# mutter-meego 软件包的简体中文翻译.
 # Copyright Intel (C) 2009
-# This file is distributed under the same license as the mutter-moblin package.
+# This file is distributed under the same license as the mutter-meego package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
 #
@@ -22,30 +22,30 @@ msgid "Search"
 msgstr "搜索"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:842
+#: ../src/meego-netbook-launcher.c:842
 msgid "Applications"
 msgstr "应用程序"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/moblin-netbook-launcher.c:858
+#: ../src/meego-netbook-launcher.c:858
 msgid "Favorite applications"
 msgstr "收藏的应用程序"
 
 #.
 #. * Applications
 #.
-#: ../src/moblin-netbook-launcher.c:883
+#: ../src/meego-netbook-launcher.c:883
 msgid "Your applications"
 msgstr "您的应用程序"
 
-#: ../src/moblin-panel-applications.c:193
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:193
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "应用程序"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "应用程序面板"
 

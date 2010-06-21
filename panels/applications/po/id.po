@@ -1,10 +1,10 @@
-# Translation of moblin-apps into Indonesian.
+# Translation of meego-apps into Indonesian.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Andika Triwidada <andika@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-apps\n"
+"Project-Id-Version: meego-panel-apps\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-03 09:29+0000\n"
 "PO-Revision-Date: 2009-08-26 07:24+0700\n"
@@ -15,32 +15,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:1330
+#: ../src/meego-netbook-launcher.c:1330
 msgid "Applications"
 msgstr "Aplikasi"
 
-#: ../src/moblin-netbook-launcher.c:1373
+#: ../src/meego-netbook-launcher.c:1373
 msgid "Search"
 msgstr "Cari"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplikasi"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel aplikasi"
 
-#: ../src/moblin-netbook-launcher.c:1370
+#: ../src/meego-netbook-launcher.c:1370
 msgid "Search for applications"
 msgstr "Cari aplikasi"
 
-#: ../src/moblin-netbook-launcher.c:1344
+#: ../src/meego-netbook-launcher.c:1344
 msgid "Your applications"
 msgstr "Aplikasi Anda"
 
 #. Fav apps
-#: ../src/moblin-netbook-launcher.c:1378
+#: ../src/meego-netbook-launcher.c:1378
 msgid "Favorite applications"
 msgstr "Aplikasi favorit"

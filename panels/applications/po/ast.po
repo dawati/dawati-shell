@@ -17,14 +17,14 @@ msgid "Search"
 msgstr "Gueta"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:987
+#: ../src/meego-netbook-launcher.c:987
 msgid "Applications"
 msgstr "Aplicaciones"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/moblin-netbook-launcher.c:1003
+#: ../src/meego-netbook-launcher.c:1003
 msgid "Favorite applications"
 msgstr "Aplicaciones preferíes"
 
@@ -32,17 +32,17 @@ msgstr "Aplicaciones preferíes"
 #.
 #. * Applications
 #.
-#: ../src/moblin-netbook-launcher.c:1030
+#: ../src/meego-netbook-launcher.c:1030
 msgid "Your applications"
 msgstr "Les tos aplicaciones"
 
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-applications.c:223
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:223
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicaciones"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel aplicaciones"
 

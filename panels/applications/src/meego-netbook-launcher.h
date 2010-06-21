@@ -20,8 +20,8 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef MOBLIN_NETBOOK_LAUNCHER_H
-#define MOBLIN_NETBOOK_LAUNCHER_H
+#ifndef MEEGO_NETBOOK_LAUNCHER_H
+#define MEEGO_NETBOOK_LAUNCHER_H
 
 #include <glib.h>
 #include <glib-object.h>

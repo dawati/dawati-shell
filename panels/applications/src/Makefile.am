@@ -7,11 +7,11 @@ AM_CFLAGS = \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\"
 
-libexec_PROGRAMS = moblin-panel-applications
+libexec_PROGRAMS = meego-panel-applications
 
-moblin_panel_applications_LDADD = $(APPLICATIONS_LIBS) $(MPL_LIBS)
+meego_panel_applications_LDADD = $(APPLICATIONS_LIBS) $(MPL_LIBS)
 
-moblin_panel_applications_SOURCES = \
+meego_panel_applications_SOURCES = \
   mnb-entry.c \
   mnb-entry.h \
   mnb-expander.c \
@@ -26,18 +26,18 @@ moblin_panel_applications_SOURCES = \
   mnb-launcher-grid.h \
   mnb-launcher-tree.c \
   mnb-launcher-tree.h \
-  moblin-netbook-launcher.c \
-  moblin-netbook-launcher.h \
-  moblin-panel-applications.c
+  meego-netbook-launcher.c \
+  meego-netbook-launcher.h \
+  meego-panel-applications.c
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.applications.service.in
-service_DATA = org.moblin.UX.Shell.Panels.applications.service
+service_in_files = com.meego.UX.Shell.Panels.applications.service.in
+service_DATA = com.meego.UX.Shell.Panels.applications.service
 
 EXTRA_DIST = $(service_in_files)
 
-DISTCLEANFILES = org.moblin.UX.Shell.Panels.applications.service
+DISTCLEANFILES = com.meego.UX.Shell.Panels.applications.service
 
-org.moblin.UX.Shell.Panels.applications.service: org.moblin.UX.Shell.Panels.applications.service.in $(top_builddir)/config.log
+com.meego.UX.Shell.Panels.applications.service: com.meego.UX.Shell.Panels.applications.service.in $(top_builddir)/config.log
 	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 

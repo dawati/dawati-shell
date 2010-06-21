@@ -19,30 +19,30 @@ msgid "Search"
 msgstr "搜尋"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:987
+#: ../src/meego-netbook-launcher.c:987
 msgid "Applications"
 msgstr "應用程式"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/moblin-netbook-launcher.c:1003
+#: ../src/meego-netbook-launcher.c:1003
 msgid "Favorite applications"
 msgstr "喜愛的應用程式"
 
 #.
 #. * Applications
 #.
-#: ../src/moblin-netbook-launcher.c:1030
+#: ../src/meego-netbook-launcher.c:1030
 msgid "Your applications"
 msgstr "您的應用程式"
 
-#: ../src/moblin-panel-applications.c:223
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:223
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "應用程式"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "應用程式面板"
 

@@ -19,33 +19,33 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:1330
+#: ../src/meego-netbook-launcher.c:1330
 msgid "Applications"
 msgstr "Приложения"
 
-#: ../src/moblin-netbook-launcher.c:1344
+#: ../src/meego-netbook-launcher.c:1344
 msgid "Your applications"
 msgstr "Ваши приложения"
 
-#: ../src/moblin-netbook-launcher.c:1370
+#: ../src/meego-netbook-launcher.c:1370
 msgid "Search for applications"
 msgstr "Поиск приложений"
 
-#: ../src/moblin-netbook-launcher.c:1373
+#: ../src/meego-netbook-launcher.c:1373
 msgid "Search"
 msgstr "Поиск"
 
 #. Fav apps
-#: ../src/moblin-netbook-launcher.c:1378
+#: ../src/meego-netbook-launcher.c:1378
 msgid "Favorite applications"
 msgstr "Избранные приложения"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "приложения"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Панель приложений"
 

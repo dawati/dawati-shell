@@ -20,29 +20,29 @@ msgid "Search"
 msgstr "Hľadať"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:922
+#: ../src/meego-netbook-launcher.c:922
 msgid "Applications"
 msgstr "Aplikácie"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/moblin-netbook-launcher.c:938
+#: ../src/meego-netbook-launcher.c:938
 msgid "Favorite applications"
 msgstr "Obľúbené aplikácie"
 
 #.
 #. * Applications
 #.
-#: ../src/moblin-netbook-launcher.c:962
+#: ../src/meego-netbook-launcher.c:962
 msgid "Your applications"
 msgstr "Vaše aplikácie"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplikácie"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel aplikácií"

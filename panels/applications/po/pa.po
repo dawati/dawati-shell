@@ -17,33 +17,33 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. Panel label
-#: ../src/moblin-netbook-launcher.c:1333
+#: ../src/meego-netbook-launcher.c:1333
 msgid "Applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../src/moblin-netbook-launcher.c:1347
+#: ../src/meego-netbook-launcher.c:1347
 msgid "Your applications"
 msgstr "ਤੁਹਾਡੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ"
 
-#: ../src/moblin-netbook-launcher.c:1374
+#: ../src/meego-netbook-launcher.c:1374
 msgid "Search for applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਖੋਜ"
 
-#: ../src/moblin-netbook-launcher.c:1377
+#: ../src/meego-netbook-launcher.c:1377
 msgid "Search"
 msgstr "ਖੋਜ"
 
 #. Fav apps
-#: ../src/moblin-netbook-launcher.c:1382
+#: ../src/meego-netbook-launcher.c:1382
 msgid "Favorite applications"
 msgstr "ਪਸੰਦੀਦਾ ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../src/moblin-panel-applications.c:197
-#: ../data/moblin-panel-applications.desktop.in.in.h:2
+#: ../src/meego-panel-applications.c:197
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../data/moblin-panel-applications.desktop.in.in.h:1
+#: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਪੈਨਲ"
 
