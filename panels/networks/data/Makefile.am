@@ -4,7 +4,7 @@ desktop_in_files = carrick.desktop.in.in
 desktop_data = $(desktop_in_files:.desktop.in.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-if WITH_MOBLIN
+if WITH_MEEGO
 paneldir = @PANEL_DIR@
 panel_DATA = $(desktop_data)
 endif

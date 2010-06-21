@@ -92,7 +92,7 @@ get_tip_and_icon_state (const gchar      *connection_type,
 }
 
 
-#if WITH_MOBLIN
+#if WITH_MEEGO
 
 #include <meego-panel/mpl-panel-common.h>
 #include <meego-panel/mpl-panel-gtk.h>
@@ -272,7 +272,7 @@ void _activate_cb (GObject *object, gpointer user_data)
 gboolean
 carrick_shell_is_visible (void)
 {
-#if WITH_MOBLIN
+#if WITH_MEEGO
   if (panel_client)
     return gtk_widget_get_visible (mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client)));
   else
@@ -343,7 +343,7 @@ main (int    argc,
 
     gtk_widget_show (window);
   } else {
-#if WITH_MOBLIN
+#if WITH_MEEGO
     GdkScreen *screen;
     GtkWidget *box, *label;
     char *s;

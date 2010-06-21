@@ -16,7 +16,7 @@ carrick_connection_panel_LDADD= $(top_builddir)/carrick/libcarrick.la \
                                 $(GTK_LIBS) $(DBUS_LIBS) $(CONNMAN_LIBS) $(MPL_LIBS)
 
 
-if WITH_MOBLIN
+if WITH_MEEGO
 %.service: %.service.in
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
