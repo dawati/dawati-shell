@@ -1,5 +1,5 @@
 /*
- * Mux - a connection panel for the Moblin Netbook
+ * Mux - a connection panel for the MeeGo Netbook
  * Copyright (C) 2010 Intel Corporation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or

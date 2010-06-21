@@ -1,5 +1,5 @@
 /*
- * Carrick - a connection panel for the Moblin Netbook
+ * Carrick - a connection panel for the MeeGo Netbook
  * Copyright (C) 2009 Intel Corporation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -308,7 +308,7 @@ main (int    argc,
   textdomain (GETTEXT_PACKAGE);
 
   g_set_application_name (_ ("Carrick connectivity applet"));
-  gtk_init_with_args (&argc, &argv, _ ("- Moblin connectivity applet"),
+  gtk_init_with_args (&argc, &argv, _ ("- MeeGo connectivity applet"),
                       entries, GETTEXT_PACKAGE, &error);
   dbus_g_thread_init ();
 
