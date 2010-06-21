@@ -12,6 +12,6 @@ Categories=
 OnlyShowIn=MEEGO;
 X-Meego-Priority=Highest
 X-GNOME-Autostart-enable=true
-X-Meego-Service=org.meego.UX.Shell.Panels.myzone
+X-Meego-Service=com.meego.UX.Shell.Panels.myzone
 X-Meego-Panel-Optional=false
 X-Meego-Panel-Button-Style=myzone-button
