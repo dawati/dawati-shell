@@ -24,8 +24,8 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
 #include "mnb-people-panel.h"
 
 #include <config.h>
@@ -45,7 +45,7 @@ _client_set_size_cb (MplPanelClient *client,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
   { NULL }
 };
 
@@ -64,7 +64,7 @@ main (int    argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- mutter-moblin people panel");
+  context = g_option_context_new ("- mutter-meego people panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, cogl_get_option_group ());
@@ -77,7 +77,7 @@ main (int    argc,
 
   g_option_context_free (context);
 
-  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
+  mpl_panel_clutter_init_with_gtk (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/panel.css", NULL);
@@ -90,7 +90,7 @@ main (int    argc,
                                     "people-button",
                                     TRUE);
 
-    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
+    mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
 
     mpl_panel_client_set_height_request (client, 600);
 
@@ -108,7 +108,7 @@ main (int    argc,
     clutter_actor_realize (stage);
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
+    mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
     people_panel = mnb_people_panel_new ();
     clutter_actor_set_size ((ClutterActor *)people_panel, 1016, 600);
     clutter_actor_set_size (stage, 1016, 600);

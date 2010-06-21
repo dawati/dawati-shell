@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=com.meego.UX.Shell.Panels.people
+Exec=@libexecdir@/meego-panel-people
+

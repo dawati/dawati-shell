@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-people.c:69
+#: ../src/meego-panel-people.c:69
 msgid "people"
 msgstr "persones"
 

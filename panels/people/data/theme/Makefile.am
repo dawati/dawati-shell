@@ -23,7 +23,7 @@ dist_theme_DATA = \
 	content-panel-header-grey.png \
 	box-background-border-bottom.png
 
-# Manage mutter-moblin's texture cache.
+# Manage mutter-meego's texture cache.
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/nbtk.cache
 CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)

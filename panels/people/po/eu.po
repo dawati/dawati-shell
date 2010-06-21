@@ -19,14 +19,14 @@ msgstr ""
 #. * Used as header for a block of the panel showing pending conversations.
 #. * The user will be able to click the tile and answer the pending conversation
 #.
-#: ../src/moblin-panel-people.c:18
+#: ../src/meego-panel-people.c:18
 msgid "People talking to you ..."
 msgstr "Hitz egiten ari zaizkizu ..."
 
 #.
 #. * Used for the tooltip for the hover state for the icon in the toolbar
 #.
-#: ../src/moblin-panel-people.c:23
+#: ../src/meego-panel-people.c:23
 msgid "people - Someone is talking to you"
 msgstr "jendea - Hizketan ari zaizu norbait"
 
@@ -34,12 +34,12 @@ msgstr "jendea - Hizketan ari zaizu norbait"
 #. * Used for the tooltip for the hover state for the icon in the toolbar
 #. * (plural version)
 #.
-#: ../src/moblin-panel-people.c:29
+#: ../src/meego-panel-people.c:29
 #, c-format
 msgid "people - %d people are talking to you"
 msgstr "jendea - %d pertsona hizketan ari zaizkizu"
 
-#: ../src/moblin-panel-people.c:87
+#: ../src/meego-panel-people.c:87
 msgid "people"
 msgstr "jendea"
 

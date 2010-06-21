@@ -1,11 +1,11 @@
-# Danish translation moblin-panel-people
+# Danish translation meego-panel-people
 # Copyright (C) 2009
-# This file is distributed under the same license as the moblin-panel-people package.
+# This file is distributed under the same license as the meego-panel-people package.
 # Kris Thomsen <lakristho@gmail.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-people\n"
+"Project-Id-Version: meego-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:32+0000\n"
 "PO-Revision-Date: 2009-11-08 22:15+0100\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-people.c:70 ../src/mnb-people-panel.c:573
+#: ../src/meego-panel-people.c:70 ../src/mnb-people-panel.c:573
 msgid "people"
 msgstr "mennesker"
 

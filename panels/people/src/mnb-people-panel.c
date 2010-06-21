@@ -38,9 +38,9 @@
 
 #include <libebook/e-book.h>
 
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-entry.h>
 
 #include "mnb-people-panel.h"
 #include "sw-online.h"
@@ -174,7 +174,7 @@ _make_settings_launcher (MnbPeoplePanel *people_panel)
   app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
 
   icon_tex = g_object_new (MX_TYPE_ICON,
-                           "icon-name", "moblin-empathy-accounts",
+                           "icon-name", "meego-empathy-accounts",
                            NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (table),
@@ -399,7 +399,7 @@ _make_messenger_launcher_tile (MnbPeoplePanel *panel)
   app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
 
   icon_tex = g_object_new (MX_TYPE_ICON,
-                           "icon-name", "moblin-empathy",
+                           "icon-name", "meego-empathy",
                            NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (table),
@@ -713,7 +713,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   priv->tile_view = anerley_tile_view_new (priv->model);
 
   active_feed = anerley_tp_monitor_feed_new ((AnerleyAggregateTpFeed *)priv->tp_feed,
-                                             "MoblinPanelPeople");
+                                             "MeegoPanelPeople");
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
 
   priv->active_list_view = anerley_compact_tile_view_new (priv->active_model);
@@ -1103,7 +1103,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
 
   active_feed = anerley_tp_monitor_feed_new ((AnerleyAggregateTpFeed *)priv->tp_feed,
-                                             "MoblinPanelPeople");
+                                             "MeegoPanelPeople");
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
 
 

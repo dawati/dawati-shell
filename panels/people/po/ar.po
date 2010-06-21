@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-people\n"
+"Project-Id-Version: meego-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:32+0000\n"
 "PO-Revision-Date: 2009-11-13 23:36+0200\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../src/moblin-panel-people.c:70
+#: ../src/meego-panel-people.c:70
 #: ../src/mnb-people-panel.c:573
 msgid "people"
 msgstr "أشخاص"

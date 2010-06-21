@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/meego-panel-people
+TryExec=@libexecdir@/meego-panel-people
+_Name=people
+Icon=meego-panel-people
+_Comment=People panel
+Terminal=false
+Categories=
+OnlyShowIn=MEEGO;
+X-Meego-Priority=Low
+X-Meego-Service=com.meego.UX.Shell.Panels.people
+X-Meego-Panel-Optional=true
+X-Meego-Panel-Button-Style=people-button
