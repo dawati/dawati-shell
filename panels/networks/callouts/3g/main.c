@@ -287,9 +287,9 @@ show_network_panel (void)
   }
 
   proxy = dbus_g_proxy_new_for_name (session_bus,
-                                     "org.moblin.UX.Shell.Toolbar",
-                                     "/org/moblin/UX/Shell/Toolbar",
-                                     "org.moblin.UX.Shell.Toolbar");
+                                     "com.meego.UX.Shell.Toolbar",
+                                     "/com/meego/UX/Shell/Toolbar",
+                                     "com.meego.UX.Shell.Toolbar");
 
   dbus_g_proxy_call_no_reply (proxy, "ShowPanel",
                               G_TYPE_STRING, "network", G_TYPE_INVALID);
