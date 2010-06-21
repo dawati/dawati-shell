@@ -25,7 +25,7 @@
 #include "mpd-display-device.h"
 #include "mpd-gobject.h"
 
-#define MPD_GCONF_DIR "/desktop/moblin/panel-devices"
+#define MPD_GCONF_DIR "/desktop/meego/panel-devices"
 #define MPD_DISPLAY_BRIGHTNESS_ENABLED "brightness_enabled"
 #define MPD_DISPLAY_BRIGHTNESS_VALUE "brightness_value"
 

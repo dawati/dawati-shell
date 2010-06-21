@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-devices\n"
+"Project-Id-Version: meego-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-14 09:22+0000\n"
 "PO-Revision-Date: 2010-06-15 10:34-0800\n"
@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Apparaten paneel"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "apparaten"
 
@@ -55,7 +55,7 @@ msgstr[1] "%u invoeren"
 msgid "System Sounds"
 msgstr "Systeemgeluid"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo Energie pictogram"
 
@@ -106,7 +106,7 @@ msgstr "Wil je nu afsluiten?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Als je niet beslist sluit ik in 30 seconden af"
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo Apparaten paneel"
 
@@ -267,8 +267,8 @@ msgstr "Computer geluidsvolume"
 msgid "Mute"
 msgstr "Geluiden dempen"
 
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Moblin Energie pictogram"
+#~ msgid "Meego Power Icon"
+#~ msgstr "Meego Energie pictogram"
 
 #~ msgid "Netbook volume"
 #~ msgstr "Netbook volume"

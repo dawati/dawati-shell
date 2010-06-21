@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@LIBEXECDIR@/meego-panel-devices
+TryExec=@LIBEXECDIR@/meego-panel-devices
+_Name=devices
+Icon=meego-panel-devices
+_Comment=Devices panel
+Terminal=false
+Categories=
+OnlyShowIn=MEEGO;
+X-Meego-Priority=Late
+X-Meego-Service=org.meego.UX.Shell.Panels.devices
+X-Meego-Panel-Optional=false
+X-Meego-Panel-Button-Style=devices-button

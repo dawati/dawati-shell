@@ -9,20 +9,20 @@ AM_CFLAGS = \
   $(NULL)
 
 libexec_PROGRAMS = \
-  moblin-power-icon \
+  meego-power-icon \
   $(NULL)
 
-moblin_power_icon_LDADD = \
+meego_power_icon_LDADD = \
   $(top_builddir)/egg-console-kit/libegg-console-kit.la \
   $(top_builddir)/gpm/libgpm.la \
   $(MPI_LIBS) \
   $(NULL)
 
-moblin_power_icon_SOURCES = \
+meego_power_icon_SOURCES = \
   $(top_srcdir)/src/mpd-battery-device.c \
   $(top_srcdir)/src/mpd-display-device.c \
   $(top_srcdir)/src/mpd-gobject.c \
-  moblin-power-icon.c \
+  meego-power-icon.c \
   mpd-global-key.c \
   mpd-global-key.h \
   mpd-idle-manager.c \

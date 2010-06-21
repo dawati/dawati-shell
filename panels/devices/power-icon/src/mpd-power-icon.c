@@ -22,7 +22,7 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkx.h>
 #include <libnotify/notify.h>
-#include <moblin-panel/mpl-panel-windowless.h>
+#include <meego-panel/mpl-panel-windowless.h>
 #include <mx/mx.h>
 #include <X11/XF86keysym.h>
 

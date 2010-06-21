@@ -10,17 +10,17 @@ AM_CFLAGS = \
   $(NULL)
 
 libexec_PROGRAMS = \
-  moblin-panel-devices \
+  meego-panel-devices \
   $(NULL)
 
-moblin_panel_devices_LDADD = \
+meego_panel_devices_LDADD = \
   $(top_builddir)/gpm/libgpm.la \
   $(top_builddir)/gvc/libgvc.la \
   $(MPD_LIBS) \
   $(NULL)
 
-moblin_panel_devices_SOURCES = \
-  moblin-panel-devices.c \
+meego_panel_devices_SOURCES = \
+  meego-panel-devices.c \
   mpd-battery-device.c \
   mpd-battery-device.h \
   mpd-battery-icon.c \

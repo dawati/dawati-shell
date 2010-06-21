@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "デバイスパネル"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "デバイス"
 
@@ -50,7 +50,7 @@ msgstr[1] "入力 %u"
 msgid "System Sounds"
 msgstr "システム効果音"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo 電源アイコン"
 
@@ -102,7 +102,7 @@ msgstr "今すぐ電源をオフにしますか?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "このままの状態では、30秒後に電源がオフになります。"
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo デバイスパネル"
 
@@ -263,8 +263,8 @@ msgstr "ミュート"
 #~ msgid "Netbook volume"
 #~ msgstr "ネットブックの音量"
 
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Moblin 電源アイコン"
+#~ msgid "Meego Power Icon"
+#~ msgstr "Meego 電源アイコン"
 
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"

@@ -1,15 +1,15 @@
 
 SUBDIRS = icons theme
 
-autostart_src_files = moblin-panel-devices.desktop.in.in
-autostart_in_files = moblin-panel-devices.desktop.in
+autostart_src_files = meego-panel-devices.desktop.in.in
+autostart_in_files = meego-panel-devices.desktop.in
 #autostartdir = $(sysconfdir)/xdg/autostart
-autostartdir = $(MOBLIN_PANELS_DIR)
+autostartdir = $(MEEGO_PANELS_DIR)
 autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
 
-service_in_files = org.moblin.UX.Shell.Panels.devices.service.in
+service_in_files = com.meego.UX.Shell.Panels.devices.service.in
 servicedir = $(datadir)/dbus-1/services
-service_DATA = org.moblin.UX.Shell.Panels.devices.service
+service_DATA = com.meego.UX.Shell.Panels.devices.service
 
 EXTRA_DIST = \
   $(autostart_src_files) \

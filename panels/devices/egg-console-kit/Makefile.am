@@ -3,7 +3,7 @@ AM_CFLAGS = \
   $(ECK_CFLAGS) \
   -DEGG_CONSOLE="\"MPD_CONSOLE\"" \
   -DEGG_LOGGING="\"MPD_LOGGING\"" \
-  -DEGG_LOG_FILE=\""/tmp/moblin-panel-devices.log"\" \
+  -DEGG_LOG_FILE=\""/tmp/meego-panel-devices.log"\" \
   -DEGG_VERBOSE="\"MPD_VERBOSE\"" \
   $(NULL)
 

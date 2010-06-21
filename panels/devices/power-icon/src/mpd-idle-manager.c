@@ -47,8 +47,8 @@ typedef struct
   guint suspend_source_id;
 } MpdIdleManagerPrivate;
 
-#define MOBLIN_GCONF_DIR "/desktop/moblin"
-#define SUSPEND_IDLE_TIME_KEY MOBLIN_GCONF_DIR"/suspend_idle_time"
+#define MEEGO_GCONF_DIR "/desktop/meego"
+#define SUSPEND_IDLE_TIME_KEY MEEGO_GCONF_DIR"/suspend_idle_time"
 
 static void
 _dispose (GObject *object)
@@ -185,7 +185,7 @@ mpd_idle_manager_init (MpdIdleManager *self)
   priv->client = gconf_client_get_default ();
 
   gconf_client_add_dir (priv->client,
-                        MOBLIN_GCONF_DIR,
+                        MEEGO_GCONF_DIR,
                         GCONF_CLIENT_PRELOAD_NONE,
                         &error);
 

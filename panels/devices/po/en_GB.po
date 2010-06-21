@@ -19,12 +19,12 @@ msgstr ""
 "X-Poedit-Country: UNITED KINGDOM\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Devices panel"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "devices"
 
@@ -56,7 +56,7 @@ msgstr[1] "%u Inputs"
 msgid "System Sounds"
 msgstr "System Sounds"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo Power Icon"
 
@@ -107,7 +107,7 @@ msgstr "Would you like to turn off now?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "If you don't decide, I'll turn off in 30 seconds."
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo Devices Panel"
 
@@ -263,7 +263,7 @@ msgstr "Computer volume"
 msgid "Mute"
 msgstr "Mute"
 
-#~ msgid "Moblin Power Icon"
+#~ msgid "Meego Power Icon"
 #~ msgstr "MeeGo Power Icon"
 
 #~ msgid "Netbook volume"

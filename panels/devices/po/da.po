@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-devices\n"
+"Project-Id-Version: meego-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-14 09:58+0000\n"
 "PO-Revision-Date: 2010-04-15 08:03+0100\n"
@@ -19,12 +19,12 @@ msgstr ""
 "X-Poedit-Country: DENMARK\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Enhedspanel"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:149
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:149
 msgid "devices"
 msgstr "enheder"
 
@@ -56,10 +56,10 @@ msgstr[1] "%u Inputs"
 msgid "System Sounds"
 msgstr "Systemlyde"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 #: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Moblin-strømforsyningsikon"
+msgid "Meego Power Icon"
+msgstr "Meego-strømforsyningsikon"
 
 #: ../power-icon/src/mpd-power-icon.c:71
 msgid "Running low on battery"
@@ -106,9 +106,9 @@ msgstr "Hvis du foretager et valg, lukker computeren ned om %d sekunder."
 msgid "Turn off"
 msgstr "Luk ned"
 
-#: ../src/moblin-panel-devices.c:120
-msgid "Moblin Devices Panel"
-msgstr "Moblin-enhedspanel"
+#: ../src/meego-panel-devices.c:120
+msgid "Meego Devices Panel"
+msgstr "Meego-enhedspanel"
 
 #: ../src/mpd-battery-device.c:333
 #, c-format

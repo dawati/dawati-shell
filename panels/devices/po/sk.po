@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-devices.master\n"
+"Project-Id-Version: meego-panel-devices.master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-21 09:44+0000\n"
 "PO-Revision-Date: 2010-04-21 05:50+0200\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel zariadení"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:149
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:149
 msgid "devices"
 msgstr "zariadenia"
 
@@ -55,9 +55,9 @@ msgstr[2] "%u vstupy"
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 #: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
+msgid "Meego Power Icon"
 msgstr ""
 
 #: ../power-icon/src/mpd-power-icon.c:71
@@ -111,8 +111,8 @@ msgstr "Keď sa nerozhodnete. Vypnem sa za %d sekúnd."
 msgid "Turn off"
 msgstr "Vypnúť"
 
-#: ../src/moblin-panel-devices.c:120
-msgid "Moblin Devices Panel"
+#: ../src/meego-panel-devices.c:120
+msgid "Meego Devices Panel"
 msgstr ""
 
 #: ../src/mpd-battery-device.c:333

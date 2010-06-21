@@ -19,12 +19,12 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Панель устройств"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "устройства"
 
@@ -56,7 +56,7 @@ msgstr[1] "%u вводы"
 msgid "System Sounds"
 msgstr "Системные звуки"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "Значок электропитания MeeGo"
 
@@ -107,7 +107,7 @@ msgstr "Отключить питание немедленно?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "Панель устройств MeeGo"
 
@@ -265,8 +265,8 @@ msgstr "Том компьютера"
 msgid "Mute"
 msgstr "Без звука"
 
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Moblin Power Icon"
+#~ msgid "Meego Power Icon"
+#~ msgstr "Meego Power Icon"
 
 #~ msgid "Netbook volume"
 #~ msgstr "Громкость нетбука"

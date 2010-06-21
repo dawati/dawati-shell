@@ -1,0 +1,23 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Encoding=UTF-8
+TryExec=@LIBEXECDIR@/meego-power-icon
+Exec=@LIBEXECDIR@/meego-power-icon
+Icon=meego-power-icon
+Terminal=false
+Categories=
+Name=MeeGo power icon
+Comment=A power indicator
+GenericName=A power indicator
+NoDisplay=true
+OnlyShowIn=MEEGO;
+X-GNOME-Autostart-enable=true
+X-Meego-Panel-Button-Style=state-80
+X-Meego-Panel-Optional=false
+X-Meego-Panel-Stylesheet=@PKGTHEMEDIR@/power-icon/power-icon.css
+X-Meego-Panel-Type=applet
+X-Meego-Panel-Windowless=true
+X-Meego-Priority=High
+X-Meego-Service=org.meego.UX.Shell.Panels.power
+

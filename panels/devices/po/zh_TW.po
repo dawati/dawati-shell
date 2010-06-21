@@ -1,11 +1,11 @@
-# Traditional Chinese translation for moblin-panel-devices
+# Traditional Chinese translation for meego-panel-devices
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2010, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-devices\n"
+"Project-Id-Version: meego-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-16 09:27+0000\n"
 "PO-Revision-Date: 2010-06-16 11:11-0800\n"
@@ -19,12 +19,12 @@ msgstr ""
 "X-Poedit-Country: TAIWAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "裝置面板"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "裝置"
 
@@ -56,7 +56,7 @@ msgstr[1] "%u 輸入"
 msgid "System Sounds"
 msgstr "系統音效"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo 電源圖示"
 
@@ -107,7 +107,7 @@ msgstr "您現在要關閉電腦嗎？"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "如果您不決定，我會在 30 秒內關閉。"
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo 裝置面板"
 
@@ -263,8 +263,8 @@ msgstr "電腦容量"
 msgid "Mute"
 msgstr "靜音"
 
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Moblin 電源圖示"
+#~ msgid "Meego Power Icon"
+#~ msgstr "Meego 電源圖示"
 #~ msgid "Netbook volume"
 #~ msgstr "網路筆電靜音"
 #~ msgid ""

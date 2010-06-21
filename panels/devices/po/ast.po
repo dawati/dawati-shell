@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-Language: asturian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel de preseos"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "preseos"
 
@@ -55,7 +55,7 @@ msgstr[1] "Entraes %u"
 msgid "System Sounds"
 msgstr "Soníos del sistema"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "Iconu d'enerxía MeeGo"
 
@@ -106,7 +106,7 @@ msgstr "¿Apagar l'equipu?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Si nun se decide un res, va apagase en 30 segundos."
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "Panel de preseos de MeeGo"
 

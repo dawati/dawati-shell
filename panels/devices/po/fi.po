@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Laitteet-paneeli"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "laitteet"
 
@@ -50,7 +50,7 @@ msgstr[1] "%u syötöt"
 msgid "System Sounds"
 msgstr "Järjestelmän äänet"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo virtakuvake"
 
@@ -101,7 +101,7 @@ msgstr "Haluaisitko sammuttaa nyt?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Jos et tee päätöstä, virta kytkeytyy pois päältä 30 sekunnissa."
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo laitteet-paneeli"
 
@@ -257,8 +257,8 @@ msgstr "Tietokoneen äänenvoimakkuus"
 msgid "Mute"
 msgstr "Mykistä"
 
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Moblin virtakuvake"
+#~ msgid "Meego Power Icon"
+#~ msgstr "Meego virtakuvake"
 
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"

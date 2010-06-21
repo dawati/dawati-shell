@@ -1,11 +1,11 @@
-# Translation of moblin-panel-devices into Indonesian
-# Copyright (C) 2010 THE moblin-panel-device'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the moblin-panel-devices package.
+# Translation of meego-panel-devices into Indonesian
+# Copyright (C) 2010 THE meego-panel-device'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the meego-panel-devices package.
 # Andika Triwidada <andika@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-devices master\n"
+"Project-Id-Version: meego-panel-devices master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:48+0000\n"
 "PO-Revision-Date: 2010-05-05 19:40+0700\n"
@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-Country: Indonesia\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel perangkat"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:162
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:162
 msgid "devices"
 msgstr "perangkat"
 
@@ -53,7 +53,7 @@ msgstr[0] "%u Masukan"
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "Ikon Daya MeeGo"
 
@@ -103,10 +103,10 @@ msgid "Turn off"
 msgstr "Matikan"
 
 #: ../power-icon/tests/test-battery-notification.c:58
-msgid "Moblin Power Icon"
-msgstr "Ikon Daya Moblin"
+msgid "Meego Power Icon"
+msgstr "Ikon Daya Meego"
 
-#: ../src/moblin-panel-devices.c:123
+#: ../src/meego-panel-devices.c:123
 msgid "MeeGo Devices Panel"
 msgstr "Panel Perangkat MeeGo"
 

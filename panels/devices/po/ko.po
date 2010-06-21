@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "장치 패널"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "장치"
 
@@ -50,7 +50,7 @@ msgstr[1] "%u 입력"
 msgid "System Sounds"
 msgstr "시스템 음향"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo 전원 아이콘"
 
@@ -101,7 +101,7 @@ msgstr "지금 끄시겠습니까?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "결정하지 않으시면, 30초 후에 종료됩니다."
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo 장치 패널"
 
@@ -257,8 +257,8 @@ msgstr "컴퓨터 볼륨"
 msgid "Mute"
 msgstr "음소거"
 
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Moblin 전원 아이콘"
+#~ msgid "Meego Power Icon"
+#~ msgstr "Meego 전원 아이콘"
 #~ msgid "Netbook volume"
 #~ msgstr "넷북 볼륨"
 #~ msgid ""

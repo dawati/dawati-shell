@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "设备面板"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "设备"
 
@@ -55,7 +55,7 @@ msgstr[1] "%u 输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo 电源图标"
 
@@ -106,7 +106,7 @@ msgstr "您要关闭吗？"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "如果您再不决定，我会在 30 秒后替您关闭。"
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo 设备面板"
 
@@ -262,8 +262,8 @@ msgstr "电脑音量"
 msgid "Mute"
 msgstr "静音"
 
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Moblin 电源图标"
+#~ msgid "Meego Power Icon"
+#~ msgstr "Meego 电源图标"
 
 #~ msgid "Netbook volume"
 #~ msgstr "上网本音量"

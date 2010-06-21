@@ -16,12 +16,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "ਜੰਤਰ ਪੈਨਲ"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:149
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:149
 msgid "devices"
 msgstr "ਜੰਤਰ"
 
@@ -53,8 +53,8 @@ msgstr[1] "%u ਇੰਪੁੱਟ"
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
-#: ../power-icon/src/moblin-power-icon.c:46
-msgid "Moblin Power Icon"
+#: ../power-icon/src/meego-power-icon.c:46
+msgid "Meego Power Icon"
 msgstr "ਮੋਬਲਿਨ ਪਾਵਰ ਆਈਕਾਨ"
 
 #: ../power-icon/src/mpd-power-icon.c:72
@@ -108,8 +108,8 @@ msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮ
 msgid "Turn off"
 msgstr "ਬੰਦ ਕਰੋ"
 
-#: ../src/moblin-panel-devices.c:120
-msgid "Moblin Devices Panel"
+#: ../src/meego-panel-devices.c:120
+msgid "Meego Devices Panel"
 msgstr "ਮੋਬਾਇਲ ਜੰਤਰ ਪੈਨਲ"
 
 #: ../src/mpd-battery-device.c:333

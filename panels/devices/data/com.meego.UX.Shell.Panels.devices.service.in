@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.meego.UX.Shell.Panels.devices
+Exec=@LIBEXECDIR@/meego-panel-devices
+

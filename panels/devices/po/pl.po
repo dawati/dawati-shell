@@ -14,12 +14,12 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Bookmarks: -1,368,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel urządzeń"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "urządzenia"
 
@@ -53,7 +53,7 @@ msgstr[2] "%u wejść"
 msgid "System Sounds"
 msgstr "Dźwięki systemowe"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "Ikona zasilania systemu MeeGo"
 
@@ -105,7 +105,7 @@ msgstr "Czy chcesz teraz wyłączyć komputer?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za 30 sekund."
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "Panel urządzeń MeeGo"
 
@@ -264,8 +264,8 @@ msgstr "Wycisz"
 #~ msgid "Netbook volume"
 #~ msgstr "Głośność notebooka"
 
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Ikona zasilania systemu Moblin"
+#~ msgid "Meego Power Icon"
+#~ msgstr "Ikona zasilania systemu Meego"
 
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"

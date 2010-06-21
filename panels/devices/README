@@ -10,7 +10,7 @@ gvc - GNOME Volume control
 
 Many thanks to those guys for their source code. These blocks of code 
 are licensed under the terms of the GPL. The rest of 
-moblin-panel-devices is licensed under the terms of the LGPL.
+meego-panel-devices is licensed under the terms of the LGPL.
 
 When this software is compiled and distributed as a whole the terms of 
 the GPL apply. However if you wish to reuse components you may do so 

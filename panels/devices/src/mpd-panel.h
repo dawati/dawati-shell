@@ -22,7 +22,7 @@
 #define MPD_PANEL_H
 
 #include <glib-object.h>
-#include <moblin-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-clutter.h>
 
 G_BEGIN_DECLS
 
