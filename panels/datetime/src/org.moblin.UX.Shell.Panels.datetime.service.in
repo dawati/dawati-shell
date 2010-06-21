@@ -1,4 +1,0 @@
-[D-BUS Service]
-Name=org.moblin.UX.Shell.Panels.datetime
-Exec=@libexecdir@/moblin-panel-datetime
-

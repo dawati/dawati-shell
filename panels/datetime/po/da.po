@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-datetime\n"
+"Project-Id-Version: meego-panel-datetime\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-14 09:59+0000\n"
 "PO-Revision-Date: 2010-04-15 07:49+0100\n"
@@ -19,15 +19,15 @@ msgstr ""
 "X-Poedit-Country: DENMARK\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:111
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Dato/Klokkeslæt"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "Dato- og klokkeslætspanel"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "dato og klokkeslæt"
 

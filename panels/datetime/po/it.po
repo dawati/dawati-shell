@@ -14,15 +14,15 @@ msgstr ""
 "X-Poedit-Language: Italian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:111
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Data/Ora"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "Pannello Data e Ora"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "data e ora"
 
@@ -205,8 +205,8 @@ msgstr "Elenco degli allarmi in forma codificata breve"
 #~ msgid "pm"
 #~ msgstr "pm"
 
-#~ msgid "Moblin Alarm Notify"
-#~ msgstr "Notifica dell'allarme Moblin"
+#~ msgid "Meego Alarm Notify"
+#~ msgstr "Notifica dell'allarme Meego"
 
 #~ msgid "AlarmNotifications"
 #~ msgstr "Notifichedell'allarme"
@@ -235,5 +235,5 @@ msgstr "Elenco degli allarmi in forma codificata breve"
 #~ msgid "SUNDAYS"
 #~ msgstr "DOMENICHE"
 
-#~ msgid "Moblin alarm notify"
-#~ msgstr "Notifica dell'allarme Moblin"
+#~ msgid "Meego alarm notify"
+#~ msgstr "Notifica dell'allarme Meego"

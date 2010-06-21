@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-datetime-master.1\n"
+"Project-Id-Version: meego-panel-datetime-master.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-12 09:23+0000\n"
 "PO-Revision-Date: 2010-06-14 02:22+0100\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Asturian\n"
 
-#: ../src/moblin-panel-date-time.c:111
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Data/Hora"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "Panel de data y hora"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "data y hora"
 

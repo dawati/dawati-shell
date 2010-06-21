@@ -32,9 +32,9 @@
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-entry.h>
 
 #include "mnp-shell.h"
 
@@ -69,7 +69,7 @@ _client_activated_cb  (MnpShell *shell,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
   { NULL }
 };
 
@@ -88,7 +88,7 @@ main (int    argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- mutter-moblin date/time panel");
+  context = g_option_context_new ("- mutter-meego date/time panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, gtk_get_option_group (FALSE));
@@ -100,7 +100,7 @@ main (int    argc,
 
   g_option_context_free (context);
 
-  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
+  mpl_panel_clutter_init_with_gtk (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
                            THEMEDIR "/date-panel.css", NULL);
@@ -113,7 +113,7 @@ main (int    argc,
                                     "datetime-button",
                                     TRUE);
 
-    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
+    mpl_panel_clutter_setup_events_with_gtk (client);
 
     mpl_panel_client_set_height_request (client, 530);
 
@@ -136,7 +136,7 @@ main (int    argc,
     clutter_actor_realize (stage);
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
+    mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
     datetime = mnp_shell_new ();
     clutter_actor_set_size (stage, 1016, 530);
     clutter_actor_set_size (datetime, 1016, 530);

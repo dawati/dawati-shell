@@ -13,15 +13,15 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../src/moblin-panel-date-time.c:111
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "日付/時間"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "日付と時間パネル"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "日付と時間"
 
@@ -204,8 +204,8 @@ msgstr "短いエンコード形式のアラーム一覧"
 #~ msgid "pm"
 #~ msgstr "午後"
 
-#~ msgid "Moblin Alarm Notify"
-#~ msgstr "Moblin アラーム通知"
+#~ msgid "Meego Alarm Notify"
+#~ msgstr "Meego アラーム通知"
 
 #~ msgid "AlarmNotifications"
 #~ msgstr "AlarmNotifications"
@@ -234,5 +234,5 @@ msgstr "短いエンコード形式のアラーム一覧"
 #~ msgid "SUNDAYS"
 #~ msgstr "日曜日"
 
-#~ msgid "Moblin alarm notify"
-#~ msgstr "Moblin アラーム通知"
+#~ msgid "Meego alarm notify"
+#~ msgstr "Meego アラーム通知"

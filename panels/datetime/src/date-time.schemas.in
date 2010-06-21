@@ -4,7 +4,7 @@
     <schema>
       <key>/schemas/apps/date-time-panel/alarms</key>
       <applyto>/apps/date-time-panel/alarms</applyto>
-      <owner>moblin-panel-datetime</owner>
+      <owner>meego-panel-datetime</owner>
       <type>list</type>
       <list_type>string</list_type>
       <default>[]</default>      
@@ -19,7 +19,7 @@
     <schema>
       <key>/schemas/apps/date-time-panel/24_h_clock</key>
       <applyto>/apps/date-time-panel/24_h_clock</applyto>
-      <owner>moblin-panel-datetime</owner>
+      <owner>meego-panel-datetime</owner>
       <type>bool</type>
       <default>true</default>      
       <locale name="C">

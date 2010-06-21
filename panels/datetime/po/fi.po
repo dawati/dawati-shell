@@ -13,15 +13,15 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:111
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Pvm/Aika"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "Pvm ja aikapaneeli"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "pvm ja aika"
 
@@ -131,7 +131,7 @@ msgstr "Herätysten luettelo lyhyessä koodatussa muodossa"
 #~ msgid "SUNDAYS"
 #~ msgstr "SUNNUNTAIT"
 
-#~ msgid "Moblin alarm notify"
+#~ msgid "Meego alarm notify"
 #~ msgstr "Mobilin-herätysilmoitus"
 
 #~ msgid "FRIDAYS"
@@ -207,8 +207,8 @@ msgstr "Herätysten luettelo lyhyessä koodatussa muodossa"
 #~ msgid "Alarm Notify"
 #~ msgstr "Herätysilmoitus"
 
-#~ msgid "Moblin Alarm Notify"
-#~ msgstr "Moblin-herätysilmoitus"
+#~ msgid "Meego Alarm Notify"
+#~ msgstr "Meego-herätysilmoitus"
 
 #~ msgid "pm"
 #~ msgstr "pm."

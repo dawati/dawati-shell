@@ -15,15 +15,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-date-time.c:111
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "날짜/시간"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "날짜 및 시간 패널"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "날짜 및 시간"
 
@@ -182,8 +182,8 @@ msgstr "짧은 암호 형식의 경보 목록"
 #~ msgstr "오전"
 #~ msgid "pm"
 #~ msgstr "오후"
-#~ msgid "Moblin Alarm Notify"
-#~ msgstr "Moblin 경보 통보"
+#~ msgid "Meego Alarm Notify"
+#~ msgstr "Meego 경보 통보"
 #~ msgid "AlarmNotifications"
 #~ msgstr "AlarmNotifications"
 #~ msgid "MON-FRI"
@@ -202,6 +202,6 @@ msgstr "짧은 암호 형식의 경보 목록"
 #~ msgstr "토요일"
 #~ msgid "SUNDAYS"
 #~ msgstr "일요일"
-#~ msgid "Moblin alarm notify"
-#~ msgstr "Moblin 경보 통보"
+#~ msgid "Meego alarm notify"
+#~ msgstr "Meego 경보 통보"
 

@@ -8,14 +8,14 @@ AM_CFLAGS = \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
 	-Wall -g3 -O0 -ggdb
 
-moblin_panel_datetime_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
-moblin_alarm_notify_LDADD =  $(DATETIME_LIBS) $(MPL_LIBS)
+meego_panel_datetime_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
+meego_alarm_notify_LDADD =  $(DATETIME_LIBS) $(MPL_LIBS)
 
-libexec_PROGRAMS = moblin-panel-datetime
+libexec_PROGRAMS = meego-panel-datetime
 
-#bin_PROGRAMS = moblin-alarm-notify
+#bin_PROGRAMS = meego-alarm-notify
 
-moblin_panel_datetime_SOURCES = moblin-panel-date-time.c	\
+meego_panel_datetime_SOURCES = meego-panel-date-time.c	\
 				 mnp-world-clock.c	\
 				 mnp-world-clock.h	\
 				 mnp-utils.c 		\
@@ -43,7 +43,7 @@ moblin_panel_datetime_SOURCES = moblin-panel-date-time.c	\
 #				 mx-spin-entry.h	\
 #				 mnp-alarm-utils.h	
 
-moblin_alarm_notify_SOURCES = moblin-alarm-notify.c 	\
+meego_alarm_notify_SOURCES = meego-alarm-notify.c 	\
 			      mnp-alarm-manager.c	\
 			      mnp-alarm-manager.h	\
 			      mnp-alarm-instance.c	\
@@ -52,25 +52,25 @@ moblin_alarm_notify_SOURCES = moblin-alarm-notify.c 	\
 
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.datetime.service.in
-service_DATA = org.moblin.UX.Shell.Panels.datetime.service
+service_in_files = org.meego.UX.Shell.Panels.datetime.service.in
+service_DATA = org.meego.UX.Shell.Panels.datetime.service
 
 schemadir   = $(GCONF_SCHEMA_FILE_DIR)
 schema_in_files = date-time.schemas.in
 schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 @INTLTOOL_SCHEMAS_RULE@
 
-#moblin_panel_date_time_LDFLAGS = \
+#meego_panel_date_time_LDFLAGS = \
 #			-Wl,--export-dynamic
 
 DISTCLEANFILES = \
-	org.moblin.UX.Shell.Panels.datetime.service\
+	org.meego.UX.Shell.Panels.datetime.service\
 	date-time.schemas
 
 EXTRA_DIST = $(service_in_files) \
 	     $(schema_in_files) 	     
 
-org.moblin.UX.Shell.Panels.datetime.service: org.moblin.UX.Shell.Panels.datetime.service.in $(top_builddir)/config.log
+org.meego.UX.Shell.Panels.datetime.service: org.meego.UX.Shell.Panels.datetime.service.in $(top_builddir)/config.log
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 

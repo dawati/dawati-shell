@@ -291,7 +291,7 @@ show_notification(MnpAlarmInstance *alarm)
   }
 
   string = g_strdup_printf(_("Alarm at %d:%.2d %s"), item->hour, item->minute, item->am_pm ? _("am") : _("pm"));  
-  notify = notify_notification_new(_("Moblin Alarm Notify"), string,NULL,NULL);
+  notify = notify_notification_new(_("Meego Alarm Notify"), string,NULL,NULL);
   notify_notification_set_timeout(notify,10000);
   notify_notification_set_category(notify,_("AlarmNotifications"));
 
@@ -349,7 +349,7 @@ play_music()
 		ca_context_change_props(
 			notification,
 			CA_PROP_APPLICATION_NAME,
-			"Moblin Alarm Notify",
+			"Meego Alarm Notify",
 			NULL);
 	}
 	ca_context_play(notification, 0,

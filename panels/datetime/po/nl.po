@@ -18,15 +18,15 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-date-time.c:111
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Datum/Tijd"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "Datum en tijd paneel"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "datum en tijd"
 
@@ -212,8 +212,8 @@ msgstr "Lijst van alarmen in korte gecodeerde vorm"
 #~ msgid "pm"
 #~ msgstr "nm"
 
-#~ msgid "Moblin Alarm Notify"
-#~ msgstr "Moblin Alarmwekker"
+#~ msgid "Meego Alarm Notify"
+#~ msgstr "Meego Alarmwekker"
 
 #~ msgid "AlarmNotifications"
 #~ msgstr "Alarm notificaties"
@@ -242,8 +242,8 @@ msgstr "Lijst van alarmen in korte gecodeerde vorm"
 #~ msgid "SUNDAYS"
 #~ msgstr "ZONDAGS"
 
-#~ msgid "Moblin alarm notify"
-#~ msgstr "Moblin alarmwekker"
+#~ msgid "Meego alarm notify"
+#~ msgstr "Meego alarmwekker"
 
 #~ msgid "Search"
 #~ msgstr "Zoek"

@@ -15,15 +15,15 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../src/moblin-panel-date-time.c:111
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "日期/時間"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "日期和時間面板"
 
-#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "日期和時間"
 
@@ -203,8 +203,8 @@ msgstr "時間與日期"
 #~ msgid "pm"
 #~ msgstr "下午"
 
-#~ msgid "Moblin Alarm Notify"
-#~ msgstr "Moblin 鬧鐘通知"
+#~ msgid "Meego Alarm Notify"
+#~ msgstr "Meego 鬧鐘通知"
 
 #~ msgid "AlarmNotifications"
 #~ msgstr "AlarmNotifications"
@@ -236,5 +236,5 @@ msgstr "時間與日期"
 #~ msgid "Search"
 #~ msgstr "搜尋"
 
-#~ msgid "Moblin alarm notify"
-#~ msgstr "Moblin 鬧鐘通知"
+#~ msgid "Meego alarm notify"
+#~ msgstr "Meego 鬧鐘通知"

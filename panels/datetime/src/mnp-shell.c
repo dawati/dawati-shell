@@ -23,9 +23,9 @@
 #include <glib/gi18n.h>
 
 
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-entry.h>
 
 #include "mnp-shell.h"
 #include "mnp-datetime.h"

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/meego-panel-datetime
+TryExec=@libexecdir@/meego-panel-datetime
+_Name=date and time
+Icon=meego-panel-datetime
+_Comment=Date and Time panel
+Terminal=false
+Categories=
+OnlyShowIn=MEEGO;
+X-Meego-Priority=Low
+X-Meego-Service=org.meego.UX.Shell.Panels.datetime
+X-Meego-Panel-Optional=true
+X-Meego-Panel-Type=clock
