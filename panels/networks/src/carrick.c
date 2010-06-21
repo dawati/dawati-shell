@@ -94,8 +94,8 @@ get_tip_and_icon_state (const gchar      *connection_type,
 
 #if WITH_MOBLIN
 
-#include <moblin-panel/mpl-panel-common.h>
-#include <moblin-panel/mpl-panel-gtk.h>
+#include <meego-panel/mpl-panel-common.h>
+#include <meego-panel/mpl-panel-gtk.h>
 
 static MplPanelClient *panel_client = NULL;
 
