@@ -21,8 +21,8 @@ if WITH_MEEGO
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.network.service.in
-service_DATA =     org.moblin.UX.Shell.Panels.network.service
+service_in_files = com.meego.UX.Shell.Panels.network.service.in
+service_DATA =     com.meego.UX.Shell.Panels.network.service
 endif
 
 EXTRA_DIST = $(service_in_files)
