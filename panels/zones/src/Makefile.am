@@ -24,14 +24,14 @@ meego_panel_zones_SOURCES = \
 			     main.c
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.meego.UX.Shell.Panels.zones.service.in
-service_DATA = org.meego.UX.Shell.Panels.zones.service
+service_in_files = com.meego.UX.Shell.Panels.zones.service.in
+service_DATA = com.meego.UX.Shell.Panels.zones.service
 
 EXTRA_DIST = $(service_in_files)
 
-DISTCLEANFILES = org.meego.UX.Shell.Panels.zones.service
+DISTCLEANFILES = com.meego.UX.Shell.Panels.zones.service
 
-org.meego.UX.Shell.Panels.zones.service: org.meego.UX.Shell.Panels.zones.service.in
+com.meego.UX.Shell.Panels.zones.service: com.meego.UX.Shell.Panels.zones.service.in
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 -include $(top_srcdir)/git.mk
