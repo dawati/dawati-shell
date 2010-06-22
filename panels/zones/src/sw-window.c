@@ -22,10 +22,14 @@
 #include "sw-window.h"
 #include "sw-zone.h"
 
+#include <clutter/clutter-keysyms.h>
+
 static void mx_draggable_iface_init (MxDraggableIface *iface);
+static void mx_focusable_iface_init (MxFocusableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (SwWindow, sw_window, MX_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (MX_TYPE_DRAGGABLE, mx_draggable_iface_init))
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_DRAGGABLE, mx_draggable_iface_init)
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_FOCUSABLE, mx_focusable_iface_init))
 
 #define WINDOW_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), SW_TYPE_WINDOW, SwWindowPrivate))
@@ -74,6 +78,41 @@ struct _SwWindowPrivate
   gint workspace;
 };
 
+/* focusable implementation */
+
+static MxFocusable *
+sw_window_accept_focus (MxFocusable *focusable,
+                        MxFocusHint  hint)
+{
+  clutter_actor_grab_key_focus (CLUTTER_ACTOR (focusable));
+
+  mx_stylable_set_style_pseudo_class(MX_STYLABLE (focusable), "hover");
+
+  return focusable;
+}
+
+static MxFocusable *
+sw_window_move_focus (MxFocusable *focusable,
+                      MxFocusDirection direction,
+                      MxFocusable *from)
+{
+  if (from == focusable)
+    mx_stylable_set_style_pseudo_class (MX_STYLABLE (focusable), "");
+
+  return NULL;
+}
+
+
+
+static void
+mx_focusable_iface_init (MxFocusableIface *iface)
+{
+  iface->accept_focus = sw_window_accept_focus;
+  iface->move_focus = sw_window_move_focus;
+}
+
+
+/* draggable implementation */
 static void
 sw_window_drag_begin (MxDraggable         *draggable,
                       gfloat               event_x,
@@ -292,6 +331,20 @@ sw_window_button_release_event (ClutterActor       *actor,
   return FALSE;
 }
 
+static gboolean
+sw_window_key_release_event (ClutterActor *actor,
+                             ClutterKeyEvent *event)
+{
+  if (event->keyval == CLUTTER_Return)
+    {
+      g_signal_emit (actor, window_signals[CLICKED], 0);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 sw_window_map (ClutterActor *actor)
 {
@@ -487,6 +540,7 @@ sw_window_class_init (SwWindowClass *klass)
   object_class->finalize = sw_window_finalize;
 
   actor_class->button_release_event = sw_window_button_release_event;
+  actor_class->key_release_event = sw_window_key_release_event;
   actor_class->map = sw_window_map;
   actor_class->unmap = sw_window_unmap;
   actor_class->paint = sw_window_paint;

@@ -581,6 +581,9 @@ main (int argc, char **argv)
                         G_CALLBACK (key_press), data);
     }
 
+  /* enable key focus support */
+  mx_focus_manager_get_for_stage (CLUTTER_STAGE (data->stage));
+
 
   clutter_actor_lower_bottom (data->background);
 

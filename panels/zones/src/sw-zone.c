@@ -27,10 +27,12 @@
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 static void mx_droppable_iface_init (MxDroppableIface *iface);
+static void mx_focusable_iface_init (MxFocusableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (SwZone, sw_zone, MX_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER, clutter_container_iface_init)
-                         G_IMPLEMENT_INTERFACE (MX_TYPE_DROPPABLE, mx_droppable_iface_init))
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_DROPPABLE, mx_droppable_iface_init)
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_FOCUSABLE, mx_focusable_iface_init))
 
 #define ZONE_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), SW_TYPE_ZONE, SwZonePrivate))
@@ -77,6 +79,78 @@ struct _SwZonePrivate
 
   gint number;
 };
+
+
+/* focusable implementation */
+static MxFocusable *
+sw_zone_accept_focus (MxFocusable *focusable,
+                      MxFocusHint  hint)
+{
+  mx_stylable_set_style_pseudo_class(MX_STYLABLE (focusable), "active");
+  return focusable;
+}
+
+static MxFocusable *
+sw_zone_move_focus (MxFocusable      *focusable,
+                    MxFocusDirection  direction,
+                    MxFocusable      *from)
+{
+  GList *children;
+
+  if (direction == MX_FOCUS_DIRECTION_LEFT
+      || direction == MX_FOCUS_DIRECTION_RIGHT)
+    {
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (focusable), "");
+      return NULL;
+    }
+
+  children = SW_ZONE (focusable)->priv->children;
+
+  if (!children)
+    {
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (focusable), "");
+      return NULL;
+    }
+
+  if (from == focusable)
+    mx_stylable_set_style_pseudo_class (MX_STYLABLE (focusable), "");
+
+    {
+      GList *l;
+      for (l = SW_ZONE (focusable)->priv->children; l; l = l->next)
+        {
+          if (l->data == from)
+            {
+              GList *next;
+              if (direction == MX_FOCUS_DIRECTION_DOWN
+                  || direction == MX_FOCUS_DIRECTION_NEXT)
+                next = l->next;
+              else
+                next = l->prev;
+
+              if (next)
+                return mx_focusable_accept_focus (next->data, 0);
+              else
+                return NULL;
+            }
+        }
+    }
+
+  /* focus first child */
+  if (direction == MX_FOCUS_DIRECTION_UP)
+    return mx_focusable_accept_focus (g_list_last (children)->data, 0);
+  else
+    return mx_focusable_accept_focus (children->data, 0);
+}
+
+
+static void
+mx_focusable_iface_init (MxFocusableIface *iface)
+{
+  iface->accept_focus = sw_zone_accept_focus;
+  iface->move_focus = sw_zone_move_focus;
+}
+
 
 void sw_zone_finish_animation (SwZone *zone);
 
