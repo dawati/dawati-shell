@@ -135,6 +135,7 @@ struct _MnbPanelOopPrivate
   gboolean         in_hide_animation : 1;
   gboolean         dont_hide_toolbar : 1;
   gboolean         delayed_show      : 1;
+  gboolean         mapped            : 1;
 
   MxButton      *button;
 
@@ -1003,6 +1004,7 @@ mnb_panel_oop_mutter_window_destroy_cb (ClutterActor *actor, gpointer data)
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (data)->priv;
 
   priv->mcw = NULL;
+  priv->mapped = FALSE;
 }
 
 void
@@ -1025,6 +1027,7 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
                                         panel);
 
           priv->mcw = NULL;
+          priv->mapped = FALSE;
         }
 
       return;
@@ -1040,6 +1043,7 @@ mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
     }
 
   priv->mcw = mcw;
+  priv->mapped = TRUE;
 
   g_signal_connect (mcw, "destroy",
                     G_CALLBACK (mnb_panel_oop_mutter_window_destroy_cb),
@@ -1411,6 +1415,7 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
 
   priv->hide_anim = NULL;
   priv->hide_completed_id = 0;
+  priv->mapped = FALSE;
 
   if (!priv->dont_hide_toolbar)
     {
@@ -1570,7 +1575,7 @@ mnb_panel_oop_is_mapped (MnbPanel *panel)
 
   priv = MNB_PANEL_OOP (panel)->priv;
 
-  return (priv->mcw != NULL);
+  return (priv->mapped != FALSE);
 }
 
 static gboolean
