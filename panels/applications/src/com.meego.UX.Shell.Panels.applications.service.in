@@ -1,4 +1,4 @@
 [D-BUS Service]
-Name=org.meego.UX.Shell.Panels.applications
+Name=com.meego.UX.Shell.Panels.applications
 Exec=@libexecdir@/meego-panel-applications
 
