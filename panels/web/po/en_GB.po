@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-web-browser 0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 03:06+0000\n"
+"POT-Creation-Date: 2010-06-23 15:03+0000\n"
 "PO-Revision-Date: 2009-10-02 18:19+0100\n"
 "Last-Translator: Neil Roberts <neil@linux.intel.com>\n"
 "Language-Team: English (British)\n"
@@ -48,46 +48,46 @@ msgstr ""
 "Press down to\n"
 "explore list"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/moblin-netbook-netpanel.cc:796
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "As you visit web pages, your favourites will appear here and on the New tab page in the browser."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/moblin-netbook-netpanel.cc:818
+#: ../netpanel/moblin-netbook-netpanel.cc:941
 msgid "New tab"
 msgstr "New tab"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#. Construct entry table widgets
+#: ../netpanel/moblin-netbook-netpanel.cc:1216
+msgid "Your pages"
+msgstr "Your pages"
+
+#: ../netpanel/moblin-netbook-netpanel.cc:1229
 msgid "Search"
 msgstr "Search"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/moblin-netbook-netpanel.cc:1250
 msgid "Tabs"
 msgstr "Tabs"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/moblin-netbook-netpanel.cc:1255
 msgid "Favorite pages"
 msgstr "Favourite pages"
 
-#: ../netpanel/moblin-panel-web.cc:195
+#: ../netpanel/moblin-panel-web.cc:189
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/moblin-panel-web.cc:210 ../netpanel/moblin-panel-web.cc:256
 msgid "Internet"
 msgstr "Internet"
 
-#. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
-msgid "Your pages"
-msgstr "Your pages"
-
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
-msgstr "Internet panel"
+msgstr "Internet panel "
 
 #~ msgid "It's the internet"
 #~ msgstr "It's the internet"
