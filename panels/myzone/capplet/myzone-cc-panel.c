@@ -75,7 +75,7 @@ clear_recent_files_button_clicked_cb (GtkButton *button,
                                    GTK_MESSAGE_OTHER,
                                    GTK_BUTTONS_YES_NO,
                                    _("Do you want to clear your recent documents? "
-                                     "This will remove the local content from the Myzone"));
+                                     "This will remove the local content from your myzone"));
   res = gtk_dialog_run (dialog);
 
   if (res == GTK_RESPONSE_YES)
