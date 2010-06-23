@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-web-browser 0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-23 15:03+0000\n"
+"POT-Creation-Date: 2010-06-23 15:08+0000\n"
 "PO-Revision-Date: 2009-10-02 18:19+0100\n"
 "Last-Translator: Neil Roberts <neil@linux.intel.com>\n"
 "Language-Team: English (British)\n"
@@ -87,7 +87,7 @@ msgstr "Internet"
 
 #: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
-msgstr "Internet panel "
+msgstr "Internet panel"
 
 #~ msgid "It's the internet"
 #~ msgstr "It's the internet"
