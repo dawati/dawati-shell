@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
+"POT-Creation-Date: 2010-06-16 09:23+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "設定您的工具列偏好設定"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "工具列設定"
 
@@ -29,6 +29,10 @@ msgstr "儲存工具列"
 #: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "很抱歉，在您加入新面板之前，必須先移除一個面板。"
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "您可以新增、刪除，以及重新排序您的工具列中的多個面板。"
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
@@ -82,62 +86,58 @@ msgstr "系統匣"
 msgid "Show system tray"
 msgstr "顯示系統匣"
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "系統匣是種某些舊一代應用程式所使用的概念，它能讓您瞭解什麼時候應用程式發生什麼事；或是當您關閉應用程式後，讓它們繼續在系統匣內保持執行。"
+
+#: ../data/mutter-moblin.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "總是使用小螢幕模式"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "決定工具列上的面板順序。"
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "即使畫面顯示大小需要用到更大的螢幕模式，也強迫它使用小螢幕模式。"
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "工具列上的面板順序"
 
-#: ../src/meego-netbook.c:1018
-msgid "Meego Netbook Effects"
-msgstr "Meego 網路筆電特效"
-
-#: ../src/meego-netbook.c:1022
-msgid "Effects for Meego Netbooks"
-msgstr "給 Meego 網路筆電用的特效"
-
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "啟動"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "未知的視窗"
-
-#: ../src/mnb-toolbar.c:1000
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "抱歉，%s 已損毀"
 
-#: ../src/notifications/mnb-notification.c:282
+#: ../src/notifications/ntf-notification.c:224
 msgid "Dismiss"
 msgstr "取消"
 
-#: ../src/notifications/mnb-notification-cluster.c:663
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "取消所有"
 
-#: ../src/meego-netbook.c:3234
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "未知的視窗"
+
+#: ../src/notifications/ntf-wm.c:107
 msgid "is asking for your attention."
 msgstr "正在要求您的注意。"
 
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "您可以新增、刪除，以及重新排序您的工具列中的多個面板。"
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "啟動"
 
-#: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
-msgstr "系統匣是種某些舊一代應用程式所使用的概念，它能讓您瞭解什麼時候應用程式發生什麼事；或是當您關閉應用程式後，讓它們繼續在系統匣內保持執行。"
+#: ../src/moblin-netbook.c:829
+msgid "Effects for Moblin Netbooks"
+msgstr "供 Moblin 網路筆電使用的特效"
+
+#: ../src/moblin-netbook.c:825
+msgid "Moblin Netbook Effects"
+msgstr "Moblin 網路筆電特效"
 
 #~ msgid "System tray"
 #~ msgstr "系統匣"
