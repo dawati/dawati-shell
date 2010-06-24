@@ -19,5 +19,5 @@ X-Meego-Panel-Stylesheet=@PKGTHEMEDIR@/power-icon/power-icon.css
 X-Meego-Panel-Type=applet
 X-Meego-Panel-Windowless=true
 X-Meego-Priority=High
-X-Meego-Service=org.meego.UX.Shell.Panels.power
+X-Meego-Service=com.meego.UX.Shell.Panels.power
 

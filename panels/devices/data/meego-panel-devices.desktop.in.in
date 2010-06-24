@@ -11,6 +11,6 @@ Terminal=false
 Categories=
 OnlyShowIn=MEEGO;
 X-Meego-Priority=Late
-X-Meego-Service=org.meego.UX.Shell.Panels.devices
+X-Meego-Service=com.meego.UX.Shell.Panels.devices
 X-Meego-Panel-Optional=false
 X-Meego-Panel-Button-Style=devices-button

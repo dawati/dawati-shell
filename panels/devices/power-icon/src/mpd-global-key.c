@@ -113,6 +113,7 @@ _event_filter_cb (XEvent        *xev,
   if (xev->type == KeyPress &&
       xev->xkey.keycode == priv->key_code)
   {
+    g_debug ("%s(), key %x", __FUNCTION__, priv->key_code);
     g_signal_emit_by_name (self, "activated");
     return GDK_FILTER_REMOVE;
   }
