@@ -364,15 +364,10 @@ _brightness_up_key_activated_cb (MxAction     *action,
                                  MpdPowerIcon *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  float brightness;
 
   g_debug ("%s()", __FUNCTION__);
 
-  brightness = mpd_display_device_get_brightness (priv->display);
-  if (brightness >= 0)
-    mpd_display_device_set_brightness (priv->display, brightness + 0.1);
-  else
-    g_warning ("%s : Brightness is %.1f", G_STRLOC, brightness);
+  mpd_display_device_increase_brightness (priv->display);
 }
 
 static void
@@ -380,15 +375,10 @@ _brightness_down_key_activated_cb (MxAction     *action,
                                    MpdPowerIcon *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  float brightness;
 
   g_debug ("%s()", __FUNCTION__);
 
-  brightness = mpd_display_device_get_brightness (priv->display);
-  if (brightness >= 0)
-    mpd_display_device_set_brightness (priv->display, brightness - 0.1);
-  else
-    g_warning ("%s : Brightness is %.1f", G_STRLOC, brightness);
+  mpd_display_device_decrease_brightness (priv->display);
 }
 
 static void

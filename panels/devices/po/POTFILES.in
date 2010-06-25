@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 data/meego-panel-devices.desktop.in.in
+data/meego-panel-devices.schemas.in
 gvc/gvc-mixer-control.c
 power-icon/data/meego-power-icon.desktop.in.in
 power-icon/src/meego-power-icon.c

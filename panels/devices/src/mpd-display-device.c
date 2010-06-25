@@ -346,3 +346,55 @@ mpd_display_device_set_brightness (MpdDisplayDevice  *self,
   }
 }
 
+void
+mpd_display_device_increase_brightness (MpdDisplayDevice *self)
+{
+  MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
+  gboolean hw_changed;
+
+  if (gpm_brightness_xrandr_up (priv->brightness, &hw_changed))
+  {
+    /* Also update gconf */
+    float brightness = mpd_display_device_get_brightness (self);
+    GError *error = NULL;
+    gconf_client_set_float (priv->client,
+                            MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_VALUE,
+                            brightness,
+                            &error);
+    if (error)
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    }
+  } else
+  {
+    g_warning ("%s : Increasing brightness failed", G_STRLOC);
+  }
+}
+
+void
+mpd_display_device_decrease_brightness (MpdDisplayDevice *self)
+{
+  MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
+  gboolean hw_changed;
+
+  if (gpm_brightness_xrandr_down (priv->brightness, &hw_changed))
+  {
+    /* Also update gconf */
+    float brightness = mpd_display_device_get_brightness (self);
+    GError *error = NULL;
+    gconf_client_set_float (priv->client,
+                            MPD_GCONF_DIR"/"MPD_DISPLAY_BRIGHTNESS_VALUE,
+                            brightness,
+                            &error);
+    if (error)
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    }
+  } else
+  {
+    g_warning ("%s : Decreasing brightness failed", G_STRLOC);
+  }
+}
+

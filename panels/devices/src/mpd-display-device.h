@@ -73,6 +73,12 @@ void
 mpd_display_device_set_brightness (MpdDisplayDevice  *self,
                                    float              brightness);
 
+void
+mpd_display_device_increase_brightness (MpdDisplayDevice *self);
+
+void
+mpd_display_device_decrease_brightness (MpdDisplayDevice *self);
+
 G_END_DECLS
 
 #endif /* MPD_DISPLAY_DEVICE_H */

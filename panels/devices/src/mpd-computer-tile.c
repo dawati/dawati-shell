@@ -119,11 +119,6 @@ mpd_computer_tile_init (MpdComputerTile *self)
 
     tile = mpd_brightness_tile_new ();
     clutter_container_add_actor (CLUTTER_CONTAINER (self), tile);
-    clutter_container_child_set (CLUTTER_CONTAINER (self), tile,
-                                 "expand", true,
-                                 "x-fill", true,
-                                 "y-fill", false,
-                                 NULL);
   }
   /* FIXME: Makes crash when unref'd.
    * GpmBrightnessXRandR doesn't remove filter from root window in ::finalize()
