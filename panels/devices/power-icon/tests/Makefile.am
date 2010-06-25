@@ -10,6 +10,7 @@ AM_CFLAGS = \
 
 noinst_PROGRAMS = \
   test-battery-notification \
+  test-brightness-keys \
   test-idle-manager \
   test-shutdown-notification \
   test-xbacklight \
@@ -36,6 +37,11 @@ test_battery_notification_SOURCES = \
   $(top_srcdir)/src/mpd-battery-device.c \
   $(top_srcdir)/src/mpd-display-device.c \
   $(top_srcdir)/src/mpd-gobject.c \
+  $(NULL)
+
+test_brightness_keys_SOURCES = \
+  test-brightness-keys.c \
+  $(top_srcdir)/power-icon/src/mpd-global-key.c \
   $(NULL)
 
 test_idle_manager_SOURCES = \
