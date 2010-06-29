@@ -17,7 +17,7 @@
  */
 
 #include "mnb-netpanel-scrollview.h"
-#include "moblin-netbook-netpanel.h"
+#include "meego-netbook-netpanel.h"
 #include "mwb-utils.h"
 
 /* FIXME: replace with styles or properties */
@@ -351,7 +351,7 @@ mnb_netpanel_scrollview_captured_event (ClutterActor *actor,
                                         ClutterEvent *event)
 {
   if (event->type == CLUTTER_BUTTON_PRESS)
-    moblin_netbook_netpanel_button_press (MOBLIN_NETBOOK_NETPANEL 
+    meego_netbook_netpanel_button_press (MEEGO_NETBOOK_NETPANEL 
                                           (clutter_actor_get_parent (actor)));
 
   return FALSE;

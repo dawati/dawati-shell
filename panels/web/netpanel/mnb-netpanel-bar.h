@@ -16,14 +16,14 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/* Borrowed from the moblin-web-browser project */
+/* Borrowed from the meego-web-browser project */
 
 #ifndef _MNB_NETPANEL_BAR_H
 #define _MNB_NETPANEL_BAR_H
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-entry.h>
 
 G_BEGIN_DECLS
 

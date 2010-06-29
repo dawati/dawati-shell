@@ -45,44 +45,44 @@ msgstr ""
 "Använd nedpil\n"
 "för att se lista"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "När du besöker webbsidor kommer dina favoriter visas här och på den nya fliken i webbläsaren."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Ny flik"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Sök"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Flikar"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Favoritsidor"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "Dina sidor"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "Internetpanel"
 
@@ -92,8 +92,8 @@ msgstr "Internetpanel"
 #~ msgid "Web Browser"
 #~ msgstr "Webbläsare"
 
-#~ msgid "Moblin web browser - "
-#~ msgstr "Webbläsaren Moblin -"
+#~ msgid "Meego web browser - "
+#~ msgstr "Webbläsaren Meego -"
 
 #~ msgid "Loading..."
 #~ msgstr "Laddar.."
@@ -107,8 +107,8 @@ msgstr "Internetpanel"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Nerladdat material - %d%%"
 
-#~ msgid "Moblin web browser"
-#~ msgstr "Webbläsaren Moblin"
+#~ msgid "Meego web browser"
+#~ msgstr "Webbläsaren Meego"
 
 #~ msgid "Oops!"
 #~ msgstr "Oooojdå!"
@@ -149,8 +149,8 @@ msgstr "Internetpanel"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Lägg till URL'en i fillistan"
 
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Webbläsaren Moblin"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Webbläsaren Meego"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "Öppna länk i ny flik"
@@ -272,8 +272,8 @@ msgstr "Internetpanel"
 #~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "Flytta din markör till översta delen av skärmen för att i verktygsfältet välja Nätverk"
 
-#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
-#~ msgstr "Välkommen till Moblin Netbook webbläsare. När du besöker sidor kommer dina favoriter visas här."
+#~ msgid "Welcome to Meego Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Välkommen till Meego Netbook webbläsare. När du besöker sidor kommer dina favoriter visas här."
 
 #~ msgid "Getting started"
 #~ msgstr "Börjar"
@@ -287,8 +287,8 @@ msgstr "Internetpanel"
 #~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
 #~ msgstr "Detta är en personlig flik. Det som du gör under denna flik kommer inte sparas på datorn. Webbplatser som du besöker kan  fortfarande ha sparat information beträffande dina aktiviteter."
 
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Moblin webbläsare är baserad på teknologi från Mozilla"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego webbläsare är baserad på teknologi från Mozilla"
 
 #~ msgid "Go"
 #~ msgstr "Gå till"

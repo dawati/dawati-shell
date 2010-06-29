@@ -1,5 +1,5 @@
 /*
- * Moblin-Panel-Web: The web panel for Moblin
+ * Meego-Panel-Web: The web panel for Meego
  * 
  * Chromium browser APIs wrapper
  */
@@ -266,7 +266,7 @@ ChromeProfileProvider::SaveThumbnail(const char* url,
 
   csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, url, -1);  
 
-  // Cheat the mutter-moblin. Pretend as a png file here.
+  // Cheat the mutter-meego. Pretend as a png file here.
   thumbnail_filename = g_strconcat (csum, ".png", NULL);
   thumbnail_path = g_build_filename (g_get_home_dir (),  
                                      ".thumbnails",  

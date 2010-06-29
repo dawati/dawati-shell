@@ -22,9 +22,9 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <moblin-panel/mpl-panel-clutter.h>
-#include <moblin-panel/mpl-panel-common.h>
-#include "moblin-netbook-netpanel.h"
+#include <meego-panel/mpl-panel-clutter.h>
+#include <meego-panel/mpl-panel-common.h>
+#include "meego-netbook-netpanel.h"
 #include "chrome-profile-provider.h"
 
 #include <config.h>
@@ -67,9 +67,9 @@ _client_set_size_cb (MplPanelClient *client,
 static gboolean
 stage_button_press_event (ClutterStage          *stage,
                           ClutterEvent          *event,
-                          MoblinNetbookNetpanel *netpanel)
+                          MeegoNetbookNetpanel *netpanel)
 {
-  moblin_netbook_netpanel_button_press (netpanel);
+  meego_netbook_netpanel_button_press (netpanel);
   return TRUE;
 }
 
@@ -86,7 +86,7 @@ stage_delete_event (ClutterStage *stage,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-moblin panel", NULL}
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL}
 };
 
 #define CHROME_EXE_PATH "/opt/google/chrome/"
@@ -103,7 +103,7 @@ main (int    argc,
 {
   MplPanelClient *client;
   ClutterActor *stage;
-  MoblinNetbookNetpanel *netpanel;
+  MeegoNetbookNetpanel *netpanel;
   GOptionContext *context;
   std::string browser_name;
   GError *error = NULL;
@@ -170,7 +170,7 @@ main (int    argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- mutter-moblin myzone panel");
+  context = g_option_context_new ("- mutter-meego myzone panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, gtk_get_option_group (FALSE));
@@ -202,8 +202,8 @@ main (int    argc,
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
-    netpanel = MOBLIN_NETBOOK_NETPANEL (moblin_netbook_netpanel_new ());
-    moblin_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
+    netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
+    meego_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
 
     ClutterActor  *content_pane;
     ClutterActor  *base_pane;
@@ -236,7 +236,7 @@ main (int    argc,
                                  "y-fill", TRUE,
                                  NULL);
 
-    moblin_netbook_netpanel_set_panel_client (netpanel, client);
+    meego_netbook_netpanel_set_panel_client (netpanel, client);
     g_signal_connect (client,
                       "set-size",
                       (GCallback)_client_set_size_cb,
@@ -252,8 +252,8 @@ main (int    argc,
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
     MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
-    netpanel = MOBLIN_NETBOOK_NETPANEL (moblin_netbook_netpanel_new ());
-    moblin_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
+    netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
+    meego_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
 
     base_pane = mx_box_layout_new();
     clutter_actor_set_name (base_pane, "base-pane");

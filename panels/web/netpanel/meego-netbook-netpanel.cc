@@ -1,4 +1,4 @@
-/* moblin-netbook-netpanel.c */
+/* meego-netbook-netpanel.c */
 /*
  * Copyright (c) 2009 Intel Corp.
  *
@@ -27,10 +27,10 @@
 #include <unistd.h>
 
 extern "C" {
-#include <moblin-panel/mpl-entry.h>
-#include <moblin-panel/mpl-utils.h>
-#include <moblin-panel/mpl-panel-client.h>
-#include "moblin-netbook-netpanel.h"
+#include <meego-panel/mpl-entry.h>
+#include <meego-panel/mpl-utils.h>
+#include <meego-panel/mpl-panel-client.h>
+#include "meego-netbook-netpanel.h"
 #include "mnb-netpanel-bar.h"
 #include "mnb-netpanel-scrollview.h"
 #include "mwb-utils.h"
@@ -48,20 +48,20 @@ extern "C" {
 #define CELL_WIDTH  210
 #define CELL_HEIGHT 114
 
-#define START_PAGE "moblin://start/"
+#define START_PAGE "meego://start/"
 
 static gboolean
-moblin_netbook_netpanel_select_tab (MoblinNetbookNetpanel *self, gint tab_id);
+meego_netbook_netpanel_select_tab (MeegoNetbookNetpanel *self, gint tab_id);
 
 static void
-moblin_netbook_netpanel_restore_tab (MoblinNetbookNetpanel *self, gchar* tab_url);
+meego_netbook_netpanel_restore_tab (MeegoNetbookNetpanel *self, gchar* tab_url);
 
-G_DEFINE_TYPE (MoblinNetbookNetpanel, moblin_netbook_netpanel, MX_TYPE_WIDGET)
+G_DEFINE_TYPE (MeegoNetbookNetpanel, meego_netbook_netpanel, MX_TYPE_WIDGET)
 
 #define NETPANEL_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MOBLIN_TYPE_NETBOOK_NETPANEL, MoblinNetbookNetpanelPrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MEEGO_TYPE_NETBOOK_NETPANEL, MeegoNetbookNetpanelPrivate))
 
-struct _MoblinNetbookNetpanelPrivate
+struct _MeegoNetbookNetpanelPrivate
 {
   GList          *calls;
 
@@ -92,10 +92,10 @@ struct _MoblinNetbookNetpanelPrivate
 
 
 static void
-moblin_netbook_netpanel_dispose (GObject *object)
+meego_netbook_netpanel_dispose (GObject *object)
 {
-  MoblinNetbookNetpanel *self = MOBLIN_NETBOOK_NETPANEL (object);
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanel *self = MEEGO_NETBOOK_NETPANEL (object);
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
   guint i;
 
   if (priv->panel_client)
@@ -160,17 +160,17 @@ moblin_netbook_netpanel_dispose (GObject *object)
   if (priv->browser_name)
     g_free (priv->browser_name);
 
-  G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->dispose (object);
+  G_OBJECT_CLASS (meego_netbook_netpanel_parent_class)->dispose (object);
 }
 
 static void
-moblin_netbook_netpanel_finalize (GObject *object)
+meego_netbook_netpanel_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (moblin_netbook_netpanel_parent_class)->finalize (object);
+  G_OBJECT_CLASS (meego_netbook_netpanel_parent_class)->finalize (object);
 }
 
 static void
-moblin_netbook_netpanel_allocate (ClutterActor           *actor,
+meego_netbook_netpanel_allocate (ClutterActor           *actor,
                                   const ClutterActorBox  *box,
                                   ClutterAllocationFlags  flags)
 {
@@ -180,9 +180,9 @@ moblin_netbook_netpanel_allocate (ClutterActor           *actor,
   gfloat min_heights[5], natural_heights[5], final_heights[5];
   gfloat natural_height;
   guint i;
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (actor)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->
+  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->
     allocate (actor, box, flags);
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
@@ -323,16 +323,16 @@ expand_to_child_width (ClutterActor *actor,
 }
 
 static void
-moblin_netbook_netpanel_get_preferred_width (ClutterActor *self,
+meego_netbook_netpanel_get_preferred_width (ClutterActor *self,
                                              gfloat        for_height,
                                              gfloat        *min_width_p,
                                              gfloat        *natural_width_p)
 {
   MxPadding padding;
   gfloat min_width = 0.0, natural_width = 0.0;
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
 
-  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->
+  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->
     get_preferred_width (self, for_height, min_width_p, natural_width_p);
 
   if (for_height != -1.0)
@@ -383,15 +383,15 @@ add_child_height (ClutterActor *actor,
 }
 
 static void
-moblin_netbook_netpanel_get_preferred_height (ClutterActor *self,
+meego_netbook_netpanel_get_preferred_height (ClutterActor *self,
                                               gfloat        for_width,
                                               gfloat       *min_height_p,
                                               gfloat       *natural_height_p)
 {
   MxPadding padding;
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
 
-  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->
+  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->
     get_preferred_height (self, for_width, min_height_p, natural_height_p);
 
   mx_widget_get_padding (MX_WIDGET (self), &padding);
@@ -410,12 +410,12 @@ moblin_netbook_netpanel_get_preferred_height (ClutterActor *self,
 }
 
 static void
-moblin_netbook_netpanel_paint (ClutterActor *actor)
+meego_netbook_netpanel_paint (ClutterActor *actor)
 {
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (actor)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (actor)->priv;
 
   /* Chain up to get the background */
-  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->paint (actor);
 
   if (priv->tabs_label)
     clutter_actor_paint (CLUTTER_ACTOR (priv->tabs_label));
@@ -431,17 +431,17 @@ moblin_netbook_netpanel_paint (ClutterActor *actor)
 }
 
 static void
-moblin_netbook_netpanel_pick (ClutterActor *actor, const ClutterColor *color)
+meego_netbook_netpanel_pick (ClutterActor *actor, const ClutterColor *color)
 {
-  moblin_netbook_netpanel_paint (actor);
+  meego_netbook_netpanel_paint (actor);
 }
 
 static void
-moblin_netbook_netpanel_map (ClutterActor *actor)
+meego_netbook_netpanel_map (ClutterActor *actor)
 {
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (actor)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->map (actor);
+  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->map (actor);
 
   clutter_actor_map (CLUTTER_ACTOR (priv->entry_table));
   if (priv->tabs_label)
@@ -455,11 +455,11 @@ moblin_netbook_netpanel_map (ClutterActor *actor)
 }
 
 static void
-moblin_netbook_netpanel_unmap (ClutterActor *actor)
+meego_netbook_netpanel_unmap (ClutterActor *actor)
 {
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (actor)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->unmap (actor);
+  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->unmap (actor);
 
   clutter_actor_unmap (CLUTTER_ACTOR (priv->entry_table));
   if (priv->tabs_label)
@@ -473,12 +473,12 @@ moblin_netbook_netpanel_unmap (ClutterActor *actor)
 }
 
 void
-moblin_netbook_netpanel_button_press (MoblinNetbookNetpanel *netpanel)
+meego_netbook_netpanel_button_press (MeegoNetbookNetpanel *netpanel)
 {
   if (!netpanel)
     return;
 
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (netpanel)->priv;
   if (priv->entry)
     mnb_netpanel_bar_button_press_cb(NULL, NULL,
                                      MNB_NETPANEL_BAR (priv->entry));
@@ -489,11 +489,11 @@ moblin_netbook_netpanel_button_press (MoblinNetbookNetpanel *netpanel)
  * the application workspace; investigate further.
  */
 static void
-moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
+meego_netbook_netpanel_launch_url (MeegoNetbookNetpanel *netpanel,
                                     const gchar           *url,
                                     gboolean               user_initiated)
 {
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (netpanel)->priv;
   gchar *exec, *esc_url, *ptr, *remaining;
   gchar *prefix = g_strdup ("");
 
@@ -538,23 +538,23 @@ moblin_netbook_netpanel_launch_url (MoblinNetbookNetpanel *netpanel,
 }
 
 static void
-new_tab_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
+new_tab_clicked_cb (MxWidget *button, MeegoNetbookNetpanel *self)
 {
   // -1 means open New Tab
   // FIXME: avoid hardcode here
-  if (!moblin_netbook_netpanel_select_tab (self, -1))
+  if (!meego_netbook_netpanel_select_tab (self, -1))
     {
-      moblin_netbook_netpanel_restore_tab (self, "");
+      meego_netbook_netpanel_restore_tab (self, "");
     }
 }
 
 static void
-fav_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
+fav_button_clicked_cb (MxWidget *button, MeegoNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
   guint fav = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (button), "fav"));
 
-  moblin_netbook_netpanel_launch_url (self, priv->fav_urls[fav], TRUE);
+  meego_netbook_netpanel_launch_url (self, priv->fav_urls[fav], TRUE);
 }
 
 static void
@@ -664,9 +664,9 @@ pipe_send (GIOChannel *channel, ...)
 #define CMD_SELECT_TAB 1
 
 static gboolean
-moblin_netbook_netpanel_select_tab (MoblinNetbookNetpanel *self, gint tab_id)
+meego_netbook_netpanel_select_tab (MeegoNetbookNetpanel *self, gint tab_id)
 {
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
 
   gchar *plugin_pipe = g_strdup_printf ("%s/chrome-meego-plugin.fifo",
                                         g_get_tmp_dir ());
@@ -710,9 +710,9 @@ moblin_netbook_netpanel_select_tab (MoblinNetbookNetpanel *self, gint tab_id)
 }
 
 static void
-moblin_netbook_netpanel_restore_tab (MoblinNetbookNetpanel *self, gchar* tab_url)
+meego_netbook_netpanel_restore_tab (MeegoNetbookNetpanel *self, gchar* tab_url)
 {
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
 
   gchar *plugin_cmd = g_strdup_printf ("%s/chrome-meego-extension.cmd",
                                         g_get_tmp_dir ());
@@ -726,28 +726,28 @@ moblin_netbook_netpanel_restore_tab (MoblinNetbookNetpanel *self, gchar* tab_url
       g_file_set_contents (plugin_cmd, (gchar *)tab_url, strlen(tab_url), NULL);
     }
   // Launch the Chrome to restore tabs and execute startup commands
-  moblin_netbook_netpanel_launch_url(self, "", TRUE);
+  meego_netbook_netpanel_launch_url(self, "", TRUE);
   g_free (plugin_cmd);
 }
 
 static void
-session_tab_button_clicked_cb (MxWidget *button, MoblinNetbookNetpanel *self)
+session_tab_button_clicked_cb (MxWidget *button, MeegoNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (self)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
 
   gchar *tab_url = (gchar *)g_object_get_data (G_OBJECT (button), "url");
   guint tab_id = (guint)g_object_get_data (G_OBJECT (button), "tab_id");
 
-  if (!moblin_netbook_netpanel_select_tab (self, tab_id))
+  if (!meego_netbook_netpanel_select_tab (self, tab_id))
     {
-      moblin_netbook_netpanel_restore_tab (self, tab_url);
+      meego_netbook_netpanel_restore_tab (self, tab_url);
     }
 }
 
 static void
-create_tabs_view (MoblinNetbookNetpanel *self)
+create_tabs_view (MeegoNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
 
   if (priv->tabs_view)
     clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_view));
@@ -763,9 +763,9 @@ create_tabs_view (MoblinNetbookNetpanel *self)
 }
 
 static void
-create_favs_view (MoblinNetbookNetpanel *self)
+create_favs_view (MeegoNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
 
   if (priv->favs_view)
     clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
@@ -782,9 +782,9 @@ create_favs_view (MoblinNetbookNetpanel *self)
 }
 
 static void
-create_favs_placeholder (MoblinNetbookNetpanel *self)
+create_favs_placeholder (MeegoNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
   MxWidget *label, *bin;
 
   if (priv->favs_view)
@@ -874,8 +874,8 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
 static void
 favs_exception (void *context, int errno)
 {
-  MoblinNetbookNetpanel *self = (MoblinNetbookNetpanel*)context;
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanel *self = (MeegoNetbookNetpanel*)context;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
 
   create_favs_placeholder(self);
 }
@@ -883,8 +883,8 @@ favs_exception (void *context, int errno)
 static void
 favs_received (void *context, const char* url, const char *title)
 {
-  MoblinNetbookNetpanel *self = (MoblinNetbookNetpanel*)context;
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanel *self = (MeegoNetbookNetpanel*)context;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
 
   MxWidget *button;
   MnbNetpanelScrollview *scrollview;
@@ -912,8 +912,8 @@ favs_received (void *context, const char* url, const char *title)
 
 static void tabs_exception(void* context, int errno)
 {
-  MoblinNetbookNetpanel* self = (MoblinNetbookNetpanel*)context;
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanel* self = (MeegoNetbookNetpanel*)context;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
   MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
 
   MxWidget *label;
@@ -952,8 +952,8 @@ static void tabs_received(void* context, int tab_id,
                                      const char* url,
                                      const char* title) 
 {
-    MoblinNetbookNetpanel* self = (MoblinNetbookNetpanel*)context;
-    MoblinNetbookNetpanelPrivate *priv = self->priv;
+    MeegoNetbookNetpanel* self = (MeegoNetbookNetpanel*)context;
+    MeegoNetbookNetpanelPrivate *priv = self->priv;
     MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
 
     if (!scrollview)
@@ -987,9 +987,9 @@ static void tabs_received(void* context, int tab_id,
 }
 
 static void
-create_tabs(MoblinNetbookNetpanel *self)
+create_tabs(MeegoNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
   /* Create tabs table */
   create_tabs_view (self);
 
@@ -1001,9 +1001,9 @@ create_tabs(MoblinNetbookNetpanel *self)
 
 
 static void
-create_history (MoblinNetbookNetpanel *self)
+create_history (MeegoNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
   gint rc, i;
 
   if (!priv->tabs_view)
@@ -1034,9 +1034,9 @@ create_history (MoblinNetbookNetpanel *self)
 }
 
 static void
-request_live_previews (MoblinNetbookNetpanel *self)
+request_live_previews (MeegoNetbookNetpanel *self)
 {
-  MoblinNetbookNetpanelPrivate *priv = self->priv;
+  MeegoNetbookNetpanelPrivate *priv = self->priv;
 
   priv->display_tab = 0;
   priv->display_fav = 0;
@@ -1046,10 +1046,10 @@ request_live_previews (MoblinNetbookNetpanel *self)
 }
 
 static void
-moblin_netbook_netpanel_unload (ClutterActor *actor)
+meego_netbook_netpanel_unload (ClutterActor *actor)
 {
-  MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
-  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  MeegoNetbookNetpanel *netpanel = MEEGO_NETBOOK_NETPANEL (actor);
+  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
 
   // mpl_panel_clutter_unload uses clutter_main_quit to quit
   // which doesn't work for us, use MessageLoopForUI.Quit instead
@@ -1057,25 +1057,25 @@ moblin_netbook_netpanel_unload (ClutterActor *actor)
 }
 
 static void
-moblin_netbook_netpanel_show (ClutterActor *actor)
+meego_netbook_netpanel_show (ClutterActor *actor)
 {
-  MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
-  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  MeegoNetbookNetpanel *netpanel = MEEGO_NETBOOK_NETPANEL (actor);
+  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
 
   ChromeProfileProvider::GetInstance()->Initialize(priv->browser_name);
 
-  moblin_netbook_netpanel_focus (netpanel);
+  meego_netbook_netpanel_focus (netpanel);
 
   request_live_previews (netpanel);
 
-  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->show (actor);
+  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->show (actor);
 }
 
 static void
-moblin_netbook_netpanel_hide (ClutterActor *actor)
+meego_netbook_netpanel_hide (ClutterActor *actor)
 {
-  MoblinNetbookNetpanel *netpanel = MOBLIN_NETBOOK_NETPANEL (actor);
-  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  MeegoNetbookNetpanel *netpanel = MEEGO_NETBOOK_NETPANEL (actor);
+  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
   guint i;
 
   if (!ChromeProfileProvider::GetInstance()->GetReady())
@@ -1083,7 +1083,7 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
 
   ChromeProfileProvider::GetInstance()->Uninitialize();
 
-  moblin_netbook_netpanel_clear (netpanel);
+  meego_netbook_netpanel_clear (netpanel);
 
   if (priv->tabs)
     {
@@ -1138,37 +1138,37 @@ moblin_netbook_netpanel_hide (ClutterActor *actor)
                                                priv->session_urls);
     }
 
-  CLUTTER_ACTOR_CLASS (moblin_netbook_netpanel_parent_class)->hide (actor);
+  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->hide (actor);
 }
 
 static void
-moblin_netbook_netpanel_class_init (MoblinNetbookNetpanelClass *klass)
+meego_netbook_netpanel_class_init (MeegoNetbookNetpanelClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MoblinNetbookNetpanelPrivate));
+  g_type_class_add_private (klass, sizeof (MeegoNetbookNetpanelPrivate));
 
-  object_class->dispose = moblin_netbook_netpanel_dispose;
-  object_class->finalize = moblin_netbook_netpanel_finalize;
+  object_class->dispose = meego_netbook_netpanel_dispose;
+  object_class->finalize = meego_netbook_netpanel_finalize;
 
-  actor_class->allocate = moblin_netbook_netpanel_allocate;
+  actor_class->allocate = meego_netbook_netpanel_allocate;
   actor_class->get_preferred_width =
-    moblin_netbook_netpanel_get_preferred_width;
+    meego_netbook_netpanel_get_preferred_width;
   actor_class->get_preferred_height =
-    moblin_netbook_netpanel_get_preferred_height;
-  actor_class->paint = moblin_netbook_netpanel_paint;
-  actor_class->pick = moblin_netbook_netpanel_pick;
-  actor_class->map = moblin_netbook_netpanel_map;
-  actor_class->unmap = moblin_netbook_netpanel_unmap;
-  actor_class->show = moblin_netbook_netpanel_show;
-  actor_class->hide = moblin_netbook_netpanel_hide;
+    meego_netbook_netpanel_get_preferred_height;
+  actor_class->paint = meego_netbook_netpanel_paint;
+  actor_class->pick = meego_netbook_netpanel_pick;
+  actor_class->map = meego_netbook_netpanel_map;
+  actor_class->unmap = meego_netbook_netpanel_unmap;
+  actor_class->show = meego_netbook_netpanel_show;
+  actor_class->hide = meego_netbook_netpanel_hide;
 }
 
 static void
 netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
                     const gchar           *url,
-                    MoblinNetbookNetpanel *self)
+                    MeegoNetbookNetpanel *self)
 {
   if (!url)
     return;
@@ -1182,12 +1182,12 @@ netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
       return;
     }
 
-  moblin_netbook_netpanel_launch_url (self, url, TRUE);
+  meego_netbook_netpanel_launch_url (self, url, TRUE);
 }
 
 static void
 netpanel_bar_button_clicked_cb (MnbNetpanelBar        *netpanel_bar,
-                                MoblinNetbookNetpanel *self)
+                                MeegoNetbookNetpanel *self)
 {
   netpanel_bar_go_cb (netpanel_bar,
                       mpl_entry_get_text (MPL_ENTRY (netpanel_bar)),
@@ -1195,13 +1195,13 @@ netpanel_bar_button_clicked_cb (MnbNetpanelBar        *netpanel_bar,
 }
 
 static void
-moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
+meego_netbook_netpanel_init (MeegoNetbookNetpanel *self)
 {
   DBusGConnection *connection;
   MxWidget *table, *label;
 
   GError *error = NULL;
-  MoblinNetbookNetpanelPrivate *priv = self->priv = NETPANEL_PRIVATE (self);
+  MeegoNetbookNetpanelPrivate *priv = self->priv = NETPANEL_PRIVATE (self);
 
   /* Construct entry table */
   priv->entry_table = table = MX_WIDGET (mx_table_new ());
@@ -1261,18 +1261,18 @@ moblin_netbook_netpanel_init (MoblinNetbookNetpanel *self)
 
 
 MxWidget*
-moblin_netbook_netpanel_new (void)
+meego_netbook_netpanel_new (void)
 {
-  return (MxWidget*)g_object_new (MOBLIN_TYPE_NETBOOK_NETPANEL,
+  return (MxWidget*)g_object_new (MEEGO_TYPE_NETBOOK_NETPANEL,
                                   "visible", FALSE,
                                   NULL);
 }
 
 void
-moblin_netbook_netpanel_set_browser(MoblinNetbookNetpanel *netpanel,
+meego_netbook_netpanel_set_browser(MeegoNetbookNetpanel *netpanel,
                                     const char* browser_name)
 {
-  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
 
   if(priv->browser_name)
     g_free(priv->browser_name);
@@ -1280,33 +1280,33 @@ moblin_netbook_netpanel_set_browser(MoblinNetbookNetpanel *netpanel,
 }
 
 void
-moblin_netbook_netpanel_focus (MoblinNetbookNetpanel *netpanel)
+meego_netbook_netpanel_focus (MeegoNetbookNetpanel *netpanel)
 {
-  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
   mnb_netpanel_bar_focus (MNB_NETPANEL_BAR (priv->entry));
 }
 
 void
-moblin_netbook_netpanel_clear (MoblinNetbookNetpanel *netpanel)
+meego_netbook_netpanel_clear (MeegoNetbookNetpanel *netpanel)
 {
-  MoblinNetbookNetpanelPrivate *priv = netpanel->priv;
+  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
   mpl_entry_set_text (MPL_ENTRY (priv->entry), "");
 }
 
 void
-moblin_netbook_netpanel_set_panel_client (MoblinNetbookNetpanel *netpanel,
+meego_netbook_netpanel_set_panel_client (MeegoNetbookNetpanel *netpanel,
                                           MplPanelClient *panel_client)
 {
-  MoblinNetbookNetpanelPrivate *priv = MOBLIN_NETBOOK_NETPANEL (netpanel)->priv;
+  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (netpanel)->priv;
 
   priv->panel_client = (MplPanelClient*)g_object_ref (panel_client);
 
   g_signal_connect_swapped (panel_client, "show-begin",
-                            (GCallback)moblin_netbook_netpanel_show, netpanel);
+                            (GCallback)meego_netbook_netpanel_show, netpanel);
 
   g_signal_connect_swapped (panel_client, "hide-end",
-                            (GCallback)moblin_netbook_netpanel_hide, netpanel);
+                            (GCallback)meego_netbook_netpanel_hide, netpanel);
 
   g_signal_connect_swapped (panel_client, "unload",
-                            (GCallback)moblin_netbook_netpanel_unload, netpanel);
+                            (GCallback)meego_netbook_netpanel_unload, netpanel);
 }

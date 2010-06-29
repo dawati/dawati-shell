@@ -45,45 +45,45 @@ msgstr ""
 "按下「向下」鍵來\n"
 "探索清單"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "當你造訪網頁時，你喜愛的頁面會出現在這裡以及瀏覽器的新分頁中。"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "新的分頁"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "搜尋"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "分頁"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "喜愛的網頁"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "網際網路"
 
-#: ../netpanel/moblin-panel-web.cc:216
-#: ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216
+#: ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "網際網路"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "您的網頁"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "網際網路面板"
 
@@ -91,8 +91,8 @@ msgstr "網際網路面板"
 #~ msgstr "這裡是網際網路"
 #~ msgid "Web Browser"
 #~ msgstr "網路瀏覽器"
-#~ msgid "Moblin web browser - "
-#~ msgstr "Moblin 網路瀏覽器 - "
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego 網路瀏覽器 - "
 #~ msgid "Loading..."
 #~ msgstr "載入中..."
 #~ msgid "Untitled"
@@ -101,8 +101,8 @@ msgstr "網際網路面板"
 #~ msgstr "下載"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "下載 - %d%%"
-#~ msgid "Moblin web browser"
-#~ msgstr "Moblin 網路瀏覽器"
+#~ msgid "Meego web browser"
+#~ msgstr "Meego 網路瀏覽器"
 #~ msgid "Oops!"
 #~ msgstr "糟糕！"
 #~ msgid "New tab page"
@@ -129,8 +129,8 @@ msgstr "網際網路面板"
 #~ msgstr "在視窗內執行瀏覽器"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "將該網址加入最近的檔案清單"
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Moblin 網路瀏覽器"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego 網路瀏覽器"
 #~ msgid "Open link in new tab"
 #~ msgstr "在新分頁中開啟連結"
 #~ msgid "Copy link location"
@@ -211,8 +211,8 @@ msgstr "網際網路面板"
 #~ msgstr "有連線上的問題嗎？"
 #~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "將滑鼠指標移動到螢幕頂端來向下帶出工具列，並選取網路的面板。"
-#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
-#~ msgstr "歡迎來到 Moblin 網路筆電網路瀏覽器。當你造網頁時，你喜愛的網頁會在這裡出現。"
+#~ msgid "Welcome to Meego Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "歡迎來到 Meego 網路筆電網路瀏覽器。當你造網頁時，你喜愛的網頁會在這裡出現。"
 #~ msgid "Getting started"
 #~ msgstr "準備開始"
 #~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
@@ -221,8 +221,8 @@ msgstr "網際網路面板"
 #~ msgstr "將此分頁標記為私人的"
 #~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
 #~ msgstr "這是一個私人分頁。你在這個分頁內所做的事情都不會在這台電腦上儲存起來。然而，你所瀏覽的網站仍可能會保留住你的動作紀錄。 "
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Moblin 網頁瀏覽器驕傲地建立在 Mozilla 科技之上"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego 網頁瀏覽器驕傲地建立在 Mozilla 科技之上"
 #~ msgid "Go"
 #~ msgstr "Go"
 #~ msgid "Push the pin icon in the location bar above to add pages to this list."

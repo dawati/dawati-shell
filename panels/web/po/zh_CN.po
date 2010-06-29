@@ -1,4 +1,4 @@
-# moblin web browser
+# meego web browser
 # Copyright Intel(C) 2009
 # This file is distributed under the same license as the PACKAGE package.
 # Zhang Qiang <qiang.z.zhang@intel.com>, 2009
@@ -6,7 +6,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-web-browser\n"
+"Project-Id-Version: meego-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 03:06+0000\n"
 "PO-Revision-Date: 2009-10-21 15:59-0800\n"
@@ -48,44 +48,44 @@ msgstr ""
 "按向下键\n"
 "浏览列表"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "当您访问网页后，访问最频繁的页面显示在这里，这些页面可以在浏览器新标签中显示"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "新建标签"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "搜索"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "标签"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "书签"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "互联网"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "互联网"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "你的页面"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "互联网面板"
 
@@ -93,10 +93,10 @@ msgstr "互联网面板"
 #~ msgstr "连接至互联网"
 
 #~ msgid "Web Browser"
-#~ msgstr "Moblin 浏览器"
+#~ msgstr "Meego 浏览器"
 
-#~ msgid "Moblin web browser - "
-#~ msgstr "Moblin 浏览器 - "
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego 浏览器 - "
 
 #~ msgid "Loading..."
 #~ msgstr "加载..."
@@ -110,8 +110,8 @@ msgstr "互联网面板"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "下载中 - %d%%"
 
-#~ msgid "Moblin web browser"
-#~ msgstr "Moblin 浏览器"
+#~ msgid "Meego web browser"
+#~ msgstr "Meego 浏览器"
 
 #~ msgid "Oops!"
 #~ msgstr "哎呀！"
@@ -152,8 +152,8 @@ msgstr "互联网面板"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "把这个地址加入最近访问过的文件列表"
 
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Moblin 浏览器"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego 浏览器"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "在新标签页中打开此链接"
@@ -275,8 +275,8 @@ msgstr "互联网面板"
 #~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "移动鼠标到屏幕顶部，在显示的工具栏上选择网络面板项。"
 
-#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
-#~ msgstr "欢迎使用 Moblin Netbook 浏览器。当你要浏览网页时，你最喜欢的网页会先显示在这里。"
+#~ msgid "Welcome to Meego Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "欢迎使用 Meego Netbook 浏览器。当你要浏览网页时，你最喜欢的网页会先显示在这里。"
 
 #~ msgid "Getting started"
 #~ msgstr "开始"
@@ -292,8 +292,8 @@ msgstr "互联网面板"
 #~ "这是一个隐藏的标签页。您在本页面上进行的一切操作都不会被存储在这台计算机上。然而，\n"
 #~ "您所访问的网站仍然有可能保存您的操作记录。"
 
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Moblin 网络浏览器是基于 Mozilla 技术。"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego 网络浏览器是基于 Mozilla 技术。"
 
 #~ msgid "Go"
 #~ msgstr "出发"

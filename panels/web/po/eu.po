@@ -46,7 +46,7 @@ msgstr ""
 "'Behera' sakatu\n"
 "zerrenda arakatzeko"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
@@ -54,41 +54,41 @@ msgstr ""
 "Webguneak bisitatzen dituzun eran, zure gogokoenak hemen eta arakatzailean "
 "'Fitxa berria' agertuko dira."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Fitxa berria"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
+#: ../netpanel/meego-netbook-netpanel.cc:1198
 #, fuzzy
 msgid "Your pages"
 msgstr "Orri gogokoenak"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/meego-netbook-netpanel.cc:1211
 msgid "Search"
 msgstr "Bilatu"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/meego-netbook-netpanel.cc:1232
 msgid "Tabs"
 msgstr "Fitxak"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/meego-netbook-netpanel.cc:1237
 msgid "Favorite pages"
 msgstr "Orri gogokoenak"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 #, fuzzy
 msgid "Internet panel"
 msgstr "Internet"
@@ -117,8 +117,8 @@ msgstr "Internet"
 #~ msgid "Web Browser"
 #~ msgstr "Web-Arakatzailea"
 
-#~ msgid "Moblin web browser - "
-#~ msgstr "Moblin web-arakatzailea - "
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego web-arakatzailea - "
 
 #~ msgid "Untitled"
 #~ msgstr "Izengabea"
@@ -129,8 +129,8 @@ msgstr "Internet"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Deskargak - %d%%"
 
-#~ msgid "Moblin web browser"
-#~ msgstr "Moblin web-arakatzailea"
+#~ msgid "Meego web browser"
+#~ msgstr "Meego web-arakatzailea"
 
 #~ msgid "Download cancelled"
 #~ msgstr "Deskarga ezeztatua"
@@ -147,8 +147,8 @@ msgstr "Internet"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Azken fitxategien zerrendara gehitu URLa"
 
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Moblin Web-Arakatzailea"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego Web-Arakatzailea"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "Fitxa berrian ireki fitxa"
@@ -250,10 +250,10 @@ msgstr "Internet"
 #~ "eta Sareak panela hautatu ezazu."
 
 #~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
-#~ "Ongietorri Moblin Netbook Web-Arakatzailera. Orriak bisitatzen "
+#~ "Ongietorri Meego Netbook Web-Arakatzailera. Orriak bisitatzen "
 #~ "dituzunean, hemen agertuko dira zure gogokoenak."
 
 #~ msgid "Getting started"
@@ -280,8 +280,8 @@ msgstr "Internet"
 #~ "gordeko ordenagailu honetan. Halaere, webguneek zure ekintzen erregistroa "
 #~ "gorde dezakete."
 
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Mozilla-ren teknologian oinarritzen da Moblin Web-Arakatzailea"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Mozilla-ren teknologian oinarritzen da Meego Web-Arakatzailea"
 
 #~ msgid "Go"
 #~ msgstr "Joan"

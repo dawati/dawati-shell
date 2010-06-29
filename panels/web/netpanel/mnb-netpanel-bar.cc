@@ -16,7 +16,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-/* Borrowed from the moblin-web-browser project */
+/* Borrowed from the meego-web-browser project */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

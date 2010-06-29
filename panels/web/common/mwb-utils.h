@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -26,7 +26,7 @@
 #include <mx/mx.h>
 #include <gdk/gdk.h>
 
-#define MWB_PROFILES_BASE ".mozilla/moblin-web-browser/"
+#define MWB_PROFILES_BASE ".mozilla/meego-web-browser/"
 #define MWB_PROFILES_INI  MWB_PROFILES_BASE "/profiles.ini"
 #define MWB_PLACES_SQLITE "places.sqlite"
 

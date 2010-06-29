@@ -1,5 +1,5 @@
 /*
- * Moblin-Panel-Web: The web panel for Moblin
+ * Meego-Panel-Web: The web panel for Meego
  * 
  * Chromium browser APIs wrapper
  */

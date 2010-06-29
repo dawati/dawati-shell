@@ -1,12 +1,12 @@
-# Italian translations for moblin-web-browesr package.
-# Copyright (C) 2009 the moblin-web-browser's holder.
-# This file is distributed under the same license as the moblin-web-broser package.
+# Italian translations for meego-web-browesr package.
+# Copyright (C) 2009 the meego-web-browser's holder.
+# This file is distributed under the same license as the meego-web-broser package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 # 
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-web-browser\n"
+"Project-Id-Version: meego-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: 2009-10-02 22:32+0200\n"
@@ -52,44 +52,44 @@ msgstr ""
 
 # (ndt) spero che quel New tab sia quello che c'è
 # un paio di stringhe dopo...
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Visitando delle pagine web, quelle preferite verranno visualizzate qui e nella pagina «Nuova scheda» del browser."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Nuova scheda"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Cerca"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Schede"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Pagine preferite"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "Pannello Internet"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "Pagine preferite"
 
@@ -111,8 +111,8 @@ msgstr "Pagine preferite"
 #~ msgid "Web Browser"
 #~ msgstr "Browser web"
 
-#~ msgid "Moblin web browser - "
-#~ msgstr "Browser web Moblin - "
+#~ msgid "Meego web browser - "
+#~ msgstr "Browser web Meego - "
 
 #~ msgid "Untitled"
 #~ msgstr "Senza nome"
@@ -123,8 +123,8 @@ msgstr "Pagine preferite"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Scaricati - %d%%"
 
-#~ msgid "Moblin web browser"
-#~ msgstr "Browser web Moblin"
+#~ msgid "Meego web browser"
+#~ msgstr "Browser web Meego"
 
 #~ msgid "Download cancelled"
 #~ msgstr "Scaricamento annullato"
@@ -141,8 +141,8 @@ msgstr "Pagine preferite"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Aggiunge l'indirizzo all'elenco dei file recenti"
 
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Browser web Moblin"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Browser web Meego"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "Apri in una nuova scheda"
@@ -231,8 +231,8 @@ msgstr "Pagine preferite"
 #~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "Muovere il puntatore in alto nello schermo per visualizzare la barra degli strumenti e selezionare la sezione relativa alla rete."
 
-#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
-#~ msgstr "Benvenuti nel browser web Moblin per netbook. Una volta visitate delle pagine, le preferite verranno mostrate qui."
+#~ msgid "Welcome to Meego Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Benvenuti nel browser web Meego per netbook. Una volta visitate delle pagine, le preferite verranno mostrate qui."
 
 #~ msgid "Getting started"
 #~ msgstr "Per iniziare"
@@ -246,8 +246,8 @@ msgstr "Pagine preferite"
 #~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
 #~ msgstr "Questa è una scheda privata. Tutte le attività svolte in questa scheda non verranno salvate sul computer, ma i siti web visitati potrebbero mantenere dei dati riguardo le azioni svolte."
 
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Il browser web Moblin è basato su tecnologia di Mozilla."
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Il browser web Meego è basato su tecnologia di Mozilla."
 
 #~ msgid "Go"
 #~ msgstr "Vai"

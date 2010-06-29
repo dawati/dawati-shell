@@ -48,44 +48,44 @@ msgstr ""
 "durchsuchen"
 
 # not 100% sure about the "New tab page" thing
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Während du Webseiten besuchst erscheinen deine Favoriten hier und auf der Seite 'Neuer Tab' im Browser."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Neuer Tab"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Suche"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Tabs"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Favoritenseiten"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "Internet"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "Deine Seiten"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "Panel Internet"
 
@@ -95,8 +95,8 @@ msgstr "Panel Internet"
 #~ msgid "Web Browser"
 #~ msgstr "Webbrowser"
 
-#~ msgid "Moblin web browser - "
-#~ msgstr "Moblin Webbrowser - "
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego Webbrowser - "
 
 #~ msgid "Loading..."
 #~ msgstr "Wird geladen..."
@@ -110,8 +110,8 @@ msgstr "Panel Internet"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Downloads - %d%%"
 
-#~ msgid "Moblin web browser"
-#~ msgstr "Moblin Webbrowser"
+#~ msgid "Meego web browser"
+#~ msgstr "Meego Webbrowser"
 
 #~ msgid "Oops!"
 #~ msgstr "Oh je!"
@@ -152,8 +152,8 @@ msgstr "Panel Internet"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "URL zur Liste der letzten Dateien hinzufügen"
 
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Moblin Webbrowser"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego Webbrowser"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "Link in neuem Tab öffnen"
@@ -275,8 +275,8 @@ msgstr "Panel Internet"
 #~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "Bewege deinen Cursor zum oberen Bildrand, um die Symbolleiste zu öffnen und wähle dann Netzwerke."
 
-#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
-#~ msgstr "Willkommen beim Moblin Netbook Webbrowser. Wenn du Seiten besuchst, erscheinen hier deine Favoriten."
+#~ msgid "Welcome to Meego Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Willkommen beim Meego Netbook Webbrowser. Wenn du Seiten besuchst, erscheinen hier deine Favoriten."
 
 #~ msgid "Getting started"
 #~ msgstr "Erste Schritte"
@@ -290,8 +290,8 @@ msgstr "Panel Internet"
 #~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
 #~ msgstr "Dies ist ein privater Tab. Was du in diesem Tab machst, wird nicht auf diesem Computer gespeichert. Jedoch können von dir besuchte Websites dennoch Daten über dich anlegen."
 
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Moblin Web Browser ist auf Mozilla-Technologie basiert"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego Web Browser ist auf Mozilla-Technologie basiert"
 
 #~ msgid "Go"
 #~ msgstr "Los"

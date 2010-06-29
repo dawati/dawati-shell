@@ -11,9 +11,9 @@ AM_CPPFLAGS = \
 	-fno-exceptions -fno-rtti \
 	-I$(top_srcdir)/common
 
-libexec_PROGRAMS = moblin-panel-web
+libexec_PROGRAMS = meego-panel-web
 
-moblin_panel_web_LDADD = \
+meego_panel_web_LDADD = \
 	$(SQLITE_LIBS) \
 	$(MX_LIBS) \
 	$(GTK_LIBS) \
@@ -22,28 +22,28 @@ moblin_panel_web_LDADD = \
 	$(CHROME_LIBS) \
 	$(top_builddir)/common/libcommon.a
 
-moblin_panel_web_SOURCES = \
-  moblin-panel-web.cc   \
-  moblin-netbook-netpanel.cc \
-  moblin-netbook-netpanel.h \
+meego_panel_web_SOURCES = \
+  meego-panel-web.cc   \
+  meego-netbook-netpanel.cc \
+  meego-netbook-netpanel.h \
   mnb-netpanel-bar.cc        \
   mnb-netpanel-bar.h        \
   mnb-netpanel-scrollview.cc \
   mnb-netpanel-scrollview.h 
 
-moblin_panel_web_DEPENDENCIES = \
+meego_panel_web_DEPENDENCIES = \
   $(top_builddir)/common/libcommon.a
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.moblin.UX.Shell.Panels.internet.service.in
-service_DATA = org.moblin.UX.Shell.Panels.internet.service
+service_in_files = org.meego.UX.Shell.Panels.internet.service.in
+service_DATA = org.meego.UX.Shell.Panels.internet.service
 
-autostartdir = $(datadir)/mutter-moblin/panels
-autostart_DATA = moblin-panel-internet.desktop
+autostartdir = $(datadir)/mutter-meego/panels
+autostart_DATA = meego-panel-internet.desktop
 
 @INTLTOOL_DESKTOP_RULE@
 
-desktopfiles_in_files=moblin-panel-internet.desktop.in
+desktopfiles_in_files=meego-panel-internet.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
 %.desktop.in: %.desktop.in.in Makefile
@@ -51,7 +51,7 @@ desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
 EXTRA_DIST = $(service_in_files) $(autostart_DATA)
 
-DISTCLEANFILES = org.moblin.UX.Shell.Panels.internet.service
+DISTCLEANFILES = org.meego.UX.Shell.Panels.internet.service
 
-org.moblin.UX.Shell.Panels.internet.service: org.moblin.UX.Shell.Panels.internet.service.in
+org.meego.UX.Shell.Panels.internet.service: org.meego.UX.Shell.Panels.internet.service.in
 	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@

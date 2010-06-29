@@ -22,7 +22,7 @@
 #include <glib-object.h>
 extern "C" {
 #include <clutter/clutter.h>
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-entry.h>
 }
 
 G_BEGIN_DECLS

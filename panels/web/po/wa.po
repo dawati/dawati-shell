@@ -4,7 +4,7 @@
 # Jean Cayron <jean.cayron@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-web-browser.master.moblin-web-browser\n"
+"Project-Id-Version: meego-web-browser.master.meego-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-10 09:23+0000\n"
 "PO-Revision-Date: 2009-09-29 18:21+0100\n"
@@ -47,44 +47,44 @@ msgstr ""
 "Tchôkî l' tape po dischinde po\n"
 "betchter l' djivêye"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:796
+#: ../netpanel/meego-netbook-netpanel.cc:796
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Cwand vs vizitez des pådje waibe, vos colåds aparexhront vaici eyet sol  pådje del Novele linwete e betchteu."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:818
-#: ../netpanel/moblin-netbook-netpanel.cc:941
+#: ../netpanel/meego-netbook-netpanel.cc:818
+#: ../netpanel/meego-netbook-netpanel.cc:941
 msgid "New tab"
 msgstr "Novele linwete"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1229
+#: ../netpanel/meego-netbook-netpanel.cc:1229
 msgid "Search"
 msgstr "Trover"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1250
+#: ../netpanel/meego-netbook-netpanel.cc:1250
 msgid "Tabs"
 msgstr "Linwetes"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1255
+#: ../netpanel/meego-netbook-netpanel.cc:1255
 msgid "Favorite pages"
 msgstr "Pådjes favorites"
 
-#: ../netpanel/moblin-panel-web.cc:189
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:189
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "daegntoele"
 
-#: ../netpanel/moblin-panel-web.cc:210 ../netpanel/moblin-panel-web.cc:256
+#: ../netpanel/meego-panel-web.cc:210 ../netpanel/meego-panel-web.cc:256
 msgid "Internet"
 msgstr "Daegntoele"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1216
+#: ../netpanel/meego-netbook-netpanel.cc:1216
 msgid "Your pages"
 msgstr "Pådjes da vosse"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "Sicriftôr del Daegntoele"
 
@@ -94,8 +94,8 @@ msgstr "Sicriftôr del Daegntoele"
 #~ msgid "Web Browser"
 #~ msgstr "Betchteu waibe"
 
-#~ msgid "Moblin web browser - "
-#~ msgstr "Betchteu waibe da Moblin - "
+#~ msgid "Meego web browser - "
+#~ msgstr "Betchteu waibe da Meego - "
 
 #~ msgid "Untitled"
 #~ msgstr "Sins no"
@@ -106,8 +106,8 @@ msgstr "Sicriftôr del Daegntoele"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Aberwetaedjes - %d%%"
 
-#~ msgid "Moblin web browser"
-#~ msgstr "Betchteu waibe da Moblin"
+#~ msgid "Meego web browser"
+#~ msgstr "Betchteu waibe da Meego"
 
 #~ msgid "Download cancelled"
 #~ msgstr "Aberwetaedje rinoncî"
@@ -124,8 +124,8 @@ msgstr "Sicriftôr del Daegntoele"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Radjouter l' URL al djivêye des fitchîs d' enawaire"
 
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Betchteu waibe da Moblin"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Betchteu waibe da Meego"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "Drovi hårdêye dins ene novele linwete"
@@ -214,8 +214,8 @@ msgstr "Sicriftôr del Daegntoele"
 #~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "Bodjî vos pwinteu al copete del waitroûle po fé dischinde li bår ås usteyes eyet tchoezi l' scriftôr del Rantoele."
 
-#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
-#~ msgstr "Wilicome sol Betchteu waibe po Netbook da Moblin. Cwand vos vizitez des pådjes, vos favorites si mosterront chal."
+#~ msgid "Welcome to Meego Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Wilicome sol Betchteu waibe po Netbook da Meego. Cwand vos vizitez des pådjes, vos favorites si mosterront chal."
 
 #~ msgid "Getting started"
 #~ msgstr "Pos ataker"

@@ -48,45 +48,45 @@ msgstr ""
 "Tutki listaa\n"
 "painamalla alas"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi välilehti -sivulla."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Uusi välilehti"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "Suosikkisivut"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Etsi"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Välilehdet"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Suosikkisivut"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/moblin-panel-web.cc:216
-#: ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216
+#: ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "Internet-ruutu"
 
@@ -94,8 +94,8 @@ msgstr "Internet-ruutu"
 #~ msgstr "Se on Internet!"
 #~ msgid "Web Browser"
 #~ msgstr "Verkkoselain"
-#~ msgid "Moblin web browser - "
-#~ msgstr "Moblin verkkoselain -"
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego verkkoselain -"
 #~ msgid "Loading..."
 #~ msgstr "Lataa..."
 #~ msgid "Untitled"
@@ -104,8 +104,8 @@ msgstr "Internet-ruutu"
 #~ msgstr "Tallennetut tiedostot"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Tallennetut tiedostot - %d%%"
-#~ msgid "Moblin web browser"
-#~ msgstr "Moblin verkkoselain"
+#~ msgid "Meego web browser"
+#~ msgstr "Meego verkkoselain"
 #~ msgid "Oops!"
 #~ msgstr "Upsis!"
 #~ msgid "New tab page"
@@ -138,8 +138,8 @@ msgstr "Internet-ruutu"
 #~ msgstr "Suorita selain ikkunassa"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Lisää URL viimeaikaisten tiedostojen listaan"
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Moblin verkkoselain"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego verkkoselain"
 #~ msgid "Open link in new tab"
 #~ msgstr "Avaa linkki uudessa välilehdessä"
 #~ msgid "Copy link location"
@@ -233,10 +233,10 @@ msgstr "Internet-ruutu"
 #~ "Siirrä osoitin ruudun yläreunaan työkalurivin aktivoimiseksi ja valitse "
 #~ "sitten verkot-paneeli."
 #~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
-#~ "Tervetuloa käyttämään Moblin-verkkoselainta. Useimmiten vierailemasi "
+#~ "Tervetuloa käyttämään Meego-verkkoselainta. Useimmiten vierailemasi "
 #~ "sivut näkyvät täällä."
 #~ msgid "Getting started"
 #~ msgstr "Alkuvalmistelut"
@@ -258,8 +258,8 @@ msgstr "Internet-ruutu"
 #~ "Tämä on yksityinen välilehti. Tämän välilehden tapahtumia ei tallenneta "
 #~ "tähän koneeseen. Vierailemasi sivustot voivat tosin silti säilyttää "
 #~ "tietoja tekemisistäsi."
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Moblin Verkkoselain perustuu Mozilla teknologiaan"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego Verkkoselain perustuu Mozilla teknologiaan"
 #~ msgid "Go"
 #~ msgstr "Siirry"
 #~ msgid ""

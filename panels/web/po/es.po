@@ -1,7 +1,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Moblin UX\n"
+"Project-Id-Version: Meego UX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: 2009-10-01 13:43-0800\n"
@@ -50,47 +50,47 @@ msgstr ""
 "Usa las flechas\n"
 "para ver la lista"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Tus favoritos se mostrarán aquí y en la página de nuevas pestañas conforme vayas visitando páginas"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Nueva pestaña"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Buscar"
 
 #. Construct title for tab preview section
 # <Fichas? If "fichas" is better then it needs to replace pestañas in other
 # strings too>
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Pestañas"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Páginas favoritas"
 
 # <mousetip of the top of the screen>
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "Páginas favoritas"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "Panel de Internet"
 
@@ -98,10 +98,10 @@ msgstr "Panel de Internet"
 #~ msgstr "Esto es Internet"
 
 #~ msgid "Web Browser"
-#~ msgstr "Navegador de Moblin"
+#~ msgstr "Navegador de Meego"
 
-#~ msgid "Moblin web browser - "
-#~ msgstr "Navegador de Moblin - "
+#~ msgid "Meego web browser - "
+#~ msgstr "Navegador de Meego - "
 
 #~ msgid "Untitled"
 #~ msgstr "Sin título"
@@ -112,8 +112,8 @@ msgstr "Panel de Internet"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Descargas - %d%%"
 
-#~ msgid "Moblin web browser"
-#~ msgstr "Navegador de Moblin"
+#~ msgid "Meego web browser"
+#~ msgstr "Navegador de Meego"
 
 #~ msgid "Oops!"
 #~ msgstr "¡Error!"
@@ -142,8 +142,8 @@ msgstr "Panel de Internet"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Agregar la URL a la lista de archivos recientes"
 
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Navegador de Moblin"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Navegador de Meego"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "Abrir el vínculo en una nueva pestaña"
@@ -232,8 +232,8 @@ msgstr "Panel de Internet"
 #~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
 #~ msgstr "Lleva el cursor arriba de la pantalla para ver la barra de herramientas y seleccionar el panel de redes."
 
-#~ msgid "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite ones will show up here."
-#~ msgstr "Bienvenido al navegador de Internet de Moblin. Cuando visites páginas, tus favoritas aparecerán aquí."
+#~ msgid "Welcome to Meego Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Bienvenido al navegador de Internet de Meego. Cuando visites páginas, tus favoritas aparecerán aquí."
 
 #~ msgid "Getting started"
 #~ msgstr "Empecemos"
@@ -247,8 +247,8 @@ msgstr "Panel de Internet"
 #~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
 #~ msgstr "Esta pestaña es privada. Lo que hagas aquí no se guardará en este equipo, pero puede que las páginas que visites guarden el historial de tus acciones."
 
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "El navegador de Moblin basado en la tecnología de Mozilla"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "El navegador de Meego basado en la tecnología de Mozilla"
 
 #~ msgid "Go"
 #~ msgstr "Ir"

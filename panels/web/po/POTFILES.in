@@ -7,9 +7,9 @@ common/mwb-separator.cc
 common/mwb-utils.cc
 
 # Panel
-netpanel/moblin-netbook-netpanel.cc
-netpanel/moblin-panel-web.cc
+netpanel/meego-netbook-netpanel.cc
+netpanel/meego-panel-web.cc
 netpanel/mnb-netpanel-scrollview.cc
 
 # Desktop
-netpanel/moblin-panel-internet.desktop.in.in
+netpanel/meego-panel-internet.desktop.in.in

@@ -44,45 +44,45 @@ msgstr ""
 "탐색 목록 가기\n"
 "아래쪽  화살표 이용"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "웹 사이트를 방문하시면 귀하의 즐겨 찾기가 여기에 나타나고 새 탭 페이지에있는 브라우저에 표시됩니다."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "새로운 탭"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "즐겨 찾기 페이지"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "검색"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "탭"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "즐겨 찾기 페이지"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "인터넷"
 
-#: ../netpanel/moblin-panel-web.cc:216
-#: ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216
+#: ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "인터넷"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "인터넷 패널"
 
@@ -90,8 +90,8 @@ msgstr "인터넷 패널"
 #~ msgstr "이것이 바로 인터넷입니다. "
 #~ msgid "Web Browser"
 #~ msgstr "웹 브라우저"
-#~ msgid "Moblin web browser - "
-#~ msgstr "Moblin 웹 브라우저 -"
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego 웹 브라우저 -"
 #~ msgid "Loading..."
 #~ msgstr "로드중..."
 #~ msgid "Untitled"
@@ -100,8 +100,8 @@ msgstr "인터넷 패널"
 #~ msgstr "다운로드"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "다운로드 - %d%%"
-#~ msgid "Moblin web browser"
-#~ msgstr "Moblin 웹 브라우저"
+#~ msgid "Meego web browser"
+#~ msgstr "Meego 웹 브라우저"
 #~ msgid "Oops!"
 #~ msgstr "실수!"
 #~ msgid "New tab page"
@@ -134,8 +134,8 @@ msgstr "인터넷 패널"
 #~ msgstr "창에 브라우저 실행"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "최근 파일 리스트에 URL을 더하십시오."
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Moblin 웹 브라우저"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego 웹 브라우저"
 #~ msgid "Open link in new tab"
 #~ msgstr "새로운 탭에서 링크 열기"
 #~ msgid "Copy link location"
@@ -229,10 +229,10 @@ msgstr "인터넷 패널"
 #~ "툴바를 끌어내리고 네트워크 패널을 선택하려면 포인터를 스크린 위쪽으로 옮기"
 #~ "십시오. "
 #~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
-#~ "Moblin 넷북 웹 브라우저에 오신것을 환영합니다. 페이지를 열면 즐겨 찾는 페"
+#~ "Meego 넷북 웹 브라우저에 오신것을 환영합니다. 페이지를 열면 즐겨 찾는 페"
 #~ "이지가 여기에 보일 것 입니다. "
 #~ msgid "Getting started"
 #~ msgstr "시작하기 "
@@ -253,8 +253,8 @@ msgstr "인터넷 패널"
 #~ msgstr ""
 #~ "개인용 탭입니다. 모든 작업들은 이 기계에 저장되지 않습니다. 하지만, 사용하"
 #~ "시는 웹싸이트에서 실행되는 작업이 기록될수 있습니다."
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Moblin 웹 브라우저는 Mozilla 기술을 기반으로 합니다.  "
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego 웹 브라우저는 Mozilla 기술을 기반으로 합니다.  "
 #~ msgid "Go"
 #~ msgstr "가기 "
 #~ msgid "Next"

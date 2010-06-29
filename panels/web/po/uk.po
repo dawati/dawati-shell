@@ -46,7 +46,7 @@ msgstr ""
 "Натисніть Вниз для\n"
 "відкриття списку"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
@@ -54,41 +54,41 @@ msgstr ""
 "Після відвідування веб-сторінок, ваші вподобання будуть відображені тут і в "
 "нових вкладках переглядача."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Нова вкладка"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
+#: ../netpanel/meego-netbook-netpanel.cc:1198
 #, fuzzy
 msgid "Your pages"
 msgstr "Улюблені сторінки"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/meego-netbook-netpanel.cc:1211
 msgid "Search"
 msgstr "Пошук"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/meego-netbook-netpanel.cc:1232
 msgid "Tabs"
 msgstr "Вкладки"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/meego-netbook-netpanel.cc:1237
 msgid "Favorite pages"
 msgstr "Улюблені сторінки"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "інтернет"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "Інтернет"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 #, fuzzy
 msgid "Internet panel"
 msgstr "Інтернет"
@@ -117,8 +117,8 @@ msgstr "Інтернет"
 #~ msgid "Web Browser"
 #~ msgstr "Переглядач Інтернету"
 
-#~ msgid "Moblin web browser - "
-#~ msgstr "Moblin web browser - "
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego web browser - "
 
 #~ msgid "Untitled"
 #~ msgstr "Без імені"
@@ -129,8 +129,8 @@ msgstr "Інтернет"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Завантаження - %d%%"
 
-#~ msgid "Moblin web browser"
-#~ msgstr "Moblin web browser"
+#~ msgid "Meego web browser"
+#~ msgstr "Meego web browser"
 
 #~ msgid "Download cancelled"
 #~ msgstr "Завантаження скасовано"
@@ -147,8 +147,8 @@ msgstr "Інтернет"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Додати URL до списку недавніх файлів"
 
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Moblin Web Browser"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego Web Browser"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "Відкрити посилання у новій вкладці"
@@ -250,10 +250,10 @@ msgstr "Інтернет"
 #~ "мережеву панель."
 
 #~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
-#~ "Ласкаво просимо до перегялача Moblin Netbook Web Browser. Коли ви "
+#~ "Ласкаво просимо до перегялача Meego Netbook Web Browser. Коли ви "
 #~ "відвідаєте сторіки, ваші улюблені будуть показані тут."
 
 #~ msgid "Getting started"
@@ -279,8 +279,8 @@ msgstr "Інтернет"
 #~ "Це приватна вкладка. Все, що зробите в ній не буде збережено на цьому "
 #~ "комп'ютері. Проте, веб-сайти можуть зберігати дані ваших дій."
 
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Moblin Web Browser розроблений на основі технології Mozilla"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego Web Browser розроблений на основі технології Mozilla"
 
 #~ msgid "Go"
 #~ msgstr "Перейти"

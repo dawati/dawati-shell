@@ -4,7 +4,7 @@
 # A S Alam <aalam@users.sf.net>, 2009, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-web-browser.Moblin2.moblin-web-browser\n"
+"Project-Id-Version: meego-web-browser.Meego2.meego-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:21+0000\n"
 "PO-Revision-Date: 2010-05-06 07:42+0530\n"
@@ -47,47 +47,47 @@ msgstr ""
 "ਲਿਸਟ ਵੇਖਣ ਲਈ\n"
 "ਹੇਠਾਂ ਦੱਬੋ"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
 msgstr ""
 "ਜਿਵੇਂ ਤੁਸੀਂ ਵੈੱਬ ਪੇਜ਼ ਖੋਲ੍ਹੋਗੇ, ਤੁਹਾਡੇ ਪਸੰਦੀਦਾ ਇੱਥੇ ਵੇਖਾਈ ਦੇਣਗੇ ਅਤੇ ਬਰਾਊਜ਼ਰ ਵਿੱਚ ਨਵਾਂ ਟੈਬ ਪੇਜ਼ ਉੱਤੇ ਹੋਵੇਗਾ।"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "ਨਵੀਂ ਟੈਬ"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "ਤੁਹਾਡੇ ਪੇਜ਼"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "ਖੋਜ"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "ਟੈਬਾਂ"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "ਪਸੰਦੀਦਾ ਪੇਜ਼"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "ਇੰਟਰਨੈੱਟ"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "ਇੰਟਰਨੈੱਟ"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "ਇੰਟਰਨੈੱਟ ਪੈਨਲ"
 
@@ -97,7 +97,7 @@ msgstr "ਇੰਟਰਨੈੱਟ ਪੈਨਲ"
 #~ msgid "Web Browser"
 #~ msgstr "ਵੈੱਬ ਬਰਾਊਜ਼ਰ"
 
-#~ msgid "Moblin web browser - "
+#~ msgid "Meego web browser - "
 #~ msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ"
 
 #~ msgid "Loading..."
@@ -112,7 +112,7 @@ msgstr "ਇੰਟਰਨੈੱਟ ਪੈਨਲ"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "ਡਾਊਨਲੋਡ - %d%%"
 
-#~ msgid "Moblin web browser"
+#~ msgid "Meego web browser"
 #~ msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ"
 
 #~ msgid "Oops!"
@@ -160,7 +160,7 @@ msgstr "ਇੰਟਰਨੈੱਟ ਪੈਨਲ"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "ਤਾਜ਼ਾ ਫਾਇਲ ਲਿਸਟ ਵਿੱਚ URL ਸ਼ਾਮਲ ਕਰੋ"
 
-#~ msgid "Moblin Web Browser"
+#~ msgid "Meego Web Browser"
 #~ msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ"
 
 #~ msgid "Open link in new tab"
@@ -295,7 +295,7 @@ msgstr "ਇੰਟਰਨੈੱਟ ਪੈਨਲ"
 #~ "ਪੁਆਇੰਟਰ ਨੂੰ ਸਕਰੀਨ ਦੇ ਉੱਤੇ ਲੈ ਜਾਉ ਤਾਂ ਕਿ ਟੂਲਬਾਰ ਹੇਠਾਂ ਲੈ ਆਂਦੀ ਜਾ ਸਕੇ ਅਤੇ ਨੈੱਟਵਰਕ ਪੈਨਲ ਚੁਣੋ।"
 
 #~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
 #~ "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ। ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੇ ਪਸੰਦੀਦਾ ਪੇਜ਼ ਖੋਲ੍ਹੋਗੇ ਤਾਂ ਉਹ ਇੱਥੇ ਵੇਖਾਏ ਜਾਣਗੇ।"
@@ -322,7 +322,7 @@ msgstr "ਇੰਟਰਨੈੱਟ ਪੈਨਲ"
 #~ "ਇਹ ਟੈਬ ਪ੍ਰਾਈਵੇਟ ਬਣਾਉ। ਇਸ ਟੈਬ ਵਿੱਚ ਜੋ ਵੀ ਕੁਝ ਤੁਸੀਂ ਕਰੋਗੇ ਤਾਂ ਉਹ ਮਸ਼ੀਨ ਉੱਤੇ ਸਟੋਰ ਨਹੀਂ ਕੀਤਾ "
 #~ "ਜਾਵੇਗਾ। ਪਰ, ਵੈਬਸਾਈਟਾਂ, ਜੋ ਤੁਸੀਂ ਵਰਤੋਂਗੇ, ਤੁਹਾਡੀਆਂ ਕਾਰਵਾਈਆਂ ਦਾ ਰਿਕਾਰਡ ਰੱਖਣਗੀਆਂ।"
 
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
 #~ msgstr "ਮੋਬਲਿਨ ਵੈੱਬ ਬਰਾਊਜ਼ਰ ਮਾਣ ਨਾਲ ਮੋਜ਼ੀਲਾ ਤਕਨਾਲੋਜੀ ਵਰਤਦਾ ਹੈ"
 
 #~ msgid "Go"

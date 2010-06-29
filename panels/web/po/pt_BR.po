@@ -44,45 +44,45 @@ msgstr ""
 "Desce na lista\n"
 "para explorar"
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
 msgstr "Ao visitar as páginas na web, seus favoritos aparecerão aqui e na página Nova guia no seu navegador."
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Nova guia"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1209
+#: ../netpanel/meego-netbook-netpanel.cc:1209
 msgid "Your pages"
 msgstr "Suas páginas "
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1222
+#: ../netpanel/meego-netbook-netpanel.cc:1222
 msgid "Search"
 msgstr "Pesquisar"
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1243
+#: ../netpanel/meego-netbook-netpanel.cc:1243
 msgid "Tabs"
 msgstr "Guias"
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1248
+#: ../netpanel/meego-netbook-netpanel.cc:1248
 msgid "Favorite pages"
 msgstr "Páginas favoritas"
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/moblin-panel-web.cc:216
-#: ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216
+#: ../netpanel/meego-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "Painel Internet"
 
@@ -90,8 +90,8 @@ msgstr "Painel Internet"
 #~ msgstr "É a Internet"
 #~ msgid "Web Browser"
 #~ msgstr "Navegador na web"
-#~ msgid "Moblin web browser - "
-#~ msgstr "Navegador na web Moblin -"
+#~ msgid "Meego web browser - "
+#~ msgstr "Navegador na web Meego -"
 #~ msgid "Loading..."
 #~ msgstr " Carregando..."
 #~ msgid "Untitled"
@@ -100,8 +100,8 @@ msgstr "Painel Internet"
 #~ msgstr "Downloads"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Downloads - %d%%"
-#~ msgid "Moblin web browser"
-#~ msgstr "Navegador na web Moblin"
+#~ msgid "Meego web browser"
+#~ msgstr "Navegador na web Meego"
 #~ msgid "Oops!"
 #~ msgstr "Opa!"
 #~ msgid "New tab page"
@@ -134,8 +134,8 @@ msgstr "Painel Internet"
 #~ msgstr "Rodar o navegador numa janela"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Adicionar URL à lista de arquivos recentes"
-#~ msgid "Moblin Web Browser"
-#~ msgstr "Navegador na web Moblin"
+#~ msgid "Meego Web Browser"
+#~ msgstr "Navegador na web Meego"
 #~ msgid "Open link in new tab"
 #~ msgstr "Abrir link em guia nova"
 #~ msgid "Copy link location"
@@ -229,10 +229,10 @@ msgstr "Painel Internet"
 #~ "Move seu cursor para o topo da tela para baixar a barra de ferramentas e "
 #~ "escolha o painel de Redes."
 #~ msgid ""
-#~ "Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
-#~ "Bem-vindo ao navegador da web da Moblin Netbook. Se você visitar páginas, "
+#~ "Bem-vindo ao navegador da web da Meego Netbook. Se você visitar páginas, "
 #~ "as favoritas aparecem aqui."
 #~ msgid "Getting started"
 #~ msgstr "Para começar"
@@ -254,9 +254,9 @@ msgstr "Painel Internet"
 #~ "Isto é uma guia particular. As coisas que fizer nessa guia não serão "
 #~ "armazenadas neste computador. Todavia, os sites que você usa poderão "
 #~ "manter registros de suas ações."
-#~ msgid "Moblin Web Browser is proudly based on Mozilla technology"
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
 #~ msgstr ""
-#~ "O Navegador web Moblin é orgulhosamente baseado na tecnologia Mozilla"
+#~ "O Navegador web Meego é orgulhosamente baseado na tecnologia Mozilla"
 #~ msgid "Go"
 #~ msgstr "Ir"
 #~ msgid "Less than a minute ago"

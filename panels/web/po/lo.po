@@ -1,7 +1,7 @@
 # translation of lo.po to Lao
-# Esperanto translations for moblin-web-browser package.
+# Esperanto translations for meego-web-browser package.
 # Copyright (C) 2009 Intel Corporation
-# This file is distributed under the same license as the moblin-web-browser package.
+# This file is distributed under the same license as the meego-web-browser package.
 #
 # Neil Roberts <neil@linux.intel.com>, 2009.
 # Anousak Souphavanh <anousak@gmail.com>, 2009.
@@ -46,55 +46,55 @@ msgid ""
 "explore list"
 msgstr ""
 
-#: ../netpanel/moblin-netbook-netpanel.cc:789
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
 msgstr ""
 
-#: ../netpanel/moblin-netbook-netpanel.cc:811
-#: ../netpanel/moblin-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "ເເທບໃຫມ່"
 
 #. Construct entry table widgets
-#: ../netpanel/moblin-netbook-netpanel.cc:1198
+#: ../netpanel/meego-netbook-netpanel.cc:1198
 msgid "Your pages"
 msgstr ""
 
-#: ../netpanel/moblin-netbook-netpanel.cc:1211
+#: ../netpanel/meego-netbook-netpanel.cc:1211
 msgid "Search"
 msgstr ""
 
 #. Construct title for tab preview section
-#: ../netpanel/moblin-netbook-netpanel.cc:1232
+#: ../netpanel/meego-netbook-netpanel.cc:1232
 msgid "Tabs"
 msgstr ""
 
 #. Construct title for favorite pages section
-#: ../netpanel/moblin-netbook-netpanel.cc:1237
+#: ../netpanel/meego-netbook-netpanel.cc:1237
 msgid "Favorite pages"
 msgstr ""
 
-#: ../netpanel/moblin-panel-web.cc:195
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:2
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 #, fuzzy
 msgid "internet"
 msgstr "ມັນເເມ່ນ ອີນເຕີເເນດ"
 
-#: ../netpanel/moblin-panel-web.cc:216 ../netpanel/moblin-panel-web.cc:262
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
 #, fuzzy
 msgid "Internet"
 msgstr "ມັນເເມ່ນ ອີນເຕີເເນດ"
 
-#: ../netpanel/moblin-panel-internet.desktop.in.in.h:1
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr ""
 
 #~ msgid "Web Browser"
 #~ msgstr "ເວບ ບາວເຊີ"
 
-#~ msgid "Moblin web browser - "
+#~ msgid "Meego web browser - "
 #~ msgstr "ມອບລີນ ເວບ ບາວເຊີ -"
 
 #~ msgid "Untitled"
@@ -106,7 +106,7 @@ msgstr ""
 #~ msgid "Downloads - %d%%"
 #~ msgstr "ດາວໂລດ - %d%%"
 
-#~ msgid "Moblin web browser"
+#~ msgid "Meego web browser"
 #~ msgstr "ມອບລີນ ເວບ ບາວເຊີ"
 
 #~ msgid "Download cancelled"
@@ -118,7 +118,7 @@ msgstr ""
 #~ msgid "Open file"
 #~ msgstr "ເປີດເເຟ້ມ"
 
-#~ msgid "Moblin Web Browser"
+#~ msgid "Meego Web Browser"
 #~ msgstr "ມອບລີນ ເວບ ບາວເຊີ"
 
 #~ msgid "Yes, delete"
