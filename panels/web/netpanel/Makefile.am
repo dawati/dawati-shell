@@ -35,8 +35,8 @@ meego_panel_web_DEPENDENCIES = \
   $(top_builddir)/common/libcommon.a
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.meego.UX.Shell.Panels.internet.service.in
-service_DATA = org.meego.UX.Shell.Panels.internet.service
+service_in_files = com.meego.UX.Shell.Panels.internet.service.in
+service_DATA = com.meego.UX.Shell.Panels.internet.service
 
 autostartdir = $(datadir)/mutter-meego/panels
 autostart_DATA = meego-panel-internet.desktop
@@ -51,7 +51,7 @@ desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
 EXTRA_DIST = $(service_in_files) $(autostart_DATA)
 
-DISTCLEANFILES = org.meego.UX.Shell.Panels.internet.service
+DISTCLEANFILES = com.meego.UX.Shell.Panels.internet.service
 
-org.meego.UX.Shell.Panels.internet.service: org.meego.UX.Shell.Panels.internet.service.in
+com.meego.UX.Shell.Panels.internet.service: com.meego.UX.Shell.Panels.internet.service.in
 	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@

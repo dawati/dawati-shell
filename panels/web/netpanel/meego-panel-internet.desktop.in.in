@@ -12,5 +12,5 @@ Categories=
 OnlyShowIn=MEEGO;
 X-GNOME-Autostart-enable=true
 X-Meego-Priority=Low
-X-Meego-Service=org.meego.UX.Shell.Panels.internet
+X-Meego-Service=com.meego.UX.Shell.Panels.internet
 X-Meego-Panel-Button-Style=internet-button

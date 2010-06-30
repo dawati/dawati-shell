@@ -1,3 +1,3 @@
 [D-BUS Service]
-Name=org.meego.UX.Shell.Panels.internet
+Name=com.meego.UX.Shell.Panels.internet
 Exec=@libexecdir@/meego-panel-web

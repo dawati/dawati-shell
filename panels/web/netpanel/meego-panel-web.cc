@@ -182,7 +182,7 @@ main (int    argc,
 
   g_option_context_free (context);
 
-  MPL_PANEL_CLUTTER_INIT_WITH_GTK (&argc, &argv);
+  mpl_panel_clutter_init_with_gtk (&argc, &argv);
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
                                  MX_CACHE);
@@ -199,7 +199,7 @@ main (int    argc,
                                     TRUE);
 
 
-    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK (client);
+    mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER(client));
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
@@ -251,7 +251,7 @@ main (int    argc,
     clutter_actor_realize (stage);
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
-    MPL_PANEL_CLUTTER_SETUP_EVENTS_WITH_GTK_FOR_XID (xwin);
+    mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
     netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
     meego_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
 
