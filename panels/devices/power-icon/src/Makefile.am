@@ -19,6 +19,7 @@ meego_power_icon_LDADD = \
   $(NULL)
 
 meego_power_icon_SOURCES = \
+  $(top_srcdir)/src/mpd-conf.c \
   $(top_srcdir)/src/mpd-battery-device.c \
   $(top_srcdir)/src/mpd-display-device.c \
   $(top_srcdir)/src/mpd-gobject.c \

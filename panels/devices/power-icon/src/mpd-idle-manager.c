@@ -21,8 +21,8 @@
 
 #include <dbus/dbus-glib.h>
 #include <devkit-power-gobject/devicekit-power.h>
-#include <gconf/gconf-client.h>
 
+#include "mpd-conf.h"
 #include "mpd-gobject.h"
 #include "mpd-idle-manager.h"
 #include "config.h"
@@ -34,35 +34,22 @@ G_DEFINE_TYPE (MpdIdleManager, mpd_idle_manager, G_TYPE_OBJECT)
 
 typedef struct
 {
-  GConfClient *client;
-  unsigned int suspend_idle_time_notify_id;
+  MpdConf     *conf;
 
-  int suspend_idle_time;
+  DBusGProxy  *presence;
+  DBusGProxy  *screensaver;
 
-  DBusGProxy *presence;
-  DBusGProxy *screensaver;
+  DkpClient   *power_client;
 
-  DkpClient *power_client;
-
-  guint suspend_source_id;
+  guint        suspend_source_id;
 } MpdIdleManagerPrivate;
-
-#define MEEGO_GCONF_DIR "/desktop/meego"
-#define SUSPEND_IDLE_TIME_KEY MEEGO_GCONF_DIR"/suspend_idle_time"
 
 static void
 _dispose (GObject *object)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (object);
 
-  if (priv->suspend_idle_time_notify_id)
-  {
-    gconf_client_notify_remove (priv->client,
-                                priv->suspend_idle_time_notify_id);
-    priv->suspend_idle_time_notify_id = 0;
-  }
-
-  mpd_gobject_detach (object, (GObject **) &priv->client);
+  mpd_gobject_detach (object, (GObject **) &priv->conf);
   mpd_gobject_detach (object, (GObject **) &priv->presence);
   mpd_gobject_detach (object, (GObject **) &priv->screensaver);
   mpd_gobject_detach (object, (GObject **) &priv->power_client);
@@ -80,17 +67,11 @@ mpd_idle_manager_class_init (MpdIdleManagerClass *klass)
   object_class->dispose = _dispose;
 }
 
-static gboolean
-_suspend_timer_elapsed (gpointer data)
+static bool
+_suspend_timer_elapsed_cb (MpdIdleManager *self)
 {
-  MpdIdleManager *self;
-  MpdIdleManagerPrivate *priv;
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
   GError *error = NULL;
-
-  g_return_val_if_fail (MPD_IS_IDLE_MANAGER (data), FALSE);
-
-  self = MPD_IDLE_MANAGER (data);
-  priv = GET_PRIVATE (self);
 
   priv->suspend_source_id = 0;
 
@@ -103,49 +84,29 @@ _suspend_timer_elapsed (gpointer data)
   return FALSE;
 }
 
-
-#define MIN_SUSPEND_DELAY 15
 static void
-_presence_status_changed (DBusGProxy *presence,
-                          guint       status,
-                          gpointer    data)
+_presence_status_changed_cb (DBusGProxy     *presence,
+                             unsigned int    status,
+                             MpdIdleManager *self)
 {
-  MpdIdleManager *self;
-  MpdIdleManagerPrivate *priv;
-
-  g_return_if_fail (MPD_IS_IDLE_MANAGER (data));
-
-  self = MPD_IDLE_MANAGER (data);
-  priv = GET_PRIVATE (self);
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
 
   if (status == 3)
   {
     if (priv->suspend_source_id == 0)
     {
+      int suspend_idle_time = mpd_conf_get_suspend_idle_time (priv->conf);
+
       /* session just became idle */
-      if (priv->suspend_idle_time >= 0 &&
-          priv->suspend_idle_time < MIN_SUSPEND_DELAY)
-      {
-        /* suspend now but leave a few seconds for gnome-screensaver:
-         * otherwise may get a screensave _after_ resuming. This
-         * also lets screensaver finish any fading it wants to do,
-         * not to mention giving the user a few seconds to break idle */
-        priv->suspend_source_id =
-          g_timeout_add_seconds (MIN_SUSPEND_DELAY,
-                                 _suspend_timer_elapsed,
-                                 data);
-      }
-      else if (priv->suspend_idle_time > 0)
+      if (suspend_idle_time > 0)
       {
         priv->suspend_source_id =
-          g_timeout_add_seconds (priv->suspend_idle_time,
-                                 _suspend_timer_elapsed,
-                                 data);
+          g_timeout_add_seconds (suspend_idle_time,
+                                 (GSourceFunc) _suspend_timer_elapsed_cb,
+                                 self);
       }
     }
-  }
-  else if (priv->suspend_source_id > 0)
-  {
+  } else if (priv->suspend_source_id > 0) {
     /* session just became non-idle and we have a timer */
     g_source_remove (priv->suspend_source_id);
     priv->suspend_source_id = 0;
@@ -153,62 +114,15 @@ _presence_status_changed (DBusGProxy *presence,
 }
 
 static void
-_suspend_idle_time_key_changed_cb (GConfClient  *client,
-                                   unsigned int  cnxn_id,
-                                   GConfEntry   *entry,
-                                   void         *data)
-{
-  MpdIdleManagerPrivate *priv;
-  GConfValue *val = NULL;
-
-  g_return_if_fail (MPD_IS_IDLE_MANAGER (data));
-  priv = GET_PRIVATE (data);
-
-  val = gconf_client_get (priv->client, SUSPEND_IDLE_TIME_KEY, NULL);
-  if (!val) {
-    priv->suspend_idle_time = -1;
-  } else {
-    priv->suspend_idle_time = gconf_value_get_int (val);
-    gconf_value_free (val);
-  }
-}
-
-static void
 mpd_idle_manager_init (MpdIdleManager *self)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
-  GError *error = NULL;
   DBusGConnection *conn;
+  GError          *error = NULL;
 
-  priv->suspend_idle_time = -1;
+  priv->conf = mpd_conf_new ();
+
   priv->power_client = dkp_client_new ();
-  priv->client = gconf_client_get_default ();
-
-  gconf_client_add_dir (priv->client,
-                        MEEGO_GCONF_DIR,
-                        GCONF_CLIENT_PRELOAD_NONE,
-                        &error);
-
-  if (error)
-  {
-    g_warning (G_STRLOC ": Unable to add gconf client directory: %s",
-               error->message);
-    g_clear_error (&error);
-  }
-
-  priv->suspend_idle_time_notify_id =
-    gconf_client_notify_add (priv->client,
-                             SUSPEND_IDLE_TIME_KEY,
-                             _suspend_idle_time_key_changed_cb,
-                             g_object_ref (self),
-                             g_object_unref,
-                             &error);
-  if (error)
-  {
-    g_warning (G_STRLOC ": Unable to add gconf client key notify: %s",
-               error->message);
-    g_clear_error (&error);
-  }
 
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (!conn)
@@ -228,7 +142,7 @@ mpd_idle_manager_init (MpdIdleManager *self)
     dbus_g_proxy_add_signal (priv->presence, "StatusChanged",
                              G_TYPE_UINT, G_TYPE_INVALID);
     dbus_g_proxy_connect_signal (priv->presence, "StatusChanged",
-                                 G_CALLBACK (_presence_status_changed),
+                                 G_CALLBACK (_presence_status_changed_cb),
                                  self, NULL);
 
     priv->screensaver =
@@ -237,8 +151,6 @@ mpd_idle_manager_init (MpdIdleManager *self)
                                  "/",
                                  "org.gnome.ScreenSaver");
   }
-
-  gconf_client_notify (priv->client, SUSPEND_IDLE_TIME_KEY);
 }
 
 MpdIdleManager *

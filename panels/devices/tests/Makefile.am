@@ -15,6 +15,7 @@ LDADD = \
 noinst_PROGRAMS = \
   test-battery-device \
   test-battery-icon \
+  test-conf \
   test-display-device \
   test-disk-tile \
   test-folder-button \
@@ -34,6 +35,12 @@ test_battery_icon_SOURCES = \
   $(top_srcdir)/src/mpd-battery-icon.c \
   $(NULL)
 
+test_conf_SOURCES = \
+  test-conf.c \
+  $(top_srcdir)/src/mpd-conf.c \
+  $(top_srcdir)/src/mpd-gobject.c \
+  $(NULL)
+
 test_display_device_LDADD = \
   $(MPD_LIBS) \
   $(top_builddir)/gpm/libgpm.la \
@@ -41,6 +48,7 @@ test_display_device_LDADD = \
 
 test_display_device_SOURCES = \
   test-display-device.c \
+  $(top_srcdir)/src/mpd-conf.c \
   $(top_srcdir)/src/mpd-gobject.c \
   $(top_srcdir)/src/mpd-display-device.c \
   $(NULL)

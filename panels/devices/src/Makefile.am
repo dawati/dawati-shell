@@ -33,6 +33,8 @@ meego_panel_devices_SOURCES = \
   mpd-computer-pane.h \
   mpd-computer-tile.c \
   mpd-computer-tile.h \
+  mpd-conf.c \
+  mpd-conf.h \
   mpd-default-device-tile.c \
   mpd-default-device-tile.h \
   mpd-devices-pane.c \

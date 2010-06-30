@@ -35,6 +35,7 @@ test_battery_notification_SOURCES = \
   $(top_srcdir)/power-icon/src/mpd-power-icon.c \
   $(top_srcdir)/power-icon/src/mpd-shutdown-notification.c \
   $(top_srcdir)/src/mpd-battery-device.c \
+  $(top_srcdir)/src/mpd-conf.c \
   $(top_srcdir)/src/mpd-display-device.c \
   $(top_srcdir)/src/mpd-gobject.c \
   $(NULL)
@@ -47,6 +48,7 @@ test_brightness_keys_SOURCES = \
 test_idle_manager_SOURCES = \
   test-idle-manager.c \
   $(top_srcdir)/power-icon/src/mpd-idle-manager.c \
+  $(top_srcdir)/src/mpd-conf.c \
   $(top_srcdir)/src/mpd-gobject.c \
   $(NULL)
 
