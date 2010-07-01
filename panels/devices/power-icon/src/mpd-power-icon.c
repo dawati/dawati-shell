@@ -27,6 +27,7 @@
 #include <X11/XF86keysym.h>
 
 #include "mpd-battery-device.h"
+#include "mpd-conf.h"
 #include "mpd-display-device.h"
 #include "mpd-gobject.h"
 #include "mpd-global-key.h"
@@ -285,17 +286,22 @@ _lid_closed_cb (MpdLidDevice    *lid,
                 MpdPowerIcon    *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
-  GError *error = NULL;
 
   if (mpd_lid_device_get_closed (lid) &&
       !priv->in_shutdown)
   {
-    mpd_idle_manager_suspend (priv->idle_manager, &error);
-    if (error)
+    MpdConf *conf = mpd_conf_new ();
+    if (MPD_CONF_LID_ACTION_SUSPEND == mpd_conf_get_lid_action (conf))
     {
-      g_warning ("%s : %s", G_STRLOC, error->message);
-      g_clear_error (&error);
+      GError  *error = NULL;
+      mpd_idle_manager_suspend (priv->idle_manager, &error);
+      if (error)
+      {
+        g_warning ("%s : %s", G_STRLOC, error->message);
+        g_clear_error (&error);
+      }
     }
+    g_object_unref (conf);
   }
 }
 

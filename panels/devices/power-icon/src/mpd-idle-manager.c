@@ -163,10 +163,9 @@ bool
 mpd_idle_manager_activate_screensaver (MpdIdleManager   *self,
                                        GError          **error)
 {
-  MpdIdleManagerPrivate *priv;
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
 
   g_return_val_if_fail (MPD_IS_IDLE_MANAGER (self), FALSE);
-  priv = GET_PRIVATE (self);
 
   dbus_g_proxy_call_no_reply (priv->screensaver, "SetActive",
                               G_TYPE_BOOLEAN, TRUE,
@@ -183,19 +182,14 @@ mpd_idle_manager_suspend (MpdIdleManager   *self,
   bool ret;
 
   ret = mpd_idle_manager_activate_screensaver (self, error);
-  if (!ret || (error && *error))
-  {
+  if (!ret)
     return false;
-  }
 
   ret = dkp_client_suspend (priv->power_client, error);
+
   dbus_g_proxy_call_no_reply (priv->screensaver, "SimulateUserActivity",
                               G_TYPE_INVALID);
-  if (!ret || (error && *error))
-  {
-    return false;
-  }
 
-  return true;
+  return ret;
 }
 
