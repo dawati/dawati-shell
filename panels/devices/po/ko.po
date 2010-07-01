@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
+"POT-Creation-Date: 2010-06-23 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "장치 패널"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "장치"
 
@@ -50,7 +50,7 @@ msgstr[1] "%u 입력"
 msgid "System Sounds"
 msgstr "시스템 음향"
 
-#: ../power-icon/src/meego-power-icon.c:46
+#: ../power-icon/src/moblin-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo 전원 아이콘"
 
@@ -101,7 +101,7 @@ msgstr "지금 끄시겠습니까?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "결정하지 않으시면, 30초 후에 종료됩니다."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo 장치 패널"
 
@@ -159,7 +159,7 @@ msgstr "기타 장치"
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "꺼내는 동안 오류가 발생, 응용 프로그램이 사용하는것 같습니다."
 
-#: ../src/mpd-devices-tile.c:420
+#: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
 msgstr "이제 장치를 언플러드해도 안전합니다."
 
@@ -176,39 +176,39 @@ msgstr "쓰레기"
 msgid "Devices"
 msgstr "장치"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:242
 #, c-format
-msgid "Could not run %s"
+msgid "Could not run \"%s\""
 msgstr "%s을(를) 실행할 수 없습니다."
 
-#: ../src/mpd-storage-device-tile.c:167
+#: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "들여오기 오류"
 
-#: ../src/mpd-storage-device-tile.c:278
+#: ../src/mpd-storage-device-tile.c:355
 msgid "Import photos"
 msgstr "사진 가져오기"
 
-#: ../src/mpd-storage-device-tile.c:280
+#: ../src/mpd-storage-device-tile.c:357
 msgid "Import media"
 msgstr "미디어 가져오기"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:538
+#: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
 msgstr "꺼내기"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:549
+#: ../src/mpd-storage-device-tile.c:626
 msgid "Open"
 msgstr "열기"
 
-#: ../src/mpd-storage-device-tile.c:742
+#: ../src/mpd-storage-device-tile.c:819
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> 사용 <span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:750
+#: ../src/mpd-storage-device-tile.c:827
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
