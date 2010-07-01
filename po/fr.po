@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
+"POT-Creation-Date: 2010-06-16 09:23+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: David Cicognani <david.cicognani@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Définir les préférences de la barre d’outils"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Paramètres de la barre d’outils"
 
@@ -29,6 +29,10 @@ msgstr "Sauvegarder la barre d’outils"
 #: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Désolé, vous devez supprimer un panneau avant d’en rajouter un nouveau."
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Vous pouvez ajouter, supprimer ou réorganiser la plupart des panneaux dans votre barre d’outils."
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
@@ -84,62 +88,58 @@ msgstr "Barre d'état"
 msgid "Show system tray"
 msgstr "Montrer la barre d'état"
 
-#: ../data/mutter-meego.schemas.in.h:2
-msgid "Determines the order of panels on the toolbar."
-msgstr "Établit l'ordre des panneaux sur la barre d'outils."
-
-#: ../data/mutter-meego.schemas.in.h:4
-msgid "Order of panels on toolbar"
-msgstr "Ordre des panneaux sur la barre d'outils"
-
-#: ../src/meego-netbook.c:1022
-msgid "Effects for Meego Netbooks"
-msgstr "Effets spéciaux pour Netbooks utilisant Meego"
-
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "Activer"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "Fenêtre inconnue"
-
-#: ../src/mnb-toolbar.c:1000
-#, c-format
-msgid "Sorry, %s is broken"
-msgstr "Désolé, %s est corrompu"
-
-#: ../src/notifications/mnb-notification.c:282
-msgid "Dismiss"
-msgstr "Ignorer"
-
-#: ../src/notifications/mnb-notification-cluster.c:663
-msgid "Dismiss All"
-msgstr "Tout ignorer"
-
-#: ../src/meego-netbook.c:3234
-msgid "is asking for your attention."
-msgstr "requiert votre attention."
-
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "Vous pouvez ajouter, supprimer ou réorganiser la plupart des panneaux dans votre barre d’outils."
-
-#: ../data/mutter-meego.schemas.in.h:1
-msgid "Always use small screen mode"
-msgstr "Toujours utiliser le mode petit écran"
-
 #: ../capplet/src/syst-cc-panel.c:195
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "La barre d'état est un concept utilisé par certaines applications pour vous permettre de savoir quand quelque chose se passe ou pour rester en exécution lorsque vous les fermez."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Toujours utiliser le mode petit écran"
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Établit l'ordre des panneaux sur la barre d'outils."
+
+#: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Force l'utilisation du mode petit écran même quand la taille de l'écran pourrait autoriser un mode d'écran plus large."
 
-#: ../src/meego-netbook.c:1018
-msgid "Meego Netbook Effects"
-msgstr "Effets spéciaux pour Netbook utilisant Meego"
+#: ../data/mutter-moblin.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "Ordre des panneaux sur la barre d'outils"
+
+#: ../src/mnb-toolbar.c:1007
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Désolé, %s est corrompu"
+
+#: ../src/notifications/ntf-notification.c:224
+msgid "Dismiss"
+msgstr "Ignorer"
+
+#: ../src/notifications/ntf-tray.c:308
+msgid "Dismiss All"
+msgstr "Tout ignorer"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Fenêtre inconnue"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "requiert votre attention."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Activer"
+
+#: ../src/moblin-netbook.c:829
+msgid "Effects for Moblin Netbooks"
+msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
+
+#: ../src/moblin-netbook.c:825
+msgid "Moblin Netbook Effects"
+msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
 
 #~ msgid "System tray"
 #~ msgstr "Barre d'état"
