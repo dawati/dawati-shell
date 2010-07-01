@@ -2,14 +2,14 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:36+0000\n"
+"POT-Creation-Date: 2010-06-30 09:22+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Romuald Pawlikowski <r.pawlikowski@gmail.com>\n"
+"Last-Translator: mekaminX <mariax.e.kaminski@intel.com>\n"
 "Language-Team: Meego\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,9 +26,42 @@ msgstr "Panel Myzone"
 msgid "Change the Myzone background and content"
 msgstr "Zmień tło i zawartość Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Zmień zawartość Myzone</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Tapeta Myzone</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Kalendarz i zadania:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Zmień konta internetowe"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Wybierz tapetę"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Wyczyść ostatnie dokumenty"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Powiadomienia email:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Ustawienia domyślne"
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
@@ -60,7 +93,7 @@ msgid "Show as many recent files as possible"
 msgstr "Pokaż tyle ostatnich plików, ile to możliwe"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
 msgstr "Czy chcesz wyczyścić listę ostatnio używanych dokumentów? Spowoduje to usunięcie lokalnej zawartości Myzone"
 
 # Depend on context... could also be:
@@ -72,7 +105,8 @@ msgstr "Czy chcesz wyczyścić listę ostatnio używanych dokumentów? Spowoduje
 msgid "Appointments"
 msgstr "Spotkania"
 
-#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Otwórz"
 
@@ -84,7 +118,8 @@ msgstr "Zadania"
 msgid "Create an appointment"
 msgstr "Utwórz nowe spotkanie"
 
-#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Dodaj"
 
@@ -109,21 +144,17 @@ msgstr "Brak zadań na dziś"
 msgid "Due %x"
 msgstr "Na %x"
 
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "Po skonfigurowaniu kont internetowych i użyciu niektórych plików, zostaną one wyświetlone w Myzone, aby umożliwić łatwy dostęp w dowolnej chwili. "
+
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "Odtwórz film wprowadzający"
 
-#: ../penge/penge-welcome-tile.c:65
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "Witaj w MeeGo"
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "To jest Myzone, gdzie wyświetlane są ostatnio używane pliki i zawartość internetowa."
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "Po skonfigurowaniu kont internetowych i użyciu niektórych plików, zostaną wyświetlone w Myzone, aby umożliwić łatwy do nich dostęp w dowolnej chwili. "
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -137,43 +168,28 @@ msgstr "Nieodczytana wiadomość"
 msgid "Unread messages"
 msgstr "Nieodczytane wiadomości"
 
-#: ../data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Tapeta Myzone</b>"
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr ""
+#~ "To jest Myzone, gdzie wyświetlane są ostatnio używane pliki i zawartość "
+#~ "internetowa."
 
-#: ../data/capplet.ui.h:6
-msgid "Clear recent documents"
-msgstr "Wyczyść ostatnie dokumenty"
-
-#: ../data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Zmień zawartość Myzone</b>"
-
-#: ../data/capplet.ui.h:7
-msgid "Email alerts:"
-msgstr "Powiadomienia email:"
-
-#: ../data/capplet.ui.h:8
-msgid "Reset to default"
-msgstr "Ustawienia domyślne"
-
-#: ../data/capplet.ui.h:5
-msgid "Choose your wallpaper"
-msgstr "Wybierz tapetę"
-
-#: ../data/capplet.ui.h:3
-msgid "Calendar and tasks:"
-msgstr "Kalendarz i zadania:"
-
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
-msgstr "Zmień konta internetowe"
-
-#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
-#~ msgstr "Tutaj pojawią się informacje o aktywności twoich znajomych w sieci. Aktywuj swoje konta!"
+#~ msgid ""
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "Tutaj pojawią się informacje o aktywności twoich znajomych w sieci. "
+#~ "Aktywuj swoje konta!"
 
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>Witamy w Meegoie 2.1 dla netbooków</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Meego różni się od innych komputerów w paru aspektach, pozbieraliśmy więc co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team Meego"
+#~ msgid ""
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
+#~ msgstr ""
+#~ "Meego różni się od innych komputerów w paru aspektach, pozbieraliśmy więc "
+#~ "co nieco na jego temat aby pomóc Ci się w nim znaleźć. Powodzenia, Team "
+#~ "Meego"
