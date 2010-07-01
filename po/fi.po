@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
+"POT-Creation-Date: 2010-06-16 09:23+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Määritä työkalupalkin asetukset"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Työkalupalkin asetukset"
 
@@ -93,54 +93,54 @@ msgstr "Näytä ilmaisinalue"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Ilmaisinalue on käsite, jota käyttävät jotkut vanhemmat sovellukset. Se ilmaisee, kun jotakin tapahtuu tai pysyy käynnissä, kun suljet ne."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-moblin.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Käytä aina pientä näyttöruutua"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Määrittää työkalupalkin paneelien järjestyksen."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Pakottaa pienen näyttöruudun käyttämistä vaikka näyttökoko normaalisti osoittaisi suurempaa näyttöruutua."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Työkalupalkin paneelien järjestys"
 
-#: ../src/meego-netbook.c:1018
-msgid "Meego Netbook Effects"
-msgstr "Meego ultrakannettavan tehosteet"
+#: ../src/moblin-netbook.c:825
+msgid "Moblin Netbook Effects"
+msgstr "MeeGo ultrakannettavan tehosteet"
 
-#: ../src/meego-netbook.c:1022
-msgid "Effects for Meego Netbooks"
-msgstr "Meego ultrakannettavien tehosteet"
+#: ../src/moblin-netbook.c:829
+msgid "Effects for Moblin Netbooks"
+msgstr "MeeGo ultrakannettavien tehosteet"
 
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "Aktivoi"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "Tuntematon ikkuna"
-
-#: ../src/meego-netbook.c:3234
-msgid "is asking for your attention."
-msgstr "pyytää huomiotasi."
-
-#: ../src/mnb-toolbar.c:1000
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Sori, %s on rikki."
 
-#: ../src/notifications/mnb-notification.c:282
+#: ../src/notifications/ntf-notification.c:224
 msgid "Dismiss"
 msgstr "Sivuuta"
 
-#: ../src/notifications/mnb-notification-cluster.c:663
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "Sivuuta kaikki"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Tuntematon ikkuna"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "pyytää huomiotasi."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Aktivoi"
 
 #~ msgid "System tray"
 #~ msgstr "Ilmaisinalue"
