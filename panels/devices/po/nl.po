@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
-"PO-Revision-Date: 2010-06-15 10:34-0800\n"
-"Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-06-23 09:22+0000\n"
+"PO-Revision-Date: 2010-07-01 09:55-0800\n"
+"Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Apparaten paneel"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "apparaten"
 
@@ -55,7 +55,7 @@ msgstr[1] "%u invoeren"
 msgid "System Sounds"
 msgstr "Systeemgeluid"
 
-#: ../power-icon/src/meego-power-icon.c:46
+#: ../power-icon/src/moblin-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo Energie pictogram"
 
@@ -106,7 +106,7 @@ msgstr "Wil je nu afsluiten?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Als je niet beslist sluit ik in 30 seconden af"
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo Apparaten paneel"
 
@@ -164,7 +164,7 @@ msgstr "Andere apparaten"
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "Verwijderen mislukt, het lijkt erop dat het gebruikt wordt door een toepassing"
 
-#: ../src/mpd-devices-tile.c:420
+#: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
 msgstr "Het is nu veilig om het apparaat te ontkoppelen"
 
@@ -181,41 +181,41 @@ msgstr "Prullenbak"
 msgid "Devices"
 msgstr "Apparaten"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:242
 #, c-format
-msgid "Could not run %s"
-msgstr "Kon %s niet uitvoeren"
+msgid "Could not run \"%s\""
+msgstr "Kon \"%s\" niet uitvoeren"
 
-#: ../src/mpd-storage-device-tile.c:167
+#: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "Importeer fout"
 
-#: ../src/mpd-storage-device-tile.c:278
+#: ../src/mpd-storage-device-tile.c:355
 msgid "Import photos"
 msgstr "Foto's  importeren"
 
-#: ../src/mpd-storage-device-tile.c:280
+#: ../src/mpd-storage-device-tile.c:357
 msgid "Import media"
 msgstr "Media importeren"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:538
+#: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
 msgstr "Uitwerpen"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:549
+#: ../src/mpd-storage-device-tile.c:626
 msgid "Open"
 msgstr "Openen"
 
 # Context is missing; a dev note what is used would have been helpful.
 # Another translation that may fit better in the actual context could be Dutch "met behulp van"
-#: ../src/mpd-storage-device-tile.c:742
+#: ../src/mpd-storage-device-tile.c:819
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> gebruik <span color='%s'>%d%% van %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:750
+#: ../src/mpd-storage-device-tile.c:827
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -269,101 +269,71 @@ msgstr "Geluiden dempen"
 
 #~ msgid "Meego Power Icon"
 #~ msgstr "Meego Energie pictogram"
-
 #~ msgid "Netbook volume"
 #~ msgstr "Netbook volume"
-
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
 #~ "span>"
 #~ msgstr ""
 #~ "<span font-weight='bold'>Gegevens importeren</span> <span color='%s'>%d%%"
 #~ "</span>"
-
 #~ msgid "Stop"
 #~ msgstr "Stoppen"
-
 #~ msgid ""
 #~ "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr ""
 #~ "%s is nu aangesloten. In het Apparaten paneel kunt u het interactief "
 #~ "gebruiken."
-
 #~ msgid "USB plugged in"
 #~ msgstr "USB is aangesloten"
-
 #~ msgid "Show"
 #~ msgstr "Weergeven"
-
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
-
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
-
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
-
 #~ msgid "SecureDigital"
 #~ msgstr "SecureDigital"
-
 #~ msgid "SD High Capacity"
 #~ msgstr "SD High Capacity"
-
 #~ msgid "Floppy"
 #~ msgstr "Diskette"
-
 #~ msgid "Zip"
 #~ msgstr "Zip-schijf"
-
 #~ msgid "Jaz"
 #~ msgstr "Jaz-schijf"
-
 #~ msgid "CD"
 #~ msgstr "CD"
-
 #~ msgid "DVD"
 #~ msgstr "DVD"
-
 #~ msgid "Blu-Ray"
 #~ msgstr "Blu-ray"
-
 #~ msgid "HDDVD"
 #~ msgstr "Hd-dvd"
-
 #~ msgid "%s Drive"
 #~ msgstr "%s-station"
-
 #~ msgid "%s %s Drive"
 #~ msgstr "%s %s-station"
-
 #~ msgid "%s Hard Disk"
 #~ msgstr "%s Harde Schijf"
-
 #~ msgid "Hard Disk"
 #~ msgstr "Harde Schijf"
-
 #~ msgid "%s Solid-State Disk"
 #~ msgstr "%s Solid-State Schijf"
-
 #~ msgid "Solid-State Disk"
 #~ msgstr "Solid-State Schijf"
-
 #~ msgid "%s Media"
 #~ msgstr "Media van %s"
-
 #~ msgid "No Media Detected"
 #~ msgstr "Geen media in gevonden"
-
 #~ msgid "MBR Partition Table"
 #~ msgstr "MBR Partitie Tabel"
-
 #~ msgid "GUID Partition Table"
 #~ msgstr "GUID Partitie Tabel"
-
 #~ msgid "Apple Partition Table"
 #~ msgstr "Apple Partitie Tabel"
-
 #~ msgid "Not Partitioned"
 #~ msgstr "Niet gepartitioneerd"
 
@@ -439,7 +409,6 @@ msgstr "Geluiden dempen"
 #~ msgid "RAID device %s"
 #~ msgstr "# %s (apparaat %d, inode [%d,%d,%d]): "
 #~ msgctxt "RAID Level fallback"
-
 #~ msgid "RAID"
 #~ msgstr "raid"
 
@@ -449,17 +418,14 @@ msgstr "Geluiden dempen"
 
 #, fuzzy
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Not Attached"
 #~ msgstr "Protocolstuurprogramma is niet aangehecht"
 
 #, fuzzy
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Fully Synchronized"
 #~ msgstr "Niveau 2 is niet gesynchroniseerd"
 #~ msgctxt "Linux MD slave state"
-
 #~ msgid "Blocked"
 #~ msgstr "Geblokkeerd"
 
@@ -526,50 +492,36 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "%s (%s bytes)"
 #~ msgstr " (%s bytes)"
-
 #~ msgid "FAT (12-bit version)"
 #~ msgstr "FAT (12-bit versie)"
-
 #~ msgid "FAT"
 #~ msgstr "FAT"
-
 #~ msgid "FAT (16-bit version)"
 #~ msgstr "FAT (16-bit versie)"
-
 #~ msgid "FAT (32-bit version)"
 #~ msgstr "FAT (32-bit versie)"
-
 #~ msgid "NTFS (version %s)"
 #~ msgstr "NTFS (versie %s)"
 
 #, fuzzy
 #~ msgid "NTFS"
 #~ msgstr "NTFS"
-
 #~ msgid "HFS"
 #~ msgstr "HFS"
-
 #~ msgid "HFS+"
 #~ msgstr "HFS+"
-
 #~ msgid "LUKS"
 #~ msgstr "LUKS"
-
 #~ msgid "Ext2 (version %s)"
 #~ msgstr "Ext2 (versie %s)"
-
 #~ msgid "Ext2"
 #~ msgstr "Ext2"
-
 #~ msgid "ext2"
 #~ msgstr "ext2"
-
 #~ msgid "Ext3 (version %s)"
 #~ msgstr "Ext3 (versie %s)"
-
 #~ msgid "Ext3"
 #~ msgstr "Ext3"
-
 #~ msgid "ext3"
 #~ msgstr "ext3"
 
@@ -580,47 +532,34 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "Journal for Ext3"
 #~ msgstr "tijdens controle van het ext3-journal van %s"
-
 #~ msgid "jbd"
 #~ msgstr "jbd"
-
 #~ msgid "Ext4 (version %s)"
 #~ msgstr "Ext4 (versie %s)"
-
 #~ msgid "Ext4"
 #~ msgstr "Ext4"
-
 #~ msgid "ext4"
 #~ msgstr "ext4"
-
 #~ msgid "XFS (version %s)"
 #~ msgstr "XFS (versie %s)"
-
 #~ msgid "XFS"
 #~ msgstr "XFS"
-
 #~ msgid "xfs"
 #~ msgstr "xfs"
-
 #~ msgid "ReiserFS (version %s)"
 #~ msgstr "ReiserFS (versie %s)"
-
 #~ msgid "ReiserFS"
 #~ msgstr "ReiserFS"
-
 #~ msgid "reiserfs"
 #~ msgstr "reiserfs"
-
 #~ msgid "ISO 9660"
 #~ msgstr "ISO 9660"
-
 #~ msgid "iso9660"
 #~ msgstr "iso9660"
 
 #, fuzzy
 #~ msgid "Universal Disk Format"
 #~ msgstr "Schijfindeling wordt niet ondersteund"
-
 #~ msgid "udf"
 #~ msgstr "udf"
 
@@ -635,7 +574,6 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "LVM2 Physical Volume"
 #~ msgstr "Deelnummer-overloop"
-
 #~ msgid "lvm2_pv"
 #~ msgstr "lvm2_pv"
 
@@ -650,10 +588,8 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "raid"
 #~ msgstr "raid"
-
 #~ msgid "Minix"
 #~ msgstr "Minix"
-
 #~ msgid "minix"
 #~ msgstr "minix"
 
@@ -930,136 +866,92 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "ProDOS file system"
 #~ msgstr "Backend bestandsysteem"
-
 #~ msgid "FAT 12"
 #~ msgstr "FAT 12"
-
 #~ msgid "FAT 16"
 #~ msgstr "FAT 16"
-
 #~ msgid "FAT 32"
 #~ msgstr "FAT 32"
-
 #~ msgid "FAT 16 (Windows)"
 #~ msgstr "FAT 16 (Windows)"
-
 #~ msgid "FAT 32 (Windows)"
 #~ msgstr "FAT 32 (Windows)"
-
 #~ msgid "Empty (0x00)"
 #~ msgstr "Empty (0x00)"
-
 #~ msgid "FAT12 (0x01)"
 #~ msgstr "FAT12 (0x01)"
-
 #~ msgid "FAT16 <32M (0x04)"
 #~ msgstr "FAT16 <32M (0x04)"
-
 #~ msgid "Extended (0x05)"
 #~ msgstr "Extended (0x05)"
-
 #~ msgid "FAT16 (0x06)"
 #~ msgstr "FAT16 (0x06)"
-
 #~ msgid "HPFS/NTFS (0x07)"
 #~ msgstr "HPFS/NTFS (0x07)"
-
 #~ msgid "W95 FAT32 (0x0b)"
 #~ msgstr "W95 FAT32 (0x0b)"
-
 #~ msgid "W95 FAT32 (LBA) (0x0c)"
 #~ msgstr "W95 FAT32 (LBA) (0x0c)"
-
 #~ msgid "W95 FAT16 (LBA) (0x0e)"
 #~ msgstr "W95 FAT16 (LBA) (0x0e)"
-
 #~ msgid "W95 Ext d (LBA) (0x0f)"
 #~ msgstr "W95 Ext d (LBA) (0x0f)"
-
 #~ msgid "OPUS (0x10)"
 #~ msgstr "OPUS (0x10)"
-
 #~ msgid "Hidden FAT12 (0x11)"
 #~ msgstr "Hidden FAT12 (0x11)"
-
 #~ msgid "Compaq diagnostics (0x12)"
 #~ msgstr "Compaq diagnostics (0x12)"
-
 #~ msgid "Hidden FAT16 <32M (0x14)"
 #~ msgstr "Hidden FAT16 <32M (0x14)"
-
 #~ msgid "Hidden FAT16 (0x16)"
 #~ msgstr "Hidden FAT16 (0x16)"
-
 #~ msgid "Hidden HPFS/NTFS (0x17)"
 #~ msgstr "Hidden HPFS/NTFS (0x17)"
-
 #~ msgid "Hidden W95 FAT32 (0x1b)"
 #~ msgstr "Hidden W95 FAT32 (0x1b)"
-
 #~ msgid "Hidden W95 FAT32 (LBA) (0x1c)"
 #~ msgstr "Hidden W95 FAT32 (LBA) (0x1c)"
-
 #~ msgid "Hidden W95 FAT16 (LBA) (0x1e)"
 #~ msgstr "Hidden W95 FAT16 (LBA) (0x1e)"
-
 #~ msgid "PartitionMagic (0x3c)"
 #~ msgstr "PartitionMagic (0x3c)"
-
 #~ msgid "Minix (0x81)"
 #~ msgstr "Minix (0x81)"
-
 #~ msgid "Linux swap (0x82)"
 #~ msgstr "Linux swap (0x82)"
-
 #~ msgid "Linux (0x83)"
 #~ msgstr "Linux (0x83)"
-
 #~ msgid "Hibernation (0x84)"
 #~ msgstr "Hibernation (0x84)"
-
 #~ msgid "Linux Extended (0x85)"
 #~ msgstr "Linux Extended (0x85)"
-
 #~ msgid "Linux LVM (0x8e)"
 #~ msgstr "Linux LVM (0x8e)"
-
 #~ msgid "Hibernation (0xa0)"
 #~ msgstr "Hibernation (0xa0)"
-
 #~ msgid "FreeBSD (0xa5)"
 #~ msgstr "FreeBSD (0xa5)"
-
 #~ msgid "OpenBSD (0xa6)"
 #~ msgstr "OpenBSD (0xa6)"
-
 #~ msgid "Mac OS X (0xa8)"
 #~ msgstr "Mac OS X (0xa8)"
-
 #~ msgid "Mac OS X (0xaf)"
 #~ msgstr "Mac OS X (0xaf)"
-
 #~ msgid "Solaris boot (0xbe)"
 #~ msgstr "Solaris boot (0xbe)"
-
 #~ msgid "Solaris (0xbf)"
 #~ msgstr "Solaris (0xbf)"
-
 #~ msgid "BeOS BFS (0xeb)"
 #~ msgstr "BeOS BFS (0xeb)"
-
 #~ msgid "SkyOS SkyFS (0xec)"
 #~ msgstr "SkyOS SkyFS (0xec)"
-
 #~ msgid "EFI GPT (0xee)"
 #~ msgstr "EFI GPT (0xee)"
-
 #~ msgid "EFI (FAT-12/16/32 (0xef)"
 #~ msgstr "EFI (FAT-12/16/32 (0xef)"
-
 #~ msgid "Linux RAID autodetect (0xfd)"
 #~ msgstr "Linux RAID autodetect (0xfd)"
-
 #~ msgid "Unknown (%s)"
 #~ msgstr "Onbekend (%s)"
 
@@ -1070,37 +962,26 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "LUKS Passphrase for UUID %s"
 #~ msgstr "Voer wachtwoordzin voor sleutel in"
-
 #~ msgid "%.1f KB/s"
 #~ msgstr "%.1f kB"
-
 #~ msgid "%.1f MB/s"
 #~ msgstr "%.1f MB"
-
 #~ msgid "%.1f GB/s"
 #~ msgstr "%.1f GB"
-
 #~ msgid "SATA"
 #~ msgstr "SATA"
-
 #~ msgid "eSATA"
 #~ msgstr "eSATA"
-
 #~ msgid "PATA"
 #~ msgstr "PATA"
-
 #~ msgid "ATA"
 #~ msgstr "ATA"
-
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
-
 #~ msgid "USB"
 #~ msgstr "USB"
-
 #~ msgid "Firewire"
 #~ msgstr "Firewire"
-
 #~ msgid "SDIO"
 #~ msgstr "SDIO"
 
@@ -1110,7 +991,6 @@ msgstr "Geluiden dempen"
 
 #, fuzzy
 #~ msgctxt "connection name"
-
 #~ msgid "Unknown"
 #~ msgstr "Onbekend"
 
@@ -1118,57 +998,44 @@ msgstr "Geluiden dempen"
 #~ msgid "%s at %s"
 #~ msgstr "%s op %s"
 #~ msgctxt "RAID level"
-
 #~ msgid "Stripe (RAID-0)"
 #~ msgstr "Stripe (RAID-0)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-0"
 #~ msgstr "RAID-0"
 #~ msgctxt "RAID level"
-
 #~ msgid "Mirror (RAID-1)"
 #~ msgstr "Mirror (RAID-1)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-1"
 #~ msgstr "RAID-1"
 #~ msgctxt "RAID level"
-
 #~ msgid "Parity Disk (RAID-4)"
 #~ msgstr "Parity Disk (RAID-4)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-4"
 #~ msgstr "RAID-4"
 #~ msgctxt "RAID level"
-
 #~ msgid "Distributed Parity (RAID-5)"
 #~ msgstr "Distributed Parity (RAID-5)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-5"
 #~ msgstr "RAID-5"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-6"
 #~ msgstr "RAID-6"
 #~ msgctxt "RAID level"
-
 #~ msgid "Stripe of Mirrors (RAID-10)"
 #~ msgstr "Stripe of Mirrors (RAID-10)"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID-10"
 #~ msgstr "RAID-10"
 
 #, fuzzy
 #~ msgctxt "RAID level"
-
 #~ msgid "Concatenated (Linear)"
 #~ msgstr "Lineaire beweging"
 #~ msgctxt "RAID level"
-
 #~ msgid "Linear"
 #~ msgstr "Lineair"
 
@@ -1183,109 +1050,74 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "DISK FAILURE IS IMMINENT"
 #~ msgstr "Schijf is in gebruik"
-
 #~ msgid "Unknown"
 #~ msgstr "Onbekend"
-
 #~ msgid "CD-ROM Disc"
 #~ msgstr "Cd-rom-schijf"
-
 #~ msgid "Blank CD-ROM Disc"
 #~ msgstr "Lege cd-rom-schijf"
-
 #~ msgid "CD-R Disc"
 #~ msgstr "Cd-r-schijf"
-
 #~ msgid "Blank CD-R Disc"
 #~ msgstr "Lege cd-r-schijf"
-
 #~ msgid "CD-RW Disc"
 #~ msgstr "Cd-rw-schijf"
-
 #~ msgid "Blank CD-RW Disc"
 #~ msgstr "Lege cd-rw-schijf"
-
 #~ msgid "DVD-ROM Disc"
 #~ msgstr "Dvd-rom-schijf"
-
 #~ msgid "Blank DVD-ROM Disc"
 #~ msgstr "Lege dvd-rom-schijf"
-
 #~ msgid "DVD-RW Disc"
 #~ msgstr "Dvd-rw-schijf"
-
 #~ msgid "Blank DVD-RW Disc"
 #~ msgstr "Lege dvd-rw-schijf"
-
 #~ msgid "DVD-RAM Disc"
 #~ msgstr "Dvd-ram-schijf"
-
 #~ msgid "Blank DVD-RAM Disc"
 #~ msgstr "Lege dvd-ram-schijf"
-
 #~ msgid "DVD+R Disc"
 #~ msgstr "Dvd-r-schijf"
-
 #~ msgid "Blank DVD+R Disc"
 #~ msgstr "Lege dvd-r-schijf"
-
 #~ msgid "DVD+RW Disc"
 #~ msgstr "Dvd+rw-schijf"
-
 #~ msgid "Blank DVD+RW Disc"
 #~ msgstr "Lege dvd+rw-schijf"
-
 #~ msgid "DVD+R DL Disc"
 #~ msgstr "Dvd+r DL-schijf"
-
 #~ msgid "Blank DVD+R DL Disc"
 #~ msgstr "Lege dvd+r dl-schijf"
-
 #~ msgid "DVD+RW DL Disc"
 #~ msgstr "Lege dvd+r dl-schijf"
-
 #~ msgid "Blank DVD+RW DL Disc"
 #~ msgstr "Lege hd-dvd-rw-schijf"
-
 #~ msgid "Blu-Ray Disc"
 #~ msgstr "Blu-ray-schijf"
-
 #~ msgid "Blank Blu-Ray Disc"
 #~ msgstr "Lege Blu-ray-schijf"
-
 #~ msgid "Blu-Ray R Disc"
 #~ msgstr "Blu-ray-r-schijf"
-
 #~ msgid "Blank Blu-Ray R Disc"
 #~ msgstr "Lege Blu-ray-r-schijf"
-
 #~ msgid "Blu-Ray RW Disc"
 #~ msgstr "Blu-ray-rw-schijf"
-
 #~ msgid "Blank Blu-Ray RW Disc"
 #~ msgstr "Lege Blu-ray-rw-schijf"
-
 #~ msgid "HD DVD Disc"
 #~ msgstr "Hd-dvd-schijf"
-
 #~ msgid "Blank HD DVD Disc"
 #~ msgstr "Lege hd-dvd-schijf"
-
 #~ msgid "HD DVD-R Disc"
 #~ msgstr "Hd-dvd-r-schijf"
-
 #~ msgid "Blank HD DVD-R Disc"
 #~ msgstr "Lege hd-dvd-r-schijf"
-
 #~ msgid "HD DVD-RW Disc"
 #~ msgstr "Hd-dvd-rw-schijf"
-
 #~ msgid "Blank HD DVD-RW Disc"
 #~ msgstr "Lege hd-dvd-rw-schijf"
-
 #~ msgid "MO Disc"
 #~ msgstr "MO-schijf"
-
 #~ msgid "Blank MO Disc"
 #~ msgstr "Lege MO-schijf"
 
@@ -1308,7 +1140,6 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "Blank Optical Disc"
 #~ msgstr "Lege cd-r-schijf"
-
 #~ msgid "%s Extended"
 #~ msgstr "%s Uitgebreid"
 
@@ -1336,7 +1167,6 @@ msgstr "Geluiden dempen"
 #~ msgid "%s LVM2 Physical Volume"
 #~ msgstr "Deelnummer-overloop"
 #~ msgctxt "RAID level"
-
 #~ msgid "RAID"
 #~ msgstr "RAID"
 
@@ -1391,3 +1221,4 @@ msgstr "Geluiden dempen"
 #, fuzzy
 #~ msgid "Using %d%% of %s"
 #~ msgstr "%s wordt gebruikt.\n"
+
