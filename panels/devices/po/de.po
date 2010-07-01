@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
+"POT-Creation-Date: 2010-06-23 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
 "Language-Team: \n"
@@ -14,12 +14,12 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel Geräte"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "Geräte"
 
@@ -51,7 +51,7 @@ msgstr[1] "%u Eingänge"
 msgid "System Sounds"
 msgstr "Systemklänge"
 
-#: ../power-icon/src/meego-power-icon.c:46
+#: ../power-icon/src/moblin-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo Energiesymbol"
 
@@ -102,7 +102,7 @@ msgstr "Möchtest du jetzt abschalten?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo Panel Geräte"
 
@@ -160,7 +160,7 @@ msgstr "Andere Geräte"
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "Auswerfen fehlgeschlagen, es wird wahrscheinlich von einer Anwendung benutzt."
 
-#: ../src/mpd-devices-tile.c:420
+#: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
 msgstr "Dieses Gerät kann jetzt entfernt werden."
 
@@ -177,39 +177,39 @@ msgstr "Abfall"
 msgid "Devices"
 msgstr "Geräte"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:242
 #, c-format
-msgid "Could not run %s"
-msgstr "%s konnte nicht ausgeführt werden."
+msgid "Could not run \"%s\""
+msgstr "\"%s\" konnte nicht ausgeführt werden."
 
-#: ../src/mpd-storage-device-tile.c:167
+#: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "Fehler beim Importieren"
 
-#: ../src/mpd-storage-device-tile.c:278
+#: ../src/mpd-storage-device-tile.c:355
 msgid "Import photos"
 msgstr "Fotos importieren"
 
-#: ../src/mpd-storage-device-tile.c:280
+#: ../src/mpd-storage-device-tile.c:357
 msgid "Import media"
 msgstr "Medien importieren"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:538
+#: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
 msgstr "Auswerfen"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:549
+#: ../src/mpd-storage-device-tile.c:626
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../src/mpd-storage-device-tile.c:742
+#: ../src/mpd-storage-device-tile.c:819
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> benutzt <span color='%s'>%d%% von %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:750
+#: ../src/mpd-storage-device-tile.c:827
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
