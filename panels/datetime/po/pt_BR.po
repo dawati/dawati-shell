@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
+"POT-Creation-Date: 2010-06-19 09:25+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -14,15 +15,15 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: BRAZIL\n"
 
-#: ../src/meego-panel-date-time.c:111
+#: ../src/moblin-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Data/Hora"
 
-#: ../data/meego-panel-datetime.desktop.in.in.h:1
+#: ../data/moblin-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "Painel de data e hora"
 
-#: ../data/meego-panel-datetime.desktop.in.in.h:2
+#: ../data/moblin-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "data e hora"
 
@@ -94,24 +95,15 @@ msgstr "Compromissos"
 #. "x-fill", TRUE,
 #. NULL);
 #. clutter_actor_set_height (div, 2);
-#.
+#. 
 #. format date
-#: ../src/mnp-datetime.c:342
-#: ../src/mnp-datetime.c:541
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Hoje"
-
-#: ../src/mnp-datetime.c:433
-msgid "Open Appointments"
-msgstr "Compromissos abertos"
 
 #: ../src/mnp-datetime.c:511
 msgid "Tasks"
 msgstr "Tarefas"
-
-#: ../src/mnp-datetime.c:608
-msgid "Open Tasks"
-msgstr "Tarefas abertas"
 
 #: ../src/mnp-shell.c:164
 msgid "Time and Date"
@@ -129,78 +121,119 @@ msgstr "Alarmes armazenados em formato codificado para uso pelo notificador de a
 msgid "List of alarms in short encoded form"
 msgstr "Lista de alarmes em formato curto codificado"
 
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "Abrir tarefas"
+
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr "Abrir compromissos"
+
 #~ msgid "OFF"
 #~ msgstr "DESLIGADO"
+
 #~ msgid "Beep"
 #~ msgstr "Bipe"
+
 #~ msgid "Music"
 #~ msgstr "Música"
+
 #~ msgid "Never"
 #~ msgstr "Nunca"
+
 #~ msgid "Everyday"
 #~ msgstr "Todo dia"
+
 #~ msgid "Monday - Friday"
 #~ msgstr "Segunda-feira a Sexta-feira"
+
 #~ msgid "Monday"
 #~ msgstr "Segunda-feira"
+
 #~ msgid "Tuesday"
 #~ msgstr "Terça-feira"
+
 #~ msgid "Wednesday"
 #~ msgstr "Quarta-feira"
+
 #~ msgid "Thursday"
 #~ msgstr "Quinta-feira"
+
 #~ msgid "Friday"
 #~ msgstr "Sexta-feira"
+
 #~ msgid "Saturday"
 #~ msgstr "Sábado"
+
 #~ msgid "Sunday"
 #~ msgstr "Domingo"
+
 #~ msgid "Alarm settings"
 #~ msgstr "Configurações de alarme"
+
 #~ msgid "ON"
 #~ msgstr "LIGADO"
+
 #~ msgid "Repeat"
 #~ msgstr "Repetir"
+
 #~ msgid "Snooze"
 #~ msgstr "Suspender"
+
 #~ msgid "Sound"
 #~ msgstr "Som"
+
 #~ msgid "Delete alarm"
 #~ msgstr "Excluir alarme"
+
 #~ msgid ""
 #~ "New\n"
 #~ "Alarm"
 #~ msgstr ""
 #~ "Novo\n"
 #~ "Alarme"
+
 #~ msgid "Alarm Notify"
 #~ msgstr "Notificação alarme"
+
 #~ msgid "Alarm at %d:%.2d %s"
 #~ msgstr "Alarme a %d:%.2d %s"
+
 #~ msgid "am"
 #~ msgstr "de manhã"
+
 #~ msgid "pm"
 #~ msgstr "à tarde"
+
 #~ msgid "Meego Alarm Notify"
 #~ msgstr "Notificação alarme Meego"
+
 #~ msgid "AlarmNotifications"
 #~ msgstr "NotificaçõesAlarme"
+
 #~ msgid "MON-FRI"
 #~ msgstr "SEG-SEX"
+
 #~ msgid "MONDAYS"
 #~ msgstr "SEGUNDAS"
+
 #~ msgid "TUESDAYS"
 #~ msgstr "TERÇAS"
+
 #~ msgid "WEDNESDAYS"
 #~ msgstr "QUARTAS"
+
 #~ msgid "THURSDAYS"
 #~ msgstr "QUINTAS"
+
 #~ msgid "FRIDAYS"
 #~ msgstr "SEXTAS"
+
 #~ msgid "SATURDAYS"
 #~ msgstr "SÁBADOS"
+
 #~ msgid "SUNDAYS"
 #~ msgstr "DOMINGOS"
+
 #~ msgid "Meego alarm notify"
 #~ msgstr "Notificação de alarme Meego"
-
