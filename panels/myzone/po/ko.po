@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:36+0000\n"
+"POT-Creation-Date: 2010-06-30 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
@@ -89,8 +89,8 @@ msgid "Show as many recent files as possible"
 msgstr "최신 파일을 가능한 한 많이 표시 "
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "최근 문서를 지우시겠습니까? 이것은 Myzone에서 지역 콘텐츠를 제거합니다."
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "최근 문서를 지우시겠습니까? 이는 Myzone에서 지역 콘텐츠를 제거할 것입니다."
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -135,21 +135,17 @@ msgstr "오늘 예정된 일정 없음"
 msgid "Due %x"
 msgstr "%x까지"
 
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "웹 계정을 설정하고 파일을 사용하면 원할 때마다 쉽게 액세스할 수 있도록 Myzone에 나타납니다."
+
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "소개 비디오 재생"
 
-#: ../penge/penge-welcome-tile.c:65
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "MeeGo가 당신을 환영합니다."
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Myzone에서 최근 사용된 파일과 웹 피드의 콘텐츠가 표시됩니다."
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "웹 계정을 설정하고 파일을 사용하면 원할 때마다 쉽게 액세스할 수 있도록 Myzone에 나타납니다."
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -163,6 +159,10 @@ msgstr "읽지 않은 메시지"
 msgid "Unread messages"
 msgstr "읽지 않은 메시지들"
 
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr "Myzone에서 최근 사용된 파일과 웹 피드의 콘텐츠가 표시됩니다."
 #~ msgid ""
 #~ "Things that your friends do online will appear here. Activate your "
 #~ "accounts now!"
