@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
-"PO-Revision-Date: 2010-05-06 09:00-0800\n"
+"POT-Creation-Date: 2010-06-16 09:23+0000\n"
+"PO-Revision-Date: 2010-07-01 09:58-0800\n"
 "Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -20,11 +20,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Voorkeuren werkbalk instellen"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Toolbar instellingen"
 
@@ -103,56 +103,56 @@ msgstr "Notificatiepaneel weergeven"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Het Notificatiepaneel is een concept in gebruik door sommige oudere applicaties om mededelingen te geven of om in de achtergrond te blijven als het hoofdvenster van de applicatie sluit."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-moblin.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Gebruik altijd kleine scherm modus"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Bepaalt de orde van de panelen op de werkbalk."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Dwingt kleine scherm modus af, zelfs als er normaal gesproken een groetere scherm modus gebruikt zou worden. "
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "De panelen op de werkbalk ordenen"
 
-#: ../src/meego-netbook.c:1018
-msgid "Meego Netbook Effects"
+#: ../src/moblin-netbook.c:825
+msgid "Moblin Netbook Effects"
 msgstr "Meego netbook effecten"
 
-#: ../src/meego-netbook.c:1022
-msgid "Effects for Meego Netbooks"
+#: ../src/moblin-netbook.c:829
+msgid "Effects for Moblin Netbooks"
 msgstr "Effecten voor Meego netbooks"
 
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "Activeren"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "Onbekend venster"
-
-#: ../src/meego-netbook.c:3234
-msgid "is asking for your attention."
-msgstr "vraagt om uw aandacht."
-
-#: ../src/mnb-toolbar.c:1000
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Sorry, %s is gebroken"
 
 # Aanvaard is een foute vertaling van het Engelse word "dismiss", moet "afwijzen" zijn
-#: ../src/notifications/mnb-notification.c:282
+#: ../src/notifications/ntf-notification.c:224
 msgid "Dismiss"
 msgstr "Afwijzen"
 
 # Aanvaard is een foute vertaling van het Engelse word "dismiss", moet "afwijzen" zijn
-#: ../src/notifications/mnb-notification-cluster.c:663
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "Alle afwijzen"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Onbekend venster"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "vraagt om uw aandacht."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Activeren"
 
 #~ msgid "System tray"
 #~ msgstr "Notificatiepaneel"
