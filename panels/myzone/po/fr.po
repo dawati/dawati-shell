@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:36+0000\n"
+"POT-Creation-Date: 2010-06-30 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -25,6 +25,38 @@ msgstr "Changer le contenu et l'arrière-plan de Myzone"
 #: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Changer ce qui apparaît dans votre Myzone</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Fond d'écran Myzone<b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calendrier et tâches :"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Changer Mes comptes Web"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Choisissez votre fond d'écran"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Effacer les documents récents"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Alertes email :"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Réinitialiser aux valeurs par défaut"
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
@@ -54,10 +86,6 @@ msgstr "Afficher principalement les fichiers récents"
 #: ../capplet/myzone-cc-panel.c:55
 msgid "Show as many recent files as possible"
 msgstr "Afficher le maximum de fichiers récents"
-
-#: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "Voulez-vous vider vos documents récents ? Le contenu local sera supprimé de Myzone"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -102,21 +130,13 @@ msgstr "Rien à faire aujourd'hui"
 msgid "Due %x"
 msgstr "Dû %x"
 
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "Lire la vidéo d'intro"
 
-#: ../penge/penge-welcome-tile.c:65
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "Bienvenue sur MeeGo"
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Ceci est Myzone, là où apparaîtront vos fichiers récents et le contenu de vos flux RSS."
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "Lorsque vous aurez configuré vos comptes web et utilisé des fichiers ils apparaîtront ici dans Myzone, accessible à tout moment."
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -130,37 +150,16 @@ msgstr "Message non lu"
 msgid "Unread messages"
 msgstr "Messages non lus"
 
-#: ../data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Fond d'écran Myzone<b>"
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Voulez-vous vider vos documents récents ? Le contenu local sera supprimé de myzone"
 
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
-msgstr "Changer Mes comptes Web"
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "Lorsque vous aurez configuré vos comptes web et utilisé des fichiers ils apparaîtront ici dans myzone, accessible à tout moment."
 
-#: ../data/capplet.ui.h:3
-msgid "Calendar and tasks:"
-msgstr "Calendrier et tâches :"
-
-#: ../data/capplet.ui.h:6
-msgid "Clear recent documents"
-msgstr "Effacer les documents récents"
-
-#: ../data/capplet.ui.h:5
-msgid "Choose your wallpaper"
-msgstr "Choisissez votre fond d'écran"
-
-#: ../data/capplet.ui.h:8
-msgid "Reset to default"
-msgstr "Réinitialiser aux valeurs par défaut"
-
-#: ../data/capplet.ui.h:7
-msgid "Email alerts:"
-msgstr "Alertes email :"
-
-#: ../data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Changer ce qui apparaît dans votre Myzone</b>"
+#~ msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+#~ msgstr "Ceci est Myzone, là où apparaîtront vos fichiers récents et le contenu de vos flux RSS."
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Ce que vos amis font en ligne va apparaître ici. Activez vos comptes dès maintenant !"
