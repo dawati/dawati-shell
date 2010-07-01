@@ -4,14 +4,14 @@
 # This file is distributed under the same license as the mutter-meego package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:36+0000\n"
-"PO-Revision-Date: 2010-02-24 10:11-0800\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2010-06-30 09:22+0000\n"
+"PO-Revision-Date: 2010-07-01 14:33-0800\n"
+"Last-Translator: Yun Nie\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,9 +27,42 @@ msgstr "Myzone 面板"
 msgid "Change the Myzone background and content"
 msgstr "更改 Myzone 背景和内容"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>更改您的 Myzone 上显示的内容</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Myzone 壁纸</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "日历和任务："
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "更改我的网络帐号"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "选择您的壁纸"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "清除最近使用的文档"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "电子邮件警告："
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "重置为默认值"
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
@@ -61,14 +94,15 @@ msgid "Show as many recent files as possible"
 msgstr "显示尽可能多的最近的文件"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "您要清除最近的文件吗？这将从 Myzone 移除本地内容。"
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "您要清除最近的文件吗？这将从您的 Myzone 移除本地内容。"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "日程安排"
 
-#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "打开"
 
@@ -80,7 +114,8 @@ msgstr "任务"
 msgid "Create an appointment"
 msgstr "创建一个日程"
 
-#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "添加"
 
@@ -105,21 +140,17 @@ msgstr "今天没有安排"
 msgid "Due %x"
 msgstr "%x 到期"
 
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "当您设置了您的网络帐号并使用了一些文件后，它们将在 Myzone 的这个地方出现，方便您随时访问。"
+
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "播放介绍视频"
 
-#: ../penge/penge-welcome-tile.c:65
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "MeeGo 欢迎您"
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "这是 Myzone，您最近使用过的文件和网页内容资讯将在这里出现。"
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "当您设置了您的网络帐号并使用了一些文件后，它们将在 Myzone 的这个地方出现，方便您随时访问。"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -133,39 +164,14 @@ msgstr "未读的消息"
 msgid "Unread messages"
 msgstr "已读的消息"
 
-#: ../data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Myzone 壁纸</b>"
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr "这是 Myzone，您最近使用过的文件和网页内容资讯将在这里出现。"
 
-#: ../data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>更改您的 Myzone 上显示的内容</b>"
-
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
-msgstr "更改我的网络帐号"
-
-#: ../data/capplet.ui.h:3
-msgid "Calendar and tasks:"
-msgstr "日历和任务："
-
-#: ../data/capplet.ui.h:6
-msgid "Clear recent documents"
-msgstr "清除最近使用的文档"
-
-#: ../data/capplet.ui.h:5
-msgid "Choose your wallpaper"
-msgstr "选择您的壁纸"
-
-#: ../data/capplet.ui.h:8
-msgid "Reset to default"
-msgstr "重置为默认值"
-
-#: ../data/capplet.ui.h:7
-msgid "Email alerts:"
-msgstr "电子邮件警告："
-
-#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgid ""
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
 #~ msgstr "您朋友的最新情况会在这里显示。现在就激活您的账户吧！"
 
 #~ msgid "Myzone settings"
@@ -174,5 +180,10 @@ msgstr "电子邮件警告："
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>欢迎使用 Meego 2.1 上网本</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Meego 和其他系统有很大区别，在这个试用版中我们整合了一组工具和特性帮助您尽快熟悉 Meego。希望您喜欢我们的产品，尽情享受吧！ -- Meego 团队。"
+#~ msgid ""
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
+#~ msgstr ""
+#~ "Meego 和其他系统有很大区别，在这个试用版中我们整合了一组工具和特性帮助您尽"
+#~ "快熟悉 Meego。希望您喜欢我们的产品，尽情享受吧！ -- Meego 团队。"
