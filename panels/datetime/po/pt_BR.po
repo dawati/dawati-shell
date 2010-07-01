@@ -95,9 +95,10 @@ msgstr "Compromissos"
 #. "x-fill", TRUE,
 #. NULL);
 #. clutter_actor_set_height (div, 2);
-#. 
+#.
 #. format date
-#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
+#: ../src/mnp-datetime.c:342
+#: ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Hoje"
 
@@ -131,109 +132,76 @@ msgstr "Abrir compromissos"
 
 #~ msgid "OFF"
 #~ msgstr "DESLIGADO"
-
 #~ msgid "Beep"
 #~ msgstr "Bipe"
-
 #~ msgid "Music"
 #~ msgstr "Música"
-
 #~ msgid "Never"
 #~ msgstr "Nunca"
-
 #~ msgid "Everyday"
 #~ msgstr "Todo dia"
-
 #~ msgid "Monday - Friday"
 #~ msgstr "Segunda-feira a Sexta-feira"
-
 #~ msgid "Monday"
 #~ msgstr "Segunda-feira"
-
 #~ msgid "Tuesday"
 #~ msgstr "Terça-feira"
-
 #~ msgid "Wednesday"
 #~ msgstr "Quarta-feira"
-
 #~ msgid "Thursday"
 #~ msgstr "Quinta-feira"
-
 #~ msgid "Friday"
 #~ msgstr "Sexta-feira"
-
 #~ msgid "Saturday"
 #~ msgstr "Sábado"
-
 #~ msgid "Sunday"
 #~ msgstr "Domingo"
-
 #~ msgid "Alarm settings"
 #~ msgstr "Configurações de alarme"
-
 #~ msgid "ON"
 #~ msgstr "LIGADO"
-
 #~ msgid "Repeat"
 #~ msgstr "Repetir"
-
 #~ msgid "Snooze"
 #~ msgstr "Suspender"
-
 #~ msgid "Sound"
 #~ msgstr "Som"
-
 #~ msgid "Delete alarm"
 #~ msgstr "Excluir alarme"
-
 #~ msgid ""
 #~ "New\n"
 #~ "Alarm"
 #~ msgstr ""
 #~ "Novo\n"
 #~ "Alarme"
-
 #~ msgid "Alarm Notify"
 #~ msgstr "Notificação alarme"
-
 #~ msgid "Alarm at %d:%.2d %s"
 #~ msgstr "Alarme a %d:%.2d %s"
-
 #~ msgid "am"
 #~ msgstr "de manhã"
-
 #~ msgid "pm"
 #~ msgstr "à tarde"
-
 #~ msgid "Meego Alarm Notify"
 #~ msgstr "Notificação alarme Meego"
-
 #~ msgid "AlarmNotifications"
 #~ msgstr "NotificaçõesAlarme"
-
 #~ msgid "MON-FRI"
 #~ msgstr "SEG-SEX"
-
 #~ msgid "MONDAYS"
 #~ msgstr "SEGUNDAS"
-
 #~ msgid "TUESDAYS"
 #~ msgstr "TERÇAS"
-
 #~ msgid "WEDNESDAYS"
 #~ msgstr "QUARTAS"
-
 #~ msgid "THURSDAYS"
 #~ msgstr "QUINTAS"
-
 #~ msgid "FRIDAYS"
 #~ msgstr "SEXTAS"
-
 #~ msgid "SATURDAYS"
 #~ msgstr "SÁBADOS"
-
 #~ msgid "SUNDAYS"
 #~ msgstr "DOMINGOS"
-
 #~ msgid "Meego alarm notify"
 #~ msgstr "Notificação de alarme Meego"
+
