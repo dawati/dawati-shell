@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-16 09:23+0000\n"
-"PO-Revision-Date: 2010-07-01 09:58-0800\n"
+"PO-Revision-Date: 2010-07-01 10:50-0800\n"
 "Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "Toolbar opslaan"
 
 #: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "Sorry, je moet een panel verwijderen voordat je een nieuwe kunt toevoegen."
+msgstr "Sorry, je moet een paneel verwijderen voordat je een nieuwe kunt toevoegen."
 
 #: ../capplet/src/mtp-bin.c:369
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
