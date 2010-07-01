@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:36+0000\n"
-"PO-Revision-Date: 2010-04-30 10:08-0800\n"
+"POT-Creation-Date: 2010-06-30 09:22+0000\n"
+"PO-Revision-Date: 2010-07-01 11:15-0800\n"
 "Last-Translator: francesca godani <francesca.godani@ptiglobal.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -29,6 +29,34 @@ msgstr "Cambia lo sfondo e il contenuto myzone"
 #: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Cambia ciò che viene visualizzato in Myzone</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Wallpaper di Myzone </b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calendario e attività:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Cambia i miei account web"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Scegli il wallpaper"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Cancella i documenti recenti"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Notifiche via email:"
 
 #: ../data/capplet.ui.h:8
 msgid "Reset to default"
@@ -64,8 +92,8 @@ msgid "Show as many recent files as possible"
 msgstr "Mostra il maggior numero possibile di file recenti"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "Vuoi eliminare i documenti recenti? Questo rimuoverà il contenuto locale dalla Myzone"
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Vuoi eliminare i documenti recenti? Questo rimuoverà il contenuto locale da myzone"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -110,21 +138,17 @@ msgstr "Nessuna attività per oggi"
 msgid "Due %x"
 msgstr "In scadenza il %x"
 
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "Quando avrai impostato l'account web e utilizzato alcuni file, questi appariranno su myzone per un facile accesso ogni volta che vuoi."
+
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "Avvia il video di introduzione"
 
-#: ../penge/penge-welcome-tile.c:65
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "Benvenuti in MeeGo"
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Questo è Myzone, dove verranno visualizzati i file utilizzati di recente e il contenuto dei tuoi feed web."
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "Quando che avrai impostato l'account web e utilizzato alcuni file, questi appariranno sul Myzone per un facile accesso ogni volta che vuoi."
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -138,36 +162,19 @@ msgstr "Messaggio non letto"
 msgid "Unread messages"
 msgstr "Messaggi non letti"
 
-#: ../data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Wallpaper di Myzone </b>"
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr ""
+#~ "Questo è Myzone, dove verranno visualizzati i file utilizzati di recente "
+#~ "e il contenuto dei tuoi feed web."
 
-#: ../data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Cambia ciò che viene visualizzato in Myzone</b>"
-
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
-msgstr "Cambia i miei account web"
-
-#: ../data/capplet.ui.h:3
-msgid "Calendar and tasks:"
-msgstr "Calendario e attività:"
-
-#: ../data/capplet.ui.h:6
-msgid "Clear recent documents"
-msgstr "Cancella i documenti recenti"
-
-#: ../data/capplet.ui.h:5
-msgid "Choose your wallpaper"
-msgstr "Scegli il wallpaper"
-
-#: ../data/capplet.ui.h:7
-msgid "Email alerts:"
-msgstr "Notifiche via email:"
-
-#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
-#~ msgstr "Qui verranno mostrate le attività svolte in rete dai propri amici. Attivate i vostri account!"
+#~ msgid ""
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "Qui verranno mostrate le attività svolte in rete dai propri amici. "
+#~ "Attivate i vostri account!"
 
 #~ msgid "Myzone settings"
 #~ msgstr "Impostazioni myzone"
@@ -175,5 +182,11 @@ msgstr "Notifiche via email:"
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>Benvenuti in Meego 2.1 per netbook</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Poiché Meego è un po' diverso rispetto agli altri computer, sono state raggruppate alcune informazioni per comprendere al meglio il sistema. Speriamo troviate tutto di Vostro gradimento, il team Meego."
+#~ msgid ""
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
+#~ msgstr ""
+#~ "Poiché Meego è un po' diverso rispetto agli altri computer, sono state "
+#~ "raggruppate alcune informazioni per comprendere al meglio il sistema. "
+#~ "Speriamo troviate tutto di Vostro gradimento, il team Meego."
