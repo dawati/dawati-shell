@@ -76,7 +76,7 @@ msgstr "Vaara!"
 
 #: ../power-icon/src/mpd-power-icon.c:86
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Sorry, tietokoneesi akku on lähes tyhjä. Meidän täytyy nyt kytkeä virta pois päältä. Tallenna työsi ja toivottavasti näemme sinut pian uudelleen."
+msgstr "Sori, tietokoneesi akku on lähes tyhjä. Meidän täytyy nyt kytkeä virta pois päältä. Tallenna työsi ja toivottavasti näemme sinut pian uudelleen."
 
 #: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
@@ -108,7 +108,7 @@ msgstr "MeeGo laitteet-paneeli"
 #: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr "Sorry, sinulla ei näyttäisi olevan akkua asennettuna."
+msgstr "Sori, sinulla ei näyttäisi olevan akkua asennettuna."
 
 #: ../src/mpd-battery-device.c:375
 #, c-format
@@ -128,7 +128,7 @@ msgstr "Akkusi on täysin ladattu ja olet valmis töihin. "
 #: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr "Sorry, näyttää siltä, että akku on rikki."
+msgstr "Sori, näyttää siltä, että akku on rikki."
 
 #. First row.
 #: ../src/mpd-brightness-tile.c:141
