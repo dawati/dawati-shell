@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -20,8 +20,10 @@
 #define _MWB_AC_LIST_H
 
 #include <glib-object.h>
+extern "C" {
 #include <clutter/clutter.h>
 #include <mx/mx.h>
+}
 
 G_BEGIN_DECLS
 
@@ -64,10 +66,6 @@ typedef struct {
 GType mwb_ac_list_get_type (void);
 
 MxWidget *mwb_ac_list_new (void);
-
-void mwb_ac_list_db_stmt_prepare (MwbAcList *self, void *dbcon);
-
-void mwb_ac_list_db_stmt_finalize (MwbAcList *self);
 
 void mwb_ac_list_set_search_text (MwbAcList *self,
                                   const gchar *search_text);

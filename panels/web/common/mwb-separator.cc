@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -20,7 +20,9 @@
 #include "config.h"
 #endif
 
+extern "C" {
 #include <clutter/clutter.h>
+}
 
 #include "mwb-separator.h"
 
@@ -246,10 +248,10 @@ mx_stylable_iface_init (MxStylableIface *iface)
                                   "Line width",
                                   "Width of the line in pixels",
                                   0.0, G_MAXFLOAT, 1.0,
-                                  G_PARAM_READWRITE |
+                                  (GParamFlags)(G_PARAM_READWRITE |
                                   G_PARAM_STATIC_NAME |
                                   G_PARAM_STATIC_NICK |
-                                  G_PARAM_STATIC_BLURB);
+                                  G_PARAM_STATIC_BLURB));
       mx_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
 
       pspec = g_param_spec_float ("off-width",
@@ -257,10 +259,10 @@ mx_stylable_iface_init (MxStylableIface *iface)
                                   "Width of the off part of the dashes "
                                   "in pixels",
                                   0.0, G_MAXFLOAT, 0.0,
-                                  G_PARAM_READWRITE |
+                                  (GParamFlags)(G_PARAM_READWRITE |
                                   G_PARAM_STATIC_NAME |
                                   G_PARAM_STATIC_NICK |
-                                  G_PARAM_STATIC_BLURB);
+                                  G_PARAM_STATIC_BLURB));
       mx_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
 
       pspec = g_param_spec_float ("on-width",
@@ -268,10 +270,10 @@ mx_stylable_iface_init (MxStylableIface *iface)
                                   "Width of the on part of the dashes "
                                   "in pixels",
                                   0.0, G_MAXFLOAT, 0.0,
-                                  G_PARAM_READWRITE |
+                                  (GParamFlags)(G_PARAM_READWRITE |
                                   G_PARAM_STATIC_NAME |
                                   G_PARAM_STATIC_NICK |
-                                  G_PARAM_STATIC_BLURB);
+                                  G_PARAM_STATIC_BLURB));
       mx_stylable_iface_install_property (iface, MWB_TYPE_SEPARATOR, pspec);
     }
 }
@@ -294,40 +296,40 @@ mwb_separator_class_init (MwbSeparatorClass *klass)
                                     "Color",
                                     "The color of the line",
                                     &default_color,
-                                    G_PARAM_READWRITE |
+                                    (GParamFlags)(G_PARAM_READWRITE |
                                     G_PARAM_STATIC_NAME |
                                     G_PARAM_STATIC_NICK |
-                                    G_PARAM_STATIC_BLURB);
+                                    G_PARAM_STATIC_BLURB));
   g_object_class_install_property (object_class, PROP_COLOR, pspec);
 
   pspec = g_param_spec_float ("line-width",
                               "Line Width",
                               "The width of the line to draw",
                               0.0, G_MAXFLOAT, 1.0,
-                              G_PARAM_READWRITE |
+                              (GParamFlags)(G_PARAM_READWRITE |
                               G_PARAM_STATIC_NAME |
                               G_PARAM_STATIC_NICK |
-                              G_PARAM_STATIC_BLURB);
+                              G_PARAM_STATIC_BLURB));
   g_object_class_install_property (object_class, PROP_LINE_WIDTH, pspec);
 
   pspec = g_param_spec_float ("off-width",
                               "Off Width",
                               "The width of the 'off' part of the line",
                               0.0, G_MAXFLOAT, 0.0,
-                              G_PARAM_READWRITE |
+                              (GParamFlags)(G_PARAM_READWRITE |
                               G_PARAM_STATIC_NAME |
                               G_PARAM_STATIC_NICK |
-                              G_PARAM_STATIC_BLURB);
+                              G_PARAM_STATIC_BLURB));
   g_object_class_install_property (object_class, PROP_OFF_WIDTH, pspec);
 
   pspec = g_param_spec_float ("on-width",
                               "On Width",
                               "The width of the 'on' part of the line",
                               0.0, G_MAXFLOAT, 0.0,
-                              G_PARAM_READWRITE |
+                              (GParamFlags)(G_PARAM_READWRITE |
                               G_PARAM_STATIC_NAME |
                               G_PARAM_STATIC_NICK |
-                              G_PARAM_STATIC_BLURB);
+                              G_PARAM_STATIC_BLURB));
   g_object_class_install_property (object_class, PROP_ON_WIDTH, pspec);
 }
 
@@ -348,7 +350,7 @@ mwb_separator_init (MwbSeparator *self)
 MxWidget *
 mwb_separator_new (void)
 {
-  MxWidget *self = g_object_new (MWB_TYPE_SEPARATOR, NULL);
+  MxWidget *self = (MxWidget*)g_object_new (MWB_TYPE_SEPARATOR, NULL);
 
   return self;
 }

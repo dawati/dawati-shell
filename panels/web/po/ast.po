@@ -1,0 +1,97 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Meego UX\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-12 09:22+0000\n"
+"PO-Revision-Date: 2010-05-13 14:47+0100\n"
+"Last-Translator: astur <malditoastur@gmail.com>\n"
+"Language-Team: asturian <alministradores@softastur.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: asturian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+# <%s is the word or sentence you write in the address line>
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Guetar %%s en %s"
+
+# <%s is the word or sentence you write in the address line>
+#: ../common/mwb-ac-list.cc:1334
+#, c-format
+msgid "Go to %s"
+msgstr "Dir a %s"
+
+# <Enter refers to the Enter key in the keyboard>
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Calca Intro \n"
+"pa dir al sitiu"
+
+# <it refers to the arrow keys in your keyboard. you can press the up arrow or
+# the down arrow>
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Usa les fleches\n"
+"pa ver la llista"
+
+#: ../netpanel/meego-netbook-netpanel.cc:796
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Les tos webs favorites van amosase equí, y na páxina de nueves llingüetes según vayas visitando páxines"
+
+#: ../netpanel/meego-netbook-netpanel.cc:818
+#: ../netpanel/meego-netbook-netpanel.cc:941
+msgid "New tab"
+msgstr "Nueva llingüeta"
+
+#. Construct entry table widgets
+#: ../netpanel/meego-netbook-netpanel.cc:1216
+msgid "Your pages"
+msgstr "Páxines favorites"
+
+#: ../netpanel/meego-netbook-netpanel.cc:1229
+msgid "Search"
+msgstr "Guetar"
+
+# <Fichas? If "fichas" is better then it needs to replace pestañas in other
+# strings too>
+#. Construct title for tab preview section
+#: ../netpanel/meego-netbook-netpanel.cc:1250
+msgid "Tabs"
+msgstr "Llingüetes"
+
+#. Construct title for favorite pages section
+#: ../netpanel/meego-netbook-netpanel.cc:1255
+msgid "Favorite pages"
+msgstr "Páxines favorites"
+
+# <mousetip of the top of the screen>
+#: ../netpanel/meego-panel-web.cc:189
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "internet"
+
+#: ../netpanel/meego-panel-web.cc:210
+#: ../netpanel/meego-panel-web.cc:256
+msgid "Internet"
+msgstr "Internet"
+
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "Panel d'Internet"
+

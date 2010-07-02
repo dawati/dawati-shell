@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=/usr/libexec/meego-panel-web
+TryExec=/usr/libexec/meego-panel-web
+_Name=internet
+Icon=meego-web-browser
+_Comment=Internet panel
+Terminal=false
+Categories=
+OnlyShowIn=MEEGO;
+X-GNOME-Autostart-enable=true
+X-Meego-Priority=Low
+X-Meego-Service=com.meego.UX.Shell.Panels.internet
+X-Meego-Panel-Button-Style=internet-button

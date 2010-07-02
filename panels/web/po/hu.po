@@ -5,12 +5,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Moblin Web Browser\n"
+"Project-Id-Version: Meego Web Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-12 12:03+0100\n"
+"POT-Creation-Date: 2010-04-20 13:46-0400\n"
 "PO-Revision-Date: 2009-07-31 18:52+0100\n"
 "Last-Translator: Kökéndy Ákos <kokendy.akos@gmail.com>\n"
-"Language-Team: HUNGARIAN <moblinhungary@googlegroups.com>\n"
+"Language-Team: HUNGARIAN <meegohungary@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,17 +18,22 @@ msgstr ""
 "X-Poedit-Language: Hungarian\n"
 "X-Poedit-Country: HUNGARY\n"
 
-#: ../common/mwb-ac-list.c:1723
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
 #, c-format
 msgid "Search for %%s on %s"
 msgstr "%%s keresése itt: %s"
 
-#: ../common/mwb-ac-list.c:1746
+#: ../common/mwb-ac-list.cc:1334
 #, c-format
 msgid "Go to %s"
 msgstr "Ugrás ide: %s"
 
-#: ../common/mwb-radical-bar.c:459
+#: ../common/mwb-radical-bar.cc:503
 msgid ""
 "Press enter to\n"
 "visit site"
@@ -36,7 +41,7 @@ msgstr ""
 "Nyomj entert\n"
 "a lap megtekintéséhez"
 
-#: ../common/mwb-radical-bar.c:462
+#: ../common/mwb-radical-bar.cc:506
 msgid ""
 "Press down to\n"
 "explore list"
@@ -44,308 +49,232 @@ msgstr ""
 "Nyomj le nyilat\n"
 "a lista böngészéséhez"
 
-#: ../data/moblin-web-browser.desktop.in.h:1
-msgid "It's the internet"
-msgstr "Ez az internet"
-
-#: ../data/moblin-web-browser.desktop.in.h:2
-msgid "Web Browser"
-msgstr "Web Böngésző"
-
-#: ../browser/mwb-browser.c:1154
-msgid "Moblin web browser - "
-msgstr "Moblin web böngésző -"
-
-#: ../browser/mwb-browser.c:1177 ../browser/mwb-browser.c:2717
-#: ../netpanel/src/moblin-netbook-netpanel.c:807
-msgid "Untitled"
-msgstr "Névtelen"
-
-#. Update the tab title
-#: ../browser/mwb-browser.c:1975 ../browser/mwb-browser.c:2254
-#: ../browser/mwb-browser.c:2304
-msgid "Downloads"
-msgstr "Letöltések"
-
-#. Update the tab title
-#: ../browser/mwb-browser.c:2289
-#, c-format
-msgid "Downloads - %d%%"
-msgstr "Letöltések - %d%%"
-
-#: ../browser/mwb-browser.c:2352
-msgid "Moblin web browser"
-msgstr "Moblin web böngésző"
-
-#: ../browser/mwb-download.c:286
-msgid "Download cancelled"
-msgstr "A letöltés megszakítva"
-
-#: ../browser/mwb-download.c:299
-msgid "Download completed"
-msgstr "Sikeres letöltés"
-
-#: ../browser/mwb-download.c:615
-msgid "Open file"
-msgstr "Fájl megnyitása"
-
-#: ../browser/mwb-main.c:295
-msgid "Run the browser in a window"
-msgstr "A böngésző futtatása ablakban"
-
-#: ../browser/mwb-main.c:298
-msgid "Add the URL to the recent files list"
-msgstr "Az URL hozzáadása a legutóbbi fájlok listájához"
-
-#: ../browser/mwb-main.c:315
-msgid "Moblin Web Browser"
-msgstr "Moblin Web Böngésző"
-
-#: ../browser/mwb-mozembed.c:317
-msgid "Open link in new tab"
-msgstr "A hivatkozás megnyitása új lapon"
-
-#: ../browser/mwb-mozembed.c:321
-msgid "Copy link location"
-msgstr "A hivatkozás címének másolása"
-
-#: ../data/mwbpages/content/settings.js:215
-#, fuzzy
-msgid ""
-"Do you want to reset your browser? This will remove your web history, pinned "
-"pages and personal settings. "
-msgstr ""
-"Le akarod törölni a böngészés előzményeit? Ez el fogja távolítani a "
-"megjelölt lapjaidat és a személyes beállításaidat is."
-
-#: ../data/mwbpages/content/settings.js:223
-msgid "Yes, delete"
-msgstr "Igen, törlés"
-
-#: ../data/mwbpages/content/settings.js:224
-msgid "No, save"
-msgstr "Nem, mentés"
-
-#. Construct title for favorite pages section
-#: ../data/mwbpages/content/startpage.js:53
-#: ../netpanel/src/moblin-netbook-netpanel.c:1236
-msgid "Favorite pages"
-msgstr "Kedvenc lapok"
-
-#: ../data/mwbpages/content/startpage.js:191
-msgid "Less than a minute ago"
-msgstr "Nincs egy perce"
-
-#. Translators: The two underscores here will get replaced with a
-#. number so they should be in the translation too. Eg 'About __
-#. minutes ago' will become 'About 10 minutes ago'.
-#: ../data/mwbpages/content/startpage.js:199
-msgid "About a minute ago"
-msgid_plural "About __ minutes ago"
-msgstr[0] "Egy perce"
-msgstr[1] "__ perce"
-
-#. Translators: The two underscores here will get replaced with a
-#. number so they should be in the translation too. Eg 'About __
-#. minutes ago' will become 'About 10 minutes ago'.
-#: ../data/mwbpages/content/startpage.js:206
-msgid "About an hour ago"
-msgid_plural "About __ hours ago"
-msgstr[0] "Egy órája"
-msgstr[1] "__ órája"
-
-#: ../data/mwbpages/content/startpage.js:219
-msgid "Today at %H:%M"
-msgstr "Ma ekkor: %H:%M"
-
-#: ../data/mwbpages/content/startpage.js:221
-msgid "Yesterday at %H:%M"
-msgstr "Tegnap ekkor: %H:%M"
-
-#: ../data/mwbpages/content/startpage.js:223
-msgid "Last %A at %H:%M"
-msgstr "Múlt %A ekkor: %H:%M"
-
-#: ../data/mwbpages/content/startpage.js:225
-msgid "%x at %H:%M"
-msgstr "%x ekkor: %H:%M"
-
-#: ../data/mwbpages/content/startpage.js:261
-msgid ""
-"<p>Push the pin icon in the location bar above to add pages to this list.</p>"
-msgstr ""
-"<p>Ha lapot akarsz hozzáadni ehhez a listához, nyomd meg gombostűt a "
-"címsorban.</p>"
-
-#: ../data/mwbpages/content/startpage.js:305
-msgid "Fewer pinned pages"
-msgstr "Kevesebb megjelölt lap"
-
-#: ../data/mwbpages/content/startpage.js:310
-msgid "More pinned pages"
-msgstr "Több megjelölt lap"
-
-#. Translators: The two underscores will get replaced with a
-#. * hostname so they should be in the translation too. Eg the
-#. * string might become 'www.google.com wants to know your
-#. * location.'
-#: ../components/mwbGeolocationPrompt.js:69
-msgid "__ wants to know your location."
-msgstr ""
-
-#: ../components/mwbGeolocationPrompt.js:82
-msgid "Share location"
-msgstr ""
-
-#: ../components/mwbGeolocationPrompt.js:83
-msgid "Don't share"
-msgstr ""
-
-#: ../components/mwbGeolocationPrompt.js:85
-msgid "Remember for this site"
-msgstr ""
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:4
-msgid "Settings"
-msgstr "Beállítások"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:5
-msgid "General"
-msgstr "Általános"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:6
-msgid "Try to complete domain names in automagic bar"
-msgstr "Próbáld kiegészíteni a neveket az automagic sorban"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:7
-msgid "Search in automagic bar"
-msgstr "Keresés az automagic sorban"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:8
-msgid "Add new search engine"
-msgstr "Új keresőmotor hozzáadása"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:9
-msgid "Privacy"
-msgstr "Személyes adatok"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:10
-msgid "Remember my passwords"
-msgstr "Emlékezz a jelszavamra"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:11
-msgid "Remember what I type into forms"
-msgstr "Emlékezz arra, amit az űrlapokba írok"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:12
-msgid "Keep my browser history for up to"
-msgstr "Keresési előzményeim megtartása"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:13
-msgid "1 year"
-msgstr "1 évig"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:14
-msgid "1 month"
-msgstr "1 hónapig"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:15
-msgid "1 week"
-msgstr "1 hétig"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:16
-msgid "1 day"
-msgstr "1 napig"
-
-#: ../data/mwbpages/locale/en-US/settings.dtd:17
-#, fuzzy
-msgid "Reset my browser now"
-msgstr "Keresési előzmények visszaállítása most"
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:4
-#: ../netpanel/src/moblin-netbook-netpanel.c:622
-#: ../netpanel/src/moblin-netbook-netpanel.c:996
-msgid "New tab"
-msgstr "Új lap"
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:5
-msgid "Pinned pages"
-msgstr "Megjelölt lapok"
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:6
-msgid "Trouble connecting?"
-msgstr "Problémád van a kapcsolódással?"
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:7
-msgid ""
-"Move your pointer to the top of the screen to bring down the toolbar and "
-"choose the Networks panel."
-msgstr ""
-"Vidd a mutatót a képernyő tetejére és a lenyíló eszköztáron válaszd ki a "
-"Hálózatok panelt."
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:8
-msgid ""
-"Welcome to Moblin Netbook Web Browser. When you visit pages your favorite "
-"ones will show up here."
-msgstr ""
-"Üdvözöllek a Moblin Netbook Web Böngészőjében. A kedvenc lapjaid itt "
-"jelennek majd meg."
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:9
-msgid "Getting started"
-msgstr "Kezdés"
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:10
-msgid ""
-"First, make sure you have an internet connection! Then click on the "
-"automagic bar or press Ctrl+L to get there quickly and type the address or "
-"search you want."
-msgstr ""
-"Először is győződj meg arról, hogy van-e internet kapcsolatod! Ezután "
-"kattints az automagic sorba vagy nyomj Ctrl+L billentyűkombinációt a gyors "
-"odaugrásra és gépeld be a címet vagy amit keresni akarsz"
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:11
-msgid "Make this a private tab"
-msgstr "Legyen ez egy privát lap"
-
-#: ../data/mwbpages/locale/en-US/startpage.dtd:12
-msgid ""
-"This is a private tab. Things you do in this tab will not be stored on this "
-"machine. However, websites you use may still keep records of your actions."
-msgstr ""
-"Ez egy privát lap. Amit ezen a lapon teszel, azt nem tárolja a géped. Bár a "
-"weboldalak továbbra is rögzíthetik a műveleteidet."
-
-#: ../netpanel/src/moblin-netbook-netpanel.c:602
+#: ../netpanel/meego-netbook-netpanel.cc:789
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
 msgstr ""
 
-#. Construct entry table widgets
-#: ../netpanel/src/moblin-netbook-netpanel.c:1197
-#, fuzzy
-msgid "Internet"
-msgstr "Ez az internet"
+#: ../netpanel/meego-netbook-netpanel.cc:811
+#: ../netpanel/meego-netbook-netpanel.cc:934
+msgid "New tab"
+msgstr "Új lap"
 
-#: ../netpanel/src/moblin-netbook-netpanel.c:1210
-msgid "Go"
+#. Construct entry table widgets
+#: ../netpanel/meego-netbook-netpanel.cc:1198
+#, fuzzy
+msgid "Your pages"
+msgstr "Kedvenc lapok"
+
+#: ../netpanel/meego-netbook-netpanel.cc:1211
+msgid "Search"
 msgstr ""
 
 #. Construct title for tab preview section
-#: ../netpanel/src/moblin-netbook-netpanel.c:1231
+#: ../netpanel/meego-netbook-netpanel.cc:1232
 msgid "Tabs"
 msgstr ""
 
-#: ../netpanel/src/moblin-panel-internet.c:87
+#. Construct title for favorite pages section
+#: ../netpanel/meego-netbook-netpanel.cc:1237
+msgid "Favorite pages"
+msgstr "Kedvenc lapok"
+
+#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 #, fuzzy
 msgid "internet"
 msgstr "Ez az internet"
 
-msgid "Next"
-msgstr ""
+#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
+#, fuzzy
+msgid "Internet"
+msgstr "Ez az internet"
 
-msgid "Previous"
-msgstr ""
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+#, fuzzy
+msgid "Internet panel"
+msgstr "Ez az internet"
+
+#~ msgid "It's the internet"
+#~ msgstr "Ez az internet"
+
+#~ msgid "Web Browser"
+#~ msgstr "Web Böngésző"
+
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego web böngésző -"
+
+#~ msgid "Untitled"
+#~ msgstr "Névtelen"
+
+#~ msgid "Downloads"
+#~ msgstr "Letöltések"
+
+#~ msgid "Downloads - %d%%"
+#~ msgstr "Letöltések - %d%%"
+
+#~ msgid "Meego web browser"
+#~ msgstr "Meego web böngésző"
+
+#~ msgid "Download cancelled"
+#~ msgstr "A letöltés megszakítva"
+
+#~ msgid "Download completed"
+#~ msgstr "Sikeres letöltés"
+
+#~ msgid "Open file"
+#~ msgstr "Fájl megnyitása"
+
+#~ msgid "Run the browser in a window"
+#~ msgstr "A böngésző futtatása ablakban"
+
+#~ msgid "Add the URL to the recent files list"
+#~ msgstr "Az URL hozzáadása a legutóbbi fájlok listájához"
+
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego Web Böngésző"
+
+#~ msgid "Open link in new tab"
+#~ msgstr "A hivatkozás megnyitása új lapon"
+
+#~ msgid "Copy link location"
+#~ msgstr "A hivatkozás címének másolása"
+
+#, fuzzy
+#~ msgid ""
+#~ "Do you want to reset your browser? This will remove your web history, "
+#~ "pinned pages and personal settings. "
+#~ msgstr ""
+#~ "Le akarod törölni a böngészés előzményeit? Ez el fogja távolítani a "
+#~ "megjelölt lapjaidat és a személyes beállításaidat is."
+
+#~ msgid "Yes, delete"
+#~ msgstr "Igen, törlés"
+
+#~ msgid "No, save"
+#~ msgstr "Nem, mentés"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Nincs egy perce"
+
+#~ msgid "About a minute ago"
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "Egy perce"
+#~ msgstr[1] "__ perce"
+
+#~ msgid "About an hour ago"
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "Egy órája"
+#~ msgstr[1] "__ órája"
+
+#~ msgid "Today at %H:%M"
+#~ msgstr "Ma ekkor: %H:%M"
+
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "Tegnap ekkor: %H:%M"
+
+#~ msgid "Last %A at %H:%M"
+#~ msgstr "Múlt %A ekkor: %H:%M"
+
+#~ msgid "%x at %H:%M"
+#~ msgstr "%x ekkor: %H:%M"
+
+#~ msgid ""
+#~ "<p>Push the pin icon in the location bar above to add pages to this list."
+#~ "</p>"
+#~ msgstr ""
+#~ "<p>Ha lapot akarsz hozzáadni ehhez a listához, nyomd meg gombostűt a "
+#~ "címsorban.</p>"
+
+#~ msgid "Fewer pinned pages"
+#~ msgstr "Kevesebb megjelölt lap"
+
+#~ msgid "More pinned pages"
+#~ msgstr "Több megjelölt lap"
+
+#~ msgid "Settings"
+#~ msgstr "Beállítások"
+
+#~ msgid "General"
+#~ msgstr "Általános"
+
+#~ msgid "Try to complete domain names in automagic bar"
+#~ msgstr "Próbáld kiegészíteni a neveket az automagic sorban"
+
+#~ msgid "Search in automagic bar"
+#~ msgstr "Keresés az automagic sorban"
+
+#~ msgid "Add new search engine"
+#~ msgstr "Új keresőmotor hozzáadása"
+
+#~ msgid "Privacy"
+#~ msgstr "Személyes adatok"
+
+#~ msgid "Remember my passwords"
+#~ msgstr "Emlékezz a jelszavamra"
+
+#~ msgid "Remember what I type into forms"
+#~ msgstr "Emlékezz arra, amit az űrlapokba írok"
+
+#~ msgid "Keep my browser history for up to"
+#~ msgstr "Keresési előzményeim megtartása"
+
+#~ msgid "1 year"
+#~ msgstr "1 évig"
+
+#~ msgid "1 month"
+#~ msgstr "1 hónapig"
+
+#~ msgid "1 week"
+#~ msgstr "1 hétig"
+
+#~ msgid "1 day"
+#~ msgstr "1 napig"
+
+#, fuzzy
+#~ msgid "Reset my browser now"
+#~ msgstr "Keresési előzmények visszaállítása most"
+
+#~ msgid "Pinned pages"
+#~ msgstr "Megjelölt lapok"
+
+#~ msgid "Trouble connecting?"
+#~ msgstr "Problémád van a kapcsolódással?"
+
+#~ msgid ""
+#~ "Move your pointer to the top of the screen to bring down the toolbar and "
+#~ "choose the Networks panel."
+#~ msgstr ""
+#~ "Vidd a mutatót a képernyő tetejére és a lenyíló eszköztáron válaszd ki a "
+#~ "Hálózatok panelt."
+
+#~ msgid ""
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
+#~ "ones will show up here."
+#~ msgstr ""
+#~ "Üdvözöllek a Meego Netbook Web Böngészőjében. A kedvenc lapjaid itt "
+#~ "jelennek majd meg."
+
+#~ msgid "Getting started"
+#~ msgstr "Kezdés"
+
+#~ msgid ""
+#~ "First, make sure you have an internet connection! Then click on the "
+#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
+#~ "or search you want."
+#~ msgstr ""
+#~ "Először is győződj meg arról, hogy van-e internet kapcsolatod! Ezután "
+#~ "kattints az automagic sorba vagy nyomj Ctrl+L billentyűkombinációt a "
+#~ "gyors odaugrásra és gépeld be a címet vagy amit keresni akarsz"
+
+#~ msgid "Make this a private tab"
+#~ msgstr "Legyen ez egy privát lap"
+
+#~ msgid ""
+#~ "This is a private tab. Things you do in this tab will not be stored on "
+#~ "this machine. However, websites you use may still keep records of your "
+#~ "actions."
+#~ msgstr ""
+#~ "Ez egy privát lap. Amit ezen a lapon teszel, azt nem tárolja a géped. Bár "
+#~ "a weboldalak továbbra is rögzíthetik a műveleteidet."

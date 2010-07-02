@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -131,7 +131,7 @@ mwb_spindle_paint (ClutterActor *actor)
      one of the children directly */
   if (fabs (int_position - priv->position) < 1e-5)
     {
-      ClutterActor *child = g_slist_nth_data (priv->children, int_position);
+      ClutterActor *child = (ClutterActor*)g_slist_nth_data (priv->children, int_position);
 
       if (child)
         clutter_actor_paint (child);
@@ -173,14 +173,14 @@ mwb_spindle_paint (ClutterActor *actor)
 
           /* We need to clip to the allocation for the animation to
              work */
-          cogl_clip_push (0, 0, geom.width, geom.height);
+          cogl_clip_push_rectangle (0, 0, geom.width, geom.height);
 
           cogl_push_matrix ();
           cogl_translate (0.0f, geom.height / 2.0f, -apothem);
           cogl_rotate (360.0f / n_children * fractional_part,
                        1.0f, 0.0f, 0.0f);
           cogl_translate (0.0f, geom.height / -2.0f, apothem);
-          clutter_actor_paint (child_pos->data);
+          clutter_actor_paint ((ClutterActor*)child_pos->data);
           cogl_pop_matrix ();
 
           /* Also paint the next child if there is one */
@@ -191,7 +191,7 @@ mwb_spindle_paint (ClutterActor *actor)
               cogl_rotate (360.0f / n_children * (fractional_part - 1.0f),
                            1.0f, 0.0f, 0.0f);
               cogl_translate (0.0f, geom.height / -2.0f, apothem);
-              clutter_actor_paint (child_pos->next->data);
+              clutter_actor_paint ((ClutterActor*)child_pos->next->data);
               cogl_pop_matrix ();
             }
 
@@ -227,7 +227,7 @@ mwb_spindle_get_preferred_width (ClutterActor *self,
     {
       gfloat child_min_width, child_natural_width;
 
-      clutter_actor_get_preferred_width (l->data,
+      clutter_actor_get_preferred_width ((ClutterActor*)l->data,
                                          for_height,
                                          &child_min_width,
                                          &child_natural_width);
@@ -259,7 +259,7 @@ mwb_spindle_get_preferred_height (ClutterActor *self,
     {
       gfloat child_min_height, child_natural_height;
 
-      clutter_actor_get_preferred_height (l->data,
+      clutter_actor_get_preferred_height ((ClutterActor*)l->data,
                                           for_width,
                                           &child_min_height,
                                           &child_natural_height);
@@ -295,7 +295,7 @@ mwb_spindle_allocate (ClutterActor *self,
   child_allocation.y2 = box->y2 - box->y1;
 
   for (l = priv->children; l; l = l->next)
-    clutter_actor_allocate (l->data, &child_allocation, flags);
+    clutter_actor_allocate ((ClutterActor*)l->data, &child_allocation, flags);
 }
 
 static void
@@ -384,10 +384,10 @@ mwb_spindle_class_init (MwbSpindleClass *klass)
                                "children.",
                                -G_MAXDOUBLE, G_MAXDOUBLE,
                                0.0,
-                               G_PARAM_READWRITE |
+                               (GParamFlags)(G_PARAM_READWRITE |
                                G_PARAM_STATIC_NAME |
                                G_PARAM_STATIC_NICK |
-                               G_PARAM_STATIC_BLURB);
+                               G_PARAM_STATIC_BLURB));
   g_object_class_install_property (gobject_class, PROP_POSITION, pspec);
 
   g_type_class_add_private (klass, sizeof (MwbSpindlePrivate));
@@ -415,7 +415,7 @@ mwb_spindle_dispose (GObject *object)
 ClutterActor *
 mwb_spindle_new (void)
 {
-  ClutterActor *self = g_object_new (MWB_TYPE_SPINDLE, NULL);
+  ClutterActor *self = (ClutterActor*)g_object_new (MWB_TYPE_SPINDLE, NULL);
 
   return self;
 }

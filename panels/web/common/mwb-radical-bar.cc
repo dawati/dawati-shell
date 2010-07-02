@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -179,7 +179,7 @@ mwb_radical_bar_set_property (GObject *object, guint property_id,
   switch (property_id)
     {
     case PROP_ICON:
-      mwb_radical_bar_set_icon (radical_bar, g_value_get_object (value));
+      mwb_radical_bar_set_icon (radical_bar, (ClutterActor*)g_value_get_object (value));
       break;
 
     case PROP_URI:
@@ -200,7 +200,7 @@ mwb_radical_bar_set_property (GObject *object, guint property_id,
 
     case PROP_FAKE_PROGRESS:
       priv->fake_progress = g_value_get_double (value);
-      mwb_radical_bar_resize_progress (radical_bar, NULL, 0);
+      mwb_radical_bar_resize_progress (radical_bar, NULL, (ClutterAllocationFlags)0);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (radical_bar));
       break;
 
@@ -477,7 +477,7 @@ mwb_radical_bar_paint (ClutterActor *actor)
     {
       ClutterActorBox box;
       clutter_actor_get_allocation_box (CLUTTER_ACTOR (priv->ac_list), &box);
-      cogl_clip_push (box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
+      cogl_clip_push_rectangle (box.x1, box.y1, box.x2, box.y2);
       cogl_translate (0, -(box.y2 - box.y1) *
                          (1.0-priv->ac_list_anim_progress), 0);
       clutter_actor_paint (CLUTTER_ACTOR (priv->ac_list));
@@ -668,7 +668,7 @@ mwb_radical_bar_show_uri (MwbRadicalBar *radical_bar)
   was_selected =
     (clutter_text_get_selection_bound (CLUTTER_TEXT (ctext)) == 0 &&
      clutter_text_get_cursor_position (CLUTTER_TEXT (ctext)) ==
-     strlen (old_text));
+     (gint)strlen (old_text));
 
   mx_entry_set_text (MX_ENTRY (priv->entry),
                        priv->uri ? priv->uri : NULL);
@@ -746,7 +746,7 @@ mwb_radical_bar_captured_event (ClutterActor *actor,
             }
           else if (key_event->keyval == CLUTTER_Down)
             {
-              guint n_visible_entries =
+              gint n_visible_entries =
                 mwb_ac_list_get_n_visible_entries (MWB_AC_LIST (priv->ac_list));
 
               if (selection < n_visible_entries - 1)
@@ -843,10 +843,10 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
                                                         "Icon",
                                                         "Icon actor.",
                                                         CLUTTER_TYPE_ACTOR,
-                                                        G_PARAM_READWRITE |
+                                                        (GParamFlags)(G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_NAME |
                                                         G_PARAM_STATIC_NICK |
-                                                        G_PARAM_STATIC_BLURB));
+                                                        G_PARAM_STATIC_BLURB)));
 
   g_object_class_install_property (object_class,
                                    PROP_URI,
@@ -856,10 +856,10 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
                                                         "the user is not "
                                                         "the text.",
                                                         "",
-                                                        G_PARAM_READWRITE |
+                                                        (GParamFlags)(G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_NAME |
                                                         G_PARAM_STATIC_NICK |
-                                                        G_PARAM_STATIC_BLURB));
+                                                        G_PARAM_STATIC_BLURB)));
 
   g_object_class_install_property (object_class,
                                    PROP_TITLE,
@@ -867,10 +867,10 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
                                                         "Title",
                                                         "RadicalBar title.",
                                                         "",
-                                                        G_PARAM_READWRITE |
+                                                        (GParamFlags)(G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_NAME |
                                                         G_PARAM_STATIC_NICK |
-                                                        G_PARAM_STATIC_BLURB));
+                                                        G_PARAM_STATIC_BLURB)));
 
   g_object_class_install_property (object_class,
                                    PROP_LOADING,
@@ -878,10 +878,10 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
                                                          "Loading",
                                                          "Loading.",
                                                          FALSE,
-                                                         G_PARAM_READWRITE |
+                                                         (GParamFlags)(G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_NAME |
                                                          G_PARAM_STATIC_NICK |
-                                                         G_PARAM_STATIC_BLURB));
+                                                         G_PARAM_STATIC_BLURB)));
 
   g_object_class_install_property (object_class,
                                    PROP_PROGRESS,
@@ -889,10 +889,10 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
                                                         "Progress",
                                                         "Load progress.",
                                                         0.0, 1.0, 0.0,
-                                                        G_PARAM_READWRITE |
+                                                        (GParamFlags)(G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_NAME |
                                                         G_PARAM_STATIC_NICK |
-                                                        G_PARAM_STATIC_BLURB));
+                                                        G_PARAM_STATIC_BLURB)));
 
   g_object_class_install_property (object_class,
                                    PROP_FAKE_PROGRESS,
@@ -900,10 +900,10 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
                                                         "Fake Progress",
                                                         "Fake load progress.",
                                                         0.0, 1.0, 0.0,
-                                                        G_PARAM_READWRITE |
+                                                        (GParamFlags)(G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_NAME |
                                                         G_PARAM_STATIC_NICK |
-                                                        G_PARAM_STATIC_BLURB));
+                                                        G_PARAM_STATIC_BLURB)));
 
   g_object_class_install_property (object_class,
                                    PROP_PINNED,
@@ -913,10 +913,10 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
                                                          "icon should be "
                                                          "pushed in.",
                                                          FALSE,
-                                                         G_PARAM_READWRITE |
+                                                         (GParamFlags)(G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_NAME |
                                                          G_PARAM_STATIC_NICK |
-                                                         G_PARAM_STATIC_BLURB));
+                                                         G_PARAM_STATIC_BLURB)));
 
   g_object_class_install_property (object_class,
                                    PROP_SHOW_PIN,
@@ -925,10 +925,10 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
                                                          "Sets whether to "
                                                          "show the pinned.",
                                                          FALSE,
-                                                         G_PARAM_READWRITE |
+                                                         (GParamFlags)(G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_NAME |
                                                          G_PARAM_STATIC_NICK |
-                                                         G_PARAM_STATIC_BLURB));
+                                                         G_PARAM_STATIC_BLURB)));
 
   signals[GO] =
     g_signal_new ("go",
@@ -1095,8 +1095,8 @@ mwb_radical_bar_key_focus_in_cb (MxEntry *entry,
   MwbRadicalBarPrivate *priv = self->priv;
 
   mwb_radical_bar_set_show_title_state (self,
-                                        priv->show_title_state |
-                                        MWB_RADICAL_BAR_ENTRY_HAS_FOCUS);
+                                        (MwbRadicalBarShowTitleState)(priv->show_title_state |
+                                        MWB_RADICAL_BAR_ENTRY_HAS_FOCUS));
 }
 
 static void
@@ -1106,8 +1106,8 @@ mwb_radical_bar_key_focus_out_cb (MxEntry *entry,
   MwbRadicalBarPrivate *priv = self->priv;
 
   mwb_radical_bar_set_show_title_state (self,
-                                        priv->show_title_state &
-                                        ~MWB_RADICAL_BAR_ENTRY_HAS_FOCUS);
+                                        (MwbRadicalBarShowTitleState)(priv->show_title_state &
+                                        ~MWB_RADICAL_BAR_ENTRY_HAS_FOCUS));
 
   mwb_radical_bar_set_show_auto_complete (self, FALSE);
   mwb_radical_bar_update_instructions (self);
@@ -1122,14 +1122,14 @@ mwb_radical_bar_enter_cb (ClutterActor *actor,
   MwbRadicalBarShowTitleState new_state = priv->show_title_state;
 
   if (actor == priv->spindle)
-    new_state |= MWB_RADICAL_BAR_MOUSE_OVER_SPINDLE;
+    new_state = (MwbRadicalBarShowTitleState)(new_state | MWB_RADICAL_BAR_MOUSE_OVER_SPINDLE);
   else if (actor == (gpointer) priv->entry)
-    new_state |= MWB_RADICAL_BAR_MOUSE_OVER_ENTRY;
+    new_state = (MwbRadicalBarShowTitleState)(new_state | MWB_RADICAL_BAR_MOUSE_OVER_ENTRY);
   else
     /* This signal handler is only connected for these three actors so
        we can assume if we make it here then the ClutterText has been
        entered */
-    new_state |= MWB_RADICAL_BAR_MOUSE_OVER_TEXT;
+    new_state = (MwbRadicalBarShowTitleState)(new_state | MWB_RADICAL_BAR_MOUSE_OVER_TEXT);
 
   mwb_radical_bar_set_show_title_state (self, new_state);
 }
@@ -1143,14 +1143,14 @@ mwb_radical_bar_leave_cb (ClutterActor *actor,
   MwbRadicalBarShowTitleState new_state = priv->show_title_state;
 
   if (actor == priv->spindle)
-    new_state &= ~MWB_RADICAL_BAR_MOUSE_OVER_SPINDLE;
+    new_state = (MwbRadicalBarShowTitleState)(new_state & ~MWB_RADICAL_BAR_MOUSE_OVER_SPINDLE);
   else if (actor == (gpointer) priv->entry)
-    new_state &= ~MWB_RADICAL_BAR_MOUSE_OVER_ENTRY;
+    new_state = (MwbRadicalBarShowTitleState)(new_state & ~MWB_RADICAL_BAR_MOUSE_OVER_ENTRY);
   else
     /* This signal handler is only connected for these three actors so
        we can assume if we make it here then the ClutterText has been
        left */
-    new_state &= ~MWB_RADICAL_BAR_MOUSE_OVER_TEXT;
+    new_state = (MwbRadicalBarShowTitleState)(new_state & ~MWB_RADICAL_BAR_MOUSE_OVER_TEXT);
 
   mwb_radical_bar_set_show_title_state (self, new_state);
 }
@@ -1196,11 +1196,11 @@ mwb_radical_bar_init (MwbRadicalBar *self)
   MwbRadicalBarPrivate *priv = self->priv = RADICAL_BAR_PRIVATE (self);
 
   priv->table = MX_WIDGET(mx_table_new ());
-  priv->entry = MX_WIDGET(mx_entry_new (""));
-  priv->title = MX_WIDGET(mx_label_new (""));
+  priv->entry = MX_WIDGET(mx_entry_new ());
+  priv->title = MX_WIDGET(mx_label_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (priv->title),
                           "radical-bar-title");
-  priv->instructions = MX_WIDGET(mx_label_new (""));
+  priv->instructions = MX_WIDGET(mx_label_new ());
   clutter_actor_set_name (CLUTTER_ACTOR (priv->instructions),
                           "radical-bar-instructions");
   priv->button = MX_WIDGET(mx_button_new ());
@@ -1241,7 +1241,7 @@ mwb_radical_bar_init (MwbRadicalBar *self)
                          /* Add a dummy actor to make the spindle triangular */
                          clutter_rectangle_new (),
                          NULL);
-  priv->show_title_state = 0;
+  priv->show_title_state = (MwbRadicalBarShowTitleState)0;
 
   text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
 
@@ -1460,7 +1460,7 @@ mwb_radical_bar_set_loading (MwbRadicalBar *radical_bar, gboolean loading)
     }
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (radical_bar), &box);
-  mwb_radical_bar_resize_progress (radical_bar, &box, 0);
+  mwb_radical_bar_resize_progress (radical_bar, &box, (ClutterAllocationFlags)0);
   mwb_radical_bar_update_button (radical_bar);
 
   g_object_notify (G_OBJECT (radical_bar), "loading");
@@ -1481,7 +1481,7 @@ mwb_radical_bar_set_progress (MwbRadicalBar *radical_bar, gdouble progress)
   if (progress > 0.0)
     {
       priv->fake_progress = priv->progress = CLAMP (progress, 0.0, 1.0);
-      mwb_radical_bar_resize_progress (radical_bar, NULL, 0);
+      mwb_radical_bar_resize_progress (radical_bar, NULL, (ClutterAllocationFlags)0);
       g_object_notify (G_OBJECT (radical_bar), "progress");
     }
   else if (priv->progress > priv->fake_progress)

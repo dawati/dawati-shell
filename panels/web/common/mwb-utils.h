@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -26,7 +26,7 @@
 #include <mx/mx.h>
 #include <gdk/gdk.h>
 
-#define MWB_PROFILES_BASE ".mozilla/moblin-web-browser/"
+#define MWB_PROFILES_BASE ".mozilla/meego-web-browser/"
 #define MWB_PROFILES_INI  MWB_PROFILES_BASE "/profiles.ini"
 #define MWB_PLACES_SQLITE "places.sqlite"
 
@@ -60,7 +60,7 @@ mwb_utils_image_to_texture (const guint8 *data,
                             guint data_len,
                             GError **error);
 
-inline void
+void
 mwb_utils_table_add (MxTable    *table,
                      ClutterActor *child,
                      gint          row,
@@ -73,8 +73,8 @@ mwb_utils_table_add (MxTable    *table,
 gboolean
 mwb_utils_actor_has_focus (ClutterActor *actor);
 
-void
-mwb_utils_show_popup (MxPopup *popup);
+//void
+//mwb_utils_show_popup (MxPopup *popup);
 
 GdkPixbuf *
 mwb_utils_pixbuf_new_from_stock (const gchar *icon_name, gint size);

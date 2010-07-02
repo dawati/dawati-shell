@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -67,15 +67,15 @@ mwb_utils_image_to_texture (const guint8 *data,
                                                      NULL,
                                                      error)))
     {
-      texture = cogl_texture_new_from_data (gdk_pixbuf_get_width (pixbuf),
-                                            gdk_pixbuf_get_height (pixbuf),
-                                            0,
-                                            gdk_pixbuf_get_has_alpha (pixbuf)
-                                            ? COGL_PIXEL_FORMAT_RGBA_8888
-                                            : COGL_PIXEL_FORMAT_RGB_888,
-                                            COGL_PIXEL_FORMAT_ANY,
-                                            gdk_pixbuf_get_rowstride (pixbuf),
-                                            gdk_pixbuf_get_pixels (pixbuf));
+      texture = (ClutterActor*)cogl_texture_new_from_data (gdk_pixbuf_get_width (pixbuf),
+                                                           gdk_pixbuf_get_height (pixbuf),
+                                                           (CoglTextureFlags)0,
+                                                           gdk_pixbuf_get_has_alpha (pixbuf)
+                                                           ? COGL_PIXEL_FORMAT_RGBA_8888
+                                                           : COGL_PIXEL_FORMAT_RGB_888,
+                                                           COGL_PIXEL_FORMAT_ANY,
+                                                           gdk_pixbuf_get_rowstride (pixbuf),
+                                                           gdk_pixbuf_get_pixels (pixbuf));
 
       g_object_unref (pixbuf);
     }
@@ -96,6 +96,7 @@ mwb_utils_actor_has_focus (ClutterActor *actor)
     return FALSE;
 }
 
+/*
 void
 mwb_utils_show_popup (MxPopup *popup)
 {
@@ -117,8 +118,9 @@ mwb_utils_show_popup (MxPopup *popup)
                            "scale-y", 1.0,
                            "opacity", 0xff,
                            NULL);
-  g_signal_handlers_disconnect_by_func (animation, clutter_actor_hide, actor);
+  g_signal_handlers_disconnect_by_func (animation, (void*)clutter_actor_hide, actor);
 }
+*/
 
 GdkPixbuf *
 mwb_utils_pixbuf_new_from_stock (const gchar *icon_name, gint size)
@@ -131,9 +133,9 @@ mwb_utils_pixbuf_new_from_stock (const gchar *icon_name, gint size)
   pixbuf = gtk_icon_theme_load_icon (icon_theme,
                                      icon_name,
                                      size,
-                                     GTK_ICON_LOOKUP_USE_BUILTIN |
+                                     (GtkIconLookupFlags)(GTK_ICON_LOOKUP_USE_BUILTIN |
                                      GTK_ICON_LOOKUP_GENERIC_FALLBACK |
-                                     GTK_ICON_LOOKUP_FORCE_SIZE,
+                                     GTK_ICON_LOOKUP_FORCE_SIZE),
                                      &error);
   if (!pixbuf)
     {
@@ -188,7 +190,7 @@ mwb_utils_places_db_get_filename()
     }
 
   keys = g_key_file_new ();
-  if (!g_key_file_load_from_file (keys, profile_ini, 0, NULL))
+  if (!g_key_file_load_from_file (keys, profile_ini, (GKeyFileFlags)0, NULL))
     {
       g_warning ("[netpanel] Failed to load keys from profile config: %s", profile_ini);
       g_free (profile_ini);

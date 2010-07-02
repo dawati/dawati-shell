@@ -11,9 +11,16 @@ dist_theme_DATA = \
 	newtab-thumbnail.png \
 	placeholder-bg.png \
 	thumbnail_hover.png \
-	thumbnail.png
+	thumbnail.png \
+	content-pane-background.png \
+	content-pane-header.png \
+	o2_globe.png \
+	o2_history.png \
+	o2_more.png \
+	o2_search.png
 
-# Manage mutter-moblin's texture cache.
+
+# Manage mutter-meego's texture cache.
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/mx.cache
 CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)

@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -19,7 +19,9 @@
 #ifndef _MWB_SEPARATOR_H
 #define _MWB_SEPARATOR_H
 
+extern "C" {
 #include <mx/mx.h>
+}
 
 G_BEGIN_DECLS
 

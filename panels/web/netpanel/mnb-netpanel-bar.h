@@ -2,30 +2,28 @@
 /*
  * Copyright (c) 2009 Intel Corp.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU Lesser General Public License,
+ * version 2.1, as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/* Borrowed from the moblin-web-browser project */
+/* Borrowed from the meego-web-browser project */
 
 #ifndef _MNB_NETPANEL_BAR_H
 #define _MNB_NETPANEL_BAR_H
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
-#include <moblin-panel/mpl-entry.h>
+#include <meego-panel/mpl-entry.h>
 
 G_BEGIN_DECLS
 
@@ -70,12 +68,9 @@ GType mnb_netpanel_bar_get_type (void);
 MxWidget *mnb_netpanel_bar_new (const gchar *label);
 
 void mnb_netpanel_bar_focus (MnbNetpanelBar *netpanel_bar);
+
 gboolean mnb_netpanel_bar_check_for_search (MnbNetpanelBar *netpanel_bar,
                                             const gchar *url);
-
-void mnb_netpanel_bar_set_dbcon (GObject *object, void *dbcon);
-
-void mnb_netpanel_bar_clear_dbcon (GObject *object);
 
 void mnb_netpanel_bar_button_press_cb(GObject         *obj,
                                       ClutterKeyEvent *event,

@@ -2,31 +2,29 @@
 /*
  * Copyright (c) 2009 Intel Corp.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU Lesser General Public License,
+ * version 2.1, as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA. 
  */
 
 #include "mnb-netpanel-scrollview.h"
-#include "moblin-netbook-netpanel.h"
+#include "meego-netbook-netpanel.h"
 #include "mwb-utils.h"
 
 /* FIXME: replace with styles or properties */
 #define MAX_DISPLAY 4
-#define ROW_SPACING 6
-#define COL_SPACING 6
-#define SCROLLBAR_HEIGHT 22
+#define ROW_SPACING 0
+#define COL_SPACING 14
+#define SCROLLBAR_HEIGHT 24
 
 G_DEFINE_TYPE (MnbNetpanelScrollview, mnb_netpanel_scrollview, MX_TYPE_WIDGET)
 
@@ -61,7 +59,7 @@ mnb_netpanel_scrollview_dispose (GObject *object)
 
   while (priv->items)
     {
-      ItemProps *props = priv->items->data;
+      ItemProps *props = (ItemProps*)priv->items->data;
       clutter_actor_unparent (props->item);
       clutter_actor_unparent (props->title);
       g_slice_free (ItemProps, props);
@@ -112,17 +110,17 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
   width = box->x2 - box->x1 - padding.left - padding.right;
   height = box->y2 - box->y1 - padding.top - padding.bottom;
 
-  props = priv->items->data;
+  props = (ItemProps*)priv->items->data;
   clutter_actor_get_preferred_size (props->item, NULL, NULL,
                                     &item_width, &item_height);
   clutter_actor_get_preferred_height (props->title, -1, NULL, &title_height);
 
   /* Allocate for the items and titles */
-  child_box.x1 = padding.left;
+  child_box.x1 = padding.left + COL_SPACING;
 
   for (item = priv->items; item != NULL; item = item->next)
     {
-      props = item->data;
+      props = (ItemProps*)item->data;
       props->position = child_box.x1;
 
       child_box.x2 = child_box.x1 + item_width;
@@ -130,7 +128,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
       child_box.y2 = child_box.y1 + item_height;
       clutter_actor_allocate (props->item, &child_box, flags);
 
-      child_box.y1 = child_box.y2 + ROW_SPACING;
+      child_box.y1 = child_box.y2;
       child_box.y2 = child_box.y1 + title_height;
       clutter_actor_allocate (props->title, &child_box, flags);
 
@@ -159,7 +157,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
       /* Allocate for the scrollbar */
       child_box.x1 = padding.left;
       child_box.x2 = child_box.x1 + width;
-      child_box.y1 = padding.top + item_height + title_height + 2 * ROW_SPACING;
+      child_box.y1 = padding.top + item_height + title_height;
       child_box.y2 = child_box.y1 + SCROLLBAR_HEIGHT;
       clutter_actor_allocate (CLUTTER_ACTOR (priv->scroll_bar), &child_box,
                               flags);
@@ -183,7 +181,7 @@ mnb_netpanel_scrollview_get_preferred_width (ClutterActor *self,
   if (!priv->items)
     return;
 
-  props = priv->items->data;
+  props = (ItemProps*)priv->items->data;
   clutter_actor_get_preferred_width (props->item, -1, NULL, &item_width);
 
   n_items = g_list_length (priv->items);
@@ -236,7 +234,7 @@ mnb_netpanel_scrollview_get_preferred_height (ClutterActor *self,
   if (!priv->items)
     return;
 
-  props = priv->items->data;
+  props = (ItemProps*)priv->items->data;
   add_child_height (props->item, -1,
                     min_height_p, natural_height_p, 0.0);
   add_child_height (props->title, -1,
@@ -264,7 +262,7 @@ mnb_netpanel_scrollview_paint (ClutterActor *actor)
 
   clutter_actor_get_size (actor, &width, &height);
 
-  cogl_clip_push (0, 0, width, height);
+  cogl_clip_push_rectangle (0, 0, width, height);
 
   offset = priv->scroll_offset;
   cogl_translate (-priv->scroll_offset, 0, 0);
@@ -272,7 +270,7 @@ mnb_netpanel_scrollview_paint (ClutterActor *actor)
   /* Draw items */
   for (item = priv->items; item != NULL; item = item->next)
     {
-      ItemProps *props = item->data;
+      ItemProps *props = (ItemProps*)item->data;
 
       if (props->position > width + offset)
         break;
@@ -320,7 +318,7 @@ mnb_netpanel_scrollview_map (ClutterActor *actor)
 
   for (item = priv->items; item != NULL; item = item->next)
     {
-      ItemProps *props = item->data;
+      ItemProps *props = (ItemProps*)item->data;
       clutter_actor_map (props->item);
       clutter_actor_map (props->title);
     }
@@ -339,7 +337,7 @@ mnb_netpanel_scrollview_unmap (ClutterActor *actor)
 
   for (item = priv->items; item != NULL; item = item->next)
     {
-      ItemProps *props = item->data;
+      ItemProps *props = (ItemProps*)item->data;
       clutter_actor_unmap (props->item);
       clutter_actor_unmap (props->title);
     }
@@ -353,7 +351,7 @@ mnb_netpanel_scrollview_captured_event (ClutterActor *actor,
                                         ClutterEvent *event)
 {
   if (event->type == CLUTTER_BUTTON_PRESS)
-    moblin_netbook_netpanel_button_press (MOBLIN_NETBOOK_NETPANEL 
+    meego_netbook_netpanel_button_press (MEEGO_NETBOOK_NETPANEL 
                                           (clutter_actor_get_parent (actor)));
 
   return FALSE;
@@ -411,7 +409,7 @@ mnb_netpanel_scrollview_scroll_event_cb (ClutterActor       *actor,
   last = priv->items;
   for (item = priv->items; item != NULL; item = item->next)
     {
-      ItemProps *props = item->data;
+      ItemProps *props = (ItemProps*)item->data;
       if (offset < props->position)
         break;
       last = item;
@@ -455,8 +453,8 @@ mnb_netpanel_scrollview_init (MnbNetpanelScrollview *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
-  priv->scroll_adjustment = MX_ADJUSTMENT(mx_adjustment_new (0, 0, 0, 100, 200, 200));
-  priv->scroll_bar = MX_WIDGET(mx_scroll_bar_new (priv->scroll_adjustment));
+  priv->scroll_adjustment = MX_ADJUSTMENT(mx_adjustment_new_with_values (0, 0, 0, 100, 200, 200));
+  priv->scroll_bar = MX_WIDGET(mx_scroll_bar_new_with_adjustment (priv->scroll_adjustment));
   clutter_actor_set_height (CLUTTER_ACTOR (priv->scroll_bar), SCROLLBAR_HEIGHT);
   g_object_unref (priv->scroll_adjustment);
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->scroll_bar),
@@ -472,7 +470,7 @@ mnb_netpanel_scrollview_init (MnbNetpanelScrollview *self)
 MxWidget*
 mnb_netpanel_scrollview_new (void)
 {
-  return g_object_new (MNB_TYPE_NETPANEL_SCROLLVIEW, NULL);
+  return (MxWidget*)g_object_new (MNB_TYPE_NETPANEL_SCROLLVIEW, NULL);
 }
 
 void
@@ -495,7 +493,7 @@ mnb_netpanel_scrollview_add_item (MnbNetpanelScrollview *self,
 
   for (i = priv->items; i != NULL; i = i->next)
     {
-      ItemProps *cur = i->data;
+      ItemProps *cur = (ItemProps*)i->data;
       if (cur->order > order)
         break;
     }

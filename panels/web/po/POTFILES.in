@@ -1,12 +1,15 @@
 # List of source files which contain translatable strings.
 
 # Common
-common/mwb-ac-list.c
-common/mwb-radical-bar.c
-common/mwb-separator.c
-common/mwb-utils.c
+common/mwb-ac-list.cc
+common/mwb-radical-bar.cc
+common/mwb-separator.cc
+common/mwb-utils.cc
 
 # Panel
-netpanel/moblin-netbook-netpanel.c
-netpanel/moblin-panel-internet.c
-netpanel/mnb-netpanel-scrollview.c
+netpanel/meego-netbook-netpanel.cc
+netpanel/meego-panel-web.cc
+netpanel/mnb-netpanel-scrollview.cc
+
+# Desktop
+netpanel/meego-panel-internet.desktop.in.in

@@ -2,23 +2,21 @@
 /*
  * Copyright (c) 2009 Intel Corp.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU Lesser General Public License,
+ * version 2.1, as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- */
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 
-/* Borrowed from the moblin-web-browser project */
+/* Borrowed from the meego-web-browser project */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -31,6 +29,8 @@
 #include "mnb-netpanel-bar.h"
 #include "mwb-utils.h"
 #include "mwb-ac-list.h"
+#include "chrome-profile-provider.h"
+#include "base/message_loop.h"
 
 G_DEFINE_TYPE (MnbNetpanelBar, mnb_netpanel_bar, MPL_TYPE_ENTRY)
 
@@ -150,7 +150,7 @@ mnb_netpanel_bar_paint (ClutterActor *actor)
     {
       ClutterActorBox box;
       clutter_actor_get_allocation_box (CLUTTER_ACTOR (priv->ac_list), &box);
-      cogl_clip_push (box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
+      cogl_clip_push_rectangle (box.x1, box.y1, box.x2, box.y2);
       cogl_translate (0, -(box.y2 - box.y1) *
                       (1.0-priv->ac_list_anim_progress), 0);
       clutter_actor_paint (CLUTTER_ACTOR (priv->ac_list));
@@ -355,24 +355,6 @@ static void
 mnb_netpanel_bar_go (MnbNetpanelBar *self, const gchar *url)
 {
   /* empty */
-}
-
-void
-mnb_netpanel_bar_set_dbcon (GObject *object, void *dbcon)
-{
-  MnbNetpanelBar *self = MNB_NETPANEL_BAR(object);
-  MnbNetpanelBarPrivate *priv = self->priv;
-
-  mwb_ac_list_db_stmt_prepare (MWB_AC_LIST (priv->ac_list), dbcon);
-}
-
-void
-mnb_netpanel_bar_clear_dbcon (GObject *object)
-{
-  MnbNetpanelBar *self = MNB_NETPANEL_BAR(object);
-  MnbNetpanelBarPrivate *priv = self->priv;
-
-  mwb_ac_list_db_stmt_finalize (MWB_AC_LIST (priv->ac_list));
 }
 
 static void

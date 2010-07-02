@@ -1,5 +1,5 @@
 /*
- * Moblin-Web-Browser: The web browser for Moblin
+ * Meego-Web-Browser: The web browser for Meego
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -21,39 +21,17 @@
 #endif
 
 #include <stdlib.h>
+extern "C" {
 #include <cogl/cogl-pango.h>
+}
 #include <string.h>
 #include <glib/gi18n.h>
 #include <math.h>
-#include <sqlite3.h>
 #include "mwb-ac-list.h"
 #include "mwb-separator.h"
 #include "mwb-utils.h"
-
-#define MWB_AC_LIST_SQL \
-  "SELECT r.url, GROUP_CONCAT(IFNULL(r.title, ' '), ', '), " \
-          "IFNULL(f.mime_type, ''), IFNULL(f.data, ''), IFNULL(LENGTH(f.data), 0) " \
-  "FROM ( " \
-          "SELECT bmtag.id AS id, bmtag.url AS url, bmtag.title AS title, " \
-                  "bmtag.favicon_id AS favicon_id, bmtag.frecency AS frecency " \
-          "FROM ( " \
-                  "SELECT h.id, h.url, t.title, h.favicon_id, h.frecency " \
-                  "FROM moz_bookmarks b, moz_places h " \
-                  "JOIN moz_bookmarks t ON t.id = b.parent AND t.parent = 4 " \
-                  "WHERE b.fk = h.id AND b.type = 1 AND LENGTH(t.title) > 0 " \
-                  "UNION ALL " \
-                  "SELECT h.id, h.url, b.title, h.favicon_id, h.frecency " \
-                  "FROM moz_bookmarks b, moz_places h " \
-                  "JOIN moz_bookmarks t ON t.id = b.parent AND t.parent <> 4 " \
-                  "WHERE b.fk = h.id AND b.type = 1 AND h.hidden = 0 " \
-          ") AS bmtag WHERE title LIKE ?1 " \
-          "UNION ALL " \
-          "SELECT id, url, title, favicon_id, frecency " \
-          "FROM moz_places " \
-          "WHERE hidden = 0 AND (url LIKE ?1 OR title LIKE ?1) " \
-  ") AS r " \
-  "LEFT OUTER JOIN moz_favicons f ON r.favicon_id = f.id " \
-  "GROUP BY r.id ORDER BY r.frecency DESC LIMIT 14"
+#include "chrome-profile-provider.h"
+#include "base/message_loop.h"
 
 G_DEFINE_TYPE (MwbAcList, mwb_ac_list, MX_TYPE_WIDGET);
 
@@ -108,19 +86,9 @@ struct _MwbAcListPrivate
   guint          old_search_length;
   gint           selection;
 
-  /* Cache of favicons. Maps from a gchar* to a
-     MwbAcListCachedFavicon*. This is cleared every time the search
-     string shrinks. That way it avoids refetching icons while the
-     user is typing which is likely to consistently return the same
-     results */
-  GHashTable    *favicon_cache;
-
   CoglHandle     search_engine_icon;
   gchar         *search_engine_name;
   gchar         *search_engine_url;
-
-  sqlite3       *dbcon;
-  sqlite3_stmt  *search_stmt;
 
   /* List of suggested TLD completions */
   GHashTable    *tld_suggestions;
@@ -136,6 +104,7 @@ struct _MwbAcListEntry
   MxWidget *label_actor;
   gchar *label_text;
   gchar *url;
+  gint type;
   gint match_start, match_end;
   CoglHandle texture;
 
@@ -274,10 +243,6 @@ mwb_ac_list_dispose (GObject *object)
 
   mwb_ac_list_forget_search_engine (MWB_AC_LIST (object));
 
-  /* The favicon cache holds references to ClutterTextures so it
-     should be cleared to unref them */
-  g_hash_table_remove_all (priv->favicon_cache);
-
   G_OBJECT_CLASS (mwb_ac_list_parent_class)->dispose (object);
 }
 
@@ -289,8 +254,6 @@ mwb_ac_list_finalize (GObject *object)
   g_array_free (priv->entries, TRUE);
 
   g_string_free (priv->search_text, TRUE);
-
-  g_hash_table_unref (priv->favicon_cache);
 
   g_hash_table_unref (priv->tld_suggestions);
 
@@ -346,17 +309,6 @@ mwb_ac_list_stristr (const gchar *haystack, const gchar *needle,
     }
 
   return FALSE;
-}
-
-static void
-mwb_ac_list_cached_favicon_free (MwbAcListCachedFavicon *cached_favicon)
-{
-  g_free (cached_favicon->url);
-
-  if (cached_favicon->texture)
-    cogl_handle_unref (cached_favicon->texture);
-
-  g_slice_free (MwbAcListCachedFavicon, cached_favicon);
 }
 
 static gfloat
@@ -444,7 +396,7 @@ mwb_ac_list_paint (ClutterActor *actor)
   ClutterGeometry geom;
   gfloat separator_height = 0.;
   gfloat ypos;
-  gint i;
+  guint i;
 
   /* Chain up to get the background */
   CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->paint (actor);
@@ -468,7 +420,7 @@ mwb_ac_list_paint (ClutterActor *actor)
       MwbAcListEntry *entry = &g_array_index (priv->entries, MwbAcListEntry, i);
 
       /* Only paint the highlight widget if the row is selected */
-      if (entry->highlight_widget && priv->selection == i
+      if (entry->highlight_widget && (guint)priv->selection == i
           && CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (entry->highlight_widget)))
         clutter_actor_paint (CLUTTER_ACTOR (entry->highlight_widget));
 
@@ -510,7 +462,7 @@ mwb_ac_list_pick (ClutterActor *actor, const ClutterColor *color)
   gfloat ypos;
   ClutterGeometry geom;
   MxPadding padding;
-  gint i;
+  guint i;
 
   /* Chain up so we get a bounding box painted */
   CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->pick (actor, color);
@@ -550,7 +502,7 @@ mwb_ac_list_set_selection_for_highlight (MwbAcList *ac_list,
                                          ClutterActor *actor)
 {
   MwbAcListPrivate *priv = ac_list->priv;
-  int i;
+  guint i;
 
   for (i = 0; i < priv->entries->len; i++)
     {
@@ -630,9 +582,9 @@ mwb_ac_list_update_entry (MwbAcList *ac_list,
 
   if (entry->highlight_widget == NULL)
     {
-      entry->highlight_widget = g_object_new (MX_TYPE_FRAME,
-                                              "reactive", TRUE,
-                                              NULL);
+      entry->highlight_widget = (MxWidget*)g_object_new (MX_TYPE_FRAME,
+                                                         "reactive", TRUE,
+                                                         NULL);
       entry->highlight_motion_handler
         = g_signal_connect (entry->highlight_widget, "motion-event",
                             G_CALLBACK (mwb_ac_list_highlight_motion_cb),
@@ -648,7 +600,7 @@ mwb_ac_list_update_entry (MwbAcList *ac_list,
   if (entry->label_actor)
     clutter_actor_unparent (CLUTTER_ACTOR (entry->label_actor));
 
-  entry->label_actor = MX_WIDGET (mx_label_new (entry->label_text));
+  entry->label_actor = MX_WIDGET (mx_label_new_with_text (entry->label_text));
   clutter_actor_set_parent (CLUTTER_ACTOR (entry->label_actor),
                             CLUTTER_ACTOR (ac_list));
 
@@ -688,7 +640,7 @@ mwb_ac_list_allocate (ClutterActor           *actor,
   MwbAcList *self = MWB_AC_LIST (actor);
   MwbAcListPrivate *priv = self->priv;
   MxPadding padding;
-  gint i;
+  guint i;
   gfloat ypos;
   gfloat separator_height = 0;
 
@@ -782,7 +734,7 @@ static void
 mwb_ac_list_update_all_entries (MwbAcList *self)
 {
   MwbAcListPrivate *priv = self->priv;
-  gint i;
+  guint i;
 
   for (i = 0; i < priv->entries->len; i++)
     {
@@ -824,7 +776,7 @@ mwb_ac_list_style_changed_cb (MxWidget *widget)
 static void
 mwb_ac_list_map (ClutterActor *actor)
 {
-  gint i;
+  guint i;
   MwbAcListPrivate *priv = MWB_AC_LIST (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->map (actor);
@@ -842,7 +794,7 @@ mwb_ac_list_map (ClutterActor *actor)
 static void
 mwb_ac_list_unmap (ClutterActor *actor)
 {
-  gint i;
+  guint i;
   MwbAcListPrivate *priv = MWB_AC_LIST (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->unmap (actor);
@@ -855,6 +807,8 @@ mwb_ac_list_unmap (ClutterActor *actor)
       clutter_actor_unmap (CLUTTER_ACTOR (entry->label_actor));
       clutter_actor_unmap (CLUTTER_ACTOR (entry->highlight_widget));
     }
+
+  ChromeProfileProvider::GetInstance()->StopAutoComplete();
 }
 
 static void
@@ -889,37 +843,37 @@ mwb_ac_list_class_init (MwbAcListClass *klass)
   pspec = g_param_spec_string ("search-text", "Search Text",
                                "The text to auto complete on",
                                "",
-                               G_PARAM_READWRITE |
+                               GParamFlags(G_PARAM_READWRITE |
                                G_PARAM_STATIC_NAME |
                                G_PARAM_STATIC_NICK |
-                               G_PARAM_STATIC_BLURB);
+                               G_PARAM_STATIC_BLURB));
   g_object_class_install_property (object_class, PROP_SEARCH_TEXT, pspec);
 
   pspec = g_param_spec_int ("selection", "Selection",
                             "The currently selected row or -1 for no selection",
                             -1, G_MAXINT, -1,
-                            G_PARAM_READWRITE |
+                            GParamFlags(G_PARAM_READWRITE |
                             G_PARAM_STATIC_NAME |
                             G_PARAM_STATIC_NICK |
-                            G_PARAM_STATIC_BLURB);
+                            G_PARAM_STATIC_BLURB));
   g_object_class_install_property (object_class, PROP_SELECTION, pspec);
 
   pspec = g_param_spec_boolean ("completion-enabled", "Completion enabled",
                                 "Whether top-level domain completion is enabled",
                                 TRUE,
-                                G_PARAM_READABLE |
+                                GParamFlags(G_PARAM_READABLE |
                                 G_PARAM_STATIC_NAME |
                                 G_PARAM_STATIC_NICK |
-                                G_PARAM_STATIC_BLURB);
+                                G_PARAM_STATIC_BLURB));
   g_object_class_install_property (object_class, PROP_COMPLETION_ENABLED, pspec);
 
   pspec = g_param_spec_boolean ("search-enabled", "Search enabled",
                                 "Whether radical-bar search is enabled",
                                 TRUE,
-                                G_PARAM_READABLE |
+                                GParamFlags(G_PARAM_READABLE |
                                 G_PARAM_STATIC_NAME |
                                 G_PARAM_STATIC_NICK |
-                                G_PARAM_STATIC_BLURB);
+                                G_PARAM_STATIC_BLURB));
   g_object_class_install_property (object_class, PROP_SEARCH_ENABLED, pspec);
 
   ac_list_signals[ACTIVATE_SIGNAL] =
@@ -943,12 +897,6 @@ mwb_ac_list_init (MwbAcList *self)
 
   priv->selection = -1;
 
-  priv->favicon_cache
-    = g_hash_table_new_full (g_str_hash,
-                             g_str_equal,
-                             NULL,
-                             (GDestroyNotify) mwb_ac_list_cached_favicon_free);
-
   priv->separator = mwb_separator_new ();
   clutter_actor_set_parent (CLUTTER_ACTOR (priv->separator),
                             CLUTTER_ACTOR (self));
@@ -962,9 +910,6 @@ mwb_ac_list_init (MwbAcList *self)
 
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mwb_ac_list_style_changed_cb), NULL);
-
-  priv->dbcon = NULL;
-  priv->search_stmt = NULL;
 }
 
 MxWidget*
@@ -973,44 +918,54 @@ mwb_ac_list_new (void)
   return MX_WIDGET (g_object_new (MWB_TYPE_AC_LIST, NULL));
 }
 
+#define THEMEDIR "/usr/share/meego-panel-web/netpanel/"
 static void
-mwb_ac_list_set_favicon (const gchar *mime_type,
-                         const guint8 *data,
-                         guint data_len,
-                         gpointer user_data)
+mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
 {
-  MwbAcListCachedFavicon *cached_favicon = user_data;
-  MwbAcList *ac_list = cached_favicon->ac_list;
-  MwbAcListPrivate *priv = ac_list->priv;
-
   GError *texture_error = NULL;
+  const char* icon_path = NULL;
 
-  cached_favicon->texture = mwb_utils_image_to_texture (data, data_len,
-                                                        &texture_error);
-  if (cached_favicon->texture != COGL_INVALID_HANDLE)
+  if (!entry) 
+    return;
+
+  switch (entry->type)
     {
-      guint i;
-
-      /* Set all of the entries that correspond to this URL */
-      for (i = MWB_AC_LIST_N_FIXED_ENTRIES; i < priv->entries->len; i++)
+    case AutocompleteMatch::URL_WHAT_YOU_TYPED:     // The input as a URL.
+      icon_path = THEMEDIR "o2_globe.png";
+      break;
+    case AutocompleteMatch::HISTORY_URL:            // A past page whose URL contains the input.
+    case AutocompleteMatch::HISTORY_TITLE:          // A past page whose title contains the input.
+    case AutocompleteMatch::HISTORY_BODY:           // A past page whose body contains the input.
+    case AutocompleteMatch::HISTORY_KEYWORD:        // A past page whose keyword contains the input.
+      icon_path = THEMEDIR "o2_history.png";
+      break;
+    case AutocompleteMatch::NAVSUGGEST:             // A suggested URL.
+    case AutocompleteMatch::SEARCH_WHAT_YOU_TYPED:  // The input as a search query (with the default
+    case AutocompleteMatch::SEARCH_HISTORY:         // A past search (with the default engine)
+    case AutocompleteMatch::SEARCH_SUGGEST:         // A suggested search (with the default engine).
+    case AutocompleteMatch::SEARCH_OTHER_ENGINE:    // A search with a non-default engine.
+      icon_path = THEMEDIR "o2_search.png";
+      break;
+    case AutocompleteMatch::OPEN_HISTORY_PAGE:      // A synthetic 
+      icon_path = THEMEDIR "o2_more.png";
+      break;
+    default:
+      break;
+    }
+  if (icon_path)
+    {
+      entry->texture =  cogl_texture_new_from_file (icon_path, 
+                                                    COGL_TEXTURE_NONE, 
+                                                    COGL_PIXEL_FORMAT_ANY, 
+                                                    &texture_error);
+      if (texture_error)
         {
-          MwbAcListEntry *entry = &g_array_index (priv->entries,
-                                                  MwbAcListEntry, i);
-
-          if (entry->url && !strcmp (entry->url, cached_favicon->url))
-            {
-              entry->texture = cogl_handle_ref (cached_favicon->texture);
-              clutter_actor_queue_redraw (CLUTTER_ACTOR (ac_list));
-            }
+          g_warning ("[netpanel] unable to open ac-list icon: %s\n",
+                     texture_error->message);
+          g_error_free (texture_error);
         }
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
     }
-  else
-    {
-      g_warning ("favicon error: %s", texture_error->message);
-      g_error_free (texture_error);
-    }
-
-  cached_favicon->favicon_handler = 0;
 }
 
 static void
@@ -1057,26 +1012,40 @@ mwb_ac_list_start_transition (MwbAcList *self)
 }
 
 static void
-mwb_ac_list_result_received(MwbAcList *self, 
-                            gchar     *value, 
-                            gchar     *comment, 
-                            gchar     *mime_type, 
-                            guint8    *favicon, 
-                            guint      favicon_len)
+mwb_ac_list_result_exception(void *context,
+                             int errno)
 {
+  //MwbAcList* self = (MwbAcList*)context;
+  //MwbAcListPrivate *priv = self->priv;
+  return;
+}
+
+static void
+mwb_ac_list_result_received(void       *context, 
+                            int         type,
+                            const char *url,
+                            const char *value,
+                            const char *comment)
+{
+  MwbAcList* self = (MwbAcList*)context;
   MwbAcListPrivate *priv = self->priv;
 
-  if (!value) /* No URL */
+  if (!url || !value) /* No URL */
     return; 
 
-  if (!comment) /* No title, will display URL */
-    comment = "";
+  char *result_text = NULL;
+  if (comment)
+    {
+      result_text = (char*)g_malloc(strlen(value) + strlen(comment) + 4);
+      sprintf(result_text, "%s - %s", value, comment);
+    }
+  else
+    result_text = g_strdup(value);
 
   if (priv->entries->len < MWB_AC_LIST_MAX_ENTRIES)
     {
       MwbAcListEntry *entry;
-      const gchar *result_text;
-      MwbAcListCachedFavicon *cached_favicon;
+      //xxx MwbAcListCachedFavicon *cached_favicon;
 
       /* Remove the clear timeout */
       if (priv->clear_timeout)
@@ -1093,66 +1062,20 @@ mwb_ac_list_result_received(MwbAcList *self,
 
       /* Prefer to display the comment if the search string matches in
          it */
-      if (mwb_ac_list_stristr (comment, priv->search_text->str,
+      if (!mwb_ac_list_stristr (result_text, priv->search_text->str,
                                &entry->match_start, &entry->match_end))
-        result_text = comment;
-      else if (mwb_ac_list_stristr (value, priv->search_text->str,
-                                    &entry->match_start, &entry->match_end))
-        {
-          result_text = value;
-
-          /* Strip leading http:// and www. */
-          if (strncmp ("http://", result_text, 7) == 0)
-            {
-              int offset = strncmp ("www.", result_text + 7, 4) ? 7 : 11;
-              entry->match_start -= offset;
-              entry->match_end -= offset;
-              if (entry->match_start < 0)
-                entry->match_start = 0;
-              if (entry->match_end < 0)
-                entry->match_end = 0;
-              result_text += offset;
-            }
-        }
-      else
         {
           /* If neither match just display the comment and trust that
              places had some reason to suggest it */
-          result_text = comment;
           entry->match_start = entry->match_end = 0;
         }
 
-      entry->label_text = g_strdup (result_text);
-      entry->url = g_strdup (value);
+      entry->label_text = (gchar*)result_text;
+      entry->url = g_strdup (url);
+      entry->type = type;
 
       mwb_ac_list_update_entry (self, entry);
-
-      /* Check if we've still got a cached version of the icon */
-      if ((cached_favicon = g_hash_table_lookup (priv->favicon_cache, value)))
-        {
-          /* The favicon might not have finished being fetched
-             yet. Once it is then the callback will set the icon on
-             all matching entries */
-          if (cached_favicon->texture)
-            entry->texture = cogl_handle_ref (cached_favicon->texture);
-        }
-      else
-        {
-          /* Otherwise start fetching it */
-          cached_favicon = g_slice_new (MwbAcListCachedFavicon);
-
-          cached_favicon->texture = NULL;
-          cached_favicon->ac_list = self;
-          cached_favicon->url = g_strdup (value);
-
-          if (favicon && favicon_len > 0)
-            mwb_ac_list_set_favicon (mime_type, favicon, 
-                                     favicon_len, cached_favicon);
-
-          g_hash_table_insert (priv->favicon_cache,
-                               cached_favicon->url,
-                               cached_favicon);
-        }
+      mwb_ac_list_set_icon (self, entry);
 
       mwb_ac_list_start_transition (self);
 
@@ -1227,7 +1150,7 @@ mwb_ac_list_add_default_entry (MwbAcList *self,
     {
       size_t search_len = strlen (search_text);
       size_t end_len = strlen (marker + 2);
-      entry->label_text = g_malloc (marker - label_text
+      entry->label_text = (gchar*)g_malloc (marker - label_text
                                     + search_len + end_len + 1);
       memcpy (entry->label_text, label_text, marker - label_text);
       memcpy (entry->label_text + (marker - label_text),
@@ -1255,7 +1178,7 @@ mwb_ac_list_check_best_tld_suggestion_overlap (gpointer key,
   const gchar *search_str_end = (data->search_string +
                                  strlen (data->search_string));
   const gchar *tail;
-  int keylen = strlen (key);
+  int keylen = strlen ((const char*)key);
 
   /* Scan from the end of the string to find the most overlap with the
      start of the key */
@@ -1263,7 +1186,7 @@ mwb_ac_list_check_best_tld_suggestion_overlap (gpointer key,
        search_str_end - tail <= keylen &&
          tail >= (const gchar *) data->search_string;
        tail--)
-    if (g_str_has_prefix (key, tail))
+    if (g_str_has_prefix ((const char*)key, tail))
       overlap = search_str_end - tail;
 
   /* Use this key if more of it overlaps or it has a better score */
@@ -1272,7 +1195,7 @@ mwb_ac_list_check_best_tld_suggestion_overlap (gpointer key,
        data->best_score < GPOINTER_TO_INT (value)))
     {
       data->best_score = GPOINTER_TO_INT (value);
-      data->best_tld = key;
+      data->best_tld = (const char*)key;
       data->best_overlap_length = overlap;
     }
 }
@@ -1433,58 +1356,17 @@ mwb_ac_list_clear_timeout_cb (MwbAcList *self)
 }
 
 void
-mwb_ac_list_db_stmt_prepare (MwbAcList *self, void *dbcon)
-{
-  gint rc;
-  MwbAcListPrivate *priv = self->priv;
-  priv->dbcon = (sqlite3 *)dbcon;
-
-  if (!priv->dbcon)
-    {
-      g_warning ("[netpanel] No available database connection");
-      return;
-    }
-
-  if (!priv->search_stmt)
-    {
-      rc = sqlite3_prepare_v2 (priv->dbcon,
-                               MWB_AC_LIST_SQL, 
-                               sizeof (MWB_AC_LIST_SQL), 
-                               &priv->search_stmt, 
-                               NULL);
-      if (rc)
-        g_warning("[netpanel] sqlite3_prepare_v2 (): %s", 
-                  sqlite3_errmsg(priv->dbcon));
-    }
-}
-
-void
-mwb_ac_list_db_stmt_finalize (MwbAcList *self)
-{
-  MwbAcListPrivate *priv = self->priv;
-
-  if (priv->search_stmt)
-    sqlite3_finalize(priv->search_stmt);
-
-  priv->search_stmt = NULL;
-  priv->dbcon = NULL; /* let panel to close db */
-}
-
-void
 mwb_ac_list_set_search_text (MwbAcList *self,
                              const gchar *search_text)
 {
   MwbAcListPrivate *priv = self->priv;
-  gint rc = 0;
 
   g_return_if_fail (MWB_IS_AC_LIST (self));
 
   if (strcmp (priv->search_text->str, search_text) != 0)
     {
-      int search_text_len = strlen (search_text);
+      size_t search_text_len = strlen (search_text);
 
-      if (search_text_len < priv->old_search_length)
-        g_hash_table_remove_all (priv->favicon_cache);
       priv->old_search_length = search_text_len;
 
       g_string_set_size (priv->search_text, 0);
@@ -1496,32 +1378,19 @@ mwb_ac_list_set_search_text (MwbAcList *self,
        */
       if (priv->clear_timeout)
         g_source_remove (priv->clear_timeout);
+
       priv->clear_timeout = g_timeout_add (100, (GSourceFunc)
                                            mwb_ac_list_clear_timeout_cb,
                                            self);
 
       g_object_notify (G_OBJECT (self), "search-text");
 
-      if (search_text_len == 0 || !priv->search_stmt)
+      if (search_text_len == 0)
         return;
 
-      sqlite3_reset(priv->search_stmt);
-
-      gchar param[search_text_len + 3];
-      sprintf(param, "%%%s%%", search_text);
-      rc = sqlite3_bind_text(priv->search_stmt, 1, param, search_text_len + 2, SQLITE_TRANSIENT);
-      if (rc)
-        g_warning("[netpanel] sqlite3_bind_text(): %s", sqlite3_errmsg(priv->dbcon));
-
-      while (sqlite3_step(priv->search_stmt) == SQLITE_ROW) 
-        {
-          mwb_ac_list_result_received(self, 
-                                      (gchar*) sqlite3_column_text(priv->search_stmt, 0), 
-                                      (gchar*) sqlite3_column_text(priv->search_stmt, 1), 
-                                      (gchar*) sqlite3_column_text(priv->search_stmt, 2),
-                                      (guint8*)sqlite3_column_blob(priv->search_stmt, 3), 
-                                      (guint)  sqlite3_column_int (priv->search_stmt, 4));
-        }
+      ChromeProfileProvider::GetInstance()->StartAutoComplete(search_text, self,
+                                                              mwb_ac_list_result_received,
+                                                              mwb_ac_list_result_exception);
     }
 }
 
@@ -1542,7 +1411,7 @@ mwb_ac_list_set_selection (MwbAcList *self, gint selection)
 
   g_return_if_fail (MWB_IS_AC_LIST (self));
   g_return_if_fail (selection == -1
-                    || (selection >= 0 && selection < priv->entries->len));
+                    || (selection >= 0 && selection < (gint)priv->entries->len));
 
   if (priv->selection != selection)
     {
