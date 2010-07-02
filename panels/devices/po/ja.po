@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
+"POT-Creation-Date: 2010-06-23 09:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "デバイスパネル"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../data/moblin-panel-devices.desktop.in.in.h:2
+#: ../src/moblin-panel-devices.c:160
 msgid "devices"
 msgstr "デバイス"
 
@@ -50,7 +50,7 @@ msgstr[1] "入力 %u"
 msgid "System Sounds"
 msgstr "システム効果音"
 
-#: ../power-icon/src/meego-power-icon.c:46
+#: ../power-icon/src/moblin-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo 電源アイコン"
 
@@ -102,7 +102,7 @@ msgstr "今すぐ電源をオフにしますか?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "このままの状態では、30秒後に電源がオフになります。"
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo デバイスパネル"
 
@@ -160,7 +160,7 @@ msgstr "他のデバイス"
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "取り出しに失敗しました。どうやらアプリケーションが使用中です。"
 
-#: ../src/mpd-devices-tile.c:420
+#: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
 msgstr "デバイスをプラグから抜いても安全です。"
 
@@ -177,41 +177,41 @@ msgstr "ゴミ箱へ移動する"
 msgid "Devices"
 msgstr "デバイス"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:242
 #, c-format
-msgid "Could not run %s"
-msgstr "%s を実行できませんでした"
+msgid "Could not run \"%s\""
+msgstr "「%s」を実行できませんでした"
 
-#: ../src/mpd-storage-device-tile.c:167
+#: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "インポートエラー"
 
 # In UI, only three characters can be displayed with the current button width. Work around to fix the trancation problem, we are instructed to shorten the translation (to "import" if possible), but it would still be truncated in JPN, and that truncation would be too embarrassing for JPN. Keep the whole translation for now.
-#: ../src/mpd-storage-device-tile.c:278
+#: ../src/mpd-storage-device-tile.c:355
 msgid "Import photos"
 msgstr "写真のインポート"
 
 # In UI, only three characters can be displayed with the current button width. Work around to fix the trancation problem, we are instructed to shorten the translation (to "import" if possible), but it would still be truncated in JPN, and that truncation would be too embarrassing for JPN. Keep the whole translation for now.
-#: ../src/mpd-storage-device-tile.c:280
+#: ../src/mpd-storage-device-tile.c:357
 msgid "Import media"
 msgstr "メディアのインポート"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:538
+#: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
 msgstr "取り出し"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:549
+#: ../src/mpd-storage-device-tile.c:626
 msgid "Open"
 msgstr "開く"
 
-#: ../src/mpd-storage-device-tile.c:742
+#: ../src/mpd-storage-device-tile.c:819
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> は <span color='%s'>%d%% / %s</span> を使用中"
 
-#: ../src/mpd-storage-device-tile.c:750
+#: ../src/mpd-storage-device-tile.c:827
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
