@@ -36,7 +36,7 @@ msgstr "툴바의 패널을 추가, 제거, 재정렬할 수 있습니다. "
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
-msgstr "사용 가능한 패널"
+msgstr "사용 가능 패널"
 
 #. translators: translate this to a suitable 24 hourt time format for
 #. * your locale showing only hours and minutes. For available format
