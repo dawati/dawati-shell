@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:36+0000\n"
+"POT-Creation-Date: 2010-06-30 09:22+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Takashi Kazami <tkazami@gmail.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +22,42 @@ msgstr "Myzone パネル"
 msgid "Change the Myzone background and content"
 msgstr "Myzone の背景とコンテンツを変更"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Myzone に表示されている内容を変更</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Myzone の壁紙</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "カレンダーとタスク："
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "マイ Web アカウントを変更"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "壁紙を選択"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "最近の文書をクリア"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "メールアラート："
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "デフォルトにリセット"
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
@@ -56,14 +89,15 @@ msgid "Show as many recent files as possible"
 msgstr "最近のファイルをできるだけ多く表示"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "最近使用した文書をクリアしますか? この操作ではローカルのコンテンツが Myzone から削除されます"
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "最近使用した文書をクリアしますか? この操作ではローカルのコンテンツが Myzone から削除されます。"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "予定"
 
-#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "開く"
 
@@ -75,7 +109,8 @@ msgstr "タスク"
 msgid "Create an appointment"
 msgstr "予定を作成します。"
 
-#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "追加"
 
@@ -100,21 +135,17 @@ msgstr "今日のイベントは何もありません"
 msgid "Due %x"
 msgstr "期限：%x"
 
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "Web アカウントを設定して使用したファイルは、必要な時にすぐアクセスできるように Myzone のこの場所に表示されます。"
+
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "イントロ動画の再生"
 
-#: ../penge/penge-welcome-tile.c:65
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "ようこそ MeeGo へ"
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "ここは Myzone です。Web フィードから最近使用したファイルやコンテンツが表示されます。"
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "Web アカウントを設定して使用したファイルは、必要な時にすぐアクセスできるように Myzone のこの場所に表示されます。"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -128,40 +159,18 @@ msgstr "未読メッセージ"
 msgid "Unread messages"
 msgstr "未読メッセージ"
 
-#: ../data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Myzone の壁紙</b>"
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr ""
+#~ "ここは Myzone です。Web フィードから最近使用したファイルやコンテンツが表示"
+#~ "されます。"
 
-#: ../data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Myzone に表示されている内容を変更</b>"
-
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
-msgstr "マイ Web アカウントを変更"
-
-#: ../data/capplet.ui.h:3
-msgid "Calendar and tasks:"
-msgstr "カレンダーとタスク："
-
-#: ../data/capplet.ui.h:6
-msgid "Clear recent documents"
-msgstr "最近の文書をクリア"
-
-#: ../data/capplet.ui.h:5
-msgid "Choose your wallpaper"
-msgstr "壁紙を選択"
-
-#: ../data/capplet.ui.h:8
-msgid "Reset to default"
-msgstr "デフォルトにリセット"
-
-#: ../data/capplet.ui.h:7
-msgid "Email alerts:"
-msgstr "メールアラート："
-
-#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
-#~ msgstr "アカウントをアクティブにすると、オンラインの友達がここに表示されます。"
+#~ msgid ""
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "アカウントをアクティブにすると、オンラインの友達がここに表示されます。"
 
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
@@ -169,5 +178,10 @@ msgstr "メールアラート："
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>ネットブック Meego 2.1 にようこそ</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Meego は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いたしました。お楽しみいただけることを願っております。Meego チーム一同"
+#~ msgid ""
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
+#~ msgstr ""
+#~ "Meego は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いた"
+#~ "しました。お楽しみいただけることを願っております。Meego チーム一同"
