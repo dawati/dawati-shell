@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
+"POT-Creation-Date: 2010-06-16 09:23+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
+"Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Einstellungen der Werkzeugleiste festlegen"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Einstellungen der Werkzeugleiste"
 
@@ -30,46 +30,53 @@ msgstr "Werkzeugleiste speichern"
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Du musst zuerst ein Panel löschen, bevor du ein neues hinzufügen kannst."
 
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Du kannst viele der Panels in der Werkzeugleiste hinzufügen, entfernen oder neu anordnen."
+
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "verfügbare Panels"
 
+# example:
+# 14:37
+# (no am/pm needed)
 #. translators: translate this to a suitable 24 hourt time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# example:
-# 14:37
-# (no am/pm needed)
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H.%M"
 
+# example:
+# 14:37
+# (no am/pm needed)
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# example:
-# 14:37
-# (no am/pm needed)
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
+# example:
+# 25. Mai 2007
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# example:
-# 25. Mai 2007
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e. %B %Y"
 
@@ -90,31 +97,35 @@ msgstr "Infobereich"
 msgid "Show system tray"
 msgstr "Infobereich anzeigen"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "Der Infobereich ist ein Konzept, das von einigen älteren Anwendungen benutzt wird, um dich auf etwas aufmerksam zu machen oder nach dem Schließen im Hintergrund weiterzulaufen."
+
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Immer den Modus Kleiner Bildschirm verwenden"
+
+#: ../data/mutter-moblin.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Legt die Reihenfolge der Panels auf der Werkzeugleiste fest."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-moblin.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Erzwingt, dass der Modus Kleiner Bildschirm verwendet wird, auch wenn die Anzeige normalerweise einen größeren Bildschirmmodus impliziert."
+
+#: ../data/mutter-moblin.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Reihenfolge der Panels auf der Werkzeugleiste"
 
-#: ../src/meego-netbook.c:1018
-msgid "Meego Netbook Effects"
-msgstr "Meego-Effekte auf dem Netbook"
+#: ../src/moblin-netbook.c:825
+msgid "Moblin Netbook Effects"
+msgstr "Moblin-Effekte auf dem Netbook"
 
-#: ../src/meego-netbook.c:1022
-msgid "Effects for Meego Netbooks"
-msgstr "Effekte für Netbooks mit Meego"
+#: ../src/moblin-netbook.c:829
+msgid "Effects for Moblin Netbooks"
+msgstr "Effekte für Netbooks mit Moblin"
 
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "Aktivieren"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "Unbekanntes Fenster"
-
-#: ../src/mnb-toolbar.c:1000
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "%s funktioniert leider nicht."
@@ -123,34 +134,26 @@ msgstr "%s funktioniert leider nicht."
 # notification pop-ups, I think "Ignorieren" (= Ignore) would be the best
 # translation in this context. (User has to click the button to make the
 # notification go away without taking any action.)
-#: ../src/notifications/mnb-notification.c:282
+#: ../src/notifications/ntf-notification.c:224
 msgid "Dismiss"
 msgstr "Ignorieren"
 
 # see note at "Dismiss"...
-#: ../src/notifications/mnb-notification-cluster.c:663
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "Alle ignorieren"
 
-#: ../src/meego-netbook.c:3234
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Unbekanntes Fenster"
+
+#: ../src/notifications/ntf-wm.c:107
 msgid "is asking for your attention."
 msgstr "sucht deine Aufmerksamkeit."
 
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "Du kannst viele der Panels in der Werkzeugleiste hinzufügen, entfernen oder neu anordnen."
-
-#: ../data/mutter-meego.schemas.in.h:1
-msgid "Always use small screen mode"
-msgstr "Immer den Modus Kleiner Bildschirm verwenden"
-
-#: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
-msgstr "Der Infobereich ist ein Konzept, das von einigen älteren Anwendungen benutzt wird, um dich auf etwas aufmerksam zu machen oder nach dem Schließen im Hintergrund weiterzulaufen."
-
-#: ../data/mutter-meego.schemas.in.h:3
-msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-msgstr "Erzwingt, dass der Modus Kleiner Bildschirm verwendet wird, auch wenn die Anzeige normalerweise einen größeren Bildschirmmodus impliziert."
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Aktivieren"
 
 #~ msgid "System tray"
 #~ msgstr "Infobereich"
@@ -221,14 +224,24 @@ msgstr "Erzwingt, dass der Modus Kleiner Bildschirm verwendet wird, auch wenn di
 #~ msgid "No Zones yet"
 #~ msgstr "Noch keine Zonen"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Die von dir benutzten Anwendungen erscheinen hier. Du hast die Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Die von dir benutzten Anwendungen erscheinen hier. Du hast die "
+#~ "Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
 
 #~ msgid "No applications on this zone"
 #~ msgstr "In dieser Zone gibt es keine Anwendungen"
 
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige Beispielsdateien ansehen:"
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um "
+#~ "deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige "
+#~ "Beispielsdateien ansehen:"
 
 #~ msgid "Recently played"
 #~ msgstr "Vor kurzem abgespielt"
