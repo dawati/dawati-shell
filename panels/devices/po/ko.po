@@ -91,7 +91,7 @@ msgstr[1] "결정하지 않으시면, %d초 후에 종료됩니다."
 
 #: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
-msgstr "끕니다."
+msgstr "종료"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:184
 msgid "Would you like to turn off now?"
