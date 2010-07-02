@@ -2,14 +2,14 @@
 # Copyright (C) 2009 mutter-meego's copyright holder.
 # This file is distributed under the same license as the mutter-meego package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
-"PO-Revision-Date: 2009-12-11 19:55+0100\n"
-"Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
+"POT-Creation-Date: 2010-06-16 09:23+0000\n"
+"PO-Revision-Date: 2010-07-02 10:09-0800\n"
+"Last-Translator: francesca godani <francesca.godani@ptiglobal.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Italian\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Imposta le preferenze della barra degli strumenti"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Impostazioni della barra degli strumenti"
 
@@ -33,6 +33,10 @@ msgstr "Salva barra degli strumenti"
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Spiacenti, è necessario rimuovere un pannello prima di poter aggiungerne uno nuovo."
 
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Puoi aggiungere, rimuovere o riorganizzare molti dei pannelli nella barra degli strumenti."
+
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Pannelli disponibili"
@@ -41,8 +45,9 @@ msgstr "Pannelli disponibili"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H.%M"
 
@@ -50,21 +55,23 @@ msgstr "%H.%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%H.%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
@@ -85,62 +92,58 @@ msgstr "Barra degli strumenti del sistema"
 msgid "Show system tray"
 msgstr "Mostra la barra degli strumenti"
 
-#: ../data/mutter-meego.schemas.in.h:2
-msgid "Determines the order of panels on the toolbar."
-msgstr "Determina l'ordine dei pannelli sulla barra degli strumenti."
-
-#: ../data/mutter-meego.schemas.in.h:4
-msgid "Order of panels on toolbar"
-msgstr "Ordine dei pannelli sulla barra degli strumenti"
-
-#: ../src/meego-netbook.c:1018
-msgid "Meego Netbook Effects"
-msgstr "Effetti Meego netbook"
-
-#: ../src/meego-netbook.c:1022
-msgid "Effects for Meego Netbooks"
-msgstr "Effetti per i netbook Meego"
-
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "Attiva"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "Finestra sconosciuta"
-
-#: ../src/mnb-toolbar.c:1000
-#, c-format
-msgid "Sorry, %s is broken"
-msgstr "Spiacente, %s non funziona"
-
-#: ../src/notifications/mnb-notification.c:282
-msgid "Dismiss"
-msgstr "Ignora"
-
-#: ../src/notifications/mnb-notification-cluster.c:663
-msgid "Dismiss All"
-msgstr "Ignora tutto"
-
-#: ../src/meego-netbook.c:3234
-msgid "is asking for your attention."
-msgstr "Richiede la tua attenzione."
-
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "Puoi aggiungere, rimuovere o riorganizzare molti dei pannelli nella barra degli strumenti."
-
-#: ../data/mutter-meego.schemas.in.h:1
-msgid "Always use small screen mode"
-msgstr "Usare sempre la modalità schermo ridotto"
-
 #: ../capplet/src/syst-cc-panel.c:195
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "La barra degli strumenti del sistema è un concetto usato da alcune vecchie applicazioni per farti sapere quando succede qualcosa o per rimanere in esecuzione quando si chiudono."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-moblin.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Usare sempre la modalità schermo ridotto"
+
+#: ../data/mutter-moblin.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determina l'ordine dei pannelli sulla barra degli strumenti."
+
+#: ../data/mutter-moblin.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del display indicherebbero normalmente la modalità schermo grande."
+
+#: ../data/mutter-moblin.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "Ordine dei pannelli sulla barra degli strumenti"
+
+#: ../src/moblin-netbook.c:825
+msgid "Moblin Netbook Effects"
+msgstr "Effetti netbook Moblin "
+
+#: ../src/moblin-netbook.c:829
+msgid "Effects for Moblin Netbooks"
+msgstr "Effetti per i netbook Moblin"
+
+#: ../src/mnb-toolbar.c:1007
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Spiacente, %s non funziona"
+
+#: ../src/notifications/ntf-notification.c:224
+msgid "Dismiss"
+msgstr "Ignora"
+
+#: ../src/notifications/ntf-tray.c:308
+msgid "Dismiss All"
+msgstr "Ignora tutto"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Finestra sconosciuta"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "Richiede la tua attenzione."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Attiva"
 
 #~ msgid "System tray"
 #~ msgstr "Barra degli strumenti del sistema"
@@ -160,8 +163,12 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgid "No Zones yet"
 #~ msgstr "Zone non definite"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Le applicazioni in uso vengono mostrate qui. È possibile passare da un'applicazione all'altra e organizzarle come meglio si crede."
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Le applicazioni in uso vengono mostrate qui. È possibile passare da "
+#~ "un'applicazione all'altra e organizzarle come meglio si crede."
 
 #~ msgid "No applications on this zone"
 #~ msgstr "Nessuna applicazione in questa zona"
@@ -217,8 +224,14 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgid "test"
 #~ msgstr "test"
 
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "La cronologia personale sarà disponibile solo dopo aver ascoltato della musica, guardato alcune immagini o dei video. Per il momento sono mostrati alcuni contenuti di esempio:"
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "La cronologia personale sarà disponibile solo dopo aver ascoltato della "
+#~ "musica, guardato alcune immagini o dei video. Per il momento sono "
+#~ "mostrati alcuni contenuti di esempio:"
 
 #~ msgid "Recently played"
 #~ msgstr "Riprodotti di recente"
@@ -268,8 +281,12 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgid "applications"
 #~ msgstr "applicazioni"
 
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "Visitando delle pagine web, quelle preferite verranno visualizzate qui e nella pagina «Nuova scheda» del browser."
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "Visitando delle pagine web, quelle preferite verranno visualizzate qui e "
+#~ "nella pagina «Nuova scheda» del browser."
 
 #~ msgid "Untitled"
 #~ msgstr "Senza nome"
@@ -325,14 +342,24 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgid "No calendar entries this week"
 #~ msgstr "Questa settimana nessun appuntamento"
 
-#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-#~ msgstr "Una volta attivati gli account personali, qui verranno mostrate le notizie degli amici e i servizi web."
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "Una volta attivati gli account personali, qui verranno mostrate le "
+#~ "notizie degli amici e i servizi web."
 
 #~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
 #~ msgstr "<b>Benvenuti in Meego 2.0 per netbook</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Poiché Meego è un po' diverso rispetto agli altri computer, abiamo raccolto alcune informazioni per aiutare a comprendere al meglio come usarlo. Speriamo troviate tutto di Vostro gradimento, il team Meego."
+#~ msgid ""
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
+#~ msgstr ""
+#~ "Poiché Meego è un po' diverso rispetto agli altri computer, abiamo "
+#~ "raccolto alcune informazioni per aiutare a comprendere al meglio come "
+#~ "usarlo. Speriamo troviate tutto di Vostro gradimento, il team Meego."
 
 #~ msgid "Web page"
 #~ msgstr "Pagina web"
@@ -355,8 +382,11 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgid "Send a message"
 #~ msgstr "Invia un messaggio"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Non è stata trovata alcuna persona. È stato configurato un account di messaggistica istantanea?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Non è stata trovata alcuna persona. È stato configurato un account di "
+#~ "messaggistica istantanea?"
 
 #~ msgid "People"
 #~ msgstr "Persone"
@@ -377,7 +407,9 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgstr "Scegliere una zona per l'applicazione:"
 
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
-#~ msgstr "Per attivare la barra degli strumenti, muovere il puntatore verso la parte superiore dello schermo"
+#~ msgstr ""
+#~ "Per attivare la barra degli strumenti, muovere il puntatore verso la "
+#~ "parte superiore dello schermo"
 
 #~ msgid "Offline"
 #~ msgstr "Fuori rete"
@@ -415,11 +447,18 @@ msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del dis
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Stato attuale - fuori rete"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "Per aggiornare il proprio stato è necessario configurare un account di un Servizio web che supporti i messaggi di stato"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Per aggiornare il proprio stato è necessario configurare un account di un "
+#~ "Servizio web che supporti i messaggi di stato"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Per aggiornare il proprio stato IM è necessario configurare un account di messaggistica istantanea"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Per aggiornare il proprio stato IM è necessario configurare un account di "
+#~ "messaggistica istantanea"
 
 #~ msgid "status"
 #~ msgstr "stato"
