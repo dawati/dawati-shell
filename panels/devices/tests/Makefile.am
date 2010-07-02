@@ -12,7 +12,7 @@ LDADD = \
   $(MPD_LIBS) \
   $(NULL)
 
-noinst_PROGRAMS = \
+tools = \
   test-battery-device \
   test-battery-icon \
   test-conf \
@@ -23,6 +23,12 @@ noinst_PROGRAMS = \
   test-storage-device \
   test-storage-device-tile \
   $(NULL)
+
+if INSTALL_TEST_TOOLS
+  pkglib_PROGRAMS = $(tools)
+else
+  noinst_PROGRAMS = $(tools)
+endif
 
 test_battery_device_SOURCES = \
   test-battery-device.c \

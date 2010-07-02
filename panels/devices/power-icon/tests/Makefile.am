@@ -8,13 +8,19 @@ AM_CFLAGS = \
   -DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
   $(NULL)
 
-noinst_PROGRAMS = \
+tools = \
   test-battery-notification \
   test-brightness-keys \
   test-idle-manager \
   test-shutdown-notification \
   test-xbacklight \
   $(NULL)
+
+if INSTALL_TEST_TOOLS
+  pkglib_PROGRAMS = $(tools)
+else
+  noinst_PROGRAMS = $(tools)
+endif
 
 LDADD = \
   $(top_builddir)/egg-console-kit/libegg-console-kit.la \
