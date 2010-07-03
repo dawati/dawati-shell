@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-myzone.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-09 09:22+0000\n"
-"PO-Revision-Date: 2010-06-10 15:27+0100\n"
+"POT-Creation-Date: 2010-06-29 16:02+0000\n"
+"PO-Revision-Date: 2010-07-03 12:11+0100\n"
 "Last-Translator: astur <malditoastur@gmail.com>\n"
 "Language-Team: asturian <alministradores@softastur.org>\n"
 "MIME-Version: 1.0\n"
@@ -92,8 +92,8 @@ msgid "Show as many recent files as possible"
 msgstr "Amosar el máximu conteníu de ficheros recientes"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "¿Quies llimpiar l'área de documentos recientes? Esto desaniciará'l conteníu llocal de Myzone."
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "¿Quies llimpiar los tos documentos recientes? Esto desaniciará'l conteníu llocal de Myzone."
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -139,8 +139,8 @@ msgid "Due %x"
 msgstr "Ye pa %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "Cuando tengas configuraes les tos cuentes Web y usao dalgunos ficheos, estos van apaecer equí en MyZone, pa poder acceder a ellos cenciellamente."
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "Cuando tengas configuraes les tos cuentes Web y usao dalgunos ficheros, estos van apaecer equí en MyZone, pa poder acceder a ellos cenciellamente."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
