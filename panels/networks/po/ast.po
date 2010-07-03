@@ -32,27 +32,32 @@ msgstr " o "
 msgid ", "
 msgstr ", "
 
-#: ../carrick/carrick-list.c:849 ../carrick/carrick-util.c:34
+#: ../carrick/carrick-list.c:849
+#: ../carrick/carrick-util.c:34
 msgid "wired"
 msgstr "Por cable"
 
 #. Switches
-#: ../carrick/carrick-list.c:850 ../carrick/carrick-pane.c:1429
+#: ../carrick/carrick-list.c:850
+#: ../carrick/carrick-pane.c:1429
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "Wi-Fi"
 
-#: ../carrick/carrick-list.c:851 ../carrick/carrick-pane.c:1471
+#: ../carrick/carrick-list.c:851
+#: ../carrick/carrick-pane.c:1471
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:852 ../carrick/carrick-pane.c:1457
+#: ../carrick/carrick-list.c:852
+#: ../carrick/carrick-pane.c:1457
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:853 ../carrick/carrick-pane.c:1485
+#: ../carrick/carrick-list.c:853
+#: ../carrick/carrick-pane.c:1485
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -63,23 +68,16 @@ msgstr "Bluetooth"
 #. * connectivity daemon, is not running.
 #.
 #: ../carrick/carrick-list.c:866
-msgid ""
-"Sorry, we can't find any networks. It appears that the connection manager is "
-"not running. You could try restarting your computer."
-msgstr ""
-"Nun s'alcuentra denguna rede. Paez que'l xestor de conexones nun ta "
-"executándose. Encamiéntase reaniciar el miniportátil."
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "Nun s'alcuentra denguna rede. Paez que'l xestor de conexones nun ta executándose. Encamiéntase reaniciar el miniportátil."
 
 #.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
 #: ../carrick/carrick-list.c:876
-msgid ""
-"Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr ""
-"Nun s'alcuentra denguna rede. Puede qu'heba que desactivar el mou fuera de "
-"llinia."
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Nun s'alcuentra denguna rede. Puede qu'heba que desactivar el mou fuera de llinia."
 
 #: ../carrick/carrick-list.c:1013
 #, c-format
@@ -139,41 +137,32 @@ msgstr "Camudó la rede"
 
 #: ../carrick/carrick-notification-manager.c:239
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a wired "
-"network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
 msgstr "Perdióse la conexón a %s, ansí que coneutósete a una rede cableada."
 
 #: ../carrick/carrick-notification-manager.c:246
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
-"network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
 msgstr "Perdióse la conexón a %s, ansí que coneutósete a %s, una rede %s."
 
 #: ../carrick/carrick-notification-manager.c:254
 #, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr "Perdióse la conexón a %s, ansí que coneutósete a una rede %s."
 
 #: ../carrick/carrick-notification-manager.c:264
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
 msgstr "Perdióse la conexón %s, ansí que coneutósete a una rede cableada."
 
 #: ../carrick/carrick-notification-manager.c:271
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
-"network"
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
 msgstr "Perdióse la conexón %s, ansí que coneutósete a %s, una rede %s."
 
 #: ../carrick/carrick-notification-manager.c:280
 #, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "Perdióse la conexón %s, ansí que coneutósete a una rede %s."
 
 #: ../carrick/carrick-pane.c:634
@@ -206,7 +195,8 @@ msgstr "Denguna"
 msgid "Password"
 msgstr "Contraseña"
 
-#: ../carrick/carrick-pane.c:731 ../carrick/carrick-service-item.c:1787
+#: ../carrick/carrick-pane.c:731
+#: ../carrick/carrick-service-item.c:1787
 msgid "Show password"
 msgstr "Amosar la contraseña"
 
@@ -214,7 +204,8 @@ msgstr "Amosar la contraseña"
 msgid "Settings"
 msgstr "Axustes"
 
-#: ../carrick/carrick-pane.c:1443 ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-pane.c:1443
+#: ../carrick/carrick-service-item.c:328
 msgid "Wired"
 msgstr "Con cable"
 
@@ -226,7 +217,8 @@ msgstr "Mou fuera de llinia"
 msgid "This will disable all your connections"
 msgstr "Esto deshabilitará toles conexones"
 
-#: ../carrick/carrick-pane.c:1556 ../src/carrick.c:369
+#: ../carrick/carrick-pane.c:1556
+#: ../src/carrick.c:369
 msgid "Networks"
 msgstr "Redes"
 
@@ -267,7 +259,8 @@ msgstr "ERROR: nun se deteutó'l hardware de 3G"
 msgid "%s encrypted"
 msgstr "%s cifráu"
 
-#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:357
+#: ../carrick/carrick-service-item.c:340
+#: ../carrick/carrick-service-item.c:357
 msgid "Disconnect"
 msgstr "Desconeutase"
 
@@ -279,7 +272,8 @@ msgstr "Coneutáu"
 msgid "Online"
 msgstr "En llinia"
 
-#: ../carrick/carrick-service-item.c:367 ../carrick/carrick-service-item.c:376
+#: ../carrick/carrick-service-item.c:367
+#: ../carrick/carrick-service-item.c:376
 #, c-format
 msgid "Cancel"
 msgstr "Encaboxar"
@@ -292,7 +286,8 @@ msgstr "Configurando"
 msgid "Associating"
 msgstr "Asociándose"
 
-#: ../carrick/carrick-service-item.c:388 ../carrick/carrick-service-item.c:413
+#: ../carrick/carrick-service-item.c:388
+#: ../carrick/carrick-service-item.c:413
 #: ../carrick/carrick-service-item.c:1774
 msgid "Connect"
 msgstr "Coneutase"
@@ -305,7 +300,8 @@ msgstr "Falló la conexón"
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Fallu na conexón. Inténtalo otra vegada."
 
-#: ../carrick/carrick-service-item.c:425 ../carrick/carrick-service-item.c:428
+#: ../carrick/carrick-service-item.c:425
+#: ../carrick/carrick-service-item.c:428
 #, c-format
 msgid "Disconnecting"
 msgstr "Desconeutándose"
@@ -331,48 +327,28 @@ msgstr ""
 
 #: ../carrick/carrick-service-item.c:786
 #, c-format
-msgid ""
-"Your password isn't the right length. For a WEP connection it needs to be "
-"either 10 or 26 characters, you have %i."
-msgstr ""
-"La contraseña nun tien la llonxitú afayadiza. Una conexón WEP requier 10 o "
-"26 carauteres. La to contraseña tien %i."
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
+msgstr "La contraseña nun tien la llonxitú afayadiza. Una conexón WEP requier 10 o 26 carauteres. La to contraseña tien %i."
 
 #: ../carrick/carrick-service-item.c:797
 #, c-format
-msgid ""
-"Your password is too short. For a WPA  connection it needs to be at least 8 "
-"characters long, you have %i"
-msgstr ""
-"La contraseña ye enforma curtia. Una conexón WPA requier al menos 8 "
-"carauteres. La to contraseña tien %i."
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "La contraseña ye enforma curtia. Una conexón WPA requier al menos 8 carauteres. La to contraseña tien %i."
 
 #: ../carrick/carrick-service-item.c:801
 #, c-format
-msgid ""
-"Your password is too long. For a WPA  connection it needs to have fewer than "
-"63 characters, you have %i"
-msgstr ""
-"La contraseña ye enforma llarga. Una conexón WPA requier menos de 63 "
-"carauteres. La to contraseña tien %i."
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "La contraseña ye enforma llarga. Una conexón WPA requier menos de 63 carauteres. La to contraseña tien %i."
 
 #: ../carrick/carrick-service-item.c:810
 #, c-format
-msgid ""
-"Your password is too short. For a WPA2  connection it needs to be at least 8 "
-"characters long, you have %i"
-msgstr ""
-"La contraseña ye enforma curtia. Una conexón WPA2 requiere al menos 8 "
-"carauteres. La to contraseña tien %i."
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "La contraseña ye enforma curtia. Una conexón WPA2 requiere al menos 8 carauteres. La to contraseña tien %i."
 
 #: ../carrick/carrick-service-item.c:814
 #, c-format
-msgid ""
-"Your password is too long. For a WPA2  connection it needs to have fewer "
-"than 63 characters, you have %i"
-msgstr ""
-"La contraseña ye enforma llarga. Una conexón WPA2 requier menos de 63 "
-"carauteres. La to contraseña tien %i."
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "La contraseña ye enforma llarga. Una conexón WPA2 requier menos de 63 carauteres. La to contraseña tien %i."
 
 #: ../carrick/carrick-service-item.c:1267
 msgid "Sorry, it looks like the IP address is not valid"
@@ -479,7 +455,8 @@ msgstr "Rede 3G - %s -"
 msgid "networks - %s - bluetooth"
 msgstr "Rede bluetooth - %s -"
 
-#: ../src/carrick.c:75 ../src/carrick.c:87
+#: ../src/carrick.c:75
+#: ../src/carrick.c:87
 msgid "networks"
 msgstr "Redes"
 
@@ -500,16 +477,17 @@ msgid "Carrick connectivity applet"
 msgstr "Applet de coneutividá Carrick"
 
 #: ../src/carrick.c:311
-#, fuzzy
 msgid "- MeeGo connectivity applet"
-msgstr "- Applet de coneutividá Moblin"
+msgstr "- Applet de coneutividá MeeGo"
 
-#: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:352
+#: ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "Rede"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -571,3 +549,4 @@ msgstr "Esbilla'l serviciu 3G"
 #: ../data/carrick.desktop.in.in.h:1
 msgid "Network settings"
 msgstr "Configuración de rede"
+
