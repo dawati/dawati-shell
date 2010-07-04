@@ -28,7 +28,6 @@ msgstr "تطبيقات"
 #. * Fav apps pane
 #. 
 #: ../src/meego-netbook-launcher.c:1065
-#, fuzzy
 msgid "Favorite applications"
 msgstr "التطبيقات المفضّلة"
 
