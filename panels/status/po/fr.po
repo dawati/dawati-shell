@@ -82,7 +82,6 @@ msgid "Change"
 msgstr "Changer"
 
 #: ../src/mps-feed-switcher.c:350
-#, fuzzy
 msgid "Add new web account"
 msgstr "Ajouter un nouveau service web"
 
