@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:35+0000\n"
+"POT-Creation-Date: 2010-07-03 11:56+0000\n"
 "PO-Revision-Date: 2009-10-14 20:43+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -18,14 +18,26 @@ msgstr ""
 
 #: ../src/mnb-filter.c:161
 msgid "Search"
-msgstr "Procurar"
+msgstr "Buscar"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:842
+#: ../src/meego-netbook-launcher.c:1049
 msgid "Applications"
 msgstr "Aplicativos"
 
-#: ../src/meego-panel-applications.c:193
+#. * Fav apps pane
+#. 
+#: ../src/meego-netbook-launcher.c:1065
+msgid "Favorite applications"
+msgstr "Aplicativos preferidos"
+
+#. * Applications
+#. 
+#: ../src/meego-netbook-launcher.c:1092
+msgid "Your applications"
+msgstr "Os seus aplicativos"
+
+#: ../src/meego-panel-applications.c:223
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicativos"
@@ -33,15 +45,3 @@ msgstr "aplicativos"
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel de aplicativos"
-
-#. * Fav apps pane
-#. 
-#: ../src/meego-netbook-launcher.c:858
-msgid "Favorite applications"
-msgstr "Aplicativos favoritos"
-
-#. * Applications
-#. 
-#: ../src/meego-netbook-launcher.c:883
-msgid "Your applications"
-msgstr "Os seus aplicativos"
