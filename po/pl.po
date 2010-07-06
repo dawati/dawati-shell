@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-16 09:23+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
 "Language-Team: Meego\n"
@@ -18,11 +18,11 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Ustaw preferencje paska narzędzi"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Ustawienia paska narzędzi"
 
@@ -97,28 +97,28 @@ msgstr "Pokaż pasek systemowy"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Pasek systemowy jest używany przez niektóre starsze aplikacje w celu informowania o zdarzeniach, lub aby aplikacja pozostała uruchomiona po zamknięciu okna."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Zawsze używaj trybu małego ekranu"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Określa kolejność paneli na pasku narzędzi."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Wymusza tryb małego ekranu nawet jeśli rozmiar wyświetlacza sugeruje duży ekran."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Kolejność paneli na pasku narzędzi"
 
-#: ../src/moblin-netbook.c:825
-msgid "Moblin Netbook Effects"
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
 msgstr "Efekty MeeGo na netbooku"
 
-#: ../src/moblin-netbook.c:829
-msgid "Effects for Moblin Netbooks"
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
 msgstr "Efekty dla Netbooków z MeeGo"
 
 #: ../src/mnb-toolbar.c:1007
