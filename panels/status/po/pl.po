@@ -2,14 +2,14 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: ewa zielinska <zielinskaewa@yahoo.com>\n"
+"Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,33 +18,37 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Witaj! To jest panel Stan. Po skonfigurowaniu konta usługi internetowej (takiej jak Twitter), będzie można wyświetlać tu swoje informacje i aktualizować swój stan/"
+msgstr "Witaj! To jest panel Stanu. Po skonfigurowaniu kont usług internetowych (np. Twitter) będa się tu wyświetlać informacje z wybranych usług.Ty także będziesz mógł wysyłać informacje za pośrednictwem skonfigurowanych kont."
 
 # either "stan" or "status"
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "Stan"
 
 # either "stan" or "status"
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "stan"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Panel stanu"
 
 #: ../src/mps-feed-pane.c:92
 msgid "Unable to update status. The service may be unavailable or your password could be wrong."
-msgstr "Nie można zaktualizować stanu. Usługa może być niedostępna, lub hasło może być błędne."
+msgstr "Nie można zaktualizować stanu. Usługa może być niedostępna lub hasło może być błędne."
 
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
 msgstr "Nie można zaktualizować stanu: Nie jesteś w trybie online."
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Odgadliśmy Twoją lokalizację: %f %f"
 
 #: ../src/mps-feed-pane.c:452
 #, c-format
@@ -84,12 +88,12 @@ msgid "Change"
 msgstr "Zmień"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
+msgid "Add new web account"
 msgstr "Dodaj nową usługę internetową"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Nie masz skonfigurowanych żadnych usług internetowych, lub wystąpił problem z ich konfiguracją. Użyj powyższego przycisku, aby otworzyć okno Moje konta internetowe i skonfigurować."
+msgstr "Nie masz skonfigurowanych żadnych usług internetowych lub wystąpił problem z ich konfiguracją. Użyj powyższego przycisku, aby otworzyć okno Moje konta internetowe i skonfigurować."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -119,12 +123,9 @@ msgstr "Nie używaj lokalizacji"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s z %s"
 
-#: ../src/mps-feed-pane.c:444
-msgid "We were unable to guess your location"
-msgstr "Odgadliśmy Twoją lokalizację: %f %f"
