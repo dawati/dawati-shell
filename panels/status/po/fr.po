@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-05 09:18+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: David Cicognani <david.cicognani@ptiglobal.net>\n"
+"Last-Translator: Martine <martine.landais@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,21 +14,21 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "Bonjour ! Voici le panneau Statut. Lorsque vous avez un compte web configuré (comme Twitter) vous pourrez voir vos flux et mettre à jour votre statut ici."
 
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "Statut"
 
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "statut"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Panneau de statut"
 
@@ -39,6 +39,10 @@ msgstr "Impossible de mettre à jour le statut : le service est peut être indis
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
 msgstr "Impossible de mettre à jour votre statut : vous n'êtes pas connecté."
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Nous n'avons pas pu deviner votre position"
 
 #: ../src/mps-feed-pane.c:452
 #, c-format
@@ -78,7 +82,8 @@ msgid "Change"
 msgstr "Changer"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
+#, fuzzy
+msgid "Add new web account"
 msgstr "Ajouter un nouveau service web"
 
 #: ../src/mps-feed-switcher.c:373
@@ -113,57 +118,50 @@ msgstr "Utiliser la position"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s de %s"
 
-#: ../src/mps-feed-pane.c:444
-msgid "We were unable to guess your location"
-msgstr "Nous n'avons pas pu deviner votre position"
-
 #~ msgid "Offline"
 #~ msgstr "Déconnecté"
-
 #~ msgid "Available"
 #~ msgstr "Disponible"
-
 #~ msgid "Away"
 #~ msgstr "Absent"
-
 #~ msgid "Busy"
 #~ msgstr "Occupé"
-
 #~ msgid "Close"
 #~ msgstr "Fermer"
-
 #~ msgid "Unknown account"
 #~ msgstr "Compte inconnu"
-
 #~ msgid "Edit"
 #~ msgstr "Éditer"
-
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Saisissez votre statut pour %s ici..."
-
 #~ msgid "Enter your current status here..."
 #~ msgstr "Saisissez votre statut actuel ici..."
-
 #~ msgid "Your current status"
 #~ msgstr "Votre statut actuel"
-
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Votre statut actuel - vous êtes déconnecté"
-
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte Messenger ?"
-
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "Pour mettre à jour votre statut Web, configurez un compte de services Web avec un fournisseur qui autorise de tels messages"
-
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Installez un compte de  messagerie instantanée pour mettre à jour votre statut"
-
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Désolé, nous n'avons trouvé personne. Êtes-vous sûr d'avoir un compte "
+#~ "Messenger ?"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Pour mettre à jour votre statut Web, configurez un compte de services Web "
+#~ "avec un fournisseur qui autorise de tels messages"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Installez un compte de  messagerie instantanée pour mettre à jour votre "
+#~ "statut"
 #~ msgid "Post"
 #~ msgstr "Actualiser"
+
