@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-16 09:23+0000\n"
+"POT-Creation-Date: 2010-07-05 09:17+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: David Cicognani <david.cicognani@ptiglobal.net>\n"
+"Last-Translator: Martine <martine.landais@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Définir les préférences de la barre d’outils"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Paramètres de la barre d’outils"
 
@@ -38,36 +38,39 @@ msgstr "Vous pouvez ajouter, supprimer ou réorganiser la plupart des panneaux d
 msgid "Available panels"
 msgstr "Panneaux disponibles"
 
+# For France, use 24-hour clock
 #. translators: translate this to a suitable 24 hourt time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# For France, use 24-hour clock
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
+# For France, use 24-hour clock
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# For France, use 24-hour clock
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e %B %Y"
 
@@ -92,21 +95,29 @@ msgstr "Montrer la barre d'état"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "La barre d'état est un concept utilisé par certaines applications pour vous permettre de savoir quand quelque chose se passe ou pour rester en exécution lorsque vous les fermez."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Toujours utiliser le mode petit écran"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Établit l'ordre des panneaux sur la barre d'outils."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Force l'utilisation du mode petit écran même quand la taille de l'écran pourrait autoriser un mode d'écran plus large."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordre des panneaux sur la barre d'outils"
+
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
+msgstr "Effets spéciaux pour Netbooks utilisant MeeGo"
+
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
+msgstr "Effets spéciaux pour Netbooks utilisant MeeGo"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -133,154 +144,114 @@ msgstr "requiert votre attention."
 msgid "Activate"
 msgstr "Activer"
 
-#: ../src/moblin-netbook.c:829
-msgid "Effects for Moblin Netbooks"
-msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
-
-#: ../src/moblin-netbook.c:825
-msgid "Moblin Netbook Effects"
-msgstr "Effets spéciaux pour Netbooks utilisant Moblin"
-
 #~ msgid "System tray"
 #~ msgstr "Barre d'état"
-
 #~ msgid "Socket for embedding"
 #~ msgstr "Socket pour l’intégration"
-
 #~ msgid "- Meego Toolbar Preferences"
 #~ msgstr "- Préférences de la barre d’outils Meego"
-
 #~ msgid "socket"
 #~ msgstr "socket"
-
 #~ msgid "zones"
 #~ msgstr "zones"
-
 #~ msgid "No Zones yet"
 #~ msgstr "Aucune zone n'est définie"
-
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Les applications que vous utilisez vont apparaître ici. Vous pourrez les organizer et y accéder à votre guise."
-
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Les applications que vous utilisez vont apparaître ici. Vous pourrez les "
+#~ "organizer et y accéder à votre guise."
 #~ msgid "No applications on this zone"
 #~ msgstr "Pas d'applications dans cette zone"
-
 #~ msgid "Less than a minute ago"
 #~ msgstr "Il y a moins d'une minute"
-
 #~ msgid "A few minutes ago"
 #~ msgstr "Il y a quelques minutes"
-
 #~ msgid "A couple of hours ago"
 #~ msgstr "Il y a quelques heures"
-
 #~ msgid "Earlier today"
 #~ msgstr "Un peu plus tôt aujourd'hui"
-
 #~ msgid "On %A"
 #~ msgstr "%A"
-
 #~ msgid "Last week"
 #~ msgstr "La semaine dernière"
-
 #~ msgid "A couple of weeks ago"
 #~ msgstr "Il y a quelques semaines"
-
 #~ msgid "This month"
 #~ msgstr "Ce mois"
-
 #~ msgid "Last month"
 #~ msgstr "Le mois dernier"
-
 #~ msgid "This year"
 #~ msgstr "Cette année"
-
 #~ msgid "Last year"
 #~ msgstr "L'année dernière"
-
 #~ msgid "Ages ago"
 #~ msgstr "Ça fait un bail"
-
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "Vous devez avoir écouté de la musique, regardé des photos ou des vidéos avant de pouvoir consulter votre historique. Pour le moment, vous pouvez accéder à des fichiers multimédia de démo :"
-
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "Vous devez avoir écouté de la musique, regardé des photos ou des vidéos "
+#~ "avant de pouvoir consulter votre historique. Pour le moment, vous pouvez "
+#~ "accéder à des fichiers multimédia de démo :"
 #~ msgid "Recently played"
 #~ msgstr "Récemment utilisés"
-
 #~ msgid "Search results"
 #~ msgstr "Résultats de recherche"
-
 #~ msgid "Playqueue"
 #~ msgstr "File de lecture"
-
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "Saison %u, épisode %u"
-
 #~ msgid "Previous"
 #~ msgstr "Précédent"
-
 #~ msgid "Next"
 #~ msgstr "Suivant"
-
 #~ msgid "Media"
 #~ msgstr "Fichiers multimédia"
-
 #~ msgid "Search"
 #~ msgstr "Rechercher"
-
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Saison %d épisode %d"
-
 #~ msgid "Season %d"
 #~ msgstr "Saison %d"
-
 #~ msgid "Episode %d"
 #~ msgstr "Épisode %d"
-
 #~ msgid "Year %d"
 #~ msgstr "Année %d"
-
 #~ msgid "media"
 #~ msgstr "fichiers multimédia"
-
 #~ msgid "Favourite Applications"
 #~ msgstr "Applications favorites"
-
 #~ msgid "Applications"
 #~ msgstr "Applications"
-
 #~ msgid "applications"
 #~ msgstr "applications"
-
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "Lorsque vous visitez des pages web, vos pages favorites apparaissent ici et sur la page Nouvel onglet du navigateur."
-
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "Lorsque vous visitez des pages web, vos pages favorites apparaissent ici "
+#~ "et sur la page Nouvel onglet du navigateur."
 #~ msgid "Untitled"
 #~ msgstr "Sans titre"
-
 #~ msgid "New tab"
 #~ msgstr "Nouvel onglet"
-
 #~ msgid "Internet"
 #~ msgstr "Internet"
-
 #~ msgid "Go"
 #~ msgstr "Lancer"
-
 #~ msgid "Tabs"
 #~ msgstr "Onglets"
-
 #~ msgid "Favorite pages"
 #~ msgstr "Pages favorites"
-
 #~ msgid "internet"
 #~ msgstr "Internet"
-
 #~ msgid "Search for %%s on %s"
 #~ msgstr "Chercher %%s dans %s"
-
 #~ msgid "Go to %s"
 #~ msgstr "Aller sur %s"
-
 #~ msgid "Copy"
 #~ msgstr "Copier"
+
