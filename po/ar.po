@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:26+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: 2009-11-10 23:16+0200\n"
 "Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
 "Language-Team: ITSOFTEX <info@itsoftex.com>\n"
@@ -16,52 +16,140 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../src/meego-netbook.c:391
-#: ../src/mnb-toolbar.c:1427
-msgid "zones"
-msgstr "مناطق"
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "تعيين تفضيلات شريط الأدوات"
 
-#: ../src/meego-netbook.c:504
-msgid "Meego Netbook Effects"
-msgstr "تأثيرات خاصة بأجهزة الانترنت التي تعمل بموبلن"
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "إعدادات شريط الأدوات"
 
-#: ../src/meego-netbook.c:508
-msgid "Effects for Meego Netbooks"
-msgstr "تأثيرات لأجهزة الانترنت التي تعمل بموبلن"
+#: ../capplet/src/mtp-bin.c:362
+msgid "Save toolbar"
+msgstr "حفظ شريط الأدوات"
 
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#: ../capplet/src/mtp-bin.c:367
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "عذرا ، سيكون عليك إزالة لوحة قبل أن تتمكن من إضافة واحدة جديدة."
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "يمكنك إضافة وإزالة ، وإعادة ترتيب العديد من لوحات في شريط الأدوات."
+
+#: ../capplet/src/mtp-jar.c:110
+msgid "Available panels"
+msgstr "تتوفر الألواح"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:675
+#. 
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:685
+#. 
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
-msgstr "%e %B, %Y"
+msgstr "%B %e, %Y"
 
-#: ../src/notifications/mnb-notification.c:262
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "شريط الأدوات"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "تعيين تفضيلات لوحة النظام"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:241
+msgid "System Tray"
+msgstr "لوحة النظام"
+
+#: ../capplet/src/syst-cc-panel.c:174
+msgid "Show system tray"
+msgstr "اظهر لوحة النظام"
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "لوحة النظام هي اداة تتيح معرفة حالة التطبيق"
+
+#: ../data/mutter-meego.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "دوما استخدام وضع الشاشة الصغيرة"
+
+#: ../data/mutter-meego.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "ثبت ترتيب لوحات على شريط الأدوات."
+
+#: ../data/mutter-meego.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "استخدم وضع الشاشة الصغيرة حتى لو كان العرض الافتراضي وضع الشاشة الكبيرة"
+
+#: ../data/mutter-meego.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "ترتيب اللوحات في شريط الأدوات"
+
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
+msgstr "ادوات ميقو للنوتبوك"
+
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
+msgstr "تأثيرات ميجو للنوتبوك"
+
+#: ../src/mnb-toolbar.c:1007
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "عذراً، %s عطلان "
+
+#: ../src/notifications/ntf-notification.c:224
 msgid "Dismiss"
-msgstr "استبعاد"
+msgstr "رفض"
 
-#: ../src/notifications/mnb-notification-cluster.c:668
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
-msgstr "استبعاد الكل"
+msgstr "رفض جميع"
 
-#: ../src/switcher/mnb-switcher.c:301
-msgid "No Zones yet"
-msgstr "لا مناطق حتى الآن"
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr " نافذة غير معروفة"
 
-#: ../src/switcher/mnb-switcher.c:321
-msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-msgstr "ستعرض هنا التطبيقات التي تستخدمها. سيكون بامكانك تبديلها وترتيبها بحسب رغبة قلبك."
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "يطلب انتباهك"
 
-#: ../src/switcher/mnb-switcher-zone-apps.c:463
-msgid "No applications on this zone"
-msgstr "لا يوجد تطبيقات في هذه المنطقة"
+#: ../src/notifications/ntf-wm.c:115
+#, fuzzy
+msgid "Activate"
+msgstr "تفعيل"
 
+#~ msgid "zones"
+#~ msgstr "مناطق"
+
+#~ msgid "No Zones yet"
+#~ msgstr "لا مناطق حتى الآن"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "ستعرض هنا التطبيقات التي تستخدمها. سيكون بامكانك تبديلها وترتيبها بحسب رغبة قلبك."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "لا يوجد تطبيقات في هذه المنطقة"
