@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-16 11:32+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2009-11-14 00:01+0200\n"
 "Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
 "Language-Team: ITSOFTEX <info@itsoftex.com>\n"
@@ -16,88 +16,156 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../src/mnb-im-status-row.c:109
-#: ../src/mnb-im-status-row.c:110
-#: ../src/mnb-im-status-row.c:809
-#: ../src/moblin-panel-status.c:491
-msgid "Offline"
-msgstr "غير متصل"
+#: ../src/meego-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "مرحبا! هذه لوحة الحالة. عندما يكون لديك إعدادات حساب انترنت مثل(Twitter) تستطيع تغيير اعداداته واستعراضها هنا"
 
-#: ../src/mnb-im-status-row.c:111
-#: ../src/moblin-panel-status.c:495
-msgid "Available"
-msgstr "متوفر"
+#: ../src/meego-panel-status.c:100
+msgid "Status"
+msgstr "الحالة"
 
-#: ../src/mnb-im-status-row.c:112
-#: ../src/mnb-im-status-row.c:113
-#: ../src/moblin-panel-status.c:499
-#: ../src/moblin-panel-status.c:503
-msgid "Away"
-msgstr "بعيد"
-
-#: ../src/mnb-im-status-row.c:114
-#: ../src/mnb-im-status-row.c:115
-#: ../src/moblin-panel-status.c:507
-#: ../src/moblin-panel-status.c:511
-msgid "Busy"
-msgstr "مشغول"
-
-#: ../src/mnb-im-status-row.c:138
-msgid "Close"
-msgstr "إغلاق"
-
-#: ../src/mnb-im-status-row.c:147
-#: ../src/mnb-im-status-row.c:827
-msgid "Change"
-msgstr "تغيير"
-
-#: ../src/mnb-im-status-row.c:812
-msgid "Unknown account"
-msgstr "حساب غير معروف"
-
-#: ../src/mnb-web-status-entry.c:88
-#: ../src/mnb-web-status-entry.c:641
-#: ../src/mnb-web-status-entry.c:722
-msgid "Edit"
-msgstr "حرر"
-
-#. Translators: %s is the user visible name of the service
-#: ../src/mnb-web-status-entry.c:515
-#, c-format
-msgid "Enter your %s status here..."
-msgstr "ادخل الحالة عندما تكون حالتك %s"
-
-#: ../src/mnb-web-status-entry.c:519
-#: ../src/mnb-web-status-entry.c:592
-msgid "Enter your current status here..."
-msgstr "ادخل الحالة الحالية هنا..."
-
-#: ../src/mnb-web-status-entry.c:701
-msgid "Post"
-msgstr "نشر"
-
-#: ../src/moblin-panel-status.c:469
-msgid "Your current status"
-msgstr "حالتك الحالية"
-
-#: ../src/moblin-panel-status.c:471
-#: ../src/moblin-panel-status.c:930
-msgid "Your current status - you are offline"
-msgstr "حالتك الحالية - غير متصل"
-
-#: ../src/moblin-panel-status.c:795
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "نأسف، لم نتمكن من ايجاد أشخاص. هل أعددت حساب للمرسالة؟"
-
-#: ../src/moblin-panel-status.c:964
-msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-msgstr "لتحديث حالتك في الويب تحتاج لإعداد حساب خدمات الويب عن طريق مزوّد يدعم رسائل الحالة"
-
-#: ../src/moblin-panel-status.c:991
-msgid "To update your IM status you need to setup an Instant Messaging account"
-msgstr "لتحديث حالة الرسائل الفورية تحتاج لإعداد حساب للرسائل الفورية"
-
-#: ../src/moblin-panel-status.c:1086
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "الحالة"
 
+#. vim:set ts=8 expandtab
+#: ../data/meego-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "شريط الحالة"
+
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "غير قادر على تحديث المعلومات. قد تكون هذه الخدمة غير متوفرة أو كلمة السر  خاطئة."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "غير قادر على تحديث الحالة أنت غير متصل."
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "لم نتمكن من تخمين موقعك"
+
+#: ../src/mps-feed-pane.c:452
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "نحن خمنت موقعك على النحو التالي :%s (%f, %f))"
+
+#: ../src/mps-feed-pane.c:458
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "تم مشاركة موقعك كما يلي:%s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:468
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "نتوقع موقعك في :%f %f"
+
+#: ../src/mps-feed-pane.c:472
+#, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "تم مشاركة موقعك كما يلي:%f %f"
+
+#: ../src/mps-feed-pane.c:482
+msgid "Your location is not being shared"
+msgstr "لم تتم مشاركة موقعك"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:585
+msgid "Update"
+msgstr "لتحديث"
+
+#: ../src/mps-feed-pane.c:590
+msgid "What's happening?"
+msgstr "ما الذي يحدث؟"
+
+#: ../src/mps-feed-pane.c:640
+msgid "Change"
+msgstr "تغيير"
+
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web account"
+msgstr "إضافة حساب إنترنت جديد"
+
+#: ../src/mps-feed-switcher.c:373
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "لم تتمكن من إعداد خدمة الانترنت أو قد تكون حدثت مشكلة في الاعداد. استخدم الزر في الاعلى لفتح إعداد حساب الانترنت"
+
+#: ../src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr "موقعك الخاص"
+
+#: ../src/mps-geotag-pane.c:568
+msgid "Search"
+msgstr "بحث"
+
+#: ../src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr "أين أنت؟"
+
+#: ../src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr "ابحث عني"
+
+#: ../src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr "استخدام الموقع"
+
+#: ../src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr "لا تستخدم الموقع"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:528
+#, c-format
+msgid "%s from %s"
+msgstr "%s من %s"
+
+#~ msgid "Offline"
+#~ msgstr "غير متصل"
+
+#~ msgid "Available"
+#~ msgstr "متوفر"
+
+#~ msgid "Away"
+#~ msgstr "بعيد"
+
+#~ msgid "Busy"
+#~ msgstr "مشغول"
+
+#~ msgid "Close"
+#~ msgstr "إغلاق"
+
+#~ msgid "Unknown account"
+#~ msgstr "حساب غير معروف"
+
+#~ msgid "Edit"
+#~ msgstr "حرر"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "ادخل الحالة عندما تكون حالتك %s"
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "ادخل الحالة الحالية هنا..."
+
+#~ msgid "Post"
+#~ msgstr "نشر"
+
+#~ msgid "Your current status"
+#~ msgstr "حالتك الحالية"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "حالتك الحالية - غير متصل"
+
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "نأسف، لم نتمكن من ايجاد أشخاص. هل أعددت حساب للمرسالة؟"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "لتحديث حالتك في الويب تحتاج لإعداد حساب خدمات الويب عن طريق مزوّد يدعم رسائل الحالة"
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "لتحديث حالة الرسائل الفورية تحتاج لإعداد حساب للرسائل الفورية"
