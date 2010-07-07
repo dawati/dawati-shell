@@ -1,62 +1,102 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Pavel, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 23:51+0000\n"
-"PO-Revision-Date: 2010-02-19 10:22+0100\n"
-"Last-Translator: Petr Novák <peta.en@gmail.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2010-06-29 16:03+0000\n"
+"PO-Revision-Date: 2010-07-06 10:38+0200\n"
+"Last-Translator: Pavel\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../src/meego-panel-people.c:88
-#: ../src/mnb-people-panel.c:493
+#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:476
 #: ../data/meego-panel-people.desktop.in.in.h:2
 msgid "people"
-msgstr "lidé"
+msgstr "Lidé"
 
-#: ../src/mnb-people-panel.c:265
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Litujeme, ale nemůžeme nikoho najít. Nastavili jste si IM účet?"
+#: ../src/mnb-people-panel.c:57
+msgid ""
+"Hello! This is the People panel. When you have an IM service configured "
+"(like Messenger), this is where you chat to people."
+msgstr ""
+"Ahoj! Toto je panel Lidé. Když máte nastavenu službu pro okamžité"
+"posílání zpráv (například program \"Messenger\" neboli Posel), zde "
+"si můžete povídat s lidmi."
 
-#: ../src/mnb-people-panel.c:377
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Litujeme, ale nemůžeme nikoho najít. Vypadá to, že jsou všichni offline."
-
-#: ../src/mnb-people-panel.c:422
-msgid "To see your IM contacts, you need to go online."
-msgstr "Abyste viděli vaše IM kontakty, musíte být online."
-
-#: ../src/mnb-people-panel.c:474
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
 #, c-format
-msgid "people - %d people are talking to you"
-msgstr "lidé - %d lidí s vámi mluví"
+msgid "Open %s"
+msgstr "Otevřít %s"
 
-#: ../src/mnb-people-panel.c:481
-msgid "people - Someone is talking to you"
-msgstr "lidé - někdo s vámi mluví"
+#: ../src/mnb-people-panel.c:231
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr ""
+"Litujeme, ale nemůžeme nikoho najít. Nastavil jste si účet pro okamžité"
+"posílání zpráv?"
 
-#: ../src/mnb-people-panel.c:671
+#: ../src/mnb-people-panel.c:283
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr ""
+"Litujeme, ale nemůžeme nikoho najít. Vypadá to, že všichni jsou "
+"nepřipojeni k internetu."
+
+#: ../src/mnb-people-panel.c:328
+msgid "To see your IM contacts, you need to go online."
+msgstr ""
+"Abyste viděl svá spojení pro okamžité posílání zpráv, musíte se připojit k "
+"internetu."
+
+#: ../src/mnb-people-panel.c:458
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "Lidé - povídáte si s %d lidmi"
+
+#: ../src/mnb-people-panel.c:465
+msgid "people - you are chatting with someone"
+msgstr "Lidé - s někým si povídáte"
+
+#. Populate header
+#: ../src/mnb-people-panel.c:669 ../src/mnb-people-panel.c:923
 msgid "People"
 msgstr "Lidé"
 
-#: ../src/mnb-people-panel.c:684
+#: ../src/mnb-people-panel.c:682
 msgid "Search"
 msgstr "Hledat"
 
-#: ../src/mnb-people-panel.c:747
-msgid "People talking to you ..."
-msgstr "Lidé, kteří s vámi mluví ..."
+#: ../src/mnb-people-panel.c:733 ../src/mnb-people-panel.c:1122
+msgid "You are chatting with:"
+msgstr "Povídáte si s:"
+
+#: ../src/mnb-people-panel.c:940
+msgid "Me and my people"
+msgstr "Já a moji lidé"
+
+#: ../src/mnb-people-panel.c:978
+msgid "Me"
+msgstr "Já"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1079
+msgid "My conversations"
+msgstr "Moje hovory"
 
 #: ../data/meego-panel-people.desktop.in.in.h:1
 msgid "People panel"
-msgstr "Panel lidé"
+msgstr "Panel Lidé"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "lidé - někdo s vámi mluví"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Lidé, kteří s vámi mluví ..."
 
 #~ msgid "Send an email"
 #~ msgstr "Poslat e-mail"
