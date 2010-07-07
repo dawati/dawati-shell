@@ -1,0 +1,458 @@
+#
+# Pavel, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-29 15:57+0000\n"
+"PO-Revision-Date: 2010-07-06 23:18+0200\n"
+"Last-Translator: Pavel\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../data/meego-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Panel Zařízení"
+
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:160
+msgid "devices"
+msgstr "Zařízení"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Zakázáno"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u výstup"
+msgstr[1] "%u výstupy"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u vstup"
+msgstr[1] "%u vstupy"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Systémové zvuky"
+
+#: ../power-icon/src/meego-power-icon.c:46
+msgid "MeeGo Power Icon"
+msgstr "MeeGo symbol pro stav elektrické energie"
+
+#: ../power-icon/src/mpd-power-icon.c:76
+msgid "Running low on battery"
+msgstr "Baterie ztrácí sílu"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid ""
+"I've noticed that your battery is running a bit low. If you can, it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Bylo zjištěno, že baterie ztrácí sílu. Je-li to možné, bylo by dobré ji "
+"zapojit "
+"do elektrické sítě a dobít."
+
+#: ../power-icon/src/mpd-power-icon.c:80
+msgid "Getting close to empty"
+msgstr "baterie je téměř prázdná"
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can."
+msgstr ""
+"Baterie je poměrně slabá. Opravdu by bylo dobré uložit celou vaši práci, "
+"a potom ji, jakmile to bude možné, připojit k síti a nechat ji nabít."
+
+#: ../power-icon/src/mpd-power-icon.c:85
+msgid "Danger!"
+msgstr "Nebezpečí!"
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid ""
+"Sorry, your computer is about to run out of battery. I'm going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Promiňte, ale váš počítač už je bez šťávy. Nyní bude vypnut. Uložte, "
+"prosím, všechnu svou práci a brzy na shledanou."
+
+#: ../power-icon/src/mpd-power-icon.c:429
+msgid "battery"
+msgstr "Baterie"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] ""
+"Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za %d sekundy."
+msgstr[1] ""
+"Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za %d sekund."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Vypnout"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Chcete nyní provést vypnutí?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za 30 sekund."
+
+#: ../src/meego-panel-devices.c:121
+msgid "MeeGo Devices Panel"
+msgstr "MeeGo panel Zařízení"
+
+#: ../src/mpd-battery-device.c:371
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Promiňte, ale zdá se, že nemáte nainstalovánu žádnou baterii."
+
+#: ../src/mpd-battery-device.c:375
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Vaše baterie se nabíjí. Je z asi %d%% plná."
+
+#: ../src/mpd-battery-device.c:380
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Vaše baterie se používá. Je z asi %d%% plná."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Vaše baterie je úplně nabita a jste připraven vyrazit."
+
+#: ../src/mpd-battery-device.c:389
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Promiňte, ale vypadá to, že vaše baterie je poškozena."
+
+#. First row.
+#: ../src/mpd-brightness-tile.c:141
+msgid "Netbook brightness"
+msgstr "Jas přenosného počítače"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "Váš počítač"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Všechna nastavení"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Zastrčte zařízení, a to bude\n"
+"automaticky rozpoznáno."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Jiná zařízení"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr ""
+"Vysunutí se nezdařilo. Vypadá to, že zařízení je používáno nějakým programem."
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Toto zařízení lze nyní bezpečně vytáhnout."
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
+"span>"
+msgstr ""
+"<span font-weight='bold'>Používáte</span> <span color='%s'>%d%% z %s</"
+"span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Koš"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Zařízení"
+
+#: ../src/mpd-storage-device-tile.c:242
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "%s se nepodařilo spustit."
+
+#: ../src/mpd-storage-device-tile.c:244
+msgid "Import error"
+msgstr "Chyba při zavádění"
+
+#: ../src/mpd-storage-device-tile.c:355
+msgid "Import photos"
+msgstr "Zavést fotografie"
+
+#: ../src/mpd-storage-device-tile.c:357
+msgid "Import media"
+msgstr "Zavést sdělovací prostředky"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:615
+msgid "Eject"
+msgstr "Vysunout"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:626
+msgid "Open"
+msgstr "Otevřít"
+
+#: ../src/mpd-storage-device-tile.c:819
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+"<span font-weight='bold'>%s</span> používá <span color='%s'>%d%% z %s</"
+"span>"
+
+#: ../src/mpd-storage-device-tile.c:827
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Ohlušující"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Velmi hlasitý"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Hlasitý"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Celkem hlasitý"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Zlatý střed"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Celkem tichý"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Tichý"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Velmi tichý"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Tichý"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Hlasitost počítače"
+
+#: ../src/mpd-volume-tile.c:371
+msgid "Mute"
+msgstr "Ztlumit"
+
+#~ msgid "Netbook volume"
+#~ msgstr "Netbook-Lautstärke"
+
+#~ msgid "Meego Power Icon"
+#~ msgstr "Meego Energiesymbol"
+
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%"
+#~ "d%%</span>"
+
+#~ msgid "Stop"
+#~ msgstr "Stop"
+
+#~ msgid ""
+#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr ""
+#~ "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
+
+#~ msgid "USB plugged in"
+#~ msgstr "USB ist angeschlossen"
+
+#~ msgid "Show"
+#~ msgstr "Anzeigen"
+
+#~ msgid "CompactFlash"
+#~ msgstr "CompactFlash"
+
+#~ msgid "MemoryStick"
+#~ msgstr "Memory Stick"
+
+#~ msgid "SmartMedia"
+#~ msgstr "SmartMedia"
+
+#~ msgid "SecureDigital"
+#~ msgstr "SecureDigital"
+
+#~ msgid "SD High Capacity"
+#~ msgstr "SD High Capacity"
+
+#~ msgid "Floppy"
+#~ msgstr "Diskette"
+
+#~ msgid "Zip"
+#~ msgstr "Zip"
+
+#~ msgid "Jaz"
+#~ msgstr "Jaz"
+
+#~ msgid "CD"
+#~ msgstr "CD"
+
+#~ msgid "DVD"
+#~ msgstr "DVD"
+
+#~ msgid "Blu-Ray"
+#~ msgstr "Blu-ray"
+
+#~ msgid "HDDVD"
+#~ msgstr "HD DVD"
+
+#~ msgid "%s Drive"
+#~ msgstr "%s-Laufwerk"
+
+#~ msgid "%s %s Drive"
+#~ msgstr "%s %s-Laufwerk"
+
+#~ msgid "%s Hard Disk"
+#~ msgstr "%s Festplatte"
+
+#~ msgid "Hard Disk"
+#~ msgstr "Festplatte"
+
+#~ msgid "%s Solid-State Disk"
+#~ msgstr "%s Solid-State-Laufwerk"
+
+#~ msgid "Solid-State Disk"
+#~ msgstr "Solid-State-Laufwerk"
+
+#~ msgid "%s Media"
+#~ msgstr "%s Medium"
+
+#~ msgid "No Media Detected"
+#~ msgstr "Kein Medium gefunden"
+
+#~ msgid "MBR Partition Table"
+#~ msgstr "MBR Partitionstabelle"
+
+#~ msgid "GUID Partition Table"
+#~ msgstr "GUID Partitionstabelle"
+
+#~ msgid "Apple Partition Table"
+#~ msgstr "Apple Partitionstabelle"
+
+#~ msgid "Partitioned"
+#~ msgstr "Partitioniert"
+
+#~ msgid "Not Partitioned"
+#~ msgstr "Nicht Partitioniert"
+
+#~ msgid "SAS Expander"
+#~ msgstr "SAS-Expander"
+
+#~ msgid "PATA Host Adapter"
+#~ msgstr "PATA Hostadapter"
+
+#~ msgid "SATA Host Adapter"
+#~ msgstr "SATA Hostadapter"
+
+#~ msgid "ATA Host Adapter"
+#~ msgstr "ATA Hostadapter"
+
+#~ msgid "SAS Host Adapter"
+#~ msgstr "SAS Hostadapter"
+
+#~ msgid "SCSI Host Adapter"
+#~ msgstr "SCSI Hostadapter"
+
+#~ msgid "Host Adapter"
+#~ msgstr "Hostadapter"
+
+#~ msgid "Volume Group"
+#~ msgstr "Volume Group"
+
+#~ msgid "%s LVM2 Volume Group"
+#~ msgstr "%s LVM2 Volume Group"
+
+#~ msgid "LVM2 Volume Group"
+#~ msgstr "LVM2 Volume Group"
+
+#~ msgid "%s Free"
+#~ msgstr "%s frei"
+
+#~ msgid "Unallocated Space"
+#~ msgstr "Nicht zugewiesener Platz"
+
+#~ msgid "LVM2 VG Unallocated Space"
+#~ msgstr "LVM2 VG Nicht zugeteilter Platz"
+
+#~ msgid "Logical Volume"
+#~ msgstr "Logischer Datenträger (Logical Volume)"
+
+#~ msgid "LVM2 Logical Volume"
+#~ msgstr "LVM2 Logischer Datenträger (Logical Volume)"
+
+#~ msgid "%s %s Array"
+#~ msgstr "%s %s Array"
+
+#~ msgid "%s Array"
+#~ msgstr "%s Array"
+
+#~ msgid "RAID Array %s (%s)"
+#~ msgstr "RAID-Array %s (%s)"
+
+#~ msgid "RAID device %s"
+#~ msgstr "RAID-Gerät %s"
+
+#~ msgid "RAID"
+#~ msgstr "RAID"
+
+#~ msgid "RAID Array"
+#~ msgstr "RAID-Array"
+
+#~ msgid "Not Attached"
+#~ msgstr "Nicht angeschlossen"
+
+#~ msgid "Faulty"
+#~ msgstr "Fehlerhaft"
+
+#~ msgid "Fully Synchronized"
+#~ msgstr "Voll synchronisiert"
