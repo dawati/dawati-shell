@@ -1,42 +1,50 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Pavel, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-17 15:12+0000\n"
-"PO-Revision-Date: 2010-02-17 19:31+0100\n"
-"Last-Translator: Petr Novák <peta.en@gmail.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2010-06-29 15:47+0000\n"
+"PO-Revision-Date: 2010-07-06 11:44+0200\n"
+"Last-Translator: Pavel\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/meego-netbook-launcher.c:867
-msgid "Favorite Applications"
-msgstr "Oblíbené aplikace"
-
-#: ../src/meego-netbook-launcher.c:1427
-msgid "Applications"
-msgstr "Aplikace"
-
-#: ../src/meego-netbook-launcher.c:1438
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Hledat"
 
-#: ../src/meego-panel-applications.c:197
+#. Panel label
+#: ../src/meego-netbook-launcher.c:1049
+msgid "Applications"
+msgstr "Programy"
+
+#.
+#. * Fav apps pane
+#.
+#: ../src/meego-netbook-launcher.c:1065
+msgid "Favorite applications"
+msgstr "Oblíbené programy"
+
+#.
+#. * Applications
+#.
+#: ../src/meego-netbook-launcher.c:1092
+msgid "Your applications"
+msgstr "Vaše programy"
+
+#: ../src/meego-panel-applications.c:223
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
-msgstr "aplikace"
+msgstr "Programy"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
-msgstr "Panel aplikací"
+msgstr "Panel Programy"
 
