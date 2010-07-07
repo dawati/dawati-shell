@@ -1,57 +1,59 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
+# Pavel, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-11 22:48+0000\n"
-"PO-Revision-Date: 2010-02-06 00:49+0100\n"
-"Last-Translator: Petr Novák <peta.en@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2010-06-29 15:43+0000\n"
+"PO-Revision-Date: 2010-07-06 17:08+0200\n"
+"Last-Translator: Pavel\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
+#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
 msgid "Available"
-msgstr "Přítomen"
+msgstr "Dostupný"
 
-#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
+#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
 msgid "Busy"
 msgstr "Zaneprázdněn"
 
-#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
-#: ../anerley/anerley-presence-chooser.c:44
+#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
 msgid "Away"
 msgstr "Pryč"
 
-#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
 msgid "Offline"
-msgstr "Odpojen"
+msgstr "Odpojený"
 
-#: ../anerley/anerley-econtact-item.c:233
+#: ../anerley/anerley-econtact-item.c:234
 msgid "Unnamed"
 msgstr "Beze jména"
 
-#: ../anerley/anerley-presence-chooser.c:45
+#: ../anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr "Nenastavený"
+
+#: ../anerley/anerley-presence-chooser.c:46
 msgid "Extended Away"
 msgstr "Pryč na déle"
 
-#: ../anerley/anerley-presence-chooser.c:41
-msgid "Unset"
-msgstr "Nenastaven"
-
-#: ../anerley/anerley-presence-chooser.c:48
-msgid "Unknown"
-msgstr "Neznámý"
-
-#: ../anerley/anerley-presence-chooser.c:46
+#: ../anerley/anerley-presence-chooser.c:47
 msgid "Hidden"
 msgstr "Skrytý"
 
 #: ../anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: ../anerley/anerley-presence-chooser.c:50
 msgid "Error"
 msgstr "Chyba"
+
