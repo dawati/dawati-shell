@@ -1,0 +1,304 @@
+#
+# Pavel, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-29 16:09+0000\n"
+"PO-Revision-Date: 2010-07-07 09:14+0200\n"
+"Last-Translator: Pavel\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Nastavit nastavení nástrojového pruhu"
+
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Nastavení nástrojového pruhu"
+
+#: ../capplet/src/mtp-bin.c:362
+msgid "Save toolbar"
+msgstr "Uložit nástrojový pruh"
+
+#: ../capplet/src/mtp-bin.c:367
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr ""
+"Promiňte, ale předtím, než budete moci přidat nový panel, musíte nejprve "
+"jeden odstranit."
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr ""
+"Můžete do nástrojového pruhu přidat, odstranit a znovu uspořádat mnoho "
+"panelů."
+
+#: ../capplet/src/mtp-jar.c:110
+msgid "Available panels"
+msgstr "Dostupné panely"
+
+# example:
+# 14:37
+# (no am/pm needed)
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+msgid "%H:%M"
+msgstr "%H.%M"
+
+# example:
+# 14:37
+# (no am/pm needed)
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+msgid "%l:%M %P"
+msgstr "%H:%M"
+
+# example:
+# 25. Mai 2007
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+msgid "%B %e, %Y"
+msgstr "%e. %B %Y"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Nástrojový pruh"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Nastavit nastavení oznamovací oblasti"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:241
+msgid "System Tray"
+msgstr "Oznamovací oblast"
+
+#: ../capplet/src/syst-cc-panel.c:174
+msgid "Show system tray"
+msgstr "Ukázat oznamovací oblast"
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid ""
+"The system tray is a concept used by some older applications to let you know "
+"when something happens or to stay running when you close them."
+msgstr ""
+"Oznamovací oblast je pojetí používané některými staršími programy, "
+"abyste byl upozorněn, když se něco děje, nebo aby zůstaly běžet na "
+"pozadí, když vámi byly uzavřeny"
+
+#: ../data/mutter-meego.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Používat vždy režim malé obrazovky"
+
+#: ../data/mutter-meego.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Určuje pořadí panelů v nástrojovém pruhu."
+
+#: ../data/mutter-meego.schemas.in.h:3
+msgid ""
+"Forces small screen mode to be used even if display size would normally "
+"imply bigger screen mode."
+msgstr ""
+"Vynucuje použití režimu malé obrazovky, i kdyby velikost zobrazení"
+"obvykle naznačovala režim větší obrazovky."
+
+#: ../data/mutter-meego.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "Pořadí panelů v nástrojovém pruhu"
+
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
+msgstr "Efekty Meego v přenosném počítači"
+
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
+msgstr "Efekty pro přenosné počítače s Meego"
+
+#: ../src/mnb-toolbar.c:1007
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Promiňte, ale %s není bohužel v chodu."
+
+# Since I've come across this in the UI only in connection with a button in
+# notification pop-ups, I think "Ignorieren" (= Ignore) would be the best
+# translation in this context. (User has to click the button to make the
+# notification go away without taking any action.)
+#: ../src/notifications/ntf-notification.c:224
+msgid "Dismiss"
+msgstr "Odmítnout"
+
+# see note at "Dismiss"...
+#: ../src/notifications/ntf-tray.c:308
+msgid "Dismiss All"
+msgstr "Odmítnout vše"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Neznámé okno"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "žádá vaši pozornost."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Zapnout"
+
+#~ msgid "System tray"
+#~ msgstr "Infobereich"
+
+#~ msgid "Socket for embedding"
+#~ msgstr "Sockel für Embedding"
+
+#~ msgid "- Meego Toolbar Preferences"
+#~ msgstr "Meego Werkzeugleiste - Einstellungen"
+
+#~ msgid "socket"
+#~ msgstr "Sockel"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Vor weniger als einer Minute"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Vor einigen Minuten"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Vor ein paar Stunden"
+
+#~ msgid "Earlier today"
+#~ msgstr "Heute schon früher"
+
+#~ msgid "On %A"
+#~ msgstr "Am %A"
+
+#~ msgid "Last week"
+#~ msgstr "Letzte Woche"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Vor einigen Wochen"
+
+#~ msgid "This month"
+#~ msgstr "Diesen Monat"
+
+#~ msgid "Last month"
+#~ msgstr "Letzten Monat"
+
+#~ msgid "This year"
+#~ msgstr "Dieses Jahr"
+
+#~ msgid "Last year"
+#~ msgstr "Letztes Jahr"
+
+#~ msgid "Ages ago"
+#~ msgstr "Vor einer Ewigkeit"
+
+#~ msgid "zones"
+#~ msgstr "Zonen"
+
+#~ msgid "power & brightness"
+#~ msgstr "Energie und Helligkeit"
+
+#~ msgid "volume"
+#~ msgstr "Lautstärke"
+
+#~ msgid "bluetooth"
+#~ msgstr "Bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "Netzwerke"
+
+#~ msgid "test"
+#~ msgstr "Test"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Noch keine Zonen"
+
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Die von dir benutzten Anwendungen erscheinen hier. Du hast die "
+#~ "Möglichkeit, diese nach Herzenslust zu wechseln und zu ordnen."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "In dieser Zone gibt es keine Anwendungen"
+
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um "
+#~ "deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige "
+#~ "Beispielsdateien ansehen:"
+
+#~ msgid "Recently played"
+#~ msgstr "Vor kurzem abgespielt"
+
+#~ msgid "Search results"
+#~ msgstr "Suchergebnisse"
+
+#~ msgid "Playqueue"
+#~ msgstr "Wiedergabewarteschleife"
+
+#~ msgid "Season %u, Episode %u"
+#~ msgstr "Staffel %u, Folge %u"
+
+#~ msgid "Previous"
+#~ msgstr "Zurück"
+
+#~ msgid "Next"
+#~ msgstr "Weiter"
+
+#~ msgid "Media"
+#~ msgstr "Multimedia"
+
+#~ msgid "Search"
+#~ msgstr "Suchen"
+
+#~ msgid "Season %d Episode %d"
+#~ msgstr "Staffel %d Folge %d"
+
+#~ msgid "Season %d"
+#~ msgstr "Staffel %d"
+
+#~ msgid "Episode %d"
+#~ msgstr "Folge %d"
+
+#~ msgid "Year %d"
+#~ msgstr "Jahr %d"
+
+#~ msgid "media"
+#~ msgstr "Multimedia"
+
+#~ msgid "Favourite Applications"
+#~ msgstr "Lieblingsanwendungen"
+
+#~ msgid "Applications"
+#~ msgstr "Anwendungen"
+
+#~ msgid "applications"
+#~ msgstr "Anwendungen"
