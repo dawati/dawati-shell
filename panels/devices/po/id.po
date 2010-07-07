@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-devices master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:48+0000\n"
+"POT-Creation-Date: 2010-07-07 09:20+0000\n"
 "PO-Revision-Date: 2010-05-05 19:40+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -23,7 +23,7 @@ msgid "Devices panel"
 msgstr "Panel perangkat"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:162
+#: ../src/meego-panel-devices.c:160
 msgid "devices"
 msgstr "perangkat"
 
@@ -57,80 +57,94 @@ msgstr "Suara Sistem"
 msgid "MeeGo Power Icon"
 msgstr "Ikon Daya MeeGo"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "Baterai hampir habis"
 
-#: ../power-icon/src/mpd-power-icon.c:77
-msgid "We've noticed that your battery is running a bit low. If you can it would be a good idea to plug in and top up."
-msgstr "Baterai Anda hampir habis. Alangkah baiknya apabila Anda menyambung ke listrik dan mengisinya."
+#: ../power-icon/src/mpd-power-icon.c:78
+#, fuzzy
+msgid ""
+"I've noticed that your battery is running a bit low. If you can, it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Baterai Anda hampir habis. Alangkah baiknya apabila Anda menyambung ke "
+"listrik dan mengisinya."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "Nyaris habis"
 
-#: ../power-icon/src/mpd-power-icon.c:81
-msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can"
-msgstr "Baterai Anda nyaris habis. Sebaiknya Anda menyimpan semua pekerjaan Anda dan menyambung ke listrik secepatnya"
+#: ../power-icon/src/mpd-power-icon.c:82
+#, fuzzy
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can."
+msgstr ""
+"Baterai Anda nyaris habis. Sebaiknya Anda menyimpan semua pekerjaan Anda dan "
+"menyambung ke listrik secepatnya"
 
-#: ../power-icon/src/mpd-power-icon.c:85
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "Bahaya!"
 
-#: ../power-icon/src/mpd-power-icon.c:86
-msgid "Sorry, your computer is about to run out of battery. We're going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Maaf, baterai komputer Anda sekejap lagi habis. Kami mesti mematikan sekarang. Silakan simpan hasil kerja Anda dan semoga kita segera bertemu lagi."
+#: ../power-icon/src/mpd-power-icon.c:87
+#, fuzzy
+msgid ""
+"Sorry, your computer is about to run out of battery. I'm going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Maaf, baterai komputer Anda sekejap lagi habis. Kami mesti mematikan "
+"sekarang. Silakan simpan hasil kerja Anda dan semoga kita segera bertemu "
+"lagi."
 
-#: ../power-icon/src/mpd-power-icon.c:342
-msgid "Would you like to turn off now?"
-msgstr "Anda mau mematikan sekarang?"
-
-#: ../power-icon/src/mpd-power-icon.c:343
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "Bila Anda tak memutuskan, komputer akan dimatikan dalam 30 detik"
-
-#: ../power-icon/src/mpd-power-icon.c:447
+#: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "baterai"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:75
-#, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "Bila Anda tak memutuskan, komputer akan dimatikan dalam %d detik"
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, fuzzy, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Bila Anda tak memutuskan, komputer akan dimatikan dalam %d detik"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:133
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "Matikan"
 
-#: ../power-icon/tests/test-battery-notification.c:58
-msgid "Meego Power Icon"
-msgstr "Ikon Daya Meego"
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Anda mau mematikan sekarang?"
 
-#: ../src/meego-panel-devices.c:123
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+#, fuzzy
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Bila Anda tak memutuskan, komputer akan dimatikan dalam 30 detik"
+
+#: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
 msgstr "Panel Perangkat MeeGo"
 
-#: ../src/mpd-battery-device.c:333
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Maaf, sepertinya Anda tidak memasang baterai."
 
-#: ../src/mpd-battery-device.c:337
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Baterai Anda sedang diisi. Kira-kira terisi %d%%."
 
-#: ../src/mpd-battery-device.c:342
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Baterai Anda sedang dipakai. Kira-kira terisi %d%%."
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Baterai Anda telah terisi penuh dan Anda siap untuk pergi."
 
-#: ../src/mpd-battery-device.c:351
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Maaf, sepertinya baterai Anda rusak."
@@ -160,59 +174,69 @@ msgstr ""
 msgid "Other devices"
 msgstr "Perangkat lain"
 
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr ""
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr ""
+
 #: ../src/mpd-disk-tile.c:65
 #, c-format
-msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>Anda memakai</span> <span color='%s'>%d%% dari %s</span>"
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
+"span>"
+msgstr ""
+"<span font-weight='bold'>Anda memakai</span> <span color='%s'>%d%% dari %s</"
+"span>"
 
 #: ../src/mpd-folder-tile.c:186
 msgid "Trash"
 msgstr "Tong Sampah"
 
-#: ../src/mpd-media-import-tile.c:73
-#, c-format
-msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-msgstr "<span font-weight='bold'>Mengimpor data</span> <span color='%s'>%d%%</span>"
-
-#: ../src/mpd-media-import-tile.c:217
-msgid "Stop"
-msgstr "Stop"
-
 #: ../src/mpd-shell.c:126
 msgid "Devices"
 msgstr "Perangkat"
 
-#: ../src/mpd-storage-device-tile.c:161
-#, c-format
-msgid "Could not run %s"
+#: ../src/mpd-storage-device-tile.c:242
+#, fuzzy, c-format
+msgid "Could not run \"%s\""
 msgstr "Tak bisa menjalankan %s"
 
-#: ../src/mpd-storage-device-tile.c:163
+#: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "Kesalahan impor"
 
-#. TODO: import button should only be shown if the import apps are available
-#. Import button
-#: ../src/mpd-storage-device-tile.c:498
-msgid "Import data"
+#: ../src/mpd-storage-device-tile.c:355
+#, fuzzy
+msgid "Import photos"
+msgstr "Impor data"
+
+#: ../src/mpd-storage-device-tile.c:357
+#, fuzzy
+msgid "Import media"
 msgstr "Impor data"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:509
+#: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
 msgstr "Keluarkan"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:520
+#: ../src/mpd-storage-device-tile.c:626
 msgid "Open"
 msgstr "Buka"
 
-#: ../src/mpd-storage-device-tile.c:710
+#: ../src/mpd-storage-device-tile.c:819
 #, c-format
-msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>%s</span> memakai <span color='%s'>%d%% dari %s</span>"
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+"<span font-weight='bold'>%s</span> memakai <span color='%s'>%d%% dari %s</"
+"span>"
 
-#: ../src/mpd-storage-device-tile.c:718
+#: ../src/mpd-storage-device-tile.c:827
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -253,11 +277,26 @@ msgstr "Sangat sunyi"
 msgid "Silent"
 msgstr "Tanpa suara"
 
-#: ../src/mpd-volume-tile.c:357
-msgid "Netbook volume"
-msgstr "Keras suara netbook"
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr ""
 
-#: ../src/mpd-volume-tile.c:373
+#: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Bisu"
 
+#~ msgid "Meego Power Icon"
+#~ msgstr "Ikon Daya Meego"
+
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>Mengimpor data</span> <span color='%s'>%d%%</"
+#~ "span>"
+
+#~ msgid "Stop"
+#~ msgstr "Stop"
+
+#~ msgid "Netbook volume"
+#~ msgstr "Keras suara netbook"
