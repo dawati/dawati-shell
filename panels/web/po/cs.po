@@ -1,0 +1,344 @@
+#
+# , 2004.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"PO-Revision-Date: 2004-01-02 15:45+0100\n"
+"Last-Translator: \n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 1.0\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Hledat %%s na %s"
+
+#: ../common/mwb-ac-list.cc:1334
+#, c-format
+msgid "Go to %s"
+msgstr "Jít na %s"
+
+# "go to website via Enter key"
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Stiskněte Enter\n"
+"pro přechod na stránky"
+
+# "Explore with arrow keys"
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Stiskněte šipku dolů\n"
+"pro prohlížení seznamu"
+
+# not 100% sure about the "New tab page" thing
+#: ../netpanel/meego-netbook-netpanel.cc:796
+msgid ""
+"As you visit web pages, your favorites will appear here and on the New tab "
+"page in the browser."
+msgstr ""
+"Když navštívíte internetové stránky, objeví se vaše oblíbené zde a v "
+"prohlížeči "
+"na stránce \"Nová karta\"."
+
+#: ../netpanel/meego-netbook-netpanel.cc:818
+#: ../netpanel/meego-netbook-netpanel.cc:941
+msgid "New tab"
+msgstr "Nová karta"
+
+#. Construct entry table widgets
+#: ../netpanel/meego-netbook-netpanel.cc:1216
+msgid "Your pages"
+msgstr "Vaše stránky"
+
+#: ../netpanel/meego-netbook-netpanel.cc:1229
+msgid "Search"
+msgstr "Hledat"
+
+#. Construct title for tab preview section
+#: ../netpanel/meego-netbook-netpanel.cc:1250
+msgid "Tabs"
+msgstr "Karty"
+
+#. Construct title for favorite pages section
+#: ../netpanel/meego-netbook-netpanel.cc:1255
+msgid "Favorite pages"
+msgstr "Oblíbené stránky"
+
+#: ../netpanel/meego-panel-web.cc:196
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "Internet"
+
+#: ../netpanel/meego-panel-web.cc:217 ../netpanel/meego-panel-web.cc:263
+msgid "Internet"
+msgstr "Internet"
+
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "Panel Internet"
+
+#~ msgid "It's the internet"
+#~ msgstr "Das Internet!"
+
+#~ msgid "Web Browser"
+#~ msgstr "Webbrowser"
+
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego Webbrowser - "
+
+#~ msgid "Loading..."
+#~ msgstr "Wird geladen..."
+
+#~ msgid "Untitled"
+#~ msgstr "Unbenannt"
+
+#~ msgid "Downloads"
+#~ msgstr "Downloads"
+
+#~ msgid "Downloads - %d%%"
+#~ msgstr "Downloads - %d%%"
+
+#~ msgid "Meego web browser"
+#~ msgstr "Meego Webbrowser"
+
+#~ msgid "Oops!"
+#~ msgstr "Oh je!"
+
+#~ msgid "New tab page"
+#~ msgstr "Neue Tab Seite"
+
+#~ msgid "Reload page"
+#~ msgstr "Seite neu laden"
+
+#~ msgid ""
+#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
+#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
+#~ "page or visit another one."
+#~ msgstr ""
+#~ "Leider brachte <span color=\"#909090\">%s</span> dieses Tab zum Absturz. "
+#~ "Der Browser ist unbeschädigt. Sie können versuchen, die Seite neu zu "
+#~ "laden oder eine andere besuchen. "
+
+#~ msgid "Download cancelled"
+#~ msgstr "Download abgebrochen"
+
+#~ msgid "Download completed"
+#~ msgstr "Download abgeschlossen"
+
+#~ msgid "Open file"
+#~ msgstr "Datei öffnen"
+
+#~ msgid "Find in Page"
+#~ msgstr "Suchen auf Seite"
+
+#~ msgid "Type to search"
+#~ msgstr "Eingabe zur Suche"
+
+#~ msgid "Next result"
+#~ msgstr "Nächstes Ergebnis"
+
+#~ msgid "Previous result"
+#~ msgstr "Vorheriges Ergebnis"
+
+#~ msgid "Run the browser in a window"
+#~ msgstr "Browser in einem Fenster starten"
+
+#~ msgid "Add the URL to the recent files list"
+#~ msgstr "URL zur Liste der letzten Dateien hinzufügen"
+
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego Webbrowser"
+
+#~ msgid "Open link in new tab"
+#~ msgstr "Link in neuem Tab öffnen"
+
+#~ msgid "Copy link location"
+#~ msgstr "Link-Adresse kopieren"
+
+#~ msgid "Save link"
+#~ msgstr "Link speichern"
+
+#~ msgid "View image"
+#~ msgstr "Bild anzeigen"
+
+#~ msgid "Copy image location"
+#~ msgstr "Bildort kopieren"
+
+#~ msgid "Save image"
+#~ msgstr "Bild speichern"
+
+#~ msgid "Copy text"
+#~ msgstr "Text kopieren"
+
+#~ msgid "Back"
+#~ msgstr "Zurück"
+
+#~ msgid "Forward"
+#~ msgstr "Weiter"
+
+#~ msgid "Stop"
+#~ msgstr "Stop"
+
+#~ msgid "Reload"
+#~ msgstr "Neu laden"
+
+#~ msgid "Pin this page"
+#~ msgstr "Diese Seite feststecken"
+
+#~ msgid "Save page"
+#~ msgstr "Seite speichern"
+
+#~ msgid ""
+#~ "Do you want to reset your browser? This will remove your web history, "
+#~ "pinned pages and personal settings. "
+#~ msgstr ""
+#~ "Möchtest du deinen Browser zurücksetzen? Dies löscht deinen "
+#~ "Browserverlauf, festgesteckte Seiten und persönliche Einstellungen."
+
+#~ msgid "Yes, delete"
+#~ msgstr "Ja, löschen"
+
+#~ msgid "No, save"
+#~ msgstr "Nein, speichern"
+
+#~ msgid ""
+#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
+#~ "remember."
+#~ msgstr ""
+#~ "Keine festgesteckten Seiten. Stecken Sie die Pin in der Automagic-Leiste "
+#~ "auf die Seite, an die Sie erinnert werden wollen."
+
+#~ msgid "More pinned pages"
+#~ msgstr "Mehr festgesteckte Seiten"
+
+#~ msgid "No matching pages were found"
+#~ msgstr "Keine passenden Seiten gefunden"
+
+#~ msgid "__ wants to know your location."
+#~ msgstr "__ will wissen wo du bist."
+
+#~ msgid "Share location"
+#~ msgstr "Aufenthaltsort bekanntgeben"
+
+#~ msgid "Don't share"
+#~ msgstr "nicht bekanntgeben"
+
+#~ msgid "Remember for this site"
+#~ msgstr "Für diese Site merken"
+
+#~ msgid "Settings"
+#~ msgstr "Einstellungen"
+
+#~ msgid "General"
+#~ msgstr "Allgemein"
+
+#~ msgid "Try to complete domain names in automagic bar"
+#~ msgstr "Versuche Domain-Namen in der Automagic-Leiste zu ergänzen"
+
+#~ msgid "Search in automagic bar"
+#~ msgstr "In der Automagic-Leiste suchen"
+
+#~ msgid "Add new search engine"
+#~ msgstr "Neue Suchmaschine hinzufügen"
+
+#~ msgid "Privacy"
+#~ msgstr "Privatsphäre"
+
+#~ msgid "Remember my passwords"
+#~ msgstr "Speichere meine Kennwörter"
+
+#~ msgid "Remember what I type into forms"
+#~ msgstr "Speichere was ich in Formularen eingebe"
+
+#~ msgid "Keep my browser history for up to"
+#~ msgstr "Browserverlauf aufbewahren für bis zu"
+
+#~ msgid "1 year"
+#~ msgstr "1 Jahr"
+
+#~ msgid "1 month"
+#~ msgstr "1 Monat"
+
+#~ msgid "1 week"
+#~ msgstr "1 Woche"
+
+#~ msgid "1 day"
+#~ msgstr "1 Tag"
+
+#~ msgid "Reset my browser now"
+#~ msgstr "Meinen Browser jetzt zurücksetzen"
+
+#~ msgid "Pinned pages"
+#~ msgstr "Festgesteckte Seiten"
+
+#~ msgid "Trouble connecting?"
+#~ msgstr "Probleme beim Verbinden?"
+
+#~ msgid ""
+#~ "Move your pointer to the top of the screen to bring down the toolbar and "
+#~ "choose the Networks panel."
+#~ msgstr ""
+#~ "Bewege deinen Cursor zum oberen Bildrand, um die Symbolleiste zu öffnen "
+#~ "und wähle dann Netzwerke."
+
+#~ msgid ""
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
+#~ "ones will show up here."
+#~ msgstr ""
+#~ "Willkommen beim Meego Netbook Webbrowser. Wenn du Seiten besuchst, "
+#~ "erscheinen hier deine Favoriten."
+
+#~ msgid "Getting started"
+#~ msgstr "Erste Schritte"
+
+#~ msgid ""
+#~ "First, make sure you have an internet connection! Then click on the "
+#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
+#~ "or search you want."
+#~ msgstr ""
+#~ "Stelle zunächst sicher, dass du eine Internet-Verbindung hast! Klicke "
+#~ "dann auf die Automagic-Leiste (oder drücke Strg+L um schnell dorthin zu "
+#~ "gelangen) und gib die gewünschte Adresse oder Suche ein."
+
+#~ msgid "Make this a private tab"
+#~ msgstr "Dies zu einem privaten Tab machen"
+
+#~ msgid ""
+#~ "This is a private tab. Things you do in this tab will not be stored on "
+#~ "this machine. However, websites you use may still keep records of your "
+#~ "actions."
+#~ msgstr ""
+#~ "Dies ist ein privater Tab. Was du in diesem Tab machst, wird nicht auf "
+#~ "diesem Computer gespeichert. Jedoch können von dir besuchte Websites "
+#~ "dennoch Daten über dich anlegen."
+
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego Web Browser ist auf Mozilla-Technologie basiert"
+
+#~ msgid "Go"
+#~ msgstr "Los"
+
+#~ msgid "Next"
+#~ msgstr "Weiter"
+
+#~ msgid "Previous"
+#~ msgstr "Zurück"
