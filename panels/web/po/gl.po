@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-29 09:17+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2009-10-14 21:08+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -24,7 +24,7 @@ msgstr ""
 #: ../common/mwb-ac-list.cc:1311
 #, c-format
 msgid "Search for %%s on %s"
-msgstr "Procurar %%s en %s"
+msgstr "Buscar %%s en %s"
 
 #: ../common/mwb-ac-list.cc:1334
 #, c-format
@@ -36,7 +36,7 @@ msgid ""
 "Press enter to\n"
 "visit site"
 msgstr ""
-"Prema Enter para\n"
+"Prema Intro para\n"
 "visitar este sitio"
 
 #: ../common/mwb-radical-bar.cc:506
@@ -45,20 +45,25 @@ msgid ""
 "explore list"
 msgstr ""
 "Prema a frecha para baixo\n"
-"para explorar a lista"
+"para examinar a lista"
 
 #: ../netpanel/meego-netbook-netpanel.cc:796
 msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-msgstr "Cando visite páxinas web, as favoritas aparecerán aquí e na páxina Novo separador do navegador."
+msgstr "Cando visite páxinas web, as preferidas aparecerán aquí e na páxina Novo separador do navegador."
 
 #: ../netpanel/meego-netbook-netpanel.cc:818
 #: ../netpanel/meego-netbook-netpanel.cc:941
 msgid "New tab"
 msgstr "Novo separador"
 
+#. Construct entry table widgets
+#: ../netpanel/meego-netbook-netpanel.cc:1216
+msgid "Your pages"
+msgstr "As súas páxinas"
+
 #: ../netpanel/meego-netbook-netpanel.cc:1229
 msgid "Search"
-msgstr "Procurar"
+msgstr "Buscar"
 
 #. Construct title for tab preview section
 #: ../netpanel/meego-netbook-netpanel.cc:1250
@@ -68,21 +73,16 @@ msgstr "Separadores"
 #. Construct title for favorite pages section
 #: ../netpanel/meego-netbook-netpanel.cc:1255
 msgid "Favorite pages"
-msgstr "Páxinas favoritas"
+msgstr "Páxinas preferidas"
 
-#: ../netpanel/meego-panel-web.cc:189
+#: ../netpanel/meego-panel-web.cc:196
 #: ../netpanel/meego-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "Internet"
 
-#: ../netpanel/meego-panel-web.cc:210 ../netpanel/meego-panel-web.cc:256
+#: ../netpanel/meego-panel-web.cc:217 ../netpanel/meego-panel-web.cc:263
 msgid "Internet"
 msgstr "Internet"
-
-#. Construct entry table widgets
-#: ../netpanel/meego-netbook-netpanel.cc:1216
-msgid "Your pages"
-msgstr "As súas páxinas"
 
 #: ../netpanel/meego-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
