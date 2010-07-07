@@ -467,7 +467,7 @@ msgstr "Carrick-yhteyssovelma"
 
 #: ../src/carrick.c:311
 msgid "- MeeGo connectivity applet"
-msgstr "- Meego-yhteyssovelma"
+msgstr "- MeeGo-yhteyssovelma"
 
 #: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
 msgid "network"
