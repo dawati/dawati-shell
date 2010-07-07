@@ -1,0 +1,197 @@
+#
+# Pavel, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-29 16:05+0000\n"
+"PO-Revision-Date: 2010-07-06 10:23+0200\n"
+"Last-Translator: Pavel\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../src/meego-panel-status.c:49
+msgid ""
+"Hello! This is the Status panel. When you have a web account configured "
+"(like Twitter), you will be able to view your feeds and update your status "
+"here."
+msgstr ""
+"Ahoj! Toto je stavový panel. Když máte na internetu nastaven nějaký účet "
+"(například Twitter), můžete se zde podívat na to, jak vypadá přísun z něj "
+"a obnovit stav."
+
+#: ../src/meego-panel-status.c:100
+msgid "Status"
+msgstr "Stav"
+
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr "Stav"
+
+#. vim:set ts=8 expandtab
+#: ../data/meego-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Stavový panel"
+
+#: ../src/mps-feed-pane.c:92
+msgid ""
+"Unable to update status. The service may be unavailable or your password "
+"could be wrong."
+msgstr ""
+"Stav nelze obnovit. Služba je možná nedostupná, nebo je vaše heslo "
+"nesprávné."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Stav nelze obnovit: Nejste připojen."
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Nepodařilo se nám vypátrat vaši polohu"
+
+#: ../src/mps-feed-pane.c:452
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Vaše odhadovaná poloha: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:458
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Vaše poloha je oznámena jako: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:468
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "Vaše odhadovaná poloha: %f, %f"
+
+#: ../src/mps-feed-pane.c:472
+#, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "Vaše poloha je oznámena jako: %f, %f"
+
+#: ../src/mps-feed-pane.c:482
+msgid "Your location is not being shared"
+msgstr "Vaše poloha se neoznamuje"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:585
+msgid "Update"
+msgstr "Obnovení"
+
+#: ../src/mps-feed-pane.c:590
+msgid "What's happening?"
+msgstr "Co se stalo?"
+
+#: ../src/mps-feed-pane.c:640
+msgid "Change"
+msgstr "Změnit"
+
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web account"
+msgstr "Přidat nový internetový účet"
+
+#: ../src/mps-feed-switcher.c:373
+msgid ""
+"You don't appear to have any web services configured or there is a problem "
+"with their configuration. Use the button above to open the My Web Accounts "
+"and set one up."
+msgstr ""
+"Buď není nastavena žádná internetová služba, anebo jsou potíže s jejím "
+"nastavením. Použijte tlačítko nahoře pro otevření Moje internetové účty "
+"a jeden účet nastavte."
+
+#: ../src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr "Vaše poloha"
+
+#: ../src/mps-geotag-pane.c:568
+msgid "Search"
+msgstr "Hledat"
+
+#: ../src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr "Kde jste?"
+
+#: ../src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr "Najdi mě"
+
+#: ../src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr "Použít polohu"
+
+#: ../src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr "Nepoužít polohu"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:528
+#, c-format
+msgid "%s from %s"
+msgstr "%s z %s"
+
+#~ msgid "Offline"
+#~ msgstr "Offline"
+
+#~ msgid "Available"
+#~ msgstr "Verfügbar"
+
+#~ msgid "Away"
+#~ msgstr "Abwesend"
+
+#~ msgid "Busy"
+#~ msgstr "Beschäftigt"
+
+#~ msgid "Close"
+#~ msgstr "Schließen"
+
+#~ msgid "Unknown account"
+#~ msgstr "Unbekanntes Konto"
+
+#~ msgid "Edit"
+#~ msgstr "Bearbeiten"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "Wähle hier deinen Status für %s aus..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "Wähle hier deinen gegenwärtigen Status aus..."
+
+#~ msgid "Post"
+#~ msgstr "Abschicken"
+
+#~ msgid "Your current status"
+#~ msgstr "Dein gegenwärtiger Status"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "Dein gegenwärtiger Status: offline"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Wir können leider keine Leute finden. Hast du ein Messenger-Konto "
+#~ "eingerichtet?"
+
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Um deinen Web-Status zu aktualisieren, musst du ein Webservice-Konto mit "
+#~ "einem Anbieter haben, der Statusmeldungen unterstützt"
+
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Um deinen IM-Status zu aktualisieren, musst du ein Instant Messaging-"
+#~ "Konto einrichten."
