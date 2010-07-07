@@ -1,30 +1,120 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# 
+# Galician translations for panel-myzone package.
+# Copyright (C) 2010 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the panel-myzone package.
 # Xosé <xosecalvo@gmail.com>, 2009.
+# Miguel Anxo Bouzada <mbouzada@gmail.com>, 2010.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:36+0000\n"
-"PO-Revision-Date: 2009-10-14 20:50+0200\n"
-"Last-Translator: Xosé <xosecalvo@gmail.com>\n"
-"Language-Team: Galego <proxecto@trasno.net>\n"
+"POT-Creation-Date: 2010-07-03 11:20+0000\n"
+"PO-Revision-Date: 2010-07-07 09:31+0100\n"
+"Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
+"Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Galician\n"
+
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Panel AMiñaZona"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Cambiar o fondo e o contido de AMiñaZona"
+
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "AMiñaZona"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Cambiar o que aparece en AMiñaZona</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Fondo de AMiñaZona</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calendario e tarefas:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Cambiar as miñas contas web"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Escolla o fondo de pantalla"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Limpar os documentos recentes"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Alertas por correo-e:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Restaurar a predeterminado"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Erro de Gconf: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "O resto dos erros móstranse só no terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Mostrar todo o contido de servizos web que for posíbel"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Mostrar principalmente contido de servizos web"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Mostrar metade e metade"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Mostrar principalmente os ficheiros recentes"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Mostrar todos os ficheiros recentes que for posíbel"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Desexa limpar os documentos recentes? Isto elimina o contido local de AMiñaZona"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
-msgstr "Citas"
+msgstr "Compromisos"
+
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Aberto"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Tarefas"
 
 #: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
-msgstr "Crear unha cita"
+msgstr "Crear unha compromiso"
 
-#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Engadir"
 
@@ -47,104 +137,19 @@ msgstr "Hoxe non hai nada que facer"
 #: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
-msgstr "Vence %x"
+msgstr "Caduca %x"
 
-#: ../data/capplet.ui.h:3
-msgid "Calendar and tasks:"
-msgstr "Calendario e tarefas:"
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "Cando se teñan configurado as contas web e utilizado algúns ficheiros, aparecerán aquí, en AMiñaZona, para acceder doadamente cando se precisen."
 
-#: ../data/capplet.ui.h:6
-msgid "Clear recent documents"
-msgstr "Limpar os documentos recentes"
-
-#: ../data/capplet.ui.h:5
-msgid "Choose your wallpaper"
-msgstr "Escolla o fondo de escritorio"
-
-#: ../capplet/myzone-cc-panel.c:55
-msgid "Show as many recent files as possible"
-msgstr "Mostrar todos os ficheiros recentes que for posíbel"
-
-#: ../data/capplet.ui.h:8
-msgid "Reset to default"
-msgstr "Restaurar ao predefinido"
-
-#: ../data/capplet.ui.h:7
-msgid "Email alerts:"
-msgstr "Alertas por correo electrónico:"
-
-#: ../capplet/gconf-bridge.c:1237
-msgid "All further errors shown only on terminal."
-msgstr "O resto dos erros móstranse só no terminal."
-
-#: ../capplet/gconf-bridge.c:1232
-#, c-format
-msgid "GConf error: %s"
-msgstr "Erro de Gconf: %s"
-
-#: ../capplet/myzone-cc-panel.c:49
-msgid "Show mostly web service content"
-msgstr "Mostrar principalmente contido de servizos web"
-
-#: ../capplet/myzone-cc-panel.c:47
-msgid "Show as much web service content as possible"
-msgstr "Mostrar todo o contido de servizos web que for posíbel"
-
-#: ../capplet/myzone-cc-panel.c:53
-msgid "Show mostly recent files"
-msgstr "Mostrar principalmente os ficheiros recentes"
-
-#: ../capplet/myzone-cc-panel.c:51
-msgid "Show half and half"
-msgstr "Mostrar metade e metade"
-
-#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
-msgid "Open"
-msgstr "Abrir"
-
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
-msgid "Myzone panel"
-msgstr "Panel AMiñaZona"
-
-#: ../data/myzone.desktop.in.in.h:1
-msgid "Change the Myzone background and content"
-msgstr "Mudar o fondo e o contido de AMiñaZona"
-
-#: ../data/capplet.ui.h:2
-msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Fondo de AMiñaZona</b>"
-
-#: ../data/capplet.ui.h:1
-msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Mudar o que aparece en AMiñaZona</b>"
-
-#: ../data/capplet.ui.h:4
-msgid "Change My Web Accounts"
-msgstr "Mudar as miñas contas web"
-
-#: ../penge/penge-calendar-pane.c:527
-msgid "Tasks"
-msgstr "Tarefas"
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "Cando se teña configurado as contas web e utilizado algúns ficheiros, aparecerán aquí, en AMiñaZona, para acceder doadamente cando se precisaren."
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "Esta é AMiñaZona, onde aparecen os ficheiros usados recentemente e o contido das fontes web."
-
-#: ../penge/penge-welcome-tile.c:65
-msgid "Welcome to MeeGo"
-msgstr "Benvida/o a MeeGo"
-
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "Reproducir o vídeo introdutorio"
 
-#: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "Desexa limpar os documentos recentes? Isto elimina o contido local de AMiñaZona"
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to MeeGo"
+msgstr "Benvida/o a MeeGo"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -158,15 +163,3 @@ msgstr "Mensaxe sen ler"
 msgid "Unread messages"
 msgstr "Mensaxes sen ler"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
-msgid "Myzone"
-msgstr "AMiñaZona"
-
-#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
-#~ msgstr "Aquí aparece o que andan a facer as súas amizades na Internet. Active agora as súas contas!"
-
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Reciba a benvida a Meego 2.1 para netbooks</b>"
-
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Dado que o Meego é un chisco diferente a outros computadores, reunimos algunhas cousiñas para axudar a atopar o que sexa necesario. Agardamos que goce del, o Equipo de Meego."
