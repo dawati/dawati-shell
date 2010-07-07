@@ -1,0 +1,333 @@
+# English translations for meego-web-browser package
+# English (United Kingdom) translations for meego-web-browser package.
+# Copyright (C) 2009 THE meego-web-browser'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the meego-web-browser package.
+# Neil Roberts <neil@linux.intel.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-web-browser 0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"PO-Revision-Date: 2010-07-07 09:08+0300\n"
+"Last-Translator: Mohammad Alhargan <malham1@gmail.com>\n"
+"Language-Team: English (British)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "بحث عن %%s on %s"
+
+#: ../common/mwb-ac-list.cc:1334
+#, c-format
+msgid "Go to %s"
+msgstr "إذهب إلى %s"
+
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"ادخل لتزور\n"
+" l,ru"
+
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"إضغط للاسفل \n"
+" لتصفح الموقع"
+
+#: ../netpanel/meego-netbook-netpanel.cc:796
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "عند زيارة صفحات الويب ، ستظهر المفضلة هنا وعلى علامة التبويب الجديدة في المتصفح."
+
+#: ../netpanel/meego-netbook-netpanel.cc:818
+#: ../netpanel/meego-netbook-netpanel.cc:941
+msgid "New tab"
+msgstr "علامة تبويب جديدة"
+
+#. Construct entry table widgets
+#: ../netpanel/meego-netbook-netpanel.cc:1216
+msgid "Your pages"
+msgstr "صفحاتك"
+
+#: ../netpanel/meego-netbook-netpanel.cc:1229
+msgid "Search"
+msgstr "بحث"
+
+#. Construct title for tab preview section
+#: ../netpanel/meego-netbook-netpanel.cc:1250
+msgid "Tabs"
+msgstr "علامة تبويب"
+
+#. Construct title for favorite pages section
+#: ../netpanel/meego-netbook-netpanel.cc:1255
+msgid "Favorite pages"
+msgstr "الصفحات المفضلة"
+
+#: ../netpanel/meego-panel-web.cc:196
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "انترنت"
+
+#: ../netpanel/meego-panel-web.cc:217
+#: ../netpanel/meego-panel-web.cc:263
+msgid "Internet"
+msgstr "انترنت"
+
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "شريط الانترنت"
+
+#~ msgid "It's the internet"
+#~ msgstr "It's the internet"
+
+#~ msgid "Web Browser"
+#~ msgstr "Web Browser"
+
+#~ msgid "Meego web browser - "
+#~ msgstr "Meego web browser - "
+
+#~ msgid "Untitled"
+#~ msgstr "Untitled"
+
+#~ msgid "Downloads"
+#~ msgstr "Downloads"
+
+#~ msgid "Downloads - %d%%"
+#~ msgstr "Downloads - %d%%"
+
+#~ msgid "Meego web browser"
+#~ msgstr "Meego web browser"
+
+#~ msgid "Oops!"
+#~ msgstr "Oops!"
+
+#~ msgid "New tab page"
+#~ msgstr "New tab page"
+
+#~ msgid "Reload page"
+#~ msgstr "Reload page"
+
+#~ msgid ""
+#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
+#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
+#~ "page or visit another one."
+#~ msgstr ""
+#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
+#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
+#~ "page or visit another one."
+
+#~ msgid "Download cancelled"
+#~ msgstr "Download cancelled"
+
+#~ msgid "Download completed"
+#~ msgstr "Download completed"
+
+#~ msgid "Open file"
+#~ msgstr "Open file"
+
+#~ msgid "Find in Page"
+#~ msgstr "Find in Page"
+
+#~ msgid "Type to search"
+#~ msgstr "Type to search"
+
+#~ msgid "Next result"
+#~ msgstr "Next result"
+
+#~ msgid "Previous result"
+#~ msgstr "Previous result"
+
+#~ msgid "Run the browser in a window"
+#~ msgstr "Run the browser in a window"
+
+#~ msgid "Add the URL to the recent files list"
+#~ msgstr "Add the URL to the recent files list"
+
+#~ msgid "Meego Web Browser"
+#~ msgstr "Meego Web Browser"
+
+#~ msgid "Open link in new tab"
+#~ msgstr "Open link in new tab"
+
+#~ msgid "Copy link location"
+#~ msgstr "Copy link location"
+
+#~ msgid ""
+#~ "Do you want to reset your browser? This will remove your web history, "
+#~ "pinned pages and personal settings. "
+#~ msgstr ""
+#~ "Do you want to reset your browser? This will remove your web history, "
+#~ "pinned pages and personal settings. "
+
+#~ msgid "Yes, delete"
+#~ msgstr "Yes, delete"
+
+#~ msgid "No, save"
+#~ msgstr "No, save"
+
+#~ msgid ""
+#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
+#~ "remember."
+#~ msgstr ""
+#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
+#~ "remember."
+
+#~ msgid "More pinned pages"
+#~ msgstr "More pinned pages"
+
+#~ msgid "No matching pages were found"
+#~ msgstr "No matching pages were found"
+
+#~ msgid "__ wants to know your location."
+#~ msgstr "__ wants to know your location."
+
+#~ msgid "Share location"
+#~ msgstr "Share location"
+
+#~ msgid "Don't share"
+#~ msgstr "Don't share"
+
+#~ msgid "Remember for this site"
+#~ msgstr "Remember for this site"
+
+#~ msgid "Settings"
+#~ msgstr "Settings"
+
+#~ msgid "General"
+#~ msgstr "General"
+
+#~ msgid "Try to complete domain names in automagic bar"
+#~ msgstr "Try to complete domain names in automagic bar"
+
+#~ msgid "Search in automagic bar"
+#~ msgstr "Search in automagic bar"
+
+#~ msgid "Add new search engine"
+#~ msgstr "Add new search engine"
+
+#~ msgid "Privacy"
+#~ msgstr "Privacy"
+
+#~ msgid "Remember my passwords"
+#~ msgstr "Remember my passwords"
+
+#~ msgid "Remember what I type into forms"
+#~ msgstr "Remember what I type into forms"
+
+#~ msgid "Keep my browser history for up to"
+#~ msgstr "Keep my browser history for up to"
+
+#~ msgid "1 year"
+#~ msgstr "1 year"
+
+#~ msgid "1 month"
+#~ msgstr "1 month"
+
+#~ msgid "1 week"
+#~ msgstr "1 week"
+
+#~ msgid "1 day"
+#~ msgstr "1 day"
+
+#~ msgid "Reset my browser now"
+#~ msgstr "Reset my browser now"
+
+#~ msgid "Pinned pages"
+#~ msgstr "Pinned pages"
+
+#~ msgid "Trouble connecting?"
+#~ msgstr "Trouble connecting?"
+
+#~ msgid ""
+#~ "Move your pointer to the top of the screen to bring down the toolbar and "
+#~ "choose the Networks panel."
+#~ msgstr ""
+#~ "Move your pointer to the top of the screen to bring down the toolbar and "
+#~ "choose the Networks panel."
+
+#~ msgid ""
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
+#~ "ones will show up here."
+#~ msgstr ""
+#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favourite "
+#~ "ones will show up here."
+
+#~ msgid "Getting started"
+#~ msgstr "Getting started"
+
+#~ msgid ""
+#~ "First, make sure you have an internet connection! Then click on the "
+#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
+#~ "or search you want."
+#~ msgstr ""
+#~ "First, make sure you have an internet connection! Then click on the "
+#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
+#~ "or search you want."
+
+#~ msgid "Make this a private tab"
+#~ msgstr "Make this a private tab"
+
+#~ msgid ""
+#~ "This is a private tab. Things you do in this tab will not be stored on "
+#~ "this machine. However, websites you use may still keep records of your "
+#~ "actions."
+#~ msgstr ""
+#~ "This is a private tab. Things you do in this tab will not be stored on "
+#~ "this machine. However, websites you use may still keep records of your "
+#~ "actions."
+
+#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Meego Web Browser is proudly based on Mozilla technology"
+
+#~ msgid "Go"
+#~ msgstr "Go"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Less than a minute ago"
+
+#~ msgid "About a minute ago"
+
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "About a minute ago"
+#~ msgstr[1] "About __ minutes ago"
+
+#~ msgid "About an hour ago"
+
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "About an hour ago"
+#~ msgstr[1] "About __ hours ago"
+
+#~ msgid "Today at %H:%M"
+#~ msgstr "Today at %H:%M"
+
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "Yesterday at %H:%M"
+
+#~ msgid "Last %A at %H:%M"
+#~ msgstr "Last %A at %H:%M"
+
+#~ msgid "%x at %H:%M"
+#~ msgstr "%x at %H:%M"
+
+#~ msgid ""
+#~ "<p>Push the pin icon in the location bar above to add pages to this list."
+#~ "</p>"
+#~ msgstr ""
+#~ "<p>Push the pin icon in the location bar above to add pages to this list."
+#~ "</p>"
+
+#~ msgid "Fewer pinned pages"
+#~ msgstr "Fewer pinned pages"
