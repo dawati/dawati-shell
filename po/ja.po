@@ -110,11 +110,11 @@ msgstr "ツールバー上のパネルの順番"
 
 #: ../src/meego-netbook.c:825
 msgid "Meego Netbook Effects"
-msgstr "Meego ネットブックのエフェクター"
+msgstr "MeeGo ネットブックのエフェクター"
 
 #: ../src/meego-netbook.c:829
 msgid "Effects for Meego Netbooks"
-msgstr "Meego ネットブックのエフェクター"
+msgstr "MeeGo ネットブックのエフェクター"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
