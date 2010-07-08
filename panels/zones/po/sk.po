@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Tomáš Virgl <tomas@virgl.net>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-zones.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2010-04-21 02:43+0200\n"
 "Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
 "Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
@@ -41,14 +41,8 @@ msgid "No applications on this zone"
 msgstr "Na tejto zóne nie je žiadna aplikácia"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Aplikácie, ktoré používate sa zobrazia tu. Budete môcť meniť ich a organizovať akokoľvek budete chcieť."
 
-#~ msgid ""
-#~ "Hello! This is the Zones panel. When you have applications open you will "
-#~ "be able to view, manage and access them here."
-#~ msgstr ""
-#~ "Toto je panel zón. Keď budete mať aplikácie otvorené budete ich môcť "
-#~ "prezerať, spravovať a mať k nim prístup."
+#~ msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+#~ msgstr "Toto je panel zón. Keď budete mať aplikácie otvorené budete ich môcť prezerať, spravovať a mať k nim prístup."
