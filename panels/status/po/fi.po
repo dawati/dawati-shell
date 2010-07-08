@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
@@ -14,21 +14,21 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "Hei! Tämä on Tila-paneeli. Kun sinulla on web-tili asetettuna (kuten Twitter), pystyt täällä tarkastelemaan syötteitä ja päivittämään tilaasi."
 
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "Tila"
 
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "tila"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Tilapaneeli"
 
@@ -82,8 +82,8 @@ msgid "Change"
 msgstr "Muuta"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr "Lisää uusi web-palvelu"
+msgid "Add new web account"
+msgstr "Lisää uusi web-tili"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
@@ -117,7 +117,7 @@ msgstr "Älä käytä paikkaa"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
@@ -159,18 +159,11 @@ msgstr " %s kohteesta %s"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Tämänhetkinen tilasi: olet poissa linjoilta"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Jotta voisit päivittää tilasi verkossa, sinun pitää määrittää "
-#~ "verkkopalvelutili palveluntarjoajan kanssa, joka tukee tilaviestejä."
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Jotta voisit päivittää tilasi verkossa, sinun pitää määrittää verkkopalvelutili palveluntarjoajan kanssa, joka tukee tilaviestejä."
 
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Pikaviestintili pitää määrittää, jotta voit päivittää pikaviestintilaasi."
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Pikaviestintili pitää määrittää, jotta voit päivittää pikaviestintilaasi."
