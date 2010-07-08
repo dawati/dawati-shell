@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Tomáš Virgl <tomas@virgl.net>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-datetime.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-21 09:44+0000\n"
+"POT-Creation-Date: 2010-07-03 11:57+0000\n"
 "PO-Revision-Date: 2010-04-20 22:09+0200\n"
 "Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
 "Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
@@ -62,27 +62,27 @@ msgstr "%b %-d (miestneho času)"
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-world-clock.c:464
+#: ../src/mnp-world-clock.c:525
 msgid "Time"
 msgstr "Čas"
 
-#: ../src/mnp-world-clock.c:518
+#: ../src/mnp-world-clock.c:579
 msgid "24 hour clock"
 msgstr "24 hodinové hodinky"
 
-#: ../src/mnp-world-clock.c:587
+#: ../src/mnp-world-clock.c:648
 msgid "Enter a country or city"
 msgstr "Zadajte krajinu alebo mesto"
 
-#: ../src/mnp-world-clock.c:610
+#: ../src/mnp-world-clock.c:671
 msgid "Add"
 msgstr "Pridať"
 
-#: ../src/mnp-world-clock.c:684
+#: ../src/mnp-world-clock.c:745
 msgid "Set Time & Date"
 msgstr "Nastaviť dátum a čas"
 
-#: ../src/mnp-datetime.c:286
+#: ../src/mnp-datetime.c:293
 msgid "Appointments"
 msgstr "Stretnutia"
 
@@ -95,23 +95,27 @@ msgstr "Stretnutia"
 #. "x-fill", TRUE,
 #. NULL);
 #. clutter_actor_set_height (div, 2);
-#.
+#. 
 #. format date
-#: ../src/mnp-datetime.c:335 ../src/mnp-datetime.c:534
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Dnes"
 
-#: ../src/mnp-datetime.c:426
+#: ../src/mnp-datetime.c:433
 msgid "Open Appointments"
 msgstr "Otvoriť stretnutia"
 
-#: ../src/mnp-datetime.c:504
+#: ../src/mnp-datetime.c:511
 msgid "Tasks"
 msgstr "Úlohy"
 
-#: ../src/mnp-datetime.c:601
+#: ../src/mnp-datetime.c:608
 msgid "Open Tasks"
 msgstr "Otvoriť úlohy"
+
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Čas a dátum"
 
 #: ../src/date-time.schemas.in.h:1
 msgid "24 hour clock or 12 hour clock"
