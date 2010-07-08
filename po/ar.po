@@ -138,7 +138,6 @@ msgid "is asking for your attention."
 msgstr "يطلب انتباهك"
 
 #: ../src/notifications/ntf-wm.c:115
-#, fuzzy
 msgid "Activate"
 msgstr "تفعيل"
 
