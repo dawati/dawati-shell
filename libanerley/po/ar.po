@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: anerley\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-09 23:54+0000\n"
+"POT-Creation-Date: 2010-07-03 11:55+0000\n"
 "PO-Revision-Date: 2009-11-16 11:46+0200\n"
 "Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
 "Language-Team: ITSOFTEX <info@itsoftex.com>\n"
@@ -16,24 +16,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../anerley/anerley-tile.c:206
+#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
 msgid "Available"
 msgstr "متوفّر"
 
-#: ../anerley/anerley-tile.c:209
+#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
 msgid "Busy"
 msgstr "مشغول"
 
-#: ../anerley/anerley-tile.c:212
-#: ../anerley/anerley-tile.c:215
+#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
 msgid "Away"
 msgstr "بعيد"
 
-#: ../anerley/anerley-tile.c:218
+#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
 msgid "Offline"
 msgstr "غير متّصل"
 
-#: ../anerley/anerley-econtact-item.c:307
+#: ../anerley/anerley-econtact-item.c:234
 msgid "Unnamed"
 msgstr "غير مسمّى"
 
+#: ../anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr "غير معد"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr "مدد بعيدا"
+
+#: ../anerley/anerley-presence-chooser.c:47
+msgid "Hidden"
+msgstr "مخفي"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "غير معروف"
+
+#: ../anerley/anerley-presence-chooser.c:50
+msgid "Error"
+msgstr "خطأ"
