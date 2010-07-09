@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego (Moblin 2.x)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2010-04-09 07:11+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -18,17 +18,21 @@ msgstr ""
 "X-Poedit-Language: Walloon\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "A ! Çouchal, c' est l' sicriftôr des statuts. Cwand vs åroz on conte sol waibe d' apontyî (come Twitter), vos î såroz vey vos floûs eyet mete a djoû vos statuts."
+
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "Statuts"
 
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "statuts"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Sicriftôr des statuts"
 
@@ -40,10 +44,29 @@ msgstr "Dji n' sai mete a djoû l' sitatut. Li siervice est motoit nén disponib
 msgid "Unable to update status: You're not online."
 msgstr "Dji n' sai mete a djoû l' sitatut : vos n' estoz nén raloyîs."
 
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Nos n' avans sepou adviner vosse plaece"
+
+#: ../src/mps-feed-pane.c:452
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Nos avans adviné vosse plaece come estant : %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:458
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Vosse plaece est pårtaedjeye come estant : %s (%f, %f)"
+
 #: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Nos avans adviné vosse plaece come estant : %f %f"
+
+#: ../src/mps-feed-pane.c:472
+#, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "Vosse plaece est pårtaedjeye come estant : %f %f"
 
 #: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
@@ -63,8 +86,8 @@ msgid "Change"
 msgstr "Candjî"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr "Radjouter on novea siervice waibe"
+msgid "Add new web account"
+msgstr "Radjouter on novea conte waibe"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
@@ -103,26 +126,3 @@ msgstr "Èn n' nén eployî d' plaece"
 #, c-format
 msgid "%s from %s"
 msgstr "%s di %s"
-
-#: ../src/moblin-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "A ! Çouchal, c' est l' sicriftôr des statuts. Cwand vs åroz on conte sol waibe d' apontyî (come Twitter), vos î såroz vey vos floûs eyet mete a djoû vos statuts."
-
-#: ../src/mps-feed-pane.c:444
-msgid "We were unable to guess your location"
-msgstr "Nos n' avans sepou adviner vosse plaece"
-
-#: ../src/mps-feed-pane.c:458
-#, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Vosse plaece est pårtaedjeye come estant : %s (%f, %f)"
-
-#: ../src/mps-feed-pane.c:452
-#, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "Nos avans adviné vosse plaece come estant : %s (%f, %f)"
-
-#: ../src/mps-feed-pane.c:472
-#, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "Vosse plaece est pårtaedjeye come estant : %f %f"
