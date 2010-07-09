@@ -1,14 +1,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Pavel, 2010.
+# Pavel, 2010, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-29 16:12+0000\n"
-"PO-Revision-Date: 2010-07-06 11:51+0200\n"
-"Last-Translator: Pavel\n"
+"PO-Revision-Date: 2004-01-01 03:33+0100\n"
+"Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr "Datum/Čas"
 
 #: ../data/meego-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
-msgstr "Panel pro datum a čas"
+msgstr "Panel Datum a čas"
 
 #: ../data/meego-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
