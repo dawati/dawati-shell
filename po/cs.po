@@ -1,12 +1,12 @@
 #
-# Pavel, 2010.
+# Pavel, 2010, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-29 16:09+0000\n"
-"PO-Revision-Date: 2010-07-07 09:14+0200\n"
-"Last-Translator: Pavel\n"
+"PO-Revision-Date: 2004-01-01 04:07+0100\n"
+"Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +54,7 @@ msgstr "Dostupné panely"
 #.
 #: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
-msgstr "%H.%M"
+msgstr "%H:%M"
 
 # example:
 # 14:37
@@ -81,7 +81,7 @@ msgstr "%H:%M"
 #.
 #: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
-msgstr "%e. %B %Y"
+msgstr "%B %e. %Y"
 
 #: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
