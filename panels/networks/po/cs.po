@@ -1,14 +1,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Pavel, 2010.
+# Pavel, 2010, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-29 16:15+0000\n"
-"PO-Revision-Date: 2010-07-06 11:15+0200\n"
-"Last-Translator: Pavel\n"
+"PO-Revision-Date: 2004-01-01 03:54+0100\n"
+"Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +36,7 @@ msgstr ", "
 
 #: ../carrick/carrick-list.c:849 ../carrick/carrick-util.c:34
 msgid "wired"
-msgstr "drátové"
+msgstr "drát"
 
 #. Switches
 #: ../carrick/carrick-list.c:850 ../carrick/carrick-pane.c:1429
@@ -57,7 +57,7 @@ msgstr "3G"
 #: ../carrick/carrick-list.c:853 ../carrick/carrick-pane.c:1485
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
-msgstr "Bluetooth"
+msgstr "Modrozub"
 
 #.
 #. * Translators: this string is displayed if there
@@ -234,7 +234,7 @@ msgstr "Drát"
 
 #: ../carrick/carrick-pane.c:1510
 msgid "Offline mode"
-msgstr "Režim nepřipojený k internetu"
+msgstr "Nepřipojen k síti"
 
 #: ../carrick/carrick-pane.c:1520
 msgid "This will disable all your connections"
@@ -584,4 +584,5 @@ msgstr "Vyberte službu 3G"
 #: ../data/carrick.desktop.in.in.h:1
 msgid "Network settings"
 msgstr "Nastavení sítě"
+
 
