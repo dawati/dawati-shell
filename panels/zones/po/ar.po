@@ -25,7 +25,6 @@ msgid "zones"
 msgstr "مناطق"
 
 #: ../src/main.c:412
-#, fuzzy
 msgid "Zones"
 msgstr "مناطق"
 
