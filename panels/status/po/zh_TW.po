@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-10 09:20+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -14,21 +14,21 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "嗨！這裡是狀態面板。當您設定好網路帳號 (像是 Twitter) 後，您可以從這裡檢視您的消息來源，以及更新您的狀態。"
 
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "狀態"
 
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "狀態"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "狀態面板"
 
@@ -39,6 +39,10 @@ msgstr "無法更新狀態：此服務可能無法使用或密碼可能是錯誤
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
 msgstr "無法更新狀態：您未上線。"
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "我們無法推測您的地理位置"
 
 #: ../src/mps-feed-pane.c:452
 #, c-format
@@ -76,10 +80,6 @@ msgstr "發生什麼事？"
 #: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "變更"
-
-#: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr "新增網路服務"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
@@ -119,9 +119,9 @@ msgstr "不要使用地理位置"
 msgid "%s from %s"
 msgstr "%s 來自 %s"
 
-#: ../src/mps-feed-pane.c:444
-msgid "We were unable to guess your location"
-msgstr "我們無法推測您的地理位置"
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web account"
+msgstr "新增網路帳號"
 
 #~ msgid "Offline"
 #~ msgstr "離線"
