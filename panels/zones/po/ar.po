@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2009-11-10 23:16+0200\n"
 "Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
 "Language-Team: ITSOFTEX <info@itsoftex.com>\n"
@@ -17,9 +17,8 @@ msgstr ""
 "X-Poedit-Language: Arabic\n"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:1
-#, fuzzy
 msgid "Zones panel"
-msgstr "لا مناطق حتى الآن"
+msgstr "لوحة المناطق"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
@@ -31,26 +30,21 @@ msgid "Zones"
 msgstr "مناطق"
 
 #: ../src/sw-zone.c:92
-#, fuzzy
 msgid "New Zone"
-msgstr "مناطق"
+msgstr "منطقة جديدة"
 
 #: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
-#, fuzzy, c-format
+#, c-format
 msgid "Zone %d"
-msgstr "مناطق"
+msgstr "المنطقة %d"
 
 #: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "لا يوجد تطبيقات في هذه المنطقة"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"ستعرض هنا التطبيقات التي تستخدمها. سيكون بامكانك تبديلها وترتيبها بحسب رغبة "
-"قلبك."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "ستعرض هنا التطبيقات التي تستخدمها. سيكون بامكانك تبديلها وترتيبها بحسب رغبة قلبك."
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "تأثيرات خاصة بأجهزة الانترنت التي تعمل بموبلن"
