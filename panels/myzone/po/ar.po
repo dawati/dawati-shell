@@ -37,9 +37,8 @@ msgid "<b>Myzone Wallpaper</b>"
 msgstr "<b>ورقة الحائط الخاصه في نطاقي</b>"
 
 #: ../data/capplet.ui.h:3
-#, fuzzy
 msgid "Calendar and tasks:"
-msgstr "إنشاء مهمة جديدة"
+msgstr "التقويم و المهمات"
 
 #: ../data/capplet.ui.h:4
 msgid "Change My Web Accounts"
@@ -58,14 +57,13 @@ msgid "Email alerts:"
 msgstr "اشعار بواسطة البريد الألكتروني"
 
 #: ../data/capplet.ui.h:8
-#, fuzzy
 msgid "Reset to default"
-msgstr "اعادة ظبط للوضع الأفتراضي"
+msgstr "أعِد الضبط للإفتراضي"
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
 msgid "GConf error: %s"
-msgstr ""
+msgstr "خلل GConf: %s"
 
 #: ../capplet/gconf-bridge.c:1237
 msgid "All further errors shown only on terminal."
@@ -73,7 +71,7 @@ msgstr "جميع الاخطاء تظهر فقط في التيرمنال"
 
 #: ../capplet/myzone-cc-panel.c:47
 msgid "Show as much web service content as possible"
-msgstr ""
+msgstr "اظهر محتوى خدمات ويب قدر الأمكان"
 
 #: ../capplet/myzone-cc-panel.c:49
 msgid "Show mostly web service content"
@@ -101,11 +99,11 @@ msgstr "مواعيد"
 
 #: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
-msgstr ""
+msgstr "افتح"
 
 #: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
-msgstr ""
+msgstr "مهمات"
 
 #: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
@@ -150,15 +148,15 @@ msgstr ""
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
-msgstr ""
+msgstr "لا رسائل غير مقروءة"
 
 #: ../penge/penge-email-pane.c:194
 msgid "Unread message"
-msgstr ""
+msgstr "رسالة غير مقروءة"
 
 #: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
-msgstr ""
+msgstr "رسائل غير مقروءة"
 
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "أمور يفعلها اصدقاؤك بينما هم متّصلون ستظهر هنا. نشّط حساباتك الآن!"
