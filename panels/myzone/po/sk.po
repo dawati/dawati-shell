@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Tomáš Virgl <tomas@virgl.net>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-myzone.meego-10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-21 13:18+0000\n"
+"POT-Creation-Date: 2010-07-03 11:20+0000\n"
 "PO-Revision-Date: 2010-04-20 21:52+0200\n"
 "Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
 "Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
@@ -26,6 +26,38 @@ msgstr "Zmeniť obsah a pozadie plochy Myzone"
 #: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Zmeniť to, čo je zobrazené v Myzone</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Pozadie plochy Myzone</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Kalendár a úlohy:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Zmeniť moje webové účty"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Vyberte si pozadie pracovnej plochy"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Vyčistiť zoznam naposledy otvorených dokumentov"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "E-mailové upozornenia:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Nastaviť na predvolené"
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
@@ -57,77 +89,61 @@ msgid "Show as many recent files as possible"
 msgstr "Zobraziť čo najviac nedávno otvorených súborov"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid ""
-"Do you want to clear your recent documents? This will remove the local "
-"content from the Myzone"
-msgstr ""
-"Chcete vyčistiť zoznam naposledy otvorených dokumentov? Toto odstráni "
-"miestny obsah z Myzone"
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Chcete vyčistiť zoznam naposledy otvorených dokumentov? Toto odstráni miestny obsah z Myzone"
 
-#: ../penge/penge-calendar-pane.c:483
+#: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Stretnutia"
 
-#: ../penge/penge-calendar-pane.c:495 ../penge/penge-calendar-pane.c:538
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Otvoriť"
 
-#: ../penge/penge-calendar-pane.c:526
+#: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
 msgstr "Úlohy"
 
-#: ../penge/penge-events-pane.c:69
+#: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
 msgstr "Vytvoriť stretnutie"
 
-#: ../penge/penge-events-pane.c:70 ../penge/penge-tasks-pane.c:51
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Pridať"
 
-#: ../penge/penge-events-pane.c:400
+#: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
 msgstr "Na tento týždeň nie je nič v kalendári"
 
-#: ../penge/penge-recent-file-tile.c:216
+#: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
 msgstr "Webová stránka"
 
-#: ../penge/penge-tasks-pane.c:50
+#: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
 msgstr "Vytvoriť novú úlohu"
 
-#: ../penge/penge-tasks-pane.c:426
+#: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
 msgstr "Dnes nie je čo robiť"
 
-#: ../penge/penge-task-tile.c:318
+#: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
 msgstr "Vďaka %x"
 
-#: ../penge/penge-welcome-tile.c:32
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "Keď si nastavíte vaše webové účty a použijete nejaké súbory - objavia sa tu na Myzone a budete mať k nim prístup kedykoľvek budete chcieť."
+
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "Prehrať úvodné video"
 
-#: ../penge/penge-welcome-tile.c:64
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "Vitajte v MeeGo"
-
-#: ../penge/penge-welcome-tile.c:83
-msgid ""
-"This is the Myzone, where your recently used files and content from your web "
-"feeds will appear."
-msgstr ""
-"Toto je Myzone. Tu sa objavia naposledy otvorené dokumenty a obsah z vašich "
-"webových zdrojov."
-
-#: ../penge/penge-welcome-tile.c:26
-msgid ""
-"When you’ve set up your web accounts and used some files they will appear "
-"here on the Myzone for easy access whenever you want. "
-msgstr ""
-"Keď si nastavíte vaše webové účty a použijete nejaké súbory - objavia sa tu "
-"na Myzone a budete mať k nim prístup kedykoľvek budete chcieť."
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -140,3 +156,6 @@ msgstr "Neprečítaná správa"
 #: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
 msgstr "Neprečítané správy"
+
+#~ msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+#~ msgstr "Toto je Myzone. Tu sa objavia naposledy otvorené dokumenty a obsah z vašich webových zdrojov."
