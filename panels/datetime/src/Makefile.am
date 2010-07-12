@@ -52,8 +52,8 @@ meego_alarm_notify_SOURCES = meego-alarm-notify.c 	\
 
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.meego.UX.Shell.Panels.datetime.service.in
-service_DATA = org.meego.UX.Shell.Panels.datetime.service
+service_in_files = com.meego.UX.Shell.Panels.datetime.service.in
+service_DATA = com.meego.UX.Shell.Panels.datetime.service
 
 schemadir   = $(GCONF_SCHEMA_FILE_DIR)
 schema_in_files = date-time.schemas.in
@@ -64,13 +64,13 @@ schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 #			-Wl,--export-dynamic
 
 DISTCLEANFILES = \
-	org.meego.UX.Shell.Panels.datetime.service\
+	com.meego.UX.Shell.Panels.datetime.service\
 	date-time.schemas
 
 EXTRA_DIST = $(service_in_files) \
 	     $(schema_in_files) 	     
 
-org.meego.UX.Shell.Panels.datetime.service: org.meego.UX.Shell.Panels.datetime.service.in $(top_builddir)/config.log
+com.meego.UX.Shell.Panels.datetime.service: com.meego.UX.Shell.Panels.datetime.service.in $(top_builddir)/config.log
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 

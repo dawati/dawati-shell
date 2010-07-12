@@ -10,5 +10,5 @@ src/mnp-button-item.c
 src/mnp-datetime.c
 src/mnp-shell.c
 src/system-timezone.c
-src/org.meego.UX.Shell.Panels.datetime.service.in
+src/com.meego.UX.Shell.Panels.datetime.service.in
 src/date-time.schemas.in
