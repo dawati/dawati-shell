@@ -25,7 +25,7 @@
 #include "mpl-icon-theme.h"
 
 #define FALLBACK_THEME  "hicolor"
-#define ICON_PREFIX     "meego"
+#define ICON_PREFIX     "netbook"
 
 /* Quite possible that we end up with duplicate entries here,
  * but that shouldn't matter because when we need this something's already
