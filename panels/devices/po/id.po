@@ -2,21 +2,21 @@
 # Copyright (C) 2010 THE meego-panel-device'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the meego-panel-devices package.
 # Andika Triwidada <andika@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-devices master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-07 09:20+0000\n"
+"POT-Creation-Date: 2010-07-03 11:59+0000\n"
 "PO-Revision-Date: 2010-05-05 19:40+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Language: Indonesian\n"
 "X-Poedit-Country: Indonesia\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
@@ -62,47 +62,31 @@ msgid "Running low on battery"
 msgstr "Baterai hampir habis"
 
 #: ../power-icon/src/mpd-power-icon.c:78
-#, fuzzy
-msgid ""
-"I've noticed that your battery is running a bit low. If you can, it would be "
-"a good idea to plug in and top up."
-msgstr ""
-"Baterai Anda hampir habis. Alangkah baiknya apabila Anda menyambung ke "
-"listrik dan mengisinya."
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Baterai Anda hampir habis. Alangkah baiknya apabila Anda menyambung ke listrik dan mengisinya."
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "Nyaris habis"
 
 #: ../power-icon/src/mpd-power-icon.c:82
-#, fuzzy
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can."
-msgstr ""
-"Baterai Anda nyaris habis. Sebaiknya Anda menyimpan semua pekerjaan Anda dan "
-"menyambung ke listrik secepatnya"
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "Baterai Anda nyaris habis. Sebaiknya Anda menyimpan semua pekerjaan Anda dan menyambung ke listrik secepatnya."
 
 #: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "Bahaya!"
 
 #: ../power-icon/src/mpd-power-icon.c:87
-#, fuzzy
-msgid ""
-"Sorry, your computer is about to run out of battery. I'm going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
-"Maaf, baterai komputer Anda sekejap lagi habis. Kami mesti mematikan "
-"sekarang. Silakan simpan hasil kerja Anda dan semoga kita segera bertemu "
-"lagi."
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Maaf, baterai komputer Anda sekejap lagi habis. Kami mesti mematikan sekarang. Silakan simpan hasil kerja Anda dan semoga kita segera bertemu lagi."
 
 #: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "baterai"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:98
-#, fuzzy, c-format
+#, c-format
 msgid "If you don't decide, I'll turn off in %d second"
 msgid_plural "If you don't decide, I'll turn off in %d seconds"
 msgstr[0] "Bila Anda tak memutuskan, komputer akan dimatikan dalam %d detik"
@@ -116,9 +100,8 @@ msgid "Would you like to turn off now?"
 msgstr "Anda mau mematikan sekarang?"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:185
-#, fuzzy
 msgid "If you don't decide, I'll turn off in 30 seconds."
-msgstr "Bila Anda tak memutuskan, komputer akan dimatikan dalam 30 detik"
+msgstr "Bila Anda tak memutuskan, komputer akan dimatikan dalam 30 detik."
 
 #: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
@@ -176,20 +159,16 @@ msgstr "Perangkat lain"
 
 #: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
-msgstr ""
+msgstr "Eject gagal, sepertinya suatu aplikasi sedang memakainya"
 
 #: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
-msgstr ""
+msgstr "Kini aman untuk mencopot perangkat ini"
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
-msgid ""
-"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
-"span>"
-msgstr ""
-"<span font-weight='bold'>Anda memakai</span> <span color='%s'>%d%% dari %s</"
-"span>"
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Anda memakai</span> <span color='%s'>%d%% dari %s</span>"
 
 #: ../src/mpd-folder-tile.c:186
 msgid "Trash"
@@ -200,23 +179,21 @@ msgid "Devices"
 msgstr "Perangkat"
 
 #: ../src/mpd-storage-device-tile.c:242
-#, fuzzy, c-format
+#, c-format
 msgid "Could not run \"%s\""
-msgstr "Tak bisa menjalankan %s"
+msgstr "Tak bisa menjalankan \"%s\""
 
 #: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "Kesalahan impor"
 
 #: ../src/mpd-storage-device-tile.c:355
-#, fuzzy
 msgid "Import photos"
-msgstr "Impor data"
+msgstr "Impor foto"
 
 #: ../src/mpd-storage-device-tile.c:357
-#, fuzzy
 msgid "Import media"
-msgstr "Impor data"
+msgstr "Impor media"
 
 #. Eject button
 #: ../src/mpd-storage-device-tile.c:615
@@ -230,11 +207,8 @@ msgstr "Buka"
 
 #: ../src/mpd-storage-device-tile.c:819
 #, c-format
-msgid ""
-"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr ""
-"<span font-weight='bold'>%s</span> memakai <span color='%s'>%d%% dari %s</"
-"span>"
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> memakai <span color='%s'>%d%% dari %s</span>"
 
 #: ../src/mpd-storage-device-tile.c:827
 #, c-format
@@ -279,7 +253,7 @@ msgstr "Tanpa suara"
 
 #: ../src/mpd-volume-tile.c:355
 msgid "Computer volume"
-msgstr ""
+msgstr "Volume komputer"
 
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
@@ -288,12 +262,8 @@ msgstr "Bisu"
 #~ msgid "Meego Power Icon"
 #~ msgstr "Ikon Daya Meego"
 
-#~ msgid ""
-#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
-#~ "span>"
-#~ msgstr ""
-#~ "<span font-weight='bold'>Mengimpor data</span> <span color='%s'>%d%%</"
-#~ "span>"
+#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+#~ msgstr "<span font-weight='bold'>Mengimpor data</span> <span color='%s'>%d%%</span>"
 
 #~ msgid "Stop"
 #~ msgstr "Stop"
