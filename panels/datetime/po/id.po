@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-datetime master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 09:45+0000\n"
+"POT-Creation-Date: 2010-07-03 11:57+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Language: Indonesian\n"
 "X-Poedit-Country: Indonesia\n"
 
-#: ../src/meego-panel-date-time.c:105
+#: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Tanggal/Waktu"
 
@@ -31,7 +31,7 @@ msgstr "tanggal dan waktu"
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: ../src/mnp-utils.c:422
+#: ../src/mnp-utils.c:423
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -40,37 +40,84 @@ msgstr "%l:%M %p"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: ../src/mnp-utils.c:430
+#: ../src/mnp-utils.c:431
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../src/mnp-utils.c:445
+#: ../src/mnp-utils.c:446
 msgid "%b %-d (Yesterday)"
 msgstr "%b %-d (Kemarin)"
 
-#: ../src/mnp-utils.c:447
+#: ../src/mnp-utils.c:448
 msgid "%b %-d (Tomorrow)"
 msgstr "%b %-d (Besok)"
 
-#: ../src/mnp-utils.c:455
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr "%b %-d (lokal)"
+
+#: ../src/mnp-utils.c:456
 msgid "%b %-d"
 msgstr "%b %-d"
 
-#: ../src/mnp-world-clock.c:562
+#: ../src/mnp-world-clock.c:525
+msgid "Time"
+msgstr "Waktu"
+
+#: ../src/mnp-world-clock.c:579
+msgid "24 hour clock"
+msgstr "Pewaktu 24 jam"
+
+#: ../src/mnp-world-clock.c:648
 msgid "Enter a country or city"
 msgstr "Masukkan suatu negara atau kota"
 
-#: ../src/mnp-world-clock.c:585
+#: ../src/mnp-world-clock.c:671
 msgid "Add"
 msgstr "Tambah"
 
-#: ../src/mnp-datetime.c:278 ../src/mnp-datetime.c:453
+#: ../src/mnp-world-clock.c:745
+msgid "Set Time & Date"
+msgstr "Atur Waktu & Tanggal"
+
+#: ../src/mnp-datetime.c:293
+msgid "Appointments"
+msgstr "Janji"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#. 
+#. format date
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Hari ini"
 
-#: ../src/mnp-datetime.c:404
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr "Janji Mendatang"
+
+#: ../src/mnp-datetime.c:511
 msgid "Tasks"
 msgstr "Tugas"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "Tugas Mendatang"
+
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Waktu dan Tanggal"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "Pewaktu 24 jam atau 12 jam"
 
 #: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
@@ -79,40 +126,6 @@ msgstr "Alarm disimpan dalam bentuk terkode untuk dipakai oleh pemberitahu alarm
 #: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "Daftar alarm dalam bentuk terkode pendek"
-
-#: ../src/date-time.schemas.in.h:1
-#, fuzzy
-msgid "24 hour clock or 12 hour clock"
-msgstr "Pewaktu 24 jam atau 12 jam"
-
-#: ../src/mnp-utils.c:453
-msgid "%b %-d (local)"
-msgstr "%b %-d (lokal)"
-
-#: ../src/mnp-datetime.c:506
-msgid "Open Tasks"
-msgstr "Tugas Mendatang"
-
-#: ../src/mnp-world-clock.c:499
-#, fuzzy
-msgid "24 hour clock"
-msgstr "Pewaktu 24 jam"
-
-#: ../src/mnp-world-clock.c:445
-msgid "Time"
-msgstr "Waktu"
-
-#: ../src/mnp-datetime.c:230
-msgid "Appointments"
-msgstr "Janji"
-
-#: ../src/mnp-world-clock.c:658
-msgid "Set Time & Date"
-msgstr "Atur Waktu & Tanggal"
-
-#: ../src/mnp-datetime.c:337
-msgid "Open Appointments"
-msgstr "Janji Mendatang"
 
 #~ msgid "OFF"
 #~ msgstr "MATI"
