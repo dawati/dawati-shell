@@ -1,5 +1,9 @@
 /* generic classes */
 
+* {
+  font-size:13px;
+}
+
 MxEntry:indeterminate {
   color: gray;
 }
@@ -40,7 +44,7 @@ MxTable {
 
 MxLabel#time-label {
   color: #31c2ee;
-  font-size: 18pt;
+  font-size: 18px;
   font-weight: bold;
 }
 

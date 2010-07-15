@@ -1,3 +1,6 @@
+* {
+  font-size: 13px;
+}
 
 MplContentPane {
   border-image: url('content-pane-background.png') 5;
@@ -11,7 +14,7 @@ MplContentPane > .header {
 
 MplContentPane > MxBoxLayout > .title {
   color: #616261;
-  font-size: 16pt;
+  font-size: 16px;
   font-weight: bold;
 }
 
@@ -22,13 +25,13 @@ MplEntry {
 
 MxEntry.MplEntryEntry, MxEntry.MplEntryEntry:focus {
   border-image: none;
-  font-size: 15;
+  font-size: 15px;
 }
 
 MxButton.MplEntryButton, MxButton.MplEntryButton:hover, MxButton.MplEntryButton:active {
   border-image: url('mpl-entry-separator.png') 0 0 0 3;
   color: #be1011;
-  font-size: 13;
+  font-size: 13px;
   padding: 0 2 0 10;
 }
 
