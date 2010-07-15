@@ -5,7 +5,7 @@ MnbLauncher {
 
 #panel-label {
   color: #ed2124;
-  font-size: 22pt;
+  font-size: 22px;
   font-weight: bold;
   padding: 6 6 6 15;
 }
@@ -23,7 +23,7 @@ MnbLauncher {
 }
 
 .tile-label {
-  font-size: 14pt;
+  font-size: 14px;
   color: #7e7e7e;
 }
 
@@ -45,17 +45,17 @@ MnbLauncherButton:hover {
 
 MnbLauncherButton > *#mnb-launcher-button-title {
   color: #3b3b3b;
-  font-size: 14pt;
+  font-size: 14px;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-description {
   color: #7e7e7e;
-  font-size: 14pt;
+  font-size: 14px;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-comment {
   color: #a2adb6;
-  font-size: 14pt;
+  font-size: 14px;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-fav-toggle {
