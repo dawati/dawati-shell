@@ -6,7 +6,7 @@ MnbPeoplePanel
 *#people-panel-header-label
 {
   color: #febf00ff;
-  font-size: 22pt;
+  font-size: 22px;
   font-weight: bold;
   font-family: "Droid Sans";
   padding: 0 0 0 15;
@@ -16,7 +16,7 @@ MnbPeoplePanel
 *#people-panel-side-box-header-label
 {
   color: #616261ff;
-  font-size: 16pt;
+  font-size: 16px;
   font-weight: bold;
   font-family: "Droid Sans";
 }
@@ -24,7 +24,7 @@ MnbPeoplePanel
 *#people-panel-active-content-header-label
 {
   color: #616261ff;
-  font-size: 14pt;
+  font-size: 14px;
   font-family: "Droid Sans";
 }
 
@@ -57,7 +57,7 @@ MnbPeoplePanel
 *#people-panel-me-label
 {
   color: #616261ff;
-  font-size: 16pt;
+  font-size: 16px;
   font-family: "Droid Sans";
 }
 
@@ -73,7 +73,7 @@ MnbPeoplePanel
 *#people-pane-everybody-offline-label,
 *#people-pane-you-offline-label
 {
-  font-size:16pt;
+  font-size:16px;
   font-family: "Droid Sans";
   color: #616261ff;
 }
