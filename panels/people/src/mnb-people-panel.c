@@ -174,7 +174,7 @@ _make_settings_launcher (MnbPeoplePanel *people_panel)
   app_info = (GAppInfo *)g_desktop_app_info_new ("empathy-accounts.desktop");
 
   icon_tex = g_object_new (MX_TYPE_ICON,
-                           "icon-name", "meego-empathy-accounts",
+                           "icon-name", "netbook-empathy-accounts",
                            NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (table),
@@ -399,7 +399,7 @@ _make_messenger_launcher_tile (MnbPeoplePanel *panel)
   app_info = (GAppInfo *)g_desktop_app_info_new ("empathy.desktop");
 
   icon_tex = g_object_new (MX_TYPE_ICON,
-                           "icon-name", "meego-empathy",
+                           "icon-name", "netbook-empathy",
                            NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (table),
