@@ -364,7 +364,10 @@ meego_netbook_compute_screen_size (Display  *xdpy,
       {
         XRROutputInfo *info = XRRGetOutputInfo (xdpy, res, res->outputs[i]);
 
-        if (info->connection == RR_Connected)
+        /*
+         * Must be both connected and have crtc associated, BMC#3795
+         */
+        if (info->connection == RR_Connected && info->crtc)
           {
             if (strncmp (info->name, "LVDS", strlen ("LVDS")))
               *external = TRUE;
