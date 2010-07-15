@@ -1,7 +1,7 @@
 MxLabel#myzone-panel-header-label
 {
   color: #31c2eeff;
-  font-size: 22pt;
+  font-size: 22px;
   font-weight: bold;
   padding: 0 0 0 15;
 }
@@ -32,7 +32,7 @@ PengeAppsPane
 
 MxLabel.PengeEventsPaneTitle, MxLabel.PengeTasksPaneTitle
 {
-  font-size: 16pt;
+  font-size: 16px;
   font-weight: bold;
   color: #616261ff;
 }
@@ -123,19 +123,19 @@ PengePeopleTile *.PengeInterestingTilePrimaryLabel,
 PengeRecentFileTile *.PengeInterestingTilePrimaryLabel
 {
   color: #3e3e3eff;
-  font-size: 14pt;
+  font-size: 14px;
 }
 
 PengePeopleTile *.PengeInterestingTileSecondaryLabel,
 PengeRecentFileTile *.PengeInterestingTileSecondaryLabel
 {
   color: #3e3e3eff;
-  font-size: 11pt;
+  font-size: 11px;
 }
 
 PengePeopleTile *.PengePeopleTileContentLabel
 {
-  font-size: 14pt;
+  font-size: 14px;
 }
 
 PengePeopleTile *.PengePeopleTileContentBackground
@@ -146,7 +146,7 @@ PengePeopleTile *.PengePeopleTileContentBackground
 
 PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
 {
-  font-size: 14pt;
+  font-size: 14px;
   color: #2c2c2cff;
 }
 
@@ -163,7 +163,7 @@ PengePeoplePlaceholderTile *#penge-no-content-main-message
 
 PengePeoplePlaceholderTile *#penge-no-content-other-message
 {
-  font-size:14pt;
+  font-size:14px;
   color: #2c2c2cff;
 }
 
@@ -186,13 +186,13 @@ PengeWelcomeTile
 *#penge-welcome-primary-text
 {
   color: #31c2eeff;
-  font-size:22pt;
+  font-size:22px;
   font-weight: bold;
 }
 
 *#penge-welcome-secondary-text
 {
-  font-size:18pt;
+  font-size:18px;
   color: #616261;
   padding: 0 0 12 0;
 }
@@ -247,7 +247,7 @@ PengeWelcomeTile
 
 MxLabel.PengeZeroCountLabel
 {
-  font-size: 22pt;
+  font-size: 22px;
   color: #a7a7a7ff;
   border-image: url('count-frame-zero.png') 12;
   padding: 5 6;
@@ -255,7 +255,7 @@ MxLabel.PengeZeroCountLabel
 
 MxLabel.PengeCountLabel
 {
-  font-size: 22pt;
+  font-size: 22px;
   color: #000000ff;
   border-image: url('count-frame.png') 12;
   padding: 5 6;
@@ -263,12 +263,12 @@ MxLabel.PengeCountLabel
 
 MxLabel.PengeCountMessageLabel
 {
-  font-size: 14;
+  font-size: 14px;
 }
 
 MxLabel.PengeCountAccountLabel
 {
-  font-size: 11pt;
+  font-size: 11px;
   color: #7a7a7aff;
 }
 
