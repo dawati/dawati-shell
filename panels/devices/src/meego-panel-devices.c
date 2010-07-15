@@ -122,6 +122,9 @@ main (int     argc,
   /* Just for icon theme, no widgets. */
   gtk_init (&argc, &argv);
 
+  /* Load base styling for default font size */
+  mpl_panel_clutter_load_base_style ();
+
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
                                PKGDATADIR "/mx.cache");
   mx_style_load_from_file (mx_style_get_default (),
