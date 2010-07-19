@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-05 09:18+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martine <martine.landais@intel.com>\n"
 "Language-Team: \n"
@@ -83,7 +83,7 @@ msgstr "Changer"
 
 #: ../src/mps-feed-switcher.c:350
 msgid "Add new web account"
-msgstr "Ajouter un nouveau service web"
+msgstr "Ajouter un nouveau compte web"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
