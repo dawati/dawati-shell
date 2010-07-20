@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego myzone panel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:36+0000\n"
-"PO-Revision-Date: 2010-04-28 08:36-0800\n"
+"POT-Creation-Date: 2010-07-20 17:55+0000\n"
+"PO-Revision-Date: 2010-07-20 10:56-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -94,8 +94,8 @@ msgid "Show as many recent files as possible"
 msgstr "Show as many recent files as possible"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from the Myzone"
-msgstr "Do you want to clear your recent documents? This will remove the local content from Myzone."
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Do you want to clear your recent documents? This will remove the local content from your myzone"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -140,21 +140,17 @@ msgstr "Nothing to do today"
 msgid "Due %x"
 msgstr "Due %x"
 
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "Play intro video"
 
-#: ../penge/penge-welcome-tile.c:65
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "Welcome to MeeGo"
-
-#: ../penge/penge-welcome-tile.c:84
-msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-msgstr "This is Myzone, where your recently used files and content from your web feeds appear."
-
-#: ../penge/penge-welcome-tile.c:27
-msgid "When you’ve set up your web accounts and used some files they will appear here on the Myzone for easy access whenever you want. "
-msgstr "When you’ve set up your web accounts and opened some files, they appear here on the Myzone for easy access whenever you want. "
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -169,13 +165,22 @@ msgid "Unread messages"
 msgstr "Unread messages"
 
 #~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr ""
+#~ "This is Myzone, where your recently used files and content from your web "
+#~ "feeds appear."
+
+#~ msgid ""
 #~ "Things that your friends do online will appear here. Activate your "
 #~ "accounts now!"
 #~ msgstr ""
 #~ "Things that your friends do online will appear here. Activate your "
 #~ "accounts now!"
+
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>Welcome to Meego 2.1 for Netbooks</b>"
+
 #~ msgid ""
 #~ "As Meego is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
@@ -184,4 +189,3 @@ msgstr "Unread messages"
 #~ "As Meego is a bit different from other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
 #~ "enjoy it. The Meego Team."
-
