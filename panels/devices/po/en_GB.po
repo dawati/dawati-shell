@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MeeGo Panel Devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
-"PO-Revision-Date: 2010-06-14 08:56-0800\n"
+"POT-Creation-Date: 2010-07-20 17:50+0000\n"
+"PO-Revision-Date: 2010-07-20 10:52-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgid "Devices panel"
 msgstr "Devices panel"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../src/meego-panel-devices.c:163
 msgid "devices"
 msgstr "devices"
 
@@ -60,31 +60,31 @@ msgstr "System Sounds"
 msgid "MeeGo Power Icon"
 msgstr "MeeGo Power Icon"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "Running low on battery"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:78
 msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "Getting close to empty"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:82
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 
-#: ../power-icon/src/mpd-power-icon.c:85
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "Danger!"
 
-#: ../power-icon/src/mpd-power-icon.c:86
+#: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Sorry, your computer is about to run out of battery. I'm going to turn off now. Please save your work and hope to see you again soon."
 
-#: ../power-icon/src/mpd-power-icon.c:439
+#: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "battery"
 
@@ -165,7 +165,7 @@ msgstr "Other devices"
 msgid "Ejecting failed, looks like an application is using it"
 msgstr "Ejecting failed, looks like an application is using it"
 
-#: ../src/mpd-devices-tile.c:420
+#: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
 msgstr "It is safe to unplug this device now"
 
@@ -182,39 +182,39 @@ msgstr "Trash"
 msgid "Devices"
 msgstr "Devices"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:242
 #, c-format
-msgid "Could not run %s"
-msgstr "Could not run %s"
+msgid "Could not run \"%s\""
+msgstr "Could not run \"%s\""
 
-#: ../src/mpd-storage-device-tile.c:167
+#: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "Import error"
 
-#: ../src/mpd-storage-device-tile.c:278
+#: ../src/mpd-storage-device-tile.c:355
 msgid "Import photos"
 msgstr "Import photos"
 
-#: ../src/mpd-storage-device-tile.c:280
+#: ../src/mpd-storage-device-tile.c:357
 msgid "Import media"
 msgstr "Import media"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:538
+#: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
 msgstr "Eject"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:549
+#: ../src/mpd-storage-device-tile.c:626
 msgid "Open"
 msgstr "Open"
 
-#: ../src/mpd-storage-device-tile.c:742
+#: ../src/mpd-storage-device-tile.c:819
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:750
+#: ../src/mpd-storage-device-tile.c:827
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
