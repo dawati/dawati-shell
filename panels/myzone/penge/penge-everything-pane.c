@@ -48,7 +48,7 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 
 struct _PengeEverythingPanePrivate {
   SwClient *client;
-  SwClientView *view;
+  GList *views;
   GtkRecentManager *recent_manager;
   GHashTable *pointer_to_actor;
 
@@ -102,10 +102,10 @@ penge_everything_pane_dispose (GObject *object)
     priv->uuid_to_sw_items = NULL;
   }
 
-  if (priv->view)
+  while (priv->views)
   {
-    g_object_unref (priv->view);
-    priv->view = NULL;
+    g_object_unref ((GObject *)priv->views->data);
+    priv->views = g_list_delete_link (priv->views, priv->views);
   }
 
   if (priv->client)
@@ -227,7 +227,7 @@ _people_tile_remove_clicked_cb (PengeInterestingTile *tile,
   g_object_get (tile,
                 "item", &item,
                 NULL);
-  sw_client_hide_item (priv->client, item);
+  /* sw_client_hide_item (priv->client, item); */
 }
 
 static ClutterActor *
@@ -560,9 +560,9 @@ penge_everything_pane_queue_update (PengeEverythingPane *pane)
 }
 
 static void
-_view_items_added_cb (SwClientView *view,
-                      GList        *items,
-                      gpointer      userdata)
+_view_items_added_cb (SwClientItemView *view,
+                      GList            *items,
+                      gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -571,6 +571,7 @@ _view_items_added_cb (SwClientView *view,
   for (l = items; l; l = l->next)
   {
     SwItem *item = (SwItem *)l->data;
+    g_debug (G_STRLOC ": Item added: %s", item->uuid);
     g_hash_table_insert (priv->uuid_to_sw_items,
                          g_strdup (item->uuid),
                          sw_item_ref (item));
@@ -580,9 +581,9 @@ _view_items_added_cb (SwClientView *view,
 }
 
 static void
-_view_items_removed_cb (SwClientView *view,
-                        GList        *items,
-                        gpointer      userdata)
+_view_items_removed_cb (SwClientItemView *view,
+                        GList            *items,
+                        gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -592,6 +593,7 @@ _view_items_removed_cb (SwClientView *view,
   for (l = items; l; l = l->next)
   {
     SwItem *item = (SwItem *)l->data;
+    g_debug (G_STRLOC ": Item removed: %s", item->uuid);
     g_hash_table_remove (priv->uuid_to_sw_items,
                          item->uuid);
   }
@@ -600,9 +602,9 @@ _view_items_removed_cb (SwClientView *view,
 }
 
 static void
-_view_items_changed_cb (SwClientView *view,
-                        GList        *items,
-                        gpointer      userdata)
+_view_items_changed_cb (SwClientItemView *view,
+                        GList            *items,
+                        gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -614,7 +616,9 @@ _view_items_changed_cb (SwClientView *view,
     SwItem *item = (SwItem *)l->data;
     ClutterActor *actor;
 
-    /* Important to note that SwClientView reuses the SwItem so the
+    g_debug (G_STRLOC ": Item changed: %s", item->uuid);
+
+    /* Important to note that SwClientItemView reuses the SwItem so the
      * pointer is a valid piece of lookup
      */
     actor = g_hash_table_lookup (priv->pointer_to_actor,
@@ -636,9 +640,9 @@ _view_items_changed_cb (SwClientView *view,
 }
 
 static void
-_client_open_view_cb (SwClient     *client,
-                      SwClientView *view,
-                      gpointer      userdata)
+_client_open_view_cb (SwClientService  *service,
+                      SwClientItemView *view,
+                      gpointer          userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
@@ -646,7 +650,7 @@ _client_open_view_cb (SwClient     *client,
   if (!view)
     return;
 
-  priv->view = view;
+  priv->views = g_list_append (priv->views, view);
 
   g_signal_connect (view,
                     "items-added",
@@ -661,21 +665,31 @@ _client_open_view_cb (SwClient     *client,
                     (GCallback)_view_items_changed_cb,
                     userdata);
 
-  sw_client_view_start (view);
+  sw_client_item_view_start (view);
 }
 
 static void
 _client_get_services_cb (SwClient    *client,
-                         const GList *services,
+                         GList *services,
                          gpointer     userdata)
 {
   PengeEverythingPane *pane = PENGE_EVERYTHING_PANE (userdata);
+  GList *l;
 
-  sw_client_open_view (client,
-                       (GList *)services,
-                       50,
-                       _client_open_view_cb,
-                       pane);
+  for (l = services; l; l = l->next)
+  {
+    SwClientService *service;
+
+    service = sw_client_get_service (client, (const gchar *)l->data);
+
+    sw_client_service_query_open_view (service,
+                                       "feed",
+                                       NULL,
+                                       _client_open_view_cb,
+                                       pane);
+
+    g_object_unref (service);
+  }
 }
 
 static void
@@ -740,7 +754,9 @@ penge_everything_pane_init (PengeEverythingPane *self)
                                                   (GDestroyNotify)sw_item_unref);
 
   priv->client = sw_client_new ();
-  sw_client_get_services (priv->client, _client_get_services_cb, self);
+  sw_client_get_services (priv->client,
+                          (SwClientGetServicesCallback)_client_get_services_cb,
+                          self);
 
   priv->recent_manager = gtk_recent_manager_new ();
 
