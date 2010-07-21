@@ -1,0 +1,146 @@
+# Mutter Catalan translation.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the Mutter package.
+# Gil Forcada <gilforcada@guifi.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mutter 2.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-15 09:22+0000\n"
+"PO-Revision-Date: 2009-08-21 14:54+0200\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:57
+msgid "Less than a minute ago"
+msgstr "Fa menys d'un minut"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:61
+msgid "A few minutes ago"
+msgstr "Fa uns minuts"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:65
+msgid "A couple of hours ago"
+msgstr "Fa unes hores"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:72
+msgid "Earlier today"
+msgstr "Avui"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:75
+msgid "Yesterday"
+msgstr "Ahir"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:83
+#, c-format
+msgid "On %A"
+msgstr "El %A"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:89
+msgid "Unknown"
+msgstr "Desconegut"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:96
+msgid "Last week"
+msgstr "La setmana passada"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:99
+msgid "A couple of weeks ago"
+msgstr "Fa un parell de setmanes"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:105
+msgid "This month"
+msgstr "Aquest mes"
+
+#. Now Jan., last used in Dec.
+#: ../libmeego-panel/meego-panel/mpl-utils.c:109
+msgid "Last month"
+msgstr "El mes passat"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:112
+msgid "This year"
+msgstr "Aquest any"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:115
+msgid "Last year"
+msgstr "L'any passat"
+
+#: ../libmeego-panel/meego-panel/mpl-utils.c:117
+msgid "Ages ago"
+msgstr "Fa milers d'anys"
+
+#: ../src/meego-netbook.c:305 ../src/mnb-toolbar.c:1339
+msgid "zones"
+msgstr "zones"
+
+#: ../src/meego-netbook.c:412
+msgid "Meego Netbook Effects"
+msgstr "Efectes del Meego"
+
+#: ../src/meego-netbook.c:416
+msgid "Effects for Meego Netbooks"
+msgstr "Efectes per als mini-portàtils Meego"
+
+#: ../src/mnb-notification.c:266
+msgid "Dismiss"
+msgstr "Descarta"
+
+#: ../src/mnb-notification-cluster.c:657
+msgid "Dismiss All"
+msgstr "Descarta-ho tot"
+
+#: ../src/mnb-switcher.c:1707
+msgid "No Zones yet"
+msgstr "Encara no hi ha cap zona"
+
+#: ../src/mnb-switcher.c:1729
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i "
+"organitzar-les com més us agradi."
+
+#: ../src/mnb-switcher.c:1952
+msgid "No applications on this zone"
+msgstr "No hi ha aplicacions en aquesta zona"
+
+#. translators: translate this to a suitable time format for your locale
+#. * showing only hours and minutes. For available format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:666
+msgid "%l:%M %P"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../src/mnb-toolbar.c:676
+msgid "%B %e, %Y"
+msgstr "%e de %B de %Y"
+
+#: ../src/mnb-toolbar.c:1576
+msgid "power & brightness"
+msgstr "energia i brillantor"
+
+#: ../src/mnb-toolbar.c:1579
+msgid "volume"
+msgstr "volum"
+
+#: ../src/mnb-toolbar.c:1582
+msgid "bluetooth"
+msgstr "bluetooth"
+
+#: ../src/mnb-toolbar.c:1585
+msgid "networks"
+msgstr "xarxes"
+
+#: ../src/mnb-toolbar.c:1588
+msgid "test"
+msgstr "test"
