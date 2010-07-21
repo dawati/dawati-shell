@@ -28,14 +28,14 @@ msgid ""
 "Hello! This is the People panel. When you have an IM service configured "
 "(like Messenger), this is where you chat to people."
 msgstr ""
-"Hola! Este és el tauler dels contactes. Quan hàgeu configurat un servei de "
-"MI (com ara el Messenger), ací és des d'on podreu xarrar amb els "
+"Hola! Aquest és el tauler dels contactes. Quan hàgiu configurat un servei de "
+"MI (com ara el Messenger), aquí és des d'on podreu xerrar amb els "
 "contactes."
 
 #: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
 #, c-format
 msgid "Open %s"
-msgstr "Obri %s"
+msgstr "Obre %s"
 
 #: ../src/mnb-people-panel.c:231
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
@@ -44,21 +44,21 @@ msgstr ""
 
 #: ../src/mnb-people-panel.c:283
 msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "No s'ha trobat cap contacte. Pareix que tothom està fora de línia."
+msgstr "No s'ha trobat cap contacte. Sembla que tothom està fora de línia."
 
 #: ../src/mnb-people-panel.c:328
 msgid "To see your IM contacts, you need to go online."
 msgstr ""
-"Per veure els vostres contactes de missatgeria, cal que vos poseu en línia."
+"Per veure els vostres contactes de missatgeria, cal que us poseu en línia."
 
 #: ../src/mnb-people-panel.c:458
 #, c-format
 msgid "people - you are chatting with %d people"
-msgstr "contactes - esteu xarrant amb %d contactes"
+msgstr "contactes - esteu xerrant amb %d contactes"
 
 #: ../src/mnb-people-panel.c:465
 msgid "people - you are chatting with someone"
-msgstr "contactes - esteu xarrant amb algú"
+msgstr "contactes - esteu xerrant amb algú"
 
 #. Populate header
 #: ../src/mnb-people-panel.c:669 ../src/mnb-people-panel.c:923
@@ -71,7 +71,7 @@ msgstr "Cerca"
 
 #: ../src/mnb-people-panel.c:733 ../src/mnb-people-panel.c:1122
 msgid "You are chatting with:"
-msgstr "Esteu xarrant amb:"
+msgstr "Esteu xerrant amb:"
 
 #: ../src/mnb-people-panel.c:940
 msgid "Me and my people"
@@ -84,7 +84,7 @@ msgstr "Jo"
 #. Side table
 #: ../src/mnb-people-panel.c:1079
 msgid "My conversations"
-msgstr "Les meues converses"
+msgstr "Les meves converses"
 
 #: ../data/meego-panel-people.desktop.in.in.h:1
 msgid "People panel"
