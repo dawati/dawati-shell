@@ -1,0 +1,106 @@
+# People Catalan translation.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the People package.
+# Gil Forcada <gilforcada@guifi.net>, 2009.
+# Toni Hermoso Pulido <toniher@softcatala.cat>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: People 2.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"PO-Revision-Date: 2010-07-20 16:54-0700\n"
+"Last-Translator: Toni Hermoso Pulido <toniher@softcatala.cat>\n"
+"Language-Team: Softcatalà\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
+
+#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:476
+#: ../data/meego-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "persones"
+
+#: ../src/mnb-people-panel.c:57
+msgid ""
+"Hello! This is the People panel. When you have an IM service configured "
+"(like Messenger), this is where you chat to people."
+msgstr ""
+"Hola! Este és el tauler dels contactes. Quan hàgeu configurat un servei de "
+"MI (com ara el Messenger), ací és des d'on podreu xarrar amb els "
+"contactes."
+
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#, c-format
+msgid "Open %s"
+msgstr "Obri %s"
+
+#: ../src/mnb-people-panel.c:231
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr ""
+"No s'ha trobat cap contacte. Ja heu configurat un compte de missatgeria?"
+
+#: ../src/mnb-people-panel.c:283
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "No s'ha trobat cap contacte. Pareix que tothom està fora de línia."
+
+#: ../src/mnb-people-panel.c:328
+msgid "To see your IM contacts, you need to go online."
+msgstr ""
+"Per veure els vostres contactes de missatgeria, cal que vos poseu en línia."
+
+#: ../src/mnb-people-panel.c:458
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "contactes - esteu xarrant amb %d contactes"
+
+#: ../src/mnb-people-panel.c:465
+msgid "people - you are chatting with someone"
+msgstr "contactes - esteu xarrant amb algú"
+
+#. Populate header
+#: ../src/mnb-people-panel.c:669 ../src/mnb-people-panel.c:923
+msgid "People"
+msgstr "Contactes"
+
+#: ../src/mnb-people-panel.c:682
+msgid "Search"
+msgstr "Cerca"
+
+#: ../src/mnb-people-panel.c:733 ../src/mnb-people-panel.c:1122
+msgid "You are chatting with:"
+msgstr "Esteu xarrant amb:"
+
+#: ../src/mnb-people-panel.c:940
+msgid "Me and my people"
+msgstr "Jo i els meus contactes"
+
+#: ../src/mnb-people-panel.c:978
+msgid "Me"
+msgstr "Jo"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1079
+msgid "My conversations"
+msgstr "Les meues converses"
+
+#: ../data/meego-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Tauler dels contactes"
+
+#~ msgid "Send an email"
+#~ msgstr "Envia un correu"
+
+#~ msgid "Edit details"
+#~ msgstr "Edita les dades"
+
+#~ msgid "Send a message"
+#~ msgstr "Envia un missatge"
+
+#~ msgid "Selection"
+#~ msgstr "Selecció"
+
+#~ msgid "Nobody selected"
+#~ msgstr "No s'ha seleccionat ningú"
