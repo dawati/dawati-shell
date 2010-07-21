@@ -55,7 +55,7 @@ GType mps_view_bridge_get_type (void);
 
 MpsViewBridge *mps_view_bridge_new (void);
 void mps_view_bridge_set_view (MpsViewBridge    *bridge,
-                               SwClientView *view);
+                               SwClientItemView *view);
 void mps_view_bridge_set_container (MpsViewBridge    *bridge,
                                     ClutterContainer *container);
 typedef ClutterActor *(*MpsViewBridgeFactoryFunc) (MpsViewBridge *bridge,
@@ -64,7 +64,7 @@ typedef ClutterActor *(*MpsViewBridgeFactoryFunc) (MpsViewBridge *bridge,
 void mps_view_bridge_set_factory_func (MpsViewBridge            *bridge,
                                        MpsViewBridgeFactoryFunc  func,
                                        gpointer                  userdata);
-SwClientView *mps_view_bridge_get_view (MpsViewBridge *bridge);
+SwClientItemView *mps_view_bridge_get_view (MpsViewBridge *bridge);
 ClutterContainer *mps_view_bridge_get_container (MpsViewBridge *bridge);
 
 G_END_DECLS

@@ -53,7 +53,7 @@
 typedef struct _MeegoStatusPanel
 {
   SwClient *client;
-  SwClientView *view;
+  SwClientItemView *view;
   MplPanelClient *panel_client;
   MpsViewBridge *bridge;
 } MeegoStatusPanel;
@@ -71,9 +71,9 @@ meego_status_panel_hide (void)
 }
 
 static void 
-_client_view_opened_cb (SwClient     *client,
-                        SwClientView *view,
-                        gpointer      userdata)
+_client_view_opened_cb (SwClient         *client,
+                        SwClientItemView *view,
+                        gpointer          userdata)
 {
   MeegoStatusPanel *status_panel = (MeegoStatusPanel *)userdata;
 

@@ -59,7 +59,7 @@ typedef struct _MpsFeedPanePrivate MpsFeedPanePrivate;
 struct _MpsFeedPanePrivate {
   SwClient *client;
   SwClientService *service;
-  SwClientView *view;
+  SwClientItemView *view;
   MpsViewBridge *bridge;
 
   ClutterActor *update_hbox;
@@ -175,9 +175,9 @@ mps_feed_pane_finalize (GObject *object)
 }
 
 static void
-_client_view_opened_cb (SwClient     *client,
-                        SwClientView *view,
-                        gpointer      userdata) 
+_client_view_opened_cb (SwClientService  *client,
+                        SwClientItemView *view,
+                        gpointer          userdata) 
 {
   MpsFeedPane *pane = MPS_FEED_PANE (userdata);
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
@@ -200,7 +200,7 @@ _service_status_updated_cb (SwClient *service,
   if (success)
   {
     ClutterActor *entry;
-    sw_client_view_refresh (priv->view);
+    sw_client_item_view_refresh (priv->view);
     entry = (ClutterActor *)mpl_entry_get_mx_entry (MPL_ENTRY (priv->entry));
     mx_entry_set_text (MX_ENTRY (entry), NULL);
   }
@@ -307,11 +307,12 @@ mps_feed_pane_constructed (GObject *object)
                                               _service_get_dynamic_caps_cb,
                                               pane);
 
-  sw_client_open_view_for_service (priv->client,
-                                   service_name,
-                                   20,
-                                   _client_view_opened_cb,
-                                   g_object_ref (pane));
+  sw_client_service_query_open_view (priv->service,
+                                     "feed",
+                                     NULL,
+                                     _client_view_opened_cb,
+                                     g_object_ref (pane));
+
 
   sw_online_add_notify (_online_notify_cb,
                         object);

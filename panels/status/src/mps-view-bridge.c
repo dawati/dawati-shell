@@ -28,7 +28,7 @@ G_DEFINE_TYPE (MpsViewBridge, mps_view_bridge, G_TYPE_OBJECT)
 typedef struct _MpsViewBridgePrivate MpsViewBridgePrivate;
 
 struct _MpsViewBridgePrivate {
-  SwClientView *view;
+  SwClientItemView *view;
   ClutterContainer *container;
 
   GHashTable *item_uid_to_actor;
@@ -78,7 +78,7 @@ mps_view_bridge_set_property (GObject *object, guint property_id,
   switch (property_id) {
     case PROP_VIEW:
       mps_view_bridge_set_view (bridge,
-                                (SwClientView *)g_value_get_object (value));
+                                (SwClientItemView *)g_value_get_object (value));
       break;
     case PROP_CONTAINER:
       mps_view_bridge_set_container (bridge,
@@ -349,9 +349,9 @@ _do_next_card_animation (MpsViewBridge *bridge)
 }
 
 static void
-_view_items_added_cb (SwClientView  *view,
-                      GList         *items,
-                      MpsViewBridge *bridge)
+_view_items_added_cb (SwClientItemView *view,
+                      GList            *items,
+                      MpsViewBridge    *bridge)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
   gint item_count = 0;
@@ -435,7 +435,7 @@ _view_items_added_cb (SwClientView  *view,
 }
 
 static void
-_view_items_removed_cb (SwClientView *view,
+_view_items_removed_cb (SwClientItemView *view,
                         GList            *items,
                         MpsViewBridge    *bridge)
 {
@@ -444,9 +444,9 @@ _view_items_removed_cb (SwClientView *view,
 }
 
 static void
-_view_items_changed_cb (SwClientView *view,
-                        GList     *items,
-                        MpsViewBridge *bridge)
+_view_items_changed_cb (SwClientItemView *view,
+                        GList            *items,
+                        MpsViewBridge    *bridge)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
   GList *l;
@@ -470,8 +470,8 @@ _view_items_changed_cb (SwClientView *view,
 
 
 void
-mps_view_bridge_set_view (MpsViewBridge *bridge,
-                          SwClientView  *view)
+mps_view_bridge_set_view (MpsViewBridge    *bridge,
+                          SwClientItemView *view)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
 
@@ -492,7 +492,7 @@ mps_view_bridge_set_view (MpsViewBridge *bridge,
                     (GCallback)_view_items_changed_cb,
                     bridge);
 
-  sw_client_view_start (priv->view);
+  sw_client_item_view_start (priv->view);
 }
 
 void
@@ -517,7 +517,7 @@ mps_view_bridge_set_container (MpsViewBridge    *bridge,
   priv->container = g_object_ref (container);
 }
 
-SwClientView *
+SwClientItemView *
 mps_view_bridge_get_view (MpsViewBridge *bridge)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
