@@ -224,6 +224,9 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
   bridge = gconf_bridge_get ();
   client = gconf_bridge_get_client (bridge);
 
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
   builder = gtk_builder_new ();
   gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
   gtk_builder_add_from_file (builder,
