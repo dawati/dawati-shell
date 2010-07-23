@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-control-center\n"
@@ -15,8 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/meego-panel-people.c:88
-#: ../src/mnb-people-panel.c:476
+#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:476
 #: ../data/meego-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "kişiler"
@@ -25,8 +24,7 @@ msgstr "kişiler"
 msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
 msgstr "Merhaba! Bu Kişiler paneli. IM servisini düzenlediğin zaman (Messenger gibi), burada kişilerle sohbet edebilirsin."
 
-#: ../src/mnb-people-panel.c:191
-#: ../src/mnb-people-panel.c:414
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
 #, c-format
 msgid "Open %s"
 msgstr "Aç %s"
@@ -51,11 +49,10 @@ msgstr "Kişiler - %d kişi ile sohbet ediyorsun"
 #: ../src/mnb-people-panel.c:465
 #, fuzzy
 msgid "people - you are chatting with someone"
-msgstr "Kişiler - %d kişi sizinle konuşuyor"
+msgstr "Kişiler - biriyle sohbet ediyorsun"
 
 #. Populate header
-#: ../src/mnb-people-panel.c:669
-#: ../src/mnb-people-panel.c:923
+#: ../src/mnb-people-panel.c:669 ../src/mnb-people-panel.c:923
 msgid "People"
 msgstr "Kişiler"
 
@@ -63,8 +60,7 @@ msgstr "Kişiler"
 msgid "Search"
 msgstr "Arama"
 
-#: ../src/mnb-people-panel.c:733
-#: ../src/mnb-people-panel.c:1122
+#: ../src/mnb-people-panel.c:733 ../src/mnb-people-panel.c:1122
 msgid "You are chatting with:"
 msgstr "Sohbet ettiğiniz kişi:"
 
