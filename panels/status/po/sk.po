@@ -53,21 +53,21 @@ msgstr "Vaša poloha je odhadnutá ako: %s (%f, %f)"
 #: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Vaše umiestnenie je zdieľané ako: %s (%f, %f)"
+msgstr "Vaša poloha je zdieľaná ako: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
-msgstr "Vaše umiestnenie by mohlo byť: %f %f"
+msgstr "Vaša poloha je odhadnutá ako: %f, %f"
 
 #: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
-msgstr "Vaše umiestnenie je zdieľané ako: %f %f "
+msgstr "Vaša poloha je zdieľaná ako: %f, %f"
 
 #: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
-msgstr "Vaše umiestnenie nie je zdieľaná"
+msgstr "Vaša poloha nie je zdieľaná"
 
 #. Actor creation
 #: ../src/mps-feed-pane.c:585
@@ -108,11 +108,11 @@ msgstr "Nájdi ma"
 
 #: ../src/mps-geotag-pane.c:582
 msgid "Use location"
-msgstr "Použiť umiestnenie"
+msgstr "Použiť polohu"
 
 #: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
-msgstr "Nepoužiť umiestnenie"
+msgstr "Nepoužiť polohu"
 
 #. When the tweet has a location associated with it then this string will
 #. * be <human readable time> from <human readable place name>
