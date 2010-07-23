@@ -47,7 +47,6 @@ msgid "people - you are chatting with %d people"
 msgstr "Kişiler - %d kişi ile sohbet ediyorsun"
 
 #: ../src/mnb-people-panel.c:465
-#, fuzzy
 msgid "people - you are chatting with someone"
 msgstr "Kişiler - biriyle sohbet ediyorsun"
 
