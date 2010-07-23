@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Tomáš Virgl <tomas@virgl.net>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-21 09:37+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2010-04-21 03:16+0200\n"
 "Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
 "Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
@@ -15,101 +15,102 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-status.c:48
-msgid ""
-"Hello! This is the Status panel.When you have a web account configured(like "
-"Twitter) you will be able to view yourfeeds and update your status here"
-msgstr ""
-"Toto je panel stavu. Keď budete mať nakonfigurované vaše webové účty "
-"(napríklad Twitter) uvidíte tu vaše zdroje a môžete si aktualizovať váš stav."
+#: ../src/meego-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr "Toto je panel stavu. Keď budete mať nakonfigurované vaše webové účty (napríklad Twitter) uvidíte tu vaše zdroje a môžete si aktualizovať váš stav."
 
-#: ../src/moblin-panel-status.c:99
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "Stav"
 
-#: ../src/moblin-panel-status.c:157
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "stav"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Panel stavu"
 
 #: ../src/mps-feed-pane.c:92
-msgid ""
-"Unable to update status. The service may be unavailable or your password "
-"could be wrong."
-msgstr ""
-"Nie je možné aktualizovať stav. Služba môže byt nedostupná alebo heslo môže "
-"byť zlé."
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Nie je možné aktualizovať stav. Služba môže byt nedostupná alebo heslo môže byť zlé."
 
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
 msgstr "Nie je možné aktualizovať stav: Nie ste pripojený."
 
 #: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Neboli sme schopní odhadnúť vašu polohu"
+
+#: ../src/mps-feed-pane.c:452
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "Vaša poloha je odhadnutá ako: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:458
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "Vaše umiestnenie je zdieľané ako: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Vaše umiestnenie by mohlo byť: %f %f"
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:472
 #, c-format
-msgid "Your location is being shared as: %f %f "
-msgstr "Vaše umiestnenie je zdieľaná ako: %f %f "
+msgid "Your location is being shared as: %f %f"
+msgstr "Vaše umiestnenie je zdieľané ako: %f %f "
 
-#: ../src/mps-feed-pane.c:455
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
 msgstr "Vaše umiestnenie nie je zdieľaná"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:551
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "Aktualizovať"
 
-#: ../src/mps-feed-pane.c:556
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "Čo sa deje?"
 
-#: ../src/mps-feed-pane.c:606
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "Zmeniť"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr "Pridať novú webovú službu"
+msgid "Add new web account"
+msgstr "Pridať nový webový účet"
 
 #: ../src/mps-feed-switcher.c:373
-msgid ""
-"You don't appear to have any web services configured or there is a problem "
-"with their configuration. Use the button above to open the My Web Accounts "
-"and set one up."
-msgstr ""
-"Vyzerá to tak, že nemáte nakonfigurované žiadne webové služby. Kliknite na "
-"tlačidlo hore - otvorte Moje webové účty a nastavte jeden."
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "Vyzerá to tak, že nemáte nakonfigurované žiadne webové služby. Kliknite na tlačidlo hore - otvorte Moje webové účty a nastavte jeden."
 
-#: ../src/mps-geotag-pane.c:215
+#: ../src/mps-geotag-pane.c:232
 msgid "Your location"
 msgstr "Vaše umiestnenie"
 
-#: ../src/mps-geotag-pane.c:485
+#: ../src/mps-geotag-pane.c:568
 msgid "Search"
 msgstr "Hľadať"
 
-#: ../src/mps-geotag-pane.c:490
+#: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
 msgstr "Kde ste?"
 
-#: ../src/mps-geotag-pane.c:492
+#: ../src/mps-geotag-pane.c:575
 msgid "Find me"
 msgstr "Nájdi ma"
 
-#: ../src/mps-geotag-pane.c:499
+#: ../src/mps-geotag-pane.c:582
 msgid "Use location"
 msgstr "Použiť umiestnenie"
 
-#: ../src/mps-geotag-pane.c:500
+#: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
 msgstr "Nepoužiť umiestnenie"
 
@@ -117,7 +118,7 @@ msgstr "Nepoužiť umiestnenie"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
