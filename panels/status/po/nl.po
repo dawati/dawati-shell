@@ -2,14 +2,14 @@
 # Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the mutter-moblin package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-# , fuzzy
-#
-#
+#, fuzzy
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2010-05-11 08:25-0800\n"
 "Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
@@ -20,21 +20,21 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "Hallo. Dit is het Status paneel. Wanneer je jouw web accounts (bijv. Twitter) hebt geconfigureerd dan kan je hier jouw webfeeds zien en je status updaten."
 
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "Status"
 
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Status paneel"
 
@@ -88,8 +88,8 @@ msgid "Change"
 msgstr "Wijzig"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr "Voeg een nieuwe webdienst toe"
+msgid "Add new web account"
+msgstr "Voeg een niewe internetdienst toe"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
@@ -123,7 +123,7 @@ msgstr "Lokatie niet gebruiken"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
@@ -131,41 +131,45 @@ msgstr "%s uit %s"
 
 #~ msgid "Offline"
 #~ msgstr "Niet verbonden"
+
 #~ msgid "Available"
 #~ msgstr "Beschikbaar"
+
 #~ msgid "Away"
 #~ msgstr "Weg"
+
 #~ msgid "Busy"
 #~ msgstr "Bezig"
+
 #~ msgid "Close"
 #~ msgstr "Sluit"
+
 #~ msgid "Unknown account"
 #~ msgstr "Onbekende account"
+
 #~ msgid "Edit"
 #~ msgstr "Bewerk"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "Vul hier je %s status in..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "Vul hier je huidige status in..."
+
 #~ msgid "Post"
 #~ msgstr "Verstuur"
+
 #~ msgid "Your current status"
 #~ msgstr "Je huidige status"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Je huidige status - je bent niet verbonden"
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Sorry, we kunnen geen personen vinden. Heb je een Messenger account "
-#~ "aangemaakt?"
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Om je internet status te wijzigen moet je een web services account "
-#~ "opzetten met een provider die status berichten ondersteund"
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Om je IM status te wijzigen moet je een Instant Messaging account opzetten"
 
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Sorry, we kunnen geen personen vinden. Heb je een Messenger account aangemaakt?"
+
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Om je internet status te wijzigen moet je een web services account opzetten met een provider die status berichten ondersteund"
+
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Om je IM status te wijzigen moet je een Instant Messaging account opzetten"
