@@ -2,9 +2,6 @@
 # Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the mutter-moblin package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-#, fuzzy
-# 
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
@@ -22,7 +19,7 @@ msgstr ""
 
 #: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Hallo. Dit is het Status paneel. Wanneer je jouw web accounts (bijv. Twitter) hebt geconfigureerd dan kan je hier jouw webfeeds zien en je status updaten."
+msgstr "Hallo! Dit is het Status paneel. Wanneer je jouw web accounts (bijv. Twitter) hebt geconfigureerd dan kan je hier jouw webfeeds zien en je status updaten."
 
 #: ../src/meego-panel-status.c:100
 msgid "Status"
