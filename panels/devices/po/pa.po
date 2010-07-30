@@ -6,10 +6,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-09 11:31+0000\n"
-"PO-Revision-Date: 2010-04-10 09:33+0530\n"
+"POT-Creation-Date: 2010-07-20 17:50+0000\n"
+"PO-Revision-Date: 2010-07-30 08:50+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,7 +21,7 @@ msgid "Devices panel"
 msgstr "ਜੰਤਰ ਪੈਨਲ"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:149
+#: ../src/meego-panel-devices.c:163
 msgid "devices"
 msgstr "ਜੰਤਰ"
 
@@ -54,85 +54,94 @@ msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
 #: ../power-icon/src/meego-power-icon.c:46
-msgid "Meego Power Icon"
-msgstr "ਮੋਬਲਿਨ ਪਾਵਰ ਆਈਕਾਨ"
+msgid "MeeGo Power Icon"
+msgstr "ਮੀਗੋ ਪਾਵਰ ਆਈਕਾਨ"
 
-#: ../power-icon/src/mpd-power-icon.c:72
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "ਘੱਟ ਬੈਟਰੀ ਉੱਤੇ ਚੱਲ ਰਿਹਾ ਹੈ"
 
-#: ../power-icon/src/mpd-power-icon.c:73
+#: ../power-icon/src/mpd-power-icon.c:78
 msgid ""
-"We've noticed that your battery is running a bit low. If you can it would be "
+"I've noticed that your battery is running a bit low. If you can, it would be "
 "a good idea to plug in and top up."
 msgstr ""
+"ਮੈਨੂੰ ਪਤਾ ਲੱਗਾ ਹੈ ਕਿ ਤੁਹਾਡੀ ਬੈਟਰੀ ਕਾਫ਼ੀ ਘੱਟ ਗਈ ਹੈ। ਜੇ ਹੋ ਸਕੇ ਤਾਂ ਪਲੱਗ ਲਗਾਉਣ "
+"ਅਤੇ ਇਸ ਨੂੰ ਚਾਰਜ ਕਰ ਲਵੋ।"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "ਖਾਲੀ ਹੋਣ ਵਾਲੀ ਹੈ"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:82
 msgid ""
 "You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can"
+"work and plug in as soon as you can."
 msgstr ""
+"ਤੁਹਾਡੇ ਕੋਲ ਬੈਟਰੀ ਕਾਫ਼ੀ ਘੱਟ ਗਈ ਹੈ। ਤੁਹਾਡੇ ਸਾਰੇ ਕੰਮ ਨੂੰ ਸੰਭਾਲਣਾ ਤੇ ਜਿੰਨਾ ਵੀ "
+"ਛੇਤੀ ਹੋ ਸਕੇ "
+"ਪਲੱਗ ਲਗਾਉਣਾ ਚੰਗਾ ਰਹੇਗਾ।"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "ਖਤਰਾ!"
 
-#: ../power-icon/src/mpd-power-icon.c:82
+#: ../power-icon/src/mpd-power-icon.c:87
 msgid ""
-"Sorry, your computer is about to run out of battery. We're going to have to "
+"Sorry, your computer is about to run out of battery. I'm going to have to "
 "turn off now. Please save your work and hope to see you again soon."
 msgstr ""
+"ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਦੀ ਬੈਟਰੀ ਲਗਭਗ ਖਤਮ ਹੋਣ ਵਾਲੀ ਹੈ। ਮੈਂ ਹੁਣ ਬੰਦ ਹੋਣ ਜਾ ਰਿਹਾ "
+"ਹਾਂ। ਆਪਣਾ ਕੰਮ ਸੰਭਾਲ ਲਵੋ ਜੀ ਤੇ ਤੁਹਾਨੂੰ ਛੇਤੀ ਹੀ ਫੇਰ ਮਿਲਦੇ ਹਾਂ।"
 
-#: ../power-icon/src/mpd-power-icon.c:300
-msgid "Would you like to turn off now?"
-msgstr "ਕੀ ਤੁਸੀਂ ਹੁਣ ਬੰਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
-
-#: ../power-icon/src/mpd-power-icon.c:301
-msgid "If you don't decide I'll turn off in 30 seconds."
-msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ ੩੦ ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ।"
-
-#: ../power-icon/src/mpd-power-icon.c:368
+#: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "ਬੈਟਰੀ"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:75
+#: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
-msgid "If you don't decide I'll turn off in %d seconds"
-msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ।"
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ।"
+msgstr[1] "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ।"
 
-#: ../power-icon/src/mpd-shutdown-notification.c:133
+#: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
 msgstr "ਬੰਦ ਕਰੋ"
 
-#: ../src/meego-panel-devices.c:120
-msgid "Meego Devices Panel"
-msgstr "ਮੋਬਾਇਲ ਜੰਤਰ ਪੈਨਲ"
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "ਕੀ ਤੁਸੀਂ ਹੁਣ ਬੰਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: ../src/mpd-battery-device.c:333
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ ੩੦ ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ।"
+
+#: ../src/meego-panel-devices.c:121
+msgid "MeeGo Devices Panel"
+msgstr "ਮੀਗੋ ਜੰਤਰ ਪੈਨਲ"
+
+#: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੋਲ ਬੈਟਰੀ ਇੰਸਟਾਲ ਨਹੀਂ ਜਾਪਦੀ ਹੈ।"
 
-#: ../src/mpd-battery-device.c:337
+#: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਚਾਰਜ ਹੋ ਰਹੀ ਹੈ। ਇਹ %d%% ਲਗਭਗ ਪੂਰੀ ਹੈ।"
 
-#: ../src/mpd-battery-device.c:342
+#: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr ""
+msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਵਰਤੀ ਜਾ ਰਹੀ ਹੈ। ਇਹ ਲਗਭਗ %d%% ਪੂਰੀ ਹੈ।"
 
-#: ../src/mpd-battery-device.c:347
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr ""
+msgstr "ਬੈਟਰੀ ਪੂਰੀ ਤਰ੍ਹਾਂ ਚਾਰਜ ਹੋ ਚੁੱਕੀ ਹੈ ਤੇ ਤੁਸੀਂ ਵਰਤਣ ਲਈ ਤਿਆਰ ਹੋ।"
 
-#: ../src/mpd-battery-device.c:351
+#: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੀ ਬੈਟਰੀ ਖਰਾਬ ਜਾਪਦੀ ਹੈ।"
@@ -142,11 +151,11 @@ msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੀ ਬੈਟਰੀ ਖਰਾਬ ਜਾ�
 msgid "Netbook brightness"
 msgstr "ਨੈੱਟਬੁੱਕ ਚਮਕ"
 
-#: ../src/mpd-computer-pane.c:120
+#: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
 msgstr "ਤੁਹਾਡਾ ਕੰਪਿਊਟਰ"
 
-#: ../src/mpd-computer-pane.c:129
+#: ../src/mpd-computer-pane.c:128
 msgid "All settings"
 msgstr "ਸਭ ਸੈਟਿੰਗ"
 
@@ -158,9 +167,17 @@ msgstr ""
 "ਜੰਤਰ ਲਗਾਉ ਅਤੇ ਇਹ ਆਟੋਮੈਟਿਕ\n"
 "ਹੀ ਖੋਜਿਆ ਜਾਵੇਗਾ।"
 
-#: ../src/mpd-devices-pane.c:105
+#: ../src/mpd-devices-pane.c:104
 msgid "Other devices"
 msgstr "ਹੋਰ ਜੰਤਰ"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "ਬਾਹਰ ਕੱਢਣ ਲਈ ਫੇਲ੍ਹ, ਜਾਪਦਾ ਹੈ ਕਿ ਕੋਈ ਐਪਲੀਕੇਸ਼ਨ ਇਸ ਨੂੰ ਵਰਤ ਰਹੀ ਹੈ"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "ਇਹ ਜੰਤਰ ਨੂੰ ਹੁਣ ਹਟਾਉਣਾ ਸੁਰੱਖਿਅਤ ਹੈ"
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
@@ -168,67 +185,61 @@ msgid ""
 "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
 "span>"
 msgstr ""
+"<span font-weight='bold'>ਤੁਸੀਂ ਵਰਤ ਰਹੇ ਹੋ</span> <span color='%s'>%d%% ਨੂੰ "
+"%s ਵਿੱਚੋਂ</"
+"span>"
 
-#: ../src/mpd-media-import-tile.c:73
-#, c-format
-msgid ""
-"<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-msgstr ""
-
-#: ../src/mpd-media-import-tile.c:217
-msgid "Stop"
-msgstr "ਰੋਕੋ"
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "ਰੱਦੀ"
 
 #: ../src/mpd-shell.c:126
 msgid "Devices"
 msgstr "ਜੰਤਰ"
 
-#: ../src/mpd-storage-device-tile.c:164
+#: ../src/mpd-storage-device-tile.c:242
 #, c-format
-msgid "Could not run %s"
-msgstr ""
+msgid "Could not run \"%s\""
+msgstr "\"%s\" ਚਲਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ"
 
-#: ../src/mpd-storage-device-tile.c:165
+#: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
 msgstr "ਇੰਪੋਰਟ ਗਲਤੀ"
 
-#: ../src/mpd-storage-device-tile.c:256
-#, c-format
-msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-msgstr ""
+#: ../src/mpd-storage-device-tile.c:355
+msgid "Import photos"
+msgstr "ਫੋਟੋ ਇੰਪੋਰਟ ਕਰੋ"
 
-#: ../src/mpd-storage-device-tile.c:259
-msgid "USB plugged in"
-msgstr "USB ਪਲੱਗ ਲੱਗਾ"
-
-#: ../src/mpd-storage-device-tile.c:260
-msgid "Show"
-msgstr "ਵੇਖੋ"
-
-#. Import button
-#: ../src/mpd-storage-device-tile.c:514
-msgid "Import data"
-msgstr "ਡਾਟਾ ਇੰਪੋਰਟ ਕਰੋ"
+#: ../src/mpd-storage-device-tile.c:357
+msgid "Import media"
+msgstr "ਮੀਡਿਆ ਇੰਪੋਰਟ ਕਰੋ"
 
 #. Eject button
-#: ../src/mpd-storage-device-tile.c:525
+#: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
 msgstr "ਬਾਹਰ ਕੱਢੋ"
 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:536
+#: ../src/mpd-storage-device-tile.c:626
 msgid "Open"
 msgstr "ਖੋਲ੍ਹੋ"
 
-#: ../src/mpd-storage-device-tile.c:725
+#: ../src/mpd-storage-device-tile.c:819
 #, c-format
 msgid ""
 "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr ""
+"<span font-weight='bold'>%s</span> <span color='%s'>%d%% "
+"%s ਵਿੱਚੋਂ</span>"
+
+#: ../src/mpd-storage-device-tile.c:827
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
 
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
-msgstr ""
+msgstr "11 ਤੱਕ ਚਲਾਓ"
 
 #: ../src/mpd-volume-tile.c:115
 msgid "Very loud"
@@ -240,11 +251,11 @@ msgstr "ਉੱਚੀ"
 
 #: ../src/mpd-volume-tile.c:119
 msgid "Fairly loud"
-msgstr ""
+msgstr "ਕਾਫ਼ੀ ਉੱਚਾ"
 
 #: ../src/mpd-volume-tile.c:121
 msgid "Middle of the road"
-msgstr ""
+msgstr "ਰਾਹ 'ਚ ਵਿਚਾਲੇ"
 
 #: ../src/mpd-volume-tile.c:123
 msgid "Fairly quiet"
@@ -256,17 +267,28 @@ msgstr "ਸ਼ਾਂਤ"
 
 #: ../src/mpd-volume-tile.c:127
 msgid "Very quiet"
-msgstr ""
+msgstr "ਬਹੁਤ ਸ਼ਾਂਤ"
 
 #: ../src/mpd-volume-tile.c:129
 msgid "Silent"
 msgstr "ਚੁੱਪ"
 
-#: ../src/mpd-volume-tile.c:356
-msgid "Netbook volume"
-msgstr "ਨੈੱਟਬੁੱਕ ਵਾਲੀਅਮ"
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "ਕੰਪਿਊਟਰ ਵਾਲੀਅਮ"
 
-#: ../src/mpd-volume-tile.c:366
+#: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "ਚੁੱਪ"
 
+#~ msgid "Stop"
+#~ msgstr "ਰੋਕੋ"
+
+#~ msgid "USB plugged in"
+#~ msgstr "USB ਪਲੱਗ ਲੱਗਾ"
+
+#~ msgid "Show"
+#~ msgstr "ਵੇਖੋ"
+
+#~ msgid "Netbook volume"
+#~ msgstr "ਨੈੱਟਬੁੱਕ ਵਾਲੀਅਮ"
