@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:34+0000\n"
-"PO-Revision-Date: 2010-05-06 07:48+0530\n"
+"POT-Creation-Date: 2010-07-20 17:55+0000\n"
+"PO-Revision-Date: 2010-07-30 08:58+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -92,9 +92,9 @@ msgstr "ਜਿੰਨੀਆਂ ਵੀ ਸੰਭਵ ਹੋਵੇ ਤਾਜ਼ੀ�
 #: ../capplet/myzone-cc-panel.c:77
 msgid ""
 "Do you want to clear your recent documents? This will remove the local "
-"content from the Myzone"
+"content from your myzone"
 msgstr ""
-"ਕੀ ਤੁਸੀਂ ਆਪਣੇ ਤਾਜ਼ਾ ਡੌਕੂਮੈਂਟ ਸਾਫ਼ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ? ਇਸ ਨਾਲ Myzone ਤੋਂ ਲੋਕਲ ਸਮੱਗਰੀ ਹਟਾਈ ਜਾਵੇਗੀ"
+"ਕੀ ਤੁਸੀਂ ਆਪਣੇ ਤਾਜ਼ਾ ਡੌਕੂਮੈਂਟ ਸਾਫ਼ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ? ਇਸ ਨਾਲ myzone ਤੋਂ ਲੋਕਲ ਸਮੱਗਰੀ ਹਟਾਈ ਜਾਵੇਗੀ"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -137,28 +137,21 @@ msgstr "ਅੱਜ ਲਈ ਕੁਝ ਨਹੀਂ ਹੈ"
 msgid "Due %x"
 msgstr "%x ਨੂੰ ਚਾਹੀਦਾ"
 
-#: ../penge/penge-welcome-tile.c:33
+#: ../penge/penge-welcome-tile.c:28
+msgid ""
+"When you’ve set up your web accounts and used some files they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+"ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੇ ਵੈੱਬ ਅਕਾਊਂਟ ਸੈਟਅੱਪ ਕਰ ਲਏ ਅਤੇ ਵਰਤੇ ਤਾਂ ਕੁਝ ਫਾਇਲਾਂ myzone ਵਿੱਚ ਕੁਝ ਫਾਇਲਾਂ ਸੌਖੀ "
+"ਵਰਤੋਂ ਲਈ ਵੇਖਾਈ ਦੇਣਗੀਆਂ, ਜਦੋਂ ਵੀ ਤੁਸੀਂ ਚਾਹੋਗੇ।"
+
+#: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "ਜਾਣਕਾਰੀ ਵਿਡੀਓ ਚਲਾਓ"
 
-#: ../penge/penge-welcome-tile.c:65
+#: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
 msgstr "ਮੀਗੋ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ"
-
-#: ../penge/penge-welcome-tile.c:84
-msgid ""
-"This is the Myzone, where your recently used files and content from your web "
-"feeds will appear."
-msgstr ""
-"ਇਹ Myzone ਹੈ, ਜਿੱਥੇ ਤੁਹਾਡੇ ਵਲੋਂ ਤਾਜ਼ਾ ਵਰਤੀਆਂ ਫਾਇਲਾਂ ਅਤੇ ਤੁਹਾਡੀ ਵੈੱਬ ਫੀਡ ਦੀ ਸਮੱਗਰੀ ਵੇਖਾਈ ਦੇਵੇਗੀ।"
-
-#: ../penge/penge-welcome-tile.c:27
-msgid ""
-"When you’ve set up your web accounts and used some files they will appear "
-"here on the Myzone for easy access whenever you want. "
-msgstr ""
-"ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੇ ਵੈੱਬ ਅਕਾਊਂਟ ਸੈਟਅੱਪ ਕਰ ਲਏ ਅਤੇ ਵਰਤੇ ਤਾਂ ਕੁਝ ਫਾਇਲਾਂ Myzone ਵਿੱਚ ਕੁਝ ਫਾਇਲਾਂ ਸੌਖੀ "
-"ਵਰਤੋਂ ਲਈ ਵੇਖਾਈ ਦੇਣਗੀਆਂ, ਜਦੋਂ ਵੀ ਤੁਸੀਂ ਚਾਹੋਗੇ।"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -171,6 +164,13 @@ msgstr "ਨਾ-ਪੜ੍ਹਿਆ ਸੁਨੇਹਾ"
 #: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
 msgstr "ਨਾ-ਪੜ੍ਹੇ ਸੁਨੇਹੇ"
+
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr ""
+#~ "ਇਹ Myzone ਹੈ, ਜਿੱਥੇ ਤੁਹਾਡੇ ਵਲੋਂ ਤਾਜ਼ਾ ਵਰਤੀਆਂ ਫਾਇਲਾਂ ਅਤੇ ਤੁਹਾਡੀ ਵੈੱਬ ਫੀਡ ਦੀ ਸਮੱਗਰੀ ਵੇਖਾਈ "
+#~ "ਦੇਵੇਗੀ।"
 
 #~ msgid ""
 #~ "Things that your friends do online will appear here. Activate your "
