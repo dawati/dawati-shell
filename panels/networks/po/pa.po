@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: carrick-ng.Moblin2-UI.carrick\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
-"PO-Revision-Date: 2010-05-06 07:57+0530\n"
+"POT-Creation-Date: 2010-07-03 11:59+0000\n"
+"PO-Revision-Date: 2010-07-30 08:54+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 #. * The conjunction 'or' will be at the end of a choice of disabled technologies,
 #. * for example 'WiFi, WiMAX or 3G.
 #.
-#: ../carrick/carrick-list.c:847
+#: ../carrick/carrick-list.c:843
 msgid " or "
 msgstr " ਜਾਂ "
 
@@ -30,30 +30,31 @@ msgstr " ਜਾਂ "
 #. * Translator note: the comma ',' will be used to join the different disabled technologies
 #. * as in the above example; 'WiFi, WiMAX or 3G'
 #.
-#: ../carrick/carrick-list.c:852
+#: ../carrick/carrick-list.c:848
 msgid ", "
 msgstr ", "
 
-#: ../carrick/carrick-list.c:853 ../carrick/carrick-util.c:34
+#: ../carrick/carrick-list.c:849 ../carrick/carrick-util.c:34
 msgid "wired"
 msgstr "ਤਾਰ"
 
-#: ../carrick/carrick-list.c:854 ../carrick/carrick-pane.c:1368
+#. Switches
+#: ../carrick/carrick-list.c:850 ../carrick/carrick-pane.c:1429
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "ਵਾਈ-ਫਾਈ"
 
-#: ../carrick/carrick-list.c:855 ../carrick/carrick-pane.c:1443
+#: ../carrick/carrick-list.c:851 ../carrick/carrick-pane.c:1471
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "ਵਾਈਮੈਕਸ"
 
-#: ../carrick/carrick-list.c:856 ../carrick/carrick-pane.c:1418
+#: ../carrick/carrick-list.c:852 ../carrick/carrick-pane.c:1457
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:857 ../carrick/carrick-pane.c:1468
+#: ../carrick/carrick-list.c:853 ../carrick/carrick-pane.c:1485
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "ਬਲਿਊਟੁੱਥ"
@@ -63,7 +64,7 @@ msgstr "ਬਲਿਊਟੁੱਥ"
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
 #.
-#: ../carrick/carrick-list.c:870
+#: ../carrick/carrick-list.c:866
 msgid ""
 "Sorry, we can't find any networks. It appears that the connection manager is "
 "not running. You could try restarting your computer."
@@ -75,11 +76,11 @@ msgstr ""
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #.
-#: ../carrick/carrick-list.c:880
+#: ../carrick/carrick-list.c:876
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ ਆਫਲਾਈਨ ਮੋਡ ਬੰਦ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
 
-#: ../carrick/carrick-list.c:1017
+#: ../carrick/carrick-list.c:1013
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
 msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ ਹੈ। ਤੁਸੀਂ %s ਨੂੰ ਚਾਲੂ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
@@ -89,53 +90,53 @@ msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹ�
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
 #.
-#: ../carrick/carrick-list.c:1031
+#: ../carrick/carrick-list.c:1027
 msgid "Sorry, we can't find any networks"
 msgstr "ਅਫਸੋਸ, ਸਾਨੂੰ ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ ਲੱਭਿਆ।"
 
-#: ../carrick/carrick-notification-manager.c:104
+#: ../carrick/carrick-notification-manager.c:124
 msgid "Network connected"
 msgstr "ਨੈੱਟਵਰਕ ਕੁਨੈਕਟ ਹੈ"
 
-#: ../carrick/carrick-notification-manager.c:112
+#: ../carrick/carrick-notification-manager.c:132
 #, c-format
 msgid "You're now connected to a wired network"
 msgstr "ਹੁਣ ਤੁਸੀਂ ਤਾਰ ਵਾਲੇ ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
 
-#: ../carrick/carrick-notification-manager.c:142
+#: ../carrick/carrick-notification-manager.c:162
 #, c-format
 msgid "You're now connected to %s, a %s network"
 msgstr "ਹੁਣ ਤੁਸੀਂ %s, ਇੱਕ %s ਨੈੱਟਵਰਕ, ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
 
-#: ../carrick/carrick-notification-manager.c:148
+#: ../carrick/carrick-notification-manager.c:168
 #, c-format
 msgid "You're now connected to a %s network"
 msgstr "ਹੁਣ ਤੁਸੀਂ %s ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ।"
 
-#: ../carrick/carrick-notification-manager.c:165
+#: ../carrick/carrick-notification-manager.c:185
 msgid "Network lost"
 msgstr "ਨੈੱਟਵਰਕ ਗੁਆਚਿਆ"
 
-#: ../carrick/carrick-notification-manager.c:173
+#: ../carrick/carrick-notification-manager.c:193
 #, c-format
 msgid "Sorry, we've lost your wired connection"
 msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਤੁਹਾਡਾ ਤਾਰ ਵਾਲਾ ਕੁਨੈਕਸ਼ਨ ਗੁਆ ਦਿੱਤਾ ਹੈ"
 
-#: ../carrick/carrick-notification-manager.c:177
+#: ../carrick/carrick-notification-manager.c:197
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
 msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਤੁਹਾਡਾ %s ਕੁਨੈਕਸ਼ਨ %s ਨਾਲੋਂ ਗੁਆ ਦਿੱਤਾ ਹੈ"
 
-#: ../carrick/carrick-notification-manager.c:183
+#: ../carrick/carrick-notification-manager.c:203
 #, c-format
 msgid "Sorry, we've lost your %s connection"
 msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਤੁਹਾਡਾ %s ਕੁਨੈਕਸ਼ਨ ਗੁਆ ਦਿੱਤਾ ਹੈ"
 
-#: ../carrick/carrick-notification-manager.c:200
+#: ../carrick/carrick-notification-manager.c:220
 msgid "Network changed"
 msgstr "ਨੈੱਟਵਰਕ ਬਦਲਿਆ"
 
-#: ../carrick/carrick-notification-manager.c:219
+#: ../carrick/carrick-notification-manager.c:239
 #, c-format
 msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to a wired "
@@ -144,7 +145,7 @@ msgstr ""
 "ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ ਤਾਰ ਵਾਲੇ ਕੁਨੈਕਸ਼ਨ ਨਾਲ ਕੁਨੈਕਟ ਕਰ "
 "ਦਿੱਤਾ ਹੈ।"
 
-#: ../carrick/carrick-notification-manager.c:226
+#: ../carrick/carrick-notification-manager.c:246
 #, c-format
 msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
@@ -153,21 +154,21 @@ msgstr ""
 "ਅਫਸੋਸ, ਤੁਹਾਡਾ %s ਨਾਲ ਕੁਨੈਕਸ਼ਨ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ %s ਕੁਨੈਕਸ਼ਨ, %s ਨੈੱਟਵਰਕ ਨਾਲ "
 "ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ ਹੈ।"
 
-#: ../carrick/carrick-notification-manager.c:234
+#: ../carrick/carrick-notification-manager.c:254
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr ""
 "ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ %s ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ "
 "ਹੈ।"
 
-#: ../carrick/carrick-notification-manager.c:244
+#: ../carrick/carrick-notification-manager.c:264
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
 msgstr ""
 "ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ ਤਾਰ ਵਾਲੇ ਕੁਨੈਕਸ਼ਨ ਨਾਲ ਕੁਨੈਕਟ ਕਰ "
 "ਦਿੱਤਾ ਹੈ।"
 
-#: ../carrick/carrick-notification-manager.c:251
+#: ../carrick/carrick-notification-manager.c:271
 #, c-format
 msgid ""
 "Sorry, your %s connection was lost. So we've connected you to %s, a %s "
@@ -176,18 +177,18 @@ msgstr ""
 "ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ %s ਕੁਨੈਕਸ਼ਨ, %s ਨੈੱਟਵਰਕ ਨਾਲ "
 "ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ ਹੈ।"
 
-#: ../carrick/carrick-notification-manager.c:260
+#: ../carrick/carrick-notification-manager.c:280
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr ""
 "ਅਫਸੋਸ, ਤੁਹਾਡਾ ਕੁਨੈਕਸ਼ਨ %s ਨਾਲ ਗੁਆਚ ਗਿਆ ਹੈ। ਇਸਕਰਕੇ ਅਸੀਂ ਤੁਹਾਨੂੰ %s ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨੈਕਟ ਕਰ ਦਿੱਤਾ "
 "ਹੈ।"
 
-#: ../carrick/carrick-pane.c:629
+#: ../carrick/carrick-pane.c:634
 msgid "New connection settings"
 msgstr "ਨਵਾਂ ਕੁਨੈਕਸ਼ਨ ਸੈਟਿੰਗ"
 
-#: ../carrick/carrick-pane.c:667
+#: ../carrick/carrick-pane.c:672
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -197,43 +198,43 @@ msgstr ""
 "ਚਾਹੁੰਦੇ ਹੋ, ਅਤੇ ਜਿੱਥੇ ਲਾਜ਼ਮੀ ਹੋਵੇ, ਉੱਥੇ ਪਾਸਵਰਡ\n"
 "ਅਤੇ ਸੁਰੱਖਿਆ ਟਾਈਮ ਵੀ ਦਿਓ।"
 
-#: ../carrick/carrick-pane.c:677
+#: ../carrick/carrick-pane.c:682
 msgid "Network name"
 msgstr "ਨੈੱਟਵਰਕ ਨਾਂ"
 
-#: ../carrick/carrick-pane.c:689
+#: ../carrick/carrick-pane.c:694
 msgid "Network security"
 msgstr "ਨੈੱਟਵਰਕ ਸੁਰੱਖਿਆ"
 
-#: ../carrick/carrick-pane.c:699
+#: ../carrick/carrick-pane.c:704
 msgid "None"
 msgstr "ਕੋਈ ਨਹੀਂ"
 
-#: ../carrick/carrick-pane.c:711
+#: ../carrick/carrick-pane.c:716
 msgid "Password"
 msgstr "ਪਾਸਵਰਡ"
 
-#: ../carrick/carrick-pane.c:726 ../carrick/carrick-service-item.c:1303
+#: ../carrick/carrick-pane.c:731 ../carrick/carrick-service-item.c:1787
 msgid "Show password"
 msgstr "ਪਾਸਵਰਡ ਵੇਖੋ"
 
-#: ../carrick/carrick-pane.c:1356
+#: ../carrick/carrick-pane.c:1412
 msgid "Settings"
 msgstr "ਸੈਟਿੰਗ"
 
-#: ../carrick/carrick-pane.c:1393 ../carrick/carrick-service-item.c:241
+#: ../carrick/carrick-pane.c:1443 ../carrick/carrick-service-item.c:328
 msgid "Wired"
 msgstr "ਤਾਰ"
 
-#: ../carrick/carrick-pane.c:1495
-msgid "This will disable all your connections"
-msgstr "ਇਹ ਤੁਹਾਡੇ ਸਭ ਕੁਨੈਕਸ਼ਨ ਆਯੋਗ ਕਰੇਗਾ"
-
-#: ../carrick/carrick-pane.c:1520
+#: ../carrick/carrick-pane.c:1510
 msgid "Offline mode"
 msgstr "ਆਫਲਾਈਨ ਮੋਡ"
 
-#: ../carrick/carrick-pane.c:1556 ../src/carrick.c:351
+#: ../carrick/carrick-pane.c:1520
+msgid "This will disable all your connections"
+msgstr "ਇਹ ਤੁਹਾਡੇ ਸਭ ਕੁਨੈਕਸ਼ਨ ਆਯੋਗ ਕਰੇਗਾ"
+
+#: ../carrick/carrick-pane.c:1556 ../src/carrick.c:369
 msgid "Networks"
 msgstr "ਨੈੱਟਵਰਕ"
 
@@ -246,86 +247,86 @@ msgstr "ਨਵਾਂ ਕੁਨੈਕਸ਼ਨ ਸ਼ਾਮਲ ਕਰੋ"
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
 #.
-#: ../carrick/carrick-service-item.c:46
+#: ../carrick/carrick-service-item.c:51
 msgid "Critical Error: Invalid country code"
 msgstr "ਘਾਤਕ ਗਲਤੀ: ਗਲਤ ਦੇਸ਼ ਕੋਡ"
 
-#: ../carrick/carrick-service-item.c:47
+#: ../carrick/carrick-service-item.c:52
 msgid "Missing required APN (service plan name)"
 msgstr "ਲੋੜੀਦਾ APN ਗੁੰਮ ਹੈ (ਸਰਵਿਸ ਪਲੈਨ ਨਾਂ)"
 
-#: ../carrick/carrick-service-item.c:48
+#: ../carrick/carrick-service-item.c:53
 msgid "Internal Error: Invalid network service"
 msgstr "ਅੰਦਰੂਨੀ ਗਲਤੀ: ਗਲਤ ਨੈੱਟਵਰਕ ਸਰਵਿਸ"
 
-#: ../carrick/carrick-service-item.c:49
+#: ../carrick/carrick-service-item.c:54
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "ਨਾਜ਼ੁਕ ਗਲਤੀ: ਕੁਨੈਕਸ਼ਨ ਮੈਨੇਜਰ ਵਰਤਣ ਲਈ ਅਸਮਰੱਥ"
 
-#: ../carrick/carrick-service-item.c:50
+#: ../carrick/carrick-service-item.c:55
 msgid "ERROR: No 3G Hardware detected"
 msgstr "ਗਲਤੀ: ਕੋਈ 3G ਹਾਰਡਵੇਅਰ ਨਹੀਂ ਮਿਲਿਆ"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #.
-#: ../carrick/carrick-service-item.c:177
+#: ../carrick/carrick-service-item.c:192
 #, c-format
 msgid "%s encrypted"
 msgstr "%s ਇੰਕ੍ਰਿਪਟਡ"
 
-#: ../carrick/carrick-service-item.c:272 ../carrick/carrick-service-item.c:289
+#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:357
 msgid "Disconnect"
 msgstr "ਡਿਸ-ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../carrick/carrick-service-item.c:275
+#: ../carrick/carrick-service-item.c:343
 msgid "Connected"
 msgstr "ਕੁਨੈਕਟ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:360
 msgid "Online"
 msgstr "ਆਨਲਾਈਨ"
 
-#: ../carrick/carrick-service-item.c:299 ../carrick/carrick-service-item.c:308
+#: ../carrick/carrick-service-item.c:367 ../carrick/carrick-service-item.c:376
 #, c-format
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
-#: ../carrick/carrick-service-item.c:302
+#: ../carrick/carrick-service-item.c:370
 msgid "Configuring"
 msgstr "ਸੰਰਚਨਾ ਜਾਰੀ"
 
-#: ../carrick/carrick-service-item.c:311
+#: ../carrick/carrick-service-item.c:379
 msgid "Associating"
 msgstr "ਸਬੰਧਤ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:320 ../carrick/carrick-service-item.c:345
-#: ../carrick/carrick-service-item.c:1292
+#: ../carrick/carrick-service-item.c:388 ../carrick/carrick-service-item.c:413
+#: ../carrick/carrick-service-item.c:1774
 msgid "Connect"
 msgstr "ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../carrick/carrick-service-item.c:348
+#: ../carrick/carrick-service-item.c:416
 msgid "Connection failed"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:351
+#: ../carrick/carrick-service-item.c:419
 msgid "Sorry, the connection failed. You could try again."
 msgstr "ਅਫਸੋਸ, ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ। ਤੁਸੀਂ ਬਾਅਦ 'ਚ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹੋ।"
 
-#: ../carrick/carrick-service-item.c:357 ../carrick/carrick-service-item.c:360
+#: ../carrick/carrick-service-item.c:425 ../carrick/carrick-service-item.c:428
 #, c-format
 msgid "Disconnecting"
 msgstr "ਡਿਸ-ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../carrick/carrick-service-item.c:418
+#: ../carrick/carrick-service-item.c:494
 msgid "Type password here"
 msgstr "ਇੱਥੇ ਪਾਸਵਰਡ ਲਿਖੋ"
 
-#: ../carrick/carrick-service-item.c:481
+#: ../carrick/carrick-service-item.c:563
 msgid "Really remove?"
 msgstr "ਕੀ ਹਟਾਉਣਾ ਹੈ?"
 
-#: ../carrick/carrick-service-item.c:501
+#: ../carrick/carrick-service-item.c:583
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -336,7 +337,7 @@ msgstr ""
 "ਪਾਸਵਰਡ ਵੀ ਭੁੱਲਾ ਦਿੱਤਾ ਜਾਵੇਗਾ ਅਤੇ ਤੁਸੀਂ %s ਨਾਲ ਆਟੋਮੈਟਿਕ\n"
 "ਕੁਨੈਕਟ ਨਹੀਂ ਕਰ ਸਕੋਗੇ।"
 
-#: ../carrick/carrick-service-item.c:686
+#: ../carrick/carrick-service-item.c:786
 #, c-format
 msgid ""
 "Your password isn't the right length. For a WEP connection it needs to be "
@@ -345,7 +346,7 @@ msgstr ""
 "ਤੁਹਾਡੇ ਪਾਸਵਰਡ ਦੀ ਠੀਕ ਲੰਬਾਈ ਨਹੀਂ ਹੈ। WEP ਕੁਨੈਕਸ਼ਨ ਲਈ, ਇਸ ਦੀ ਲੰਬਾਈ ਜਾਂ ਤਾਂ 10 ਜਾਂ 26 ਅੱਖਰ "
 "ਹੋਣੀ ਲਾਜ਼ਮੀ ਹੈ, ਤੁਸੀਂ %i ਰੱਖੇ ਹਨ।"
 
-#: ../carrick/carrick-service-item.c:697
+#: ../carrick/carrick-service-item.c:797
 #, c-format
 msgid ""
 "Your password is too short. For a WPA  connection it needs to be at least 8 "
@@ -354,7 +355,7 @@ msgstr ""
 "ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਬਹੁਤ ਛੋਟਾ ਹੈ। WPA ਕੁਨੈਕਸ਼ਨ ਲਈ ਘੱਟੋ-ਘੱਟ 8 ਅੱਖਰ ਹੋਣੇ ਲਾਜ਼ਮੀ ਹਨ, ਤੁਸੀਂ %i ਹੀ ਦਿੱਤੇ "
 "ਹਨ।"
 
-#: ../carrick/carrick-service-item.c:701
+#: ../carrick/carrick-service-item.c:801
 #, c-format
 msgid ""
 "Your password is too long. For a WPA  connection it needs to have fewer than "
@@ -362,7 +363,7 @@ msgid ""
 msgstr ""
 "ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਬਹੁਤ ਵੱਡਾ ਹੈ। WPA ਕੁਨੈਕਸ਼ਨ ਲਈ 63 ਅੱਖਰਾਂ ਤੋਂ ਘੱਟ ਹੋਣੇ ਲਾਜ਼ਮੀ ਹਨ, ਤੁਸੀਂ %i ਦਿੱਤੇ ਹਨ।"
 
-#: ../carrick/carrick-service-item.c:710
+#: ../carrick/carrick-service-item.c:810
 #, c-format
 msgid ""
 "Your password is too short. For a WPA2  connection it needs to be at least 8 "
@@ -371,7 +372,7 @@ msgstr ""
 "ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਬਹੁਤ ਛੋਟਾ ਹੈ। WPA2 ਕੁਨੈਕਸ਼ਨ ਲਈ ਘੱਟੋ-ਘੱਟ 8 ਅੱਖਰ ਹੋਣੇ ਲਾਜ਼ਮੀ ਹਨ, ਤੁਸੀਂ %i ਹੀ ਦਿੱਤੇ "
 "ਹਨ।"
 
-#: ../carrick/carrick-service-item.c:714
+#: ../carrick/carrick-service-item.c:814
 #, c-format
 msgid ""
 "Your password is too long. For a WPA2  connection it needs to have fewer "
@@ -380,7 +381,29 @@ msgstr ""
 "ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਬਹੁਤ ਵੱਡਾ ਹੈ। WPA2 ਕੁਨੈਕਸ਼ਨ ਲਈ 63 ਅੱਖਰਾਂ ਤੋਂ ਘੱਟ ਹੋਣੇ ਲਾਜ਼ਮੀ ਹਨ, ਤੁਸੀਂ %i ਦਿੱਤੇ "
 "ਹਨ।"
 
-#: ../carrick/carrick-service-item.c:1228
+#: ../carrick/carrick-service-item.c:1267
+msgid "Sorry, it looks like the IP address is not valid"
+msgstr "ਅਫਸੋਸ, IP ਐਡਰੈੱਸ ਠੀਕ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
+
+#: ../carrick/carrick-service-item.c:1279
+msgid "Sorry, it looks like the gateway address is not valid"
+msgstr "ਅਫਸੋਸ, ਗੇਟਵੇ ਐਡਰੈੱਸ ਠੀਕ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
+
+#: ../carrick/carrick-service-item.c:1291
+msgid "Sorry, it looks like the subnet mask is not valid"
+msgstr "ਅਫਸੋਸ, ਸਬਨੈੱਟ ਮਾਸਕ ਠੀਕ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
+
+#: ../carrick/carrick-service-item.c:1336
+#, c-format
+msgid "Sorry, it looks like the nameserver address '%s' is not valid"
+msgstr "ਅਫਸੋਸ, ਨੇਮ ਸਰਵਰ ਐਡਰੈੱਸ '%s' ਢੁੱਕਵਾਂ ਨਹੀਂ ਜਾਪਦਾ ਹੈ"
+
+#. TRANSLATORS: label for the Advanced expander in a service item
+#: ../carrick/carrick-service-item.c:1698
+msgid "Advanced"
+msgstr "ਤਕਨੀਕੀ"
+
+#: ../carrick/carrick-service-item.c:1708
 msgid "Scanning"
 msgstr "ਸਕੈਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
@@ -388,67 +411,106 @@ msgstr "ਸਕੈਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1247
+#: ../carrick/carrick-service-item.c:1729
 msgid "WPA2 encrypted"
 msgstr "WPA2 ਇੰਕ੍ਰਿਪਟਡ"
 
-#: ../src/carrick.c:43
+#. TRANSLATORS: label in advanced settings (next to combobox
+#. * for DHCP/Static IP)
+#: ../carrick/carrick-service-item.c:1836
+msgid "Connect by:"
+msgstr "ਕੁਨੈਕਟ ਕਰੋ:"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1838
+msgid "IP address:"
+msgstr "IP ਐਡਰੈੱਸ:"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1840
+msgid "Subnet mask:"
+msgstr "ਸਬਨੈੱਟ ਮਾਸਕ:"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1842
+msgid "Router:"
+msgstr "ਰਾਊਟਰ:"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1844
+msgid "DNS:"
+msgstr "DNS:"
+
+#: ../carrick/carrick-service-item.c:1850
+msgid "DHCP"
+msgstr "DHCP"
+
+#: ../carrick/carrick-service-item.c:1852
+msgid "Static IP"
+msgstr "ਸਥਿਰ IP"
+
+#. TRANSLATORS: label for apply button in static ip settings
+#: ../carrick/carrick-service-item.c:1902
+msgid "Apply"
+msgstr "ਲਾਗੂ ਕਰੋ"
+
+#: ../src/carrick.c:49
 msgid "networks - not connected"
 msgstr "ਨੈੱਟਵਰਕ - ਕੁਨੈਕਟ ਨਹੀਂ ਹੈ"
 
-#: ../src/carrick.c:49
+#: ../src/carrick.c:55
 msgid "networks - connecting"
 msgstr "ਨੈੱਟਵਰਕ - ਕੁਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../src/carrick.c:55
+#: ../src/carrick.c:61
 msgid "networks - wired"
 msgstr "ਨੈੱਟਵਰਕ - ਤਾਰ"
 
-#: ../src/carrick.c:57
+#: ../src/carrick.c:63
 #, c-format
 msgid "networks - %s - wifi"
 msgstr "ਨੈੱਟਵਰਕ - %s - wifi"
 
-#: ../src/carrick.c:60
+#: ../src/carrick.c:66
 #, c-format
 msgid "networks - %s - wimax"
 msgstr "ਨੈੱਟਵਰਕ - %s - ਵਾਈਮੈਕਸ"
 
-#: ../src/carrick.c:63
+#: ../src/carrick.c:69
 #, c-format
 msgid "networks - %s - 3G"
 msgstr "ਨੈੱਟਵਰਕ - %s - 3G"
 
-#: ../src/carrick.c:66
+#: ../src/carrick.c:72
 #, c-format
 msgid "networks - %s - bluetooth"
 msgstr "ਨੈੱਟਵਰਕ - %s - ਬਲਿਊਟੁੱਥ"
 
-#: ../src/carrick.c:69 ../src/carrick.c:81
+#: ../src/carrick.c:75 ../src/carrick.c:87
 msgid "networks"
 msgstr "ਨੈੱਟਵਰਕ"
 
-#: ../src/carrick.c:76
+#: ../src/carrick.c:82
 msgid "networks - error"
 msgstr "ਨੈੱਟਵਰਕ - ਗਲਤੀ"
 
-#: ../src/carrick.c:279
+#: ../src/carrick.c:297
 msgid "Run in standalone mode"
 msgstr "ਇੱਕਲੇ ਮੋਡ ਵਿੱਚ ਚਲਾਓ"
 
-#: ../src/carrick.c:281
+#: ../src/carrick.c:299
 msgid "Embed in another window (overrides --standalone)"
 msgstr "ਹੋਰ ਵਿੰਡੋ ਵਿੱਚ ਇੰਬੈੱਡ (--standalone ਅਣਡਿੱਠਾ)"
 
-#: ../src/carrick.c:292
+#: ../src/carrick.c:310
 msgid "Carrick connectivity applet"
 msgstr "ਕੱਰਿਕ ਕੁਨੈਕਟਵਿਟੀ ਐਪਲਿਟ"
 
-#: ../src/carrick.c:293
-msgid "- Moblin connectivity applet"
-msgstr "- ਮੋਬਲਿਨ ਕੁਨੈਕਟਵਿਟੀ ਐਪਲਿਟ"
+#: ../src/carrick.c:311
+msgid "- MeeGo connectivity applet"
+msgstr "- ਮੀਗੋ ਕੁਨੈਕਟਵਿਟੀ ਐਪਲਿਟ"
 
-#: ../src/carrick.c:334 ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "ਨੈੱਟਵਰਕ"
 
