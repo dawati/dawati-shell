@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-10 09:18+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -59,7 +59,7 @@ msgstr "%H:%M"
 #. 
 #: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
-msgstr "%l:%M %P"
+msgstr "%P %l:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
@@ -106,6 +106,14 @@ msgstr "即使畫面顯示大小需要用到更大的螢幕模式，也強迫它
 msgid "Order of panels on toolbar"
 msgstr "工具列上的面板順序"
 
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
+msgstr "Meego 網路筆電特效"
+
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
+msgstr "供 Meego 網路筆電使用的特效"
+
 #: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
@@ -130,14 +138,6 @@ msgstr "正在要求您的注意。"
 #: ../src/notifications/ntf-wm.c:115
 msgid "Activate"
 msgstr "啟動"
-
-#: ../src/meego-netbook.c:829
-msgid "Effects for Meego Netbooks"
-msgstr "供 Meego 網路筆電使用的特效"
-
-#: ../src/meego-netbook.c:825
-msgid "Meego Netbook Effects"
-msgstr "Meego 網路筆電特效"
 
 #~ msgid "System tray"
 #~ msgstr "系統匣"
