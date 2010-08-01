@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-10 09:20+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -81,6 +81,10 @@ msgstr "發生什麼事？"
 msgid "Change"
 msgstr "變更"
 
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web account"
+msgstr "新增網路帳號"
+
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
 msgstr "您似乎沒有任何網路服務的配置，或者網路服務配置有問題。使用上面的按鈕，打開「我的網站帳戶」並設置一個帳戶。"
@@ -118,10 +122,6 @@ msgstr "不要使用地理位置"
 #, c-format
 msgid "%s from %s"
 msgstr "%s 來自 %s"
-
-#: ../src/mps-feed-switcher.c:350
-msgid "Add new web account"
-msgstr "新增網路帳號"
 
 #~ msgid "Offline"
 #~ msgstr "離線"
