@@ -2,12 +2,12 @@
 # Copyright (C) 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the Mutter package.
 # Gil Forcada <gilforcada@guifi.net>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutter 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2009-08-21 14:54+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -16,40 +16,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:1
-#, fuzzy
 msgid "Zones panel"
-msgstr "Encara no hi ha cap zona"
+msgstr "Tauler de zones"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zones"
 
 #: ../src/main.c:412
-#, fuzzy
 msgid "Zones"
-msgstr "zones"
+msgstr "Zones"
 
 #: ../src/sw-zone.c:92
-#, fuzzy
 msgid "New Zone"
-msgstr "zones"
+msgstr "Zona nova"
 
 #: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
-#, fuzzy, c-format
+#, c-format
 msgid "Zone %d"
-msgstr "zones"
+msgstr "Zona %d"
 
 #: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "No hi ha aplicacions en aquesta zona"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i "
-"organitzar-les com més us agradi."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i organitzar-les com més us agradi."
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Fa menys d'un minut"
