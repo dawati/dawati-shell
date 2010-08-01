@@ -2,12 +2,12 @@
 # Copyright (C) 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the Mutter package.
 # Gil Forcada <gilforcada@guifi.net>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutter 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 09:22+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: 2009-08-21 14:54+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -15,132 +15,190 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../libmeego-panel/meego-panel/mpl-utils.c:57
-msgid "Less than a minute ago"
-msgstr "Fa menys d'un minut"
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Establiu les preferències de la barra d'eines"
 
-#: ../libmeego-panel/meego-panel/mpl-utils.c:61
-msgid "A few minutes ago"
-msgstr "Fa uns minuts"
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Paràmetres de la barra d'eines"
 
-#: ../libmeego-panel/meego-panel/mpl-utils.c:65
-msgid "A couple of hours ago"
-msgstr "Fa unes hores"
+#: ../capplet/src/mtp-bin.c:362
+msgid "Save toolbar"
+msgstr "Desa la barra d'eines"
 
-#: ../libmeego-panel/meego-panel/mpl-utils.c:72
-msgid "Earlier today"
-msgstr "Avui"
+#: ../capplet/src/mtp-bin.c:367
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Heu d'eliminar un tauler abans de poder afegir-ne un de nou."
 
-#: ../libmeego-panel/meego-panel/mpl-utils.c:75
-msgid "Yesterday"
-msgstr "Ahir"
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Podeu afegir, eliminar o reordenar els taulers a la barra d'eines."
 
-#: ../libmeego-panel/meego-panel/mpl-utils.c:83
-#, c-format
-msgid "On %A"
-msgstr "El %A"
+#: ../capplet/src/mtp-jar.c:110
+msgid "Available panels"
+msgstr "Taulers disponibles"
 
-#: ../libmeego-panel/meego-panel/mpl-utils.c:89
-msgid "Unknown"
-msgstr "Desconegut"
-
-#: ../libmeego-panel/meego-panel/mpl-utils.c:96
-msgid "Last week"
-msgstr "La setmana passada"
-
-#: ../libmeego-panel/meego-panel/mpl-utils.c:99
-msgid "A couple of weeks ago"
-msgstr "Fa un parell de setmanes"
-
-#: ../libmeego-panel/meego-panel/mpl-utils.c:105
-msgid "This month"
-msgstr "Aquest mes"
-
-#. Now Jan., last used in Dec.
-#: ../libmeego-panel/meego-panel/mpl-utils.c:109
-msgid "Last month"
-msgstr "El mes passat"
-
-#: ../libmeego-panel/meego-panel/mpl-utils.c:112
-msgid "This year"
-msgstr "Aquest any"
-
-#: ../libmeego-panel/meego-panel/mpl-utils.c:115
-msgid "Last year"
-msgstr "L'any passat"
-
-#: ../libmeego-panel/meego-panel/mpl-utils.c:117
-msgid "Ages ago"
-msgstr "Fa milers d'anys"
-
-#: ../src/meego-netbook.c:305 ../src/mnb-toolbar.c:1339
-msgid "zones"
-msgstr "zones"
-
-#: ../src/meego-netbook.c:412
-msgid "Meego Netbook Effects"
-msgstr "Efectes del Meego"
-
-#: ../src/meego-netbook.c:416
-msgid "Effects for Meego Netbooks"
-msgstr "Efectes per als mini-portàtils Meego"
-
-#: ../src/mnb-notification.c:266
-msgid "Dismiss"
-msgstr "Descarta"
-
-#: ../src/mnb-notification-cluster.c:657
-msgid "Dismiss All"
-msgstr "Descarta-ho tot"
-
-#: ../src/mnb-switcher.c:1707
-msgid "No Zones yet"
-msgstr "Encara no hi ha cap zona"
-
-#: ../src/mnb-switcher.c:1729
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i "
-"organitzar-les com més us agradi."
-
-#: ../src/mnb-switcher.c:1952
-msgid "No applications on this zone"
-msgstr "No hi ha aplicacions en aquesta zona"
-
-#. translators: translate this to a suitable time format for your locale
-#. * showing only hours and minutes. For available format specifiers see
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:666
+#. 
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#. 
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../src/mnb-toolbar.c:676
+#. 
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e de %B de %Y"
 
-#: ../src/mnb-toolbar.c:1576
-msgid "power & brightness"
-msgstr "energia i brillantor"
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Barra d'eines"
 
-#: ../src/mnb-toolbar.c:1579
-msgid "volume"
-msgstr "volum"
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Establiu les preferències de la safata del sistema"
 
-#: ../src/mnb-toolbar.c:1582
-msgid "bluetooth"
-msgstr "bluetooth"
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:241
+msgid "System Tray"
+msgstr "Safata del sistema"
 
-#: ../src/mnb-toolbar.c:1585
-msgid "networks"
-msgstr "xarxes"
+#: ../capplet/src/syst-cc-panel.c:174
+msgid "Show system tray"
+msgstr "Mostra la safata del sistema"
 
-#: ../src/mnb-toolbar.c:1588
-msgid "test"
-msgstr "test"
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr ""
+
+#: ../data/mutter-meego.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Fes servir sempre el mode de pantalla petita"
+
+#: ../data/mutter-meego.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determina l'ordre dels taulers a la barra d'eines."
+
+#: ../data/mutter-meego.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Força l'ús del mode de pantalla petita fins i tot quan la mida de la pantalla suposaria un mode de pantalla més gran."
+
+#: ../data/mutter-meego.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "Ordre dels taulers a la barra d'eines"
+
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
+msgstr "Efectes del Meego"
+
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
+msgstr "Efectes per als mini-portàtils Meego"
+
+#: ../src/mnb-toolbar.c:1007
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "%s està trencat"
+
+#: ../src/notifications/ntf-notification.c:224
+msgid "Dismiss"
+msgstr "Descarta"
+
+#: ../src/notifications/ntf-tray.c:308
+msgid "Dismiss All"
+msgstr "Descarta-ho tot"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Finestra desconeguda"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "demana la vostra atenció."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Activa"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Fa menys d'un minut"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Fa uns minuts"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Fa unes hores"
+
+#~ msgid "Earlier today"
+#~ msgstr "Avui"
+
+#~ msgid "On %A"
+#~ msgstr "El %A"
+
+#~ msgid "Last week"
+#~ msgstr "La setmana passada"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Fa un parell de setmanes"
+
+#~ msgid "This month"
+#~ msgstr "Aquest mes"
+
+#~ msgid "Last month"
+#~ msgstr "El mes passat"
+
+#~ msgid "This year"
+#~ msgstr "Aquest any"
+
+#~ msgid "Last year"
+#~ msgstr "L'any passat"
+
+#~ msgid "Ages ago"
+#~ msgstr "Fa milers d'anys"
+
+#~ msgid "zones"
+#~ msgstr "zones"
+
+#~ msgid "No Zones yet"
+#~ msgstr "Encara no hi ha cap zona"
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i organitzar-les com més us agradi."
+
+#~ msgid "No applications on this zone"
+#~ msgstr "No hi ha aplicacions en aquesta zona"
+
+#~ msgid "power & brightness"
+#~ msgstr "energia i brillantor"
+
+#~ msgid "volume"
+#~ msgstr "volum"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "xarxes"
+
+#~ msgid "test"
+#~ msgstr "test"
