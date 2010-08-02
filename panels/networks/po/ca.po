@@ -2,12 +2,12 @@
 # Copyright (C) 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the Carrick package.
 # Gil Forcada <gilforcada@guifi.net>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Carrick 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 09:21+0000\n"
+"POT-Creation-Date: 2010-07-03 11:59+0000\n"
 "PO-Revision-Date: 2009-08-21 14:39+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -15,11 +15,156 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../carrick/carrick-pane.c:414
+#. * Translator note: The disabled technologies available to be turned on is
+#. put together at
+#. * runtime.
+#. * The conjunction 'or' will be at the end of a choice of disabled
+#. technologies,
+#. * for example 'WiFi, WiMAX or 3G.
+#. 
+#: ../carrick/carrick-list.c:843
+msgid " or "
+msgstr "o"
+
+#. * Translator note: the comma ',' will be used to join the different
+#. disabled technologies
+#. * as in the above example; 'WiFi, WiMAX or 3G'
+#. 
+#: ../carrick/carrick-list.c:848
+msgid ", "
+msgstr ", "
+
+#: ../carrick/carrick-list.c:849 ../carrick/carrick-util.c:34
+msgid "wired"
+msgstr "amb fil"
+
+#. Switches
+#: ../carrick/carrick-list.c:850 ../carrick/carrick-pane.c:1429
+#: ../carrick/carrick-util.c:32
+msgid "WiFi"
+msgstr "Wi-Fi"
+
+#: ../carrick/carrick-list.c:851 ../carrick/carrick-pane.c:1471
+#: ../carrick/carrick-util.c:38
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-list.c:852 ../carrick/carrick-pane.c:1457
+#: ../carrick/carrick-util.c:36
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-list.c:853 ../carrick/carrick-pane.c:1485
+#: ../carrick/carrick-util.c:40
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#. 
+#: ../carrick/carrick-list.c:866
+#, fuzzy
+msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
+msgstr "No s'ha trobat cap xarxa. Sembla que el gestor de connexions no estigui funcionant. Podeu provar de reiniciar el dispositiu."
+
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#. 
+#: ../carrick/carrick-list.c:876
+msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "No s'ha trobat cap xarxa. Podeu provar de inhabilitar el mode fora de línia. "
+
+#: ../carrick/carrick-list.c:1013
+#, fuzzy, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr "No s'ha trobat cap xarxa. Podeu provar d'engegar el 3G."
+
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#. 
+#: ../carrick/carrick-list.c:1027
+msgid "Sorry, we can't find any networks"
+msgstr "No s'ha trobat cap xarxa"
+
+#: ../carrick/carrick-notification-manager.c:124
+msgid "Network connected"
+msgstr "Connectat a la xarxa"
+
+#: ../carrick/carrick-notification-manager.c:132
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "Esteu connectat a la xarxa per cable"
+
+#: ../carrick/carrick-notification-manager.c:162
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "Esteu connectat a %s a, a través d'una xarxa %s"
+
+#: ../carrick/carrick-notification-manager.c:168
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "Esteu connectat a una xarxa %s"
+
+#: ../carrick/carrick-notification-manager.c:185
+msgid "Network lost"
+msgstr "S'ha perdut la connexió"
+
+#: ../carrick/carrick-notification-manager.c:193
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "S'ha perdut la connexió per cable"
+
+#: ../carrick/carrick-notification-manager.c:197
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "S'ha perdut la connexió %s a %s"
+
+#: ../carrick/carrick-notification-manager.c:203
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "S'ha perdut la connexió %s"
+
+#: ../carrick/carrick-notification-manager.c:220
+msgid "Network changed"
+msgstr "S'ha canviat de xarxa"
+
+#: ../carrick/carrick-notification-manager.c:239
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
+msgstr "S'ha perdut la connexió %s de manera que s'ha connectat a la xarxa de cable."
+
+#: ../carrick/carrick-notification-manager.c:246
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
+msgstr "S'ha perdut la connexió %s. S'ha connectat a %s, una xarxa %s."
+
+#: ../carrick/carrick-notification-manager.c:254
+#, c-format
+msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "S'ha perdut la connexió %s. S'ha connectat a la xarxa %s"
+
+#: ../carrick/carrick-notification-manager.c:264
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "S'ha perdut la connexió %s. S'ha connectat a la xarxa de cable"
+
+#: ../carrick/carrick-notification-manager.c:271
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
+msgstr "S'ha perdut la connexió %s. S'ha connectat a %s, una xarxa %s"
+
+#: ../carrick/carrick-notification-manager.c:280
+#, c-format
+msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "S'ha perdut la connexió %s. S'ha connectat a una xarxa %s"
+
+#: ../carrick/carrick-pane.c:634
 msgid "New connection settings"
 msgstr "Paràmetres de la connexió nova"
 
-#: ../carrick/carrick-pane.c:450
+#: ../carrick/carrick-pane.c:672
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -29,190 +174,135 @@ msgstr ""
 "us voleu connectar i, si fa falta, la\n"
 "contrasenya i el tipus de seguretat."
 
-#: ../carrick/carrick-pane.c:460
+#: ../carrick/carrick-pane.c:682
 msgid "Network name"
 msgstr "Nom de la xarxa"
 
-#: ../carrick/carrick-pane.c:472
+#: ../carrick/carrick-pane.c:694
 msgid "Network security"
 msgstr "Seguretat de la xarxa"
 
-#: ../carrick/carrick-pane.c:482
+#: ../carrick/carrick-pane.c:704
 msgid "None"
 msgstr "Cap"
 
-#: ../carrick/carrick-pane.c:496
+#: ../carrick/carrick-pane.c:716
 msgid "Password"
 msgstr "Contrasenya"
 
-#: ../carrick/carrick-pane.c:511 ../carrick/carrick-service-item.c:1036
+#: ../carrick/carrick-pane.c:731 ../carrick/carrick-service-item.c:1787
 msgid "Show password"
 msgstr "Mostra la contrasenya"
 
-#.
-#. * Hint to display when we detect that the connection manager
-#. * is dead.  Ideally the system auto-restarts connman so the
-#. * user will not see this, but this is what to show if all
-#. * available recovery measures fail.
-#.
-#: ../carrick/carrick-pane.c:609
-msgid ""
-"Sorry, we can't find any networks. The Connection Manager doesn't seem to be "
-"running. You may want to try re-starting your device."
-msgstr ""
-"No s'ha trobat cap xarxa. Sembla que el gestor de connexions no estigui "
-"funcionant. Podeu provar de reiniciar el dispositiu."
+#: ../carrick/carrick-pane.c:1412
+msgid "Settings"
+msgstr "Paràmetres"
 
-#.
-#. * Hint display if we detect that the system is in
-#. * offline mode and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:620
-msgid ""
-"Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr ""
-"No s'ha trobat cap xarxa. Podeu provar de inhabilitar el mode fora de línia. "
-
-#.
-#. * Hint to display if we detect that wifi has been turned off
-#. * and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:636
-msgid "Sorry, we can't find any networks. You could try turning on WiFi."
-msgstr ""
-"No s'ha trobat cap xarxa. Podeu provar d'engegar el wi-fi."
-
-#.
-#. * Hint to display if we detect that wifi is on but
-#. * WiMAX has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-pane.c:647
-msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
-msgstr ""
-"No s'ha trobat cap xarxa. Podeu provar d'engegar el WiMAX."
-
-#.
-#. * Hint to display if we detect that wifi and wimax is on but
-#. * 3G has been turned off and there are no available
-#. * networks
-#.
-#: ../carrick/carrick-pane.c:658
-msgid "Sorry, we can't find any networks. You could try turning on 3G."
-msgstr ""
-"No s'ha trobat cap xarxa. Podeu provar d'engegar el 3G."
-
-#.
-#. * Hint to display if we detect that wifi, wimax, and 3G are on but
-#. * bluetooth has been turned off and there are no available networks
-#.
-#: ../carrick/carrick-pane.c:668
-msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
-msgstr ""
-"No s'ha trobat cap xarxa. Podeu provar d'engegar el Bluetooth."
-
-#.
-#. * Hint to display if we detect that all technologies
-#. * other then ethernet have been turned on, and there
-#. * are no available networks
-#.
-#: ../carrick/carrick-pane.c:679
-msgid "Sorry, we can't find any networks. You could try turning on Wired."
-msgstr ""
-"No s'ha trobat cap xarxa. Podeu provar d'engegar la connexió per cable."
-
-#.
-#. * Generic message to display if all available networking
-#. * technologies are turned on, but for whatever reason we
-#. * can not find any networks
-#.
-#: ../carrick/carrick-pane.c:691
-msgid "Sorry, we can't find any networks"
-msgstr "No s'ha trobat cap xarxa"
-
-#: ../carrick/carrick-pane.c:1030
-msgid "Networks"
-msgstr "Xarxes"
-
-#: ../carrick/carrick-pane.c:1070
-msgid "Add new connection"
-msgstr "Afegeix una connexió nova"
-
-#: ../carrick/carrick-pane.c:1097
-msgid "WiFi"
-msgstr "Wi-Fi"
-
-#: ../carrick/carrick-pane.c:1129 ../carrick/carrick-service-item.c:224
+#: ../carrick/carrick-pane.c:1443 ../carrick/carrick-service-item.c:328
 msgid "Wired"
 msgstr "Cable"
 
-#: ../carrick/carrick-pane.c:1160
-msgid "3G"
-msgstr "3G"
-
-#: ../carrick/carrick-pane.c:1191
-msgid "WiMAX"
-msgstr "WiMAX"
-
-#: ../carrick/carrick-pane.c:1223
-msgid "Bluetooth"
-msgstr "Bluetooth"
-
-#: ../carrick/carrick-pane.c:1266
+#: ../carrick/carrick-pane.c:1510
 msgid "Offline mode"
 msgstr "Mode fora de línia"
 
-#: ../carrick/carrick-pane.c:1291
+#: ../carrick/carrick-pane.c:1520
 msgid "This will disable all your connections"
 msgstr "Inhabilitareu totes les connexions"
 
+#: ../carrick/carrick-pane.c:1556 ../src/carrick.c:369
+msgid "Networks"
+msgstr "Xarxes"
+
+#. New connection button
+#: ../carrick/carrick-pane.c:1562
+msgid "Add new connection"
+msgstr "Afegeix una connexió nova"
+
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#. 
+#: ../carrick/carrick-service-item.c:51
+msgid "Critical Error: Invalid country code"
+msgstr "Error crític: el codi de país no és vàlid"
+
+#: ../carrick/carrick-service-item.c:52
+msgid "Missing required APN (service plan name)"
+msgstr "No es troba l'APN (nom del pla de servei) requerida"
+
+#: ../carrick/carrick-service-item.c:53
+msgid "Internal Error: Invalid network service"
+msgstr "Error intern: el servei de xarxa no és vàlid"
+
+#: ../carrick/carrick-service-item.c:54
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr "Error crític: no es pot accedir al gestor de connexions"
+
+#: ../carrick/carrick-service-item.c:55
+msgid "ERROR: No 3G Hardware detected"
+msgstr "Error: no s'ha detectat cap dispositiu 3G"
+
 #. TRANSLATORS: this is a wireless security method, at least WEP,
-#. WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#: ../carrick/carrick-service-item.c:183
+#. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
+#. 
+#: ../carrick/carrick-service-item.c:192
 #, c-format
 msgid "%s encrypted"
 msgstr "Encriptat amb %s"
 
-#: ../carrick/carrick-service-item.c:255
+#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:357
 msgid "Disconnect"
 msgstr "Desconnectat"
 
-#: ../carrick/carrick-service-item.c:258
+#: ../carrick/carrick-service-item.c:343
 msgid "Connected"
 msgstr "Connectat"
 
-#: ../carrick/carrick-service-item.c:263
+#: ../carrick/carrick-service-item.c:360
+msgid "Online"
+msgstr "Connectat"
+
+#: ../carrick/carrick-service-item.c:367 ../carrick/carrick-service-item.c:376
 #, c-format
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: ../carrick/carrick-service-item.c:266
+#: ../carrick/carrick-service-item.c:370
 msgid "Configuring"
 msgstr "S'està configurant"
 
-#: ../carrick/carrick-service-item.c:273 ../carrick/carrick-service-item.c:281
-#: ../carrick/carrick-service-item.c:1025
+#: ../carrick/carrick-service-item.c:379
+msgid "Associating"
+msgstr "S'està associant"
+
+#: ../carrick/carrick-service-item.c:388 ../carrick/carrick-service-item.c:413
+#: ../carrick/carrick-service-item.c:1774
 msgid "Connect"
 msgstr "Connectat"
 
-#: ../carrick/carrick-service-item.c:284
+#: ../carrick/carrick-service-item.c:416
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"
 
-#: ../carrick/carrick-service-item.c:289 ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:419
+msgid "Sorry, the connection failed. You could try again."
+msgstr "Ha fallat la connexió. Proveu de nou."
+
+#: ../carrick/carrick-service-item.c:425 ../carrick/carrick-service-item.c:428
 #, c-format
 msgid "Disconnecting"
 msgstr "S'està desconnectant"
 
-#: ../carrick/carrick-service-item.c:340
+#: ../carrick/carrick-service-item.c:494
 msgid "Type password here"
 msgstr "Introduïu la contrasenya"
 
-#: ../carrick/carrick-service-item.c:403
+#: ../carrick/carrick-service-item.c:563
 msgid "Really remove?"
 msgstr "Segur que voleu suprimir-la?"
 
-#: ../carrick/carrick-service-item.c:421
+#: ../carrick/carrick-service-item.c:583
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -223,97 +313,244 @@ msgstr ""
 "feu s'esborrarà la contrasenya i no podreu\n"
 "connectar-vos automàticament a %s."
 
+#: ../carrick/carrick-service-item.c:786
+#, c-format
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
+msgstr "La contrasenya no té la llargada correcta. Per a connexions WEP són necessaris 10 o 26 caràcters, heu introduït %i."
+
+#: ../carrick/carrick-service-item.c:797
+#, c-format
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "La contrasenya és massa curta. Per una connexió WPA són necessaris com a mínim 8 caràcters, heu introduït %i"
+
+#: ../carrick/carrick-service-item.c:801
+#, c-format
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "La contrasenya és massa llarga. Per a una connexió WPA el màxim són 63 caràcters, heu introduït %i"
+
+#: ../carrick/carrick-service-item.c:810
+#, c-format
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "La contrasenya és massa curta. Per una connexió WPA2 són necessaris com a mínim 8 caràcters, heu introduït %i"
+
+#: ../carrick/carrick-service-item.c:814
+#, c-format
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
+msgstr "La contrasenya és massa llarga. Per a una connexió WPA2 el màxim són 63 caràcters, heu introduït %i"
+
+#: ../carrick/carrick-service-item.c:1267
+msgid "Sorry, it looks like the IP address is not valid"
+msgstr "Sembla que l'adreça IP no és vàlida"
+
+#: ../carrick/carrick-service-item.c:1279
+msgid "Sorry, it looks like the gateway address is not valid"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1291
+msgid "Sorry, it looks like the subnet mask is not valid"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1336
+#, c-format
+msgid "Sorry, it looks like the nameserver address '%s' is not valid"
+msgstr ""
+
+#. TRANSLATORS: label for the Advanced expander in a service item
+#: ../carrick/carrick-service-item.c:1698
+msgid "Advanced"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1708
+msgid "Scanning"
+msgstr ""
+
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:981
+#: ../carrick/carrick-service-item.c:1729
 msgid "WPA2 encrypted"
 msgstr "Encriptat amb WPA2"
 
-#: ../carrick/carrick-notification-manager.c:131
-msgid "Network connected"
+#. TRANSLATORS: label in advanced settings (next to combobox
+#. * for DHCP/Static IP)
+#: ../carrick/carrick-service-item.c:1836
+#, fuzzy
+msgid "Connect by:"
+msgstr "Connectat"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1838
+msgid "IP address:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1840
+msgid "Subnet mask:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1842
+msgid "Router:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:1844
+msgid "DNS:"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1850
+msgid "DHCP"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1852
+msgid "Static IP"
+msgstr ""
+
+#. TRANSLATORS: label for apply button in static ip settings
+#: ../carrick/carrick-service-item.c:1902
+msgid "Apply"
+msgstr ""
+
+#: ../src/carrick.c:49
+#, fuzzy
+msgid "networks - not connected"
 msgstr "Connectat a la xarxa"
 
-#: ../carrick/carrick-notification-manager.c:139
-#, c-format
-msgid "You're now connected to a wired network"
-msgstr "Esteu connectat a la xarxa per cable"
+#: ../src/carrick.c:55
+#, fuzzy
+msgid "networks - connecting"
+msgstr "Connectat a la xarxa"
 
-#: ../carrick/carrick-notification-manager.c:169
-#, c-format
-msgid "You're now connected to %s, a %s network"
-msgstr "Esteu connectat a %s a, a través d'una xarxa %s"
+#: ../src/carrick.c:61
+msgid "networks - wired"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:175
+#: ../src/carrick.c:63
 #, c-format
-msgid "You're now connected to a %s network"
-msgstr "Esteu connectat a una xarxa %s"
+msgid "networks - %s - wifi"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:192
-msgid "Network lost"
+#: ../src/carrick.c:66
+#, c-format
+msgid "networks - %s - wimax"
+msgstr ""
+
+#: ../src/carrick.c:69
+#, c-format
+msgid "networks - %s - 3G"
+msgstr ""
+
+#: ../src/carrick.c:72
+#, c-format
+msgid "networks - %s - bluetooth"
+msgstr ""
+
+#: ../src/carrick.c:75 ../src/carrick.c:87
+#, fuzzy
+msgid "networks"
+msgstr "Xarxes"
+
+#: ../src/carrick.c:82
+msgid "networks - error"
+msgstr ""
+
+#: ../src/carrick.c:297
+msgid "Run in standalone mode"
+msgstr ""
+
+#: ../src/carrick.c:299
+msgid "Embed in another window (overrides --standalone)"
+msgstr ""
+
+#: ../src/carrick.c:310
+msgid "Carrick connectivity applet"
+msgstr ""
+
+#: ../src/carrick.c:311
+msgid "- MeeGo connectivity applet"
+msgstr ""
+
+#: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
+#, fuzzy
+msgid "network"
+msgstr "Xarxes"
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr ""
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:89
+#, fuzzy
+msgid "Manual Configuration"
+msgstr "S'està configurant"
+
+#: ../callouts/3g/ggg-manual-dialog.c:93
+msgid "Plan Name (required):"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:96
+msgid "Username:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:99
+#, fuzzy
+msgid "Password:"
+msgstr "Contrasenya"
+
+#: ../callouts/3g/ggg-manual-dialog.c:103
+msgid "Gateway:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:106
+msgid "Primary DNS:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:109
+msgid "Secondary DNS:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:112
+msgid "Tertiary DNS:"
+msgstr ""
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr ""
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr ""
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr ""
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr ""
+
+#: ../data/carrick.desktop.in.in.h:1
+#, fuzzy
+msgid "Network settings"
 msgstr "S'ha perdut la connexió"
 
-#: ../carrick/carrick-notification-manager.c:200
-#, c-format
-msgid "Sorry, we've lost your wired connection"
-msgstr "S'ha perdut la connexió per cable"
+#~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
+#~ msgstr "No s'ha trobat cap xarxa. Podeu provar d'engegar el wi-fi."
 
-#: ../carrick/carrick-notification-manager.c:204
-#, c-format
-msgid "Sorry we've lost your %s connection to %s"
-msgstr "S'ha perdut la connexió %s a %s"
+#~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
+#~ msgstr "No s'ha trobat cap xarxa. Podeu provar d'engegar el WiMAX."
 
-#: ../carrick/carrick-notification-manager.c:210
-#, c-format
-msgid "Sorry, we've lost your %s connection"
-msgstr "S'ha perdut la connexió %s"
+#~ msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
+#~ msgstr "No s'ha trobat cap xarxa. Podeu provar d'engegar el Bluetooth."
 
-#: ../carrick/carrick-notification-manager.c:227
-msgid "Network changed"
-msgstr "S'ha canviat de xarxa"
-
-#: ../carrick/carrick-notification-manager.c:246
-#, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a wired "
-"network"
-msgstr ""
-"S'ha perdut la connexió %s de manera que s'ha connectat a la xarxa de cable."
-
-#: ../carrick/carrick-notification-manager.c:253
-#, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
-"network"
-msgstr ""
-"S'ha perdut la connexió %s. S'ha connectat a %s, una xarxa %s."
-
-#: ../carrick/carrick-notification-manager.c:261
-#, c-format
-msgid ""
-"Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr ""
-"S'ha perdut la connexió %s. S'ha connectat a la xarxa %s"
-
-#: ../carrick/carrick-notification-manager.c:271
-#, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr ""
-"S'ha perdut la connexió %s. S'ha connectat a la xarxa de cable"
-
-#: ../carrick/carrick-notification-manager.c:278
-#, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
-"network"
-msgstr ""
-"S'ha perdut la connexió %s. S'ha connectat a %s, una xarxa %s"
-
-#: ../carrick/carrick-notification-manager.c:287
-#, c-format
-msgid ""
-"Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr ""
-"S'ha perdut la connexió %s. S'ha connectat a una xarxa %s"
+#~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
+#~ msgstr "No s'ha trobat cap xarxa. Podeu provar d'engegar la connexió per cable."
