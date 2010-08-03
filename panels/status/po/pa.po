@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:37+0000\n"
-"PO-Revision-Date: 2010-05-06 07:44+0530\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"PO-Revision-Date: 2010-08-03 08:17+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid ""
 "Hello! This is the Status panel. When you have a web account configured "
 "(like Twitter), you will be able to view your feeds and update your status "
@@ -25,17 +25,17 @@ msgstr ""
 "ਜੀ ਆਇਆਂ ਨੂੰ! ਇਹ ਹਾਲਤ ਪੈਨਲ ਹੈ। ਜਦੋਂ ਤੁਹਾਡੇ ਕੋਲ ਵੈੱਬ ਅਕਾਊਂਟ ਸੰਰਚਿਤ ਹੋ ਗਏ (ਟਵਿੱਟਰ ਵਰਗੇ) ਤਾਂ ਤੁਸੀਂ "
 "ਆਪਣੀ ਫੀਡ ਅਤੇ ਹਾਲਤ ਅੱਪਡੇਟ ਇੱਥੇ ਵੇਖੋਗੇ।"
 
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "ਹਾਲਤ"
 
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "ਹਾਲਤ"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "ਹਾਲਤ ਪੈਨਲ"
 
@@ -51,46 +51,50 @@ msgstr ""
 msgid "Unable to update status: You're not online."
 msgstr "ਹਾਲਤ ਅੱਪਡੇਟ ਕਰਨ ਲਈ ਅਸਮਰੱਥ। ਤੁਸੀਂ ਆਨਲਾਈਨ ਨਹੀਂ ਹੋ।"
 
-#: ../src/mps-feed-pane.c:448
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "ਅਸੀਂ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਬਾਰੇ ਅੰਦਾਜ਼ਾ ਨਹੀਂ ਲਾ ਸਕੇ"
+
+#: ../src/mps-feed-pane.c:452
 #, c-format
 msgid "We guessed your location as: %s (%f, %f)"
 msgstr "ਅਸੀਂ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਦਾ ਅੰਦਾਜ਼ਾ ਲਾਇਆ: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:453
+#: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
 msgstr "ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਕੀਤਾ ਗਿਆ ਹੈ: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:463
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "ਅਸੀਂ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਦਾ ਅੰਦਾਜ਼ਾ ਲਾਇਆ: %f %f"
 
-#: ../src/mps-feed-pane.c:467
+#: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
 msgstr "ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਕੀਤਾ ਗਿਆ ਹੈ: %f %f "
 
-#: ../src/mps-feed-pane.c:476
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
 msgstr "ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਗਿਆ ਹੈ"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:579
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "ਅੱਪਡੇਟ"
 
-#: ../src/mps-feed-pane.c:584
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "ਕੀ ਹੋ ਰਿਹਾ ਹੈ?"
 
-#: ../src/mps-feed-pane.c:634
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "ਬਦਲੋ"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr "ਨਵੀਂ ਵੈੱਬ ਸਰਵਿਸ ਜੋੜੋ"
+msgid "Add new web account"
+msgstr "ਨਵਾਂ ਵੈੱਬ ਅਕਾਊਂਟ ਜੋੜੋ"
 
 #: ../src/mps-feed-switcher.c:373
 msgid ""
@@ -105,23 +109,23 @@ msgstr ""
 msgid "Your location"
 msgstr "ਤੁਹਾਡਾ ਟਿਕਾਣਾ"
 
-#: ../src/mps-geotag-pane.c:554
+#: ../src/mps-geotag-pane.c:568
 msgid "Search"
 msgstr "ਖੋਜ"
 
-#: ../src/mps-geotag-pane.c:559
+#: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
 msgstr "ਤੁਸੀਂ ਕਿੱਥੇ ਹੋ?"
 
-#: ../src/mps-geotag-pane.c:561
+#: ../src/mps-geotag-pane.c:575
 msgid "Find me"
 msgstr "ਮੈਨੂੰ ਲੱਭੋ"
 
-#: ../src/mps-geotag-pane.c:568
+#: ../src/mps-geotag-pane.c:582
 msgid "Use location"
 msgstr "ਟਿਕਾਣਾ ਵਰਤੋਂ"
 
-#: ../src/mps-geotag-pane.c:569
+#: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
 msgstr "ਟਿਕਾਣਾ ਨਾ ਵਰਤੋਂ"
 
