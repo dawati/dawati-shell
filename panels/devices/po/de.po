@@ -1,22 +1,23 @@
 #
+# Hendrik Richter <hendrikr@gnome.org>, 2010.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-23 09:22+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
+"Project-Id-Version: meego-panel-device master\n"
+"Report-Msgid-Bugs-To: meego-de@lists.hendi.name\n"
+"POT-Creation-Date: 2010-08-02 10:00+0000\n"
+"PO-Revision-Date: 2010-08-03 15:27+0200\n"
+"Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-SourceCharset: utf-8\n"
+#
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
-msgstr "Panel Geräte"
+msgstr "Panel »Geräte«"
 
 #: ../data/moblin-panel-devices.desktop.in.in.h:2
 #: ../src/moblin-panel-devices.c:160
@@ -53,31 +54,31 @@ msgstr "Systemklänge"
 
 #: ../power-icon/src/moblin-power-icon.c:46
 msgid "MeeGo Power Icon"
-msgstr "MeeGo Energiesymbol"
+msgstr "MeeGo-Energiesymbol"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
-msgstr "Der Akku wird schwach"
+msgstr "Ladezustand des Akkus ist niedrig"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
-msgstr "Ich habe festgestellt, dass dein Akku ein bisschen schwach wird. Wenn möglich, wäre Einstecken und Aufladen jetzt eine gute Idee."
+msgstr "Der Rechner hat nur noch wenig Energie. Bitte laden Sie falls möglich den Akku auf."
 
 #: ../power-icon/src/mpd-power-icon.c:80
 msgid "Getting close to empty"
-msgstr "Akku ist fast leer"
+msgstr "Ladezustand des Akkus ist sehr niedrig"
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
-msgstr "Dein Akku ist ziemlich schwach. Es wäre wirklich eine gute Idee, alles zu speichern und dann unverzüglich aufzuladen."
+msgstr "Der Rechner hat nur noch sehr wenig Energie. Bitte speichern Sie Ihre Arbeit und laden den Akku so bald wie möglich auf."
 
 #: ../power-icon/src/mpd-power-icon.c:85
 msgid "Danger!"
-msgstr "Gefahr!"
+msgstr "Ladezustand des Akkus ist kritisch"
 
 #: ../power-icon/src/mpd-power-icon.c:86
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Leider hat dein Computer keinen Saft mehr. Ich muss jetzt abschalten. Bitte speichere alles Wichtige und ich hoffe dich bald wiederzusehen."
+msgstr "Der Akkuladezustand ist im kritischen Bereich. Der Rechner wird deshalb nun heruntergefahren. Bitte speicheren Sie Ihre Arbeit."
 
 #: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
@@ -87,58 +88,58 @@ msgstr "Akku"
 #, c-format
 msgid "If you don't decide, I'll turn off in %d second"
 msgid_plural "If you don't decide, I'll turn off in %d seconds"
-msgstr[0] "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunde ab."
-msgstr[1] "Wenn keine Entscheidung getroffen wird, schalte ich in %d Sekunden ab."
+msgstr[0] "Der Rechner wird in %d Sekunde ausgeschaltet, wenn keine Entscheidung getroffen wird."
+msgstr[1] "Der Rechner wird in %d Sekunden ausgeschaltet, wenn keine Entscheidung getroffen wird."
 
 #: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
-msgstr "Abschalten"
+msgstr "Ausschalten"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:184
 msgid "Would you like to turn off now?"
-msgstr "Möchtest du jetzt abschalten?"
+msgstr "Möchten Sie den Rechner jetzt ausschalten?"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:185
 msgid "If you don't decide, I'll turn off in 30 seconds."
-msgstr "Wenn keine Entscheidung getroffen wird, schalte ich in 30 Sekunden ab."
+msgstr "Der Rechner wird in 30 Sekunden automatisch ausgeschaltet."
 
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
-msgstr "MeeGo Panel Geräte"
+msgstr "MeeGo-Panel »Geräte«"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr "Leider scheinst du keinen Akku installiert zu haben."
+msgstr "Anscheinend ist kein Akku vorhanden."
 
 #: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr "Dein Akku wird geladen. Er ist etwa %d%% voll."
+msgstr "Akku wird geladen. Aktueller Ladezustand: ca %d%%"
 
 #: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr "Dein Akku wird genutzt. Er ist etwa %d%% voll."
+msgstr "Akku entlädt. Aktueller Ladezustand: ca %d%%"
 
 #: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "Dein Akku ist voll geladen und du kannst loslegen."
+msgstr "Akku ist vollständig geladen."
 
 #: ../src/mpd-battery-device.c:389
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr "Leider scheint dein Akku defekt zu sein."
+msgstr "Akku ist eventuell beschädigt."
 
 #. First row.
 #: ../src/mpd-brightness-tile.c:141
 msgid "Netbook brightness"
-msgstr "Netbook Helligkeit"
+msgstr "Bildschirmhelligkeit"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
-msgstr "Dein Computer"
+msgstr "Ihr Rechner"
 
 #: ../src/mpd-computer-pane.c:128
 msgid "All settings"
@@ -149,7 +150,7 @@ msgid ""
 "Plug in a device and it will\n"
 "be automatically detected."
 msgstr ""
-"Schließe ein Gerät an\n"
+"Stöpseln Sie ein Gerät ein\n"
 "und es wird automatisch erkannt."
 
 #: ../src/mpd-devices-pane.c:104
@@ -158,20 +159,20 @@ msgstr "Andere Geräte"
 
 #: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
-msgstr "Auswerfen fehlgeschlagen, es wird wahrscheinlich von einer Anwendung benutzt."
+msgstr "Aushängen ist gescheitert; möglicherweise verwendet eine Anwendung das Gerät."
 
 #: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
-msgstr "Dieses Gerät kann jetzt entfernt werden."
+msgstr "Das Gerät kann nun sicher entfernt werden."
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>Du benutzt</span> <span color='%s'>%d%% von %s</span>"
+msgstr "<span color='%s'>%d%% von %s</span> Speicherplatz belegt"
 
 #: ../src/mpd-folder-tile.c:186
 msgid "Trash"
-msgstr "Abfall"
+msgstr "Müll"
 
 #: ../src/mpd-shell.c:126
 msgid "Devices"
@@ -180,7 +181,7 @@ msgstr "Geräte"
 #: ../src/mpd-storage-device-tile.c:242
 #, c-format
 msgid "Could not run \"%s\""
-msgstr "\"%s\" konnte nicht ausgeführt werden."
+msgstr "»%s« konnte nicht ausgeführt werden."
 
 #: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
@@ -197,7 +198,7 @@ msgstr "Medien importieren"
 #. Eject button
 #: ../src/mpd-storage-device-tile.c:615
 msgid "Eject"
-msgstr "Auswerfen"
+msgstr "Aushängen"
 
 #. Open button
 #: ../src/mpd-storage-device-tile.c:626
@@ -207,7 +208,7 @@ msgstr "Öffnen"
 #: ../src/mpd-storage-device-tile.c:819
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>%s</span> benutzt <span color='%s'>%d%% von %s</span>"
+msgstr "<span font-weight='bold'>%s</span> <span color='%s'>%d%% von %s</span> belegt"
 
 #: ../src/mpd-storage-device-tile.c:827
 #, c-format
@@ -228,15 +229,15 @@ msgstr "Laut"
 
 #: ../src/mpd-volume-tile.c:119
 msgid "Fairly loud"
-msgstr "Etwas laut"
+msgstr "Ziemlich laut"
 
 #: ../src/mpd-volume-tile.c:121
 msgid "Middle of the road"
-msgstr "Die goldene Mitte"
+msgstr "Mittellaut"
 
 #: ../src/mpd-volume-tile.c:123
 msgid "Fairly quiet"
-msgstr "Etwas leise"
+msgstr "Ziemlich leise"
 
 #: ../src/mpd-volume-tile.c:125
 msgid "Quiet"
@@ -252,182 +253,9 @@ msgstr "Still"
 
 #: ../src/mpd-volume-tile.c:355
 msgid "Computer volume"
-msgstr "Computerlautstärke"
+msgstr "Lautstärke"
 
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Stumm"
 
-#~ msgid "Netbook volume"
-#~ msgstr "Netbook-Lautstärke"
-
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego Energiesymbol"
-
-#~ msgid ""
-#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
-#~ "span>"
-#~ msgstr ""
-#~ "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%"
-#~ "d%%</span>"
-
-#~ msgid "Stop"
-#~ msgstr "Stop"
-
-#~ msgid ""
-#~ "%s nas been plugged in. You can use the Devices panel interact with it"
-#~ msgstr ""
-#~ "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
-
-#~ msgid "USB plugged in"
-#~ msgstr "USB ist angeschlossen"
-
-#~ msgid "Show"
-#~ msgstr "Anzeigen"
-
-#~ msgid "CompactFlash"
-#~ msgstr "CompactFlash"
-
-#~ msgid "MemoryStick"
-#~ msgstr "Memory Stick"
-
-#~ msgid "SmartMedia"
-#~ msgstr "SmartMedia"
-
-#~ msgid "SecureDigital"
-#~ msgstr "SecureDigital"
-
-#~ msgid "SD High Capacity"
-#~ msgstr "SD High Capacity"
-
-#~ msgid "Floppy"
-#~ msgstr "Diskette"
-
-#~ msgid "Zip"
-#~ msgstr "Zip"
-
-#~ msgid "Jaz"
-#~ msgstr "Jaz"
-
-#~ msgid "CD"
-#~ msgstr "CD"
-
-#~ msgid "DVD"
-#~ msgstr "DVD"
-
-#~ msgid "Blu-Ray"
-#~ msgstr "Blu-ray"
-
-#~ msgid "HDDVD"
-#~ msgstr "HD DVD"
-
-#~ msgid "%s Drive"
-#~ msgstr "%s-Laufwerk"
-
-#~ msgid "%s %s Drive"
-#~ msgstr "%s %s-Laufwerk"
-
-#~ msgid "%s Hard Disk"
-#~ msgstr "%s Festplatte"
-
-#~ msgid "Hard Disk"
-#~ msgstr "Festplatte"
-
-#~ msgid "%s Solid-State Disk"
-#~ msgstr "%s Solid-State-Laufwerk"
-
-#~ msgid "Solid-State Disk"
-#~ msgstr "Solid-State-Laufwerk"
-
-#~ msgid "%s Media"
-#~ msgstr "%s Medium"
-
-#~ msgid "No Media Detected"
-#~ msgstr "Kein Medium gefunden"
-
-#~ msgid "MBR Partition Table"
-#~ msgstr "MBR Partitionstabelle"
-
-#~ msgid "GUID Partition Table"
-#~ msgstr "GUID Partitionstabelle"
-
-#~ msgid "Apple Partition Table"
-#~ msgstr "Apple Partitionstabelle"
-
-#~ msgid "Partitioned"
-#~ msgstr "Partitioniert"
-
-#~ msgid "Not Partitioned"
-#~ msgstr "Nicht Partitioniert"
-
-#~ msgid "SAS Expander"
-#~ msgstr "SAS-Expander"
-
-#~ msgid "PATA Host Adapter"
-#~ msgstr "PATA Hostadapter"
-
-#~ msgid "SATA Host Adapter"
-#~ msgstr "SATA Hostadapter"
-
-#~ msgid "ATA Host Adapter"
-#~ msgstr "ATA Hostadapter"
-
-#~ msgid "SAS Host Adapter"
-#~ msgstr "SAS Hostadapter"
-
-#~ msgid "SCSI Host Adapter"
-#~ msgstr "SCSI Hostadapter"
-
-#~ msgid "Host Adapter"
-#~ msgstr "Hostadapter"
-
-#~ msgid "Volume Group"
-#~ msgstr "Volume Group"
-
-#~ msgid "%s LVM2 Volume Group"
-#~ msgstr "%s LVM2 Volume Group"
-
-#~ msgid "LVM2 Volume Group"
-#~ msgstr "LVM2 Volume Group"
-
-#~ msgid "%s Free"
-#~ msgstr "%s frei"
-
-#~ msgid "Unallocated Space"
-#~ msgstr "Nicht zugewiesener Platz"
-
-#~ msgid "LVM2 VG Unallocated Space"
-#~ msgstr "LVM2 VG Nicht zugeteilter Platz"
-
-#~ msgid "Logical Volume"
-#~ msgstr "Logischer Datenträger (Logical Volume)"
-
-#~ msgid "LVM2 Logical Volume"
-#~ msgstr "LVM2 Logischer Datenträger (Logical Volume)"
-
-#~ msgid "%s %s Array"
-#~ msgstr "%s %s Array"
-
-#~ msgid "%s Array"
-#~ msgstr "%s Array"
-
-#~ msgid "RAID Array %s (%s)"
-#~ msgstr "RAID-Array %s (%s)"
-
-#~ msgid "RAID device %s"
-#~ msgstr "RAID-Gerät %s"
-
-#~ msgid "RAID"
-#~ msgstr "RAID"
-
-#~ msgid "RAID Array"
-#~ msgstr "RAID-Array"
-
-#~ msgid "Not Attached"
-#~ msgstr "Nicht angeschlossen"
-
-#~ msgid "Faulty"
-#~ msgstr "Fehlerhaft"
-
-#~ msgid "Fully Synchronized"
-#~ msgstr "Voll synchronisiert"
