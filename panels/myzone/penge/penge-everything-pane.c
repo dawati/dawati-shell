@@ -222,12 +222,18 @@ _people_tile_remove_clicked_cb (PengeInterestingTile *tile,
 {
   PengeEverythingPane *pane = (PengeEverythingPane *)userdata;
   PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  SwClientService *service;
   SwItem *item;
 
   g_object_get (tile,
                 "item", &item,
                 NULL);
-  /* sw_client_hide_item (priv->client, item); */
+
+  service = sw_client_get_service (priv->client, item->service);
+
+  sw_client_service_banishable_hide_item (service, item->uuid);
+
+  g_object_unref (service);
 }
 
 static ClutterActor *
