@@ -42,7 +42,7 @@ msgstr "No definit"
 
 #: ../anerley/anerley-presence-chooser.c:46
 msgid "Extended Away"
-msgstr ""
+msgstr "Absència perllongada"
 
 #: ../anerley/anerley-presence-chooser.c:47
 msgid "Hidden"
