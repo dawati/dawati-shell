@@ -26,7 +26,7 @@
 G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, MX_TYPE_TABLE)
 
 #define PLACEHOLDER_TEXT _("When you’ve set up your web " \
-"accounts and used some files they " \
+"accounts and used some files, they " \
 "will appear here on myzone " \
 "for easy access whenever you " \
 "want. ")
