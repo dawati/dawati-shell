@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-16 09:23+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Määritä työkalupalkin asetukset"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Työkalupalkin asetukset"
 
@@ -42,9 +42,8 @@ msgstr "Saatavilla olevat paneelit"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:217
-#: ../src/mnb-toolbar-clock.c:125
+#. 
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr " %H:%M"
 
@@ -52,23 +51,21 @@ msgstr " %H:%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
+#. 
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:227
-#: ../src/mnb-toolbar-clock.c:134
+#. 
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:249
-#: ../src/mnb-toolbar-clock.c:155
+#. 
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
 
@@ -93,28 +90,28 @@ msgstr "Näytä ilmaisinalue"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Ilmaisinalue on käsite, jota käyttävät jotkut vanhemmat sovellukset. Se ilmaisee, kun jotakin tapahtuu tai pysyy käynnissä, kun suljet ne."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Käytä aina pientä näyttöruutua"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Määrittää työkalupalkin paneelien järjestyksen."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Pakottaa pienen näyttöruudun käyttämistä vaikka näyttökoko normaalisti osoittaisi suurempaa näyttöruutua."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Työkalupalkin paneelien järjestys"
 
-#: ../src/moblin-netbook.c:825
-msgid "Moblin Netbook Effects"
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
 msgstr "MeeGo ultrakannettavan tehosteet"
 
-#: ../src/moblin-netbook.c:829
-msgid "Effects for Moblin Netbooks"
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
 msgstr "MeeGo ultrakannettavien tehosteet"
 
 #: ../src/mnb-toolbar.c:1007
@@ -144,119 +141,156 @@ msgstr "Aktivoi"
 
 #~ msgid "System tray"
 #~ msgstr "Ilmaisinalue"
+
 #~ msgid "Less than a minute ago"
 #~ msgstr "Alle minuutti sitten"
+
 #~ msgid "A few minutes ago"
 #~ msgstr "Muutama minuutti sitten"
+
 #~ msgid "A couple of hours ago"
 #~ msgstr "Muutama tunti sitten"
+
 #~ msgid "Earlier today"
 #~ msgstr "Tänään aikaisemmin"
+
 #~ msgid "On %A"
 #~ msgstr "Päivämääränä %A"
+
 #~ msgid "Last week"
 #~ msgstr "Viime viikolla"
+
 #~ msgid "A couple of weeks ago"
 #~ msgstr "Pari viikkoa sitten"
+
 #~ msgid "This month"
 #~ msgstr "Tässä kuussa"
+
 #~ msgid "Last month"
 #~ msgstr "Viime kuussa"
+
 #~ msgid "This year"
 #~ msgstr "Tänä vuonna"
+
 #~ msgid "Last year"
 #~ msgstr "Viime vuonna"
+
 #~ msgid "Ages ago"
 #~ msgstr "Aataminaikoina"
+
 #~ msgid "zones"
 #~ msgstr "vyöhykkeet"
+
 #~ msgid "No Zones yet"
 #~ msgstr "Vyöhykkeitä ei vielä ole"
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä "
-#~ "miten haluat."
+
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä miten haluat."
+
 #~ msgid "No applications on this zone"
 #~ msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi "
-#~ "historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
+
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
+
 #~ msgid "Recently played"
 #~ msgstr "Äskettäin soitetut"
+
 #~ msgid "Search results"
 #~ msgstr "Etsintätulokset"
+
 #~ msgid "Playqueue"
 #~ msgstr "Soittojono"
+
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "Kausi %u, episodi %u"
+
 #~ msgid "Previous"
 #~ msgstr "Edellinen"
+
 #~ msgid "Next"
 #~ msgstr "Seuraava"
+
 #~ msgid "Media"
 #~ msgstr "Media"
+
 #~ msgid "Search"
 #~ msgstr "Etsi"
+
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Kausi %d, episodi %d"
+
 #~ msgid "Season %d"
 #~ msgstr "Kausi %d"
+
 #~ msgid "Episode %d"
 #~ msgstr "Episodi %d"
+
 #~ msgid "Year %d"
 #~ msgstr "Vuosi %d"
+
 #~ msgid "media"
 #~ msgstr "media"
+
 #~ msgid "Favourite Applications"
 #~ msgstr "Suosikkisovellukset"
+
 #~ msgid "Applications"
 #~ msgstr "Sovellukset"
+
 #~ msgid "applications"
 #~ msgstr "sovellukset"
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi "
-#~ "välilehti -sivulla."
+
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi välilehti -sivulla."
+
 #~ msgid "Untitled"
 #~ msgstr "Nimetön"
+
 #~ msgid "New tab"
 #~ msgstr "Uusi välilehti"
+
 #~ msgid "Internet"
 #~ msgstr "Internet"
+
 #~ msgid "Go"
 #~ msgstr "Siirry"
+
 #~ msgid "Tabs"
 #~ msgstr "Välilehdet"
+
 #~ msgid "Favorite pages"
 #~ msgstr "Suosikkisivut"
+
 #~ msgid "internet"
 #~ msgstr "internet"
+
 #~ msgid "Search for %%s on %s"
 #~ msgstr "Etsi '%%s' käyttäen seuraavaa: %s"
+
 #~ msgid "Go to %s"
 #~ msgstr "Siirry osoitteeseen %s"
+
 #~ msgid "Copy"
 #~ msgstr "Kopioi"
+
 #~ msgid "the current selection to pasteboard"
 #~ msgstr "nykyinen valinta liitepöytään"
+
 #~ msgid "your selection"
 #~ msgstr "valintasi"
+
 #~ msgid "Pasteboard"
 #~ msgstr "Liitepöytä"
+
 #~ msgid "You need to copy some text to use Pasteboard"
 #~ msgstr "Kopioi jotain tekstiä, jotta voisit käyttää liitepöytää"
+
 #~ msgid "Clear pasteboard"
 #~ msgstr "Tyhjennä liitepöytä"
+
 #~ msgid "pasteboard"
 #~ msgstr "liitepöytä"
+
 #~ msgid "<b>Appointments</b>"
 #~ msgstr "<b>Tapaamiset</b>"
-
