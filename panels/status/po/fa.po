@@ -1,0 +1,128 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"PO-Revision-Date: 2010-08-12 02:57+0330\n"
+"Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
+"Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Persian\n"
+"X-Poedit-Country: Iran\n"
+
+#: ../src/meego-panel-status.c:49
+msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
+msgstr ""
+
+#: ../src/meego-panel-status.c:100
+msgid "Status"
+msgstr ""
+
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr "وضعیت"
+
+#. vim:set ts=8 expandtab
+#: ../data/meego-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "قاب وضعیت"
+
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "قادر به هنگام سازی وضعیت نیست. سرویس شاید در دسترس نیست یا کلمه عبور شما اشتباه است."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "قادر به هنگام رسانی وضعیت نیست: شما آنلاین نیستید."
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "ما قادر به حدس زدن مکان شما نیستم"
+
+#: ../src/mps-feed-pane.c:452
+#, c-format
+msgid "We guessed your location as: %s (%f, %f)"
+msgstr "ما مکان شما را به عنوان ذیل حدس زدیم:  %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:458
+#, c-format
+msgid "Your location is being shared as: %s (%f, %f)"
+msgstr "مکان شما به عنوان ذیل به اشتراک گذاشته می شود: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:468
+#, c-format
+msgid "We guessed your location as: %f %f"
+msgstr "ما مکان شما را به عنوان ذیل حدس زدیم: %f %f"
+
+#: ../src/mps-feed-pane.c:472
+#, c-format
+msgid "Your location is being shared as: %f %f"
+msgstr "مکان شما به اشتراک گذاشته می شود به عنوان: %f %f"
+
+#: ../src/mps-feed-pane.c:482
+msgid "Your location is not being shared"
+msgstr "مکان شما به اشتراک گذاشته نمی شود"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:585
+msgid "Update"
+msgstr "به هنگام رسانی"
+
+#: ../src/mps-feed-pane.c:590
+msgid "What's happening?"
+msgstr "چه اتفاقی می افتد؟"
+
+#: ../src/mps-feed-pane.c:640
+msgid "Change"
+msgstr "تغییر"
+
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web account"
+msgstr "افزودن یک حساب وب جدید"
+
+#: ../src/mps-feed-switcher.c:373
+msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+msgstr "به نظر می رسد شما هیچ سرویس وب تنظیم شده ای وجود ندارد یا تنظیمات ان دچار مشکل است. از دکمه بالا برای باز کردن حساب های وب من و تنظیم انها استفاده کنید."
+
+#: ../src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr "مکان شما"
+
+#: ../src/mps-geotag-pane.c:568
+msgid "Search"
+msgstr "جستجو"
+
+#: ../src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr "تو کجا هستی؟"
+
+#: ../src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr "مرا پیدا کن"
+
+#: ../src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr "از مکان استفاده کن"
+
+#: ../src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr "از مکان استفاده نکن"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:528
+#, c-format
+msgid "%s from %s"
+msgstr "%s از %s"
+
