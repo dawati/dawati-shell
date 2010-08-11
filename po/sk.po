@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Tomáš Virgl <tomas@virgl.net>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-21 09:26+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: 2010-04-21 06:15+0200\n"
 "Last-Translator: Tomáš Virgl <tomas@virgl.net>\n"
 "Language-Team: slovak <sk-i18n@lists.linux.sk>\n"
@@ -17,25 +17,25 @@ msgstr ""
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
-msgstr ""
+msgstr "Nastaviť predvoľby panela nástrojov"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
-msgstr ""
+msgstr "Nastavenia panela nástrojov"
 
-#: ../capplet/src/mtp-bin.c:361
+#: ../capplet/src/mtp-bin.c:362
 msgid "Save toolbar"
-msgstr ""
+msgstr "Uložiť panel nástrojov"
 
-#: ../capplet/src/mtp-bin.c:366
+#: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr ""
+msgstr "Prepáčte, ale predtým než budete môcť pridať nový panel, musíte najprv jeden odstrániť."
 
-#: ../capplet/src/mtp-bin.c:368
-msgid "You can add, remove and reorder many of the panels in your toolbar."
-msgstr ""
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "V paneli nástrojov môžete pridať, odstrániť alebo usporiadať si viacero panelov."
 
-#: ../capplet/src/mtp-jar.c:109
+#: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Dostupné panely"
 
@@ -43,8 +43,8 @@ msgstr "Dostupné panely"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:216 ../src/mnb-toolbar-clock.c:124
+#. 
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -52,88 +52,90 @@ msgstr "%H:%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
+#. 
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:226 ../src/mnb-toolbar-clock.c:133
+#. 
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
-msgstr ""
+msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:248 ../src/mnb-toolbar-clock.c:154
+#. 
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
-msgstr ""
+msgstr "%e. %B %Y"
 
 #: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
-msgstr ""
+msgstr "Panel nástrojov"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
-msgstr ""
+msgstr "Nastaviť predvoľby oznamovacej oblasti"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:253
+#: ../capplet/src/syst-cc-panel.c:241
 msgid "System Tray"
-msgstr ""
+msgstr "Oznamovacia oblasť"
 
-#: ../capplet/src/syst-cc-panel.c:170
-msgid "System tray"
-msgstr ""
-
-#: ../capplet/src/syst-cc-panel.c:186
+#: ../capplet/src/syst-cc-panel.c:174
 msgid "Show system tray"
-msgstr ""
+msgstr "Ukázať oznamovaciu oblasť"
 
-#: ../capplet/src/syst-cc-panel.c:207
-msgid ""
-"The system tray is a concept used by some, older, applications to let you "
-"know when something happens or to stay running when you close them."
-msgstr ""
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "Oznamovacia oblasť je koncept používaný niektorými staršími programami, aby ste boli upozornený, keď sa niečo deje alebo aby zostali bežať na pozadí, keď ste ich zatvorili."
 
 #: ../data/mutter-meego.schemas.in.h:1
-msgid "Determines the order of panels on the toolbar."
-msgstr ""
+msgid "Always use small screen mode"
+msgstr "Vždy používať režim malej obrazovky"
 
 #: ../data/mutter-meego.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Určuje poradie panelov v paneli nástrojov."
+
+#: ../data/mutter-meego.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Vynucuje použitie režimu malej obrazovky aj keď veľkosť zobrazenia naznačuje režim väčšej obrazovky."
+
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
-msgstr ""
+msgstr "Poradie panelov v paneli nástrojov"
 
-#: ../src/meego-netbook.c:962
+#: ../src/meego-netbook.c:825
 msgid "Meego Netbook Effects"
-msgstr ""
+msgstr "Efekty Meego v prenosnom počítači"
 
-#: ../src/meego-netbook.c:966
+#: ../src/meego-netbook.c:829
 msgid "Effects for Meego Netbooks"
-msgstr ""
+msgstr "Efekty pre prenosné počítače s Meego"
 
-#: ../src/meego-netbook.c:3128
-msgid "Activate"
-msgstr "Aktivovať"
-
-#: ../src/meego-netbook.c:3142
-msgid "Unknown window"
-msgstr "Neznáme okno"
-
-#: ../src/meego-netbook.c:3144
-msgid "Is asking for your attention."
-msgstr ""
-
-#: ../src/mnb-toolbar.c:976
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Prepáčte, %s je pokazený"
 
-#: ../src/notifications/mnb-notification.c:262
+#: ../src/notifications/ntf-notification.c:224
 msgid "Dismiss"
-msgstr ""
+msgstr "Odmietnuť"
 
-#: ../src/notifications/mnb-notification-cluster.c:668
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
-msgstr ""
+msgstr "Odmietnuť všetko"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Neznáme okno"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "si žiada vašu pozornosť."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Aktivovať"
