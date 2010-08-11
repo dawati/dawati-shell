@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"PO-Revision-Date: 2010-08-12 02:20+0330\n"
+"Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
+"Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Persian\n"
+"X-Poedit-Country: Iran\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "جستجو برای %%s در %s"
+
+#: ../common/mwb-ac-list.cc:1334
+#, c-format
+msgid "Go to %s"
+msgstr "رفتن به %s"
+
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"دکمه ورود را برای\n"
+"بازدید سایت بزنید"
+
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"دکمه پایین را برای\n"
+"برای جستجوی سایت بزنید"
+
+#: ../netpanel/meego-netbook-netpanel.cc:796
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "وقتی صفحات وب را مشاهده می کنید، موارد دلخواه شما اینجا نمایش داده می شوند و بر روی صفحه زبانه ی جدید در مرور نیز."
+
+#: ../netpanel/meego-netbook-netpanel.cc:818
+#: ../netpanel/meego-netbook-netpanel.cc:941
+msgid "New tab"
+msgstr "زبانه جدید"
+
+#. Construct entry table widgets
+#: ../netpanel/meego-netbook-netpanel.cc:1216
+msgid "Your pages"
+msgstr "صفحات شما"
+
+#: ../netpanel/meego-netbook-netpanel.cc:1229
+msgid "Search"
+msgstr "جستجو"
+
+#. Construct title for tab preview section
+#: ../netpanel/meego-netbook-netpanel.cc:1250
+msgid "Tabs"
+msgstr "زبانه ها"
+
+#. Construct title for favorite pages section
+#: ../netpanel/meego-netbook-netpanel.cc:1255
+msgid "Favorite pages"
+msgstr "صفحات دلخواه"
+
+#: ../netpanel/meego-panel-web.cc:196
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "اینترنت"
+
+#: ../netpanel/meego-panel-web.cc:217
+#: ../netpanel/meego-panel-web.cc:263
+msgid "Internet"
+msgstr "اینترنت"
+
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "قاب اینترنت"
+
