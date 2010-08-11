@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 12:02+0000\n"
-"PO-Revision-Date: 2010-08-12 02:57+0330\n"
+"PO-Revision-Date: 2010-08-12 03:00+0330\n"
 "Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
 "Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +19,11 @@ msgstr ""
 
 #: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr ""
+msgstr "سلام! این قاب وضعیت است. وقتی یک حساب وبی تنطیم شده اید داشتید، قادر خواهد بود فید های خود را دیده و در اینجا وضعیت خود را به هنگام سازی کنید."
 
 #: ../src/meego-panel-status.c:100
 msgid "Status"
-msgstr ""
+msgstr "وضعیت"
 
 #: ../src/meego-panel-status.c:158
 #: ../data/meego-panel-status.desktop.in.in.h:2
