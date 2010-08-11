@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# sankarshan mukhopadhyay <sankarshan@fedoraproject.org>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 11:57+0000\n"
+"PO-Revision-Date: 2010-08-11 11:30+0530\n"
+"Last-Translator: sankarshan mukhopadhyay <sankarshan@fedoraproject.org>\n"
+"Language-Team: anubad@lists.ankur.org.in\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
+
+#: ../src/meego-panel-date-time.c:111
+msgid "Date/Time"
+msgstr "সময়/তারিখ"
+
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr "সময় এবং তারিখ প্যানেল"
+
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
+msgid "date and time"
+msgstr "সময় এবং তারিখ"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../src/mnp-utils.c:423
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#: ../src/mnp-utils.c:431
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../src/mnp-utils.c:446
+msgid "%b %-d (Yesterday)"
+msgstr "%b %-d (গতকাল)"
+
+#: ../src/mnp-utils.c:448
+msgid "%b %-d (Tomorrow)"
+msgstr "%b %-d (আগামীকাল)"
+
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr "%b %-d (স্থানীয়)"
+
+#: ../src/mnp-utils.c:456
+msgid "%b %-d"
+msgstr "%b %-d"
+
+#: ../src/mnp-world-clock.c:525
+msgid "Time"
+msgstr ""
+
+#: ../src/mnp-world-clock.c:579
+msgid "24 hour clock"
+msgstr "২৪ ঘন্টা ঘড়ি"
+
+#: ../src/mnp-world-clock.c:648
+msgid "Enter a country or city"
+msgstr "একটি দেশ বা শহরের নাম লিখুন"
+
+#: ../src/mnp-world-clock.c:671
+msgid "Add"
+msgstr "যোগ করুন"
+
+#: ../src/mnp-world-clock.c:745
+msgid "Set Time & Date"
+msgstr "সময় এবং তারিখ নির্ধারন করুন"
+
+#: ../src/mnp-datetime.c:293
+msgid "Appointments"
+msgstr "অ্যাপয়েন্টমেন্ট"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#.
+#. format date
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
+msgid "Today"
+msgstr "আজকের দিনে"
+
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr "অ্যাপয়েন্টমেন্ট"
+
+#: ../src/mnp-datetime.c:511
+msgid "Tasks"
+msgstr "কর্ম"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "বাকি কাজ"
+
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "সময় ও তারিখ"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "২৪ ঘন্টা অথবা ১২ ঘন্টা ঘড়ি"
+
+#: ../src/date-time.schemas.in.h:2
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr ""
+
+#: ../src/date-time.schemas.in.h:3
+msgid "List of alarms in short encoded form"
+msgstr ""
