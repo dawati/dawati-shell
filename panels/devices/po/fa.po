@@ -1,0 +1,254 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-20 17:50+0000\n"
+"PO-Revision-Date: 2010-08-12 14:41+0330\n"
+"Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
+"Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Persian\n"
+"X-Poedit-Country: Iran\n"
+
+#: ../data/meego-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "قاب ابزارها"
+
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:163
+msgid "devices"
+msgstr "ابزار"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "غیر فعال"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgstr "%u خروجی"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#: ../gvc/gvc-mixer-control.c:1316
+#, c-format
+msgid "System Sounds"
+msgstr "صداهای سیستم"
+
+#: ../power-icon/src/meego-power-icon.c:46
+msgid "MeeGo Power Icon"
+msgstr "آیکن نیروی می‌گو"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "اجرا باطری کم"
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "من متوجه شده ام باطری شما کمی کم شده است. اگر می توانید بهتر است آن را به برق متصل کنید."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "نزدیک شدن به تهی"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "باطری شما تقریبا به پایان رسیده است. بهتر است همه کارها خود را ذخیره کرده و هر چه زودتر آن را به برق متصل کنید."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "خطر"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "متاسفیم، رایانه شما تقریبا باطری اش تمام شده است. کم قصد دارم آن را همین الان آن را خاموش کنم. لطفا کارهای خود را ذخیره کند و امیدوارم بعدا به زودی شما را ببینم."
+
+#: ../power-icon/src/mpd-power-icon.c:435
+msgid "battery"
+msgstr "باطری"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgstr "اگر تصمیمی گرفته نشود طی  %d ثانیه خاموش خواهد شد."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "خاموش"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "آیا می خواهید همین الان خاموش شود؟"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "اگر تصمیمی نگیرید طی ۳۰ ثانیه خاموش خواهد شد."
+
+#: ../src/meego-panel-devices.c:121
+msgid "MeeGo Devices Panel"
+msgstr "قاب ابزارهای می‌گو"
+
+#: ../src/mpd-battery-device.c:371
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "متاسفیم، به نظر می رسد شما باطری نصب شده اید ندارید."
+
+#: ../src/mpd-battery-device.c:375
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "باطری در حال شارج شدن است. آن حدود  %d%% پر است."
+
+#: ../src/mpd-battery-device.c:380
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "باطری در حال استفاده است. آن حدود  %d%% پر است"
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "باطری کاملا شارچ است و شما آماده اید"
+
+#: ../src/mpd-battery-device.c:389
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "متاسفیم، به نظر می رسد باطری شما دچار مشکل است"
+
+#. First row.
+#: ../src/mpd-brightness-tile.c:141
+msgid "Netbook brightness"
+msgstr "شفافیت نت‌بوک"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "رایانه ی شما"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "همه ی تنظیمات"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"وسیله را متصل نموده و آن\n"
+"به طور اتوماتیک پیدا خواهد شد"
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "دیگر ابزارها"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "خارج شدن دچار مشکل شد، به نظر می رسد برنامه ای از آن استفاده می کند"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "بهتر است این ابزار همین الان بیرون کشیده شود"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>شما در حال استفاده از</span> <span color='%s'>%d%% of %s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "زباله دان"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "ابزارها"
+
+#: ../src/mpd-storage-device-tile.c:242
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "نمی تواند  \"%s\" را اجرا کند"
+
+#: ../src/mpd-storage-device-tile.c:244
+msgid "Import error"
+msgstr "خطای وارد کردن"
+
+#: ../src/mpd-storage-device-tile.c:355
+msgid "Import photos"
+msgstr "وارد کردن تصاویر"
+
+#: ../src/mpd-storage-device-tile.c:357
+msgid "Import media"
+msgstr "واردن کردن رسانه"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:615
+msgid "Eject"
+msgstr "خروج"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:626
+msgid "Open"
+msgstr "باز"
+
+#: ../src/mpd-storage-device-tile.c:819
+#, c-format
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+
+#: ../src/mpd-storage-device-tile.c:827
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "بالا تا ۱۱"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "بسیار بلند"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "بلند"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "تقریبا بلند"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "میان راه"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "تقریبا ساکت"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "ساکن"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "خیلی ساکت"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "ساکت"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "صدای رایانه"
+
+#: ../src/mpd-volume-tile.c:371
+msgid "Mute"
+msgstr "بیصدا"
+
