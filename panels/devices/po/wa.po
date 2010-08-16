@@ -6,24 +6,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:59+0000\n"
+"POT-Creation-Date: 2010-07-20 17:50+0000\n"
 "PO-Revision-Date: 2010-05-09 00:22+0200\n"
 "Last-Translator: Jean Cayron et Odile Lambert <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-Language: Walloon\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 1.0\n"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Sicriftôr des éndjins"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../src/meego-panel-devices.c:163
 msgid "devices"
 msgstr "éndjins"
 
@@ -57,7 +57,7 @@ msgstr "Sons do sistinme"
 
 #: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
-msgstr "Imådjete d' enerdjeye di MeeGo"
+msgstr "Imådjete di l' enerdjeye di MeeGo"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -81,7 +81,7 @@ msgstr "Dandjî !"
 
 #: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Dji rgrete mins i gn årè bén rade pus rén sol batreye di vosse copiutrece. Djel va distinde do côp. Schapez vost ovraedje s' i vs plait et tot rade."
+msgstr "Dji rgrete mins i gn årè bén rade pus rén sol batreye di vosse copiutrece. Djel va arester do côp. Schapez vost ovraedje s' i vs plait et tot rade."
 
 #: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
@@ -91,20 +91,20 @@ msgstr "batreye"
 #, c-format
 msgid "If you don't decide, I'll turn off in %d second"
 msgid_plural "If you don't decide, I'll turn off in %d seconds"
-msgstr[0] "Si vos n' decidez nén, dji m' va distinde dins %d segonde"
-msgstr[1] "Si vos n' decidez nén, dji m' va distinde dins %d segondes"
+msgstr[0] "Si vos n' decidez nén, dji m' va arester dins %d segonde"
+msgstr[1] "Si vos n' decidez nén, dji m' va arester dins %d segondes"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
-msgstr "Distinde"
+msgstr "Arester l' éndjole"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:184
 msgid "Would you like to turn off now?"
-msgstr "Voloz vs distinde do côp ?"
+msgstr "Voloz vs arester l' éndjole do côp ?"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:185
 msgid "If you don't decide, I'll turn off in 30 seconds."
-msgstr "Si vos n' decidez nén, dji m' va distinde dins 30 segondes."
+msgstr "Si vos n' decidez nén, dji m' va arester dins 30 segondes."
 
 #: ../src/meego-panel-devices.c:121
 msgid "MeeGo Devices Panel"
