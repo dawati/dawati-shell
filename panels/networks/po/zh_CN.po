@@ -460,7 +460,7 @@ msgstr "Carrick 连接小程序"
 
 #: ../src/carrick.c:311
 msgid "- MeeGo connectivity applet"
-msgstr "- MeeGo 连接管理小程序"
+msgstr "- MeeGo 连接小程序"
 
 #: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
 msgid "network"
