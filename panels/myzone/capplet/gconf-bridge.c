@@ -114,16 +114,6 @@ int gconf_value_compare (const GConfValue *value_a,
 
 static GConfBridge *bridge = NULL; /* Global GConfBridge object */
 
-/* Free up all resources allocated by the GConfBridge. Called on exit. */
-static void
-destroy_bridge (void)
-{
-        g_hash_table_destroy (bridge->bindings);
-        g_object_unref (bridge->client);
-
-        g_free (bridge);
-}
-
 /**
  * gconf_bridge_get
  *
@@ -144,8 +134,6 @@ gconf_bridge_get (void)
         bridge->client = gconf_client_get_default ();
         bridge->bindings = g_hash_table_new_full (NULL, NULL, NULL,
                                                   (GDestroyNotify) unbind);
-
-        g_atexit (destroy_bridge);
 
         return bridge;
 }
