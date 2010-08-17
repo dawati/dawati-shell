@@ -1,0 +1,282 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Toni Hermoso Pulido <toniher@softcatala.cat>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-20 17:50+0000\n"
+"PO-Revision-Date: 2010-08-18 00:14+0200\n"
+"Last-Translator: Toni Hermoso Pulido <toniher@softcatala.cat>\n"
+"Language-Team: Softcatalà\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
+
+#: ../data/meego-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Tauler dels dispositius"
+
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:163
+msgid "devices"
+msgstr "dispositius"
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Inhabilitat"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u sortida"
+msgstr[1] "%u sortides"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u entrada"
+msgstr[1] "%u entrades"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Sons del sistema"
+
+#: ../power-icon/src/meego-power-icon.c:46
+msgid "MeeGo Power Icon"
+msgstr "Icona de la bateria del MeeGo"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Esteu funcionant amb baixa bateria"
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid ""
+"I've noticed that your battery is running a bit low. If you can, it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Sembla que la vostra bateria és baixa. Quan pugueu, fóra bo que endolleu i "
+"la carregueu."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "A punt d'acabar-se"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can."
+msgstr ""
+"Esteu funcionant amb baix bateria. Fóra bo que deseu tota la vostra feina i "
+"endolleu tant aviat com pugueu."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "Perill!"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid ""
+"Sorry, your computer is about to run out of battery. I'm going to have to "
+"turn off now. Please save your work and hope to see you again soon."
+msgstr ""
+"Ho sentim, el vostre ordinador està a punt d'acabar la bateria. Caldrà "
+"apagar-lo ara mateix. Deseu el vostre treball i esperem tornar-vos a veure "
+"aviat."
+
+#: ../power-icon/src/mpd-power-icon.c:435
+msgid "battery"
+msgstr "bateria"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Si no us decidiu, s'apagarà en %d segon"
+msgstr[1] "Si no us decidiu, s'apagarà en %d segons"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Apaga"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Voleu apagar-lo ara?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Si no us decidiu, s'apagarà en 30 segons."
+
+#: ../src/meego-panel-devices.c:121
+msgid "MeeGo Devices Panel"
+msgstr "Tauler de dispositius del MeeGo"
+
+#: ../src/mpd-battery-device.c:371
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Ho sentim, sembla que no tenia cap bateria instal·lada."
+
+#: ../src/mpd-battery-device.c:375
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "La vostra bateria s'està carregant. Està plena un %d%%."
+
+#: ../src/mpd-battery-device.c:380
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "La vostra bateria s'està fent servir. Està plena un %d%%."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "La vostra bateria està completament carregada i ja podeu anar-vos-en."
+
+#: ../src/mpd-battery-device.c:389
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Ho sentim, sembla que la vostra bateria està malmesa."
+
+#. First row.
+#: ../src/mpd-brightness-tile.c:141
+msgid "Netbook brightness"
+msgstr "Brillantor de l'ultraportàtil"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "El vostre ordinador"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Tots els paràmetres"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Endolleu un dispositiu\n"
+"i es detectarà automàticament."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Altres dispositius"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "L'expulsió ha fallat. Sembla que una aplicació l'està fent servir"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Ja és segur que desendolleu el dispositiu"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
+"span>"
+msgstr ""
+"<span font-weight='bold'>Esteu fent servir</span> <span color='%s'>%d%% de %"
+"s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Paperera"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Dispositius"
+
+#: ../src/mpd-storage-device-tile.c:242
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "No s'ha pogut executar «%s»"
+
+#: ../src/mpd-storage-device-tile.c:244
+msgid "Import error"
+msgstr "Error d'importació"
+
+#: ../src/mpd-storage-device-tile.c:355
+msgid "Import photos"
+msgstr "Importa fotos"
+
+#: ../src/mpd-storage-device-tile.c:357
+msgid "Import media"
+msgstr "Importa contingut multimèdia"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:615
+msgid "Eject"
+msgstr "Expulsa"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:626
+msgid "Open"
+msgstr "Obre"
+
+#: ../src/mpd-storage-device-tile.c:819
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+"<span font-weight='bold'>%s</span> fent servir <span color='%s'>%d%% de %"
+"s</span>"
+
+#: ../src/mpd-storage-device-tile.c:827
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "S'ha canviat a 11"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Molt sorollós"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Sorollós"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Bastant sorollós"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Enmig del carrer"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Bastant silenciós"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Silenciós"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Molt silenciós"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "En silenci"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Volum de l'ordinador"
+
+#: ../src/mpd-volume-tile.c:371
+msgid "Mute"
+msgstr "Sense so"
