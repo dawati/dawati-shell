@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLS <tomas.galicia@intel.com>\n"
 "Language-Team: \n"
@@ -28,7 +28,7 @@ msgstr "Vyöhykkeet"
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
-msgstr "Uusi vyöhyke."
+msgstr "Uusi vyöhyke"
 
 #: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
 #, c-format
@@ -40,19 +40,11 @@ msgid "No applications on this zone"
 msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä "
-"miten haluat."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä miten haluat."
 
-#~ msgid ""
-#~ "Hello! This is the Zones panel. When you have applications open you will "
-#~ "be able to view, manage and access them here."
-#~ msgstr ""
-#~ "Hei! Tämä on Vyöhykkeet-paneeli. Kun sinulla on sovelluksia avoinna, voi "
-#~ "tarkastella, hallita ja käyttää niitä täältä."
+#~ msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+#~ msgstr "Hei! Tämä on Vyöhykkeet-paneeli. Kun sinulla on sovelluksia avoinna, voi tarkastella, hallita ja käyttää niitä täältä."
 
 #~ msgid "two"
 #~ msgstr "kaksi"
@@ -138,13 +130,8 @@ msgstr ""
 #~ msgid "%B %e, %Y"
 #~ msgstr "%B %e, %Y"
 
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi "
-#~ "historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
 
 #~ msgid "Recently played"
 #~ msgstr "Äskettäin soitetut"
@@ -191,12 +178,8 @@ msgstr ""
 #~ msgid "applications"
 #~ msgstr "sovellukset"
 
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi "
-#~ "välilehti -sivulla."
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi välilehti -sivulla."
 
 #~ msgid "Untitled"
 #~ msgstr "Nimetön"
