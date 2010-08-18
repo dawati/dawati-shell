@@ -11,6 +11,7 @@ AM_CPPFLAGS = \
 LDADD = $(LIBMPL_LIBS)
 
 noinst_PROGRAMS = \
+  test-app-launches-store \
   test-content-pane \
 	test-entry \
 	test-icon-theme \
@@ -23,6 +24,11 @@ test_entry_CFLAGS = \
 
 # FIXME use this once split out
 # -DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/$(PACKAGE_NAME)\"
+
+test_app_launches_store_SOURCES = \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-app-launches-query.c \
+	$(top_srcdir)/libmeego-panel/meego-panel/mpl-app-launches-store.c \
+	test-app-launches-store.c
 
 test_content_pane_SOURCES = \
 	$(top_srcdir)/libmeego-panel/meego-panel/mpl-content-pane.c \

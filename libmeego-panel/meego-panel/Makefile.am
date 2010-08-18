@@ -1,7 +1,10 @@
 
 lib_LTLIBRARIES = libmeego-panel.la
 
-source_h =	$(srcdir)/mpl-version.h			\
+source_h = \
+		$(srcdir)/mpl-app-launches-query.h \
+		$(srcdir)/mpl-app-launches-store.h\
+		$(srcdir)/mpl-version.h			\
 		$(srcdir)/mpl-content-pane.h \
 		$(srcdir)/mpl-entry.h			\
 		$(srcdir)/mpl-icon-theme.h		\
@@ -13,9 +16,14 @@ source_h =	$(srcdir)/mpl-version.h			\
 		$(srcdir)/mpl-app-bookmark-manager.h	\
 		$(srcdir)/mpl-utils.h
 
-private_h = 	$(srcdir)/mpl-panel-background.h
+private_h = \
+		$(srcdir)/mpl-app-launches-store-priv.h \
+		$(srcdir)/mpl-panel-background.h
 
-source_c = 	$(srcdir)/mnb-enum-types.c		\
+source_c = \
+		$(srcdir)/mpl-app-launches-query.c \
+		$(srcdir)/mpl-app-launches-store.c \
+		$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/mpl-content-pane.c \
 		$(srcdir)/mpl-entry.c			\
 		$(srcdir)/mpl-icon-theme.c		\
