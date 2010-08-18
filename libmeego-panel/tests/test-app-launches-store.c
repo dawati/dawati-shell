@@ -79,7 +79,6 @@ main (int     argc,
 
   GOptionContext      *context;
   MplAppLaunchesStore *store;
-  char                *database_file;
   GError              *error = NULL;
 
   g_type_init ();
@@ -92,10 +91,7 @@ main (int     argc,
     return EXIT_FAILURE;
   }
 
-  database_file = g_build_filename (g_get_user_cache_dir (),
-                                    "meego-app-launches", NULL);
-  store = mpl_app_launches_store_new (database_file);
-  g_free (database_file);
+  store = mpl_app_launches_store_new ();
 
   if (add)
   {

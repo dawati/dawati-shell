@@ -69,7 +69,7 @@ GType
 mpl_app_launches_store_get_type (void);
 
 MplAppLaunchesStore *
-mpl_app_launches_store_new (char const *database_file);
+mpl_app_launches_store_new (void);
 
 bool
 mpl_app_launches_store_add (MplAppLaunchesStore  *self,

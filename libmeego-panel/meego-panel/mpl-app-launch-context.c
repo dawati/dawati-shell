@@ -26,6 +26,7 @@
 
 #include "gdkapplaunchcontext-x11.h"
 #include "mpl-app-launch-context.h"
+#include "mpl-app-launches-store.h"
 
 G_DEFINE_TYPE (MplAppLaunchContext, mpl_app_launch_context, G_TYPE_APP_LAUNCH_CONTEXT)
 
@@ -34,7 +35,7 @@ G_DEFINE_TYPE (MplAppLaunchContext, mpl_app_launch_context, G_TYPE_APP_LAUNCH_CO
 
 typedef struct
 {
-  int dummy;
+  MplAppLaunchesStore *store;
 } MplAppLaunchContextPrivate;
 
 static gchar *
@@ -49,9 +50,38 @@ _get_display (GAppLaunchContext *context,
   return g_strdup (gdk_display_get_name (display));
 }
 
+static char *
+_get_startup_notify_id (GAppLaunchContext *context,
+                        GAppInfo          *info,
+                        GList             *files)
+{
+  MplAppLaunchContextPrivate *priv = GET_PRIVATE (context);
+  char const  *executable;
+  GError      *error = NULL;
+
+  executable = g_app_info_get_executable (info);
+
+  mpl_app_launches_store_add (priv->store, executable, &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+
+  return mpl_gdk_windowing_get_startup_notify_id (context, info, files);
+}
+
 static void
 _dispose (GObject *object)
 {
+  MplAppLaunchContextPrivate *priv = GET_PRIVATE (object);
+
+  if (priv->store)
+  {
+    g_object_unref (priv->store);
+    priv->store = NULL;
+  }
+
   G_OBJECT_CLASS (mpl_app_launch_context_parent_class)->dispose (object);
 }
 
@@ -64,20 +94,36 @@ mpl_app_launch_context_class_init (MplAppLaunchContextClass *klass)
   gobject_class->dispose = _dispose;
 
   context_class->get_display = _get_display;
-  context_class->get_startup_notify_id = mpl_gdk_windowing_get_startup_notify_id;
+  context_class->get_startup_notify_id = _get_startup_notify_id;
   context_class->launch_failed = mpl_gdk_windowing_launch_failed;
 
   g_type_class_add_private (klass, sizeof (MplAppLaunchContextPrivate));
 }
 
 static void
-mpl_app_launch_context_init (MplAppLaunchContext *context)
+mpl_app_launch_context_init (MplAppLaunchContext *self)
 {
+  MplAppLaunchContextPrivate *priv = GET_PRIVATE (self);
+
+  priv->store = mpl_app_launches_store_new ();
 }
 
 GAppLaunchContext *
 mpl_app_launch_context_new (void)
 {
   return g_object_new (MPL_TYPE_APP_LAUNCH_CONTEXT, NULL);
+}
+
+GAppLaunchContext *
+mpl_app_launch_context_get_default (void)
+{
+  static GAppLaunchContext *_context = NULL;
+
+  if (NULL == _context)
+  {
+    _context = mpl_app_launch_context_new ();
+  }
+
+  return _context;
 }
 

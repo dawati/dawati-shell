@@ -207,6 +207,7 @@ _dispose (GObject *object)
 static void
 mpl_app_launches_store_class_init (MplAppLaunchesStoreClass *klass)
 {
+  static char   *_database_file = NULL;
   GObjectClass  *object_class = G_OBJECT_CLASS (klass);
   GParamFlags    param_flags;
 
@@ -221,12 +222,18 @@ mpl_app_launches_store_class_init (MplAppLaunchesStoreClass *klass)
 
   param_flags = G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS;
 
+  if (NULL == _database_file)
+  {
+    _database_file = g_build_filename (g_get_user_cache_dir (),
+                                       "meego-app-launches", NULL);  
+  }
+
   g_object_class_install_property (object_class,
                                    PROP_DATABASE_FILE,
                                    g_param_spec_string ("database-file",
                                                         "Database file",
                                                         "File where app launches are logged",
-                                                        NULL,
+                                                        _database_file,
                                                         param_flags |
                                                         G_PARAM_CONSTRUCT_ONLY));
 
@@ -246,11 +253,9 @@ mpl_app_launches_store_init (MplAppLaunchesStore *self)
 }
 
 MplAppLaunchesStore *
-mpl_app_launches_store_new (char const *database_file)
+mpl_app_launches_store_new (void)
 {
-  return g_object_new (MPL_TYPE_APP_LAUNCHES_STORE,
-                       "database-file", database_file,
-                       NULL);
+  return g_object_new (MPL_TYPE_APP_LAUNCHES_STORE, NULL);
 }
 
 static int

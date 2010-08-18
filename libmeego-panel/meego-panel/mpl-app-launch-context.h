@@ -61,6 +61,9 @@ mpl_app_launch_context_get_type (void);
 GAppLaunchContext *
 mpl_app_launch_context_new (void);
 
+GAppLaunchContext *
+mpl_app_launch_context_get_default (void);
+
 G_END_DECLS
 
 #endif /* MPL_APP_LAUNCH_CONTEXT_H */
