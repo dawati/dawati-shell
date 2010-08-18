@@ -20,8 +20,8 @@
  * Author: Rob Staudinger <robsta@linux.intel.com>
  */
 
-#include <meego-panel/mpl-app-launches-query.h>
-#include <meego-panel/mpl-app-launches-store-priv.h>
+#include "mpl-app-launches-query.h"
+#include "mpl-app-launches-store-priv.h"
 
 G_DEFINE_TYPE (MplAppLaunchesQuery, mpl_app_launches_query, G_TYPE_OBJECT)
 

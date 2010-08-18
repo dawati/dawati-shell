@@ -21,6 +21,7 @@ private_h = \
 		$(srcdir)/mpl-panel-background.h
 
 source_c = \
+		$(srcdir)/gdkapplaunchcontext-x11.c \
 		$(srcdir)/mpl-app-launches-query.c \
 		$(srcdir)/mpl-app-launches-store.c \
 		$(srcdir)/mnb-enum-types.c		\
@@ -44,6 +45,7 @@ libmeego_panel_la_SOURCES = $(source_c)
 
 libmeego_panel_la_CFLAGS =						\
 	$(LIBMPL_CFLAGS) 						\
+	-I$(top_srcdir)/libmeego-panel \
 	-DMX_CACHE=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel/mx.cache\" \
 	-DDATADIR=\"$(datadir)\"					\
 	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel\"
