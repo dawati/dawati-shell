@@ -1,55 +1,58 @@
+# GLSPTB_Gabor <bechtg@gmail.com>, 2010.
+# Djavan Fagundes <djavan@syst.com.br>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-28 09:35+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2010-07-03 11:55+0000\n"
+"PO-Revision-Date: 2010-08-18 11:42-0200\n"
+"Last-Translator: Djavan Fagundes <djavan@syst.com.br>\n"
+"Language-Team: meego-il10n@meego.com\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
-"X-Poedit-Language: Portuguese\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
+#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
 msgid "Available"
 msgstr "Disponível"
 
-#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
+#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
-#: ../anerley/anerley-presence-chooser.c:44
+#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
 msgid "Away"
 msgstr "Ausente"
 
-#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
 msgid "Offline"
-msgstr "Offline"
+msgstr "Desconectado"
 
-#: ../anerley/anerley-econtact-item.c:233
+#: ../anerley/anerley-econtact-item.c:234
 msgid "Unnamed"
 msgstr "Sem nome"
 
-#: ../anerley/anerley-presence-chooser.c:41
+#: ../anerley/anerley-presence-chooser.c:42
 msgid "Unset"
 msgstr "Sem definição"
 
-#: ../anerley/anerley-presence-chooser.c:45
-msgid "Extended Away"
-msgstr "Ausencia prolongada"
-
 #: ../anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr "Ausência prolongada"
+
+#: ../anerley/anerley-presence-chooser.c:47
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ../anerley/anerley-presence-chooser.c:48
+#: ../anerley/anerley-presence-chooser.c:49
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: ../anerley/anerley-presence-chooser.c:49
+#: ../anerley/anerley-presence-chooser.c:50
 msgid "Error"
 msgstr "Erro"
