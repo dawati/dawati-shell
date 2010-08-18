@@ -14,12 +14,17 @@ sw-marshals.h: sw-marshals.list Makefile.am
 
 
 libexec_PROGRAMS = meego-panel-status
+lib_LTLIBRARIES = libmeego-panel-status.la
+
 BUILT_SOURCES = sw-marshals.c sw-marshals.h
 
 meego_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
-meego_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
+meego_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS) \
+			      $(top_builddir)/src/libmeego-panel-status.la
 meego_panel_status_SOURCES  = 	\
-	meego-panel-status.c \
+	meego-panel-status.c
+
+libmeego_panel_status_la_SOURCES = \
 	penge-magic-texture.h \
 	penge-magic-texture.c \
 	penge-clickable-label.c \
@@ -36,6 +41,8 @@ meego_panel_status_SOURCES  = 	\
 	mps-geotag-pane.h \
 	sw-online.c \
 	sw-online.h
+libmeego_panel_status_la_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
+libmeego_panel_status_la_LIBADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.meego.UX.Shell.Panels.status.service.in
