@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
+"POT-Creation-Date: 2010-07-20 17:55+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
+"Last-Translator: Otto Kekäläinen <otto@sange.fi>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,11 +29,11 @@ msgstr "Myzone"
 
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Muuta se, mikä näkyy Myzone-ikkunassasi</b>"
+msgstr "<b>Muuta Myzone-näkymääsi</b>"
 
 #: ../data/capplet.ui.h:2
 msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Myzone taustakuva</b>"
+msgstr "<b>Myzone-taustakuva</b>"
 
 #: ../data/capplet.ui.h:3
 msgid "Calendar and tasks:"
@@ -41,7 +41,7 @@ msgstr "Kalenteri ja tehtävät:"
 
 #: ../data/capplet.ui.h:4
 msgid "Change My Web Accounts"
-msgstr "Vaihda web-tilini"
+msgstr "Muuta web-tilejäni"
 
 #: ../data/capplet.ui.h:5
 msgid "Choose your wallpaper"
@@ -66,15 +66,15 @@ msgstr "GConf-virhe: %s"
 
 #: ../capplet/gconf-bridge.c:1237
 msgid "All further errors shown only on terminal."
-msgstr "Kaikki virheet tämän lisäksi näytetään vain päätteellä. "
+msgstr "Kaikki tulevat virheet näytetään vain päätteellä. "
 
 #: ../capplet/myzone-cc-panel.c:47
 msgid "Show as much web service content as possible"
-msgstr "Näytä niin paljon webäpalvelun sisältöä kuin mahdollista."
+msgstr "Näytä niin paljon web-sisältöjä kuin mahdollista."
 
 #: ../capplet/myzone-cc-panel.c:49
 msgid "Show mostly web service content"
-msgstr "Näytä suurin osa web-palvelun sisällöstä."
+msgstr "Näytä suurin osa web-sisällöistä."
 
 #: ../capplet/myzone-cc-panel.c:51
 msgid "Show half and half"
@@ -90,7 +90,7 @@ msgstr "Näytä mahdollisimman monta viimeisintä tiedostoa"
 
 #: ../capplet/myzone-cc-panel.c:77
 msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
-msgstr "Haluatko tyhjentää viimeisimmät asiakirjasi? Tämä poistaa paikallisen sisällön myzonesta"
+msgstr "Haluatko tyhjentää viimeisimmät asiakirjasi? Tämä poistaa paikallisen sisällön Myzonesta"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -117,7 +117,7 @@ msgstr "Lisää"
 # took off "calendar" in order to fix a truncation
 #: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
-msgstr "Tällä viikolla ei ole tapahtumia"
+msgstr "Tälle viikolle ei ole merkintöjä"
 
 #: ../penge/penge-recent-file-tile.c:217
 msgid "Web page"
@@ -129,7 +129,7 @@ msgstr "Luo uusi tehtävä"
 
 #: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
-msgstr "Tänään ei ole mitään tekemistä!"
+msgstr "Tälle päivälle ei ole tehtäviä"
 
 #: ../penge/penge-task-tile.c:319
 #, c-format
@@ -138,7 +138,7 @@ msgstr "Määräaika: %x"
 
 #: ../penge/penge-welcome-tile.c:28
 msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Kun olet asettanut web-tilisi ja käyttänyt joitakin tiedostoja, ne näkyvät täällä myzonessa ja niitä on helppo käyttää milloin haluat."
+msgstr "Kun olet asettanut web-tilisi ja käyttänyt joitakin tiedostoja, ne näkyvät täällä Myzonessa ja niitä on helppo käyttää milloin haluat."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
@@ -146,11 +146,11 @@ msgstr "Toista esittelyvideo"
 
 #: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
-msgstr "Terveteloa MeeGo-sovellukseen"
+msgstr "Tervetuloa MeeGoon"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
-msgstr "Ei lukemattomia viestejä."
+msgstr "Ei lukemattomia viestejä"
 
 #: ../penge/penge-email-pane.c:194
 msgid "Unread message"
