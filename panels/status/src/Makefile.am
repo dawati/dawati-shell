@@ -44,6 +44,10 @@ libmeego_panel_status_la_SOURCES = \
 libmeego_panel_status_la_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
 libmeego_panel_status_la_LIBADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
 
+
+pkgconfig_DATA = meego-panel-status.pc
+pkgconfigdir   = $(libdir)/pkgconfig
+
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.meego.UX.Shell.Panels.status.service.in
 service_DATA = com.meego.UX.Shell.Panels.status.service

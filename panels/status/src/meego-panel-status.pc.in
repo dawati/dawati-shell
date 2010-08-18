@@ -1,0 +1,14 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@/libsocialweb
+datadir=@datadir@
+servicesdir=@servicesdir@
+servicesdatadir=@servicesdatadir@
+
+Name: meego-panel-status
+Description: Plugin for meego-panel-status
+Version: @VERSION@
+Cflags: -I${includedir}
+Libs: -L${libdir} -lmeego-panel-status
+Requires: mx-1.0 libsocialweb-client
