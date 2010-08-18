@@ -2,6 +2,7 @@
 lib_LTLIBRARIES = libmeego-panel.la
 
 source_h = \
+		$(srcdir)/mpl-app-launch-context.h \
 		$(srcdir)/mpl-app-launches-query.h \
 		$(srcdir)/mpl-app-launches-store.h\
 		$(srcdir)/mpl-version.h			\
@@ -22,6 +23,7 @@ private_h = \
 
 source_c = \
 		$(srcdir)/gdkapplaunchcontext-x11.c \
+		$(srcdir)/mpl-app-launch-context.c \
 		$(srcdir)/mpl-app-launches-query.c \
 		$(srcdir)/mpl-app-launches-store.c \
 		$(srcdir)/mnb-enum-types.c		\
