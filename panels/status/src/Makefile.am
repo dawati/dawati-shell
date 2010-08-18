@@ -24,23 +24,28 @@ meego_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS) \
 meego_panel_status_SOURCES  = 	\
 	meego-panel-status.c
 
-libmeego_panel_status_la_SOURCES = \
+
+libmeego_panel_status_ladir = $(pkgincludedir)
+libmeego_panel_status_la_HEADERS = \
 	penge-magic-texture.h \
-	penge-magic-texture.c \
-	penge-clickable-label.c \
 	penge-clickable-label.h \
 	mps-tweet-card.h \
+	mps-view-bridge.h \
+	mps-feed-pane.h \
+	mps-feed-switcher.h \
+	mps-geotag-pane.h \
+	sw-online.h
+
+libmeego_panel_status_la_SOURCES = \
+	penge-magic-texture.c \
+	penge-clickable-label.c \
 	mps-tweet-card.c \
 	mps-view-bridge.c \
-	mps-view-bridge.h \
 	mps-feed-pane.c \
-	mps-feed-pane.h \
 	mps-feed-switcher.c \
-	mps-feed-switcher.h \
 	mps-geotag-pane.c \
-	mps-geotag-pane.h \
 	sw-online.c \
-	sw-online.h
+	$(libmeego_panel_status_la_HEADERS)
 libmeego_panel_status_la_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
 libmeego_panel_status_la_LIBADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
 
