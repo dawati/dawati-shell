@@ -18,6 +18,7 @@ source_h = \
 		$(srcdir)/mpl-utils.h
 
 private_h = \
+		$(srcdir)/gdkapplaunchcontext-x11.h \
 		$(srcdir)/mpl-app-launches-store-priv.h \
 		$(srcdir)/mpl-panel-background.h
 
