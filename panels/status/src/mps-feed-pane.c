@@ -230,7 +230,7 @@ _update_from_caps (MpsFeedPane  *pane,
 {
   MpsFeedPanePrivate *priv = GET_PRIVATE (pane);
 
-  if (_has_cap (caps, "can-update-status"))
+  if (_has_cap (caps, CAN_UPDATE_STATUS))
   {
     clutter_actor_hide (priv->something_wrong_frame);
     clutter_actor_show (priv->update_hbox);
@@ -249,7 +249,7 @@ _update_from_caps (MpsFeedPane  *pane,
     }
   }
 
-  if (_has_cap (caps, "can-geotag"))
+  if (_has_cap (caps, CAN_UPDATE_STATUS_WITH_GEOTAG))
   {
     clutter_actor_show (priv->location_hbox);
   } else {

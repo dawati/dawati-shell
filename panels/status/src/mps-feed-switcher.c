@@ -141,16 +141,18 @@ _service_caps_changed_cb (SwClientService  *service,
   MpsFeedSwitcher *switcher = MPS_FEED_SWITCHER (userdata);
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
 
-  if (_has_cap (caps, "is-configured"))
+  if (_has_cap (caps, IS_CONFIGURED))
   {
     g_debug (G_STRLOC ": Capabilities changed: Service %s has "
-             "is-configured capability",
-             sw_client_service_get_name (service));
+             "%s capability",
+             sw_client_service_get_name (service),
+             IS_CONFIGURED);
     mps_feed_switcher_ensure_service (switcher, service);
   } else {
     g_debug (G_STRLOC ": Capabilities changed: Service doesn't "
-             "have is-configured capability",
-             sw_client_service_get_name (service));
+             "have %s capability",
+             sw_client_service_get_name (service),
+             IS_CONFIGURED);
     mps_feed_switcher_remove_service (switcher, service);
   }
 }
@@ -164,16 +166,18 @@ _service_get_dynamic_caps_cb (SwClientService  *service,
   MpsFeedSwitcher *switcher = MPS_FEED_SWITCHER (userdata);
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
 
-  if (_has_cap (caps, "is-configured"))
+  if (_has_cap (caps, IS_CONFIGURED))
   {
-    g_debug (G_STRLOC ": Service %s has is-configured dynamic capability",
-             sw_client_service_get_name (service));
+    g_debug (G_STRLOC ": Service %s has %s dynamic capability",
+             sw_client_service_get_name (service),
+             IS_CONFIGURED);
 
     mps_feed_switcher_ensure_service (switcher, service);
   } else {
-    g_debug (G_STRLOC ": Service %s doesn't have is-configured dynamic "
+    g_debug (G_STRLOC ": Service %s doesn't have %s dynamic "
              "capability",
-             sw_client_service_get_name (service));
+             sw_client_service_get_name (service),
+             IS_CONFIGURED);
 
     mps_feed_switcher_remove_service (switcher, service);
   }
@@ -189,7 +193,7 @@ _service_get_static_caps_cb (SwClientService  *service,
   MpsFeedSwitcher *switcher = MPS_FEED_SWITCHER (userdata);
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
 
-  if (!_has_cap (caps, "can-update-status"))
+  if (!_has_cap (caps, HAS_UPDATE_STATUS_IFACE))
   {
     g_hash_table_remove (priv->services,
                          sw_client_service_get_name (service));
@@ -200,8 +204,9 @@ _service_get_static_caps_cb (SwClientService  *service,
                       (GCallback)_service_caps_changed_cb,
                       userdata);
 
-    g_debug (G_STRLOC ": Service %s has can-update-status static capability",
-             sw_client_service_get_name (service));
+    g_debug (G_STRLOC ": Service %s has %s static capability",
+             sw_client_service_get_name (service),
+             HAS_UPDATE_STATUS_IFACE);
 
 
     sw_client_service_get_dynamic_capabilities (service,
