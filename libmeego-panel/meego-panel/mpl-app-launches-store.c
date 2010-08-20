@@ -225,7 +225,7 @@ mpl_app_launches_store_class_init (MplAppLaunchesStoreClass *klass)
   if (NULL == _database_file)
   {
     _database_file = g_build_filename (g_get_user_cache_dir (),
-                                       "meego-app-launches", NULL);  
+                                       "meego-app-launches", NULL);
   }
 
   g_object_class_install_property (object_class,
@@ -287,7 +287,8 @@ record_read (MplAppLaunchesRecord const *record,
 
 static void
 record_update (MplAppLaunchesRecord *record,
-               int32_t               hash)
+               int32_t               hash,
+               time_t                timestamp)
 {
   uint32_t n_launches = 0;
 
@@ -295,7 +296,7 @@ record_update (MplAppLaunchesRecord *record,
     snprintf (record->hash, sizeof (record->hash), "%08x", hash);
 
   snprintf (record->last_launched, sizeof (record->last_launched),
-            "%08lx", time (NULL));
+            "%08lx", timestamp);
 
   record_read (record, NULL, NULL, &n_launches);
   snprintf (record->n_launches, sizeof (record->n_launches),
@@ -500,6 +501,7 @@ store_lookup_hash (MplAppLaunchesStore  *self,
 static char *
 store_insert (MplAppLaunchesStore   *self,
               uint32_t               hash,
+              time_t                 timestamp,
               GError               **error_out)
 {
   MplAppLaunchesStorePrivate *priv = GET_PRIVATE (self);
@@ -532,7 +534,7 @@ store_insert (MplAppLaunchesStore   *self,
       {
         /* Insert new record here. */
         MplAppLaunchesRecord record = { "00000000", "00000000", "00000000", '\n' };
-        record_update (&record, hash);
+        record_update (&record, hash, timestamp);
         hash = 0;
         if (!record_write (&record, fd, &error))
           break;
@@ -547,7 +549,7 @@ store_insert (MplAppLaunchesStore   *self,
   {
     /* Insert new record at the end. */
     MplAppLaunchesRecord record = { "00000000", "00000000", "00000000", '\n' };
-    record_update (&record, hash);
+    record_update (&record, hash, timestamp);
     record_write (&record, fd, &error);
   }
 
@@ -568,10 +570,12 @@ store_insert (MplAppLaunchesStore   *self,
 
 /*
  * Add executable launch event to the store.
+ * When 0 is passed for timestamp the current time is used.
  */
 bool
 mpl_app_launches_store_add (MplAppLaunchesStore  *self,
                             char const           *executable,
+                            time_t                timestamp,
                             GError              **error_out)
 {
   MplAppLaunchesStorePrivate *priv = GET_PRIVATE (self);
@@ -592,11 +596,14 @@ mpl_app_launches_store_add (MplAppLaunchesStore  *self,
 
   if (record)
   {
-    record_update (record, 0);
+    record_update (record, 0, timestamp);
 
   } else {
 
-    char *tmp_database_file = store_insert (self, hash, &error);
+    char *tmp_database_file = store_insert (self,
+                                            hash,
+                                            timestamp ? timestamp : time (NULL),
+                                            &error);
     PROPAGATE_ERROR_AND_RETURN_IF_FAIL_WITH_CODE (tmp_database_file,
                                                   error,
                                                   error_out,
@@ -617,6 +624,26 @@ mpl_app_launches_store_add (MplAppLaunchesStore  *self,
   PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
 
   return true;
+}
+
+bool
+mpl_app_launches_store_add_async (MplAppLaunchesStore  *self,
+                                  char const           *executable,
+                                  time_t                timestamp,
+                                  GError              **error)
+{
+  char  *command_line;
+  bool   ret;
+
+  command_line = g_strdup_printf ("%s --add %s --timestamp %li",
+                                  MEEGO_APP_LAUNCHES_STORE,
+                                  executable,
+                                  timestamp ? timestamp : time (NULL));
+
+  ret = g_spawn_command_line_async (command_line, error);
+  g_free (command_line);
+
+  return ret;
 }
 
 /*

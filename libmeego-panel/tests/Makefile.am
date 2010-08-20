@@ -6,13 +6,13 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/libmeego-panel \
 	-DDATADIR=\"$(datadir)\" \
   -DCSS_DIR=\"$(abs_builddir)\" \
-	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel\"
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel\" \
+	-DMEEGO_APP_LAUNCHES_STORE=\"$(libexecdir)/meego-app-launches-store\"
 
 LDADD = $(LIBMPL_LIBS)
 
 noinst_PROGRAMS = \
   test-app-launch-context \
-  test-app-launches-store \
   test-content-pane \
 	test-entry \
 	test-icon-theme \
@@ -32,11 +32,6 @@ test_app_launch_context_SOURCES = \
 	$(top_srcdir)/libmeego-panel/meego-panel/mpl-app-launches-query.c \
 	$(top_srcdir)/libmeego-panel/meego-panel/mpl-app-launches-store.c \
 	test-app-launch-context.c
-
-test_app_launches_store_SOURCES = \
-	$(top_srcdir)/libmeego-panel/meego-panel/mpl-app-launches-query.c \
-	$(top_srcdir)/libmeego-panel/meego-panel/mpl-app-launches-store.c \
-	test-app-launches-store.c
 
 test_content_pane_SOURCES = \
 	$(top_srcdir)/libmeego-panel/meego-panel/mpl-content-pane.c \

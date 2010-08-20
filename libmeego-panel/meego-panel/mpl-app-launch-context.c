@@ -61,7 +61,10 @@ _get_startup_notify_id (GAppLaunchContext *context,
 
   executable = g_app_info_get_executable (info);
 
-  mpl_app_launches_store_add (priv->store, executable, &error);
+  mpl_app_launches_store_add_async (priv->store,
+                                    executable,
+                                    time (NULL),
+                                    &error);
   if (error)
   {
     g_warning ("%s : %s", G_STRLOC, error->message);

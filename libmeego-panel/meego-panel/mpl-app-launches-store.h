@@ -74,7 +74,14 @@ mpl_app_launches_store_new (void);
 bool
 mpl_app_launches_store_add (MplAppLaunchesStore  *self,
                             char const           *executable,
+                            time_t                timestamp,
                             GError              **error);
+
+bool
+mpl_app_launches_store_add_async (MplAppLaunchesStore  *self,
+                                  char const           *executable,
+                                  time_t                timestamp,
+                                  GError              **error);
 
 bool
 mpl_app_launches_store_lookup (MplAppLaunchesStore   *self,

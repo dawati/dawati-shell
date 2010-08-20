@@ -1,4 +1,27 @@
 
+AM_CPPFLAGS = \
+	$(LIBMPL_CFLAGS) \
+	-I$(top_srcdir)/libmeego-panel \
+	-DMX_CACHE=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel/mx.cache\" \
+	-DDATADIR=\"$(datadir)\" \
+	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel\" \
+	-DMEEGO_APP_LAUNCHES_STORE=\"$(libexecdir)/meego-app-launches-store\"
+
+#
+# App launches store manipulation tool
+#
+libexec_PROGRAMS = meego-app-launches-store
+
+meego_app_launches_store_LDADD = \
+	$(LIBMPL_LIBS) \
+	libmeego-panel.la
+
+meego_app_launches_store_SOURCES = \
+	meego-app-launches-store.c
+
+#
+# Meego-panel library
+#
 lib_LTLIBRARIES = libmeego-panel.la
 
 source_h = \
@@ -45,13 +68,6 @@ source_c = \
 libmeego_panel_includedir = $(includedir)/libmeego-panel/meego-panel
 libmeego_panel_include_HEADERS = $(source_h)
 libmeego_panel_la_SOURCES = $(source_c)
-
-libmeego_panel_la_CFLAGS =						\
-	$(LIBMPL_CFLAGS) 						\
-	-I$(top_srcdir)/libmeego-panel \
-	-DMX_CACHE=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel/mx.cache\" \
-	-DDATADIR=\"$(datadir)\"					\
-	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)/meego-panel\"
 
 libmeego_panel_la_LDFLAGS = $(LIBMPL_LIBS)
 

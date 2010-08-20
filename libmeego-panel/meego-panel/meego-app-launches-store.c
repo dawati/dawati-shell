@@ -53,6 +53,8 @@ main (int     argc,
       char  **argv)
 {
   char const *add = NULL;
+  bool async = false;
+  int  timestamp = 0;
   char const *lookup = NULL;
   char const **query = NULL;
   bool lock_exclusive = false;
@@ -62,6 +64,10 @@ main (int     argc,
   GOptionEntry _options[] = {
     { "add", 'a', 0, G_OPTION_ARG_STRING, (void **) &add,
       "Add launch of <executable> at current time to database", "<executable>" },
+    { "async", 0, 0, G_OPTION_ARG_NONE, &async,
+      "Asynchronous 'add' to database", NULL },
+    { "timestamp", 't', 0, G_OPTION_ARG_INT, &timestamp,
+      "Pass timestamp to 'add' instead of using current time", NULL },
     { "lookup", 'l', 0, G_OPTION_ARG_STRING, (void **) &lookup,
       "Lookup <executable> in database", "<executable>" },
     { G_OPTION_REMAINING, 'q', 0, G_OPTION_ARG_STRING_ARRAY, (void **) &query,
@@ -95,7 +101,11 @@ main (int     argc,
 
   if (add)
   {
-    mpl_app_launches_store_add (store, add, &error);
+    if (async)
+      mpl_app_launches_store_add_async (store, add, timestamp, &error);
+    else
+      mpl_app_launches_store_add (store, add, timestamp, &error);
+
     if (error)
     {
       g_critical ("%s\n\t%s", G_STRLOC, error->message);
