@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-16 09:23+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: 2010-07-01 13:32-0800\n"
 "Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -18,11 +18,11 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Настроить параметры панели инструментов"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Настройки панели инструментов"
 
@@ -46,9 +46,8 @@ msgstr "Доступные панели"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:217
-#: ../src/mnb-toolbar-clock.c:125
+#. 
+#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -56,23 +55,21 @@ msgstr "%H:%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
+#. 
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:227
-#: ../src/mnb-toolbar-clock.c:134
+#. 
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#.
-#: ../capplet/src/mtp-clock.c:249
-#: ../src/mnb-toolbar-clock.c:155
+#. 
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
 
@@ -97,29 +94,29 @@ msgstr "Показать область уведомлений"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Область уведомлений используется некоторыми более старыми приложениями для информирования пользователя в случае возникновения какого-то события или продолжения работы после их закрытия."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Всегда используйте малое разрешение экрана"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Определяет порядок панелей на инструментальной панели."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Принуждает использовать малое разрешение экрана даже тогда, когда размер экрана подразумевает использование большого разрешения."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Порядок панелей на инструментальной панели"
 
-#: ../src/moblin-netbook.c:825
-msgid "Moblin Netbook Effects"
-msgstr "Эффекты Moblin Netbook"
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
+msgstr "Эффекты Meego Netbook"
 
-#: ../src/moblin-netbook.c:829
-msgid "Effects for Moblin Netbooks"
-msgstr "Эффекты для Moblin Netbooks"
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
+msgstr "Эффекты для Meego Netbooks"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -155,12 +152,8 @@ msgstr "Активировать"
 #~ msgid "No Zones yet"
 #~ msgstr "Нет зон"
 
-#~ msgid ""
-#~ "Applications you’re using will show up here. You will be able to switch "
-#~ "and organize them to your heart's content."
-#~ msgstr ""
-#~ "Программы, которые будут использоваться, появятся здесь.  Вы сможете "
-#~ "переключать и упорядочить их."
+#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+#~ msgstr "Программы, которые будут использоваться, появятся здесь.  Вы сможете переключать и упорядочить их."
 
 #~ msgid "No applications on this zone"
 #~ msgstr "Нет программ в этой зоне."
