@@ -8,6 +8,18 @@ AM_CPPFLAGS = \
 	-DMEEGO_APP_LAUNCHES_STORE=\"$(libexecdir)/meego-app-launches-store\"
 
 #
+# Application launch utility
+#
+bin_PROGRAMS = meego-launch
+
+meego_launch_LDADD = \
+	$(LIBMPL_LIBS) \
+	libmeego-panel.la
+
+meego_launch_SOURCES = \
+	meego-launch.c
+
+#
 # App launches store manipulation tool
 #
 libexec_PROGRAMS = meego-app-launches-store
