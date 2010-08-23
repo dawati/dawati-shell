@@ -27,7 +27,6 @@
 #include "../meego-netbook.h"
 
 void     mnb_switch_zones_effect (MutterPlugin         *plugin,
-                                  const GList         **actors,
                                   gint                  from,
                                   gint                  to,
                                   MetaMotionDirection   direction);

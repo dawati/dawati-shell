@@ -126,7 +126,6 @@ static void     map        (MutterPlugin *plugin,
 static void     destroy    (MutterPlugin *plugin,
                             MutterWindow *actor);
 static void     switch_workspace (MutterPlugin         *plugin,
-                                  const GList         **actors,
                                   gint                  from,
                                   gint                  to,
                                   MetaMotionDirection   direction);
@@ -137,8 +136,9 @@ static void     unmaximize (MutterPlugin *plugin,
                             MutterWindow *actor,
                             gint x, gint y, gint width, gint height);
 
-static void     kill_effect (MutterPlugin *plugin,
-                             MutterWindow *actor, gulong event);
+static void     kill_window_effects (MutterPlugin *plugin,
+                                     MutterWindow *actor);
+static void     kill_switch_workspace (MutterPlugin *plugin);
 
 static const MutterPluginInfo * plugin_info (MutterPlugin *plugin);
 
@@ -807,7 +807,8 @@ meego_netbook_plugin_class_init (MeegoNetbookPluginClass *klass)
   plugin_class->unmaximize       = unmaximize;
   plugin_class->destroy          = destroy;
   plugin_class->switch_workspace = switch_workspace;
-  plugin_class->kill_effect      = kill_effect;
+  plugin_class->kill_window_effects   = kill_window_effects;
+  plugin_class->kill_switch_workspace = kill_switch_workspace;
   plugin_class->plugin_info      = plugin_info;
   plugin_class->xevent_filter    = xevent_filter;
   plugin_class->get_shadow       = meego_netbook_get_shadow;
@@ -872,8 +873,7 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mcw,
-                                      MUTTER_PLUGIN_MINIMIZE);
+  mutter_plugin_minimize_completed (plugin, mcw);
 }
 
 /*
@@ -916,7 +916,7 @@ minimize (MutterPlugin * plugin, MutterWindow *mcw)
                         data);
     }
   else
-    mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MINIMIZE);
+    mutter_plugin_minimize_completed (plugin, mcw);
 }
 
 /*
@@ -940,7 +940,7 @@ on_maximize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAXIMIZE);
+  mutter_plugin_maximize_completed (plugin, mcw);
 
   g_free (data);
 }
@@ -1011,7 +1011,7 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
       return;
     }
 
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAXIMIZE);
+  mutter_plugin_maximize_completed (plugin, mcw);
 }
 
 /*
@@ -1035,7 +1035,7 @@ unmaximize (MutterPlugin *plugin, MutterWindow *mcw,
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_UNMAXIMIZE);
+  mutter_plugin_unmaximize_completed (plugin, mcw);
 }
 
 static void
@@ -1174,7 +1174,7 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
   g_free (data);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+  mutter_plugin_map_completed (plugin, mcw);
 }
 
 /*
@@ -1814,7 +1814,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
     {
       const gchar *wm_class = meta_window_get_wm_class (mw);
 
-      mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+      mutter_plugin_map_completed (plugin, mcw);
 
       /*
        * If this is a SCIM window, ensure we have an input region for it on the
@@ -1859,17 +1859,17 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                * effect completes, we have to first let the compositor to do its
                * thing, and only then impose our will on it.
                */
-              mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+              mutter_plugin_map_completed (plugin, mcw);
               mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
             }
           else
             {
-              mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+              mutter_plugin_map_completed (plugin, mcw);
               mnb_panel_hide (panel);
             }
         }
       else
-        mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+        mutter_plugin_map_completed (plugin, mcw);
     }
   /*
    * Anything that might be associated with startup notification needs to be
@@ -1950,7 +1950,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           type == META_COMP_WINDOW_MODAL_DIALOG ||
           fullscreen)
         {
-          mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+          mutter_plugin_map_completed (plugin, mcw);
           return;
         }
 
@@ -1993,7 +1993,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                             data);
         }
       else
-        mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+        mutter_plugin_map_completed (plugin, mcw);
     }
   else
     {
@@ -2004,7 +2004,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                         G_CALLBACK (window_destroyed_cb),
                         plugin);
 
-      mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
+      mutter_plugin_map_completed (plugin, mcw);
     }
 }
 
@@ -2031,12 +2031,11 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
     }
 
   handle_window_destruction (mcw, plugin);
-  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
+  mutter_plugin_destroy_completed (plugin, mcw);
 }
 
 static void
 switch_workspace (MutterPlugin         *plugin,
-                  const GList         **actors,
                   gint                  from,
                   gint                  to,
                   MetaMotionDirection   direction)
@@ -2049,13 +2048,11 @@ switch_workspace (MutterPlugin         *plugin,
    */
   if (mnb_toolbar_get_active_panel (MNB_TOOLBAR (priv->toolbar)))
     {
-      mutter_plugin_effect_completed (plugin,
-                                      actors ? (*actors)->data : NULL,
-                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
+      mutter_plugin_switch_workspace_completed (plugin);
     }
   else
     {
-      mnb_switch_zones_effect (plugin, actors, from, to, direction);
+      mnb_switch_zones_effect (plugin, from, to, direction);
     }
 }
 
@@ -2149,34 +2146,30 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 }
 
 static void
-kill_effect (MutterPlugin *plugin, MutterWindow *mcw, gulong event)
+kill_switch_workspace (MutterPlugin *plugin)
+{
+}
+
+static void
+kill_window_effects (MutterPlugin *plugin, MutterWindow *mcw)
 {
   ActorPrivate *apriv;
 
-  if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
-    {
-      /*
-       * We never kill the zone switching effect; since the effect does not
-       * use the MutterWindows directly, it does not screw up the layout.
-       */
-      return;
-    }
-
   apriv = get_actor_private (mcw);
 
-  if ((event & MUTTER_PLUGIN_MINIMIZE) && apriv->tml_minimize)
+  if (apriv->tml_minimize)
     {
       clutter_timeline_stop (apriv->tml_minimize);
       g_signal_emit_by_name (apriv->tml_minimize, "completed", NULL);
     }
 
-  if ((event & MUTTER_PLUGIN_MAXIMIZE) && apriv->tml_maximize)
+  if (apriv->tml_maximize)
     {
       clutter_timeline_stop (apriv->tml_maximize);
       g_signal_emit_by_name (apriv->tml_maximize, "completed", NULL);
     }
 
-  if ((event & MUTTER_PLUGIN_MAP) && apriv->tml_map)
+  if (apriv->tml_map)
     {
       clutter_timeline_stop (apriv->tml_map);
 

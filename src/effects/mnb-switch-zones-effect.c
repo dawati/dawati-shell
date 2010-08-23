@@ -29,27 +29,9 @@
 static ClutterActor *zones_preview = NULL;
 static gint          running = 0;
 
-static MutterWindow *
-get_mcw_for_completed_cb (MutterPlugin *plugin)
-{
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
-  GList      *l;
-
-  l = mutter_get_windows (screen);
-
-  if (l)
-    return l->data;
-
-  g_critical (G_STRLOC ": nothing to pass to mutter_plugin_effect_completed()");
-
-  return NULL;
-}
-
 static void
 mnb_switch_zones_completed_cb (MnbZonesPreview *preview, MutterPlugin *plugin)
 {
-  MutterWindow *mcw = get_mcw_for_completed_cb (plugin);
-
   clutter_actor_destroy (zones_preview);
   zones_preview = NULL;
 
@@ -59,11 +41,7 @@ mnb_switch_zones_completed_cb (MnbZonesPreview *preview, MutterPlugin *plugin)
       running = 0;
     }
 
-  if (mcw)
-    {
-      mutter_plugin_effect_completed (plugin, mcw,
-                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
-    }
+  mutter_plugin_switch_workspace_completed (plugin);
 }
 
 /*
@@ -71,7 +49,6 @@ mnb_switch_zones_completed_cb (MnbZonesPreview *preview, MutterPlugin *plugin)
  */
 void
 mnb_switch_zones_effect (MutterPlugin         *plugin,
-                         const GList         **actors,
                          gint                  from,
                          gint                  to,
                          MetaMotionDirection   direction)
@@ -80,7 +57,6 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   gint width, height;
   MetaScreen *screen;
   ClutterActor *window_group;
-  MutterWindow *mcw = get_mcw_for_completed_cb (plugin);
 
   MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -96,11 +72,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
           running = 0;
         }
 
-      if (mcw)
-        {
-          mutter_plugin_effect_completed (plugin, mcw,
-                                          MUTTER_PLUGIN_SWITCH_WORKSPACE);
-        }
+      mutter_plugin_switch_workspace_completed (plugin);
     }
 
   if ((from == to) && !zones_preview)
@@ -111,11 +83,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
           running = 0;
         }
 
-      if (mcw)
-        {
-          mutter_plugin_effect_completed (plugin, mcw,
-                                          MUTTER_PLUGIN_SWITCH_WORKSPACE);
-        }
+      mutter_plugin_switch_workspace_completed (plugin);
 
       return;
     }
