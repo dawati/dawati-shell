@@ -1,11 +1,12 @@
-#
+# GLSPTB_Gabor <bechtg@gmail.com>, 2010.
+# Djavan Fagundes <djavan@syst.com.br>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-05 09:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
+"Last-Translator: Djavan Fagundes <djavan@syst.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,11 +20,11 @@ msgstr ""
 #: ../src/mnb-people-panel.c:476
 #: ../data/moblin-panel-people.desktop.in.in.h:2
 msgid "people"
-msgstr "gente"
+msgstr "pessoas"
 
 #: ../src/mnb-people-panel.c:57
 msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
-msgstr "Olá! Este é o painel de Gente. Se você tem um serviço IM configurado (como Messenger) você vai bater papo com gente aqui."
+msgstr "Olá! Este é o painel de pessoas. Se você tem um serviço MI configurado (como Messenger) você vai bater papo com pessoas por aqui."
 
 #: ../src/mnb-people-panel.c:191
 #: ../src/mnb-people-panel.c:414
@@ -33,30 +34,30 @@ msgstr "Abrir %s"
 
 #: ../src/mnb-people-panel.c:231
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Sinto muito, não achamos ninguém.  Você já configurou uma conta Messenger?"
+msgstr "Sinto muito, não achamos ninguém. Você já configurou uma conta no mensageiro?"
 
 #: ../src/mnb-people-panel.c:283
 msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Sinto muito, não achamos ninguém.  Parece que todos estão offline."
+msgstr "Sinto muito, não achamos ninguém. Parece que todos estão desconectados."
 
 #: ../src/mnb-people-panel.c:328
 msgid "To see your IM contacts, you need to go online."
-msgstr "Para ver seus contatos IM, vá online."
+msgstr "Para ver seus contatos de MI, você precisa estar conectado."
 
 #: ../src/mnb-people-panel.c:458
 #, c-format
 msgid "people - you are chatting with %d people"
-msgstr "gente - você está batendo papo com %d pessoas"
+msgstr "pessoas - você está batendo papo com %d pessoas"
 
 #: ../src/mnb-people-panel.c:465
 msgid "people - you are chatting with someone"
-msgstr "gente - você está batendo papo com alguém"
+msgstr "pessoas - você está batendo papo com alguém"
 
 #. Populate header
 #: ../src/mnb-people-panel.c:676
 #: ../src/mnb-people-panel.c:930
 msgid "People"
-msgstr "Gente"
+msgstr "Pessoas"
 
 #: ../src/mnb-people-panel.c:689
 msgid "Search"
@@ -69,7 +70,7 @@ msgstr "Você está batendo papo com:"
 
 #: ../src/mnb-people-panel.c:947
 msgid "Me and my people"
-msgstr "Eu e minha gente"
+msgstr "Eu e meus amigos"
 
 #: ../src/mnb-people-panel.c:985
 msgid "Me"
@@ -82,7 +83,7 @@ msgstr "Minhas conversas"
 
 #: ../data/moblin-panel-people.desktop.in.in.h:1
 msgid "People panel"
-msgstr "Painel de gente"
+msgstr "Painel de pessoas"
 
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "pessoas - %d pessoas estão falando com você"
