@@ -1,10 +1,13 @@
+# GLSPTB_Gabor <bechtg@gmail.com>, 2010.
+# Djavan Fagundes <djavan@syst.com.br>, 2010.
+
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-23 09:22+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
+"Last-Translator: Djavan Fagundes <djavan@syst.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,8 +38,8 @@ msgstr "Desabilitado"
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] "Saída %u"
-msgstr[1] "Saídas %u"
+msgstr[0] "%u saída"
+msgstr[1] "%u saídas"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -44,8 +47,8 @@ msgstr[1] "Saídas %u"
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] "Entrada %u"
-msgstr[1] "Entradas %u"
+msgstr[0] "%u entrada"
+msgstr[1] "%u entradas"
 
 #: ../gvc/gvc-mixer-control.c:1316
 msgid "System Sounds"
@@ -53,7 +56,7 @@ msgstr "Sons de sistema"
 
 #: ../power-icon/src/moblin-power-icon.c:46
 msgid "MeeGo Power Icon"
-msgstr "Ícone de energia MeeGo"
+msgstr "Ícone de energia do MeeGo"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
@@ -77,7 +80,7 @@ msgstr "Perigo!"
 
 #: ../power-icon/src/mpd-power-icon.c:86
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Sinto muito, seu computador está com bateria quase esgotada. Teremos que desligar agora. Favor salvar o seu trabalho e até logo."
+msgstr "Sinto muito, seu computador está com bateria quase esgotada. Teremos que desligar agora. Por favor, salve o seu trabalho e até logo."
 
 #: ../power-icon/src/mpd-power-icon.c:439
 msgid "battery"
@@ -87,8 +90,8 @@ msgstr "bateria"
 #, c-format
 msgid "If you don't decide, I'll turn off in %d second"
 msgid_plural "If you don't decide, I'll turn off in %d seconds"
-msgstr[0] "Se não puder decidir, vou desligar dentro de %d segundos"
-msgstr[1] "Se não puderem decidir, vou desligar dentro de %d segundos"
+msgstr[0] "Se você não decidir, vou desligar dentro de %d segundos"
+msgstr[1] "Se você não decidir, vou desligar dentro de %d segundos"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
@@ -96,11 +99,11 @@ msgstr "Desligar"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:184
 msgid "Would you like to turn off now?"
-msgstr "Quer desligar agora?"
+msgstr "Deseja desligar agora?"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:185
 msgid "If you don't decide, I'll turn off in 30 seconds."
-msgstr "Se não puder decidir, vou desligar dentro de 30 segundos."
+msgstr "Se você não decidir, vou desligar dentro de 30 segundos."
 
 #: ../src/moblin-panel-devices.c:121
 msgid "MeeGo Devices Panel"
@@ -114,17 +117,17 @@ msgstr "Sinto muito, parece que você não tem bateria instalada."
 #: ../src/mpd-battery-device.c:375
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr "Sua bateria está carregando. Está mais ou menos %d%% cheio."
+msgstr "Sua bateria está carregando. Está aproximadamente %d%% carregada."
 
 #: ../src/mpd-battery-device.c:380
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr "Sua bateria está sendo usado. Está mais ou menos %d%% cheio."
+msgstr "Sua bateria está sendo usada. Está aproximadamente %d%% carregada."
 
 #: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "Sua bateria está completamente carregado e pronto para usar."
+msgstr "Sua bateria está completamente carregada e pronta para ser usada."
 
 #: ../src/mpd-battery-device.c:389
 #, c-format
@@ -158,11 +161,11 @@ msgstr "Outros dispositivos"
 
 #: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
-msgstr "Ejeção falhou, parece que um aplicativo está a usando"
+msgstr "Ejetar falhou, parece que um aplicativo ainda está o usando"
 
 #: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
-msgstr "Pode desplugar este dipositivo agora com segurança"
+msgstr "Pode desplugar este dipositivo com segurança"
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
@@ -180,7 +183,7 @@ msgstr "Dispositivos"
 #: ../src/mpd-storage-device-tile.c:242
 #, c-format
 msgid "Could not run \"%s\""
-msgstr "Não pôde executar \"%s\""
+msgstr "Não foi possível executar \"%s\""
 
 #: ../src/mpd-storage-device-tile.c:244
 msgid "Import error"
