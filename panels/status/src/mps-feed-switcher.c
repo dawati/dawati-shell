@@ -25,6 +25,8 @@
 #include "mps-feed-switcher.h"
 #include "mps-feed-pane.h"
 
+#include "mps-module.h"
+
 G_DEFINE_TYPE (MpsFeedSwitcher, mps_feed_switcher, MX_TYPE_TABLE)
 
 #define GET_PRIVATE(o) \
@@ -38,6 +40,7 @@ struct _MpsFeedSwitcherPrivate {
   GHashTable *services;
   GHashTable *service_to_panes;
   GHashTable *service_to_buttons;
+  GHashTable *pane_types;
 
   ClutterActor *button_box;
   ClutterActor *placeholder_frame;
@@ -47,6 +50,10 @@ struct _MpsFeedSwitcherPrivate {
 
   MxButtonGroup *button_group;
 };
+
+
+typedef const gchar *(*MpsModuleGetNameFunc)(void);
+typedef const GType (*MpsModuleGetTypeFunc)(void);
 
 enum
 {
@@ -193,7 +200,12 @@ _service_get_static_caps_cb (SwClientService  *service,
   MpsFeedSwitcher *switcher = MPS_FEED_SWITCHER (userdata);
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
 
-  if (!_has_cap (caps, HAS_UPDATE_STATUS_IFACE))
+  /* Check if the service has the HAS_UPDATE_STATUS_IFACE or is in the service
+   * whitelist (from loadable modules)
+   */
+  if (!_has_cap (caps, HAS_UPDATE_STATUS_IFACE) &&
+      !g_hash_table_lookup (priv->pane_types,
+                             sw_client_service_get_name (service)))
   {
     g_hash_table_remove (priv->services,
                          sw_client_service_get_name (service));
@@ -341,6 +353,116 @@ _new_service_button_clicked_cb (MxButton        *button,
 }
 
 static void
+load_module (MpsFeedSwitcher *switcher,
+             const char      *file)
+{
+  MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
+  GModule *service_module;
+  const gchar *service_name;
+  GType service_type;
+  gpointer sym;
+  gchar *path;
+  GError *error = NULL;
+
+  service_module = g_module_open (file, G_MODULE_BIND_LOCAL);
+  if (service_module == NULL) {
+    g_critical (G_STRLOC ": error opening module: %s",
+                g_module_error());
+    g_module_close (service_module);
+    return;
+  }
+
+  if (!g_module_symbol (service_module, "mps_module_get_name", &sym)) {
+    g_critical ("Cannot get symbol mps_module_get_name: %s",
+                g_module_error());
+    g_module_close (service_module);
+    return;
+  } else {
+    service_name = (*(MpsModuleGetNameFunc)sym)();
+  }
+
+  /* Module already loaded */
+  if (g_hash_table_lookup (priv->pane_types, service_name))
+  {
+    g_debug ("Module %s already loaded.", service_name);
+    g_module_close (service_module);
+    return;
+  }
+
+  if (!g_module_symbol (service_module, "mps_module_get_type", &sym)) {
+    g_critical ("Cannot get symbol mps_module_get_type: %s",
+                g_module_error());
+    g_module_close (service_module);
+    return;
+  } else {
+    service_type = (*(MpsModuleGetTypeFunc)sym)();
+  }
+
+  if (service_name && service_type) {
+    g_module_make_resident (service_module);
+
+    /* Add to the service name -> type hash */
+    g_hash_table_insert (priv->pane_types,
+                         g_strdup (service_name),
+                         GINT_TO_POINTER (service_type));
+
+    g_message (G_STRLOC ": Imported module: %s", service_name);
+  }
+}
+
+static void
+load_modules_from_dir (MpsFeedSwitcher *switcher)
+{
+  GFile *services_dir_file;
+  GFileEnumerator *enumerator;
+  GError *error = NULL;
+  GFileInfo *fi;
+
+  services_dir_file = g_file_new_for_path (SERVICES_MODULES_DIR);
+
+  enumerator = g_file_enumerate_children (services_dir_file,
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                          G_FILE_QUERY_INFO_NONE,
+                                          NULL,
+                                          &error);
+  g_object_unref (services_dir_file);
+
+  if (!enumerator)
+  {
+    g_critical (G_STRLOC ": error whilst enumerating directory children: %s",
+                error->message);
+    g_clear_error (&error);
+    return;
+  }
+
+  while ((fi = g_file_enumerator_next_file (enumerator, NULL, &error)) != NULL)
+  {
+    if (g_str_has_suffix (g_file_info_get_name (fi), ".so"))
+    {
+      char *module_path;
+
+
+      module_path = g_build_filename (SERVICES_MODULES_DIR,
+                                      g_file_info_get_name (fi),
+                                      NULL);
+      load_module (switcher, module_path);
+      g_free (module_path);
+    }
+
+    g_object_unref (fi);
+  }
+
+  if (error)
+  {
+    g_critical (G_STRLOC ": error whilst enumerating directory children: %s",
+                error->message);
+    g_clear_error (&error);
+  }
+
+  g_object_unref (enumerator);
+}
+
+static void
 mps_feed_switcher_init (MpsFeedSwitcher *self)
 {
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (self);
@@ -426,12 +548,19 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
                                                     g_free,
                                                     NULL);
 
+  priv->pane_types = g_hash_table_new_full (g_str_hash,
+                                            g_str_equal,
+                                            g_free,
+                                            NULL);
+
   priv->button_group = mx_button_group_new ();
 
   g_signal_connect (priv->button_group,
                     "notify::active-button",
                     (GCallback)_button_group_active_button_changed_cb,
                     self);
+
+  load_modules_from_dir (self);
 }
 
 ClutterActor *
@@ -450,7 +579,7 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
   const gchar *service_name;
   ClutterActor *pane, *button;
-
+  GType pane_type;
   service_name = sw_client_service_get_name (service);
 
   g_debug (G_STRLOC ": Asked to ensure service %s", service_name);
@@ -461,8 +590,20 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
 
   if (!pane)
   {
-    pane = mps_feed_pane_new (priv->client,
-                              service);
+    /* Check if this pane is to be provided from a custom pane type */
+    pane_type = (GType)g_hash_table_lookup (priv->pane_types,
+                                            service_name);
+
+    if (pane_type)
+    {
+      pane = g_object_new (pane_type,
+                           "service", service,
+                           "client", priv->client,
+                           NULL);
+    } else {
+      pane = mps_feed_pane_new (priv->client,
+                                service);
+    }
     clutter_actor_set_reactive (pane, TRUE);
 
     g_hash_table_insert (priv->service_to_panes,
