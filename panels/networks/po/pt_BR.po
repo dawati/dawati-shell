@@ -1,5 +1,6 @@
-# GLSPTB_Gabor <gaborx.k.becht@intel.com>, 2009.
+# GLSPTB_Gabor <gaborx.k.becht@intel.com>, 2009, 2010.
 # Og Maciel <ogmaciel@gnome.org>, 2009.
+# Djavan Fagundes <djavan@syst.com.br>, 2010.
 # 
 msgid ""
 msgstr ""
@@ -7,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:59+0000\n"
 "PO-Revision-Date: 2010-05-12 09:14-0800\n"
-"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
+"Last-Translator: Djavan Fagundes <djavan@syst.com.br>\n"
 "Language-Team: Brazilian Portuguese <l10n@moblin.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +65,7 @@ msgstr "Bluetooth"
 #. 
 #: ../carrick/carrick-list.c:866
 msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Sinto muito, mas não encontramos nenhuma rede. Parece que o gerente de conexão não está rodando. Talvez seja melhor reiniciar o seu computador."
+msgstr "Sinto muito, mas não encontramos nenhuma rede. Parece que o gerenciador de conexão não está rodando. Talvez seja melhor reiniciar o seu computador."
 
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
@@ -131,17 +132,17 @@ msgstr "A rede mudou"
 #: ../carrick/carrick-notification-manager.c:239
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Sinto muito, mas sua conexão a %s caiu. Portanto nós conectamos você a uma rede com fio"
+msgstr "Sinto muito, mas sua conexão %s caiu. Portanto nós conectamos você a uma rede com fio"
 
 #: ../carrick/carrick-notification-manager.c:246
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "Sinto muito, mas sua conexão a %s caiu. Portanto nós conectamos você a %s, uma rede %s"
+msgstr "Sinto muito, mas sua conexão %s caiu. Portanto nós conectamos você a %s, uma rede %s"
 
 #: ../carrick/carrick-notification-manager.c:254
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "Sinto muito, mas sua conexão a %s caiu. Portanto nós conectamos você a uma rede %s"
+msgstr "Sinto muito, mas sua conexão %s caiu. Portanto nós conectamos você a uma rede %s"
 
 #: ../carrick/carrick-notification-manager.c:264
 #, c-format
@@ -169,7 +170,7 @@ msgid ""
 "password and security type."
 msgstr ""
 "Digite o nome da rede que você deseja\n"
-"conectar e, onde necessário, a senha e\n"
+"conectar e, onde for necessário, a senha e\n"
 "tipo de segurança."
 
 #: ../carrick/carrick-pane.c:682
@@ -202,7 +203,7 @@ msgstr "Com fio"
 
 #: ../carrick/carrick-pane.c:1510
 msgid "Offline mode"
-msgstr "Modo offline"
+msgstr "Modo desconectado"
 
 #: ../carrick/carrick-pane.c:1520
 msgid "This will disable all your connections"
@@ -227,7 +228,7 @@ msgstr "Erro crítico: código de país inválido"
 
 #: ../carrick/carrick-service-item.c:52
 msgid "Missing required APN (service plan name)"
-msgstr "Falta o APN (nome do plano de serviço) exigido "
+msgstr "Falta o APN (nome do plano de serviço) exigido"
 
 #: ../carrick/carrick-service-item.c:53
 msgid "Internal Error: Invalid network service"
@@ -235,7 +236,7 @@ msgstr "Erro interno: serviço de rede inválido"
 
 #: ../carrick/carrick-service-item.c:54
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Erro crítico: não foi possível acessar o Gerente de conexões"
+msgstr "Erro crítico: não foi possível acessar o Gerenciador de conexões"
 
 #: ../carrick/carrick-service-item.c:55
 msgid "ERROR: No 3G Hardware detected"
@@ -308,7 +309,7 @@ msgid ""
 "automatically connected to %s."
 msgstr ""
 "Você deseja remover a rede %s %s? Isso\n"
-"esquecerá a senha e você não estará mais\n"
+"irá esquecer a senha e você não será mais\n"
 "conectado automaticamente a %s."
 
 #: ../carrick/carrick-service-item.c:786
@@ -324,7 +325,7 @@ msgstr "Sua senha é muito curta. Para uma conexão WPA ela precisa ter no míni
 #: ../carrick/carrick-service-item.c:801
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Sua senha é muito comprida. Para uma conexão WPA ela precisa ter menos que 63 caracteres, e a sua tem %i"
+msgstr "Sua senha é muito longa. Para uma conexão WPA ela precisa ter menos que 63 caracteres, e a sua tem %i"
 
 #: ../carrick/carrick-service-item.c:810
 #, c-format
@@ -334,7 +335,7 @@ msgstr "Sua senha é muito curta. Para uma conexão WPA2 ela precisa ter no mín
 #: ../carrick/carrick-service-item.c:814
 #, c-format
 msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Sua senha é muito comprida. Para uma conexão WPA2 ela precisa ter menos que 63 caracteres, e a sua tem %i"
+msgstr "Sua senha é muito longa. Para uma conexão WPA2 ela precisa ter menos que 63 caracteres, e a sua tem %i"
 
 #: ../carrick/carrick-service-item.c:1267
 msgid "Sorry, it looks like the IP address is not valid"
@@ -346,7 +347,7 @@ msgstr "Sinto muito, parece que o endereço de gateway não é válido"
 
 #: ../carrick/carrick-service-item.c:1291
 msgid "Sorry, it looks like the subnet mask is not valid"
-msgstr "Sinto muito, parece que a máscara subnet não é válido"
+msgstr "Sinto muito, parece que a máscara subnet não é válida"
 
 #: ../carrick/carrick-service-item.c:1336
 #, c-format
@@ -463,7 +464,7 @@ msgstr "Miniaplicativo de conectividade Carrick"
 
 #: ../src/carrick.c:311
 msgid "- MeeGo connectivity applet"
-msgstr "- Miniaplicativo de conectividade do Meego"
+msgstr "- Miniaplicativo de conectividade do MeeGo"
 
 #: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
 msgid "network"
@@ -478,7 +479,7 @@ msgstr "Assistente de conexão de dados de celular"
 
 #: ../callouts/3g/ggg-country-dialog.c:93
 msgid "Select Country"
-msgstr "Selecione país"
+msgstr "Selecionar país"
 
 #: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
