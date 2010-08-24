@@ -29,7 +29,7 @@ msgstr "Myzone"
 
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Modificar o que aparece na sua Myzone</b>"
+msgstr "<b>Modificar o que aparece em Myzone</b>"
 
 #: ../data/capplet.ui.h:2
 msgid "<b>Myzone Wallpaper</b>"
@@ -41,7 +41,7 @@ msgstr "Calendário e tarefas:"
 
 #: ../data/capplet.ui.h:4
 msgid "Change My Web Accounts"
-msgstr "Modificar contas My Web"
+msgstr "Modificar minhas contas da web"
 
 #: ../data/capplet.ui.h:5
 msgid "Choose your wallpaper"
@@ -57,7 +57,7 @@ msgstr "Alertas de email:"
 
 #: ../data/capplet.ui.h:8
 msgid "Reset to default"
-msgstr "Redfinir para padrão"
+msgstr "Redefinir para padrão"
 
 #: ../capplet/gconf-bridge.c:1232
 #, c-format
@@ -137,7 +137,7 @@ msgstr "Prazo %x"
 
 #: ../penge/penge-welcome-tile.c:28
 msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Se você configurou suas contas da web e usou alguns do arquivos, eles irão aparecer aqui no myzone para acesso fácil quando você quiser."
+msgstr "Se você configurou suas contas da web e usou alguns arquivos, eles irão aparecer aqui no myzone para acesso fácil quando você quiser."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
