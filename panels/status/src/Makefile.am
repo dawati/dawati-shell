@@ -34,7 +34,8 @@ libmeego_panel_status_la_HEADERS = \
 	mps-feed-pane.h \
 	mps-feed-switcher.h \
 	mps-geotag-pane.h \
-	sw-online.h
+	sw-online.h \
+	mps-module.h
 
 libmeego_panel_status_la_SOURCES = \
 	penge-magic-texture.c \
