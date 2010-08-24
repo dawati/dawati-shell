@@ -34,6 +34,7 @@
 #include <gio/gdesktopappinfo.h>
 #include <clutter/x11/clutter-x11.h>
 
+#include "mpl-app-launches-store.h"
 #include "mpl-panel-client.h"
 #include "mpl-panel-common.h"
 #include "marshal.h"
@@ -1238,6 +1239,19 @@ mpl_panel_client_launch_application_from_info (GAppInfo *app, GList *files)
 #endif
                      );
         }
+    }
+  else
+    {
+      /* Track app launch */
+      MplAppLaunchesStore *store = mpl_app_launches_store_new ();
+      char const *executable = g_app_info_get_executable (app);
+      mpl_app_launches_store_add_async (store, executable, timestamp, &error);
+      if (error)
+      {
+        g_warning ("%s : %s", G_STRLOC, error->message);
+        g_clear_error (&error);
+      }
+      g_object_unref (store);
     }
 
   g_object_unref (ctx);
