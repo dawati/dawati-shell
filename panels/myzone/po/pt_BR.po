@@ -1,6 +1,6 @@
 # GLSPTB_Gabor <gaborx.k.becht@intel.com>, 2009.
 # Og Maciel <ogmaciel@gnome.org>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -22,8 +22,7 @@ msgstr "Painel Myzone"
 msgid "Change the Myzone background and content"
 msgstr "Modifique o fundo e conteúdo do Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -96,8 +95,7 @@ msgstr "Você quer limpar seus documentos recentes? Isto removerá o conteúdo l
 msgid "Appointments"
 msgstr "Compromissos"
 
-#: ../penge/penge-calendar-pane.c:496
-#: ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Aberto"
 
@@ -109,8 +107,7 @@ msgstr "Tarefas"
 msgid "Create an appointment"
 msgstr "Criar um compromisso"
 
-#: ../penge/penge-events-pane.c:72
-#: ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Adicionar"
 
@@ -145,7 +142,7 @@ msgstr "Reproduzir vídeo de introdução"
 
 #: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
-msgstr "Bem-vindo a MeeGo"
+msgstr "Bem-vindo ao MeeGo"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -159,28 +156,17 @@ msgstr "Mensagem não lida"
 msgid "Unread messages"
 msgstr "Mensagens não lidas"
 
-#~ msgid ""
-#~ "This is the Myzone, where your recently used files and content from your "
-#~ "web feeds will appear."
-#~ msgstr ""
-#~ "Este é Myzone, onde seus arquivos recentemente usados e conteúdo de sua "
-#~ "web feed vai aparecer."
-#~ msgid ""
-#~ "Things that your friends do online will appear here. Activate your "
-#~ "accounts now!"
-#~ msgstr ""
-#~ "As coisas que o seus amigos fazem online aparecerão aqui. Ative suas "
-#~ "contas agora!"
+#~ msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+#~ msgstr "Este é Myzone, onde seus arquivos recentemente usados e conteúdo de sua web feed vai aparecer."
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "As coisas que o seus amigos fazem online aparecerão aqui. Ative suas contas agora!"
+
 #~ msgid "Myzone settings"
 #~ msgstr "Configurações Myzone"
-#~ msgid ""
-#~ "As Meego is a bit different to other computers, we've put together a "
-#~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Meego Team."
-#~ msgstr ""
-#~ "Como o Meego é um pouco diferente de outros computadores, nós juntamos "
-#~ "algumas dicas e itens para ajudá-lo a navegar pelo sistema. Esperamos que "
-#~ "se divirta, a Equipe Meego."
+
+#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgstr "Como o Meego é um pouco diferente de outros computadores, nós juntamos algumas dicas e itens para ajudá-lo a navegar pelo sistema. Esperamos que se divirta, a Equipe Meego."
+
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>Bem-vindo ao Meego 2.1 para Netbooks</b>"
-
