@@ -47,7 +47,8 @@ libmeego_panel_status_la_SOURCES = \
 	mps-geotag-pane.c \
 	sw-online.c \
 	$(libmeego_panel_status_la_HEADERS)
-libmeego_panel_status_la_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
+libmeego_panel_status_la_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS) \
+				    -DSERVICES_MODULES_DIR=\"$(servicesdir)\"
 libmeego_panel_status_la_LIBADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS)
 
 
