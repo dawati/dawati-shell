@@ -48,6 +48,11 @@ MnbLauncherButton > *#mnb-launcher-button-title {
   font-size: 14px;
 }
 
+MnbLauncherButton > *#mnb-launcher-button-launched {
+  color: #7e7e7e;
+  font-size: 11px;
+}
+
 MnbLauncherButton > *#mnb-launcher-button-description {
   color: #7e7e7e;
   font-size: 14px;

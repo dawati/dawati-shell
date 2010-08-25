@@ -237,7 +237,7 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
   MxPadding          padding;
-  ClutterActorBox    icon_box, title_box, launched_box, pin_box;
+  ClutterActorBox    icon_box, title_box = { 0, }, launched_box = { 0, }, pin_box;
   gfloat             title_height;
   gfloat             title_width;
   gfloat             launched_height;
@@ -258,25 +258,31 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &icon_box, flags);
 
   /* launched */
-  launched_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
-  clutter_actor_get_preferred_height (CLUTTER_ACTOR (self->priv->launched),
-                                      launched_width,
-                                      NULL,
-                                      &launched_height);
-  launched_box.x1 = (int) (icon_box.x2 + COL_SPACING);
-  launched_box.x2 = (int) (launched_box.x1 + launched_width);
-  launched_box.y1 = (int) (box->y2 - box->y1 - launched_height - padding.bottom);
-  launched_box.y2 = (int) (launched_box.y1 + launched_height);
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->launched), &launched_box, flags);
+  if (self->priv->launched)
+    {
+      launched_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
+      clutter_actor_get_preferred_height (CLUTTER_ACTOR (self->priv->launched),
+                                          launched_width,
+                                          NULL,
+                                          &launched_height);
+      launched_box.x1 = (int) (icon_box.x2 + COL_SPACING);
+      launched_box.x2 = (int) (launched_box.x1 + launched_width);
+      launched_box.y1 = (int) (box->y2 - box->y1 - launched_height - padding.bottom);
+      launched_box.y2 = (int) (launched_box.y1 + launched_height);
+      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->launched), &launched_box, flags);
+    }
 
   /* title */
-  title_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
-  title_height = launched_box.y1 - ROW_SPACING - padding.top;
-  title_box.x1 = (int) (icon_box.x2 + COL_SPACING);
-  title_box.x2 = (int) (title_box.x1 + title_width);
-  title_box.y1 = (int) (padding.top);
-  title_box.y2 = (int) (title_box.y1 + title_height);
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &title_box, flags);
+  if (self->priv->title)
+    {
+      title_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
+      title_height = launched_box.y1 - ROW_SPACING - padding.top;
+      title_box.x1 = (int) (icon_box.x2 + COL_SPACING);
+      title_box.x2 = (int) (title_box.x1 + title_width);
+      title_box.y1 = (int) (padding.top);
+      title_box.y2 = (int) (title_box.y1 + title_height);
+      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &title_box, flags);
+    }
 
   /* Pin location hardcoded, designers want this to fit perfectly. */
   pin_box.x1 = (int) (box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET);
@@ -284,6 +290,14 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
   pin_box.y1 = (int) (FAV_TOGGLE_Y_OFFSET);
   pin_box.y2 = (int) (pin_box.y1 + FAV_TOGGLE_SIZE);
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->fav_toggle), &pin_box, flags);
+}
+
+static void
+mnb_launcher_button_paint (ClutterActor *actor)
+{
+  CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)->paint (actor);
+
+  clutter_actor_paint ((ClutterActor *) ((MnbLauncherButton *) actor)->priv->fav_toggle);
 }
 
 static void
@@ -317,7 +331,9 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
   actor_class->button_press_event = mnb_launcher_button_button_press_event;
   actor_class->button_release_event = mnb_launcher_button_button_release_event;
   actor_class->allocate = mnb_launcher_button_allocate;
+  actor_class->allocate = mnb_launcher_button_allocate;
   actor_class->pick = mnb_launcher_button_pick;
+  actor_class->paint = mnb_launcher_button_paint;
 
   _signals[HOVERED] = g_signal_new ("hovered",
                                     G_TYPE_FROM_CLASS (klass),
@@ -394,7 +410,9 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (label), PANGO_WRAP_WORD_CHAR);
 
   /* last launched */
-  self->priv->launched = (MxLabel *) mx_label_new_with_text ("Launched: ");
+  self->priv->launched = (MxLabel *) mx_label_new ();
+  clutter_actor_set_name (CLUTTER_ACTOR (self->priv->launched),
+                          "mnb-launcher-button-launched");
   mx_table_add_actor (MX_TABLE (self),
                       CLUTTER_ACTOR (self->priv->launched),
                       1, 1);
@@ -472,9 +490,9 @@ mnb_launcher_button_create_favorite (MnbLauncherButton *self)
                                    self->priv->executable,
                                    self->priv->desktop_file_path);
 
-  clutter_actor_set_size (CLUTTER_ACTOR (fav_sibling),
-                          clutter_actor_get_width (CLUTTER_ACTOR (self)),
-                          clutter_actor_get_height (CLUTTER_ACTOR (self)));
+  mnb_launcher_button_make_favorite (fav_sibling,
+                                     clutter_actor_get_height (CLUTTER_ACTOR (self)),
+                                     clutter_actor_get_height (CLUTTER_ACTOR (self)));
 
   mnb_launcher_button_set_favorite (fav_sibling, TRUE);
 
@@ -494,7 +512,10 @@ mnb_launcher_button_get_title (MnbLauncherButton *self)
 {
   g_return_val_if_fail (self, NULL);
 
-  return mx_label_get_text (self->priv->title);
+  if (self->priv->title)
+    return mx_label_get_text (self->priv->title);
+  else
+    return NULL;
 }
 
 const char *
@@ -622,11 +643,6 @@ mnb_launcher_button_set_last_launched (MnbLauncherButton  *self,
   if (0 != g_strcmp0 (text, mx_label_get_text (self->priv->launched)))
     {
       mx_label_set_text (self->priv->launched, text);
-      if (self->priv->fav_sibling)
-        {
-          mnb_launcher_button_set_last_launched (self->priv->fav_sibling,
-                                                 last_launched);
-        }
     }
 
   g_free (text);
@@ -708,5 +724,18 @@ mnb_launcher_button_sync_if_favorite (MnbLauncherButton *self,
       self->priv->plain_sibling = plain_sibling;
       plain_sibling->priv->fav_sibling = self;
     }
+}
+
+void
+mnb_launcher_button_make_favorite (MnbLauncherButton *self,
+                                   gfloat             width,
+                                   gfloat             height)
+{
+  clutter_actor_destroy ((ClutterActor *) self->priv->title);
+  self->priv->title = NULL;
+  clutter_actor_destroy ((ClutterActor *) self->priv->launched);
+  self->priv->launched = NULL;
+
+  clutter_actor_set_size (CLUTTER_ACTOR (self), width, height);
 }
 

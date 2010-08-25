@@ -2,4 +2,5 @@
 src/mnb-filter.c
 src/meego-netbook-launcher.c
 src/meego-panel-applications.c
+src/mnb-launcher-button.c
 data/meego-panel-applications.desktop.in.in

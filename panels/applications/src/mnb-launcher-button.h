@@ -97,6 +97,10 @@ gboolean      mnb_launcher_button_match           (MnbLauncherButton *self,
 void          mnb_launcher_button_sync_if_favorite  (MnbLauncherButton *self,
                                                      MnbLauncherButton *other);
 
+void          mnb_launcher_button_make_favorite (MnbLauncherButton *self,
+                                                 gfloat             width,
+                                                 gfloat             height);
+
 G_END_DECLS
 
 #endif /* __MNB_LAUNCHER_BUTTON_H__ */

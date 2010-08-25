@@ -719,6 +719,12 @@ mnb_launcher_fill (MnbLauncher  *self)
           if (entry)
             {
               button = launcher_button_create_from_entry (entry, NULL, priv->theme);
+              if (button)
+                {
+                  mnb_launcher_button_make_favorite (MNB_LAUNCHER_BUTTON (button),
+                                                     LAUNCHER_BUTTON_HEIGHT,
+                                                     LAUNCHER_BUTTON_HEIGHT);
+                }
               g_object_unref (entry);
             }
 
@@ -1122,9 +1128,9 @@ _constructor (GType                  gtype,
 
   priv->fav_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
   mx_stylable_set_style_class (MX_STYLABLE (priv->fav_grid), "fav-grid");
-  mx_grid_set_column_spacing (MX_GRID (priv->fav_grid), APPS_GRID_COLUMN_GAP);
+//  mx_grid_set_column_spacing (MX_GRID (priv->fav_grid), APPS_GRID_COLUMN_GAP);
   mx_grid_set_row_spacing (MX_GRID (priv->fav_grid), APPS_GRID_ROW_GAP);
-  mx_grid_set_max_stride (MX_GRID (priv->fav_grid), 1);
+//  mx_grid_set_max_stride (MX_GRID (priv->fav_grid), 4);
   clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll), priv->fav_grid);
 
   /*
