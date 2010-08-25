@@ -18,3 +18,5 @@ src/notifications/ntf-source.c
 src/notifications/ntf-overlay.c
 src/notifications/ntf-libnotify.c
 src/notifications/ntf-wm.c
+# TODO libmeego-panel needs it's own translations
+libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c
