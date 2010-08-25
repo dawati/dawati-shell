@@ -1,11 +1,12 @@
-# 
+# GLSPTB_Gabor <bechtg@gmail.com>, 2010.
+# Djavan Fagundes <djavan@syst.com.br>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
+"Last-Translator: Djavan Fagundes <djavan@syst.com.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,7 +17,7 @@ msgstr ""
 
 #: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Olá! Este é o painel de status. Se você tem uma conta configurada na web (como Twitter) você poderá ver seus feeds e atualizar seu status aqui."
+msgstr "Olá! Este é o painel de status. Se você tiver uma conta na web configurada (como o Twitter) você poderá ver as atualizações e atualizar seu status por aqui."
 
 #: ../src/meego-panel-status.c:100
 msgid "Status"
@@ -38,35 +39,35 @@ msgstr "Impossível atualizar o status. O serviço pode estar indisponível ou s
 
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
-msgstr "Impossível atualizar o status: Você não está online."
+msgstr "Impossível atualizar o status: Você não está conectado."
 
 #: ../src/mps-feed-pane.c:444
 msgid "We were unable to guess your location"
-msgstr "Não nos foi possível adivinhar o seu local"
+msgstr "Não nos foi possível adivinhar a sua localização"
 
 #: ../src/mps-feed-pane.c:452
 #, c-format
 msgid "We guessed your location as: %s (%f, %f)"
-msgstr "Nós supomos que seu local seja: %s (%f, %f)"
+msgstr "Nós supomos que sua localização seja: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Seu local está sendo compartilhado como: %s (%f, %f)"
+msgstr "Sua localização está sendo compartilhada como: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
-msgstr "Nós supomos que seu local seja: %f %f"
+msgstr "Nós supomos que sua localização seja: %f %f"
 
 #: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
-msgstr "Seu local está sendo compartilhado como: %f %f"
+msgstr "Sua localização está sendo compartilhada como: %f %f"
 
 #: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
-msgstr "Seu local não está sendo compartilhado"
+msgstr "Sua localização não está sendo compartilhada"
 
 #. Actor creation
 #: ../src/mps-feed-pane.c:585
@@ -87,11 +88,11 @@ msgstr "Adicionar novo serviço web"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Parece que você não tem serviços web configurados ou existe um problema com suas configurações. Use o botão acima para abrir Minhas Contas Web e configure uma."
+msgstr "Parece que você não tem serviços web configurados ou existe um problema com suas configurações. Use o botão acima para abrir Minhas contas da web e configure uma."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
-msgstr "Seu local"
+msgstr "Sua localização"
 
 #: ../src/mps-geotag-pane.c:568
 msgid "Search"
@@ -107,11 +108,11 @@ msgstr "Me localize"
 
 #: ../src/mps-geotag-pane.c:582
 msgid "Use location"
-msgstr "Use o local"
+msgstr "Usar localização"
 
 #: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
-msgstr "Não use o local"
+msgstr "Não usar localização"
 
 #. When the tweet has a location associated with it then this string will
 #. * be <human readable time> from <human readable place name>
