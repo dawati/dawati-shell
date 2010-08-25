@@ -363,6 +363,7 @@ mpl_app_launches_store_open (MplAppLaunchesStore  *self,
   priv->size = 0;
   priv->for_writing = for_writing;
 
+  /* Empty (non existant) store is fine. */
   if (!g_file_test (priv->database_file, G_FILE_TEST_IS_REGULAR))
   {
     return true;
@@ -450,6 +451,8 @@ mpl_app_launches_store_close (MplAppLaunchesStore  *self,
 
   if (priv->data && priv->size)
   {
+    /* Store is not empty/non-exist, close it. */
+
     if (-1 == munmap ((void *) priv->data, priv->size))
     {
       error = g_error_new (MPL_APP_LAUNCHES_STORE_ERROR,
@@ -457,24 +460,24 @@ mpl_app_launches_store_close (MplAppLaunchesStore  *self,
                            "%s : %s",
                            G_STRLOC, strerror (errno));
     }
+
+    if (-1 == flock (priv->fd, LOCK_UN))
+    {
+      g_warning ("%s : %s", G_STRLOC, strerror (errno));
+    }
+
+    if (-1 == close (priv->fd))
+    {
+      g_warning ("%s : %s", G_STRLOC, strerror (errno));
+    }
+
+    priv->fd = 0;
+    priv->data = NULL;
+    priv->size = 0;
+    priv->mmap_reference_count = 0;
+
+    PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
   }
-
-  if (-1 == flock (priv->fd, LOCK_UN))
-  {
-    g_warning ("%s : %s", G_STRLOC, strerror (errno));
-  }
-
-  if (-1 == close (priv->fd))
-  {
-    g_warning ("%s : %s", G_STRLOC, strerror (errno));
-  }
-
-  priv->fd = 0;
-  priv->data = NULL;
-  priv->size = 0;
-  priv->mmap_reference_count = 0;
-
-  PROPAGATE_ERROR_AND_RETURN_IF_FAIL (!error, error, error_out);
 
   return true;
 }
