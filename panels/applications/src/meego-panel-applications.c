@@ -28,6 +28,7 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
+#include <meego-panel/mpl-app-launch-context.h>
 #include <meego-panel/mpl-panel-clutter.h>
 #include <meego-panel/mpl-panel-common.h>
 #include "meego-netbook-launcher.h"
@@ -105,7 +106,10 @@ standalone_launcher_activated_cb (MnbLauncher    *launcher,
 
   app_info = g_desktop_app_info_new_from_filename (desktop_file);
 
-  g_app_info_launch (G_APP_INFO (app_info), NULL, NULL, &error);
+  g_app_info_launch (G_APP_INFO (app_info),
+                     NULL,
+                     mpl_app_launch_context_get_default (),
+                     &error);
   if (error) {
     g_warning ("%s : %s", G_STRLOC, error->message);
     g_clear_error (&error);
