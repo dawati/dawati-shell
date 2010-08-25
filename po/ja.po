@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-07 09:18+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -27,7 +27,7 @@ msgstr "ツールバーの保存"
 
 #: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr "パネルを追加する前に、パネルを 1 つ外してください。"
+msgstr "パネルを 1 つ追加するには、パネルを 1 つ削除する必要があります。"
 
 #: ../capplet/src/mtp-bin.c:369
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
@@ -94,7 +94,7 @@ msgstr "システムトレイは、一部の旧式のアプリケーションが
 
 #: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
-msgstr "常にスモール・スクリーンモードを使う"
+msgstr "常にスモール スクリーン モードを使う"
 
 #: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
@@ -102,7 +102,7 @@ msgstr "ツールバー上のパネルの順番を決定します。"
 
 #: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-msgstr "ディスプレイ・サイズが大きなスクリーンモードを通常設定されていても、スモール・スクリーンモードを強制使用します。"
+msgstr "ディスプレイ サイズが大きなスクリーンモードを通常設定されていても、スモール スクリーン モードを強制使用します。"
 
 #: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
@@ -110,11 +110,11 @@ msgstr "ツールバー上のパネルの順番"
 
 #: ../src/meego-netbook.c:825
 msgid "Meego Netbook Effects"
-msgstr "MeeGo ネットブックのエフェクター"
+msgstr "Meego ネットブックのエフェクター"
 
 #: ../src/meego-netbook.c:829
 msgid "Effects for Meego Netbooks"
-msgstr "MeeGo ネットブックのエフェクター"
+msgstr "Meego ネットブックのエフェクター"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
