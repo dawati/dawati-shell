@@ -25,6 +25,7 @@
 #endif
 
 #include <string.h>
+#include <glib/gi18n.h>
 #include <clutter/clutter.h>
 #include <mx/mx.h>
 #include "mnb-launcher-button.h"
@@ -33,6 +34,7 @@
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER_BUTTON, MnbLauncherButtonPrivate))
 
 /* Distance between icon and text. */
+#define ROW_SPACING 5
 #define COL_SPACING 10
 #define FAV_TOGGLE_SIZE 24
 #define FAV_TOGGLE_X_OFFSET 7
@@ -51,6 +53,7 @@ struct _MnbLauncherButtonPrivate
 {
   ClutterActor  *icon;
   MxLabel       *title;
+  MxLabel       *launched;
   ClutterActor  *fav_toggle;
 
   char          *description;
@@ -234,9 +237,11 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
   MxPadding          padding;
-  ClutterActorBox    icon_box, title_box, pin_box;
+  ClutterActorBox    icon_box, title_box, launched_box, pin_box;
   gfloat             title_height;
   gfloat             title_width;
+  gfloat             launched_height;
+  gfloat             launched_width;
 
   CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)
     ->allocate (actor, box, flags);
@@ -252,14 +257,24 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
 
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &icon_box, flags);
 
-  title_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
-  clutter_actor_get_preferred_height (CLUTTER_ACTOR (self->priv->title),
-                                      title_width,
+  /* launched */
+  launched_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
+  clutter_actor_get_preferred_height (CLUTTER_ACTOR (self->priv->launched),
+                                      launched_width,
                                       NULL,
-                                      &title_height);
+                                      &launched_height);
+  launched_box.x1 = (int) (icon_box.x2 + COL_SPACING);
+  launched_box.x2 = (int) (launched_box.x1 + launched_width);
+  launched_box.y1 = (int) (box->y2 - box->y1 - launched_height - padding.bottom);
+  launched_box.y2 = (int) (launched_box.y1 + launched_height);
+  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->launched), &launched_box, flags);
+
+  /* title */
+  title_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
+  title_height = launched_box.y1 - ROW_SPACING - padding.top;
   title_box.x1 = (int) (icon_box.x2 + COL_SPACING);
   title_box.x2 = (int) (title_box.x1 + title_width);
-  title_box.y1 = (int) ((box->y2 - box->y1 - title_height) / 2);
+  title_box.y1 = (int) (padding.top);
   title_box.y2 = (int) (title_box.y1 + title_height);
   clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &title_box, flags);
 
@@ -376,6 +391,13 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_text_set_ellipsize (CLUTTER_TEXT (label), PANGO_ELLIPSIZE_END);
   clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_LEFT);
   clutter_text_set_line_wrap (CLUTTER_TEXT (label), TRUE);
+  clutter_text_set_line_wrap_mode (CLUTTER_TEXT (label), PANGO_WRAP_WORD_CHAR);
+
+  /* last launched */
+  self->priv->launched = (MxLabel *) mx_label_new_with_text ("Launched: ");
+  mx_table_add_actor (MX_TABLE (self),
+                      CLUTTER_ACTOR (self->priv->launched),
+                      1, 1);
 
   /* "fav app" toggle */
   self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (mx_button_new ()));
@@ -578,6 +600,36 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
                                           "row-span", 1,
                                           NULL);
   }
+}
+
+void
+mnb_launcher_button_set_last_launched (MnbLauncherButton  *self,
+                                       time_t              last_launched)
+{
+  GTimeVal   time = { 0, };
+  char      *text;
+
+  if (last_launched == 0)
+    {
+      text = g_strdup (_("Never launched"));
+    }
+  else
+    {
+      time.tv_sec = last_launched;
+      text = mx_utils_format_time (&time);
+    }
+
+  if (0 != g_strcmp0 (text, mx_label_get_text (self->priv->launched)))
+    {
+      mx_label_set_text (self->priv->launched, text);
+      if (self->priv->fav_sibling)
+        {
+          mnb_launcher_button_set_last_launched (self->priv->fav_sibling,
+                                                 last_launched);
+        }
+    }
+
+  g_free (text);
 }
 
 gint

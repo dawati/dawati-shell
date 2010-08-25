@@ -79,6 +79,8 @@ gboolean        mnb_launcher_get_show_expanders (MnbLauncher *self);
 void            mnb_launcher_set_show_expanders (MnbLauncher *self,
                                                  gboolean     show_expanders);
 
+void            mnb_launcher_update_last_launched (MnbLauncher *self);
+
 G_END_DECLS
 
 #endif

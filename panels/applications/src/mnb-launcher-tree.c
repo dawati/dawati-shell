@@ -145,15 +145,28 @@ mnb_launcher_monitor_free (MnbLauncherMonitor *self)
 static MnbLauncherApplication *
 mnb_launcher_application_create_from_gmenu_entry (GMenuTreeEntry *entry)
 {
-  MnbLauncherApplication *self;
+  MnbLauncherApplication *self = NULL;
+  int       argc;
+  char    **argv;
+  GError   *error = NULL;
 
   g_return_val_if_fail (entry, NULL);
 
-  self = mnb_launcher_application_new (gmenu_tree_entry_get_name (entry),
-                                       gmenu_tree_entry_get_icon (entry),
-                                       gmenu_tree_entry_get_comment (entry),
-                                       gmenu_tree_entry_get_exec (entry),
-                                       gmenu_tree_entry_get_desktop_file_path (entry));
+  if (!g_shell_parse_argv (gmenu_tree_entry_get_exec (entry), &argc, &argv, &error))
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    }
+  else if (argc > 0)
+    {
+      self = mnb_launcher_application_new (gmenu_tree_entry_get_name (entry),
+                                           gmenu_tree_entry_get_icon (entry),
+                                           gmenu_tree_entry_get_comment (entry),
+                                           argv[0],
+                                           gmenu_tree_entry_get_desktop_file_path (entry));
+
+      g_strfreev (argv);
+    }
 
   return self;
 }

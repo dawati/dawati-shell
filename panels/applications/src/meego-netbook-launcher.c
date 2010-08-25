@@ -35,6 +35,7 @@
 #include <meego-panel/mpl-icon-theme.h>
 
 #include <meego-panel/mpl-app-bookmark-manager.h>
+#include <meego-panel/mpl-app-launches-store.h>
 #include <meego-panel/mpl-content-pane.h>
 
 #include "meego-netbook-launcher.h"
@@ -95,6 +96,7 @@ struct MnbLauncherPrivate_
   gboolean                 is_constructed;
   GtkIconTheme            *theme;
   MplAppBookmarkManager   *manager;
+  MplAppLaunchesStore     *app_launches;
   MnbLauncherMonitor      *monitor;
   GHashTable              *expanders;
   MxExpander              *first_expander;
@@ -425,6 +427,44 @@ mnb_launcher_reset (MnbLauncher     *self)
     }
 }
 
+void
+mnb_launcher_update_last_launched (MnbLauncher *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (self);
+  MplAppLaunchesQuery *query;
+  GSList  *iter;
+
+  query = mpl_app_launches_store_create_query (priv->app_launches);
+  for (iter = priv->launchers; iter; iter = iter->next)
+    {
+      time_t last_launched = 0;
+      char const *executable;
+      GError *error = NULL;
+
+      executable = mnb_launcher_button_get_executable ((MnbLauncherButton *) iter->data);
+
+      mpl_app_launches_query_lookup (query, executable, &last_launched, NULL, &error);
+      if (error)
+        {
+          g_warning ("%s : %s", G_STRLOC, error->message);
+          g_clear_error (&error);
+        }
+      else
+        {
+          mnb_launcher_button_set_last_launched ((MnbLauncherButton *) iter->data,
+                                                 last_launched);
+        }
+    }
+  g_object_unref (query);
+}
+
+static void
+_launches_changed_cb (MplAppLaunchesStore *store,
+                      MnbLauncher         *self)
+{
+  mnb_launcher_update_last_launched (self);
+}
+
 static gboolean
 mnb_launcher_fill_category (MnbLauncher     *self)
 {
@@ -732,6 +772,8 @@ mnb_launcher_fill (MnbLauncher  *self)
     {
       mnb_launcher_fill_plain (self);
     }
+
+  mnb_launcher_update_last_launched (self);
 }
 
 static void
@@ -1122,6 +1164,10 @@ _constructor (GType                  gtype,
                     G_CALLBACK (mnb_launcher_theme_changed_cb), self);
   priv->manager = mpl_app_bookmark_manager_get_default ();
   priv->is_constructed = TRUE;
+
+  priv->app_launches = mpl_app_launches_store_new ();
+  g_signal_connect (priv->app_launches, "changed",
+                    G_CALLBACK (_launches_changed_cb), self);
 
   mnb_launcher_fill (self);
 

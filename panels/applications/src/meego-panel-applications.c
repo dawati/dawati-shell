@@ -119,6 +119,13 @@ standalone_launcher_activated_cb (MnbLauncher    *launcher,
 }
 
 static void
+panel_show_begin_cb (MplPanelClient *panel,
+                     MnbLauncher    *launcher)
+{
+  mnb_launcher_update_last_launched (launcher);
+}
+
+static void
 panel_show_end_cb (MplPanelClient *panel,
                    MnbLauncher    *launcher)
 {
@@ -144,7 +151,7 @@ main (int     argc,
       "Do not embed into the mutter-meego panel", NULL },
     { "geometry", 'g', 0, G_OPTION_ARG_STRING, &_geometry,
       "Window geometry in standalone mode", NULL },
-#if CLUTTER_CHECK_VERSION(1, 4, 0)
+#if CLUTTER_CHECK_VERSION(1, 3, 0)
     { "clutter-font-dpi", 'd', 0, G_OPTION_ARG_INT, &_dpi,
       "Set clutter font resolution to <dpi>", "<dpi>" },
 #endif
@@ -178,7 +185,7 @@ main (int     argc,
 
   if (_dpi)
     {
-#if CLUTTER_CHECK_VERSION(1, 4, 0)
+#if CLUTTER_CHECK_VERSION(1, 3, 0)
       ClutterSettings *settings = clutter_settings_get_default ();
       g_object_set (settings, "font-dpi", _dpi * 1000, NULL);
 #endif
@@ -250,6 +257,8 @@ main (int     argc,
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (launcher_activated_cb), panel);
 
+      g_signal_connect (panel, "show-begin",
+                        G_CALLBACK (panel_show_begin_cb), launcher);
       g_signal_connect (panel, "show-end",
                         G_CALLBACK (panel_show_end_cb), launcher);
       g_signal_connect (panel, "hide-end",

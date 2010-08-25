@@ -85,6 +85,9 @@ void          mnb_launcher_button_set_icon        (MnbLauncherButton  *self,
                                                    const gchar        *icon_file,
                                                    gint                icon_size);
 
+void          mnb_launcher_button_set_last_launched (MnbLauncherButton  *self,
+                                                     time_t              last_launched);
+
 gint          mnb_launcher_button_compare         (MnbLauncherButton *self,
                                                    MnbLauncherButton *other);
 

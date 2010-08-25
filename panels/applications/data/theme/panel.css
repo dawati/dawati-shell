@@ -36,7 +36,7 @@ MnbLauncher *#launcher-expander-grid {
  */
 
 MnbLauncherButton {
-  padding: 5 5 5 7;
+  padding: 5 10 5 7;
 }
 
 MnbLauncherButton:hover {
