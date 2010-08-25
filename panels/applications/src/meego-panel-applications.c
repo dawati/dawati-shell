@@ -138,11 +138,16 @@ main (int     argc,
 {
   static gboolean    _standalone = FALSE;
   static char const *_geometry = NULL;
+  static int         _dpi = 0;
   static GOptionEntry _options[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone,
       "Do not embed into the mutter-meego panel", NULL },
     { "geometry", 'g', 0, G_OPTION_ARG_STRING, &_geometry,
       "Window geometry in standalone mode", NULL },
+#if CLUTTER_CHECK_VERSION(1, 4, 0)
+    { "clutter-font-dpi", 'd', 0, G_OPTION_ARG_INT, &_dpi,
+      "Set clutter font resolution to <dpi>", "<dpi>" },
+#endif
     { NULL }
   };
 
@@ -170,6 +175,14 @@ main (int     argc,
   g_option_context_free (context);
 
   mpl_panel_clutter_init_with_gtk (&argc, &argv);
+
+  if (_dpi)
+    {
+#if CLUTTER_CHECK_VERSION(1, 4, 0)
+      ClutterSettings *settings = clutter_settings_get_default ();
+      g_object_set (settings, "font-dpi", _dpi * 1000, NULL);
+#endif
+    }
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
     DATADIR "/icons/meego/48x48/mx.cache");
