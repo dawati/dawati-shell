@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -13,21 +13,21 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "やあ! ここは [ステータス] パネルです。Twitter などの Web アカウントを設定していれば、ここでフィードを見たりステータスを更新できます。"
 
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "ステータス"
 
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "ステータス"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "ステータスパネル"
 
@@ -81,8 +81,8 @@ msgid "Change"
 msgstr "変更"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr "新しい Web サーバーを追加"
+msgid "Add new web account"
+msgstr "新しい Web アカウントを追加"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
@@ -124,41 +124,54 @@ msgstr "%s から %s"
 
 #~ msgid "Offline"
 #~ msgstr "オフライン"
+
 #~ msgid "Available"
 #~ msgstr "使用できます"
+
 #~ msgid "Away"
 #~ msgstr "退席中"
+
 #~ msgid "Busy"
 #~ msgstr "取り込み中"
+
 #~ msgid "Close"
 #~ msgstr "閉じる"
+
 #~ msgid "Unknown account"
 #~ msgstr "不明なアカウント"
+
 #~ msgid "Edit"
 #~ msgstr "編集"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "ここに「%s」のステータスを入力してください..."
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "ここに現在のステータスを入力してください..."
+
 #~ msgid "Post"
 #~ msgstr "投稿する"
+
 #~ msgid "Your current status"
 #~ msgstr "現在のステータス"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "現在のステータス：オフライン"
+
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr ""
 #~ "誰も見つかりません。メッセンジャーのアカウントが設定されていますか？"
+
 #~ msgid ""
 #~ "To update your web status you need to setup a Web Services account with a "
 #~ "provider that supports status messages"
 #~ msgstr ""
 #~ "Web ステータスを更新するには、ステータス・メッセージをサポートする Web "
 #~ "サービスアカウントを設定する必要があります。"
+
 #~ msgid ""
 #~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr ""
 #~ "IM のステータスを更新するには、インスタント・メッセンジャーのアカウントを"
 #~ "設定する必要があります。"
-
