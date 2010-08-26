@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Annika <AnnikaNbpt@gmail.com>\n"
+"Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,21 +14,21 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "Hej! Detta är statuspanelen. När du har ett konfigurerat webbkonto (som Twitter) kan du visa dina feeds och uppdatera din status här."
 
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "Status"
 
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Statuspanel"
 
@@ -39,6 +39,10 @@ msgstr "Kan inte uppdatera status. Tjänsten kan vara otillgänglig eller så ka
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
 msgstr "Det går inte att uppdatera status: Du är inte online."
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "Vi kunde inte gissa din plats"
 
 #: ../src/mps-feed-pane.c:452
 #, c-format
@@ -78,8 +82,8 @@ msgid "Change"
 msgstr "Ändra"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
-msgstr "Lägg till ny webbtjänst"
+msgid "Add new web account"
+msgstr "Lägg till nytt webbkonto"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
@@ -113,15 +117,11 @@ msgstr "Använd inte plats"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s från %s"
-
-#: ../src/mps-feed-pane.c:444
-msgid "We were unable to guess your location"
-msgstr "Vi kunde inte gissa din plats"
 
 #~ msgid "Offline"
 #~ msgstr "Frånkopplad"
@@ -159,11 +159,18 @@ msgstr "Vi kunde inte gissa din plats"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Din nuvarande status - du är frånkopplad"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "För att uppdatera din webbstatus behöver du installera ett webbtjänstkonto med ett företag som stödjer statusmeddelanden"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "För att uppdatera din webbstatus behöver du installera ett "
+#~ "webbtjänstkonto med ett företag som stödjer statusmeddelanden"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "För att uppdatera din IM status behöver du installera ett IM konto"
