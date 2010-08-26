@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:37+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -13,23 +13,23 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:49
+#: ../src/meego-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "¡Hola! Éste es el panel de estado. Cuando tengas configurada una cuenta Web (como Twitter), aquí podrás ver las actualizaciones del estado de tus contactos y actualizar el tuyo."
 
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-status.c:100
+#: ../src/meego-panel-status.c:100
 msgid "Status"
 msgstr "Estado"
 
 # <mousetip of the top of the screen>
-#: ../src/moblin-panel-status.c:158
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/meego-panel-status.c:158
+#: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "estado"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Panel de estado"
 
@@ -40,6 +40,10 @@ msgstr "No se puede actualizar el estado: O el servicio no está disponible o tu
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
 msgstr "No se puede actualizar el estado: No estás en línea"
+
+#: ../src/mps-feed-pane.c:444
+msgid "We were unable to guess your location"
+msgstr "No podemos averiguar dónde estás"
 
 #: ../src/mps-feed-pane.c:452
 #, c-format
@@ -79,7 +83,7 @@ msgid "Change"
 msgstr "Cambiar"
 
 #: ../src/mps-feed-switcher.c:350
-msgid "Add new web service"
+msgid "Add new web account"
 msgstr "Agregar un nuevo servicio web"
 
 #: ../src/mps-feed-switcher.c:373
@@ -119,10 +123,6 @@ msgstr "No usar esta ubicación"
 #, c-format
 msgid "%s from %s"
 msgstr " \t%s de %s"
-
-#: ../src/mps-feed-pane.c:444
-msgid "We were unable to guess your location"
-msgstr "No podemos averiguar dónde estás"
 
 #~ msgid "Offline"
 #~ msgstr "Fuera de línea"
