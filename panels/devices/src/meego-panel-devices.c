@@ -88,11 +88,16 @@ main (int     argc,
 {
   bool standalone = false;
   char const *geometry = NULL;
+  int dpi = 0;
   GOptionEntry _options[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
       "Run as standalone app (for testing purpose)", NULL },
     { "geometry", 'g', 0, G_OPTION_ARG_STRING, &geometry,
       "Window geometry in standalone mode", NULL },
+#if CLUTTER_CHECK_VERSION(1, 3, 0)
+    { "clutter-font-dpi", 'd', 0, G_OPTION_ARG_INT, &dpi,
+      "Set clutter font resolution to <dpi>", "<dpi>" },
+#endif
     { NULL }
   };
 
@@ -121,6 +126,14 @@ main (int     argc,
   notify_init (_("MeeGo Devices Panel"));
   /* Just for icon theme, no widgets. */
   gtk_init (&argc, &argv);
+
+  if (dpi)
+    {
+#if CLUTTER_CHECK_VERSION(1, 3, 0)
+      ClutterSettings *settings = clutter_settings_get_default ();
+      g_object_set (settings, "font-dpi", dpi * 1000, NULL);
+#endif
+    }
 
   /* Load base styling for default font size */
   mpl_panel_clutter_load_base_style ();
