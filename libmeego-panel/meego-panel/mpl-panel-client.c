@@ -1245,7 +1245,7 @@ mpl_panel_client_launch_application_from_info (GAppInfo *app, GList *files)
       /* Track app launch */
       MplAppLaunchesStore *store = mpl_app_launches_store_new ();
       char const *executable = g_app_info_get_executable (app);
-      mpl_app_launches_store_add_async (store, executable, timestamp, &error);
+      mpl_app_launches_store_add_async (store, executable, 0, &error);
       if (error)
       {
         g_warning ("%s : %s", G_STRLOC, error->message);

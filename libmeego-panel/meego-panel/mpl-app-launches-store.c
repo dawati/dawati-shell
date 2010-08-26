@@ -295,8 +295,9 @@ record_update (MplAppLaunchesRecord *record,
   if (hash)
     snprintf (record->hash, sizeof (record->hash), "%08x", hash);
 
-  snprintf (record->last_launched, sizeof (record->last_launched),
-            "%08lx", timestamp);
+  if (timestamp)
+    snprintf (record->last_launched, sizeof (record->last_launched),
+              "%08lx", timestamp);
 
   record_read (record, NULL, NULL, &n_launches);
   snprintf (record->n_launches, sizeof (record->n_launches),
@@ -599,7 +600,7 @@ mpl_app_launches_store_add (MplAppLaunchesStore  *self,
 
   if (record)
   {
-    record_update (record, 0, timestamp);
+    record_update (record, 0, timestamp ? timestamp : time (NULL));
 
   } else {
 
