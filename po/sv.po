@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-16 09:23+0000\n"
+"POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Annika Olsson <AnnikaNbpt@gmail.com>\n"
 "Language-Team: \n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Ange dina inställningar för verktygsfältet"
 
-#: ../capplet/data/moblin-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Inställningar för verktygsfält"
 
@@ -42,8 +42,9 @@ msgstr "Tillgängliga paneler"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -51,21 +52,23 @@ msgstr "%H:%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%e %B, %Y"
 
@@ -90,21 +93,29 @@ msgstr "Visa systemfält"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Systemfältet är ett koncept som används av vissa äldre program för att informera dig när något händer eller för att förbli aktiva när du stänger dem."
 
-#: ../data/mutter-moblin.schemas.in.h:1
+#: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Använd alltid litet skärm läge"
 
-#: ../data/mutter-moblin.schemas.in.h:2
+#: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Avgör panelordningen i verktygsfältet."
 
-#: ../data/mutter-moblin.schemas.in.h:3
+#: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Tvinga alltid att använda litet skärm läge även om display läge normalt vill använda större skärm läge."
 
-#: ../data/mutter-moblin.schemas.in.h:4
+#: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Panelordning i verktygsfältet"
+
+#: ../src/meego-netbook.c:825
+msgid "Meego Netbook Effects"
+msgstr "Meego netbook effekter"
+
+#: ../src/meego-netbook.c:829
+msgid "Effects for Meego Netbooks"
+msgstr "Effekter för Meego netbooks"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -130,14 +141,6 @@ msgstr "Ber om din uppmärksamhet."
 #: ../src/notifications/ntf-wm.c:115
 msgid "Activate"
 msgstr "Aktivera"
-
-#: ../src/moblin-netbook.c:829
-msgid "Effects for Moblin Netbooks"
-msgstr "Effekter för Meego netbooks"
-
-#: ../src/moblin-netbook.c:825
-msgid "Moblin Netbook Effects"
-msgstr "Meego netbook effekter"
 
 #~ msgid "System tray"
 #~ msgstr "Systemfält"
@@ -199,14 +202,23 @@ msgstr "Meego netbook effekter"
 #~ msgid "No Zones yet"
 #~ msgstr "Inga zoner ännu"
 
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Program du använder visas här. Du kan byta och organisera dem bäst du vill."
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Program du använder visas här. Du kan byta och organisera dem bäst du "
+#~ "vill."
 
 #~ msgid "No applications on this zone"
 #~ msgstr "Inga program i denna zon"
 
-#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
-#~ msgstr "Du behöver spela musik, titta på bilder eller video för att se din historia här. Under tiden kan du titta på litet test media:"
+#~ msgid ""
+#~ "You need to play some music, look at some pictures or watch some video to "
+#~ "see your history here. In the meantime, you could take a look at some "
+#~ "sample media:"
+#~ msgstr ""
+#~ "Du behöver spela musik, titta på bilder eller video för att se din "
+#~ "historia här. Under tiden kan du titta på litet test media:"
 
 #~ msgid "Recently played"
 #~ msgstr "Tidigare spelade"
@@ -256,8 +268,12 @@ msgstr "Meego netbook effekter"
 #~ msgid "applications"
 #~ msgstr "Program"
 
-#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
-#~ msgstr "När du besöker webbsidor kommer dina favoriter visas här och på den nya fliken i webbläsaren."
+#~ msgid ""
+#~ "As you visit web pages, your favorites will appear here and on the New "
+#~ "tab page in the browser."
+#~ msgstr ""
+#~ "När du besöker webbsidor kommer dina favoriter visas här och på den nya "
+#~ "fliken i webbläsaren."
 
 #~ msgid "Untitled"
 #~ msgstr "Namnlös"
@@ -313,14 +329,24 @@ msgstr "Meego netbook effekter"
 #~ msgid "No calendar entries this week"
 #~ msgstr "Inget i kalendern denna vecka"
 
-#~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
-#~ msgstr "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina konton nu!"
+#~ msgid ""
+#~ "Your friends' feeds and web services will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina "
+#~ "konton nu!"
 
 #~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
 #~ msgstr "<b>Välkommen till Meego 2.0 för netbooks</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Då Meego skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Meego."
+#~ msgid ""
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
+#~ msgstr ""
+#~ "Då Meego skiljer sig något från andra datorer har vi satt ihop en del "
+#~ "tips för att underlätta för dig att hitta allt. Hoppas du gillar det! "
+#~ "Team Meego."
 
 #~ msgid "Web page"
 #~ msgstr "Webbplats"
@@ -343,8 +369,10 @@ msgstr "Meego netbook effekter"
 #~ msgid "Send a message"
 #~ msgstr "Skicka ett meddelande"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Ursäkta, men vi hittar inga personer. Har du installerat ett IM konto?"
 
 #~ msgid "People"
 #~ msgstr "Personer "
@@ -365,7 +393,8 @@ msgstr "Meego netbook effekter"
 #~ msgstr "Välj zon för detta program:"
 
 #~ msgid "To activate the toolbar, move your cursor to the top of the screen"
-#~ msgstr "För att aktivera listen, flytta din markör till översta delen av skärmen"
+#~ msgstr ""
+#~ "För att aktivera listen, flytta din markör till översta delen av skärmen"
 
 #~ msgid "Offline"
 #~ msgstr "Frånkopplad"
@@ -403,10 +432,15 @@ msgstr "Meego netbook effekter"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Din nuvarande status - du är frånkopplad"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "För att uppdatera din webbstatus behöver du installera ett webbtjänstkonto med ett företag som stödjer statusmeddelanden"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "För att uppdatera din webbstatus behöver du installera ett "
+#~ "webbtjänstkonto med ett företag som stödjer statusmeddelanden"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "För att uppdatera din IM status behöver du installera ett IM konto"
 
 #~ msgid "status"
@@ -416,7 +450,9 @@ msgstr "Meego netbook effekter"
 #~ msgstr "MyZone"
 
 #~ msgid "tray icon has requested a size of (%i x %i), resizing to (%i x %i)"
-#~ msgstr "Fältikonen har efterfrågat en storlek motsvarande (%i x %i), ändrar till (%i x %i)"
+#~ msgstr ""
+#~ "Fältikonen har efterfrågat en storlek motsvarande (%i x %i), ändrar till "
+#~ "(%i x %i)"
 
 #~ msgid "Local"
 #~ msgstr "Lokal "
