@@ -85,6 +85,39 @@ _suspend_timer_elapsed_cb (MpdIdleManager *self)
 }
 
 static void
+stop_suspend_timer (MpdIdleManager *self)
+{
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
+
+  if (priv->suspend_source_id != 0)
+  {
+    g_source_remove (priv->suspend_source_id);
+    priv->suspend_source_id = 0;
+  }
+}
+
+static void
+start_suspend_timer (MpdIdleManager *self)
+{
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
+  int suspend_idle_time;
+
+  if (priv->suspend_source_id != 0)
+  {
+    stop_suspend_timer (self);
+  }
+
+  suspend_idle_time = mpd_conf_get_suspend_idle_time (priv->conf);
+  if (suspend_idle_time > 0)
+  {
+    priv->suspend_source_id =
+      g_timeout_add_seconds (suspend_idle_time,
+                             (GSourceFunc) _suspend_timer_elapsed_cb,
+                             self);
+  }
+}
+
+static void
 _presence_status_changed_cb (DBusGProxy     *presence,
                              unsigned int    status,
                              MpdIdleManager *self)
@@ -93,23 +126,28 @@ _presence_status_changed_cb (DBusGProxy     *presence,
 
   if (status == 3)
   {
-    if (priv->suspend_source_id == 0)
-    {
-      int suspend_idle_time = mpd_conf_get_suspend_idle_time (priv->conf);
+    /* session just became idle */
+    start_suspend_timer (self);
 
-      /* session just became idle */
-      if (suspend_idle_time > 0)
-      {
-        priv->suspend_source_id =
-          g_timeout_add_seconds (suspend_idle_time,
-                                 (GSourceFunc) _suspend_timer_elapsed_cb,
-                                 self);
-      }
-    }
   } else if (priv->suspend_source_id > 0) {
     /* session just became non-idle and we have a timer */
-    g_source_remove (priv->suspend_source_id);
-    priv->suspend_source_id = 0;
+    stop_suspend_timer (self);
+  }
+}
+
+static void
+_suspend_timeout_changed_cb (MpdConf        *conf,
+                             GParamSpec     *pspec,
+                             MpdIdleManager *self)
+{
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
+
+  /* Restart timer if already running.
+   * This is very unlikely though, because the timer only runs when
+   * the system is idle in the first place. */
+  if (priv->suspend_source_id != 0)
+  {
+    start_suspend_timer (self);
   }
 }
 
@@ -121,6 +159,8 @@ mpd_idle_manager_init (MpdIdleManager *self)
   GError          *error = NULL;
 
   priv->conf = mpd_conf_new ();
+  g_signal_connect (priv->conf, "notify::suspend-idle-time",
+                    G_CALLBACK (_suspend_timeout_changed_cb), self);
 
   priv->power_client = dkp_client_new ();
 

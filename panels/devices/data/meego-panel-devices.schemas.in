@@ -36,7 +36,7 @@
       <applyto>/desktop/meego/panel-devices/timeout/sleep_computer</applyto>
       <owner>meego-panel-devices</owner>
       <type>int</type>
-      <default>30</default>
+      <default>300</default>
       <locale name="C">
         <short/>
       </locale>
