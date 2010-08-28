@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-20 17:55+0000\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2010-08-12 14:16+0330\n"
 "Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
 "Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
@@ -25,8 +25,7 @@ msgstr "قاب منطقه ی من"
 msgid "Change the Myzone background and content"
 msgstr "تغییر پس زمینه و محتوای منطقه ی من"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "منطقه ی من"
 
@@ -62,12 +61,12 @@ msgstr "اعلان های ایمیل:"
 msgid "Reset to default"
 msgstr "بازنشانی صورت پیش فرض"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "خطای GConf:  %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "همه خطاهای دیگر فقط در ترمینال نمایش داده می شوند"
 
@@ -99,8 +98,7 @@ msgstr "آیا می خواهید اسناد جدید را پاک کنید؟ ای
 msgid "Appointments"
 msgstr "قرار ملاقات"
 
-#: ../penge/penge-calendar-pane.c:496
-#: ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "باز"
 
@@ -112,8 +110,7 @@ msgstr "وظایف"
 msgid "Create an appointment"
 msgstr "ایجاد قرار ملاقات"
 
-#: ../penge/penge-events-pane.c:72
-#: ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "افزودن"
 
@@ -139,8 +136,8 @@ msgid "Due %x"
 msgstr "سررسید  %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "وقتی شما حساب های وبی خود را تنظیم کردید و برخی فایل ها را استفاده کردید انها اینجا برای دسترسی آسان در منطقه ی من ظاهر خواهند شد."
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "وقتی شما حساب های وبی خود را تنظیم کردید و برخی فایل ها را استفاده کردید انها اینجا برای دسترسی آسان هر زمان که شما بخواهید در منطقه ی من ظاهر خواهند شد."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
@@ -161,4 +158,3 @@ msgstr "پیام خوانده نشده"
 #: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
 msgstr "پیام های خوانده نشده"
-
