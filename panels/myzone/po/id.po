@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:20+0000\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2009-08-26 08:21+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -58,12 +58,12 @@ msgstr "Peringatan lewat email:"
 msgid "Reset to default"
 msgstr "Kembalikan ke baku"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Galat GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "Galat selanjutnya hanya ditampilkan pada terminal."
 
@@ -133,7 +133,7 @@ msgid "Due %x"
 msgstr "Jatuh tempo %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
 msgstr "Ketika Anda telah menata akun web Anda dan memakai beberapa berkas, mereka akan muncul disini pada myzone untuk pengaksesan yang mudah kapanpun Anda inginkan."
 
 #: ../penge/penge-welcome-tile.c:34
