@@ -1,12 +1,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Pavel, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-29 16:02+0000\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2010-07-06 11:36+0200\n"
 "Last-Translator: Pavel\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -15,8 +15,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Generator: Lokalize 1.0\n"
 
 #: ../data/meego-panel-myzone.desktop.in.in.h:1
@@ -63,12 +63,12 @@ msgstr "Upozornění na elektronickou poštu:"
 msgid "Reset to default"
 msgstr "Obnovit výchozí nastavení"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Chyba GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "Všechny další chyby se budou ukazovat jen v terminálu."
 
@@ -93,12 +93,8 @@ msgid "Show as many recent files as possible"
 msgstr "Ukázat tolik naposledy otevřených dokumentů, kolik je jen možné"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid ""
-"Do you want to clear your recent documents? This will remove the local "
-"content from your myzone"
-msgstr ""
-"Chcete smazat své naposledy otevřené dokumenty? Tím se z vašeho panelu "
-"Moje oblast odstraní místní obsah"
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Chcete smazat své naposledy otevřené dokumenty? Tím se z vašeho panelu Moje oblast odstraní místní obsah"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -142,13 +138,8 @@ msgid "Due %x"
 msgstr "Má nastat %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid ""
-"When you’ve set up your web accounts and used some files they will appear "
-"here on myzone for easy access whenever you want. "
-msgstr ""
-"Když jste si zřídil svůj internetový účet a použil nějaké soubory, objeví "
-"se zde v panelu "
-"Moje oblast pro snadný přístup, vždycky když budete chtít. "
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Když jste si zřídil své internetové účty a použil nějaké soubory, objeví se zde v panelu Moje oblast, pro snadný přístup vždy, když budete chtít. "
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
@@ -170,6 +161,5 @@ msgstr "Nepřečtená zpráva"
 msgid "Unread messages"
 msgstr "Nepřečtené zprávy"
 
-#, fuzzy
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>Vítá vás Meego 2.1 pro netbooky</b>"
