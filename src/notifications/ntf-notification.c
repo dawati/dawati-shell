@@ -97,6 +97,11 @@ static guint signals[N_SIGNALS] = {0};
 static gboolean
 ntf_notification_timeout_cb (NtfNotification *ntf)
 {
+  NtfNotificationPrivate *priv = ntf->priv;
+
+  if (priv->closed)
+    return FALSE;
+
   g_object_ref (ntf);
   g_signal_emit (ntf, signals[CLOSED], 0);
   g_object_unref (ntf);
@@ -199,6 +204,11 @@ ntf_notification_class_init (NtfNotificationClass *klass)
 static void
 ntf_notification_dismiss_cb (ClutterActor *button, NtfNotification *self)
 {
+  NtfNotificationPrivate *priv = self->priv;
+
+  if (priv->closed)
+    return;
+
   g_signal_emit (self, signals[CLOSED], 0);
 }
 
@@ -322,6 +332,9 @@ ntf_notification_source_closed_cb (NtfSource *src, NtfNotification *ntf)
 
   priv->source = NULL;
 
+  if (priv->closed)
+    return;
+
   g_object_ref (ntf);
   g_signal_emit (ntf, signals[CLOSED], 0);
   g_object_unref (ntf);
@@ -430,7 +443,14 @@ ntf_notification_get_source (NtfNotification *ntf)
 void
 ntf_notification_close (NtfNotification *ntf)
 {
+  NtfNotificationPrivate *priv;
+
   g_return_if_fail (NTF_IS_NOTIFICATION (ntf));
+
+  priv = ntf->priv;
+
+  if (priv->closed)
+    return;
 
   g_object_ref (ntf);
   g_signal_emit (ntf, signals[CLOSED], 0);
