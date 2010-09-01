@@ -3,12 +3,17 @@ MnbPeoplePanel
   padding: 5;
 }
 
+*#people-no-people-message-title,
 *#people-panel-header-label
 {
   color: #febf00ff;
   font-size: 22px;
   font-weight: bold;
   font-family: "Droid Sans";
+}
+
+*#people-panel-header-label
+{
   padding: 0 0 0 15;
 }
 
@@ -48,6 +53,12 @@ MnbPeoplePanel
   padding: 3;
 }
 
+*#no-people-panel-content-box
+{
+  border-image: url("background-gradient.png") 5;
+  padding: 2;
+}
+
 *#people-panel-me-avatar-frame
 {
   border-image: url("avatar_frame.png") 4 4 4 4;
@@ -61,6 +72,10 @@ MnbPeoplePanel
   font-family: "Droid Sans";
 }
 
+*#people-pane-no-people-tile
+{
+  padding: 28 25 90 4;
+}
 
 *#people-no-people-message-bin,
 *#people-pane-everybody-offline-bin,
@@ -76,6 +91,11 @@ MnbPeoplePanel
   font-size:16px;
   font-family: "Droid Sans";
   color: #616261ff;
+}
+
+*#people-no-people-message-label
+{
+  padding: 0 0 24 0;
 }
 
 *#people-panel-messenger-launcher-tile,

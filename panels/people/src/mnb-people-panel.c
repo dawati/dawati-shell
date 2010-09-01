@@ -53,10 +53,10 @@ G_DEFINE_TYPE (MnbPeoplePanel, mnb_people_panel, MX_TYPE_TABLE)
 #define TIMEOUT 250
 
 
-#define NEW_PLACEHOLDER_TEXT _( \
-"Hello! This is the People panel. When you have an IM service configured " \
-"(like Messenger), this is where you chat to people." \
-  )
+#define PLACEHOLDER_MESSAGE _("When you have an IM service configured " \
+                              "(like Messenger), this is where you chat to " \
+                              "people.")
+#define PLACEHOLDER_IMAGE THEMEDIR "/people.png"
 
 typedef struct _MnbPeoplePanelPrivate MnbPeoplePanelPrivate;
 
@@ -219,17 +219,37 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
   ClutterActor *label;
   ClutterActor *tmp_text;
   ClutterActor *settings_launcher;
+  ClutterActor *picture;
 
   tile = mx_table_new ();
   mx_table_set_row_spacing (MX_TABLE (tile), 8);
 
   clutter_actor_set_name ((ClutterActor *)tile,
                           "people-pane-no-people-tile");
+  /* title */
   frame = mx_frame_new ();
   clutter_actor_set_name (frame,
                           "people-no-people-message-bin");
-  label = mx_label_new_with_text (_("Sorry, we can't find any people. " \
-                                    "Have you set up a Messenger account?"));
+  label = mx_label_new_with_text (_("This is the People panel."));
+  clutter_actor_set_name (label,
+                          "people-no-people-message-title");
+  mx_bin_set_child (MX_BIN (frame), label);
+  mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                      frame,
+                                      0, 0,
+                                      "x-expand", TRUE,
+                                      "y-expand", FALSE,
+                                      "x-fill", TRUE,
+                                      "y-fill", FALSE,
+                                      "x-align", MX_ALIGN_START,
+                                      NULL);
+  mx_bin_set_alignment (MX_BIN (frame), MX_ALIGN_START, MX_ALIGN_MIDDLE);
+
+  /* message */
+  frame = mx_frame_new ();
+  clutter_actor_set_name (frame,
+                          "people-no-people-message-bin");
+  label = mx_label_new_with_text (PLACEHOLDER_MESSAGE);
   clutter_actor_set_name (label,
                           "people-no-people-message-label");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));
@@ -238,10 +258,12 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
                                    PANGO_WRAP_WORD_CHAR);
   clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text),
                               PANGO_ELLIPSIZE_NONE);
+  clutter_actor_set_width (label, 500);
+
   mx_bin_set_child (MX_BIN (frame), label);
   mx_table_add_actor_with_properties (MX_TABLE (tile),
                                       frame,
-                                      0, 0,
+                                      1, 0,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
                                       "x-fill", TRUE,
@@ -257,13 +279,28 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
 
   mx_table_add_actor_with_properties (MX_TABLE (tile),
                                       settings_launcher,
-                                      1, 0,
+                                      2, 0,
                                       "x-expand", TRUE,
                                       "y-expand", FALSE,
                                       "x-fill", TRUE,
                                       "y-fill", FALSE,
                                       "x-align", MX_ALIGN_START,
                                       NULL);
+
+  picture = clutter_texture_new_from_file (PLACEHOLDER_IMAGE, NULL);
+
+  mx_table_add_actor_with_properties (MX_TABLE (tile),
+                                      picture,
+                                      3, 0,
+                                      "x-expand", TRUE,
+                                      "y-expand", TRUE,
+                                      "x-fill", FALSE,
+                                      "y-fill", FALSE,
+                                      "x-align", MX_ALIGN_END,
+                                      "y-align", MX_ALIGN_END,
+                                      NULL);
+
+
 
   return tile;
 }
@@ -540,6 +577,8 @@ _update_placeholder_state (MnbPeoplePanel *self)
                 "accounts-online", &accounts_online,
                 NULL);
 
+  clutter_actor_set_name (priv->content_table, "people-panel-content-box");
+
   /* There is something in the model, hide all placeholders */
   if (clutter_model_get_first_iter (CLUTTER_MODEL (priv->model)))
   {
@@ -564,6 +603,8 @@ _update_placeholder_state (MnbPeoplePanel *self)
     {
       if (accounts_available == 0)
       {
+        clutter_actor_set_name (priv->content_table,
+                                "no-people-panel-content-box");
         clutter_actor_show (priv->no_people_tile);
         clutter_actor_hide (priv->me_table);
         clutter_actor_hide (priv->everybody_offline_tile);
@@ -1040,9 +1081,8 @@ mnb_people_panel_init (MnbPeoplePanel *self)
                                       1, 0,
                                       "x-fill", TRUE,
                                       "x-expand", TRUE,
-                                      "y-expand", FALSE,
-                                      "y-fill", FALSE,
-                                      "y-align", MX_ALIGN_START,
+                                      "y-expand", TRUE,
+                                      "y-fill", TRUE,
                                       NULL);
 
   /* No people && acounts are online */

@@ -21,7 +21,9 @@ dist_theme_DATA = \
 	panel-background.png \
 	content-panel-background.png \
 	content-panel-header-grey.png \
-	box-background-border-bottom.png
+	box-background-border-bottom.png \
+	background-gradient.png \
+	people.png
 
 # Manage mutter-meego's texture cache.
 if ENABLE_CACHE
