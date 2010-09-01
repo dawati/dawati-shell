@@ -18,7 +18,10 @@ dist_theme_DATA = \
 	icon-bg-hover.png \
 	location-box-bg.png \
 	content-panel-background.png \
-	panel-background.png
+	panel-background.png \
+	background-gradient.png \
+	people.png \
+	content-panel-header-grey.png
 
 # Manage mutter-meego's texture cache.
 

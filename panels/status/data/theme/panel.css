@@ -18,6 +18,12 @@ MpsFeedSwitcher
   border-image: url("content-panel-background.png") 5;
 }
 
+MpsFeedSwitcher.first-run
+{
+  padding: 3;
+  border-image: url('background-gradient.png') 6;
+}
+
 MpsFeedPane
 {
   background-color: white;
@@ -114,6 +120,24 @@ MpsTweetCard.mps-tweet-card-last:active
 *.mps-status-entry *.MplEntryButton
 {
   color: #7dbe0cff;
+}
+
+*.mps-switcher-placeholder-frame
+{
+  padding: 20 134 40 0;
+}
+
+*.mps-switcher-placeholder-title
+{
+  color: #a0da00;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+*.mps-switcher-placeholder-header
+{
+  border-image: url("content-panel-header-grey.png") 2 2 35 2;
+  padding: 2 2 35 2;
 }
 
 *.mps-switcher-placeholder-label, *.mps-something-wrong-message

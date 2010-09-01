@@ -32,6 +32,10 @@ G_DEFINE_TYPE (MpsFeedSwitcher, mps_feed_switcher, MX_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPS_TYPE_FEED_SWITCHER, MpsFeedSwitcherPrivate))
 
+#define FIRST_RUN_MESSAGE _("When you have a web account configuired, you will be able to view your feeds and manage your status here.")
+#define FIRST_RUN_IMAGE THEMEDIR "/people.png"
+
+
 typedef struct _MpsFeedSwitcherPrivate MpsFeedSwitcherPrivate;
 
 struct _MpsFeedSwitcherPrivate {
@@ -44,7 +48,8 @@ struct _MpsFeedSwitcherPrivate {
 
   ClutterActor *button_box;
   ClutterActor *placeholder_frame;
-  ClutterActor *placeholder_label;
+  ClutterActor *placeholder_image;
+  ClutterActor *placeholder_header;
   ClutterActor *notebook;
   ClutterActor *add_new_service_button;
 
@@ -463,10 +468,30 @@ load_modules_from_dir (MpsFeedSwitcher *switcher)
 }
 
 static void
+mps_feed_switcher_set_first_run (MpsFeedSwitcher *switcher,
+                                 gboolean         first_run)
+{
+  MpsFeedSwitcherPrivate *priv = GET_PRIVATE (switcher);
+
+  if (!first_run)
+  {
+    mx_stylable_set_style_class (MX_STYLABLE (switcher), "");
+    clutter_actor_show (priv->button_box);
+    clutter_actor_hide (priv->placeholder_header);
+  }
+  else
+  {
+    mx_stylable_set_style_class (MX_STYLABLE (switcher), "first-run");
+    clutter_actor_hide (priv->button_box);
+    clutter_actor_show (priv->placeholder_header);
+  }
+}
+
+static void
 mps_feed_switcher_init (MpsFeedSwitcher *self)
 {
   MpsFeedSwitcherPrivate *priv = GET_PRIVATE (self);
-  ClutterActor *tmp_text;
+  ClutterActor *tmp_text, *tmp_texture, *tmp_button, *tmp_box, *tmp_label;
 
   priv->button_box = mx_box_layout_new ();
   mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box), 8);
@@ -494,28 +519,76 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
   mx_stylable_set_style_class (MX_STYLABLE (priv->notebook),
                               "mps-switcher-notebook");
 
-  priv->placeholder_frame = mx_frame_new ();
+  /* create "first run" placeholder content */
+  priv->placeholder_frame = mx_box_layout_new ();
   mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_frame),
                                "mps-switcher-placeholder-frame");
-  priv->placeholder_label = mx_label_new_with_text (_("You don't appear to have any web "
-                                                      "services configured or there is "
-                                                      "a problem with their configuration. "
-                                                      "Use the button above to open the My "
-                                                      "Web Accounts and set one up."));
-  tmp_text = mx_label_get_clutter_text (MX_LABEL (priv->placeholder_label));
-  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text),
-                              TRUE);
 
-  mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_label),
+  tmp_box = mx_box_layout_new ();
+  mx_box_layout_set_spacing (MX_BOX_LAYOUT (tmp_box), 32);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (tmp_box),
+                                 MX_ORIENTATION_VERTICAL);
+
+  tmp_label = mx_label_new_with_text (_("This is the Status panel."));
+  mx_stylable_set_style_class (MX_STYLABLE (tmp_label),
+                               "mps-switcher-placeholder-title");
+  clutter_container_add_actor (CLUTTER_CONTAINER (tmp_box), tmp_label);
+
+
+  tmp_label = mx_label_new_with_text (FIRST_RUN_MESSAGE);
+  mx_stylable_set_style_class (MX_STYLABLE (tmp_label),
                                "mps-switcher-placeholder-label");
-  mx_bin_set_child (MX_BIN (priv->placeholder_frame),
-                    priv->placeholder_label);
-  mx_bin_set_alignment (MX_BIN (priv->placeholder_frame),
-                        MX_ALIGN_START,
-                        MX_ALIGN_START);
+  tmp_text = mx_label_get_clutter_text (MX_LABEL (tmp_label));
+  clutter_text_set_line_wrap (CLUTTER_TEXT (tmp_text), TRUE);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (tmp_text), PANGO_ELLIPSIZE_NONE);
+  clutter_actor_set_width (tmp_label, 500);
+  clutter_container_add_actor (CLUTTER_CONTAINER (tmp_box), tmp_label);
+
+  tmp_button = mx_button_new_with_label (_("Add new web account"));
+  g_signal_connect (tmp_button,
+                    "clicked",
+                    (GCallback)_new_service_button_clicked_cb,
+                    self);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (tmp_box), tmp_button);
+  clutter_container_child_set (CLUTTER_CONTAINER (tmp_box),
+                               tmp_button,
+                               "y-align", MX_ALIGN_START,
+                               "x-align", MX_ALIGN_START,
+                               "y-fill", FALSE,
+                               "x-fill", FALSE,
+                               NULL);
+
+
+  priv->placeholder_image = clutter_texture_new_from_file (FIRST_RUN_IMAGE,
+                                                           NULL);
+  clutter_container_add (CLUTTER_CONTAINER (priv->placeholder_frame),
+                         tmp_box, priv->placeholder_image,
+                         NULL);
+  clutter_container_child_set (CLUTTER_CONTAINER (priv->placeholder_frame),
+                               priv->placeholder_image,
+                               "y-align", MX_ALIGN_END,
+                               "x-align", MX_ALIGN_END,
+                               "y-fill", FALSE,
+                               "x-fill", FALSE,
+                               "expand", TRUE,
+                               NULL);
+
 
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->notebook),
                                priv->placeholder_frame);
+
+  priv->placeholder_header = mx_frame_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_header),
+                               "mps-switcher-placeholder-header");
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      priv->placeholder_header,
+                                      0, 0,
+                                      "x-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
 
   mx_table_add_actor_with_properties (MX_TABLE (self),
                                       priv->button_box,
@@ -559,6 +632,9 @@ mps_feed_switcher_init (MpsFeedSwitcher *self)
                     "notify::active-button",
                     (GCallback)_button_group_active_button_changed_cb,
                     self);
+
+  /* mark as first run, until a service is added */
+  mps_feed_switcher_set_first_run (self, TRUE);
 
   load_modules_from_dir (self);
 }
@@ -654,6 +730,9 @@ mps_feed_switcher_ensure_service (MpsFeedSwitcher *switcher,
     mx_button_group_set_active_button (priv->button_group,
                                        MX_BUTTON (button));
   }
+
+
+  mps_feed_switcher_set_first_run (switcher, FALSE);
 }
 
 
@@ -691,5 +770,11 @@ mps_feed_switcher_remove_service (MpsFeedSwitcher *switcher,
   {
     clutter_container_remove_actor (CLUTTER_CONTAINER (priv->notebook),
                                     pane);
+  }
+
+  /* the first run placeholder becomes visible when no services are available */
+  if (g_hash_table_size (priv->service_to_buttons) == 0)
+  {
+    mps_feed_switcher_set_first_run (switcher, TRUE);
   }
 }
