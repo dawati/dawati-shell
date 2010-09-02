@@ -525,6 +525,7 @@ mnb_launcher_fill_category (MnbLauncher     *self)
   directory = (MnbLauncherDirectory *) priv->directory_iter->data;
 
   inner_grid = CLUTTER_ACTOR (mnb_launcher_grid_new ());
+  clutter_actor_set_reactive (inner_grid, TRUE);
   mx_grid_set_column_spacing (MX_GRID (inner_grid), APPS_GRID_COLUMN_GAP);
   mx_grid_set_row_spacing (MX_GRID (inner_grid), APPS_GRID_ROW_GAP);
   clutter_actor_set_name (inner_grid, "launcher-expander-grid");
