@@ -2,19 +2,20 @@
 # Copyright (C) 2009 Intel Corporation
 # This file is distributed under the same license as the mutter package.
 # Andrzej Zaborowski <andrew.zaborowski@intel.com>, 2009.
-#
+# Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: Meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: mekaminX <mariax.e.kaminski@intel.com>\n"
-"Language-Team: Meego\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-09-03 17:53+0200\n"
+"Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
+"Language-Team: pl <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
@@ -26,8 +27,7 @@ msgstr "Panel Myzone"
 msgid "Change the Myzone background and content"
 msgstr "Zmień tło i zawartość Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -63,12 +63,12 @@ msgstr "Powiadomienia email:"
 msgid "Reset to default"
 msgstr "Ustawienia domyślne"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Błąd GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "Kolejne błędy pokazane są tylko w terminalu."
 
@@ -93,8 +93,12 @@ msgid "Show as many recent files as possible"
 msgstr "Pokaż tyle ostatnich plików, ile to możliwe"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
-msgstr "Czy chcesz wyczyścić listę ostatnio używanych dokumentów? Spowoduje to usunięcie lokalnej zawartości Myzone"
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from your myzone"
+msgstr ""
+"Czy chcesz wyczyścić listę ostatnio używanych dokumentów? Spowoduje to "
+"usunięcie lokalnej zawartości Myzone"
 
 # Depend on context... could also be:
 # <b>Spotkania</b>
@@ -105,8 +109,7 @@ msgstr "Czy chcesz wyczyścić listę ostatnio używanych dokumentów? Spowoduje
 msgid "Appointments"
 msgstr "Spotkania"
 
-#: ../penge/penge-calendar-pane.c:496
-#: ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Otwórz"
 
@@ -118,8 +121,7 @@ msgstr "Zadania"
 msgid "Create an appointment"
 msgstr "Utwórz nowe spotkanie"
 
-#: ../penge/penge-events-pane.c:72
-#: ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Dodaj"
 
@@ -145,8 +147,13 @@ msgid "Due %x"
 msgstr "Na %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Po skonfigurowaniu kont internetowych i użyciu niektórych plików, zostaną one wyświetlone w Myzone, aby umożliwić łatwy dostęp w dowolnej chwili. "
+msgid ""
+"When you’ve set up your web accounts and used some files, they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+"Po skonfigurowaniu kont internetowych wiadomości oraz ostatnio odwiedzane "
+"witryny zostaną one wyświetlone w panelu Myzone, aby umożliwić łatwy dostęp "
+"do nich w dowolnej chwili. "
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
