@@ -135,7 +135,7 @@ msgstr "Määräaika: %x"
 
 #: ../penge/penge-welcome-tile.c:28
 msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
-msgstr "Kun olet asettanut web-tilisi ja käyttänyt joitakin tiedostoja, ne näkyvät täällä Myzonessa ja niitä on helppo käyttää milloin haluat."
+msgstr "Kun olet asettanut web-tilisi ja käyttänyt joitakin tiedostoja, ne näkyvät täällä myzonessa ja niitä on helppo käyttää milloin haluat."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
