@@ -64,9 +64,8 @@ msgstr "Bluetooth"
 #. * connectivity daemon, is not running.
 #. 
 #: ../carrick/carrick-list.c:866
-#, fuzzy
 msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "No s'ha trobat cap xarxa. Sembla que el gestor de connexions no estigui funcionant. Podeu provar de reiniciar el dispositiu."
+msgstr "No s'ha trobat cap xarxa. Sembla que el gestor de connexions no està funcionant. Podeu provar de reiniciar el dispositiu."
 
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
@@ -76,9 +75,9 @@ msgid "Sorry, we can't find any networks. You could try disabling Offline mode. 
 msgstr "No s'ha trobat cap xarxa. Podeu provar de inhabilitar el mode fora de línia. "
 
 #: ../carrick/carrick-list.c:1013
-#, fuzzy, c-format
+#, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "No s'ha trobat cap xarxa. Podeu provar d'engegar el 3G."
+msgstr "No s'ha trobat cap xarxa. Podeu provar d'habilitar el %s."
 
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
@@ -344,11 +343,11 @@ msgstr "Sembla que l'adreça IP no és vàlida"
 
 #: ../carrick/carrick-service-item.c:1279
 msgid "Sorry, it looks like the gateway address is not valid"
-msgstr ""
+msgstr "Sembla que l'adreça de la passarel·la no és vàlida"
 
 #: ../carrick/carrick-service-item.c:1291
 msgid "Sorry, it looks like the subnet mask is not valid"
-msgstr ""
+msgstr "Sembla que la màscara de subxarxa no és vàlida"
 
 #: ../carrick/carrick-service-item.c:1336
 #, c-format
@@ -457,7 +456,7 @@ msgstr "Executa en mode autònom"
 
 #: ../src/carrick.c:299
 msgid "Embed in another window (overrides --standalone)"
-msgstr ""
+msgstr "Incrusta en una altra finestra (ignora --autònom)"
 
 #: ../src/carrick.c:310
 msgid "Carrick connectivity applet"
@@ -488,7 +487,7 @@ msgstr "Configuració manual"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr ""
+msgstr "Nom del pla (obligatori):"
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
@@ -525,7 +524,7 @@ msgstr "Seleccioneu un proveïdor"
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
 msgid "%s (Roaming)"
-msgstr ""
+msgstr "%s (Itinerant)"
 
 #: ../callouts/3g/ggg-service-dialog.c:125
 msgid "Select 3G Service"
