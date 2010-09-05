@@ -449,7 +449,7 @@ msgstr "xarxes"
 
 #: ../src/carrick.c:82
 msgid "networks - error"
-msgstr ""
+msgstr "xarxes - error"
 
 #: ../src/carrick.c:297
 msgid "Run in standalone mode"
@@ -480,12 +480,11 @@ msgstr ""
 
 #: ../callouts/3g/ggg-country-dialog.c:93
 msgid "Select Country"
-msgstr ""
+msgstr "Seleccioneu un país"
 
 #: ../callouts/3g/ggg-manual-dialog.c:89
-#, fuzzy
 msgid "Manual Configuration"
-msgstr "S'està configurant"
+msgstr "Configuració manual"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
@@ -493,24 +492,23 @@ msgstr ""
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
-msgstr ""
+msgstr "Nom d'usuari:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:99
-#, fuzzy
 msgid "Password:"
-msgstr "Contrasenya"
+msgstr "Contrasenya:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:103
 msgid "Gateway:"
-msgstr ""
+msgstr "Passarel·la (gateway):"
 
 #: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
-msgstr ""
+msgstr "DNS primari:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
-msgstr ""
+msgstr "DNS secundari:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
