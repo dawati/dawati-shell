@@ -358,11 +358,11 @@ msgstr ""
 #. TRANSLATORS: label for the Advanced expander in a service item
 #: ../carrick/carrick-service-item.c:1698
 msgid "Advanced"
-msgstr ""
+msgstr "Avançat"
 
 #: ../carrick/carrick-service-item.c:1708
 msgid "Scanning"
-msgstr ""
+msgstr "S'està escanejant"
 
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
@@ -386,12 +386,12 @@ msgstr "Adreça IP:"
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:1840
 msgid "Subnet mask:"
-msgstr ""
+msgstr "Màscara de subxarxa:"
 
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:1842
 msgid "Router:"
-msgstr ""
+msgstr "Encaminador (router):"
 
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:1844
@@ -436,17 +436,16 @@ msgstr ""
 #: ../src/carrick.c:69
 #, c-format
 msgid "networks - %s - 3G"
-msgstr ""
+msgstr "xarxes - %s - 3G"
 
 #: ../src/carrick.c:72
 #, c-format
 msgid "networks - %s - bluetooth"
-msgstr ""
+msgstr "xarxes - %s - bluetooth"
 
 #: ../src/carrick.c:75 ../src/carrick.c:87
-#, fuzzy
 msgid "networks"
-msgstr "Xarxes"
+msgstr "xarxes"
 
 #: ../src/carrick.c:82
 msgid "networks - error"
@@ -469,9 +468,8 @@ msgid "- MeeGo connectivity applet"
 msgstr ""
 
 #: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
-#, fuzzy
 msgid "network"
-msgstr "Xarxes"
+msgstr "xarxa"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
 #: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
