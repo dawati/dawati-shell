@@ -431,7 +431,7 @@ msgstr "xarxes - %s - sense fil"
 #: ../src/carrick.c:66
 #, c-format
 msgid "networks - %s - wimax"
-msgstr ""
+msgstr "xarxes - %s - wimax"
 
 #: ../src/carrick.c:69
 #, c-format
@@ -453,7 +453,7 @@ msgstr "xarxes - error"
 
 #: ../src/carrick.c:297
 msgid "Run in standalone mode"
-msgstr ""
+msgstr "Executa en mode autònom"
 
 #: ../src/carrick.c:299
 msgid "Embed in another window (overrides --standalone)"
@@ -512,15 +512,15 @@ msgstr "DNS secundari:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
-msgstr ""
+msgstr "DNS terciari:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
-msgstr ""
+msgstr "Seleccioneu el vostre pla 3G"
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
-msgstr ""
+msgstr "Seleccioneu un proveïdor"
 
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
@@ -529,12 +529,11 @@ msgstr ""
 
 #: ../callouts/3g/ggg-service-dialog.c:125
 msgid "Select 3G Service"
-msgstr ""
+msgstr "Seleccioneu un servei 3G"
 
 #: ../data/carrick.desktop.in.in.h:1
-#, fuzzy
 msgid "Network settings"
-msgstr "S'ha perdut la connexió"
+msgstr "Paràmetres de la connexió"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr "No s'ha trobat cap xarxa. Podeu provar d'engegar el wi-fi."
