@@ -375,14 +375,13 @@ msgstr "Encriptat amb WPA2"
 #. TRANSLATORS: label in advanced settings (next to combobox
 #. * for DHCP/Static IP)
 #: ../carrick/carrick-service-item.c:1836
-#, fuzzy
 msgid "Connect by:"
-msgstr "Connectat"
+msgstr "Connectat per:"
 
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:1838
 msgid "IP address:"
-msgstr ""
+msgstr "Adreça IP:"
 
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:1840
@@ -397,39 +396,37 @@ msgstr ""
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:1844
 msgid "DNS:"
-msgstr ""
+msgstr "DNS:"
 
 #: ../carrick/carrick-service-item.c:1850
 msgid "DHCP"
-msgstr ""
+msgstr "DHCP"
 
 #: ../carrick/carrick-service-item.c:1852
 msgid "Static IP"
-msgstr ""
+msgstr "IP estàtica"
 
 #. TRANSLATORS: label for apply button in static ip settings
 #: ../carrick/carrick-service-item.c:1902
 msgid "Apply"
-msgstr ""
+msgstr "Applica"
 
 #: ../src/carrick.c:49
-#, fuzzy
 msgid "networks - not connected"
-msgstr "Connectat a la xarxa"
+msgstr "xarxes - no connectades"
 
 #: ../src/carrick.c:55
-#, fuzzy
 msgid "networks - connecting"
-msgstr "Connectat a la xarxa"
+msgstr "xarxes - connectant-s'hi"
 
 #: ../src/carrick.c:61
 msgid "networks - wired"
-msgstr ""
+msgstr "xarxes - amb fil"
 
 #: ../src/carrick.c:63
 #, c-format
 msgid "networks - %s - wifi"
-msgstr ""
+msgstr "xarxes - %s - sense fil"
 
 #: ../src/carrick.c:66
 #, c-format
