@@ -3,7 +3,6 @@ AM_CPPFLAGS = \
 	-DMWB_VERSION_STRING=\"$(MWB_VERSION)\" \
 	$(MX_CFLAGS) \
 	$(GTK_CFLAGS) \
-	$(CHROME_CFLAGS) \
 	-Wall \
 	-fno-exceptions -fno-rtti \
 	-I$(top_srcdir)/common
@@ -20,6 +19,4 @@ libcommon_a_SOURCES = \
 	mwb-spindle.cc \
 	mwb-spindle.h \
 	mwb-utils.cc \
-	mwb-utils.h \
-	chrome-profile-provider.cc \
-	chrome-profile-provider.h
+	mwb-utils.h 
