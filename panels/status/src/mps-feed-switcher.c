@@ -334,6 +334,13 @@ _new_service_button_clicked_cb (MxButton        *button,
   const gchar *args[3] = { NULL, };
 
   app_info = g_desktop_app_info_new ("gnome-control-center.desktop");
+
+  if (!app_info)
+  {
+    g_critical (G_STRLOC ": Unable to get app infor for gnome-control-center");
+    return;
+  }
+
   args[0] = g_app_info_get_commandline (G_APP_INFO (app_info));
   args[1] = "bisho.desktop";
   args[2] = NULL;
