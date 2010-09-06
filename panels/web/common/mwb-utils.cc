@@ -22,6 +22,8 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
+#include <stdlib.h>
+#include <string.h>
 #include "mwb-utils.h"
 
 gboolean
@@ -167,6 +169,9 @@ mwb_utils_cursor_new_from_stock (const gchar *icon_name)
     return NULL;
 }
 
+
+#define NETPANEL_DIR ".config/internet-panel"
+
 gchar*
 mwb_utils_places_db_get_filename()
 {
@@ -178,6 +183,12 @@ mwb_utils_places_db_get_filename()
   gchar *result = NULL;
   gchar *path = NULL;
   guint i, length = 0;
+
+  result = g_build_filename(g_get_home_dir(),
+                            NETPANEL_DIR, 
+                            "chromium.db", 
+                            NULL);
+  return result;
 
   profile_ini = g_build_filename(g_get_home_dir(),
                                  MWB_PROFILES_INI,
@@ -250,7 +261,7 @@ mwb_utils_places_db_connect(const gchar *places_db, sqlite3 **dbcon)
       *dbcon = NULL;
       return -1;
     }
-  sqlite3_busy_timeout(*dbcon, 5000);
+//   sqlite3_busy_timeout(*dbcon, 5000);
 
   return 0;
 }
@@ -258,5 +269,5 @@ mwb_utils_places_db_connect(const gchar *places_db, sqlite3 **dbcon)
 void 
 mwb_utils_places_db_close(sqlite3 *dbcon)
 {
-    sqlite3_close(dbcon);
+  sqlite3_close(dbcon);
 }

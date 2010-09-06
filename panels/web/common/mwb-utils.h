@@ -91,7 +91,6 @@ mwb_utils_places_db_connect (const gchar *places_db, sqlite3 **dbcon);
 void 
 mwb_utils_places_db_close (sqlite3 *dbcon);
 
-
 G_END_DECLS
 
 #endif /* _MWB_UTILS_H */

@@ -4,7 +4,6 @@ AM_CPPFLAGS = \
 	$(GTK_CFLAGS) \
 	$(NETPANEL_CFLAGS) \
 	$(MPL_CFLAGS) \
-	$(CHROME_CFLAGS) \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/netpanel\" \
@@ -19,7 +18,6 @@ meego_panel_web_LDADD = \
 	$(GTK_LIBS) \
 	$(NETPANEL_LIBS) \
 	$(MPL_LIBS) \
-	$(CHROME_LIBS) \
 	$(top_builddir)/common/libcommon.a
 
 meego_panel_web_SOURCES = \

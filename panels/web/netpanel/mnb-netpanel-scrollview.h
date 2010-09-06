@@ -67,7 +67,7 @@ GType mnb_netpanel_scrollview_get_type (void);
 MxWidget *mnb_netpanel_scrollview_new ();
 
 void mnb_netpanel_scrollview_add_item (MnbNetpanelScrollview *self, guint order,
-                                       ClutterActor *item, ClutterActor *title);
+                                       ClutterActor *item, ClutterActor *favi, ClutterActor *title);
 
 G_END_DECLS
 

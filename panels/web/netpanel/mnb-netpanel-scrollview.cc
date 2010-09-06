@@ -24,7 +24,9 @@
 #define MAX_DISPLAY 4
 #define ROW_SPACING 0
 #define COL_SPACING 14
-#define SCROLLBAR_HEIGHT 24
+#define SCROLLBAR_HEIGHT 16
+#define TITLE_SPACING 4
+// #define SCROLLBAR_HEIGHT 24
 
 G_DEFINE_TYPE (MnbNetpanelScrollview, mnb_netpanel_scrollview, MX_TYPE_WIDGET)
 
@@ -35,6 +37,7 @@ typedef struct
 {
   ClutterActor *item;
   ClutterActor *title;
+  ClutterActor *favi;
   guint order;
   gfloat position;
 } ItemProps;
@@ -62,6 +65,7 @@ mnb_netpanel_scrollview_dispose (GObject *object)
       ItemProps *props = (ItemProps*)priv->items->data;
       clutter_actor_unparent (props->item);
       clutter_actor_unparent (props->title);
+      clutter_actor_unparent (props->favi);
       g_slice_free (ItemProps, props);
       priv->items = g_list_delete_link (priv->items, priv->items);
     }
@@ -89,7 +93,8 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
   ClutterActorBox child_box;
   MxPadding padding;
   gfloat width, height;
-  gfloat item_width = 0.0, item_height = 0.0, title_height = 0.0;
+  gfloat item_width = 0.0, item_height = 0.0, title_height = 0.0, 
+         favi_width = 0.0, favi_height = 0.0;
   guint n_items;
   ItemProps *props;
   GList *item;
@@ -113,7 +118,9 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
   props = (ItemProps*)priv->items->data;
   clutter_actor_get_preferred_size (props->item, NULL, NULL,
                                     &item_width, &item_height);
-  clutter_actor_get_preferred_height (props->title, -1, NULL, &title_height);
+  clutter_actor_get_preferred_size (props->favi, NULL, NULL,
+                                    &favi_width, &favi_height);
+//   clutter_actor_get_preferred_height (props->title, -1, NULL, &title_height);
 
   /* Allocate for the items and titles */
   child_box.x1 = padding.left + COL_SPACING;
@@ -129,7 +136,12 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
       clutter_actor_allocate (props->item, &child_box, flags);
 
       child_box.y1 = child_box.y2;
-      child_box.y2 = child_box.y1 + title_height;
+      child_box.y2 = child_box.y1 + favi_height;
+      child_box.x2 = child_box.x1 + favi_width;
+      clutter_actor_allocate (props->favi, &child_box, flags);
+
+      child_box.x2 = child_box.x1 + item_width;
+      child_box.x1 = child_box.x1 + favi_width + TITLE_SPACING;
       clutter_actor_allocate (props->title, &child_box, flags);
 
       child_box.x1 = child_box.x2 + COL_SPACING;
@@ -157,7 +169,8 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
       /* Allocate for the scrollbar */
       child_box.x1 = padding.left;
       child_box.x2 = child_box.x1 + width;
-      child_box.y1 = padding.top + item_height + title_height;
+//       child_box.y1 = padding.top + item_height + title_height;
+      child_box.y1 = padding.top + item_height + favi_height + TITLE_SPACING;
       child_box.y2 = child_box.y1 + SCROLLBAR_HEIGHT;
       clutter_actor_allocate (CLUTTER_ACTOR (priv->scroll_bar), &child_box,
                               flags);
@@ -239,6 +252,8 @@ mnb_netpanel_scrollview_get_preferred_height (ClutterActor *self,
                     min_height_p, natural_height_p, 0.0);
   add_child_height (props->title, -1,
                     min_height_p, natural_height_p, ROW_SPACING);
+  add_child_height (props->favi, -1,
+                    min_height_p, natural_height_p, ROW_SPACING);
 
   n_items = g_list_length (priv->items);
   if (n_items > MAX_DISPLAY)  /* Include scrollbar */
@@ -280,6 +295,7 @@ mnb_netpanel_scrollview_paint (ClutterActor *actor)
       if (CLUTTER_ACTOR_IS_MAPPED (props->item))
         {
           clutter_actor_paint (props->item);
+          clutter_actor_paint (props->favi);
           clutter_actor_paint (props->title);
         }
     }
@@ -320,6 +336,7 @@ mnb_netpanel_scrollview_map (ClutterActor *actor)
     {
       ItemProps *props = (ItemProps*)item->data;
       clutter_actor_map (props->item);
+      clutter_actor_map (props->favi);
       clutter_actor_map (props->title);
     }
 
@@ -339,6 +356,7 @@ mnb_netpanel_scrollview_unmap (ClutterActor *actor)
     {
       ItemProps *props = (ItemProps*)item->data;
       clutter_actor_unmap (props->item);
+      clutter_actor_unmap (props->favi);
       clutter_actor_unmap (props->title);
     }
 
@@ -477,6 +495,7 @@ void
 mnb_netpanel_scrollview_add_item (MnbNetpanelScrollview *self,
                                   guint                  order,
                                   ClutterActor          *item,
+                                  ClutterActor          *favi,
                                   ClutterActor          *title)
 {
   GList *i;
@@ -484,11 +503,13 @@ mnb_netpanel_scrollview_add_item (MnbNetpanelScrollview *self,
   MnbNetpanelScrollviewPrivate *priv = self->priv;
 
   clutter_actor_set_parent (item, CLUTTER_ACTOR (self));
+  clutter_actor_set_parent (favi, CLUTTER_ACTOR (self));
   clutter_actor_set_parent (title, CLUTTER_ACTOR (self));
 
   props = g_slice_new0 (ItemProps);
   props->item = item;
   props->title = title;
+  props->favi = favi;
   props->order = order;
 
   for (i = priv->items; i != NULL; i = i->next)

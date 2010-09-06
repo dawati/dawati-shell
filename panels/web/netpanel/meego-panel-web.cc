@@ -16,6 +16,7 @@
  */
 
 #include <locale.h>
+#include <string>
 #include <glib/gi18n.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -24,33 +25,10 @@
 #include <mx/mx.h>
 #include <meego-panel/mpl-panel-clutter.h>
 #include <meego-panel/mpl-panel-common.h>
+
 #include "meego-netbook-netpanel.h"
-#include "chrome-profile-provider.h"
 
 #include <config.h>
-
-// chrome header
-#include "app/app_paths.h"
-#include "app/resource_bundle.h"
-#include "base/at_exit.h"
-#include "base/basictypes.h"
-#include "base/file_path.h"
-#include "base/file_util.h"
-#include "base/i18n/icu_util.h"
-#include "base/message_loop.h"
-#include "base/path_service.h"
-#include "base/scoped_vector.h"
-#include "base/string_util.h"
-#include "base/command_line.h"
-#include "chrome/browser/pref_service.h"
-#include "chrome/common/pref_names.h"
-#include "chrome/common/chrome_paths.h"
-#include "chrome/browser/browser_prefs.h"
-#include "chrome/browser/profile.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/browser_process_impl.h"
-#include "chrome/browser/chrome_thread.h"
-#include "chrome/browser/user_data_manager.h"
 
 static void
 _client_set_size_cb (MplPanelClient *client,
@@ -78,7 +56,6 @@ stage_delete_event (ClutterStage *stage,
                     ClutterEvent *event,
                     gpointer* userdata)
 {
-  MessageLoopForUI::current()->Quit();
   return TRUE;
 }
 
@@ -89,13 +66,6 @@ static GOptionEntry entries[] = {
   {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL}
 };
 
-#define CHROME_EXE_PATH "/opt/google/chrome/"
-#define CHROME_BUNDLE_PATH CHROME_EXE_PATH "/chrome.pak"
-#define CHROME_LOCALE_PATH CHROME_EXE_PATH "/locales"
-
-#define CHROMIUM_EXE_PATH "/usr/lib/chromium-browser/"
-#define CHROMIUM_BUNDLE_PATH CHROMIUM_EXE_PATH "/chrome.pak"
-#define CHROMIUM_LOCALE_PATH CHROMIUM_EXE_PATH "/locales"
 
 int
 main (int    argc,
@@ -105,65 +75,8 @@ main (int    argc,
   ClutterActor *stage;
   MeegoNetbookNetpanel *netpanel;
   GOptionContext *context;
-  std::string browser_name;
+  std::string browser_name = "chromium";
   GError *error = NULL;
-
-  // Init chrome environment variables
-  base::AtExitManager at_exit_manager;
-  CommandLine::Init(argc, argv);
-  CommandLine* cmd_line = CommandLine::ForCurrentProcess();
-
-  chrome::RegisterPathProvider();
-  app::RegisterPathProvider();
-
-  if (g_file_test (CHROMIUM_BUNDLE_PATH, G_FILE_TEST_EXISTS)
-     && g_file_test (CHROMIUM_LOCALE_PATH, G_FILE_TEST_EXISTS)) {
-    FilePath bundle_path(CHROMIUM_BUNDLE_PATH);
-    FilePath locale_path(CHROMIUM_LOCALE_PATH);
-    ResourceBundle::InitSharedInstance(L"en-US", bundle_path, locale_path);
-    if (g_file_test(CHROME_EXE_PATH "chrome", G_FILE_TEST_EXISTS) == TRUE) {
-      browser_name = "google-chrome";
-    } else {
-      browser_name = "chromium";
-    }
-  }
-  else {
-    g_warning("Chrome browser is not installed\n");
-  }
-
-  g_thread_init(NULL);
-  g_type_init();
-  gtk_init(&argc, &argv);
-
-  MessageLoop main_message_loop(MessageLoop::TYPE_UI);
-
-  scoped_ptr<BrowserProcessImpl> browser_process;
-  browser_process.reset(new BrowserProcessImpl(*cmd_line));
-
-  ChromeThread main_thread(ChromeThread::UI, MessageLoop::current());
-
-  PrefService* local_state = browser_process->local_state();
-  local_state->RegisterStringPref(prefs::kApplicationLocale, L"");
-
-  scoped_ptr<UserDataManager> user_data_manager(UserDataManager::Create());
-
-  // Initialize the prefs of the local state.
-  browser::RegisterLocalState(local_state);
-  g_browser_process->SetApplicationLocale("en-US");
-
-  // Create the child threads.  We need to do this since ChromeThread::PostTask
-  // silently deletes a posted task if the target message loop isn't created.
-  browser_process->db_thread();
-  browser_process->file_thread();
-  browser_process->process_launcher_thread();
-  browser_process->io_thread();
-
-  // Init google url tracker to avoid abort later
-  browser_process->google_url_tracker();
-
-  // XXX: have to init chrome profile prover after thread creation
-  // Init chrome profile provider
-  ChromeProfileProvider::GetInstance()->Initialize(browser_name.c_str());
 
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -181,6 +94,9 @@ main (int    argc,
   }
 
   g_option_context_free (context);
+
+  g_thread_init(NULL);
+  clutter_threads_init();
 
   mpl_panel_clutter_init_with_gtk (&argc, &argv);
 
@@ -297,8 +213,7 @@ main (int    argc,
                     (GCallback)stage_button_press_event,
                     netpanel);
 
-  // run chromium's message loop
-  MessageLoopForUI::current()->Run(NULL);
+  clutter_main ();
 
   return 0;
 }

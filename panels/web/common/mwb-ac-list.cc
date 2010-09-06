@@ -30,8 +30,6 @@ extern "C" {
 #include "mwb-ac-list.h"
 #include "mwb-separator.h"
 #include "mwb-utils.h"
-#include "chrome-profile-provider.h"
-#include "base/message_loop.h"
 
 G_DEFINE_TYPE (MwbAcList, mwb_ac_list, MX_TYPE_WIDGET);
 
@@ -89,6 +87,9 @@ struct _MwbAcListPrivate
   CoglHandle     search_engine_icon;
   gchar         *search_engine_name;
   gchar         *search_engine_url;
+
+  sqlite3       *dbcon;
+  sqlite3_stmt  *search_stmt;
 
   /* List of suggested TLD completions */
   GHashTable    *tld_suggestions;
@@ -808,7 +809,6 @@ mwb_ac_list_unmap (ClutterActor *actor)
       clutter_actor_unmap (CLUTTER_ACTOR (entry->highlight_widget));
     }
 
-  ChromeProfileProvider::GetInstance()->StopAutoComplete();
 }
 
 static void
@@ -910,6 +910,9 @@ mwb_ac_list_init (MwbAcList *self)
 
   g_signal_connect (self, "style-changed",
                     G_CALLBACK (mwb_ac_list_style_changed_cb), NULL);
+
+  priv->dbcon = NULL;
+  priv->search_stmt = NULL;
 }
 
 MxWidget*
@@ -918,40 +921,60 @@ mwb_ac_list_new (void)
   return MX_WIDGET (g_object_new (MWB_TYPE_AC_LIST, NULL));
 }
 
+#define FAVICON_SQL "SELECT url FROM favicons WHERE id='%d'"
+
 #define THEMEDIR "/usr/share/meego-panel-web/netpanel/"
 static void
 mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
 {
+
+  MwbAcListPrivate *priv = self->priv;
+
   GError *texture_error = NULL;
-  const char* icon_path = NULL;
 
   if (!entry) 
     return;
 
-  switch (entry->type)
+  gchar *favi_url = NULL;
+  gchar *icon_path = NULL;
+
+  sqlite3_stmt *favicon_stmt;
+  gchar *stmt = g_strdup_printf(FAVICON_SQL, entry->type);
+  int rc = sqlite3_prepare_v2 (priv->dbcon,
+                           stmt,
+                           -1,
+                           &favicon_stmt, NULL);
+  if (rc)
+    g_warning ("[netpanel] sqlite3_prepare_v2():tab_stmt %s",
+               sqlite3_errmsg(priv->dbcon));
+
+  if (priv->dbcon && favicon_stmt)
     {
-    case AutocompleteMatch::URL_WHAT_YOU_TYPED:     // The input as a URL.
-      icon_path = THEMEDIR "o2_globe.png";
-      break;
-    case AutocompleteMatch::HISTORY_URL:            // A past page whose URL contains the input.
-    case AutocompleteMatch::HISTORY_TITLE:          // A past page whose title contains the input.
-    case AutocompleteMatch::HISTORY_BODY:           // A past page whose body contains the input.
-    case AutocompleteMatch::HISTORY_KEYWORD:        // A past page whose keyword contains the input.
-      icon_path = THEMEDIR "o2_history.png";
-      break;
-    case AutocompleteMatch::NAVSUGGEST:             // A suggested URL.
-    case AutocompleteMatch::SEARCH_WHAT_YOU_TYPED:  // The input as a search query (with the default
-    case AutocompleteMatch::SEARCH_HISTORY:         // A past search (with the default engine)
-    case AutocompleteMatch::SEARCH_SUGGEST:         // A suggested search (with the default engine).
-    case AutocompleteMatch::SEARCH_OTHER_ENGINE:    // A search with a non-default engine.
-      icon_path = THEMEDIR "o2_search.png";
-      break;
-    case AutocompleteMatch::OPEN_HISTORY_PAGE:      // A synthetic 
-      icon_path = THEMEDIR "o2_more.png";
-      break;
-    default:
-      break;
+      if (sqlite3_step (favicon_stmt) == SQLITE_ROW)
+        {
+          favi_url = (gchar*)sqlite3_column_text(favicon_stmt, 0);
+        }
     }
+
+  if(favi_url)
+    {
+      gchar *csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, favi_url, -1);  
+      gchar *thumbnail_filename = g_strconcat (csum, ".ico", NULL);
+      icon_path = g_build_filename (g_get_home_dir (),  
+                                    ".config",  
+                                    "internet-panel",  
+                                    "favicons",  
+                                    thumbnail_filename,  
+                                    NULL);  
+      g_free(csum);  
+      g_free(thumbnail_filename);
+    }
+  else
+    {
+      icon_path = g_strdup_printf("%s%s", THEMEDIR, "o2_globe.png");
+    }
+  sqlite3_finalize(favicon_stmt);
+
   if (icon_path)
     {
       entry->texture =  cogl_texture_new_from_file (icon_path, 
@@ -965,6 +988,7 @@ mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
           g_error_free (texture_error);
         }
       clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      g_free(icon_path);
     }
 }
 
@@ -1025,7 +1049,7 @@ mwb_ac_list_result_received(void       *context,
                             int         type,
                             const char *url,
                             const char *value,
-                            const char *comment)
+                            int         favicon_id)
 {
   MwbAcList* self = (MwbAcList*)context;
   MwbAcListPrivate *priv = self->priv;
@@ -1034,13 +1058,8 @@ mwb_ac_list_result_received(void       *context,
     return; 
 
   char *result_text = NULL;
-  if (comment)
-    {
-      result_text = (char*)g_malloc(strlen(value) + strlen(comment) + 4);
-      sprintf(result_text, "%s - %s", value, comment);
-    }
-  else
-    result_text = g_strdup(value);
+
+  result_text = g_strdup(value);
 
   if (priv->entries->len < MWB_AC_LIST_MAX_ENTRIES)
     {
@@ -1072,7 +1091,7 @@ mwb_ac_list_result_received(void       *context,
 
       entry->label_text = (gchar*)result_text;
       entry->url = g_strdup (url);
-      entry->type = type;
+      entry->type = favicon_id;
 
       mwb_ac_list_update_entry (self, entry);
       mwb_ac_list_set_icon (self, entry);
@@ -1355,6 +1374,15 @@ mwb_ac_list_clear_timeout_cb (MwbAcList *self)
   return FALSE;
 }
 
+#define AC_LIST_SQL "SELECT DISTINCT url, url||' - '||title as vl, favicon_id "\
+                    "FROM ( "\
+                          "SELECT url, title, favicon_id, 100 as visit_count "\
+                          "FROM bookmarks "\
+                          "UNION "\
+                          "SELECT url, title, favicon_id, visit_count "\
+                          "FROM urls"\
+                         ") WHERE vl like ? ORDER BY visit_count DESC"
+
 void
 mwb_ac_list_set_search_text (MwbAcList *self,
                              const gchar *search_text)
@@ -1385,12 +1413,26 @@ mwb_ac_list_set_search_text (MwbAcList *self,
 
       g_object_notify (G_OBJECT (self), "search-text");
 
-      if (search_text_len == 0)
+      if (search_text_len == 0 || !priv->search_stmt)
         return;
 
-      ChromeProfileProvider::GetInstance()->StartAutoComplete(search_text, self,
-                                                              mwb_ac_list_result_received,
-                                                              mwb_ac_list_result_exception);
+      sqlite3_reset(priv->search_stmt);
+
+      gchar param[search_text_len + 3];
+      sprintf(param, "%%%s%%", search_text);
+      int rc = sqlite3_bind_text(priv->search_stmt, 1, param, search_text_len + 2, SQLITE_TRANSIENT);
+      if (rc)
+          g_warning("[netpanel] sqlite3_bind_text(): %s", sqlite3_errmsg(priv->dbcon));
+
+      priv->entries->len = 0;
+      while (sqlite3_step(priv->search_stmt) == SQLITE_ROW)
+        {
+          mwb_ac_list_result_received(self,
+                  0,
+                  (gchar*) sqlite3_column_text(priv->search_stmt, 0), // url
+                  (gchar*) sqlite3_column_text(priv->search_stmt, 1), // title
+                  sqlite3_column_int(priv->search_stmt, 2));          // favicon_id
+        }
     }
 }
 
@@ -1472,3 +1514,40 @@ mwb_ac_list_get_tld_suggestions (MwbAcList *self)
   return g_hash_table_get_keys (priv->tld_suggestions);
 }
 
+void
+mwb_ac_list_db_stmt_prepare (MwbAcList *self, void *dbcon)
+{
+  gint rc;
+  MwbAcListPrivate *priv = self->priv;
+  priv->dbcon = (sqlite3 *)dbcon;
+
+  if (!priv->dbcon)
+    {
+      g_warning ("[netpanel] No available database connection");
+      return;
+    }
+
+  if (!priv->search_stmt)
+    {
+      rc = sqlite3_prepare_v2 (priv->dbcon,
+                               AC_LIST_SQL,
+                               -1,
+                               &priv->search_stmt,
+                               NULL);
+    if (rc)
+      g_warning("[netpanel] sqlite3_prepare_v2 (): %s",
+                sqlite3_errmsg(priv->dbcon));
+    }
+}
+
+void
+mwb_ac_list_db_stmt_finalize (MwbAcList *self)
+{
+  MwbAcListPrivate *priv = self->priv;
+
+  if (priv->search_stmt)
+    sqlite3_finalize(priv->search_stmt);
+
+  priv->search_stmt = NULL;
+  priv->dbcon = NULL; /*  let panel to close db */
+}

@@ -29,8 +29,6 @@
 #include "mnb-netpanel-bar.h"
 #include "mwb-utils.h"
 #include "mwb-ac-list.h"
-#include "chrome-profile-provider.h"
-#include "base/message_loop.h"
 
 G_DEFINE_TYPE (MnbNetpanelBar, mnb_netpanel_bar, MPL_TYPE_ENTRY)
 
@@ -55,6 +53,7 @@ struct _MnbNetpanelBarPrivate
   guint            ac_list_activate_handler;
   ClutterTimeline *ac_list_timeline;
   gdouble          ac_list_anim_progress;
+  gboolean         ac_list_tag;
 };
 
 static void
@@ -299,9 +298,10 @@ mnb_netpanel_bar_captured_event (ClutterActor *actor,
         {
           gint selection =
             mwb_ac_list_get_selection (MWB_AC_LIST (priv->ac_list));
-
           if (selection < 0)
+            {
             mwb_ac_list_set_selection (MWB_AC_LIST (priv->ac_list), 0);
+            }
           else if (key_event->keyval == CLUTTER_Down)
             {
               guint n_visible_entries =
@@ -311,15 +311,23 @@ mnb_netpanel_bar_captured_event (ClutterActor *actor,
                 {
                   mwb_ac_list_set_selection (MWB_AC_LIST (priv->ac_list),
                                              selection + 1);
-                  return TRUE;
+//                   return TRUE;
                 }
             }
           else if (selection > 0)
             {
               mwb_ac_list_set_selection (MWB_AC_LIST (priv->ac_list),
                                          selection - 1);
-              return TRUE;
+//               return TRUE;
             }
+
+          priv->ac_list_tag = FALSE;
+          int tmp = mwb_ac_list_get_selection(MWB_AC_LIST (priv->ac_list));
+          gchar *url = mwb_ac_list_get_entry_url (MWB_AC_LIST (priv->ac_list),
+              tmp);
+          mpl_entry_set_text (MPL_ENTRY (self), url);
+          priv->ac_list_tag = TRUE;
+          return TRUE;
         }
         break;
       }
@@ -406,7 +414,7 @@ mnb_netpanel_bar_text_changed_cb (GObject        *obj,
 {
   MnbNetpanelBarPrivate *priv = self->priv;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (priv->ac_list)))
+  if (priv->ac_list_tag && CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (priv->ac_list)))
     {
       const gchar *text = mpl_entry_get_text (MPL_ENTRY (self));
       mwb_ac_list_set_search_text (MWB_AC_LIST (priv->ac_list), text);
@@ -504,6 +512,7 @@ mnb_netpanel_bar_init (MnbNetpanelBar *self)
                     self);
 
   priv->ac_list = mwb_ac_list_new ();
+  priv->ac_list_tag = TRUE;
 
   priv->ac_list_activate_handler
     = g_signal_connect (priv->ac_list, "activate",
@@ -520,6 +529,24 @@ mnb_netpanel_bar_new (const gchar *label)
   return MX_WIDGET (g_object_new (MNB_TYPE_NETPANEL_BAR,
                                     "label", label,
                                     NULL));
+}
+
+void
+mnb_netpanel_bar_set_dbcon (GObject *object, void *dbcon)
+{
+  MnbNetpanelBar *self = MNB_NETPANEL_BAR(object);
+  MnbNetpanelBarPrivate *priv = self->priv;
+
+  mwb_ac_list_db_stmt_prepare (MWB_AC_LIST (priv->ac_list), dbcon);
+}
+
+void
+mnb_netpanel_bar_clear_dbcon (GObject *object)
+{
+  MnbNetpanelBar *self = MNB_NETPANEL_BAR(object);
+  MnbNetpanelBarPrivate *priv = self->priv;
+
+  mwb_ac_list_db_stmt_finalize (MWB_AC_LIST (priv->ac_list));
 }
 
 void

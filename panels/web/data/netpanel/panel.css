@@ -43,7 +43,7 @@ MeegoNetbookNetpanel
 MeegoNetbookNetpanel MxLabel
 {
   font-family: "Droid Sans";
-  font-size: 11pt;
+  font-size: 11px;
   color: #6e6e6e;
   padding:  3 0 5 0;
 }
@@ -51,7 +51,7 @@ MeegoNetbookNetpanel MxLabel
 MeegoNetbookNetpanel MxLabel#section
 {
   font-family: "Droid Sans Bold";
-  font-size: 14pt;
+  font-size: 14px;
   font-weight: bold;
   color: #616261;
   padding: 15 16 0 34;
@@ -60,7 +60,7 @@ MeegoNetbookNetpanel MxLabel#section
 MeegoNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
   font-family: "Droid Sans";
-  font-size: 16pt;
+  font-size: 16px;
   color: #909190;
   padding: 13 16 13 34;
 }
@@ -126,7 +126,7 @@ MnbNetpanelScrollview
 #panel-label {
   font-family: "Droid Sans Bold";
   color: #a980ed;
-  font-size: 22pt;
+  font-size: 22px;
   font-weight: bold;
   padding: 1 0 5 18;
 }
@@ -140,7 +140,7 @@ MnbNetpanelScrollview
   font-family: "Droid Sans Bold";
   border-image: url('content-pane-header.png') 2;
   color: #616261;
-  font-size: 16pt;
+  font-size: 16px;
   font-weight: bold;
   padding: 8;
 }
