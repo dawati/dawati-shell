@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:20+0000\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2010-03-20 09:54+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -60,12 +60,12 @@ msgstr "Abranles emile :"
 msgid "Reset to default"
 msgstr "Rimete come prémetou"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Aroke GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "Totes les ôtes arokes ni sont mostrêyes k' e terminå."
 
@@ -135,8 +135,8 @@ msgid "Due %x"
 msgstr "A fé pol %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Cwand vs avoz defini vos contes waibes eyet eployî kékès fitchîs, il aparexhront chal so myzone pos î moussî  abeydimint cwand vos l' vôroz."
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Cwand vs åroz apontyî vos contes waibes eyet eployî kékès fitchîs, il aparexhront chal so myzone pos î moussî  åjheymint cwand vos l' vôroz."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
