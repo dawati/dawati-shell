@@ -1,20 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# iñigo varela <ivarela@softastur.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-myzone.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-29 16:02+0000\n"
-"PO-Revision-Date: 2010-07-03 12:11+0100\n"
-"Last-Translator: astur <malditoastur@gmail.com>\n"
-"Language-Team: asturian <alministradores@softastur.org>\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-09-07 21:17+0200\n"
+"Last-Translator: iñigo varela <ivarela@softastur.org>\n"
+"Language-Team: alministradores@softastur.org\n"
+"Language: ast\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Virtaal 0.5.2\n"
 "X-Poedit-Language: asturian\n"
 
 #: ../data/meego-panel-myzone.desktop.in.in.h:1
@@ -25,8 +26,7 @@ msgstr "Myzone"
 msgid "Change the Myzone background and content"
 msgstr "Camuda'l conteníu y el papel tapiz de Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -62,12 +62,12 @@ msgstr "Alertes de corréu-e:"
 msgid "Reset to default"
 msgstr "Restablecer valores predeterminaos"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Fallu GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "El restu de los fallos namái s'amuesen na pantalla de terminal."
 
@@ -92,15 +92,18 @@ msgid "Show as many recent files as possible"
 msgstr "Amosar el máximu conteníu de ficheros recientes"
 
 #: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
-msgstr "¿Quies llimpiar los tos documentos recientes? Esto desaniciará'l conteníu llocal de Myzone."
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from your myzone"
+msgstr ""
+"¿Quies llimpiar los tos documentos recientes? Esto desaniciará'l conteníu "
+"llocal de Myzone."
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Cites"
 
-#: ../penge/penge-calendar-pane.c:496
-#: ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Abrir"
 
@@ -112,8 +115,7 @@ msgstr "Xeres"
 msgid "Create an appointment"
 msgstr "Crear una cita"
 
-#: ../penge/penge-events-pane.c:72
-#: ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Amestar"
 
@@ -139,8 +141,12 @@ msgid "Due %x"
 msgstr "Ye pa %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Cuando tengas configuraes les tos cuentes Web y usao dalgunos ficheros, estos van apaecer equí en MyZone, pa poder acceder a ellos cenciellamente."
+msgid ""
+"When you’ve set up your web accounts and used some files, they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+"Cuando tengas configuraes les tos cuentes Web y usao dalgunos ficheros, "
+"estos van apaecer equí en MyZone, pa poder acceder a ellos cenciellamente."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
@@ -161,4 +167,3 @@ msgstr "Mensaxe ensin lleer"
 #: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
 msgstr "Mensaxes ensin lleer"
-
