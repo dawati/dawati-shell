@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego meego2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
-"PO-Revision-Date: 2010-07-01 09:53-0800\n"
-"Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-09-09 15:13-0800\n"
+"Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,12 +65,12 @@ msgstr "Email waarschuwingen:"
 msgid "Reset to default"
 msgstr "Terugzetten naar standaardwaarden"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "GConf fout: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "Alle verdere fouten alleen op de terminal weergegeven."
 
@@ -142,8 +142,8 @@ msgid "Due %x"
 msgstr "Verstrijkt %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Als je jouw web accounts hebt ingesteld en een aantal bestanden hebt gebruikt, zullen die hier voor toegangsgemak in myzone verschijnen."
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Als je webaccounts hebt ingesteld en bestanden hebt gebruikt, zullen die voor toegangsgemak hier in de myzone verschijnen."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
@@ -171,15 +171,19 @@ msgstr "Ongelezen berichten"
 #~ msgstr ""
 #~ "Dit is de Myzone, waar je recente bestanden en inhoud van webfeeds "
 #~ "verschijnen."
+
 #~ msgid ""
 #~ "Things that your friends do online will appear here. Activate your "
 #~ "accounts now!"
 #~ msgstr ""
 #~ "Dingen die je vrienden online doen verschijnen hier. Activeer je accounts!"
+
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone insellingen"
+
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>Welkom bij Meego 2.1 voor Netbooks</b>"
+
 #~ msgid ""
 #~ "As Meego is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
@@ -188,4 +192,3 @@ msgstr "Ongelezen berichten"
 #~ "Meego is anders dan andere computers. We hebben hier en daar wat "
 #~ "dingetjes toegevoegd om je op weg te helpen. We hopen dat je het "
 #~ "waardeert, Het Meego Team."
-
