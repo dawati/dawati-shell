@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Anna-Lena Schon <anna-lenax.schon@intel.com>\n"
+"Last-Translator: Petra Mathilda Klein <klein.mathilda@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +22,8 @@ msgstr "Myzone-panel"
 msgid "Change the Myzone background and content"
 msgstr "Ändra bakgrund och innehåll i Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -58,12 +59,12 @@ msgstr "Email meddelanden"
 msgid "Reset to default"
 msgstr "Resätta till standard"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "GConf-fel: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "Alla ytterligare fel visas bara på terminal."
 
@@ -87,11 +88,16 @@ msgstr "Visa mestadels nyligen använda filer"
 msgid "Show as many recent files as possible"
 msgstr "Visa så många av nyligen använda filer som möjligt"
 
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Vill du radera dina senaste dokument? Detta tar bort det lokala innehållet från Myzone"
+
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
 msgstr "Möten"
 
-#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Öppna"
 
@@ -103,7 +109,8 @@ msgstr "Uppgifter"
 msgid "Create an appointment"
 msgstr "Skapa ett möte"
 
-#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Lägg till"
 
@@ -128,6 +135,10 @@ msgstr "Inget schemalagt idag"
 msgid "Due %x"
 msgstr "Färdig %x"
 
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "När du har konfigurerat dina webbkonton och använt några filer visas de här på myzone för enkel åtkomst när du vill."
+
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
 msgstr "Spela upp introduktionsvideo"
@@ -148,22 +159,25 @@ msgstr "Oläst meddelande"
 msgid "Unread messages"
 msgstr "Olästa meddelanden"
 
-#: ../capplet/myzone-cc-panel.c:77
-msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
-msgstr "Vill du radera dina senaste dokument? Detta tar bort det lokala innehållet från Myzone"
-
-#: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "När du har konfigurerat dina webbkonton och använt några filer visas de här på Myzone för enkel åtkomst när du vill."
-
-#~ msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-#~ msgstr "Detta är Myzone där dina nyligen använda filer och innehåll från webbmatningar visas."
-
-#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
-#~ msgstr "Vad dina vänner gör på internvet visas här. Aktivera dina konton nu!"
-
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr ""
+#~ "Detta är Myzone där dina nyligen använda filer och innehåll från "
+#~ "webbmatningar visas."
+#~ msgid ""
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "Vad dina vänner gör på internvet visas här. Aktivera dina konton nu!"
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>Välkommen till Meego 2.1 för netbooks</b>"
+#~ msgid ""
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
+#~ msgstr ""
+#~ "Då Meego skiljer sig något från andra datorer har vi satt ihop en del "
+#~ "tips för att underlätta för dig att hitta allt. Hoppas du gillar det! "
+#~ "Team Meego."
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Då Meego skiljer sig något från andra datorer har vi satt ihop en del tips för att underlätta för dig att hitta allt. Hoppas du gillar det! Team Meego."
