@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: GLSJPN_Etsuko <etsuko.murozono@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,12 +59,12 @@ msgstr "メールアラート："
 msgid "Reset to default"
 msgstr "デフォルトにリセット"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "GConf エラー: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "その他のエラーは全て端末に表示されます。"
 
@@ -136,8 +136,8 @@ msgid "Due %x"
 msgstr "期限：%x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Web アカウントを設定して使用したファイルは、必要な時にすぐアクセスできるように Myzone のこの場所に表示されます。"
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Web アカウントを設定してファイルを使用した場合、それらのファイルは必要な時にすぐアクセスできるように Myzone のこの場所に表示されます。"
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
@@ -165,19 +165,15 @@ msgstr "未読メッセージ"
 #~ msgstr ""
 #~ "ここは Myzone です。Web フィードから最近使用したファイルやコンテンツが表示"
 #~ "されます。"
-
 #~ msgid ""
 #~ "Things that your friends do online will appear here. Activate your "
 #~ "accounts now!"
 #~ msgstr ""
 #~ "アカウントをアクティブにすると、オンラインの友達がここに表示されます。"
-
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
-
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>ネットブック Meego 2.1 にようこそ</b>"
-
 #~ msgid ""
 #~ "As Meego is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
@@ -185,3 +181,4 @@ msgstr "未読メッセージ"
 #~ msgstr ""
 #~ "Meego は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いた"
 #~ "しました。お楽しみいただけることを願っております。Meego チーム一同"
+
