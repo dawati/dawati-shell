@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pablo Barbecho <pablo.barbecho@ptiglobal.net>\n"
 "Language-Team: \n"
@@ -58,12 +58,12 @@ msgstr "Notificaciones de correo electrónico:"
 msgid "Reset to default"
 msgstr "Restablecer valores predeterminados"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Error GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "El resto de los errores sólo se muestra en la pantalla de terminal."
 
@@ -137,8 +137,8 @@ msgid "Due %x"
 msgstr "Es para %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Cuando hayas configurado tus cuentas Web y utilizado algunos archivos, estos aparecerán aquí en Myzone, para poder acceder a ellos fácilmente."
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Cuando hayas configurado tus cuentas Web y hayas usado algunos archivos, estos aparecerán aquí en Myzone, para poder acceder a ellos fácilmente."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
