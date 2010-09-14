@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
-"PO-Revision-Date: 2010-07-01 11:15-0800\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-09-14 11:21-0800\n"
 "Last-Translator: francesca godani <francesca.godani@ptiglobal.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -62,12 +62,12 @@ msgstr "Notifiche via email:"
 msgid "Reset to default"
 msgstr "Ripristinare i valori predefiniti"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Errore GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "Tutti gli ulteriori errori verranno mostrati solo sul terminale."
 
@@ -139,8 +139,8 @@ msgid "Due %x"
 msgstr "In scadenza il %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Quando avrai impostato l'account web e utilizzato alcuni file, questi appariranno su myzone per un facile accesso ogni volta che vuoi."
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Quando avrai impostato gli account web e utilizzato alcuni file, questi appariranno su myzone per un facile accesso ogni volta che vuoi."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
