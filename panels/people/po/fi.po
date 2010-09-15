@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:36+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
@@ -32,15 +32,15 @@ msgstr "Avaa %s"
 
 #: ../src/mnb-people-panel.c:231
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
+msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestitilin?"
 
 #: ../src/mnb-people-panel.c:283
 msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Emme valitettavasti löydä ketään. Kukaan ei näytä olevan netissä."
+msgstr "Emme valitettavasti löydä ketään. Kaikki näyttävät olevan offline-tilassa."
 
 #: ../src/mnb-people-panel.c:328
 msgid "To see your IM contacts, you need to go online."
-msgstr "Nähdäksesi IM kontaktisi, mene nettiin."
+msgstr "Siirry online-tilaan, jotta näet kontaktisi."
 
 #: ../src/mnb-people-panel.c:458
 #, c-format
@@ -52,30 +52,30 @@ msgid "people - you are chatting with someone"
 msgstr "Ihmiset -  chattailet jonkun kanssa:"
 
 #. Populate header
-#: ../src/mnb-people-panel.c:676
-#: ../src/mnb-people-panel.c:930
+#: ../src/mnb-people-panel.c:669
+#: ../src/mnb-people-panel.c:923
 msgid "People"
 msgstr "Ihmiset"
 
-#: ../src/mnb-people-panel.c:689
+#: ../src/mnb-people-panel.c:682
 msgid "Search"
 msgstr "Etsi"
 
-#: ../src/mnb-people-panel.c:740
-#: ../src/mnb-people-panel.c:1129
+#: ../src/mnb-people-panel.c:733
+#: ../src/mnb-people-panel.c:1122
 msgid "You are chatting with:"
 msgstr "Chattailet:"
 
-#: ../src/mnb-people-panel.c:947
+#: ../src/mnb-people-panel.c:940
 msgid "Me and my people"
-msgstr "Minä ja ihmiseni"
+msgstr "Minä ja omat ihmiset"
 
-#: ../src/mnb-people-panel.c:985
+#: ../src/mnb-people-panel.c:978
 msgid "Me"
 msgstr "Minä"
 
 #. Side table
-#: ../src/mnb-people-panel.c:1086
+#: ../src/mnb-people-panel.c:1079
 msgid "My conversations"
 msgstr "Omat keskustelut"
 
