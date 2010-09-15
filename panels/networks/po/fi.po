@@ -1,14 +1,14 @@
 # Carrick-ng Finnish (fi) translation
-# 
+#
 # Paula <pkwanzek@hotmail.com>, 2009.
 # Timo Jyrinki <timo.jyrinki@iki.fi>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:59+0000\n"
-"PO-Revision-Date: 2010-05-12 09:26-0800\n"
+"PO-Revision-Date: 2010-09-14 20:05-0800\n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr ""
 #. * The conjunction 'or' will be at the end of a choice of disabled
 #. technologies,
 #. * for example 'WiFi, WiMAX or 3G.
-#. 
+#.
 #: ../carrick/carrick-list.c:843
 msgid " or "
 msgstr " tai "
@@ -32,32 +32,37 @@ msgstr " tai "
 #. * Translator note: the comma ',' will be used to join the different
 #. disabled technologies
 #. * as in the above example; 'WiFi, WiMAX or 3G'
-#. 
+#.
 #: ../carrick/carrick-list.c:848
 msgid ", "
 msgstr ", "
 
-#: ../carrick/carrick-list.c:849 ../carrick/carrick-util.c:34
+#: ../carrick/carrick-list.c:849
+#: ../carrick/carrick-util.c:34
 msgid "wired"
 msgstr "kiinteä"
 
 #. Switches
-#: ../carrick/carrick-list.c:850 ../carrick/carrick-pane.c:1429
+#: ../carrick/carrick-list.c:850
+#: ../carrick/carrick-pane.c:1429
 #: ../carrick/carrick-util.c:32
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:851 ../carrick/carrick-pane.c:1471
+#: ../carrick/carrick-list.c:851
+#: ../carrick/carrick-pane.c:1471
 #: ../carrick/carrick-util.c:38
 msgid "WiMAX"
 msgstr "WiMax"
 
-#: ../carrick/carrick-list.c:852 ../carrick/carrick-pane.c:1457
+#: ../carrick/carrick-list.c:852
+#: ../carrick/carrick-pane.c:1457
 #: ../carrick/carrick-util.c:36
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:853 ../carrick/carrick-pane.c:1485
+#: ../carrick/carrick-list.c:853
+#: ../carrick/carrick-pane.c:1485
 #: ../carrick/carrick-util.c:40
 msgid "Bluetooth"
 msgstr "Bluetooth"
@@ -65,14 +70,14 @@ msgstr "Bluetooth"
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
-#. 
+#.
 #: ../carrick/carrick-list.c:866
 msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
 msgstr "Yhtään verkkoa ei löydy. Yhteyksien hallinta ei näytä olevan käynnissä. Kokeile laitteen käynnistämistä uudelleen."
 
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
-#. 
+#.
 #: ../carrick/carrick-list.c:876
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "Yhtään verkkoa ei löydy. Voit yrittää Poissa linjoilta -tilan käytöstä poistamista"
@@ -80,12 +85,12 @@ msgstr "Yhtään verkkoa ei löydy. Voit yrittää Poissa linjoilta -tilan käyt
 #: ../carrick/carrick-list.c:1013
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Yhtään verkkoa ei löydy. Voit yrittää ottaa kayttöön %s. "
+msgstr "Yhtään verkkoa ei löydy. Voit yrittää ottaa käyttöön %s. "
 
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
-#. 
+#.
 #: ../carrick/carrick-list.c:1027
 msgid "Sorry, we can't find any networks"
 msgstr "Emme valitettavasti löydä yhtään verkkoa."
@@ -102,7 +107,7 @@ msgstr "Olet nyt yhdistettynä langalliseen verkkoon"
 #: ../carrick/carrick-notification-manager.c:162
 #, c-format
 msgid "You're now connected to %s, a %s network"
-msgstr "Olet nyt yhdistettynä kohteesseen %s, joka on %s-verkko"
+msgstr "Olet nyt yhdistettynä kohteeseen %s, joka on %s-verkko"
 
 #: ../carrick/carrick-notification-manager.c:168
 #, c-format
@@ -192,7 +197,8 @@ msgstr "Ei yhtään"
 msgid "Password"
 msgstr "Salasana"
 
-#: ../carrick/carrick-pane.c:731 ../carrick/carrick-service-item.c:1787
+#: ../carrick/carrick-pane.c:731
+#: ../carrick/carrick-service-item.c:1787
 msgid "Show password"
 msgstr "Näytä salasana"
 
@@ -200,7 +206,8 @@ msgstr "Näytä salasana"
 msgid "Settings"
 msgstr "Asetukset"
 
-#: ../carrick/carrick-pane.c:1443 ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-pane.c:1443
+#: ../carrick/carrick-service-item.c:328
 msgid "Wired"
 msgstr "Kiinteä"
 
@@ -212,7 +219,8 @@ msgstr "Poissa linjoilta -tila"
 msgid "This will disable all your connections"
 msgstr "Tämä katkaisee kaikki yhteydet"
 
-#: ../carrick/carrick-pane.c:1556 ../src/carrick.c:369
+#: ../carrick/carrick-pane.c:1556
+#: ../src/carrick.c:369
 msgid "Networks"
 msgstr "Verkot"
 
@@ -224,7 +232,7 @@ msgstr "Lisää uusi yhteys"
 #. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
-#. 
+#.
 #: ../carrick/carrick-service-item.c:51
 msgid "Critical Error: Invalid country code"
 msgstr "Kriittinen virhe: Virheellinen maakoodi"
@@ -247,13 +255,14 @@ msgstr "Virhe: 3G-laitteistoa ei havaittu"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
-#. 
+#.
 #: ../carrick/carrick-service-item.c:192
 #, c-format
 msgid "%s encrypted"
 msgstr "Salattu: %s"
 
-#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:357
+#: ../carrick/carrick-service-item.c:340
+#: ../carrick/carrick-service-item.c:357
 msgid "Disconnect"
 msgstr "Katkaise yhteys"
 
@@ -265,7 +274,8 @@ msgstr "Yhdistetty"
 msgid "Online"
 msgstr "Linjoilla"
 
-#: ../carrick/carrick-service-item.c:367 ../carrick/carrick-service-item.c:376
+#: ../carrick/carrick-service-item.c:367
+#: ../carrick/carrick-service-item.c:376
 #, c-format
 msgid "Cancel"
 msgstr "Peruu"
@@ -278,7 +288,8 @@ msgstr "Määritetään"
 msgid "Associating"
 msgstr "Liitetään"
 
-#: ../carrick/carrick-service-item.c:388 ../carrick/carrick-service-item.c:413
+#: ../carrick/carrick-service-item.c:388
+#: ../carrick/carrick-service-item.c:413
 #: ../carrick/carrick-service-item.c:1774
 msgid "Connect"
 msgstr "Yhdistä"
@@ -291,7 +302,8 @@ msgstr "Yhteys epäonnistui"
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Yhteys epäonnistui. Voit yrittää uudelleen."
 
-#: ../carrick/carrick-service-item.c:425 ../carrick/carrick-service-item.c:428
+#: ../carrick/carrick-service-item.c:425
+#: ../carrick/carrick-service-item.c:428
 #, c-format
 msgid "Disconnecting"
 msgstr "Katkaistaan yhteys"
@@ -445,7 +457,8 @@ msgstr "verkot - %s - 3G"
 msgid "networks - %s - bluetooth"
 msgstr "verkot - %s - bluetooth"
 
-#: ../src/carrick.c:75 ../src/carrick.c:87
+#: ../src/carrick.c:75
+#: ../src/carrick.c:87
 msgid "networks"
 msgstr "verkot"
 
@@ -469,12 +482,14 @@ msgstr "Carrick-yhteyssovelma"
 msgid "- MeeGo connectivity applet"
 msgstr "- MeeGo-yhteyssovelma"
 
-#: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:352
+#: ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "verkko"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -539,78 +554,54 @@ msgstr "Verkkoasetukset"
 
 #~ msgid "Select your 3G Data Plan"
 #~ msgstr "Valitse 3G Data Liittymä"
-
 #~ msgid "Plan Name: (required)"
 #~ msgstr "Liittymän Nimi: (pakollinen)"
-
 #~ msgid "Tertairy DNS:"
 #~ msgstr "Lisä DNS:"
-
 #~ msgid "Manual Config"
 #~ msgstr "Manuaalinen asennus"
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
 #~ msgstr "Yhtään verkkoa ei löydy. Yritä ottaa käyttöön 3G."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr "Yhtään verkkoa ei löydy. Yritä ottaa käyttöön WiFi."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
 #~ msgstr "Yhtään verkkoa ei löydy. Yritä ottaa käyttöön WiMAX."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
 #~ msgstr "Yhtään verkkoa ei löydy. Yritä ottaa käyttöön Bluetooth."
-
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
 #~ msgstr "Emme valitettavasti löydä yhtään verkkoa. Yritä langallisen verkon käyttöön ottamista."
-
 #~ msgid "Sorry, we can't find any networks. "
 #~ msgstr "Emme valitettavasti löydä yhtään verkkoa."
-
 #~ msgid "The ConnMan daemon doesn't seem to be running. You may want to try re-starting your device"
 #~ msgstr "ConnMan daemon ei näytä olevan käynnissä. Yritä laitteen käynnistämistä uudelleen."
-
 #~ msgid "You could try disabling Offline mode"
 #~ msgstr "Voit yrittää Poissa linjoilta -tilan käytöstä poistamista"
-
 #~ msgid "You could try turning on "
 #~ msgstr "Voit yrittää ottaa käyttöön  "
-
 #~ msgid " and "
 #~ msgstr " ja "
-
 #~ msgid "Ethernet"
 #~ msgstr "Ethernet"
-
 #~ msgid "Sorry, your connection to %s was lost. So we've "
 #~ msgstr "Yhteys kohteeseen %s menetetty, joten"
-
 #~ msgid "Sorry, your %s connection was lost. So we've "
 #~ msgstr "%s-yhteys menetetty, joten"
-
 #~ msgid "connected you to a wired network"
 #~ msgstr "muodostimme yhteyden langalliseen verkkoon"
-
 #~ msgid "connected you to %s, a %s network"
 #~ msgstr "muodostimme yhteyden kohteeseen %s, joka on %s-verkko"
-
 #~ msgid "connected you to a %s network"
 #~ msgstr "muodostimme yhteyden %s-verkkoon"
-
 #~ msgid "Sorry, your wired connection was lost. So we've "
 #~ msgstr "Langallinen yhteys menetetty, joten"
-
 #~ msgid "Offline"
 #~ msgstr "Poissa linjoilta"
-
 #~ msgid "No active connection."
 #~ msgstr "Verkkoyhteyttä ei ole käytettävissä."
-
 #~ msgid "Now online and connected to %s."
 #~ msgstr "Linjoilla ja yhdistettynä seuraavaan: %s"
-
 #~ msgid "Connecting"
 #~ msgstr "Yhdistetään"
-
 #~ msgid "Sorry, we can't find any networks. The Connection Manager doesn't seem to be running. You may want to try re-starting your device."
 #~ msgstr "Yhtään verkkoa ei löydy. ConnMan daemon ei näytä olevan käynnissä. Yritä laitteen käynnistämistä uudelleen."
+
