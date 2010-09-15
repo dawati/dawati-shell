@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the panel-myzone package.
 # Xosé <xosecalvo@gmail.com>, 2009.
 # Miguel Anxo Bouzada <mbouzada@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:20+0000\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2010-07-07 09:31+0100\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -26,8 +26,7 @@ msgstr "Panel AMiñaZona"
 msgid "Change the Myzone background and content"
 msgstr "Cambiar o fondo e o contido de AMiñaZona"
 
-#: ../data/myzone.desktop.in.in.h:2
-#: ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "AMiñaZona"
 
@@ -63,12 +62,12 @@ msgstr "Alertas por correo-e:"
 msgid "Reset to default"
 msgstr "Restaurar a predeterminado"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Erro de Gconf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "O resto dos erros móstranse só no terminal."
 
@@ -100,8 +99,7 @@ msgstr "Desexa limpar os documentos recentes? Isto elimina o contido local de AM
 msgid "Appointments"
 msgstr "Compromisos"
 
-#: ../penge/penge-calendar-pane.c:496
-#: ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Aberto"
 
@@ -113,8 +111,7 @@ msgstr "Tarefas"
 msgid "Create an appointment"
 msgstr "Crear unha compromiso"
 
-#: ../penge/penge-events-pane.c:72
-#: ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Engadir"
 
@@ -140,7 +137,7 @@ msgid "Due %x"
 msgstr "Caduca %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
 msgstr "Cando se teñan configurado as contas web e utilizado algúns ficheiros, aparecerán aquí, en AMiñaZona, para acceder doadamente cando se precisen."
 
 #: ../penge/penge-welcome-tile.c:34
@@ -162,4 +159,3 @@ msgstr "Mensaxe sen ler"
 #: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
 msgstr "Mensaxes sen ler"
-
