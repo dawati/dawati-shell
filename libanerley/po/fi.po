@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:33+0000\n"
+"POT-Creation-Date: 2010-07-03 11:55+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+"Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -20,43 +20,48 @@ msgstr ""
 # Copyright (C) 2006 Samuli SeppÃ¤nen and Henna NykÃ¤nen.
 # Ilkka Tuohela <hile@iki.fi>, 2006-2009.
 # Samuli SeppÃ¤nen & Henna NykÃ¤nen <sjsepp@utu.fi>, 2006.
-#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
+#: ../anerley/anerley-tile.c:171
+#: ../anerley/anerley-presence-chooser.c:44
 msgid "Available"
 msgstr "Tavoitettavissa"
 
-#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
+#: ../anerley/anerley-tile.c:174
+#: ../anerley/anerley-presence-chooser.c:48
 msgid "Busy"
 msgstr "Varattu"
 
-#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
-#: ../anerley/anerley-presence-chooser.c:44
+#: ../anerley/anerley-tile.c:177
+#: ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
 msgid "Away"
 msgstr "Poissa"
 
-#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+#: ../anerley/anerley-tile.c:183
+#: ../anerley/anerley-presence-chooser.c:43
 msgid "Offline"
-msgstr "Poissa linjoilta"
+msgstr "Offline-tila"
 
-#: ../anerley/anerley-econtact-item.c:233
+#: ../anerley/anerley-econtact-item.c:234
 msgid "Unnamed"
 msgstr "Nimetön"
 
-#: ../anerley/anerley-presence-chooser.c:41
+#: ../anerley/anerley-presence-chooser.c:42
 msgid "Unset"
 msgstr "Poista asetus"
 
-#: ../anerley/anerley-presence-chooser.c:45
+#: ../anerley/anerley-presence-chooser.c:46
 msgid "Extended Away"
 msgstr "Jatkettu pois"
 
-#: ../anerley/anerley-presence-chooser.c:46
+#: ../anerley/anerley-presence-chooser.c:47
 msgid "Hidden"
 msgstr "Piilotettu"
 
-#: ../anerley/anerley-presence-chooser.c:48
+#: ../anerley/anerley-presence-chooser.c:49
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: ../anerley/anerley-presence-chooser.c:49
+#: ../anerley/anerley-presence-chooser.c:50
 msgid "Error"
 msgstr "Virhe"
+
