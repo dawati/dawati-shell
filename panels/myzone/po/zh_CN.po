@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
-"PO-Revision-Date: 2010-07-01 14:33-0800\n"
-"Last-Translator: Yun Nie\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-09-14 19:28-0800\n"
+"Last-Translator: mackey tian <mackeyx.tian@ptiglobal.net>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,12 +64,12 @@ msgstr "电子邮件警告："
 msgid "Reset to default"
 msgstr "重置为默认值"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "GConf 错误：%s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "所有其它的错误仅显示在终端。"
 
@@ -141,8 +141,8 @@ msgid "Due %x"
 msgstr "%x 到期"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "当您设置了您的网络帐号并使用了一些文件后，它们将在 Myzone 的这个地方出现，方便您随时访问。"
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "当您设置了您的网络帐号并使用了一些文件后，它们将出现在 Myzone 中，方便您随时访问。"
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
