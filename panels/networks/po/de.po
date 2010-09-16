@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:59+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -561,68 +561,92 @@ msgstr "Netzwerkeinstellungen"
 
 #~ msgid "Manual Config"
 #~ msgstr "Manuelle Konfig."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on 3G."
 #~ msgstr ""
 #~ "Leider können wir keine Netzwerke finden. Du könntest versuchen, 3G zu "
 #~ "aktivieren."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
 #~ msgstr ""
 #~ "Leider können wir keine Netzwerke finden. Du könntest versuchen, WiFi zu "
 #~ "aktivieren."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
 #~ msgstr ""
 #~ "Leider können wir keine Netzwerke finden. Du könntest versuchen, WiMAX zu "
 #~ "aktivieren."
+
 #~ msgid ""
 #~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
 #~ msgstr ""
 #~ "Leider können wir keine Netzwerke finden. Du könntest versuchen, "
 #~ "Bluetooth zu aktivieren."
+
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
 #~ msgstr ""
 #~ "Leider können wir keine Netzwerke finden. Du könntest versuchen, ein "
 #~ "drahtgebundenes Netzwerk zu aktivieren."
+
 #~ msgid "Sorry, we can't find any networks. "
 #~ msgstr "Leider können wir keine Netzwerke finden. "
+
 #~ msgid ""
 #~ "The ConnMan daemon doesn't seem to be running. You may want to try re-"
 #~ "starting your device"
 #~ msgstr ""
 #~ "Der ConnMan Daemon scheint nicht zu laufen. Du solltest eventuell "
 #~ "versuchen, dein Gerät neu zu starten."
+
 #~ msgid "You could try disabling Offline mode"
 #~ msgstr "Du könntest versuchen, den Offline-Modus zu deaktivieren."
+
 #~ msgid "You could try turning on "
 #~ msgstr "Versuche folgendes einzuschalten: "
+
 #~ msgid " and "
 #~ msgstr " und "
+
 #~ msgid "Ethernet"
 #~ msgstr "Ethernet"
+
 #~ msgid "Sorry, your connection to %s was lost. So we've "
 #~ msgstr "Leider ging deine Verbindung zu %s verloren. Daher haben wir"
+
 #~ msgid "Sorry, your %s connection was lost. So we've "
 #~ msgstr "Leider ging deine %s-Verbindung verloren. Daher haben wir"
+
 #~ msgid "connected you to a wired network"
 #~ msgstr "dich mit einem drahtgebundenen Netzwerk verbunden"
+
 #~ msgid "connected you to %s, a %s network"
 #~ msgstr "dich mit %s, einem %s-Netzwerk verbunden"
+
 #~ msgid "connected you to a %s network"
 #~ msgstr "dich mit einem %s-Netzwerk verbunden"
+
 #~ msgid "Sorry, your wired connection was lost. So we've "
 #~ msgstr ""
 #~ "Leider ging deine drahtgebundene Verbindung verloren. Daher haben wir"
+
 #~ msgid "Offline"
 #~ msgstr "Offline"
+
 #~ msgid "No active connection."
 #~ msgstr "Keine Netzwerkverbindung verfügbar."
+
 #~ msgid "Now online and connected to %s."
 #~ msgstr "Du bist online und als %s angemeldet."
+
 #~ msgid "Connecting"
 #~ msgstr "Verbindung wird hergestellt"
+
 #~ msgid "<b><big>Network Requires a Password</big></b>"
 #~ msgstr "<b><big>Netzwerk verlangt ein Kennwort</big></b>"
+
 #~ msgid "Please enter the password for this network:"
 #~ msgstr "Bitte das Kennwort für das Netzwerk eingeben:"
+
 #~ msgid ""
 #~ "Sorry, we can't find any networks. The Connection Manager doesn't seem to "
 #~ "be running. You may want to try re-starting your device."
@@ -630,12 +654,15 @@ msgstr "Netzwerkeinstellungen"
 #~ "Leider können wir keine Netzwerke finden. Der Verbindungsmanager scheint "
 #~ "nicht zu laufen. Du solltest eventuell versuchen, dein Gerät neu zu "
 #~ "starten."
+
 #~ msgid "Passphrase required"
 #~ msgstr "Kennwort erforderlich"
+
 #~ msgid "Select your 3G Data Plan"
 #~ msgstr "Ihren 3G Datenplan wählen"
+
 #~ msgid "Plan Name: (required)"
 #~ msgstr "Planname: (erforderlich)"
+
 #~ msgid "Tertairy DNS:"
 #~ msgstr "Tertiäre DNS:"
-
