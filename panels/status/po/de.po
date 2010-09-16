@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-23 09:18+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,46 +40,50 @@ msgstr "Status kann nicht aktualisiert werden. Der Service ist vielleicht nicht 
 msgid "Unable to update status: You're not online."
 msgstr "Status kann nicht aktualisiert werden: Du bist nicht online."
 
-#: ../src/mps-feed-pane.c:445
+#: ../src/mps-feed-pane.c:444
 msgid "We were unable to guess your location"
 msgstr "Wir konnten deinen Ort nicht ausfindig machen"
 
-#: ../src/mps-feed-pane.c:453
+#: ../src/mps-feed-pane.c:452
 #, c-format
 msgid "We guessed your location as: %s (%f, %f)"
 msgstr "Dein geschätzter Ort: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:459
+#: ../src/mps-feed-pane.c:458
 #, c-format
 msgid "Your location is being shared as: %s (%f, %f)"
 msgstr "Dein Ort wird bekanntgegeben als: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:469
+#: ../src/mps-feed-pane.c:468
 #, c-format
 msgid "We guessed your location as: %f %f"
 msgstr "Dein geschätzter Ort: %f %f"
 
-#: ../src/mps-feed-pane.c:473
+#: ../src/mps-feed-pane.c:472
 #, c-format
 msgid "Your location is being shared as: %f %f"
 msgstr "Dein Ort wird bekanntgegeben als: %f %f "
 
-#: ../src/mps-feed-pane.c:483
+#: ../src/mps-feed-pane.c:482
 msgid "Your location is not being shared"
 msgstr "Dein Ort wird nicht bekanntgegeben"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:586
+#: ../src/mps-feed-pane.c:585
 msgid "Update"
 msgstr "Aktualisierung"
 
-#: ../src/mps-feed-pane.c:591
+#: ../src/mps-feed-pane.c:590
 msgid "What's happening?"
 msgstr "Was ist los?"
 
-#: ../src/mps-feed-pane.c:641
+#: ../src/mps-feed-pane.c:640
 msgid "Change"
 msgstr "Ändern"
+
+#: ../src/mps-feed-switcher.c:350
+msgid "Add new web account"
+msgstr "Neues Web-Konto zufügen"
 
 #: ../src/mps-feed-switcher.c:373
 msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
@@ -113,15 +117,11 @@ msgstr "Ort nicht verwenden"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s von %s"
-
-#: ../src/mps-feed-switcher.c:350
-msgid "Add new web account"
-msgstr "Neues Web-Konto zufügen"
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
@@ -159,11 +159,21 @@ msgstr "Neues Web-Konto zufügen"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Dein gegenwärtiger Status: offline"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Wir können leider keine Leute finden. Hast du ein Messenger-Konto eingerichtet?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Wir können leider keine Leute finden. Hast du ein Messenger-Konto "
+#~ "eingerichtet?"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "Um deinen Web-Status zu aktualisieren, musst du ein Webservice-Konto mit einem Anbieter haben, der Statusmeldungen unterstützt"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Um deinen Web-Status zu aktualisieren, musst du ein Webservice-Konto mit "
+#~ "einem Anbieter haben, der Statusmeldungen unterstützt"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Um deinen IM-Status zu aktualisieren, musst du ein Instant Messaging-Konto einrichten."
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Um deinen IM-Status zu aktualisieren, musst du ein Instant Messaging-"
+#~ "Konto einrichten."
