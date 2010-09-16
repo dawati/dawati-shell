@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-application\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-26 05:58+0000\n"
+"POT-Creation-Date: 2010-07-03 11:56+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gönczi Norbert <gonczinorbert@gmail.com>\n"
 "Language-Team: hungarian\n"
@@ -10,26 +11,35 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Hungarian\n"
-"X-Poedit-Country: HUNGARY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: HUNGARY\n"
 
-#.
-#. * Fav apps.
-#.
-#. Label
-#: ../src/meego-netbook-launcher.c:815
-msgid "Favorite Applications"
-msgstr "Kedvencek alkalmazások"
-
-#: ../src/meego-netbook-launcher.c:1339
-msgid "Applications"
-msgstr "Alkalmazások"
-
-#: ../src/meego-netbook-launcher.c:1350
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Keresés"
 
-#: ../src/meego-panel-applications.c:196
+#. Panel label
+#: ../src/meego-netbook-launcher.c:1049
+msgid "Applications"
+msgstr "Alkalmazások"
+
+#. * Fav apps pane
+#. 
+#: ../src/meego-netbook-launcher.c:1065
+msgid "Favorite applications"
+msgstr "Kedvencek alkalmazások"
+
+#. * Applications
+#. 
+#: ../src/meego-netbook-launcher.c:1092
+msgid "Your applications"
+msgstr "Saját alkalmazások"
+
+#: ../src/meego-panel-applications.c:223
+#: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "alkalmazások"
 
+#: ../data/meego-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Alkalmazások panel"
