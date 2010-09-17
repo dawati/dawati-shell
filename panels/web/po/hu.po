@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Meego Web Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2009-07-31 18:52+0100\n"
 "Last-Translator: Kökéndy Ákos <kokendy.akos@gmail.com>\n"
 "Language-Team: HUNGARIAN <meegohungary@googlegroups.com>\n"
@@ -38,7 +38,7 @@ msgid ""
 "Press enter to\n"
 "visit site"
 msgstr ""
-"Nyomj entert\n"
+"Nyomjon entert\n"
 "a lap megtekintéséhez"
 
 #: ../common/mwb-radical-bar.cc:506
@@ -46,55 +46,49 @@ msgid ""
 "Press down to\n"
 "explore list"
 msgstr ""
-"Nyomj le nyilat\n"
+"Nyomjon le nyilat\n"
 "a lista böngészéséhez"
 
-#: ../netpanel/meego-netbook-netpanel.cc:789
-msgid ""
-"As you visit web pages, your favorites will appear here and on the New tab "
-"page in the browser."
-msgstr ""
+#: ../netpanel/meego-netbook-netpanel.cc:796
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Weboldalak böngészése közben a kedvencek itt és az Új lap oldalon kerülnek megjelenítésre."
 
-#: ../netpanel/meego-netbook-netpanel.cc:811
-#: ../netpanel/meego-netbook-netpanel.cc:934
+#: ../netpanel/meego-netbook-netpanel.cc:818
+#: ../netpanel/meego-netbook-netpanel.cc:941
 msgid "New tab"
 msgstr "Új lap"
 
 #. Construct entry table widgets
-#: ../netpanel/meego-netbook-netpanel.cc:1198
-#, fuzzy
+#: ../netpanel/meego-netbook-netpanel.cc:1216
 msgid "Your pages"
-msgstr "Kedvenc lapok"
+msgstr "Saját oldalak"
 
-#: ../netpanel/meego-netbook-netpanel.cc:1211
+#: ../netpanel/meego-netbook-netpanel.cc:1229
 msgid "Search"
-msgstr ""
+msgstr "Keresés"
 
 #. Construct title for tab preview section
-#: ../netpanel/meego-netbook-netpanel.cc:1232
+#: ../netpanel/meego-netbook-netpanel.cc:1250
 msgid "Tabs"
-msgstr ""
+msgstr "Lapok"
 
 #. Construct title for favorite pages section
-#: ../netpanel/meego-netbook-netpanel.cc:1237
+#: ../netpanel/meego-netbook-netpanel.cc:1255
 msgid "Favorite pages"
-msgstr "Kedvenc lapok"
+msgstr "Kedvenc oldalak"
 
-#: ../netpanel/meego-panel-web.cc:195
+#: ../netpanel/meego-panel-web.cc:196
 #: ../netpanel/meego-panel-internet.desktop.in.in.h:2
-#, fuzzy
 msgid "internet"
-msgstr "Ez az internet"
+msgstr "internet"
 
-#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
-#, fuzzy
+#: ../netpanel/meego-panel-web.cc:217 ../netpanel/meego-panel-web.cc:263
 msgid "Internet"
-msgstr "Ez az internet"
+msgstr "Internet"
 
 #: ../netpanel/meego-panel-internet.desktop.in.in.h:1
-#, fuzzy
 msgid "Internet panel"
-msgstr "Ez az internet"
+msgstr "Internet panel"
 
 #~ msgid "It's the internet"
 #~ msgstr "Ez az internet"
@@ -141,13 +135,8 @@ msgstr "Ez az internet"
 #~ msgid "Copy link location"
 #~ msgstr "A hivatkozás címének másolása"
 
-#, fuzzy
-#~ msgid ""
-#~ "Do you want to reset your browser? This will remove your web history, "
-#~ "pinned pages and personal settings. "
-#~ msgstr ""
-#~ "Le akarod törölni a böngészés előzményeit? Ez el fogja távolítani a "
-#~ "megjelölt lapjaidat és a személyes beállításaidat is."
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "Le akarod törölni a böngészés előzményeit? Ez el fogja távolítani a megjelölt lapjaidat és a személyes beállításaidat is."
 
 #~ msgid "Yes, delete"
 #~ msgstr "Igen, törlés"
@@ -180,12 +169,8 @@ msgstr "Ez az internet"
 #~ msgid "%x at %H:%M"
 #~ msgstr "%x ekkor: %H:%M"
 
-#~ msgid ""
-#~ "<p>Push the pin icon in the location bar above to add pages to this list."
-#~ "</p>"
-#~ msgstr ""
-#~ "<p>Ha lapot akarsz hozzáadni ehhez a listához, nyomd meg gombostűt a "
-#~ "címsorban.</p>"
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+#~ msgstr "<p>Ha lapot akarsz hozzáadni ehhez a listához, nyomd meg gombostűt a címsorban.</p>"
 
 #~ msgid "Fewer pinned pages"
 #~ msgstr "Kevesebb megjelölt lap"
@@ -232,7 +217,6 @@ msgstr "Ez az internet"
 #~ msgid "1 day"
 #~ msgstr "1 napig"
 
-#, fuzzy
 #~ msgid "Reset my browser now"
 #~ msgstr "Keresési előzmények visszaállítása most"
 
@@ -242,39 +226,20 @@ msgstr "Ez az internet"
 #~ msgid "Trouble connecting?"
 #~ msgstr "Problémád van a kapcsolódással?"
 
-#~ msgid ""
-#~ "Move your pointer to the top of the screen to bring down the toolbar and "
-#~ "choose the Networks panel."
-#~ msgstr ""
-#~ "Vidd a mutatót a képernyő tetejére és a lenyíló eszköztáron válaszd ki a "
-#~ "Hálózatok panelt."
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+#~ msgstr "Vidd a mutatót a képernyő tetejére és a lenyíló eszköztáron válaszd ki a Hálózatok panelt."
 
-#~ msgid ""
-#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
-#~ "ones will show up here."
-#~ msgstr ""
-#~ "Üdvözöllek a Meego Netbook Web Böngészőjében. A kedvenc lapjaid itt "
-#~ "jelennek majd meg."
+#~ msgid "Welcome to Meego Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Üdvözöllek a Meego Netbook Web Böngészőjében. A kedvenc lapjaid itt jelennek majd meg."
 
 #~ msgid "Getting started"
 #~ msgstr "Kezdés"
 
-#~ msgid ""
-#~ "First, make sure you have an internet connection! Then click on the "
-#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
-#~ "or search you want."
-#~ msgstr ""
-#~ "Először is győződj meg arról, hogy van-e internet kapcsolatod! Ezután "
-#~ "kattints az automagic sorba vagy nyomj Ctrl+L billentyűkombinációt a "
-#~ "gyors odaugrásra és gépeld be a címet vagy amit keresni akarsz"
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "Először is győződj meg arról, hogy van-e internet kapcsolatod! Ezután kattints az automagic sorba vagy nyomj Ctrl+L billentyűkombinációt a gyors odaugrásra és gépeld be a címet vagy amit keresni akarsz"
 
 #~ msgid "Make this a private tab"
 #~ msgstr "Legyen ez egy privát lap"
 
-#~ msgid ""
-#~ "This is a private tab. Things you do in this tab will not be stored on "
-#~ "this machine. However, websites you use may still keep records of your "
-#~ "actions."
-#~ msgstr ""
-#~ "Ez egy privát lap. Amit ezen a lapon teszel, azt nem tárolja a géped. Bár "
-#~ "a weboldalak továbbra is rögzíthetik a műveleteidet."
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+#~ msgstr "Ez egy privát lap. Amit ezen a lapon teszel, azt nem tárolja a géped. Bár a weboldalak továbbra is rögzíthetik a műveleteidet."
