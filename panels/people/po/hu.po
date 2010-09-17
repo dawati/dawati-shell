@@ -2,77 +2,104 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-26 06:06+0000\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2010-01-22 10:26+0100\n"
 "Last-Translator: Gergely Lónyai <aleph@mandriva.org>\n"
 "Language-Team: Hungarian <aleph@mandriva.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Hungarian\n"
 "X-Poedit-Country: HUNGARY\n"
+"X-Poedit-Language: Hungarian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-people.c:89
-#: ../src/mnb-people-panel.c:573
+#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:476
+#: ../data/meego-panel-people.desktop.in.in.h:2
 msgid "people"
-msgstr "ember"
+msgstr "partnerek"
 
-#: ../src/mnb-people-panel.c:166
-msgid "Send an email"
-msgstr "Egy email küldése"
+#: ../src/mnb-people-panel.c:57
+msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "Üdv! Ez a Partnerek panel. Ha van beállított csevegő-szolgáltatása (pl. Messenger), akkor itt tud társalogni a partnereivel."
 
-#: ../src/mnb-people-panel.c:168
-msgid "Edit details"
-msgstr "Részletek szerkesztése"
-
-#: ../src/mnb-people-panel.c:177
-msgid "Send a message"
-msgstr "Egy üzenet küldése"
-
-#: ../src/mnb-people-panel.c:311
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Bocsi, nem találok egy személyt sem. Nem lehet, hogy még nincs beállítva az Üzenő kliensed?"
-
-#: ../src/mnb-people-panel.c:447
-msgid "Sorry, we can't find any people. It looks like they are all offline."
-msgstr "Bocsi, nem találok senkit. Mindenkit offline-nak látok."
-
-#: ../src/mnb-people-panel.c:497
-msgid "To see your IM contacts, go online in the Status panel."
-msgstr "Ha a kapcsolataid meg szeretnéd nézni, menj a Státusz panelra."
-
-#: ../src/mnb-people-panel.c:554
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
 #, c-format
-msgid "people - %d people are talking to you"
-msgstr "ember - %d ember találkozna veled"
+msgid "Open %s"
+msgstr "%s megnyitása"
 
-#: ../src/mnb-people-panel.c:561
-msgid "people - Someone is talking to you"
-msgstr "ember - Valaki találkozna veled"
+#: ../src/mnb-people-panel.c:231
+msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+msgstr "Nem található egy partner sem. Beállította már a csevegő-szolgáltatást?"
 
-#: ../src/mnb-people-panel.c:808
+#: ../src/mnb-people-panel.c:283
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Nem található egy partner sem. Valószínűleg egyikük sem elérhető."
+
+#: ../src/mnb-people-panel.c:328
+msgid "To see your IM contacts, you need to go online."
+msgstr "A csevegőpartnerek megtekintéséhez online mód szükséges."
+
+#: ../src/mnb-people-panel.c:458
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "partnerek - jelenleg %d partnerrel cseveg"
+
+#: ../src/mnb-people-panel.c:465
+msgid "people - you are chatting with someone"
+msgstr "partnerek - jelenleg valakivel cseveg"
+
+#. Populate header
+#: ../src/mnb-people-panel.c:669 ../src/mnb-people-panel.c:923
 msgid "People"
-msgstr "Ember"
+msgstr "Partnerek"
 
-#: ../src/mnb-people-panel.c:821
+#: ../src/mnb-people-panel.c:682
 msgid "Search"
 msgstr "Keresés"
 
-#: ../src/mnb-people-panel.c:874
-msgid "People talking to you ..."
-msgstr "Valaki találkozna veled..."
+#: ../src/mnb-people-panel.c:733 ../src/mnb-people-panel.c:1122
+msgid "You are chatting with:"
+msgstr "Jelenlegi csevegőpartner:"
 
-#: ../src/mnb-people-panel.c:1001
-msgid "Selection"
-msgstr "Kiválasztás"
+#: ../src/mnb-people-panel.c:940
+msgid "Me and my people"
+msgstr "Én és a partnereim"
 
-#: ../src/mnb-people-panel.c:1064
-msgid "Nobody selected"
-msgstr "Senki sincs kiválasztva"
+#: ../src/mnb-people-panel.c:978
+msgid "Me"
+msgstr "Én"
 
+#. Side table
+#: ../src/mnb-people-panel.c:1079
+msgid "My conversations"
+msgstr "Saját beszélgetések"
+
+#: ../data/meego-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Partnerek panel"
+
+#~ msgid "Send an email"
+#~ msgstr "Egy email küldése"
+
+#~ msgid "Edit details"
+#~ msgstr "Részletek szerkesztése"
+
+#~ msgid "Send a message"
+#~ msgstr "Egy üzenet küldése"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "ember - Valaki találkozna veled"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Valaki találkozna veled..."
+
+#~ msgid "Selection"
+#~ msgstr "Kiválasztás"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Senki sincs kiválasztva"
