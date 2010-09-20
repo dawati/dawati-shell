@@ -450,13 +450,13 @@ _update_location_label (MpsFeedPane *pane)
       {
         if (guess_location)
         {
-          message = g_strdup_printf (_("We guessed your location as: %s (%f, %f)"),
+          message = g_strdup_printf (_("We think your location is: %s (%f, %f)"),
                                        reverse_location,
                                        latitude,
                                        longitude);
 
         } else {
-          message = g_strdup_printf (_("Your location is being shared as: %s (%f, %f)"),
+          message = g_strdup_printf (_("Your location is currently shared as: %s (%f, %f)"),
                                      reverse_location,
                                      latitude,
                                      longitude);
@@ -466,11 +466,11 @@ _update_location_label (MpsFeedPane *pane)
       } else {
         if (guess_location)
         {
-          message = g_strdup_printf (_("We guessed your location as: %f %f"),
+          message = g_strdup_printf (_("We think your locations is: %f %f"),
                                        latitude,
                                        longitude);
         } else {
-          message = g_strdup_printf (_("Your location is being shared as: %f %f"),
+          message = g_strdup_printf (_("Your location is currently shared as: %f %f"),
                                        latitude,
                                        longitude);
         }
@@ -480,7 +480,7 @@ _update_location_label (MpsFeedPane *pane)
       g_free (message);
     }
   } else {
-    mx_label_set_text (MX_LABEL (priv->location_label), _("Your location is not being shared"));
+    mx_label_set_text (MX_LABEL (priv->location_label), _("Your location isn't currently shared"));
   }
 }
 
