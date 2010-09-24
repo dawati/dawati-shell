@@ -1,0 +1,132 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Csanád Tóth <toth.csanad@kde.hu>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 11:57+0000\n"
+"PO-Revision-Date: 2010-09-24 07:27+0200\n"
+"Last-Translator: Csanád Tóth <toth.csanad@kde.hu>\n"
+"Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../src/meego-panel-date-time.c:111
+msgid "Date/Time"
+msgstr "Dátum/idő"
+
+#: ../data/meego-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr "Dátum és idő panel"
+
+#: ../data/meego-panel-datetime.desktop.in.in.h:2
+msgid "date and time"
+msgstr "dátum és idő"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../src/mnp-utils.c:423
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#: ../src/mnp-utils.c:431
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../src/mnp-utils.c:446
+msgid "%b %-d (Yesterday)"
+msgstr "%b %-d (tegnap)"
+
+#: ../src/mnp-utils.c:448
+msgid "%b %-d (Tomorrow)"
+msgstr "%b %-d (holnap)"
+
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr "%b %-d (helyi)"
+
+#: ../src/mnp-utils.c:456
+msgid "%b %-d"
+msgstr "%b %-d"
+
+#: ../src/mnp-world-clock.c:525
+msgid "Time"
+msgstr "Idő"
+
+#: ../src/mnp-world-clock.c:579
+msgid "24 hour clock"
+msgstr ""
+
+#: ../src/mnp-world-clock.c:648
+msgid "Enter a country or city"
+msgstr "Adjon meg országot és várost"
+
+#: ../src/mnp-world-clock.c:671
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: ../src/mnp-world-clock.c:745
+msgid "Set Time & Date"
+msgstr "Dátum és idő beállítása"
+
+#: ../src/mnp-datetime.c:293
+msgid "Appointments"
+msgstr ""
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#.
+#. format date
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
+msgid "Today"
+msgstr ""
+
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr ""
+
+#: ../src/mnp-datetime.c:511
+msgid "Tasks"
+msgstr ""
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr ""
+
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr ""
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr ""
+
+#: ../src/date-time.schemas.in.h:2
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr ""
+
+#: ../src/date-time.schemas.in.h:3
+msgid "List of alarms in short encoded form"
+msgstr ""
+
