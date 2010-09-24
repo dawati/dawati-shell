@@ -1,6 +1,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Csanád Tóth <toth.csanad@kde.hu>, 2010.
 msgid ""
 msgstr ""
@@ -34,10 +34,10 @@ msgstr "Letiltva"
 #. translators:
 #. * The number of sound outputs on a particular device
 #: ../gvc/gvc-mixer-control.c:1010
-#, c-format
+#, c-format, fuzzy
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
+msgstr[0] "%u Output"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -57,37 +57,31 @@ msgstr ""
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
-msgstr ""
+msgstr "Az akkumulátor töltöttsége alacsony"
 
 #: ../power-icon/src/mpd-power-icon.c:78
-msgid ""
-"I've noticed that your battery is running a bit low. If you can, it would be "
-"a good idea to plug in and top up."
-msgstr ""
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Az akkumulátor töltöttsége viszonylag alacsony szintet ért el. Ajánlott a hálózati töltő csatlakoztatása."
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
-msgstr ""
+msgstr "Közel üres"
 
 #: ../power-icon/src/mpd-power-icon.c:82
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can."
-msgstr ""
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "Az akkumulátor töltöttsége nagyon alacsony szintet ért el. Ajánlott a végzett feladatok elmentése és a hálózati töltő csatlakoztatása."
 
 #: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
-msgstr ""
+msgstr "Figyelem!"
 
 #: ../power-icon/src/mpd-power-icon.c:87
-msgid ""
-"Sorry, your computer is about to run out of battery. I'm going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Az akkumulátor lemerült, ezért az eszköz kikapcsolásra kerül. Ajánlott a végzett feladatok elmentése."
 
 #: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
-msgstr ""
+msgstr "akkumulátor"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:98
 #, c-format
@@ -169,9 +163,7 @@ msgstr ""
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
-msgid ""
-"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
-"span>"
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
 msgstr ""
 
 #: ../src/mpd-folder-tile.c:186
@@ -211,8 +203,7 @@ msgstr ""
 
 #: ../src/mpd-storage-device-tile.c:819
 #, c-format
-msgid ""
-"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr ""
 
 #: ../src/mpd-storage-device-tile.c:827
@@ -263,4 +254,3 @@ msgstr ""
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr ""
-
