@@ -154,6 +154,7 @@ on_mail_notification_get_all (TpProxy      *proxy,
 complete:
   g_simple_async_result_complete (simple);
   g_object_unref (simple);
+  g_object_unref (self);
 }
 
 static void
@@ -236,6 +237,7 @@ on_subscribed (DBusGProxy       *proxy,
     g_simple_async_result_complete (async_result);
     g_error_free (error);
     g_object_unref (async_result);
+    g_object_unref (self);
     return;
   }
 
@@ -246,6 +248,8 @@ on_subscribed (DBusGProxy       *proxy,
         on_mail_notification_get_all,
         async_result,
         NULL, NULL);
+
+  g_object_unref (self);
 }
 
 static void
@@ -273,12 +277,14 @@ on_connection_ready (TpConnection *connection,
                              simple,
                              NULL,
                              G_TYPE_INVALID);
+    g_object_unref (self);
     return;
   }
 
 complete:
   g_simple_async_result_complete (simple);
   g_object_unref (simple);
+  g_object_unref (self);
 }
 
 static void
@@ -307,6 +313,7 @@ on_account_prepared (GObject      *source,
         tp_connection_call_when_ready (connection,
                                        on_connection_ready,
                                        user_data);
+        g_object_unref (self);
         return;
       }
     default:
@@ -317,6 +324,7 @@ on_account_prepared (GObject      *source,
 complete:
   g_simple_async_result_complete (simple);
   g_object_unref (simple);
+  g_object_unref (self);
 }
 
 static void

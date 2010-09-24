@@ -152,6 +152,7 @@ on_account_manager_prepared (GObject      *source,
   {
     g_simple_async_result_set_from_error (simple, error);
     g_simple_async_result_complete (simple);
+    g_object_unref (self);
     return;
   }
 
@@ -162,6 +163,8 @@ on_account_manager_prepared (GObject      *source,
   {
     g_list_foreach (accounts, (GFunc) foreach_account, self);
   }
+
+  g_object_unref (self);
 }
 
 static void
