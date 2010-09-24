@@ -1,12 +1,12 @@
 # GLSPTB_Gabor <gaborx.k.becht@intel.com>, 2009.
 # Og Maciel <ogmaciel@gnome.org>, 2009.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-30 09:22+0000\n"
-"PO-Revision-Date: 2010-06-30 15:38-0800\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-09-13 12:49-0800\n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <l10n@meego.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,8 @@ msgstr "Painel Myzone"
 msgid "Change the Myzone background and content"
 msgstr "Modifique o fundo e conteúdo do Myzone"
 
-#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
 msgstr "Myzone"
 
@@ -58,12 +59,12 @@ msgstr "Alertas de email:"
 msgid "Reset to default"
 msgstr "Redefinir para padrão"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "Erro GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "Todos os demais erros são mostrados apenas no terminal."
 
@@ -95,7 +96,8 @@ msgstr "Você quer limpar seus documentos recentes? Isto removerá o conteúdo l
 msgid "Appointments"
 msgstr "Compromissos"
 
-#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "Aberto"
 
@@ -107,7 +109,8 @@ msgstr "Tarefas"
 msgid "Create an appointment"
 msgstr "Criar um compromisso"
 
-#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
 msgid "Add"
 msgstr "Adicionar"
 
@@ -133,8 +136,8 @@ msgid "Due %x"
 msgstr "Prazo %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr "Se você configurou suas contas da web e usou alguns arquivos, eles irão aparecer aqui no myzone para acesso fácil quando você quiser."
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Quando você configurou suas contas da web e usou alguns arquivos, eles irão aparecer aqui no myzone para acesso fácil quando você quiser."
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
@@ -156,17 +159,28 @@ msgstr "Mensagem não lida"
 msgid "Unread messages"
 msgstr "Mensagens não lidas"
 
-#~ msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
-#~ msgstr "Este é Myzone, onde seus arquivos recentemente usados e conteúdo de sua web feed vai aparecer."
-
-#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
-#~ msgstr "As coisas que o seus amigos fazem online aparecerão aqui. Ative suas contas agora!"
-
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr ""
+#~ "Este é Myzone, onde seus arquivos recentemente usados e conteúdo de sua "
+#~ "web feed vai aparecer."
+#~ msgid ""
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "As coisas que o seus amigos fazem online aparecerão aqui. Ative suas "
+#~ "contas agora!"
 #~ msgid "Myzone settings"
 #~ msgstr "Configurações Myzone"
-
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Como o Meego é um pouco diferente de outros computadores, nós juntamos algumas dicas e itens para ajudá-lo a navegar pelo sistema. Esperamos que se divirta, a Equipe Meego."
-
+#~ msgid ""
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
+#~ msgstr ""
+#~ "Como o Meego é um pouco diferente de outros computadores, nós juntamos "
+#~ "algumas dicas e itens para ajudá-lo a navegar pelo sistema. Esperamos que "
+#~ "se divirta, a Equipe Meego."
 #~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
 #~ msgstr "<b>Bem-vindo ao Meego 2.1 para Netbooks</b>"
+
