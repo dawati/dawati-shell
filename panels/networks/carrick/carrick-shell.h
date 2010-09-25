@@ -28,6 +28,8 @@ void carrick_shell_request_focus (void);
  */
 void carrick_shell_hide (void);
 
+void carrick_shell_show (void);
+
 /*
  * If the shell is focused.
  */

@@ -160,6 +160,13 @@ carrick_shell_hide (void)
     mpl_panel_client_hide (panel_client);
 }
 
+void
+carrick_shell_show (void)
+{
+  if (panel_client)
+    mpl_panel_client_show (panel_client);
+}
+
 static void
 panel_hide_cb (MplPanelClient *panel_client, gpointer user_data)
 {

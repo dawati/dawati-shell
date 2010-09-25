@@ -371,9 +371,10 @@ _set_state (CarrickServiceItem *self)
 
   if (g_strcmp0 (priv->state, "ready") == 0)
     {
-      if (g_strcmp0 (priv->type, "ethernet") != 0)
+      if (g_strcmp0 (priv->type, "ethernet") != 0 &&
+          g_strcmp0 (priv->type, "vpn") != 0)
         {
-          /* Only expose delete button for non-ethernet devices */
+          /* Only expose delete button for non-ethernet, non-vpn devices */
           gtk_widget_show (GTK_WIDGET (priv->delete_button));
           gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                                     TRUE);
@@ -388,9 +389,10 @@ _set_state (CarrickServiceItem *self)
     }
   else if (g_strcmp0 (priv->state, "online") == 0)
     {
-      if (g_strcmp0 (priv->type, "ethernet") != 0)
+      if (g_strcmp0 (priv->type, "ethernet") != 0 &&
+          g_strcmp0 (priv->type, "vpn") != 0)
         {
-          /* Only expose delete button for non-ethernet devices */
+          /* Only expose delete button for non-ethernet, non-vpn devices */
           gtk_widget_show (GTK_WIDGET (priv->delete_button));
           gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),
                                     TRUE);
@@ -436,9 +438,10 @@ _set_state (CarrickServiceItem *self)
       /*
        * If the connection failed we should allow the user
        * to remove the connection (and forget the password.
-       * Except, of course, when the connection is Ethernet ...
+       * Except, of course, when the connection is Ethernet or VPN.
        */
-      if (g_strcmp0 (priv->type, "ethernet") == 0)
+      if (g_strcmp0 (priv->type, "ethernet") != 0 &&
+          g_strcmp0 (priv->type, "vpn") != 0)
         {
           gtk_widget_hide (GTK_WIDGET (priv->delete_button));
           gtk_widget_set_sensitive (GTK_WIDGET (priv->delete_button),

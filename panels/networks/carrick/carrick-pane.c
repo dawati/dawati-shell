@@ -17,7 +17,7 @@
  * 02110-1301, USA.
  *
  * Written by - Joshua Lock <josh@linux.intel.com>
- *
+ *              Jussi Kukkonen <jku@linux.intel.com>
  */
 
 #include "carrick-pane.h"
@@ -25,6 +25,7 @@
 #include <config.h>
 #include <mx-gtk/mx-gtk.h>
 #include <glib/gi18n.h>
+#include <gconf/gconf-client.h>
 #include <dbus/dbus-glib.h>
 
 #include "connman-marshal.h"
@@ -65,6 +66,9 @@ struct _CarrickPanePrivate
   GtkWidget *offline_mode_box;
   GtkWidget *service_list;
   GtkWidget *new_conn_button;
+  GtkWidget *vpn_box;
+  GtkWidget *vpn_combo;
+
   CarrickIconFactory *icon_factory;
   time_t   last_scan;
   gboolean offline_mode;
@@ -80,6 +84,7 @@ struct _CarrickPanePrivate
   gboolean wimax_enabled;
   gboolean bluetooth_enabled;
 
+  GConfClient *gconf;
   DBusGProxy *manager;
 
   /* Technology proxies are needed to get State:Blocked
@@ -106,6 +111,15 @@ enum
 };
 
 static guint _signals[LAST_SIGNAL] = { 0, };
+
+#define AUTH_DIALOG LIBEXECDIR"/nm-openconnect-auth-dialog"
+
+enum {
+  COLUMN_VPN_NAME,
+  COLUMN_VPN_UUID,
+  N_VPN_COLUMNS
+};
+
 
 static gboolean _wifi_switch_callback (MxGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
 static gboolean _ethernet_switch_callback (MxGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
@@ -228,6 +242,11 @@ carrick_pane_dispose (GObject *object)
       g_object_unref (priv->manager);
       priv->manager = NULL;
     }
+
+  if (priv->gconf) {
+    g_object_unref (priv->gconf);
+    priv->gconf = NULL;
+  }
 
   G_OBJECT_CLASS (carrick_pane_parent_class)->dispose (object);
 }
@@ -1270,6 +1289,33 @@ pane_manager_get_properties_cb (DBusGProxy *manager,
 }
 
 static void
+pane_update_vpn_ui (CarrickPane *self,
+                    const char *connection_type,
+                    const char *connection_state)
+{
+  if (g_strcmp0 (connection_type, "vpn") == 0 &&
+      (g_strcmp0 (connection_state, "online") == 0 ||
+       g_strcmp0 (connection_state, "ready") == 0 ||
+       g_strcmp0 (connection_state, "configuration") == 0 ||
+       g_strcmp0 (connection_state, "association") == 0))
+    {
+      /* there is a VPN connection already */
+      gtk_widget_set_sensitive (self->priv->vpn_box, FALSE);
+    }
+  else if (g_strcmp0 (connection_type, "vpn") != 0 &&
+           (g_strcmp0 (connection_state, "online") == 0 ||
+            g_strcmp0 (connection_state, "ready") == 0))
+    {
+      /* there is a network connection */
+      gtk_widget_set_sensitive (self->priv->vpn_box, TRUE);
+    }
+  else
+    {
+      gtk_widget_set_sensitive (self->priv->vpn_box, FALSE);
+    }
+}
+
+static void
 model_emit_change (GtkTreeModel *tree_model,
                    GtkTreeIter  *iter,
                    CarrickPane  *self)
@@ -1306,6 +1352,8 @@ model_emit_change (GtkTreeModel *tree_model,
                                              connection_state,
                                              connection_name,
                                              strength);
+
+  pane_update_vpn_ui (self, connection_type, connection_state);
 }
 
 static void
@@ -1344,17 +1392,16 @@ model_row_changed_cb (GtkTreeModel  *tree_model,
                       GtkTreeIter   *iter,
                       CarrickPane   *self)
 {
-  GtkTreePath *first;
+  guint index;
 
-  /* Emit signal if connection is first in the model -- means the active one.
-   * This could probably be done nicer, maybe by using the INDEX column? */
-  first = gtk_tree_path_new_first ();
-  if (0 == gtk_tree_path_compare (first, path)) {
+  gtk_tree_model_get (tree_model, iter,
+                      CARRICK_COLUMN_INDEX, &index,
+                      -1);
+  if (index == 0) {
     model_emit_change (tree_model,
                        iter,
                        self);
   }
-  gtk_tree_path_free (first);
 }
 
 static void
@@ -1419,6 +1466,290 @@ button_size_request_cb (GtkWidget      *button,
   requisition->width = MAX (requisition->width, CARRICK_MIN_BUTTON_WIDTH);
 }
 
+
+static void
+connect_provider_cb (DBusGProxy *proxy,
+                     gchar      *service,
+                     GError     *error,
+                     gpointer    data)
+{
+  if (error)
+    {
+      g_debug ("Error when ending call: %s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  g_debug ("New VPN service: %s", service);
+}
+
+static void
+carrick_pane_connect_vpn (CarrickPane *self,
+                          const char *name,
+                          const char *gw,
+                          const char *cookie)
+{
+  GHashTable *props;
+  GValue *val;
+
+  props = g_hash_table_new_full (g_str_hash,
+                                 g_str_equal,
+                                 g_free,
+                                 (GDestroyNotify) pane_free_g_value);
+
+  val = g_slice_new0 (GValue);
+  g_value_init (val, G_TYPE_STRING);
+  g_value_set_string (val, g_strdup ("openconnect"));
+  g_hash_table_insert (props, g_strdup ("Type"), val);
+
+  val = g_slice_new0 (GValue);
+  g_value_init (val, G_TYPE_STRING);
+  g_value_set_string (val, g_strdup (name));
+  g_hash_table_insert (props, g_strdup ("Name"), val);
+
+  val = g_slice_new0 (GValue);
+  g_value_init (val, G_TYPE_STRING);
+  g_value_set_string (val, g_strdup (gw));
+  g_hash_table_insert (props, g_strdup ("Host"), val);
+
+  val = g_slice_new0 (GValue);
+  g_value_init (val, G_TYPE_STRING);
+  g_value_set_string (val, g_strdup (cookie));
+  g_hash_table_insert (props, g_strdup ("OpenConnect.Cookie"), val);
+
+  val = g_slice_new0 (GValue);
+  g_value_init (val, G_TYPE_STRING);
+  /* FIXME: VPN.Domain should be the domain to use for route splitting
+   * but currently connman (0.61) does not do that, so we're being lazy
+   * as well. */
+  g_value_set_string (val, g_strdup (""));
+  g_hash_table_insert (props, g_strdup ("VPN.Domain"), val);
+
+  carrick_notification_manager_queue_event (self->priv->notes,
+                                            "vpn",
+                                            "ready",
+                                            name);
+
+  /* Connection methods do not return until there has been success or an error,
+   * set the timeout nice and long before we make the call */
+  dbus_g_proxy_set_default_timeout (self->priv->manager, 120000);
+  org_moblin_connman_Manager_connect_provider_async (self->priv->manager,
+                                                     props,
+                                                     connect_provider_cb,
+                                                     self);
+  dbus_g_proxy_set_default_timeout (self->priv->manager, -1);
+}
+
+typedef struct {
+  CarrickPane *self;
+  GIOChannel *io_out;
+  char *name;
+} auth_dialog_data;
+
+static void
+auth_dialog_exit_cb (GPid pid, int status, auth_dialog_data *data)
+{
+  char *line;
+  char *gw = NULL, *cookie = NULL;
+  char *gw_term, *cookie_term;
+
+  g_spawn_close_pid (pid);
+
+  if (status != 0)
+    {
+      g_io_channel_unref (data->io_out);
+      g_free (data->name);
+      g_free (data);
+      g_warning ("OpenConnect authentication failed\n");
+      return;
+    }
+
+  carrick_shell_show ();
+
+  g_io_channel_read_line (data->io_out, &line, NULL, NULL, NULL);
+  while (line)
+    {
+      if (g_strcmp0 (line, "gateway\n") == 0)
+        g_io_channel_read_line (data->io_out, &gw, NULL, NULL, NULL);
+      else if (g_strcmp0 (line, "cookie\n") == 0)
+        g_io_channel_read_line (data->io_out, &cookie, NULL, NULL, NULL);
+
+      g_free (line);
+      g_io_channel_read_line (data->io_out, &line, NULL, NULL, NULL);
+    }
+  g_io_channel_unref (data->io_out);
+
+  if (!gw || !cookie)
+    {
+      g_free (data->name);
+      g_free (data);
+      g_warning ("OpenConnect authentication did not return gateway and cookie\n");
+      return;
+    }
+
+  /* remove linefeeds */
+  gw_term = g_strndup (gw, strlen (gw) - 1);
+  cookie_term = g_strndup (cookie, strlen (cookie) - 1);
+  g_free (gw);
+  g_free (cookie);
+
+  carrick_pane_connect_vpn (data->self, data->name, gw_term, cookie_term); 
+  g_free (data->name);
+  g_free (data);
+  g_free (gw_term);
+  g_free (cookie_term);
+}
+
+static void
+vpn_connect_clicked (GtkButton *btn, CarrickPane *self)
+{
+  CarrickPanePrivate *priv;
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+  char *uuid, *name;
+  GPid pid;
+  int out;
+  auth_dialog_data *data;
+  GError *error = NULL;
+
+  priv = self->priv;
+
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (priv->vpn_combo),
+                                      &iter))
+    {
+      return;
+    }
+
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (priv->vpn_combo));
+  gtk_tree_model_get (model, &iter,
+                      COLUMN_VPN_NAME, &name,
+                      COLUMN_VPN_UUID, &uuid,
+                      -1);
+
+  char *argv[] = {
+    AUTH_DIALOG,
+    "-u", uuid,
+    "-n", name,
+    "-s", "org.freedesktop.NetworkManager.openconnect",
+    NULL
+  };
+
+  if (!g_spawn_async_with_pipes (NULL, argv, NULL,
+                                 G_SPAWN_DO_NOT_REAP_CHILD,
+                                 NULL, NULL,
+                                 &pid, NULL, &out, NULL, &error))
+    {
+      g_warning ("Unable to spawn OpenConnect authentication dialog: %s",
+                 error->message);
+      g_error_free(error);
+      return;
+    }
+
+  data = g_new0 (auth_dialog_data, 1);
+  data->io_out = g_io_channel_unix_new (out);
+  data->name = g_strdup (name);
+  data->self = self;
+  g_child_watch_add (pid, (GChildWatchFunc)auth_dialog_exit_cb, data);
+}
+
+static void
+carrick_pane_load_vpn_config (CarrickPane *self)
+{
+  CarrickPanePrivate *priv;
+  GSList *connections, *this;
+  GtkListStore *store;
+  GtkTreeIter iter;
+  gboolean have_vpn = FALSE;
+
+  priv = self->priv;
+
+  store = GTK_LIST_STORE (gtk_combo_box_get_model (GTK_COMBO_BOX (priv->vpn_combo)));
+  gtk_list_store_clear (store);
+
+  connections = gconf_client_all_dirs (priv->gconf,
+                                       "/system/networking/connections",
+                                       NULL);
+  for (this = connections; this; this = this->next)
+    {
+      char *key, *val, *uuid, *id;
+
+      /* make sure this is a vpn and uses openconnect */
+      key = g_strdup_printf ("%s/connection/type", (char*)this->data);
+      val = gconf_client_get_string (priv->gconf, key, NULL);
+      g_free (key);
+
+      if (g_strcmp0	(val, "vpn") != 0)
+        {
+          g_free (val);
+          continue;
+        }
+      g_free (val);
+
+      key = g_strdup_printf ("%s/vpn/service-type", (char*)this->data);
+      val = gconf_client_get_string (priv->gconf, key, NULL);
+      g_free (key);
+
+      if (g_strcmp0	(val, "org.freedesktop.NetworkManager.openconnect") != 0)
+        {
+          g_free (val);
+          continue;
+        }
+      g_free (val);
+
+      key = g_strdup_printf("%s/connection/uuid", (char*)this->data);
+      uuid = gconf_client_get_string (priv->gconf, key, NULL);
+      g_free (key);
+
+      key = g_strdup_printf("%s/connection/id", (char*)this->data);
+      id = gconf_client_get_string (priv->gconf, key, NULL);
+      g_free (key);
+
+      /* TODO add vpn to to combo-model */
+      gtk_list_store_append (store, &iter);
+      gtk_list_store_set (store, &iter,
+                          COLUMN_VPN_NAME, id,
+                          COLUMN_VPN_UUID, uuid,
+                          -1);
+      g_free (uuid);
+      g_free (id);
+ 
+      if (!have_vpn)
+        {
+          gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->vpn_combo),
+                                        &iter);
+          have_vpn = TRUE;
+        }
+    }
+
+  gtk_widget_set_visible (priv->vpn_box, have_vpn);
+
+  g_slist_foreach (connections, (GFunc)g_free, NULL);
+  g_slist_free (connections);
+}
+
+static void
+vpn_config_changed_cb (GConfClient *gconf,
+                       guint cnxn_id,
+                       GConfEntry *entry,
+                       gpointer user_data)
+{
+  carrick_pane_load_vpn_config (CARRICK_PANE (user_data));
+}
+
+static void
+init_gconf (CarrickPane *self)
+{
+  self->priv->gconf = gconf_client_get_default ();
+  gconf_client_add_dir (self->priv->gconf,
+                        "/system/networking/connections",
+                        GCONF_CLIENT_PRELOAD_NONE, NULL);
+  gconf_client_notify_add (self->priv->gconf,
+                           "/system/networking/connections",
+                           vpn_config_changed_cb, self,
+                           NULL, NULL);
+  carrick_pane_load_vpn_config (self);
+}
+
 static void
 carrick_pane_init (CarrickPane *self)
 {
@@ -1435,7 +1766,10 @@ carrick_pane_init (CarrickPane *self)
   GError             *error = NULL;
   DBusGConnection    *connection;
   DBusGProxy         *bus_proxy;
+  GtkWidget          *vpn_connect_button;
   GtkTreeModel       *model;
+  GtkListStore       *vpn_store;
+  GtkCellRenderer    *renderer;
 
   priv = self->priv = PANE_PRIVATE (self);
 
@@ -1712,6 +2046,47 @@ carrick_pane_init (CarrickPane *self)
                                          CARRICK_NETWORK_MODEL (model));
   gtk_widget_show (priv->service_list);
   gtk_box_pack_start (GTK_BOX (column), priv->service_list, TRUE, TRUE, 0);
+
+  /* vpn widgets in the bottom */
+  priv->vpn_box = gtk_vbox_new (FALSE, 0);
+  gtk_widget_set_sensitive (priv->vpn_box, FALSE);
+  gtk_widget_set_no_show_all (priv->vpn_box, TRUE);
+  gtk_box_pack_start (GTK_BOX (column), priv->vpn_box, FALSE, FALSE, 4);
+
+  sep = gtk_hseparator_new ();
+  gtk_widget_show (sep);
+  gtk_box_pack_start (GTK_BOX (priv->vpn_box), sep, FALSE, FALSE, 0);
+
+  box = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (box);
+  gtk_box_pack_start (GTK_BOX (priv->vpn_box), box, FALSE, FALSE, 4);
+
+  /* TRANSLATORS: Button
+   * There will be a combobox of VPN networks to the left of the 
+   * button */
+  vpn_connect_button = gtk_button_new_with_label (_("Connect to VPN"));
+  gtk_widget_show (vpn_connect_button);
+  gtk_box_pack_end (GTK_BOX (box), vpn_connect_button, FALSE, FALSE, 8);
+  g_signal_connect (GTK_BUTTON (vpn_connect_button), "clicked",
+                    G_CALLBACK (vpn_connect_clicked), self);
+
+  vpn_store = gtk_list_store_new (N_VPN_COLUMNS,
+                                  G_TYPE_STRING, G_TYPE_STRING);
+  priv->vpn_combo = gtk_combo_box_new_with_model (GTK_TREE_MODEL (vpn_store));
+  g_object_unref (vpn_store);
+  gtk_widget_show (priv->vpn_combo);
+  gtk_box_pack_end (GTK_BOX (box), priv->vpn_combo, FALSE, FALSE, 0);
+
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (priv->vpn_combo),
+                              renderer, TRUE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (priv->vpn_combo),
+                                  renderer,
+                                  "text", COLUMN_VPN_NAME,
+                                  NULL);
+
+  if (g_file_test (AUTH_DIALOG, G_FILE_TEST_IS_EXECUTABLE))
+    init_gconf (self);
 
   gtk_container_add (GTK_CONTAINER (net_list_frame), column);
   gtk_box_pack_start (GTK_BOX (self),
