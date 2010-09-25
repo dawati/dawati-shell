@@ -1,65 +1,68 @@
 # Derived from Empathy:
 # empathy Korean translation
 # This file is distributed under the same license as the empathy package.
-# 
-# Changwoo Ryu <cwryu@debian.org>, 2008, 2009.
-# 
+#
+#
 # 새로 번역하시는 분은 아래 translator-credits에 추가하세요.
-# 
+#
 # 참고:
 # - 이 프로그램의 이름인 "Empathy"는 외국어 표기법에 따라 "엠퍼시"라고 표기
-# 
+#
+# Changwoo Ryu <cwryu@debian.org>, 2008, 2009.
+# Park Shinjo <peremen@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: empathy\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-01 10:33+0000\n"
-"PO-Revision-Date: 2009-07-27 12:10-0800\n"
-"Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
-"Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
+"POT-Creation-Date: 2010-07-03 11:55+0000\n"
+"PO-Revision-Date: 2010-07-10 05:34+0900\n"
+"Last-Translator: Park Shinjo <peremen@gmail.com>\n"
+"Language-Team: Korean <peremen@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-Language: Korean\n"
+"X-Generator: Lokalize 1.0\n"
 
-#: ../anerley/anerley-tile.c:170 ../anerley/anerley-presence-chooser.c:43
+#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
 msgid "Available"
 msgstr "대화 가능"
 
-#: ../anerley/anerley-tile.c:173 ../anerley/anerley-presence-chooser.c:47
+#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
 msgid "Busy"
 msgstr "다른 용무 중"
 
-#: ../anerley/anerley-tile.c:176 ../anerley/anerley-tile.c:179
-#: ../anerley/anerley-presence-chooser.c:44
+#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
 msgid "Away"
 msgstr "자리 비움"
 
-#: ../anerley/anerley-tile.c:182 ../anerley/anerley-presence-chooser.c:42
+#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
 msgid "Offline"
 msgstr "오프라인"
 
-#: ../anerley/anerley-econtact-item.c:233
+#: ../anerley/anerley-econtact-item.c:234
 msgid "Unnamed"
-msgstr "무명"
+msgstr "이름 없음"
 
-#: ../anerley/anerley-presence-chooser.c:45
-msgid "Extended Away"
-msgstr "오랫동안 자리비움"
-
-#: ../anerley/anerley-presence-chooser.c:41
+#: ../anerley/anerley-presence-chooser.c:42
 msgid "Unset"
 msgstr "설정 취소"
 
-#: ../anerley/anerley-presence-chooser.c:48
-msgid "Unknown"
-msgstr "알 수 없음"
-
 #: ../anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr "오랫동안 자리 비움"
+
+#: ../anerley/anerley-presence-chooser.c:47
 msgid "Hidden"
 msgstr "숨김"
 
 #: ../anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "알 수 없음"
+
+#: ../anerley/anerley-presence-chooser.c:50
 msgid "Error"
 msgstr "오류"
+
