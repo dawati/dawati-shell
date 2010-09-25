@@ -46,6 +46,9 @@ get_tip_and_icon_state (const gchar      *connection_type,
 
   if (g_str_equal (state, "idle"))
     {
+      /* TRANSLATORS: Tooltips for the toolbar icon
+       * The possible placeholder is service name (such as 
+       * a wireless network name) */
       tip = g_strdup (_("networks - not connected"));
       *icon_state = ICON_OFFLINE;
     }
@@ -70,6 +73,9 @@ get_tip_and_icon_state (const gchar      *connection_type,
                                connection_name);
       else if (g_str_equal (connection_type, "bluetooth"))
         tip = g_strdup_printf (_("networks - %s - bluetooth"),
+                               connection_name);
+      else if (g_str_equal (connection_type, "vpn"))
+        tip = g_strdup_printf (_("networks - %s - VPN"),
                                connection_name);
       else
         tip = g_strdup (_("networks"));

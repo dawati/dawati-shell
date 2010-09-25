@@ -75,7 +75,9 @@ typedef enum {
   ICON_BLUETOOTH_STRONG,
   ICON_BLUETOOTH_STRONG_HOVER,
   ICON_BLUETOOTH_WEAK,
-  ICON_BLUETOOTH_WEAK_HOVER
+  ICON_BLUETOOTH_WEAK_HOVER,
+  ICON_VPN,
+  ICON_VPN_HOVER
 } CarrickIconState;
 
 typedef struct _CarrickIconFactory CarrickIconFactory;

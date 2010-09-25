@@ -56,7 +56,9 @@ static const gchar * icon_names[] = {
   PKG_ICON_DIR "/" "network-bluetooth-strong.png",
   PKG_ICON_DIR "/" "network-bluetooth-strong-hover.png",
   PKG_ICON_DIR "/" "network-bluetooth-weak.png",
-  PKG_ICON_DIR "/" "network-bluetooth-weak-hover.png"
+  PKG_ICON_DIR "/" "network-bluetooth-weak-hover.png",
+  PKG_ICON_DIR "/" "network-vpn.png",
+  PKG_ICON_DIR "/" "network-vpn-hover.png"
 };
 
 /* Keep in sync with CarrickIconState. */
@@ -87,6 +89,8 @@ static const gchar *icon_ids[] = {
   "bluetooth-strong", /* ICON_BLUETOOTH_STRONG_HOVER */
   "bluetooth-weak", /* ICON_BLUETOOTH_WEAK */
   "bluetooth-weak", /* ICON_BLUETOOTH_WEAK_HOVER */
+  "vpn", /* ICON_VPN */
+  "vpn", /* ICON_VPN_HOVER */
   NULL
 };
 
@@ -118,6 +122,8 @@ struct _CarrickIconFactoryPrivate
   GdkPixbuf *bluetooth_strong_hov_img;
   GdkPixbuf *bluetooth_weak_img;
   GdkPixbuf *bluetooth_weak_hov_img;
+  GdkPixbuf *vpn_img;
+  GdkPixbuf *vpn_hov_img;
 };
 
 static void
@@ -248,6 +254,10 @@ carrick_icon_factory_get_state (const gchar *connection_type,
         {
           return ICON_3G_STRONG_HOVER;
         }
+    }
+  else if (g_str_equal (connection_type, "vpn"))
+    {
+      return ICON_VPN_HOVER;
     }
 
   return ICON_ERROR;
@@ -523,6 +533,26 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       icon = priv->bluetooth_weak_hov_img;
       break;
 
+    case ICON_VPN:
+      if (!priv->vpn_img)
+        {
+          priv->vpn_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
+      icon = priv->vpn_img;
+      break;
+
+    case ICON_VPN_HOVER:
+      if (!priv->vpn_hov_img)
+        {
+          priv->vpn_hov_img =
+            gdk_pixbuf_new_from_file (icon_names[state],
+                                      &error);
+        }
+      icon = priv->vpn_hov_img;
+      break;
+
     default:
       if (!priv->error_img)
         {
@@ -536,8 +566,10 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
 
   if (icon == NULL || error)
     {
-      g_warning (G_STRLOC ":error opening pixbuf: %s",
-                 error->message);
+/*
+       g_warning (G_STRLOC ":error opening pixbuf: %s",
+                  error->message);
+*/
       g_clear_error (&error);
     }
 
