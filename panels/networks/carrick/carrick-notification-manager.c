@@ -375,6 +375,13 @@ carrick_notification_manager_init (CarrickNotificationManager *self)
   notify_init ("Carrick");
 }
 
+static gboolean
+is_ready_or_online (const char *state)
+{
+  return (g_strcmp0 (state, "ready") == 0 ||
+          g_strcmp0 (state, "online") == 0);
+}
+
 void
 carrick_notification_manager_notify_event (CarrickNotificationManager *self,
                                            const gchar                *type,
@@ -430,13 +437,13 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
           (priv->last_name != NULL && g_strcmp0 (priv->last_name, name) != 0))
         {
           /* top service has changed */
-          if (g_strcmp0 (state, "ready") == 0 &&
+          if (is_ready_or_online (state) &&
               g_strcmp0 (priv->last_state, "idle") == 0)
             {
               _tell_online (self, name, type, str);
             }
-          else if (g_strcmp0 (state, "ready") == 0 &&
-                   g_strcmp0 (priv->last_state, "ready") == 0
+          else if (is_ready_or_online (state) &&
+                   is_ready_or_online (priv->last_state)
                    && g_strcmp0 (name, priv->last_name) != 0)
             {
               if (g_strcmp0 (priv->last_type, "wired") == 0)
@@ -453,16 +460,17 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
                 }
             }
           else if (g_strcmp0 (state, "idle") == 0
-                   && g_strcmp0 (priv->last_state, "ready") == 0)
+                   && is_ready_or_online (priv->last_state))
             {
               _tell_offline (self, name, type);
             }
         }
       else if (g_strcmp0 (priv->last_name, name) == 0 &&
-               g_strcmp0 (priv->last_state, state) != 0)
+               is_ready_or_online (state) !=
+               is_ready_or_online (priv->last_state))
         {
           /* service same but state changed */
-          if (g_strcmp0 (state, "ready") == 0)
+          if (is_ready_or_online (state))
             _tell_online (self, name, type, str);
           else if (g_strcmp0 (state, "idle") == 0)
             _tell_offline (self, name, type);
