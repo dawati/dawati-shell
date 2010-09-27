@@ -1530,6 +1530,11 @@ carrick_pane_connect_vpn (CarrickPane *self,
                                             "ready",
                                             name);
 
+  carrick_notification_manager_queue_event (self->priv->notes,
+                                            "vpn",
+                                            "ready",
+                                            name);
+
   /* Connection methods do not return until there has been success or an error,
    * set the timeout nice and long before we make the call */
   dbus_g_proxy_set_default_timeout (self->priv->manager, 120000);
