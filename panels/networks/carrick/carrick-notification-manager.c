@@ -43,10 +43,18 @@ struct _CarrickNotificationManagerPrivate
   gchar *last_name;
   gchar *last_state;
 
+  /* if we get a notification that matches the queued one, don't show it */
   gchar *queued_type;
   gchar *queued_name;
-  gchar *queued_state;
+  gboolean queued_ready_or_online;
 };
+
+static gboolean
+is_ready_or_online (const char *state)
+{
+  return (g_strcmp0 (state, "ready") == 0 ||
+          g_strcmp0 (state, "online") == 0);
+}
 
 void
 carrick_notification_manager_queue_event (CarrickNotificationManager *self,
@@ -59,8 +67,7 @@ carrick_notification_manager_queue_event (CarrickNotificationManager *self,
   g_free (priv->queued_type);
   priv->queued_type = NULL;
 
-  g_free (priv->queued_state);
-  priv->queued_state = NULL;
+  priv->queued_ready_or_online = FALSE;
 
   g_free (priv->queued_name);
   priv->queued_name = NULL;
@@ -69,7 +76,7 @@ carrick_notification_manager_queue_event (CarrickNotificationManager *self,
     priv->queued_type = g_strdup (type);
 
   if (state)
-    priv->queued_state = g_strdup (state);
+    priv->queued_ready_or_online = is_ready_or_online (state);
 
   if (name)
     priv->queued_name = g_strdup (name);
@@ -344,7 +351,6 @@ carrick_notification_manager_finalize (GObject *object)
   g_free (priv->last_state);
   g_free (priv->queued_type);
   g_free (priv->queued_name);
-  g_free (priv->queued_state);
 
   G_OBJECT_CLASS (carrick_notification_manager_parent_class)->finalize (object);
 }
@@ -370,16 +376,28 @@ carrick_notification_manager_init (CarrickNotificationManager *self)
   self->priv->last_state = NULL;
   self->priv->queued_type = NULL;
   self->priv->queued_name = NULL;
-  self->priv->queued_state = NULL;
 
   notify_init ("Carrick");
 }
 
 static gboolean
-is_ready_or_online (const char *state)
+matches_queued (CarrickNotificationManager *self,
+                const char *type, const char *state, const char *name)
 {
-  return (g_strcmp0 (state, "ready") == 0 ||
-          g_strcmp0 (state, "online") == 0);
+  CarrickNotificationManagerPrivate *priv = self->priv;
+
+  if (g_strcmp0 (type, priv->queued_type) != 0 &&
+      g_strcmp0 ("all", priv->queued_type) != 0)
+    return FALSE;
+
+  if (g_strcmp0 (name, priv->queued_name) != 0 &&
+      g_strcmp0 ("all", priv->queued_name) != 0)
+    return FALSE;
+
+  if (priv->queued_ready_or_online != is_ready_or_online (state))
+    return FALSE;
+
+  return TRUE;
 }
 
 void
@@ -401,27 +419,12 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
 
   /* Need to handle last events and queued events separately to better maintain
    * the systems state */
-  if (priv->queued_state)
+  if (priv->queued_type)
     {
       /* We have a queued event, test to see if that's what happened */
-      if (g_strcmp0 (priv->queued_type, "all") == 0 ||
-          (g_strcmp0 (priv->queued_type, type) == 0 &&
-           g_strcmp0 (priv->queued_state, state) == 0 &&
-           g_strcmp0 (priv->queued_name, name) == 0))
+      if (matches_queued (self, type, state, name))
         {
-          /* Remember the event info */
-          g_free (priv->last_state);
-          priv->last_state = g_strdup (priv->queued_state);
-          g_free (priv->last_type);
-          priv->last_type = g_strdup (priv->queued_type);
-          g_free (priv->last_name);
-          priv->last_name = NULL;
-          if (priv->queued_name && g_strcmp0 (priv->queued_name, "all") != 0)
-            priv->last_name = g_strdup (priv->queued_name);
-
-          /* We've handled this queued event, clear the stored data */
-          g_free (priv->queued_state);
-          priv->queued_state = NULL;
+          priv->queued_ready_or_online = is_ready_or_online (state);
           g_free (priv->queued_type);
           priv->queued_type = NULL;
           g_free (priv->queued_name);
@@ -434,62 +437,55 @@ carrick_notification_manager_notify_event (CarrickNotificationManager *self,
   if (!queue_handled)
     {
       if (g_strcmp0 (priv->last_type, type) != 0 ||
-          (priv->last_name != NULL && g_strcmp0 (priv->last_name, name) != 0))
+          g_strcmp0 (priv->last_name, name) != 0)
         {
-          /* top service has changed */
-          if (is_ready_or_online (state) &&
-              g_strcmp0 (priv->last_state, "idle") == 0)
-            {
-              _tell_online (self, name, type, str);
-            }
-          else if (is_ready_or_online (state) &&
-                   is_ready_or_online (priv->last_state)
-                   && g_strcmp0 (name, priv->last_name) != 0)
+          /* new primary service */
+
+          if (!is_ready_or_online(priv->last_state) &&
+              is_ready_or_online (state))
             {
               if (g_strcmp0 (priv->last_type, "wired") == 0)
-                {
-                  /* Special case ethernet connections.
-                   * When cable unplugged just tell the user what the
-                   * new connection is.
-                   */
-                  _tell_online (self, name, type, str);
-                }
+                /* When cable unplugged just tell the user what the
+                 * new connection is. */
+                _tell_online (self, name, type, str);
+              else if (g_strcmp0 (priv->last_type, "vpn") == 0)
+                /* notification system doesn't handle multiple 
+                 * services too well, this hack prevents weird
+                 * notification with vpn */
+                 ;
+              else if (priv->note)
+                /* There is a notification already, it should be
+                 * a _tell_offline()... */
+                _tell_changed (self, name, type, str);
               else
-                {
-                  _tell_changed (self, name, type, str);
-                }
+                _tell_online (self, name, type, str);
             }
-          else if (g_strcmp0 (state, "idle") == 0
-                   && is_ready_or_online (priv->last_state))
+          else if (is_ready_or_online (state))
             {
-              _tell_offline (self, name, type);
+               _tell_online (self, name, type, str);
             }
         }
-      else if (g_strcmp0 (priv->last_name, name) == 0 &&
-               is_ready_or_online (state) !=
-               is_ready_or_online (priv->last_state))
+      else if (is_ready_or_online (priv->last_state) !=
+               is_ready_or_online (state))
         {
           /* service same but state changed */
           if (is_ready_or_online (state))
             _tell_online (self, name, type, str);
-          else if (g_strcmp0 (state, "idle") == 0)
+          else
             _tell_offline (self, name, type);
         }
     }
 
   /*
-   * Stash state in last_*
+   * update saved "last values"
    */
+
   g_free (priv->last_state);
   priv->last_state = g_strdup (state);
-
-  if (g_strcmp0 (state, "ready") == 0)
-    {
-      g_free (priv->last_type);
-      priv->last_type = g_strdup (type);
-      g_free (priv->last_name);
-      priv->last_name = g_strdup (name);
-    }
+  g_free (priv->last_type);
+  priv->last_type = g_strdup (type);
+  g_free (priv->last_name);
+  priv->last_name = g_strdup (name);
 }
 
 CarrickNotificationManager *
