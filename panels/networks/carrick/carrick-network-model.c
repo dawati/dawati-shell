@@ -438,6 +438,19 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 }
 
 static void
+remove_provider_cb (DBusGProxy *proxy,
+                    GError     *error,
+                    gpointer    data)
+{
+  if (error)
+    {
+      g_debug ("Error on RemoveProvider: %s", error->message);
+      g_error_free (error);
+      return;
+    }
+}
+
+static void
 network_model_service_changed_cb (DBusGProxy  *service,
                                   const gchar *property,
                                   GValue      *value,
@@ -455,9 +468,29 @@ network_model_service_changed_cb (DBusGProxy  *service,
 
   if (g_str_equal (property, "State"))
     {
+      const char *type, *state;
+      DBusGProxy *service_proxy;
+
+      /* HACK: connman (0.61) vpn handling is not consistent, so we
+       * remove the provider on idle (otherwise it'll just hang there). 
+       * But: set the state first, so notifications etc happen. */
+
+      state = g_value_get_string (value);
       gtk_list_store_set (store, &iter,
-                          CARRICK_COLUMN_STATE, g_value_get_string (value),
+                          CARRICK_COLUMN_STATE, state,
                           -1);
+
+      gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
+                          CARRICK_COLUMN_TYPE, &type,
+                          CARRICK_COLUMN_PROXY, &service_proxy,
+                          -1);
+      if (g_strcmp0 (type, "vpn") == 0 &&
+          (g_strcmp0 (state, "idle") == 0 ||
+           g_strcmp0 (state, "failure") == 0))
+        org_moblin_connman_Manager_remove_provider_async (self->priv->manager,
+                                                          dbus_g_proxy_get_path (service),
+                                                          remove_provider_cb,
+                                                          self);
     }
   else if (g_str_equal (property, "Favorite"))
     {

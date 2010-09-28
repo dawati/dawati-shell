@@ -1466,7 +1466,6 @@ button_size_request_cb (GtkWidget      *button,
   requisition->width = MAX (requisition->width, CARRICK_MIN_BUTTON_WIDTH);
 }
 
-
 static void
 connect_provider_cb (DBusGProxy *proxy,
                      gchar      *service,
@@ -1479,8 +1478,6 @@ connect_provider_cb (DBusGProxy *proxy,
       g_error_free (error);
       return;
     }
-
-  g_debug ("New VPN service: %s", service);
 }
 
 static void
