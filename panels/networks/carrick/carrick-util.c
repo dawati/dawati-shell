@@ -28,6 +28,12 @@
 const char *
 util_get_service_type_for_display (const char *type)
 {
+  /* TRANSLATORS: Service type names
+   * These names will be used in notification-manager to form phrases 
+   * such as
+   *   "Sorry, your %s connection was lost. So we've connected
+   *     you to a %s network"
+   * where both placeholders are service type names. */
   if (g_strcmp0 (type, "wifi") == 0)
     return _("WiFi");
   else if (g_strcmp0 (type, "ethernet") == 0)
@@ -38,6 +44,8 @@ util_get_service_type_for_display (const char *type)
     return _("WiMAX");
   else if (g_strcmp0 (type, "bluetooth") == 0)
     return _("Bluetooth");
+  else if (g_strcmp0 (type, "vpn") == 0)
+    return _("VPN");
   else
     /* Run it through gettext and hope for the best */
     return _(type);

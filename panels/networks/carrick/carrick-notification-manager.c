@@ -270,7 +270,7 @@ _tell_changed (CarrickNotificationManager *self,
         {
           message = g_strdup_printf (_ ("Sorry, your %s connection was lost. "
                                         "So we've connected you to a wired network"),
-                                     priv->last_type);
+                                     util_get_service_type_for_display (priv->last_type));
           icon = carrick_icon_factory_get_path_for_state (ICON_ACTIVE);
         }
       else if (name)
