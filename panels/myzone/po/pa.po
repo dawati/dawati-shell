@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-20 17:55+0000\n"
-"PO-Revision-Date: 2010-07-30 08:58+0530\n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-09-29 07:39+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -60,12 +60,12 @@ msgstr "ਈਮੇਲ ਚੇਤਾਵਨੀ:"
 msgid "Reset to default"
 msgstr "ਡਿਫਾਲਟ ਲਈ ਮੁੜ-ਸੈੱਟ"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
 msgstr "GConf ਗਲਤੀ: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
 msgstr "ਸਭ ਹੋਰ ਗਲਤੀਆਂ ਕੇਵਲ ਟਰਮੀਨਲ ਉੱਤੇ ਹੀ ਵੇਖਾਓ।"
 
@@ -139,10 +139,11 @@ msgstr "%x ਨੂੰ ਚਾਹੀਦਾ"
 
 #: ../penge/penge-welcome-tile.c:28
 msgid ""
-"When you’ve set up your web accounts and used some files they will appear "
+"When you’ve set up your web accounts and used some files, they will appear "
 "here on myzone for easy access whenever you want. "
 msgstr ""
-"ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੇ ਵੈੱਬ ਅਕਾਊਂਟ ਸੈਟਅੱਪ ਕਰ ਲਏ ਅਤੇ ਵਰਤੇ ਤਾਂ ਕੁਝ ਫਾਇਲਾਂ myzone ਵਿੱਚ ਕੁਝ ਫਾਇਲਾਂ ਸੌਖੀ "
+"ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੇ ਵੈੱਬ ਅਕਾਊਂਟ ਸੈਟਅੱਪ ਕਰ ਲਏ ਅਤੇ ਕੁਝ ਫਾਇਲਾਂ ਵਰਤੀਆਂ ਤਾਂ myzone ਵਿੱਚ ਕੁਝ ਫਾਇਲਾਂ "
+"ਸੌਖੀ "
 "ਵਰਤੋਂ ਲਈ ਵੇਖਾਈ ਦੇਣਗੀਆਂ, ਜਦੋਂ ਵੀ ਤੁਸੀਂ ਚਾਹੋਗੇ।"
 
 #: ../penge/penge-welcome-tile.c:34
