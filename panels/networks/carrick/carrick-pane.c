@@ -29,6 +29,7 @@
 
 #include "connman-marshal.h"
 #include "connman-manager-bindings.h"
+#include "connman-technology-bindings.h"
 
 #include "carrick-list.h"
 #include "carrick-service-item.h"
@@ -78,7 +79,17 @@ struct _CarrickPanePrivate
   gboolean threeg_enabled;
   gboolean wimax_enabled;
   gboolean bluetooth_enabled;
+
   DBusGProxy *manager;
+
+  /* Technology proxies are needed to get State:Blocked
+   * -- this means a hw or sw rfkill switch */
+  DBusGProxy *wifi_tech;
+  DBusGProxy *wimax_tech;
+  DBusGProxy *bluetooth_tech;
+  DBusGProxy *threeg_tech;
+  DBusGProxy *ethernet_tech;
+
   CarrickNotificationManager *notes;
 };
 
@@ -893,6 +904,103 @@ _offline_mode_switch_callback (MxGtkLightSwitch *flight_switch,
 }
 
 static void
+tech_property_changed_cb (DBusGProxy  *proxy,
+                          const gchar *property,
+                          GValue      *value,
+                          gpointer     data)
+{
+  GtkWidget *tech_switch = GTK_WIDGET (data);
+
+  if (g_strcmp0 (property, "State") == 0)
+    {
+      gboolean blocked;
+
+      blocked = (g_strcmp0 (g_value_get_string (value), "blocked") == 0);
+      gtk_widget_set_sensitive (tech_switch, !blocked);
+    }
+}
+
+static void
+tech_get_properties_cb (DBusGProxy *tech_proxy,
+                        GHashTable *properties,
+                        GError     *error,
+                        gpointer    data)
+{
+  GtkWidget *tech_switch = GTK_WIDGET (data);
+  GValue *value;
+
+  if (error)
+    {
+      g_debug ("Error when ending Technology.GetProperties call: %s",
+               error->message);
+      g_error_free (error);
+      return;
+    }
+
+  value = g_hash_table_lookup (properties, "State");
+  if (value)
+    {
+      gboolean blocked;
+
+      blocked = (g_strcmp0 (g_value_get_string (value), "blocked") == 0);
+      gtk_widget_set_sensitive (tech_switch, !blocked);
+    }
+}
+
+static DBusGProxy*
+new_tech_proxy (const char *tech, GtkWidget *tech_switch)
+{
+  DBusGProxy *proxy;
+  DBusGConnection *connection;
+  char *path;
+
+  /* default in case something fails when checking tech State */
+  gtk_widget_set_sensitive (tech_switch, TRUE);
+
+  connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, NULL);
+  if (!connection) 
+    return NULL;
+
+  path = g_strdup_printf ("/org/moblin/connman/technology/%s", tech);
+  proxy = dbus_g_proxy_new_for_name (connection,
+                                     CONNMAN_SERVICE,
+                                     path,
+                                     "org.moblin.connman.Technology");
+  g_free (path);
+
+  /* Listen for the D-Bus PropertyChanged signal */
+  dbus_g_proxy_add_signal (proxy,
+                           "PropertyChanged",
+                           G_TYPE_STRING,
+                           G_TYPE_VALUE,
+                           G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (proxy,
+                               "PropertyChanged",
+                               G_CALLBACK (tech_property_changed_cb),
+                               tech_switch,
+                               NULL);
+
+  org_moblin_connman_Technology_get_properties_async (proxy,
+                                                      tech_get_properties_cb,
+                                                      tech_switch);
+  
+  return proxy;
+}
+
+static void
+unref_tech_proxy (DBusGProxy *proxy, gpointer data)
+{
+  if (proxy)
+    {
+      dbus_g_proxy_disconnect_signal (proxy,
+                                      "PropertyChanged",
+                                      G_CALLBACK (tech_property_changed_cb),
+                                      data);
+      g_object_unref (proxy);
+    }
+}
+
+static void
 pane_update_property (const gchar *property,
                       GValue      *value,
                       gpointer     user_data)
@@ -932,27 +1040,50 @@ pane_update_property (const gchar *property,
       priv->have_wimax = FALSE;
       priv->have_bluetooth = FALSE;
 
+      unref_tech_proxy (priv->wifi_tech, priv->wifi_switch);
+      priv->wifi_tech = NULL;
+      unref_tech_proxy (priv->wimax_tech, priv->wimax_switch);
+      priv->wimax_tech = NULL;
+      unref_tech_proxy (priv->bluetooth_tech, priv->bluetooth_switch);
+      priv->bluetooth_tech = NULL;
+      unref_tech_proxy (priv->threeg_tech, priv->threeg_switch);
+      priv->threeg_tech = NULL;
+      unref_tech_proxy (priv->ethernet_tech, priv->ethernet_switch);
+      priv->ethernet_tech = NULL;
+
       for (i = 0; i < g_strv_length (tech); i++)
         {
-          if (g_str_equal ("wifi", *(tech + i)))
+          const char *tech_name = (*(tech + i));
+
+          if (g_str_equal ("wifi", tech_name))
             {
               priv->have_wifi = TRUE;
+              priv->wifi_tech = new_tech_proxy (tech_name,
+                                                priv->wifi_switch);
             }
-          else if (g_str_equal ("wimax", *(tech + i)))
+          else if (g_str_equal ("wimax", tech_name))
             {
               priv->have_wimax = TRUE;
+              priv->wimax_tech = new_tech_proxy (tech_name,
+                                                 priv->wimax_switch);
             }
-          else if (g_str_equal ("bluetooth", *(tech + i)))
+          else if (g_str_equal ("bluetooth", tech_name))
             {
               priv->have_bluetooth = TRUE;
+              priv->bluetooth_tech = new_tech_proxy (tech_name,
+                                                     priv->bluetooth_switch);
             }
-          else if (g_str_equal ("cellular", *(tech + i)))
+          else if (g_str_equal ("cellular", tech_name))
             {
               priv->have_threeg = TRUE;
+              priv->threeg_tech = new_tech_proxy (tech_name,
+                                                  priv->threeg_switch);
             }
-          else if (g_str_equal ("ethernet", *(tech + i)))
+          else if (g_str_equal ("ethernet", tech_name))
             {
               priv->have_ethernet = TRUE;
+              priv->ethernet_tech = new_tech_proxy (tech_name,
+                                                    priv->ethernet_switch);
             }
         }
 

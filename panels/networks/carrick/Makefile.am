@@ -10,7 +10,9 @@ connman-marshal.h: connman-marshal.list Makefile
 	$(AM_V_GEN)dbus-binding-tool --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
 
 BUILT_SOURCES = connman-marshal.c connman-marshal.h \
-                connman-manager-bindings.h connman-service-bindings.h
+                connman-manager-bindings.h \
+                connman-service-bindings.h \
+                connman-technology-bindings.h
 
 noinst_LTLIBRARIES = \
                         libcarrick.la
@@ -55,6 +57,9 @@ libcarrick_la_LIBADD = $(GTK_LIBS) \
 
 
 DISTCLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = connman-marshal.list connman-manager.xml connman-service.xml
+EXTRA_DIST = connman-marshal.list \
+             connman-manager.xml \
+             connman-service.xml \
+             connman-technology.xml
 
 -include $(top_srcdir)/git.mk
