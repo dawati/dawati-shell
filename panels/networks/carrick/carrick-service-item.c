@@ -124,6 +124,12 @@ enum {
 
 static gint service_item_signals[SIGNAL_LAST];
 
+enum {
+  METHOD_DHCP = 0,
+  METHOD_MANUAL = 1,
+  METHOD_FIXED = 2,
+};
+
 
 static void
 carrick_service_item_get_property (GObject *object, guint property_id,
@@ -275,14 +281,44 @@ _set_form_state (CarrickServiceItem *self)
   CarrickServiceItemPrivate *priv = self->priv;
   gchar                     *nameservers = NULL;
   GtkTextBuffer             *buf;
+  GtkComboBox               *combo;
 
+  combo = GTK_COMBO_BOX (priv->method_combo);
+
+  /* This is a bit of a hack: we don't want to show "Fixed" as 
+   * option if it's not sent by connman */
   if (g_strcmp0 (priv->method, "manual") == 0)
     {
-      gtk_combo_box_set_active (GTK_COMBO_BOX (priv->method_combo), 1);
+      if (gtk_combo_box_get_active (combo) == METHOD_FIXED)
+        gtk_combo_box_remove_text (combo, METHOD_FIXED);
+
+      gtk_combo_box_set_active (combo, METHOD_MANUAL);
+      gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
     }
-  else
+  else if (g_strcmp0 (priv->method, "dhcp") == 0)
     {
-      gtk_combo_box_set_active (GTK_COMBO_BOX (priv->method_combo), 0);
+      if (gtk_combo_box_get_active (combo) == METHOD_FIXED)
+        gtk_combo_box_remove_text (combo, METHOD_FIXED);
+
+      gtk_combo_box_set_active (combo, METHOD_DHCP);
+      gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
+    }
+  else if (g_strcmp0 (priv->method, "fixed") == 0)
+    {
+      if (gtk_combo_box_get_active (combo) != METHOD_FIXED)
+        {
+           /* TRANSLATORS: This string will be in the "Connect by:"-
+            * combobox just like "DHCP" and "Static IP". Fixed means
+            * that the IP configuration cannot be changed at all,
+            * like in a 3G network */
+          gtk_combo_box_insert_text (combo, METHOD_FIXED, _("Fixed IP"));
+        }
+      gtk_combo_box_set_active (combo, METHOD_FIXED);
+      gtk_widget_set_sensitive (GTK_WIDGET (combo), FALSE);
+    }
+  else if (priv->method)
+    {
+      g_warning ("Unknown service ipv4 method '%s'", priv->method);
     }
 
   gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
@@ -1140,18 +1176,18 @@ method_combo_changed_cb (GtkComboBox *combobox,
                          gpointer     user_data)
 {
   CarrickServiceItemPrivate *priv;
-  gboolean use_dhcp;
+  gboolean manual;
 
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
   priv = CARRICK_SERVICE_ITEM (user_data)->priv;
 
-  use_dhcp = (gtk_combo_box_get_active (combobox) == 0);
+  manual = (gtk_combo_box_get_active (combobox) == METHOD_MANUAL);
 
-  gtk_widget_set_sensitive (priv->address_entry, !use_dhcp);
-  gtk_widget_set_sensitive (priv->netmask_entry, !use_dhcp);
-  gtk_widget_set_sensitive (priv->gateway_entry, !use_dhcp);
+  gtk_widget_set_sensitive (priv->address_entry, manual);
+  gtk_widget_set_sensitive (priv->netmask_entry, manual);
+  gtk_widget_set_sensitive (priv->gateway_entry, manual);
 
-  if (use_dhcp)
+  if (!manual)
     {
       GtkTextBuffer *buf;
 
@@ -1387,8 +1423,8 @@ apply_button_clicked_cb (GtkButton *button,
   CarrickServiceItem *item;
   CarrickServiceItemPrivate *priv;
   GValue *value;
-  GHashTable *ipv4;
   char **dnsv;
+  int method;
 
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
   item = CARRICK_SERVICE_ITEM (user_data);
@@ -1397,48 +1433,56 @@ apply_button_clicked_cb (GtkButton *button,
   if (!validate_dns_text_view (item))
     return;
 
-  ipv4 = g_hash_table_new (g_str_hash, g_str_equal);
-  if (gtk_combo_box_get_active (GTK_COMBO_BOX (priv->method_combo)) == 1)
+  method = gtk_combo_box_get_active (GTK_COMBO_BOX (priv->method_combo));
+  if (method != METHOD_FIXED)
     {
-      char *address, *netmask, *gateway;
+      GHashTable *ipv4;
 
-      if (!validate_static_ip_entries (item))
+      /* save ipv4 settings */
+
+      ipv4 = g_hash_table_new (g_str_hash, g_str_equal);
+      if (method == METHOD_MANUAL)
         {
-           g_hash_table_destroy (ipv4);
-           return;
+          char *address, *netmask, *gateway;
+
+          if (!validate_static_ip_entries (item))
+            {
+               g_hash_table_destroy (ipv4);
+               return;
+            }
+
+          address = (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
+          netmask = (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
+          gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
+
+          g_hash_table_insert (ipv4, "Method", "manual");
+          g_hash_table_insert (ipv4, "Address", address);
+          g_hash_table_insert (ipv4, "Netmask", netmask);
+          g_hash_table_insert (ipv4, "Gateway", gateway);
+        }
+      else
+        {
+          g_hash_table_insert (ipv4, "Method", "dhcp");
         }
 
-      address = (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
-      netmask = (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
-      gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
+      value = g_new0 (GValue, 1);
+      g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
+      g_value_set_boxed (value, ipv4);
 
-      g_hash_table_insert (ipv4, "Method", "manual");
-      g_hash_table_insert (ipv4, "Address", address);
-      g_hash_table_insert (ipv4, "Netmask", netmask);
-      g_hash_table_insert (ipv4, "Gateway", gateway);
-    }
-  else
-    {
-      g_hash_table_insert (ipv4, "Method", "dhcp");
+      org_moblin_connman_Service_set_property_async (priv->proxy,
+                                                     "IPv4.Configuration",
+                                                     value,
+                                                     set_ipv4_configuration_cb,
+                                                     user_data);  
+
+      g_free (value);
+      g_hash_table_destroy (ipv4);
     }
 
   /* start updating form again based on connman updates */
   priv->form_modified = FALSE;
 
-  value = g_new0 (GValue, 1);
-  g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
-  g_value_set_boxed (value, ipv4);
-
-  org_moblin_connman_Service_set_property_async (priv->proxy,
-                                                 "IPv4.Configuration",
-                                                 value,
-                                                 set_ipv4_configuration_cb,
-                                                 user_data);  
-
-  g_free (value);
-  g_hash_table_destroy (ipv4);
-
-
+  /* save dns settings */
   value = g_new0 (GValue, 1);
   g_value_init (value, G_TYPE_STRV);
   dnsv = get_nameserver_strv (GTK_TEXT_VIEW (priv->dns_text_view));
@@ -1845,11 +1889,13 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->method_combo = gtk_combo_box_new_text ();  
   /* NOTE: order/index of items in combobox is significant */
-  /* TRANSLATORS: choices in the connection method combobox */
-  gtk_combo_box_append_text (GTK_COMBO_BOX (priv->method_combo),
-                             _("DHCP"));
-  gtk_combo_box_append_text (GTK_COMBO_BOX (priv->method_combo),
-                             _("Static IP"));
+  /* TRANSLATORS: choices in the connection method combobox:
+   * Will include "DHCP", "Static IP" and sometimes "Fixed IP" */
+  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->method_combo),
+                             METHOD_DHCP, _("DHCP"));
+  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->method_combo),
+                             METHOD_MANUAL, _("Static IP"));
+
   gtk_widget_show (priv->method_combo);
   gtk_table_attach (GTK_TABLE (table), priv->method_combo,
                     1, 2, 0, 1,
