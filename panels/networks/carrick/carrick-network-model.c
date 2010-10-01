@@ -120,6 +120,7 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                  G_TYPE_STRING, /* manually configured gateway */
                                  G_TYPE_STRV, /* name servers */
                                  G_TYPE_STRV, /* manually configured name servers */
+                                 G_TYPE_BOOLEAN, /* immutable */
   };
 
   gtk_list_store_set_column_types (GTK_LIST_STORE (self),
@@ -274,6 +275,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   const gchar        **nameservers = NULL;
   const gchar        **config_nameservers = NULL;
   const gchar         *passphrase = NULL;
+  gboolean             immutable = FALSE;
   GValue              *value;
   GtkTreeIter          iter;
 
@@ -377,6 +379,10 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
       if (value)
         config_nameservers = g_value_get_boxed (value);
 
+      value = g_hash_table_lookup (properties, "Immutable");
+      if (value)
+        immutable = g_value_get_boolean (value);
+
       if (network_model_have_service_by_proxy (store,
                                                &iter,
                                                service))
@@ -401,6 +407,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
                               CARRICK_COLUMN_CONFIGURED_GATEWAY, config_gateway,
                               CARRICK_COLUMN_NAMESERVERS, nameservers,
                               CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
+                              CARRICK_COLUMN_IMMUTABLE, immutable,
                               -1);
         }
       else
@@ -427,6 +434,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
              CARRICK_COLUMN_CONFIGURED_GATEWAY, config_gateway,
              CARRICK_COLUMN_NAMESERVERS, nameservers,
              CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
+             CARRICK_COLUMN_IMMUTABLE, immutable,
              -1);
         }
     }
@@ -601,6 +609,12 @@ network_model_service_changed_cb (DBusGProxy  *service,
       gtk_list_store_set (store, &iter,
                           CARRICK_COLUMN_CONFIGURED_NAMESERVERS,
                           g_value_get_boxed (value),
+                          -1);
+    }
+  else if (g_str_equal (property, "Immutable"))
+    {
+      gtk_list_store_set (store, &iter,
+                          CARRICK_COLUMN_IMMUTABLE, g_value_get_boolean (value),
                           -1);
     }
 }

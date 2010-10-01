@@ -112,6 +112,7 @@ struct _CarrickServiceItemPrivate
   gchar *gateway;
   gchar **nameservers;
   gboolean favorite;
+  gboolean immutable;
 
   GtkWidget *info_bar;
   GtkWidget *info_label;
@@ -254,6 +255,7 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_NAMESERVERS, &nameservers,
                           CARRICK_COLUMN_CONFIGURED_NAMESERVERS, &priv->nameservers,
                           CARRICK_COLUMN_FAVORITE, &priv->favorite,
+                          CARRICK_COLUMN_IMMUTABLE, &priv->immutable,
                           -1);
 
       /* use normal values only if manually configured values are not available:
@@ -685,8 +687,11 @@ _start_connecting (CarrickServiceItem *item)
 
   if (priv->security && g_str_equal (priv->security, "none") == FALSE)
     {
-      if (priv->failed ||
-          (priv->need_pass && priv->passphrase == NULL))
+      /* ask for a passphrase for non-immutable services that 
+       * require a password or failed to connect last time */
+      if (!priv->immutable &&
+          (priv->failed ||
+           (priv->need_pass && priv->passphrase == NULL)))
         {
           _request_passphrase (item);
         }
