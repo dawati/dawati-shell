@@ -77,6 +77,7 @@ struct _CarrickServiceItemPrivate
   GtkWidget *delete_button;
   GtkWidget *expando;
 
+  GtkWidget *advanced_box;
   GtkWidget *method_combo;
   GtkWidget *address_entry;
   GtkWidget *gateway_entry;
@@ -359,6 +360,8 @@ _set_state (CarrickServiceItem *self)
   gchar                     *name = g_strdup (priv->name);
 
   _service_item_set_security (self);
+
+  gtk_widget_set_sensitive (priv->advanced_box, !priv->immutable);
 
   if (g_strcmp0 ("ethernet", priv->type) == 0)
     {
@@ -1884,14 +1887,14 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   /* static IP UI */
 
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox);
-  gtk_container_add (GTK_CONTAINER (priv->expando), vbox);
+  priv->advanced_box = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (priv->advanced_box);
+  gtk_container_add (GTK_CONTAINER (priv->expando), priv->advanced_box);
 
   align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
   gtk_alignment_set_padding (GTK_ALIGNMENT (align), 6, 6, 20, 20);
   gtk_widget_show (align);
-  gtk_box_pack_start (GTK_BOX (vbox), align,
+  gtk_box_pack_start (GTK_BOX (priv->advanced_box), align,
                       FALSE, FALSE, 0);
 
   table = gtk_table_new (7, 2, FALSE);
