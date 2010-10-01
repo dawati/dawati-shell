@@ -526,12 +526,21 @@ _request_passphrase (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv = item->priv;
 
-  /* TRANSLATORS: text should be 20 characters or less to be entirely
-   * visible in the passphrase entry */
-  gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry),
-                      _ ("Type password here"));
+  if (!priv->passphrase || (strlen (priv->passphrase) == 0))
+    {
+      /* TRANSLATORS: text should be 20 characters or less to be entirely
+       * visible in the passphrase entry */
+      gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry),
+                          _ ("Type password here"));
+      priv->passphrase_hint_visible = TRUE;
+    }
+  else
+    {
+      gtk_entry_set_text (GTK_ENTRY (priv->passphrase_entry),
+                          priv->passphrase);
+    }    
+
   gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry), TRUE);
-  priv->passphrase_hint_visible = TRUE;
   gtk_editable_select_region (GTK_EDITABLE (priv->passphrase_entry),
                               0, -1);
   gtk_widget_grab_focus (priv->passphrase_entry);
@@ -859,6 +868,8 @@ _connect_with_password (CarrickServiceItem *item)
 
       if (!label)
         {
+          GtkTreeIter iter;
+        
           passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
           value = g_slice_new0 (GValue);
           g_value_init (value, G_TYPE_STRING);
@@ -875,6 +886,15 @@ _connect_with_password (CarrickServiceItem *item)
 
           gtk_widget_hide (priv->passphrase_box);
           gtk_widget_show (priv->connect_box);
+
+          /* hack: modify passphrase here since connman won't
+           * send property change notify */
+          gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->model),
+                                   &iter, gtk_tree_row_reference_get_path (priv->row));
+          gtk_list_store_set (GTK_LIST_STORE (priv->model), &iter,
+                              CARRICK_COLUMN_PASSPHRASE,
+                              passphrase,
+                              -1);
         }
       else
         {

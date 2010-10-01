@@ -314,12 +314,9 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
       if (value)
         passphrase_required = g_value_get_boolean (value);
 
-      if (passphrase_required)
-        {
-          value = g_hash_table_lookup (properties, "Passphrase");
-          if (value)
-            passphrase = g_value_get_string (value);
-        }
+      value = g_hash_table_lookup (properties, "Passphrase");
+      if (value)
+        passphrase = g_value_get_string (value);
 
       value = g_hash_table_lookup (properties, "SetupRequired");
       if (value)
