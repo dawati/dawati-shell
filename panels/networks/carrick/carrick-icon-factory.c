@@ -89,8 +89,10 @@ static const gchar *icon_ids[] = {
   "bluetooth-strong", /* ICON_BLUETOOTH_STRONG_HOVER */
   "bluetooth-weak", /* ICON_BLUETOOTH_WEAK */
   "bluetooth-weak", /* ICON_BLUETOOTH_WEAK_HOVER */
-  "vpn", /* ICON_VPN */
-  "vpn", /* ICON_VPN_HOVER */
+
+  /* FIXME: hack because could not get vpn icon in time */
+  "active", /* ICON_VPN */
+  "active", /* ICON_VPN_HOVER */
   NULL
 };
 
@@ -539,6 +541,14 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
           priv->vpn_img =
             gdk_pixbuf_new_from_file (icon_names[state],
                                       &error);
+          /* FIXME: Workaround for missing icon */
+          if (error)
+            {
+              g_clear_error (&error);
+              priv->vpn_img =
+                gdk_pixbuf_new_from_file (icon_names[ICON_ACTIVE],
+                                          &error);
+            }
         }
       icon = priv->vpn_img;
       break;
@@ -549,6 +559,14 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
           priv->vpn_hov_img =
             gdk_pixbuf_new_from_file (icon_names[state],
                                       &error);
+          /* FIXME: Workaround for missing icon */
+          if (error)
+            {
+              g_clear_error (&error);
+              priv->vpn_hov_img =
+                gdk_pixbuf_new_from_file (icon_names[ICON_ACTIVE_HOVER],
+                                          &error);
+            }
         }
       icon = priv->vpn_hov_img;
       break;
@@ -564,12 +582,10 @@ carrick_icon_factory_get_pixbuf_for_state (CarrickIconFactory *factory,
       break;
     }
 
-  if (icon == NULL || error)
+  if (error)
     {
-/*
-       g_warning (G_STRLOC ":error opening pixbuf: %s",
-                  error->message);
-*/
+      g_warning (G_STRLOC ":error opening pixbuf: %s",
+                 error->message);
       g_clear_error (&error);
     }
 
