@@ -1478,6 +1478,8 @@ connect_provider_cb (DBusGProxy *proxy,
       g_error_free (error);
       return;
     }
+
+  carrick_shell_show ();
 }
 
 static void
@@ -1565,8 +1567,6 @@ auth_dialog_exit_cb (GPid pid, int status, auth_dialog_data *data)
       g_warning ("OpenConnect authentication failed\n");
       return;
     }
-
-  carrick_shell_show ();
 
   g_io_channel_read_line (data->io_out, &line, NULL, NULL, NULL);
   while (line)
