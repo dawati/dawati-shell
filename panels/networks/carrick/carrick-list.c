@@ -334,14 +334,16 @@ _list_collapse_inactive_items (GtkWidget *item,
 }
 
 static void
-_list_active_changed (GtkWidget *item,
-                      GtkWidget *list)
+_list_active_changed (GtkWidget  *item,
+                      GParamSpec *pspec,
+                      GtkWidget  *list)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (list);
 
-  gtk_container_foreach (GTK_CONTAINER (priv->box),
-                         (GtkCallback) _list_collapse_inactive_items,
-                         item);
+  if (carrick_service_item_get_active (CARRICK_SERVICE_ITEM (item)))
+    gtk_container_foreach (GTK_CONTAINER (priv->box),
+                           (GtkCallback) _list_collapse_inactive_items,
+                           item);
 }
 
 typedef struct find_data
@@ -814,7 +816,7 @@ carrick_list_add (CarrickList *list,
 
   /* listen to activate so we can deactivate other items in list */
   g_signal_connect (widget,
-                    "activate",
+                    "notify::active",
                     G_CALLBACK (_list_active_changed),
                     list);
 

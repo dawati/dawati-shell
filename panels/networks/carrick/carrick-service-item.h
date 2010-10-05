@@ -71,6 +71,7 @@ struct _CarrickServiceItemClass
 GType carrick_service_item_get_type (void);
 
 gint carrick_service_item_get_order (CarrickServiceItem *item);
+gboolean carrick_service_item_get_active (CarrickServiceItem *item);
 void carrick_service_item_set_active (CarrickServiceItem *item,
                                       gboolean            active);
 

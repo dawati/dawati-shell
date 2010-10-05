@@ -60,7 +60,8 @@ enum {
   PROP_ICON_FACTORY,
   PROP_NOTIFICATIONS,
   PROP_MODEL,
-  PROP_ROW
+  PROP_ROW,
+  PROP_ACTIVE,
 };
 
 struct _CarrickServiceItemPrivate
@@ -124,13 +125,6 @@ struct _CarrickServiceItemPrivate
 };
 
 enum {
-  SIGNAL_ITEM_ACTIVATE,
-  SIGNAL_LAST
-};
-
-static gint service_item_signals[SIGNAL_LAST];
-
-enum {
   METHOD_DHCP = 0,
   METHOD_MANUAL = 1,
   METHOD_FIXED = 2,
@@ -167,6 +161,10 @@ carrick_service_item_get_property (GObject *object, guint property_id,
 
     case PROP_ROW:
       g_value_set_boxed (value, priv->row);
+      break;
+
+    case PROP_ACTIVE:
+      g_value_set_boolean (value, priv->active);
       break;
 
     default:
@@ -1011,6 +1009,14 @@ _unexpand_advanced_settings (CarrickServiceItem *item)
                                   FALSE);
 }
 
+gboolean
+carrick_service_item_get_active (CarrickServiceItem *item)
+{
+  g_return_val_if_fail (CARRICK_IS_SERVICE_ITEM (item), FALSE);
+
+  return item->priv->active;
+}
+
 void
 carrick_service_item_set_active (CarrickServiceItem *item,
                                  gboolean            active)
@@ -1031,10 +1037,7 @@ carrick_service_item_set_active (CarrickServiceItem *item,
       gtk_label_set_text (GTK_LABEL (priv->info_label), "");
       _unexpand_advanced_settings (item);
     }
-  else
-    {
-      g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
-    }
+  g_object_notify (G_OBJECT (item), "active");
 }
 
 DBusGProxy*
@@ -1141,6 +1144,10 @@ carrick_service_item_set_property (GObject *object, guint property_id,
     case PROP_ROW:
       _set_row (self,
                 (GtkTreePath *) g_value_get_boxed (value));
+      break;
+
+    case PROP_ACTIVE:
+      carrick_service_item_set_active (self, g_value_get_boolean (value));
       break;
 
     default:
@@ -1620,15 +1627,14 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
                                    PROP_ROW,
                                    pspec);
 
-  /* activated == some ui activity in the label part of the item */
-  service_item_signals[SIGNAL_ITEM_ACTIVATE] = g_signal_new (
-    "activate",
-    G_TYPE_FROM_CLASS (object_class),
-    G_SIGNAL_RUN_LAST,
-    0,
-    NULL, NULL,
-    g_cclosure_marshal_VOID__VOID,
-    G_TYPE_NONE, 0);
+  pspec = g_param_spec_boolean ("active",
+                                "active",
+                                "Whether ServiceItem is considered the active UI element",
+                                FALSE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_ACTIVE,
+                                   pspec);
 }
 
 static GtkWidget*
