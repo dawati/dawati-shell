@@ -106,10 +106,8 @@ get_tip_and_icon_state (const gchar      *connection_type,
 static MplPanelClient *panel_client = NULL;
 
 static void
-_client_set_size_cb (MplPanelClient *client,
-                     guint           width,
-                     guint           height,
-                     gpointer        user_data)
+_client_show_cb (MplPanelClient *client,
+                 gpointer        user_data)
 {
   CarrickApplet *applet = CARRICK_APPLET (user_data);
   CarrickPane   *pane = CARRICK_PANE (carrick_applet_get_pane (applet));
@@ -367,8 +365,8 @@ main (int    argc,
                                       "offline",
                                       TRUE);
     g_signal_connect (panel_client,
-                      "set-size",
-                      (GCallback) _client_set_size_cb,
+                      "show",
+                      (GCallback) _client_show_cb,
                       applet);
     window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
 
