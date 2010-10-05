@@ -117,6 +117,10 @@ struct _CarrickServiceItemPrivate
 
   GtkWidget *info_bar;
   GtkWidget *info_label;
+
+  /* active means the last ServiceItem that has been interacted with
+   * since panel was last shown */
+  gboolean active;
 };
 
 enum {
@@ -383,7 +387,6 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Connected"));
-      priv->failed = FALSE;
       gtk_label_set_text (GTK_LABEL (priv->info_label),
                           "");
     }
@@ -401,7 +404,6 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Online"));
-      priv->failed = FALSE;
       gtk_label_set_text (GTK_LABEL (priv->info_label),
                           "");
     }
@@ -458,11 +460,13 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Connection failed"));
-      priv->failed = TRUE;
-      gtk_label_set_text (GTK_LABEL (priv->info_label),
-                          _("Sorry, the connection failed. You could try again."));
-      gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
-                                     GTK_MESSAGE_ERROR);
+      if (priv->active)
+        {
+          gtk_label_set_text (GTK_LABEL (priv->info_label),
+                              _("Sorry, the connection failed. You could try again."));
+          gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                         GTK_MESSAGE_ERROR);
+        }
     }
   else if (g_strcmp0 (priv->state, "disconnect") == 0)
     {
@@ -517,14 +521,14 @@ _show_pass_toggled_cb (GtkToggleButton    *button,
 {
   CarrickServiceItemPrivate *priv = item->priv;
 
-  g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
-
   if (!priv->passphrase_hint_visible)
     {
       gboolean vis = gtk_toggle_button_get_active (button);
       gtk_entry_set_visibility (GTK_ENTRY (priv->passphrase_entry),
                                 vis);
     }
+
+  carrick_service_item_set_active (item, TRUE);
 }
 
 static void
@@ -705,7 +709,7 @@ _start_connecting (CarrickServiceItem *item)
       /* ask for a passphrase for non-immutable services that 
        * require a password or failed to connect last time */
       if (!priv->immutable &&
-          (priv->failed ||
+          ((g_strcmp0 (priv->state, "failure") == 0) ||
            (priv->need_pass && priv->passphrase == NULL)))
         {
           _request_passphrase (item);
@@ -759,7 +763,7 @@ _connect_button_cb (GtkButton          *connect_button,
 {
   CarrickServiceItemPrivate *priv = item->priv;
 
-  g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
+  carrick_service_item_set_active (item, TRUE);
 
   if (g_str_equal (priv->state, "online") ||
       g_str_equal (priv->state, "ready") ||
@@ -791,10 +795,10 @@ _advanced_expander_notify_expanded_cb (GObject    *object,
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (data));
   priv = CARRICK_SERVICE_ITEM (data)->priv;
 
-  g_signal_emit (data, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
+  carrick_service_item_set_active (CARRICK_SERVICE_ITEM (data), TRUE);
 
   expanded = gtk_expander_get_expanded (GTK_EXPANDER (priv->advanced_expander));
-  if (!expanded)
+  if (expanded)
     {
       /* update user changed values with connman data */
       priv->form_modified = FALSE;
@@ -917,12 +921,14 @@ _connect_with_password (CarrickServiceItem *item)
 static void
 _connect_with_pw_clicked_cb (GtkButton *btn, CarrickServiceItem *item)
 {
+  carrick_service_item_set_active (item, TRUE);
   _connect_with_password (item);
 }
 
 static void
 _passphrase_entry_activated_cb (GtkEntry *entry, CarrickServiceItem *item)
 {
+  carrick_service_item_set_active (item, TRUE);
   _connect_with_password (item);
 }
 
@@ -948,6 +954,7 @@ _passphrase_entry_clear_released_cb (GtkEntry            *entry,
                                      gpointer             user_data)
 {
   CarrickServiceItem *self = CARRICK_SERVICE_ITEM (user_data);
+  CarrickServiceItemPrivate *priv = self->priv;
 
   if (gtk_entry_get_text_length (entry) > 0)
     {
@@ -957,8 +964,9 @@ _passphrase_entry_clear_released_cb (GtkEntry            *entry,
   /* On the second click of the clear button hide the passphrase widget */
   else
     {
-      carrick_service_item_set_active (self,
-                                       FALSE);
+      gtk_widget_hide (priv->passphrase_box);
+      gtk_widget_hide (priv->info_bar);
+      gtk_label_set_text (GTK_LABEL (priv->info_label), "");
     }
 }
 
@@ -1009,15 +1017,23 @@ carrick_service_item_set_active (CarrickServiceItem *item,
 {
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (item));
 
+  CarrickServiceItemPrivate *priv = item->priv;
+
+  if (priv->active == active)
+    return;
+
+  priv->active = active;
   if (!active)
     {
-      CarrickServiceItemPrivate *priv = item->priv;
-
       gtk_widget_hide (priv->passphrase_box);
       gtk_widget_show (priv->connect_box);
       gtk_widget_hide (priv->info_bar);
-
+      gtk_label_set_text (GTK_LABEL (priv->info_label), "");
       _unexpand_advanced_settings (item);
+    }
+  else
+    {
+      g_signal_emit (item, service_item_signals[SIGNAL_ITEM_ACTIVATE], 0);
     }
 }
 
@@ -1461,6 +1477,8 @@ apply_button_clicked_cb (GtkButton *button,
   item = CARRICK_SERVICE_ITEM (user_data);
   priv = item->priv;
 
+  carrick_service_item_set_active (item, TRUE);
+
   if (!validate_dns_text_view (item))
     return;
 
@@ -1664,7 +1682,6 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   priv->model = NULL;
   priv->row = NULL;
-  priv->failed = FALSE;
 
   priv->proxy = NULL;
   priv->index = 0;
