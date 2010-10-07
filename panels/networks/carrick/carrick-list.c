@@ -45,6 +45,7 @@ struct _CarrickListPrivate
 
   GtkWidget     *active_item;
   double         active_item_rel_pos;
+  int            active_item_height;
 
   guint drag_position;
   guint drop_position;
@@ -316,6 +317,9 @@ _active_item_was_visible (CarrickList *list)
   return TRUE;
 }
 
+/* TODO: its possible that it would make sense to set the adjustment
+ * after the whole list allocation-cycle is done... there is a 
+ * potential for a race here */
 static void
 active_item_alloc_cb (GtkWidget     *item,
                       GtkAllocation *allocation,
@@ -323,12 +327,30 @@ active_item_alloc_cb (GtkWidget     *item,
 {
   CarrickListPrivate *priv = list->priv;
 
-  /* Active item possibly moved in the list. We can autoscroll to keep
+  /* Active item moved or expanded: We can autoscroll to keep
    * it in the same spot on the screen, but we only want that if 
    * the active item is/was visible */
-  if (_active_item_was_visible (list))
-    gtk_adjustment_set_value (priv->adjustment,
-                              allocation->y - priv->active_item_rel_pos);
+  if (_active_item_was_visible (list) &&
+      allocation->height >= priv->active_item_height)
+    {
+      int space_below, expand, move = 0;
+
+      /* make sure expanding items are visible */
+      if (allocation->height > priv->active_item_height)
+        {
+          expand = allocation->height - priv->active_item_height;
+          space_below = GTK_WIDGET (list)->allocation.height - 
+                        (priv->active_item_rel_pos + priv->active_item_height);
+          move = MAX (0, expand - space_below);
+        }
+
+      /* scroll so that A) expanded item is visible and B) 
+       * the items position relative to screen stays the same */
+      gtk_adjustment_set_value (priv->adjustment,
+                                allocation->y - priv->active_item_rel_pos + move);
+    }
+
+  priv->active_item_height = allocation->height;
 }
 
 static void
@@ -360,6 +382,7 @@ _set_active_item (CarrickList *list, GtkWidget *item)
     {
       priv->active_item_rel_pos = priv->active_item->allocation.y -
                                   gtk_adjustment_get_value (priv->adjustment);
+      priv->active_item_height = priv->active_item->allocation.height;
       g_signal_connect (priv->active_item, "size-allocate",
                         G_CALLBACK (active_item_alloc_cb), list);
     }
