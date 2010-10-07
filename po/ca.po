@@ -89,7 +89,7 @@ msgstr "Mostra la safata del sistema"
 
 #: ../capplet/src/syst-cc-panel.c:195
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
-msgstr ""
+msgstr "La safata del sistema és un concepte que feien servir aplicacions més antigues per tal de fer conèixer quan quelcom passa o per romandre en execució en tancar-se."
 
 #: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
