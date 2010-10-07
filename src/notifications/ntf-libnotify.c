@@ -158,6 +158,8 @@ ntf_libnotify_init (void)
 {
   store = meego_netbook_notify_store_new ();
 
+  subsystem_id = ntf_notification_get_subsystem_id ();
+
   g_signal_connect (store,
                     "notification-added",
                     G_CALLBACK (ntf_libnotify_notification_added_cb),
@@ -175,9 +177,6 @@ ntf_libnotify_update (NtfNotification *ntf, Notification *details)
   ClutterActor *icon = NULL;
 
   g_return_if_fail (store && ntf && details);
-
-  if (!subsystem_id)
-    subsystem_id = ntf_notification_get_subsystem_id ();
 
   if (details->summary)
     ntf_notification_set_summary (ntf, details->summary);
