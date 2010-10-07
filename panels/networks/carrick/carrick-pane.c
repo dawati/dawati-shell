@@ -2110,7 +2110,6 @@ void
 carrick_pane_update (CarrickPane *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
-  GtkAdjustment      *adj;
   time_t              now = time (NULL);
 
   /* Only trigger a scan if we haven't triggered one in the last minute.

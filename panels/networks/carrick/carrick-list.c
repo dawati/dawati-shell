@@ -31,12 +31,6 @@
 
 #include "carrick-service-item.h"
 
-#define CARRICK_DRAG_TARGET "CARRICK_DRAG_TARGET"
-
-static const GtkTargetEntry carrick_targets[] = {
-  { CARRICK_DRAG_TARGET, GTK_TARGET_SAME_APP, 0 },
-};
-
 G_DEFINE_TYPE (CarrickList, carrick_list, GTK_TYPE_SCROLLED_WINDOW)
 
 #define LIST_PRIVATE(o) \
@@ -163,6 +157,8 @@ carrick_list_drag_begin (GtkWidget      *widget,
   CarrickListPrivate *priv = list->priv;
   gint                x, y;
 
+  carrick_service_item_set_active (CARRICK_SERVICE_ITEM (widget), FALSE);
+
   /* save old place in list for drag-failures */
   gtk_container_child_get (GTK_CONTAINER (priv->box),
                            widget,
@@ -192,20 +188,10 @@ carrick_list_drag_drop (GtkWidget      *widget,
 {
   CarrickListPrivate *priv = list->priv;
 
-  /* find drop position in list */
-  if (widget == GTK_WIDGET (priv->box))
-    {
-      /* dropped on "empty" space on list */
-      priv->drop_position = -1;
-    }
-  else
-    {
-      /* dropped on a list item */
-      gtk_container_child_get (GTK_CONTAINER (priv->box),
-                               widget,
-                               "position", &priv->drop_position,
-                               NULL);
-    }
+  gtk_container_child_get (GTK_CONTAINER (priv->box),
+                           widget,
+                           "position", &priv->drop_position,
+                           NULL);
 
   gtk_drag_finish (context, TRUE, TRUE, time);
   return TRUE;
@@ -245,7 +231,6 @@ carrick_list_drag_end (GtkWidget      *widget,
 {
   CarrickListPrivate *priv = list->priv;
   GList              *children;
-  gboolean            pos_changed;
 
   children = gtk_container_get_children (GTK_CONTAINER (priv->box));
 
@@ -263,16 +248,7 @@ carrick_list_drag_end (GtkWidget      *widget,
                          priv->drop_position);
   g_object_unref (widget);
 
-  if (priv->drop_position == -1)
-    {
-      pos_changed = priv->drag_position != g_list_length (children);
-    }
-  else
-    {
-      pos_changed = priv->drop_position != priv->drag_position;
-    }
-
-  if (pos_changed)
+  if (priv->drop_position != priv->drag_position)
     {
       GtkWidget   *other_widget;
       DBusGProxy  *service, * other_service;
@@ -285,8 +261,6 @@ carrick_list_drag_end (GtkWidget      *widget,
       data->item = widget;
       data->pos = priv->drag_position;
 
-      /* TODO: should ensure favorite status for one or both services ? */
-      /* TODO: should do both move_before() and move_after() if possible ? */
       if (priv->drop_position == 0)
         {
           other_widget = g_list_nth_data (children, 0);
@@ -301,16 +275,8 @@ carrick_list_drag_end (GtkWidget      *widget,
         }
       else
         {
-          if (priv->drop_position == -1)
-            {
-              /* dropped below last child */
-              other_widget = g_list_last (children)->data;
-            }
-          else
-            {
-              other_widget = g_list_nth_data (children,
-                                              priv->drop_position - 1);
-            }
+          other_widget = g_list_nth_data (children,
+                                          priv->drop_position - 1);
 
           other_service = carrick_service_item_get_proxy
                     (CARRICK_SERVICE_ITEM (other_widget));
@@ -854,37 +820,19 @@ carrick_list_add (CarrickList *list,
 
   gtk_widget_show (widget);
 
-  /* Define the service item as a drag source.
-   * Note: DnD will not work in mutter-moblin until MB #5499 is fixed
-   * http://bugzilla.moblin.org/show_bug.cgi?id=5499
-   */
-  
-  carrick_service_item_set_draggable (CARRICK_SERVICE_ITEM (widget), TRUE);
-  gtk_drag_source_set (widget,
-                       GDK_BUTTON1_MASK,
-                       carrick_targets,
-                       G_N_ELEMENTS (carrick_targets),
-                       GDK_ACTION_MOVE);
-  
-  g_signal_connect (widget,
-                    "drag-begin",
-                    G_CALLBACK (carrick_list_drag_begin),
-                    list);
-  g_signal_connect (widget,
-                    "drag-motion",
-                    G_CALLBACK (carrick_list_drag_motion),
-                    list);
-  g_signal_connect (widget,
-                    "drag-end",
-                    G_CALLBACK (carrick_list_drag_end),
-                    list);
-  /* Define the service as a drag destination */
-  
-  gtk_drag_dest_set (widget,
-                     GTK_DEST_DEFAULT_ALL,
-                     carrick_targets,
-                     G_N_ELEMENTS (carrick_targets),
-                     GDK_ACTION_MOVE);
+
+      g_signal_connect (widget,
+                        "drag-begin",
+                        G_CALLBACK (carrick_list_drag_begin),
+                        list);
+      g_signal_connect (widget,
+                        "drag-motion",
+                        G_CALLBACK (carrick_list_drag_motion),
+                        list);
+      g_signal_connect (widget,
+                        "drag-end",
+                        G_CALLBACK (carrick_list_drag_end),
+                        list);
   
   g_signal_connect (widget,
                     "drag-drop",
@@ -1311,18 +1259,6 @@ carrick_list_constructor (GType                  gtype,
   priv->box = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (box),
                      priv->box);
-
-  /* add a drag target for dropping below any real
-     items in the list*/
-  gtk_drag_dest_set (GTK_WIDGET (priv->box),
-                     GTK_DEST_DEFAULT_ALL,
-                     carrick_targets,
-                     G_N_ELEMENTS (carrick_targets),
-                     GDK_ACTION_MOVE);
-  g_signal_connect (priv->box,
-                    "drag-drop",
-                    G_CALLBACK (carrick_list_drag_drop),
-                    obj);
 
   return obj;
 }

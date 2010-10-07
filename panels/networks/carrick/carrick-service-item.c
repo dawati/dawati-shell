@@ -24,6 +24,13 @@
  *
  */
 
+/* TODO
+ * 
+ * The _populate_variables() / _set_state() cycle is
+ * inefficient and complex. _set_state() updates everything, 
+ * even if nothing changed since the last update.
+ */
+
 #include "carrick-service-item.h"
 
 #include <config.h>
@@ -38,6 +45,12 @@
 #include "carrick-notification-manager.h"
 #include "carrick-util.h"
 #include "carrick-shell.h"
+
+#define CARRICK_DRAG_TARGET "CARRICK_DRAG_TARGET"
+
+static const GtkTargetEntry carrick_targets[] = {
+  { CARRICK_DRAG_TARGET, GTK_TARGET_SAME_APP, 0 },
+};
 
 G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 
@@ -56,7 +69,7 @@ G_DEFINE_TYPE (CarrickServiceItem, carrick_service_item, GTK_TYPE_EVENT_BOX)
 
 enum {
   PROP_0,
-  PROP_DRAGGABLE,
+  PROP_FAVORITE,
   PROP_ICON_FACTORY,
   PROP_NOTIFICATIONS,
   PROP_MODEL,
@@ -92,7 +105,6 @@ struct _CarrickServiceItemPrivate
 
   CarrickNotificationManager *note;
 
-  gboolean draggable;
   GdkCursor *hand_cursor;
 
   CarrickNetworkModel *model;
@@ -144,8 +156,8 @@ carrick_service_item_get_property (GObject *object, guint property_id,
 
   switch (property_id)
     {
-    case PROP_DRAGGABLE:
-      g_value_set_boolean (value, priv->draggable);
+    case PROP_FAVORITE:
+      g_value_set_boolean (value, priv->favorite);
       break;
 
     case PROP_ICON_FACTORY:
@@ -169,6 +181,30 @@ carrick_service_item_get_property (GObject *object, guint property_id,
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
+_service_item_set_drag_state (CarrickServiceItem *self)
+{
+  if (self->priv->favorite)
+    {
+      /* Define the service as a drag source/destination */
+      gtk_drag_source_set (GTK_WIDGET (self),
+                           GDK_BUTTON1_MASK,
+                           carrick_targets,
+                           G_N_ELEMENTS (carrick_targets),
+                           GDK_ACTION_MOVE);
+      gtk_drag_dest_set (GTK_WIDGET (self),
+                         GTK_DEST_DEFAULT_ALL,
+                         carrick_targets,
+                         G_N_ELEMENTS (carrick_targets),
+                         GDK_ACTION_MOVE);
+    }
+  else
+    {
+      gtk_drag_source_unset (GTK_WIDGET (self));
+      gtk_drag_dest_unset (GTK_WIDGET (self));
     }
 }
 
@@ -362,6 +398,7 @@ _set_state (CarrickServiceItem *self)
   gchar                     *name = g_strdup (priv->name);
 
   _service_item_set_security (self);
+  _service_item_set_drag_state (self);
 
   gtk_widget_set_sensitive (priv->advanced_box, !priv->immutable);
 
@@ -970,26 +1007,11 @@ _passphrase_entry_clear_released_cb (GtkEntry            *entry,
 }
 
 gboolean
-carrick_service_item_get_draggable (CarrickServiceItem *item)
+carrick_service_item_get_favorite (CarrickServiceItem *item)
 {
-  CarrickServiceItemPrivate *priv;
-
   g_return_val_if_fail (CARRICK_IS_SERVICE_ITEM (item), FALSE);
 
-  priv = item->priv;
-  return priv->draggable;
-}
-
-void
-carrick_service_item_set_draggable (CarrickServiceItem *item,
-                                    gboolean            draggable)
-{
-  CarrickServiceItemPrivate *priv;
-
-  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (item));
-
-  priv = item->priv;
-  priv->draggable = draggable;
+  return item->priv->favorite;
 }
 
 static void
@@ -1125,10 +1147,6 @@ carrick_service_item_set_property (GObject *object, guint property_id,
 
   switch (property_id)
     {
-    case PROP_DRAGGABLE:
-      priv->draggable = g_value_get_boolean (value);
-      break;
-
     case PROP_ICON_FACTORY:
       priv->icon_factory = CARRICK_ICON_FACTORY (g_value_get_object (value));
       break;
@@ -1205,9 +1223,11 @@ carrick_service_item_enter_notify_event (GtkWidget        *widget,
   CarrickServiceItem        *item = CARRICK_SERVICE_ITEM (widget);
   CarrickServiceItemPrivate *priv = item->priv;
 
-  if (priv->draggable)
+  if (priv->favorite)
     gdk_window_set_cursor (widget->window, priv->hand_cursor);
-
+  else
+    gdk_window_set_cursor (widget->window, NULL);
+  
   return TRUE;
 }
 
@@ -1583,13 +1603,13 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   widget_class->enter_notify_event = carrick_service_item_enter_notify_event;
   widget_class->leave_notify_event = carrick_service_item_leave_notify_event;
 
-  pspec = g_param_spec_boolean ("draggable",
-                                "draggable",
-                                "Should the service item show a draggable cursor on hover",
+  pspec = g_param_spec_boolean ("favorite",
+                                "Favorite",
+                                "Is the service a favorite (i.e. used previously)",
                                 FALSE,
-                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                                G_PARAM_READABLE);
   g_object_class_install_property (object_class,
-                                   PROP_DRAGGABLE,
+                                   PROP_FAVORITE,
                                    pspec);
 
   pspec = g_param_spec_object ("notification-manager",

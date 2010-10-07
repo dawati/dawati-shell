@@ -75,9 +75,7 @@ gboolean carrick_service_item_get_active (CarrickServiceItem *item);
 void carrick_service_item_set_active (CarrickServiceItem *item,
                                       gboolean            active);
 
-void carrick_service_item_set_draggable (CarrickServiceItem *item,
-                                         gboolean            draggable);
-gboolean carrick_service_item_get_draggable (CarrickServiceItem *item);
+gboolean carrick_service_item_get_favorite (CarrickServiceItem *item);
 DBusGProxy* carrick_service_item_get_proxy (CarrickServiceItem *item);
 GtkTreeRowReference* carrick_service_item_get_row_reference (CarrickServiceItem *item);
 
