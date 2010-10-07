@@ -49,6 +49,9 @@ struct _CarrickListPrivate
   GtkWidget     *drag_window;
   GtkWidget     *fallback;
 
+  GtkWidget     *active_item;
+  double         active_item_rel_pos;
+
   guint drag_position;
   guint drop_position;
 
@@ -333,17 +336,84 @@ _list_collapse_inactive_items (GtkWidget *item,
     }
 }
 
+static gboolean
+_active_item_was_visible (CarrickList *list)
+{
+  CarrickListPrivate *priv = list->priv;
+
+  if (priv->active_item_rel_pos + priv->active_item->allocation.height < 0)
+    return FALSE;
+
+  if (priv->active_item_rel_pos > GTK_WIDGET (list)->allocation.height)
+    return FALSE;
+
+  return TRUE;
+}
+
 static void
-_list_active_changed (GtkWidget  *item,
+active_item_alloc_cb (GtkWidget     *item,
+                      GtkAllocation *allocation,
+                      CarrickList   *list) 
+{
+  CarrickListPrivate *priv = list->priv;
+
+  /* Active item possibly moved in the list. We can autoscroll to keep
+   * it in the same spot on the screen, but we only want that if 
+   * the active item is/was visible */
+  if (_active_item_was_visible (list))
+    gtk_adjustment_set_value (priv->adjustment,
+                              allocation->y - priv->active_item_rel_pos);
+}
+
+static void
+_adjustment_value_changed_cb (GtkAdjustment *adj, CarrickList *list)
+{
+  CarrickListPrivate *priv = list->priv;
+
+  /* save the position of the active item relative to the adjustment.
+   * This allows us to preserve that position in active_item_alloc_cb() */
+  if (priv->active_item)
+    priv->active_item_rel_pos = priv->active_item->allocation.y -
+                                gtk_adjustment_get_value (adj);
+}
+
+/* called when a ServiceItem signals it is active or when
+ * the active ServiceItem is removed from list*/
+static void
+_set_active_item (CarrickList *list, GtkWidget *item)
+{
+  CarrickListPrivate *priv = list->priv;
+
+  if (priv->active_item)
+    g_signal_handlers_disconnect_by_func (priv->active_item,
+                                         active_item_alloc_cb,
+                                         list);
+
+  priv->active_item = item;
+  if (priv->active_item)
+    {
+      priv->active_item_rel_pos = priv->active_item->allocation.y -
+                                  gtk_adjustment_get_value (priv->adjustment);
+      g_signal_connect (priv->active_item, "size-allocate",
+                        G_CALLBACK (active_item_alloc_cb), list);
+    }
+}
+
+
+static void
+_item_active_changed (GtkWidget  *item,
                       GParamSpec *pspec,
                       GtkWidget  *list)
 {
   CarrickListPrivate *priv = LIST_PRIVATE (list);
 
   if (carrick_service_item_get_active (CARRICK_SERVICE_ITEM (item)))
-    gtk_container_foreach (GTK_CONTAINER (priv->box),
-                           (GtkCallback) _list_collapse_inactive_items,
-                           item);
+    {
+      gtk_container_foreach (GTK_CONTAINER (priv->box),
+                             (GtkCallback) _list_collapse_inactive_items,
+                             item);
+      _set_active_item (CARRICK_LIST (list), item);
+    }
 }
 
 typedef struct find_data
@@ -402,13 +472,15 @@ _set_item_inactive (GtkWidget *widget)
 
 
 void
-carrick_list_set_all_inactive (CarrickList *list)
+carrick_list_clear_state (CarrickList *list)
 {
   CarrickListPrivate *priv = list->priv;
 
   gtk_container_foreach (GTK_CONTAINER (priv->box),
                          (GtkCallback) _set_item_inactive,
                          NULL);
+  gtk_adjustment_set_value (priv->adjustment,
+                            gtk_adjustment_get_lower (priv->adjustment)); 
 }
 
 void
@@ -481,11 +553,14 @@ _find_and_remove (GtkWidget *item,
   g_return_if_fail (item != NULL);
   g_return_if_fail (user_data != NULL);
 
+  CarrickList *list = CARRICK_LIST (user_data);
   CarrickServiceItem *service_item = CARRICK_SERVICE_ITEM (item);
   GtkTreeRowReference *row = carrick_service_item_get_row_reference (service_item);
 
   if (gtk_tree_row_reference_valid (row) == FALSE)
     {
+      if (list->priv->active_item == item)
+        _set_active_item (list, NULL);
       gtk_widget_destroy (item);
     }
 }
@@ -495,7 +570,8 @@ _row_deleted_cb (GtkTreeModel *tree_model,
                  GtkTreePath  *path,
                  gpointer      user_data)
 {
-  CarrickListPrivate *priv = CARRICK_LIST (user_data)->priv;
+  CarrickList *self = user_data;
+  CarrickListPrivate *priv = self->priv;
   GtkTreeIter iter;
 
   /* If the model is empty, delete all widgets and show some fallback content */
@@ -504,7 +580,8 @@ _row_deleted_cb (GtkTreeModel *tree_model,
       gtk_container_foreach (GTK_CONTAINER (priv->box),
                              (GtkCallback)gtk_widget_destroy,
                              NULL);
-      carrick_list_set_fallback (CARRICK_LIST (user_data));
+      carrick_list_set_fallback (self);
+      _set_active_item (self, NULL);
     }
   else
     {
@@ -512,7 +589,7 @@ _row_deleted_cb (GtkTreeModel *tree_model,
        * and destroy */
       gtk_container_foreach (GTK_CONTAINER (priv->box),
                              _find_and_remove,
-                             path);
+                             user_data);
     }
 }
 
@@ -817,7 +894,7 @@ carrick_list_add (CarrickList *list,
   /* listen to activate so we can deactivate other items in list */
   g_signal_connect (widget,
                     "notify::active",
-                    G_CALLBACK (_list_active_changed),
+                    G_CALLBACK (_item_active_changed),
                     list);
 
   gtk_box_pack_start (GTK_BOX (priv->box),
@@ -1203,6 +1280,8 @@ carrick_list_constructor (GType                  gtype,
 
   priv->adjustment = gtk_scrolled_window_get_vadjustment
                 (GTK_SCROLLED_WINDOW (obj));
+  g_signal_connect (priv->adjustment, "value-changed",
+                    G_CALLBACK (_adjustment_value_changed_cb), obj);
   viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment
                                            (GTK_SCROLLED_WINDOW (obj)),
                                gtk_scrolled_window_get_vadjustment

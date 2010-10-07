@@ -74,7 +74,7 @@ GtkWidget* carrick_list_new (CarrickIconFactory         *icon_factory,
                              CarrickNotificationManager *notifications,
                              CarrickNetworkModel        *model);
 
-void carrick_list_set_all_inactive (CarrickList *list);
+void carrick_list_clear_state (CarrickList *list);
 
 void carrick_list_set_icon_factory (CarrickList        *list,
                                     CarrickIconFactory *icon_factory);

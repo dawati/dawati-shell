@@ -2130,13 +2130,7 @@ carrick_pane_update (CarrickPane *pane)
                                                      pane);
     }
 
-  /* make sure no advanced-configs or error infobars are shown */
-  carrick_list_set_all_inactive (CARRICK_LIST (priv->service_list));
-
-  /* scroll to top of list */
-  adj = gtk_scrolled_window_get_vadjustment 
-      (GTK_SCROLLED_WINDOW (priv->service_list));
-  gtk_adjustment_set_value (adj, gtk_adjustment_get_lower (adj)); 
+  carrick_list_clear_state (CARRICK_LIST (priv->service_list));
 }
 
 GtkWidget*

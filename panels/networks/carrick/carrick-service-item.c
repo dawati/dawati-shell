@@ -655,6 +655,7 @@ _delete_button_cb (GtkButton *delete_button,
 
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
+      carrick_service_item_set_active (item, FALSE);
       if (g_strcmp0 (priv->state, "failure") == 0)
         {
           /* The service is marked failure, use Service.Remove to set
@@ -761,8 +762,6 @@ _connect_button_cb (GtkButton          *connect_button,
 {
   CarrickServiceItemPrivate *priv = item->priv;
 
-  carrick_service_item_set_active (item, TRUE);
-
   if (g_str_equal (priv->state, "online") ||
       g_str_equal (priv->state, "ready") ||
       g_str_equal (priv->state, "configuration") ||
@@ -772,12 +771,14 @@ _connect_button_cb (GtkButton          *connect_button,
                                                 priv->type,
                                                 "idle",
                                                 priv->name);
+      carrick_service_item_set_active (item, FALSE);
       org_moblin_connman_Service_disconnect_async (priv->proxy,
                                                    dbus_proxy_notify_cb,
                                                    item);
     }
   else
     {
+      carrick_service_item_set_active (item, TRUE);
       _start_connecting (item);
     }
 }
