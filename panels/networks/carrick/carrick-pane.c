@@ -1247,8 +1247,6 @@ pane_have_daemon (CarrickPane *pane,
       gtk_widget_set_visible (priv->wimax_box, FALSE);
       gtk_widget_set_visible (priv->wimax_sep, FALSE);
       gtk_widget_set_visible (priv->bluetooth_box, FALSE);
-
-      carrick_list_set_fallback (CARRICK_LIST (priv->service_list));
     }
 }
 

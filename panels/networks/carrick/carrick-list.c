@@ -69,9 +69,6 @@ struct _CarrickListPrivate
   gboolean have_threeg;
   gboolean have_wimax;
   gboolean have_bluetooth;
-
-  guint enabled_count;
-  guint available_count;
 };
 
 enum {
@@ -83,6 +80,7 @@ enum {
 
 static void carrick_list_set_model (CarrickList *list, CarrickNetworkModel *model);
 static void carrick_list_add (CarrickList *list, GtkTreePath *path);
+static void carrick_list_show_fallback (CarrickList *self);
 
 static void
 carrick_list_get_property (GObject *object, guint property_id,
@@ -569,7 +567,7 @@ _row_deleted_cb (GtkTreeModel *tree_model,
       gtk_container_foreach (GTK_CONTAINER (priv->box),
                              (GtkCallback)gtk_widget_destroy,
                              NULL);
-      carrick_list_set_fallback (self);
+      carrick_list_show_fallback (self);
       _set_active_item (self, NULL);
     }
   else
@@ -671,6 +669,106 @@ _create_service_item (GtkTreeModel *model,
 }
 
 static void
+list_update_property (const gchar *property,
+                      GValue      *value,
+                      gpointer     user_data)
+{
+  CarrickList        *list = user_data;
+  CarrickListPrivate *priv = list->priv;
+
+  if (g_str_equal (property, "OfflineMode"))
+    {
+      priv->offline_mode = g_value_get_boolean (value);
+    }
+  else if (g_str_equal (property, "AvailableTechnologies"))
+    {
+      gchar **tech = g_value_get_boxed (value);
+      gint    i;
+
+      priv->have_wifi = FALSE;
+      priv->have_ethernet = FALSE;
+      priv->have_threeg = FALSE;
+      priv->have_wimax = FALSE;
+      priv->have_bluetooth = FALSE;
+
+      for (i = 0; i < g_strv_length (tech); i++)
+        {
+          if (g_str_equal ("wifi", *(tech + i)))
+            priv->have_wifi = TRUE;
+          else if (g_str_equal ("wimax", *(tech + i)))
+            priv->have_wimax = TRUE;
+          else if (g_str_equal ("bluetooth", *(tech + i)))
+            priv->have_bluetooth = TRUE;
+          else if (g_str_equal ("cellular", *(tech + i)))
+            priv->have_threeg = TRUE;
+          else if (g_str_equal ("ethernet", *(tech + i)))
+            priv->have_ethernet = TRUE;
+        }
+    }
+  else if (g_str_equal (property, "EnabledTechnologies"))
+    {
+      gchar **tech = g_value_get_boxed (value);
+      gint    i;
+
+      priv->wifi_enabled = FALSE;
+      priv->ethernet_enabled = FALSE;
+      priv->threeg_enabled = FALSE;
+      priv->wimax_enabled = FALSE;
+      priv->bluetooth_enabled = FALSE;
+
+      for (i = 0; i < g_strv_length (tech); i++)
+        {
+          if (g_str_equal ("wifi", *(tech + i)))
+            priv->wifi_enabled = TRUE;
+          else if (g_str_equal ("wimax", *(tech + i)))
+            priv->wimax_enabled = TRUE;
+          else if (g_str_equal ("bluetooth", *(tech + i)))
+            priv->bluetooth_enabled = TRUE;
+          else if (g_str_equal ("cellular", *(tech + i)))
+            priv->threeg_enabled = TRUE;
+          else if (g_str_equal ("ethernet", *(tech + i)))
+            priv->ethernet_enabled = TRUE;
+        }
+    }
+}
+
+static void
+_mngr_property_changed_cb (DBusGProxy  *manager,
+                           const gchar *property,
+                           GValue      *value,
+                           gpointer     user_data)
+{
+  list_update_property (property, value, user_data);
+}
+
+static void
+_mngr_get_properties_cb (DBusGProxy     *manager,
+                         GHashTable     *properties,
+                         GError         *error,
+                         gpointer        user_data)
+{
+  CarrickList *list = user_data;
+  CarrickListPrivate *priv = list->priv;
+
+  if (error)
+    {
+      g_debug ("Error when ending GetProperties call: %s",
+               error->message);
+      g_error_free (error);
+
+      priv->have_daemon = FALSE;
+    }
+  else
+    {
+      priv->have_daemon = TRUE;
+      g_hash_table_foreach (properties,
+                            (GHFunc) list_update_property,
+                            list);
+      g_hash_table_unref (properties);
+    }
+}
+
+static void
 carrick_list_set_model (CarrickList         *list,
                         CarrickNetworkModel *model)
 {
@@ -697,7 +795,20 @@ carrick_list_set_model (CarrickList         *list,
 
   if (model)
     {
+      DBusGProxy *manager;
+
       priv->model = g_object_ref (model);
+
+      /* Keep track of OfflineMode, AvailableTechnologies and 
+       * EnabledTechnologies using connman.Manager */
+      manager = carrick_network_model_get_proxy (priv->model);
+      dbus_g_proxy_connect_signal (manager,
+                                   "PropertyChanged",
+                                   G_CALLBACK (_mngr_property_changed_cb),
+                                   list, NULL);
+      org_moblin_connman_Manager_get_properties_async (manager,
+                                                       _mngr_get_properties_cb,
+                                                       list);
 
       gtk_tree_model_foreach (GTK_TREE_MODEL (model),
                               _create_service_item,
@@ -880,30 +991,46 @@ carrick_list_add (CarrickList *list,
 
 
 static void
-_set_and_show_fallback (CarrickList *self)
+_append_tech_string (GString *technologies, char *tech, gboolean last)
+{
+  /* Translator note: The disabled technologies available to be turned on is put together at
+   * runtime.
+   * The conjunction ' or ' will be at the end of a choice of disabled technologies,
+   * for example 'You could try enabling WiFi, WiMAX or 3G'.
+   * Note that you need to include spaces on both sides of the word/phrase 
+   * here -- unless you want it joined with previous or next word. */
+  gchar              *conjunction = _(" or ");
+
+  /* Translator note: the comma ',' will be used to join the different disabled technologies
+   * as in the example: 'You could try enabling WiFi, WiMAX or 3G' */
+  gchar              *comma = _(", ");
+
+  if (technologies->len == 0)
+    g_string_append (technologies, tech);
+  else if (!last)
+    g_string_append_printf (technologies, "%s%s",
+                            tech, comma);
+  else
+    g_string_append_printf (technologies, "%s%s",
+                            conjunction, tech);
+}
+
+static void
+carrick_list_show_fallback (CarrickList *self)
 {
   CarrickListPrivate *priv = self->priv;
   gchar              *fallback = NULL;
-  /*
-   * Translator note: The disabled technologies available to be turned on is put together at
-   * runtime.
-   * The conjunction 'or' will be at the end of a choice of disabled technologies,
-   * for example 'WiFi, WiMAX or 3G.
+  GString            *technologies = NULL;
+  guint               count = 0;
+
+  /* Translator note: these technology names will be used in forming
+   * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
    */
-  gchar              *conjunction = _(" or ");
-  /*
-   * Translator note: the comma ',' will be used to join the different disabled technologies
-   * as in the above example; 'WiFi, WiMAX or 3G'
-   */
-  gchar              *comma = _(", ");
   gchar              *ethernet = _("wired");
   gchar              *wifi = _("WiFi");
   gchar              *wimax = _("WiMAX");
   gchar              *cellular = _("3G");
   gchar              *bluetooth = _("Bluetooth");
-  GString            *technologies = NULL;
-  guint               count = 0;
-  gboolean            processed_first = FALSE;
 
   /* Need to add some fall-back content */
   if (!priv->have_daemon)
@@ -933,130 +1060,45 @@ _set_and_show_fallback (CarrickList *self)
            (priv->have_wimax && !priv->wimax_enabled) ||
            (priv->have_bluetooth && !priv->bluetooth_enabled))
     {
+      guint available, enabled;
+
       /* How many strings we're joining */
-      count = priv->available_count - priv->enabled_count;
-      technologies = g_string_new (" ");
-      processed_first = FALSE;
+      available = priv->have_wifi + priv->have_ethernet + 
+                  priv->have_threeg + priv->have_wimax + 
+                  priv->have_bluetooth;
+      enabled = priv->wifi_enabled + priv->ethernet_enabled +
+                priv->threeg_enabled + priv->wimax_enabled +
+                priv->bluetooth_enabled;
+      count = available - enabled;
+      technologies = g_string_new (NULL);
 
       if (priv->have_wifi && !priv->wifi_enabled)
         {
-          if (count > 1)
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      wifi,
-                                      comma);
-            }
-          else
-            {
-              g_string_append (technologies,
-                               wifi);
-            }
-          processed_first = TRUE;
+          _append_tech_string (technologies, wifi, count == 1);
           count--;
         }
 
       if (priv->have_wimax && !priv->wimax_enabled)
         {
-          if (!processed_first)
-            {
-              g_string_append (technologies,
-                               wimax);
-              processed_first = TRUE;
-            }
-          else if (count > 1)
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      wimax,
-                                      comma);
-            }
-          else
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      conjunction,
-                                      wimax);
-            }
-
+          _append_tech_string (technologies, wimax, count == 1);
           count--;
         }
 
       if (priv->have_threeg && !priv->threeg_enabled)
         {
-          if (!processed_first)
-            {
-              g_string_append (technologies,
-                               cellular);
-              processed_first = TRUE;
-            }
-          else if (count > 1)
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      cellular,
-                                      comma);
-            }
-          else
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      conjunction,
-                                      cellular);
-            }
-
+          _append_tech_string (technologies, cellular, count == 1);
           count--;
         }
 
       if (priv->have_bluetooth && !priv->bluetooth_enabled)
         {
-          if (!processed_first)
-            {
-              g_string_append (technologies,
-                               bluetooth);
-              processed_first = TRUE;
-            }
-          else if (count > 1)
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      bluetooth,
-                                      comma);
-            }
-          else
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      conjunction,
-                                      bluetooth);
-            }
-
+          _append_tech_string (technologies, bluetooth, count == 1);
           count--;
         }
 
       if (priv->have_ethernet && !priv->ethernet_enabled)
         {
-          if (!processed_first)
-            {
-              g_string_append (technologies,
-                               ethernet);
-              processed_first = TRUE;
-            }
-          else if (count > 1)
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      ethernet,
-                                      comma);
-            }
-          else
-            {
-              g_string_append_printf (technologies,
-                                      "%s%s",
-                                      conjunction,
-                                      ethernet);
-            }
-
+          _append_tech_string (technologies, ethernet, count == 1);
           count--;
         }
 
@@ -1083,155 +1125,6 @@ _set_and_show_fallback (CarrickList *self)
     gtk_widget_show (priv->fallback);
 
   g_free (fallback);
-}
-
-static void
-list_update_property (const gchar *property,
-                      GValue      *value,
-                      gpointer     user_data)
-{
-  CarrickList        *list = user_data;
-  CarrickListPrivate *priv = list->priv;
-  gboolean state_changed = FALSE;
-
-  if (g_str_equal (property, "OfflineMode"))
-    {
-      priv->offline_mode = g_value_get_boolean (value);
-      state_changed = TRUE;
-    }
-  else if (g_str_equal (property, "AvailableTechnologies"))
-    {
-      gchar **tech = g_value_get_boxed (value);
-      gint    i;
-
-      priv->have_wifi = FALSE;
-      priv->have_ethernet = FALSE;
-      priv->have_threeg = FALSE;
-      priv->have_wimax = FALSE;
-      priv->have_bluetooth = FALSE;
-      priv->available_count = 0;
-
-      for (i = 0; i < g_strv_length (tech); i++)
-        {
-          if (g_str_equal ("wifi", *(tech + i)))
-            {
-              priv->have_wifi = TRUE;
-              priv->available_count ++;
-            }
-          else if (g_str_equal ("wimax", *(tech + i)))
-            {
-              priv->have_wimax = TRUE;
-              priv->available_count ++;
-            }
-          else if (g_str_equal ("bluetooth", *(tech + i)))
-            {
-              priv->have_bluetooth = TRUE;
-              priv->available_count ++;
-            }
-          else if (g_str_equal ("cellular", *(tech + i)))
-            {
-              priv->have_threeg = TRUE;
-              priv->available_count ++;
-            }
-          else if (g_str_equal ("ethernet", *(tech + i)))
-            {
-              priv->have_ethernet = TRUE;
-              priv->available_count ++;
-            }
-        }
-      state_changed = TRUE;
-    }
-  else if (g_str_equal (property, "EnabledTechnologies"))
-    {
-      gchar **tech = g_value_get_boxed (value);
-      gint    i;
-
-      priv->wifi_enabled = FALSE;
-      priv->ethernet_enabled = FALSE;
-      priv->threeg_enabled = FALSE;
-      priv->wimax_enabled = FALSE;
-      priv->bluetooth_enabled = FALSE;
-      priv->enabled_count = 0;
-
-      for (i = 0; i < g_strv_length (tech); i++)
-        {
-          if (g_str_equal ("wifi", *(tech + i)))
-            {
-              priv->wifi_enabled = TRUE;
-              priv->enabled_count ++;
-            }
-          else if (g_str_equal ("wimax", *(tech + i)))
-            {
-              priv->wimax_enabled = TRUE;
-              priv->enabled_count ++;
-            }
-          else if (g_str_equal ("bluetooth", *(tech + i)))
-            {
-              priv->bluetooth_enabled = TRUE;
-              priv->enabled_count ++;
-            }
-          else if (g_str_equal ("cellular", *(tech + i)))
-            {
-              priv->threeg_enabled = TRUE;
-              priv->enabled_count ++;
-            }
-          else if (g_str_equal ("ethernet", *(tech + i)))
-            {
-              priv->ethernet_enabled = TRUE;
-              priv->enabled_count ++;
-            }
-        }
-      state_changed = TRUE;
-    }
-
-  if (state_changed)
-    {
-      _set_and_show_fallback (list);
-    }
-}
-
-static void
-list_get_properties_cb (DBusGProxy     *manager,
-                        GHashTable     *properties,
-                        GError         *error,
-                        gpointer        user_data)
-{
-  CarrickList *list = user_data;
-  CarrickListPrivate *priv = list->priv;
-
-  if (error)
-    {
-      g_debug ("Error when ending GetProperties call: %s",
-               error->message);
-      g_error_free (error);
-
-      priv->have_daemon = FALSE;
-      _set_and_show_fallback (list);
-    }
-  else
-    {
-      priv->have_daemon = TRUE;
-      g_hash_table_foreach (properties,
-                            (GHFunc) list_update_property,
-                            list);
-      g_hash_table_unref (properties);
-    }
-}
-
-void
-carrick_list_set_fallback (CarrickList *list)
-{
-  CarrickListPrivate *priv = list->priv;
-  DBusGProxy *manager = carrick_network_model_get_proxy (priv->model);
-
-  /*
-   * Make D-Bus calls to determine whether there's a reason that we have no
-   * content. If so, set the fallback label.
-   */
-  org_moblin_connman_Manager_get_properties_async
-    (manager,
-     list_get_properties_cb,
-     list);
 }
 
 static GObject *
@@ -1275,13 +1168,14 @@ carrick_list_constructor (GType                  gtype,
                                550,
                                -1);
   gtk_misc_set_padding (GTK_MISC (priv->fallback), 0, 12);
-  gtk_widget_show (priv->fallback);
   gtk_box_pack_start (GTK_BOX (box), priv->fallback,
                       FALSE, FALSE, 2);
 
   priv->box = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (box),
                      priv->box);
+
+  carrick_list_show_fallback (CARRICK_LIST (obj));
 
   return obj;
 }
