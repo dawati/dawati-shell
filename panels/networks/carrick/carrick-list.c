@@ -80,7 +80,7 @@ enum {
 
 static void carrick_list_set_model (CarrickList *list, CarrickNetworkModel *model);
 static void carrick_list_add (CarrickList *list, GtkTreePath *path);
-static void carrick_list_show_fallback (CarrickList *self);
+static void carrick_list_update_fallback (CarrickList *self);
 
 static void
 carrick_list_get_property (GObject *object, guint property_id,
@@ -567,7 +567,8 @@ _row_deleted_cb (GtkTreeModel *tree_model,
       gtk_container_foreach (GTK_CONTAINER (priv->box),
                              (GtkCallback)gtk_widget_destroy,
                              NULL);
-      carrick_list_show_fallback (self);
+      carrick_list_update_fallback (self);
+      gtk_widget_show (priv->fallback);
       _set_active_item (self, NULL);
     }
   else
@@ -736,9 +737,12 @@ static void
 _mngr_property_changed_cb (DBusGProxy  *manager,
                            const gchar *property,
                            GValue      *value,
-                           gpointer     user_data)
+                           CarrickList *list)
 {
-  list_update_property (property, value, user_data);
+  list_update_property (property, value, list);
+
+  if (GTK_WIDGET_VISIBLE (list->priv->fallback))
+      carrick_list_update_fallback (list);
 }
 
 static void
@@ -766,6 +770,8 @@ _mngr_get_properties_cb (DBusGProxy     *manager,
                             list);
       g_hash_table_unref (properties);
     }
+
+  carrick_list_update_fallback (list);
 }
 
 static void
@@ -1001,22 +1007,25 @@ _append_tech_string (GString *technologies, char *tech, gboolean last)
    * here -- unless you want it joined with previous or next word. */
   gchar              *conjunction = _(" or ");
 
-  /* Translator note: the comma ',' will be used to join the different disabled technologies
-   * as in the example: 'You could try enabling WiFi, WiMAX or 3G' */
+  /* Translator note: the comma ', ' will be used to join the different 
+   * disabled technologies as in the example: 
+   * 'You could try enabling WiFi, WiMAX or 3G'
+   * Note that you need to include spaces in the string, unless you 
+   * want the words to appear right next to the comma. */
   gchar              *comma = _(", ");
 
   if (technologies->len == 0)
     g_string_append (technologies, tech);
   else if (!last)
     g_string_append_printf (technologies, "%s%s",
-                            tech, comma);
+                            comma, tech);
   else
     g_string_append_printf (technologies, "%s%s",
                             conjunction, tech);
 }
 
 static void
-carrick_list_show_fallback (CarrickList *self)
+carrick_list_update_fallback (CarrickList *self)
 {
   CarrickListPrivate *priv = self->priv;
   gchar              *fallback = NULL;
@@ -1120,10 +1129,6 @@ carrick_list_show_fallback (CarrickList *self)
     }
 
   gtk_label_set_text (GTK_LABEL (priv->fallback), fallback);
-
-  if (fallback)
-    gtk_widget_show (priv->fallback);
-
   g_free (fallback);
 }
 
@@ -1161,12 +1166,12 @@ carrick_list_constructor (GType                  gtype,
   gtk_container_add (GTK_CONTAINER (viewport),
                      box);
 
-  priv->fallback = gtk_label_new ("");
   gtk_label_set_line_wrap (GTK_LABEL (priv->fallback),
                            TRUE);
   gtk_widget_set_size_request (priv->fallback,
                                550,
                                -1);
+  gtk_widget_show (priv->fallback);
   gtk_misc_set_padding (GTK_MISC (priv->fallback), 0, 12);
   gtk_box_pack_start (GTK_BOX (box), priv->fallback,
                       FALSE, FALSE, 2);
@@ -1174,8 +1179,6 @@ carrick_list_constructor (GType                  gtype,
   priv->box = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (box),
                      priv->box);
-
-  carrick_list_show_fallback (CARRICK_LIST (obj));
 
   return obj;
 }
@@ -1229,7 +1232,7 @@ carrick_list_init (CarrickList *self)
 
   priv = self->priv = LIST_PRIVATE (self);
 
-  priv->fallback = NULL;
+  priv->fallback = gtk_label_new ("");
   priv->have_daemon = FALSE;
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
