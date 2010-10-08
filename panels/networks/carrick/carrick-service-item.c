@@ -83,6 +83,7 @@ struct _CarrickServiceItemPrivate
   GtkWidget *name_label;
   GtkWidget *connect_box;
   GtkWidget *security_label;
+  GtkWidget *portal_button;
   GtkWidget *connect_button;
   GtkWidget *advanced_expander;
   GtkWidget *passphrase_box;
@@ -127,6 +128,7 @@ struct _CarrickServiceItemPrivate
   gchar **nameservers;
   gboolean favorite;
   gboolean immutable;
+  gboolean login_required;
 
   GtkWidget *info_bar;
   GtkWidget *info_label;
@@ -310,6 +312,7 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_CONFIGURED_NAMESERVERS, &priv->nameservers,
                           CARRICK_COLUMN_FAVORITE, &priv->favorite,
                           CARRICK_COLUMN_IMMUTABLE, &priv->immutable,
+                          CARRICK_COLUMN_LOGIN_REQUIRED, &priv->login_required,
                           -1);
 
       /* use normal values only if manually configured values are not available:
@@ -436,6 +439,7 @@ _set_state (CarrickServiceItem *self)
   _service_item_set_drag_state (self);
 
   gtk_widget_set_sensitive (priv->advanced_box, !priv->immutable);
+  gtk_widget_show (priv->portal_button);
 
   if (g_strcmp0 ("ethernet", priv->type) == 0)
     {
@@ -459,6 +463,7 @@ _set_state (CarrickServiceItem *self)
                                _ ("Connected"));
       gtk_label_set_text (GTK_LABEL (priv->info_label),
                           "");
+      gtk_widget_set_visible (priv->portal_button, priv->login_required);
     }
   else if (g_strcmp0 (priv->state, "online") == 0)
     {
@@ -853,6 +858,14 @@ _connect_button_cb (GtkButton          *connect_button,
       carrick_service_item_set_active (item, TRUE);
       _start_connecting (item);
     }
+}
+
+static void
+_portal_button_cb (GtkButton          *button,
+                   CarrickServiceItem *item)
+{
+   if (g_app_info_launch_default_for_uri ("http://connman.net", NULL, NULL))
+     carrick_shell_hide ();
 }
 
 static void
@@ -1879,6 +1892,15 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (_advanced_expander_notify_expanded_cb),
                     self);
   gtk_container_add (GTK_CONTAINER (align), priv->advanced_expander);
+
+  /* TRANSLATORS: button for services that require an additional 
+   * web login (clicking will open browser) */
+  priv->portal_button = gtk_button_new_with_label (_("Log in"));
+  g_signal_connect (priv->portal_button, "clicked",
+                    G_CALLBACK (_portal_button_cb), self);
+  gtk_box_pack_start (GTK_BOX (priv->connect_box),
+                      priv->portal_button,
+                      FALSE, FALSE, 6);
 
   priv->connect_button = gtk_button_new_with_label (_("Scanning"));
   gtk_widget_show (priv->connect_button);

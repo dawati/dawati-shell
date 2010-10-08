@@ -121,6 +121,7 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                  G_TYPE_STRV, /* name servers */
                                  G_TYPE_STRV, /* manually configured name servers */
                                  G_TYPE_BOOLEAN, /* immutable */
+                                 G_TYPE_BOOLEAN, /* login_required */
   };
 
   gtk_list_store_set_column_types (GTK_LIST_STORE (self),
@@ -276,6 +277,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   const gchar        **config_nameservers = NULL;
   const gchar         *passphrase = NULL;
   gboolean             immutable = FALSE;
+  gboolean             login_required = FALSE;
   GValue              *value;
   GtkTreeIter          iter;
 
@@ -380,6 +382,10 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
       if (value)
         immutable = g_value_get_boolean (value);
 
+      value = g_hash_table_lookup (properties, "LoginRequired");
+      if (value)
+        login_required = g_value_get_boolean (value);
+
       if (network_model_have_service_by_proxy (store,
                                                &iter,
                                                service))
@@ -405,6 +411,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
                               CARRICK_COLUMN_NAMESERVERS, nameservers,
                               CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
                               CARRICK_COLUMN_IMMUTABLE, immutable,
+                              CARRICK_COLUMN_LOGIN_REQUIRED, login_required,
                               -1);
         }
       else
@@ -432,6 +439,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
              CARRICK_COLUMN_NAMESERVERS, nameservers,
              CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
              CARRICK_COLUMN_IMMUTABLE, immutable,
+             CARRICK_COLUMN_LOGIN_REQUIRED, login_required,
              -1);
         }
     }
@@ -645,6 +653,12 @@ network_model_service_changed_cb (DBusGProxy  *service,
     {
       gtk_list_store_set (store, &iter,
                           CARRICK_COLUMN_IMMUTABLE, g_value_get_boolean (value),
+                          -1);
+    }
+  else if (g_str_equal (property, "LoginRequired"))
+    {
+      gtk_list_store_set (store, &iter,
+                          CARRICK_COLUMN_LOGIN_REQUIRED, g_value_get_boolean (value),
                           -1);
     }
 }
