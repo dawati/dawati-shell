@@ -134,6 +134,8 @@ struct _CarrickServiceItemPrivate
   /* active means the last ServiceItem that has been interacted with
    * since panel was last shown */
   gboolean active;
+  /* have we shown and hidden the connect-related error yet? */
+  gboolean error_hidden;
 };
 
 enum {
@@ -271,12 +273,12 @@ _populate_variables (CarrickServiceItem *self)
     {
       char *method, *address, *netmask, *gateway;
       char **nameservers;
+      char *state;
 
       if (priv->proxy)
         g_object_unref (priv->proxy);
       g_free (priv->name);
       g_free (priv->type);
-      g_free (priv->state);
       g_free (priv->security);
       g_free (priv->passphrase);
       g_free (priv->method);
@@ -290,7 +292,7 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_INDEX, &priv->index,
                           CARRICK_COLUMN_NAME, &priv->name,
                           CARRICK_COLUMN_TYPE, &priv->type,
-                          CARRICK_COLUMN_STATE, &priv->state,
+                          CARRICK_COLUMN_STATE, &state,
                           CARRICK_COLUMN_STRENGTH, &priv->strength,
                           CARRICK_COLUMN_SECURITY, &priv->security,
                           CARRICK_COLUMN_PASSPHRASE_REQUIRED, &priv->need_pass,
@@ -335,6 +337,17 @@ _populate_variables (CarrickServiceItem *self)
         g_free (nameservers);
       else
         priv->nameservers = nameservers;
+
+      /* TODO: it would make sense to expand this to cover lot of other 
+       * state transitions so populate_variables() did not have to do so 
+       * much unnecessary work */
+      if (priv->state &&
+          g_strcmp0 (priv->state, "failure") != 0 &&
+          g_strcmp0 (state, "failure") == 0)
+        priv->error_hidden = FALSE;
+      g_free (priv->state);
+      priv->state = state;
+    }
 }
 
 
@@ -517,7 +530,7 @@ _set_state (CarrickServiceItem *self)
       label = g_strdup_printf ("%s - %s",
                                name,
                                _ ("Connection failed"));
-      if (priv->active)
+      if (!priv->error_hidden)
         {
           gtk_label_set_text (GTK_LABEL (priv->info_label),
                               _("Sorry, the connection failed. You could try again."));
@@ -1076,6 +1089,7 @@ carrick_service_item_set_active (CarrickServiceItem *item,
   priv->active = active;
   if (!active)
     {
+      priv->error_hidden = TRUE;
       gtk_widget_hide (priv->passphrase_box);
       gtk_widget_show (priv->connect_box);
       gtk_widget_hide (priv->info_bar);
@@ -1764,6 +1778,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   priv->note = NULL;
   priv->setup_required = FALSE;
   priv->favorite = FALSE;
+  priv->error_hidden = TRUE;
 
   priv->hand_cursor = gdk_cursor_new (GDK_HAND1);
 
