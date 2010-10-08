@@ -272,6 +272,19 @@ _populate_variables (CarrickServiceItem *self)
       char *method, *address, *netmask, *gateway;
       char **nameservers;
 
+      if (priv->proxy)
+        g_object_unref (priv->proxy);
+      g_free (priv->name);
+      g_free (priv->type);
+      g_free (priv->state);
+      g_free (priv->security);
+      g_free (priv->passphrase);
+      g_free (priv->method);
+      g_free (priv->address);
+      g_free (priv->netmask);
+      g_free (priv->gateway);
+      g_strfreev (priv->nameservers);
+
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
                           CARRICK_COLUMN_PROXY, &priv->proxy,
                           CARRICK_COLUMN_INDEX, &priv->index,
@@ -302,17 +315,26 @@ _populate_variables (CarrickServiceItem *self)
        * 1. sometimes normal values are not available (e.g. when not connected).
        * 2. don't show "old" values while connman is still applying manually set ones
        */
-      if (!priv->method)
+      if (priv->method)
+        g_free (method);
+      else
         priv->method = method;
-      if (!priv->address)
+      if (priv->address)
+        g_free (address);
+      else
         priv->address = address;
-      if (!priv->netmask)
+      if (priv->netmask)
+        g_free (netmask);
+      else
         priv->netmask = netmask;
-      if (!priv->gateway)
+      if (priv->gateway)
+        g_free (gateway);
+      else
         priv->gateway = gateway;
-      if (!priv->nameservers)
+      if (priv->nameservers)
+        g_free (nameservers);
+      else
         priv->nameservers = nameservers;
-    }
 }
 
 
@@ -1197,6 +1219,25 @@ carrick_service_item_dispose (GObject *object)
       g_object_unref (priv->proxy);
       priv->proxy = NULL;
     }
+
+  g_free (priv->name);
+  priv->name = NULL;
+  g_free (priv->type);
+  priv->type = NULL;
+  g_free (priv->security);
+  priv->security = NULL;
+  g_free (priv->passphrase);
+  priv->passphrase = NULL;
+  g_free (priv->method);
+  priv->method = NULL;
+  g_free (priv->address);
+  priv->address = NULL;
+  g_free (priv->netmask);
+  priv->netmask = NULL;
+  g_free (priv->gateway);
+  priv->gateway = NULL;
+  g_strfreev (priv->nameservers);
+  priv->nameservers = NULL;
 
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
