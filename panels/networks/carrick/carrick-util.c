@@ -87,9 +87,10 @@ util_validate_wlan_passphrase (const char *security,
                                       " have %i."), len);
         }
     }
-  else if (g_strcmp0 (security, "wpa") == 0)
+  else if (g_strcmp0 (security, "wpa") == 0 ||
+           g_strcmp0 (security, "psk") == 0)
     {
-      /* WPA passphrase must be more than 9 chars, less than or equal 63 */
+      /* WPA passphrase must be between 8 and 63 characters (inclusive) */
       /* TODO: 64-character hex string, or 8-63 character ASCII */
       if (len < 8)
         {
@@ -105,12 +106,12 @@ util_validate_wlan_passphrase (const char *security,
           if (msg)
             *msg = g_strdup_printf (_("Your password is too long. For a WPA "
                                       " connection it needs to have fewer than"
-                                      " 63 characters, you have %i"), len);
+                                      " 64 characters, you have %i"), len);
         }
     }
   else if (g_strcmp0 (security, "rsn") == 0)
     {
-      /* WPA2 passphrase must be more than 9 chars, less than 63 */
+      /* WPA2 passphrase must be between 8 and 63 characters (inclusive) */
       /* TODO: 64-character hex string, or 8-63 character ASCII */
       if (len < 8)
         {
@@ -126,7 +127,7 @@ util_validate_wlan_passphrase (const char *security,
           if (msg)
             *msg = g_strdup_printf (_("Your password is too long. For a WPA2 "
                                       " connection it needs to have fewer than"
-                                      " 63 characters, you have %i"), len);
+                                      " 64 characters, you have %i"), len);
         }
     }
   else if (g_strcmp0 (security, "none") == 0)
