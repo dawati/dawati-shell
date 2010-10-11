@@ -642,6 +642,26 @@ _secret_check_toggled (GtkToggleButton *toggle,
   gtk_entry_set_visibility (entry, vis);
 }
 
+typedef struct secret_data {
+  GtkWidget *label;
+  GtkWidget *entry;
+  GtkWidget *check;
+} secret_data;
+
+static void
+_security_combo_changed_cb (GtkComboBox *combo, secret_data *data)
+{
+  gboolean security;
+
+  security = (gtk_combo_box_get_active (combo) != 0);
+
+  gtk_widget_set_sensitive (data->label, security);
+  gtk_widget_set_sensitive (data->check, security);
+  gtk_widget_set_sensitive (data->entry, security);
+  if (!security)
+    gtk_entry_set_text (GTK_ENTRY (data->entry), "");
+}
+
 static void
 _new_connection_cb (GtkButton *button,
                     gpointer   user_data)
@@ -654,12 +674,14 @@ _new_connection_cb (GtkButton *button,
   GtkWidget          *security_combo, *security_label;
   GtkWidget          *secret_entry, *secret_label;
   GtkWidget          *secret_check;
+  GtkWidget          *info_bar, *content, *info_label;
   GtkWidget          *table;
   const gchar        *network, *secret;
   gchar              *security;
   GtkWidget          *image;
   GHashTable         *method_props;
   GValue             *type_v, *mode_v, *ssid_v, *security_v, *pass_v;
+  secret_data        *secretdata;
 
   dialog = gtk_dialog_new_with_buttons (_ ("New connection settings"),
                                         GTK_WINDOW (gtk_widget_get_toplevel (user_data)),
@@ -744,21 +766,25 @@ _new_connection_cb (GtkButton *button,
                              2, 3);
 
   secret_label = gtk_label_new (_ ("Password"));
+  gtk_widget_set_sensitive (secret_label, FALSE);
   gtk_misc_set_alignment (GTK_MISC (secret_label),
                           0.0, 0.5);
   gtk_table_attach_defaults (GTK_TABLE (table),
                              secret_label,
                              1, 2,
                              3, 4);
+
   secret_entry = gtk_entry_new ();
   gtk_entry_set_visibility (GTK_ENTRY (secret_entry),
                             FALSE);
+  gtk_widget_set_sensitive (secret_entry, FALSE);
   gtk_table_attach_defaults (GTK_TABLE (table),
                              secret_entry,
                              2, 3,
                              3, 4);
 
   secret_check = gtk_check_button_new_with_label (_ ("Show password"));
+  gtk_widget_set_sensitive (secret_check, FALSE);
   g_signal_connect (secret_check,
                     "toggled",
                     G_CALLBACK (_secret_check_toggled),
@@ -768,16 +794,39 @@ _new_connection_cb (GtkButton *button,
                              1, 2,
                              4, 5);
 
+  secretdata = g_new0 (secret_data, 1);
+  secretdata->entry = secret_entry;
+  secretdata->label = secret_label;
+  secretdata->check = secret_check;
+  g_signal_connect (security_combo, "changed",
+                    G_CALLBACK (_security_combo_changed_cb), secretdata);
+
+  info_bar = gtk_info_bar_new ();
+  gtk_info_bar_set_message_type (GTK_INFO_BAR (info_bar), GTK_MESSAGE_WARNING);
+  gtk_table_attach_defaults (GTK_TABLE (table), info_bar,
+                             1, 3,
+                             5, 6);
+  gtk_widget_set_no_show_all (info_bar, TRUE);
+
+  info_label = gtk_label_new ("");
+  gtk_widget_set_size_request (info_label, 280, -1);
+  gtk_label_set_line_wrap (GTK_LABEL (info_label), TRUE);
+  content = gtk_info_bar_get_content_area (GTK_INFO_BAR (info_bar));
+  gtk_container_add (GTK_CONTAINER (content), info_label);
+  gtk_widget_show (info_label);
+
   gtk_widget_show_all (dialog);
 
-  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+  while (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
+      char *message;
+
       network = gtk_entry_get_text (GTK_ENTRY (ssid_entry));
       security = gtk_combo_box_get_active_text (GTK_COMBO_BOX (security_combo));
       secret = gtk_entry_get_text (GTK_ENTRY (secret_entry));
 
       if (network == NULL)
-        return;
+        continue;
 
       if (gtk_combo_box_get_active (GTK_COMBO_BOX (security_combo)) == 0)
         {
@@ -799,6 +848,24 @@ _new_connection_cb (GtkButton *button,
             {
               security[i] = g_ascii_tolower (security[i]);
             }
+        }
+
+      gtk_widget_hide (info_bar);
+      if (!util_validate_wlan_passphrase (security,
+                                          secret,
+                                          &message))
+        {
+          if (message)
+            {
+              gtk_label_set_text (GTK_LABEL (info_label), message);
+              gtk_widget_show (info_bar);
+              g_free (message);
+              message = NULL;
+            }
+          gtk_editable_select_region (GTK_EDITABLE (secret_entry),
+                                      0, -1);
+          gtk_widget_grab_focus (secret_entry);
+          continue;
         }
 
       carrick_notification_manager_queue_event (priv->notes,
@@ -852,6 +919,8 @@ _new_connection_cb (GtkButton *button,
                                                         connect_service_notify_cb,
                                                         self);
       dbus_g_proxy_set_default_timeout (priv->manager, -1);
+
+      break;
     }
 
   /*
@@ -859,6 +928,7 @@ _new_connection_cb (GtkButton *button,
    */
   carrick_shell_request_focus ();
 
+  g_free (secretdata);
   gtk_widget_destroy (dialog);
 }
 
