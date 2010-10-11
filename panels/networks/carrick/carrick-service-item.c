@@ -439,7 +439,7 @@ _set_state (CarrickServiceItem *self)
   _service_item_set_drag_state (self);
 
   gtk_widget_set_sensitive (priv->advanced_box, !priv->immutable);
-  gtk_widget_show (priv->portal_button);
+  gtk_widget_hide (priv->portal_button);
 
   if (g_strcmp0 ("ethernet", priv->type) == 0)
     {
@@ -1896,6 +1896,8 @@ carrick_service_item_init (CarrickServiceItem *self)
   /* TRANSLATORS: button for services that require an additional 
    * web login (clicking will open browser) */
   priv->portal_button = gtk_button_new_with_label (_("Log in"));
+  g_signal_connect_after (priv->portal_button, "size-request",
+                          G_CALLBACK (button_size_request_cb), self);
   g_signal_connect (priv->portal_button, "clicked",
                     G_CALLBACK (_portal_button_cb), self);
   gtk_box_pack_start (GTK_BOX (priv->connect_box),
