@@ -31,6 +31,10 @@ G_BEGIN_DECLS
 
 const char * util_get_service_type_for_display (const char *type);
 
+gboolean util_validate_wlan_passphrase (const char *security,
+                                        const char *passphrase,
+                                        char **msg);
+
 G_END_DECLS
 
 #endif /* _CARRICK_UTIL_H */

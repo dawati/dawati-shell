@@ -50,3 +50,89 @@ util_get_service_type_for_display (const char *type)
     /* Run it through gettext and hope for the best */
     return _(type);
 }
+
+
+/* Return TRUE if passphrase seems to be good
+ * 
+ * In case of invalid passphrase, if msg is set, insert a 
+ * infromational message about the problem in msg. This
+ * string should be freed by caller.
+ */
+gboolean
+util_validate_wlan_passphrase (const char *security,
+                               const char *passphrase,
+                               char **msg)
+{
+  guint len;
+  gboolean valid = TRUE;
+  
+  len = strlen (passphrase);
+
+  if (g_strcmp0 (security, "wep") == 0)
+    {
+      /*
+       * 48/64-bit WEP keys are 5 or 10 characters (ASCII/hexadecimal)
+       * 128-bit WEP keys are 13 or 26.
+       * (Unofficial) 256-bit WEP keys are 29 or 58
+       */
+      if (len != 5 && len != 10 &&
+          len != 13 && len != 26 &&
+          len != 29 && len != 58)
+        {
+          valid = FALSE;
+          if (msg)
+            *msg = g_strdup_printf (_("Your password isn't the right length."
+                                      " For a WEP connection it needs to be"
+                                      " either 10 or 26 characters, you"
+                                      " have %i."), len);
+        }
+    }
+  else if (g_strcmp0 (security, "wpa") == 0)
+    {
+      /* WPA passphrase must be more than 9 chars, less than or equal 63 */
+      /* TODO: 64-character hex string, or 8-63 character ASCII */
+      if (len < 8)
+        {
+          valid = FALSE;
+          if (msg)
+            *msg = g_strdup_printf (_("Your password is too short. For a WPA "
+                                      " connection it needs to be at least"
+                                      " 8 characters long, you have %i"), len);
+        }
+      else if (len > 64)
+        {
+          valid = FALSE;
+          if (msg)
+            *msg = g_strdup_printf (_("Your password is too long. For a WPA "
+                                      " connection it needs to have fewer than"
+                                      " 63 characters, you have %i"), len);
+        }
+    }
+  else if (g_strcmp0 (security, "rsn") == 0)
+    {
+      /* WPA2 passphrase must be more than 9 chars, less than 63 */
+      /* TODO: 64-character hex string, or 8-63 character ASCII */
+      if (len < 8)
+        {
+          valid = FALSE;
+          if (msg)
+            *msg = g_strdup_printf (_("Your password is too short. For a WPA2 "
+                                      " connection it needs to be at least"
+                                      " 8 characters long, you have %i"), len);
+        }
+      else if (len > 64)
+        {
+          valid = FALSE;
+          if (msg)
+            *msg = g_strdup_printf (_("Your password is too long. For a WPA2 "
+                                      " connection it needs to have fewer than"
+                                      " 63 characters, you have %i"), len);
+        }
+    }
+  else if (g_strcmp0 (security, "none") == 0)
+    ;
+  else
+    g_debug ("Don't know how to validate '%s' passphrase", security);
+
+  return valid;
+}

@@ -900,7 +900,6 @@ _connect_with_password (CarrickServiceItem *item)
   CarrickServiceItemPrivate *priv = item->priv;
   const gchar               *passphrase;
   GValue                    *value;
-  guint                      len;
   gchar                     *label = NULL;
 
   carrick_notification_manager_queue_event (priv->note,
@@ -914,57 +913,14 @@ _connect_with_password (CarrickServiceItem *item)
     }
   else
     {
-      /* Basic validation of the passphrase */
-      len = gtk_entry_get_text_length (GTK_ENTRY (priv->passphrase_entry));
-      if (g_str_equal (priv->security, "wep"))
-        {
-          /*
-            48/64-bit WEP keys are 5 or 10 characters (ASCII/hexadecimal)
-            128-bit WEP keys are 13 or 26.
-            (Unofficial) 256-bit WEP keys are 29 or 58
-          */
-          if (len != 5 && len != 10 &&
-              len != 13 && len != 26 &&
-              len != 29 && len != 58)
-            {
-              label = g_strdup_printf (_("Your password isn't the right length."
-                                         " For a WEP connection it needs to be"
-                                         " either 10 or 26 characters, you"
-                                         " have %i."), len);
-            }
-        }
-      else if (g_str_equal (priv->security, "wpa"))
-        {
-          /* WPA passphrase must be more than 9 chars, less than or equal 63 */
-          /* TODO: 64-character hex string, or 8-63 character ASCII */
-          if (len < 8)
-            label = g_strdup_printf (_("Your password is too short. For a WPA "
-                                       " connection it needs to be at least"
-                                       " 8 characters long, you have %i"), len);
-          else if (len > 64)
-            label = g_strdup_printf (_("Your password is too long. For a WPA "
-                                       " connection it needs to have fewer than"
-                                       " 63 characters, you have %i"), len);
-        }
-      else if (g_str_equal (priv->security, "rsn"))
-        {
-          /* WPA2 passphrase must be more than 9 chars, less than 63 */
-          /* TODO: 64-character hex string, or 8-63 character ASCII */
-          if (len < 8)
-            label = g_strdup_printf (_("Your password is too short. For a WPA2 "
-                                       " connection it needs to be at least"
-                                       " 8 characters long, you have %i"), len);
-          else if (len > 64)
-            label = g_strdup_printf (_("Your password is too long. For a WPA2 "
-                                       " connection it needs to have fewer than"
-                                       " 63 characters, you have %i"), len);
-        }
-
-      if (!label)
+      passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
+    
+      if (util_validate_wlan_passphrase (priv->security,
+                                         passphrase,
+                                         &label))
         {
           GtkTreeIter iter;
         
-          passphrase = gtk_entry_get_text (GTK_ENTRY (priv->passphrase_entry));
           value = g_slice_new0 (GValue);
           g_value_init (value, G_TYPE_STRING);
           g_value_set_string (value, passphrase);
