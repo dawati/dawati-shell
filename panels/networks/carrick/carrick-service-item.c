@@ -98,6 +98,7 @@ struct _CarrickServiceItemPrivate
   GtkWidget *gateway_entry;
   GtkWidget *netmask_entry;
   GtkWidget *dns_text_view;
+  GtkWidget *apply_button;
   gboolean form_modified;
 
   CarrickIconFactory *icon_factory;
@@ -353,6 +354,14 @@ _populate_variables (CarrickServiceItem *self)
     }
 }
 
+static void
+_set_form_modified (CarrickServiceItem *item, gboolean modified)
+{
+  item->priv->form_modified = modified;
+  gtk_widget_set_sensitive (item->priv->apply_button, modified);
+  if (modified) 
+    gtk_widget_hide (item->priv->info_bar);
+}
 
 static void
 _set_form_state (CarrickServiceItem *self)
@@ -423,7 +432,7 @@ _set_form_state (CarrickServiceItem *self)
 
   /* need to initialize this after setting the widgets, as their signal
    * handlers set form_modified to TRUE */
-  priv->form_modified = FALSE;
+  _set_form_modified (self, FALSE);
 }
 
 static void
@@ -1064,6 +1073,9 @@ carrick_service_item_set_active (CarrickServiceItem *item,
       gtk_widget_hide (priv->info_bar);
       gtk_label_set_text (GTK_LABEL (priv->info_label), "");
       _unexpand_advanced_settings (item);
+
+      /* overwrite any form changes user made */
+      _set_form_state (item);
     }
   g_object_notify (G_OBJECT (item), "active");
 }
@@ -1316,8 +1328,7 @@ method_combo_changed_cb (GtkComboBox *combobox,
         }
     }
 
-  priv->form_modified = TRUE;
-  gtk_widget_hide (priv->info_bar);
+  _set_form_modified (CARRICK_SERVICE_ITEM (user_data), TRUE);
 }
 
 static void
@@ -1493,26 +1504,18 @@ static_ip_entry_notify_text (GtkEntry   *entry,
                              GParamSpec *pspec,
                              gpointer    user_data)
 {
-  CarrickServiceItemPrivate *priv;
-
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
-  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
 
-  priv->form_modified = TRUE;
-  gtk_widget_hide (priv->info_bar);
+  _set_form_modified (CARRICK_SERVICE_ITEM (user_data), TRUE);
 }
 
 static void
 dns_buffer_changed_cb (GtkTextBuffer *textbuffer,
                        gpointer       user_data)
 {
-  CarrickServiceItemPrivate *priv;
-
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
-  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
 
-  priv->form_modified = TRUE;
-  gtk_widget_hide (priv->info_bar);
+  _set_form_modified (CARRICK_SERVICE_ITEM (user_data), TRUE);
 }
 
 static void
@@ -1581,7 +1584,7 @@ apply_button_clicked_cb (GtkButton *button,
     }
 
   /* start updating form again based on connman updates */
-  priv->form_modified = FALSE;
+  _set_form_modified (item, FALSE);
 
   /* save dns settings */
   value = g_new0 (GValue, 1);
@@ -1722,7 +1725,6 @@ carrick_service_item_init (CarrickServiceItem *self)
   GtkWidget                 *box, *hbox, *vbox;
   GtkWidget                 *image;
   GtkWidget                 *table;
-  GtkWidget                 *apply_button;
   GtkWidget                 *align;
   GtkWidget                 *scrolled_window;
   GtkWidget                 *connect_with_pw_button;
@@ -2056,13 +2058,13 @@ carrick_service_item_init (CarrickServiceItem *self)
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
   /* TRANSLATORS: label for apply button in static ip settings */
-  apply_button = gtk_button_new_with_label (_("Apply"));
-  gtk_widget_show (apply_button);
-  g_signal_connect_after (apply_button, "size-request",
+  priv->apply_button = gtk_button_new_with_label (_("Apply"));
+  gtk_widget_show (priv->apply_button);
+  g_signal_connect_after (priv->apply_button, "size-request",
                           G_CALLBACK (button_size_request_cb), self);
-  g_signal_connect (apply_button, "clicked",
+  g_signal_connect (priv->apply_button, "clicked",
                     G_CALLBACK (apply_button_clicked_cb), self);
-  gtk_container_add (GTK_CONTAINER (align), apply_button);
+  gtk_container_add (GTK_CONTAINER (align), priv->apply_button);
 }
 
 GtkWidget*
