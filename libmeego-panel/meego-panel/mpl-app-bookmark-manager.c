@@ -50,6 +50,7 @@ struct _MplAppBookmarkManagerPrivate {
 };
 
 #define APP_BOOKMARK_FILENAME "favourite-apps"
+#define APP_BOOKMARK_REMOVED_FILENAME APP_BOOKMARK_FILENAME ".removed"
 #define APP_BOOKMARK_REMOVAL_TIMOUT_S 10
 
 enum
@@ -57,6 +58,8 @@ enum
   BOOKMARKS_CHANGED,
   LAST_SIGNAL
 };
+
+static void mpl_app_bookmark_manager_idle_save (MplAppBookmarkManager *manager);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
@@ -73,7 +76,7 @@ _list_pending_removals (MplAppBookmarkManager *self,
   const gchar *entry;
   gchar *filename = NULL;
   gchar *uri = NULL;
-  const gchar *prefix = APP_BOOKMARK_FILENAME ".";
+  const gchar *prefix = APP_BOOKMARK_REMOVED_FILENAME ".";
   GList *list = NULL;
   GError *error = NULL;
 
@@ -122,6 +125,8 @@ _bookmark_removal_cb (BookmarkRemovalData *data)
   gchar *uri = NULL;
   GError *error = NULL;
 
+  g_debug ("%s() %s", __FUNCTION__, data->filename);
+
   g_file_get_contents (data->filename, &uri, NULL, &error);
   if (error)
   {
@@ -168,7 +173,7 @@ _queue_bookmark_removal (MplAppBookmarkManager  *self,
     filename = g_strdup_printf ("%s%c%s.%d",
                                 g_get_user_data_dir (),
                                 G_DIR_SEPARATOR,
-                                APP_BOOKMARK_FILENAME,
+                                APP_BOOKMARK_REMOVED_FILENAME,
                                 i++);
   } while (g_file_test (filename, G_FILE_TEST_EXISTS));
 
@@ -415,9 +420,12 @@ mpl_app_bookmark_manager_save (MplAppBookmarkManager *manager)
                             -1,
                             &error))
   {
-    g_critical (G_STRLOC ": Unable to save to bookmarks file: %s",
+    g_critical (G_STRLOC ": Unable to save to bookmarks file: %s, retrying ...",
                 error->message);
     g_clear_error (&error);
+
+    /* Retry */
+    mpl_app_bookmark_manager_idle_save (manager);
   }
 
   g_free (contents);
