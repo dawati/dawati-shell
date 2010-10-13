@@ -208,13 +208,8 @@ handle_alarm_notify_event (GSIdleMonitor         *monitor,
                  _xsyncvalue_to_int64 (alarm_event->counter_value));
 #endif
 
-        if (alarm_event->alarm == watch->xalarm_positive) {
-                condition = TRUE;
-        } else {
-		/* I wonder how gnome-session works without this line... */
-                _xsync_alarm_set (monitor, watch);
-                condition = FALSE;
-        }
+        condition = (alarm_event->alarm == watch->xalarm_positive);
+        _xsync_alarm_set (monitor, watch);
 
         res = TRUE;
         if (watch->callback != NULL) {
