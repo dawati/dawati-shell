@@ -38,7 +38,9 @@
       <type>int</type>
       <default>300</default>
       <locale name="C">
-        <short/>
+        <short>Sleep timeout</short>
+        <long>Value of -1 means never sleep, other values are seconds
+               of continuous idle state before sleeping.</long>
       </locale>
     </schema>
   </schemalist>

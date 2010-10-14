@@ -108,10 +108,13 @@ start_suspend_timer (MpdIdleManager *self)
   }
 
   suspend_idle_time = mpd_conf_get_suspend_idle_time (priv->conf);
-  if (suspend_idle_time > 0)
+  if (suspend_idle_time >= 0)
   {
+    /* suspend after given time (but after at least 15 secs to
+     * give everyone else the chance to do what they want when going
+     * idle */
     priv->suspend_source_id =
-      g_timeout_add_seconds (suspend_idle_time,
+      g_timeout_add_seconds (MAX (15, suspend_idle_time),
                              (GSourceFunc) _suspend_timer_elapsed_cb,
                              self);
   }
