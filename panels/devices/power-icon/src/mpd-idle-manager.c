@@ -22,6 +22,9 @@
 #include <dbus/dbus-glib.h>
 #include <devkit-power-gobject/devicekit-power.h>
 
+#include <gdk/gdkx.h>
+#include <X11/extensions/dpms.h>
+
 #include "mpd-conf.h"
 #include "mpd-gobject.h"
 #include "mpd-idle-manager.h"
@@ -41,7 +44,10 @@ typedef struct
 
   DkpClient   *power_client;
 
+  Display     *display;
+
   guint        suspend_source_id;
+  guint        dpms_source_id;
 } MpdIdleManagerPrivate;
 
 static void
@@ -67,6 +73,24 @@ mpd_idle_manager_class_init (MpdIdleManagerClass *klass)
   object_class->dispose = _dispose;
 }
 
+static void
+force_dpms (MpdIdleManager *self, gboolean on)
+{
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
+  CARD16 mode;
+
+  if (!priv->display)
+    return;
+
+  mode = on ? DPMSModeOn : DPMSModeOff;
+
+  if (!DPMSForceLevel (priv->display, mode))
+    g_warning ("DPMSForceLevel failed");
+  else
+    XSync (priv->display, FALSE);
+}
+
+
 static bool
 _suspend_timer_elapsed_cb (MpdIdleManager *self)
 {
@@ -84,8 +108,21 @@ _suspend_timer_elapsed_cb (MpdIdleManager *self)
   return FALSE;
 }
 
+
+static bool
+dpms_timeout_cb (MpdIdleManager *self)
+{
+  MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
+  GError *error = NULL;
+
+  priv->dpms_source_id = 0;
+  force_dpms (self, FALSE);
+
+  return FALSE;
+}
+
 static void
-stop_suspend_timer (MpdIdleManager *self)
+stop_timers (MpdIdleManager *self)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
 
@@ -94,18 +131,27 @@ stop_suspend_timer (MpdIdleManager *self)
     g_source_remove (priv->suspend_source_id);
     priv->suspend_source_id = 0;
   }
+
+  if (priv->dpms_source_id != 0)
+  {
+    g_source_remove (priv->dpms_source_id);
+    priv->dpms_source_id = 0;
+  }
 }
 
 static void
-start_suspend_timer (MpdIdleManager *self)
+start_timers (MpdIdleManager *self)
 {
   MpdIdleManagerPrivate *priv = GET_PRIVATE (self);
   int suspend_idle_time;
 
-  if (priv->suspend_source_id != 0)
-  {
-    stop_suspend_timer (self);
-  }
+  stop_timers (self);
+
+  /* dpms blank after timeout to get nicer fadeout from screensaver */
+  priv->dpms_source_id =
+    g_timeout_add_seconds (10,
+                           (GSourceFunc) dpms_timeout_cb,
+                           self);
 
   suspend_idle_time = mpd_conf_get_suspend_idle_time (priv->conf);
   if (suspend_idle_time >= 0)
@@ -130,11 +176,15 @@ _presence_status_changed_cb (DBusGProxy     *presence,
   if (status == 3)
   {
     /* session just became idle */
-    start_suspend_timer (self);
+    start_timers (self);
 
-  } else if (priv->suspend_source_id > 0) {
-    /* session just became non-idle and we have a timer */
-    stop_suspend_timer (self);
+  } else {
+    /* session just became non-idle  */
+    stop_timers (self);
+
+    /* This _should_ not be needed, but we do it just in case someones
+     * screen does stay black when they start pressing keys... */
+    force_dpms (self, TRUE);
   }
 }
 
@@ -148,9 +198,10 @@ _suspend_timeout_changed_cb (MpdConf        *conf,
   /* Restart timer if already running.
    * This is very unlikely though, because the timer only runs when
    * the system is idle in the first place. */
-  if (priv->suspend_source_id != 0)
+  if (priv->suspend_source_id != 0 ||
+      priv->dpms_source_id != 0)
   {
-    start_suspend_timer (self);
+    start_timers (self);
   }
 }
 
@@ -194,6 +245,12 @@ mpd_idle_manager_init (MpdIdleManager *self)
                                  "/",
                                  "org.gnome.ScreenSaver");
   }
+
+  priv->display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+  /* clear default timeouts, we'll be doing this by hand */
+  if (priv->display &&
+      !DPMSSetTimeouts (priv->display, 0, 0, 0))
+    g_warning ("DPMSSetTimeouts failed.");
 }
 
 MpdIdleManager *
