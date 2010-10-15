@@ -206,7 +206,7 @@ ntf_libnotify_update (NtfNotification *ntf, Notification *details)
       GtkIconInfo  *info;
 
       theme = gtk_icon_theme_get_default ();
-      info = gtk_icon_theme_lookup_icon (theme, details->icon_name, 48, 0);
+      info = gtk_icon_theme_lookup_icon (theme, details->icon_name, 24, 0);
 
       if (info)
         {
@@ -219,6 +219,8 @@ ntf_libnotify_update (NtfNotification *ntf, Notification *details)
         }
     }
 
+  if (icon)
+    clutter_actor_set_size (icon, 24.0, 24.0);
   ntf_notification_set_icon (ntf, icon);
 
   if (details->actions)
