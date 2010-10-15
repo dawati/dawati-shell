@@ -2,7 +2,7 @@
 _Name=Toolbar settings
 _Comment=Set your toolbar preferences
 Exec=meego-toolbar-properties
-Icon=meego-toolbar-properties
+Icon=netbook-toolbar-properties
 Terminal=false
 Type=Application
 StartupNotify=false
