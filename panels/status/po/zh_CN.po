@@ -4,28 +4,24 @@
 # This file is distributed under the same license as the mutter-moblin package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.27.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
-"PO-Revision-Date: 2010-05-11 10:32-0800\n"
-"Last-Translator: mackey tian <mackeyx.tian@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"PO-Revision-Date: 2010-10-19 11:43-0800\n"
+"Last-Translator: \n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "您好！这是状态面板。当您有配置好的网络帐户时（例如 Twitter），您就可以在这里查看您的 feeds 和更新您的状态。"
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "状态"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "状态"
@@ -43,54 +39,59 @@ msgstr "无法更新状态。服务不可用或您的密码可能是错误的。
 msgid "Unable to update status: You're not online."
 msgstr "无法更新您的状态：您不在线。"
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "我们无法猜测您的位置"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "我们猜测您的位置是：%s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
+msgstr "我们猜测您的位置是：%s（%f, %f）"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "您的位置被共享为：%s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "您的位置目前被共享为：%s（%f, %f）"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
+msgid "We think your locations is: %f %f"
 msgstr "我们猜测您的位置是：%f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "您的位置被共享为：%f %f "
+msgid "Your location is currently shared as: %f %f"
+msgstr "您的位置目前被共享为：%f %f "
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "您的位置没有被共享"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "您的位置目前没有被共享"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "更新"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "这是怎么回事？"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "修改"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "当您有配置好的网络帐户时，您就可以在这里查看您的 feeds 和管理您的状态。"
+
+#: ../src/mps-feed-switcher.c:509
+#: ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "添加新的网络服务帐号"
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "您似乎没有配置任何网络服务，或者您的配置有问题。请使用上面的按钮，打开我的网络帐户，开始配置。"
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "这是状态面板。"
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -120,53 +121,53 @@ msgstr "不要使用位置"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s 从 %s"
 
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "您似乎没有配置任何网络服务，或者您的配置有问题。请使用上面的按钮，打开我的"
+#~ "网络帐户，开始配置。"
 #~ msgid "Offline"
 #~ msgstr "离线"
-
 #~ msgid "Away"
 #~ msgstr "离开"
-
 #~ msgid "Busy"
 #~ msgstr "忙碌"
-
 #~ msgid "Close"
 #~ msgstr "关闭"
-
 #~ msgid "Unknown account"
 #~ msgstr "未知账户"
-
 #~ msgid "Edit"
 #~ msgstr "编辑"
-
 #~ msgid "Enter your %s status here..."
 #~ msgstr "在这里输入您的 %s 状态 ..."
-
 #~ msgid "Enter your current status here..."
 #~ msgstr "在这里输入您的当前状态 ..."
-
 #~ msgid "Post"
 #~ msgstr "发送"
-
 #~ msgid "Your current status"
 #~ msgstr "您的当前状态"
-
 #~ msgid "Your current status - you are offline"
 #~ msgstr "当前状态 - 离线"
-
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "抱歉，我不能找到任何联系人。您已经建立好一个聊天账户了吗？"
-
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状态信息。"
-
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "要更新您的网络状态，您必须设定一个网络服务账户，提供此账户的一方要能支持状"
+#~ "态信息。"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "要更新您的即时通讯状态，需要先建立一个即时通讯账户。"
-
 #~ msgid "Available"
 #~ msgstr "在线"
+
