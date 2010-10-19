@@ -478,7 +478,7 @@ ntf_tray_notification_closed_cb (NtfNotification *ntf, NtfTray *tray)
     {
       /* Just Update control text */
       gchar *msg;
-      msg = g_strdup_printf ("%i pending messages", priv->n_notifiers);
+      msg = g_strdup_printf (_("%i pending messages"), priv->n_notifiers);
       mx_label_set_text (MX_LABEL (priv->control_text), msg);
       g_free (msg);
     }
@@ -532,7 +532,7 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
     {
       /* slide the control into view */
       mx_label_set_text (MX_LABEL(priv->control_text),
-                           "1 pending message");
+                         _("1 pending message"));
 
       clutter_actor_show (priv->control);
 
@@ -554,7 +554,7 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
       /* simply update the control */
       gchar *msg;
 
-      msg = g_strdup_printf ("%i pending messages", priv->n_notifiers-1);
+      msg = g_strdup_printf (_("%i pending messages"), priv->n_notifiers-1);
 
       mx_label_set_text (MX_LABEL (priv->control_text), msg);
 
