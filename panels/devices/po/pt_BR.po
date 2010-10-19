@@ -1,13 +1,12 @@
 # GLSPTB_Gabor <bechtg@gmail.com>, 2010.
 # Djavan Fagundes <djavan@syst.com.br>, 2010.
-
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-23 09:22+0000\n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Djavan Fagundes <djavan@syst.com.br>\n"
+"Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,14 +16,22 @@ msgstr ""
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Painel de dispositivos"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "dispositivos"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Tempo limite de suspensão"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Valor de -1 significa nunca suspenso, outros valores são segundos em estado contínuo ocioso antes de suspensão."
 
 #. translators:
 #. * The device has been disabled
@@ -54,35 +61,35 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons de sistema"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "Ícone de energia do MeeGo"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "Carga de bateria baixa"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:78
 msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "Notamos que sua bateria está com carga baixa. Se possível ligue à tomada para recarregar."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "Está quase esgotada"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:82
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "Notamos que sua bateria está com carga muito baixa. Seria bom salvar todo o seu trabalho e ligar à tomada o mais rápido possível."
 
-#: ../power-icon/src/mpd-power-icon.c:85
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "Perigo!"
 
-#: ../power-icon/src/mpd-power-icon.c:86
+#: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sinto muito, seu computador está com bateria quase esgotada. Teremos que desligar agora. Por favor, salve o seu trabalho e até logo."
 
-#: ../power-icon/src/mpd-power-icon.c:439
+#: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "bateria"
 
@@ -105,7 +112,7 @@ msgstr "Deseja desligar agora?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Se você não decidir, vou desligar dentro de 30 segundos."
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "Painel de dispositivos MeeGo"
 
