@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:31+0000\n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: GLSPTB_Gabor <bechtg@gmail.com>\n"
 "Language-Team: \n"
@@ -14,34 +14,42 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#. Panel label
-#: ../src/meego-netbook-launcher.c:1330
-msgid "Applications"
-msgstr "Aplicativos"
-
-#: ../src/meego-netbook-launcher.c:1344
-msgid "Your applications"
-msgstr "Seus aplicativos"
-
-#: ../src/meego-netbook-launcher.c:1370
-msgid "Search for applications"
-msgstr "Pesquisar por aplicativos"
-
-#: ../src/meego-netbook-launcher.c:1373
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Pesquisar"
 
-#. Fav apps
-#: ../src/meego-netbook-launcher.c:1378
+#. Panel label
+#: ../src/meego-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Aplicativos"
+
+#.
+#. * Fav apps pane
+#.
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Aplicativos favoritos"
 
-#: ../src/meego-panel-applications.c:197
+#.
+#. * Applications
+#.
+#: ../src/meego-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Seus aplicativos"
+
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicativos"
 
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "Nunca iniciado"
+
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Painel de aplicativos"
+
+#~ msgid "Search for applications"
+#~ msgstr "Pesquisar por aplicativos"
 
