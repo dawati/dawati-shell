@@ -32,7 +32,7 @@ G_DEFINE_TYPE (MpsFeedSwitcher, mps_feed_switcher, MX_TYPE_TABLE)
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MPS_TYPE_FEED_SWITCHER, MpsFeedSwitcherPrivate))
 
-#define FIRST_RUN_MESSAGE _("When you have a web account configuired, you will be able to view your feeds and manage your status here.")
+#define FIRST_RUN_MESSAGE _("When you have a web account configured, you will be able to view your feeds and manage your status here.")
 #define FIRST_RUN_IMAGE THEMEDIR "/people.png"
 
 
