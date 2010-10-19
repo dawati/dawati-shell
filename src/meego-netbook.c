@@ -2805,8 +2805,9 @@ meego_netbook_get_plugin_singleton (void)
 }
 
 /*
- * Returns TRUE if a modal window is present on given workspace; if workspace
- * is < 0, returns TRUE if any modal windows are present on any workspace.
+ * Returns TRUE if a top-level modal window is present on given workspace; if
+ * workspace is < 0, returns TRUE if any modal windows are present on any
+ * workspace.
  */
 gboolean
 meego_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
@@ -2823,7 +2824,8 @@ meego_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
        * Working out the workspace index in Mutter requires examining a list,
        * so do the modality test first.
        */
-      if (meta_window_is_modal (w))
+      if (meta_window_is_modal (w) &&
+          meta_window_get_transient_for_as_xid (w) == None)
         {
           if (workspace < 0)
             {
