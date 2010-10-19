@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-19 09:25+0000\n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
+"Last-Translator: mekaminski <maria.kamminski@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,9 +19,17 @@ msgid "Devices panel"
 msgstr "Panel urządzeń"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "urządzenia"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Limit czasu uśpienia"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Wartość -1 oznacza nigdy nie śpi, inne wartości są sekundami ciągłego stanu bezczynności przed do snem."
 
 #. translators:
 #. * The device has been disabled
@@ -57,31 +65,31 @@ msgstr "Dźwięki systemowe"
 msgid "MeeGo Power Icon"
 msgstr "Ikona zasilania systemu MeeGo"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "Akumulator wyczerpuje się"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:78
 msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "Zauważyliśmy, że akumulator wyczerpuje się. Jeśli to możliwe, podłącz zasilanie i go naładuj."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "Akumulator prawie wyczerpany"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:82
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "Akumulator jest prawie wyczerpany. Dobrym pomysłem będzie zapisanie pracy i jak najszybsze podłączenie zasilania"
 
-#: ../power-icon/src/mpd-power-icon.c:85
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "Niebezpieczeństwo!"
 
-#: ../power-icon/src/mpd-power-icon.c:86
+#: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Przepraszamy, akumulator w komputerze za chwilę się wyczerpie. Musimy teraz wyłączyć komputer. Zapisz pracę. Mamy nadzieję, że wkrótce się zobaczymy."
 
-#: ../power-icon/src/mpd-power-icon.c:439
+#: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "akumulator"
 
@@ -105,7 +113,7 @@ msgstr "Czy chcesz teraz wyłączyć komputer?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Jeśli nie podejmiesz decyzji, komputer zostanie wyłączony za 30 sekund."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "Panel urządzeń MeeGo"
 
