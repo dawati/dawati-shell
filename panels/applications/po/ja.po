@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:33+0000\n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+"Last-Translator: Etsuko <edc914@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +18,7 @@ msgid "Search"
 msgstr "検索"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:966
+#: ../src/meego-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "アプリケーション"
 
@@ -26,21 +26,25 @@ msgstr "アプリケーション"
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:982
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "お気に入り"
 
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1009
+#: ../src/meego-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "使用アプリケーション"
 
-#: ../src/meego-panel-applications.c:223
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "アプリケーション"
+
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "起動したことがない"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
