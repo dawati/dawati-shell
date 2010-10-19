@@ -331,6 +331,7 @@ ntf_notification_source_closed_cb (NtfSource *src, NtfNotification *ntf)
   NtfNotificationPrivate *priv = ntf->priv;
 
   priv->source = NULL;
+  priv->source_closed_id = 0;
 
   if (priv->closed)
     return;
@@ -362,6 +363,8 @@ ntf_notification_set_property (GObject      *object,
                               G_CALLBACK (ntf_notification_source_closed_cb),
                               self);
         }
+      else
+        priv->source_closed_id = 0;
       break;
     case PROP_ID:
       priv->id = g_value_get_int (value);
@@ -403,9 +406,14 @@ ntf_notification_dispose (GObject *object)
 
   if (priv->source_closed_id)
     {
-      g_assert (priv->source);
-      g_signal_handler_disconnect (priv->source, priv->source_closed_id);
-      priv->source = NULL;
+      if (priv->source)
+        {
+          g_signal_handler_disconnect (priv->source, priv->source_closed_id);
+          priv->source = NULL;
+        }
+      else
+        g_warning ("Stale source 'closed' callback id");
+
       priv->source_closed_id = 0;
     }
 
