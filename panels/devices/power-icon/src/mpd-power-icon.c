@@ -91,6 +91,26 @@ static const struct
   { NULL, NULL, NULL }
 };
 
+static MpdDisplayDeviceMode
+get_display_device_mode (MpdPowerIcon *self)
+{
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
+  MpdBatteryDeviceState battery_state;
+  MpdDisplayDeviceMode  mode;
+
+  battery_state = mpd_battery_device_get_state (priv->battery);
+  if (MPD_BATTERY_DEVICE_STATE_CHARGING == battery_state ||
+      MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED == battery_state)
+  {
+    mode = MPD_DISPLAY_DEVICE_MODE_AC;
+  } else {
+    mode = MPD_DISPLAY_DEVICE_MODE_BATTERY;
+  }
+
+  return mode;
+}
+
+
 static void
 shutdown (MpdPowerIcon *self)
 {
@@ -273,10 +293,39 @@ update (MpdPowerIcon *self,
 }
 
 static void
-_device_notify_cb (MpdBatteryDevice *battery,
-                   GParamSpec       *pspec,
-                   MpdPowerIcon     *self)
+_battery_percentage_notify_cb (MpdBatteryDevice *battery,
+                               GParamSpec       *pspec,
+                               MpdPowerIcon     *self)
 {
+  update (self, -1);
+}
+
+static void
+_battery_state_notify_cb (MpdBatteryDevice *battery,
+                          GParamSpec       *pspec,
+                          MpdPowerIcon     *self)
+{
+  MpdPowerIconPrivate *priv = GET_PRIVATE (self);
+  MpdConf               *conf;
+  MpdBatteryDeviceState  battery_state;
+  float                  brightness;
+
+  /* Plugged state changed, update brightness to stored value for new state. */
+  conf = mpd_conf_new ();
+  battery_state = mpd_battery_device_get_state (priv->battery);
+  if (MPD_BATTERY_DEVICE_STATE_CHARGING == battery_state ||
+      MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED == battery_state)
+  {
+    brightness = mpd_conf_get_brightness_value (conf);
+  } else {
+    brightness = mpd_conf_get_brightness_value_battery (conf);
+  }
+  g_object_unref (conf);
+
+  mpd_display_device_set_brightness (priv->display,
+                                     brightness,
+                                     get_display_device_mode (self));
+
   update (self, -1);
 }
 
@@ -373,7 +422,8 @@ _brightness_up_key_activated_cb (MxAction     *action,
 
   g_debug ("%s()", __FUNCTION__);
 
-  mpd_display_device_increase_brightness (priv->display);
+  mpd_display_device_increase_brightness (priv->display,
+                                          get_display_device_mode (self));
 }
 
 static void
@@ -384,7 +434,8 @@ _brightness_down_key_activated_cb (MxAction     *action,
 
   g_debug ("%s()", __FUNCTION__);
 
-  mpd_display_device_decrease_brightness (priv->display);
+  mpd_display_device_decrease_brightness (priv->display,
+                                          get_display_device_mode (self));
 }
 
 static void
@@ -440,9 +491,9 @@ mpd_power_icon_init (MpdPowerIcon *self)
   /* Battery */
   priv->battery = mpd_battery_device_new ();
   g_signal_connect (priv->battery, "notify::percentage",
-                    G_CALLBACK (_device_notify_cb), self);
+                    G_CALLBACK (_battery_percentage_notify_cb), self);
   g_signal_connect (priv->battery, "notify::state",
-                    G_CALLBACK (_device_notify_cb), self);
+                    G_CALLBACK (_battery_state_notify_cb), self);
 
   update (self, -1);
 
@@ -477,6 +528,9 @@ mpd_power_icon_init (MpdPowerIcon *self)
   priv->display = mpd_display_device_new ();
   if (mpd_display_device_is_enabled (priv->display))
   {
+    mpd_display_device_restore_brightness (priv->display,
+                                           get_display_device_mode (self));
+
     /* Brightness keys. */
     key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_MonBrightnessUp);
     if (key_code)

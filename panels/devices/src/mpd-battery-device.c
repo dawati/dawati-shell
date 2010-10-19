@@ -121,15 +121,25 @@ _constructor (GType                  type,
               unsigned int           n_properties,
               GObjectConstructParam *properties)
 {
-  MpdBatteryDevice *self = (MpdBatteryDevice *)
-                              G_OBJECT_CLASS (mpd_battery_device_parent_class)
-                                ->constructor (type, n_properties, properties);
-  MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
+  static MpdBatteryDevice *self = NULL;
+  MpdBatteryDevicePrivate *priv = NULL;
   GPtrArray     *devices;
   GError        *error = NULL;
   unsigned int   i;
 
+  /* This is a singleton */
+
+  if (self)
+  {
+    return g_object_ref (self);
+  }
+
+  self = (MpdBatteryDevice *)
+                  G_OBJECT_CLASS (mpd_battery_device_parent_class)
+                    ->constructor (type, n_properties, properties);
+  priv = GET_PRIVATE (self);
   g_return_val_if_fail (priv->client, NULL);
+  g_object_add_weak_pointer ((GObject *) self, (gpointer) &self);
 
   /* Look up battery device. */
 

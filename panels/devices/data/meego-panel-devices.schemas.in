@@ -22,6 +22,16 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/desktop/meego/panel-devices/brightness_value_battery</key>
+      <applyto>/desktop/meego/panel-devices/brightness_value_battery</applyto>
+      <owner>meego-panel-devices</owner>
+      <type>float</type>
+      <default>0.75</default>
+      <locale name="C">
+        <short/>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/desktop/meego/panel-devices/buttons/lid</key>
       <applyto>/desktop/meego/panel-devices/buttons/lid</applyto>
       <owner>meego-panel-devices</owner>

@@ -47,7 +47,7 @@ _brightness_down_cb (MpdDisplayDevice *display)
   brightness = mpd_display_device_get_brightness (display);
   g_debug ("%s() %.3f", __FUNCTION__, brightness);
 
-  mpd_display_device_decrease_brightness (display);
+  mpd_display_device_decrease_brightness (display, MPD_DISPLAY_DEVICE_MODE_AC);
 
   return false;
 }
@@ -60,7 +60,7 @@ _brightness_up_cb (MpdDisplayDevice *display)
   brightness = mpd_display_device_get_brightness (display);
   g_debug ("%s() %.3f", __FUNCTION__, brightness);
 
-  mpd_display_device_increase_brightness (display);
+  mpd_display_device_increase_brightness (display, MPD_DISPLAY_DEVICE_MODE_AC);
 
   return false;
 }

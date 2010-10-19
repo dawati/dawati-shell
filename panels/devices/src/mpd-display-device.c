@@ -99,10 +99,6 @@ _set_property (GObject      *object,
 {
   switch (property_id)
   {
-  case PROP_BRIGHTNESS:
-    mpd_display_device_set_brightness (MPD_DISPLAY_DEVICE (object),
-                                       g_value_get_float (value));
-    break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -144,13 +140,15 @@ mpd_display_device_class_init (MpdDisplayDeviceClass *klass)
                                                          false,
                                                          param_flags));
 
+  /* Read-only because we can not transfer the battery mode through
+   * the property system. Use helper methods to set this. */
   g_object_class_install_property (object_class,
                                    PROP_BRIGHTNESS,
                                    g_param_spec_float ("brightness",
                                                        "Brightness",
                                                        "Display brightess 0 .. 1",
                                                        -1, 1, 1,
-                                                       param_flags | G_PARAM_WRITABLE));
+                                                       param_flags));
 }
 
 static void
@@ -163,19 +161,10 @@ mpd_display_device_init (MpdDisplayDevice *self)
                     G_CALLBACK (_conf_brightness_enabled_notify_cb), self);
   g_signal_connect (priv->conf, "notify::brightness-value",
                     G_CALLBACK (_conf_brightness_value_notify_cb), self);
+  g_signal_connect (priv->conf, "notify::brightness-value-battery",
+                    G_CALLBACK (_conf_brightness_value_notify_cb), self);
 
   priv->brightness = gpm_brightness_xrandr_new ();
-
-  if (mpd_display_device_is_enabled (self))
-  {
-    /* Reset stored brightness. */
-    gboolean hw_changed;
-    float brightness = mpd_conf_get_brightness_value (priv->conf);
-    gpm_brightness_xrandr_set (priv->brightness,
-                               brightness * 100,
-                               &hw_changed);
-  }
-
   g_signal_connect (priv->brightness, "brightness-changed",
                     G_CALLBACK (_brightness_changed_cb), self);
 }
@@ -214,8 +203,9 @@ mpd_display_device_get_brightness (MpdDisplayDevice  *self)
 }
 
 static void
-update_stored_brightness (MpdDisplayDevice  *self,
-                          float              brightness)
+update_stored_brightness (MpdDisplayDevice      *self,
+                          float                  brightness,
+                          MpdDisplayDeviceMode   mode)
 {
   MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
 
@@ -223,7 +213,12 @@ update_stored_brightness (MpdDisplayDevice  *self,
                                    _conf_brightness_value_notify_cb,
                                    self);
 
-  mpd_conf_set_brightness_value (priv->conf, brightness);
+  if (MPD_DISPLAY_DEVICE_MODE_AC == mode)
+  {
+    mpd_conf_set_brightness_value (priv->conf, brightness);
+  } else {
+    mpd_conf_set_brightness_value_battery (priv->conf, brightness);
+  }
 
   g_signal_handlers_unblock_by_func (priv->conf,
                                      _conf_brightness_value_notify_cb,
@@ -231,8 +226,9 @@ update_stored_brightness (MpdDisplayDevice  *self,
 }
 
 void
-mpd_display_device_set_brightness (MpdDisplayDevice  *self,
-                                   float              brightness)
+mpd_display_device_set_brightness (MpdDisplayDevice     *self,
+                                   float                 brightness,
+                                   MpdDisplayDeviceMode  mode)
 {
   MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
   gboolean hw_changed;
@@ -241,31 +237,70 @@ mpd_display_device_set_brightness (MpdDisplayDevice  *self,
 
   brightness = CLAMP (brightness, 0.0, 1.0);
 
+  g_signal_handlers_block_by_func (priv->brightness,
+                                   _brightness_changed_cb,
+                                   self);
+
   if (gpm_brightness_xrandr_set (priv->brightness, brightness * 100, &hw_changed))
   {
-    update_stored_brightness (self, brightness);
+    update_stored_brightness (self, brightness, mode);
   } else {
     g_warning ("%s : Setting brightness failed", G_STRLOC);
   }
+
+  g_signal_handlers_unblock_by_func (priv->brightness,
+                                     _brightness_changed_cb,
+                                     self);
 }
 
 void
-mpd_display_device_increase_brightness (MpdDisplayDevice *self)
+mpd_display_device_restore_brightness (MpdDisplayDevice     *self,
+                                       MpdDisplayDeviceMode  mode)
 {
   MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
-  gboolean hw_changed;
+  float     brightness;
+  gboolean  hw_changed;
+
+  if (MPD_DISPLAY_DEVICE_MODE_AC == mode)
+  {
+    brightness = mpd_conf_get_brightness_value (priv->conf);
+  } else {
+    brightness = mpd_conf_get_brightness_value_battery (priv->conf);
+  }
+
+  g_signal_handlers_block_by_func (priv->brightness,
+                                   _brightness_changed_cb,
+                                   self);
+
+  if (!gpm_brightness_xrandr_set (priv->brightness, brightness * 100, &hw_changed))
+  {
+    g_warning ("%s : Setting brightness failed", G_STRLOC);
+  }
+
+  g_signal_handlers_unblock_by_func (priv->brightness,
+                                     _brightness_changed_cb,
+                                     self);
+}
+
+void
+mpd_display_device_increase_brightness (MpdDisplayDevice      *self,
+                                        MpdDisplayDeviceMode   mode)
+{
+  MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
+  gboolean  hw_changed;
 
   if (gpm_brightness_xrandr_up (priv->brightness, &hw_changed))
   {
     float brightness = mpd_display_device_get_brightness (self);
-    update_stored_brightness (self, brightness);
+    update_stored_brightness (self, brightness, mode);
   } else {
     g_warning ("%s : Increasing brightness failed", G_STRLOC);
   }
 }
 
 void
-mpd_display_device_decrease_brightness (MpdDisplayDevice *self)
+mpd_display_device_decrease_brightness (MpdDisplayDevice      *self,
+                                        MpdDisplayDeviceMode   mode)
 {
   MpdDisplayDevicePrivate *priv = GET_PRIVATE (self);
   gboolean hw_changed;
@@ -273,7 +308,7 @@ mpd_display_device_decrease_brightness (MpdDisplayDevice *self)
   if (gpm_brightness_xrandr_down (priv->brightness, &hw_changed))
   {
     float brightness = mpd_display_device_get_brightness (self);
-    update_stored_brightness (self, brightness);
+    update_stored_brightness (self, brightness, mode);
   } else {
     g_warning ("%s : Decreasing brightness failed", G_STRLOC);
   }

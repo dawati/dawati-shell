@@ -69,6 +69,13 @@ void
 mpd_conf_set_brightness_value (MpdConf *self,
                                float    value);
 
+float
+mpd_conf_get_brightness_value_battery (MpdConf *self);
+
+void
+mpd_conf_set_brightness_value_battery (MpdConf *self,
+                                       float    value);
+
 int
 mpd_conf_get_suspend_idle_time (MpdConf *self);
 

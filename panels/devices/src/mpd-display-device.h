@@ -56,6 +56,12 @@ typedef struct
 GType
 mpd_display_device_get_type (void);
 
+typedef enum
+{
+  MPD_DISPLAY_DEVICE_MODE_AC,
+  MPD_DISPLAY_DEVICE_MODE_BATTERY
+} MpdDisplayDeviceMode;
+
 MpdDisplayDevice *
 mpd_display_device_new (void);
 
@@ -70,14 +76,21 @@ float
 mpd_display_device_get_brightness (MpdDisplayDevice  *self);
 
 void
-mpd_display_device_set_brightness (MpdDisplayDevice  *self,
-                                   float              brightness);
+mpd_display_device_set_brightness (MpdDisplayDevice     *self,
+                                   float                 brightness,
+                                   MpdDisplayDeviceMode  mode);
 
 void
-mpd_display_device_increase_brightness (MpdDisplayDevice *self);
+mpd_display_device_restore_brightness (MpdDisplayDevice     *self,
+                                       MpdDisplayDeviceMode  mode);
 
 void
-mpd_display_device_decrease_brightness (MpdDisplayDevice *self);
+mpd_display_device_increase_brightness (MpdDisplayDevice      *self,
+                                        MpdDisplayDeviceMode   mode);
+
+void
+mpd_display_device_decrease_brightness (MpdDisplayDevice      *self,
+                                        MpdDisplayDeviceMode   mode);
 
 G_END_DECLS
 

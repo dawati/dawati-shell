@@ -37,6 +37,7 @@ enum
 
   PROP_BRIGHTNESS_ENABLED,
   PROP_BRIGHTNESS_VALUE,
+  PROP_BRIGHTNESS_VALUE_BATTERY,
   PROP_LID_ACTION,
   PROP_SUSPEND_IDLE_TIME
 };
@@ -48,10 +49,11 @@ typedef struct
 } MpdConfPrivate;
 
 #define MPD_CONF_DIR "/desktop/meego"
-#define MPD_CONF_BRIGHTNESS_ENABLED MPD_CONF_DIR"/panel-devices/brightness_enabled"
-#define MPD_CONF_BRIGHTNESS_VALUE   MPD_CONF_DIR"/panel-devices/brightness_value"
-#define MPD_CONF_LID_ACTION         MPD_CONF_DIR"/panel-devices/buttons/lid"
-#define MPD_CONF_SUSPEND_IDLE_TIME  MPD_CONF_DIR"/panel-devices/timeout/sleep_computer"
+#define MPD_CONF_BRIGHTNESS_ENABLED       MPD_CONF_DIR"/panel-devices/brightness_enabled"
+#define MPD_CONF_BRIGHTNESS_VALUE         MPD_CONF_DIR"/panel-devices/brightness_value"
+#define MPD_CONF_BRIGHTNESS_VALUE_BATTERY MPD_CONF_DIR"/panel-devices/brightness_value_battery"
+#define MPD_CONF_LID_ACTION               MPD_CONF_DIR"/panel-devices/buttons/lid"
+#define MPD_CONF_SUSPEND_IDLE_TIME        MPD_CONF_DIR"/panel-devices/timeout/sleep_computer"
 
 #define MPD_CONF_MIN_SUSPEND_DELAY  15
 
@@ -80,6 +82,11 @@ _gconf_mpd_notify_cb (GConfClient   *client,
   if (0 == g_strcmp0 (key, MPD_CONF_BRIGHTNESS_VALUE))
   {
     g_object_notify (G_OBJECT (self), "brightness-value");
+  }
+
+  if (0 == g_strcmp0 (key, MPD_CONF_BRIGHTNESS_VALUE_BATTERY))
+  {
+    g_object_notify (G_OBJECT (self), "brightness-value-battery");
   }
 
   if (0 == g_strcmp0 (key, MPD_CONF_LID_ACTION))
@@ -199,6 +206,14 @@ mpd_conf_class_init (MpdConfClass *klass)
                                    g_param_spec_float ("brightness-value",
                                                        "Brightness value",
                                                        "Display brightness value",
+                                                       0.0, 1.0, 1.0,
+                                                       param_flags | G_PARAM_WRITABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_BRIGHTNESS_VALUE_BATTERY,
+                                   g_param_spec_float ("brightness-value-battery",
+                                                       "Brightness value on battery",
+                                                       "Display brightness value on battery",
                                                        0.0, 1.0, 1.0,
                                                        param_flags | G_PARAM_WRITABLE));
 
@@ -325,6 +340,52 @@ mpd_conf_set_brightness_value (MpdConf *self,
       g_clear_error (&error);
     } else {
       g_object_notify (G_OBJECT (self), "brightness-value");
+    }
+  }
+}
+
+float
+mpd_conf_get_brightness_value_battery (MpdConf *self)
+{
+  MpdConfPrivate *priv = GET_PRIVATE (self);
+  GError  *error = NULL;
+  float    brightness;
+
+  g_return_val_if_fail (MPD_IS_CONF (self), -1);
+
+  brightness = gconf_client_get_float (priv->client,
+                                       MPD_CONF_BRIGHTNESS_VALUE_BATTERY,
+                                       &error);
+  if (error)
+  {
+    g_warning ("%s : %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+  }
+
+  return CLAMP (brightness, 0, 1);
+}
+
+void
+mpd_conf_set_brightness_value_battery (MpdConf *self,
+                                       float    brightness)
+{
+  MpdConfPrivate *priv = GET_PRIVATE (self);
+  GError  *error = NULL;
+  float    old_brightness;
+
+  old_brightness = mpd_conf_get_brightness_value_battery (self);
+  if (fabs (brightness - old_brightness) >= 0.01)
+  {
+    gconf_client_set_float (priv->client,
+                            MPD_CONF_BRIGHTNESS_VALUE_BATTERY,
+                            brightness,
+                            &error);
+    if (error)
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    } else {
+      g_object_notify (G_OBJECT (self), "brightness-value-battery");
     }
   }
 }
