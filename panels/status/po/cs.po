@@ -1,10 +1,9 @@
-#
 # Pavel, 2010, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-29 16:05+0000\n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
 "PO-Revision-Date: 2004-01-01 04:12+0100\n"
 "Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -16,21 +15,11 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../src/meego-panel-status.c:49
-msgid ""
-"Hello! This is the Status panel. When you have a web account configured "
-"(like Twitter), you will be able to view your feeds and update your status "
-"here."
-msgstr ""
-"Ahoj! Toto je stavový panel. Když máte na internetu nastaven nějaký účet "
-"(například Twitter), můžete se zde podívat na to, jak vypadá přísun z něj "
-"a obnovit stav."
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "Stav"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "Stav"
@@ -41,71 +30,65 @@ msgid "Status panel"
 msgstr "Panel Stav"
 
 #: ../src/mps-feed-pane.c:92
-msgid ""
-"Unable to update status. The service may be unavailable or your password "
-"could be wrong."
-msgstr ""
-"Stav nelze obnovit. Služba je možná nedostupná, nebo je vaše heslo "
-"nesprávné."
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Stav nelze obnovit. Služba je možná nedostupná, nebo je vaše heslo nesprávné."
 
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
 msgstr "Stav nelze obnovit: Nejste připojen."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "Nepodařilo se nám vypátrat vaši polohu"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "Vaše odhadovaná poloha: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
+msgstr "Myslíme si, že vaše poloha je: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Vaše poloha je oznámena jako: %s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "Vaše poloha je nyní sdílena jako: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
-msgstr "Vaše odhadovaná poloha: %f, %f"
+msgid "We think your locations is: %f %f"
+msgstr "Myslíme si, že vaše poloha je: %f, %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "Vaše poloha je oznámena jako: %f, %f"
+msgid "Your location is currently shared as: %f %f"
+msgstr "Vaše poloha je nyní sdílena jako: %f, %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "Vaše poloha se neoznamuje"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "Vaše poloha nyní sdílena není"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "Obnovení"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "Co se stalo?"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "Změnit"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Když máte na internetu nastaven nějaký účet, můžete se zde podívat na to, jak vypadá přísun z něj, a spravovat zde svůj stav."
+
+#: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "Přidat nový internetový účet"
 
-#: ../src/mps-feed-switcher.c:373
-msgid ""
-"You don't appear to have any web services configured or there is a problem "
-"with their configuration. Use the button above to open the My Web Accounts "
-"and set one up."
-msgstr ""
-"Buď není nastavena žádná internetová služba, anebo jsou potíže s jejím "
-"nastavením. Použijte tlačítko nahoře pro otevření Moje internetové účty "
-"a jeden účet nastavte."
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Toto je panel Stav"
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -135,11 +118,14 @@ msgstr "Nepoužít polohu"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s z %s"
+
+#~ msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+#~ msgstr "Buď není nastavena žádná internetová služba, anebo jsou potíže s jejím nastavením. Použijte tlačítko nahoře pro otevření Moje internetové účty a jeden účet nastavte."
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
@@ -177,21 +163,11 @@ msgstr "%s z %s"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Dein gegenwärtiger Status: offline"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr ""
-#~ "Wir können leider keine Leute finden. Hast du ein Messenger-Konto "
-#~ "eingerichtet?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Wir können leider keine Leute finden. Hast du ein Messenger-Konto eingerichtet?"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Um deinen Web-Status zu aktualisieren, musst du ein Webservice-Konto mit "
-#~ "einem Anbieter haben, der Statusmeldungen unterstützt"
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Um deinen Web-Status zu aktualisieren, musst du ein Webservice-Konto mit einem Anbieter haben, der Statusmeldungen unterstützt"
 
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Um deinen IM-Status zu aktualisieren, musst du ein Instant Messaging-"
-#~ "Konto einrichten."
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Um deinen IM-Status zu aktualisieren, musst du ein Instant Messaging-Konto einrichten."
