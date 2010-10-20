@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-12 09:35+0000\n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Last-Translator: Wen-Hsin Moh <wenhsinm@gmail.com>\n"
 "Language-Team: chinese-l10n <chinese-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,28 +19,32 @@ msgid "Search"
 msgstr "搜尋"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:987
+#: ../src/meego-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "應用程式"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:1003
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "喜愛的應用程式"
 
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1030
+#: ../src/meego-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "您的應用程式"
 
-#: ../src/meego-panel-applications.c:223
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "應用程式"
+
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "從未啟動 "
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
@@ -48,4 +52,3 @@ msgstr "應用程式面板"
 
 #~ msgid "Search for applications"
 #~ msgstr "搜尋應用程式"
-
