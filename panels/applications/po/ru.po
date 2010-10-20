@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:31+0000\n"
-"PO-Revision-Date: 2010-04-06 16:56+0200\n"
-"Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
+"PO-Revision-Date: 2010-10-19 19:52-0800\n"
+"Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,34 +18,42 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Language: Russian\n"
 
-#. Panel label
-#: ../src/meego-netbook-launcher.c:1330
-msgid "Applications"
-msgstr "Приложения"
-
-#: ../src/meego-netbook-launcher.c:1344
-msgid "Your applications"
-msgstr "Ваши приложения"
-
-#: ../src/meego-netbook-launcher.c:1370
-msgid "Search for applications"
-msgstr "Поиск приложений"
-
-#: ../src/meego-netbook-launcher.c:1373
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Поиск"
 
-#. Fav apps
-#: ../src/meego-netbook-launcher.c:1378
+#. Panel label
+#: ../src/meego-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Приложения"
+
+#.
+#. * Fav apps pane
+#.
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Избранные приложения"
 
-#: ../src/meego-panel-applications.c:197
+#.
+#. * Applications
+#.
+#: ../src/meego-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Ваши приложения"
+
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "приложения"
+
+# Could potentailly cause declension issues. Need to know the noun associated with this tring. What has never been launched? Program, function, component, etc.
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "Никогда не запускалось"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Панель приложений"
 
+#~ msgid "Search for applications"
+#~ msgstr "Поиск приложений"
