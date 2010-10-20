@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,15 +14,11 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Hei! Tämä on Tila-paneeli. Kun sinulla on web-tili asetettuna (kuten Twitter), pystyt täällä tarkastelemaan syötteitä ja päivittämään tilaasi."
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "Tila"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "tila"
@@ -40,54 +36,59 @@ msgstr "Tilaa ei voida päivittää. Palvelu ei ehkä ole käytettävissä tai s
 msgid "Unable to update status: You're not online."
 msgstr "Tilaa ei oida päivittää. Et ole verkossa."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "Sijaintia ei voida tunnistaa"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
 msgstr "Arvelemme, että sijaintisi on: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Sijaintisi jaetaan arvolla: %s (%f, %f) "
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "Tällä hetkellä sijaintisi jaetaan arvolla: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
+msgid "We think your locations is: %f %f"
 msgstr "Arvelemme, että sijaintisi on : %f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "Sijaintisi jaetaan arvolla: %f %f "
+msgid "Your location is currently shared as: %f %f"
+msgstr "Tällä hetkellä sijaintisi jaetaan arvolla: %f %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "Sijaintisi ei jaeta"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "Sijaintisi ei tällä hetkellä jaeta"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "Päivitä"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "Mitä tapahtuu?"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "Muuta"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Kun sinulla on web-tili asetettuna (kuten Twitter), pystyt täällä tarkastelemaan syötteitä ja päivittämään tilaasi."
+
+#: ../src/mps-feed-switcher.c:509
+#: ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "Lisää uusi web-tili"
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Sinulla ei näytä olevan mitään web-palveluja konfiguroituna tai niiden konfiguraatiossa on ongelma. Avaa yllä olevalla painikkeella Omat Web-tilit ja määritä niistä yksi."
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Tämä on Tilapaneeli."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -117,11 +118,20 @@ msgstr "Älä käytä paikkaa"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr " %s kohteesta %s"
+
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "Sinulla ei näytä olevan mitään web-palveluja konfiguroituna tai niiden "
+#~ "konfiguraatiossa on ongelma. Avaa yllä olevalla painikkeella Omat Web-"
+#~ "tilit ja määritä niistä yksi."
 
 #~ msgid "Offline"
 #~ msgstr "Poissa linjoilta"
@@ -159,11 +169,18 @@ msgstr " %s kohteesta %s"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Tämänhetkinen tilasi: olet poissa linjoilta"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "Jotta voisit päivittää tilasi verkossa, sinun pitää määrittää verkkopalvelutili palveluntarjoajan kanssa, joka tukee tilaviestejä."
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Jotta voisit päivittää tilasi verkossa, sinun pitää määrittää "
+#~ "verkkopalvelutili palveluntarjoajan kanssa, joka tukee tilaviestejä."
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Pikaviestintili pitää määrittää, jotta voit päivittää pikaviestintilaasi."
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Pikaviestintili pitää määrittää, jotta voit päivittää pikaviestintilaasi."
