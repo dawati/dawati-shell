@@ -1,1492 +1,187 @@
+#
+# Park Shinjo <peremen@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:59+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2010-10-19 16:53+0000\n"
+"PO-Revision-Date: 2010-10-20 08:15-0800\n"
+"Last-Translator: Sun Kim <sunx.kim@intel.com>\n"
+"Language-Team: Korean <peremen@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 1.0\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
-msgid "Devices panel"
-msgstr "장치 패널"
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone 패널"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
-msgid "devices"
-msgstr "장치"
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Myzone 배경과 내용 변경하기"
 
-#. translators:
-#. * The device has been disabled
-#: ../gvc/gvc-mixer-control.c:1003
-msgid "Disabled"
-msgstr "비활성"
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
 
-#. translators:
-#. * The number of sound outputs on a particular device
-#: ../gvc/gvc-mixer-control.c:1010
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Myzone에 나타나는 항목 바꾸기</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Myzone 배경 그림</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "달력과 작업:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "내 웹 계정 바꾸기"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "배경 그림 선택"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "최근 문서 지우기"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "전자 우편 알림:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "기본값으로 복원"
+
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
-msgid "%u Output"
-msgid_plural "%u Outputs"
-msgstr[0] "%u 출력"
-msgstr[1] "%u 출력"
+msgid "GConf error: %s"
+msgstr "GConf 오류: %s"
 
-#. translators:
-#. * The number of sound inputs on a particular device
-#: ../gvc/gvc-mixer-control.c:1020
-#, c-format
-msgid "%u Input"
-msgid_plural "%u Inputs"
-msgstr[0] "%u 입력"
-msgstr[1] "%u 입력"
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "이후 발생하는 오류는 터미널에만 표시됩니다."
 
-#: ../gvc/gvc-mixer-control.c:1316
-msgid "System Sounds"
-msgstr "시스템 음향"
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "가능한 한 많은 웹 서비스 내용 보이기"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo 전원 아이콘"
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "대부분의 웹 서비스 내용 보이기"
 
-#: ../power-icon/src/mpd-power-icon.c:77
-msgid "Running low on battery"
-msgstr "배터리 전원이 낮음"
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "반반씩 보이기"
 
-#: ../power-icon/src/mpd-power-icon.c:78
-msgid ""
-"I've noticed that your battery is running a bit low. If you can, it would be "
-"a good idea to plug in and top up."
-msgstr "배터리 전원이 낮음을 알려드립니다. 기회가 되면 충전하는 것이 좋습니다."
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "대부분의 최근 파일 보이기"
 
-#: ../power-icon/src/mpd-power-icon.c:81
-msgid "Getting close to empty"
-msgstr "거의 비어 있습니다."
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "가능한 한 많은 최근 파일 보이기"
 
-#: ../power-icon/src/mpd-power-icon.c:82
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can."
-msgstr ""
-"배터리 전원이 매우 낮습니다. 작업을 모두 저장한 다음 가능한 빨리 충전하십시"
-"오."
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "최근 문서를 비우시겠습니까? Myzone에 있는 로컬 내용을 삭제합니다"
 
-#: ../power-icon/src/mpd-power-icon.c:86
-msgid "Danger!"
-msgstr "위험!"
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "약속"
 
-#: ../power-icon/src/mpd-power-icon.c:87
-msgid ""
-"Sorry, your computer is about to run out of battery. I'm going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
-"죄송합니다. 컴퓨터의 배터리 전원이 거의 다 소모되었습니다. 컴퓨터가 지금 종료"
-"될 것입니다. 작업을 저장하시고 다시 시작하시길 바랍니다."
-
-#: ../power-icon/src/mpd-power-icon.c:435
-msgid "battery"
-msgstr "배터리"
-
-#: ../power-icon/src/mpd-shutdown-notification.c:98
-#, c-format
-msgid "If you don't decide, I'll turn off in %d second"
-msgid_plural "If you don't decide, I'll turn off in %d seconds"
-msgstr[0] "결정하지 않으시면, %d초 후에 종료됩니다."
-msgstr[1] "결정하지 않으시면, %d초 후에 종료됩니다."
-
-#: ../power-icon/src/mpd-shutdown-notification.c:130
-msgid "Turn off"
-msgstr "종료"
-
-#: ../power-icon/src/mpd-shutdown-notification.c:184
-msgid "Would you like to turn off now?"
-msgstr "지금 끄시겠습니까?"
-
-#: ../power-icon/src/mpd-shutdown-notification.c:185
-msgid "If you don't decide, I'll turn off in 30 seconds."
-msgstr "결정하지 않으시면, 30초 후에 종료됩니다."
-
-#: ../src/meego-panel-devices.c:121
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo 장치 패널"
-
-#: ../src/mpd-battery-device.c:371
-#, c-format
-msgid "Sorry, you don't appear to have a battery installed."
-msgstr "죄송합니다. 배터리가 설치된 것 같지 않습니다."
-
-#: ../src/mpd-battery-device.c:375
-#, c-format
-msgid "Your battery is charging. It is about %d%% full."
-msgstr "배터리를 충전 중입니다. %d%% 충전되었습니다."
-
-#: ../src/mpd-battery-device.c:380
-#, c-format
-msgid "Your battery is being used. It is about %d%% full."
-msgstr "배터리를 사용 중입니다. %d%% 충전되었습니다."
-
-#: ../src/mpd-battery-device.c:385
-#, c-format
-msgid "Your battery is fully charged and you're ready to go."
-msgstr "배터리가 완전히 충전되었고 이제 사용할 수 있습니다."
-
-#: ../src/mpd-battery-device.c:389
-#, c-format
-msgid "Sorry, it looks like your battery is broken."
-msgstr "죄송합니다. 배터리가 고장난 것 같습니다."
-
-#. First row.
-#: ../src/mpd-brightness-tile.c:141
-msgid "Netbook brightness"
-msgstr "넷북 밝기"
-
-#: ../src/mpd-computer-pane.c:119
-msgid "Your computer"
-msgstr "귀하의 컴퓨터"
-
-#: ../src/mpd-computer-pane.c:128
-msgid "All settings"
-msgstr "모든 설정값"
-
-#: ../src/mpd-default-device-tile.c:107
-msgid ""
-"Plug in a device and it will\n"
-"be automatically detected."
-msgstr ""
-"장치를 플러그인하면\n"
-"자동 탐지됩니다."
-
-#: ../src/mpd-devices-pane.c:104
-msgid "Other devices"
-msgstr "기타 장치"
-
-#: ../src/mpd-devices-tile.c:61
-msgid "Ejecting failed, looks like an application is using it"
-msgstr "꺼내는 동안 오류가 발생, 응용 프로그램이 사용하는것 같습니다."
-
-#: ../src/mpd-devices-tile.c:423
-msgid "It is safe to unplug this device now"
-msgstr "이제 장치를 언플러드해도 안전합니다."
-
-#: ../src/mpd-disk-tile.c:65
-#, c-format
-msgid ""
-"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
-"span>"
-msgstr ""
-"<span font-weight='bold'>사용 중:</span> <span color='%s'>%d%% of %s</span>"
-
-#: ../src/mpd-folder-tile.c:186
-msgid "Trash"
-msgstr "쓰레기"
-
-#: ../src/mpd-shell.c:126
-msgid "Devices"
-msgstr "장치"
-
-#: ../src/mpd-storage-device-tile.c:242
-#, c-format
-msgid "Could not run \"%s\""
-msgstr "%s을(를) 실행할 수 없습니다."
-
-#: ../src/mpd-storage-device-tile.c:244
-msgid "Import error"
-msgstr "들여오기 오류"
-
-#: ../src/mpd-storage-device-tile.c:355
-msgid "Import photos"
-msgstr "사진 가져오기"
-
-#: ../src/mpd-storage-device-tile.c:357
-msgid "Import media"
-msgstr "미디어 가져오기"
-
-#. Eject button
-#: ../src/mpd-storage-device-tile.c:615
-msgid "Eject"
-msgstr "꺼내기"
-
-#. Open button
-#: ../src/mpd-storage-device-tile.c:626
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
 msgid "Open"
 msgstr "열기"
 
-#: ../src/mpd-storage-device-tile.c:819
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "작업"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "일정 만들기"
+
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "추가"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "이 주의 달력 항목 없음"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "웹 페이지"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "새 작업 만들기"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "오늘 할 일 없음"
+
+#: ../penge/penge-task-tile.c:319
 #, c-format
-msgid ""
-"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr ""
-"<span font-weight='bold'>%s</span> 사용 <span color='%s'>%d%% of %s</span>"
+msgid "Due %x"
+msgstr "%x까지"
 
-#: ../src/mpd-storage-device-tile.c:827
-#, c-format
-msgid "<span font-weight='bold'>%s</span>"
-msgstr "<span font-weight='bold'>%s</span>"
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "웹 계정과 사용하는 일부 파일을 설정하면, 언제든지 쉽게 액세스할 수 있도록 Myzone에 나타납니다."
 
-#: ../src/mpd-volume-tile.c:113
-msgid "Turned up to 11"
-msgstr "11까지 올림"
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "소개 비디오 재생하기"
 
-#: ../src/mpd-volume-tile.c:115
-msgid "Very loud"
-msgstr "매우 크게"
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to MeeGo"
+msgstr "MeeGo에 오신 것을 환영합니다"
 
-#: ../src/mpd-volume-tile.c:117
-msgid "Loud"
-msgstr "크게"
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "읽지 않은 메시지 없음"
 
-#: ../src/mpd-volume-tile.c:119
-msgid "Fairly loud"
-msgstr "보통으로 크게"
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "읽지 않은 메시지"
 
-#: ../src/mpd-volume-tile.c:121
-msgid "Middle of the road"
-msgstr "중간"
-
-#: ../src/mpd-volume-tile.c:123
-msgid "Fairly quiet"
-msgstr "보통으로 작게"
-
-#: ../src/mpd-volume-tile.c:125
-msgid "Quiet"
-msgstr "작게"
-
-#: ../src/mpd-volume-tile.c:127
-msgid "Very quiet"
-msgstr "매우 작게"
-
-#: ../src/mpd-volume-tile.c:129
-msgid "Silent"
-msgstr "음소거"
-
-#: ../src/mpd-volume-tile.c:355
-msgid "Computer volume"
-msgstr "컴퓨터 볼륨"
-
-#: ../src/mpd-volume-tile.c:371
-msgid "Mute"
-msgstr "음소거"
-
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego 전원 아이콘"
-
-#~ msgid "Netbook volume"
-#~ msgstr "넷북 볼륨"
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "읽지 않은 메시지"
 
 #~ msgid ""
-#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
-#~ "span>"
-#~ msgstr ""
-#~ "<span font-weight='bold'>데이터 들여오기</span> <span color='%s'>%d%%</"
-#~ "span>"
-
-#~ msgid "Stop"
-#~ msgstr "정지"
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr "Myzone에서 최근 사용된 파일과 웹 피드의 콘텐츠가 표시됩니다."
 
 #~ msgid ""
-#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
 #~ msgstr ""
-#~ "%s이(가) 플러그인되었습니다. 장치 패널을 사용하여 통신할 수 있습니다."
+#~ "친구들과의 웹 사이트 활동이 여기에 나타날 것입니다. 지금 계정을 여십시오!"
 
-#~ msgid "USB plugged in"
-#~ msgstr "USB가 플러그인 되었습니다."
+#~ msgid "Myzone settings"
+#~ msgstr "Myzone 설정"
 
-#~ msgid "Show"
-#~ msgstr "표시하기"
-
-#~ msgid "CompactFlash"
-#~ msgstr "CompactFlash"
-
-#~ msgid "MemoryStick"
-#~ msgstr "MemoryStick"
-
-#~ msgid "SmartMedia"
-#~ msgstr "SmartMedia"
-
-#~ msgid "SecureDigital"
-#~ msgstr "SecureDigital"
-
-#~ msgid "SD High Capacity"
-#~ msgstr "SD 고용량"
-
-#~ msgid "Floppy"
-#~ msgstr "플로피"
-
-#~ msgid "Zip"
-#~ msgstr "Zip"
-
-#~ msgid "Jaz"
-#~ msgstr "Jaz"
-
-#~ msgid "CD"
-#~ msgstr "CD"
-
-#~ msgid "DVD"
-#~ msgstr "DVD"
-
-#~ msgid "Blu-Ray"
-#~ msgstr "Blu-Ray"
-
-#~ msgid "HDDVD"
-#~ msgstr "HDDVD"
-
-#~ msgid "%s Drive"
-#~ msgstr "%s 드라이브"
-
-#~ msgid "%s %s Drive"
-#~ msgstr "%s %s 드라이브"
-
-#~ msgid "%s Hard Disk"
-#~ msgstr "%s 하드 디스크"
-
-#~ msgid "Hard Disk"
-#~ msgstr "하드 디스크"
-
-#~ msgid "%s Solid-State Disk"
-#~ msgstr "%s 고체 상태 디스크"
-
-#~ msgid "Solid-State Disk"
-#~ msgstr "고체 상태 디스크"
-
-#~ msgid "%s Media"
-#~ msgstr "%s 미디어"
-
-#~ msgid "No Media Detected"
-#~ msgstr "미디어가 없습니다."
-
-#~ msgid "MBR Partition Table"
-#~ msgstr "MBR 파티션 표"
-
-#~ msgid "GUID Partition Table"
-#~ msgstr "GUID 파티션 표"
-
-#~ msgid "Apple Partition Table"
-#~ msgstr "Apple 파티션 표"
-
-#~ msgid "Partitioned"
-#~ msgstr "파티션됨"
-
-#~ msgid "Not Partitioned"
-#~ msgstr "파티션되지 않음"
-
-#~ msgid "SAS Expander"
-#~ msgstr "SAS 확장기"
-
-#~ msgid "PATA Host Adapter"
-#~ msgstr "PATA 호스트 어댑터"
-
-#~ msgid "SATA Host Adapter"
-#~ msgstr "SATA 호스트 어댑터"
-
-#~ msgid "ATA Host Adapter"
-#~ msgstr "ATA 호스트 어댑터"
-
-#~ msgid "SAS Host Adapter"
-#~ msgstr "SAS 호스트 어댑터"
-
-#~ msgid "SCSI Host Adapter"
-#~ msgstr "SCSI 호스트 어댑터"
-
-#~ msgid "Host Adapter"
-#~ msgstr "호스트 어댑터"
-
-#~ msgid "Volume Group"
-#~ msgstr "볼륨 그룹"
-
-#~ msgid "%s LVM2 Volume Group"
-#~ msgstr "%s LVM2 볼륨 그룹"
-
-#~ msgid "LVM2 Volume Group"
-#~ msgstr "LVM2 볼륨 그룹"
-
-#~ msgid "%s Free"
-#~ msgstr "%s 사용 가능"
-
-#~ msgid "Unallocated Space"
-#~ msgstr "할당되지 않은 공간"
-
-#~ msgid "LVM2 VG Unallocated Space"
-#~ msgstr "LVM2 VG 할당되지 않은 공간"
-
-#~ msgid "Logical Volume"
-#~ msgstr "논리적 볼륨"
-
-#~ msgid "LVM2 Logical Volume"
-#~ msgstr "LVM2 논리적 볼륨"
-
-#~ msgid "%s %s Array"
-#~ msgstr "%s %s 어레이"
-
-#~ msgid "%s Array"
-#~ msgstr "%s 어레이"
-
-#~ msgid "RAID Array %s (%s)"
-#~ msgstr "RAID 어레이 %s (%s)"
-
-#~ msgid "RAID device %s"
-#~ msgstr "RAID 장치 %s"
-
-#~ msgctxt "RAID Level fallback"
-#~ msgid "RAID"
-#~ msgstr "RAID"
-
-#~ msgid "RAID Array"
-#~ msgstr "RAID 어레이"
-
-#~ msgctxt "Linux MD slave state"
-#~ msgid "Not Attached"
-#~ msgstr "부착되지 않음"
-
-#~ msgctxt "Linux MD slave state"
-#~ msgid "Faulty"
-#~ msgstr "오류"
-
-#~ msgctxt "Linux MD slave state"
-#~ msgid "Fully Synchronized"
-#~ msgstr "완전 동기화됨"
-
-#~ msgctxt "Linux MD slave state"
-#~ msgid "Writemostly"
-#~ msgstr "Writemostly"
-
-#~ msgctxt "Linux MD slave state"
-#~ msgid "Blocked"
-#~ msgstr "차단됨"
-
-#~ msgctxt "Linux MD slave state"
-#~ msgid "Spare"
-#~ msgstr "여분"
-
-#~ msgid "Local Storage"
-#~ msgstr "로컬 스토리지"
-
-#~ msgid "Storage on %s"
-#~ msgstr "%s의 스토리지"
-
-#~ msgid "Multipath Devices"
-#~ msgstr "다중경로 장치"
-
-#~ msgid "Drives with multiple I/O paths"
-#~ msgstr "다중 I/O 경로가 있는 장치"
-
-#~ msgid "Multi-disk Devices"
-#~ msgstr "다중 디스크 장치"
-
-#~ msgid "RAID, LVM and other logical drives"
-#~ msgstr "RAID, LVM 및 기타 논리적 드라이브"
-
-#~ msgid "Peripheral Devices"
-#~ msgstr "주변 장치"
-
-#~ msgid "USB, Firewire and other peripherals"
-#~ msgstr "USB, 파이어와이어, 및 기타 주변 기기"
-
-#~ msgid "Error enumerating devices: %s"
-#~ msgstr "장치들을 열거하는 중 오류가 발생했습니다. %s"
-
-#~ msgid "Error enumerating adapters: %s"
-#~ msgstr "어댑터들을 열거하는 중 오류가 발생했습니다. %s"
-
-#~ msgid "Error enumerating expanders: %s"
-#~ msgstr "확장기들을 열거하는 중 오류가 발생했습니다. %s"
-
-#~ msgid "Error enumerating ports: %s"
-#~ msgstr "포트들을 열거하는 중 오류가 발생했습니다. %s"
-
-#~ msgid "Error listening to address `localhost:%d': %s: %s\n"
-#~ msgstr "다음 주소를 듣는 중 오류가 발생했습니다. `localhost:%d': %s: %s\n"
+#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgstr "<b>Meego 2.0 넷북에 오신것을 환영합니다.</b>   "
 
 #~ msgid ""
-#~ "Error creating a local TCP server, tried binding to ports 9000-10000 on "
-#~ "localhost"
+#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Meego Team."
 #~ msgstr ""
-#~ "로컬 TCP 서버를 만드는 중 오류가 발생했습니다. 로컬호스트의 포트 9000-"
-#~ "10000으로 바인드를 시도했습니다."
-
-#~ msgid "Error setting auth mechanisms on local DBusServer\n"
-#~ msgstr ""
-#~ "로컬 DBusServer에서 인증 메커니즘을 설정하는 중 오류가 발생했습니다.\n"
-
-#~ msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-#~ msgstr "명령행을 해석할 수 없습니다. `%s' (잘못된 주소일 수도 있음): %s"
-
-#~ msgid "Unable to spawn ssh program: %s"
-#~ msgstr "ssh 프로그램: %s을(를) 스폰하지 못했습니다."
-
-#~ msgid "Error reading stderr output: %s"
-#~ msgstr "stderr 출력: %s을(를) 읽지 못했습니다."
-
-#~ msgid "Error reading stderr output: No content"
-#~ msgstr "stderr 출력을 읽는 중 오류가 발생했습니다: 내용 없음"
-
-#~ msgid "Error logging in"
-#~ msgstr "로그인하는 중 오류가 발생했습니다."
-
-#~ msgid "Error sending `%s': %s"
-#~ msgstr "`%s': %s 송신 중 오류가 발생했습니다."
-
-#~ msgid ""
-#~ "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for "
-#~ "secret' but got `%s'"
-#~ msgstr ""
-#~ "예상하지 않은 stderr 출력입니다. `udisks-tcp-bridge: Waiting for "
-#~ "secret'을 예상했지만 `%s'을(를) 받았습니다."
-
-#~ msgid "Error passing authorization secret: %s"
-#~ msgstr "인증 비밀을 통과시키는 중 오류가 발생했습니다. %s"
-
-#~ msgid "Error reading stderr from: %s"
-#~ msgstr "%s에서 stderr을 읽는 중 오류가 발생했습니다."
-
-#~ msgid ""
-#~ "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to "
-#~ "connect to port %d' but got `%s'"
-#~ msgstr ""
-#~ "예상하지 않은 stderr 출력입니다. `udisks-tcp-bridge: Attempting to "
-#~ "connect to port %d'을(를) 예상했지만 `%s'을(를) 받았습니다."
-
-#~ msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
-#~ msgstr ""
-#~ "udisks-tcp-bridge 프로그램이 인증을 받은 것을 입증하지 못했습니다. %s"
-
-#~ msgid "The udisks-tcp-bridge program failed to prove it was authorized"
-#~ msgstr "udisks-tcp-bridge 프로그램이 승인받은 것을 입증하지 못했습니다."
-
-#~ msgid "%s (%s bytes)"
-#~ msgstr "%s (%s 바이트)"
-
-#~ msgid "FAT (12-bit version)"
-#~ msgstr "FAT (12 비트 버전)"
-
-#~ msgid "FAT"
-#~ msgstr "FAT"
-
-#~ msgid "FAT (16-bit version)"
-#~ msgstr "FAT (16 비트 버전)"
-
-#~ msgid "FAT (32-bit version)"
-#~ msgstr "FAT (32 비트 버전)"
-
-#~ msgid "NTFS (version %s)"
-#~ msgstr "NTFS (버전 %s)"
-
-#~ msgid "NTFS"
-#~ msgstr "NTFS"
-
-#~ msgid "HFS"
-#~ msgstr "HFS"
-
-#~ msgid "HFS+"
-#~ msgstr "HFS+"
-
-#~ msgid "Linux Unified Key Setup"
-#~ msgstr "Linux 통합 키 설정"
-
-#~ msgid "LUKS"
-#~ msgstr "LUKS"
-
-#~ msgid "Ext2 (version %s)"
-#~ msgstr "Ext2 (버전 %s)"
-
-#~ msgid "Ext2"
-#~ msgstr "Ext2"
-
-#~ msgid "ext2"
-#~ msgstr "ext2"
-
-#~ msgid "Ext3 (version %s)"
-#~ msgstr "Ext3 (버전 %s)"
-
-#~ msgid "Ext3"
-#~ msgstr "Ext3"
-
-#~ msgid "ext3"
-#~ msgstr "ext3"
-
-#~ msgid "Journal for Ext3 (version %s)"
-#~ msgstr "Ext3 (버전 %s)의 저널"
-
-#~ msgid "Journal for Ext3"
-#~ msgstr "Ext3의 저널"
-
-#~ msgid "jbd"
-#~ msgstr "jbd"
-
-#~ msgid "Ext4 (version %s)"
-#~ msgstr "Ext4 (버전 %s)"
-
-#~ msgid "Ext4"
-#~ msgstr "Ext4"
-
-#~ msgid "ext4"
-#~ msgstr "ext4"
-
-#~ msgid "XFS (version %s)"
-#~ msgstr "XFS (버전 %s)"
-
-#~ msgid "XFS"
-#~ msgstr "XFS"
-
-#~ msgid "xfs"
-#~ msgstr "xfs"
-
-#~ msgid "ReiserFS (version %s)"
-#~ msgstr "ReiserFS (버전 %s)"
-
-#~ msgid "ReiserFS"
-#~ msgstr "ReiserFS"
-
-#~ msgid "reiserfs"
-#~ msgstr "reiserfs"
-
-#~ msgid "ISO 9660"
-#~ msgstr "ISO 9660"
-
-#~ msgid "iso9660"
-#~ msgstr "iso9660"
-
-#~ msgid "Universal Disk Format"
-#~ msgstr "유니버설 디스크 형식"
-
-#~ msgid "udf"
-#~ msgstr "udf"
-
-#~ msgid "Swap Space"
-#~ msgstr "스왑 공간"
-
-#~ msgid "swap"
-#~ msgstr "스왑"
-
-#~ msgid "LVM2 Physical Volume (version %s)"
-#~ msgstr "LVM2 물리적 볼륨 (버전 %s)"
-
-#~ msgid "LVM2 Physical Volume"
-#~ msgstr "LVM2 물리적 볼륨"
-
-#~ msgid "lvm2_pv"
-#~ msgstr "lvm2_pv"
-
-#~ msgid "RAID Component (version %s)"
-#~ msgstr "RAID 구성요소 (버전 %s)"
-
-#~ msgid "RAID Component"
-#~ msgstr "RAID 구성요소"
-
-#~ msgid "raid"
-#~ msgstr "raid"
-
-#~ msgid "Minix"
-#~ msgstr "Minix"
-
-#~ msgid "minix"
-#~ msgstr "minix"
-
-#~ msgid "Creating File System"
-#~ msgstr "파일 시스템 작성"
-
-#~ msgid "Mounting File System"
-#~ msgstr "파일 시스템 탑재"
-
-#~ msgid "Unmounting File System"
-#~ msgstr "파일 시스템 해제"
-
-#~ msgid "Checking File System"
-#~ msgstr "파일 시스템 검사"
-
-#~ msgid "Creating LUKS Device"
-#~ msgstr "LUKS 장치 작성"
-
-#~ msgid "Unlocking LUKS Device"
-#~ msgstr "LUKS 장치 잠금 풀기"
-
-#~ msgid "Locking LUKS Device"
-#~ msgstr "LUKS 장치 잠금"
-
-#~ msgid "Creating Partition Table"
-#~ msgstr "파티션 표 작성"
-
-#~ msgid "Deleting Partition"
-#~ msgstr "파티션 삭제"
-
-#~ msgid "Creating Partition"
-#~ msgstr "파티션 만들기"
-
-#~ msgid "Modifying Partition"
-#~ msgstr "파티션 수정"
-
-#~ msgid "Setting Label for Device"
-#~ msgstr "장치 라벨 설정"
-
-#~ msgid "Changing Passphrase for Encrypted LUKS Device"
-#~ msgstr "암호화된 LUKS 장치의 패스프레이즈 변경"
-
-#~ msgid "Adding Component to RAID Array"
-#~ msgstr "RAID 어레이에 구성요소 추가"
-
-#~ msgid "Removing Component from RAID Array"
-#~ msgstr "RAID 어레이에서 구성요소 제거"
-
-#~ msgid "Stopping RAID Array"
-#~ msgstr "RAID 어레이 정지"
-
-#~ msgid "Starting RAID Array"
-#~ msgstr "RAID 어레이 시작"
-
-#~ msgid "Checking RAID Array"
-#~ msgstr "RAID 어레이 검사"
-
-#~ msgid "Repairing RAID Array"
-#~ msgstr "RAID 어레이 수리"
-
-#~ msgid "Running Short SMART Self-Test"
-#~ msgstr "짧은 SMART 자체 검사 실행 중"
-
-#~ msgid "Running Extended SMART Self-Test"
-#~ msgstr "긴 SMART 자체 검사 실행 중"
-
-#~ msgid "Running Conveyance SMART Self-Test"
-#~ msgstr "운반 SMART 자체 검사 실행 중"
-
-#~ msgid "Ejecting Media"
-#~ msgstr "미디어 꺼내기"
-
-#~ msgid "Detaching Device"
-#~ msgstr "장치 떼어내기"
-
-#~ msgid "Forcibly Unmounting Filesystem"
-#~ msgstr "파일 시스템 강제 해제"
-
-#~ msgid "Forcibly Locking LUKS device"
-#~ msgstr "LUKS 장치 강제 잠금"
-
-#~ msgid "Linux Basic Data Partition"
-#~ msgstr "Linux 기본 데이터 파티션"
-
-#~ msgid "Linux RAID Partition"
-#~ msgstr "Linux RAID 파티션"
-
-#~ msgid "Linux Swap Partition"
-#~ msgstr "Linux 스왑 파티션"
-
-#~ msgid "Linux LVM Partition"
-#~ msgstr "Linux LVM 파티션"
-
-#~ msgid "Linux Reserved Partition"
-#~ msgstr "Linux 예약 파티션"
-
-#~ msgid "MBR Partition Scheme"
-#~ msgstr "MBR 파티션 구성"
-
-#~ msgid "EFI System Partition"
-#~ msgstr "EFI 시스템 파티션"
-
-#~ msgid "BIOS Boot Partition"
-#~ msgstr "BIOS 부트 파티션"
-
-#~ msgid "Microsoft Reserved Partition"
-#~ msgstr "Microsoft 예약 파티션"
-
-#~ msgid "Microsoft Basic Data Partition"
-#~ msgstr "Microsoft 기본 데이터 파티션"
-
-#~ msgid "Microsoft LDM Metadata Partition"
-#~ msgstr "Microsoft LDM 메타데이터 파티션"
-
-#~ msgid "Microsoft LDM Data Partition"
-#~ msgstr "Microsoft LDM 데이터 파티션"
-
-#~ msgid "Microsoft Windows Recovery Environment"
-#~ msgstr "Microsoft Windows 복구 환경"
-
-#~ msgid "HP-UX Data Partition"
-#~ msgstr "HP-UX 데이터 파티션"
-
-#~ msgid "HP-UX Service Partition"
-#~ msgstr "HP-UX 서비스 파티션"
-
-#~ msgid "FreeBSD Boot Partition"
-#~ msgstr "FreeBSD 부트 파티션"
-
-#~ msgid "FreeBSD Data Partition"
-#~ msgstr "FreeBSD 데이터 파티션"
-
-#~ msgid "FreeBSD Swap Partition"
-#~ msgstr "FreeBSD 스왑 파티션"
-
-#~ msgid "FreeBSD UFS Partition"
-#~ msgstr "FreeBSD UFS 파티션"
-
-#~ msgid "FreeBSD Vinum Partition"
-#~ msgstr "FreeBSD 비눔 파티션"
-
-#~ msgid "FreeBSD ZFS Partition"
-#~ msgstr "FreeBSD ZFS 파티션"
-
-#~ msgid "Solaris Boot Partition"
-#~ msgstr "Solaris 부트 파티션"
-
-#~ msgid "Solaris Root Partition"
-#~ msgstr "Solaris 루트 파티션"
-
-#~ msgid "Solaris Swap Partition"
-#~ msgstr "Solaris 스왑 파티션"
-
-#~ msgid "Solaris Backup Partition"
-#~ msgstr "Solaris 백업 파티션"
-
-#~ msgid "Solaris /usr Partition"
-#~ msgstr "Solaris /usr 파티션"
-
-#~ msgid "Solaris /var Partition"
-#~ msgstr "Solaris /var 파티션"
-
-#~ msgid "Solaris /home Partition"
-#~ msgstr "Solaris /home 파티션"
-
-#~ msgid "Solaris Alternate Sector Partition"
-#~ msgstr "Solaris 대체 섹터 파티션"
-
-#~ msgid "Solaris Reserved Partition"
-#~ msgstr "Solaris 예약 파티션"
-
-#~ msgid "Solaris Reserved Partition (2)"
-#~ msgstr "Solaris 예약 파티션 (2)"
-
-#~ msgid "Solaris Reserved Partition (3)"
-#~ msgstr "Solaris 예약 파티션 (3)"
-
-#~ msgid "Solaris Reserved Partition (4)"
-#~ msgstr "Solaris 예약 파티션 (4)"
-
-#~ msgid "Solaris Reserved Partition (5)"
-#~ msgstr "Solaris 예약 파티션 (5)"
-
-#~ msgid "Apple HFS/HFS+ Partition"
-#~ msgstr "Apple HFS/HFS+ 파티션"
-
-#~ msgid "Apple UFS Partition"
-#~ msgstr "Apple UFS 파티션"
-
-#~ msgid "Apple ZFS Partition"
-#~ msgstr "Apple ZFS 파티션"
-
-#~ msgid "Apple RAID Partition"
-#~ msgstr "Apple RAID 파티션"
-
-#~ msgid "Apple RAID Partition (Offline)"
-#~ msgstr "Apple RAID 파티션 (오프라인)"
-
-#~ msgid "Apple Boot Partition"
-#~ msgstr "Apple 부트 파티션"
-
-#~ msgid "Apple Label Partition"
-#~ msgstr "Apple 라벨 파티션"
-
-#~ msgid "Apple TV Recovery Partition"
-#~ msgstr "Apple TV 복구 파티션"
-
-#~ msgid "NetBSD Swap Partition"
-#~ msgstr "NetBSD 스왑 파티션"
-
-#~ msgid "NetBSD FFS Partition"
-#~ msgstr "NetBSD FFS 파티션"
-
-#~ msgid "NetBSD LFS Partition"
-#~ msgstr "NetBSD LFS 파티션"
-
-#~ msgid "NetBSD RAID Partition"
-#~ msgstr "NetBSD RAID 파티션"
-
-#~ msgid "NetBSD Concatenated  Partition"
-#~ msgstr "NetBSD 연결 파티션"
-
-#~ msgid "NetBSD Encrypted Partition"
-#~ msgstr "NetBSD 암호화 파티션"
-
-#~ msgid "Apple Partition Map"
-#~ msgstr "Apple 파티션 지도"
-
-#~ msgid "Unused Partition"
-#~ msgstr "사용되지 않은 파티션"
-
-#~ msgid "Empty Partition"
-#~ msgstr "빈 파티션"
-
-#~ msgid "Driver Partition"
-#~ msgstr "드라이버 파티션"
-
-#~ msgid "Driver 4.3 Partition"
-#~ msgstr "드라이버 4.3 파티션"
-
-#~ msgid "ProDOS file system"
-#~ msgstr "ProDOS 파일 시스템"
-
-#~ msgid "FAT 12"
-#~ msgstr "FAT 12"
-
-#~ msgid "FAT 16"
-#~ msgstr "FAT 16"
-
-#~ msgid "FAT 32"
-#~ msgstr "FAT 32"
-
-#~ msgid "FAT 16 (Windows)"
-#~ msgstr "FAT 16 (Windows)"
-
-#~ msgid "FAT 32 (Windows)"
-#~ msgstr "FAT 32 (Windows)"
-
-#~ msgid "Empty (0x00)"
-#~ msgstr "비어 있음 (0x00)"
-
-#~ msgid "FAT12 (0x01)"
-#~ msgstr "FAT12 (0x01)"
-
-#~ msgid "FAT16 <32M (0x04)"
-#~ msgstr "FAT16 <32M (0x04)"
-
-#~ msgid "Extended (0x05)"
-#~ msgstr "확장 (0x05)"
-
-#~ msgid "FAT16 (0x06)"
-#~ msgstr "FAT16 (0x06)"
-
-#~ msgid "HPFS/NTFS (0x07)"
-#~ msgstr "HPFS/NTFS (0x07)"
-
-#~ msgid "W95 FAT32 (0x0b)"
-#~ msgstr "W95 FAT32 (0x0b)"
-
-#~ msgid "W95 FAT32 (LBA) (0x0c)"
-#~ msgstr "W95 FAT32 (LBA) (0x0c)"
-
-#~ msgid "W95 FAT16 (LBA) (0x0e)"
-#~ msgstr "W95 FAT16 (LBA) (0x0e)"
-
-#~ msgid "W95 Ext d (LBA) (0x0f)"
-#~ msgstr "W95 Ext d (LBA) (0x0f)"
-
-#~ msgid "OPUS (0x10)"
-#~ msgstr "OPUS (0x10)"
-
-#~ msgid "Hidden FAT12 (0x11)"
-#~ msgstr "숨은 FAT12 (0x11)"
-
-#~ msgid "Compaq diagnostics (0x12)"
-#~ msgstr "Compaq 진단 (0x12)"
-
-#~ msgid "Hidden FAT16 <32M (0x14)"
-#~ msgstr "숨은 FAT16 <32M (0x14)"
-
-#~ msgid "Hidden FAT16 (0x16)"
-#~ msgstr "숨은 FAT16 (0x16)"
-
-#~ msgid "Hidden HPFS/NTFS (0x17)"
-#~ msgstr "숨은 HPFS/NTFS (0x17)"
-
-#~ msgid "Hidden W95 FAT32 (0x1b)"
-#~ msgstr "숨은 W95 FAT32 (0x1b)"
-
-#~ msgid "Hidden W95 FAT32 (LBA) (0x1c)"
-#~ msgstr "숨은 W95 FAT32 (LBA) (0x1c)"
-
-#~ msgid "Hidden W95 FAT16 (LBA) (0x1e)"
-#~ msgstr "숨은 W95 FAT16 (LBA) (0x1e)"
-
-#~ msgid "PartitionMagic (0x3c)"
-#~ msgstr "PartitionMagic (0x3c)"
-
-#~ msgid "Minix (0x81)"
-#~ msgstr "Minix (0x81)"
-
-#~ msgid "Linux swap (0x82)"
-#~ msgstr "Linux 스왑 (0x82)"
-
-#~ msgid "Linux (0x83)"
-#~ msgstr "Linux (0x83)"
-
-#~ msgid "Hibernation (0x84)"
-#~ msgstr "유휴 (0x84)"
-
-#~ msgid "Linux Extended (0x85)"
-#~ msgstr "Linux 확장 (0x85)"
-
-#~ msgid "Linux LVM (0x8e)"
-#~ msgstr "Linux LVM (0x8e)"
-
-#~ msgid "Hibernation (0xa0)"
-#~ msgstr "유휴 (0xa0)"
-
-#~ msgid "FreeBSD (0xa5)"
-#~ msgstr "FreeBSD (0xa5)"
-
-#~ msgid "OpenBSD (0xa6)"
-#~ msgstr "OpenBSD (0xa6)"
-
-#~ msgid "Mac OS X (0xa8)"
-#~ msgstr "Mac OS X (0xa8)"
-
-#~ msgid "Mac OS X (0xaf)"
-#~ msgstr "Mac OS X (0xaf)"
-
-#~ msgid "Solaris boot (0xbe)"
-#~ msgstr "Solaris 부트 (0xbe)"
-
-#~ msgid "Solaris (0xbf)"
-#~ msgstr "Solaris (0xbf)"
-
-#~ msgid "BeOS BFS (0xeb)"
-#~ msgstr "BeOS BFS (0xeb)"
-
-#~ msgid "SkyOS SkyFS (0xec)"
-#~ msgstr "SkyOS SkyFS (0xec)"
-
-#~ msgid "EFI GPT (0xee)"
-#~ msgstr "EFI GPT (0xee)"
-
-#~ msgid "EFI (FAT-12/16/32 (0xef)"
-#~ msgstr "EFI (FAT-12/16/32 (0xef)"
-
-#~ msgid "Linux RAID autodetect (0xfd)"
-#~ msgstr "Linux RAID 자동탐지 (0xfd)"
-
-#~ msgid "Unknown (%s)"
-#~ msgstr "알 수 없음 (%s)"
-
-#~ msgid ""
-#~ "A popular format compatible with almost any device or system, typically "
-#~ "used for file exchange."
-#~ msgstr ""
-#~ "거의 모든 장치 또는 시스템와 호환되는 인기 있는 포맷, 일반적으로 파일 교환"
-#~ "에 사용됩니다."
-
-#~ msgid ""
-#~ "This file system is compatible with Linux systems only and provides "
-#~ "classic UNIX file permissions support. This file system does not use a "
-#~ "journal."
-#~ msgstr ""
-#~ "이 파일 시스템은 Linux 시스템과만 호환되며 클래식한 UNIX 파일 승인 지원을 "
-#~ "제공합니다. 이 파일 시스템은 저널을 사용하지 않습니다."
-
-#~ msgid ""
-#~ "This file system is compatible with Linux systems only and provides "
-#~ "classic UNIX file permissions support."
-#~ msgstr ""
-#~ "이 파일 시스템은 Linux 시스템과만 호환되며 클래식한 UNIX 파일 승인 지원을 "
-#~ "제공합니다."
-
-#~ msgid "Swap area used by the operating system for virtual memory."
-#~ msgstr "운영 체제가 사용하는 가상 메모리를 위한 스왑 영역입니다."
-
-#~ msgid ""
-#~ "The native Windows file system. Not widely compatible with other "
-#~ "operating systems than Windows."
-#~ msgstr ""
-#~ "원래의 Windows 파일 시스템입니다. Windows가 아닌 다른 운영체제와는 크게 호"
-#~ "환되지 않습니다."
-
-#~ msgid ""
-#~ "Simple filesystem with low overhead and UNIX permissions support. Not "
-#~ "widely compatible with other operating systems than Linux and Minix."
-#~ msgstr ""
-#~ "경제적이고 UNIX 승인이 지원되는 간단한 파일 시스템입니다. Linux와 Minix가 "
-#~ "아닌 다른 운영 체제에서는 크게 호환되지 않습니다."
-
-#~ msgid "No file system will be created."
-#~ msgstr "아무 파일 시스템도 작성되지 않을 것입니다."
-
-#~ msgid "Create an Extended Partition for logical partitions."
-#~ msgstr "논리적 파티션을 위한 확장 파티션을 만듭니다."
-
-#~ msgid ""
-#~ "The Master Boot Record scheme is compatible with almost any device or "
-#~ "system but has a number of limitations with respect to disk size and "
-#~ "number of partitions."
-#~ msgstr ""
-#~ "마스터 부트 레코드 구성은 거의 모든 장치 또는 시스템과 호환되지만, 디스크 "
-#~ "크기 및 파티션 수에 있어서 그 수가 제한되어 있습니다."
-
-#~ msgid ""
-#~ "A legacy scheme that is incompatible with most systems except Apple "
-#~ "systems and most Linux systems. Not recommended for removable media."
-#~ msgstr ""
-#~ "Apple 시스템과 대부분의 Linux 시스템을 제외한 대부분의 시스템과는 호환되"
-#~ "지 않는 레거시 구성입니다. 제거 가능한 미디어에는 권장되지 않습니다."
-
-#~ msgid ""
-#~ "The GUID scheme is compatible with most modern systems but may be "
-#~ "incompatible with some devices and legacy systems."
-#~ msgstr ""
-#~ "GUID 구성은 대부분의 현대식 시스템과 호환되지만 일부 장치 및 레거시 시스템"
-#~ "과는 호환되지 않을 수 있습니다."
-
-#~ msgid ""
-#~ "Marks the entire disk as unused. Use this option only if you want to "
-#~ "avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
-#~ msgstr ""
-#~ "디스크 전체를 사용하지 않은 것으로 표시합니다. 디스크 전체 사용이나 플로"
-#~ "피 / 압축 디스크와 같이 디스크를 파티션하지 않을 경우에만 이 옵션을 사용합"
-#~ "니다."
-
-#~ msgid "LUKS Passphrase for UUID %s"
-#~ msgstr "UUID %s의 LUKS 패스프레이즈"
-
-#~ msgid "%.1f KB/s"
-#~ msgstr "%.1f KB/s"
-
-#~ msgid "%.1f MB/s"
-#~ msgstr "%.1f MB/s"
-
-#~ msgid "%.1f GB/s"
-#~ msgstr "%.1f GB/s"
-
-#~ msgid "SATA"
-#~ msgstr "SATA"
-
-#~ msgid "eSATA"
-#~ msgstr "eSATA"
-
-#~ msgid "PATA"
-#~ msgstr "PATA"
-
-#~ msgid "ATA"
-#~ msgstr "ATA"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "USB"
-#~ msgstr "USB"
-
-#~ msgid "Firewire"
-#~ msgstr "파이어와이어"
-
-#~ msgid "SDIO"
-#~ msgstr "SDIO"
-
-#~ msgid "Virtual"
-#~ msgstr "가상"
-
-#~ msgctxt "connection name"
-#~ msgid "Unknown"
-#~ msgstr "알 수 없음"
-
-#~ msgid "%s at %s"
-#~ msgstr "%s @ %s"
-
-#~ msgctxt "RAID level"
-#~ msgid "Stripe (RAID-0)"
-#~ msgstr "스트라이프 (RAID-0)"
-
-#~ msgctxt "RAID level"
-#~ msgid "RAID-0"
-#~ msgstr "RAID-0"
-
-#~ msgctxt "RAID level"
-#~ msgid "Mirror (RAID-1)"
-#~ msgstr "미러 (RAID-1)"
-
-#~ msgctxt "RAID level"
-#~ msgid "RAID-1"
-#~ msgstr "RAID-1"
-
-#~ msgctxt "RAID level"
-#~ msgid "Parity Disk (RAID-4)"
-#~ msgstr "패리티 디스크 (RAID-4)"
-
-#~ msgctxt "RAID level"
-#~ msgid "RAID-4"
-#~ msgstr "RAID-4"
-
-#~ msgctxt "RAID level"
-#~ msgid "Distributed Parity (RAID-5)"
-#~ msgstr "분배 패리티 (RAID-5)"
-
-#~ msgctxt "RAID level"
-#~ msgid "RAID-5"
-#~ msgstr "RAID-5"
-
-#~ msgctxt "RAID level"
-#~ msgid "Dual Distributed Parity (RAID-6)"
-#~ msgstr "이중 분배 패리티 (RAID-6)"
-
-#~ msgctxt "RAID level"
-#~ msgid "RAID-6"
-#~ msgstr "RAID-6"
-
-#~ msgctxt "RAID level"
-#~ msgid "Stripe of Mirrors (RAID-10)"
-#~ msgstr "미러 스트라이프 (RAID-10)"
-
-#~ msgctxt "RAID level"
-#~ msgid "RAID-10"
-#~ msgstr "RAID-10"
-
-#~ msgctxt "RAID level"
-#~ msgid "Concatenated (Linear)"
-#~ msgstr "연결됨 (선형)"
-
-#~ msgctxt "RAID level"
-#~ msgid "Linear"
-#~ msgstr "선형"
-
-#~ msgid ""
-#~ "Striped set without parity. Provides improved performance but no fault "
-#~ "tolerance. If a single disk in the array fails, the entire RAID-0 array "
-#~ "fails."
-#~ msgstr ""
-#~ "패리티 없이 스트라이프된 세트입니다. 성능은 향상되지만 내고장성이 없습니"
-#~ "다. 어레이의 디스크에 하나라도 오류가 생기면 RAID-0 어레이 전체를 사용할 "
-#~ "수 없게 됩니다."
-
-#~ msgid ""
-#~ "Mirrored set without parity. Provides fault tolerance and improved "
-#~ "performance for reading. RAID-1 arrays can sustain all but one disk "
-#~ "failing."
-#~ msgstr ""
-#~ "패리티 없이 미러된 세트입니다. 내고장성이 있고 읽기 성능이 향상됩니다. "
-#~ "RAID-1 어레이는 디스크가 하나를 제외하고 모두 고장나도 사용이 가능합니다."
-
-#~ msgid ""
-#~ "Striped set with parity on a single disk. Provides improved performance "
-#~ "and fault tolerance. RAID-4 arrays can sustain a single disk failure."
-#~ msgstr ""
-#~ "단일 디스크에서 패리티로 스트라이프된 세트입니다. 성능은 향상되지만 내고장"
-#~ "성이 없습니다. RAID-4 어레이는 한 개의 디스크에 고장이 날 경우에도 사용이 "
-#~ "가능합니다."
-
-#~ msgid ""
-#~ "Striped set with distributed parity. Provides improved performance and "
-#~ "fault tolerance. RAID-5 arrays can sustain a single disk failure."
-#~ msgstr ""
-#~ "분배된 패리티로 스트라이프된 세트입니다. 성능이 향상되고 내고장성이 있습니"
-#~ "다. 디스크 하나가 고장나도 RAID-5를 사용할 수 있습니다."
-
-#~ msgid ""
-#~ "Striped set with dual distributed parity. Provides improved performance "
-#~ "and fault tolerance. RAID-6 arrays can sustain two disk failures."
-#~ msgstr ""
-#~ "이중 분배 패리티로 스트라이프된 세트입니다. 성능이 향상되고 내고장성이 있"
-#~ "습니다. 디스크 두 개가 고장나도 RAID-6 어레이를 사용할 수 있습니다."
-
-#~ msgid ""
-#~ "Striped set with distributed parity. Provides improved performance and "
-#~ "fault tolerance. RAID-10 arrays can sustain multiple drive losses so long "
-#~ "as no mirror loses all its drives."
-#~ msgstr ""
-#~ "분배된 패리티로 스트라이프된 세트입니다. 성능이 향상되고 내고장성이 있습니"
-#~ "다. 미러가 모든 드라이브를 잃지 않는 한, 드라이브가 여러 개 손실되어도 "
-#~ "RAID-10 어레이를 사용할 수 있습니다."
-
-#~ msgid "Unknown RAID level %s."
-#~ msgstr "알 수 없는 RAID 수준 %s입니다."
-
-#~ msgid "Disk is healthy"
-#~ msgstr "디스크가 양호합니다."
-
-#~ msgid "Disk was used outside of design parameters in the past"
-#~ msgstr "디스크가 이전에 디자인 매개변수 이외의 범위에서 사용되었습니다."
-
-#~ msgid "Disk has a few bad sectors"
-#~ msgstr "디스크에 몇 개의 불량 섹터가 있습니다."
-
-#~ msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
-#~ msgstr "디스크가 디자인 매개변수 밖의 범위에서 사용되고 있습니다."
-
-#~ msgid "Backup all data and replace the disk"
-#~ msgstr "모든 데이터를 백업하고 디스크를 교체합니다."
-
-#~ msgid "DISK HAS MANY BAD SECTORS"
-#~ msgstr "디스크가 불량 섹터가 많습니다."
-
-#~ msgid "DISK FAILURE IS IMMINENT"
-#~ msgstr "디스크가 곧 고장납니다."
-
-#~ msgid "Unknown"
-#~ msgstr "알 수 없음"
-
-#~ msgid "CD-ROM Disc"
-#~ msgstr "CD-ROM 디스크"
-
-#~ msgid "Blank CD-ROM Disc"
-#~ msgstr "빈 CD-ROM 디스크"
-
-#~ msgid "CD-R Disc"
-#~ msgstr "CD-R 디스크"
-
-#~ msgid "Blank CD-R Disc"
-#~ msgstr "빈 CD-R 디스크"
-
-#~ msgid "CD-RW Disc"
-#~ msgstr "CD-RW 디스크"
-
-#~ msgid "Blank CD-RW Disc"
-#~ msgstr "빈 CD-RW 디스크"
-
-#~ msgid "DVD-ROM Disc"
-#~ msgstr "DVD-ROM 디스크"
-
-#~ msgid "Blank DVD-ROM Disc"
-#~ msgstr "빈 DVD-ROM 디스크"
-
-#~ msgid "DVD-RW Disc"
-#~ msgstr "DVD-RW 디스크"
-
-#~ msgid "Blank DVD-RW Disc"
-#~ msgstr "빈 DVD-RW 디스크"
-
-#~ msgid "DVD-RAM Disc"
-#~ msgstr "DVD-RAM 디스크"
-
-#~ msgid "Blank DVD-RAM Disc"
-#~ msgstr "빈 DVD-RAM 디스크"
-
-#~ msgid "DVD+R Disc"
-#~ msgstr "DVD+R 디스크"
-
-#~ msgid "Blank DVD+R Disc"
-#~ msgstr "빈 DVD+R 디스크"
-
-#~ msgid "DVD+RW Disc"
-#~ msgstr "DVD+RW 디스크"
-
-#~ msgid "Blank DVD+RW Disc"
-#~ msgstr "빈 DVD+RW 디스크"
-
-#~ msgid "DVD+R DL Disc"
-#~ msgstr "DVD+R DL 디스크"
-
-#~ msgid "Blank DVD+R DL Disc"
-#~ msgstr "빈 DVD+R DL 디스크"
-
-#~ msgid "DVD+RW DL Disc"
-#~ msgstr "DVD+RW DL 디스크"
-
-#~ msgid "Blank DVD+RW DL Disc"
-#~ msgstr "빈 DVD+RW DL 디스크"
-
-#~ msgid "Blu-Ray Disc"
-#~ msgstr "Blu-Ray 디스크"
-
-#~ msgid "Blank Blu-Ray Disc"
-#~ msgstr "빈 Blu-Ray 디스크"
-
-#~ msgid "Blu-Ray R Disc"
-#~ msgstr "Blu-Ray R 디스크"
-
-#~ msgid "Blank Blu-Ray R Disc"
-#~ msgstr "빈 Blu-Ray R 디스크"
-
-#~ msgid "Blu-Ray RW Disc"
-#~ msgstr "Blu-Ray RW 디스크"
-
-#~ msgid "Blank Blu-Ray RW Disc"
-#~ msgstr "빈 Blu-Ray RW 디스크"
-
-#~ msgid "HD DVD Disc"
-#~ msgstr "HD DVD 디스크"
-
-#~ msgid "Blank HD DVD Disc"
-#~ msgstr "빈 HD DVD 디스크"
-
-#~ msgid "HD DVD-R Disc"
-#~ msgstr "HD DVD-R 디스크"
-
-#~ msgid "Blank HD DVD-R Disc"
-#~ msgstr "빈 HD DVD-R 디스크"
-
-#~ msgid "HD DVD-RW Disc"
-#~ msgstr "HD DVD-RW 디스크"
-
-#~ msgid "Blank HD DVD-RW Disc"
-#~ msgstr "빈 HD DVD-RW 디스크"
-
-#~ msgid "MO Disc"
-#~ msgstr "MO 디스크"
-
-#~ msgid "Blank MO Disc"
-#~ msgstr "빈 MO 디스크"
-
-#~ msgid "MRW Disc"
-#~ msgstr "MRW 디스크"
-
-#~ msgid "Blank MRW Disc"
-#~ msgstr "빈 MRW 디스크"
-
-#~ msgid "MRW/W Disc"
-#~ msgstr "MRW/W 디스크"
-
-#~ msgid "Blank MRW/W Disc"
-#~ msgstr "빈 MRW/W 디스크"
-
-#~ msgid "Blank Optical Disc"
-#~ msgstr "빈 Optical 디스크"
-
-#~ msgid "%s Extended"
-#~ msgstr "%s 확장됨"
-
-#~ msgid "Contains logical partitions"
-#~ msgstr "논리적 파티션을 포함하고 있습니다."
-
-#~ msgid "%s Encrypted"
-#~ msgstr "%s 암호화됨"
-
-#~ msgid "Optical Disc"
-#~ msgstr "광학 디스크"
-
-#~ msgid "%s Filesystem"
-#~ msgstr "%s 파일시스템"
-
-#~ msgid "%s Partition Table"
-#~ msgstr "%s 파티션 표"
-
-#~ msgid "%s LVM2 Physical Volume"
-#~ msgstr "%s LVM2 물리적 볼륨"
-
-#~ msgctxt "RAID level"
-#~ msgid "RAID"
-#~ msgstr "RAID"
-
-#~ msgid "%s %s Component"
-#~ msgstr "%s %s 구성요소"
-
-#~ msgid "Part of \"%s\" array"
-#~ msgstr "\"%s\" 어레이의 부분"
-
-#~ msgid "%s Swap Space"
-#~ msgstr "%s 스왑 공간"
-
-#~ msgid "%s Data"
-#~ msgstr "%s 데이터"
-
-#~ msgid "%s Unrecognized"
-#~ msgstr "%s 인식이 안 됨"
-
-#~ msgid "Unknown or Unused"
-#~ msgstr "알 수 없거나 사용되지 않았음"
-
-#~ msgid "%s Partition"
-#~ msgstr "%s 파티션"
-
-#~ msgid "Partition %d of %s"
-#~ msgstr "파티션 %d / %s"
-
-#~ msgid "Partition %d"
-#~ msgstr "파티션 %d"
-
-#~ msgid "Whole-disk volume on %s"
-#~ msgstr "%s의 전체 디스크 볼륨"
-
-#~ msgid "Whole-disk volume"
-#~ msgstr "전체 디스크 볼륨"
-
-#~ msgid "You are using %d%% of %s"
-#~ msgstr "사용량: %d%% / %s"
-
-#~ msgid "Using %d%% of %s"
-#~ msgstr "사용량: %d%% / %s"
+#~ "Meego은 다른 컴퓨터와 차이가 있으며, 당신이 이에 잘 적응할 수 있도록 여러"
+#~ "가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Meego 팀."
