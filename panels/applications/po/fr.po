@@ -1,46 +1,54 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 09:31+0000\n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#. Panel label
-#: ../src/meego-netbook-launcher.c:1330
-msgid "Applications"
-msgstr "Applications"
-
-#: ../src/meego-netbook-launcher.c:1373
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../src/meego-panel-applications.c:197
+#. Panel label
+#: ../src/meego-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Applications"
+
+#.
+#. * Fav apps pane
+#.
+#: ../src/meego-netbook-launcher.c:1114
+msgid "Favorite applications"
+msgstr "Applications favorites"
+
+#.
+#. * Applications
+#.
+#: ../src/meego-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Vos applications"
+
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "applications"
+
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "Jamais lancé(e)"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panneau des applications"
 
-#: ../src/meego-netbook-launcher.c:1370
-msgid "Search for applications"
-msgstr "Rechercher des applications"
-
-#: ../src/meego-netbook-launcher.c:1344
-msgid "Your applications"
-msgstr "Vos applications"
-
-#. Fav apps
-#: ../src/meego-netbook-launcher.c:1378
-msgid "Favorite applications"
-msgstr "Applications favorites"
+#~ msgid "Search for applications"
+#~ msgstr "Rechercher des applications"
