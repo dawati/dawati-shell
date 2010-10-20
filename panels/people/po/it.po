@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:36+0000\n"
-"PO-Revision-Date: 2010-05-05 11:12-0800\n"
+"POT-Creation-Date: 2010-10-19 16:57+0000\n"
+"PO-Revision-Date: 2010-10-19 19:08-0800\n"
 "Last-Translator: francesca godani <francesca.godani@ptiglobal.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -16,74 +16,80 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/moblin-panel-people.c:88
-#: ../src/mnb-people-panel.c:476
-#: ../data/moblin-panel-people.desktop.in.in.h:2
+#: ../src/meego-panel-people.c:88
+#: ../src/mnb-people-panel.c:513
+#: ../data/meego-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "persone"
 
+#: ../src/mnb-people-panel.c:56
+msgid "When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "Quando si dispone di un servizio di chat configurato (come Messenger) qui è dove si chatta."
+
 #: ../src/mnb-people-panel.c:191
-#: ../src/mnb-people-panel.c:414
+#: ../src/mnb-people-panel.c:451
 #, c-format
 msgid "Open %s"
 msgstr "Apri %s"
 
-#: ../src/mnb-people-panel.c:231
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Non è stata trovata alcuna persona. È stato configurato un account di messaggistica istantanea?"
+#: ../src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr "Questo è il Pannello persone."
 
-#: ../src/mnb-people-panel.c:283
+#: ../src/mnb-people-panel.c:320
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Non è stata trovata alcuna persona. Sembra siano tutti fuori rete."
 
-#: ../src/mnb-people-panel.c:328
+#: ../src/mnb-people-panel.c:365
 msgid "To see your IM contacts, you need to go online."
 msgstr "Per visualizzare i contatti IM, è necessario essere online."
 
-#: ../src/mnb-people-panel.c:458
+#: ../src/mnb-people-panel.c:495
 #, c-format
 msgid "people - you are chatting with %d people"
 msgstr "persone - stai chattando con %d persone"
 
-#: ../src/mnb-people-panel.c:465
+#: ../src/mnb-people-panel.c:502
 msgid "people - you are chatting with someone"
 msgstr "persone - stai chattando con qualcuno"
 
 #. Populate header
-#: ../src/mnb-people-panel.c:676
-#: ../src/mnb-people-panel.c:930
+#: ../src/mnb-people-panel.c:710
+#: ../src/mnb-people-panel.c:964
 msgid "People"
 msgstr "Persone"
 
-#: ../src/mnb-people-panel.c:689
+#: ../src/mnb-people-panel.c:723
 msgid "Search"
 msgstr "Cerca"
 
-#: ../src/mnb-people-panel.c:740
-#: ../src/mnb-people-panel.c:1129
+#: ../src/mnb-people-panel.c:774
+#: ../src/mnb-people-panel.c:1162
 msgid "You are chatting with:"
 msgstr "Sei in chat con:"
 
-#: ../src/mnb-people-panel.c:947
+#: ../src/mnb-people-panel.c:981
 msgid "Me and my people"
 msgstr "Io e le mie persone"
 
-#: ../src/mnb-people-panel.c:985
+#: ../src/mnb-people-panel.c:1019
 msgid "Me"
 msgstr "Io"
 
 #. Side table
-#: ../src/mnb-people-panel.c:1086
+#: ../src/mnb-people-panel.c:1119
 msgid "My conversations"
 msgstr "Le mie conversazioni"
 
-#: ../data/moblin-panel-people.desktop.in.in.h:1
+#: ../data/meego-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Pannello persone"
 
-#: ../src/mnb-people-panel.c:57
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
-msgstr "Salve! Questo è il pannello Persone. Quando si dispone di un servizio di chat configurato (come Messenger) qui è dove si chatta."
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Non è stata trovata alcuna persona. È stato configurato un account di "
+#~ "messaggistica istantanea?"
 
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "persone - %d persone con cui si sta parlando"
