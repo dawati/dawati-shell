@@ -2,15 +2,15 @@
 # Copyright (C) 2009 THE carrick-ng'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the carrick-ng package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:59+0000\n"
-"PO-Revision-Date: 2010-05-12 12:03-0800\n"
-"Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-10-19 16:54+0000\n"
+"PO-Revision-Date: 2010-10-19 22:02-0800\n"
+"Last-Translator: helen martin <helen.martin@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -19,155 +19,166 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#. * Translator note: The disabled technologies available to be turned on is
-#. put together at
+#. Translator note: The disabled technologies available to be turned on is put together at
 #. * runtime.
-#. * The conjunction 'or' will be at the end of a choice of disabled
-#. technologies,
-#. * for example 'WiFi, WiMAX or 3G.
-#. 
-#: ../carrick/carrick-list.c:843
+#. * The conjunction ' or ' will be at the end of a choice of disabled technologies,
+#. * for example 'You could try enabling WiFi, WiMAX or 3G'.
+#. * Note that you need to include spaces on both sides of the word/phrase
+#. * here -- unless you want it joined with previous or next word.
+#: ../carrick/carrick-list.c:1008
 msgid " or "
 msgstr " of "
 
-#. * Translator note: the comma ',' will be used to join the different
-#. disabled technologies
-#. * as in the above example; 'WiFi, WiMAX or 3G'
-#. 
-#: ../carrick/carrick-list.c:848
+#. Translator note: the comma ', ' will be used to join the different
+#. * disabled technologies as in the example:
+#. * 'You could try enabling WiFi, WiMAX or 3G'
+#. * Note that you need to include spaces in the string, unless you
+#. * want the words to appear right next to the comma.
+#: ../carrick/carrick-list.c:1015
 msgid ", "
 msgstr ", "
 
-#: ../carrick/carrick-list.c:849 ../carrick/carrick-util.c:34
+#. Translator note: these technology names will be used in forming
+#. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
+#.
+#: ../carrick/carrick-list.c:1038
+#: ../carrick/carrick-util.c:40
 msgid "wired"
 msgstr "bedraad"
 
 #. Switches
-#: ../carrick/carrick-list.c:850 ../carrick/carrick-pane.c:1429
-#: ../carrick/carrick-util.c:32
+#: ../carrick/carrick-list.c:1039
+#: ../carrick/carrick-pane.c:1964
+#: ../carrick/carrick-util.c:38
 msgid "WiFi"
 msgstr "Wi-Fi"
 
-#: ../carrick/carrick-list.c:851 ../carrick/carrick-pane.c:1471
-#: ../carrick/carrick-util.c:38
+#: ../carrick/carrick-list.c:1040
+#: ../carrick/carrick-pane.c:2006
+#: ../carrick/carrick-util.c:44
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:852 ../carrick/carrick-pane.c:1457
-#: ../carrick/carrick-util.c:36
+#: ../carrick/carrick-list.c:1041
+#: ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-util.c:42
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:853 ../carrick/carrick-pane.c:1485
-#: ../carrick/carrick-util.c:40
+#: ../carrick/carrick-list.c:1042
+#: ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-util.c:46
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
+#.
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
-#. 
-#: ../carrick/carrick-list.c:866
+#.
+#: ../carrick/carrick-list.c:1052
 msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
 msgstr "Sorry, geen netwerken gevonden. Het verbindingsbeheer lijkt niet actief te zijn. Je kunt proberen het apparaat opnieuw op te starten."
 
+#.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
-#. 
-#: ../carrick/carrick-list.c:876
+#.
+#: ../carrick/carrick-list.c:1062
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om Offline mode uit te schakelen."
 
-#: ../carrick/carrick-list.c:1013
+#: ../carrick/carrick-list.c:1114
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
 msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om %s aan te zetten."
 
+#.
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
-#. 
-#: ../carrick/carrick-list.c:1027
+#.
+#: ../carrick/carrick-list.c:1128
 msgid "Sorry, we can't find any networks"
 msgstr "Sorry, geen netwerken gevonden."
 
-#: ../carrick/carrick-notification-manager.c:124
+#: ../carrick/carrick-notification-manager.c:131
 msgid "Network connected"
 msgstr "Netwerk verbonden"
 
-#: ../carrick/carrick-notification-manager.c:132
+#: ../carrick/carrick-notification-manager.c:139
 #, c-format
 msgid "You're now connected to a wired network"
 msgstr "Je bent verbonden met een bedraad netwerk"
 
-#: ../carrick/carrick-notification-manager.c:162
+#: ../carrick/carrick-notification-manager.c:169
 #, c-format
 msgid "You're now connected to %s, a %s network"
 msgstr "Je bent verbonden met %s, een %s netwerk"
 
-#: ../carrick/carrick-notification-manager.c:168
+#: ../carrick/carrick-notification-manager.c:175
 #, c-format
 msgid "You're now connected to a %s network"
 msgstr "Je bent verbonden met een %s netwerk"
 
-#: ../carrick/carrick-notification-manager.c:185
+#: ../carrick/carrick-notification-manager.c:192
 msgid "Network lost"
 msgstr "Netwerk verloren"
 
-#: ../carrick/carrick-notification-manager.c:193
+#: ../carrick/carrick-notification-manager.c:200
 #, c-format
 msgid "Sorry, we've lost your wired connection"
 msgstr "Sorry, de bedraade verbinding was verbroken"
 
-#: ../carrick/carrick-notification-manager.c:197
+#: ../carrick/carrick-notification-manager.c:204
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
 msgstr "Sorry, de %s verbinding met %s was verbroken"
 
-#: ../carrick/carrick-notification-manager.c:203
+#: ../carrick/carrick-notification-manager.c:210
 #, c-format
 msgid "Sorry, we've lost your %s connection"
 msgstr "Sorry, de %s verbinding was verbroken"
 
-#: ../carrick/carrick-notification-manager.c:220
+#: ../carrick/carrick-notification-manager.c:227
 msgid "Network changed"
 msgstr "Netwerk gewijzigd"
 
-#: ../carrick/carrick-notification-manager.c:239
+#: ../carrick/carrick-notification-manager.c:246
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
 msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een bedraad netwerk"
 
-#: ../carrick/carrick-notification-manager.c:246
+#: ../carrick/carrick-notification-manager.c:253
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
 msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met %s, een %s netwerk"
 
-#: ../carrick/carrick-notification-manager.c:254
+#: ../carrick/carrick-notification-manager.c:261
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
 msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een %s netwerk"
 
-#: ../carrick/carrick-notification-manager.c:264
+#: ../carrick/carrick-notification-manager.c:271
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
 msgstr "Sorry, de verbinding met %s was verbroken. We hebben je verbonden met een bedraad netwerk"
 
-#: ../carrick/carrick-notification-manager.c:271
+#: ../carrick/carrick-notification-manager.c:278
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
 msgstr "Sorry, je %s verbinding was verbroken. We hebben je verbonden met %s, een %s netwerk"
 
-#: ../carrick/carrick-notification-manager.c:280
+#: ../carrick/carrick-notification-manager.c:287
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
 msgstr "Sorry, je %s verbinding was verbroken. We hebben je verbonden met een %s netwerk"
 
-#: ../carrick/carrick-pane.c:634
+#: ../carrick/carrick-pane.c:686
 msgid "New connection settings"
 msgstr "Nieuwe verbinding instellingen"
 
-#: ../carrick/carrick-pane.c:672
+#: ../carrick/carrick-pane.c:724
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
@@ -177,135 +188,157 @@ msgstr ""
 "mee wil verbinden en, waar nodig, het\n"
 "wachtwoord en beveiligingstype."
 
-#: ../carrick/carrick-pane.c:682
+#: ../carrick/carrick-pane.c:734
 msgid "Network name"
 msgstr "Netwerk naam"
 
-#: ../carrick/carrick-pane.c:694
+#: ../carrick/carrick-pane.c:746
 msgid "Network security"
 msgstr "Netwerk beveiliging"
 
-#: ../carrick/carrick-pane.c:704
+#: ../carrick/carrick-pane.c:756
 msgid "None"
 msgstr "Geen"
 
-#: ../carrick/carrick-pane.c:716
+#: ../carrick/carrick-pane.c:768
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: ../carrick/carrick-pane.c:731 ../carrick/carrick-service-item.c:1787
+#: ../carrick/carrick-pane.c:786
+#: ../carrick/carrick-service-item.c:1944
 msgid "Show password"
 msgstr "Geef wachtwoord weer"
 
-#: ../carrick/carrick-pane.c:1412
+#: ../carrick/carrick-pane.c:1947
 msgid "Settings"
 msgstr "Instellingen"
 
-#: ../carrick/carrick-pane.c:1443 ../carrick/carrick-service-item.c:328
+#: ../carrick/carrick-pane.c:1978
+#: ../carrick/carrick-service-item.c:456
 msgid "Wired"
 msgstr "Bedraad"
 
-#: ../carrick/carrick-pane.c:1510
+#: ../carrick/carrick-pane.c:2045
 msgid "Offline mode"
 msgstr "Offline mode"
 
-#: ../carrick/carrick-pane.c:1520
+#: ../carrick/carrick-pane.c:2055
 msgid "This will disable all your connections"
 msgstr "Dit maakt alle verbindingen inactief"
 
-#: ../carrick/carrick-pane.c:1556 ../src/carrick.c:369
+#: ../carrick/carrick-pane.c:2091
+#: ../src/carrick.c:380
 msgid "Networks"
 msgstr "netwerken"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1562
+#: ../carrick/carrick-pane.c:2097
 msgid "Add new connection"
 msgstr "Nieuwe verbinding toevoegen"
+
+#. TRANSLATORS: Button
+#. * There will be a combobox of VPN networks to the left of the
+#. * button
+#: ../carrick/carrick-pane.c:2137
+msgid "Connect to VPN"
+msgstr "Verbinding maken met VPN"
 
 #. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
-#. 
-#: ../carrick/carrick-service-item.c:51
+#.
+#: ../carrick/carrick-service-item.c:64
 msgid "Critical Error: Invalid country code"
 msgstr "Kritieke Fout: Ongeldige land code"
 
-#: ../carrick/carrick-service-item.c:52
+#: ../carrick/carrick-service-item.c:65
 msgid "Missing required APN (service plan name)"
 msgstr "Missende vereiste APN (service plan naam)"
 
-#: ../carrick/carrick-service-item.c:53
+#: ../carrick/carrick-service-item.c:66
 msgid "Internal Error: Invalid network service"
 msgstr "Interne fout: Ongeldige netwerk dienst"
 
-#: ../carrick/carrick-service-item.c:54
+#: ../carrick/carrick-service-item.c:67
 msgid "Critical Error: Unable to access Connection Manager"
 msgstr "Kritieke fout: Kan geen verbinding maken met connectie beheer"
 
-#: ../carrick/carrick-service-item.c:55
+#: ../carrick/carrick-service-item.c:68
 msgid "ERROR: No 3G Hardware detected"
 msgstr "Fout: Geen 3G hardware gevonden"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
-#. 
-#: ../carrick/carrick-service-item.c:192
+#.
+#: ../carrick/carrick-service-item.c:243
 #, c-format
 msgid "%s encrypted"
 msgstr "%s versleuteld"
 
-#: ../carrick/carrick-service-item.c:340 ../carrick/carrick-service-item.c:357
+#. TRANSLATORS: This string will be in the "Connect by:"-
+#. * combobox just like "DHCP" and "Static IP". Fixed means
+#. * that the IP configuration cannot be changed at all,
+#. * like in a 3G network
+#: ../carrick/carrick-service-item.c:402
+msgid "Fixed IP"
+msgstr "Vast IP adres"
+
+#: ../carrick/carrick-service-item.c:469
+#: ../carrick/carrick-service-item.c:487
 msgid "Disconnect"
 msgstr "Verbreek verbinding"
 
-#: ../carrick/carrick-service-item.c:343
+#: ../carrick/carrick-service-item.c:472
 msgid "Connected"
 msgstr "Verbonden"
 
-#: ../carrick/carrick-service-item.c:360
+#: ../carrick/carrick-service-item.c:490
 msgid "Online"
 msgstr "Online"
 
-#: ../carrick/carrick-service-item.c:367 ../carrick/carrick-service-item.c:376
+#: ../carrick/carrick-service-item.c:496
+#: ../carrick/carrick-service-item.c:505
 #, c-format
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ../carrick/carrick-service-item.c:370
+#: ../carrick/carrick-service-item.c:499
 msgid "Configuring"
 msgstr "Configureren"
 
-#: ../carrick/carrick-service-item.c:379
+#: ../carrick/carrick-service-item.c:508
 msgid "Associating"
 msgstr "associëren"
 
-#: ../carrick/carrick-service-item.c:388 ../carrick/carrick-service-item.c:413
-#: ../carrick/carrick-service-item.c:1774
+#: ../carrick/carrick-service-item.c:517
+#: ../carrick/carrick-service-item.c:543
+#: ../carrick/carrick-service-item.c:1931
 msgid "Connect"
 msgstr "Maak verbinding"
 
-#: ../carrick/carrick-service-item.c:416
+#: ../carrick/carrick-service-item.c:546
 msgid "Connection failed"
 msgstr "Verbindingsfout"
 
-#: ../carrick/carrick-service-item.c:419
+#: ../carrick/carrick-service-item.c:550
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Sorry, kon geen verbinding maken. Probeer het nogmaals."
 
-#: ../carrick/carrick-service-item.c:425 ../carrick/carrick-service-item.c:428
+#: ../carrick/carrick-service-item.c:557
+#: ../carrick/carrick-service-item.c:560
 #, c-format
 msgid "Disconnecting"
 msgstr "Verbinding wordt verbroken"
 
-#: ../carrick/carrick-service-item.c:494
+#: ../carrick/carrick-service-item.c:628
 msgid "Type password here"
 msgstr "Geef wachtwoord hier op"
 
-#: ../carrick/carrick-service-item.c:563
+#: ../carrick/carrick-service-item.c:704
 msgid "Really remove?"
 msgstr "Echt verwijderen?"
 
-#: ../carrick/carrick-service-item.c:583
+#: ../carrick/carrick-service-item.c:724
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -316,54 +349,35 @@ msgstr ""
 "verwijdert ook het opgeslagen wachtwoord. Je zult niet\n"
 "langer met %s automatisch verbonden worden."
 
-#: ../carrick/carrick-service-item.c:786
-#, c-format
-msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
-msgstr "Je wachtwoord is niet de juiste lengte. Een WEP verbinding heeft een lengte van 10 of 26 karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:797
-#, c-format
-msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Je wachtwoord is te kort. Voor een WPA verbinding heb je minstens 8 karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:801
-#, c-format
-msgid "Your password is too long. For a WPA  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Je wachtwoord is te lang. Voor een WPA verbinding heb je minder dan 63 karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:810
-#, c-format
-msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Je wachtwoord is te kort. Voor een WPA2 verbinding heb je minstens 8 karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:814
-#, c-format
-msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 63 characters, you have %i"
-msgstr "Je wachtwoord is te lang. Voor een WPA2 verbinding heb je minder dan 63karakters nodig, je hebt %i."
-
-#: ../carrick/carrick-service-item.c:1267
+#: ../carrick/carrick-service-item.c:1413
 msgid "Sorry, it looks like the IP address is not valid"
 msgstr "Sorry, het IP adres is onjuist"
 
-#: ../carrick/carrick-service-item.c:1279
+#: ../carrick/carrick-service-item.c:1425
 msgid "Sorry, it looks like the gateway address is not valid"
 msgstr "Sorry, het gateway adres is onjuist"
 
-#: ../carrick/carrick-service-item.c:1291
+#: ../carrick/carrick-service-item.c:1437
 msgid "Sorry, it looks like the subnet mask is not valid"
 msgstr "Sorry het subnetmasker is onjuist"
 
-#: ../carrick/carrick-service-item.c:1336
+#: ../carrick/carrick-service-item.c:1482
 #, c-format
 msgid "Sorry, it looks like the nameserver address '%s' is not valid"
 msgstr "Sorry, het servernaam adres '%s' is onjuist"
 
 #. TRANSLATORS: label for the Advanced expander in a service item
-#: ../carrick/carrick-service-item.c:1698
+#: ../carrick/carrick-service-item.c:1844
 msgid "Advanced"
 msgstr "Geavanceerd"
 
-#: ../carrick/carrick-service-item.c:1708
+#. TRANSLATORS: button for services that require an additional
+#. * web login (clicking will open browser)
+#: ../carrick/carrick-service-item.c:1856
+msgid "Log in"
+msgstr "Inloggen"
+
+#: ../carrick/carrick-service-item.c:1865
 msgid "Scanning"
 msgstr "Scannen"
 
@@ -371,111 +385,151 @@ msgstr "Scannen"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1729
+#: ../carrick/carrick-service-item.c:1886
 msgid "WPA2 encrypted"
 msgstr "WPA2 versleuteld"
 
 #. TRANSLATORS: label in advanced settings (next to combobox
 #. * for DHCP/Static IP)
-#: ../carrick/carrick-service-item.c:1836
+#: ../carrick/carrick-service-item.c:1993
 msgid "Connect by:"
 msgstr "Maak verbinding via:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1838
+#: ../carrick/carrick-service-item.c:1995
 msgid "IP address:"
 msgstr "IP-adres:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1840
+#: ../carrick/carrick-service-item.c:1997
 msgid "Subnet mask:"
 msgstr "Subnetmasker:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1842
+#: ../carrick/carrick-service-item.c:1999
 msgid "Router:"
 msgstr "Router:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1844
+#: ../carrick/carrick-service-item.c:2001
 msgid "DNS:"
 msgstr "DNS:"
 
-#: ../carrick/carrick-service-item.c:1850
+#: ../carrick/carrick-service-item.c:2008
 msgid "DHCP"
 msgstr "DHCP"
 
-#: ../carrick/carrick-service-item.c:1852
+#: ../carrick/carrick-service-item.c:2010
 msgid "Static IP"
 msgstr "Statisch IP"
 
 #. TRANSLATORS: label for apply button in static ip settings
-#: ../carrick/carrick-service-item.c:1902
+#: ../carrick/carrick-service-item.c:2061
 msgid "Apply"
 msgstr "Toepassen"
 
-#: ../src/carrick.c:49
+#: ../carrick/carrick-util.c:48
+msgid "VPN"
+msgstr "VPN"
+
+#: ../carrick/carrick-util.c:84
+#, c-format
+msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
+msgstr "Je wachtwoord is niet de juiste lengte. Een WEP verbinding heeft een lengte van 10 of 26 karakters nodig, je hebt %i."
+
+#: ../carrick/carrick-util.c:99
+#, c-format
+msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Je wachtwoord is te kort. Voor een WPA verbinding heb je minstens 8 karakters nodig, je hebt %i."
+
+#: ../carrick/carrick-util.c:107
+#, c-format
+msgid "Your password is too long. For a WPA  connection it needs to have fewer than 64 characters, you have %i"
+msgstr "Je wachtwoord is te lang. Voor een WPA verbinding heb je minder dan 64 karakters nodig, je hebt er %i."
+
+#: ../carrick/carrick-util.c:120
+#, c-format
+msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
+msgstr "Je wachtwoord is te kort. Voor een WPA2 verbinding heb je minstens 8 karakters nodig, je hebt %i."
+
+#: ../carrick/carrick-util.c:128
+#, c-format
+msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 64 characters, you have %i"
+msgstr "Je wachtwoord is te lang. Voor een WPA2 verbinding heb je minder dan 64 karakters nodig, je hebt er %i."
+
+#. TRANSLATORS: Tooltips for the toolbar icon
+#. * The possible placeholder is service name (such as
+#. * a wireless network name)
+#: ../src/carrick.c:52
 msgid "networks - not connected"
 msgstr "netwerken - niet verbonden"
 
-#: ../src/carrick.c:55
+#: ../src/carrick.c:58
 msgid "networks - connecting"
 msgstr "netwerken - verbinden"
 
-#: ../src/carrick.c:61
+#: ../src/carrick.c:64
 msgid "networks - wired"
 msgstr "netwerken - bedraad"
 
-#: ../src/carrick.c:63
+#: ../src/carrick.c:66
 #, c-format
 msgid "networks - %s - wifi"
 msgstr "netwerken - %s - Wi-Fi"
 
-#: ../src/carrick.c:66
+#: ../src/carrick.c:69
 #, c-format
 msgid "networks - %s - wimax"
 msgstr "netwerken - %s - WiMAX"
 
-#: ../src/carrick.c:69
+#: ../src/carrick.c:72
 #, c-format
 msgid "networks - %s - 3G"
 msgstr "netwerken - %s - 3G"
 
-#: ../src/carrick.c:72
+#: ../src/carrick.c:75
 #, c-format
 msgid "networks - %s - bluetooth"
 msgstr "netwerken - %s - Bluetooth"
 
-#: ../src/carrick.c:75 ../src/carrick.c:87
+#: ../src/carrick.c:78
+#, c-format
+msgid "networks - %s - VPN"
+msgstr "netwerken - %s - VPN"
+
+#: ../src/carrick.c:81
+#: ../src/carrick.c:93
 msgid "networks"
 msgstr "netwerken"
 
-#: ../src/carrick.c:82
+#: ../src/carrick.c:88
 msgid "networks - error"
 msgstr "netwerken - fout"
 
-#: ../src/carrick.c:297
+#: ../src/carrick.c:308
 msgid "Run in standalone mode"
 msgstr "Werk in losgekoppelde modus"
 
-#: ../src/carrick.c:299
+#: ../src/carrick.c:310
 msgid "Embed in another window (overrides --standalone)"
 msgstr "Ingebed in een ander venster (overschrijft --losgekoppeld)"
 
-#: ../src/carrick.c:310
+#: ../src/carrick.c:321
 msgid "Carrick connectivity applet"
 msgstr "Carrick connectiviteits applet"
 
-#: ../src/carrick.c:311
+#: ../src/carrick.c:322
 msgid "- MeeGo connectivity applet"
 msgstr "- MeeGo verbinding applet"
 
-#: ../src/carrick.c:352 ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:363
+#: ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "netwerk"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70
+#: ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -542,13 +596,19 @@ msgstr "Netwerk instellingen"
 #~ msgstr "Handmatige Configuratie"
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiFi."
-#~ msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om WiFi aan te zetten."
+#~ msgstr ""
+#~ "Sorry, geen netwerken gevonden. Je kunt proberen om WiFi aan te zetten."
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on WiMAX."
-#~ msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om WiMAX aan te zetten."
+#~ msgstr ""
+#~ "Sorry, geen netwerken gevonden. Je kunt proberen om WiMAX aan te zetten."
 
-#~ msgid "Sorry, we can't find any networks. You could try turning on Bluetooth."
-#~ msgstr "Sorry, geen netwerken gevonden. Je kunt proberen om Bluetooth aan te zetten."
+#~ msgid ""
+#~ "Sorry, we can't find any networks. You could try turning on Bluetooth."
+#~ msgstr ""
+#~ "Sorry, geen netwerken gevonden. Je kunt proberen om Bluetooth aan te "
+#~ "zetten."
 
 #~ msgid "Sorry, we can't find any networks. You could try turning on Wired."
-#~ msgstr "Sorry, geen netwerken gevonden. Je kunt proberen on Wired aan te zetten."
+#~ msgstr ""
+#~ "Sorry, geen netwerken gevonden. Je kunt proberen on Wired aan te zetten."
