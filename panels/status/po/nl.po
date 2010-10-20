@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin moblin2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
-"PO-Revision-Date: 2010-05-11 08:25-0800\n"
-"Last-Translator: Thomas <thomas.martens@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"PO-Revision-Date: 2010-10-19 22:07-0800\n"
+"Last-Translator: helen martin <helen.martin@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,15 +17,11 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Hallo! Dit is het Status paneel. Wanneer je jouw web accounts (bijv. Twitter) hebt geconfigureerd dan kan je hier jouw webfeeds zien en je status updaten."
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "Status"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
@@ -43,58 +39,63 @@ msgstr "Kan de status niet updaten. De service kan niet beschikbaar zijn of uw w
 msgid "Unable to update status: You're not online."
 msgstr "Kan status niet updaten: je bent niet online."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
-msgstr "We weten niet wat jouw lokatie is"
+msgstr "We weten niet wat jouw locatie is"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "We denken dat dit jouw lokatie is: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
+msgstr "We denken dat dit jouw locatie is: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Jouw lokatie word gedeeld als: %s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "Jouw locatie wordt momenteel gedeeld als: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
-msgstr "Jouw lokatie wordt gegist als: %f %f"
+msgid "We think your locations is: %f %f"
+msgstr "Wij denken dat dit jouw locatie is: %f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "Jouw lokatie word gedeeld als: %f %f"
+msgid "Your location is currently shared as: %f %f"
+msgstr "Jouw locatie wordt momenteel gedeeld als: %f %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "Jouw lokatie word niet gedeeld"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "Jouw locatie wordt momenteel niet gedeeld"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "Update"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "Wat gebeurt er?"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "Wijzig"
 
-#: ../src/mps-feed-switcher.c:350
-msgid "Add new web account"
-msgstr "Voeg een niewe internetdienst toe"
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Wanneer je een webaccount hebt geconfigureerd, dan kan je hier je webfeeds zien en je status updaten."
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Je hebt blijkbaar geen web services geconfigureerd of er is een probleem met die configuratie. Gebruik de knop hierboven om een My Web Accounts service in te stellen."
+#: ../src/mps-feed-switcher.c:509
+#: ../src/mps-feed-switcher.c:554
+msgid "Add new web account"
+msgstr "Voeg een niewe webaccount toe"
+
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Dit is het Status paneel"
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
-msgstr "Jouw lokatie"
+msgstr "Jouw locatie"
 
 #: ../src/mps-geotag-pane.c:568
 msgid "Search"
@@ -110,21 +111,30 @@ msgstr "Vind mij"
 
 #: ../src/mps-geotag-pane.c:582
 msgid "Use location"
-msgstr "Lokatie gebruiken"
+msgstr "Locatie gebruiken"
 
 #: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
-msgstr "Lokatie niet gebruiken"
+msgstr "Locatie niet gebruiken"
 
 #. When the tweet has a location associated with it then this string will
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s uit %s"
+
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "Je hebt blijkbaar geen web services geconfigureerd of er is een probleem "
+#~ "met die configuratie. Gebruik de knop hierboven om een My Web Accounts "
+#~ "service in te stellen."
 
 #~ msgid "Offline"
 #~ msgstr "Niet verbonden"
@@ -162,11 +172,20 @@ msgstr "%s uit %s"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Je huidige status - je bent niet verbonden"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "Sorry, we kunnen geen personen vinden. Heb je een Messenger account aangemaakt?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "Sorry, we kunnen geen personen vinden. Heb je een Messenger account "
+#~ "aangemaakt?"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "Om je internet status te wijzigen moet je een web services account opzetten met een provider die status berichten ondersteund"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "Om je internet status te wijzigen moet je een web services account "
+#~ "opzetten met een provider die status berichten ondersteund"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Om je IM status te wijzigen moet je een Instant Messaging account opzetten"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Om je IM status te wijzigen moet je een Instant Messaging account opzetten"
