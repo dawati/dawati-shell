@@ -1,50 +1,51 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Pavel, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-29 15:47+0000\n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
 "PO-Revision-Date: 2010-07-06 11:44+0200\n"
 "Last-Translator: Pavel\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 1.0\n"
 
 #: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Hledat"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1049
+#: ../src/meego-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "Programy"
 
-#.
 #. * Fav apps pane
-#.
-#: ../src/meego-netbook-launcher.c:1065
+#. 
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Oblíbené programy"
 
-#.
 #. * Applications
-#.
-#: ../src/meego-netbook-launcher.c:1092
+#. 
+#: ../src/meego-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "Vaše programy"
 
-#: ../src/meego-panel-applications.c:223
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "Programy"
 
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "Nikdy nespuštěno"
+
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel Programy"
-
