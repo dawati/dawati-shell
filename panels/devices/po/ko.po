@@ -28,7 +28,7 @@ msgstr "절전 모드 시간 제한"
 
 #: ../data/meego-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
-msgstr ""
+msgstr "-1의 값은 절전 모드 사용 불능이며, 다른 값은 절전 모드 중 두번째 연속 휴면 상태입니다. "
 
 #. translators:
 #. * The device has been disabled
