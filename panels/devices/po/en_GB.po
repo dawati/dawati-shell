@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MeeGo Panel Devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-20 17:50+0000\n"
-"PO-Revision-Date: 2010-07-20 10:52-0800\n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"PO-Revision-Date: 2010-10-20 10:10-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,9 +24,17 @@ msgid "Devices panel"
 msgstr "Devices panel"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:163
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "devices"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Sleep timeout"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 
 #. translators:
 #. * The device has been disabled
@@ -107,7 +115,7 @@ msgstr "Would you like to turn off now?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "If you don't decide, I'll turn off in 30 seconds."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo Devices Panel"
 
