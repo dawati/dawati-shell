@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: meego-panel-device master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-19 16:51+0000\n"
-"PO-Revision-Date: 2010-10-20 11:54-0800\n"
+"PO-Revision-Date: 2010-10-20 12:01-0800\n"
 "Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "Geräte"
 
 #: ../data/meego-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
-msgstr ""
+msgstr "Zeitlimit für Energiesparmodus"
 
 #: ../data/meego-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
