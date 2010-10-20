@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-19 16:54+0000\n"
-"PO-Revision-Date: 2010-10-19 19:36-0800\n"
+"PO-Revision-Date: 2010-10-19 19:45-0800\n"
 "Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -85,7 +85,7 @@ msgstr "Не найдено ни одной сети. Возможно, маст
 #.
 #: ../carrick/carrick-list.c:1062
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "Не удается найти ни одной сети. Попробуйте отключить режим Оффлайн."
+msgstr "Не удается найти ни одной сети. Попробуйте отключить режим Офлайн."
 
 #: ../carrick/carrick-list.c:1114
 #, c-format
@@ -127,7 +127,7 @@ msgstr "Соединение с сетью утрачено"
 #: ../carrick/carrick-notification-manager.c:200
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "Ваше провдное подключение утрачено"
+msgstr "Ваше проводное подключение утрачено"
 
 #: ../carrick/carrick-notification-manager.c:204
 #, c-format
