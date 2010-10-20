@@ -1,10 +1,9 @@
-#
 # Pavel, 2010, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-29 15:57+0000\n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
 "PO-Revision-Date: 2004-01-01 03:38+0100\n"
 "Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -21,9 +20,17 @@ msgid "Devices panel"
 msgstr "Panel Zařízení"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "Zařízení"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Překročení času spánku"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Hodnota -1 znamená, že spánek nikdy nebude, ostatní hodnoty představují sekundy nepřetržitého nečinného stavu před spaním."
 
 #. translators:
 #. * The device has been disabled
@@ -57,44 +64,31 @@ msgstr "Systémové zvuky"
 msgid "MeeGo Power Icon"
 msgstr "MeeGo symbol pro stav elektrické energie"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "Baterie ztrácí sílu"
 
-#: ../power-icon/src/mpd-power-icon.c:77
-msgid ""
-"I've noticed that your battery is running a bit low. If you can, it would be "
-"a good idea to plug in and top up."
-msgstr ""
-"Bylo zjištěno, že baterie ztrácí sílu. Je-li to možné, bylo by dobré ji "
-"zapojit "
-"do elektrické sítě a dobít."
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Bylo zjištěno, že baterie ztrácí sílu. Je-li to možné, bylo by dobré ji zapojit do elektrické sítě a dobít."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "Baterie je téměř prázdná"
 
-#: ../power-icon/src/mpd-power-icon.c:81
-msgid ""
-"You're running quite low on battery. It'd be a good idea to save all your "
-"work and plug in as soon as you can."
-msgstr ""
-"Baterie je poměrně slabá. Opravdu by bylo dobré uložit celou vaši práci, "
-"a potom ji, jakmile to bude možné, připojit k síti a nechat ji nabít."
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "Baterie je poměrně slabá. Opravdu by bylo dobré uložit celou vaši práci, a potom ji, jakmile to bude možné, připojit k síti a nechat ji nabít."
 
-#: ../power-icon/src/mpd-power-icon.c:85
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "Nebezpečí!"
 
-#: ../power-icon/src/mpd-power-icon.c:86
-msgid ""
-"Sorry, your computer is about to run out of battery. I'm going to have to "
-"turn off now. Please save your work and hope to see you again soon."
-msgstr ""
-"Promiňte, ale váš počítač už je bez šťávy. Nyní bude vypnut. Uložte, "
-"prosím, všechnu svou práci a brzy na shledanou."
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Promiňte, ale váš počítač už je bez šťávy. Nyní bude vypnut. Uložte, prosím, všechnu svou práci a brzy na shledanou."
 
-#: ../power-icon/src/mpd-power-icon.c:429
+#: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "Baterie"
 
@@ -102,10 +96,8 @@ msgstr "Baterie"
 #, c-format
 msgid "If you don't decide, I'll turn off in %d second"
 msgid_plural "If you don't decide, I'll turn off in %d seconds"
-msgstr[0] ""
-"Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za %d sekundy."
-msgstr[1] ""
-"Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za %d sekund."
+msgstr[0] "Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za %d sekundy."
+msgstr[1] "Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za %d sekund."
 
 #: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
@@ -119,7 +111,7 @@ msgstr "Chcete nyní provést vypnutí?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za 30 sekund."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo panel Zařízení"
 
@@ -175,8 +167,7 @@ msgstr "Jiná zařízení"
 
 #: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
-msgstr ""
-"Vysunutí se nezdařilo. Vypadá to, že zařízení je používáno nějakým programem."
+msgstr "Vysunutí se nezdařilo. Vypadá to, že zařízení je používáno nějakým programem."
 
 #: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
@@ -184,12 +175,8 @@ msgstr "Toto zařízení lze nyní bezpečně vytáhnout."
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
-msgid ""
-"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
-"span>"
-msgstr ""
-"<span font-weight='bold'>Používáte</span> <span color='%s'>%d%% z %s</"
-"span>"
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Používáte</span> <span color='%s'>%d%% z %s</span>"
 
 #: ../src/mpd-folder-tile.c:186
 msgid "Trash"
@@ -228,11 +215,8 @@ msgstr "Otevřít"
 
 #: ../src/mpd-storage-device-tile.c:819
 #, c-format
-msgid ""
-"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr ""
-"<span font-weight='bold'>%s</span> používá <span color='%s'>%d%% z %s</"
-"span>"
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> používá <span color='%s'>%d%% z %s</span>"
 
 #: ../src/mpd-storage-device-tile.c:827
 #, c-format
@@ -289,20 +273,14 @@ msgstr "Ztlumit"
 #~ msgid "Meego Power Icon"
 #~ msgstr "Meego Energiesymbol"
 
-#~ msgid ""
-#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
-#~ "span>"
-#~ msgstr ""
-#~ "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%"
-#~ "d%%</span>"
+#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+#~ msgstr "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%d%%</span>"
 
 #~ msgid "Stop"
 #~ msgstr "Stop"
 
-#~ msgid ""
-#~ "%s nas been plugged in. You can use the Devices panel interact with it"
-#~ msgstr ""
-#~ "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
+#~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr "%s wurde angeschlossen. Du kannst es über das Panel Geräte benutzen."
 
 #~ msgid "USB plugged in"
 #~ msgstr "USB ist angeschlossen"
