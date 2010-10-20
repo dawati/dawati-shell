@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-20 17:50+0000\n"
-"PO-Revision-Date: 2010-07-01 15:42-0800\n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"PO-Revision-Date: 2010-10-20 14:15-0800\n"
 "Last-Translator: Pablo Barbecho <pablo.barbecho@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,9 +23,17 @@ msgid "Devices panel"
 msgstr "Panel de dispositivos"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:163
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "dispositivos"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Tiempo de espera de para la suspensión"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Un valor igual a -1 significa que nunca se produce la suspensión. Otros valores representan los segundos de inactividad continuada antes de que se produzca la suspensión."
 
 #. translators:
 #. * The device has been disabled
@@ -106,7 +114,7 @@ msgstr "¿Apagar el equipo?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Si no se decide nada, se apagará en 30 segundos."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "Panel de dispositivos de MeeGo"
 
@@ -264,1130 +272,861 @@ msgstr "Silencio"
 
 #~ msgid "Netbook volume"
 #~ msgstr "Volumen del miniordenador"
-
 #~ msgid "Meego Power Icon"
 #~ msgstr "Icono de energía Meego"
-
-#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
-#~ msgstr "<span font-weight='bold'>Importando datos</span> <span color='%s'>%d%%</span>"
-
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>Importando datos</span> <span color='%s'>%d%%</"
+#~ "span>"
 #~ msgid "Stop"
 #~ msgstr "Detener"
-
-#~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
-#~ msgstr "Se ha conectado %s. Puedes acceder a él en el panel de dispositivos."
-
+#~ msgid ""
+#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr ""
+#~ "Se ha conectado %s. Puedes acceder a él en el panel de dispositivos."
 #~ msgid "USB plugged in"
 #~ msgstr "USB conectado"
-
 #~ msgid "Show"
 #~ msgstr "Mostrar"
-
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
-
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
-
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
-
 #~ msgid "SecureDigital"
 #~ msgstr "SecureDigital"
-
 #~ msgid "SD High Capacity"
 #~ msgstr "Alta capacidad SD"
-
 #~ msgid "Floppy"
 #~ msgstr "Disco flexible"
-
 #~ msgid "Zip"
 #~ msgstr "Zip"
-
 #~ msgid "Jaz"
 #~ msgstr "Jaz"
-
 #~ msgid "CD"
 #~ msgstr "CD"
-
 #~ msgid "DVD"
 #~ msgstr "DVD"
-
 #~ msgid "Blu-Ray"
 #~ msgstr "Blu-Ray"
-
 #~ msgid "HDDVD"
 #~ msgstr "HDDVD"
-
 #~ msgid "%s Drive"
 #~ msgstr "Unidad %s"
-
 #~ msgid "%s %s Drive"
 #~ msgstr "Unidad %s %s"
-
 #~ msgid "%s Hard Disk"
 #~ msgstr "Disco duro %s"
-
 #~ msgid "Hard Disk"
 #~ msgstr "Disco duro"
-
 #~ msgid "%s Solid-State Disk"
 #~ msgstr "Disco de estado sólido %s"
-
 #~ msgid "Solid-State Disk"
 #~ msgstr "Disco de estado sólido"
-
 #~ msgid "%s Media"
 #~ msgstr "Multimedia %s"
-
 #~ msgid "No Media Detected"
 #~ msgstr "Ningún medio detectado"
-
 #~ msgid "MBR Partition Table"
 #~ msgstr "Tabla de partición MBR"
-
 #~ msgid "GUID Partition Table"
 #~ msgstr "Tabla de partición GUID"
-
 #~ msgid "Apple Partition Table"
 #~ msgstr "Tabla de partición Apple"
-
 #~ msgid "Partitioned"
 #~ msgstr "Particionado"
-
 #~ msgid "Not Partitioned"
 #~ msgstr "No particionado"
-
 #~ msgid "SAS Expander"
 #~ msgstr "Expansor SAS"
-
 #~ msgid "PATA Host Adapter"
 #~ msgstr "Adaptador host PATA"
-
 #~ msgid "SATA Host Adapter"
 #~ msgstr "Adaptador host SATA"
-
 #~ msgid "ATA Host Adapter"
 #~ msgstr "Adaptador host ATA"
-
 #~ msgid "SAS Host Adapter"
 #~ msgstr "Adaptador host SAS"
-
 #~ msgid "SCSI Host Adapter"
 #~ msgstr "Adaptador host SCSI"
-
 #~ msgid "Host Adapter"
 #~ msgstr "Adaptador host"
-
 #~ msgid "Volume Group"
 #~ msgstr "Volumen de grupo"
-
 #~ msgid "%s LVM2 Volume Group"
 #~ msgstr "Volumen de grupo %s LVM2"
-
 #~ msgid "LVM2 Volume Group"
 #~ msgstr "Volumen de grupo LVM2"
-
 #~ msgid "%s Free"
 #~ msgstr "%s Libres"
-
 #~ msgid "Unallocated Space"
 #~ msgstr "Espacio sin asignar"
-
 #~ msgid "LVM2 VG Unallocated Space"
 #~ msgstr "Espacio sin asignar LVM2 VG"
-
 #~ msgid "Logical Volume"
 #~ msgstr "Volumen lógico"
-
 #~ msgid "LVM2 Logical Volume"
 #~ msgstr "Volumen lógico LVM2"
-
 #~ msgid "%s %s Array"
 #~ msgstr "Conjunto %s %s"
-
 #~ msgid "%s Array"
 #~ msgstr "Conjunto %s"
-
 #~ msgid "RAID Array %s (%s)"
 #~ msgstr "Conjunto RAID %s (%s)"
-
 #~ msgid "RAID device %s"
 #~ msgstr "Dispositivo RAID %s"
-
 #~ msgctxt "RAID Level fallback"
 #~ msgid "RAID"
 #~ msgstr "RAID"
-
 #~ msgid "RAID Array"
 #~ msgstr "Conjunto RAID"
-
 #~ msgctxt "Linux MD slave state"
 #~ msgid "Not Attached"
 #~ msgstr "No adjuntado"
-
 #~ msgctxt "Linux MD slave state"
 #~ msgid "Faulty"
 #~ msgstr "Defectuoso"
-
 #~ msgctxt "Linux MD slave state"
 #~ msgid "Fully Synchronized"
 #~ msgstr "Completamente sincronizado"
-
 #~ msgctxt "Linux MD slave state"
 #~ msgid "Writemostly"
 #~ msgstr "Writemostly"
-
 #~ msgctxt "Linux MD slave state"
 #~ msgid "Blocked"
 #~ msgstr "Bloqueado"
-
 #~ msgctxt "Linux MD slave state"
 #~ msgid "Spare"
 #~ msgstr "Extra"
-
 #~ msgid "Local Storage"
 #~ msgstr "Almacenamiento local"
-
 #~ msgid "Storage on %s"
 #~ msgstr "Almacenamiento en %s"
-
 #~ msgid "Multipath Devices"
 #~ msgstr "Dispositivo multitrayecto"
-
 #~ msgid "Drives with multiple I/O paths"
 #~ msgstr "Unidad con múltiples rutas de E/S"
-
 #~ msgid "Multi-disk Devices"
 #~ msgstr "Dispositivos multi discos"
-
 #~ msgid "RAID, LVM and other logical drives"
 #~ msgstr "RAID, LVM y otros discos lógicos"
-
 #~ msgid "Peripheral Devices"
 #~ msgstr "Dispositivos periféricos"
-
 #~ msgid "USB, Firewire and other peripherals"
 #~ msgstr "USB, Firewire y otros periféricos"
-
 #~ msgid "Error enumerating devices: %s"
 #~ msgstr "Error enumerando dispositivos: %s"
-
 #~ msgid "Error enumerating adapters: %s"
 #~ msgstr "Error enumerando adaptadores: %s"
-
 #~ msgid "Error enumerating expanders: %s"
 #~ msgstr "Error enumerando expansores: %s"
-
 #~ msgid "Error enumerating ports: %s"
 #~ msgstr "Error enumerando puertos: %s"
-
 #~ msgid "Error listening to address `localhost:%d': %s: %s\n"
 #~ msgstr "Error escuchando dirección `localhost:%d': %s: %s\n"
-
-#~ msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
-#~ msgstr "Error al crear un servidor local TCP, intentando unir a los puertos del localhost 9000-10000"
-
+#~ msgid ""
+#~ "Error creating a local TCP server, tried binding to ports 9000-10000 on "
+#~ "localhost"
+#~ msgstr ""
+#~ "Error al crear un servidor local TCP, intentando unir a los puertos del "
+#~ "localhost 9000-10000"
 #~ msgid "Error setting auth mechanisms on local DBusServer\n"
 #~ msgstr "Error configurando mecanismos auténticos en DBusServer local\n"
-
 #~ msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-#~ msgstr "No se pudo analizar la línea de comandos `%s' (Malformed address?): %s"
-
+#~ msgstr ""
+#~ "No se pudo analizar la línea de comandos `%s' (Malformed address?): %s"
 #~ msgid "Unable to spawn ssh program: %s"
 #~ msgstr "No se pudo reproducir programa ssh: %s"
-
 #~ msgid "Error reading stderr output: %s"
 #~ msgstr "Error leyendo la salida stderr: %s"
-
 #~ msgid "Error reading stderr output: No content"
 #~ msgstr "Error leyendo la salida stderr: Sin contenido"
-
 #~ msgid "Error logging in"
 #~ msgstr "Error al inicio de sesión "
-
 #~ msgid "Error sending `%s': %s"
 #~ msgstr "Error al enviar `%s': %s"
-
-#~ msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
-#~ msgstr "Salida stderr inesperada - esperado `udisks-tcp-bridge: Esperando por secreto' pero se obtuvo `%s'"
-
+#~ msgid ""
+#~ "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for "
+#~ "secret' but got `%s'"
+#~ msgstr ""
+#~ "Salida stderr inesperada - esperado `udisks-tcp-bridge: Esperando por "
+#~ "secreto' pero se obtuvo `%s'"
 #~ msgid "Error passing authorization secret: %s"
 #~ msgstr "Error al pasar el secreto de autorización: %s"
-
 #~ msgid "Error reading stderr from: %s"
 #~ msgstr "Error leyendo stderr desde: %s"
-
-#~ msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
-#~ msgstr "Salida stderr inesperada - esperado `udisks-tcp-bridge: Intentando conectar al puerto %d' pero se obtuvo `%s'"
-
+#~ msgid ""
+#~ "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to "
+#~ "connect to port %d' but got `%s'"
+#~ msgstr ""
+#~ "Salida stderr inesperada - esperado `udisks-tcp-bridge: Intentando "
+#~ "conectar al puerto %d' pero se obtuvo `%s'"
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
 #~ msgstr "El programa udisks-tcp-bridge no pudo probar que fue autorizado: %s"
-
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized"
 #~ msgstr "El programa udisks-tcp-bridge no pudo probar que fue autorizado"
-
 #~ msgid "%s (%s bytes)"
 #~ msgstr "%s (%s bytes)"
-
 #~ msgid "FAT (12-bit version)"
 #~ msgstr "FAT (versión 12-bit)"
-
 #~ msgid "FAT"
 #~ msgstr "FAT"
-
 #~ msgid "FAT (16-bit version)"
 #~ msgstr "FAT (versión 16-bit)"
-
 #~ msgid "FAT (32-bit version)"
 #~ msgstr "FAT (versión 32-bit)"
-
 #~ msgid "NTFS (version %s)"
 #~ msgstr "NTFS (versión %s)"
-
 #~ msgid "NTFS"
 #~ msgstr "NTFS"
-
 #~ msgid "HFS"
 #~ msgstr "HFS"
-
 #~ msgid "HFS+"
 #~ msgstr "HFS+"
-
 #~ msgid "Linux Unified Key Setup"
 #~ msgstr "Configuración clave unificada Linux"
-
 #~ msgid "LUKS"
 #~ msgstr "LUKS"
-
 #~ msgid "Ext2 (version %s)"
 #~ msgstr "Ext2 (versión %s)"
-
 #~ msgid "Ext2"
 #~ msgstr "Ext2"
-
 #~ msgid "ext2"
 #~ msgstr "ext2"
-
 #~ msgid "Ext3 (version %s)"
 #~ msgstr "Ext3 (versión %s)"
-
 #~ msgid "Ext3"
 #~ msgstr "Ext3"
-
 #~ msgid "ext3"
 #~ msgstr "ext3"
-
 #~ msgid "Journal for Ext3 (version %s)"
 #~ msgstr "Diario para Ext3 (versión %s)"
-
 #~ msgid "Journal for Ext3"
 #~ msgstr "Diario para Ext3"
-
 #~ msgid "jbd"
 #~ msgstr "jbd"
-
 #~ msgid "Ext4 (version %s)"
 #~ msgstr "Ext4 (versión %s)"
-
 #~ msgid "Ext4"
 #~ msgstr "Ext4"
-
 #~ msgid "ext4"
 #~ msgstr "ext4"
-
 #~ msgid "XFS (version %s)"
 #~ msgstr "XFS (versión %s)"
-
 #~ msgid "XFS"
 #~ msgstr "XFS"
-
 #~ msgid "xfs"
 #~ msgstr "xfs"
-
 #~ msgid "ReiserFS (version %s)"
 #~ msgstr "ReiserFS (versión %s)"
-
 #~ msgid "ReiserFS"
 #~ msgstr "ReiserFS"
-
 #~ msgid "reiserfs"
 #~ msgstr "reiserfs"
-
 #~ msgid "ISO 9660"
 #~ msgstr "ISO 9660"
-
 #~ msgid "iso9660"
 #~ msgstr "iso9660"
-
 #~ msgid "Universal Disk Format"
 #~ msgstr "Formato de disco universal "
-
 #~ msgid "udf"
 #~ msgstr "udf"
-
 #~ msgid "Swap Space"
 #~ msgstr "Espacio Swap"
-
 #~ msgid "swap"
 #~ msgstr "swap"
-
 #~ msgid "LVM2 Physical Volume (version %s)"
 #~ msgstr "Volumen físico LVM2 (versión %s)"
-
 #~ msgid "LVM2 Physical Volume"
 #~ msgstr "Volumen físico LVM2"
-
 #~ msgid "lvm2_pv"
 #~ msgstr "lvm2_pv"
-
 #~ msgid "RAID Component (version %s)"
 #~ msgstr "Componente RAID (versión %s)"
-
 #~ msgid "RAID Component"
 #~ msgstr "Componente RAID"
-
 #~ msgid "raid"
 #~ msgstr "raid"
-
 #~ msgid "Minix"
 #~ msgstr "Minix"
-
 #~ msgid "minix"
 #~ msgstr "minix"
-
 #~ msgid "Creating File System"
 #~ msgstr "Creando archivo de sistema"
-
 #~ msgid "Mounting File System"
 #~ msgstr "Montando archivo de sistema"
-
 #~ msgid "Unmounting File System"
 #~ msgstr "Desmontando archivo de sistema"
-
 #~ msgid "Checking File System"
 #~ msgstr "Comprobando archivo de sistema"
-
 #~ msgid "Creating LUKS Device"
 #~ msgstr "Creando dispositivo LUKS"
-
 #~ msgid "Unlocking LUKS Device"
 #~ msgstr "Desbloqueando dispositivo LUKS"
-
 #~ msgid "Locking LUKS Device"
 #~ msgstr "Bloqueando dispositivo LUKS"
-
 #~ msgid "Creating Partition Table"
 #~ msgstr "Creando tabla de partición"
-
 #~ msgid "Deleting Partition"
 #~ msgstr "Eliminando partición"
-
 #~ msgid "Creating Partition"
 #~ msgstr "Creando partición"
-
 #~ msgid "Modifying Partition"
 #~ msgstr "Editando partición"
-
 #~ msgid "Setting Label for Device"
 #~ msgstr "Configurando etiqueta para dispositivo"
-
 #~ msgid "Changing Passphrase for Encrypted LUKS Device"
 #~ msgstr "Cambiando contraseña para dispositivos LUKS encriptados"
-
 #~ msgid "Adding Component to RAID Array"
 #~ msgstr "Añadiendo componente a conjunto RAID"
-
 #~ msgid "Removing Component from RAID Array"
 #~ msgstr "Eliminando componente de conjunto RAID"
-
 #~ msgid "Stopping RAID Array"
 #~ msgstr "Deteniendo conjunto RAID"
-
 #~ msgid "Starting RAID Array"
 #~ msgstr "Iniciando conjunto RAID"
-
 #~ msgid "Checking RAID Array"
 #~ msgstr "Comprobando conjunto RAID"
-
 #~ msgid "Repairing RAID Array"
 #~ msgstr "Reparando conjunto RAID"
-
 #~ msgid "Running Short SMART Self-Test"
 #~ msgstr "Ejecutando autoevaluación SMART corta"
-
 #~ msgid "Running Extended SMART Self-Test"
 #~ msgstr "Ejecutando autoevaluación SMART extendida"
-
 #~ msgid "Running Conveyance SMART Self-Test"
 #~ msgstr "Ejecutando autoevaluación SMART de transporte"
-
 #~ msgid "Ejecting Media"
 #~ msgstr "Expulsar multimedia"
-
 #~ msgid "Detaching Device"
 #~ msgstr "Separando dispositivo"
-
 #~ msgid "Forcibly Unmounting Filesystem"
 #~ msgstr "Desmontando forzadamente el archivo de sistema"
-
 #~ msgid "Forcibly Locking LUKS device"
 #~ msgstr "Bloqueando forzadamente el dispositivo LUKS"
-
 #~ msgid "Linux Basic Data Partition"
 #~ msgstr "Partición de datos básicos Linux"
-
 #~ msgid "Linux RAID Partition"
 #~ msgstr "Partición Linux RAID"
-
 #~ msgid "Linux Swap Partition"
 #~ msgstr "Partición Linux Swap"
-
 #~ msgid "Linux LVM Partition"
 #~ msgstr "Partición Linux LVM"
-
 #~ msgid "Linux Reserved Partition"
 #~ msgstr "Partición reservada Linux"
-
 #~ msgid "MBR Partition Scheme"
 #~ msgstr "Esquema de partición MBR"
-
 #~ msgid "EFI System Partition"
 #~ msgstr "Partición de sistema EFI"
-
 #~ msgid "BIOS Boot Partition"
 #~ msgstr "Partición de arranque BIOS"
-
 #~ msgid "Microsoft Reserved Partition"
 #~ msgstr "Partición reservada Microsoft"
-
 #~ msgid "Microsoft Basic Data Partition"
 #~ msgstr "Partición de datos básicos Microsoft"
-
 #~ msgid "Microsoft LDM Metadata Partition"
 #~ msgstr "Partición de Metadata LDM Microsoft"
-
 #~ msgid "Microsoft LDM Data Partition"
 #~ msgstr "Partición de datos LDM Microsoft"
-
 #~ msgid "Microsoft Windows Recovery Environment"
 #~ msgstr "Entorno de recuperación de Microsoft Windows"
-
 #~ msgid "HP-UX Data Partition"
 #~ msgstr "Partición da datos HP-UX "
-
 #~ msgid "HP-UX Service Partition"
 #~ msgstr "Partición de servicio HP-UX"
-
 #~ msgid "FreeBSD Boot Partition"
 #~ msgstr "Partición de arranque FreeBSD"
-
 #~ msgid "FreeBSD Data Partition"
 #~ msgstr "Partición de datos FreeBSD"
-
 #~ msgid "FreeBSD Swap Partition"
 #~ msgstr "Partición Swap FreeBSD"
-
 #~ msgid "FreeBSD UFS Partition"
 #~ msgstr "Partición UFS FreeBSD"
-
 #~ msgid "FreeBSD Vinum Partition"
 #~ msgstr "Partición Vinum FreeBSD"
-
 #~ msgid "FreeBSD ZFS Partition"
 #~ msgstr "Partición ZFS FreeBSD"
-
 #~ msgid "Solaris Boot Partition"
 #~ msgstr "Partición de arranque Solaris"
-
 #~ msgid "Solaris Root Partition"
 #~ msgstr "Partición de raíz Solaris"
-
 #~ msgid "Solaris Swap Partition"
 #~ msgstr "Partición Swap Solaris"
-
 #~ msgid "Solaris Backup Partition"
 #~ msgstr "Partición de copia de seguridad Solaris"
-
 #~ msgid "Solaris /usr Partition"
 #~ msgstr "Partición de /usr Solaris"
-
 #~ msgid "Solaris /var Partition"
 #~ msgstr "Patición de /var Solaris"
-
 #~ msgid "Solaris /home Partition"
 #~ msgstr "Partición /inicio Solaris"
-
 #~ msgid "Solaris Alternate Sector Partition"
 #~ msgstr "Partición de sector alterno Solaris"
-
 #~ msgid "Solaris Reserved Partition"
 #~ msgstr "Partición reservada Solaris"
-
 #~ msgid "Solaris Reserved Partition (2)"
 #~ msgstr "Partición reservada Solaris (2)"
-
 #~ msgid "Solaris Reserved Partition (3)"
 #~ msgstr "Partición reservada Solaris (3)"
-
 #~ msgid "Solaris Reserved Partition (4)"
 #~ msgstr "Partición reservada Solaris (4)"
-
 #~ msgid "Solaris Reserved Partition (5)"
 #~ msgstr "Partición reservada Solaris (5)"
-
 #~ msgid "Apple HFS/HFS+ Partition"
 #~ msgstr "Partición Apple HFS/HFS+"
-
 #~ msgid "Apple UFS Partition"
 #~ msgstr "Partición Apple UFS"
-
 #~ msgid "Apple ZFS Partition"
 #~ msgstr "Partición Apple ZFS"
-
 #~ msgid "Apple RAID Partition"
 #~ msgstr "Partición Apple RAID"
-
 #~ msgid "Apple RAID Partition (Offline)"
 #~ msgstr "Partición RAID Apple (fuera de línea)"
-
 #~ msgid "Apple Boot Partition"
 #~ msgstr "Partición de arranque Apple"
-
 #~ msgid "Apple Label Partition"
 #~ msgstr "Partición de etiqueta Apple"
-
 #~ msgid "Apple TV Recovery Partition"
 #~ msgstr "Partición de recuperación Apple TV"
-
 #~ msgid "NetBSD Swap Partition"
 #~ msgstr "Partición NetBSD Swap"
-
 #~ msgid "NetBSD FFS Partition"
 #~ msgstr "Partición NetBSD FFS"
-
 #~ msgid "NetBSD LFS Partition"
 #~ msgstr "Partición NetBSD LFS"
-
 #~ msgid "NetBSD RAID Partition"
 #~ msgstr "Partición NetBSD RAID"
-
 #~ msgid "NetBSD Concatenated  Partition"
 #~ msgstr "Partición concatenada NetBSD"
-
 #~ msgid "NetBSD Encrypted Partition"
 #~ msgstr "Partición encriptada NetBSD"
-
 #~ msgid "Apple Partition Map"
 #~ msgstr "Mapa de partición Apple"
-
 #~ msgid "Unused Partition"
 #~ msgstr "Partición no usada"
-
 #~ msgid "Empty Partition"
 #~ msgstr "Partición vacía"
-
 #~ msgid "Driver Partition"
 #~ msgstr "Partición de controladores"
-
 #~ msgid "Driver 4.3 Partition"
 #~ msgstr "Partición controlador 4.3"
-
 #~ msgid "ProDOS file system"
 #~ msgstr "Archivo de sistema ProDOS"
-
 #~ msgid "FAT 12"
 #~ msgstr "FAT 12"
-
 #~ msgid "FAT 16"
 #~ msgstr "FAT 16"
-
 #~ msgid "FAT 32"
 #~ msgstr "FAT 32"
-
 #~ msgid "FAT 16 (Windows)"
 #~ msgstr "FAT 16 (Windows)"
-
 #~ msgid "FAT 32 (Windows)"
 #~ msgstr "FAT 32 (Windows)"
-
 #~ msgid "Empty (0x00)"
 #~ msgstr "Vacío (0x00)"
-
 #~ msgid "FAT12 (0x01)"
 #~ msgstr "FAT12 (0x01)"
-
 #~ msgid "FAT16 <32M (0x04)"
 #~ msgstr "FAT16 <32M (0x04)"
-
 #~ msgid "Extended (0x05)"
 #~ msgstr "Extendido (0x05)"
-
 #~ msgid "FAT16 (0x06)"
 #~ msgstr "FAT16 (0x06)"
-
 #~ msgid "HPFS/NTFS (0x07)"
 #~ msgstr "HPFS/NTFS (0x07)"
-
 #~ msgid "W95 FAT32 (0x0b)"
 #~ msgstr "W95 FAT32 (0x0b)"
-
 #~ msgid "W95 FAT32 (LBA) (0x0c)"
 #~ msgstr "W95 FAT32 (LBA) (0x0c)"
-
 #~ msgid "W95 FAT16 (LBA) (0x0e)"
 #~ msgstr "W95 FAT16 (LBA) (0x0e)"
-
 #~ msgid "W95 Ext d (LBA) (0x0f)"
 #~ msgstr "W95 Ext d (LBA) (0x0f)"
-
 #~ msgid "OPUS (0x10)"
 #~ msgstr "OPUS (0x10)"
-
 #~ msgid "Hidden FAT12 (0x11)"
 #~ msgstr "FAT12 (0x11) Oculto"
-
 #~ msgid "Compaq diagnostics (0x12)"
 #~ msgstr "Diagnósticos Compaq (0x12)"
-
 #~ msgid "Hidden FAT16 <32M (0x14)"
 #~ msgstr "FAT16 <32M (0x14) Oculto"
-
 #~ msgid "Hidden FAT16 (0x16)"
 #~ msgstr "FAT16 (0x16) Oculto"
-
 #~ msgid "Hidden HPFS/NTFS (0x17)"
 #~ msgstr "HPFS/NTFS (0x17) Oculto"
-
 #~ msgid "Hidden W95 FAT32 (0x1b)"
 #~ msgstr "FAT32 (0x1b) W95 Oculto"
-
 #~ msgid "Hidden W95 FAT32 (LBA) (0x1c)"
 #~ msgstr "FAT32 (LBA) (0x1c) W95 Oculto"
-
 #~ msgid "Hidden W95 FAT16 (LBA) (0x1e)"
 #~ msgstr "FAT16 (LBA) (0x1e) W95 Oculto"
-
 #~ msgid "PartitionMagic (0x3c)"
 #~ msgstr "PartitionMagic (0x3c)"
-
 #~ msgid "Minix (0x81)"
 #~ msgstr "Minix (0x81)"
-
 #~ msgid "Linux swap (0x82)"
 #~ msgstr "Linux swap (0x82)"
-
 #~ msgid "Linux (0x83)"
 #~ msgstr "Linux (0x83)"
-
 #~ msgid "Hibernation (0x84)"
 #~ msgstr "Hibernación (0x84)"
-
 #~ msgid "Linux Extended (0x85)"
 #~ msgstr "Linux Extendido (0x85)"
-
 #~ msgid "Linux LVM (0x8e)"
 #~ msgstr "Linux LVM (0x8e)"
-
 #~ msgid "Hibernation (0xa0)"
 #~ msgstr "Hibernación (0xa0)"
-
 #~ msgid "FreeBSD (0xa5)"
 #~ msgstr "FreeBSD (0xa5)"
-
 #~ msgid "OpenBSD (0xa6)"
 #~ msgstr "OpenBSD (0xa6)"
-
 #~ msgid "Mac OS X (0xa8)"
 #~ msgstr "SO Mac X (0xa8)"
-
 #~ msgid "Mac OS X (0xaf)"
 #~ msgstr "SO Mac X (0xaf)"
-
 #~ msgid "Solaris boot (0xbe)"
 #~ msgstr "Arranque Solaris (0xbe)"
-
 #~ msgid "Solaris (0xbf)"
 #~ msgstr "Solaris (0xbf)"
-
 #~ msgid "BeOS BFS (0xeb)"
 #~ msgstr "BeOS BFS (0xeb)"
-
 #~ msgid "SkyOS SkyFS (0xec)"
 #~ msgstr "SkyOS SkyFS (0xec)"
-
 #~ msgid "EFI GPT (0xee)"
 #~ msgstr "EFI GPT (0xee)"
-
 #~ msgid "EFI (FAT-12/16/32 (0xef)"
 #~ msgstr "EFI (FAT-12/16/32 (0xef)"
-
 #~ msgid "Linux RAID autodetect (0xfd)"
 #~ msgstr "RAID Linux autodetectada (0xfd)"
-
 #~ msgid "Unknown (%s)"
 #~ msgstr "Desconocido (%s)"
-
-#~ msgid "A popular format compatible with almost any device or system, typically used for file exchange."
-#~ msgstr "Un formato popular compatible con casi cualquier dispositivo o sistema, usado típicamente para el intercambio de archivos."
-
-#~ msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
-#~ msgstr "Este sistema de archivos es compatible únicamente con los sistemas Linux y proporciona la ayuda clásica de los permisos de archivo UNIX. Este sistema de archivos no utiliza un diario."
-
-#~ msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
-#~ msgstr "Este sistema de archivos es compatible únicamente con los sistemas Linux y proporciona la ayuda clásica de los permisos de archivo UNIX. "
-
+#~ msgid ""
+#~ "A popular format compatible with almost any device or system, typically "
+#~ "used for file exchange."
+#~ msgstr ""
+#~ "Un formato popular compatible con casi cualquier dispositivo o sistema, "
+#~ "usado típicamente para el intercambio de archivos."
+#~ msgid ""
+#~ "This file system is compatible with Linux systems only and provides "
+#~ "classic UNIX file permissions support. This file system does not use a "
+#~ "journal."
+#~ msgstr ""
+#~ "Este sistema de archivos es compatible únicamente con los sistemas Linux "
+#~ "y proporciona la ayuda clásica de los permisos de archivo UNIX. Este "
+#~ "sistema de archivos no utiliza un diario."
+#~ msgid ""
+#~ "This file system is compatible with Linux systems only and provides "
+#~ "classic UNIX file permissions support."
+#~ msgstr ""
+#~ "Este sistema de archivos es compatible únicamente con los sistemas Linux "
+#~ "y proporciona la ayuda clásica de los permisos de archivo UNIX. "
 #~ msgid "Swap area used by the operating system for virtual memory."
 #~ msgstr "Área Swap usada por el sistema operativo para la memoria virtual."
-
-#~ msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
-#~ msgstr "El sistema de archivos nativo de Windows. No extensamente compatible con otros sistemas operativos que Windows."
-
-#~ msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
-#~ msgstr "Sistema de archivos simple con bajo coste indirecto y permisos de ayuda de UNIX. No extensamente compatible con otros sistemas operativos que Linux y Minix."
-
+#~ msgid ""
+#~ "The native Windows file system. Not widely compatible with other "
+#~ "operating systems than Windows."
+#~ msgstr ""
+#~ "El sistema de archivos nativo de Windows. No extensamente compatible con "
+#~ "otros sistemas operativos que Windows."
+#~ msgid ""
+#~ "Simple filesystem with low overhead and UNIX permissions support. Not "
+#~ "widely compatible with other operating systems than Linux and Minix."
+#~ msgstr ""
+#~ "Sistema de archivos simple con bajo coste indirecto y permisos de ayuda "
+#~ "de UNIX. No extensamente compatible con otros sistemas operativos que "
+#~ "Linux y Minix."
 #~ msgid "No file system will be created."
 #~ msgstr "No se creará ningún sistema de archivos"
-
 #~ msgid "Create an Extended Partition for logical partitions."
 #~ msgstr "Crea una partición extendida para particiones lógicas."
-
-#~ msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
-#~ msgstr "El esquema de registro principal de arranque es compatible es compatible con casi cualquier dispositivo o sistema pero tiene un número de limitaciones con respecto al tamaño de disco y al número de particiones."
-
-#~ msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
-#~ msgstr "Un esquema anterior que es incompatible con la mayoría de los sistemas excepto los de Apple y la mayoría de los Linux. No recomendado para medios extraíbles."
-
-#~ msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
-#~ msgstr "El esquema GUID es compatible con la mayoría de los sistemas modernos pero puede ser incompatible con algunos dispositivos y sistemas anteriores."
-
-#~ msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
-#~ msgstr "Marca el disco entero como no utilizado. Utiliza esta opción solamente si quieres evitar particionar el disco; por ejemplo disco entero o discos Zip."
-
+#~ msgid ""
+#~ "The Master Boot Record scheme is compatible with almost any device or "
+#~ "system but has a number of limitations with respect to disk size and "
+#~ "number of partitions."
+#~ msgstr ""
+#~ "El esquema de registro principal de arranque es compatible es compatible "
+#~ "con casi cualquier dispositivo o sistema pero tiene un número de "
+#~ "limitaciones con respecto al tamaño de disco y al número de particiones."
+#~ msgid ""
+#~ "A legacy scheme that is incompatible with most systems except Apple "
+#~ "systems and most Linux systems. Not recommended for removable media."
+#~ msgstr ""
+#~ "Un esquema anterior que es incompatible con la mayoría de los sistemas "
+#~ "excepto los de Apple y la mayoría de los Linux. No recomendado para "
+#~ "medios extraíbles."
+#~ msgid ""
+#~ "The GUID scheme is compatible with most modern systems but may be "
+#~ "incompatible with some devices and legacy systems."
+#~ msgstr ""
+#~ "El esquema GUID es compatible con la mayoría de los sistemas modernos "
+#~ "pero puede ser incompatible con algunos dispositivos y sistemas "
+#~ "anteriores."
+#~ msgid ""
+#~ "Marks the entire disk as unused. Use this option only if you want to "
+#~ "avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
+#~ msgstr ""
+#~ "Marca el disco entero como no utilizado. Utiliza esta opción solamente si "
+#~ "quieres evitar particionar el disco; por ejemplo disco entero o discos "
+#~ "Zip."
 #~ msgid "LUKS Passphrase for UUID %s"
 #~ msgstr "Contraseña LUKS para UUID %s"
-
 #~ msgid "%.1f KB/s"
 #~ msgstr "%.1f KB/s"
-
 #~ msgid "%.1f MB/s"
 #~ msgstr "%.1f MB/s"
-
 #~ msgid "%.1f GB/s"
 #~ msgstr "%.1f GB/s"
-
 #~ msgid "SATA"
 #~ msgstr "SATA"
-
 #~ msgid "eSATA"
 #~ msgstr "eSATA"
-
 #~ msgid "PATA"
 #~ msgstr "PATA"
-
 #~ msgid "ATA"
 #~ msgstr "ATA"
-
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
-
 #~ msgid "USB"
 #~ msgstr "USB"
-
 #~ msgid "Firewire"
 #~ msgstr "Firewire"
-
 #~ msgid "SDIO"
 #~ msgstr "SDIO"
-
 #~ msgid "Virtual"
 #~ msgstr "Virtual"
-
 #~ msgctxt "connection name"
 #~ msgid "Unknown"
 #~ msgstr "Desconocido"
-
 #~ msgid "%s at %s"
 #~ msgstr "%s en %s"
-
 #~ msgctxt "RAID level"
 #~ msgid "Stripe (RAID-0)"
 #~ msgstr "División (RAID-0)"
-
 #~ msgctxt "RAID level"
 #~ msgid "RAID-0"
 #~ msgstr "RAID-0"
-
 #~ msgctxt "RAID level"
 #~ msgid "Mirror (RAID-1)"
 #~ msgstr "Espejo (RAID-1)"
-
 #~ msgctxt "RAID level"
 #~ msgid "RAID-1"
 #~ msgstr "RAID-1"
-
 #~ msgctxt "RAID level"
 #~ msgid "Parity Disk (RAID-4)"
 #~ msgstr "Disco de paridad (RAID-4)"
-
 #~ msgctxt "RAID level"
 #~ msgid "RAID-4"
 #~ msgstr "RAID-4"
-
 #~ msgctxt "RAID level"
 #~ msgid "Distributed Parity (RAID-5)"
 #~ msgstr "Paridad distribuida (RAID-5)"
-
 #~ msgctxt "RAID level"
 #~ msgid "RAID-5"
 #~ msgstr "RAID-5"
-
 #~ msgctxt "RAID level"
 #~ msgid "Dual Distributed Parity (RAID-6)"
 #~ msgstr "Distribución de paridad dual (RAID-6)"
-
 #~ msgctxt "RAID level"
 #~ msgid "RAID-6"
 #~ msgstr "RAID-6"
-
 #~ msgctxt "RAID level"
 #~ msgid "Stripe of Mirrors (RAID-10)"
 #~ msgstr "División de espejos (RAID-10)"
-
 #~ msgctxt "RAID level"
 #~ msgid "RAID-10"
 #~ msgstr "RAID-10"
-
 #~ msgctxt "RAID level"
 #~ msgid "Concatenated (Linear)"
 #~ msgstr "Concatenado (linear)"
-
 #~ msgctxt "RAID level"
 #~ msgid "Linear"
 #~ msgstr "Linear"
-
-#~ msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
-#~ msgstr "División configurada sin paridad. Proporciona mejor funcionamiento pero no tolerancia a fallos. Si sólo un disco del conjunto falla, el conjunto completo RAID-0 falla."
-
-#~ msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
-#~ msgstr "Sistema reflejado sin paridad. Proporciona tolerancia de fallos y funcionamiento mejorado para lectura. Los conjuntos RAID-1 pueden sostener el fallo de todos los discos menos uno."
-
-#~ msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
-#~ msgstr "División configurada con paridad en un único disco. Proporciona mejor funcionamiento  y tolerancia a fallos. Los conjuntos RAID-4 pueden sostener el fallo de un sólo disco."
-
-#~ msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
-#~ msgstr "División configurada con paridad distribuida. Proporciona mejor funcionamiento  y tolerancia a fallos. Los conjuntos RAID-5 pueden sostener el fallo de un sólo disco."
-
-#~ msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
-#~ msgstr "División configurada con paridad distribuida dual. Proporciona mejor funcionamiento  y tolerancia a  fallos. Los conjuntos RAID-6 pueden sostener el fallo de dos discos."
-
-#~ msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
-#~ msgstr "División configurada con paridad distribuida. Proporciona mejor funcionamiento  y tolerancia a  fallos. Los conjuntos RAID-10 puede sostenerla  pérdida de múltiples unidades siempre y cuando ningún espejo pierda todas sus unidades."
-
+#~ msgid ""
+#~ "Striped set without parity. Provides improved performance but no fault "
+#~ "tolerance. If a single disk in the array fails, the entire RAID-0 array "
+#~ "fails."
+#~ msgstr ""
+#~ "División configurada sin paridad. Proporciona mejor funcionamiento pero "
+#~ "no tolerancia a fallos. Si sólo un disco del conjunto falla, el conjunto "
+#~ "completo RAID-0 falla."
+#~ msgid ""
+#~ "Mirrored set without parity. Provides fault tolerance and improved "
+#~ "performance for reading. RAID-1 arrays can sustain all but one disk "
+#~ "failing."
+#~ msgstr ""
+#~ "Sistema reflejado sin paridad. Proporciona tolerancia de fallos y "
+#~ "funcionamiento mejorado para lectura. Los conjuntos RAID-1 pueden "
+#~ "sostener el fallo de todos los discos menos uno."
+#~ msgid ""
+#~ "Striped set with parity on a single disk. Provides improved performance "
+#~ "and fault tolerance. RAID-4 arrays can sustain a single disk failure."
+#~ msgstr ""
+#~ "División configurada con paridad en un único disco. Proporciona mejor "
+#~ "funcionamiento  y tolerancia a fallos. Los conjuntos RAID-4 pueden "
+#~ "sostener el fallo de un sólo disco."
+#~ msgid ""
+#~ "Striped set with distributed parity. Provides improved performance and "
+#~ "fault tolerance. RAID-5 arrays can sustain a single disk failure."
+#~ msgstr ""
+#~ "División configurada con paridad distribuida. Proporciona mejor "
+#~ "funcionamiento  y tolerancia a fallos. Los conjuntos RAID-5 pueden "
+#~ "sostener el fallo de un sólo disco."
+#~ msgid ""
+#~ "Striped set with dual distributed parity. Provides improved performance "
+#~ "and fault tolerance. RAID-6 arrays can sustain two disk failures."
+#~ msgstr ""
+#~ "División configurada con paridad distribuida dual. Proporciona mejor "
+#~ "funcionamiento  y tolerancia a  fallos. Los conjuntos RAID-6 pueden "
+#~ "sostener el fallo de dos discos."
+#~ msgid ""
+#~ "Striped set with distributed parity. Provides improved performance and "
+#~ "fault tolerance. RAID-10 arrays can sustain multiple drive losses so long "
+#~ "as no mirror loses all its drives."
+#~ msgstr ""
+#~ "División configurada con paridad distribuida. Proporciona mejor "
+#~ "funcionamiento  y tolerancia a  fallos. Los conjuntos RAID-10 puede "
+#~ "sostenerla  pérdida de múltiples unidades siempre y cuando ningún espejo "
+#~ "pierda todas sus unidades."
 #~ msgid "Unknown RAID level %s."
 #~ msgstr "Nivel RAID desconocido %s."
-
 #~ msgid "Disk is healthy"
 #~ msgstr "Disco en buen estado"
-
 #~ msgid "Disk was used outside of design parameters in the past"
-#~ msgstr "El disco fue anteriormente utilizado fuera de los parámetros de diseño"
-
+#~ msgstr ""
+#~ "El disco fue anteriormente utilizado fuera de los parámetros de diseño"
 #~ msgid "Disk has a few bad sectors"
 #~ msgstr "El disco tiene algunos sectores defectuosos"
-
 #~ msgid "DISK IS BEING USED OUTSIDE DESIGN PARAMETERS"
 #~ msgstr "EL DISCO ESTÁ SIENDO USADO FUERA DE LOS PARÁMETROS DE DISEÑO"
-
 #~ msgid "Backup all data and replace the disk"
 #~ msgstr "Realiza una copia de seguridad de los datos y reemplaza el disco"
-
 #~ msgid "DISK HAS MANY BAD SECTORS"
 #~ msgstr "EL DISCO TIENE MUCHOS SECTORES DEFECTUOSOS"
-
 #~ msgid "DISK FAILURE IS IMMINENT"
 #~ msgstr "EL FALLO DEL DISCO ES INMINENTE"
-
 #~ msgid "Unknown"
 #~ msgstr "Desconocido"
-
 #~ msgid "CD-ROM Disc"
 #~ msgstr "Disco CD-ROM"
-
 #~ msgid "Blank CD-ROM Disc"
 #~ msgstr "Disco CD-ROM en blanco"
-
 #~ msgid "CD-R Disc"
 #~ msgstr "Disco CD-R"
-
 #~ msgid "Blank CD-R Disc"
 #~ msgstr "Disco CD-R en blanco"
-
 #~ msgid "CD-RW Disc"
 #~ msgstr "Disco CD-RW"
-
 #~ msgid "Blank CD-RW Disc"
 #~ msgstr "Disco CD-RW en blanco"
-
 #~ msgid "DVD-ROM Disc"
 #~ msgstr "Disco DVD-ROM"
-
 #~ msgid "Blank DVD-ROM Disc"
 #~ msgstr "Disco DVD-ROM en blanco"
-
 #~ msgid "DVD-RW Disc"
 #~ msgstr "Disco DVD-RW"
-
 #~ msgid "Blank DVD-RW Disc"
 #~ msgstr "Disco DVD-RW en blanco"
-
 #~ msgid "DVD-RAM Disc"
 #~ msgstr "Disco DVD-RAM"
-
 #~ msgid "Blank DVD-RAM Disc"
 #~ msgstr "Disco DVD-RAM en blanco"
-
 #~ msgid "DVD+R Disc"
 #~ msgstr "Disco DVD+R"
-
 #~ msgid "Blank DVD+R Disc"
 #~ msgstr "Disco DVD+R en blanco"
-
 #~ msgid "DVD+RW Disc"
 #~ msgstr "Disco DVD+RW"
-
 #~ msgid "Blank DVD+RW Disc"
 #~ msgstr "Disco DVD+RW en blanco"
-
 #~ msgid "DVD+R DL Disc"
 #~ msgstr "Disco DVD+R DL"
-
 #~ msgid "Blank DVD+R DL Disc"
 #~ msgstr "Disco DVD+R DL en blanco"
-
 #~ msgid "DVD+RW DL Disc"
 #~ msgstr "Disco DVD+RW DL"
-
 #~ msgid "Blank DVD+RW DL Disc"
 #~ msgstr "Disco DVD+RW DL en blanco"
-
 #~ msgid "Blu-Ray Disc"
 #~ msgstr "Disco Blu-Ray"
-
 #~ msgid "Blank Blu-Ray Disc"
 #~ msgstr "Disco Blu-Ray en blanco"
-
 #~ msgid "Blu-Ray R Disc"
 #~ msgstr "Disco Blu-Ray R"
-
 #~ msgid "Blank Blu-Ray R Disc"
 #~ msgstr "Disco Blu-Ray R en blanco"
-
 #~ msgid "Blu-Ray RW Disc"
 #~ msgstr "Disco Blu-Ray RW"
-
 #~ msgid "Blank Blu-Ray RW Disc"
 #~ msgstr "Disco Blu-Ray RW en blanco"
-
 #~ msgid "HD DVD Disc"
 #~ msgstr "Disco HD DVD"
-
 #~ msgid "Blank HD DVD Disc"
 #~ msgstr "Disco HD DVD en blanco"
-
 #~ msgid "HD DVD-R Disc"
 #~ msgstr "Disco HD DVD-R"
-
 #~ msgid "Blank HD DVD-R Disc"
 #~ msgstr "Disco HD DVD-R en blanco"
-
 #~ msgid "HD DVD-RW Disc"
 #~ msgstr "Disco HD DVD-RW"
-
 #~ msgid "Blank HD DVD-RW Disc"
 #~ msgstr "Disco HD DVD-RW en blanco"
-
 #~ msgid "MO Disc"
 #~ msgstr "Disco MO"
-
 #~ msgid "Blank MO Disc"
 #~ msgstr "Disco MO en blanco"
-
 #~ msgid "MRW Disc"
 #~ msgstr "Disco MRW"
-
 #~ msgid "Blank MRW Disc"
 #~ msgstr "Disco MRW en blanco"
-
 #~ msgid "MRW/W Disc"
 #~ msgstr "Disco MRW/W"
-
 #~ msgid "Blank MRW/W Disc"
 #~ msgstr "Disco MRW/W en blanco"
-
 #~ msgid "Blank Optical Disc"
 #~ msgstr "Disco óptico en blanco"
-
 #~ msgid "%s Extended"
 #~ msgstr "Extendido %s"
-
 #~ msgid "Contains logical partitions"
 #~ msgstr "Contiene particiones lógicas"
-
 #~ msgid "%s Encrypted"
 #~ msgstr "Encriptado %s"
-
 #~ msgid "Optical Disc"
 #~ msgstr "Disco óptico"
-
 #~ msgid "%s Filesystem"
 #~ msgstr "Archivo de sistema %s"
-
 #~ msgid "%s Partition Table"
 #~ msgstr "Tabla de partición %s"
-
 #~ msgid "%s LVM2 Physical Volume"
 #~ msgstr "Volumen físico LVM2 %s"
-
 #~ msgctxt "RAID level"
 #~ msgid "RAID"
 #~ msgstr "RAID"
-
 #~ msgid "%s %s Component"
 #~ msgstr "Componente %s %s"
-
 #~ msgid "Part of \"%s\" array"
 #~ msgstr "Parte del conjunto \"%s\""
-
 #~ msgid "%s Swap Space"
 #~ msgstr "Espacio swap %s"
-
 #~ msgid "%s Data"
 #~ msgstr "Datos %s"
-
 #~ msgid "%s Unrecognized"
 #~ msgstr "Desconocido %s"
-
 #~ msgid "Unknown or Unused"
 #~ msgstr "Desconocido o no utilizado"
-
 #~ msgid "%s Partition"
 #~ msgstr "Partición %s "
-
 #~ msgid "Partition %d of %s"
 #~ msgstr "Partición %d de %s"
-
 #~ msgid "Partition %d"
 #~ msgstr "Partición %d"
-
 #~ msgid "Whole-disk volume on %s"
 #~ msgstr "Volumen de disco entero en %s"
-
 #~ msgid "Whole-disk volume"
 #~ msgstr "Volumen de disco entero"
-
 #~ msgid "You are using %d%% of %s"
 #~ msgstr "Estás usando %d%% of %s"
-
 #~ msgid "Using %d%% of %s"
 #~ msgstr "Usando %d%% of %s"
+
