@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-23 09:22+0000\n"
-"PO-Revision-Date: 2010-07-01 13:27-0800\n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"PO-Revision-Date: 2010-10-19 19:27-0800\n"
 "Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,14 +19,22 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Панель устройств"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "устройства"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Истечение времени ожидания в спящем режиме"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Значение -1 индицирует отсутствие сна, в то время как другие значения указывают на длительность (в секундах) непрерывного режима простоя перед переходом в спящий режим."
 
 #. translators:
 #. * The device has been disabled
@@ -56,35 +64,35 @@ msgstr[1] "%u вводы"
 msgid "System Sounds"
 msgstr "Системные звуки"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "Значок электропитания MeeGo"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "Заряд батареи на исходе"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:78
 msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "Заряд батареи на исходе. При возможности подключите шнур питания и зарядите ее."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "Заряд практически исчерпан"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:82
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "Заряд батареи практически исчерпан. Сохраните результаты своей работы и как можно быстрее подключите шнур питания."
 
-#: ../power-icon/src/mpd-power-icon.c:85
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "Внимание!"
 
-#: ../power-icon/src/mpd-power-icon.c:86
+#: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Заряд батареи исчерпан и компьютер будет выключен. Сохраните свою работу, и до скорой встречи!"
 
-#: ../power-icon/src/mpd-power-icon.c:439
+#: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "батарея"
 
@@ -107,7 +115,7 @@ msgstr "Отключить питание немедленно?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "Панель устройств MeeGo"
 
