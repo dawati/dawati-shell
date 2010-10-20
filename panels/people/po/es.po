@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Meego UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:35+0000\n"
+"POT-Creation-Date: 2010-10-19 16:57+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Gonzalo <gonzalo.velasquez@ptiglobal.net>\n"
+"Last-Translator: Pablo Barbecho <pablo.barbecho@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,64 +14,70 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 # <mousetip of the top of the screen>
-#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:476
+#: ../src/meego-panel-people.c:88
+#: ../src/mnb-people-panel.c:513
 #: ../data/meego-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "gente"
 
-#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#: ../src/mnb-people-panel.c:56
+msgid "When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "Cuando tengas configurado un servicio IM (como Messenger) aquí es donde podrás chatear."
+
+#: ../src/mnb-people-panel.c:191
+#: ../src/mnb-people-panel.c:451
 #, c-format
 msgid "Open %s"
 msgstr "Abrir %s"
 
-# We didn't find anybody. Do you already have an account in any Instant
-# Messenger (service)?
-#: ../src/mnb-people-panel.c:231
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Lo sentimos, no encontramos a nadie. ¿Tienes ya una cuenta en Messenger?"
+#: ../src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr "Este es el panel Gente."
 
 # We didn't find anybody. Do you already have an account in any Instant
 # Messenger (service)?
-#: ../src/mnb-people-panel.c:283
+#: ../src/mnb-people-panel.c:320
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Lo sentimos, no encontramos a nadie. Parece que están todos fuera de línea."
 
-#: ../src/mnb-people-panel.c:328
+#: ../src/mnb-people-panel.c:365
 msgid "To see your IM contacts, you need to go online."
 msgstr "Para ver tus contactos en IM, ponte en línea."
 
-#: ../src/mnb-people-panel.c:458
+#: ../src/mnb-people-panel.c:495
 #, c-format
 msgid "people - you are chatting with %d people"
 msgstr "Estás chateando con %d personas"
 
-#: ../src/mnb-people-panel.c:465
+#: ../src/mnb-people-panel.c:502
 msgid "people - you are chatting with someone"
 msgstr "Estás chateando con alguien"
 
 #. Populate header
-#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
+#: ../src/mnb-people-panel.c:710
+#: ../src/mnb-people-panel.c:964
 msgid "People"
 msgstr "Gente"
 
-#: ../src/mnb-people-panel.c:689
+#: ../src/mnb-people-panel.c:723
 msgid "Search"
 msgstr "Búsqueda"
 
-#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
+#: ../src/mnb-people-panel.c:774
+#: ../src/mnb-people-panel.c:1162
 msgid "You are chatting with:"
 msgstr "Estás chateando con:"
 
-#: ../src/mnb-people-panel.c:947
+#: ../src/mnb-people-panel.c:981
 msgid "Me and my people"
 msgstr "Mi gente y yo"
 
-#: ../src/mnb-people-panel.c:985
+#: ../src/mnb-people-panel.c:1019
 msgid "Me"
 msgstr "Yo"
 
 #. Side table
-#: ../src/mnb-people-panel.c:1086
+#: ../src/mnb-people-panel.c:1119
 msgid "My conversations"
 msgstr "Mis conversaciones"
 
@@ -79,30 +85,3 @@ msgstr "Mis conversaciones"
 msgid "People panel"
 msgstr "Gente"
 
-#: ../src/mnb-people-panel.c:57
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
-msgstr "¡Hola! Éste es el panel Gente. Cuando tengas configurado un servicio IM (como Messenger) aquí es donde podrás chatear."
-
-#~ msgid "people - %d people are talking to you"
-#~ msgstr "gente - personas conversando contigo: %d"
-
-#~ msgid "people - Someone is talking to you"
-#~ msgstr "gente - hay alguien conversando contigo"
-
-#~ msgid "People talking to you ..."
-#~ msgstr "Hay gente conversando contigo..."
-
-#~ msgid "Send an email"
-#~ msgstr "Enviar un correo electrónico"
-
-#~ msgid "Edit details"
-#~ msgstr "Editar detalles"
-
-#~ msgid "Send a message"
-#~ msgstr "Enviar un mensaje"
-
-#~ msgid "Selection"
-#~ msgstr "Selección"
-
-#~ msgid "Nobody selected"
-#~ msgstr "Nadie seleccionado"
