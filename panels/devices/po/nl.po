@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-23 09:22+0000\n"
-"PO-Revision-Date: 2010-09-16 22:59-0800\n"
-"Last-Translator: GLS_NLD <albert.dijkstra@ptiglobal.net>\n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"PO-Revision-Date: 2010-10-19 22:00-0800\n"
+"Last-Translator: helen martin <helen.martin@ptiglobal.net>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -18,14 +18,22 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Apparaten paneel"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "apparaten"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Slaap time-out"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Waarde van -1 betekent nooit slapen, andere waarden zijn seconden continue ruststand voor het slapen gaan."
 
 #. translators:
 #. * The device has been disabled
@@ -55,35 +63,35 @@ msgstr[1] "%u invoeren"
 msgid "System Sounds"
 msgstr "Systeemgeluid"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/meego-power-icon.c:46
 msgid "MeeGo Power Icon"
 msgstr "MeeGo Energie pictogram"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "De batterij is bijna leeg"
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:78
 msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "De batterij begint leeg te raken. Dit is een goed moment om de stroom aan te sluiten en de batterij op te laden."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "De batterij begint leeg te raken"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:82
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "De batterij is erg leeg. Probeer zo spoedig mogelijk om al je werk op te slaan, en de stroom aan te sluiten."
 
-#: ../power-icon/src/mpd-power-icon.c:85
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "Gevaar!"
 
-#: ../power-icon/src/mpd-power-icon.c:86
+#: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Sorry, je batterij is bijna helemaal leeg. We sluiten nu automatisch af. Sla alsjeblieft je werk op. Tot snel!"
 
-#: ../power-icon/src/mpd-power-icon.c:439
+#: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
 msgstr "batterij"
 
@@ -106,7 +114,7 @@ msgstr "Wil je nu afsluiten?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Als je niet beslist sluit ik in 30 seconden af"
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo Apparaten paneel"
 
