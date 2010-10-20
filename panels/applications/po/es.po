@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Meego UX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-14 09:36+0000\n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLS_ESPX <gonzalo.velasquez@ptiglobal.net>\n"
+"Last-Translator: Pablo Barbecho <pablo.barbecho@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,36 +13,41 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+#: ../src/mnb-filter.c:161
+msgid "Search"
+msgstr "Buscar"
+
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1333
+#: ../src/meego-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "Aplicaciones"
 
-# <mousetip of the top of the screen>
-#: ../src/meego-netbook-launcher.c:1347
-msgid "Your applications"
-msgstr "Tus aplicaciones"
-
-# <mousetip of the top of the screen>
-#: ../src/meego-netbook-launcher.c:1374
-msgid "Search for applications"
-msgstr "Buscar aplicaciones"
-
-#. Fav apps
-#: ../src/meego-netbook-launcher.c:1383
+#.
+#. * Fav apps pane
+#.
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Aplicaciones preferidas"
 
 # <mousetip of the top of the screen>
-#: ../src/meego-panel-applications.c:197
+#.
+#. * Applications
+#.
+#: ../src/meego-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Tus aplicaciones"
+
+# <mousetip of the top of the screen>
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicaciones"
+
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "Nunca se ha lanzado"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel aplicaciones"
 
-#: ../src/meego-netbook-launcher.c:1378
-msgid "Search"
-msgstr "Buscar"
