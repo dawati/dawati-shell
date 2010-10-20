@@ -4,9 +4,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:56+0000\n"
-"PO-Revision-Date: 2010-07-10 05:33+0900\n"
-"Last-Translator: Park Shinjo <peremen@gmail.com>\n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
+"PO-Revision-Date: 2010-10-20 08:58-0800\n"
+"Last-Translator: Sun Kim <sunx.kim@intel.com>\n"
 "Language-Team: Korean <peremen@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,28 +21,32 @@ msgid "Search"
 msgstr "찾기"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1049
+#: ../src/meego-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "프로그램"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:1065
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "즐겨찾는 프로그램"
 
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1092
+#: ../src/meego-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "내 프로그램"
 
-#: ../src/meego-panel-applications.c:223
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "프로그램"
+
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "시작되지 않음"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
