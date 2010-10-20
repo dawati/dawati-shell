@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: panel status ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
-"PO-Revision-Date: 2010-04-06 16:12+0200\n"
-"Last-Translator: Yuri Nazarenko <yuri.nazarenko@gmail.com>\n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"PO-Revision-Date: 2010-10-19 19:58-0800\n"
+"Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,15 +19,11 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Приветствуем вас! Это панель «Статус». Здесь вы сможете просматривать свои веб-ленты и обновлять свой статус после создания учетной веб-записи (например, Twitter)."
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "Статус"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "статус"
@@ -45,54 +41,59 @@ msgstr "Не удается обновить статус. Возможно, с�
 msgid "Unable to update status: You're not online."
 msgstr "Невозможно обновить статус: вы не в режиме онлайн."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "Мы не смогли определить ваше местоположение"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
 msgstr "Ваше вероятное местоположение: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
 msgstr "Ваше местоположение указывается как: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
-msgstr "Возможно, ваше местоположение: %f %f"
+msgid "We think your locations is: %f %f"
+msgstr "Ваше вероятное местоположение: %f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
+msgid "Your location is currently shared as: %f %f"
 msgstr "Ваше местоположение указывается как: %f %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
 msgstr "Ваше местоположение не указывается"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "Обновить"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "Что происходит?"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "Изменить"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Здесь вы сможете просматривать свои веб-ленты и обновлять свой статус после создания учетной веб-записи."
+
+#: ../src/mps-feed-switcher.c:509
+#: ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "Добавить новую учетную запись"
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "У вас не настроен ни один веб-сервис или их параметры указаны неверно. Воспользуйтесь расположенной выше кнопкой для открытия страницы Мои учетные записи и настройки одной из них."
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Это панель «Статус»."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -122,11 +123,20 @@ msgstr "Не использовать местоположение"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s из %s"
+
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "У вас не настроен ни один веб-сервис или их параметры указаны неверно. "
+#~ "Воспользуйтесь расположенной выше кнопкой для открытия страницы Мои "
+#~ "учетные записи и настройки одной из них."
 
 #~ msgid "Offline"
 #~ msgstr "Offline"
@@ -161,8 +171,13 @@ msgstr "%s из %s"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Текущий статус - offline"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-#~ msgstr "К сожалению, мы никого не можем найти. Есть ли у Вас учётная запись Messenger?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "К сожалению, мы никого не можем найти. Есть ли у Вас учётная запись "
+#~ "Messenger?"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr "Для того, чтобы обновить IM статус, нужно настроить учётную запись IM"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Для того, чтобы обновить IM статус, нужно настроить учётную запись IM"
