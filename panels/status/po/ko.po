@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
+"Last-Translator: Sun Kim <sunx.kim@intel.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,15 +14,11 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "안녕하십니까? 상태 패널입니다. 웹 계정이 구성되면 (Twitter처럼) 여기서 피드를 보거나 상태를 업데이트할 수 있습니다."
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "상태"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "상태"
@@ -40,54 +36,59 @@ msgstr "상태를 업데이트할 수 없습니다. 서비스를 사용할 수 �
 msgid "Unable to update status: You're not online."
 msgstr "상태를 업데이트할 수 없습니다. 온라인이 아닙니다."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "귀하의 위치를 파악하지 못했습니다."
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
 msgstr "짐작되는 귀하의 위치: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "귀하의 위치는 다음과 공유되고 있습니다: %s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "귀하의 위치는 현재 다음과 같이 공유되고 있습니다: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
-msgstr "우리가 짐작한 귀하의 위치: %f %f"
+msgid "We think your locations is: %f %f"
+msgstr "짐작되는 귀하의 위치: %f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "귀하의 위치는 다음과 공유되고 있습니다: %f %f"
+msgid "Your location is currently shared as: %f %f"
+msgstr "귀하의 위치는 현재 다음과 같이 공유되고 있습니다: %f %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "귀하의 위치가 공유되지 않고 있습니다."
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "귀하의 위치는 현재 공유되지 않고 있습니다."
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "업데이트"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "현재 상황"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "변경"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "웹 계정이 구성되면, 여기서 피드를 보기 및 상태를 관리할 수 있습니다."
+
+#: ../src/mps-feed-switcher.c:509
+#: ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "새로운 웹 계정 추가"
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "웹 서비스가 구성되지 않았거나 구성에 문제가 있습니다. 위의 단추를 사용하여 내 웹 계정을 열고 설정하십시오."
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "상태 패널입니다."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -123,42 +124,63 @@ msgstr "위치 사용 안 함"
 msgid "%s from %s"
 msgstr "%s의 %s"
 
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "웹 서비스가 구성되지 않았거나 구성에 문제가 있습니다. 위의 단추를 사용하"
+#~ "여 내 웹 계정을 열고 설정하십시오."
+
 #~ msgid "Offline"
 #~ msgstr "오프라인 "
+
 #~ msgid "Available"
 #~ msgstr "사용 가능"
+
 #~ msgid "Away"
 #~ msgstr "자리 비움"
+
 #~ msgid "Busy"
 #~ msgstr "다른 용무 중"
+
 #~ msgid "Close"
 #~ msgstr "닫기"
+
 #~ msgid "Unknown account"
 #~ msgstr "알 수 없는 계정 "
+
 #~ msgid "Edit"
 #~ msgstr "편집"
+
 #~ msgid "Enter your %s status here..."
 #~ msgstr "%s 상태을 입력하세요"
+
 #~ msgid "Enter your current status here..."
 #~ msgstr "여기에 지금 상태를 입력하십시오..."
+
 #~ msgid "Post"
 #~ msgstr "게시"
+
 #~ msgid "Your current status"
 #~ msgstr "현재 상태"
+
 #~ msgid "Your current status - you are offline"
 #~ msgstr "현재 상태 - 오프라인"
+
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "죄송합니다. 아무도 찾을수 없습니다. 메신저 계정을 설정 하셨습니까?"
+
 #~ msgid ""
 #~ "To update your web status you need to setup a Web Services account with a "
 #~ "provider that supports status messages"
 #~ msgstr ""
 #~ "귀하의 웹 상태를 업데이트 하려면 상태 메세지 지원하는 웹 서비스 계정을 설"
 #~ "정해야 합니다. "
+
 #~ msgid ""
 #~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr ""
 #~ "귀하의 IM 상태를 업데이트 하려면 인스턴트 메시징 계정을 설치 하셔야합니"
 #~ "다.  "
-
