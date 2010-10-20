@@ -1,11 +1,11 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Last-Translator: Wen-Hsin Moh <wenhsinm@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,15 +14,11 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "嗨！這裡是狀態面板。當您設定好網路帳號 (像是 Twitter) 後，您可以從這裡檢視您的消息來源，以及更新您的狀態。"
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "狀態"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "狀態"
@@ -40,54 +36,59 @@ msgstr "無法更新狀態：此服務可能無法使用或密碼可能是錯誤
 msgid "Unable to update status: You're not online."
 msgstr "無法更新狀態：您未上線。"
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "我們無法推測您的地理位置"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
 msgstr "我們推測您的地理位置為：%s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
 msgstr "您的地理位置正被分享：%s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
+msgid "We think your locations is: %f %f"
 msgstr "我們推測您的地理位置為：%f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
+msgid "Your location is currently shared as: %f %f"
 msgstr "您的地理位置正被分享：%f %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
 msgstr "您的地理位置沒有被分享"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "更新"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "發生什麼事？"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "變更"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "當您設定好網路帳號後，您可以從這裡檢視您的消息來源，以及更新您的狀態。"
+
+#: ../src/mps-feed-switcher.c:509
+#: ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "新增網路帳號"
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "您似乎沒有任何網路服務的配置，或者網路服務配置有問題。使用上面的按鈕，打開「我的網站帳戶」並設置一個帳戶。"
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "這裡是狀態面板。"
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -117,11 +118,19 @@ msgstr "不要使用地理位置"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#. 
+#.
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s 來自 %s"
+
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "您似乎沒有任何網路服務的配置，或者網路服務配置有問題。使用上面的按鈕，打開"
+#~ "「我的網站帳戶」並設置一個帳戶。"
 
 #~ msgid "Offline"
 #~ msgstr "離線"
@@ -159,11 +168,16 @@ msgstr "%s 來自 %s"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "您目前的狀態 - 您是離線"
 
-#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "抱歉，我們找不到任何朋友的資料。您已經設立好通訊程式的帳戶了嗎？"
 
-#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
-#~ msgstr "要更新您的網路狀態，您需要設置一個支援狀態訊息的廠商所提供的網路服務帳戶。"
+#~ msgid ""
+#~ "To update your web status you need to setup a Web Services account with a "
+#~ "provider that supports status messages"
+#~ msgstr ""
+#~ "要更新您的網路狀態，您需要設置一個支援狀態訊息的廠商所提供的網路服務帳戶。"
 
-#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "要更新您即時通訊的狀態，您需要設置一個即時通訊帳戶"
