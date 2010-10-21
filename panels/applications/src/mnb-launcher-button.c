@@ -236,53 +236,10 @@ mnb_launcher_button_allocate (ClutterActor          *actor,
                               ClutterAllocationFlags flags)
 {
   MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
-  MxPadding          padding;
-  ClutterActorBox    icon_box, title_box = { 0, }, launched_box = { 0, }, pin_box;
-  gfloat             title_height;
-  gfloat             title_width;
-  gfloat             launched_height;
-  gfloat             launched_width;
+  ClutterActorBox    pin_box;
 
   CLUTTER_ACTOR_CLASS (mnb_launcher_button_parent_class)
     ->allocate (actor, box, flags);
-
-  mx_widget_get_padding (MX_WIDGET (self), &padding);
-
-  /* Hack allocation of the labels, so the fav toggle overlaps. */
-
-  clutter_actor_get_allocation_box (CLUTTER_ACTOR (self->priv->icon), &icon_box);
-  icon_box.y1 = (int) ((box->y2 - box->y1 - self->priv->icon_size) / 2);
-  icon_box.x2 = (int) (icon_box.x1 + self->priv->icon_size);
-  icon_box.y2 = (int) (icon_box.y1 + self->priv->icon_size);
-
-  clutter_actor_allocate (CLUTTER_ACTOR (self->priv->icon), &icon_box, flags);
-
-  /* launched */
-  if (self->priv->launched)
-    {
-      launched_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
-      clutter_actor_get_preferred_height (CLUTTER_ACTOR (self->priv->launched),
-                                          launched_width,
-                                          NULL,
-                                          &launched_height);
-      launched_box.x1 = (int) (icon_box.x2 + COL_SPACING);
-      launched_box.x2 = (int) (launched_box.x1 + launched_width);
-      launched_box.y1 = (int) (box->y2 - box->y1 - launched_height - padding.bottom);
-      launched_box.y2 = (int) (launched_box.y1 + launched_height);
-      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->launched), &launched_box, flags);
-    }
-
-  /* title */
-  if (self->priv->title)
-    {
-      title_width = (box->x2 - box->x1 - padding.right) - (icon_box.x2 + COL_SPACING);
-      title_height = launched_box.y1 - ROW_SPACING - padding.top;
-      title_box.x1 = (int) (icon_box.x2 + COL_SPACING);
-      title_box.x2 = (int) (title_box.x1 + title_width);
-      title_box.y1 = (int) (padding.top);
-      title_box.y2 = (int) (title_box.y1 + title_height);
-      clutter_actor_allocate (CLUTTER_ACTOR (self->priv->title), &title_box, flags);
-    }
 
   /* Pin location hardcoded, designers want this to fit perfectly. */
   pin_box.x1 = (int) (box->x2 - box->x1 - FAV_TOGGLE_SIZE - FAV_TOGGLE_X_OFFSET);
@@ -618,7 +575,13 @@ mnb_launcher_button_set_icon (MnbLauncherButton  *self,
     mx_table_add_actor_with_properties (MX_TABLE (self),
                                           CLUTTER_ACTOR (self->priv->icon),
                                           0, 0,
-                                          "row-span", 1,
+                                          "row-span", 2,
+                                          "x-align", MX_ALIGN_START,
+                                          "x-expand", FALSE,
+                                          "x-fill", FALSE,
+                                          "y-align", MX_ALIGN_MIDDLE,
+                                          "y-expand", FALSE,
+                                          "y-fill", FALSE,
                                           NULL);
   }
 }
