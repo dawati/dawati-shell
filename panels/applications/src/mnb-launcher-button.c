@@ -358,6 +358,9 @@ mnb_launcher_button_init (MnbLauncherButton *self)
                                         "x-align", MX_ALIGN_START,
                                         "x-expand", TRUE,
                                         "x-fill", TRUE,
+                                        "y-align", MX_ALIGN_START,
+                                        "y-expand", TRUE,
+                                        "y-fill", TRUE,
                                         NULL);
 
   label = mx_label_get_clutter_text (self->priv->title);
@@ -370,9 +373,17 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   self->priv->launched = (MxLabel *) mx_label_new ();
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->launched),
                           "mnb-launcher-button-launched");
-  mx_table_add_actor (MX_TABLE (self),
-                      CLUTTER_ACTOR (self->priv->launched),
-                      1, 1);
+  mx_table_add_actor_with_properties (MX_TABLE (self),
+                                      CLUTTER_ACTOR (self->priv->launched),
+                                      1, 1,
+                                      "column-span", 2,
+                                      "x-align", MX_ALIGN_START,
+                                      "x-expand", TRUE,
+                                      "x-fill", TRUE,
+                                      "y-align", MX_ALIGN_END,
+                                      "y-expand", FALSE,
+                                      "y-fill", FALSE,
+                                      NULL);
 
   /* "fav app" toggle */
   self->priv->fav_toggle = g_object_ref_sink (CLUTTER_ACTOR (mx_button_new ()));
@@ -380,11 +391,9 @@ mnb_launcher_button_init (MnbLauncherButton *self)
   clutter_actor_set_name (CLUTTER_ACTOR (self->priv->fav_toggle),
                           "mnb-launcher-button-fav-toggle");
   clutter_actor_set_size (self->priv->fav_toggle, FAV_TOGGLE_SIZE, FAV_TOGGLE_SIZE);
-  mx_table_add_actor_with_properties (MX_TABLE (self),
-                                        CLUTTER_ACTOR (self->priv->fav_toggle),
-                                        0, 2,
-                                        "row-span", 1,
-                                        NULL);
+  mx_table_add_actor (MX_TABLE (self),
+                      CLUTTER_ACTOR (self->priv->fav_toggle),
+                      0, 2);
 
   g_signal_connect (self->priv->fav_toggle, "notify::toggled",
                     G_CALLBACK (fav_button_notify_toggled_cb), self);

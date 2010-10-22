@@ -46,11 +46,13 @@ MnbLauncherButton:hover {
 MnbLauncherButton > *#mnb-launcher-button-title {
   color: #3b3b3b;
   font-size: 14px;
+  padding: 4 0 0 0;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-launched {
   color: #7e7e7e;
   font-size: 11px;
+  padding: 0 0 2 0;
 }
 
 MnbLauncherButton > *#mnb-launcher-button-description {
