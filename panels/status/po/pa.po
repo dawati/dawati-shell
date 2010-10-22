@@ -6,30 +6,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
-"PO-Revision-Date: 2010-08-03 08:17+0530\n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"PO-Revision-Date: 2010-10-22 07:31+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../src/meego-panel-status.c:49
-msgid ""
-"Hello! This is the Status panel. When you have a web account configured "
-"(like Twitter), you will be able to view your feeds and update your status "
-"here."
-msgstr ""
-"ਜੀ ਆਇਆਂ ਨੂੰ! ਇਹ ਹਾਲਤ ਪੈਨਲ ਹੈ। ਜਦੋਂ ਤੁਹਾਡੇ ਕੋਲ ਵੈੱਬ ਅਕਾਊਂਟ ਸੰਰਚਿਤ ਹੋ ਗਏ (ਟਵਿੱਟਰ ਵਰਗੇ) ਤਾਂ ਤੁਸੀਂ "
-"ਆਪਣੀ ਫੀਡ ਅਤੇ ਹਾਲਤ ਅੱਪਡੇਟ ਇੱਥੇ ਵੇਖੋਗੇ।"
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "ਹਾਲਤ"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "ਹਾਲਤ"
@@ -51,59 +42,63 @@ msgstr ""
 msgid "Unable to update status: You're not online."
 msgstr "ਹਾਲਤ ਅੱਪਡੇਟ ਕਰਨ ਲਈ ਅਸਮਰੱਥ। ਤੁਸੀਂ ਆਨਲਾਈਨ ਨਹੀਂ ਹੋ।"
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "ਅਸੀਂ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਬਾਰੇ ਅੰਦਾਜ਼ਾ ਨਹੀਂ ਲਾ ਸਕੇ"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "ਅਸੀਂ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਦਾ ਅੰਦਾਜ਼ਾ ਲਾਇਆ: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
+msgstr "ਅਸੀਂ ਲੱਭਿਆ ਹੈ ਕਿ ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਹੈ: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਕੀਤਾ ਗਿਆ ਹੈ: %s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਕੀਤਾ ਗਿਆ ਹੈ: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
-msgstr "ਅਸੀਂ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਦਾ ਅੰਦਾਜ਼ਾ ਲਾਇਆ: %f %f"
+msgid "We think your locations is: %f %f"
+msgstr "ਅਸੀਂ ਲੱਭਿਆ ਹੈ ਕਿ ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਟਿਕਾਣਾ ਹੈ: %f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਕੀਤਾ ਗਿਆ ਹੈ: %f %f "
+msgid "Your location is currently shared as: %f %f"
+msgstr "ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਕੀਤਾ ਗਿਆ ਹੈ: %f, %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਗਿਆ ਹੈ"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਟਿਕਾਣਾ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਗਿਆ ਹੈ"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "ਅੱਪਡੇਟ"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "ਕੀ ਹੋ ਰਿਹਾ ਹੈ?"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "ਬਦਲੋ"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid ""
+"When you have a web account configured, you will be able to view your feeds "
+"and manage your status here."
+msgstr ""
+"ਜਦੋਂ ਤੁਹਾਡੇ ਕੋਲ ਵੈੱਬ ਅਕਾਊਂਟ ਸੰਰਚਿਤ ਹੋ ਗਏ ਤਾਂ ਤੁਸੀਂ ਆਪਣੀ ਫੀਡ ਇੱਥੇ ਵੇਖ ਸਕਦੇ ਹੋ ਅਤੇ ਹਾਲਤ ਦਾ ਪਰਬੰਧ "
+"ਕਰ "
+"ਸਕਦੇ ਹੋ।"
+
+#: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "ਨਵਾਂ ਵੈੱਬ ਅਕਾਊਂਟ ਜੋੜੋ"
 
-#: ../src/mps-feed-switcher.c:373
-msgid ""
-"You don't appear to have any web services configured or there is a problem "
-"with their configuration. Use the button above to open the My Web Accounts "
-"and set one up."
-msgstr ""
-"ਤੁਹਾਡੇ ਕੋਲ ਕੋਈ ਵੀ ਵੈੱਬ ਸਰਵਿਸ ਸੰਰਚਿਤ ਨਹੀਂ ਜਾਪਦੀ ਹੈ ਜਾਂ ਉਹਨਾਂ ਦੀ ਸੰਰਚਨਾ 'ਚ ਕੋਈ ਸਮੱਸਿਆ ਹੈ। ਮੇਰੇ "
-"ਵੈੱਬ ਅਕਾਊਂਟ ਖੋਲ੍ਹਣ ਅਤੇ ਸੈੱਟਅੱਪ ਕਰਨ ਲਈ ਉੱਤੇ ਦਿੱਤਾ ਬਟਨ ਵਰਤੋਂ।"
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "ਇਹ ਹਾਲਤ ਪੈਨਲ ਹੈ।"
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -138,6 +133,14 @@ msgstr "ਟਿਕਾਣਾ ਨਾ ਵਰਤੋਂ"
 #, c-format
 msgid "%s from %s"
 msgstr "%2$s ਤੋਂ %1$s"
+
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "ਤੁਹਾਡੇ ਕੋਲ ਕੋਈ ਵੀ ਵੈੱਬ ਸਰਵਿਸ ਸੰਰਚਿਤ ਨਹੀਂ ਜਾਪਦੀ ਹੈ ਜਾਂ ਉਹਨਾਂ ਦੀ ਸੰਰਚਨਾ 'ਚ ਕੋਈ ਸਮੱਸਿਆ ਹੈ। "
+#~ "ਮੇਰੇ ਵੈੱਬ ਅਕਾਊਂਟ ਖੋਲ੍ਹਣ ਅਤੇ ਸੈੱਟਅੱਪ ਕਰਨ ਲਈ ਉੱਤੇ ਦਿੱਤਾ ਬਟਨ ਵਰਤੋਂ।"
 
 #~ msgid "Offline"
 #~ msgstr "ਆਫਲਾਈਨ"
