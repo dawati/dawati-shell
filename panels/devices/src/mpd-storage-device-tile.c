@@ -81,16 +81,13 @@ enum
 typedef struct
 {
   /* Managed by clutter */
+  ClutterActor              *table;
   ClutterActor              *icon;
-  ClutterActor              *vbox;
   ClutterActor              *label;
   ClutterActor              *meter;
-  ClutterActor              *button_box;
-  /* Inside button_box. */
   ClutterActor              *eject;
   ClutterActor              *open;
   ClutterActor              *import;
-  /* Alternative to button_box. */
   ClutterActor              *message;
 
   /* Data */
@@ -140,9 +137,11 @@ update (MpdStorageDeviceTile *self)
                                   percentage / 100.);
   }
 
-  g_object_set (priv->meter,
-                "visible", available_size > 0,
-                NULL);
+  if (available_size == 0)
+  {
+    g_object_set (priv->meter, "visible", false, NULL);
+    mx_table_child_set_row_span (MX_TABLE (priv->table), priv->label, 2);
+  }
 }
 
 static void
@@ -551,93 +550,142 @@ static void
 mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  ClutterActor  *hbox;
+  ClutterText   *text;
   ClutterActor  *separator;
 
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self), MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (self),
+                                 MX_ORIENTATION_VERTICAL);
+  mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (self), true);
 
-  hbox = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (hbox),
-                             MPD_STORAGE_DEVICE_TILE_SPACING);
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), hbox);
+  priv->table = mx_table_new ();
+  mx_table_set_column_spacing (MX_TABLE (priv->table), 5);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->table, -1,
+                                           "x-fill", true,
+                                           NULL);
+/*
+   0      1           2
+  +--------------------------+ Table
+0 |      | Text      |  Open |
+1 | Icon | Progress  | Eject |
+  +------+-----------+-------+ Vbox
+2 | <message> .. Import data |
+  +--------------------------+
+3 | ======================== |
+  +--------------------------+
+*/
 
-  /* 1st column: icon */
+  /*
+   * Column 0: icon
+   */
+
   priv->icon = clutter_texture_new ();
   clutter_actor_set_size (priv->icon,
                           MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
                           MPD_STORAGE_DEVICE_TILE_ICON_SIZE);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->icon);
-  clutter_container_child_set (CLUTTER_CONTAINER (hbox), priv->icon,
-                               "expand", false,
-                               "x-align", MX_ALIGN_START,
-                               "x-fill", false,
-                               "y-align", MX_ALIGN_START,
-                               "y-fill", false,
-                               NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->icon, 0, 0,
+                                      "row-span", 2,
+                                      "column-span", 1,
+                                      "x-align", MX_ALIGN_START,
+                                      "x-expand", false,
+                                      "x-fill", false,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-expand", false,
+                                      "y-fill", false,
+                                      NULL);
 
-  /* 2nd column: text, free space */
-  priv->vbox = mx_box_layout_new ();
-  mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (priv->vbox), true);
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->vbox),
-                             MPD_STORAGE_DEVICE_TILE_VBOX_SPACING);
-  mx_box_layout_set_orientation (MX_BOX_LAYOUT (priv->vbox),
-                                 MX_ORIENTATION_VERTICAL);
-  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), priv->vbox);
+  /*
+   * Column 1
+   */
 
+  /* Text */
   priv->label = mx_label_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                               priv->label);
+  clutter_actor_set_width (priv->label, 200.0);
+  text = (ClutterText *) mx_label_get_clutter_text (MX_LABEL (priv->label));
+  clutter_text_set_line_wrap (text, true);
+  clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD);
+  clutter_text_set_single_line_mode (text, false);
+  clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_END);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->label, 0, 1,
+                                      "x-align", MX_ALIGN_START,
+                                      "x-expand", true,
+                                      "x-fill", true,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-expand", false,
+                                      "y-fill", false,
+                                      NULL);
 
-  /* Progress bar */
+  /* Progress */
   priv->meter = mx_progress_bar_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                               priv->meter);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->meter, 1, 1,
+                                      "x-align", MX_ALIGN_START,
+                                      "x-expand", true,
+                                      "x-fill", true,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-expand", false,
+                                      "y-fill", false,
+                                      NULL);
 
-  /* Button box */
-  priv->button_box = mx_box_layout_new ();
-  mx_box_layout_set_spacing (MX_BOX_LAYOUT (priv->button_box),
-                             MPD_STORAGE_DEVICE_TILE_BUTTON_BOX_SPACING);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox),
-                               priv->button_box);
-
-  /* Import button */
-  priv->import = mx_button_new ();
-  g_signal_connect (priv->import, "clicked",
-                    G_CALLBACK (_import_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
-                                priv->import);
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
-                                priv->import,
-                                "x-fill", true,
-                                NULL);
-
-  /* Eject button */
-  priv->eject = mx_button_new_with_label (_("Eject"));
-  g_signal_connect (priv->eject, "clicked",
-                    G_CALLBACK (_eject_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
-                               priv->eject);
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
-                               priv->eject,
-                               "x-fill", true,
-                               NULL);
+  /*
+   * Column 2: buttons
+   */
 
   /* Open button */
   priv->open = mx_button_new_with_label (_("Open"));
   g_signal_connect (priv->open, "clicked",
                     G_CALLBACK (_open_clicked_cb), self);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
-                               priv->open);
-  clutter_container_child_set (CLUTTER_CONTAINER (priv->button_box),
-                               priv->open,
-                               "x-fill", true,
-                               NULL);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->open, 0, 2,
+                                      "x-align", MX_ALIGN_END,
+                                      "x-expand", false,
+                                      "x-fill", true,
+                                      "y-align", MX_ALIGN_END,
+                                      "y-expand", false,
+                                      "y-fill", false,
+                                      NULL);
+
+  /* Eject button */
+  priv->eject = mx_button_new_with_label (_("Eject"));
+  g_signal_connect (priv->eject, "clicked",
+                    G_CALLBACK (_eject_clicked_cb), self);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->eject, 1, 2,
+                                      "x-align", MX_ALIGN_END,
+                                      "x-expand", false,
+                                      "x-fill", true,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-expand", false,
+                                      "y-fill", false,
+                                      NULL);
+
+  /*
+   * Row 2
+   */
+
+  /* Import button */
+  priv->import = mx_button_new ();
+  clutter_actor_set_name (priv->import, "import");
+  g_signal_connect (priv->import, "clicked",
+                    G_CALLBACK (_import_clicked_cb), self);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->import,
+                                           -1,
+                                           "expand", false,
+                                           "x-align", MX_ALIGN_END,
+                                           "x-fill", false,
+                                           NULL);
+
+  /*
+   * 4th row: separator
+   */
 
   /* Separator */
-  separator = mx_icon_new ();
-  clutter_actor_set_height (separator, 1.0);
+  separator = mx_frame_new ();
   mx_stylable_set_style_class (MX_STYLABLE (separator), "separator");
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), separator);
+  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), separator,
+                                           -1,
+                                           "expand", false,
+                                           "x-align", MX_ALIGN_MIDDLE,
+                                           "x-fill", true,
+                                           "y-align", MX_ALIGN_START,
+                                           "y-fill", false,
+                                           NULL);
 }
 
 ClutterActor *
@@ -864,35 +912,30 @@ mpd_storage_device_tile_show_message_full (MpdStorageDeviceTile  *self,
 
   g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
 
-  if (replace_buttons)
-  {
-    g_object_set (priv->button_box,
-                  "visible", false,
-                  NULL);
-  }
-
   if (priv->message == NULL)
   {
     ClutterText *text;
     priv->message = mx_label_new_with_text (message);
+    mx_stylable_set_style_class (MX_STYLABLE (priv->message), "message");
     text = (ClutterText *) mx_label_get_clutter_text (MX_LABEL (priv->message));
     clutter_text_set_line_wrap (text, true);
     clutter_text_set_line_wrap_mode (text, PANGO_WRAP_WORD);
     clutter_text_set_single_line_mode (text, false);
     clutter_text_set_ellipsize (text, PANGO_ELLIPSIZE_NONE);
-    clutter_container_add_actor (CLUTTER_CONTAINER (priv->vbox), priv->message);
-    clutter_container_child_set (CLUTTER_CONTAINER (priv->vbox), priv->message,
-                                 "expand", true,
-                                 "x-fill", true,
-                                 "y-fill", false,
-                                 NULL);
-  } else
-  {
-    mx_label_set_text (MX_LABEL (priv->message), message);
-    g_object_set (priv->message,
-                  "visible", true,
-                  NULL);
+    mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->message,
+                                             2,
+                                             "x-align", MX_ALIGN_MIDDLE,
+                                             NULL);
   }
+
+  if (replace_buttons)
+  {
+    mx_widget_set_disabled (MX_WIDGET (priv->open), true);
+    mx_widget_set_disabled (MX_WIDGET (priv->eject), true);
+    clutter_container_remove_actor (CLUTTER_CONTAINER (self), priv->import);
+  }
+
+  mx_label_set_text (MX_LABEL (priv->message), message);
 
   if (timeout_s)
   {

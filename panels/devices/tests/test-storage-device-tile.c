@@ -91,6 +91,45 @@ _tile_unmount_cb (MpdStorageDeviceTile  *tile,
 }
 
 static void
+add_tile_from_mount (MxBoxLayout  *box,
+                     GMount       *mount)
+{
+  GFile         *file;
+  char          *name;
+  char          *uri;
+  GIcon         *icon;
+  GtkIconInfo   *icon_info;
+  char const    *icon_file;
+  ClutterActor  *tile;
+
+  /* Mount point */
+  file = g_mount_get_root (mount);
+  uri = g_file_get_uri (file);
+  name = g_mount_get_name (mount);
+
+  /* Icon */
+  icon = g_mount_get_icon (mount);
+  icon_info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
+                                              icon,
+                                              MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
+                                              GTK_ICON_LOOKUP_NO_SVG);
+  icon_file = gtk_icon_info_get_filename (icon_info);
+  g_debug ("%s() %s", __FUNCTION__, icon_file);
+
+  tile = mpd_storage_device_tile_new (name, uri, NULL, icon_file);
+  g_signal_connect (tile, "eject",
+                    G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), tile, 0);
+  clutter_actor_set_width (tile, 480.0);
+
+  gtk_icon_info_free (icon_info);
+  g_object_unref (icon);
+  g_free (name);
+  g_free (uri);
+  g_object_unref (file);
+}
+
+static void
 _find_first_cb (ClutterActor   *actor,
                 void          **child)
 {
@@ -103,13 +142,6 @@ _mount_added_cb (GVolumeMonitor  *monitor,
                  GMount          *mount,
                  ClutterActor    *box)
 {
-  GFile         *file;
-  char          *name;
-  char          *path;
-  GIcon         *icon;
-  GtkIconInfo   *icon_info;
-  char const    *icon_file;
-  ClutterActor  *tile;
   ClutterActor  *label = NULL;
 
   clutter_container_foreach (CLUTTER_CONTAINER (box),
@@ -122,31 +154,7 @@ _mount_added_cb (GVolumeMonitor  *monitor,
     g_debug ("Not a label");
   }
 
-  /* Mount point */
-  file = g_mount_get_root (mount);
-  path = g_file_get_path (file);
-  name = g_mount_get_name (mount);
-
-  /* Icon */
-  icon = g_mount_get_icon (mount);
-  icon_info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
-                                              icon,
-                                              MPD_STORAGE_DEVICE_TILE_ICON_SIZE,
-                                              GTK_ICON_LOOKUP_NO_SVG);
-  icon_file = gtk_icon_info_get_filename (icon_info);
-  g_debug ("%s() %s", __FUNCTION__, icon_file);
-
-  tile = mpd_storage_device_tile_new (name, path, NULL, icon_file);
-  g_signal_connect (tile, "eject",
-                    G_CALLBACK (_tile_unmount_cb), g_object_ref (mount));
-  mx_box_layout_add_actor (MX_BOX_LAYOUT (box), tile, 0);
-  clutter_actor_set_width (tile, 480.0);
-
-  gtk_icon_info_free (icon_info);
-  g_object_unref (icon);
-  g_free (name);
-  g_free (path);
-  g_object_unref (file);
+  add_tile_from_mount (MX_BOX_LAYOUT (box), mount);
 }
 
 static void
@@ -184,8 +192,26 @@ main (int     argc,
 {
   ClutterActor    *stage;
   ClutterActor    *box;
-  ClutterActor    *label;
-  GVolumeMonitor  *monitor;
+  GOptionContext  *context;
+  char const      *uri = NULL;
+  GError          *error = NULL;
+  GOptionEntry     options[] = {
+    { "uri", 'u', 0, G_OPTION_ARG_STRING, &uri,
+      "URI to display", "<uri>" },
+    { NULL }
+  };
+
+  context = g_option_context_new ("");
+  g_option_context_add_main_entries (context, options, NULL);
+  g_option_context_add_group (context, clutter_get_option_group_without_init ());
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+  {
+    g_critical ("%s %s", G_STRLOC, error->message);
+    g_clear_error (&error);
+    g_option_context_free (context);
+    return EXIT_FAILURE;
+  }
+  g_option_context_free (context);
 
   clutter_init (&argc, &argv);
   /* Just for icon theme, no widgets. */
@@ -196,21 +222,39 @@ main (int     argc,
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (box), MX_ORIENTATION_VERTICAL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
-  monitor = g_volume_monitor_get ();
-  g_signal_connect (monitor, "mount-added",
-                    G_CALLBACK (_mount_added_cb), box);
-  g_signal_connect (monitor, "mount-changed",
-                    G_CALLBACK (_mount_changed_cb), box);
-  g_signal_connect (monitor, "mount-removed",
-                    G_CALLBACK (_mount_removed_cb), box);
+  if (uri)
+  {
+    GFile *file = g_file_new_for_uri (uri);
+    GMount *mount = g_file_find_enclosing_mount (file, NULL, &error);
+    g_object_unref (file);
+    if (error)
+    {
+      g_critical ("%s %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+      return EXIT_FAILURE;      
+    }
 
-  label = mx_label_new_with_text ("Plug in USB storage device ...");
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), label);
+    add_tile_from_mount (MX_BOX_LAYOUT (box), mount);
+
+  } else {
+    ClutterActor *label;
+    GVolumeMonitor *monitor = g_volume_monitor_get ();
+    g_signal_connect (monitor, "mount-added",
+                      G_CALLBACK (_mount_added_cb), box);
+    g_signal_connect (monitor, "mount-changed",
+                      G_CALLBACK (_mount_changed_cb), box);
+    g_signal_connect (monitor, "mount-removed",
+                      G_CALLBACK (_mount_removed_cb), box);
+
+    label = mx_label_new_with_text ("Plug in USB storage device ...");
+    clutter_container_add_actor (CLUTTER_CONTAINER (box), label);  
+  }
 
   clutter_actor_show_all (stage);
   clutter_main ();
 
-  g_object_unref (monitor);
+  /* Leak this, who cares 
+  g_object_unref (monitor); */
 
   return EXIT_SUCCESS;
 }
