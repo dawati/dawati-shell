@@ -6,84 +6,87 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:36+0000\n"
-"PO-Revision-Date: 2010-05-06 07:29+0530\n"
+"POT-Creation-Date: 2010-10-21 14:16+0000\n"
+"PO-Revision-Date: 2010-10-22 07:33+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:476
-#: ../data/moblin-panel-people.desktop.in.in.h:2
+#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:513
+#: ../data/meego-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "ਲੋਕ"
 
-#: ../src/mnb-people-panel.c:57
+#: ../src/mnb-people-panel.c:56
 msgid ""
-"Hello! This is the People panel. When you have an IM service configured "
-"(like Messenger), this is where you chat to people."
+"When you have an IM service configured (like Messenger), this is where you "
+"chat to people."
 msgstr ""
-"ਹੈਲੋ! ਇਹ ਲੋਕ ਪੈਨਲ ਹੈ। ਜਦੋਂ ਤੁਸੀਂ IM ਸਰਵਿਸ ਸੰਰਚਿਤ ਕਰ ਲਈ (ਮੈਂਸਜਰ ਵਰਗੀ) ਤਾਂ ਇੱਥੇ ਤੁਸੀਂ ਲੋਕਾਂ ਨਾਲ "
-"ਗੱਲਾਬਾਤਾਂ ਵੇਖ ਸਕਦੇ ਹੋ।"
+"ਜਦੋਂ ਤੁਸੀਂ IM ਸਰਵਿਸ ਸੰਰਚਿਤ ਕਰ ਲਈ (ਮੈਂਸਜਰ ਵਰਗੀ) ਤਾਂ ਇੱਥੇ ਤੁਸੀਂ ਲੋਕਾਂ ਨਾਲ ਗੱਲਾਬਾਤਾਂ ਵੇਖ ਸਕਦੇ ਹੋ।"
 
-#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:451
 #, c-format
 msgid "Open %s"
 msgstr "%s ਖੋਲ੍ਹੋ"
 
-#: ../src/mnb-people-panel.c:231
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਕਿਸੇ ਨੂੰ ਵੀ ਲੱਭ ਨਹੀਂ ਸਕਦੇ ਹਾਂ। ਕੀ ਤੁਸੀਂ ਮੈਸੈਂਜ਼ਰ ਅਕਾਊਂਟ ਸੈੱਟਅੱਪ ਕਰ ਲਿਆ ਹੈ?"
+#: ../src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr "ਇਹ ਲੋਕ ਪੈਨਲ ਹੈ।"
 
-#: ../src/mnb-people-panel.c:283
+#: ../src/mnb-people-panel.c:320
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਕਿਸੇ ਨੂੰ ਵੀ ਲੱਭ ਨਹੀਂ ਸਕਦੇ ਹਾਂ। ਉਹ ਸਾਰੇ ਆਫਲਾਈਨ ਜਾਪਦੇ ਹਨ।"
 
-#: ../src/mnb-people-panel.c:328
+#: ../src/mnb-people-panel.c:365
 msgid "To see your IM contacts, you need to go online."
 msgstr "ਆਪਣੇ  IM ਸੰਪਰਕ ਵੇਖਣ ਲਈ, ਤੁਹਾਨੂੰ ਆਨਲਾਈਨ ਜਾਣ ਦੀ ਲੋੜ ਹੈ।"
 
-#: ../src/mnb-people-panel.c:458
+#: ../src/mnb-people-panel.c:495
 #, c-format
 msgid "people - you are chatting with %d people"
 msgstr "ਲੋਕ - ਤੁਸੀਂ %d ਲੋਕਾਂ ਨਾਲ ਗੱਲ ਕਰ ਰਹੇ ਹੋ"
 
-#: ../src/mnb-people-panel.c:465
+#: ../src/mnb-people-panel.c:502
 msgid "people - you are chatting with someone"
 msgstr "ਲੋਕ - ਤੁਸੀਂ ਕਿਸੇ ਨਾਲ ਗੱਲਾਂ ਕਰ ਰਹੇ ਹੋ"
 
 #. Populate header
-#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
+#: ../src/mnb-people-panel.c:710 ../src/mnb-people-panel.c:964
 msgid "People"
 msgstr "ਲੋਕ"
 
-#: ../src/mnb-people-panel.c:689
+#: ../src/mnb-people-panel.c:723
 msgid "Search"
 msgstr "ਖੋਜ"
 
-#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
+#: ../src/mnb-people-panel.c:774 ../src/mnb-people-panel.c:1162
 msgid "You are chatting with:"
 msgstr "ਤੁਸੀਂ ਗੱਲਾਂ ਕਰ ਰਹੇ ਹੋ:"
 
-#: ../src/mnb-people-panel.c:947
+#: ../src/mnb-people-panel.c:981
 msgid "Me and my people"
 msgstr "ਮੈਂ ਅਤੇ ਮੇਰੇ ਲੋਕ"
 
-#: ../src/mnb-people-panel.c:985
+#: ../src/mnb-people-panel.c:1019
 msgid "Me"
 msgstr "ਮੈਂ"
 
 #. Side table
-#: ../src/mnb-people-panel.c:1086
+#: ../src/mnb-people-panel.c:1119
 msgid "My conversations"
 msgstr "ਮੇਰੀਆਂ ਗੱਲਾਂ"
 
-#: ../data/moblin-panel-people.desktop.in.in.h:1
+#: ../data/meego-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "ਲੋਕ ਪੈਨਲ"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "ਅਫਸੋਸ, ਅਸੀਂ ਕਿਸੇ ਨੂੰ ਵੀ ਲੱਭ ਨਹੀਂ ਸਕਦੇ ਹਾਂ। ਕੀ ਤੁਸੀਂ ਮੈਸੈਂਜ਼ਰ ਅਕਾਊਂਟ ਸੈੱਟਅੱਪ ਕਰ ਲਿਆ ਹੈ?"
 
 #~ msgid "Send an email"
 #~ msgstr "ਈਮੇਲ ਭੇਜੋ"
