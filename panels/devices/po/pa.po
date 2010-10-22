@@ -6,24 +6,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-20 17:50+0000\n"
-"PO-Revision-Date: 2010-07-30 08:50+0530\n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"PO-Revision-Date: 2010-10-22 07:36+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "ਜੰਤਰ ਪੈਨਲ"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:163
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "ਜੰਤਰ"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "ਸਲੀਪ ਟਾਈਮਆਉਟ"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid ""
+"Value of -1 means never sleep, other values are seconds of continuous idle "
+"state before sleeping."
+msgstr ""
+"-1 ਦਾ ਅਰਥ ਹੈ ਕਦੇ ਵੀ ਸਲੀਪ ਨਹੀਂ, ਹੋਰ ਮੁੱਲ ਸਕਿੰਟ ਵਿੱਚ ਹਨ, ਜੋ ਸਲੀਪ ਹੋਣ ਪਹਿਲਾਂ ਵੇਹਲੇ ਹੋਣ ਦੀ ਹਾਲਤ "
+"ਦਰਸਾਉਂਦੇ ਹਨ।"
 
 #. translators:
 #. * The device has been disabled
@@ -66,8 +78,8 @@ msgid ""
 "I've noticed that your battery is running a bit low. If you can, it would be "
 "a good idea to plug in and top up."
 msgstr ""
-"ਮੈਨੂੰ ਪਤਾ ਲੱਗਾ ਹੈ ਕਿ ਤੁਹਾਡੀ ਬੈਟਰੀ ਕਾਫ਼ੀ ਘੱਟ ਗਈ ਹੈ। ਜੇ ਹੋ ਸਕੇ ਤਾਂ ਪਲੱਗ ਲਗਾਉਣ "
-"ਅਤੇ ਇਸ ਨੂੰ ਚਾਰਜ ਕਰ ਲਵੋ।"
+"ਮੈਨੂੰ ਪਤਾ ਲੱਗਾ ਹੈ ਕਿ ਤੁਹਾਡੀ ਬੈਟਰੀ ਕਾਫ਼ੀ ਘੱਟ ਗਈ ਹੈ। ਜੇ ਹੋ ਸਕੇ ਤਾਂ ਪਲੱਗ ਲਗਾਉਣ ਅਤੇ ਇਸ ਨੂੰ ਚਾਰਜ ਕਰ "
+"ਲਵੋ।"
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
@@ -78,9 +90,8 @@ msgid ""
 "You're running quite low on battery. It'd be a good idea to save all your "
 "work and plug in as soon as you can."
 msgstr ""
-"ਤੁਹਾਡੇ ਕੋਲ ਬੈਟਰੀ ਕਾਫ਼ੀ ਘੱਟ ਗਈ ਹੈ। ਤੁਹਾਡੇ ਸਾਰੇ ਕੰਮ ਨੂੰ ਸੰਭਾਲਣਾ ਤੇ ਜਿੰਨਾ ਵੀ "
-"ਛੇਤੀ ਹੋ ਸਕੇ "
-"ਪਲੱਗ ਲਗਾਉਣਾ ਚੰਗਾ ਰਹੇਗਾ।"
+"ਤੁਹਾਡੇ ਕੋਲ ਬੈਟਰੀ ਕਾਫ਼ੀ ਘੱਟ ਗਈ ਹੈ। ਤੁਹਾਡੇ ਸਾਰੇ ਕੰਮ ਨੂੰ ਸੰਭਾਲਣਾ ਤੇ ਜਿੰਨਾ ਵੀ ਛੇਤੀ ਹੋ ਸਕੇ ਪਲੱਗ "
+"ਲਗਾਉਣਾ ਚੰਗਾ ਰਹੇਗਾ।"
 
 #: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
@@ -91,8 +102,8 @@ msgid ""
 "Sorry, your computer is about to run out of battery. I'm going to have to "
 "turn off now. Please save your work and hope to see you again soon."
 msgstr ""
-"ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਦੀ ਬੈਟਰੀ ਲਗਭਗ ਖਤਮ ਹੋਣ ਵਾਲੀ ਹੈ। ਮੈਂ ਹੁਣ ਬੰਦ ਹੋਣ ਜਾ ਰਿਹਾ "
-"ਹਾਂ। ਆਪਣਾ ਕੰਮ ਸੰਭਾਲ ਲਵੋ ਜੀ ਤੇ ਤੁਹਾਨੂੰ ਛੇਤੀ ਹੀ ਫੇਰ ਮਿਲਦੇ ਹਾਂ।"
+"ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਦੀ ਬੈਟਰੀ ਲਗਭਗ ਖਤਮ ਹੋਣ ਵਾਲੀ ਹੈ। ਮੈਂ ਹੁਣ ਬੰਦ ਹੋਣ ਜਾ ਰਿਹਾ ਹਾਂ। ਆਪਣਾ ਕੰਮ "
+"ਸੰਭਾਲ ਲਵੋ ਜੀ ਤੇ ਤੁਹਾਨੂੰ ਛੇਤੀ ਹੀ ਫੇਰ ਮਿਲਦੇ ਹਾਂ।"
 
 #: ../power-icon/src/mpd-power-icon.c:435
 msgid "battery"
@@ -117,7 +128,7 @@ msgstr "ਕੀ ਤੁਸੀਂ ਹੁਣ ਬੰਦ ਕਰਨਾ ਚਾਹੁੰ�
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮੈਂ ੩੦ ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਹੋ ਜਾਵਾਂਗਾ।"
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "ਮੀਗੋ ਜੰਤਰ ਪੈਨਲ"
 
@@ -185,8 +196,7 @@ msgid ""
 "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
 "span>"
 msgstr ""
-"<span font-weight='bold'>ਤੁਸੀਂ ਵਰਤ ਰਹੇ ਹੋ</span> <span color='%s'>%d%% ਨੂੰ "
-"%s ਵਿੱਚੋਂ</"
+"<span font-weight='bold'>ਤੁਸੀਂ ਵਰਤ ਰਹੇ ਹੋ</span> <span color='%s'>%d%% ਨੂੰ %s ਵਿੱਚੋਂ</"
 "span>"
 
 #: ../src/mpd-folder-tile.c:186
@@ -226,11 +236,8 @@ msgstr "ਖੋਲ੍ਹੋ"
 
 #: ../src/mpd-storage-device-tile.c:819
 #, c-format
-msgid ""
-"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
-msgstr ""
-"<span font-weight='bold'>%s</span> <span color='%s'>%d%% "
-"%s ਵਿੱਚੋਂ</span>"
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> <span color='%s'>%d%% %s ਵਿੱਚੋਂ</span>"
 
 #: ../src/mpd-storage-device-tile.c:827
 #, c-format
