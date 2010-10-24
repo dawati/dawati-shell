@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"POT-Creation-Date: 2010-10-24 01:24+0000\n"
 "PO-Revision-Date: 2004-01-01 03:38+0100\n"
 "Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -88,7 +88,7 @@ msgstr "Nebezpečí!"
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Promiňte, ale váš počítač už je bez šťávy. Nyní bude vypnut. Uložte, prosím, všechnu svou práci a brzy na shledanou."
 
-#: ../power-icon/src/mpd-power-icon.c:435
+#: ../power-icon/src/mpd-power-icon.c:486
 msgid "battery"
 msgstr "Baterie"
 
@@ -115,35 +115,38 @@ msgstr "Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za 30 sekun
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo panel Zařízení"
 
-#: ../src/mpd-battery-device.c:371
+#: ../src/mpd-battery-device.c:381
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Promiňte, ale zdá se, že nemáte nainstalovánu žádnou baterii."
 
-#: ../src/mpd-battery-device.c:375
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Vaše baterie se nabíjí. Je z asi %d%% plná."
 
-#: ../src/mpd-battery-device.c:380
+#: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Vaše baterie se používá. Je z asi %d%% plná."
 
-#: ../src/mpd-battery-device.c:385
+#: ../src/mpd-battery-device.c:395
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Vaše baterie je úplně nabita a jste připraven vyrazit."
 
-#: ../src/mpd-battery-device.c:389
+#: ../src/mpd-battery-device.c:399
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Promiňte, ale vypadá to, že vaše baterie je poškozena."
 
-#. First row.
-#: ../src/mpd-brightness-tile.c:141
-msgid "Netbook brightness"
-msgstr "Jas přenosného počítače"
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Zobrazit jas - zapojeno"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Zobrazit jas - na baterii"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
@@ -186,39 +189,41 @@ msgstr "Koš"
 msgid "Devices"
 msgstr "Zařízení"
 
-#: ../src/mpd-storage-device-tile.c:242
+#: ../src/mpd-storage-device-tile.c:241
 #, c-format
 msgid "Could not run \"%s\""
 msgstr "%s se nepodařilo spustit."
 
-#: ../src/mpd-storage-device-tile.c:244
+#: ../src/mpd-storage-device-tile.c:243
 msgid "Import error"
 msgstr "Chyba při zavádění"
 
-#: ../src/mpd-storage-device-tile.c:355
+#: ../src/mpd-storage-device-tile.c:354
 msgid "Import photos"
 msgstr "Zavést fotografie"
 
-#: ../src/mpd-storage-device-tile.c:357
+#: ../src/mpd-storage-device-tile.c:356
 msgid "Import media"
 msgstr "Zavést hudbu a film"
 
-#. Eject button
-#: ../src/mpd-storage-device-tile.c:615
-msgid "Eject"
-msgstr "Vysunout"
-
+#. * Column 2: buttons
+#. 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:626
+#: ../src/mpd-storage-device-tile.c:633
 msgid "Open"
 msgstr "Otevřít"
 
-#: ../src/mpd-storage-device-tile.c:819
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Vysunout"
+
+#: ../src/mpd-storage-device-tile.c:867
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> používá <span color='%s'>%d%% z %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:827
+#: ../src/mpd-storage-device-tile.c:875
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -266,6 +271,9 @@ msgstr "Hlasitost počítače"
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Ztlumit"
+
+#~ msgid "Netbook brightness"
+#~ msgstr "Jas přenosného počítače"
 
 #~ msgid "Netbook volume"
 #~ msgstr "Netbook-Lautstärke"
