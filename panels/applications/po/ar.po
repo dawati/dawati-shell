@@ -1,47 +1,56 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
+# someone <sppppp987@aol.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:56+0000\n"
-"PO-Revision-Date: 2009-11-13 22:22+0200\n"
-"Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
-"Language-Team: ITSOFTEX <info@itsoftex.com>\n"
+"POT-Creation-Date: 2010-10-24 01:00+0000\n"
+"PO-Revision-Date: 2010-10-24 13:17-0400\n"
+"Last-Translator: someone <sppppp987@aol.com>\n"
+"Language-Team: Arabic <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
+"X-Generator: Lokalize 1.1\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && "
+"n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "بحث"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1049
+#: ../src/meego-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "تطبيقات"
 
+#.
 #. * Fav apps pane
-#. 
-#: ../src/meego-netbook-launcher.c:1065
+#.
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "التطبيقات المفضّلة"
 
+#.
 #. * Applications
-#. 
-#: ../src/meego-netbook-launcher.c:1092
+#.
+#: ../src/meego-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "تطبيقاتك"
 
-#: ../src/meego-panel-applications.c:223
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "التطبيقات"
 
+#: ../src/mnb-launcher-button.c:607
+msgid "Never launched"
+msgstr "لم يسبق تشغيل هذا التطبيق"
+
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "شريط التطبيقات"
+
