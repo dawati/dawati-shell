@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
-"PO-Revision-Date: 2010-05-04 23:42-0800\n"
+"POT-Creation-Date: 2010-10-23 22:53+0000\n"
+"PO-Revision-Date: 2010-10-25 15:50-0800\n"
 "Last-Translator: Margie Foster <margie@linux.intel.com>\n"
 "Language-Team: British English <margie@linux.intel.com>\n"
 "MIME-Version: 1.0\n"
@@ -114,51 +114,81 @@ msgstr "Forces small screen mode to be used even if display size would normally 
 msgid "Order of panels on toolbar"
 msgstr "Order of panels on toolbar"
 
-#: ../src/meego-netbook.c:1018
+#: ../src/meego-netbook.c:829
 msgid "Meego Netbook Effects"
 msgstr "Meego Netbook Effects"
 
-#: ../src/meego-netbook.c:1022
+#: ../src/meego-netbook.c:833
 msgid "Effects for Meego Netbooks"
 msgstr "Effects for Meego Netbooks"
 
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "Activate"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "Unknown window"
-
-#: ../src/meego-netbook.c:3234
-msgid "is asking for your attention."
-msgstr "is asking for your attention."
-
-#: ../src/mnb-toolbar.c:1000
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Sorry, %s is broken"
 
-#: ../src/notifications/mnb-notification.c:282
+#: ../src/notifications/ntf-notification.c:234
 msgid "Dismiss"
 msgstr "Dismiss"
 
-#: ../src/notifications/mnb-notification-cluster.c:663
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "Dismiss All"
 
+#: ../src/notifications/ntf-tray.c:481
+#: ../src/notifications/ntf-tray.c:557
+#, c-format
+msgid "%i pending messages"
+msgstr "%i pending messages"
+
+#: ../src/notifications/ntf-tray.c:535
+msgid "1 pending message"
+msgstr "1 pending message"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Unknown window"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "is asking for your attention."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Activate"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#, c-format
+msgid "Starting %s"
+msgstr "Starting %s"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#, c-format
+msgid "Opening %s"
+msgstr "Opening %s"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#, c-format
+msgid "Opening %d Item"
+msgid_plural "Opening %d Items"
+msgstr[0] "Opening %d Item"
+msgstr[1] "Opening %d Items"
+
 #~ msgid "System tray"
 #~ msgstr "System tray"
+
 #~ msgid "zones"
 #~ msgstr "zones"
+
 #~ msgid "No Zones yet"
 #~ msgstr "No Zones yet"
+
 #~ msgid ""
 #~ "Applications you’re using will show up here. You will be able to switch "
 #~ "and organize them to your heart's content."
 #~ msgstr ""
 #~ "Applications you’re using will show up here. You will be able to switch "
 #~ "and organise them to your heart's content."
+
 #~ msgid "No applications on this zone"
 #~ msgstr "No applications on this zone"
-
