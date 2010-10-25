@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:52+0000\n"
+"POT-Creation-Date: 2010-10-23 22:53+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
 "Language-Team: Meego\n"
@@ -113,11 +113,11 @@ msgstr "Wymusza tryb małego ekranu nawet jeśli rozmiar wyświetlacza sugeruje 
 msgid "Order of panels on toolbar"
 msgstr "Kolejność paneli na pasku narzędzi"
 
-#: ../src/meego-netbook.c:825
+#: ../src/meego-netbook.c:829
 msgid "Meego Netbook Effects"
 msgstr "Efekty MeeGo na netbooku"
 
-#: ../src/meego-netbook.c:829
+#: ../src/meego-netbook.c:833
 msgid "Effects for Meego Netbooks"
 msgstr "Efekty dla Netbooków z MeeGo"
 
@@ -126,13 +126,23 @@ msgstr "Efekty dla Netbooków z MeeGo"
 msgid "Sorry, %s is broken"
 msgstr "Niestety, panel %s jest uszkodzony"
 
-#: ../src/notifications/ntf-notification.c:224
+#: ../src/notifications/ntf-notification.c:234
 msgid "Dismiss"
 msgstr "Zamknij"
 
 #: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "Ucisz wszystkie"
+
+#: ../src/notifications/ntf-tray.c:481
+#: ../src/notifications/ntf-tray.c:557
+#, c-format
+msgid "%i pending messages"
+msgstr "Oczekujących wiadomości: %i"
+
+#: ../src/notifications/ntf-tray.c:535
+msgid "1 pending message"
+msgstr "1 oczekująca wiadomość"
 
 #: ../src/notifications/ntf-wm.c:103
 msgid "Unknown window"
@@ -145,6 +155,24 @@ msgstr "prosi o Twoją uwagę."
 #: ../src/notifications/ntf-wm.c:115
 msgid "Activate"
 msgstr "Aktywuj"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#, c-format
+msgid "Starting %s"
+msgstr "Uruchamianie %s"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#, c-format
+msgid "Opening %s"
+msgstr "Otwieranie %s"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#, c-format
+msgid "Opening %d Item"
+msgid_plural "Opening %d Items"
+msgstr[0] "Owieranie elementu"
+msgstr[1] "Otwieranie %d elementów"
+msgstr[2] "Otwieranie %d elementów"
 
 #~ msgid "System tray"
 #~ msgstr "Pasek systemowy"
