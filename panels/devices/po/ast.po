@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-19 09:25+0000\n"
-"PO-Revision-Date: 2010-06-19 22:26+0100\n"
-"Last-Translator: astur <malditoastur@gmail.com>\n"
+"POT-Creation-Date: 2010-10-24 01:24+0000\n"
+"PO-Revision-Date: 2010-10-26 14:58+0100\n"
+"Last-Translator: Iñigo Varela <ivarela@softastur.org>\n"
 "Language-Team: asturian <alministradores@softastur.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,9 +23,17 @@ msgid "Devices panel"
 msgstr "Panel de preseos"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "preseos"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Tiempu d'espera pa la suspensión"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Un valor igual a -1 significa qu'enxamás va producise la suspensión. Otros valores representen los segundos d'inactividá continuada enantes de que se produzca la suspensión."
 
 #. translators:
 #. * The device has been disabled
@@ -59,31 +67,31 @@ msgstr "Soníos del sistema"
 msgid "MeeGo Power Icon"
 msgstr "Iconu d'enerxía MeeGo"
 
-#: ../power-icon/src/mpd-power-icon.c:76
+#: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "Queda poca batería "
 
-#: ../power-icon/src/mpd-power-icon.c:77
+#: ../power-icon/src/mpd-power-icon.c:78
 msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
 msgstr "La batería ta escosándose y agora ta daqué baxa. Si puedes, enchúfala pa recargala."
 
-#: ../power-icon/src/mpd-power-icon.c:80
+#: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
 msgstr "Casi escosada"
 
-#: ../power-icon/src/mpd-power-icon.c:81
+#: ../power-icon/src/mpd-power-icon.c:82
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
 msgstr "L'equipu cásique nun tien batería. Guarda'l trabayu ya enchúfalu tan aína como puedas."
 
-#: ../power-icon/src/mpd-power-icon.c:85
+#: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
 msgstr "¡Peligru!"
 
-#: ../power-icon/src/mpd-power-icon.c:86
+#: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "L'equipu ta a piques d'escosar la batería. Va apagase agora mesmo. Por favor, guarda'l trabayu; esperamos vete aína."
 
-#: ../power-icon/src/mpd-power-icon.c:439
+#: ../power-icon/src/mpd-power-icon.c:486
 msgid "battery"
 msgstr "batería"
 
@@ -106,39 +114,42 @@ msgstr "¿Apagar l'equipu?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Si nun se decide un res, va apagase en 30 segundos."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "Panel de preseos de MeeGo"
 
-#: ../src/mpd-battery-device.c:371
+#: ../src/mpd-battery-device.c:381
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Sentímoslo, paez que nun hai denguna batería instalada."
 
-#: ../src/mpd-battery-device.c:375
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "La batería ta cargándose. Ta a un %d%% de la capacidá."
 
-#: ../src/mpd-battery-device.c:380
+#: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Batería n'usu. Ta a un %d%% del total."
 
-#: ../src/mpd-battery-device.c:385
+#: ../src/mpd-battery-device.c:395
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "La batería ta dafechu cargada y llista."
 
-#: ../src/mpd-battery-device.c:389
+#: ../src/mpd-battery-device.c:399
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sentímoslo, paez que la batería ta toyida."
 
-#. First row.
-#: ../src/mpd-brightness-tile.c:141
-msgid "Netbook brightness"
-msgstr "Claror de pantalla"
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Amosar brillu - rede eléctrica"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Amosar brillu - batería"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
@@ -181,39 +192,42 @@ msgstr "Papelera"
 msgid "Devices"
 msgstr "Preseos"
 
-#: ../src/mpd-storage-device-tile.c:242
+#: ../src/mpd-storage-device-tile.c:241
 #, c-format
 msgid "Could not run \"%s\""
 msgstr "Nun pudo executase \"%s\""
 
-#: ../src/mpd-storage-device-tile.c:244
+#: ../src/mpd-storage-device-tile.c:243
 msgid "Import error"
 msgstr "Fallu durante la importación"
 
-#: ../src/mpd-storage-device-tile.c:355
+#: ../src/mpd-storage-device-tile.c:354
 msgid "Import photos"
 msgstr "Importar semeyes"
 
-#: ../src/mpd-storage-device-tile.c:357
+#: ../src/mpd-storage-device-tile.c:356
 msgid "Import media"
 msgstr "Importar media"
 
-#. Eject button
-#: ../src/mpd-storage-device-tile.c:615
-msgid "Eject"
-msgstr "Espulsar"
-
+#.
+#. * Column 2: buttons
+#.
 #. Open button
-#: ../src/mpd-storage-device-tile.c:626
+#: ../src/mpd-storage-device-tile.c:633
 msgid "Open"
 msgstr "Abrir"
 
-#: ../src/mpd-storage-device-tile.c:819
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Espulsar"
+
+#: ../src/mpd-storage-device-tile.c:867
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% de %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:827
+#: ../src/mpd-storage-device-tile.c:875
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -262,6 +276,8 @@ msgstr "Volume del equipu"
 msgid "Mute"
 msgstr "Silenciu"
 
+#~ msgid "Netbook brightness"
+#~ msgstr "Claror de pantalla"
 #~ msgid "Netbook volume"
 #~ msgstr "Volume del miniordenador"
 
