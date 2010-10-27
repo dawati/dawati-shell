@@ -15,7 +15,7 @@ msgstr ""
 
 #: ../data/meego-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
-msgstr "Panel Geräte"
+msgstr "Panel »Geräte«"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
 #: ../src/meego-panel-devices.c:176
