@@ -1,11 +1,10 @@
-#
 # Hendrik Richter <hendrikr@gnome.org>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-device master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"POT-Creation-Date: 2010-10-24 01:24+0000\n"
 "PO-Revision-Date: 2010-10-20 12:01-0800\n"
 "Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
 "Language-Team: \n"
@@ -87,7 +86,7 @@ msgstr "Ladezustand des Akkus ist kritisch"
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Der Akkuladezustand ist im kritischen Bereich. Der Rechner wird deshalb nun heruntergefahren. Bitte speichern Sie Ihre Arbeit."
 
-#: ../power-icon/src/mpd-power-icon.c:435
+#: ../power-icon/src/mpd-power-icon.c:486
 msgid "battery"
 msgstr "Akku"
 
@@ -114,35 +113,38 @@ msgstr "Der Rechner wird in 30 Sekunden automatisch ausgeschaltet."
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo-Panel Geräte"
 
-#: ../src/mpd-battery-device.c:371
+#: ../src/mpd-battery-device.c:381
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Anscheinend ist kein Akku vorhanden."
 
-#: ../src/mpd-battery-device.c:375
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Akku wird geladen. Aktueller Ladezustand: ca %d%%"
 
-#: ../src/mpd-battery-device.c:380
+#: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Akku entlädt. Aktueller Ladezustand: ca %d%%"
 
-#: ../src/mpd-battery-device.c:385
+#: ../src/mpd-battery-device.c:395
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Akku ist vollständig geladen."
 
-#: ../src/mpd-battery-device.c:389
+#: ../src/mpd-battery-device.c:399
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Akku ist eventuell beschädigt."
 
-#. First row.
-#: ../src/mpd-brightness-tile.c:141
-msgid "Netbook brightness"
-msgstr "Bildschirmhelligkeit"
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Bildschirmhelligkeit – Netzbetrieb"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Bildschirmhelligkeit – Akkubetrieb"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
@@ -185,39 +187,41 @@ msgstr "Müll"
 msgid "Devices"
 msgstr "Geräte"
 
-#: ../src/mpd-storage-device-tile.c:242
+#: ../src/mpd-storage-device-tile.c:241
 #, c-format
 msgid "Could not run \"%s\""
 msgstr "»%s« konnte nicht ausgeführt werden."
 
-#: ../src/mpd-storage-device-tile.c:244
+#: ../src/mpd-storage-device-tile.c:243
 msgid "Import error"
 msgstr "Fehler beim Importieren"
 
-#: ../src/mpd-storage-device-tile.c:355
+#: ../src/mpd-storage-device-tile.c:354
 msgid "Import photos"
 msgstr "Fotos importieren"
 
-#: ../src/mpd-storage-device-tile.c:357
+#: ../src/mpd-storage-device-tile.c:356
 msgid "Import media"
 msgstr "Medien importieren"
 
-#. Eject button
-#: ../src/mpd-storage-device-tile.c:615
-msgid "Eject"
-msgstr "Aushängen"
-
+#. * Column 2: buttons
+#. 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:626
+#: ../src/mpd-storage-device-tile.c:633
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../src/mpd-storage-device-tile.c:819
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Aushängen"
+
+#: ../src/mpd-storage-device-tile.c:867
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> <span color='%s'>%d%% von %s</span> belegt"
 
-#: ../src/mpd-storage-device-tile.c:827
+#: ../src/mpd-storage-device-tile.c:875
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -266,3 +270,5 @@ msgstr "Lautstärke"
 msgid "Mute"
 msgstr "Stumm"
 
+#~ msgid "Netbook brightness"
+#~ msgstr "Bildschirmhelligkeit"
