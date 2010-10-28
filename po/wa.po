@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego.master.mutter-meego-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-10 09:28+0000\n"
+"POT-Creation-Date: 2010-10-23 22:53+0000\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -31,6 +31,10 @@ msgstr "Schaper bår ås usteyes"
 #: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Dji rgrete mins vos alez dveur oister on scriftôr divant saveur endè radjouter on novea."
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Vos ploz radjouter, oister oudon-bén radjinçner bråmint des scriftôrs e vosse båre ås usteyes."
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
@@ -84,6 +88,10 @@ msgstr "Boesse ås imådjetes sistinme"
 msgid "Show system tray"
 msgstr "Mostrer boesse ås imådjetes sistinme"
 
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "Li boesse ås imådjetes sistinme est ene atuze eployeye pa des pus vîs programes po vos dire cwand åk si passe ou po dmorer ovrant cwand vos les cloyoz."
+
 #: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Tofer si siervi do môde pitite waitroûle"
@@ -100,46 +108,64 @@ msgstr "Fwait k' ons eploye todi l' môde po les ptitès waitroûles minme sel g
 msgid "Order of panels on toolbar"
 msgstr "Ôre des scriftôrs sol bår ås usteyes"
 
-#: ../src/meego-netbook.c:1019
+#: ../src/meego-netbook.c:829
 msgid "Meego Netbook Effects"
 msgstr "Efets po Netbook da Meego"
 
-#: ../src/meego-netbook.c:1023
+#: ../src/meego-netbook.c:833
 msgid "Effects for Meego Netbooks"
 msgstr "Efets da Meego po les Netbooks"
 
-#: ../src/meego-netbook.c:3222
-msgid "Activate"
-msgstr "Mete en alaedje"
-
-#: ../src/meego-netbook.c:3236
-msgid "Unknown window"
-msgstr "Purnea nén cnoxhou"
-
-#: ../src/mnb-toolbar.c:1000
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Dji rgrete, %s est sketé"
 
-#: ../src/notifications/mnb-notification.c:282
+#: ../src/notifications/ntf-notification.c:234
 msgid "Dismiss"
 msgstr "Rinoncî"
 
-#: ../src/notifications/mnb-notification-cluster.c:682
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "Rinoncî a ttafwait"
 
-#: ../src/meego-netbook.c:3238
+#: ../src/notifications/ntf-tray.c:481 ../src/notifications/ntf-tray.c:557
+#, c-format
+msgid "%i pending messages"
+msgstr "%i messaedjes ratindnut"
+
+#: ../src/notifications/ntf-tray.c:535
+msgid "1 pending message"
+msgstr "1 messaedje ratind"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Purnea nén cnoxhou"
+
+#: ../src/notifications/ntf-wm.c:107
 msgid "is asking for your attention."
 msgstr "vos arinne."
 
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "Vos ploz radjouter, oister oudon-bén radjinçner bråmint des scriftôrs e vosse båre ås usteyes."
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Mete en alaedje"
 
-#: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
-msgstr "Li boesse ås imådjetes sistinme est ene atuze eployeye pa des pus vîs programes po vos dire cwand åk si passe ou po dmorer ovrant cwand vos les cloyoz."
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#, c-format
+msgid "Starting %s"
+msgstr "Dj' enonde %s"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#, c-format
+msgid "Opening %s"
+msgstr "Dji drove %s"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#, c-format
+msgid "Opening %d Item"
+msgid_plural "Opening %d Items"
+msgstr[0] "Dji drove %d cayet"
+msgstr[1] "Dji drove %d cayets"
 
 #~ msgid "System tray"
 #~ msgstr "Boesse ås imådjetes sistinme"
