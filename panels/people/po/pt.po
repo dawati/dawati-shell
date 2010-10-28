@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-panel-people\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-23 23:12+0000\n"
+"PO-Revision-Date: 2010-10-28 10:35-0000\n"
+"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: PORTUGAL\n"
+
+#: ../src/meego-panel-people.c:88
+#: ../src/mnb-people-panel.c:513
+#: ../data/meego-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "comunidade"
+
+#: ../src/mnb-people-panel.c:56
+msgid "When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "Se você tiver um serviço MI configurado (ex: Messenger), aqui é o local para conversar com os amigos."
+
+#: ../src/mnb-people-panel.c:191
+#: ../src/mnb-people-panel.c:451
+#, c-format
+msgid "Open %s"
+msgstr "Abrir %s"
+
+#: ../src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr "Este é o painel da comunidade."
+
+#: ../src/mnb-people-panel.c:320
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Desculpe, mas não encontrámos ninguém. Parece que estão todos \"off-line\"."
+
+#: ../src/mnb-people-panel.c:365
+msgid "To see your IM contacts, you need to go online."
+msgstr "Para ver os seus contactos, precisa de estar \"on-line\"."
+
+#: ../src/mnb-people-panel.c:495
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "comunidade - está a conversar com %d pessoa(s)"
+
+#: ../src/mnb-people-panel.c:502
+msgid "people - you are chatting with someone"
+msgstr "comunidade - está a conversar com alguém"
+
+#. Populate header
+#: ../src/mnb-people-panel.c:710
+#: ../src/mnb-people-panel.c:964
+msgid "People"
+msgstr "Comunidade"
+
+#: ../src/mnb-people-panel.c:723
+msgid "Search"
+msgstr "Pesquisar"
+
+#: ../src/mnb-people-panel.c:774
+#: ../src/mnb-people-panel.c:1162
+msgid "You are chatting with:"
+msgstr "Está a conversar com:"
+
+#: ../src/mnb-people-panel.c:981
+msgid "Me and my people"
+msgstr "Eu e a minha comunidade"
+
+#: ../src/mnb-people-panel.c:1019
+msgid "Me"
+msgstr "Eu"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1119
+msgid "My conversations"
+msgstr "As minhas conversas"
+
+#: ../data/meego-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Painel da comunidade"
+
