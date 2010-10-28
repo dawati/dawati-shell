@@ -1,0 +1,135 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-panel-datetime\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-24 01:37+0000\n"
+"PO-Revision-Date: 2010-10-27 14:58-0000\n"
+"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: PORTUGAL\n"
+
+#: ../src/moblin-panel-date-time.c:111
+msgid "Date/Time"
+msgstr "Data/Hora"
+
+#: ../data/moblin-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr "Painel de data e hora"
+
+#: ../data/moblin-panel-datetime.desktop.in.in.h:2
+msgid "date and time"
+msgstr "data e hora"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../src/mnp-utils.c:423
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#: ../src/mnp-utils.c:431
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../src/mnp-utils.c:446
+msgid "%b %-d (Yesterday)"
+msgstr "%b %-d (Ontem)"
+
+#: ../src/mnp-utils.c:448
+msgid "%b %-d (Tomorrow)"
+msgstr "%b %-d (Amanhã)"
+
+#: ../src/mnp-utils.c:454
+msgid "%b %-d (local)"
+msgstr "%b %-d (local)"
+
+#: ../src/mnp-utils.c:456
+msgid "%b %-d"
+msgstr "%b %-d"
+
+#: ../src/mnp-world-clock.c:525
+msgid "Time"
+msgstr "Hora"
+
+#: ../src/mnp-world-clock.c:579
+msgid "24 hour clock"
+msgstr "Relógio 24 horas"
+
+#: ../src/mnp-world-clock.c:648
+msgid "Enter a country or city"
+msgstr "Indique o país ou cidade"
+
+#: ../src/mnp-world-clock.c:671
+msgid "Add"
+msgstr "Adicionar"
+
+#: ../src/mnp-world-clock.c:745
+msgid "Set Time & Date"
+msgstr "Acertar data e hora"
+
+#: ../src/mnp-datetime.c:293
+msgid "Appointments"
+msgstr "Compromissos"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#.
+#. format date
+#: ../src/mnp-datetime.c:342
+#: ../src/mnp-datetime.c:541
+msgid "Today"
+msgstr "Hoje"
+
+#: ../src/mnp-datetime.c:433
+msgid "Open Appointments"
+msgstr "Compromissos por realizar"
+
+#: ../src/mnp-datetime.c:511
+msgid "Tasks"
+msgstr "Tarefas"
+
+#: ../src/mnp-datetime.c:608
+msgid "Open Tasks"
+msgstr "Tarefas por realizar"
+
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Hora e data"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "Relógio de 24 ou 12 horas"
+
+#: ../src/date-time.schemas.in.h:2
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr "Alarmes armazenados para serem utilizados pelo notificador."
+
+#: ../src/date-time.schemas.in.h:3
+msgid "List of alarms in short encoded form"
+msgstr "Lista de alarmes codificados"
+
