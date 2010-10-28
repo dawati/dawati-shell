@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-mutter\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-23 22:53+0000\n"
+"PO-Revision-Date: 2010-10-28 10:41-0000\n"
+"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: PORTUGAL\n"
+
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr "Definir as preferências da barra"
+
+#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr "Definições da barra"
+
+#: ../capplet/src/mtp-bin.c:362
+msgid "Save toolbar"
+msgstr "Gravar barra"
+
+#: ../capplet/src/mtp-bin.c:367
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr "Desculpe, mas tem que remover um painel antes de adicionar outro."
+
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Pode adicionar, remover e organizar a maioria dos painéis da sua barra."
+
+#: ../capplet/src/mtp-jar.c:110
+msgid "Available panels"
+msgstr "Painéis disponíveis"
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
+msgid "%l:%M %P"
+msgstr "%l:%M %P"
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
+msgid "%B %e, %Y"
+msgstr "%e %B, %Y"
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr "Barra de ferramentas"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr "Definir as preferências da área de notificação"
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:241
+msgid "System Tray"
+msgstr "Área de notificação"
+
+#: ../capplet/src/syst-cc-panel.c:174
+msgid "Show system tray"
+msgstr "Mostrar área de notificação"
+
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "A área de notificação é um conceito utilizado por algumas aplicações e indica-lhe quando algo acontece ou para continuar executando quando você os fechar."
+
+#: ../data/mutter-meego.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr "Utilizar sempre o modo de ecrã reduzido"
+
+#: ../data/mutter-meego.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr "Determina a ordem dos painéis na barra de ferramentas."
+
+#: ../data/mutter-meego.schemas.in.h:3
+msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
+msgstr "Obriga a que seja utilizado o modo de ecrã reduzido, mesmo que os programas implicam uma maior resolução."
+
+#: ../data/mutter-meego.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr "Ordem dos painéis na barra de ferramentas"
+
+#: ../src/meego-netbook.c:829
+msgid "Meego Netbook Effects"
+msgstr "Efeitos Meego"
+
+#: ../src/meego-netbook.c:833
+msgid "Effects for Meego Netbooks"
+msgstr "Efeitos para o Meego"
+
+#: ../src/mnb-toolbar.c:1007
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr "Desculpe, %s está danificada"
+
+#: ../src/notifications/ntf-notification.c:234
+msgid "Dismiss"
+msgstr "Rejeitar"
+
+#: ../src/notifications/ntf-tray.c:308
+msgid "Dismiss All"
+msgstr "Rejeitar tudo"
+
+#: ../src/notifications/ntf-tray.c:481
+#: ../src/notifications/ntf-tray.c:557
+#, c-format
+msgid "%i pending messages"
+msgstr "%i mensagens pendentes"
+
+#: ../src/notifications/ntf-tray.c:535
+msgid "1 pending message"
+msgstr "1 mensagem pendente"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Janela desconhecida"
+
+#: ../src/notifications/ntf-wm.c:107
+msgid "is asking for your attention."
+msgstr "está a solicitar a sua atenção."
+
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Ativar"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#, c-format
+msgid "Starting %s"
+msgstr "Iniciando %s"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#, c-format
+msgid "Opening %s"
+msgstr "Abrindo %s"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#, c-format
+msgid "Opening %d Item"
+msgid_plural "Opening %d Items"
+msgstr[0] "Abrindo %d item"
+msgstr[1] "Abrindo %d itens"
+
