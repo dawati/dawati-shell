@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-panel-status\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-23 23:44+0000\n"
+"PO-Revision-Date: 2010-10-28 10:40-0000\n"
+"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: PORTUGAL\n"
+
+#: ../src/meego-panel-status.c:95
+msgid "Status"
+msgstr "Estado"
+
+#: ../src/meego-panel-status.c:153
+#: ../data/meego-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr "estado"
+
+#. vim:set ts=8 expandtab
+#: ../data/meego-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Painel de estado"
+
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Incapaz de atualizar o estado. Pode ser que o serviço esteja indisponível ou a senha errada."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Incapaz de atualizar o estado. Você não está \"on-line\"."
+
+#: ../src/mps-feed-pane.c:445
+msgid "We were unable to guess your location"
+msgstr "Não fomos capazes de identificar a sua localização."
+
+#: ../src/mps-feed-pane.c:453
+#, c-format
+msgid "We think your location is: %s (%f, %f)"
+msgstr "Pensamos que a sua localização é: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:459
+#, c-format
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "A sua localização está a ser partilhada como: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:469
+#, c-format
+msgid "We think your locations is: %f %f"
+msgstr "Pensamos que a sua localização é: %f %f"
+
+#: ../src/mps-feed-pane.c:473
+#, c-format
+msgid "Your location is currently shared as: %f %f"
+msgstr "A sua localização está a ser partilhada como: %f %f"
+
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "A sua localização não está a ser partilhada"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:586
+msgid "Update"
+msgstr "Atualizar"
+
+#: ../src/mps-feed-pane.c:591
+msgid "What's happening?"
+msgstr "O que está a acontecer?"
+
+#: ../src/mps-feed-pane.c:641
+msgid "Change"
+msgstr "Alterar"
+
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Se tiver uma conta web configurada, aqui pode ver as suas fontes e fazer a gestão do seu estado."
+
+#: ../src/mps-feed-switcher.c:509
+#: ../src/mps-feed-switcher.c:554
+msgid "Add new web account"
+msgstr "Adicionar nova conta web"
+
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Este é o painel de estado."
+
+#: ../src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr "A sua localização"
+
+#: ../src/mps-geotag-pane.c:568
+msgid "Search"
+msgstr "Pesquisar"
+
+#: ../src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr "Onde está você?"
+
+#: ../src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr "Descobrir-me"
+
+#: ../src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr "Utilizar localização"
+
+#: ../src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr "Não utilizar localização"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:528
+#, c-format
+msgid "%s from %s"
+msgstr "%s em %s"
+
