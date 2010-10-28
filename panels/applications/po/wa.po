@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: panel-apps.master.meego-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-07 09:39+0000\n"
+"POT-Creation-Date: 2010-10-24 01:00+0000\n"
 "PO-Revision-Date: 2009-11-08 14:01+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -16,33 +16,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 0.3\n"
 
-#. Panel label
-#: ../src/meego-netbook-launcher.c:1333
-msgid "Applications"
-msgstr "Programes"
-
-#: ../src/meego-netbook-launcher.c:1377
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Trover"
 
-#: ../src/meego-panel-applications.c:197
+#. Panel label
+#: ../src/meego-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Programes"
+
+#. * Fav apps pane
+#. 
+#: ../src/meego-netbook-launcher.c:1114
+msgid "Favorite applications"
+msgstr "Programes colåds"
+
+#. * Applications
+#. 
+#: ../src/meego-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Programes da vosse"
+
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "programes"
+
+#: ../src/mnb-launcher-button.c:607
+msgid "Never launched"
+msgstr "Måy enondé"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Sicriftôr des programes"
 
-#: ../src/meego-netbook-launcher.c:1374
-msgid "Search for applications"
-msgstr "Trover des programes"
-
-#: ../src/meego-netbook-launcher.c:1347
-msgid "Your applications"
-msgstr "Programes da vosse"
-
-#. Fav apps
-#: ../src/meego-netbook-launcher.c:1382
-msgid "Favorite applications"
-msgstr "Programes colåds"
+#~ msgid "Search for applications"
+#~ msgstr "Trover des programes"
