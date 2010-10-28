@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-networks\n"
@@ -18,9 +18,11 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: PORTUGAL\n"
 
-#. Translator note: The disabled technologies available to be turned on is put together at
+#. Translator note: The disabled technologies available to be turned on is put
+#. together at
 #. * runtime.
-#. * The conjunction ' or ' will be at the end of a choice of disabled technologies,
+#. * The conjunction ' or ' will be at the end of a choice of disabled
+#. technologies,
 #. * for example 'You could try enabling WiFi, WiMAX or 3G'.
 #. * Note that you need to include spaces on both sides of the word/phrase
 #. * here -- unless you want it joined with previous or next word.
@@ -39,50 +41,43 @@ msgstr ", "
 
 #. Translator note: these technology names will be used in forming
 #. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
-#.
-#: ../carrick/carrick-list.c:1038
-#: ../carrick/carrick-util.c:40
+#. 
+#: ../carrick/carrick-list.c:1038 ../carrick/carrick-util.c:40
 msgid "wired"
 msgstr "com fios"
 
 #. Switches
-#: ../carrick/carrick-list.c:1039
-#: ../carrick/carrick-pane.c:1964
+#: ../carrick/carrick-list.c:1039 ../carrick/carrick-pane.c:1964
 #: ../carrick/carrick-util.c:38
 msgid "WiFi"
 msgstr "\"WiFi\""
 
-#: ../carrick/carrick-list.c:1040
-#: ../carrick/carrick-pane.c:2006
+#: ../carrick/carrick-list.c:1040 ../carrick/carrick-pane.c:2006
 #: ../carrick/carrick-util.c:44
 msgid "WiMAX"
 msgstr "\"WiMAX\""
 
-#: ../carrick/carrick-list.c:1041
-#: ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-list.c:1041 ../carrick/carrick-pane.c:1992
 #: ../carrick/carrick-util.c:42
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:1042
-#: ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-list.c:1042 ../carrick/carrick-pane.c:2020
 #: ../carrick/carrick-util.c:46
 msgid "Bluetooth"
 msgstr "\"Bluetooth\""
 
-#.
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
-#.
+#. 
 #: ../carrick/carrick-list.c:1052
 msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
 msgstr "Não foram encontradas redes. Parece que o gestor de ligações não está ativo. Deve reiniciar o computador."
 
-#.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
-#.
+#. 
 #: ../carrick/carrick-list.c:1062
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr "Não foram encontradas redes. Pode tentar inativar o modo \"off-line\"."
@@ -92,11 +87,10 @@ msgstr "Não foram encontradas redes. Pode tentar inativar o modo \"off-line\"."
 msgid "Sorry, we can't find any networks. You could try enabling %s."
 msgstr "Não foram encontradas redes. Pode tentar ativar %s."
 
-#.
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
-#.
+#. 
 #: ../carrick/carrick-list.c:1128
 msgid "Sorry, we can't find any networks"
 msgstr "Não foram encontradas redes"
@@ -203,8 +197,7 @@ msgstr "Nenhuma"
 msgid "Password"
 msgstr "Senha"
 
-#: ../carrick/carrick-pane.c:786
-#: ../carrick/carrick-service-item.c:1944
+#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1944
 msgid "Show password"
 msgstr "Mostrar senha"
 
@@ -212,8 +205,7 @@ msgstr "Mostrar senha"
 msgid "Settings"
 msgstr "Definições"
 
-#: ../carrick/carrick-pane.c:1978
-#: ../carrick/carrick-service-item.c:456
+#: ../carrick/carrick-pane.c:1978 ../carrick/carrick-service-item.c:456
 msgid "Wired"
 msgstr "Com fios"
 
@@ -225,8 +217,7 @@ msgstr "Modo \"off-line\""
 msgid "This will disable all your connections"
 msgstr "Isto vai inativar todas as ligações"
 
-#: ../carrick/carrick-pane.c:2091
-#: ../src/carrick.c:380
+#: ../carrick/carrick-pane.c:2091 ../src/carrick.c:380
 msgid "Networks"
 msgstr "Redes"
 
@@ -245,7 +236,7 @@ msgstr "Ligar a VPN"
 #. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
-#.
+#. 
 #: ../carrick/carrick-service-item.c:64
 msgid "Critical Error: Invalid country code"
 msgstr "Erro crítico: código de país inválido"
@@ -268,7 +259,7 @@ msgstr "Erro: não existe equipamento 3G"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
-#.
+#. 
 #: ../carrick/carrick-service-item.c:243
 #, c-format
 msgid "%s encrypted"
@@ -280,10 +271,9 @@ msgstr "%s encriptada"
 #. * like in a 3G network
 #: ../carrick/carrick-service-item.c:402
 msgid "Fixed IP"
-msgstr ""
+msgstr "IP fixo"
 
-#: ../carrick/carrick-service-item.c:469
-#: ../carrick/carrick-service-item.c:487
+#: ../carrick/carrick-service-item.c:469 ../carrick/carrick-service-item.c:487
 msgid "Disconnect"
 msgstr "Desligar"
 
@@ -295,8 +285,7 @@ msgstr "Ligado"
 msgid "Online"
 msgstr "\"On-line\""
 
-#: ../carrick/carrick-service-item.c:496
-#: ../carrick/carrick-service-item.c:505
+#: ../carrick/carrick-service-item.c:496 ../carrick/carrick-service-item.c:505
 #, c-format
 msgid "Cancel"
 msgstr "Cancelar"
@@ -309,8 +298,7 @@ msgstr "Configurar"
 msgid "Associating"
 msgstr "Associação"
 
-#: ../carrick/carrick-service-item.c:517
-#: ../carrick/carrick-service-item.c:543
+#: ../carrick/carrick-service-item.c:517 ../carrick/carrick-service-item.c:543
 #: ../carrick/carrick-service-item.c:1931
 msgid "Connect"
 msgstr "Ligar"
@@ -323,8 +311,7 @@ msgstr "Falha ao ligar"
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Falha durante a ligação. Tente novamente."
 
-#: ../carrick/carrick-service-item.c:557
-#: ../carrick/carrick-service-item.c:560
+#: ../carrick/carrick-service-item.c:557 ../carrick/carrick-service-item.c:560
 #, c-format
 msgid "Disconnecting"
 msgstr "A desligar"
@@ -374,7 +361,7 @@ msgstr "Avançado"
 #. * web login (clicking will open browser)
 #: ../carrick/carrick-service-item.c:1856
 msgid "Log in"
-msgstr ""
+msgstr "Iniciar sessão"
 
 #: ../carrick/carrick-service-item.c:1865
 msgid "Scanning"
@@ -429,7 +416,7 @@ msgstr "Aplicar"
 
 #: ../carrick/carrick-util.c:48
 msgid "VPN"
-msgstr ""
+msgstr "VPN"
 
 #: ../carrick/carrick-util.c:84
 #, c-format
@@ -496,8 +483,7 @@ msgstr "redes - %s - \"bluetooth\""
 msgid "networks - %s - VPN"
 msgstr "redes - %s - VPN"
 
-#: ../src/carrick.c:81
-#: ../src/carrick.c:93
+#: ../src/carrick.c:81 ../src/carrick.c:93
 msgid "networks"
 msgstr "redes"
 
@@ -521,14 +507,12 @@ msgstr "Miniaplicativo de ligação Carrick"
 msgid "- MeeGo connectivity applet"
 msgstr "- Miniaplicativo de ligação Meego"
 
-#: ../src/carrick.c:363
-#: ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:363 ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "rede"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70
-#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -590,4 +574,3 @@ msgstr "Selecione o serviço 3G"
 #: ../data/carrick.desktop.in.in.h:1
 msgid "Network settings"
 msgstr "Definições de rede"
-
