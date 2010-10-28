@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego (Moblin 2.x)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"POT-Creation-Date: 2010-10-23 23:44+0000\n"
 "PO-Revision-Date: 2010-04-09 07:11+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -18,15 +18,11 @@ msgstr ""
 "X-Poedit-Language: Walloon\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "A ! Çouchal, c' est l' sicriftôr des statuts. Cwand vs åroz on conte sol waibe d' apontyî (come Twitter), vos î såroz vey vos floûs eyet mete a djoû vos statuts."
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "Statuts"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "statuts"
@@ -44,54 +40,58 @@ msgstr "Dji n' sai mete a djoû l' sitatut. Li siervice est motoit nén disponib
 msgid "Unable to update status: You're not online."
 msgstr "Dji n' sai mete a djoû l' sitatut : vos n' estoz nén raloyîs."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "Nos n' avans sepou adviner vosse plaece"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "Nos avans adviné vosse plaece come estant : %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
+msgstr "Nos pinsans k' vosse plaece come est : %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Vosse plaece est pårtaedjeye come estant : %s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "Vosse plaece est pårtaedjeye pol moumint come : %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
-msgstr "Nos avans adviné vosse plaece come estant : %f %f"
+msgid "We think your locations is: %f %f"
+msgstr "Nos pinsans k' vosse plaece est : %f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "Vosse plaece est pårtaedjeye come estant : %f %f"
+msgid "Your location is currently shared as: %f %f"
+msgstr "Vosse plaece est pårtaedjeye pol moumint come : %f %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "Vosse plaece n' est nén pårtaedjeye"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "Vosse plaece n' est nén pårtaedjeye pol moumint"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "Mete a djoû"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "Cwè çk' i s' passe ?"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "Candjî"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Cwand vs åroz on conte sol waibe d' apontyî, vos såroz vey cial vos floûs eyet mete a djoû vos statuts."
+
+#: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "Radjouter on novea conte waibe"
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "I m' shonne ki vs n' avoz nou siervice waibe d' apontyî ou k' i gn a on problinme avou leu-z apontiaedje. Siervoz vs do boton chal pa dzeu po drovi \"Mes contes waibes\" eyet nd apontyî onk."
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Çoucial est l' sicriftôr des statuts."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -126,3 +126,6 @@ msgstr "Èn n' nén eployî d' plaece"
 #, c-format
 msgid "%s from %s"
 msgstr "%s di %s"
+
+#~ msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+#~ msgstr "I m' shonne ki vs n' avoz nou siervice waibe d' apontyî ou k' i gn a on problinme avou leu-z apontiaedje. Siervoz vs do boton chal pa dzeu po drovi \"Mes contes waibes\" eyet nd apontyî onk."
