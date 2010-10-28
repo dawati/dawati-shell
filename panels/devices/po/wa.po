@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-20 17:50+0000\n"
+"POT-Creation-Date: 2010-10-24 01:24+0000\n"
 "PO-Revision-Date: 2010-05-09 00:22+0200\n"
 "Last-Translator: Jean Cayron et Odile Lambert <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -23,9 +23,17 @@ msgid "Devices panel"
 msgstr "Sicriftôr des éndjins"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:163
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "éndjins"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Tådjaedje divant d' s' edoirmi"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Li valixhance di -1 vout dire ni djamåy s' edoirmi, les ôtès valixhances sont des segondes kel sistinme ni frè rén divant d' s' edoirmi."
 
 #. translators:
 #. * The device has been disabled
@@ -83,7 +91,7 @@ msgstr "Dandjî !"
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Dji rgrete mins i gn årè bén rade pus rén sol batreye di vosse copiutrece. Djel va arester do côp. Schapez vost ovraedje s' i vs plait et tot rade."
 
-#: ../power-icon/src/mpd-power-icon.c:435
+#: ../power-icon/src/mpd-power-icon.c:486
 msgid "battery"
 msgstr "batreye"
 
@@ -106,39 +114,42 @@ msgstr "Voloz vs arester l' éndjole do côp ?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Si vos n' decidez nén, dji m' va arester dins 30 segondes."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "Sicriftôr des éndjins da MeeGo"
 
-#: ../src/mpd-battery-device.c:371
+#: ../src/mpd-battery-device.c:381
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Dji rgrete mins i n' mi shonne nén k' vos avoz ene batreye d' astalêye."
 
-#: ../src/mpd-battery-device.c:375
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Vosse batreye tchedje. Elle est aviè les %d%% rimpleye."
 
-#: ../src/mpd-battery-device.c:380
+#: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Vosse batreye est eployeye. Elle est aviè les %d%% rimpleye."
 
-#: ../src/mpd-battery-device.c:385
+#: ../src/mpd-battery-device.c:395
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Vosse batreye est ttafwaitmint tcherdjeye eyet vs estoz presse as ataker."
 
-#: ../src/mpd-battery-device.c:389
+#: ../src/mpd-battery-device.c:399
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Dji rgrete mins i shonne ki vosse batreye est sketêye."
 
-#. First row.
-#: ../src/mpd-brightness-tile.c:141
-msgid "Netbook brightness"
-msgstr "Rilujhance del poirtåve éndjolete"
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Rilujhance do håynaedje - sol corant"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Rilujhance do håynaedje - sol batreye"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
@@ -181,39 +192,41 @@ msgstr "Batch"
 msgid "Devices"
 msgstr "Éndjins"
 
-#: ../src/mpd-storage-device-tile.c:242
+#: ../src/mpd-storage-device-tile.c:241
 #, c-format
 msgid "Could not run \"%s\""
 msgstr "Dji n' a sepou enonder \"%s\""
 
-#: ../src/mpd-storage-device-tile.c:244
+#: ../src/mpd-storage-device-tile.c:243
 msgid "Import error"
 msgstr "Aroke d' abagaedje"
 
-#: ../src/mpd-storage-device-tile.c:355
+#: ../src/mpd-storage-device-tile.c:354
 msgid "Import photos"
 msgstr "Abaguer des fotos"
 
-#: ../src/mpd-storage-device-tile.c:357
+#: ../src/mpd-storage-device-tile.c:356
 msgid "Import media"
 msgstr "Abaguer des medias"
 
-#. Eject button
-#: ../src/mpd-storage-device-tile.c:615
-msgid "Eject"
-msgstr "Fé rexhe"
-
+#. * Column 2: buttons
+#. 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:626
+#: ../src/mpd-storage-device-tile.c:633
 msgid "Open"
 msgstr "Drovi"
 
-#: ../src/mpd-storage-device-tile.c:819
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Fé rexhe"
+
+#: ../src/mpd-storage-device-tile.c:867
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> k' eploye <span color='%s'>%d%% di %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:827
+#: ../src/mpd-storage-device-tile.c:875
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -261,6 +274,9 @@ msgstr "Volume del copiutrece"
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Moya"
+
+#~ msgid "Netbook brightness"
+#~ msgstr "Rilujhance del poirtåve éndjolete"
 
 #~ msgid "Meego Power Icon"
 #~ msgstr "Imådjete d' enerdjeye di MeeGo"
