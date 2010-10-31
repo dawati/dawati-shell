@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:51+0000\n"
-"PO-Revision-Date: 2010-10-22 07:36+0530\n"
+"POT-Creation-Date: 2010-10-24 01:24+0000\n"
+"PO-Revision-Date: 2010-10-31 07:38+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -34,8 +34,8 @@ msgid ""
 "Value of -1 means never sleep, other values are seconds of continuous idle "
 "state before sleeping."
 msgstr ""
-"-1 ਦਾ ਅਰਥ ਹੈ ਕਦੇ ਵੀ ਸਲੀਪ ਨਹੀਂ, ਹੋਰ ਮੁੱਲ ਸਕਿੰਟ ਵਿੱਚ ਹਨ, ਜੋ ਸਲੀਪ ਹੋਣ ਪਹਿਲਾਂ ਵੇਹਲੇ ਹੋਣ ਦੀ ਹਾਲਤ "
-"ਦਰਸਾਉਂਦੇ ਹਨ।"
+"-1 ਦਾ ਅਰਥ ਹੈ ਕਦੇ ਵੀ ਸਲੀਪ ਨਹੀਂ, ਹੋਰ ਮੁੱਲ ਸਕਿੰਟ ਵਿੱਚ ਹਨ, ਜੋ ਸਲੀਪ ਹੋਣ ਪਹਿਲਾਂ ਵੇਹਲੇ ਹੋਣ ਦੀ "
+"ਹਾਲਤ ਦਰਸਾਉਂਦੇ ਹਨ।"
 
 #. translators:
 #. * The device has been disabled
@@ -105,7 +105,7 @@ msgstr ""
 "ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਦੀ ਬੈਟਰੀ ਲਗਭਗ ਖਤਮ ਹੋਣ ਵਾਲੀ ਹੈ। ਮੈਂ ਹੁਣ ਬੰਦ ਹੋਣ ਜਾ ਰਿਹਾ ਹਾਂ। ਆਪਣਾ ਕੰਮ "
 "ਸੰਭਾਲ ਲਵੋ ਜੀ ਤੇ ਤੁਹਾਨੂੰ ਛੇਤੀ ਹੀ ਫੇਰ ਮਿਲਦੇ ਹਾਂ।"
 
-#: ../power-icon/src/mpd-power-icon.c:435
+#: ../power-icon/src/mpd-power-icon.c:486
 msgid "battery"
 msgstr "ਬੈਟਰੀ"
 
@@ -132,35 +132,38 @@ msgstr "ਜੇ ਤੁਸੀਂ ਫੈਸਲਾ ਨਾ ਕੀਤਾ ਤਾਂ ਮ
 msgid "MeeGo Devices Panel"
 msgstr "ਮੀਗੋ ਜੰਤਰ ਪੈਨਲ"
 
-#: ../src/mpd-battery-device.c:371
+#: ../src/mpd-battery-device.c:381
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੇ ਕੋਲ ਬੈਟਰੀ ਇੰਸਟਾਲ ਨਹੀਂ ਜਾਪਦੀ ਹੈ।"
 
-#: ../src/mpd-battery-device.c:375
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਚਾਰਜ ਹੋ ਰਹੀ ਹੈ। ਇਹ %d%% ਲਗਭਗ ਪੂਰੀ ਹੈ।"
 
-#: ../src/mpd-battery-device.c:380
+#: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "ਤੁਹਾਡੀ ਬੈਟਰੀ ਵਰਤੀ ਜਾ ਰਹੀ ਹੈ। ਇਹ ਲਗਭਗ %d%% ਪੂਰੀ ਹੈ।"
 
-#: ../src/mpd-battery-device.c:385
+#: ../src/mpd-battery-device.c:395
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "ਬੈਟਰੀ ਪੂਰੀ ਤਰ੍ਹਾਂ ਚਾਰਜ ਹੋ ਚੁੱਕੀ ਹੈ ਤੇ ਤੁਸੀਂ ਵਰਤਣ ਲਈ ਤਿਆਰ ਹੋ।"
 
-#: ../src/mpd-battery-device.c:389
+#: ../src/mpd-battery-device.c:399
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "ਅਫਸੋਸ, ਤੁਹਾਡੀ ਬੈਟਰੀ ਖਰਾਬ ਜਾਪਦੀ ਹੈ।"
 
-#. First row.
-#: ../src/mpd-brightness-tile.c:141
-msgid "Netbook brightness"
-msgstr "ਨੈੱਟਬੁੱਕ ਚਮਕ"
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "ਡਿਸਪਲੇਅ ਚਮਕ - ਪਲੱਗ ਲੱਗਾ"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "ਡਿਸਪਲੇਅ ਚਮਕ - ਬੈਟਰੀ ਉੱਤੇ"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
@@ -207,39 +210,42 @@ msgstr "ਰੱਦੀ"
 msgid "Devices"
 msgstr "ਜੰਤਰ"
 
-#: ../src/mpd-storage-device-tile.c:242
+#: ../src/mpd-storage-device-tile.c:241
 #, c-format
 msgid "Could not run \"%s\""
 msgstr "\"%s\" ਚਲਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ"
 
-#: ../src/mpd-storage-device-tile.c:244
+#: ../src/mpd-storage-device-tile.c:243
 msgid "Import error"
 msgstr "ਇੰਪੋਰਟ ਗਲਤੀ"
 
-#: ../src/mpd-storage-device-tile.c:355
+#: ../src/mpd-storage-device-tile.c:354
 msgid "Import photos"
 msgstr "ਫੋਟੋ ਇੰਪੋਰਟ ਕਰੋ"
 
-#: ../src/mpd-storage-device-tile.c:357
+#: ../src/mpd-storage-device-tile.c:356
 msgid "Import media"
 msgstr "ਮੀਡਿਆ ਇੰਪੋਰਟ ਕਰੋ"
 
-#. Eject button
-#: ../src/mpd-storage-device-tile.c:615
-msgid "Eject"
-msgstr "ਬਾਹਰ ਕੱਢੋ"
-
+#.
+#. * Column 2: buttons
+#.
 #. Open button
-#: ../src/mpd-storage-device-tile.c:626
+#: ../src/mpd-storage-device-tile.c:633
 msgid "Open"
 msgstr "ਖੋਲ੍ਹੋ"
 
-#: ../src/mpd-storage-device-tile.c:819
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "ਬਾਹਰ ਕੱਢੋ"
+
+#: ../src/mpd-storage-device-tile.c:867
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> <span color='%s'>%d%% %s ਵਿੱਚੋਂ</span>"
 
-#: ../src/mpd-storage-device-tile.c:827
+#: ../src/mpd-storage-device-tile.c:875
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -287,6 +293,9 @@ msgstr "ਕੰਪਿਊਟਰ ਵਾਲੀਅਮ"
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "ਚੁੱਪ"
+
+#~ msgid "Netbook brightness"
+#~ msgstr "ਨੈੱਟਬੁੱਕ ਚਮਕ"
 
 #~ msgid "Stop"
 #~ msgstr "ਰੋਕੋ"
