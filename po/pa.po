@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego.Meego2-UI.mutter-meego-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:52+0000\n"
-"PO-Revision-Date: 2010-07-30 09:13+0530\n"
+"POT-Creation-Date: 2010-10-23 22:53+0000\n"
+"PO-Revision-Date: 2010-10-31 07:37+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
@@ -30,13 +30,11 @@ msgstr "ਟੂਲਬਾਰ ਸੰਭਾਲੋ"
 
 #: ../capplet/src/mtp-bin.c:367
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr ""
-"ਅਫਸੋਸ, ਤੁਹਾਨੂੰ ਨਵਾਂ ਪੈਨਲ ਸ਼ਾਮਲ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਇੱਕ ਪੈਨਲ ਨੂੰ ਹਟਾਉਣਾ ਪਵੇਗਾ।"
+msgstr "ਅਫਸੋਸ, ਤੁਹਾਨੂੰ ਨਵਾਂ ਪੈਨਲ ਸ਼ਾਮਲ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਇੱਕ ਪੈਨਲ ਨੂੰ ਹਟਾਉਣਾ ਪਵੇਗਾ।"
 
 #: ../capplet/src/mtp-bin.c:369
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr ""
-"ਤੁਸੀਂ ਆਪਣੇ ਟੂਲਬਾਰ ਵਿੱਚ ਕਈ ਪੈਨਲ ਜੋੜ, ਹਟਾ ਜਾਂ ਉਨ੍ਹਾਂ ਦਾ ਕ੍ਰਮ ਬਦਲ ਸਕਦੇ ਹੋ।"
+msgstr "ਤੁਸੀਂ ਆਪਣੇ ਟੂਲਬਾਰ ਵਿੱਚ ਕਈ ਪੈਨਲ ਜੋੜ, ਹਟਾ ਜਾਂ ਉਨ੍ਹਾਂ ਦਾ ਕ੍ਰਮ ਬਦਲ ਸਕਦੇ ਹੋ।"
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
@@ -95,9 +93,8 @@ msgid ""
 "The system tray is a concept used by some older applications to let you know "
 "when something happens or to stay running when you close them."
 msgstr ""
-"ਸਿਸਟਮ ਟਰੇ ਦੇ ਢੰਗ ਨੂੰ ਕੋਈ ਪੁਰਾਣੀਆਂ ਐਪਲੀਕੇਸ਼ਨ ਵਲੋਂ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕਰਨ ਲਈ ਵਰਤਿਆ "
-"ਜਾਂਦਾ ਹੈ, ਜਦੋਂ ਕੁਝ ਵਾਪਰਦਾ ਹੈ ਜਾਂ ਚੱਲਦੀਆਂ ਰਹਿੰਦੀਆਂ ਹਨ, ਜਦੋਂ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਨੂੰ "
-"ਬੰਦ ਕਰਦੇ ਹੋ।"
+"ਸਿਸਟਮ ਟਰੇ ਦੇ ਢੰਗ ਨੂੰ ਕੋਈ ਪੁਰਾਣੀਆਂ ਐਪਲੀਕੇਸ਼ਨ ਵਲੋਂ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕਰਨ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਜਦੋਂ ਕੁਝ "
+"ਵਾਪਰਦਾ ਹੈ ਜਾਂ ਚੱਲਦੀਆਂ ਰਹਿੰਦੀਆਂ ਹਨ, ਜਦੋਂ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਨੂੰ ਬੰਦ ਕਰਦੇ ਹੋ।"
 
 #: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
@@ -112,19 +109,18 @@ msgid ""
 "Forces small screen mode to be used even if display size would normally "
 "imply bigger screen mode."
 msgstr ""
-"ਜੇ ਸਕਰੀਨ ਦਾ ਆਕਾਰ ਸਧਾਰਨ ਵੀ ਹੋਵੇ ਤਾਂ ਵੀ ਵੱਡੀ ਸਕਰੀਨ ਮੋਡ ਦੀ ਬਜਾਏ ਛੋਟੀ ਸਕਰੀਨ ਮੋਡ "
-"ਲਈ "
-"ਮਨਜ਼ੂਰ ਕਰੋ।"
+"ਜੇ ਸਕਰੀਨ ਦਾ ਆਕਾਰ ਸਧਾਰਨ ਵੀ ਹੋਵੇ ਤਾਂ ਵੀ ਵੱਡੀ ਸਕਰੀਨ ਮੋਡ ਦੀ ਬਜਾਏ ਛੋਟੀ ਸਕਰੀਨ ਮੋਡ ਲਈ ਮਨਜ਼ੂਰ "
+"ਕਰੋ।"
 
 #: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "ਟੂਲਬਾਰ ਉੱਤੇ ਪੈਨਲ ਦਾ ਕ੍ਰਮ"
 
-#: ../src/meego-netbook.c:825
+#: ../src/meego-netbook.c:829
 msgid "Meego Netbook Effects"
 msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਪਰਭਾਵ"
 
-#: ../src/meego-netbook.c:829
+#: ../src/meego-netbook.c:833
 msgid "Effects for Meego Netbooks"
 msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਲਈ ਪਰਭਾਵ"
 
@@ -133,13 +129,22 @@ msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਲਈ ਪਰਭਾਵ"
 msgid "Sorry, %s is broken"
 msgstr "ਅਫਸੋਸ, %s ਖ਼ਰਾਬ ਹੈ"
 
-#: ../src/notifications/ntf-notification.c:224
+#: ../src/notifications/ntf-notification.c:234
 msgid "Dismiss"
 msgstr "ਅਣਡਿੱਠਾ"
 
 #: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "ਸਭ ਅਣਡਿੱਠੇ"
+
+#: ../src/notifications/ntf-tray.c:481 ../src/notifications/ntf-tray.c:557
+#, c-format
+msgid "%i pending messages"
+msgstr "%i ਬਾਕੀ ਸੁਨੇਹੇ"
+
+#: ../src/notifications/ntf-tray.c:535
+msgid "1 pending message"
+msgstr "੧ ਬਾਕੀ ਸੁਨੇਹਾ"
 
 #: ../src/notifications/ntf-wm.c:103
 msgid "Unknown window"
@@ -152,6 +157,23 @@ msgstr "ਤੁਹਾਡਾ ਧਿਆਨ ਮੰਗ ਰਹੀ ਹੈ।"
 #: ../src/notifications/ntf-wm.c:115
 msgid "Activate"
 msgstr "ਐਕਟੀਵੇਟ"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#, c-format
+msgid "Starting %s"
+msgstr "%s ਸ਼ੁਰੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#, c-format
+msgid "Opening %s"
+msgstr "%s ਖੋਲ੍ਹਿਆ ਜਾ ਰਿਹਾ ਹੈ"
+
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#, c-format
+msgid "Opening %d Item"
+msgid_plural "Opening %d Items"
+msgstr[0] "%d ਆਈਟਮ ਖੋਲ੍ਹੀ ਜਾ ਰਹੀ ਹੈ"
+msgstr[1] "%d ਆਈਟਮਾਂ ਖੋਲ੍ਹੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
 
 #~ msgid ""
 #~ "You need to play some music, look at some pictures or watch some video to "
@@ -340,9 +362,6 @@ msgstr "ਐਕਟੀਵੇਟ"
 
 #~ msgid "Edit details"
 #~ msgstr "ਵੇਰਵਾ ਸੋਧ"
-
-#~ msgid "Send a message"
-#~ msgstr "ਸੁਨੇਹਾ ਭੇਜੋ"
 
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
