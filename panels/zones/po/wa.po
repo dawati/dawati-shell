@@ -1,12 +1,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Jean Cayron <jean.cayron@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-10-23 22:50+0000\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -39,22 +39,14 @@ msgstr "Redjon %d"
 
 #: ../src/sw-zone.c:845
 msgid "No applications on this zone"
-msgstr "Nou programe dins cisse redjon"
+msgstr "Nou programe dins cisse redjon ci"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet "
-"les assonrer sorlon çou k' vos veyoz voltî."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
 
-#~ msgid ""
-#~ "Hello! This is the Zones panel. When you have applications open you will "
-#~ "be able to view, manage and access them here."
-#~ msgstr ""
-#~ "Bondjoû ! Çouchal, c' est l' sicriftôr des Redjons. Cwand vs avoz des "
-#~ "programes di drovous, vos les såroz vey, manaedjî eyet î moussî chal."
+#~ msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+#~ msgstr "Bondjoû ! Çouchal, c' est l' sicriftôr des Redjons. Cwand vs avoz des programes di drovous, vos les såroz vey, manaedjî eyet î moussî chal."
 
 #~ msgid "two"
 #~ msgstr "deus"
