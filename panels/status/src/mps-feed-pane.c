@@ -466,7 +466,7 @@ _update_location_label (MpsFeedPane *pane)
       } else {
         if (guess_location)
         {
-          message = g_strdup_printf (_("We think your locations is: %f %f"),
+          message = g_strdup_printf (_("We think your location is: %f %f"),
                                        latitude,
                                        longitude);
         } else {
