@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"POT-Creation-Date: 2010-11-03 00:04+0000\n"
 "PO-Revision-Date: 2004-01-01 04:12+0100\n"
 "Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -53,8 +53,8 @@ msgstr "Vaše poloha je nyní sdílena jako: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We think your locations is: %f %f"
-msgstr "Myslíme si, že vaše poloha je: %f, %f"
+msgid "We think your location is: %f %f"
+msgstr "Myslíme si, že vaše poloha je: %f %f"
 
 #: ../src/mps-feed-pane.c:473
 #, c-format
