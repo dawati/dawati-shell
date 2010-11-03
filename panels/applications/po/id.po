@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-apps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-03 09:29+0000\n"
+"POT-Creation-Date: 2010-11-02 22:32+0000\n"
 "PO-Revision-Date: 2009-08-26 07:24+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,33 +14,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Panel label
-#: ../src/meego-netbook-launcher.c:1330
-msgid "Applications"
-msgstr "Aplikasi"
-
-#: ../src/meego-netbook-launcher.c:1373
+#: ../src/mnb-filter.c:161
 msgid "Search"
 msgstr "Cari"
 
-#: ../src/meego-panel-applications.c:197
+#. Panel label
+#: ../src/meego-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Aplikasi"
+
+#. * Fav apps pane
+#. 
+#: ../src/meego-netbook-launcher.c:1114
+msgid "Favorite applications"
+msgstr "Aplikasi favorit"
+
+#. * Applications
+#. 
+#: ../src/meego-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Aplikasi Anda"
+
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplikasi"
+
+#: ../src/mnb-launcher-button.c:607
+msgid "Never launched"
+msgstr "Tak pernah diluncurkan"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel aplikasi"
 
-#: ../src/meego-netbook-launcher.c:1370
-msgid "Search for applications"
-msgstr "Cari aplikasi"
-
-#: ../src/meego-netbook-launcher.c:1344
-msgid "Your applications"
-msgstr "Aplikasi Anda"
-
-#. Fav apps
-#: ../src/meego-netbook-launcher.c:1378
-msgid "Favorite applications"
-msgstr "Aplikasi favorit"
+#~ msgid "Search for applications"
+#~ msgstr "Cari aplikasi"
