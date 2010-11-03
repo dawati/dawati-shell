@@ -50,7 +50,7 @@ msgstr "kiinteä"
 #: ../carrick/carrick-list.c:1039 ../carrick/carrick-pane.c:1964
 #: ../carrick/carrick-util.c:38
 msgid "WiFi"
-msgstr "WiFi -"
+msgstr "WiFi"
 
 #: ../carrick/carrick-list.c:1040 ../carrick/carrick-pane.c:2006
 #: ../carrick/carrick-util.c:44
@@ -126,7 +126,7 @@ msgstr "Kiinteä verkkoyhteys katkesi"
 #: ../carrick/carrick-notification-manager.c:204
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "%s yhteys kohteeseen %s katkesi"
+msgstr "%s-yhteys kohteeseen %s katkesi"
 
 #: ../carrick/carrick-notification-manager.c:210
 #, c-format
