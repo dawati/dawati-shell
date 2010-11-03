@@ -21,23 +21,23 @@ msgstr ""
 
 #: ../data/meego-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
-msgstr "Panel Moje oblast"
+msgstr "Panel Myzone neboli moje oblast"
 
 #: ../data/myzone.desktop.in.in.h:1
 msgid "Change the Myzone background and content"
-msgstr "Změnit pozadí panelu Moje oblast a obsah"
+msgstr "Změnit pozadí panelu Myzone (moje oblast) a obsah"
 
 #: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
 msgid "Myzone"
-msgstr "Moje oblast"
+msgstr "Myzone (moje oblast)"
 
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
-msgstr "<b>Změňte to, co se ukazuje ve vašem panelu Moje oblast</b>"
+msgstr "<b>Změňte to, co se ukazuje ve vašem panelu Myzone (moje oblast)</b>"
 
 #: ../data/capplet.ui.h:2
 msgid "<b>Myzone Wallpaper</b>"
-msgstr "<b>Obrázek tvořící pozadí panelu Moje oblast</b>"
+msgstr "<b>Obrázek tvořící pozadí panelu Myzone (moje oblast)</b>"
 
 #: ../data/capplet.ui.h:3
 msgid "Calendar and tasks:"
@@ -94,7 +94,7 @@ msgstr "Ukázat tolik naposledy otevřených dokumentů, kolik je jen možné"
 
 #: ../capplet/myzone-cc-panel.c:77
 msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
-msgstr "Chcete smazat své naposledy otevřené dokumenty? Tím se z vašeho panelu Moje oblast odstraní místní obsah"
+msgstr "Chcete smazat své naposledy otevřené dokumenty? Tím se z vašeho panelu Myzone (moje oblast) odstraní místní obsah"
 
 #: ../penge/penge-calendar-pane.c:484
 msgid "Appointments"
@@ -139,7 +139,7 @@ msgstr "Očekáváno %x"
 
 #: ../penge/penge-welcome-tile.c:28
 msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
-msgstr "Když jste si zřídil své internetové účty a použil nějaké soubory, objeví se zde v panelu Moje oblast, pro snadný přístup vždy, když budete chtít. "
+msgstr "Když jste si zřídil své internetové účty a použil nějaké soubory, objeví se zde v panelu Myzone (moje oblast), pro snadný přístup vždy, když budete chtít. "
 
 #: ../penge/penge-welcome-tile.c:34
 msgid "Play intro video"
