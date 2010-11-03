@@ -355,7 +355,7 @@ msgstr "Nimipalvelimen osoite '%s' ei ole pätevä"
 #. TRANSLATORS: label for the Advanced expander in a service item
 #: ../carrick/carrick-service-item.c:1844
 msgid "Advanced"
-msgstr "Edistynyt"
+msgstr "Lisäasetukset"
 
 #. TRANSLATORS: button for services that require an additional
 #. * web login (clicking will open browser)
@@ -412,7 +412,7 @@ msgstr "Staattinen IP"
 #. TRANSLATORS: label for apply button in static ip settings
 #: ../carrick/carrick-service-item.c:2061
 msgid "Apply"
-msgstr "Sovelletaan"
+msgstr "Hyväksy"
 
 #: ../carrick/carrick-util.c:48
 msgid "VPN"
