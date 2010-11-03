@@ -135,7 +135,7 @@ msgstr "Dnes není co dělat"
 #: ../penge/penge-task-tile.c:319
 #, c-format
 msgid "Due %x"
-msgstr "Má nastat %x"
+msgstr "Očekáváno %x"
 
 #: ../penge/penge-welcome-tile.c:28
 msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
