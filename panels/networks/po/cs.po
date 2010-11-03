@@ -205,7 +205,7 @@ msgstr "Nastavení"
 
 #: ../carrick/carrick-pane.c:1978 ../carrick/carrick-service-item.c:456
 msgid "Wired"
-msgstr "Drát"
+msgstr "Připojen k síti"
 
 #: ../carrick/carrick-pane.c:2045
 msgid "Offline mode"
