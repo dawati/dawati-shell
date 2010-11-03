@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"POT-Creation-Date: 2010-11-03 00:04+0000\n"
 "PO-Revision-Date: 2010-03-22 12:38+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,15 +14,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Halo! Ini adalah panel Status. Ketika Anda telah menata akun web (seperti Twitter), Anda akan dapat melihat feed Anda dan memutakhirkan status Anda disini."
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "Status"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
@@ -40,54 +36,58 @@ msgstr "Tak bisa memperbarui status. Layanan mungkin tak tersedia atau kata sand
 msgid "Unable to update status: You're not online."
 msgstr "Tak bisa perbarui status: Anda tidak daring."
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "Kami tak bisa menebak lokasimu"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "Kami tebak lokasimu sebagai: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
+msgstr "Kami tebak lokasi Anda di: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
+#: ../src/mps-feed-pane.c:459
 #, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
-msgstr "Kamu sedang berbagi lokasi sebagai: %s (%f, %f)"
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "Anda sedang berbagi lokasi sebagai: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
-msgstr "Kami tebak lokasimu pada: %f %f"
+msgid "We think your location is: %f %f"
+msgstr "Kami tebak lokasi Anda di: %f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "Kamu sedang berbagi lokasi sebagai: %f %f"
+msgid "Your location is currently shared as: %f %f"
+msgstr "Anda sedang berbagi lokasi sebagai: %f %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "Kamu tidak sedang berbagi lokasimu"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "Anda tidak sedang berbagi lokasi"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "Perbarui"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "Apa yang sedang terjadi?"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "Ubah"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Ketika Anda telah menata akun web, Anda akan dapat melihat feed Anda dan memutakhirkan status Anda disini."
+
+#: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "Tambahkan akun web baru"
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Sepertinya Anda tak memiliki layanan web yang telah tertata atau ada masalah dengan konfigurasinya. Gunakan tombol di atas untuk membuka Akun Web Saya dan siapkan satu."
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Ini adalah panel Status."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -122,6 +122,9 @@ msgstr "Jangan gunakan lokasi"
 #, c-format
 msgid "%s from %s"
 msgstr "%s dari %s"
+
+#~ msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+#~ msgstr "Sepertinya Anda tak memiliki layanan web yang telah tertata atau ada masalah dengan konfigurasinya. Gunakan tombol di atas untuk membuka Akun Web Saya dan siapkan satu."
 
 #~ msgid "Offline"
 #~ msgstr "Terputus"
