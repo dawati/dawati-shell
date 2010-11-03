@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"POT-Creation-Date: 2010-11-02 23:58+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -28,13 +29,13 @@ msgstr "Unitilan aikakatkaisu"
 
 #: ../data/meego-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
-msgstr "Arvo 1 merkitsee ei koskaan unitilaan, toiset arvot merkitsevät sekuntia yhtäjaksoista käyttämättömyyttä ennen unitilaan joutumista."
+msgstr "Arvolla -1 laite ei koskaan siirry unitilaan. Muut arvot tarkoittavat sekunteja, kauanko koneen tulee olla käyttämättä siirtyäkseen unitilaan."
 
 #. translators:
 #. * The device has been disabled
 #: ../gvc/gvc-mixer-control.c:1003
 msgid "Disabled"
-msgstr "Poistettu käytöstä"
+msgstr "Pois käytöstä"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -64,11 +65,11 @@ msgstr "MeeGo-virtakuvake"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
-msgstr "Akku on lähes lopussa"
+msgstr "Akku lähes tyhjä"
 
 #: ../power-icon/src/mpd-power-icon.c:78
 msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
-msgstr "Huomaamme, että akkusi on tyhjentymässä. Jos vain mahdollista, kannattaisi kytkeä pistoke seinään ja ladata akku."
+msgstr "Laitteen akku alkaa olla tyhjä. On suositeltavaa, että kytket laitteen latautumaan virtalähteeseen mahdollisimman pian."
 
 #: ../power-icon/src/mpd-power-icon.c:81
 msgid "Getting close to empty"
@@ -76,7 +77,7 @@ msgstr "Lähes tyhjä"
 
 #: ../power-icon/src/mpd-power-icon.c:82
 msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
-msgstr "Akkusi on melkein tyhjä. Voisi olla hyvä idea tallentaa kaikki työsi ja kytkeä pistoke seinään mahdollisimman pian."
+msgstr "Laitteen akku on lähes tyhjä. On suositeltavaa, että tallennat keskeneräiset työt heti ja kytket laitteen latautumaan virtalähteeseen."
 
 #: ../power-icon/src/mpd-power-icon.c:86
 msgid "Danger!"
@@ -84,9 +85,9 @@ msgstr "Vaara!"
 
 #: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Sori, tietokoneesi akku on lähes tyhjä. Meidän täytyy nyt kytkeä virta pois päältä. Tallenna työsi ja toivottavasti näemme sinut pian uudelleen."
+msgstr "Laitteen akku on jo lähes kokonaan tyhjä, ja se joudutaan sammuttamaan. Tallenna keskeneräiset työt heti. Nähdään taas pian!"
 
-#: ../power-icon/src/mpd-power-icon.c:435
+#: ../power-icon/src/mpd-power-icon.c:486
 msgid "battery"
 msgstr "akku"
 
@@ -94,12 +95,12 @@ msgstr "akku"
 #, c-format
 msgid "If you don't decide, I'll turn off in %d second"
 msgid_plural "If you don't decide, I'll turn off in %d seconds"
-msgstr[0] "Jos et tee päätöstä, virta kytkeytyy pois päältä %d sekunnissa"
-msgstr[1] "Jos et tee päätöstä, virta kytkeytyy pois päältä %d sekunnissa"
+msgstr[0] "Jos et tee päätöstä, virta kytkeytyy pois päältä %d sekunnin kuluttua"
+msgstr[1] "Jos et tee päätöstä, virta kytkeytyy pois päältä %d sekunnin kuluttua"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:130
 msgid "Turn off"
-msgstr "Kytke pois päältä"
+msgstr "Sammuta"
 
 #: ../power-icon/src/mpd-shutdown-notification.c:184
 msgid "Would you like to turn off now?"
@@ -113,35 +114,38 @@ msgstr "Jos et tee päätöstä, virta kytkeytyy pois päältä 30 sekunnissa."
 msgid "MeeGo Devices Panel"
 msgstr "MeeGo-laitepaneeli"
 
-#: ../src/mpd-battery-device.c:371
+#: ../src/mpd-battery-device.c:381
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Sori, sinulla ei näyttäisi olevan akkua asennettuna."
 
-#: ../src/mpd-battery-device.c:375
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Akkusi latautuu. Se on noin %d%% täysi."
 
-#: ../src/mpd-battery-device.c:380
+#: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Akkuasi käytetään. Se on noin %d%% täysi."
 
-#: ../src/mpd-battery-device.c:385
+#: ../src/mpd-battery-device.c:395
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Akkusi on täysin ladattu ja olet valmis töihin. "
 
-#: ../src/mpd-battery-device.c:389
+#: ../src/mpd-battery-device.c:399
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Sori, näyttää siltä, että akku on rikki."
 
-#. First row.
-#: ../src/mpd-brightness-tile.c:141
-msgid "Netbook brightness"
-msgstr "Verkon kirkkaus"
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Näytön kirkkaus - verkkovirtakäyttö"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Näytön kirkkaus - akkukäyttö"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
@@ -184,39 +188,41 @@ msgstr "Roskakori"
 msgid "Devices"
 msgstr "Laitteet"
 
-#: ../src/mpd-storage-device-tile.c:242
+#: ../src/mpd-storage-device-tile.c:241
 #, c-format
 msgid "Could not run \"%s\""
 msgstr "Ei voinut suorittaa \"%s\""
 
-#: ../src/mpd-storage-device-tile.c:244
+#: ../src/mpd-storage-device-tile.c:243
 msgid "Import error"
 msgstr "Tuontivirhe"
 
-#: ../src/mpd-storage-device-tile.c:355
+#: ../src/mpd-storage-device-tile.c:354
 msgid "Import photos"
 msgstr "Tuo kuvat"
 
-#: ../src/mpd-storage-device-tile.c:357
+#: ../src/mpd-storage-device-tile.c:356
 msgid "Import media"
 msgstr "Tuo media"
 
-#. Eject button
-#: ../src/mpd-storage-device-tile.c:615
-msgid "Eject"
-msgstr "Irrota"
-
+#. * Column 2: buttons
+#. 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:626
+#: ../src/mpd-storage-device-tile.c:633
 msgid "Open"
 msgstr "Avaa"
 
-#: ../src/mpd-storage-device-tile.c:819
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Irrota"
+
+#: ../src/mpd-storage-device-tile.c:867
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> käyttää <span color='%s'>%d%% of %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:827
+#: ../src/mpd-storage-device-tile.c:875
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -265,14 +271,14 @@ msgstr "Tietokoneen äänenvoimakkuus"
 msgid "Mute"
 msgstr "Mykistä"
 
+#~ msgid "Netbook brightness"
+#~ msgstr "Verkon kirkkaus"
+
 #~ msgid "Meego Power Icon"
 #~ msgstr "Meego virtakuvake"
 
-#~ msgid ""
-#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
-#~ "span>"
-#~ msgstr ""
-#~ "<span font-weight='bold'>Tuo tietoja</span> <span color='%s'>%d%%</span>"
+#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+#~ msgstr "<span font-weight='bold'>Tuo tietoja</span> <span color='%s'>%d%%</span>"
 
 #~ msgid "Stop"
 #~ msgstr "Pysäytä"
@@ -280,8 +286,7 @@ msgstr "Mykistä"
 #~ msgid "Netbook volume"
 #~ msgstr "Netbook-asema"
 
-#~ msgid ""
-#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgid "%s nas been plugged in. You can use the Devices panel interact with it"
 #~ msgstr "%s kytketty. Voit käyttää sitä Laitteet-paneelin välityksella"
 
 #~ msgid "USB plugged in"
@@ -421,35 +426,35 @@ msgstr "Mykistä"
 
 #~ msgid "RAID device %s"
 #~ msgstr "RAID-laite %s"
-#~ msgctxt "RAID Level fallback"
 
+#~ msgctxt "RAID Level fallback"
 #~ msgid "RAID"
 #~ msgstr "RAID"
 
 #~ msgid "RAID Array"
 #~ msgstr "RAID-ryhmä"
-#~ msgctxt "Linux MD slave state"
 
+#~ msgctxt "Linux MD slave state"
 #~ msgid "Not Attached"
 #~ msgstr "Ei liitetty"
-#~ msgctxt "Linux MD slave state"
 
+#~ msgctxt "Linux MD slave state"
 #~ msgid "Faulty"
 #~ msgstr "Viallinen"
-#~ msgctxt "Linux MD slave state"
 
+#~ msgctxt "Linux MD slave state"
 #~ msgid "Fully Synchronized"
 #~ msgstr "Täysin synkattu"
-#~ msgctxt "Linux MD slave state"
 
+#~ msgctxt "Linux MD slave state"
 #~ msgid "Writemostly"
 #~ msgstr "Kirjoita enimmäkseen"
-#~ msgctxt "Linux MD slave state"
 
+#~ msgctxt "Linux MD slave state"
 #~ msgid "Blocked"
 #~ msgstr "Estetty"
-#~ msgctxt "Linux MD slave state"
 
+#~ msgctxt "Linux MD slave state"
 #~ msgid "Spare"
 #~ msgstr "Vara"
 
@@ -492,21 +497,14 @@ msgstr "Mykistä"
 #~ msgid "Error listening to address `localhost:%d': %s: %s\n"
 #~ msgstr "Virhe osoitteen kuuntelemisessa `localhost:%d': %s: %s\n"
 
-#~ msgid ""
-#~ "Error creating a local TCP server, tried binding to ports 9000-10000 on "
-#~ "localhost"
-#~ msgstr ""
-#~ "Virhe paikallista TCP-palvelinta luotaessa, yritettiin sitomista "
-#~ "paikallisen isännän portteihin 9000-10000  "
+#~ msgid "Error creating a local TCP server, tried binding to ports 9000-10000 on localhost"
+#~ msgstr "Virhe paikallista TCP-palvelinta luotaessa, yritettiin sitomista paikallisen isännän portteihin 9000-10000  "
 
 #~ msgid "Error setting auth mechanisms on local DBusServer\n"
-#~ msgstr ""
-#~ "Virhe todentamismekanismien asettamisessa paikallisessa kohteessa "
-#~ "DBusServer\n"
+#~ msgstr "Virhe todentamismekanismien asettamisessa paikallisessa kohteessa DBusServer\n"
 
 #~ msgid "Unable to parse command-line `%s' (Malformed address?): %s"
-#~ msgstr ""
-#~ "Ei pysty jäsentämään komentoriviä `%s' (Väärin muotoiltu osoite?): %s"
+#~ msgstr "Ei pysty jäsentämään komentoriviä `%s' (Väärin muotoiltu osoite?): %s"
 
 #~ msgid "Unable to spawn ssh program: %s"
 #~ msgstr "ssh-ohjelman käynnistäminen ei onnistunut: %s"
@@ -523,12 +521,8 @@ msgstr "Mykistä"
 #~ msgid "Error sending `%s': %s"
 #~ msgstr "Virhe lähetettäessä `%s': %s"
 
-#~ msgid ""
-#~ "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for "
-#~ "secret' but got `%s'"
-#~ msgstr ""
-#~ "Odottamaton stderr-tuotoa - odotettu `udisks-tcp-bridge: Odottaa "
-#~ "salaista' mutta sai `%s'"
+#~ msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Waiting for secret' but got `%s'"
+#~ msgstr "Odottamaton stderr-tuotoa - odotettu `udisks-tcp-bridge: Odottaa salaista' mutta sai `%s'"
 
 #~ msgid "Error passing authorization secret: %s"
 #~ msgstr "Virhe välitettäessä valtuutussalaisuutta: %s"
@@ -536,22 +530,14 @@ msgstr "Mykistä"
 #~ msgid "Error reading stderr from: %s"
 #~ msgstr "Virhe luettaessa stderr kohteesta: %s"
 
-#~ msgid ""
-#~ "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to "
-#~ "connect to port %d' but got `%s'"
-#~ msgstr ""
-#~ "Virhe luettaessa stderr-tuotosta: odotettu `udisks-tcp-bridge: Yritettiin "
-#~ "yhdistää porttiin%d' mutta saatiin `%s'"
+#~ msgid "Unexpected stderr output - expected `udisks-tcp-bridge: Attempting to connect to port %d' but got `%s'"
+#~ msgstr "Virhe luettaessa stderr-tuotosta: odotettu `udisks-tcp-bridge: Yritettiin yhdistää porttiin%d' mutta saatiin `%s'"
 
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized: %s"
-#~ msgstr ""
-#~ "Udisks-tcp-bridge-ohjelma ei onnistunut osoittamaan, että se oli "
-#~ "hyväksytty: %s"
+#~ msgstr "Udisks-tcp-bridge-ohjelma ei onnistunut osoittamaan, että se oli hyväksytty: %s"
 
 #~ msgid "The udisks-tcp-bridge program failed to prove it was authorized"
-#~ msgstr ""
-#~ "Udisks-tcp-bridge-ohjelma ei onnistunut osoittamaan, että se oli "
-#~ "hyväksytty"
+#~ msgstr "Udisks-tcp-bridge-ohjelma ei onnistunut osoittamaan, että se oli hyväksytty"
 
 #~ msgid "%s (%s bytes)"
 #~ msgstr "%s (%s bittiä)"
@@ -1054,46 +1040,23 @@ msgstr "Mykistä"
 #~ msgid "Unknown (%s)"
 #~ msgstr "Tuntematon (%s)"
 
-#~ msgid ""
-#~ "A popular format compatible with almost any device or system, typically "
-#~ "used for file exchange."
-#~ msgstr ""
-#~ "Suosittu muoto, joka on yhteensopiva lähes kaikkien laitteiden ja "
-#~ "järjstelmien kanssa, käytetään tyypillisesti tiedoston vaihtamiseen."
+#~ msgid "A popular format compatible with almost any device or system, typically used for file exchange."
+#~ msgstr "Suosittu muoto, joka on yhteensopiva lähes kaikkien laitteiden ja järjstelmien kanssa, käytetään tyypillisesti tiedoston vaihtamiseen."
 
-#~ msgid ""
-#~ "This file system is compatible with Linux systems only and provides "
-#~ "classic UNIX file permissions support. This file system does not use a "
-#~ "journal."
-#~ msgstr ""
-#~ "Tämä tiedosto on yhteensopiva Linux-järjestelmän kanssa ja tarjoaa "
-#~ "klassisen UNIX-tiedoston oikeuksien tuen. Tämä tiedostojäjrestelmä ei "
-#~ "käytä muistiota."
+#~ msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support. This file system does not use a journal."
+#~ msgstr "Tämä tiedosto on yhteensopiva Linux-järjestelmän kanssa ja tarjoaa klassisen UNIX-tiedoston oikeuksien tuen. Tämä tiedostojäjrestelmä ei käytä muistiota."
 
-#~ msgid ""
-#~ "This file system is compatible with Linux systems only and provides "
-#~ "classic UNIX file permissions support."
-#~ msgstr ""
-#~ "Tämä tiedosto on yhteensopiva Linux-järjestelmän kanssa ja tarjoaa "
-#~ "klassisen UNIX-tiedoston oikeuksien tuen."
+#~ msgid "This file system is compatible with Linux systems only and provides classic UNIX file permissions support."
+#~ msgstr "Tämä tiedosto on yhteensopiva Linux-järjestelmän kanssa ja tarjoaa klassisen UNIX-tiedoston oikeuksien tuen."
 
 #~ msgid "Swap area used by the operating system for virtual memory."
 #~ msgstr "Käyttöjärjestelmä käyttää vaihtoaluetta virtuaaliselle muistille. "
 
-#~ msgid ""
-#~ "The native Windows file system. Not widely compatible with other "
-#~ "operating systems than Windows."
-#~ msgstr ""
-#~ "Alkuperäinen WIndowsin tiedostojärjestelmä. Ei laajasti yhteensopiva "
-#~ "muiden tiedostojärjestelmien kuten Windowsin kanssa."
+#~ msgid "The native Windows file system. Not widely compatible with other operating systems than Windows."
+#~ msgstr "Alkuperäinen WIndowsin tiedostojärjestelmä. Ei laajasti yhteensopiva muiden tiedostojärjestelmien kuten Windowsin kanssa."
 
-#~ msgid ""
-#~ "Simple filesystem with low overhead and UNIX permissions support. Not "
-#~ "widely compatible with other operating systems than Linux and Minix."
-#~ msgstr ""
-#~ "Yksinkertainen tiedostojärjestelmä matalalla kuormituksella ja UNIX-"
-#~ "oikeuksien tuella.  Ei laajasti yhteensopiva muiden tiedostojärjestelmien "
-#~ "kuten Linuxin ja Minixin kanssa."
+#~ msgid "Simple filesystem with low overhead and UNIX permissions support. Not widely compatible with other operating systems than Linux and Minix."
+#~ msgstr "Yksinkertainen tiedostojärjestelmä matalalla kuormituksella ja UNIX-oikeuksien tuella.  Ei laajasti yhteensopiva muiden tiedostojärjestelmien kuten Linuxin ja Minixin kanssa."
 
 #~ msgid "No file system will be created."
 #~ msgstr "Tiedostojärjestelmää ei luoda."
@@ -1101,38 +1064,17 @@ msgstr "Mykistä"
 #~ msgid "Create an Extended Partition for logical partitions."
 #~ msgstr "Luo laajennettu osiointi loogisille osioinneille."
 
-#~ msgid ""
-#~ "The Master Boot Record scheme is compatible with almost any device or "
-#~ "system but has a number of limitations with respect to disk size and "
-#~ "number of partitions."
-#~ msgstr ""
-#~ "Pääkäynnistystietueen kaava on yhteensopiva melkein kaikkien laitteien "
-#~ "tai järjestelmien kanssa, mutta sillä on joukko rajoituksia levykkeen "
-#~ "kokoon ja osiointien määrään liittyen."
+#~ msgid "The Master Boot Record scheme is compatible with almost any device or system but has a number of limitations with respect to disk size and number of partitions."
+#~ msgstr "Pääkäynnistystietueen kaava on yhteensopiva melkein kaikkien laitteien tai järjestelmien kanssa, mutta sillä on joukko rajoituksia levykkeen kokoon ja osiointien määrään liittyen."
 
-#~ msgid ""
-#~ "A legacy scheme that is incompatible with most systems except Apple "
-#~ "systems and most Linux systems. Not recommended for removable media."
-#~ msgstr ""
-#~ "Vanha malli, joka on yhteensopiva lähes kaikkien järjestelmien paitsi "
-#~ "Apple-järjestelmien ja useimpien Linux-järjestelmien kanssa. Ei "
-#~ "suositella irrotettaville tietovälineille."
+#~ msgid "A legacy scheme that is incompatible with most systems except Apple systems and most Linux systems. Not recommended for removable media."
+#~ msgstr "Vanha malli, joka on yhteensopiva lähes kaikkien järjestelmien paitsi Apple-järjestelmien ja useimpien Linux-järjestelmien kanssa. Ei suositella irrotettaville tietovälineille."
 
-#~ msgid ""
-#~ "The GUID scheme is compatible with most modern systems but may be "
-#~ "incompatible with some devices and legacy systems."
-#~ msgstr ""
-#~ "GUID-malli,  joka on yhteensopiva lähes kaikkien modernien järjestelmien "
-#~ "kanssa, saattaa olla yhteensopimaton joidenkin laitteiden ja vanhojen "
-#~ "järjestelmien kanssa."
+#~ msgid "The GUID scheme is compatible with most modern systems but may be incompatible with some devices and legacy systems."
+#~ msgstr "GUID-malli,  joka on yhteensopiva lähes kaikkien modernien järjestelmien kanssa, saattaa olla yhteensopimaton joidenkin laitteiden ja vanhojen järjestelmien kanssa."
 
-#~ msgid ""
-#~ "Marks the entire disk as unused. Use this option only if you want to "
-#~ "avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
-#~ msgstr ""
-#~ "Merkitsee koko levykkeen käyttämättömäski. Käytä tätä asetusta "
-#~ "ainoastaan, jos haluat välttää levykkeen osituksen, ts. koko levykeen tai "
-#~ "levykkeiden avulla."
+#~ msgid "Marks the entire disk as unused. Use this option only if you want to avoid partitioning the disk for e.g. whole disk use or floppy / Zip disks."
+#~ msgstr "Merkitsee koko levykkeen käyttämättömäski. Käytä tätä asetusta ainoastaan, jos haluat välttää levykkeen osituksen, ts. koko levykeen tai levykkeiden avulla."
 
 #~ msgid "LUKS Passphrase for UUID %s"
 #~ msgstr "LUKS-tunnuslause UUID:lle %s"
@@ -1172,120 +1114,87 @@ msgstr "Mykistä"
 
 #~ msgid "Virtual"
 #~ msgstr "Virtuaalinen"
-#~ msgctxt "connection name"
 
+#~ msgctxt "connection name"
 #~ msgid "Unknown"
 #~ msgstr "Tuntematon"
 
 #~ msgid "%s at %s"
 #~ msgstr "%s kohteessa %s"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "Stripe (RAID-0)"
 #~ msgstr "Raidoitettu (RAID-0)"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "RAID-0"
 #~ msgstr "RAID-0"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "Mirror (RAID-1)"
 #~ msgstr "Peilattu (RAID-1)"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "RAID-1"
 #~ msgstr "RAID-1"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "Parity Disk (RAID-4)"
 #~ msgstr "Pariteettilevyke (RAID-4)"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "RAID-4"
 #~ msgstr "RAID-4"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "Distributed Parity (RAID-5)"
 #~ msgstr "Jaettu pariteetti (RAID-5)"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "RAID-5"
 #~ msgstr "RAID-5"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "Dual Distributed Parity (RAID-6)"
 #~ msgstr "Jaettu kaksoispariteetti (RAID-6)"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "RAID-6"
 #~ msgstr "RAID-6"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "Stripe of Mirrors (RAID-10)"
 #~ msgstr "Peilien raidoitus (RAID-10)"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "RAID-10"
 #~ msgstr "RAID-10"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "Concatenated (Linear)"
 #~ msgstr "Yhdistetty (lineaarinen)"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "Linear"
 #~ msgstr "Lineaarinen"
 
-#~ msgid ""
-#~ "Striped set without parity. Provides improved performance but no fault "
-#~ "tolerance. If a single disk in the array fails, the entire RAID-0 array "
-#~ "fails."
-#~ msgstr ""
-#~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon, mutta ei "
-#~ "virhetoleranssia. Jos yksittäinen levyke ryhmässä epäonnistuu, koko RAID-"
-#~ "0-ryhmä epäonnistuu."
+#~ msgid "Striped set without parity. Provides improved performance but no fault tolerance. If a single disk in the array fails, the entire RAID-0 array fails."
+#~ msgstr "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon, mutta ei virhetoleranssia. Jos yksittäinen levyke ryhmässä epäonnistuu, koko RAID-0-ryhmä epäonnistuu."
 
-#~ msgid ""
-#~ "Mirrored set without parity. Provides fault tolerance and improved "
-#~ "performance for reading. RAID-1 arrays can sustain all but one disk "
-#~ "failing."
-#~ msgstr ""
-#~ "Peilattu asetus ilman pariteettia. Tarjoaa virhetoleranssin ja paremman "
-#~ "tehon lukemiseen. RAID-1-ryhmä voi ylläpitää yhtä lukuunottamatta kaikki "
-#~ "levykkeiden epäonnistumiset."
+#~ msgid "Mirrored set without parity. Provides fault tolerance and improved performance for reading. RAID-1 arrays can sustain all but one disk failing."
+#~ msgstr "Peilattu asetus ilman pariteettia. Tarjoaa virhetoleranssin ja paremman tehon lukemiseen. RAID-1-ryhmä voi ylläpitää yhtä lukuunottamatta kaikki levykkeiden epäonnistumiset."
 
-#~ msgid ""
-#~ "Striped set with parity on a single disk. Provides improved performance "
-#~ "and fault tolerance. RAID-4 arrays can sustain a single disk failure."
-#~ msgstr ""
-#~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja "
-#~ "virhetoleranssin. RAID-4-ryhmä voi ylläpitää yhden levykkeen "
-#~ "epäonnistumisen."
+#~ msgid "Striped set with parity on a single disk. Provides improved performance and fault tolerance. RAID-4 arrays can sustain a single disk failure."
+#~ msgstr "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja virhetoleranssin. RAID-4-ryhmä voi ylläpitää yhden levykkeen epäonnistumisen."
 
-#~ msgid ""
-#~ "Striped set with distributed parity. Provides improved performance and "
-#~ "fault tolerance. RAID-5 arrays can sustain a single disk failure."
-#~ msgstr ""
-#~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja "
-#~ "virhetoleranssin. RAID-5-ryhmä voi ylläpitää yhden levykkeen "
-#~ "epäonnistumisen."
+#~ msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-5 arrays can sustain a single disk failure."
+#~ msgstr "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja virhetoleranssin. RAID-5-ryhmä voi ylläpitää yhden levykkeen epäonnistumisen."
 
-#~ msgid ""
-#~ "Striped set with dual distributed parity. Provides improved performance "
-#~ "and fault tolerance. RAID-6 arrays can sustain two disk failures."
-#~ msgstr ""
-#~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja "
-#~ "virhetoleranssin. RAID-6-ryhmä voi ylläpitää kaksi levykkeiden "
-#~ "epäonnistumista."
+#~ msgid "Striped set with dual distributed parity. Provides improved performance and fault tolerance. RAID-6 arrays can sustain two disk failures."
+#~ msgstr "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja virhetoleranssin. RAID-6-ryhmä voi ylläpitää kaksi levykkeiden epäonnistumista."
 
-#~ msgid ""
-#~ "Striped set with distributed parity. Provides improved performance and "
-#~ "fault tolerance. RAID-10 arrays can sustain multiple drive losses so long "
-#~ "as no mirror loses all its drives."
-#~ msgstr ""
-#~ "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja "
-#~ "virhetoleranssin. RAID-4-ryhmä voi ylläpitää monia ohjaimien menetyksiä "
-#~ "niin kauakn kuin peili ei menetä kaikki ohjaimiaan."
+#~ msgid "Striped set with distributed parity. Provides improved performance and fault tolerance. RAID-10 arrays can sustain multiple drive losses so long as no mirror loses all its drives."
+#~ msgstr "Raidoitettu asetus ilman pariteettia. Tarjoaa paremman tehon ja virhetoleranssin. RAID-4-ryhmä voi ylläpitää monia ohjaimien menetyksiä niin kauakn kuin peili ei menetä kaikki ohjaimiaan."
 
 #~ msgid "Unknown RAID level %s."
 #~ msgstr "Tuntematon RAID-taso %s."
@@ -1294,8 +1203,7 @@ msgstr "Mykistä"
 #~ msgstr "Levyke on ehjä"
 
 #~ msgid "Disk was used outside of design parameters in the past"
-#~ msgstr ""
-#~ "Levykettä käytettiin menneisyydessä rakenneparametrien ulkopuolella."
+#~ msgstr "Levykettä käytettiin menneisyydessä rakenneparametrien ulkopuolella."
 
 #~ msgid "Disk has a few bad sectors"
 #~ msgstr "Levykkeellä on muutamia huonoja sektoreita."
@@ -1452,8 +1360,8 @@ msgstr "Mykistä"
 
 #~ msgid "%s LVM2 Physical Volume"
 #~ msgstr "%s LVM2 fyysinen asema"
-#~ msgctxt "RAID level"
 
+#~ msgctxt "RAID level"
 #~ msgid "RAID"
 #~ msgstr "RAID"
 
