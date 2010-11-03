@@ -140,32 +140,32 @@ msgstr "Verkko muuttunut"
 #: ../carrick/carrick-notification-manager.c:246
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Yhteys kohteeseen %s katkesi, joten yhdistimme sinut langalliseen verkkoon."
+msgstr "Yhteys kohteeseen %s katkesi. Verkkoyhteys muodostettu uudelleen langalliseen verkkoon."
 
 #: ../carrick/carrick-notification-manager.c:253
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "Yhteys kohteeseen %s katkesi, joten yhdistimme sinut kohteeseen %s, joka on %s-verkko."
+msgstr "Yhteys kohteeseen %s katkesi. Verkkoyhteys muodostettu uudelleen kohteeseen %s (Yhteystyyppi: %s)"
 
 #: ../carrick/carrick-notification-manager.c:261
 #, c-format
 msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "Yhteys kohteeseen %s katkesi, joten yhdistimme sinut %s-verkkoon."
+msgstr "Yhteys kohteeseen %s katkesi. Verkkoyhteys muodostettu uudelleen kohteeseen %s."
 
 #: ../carrick/carrick-notification-manager.c:271
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "%s-yhteys katkesi, joten yhdistimme sinut kiinteään verkkoon."
+msgstr "Yhteys '%s' katkesi. Verkkoyhteys muodostettu uudelleen kiinteään langalliseen verkkoon."
 
 #: ../carrick/carrick-notification-manager.c:278
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "%s-yhteys katkesi, joten yhdistimme sinut kohteeseen %s, joka on %s-verkko."
+msgstr "Yhteys '%s' katkesi. Verkkoyhteys muodostettu uudelleen kohteeseen %s (Yhteystyyppi: %s)"
 
 #: ../carrick/carrick-notification-manager.c:287
 #, c-format
 msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "%s-yhteys katkesi, joten yhdistimme sinut %s-verkkoon."
+msgstr "Yhteys '%s' katkesi. Verkkoyhteys muodostettu uudelleen kohteeseen %s."
 
 #: ../carrick/carrick-pane.c:686
 msgid "New connection settings"
@@ -211,7 +211,7 @@ msgstr "Kiinteä"
 
 #: ../carrick/carrick-pane.c:2045
 msgid "Offline mode"
-msgstr "Poissa linjoilta -tila"
+msgstr "Yhteydetön tila"
 
 #: ../carrick/carrick-pane.c:2055
 msgid "This will disable all your connections"
