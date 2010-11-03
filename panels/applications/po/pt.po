@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libsocialweb\n"
+"Project-Id-Version: meego-panel-apps\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-24 01:34+0000\n"
-"PO-Revision-Date: 2010-10-26 15:44-0000\n"
+"POT-Creation-Date: 2010-11-02 22:32+0000\n"
+"PO-Revision-Date: 2010-11-03 09:55-0000\n"
 "Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,53 +18,39 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: PORTUGAL\n"
 
-#: ../services/digg/digg.keys.in.h:1
-msgid "Digg"
-msgstr "Digg"
+#: ../src/mnb-filter.c:161
+msgid "Search"
+msgstr "Pesquisar"
 
-#: ../services/digg/digg.keys.in.h:2
-msgid "Digg - to share news, video and images"
-msgstr "Digg - para partilhar notícias, vídeos e imagens"
+#. Panel label
+#: ../src/meego-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Aplicações"
 
-#. Translators "[track title] by [artist]"
-#: ../services/lastfm/lastfm.c:149
-#, c-format
-msgid "%s by %s"
-msgstr "%s de %s"
+#.
+#. * Fav apps pane
+#.
+#: ../src/meego-netbook-launcher.c:1114
+msgid "Favorite applications"
+msgstr "Aplicações favoritas"
 
-#: ../services/lastfm/lastfm.c:153
-msgid "Unknown"
-msgstr "Desconhecido"
+#.
+#. * Applications
+#.
+#: ../src/meego-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "As suas aplicações"
 
-#: ../services/lastfm/lastfm.keys.in.h:1
-msgid "Last.fm"
-msgstr "Last.fm"
+#: ../src/meego-panel-applications.c:247
+#: ../data/meego-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr "aplicações"
 
-#: ../services/lastfm/lastfm.keys.in.h:2
-msgid "Last.fm is a music service that learns what you love. Every track you play will tell your Last.fm profile something about what you like. It can connect you to other people who like what you like - and recommend songs from their music collections and yours too."
-msgstr "O Last.fm é um serviço musical que aprende o que você gosta. Cada música que você reproduz indica ao seu perfil Last.fm o que você gosta. Pode contactar com outras pessoas com os mesmos gostos musicais e recomenda-lhes as suas músicas e vice versa."
+#: ../src/mnb-launcher-button.c:607
+msgid "Never launched"
+msgstr "Nunca iniciadas"
 
-#: ../services/twitter/twitter.keys.in.h:1
-msgid "Twitter"
-msgstr "Twitter"
-
-#: ../services/twitter/twitter.keys.in.h:2
-msgid "Twitter is a service for friends, family, and co–workers to communicate and stay connected through the exchange of quick, frequent answers to one simple question: What are you doing?"
-msgstr "O Twitter é um serviço para os amigos, familiares e colaboradores comunicarem entre si e ficarem ligados através de uma rápida troca de diálogos a apenas uma pergunta: O que estás a fazer?"
-
-#: ../services/flickr/flickr.keys.in.h:1
-msgid "Flickr"
-msgstr "Flickr"
-
-#: ../services/flickr/flickr.keys.in.h:2
-msgid "Flickr - almost certainly the best online photo management and sharing application in the world."
-msgstr "O Flickr é provavelmente a melhor aplicação do mundo \"on-line\" para a gestão das suas fotos."
-
-#: ../services/myspace/myspace.keys.in.h:1
-msgid "MySpace"
-msgstr "MySpace"
-
-#: ../services/myspace/myspace.keys.in.h:2
-msgid "MySpace is a leading social portal for connecting people, content, and culture from around the world. Create a profile, share photos, professional and viral videos, blog, instant message your friends, and listen to music on the world’s largest music community."
-msgstr "O MySpace é um portal para comunicação de conteúdos e cultura entre pessoas de todo o mundo. Crie um perfil, partilhe fotos, vídeos, comunique e envie mensagens aos seus amigos e escute as músicas da maior comunidade de músicas \"on-line\"."
+#: ../data/meego-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Painel de aplicações"
 
