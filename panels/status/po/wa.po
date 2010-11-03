@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meego (Moblin 2.x)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-23 23:44+0000\n"
+"POT-Creation-Date: 2010-11-03 00:04+0000\n"
 "PO-Revision-Date: 2010-04-09 07:11+0100\n"
 "Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
 "Language-Team: Walloon <linux-wa@walon.org>\n"
@@ -56,7 +56,7 @@ msgstr "Vosse plaece est pårtaedjeye pol moumint come : %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We think your locations is: %f %f"
+msgid "We think your location is: %f %f"
 msgstr "Nos pinsans k' vosse plaece est : %f %f"
 
 #: ../src/mps-feed-pane.c:473
