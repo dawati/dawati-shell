@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"POT-Creation-Date: 2010-11-03 00:04+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: mekaminski <maria.kamminski@ptiglobal.net>\n"
+"Last-Translator: Marcin Sołtysiak <marcin.p.soltysiak@gmail.com>\n"
 "Language-Team: Moblin\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,12 +44,12 @@ msgstr "Nie można zaktualizować stanu: Nie jesteś w trybie online."
 
 #: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
-msgstr "Odgadliśmy Twoją lokalizację: %f %f"
+msgstr "Twoja lokalizacja nie może być ustalona"
 
 #: ../src/mps-feed-pane.c:453
 #, c-format
 msgid "We think your location is: %s (%f, %f)"
-msgstr "Odgadliśmy Twoją lokalizację: %s (%f, %f)"
+msgstr "Twoja lokalizacja to: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:459
 #, c-format
@@ -58,8 +58,8 @@ msgstr "Twoja lokalizacja jest udostępniana jako: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We think your locations is: %f %f"
-msgstr "Odgadliśmy Twoją lokalizację: %f %f"
+msgid "We think your location is: %f %f"
+msgstr "Twoja lokalizacja to: %f %f"
 
 #: ../src/mps-feed-pane.c:473
 #, c-format
@@ -73,7 +73,7 @@ msgstr "Twoja lokalizacja nie jest udostępniana"
 #. Actor creation
 #: ../src/mps-feed-pane.c:586
 msgid "Update"
-msgstr "Aktualizacja"
+msgstr "Aktualizuj"
 
 #: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
