@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-devices master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:59+0000\n"
+"POT-Creation-Date: 2010-11-02 23:58+0000\n"
 "PO-Revision-Date: 2010-05-05 19:40+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -23,9 +23,17 @@ msgid "Devices panel"
 msgstr "Panel perangkat"
 
 #: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../src/meego-panel-devices.c:176
 msgid "devices"
 msgstr "perangkat"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Timeout tidur"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Nilai -1 berarti tak pernah tidur, nilai lain adalah lamanya menganggur terus-menerus dalam detik sebelum tidur."
 
 #. translators:
 #. * The device has been disabled
@@ -81,7 +89,7 @@ msgstr "Bahaya!"
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
 msgstr "Maaf, baterai komputer Anda sekejap lagi habis. Kami mesti mematikan sekarang. Silakan simpan hasil kerja Anda dan semoga kita segera bertemu lagi."
 
-#: ../power-icon/src/mpd-power-icon.c:435
+#: ../power-icon/src/mpd-power-icon.c:486
 msgid "battery"
 msgstr "baterai"
 
@@ -103,39 +111,42 @@ msgstr "Anda mau mematikan sekarang?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Bila Anda tak memutuskan, komputer akan dimatikan dalam 30 detik."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/meego-panel-devices.c:126
 msgid "MeeGo Devices Panel"
 msgstr "Panel Perangkat MeeGo"
 
-#: ../src/mpd-battery-device.c:371
+#: ../src/mpd-battery-device.c:381
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
 msgstr "Maaf, sepertinya Anda tidak memasang baterai."
 
-#: ../src/mpd-battery-device.c:375
+#: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
 msgstr "Baterai Anda sedang diisi. Kira-kira terisi %d%%."
 
-#: ../src/mpd-battery-device.c:380
+#: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
 msgstr "Baterai Anda sedang dipakai. Kira-kira terisi %d%%."
 
-#: ../src/mpd-battery-device.c:385
+#: ../src/mpd-battery-device.c:395
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
 msgstr "Baterai Anda telah terisi penuh dan Anda siap untuk pergi."
 
-#: ../src/mpd-battery-device.c:389
+#: ../src/mpd-battery-device.c:399
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
 msgstr "Maaf, sepertinya baterai Anda rusak."
 
-#. First row.
-#: ../src/mpd-brightness-tile.c:141
-msgid "Netbook brightness"
-msgstr "Kecerahan netbook"
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Kecerahan tampilan - memakai listrik"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Kecerahan tampilan - memakai baterai"
 
 #: ../src/mpd-computer-pane.c:119
 msgid "Your computer"
@@ -178,39 +189,41 @@ msgstr "Tong Sampah"
 msgid "Devices"
 msgstr "Perangkat"
 
-#: ../src/mpd-storage-device-tile.c:242
+#: ../src/mpd-storage-device-tile.c:241
 #, c-format
 msgid "Could not run \"%s\""
 msgstr "Tak bisa menjalankan \"%s\""
 
-#: ../src/mpd-storage-device-tile.c:244
+#: ../src/mpd-storage-device-tile.c:243
 msgid "Import error"
 msgstr "Kesalahan impor"
 
-#: ../src/mpd-storage-device-tile.c:355
+#: ../src/mpd-storage-device-tile.c:354
 msgid "Import photos"
 msgstr "Impor foto"
 
-#: ../src/mpd-storage-device-tile.c:357
+#: ../src/mpd-storage-device-tile.c:356
 msgid "Import media"
 msgstr "Impor media"
 
-#. Eject button
-#: ../src/mpd-storage-device-tile.c:615
-msgid "Eject"
-msgstr "Keluarkan"
-
+#. * Column 2: buttons
+#. 
 #. Open button
-#: ../src/mpd-storage-device-tile.c:626
+#: ../src/mpd-storage-device-tile.c:633
 msgid "Open"
 msgstr "Buka"
 
-#: ../src/mpd-storage-device-tile.c:819
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Keluarkan"
+
+#: ../src/mpd-storage-device-tile.c:867
 #, c-format
 msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
 msgstr "<span font-weight='bold'>%s</span> memakai <span color='%s'>%d%% dari %s</span>"
 
-#: ../src/mpd-storage-device-tile.c:827
+#: ../src/mpd-storage-device-tile.c:875
 #, c-format
 msgid "<span font-weight='bold'>%s</span>"
 msgstr "<span font-weight='bold'>%s</span>"
@@ -258,6 +271,9 @@ msgstr "Volume komputer"
 #: ../src/mpd-volume-tile.c:371
 msgid "Mute"
 msgstr "Bisu"
+
+#~ msgid "Netbook brightness"
+#~ msgstr "Kecerahan netbook"
 
 #~ msgid "Meego Power Icon"
 #~ msgstr "Ikon Daya Meego"
