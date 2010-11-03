@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: moblin-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-03 09:35+0000\n"
+"POT-Creation-Date: 2010-11-03 00:02+0000\n"
 "PO-Revision-Date: 2009-08-26 08:39+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -14,70 +14,73 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/moblin-panel-people.c:88 ../src/mnb-people-panel.c:476
-#: ../data/moblin-panel-people.desktop.in.in.h:2
+#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:513
+#: ../data/meego-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "orang"
 
-#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:414
+#: ../src/mnb-people-panel.c:56
+msgid "When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "Ketika Anda telah menata layanan IM (seperti Messenger), ini adalah tempat Anda mengobrol dengan orang lain."
+
+#: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:451
 #, c-format
 msgid "Open %s"
 msgstr "Buka %s"
 
-#: ../src/mnb-people-panel.c:231
-msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
-msgstr "Maaf, kami tak menemukan seorangpun. Sudahkah anda menyiapkan akun Messenger?"
+#: ../src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr "Ini adalah panel orang."
 
-#: ../src/mnb-people-panel.c:283
+#: ../src/mnb-people-panel.c:320
 msgid "Sorry, we can't find any people. It looks like they are all offline."
 msgstr "Maaf, kami tak menemukan seorangpun. Sepertinya mereka semua terputus."
 
-#: ../src/mnb-people-panel.c:328
+#: ../src/mnb-people-panel.c:365
 msgid "To see your IM contacts, you need to go online."
 msgstr "Untuk melihat kontak IM Anda, Anda perlu daring."
 
-#: ../src/mnb-people-panel.c:458
+#: ../src/mnb-people-panel.c:495
 #, c-format
 msgid "people - you are chatting with %d people"
 msgstr "people - Anda sedang mengobrol dengan %d orang"
 
-#: ../src/mnb-people-panel.c:465
+#: ../src/mnb-people-panel.c:502
 msgid "people - you are chatting with someone"
 msgstr "people - Anda sedang mengobrol dengan seseorang"
 
 #. Populate header
-#: ../src/mnb-people-panel.c:676 ../src/mnb-people-panel.c:930
+#: ../src/mnb-people-panel.c:710 ../src/mnb-people-panel.c:964
 msgid "People"
 msgstr "Orang"
 
-#: ../src/mnb-people-panel.c:689
+#: ../src/mnb-people-panel.c:723
 msgid "Search"
 msgstr "Cari"
 
-#: ../src/mnb-people-panel.c:740 ../src/mnb-people-panel.c:1129
+#: ../src/mnb-people-panel.c:774 ../src/mnb-people-panel.c:1162
 msgid "You are chatting with:"
 msgstr "Anda sedang mengobrol dengan:"
 
-#: ../src/mnb-people-panel.c:947
+#: ../src/mnb-people-panel.c:981
 msgid "Me and my people"
 msgstr "Saya dan orang-orangku"
 
-#: ../src/mnb-people-panel.c:985
+#: ../src/mnb-people-panel.c:1019
 msgid "Me"
 msgstr "Saya"
 
 #. Side table
-#: ../src/mnb-people-panel.c:1086
+#: ../src/mnb-people-panel.c:1119
 msgid "My conversations"
 msgstr "Percakapanku"
 
-#: ../data/moblin-panel-people.desktop.in.in.h:1
+#: ../data/meego-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panel orang"
 
-#: ../src/mnb-people-panel.c:57
-msgid "Hello! This is the People panel. When you have an IM service configured (like Messenger), this is where you chat to people."
-msgstr "Halo! Ini adalah panel People. Ketika Anda telah menata layanan IM (seperti Messenger), ini adalah tempat Anda mengobrol dengan orang lain."
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Maaf, kami tak menemukan seorangpun. Sudahkah anda menyiapkan akun Messenger?"
 
 #~ msgid "people - %d people are talking to you"
 #~ msgstr "orang - %d orang sedang bicara padamu"
