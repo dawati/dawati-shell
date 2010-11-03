@@ -80,7 +80,7 @@ msgstr "Yhtään verkkoa ei löydy. Yhteyksien hallinta ei näytä olevan käynn
 #. 
 #: ../carrick/carrick-list.c:1062
 msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "Yhtään verkkoa ei löydy. Kokeile kytkeä Poissa linjoilta -tila pois käytöstä."
+msgstr "Yhtään verkkoa ei löydy. Kokeile kytkeä 'Yhteydetön tila' pois käytöstä."
 
 #: ../carrick/carrick-list.c:1114
 #, c-format
@@ -107,7 +107,7 @@ msgstr "Olet nyt yhdistettynä kiinteään langalliseen verkkoon"
 #: ../carrick/carrick-notification-manager.c:169
 #, c-format
 msgid "You're now connected to %s, a %s network"
-msgstr "Yhteys muodostettu kohteeseen %s (Käytetty yhteystyyppi: %s)"
+msgstr "Yhteys muodostettu kohteeseen %s (Yhteyskäytäntö: %s)"
 
 #: ../carrick/carrick-notification-manager.c:175
 #, c-format
