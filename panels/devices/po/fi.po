@@ -85,7 +85,7 @@ msgstr "Vaara!"
 
 #: ../power-icon/src/mpd-power-icon.c:87
 msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
-msgstr "Laitteen akku on jo lähes kokonaan tyhjä, ja se joudutaan sammuttamaan. Tallenna keskeneräiset työt heti. Nähdään taas pian!"
+msgstr "Laitteen akku on jo lähes kokonaan tyhjä, ja kone joudutaan sammuttamaan. Tallenna keskeneräiset työt heti. Nähdään taas pian!"
 
 #: ../power-icon/src/mpd-power-icon.c:486
 msgid "battery"
@@ -127,7 +127,7 @@ msgstr "Laitteen akku latautuu. Se on noin %d%% täysi."
 #: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr "Akkua käytetään. Se on noin %d%% täysi."
+msgstr "Akkua käytetään. Virtaa jäljellä %d%%."
 
 #: ../src/mpd-battery-device.c:395
 #, c-format
