@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-02 23:58+0000\n"
+"POT-Creation-Date: 2010-11-03 23:47+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -117,27 +117,27 @@ msgstr "MeeGo-laitepaneeli"
 #: ../src/mpd-battery-device.c:381
 #, c-format
 msgid "Sorry, you don't appear to have a battery installed."
-msgstr "Sori, sinulla ei näyttäisi olevan akkua asennettuna."
+msgstr "Akkua ei ole asennettu."
 
 #: ../src/mpd-battery-device.c:385
 #, c-format
 msgid "Your battery is charging. It is about %d%% full."
-msgstr "Akkusi latautuu. Se on noin %d%% täysi."
+msgstr "Laitteen akku latautuu. Se on noin %d%% täysi."
 
 #: ../src/mpd-battery-device.c:390
 #, c-format
 msgid "Your battery is being used. It is about %d%% full."
-msgstr "Akkuasi käytetään. Se on noin %d%% täysi."
+msgstr "Akkua käytetään. Se on noin %d%% täysi."
 
 #: ../src/mpd-battery-device.c:395
 #, c-format
 msgid "Your battery is fully charged and you're ready to go."
-msgstr "Akkusi on täysin ladattu ja olet valmis töihin. "
+msgstr "Laitteen akku on täysin ladattu."
 
 #: ../src/mpd-battery-device.c:399
 #, c-format
 msgid "Sorry, it looks like your battery is broken."
-msgstr "Sori, näyttää siltä, että akku on rikki."
+msgstr "Laitteen akku on viallinen."
 
 #: ../src/mpd-brightness-tile.c:297
 msgid "Display brightness - plugged in"
@@ -160,8 +160,8 @@ msgid ""
 "Plug in a device and it will\n"
 "be automatically detected."
 msgstr ""
-"Kytke laite\n"
-"ja se havaitaan automaattisesti. "
+"Uudet laitteet havaitaan\n"
+"automaattisesti liitettyäsi ne koneeseen."
 
 #: ../src/mpd-devices-pane.c:104
 msgid "Other devices"
@@ -169,16 +169,16 @@ msgstr "Muut laitteet"
 
 #: ../src/mpd-devices-tile.c:61
 msgid "Ejecting failed, looks like an application is using it"
-msgstr "Irrottaminen epäonnistui, jokin sovellus saattaa käyttää sitä"
+msgstr "Irrottaminen epäonnistui. Laite on jonkin toisen sovelluksen käytössä."
 
 #: ../src/mpd-devices-tile.c:423
 msgid "It is safe to unplug this device now"
-msgstr "Nyt on turvallista irrottaa tämä laite"
+msgstr "Voit irroittaa laitteen tietokoneesta"
 
 #: ../src/mpd-disk-tile.c:65
 #, c-format
 msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
-msgstr "<span font-weight='bold'>Käytät</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Käytät</span> <span color='%s'>%d%% levytilastasi. (Kokonaistila: %s)</span>"
 
 #: ../src/mpd-folder-tile.c:186
 msgid "Trash"
@@ -191,7 +191,7 @@ msgstr "Laitteet"
 #: ../src/mpd-storage-device-tile.c:241
 #, c-format
 msgid "Could not run \"%s\""
-msgstr "Ei voinut suorittaa \"%s\""
+msgstr "Toimintoa \"%s\" ei voitu suorittaa"
 
 #: ../src/mpd-storage-device-tile.c:243
 msgid "Import error"
@@ -229,7 +229,7 @@ msgstr "<span font-weight='bold'>%s</span>"
 
 #: ../src/mpd-volume-tile.c:113
 msgid "Turned up to 11"
-msgstr "Käännetty ylös arvoon 11"
+msgstr "Nostettu arvoon 11"
 
 #: ../src/mpd-volume-tile.c:115
 msgid "Very loud"
