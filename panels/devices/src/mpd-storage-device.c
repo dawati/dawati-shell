@@ -30,12 +30,12 @@
 #include "config.h"
 
 static void
-mpd_storage_device_set_size (MpdStorageDevice  *self,
-                             uint64_t           size);
+mpd_storage_device_set_size (MpdStorageDevice *self,
+                             int64_t           size);
 
 static void
-mpd_storage_device_set_available_size (MpdStorageDevice  *self,
-                                       uint64_t           available_size);
+mpd_storage_device_set_available_size (MpdStorageDevice *self,
+                                       int64_t           available_size);
 
 G_DEFINE_TYPE (MpdStorageDevice, mpd_storage_device, G_TYPE_OBJECT)
 
@@ -67,9 +67,9 @@ enum
 
 typedef struct
 {
-  uint64_t       available_size;
+  int64_t        available_size;
   char          *path;
-  uint64_t       size;
+  int64_t        size;
   unsigned int   update_timeout_id;
 
   GSList        *dir_stack;
@@ -94,9 +94,9 @@ update (MpdStorageDevice *self)
 
   if (0 == statvfs (priv->path, &fsd))
   {
-    mpd_storage_device_set_size (self, (uint64_t)
+    mpd_storage_device_set_size (self, (int64_t)
                                  fsd.f_blocks * fsd.f_frsize);
-    mpd_storage_device_set_available_size (self, (uint64_t)
+    mpd_storage_device_set_available_size (self, (int64_t)
                                            fsd.f_bavail * fsd.f_frsize);
   } else {
     g_warning ("%s : %s", G_STRLOC, strerror (errno));
@@ -144,17 +144,17 @@ _get_property (GObject      *object,
 
   switch (property_id) {
   case PROP_AVAILABLE_SIZE:
-    g_value_set_uint64 (value,
-                        mpd_storage_device_get_available_size (
-                          MPD_STORAGE_DEVICE (object)));
+    g_value_set_int64 (value,
+                       mpd_storage_device_get_available_size (
+                        MPD_STORAGE_DEVICE (object)));
     break;
   case PROP_PATH:
     g_value_set_string (value, priv->path);
     break;
   case PROP_SIZE:
-    g_value_set_uint64 (value,
-                        mpd_storage_device_get_size (
-                          MPD_STORAGE_DEVICE (object)));
+    g_value_set_int64 (value,
+                       mpd_storage_device_get_size (
+                        MPD_STORAGE_DEVICE (object)));
     break;
 #if 0
   case PROP_LABEL:
@@ -189,7 +189,7 @@ _set_property (GObject      *object,
   switch (property_id) {
   case PROP_AVAILABLE_SIZE:
     mpd_storage_device_set_available_size (MPD_STORAGE_DEVICE (object),
-                                           g_value_get_uint64 (value));
+                                           g_value_get_int64 (value));
     break;
   case PROP_PATH:
     /* Construct-only */
@@ -197,7 +197,7 @@ _set_property (GObject      *object,
     break;
   case PROP_SIZE:
     mpd_storage_device_set_size (MPD_STORAGE_DEVICE (object),
-                                 g_value_get_uint64 (value));
+                                 g_value_get_int64 (value));
     break;
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -270,15 +270,16 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
 
   /* Properties */
 
-  param_flags = G_PARAM_READABLE | G_PARAM_STATIC_STRINGS;
+  param_flags = G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS;
 
   g_object_class_install_property (object_class,
                                    PROP_AVAILABLE_SIZE,
-                                   g_param_spec_uint64 ("available-size",
-                                                        "Available size",
-                                                        "Available disk size",
-                                                        0, G_MAXUINT64, 0,
-                                                        param_flags));
+                                   g_param_spec_int64 ("available-size",
+                                                       "Available size",
+                                                       "Available disk size",
+                                                       -1, G_MAXINT64, -1,
+                                                       param_flags |
+                                                       G_PARAM_CONSTRUCT));
   g_object_class_install_property (object_class,
                                    PROP_PATH,
                                    g_param_spec_string ("path",
@@ -290,11 +291,12 @@ mpd_storage_device_class_init (MpdStorageDeviceClass *klass)
                                                         G_PARAM_WRITABLE));
   g_object_class_install_property (object_class,
                                    PROP_SIZE,
-                                   g_param_spec_uint64 ("size",
-                                                        "Size",
-                                                        "Disk size",
-                                                        0, G_MAXUINT64, 0,
-                                                        param_flags));
+                                   g_param_spec_int64 ("size",
+                                                       "Size",
+                                                       "Disk size",
+                                                       -1, G_MAXINT64, -1,
+                                                       param_flags |
+                                                       G_PARAM_CONSTRUCT));
 #if 0
   g_object_class_install_property (object_class,
                                    PROP_LABEL,
@@ -355,7 +357,7 @@ mpd_storage_device_new (char const *path)
                        NULL);
 }
 
-uint64_t
+int64_t
 mpd_storage_device_get_size (MpdStorageDevice *self)
 {
   MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
@@ -366,8 +368,8 @@ mpd_storage_device_get_size (MpdStorageDevice *self)
 }
 
 static void
-mpd_storage_device_set_size (MpdStorageDevice  *self,
-                          uint64_t           size)
+mpd_storage_device_set_size (MpdStorageDevice *self,
+                             int64_t           size)
 {
   MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 
@@ -380,7 +382,7 @@ mpd_storage_device_set_size (MpdStorageDevice  *self,
   }
 }
 
-uint64_t
+int64_t
 mpd_storage_device_get_available_size (MpdStorageDevice *self)
 {
   MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
@@ -391,8 +393,8 @@ mpd_storage_device_get_available_size (MpdStorageDevice *self)
 }
 
 static void
-mpd_storage_device_set_available_size (MpdStorageDevice  *self,
-                                       uint64_t           available_size)
+mpd_storage_device_set_available_size (MpdStorageDevice *self,
+                                       int64_t           available_size)
 {
   MpdStorageDevicePrivate *priv = GET_PRIVATE (self);
 

@@ -117,9 +117,8 @@ update (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
   char          *markup;
-  uint64_t       size;
-  uint64_t       available_size = 0;
-  unsigned int   percentage;
+  int64_t        size = -1;
+  int64_t        available_size = -1;
 
   markup = mpd_storage_device_tile_get_title (self);
   clutter_text_set_markup (GET_CLUTTER_TEXT (priv->label),
@@ -132,13 +131,14 @@ update (MpdStorageDeviceTile *self)
                   "size", &size,
                   "available-size", &available_size,
                   NULL);
-    percentage = 100 - (double) available_size / size * 100;
-    mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter),
-                                  percentage / 100.);
   }
 
-  if (available_size == 0)
+  if (size > -1 && available_size > -1)
   {
+    unsigned int percentage = 100 - (double) available_size / size * 100;
+    mx_progress_bar_set_progress (MX_PROGRESS_BAR (priv->meter),
+                                  percentage / 100.);
+  } else {
     g_object_set (priv->meter, "visible", false, NULL);
     mx_table_child_set_row_span (MX_TABLE (priv->table), priv->label, 2);
   }
@@ -846,11 +846,9 @@ char *
 mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
 {
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
-  char          *markup;
-  char          *size_text;
-  uint64_t       size;
-  uint64_t       available_size = 0;
-  unsigned int   percentage;
+  int64_t  size = -1;
+  int64_t  available_size = -1;
+  char    *markup = NULL;
 
   if (priv->storage)
   {
@@ -859,11 +857,12 @@ mpd_storage_device_tile_get_title (MpdStorageDeviceTile *self)
                   "available-size", &available_size,
                   NULL);
 
-    percentage = 100 - (double) available_size / size * 100;
   }
 
-  if (available_size > 0) {
-    size_text = g_format_size_for_display (size);
+  if (size > -1 && available_size > -1)
+  {
+    unsigned int percentage = 100 - (double) available_size / size * 100;
+    char *size_text = g_format_size_for_display (size);
     markup = g_strdup_printf (_("<span font-weight='bold'>%s</span> using "
                                 "<span color='%s'>%d%% of %s</span>"),
                               priv->name,

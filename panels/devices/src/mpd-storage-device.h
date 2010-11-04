@@ -67,10 +67,10 @@ mpd_storage_device_get_type (void);
 MpdStorageDevice *
 mpd_storage_device_new (char const *path);
 
-uint64_t
+int64_t
 mpd_storage_device_get_size (MpdStorageDevice *self);
 
-uint64_t
+int64_t
 mpd_storage_device_get_available_size (MpdStorageDevice *self);
 
 char const *
