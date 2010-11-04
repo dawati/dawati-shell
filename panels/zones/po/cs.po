@@ -1,11 +1,10 @@
-#
 # Pavel Fric, 2010.
 # Pavel Fric <fripohled@blogspot.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-29 16:07+0000\n"
+"POT-Creation-Date: 2010-11-03 23:52+0000\n"
 "PO-Revision-Date: 2010-11-03 15:40+0100\n"
 "Last-Translator: Pavel Fric <fripohled@blogspot.com>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -19,15 +18,15 @@ msgstr ""
 
 #: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
-msgstr "Panel s oblastmi (Zones)"
+msgstr "Panel Zones (oblasti)"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
-msgstr "Oblasti"
+msgstr "Zones (oblasti)"
 
 #: ../src/main.c:412
 msgid "Zones"
-msgstr "Oblasti"
+msgstr "Zones (oblasti)"
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
@@ -43,19 +42,11 @@ msgid "No applications on this zone"
 msgstr "V této oblasti není žádný program"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Vámi používané programy se objevují zde. Máte možnost přepínat mezi nimi "
-"a uspořádat je podle libosti."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Vámi používané programy se objevují zde. Máte možnost přepínat mezi nimi a uspořádat je podle libosti."
 
-#~ msgid ""
-#~ "Hello! This is the Zones panel. When you have applications open you will "
-#~ "be able to view, manage and access them here."
-#~ msgstr ""
-#~ "Hallo! Dies ist das Zonen-Panel. Wenn du Anwendungen geöffnet hast, "
-#~ "kannst du hier auf sie zugreifen, sie anzeigen und verwalten."
+#~ msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+#~ msgstr "Hallo! Dies ist das Zonen-Panel. Wenn du Anwendungen geöffnet hast, kannst du hier auf sie zugreifen, sie anzeigen und verwalten."
 
 #~ msgid "two"
 #~ msgstr "zwei"
@@ -156,14 +147,8 @@ msgstr ""
 #~ msgid "test"
 #~ msgstr "Test"
 
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um "
-#~ "deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige "
-#~ "Beispielsdateien ansehen:"
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige Beispielsdateien ansehen:"
 
 #~ msgid "Recently played"
 #~ msgstr "Vor kurzem abgespielt"
