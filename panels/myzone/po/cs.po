@@ -45,11 +45,11 @@ msgstr "Kalendář a úkoly:"
 
 #: ../data/capplet.ui.h:4
 msgid "Change My Web Accounts"
-msgstr "Změnit Moje internetové účty"
+msgstr "Změňte své internetové účty"
 
 #: ../data/capplet.ui.h:5
 msgid "Choose your wallpaper"
-msgstr "Vyberte obrázek pozadí"
+msgstr "Vyberte svůj obrázek pozadí"
 
 #: ../data/capplet.ui.h:6
 msgid "Clear recent documents"
@@ -78,7 +78,7 @@ msgstr "Ukázat tolik obsahu internetových služeb, kolik je jen možné"
 
 #: ../capplet/myzone-cc-panel.c:49
 msgid "Show mostly web service content"
-msgstr "Ukázat převážně obsah internetových služeb"
+msgstr "Ukázat většinou obsah internetových služeb"
 
 #: ../capplet/myzone-cc-panel.c:51
 msgid "Show half and half"
@@ -86,7 +86,7 @@ msgstr "Ukázat půl napůl"
 
 #: ../capplet/myzone-cc-panel.c:53
 msgid "Show mostly recent files"
-msgstr "Ukázat převážně naposledy otevřené dokumenty"
+msgstr "Ukázat většinou naposledy otevřené dokumenty"
 
 #: ../capplet/myzone-cc-panel.c:55
 msgid "Show as many recent files as possible"
