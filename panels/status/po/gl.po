@@ -49,7 +49,7 @@ msgid "We think your location is: %s (%f, %f)"
 msgstr "Creemos que vostede está aquí: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:459
-#, fuzzy, c-format
+#, c-format
 msgid "Your location is currently shared as: %s (%f, %f)"
 msgstr "A súa localización compartese como: %s (%f, %f)"
 
