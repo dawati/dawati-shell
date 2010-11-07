@@ -26,7 +26,7 @@ msgstr "persoas"
 
 #: ../src/mnb-people-panel.c:56
 msgid "When you have an IM service configured (like Messenger), this is where you chat to people."
-msgstr "Cando ten un servizo de IM configurado (como o Messenger), este é o lugar onde conversa coas persoas."
+msgstr "Cando ten un servizo de MI configurado (como o Messenger), este é o lugar onde conversa coas persoas."
 
 #: ../src/mnb-people-panel.c:191 ../src/mnb-people-panel.c:451
 #, c-format
