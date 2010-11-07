@@ -432,7 +432,7 @@ msgstr "Este contrasinal é curto de máis. Nas conexións WPA ha de ter un mín
 #: ../carrick/carrick-util.c:107
 #, c-format
 msgid "Your password is too long. For a WPA  connection it needs to have fewer than 64 characters, you have %i"
-msgstr "Esre contrasinal é longo de máis. Nas conexións WPA ha de ter menos de 64 caracteres; ten %i."
+msgstr "Este contrasinal é longo de máis. Nas conexións WPA ha de ter menos de 64 caracteres; ten %i."
 
 #: ../carrick/carrick-util.c:120
 #, c-format
