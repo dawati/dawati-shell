@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:56+0000\n"
+"POT-Creation-Date: 2010-11-06 23:14+0000\n"
 "PO-Revision-Date: 2009-10-14 20:43+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -21,26 +21,30 @@ msgid "Search"
 msgstr "Buscar"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1049
+#: ../src/meego-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "Aplicativos"
 
 #. * Fav apps pane
 #. 
-#: ../src/meego-netbook-launcher.c:1065
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Aplicativos preferidos"
 
 #. * Applications
 #. 
-#: ../src/meego-netbook-launcher.c:1092
+#: ../src/meego-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "Os seus aplicativos"
 
-#: ../src/meego-panel-applications.c:223
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicativos"
+
+#: ../src/mnb-launcher-button.c:607
+msgid "Never launched"
+msgstr "Non foi executado nunca"
 
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
