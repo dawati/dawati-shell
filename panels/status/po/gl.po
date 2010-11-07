@@ -2,12 +2,12 @@
 # Copyright (C) 2010 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the panel-status package.
 # Miguel Anxo Bouzada <mbouzada@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: panel-status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"POT-Creation-Date: 2010-11-06 23:25+0000\n"
 "PO-Revision-Date: 2010-07-07 10:51+0100\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -17,15 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Galician\n"
 
-#: ../src/meego-panel-status.c:49
-msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
-msgstr "Ola! Este é o panel de estado. Cando teña configurada unha conta Web (como Twitter), aquí poderá ver as súas fontes e actualizar o seu estado."
-
-#: ../src/meego-panel-status.c:100
+#: ../src/meego-panel-status.c:95
 msgid "Status"
 msgstr "Estado"
 
-#: ../src/meego-panel-status.c:158
+#: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "estado"
@@ -43,54 +39,58 @@ msgstr "Non é posíbel actualizar o estado. Ou o servizo non está dispoñíbel
 msgid "Unable to update status: You're not online."
 msgstr "Non é posíbel actualizar o estado: non está conectado"
 
-#: ../src/mps-feed-pane.c:444
+#: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
 msgstr "Non é posíbel coñecer a súa localización"
 
-#: ../src/mps-feed-pane.c:452
+#: ../src/mps-feed-pane.c:453
 #, c-format
-msgid "We guessed your location as: %s (%f, %f)"
-msgstr "Creemos que está aquí: %s (%f, %f)"
+msgid "We think your location is: %s (%f, %f)"
+msgstr "Creemos que vostede está aquí: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:458
-#, c-format
-msgid "Your location is being shared as: %s (%f, %f)"
+#: ../src/mps-feed-pane.c:459
+#, fuzzy, c-format
+msgid "Your location is currently shared as: %s (%f, %f)"
 msgstr "A súa localización compartese como: %s (%f, %f)"
 
-#: ../src/mps-feed-pane.c:468
+#: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We guessed your location as: %f %f"
-msgstr "Creemos que está aquí: %f %f"
+msgid "We think your location is: %f %f"
+msgstr "Creemos que vostede está aquí: %f %f"
 
-#: ../src/mps-feed-pane.c:472
+#: ../src/mps-feed-pane.c:473
 #, c-format
-msgid "Your location is being shared as: %f %f"
-msgstr "A súa localización compartese como: %f %f"
+msgid "Your location is currently shared as: %f %f"
+msgstr "A súa localización actualmente compartese como: %f %f"
 
-#: ../src/mps-feed-pane.c:482
-msgid "Your location is not being shared"
-msgstr "A súa localización non está compartida"
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "A súa localización actualmente non está compartida"
 
 #. Actor creation
-#: ../src/mps-feed-pane.c:585
+#: ../src/mps-feed-pane.c:586
 msgid "Update"
 msgstr "Actualizar"
 
-#: ../src/mps-feed-pane.c:590
+#: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
 msgstr "Que está a acontecer?"
 
-#: ../src/mps-feed-pane.c:640
+#: ../src/mps-feed-pane.c:641
 msgid "Change"
 msgstr "Cambiar"
 
-#: ../src/mps-feed-switcher.c:350
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Cando teña configurada unha conta Web, aquí poderá ver as súas fontes e actualizar o seu estado."
+
+#: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "Engadir unha nova conta web"
 
-#: ../src/mps-feed-switcher.c:373
-msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
-msgstr "Parece que non ten ningún servizo web configurado ou hai un problema coa configuración. Utilice o botón de enriba para abrir «As miñas contas web e configurar un."
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Este é o panel de estado."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
@@ -120,9 +120,11 @@ msgstr "Non usar a localización"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s de %s"
 
+#~ msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+#~ msgstr "Parece que non ten ningún servizo web configurado ou hai un problema coa configuración. Utilice o botón de enriba para abrir «As miñas contas web e configurar un."
