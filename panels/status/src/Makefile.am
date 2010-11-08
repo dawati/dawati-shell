@@ -20,7 +20,7 @@ BUILT_SOURCES = sw-marshals.c sw-marshals.h
 
 meego_panel_status_CPPFLAGS = $(STATUS_CFLAGS) $(MPL_CFLAGS) $(NM_CFLAGS)
 meego_panel_status_LDADD    = $(STATUS_LIBS) $(MPL_LIBS) $(NM_LIBS) \
-			      $(top_builddir)/src/libmeego-panel-status.la
+			      ./libmeego-panel-status.la
 meego_panel_status_SOURCES  = 	\
 	meego-panel-status.c
 
