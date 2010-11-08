@@ -252,11 +252,11 @@ penge_calendar_pane_allocate (ClutterActor          *actor,
   remaining_height = height - padding.top - padding.bottom -
                      events_header_nat_h - tasks_header_nat_h;
 
-  if (tasks_nat_h <= (int)(remaining_height / 2.0))
+  if (tasks_nat_h <= (remaining_height / 2.0))
   {
     tasks_available_h = tasks_nat_h;
   } else {
-    tasks_available_h = (int)(remaining_height / 2.0);
+    tasks_available_h = (remaining_height / 2.0);
   }
 
   events_available_h = remaining_height - tasks_available_h;
@@ -269,7 +269,7 @@ penge_calendar_pane_allocate (ClutterActor          *actor,
   child_box.x1 = padding.left;
   child_box.x2 = width - padding.right;
   child_box.y1 = last_y;
-  child_box.y2 = child_box.y1 + events_available_h;
+  child_box.y2 = child_box.y1 + (int)events_available_h;
   last_y = child_box.y2;
 
   clutter_actor_allocate (CLUTTER_ACTOR (priv->events_pane),
@@ -289,7 +289,7 @@ penge_calendar_pane_allocate (ClutterActor          *actor,
   child_box.x1 = padding.left;
   child_box.x2 = width - padding.right;
   child_box.y1 = last_y;
-  child_box.y2 = child_box.y1 + tasks_available_h;
+  child_box.y2 = child_box.y1 + (int)tasks_available_h;
 
   clutter_actor_allocate (CLUTTER_ACTOR (priv->tasks_pane),
                           &child_box,

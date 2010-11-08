@@ -171,6 +171,9 @@ _calculate_children_height (PengeDynamicBox *box,
   mx_widget_get_padding (MX_WIDGET (box), &padding);
   height += padding.top + padding.bottom;
 
+  /* Subtract padding */
+  for_width -= (padding.left + padding.right);
+
   for (l = priv->children; l; l = l->next)
   {
     ClutterActor *child = (ClutterActor *)l->data;
