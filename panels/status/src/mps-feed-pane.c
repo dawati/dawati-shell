@@ -518,7 +518,7 @@ _card_reply_clicked (MpsTweetCard *card,
   item = mps_tweet_card_get_item (card);
 
   reply_msg = g_strdup_printf ("@%s ",
-                               sw_item_get_value (item, "screen_name"));
+                               sw_item_get_value (item, "authorid"));
   mpl_entry_set_text (MPL_ENTRY (priv->entry), reply_msg);
   clutter_actor_grab_key_focus (priv->entry);
   g_free (reply_msg);
@@ -536,7 +536,7 @@ _card_retweet_clicked (MpsTweetCard *card,
   item = mps_tweet_card_get_item (card);
 
   retweet_msg = g_strdup_printf ("RT @%s: %s",
-                                 sw_item_get_value (item, "screen_name"),
+                                 sw_item_get_value (item, "authorid"),
                                  sw_item_get_value (item, "content"));
 
   mpl_entry_set_text (MPL_ENTRY (priv->entry), retweet_msg);
