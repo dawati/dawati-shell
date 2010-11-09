@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"POT-Creation-Date: 2010-11-08 22:26+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Wen-Hsin Moh <wenhsinm@gmail.com>\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,7 +52,7 @@ msgstr "您的地理位置正被分享：%s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We think your locations is: %f %f"
+msgid "We think your location is: %f %f"
 msgstr "我們推測您的地理位置為：%f %f"
 
 #: ../src/mps-feed-pane.c:473
@@ -131,53 +131,39 @@ msgstr "%s 來自 %s"
 #~ msgstr ""
 #~ "您似乎沒有任何網路服務的配置，或者網路服務配置有問題。使用上面的按鈕，打開"
 #~ "「我的網站帳戶」並設置一個帳戶。"
-
 #~ msgid "Offline"
 #~ msgstr "離線"
-
 #~ msgid "Available"
 #~ msgstr "有空"
-
 #~ msgid "Away"
 #~ msgstr "離開"
-
 #~ msgid "Busy"
 #~ msgstr "忙碌"
-
 #~ msgid "Close"
 #~ msgstr "關閉"
-
 #~ msgid "Unknown account"
 #~ msgstr "未知的帳戶"
-
 #~ msgid "Edit"
 #~ msgstr "編輯"
-
 #~ msgid "Enter your %s status here..."
 #~ msgstr "在這裡輸入您的 %s 狀態..."
-
 #~ msgid "Enter your current status here..."
 #~ msgstr "在這裡輸入您目前的狀態..."
-
 #~ msgid "Post"
 #~ msgstr "貼出"
-
 #~ msgid "Your current status"
 #~ msgstr "您目前的狀態"
-
 #~ msgid "Your current status - you are offline"
 #~ msgstr "您目前的狀態 - 您是離線"
-
 #~ msgid ""
 #~ "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "抱歉，我們找不到任何朋友的資料。您已經設立好通訊程式的帳戶了嗎？"
-
 #~ msgid ""
 #~ "To update your web status you need to setup a Web Services account with a "
 #~ "provider that supports status messages"
 #~ msgstr ""
 #~ "要更新您的網路狀態，您需要設置一個支援狀態訊息的廠商所提供的網路服務帳戶。"
-
 #~ msgid ""
 #~ "To update your IM status you need to setup an Instant Messaging account"
 #~ msgstr "要更新您即時通訊的狀態，您需要設置一個即時通訊帳戶"
+
