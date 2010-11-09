@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-23 23:44+0000\n"
+"POT-Creation-Date: 2010-11-08 22:26+0000\n"
 "PO-Revision-Date: 2010-10-28 10:40-0000\n"
 "Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: \n"
@@ -56,7 +56,7 @@ msgstr "A sua localização está a ser partilhada como: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We think your locations is: %f %f"
+msgid "We think your location is: %f %f"
 msgstr "Pensamos que a sua localização é: %f %f"
 
 #: ../src/mps-feed-pane.c:473
@@ -85,8 +85,7 @@ msgstr "Alterar"
 msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
 msgstr "Se tiver uma conta web configurada, aqui pode ver as suas fontes e fazer a gestão do seu estado."
 
-#: ../src/mps-feed-switcher.c:509
-#: ../src/mps-feed-switcher.c:554
+#: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "Adicionar nova conta web"
 
@@ -122,9 +121,8 @@ msgstr "Não utilizar localização"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr "%s em %s"
-
