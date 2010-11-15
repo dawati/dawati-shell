@@ -433,7 +433,7 @@ _map_view_button_release_event_cb (ClutterActor  *actor,
 }
 
 static gboolean
-_guess_location_checked_notify_cb (MxButton      *button,
+_guess_location_toggled_notify_cb (MxButton      *button,
                                    GParamSpec    *pspec,
                                    MpsGeotagPane *pane)
 {
@@ -489,12 +489,12 @@ _gconf_guess_location_notify_cb (GConfClient *client,
   }
 
   g_signal_handlers_block_by_func (priv->guess_location_button,
-                                   _guess_location_checked_notify_cb,
+                                   _guess_location_toggled_notify_cb,
                                    userdata);
   mx_button_set_toggled (MX_BUTTON (priv->guess_location_button),
                          guess_location);
   g_signal_handlers_unblock_by_func (priv->guess_location_button,
-                                     _guess_location_checked_notify_cb,
+                                     _guess_location_toggled_notify_cb,
                                      userdata);
 
   if (guess_location)
@@ -652,8 +652,8 @@ mps_geotag_pane_init (MpsGeotagPane *self)
                     self);
 
   g_signal_connect (priv->guess_location_button,
-                    "notify::checked",
-                    (GCallback)_guess_location_checked_notify_cb,
+                    "notify::toggled",
+                    (GCallback)_guess_location_toggled_notify_cb,
                     self);
 
   g_signal_connect (priv->use_location_button,
