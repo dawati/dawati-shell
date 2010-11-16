@@ -26,7 +26,6 @@ msgstr "Програми"
 #. * Fav apps pane
 #. 
 #: ../src/meego-netbook-launcher.c:1114
-#, fuzzy
 msgid "Favorite applications"
 msgstr "Улюблені програми"
 
