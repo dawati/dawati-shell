@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:20+0000\n"
+"POT-Creation-Date: 2010-11-16 00:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
 "MIME-Version: 1.0\n"
@@ -15,81 +15,88 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/meego-panel-myzone.desktop.in.in.h:1
+#, fuzzy
 msgid "Myzone panel"
-msgstr ""
+msgstr "Панель Myzone"
 
 #: ../data/myzone.desktop.in.in.h:1
 msgid "Change the Myzone background and content"
-msgstr ""
+msgstr "Змінити фон та наповнення Myzone"
 
 #: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+#, fuzzy
 msgid "Myzone"
-msgstr ""
+msgstr "Myzone"
 
 #: ../data/capplet.ui.h:1
 msgid "<b>Change what is shown in your Myzone</b>"
-msgstr ""
+msgstr "<b>Виберіть, що відображатиметься в вашому Myzone</b>"
 
 #: ../data/capplet.ui.h:2
 msgid "<b>Myzone Wallpaper</b>"
-msgstr ""
+msgstr "<b>Шпалери Myzone</b>"
 
 #: ../data/capplet.ui.h:3
 msgid "Calendar and tasks:"
-msgstr ""
+msgstr "Календар та завдання"
 
 #: ../data/capplet.ui.h:4
+#, fuzzy
 msgid "Change My Web Accounts"
-msgstr ""
+msgstr "Змінити Мої Веб Акаунти"
 
 #: ../data/capplet.ui.h:5
 msgid "Choose your wallpaper"
-msgstr ""
+msgstr "Виберіть ваші шпалери"
 
 #: ../data/capplet.ui.h:6
 msgid "Clear recent documents"
-msgstr ""
+msgstr "Очистити недавні документи"
 
 #: ../data/capplet.ui.h:7
 msgid "Email alerts:"
-msgstr ""
+msgstr "Сповіщення Email:"
 
 #: ../data/capplet.ui.h:8
+#, fuzzy
 msgid "Reset to default"
-msgstr ""
+msgstr "Відновити замовчування"
 
-#: ../capplet/gconf-bridge.c:1232
+#: ../capplet/gconf-bridge.c:1220
 #, c-format
 msgid "GConf error: %s"
-msgstr ""
+msgstr "Помилка GConf: %s"
 
-#: ../capplet/gconf-bridge.c:1237
+#: ../capplet/gconf-bridge.c:1225
 msgid "All further errors shown only on terminal."
-msgstr ""
+msgstr "Всі подальші помилки відображати лише в терміналі"
 
 #: ../capplet/myzone-cc-panel.c:47
+#, fuzzy
 msgid "Show as much web service content as possible"
-msgstr ""
+msgstr "Показувати стільки контенту, скільки можливо"
 
 #: ../capplet/myzone-cc-panel.c:49
 msgid "Show mostly web service content"
-msgstr ""
+msgstr "Показувати більшість контенту"
 
 #: ../capplet/myzone-cc-panel.c:51
 msgid "Show half and half"
-msgstr ""
+msgstr "Показувати половину"
 
 #: ../capplet/myzone-cc-panel.c:53
 msgid "Show mostly recent files"
-msgstr ""
+msgstr "Показувати більшість недавніх файлів"
 
 #: ../capplet/myzone-cc-panel.c:55
 msgid "Show as many recent files as possible"
-msgstr ""
+msgstr "Показувати стільки недавніх файлів, скільки можливо"
 
 #: ../capplet/myzone-cc-panel.c:77
 msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
 msgstr ""
+"Хочете очистити ваші недавні документи?\r\n"
+"Це прибере локальний контент з вашого myzone"
 
 #: ../penge/penge-calendar-pane.c:484
 #, fuzzy
@@ -98,20 +105,19 @@ msgstr "Зустрічі"
 
 #: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
-msgstr ""
+msgstr "Відкрити"
 
 #: ../penge/penge-calendar-pane.c:527
 msgid "Tasks"
-msgstr ""
+msgstr "Завдання"
 
 #: ../penge/penge-events-pane.c:71
 msgid "Create an appointment"
-msgstr ""
+msgstr "Створити нагадування"
 
 #: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
-#, fuzzy
 msgid "Add"
-msgstr "Додавати"
+msgstr "Додати"
 
 #: ../penge/penge-events-pane.c:402
 msgid "No calendar entries this week"
@@ -123,7 +129,7 @@ msgstr "Веб сторінка"
 
 #: ../penge/penge-tasks-pane.c:52
 msgid "Create a new task"
-msgstr ""
+msgstr "Створити нове завдання"
 
 #: ../penge/penge-tasks-pane.c:430
 msgid "Nothing to do today"
@@ -135,28 +141,30 @@ msgid "Due %x"
 msgstr "За %x"
 
 #: ../penge/penge-welcome-tile.c:28
-msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
-msgstr ""
+#, fuzzy
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Коли ви створюватимете веб акаунти чи користуватиметесь певними файлами, вони будуть з'являтися тут у myzone для легкого доступу у будь-який момент."
 
 #: ../penge/penge-welcome-tile.c:34
+#, fuzzy
 msgid "Play intro video"
-msgstr ""
+msgstr "Показати вступне відео"
 
 #: ../penge/penge-welcome-tile.c:87
 msgid "Welcome to MeeGo"
-msgstr ""
+msgstr "Ласкаво просимо до MeeGo"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
-msgstr ""
+msgstr "Немає непрочитаних повідомлень"
 
 #: ../penge/penge-email-pane.c:194
 msgid "Unread message"
-msgstr ""
+msgstr "Непрочитане повідомлення"
 
 #: ../penge/penge-email-pane.c:196
 msgid "Unread messages"
-msgstr ""
+msgstr "Непрочитані повідомлення"
 
 #~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 #~ msgstr "Тут можуть відображатись стрічки ваших друзів. Активуйте свої облікові записи!"
