@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-27 09:22+0000\n"
+"POT-Creation-Date: 2010-11-16 23:52+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Oleksii Baranov <aleksey.baranov@gmail.com>\n"
 "Language-Team: \n"
@@ -10,24 +11,43 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../anerley/anerley-tile.c:201
+#: ../anerley/anerley-tile.c:171 ../anerley/anerley-presence-chooser.c:44
 msgid "Available"
 msgstr "Доступний"
 
-#: ../anerley/anerley-tile.c:204
+#: ../anerley/anerley-tile.c:174 ../anerley/anerley-presence-chooser.c:48
 msgid "Busy"
 msgstr "Зайнятий"
 
-#: ../anerley/anerley-tile.c:207
-#: ../anerley/anerley-tile.c:210
+#: ../anerley/anerley-tile.c:177 ../anerley/anerley-tile.c:180
+#: ../anerley/anerley-presence-chooser.c:45
 msgid "Away"
 msgstr "Відійшов"
 
-#: ../anerley/anerley-tile.c:213
+#: ../anerley/anerley-tile.c:183 ../anerley/anerley-presence-chooser.c:43
 msgid "Offline"
 msgstr "Поза мережою"
 
-#: ../anerley/anerley-econtact-item.c:290
+#: ../anerley/anerley-econtact-item.c:234
 msgid "Unnamed"
 msgstr "Без імені"
 
+#: ../anerley/anerley-presence-chooser.c:42
+msgid "Unset"
+msgstr "Не визначено"
+
+#: ../anerley/anerley-presence-chooser.c:46
+msgid "Extended Away"
+msgstr ""
+
+#: ../anerley/anerley-presence-chooser.c:47
+msgid "Hidden"
+msgstr "Прихований"
+
+#: ../anerley/anerley-presence-chooser.c:49
+msgid "Unknown"
+msgstr "Невідомий"
+
+#: ../anerley/anerley-presence-chooser.c:50
+msgid "Error"
+msgstr "Помилка"
