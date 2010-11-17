@@ -1554,7 +1554,8 @@ static void
 carrick_pane_connect_vpn (CarrickPane *self,
                           const char *name,
                           const char *gw,
-                          const char *cookie)
+                          const char *cookie,
+                          const char *server_cert)
 {
   GHashTable *props;
   GValue *val;
@@ -1583,6 +1584,14 @@ carrick_pane_connect_vpn (CarrickPane *self,
   g_value_init (val, G_TYPE_STRING);
   g_value_set_string (val, g_strdup (cookie));
   g_hash_table_insert (props, g_strdup ("OpenConnect.Cookie"), val);
+
+  if (server_cert)
+    {
+      val = g_slice_new0 (GValue);
+      g_value_init (val, G_TYPE_STRING);
+      g_value_set_string (val, g_strdup (server_cert));
+      g_hash_table_insert (props, g_strdup ("OpenConnect.ServerCert"), val);
+    }
 
   val = g_slice_new0 (GValue);
   g_value_init (val, G_TYPE_STRING);
@@ -1622,8 +1631,9 @@ static void
 auth_dialog_exit_cb (GPid pid, int status, auth_dialog_data *data)
 {
   char *line;
-  char *gw = NULL, *cookie = NULL;
+  char *gw = NULL, *cookie = NULL, *gw_cert = NULL;
   char *gw_term, *cookie_term;
+  char *gw_cert_term = NULL;
 
   g_spawn_close_pid (pid);
 
@@ -1643,6 +1653,8 @@ auth_dialog_exit_cb (GPid pid, int status, auth_dialog_data *data)
         g_io_channel_read_line (data->io_out, &gw, NULL, NULL, NULL);
       else if (g_strcmp0 (line, "cookie\n") == 0)
         g_io_channel_read_line (data->io_out, &cookie, NULL, NULL, NULL);
+      else if (g_strcmp0 (line, "gwcert\n") == 0)
+        g_io_channel_read_line (data->io_out, &gw_cert, NULL, NULL, NULL);
 
       g_free (line);
       g_io_channel_read_line (data->io_out, &line, NULL, NULL, NULL);
@@ -1653,21 +1665,33 @@ auth_dialog_exit_cb (GPid pid, int status, auth_dialog_data *data)
     {
       g_free (data->name);
       g_free (data);
+      g_free (gw);
+      g_free (cookie);
+      g_free (gw_cert);
       g_warning ("OpenConnect authentication did not return gateway and cookie\n");
       return;
     }
 
   /* remove linefeeds */
   gw_term = g_strndup (gw, strlen (gw) - 1);
-  cookie_term = g_strndup (cookie, strlen (cookie) - 1);
   g_free (gw);
+
+  cookie_term = g_strndup (cookie, strlen (cookie) - 1);
   g_free (cookie);
 
-  carrick_pane_connect_vpn (data->self, data->name, gw_term, cookie_term); 
+  if (gw_cert)
+    {
+      gw_cert_term = g_strndup (gw_cert, strlen (gw_cert) - 1);
+      g_free (gw_cert);
+    }
+
+  carrick_pane_connect_vpn (data->self, data->name,
+                            gw_term, cookie_term, gw_cert_term); 
   g_free (data->name);
   g_free (data);
   g_free (gw_term);
   g_free (cookie_term);
+  g_free (gw_cert_term);
 }
 
 static void
