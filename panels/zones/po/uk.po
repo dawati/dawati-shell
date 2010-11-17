@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"POT-Creation-Date: 2010-11-16 23:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
 "MIME-Version: 1.0\n"
@@ -15,28 +15,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:1
-#, fuzzy
 msgid "Zones panel"
-msgstr "Ще немає зон"
+msgstr "Панель зон"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "зони"
 
 #: ../src/main.c:412
-#, fuzzy
 msgid "Zones"
-msgstr "зони"
+msgstr "Зони"
 
 #: ../src/sw-zone.c:92
-#, fuzzy
 msgid "New Zone"
-msgstr " зони"
+msgstr "Нова Зона"
 
 #: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
-#, fuzzy, c-format
+#, c-format
 msgid "Zone %d"
-msgstr "зони"
+msgstr "Зона %d"
 
 #: ../src/sw-zone.c:845
 msgid "No applications on this zone"
