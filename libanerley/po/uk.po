@@ -37,8 +37,9 @@ msgid "Unset"
 msgstr "Не визначено"
 
 #: ../anerley/anerley-presence-chooser.c:46
+#, fuzzy
 msgid "Extended Away"
-msgstr ""
+msgstr "Розширено"
 
 #: ../anerley/anerley-presence-chooser.c:47
 msgid "Hidden"
