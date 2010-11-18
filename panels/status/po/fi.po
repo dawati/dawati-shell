@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"POT-Creation-Date: 2010-11-18 00:20+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -52,8 +52,8 @@ msgstr "Tällä hetkellä sijaintisi jaetaan arvolla: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:469
 #, c-format
-msgid "We think your locations is: %f %f"
-msgstr "Arvelemme, että sijaintisi on : %f %f"
+msgid "We think your location is: %f %f"
+msgstr "Arvelemme, että sijaintisi on: %f %f"
 
 #: ../src/mps-feed-pane.c:473
 #, c-format
@@ -81,8 +81,7 @@ msgstr "Muuta"
 msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
 msgstr "Kun sinulla on web-tili asetettuna (kuten Twitter), pystyt täällä tarkastelemaan syötteitä ja päivittämään tilaasi."
 
-#: ../src/mps-feed-switcher.c:509
-#: ../src/mps-feed-switcher.c:554
+#: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
 msgstr "Lisää uusi web-tili"
 
@@ -118,20 +117,14 @@ msgstr "Älä käytä paikkaa"
 #. * be <human readable time> from <human readable place name>
 #. *
 #. * e.g. A couple of hours ago from Aldgate, London
-#.
+#. 
 #: ../src/mps-tweet-card.c:528
 #, c-format
 msgid "%s from %s"
 msgstr " %s kohteesta %s"
 
-#~ msgid ""
-#~ "You don't appear to have any web services configured or there is a "
-#~ "problem with their configuration. Use the button above to open the My Web "
-#~ "Accounts and set one up."
-#~ msgstr ""
-#~ "Sinulla ei näytä olevan mitään web-palveluja konfiguroituna tai niiden "
-#~ "konfiguraatiossa on ongelma. Avaa yllä olevalla painikkeella Omat Web-"
-#~ "tilit ja määritä niistä yksi."
+#~ msgid "You don't appear to have any web services configured or there is a problem with their configuration. Use the button above to open the My Web Accounts and set one up."
+#~ msgstr "Sinulla ei näytä olevan mitään web-palveluja konfiguroituna tai niiden konfiguraatiossa on ongelma. Avaa yllä olevalla painikkeella Omat Web-tilit ja määritä niistä yksi."
 
 #~ msgid "Offline"
 #~ msgstr "Poissa linjoilta"
@@ -169,18 +162,11 @@ msgstr " %s kohteesta %s"
 #~ msgid "Your current status - you are offline"
 #~ msgstr "Tämänhetkinen tilasi: olet poissa linjoilta"
 
-#~ msgid ""
-#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 #~ msgstr "Emme valitettavasti löydä ketään. Oletko määrittänyt viestintilin?"
 
-#~ msgid ""
-#~ "To update your web status you need to setup a Web Services account with a "
-#~ "provider that supports status messages"
-#~ msgstr ""
-#~ "Jotta voisit päivittää tilasi verkossa, sinun pitää määrittää "
-#~ "verkkopalvelutili palveluntarjoajan kanssa, joka tukee tilaviestejä."
+#~ msgid "To update your web status you need to setup a Web Services account with a provider that supports status messages"
+#~ msgstr "Jotta voisit päivittää tilasi verkossa, sinun pitää määrittää verkkopalvelutili palveluntarjoajan kanssa, joka tukee tilaviestejä."
 
-#~ msgid ""
-#~ "To update your IM status you need to setup an Instant Messaging account"
-#~ msgstr ""
-#~ "Pikaviestintili pitää määrittää, jotta voit päivittää pikaviestintilaasi."
+#~ msgid "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr "Pikaviestintili pitää määrittää, jotta voit päivittää pikaviestintilaasi."
