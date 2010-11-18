@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-23 22:53+0000\n"
+"POT-Creation-Date: 2010-11-18 00:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
@@ -128,12 +128,11 @@ msgid "Dismiss All"
 msgstr "Hylkää kaikki"
 
 #: ../src/notifications/ntf-tray.c:481 ../src/notifications/ntf-tray.c:557
-#, c-format, fuzzy
+#, c-format
 msgid "%i pending messages"
 msgstr "%i viestiä vireillä"
 
 #: ../src/notifications/ntf-tray.c:535
-#, fuzzy
 msgid "1 pending message"
 msgstr "1 viesti vireillä"
 
