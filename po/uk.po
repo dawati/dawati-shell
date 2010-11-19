@@ -15,8 +15,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#, fuzzy
 msgid "Set your toolbar preferences"
-msgstr ""
+msgstr "Налаштуйте свій тулбар"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
@@ -44,7 +45,6 @@ msgstr "Доступні панелі"
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
 #. 
 #: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
-#, fuzzy
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -72,7 +72,7 @@ msgstr "%B %e, %Y"
 
 #: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
-msgstr ""
+msgstr "Тулбар"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
@@ -135,29 +135,29 @@ msgstr "%i pending messages"
 
 #: ../src/notifications/ntf-tray.c:535
 msgid "1 pending message"
-msgstr ""
+msgstr "1 непрочитане повідомлення"
 
 #: ../src/notifications/ntf-wm.c:103
 msgid "Unknown window"
-msgstr ""
+msgstr "Невідоме вікно"
 
 #: ../src/notifications/ntf-wm.c:107
 msgid "is asking for your attention."
-msgstr ""
+msgstr "потребує вашої уваги."
 
 #: ../src/notifications/ntf-wm.c:115
 msgid "Activate"
-msgstr ""
+msgstr "Активувати"
 
 #: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
-#, c-format, fuzzy
+#, c-format
 msgid "Starting %s"
-msgstr "Starting %s"
+msgstr "Запускається %s"
 
 #: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
-#, c-format, fuzzy
+#, c-format
 msgid "Opening %s"
-msgstr "Opening %s"
+msgstr "Відкривається %s"
 
 #: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
 #, c-format, fuzzy
