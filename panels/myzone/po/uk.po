@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-16 00:04+0000\n"
+"POT-Creation-Date: 2010-11-18 22:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
 "MIME-Version: 1.0\n"
@@ -99,9 +99,8 @@ msgstr ""
 "Це прибере локальний контент з вашого myzone"
 
 #: ../penge/penge-calendar-pane.c:484
-#, fuzzy
 msgid "Appointments"
-msgstr "Зустрічі"
+msgstr "Нагадування"
 
 #: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
 msgid "Open"
@@ -146,7 +145,6 @@ msgid "When you’ve set up your web accounts and used some files, they will app
 msgstr "Коли ви створюватимете веб акаунти чи користуватиметесь певними файлами, вони будуть з'являтися тут у myzone для легкого доступу у будь-який момент."
 
 #: ../penge/penge-welcome-tile.c:34
-#, fuzzy
 msgid "Play intro video"
 msgstr "Показати вступне відео"
 
