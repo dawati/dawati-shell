@@ -15,9 +15,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
-#, fuzzy
 msgid "Set your toolbar preferences"
-msgstr "Налаштуйте свій тулбар"
+msgstr "Налаштуйте ваш тулбар"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
@@ -76,28 +75,28 @@ msgstr "Тулбар"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
-msgstr ""
+msgstr "Налаштуйте ваш системний трей"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
 #: ../capplet/src/syst-cc-panel.c:241
 msgid "System Tray"
-msgstr ""
+msgstr "Системний Трей"
 
 #: ../capplet/src/syst-cc-panel.c:174
 msgid "Show system tray"
-msgstr ""
+msgstr "Показувати системний трей"
 
 #: ../capplet/src/syst-cc-panel.c:195
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
-msgstr ""
+msgstr "Системний трей - це засіб, що використовується деякими старими програмами аби повідомляти вам, що щось трапилось, або, що програма продовжує працювати, після закриття її вікна."
 
 #: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
-msgstr ""
+msgstr "Завжди використовувати режим малого екрану"
 
 #: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
-msgstr ""
+msgstr "Встановлює порядок розміщення панелей на тулбарі."
 
 #: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
