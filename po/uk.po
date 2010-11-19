@@ -105,7 +105,7 @@ msgstr ""
 
 #: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
-msgstr ""
+msgstr "Порядок панелей на тулбарі"
 
 #: ../src/meego-netbook.c:829
 msgid "Meego Netbook Effects"
@@ -116,9 +116,9 @@ msgid "Effects for Meego Netbooks"
 msgstr "Ефекти для Meego Netbooks"
 
 #: ../src/mnb-toolbar.c:1007
-#, c-format, fuzzy
+#, c-format
 msgid "Sorry, %s is broken"
-msgstr "Sorry, %s is broken"
+msgstr "Вибачте, %s зіпсовано"
 
 #: ../src/notifications/ntf-notification.c:234
 msgid "Dismiss"
