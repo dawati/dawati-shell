@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-16 23:52+0000\n"
+"POT-Creation-Date: 2010-11-20 23:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Oleksii Baranov <aleksey.baranov@gmail.com>\n"
 "Language-Team: \n"
@@ -37,9 +37,8 @@ msgid "Unset"
 msgstr "Не визначено"
 
 #: ../anerley/anerley-presence-chooser.c:46
-#, fuzzy
 msgid "Extended Away"
-msgstr "Розширено"
+msgstr "Відійшов надовго"
 
 #: ../anerley/anerley-presence-chooser.c:47
 msgid "Hidden"
