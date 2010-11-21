@@ -2,17 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Roman Tuz <tuzr@yandex.ru>, 2009.
-# 
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-18 22:04+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
+"POT-Creation-Date: 2010-11-20 23:58+0000\n"
+"PO-Revision-Date: 2010-11-21 20:31+0300\n"
+"Last-Translator: Ignat Kizenko <darkfoton@ukr.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
@@ -42,8 +44,9 @@ msgstr "Доступні панелі"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -51,21 +54,23 @@ msgstr "%H:%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
 
@@ -100,7 +105,7 @@ msgstr "Встановлює порядок розміщення панелей 
 
 #: ../data/mutter-meego.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-msgstr ""
+msgstr "Встановлює використання режиму малого екрану, навіть, якщо розмір дисплею дозволяє режим більшого екрану."
 
 #: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
@@ -127,10 +132,11 @@ msgstr "Відхилити"
 msgid "Dismiss All"
 msgstr "Відхилити все"
 
-#: ../src/notifications/ntf-tray.c:481 ../src/notifications/ntf-tray.c:557
-#, c-format, fuzzy
+#: ../src/notifications/ntf-tray.c:481
+#: ../src/notifications/ntf-tray.c:557
+#, c-format
 msgid "%i pending messages"
-msgstr "%i pending messages"
+msgstr "%i непрочитаних повідомлень"
 
 #: ../src/notifications/ntf-tray.c:535
 msgid "1 pending message"
@@ -159,20 +165,23 @@ msgid "Opening %s"
 msgstr "Відкривається %s"
 
 #: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
-#, c-format, fuzzy
+#, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"
-msgstr[0] "Opening %d Item"
-msgstr[1] "Opening %d Items"
+msgstr[0] "Відкривається %d елемент"
+msgstr[1] "Відкриваються %d елементи"
+msgstr[2] "Відкриваються %d елементів"
 
 #~ msgid "zones"
 #~ msgstr "зони"
-
 #~ msgid "No Zones yet"
 #~ msgstr "Ще немає зон"
-
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Програми, що ви їх використовуєте, показані тут. Ви можете переключатисьміж ними, організовувати на свій смак."
-
+#~ msgid ""
+#~ "Applications you’re using will show up here. You will be able to switch "
+#~ "and organize them to your heart's content."
+#~ msgstr ""
+#~ "Програми, що ви їх використовуєте, показані тут. Ви можете "
+#~ "переключатисьміж ними, організовувати на свій смак."
 #~ msgid "No applications on this zone"
 #~ msgstr "Немає програм в цій зоні"
+
