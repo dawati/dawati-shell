@@ -34,7 +34,7 @@ msgstr "%s megnyitása"
 
 #: ../src/mnb-people-panel.c:233
 msgid "This is the People panel."
-msgstr "Ez a Partnerek panel"
+msgstr "Ez a Partnerek panel."
 
 #: ../src/mnb-people-panel.c:320
 msgid "Sorry, we can't find any people. It looks like they are all offline."
