@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-03 00:08+0000\n"
+"POT-Creation-Date: 2010-11-21 00:00+0000\n"
 "PO-Revision-Date: 2004-01-01 03:54+0100\n"
 "Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -45,25 +45,25 @@ msgid "wired"
 msgstr "s připojením na internet"
 
 #. Switches
-#: ../carrick/carrick-list.c:1039 ../carrick/carrick-pane.c:1964
+#: ../carrick/carrick-list.c:1039 ../carrick/carrick-pane.c:1988
 #: ../carrick/carrick-util.c:38
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:1040 ../carrick/carrick-pane.c:2006
+#: ../carrick/carrick-list.c:1040 ../carrick/carrick-pane.c:2030
 #: ../carrick/carrick-util.c:44
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:1041 ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-list.c:1041 ../carrick/carrick-pane.c:2016
 #: ../carrick/carrick-util.c:42
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:1042 ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-list.c:1042 ../carrick/carrick-pane.c:2044
 #: ../carrick/carrick-util.c:46
 msgid "Bluetooth"
-msgstr "Modrozub"
+msgstr "Bluetooth"
 
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
@@ -199,35 +199,35 @@ msgstr "Heslo"
 msgid "Show password"
 msgstr "Ukázat heslo"
 
-#: ../carrick/carrick-pane.c:1947
+#: ../carrick/carrick-pane.c:1971
 msgid "Settings"
 msgstr "Nastavení"
 
-#: ../carrick/carrick-pane.c:1978 ../carrick/carrick-service-item.c:456
+#: ../carrick/carrick-pane.c:2002 ../carrick/carrick-service-item.c:456
 msgid "Wired"
 msgstr "Připojen k síti"
 
-#: ../carrick/carrick-pane.c:2045
+#: ../carrick/carrick-pane.c:2069
 msgid "Offline mode"
 msgstr "Nepřipojen k síti"
 
-#: ../carrick/carrick-pane.c:2055
+#: ../carrick/carrick-pane.c:2079
 msgid "This will disable all your connections"
 msgstr "Tohle zakáže všechna vaše připojení"
 
-#: ../carrick/carrick-pane.c:2091 ../src/carrick.c:380
+#: ../carrick/carrick-pane.c:2115 ../src/carrick.c:380
 msgid "Networks"
 msgstr "Sítě"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:2097
+#: ../carrick/carrick-pane.c:2121
 msgid "Add new connection"
 msgstr "Přidat nové připojení"
 
 #. TRANSLATORS: Button
 #. * There will be a combobox of VPN networks to the left of the
 #. * button
-#: ../carrick/carrick-pane.c:2137
+#: ../carrick/carrick-pane.c:2161
 msgid "Connect to VPN"
 msgstr "Připojit k VPN"
 
@@ -474,7 +474,7 @@ msgstr "Sítě - %s - 3G"
 #: ../src/carrick.c:75
 #, c-format
 msgid "networks - %s - bluetooth"
-msgstr "Sítě - %s - modrozub"
+msgstr "Sítě - %s - Bluetooth"
 
 #: ../src/carrick.c:78
 #, c-format
