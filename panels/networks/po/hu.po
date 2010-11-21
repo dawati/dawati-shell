@@ -360,7 +360,6 @@ msgstr "Haladó"
 #. TRANSLATORS: button for services that require an additional
 #. * web login (clicking will open browser)
 #: ../carrick/carrick-service-item.c:1856
-#, fuzzy
 msgid "Log in"
 msgstr "Bejelentkezés"
 
