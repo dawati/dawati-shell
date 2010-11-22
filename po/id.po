@@ -1,18 +1,21 @@
 # Translation of mutter to Indonesian.
-# Copyright (C) 2009
-# This file is distributed under the same license as the PACKAGE package.
-# Andika Triwidada <andika@gmail.com>, 2009.
+# Copyright (C) 2009 mutter copyright's holder
+# This file is distributed under the same license as the mutter package.
+# Andika Triwidada <andika@gmail.com>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-05 09:27+0000\n"
-"PO-Revision-Date: 2009-08-26 04:16+0700\n"
+"POT-Creation-Date: 2010-11-21 23:57+0000\n"
+"PO-Revision-Date: 2010-11-22 18:33+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: Indonesia\n"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
@@ -30,40 +33,47 @@ msgstr "Simpan toolbar"
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Maaf, Anda mesti menghapus suatu panel sebelum dapat menambah yang baru."
 
+#: ../capplet/src/mtp-bin.c:369
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr "Anda dapat menambah, menghapus, dan menata ulang banyak panel pada toolbar Anda."
+
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
 msgstr "Panel tersedia"
 
+# 24 hrs without am/pm for ID
 #. translators: translate this to a suitable 24 hourt time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# 24 hrs without am/pm for ID
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#: ../capplet/src/mtp-clock.c:217
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
+# 24 hrs without am/pm for ID
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-# 24 hrs without am/pm for ID
-#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+#.
+#: ../capplet/src/mtp-clock.c:227
+#: ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%H:%M"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+#.
+#: ../capplet/src/mtp-clock.c:249
+#: ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%d %B %Y"
 
@@ -84,6 +94,10 @@ msgstr "Baki Sistem"
 msgid "Show system tray"
 msgstr "Tampilkan baki sistem"
 
+#: ../capplet/src/syst-cc-panel.c:195
+msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
+msgstr "Baki sistem adalah suatu konsep yang dipakai oleh beberapa aplikasi lebih tua, untuk memberitahu Anda ketika terjadi sesuatu, atau untuk tetap berjalan ketika Anda menutupnya."
+
 #: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Selalu gunakan modus layar kecil"
@@ -100,109 +114,62 @@ msgstr "Memaksa memakai modus layar kecil bila ukuran tampilan biasanya mengisya
 msgid "Order of panels on toolbar"
 msgstr "Urutan panel pada toolbar"
 
-#: ../src/meego-netbook.c:1018
+#: ../src/meego-netbook.c:829
 msgid "Meego Netbook Effects"
 msgstr "Efek Netbook Meego"
 
-#: ../src/meego-netbook.c:1022
+#: ../src/meego-netbook.c:833
 msgid "Effects for Meego Netbooks"
 msgstr "Efek-efek untuk Netbook Meego"
 
-#: ../src/meego-netbook.c:3218
-msgid "Activate"
-msgstr "Aktifkan"
-
-#: ../src/meego-netbook.c:3232
-msgid "Unknown window"
-msgstr "Jendela tak dikenal"
-
-#: ../src/mnb-toolbar.c:1000
+#: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Maaf, %s rusak"
 
-#: ../src/notifications/mnb-notification.c:282
+#: ../src/notifications/ntf-notification.c:234
 msgid "Dismiss"
 msgstr "Bubar"
 
-#: ../src/notifications/mnb-notification-cluster.c:663
+#: ../src/notifications/ntf-tray.c:308
 msgid "Dismiss All"
 msgstr "Bubar Semua"
 
-#: ../src/meego-netbook.c:3234
+#: ../src/notifications/ntf-tray.c:481
+#: ../src/notifications/ntf-tray.c:557
+#, c-format
+msgid "%i pending messages"
+msgstr "%i pesan tertunda"
+
+#: ../src/notifications/ntf-tray.c:535
+msgid "1 pending message"
+msgstr "1 pesan tertunda"
+
+#: ../src/notifications/ntf-wm.c:103
+msgid "Unknown window"
+msgstr "Jendela tak dikenal"
+
+#: ../src/notifications/ntf-wm.c:107
 msgid "is asking for your attention."
 msgstr "perlu perhatian Anda."
 
-#: ../capplet/src/mtp-bin.c:369
-msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "Anda dapat menambah, menghapus, dan menata ulang banyak panel pada toolbar Anda."
+#: ../src/notifications/ntf-wm.c:115
+msgid "Activate"
+msgstr "Aktifkan"
 
-#: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
-msgstr "Baki sistem adalah suatu konsep yang dipakai oleh beberapa aplikasi lebih tua, untuk memberitahu Anda ketika terjadi sesuatu, atau untuk tetap berjalan ketika Anda menutupnya."
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#, c-format
+msgid "Starting %s"
+msgstr "Memulai %s"
 
-#~ msgid "System tray"
-#~ msgstr "Baki sistem"
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#, c-format
+msgid "Opening %s"
+msgstr "Membuka %s"
 
-#~ msgid "zones"
-#~ msgstr "zona"
+#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#, c-format
+msgid "Opening %d Item"
+msgid_plural "Opening %d Items"
+msgstr[0] "Membuka %d butir"
 
-#~ msgid "No Zones yet"
-#~ msgstr "Belum ada zona"
-
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Aplikasi yang sedang anda pakai akan muncul di sini. Anda akan dapat menukar dan mengatur mereka sekehendak anda."
-
-#~ msgid "No applications on this zone"
-#~ msgstr "Tak ada aplikasi pada zona ini"
-
-#~ msgid "Less than a minute ago"
-#~ msgstr "Kurang dari semenit yang lalu"
-
-#~ msgid "A few minutes ago"
-#~ msgstr "Beberapa menit yang lalu"
-
-#~ msgid "A couple of hours ago"
-#~ msgstr "Beberapa jam yang lalu"
-
-#~ msgid "Earlier today"
-#~ msgstr "Hari ini"
-
-#~ msgid "On %A"
-#~ msgstr "Pada %A"
-
-#~ msgid "Last week"
-#~ msgstr "Minggu lalu"
-
-#~ msgid "A couple of weeks ago"
-#~ msgstr "Beberapa minggu yang lalu"
-
-#~ msgid "This month"
-#~ msgstr "Bulan ini"
-
-#~ msgid "Last month"
-#~ msgstr "Bulan lalu"
-
-#~ msgid "This year"
-#~ msgstr "Tahun ini"
-
-#~ msgid "Last year"
-#~ msgstr "Tahun lalu"
-
-#~ msgid "Ages ago"
-#~ msgstr "Telah lama berlalu"
-
-#~ msgid "power & brightness"
-#~ msgstr "daya & kecerahan"
-
-#~ msgid "volume"
-#~ msgstr "keras suara"
-
-#~ msgid "bluetooth"
-#~ msgstr "bluetooth"
-
-#~ msgid "networks"
-#~ msgstr "jaringan"
-
-#~ msgid "test"
-#~ msgstr "uji"
