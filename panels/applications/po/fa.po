@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:56+0000\n"
-"PO-Revision-Date: 2010-08-12 02:37+0330\n"
+"POT-Creation-Date: 2010-11-27 00:52+0000\n"
+"PO-Revision-Date: 2010-11-27 10:21+0330\n"
 "Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
 "Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,30 +22,33 @@ msgid "Search"
 msgstr "جستجو"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1049
+#: ../src/meego-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "برنامه ها"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:1065
+#: ../src/meego-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "برنامه های دلخواه"
 
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1092
+#: ../src/meego-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "برنامه های شما"
 
-#: ../src/meego-panel-applications.c:223
+#: ../src/meego-panel-applications.c:247
 #: ../data/meego-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "برنامه ها"
 
+#: ../src/mnb-launcher-button.c:607
+msgid "Never launched"
+msgstr "هیچ گاه دستیابی نشده"
+
 #: ../data/meego-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "قاب برنامه ها"
-
