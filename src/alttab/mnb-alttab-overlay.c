@@ -436,11 +436,20 @@ mnb_alttab_overlay_allocate (ClutterActor          *actor,
   if (priv->grid)
     {
       MxPadding       padding    = { 0, };
+      gfloat          w, h;
+      ClutterActorBox box;
 
       mx_widget_get_padding (MX_WIDGET (actor), &padding);
 
-      clutter_actor_set_position (priv->grid, padding.left, padding.top);
-      clutter_actor_allocate_preferred_size (priv->grid, flags);
+      clutter_actor_get_preferred_size (priv->grid, NULL, NULL,
+                                        &w, &h);
+
+      box.x1 = padding.left;
+      box.y1 = padding.top;
+      box.x2 = padding.left + w;
+      box.y2 = padding.top + h;
+
+      clutter_actor_allocate (priv->grid, &box, flags);
     }
 }
 
