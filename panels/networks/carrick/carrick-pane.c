@@ -368,10 +368,10 @@ _wifi_switch_callback (MxGtkLightSwitch *wifi_switch,
                                                 "wifi",
                                                 "ready",
                                                 "all");
-      org_moblin_connman_Manager_enable_technology_async (priv->manager,
-                                                          "wifi",
-                                                          wifi_switch_notify_cb,
-                                                          pane);
+      net_connman_Manager_enable_technology_async (priv->manager,
+                                                   "wifi",
+                                                   wifi_switch_notify_cb,
+                                                   pane);
     }
   else
     {
@@ -379,10 +379,10 @@ _wifi_switch_callback (MxGtkLightSwitch *wifi_switch,
                                                 "wifi",
                                                 "idle",
                                                 "all");
-      org_moblin_connman_Manager_disable_technology_async (priv->manager,
-                                                           "wifi",
-                                                           wifi_switch_notify_cb,
-                                                           pane);
+      net_connman_Manager_disable_technology_async (priv->manager,
+                                                    "wifi",
+                                                    wifi_switch_notify_cb,
+                                                    pane);
     }
 
   return TRUE;
@@ -429,10 +429,10 @@ _ethernet_switch_callback (MxGtkLightSwitch *ethernet_switch,
                                                 "ethernet",
                                                 "ready",
                                                 "all");
-      org_moblin_connman_Manager_enable_technology_async (priv->manager,
-                                                          "ethernet",
-                                                          ethernet_switch_notify_cb,
-                                                          pane);
+      net_connman_Manager_enable_technology_async (priv->manager,
+                                                   "ethernet",
+                                                   ethernet_switch_notify_cb,
+                                                   pane);
     }
   else
     {
@@ -440,10 +440,10 @@ _ethernet_switch_callback (MxGtkLightSwitch *ethernet_switch,
                                                 "ethernet",
                                                 "idle",
                                                 "all");
-      org_moblin_connman_Manager_disable_technology_async (priv->manager,
-                                                           "ethernet",
-                                                           ethernet_switch_notify_cb,
-                                                           pane);
+      net_connman_Manager_disable_technology_async (priv->manager,
+                                                    "ethernet",
+                                                    ethernet_switch_notify_cb,
+                                                    pane);
     }
 
   return TRUE;
@@ -490,10 +490,10 @@ _threeg_switch_callback (MxGtkLightSwitch *threeg_switch,
                                                 "cellular",
                                                 "ready",
                                                 "all");
-      org_moblin_connman_Manager_enable_technology_async (priv->manager,
-                                                          "cellular",
-                                                          threeg_switch_notify_cb,
-                                                          pane);
+      net_connman_Manager_enable_technology_async (priv->manager,
+                                                   "cellular",
+                                                   threeg_switch_notify_cb,
+                                                   pane);
     }
   else
     {
@@ -501,10 +501,10 @@ _threeg_switch_callback (MxGtkLightSwitch *threeg_switch,
                                                 "cellular",
                                                 "idle",
                                                 "all");
-      org_moblin_connman_Manager_disable_technology_async (priv->manager,
-                                                           "cellular",
-                                                           threeg_switch_notify_cb,
-                                                           pane);
+      net_connman_Manager_disable_technology_async (priv->manager,
+                                                    "cellular",
+                                                    threeg_switch_notify_cb,
+                                                    pane);
     }
 
   return TRUE;
@@ -551,10 +551,10 @@ _wimax_switch_callback (MxGtkLightSwitch *wimax_switch,
                                                 "wimax",
                                                 "ready",
                                                 "all");
-      org_moblin_connman_Manager_enable_technology_async (priv->manager,
-                                                          "wimax",
-                                                          wimax_switch_notify_cb,
-                                                          pane);
+      net_connman_Manager_enable_technology_async (priv->manager,
+                                                   "wimax",
+                                                   wimax_switch_notify_cb,
+                                                   pane);
     }
   else
     {
@@ -562,10 +562,10 @@ _wimax_switch_callback (MxGtkLightSwitch *wimax_switch,
                                                 "wimax",
                                                 "idle",
                                                 "all");
-      org_moblin_connman_Manager_disable_technology_async (priv->manager,
-                                                           "wimax",
-                                                           wimax_switch_notify_cb,
-                                                           pane);
+      net_connman_Manager_disable_technology_async (priv->manager,
+                                                    "wimax",
+                                                    wimax_switch_notify_cb,
+                                                    pane);
     }
 
   return TRUE;
@@ -612,10 +612,10 @@ _bluetooth_switch_callback (MxGtkLightSwitch *bluetooth_switch,
                                                 "bluetooth",
                                                 "ready",
                                                 "all");
-      org_moblin_connman_Manager_enable_technology_async (priv->manager,
-                                                          "bluetooth",
-                                                          bluetooth_switch_notify_cb,
-                                                          pane);
+      net_connman_Manager_enable_technology_async (priv->manager,
+                                                   "bluetooth",
+                                                   bluetooth_switch_notify_cb,
+                                                   pane);
     }
   else
     {
@@ -623,10 +623,10 @@ _bluetooth_switch_callback (MxGtkLightSwitch *bluetooth_switch,
                                                 "bluetooth",
                                                 "idle",
                                                 "all");
-      org_moblin_connman_Manager_disable_technology_async (priv->manager,
-                                                           "bluetooth",
-                                                           bluetooth_switch_notify_cb,
-                                                           pane);
+      net_connman_Manager_disable_technology_async (priv->manager,
+                                                    "bluetooth",
+                                                    bluetooth_switch_notify_cb,
+                                                    pane);
     }
 
   return TRUE;
@@ -914,10 +914,10 @@ _new_connection_cb (GtkButton *button,
        * set the timeout nice and long before we make the call
        */
       dbus_g_proxy_set_default_timeout (priv->manager, 120000);
-      org_moblin_connman_Manager_connect_service_async (priv->manager,
-                                                        method_props,
-                                                        connect_service_notify_cb,
-                                                        self);
+      net_connman_Manager_connect_service_async (priv->manager,
+                                                 method_props,
+                                                 connect_service_notify_cb,
+                                                 self);
       dbus_g_proxy_set_default_timeout (priv->manager, -1);
 
       break;
@@ -979,11 +979,11 @@ _offline_mode_switch_callback (MxGtkLightSwitch *flight_switch,
   g_value_set_boolean (value,
                        new_state);
 
-  org_moblin_connman_Manager_set_property_async (priv->manager,
-                                                 "OfflineMode",
-                                                 value,
-                                                 offline_switch_notify_cb,
-                                                 pane);
+  net_connman_Manager_set_property_async (priv->manager,
+                                          "OfflineMode",
+                                          value,
+                                          offline_switch_notify_cb,
+                                          pane);
 
   g_value_unset (value);
   g_slice_free (GValue,
@@ -1054,7 +1054,7 @@ new_tech_proxy (const char *tech, GtkWidget *tech_switch)
   proxy = dbus_g_proxy_new_for_name (connection,
                                      CONNMAN_SERVICE,
                                      path,
-                                     "org.moblin.connman.Technology");
+                                     "net.connman.Technology");
   g_free (path);
 
   /* Listen for the D-Bus PropertyChanged signal */
@@ -1069,9 +1069,9 @@ new_tech_proxy (const char *tech, GtkWidget *tech_switch)
                                tech_switch,
                                NULL);
 
-  org_moblin_connman_Technology_get_properties_async (proxy,
-                                                      tech_get_properties_cb,
-                                                      tech_switch);
+  net_connman_Technology_get_properties_async (proxy,
+                                               tech_get_properties_cb,
+                                               tech_switch);
   
   return proxy;
 }
@@ -1614,10 +1614,10 @@ carrick_pane_connect_vpn (CarrickPane *self,
   /* Connection methods do not return until there has been success or an error,
    * set the timeout nice and long before we make the call */
   dbus_g_proxy_set_default_timeout (self->priv->manager, 120000);
-  org_moblin_connman_Manager_connect_provider_async (self->priv->manager,
-                                                     props,
-                                                     connect_provider_cb,
-                                                     self);
+  net_connman_Manager_connect_provider_async (self->priv->manager,
+                                              props,
+                                              connect_provider_cb,
+                                              self);
   dbus_g_proxy_set_default_timeout (self->priv->manager, -1);
 }
 
@@ -1948,9 +1948,9 @@ carrick_pane_init (CarrickPane *self)
                                self,
                                NULL);
 
-  org_moblin_connman_Manager_get_properties_async (priv->manager,
-                                                   pane_manager_get_properties_cb,
-                                                   self);
+  net_connman_Manager_get_properties_async (priv->manager,
+                                            pane_manager_get_properties_cb,
+                                            self);
 
   banner_group = gtk_size_group_new (GTK_SIZE_GROUP_VERTICAL);
 
@@ -2215,10 +2215,10 @@ carrick_pane_update (CarrickPane *pane)
        * The UI doesn't really care if the call to scan completes or
        * not so just fire and forget
        */
-      org_moblin_connman_Manager_request_scan_async (priv->manager,
-                                                     "",
-                                                     dbus_proxy_notify_cb,
-                                                     pane);
+      net_connman_Manager_request_scan_async (priv->manager,
+                                              "",
+                                              dbus_proxy_notify_cb,
+                                              pane);
     }
 
   carrick_list_clear_state (CARRICK_LIST (priv->service_list));

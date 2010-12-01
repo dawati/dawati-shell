@@ -666,9 +666,9 @@ _connect (CarrickServiceItem *self)
      * success or an error.
      */
     dbus_g_proxy_set_default_timeout (self->priv->proxy, 120000);
-    org_moblin_connman_Service_connect_async (self->priv->proxy,
-                                              dbus_proxy_notify_cb,
-                                              self);
+    net_connman_Service_connect_async (self->priv->proxy,
+                                       dbus_proxy_notify_cb,
+                                       self);
     dbus_g_proxy_set_default_timeout (self->priv->proxy, -1);
 }
 
@@ -747,9 +747,9 @@ _delete_button_cb (GtkButton *delete_button,
           /* The service is marked failure, use Service.Remove to set
            * back to idle state and clear password and favorite flag
            */
-          org_moblin_connman_Service_remove_async (priv->proxy,
-                                                   dbus_proxy_notify_cb,
-                                                   item);
+          net_connman_Service_remove_async (priv->proxy,
+                                            dbus_proxy_notify_cb,
+                                            item);
         }
       else if (priv->favorite)
         {
@@ -760,19 +760,19 @@ _delete_button_cb (GtkButton *delete_button,
                                                     priv->type,
                                                     "idle",
                                                     priv->name);
-          org_moblin_connman_Service_remove_async (priv->proxy,
-                                                   dbus_proxy_notify_cb,
-                                                   item);
+          net_connman_Service_remove_async (priv->proxy,
+                                            dbus_proxy_notify_cb,
+                                            item);
         }
       else
         {
           /* The service isn't marked favorite so probably hasn't been
            * successfully connected to before, just clear the passphrase
            */
-          org_moblin_connman_Service_clear_property_async (priv->proxy,
-                                                           "Passphrase",
-                                                           dbus_proxy_notify_cb,
-                                                           item);
+          net_connman_Service_clear_property_async (priv->proxy,
+                                                    "Passphrase",
+                                                    dbus_proxy_notify_cb,
+                                                    item);
         }
     }
 
@@ -858,9 +858,9 @@ _connect_button_cb (GtkButton          *connect_button,
                                                 "idle",
                                                 priv->name);
       carrick_service_item_set_active (item, FALSE);
-      org_moblin_connman_Service_disconnect_async (priv->proxy,
-                                                   dbus_proxy_notify_cb,
-                                                   item);
+      net_connman_Service_disconnect_async (priv->proxy,
+                                            dbus_proxy_notify_cb,
+                                            item);
     }
   else
     {
@@ -934,11 +934,11 @@ _connect_with_password (CarrickServiceItem *item)
           g_value_init (value, G_TYPE_STRING);
           g_value_set_string (value, passphrase);
 
-          org_moblin_connman_Service_set_property_async (priv->proxy,
-                                                         "Passphrase",
-                                                         value,
-                                                         set_passphrase_notify_cb,
-                                                         item);
+          net_connman_Service_set_property_async (priv->proxy,
+                                                  "Passphrase",
+                                                  value,
+                                                  set_passphrase_notify_cb,
+                                                  item);
 
           g_value_unset (value);
           g_slice_free (GValue, value);
@@ -1573,11 +1573,11 @@ apply_button_clicked_cb (GtkButton *button,
       g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
       g_value_set_boxed (value, ipv4);
 
-      org_moblin_connman_Service_set_property_async (priv->proxy,
-                                                     "IPv4.Configuration",
-                                                     value,
-                                                     set_ipv4_configuration_cb,
-                                                     user_data);  
+      net_connman_Service_set_property_async (priv->proxy,
+                                              "IPv4.Configuration",
+                                              value,
+                                              set_ipv4_configuration_cb,
+                                              user_data);  
 
       g_free (value);
       g_hash_table_destroy (ipv4);
@@ -1592,11 +1592,11 @@ apply_button_clicked_cb (GtkButton *button,
   dnsv = get_nameserver_strv (GTK_TEXT_VIEW (priv->dns_text_view));
   g_value_set_boxed (value, dnsv);
 
-  org_moblin_connman_Service_set_property_async (priv->proxy,
-                                                 "Nameservers.Configuration",
-                                                 value,
-                                                 set_nameservers_configuration_cb,
-                                                 user_data);
+  net_connman_Service_set_property_async (priv->proxy,
+                                          "Nameservers.Configuration",
+                                          value,
+                                          set_nameservers_configuration_cb,
+                                          user_data);
 
   g_free (value);
   g_strfreev (dnsv);

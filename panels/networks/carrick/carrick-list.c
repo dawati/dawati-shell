@@ -267,10 +267,10 @@ carrick_list_drag_end (GtkWidget      *widget,
                     (CARRICK_SERVICE_ITEM (other_widget));
           path = dbus_g_proxy_get_path (other_service);
 
-          org_moblin_connman_Service_move_before_async (service,
-                                                        path,
-                                                        move_notify_cb,
-                                                        data);
+          net_connman_Service_move_before_async (service,
+                                                 path,
+                                                 move_notify_cb,
+                                                 data);
         }
       else
         {
@@ -281,10 +281,10 @@ carrick_list_drag_end (GtkWidget      *widget,
                     (CARRICK_SERVICE_ITEM (other_widget));
           path = dbus_g_proxy_get_path (other_service);
 
-          org_moblin_connman_Service_move_after_async (service,
-                                                       path,
-                                                       move_notify_cb,
-                                                       data);
+          net_connman_Service_move_after_async (service,
+                                                path,
+                                                move_notify_cb,
+                                                data);
         }
     }
 
@@ -812,9 +812,9 @@ carrick_list_set_model (CarrickList         *list,
                                    "PropertyChanged",
                                    G_CALLBACK (_mngr_property_changed_cb),
                                    list, NULL);
-      org_moblin_connman_Manager_get_properties_async (manager,
-                                                       _mngr_get_properties_cb,
-                                                       list);
+      net_connman_Manager_get_properties_async (manager,
+                                                _mngr_get_properties_cb,
+                                                list);
 
       gtk_tree_model_foreach (GTK_TREE_MODEL (model),
                               _create_service_item,

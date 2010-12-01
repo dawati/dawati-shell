@@ -94,7 +94,7 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                self,
                                NULL);
 
-  org_moblin_connman_Manager_get_properties_async
+  net_connman_Manager_get_properties_async
     (priv->manager,
      network_model_manager_get_properties_cb,
      self);
@@ -495,10 +495,10 @@ network_model_service_changed_cb (DBusGProxy  *service,
       if (g_strcmp0 (type, "vpn") == 0 &&
           (g_strcmp0 (state, "idle") == 0 ||
            g_strcmp0 (state, "failure") == 0))
-        org_moblin_connman_Manager_remove_provider_async (self->priv->manager,
-                                                          dbus_g_proxy_get_path (service),
-                                                          remove_provider_cb,
-                                                          self);
+        net_connman_Manager_remove_provider_async (self->priv->manager,
+                                                   dbus_g_proxy_get_path (service),
+                                                   remove_provider_cb,
+                                                   self);
     }
   else if (g_str_equal (property, "Favorite"))
     {
@@ -524,7 +524,7 @@ network_model_service_changed_cb (DBusGProxy  *service,
       /* Rather than store this property we're just going to trigger
        * GetProperties to pull the up-to-date passphrase
        */
-      org_moblin_connman_Service_get_properties_async
+      net_connman_Service_get_properties_async
         (service,
          network_model_service_get_properties_cb,
          self);
@@ -732,7 +732,7 @@ network_model_update_property (const gchar *property,
                                            self,
                                            NULL);
 
-              org_moblin_connman_Service_get_properties_async
+              net_connman_Service_get_properties_async
                 (service,
                  network_model_service_get_properties_cb,
                  self);
