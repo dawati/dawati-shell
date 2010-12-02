@@ -21,7 +21,7 @@
 #include <glib/gi18n-lib.h>
 #include "myzone-cc-panel.h"
 #include <gtk/gtk.h>
-#include <mx/mx-gtk.h>
+#include <mx-gtk/mx-gtk.h>
 #include <gconf/gconf-client.h>
 #include "gconf-bridge.h"
 #include <gio/gdesktopappinfo.h>
