@@ -104,7 +104,7 @@ ggg_service_new (DBusGConnection *connection, const char *path)
                                      path,
                                      CONNMAN_SERVICE_INTERFACE);
 
-  if (!org_moblin_connman_Service_get_properties (proxy, &props, &error)) {
+  if (!net_connman_Service_get_properties (proxy, &props, &error)) {
     g_printerr ("Cannot get properties for service: %s\n", error->message);
     g_error_free (error);
     g_object_unref (proxy);
@@ -189,8 +189,7 @@ set_string_prop (DBusGProxy *proxy, const char *name, const char *string)
   g_value_init (&value, G_TYPE_STRING);
   g_value_set_static_string (&value, string);
 
-  if (!org_moblin_connman_Service_set_property
-      (proxy, name, &value, &error)) {
+  if (!net_connman_Service_set_property (proxy, name, &value, &error)) {
     g_printerr ("Cannot set property %s to %s: %s\n",
                 name, string, error->message);
     g_error_free (error);
@@ -221,7 +220,7 @@ ggg_service_connect (GggService *service)
   GError *error = NULL;
 
   if (service->priv->proxy) {
-    if (!org_moblin_connman_Service_connect (service->priv->proxy, &error)) {
+    if (!net_connman_Service_connect (service->priv->proxy, &error)) {
       g_printerr ("Cannot connect: %s\n", error->message);
       g_error_free (error);
     }

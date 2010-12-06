@@ -257,7 +257,7 @@ find_services (void)
                                      CONNMAN_SERVICE, "/",
                                      CONNMAN_MANAGER_INTERFACE);
 
-  if (!org_moblin_connman_Manager_get_properties (proxy, &props, &error)) {
+  if (!net_connman_Manager_get_properties (proxy, &props, &error)) {
     g_printerr ("Cannot get properties for manager: %s\n", error->message);
     g_error_free (error);
     g_object_unref (proxy);
