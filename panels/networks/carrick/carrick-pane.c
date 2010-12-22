@@ -1050,7 +1050,7 @@ new_tech_proxy (const char *tech, GtkWidget *tech_switch)
   if (!connection) 
     return NULL;
 
-  path = g_strdup_printf ("/org/moblin/connman/technology/%s", tech);
+  path = g_strdup_printf ("/net/connman/technology/%s", tech);
   proxy = dbus_g_proxy_new_for_name (connection,
                                      CONNMAN_SERVICE,
                                      path,

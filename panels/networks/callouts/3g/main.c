@@ -36,7 +36,7 @@
 
 #include "carrick/connman-manager-bindings.h"
 
-#define CONNMAN_SERVICE           "org.moblin.connman"
+#define CONNMAN_SERVICE           "net.connman"
 #define CONNMAN_MANAGER_PATH      "/"
 #define CONNMAN_MANAGER_INTERFACE CONNMAN_SERVICE ".Manager"
 #define CONNMAN_SERVICE_INTERFACE CONNMAN_SERVICE ".Service"
