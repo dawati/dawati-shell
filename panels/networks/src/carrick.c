@@ -234,6 +234,7 @@ popup_window (GtkWindow *window,
 /* TODO: Stubs for now */
 void carrick_shell_request_focus (void) {}
 void carrick_shell_hide (void) {}
+void carrick_shell_show (void) {}
 void carrick_shell_close_dialog_on_hide (GtkDialog *dialog) {}
 
 static void
