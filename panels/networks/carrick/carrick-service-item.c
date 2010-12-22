@@ -147,6 +147,11 @@ enum {
   METHOD_FIXED = 2,
 };
 
+typedef enum {
+  CARRICK_INET_V4,
+  CARRICK_INET_V6,
+  CARRICK_INET_ANY
+} CarrickInet;
 
 static void
 carrick_service_item_get_property (GObject *object, guint property_id,
@@ -1383,31 +1388,38 @@ set_ipv4_configuration_cb (DBusGProxy *proxy,
 }
 
 static gboolean
-validate_address (const char *address, gboolean allow_empty)
+validate_address (const char *address, CarrickInet inet, gboolean allow_empty)
 {
-  unsigned char buf[sizeof (struct in_addr)];
+  unsigned char buf_v4[sizeof (struct in_addr)];
+  unsigned char buf_v6[sizeof(struct in6_addr)];
 
   if (!address || strlen (address) == 0)
+    return allow_empty;
+
+  switch (inet)
     {
-      return allow_empty;
-    }
-  else if (inet_pton (AF_INET, address, buf) != 1)
-    {
+    case CARRICK_INET_V4:
+      return (inet_pton (AF_INET, address, buf_v4) == 1);
+    case CARRICK_INET_V6:
+      return (inet_pton (AF_INET6, address, buf_v6) == 1);
+    case CARRICK_INET_ANY:
+      return (inet_pton (AF_INET, address, buf_v4) == 1 ||
+              inet_pton (AF_INET6, address, buf_v6) == 1);
+    default:
+      g_warn_if_reached ();
       return FALSE;
     }
-
-  return TRUE;
 }
 
 static gboolean
-validate_static_ip_entries (CarrickServiceItem *item)
+validate_static_ipv4_entries (CarrickServiceItem *item)
 {
   CarrickServiceItemPrivate *priv;
   const char *address;
 
   priv = item->priv;
   address = gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
-  if (!validate_address (address, FALSE))
+  if (!validate_address (address, CARRICK_INET_V4, FALSE))
     {
       gtk_label_set_text (GTK_LABEL (priv->info_label),
                           _("Sorry, it looks like the IP address is not valid"));
@@ -1419,7 +1431,7 @@ validate_static_ip_entries (CarrickServiceItem *item)
     }
 
   address = gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
-  if (!validate_address (address, TRUE))
+  if (!validate_address (address, CARRICK_INET_V4, TRUE))
     {
       gtk_label_set_text (GTK_LABEL (priv->info_label),
                           _("Sorry, it looks like the gateway address is not valid"));
@@ -1431,7 +1443,7 @@ validate_static_ip_entries (CarrickServiceItem *item)
     }
 
   address = gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
-  if (!validate_address (address, TRUE))
+  if (!validate_address (address, CARRICK_INET_V4, TRUE))
     {
       gtk_label_set_text (GTK_LABEL (priv->info_label),
                           _("Sorry, it looks like the subnet mask is not valid"));
@@ -1475,7 +1487,7 @@ validate_dns_text_view (CarrickServiceItem *item)
 
   for (iter = dnsv; *iter; iter++)
     {
-      if (!validate_address (*iter, TRUE))
+      if (!validate_address (*iter, CARRICK_INET_ANY, TRUE))
         {
           char *msg;
 
@@ -1549,7 +1561,7 @@ apply_button_clicked_cb (GtkButton *button,
         {
           char *address, *netmask, *gateway;
 
-          if (!validate_static_ip_entries (item))
+          if (!validate_static_ipv4_entries (item))
             {
                g_hash_table_destroy (ipv4);
                return;
