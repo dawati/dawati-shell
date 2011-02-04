@@ -261,6 +261,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   const gchar         *name = NULL;
   const gchar         *state = NULL;
   const gchar         *security = NULL;
+  const gchar        **securities = NULL;
   const gchar         *type = NULL;
   gboolean             favorite = FALSE;
   gboolean             passphrase_required = FALSE;
@@ -310,7 +311,23 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 
       value = g_hash_table_lookup (properties, "Security");
       if (value)
-        security = g_value_get_string (value);
+        {
+          securities = g_value_get_boxed (value);
+          security = securities[0];
+
+          while (security)
+            {
+	      if (g_strcmp0 ("none", security) == 0 ||
+		  g_strcmp0 ("wep", security) == 0 ||
+		  g_strcmp0 ("psk", security) == 0 ||
+		  g_strcmp0 ("ieee8021x", security) == 0 ||
+		  g_strcmp0 ("wpa", security) == 0 ||
+		  g_strcmp0 ("rsn", security) == 0)
+		      break;
+
+	      security++;
+	    }
+        }
 
       value = g_hash_table_lookup (properties, "PassphraseRequired");
       if (value)
