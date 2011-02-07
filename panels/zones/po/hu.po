@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-moblin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2010-01-22 10:50+0100\n"
 "Last-Translator: Gergely Lónyai <aleph@mandriva.org>\n"
 "Language-Team: Hungarian <aleph@mandriva.org>\n"
@@ -15,44 +15,37 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Hungarian\n"
-"X-Poedit-Country: HUNGARY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: HUNGARY\n"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:1
-#, fuzzy
 msgid "Zones panel"
-msgstr "Még nincsenek zónák"
+msgstr "Zónák panel"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zónák"
 
 #: ../src/main.c:412
-#, fuzzy
 msgid "Zones"
-msgstr "zónák"
+msgstr "Zónák"
 
 #: ../src/sw-zone.c:92
-#, fuzzy
 msgid "New Zone"
-msgstr "zónák"
+msgstr "Új zóna"
 
 #: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
-#, fuzzy, c-format
+#, c-format
 msgid "Zone %d"
-msgstr "zónák"
+msgstr "%d zóna"
 
 #: ../src/sw-zone.c:845
 msgid "No applications on this zone"
 msgstr "Nincs alkalmazás ebben a zónában"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"A használt alkalmazások itt jelennek meg. Itt tudsz átváltani köztük és "
-"kedved szerint szervezheted őket."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "A használt alkalmazások itt jelennek meg. Itt tudsz átváltani köztük és kedved szerint szervezheted őket."
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin Netbook Effektek"

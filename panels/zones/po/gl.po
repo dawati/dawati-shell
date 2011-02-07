@@ -1,12 +1,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Xosé <xosecalvo@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: 2009-10-14 21:13+0200\n"
 "Last-Translator: Xosé <xosecalvo@gmail.com>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -39,22 +39,14 @@ msgstr "Zona %d"
 
 #: ../src/sw-zone.c:845
 msgid "No applications on this zone"
-msgstr "Non hai aplicacións nesta zona"
+msgstr "Non hai aplicativos nesta zona"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Os aplicativos que estea a utilizar aparecen aquí. Pode alternar entre elas "
-"e organizalas como lle pete."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Os aplicativos que estea a utilizar aparecen aquí. Pode alternar entre eles e organizalos como mellor lle conveña."
 
-#~ msgid ""
-#~ "Hello! This is the Zones panel. When you have applications open you will "
-#~ "be able to view, manage and access them here."
-#~ msgstr ""
-#~ "Olá! Este é o panel de Zonas. Cando teña aplicativos abertos poderáas "
-#~ "ver, xestionar e acceder a elas desde aquí."
+#~ msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+#~ msgstr "Olá! Este é o panel de Zonas. Cando teña aplicativos abertos poderáas ver, xestionar e acceder a elas desde aquí."
 
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Efectos de Moblin Netbook"

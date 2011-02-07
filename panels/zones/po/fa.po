@@ -1,0 +1,48 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"PO-Revision-Date: 2010-08-12 02:00+0330\n"
+"Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/meego-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "قاب مناطق"
+
+#: ../data/meego-panel-zones.desktop.in.in.h:2
+#: ../src/main.c:25
+msgid "zones"
+msgstr "مناطق"
+
+#: ../src/main.c:412
+msgid "Zones"
+msgstr "مناطق"
+
+#: ../src/sw-zone.c:92
+msgid "New Zone"
+msgstr "منطقه جدید"
+
+#: ../src/sw-zone.c:98
+#: ../src/sw-zone.c:1039
+#, c-format
+msgid "Zone %d"
+msgstr "منطقه ی %d"
+
+#: ../src/sw-zone.c:845
+msgid "No applications on this zone"
+msgstr "هیچ برنامه ای در این منطقه نیست"
+
+#: ../src/sw-zone.c:1001
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "برنامه هایی که شما استفاده می کنید در اینجا نمایش داده می شوند. شما قادر خواهید بود بین آنها جابه جا شوید و انها را همانگونه که می خواهید مدیریت کنید"
+

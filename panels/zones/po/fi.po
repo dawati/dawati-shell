@@ -1,11 +1,11 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: GLS <tomas.galicia@intel.com>\n"
+"Last-Translator: Anna Bergman <anna.b.bergman@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +18,8 @@ msgstr ""
 msgid "Zones panel"
 msgstr "Vyöhyke-paneeli"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/meego-panel-zones.desktop.in.in.h:2
+#: ../src/main.c:25
 msgid "zones"
 msgstr "vyöhykkeet"
 
@@ -28,223 +29,146 @@ msgstr "Vyöhykkeet"
 
 #: ../src/sw-zone.c:92
 msgid "New Zone"
-msgstr "Uusi vyöhyke."
+msgstr "Uusi vyöhyke"
 
-#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
+#: ../src/sw-zone.c:98
+#: ../src/sw-zone.c:1039
 #, c-format
 msgid "Zone %d"
 msgstr "Vyöhyke %d"
 
 #: ../src/sw-zone.c:845
 msgid "No applications on this zone"
-msgstr "Tällä vyöhykkeellä ei ole sovelluksia"
+msgstr "Tässä vyöhykkeessä ei ole sovelluksia"
 
 #: ../src/sw-zone.c:1001
-msgid ""
-"Applications you’re using will show up here. You will be able to switch and "
-"organize them to your heart's content."
-msgstr ""
-"Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä "
-"miten haluat."
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Käyttämäsi sovellukset näkyvät täällä. Voit vaihtaa ja järjestellä niitä miten haluat."
 
-#~ msgid ""
-#~ "Hello! This is the Zones panel. When you have applications open you will "
-#~ "be able to view, manage and access them here."
-#~ msgstr ""
-#~ "Hei! Tämä on Vyöhykkeet-paneeli. Kun sinulla on sovelluksia avoinna, voi "
-#~ "tarkastella, hallita ja käyttää niitä täältä."
-
+#~ msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+#~ msgstr "Hei! Tämä on Vyöhykkeet-paneeli. Kun sinulla on sovelluksia avoinna, voi tarkastella, hallita ja käyttää niitä täältä."
 #~ msgid "two"
 #~ msgstr "kaksi"
-
 #~ msgid "one"
 #~ msgstr "yksi"
-
 #~ msgid "four"
 #~ msgstr "neljä"
-
 #~ msgid "three"
 #~ msgstr "kolme"
-
 #~ msgid "six"
 #~ msgstr "kuusi"
-
 #~ msgid "five"
 #~ msgstr "viisi"
-
 #~ msgid "eight"
 #~ msgstr "kahdeksan"
-
 #~ msgid "seven"
 #~ msgstr "seitsemän"
-
 #~ msgid "Less than a minute ago"
 #~ msgstr "Alle minuutti sitten"
-
 #~ msgid "A few minutes ago"
 #~ msgstr "Muutama minuutti sitten"
-
 #~ msgid "A couple of hours ago"
 #~ msgstr "Muutama tunti sitten"
-
 #~ msgid "Earlier today"
 #~ msgstr "Tänään aikaisemmin"
-
 #~ msgid "Yesterday"
 #~ msgstr "Eilen"
-
 #~ msgid "On %A"
 #~ msgstr "Päivämääränä %A"
-
 #~ msgid "Unknown"
 #~ msgstr "Tuntematon"
-
 #~ msgid "Last week"
 #~ msgstr "Viime viikolla"
-
 #~ msgid "A couple of weeks ago"
 #~ msgstr "Pari viikkoa sitten"
-
 #~ msgid "This month"
 #~ msgstr "Tässä kuussa"
-
 #~ msgid "Last month"
 #~ msgstr "Viime kuussa"
-
 #~ msgid "This year"
 #~ msgstr "Tänä vuonna"
-
 #~ msgid "Last year"
 #~ msgstr "Viime vuonna"
-
 #~ msgid "Ages ago"
 #~ msgstr "Aataminaikoina"
-
 #~ msgid "Moblin Netbook Effects"
 #~ msgstr "Moblin ultrakannettavan tehosteet"
-
 #~ msgid "Effects for Moblin Netbooks"
 #~ msgstr "Moblin ultrakannettavien tehosteet"
-
 #~ msgid "Dismiss"
 #~ msgstr "Sivuuta"
-
 #~ msgid "Dismiss All"
 #~ msgstr "Sivuuta kaikki"
-
 #~ msgid "%l:%M %P"
 #~ msgstr "%l:%M %P"
-
 #~ msgid "%B %e, %Y"
 #~ msgstr "%B %e, %Y"
-
-#~ msgid ""
-#~ "You need to play some music, look at some pictures or watch some video to "
-#~ "see your history here. In the meantime, you could take a look at some "
-#~ "sample media:"
-#~ msgstr ""
-#~ "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi "
-#~ "historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
-
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Sinun pitää soittaa musiikkia tai katsella kuvia tai videoita nähdäksesi historiaa täällä. Ennen sitä voisit tarkastella muutamia medianäytteitä:"
 #~ msgid "Recently played"
 #~ msgstr "Äskettäin soitetut"
-
 #~ msgid "Search results"
 #~ msgstr "Etsintätulokset"
-
 #~ msgid "Playqueue"
 #~ msgstr "Soittojono"
-
 #~ msgid "Season %u, Episode %u"
 #~ msgstr "Kausi %u, episodi %u"
-
 #~ msgid "Previous"
 #~ msgstr "Edellinen"
-
 #~ msgid "Next"
 #~ msgstr "Seuraava"
-
 #~ msgid "Media"
 #~ msgstr "Media"
-
 #~ msgid "Search"
 #~ msgstr "Etsi"
-
 #~ msgid "Season %d Episode %d"
 #~ msgstr "Kausi %d, episodi %d"
-
 #~ msgid "Episode %d"
 #~ msgstr "Episodi %d"
-
 #~ msgid "Year %d"
 #~ msgstr "Vuosi %d"
-
 #~ msgid "media"
 #~ msgstr "media"
-
 #~ msgid "Favourite Applications"
 #~ msgstr "Suosikkisovellukset"
-
 #~ msgid "Applications"
 #~ msgstr "Sovellukset"
-
 #~ msgid "applications"
 #~ msgstr "sovellukset"
-
-#~ msgid ""
-#~ "As you visit web pages, your favorites will appear here and on the New "
-#~ "tab page in the browser."
-#~ msgstr ""
-#~ "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi "
-#~ "välilehti -sivulla."
-
+#~ msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+#~ msgstr "Kun vierailet verkkosivuilla, suosikkisi näkyvät täällä ja selaimen Uusi välilehti -sivulla."
 #~ msgid "Untitled"
 #~ msgstr "Nimetön"
-
 #~ msgid "New tab"
 #~ msgstr "Uusi välilehti"
-
 #~ msgid "Internet"
 #~ msgstr "Internet"
-
 #~ msgid "Go"
 #~ msgstr "Siirry"
-
 #~ msgid "Tabs"
 #~ msgstr "Välilehdet"
-
 #~ msgid "Favorite pages"
 #~ msgstr "Suosikkisivut"
-
 #~ msgid "internet"
 #~ msgstr "internet"
-
 #~ msgid "Search for %%s on %s"
 #~ msgstr "Etsi '%%s' käyttäen seuraavaa: %s"
-
 #~ msgid "Go to %s"
 #~ msgstr "Siirry osoitteeseen %s"
-
 #~ msgid "Copy"
 #~ msgstr "Kopioi"
-
 #~ msgid "the current selection to pasteboard"
 #~ msgstr "nykyinen valinta liitepöytään"
-
 #~ msgid "your selection"
 #~ msgstr "valintasi"
-
 #~ msgid "Pasteboard"
 #~ msgstr "Liitepöytä"
-
 #~ msgid "You need to copy some text to use Pasteboard"
 #~ msgstr "Kopioi jotain tekstiä, jotta voisit käyttää liitepöytää"
-
 #~ msgid "Clear pasteboard"
 #~ msgstr "Tyhjennä liitepöytä"
-
 #~ msgid "pasteboard"
 #~ msgstr "liitepöytä"
-
 #~ msgid "<b>Appointments</b>"
 #~ msgstr "<b>Tapaamiset</b>"
+

@@ -1,0 +1,196 @@
+# Pavel Fric, 2010.
+# Pavel Fric <fripohled@blogspot.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-11-03 23:52+0000\n"
+"PO-Revision-Date: 2010-11-03 15:40+0100\n"
+"Last-Translator: Pavel Fric <fripohled@blogspot.com>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 1.1\n"
+
+#: ../data/meego-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Panel Zones (oblasti)"
+
+#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+msgid "zones"
+msgstr "Zones (oblasti)"
+
+#: ../src/main.c:412
+msgid "Zones"
+msgstr "Zones (oblasti)"
+
+#: ../src/sw-zone.c:92
+msgid "New Zone"
+msgstr "Nová oblast"
+
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
+#, c-format
+msgid "Zone %d"
+msgstr "Oblast %d"
+
+#: ../src/sw-zone.c:845
+msgid "No applications on this zone"
+msgstr "V této oblasti není žádný program"
+
+#: ../src/sw-zone.c:1001
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Vámi používané programy se objevují zde. Máte možnost přepínat mezi nimi a uspořádat je podle libosti."
+
+#~ msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+#~ msgstr "Hallo! Dies ist das Zonen-Panel. Wenn du Anwendungen geöffnet hast, kannst du hier auf sie zugreifen, sie anzeigen und verwalten."
+
+#~ msgid "two"
+#~ msgstr "zwei"
+
+#~ msgid "one"
+#~ msgstr "eine"
+
+#~ msgid "four"
+#~ msgstr "vier"
+
+#~ msgid "three"
+#~ msgstr "drei"
+
+#~ msgid "six"
+#~ msgstr "sechs"
+
+#~ msgid "five"
+#~ msgstr "fünf"
+
+#~ msgid "eight"
+#~ msgstr "acht"
+
+#~ msgid "seven"
+#~ msgstr "sieben"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Vor weniger als einer Minute"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Vor einigen Minuten"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Vor ein paar Stunden"
+
+#~ msgid "Earlier today"
+#~ msgstr "Heute schon früher"
+
+#~ msgid "Yesterday"
+#~ msgstr "Gestern"
+
+#~ msgid "On %A"
+#~ msgstr "Am %A"
+
+#~ msgid "Unknown"
+#~ msgstr "Unbekannt"
+
+#~ msgid "Last week"
+#~ msgstr "Letzte Woche"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Vor einigen Wochen"
+
+#~ msgid "This month"
+#~ msgstr "Diesen Monat"
+
+#~ msgid "Last month"
+#~ msgstr "Letzten Monat"
+
+#~ msgid "This year"
+#~ msgstr "Dieses Jahr"
+
+#~ msgid "Last year"
+#~ msgstr "Letztes Jahr"
+
+#~ msgid "Ages ago"
+#~ msgstr "Vor einer Ewigkeit"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Moblin-Effekte auf dem Netbook"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Effekte für Netbooks mit Moblin"
+
+#~ msgid "Dismiss"
+#~ msgstr "Ignorieren"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Alle ignorieren"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%H:%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e. %B %Y"
+
+#~ msgid "power & brightness"
+#~ msgstr "Energie und Helligkeit"
+
+#~ msgid "volume"
+#~ msgstr "Lautstärke"
+
+#~ msgid "bluetooth"
+#~ msgstr "Bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "Netzwerke"
+
+#~ msgid "test"
+#~ msgstr "Test"
+
+#~ msgid "You need to play some music, look at some pictures or watch some video to see your history here. In the meantime, you could take a look at some sample media:"
+#~ msgstr "Du musst erst Musik anhören, Bilder anschauen oder Videos ansehen, um deinen Verlauf hier zu sehen. In der Zwischenzeit kannst du dir einige Beispielsdateien ansehen:"
+
+#~ msgid "Recently played"
+#~ msgstr "Vor kurzem abgespielt"
+
+#~ msgid "Search results"
+#~ msgstr "Suchergebnisse"
+
+#~ msgid "Playqueue"
+#~ msgstr "Wiedergabewarteschleife"
+
+#~ msgid "Season %u, Episode %u"
+#~ msgstr "Staffel %u, Folge %u"
+
+#~ msgid "Previous"
+#~ msgstr "Zurück"
+
+#~ msgid "Next"
+#~ msgstr "Weiter"
+
+#~ msgid "Media"
+#~ msgstr "Multimedia"
+
+#~ msgid "Search"
+#~ msgstr "Suchen"
+
+#~ msgid "Season %d Episode %d"
+#~ msgstr "Staffel %d Folge %d"
+
+#~ msgid "Episode %d"
+#~ msgstr "Folge %d"
+
+#~ msgid "Year %d"
+#~ msgstr "Jahr %d"
+
+#~ msgid "media"
+#~ msgstr "Multimedia"
+
+#~ msgid "Favourite Applications"
+#~ msgstr "Lieblingsanwendungen"
+
+#~ msgid "Applications"
+#~ msgstr "Anwendungen"
+
+#~ msgid "applications"
+#~ msgstr "Anwendungen"

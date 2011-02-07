@@ -1,9 +1,10 @@
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2010
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-18 17:36+0100\n"
+"POT-Creation-Date: 2010-11-18 21:56+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
@@ -11,8 +12,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
-"X-Poedit-Language: Chinese\n"
-"X-Poedit-SourceCharset: utf-8\n"
 
 #: ../data/meego-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
