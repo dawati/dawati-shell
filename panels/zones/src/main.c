@@ -328,6 +328,7 @@ window_opened (WnckScreen    *screen,
   gulong xid;
   ClutterActor *thumbnail;
   ClutterActor *thumbnail_background;
+  ClutterActor *icon;
 
   if (!data->overview)
     return;
@@ -369,8 +370,12 @@ window_opened (WnckScreen    *screen,
 
   sw_window_set_thumbnail (win, thumbnail);
   sw_window_set_title (win, wnck_window_get_name (window));
-  sw_window_set_icon (win, (ClutterTexture*)
-                      gtk_clutter_texture_new_from_pixbuf (wnck_window_get_icon (window)));
+
+  icon = gtk_clutter_texture_new ();
+  gtk_clutter_texture_set_from_pixbuf (GTK_CLUTTER_TEXTURE (icon),
+                                       wnck_window_get_icon (window),
+                                       NULL);
+  sw_window_set_icon (win, (ClutterTexture *)icon);
 
   sw_overview_add_window (SW_OVERVIEW (data->overview), win,
                           wnck_workspace_get_number (ws));
