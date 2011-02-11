@@ -21,7 +21,7 @@ m4_define([default_enable_cache],    [no])
 
 AC_PREREQ([2.59])
 
-AC_INIT([mutter-meego], [plugin_version], [http://meego.org])
+AC_INIT([mutter-netbook], [plugin_version], [http://meego.org])
 AC_CONFIG_MACRO_DIR([build/autotools])
 
 AC_CONFIG_SRCDIR(src/meego-netbook.c)
