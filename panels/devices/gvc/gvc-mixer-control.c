@@ -683,6 +683,7 @@ update_sink (GvcMixerControl    *control,
 
         max_volume = pa_cvolume_max (&info->volume);
         gvc_mixer_stream_set_name (stream, info->name);
+        gvc_mixer_stream_set_card_index (stream, info->card);
         gvc_mixer_stream_set_description (stream, info->description);
         gvc_mixer_stream_set_icon_name (stream, "audio-card");
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
@@ -708,7 +709,7 @@ update_sink (GvcMixerControl    *control,
         }
 
         if (map == NULL)
-                map = gvc_mixer_stream_get_channel_map (stream);
+                map = (GvcChannelMap *) gvc_mixer_stream_get_channel_map (stream);
         gvc_channel_map_volume_changed (map, &info->volume, FALSE);
 }
 
@@ -771,6 +772,7 @@ update_source (GvcMixerControl      *control,
         max_volume = pa_cvolume_max (&info->volume);
 
         gvc_mixer_stream_set_name (stream, info->name);
+        gvc_mixer_stream_set_card_index (stream, info->card);
         gvc_mixer_stream_set_description (stream, info->description);
         gvc_mixer_stream_set_icon_name (stream, "audio-input-microphone");
         gvc_mixer_stream_set_volume (stream, (guint)max_volume);
@@ -1076,6 +1078,8 @@ update_card (GvcMixerControl      *control,
                         profile->profile = g_strdup (pi.name);
                         profile->human_profile = g_strdup (pi.description);
                         profile->status = card_num_streams_to_status (pi.n_sinks, pi.n_sources);
+                        profile->n_sinks = pi.n_sinks;
+                        profile->n_sources = pi.n_sources;
                         profile->priority = pi.priority;
                         list = g_list_prepend (list, profile);
                 }

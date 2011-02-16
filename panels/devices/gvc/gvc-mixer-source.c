@@ -48,11 +48,11 @@ G_DEFINE_TYPE (GvcMixerSource, gvc_mixer_source, GVC_TYPE_MIXER_STREAM)
 static gboolean
 gvc_mixer_source_push_volume (GvcMixerStream *stream, gpointer *op)
 {
-        pa_operation      *o;
-        guint              index;
-        GvcChannelMap     *map;
-        pa_context        *context;
-        const pa_cvolume  *cv;
+        pa_operation        *o;
+        guint                index;
+        const GvcChannelMap *map;
+        pa_context          *context;
+        const pa_cvolume    *cv;
 
         index = gvc_mixer_stream_get_index (stream);
 
@@ -133,7 +133,7 @@ gvc_mixer_source_change_port (GvcMixerStream *stream,
 
         return TRUE;
 #else
-	return FALSE;
+        return FALSE;
 #endif /* PA_MICRO > 15 */
 }
 
