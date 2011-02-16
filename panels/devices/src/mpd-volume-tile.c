@@ -367,6 +367,7 @@ mpd_volume_tile_init (MpdVolumeTile *self)
   g_signal_connect (priv->mute_toggle, "notify::toggled",
                     G_CALLBACK (_mute_toggle_notify_cb), self);
   clutter_container_add_actor (CLUTTER_CONTAINER (mute_hbox), priv->mute_toggle);
+  clutter_actor_set_size (priv->mute_toggle, 16, 16);
 
   mute_label = mx_label_new_with_text (_("Mute"));
   clutter_container_add_actor (CLUTTER_CONTAINER (mute_hbox), mute_label);
