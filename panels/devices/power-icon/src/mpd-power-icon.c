@@ -55,7 +55,7 @@ typedef struct
   MxAction            *brightness_down_key;
   NotifyNotification  *shutdown_note;
   int                  last_notification_displayed;
-  unsigned int         shutdown_timeout_id;
+  unsigned int         suspend_timeout_id;
   bool                 in_shutdown;
 } MpdPowerIconPrivate;
 
@@ -85,7 +85,7 @@ static const struct
     NULL },
   { N_("Danger!"),
     N_("Sorry, your computer is about to run out of battery. " \
-       "I'm going to have to turn off now. " \
+       "I'm going to have to go to sleep now. " \
        "Please save your work and hope to see you again soon."),
     NULL },
   { NULL, NULL, NULL }
@@ -130,19 +130,27 @@ shutdown (MpdPowerIcon *self)
   g_object_unref (console);
 }
 
-static void
-_battery_shutdown_timeout_cb (MpdPowerIcon *self)
+static bool
+_battery_suspend_timeout_cb (MpdPowerIcon *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
   MpdBatteryDeviceState  state;
 
-  priv->shutdown_timeout_id = 0;
+  priv->suspend_timeout_id = 0;
 
   state = mpd_battery_device_get_state (priv->battery);
   if (state == MPD_BATTERY_DEVICE_STATE_DISCHARGING)
   {
-    shutdown (self);
+    GError *error = NULL;
+    mpd_idle_manager_suspend (priv->idle_manager, &error);
+    if (error)
+    {
+      g_warning ("%s : %s", G_STRLOC, error->message);
+      g_clear_error (&error);
+    }
   }
+
+  return false;
 }
 
 static void
@@ -249,11 +257,11 @@ update (MpdPowerIcon *self,
                         NOTIFY_URGENCY_CRITICAL);
       priv->last_notification_displayed = NOTIFICATION_5_PERCENT;
 
-      if (0 == priv->shutdown_timeout_id)
+      if (0 == priv->suspend_timeout_id)
       {
-        priv->shutdown_timeout_id = g_timeout_add_seconds (
+        priv->suspend_timeout_id = g_timeout_add_seconds (
                                 60,
-                                (GSourceFunc) _battery_shutdown_timeout_cb,
+                                (GSourceFunc) _battery_suspend_timeout_cb,
                                 self);
       }
     } else if (percentage < 10 &&
@@ -282,10 +290,10 @@ update (MpdPowerIcon *self,
     /* Not discharging, reset so we start over correctly when
      * plugged out again immediately. */
 
-    if (priv->shutdown_timeout_id)
+    if (priv->suspend_timeout_id)
     {
-      g_source_remove (priv->shutdown_timeout_id);
-      priv->shutdown_timeout_id = 0;
+      g_source_remove (priv->suspend_timeout_id);
+      priv->suspend_timeout_id = 0;
     }
 
     priv->last_notification_displayed = NOTIFICATION_NONE;
