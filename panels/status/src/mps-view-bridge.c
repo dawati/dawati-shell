@@ -39,6 +39,8 @@ struct _MpsViewBridgePrivate {
 
   MpsViewBridgeFactoryFunc func;
   gpointer userdata;
+
+  guint refresh_id;
 };
 
 enum
@@ -50,6 +52,9 @@ enum
 
 #define THRESHOLD 5
 #define CARD_HEIGHT 84.0
+#define REFRESH_TIME (600) /* 10 min */
+
+gboolean _view_refresh_items_cb (MpsViewBridge *bridge);
 
 static void
 mps_view_bridge_get_property (GObject *object, guint property_id,
@@ -93,6 +98,12 @@ static void
 mps_view_bridge_dispose (GObject *object)
 {
   MpsViewBridgePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->refresh_id != 0)
+  {
+    g_source_remove (priv->refresh_id);
+    priv->refresh_id = 0;
+  }
 
   if (priv->score)
   {
@@ -143,6 +154,11 @@ mps_view_bridge_init (MpsViewBridge *self)
                                                    g_str_equal,
                                                    g_free,
                                                    (GDestroyNotify)clutter_actor_destroy);
+
+  priv->refresh_id = g_timeout_add_seconds (REFRESH_TIME,
+                                            (GSourceFunc) _view_refresh_items_cb,
+                                            self);
+
 }
 
 MpsViewBridge *
@@ -266,7 +282,7 @@ _view_items_added_cb (SwClientView *view,
 
     alpha = clutter_alpha_new_full (opacity_timeline,
                                     CLUTTER_LINEAR);
-    behave = clutter_behaviour_opacity_new (alpha, 
+    behave = clutter_behaviour_opacity_new (alpha,
                                             0,
                                             255);
     clutter_behaviour_apply (behave, actor);
@@ -346,6 +362,23 @@ _do_next_card_animation (MpsViewBridge *bridge)
                           "completed",
                           (GCallback)_animation_completed_cb,
                           bridge);
+}
+
+gboolean
+_view_refresh_items_cb (MpsViewBridge *bridge)
+{
+  MpsViewBridgePrivate *priv = GET_PRIVATE (bridge);
+  GHashTableIter iter;
+  gpointer key;
+  MpsTweetCard *card;
+
+  g_hash_table_iter_init (&iter, priv->item_uid_to_actor);
+
+  while (g_hash_table_iter_next (&iter, &key, (gpointer *) card)) {
+    mps_tweet_card_refresh (card);
+  }
+
+  return TRUE;
 }
 
 static void

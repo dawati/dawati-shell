@@ -60,6 +60,7 @@ ClutterActor *mps_tweet_card_new (void);
 void mps_tweet_card_set_item (MpsTweetCard *card,
                               SwItem   *item);
 SwItem *mps_tweet_card_get_item (MpsTweetCard *card);
+void mps_tweet_card_refresh (MpsTweetCard *card);
 
 G_END_DECLS
 
