@@ -59,6 +59,8 @@ typedef struct {
 GType penge_people_tile_get_type (void);
 void penge_people_tile_activate (PengePeopleTile *tile,
                                  SwItem          *item);
+void penge_people_tile_refresh (PengePeopleTile *tile);
+
 G_END_DECLS
 
 #endif /* _PENGE_PEOPLE_TILE */

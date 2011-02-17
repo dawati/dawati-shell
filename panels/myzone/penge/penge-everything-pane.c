@@ -45,6 +45,7 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 
 #define TILE_WIDTH 160
 #define TILE_HEIGHT 135
+#define REFRESH_TIME (600) /* 10 minutes */
 
 struct _PengeEverythingPanePrivate {
   SwClient *client;
@@ -63,6 +64,8 @@ struct _PengeEverythingPanePrivate {
   GConfClient *gconf_client;
   gfloat ratio;
   guint ratio_notify_id;
+
+  guint refresh_id;
 };
 
 static void
@@ -89,6 +92,12 @@ static void
 penge_everything_pane_dispose (GObject *object)
 {
   PengeEverythingPanePrivate *priv = GET_PRIVATE (object);
+
+  if (priv->refresh_id != 0)
+  {
+    g_source_remove (priv->refresh_id);
+    priv->refresh_id = 0;
+  }
 
   if (priv->pointer_to_actor)
   {
@@ -552,6 +561,25 @@ _update_idle_cb (gpointer userdata)
   return FALSE;
 }
 
+static gboolean
+_refresh_cb (PengeEverythingPane *pane)
+{
+  PengeEverythingPanePrivate *priv = GET_PRIVATE (pane);
+  gpointer key, value;
+  PengePeopleTile *tile;
+  GHashTableIter iter;
+
+  g_hash_table_iter_init (&iter, priv->pointer_to_actor);
+  while (g_hash_table_iter_next (&iter, &key, &value)) {
+    if (PENGE_IS_PEOPLE_TILE (value)) {
+      tile = (PengePeopleTile *) value;
+      penge_people_tile_refresh (tile);
+    }
+  }
+
+  return TRUE;
+}
+
 static void
 penge_everything_pane_queue_update (PengeEverythingPane *pane)
 {
@@ -819,5 +847,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
   } else {
     gconf_client_notify (priv->gconf_client, MEEGO_MYZONE_RATIO);
   }
+
+  priv->refresh_id = g_timeout_add_seconds (REFRESH_TIME, (GSourceFunc) _refresh_cb, self);
 }
 

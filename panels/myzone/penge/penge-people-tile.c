@@ -180,6 +180,40 @@ _label_url_clicked_cb (PengeClickableLabel *label,
 }
 
 static void
+penge_people_tile_set_text (PengePeopleTile *tile)
+{
+  PengePeopleTilePrivate *priv = GET_PRIVATE (tile);
+  gchar *date;
+
+  if (sw_item_has_key (priv->item, "title"))
+  {
+    if (sw_item_has_key (priv->item, "author"))
+    {
+      g_object_set (tile,
+                    "primary-text", sw_item_get_value (priv->item, "title"),
+                    "secondary-text", sw_item_get_value (priv->item, "author"),
+                    NULL);
+    } else {
+      date = mx_utils_format_time (&(priv->item->date));
+      g_object_set (tile,
+                    "primary-text", sw_item_get_value (priv->item, "title"),
+                    "secondary-text", date,
+                    NULL);
+      g_free (date);
+    }
+  } else if (sw_item_has_key (priv->item, "author")) {
+      date = mx_utils_format_time (&(priv->item->date));
+      g_object_set (tile,
+                    "primary-text", sw_item_get_value (priv->item, "author"),
+                    "secondary-text", date,
+                    NULL);
+      g_free (date);
+  } else {
+    g_assert_not_reached ();
+  }
+}
+
+static void
 penge_people_tile_set_item (PengePeopleTile *tile,
                             SwItem          *item)
 {
@@ -213,7 +247,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     body = g_object_new (PENGE_TYPE_MAGIC_TEXTURE, NULL);
 
     if (clutter_texture_set_from_file (CLUTTER_TEXTURE (body),
-                                       thumbnail, 
+                                       thumbnail,
                                        &error))
     {
       g_object_set (tile,
@@ -315,32 +349,7 @@ penge_people_tile_set_item (PengePeopleTile *tile,
     }
   }
 
-  if (sw_item_has_key (item, "title"))
-  {
-    if (sw_item_has_key (item, "author"))
-    {
-      g_object_set (tile,
-                    "primary-text", sw_item_get_value (item, "title"),
-                    "secondary-text", sw_item_get_value (item, "author"),
-                    NULL);
-    } else {
-      date = mx_utils_format_time (&(item->date));
-      g_object_set (tile,
-                    "primary-text", sw_item_get_value (item, "title"),
-                    "secondary-text", date,
-                    NULL);
-      g_free (date);
-    }
-  } else if (sw_item_has_key (item, "author")) {
-      date = mx_utils_format_time (&(item->date));
-      g_object_set (tile,
-                    "primary-text", sw_item_get_value (item, "author"),
-                    "secondary-text", date,
-                    NULL);
-      g_free (date);
-  } else {
-    g_assert_not_reached ();
-  }
+  penge_people_tile_set_text (tile);
 
   if (!avatar)
   {
@@ -361,4 +370,10 @@ penge_people_tile_set_item (PengePeopleTile *tile,
                   "icon-path", NULL,
                   NULL);
   }
+}
+
+void
+penge_people_tile_refresh (PengePeopleTile *tile)
+{
+  penge_people_tile_set_text (tile);
 }
