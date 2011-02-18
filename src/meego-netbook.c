@@ -667,6 +667,19 @@ meego_netbook_plugin_start (MutterPlugin *plugin)
 
   gconf_client = priv->gconf_client = gconf_client_get_default ();
 
+  /*
+   * Disable the cycle_group bindings; the default for this is Alt+` which
+   * breaks non-English platforms, BMC#11875
+   */
+  gconf_client_set_string (gconf_client,
+                           "/apps/metacity/global_keybindings/cycle_group",
+                           "disabled",
+                           NULL);
+  gconf_client_set_string (gconf_client,
+                       "/apps/metacity/global_keybindings/cycle_group_backward",
+                       "disabled",
+                       NULL);
+
   meego_netbook_handle_screen_size (plugin, &screen_width, &screen_height);
 
   /* tweak with env var as then possible to develop in desktop env. */
