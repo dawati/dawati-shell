@@ -76,6 +76,7 @@
 #define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
 #define KEY_BG_OPTIONS BG_KEY_DIR "/picture_options"
+#define KEY_BG_COLOR BG_KEY_DIR "/primary_color"
 #define THEME_KEY_DIR "/apps/metacity/general"
 #define KEY_THEME THEME_KEY_DIR "/theme"
 #define KEY_BUTTONS THEME_KEY_DIR "/button_layout"
@@ -2628,10 +2629,10 @@ desktop_background_changed_cb (GConfClient *client,
                                GConfEntry  *entry,
                                gpointer     data)
 {
-  MutterPlugin               *plugin = MUTTER_PLUGIN (data);
-  const gchar                *filename = NULL;
-  GConfValue                 *value;
-  const gchar                *key;
+  MutterPlugin *plugin = MUTTER_PLUGIN (data);
+  const gchar  *filename = NULL;
+  GConfValue   *value;
+  const gchar  *key;
 
   if (!entry)
     return;
@@ -2644,10 +2645,25 @@ desktop_background_changed_cb (GConfClient *client,
       if (value)
         filename = gconf_value_get_string (value);
 
-      if (!filename || !*filename)
-        filename = THEMEDIR "/panel/background-tile.png";
+      if (filename && *filename)
+        setup_desktop_background (plugin, filename);
+    }
+  else if (!strcmp (key, KEY_BG_COLOR))
+    {
+      const char *clr_str = NULL;
+      ClutterColor clr;
 
-      setup_desktop_background (plugin, filename);
+      if (value)
+        clr_str = gconf_value_get_string (value);
+
+      if (clr_str && *clr_str &&
+          clutter_color_from_string (&clr, clr_str))
+        {
+          MetaScreen   *screen = mutter_plugin_get_screen (plugin);
+          ClutterActor *stage  = mutter_get_stage_for_screen (screen);
+
+          clutter_stage_set_color (CLUTTER_STAGE (stage), &clr);
+        }
     }
 #if 0
   else if (value && !strcmp (key, KEY_BG_OPTIONS))
@@ -2706,6 +2722,7 @@ desktop_background_init (MutterPlugin *plugin)
    * Read the background via our notify func
    */
   gconf_client_notify (priv->gconf_client, KEY_BG_FILENAME);
+  gconf_client_notify (priv->gconf_client, KEY_BG_COLOR);
 #if 0
   gconf_client_notify (priv->gconf_client, KEY_BG_OPTIONS);
 #endif
