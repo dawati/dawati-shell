@@ -35,6 +35,7 @@
 
 #include <config.h>
 #include <arpa/inet.h>
+#include <stdlib.h>
 #include <glib/gi18n.h>
 #include <mx-gtk/mx-gtk.h>
 #include "nbtk-gtk-expander.h"
@@ -97,6 +98,10 @@ struct _CarrickServiceItemPrivate
   GtkWidget *address_entry;
   GtkWidget *gateway_entry;
   GtkWidget *netmask_entry;
+  GtkWidget *ipv6_method_combo;
+  GtkWidget *ipv6_address_entry;
+  GtkWidget *ipv6_gateway_entry;
+  GtkWidget *ipv6_prefix_length_entry;
   GtkWidget *dns_text_view;
   GtkWidget *apply_button;
   gboolean form_modified;
@@ -122,10 +127,9 @@ struct _CarrickServiceItemPrivate
   gboolean need_pass;
   gchar *passphrase;
   gboolean setup_required;
-  gchar *method;
-  gchar *address;
-  gchar *netmask;
-  gchar *gateway;
+  gchar *method, *address, *netmask, *gateway;
+  gchar *ipv6_method, *ipv6_address, *ipv6_gateway;
+  guint ipv6_prefix_length;
   gchar **nameservers;
   gboolean favorite;
   gboolean immutable;
@@ -145,6 +149,13 @@ enum {
   METHOD_DHCP = 0,
   METHOD_MANUAL = 1,
   METHOD_FIXED = 2,
+};
+
+enum {
+  IPV6_METHOD_OFF = 0,
+  IPV6_METHOD_AUTO = 1,
+  IPV6_METHOD_MANUAL = 2,
+  IPV6_METHOD_FIXED = 3,
 };
 
 typedef enum {
@@ -280,6 +291,8 @@ _populate_variables (CarrickServiceItem *self)
                                gtk_tree_row_reference_get_path (priv->row)))
     {
       char *method, *address, *netmask, *gateway;
+      char *ipv6_method, *ipv6_address, *ipv6_gateway;
+      uint ipv6_prefix_length;
       char **nameservers;
       char *state;
 
@@ -293,6 +306,9 @@ _populate_variables (CarrickServiceItem *self)
       g_free (priv->address);
       g_free (priv->netmask);
       g_free (priv->gateway);
+      g_free (priv->ipv6_method);
+      g_free (priv->ipv6_address);
+      g_free (priv->ipv6_gateway);
       g_strfreev (priv->nameservers);
 
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
@@ -314,6 +330,14 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_CONFIGURED_ADDRESS, &priv->address,
                           CARRICK_COLUMN_CONFIGURED_NETMASK, &priv->netmask,
                           CARRICK_COLUMN_CONFIGURED_GATEWAY, &priv->gateway,
+                          CARRICK_COLUMN_IPV6_METHOD, &ipv6_method,
+                          CARRICK_COLUMN_IPV6_ADDRESS, &ipv6_address,
+                          CARRICK_COLUMN_IPV6_PREFIX_LENGTH, &ipv6_prefix_length,
+                          CARRICK_COLUMN_IPV6_GATEWAY, &ipv6_gateway,
+                          CARRICK_COLUMN_CONFIGURED_IPV6_METHOD, &priv->ipv6_method,
+                          CARRICK_COLUMN_CONFIGURED_IPV6_ADDRESS, &priv->ipv6_address,
+                          CARRICK_COLUMN_CONFIGURED_IPV6_PREFIX_LENGTH, &priv->ipv6_prefix_length,
+                          CARRICK_COLUMN_CONFIGURED_IPV6_GATEWAY, &priv->ipv6_gateway,
                           CARRICK_COLUMN_NAMESERVERS, &nameservers,
                           CARRICK_COLUMN_CONFIGURED_NAMESERVERS, &priv->nameservers,
                           CARRICK_COLUMN_FAVORITE, &priv->favorite,
@@ -342,6 +366,22 @@ _populate_variables (CarrickServiceItem *self)
         g_free (gateway);
       else
         priv->gateway = gateway;
+
+      if (priv->ipv6_method)
+        g_free (ipv6_method);
+      else
+        priv->ipv6_method = ipv6_method;
+      if (priv->ipv6_address)
+        g_free (ipv6_address);
+      else
+        priv->ipv6_address = ipv6_address;
+      if (priv->ipv6_prefix_length == 0)
+        priv->ipv6_prefix_length = ipv6_prefix_length;
+      if (priv->ipv6_gateway)
+        g_free (ipv6_gateway);
+      else
+        priv->ipv6_gateway = ipv6_gateway;
+
       if (priv->nameservers)
         g_free (nameservers);
       else
@@ -372,7 +412,7 @@ static void
 _set_form_state (CarrickServiceItem *self)
 {
   CarrickServiceItemPrivate *priv = self->priv;
-  gchar                     *nameservers = NULL;
+  gchar                     *length, *nameservers = NULL;
   GtkTextBuffer             *buf;
   GtkComboBox               *combo;
 
@@ -414,6 +454,51 @@ _set_form_state (CarrickServiceItem *self)
       g_warning ("Unknown service ipv4 method '%s'", priv->method);
     }
 
+  combo = GTK_COMBO_BOX (priv->ipv6_method_combo);
+
+  /* Same hack for IPv6 */
+  if (g_strcmp0 (priv->ipv6_method, "manual") == 0)
+    {
+      if (gtk_combo_box_get_active (combo) == IPV6_METHOD_FIXED)
+        gtk_combo_box_remove_text (combo, IPV6_METHOD_FIXED);
+
+      gtk_combo_box_set_active (combo, IPV6_METHOD_MANUAL);
+      gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
+    }
+  else if (g_strcmp0 (priv->ipv6_method, "auto") == 0)
+    {
+      if (gtk_combo_box_get_active (combo) == IPV6_METHOD_FIXED)
+        gtk_combo_box_remove_text (combo, IPV6_METHOD_FIXED);
+
+      gtk_combo_box_set_active (combo, IPV6_METHOD_AUTO);
+      gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
+    }
+  else if (g_strcmp0 (priv->ipv6_method, "fixed") == 0)
+    {
+      if (gtk_combo_box_get_active (combo) != IPV6_METHOD_FIXED)
+        {
+           /* TRANSLATORS: This string will be in the "Connect by:"-
+            * combobox just like "DHCP" and "Static IP". Fixed means
+            * that the IP configuration cannot be changed at all,
+            * like in a 3G network */
+          gtk_combo_box_insert_text (combo, IPV6_METHOD_FIXED, _("Fixed IP"));
+        }
+      gtk_combo_box_set_active (combo, IPV6_METHOD_FIXED);
+      gtk_widget_set_sensitive (GTK_WIDGET (combo), FALSE);
+    }
+  else if (g_strcmp0 (priv->ipv6_method, "off") == 0)
+    {
+      if (gtk_combo_box_get_active (combo) == IPV6_METHOD_FIXED)
+        gtk_combo_box_remove_text (combo, IPV6_METHOD_FIXED);
+
+      gtk_combo_box_set_active (combo, IPV6_METHOD_OFF);
+      gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
+    }
+  else if (priv->method)
+    {
+      g_warning ("Unknown service ipv6 method '%s'", priv->method);
+    }
+
   gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
                       priv->address ? priv->address : "");
 
@@ -422,6 +507,19 @@ _set_form_state (CarrickServiceItem *self)
 
   gtk_entry_set_text (GTK_ENTRY (priv->gateway_entry),
                       priv->gateway ? priv->gateway : "");
+
+  gtk_entry_set_text (GTK_ENTRY (priv->ipv6_address_entry),
+                      priv->ipv6_address ? priv->ipv6_address : "");
+  gtk_entry_set_text (GTK_ENTRY (priv->ipv6_gateway_entry),
+                      priv->ipv6_gateway ? priv->ipv6_gateway : "");
+
+  if (priv->ipv6_prefix_length == 0)
+    length = g_strdup ("");
+  else
+    length = g_strdup_printf ("%u", priv->ipv6_prefix_length);
+  gtk_entry_set_text (GTK_ENTRY (priv->ipv6_prefix_length_entry),
+                      length);
+  g_free (length);
 
   buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
   if (priv->nameservers)
@@ -1236,25 +1334,16 @@ carrick_service_item_dispose (GObject *object)
   priv->netmask = NULL;
   g_free (priv->gateway);
   priv->gateway = NULL;
+  g_free (priv->ipv6_method);
+  priv->ipv6_method = NULL;
+  g_free (priv->ipv6_address);
+  priv->ipv6_address = NULL;
+  g_free (priv->ipv6_gateway);
+  priv->ipv6_gateway = NULL;
   g_strfreev (priv->nameservers);
   priv->nameservers = NULL;
 
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
-}
-
-static void
-carrick_service_item_finalize (GObject *object)
-{
-  CarrickServiceItem        *item = CARRICK_SERVICE_ITEM (object);
-  CarrickServiceItemPrivate *priv = item->priv;
-
-  g_free (priv->name);
-  g_free (priv->type);
-  g_free (priv->state);
-  g_free (priv->security);
-  g_free (priv->passphrase);
-
-  G_OBJECT_CLASS (carrick_service_item_parent_class)->finalize (object);
 }
 
 static gboolean
@@ -1305,8 +1394,6 @@ method_combo_changed_cb (GtkComboBox *combobox,
 
   if (!manual)
     {
-      GtkTextBuffer *buf;
-
       /* revert to last received data */
       gtk_entry_set_text (GTK_ENTRY (priv->address_entry),
                           priv->address ? priv->address : "");
@@ -1316,22 +1403,47 @@ method_combo_changed_cb (GtkComboBox *combobox,
 
       gtk_entry_set_text (GTK_ENTRY (priv->gateway_entry),
                           priv->gateway ? priv->gateway : "");
-
-      buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->dns_text_view));
-
-      if (priv->nameservers)
-        {
-          char *nameservers;
-
-          nameservers = g_strjoinv ("\n", priv->nameservers);
-          gtk_text_buffer_set_text (buf, nameservers, -1);
-          g_free (nameservers);
-        }
-      else
-        {
-          gtk_text_buffer_set_text (buf, "", -1);
-        }
     }
+
+  _set_form_modified (CARRICK_SERVICE_ITEM (user_data), TRUE);
+}
+
+static void
+ipv6_method_combo_changed_cb (GtkComboBox *combobox,
+                              gpointer     user_data)
+{
+  CarrickServiceItemPrivate *priv;
+  gboolean manual;
+
+  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
+  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
+
+  manual = (gtk_combo_box_get_active (combobox) == IPV6_METHOD_MANUAL);
+
+  gtk_widget_set_sensitive (priv->ipv6_address_entry, manual);
+  gtk_widget_set_sensitive (priv->ipv6_prefix_length_entry, manual);
+  gtk_widget_set_sensitive (priv->ipv6_gateway_entry, manual);
+
+  if (!manual)
+    {
+      char *length;
+
+      /* revert to last received data */
+      gtk_entry_set_text (GTK_ENTRY (priv->ipv6_address_entry),
+                          priv->ipv6_address ? priv->ipv6_address : "");
+      gtk_entry_set_text (GTK_ENTRY (priv->ipv6_gateway_entry),
+                          priv->ipv6_gateway ? priv->ipv6_gateway : "");
+
+      if (priv->ipv6_prefix_length == 0)
+        length = g_strdup ("");
+      else
+        length = g_strdup_printf ("%u", priv->ipv6_prefix_length);
+      gtk_entry_set_text (GTK_ENTRY (priv->ipv6_prefix_length_entry),
+                          length);
+      g_free (length);
+    }
+
+  /* TODO hide entries if IPV6_METHOD_OFF */
 
   _set_form_modified (CARRICK_SERVICE_ITEM (user_data), TRUE);
 }
@@ -1363,25 +1475,19 @@ set_nameservers_configuration_cb (DBusGProxy *proxy,
 }
 
 static void
-set_ipv4_configuration_cb (DBusGProxy *proxy,
-                           GError     *error,
-                           gpointer    user_data)
+set_configuration_cb (DBusGProxy *proxy,
+                      GError     *error,
+                      gpointer    data)
 
 {
-  g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
-
   if (error)
     {
       /* TODO: errors we should show in UI? */
-
-      g_warning ("Error setting IPv4 configuration: %s",
-                 error->message);
+      g_warning ("Error setting %s: %s",
+                 (const char*)data, error->message);
       g_error_free (error);
       return;
     }
-
-  /* Nothing to do here, set_nameservers_configuration_cb() will
-   * re-connect if needed */
 }
 
 static gboolean
@@ -1448,6 +1554,40 @@ validate_static_ipv4_entries (CarrickServiceItem *item)
                                      GTK_MESSAGE_WARNING);
       gtk_widget_show (priv->info_bar);
       gtk_widget_grab_focus (priv->netmask_entry);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+validate_static_ipv6_entries (CarrickServiceItem *item)
+{
+  CarrickServiceItemPrivate *priv;
+  const char *address;
+
+  priv = item->priv;
+  address = gtk_entry_get_text (GTK_ENTRY (priv->ipv6_address_entry));
+  if (!validate_address (address, CARRICK_INET_V6, FALSE))
+    {
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          _("Sorry, it looks like the IPv6 address is not valid"));
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                     GTK_MESSAGE_WARNING);
+      gtk_widget_show (priv->info_bar);
+      gtk_widget_grab_focus (priv->ipv6_address_entry);
+      return FALSE;
+    }
+
+  address = gtk_entry_get_text (GTK_ENTRY (priv->ipv6_gateway_entry));
+  if (!validate_address (address, CARRICK_INET_V6, TRUE))
+    {
+      gtk_label_set_text (GTK_LABEL (priv->info_label),
+                          _("Sorry, it looks like the IPv6 gateway address is not valid"));
+      gtk_info_bar_set_message_type (GTK_INFO_BAR (priv->info_bar),
+                                     GTK_MESSAGE_WARNING);
+      gtk_widget_show (priv->info_bar);
+      gtk_widget_grab_focus (priv->ipv6_gateway_entry);
       return FALSE;
     }
 
@@ -1585,11 +1725,68 @@ apply_button_clicked_cb (GtkButton *button,
       net_connman_Service_set_property_async (priv->proxy,
                                               "IPv4.Configuration",
                                               value,
-                                              set_ipv4_configuration_cb,
-                                              user_data);  
-
+                                              set_configuration_cb,
+                                              "IPv4.Configuration");
       g_free (value);
       g_hash_table_destroy (ipv4);
+    }
+
+  method = gtk_combo_box_get_active (GTK_COMBO_BOX (priv->ipv6_method_combo));
+  if (method != IPV6_METHOD_FIXED)
+    {
+      GHashTable *dict;
+      char *address, *gateway, *prefix;
+      GValue val = {0};
+
+      /* save ipv6 settings */
+
+      dict = g_hash_table_new (g_str_hash, g_str_equal);
+      switch (method)
+      {
+        case IPV6_METHOD_MANUAL:
+          if (!validate_static_ipv6_entries (item))
+            {
+               g_hash_table_destroy (dict);
+               return;
+            }
+
+          address = (char*)gtk_entry_get_text (GTK_ENTRY (priv->address_entry));
+          gateway = (char*)gtk_entry_get_text (GTK_ENTRY (priv->gateway_entry));
+          prefix = (char*)gtk_entry_get_text (GTK_ENTRY (priv->netmask_entry));
+
+          g_hash_table_insert (dict, "Method", "manual");
+          g_hash_table_insert (dict, "Address", address);
+          g_hash_table_insert (dict, "Gateway", gateway);
+          if (strlen (prefix) > 0)
+            {
+              g_value_init (&val, G_TYPE_UCHAR);
+              g_value_set_uchar (value, (unsigned char)strtoul (prefix, NULL, 10));
+              g_hash_table_insert (dict, "PrefixLength", &value);
+            }
+          break;
+
+        case IPV6_METHOD_AUTO:
+          g_hash_table_insert (dict, "Method", "auto");
+          break;
+        case IPV6_METHOD_OFF:
+          g_hash_table_insert (dict, "Method", "off");
+          break;
+        case IPV6_METHOD_FIXED:
+          ; /* can't happen */
+      }
+
+      value = g_new0 (GValue, 1);
+      g_value_init (value, DBUS_TYPE_G_STRING_STRING_HASHTABLE);
+      g_value_set_boxed (value, dict);
+
+      net_connman_Service_set_property_async (priv->proxy,
+                                              "IPv6.Configuration",
+                                              value,
+                                              set_configuration_cb,
+                                              "IPv6.Configuration");
+
+      g_free (value);
+      g_hash_table_destroy (dict);
     }
 
   /* start updating form again based on connman updates */
@@ -1634,7 +1831,6 @@ carrick_service_item_class_init (CarrickServiceItemClass *klass)
   object_class->get_property = carrick_service_item_get_property;
   object_class->set_property = carrick_service_item_set_property;
   object_class->dispose = carrick_service_item_dispose;
-  object_class->finalize = carrick_service_item_finalize;
 
   widget_class->enter_notify_event = carrick_service_item_enter_notify_event;
   widget_class->leave_notify_event = carrick_service_item_leave_notify_event;
@@ -1999,15 +2195,22 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   /* TRANSLATORS: label in advanced settings (next to combobox 
    * for DHCP/Static IP) */
-  add_label_to_table (GTK_TABLE (table), 0, _("Connect by:"));
+  add_label_to_table (GTK_TABLE (table), 0, _("Connect to IPv4:"));
   /* TRANSLATORS: label in advanced settings */
   add_label_to_table (GTK_TABLE (table), 1, _("IP address:"));
   /* TRANSLATORS: label in advanced settings */
   add_label_to_table (GTK_TABLE (table), 2, _("Subnet mask:"));
   /* TRANSLATORS: label in advanced settings */
   add_label_to_table (GTK_TABLE (table), 3, _("Router:"));
+  /* TRANSLATORS: label in advanced settings (next to combobox
+   * for automatic/manual IPv6 method ) */
+  add_label_to_table (GTK_TABLE (table), 4, _("Connect to IPv6:"));
   /* TRANSLATORS: label in advanced settings */
-  add_label_to_table (GTK_TABLE (table), 4, _("DNS:"));
+  add_label_to_table (GTK_TABLE (table), 5, _("Router:"));
+  /* TRANSLATORS: label in advanced settings */
+  add_label_to_table (GTK_TABLE (table), 6, _("Prefix length:"));
+  /* TRANSLATORS: label in advanced settings */
+  add_label_to_table (GTK_TABLE (table), 7, _("DNS:"));
 
   priv->method_combo = gtk_combo_box_new_text ();  
   /* NOTE: order/index of items in combobox is significant */
@@ -2036,6 +2239,37 @@ carrick_service_item_init (CarrickServiceItem *self)
   g_signal_connect (priv->gateway_entry, "notify::text",
                     G_CALLBACK (static_ip_entry_notify_text), self);
 
+
+  priv->ipv6_method_combo = gtk_combo_box_new_text ();
+  /* NOTE: order/index of items in combobox is significant */
+  /* TRANSLATORS: choices in the IPv6 connection method combobox:
+   * Will include "Off", "Automatic", "Static IP" and sometimes "Fixed IP",
+   * and possibly in future "DHCP" */
+  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->ipv6_method_combo),
+                             IPV6_METHOD_OFF, _("Off"));
+  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->ipv6_method_combo),
+                             IPV6_METHOD_AUTO, _("Automatic"));
+  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->ipv6_method_combo),
+                             IPV6_METHOD_MANUAL, _("Static IP"));
+
+  gtk_widget_show (priv->ipv6_method_combo);
+  gtk_table_attach (GTK_TABLE (table), priv->ipv6_method_combo,
+                    1, 2, 4, 5,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+  g_signal_connect (priv->ipv6_method_combo, "changed",
+                    G_CALLBACK (ipv6_method_combo_changed_cb), self);
+
+  priv->ipv6_address_entry = add_entry_to_table (GTK_TABLE (table), 5);
+  g_signal_connect (priv->ipv6_address_entry, "notify::text",
+                    G_CALLBACK (static_ip_entry_notify_text), self);
+  priv->ipv6_prefix_length_entry = add_entry_to_table (GTK_TABLE (table), 6);
+  g_signal_connect (priv->ipv6_prefix_length_entry, "notify::text",
+                    G_CALLBACK (static_ip_entry_notify_text), self);
+  priv->ipv6_gateway_entry = add_entry_to_table (GTK_TABLE (table), 7);
+  g_signal_connect (priv->ipv6_gateway_entry, "notify::text",
+                    G_CALLBACK (static_ip_entry_notify_text), self);
+
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolled_window);
   gtk_widget_set_size_request (scrolled_window, 230, 60);
@@ -2044,7 +2278,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
                                        GTK_SHADOW_IN);
   gtk_table_attach (GTK_TABLE (table), scrolled_window,
-                    1, 2, 4, 5,
+                    1, 2, 8, 9,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
 
@@ -2063,7 +2297,7 @@ carrick_service_item_init (CarrickServiceItem *self)
   align = gtk_alignment_new (1.0, 0.0, 0.0, 0.0);
   gtk_widget_show (align);
   gtk_table_attach (GTK_TABLE (table), align,
-                    1, 2, 6, 7,
+                    1, 2, 9, 10,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
   /* TRANSLATORS: label for apply button in static ip settings */
