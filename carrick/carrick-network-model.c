@@ -118,6 +118,14 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                  G_TYPE_STRING, /* manually configured address */
                                  G_TYPE_STRING, /* manually configured netmask */
                                  G_TYPE_STRING, /* manually configured gateway */
+                                 G_TYPE_STRING, /* ipv6 method */
+                                 G_TYPE_STRING, /* ipv6 address */
+                                 G_TYPE_UINT, /* ipv6 prefix length */
+                                 G_TYPE_STRING, /* ipv6 gateway */
+                                 G_TYPE_STRING, /* manually configured ipv6 method */
+                                 G_TYPE_STRING, /* manually configured ipv6 address */
+                                 G_TYPE_UINT, /* manually configured ipv6 prefix length */
+                                 G_TYPE_STRING, /* manually configured ipv6 gateway */
                                  G_TYPE_STRV, /* name servers */
                                  G_TYPE_STRV, /* manually configured name servers */
                                  G_TYPE_BOOLEAN, /* immutable */
@@ -271,6 +279,18 @@ get_boolean (GHashTable *properties, const char *prop_name)
     return FALSE;
 }
 
+static guint
+get_uint (GHashTable *properties, const char *prop_name)
+{
+  const GValue *value;
+
+  value = g_hash_table_lookup (properties, prop_name);
+  if (value)
+    return g_value_get_uchar (value);
+  else
+    return 0;
+}
+
 static gpointer
 get_boxed (GHashTable *properties, const char *prop_name)
 {
@@ -291,31 +311,22 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 {
   CarrickNetworkModel *self = user_data;
   GtkListStore        *store = GTK_LIST_STORE (self);
-  GHashTable          *ipv4 = NULL;
-  GHashTable          *ipv4_config = NULL;
-  guint                strength = 0;
-  const gchar         *name = NULL;
-  const gchar         *state = NULL;
-  const gchar         *security = NULL;
-  const gchar        **securities = NULL;
-  const gchar         *type = NULL;
-  gboolean             favorite = FALSE;
-  gboolean             passphrase_required = FALSE;
-  gboolean             setup_required = FALSE;
-  const gchar         *method = NULL;
-  const gchar         *address = NULL;
-  const gchar         *netmask = NULL;
-  const gchar         *gateway = NULL;
-  const gchar         *config_method = NULL;
-  const gchar         *config_address = NULL;
-  const gchar         *config_netmask = NULL;
-  const gchar         *config_gateway = NULL;
-  const gchar        **nameservers = NULL;
-  const gchar        **config_nameservers = NULL;
-  const gchar         *passphrase = NULL;
-  gboolean             immutable = FALSE;
-  gboolean             login_required = FALSE;
-  GValue              *value;
+  GHashTable          *dict;
+  guint                strength;
+  const gchar         *name, *type, *state, *security, *passphrase;
+  gboolean             favorite, passphrase_required, setup_required,
+                       immutable, login_required;
+
+  const gchar         *method, *address, *netmask, *gateway;
+  const gchar         *config_method, *config_address,
+                      *config_netmask, *config_gateway;
+
+  const gchar         *ipv6_method, *ipv6_address, *ipv6_gateway;
+  const gchar         *config_ipv6_method, *config_ipv6_address,
+                      *config_ipv6_gateway;
+  guint                ipv6_prefix_length, config_ipv6_prefix_length;
+
+  const gchar        **nameservers, **config_nameservers, **securities;
   GtkTreeIter          iter;
 
   if (error)
@@ -336,15 +347,13 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
       config_nameservers = get_boxed (properties, "Nameservers.Configuration");
       immutable = get_boolean (properties, "Immutable");
       login_required = get_boolean (properties, "LoginRequired");
+      strength = get_uint (properties, "Strength");
 
       name = get_string (properties, "Name");
       if (!name)
         name = "";
 
-      value = g_hash_table_lookup (properties, "Strength");
-      if (value)
-        strength = g_value_get_uchar (value);
-
+      security = NULL;
       securities = get_boxed (properties, "Security");
       if (securities)
         {
@@ -364,22 +373,46 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 	    }
         }
 
-      ipv4 = get_boxed (properties, "IPv4");
-      if (ipv4)
+      method = address = netmask = gateway = NULL;
+      dict = get_boxed (properties, "IPv4");
+      if (dict)
         {
-          method = get_string (ipv4, "Method");
-          address = get_string (ipv4, "Address");
-          netmask = get_string (ipv4, "Netmask");
-          gateway = get_string (ipv4, "Gateway");
+          method = get_string (dict, "Method");
+          address = get_string (dict, "Address");
+          netmask = get_string (dict, "Netmask");
+          gateway = get_string (dict, "Gateway");
         }
 
-      ipv4_config = get_boxed (properties, "IPv4.Configuration");
-      if (ipv4_config)
+      config_method = config_address = config_netmask = config_gateway = NULL;
+      dict = get_boxed (properties, "IPv4.Configuration");
+      if (dict)
         {
-          config_method = get_string (ipv4_config, "Method");
-          config_address = get_string (ipv4_config, "Address");
-          config_netmask = get_string (ipv4_config, "Netmask");
-          config_gateway = get_string (ipv4_config, "Gateway");
+          config_method = get_string (dict, "Method");
+          config_address = get_string (dict, "Address");
+          config_netmask = get_string (dict, "Netmask");
+          config_gateway = get_string (dict, "Gateway");
+        }
+
+      ipv6_method = ipv6_address = ipv6_gateway = NULL;
+      ipv6_prefix_length = 0;
+      dict = get_boxed (properties, "IPv6");
+      if (dict)
+        {
+          ipv6_method = get_string (dict, "Method");
+          ipv6_address = get_string (dict, "Address");
+          ipv6_prefix_length = get_uint (dict, "PrefixLength");
+          ipv6_gateway = get_string (dict, "Gateway");
+        }
+
+      config_ipv6_method = config_ipv6_address = config_ipv6_gateway = NULL;
+      config_ipv6_prefix_length = 0;
+      dict = get_boxed (properties, "IPv6.Configuration");
+      if (dict)
+        {
+          config_ipv6_method = get_string (dict, "Method");
+          config_ipv6_address = get_string (dict, "Address");
+          config_ipv6_prefix_length = get_uint (dict, "PrefixLength");
+          config_ipv6_gateway = get_string (dict, "Gateway");
         }
 
       if (network_model_have_service_by_proxy (store,
@@ -404,6 +437,14 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
                               CARRICK_COLUMN_CONFIGURED_ADDRESS, config_address,
                               CARRICK_COLUMN_CONFIGURED_NETMASK, config_netmask,
                               CARRICK_COLUMN_CONFIGURED_GATEWAY, config_gateway,
+                              CARRICK_COLUMN_IPV6_METHOD, ipv6_method,
+                              CARRICK_COLUMN_IPV6_ADDRESS, ipv6_address,
+                              CARRICK_COLUMN_IPV6_PREFIX_LENGTH, ipv6_prefix_length,
+                              CARRICK_COLUMN_IPV6_GATEWAY, ipv6_gateway,
+                              CARRICK_COLUMN_CONFIGURED_IPV6_METHOD, config_ipv6_method,
+                              CARRICK_COLUMN_CONFIGURED_IPV6_ADDRESS, config_ipv6_address,
+                              CARRICK_COLUMN_CONFIGURED_IPV6_PREFIX_LENGTH, config_ipv6_prefix_length,
+                              CARRICK_COLUMN_CONFIGURED_IPV6_GATEWAY, config_ipv6_gateway,
                               CARRICK_COLUMN_NAMESERVERS, nameservers,
                               CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
                               CARRICK_COLUMN_IMMUTABLE, immutable,
@@ -432,6 +473,14 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
              CARRICK_COLUMN_CONFIGURED_ADDRESS, config_address,
              CARRICK_COLUMN_CONFIGURED_NETMASK, config_netmask,
              CARRICK_COLUMN_CONFIGURED_GATEWAY, config_gateway,
+             CARRICK_COLUMN_IPV6_METHOD, ipv6_method,
+             CARRICK_COLUMN_IPV6_ADDRESS, ipv6_address,
+             CARRICK_COLUMN_IPV6_PREFIX_LENGTH, ipv6_prefix_length,
+             CARRICK_COLUMN_IPV6_GATEWAY, ipv6_gateway,
+             CARRICK_COLUMN_CONFIGURED_IPV6_METHOD, config_ipv6_method,
+             CARRICK_COLUMN_CONFIGURED_IPV6_ADDRESS, config_ipv6_address,
+             CARRICK_COLUMN_CONFIGURED_IPV6_PREFIX_LENGTH, config_ipv6_prefix_length,
+             CARRICK_COLUMN_CONFIGURED_IPV6_GATEWAY, config_ipv6_gateway,
              CARRICK_COLUMN_NAMESERVERS, nameservers,
              CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
              CARRICK_COLUMN_IMMUTABLE, immutable,
@@ -463,6 +512,7 @@ network_model_service_changed_cb (DBusGProxy  *service,
   CarrickNetworkModel *self = user_data;
   GtkListStore        *store = GTK_LIST_STORE (self);
   GtkTreeIter          iter;
+  GHashTable          *dict;
 
   if (property == NULL || value == NULL)
     return;
@@ -527,108 +577,80 @@ network_model_service_changed_cb (DBusGProxy  *service,
     }
   else if (g_str_equal (property, "IPv4"))
     {
-      GHashTable *ipv4;
-
-      ipv4 = g_value_get_boxed (value);
-      if (ipv4)
+      dict = g_value_get_boxed (value);
+      if (dict)
         {
-          GValue *ipv4_val;
+          const char *method, *address, *netmask, *gateway;
 
-          ipv4_val = g_hash_table_lookup (ipv4, "Method");
-          if (ipv4_val)
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_METHOD,
-                                g_value_get_string (ipv4_val),
-                                -1);
-
-          ipv4_val = g_hash_table_lookup (ipv4, "Address");
-          if (ipv4_val)
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_ADDRESS,
-                                g_value_get_string (ipv4_val),
-                                -1);
-          else
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_ADDRESS,
-                                NULL,
-                                -1);
-
-          ipv4_val = g_hash_table_lookup (ipv4, "Netmask");
-          if (ipv4_val)
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_NETMASK,
-                                g_value_get_string (ipv4_val),
-                                -1);
-          else
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_NETMASK,
-                                NULL,
-                                -1);
-
-          ipv4_val = g_hash_table_lookup (ipv4, "Gateway");
-          if (ipv4_val)
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_GATEWAY,
-                                g_value_get_string (ipv4_val),
-                                -1);
-          else
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_GATEWAY,
-                                NULL,
-                                -1);
+          method = get_string (dict, "Method");
+          address = get_string (dict, "Address");
+          netmask = get_string (dict, "Netmask");
+          gateway = get_string (dict, "Gateway");
+          gtk_list_store_set (store, &iter,
+                              CARRICK_COLUMN_METHOD, method,
+                              CARRICK_COLUMN_ADDRESS, address,
+                              CARRICK_COLUMN_NETMASK, netmask,
+                              CARRICK_COLUMN_GATEWAY, gateway,
+                              -1);
         }
     }
   else if (g_str_equal (property, "IPv4.Configuration"))
     {
-      GHashTable *ipv4;
-
-      ipv4 = g_value_get_boxed (value);
-      if (ipv4)
+      dict = g_value_get_boxed (value);
+      if (dict)
         {
-          GValue *ipv4_val;
+          const char *method, *address, *netmask, *gateway;
 
-          ipv4_val = g_hash_table_lookup (ipv4, "Method");
-          if (ipv4_val)
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_CONFIGURED_METHOD,
-                                g_value_get_string (ipv4_val),
-                                -1);
+          method = get_string (dict, "Method");
+          address = get_string (dict, "Address");
+          netmask = get_string (dict, "Netmask");
+          gateway = get_string (dict, "Gateway");
+          gtk_list_store_set (store, &iter,
+                              CARRICK_COLUMN_CONFIGURED_METHOD, method,
+                              CARRICK_COLUMN_CONFIGURED_ADDRESS, address,
+                              CARRICK_COLUMN_CONFIGURED_NETMASK, netmask,
+                              CARRICK_COLUMN_CONFIGURED_GATEWAY, gateway,
+                              -1);
+        }
+    }
+  else if (g_str_equal (property, "IPv6"))
+    {
+      dict = g_value_get_boxed (value);
+      if (dict)
+        {
+          const char *method, *address, *gateway;
+          guint prefix;
 
-          ipv4_val = g_hash_table_lookup (ipv4, "Address");
-          if (ipv4_val)
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_CONFIGURED_ADDRESS,
-                                g_value_get_string (ipv4_val),
-                                -1);
-          else
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_CONFIGURED_ADDRESS,
-                                NULL,
-                                -1);
+          method = get_string (dict, "Method");
+          address = get_string (dict, "Address");
+          prefix = get_uint (dict, "PrefixLength");
+          gateway = get_string (dict, "Gateway");
+          gtk_list_store_set (store, &iter,
+                              CARRICK_COLUMN_IPV6_METHOD, method,
+                              CARRICK_COLUMN_IPV6_ADDRESS, address,
+                              CARRICK_COLUMN_IPV6_PREFIX_LENGTH, prefix,
+                              CARRICK_COLUMN_IPV6_GATEWAY, gateway,
+                              -1);
+        }
+    }
+  else if (g_str_equal (property, "IPv6.Configuration"))
+    {
+      dict = g_value_get_boxed (value);
+      if (dict)
+        {
+          const char *method, *address, *gateway;
+          guint prefix;
 
-          ipv4_val = g_hash_table_lookup (ipv4, "Netmask");
-          if (ipv4_val)
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_CONFIGURED_NETMASK,
-                                g_value_get_string (ipv4_val),
-                                -1);
-          else
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_CONFIGURED_NETMASK,
-                                NULL,
-                                -1);
-
-          ipv4_val = g_hash_table_lookup (ipv4, "Gateway");
-          if (ipv4_val)
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_CONFIGURED_GATEWAY,
-                                g_value_get_string (ipv4_val),
-                                -1);
-          else
-            gtk_list_store_set (store, &iter,
-                                CARRICK_COLUMN_CONFIGURED_GATEWAY,
-                                NULL,
-                                -1);
+          method = get_string (dict, "Method");
+          address = get_string (dict, "Address");
+          prefix = get_uint (dict, "PrefixLength");
+          gateway = get_string (dict, "Gateway");
+          gtk_list_store_set (store, &iter,
+                              CARRICK_COLUMN_CONFIGURED_IPV6_METHOD, method,
+                              CARRICK_COLUMN_CONFIGURED_IPV6_ADDRESS, address,
+                              CARRICK_COLUMN_CONFIGURED_IPV6_PREFIX_LENGTH, prefix,
+                              CARRICK_COLUMN_CONFIGURED_IPV6_GATEWAY, gateway,
+                              -1);
         }
     }
   else if (g_str_equal (property, "Nameservers"))
