@@ -247,6 +247,42 @@ network_model_have_service_by_proxy (GtkListStore *store,
   return network_model_have_service_by_path (store, iter, path);
 }
 
+static const char*
+get_string (GHashTable *properties, const char *prop_name)
+{
+  GValue *value;
+
+  value = g_hash_table_lookup (properties, prop_name);
+  if (value)
+    return g_value_get_string (value);
+  else
+    return NULL;
+}
+
+static gboolean
+get_boolean (GHashTable *properties, const char *prop_name)
+{
+  const GValue *value;
+
+  value = g_hash_table_lookup (properties, prop_name);
+  if (value)
+    return g_value_get_boolean (value);
+  else
+    return FALSE;
+}
+
+static gpointer
+get_boxed (GHashTable *properties, const char *prop_name)
+{
+  GValue *value;
+
+  value = g_hash_table_lookup (properties, prop_name);
+  if (value)
+    return g_value_get_boxed (value);
+  else
+    return NULL;
+}
+
 static void
 network_model_service_get_properties_cb (DBusGProxy     *service,
                                          GHashTable     *properties,
@@ -290,29 +326,28 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
     }
   else
     {
-      value = g_hash_table_lookup (properties, "Name");
-      if (value)
-        name = g_value_get_string (value);
-      else
-        name = g_strdup ("");
+      type = get_string (properties, "Type");
+      state = get_string (properties, "State");
+      favorite = get_boolean (properties, "Favorite");
+      passphrase_required = get_boolean (properties, "PassphraseRequired");
+      passphrase = get_string (properties, "Passphrase");
+      setup_required = get_boolean (properties, "SetupRequired");
+      nameservers = get_boxed (properties, "Nameservers");
+      config_nameservers = get_boxed (properties, "Nameservers.Configuration");
+      immutable = get_boolean (properties, "Immutable");
+      login_required = get_boolean (properties, "LoginRequired");
 
-      value = g_hash_table_lookup (properties, "Type");
-      type = g_value_get_string (value);
-
-      value = g_hash_table_lookup (properties, "State");
-      state = g_value_get_string (value);
-
-      value = g_hash_table_lookup (properties, "Favorite");
-      favorite = g_value_get_boolean (value);
+      name = get_string (properties, "Name");
+      if (!name)
+        name = "";
 
       value = g_hash_table_lookup (properties, "Strength");
       if (value)
         strength = g_value_get_uchar (value);
 
-      value = g_hash_table_lookup (properties, "Security");
-      if (value)
+      securities = get_boxed (properties, "Security");
+      if (securities)
         {
-          securities = g_value_get_boxed (value);
           security = securities[0];
 
           while (security)
@@ -329,79 +364,23 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
 	    }
         }
 
-      value = g_hash_table_lookup (properties, "PassphraseRequired");
-      if (value)
-        passphrase_required = g_value_get_boolean (value);
-
-      value = g_hash_table_lookup (properties, "Passphrase");
-      if (value)
-        passphrase = g_value_get_string (value);
-
-      value = g_hash_table_lookup (properties, "SetupRequired");
-      if (value)
-        setup_required = g_value_get_boolean (value);
-
-      value = g_hash_table_lookup (properties, "IPv4");
-      if (value)
-        ipv4 = g_value_get_boxed (value);
-
+      ipv4 = get_boxed (properties, "IPv4");
       if (ipv4)
         {
-          value = g_hash_table_lookup (ipv4, "Method");
-          if (value)
-            method = g_value_get_string (value);
-
-          value = g_hash_table_lookup (ipv4, "Address");
-          if (value)
-            address = g_value_get_string (value);
-
-          value = g_hash_table_lookup (ipv4, "Netmask");
-          if (value)
-            netmask = g_value_get_string (value);
-
-          value = g_hash_table_lookup (ipv4, "Gateway");
-          if (value)
-            gateway = g_value_get_string (value);
+          method = get_string (ipv4, "Method");
+          address = get_string (ipv4, "Address");
+          netmask = get_string (ipv4, "Netmask");
+          gateway = get_string (ipv4, "Gateway");
         }
 
-      value = g_hash_table_lookup (properties, "IPv4.Configuration");
-      if (value)
-        ipv4_config = g_value_get_boxed (value);
-
+      ipv4_config = get_boxed (properties, "IPv4.Configuration");
       if (ipv4_config)
         {
-          value = g_hash_table_lookup (ipv4_config, "Method");
-          if (value)
-            config_method = g_value_get_string (value);
-
-          value = g_hash_table_lookup (ipv4_config, "Address");
-          if (value)
-            config_address = g_value_get_string (value);
-
-          value = g_hash_table_lookup (ipv4_config, "Netmask");
-          if (value)
-            config_netmask = g_value_get_string (value);
-
-          value = g_hash_table_lookup (ipv4_config, "Gateway");
-          if (value)
-            config_gateway = g_value_get_string (value);
+          config_method = get_string (ipv4_config, "Method");
+          config_address = get_string (ipv4_config, "Address");
+          config_netmask = get_string (ipv4_config, "Netmask");
+          config_gateway = get_string (ipv4_config, "Gateway");
         }
-
-      value = g_hash_table_lookup (properties, "Nameservers");
-      if (value)
-        nameservers = g_value_get_boxed (value);
-
-      value = g_hash_table_lookup (properties, "Nameservers.Configuration");
-      if (value)
-        config_nameservers = g_value_get_boxed (value);
-
-      value = g_hash_table_lookup (properties, "Immutable");
-      if (value)
-        immutable = g_value_get_boolean (value);
-
-      value = g_hash_table_lookup (properties, "LoginRequired");
-      if (value)
-        login_required = g_value_get_boolean (value);
 
       if (network_model_have_service_by_proxy (store,
                                                &iter,
