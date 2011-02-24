@@ -387,10 +387,13 @@ _populate_variables (CarrickServiceItem *self)
       else
         priv->ipv6_gateway = ipv6_gateway;
 
-      if (priv->nameservers)
-        g_free (nameservers);
+      if (priv->nameservers && g_strv_length (priv->nameservers) > 0)
+        g_strfreev (nameservers);
       else
-        priv->nameservers = nameservers;
+        {
+          g_strfreev (priv->nameservers);
+          priv->nameservers = nameservers;
+        }
 
       /* TODO: it would make sense to expand this to cover lot of other 
        * state transitions so populate_variables() did not have to do so 
