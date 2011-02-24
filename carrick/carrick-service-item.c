@@ -2291,7 +2291,7 @@ carrick_service_item_init (CarrickServiceItem *self)
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolled_window);
-  gtk_widget_set_size_request (scrolled_window, 230, 60);
+  gtk_widget_set_size_request (scrolled_window, 230, 39);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
