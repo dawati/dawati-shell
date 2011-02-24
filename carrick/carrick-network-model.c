@@ -130,6 +130,7 @@ carrick_network_model_init (CarrickNetworkModel *self)
                                  G_TYPE_STRV, /* manually configured name servers */
                                  G_TYPE_BOOLEAN, /* immutable */
                                  G_TYPE_BOOLEAN, /* login_required */
+                                 G_TYPE_STRING, /* ethernet mac address */
   };
 
   gtk_list_store_set_column_types (GTK_LIST_STORE (self),
@@ -327,6 +328,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
   guint                ipv6_prefix_length, config_ipv6_prefix_length;
 
   const gchar        **nameservers, **config_nameservers, **securities;
+  const char          *mac_address;
   GtkTreeIter          iter;
 
   if (error)
@@ -415,6 +417,11 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
           config_ipv6_gateway = get_string (dict, "Gateway");
         }
 
+      mac_address = NULL;
+      dict = get_boxed (properties, "Ethernet");
+      if (dict)
+        mac_address = get_string (dict, "Address");
+
       if (network_model_have_service_by_proxy (store,
                                                &iter,
                                                service))
@@ -449,6 +456,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
                               CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
                               CARRICK_COLUMN_IMMUTABLE, immutable,
                               CARRICK_COLUMN_LOGIN_REQUIRED, login_required,
+                              CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, mac_address,
                               -1);
         }
       else
@@ -485,6 +493,7 @@ network_model_service_get_properties_cb (DBusGProxy     *service,
              CARRICK_COLUMN_CONFIGURED_NAMESERVERS, config_nameservers,
              CARRICK_COLUMN_IMMUTABLE, immutable,
              CARRICK_COLUMN_LOGIN_REQUIRED, login_required,
+             CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, mac_address,
              -1);
         }
     }
@@ -678,6 +687,18 @@ network_model_service_changed_cb (DBusGProxy  *service,
       gtk_list_store_set (store, &iter,
                           CARRICK_COLUMN_LOGIN_REQUIRED, g_value_get_boolean (value),
                           -1);
+    }
+  else if (g_str_equal (property, "Ethernet"))
+    {
+      dict = g_value_get_boxed (value);
+      if (dict)
+        {
+          const char *mac_address;
+          mac_address = get_string (dict, "Address");
+          gtk_list_store_set (store, &iter,
+                              CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, mac_address,
+                              -1);
+        }
     }
 }
 

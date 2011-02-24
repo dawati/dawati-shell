@@ -103,6 +103,8 @@ struct _CarrickServiceItemPrivate
   GtkWidget *ipv6_gateway_entry;
   GtkWidget *ipv6_prefix_length_entry;
   GtkWidget *dns_text_view;
+  GtkWidget *mac_address_title_label;
+  GtkWidget *mac_address_label;
   GtkWidget *apply_button;
   gboolean form_modified;
 
@@ -134,6 +136,7 @@ struct _CarrickServiceItemPrivate
   gboolean favorite;
   gboolean immutable;
   gboolean login_required;
+  gchar *mac_address;
 
   GtkWidget *info_bar;
   GtkWidget *info_label;
@@ -310,6 +313,7 @@ _populate_variables (CarrickServiceItem *self)
       g_free (priv->ipv6_address);
       g_free (priv->ipv6_gateway);
       g_strfreev (priv->nameservers);
+      g_free (priv->mac_address);
 
       gtk_tree_model_get (GTK_TREE_MODEL (priv->model), &iter,
                           CARRICK_COLUMN_PROXY, &priv->proxy,
@@ -343,6 +347,7 @@ _populate_variables (CarrickServiceItem *self)
                           CARRICK_COLUMN_FAVORITE, &priv->favorite,
                           CARRICK_COLUMN_IMMUTABLE, &priv->immutable,
                           CARRICK_COLUMN_LOGIN_REQUIRED, &priv->login_required,
+                          CARRICK_COLUMN_ETHERNET_MAC_ADDRESS, &priv->mac_address,
                           -1);
 
       /* use normal values only if manually configured values are not available:
@@ -532,6 +537,19 @@ _set_form_state (CarrickServiceItem *self)
     {
       gtk_text_buffer_set_text (buf, "", -1);
     }
+
+   if (priv->mac_address && strlen (priv->mac_address) > 0)
+     {
+       gtk_label_set_text (GTK_LABEL (priv->mac_address_label),
+                           priv->mac_address);
+       gtk_widget_show (priv->mac_address_label);
+       gtk_widget_show (priv->mac_address_title_label);
+     }
+   else
+     {
+       gtk_widget_hide (priv->mac_address_label);
+       gtk_widget_hide (priv->mac_address_title_label);
+     }
 
   /* need to initialize this after setting the widgets, as their signal
    * handlers set form_modified to TRUE */
@@ -1342,6 +1360,8 @@ carrick_service_item_dispose (GObject *object)
   priv->ipv6_gateway = NULL;
   g_strfreev (priv->nameservers);
   priv->nameservers = NULL;
+  g_free (priv->mac_address);
+  priv->mac_address = NULL;
 
   G_OBJECT_CLASS (carrick_service_item_parent_class)->dispose (object);
 }
@@ -2193,26 +2213,22 @@ carrick_service_item_init (CarrickServiceItem *self)
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
   gtk_container_add (GTK_CONTAINER (align), table);
 
-  /* TRANSLATORS: label in advanced settings (next to combobox 
-   * for DHCP/Static IP) */
+  /* TRANSLATORS: labels in advanced settings (next to combobox
+   * for DHCP/Static IP and down from there) */
   add_label_to_table (GTK_TABLE (table), 0, _("Connect to IPv4:"));
-  /* TRANSLATORS: label in advanced settings */
   add_label_to_table (GTK_TABLE (table), 1, _("IP address:"));
-  /* TRANSLATORS: label in advanced settings */
   add_label_to_table (GTK_TABLE (table), 2, _("Subnet mask:"));
-  /* TRANSLATORS: label in advanced settings */
   add_label_to_table (GTK_TABLE (table), 3, _("Router:"));
-  /* TRANSLATORS: label in advanced settings (next to combobox
-   * for automatic/manual IPv6 method ) */
   add_label_to_table (GTK_TABLE (table), 4, _("Connect to IPv6:"));
-  /* TRANSLATORS: label in advanced settings */
-  add_label_to_table (GTK_TABLE (table), 5, _("Router:"));
-  /* TRANSLATORS: label in advanced settings */
-  add_label_to_table (GTK_TABLE (table), 6, _("Prefix length:"));
-  /* TRANSLATORS: label in advanced settings */
-  add_label_to_table (GTK_TABLE (table), 7, _("DNS:"));
+  add_label_to_table (GTK_TABLE (table), 5, _("IP address:"));
+  add_label_to_table (GTK_TABLE (table), 6, _("Router:"));
+  add_label_to_table (GTK_TABLE (table), 7, _("Prefix length:"));
+  add_label_to_table (GTK_TABLE (table), 8, _("DNS:"));
+  priv->mac_address_title_label =
+    add_label_to_table (GTK_TABLE (table), 9, _("Your MAC address:"));
+  gtk_widget_hide (priv->mac_address_title_label);
 
-  priv->method_combo = gtk_combo_box_new_text ();  
+  priv->method_combo = gtk_combo_box_new_text ();
   /* NOTE: order/index of items in combobox is significant */
   /* TRANSLATORS: choices in the connection method combobox:
    * Will include "DHCP", "Static IP" and sometimes "Fixed IP" */
@@ -2294,10 +2310,19 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (dns_buffer_changed_cb),
                     self);
 
+  priv->mac_address_label = gtk_label_new ("");
+  gtk_label_set_selectable (GTK_LABEL (priv->mac_address_label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (priv->mac_address_label), 0.0, 0.0);
+  gtk_misc_set_padding (GTK_MISC (priv->mac_address_label), 0, 5);
+  gtk_table_attach (GTK_TABLE (table), priv->mac_address_label,
+                    1, 2, 9, 10,
+                    GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
+                    0, 0);
+
   align = gtk_alignment_new (1.0, 0.0, 0.0, 0.0);
   gtk_widget_show (align);
   gtk_table_attach (GTK_TABLE (table), align,
-                    1, 2, 9, 10,
+                    1, 2, 10, 11,
                     GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK,
                     0, 0);
   /* TRANSLATORS: label for apply button in static ip settings */
