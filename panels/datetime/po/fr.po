@@ -5,18 +5,17 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
-"PO-Revision-Date: 2010-03-11 21:53-0800\n"
-"Last-Translator: David Cicognani <davidx.cicognani@intel.com>\n"
-"Language-Team: \n"
+"Project-Id-Version: meego-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2010-11-27 00:58+0000\n"
+"PO-Revision-Date: 2011-03-02 18:46+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: French <None>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
-"X-Poedit-Language: French\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
@@ -116,127 +115,20 @@ msgstr "Tâches "
 msgid "Open Tasks"
 msgstr "Tâches ouvertes"
 
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Heure et date"
+
 #: ../src/date-time.schemas.in.h:1
 msgid "24 hour clock or 12 hour clock"
 msgstr "Horloge 24 heures ou horloge 12 heures"
 
 #: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
-msgstr "Alarmes stockées sous format encodé pour utilisation avec le notificateur d’alarme."
+msgstr ""
+"Alarmes stockées sous format encodé pour utilisation avec le notificateur "
+"d’alarme."
 
 #: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "Liste des alarmes sous format encodé abrégé"
-
-#: ../src/mnp-shell.c:164
-msgid "Time and Date"
-msgstr "Heure et date"
-
-#~ msgid "OFF"
-#~ msgstr "DÉSACTIVÉE"
-
-#~ msgid "Beep"
-#~ msgstr "Bip sonore"
-
-#~ msgid "Music"
-#~ msgstr "Musique"
-
-#~ msgid "Never"
-#~ msgstr "Jamais"
-
-#~ msgid "Everyday"
-#~ msgstr "Tous les jours"
-
-#~ msgid "Monday - Friday"
-#~ msgstr "Du lundi au vendredi"
-
-#~ msgid "Monday"
-#~ msgstr "Lundi"
-
-#~ msgid "Tuesday"
-#~ msgstr "Mardi"
-
-#~ msgid "Wednesday"
-#~ msgstr "Mercredi"
-
-#~ msgid "Thursday"
-#~ msgstr "Jeudi"
-
-#~ msgid "Friday"
-#~ msgstr "Vendredi"
-
-#~ msgid "Saturday"
-#~ msgstr "Samedi"
-
-#~ msgid "Sunday"
-#~ msgstr "Dimanche"
-
-#~ msgid "Alarm settings"
-#~ msgstr "Paramètres de l'alarme"
-
-#~ msgid "ON"
-#~ msgstr "ACTIVÉE"
-
-#~ msgid "Repeat"
-#~ msgstr "Répéter"
-
-#~ msgid "Snooze"
-#~ msgstr "Différer"
-
-#~ msgid "Sound"
-#~ msgstr "Son"
-
-#~ msgid "Delete alarm"
-#~ msgstr "Supprimer l'alarme"
-
-#~ msgid ""
-#~ "New\n"
-#~ "Alarm"
-#~ msgstr ""
-#~ "Nouvelle\n"
-#~ "alarme"
-
-#~ msgid "Alarm Notify"
-#~ msgstr "Notification de l'alarme"
-
-#~ msgid "Alarm at %d:%.2d %s"
-#~ msgstr "Alarme le %d : %.2d %s"
-
-#~ msgid "am"
-#~ msgstr "am"
-
-#~ msgid "pm"
-#~ msgstr "pm"
-
-#~ msgid "Meego Alarm Notify"
-#~ msgstr "Notification de l'alarme Meego"
-
-#~ msgid "AlarmNotifications"
-#~ msgstr "AlarmNotifications"
-
-#~ msgid "MON-FRI"
-#~ msgstr "LUN-VEN"
-
-#~ msgid "MONDAYS"
-#~ msgstr "LE LUNDI"
-
-#~ msgid "TUESDAYS"
-#~ msgstr "LE MARDI"
-
-#~ msgid "WEDNESDAYS"
-#~ msgstr "LE MERCREDI"
-
-#~ msgid "THURSDAYS"
-#~ msgstr "LE JEUDI"
-
-#~ msgid "FRIDAYS"
-#~ msgstr "LE VENDREDI"
-
-#~ msgid "SATURDAYS"
-#~ msgstr "LE SAMEDI"
-
-#~ msgid "SUNDAYS"
-#~ msgstr "LE DIMANCHE"
-
-#~ msgid "Meego alarm notify"
-#~ msgstr "Notification de l'alarme Meego"

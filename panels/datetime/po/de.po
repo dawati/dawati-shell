@@ -2,21 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
-"PO-Revision-Date: 2010-06-15 23:00-0800\n"
-"Last-Translator: Andreas Machoy <amachoy@hotmail.com>\n"
-"Language-Team: Clara Steiner-Jay <csteiner@aracnet.com>\n"
+"Project-Id-Version: meego-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2010-11-27 00:58+0000\n"
+"PO-Revision-Date: 2011-03-02 18:46+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: German <meego-de@lists.hendi.name>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
@@ -98,10 +97,9 @@ msgstr "Termine"
 #. "x-fill", TRUE,
 #. NULL);
 #. clutter_actor_set_height (div, 2);
-#.
+#. 
 #. format date
-#: ../src/mnp-datetime.c:342
-#: ../src/mnp-datetime.c:541
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "Heute"
 
@@ -132,112 +130,3 @@ msgstr "In verschlüsseltem Format gespeicherte Alarmsignale zur Alarmanzeige."
 #: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "Liste von Alarmsignalen in verschlüsseltem Kurzformat"
-
-#~ msgid "OFF"
-#~ msgstr "AUS"
-
-#~ msgid "Beep"
-#~ msgstr "Piepston"
-
-#~ msgid "Music"
-#~ msgstr "Musik"
-
-#~ msgid "Never"
-#~ msgstr "Nie"
-
-#~ msgid "Everyday"
-#~ msgstr "Jeden Tag"
-
-#~ msgid "Monday - Friday"
-#~ msgstr "Montag - Freitag"
-
-#~ msgid "Monday"
-#~ msgstr "Montag"
-
-#~ msgid "Tuesday"
-#~ msgstr "Dienstag"
-
-#~ msgid "Wednesday"
-#~ msgstr "Mittwoch"
-
-#~ msgid "Thursday"
-#~ msgstr "Donnerstag"
-
-#~ msgid "Friday"
-#~ msgstr "Freitag"
-
-#~ msgid "Saturday"
-#~ msgstr "Samstag"
-
-#~ msgid "Sunday"
-#~ msgstr "Sonntag"
-
-#~ msgid "Alarm settings"
-#~ msgstr "Alarmsignal-Einstellungen"
-
-#~ msgid "ON"
-#~ msgstr "EIN"
-
-#~ msgid "Repeat"
-#~ msgstr "Wiederholen"
-
-#~ msgid "Snooze"
-#~ msgstr "Schlummern"
-
-#~ msgid "Sound"
-#~ msgstr "Ton"
-
-#~ msgid "Delete alarm"
-#~ msgstr "Alarmsignal löschen"
-
-#~ msgid ""
-#~ "New\n"
-#~ "Alarm"
-#~ msgstr ""
-#~ "Neues\n"
-#~ "Signal"
-
-#~ msgid "Alarm Notify"
-#~ msgstr "Alarm Meldung"
-
-#~ msgid "Alarm at %d:%.2d %s"
-#~ msgstr "Alarmsignal für %d:%.2d %s"
-
-#~ msgid "am"
-#~ msgstr "vor 12.00 Uhr mittags"
-
-#~ msgid "pm"
-#~ msgstr "nach 12.00 Uhr mittags"
-
-#~ msgid "Meego Alarm Notify"
-#~ msgstr "Meego Alarm Meldung"
-
-#~ msgid "AlarmNotifications"
-#~ msgstr "Alarmmeldungen"
-
-#~ msgid "MON-FRI"
-#~ msgstr "Mo-Fr"
-
-#~ msgid "MONDAYS"
-#~ msgstr "montags"
-
-#~ msgid "TUESDAYS"
-#~ msgstr "dienstags"
-
-#~ msgid "WEDNESDAYS"
-#~ msgstr "mittwochs"
-
-#~ msgid "THURSDAYS"
-#~ msgstr "donnerstags"
-
-#~ msgid "FRIDAYS"
-#~ msgstr "freitags"
-
-#~ msgid "SATURDAYS"
-#~ msgstr "samstags"
-
-#~ msgid "SUNDAYS"
-#~ msgstr "sonntags"
-
-#~ msgid "Meego alarm notify"
-#~ msgstr "Meego Alarm Meldung"

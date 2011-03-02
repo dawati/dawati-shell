@@ -1,17 +1,21 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-14 09:22+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: meego-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2010-11-27 00:58+0000\n"
+"PO-Revision-Date: 2011-03-02 18:47+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Japanese <None>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Japanese\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
@@ -93,10 +97,9 @@ msgstr "予定"
 #. "x-fill", TRUE,
 #. NULL);
 #. clutter_actor_set_height (div, 2);
-#.
+#. 
 #. format date
-#: ../src/mnp-datetime.c:342
-#: ../src/mnp-datetime.c:541
+#: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
 msgstr "今日"
 
@@ -127,112 +130,3 @@ msgstr "アラームは、アラーム通知で使用できるようにエンコ
 #: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "短いエンコード形式のアラーム一覧"
-
-#~ msgid "OFF"
-#~ msgstr "オフ"
-
-#~ msgid "Beep"
-#~ msgstr "ビープ"
-
-#~ msgid "Music"
-#~ msgstr "曲"
-
-#~ msgid "Never"
-#~ msgstr "なし"
-
-#~ msgid "Everyday"
-#~ msgstr "毎日"
-
-#~ msgid "Monday - Friday"
-#~ msgstr "月曜日 - 金曜日"
-
-#~ msgid "Monday"
-#~ msgstr "月曜日"
-
-#~ msgid "Tuesday"
-#~ msgstr "火曜日"
-
-#~ msgid "Wednesday"
-#~ msgstr "水曜日"
-
-#~ msgid "Thursday"
-#~ msgstr "木曜日"
-
-#~ msgid "Friday"
-#~ msgstr "金曜日"
-
-#~ msgid "Saturday"
-#~ msgstr "土曜日"
-
-#~ msgid "Sunday"
-#~ msgstr "日曜日"
-
-#~ msgid "Alarm settings"
-#~ msgstr "アラーム設定"
-
-#~ msgid "ON"
-#~ msgstr "オン"
-
-#~ msgid "Repeat"
-#~ msgstr "リピート"
-
-#~ msgid "Snooze"
-#~ msgstr "休止"
-
-#~ msgid "Sound"
-#~ msgstr "サウンド"
-
-#~ msgid "Delete alarm"
-#~ msgstr "アラームを削除"
-
-#~ msgid ""
-#~ "New\n"
-#~ "Alarm"
-#~ msgstr ""
-#~ "新規\n"
-#~ "アラーム"
-
-#~ msgid "Alarm Notify"
-#~ msgstr "アラーム通知"
-
-#~ msgid "Alarm at %d:%.2d %s"
-#~ msgstr "%d:%.2d %s にアラーム"
-
-#~ msgid "am"
-#~ msgstr "午前"
-
-#~ msgid "pm"
-#~ msgstr "午後"
-
-#~ msgid "Meego Alarm Notify"
-#~ msgstr "Meego アラーム通知"
-
-#~ msgid "AlarmNotifications"
-#~ msgstr "AlarmNotifications"
-
-#~ msgid "MON-FRI"
-#~ msgstr "月 - 金"
-
-#~ msgid "MONDAYS"
-#~ msgstr "月曜日"
-
-#~ msgid "TUESDAYS"
-#~ msgstr "火曜日"
-
-#~ msgid "WEDNESDAYS"
-#~ msgstr "水曜日"
-
-#~ msgid "THURSDAYS"
-#~ msgstr "木曜日"
-
-#~ msgid "FRIDAYS"
-#~ msgstr "金曜日"
-
-#~ msgid "SATURDAYS"
-#~ msgstr "土曜日"
-
-#~ msgid "SUNDAYS"
-#~ msgstr "日曜日"
-
-#~ msgid "Meego alarm notify"
-#~ msgstr "Meego アラーム通知"
