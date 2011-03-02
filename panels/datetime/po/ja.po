@@ -37,7 +37,7 @@ msgstr "日付と時間"
 #. * am/pm.
 #: ../src/mnp-utils.c:423
 msgid "%l:%M %p"
-msgstr "%l:%M %p"
+msgstr "%p %l:%M"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 24-hours format
