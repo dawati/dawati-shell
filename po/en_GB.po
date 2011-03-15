@@ -51,7 +51,7 @@ msgstr "Available panels"
 #: ../capplet/src/mtp-clock.c:217
 #: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
-msgstr "%l:%M %P"
+msgstr "%H:%M"
 
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
