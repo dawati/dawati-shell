@@ -300,6 +300,33 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
 
   /* MNB_DBG_MARK(); */
 
+  /*
+   * If the compositor is turned of, switch to the next application
+   * immediately, if we know what that is.
+   */
+  if (!priv->waiting_for_timeout &&
+      meego_netbook_compositor_disabled (plugin))
+    {
+      GList *l = mnb_alttab_overlay_get_app_list (overlay);
+
+      if (l && l->next)
+        {
+          mnb_alttab_overlay_activate_window (overlay,
+                                              l->next->data,
+                                              event->xkey.time);
+        }
+
+      /* This should never happen, right ? */
+      if (priv->in_alt_grab)
+        {
+          end_kbd_grab (overlay);
+          priv->alt_tab_down = FALSE;
+        }
+
+      g_list_free (l);
+      return;
+    }
+
   if (!priv->in_alt_grab)
     {
       if (!applications_present ())
@@ -353,9 +380,7 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
 
   priv->alt_tab_down = TRUE;
 
-  if (!priv->waiting_for_timeout &&
-      (!CLUTTER_ACTOR_IS_VISIBLE (overlay) ||
-       meego_netbook_compositor_disabled (plugin)))
+  if (!priv->waiting_for_timeout && !CLUTTER_ACTOR_IS_VISIBLE (overlay))
     {
       struct alt_tab_show_complete_data *alt_data;
       MnbToolbar *toolbar;
