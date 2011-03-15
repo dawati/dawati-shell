@@ -42,6 +42,7 @@ test_panel_clutter_DEPENDENCIES = \
 	test-panel.css
 
 test_panel_clutter_LDADD = \
+	$(LIBMPL_LIBS) \
 	../meego-panel/libmeego-panel.la
 
 test_panel_clutter_SOURCES = \
@@ -52,6 +53,7 @@ test_panel_gtk_DEPENDENCIES = \
 	test-panel.css
 
 test_panel_gtk_LDADD = \
+	$(LIBMPL_LIBS) \
 	../meego-panel/libmeego-panel.la
 
 test_panel_gtk_SOURCES = \
