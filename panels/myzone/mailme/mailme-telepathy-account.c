@@ -35,11 +35,6 @@ G_DEFINE_TYPE (MailmeTelepathyAccount, mailme_telepathy_account, G_TYPE_OBJECT)
     (G_TYPE_INSTANCE_GET_PRIVATE ((o), MAILME_TYPE_TELEPATHY_ACCOUNT,\
                                   MailmeTelepathyAccountPrivate))
 
-#define TP_IFACE_STRING_CONNECTION_INTERFACE_MAIL_NOTIFICATION \
-  "org.freedesktop.Telepathy.Connection.Interface.MailNotification.DRAFT"
-
-#define TP_IFACE_QUARK_CONNECTION_INTERFACE_MAIL_NOTIFICATION \
-  mailme_get_mail_notification_interface ()
 
 #define MAILME_ERRORS mailme_errors_quark ()
 
@@ -50,14 +45,6 @@ enum
   PROP_UNREAD_COUNT,
   PROP_STATUS,
 };
-
-typedef enum {
-  MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAIL_COUNT = 1,
-  MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAILS = 2,
-  MAILME_MAIL_NOTIFICATION_FLAG_EMITS_MAILS_RECEIVED = 4,
-  MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_INBOX_URL = 8,
-  MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_MAIL_URL = 16,
-} MailmeMailNotificationFlags;
 
 typedef struct _MailmeTelepathyAccountPrivate MailmeTelepathyAccountPrivate;
 
@@ -74,18 +61,6 @@ struct _InboxOpenInfo
   MailmeInboxOpenFormat format;
   gchar *value;
 };
-
-static GQuark
-mailme_get_mail_notification_interface ()
-{
-  static GQuark interface = 0;
-  if (G_UNLIKELY (interface == 0))
-  {
-    interface = g_quark_from_static_string (
-        TP_IFACE_STRING_CONNECTION_INTERFACE_MAIL_NOTIFICATION);
-  }
-  return interface;
-}
 
 static GQuark
 mailme_errors_quark ()
@@ -107,8 +82,8 @@ check_support_and_save (MailmeTelepathyAccountPrivate *priv,
   /* Here we can ignore the validity flag since 0 will lead to unsupported
    * status */
   capabilities = tp_asv_get_uint32 (out_Properties, "MailNotificationFlags", NULL);
-  if ((capabilities & MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAIL_COUNT)
-      && (capabilities & MAILME_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_INBOX_URL))
+  if ((capabilities & TP_MAIL_NOTIFICATION_FLAG_SUPPORTS_UNREAD_MAIL_COUNT)
+      && (capabilities & TP_MAIL_NOTIFICATION_FLAG_SUPPORTS_REQUEST_INBOX_URL))
   {
     gboolean valid = FALSE;
     priv->unread_count = tp_asv_get_uint32 (out_Properties,
@@ -197,16 +172,6 @@ setup_mail_proxy (MailmeTelepathyAccount *self,
       return FALSE;
     }
 
-    dbus_g_proxy_add_signal (priv->mail_proxy,
-                             "UnreadMailsChanged",
-                             G_TYPE_UINT,
-                             dbus_g_type_get_collection ("GPtrArray",
-                               dbus_g_type_get_map ("GHashTable",
-                                                    G_TYPE_STRING,
-                                                    G_TYPE_VALUE)),
-                             G_TYPE_STRV,
-                             G_TYPE_INVALID);
-
     dbus_g_proxy_connect_signal (priv->mail_proxy,
                                  "UnreadMailsChanged",
                                  G_CALLBACK (on_unread_mails_changed),
@@ -218,41 +183,6 @@ setup_mail_proxy (MailmeTelepathyAccount *self,
 }
 
 static void
-on_subscribed (DBusGProxy       *proxy,
-               DBusGProxyCall   *call_id,
-               void             *user_data)
-{
-  GError *error = NULL;
-  GSimpleAsyncResult *async_result = G_SIMPLE_ASYNC_RESULT (user_data);
-  MailmeTelepathyAccount *self = MAILME_TELEPATHY_ACCOUNT (
-      g_async_result_get_source_object (G_ASYNC_RESULT (user_data)));
-  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
-  TpConnection *connection = tp_account_get_connection (priv->account);
-
-  dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID);
-
-  if (error)
-  {
-    g_simple_async_result_set_from_error (async_result, error);
-    g_simple_async_result_complete (async_result);
-    g_error_free (error);
-    g_object_unref (async_result);
-    g_object_unref (self);
-    return;
-  }
-
-  tp_cli_dbus_properties_call_get_all (
-        connection,
-        -1 /* Default timeout */,
-        TP_IFACE_STRING_CONNECTION_INTERFACE_MAIL_NOTIFICATION,
-        on_mail_notification_get_all,
-        async_result,
-        NULL, NULL);
-
-  g_object_unref (self);
-}
-
-static void
 on_connection_ready (TpConnection *connection,
     const GError *ready_error,
     gpointer user_data)
@@ -260,7 +190,6 @@ on_connection_ready (TpConnection *connection,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (user_data);
   MailmeTelepathyAccount *self = MAILME_TELEPATHY_ACCOUNT (
       g_async_result_get_source_object (G_ASYNC_RESULT (user_data)));
-  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
 
   if (ready_error != NULL)
   {
@@ -268,15 +197,17 @@ on_connection_ready (TpConnection *connection,
     goto complete;
   }
 
+  tp_connection_add_client_interest (connection,
+      TP_IFACE_CONNECTION_INTERFACE_MAIL_NOTIFICATION);
   if (setup_mail_proxy (self, connection))
   {
-
-    dbus_g_proxy_begin_call (priv->mail_proxy,
-                             "Subscribe",
-                             on_subscribed,
-                             simple,
-                             NULL,
-                             G_TYPE_INVALID);
+    tp_cli_dbus_properties_call_get_all (
+        connection,
+        -1 /* Default timeout */,
+        TP_IFACE_CONNECTION_INTERFACE_MAIL_NOTIFICATION,
+        on_mail_notification_get_all,
+        simple,
+        NULL, NULL);
     g_object_unref (self);
     return;
   }
@@ -353,55 +284,25 @@ on_mail_notification_get_all_again (TpProxy      *proxy,
 }
 
 static void
-on_subscribed_again (DBusGProxy       *proxy,
-                     DBusGProxyCall   *call_id,
-                     void             *user_data)
-{
-  GError *error = NULL;
-  MailmeTelepathyAccount *self = MAILME_TELEPATHY_ACCOUNT (user_data);
-  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
-  TpConnection *connection = tp_account_get_connection (priv->account);
-
-  dbus_g_proxy_end_call (proxy, call_id, &error, G_TYPE_INVALID);
-
-  if (error)
-  {
-    g_warning ("Failed to subscribe to MailNotification: %s",
-               error->message);
-    g_error_free (error);
-    return;
-  }
-
-  tp_cli_dbus_properties_call_get_all (
-        connection,
-        -1 /* Default timeout */,
-        TP_IFACE_STRING_CONNECTION_INTERFACE_MAIL_NOTIFICATION,
-        on_mail_notification_get_all_again,
-        self,
-        NULL, NULL);
-}
-
-static void
 on_connection_ready_again (TpConnection *connection,
                            const GError *ready_error,
                            gpointer      user_data)
 {
   MailmeTelepathyAccount *self = MAILME_TELEPATHY_ACCOUNT (user_data);
-  MailmeTelepathyAccountPrivate *priv = GET_PRIVATE (self);
 
   if (ready_error != NULL)
     return;
 
-  if (setup_mail_proxy (self, connection))
-  {
-
-    dbus_g_proxy_begin_call (priv->mail_proxy,
-                             "Subscribe",
-                             on_subscribed_again,
-                             self,
-                             NULL,
-                             G_TYPE_INVALID);
-  }
+  tp_connection_add_client_interest (connection,
+      TP_IFACE_CONNECTION_INTERFACE_MAIL_NOTIFICATION);
+  setup_mail_proxy (self, connection);
+  tp_cli_dbus_properties_call_get_all (
+      connection,
+      -1 /* Default timeout */,
+      TP_IFACE_CONNECTION_INTERFACE_MAIL_NOTIFICATION,
+      on_mail_notification_get_all_again,
+      self,
+      NULL, NULL);
 }
 
 static void
