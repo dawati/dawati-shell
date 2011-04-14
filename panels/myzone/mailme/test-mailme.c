@@ -33,6 +33,9 @@ print_status (MailmeTelepathyAccount *account)
   g_object_get (account, "display-name", &display_name, NULL);
   g_object_get (account, "unread-count", &unread_count, NULL);
 
+  g_print ("Display name: %s\n", display_name);
+  g_print ("Unread count: %u\n", unread_count);
+
   g_free (display_name);
 }
 
