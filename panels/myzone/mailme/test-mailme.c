@@ -162,5 +162,5 @@ gint main (gint argc, gchar **argv)
   g_object_unref (tp_provider);
   g_object_unref (loop);
 
-	return 0;
+  return 0;
 }
