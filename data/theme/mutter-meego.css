@@ -63,14 +63,14 @@ MnbToolbarButton {
   border-image: url("panel/toolbar-button-normal.png") 12;
 }
 
-MnbToolbarButton:checked {
-  -mx-border-image-transition-duration: 0;
-  border-image: url("panel/toolbar-button-active.png") 12;
-}
-
 MnbToolbarButton:hover, MnbToolbarButton:active {
   -mx-border-image-transition-duration: 0;
   border-image: url("panel/toolbar-button-normal.png") 12;
+}
+
+MnbToolbarButton:checked {
+  -mx-border-image-transition-duration: 0;
+  border-image: url("panel/toolbar-button-active.png") 12;
 }
 
 MnbToolbarClock {
