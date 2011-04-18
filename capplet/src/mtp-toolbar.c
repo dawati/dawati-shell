@@ -234,7 +234,7 @@ mtp_toolbar_over_out (MxDroppable *droppable, MxDraggable *draggable)
 /*
  * returns FALSE if no space could be removed.
  */
-static gboolean
+gboolean
 mtp_toolbar_remove_space (MtpToolbar *toolbar, gboolean applet)
 {
   MtpToolbarPrivate *priv = MTP_TOOLBAR (toolbar)->priv;

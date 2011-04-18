@@ -272,6 +272,9 @@ mtp_bin_load_contents (MtpBin *bin)
 
   panels = load_panels (priv->client);
 
+  /* First, remove the spaces */
+  while (mtp_toolbar_remove_space (toolbar, FALSE));
+
   for (l = panels; l; l = l->next)
     {
       Panel        *panel  = l->data;
