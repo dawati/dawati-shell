@@ -91,7 +91,8 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
                                NULL);
 
     }
-  else if (!g_strcmp0 (pseudo_class, "hover"))
+  else if (mx_stylable_style_pseudo_class_contains (MX_STYLABLE (button),
+                                                    "hover"))
     {
       if (icon)
         {
@@ -105,7 +106,8 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
                                  NULL);
         }
     }
-  else if (!g_strcmp0 (pseudo_class, "active"))
+  else if (mx_stylable_style_pseudo_class_contains (MX_STYLABLE (button),
+                                                    "active"))
     {
       /* shrink the background and the icon */
       if (icon)
