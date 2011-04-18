@@ -250,6 +250,8 @@ ntf_notification_constructed (GObject *object)
   txt = CLUTTER_TEXT(mx_label_get_clutter_text(MX_LABEL(priv->summary)));
   clutter_text_set_line_alignment (txt, PANGO_ALIGN_LEFT);
   clutter_text_set_ellipsize (txt, PANGO_ELLIPSIZE_NONE);
+  clutter_text_set_line_wrap (txt, TRUE);
+  clutter_text_set_line_wrap_mode (txt, PANGO_WRAP_WORD_CHAR);
 
   mx_table_add_actor (MX_TABLE (priv->title_box), CLUTTER_ACTOR (priv->summary), 0, 1);
   clutter_container_child_set (CLUTTER_CONTAINER (priv->title_box),
