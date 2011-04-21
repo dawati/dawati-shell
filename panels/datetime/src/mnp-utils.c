@@ -352,50 +352,43 @@ clock_unset_tz (SystemTimezone *tzone)
         tzset();
 }
 
-static void
-clock_location_localtime (SystemTimezone *systz, char *tzone, struct tm *tm, time_t now)
-{
-        clock_set_tz (tzone);
-
-        localtime_r (&now, tm);
-	
-        clock_unset_tz (systz);
-}
-
-#if 0
 static glong
 get_offset (const char *tzone, SystemTimezone *systz)
 {
-        glong sys_timezone, local_timezone;
-	glong offset;
+	glong offset = 0;
 	time_t t;
 	struct tm *tm;
 
-	t = time (NULL);
-	
         unsetenv ("TZ");
+	t = time (NULL);
         tm = localtime (&t);
-        sys_timezone = timezone;
 
-	if (tm->tm_isdst > 0) {
-		sys_timezone -= 3600;
-	}
+	if (tm->tm_isdst <= 0)
+          goto done;
 
         setenv ("TZ", tzone, 1);
+	t = time (NULL);
         tm = localtime (&t);
-	local_timezone = timezone;
+	if (tm->tm_isdst <= 0)
+		offset = -3600;
 
-	if (tm->tm_isdst > 0) {
-		local_timezone -= 3600;
-	}
-
-        offset = -local_timezone;
-
+done:
         clock_unset_tz (systz);
-
         return offset;
 }
-#endif
+
+static void
+clock_location_localtime (SystemTimezone *systz, char *tzone, struct tm *tm, time_t now)
+{
+	glong offset = get_offset (tzone, systz);
+	time_t real_now = now + offset;
+
+        clock_set_tz (tzone);
+
+        localtime_r (&real_now, tm);
+
+        clock_unset_tz (systz);
+}
 
 static MnpDateFormat *
 format_time (struct tm   *now, 
