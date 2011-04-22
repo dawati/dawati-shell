@@ -329,10 +329,6 @@ clock_set_tz (char *tzone)
 
         setenv ("TZ", tzone, 1);
         tzset();
-
-        now_t = time (NULL);
-        localtime_r (&now_t, &now);
-
 }
 
 #include <sys/time.h>
