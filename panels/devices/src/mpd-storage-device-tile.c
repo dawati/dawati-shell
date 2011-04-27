@@ -552,6 +552,7 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
   ClutterText   *text;
   ClutterActor  *separator;
+  ClutterActor *flow;
 
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self),
                                  MX_ORIENTATION_VERTICAL);
@@ -563,14 +564,16 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                            "x-fill", true,
                                            NULL);
 /*
-   0      1           2
+   0      1
   +--------------------------+ Table
-0 |      | Text      |  Open |
-1 | Icon | Progress  | Eject |
-  +------+-----------+-------+ Vbox
-2 | <message> .. Import data |
+0 |      | Text              |
+1 | Icon | Progress          |
+  +------+-------------------+
+2 |  Open  Eject  Import     |
+  +------+-------------------+ VBox
+3 | <message> .. Import data |
   +--------------------------+
-3 | ======================== |
+4 | ======================== |
   +--------------------------+
 */
 
@@ -625,51 +628,37 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
                                       "y-fill", false,
                                       NULL);
 
-  /*
-   * Column 2: buttons
-   */
+  /* Buttons */
+  flow = mx_grid_new ();
+  mx_grid_set_homogenous_rows (MX_GRID (flow), FALSE);
+  mx_grid_set_homogenous_columns (MX_GRID (flow), FALSE);
+  mx_table_add_actor_with_properties (MX_TABLE (priv->table), flow, 2, 1,
+                                      "x-align", MX_ALIGN_START,
+                                      "x-expand", false,
+                                      "x-fill", false,
+                                      "y-align", MX_ALIGN_MIDDLE,
+                                      "y-expand", true,
+                                      "y-fill", true,
+                                      NULL);
 
   /* Open button */
   priv->open = mx_button_new_with_label (_("Open"));
   g_signal_connect (priv->open, "clicked",
                     G_CALLBACK (_open_clicked_cb), self);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->open, 0, 2,
-                                      "x-align", MX_ALIGN_END,
-                                      "x-expand", false,
-                                      "x-fill", true,
-                                      "y-align", MX_ALIGN_END,
-                                      "y-expand", false,
-                                      "y-fill", false,
-                                      NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (flow), priv->open);
 
   /* Eject button */
   priv->eject = mx_button_new_with_label (_("Eject"));
   g_signal_connect (priv->eject, "clicked",
                     G_CALLBACK (_eject_clicked_cb), self);
-  mx_table_add_actor_with_properties (MX_TABLE (priv->table), priv->eject, 1, 2,
-                                      "x-align", MX_ALIGN_END,
-                                      "x-expand", false,
-                                      "x-fill", true,
-                                      "y-align", MX_ALIGN_MIDDLE,
-                                      "y-expand", false,
-                                      "y-fill", false,
-                                      NULL);
-
-  /*
-   * Row 2
-   */
+  clutter_container_add_actor (CLUTTER_CONTAINER (flow), priv->eject);
 
   /* Import button */
   priv->import = mx_button_new ();
   clutter_actor_set_name (priv->import, "import");
   g_signal_connect (priv->import, "clicked",
                     G_CALLBACK (_import_clicked_cb), self);
-  mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (self), priv->import,
-                                           -1,
-                                           "expand", false,
-                                           "x-align", MX_ALIGN_END,
-                                           "x-fill", false,
-                                           NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (flow), priv->import);
 
   /*
    * 4th row: separator
