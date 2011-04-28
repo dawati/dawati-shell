@@ -308,11 +308,16 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
       meego_netbook_compositor_disabled (plugin))
     {
       GList *l = mnb_alttab_overlay_get_app_list (overlay);
+      GList *last = g_list_last (l);
 
-      if (l && l->next)
+      if (l && last && l->next)
         {
+          /* Usually alttab takes the next window in the most-recently-used
+           * list. But if the compositor is turned off for all windows, the
+           * user would be stucked in the 2 most recently used windows. So we
+           * just pick the least recently used window here. */
           mnb_alttab_overlay_activate_window (overlay,
-                                              l->next->data,
+                                              last->data,
                                               event->xkey.time);
         }
 
