@@ -27,8 +27,10 @@
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
 #include <mx-gtk/mx-gtk.h>
+#include <libgnome-control-center-extension/mux-label.h>
 
 #include "syst-cc-panel.h"
+
 #define SYST_UID  {0x6aa9c364, 0x7620a0c3, 0x666f2075, 0x35392720, 0}
 #define SYST_CMD "matchbox-panel --geometry=200x36+0-0 --reserve-extra-height=4 --fullscreen --start-applets=systray"
 
@@ -192,11 +194,13 @@ syst_cc_panel_make_contents (SystCcPanel *panel)
                     G_CALLBACK (syst_cc_panel_switch_flipped_cb),
                     panel);
 
-  label = gtk_label_new (_("The system tray is a concept used by some older "
-                           "applications to let you know when something "
-                           "happens or to stay running when you close them."));
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  label = mux_label_new ();
+
+  mux_label_set_text (MUX_LABEL (label),
+                     _("The system tray is a concept used by some older "
+                       "applications to let you know when something "
+                       "happens or to stay running when you close them."));
+
   gtk_widget_show (label);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
