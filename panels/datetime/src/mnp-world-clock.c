@@ -528,7 +528,7 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), text, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                text,
-			       "expand", FALSE,
+			       "expand", TRUE,
 			       "x-fill", TRUE,
 			       "y-fill", FALSE,			       
 			       "y-align", MX_ALIGN_MIDDLE,
@@ -574,16 +574,16 @@ construct_heading_and_top_area (MnpWorldClock *world_clock)
 			       "y-fill", FALSE,		
 			       "x-fill", FALSE,
                                NULL);
-
 	
 	text = mx_label_new_with_text (_("24 hour clock"));
+
 	clutter_actor_set_name (text, "HourClockLabel");
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), text, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                text,
-                               "expand", FALSE,
+                               "expand", TRUE,
 			       "y-fill", FALSE,		
-			       "x-fill", FALSE,	
+			       "x-fill", TRUE,	
                                NULL);
 
 	mx_box_layout_add_actor (MX_BOX_LAYOUT(priv->widget_box), box, -1);	

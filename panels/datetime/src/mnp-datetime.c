@@ -295,7 +295,7 @@ construct_calendar_area (MnpDatetime *dtime)
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
-			       "expand", FALSE,
+			       "expand", TRUE,
 			       "x-fill", TRUE,
 			       "y-fill", FALSE,			       
 			       "y-align", MX_ALIGN_MIDDLE,
@@ -324,7 +324,7 @@ construct_calendar_area (MnpDatetime *dtime)
 	mx_box_layout_add_actor ((MxBoxLayout *)priv->cal_header, (ClutterActor *)box, 1);
 	clutter_container_child_set (CLUTTER_CONTAINER (priv->cal_header),
                                box,
-                               "expand", FALSE,
+                               "expand", TRUE,
 			       "y-fill", FALSE,		
 			       "x-fill", TRUE,			       			       
                                NULL);	
@@ -340,23 +340,30 @@ construct_calendar_area (MnpDatetime *dtime)
         clutter_actor_set_height (div, 2);
 */
 	label = mx_label_new_with_text(_("Today"));
+	/* HACK: This is a fixed size element but ellipsizes in non english when font size/width is modified via CSS
+	 * So just expand the size a bit */	
+	clutter_text_set_ellipsize (mx_label_get_clutter_text(label), PANGO_ELLIPSIZE_NONE);
+	clutter_text_set_line_wrap (mx_label_get_clutter_text(label), FALSE);	
+	clutter_actor_set_width (mx_label_get_clutter_text(label), clutter_actor_get_width(label)+5);
+	
 	clutter_actor_set_name (label, "CalendarPaneTitleToday");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, 0 );
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
                                "expand", FALSE,
 			       "y-fill", FALSE,		
-			       "x-fill", FALSE,			       			       
+			       "x-fill", TRUE,			       			       
                                NULL);	
 	
 	priv->cal_date_label = mx_label_new ();
-	clutter_actor_set_name (label, "CalendarPaneTitleDate");
+
+	clutter_actor_set_name (priv->cal_date_label, "CalendarPaneTitleDate");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->cal_date_label, 1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->cal_date_label,
-                               "expand", FALSE,
+                               "expand", TRUE,
 			       "y-fill", FALSE,		
-			       "x-fill", FALSE,			       			       
+			       "x-fill", TRUE,			       			       
                                NULL);	
 	format_label (priv->cal_date_label);
 
@@ -513,7 +520,7 @@ construct_task_area (MnpDatetime *dtime)
 	mx_box_layout_add_actor ((MxBoxLayout *)box, label, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                label,
-			       "expand", FALSE,
+			       "expand", TRUE,
 			       "x-fill", TRUE,
 			       "y-fill", FALSE,			       
 			       "y-align", MX_ALIGN_MIDDLE,
@@ -539,6 +546,11 @@ construct_task_area (MnpDatetime *dtime)
 
 	/* format date */
 	label = mx_label_new_with_text(_("Today"));
+	/* HACK: This is a fixed size element but ellipsizes in non english when font size/width is modified via CSS
+	 * So just expand the size a bit */	
+	clutter_text_set_ellipsize (mx_label_get_clutter_text(label), PANGO_ELLIPSIZE_NONE);
+	clutter_text_set_line_wrap (mx_label_get_clutter_text(label), FALSE);	
+	clutter_actor_set_width (mx_label_get_clutter_text(label), clutter_actor_get_width(label)+5);
 	clutter_actor_set_name (label, "TaskPaneTitleToday");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)label, 0 );
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
@@ -549,13 +561,13 @@ construct_task_area (MnpDatetime *dtime)
                                NULL);	
 	
 	priv->task_date_label = mx_label_new ();
-	clutter_actor_set_name (label, "TaskPaneTitleDate");
+	clutter_actor_set_name (priv->task_date_label, "TaskPaneTitleDate");
 	mx_box_layout_add_actor ((MxBoxLayout *)box, (ClutterActor *)priv->task_date_label, 1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
                                priv->task_date_label,
-                               "expand", FALSE,
+                               "expand", TRUE,
 			       "y-fill", FALSE,		
-			       "x-fill", FALSE,			       			       
+			       "x-fill", TRUE,			       			       
                                NULL);	
 	format_label (priv->task_date_label);
 
