@@ -156,6 +156,9 @@ carrick_list_drag_begin (GtkWidget      *widget,
   CarrickListPrivate *priv = list->priv;
   gint                x, y;
 
+  if (priv->drag_window != NULL)
+    return;
+
   carrick_service_item_set_active (CARRICK_SERVICE_ITEM (widget), FALSE);
 
   /* save old place in list for drag-failures */
@@ -230,6 +233,9 @@ carrick_list_drag_end (GtkWidget      *widget,
 {
   CarrickListPrivate *priv = list->priv;
   GList              *children;
+
+  if (gtk_widget_get_parent (widget) != priv->drag_window)
+    return;
 
   children = gtk_container_get_children (GTK_CONTAINER (priv->box));
 
@@ -1146,6 +1152,8 @@ carrick_list_constructor (GType                  gtype,
   obj = parent_class->constructor (gtype, n_properties, properties);
 
   priv = LIST_PRIVATE (obj);
+
+  priv->drag_window = NULL;
 
   priv->adjustment = gtk_scrolled_window_get_vadjustment
                 (GTK_SCROLLED_WINDOW (obj));
