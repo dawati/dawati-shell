@@ -104,10 +104,11 @@ AC_ARG_ENABLE([mutter],
 if test "$enable_mutter" != "no"; then
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl
-                  mx-1.0 >= 0.5.0                  dnl
-                  libstartup-notification-1.0      dnl
-                  gtk+-2.0                         dnl
-                  dbus-glib-1                      dnl
+                  libmutter >= mutter_version dnl
+                  mx-1.0 >= 0.5.0                     dnl
+                  libstartup-notification-1.0        dnl
+                  gtk+-2.0                           dnl
+                  dbus-glib-1                        dnl
                   gconf-2.0
                   gio-unix-2.0
                   xrandr
