@@ -579,7 +579,6 @@ echo "
 
         Configuration:
 
-            Mutter version   :    mutter_version
             Installation path:    ${MUTTER_PLUGIN_DIR}
 	    Debug            :    ${enable_debug}
 	    Profile          :    ${enable_profile}
