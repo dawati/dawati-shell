@@ -112,7 +112,7 @@ enum
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-#define AUTH_DIALOG LIBEXECDIR"/nm-openconnect-auth-dialog"
+#define AUTH_DIALOG LIBEXECDIR"/carrick-openconnect-dialog"
 
 enum {
   COLUMN_VPN_NAME,

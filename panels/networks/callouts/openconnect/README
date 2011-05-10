@@ -1,0 +1,10 @@
+This is a copy of the NetworkManager authentication dialog that used to 
+be built as part of OpenConnect itself.
+
+Now that OpenConnect provides a library for the authentication parts, 
+there is no more need for us to abuse the NetworkManager auth-dialog.
+
+There's also no need for us to be using the old GConf storage that even
+current versions of NetworkManager don't use any more. That was a dirty 
+hack, and we should do something saner.
+
