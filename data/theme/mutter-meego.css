@@ -81,16 +81,16 @@ MnbToolbarClock {
   padding: 0 0 0 0;
 }
 
-MnbToolbarClock:checked {
+MnbToolbarClock:hover, MnbToolbarClock:active {
   -mx-border-image-transition-duration: 0;
-  border-image: url("panel/toolbar-button-active.png") 12;
+  border-image: url("panel/toolbar-button-normal.png") 12;
   background-image: none;
   padding: 0 0 0 0;
 }
 
-MnbToolbarClock:hover, MnbToolbarClock:active {
+MnbToolbarClock:checked {
   -mx-border-image-transition-duration: 0;
-  border-image: url("panel/toolbar-button-normal.png") 12;
+  border-image: url("panel/toolbar-button-active.png") 12;
   background-image: none;
   padding: 0 0 0 0;
 }
@@ -102,16 +102,16 @@ MnbToolbarApplet {
   padding: 0 0 0 0;
 }
 
+MnbToolbarApplet:hover, MnbToolbarApplet:active {
+  -mx-border-image-transition-duration: 0;
+  border-image: url("panel/toolbar-button-normal.png") 12;
+  padding: 0 0 0 0;
+}
+
 MnbToolbarApplet:checked {
   -mx-border-image-transition-duration: 0;
   border-image: url("panel/toolbar-button-active.png") 12;
   background-image: none;
-  padding: 0 0 0 0;
-}
-
-MnbToolbarApplet:hover, MnbToolbarApplet:active {
-  -mx-border-image-transition-duration: 0;
-  border-image: url("panel/toolbar-button-normal.png") 12;
   padding: 0 0 0 0;
 }
 
