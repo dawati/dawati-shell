@@ -7,10 +7,11 @@ carrick_openconnect_dialog_CFLAGS = -I$(top_srcdir) \
                                     $(GTHREAD_CFLAGS) \
                                     $(GTK_CFLAGS) \
                                     $(GCONF_CFLAGS) \
+                                    $(DBUS_CFLAGS) \
                                     $(OPENCONNECT_CFLAGS) \
                                     -Wall
 
-carrick_openconnect_dialog_LDADD = $(GTK_LIBS) $(GTHREAD_LIBS) \
+carrick_openconnect_dialog_LDADD = $(GTK_LIBS) $(GTHREAD_LIBS) $(DBUS_LIBS) \
                                    $(GCONF_LIBS) $(OPENCONNECT_LIBS)
 
 -include $(top_srcdir)/git.mk
