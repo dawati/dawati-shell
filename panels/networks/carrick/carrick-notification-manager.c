@@ -112,10 +112,17 @@ _send_note (CarrickNotificationManager *self,
                                 message,
                                 icon);
   } else {
+#ifdef HAVE_NOTIFY_0_7
+    priv->note = notify_notification_new (title,
+                                          message,
+                                          icon);
+#else
     priv->note = notify_notification_new (title,
                                           message,
                                           icon,
                                           NULL);
+#endif
+
     g_signal_connect (priv->note, "closed", G_CALLBACK (on_note_closed), self);
   }
 
