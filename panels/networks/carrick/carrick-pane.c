@@ -1744,6 +1744,10 @@ vpn_connect_clicked (GtkButton *btn, CarrickPane *self)
   data->name = g_strdup (name);
   data->self = self;
   g_child_watch_add (pid, (GChildWatchFunc)auth_dialog_exit_cb, data);
+
+  /* This really should not be needed, but it seems mutter sometimes still fails
+   * to close the panel when the dialog opens... */
+  carrick_shell_hide ();
 }
 
 static void
