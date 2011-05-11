@@ -91,8 +91,8 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
                                NULL);
 
     }
-  else if (mx_stylable_style_pseudo_class_contains (MX_STYLABLE (button),
-                                                    "hover"))
+  else if (!g_strcmp0 (mx_stylable_get_style_pseudo_class (MX_STYLABLE (button)),
+                       "hover"))
     {
       if (icon)
         {
@@ -103,21 +103,6 @@ mnb_toolbar_button_transition (MnbToolbarButton *button)
                                  TRANSITION_DURATION * 1.5,
                                  "scale-x", 1.0,
                                  "scale-y", 1.0,
-                                 NULL);
-        }
-    }
-  else if (mx_stylable_style_pseudo_class_contains (MX_STYLABLE (button),
-                                                    "active"))
-    {
-      /* shrink the background and the icon */
-      if (icon)
-        {
-          clutter_actor_set_scale_with_gravity (icon, 1.0, 1.0,
-                                                CLUTTER_GRAVITY_CENTER);
-          clutter_actor_animate (icon, CLUTTER_LINEAR,
-                                 150,
-                                 "scale-x", 0.7,
-                                 "scale-y", 0.7,
                                  NULL);
         }
     }
