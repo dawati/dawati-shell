@@ -220,6 +220,7 @@ MxTooltip {
   background-image: url('generic/tooltip-arrow.png');
   border-image: url('generic/tooltip-background.png') 4 11 12 11;
   font-size: 15px;
+  -mx-tooltip-animation: "bounce";
 }
 
 MxTooltip.alttab {
