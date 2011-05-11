@@ -116,96 +116,96 @@ MnbToolbarApplet:checked {
 }
 
 /* applications button */
-MnbToolbarButton#applications-button, MnbToolbarButton#applications-button:active, MnbToolbarButton#applications-button:checked {
+MnbToolbarButton#applications-button {
   background-image: url("panel/apps-normal.png");
 }
-MnbToolbarButton#applications-button:hover  {
+MnbToolbarButton#applications-button:hover, MnbToolbarButton#applications-button:active, MnbToolbarButton#applications-button:checked {
   background-image: url("panel/apps-coloured.png");
 }
 
 /* internet button */
-MnbToolbarButton#internet-button, MnbToolbarButton#internet-button:active, MnbToolbarButton#internet-button:checked {
+MnbToolbarButton#internet-button {
   background-image: url("panel/internet-normal.png");
 }
-MnbToolbarButton#internet-button:hover {
+MnbToolbarButton#internet-button:hover, MnbToolbarButton#internet-button:active, MnbToolbarButton#internet-button:checked {
   background-image: url("panel/internet-coloured.png");
 }
 
 /* media button */
-MnbToolbarButton#media-button, MnbToolbarButton#media-button:active, MnbToolbarButton#media-button:checked {
+MnbToolbarButton#media-button {
   background-image: url("panel/media-normal.png");
 }
-MnbToolbarButton#media-button:hover {
+MnbToolbarButton#media-button:hover, MnbToolbarButton#media-button:active, MnbToolbarButton#media-button:checked {
   background-image: url("panel/media-coloured.png");
 }
 
 /* myzone button */
-MnbToolbarButton#myzone-button, MnbToolbarButton#myzone-button:active, MnbToolbarButton#myzone-button:checked {
+MnbToolbarButton#myzone-button {
   background-image: url("panel/myzone-normal.png");
 }
-MnbToolbarButton#myzone-button:hover {
+MnbToolbarButton#myzone-button:hover, MnbToolbarButton#myzone-button:active, MnbToolbarButton#myzone-button:checked {
   background-image: url("panel/myzone-coloured.png");
 }
 
 /* pasteboard button */
-MnbToolbarButton#pasteboard-button, MnbToolbarButton#pasteboard-button:active, MnbToolbarButton#pasteboard-button:checked {
+MnbToolbarButton#pasteboard-button {
   background-image: url("panel/pasteboard-normal.png");
 }
-MnbToolbarButton#pasteboard-button:hover {
+MnbToolbarButton#pasteboard-button:hover, MnbToolbarButton#pasteboard-button:active, MnbToolbarButton#pasteboard-button:checked {
   background-image: url("panel/pasteboard-coloured.png");
 }
 
 /* people button */
-MnbToolbarButton#people-button, MnbToolbarButton#people-button:active, MnbToolbarButton#people-button:checked  {
+MnbToolbarButton#people-button {
   background-image: url("panel/people-normal.png");
 }
-MnbToolbarButton#people-button:hover{
+MnbToolbarButton#people-button:hover, MnbToolbarButton#people-button:active, MnbToolbarButton#people-button:checked {
   background-image: url("panel/people-coloured.png");
 }
 
-MnbToolbarButton#people-button-active, MnbToolbarButton#people-button-active:active, MnbToolbarButton#people-button-active:checked {
+MnbToolbarButton#people-button-active {
   background-image: url("panel/people-active-normal.png");
 }
-MnbToolbarButton#people-button-active:hover {
+MnbToolbarButton#people-button-active:hover, MnbToolbarButton#people-button-active:active, MnbToolbarButton#people-button-active:checked {
   background-image: url("panel/people-active-coloured.png");
 }
 
 /* spaces button */
-MnbToolbarButton#zones-button, MnbToolbarButton#zones-button:active, MnbToolbarButton#zones-button:checked {
+MnbToolbarButton#zones-button {
   background-image: url("panel/spaces-normal.png");
 }
-MnbToolbarButton#zones-button:hover {
+MnbToolbarButton#zones-button:hover, MnbToolbarButton#zones-button:active, MnbToolbarButton#zones-button:checked {
   background-image: url("panel/spaces-coloured.png");
 }
 
 /* status button */
-MnbToolbarButton#status-button, MnbToolbarButton#status-button:active, MnbToolbarButton#status-button:checked {
+MnbToolbarButton#status-button {
   background-image: url("panel/status-normal.png");
 }
-MnbToolbarButton#status-button:hover {
+MnbToolbarButton#status-button:hover, MnbToolbarButton#status-button:active, MnbToolbarButton#status-button:checked {
   background-image: url("panel/status-coloured.png");
 }
 
 /* network button */
-MnbToolbarButton#network-button, MnbToolbarButton#network-button:active, MnbToolbarButton#network-button:checked {
+MnbToolbarButton#network-button {
   background-image: url("panel/network-coloured.png");
 }
-MnbToolbarButton#network-button:hover {
+MnbToolbarButton#network-button:hover, MnbToolbarButton#network-button:active, MnbToolbarButton#network-button:checked {
   background-image: url("panel/network-coloured.png");
 }
 
 /* devices button */
-MnbToolbarButton#devices-button, MnbToolbarButton#devices-button:active, MnbToolbarButton#devices-button:checked {
+MnbToolbarButton#devices-button {
   background-image: url("panel/devices-normal.png");
 }
-MnbToolbarButton#devices-button:hover {
+MnbToolbarButton#devices-button:hover, MnbToolbarButton#devices-button:active, MnbToolbarButton#devices-button:checked {
   background-image: url("panel/devices-coloured.png");
 }
 
-MnbToolbarButton#devices-button-active, MnbToolbarButton#devices-button-active:active, MnbToolbarButton#devices-button-active:checked {
+MnbToolbarButton#devices-button-active {
   background-image: url("panel/devices-active-normal.png");
 }
-MnbToolbarButton#devices-button-active:hover {
+MnbToolbarButton#devices-button-active:hover, MnbToolbarButton#devices-button-active:active, MnbToolbarButton#devices-button-active:checked {
   background-image: url("panel/devices-active-coloured.png");
 }
 
