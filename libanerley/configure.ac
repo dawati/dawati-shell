@@ -32,6 +32,7 @@ PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.14 gobject-2.0)
 PKG_CHECK_MODULES(TELEPATHY, telepathy-glib >= 0.9.0)
 PKG_CHECK_MODULES(MX, mx-1.0)
 PKG_CHECK_MODULES(EBOOK, libebook-1.2)
+PKG_CHECK_MODULES(DBUS_GLIB, dbus-glib-1)
 
 AC_MSG_CHECKING([how to detect we are online])
 AC_ARG_WITH([online],

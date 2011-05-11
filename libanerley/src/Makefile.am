@@ -13,5 +13,5 @@ anerley_account_starter_SOURCES = anerley-account-starter.c \
 				  sw-online.h \
 				  sw-marshals.list \
 				  $(BUILT_SOURCES)
-anerley_account_starter_CFLAGS = $(TELEPATHY_CFLAGS) $(ONLINE_CFLAGS)
-anerley_account_starter_LDADD = $(TELEPATHY_LIBS) $(ONLINE_LIBS)
+anerley_account_starter_CFLAGS = $(TELEPATHY_CFLAGS) $(ONLINE_CFLAGS) $(GLIB_CFLAGS)
+anerley_account_starter_LDADD = $(TELEPATHY_LIBS) $(ONLINE_LIBS) $(GLIB_LIBS)
