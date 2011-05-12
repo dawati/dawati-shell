@@ -233,7 +233,7 @@ _tell_changed (CarrickNotificationManager *self,
   CarrickNotificationManagerPrivate *priv = self->priv;
   gchar                             *title = g_strdup (_ ("Network changed"));
   gchar                             *message = NULL;
-  const gchar                       *icon;
+  const gchar                       *icon = NULL;
 
   if (priv->last_name == NULL && priv->last_type == NULL)
     {

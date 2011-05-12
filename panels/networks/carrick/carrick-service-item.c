@@ -1368,10 +1368,7 @@ set_ipv4_configuration_cb (DBusGProxy *proxy,
                            gpointer    user_data)
 
 {
-  CarrickServiceItemPrivate *priv;
-
   g_return_if_fail (CARRICK_IS_SERVICE_ITEM (user_data));
-  priv = CARRICK_SERVICE_ITEM (user_data)->priv;
 
   if (error)
     {
