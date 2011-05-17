@@ -218,7 +218,7 @@ mpl_panel_gtk_constructed (GObject *self)
    */
   gtk_widget_realize (window);
 
-  g_object_set (self, "xid", GDK_WINDOW_XID (window->window), NULL);
+  g_object_set (self, "xid", GDK_WINDOW_XID (gtk_widget_get_window (window)), NULL);
 }
 
 /**

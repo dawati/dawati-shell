@@ -76,7 +76,7 @@ make_window_content (MplPanelGtk *panel)
 
   toplevel = gtk_widget_get_toplevel (table);
 
-  if (GTK_WIDGET_TOPLEVEL (toplevel) && GTK_IS_WINDOW (toplevel))
+  if (gtk_widget_is_toplevel (toplevel) && GTK_IS_WINDOW (toplevel))
     gtk_window_set_focus (GTK_WINDOW (toplevel), entry);
 }
 

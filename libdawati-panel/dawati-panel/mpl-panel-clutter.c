@@ -486,7 +486,7 @@ void
 mpl_panel_clutter_init_with_gtk (gint *argc, gchar ***argv)
 {
   gtk_init (argc, argv);
-  clutter_x11_set_display (gdk_display);
+  clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   clutter_x11_disable_event_retrieval ();
 
   if (CLUTTER_INIT_SUCCESS != clutter_init (argc, argv))
@@ -524,7 +524,8 @@ mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid)
     guint32 timestamp = 0;
 
     if (!gdk_win)
-      gdk_win = gdk_window_foreign_new (GPOINTER_TO_INT (data));
+      gdk_win = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
+                                                        GPOINTER_TO_INT (data));
 
     /*
      * Ensure we update the user time on this window if the event implies user
@@ -563,7 +564,8 @@ mpl_panel_clutter_setup_events_with_gtk_for_xid (Window xid)
       }
   };
 
-  XSelectInput (GDK_DISPLAY (), xid,
+  XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
+                xid,
                 StructureNotifyMask |
                 ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
                 FocusChangeMask |
