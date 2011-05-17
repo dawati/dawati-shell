@@ -20,7 +20,6 @@ dbus_h = 	$(srcdir)/$(DBUS_GLUE) 			\
 source_h =	$(srcdir)/marshal.h			\
 		$(srcdir)/../libdawati-panel/dawati-panel/mpl-panel-common.h \
 		$(srcdir)/dawati-netbook.h		\
-		$(srcdir)/dawati-netbook-constraints.h	\
 		$(srcdir)/dawati-netbook-mutter-hints.h	\
 		$(srcdir)/mnb-spinner.h			\
 		$(srcdir)/mnb-input-manager.h		\
@@ -36,7 +35,6 @@ source_h =	$(srcdir)/marshal.h			\
 
 source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/dawati-netbook.c		\
-		$(srcdir)/dawati-netbook-constraints.c	\
 		$(srcdir)/dawati-netbook-mutter-hints.c	\
 		$(srcdir)/mnb-spinner.c			\
 		$(srcdir)/marshal.c                   	\
