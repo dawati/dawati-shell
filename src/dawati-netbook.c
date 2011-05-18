@@ -1603,6 +1603,8 @@ dawati_netbook_fullscreen_apps_present (MutterPlugin *plugin)
   return dawati_netbook_fullscreen_apps_present_on_workspace (plugin, active);
 }
 
+void meta_window_actor_detach (MetaWindowActor *actor);
+
 static void
 dawati_netbook_detach_mutter_windows (MetaScreen *screen)
 {
@@ -1614,7 +1616,8 @@ dawati_netbook_detach_mutter_windows (MetaScreen *screen)
       if (m)
         {
           /* we need to repair the window pixmap here */
-          mutter_window_detach (m);
+          meta_window_actor_unmapped (m);
+          meta_window_actor_mapped (m);
         }
 
       l = l->next;
