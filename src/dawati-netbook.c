@@ -2269,8 +2269,10 @@ setup_screen_saver (MutterPlugin *plugin)
   meta_error_trap_pop (display, FALSE);
 }
 
-GdkRegion *mutter_window_get_obscured_region (MutterWindow *cw);
-gboolean   mutter_window_effect_in_progress (MutterWindow *self);
+#pragma TODO: Change the code to use cairo_region_t
+#if 0
+GdkRegion *meta_window_actor_get_obscured_region (MetaWindowActor *cw);
+gboolean   meta_window_actor_effect_in_progress (MetaWindowActor *self);
 
 /*
  * Based on the occlusion code in MutterWindowGroup
@@ -2338,6 +2340,7 @@ mnb_get_background_visible_region (MetaScreen *screen)
 
   return visible_region;
 }
+#endif
 
 /*
  * Based on mutter_shaped_texture_paint()
@@ -2368,11 +2371,13 @@ mnb_desktop_texture_paint (ClutterActor *actor,
   gfloat vw = 0.5, vh = 0.5;    /* scaled texture half-size */
 
   ClutterActorBox alloc;
-  GdkRegion *visible_region = NULL;
   gboolean retval = TRUE;
 
+#pragma TODO: Need to update to paint sub-region
+#if 0
   if (!complete)
     {
+      GdkRegion *visible_region = NULL;
       visible_region = mnb_get_background_visible_region (screen);
 
       /*
@@ -2384,6 +2389,9 @@ mnb_desktop_texture_paint (ClutterActor *actor,
       else if (gdk_region_empty (visible_region))
         goto finish_up;
     }
+#else
+  complete = TRUE;
+#endif
 
   if (!CLUTTER_ACTOR_IS_REALIZED (actor))
     clutter_actor_realize (actor);
@@ -2460,6 +2468,8 @@ mnb_desktop_texture_paint (ClutterActor *actor,
       else
         return FALSE;
     }
+#pragma TODO: Need to re-enable
+#if 0
   else if (!gdk_region_empty (visible_region))
     {
       GdkRectangle *rects;
@@ -2558,9 +2568,13 @@ mnb_desktop_texture_paint (ClutterActor *actor,
 	  cogl_rectangles_with_texture_coords (coords, n_rects);
 	}
     }
+#endif
 
  finish_up:
+
+#if 0
   gdk_region_destroy (visible_region);
+#endif
   return retval;
 }
 
