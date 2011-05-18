@@ -487,7 +487,8 @@ ntf_tray_notification_closed_cb (NtfNotification *ntf, NtfTray *tray)
   if (priv->n_notifiers == 0)
     {
       priv->active_notifier = NULL;
-      mnb_notification_gtk_hide ();
+#pragma TODO
+      /* mnb_notification_gtk_hide (); */
     }
   else if (priv->n_notifiers == 1)
     {
@@ -535,7 +536,8 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
 
   if (dawati_netbook_compositor_disabled (plugin))
     {
-      mnb_notification_gtk_show ();
+ #pragma TODO
+      /* mnb_notification_gtk_show (); */
     }
 
   g_signal_connect (ntf, "closed",
