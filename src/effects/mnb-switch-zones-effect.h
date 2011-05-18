@@ -26,9 +26,9 @@
 
 #include "../dawati-netbook.h"
 
-void     mnb_switch_zones_effect (MutterPlugin         *plugin,
-                                  gint                  from,
-                                  gint                  to,
-                                  MetaMotionDirection   direction);
+void     mnb_switch_zones_effect (MetaPlugin         *plugin,
+                                  gint                from,
+                                  gint                to,
+                                  MetaMotionDirection direction);
 
 #endif

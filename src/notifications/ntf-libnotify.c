@@ -73,13 +73,14 @@ static void
 ntf_libnotify_update_modal (void)
 {
   NtfTray      *tray = ntf_overlay_get_tray (TRUE);
-  MutterPlugin *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin *plugin = dawati_netbook_get_plugin_singleton ();
 
   if (ntf_tray_get_n_notifications (tray) > 0)
     {
       if (!overlay_focused)
         {
-          ClutterActor *stage = mutter_plugin_get_stage (plugin);
+          MetaScreen   *screen = meta_plugin_get_screen (plugin);
+          ClutterActor *stage = meta_get_stage_for_screen (screen);
           MxFocusManager *manager =
             mx_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
 

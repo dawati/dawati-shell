@@ -28,7 +28,7 @@
 #include <mx/mx.h>
 #include "mnb-alttab.h"
 
-#include  <mutter-window.h>
+#include  <meta/meta-window-actor.h>
 
 #define MNB_ALTTAB_OVERLAY_TILE_WIDTH   200
 #define MNB_ALTTAB_OVERLAY_TILE_HEIGHT  130
@@ -78,13 +78,13 @@ MnbAlttabOverlay *mnb_alttab_overlay_new (void);
  * Xevent hook for the alt+tab code
  */
 gboolean    mnb_alttab_overlay_handle_xevent (MnbAlttabOverlay *overlay,
-                                              XEvent             *xev);
+                                              XEvent           *xev);
 
 gboolean mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward);
 void     mnb_alttab_overlay_hide (MnbAlttabOverlay *overlay);
 void     mnb_alttab_overlay_activate_window (MnbAlttabOverlay *overlay,
-                                             MutterWindow       *activate,
-                                             guint               timestamp);
+                                             MetaWindowActor  *activate,
+                                             guint             timestamp);
 void     mnb_alttab_reset_autoscroll (MnbAlttabOverlay *overlay,
                                       gboolean          backward);
 

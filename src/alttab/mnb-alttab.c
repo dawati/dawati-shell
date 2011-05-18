@@ -45,7 +45,7 @@
 #include "../dawati-netbook.h"
 #include "../mnb-toolbar.h"
 
-#include <display.h>
+#include <meta/display.h>
 
 /*
  * Establishes an active kbd grab for us via the Meta API.
@@ -100,11 +100,11 @@ void
 end_kbd_grab (MnbAlttabOverlay *overlay)
 {
   MnbAlttabOverlayPrivate *priv   = overlay->priv;
-  MutterPlugin            *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin              *plugin = dawati_netbook_get_plugin_singleton ();
 
   if (priv->in_alt_grab)
     {
-      MetaScreen  *screen  = mutter_plugin_get_screen (plugin);
+      MetaScreen  *screen  = meta_plugin_get_screen (plugin);
       MetaDisplay *display = meta_screen_get_display (screen);
       guint        timestamp;
 
@@ -146,9 +146,9 @@ alt_tab_initial_timeout_cb (gpointer data)
   ClutterActor              *stage;
   Window                     xwin;
   MnbAlttabOverlayPrivate   *priv = alt_data->overlay->priv;
-  MutterPlugin              *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin                *plugin = dawati_netbook_get_plugin_singleton ();
 
-  stage = mutter_get_stage_for_screen (alt_data->screen);
+  stage = meta_get_stage_for_screen (alt_data->screen);
   xwin  = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
   priv->waiting_for_timeout = FALSE;
@@ -202,30 +202,31 @@ alt_tab_initial_timeout_cb (gpointer data)
 static gboolean
 applications_present (void)
 {
-  MutterPlugin               *plugin = dawati_netbook_get_plugin_singleton ();
-  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
-  gint                        count  = 0;
-  GList                      *l;
+  MetaPlugin               *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaScreen               *screen = meta_plugin_get_screen (plugin);
+  gint                      count  = 0;
+  GList                    *l;
 
   /*
    * Check for running applications; we do this by checking if any
    * application-type windows are present.
    */
-  l = mutter_get_windows (screen);
+  l = meta_get_window_actors (screen);
 
   while (l)
     {
-      MutterWindow       *m    = l->data;
-      MetaCompWindowType  type = mutter_window_get_window_type (m);
+      MetaWindowActor     *m   = l->data;
+      MetaWindow          *w   = meta_window_actor_get_meta_window (m);
+      MetaWindowType       type = meta_window_get_window_type (w);
 
       /*
        * Ignore desktop, docs, and panel windows
        *
        * (Panel windows are currently of type META_COMP_WINDOW_OVERRIDE_OTHER)
        */
-      if (!(type == META_COMP_WINDOW_DESKTOP        ||
-            type == META_COMP_WINDOW_DOCK           ||
-            type == META_COMP_WINDOW_OVERRIDE_OTHER))
+      if (!(type == META_WINDOW_DESKTOP        ||
+            type == META_WINDOW_DOCK           ||
+            type == META_WINDOW_OVERRIDE_OTHER))
         {
           if (++count >= 2)
             break;
@@ -253,7 +254,7 @@ mnb_alttab_overlay_alt_tab_key_handler (MetaDisplay    *display,
 {
   MnbAlttabOverlay           *overlay = MNB_ALTTAB_OVERLAY (data);
   MnbAlttabOverlayPrivate    *priv    = overlay->priv;
-  MutterPlugin               *plugin  = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin                 *plugin  = dawati_netbook_get_plugin_singleton ();
   MetaWindow                 *focus;
 
   if (dawati_netbook_urgent_notification_present (plugin))
@@ -462,7 +463,7 @@ mnb_alttab_overlay_alt_tab_select_handler (MetaDisplay    *display,
 {
   MnbAlttabOverlay           *overlay = MNB_ALTTAB_OVERLAY (data);
   MnbAlttabOverlayPrivate    *priv    = overlay->priv;
-  MutterPlugin               *plugin  = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin                 *plugin  = dawati_netbook_get_plugin_singleton ();
 
   end_kbd_grab (overlay);
 

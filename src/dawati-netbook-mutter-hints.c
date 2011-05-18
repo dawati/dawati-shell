@@ -1,5 +1,5 @@
 #include "dawati-netbook-mutter-hints.h"
-#include "window.h"
+#include <meta/window.h>
 
 #include <string.h>
 

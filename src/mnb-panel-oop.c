@@ -35,8 +35,9 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <dawati-panel/mpl-panel-common.h>
-#include <display.h>
-#include <errors.h>
+#include <meta/display.h>
+#include <meta/errors.h>
+#include <clutter/x11/clutter-x11.h>
 
 /*
  * Including mutter's errors.h defines the i18n macros, so undefine them before
@@ -118,7 +119,7 @@ struct _MnbPanelOopPrivate
   guint            width;
   guint            height;
 
-  MutterWindow    *mcw;
+  MetaWindowActor *mcw;
 
   gboolean         constructed      : 1;
   gboolean         initialized      : 1;
@@ -700,14 +701,15 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
       unsigned long n_items;
       unsigned long r_after;
       char *r_prop;
-      MutterPlugin *plugin = dawati_netbook_get_plugin_singleton ();
+      MetaPlugin *plugin = dawati_netbook_get_plugin_singleton ();
       MetaDisplay *display;
 
-      display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+      display = meta_screen_get_display (meta_plugin_get_screen (plugin));
 
       meta_error_trap_push (display);
 
-      if (Success == XGetWindowProperty (GDK_DISPLAY (), xid, XA_WM_CLASS,
+      if (Success == XGetWindowProperty (clutter_x11_get_default_display (),
+                                         xid, XA_WM_CLASS,
                                          0, 8192,
                                          False, XA_STRING,
                                          &r_type, &r_fmt, &n_items, &r_after,
@@ -731,7 +733,7 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
             }
         }
 
-      meta_error_trap_pop (display, TRUE);
+      meta_error_trap_pop (display);
     }
 
   priv->dead = FALSE;
@@ -1008,7 +1010,7 @@ mnb_panel_oop_mutter_window_destroy_cb (ClutterActor *actor, gpointer data)
 }
 
 void
-mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw)
+mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MetaWindowActor *mcw)
 {
   MnbPanelOopPrivate *priv;
 
@@ -1102,7 +1104,7 @@ mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
                                            NULL);
 }
 
-MutterWindow *
+MetaWindowActor *
 mnb_panel_oop_get_mutter_window (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
@@ -1115,7 +1117,7 @@ mnb_panel_oop_get_mutter_window (MnbPanelOop *panel)
  * and belongs to the same window class.
  */
 gboolean
-mnb_panel_oop_owns_window (MnbPanelOop *panel, MutterWindow *mcw)
+mnb_panel_oop_owns_window (MnbPanelOop *panel, MetaWindowActor *mcw)
 {
   MnbPanelOopPrivate *priv = panel->priv;
   const gchar        *wclass;
@@ -1124,12 +1126,12 @@ mnb_panel_oop_owns_window (MnbPanelOop *panel, MutterWindow *mcw)
   if (!mcw)
     return FALSE;
 
-  xid = mutter_window_get_x_window (mcw);
+  xid = meta_window_actor_get_x_window (mcw);
 
   if (xid == priv->xid)
     return TRUE;
 
-  wclass = meta_window_get_wm_class (mutter_window_get_meta_window (mcw));
+  wclass = meta_window_get_wm_class (meta_window_actor_get_meta_window (mcw));
 
   if (priv->child_class && wclass && !strcmp (priv->child_class, wclass))
     return TRUE;
@@ -1142,10 +1144,10 @@ mnb_panel_oop_owns_window (MnbPanelOop *panel, MutterWindow *mcw)
  * and transient for it.
  */
 gboolean
-mnb_panel_oop_is_ancestor_of_transient (MnbPanelOop *panel, MutterWindow *mcw)
+mnb_panel_oop_is_ancestor_of_transient (MnbPanelOop *panel, MetaWindowActor *mcw)
 {
-  MutterWindow *pcw;
-  MetaWindow   *pmw, *mw;
+  MetaWindowActor *pcw;
+  MetaWindow      *pmw, *mw;
 
   if (!panel)
     return FALSE;
@@ -1155,8 +1157,8 @@ mnb_panel_oop_is_ancestor_of_transient (MnbPanelOop *panel, MutterWindow *mcw)
   if (!pcw || pcw == mcw)
     return FALSE;
 
-  pmw = mutter_window_get_meta_window (pcw);
-  mw  = mutter_window_get_meta_window (mcw);
+  pmw = meta_window_actor_get_meta_window (pcw);
+  mw  = meta_window_actor_get_meta_window (mcw);
 
   return meta_window_is_ancestor_of_transient (pmw, mw);
 }
@@ -1280,7 +1282,7 @@ static void
 mnb_panel_oop_show_animate (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
-  MutterPlugin    *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin         *plugin = dawati_netbook_get_plugin_singleton ();
   gfloat x, y;
   gfloat height, width;
   ClutterAnimation *animation;
@@ -1411,7 +1413,7 @@ static void
 mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
-  MutterPlugin       *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin         *plugin = dawati_netbook_get_plugin_singleton ();
 
   priv->hide_anim = NULL;
   priv->hide_completed_id = 0;
@@ -1434,11 +1436,11 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
   priv->in_hide_animation = FALSE;
   g_signal_emit_by_name (panel, "hide-completed");
 
-  mutter_plugin_destroy_completed (plugin, priv->mcw);
+  meta_plugin_destroy_completed (plugin, priv->mcw);
 }
 
 void
-mnb_panel_oop_hide_animate (MnbPanelOop *panel, MutterWindow *mcw)
+mnb_panel_oop_hide_animate (MnbPanelOop *panel, MetaWindowActor *mcw)
 {
   MnbPanelOopPrivate  *priv = panel->priv;
   ClutterAnimation    *animation;

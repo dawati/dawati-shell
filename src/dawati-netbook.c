@@ -36,11 +36,11 @@
 #include "dawati-netbook-mutter-hints.h"
 #include "notifications/ntf-overlay.h"
 
-#include <compositor-mutter.h>
-#include <display.h>
-#include <prefs.h>
-#include <keybindings.h>
-#include <errors.h>
+#include <meta/compositor-mutter.h>
+#include <meta/display.h>
+#include <meta/prefs.h>
+#include <meta/keybindings.h>
+#include <meta/errors.h>
 #include <X11/extensions/scrnsaver.h>
 
 /*
@@ -90,63 +90,63 @@ static const GDebugKey options_keys[] =
   { "composite-fullscreen-apps",  MNB_OPTION_COMPOSITE_FULLSCREEN_APPS },
 };
 
-static MutterPlugin *plugin_singleton = NULL;
+static MetaPlugin *plugin_singleton = NULL;
 
 /* callback data for when animations complete */
 typedef struct
 {
   ClutterActor *actor;
-  MutterPlugin *plugin;
+  MetaPlugin *plugin;
 } EffectCompleteData;
 
-static void desktop_background_init (MutterPlugin *plugin);
-static void setup_focus_window (MutterPlugin *plugin);
-static void setup_screen_saver (MutterPlugin *plugin);
+static void desktop_background_init (MetaPlugin *plugin);
+static void setup_focus_window (MetaPlugin *plugin);
+static void setup_screen_saver (MetaPlugin *plugin);
 
-static void fullscreen_app_added (MutterPlugin *, MetaWindow *);
-static void fullscreen_app_removed (MutterPlugin *, MetaWindow *);
+static void fullscreen_app_added (MetaPlugin *, MetaWindow *);
+static void fullscreen_app_removed (MetaPlugin *, MetaWindow *);
 static void meta_window_fullscreen_notify_cb (GObject    *object,
                                               GParamSpec *spec,
                                               gpointer    data);
-static void dawati_netbook_toggle_compositor (MutterPlugin *, gboolean on);
-static void window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin);
-static void dawati_netbook_handle_screen_size (MutterPlugin *plugin,
-                                               gint         *screen_width,
-                                               gint         *screen_height);
+static void dawati_netbook_toggle_compositor (MetaPlugin *, gboolean on);
+static void window_destroyed_cb (MetaWindowActor *mcw, MetaPlugin *plugin);
+static void dawati_netbook_handle_screen_size (MetaPlugin *plugin,
+                                              gint       *screen_width,
+                                              gint       *screen_height);
 
 static void last_focus_weak_notify_cb (gpointer data, GObject *meta_win);
 
 static GQuark actor_data_quark = 0;
 
-static void     check_for_empty_workspace (MutterPlugin *plugin,
+static void     check_for_empty_workspace (MetaPlugin *plugin,
                                            gint workspace, MetaWindow *ignore,
                                            gboolean win_destroyed);
-static void     minimize   (MutterPlugin *plugin,
-                            MutterWindow *actor);
-static void     map        (MutterPlugin *plugin,
-                            MutterWindow *actor);
-static void     destroy    (MutterPlugin *plugin,
-                            MutterWindow *actor);
-static void     switch_workspace (MutterPlugin         *plugin,
-                                  gint                  from,
-                                  gint                  to,
-                                  MetaMotionDirection   direction);
-static void     maximize   (MutterPlugin *plugin,
-                            MutterWindow *actor,
+static void     minimize   (MetaPlugin *plugin,
+                            MetaWindowActor *actor);
+static void     map        (MetaPlugin *plugin,
+                            MetaWindowActor *actor);
+static void     destroy    (MetaPlugin *plugin,
+                            MetaWindowActor *actor);
+static void     switch_workspace (MetaPlugin          *plugin,
+                                  gint                 from,
+                                  gint                 to,
+                                  MetaMotionDirection  direction);
+static void     maximize   (MetaPlugin *plugin,
+                            MetaWindowActor *actor,
                             gint x, gint y, gint width, gint height);
-static void     unmaximize (MutterPlugin *plugin,
-                            MutterWindow *actor,
+static void     unmaximize (MetaPlugin *plugin,
+                            MetaWindowActor *actor,
                             gint x, gint y, gint width, gint height);
 
-static void     kill_window_effects (MutterPlugin *plugin,
-                                     MutterWindow *actor);
-static void     kill_switch_workspace (MutterPlugin *plugin);
+static void     kill_window_effects (MetaPlugin *plugin,
+                                     MetaWindowActor *actor);
+static void     kill_switch_workspace (MetaPlugin *plugin);
 
-static const MutterPluginInfo * plugin_info (MutterPlugin *plugin);
+static const MetaPluginInfo * plugin_info (MetaPlugin *plugin);
 
-static gboolean xevent_filter (MutterPlugin *plugin, XEvent *xev);
+static gboolean xevent_filter (MetaPlugin *plugin, XEvent *xev);
 
-MUTTER_PLUGIN_DECLARE (DawatiNetbookPlugin, dawati_netbook_plugin);
+META_PLUGIN_DECLARE (DawatiNetbookPlugin, dawati_netbook_plugin);
 
 /*
  * Actor private data accessor
@@ -159,7 +159,7 @@ free_actor_private (gpointer data)
 }
 
 ActorPrivate *
-get_actor_private (MutterWindow *actor)
+get_actor_private (MetaWindowActor *actor)
 {
   ActorPrivate *priv = g_object_get_qdata (G_OBJECT (actor), actor_data_quark);
 
@@ -234,7 +234,7 @@ dawati_netbook_plugin_get_property (GObject    *object,
  * position of which is fixed and depends on the screen size.
  */
 static void
-dawati_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
+dawati_netbook_workarea_changed_cb (MetaScreen *screen, MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   gint                        screen_width, screen_height;
@@ -246,7 +246,7 @@ dawati_netbook_workarea_changed_cb (MetaScreen *screen, MutterPlugin *plugin)
 }
 
 static void
-dawati_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
+dawati_netbook_overlay_key_cb (MetaDisplay *display, MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -277,8 +277,8 @@ dawati_netbook_overlay_key_cb (MetaDisplay *display, MutterPlugin *plugin)
 }
 
 static gboolean
-dawati_netbook_fullscreen_apps_present_on_workspace (MutterPlugin *plugin,
-                                                     gint          index)
+dawati_netbook_fullscreen_apps_present_on_workspace (MetaPlugin *plugin,
+                                                    gint          index)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   GList *l;
@@ -306,10 +306,10 @@ dawati_netbook_fullscreen_apps_present_on_workspace (MutterPlugin *plugin,
 
 static void
 dawati_netbook_workspace_switched_cb (MetaScreen          *screen,
-                                      gint                 from,
-                                      gint                 to,
-                                      MetaMotionDirection  dir,
-                                      MutterPlugin        *plugin)
+                                     gint                 from,
+                                     gint                 to,
+                                     MetaMotionDirection  dir,
+                                     MetaPlugin          *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   gboolean on;
@@ -327,10 +327,10 @@ dawati_netbook_workspace_switched_cb (MetaScreen          *screen,
 
 static void
 dawati_netbook_compute_screen_size (Display  *xdpy,
-                                    gint      screen_no,
-                                    gint     *width_mm,
-                                    gint     *height_mm,
-                                    gboolean *external)
+                                   gint      screen_no,
+                                   gint     *width_mm,
+                                   gint     *height_mm,
+                                   gboolean *external)
 {
   Window                  xroot = RootWindow (xdpy, screen_no);
   XRRScreenSize          *sizes;
@@ -398,12 +398,12 @@ dawati_netbook_compute_screen_size (Display  *xdpy,
 }
 
 static void
-dawati_netbook_panel_window_show_cb (MutterWindow *mcw, MutterPlugin *plugin)
+dawati_netbook_panel_window_show_cb (MetaWindowActor *mcw, MetaPlugin *plugin)
 {
-  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+  DawatiNetbookPluginPrivate  *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   MnbPanel                   *panel;
-  Window                      xwin = mutter_window_get_x_window (mcw);
+  Window                      xwin = meta_window_actor_get_x_window (mcw);
 
   if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
     mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
@@ -415,25 +415,25 @@ dawati_netbook_panel_window_show_cb (MutterWindow *mcw, MutterPlugin *plugin)
 
 static void
 dawati_netbook_display_window_created_cb (MetaDisplay  *display,
-                                          MetaWindow   *win,
-                                          MutterPlugin *plugin)
+                                         MetaWindow   *win,
+                                         MetaPlugin   *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
-  MutterWindow               *mcw;
-  MetaCompWindowType          type;
+  MetaWindowActor            *mcw;
+  MetaWindowType              type;
   MnbPanel                   *panel;
 
-  mcw =  (MutterWindow*) meta_window_get_compositor_private (win);
+  mcw =  (MetaWindowActor*) meta_window_get_compositor_private (win);
 
   g_return_if_fail (mcw);
 
-  type = mutter_window_get_window_type (mcw);
+  type = meta_window_get_window_type (win);
 
-  if (type == META_COMP_WINDOW_DOCK)
+  if (type == META_WINDOW_DOCK)
     {
       MnbPanel    *panel;
-      Window       xwin = mutter_window_get_x_window (mcw);
+      Window       xwin = meta_window_actor_get_x_window (mcw);
       const gchar *wm_class;
 
       if ((panel = mnb_toolbar_find_panel_for_xid (toolbar, xwin)))
@@ -457,7 +457,7 @@ dawati_netbook_display_window_created_cb (MetaDisplay  *display,
         }
     }
 
-  if (mutter_window_is_override_redirect (mcw))
+  if (meta_window_actor_is_override_redirect (mcw))
     {
       const gchar *wm_class = meta_window_get_wm_class (win);
 
@@ -482,26 +482,26 @@ dawati_netbook_display_window_created_cb (MetaDisplay  *display,
 
 static void
 dawati_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
-                                               GParamSpec   *spec,
-                                               MutterPlugin *plugin)
+                                              GParamSpec   *spec,
+                                              MetaPlugin   *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   MetaWindow                 *mw   = meta_display_get_focus_window (display);
 
   if (mw && priv->last_focused != mw)
     {
-      MutterWindow       *mcw;
-      MetaCompWindowType  type;
-      Window              xwin;
+      MetaWindowActor       *mcw;
+      MetaWindowType         type;
+      Window                 xwin;
 
-      mcw  = (MutterWindow*) meta_window_get_compositor_private (mw);
-      type = mutter_window_get_window_type (mcw);
+      mcw  = (MetaWindowActor*) meta_window_get_compositor_private (mw);
+      type = meta_window_get_window_type (mw);
       xwin = meta_window_get_xwindow (mw);
 
       /*
        * Ignore panels and the toolbar focus window.
        */
-      if (type != META_COMP_WINDOW_DOCK &&
+      if (type != META_WINDOW_DOCK &&
           xwin != priv->focus_xwin      &&
           !meta_display_xwindow_is_a_no_focus_window (display, xwin))
         {
@@ -523,17 +523,17 @@ dawati_netbook_display_focus_window_notify_cb (MetaDisplay  *display,
 }
 
 static void
-dawati_netbook_handle_screen_size (MutterPlugin *plugin,
-                                   gint         *screen_width,
-                                   gint         *screen_height)
+dawati_netbook_handle_screen_size (MetaPlugin *plugin,
+                                  gint       *screen_width,
+                                  gint       *screen_height)
 {
   DawatiNetbookPluginPrivate *priv   = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
   MnbToolbar   *toolbar   = (MnbToolbar*)priv->toolbar;
-  MetaScreen   *screen    = mutter_plugin_get_screen (MUTTER_PLUGIN (plugin));
+  MetaScreen   *screen    = meta_plugin_get_screen (META_PLUGIN (plugin));
   MetaDisplay  *display   = meta_screen_get_display (screen);
   Display      *xdpy      = meta_display_get_xdisplay (display);
-  ClutterActor *stage     = mutter_get_stage_for_screen (screen);
+  ClutterActor *stage     = meta_get_stage_for_screen (screen);
   guint         screen_no = meta_screen_get_screen_number (screen);
   gint          screen_width_mm  = XDisplayWidthMM (xdpy, screen_no);
   gint          screen_height_mm = XDisplayHeightMM (xdpy, screen_no);
@@ -552,7 +552,7 @@ dawati_netbook_handle_screen_size (MutterPlugin *plugin,
    * and the second time if/when the Toolbar adusts it's struts. So do a check
    * here that the 'new' state is different from the old one.
    */
-  mutter_plugin_query_screen_size (plugin, screen_width, screen_height);
+  meta_plugin_query_screen_size (plugin, screen_width, screen_height);
 
   if (old_screen_width == *screen_width && old_screen_height == *screen_height)
     return;
@@ -599,7 +599,7 @@ dawati_netbook_handle_screen_size (MutterPlugin *plugin,
                    XA_STRING,
                    8, PropModeReplace,
                    (unsigned char*)dawati_session, strlen (dawati_session));
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 
   g_free (dawati_session);
 
@@ -643,12 +643,12 @@ dawati_netbook_handle_screen_size (MutterPlugin *plugin,
             mnb_toolbar_hide (toolbar, MNB_SHOW_HIDE_POLICY);
         }
 
-      meta_error_trap_pop (display, FALSE);
+      meta_error_trap_pop (display);
     }
 }
 
 static void
-dawati_netbook_plugin_start (MutterPlugin *plugin)
+dawati_netbook_plugin_start (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -659,9 +659,9 @@ dawati_netbook_plugin_start (MutterPlugin *plugin)
   gint          screen_width, screen_height;
   GError       *err = NULL;
 
-  MetaScreen   *screen    = mutter_plugin_get_screen (plugin);
+  MetaScreen   *screen    = meta_plugin_get_screen (plugin);
   MetaDisplay  *display   = meta_screen_get_display (screen);
-  ClutterActor *stage     = mutter_get_stage_for_screen (screen);
+  ClutterActor *stage     = meta_get_stage_for_screen (screen);
   GConfClient  *gconf_client;
 
   plugin_singleton = plugin;
@@ -723,7 +723,7 @@ dawati_netbook_plugin_start (MutterPlugin *plugin)
                     G_CALLBACK (dawati_netbook_display_focus_window_notify_cb),
                     plugin);
 
-  overlay = mutter_plugin_get_overlay_group (plugin);
+  overlay = meta_plugin_get_overlay_group (plugin);
 
   mnb_input_manager_create (plugin);
 
@@ -772,44 +772,14 @@ dawati_netbook_plugin_start (MutterPlugin *plugin)
 
   /* Keys */
 
-  meta_prefs_override_no_tab_popup (TRUE);
-}
-
-static MutterShadow *
-dawati_netbook_get_shadow (MutterPlugin *plugin, MutterWindow *mcw)
-{
-  MetaCompWindowType type;
-
-  type = mutter_window_get_window_type (mcw);
-
-  if (type == META_COMP_WINDOW_DOCK)
-    {
-      MutterShadow *shadow = mutter_shadow_new ();
-      MxPadding     padding;
-
-      shadow->actor = (ClutterActor*) mnb_panel_frame_new ();
-
-      mx_stylable_style_changed (MX_STYLABLE (shadow->actor),
-                                 MX_STYLE_CHANGED_FORCE);
-
-      mx_widget_get_padding (MX_WIDGET (shadow->actor), &padding);
-
-      shadow->attach_left   = -padding.left;
-      shadow->attach_top    = -padding.top;
-      shadow->attach_right  =  padding.right;
-      shadow->attach_bottom =  padding.bottom;
-
-      return shadow;
-    }
-
-  return NULL;
+  meta_prefs_set_no_tab_popup (TRUE);
 }
 
 static void
 dawati_netbook_plugin_class_init (DawatiNetbookPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
-  MutterPluginClass *plugin_class  = MUTTER_PLUGIN_CLASS (klass);
+  MetaPluginClass   *plugin_class  = META_PLUGIN_CLASS (klass);
 
   gobject_class->finalize        = dawati_netbook_plugin_finalize;
   gobject_class->dispose         = dawati_netbook_plugin_dispose;
@@ -872,10 +842,10 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
    * Must reverse the effect of the effect; must hide it first to ensure
    * that the restoration will not be visible.
    */
-  MutterPlugin *plugin = data->plugin;
+  MetaPlugin *plugin = data->plugin;
   ActorPrivate *apriv;
-  MutterWindow *mcw = MUTTER_WINDOW (data->actor);
-  MetaWindow   *mw  = mutter_window_get_meta_window (mcw);
+  MetaWindowActor *mcw = (MetaWindowActor *) (data->actor);
+  MetaWindow   *mw  = meta_window_actor_get_meta_window (mcw);
   MetaWorkspace *ws = meta_window_get_workspace (mw);
   int ws_index = meta_workspace_index (ws);
 
@@ -889,7 +859,7 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_minimize_completed (plugin, mcw);
+  meta_plugin_minimize_completed (plugin, mcw);
 
   check_for_empty_workspace (plugin, ws_index, mw, TRUE);
 }
@@ -899,15 +869,15 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
  * completion).
  */
 static void
-minimize (MutterPlugin * plugin, MutterWindow *mcw)
+minimize (MetaPlugin * plugin, MetaWindowActor *mcw)
 
 {
-  MetaCompWindowType type;
+  MetaWindowType type;
   ClutterActor      *actor  = CLUTTER_ACTOR (mcw);
 
-  type = mutter_window_get_window_type (mcw);
+  type = meta_window_get_window_type (meta_window_actor_get_meta_window (mcw));
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  if (type == META_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mcw);
       ClutterAnimation *animation;
@@ -934,7 +904,7 @@ minimize (MutterPlugin * plugin, MutterWindow *mcw)
                         data);
     }
   else
-    mutter_plugin_minimize_completed (plugin, mcw);
+    meta_plugin_minimize_completed (plugin, mcw);
 }
 
 /*
@@ -947,8 +917,8 @@ on_maximize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
   /*
    * Must reverse the effect of the effect.
    */
-  MutterPlugin *plugin = data->plugin;
-  MutterWindow *mcw    = MUTTER_WINDOW (data->actor);
+  MetaPlugin *plugin = data->plugin;
+  MetaWindowActor *mcw = (MetaWindowActor *) (data->actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_maximize = NULL;
@@ -958,7 +928,7 @@ on_maximize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_maximize_completed (plugin, mcw);
+  meta_plugin_maximize_completed (plugin, mcw);
 
   g_free (data);
 }
@@ -972,20 +942,20 @@ on_maximize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
  * (Something like a sound would be more appropriate.)
  */
 static void
-maximize (MutterPlugin *plugin, MutterWindow *mcw,
+maximize (MetaPlugin *plugin, MetaWindowActor *mcw,
           gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  ClutterActor               *actor = CLUTTER_ACTOR (mcw);
-  MetaCompWindowType          type;
+  ClutterActor           *actor = CLUTTER_ACTOR (mcw);
+  MetaWindowType          type;
 
   gdouble  scale_x  = 1.0;
   gdouble  scale_y  = 1.0;
   gfloat   anchor_x = 0;
   gfloat   anchor_y = 0;
 
-  type = mutter_window_get_window_type (mcw);
+  type = meta_window_get_window_type (meta_window_actor_get_meta_window (mcw));
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  if (type == META_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mcw);
       ClutterAnimation *animation;
@@ -1029,7 +999,7 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
       return;
     }
 
-  mutter_plugin_maximize_completed (plugin, mcw);
+  meta_plugin_maximize_completed (plugin, mcw);
 }
 
 /*
@@ -1038,14 +1008,14 @@ maximize (MutterPlugin *plugin, MutterWindow *mcw,
  * (Just a skeleton code.)
  */
 static void
-unmaximize (MutterPlugin *plugin, MutterWindow *mcw,
+unmaximize (MetaPlugin *plugin, MetaWindowActor *mcw,
             gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MetaCompWindowType  type;
+  MetaWindowType  type;
 
-  type = mutter_window_get_window_type (mcw);
+  type = meta_window_get_window_type (meta_window_actor_get_meta_window (mcw));
 
-  if (type == META_COMP_WINDOW_NORMAL)
+  if (type == META_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mcw);
 
@@ -1053,15 +1023,15 @@ unmaximize (MutterPlugin *plugin, MutterWindow *mcw,
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
-  mutter_plugin_unmaximize_completed (plugin, mcw);
+  meta_plugin_unmaximize_completed (plugin, mcw);
 }
 
 static void
-dawati_netbook_move_window_to_workspace (MutterWindow *mcw,
+dawati_netbook_move_window_to_workspace (MetaWindowActor *mcw,
                                          gint          workspace_index,
                                          guint32       timestamp)
 {
-  MetaWindow  *mw      = mutter_window_get_meta_window (mcw);
+  MetaWindow  *mw      = meta_window_actor_get_meta_window (mcw);
   MetaScreen  *screen  = meta_window_get_screen (mw);
 
   g_return_if_fail (mw && workspace_index > -2);
@@ -1103,11 +1073,11 @@ dawati_netbook_move_window_to_workspace (MutterWindow *mcw,
 }
 
 static void
-dawati_netbook_move_window_to_its_workspace (MutterPlugin *plugin,
-                                             MutterWindow *mcw,
+dawati_netbook_move_window_to_its_workspace (MetaPlugin *plugin,
+                                             MetaWindowActor *mcw,
                                              guint32       timestamp)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
   gint index;
   gint n_workspaces;
   gboolean append = TRUE;
@@ -1123,18 +1093,18 @@ dawati_netbook_move_window_to_its_workspace (MutterPlugin *plugin,
        * Mutter now treats all OR windows as sticky, and the -1 will trigger
        * false workspace switch.
        */
-      l = mutter_get_windows (screen);
+      l = meta_get_window_actors (screen);
 
       while (l)
         {
-          MutterWindow       *m    = l->data;
-          MetaWindow         *mw   = mutter_window_get_meta_window (m);
-          MetaCompWindowType  type = mutter_window_get_window_type (m);
+          MetaWindowActor    *m    = l->data;
+          MetaWindow         *mw   = meta_window_actor_get_meta_window (m);
+          MetaWindowType     type = meta_window_get_window_type (mw);
 
           if (m != mcw &&
-              (type == META_COMP_WINDOW_NORMAL) &&
+              (type == META_WINDOW_NORMAL) &&
               !meta_window_is_hidden (mw) &&
-              !mutter_window_is_override_redirect (m) &&
+              !meta_window_actor_is_override_redirect (m) &&
               !meta_window_is_on_all_workspaces (mw))
             {
               workspace_empty = FALSE;
@@ -1180,8 +1150,8 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
   /*
    * Must reverse the effect of the effect.
    */
-  MutterPlugin *plugin = data->plugin;
-  MutterWindow *mcw    = MUTTER_WINDOW (data->actor);
+  MetaPlugin *plugin = data->plugin;
+  MetaWindowActor *mcw = (MetaWindowActor *) (data->actor);
   ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_map = NULL;
@@ -1192,7 +1162,7 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
   g_free (data);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_map_completed (plugin, mcw);
+  meta_plugin_map_completed (plugin, mcw);
 }
 
 /*
@@ -1202,10 +1172,10 @@ on_map_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data)
  * as a one-of check.
  */
 static gboolean
-maybe_show_myzone (MutterPlugin *plugin)
+maybe_show_myzone (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  MetaScreen                 *screen = meta_plugin_get_screen (plugin);
   gboolean                    no_apps = TRUE;
   GList                      *l;
 
@@ -1219,27 +1189,27 @@ maybe_show_myzone (MutterPlugin *plugin)
    * Check for running applications; we do this by checking if any
    * application-type windows are present.
    */
-  l = mutter_get_windows (screen);
+  l = meta_get_window_actors (screen);
 
   while (l)
     {
-      MutterWindow       *m    = l->data;
-      MetaWindow         *mw   = mutter_window_get_meta_window (m);
-      MetaCompWindowType  type = mutter_window_get_window_type (m);
-      gboolean            minimized = mw && meta_window_is_skip_taskbar (mw);
+      MetaWindowActor *m         = (MetaWindowActor *) l->data;
+      MetaWindow      *mw        = meta_window_actor_get_meta_window (m);
+      MetaWindowType   type      = meta_window_get_window_type (mw);
+      gboolean         minimized = mw && meta_window_is_skip_taskbar (mw);
 
       /*
        * Ignore desktop, docs,panel windows and minimized windows
        *
-       * (Panel windows are currently of type META_COMP_WINDOW_OVERRIDE_OTHER)
+       * (Panel windows are currently of type META_WINDOW_OVERRIDE_OTHER)
        */
-      if (!(type == META_COMP_WINDOW_DESKTOP        ||
-            type == META_COMP_WINDOW_DOCK           ||
-            type == META_COMP_WINDOW_OVERRIDE_OTHER) &&
+      if (!(type == META_WINDOW_DESKTOP        ||
+            type == META_WINDOW_DOCK           ||
+            type == META_WINDOW_OVERRIDE_OTHER) &&
           !minimized)
         {
           /* g_debug ("Found singificant window %s of type %d", */
-          /*          mutter_window_get_description (m), type); */
+          /*          meta_window_actor_get_description (m), type); */
 
           no_apps = FALSE;
           break;
@@ -1257,11 +1227,11 @@ maybe_show_myzone (MutterPlugin *plugin)
 }
 
 static void
-check_for_empty_workspace (MutterPlugin *plugin,
+check_for_empty_workspace (MetaPlugin *plugin,
                            gint workspace, MetaWindow *ignore,
                            gboolean win_destroyed)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
   gboolean    workspace_empty = TRUE;
   GList      *l;
   Window      xwin = None;
@@ -1276,13 +1246,13 @@ check_for_empty_workspace (MutterPlugin *plugin,
   if (ignore)
     xwin = meta_window_get_xwindow (ignore);
 
-  l = mutter_get_windows (screen);
+  l = meta_get_window_actors (screen);
 
   while (l)
     {
-      MutterWindow *m  = l->data;
-      MetaWindow   *mw = mutter_window_get_meta_window (m);
-      Window        xt = meta_window_get_transient_for_as_xid (mw);
+      MetaWindowActor *m  = l->data;
+      MetaWindow      *mw = meta_window_actor_get_meta_window (m);
+      Window           xt = meta_window_get_transient_for_as_xid (mw);
 
       /*
        * We need to check this window is not the window we are too ignore.
@@ -1311,9 +1281,9 @@ check_for_empty_workspace (MutterPlugin *plugin,
                                                                      mw))))
         {
           /* g_debug ("querying workspace for [%s]", */
-          /*          mutter_window_get_description (m)); */
+          /*          meta_window_actor_get_description (m)); */
 
-          gint w = mutter_window_get_workspace (m);
+          gint w = meta_window_actor_get_workspace (m);
 
           if (w == workspace)
             {
@@ -1381,22 +1351,22 @@ check_for_empty_workspace (MutterPlugin *plugin,
  * the wm_name string, skipping the ignore window.
  */
 static gboolean
-check_for_windows_of_wm_class_and_name (MutterPlugin *plugin,
+check_for_windows_of_wm_class_and_name (MetaPlugin *plugin,
                                         const gchar  *wm_class,
                                         const gchar  *wm_name,
-                                        MutterWindow *ignore)
+                                        MetaWindowActor *ignore)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
   GList      *l;
 
   if (!wm_class)
     return FALSE;
 
-  l = mutter_get_windows (screen);
+  l = meta_get_window_actors (screen);
 
   while (l)
     {
-      MutterWindow *m = l->data;
+      MetaWindowActor *m = l->data;
 
       if (m != ignore)
         {
@@ -1404,7 +1374,7 @@ check_for_windows_of_wm_class_and_name (MutterPlugin *plugin,
           const gchar *klass;
           const gchar *name;
 
-          win   = mutter_window_get_meta_window (m);
+          win   = meta_window_actor_get_meta_window (m);
           klass = meta_window_get_wm_class (win);
           name  = meta_window_get_title (win);
 
@@ -1419,18 +1389,18 @@ check_for_windows_of_wm_class_and_name (MutterPlugin *plugin,
 }
 
 static void
-handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
+handle_window_destruction (MetaWindowActor *mcw, MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaCompWindowType          type;
-  gint                        workspace;
-  MetaWindow                 *meta_win;
-  const gchar                *wm_class;
-  const gchar                *wm_name;
+  MetaWindowType             type;
+  gint                       workspace;
+  MetaWindow                *meta_win;
+  const gchar               *wm_class;
+  const gchar               *wm_name;
 
-  type      = mutter_window_get_window_type (mcw);
-  workspace = mutter_window_get_workspace (mcw);
-  meta_win  = mutter_window_get_meta_window (mcw);
+  workspace = meta_window_actor_get_workspace (mcw);
+  meta_win  = meta_window_actor_get_meta_window (mcw);
+  type      = meta_window_get_window_type (meta_win);
   wm_class  = meta_window_get_wm_class (meta_win);
   wm_name   = meta_window_get_title (meta_win);
 
@@ -1453,9 +1423,9 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
                                         window_destroyed_cb,
                                         plugin);
 
-  if (type == META_COMP_WINDOW_NORMAL ||
-      type == META_COMP_WINDOW_DIALOG ||
-      type == META_COMP_WINDOW_MODAL_DIALOG)
+  if (type == META_WINDOW_NORMAL ||
+      type == META_WINDOW_DIALOG ||
+      type == META_WINDOW_MODAL_DIALOG)
     {
       /*
        * If the closed window is one of the main Skype windows, and no other
@@ -1509,14 +1479,14 @@ handle_window_destruction (MutterWindow *mcw, MutterPlugin *plugin)
    *     workspace switch effect will crash.
    */
 
-  if (type != META_COMP_WINDOW_SPLASHSCREEN &&
-      type != META_COMP_WINDOW_DOCK &&
+  if (type != META_WINDOW_SPLASHSCREEN &&
+      type != META_WINDOW_DOCK &&
       !mnb_toolbar_owns_window ((MnbToolbar*)priv->toolbar, mcw))
     check_for_empty_workspace (plugin, workspace, meta_win, TRUE);
 }
 
 static void
-window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin)
+window_destroyed_cb (MetaWindowActor *mcw, MetaPlugin *plugin)
 {
   handle_window_destruction (mcw, plugin);
 }
@@ -1532,7 +1502,7 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
                                   gint        old_workspace,
                                   gpointer    data)
 {
-  MutterPlugin *plugin = MUTTER_PLUGIN (data);
+  MetaPlugin *plugin = (MetaPlugin *) (data);
 
 #if 0
   /*
@@ -1557,7 +1527,7 @@ meta_window_workspace_changed_cb (MetaWindow *mw,
 }
 
 static void
-fullscreen_app_added (MutterPlugin *plugin, MetaWindow *mw)
+fullscreen_app_added (MetaPlugin *plugin, MetaWindow *mw)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   gboolean                    compositor_on;
@@ -1575,7 +1545,7 @@ fullscreen_app_added (MutterPlugin *plugin, MetaWindow *mw)
 }
 
 static void
-fullscreen_app_removed (MutterPlugin *plugin, MetaWindow *mw)
+fullscreen_app_removed (MetaPlugin *plugin, MetaWindow *mw)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   gboolean                    compositor_on;
@@ -1593,9 +1563,9 @@ fullscreen_app_removed (MutterPlugin *plugin, MetaWindow *mw)
 }
 
 gboolean
-dawati_netbook_fullscreen_apps_present (MutterPlugin *plugin)
+dawati_netbook_fullscreen_apps_present (MetaPlugin *plugin)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
   gint        active;
 
   active = meta_screen_get_active_workspace_index (screen);
@@ -1603,21 +1573,22 @@ dawati_netbook_fullscreen_apps_present (MutterPlugin *plugin)
   return dawati_netbook_fullscreen_apps_present_on_workspace (plugin, active);
 }
 
-void meta_window_actor_detach (MetaWindowActor *actor);
-
 static void
 dawati_netbook_detach_mutter_windows (MetaScreen *screen)
 {
-  GList* l = mutter_get_windows (screen);
+  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaCompositor *compositor = meta_display_get_compositor (display);
+  GList* l = meta_get_window_actors (screen);
 
   while (l)
     {
-      MutterWindow *m = l->data;
+      MetaWindowActor *m = l->data;
       if (m)
         {
+          MetaWindow *w = meta_window_actor_get_meta_window (m);
           /* we need to repair the window pixmap here */
-          meta_window_actor_unmapped (m);
-          meta_window_actor_mapped (m);
+          meta_compositor_window_unmapped (compositor, w);
+          meta_compositor_window_mapped (compositor, w);
         }
 
       l = l->next;
@@ -1625,7 +1596,7 @@ dawati_netbook_detach_mutter_windows (MetaScreen *screen)
 }
 
 static void
-dawati_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
+dawati_netbook_toggle_compositor (MetaPlugin *plugin, gboolean on)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   MetaScreen                 *screen;
@@ -1639,10 +1610,10 @@ dawati_netbook_toggle_compositor (MutterPlugin *plugin, gboolean on)
   if ((priv->compositor_disabled && !on) || (!priv->compositor_disabled && on))
     return;
 
-  screen  = mutter_plugin_get_screen (plugin);
-  xdpy    = mutter_plugin_get_xdisplay (plugin);
+  screen  = meta_plugin_get_screen (plugin);
+  xdpy    = meta_plugin_get_xdisplay (plugin);
   xroot   = meta_screen_get_xroot (screen);
-  overlay = mutter_get_overlay_window (screen);
+  overlay = meta_get_overlay_window (screen);
 
   if (!on)
     {
@@ -1739,7 +1710,7 @@ static gboolean
 dawati_netbook_window_is_modal_for_panel (MnbPanelOop *panel,
                                           MetaWindow  *window)
 {
-  MutterWindow *mcw;
+  MetaWindowActor *mcw;
   MetaWindow   *mw;
   MetaWindow   *trans_for;
 
@@ -1754,7 +1725,7 @@ dawati_netbook_window_is_modal_for_panel (MnbPanelOop *panel,
     }
 
   mcw = mnb_panel_oop_get_mutter_window (panel);
-  mw  = mutter_window_get_meta_window (mcw);
+  mw  = meta_window_actor_get_meta_window (mcw);
 
   if (trans_for == mw)
     return TRUE;
@@ -1763,7 +1734,7 @@ dawati_netbook_window_is_modal_for_panel (MnbPanelOop *panel,
 }
 
 static void
-dawati_netbook_panel_modal_destroyed_cb (MutterWindow *mcw,
+dawati_netbook_panel_modal_destroyed_cb (MetaWindowActor *mcw,
                                          MnbPanelOop  *panel)
 {
   mnb_panel_oop_set_auto_modal (panel, FALSE);
@@ -1789,12 +1760,12 @@ dawati_netbook_never_move_window (MetaWindow *mw)
  * completion).
  */
 static void
-map (MutterPlugin *plugin, MutterWindow *mcw)
+map (MetaPlugin *plugin, MetaWindowActor *mcw)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   MnbToolbar                 *toolbar = MNB_TOOLBAR (priv->toolbar);
   ClutterActor               *actor = CLUTTER_ACTOR (mcw);
-  MetaCompWindowType          type;
+  MetaWindowType              type;
   MnbPanelOop                *active_panel;
   Window                      xwin;
   MetaWindow                 *mw;
@@ -1802,9 +1773,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
   gboolean                    move_window = FALSE;
 
   active_panel = (MnbPanelOop*) mnb_toolbar_get_active_panel (toolbar);
-  type         = mutter_window_get_window_type (mcw);
-  xwin         = mutter_window_get_x_window (mcw);
-  mw           = mutter_window_get_meta_window (mcw);
+  xwin         = meta_window_actor_get_x_window (mcw);
+  mw           = meta_window_actor_get_meta_window (mcw);
+  type         = meta_window_get_window_type (mw);
 
   if (active_panel &&
       dawati_netbook_window_is_modal_for_panel (active_panel, mw))
@@ -1837,11 +1808,11 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
    * windows are both override redirect, but also have a _NET_WM_WINDOW_TYPE set
    * to NORMAL
    */
-  if (mutter_window_is_override_redirect (mcw))
+  if (meta_window_actor_is_override_redirect (mcw))
     {
       const gchar *wm_class = meta_window_get_wm_class (mw);
 
-      mutter_plugin_map_completed (plugin, mcw);
+      meta_plugin_map_completed (plugin, mcw);
 
       /*
        * If this is a SCIM window, ensure we have an input region for it on the
@@ -1851,7 +1822,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       if (wm_class && !strcmp (wm_class, "Scim-panel-gtk"))
         mnb_input_manager_push_window (mcw, MNB_INPUT_LAYER_TOP);
     }
-  else if (type == META_COMP_WINDOW_DOCK)
+  else if (type == META_WINDOW_DOCK)
     {
       MnbPanel *panel;
 
@@ -1886,30 +1857,30 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                * effect completes, we have to first let the compositor to do its
                * thing, and only then impose our will on it.
                */
-              mutter_plugin_map_completed (plugin, mcw);
+              meta_plugin_map_completed (plugin, mcw);
               mnb_panel_oop_show_mutter_window (MNB_PANEL_OOP (panel), mcw);
             }
           else
             {
-              mutter_plugin_map_completed (plugin, mcw);
+              meta_plugin_map_completed (plugin, mcw);
               mnb_panel_hide (panel);
             }
         }
       else
-        mutter_plugin_map_completed (plugin, mcw);
+        meta_plugin_map_completed (plugin, mcw);
     }
   /*
    * Anything that might be associated with startup notification needs to be
    * handled here; if this list grows, we should just split it further.
    */
-  else if (type == META_COMP_WINDOW_NORMAL ||
-           type == META_COMP_WINDOW_SPLASHSCREEN ||
-           type == META_COMP_WINDOW_DIALOG ||
-           type == META_COMP_WINDOW_MODAL_DIALOG)
+  else if (type == META_WINDOW_NORMAL ||
+           type == META_WINDOW_SPLASHSCREEN ||
+           type == META_WINDOW_DIALOG ||
+           type == META_WINDOW_MODAL_DIALOG)
     {
       ClutterAnimation   *animation;
       ActorPrivate       *apriv = get_actor_private (mcw);
-      MetaScreen        *screen = mutter_plugin_get_screen (plugin);
+      MetaScreen        *screen = meta_plugin_get_screen (plugin);
       gint               screen_width, screen_height;
       gfloat             actor_width, actor_height;
 
@@ -1917,9 +1888,9 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       if (meta_window_is_blessed_window (mw))
         mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar), MNB_SHOW_HIDE_POLICY);
 
-      if (type == META_COMP_WINDOW_NORMAL ||
-          type == META_COMP_WINDOW_DIALOG ||
-          type == META_COMP_WINDOW_MODAL_DIALOG)
+      if (type == META_WINDOW_NORMAL ||
+          type == META_WINDOW_DIALOG ||
+          type == META_WINDOW_MODAL_DIALOG)
         {
           g_signal_connect (mcw, "window-destroyed",
                             G_CALLBACK (window_destroyed_cb),
@@ -1951,7 +1922,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
           else if (state == MNB_STATE_UNSET)
             {
               move_window =
-                (type == META_COMP_WINDOW_NORMAL  &&
+                (type == META_WINDOW_NORMAL  &&
                  !meta_window_is_modal (mw)       &&
                  meta_window_get_transient_for_as_xid (mw) == None &&
                  !dawati_netbook_never_move_window (mw));
@@ -1973,11 +1944,11 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
       /*
        * Anything that we do not animated exits at this point.
        */
-      if (type == META_COMP_WINDOW_DIALOG ||
-          type == META_COMP_WINDOW_MODAL_DIALOG ||
+      if (type == META_WINDOW_DIALOG ||
+          type == META_WINDOW_MODAL_DIALOG ||
           fullscreen)
         {
-          mutter_plugin_map_completed (plugin, mcw);
+          meta_plugin_map_completed (plugin, mcw);
           return;
         }
 
@@ -1991,7 +1962,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
        * Only animate windows that are smaller than the screen size
        * (see MB#5273)
        */
-      mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+      meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
       clutter_actor_get_size (actor, &actor_width, &actor_height);
 
       if ((gint)actor_width  < screen_width ||
@@ -2020,7 +1991,7 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                             data);
         }
       else
-        mutter_plugin_map_completed (plugin, mcw);
+        meta_plugin_map_completed (plugin, mcw);
     }
   else
     {
@@ -2031,21 +2002,21 @@ map (MutterPlugin *plugin, MutterWindow *mcw)
                         G_CALLBACK (window_destroyed_cb),
                         plugin);
 
-      mutter_plugin_map_completed (plugin, mcw);
+      meta_plugin_map_completed (plugin, mcw);
     }
 }
 
 static void
-destroy (MutterPlugin *plugin, MutterWindow *mcw)
+destroy (MetaPlugin *plugin, MetaWindowActor *mcw)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaCompWindowType          type;
-  Window                      xwin;
+  MetaWindowType             type;
+  Window                     xwin;
 
-  type = mutter_window_get_window_type (mcw);
-  xwin = mutter_window_get_x_window (mcw);
+  type = meta_window_get_window_type (meta_window_actor_get_meta_window (mcw));
+  xwin = meta_window_actor_get_x_window (mcw);
 
-  if (type == META_COMP_WINDOW_DOCK)
+  if (type == META_WINDOW_DOCK)
     {
       MnbPanel   *panel;
       MnbToolbar *toolbar = MNB_TOOLBAR (priv->toolbar);
@@ -2058,11 +2029,11 @@ destroy (MutterPlugin *plugin, MutterWindow *mcw)
     }
 
   handle_window_destruction (mcw, plugin);
-  mutter_plugin_destroy_completed (plugin, mcw);
+  meta_plugin_destroy_completed (plugin, mcw);
 }
 
 static void
-switch_workspace (MutterPlugin         *plugin,
+switch_workspace (MetaPlugin         *plugin,
                   gint                  from,
                   gint                  to,
                   MetaMotionDirection   direction)
@@ -2075,7 +2046,7 @@ switch_workspace (MutterPlugin         *plugin,
    */
   if (mnb_toolbar_get_active_panel (MNB_TOOLBAR (priv->toolbar)))
     {
-      mutter_plugin_switch_workspace_completed (plugin);
+      meta_plugin_switch_workspace_completed (plugin);
     }
   else
     {
@@ -2095,7 +2066,7 @@ last_focus_weak_notify_cb (gpointer data, GObject *meta_win)
 }
 
 static gboolean
-xevent_filter (MutterPlugin *plugin, XEvent *xev)
+xevent_filter (MetaPlugin *plugin, XEvent *xev)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -2155,8 +2126,8 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 
       if (xev->type == KeyPress || xev->type == KeyRelease)
         {
-          MetaScreen   *screen = mutter_plugin_get_screen (plugin);
-          ClutterActor *stage  = mutter_get_stage_for_screen (screen);
+          MetaScreen   *screen = meta_plugin_get_screen (plugin);
+          ClutterActor *stage  = meta_get_stage_for_screen (screen);
           Window        xwin;
 
           /*
@@ -2174,12 +2145,12 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
 }
 
 static void
-kill_switch_workspace (MutterPlugin *plugin)
+kill_switch_workspace (MetaPlugin *plugin)
 {
 }
 
 static void
-kill_window_effects (MutterPlugin *plugin, MutterWindow *mcw)
+kill_window_effects (MetaPlugin *plugin, MetaWindowActor *mcw)
 {
   ActorPrivate *apriv;
 
@@ -2211,13 +2182,13 @@ kill_window_effects (MutterPlugin *plugin, MutterWindow *mcw)
 }
 
 static void
-setup_focus_window (MutterPlugin *plugin)
+setup_focus_window (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   Window                      xwin;
   XSetWindowAttributes        attr;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
-  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  Display                    *xdpy    = meta_plugin_get_xdisplay (plugin);
+  MetaScreen                 *screen  = meta_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   Atom                        type_atom;
 
@@ -2245,17 +2216,17 @@ setup_focus_window (MutterPlugin *plugin)
 
   XMapWindow (xdpy, xwin);
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 
   priv->focus_xwin = xwin;
 }
 
 static void
-setup_screen_saver (MutterPlugin *plugin)
+setup_screen_saver (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  Display                    *xdpy    = mutter_plugin_get_xdisplay (plugin);
-  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  Display                    *xdpy    = meta_plugin_get_xdisplay (plugin);
+  MetaScreen                 *screen  = meta_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   Window                      xroot;
 
@@ -2266,7 +2237,7 @@ setup_screen_saver (MutterPlugin *plugin)
   if (XScreenSaverQueryExtension (xdpy, &priv->saver_base, &priv->saver_error))
     XScreenSaverSelectInput (xdpy, xroot, ScreenSaverNotifyMask);
 
-  meta_error_trap_pop (display, FALSE);
+  meta_error_trap_pop (display);
 }
 
 #pragma TODO: Change the code to use cairo_region_t
@@ -2275,7 +2246,7 @@ GdkRegion *meta_window_actor_get_obscured_region (MetaWindowActor *cw);
 gboolean   meta_window_actor_effect_in_progress (MetaWindowActor *self);
 
 /*
- * Based on the occlusion code in MutterWindowGroup
+ * Based on the occlusion code in MetaWindowActorGroup
  *
  * Returns the visible region that needs to be painted, or NULL, if the
  * entire area needs to be painted.
@@ -2299,7 +2270,7 @@ mnb_get_background_visible_region (MetaScreen *screen)
 
   for (; l; l = l->next)
     {
-      MutterWindow *cw;
+      MetaWindowActor *cw;
       ClutterActor *actor;
 
       if (!MUTTER_IS_WINDOW (l->data) || !CLUTTER_ACTOR_IS_VISIBLE (l->data))
@@ -2308,21 +2279,21 @@ mnb_get_background_visible_region (MetaScreen *screen)
       cw = l->data;
       actor = l->data;
 
-      if (mutter_window_effect_in_progress (cw))
+      if (meta_window_actor_effect_in_progress (cw))
         {
           gdk_region_destroy (visible_region);
           return NULL;
         }
 
       /*
-       * MutterWindowGroup adds a test whether the actor is transformed or not;
+       * MetaWindowActorGroup adds a test whether the actor is transformed or not;
        * since we do not transform windows in any way, this was omitted.
        */
       if (clutter_actor_get_paint_opacity (actor) == 0xff)
         {
           GdkRegion *obscured_region;
 
-          if ((obscured_region = mutter_window_get_obscured_region (cw)))
+          if ((obscured_region = meta_window_actor_get_obscured_region (cw)))
             {
               gfloat x, y;
 
@@ -2361,7 +2332,7 @@ mnb_desktop_texture_paint (ClutterActor *actor,
 {
   static CoglHandle material = COGL_INVALID_HANDLE;
 
-  MutterPlugin               *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin               *plugin = dawati_netbook_get_plugin_singleton ();
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
   CoglHandle paint_tex;
@@ -2582,7 +2553,7 @@ mnb_desktop_texture_paint (ClutterActor *actor,
  * Avoid painting the desktop background if it is completely occluded.
  */
 static void
-desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
+desktop_background_paint (ClutterActor *background, MetaPlugin *plugin)
 {
   MetaScreen *screen;
 
@@ -2596,7 +2567,7 @@ desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
    * Try to paint only parts of the desktop background; however, we are painting
    * on behalf of a clone, force complete paint.
    */
-  screen = mutter_plugin_get_screen (plugin);
+  screen = meta_plugin_get_screen (plugin);
   if (!mnb_desktop_texture_paint (background,
                                   clutter_actor_is_in_clone_paint (background),
                                   screen))
@@ -2613,16 +2584,15 @@ desktop_background_paint (ClutterActor *background, MutterPlugin *plugin)
 }
 
 static void
-setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
+setup_desktop_background (MetaPlugin *plugin, const gchar *filename)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen = mutter_plugin_get_screen (plugin);
+  MetaScreen                 *screen = meta_plugin_get_screen (plugin);
   gint                        screen_width, screen_height;
   ClutterActor               *new_texture;
   ClutterActor               *old_texture = priv->desktop_tex;
 
-  mutter_plugin_query_screen_size (MUTTER_PLUGIN (plugin),
-                                   &screen_width, &screen_height);
+  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   g_assert (filename);
 
@@ -2640,7 +2610,7 @@ setup_desktop_background (MutterPlugin *plugin, const gchar *filename)
     }
   else
     {
-      ClutterActor *stage = mutter_get_stage_for_screen (screen);
+      ClutterActor *stage = meta_get_stage_for_screen (screen);
 
       if (clutter_texture_get_pixel_format (CLUTTER_TEXTURE (new_texture)) &
           COGL_A_BIT)
@@ -2670,7 +2640,7 @@ desktop_background_changed_cb (GConfClient *client,
                                GConfEntry  *entry,
                                gpointer     data)
 {
-  MutterPlugin *plugin = MUTTER_PLUGIN (data);
+  MetaPlugin *plugin = META_PLUGIN (data);
   const gchar  *filename = NULL;
   GConfValue   *value;
   const gchar  *key;
@@ -2700,8 +2670,8 @@ desktop_background_changed_cb (GConfClient *client,
       if (clr_str && *clr_str &&
           clutter_color_from_string (&clr, clr_str))
         {
-          MetaScreen   *screen = mutter_plugin_get_screen (plugin);
-          ClutterActor *stage  = mutter_get_stage_for_screen (screen);
+          MetaScreen   *screen = meta_plugin_get_screen (plugin);
+          ClutterActor *stage  = meta_get_stage_for_screen (screen);
 
           clutter_stage_set_color (CLUTTER_STAGE (stage), &clr);
         }
@@ -2727,7 +2697,7 @@ desktop_background_changed_cb (GConfClient *client,
 }
 
 static void
-desktop_background_init (MutterPlugin *plugin)
+desktop_background_init (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   GError *error = NULL;
@@ -2773,8 +2743,8 @@ desktop_background_init (MutterPlugin *plugin)
  * Core of the plugin init function, called for initial initialization and
  * by the reload() function. Returns TRUE on success.
  */
-static const MutterPluginInfo *
-plugin_info (MutterPlugin *plugin)
+static const MetaPluginInfo *
+plugin_info (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -2782,22 +2752,22 @@ plugin_info (MutterPlugin *plugin)
 }
 
 static void
-focus_xwin (MutterPlugin *plugin, guint xid)
+focus_xwin (MetaPlugin *plugin, guint xid)
 {
   MetaDisplay *display;
 
-  display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
+  display = meta_screen_get_display (meta_plugin_get_screen (plugin));
 
   meta_error_trap_push (display);
 
   XSetInputFocus (meta_display_get_xdisplay (display), xid,
                   RevertToPointerRoot, CurrentTime);
 
-  meta_error_trap_pop (display, TRUE);
+  meta_error_trap_pop (display);
 }
 
 void
-dawati_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
+dawati_netbook_stash_window_focus (MetaPlugin *plugin, guint32 timestamp)
 {
   DawatiNetbookPluginPrivate *priv    = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -2808,10 +2778,10 @@ dawati_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp)
 }
 
 void
-dawati_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
+dawati_netbook_unstash_window_focus (MetaPlugin *plugin, guint32 timestamp)
 {
   DawatiNetbookPluginPrivate *priv    = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen                 *screen  = mutter_plugin_get_screen (plugin);
+  MetaScreen                 *screen  = meta_plugin_get_screen (plugin);
   MetaDisplay                *display = meta_screen_get_display (screen);
   MetaWindow                 *focus;
   MnbPanel                   *panel;
@@ -2840,7 +2810,7 @@ dawati_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
    * First, we try the window the WM last requested focus for; if this is
    * not available, we try the last focused window.
    */
-  focus = meta_display_get_expected_focus_window (display);
+  focus = meta_display_get_focus_window (display);
 
   if (!focus)
     focus = priv->last_focused;
@@ -2856,7 +2826,7 @@ dawati_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp)
     meta_display_focus_the_no_focus_window (display, screen, timestamp);
 }
 
-MutterPlugin *
+MetaPlugin *
 dawati_netbook_get_plugin_singleton (void)
 {
   return plugin_singleton;
@@ -2868,15 +2838,15 @@ dawati_netbook_get_plugin_singleton (void)
  * workspace.
  */
 gboolean
-dawati_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
+dawati_netbook_modal_windows_present (MetaPlugin *plugin, gint workspace)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (plugin);
-  GList      *l      = mutter_get_windows (screen);
+  MetaScreen *screen = meta_plugin_get_screen (plugin);
+  GList      *l      = meta_get_window_actors (screen);
 
   while (l)
     {
-      MutterWindow *m = l->data;
-      MetaWindow   *w = mutter_window_get_meta_window (m);
+      MetaWindowActor *m = l->data;
+      MetaWindow   *w = meta_window_actor_get_meta_window (m);
 
       /*
        * Working out the workspace index in Mutter requires examining a list,
@@ -2891,7 +2861,7 @@ dawati_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
             }
           else
             {
-              gint s = mutter_window_get_workspace (m);
+              gint s = meta_window_actor_get_workspace (m);
 
               if (s < 0 || s == workspace)
                 return TRUE;
@@ -2905,7 +2875,7 @@ dawati_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace)
 }
 
 gboolean
-dawati_netbook_compositor_disabled (MutterPlugin *plugin)
+dawati_netbook_compositor_disabled (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -2942,7 +2912,7 @@ dawati_netbook_activate_window (MetaWindow *window)
 }
 
 ClutterActor *
-dawati_netbook_get_toolbar (MutterPlugin *plugin)
+dawati_netbook_get_toolbar (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -2950,7 +2920,7 @@ dawati_netbook_get_toolbar (MutterPlugin *plugin)
 }
 
 gboolean
-dawati_netbook_activate_mutter_window (MutterWindow *mcw)
+dawati_netbook_activate_mutter_window (MetaWindowActor *mcw)
 {
   MetaWindow     *window;
   MetaWorkspace  *workspace;
@@ -2959,7 +2929,7 @@ dawati_netbook_activate_mutter_window (MutterWindow *mcw)
   MetaDisplay    *display;
   guint32         timestamp;
 
-  window           = mutter_window_get_meta_window (mcw);
+  window           = meta_window_actor_get_meta_window (mcw);
   screen           = meta_window_get_screen (window);
   display          = meta_screen_get_display (screen);
   workspace        = meta_window_get_workspace (window);
@@ -2983,7 +2953,7 @@ dawati_netbook_activate_mutter_window (MutterWindow *mcw)
 }
 
 gboolean
-dawati_netbook_use_netbook_mode (MutterPlugin *plugin)
+dawati_netbook_use_netbook_mode (MetaPlugin *plugin)
 {
   DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
@@ -2997,7 +2967,7 @@ dawati_netbook_get_compositor_option_flags (void)
 }
 
 gboolean
-dawati_netbook_urgent_notification_present (MutterPlugin *plugin)
+dawati_netbook_urgent_notification_present (MetaPlugin *plugin)
 {
   return ntf_overlay_urgent_notification_present ();
 }
@@ -3006,14 +2976,14 @@ dawati_netbook_urgent_notification_present (MutterPlugin *plugin)
  * pass -1 for any values not to be used.
  */
 void
-dawati_netbook_set_struts (MutterPlugin *plugin,
+dawati_netbook_set_struts (MetaPlugin *plugin,
                            gint          left,
                            gint          right,
                            gint          top,
                            gint          bottom)
 {
   DawatiNetbookPluginPrivate *ppriv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen        *screen         = mutter_plugin_get_screen (plugin);
+  MetaScreen        *screen         = meta_plugin_get_screen (plugin);
   MetaDisplay       *display        = meta_screen_get_display (screen);
   Display           *xdpy           = meta_display_get_xdisplay (display);
   Window             xwin           = ppriv->focus_xwin;
@@ -3050,7 +3020,7 @@ dawati_netbook_set_struts (MutterPlugin *plugin,
 
           XDeleteProperty (xdpy, xwin, strut_atom);
 
-          meta_error_trap_pop (display, FALSE);
+          meta_error_trap_pop (display);
         }
       else
         {
@@ -3075,7 +3045,7 @@ dawati_netbook_set_struts (MutterPlugin *plugin,
                            XA_CARDINAL, 32, PropModeReplace,
                            (unsigned char *) &new_struts, 4);
 
-          meta_error_trap_pop (display, FALSE);
+          meta_error_trap_pop (display);
         }
     }
 }

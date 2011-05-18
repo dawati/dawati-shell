@@ -40,7 +40,8 @@ static void mnb_alttab_overlay_app_origin_weak_notify (gpointer, GObject *);
 
 struct _MnbAlttabOverlayAppPrivate
 {
-  MutterWindow *mcw;     /* MutterWindow we represent */
+  MetaWindowActor *mcw;     /* MetaWindowActor we represent */
+
   ClutterActor *child;
   ClutterActor *icon;
   ClutterActor *text;
@@ -189,7 +190,7 @@ mnb_alttab_overlay_app_constructed (GObject *self)
 {
   ClutterActor          *actor     = CLUTTER_ACTOR (self);
   MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (self)->priv;
-  MetaWindow            *meta_win  = mutter_window_get_meta_window (priv->mcw);
+  MetaWindow            *meta_win  = meta_window_actor_get_meta_window (priv->mcw);
   const gchar           *title     = meta_window_get_title (meta_win);
   ClutterActor          *texture, *c_tx;
   GdkPixbuf             *pixbuf = NULL;
@@ -220,7 +221,7 @@ mnb_alttab_overlay_app_constructed (GObject *self)
   /*
    * Clone the glx texture in the MutterWindow, and insert it into ourselves.
    */
-  texture = mutter_window_get_texture (priv->mcw);
+  texture = meta_window_actor_get_texture (priv->mcw);
   g_object_set (texture, "keep-aspect-ratio", TRUE, NULL);
 
   c_tx = priv->child = clutter_clone_new (texture);
@@ -564,9 +565,9 @@ mnb_alttab_overlay_app_class_init (MnbAlttabOverlayAppClass *klass)
                                    g_param_spec_object ("mutter-window",
                                                         "Mutter Window",
                                                         "Mutter Window",
-                                                        MUTTER_TYPE_COMP_WINDOW,
+                                                        META_TYPE_WINDOW_ACTOR,
                                                         G_PARAM_READWRITE |
-                                                       G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_CONSTRUCT_ONLY));
 
   g_object_class_install_property (object_class,
                                    PROP_BACKGROUND,
@@ -575,7 +576,7 @@ mnb_alttab_overlay_app_class_init (MnbAlttabOverlayAppClass *klass)
                                                         "Workspace background.",
                                                         CLUTTER_TYPE_ACTOR,
                                                         G_PARAM_READWRITE |
-                                                       G_PARAM_CONSTRUCT_ONLY));
+                                                        G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -587,8 +588,8 @@ mnb_alttab_overlay_app_init (MnbAlttabOverlayApp *self)
 }
 
 MnbAlttabOverlayApp *
-mnb_alttab_overlay_app_new (MutterWindow *mw,
-                            ClutterActor *background)
+mnb_alttab_overlay_app_new (MetaWindowActor *mw,
+                            ClutterActor    *background)
 {
   return g_object_new (MNB_TYPE_ALTTAB_OVERLAY_APP,
                        "mutter-window", mw,
@@ -624,7 +625,7 @@ mnb_alttab_overlay_app_get_active (MnbAlttabOverlayApp *app)
   return priv->active;
 }
 
-MutterWindow *
+MetaWindowActor *
 mnb_alttab_overlay_app_get_mcw (MnbAlttabOverlayApp *app)
 {
   MnbAlttabOverlayAppPrivate *priv = MNB_ALTTAB_OVERLAY_APP (app)->priv;

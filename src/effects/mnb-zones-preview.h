@@ -23,7 +23,7 @@
 #define _MNB_ZONES_PREVIEW_H
 
 #include <glib-object.h>
-#include <mutter-plugin.h>
+#include <meta/meta-plugin.h>
 #include <mx/mx.h>
 
 G_BEGIN_DECLS
@@ -73,7 +73,7 @@ GType mnb_zones_preview_get_type (void) G_GNUC_CONST;
 ClutterActor *mnb_zones_preview_new (void);
 
 void mnb_zones_preview_add_window (MnbZonesPreview *preview,
-                                   MutterWindow    *window);
+                                   MetaWindowActor *window);
 
 void mnb_zones_preview_change_workspace (MnbZonesPreview *preview,
                                          gint             workspace);

@@ -24,7 +24,7 @@
 #include <string.h>
 #include <glib/gi18n.h>
 
-#include <display.h>
+#include <meta/display.h>
 
 #include "../dawati-netbook.h"
 #include "ntf-notification.h"
@@ -220,23 +220,23 @@ ntf_wm_demands_attention_clear (MetaWindow *window)
 static void
 ntf_wm_display_window_demands_attention_cb (MetaDisplay  *display,
                                             MetaWindow   *mw,
-                                            MutterPlugin *plugin)
+                                            MetaPlugin   *plugin)
 {
-  MutterWindow       *mcw;
-  MetaCompWindowType  type;
+  MetaWindowActor *mcw;
+  MetaWindowType   type;
 
-  mcw = (MutterWindow*)meta_window_get_compositor_private (mw);
+  mcw = (MetaWindowActor*)meta_window_get_compositor_private (mw);
 
   g_return_if_fail (mcw);
 
   /*
    * Only use notifications for normal windows and dialogues.
    */
-  type = mutter_window_get_window_type (mcw);
+  type = meta_window_get_window_type (mw);
 
-  if (!(type == META_COMP_WINDOW_NORMAL       ||
-        type == META_COMP_WINDOW_MODAL_DIALOG ||
-        type == META_COMP_WINDOW_DIALOG))
+  if (!(type == META_WINDOW_NORMAL       ||
+        type == META_WINDOW_MODAL_DIALOG ||
+        type == META_WINDOW_DIALOG))
     {
       return;
     }
@@ -248,7 +248,7 @@ ntf_wm_display_window_demands_attention_cb (MetaDisplay  *display,
 static void
 ntf_wm_display_focus_window_notify_cb (MetaDisplay  *display,
                                        GParamSpec   *spec,
-                                       MutterPlugin *plugin)
+                                       MetaPlugin   *plugin)
 {
   MetaWindow *mw = meta_display_get_focus_window (display);
 
@@ -259,9 +259,9 @@ ntf_wm_display_focus_window_notify_cb (MetaDisplay  *display,
 void
 ntf_wm_init (void)
 {
-  MutterPlugin *plugin  = dawati_netbook_get_plugin_singleton ();
-  MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
-  MetaDisplay  *display = meta_screen_get_display (screen);
+  MetaPlugin  *plugin  = dawati_netbook_get_plugin_singleton ();
+  MetaScreen  *screen  = meta_plugin_get_screen (plugin);
+  MetaDisplay *display = meta_screen_get_display (screen);
 
   subsystem_id = ntf_notification_get_subsystem_id ();
 

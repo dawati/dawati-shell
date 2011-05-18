@@ -26,7 +26,7 @@
 #define DAWATI_NETBOOK_H
 
 #include <gconf/gconf-client.h>
-#include <mutter-plugin.h>
+#include <meta/meta-plugin.h>
 #include <mx/mx.h>
 
 #define SN_API_NOT_YET_FROZEN 1
@@ -70,14 +70,14 @@ typedef struct _DawatiNetbookPluginPrivate DawatiNetbookPluginPrivate;
 
 struct _DawatiNetbookPlugin
 {
-  MutterPlugin parent;
+  MetaPlugin parent;
 
   DawatiNetbookPluginPrivate *priv;
 };
 
 struct _DawatiNetbookPluginClass
 {
-  MutterPluginClass parent_class;
+  MetaPluginClass parent_class;
 };
 
 
@@ -105,14 +105,14 @@ struct _DawatiNetbookPluginPrivate
   /* Background desktop texture */
   ClutterActor          *desktop_tex;
 
-  MutterPluginInfo       info;
+  MetaPluginInfo         info;
 
   Window                 focus_xwin;
 
   /* Desktop background stuff */
   GConfClient           *gconf_client;
 
-  MutterWindow          *screen_saver_mcw;
+  MetaWindowActor       *screen_saver_mcw;
 
   /* Presence manager */
   GsmPresence           *presence;
@@ -141,59 +141,59 @@ struct ActorPrivate
   gboolean      sn_in_progress : 1;
 };
 
-ActorPrivate * get_actor_private (MutterWindow *actor);
-void           dawati_netbook_focus_stage (MutterPlugin *plugin,
-                                           guint32       timestamp);
+ActorPrivate * get_actor_private (MetaWindowActor *actor);
+void           dawati_netbook_focus_stage (MetaPlugin *plugin,
+                                          guint32       timestamp);
 
-void           dawati_netbook_unfocus_stage (MutterPlugin *plugin,
-                                             guint32 timestamp);
+void           dawati_netbook_unfocus_stage (MetaPlugin *plugin,
+                                            guint32 timestamp);
 
-void dawati_netbook_notify_init (MutterPlugin *plugin);
-
-void
-dawati_netbook_stash_window_focus (MutterPlugin *plugin, guint32 timestamp);
+void dawati_netbook_notify_init (MetaPlugin *plugin);
 
 void
-dawati_netbook_unstash_window_focus (MutterPlugin *plugin, guint32 timestamp);
+dawati_netbook_stash_window_focus (MetaPlugin *plugin, guint32 timestamp);
 
 void
-dawati_netbook_setup_kbd_grabs (MutterPlugin *plugin);
+dawati_netbook_unstash_window_focus (MetaPlugin *plugin, guint32 timestamp);
+
+void
+dawati_netbook_setup_kbd_grabs (MetaPlugin *plugin);
 
 gboolean
-dawati_netbook_fullscreen_apps_present (MutterPlugin *plugin);
+dawati_netbook_fullscreen_apps_present (MetaPlugin *plugin);
 
-MutterPlugin *
+MetaPlugin *
 dawati_netbook_get_plugin_singleton (void);
 
 gboolean
-dawati_netbook_modal_windows_present (MutterPlugin *plugin, gint workspace);
+dawati_netbook_modal_windows_present (MetaPlugin *plugin, gint workspace);
 
 gboolean
-dawati_netbook_compositor_disabled (MutterPlugin *plugin);
+dawati_netbook_compositor_disabled (MetaPlugin *plugin);
 
 void
 dawati_netbook_activate_window (MetaWindow *window);
 
 ClutterActor *
-dawati_netbook_get_toolbar (MutterPlugin *plugin);
+dawati_netbook_get_toolbar (MetaPlugin *plugin);
 
 gboolean
-dawati_netbook_activate_mutter_window (MutterWindow *mcw);
+dawati_netbook_activate_mutter_window (MetaWindowActor *mcw);
 
 gboolean
-dawati_netbook_use_netbook_mode (MutterPlugin *plugin);
+dawati_netbook_use_netbook_mode (MetaPlugin *plugin);
 
 guint32
 dawati_netbook_get_compositor_option_flags (void);
 
 gboolean
-dawati_netbook_urgent_notification_present (MutterPlugin *plugin);
+dawati_netbook_urgent_notification_present (MetaPlugin *plugin);
 
 void
-dawati_netbook_set_struts (MutterPlugin *plugin,
-                           gint          left,
-                           gint          right,
-                           gint          top,
-                           gint          bottom);
+dawati_netbook_set_struts (MetaPlugin *plugin,
+                          gint        left,
+                          gint        right,
+                          gint        top,
+                          gint        bottom);
 
 #endif

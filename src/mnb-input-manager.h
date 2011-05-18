@@ -25,7 +25,7 @@
 #ifndef MNB_INPUT_MANAGER
 #define MNB_INPUT_MANAGER
 
-#include <mutter-plugin.h>
+#include <meta/meta-plugin.h>
 
 typedef struct MnbInputRegion  MnbInputRegion;
 typedef struct MnbInputManager MnbInputManager;
@@ -42,7 +42,7 @@ typedef enum
   MNB_INPUT_LAYER_TOP                /* Top layer (e.g., notifications) */
 } MnbInputLayer;
 
-void            mnb_input_manager_create  (MutterPlugin *plugin);
+void            mnb_input_manager_create  (MetaPlugin *plugin);
 void            mnb_input_manager_destroy (void);
 MnbInputRegion *mnb_input_manager_push_region (gint          x,
                                                 gint          y,
@@ -52,8 +52,8 @@ MnbInputRegion *mnb_input_manager_push_region (gint          x,
                                                 MnbInputLayer layer);
 void            mnb_input_manager_remove_region (MnbInputRegion  *mir);
 void            mnb_input_manager_remove_region_without_update (MnbInputRegion  *mir);
-void            mnb_input_manager_push_window (MutterWindow *mcw, MnbInputLayer layer);
+void            mnb_input_manager_push_window (MetaWindowActor *mcw, MnbInputLayer layer);
 void            mnb_input_manager_push_actor  (ClutterActor *actor, MnbInputLayer layer);
-void            mnb_input_manager_push_oop_panel (MutterWindow *mcw);
+void            mnb_input_manager_push_oop_panel (MetaWindowActor *mcw);
 
 #endif

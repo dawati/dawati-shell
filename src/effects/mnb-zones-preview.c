@@ -678,7 +678,7 @@ mnb_zones_preview_clone_destroy_cb (ClutterActor *clone, ClutterActor *mcw)
 
 void
 mnb_zones_preview_add_window (MnbZonesPreview *preview,
-                              MutterWindow    *window)
+                              MetaWindowActor *window)
 {
   ClutterActor *clone;
   ClutterActor *group;
@@ -694,10 +694,10 @@ mnb_zones_preview_add_window (MnbZonesPreview *preview,
    * it is not enough to make it possible to map the clone once the texture
    * has been unparented.
    */
-  workspace = mutter_window_get_workspace (window);
+  workspace = meta_window_actor_get_workspace (window);
   group = mnb_zones_preview_get_workspace_group (preview, workspace);
 
-  clone = clutter_clone_new (mutter_window_get_texture (window));
+  clone = clutter_clone_new (meta_window_actor_get_texture (window));
 
   g_signal_connect (window, "destroy",
                     G_CALLBACK (mnb_zones_preview_mcw_destroy_cb),
@@ -706,7 +706,7 @@ mnb_zones_preview_add_window (MnbZonesPreview *preview,
                     G_CALLBACK (mnb_zones_preview_clone_destroy_cb),
                     window);
 
-  meta_window_get_outer_rect (mutter_window_get_meta_window (window), &rect);
+  meta_window_get_outer_rect (meta_window_actor_get_meta_window (window), &rect);
   clutter_actor_set_position (clone, rect.x, rect.y);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);

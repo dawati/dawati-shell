@@ -81,7 +81,7 @@ typedef void (* MnbToolbarCallback) (MnbPanel *panel, gpointer data);
 
 GType mnb_toolbar_get_type (void);
 
-ClutterActor* mnb_toolbar_new (MutterPlugin *plugin);
+ClutterActor* mnb_toolbar_new (MetaPlugin *plugin);
 
 gboolean mnb_toolbar_is_tray_config_window (MnbToolbar *toolbar, Window xwin);
 
@@ -113,7 +113,7 @@ void mnb_toolbar_foreach_panel (MnbToolbar        *toolbar,
                                 MnbToolbarCallback callback,
                                 gpointer           data);
 
-gboolean mnb_toolbar_owns_window (MnbToolbar *toolbar, MutterWindow *mcw);
+gboolean mnb_toolbar_owns_window (MnbToolbar *toolbar, MetaWindowActor *mcw);
 
 G_END_DECLS
 

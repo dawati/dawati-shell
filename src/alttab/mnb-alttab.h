@@ -25,10 +25,10 @@
 #ifndef _MNB_ALTTAB_ALTTAB
 #define _MNB_ALTTAB_ALTTAB
 
-#include <screen.h>
-#include <display.h>
-#include <window.h>
-#include <keybindings.h>
+#include <meta/screen.h>
+#include <meta/display.h>
+#include <meta/window.h>
+#include <meta/keybindings.h>
 
 G_BEGIN_DECLS
 

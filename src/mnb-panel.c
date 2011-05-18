@@ -423,7 +423,7 @@ mnb_panel_hide_with_toolbar_hide_completed_cb (MnbPanel         *panel,
 void
 mnb_panel_hide_with_toolbar (MnbPanel *panel, MnbShowHideReason reason)
 {
-  MutterPlugin *plugin  = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin *plugin  = dawati_netbook_get_plugin_singleton ();
   ClutterActor *toolbar = dawati_netbook_get_toolbar (plugin);
 
   if (!mnb_panel_is_mapped (panel))
@@ -452,10 +452,10 @@ mnb_panel_ensure_size (MnbPanel *panel)
   MetaRectangle  r;
   MetaScreen    *screen;
   MetaWorkspace *workspace;
-  MutterPlugin  *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin    *plugin = dawati_netbook_get_plugin_singleton ();
   gboolean       netbook_mode = dawati_netbook_use_netbook_mode (plugin);
 
-  screen    = mutter_plugin_get_screen (plugin);
+  screen    = meta_plugin_get_screen (plugin);
   workspace = meta_screen_get_active_workspace (screen);
 
   if (workspace)

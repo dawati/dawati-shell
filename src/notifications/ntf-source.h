@@ -27,7 +27,7 @@
 #include <glib-object.h>
 
 #include <clutter/clutter.h>
-#include <window.h>
+#include <meta/window.h>
 
 G_BEGIN_DECLS
 

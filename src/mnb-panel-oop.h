@@ -72,23 +72,24 @@ MnbPanelOop *mnb_panel_oop_new (const gchar  *dbus_name,
                                 guint         width,
                                 guint         height);
 
-void mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MutterWindow *mcw);
+void mnb_panel_oop_show_mutter_window (MnbPanelOop *panel, MetaWindowActor *mcw);
 
 const gchar  *mnb_panel_oop_get_dbus_name     (MnbPanelOop *panel);
 guint         mnb_panel_oop_get_xid           (MnbPanelOop *panel);
 gboolean      mnb_panel_oop_is_ready          (MnbPanelOop *panel);
 
-MutterWindow *mnb_panel_oop_get_mutter_window (MnbPanelOop *panel);
+MetaWindowActor *mnb_panel_oop_get_mutter_window (MnbPanelOop *panel);
+
 void          mnb_panel_oop_focus             (MnbPanelOop *panel);
-gboolean      mnb_panel_oop_owns_window       (MnbPanelOop *panel, MutterWindow *mcw);
+gboolean      mnb_panel_oop_owns_window       (MnbPanelOop *panel, MetaWindowActor *mcw);
 gboolean      mnb_panel_oop_is_ancestor_of_transient (MnbPanelOop     *panel,
-                                                      MutterWindow *mcw);
+                                                      MetaWindowActor *mcw);
 
 void          mnb_toolbar_ping_panel_oop      (DBusGConnection *dbus_conn,
                                                const gchar     *dbus_name);
 
-void          mnb_panel_oop_hide_animate      (MnbPanelOop  *panel,
-                                               MutterWindow *mcw);
+void          mnb_panel_oop_hide_animate      (MnbPanelOop     *panel,
+                                               MetaWindowActor *mcw);
 
 void          mnb_panel_oop_unload            (MnbPanelOop *panel);
 

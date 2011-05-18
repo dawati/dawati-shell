@@ -67,7 +67,7 @@ mnb_toolbar_clock_dispose (GObject *object)
 
   if (priv->toolbar_show_id)
     {
-      MutterPlugin *plugin = dawati_netbook_get_plugin_singleton ();
+      MetaPlugin *plugin = dawati_netbook_get_plugin_singleton ();
       DawatiNetbookPluginPrivate *ppriv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
       g_signal_handler_disconnect (ppriv->toolbar, priv->toolbar_show_id);
@@ -273,7 +273,7 @@ mnb_toolbar_clock_map (ClutterActor *actor)
    */
   if (!priv->toolbar_show_id)
     {
-      MutterPlugin *plugin = dawati_netbook_get_plugin_singleton ();
+      MetaPlugin *plugin = dawati_netbook_get_plugin_singleton ();
       DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
       priv->toolbar_show_id =

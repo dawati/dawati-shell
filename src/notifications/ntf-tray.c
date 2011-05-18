@@ -526,7 +526,7 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
   NtfTrayPrivate   *priv;
   ClutterActor     *ntfa;
   ClutterAnimation *anim;
-  MutterPlugin     *plugin;
+  MetaPlugin       *plugin;
 
   g_return_if_fail (NTF_IS_TRAY (tray) && NTF_IS_NOTIFICATION (ntf));
 

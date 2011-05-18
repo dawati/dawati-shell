@@ -26,8 +26,8 @@
 #include "mnb-alttab-overlay-app.h"
 #include "mnb-alttab-keys.h"
 #include "../dawati-netbook.h"
-#include <display.h>
-#include <keybindings.h>
+#include <meta/display.h>
+#include <meta/keybindings.h>
 #include <X11/keysym.h>
 #include <clutter/x11/clutter-x11.h>
 
@@ -120,10 +120,10 @@ mnb_alttab_overlay_get_property (GObject    *gobject,
 static gint
 sort_windows_by_user_time (gconstpointer a, gconstpointer b)
 {
-  MutterWindow *m1 = (MutterWindow*) a;
-  MutterWindow *m2 = (MutterWindow*) b;
-  MetaWindow   *w1 = mutter_window_get_meta_window (m1);
-  MetaWindow   *w2 = mutter_window_get_meta_window (m2);
+  MetaWindowActor *m1 = (MetaWindowActor*) a;
+  MetaWindowActor *m2 = (MetaWindowActor*) b;
+  MetaWindow   *w1 = meta_window_actor_get_meta_window (m1);
+  MetaWindow   *w2 = meta_window_actor_get_meta_window (m2);
   guint32       t1 = meta_window_get_user_time (w1);
   guint32       t2 = meta_window_get_user_time (w2);
 
@@ -138,25 +138,25 @@ sort_windows_by_user_time (gconstpointer a, gconstpointer b)
 GList *
 mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *self)
 {
-  MutterPlugin *plugin;
+  MetaPlugin   *plugin;
   MetaScreen   *screen;
   GList        *l, *filtered = NULL;
 
   plugin = dawati_netbook_get_plugin_singleton ();
-  screen = mutter_plugin_get_screen (plugin);
+  screen = meta_plugin_get_screen (plugin);
 
-  for (l = mutter_get_windows (screen); l; l = l->next)
+  for (l = meta_get_window_actors (screen); l; l = l->next)
     {
-      MutterWindow *m = l->data;
-      MetaWindow   *w = mutter_window_get_meta_window (m);
-      MetaCompWindowType type;
+      MetaWindowActor *m = l->data;
+      MetaWindow      *w = meta_window_actor_get_meta_window (m);
+      MetaWindowType type;
 
-      type = mutter_window_get_window_type (m);
+      type = meta_window_get_window_type (w);
 
       if (meta_window_is_on_all_workspaces (w)   ||
-          mutter_window_is_override_redirect (m) || /* Unecessary */
-          (type != META_COMP_WINDOW_NORMAL  &&
-           type != META_COMP_WINDOW_DIALOG))
+          meta_window_actor_is_override_redirect (m) || /* Unecessary */
+          (type != META_WINDOW_NORMAL  &&
+           type != META_WINDOW_DIALOG))
         {
           continue;
         }
@@ -165,7 +165,7 @@ mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *self)
        * Only intersted in top-level dialogs, i.e., those not transient
        * to anything or to root.
        */
-      if (type ==  META_COMP_WINDOW_DIALOG)
+      if (type ==  META_WINDOW_DIALOG)
         {
           MetaWindow *p = meta_window_find_root_ancestor (w);
 
@@ -197,10 +197,10 @@ mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *self)
 static gboolean
 mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
 {
-  MutterPlugin               *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin                *plugin = dawati_netbook_get_plugin_singleton ();
   DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MnbAlttabOverlayPrivate    *priv = self->priv;
-  GList                      *l, *filtered = NULL, *active = NULL;
+  MnbAlttabOverlayPrivate   *priv = self->priv;
+  GList                     *l, *filtered = NULL, *active = NULL;
 
   filtered = mnb_alttab_overlay_get_app_list (self);
 
@@ -212,7 +212,7 @@ mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
 
   for (l = filtered; l; l = l->next)
     {
-      MutterWindow          *m = l->data;
+      MetaWindowActor     *m = l->data;
       MnbAlttabOverlayApp *app;
 
       app = mnb_alttab_overlay_app_new (m, ppriv->desktop_tex);
@@ -280,7 +280,7 @@ mnb_alttab_overlay_constructed (GObject *self)
 {
   MnbAlttabOverlayPrivate *priv   = MNB_ALTTAB_OVERLAY (self)->priv;
   MxGrid                  *grid   = MX_GRID (mx_grid_new ());
-  MutterPlugin            *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin              *plugin = dawati_netbook_get_plugin_singleton ();
 
   if (G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->constructed (self);
@@ -298,7 +298,7 @@ mnb_alttab_overlay_constructed (GObject *self)
 
   mx_stylable_set_style_class (MX_STYLABLE (self),"alttab-overlay");
 
-  g_signal_connect (mutter_plugin_get_screen (plugin),
+  g_signal_connect (meta_plugin_get_screen (plugin),
                     "notify::keyboard-grabbed",
                     G_CALLBACK (mnb_alttab_overlay_kbd_grab_notify_cb),
                     self);
@@ -509,7 +509,7 @@ mnb_alttab_overlay_activate_selection (MnbAlttabOverlay *overlay,
 {
   MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (overlay)->priv;
   MnbAlttabOverlayApp     *active = priv->active;
-  MutterWindow            *mcw;
+  MetaWindowActor         *mcw;
 
   g_return_if_fail (active);
 
@@ -543,7 +543,7 @@ gboolean
 mnb_alttab_overlay_handle_xevent (MnbAlttabOverlay *overlay, XEvent *xev)
 {
   MnbAlttabOverlayPrivate *priv   = overlay->priv;
-  MutterPlugin            *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin              *plugin = dawati_netbook_get_plugin_singleton ();
 
   if (!priv->in_alt_grab)
     return FALSE;
@@ -555,7 +555,7 @@ mnb_alttab_overlay_handle_xevent (MnbAlttabOverlay *overlay, XEvent *xev)
           (XKeycodeToKeysym (xev->xkey.display,
                              xev->xkey.keycode, 0) == XK_Alt_R))
         {
-          MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
+          MetaScreen   *screen  = meta_plugin_get_screen (plugin);
           MetaDisplay  *display = meta_screen_get_display (screen);
           Time          timestamp = xev->xkey.time;
 
@@ -689,8 +689,8 @@ gboolean
 mnb_alttab_overlay_tab_still_down (MnbAlttabOverlay *overlay)
 {
   MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (overlay)->priv;
-  MutterPlugin            *plugin  = dawati_netbook_get_plugin_singleton ();
-  MetaScreen              *screen  = mutter_plugin_get_screen (plugin);
+  MetaPlugin              *plugin  = dawati_netbook_get_plugin_singleton ();
+  MetaScreen              *screen  = meta_plugin_get_screen (plugin);
   MetaDisplay             *display = meta_screen_get_display (screen);
   Display                 *xdpy    = meta_display_get_xdisplay (display);
   char                     keys[32];
@@ -770,7 +770,7 @@ mnb_alttab_overlay_autoscroll_trigger_cb (gpointer data)
 gboolean
 mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward)
 {
-  MutterPlugin  *plugin = dawati_netbook_get_plugin_singleton ();
+  MetaPlugin    *plugin = dawati_netbook_get_plugin_singleton ();
   gfloat         w, h;
   gint           screen_width, screen_height;
 
@@ -778,7 +778,7 @@ mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward)
   if (!mnb_alttab_overlay_populate (overlay))
     return FALSE;
 
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  meta_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   /*
    * Must ensure size, otherewise the reported actor size is not acurate.
@@ -852,7 +852,7 @@ mnb_alttab_overlay_hide (MnbAlttabOverlay *overlay)
  */
 void
 mnb_alttab_overlay_activate_window (MnbAlttabOverlay *overlay,
-                                    MutterWindow     *activate,
+                                    MetaWindowActor  *activate,
                                     guint             timestamp)
 {
   MnbAlttabOverlayPrivate *priv = overlay->priv;
@@ -863,7 +863,7 @@ mnb_alttab_overlay_activate_window (MnbAlttabOverlay *overlay,
 
   priv->in_alt_grab = FALSE;
 
-  next = mutter_window_get_meta_window (activate);
+  next = meta_window_actor_get_meta_window (activate);
 
   g_return_if_fail (next);
 
