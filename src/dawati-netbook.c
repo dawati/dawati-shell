@@ -444,7 +444,7 @@ dawati_netbook_display_window_created_cb (MetaDisplay  *display,
            * effect completes, we have to first let the compositor to do its
            * thing, and only then impose our will on it.
            */
-          g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL);
+          /* g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL); */
 
           g_signal_connect (mcw, "show",
                             G_CALLBACK (dawati_netbook_panel_window_show_cb),
@@ -453,7 +453,7 @@ dawati_netbook_display_window_created_cb (MetaDisplay  *display,
       else if ((wm_class = meta_window_get_wm_class (win)) &&
                !strcmp (wm_class, "Matchbox-panel"))
         {
-          g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL);
+          /* g_object_set (mcw, "shadow-type", MUTTER_SHADOW_ALWAYS, NULL); */
         }
     }
 
