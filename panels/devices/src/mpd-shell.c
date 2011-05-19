@@ -44,6 +44,8 @@ enum
 typedef struct
 {
   int dummy;
+  MplPanelClient *panel_client;
+  MpdDevicesPane *pane;
 } MpdShellPrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -114,7 +116,7 @@ mpd_shell_class_init (MpdShellClass *klass)
 static void
 mpd_shell_init (MpdShell *self)
 {
-  /* MpdShellPrivate *priv = GET_PRIVATE (self); */
+  MpdShellPrivate *priv = GET_PRIVATE (self);
   ClutterActor  *label;
   ClutterActor  *hbox;
   ClutterActor  *pane;
@@ -148,6 +150,7 @@ mpd_shell_init (MpdShell *self)
                                NULL);
 
   pane = mpd_devices_pane_new ();
+  priv->pane = pane;
   clutter_actor_set_width (pane, MPD_DEVICES_PANE_WIDTH);
   g_signal_connect (pane, "request-hide",
                     G_CALLBACK (_pane_request_hide_cb), self);
@@ -163,3 +166,12 @@ mpd_shell_new (void)
 }
 
 
+void
+mpd_shell_set_client (MpdShell *self, MplPanelClient *client)
+{
+  MpdShellPrivate *priv = GET_PRIVATE (self);
+
+  priv->panel_client = client;
+
+  mpd_devices_pane_set_client (priv->pane, client);
+}

@@ -42,6 +42,8 @@ enum
 typedef struct
 {
     int dummy;
+    MplPanelClient *panel_client;
+    MpdDevicesTile *devices_tile;
 } MpdDevicesPanePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -95,6 +97,7 @@ mpd_devices_pane_class_init (MpdDevicesPaneClass *klass)
 static void
 mpd_devices_pane_init (MpdDevicesPane *self)
 {
+  MpdDevicesPanePrivate *priv = GET_PRIVATE (self);
   ClutterActor  *label;
   ClutterActor  *tile;
 
@@ -106,6 +109,7 @@ mpd_devices_pane_init (MpdDevicesPane *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), label);
 
   tile = mpd_devices_tile_new ();
+  priv->devices_tile = tile;
   g_signal_connect (tile, "request-hide",
                     G_CALLBACK (_tile_request_hide_cb), self);
   g_signal_connect (tile, "request-show",
@@ -122,4 +126,12 @@ mpd_devices_pane_new (void)
   return g_object_new (MPD_TYPE_DEVICES_PANE, NULL);
 }
 
+void
+mpd_devices_pane_set_client (MpdDevicesPane *self, MplPanelClient *client)
+{
+  MpdDevicesPanePrivate  *priv = GET_PRIVATE (self);
 
+  priv->panel_client = client;
+
+  mpd_devices_tile_set_client (priv->devices_tile, client);
+}

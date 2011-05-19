@@ -176,6 +176,7 @@ main (int     argc,
                                            _("devices"),
                                            "devices-button");
     shell = mpd_shell_new ();
+    mpd_shell_set_client (shell, panel);
     g_signal_connect (shell, "request-hide",
                       G_CALLBACK (_shell_request_hide_cb), panel);
     g_signal_connect (shell, "request-show",

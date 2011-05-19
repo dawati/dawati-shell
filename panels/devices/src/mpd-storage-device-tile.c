@@ -97,6 +97,8 @@ typedef struct
   char                      *name;
   MpdStorageDevice          *storage;
   bool                       storage_has_media;
+  GArray                    *processes;
+  MplPanelClient            *panel_client;
 } MpdStorageDeviceTilePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
@@ -554,6 +556,8 @@ mpd_storage_device_tile_init (MpdStorageDeviceTile *self)
   ClutterActor  *separator;
   ClutterActor *flow;
 
+  priv->processes = NULL;
+
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (self),
                                  MX_ORIENTATION_VERTICAL);
   mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (self), true);
@@ -904,6 +908,7 @@ mpd_storage_device_tile_show_message_full (MpdStorageDeviceTile  *self,
   {
     ClutterText *text;
     priv->message = mx_label_new_with_text (message);
+    mx_label_set_use_markup (MX_LABEL (priv->message), true);
     mx_stylable_set_style_class (MX_STYLABLE (priv->message), "message");
     text = (ClutterText *) mx_label_get_clutter_text (MX_LABEL (priv->message));
     clutter_text_set_line_wrap (text, true);
@@ -931,3 +936,47 @@ mpd_storage_device_tile_show_message_full (MpdStorageDeviceTile  *self,
   }
 }
 
+void
+mpd_storage_device_tile_set_processes (MpdStorageDeviceTile *self,
+				       GArray          *processes)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
+
+  if (priv->processes) {
+    g_array_unref (priv->processes);
+  }
+
+  priv->processes = processes;
+}
+
+GArray *
+mpd_storage_device_tile_get_processes (MpdStorageDeviceTile *self)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (self));
+
+  return priv->processes;
+}
+
+static void
+_panel_show_cb (MplPanelClient *client,
+		MpdStorageDeviceTile *self)
+{
+  mpd_storage_device_tile_show_message (self, "", false);
+}
+
+void
+mpd_storage_device_tile_set_client (MpdStorageDeviceTile *self, MplPanelClient *client)
+{
+  MpdStorageDeviceTilePrivate *priv = GET_PRIVATE (self);
+
+  priv->panel_client = client;
+
+  g_signal_connect (client,
+                    "show",
+                    (GCallback) _panel_show_cb,
+                    self);
+}

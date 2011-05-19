@@ -22,6 +22,7 @@
 #define MPD_SHELL_H
 
 #include <glib-object.h>
+#include "mpd-panel.h"
 #include <mx/mx.h>
 
 G_BEGIN_DECLS
@@ -55,6 +56,9 @@ typedef struct
 
 GType
 mpd_shell_get_type (void);
+
+void
+mpd_shell_set_client (MpdShell *self, MplPanelClient *client);
 
 ClutterActor *
 mpd_shell_new (void);

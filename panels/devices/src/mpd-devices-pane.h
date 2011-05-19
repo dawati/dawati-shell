@@ -22,6 +22,7 @@
 #define MPD_DEVICES_PANE_H
 
 #include <glib-object.h>
+#include "mpd-panel.h"
 #include <mx/mx.h>
 
 G_BEGIN_DECLS
@@ -58,6 +59,9 @@ mpd_devices_pane_get_type (void);
 
 ClutterActor *
 mpd_devices_pane_new (void);
+
+void
+mpd_devices_pane_set_client (MpdDevicesPane *self, MplPanelClient *client);
 
 G_END_DECLS
 

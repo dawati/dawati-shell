@@ -23,6 +23,7 @@
 
 #include <stdbool.h>
 #include <glib-object.h>
+#include "mpd-panel.h"
 #include <mx/mx.h>
 
 G_BEGIN_DECLS
@@ -90,6 +91,13 @@ mpd_storage_device_tile_show_message_full (MpdStorageDeviceTile  *self,
                                            unsigned int           timeout_s,
                                            GSourceFunc            function,
                                            void                  *data);
+
+void
+mpd_storage_device_tile_set_processes (MpdStorageDeviceTile *self,
+				       GArray          *processes);
+
+GArray *
+mpd_storage_device_tile_get_processes (MpdStorageDeviceTile *self);
 
 G_END_DECLS
 

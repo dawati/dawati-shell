@@ -22,6 +22,7 @@
 #define MPD_DEVICES_TILE_H
 
 #include <glib-object.h>
+#include "mpd-panel.h"
 #include <mx/mx.h>
 
 G_BEGIN_DECLS
@@ -58,6 +59,8 @@ mpd_devices_tile_get_type (void);
 
 ClutterActor *
 mpd_devices_tile_new (void);
+void
+mpd_devices_tile_set_client (MpdDevicesTile *self, MplPanelClient *client);
 
 G_END_DECLS
 

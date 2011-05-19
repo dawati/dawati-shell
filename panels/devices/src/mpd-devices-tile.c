@@ -1,6 +1,8 @@
 
 /*
- * Copyright © 2010 Intel Corp.
+ * Copyright © 2010 Intel Corp
+ * Copyright © David Zeuthen <davidz@redhat.com>
+ * Copyright © Michael Natterer
  *
  * Authors: Rob Staudinger <robert.staudinger@intel.com>
  *          Jussi Kukkonen <jku@linux.intel.com>
@@ -22,7 +24,9 @@
 #include <stdbool.h>
 
 #include <glib/gi18n.h>
+#include <glib/gprintf.h>
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 #include <gtk/gtk.h>
 
 #include "mpd-default-device-tile.h"
@@ -51,14 +55,128 @@ typedef struct
 
   GVolumeMonitor  *monitor;
   GHashTable      *tiles;      /* key=GMount, value=MpdStorageTile */
+  MplPanelClient  *panel_client;
 } MpdDevicesTilePrivate;
 
 static unsigned int _signals[LAST_SIGNAL] = { 0, };
 
-char const *
+static char const *
 get_eject_failed_message (void)
 {
-  return _("Ejecting failed, looks like an application is using it");
+  return _("Sorry, we can't eject at the moment");
+}
+
+static char const *
+get_eject_failed_busy_message (void)
+{
+  return _("Sorry, we can't eject because <b>%s</b> is using the disk");
+}
+
+/* Copied from gtk+'s gtk/gtkmountoperation-x11.c (LGPLv2)
+ * (hence David Zeuthen and Michael Natterer added as copyright
+ *  holders).
+ */
+static gchar *
+pid_get_env (GPid         pid,
+             const gchar *key)
+{
+  gchar *ret;
+  gchar *env_filename;
+  gchar *env;
+  gsize env_len;
+  gsize key_len;
+  gchar *end;
+
+  ret = NULL;
+
+  key_len = strlen (key);
+
+  env_filename = g_strdup_printf ("/proc/%d/environ", pid);
+  if (g_file_get_contents (env_filename,
+                           &env,
+                           &env_len,
+                           NULL))
+    {
+      guint n;
+
+      /* /proc/<pid>/environ in Linux is split at '\0' points, g_strsplit() can't handle that... */
+      n = 0;
+      while (TRUE)
+        {
+          if (env[n] == '\0' || n >= env_len)
+            break;
+
+          if (g_str_has_prefix (env + n, key) && (*(env + n + key_len) == '='))
+            {
+              ret = g_strdup (env + n + key_len + 1);
+
+              /* skip invalid UTF-8 */
+              if (!g_utf8_validate (ret, -1, (const gchar **) &end))
+                *end = '\0';
+              break;
+            }
+
+          for (; env[n] != '\0' && n < env_len; n++)
+            ;
+          n++;
+        }
+      g_free (env);
+    }
+  g_free (env_filename);
+
+  return ret;
+}
+
+static gchar *
+get_name_for_pid (GPid pid)
+{
+  gchar *name = NULL;
+  gchar *desktop_file = pid_get_env (pid, "GIO_LAUNCHED_DESKTOP_FILE");
+
+  if (desktop_file) {
+      GDesktopAppInfo *gdapp = g_desktop_app_info_new_from_filename (desktop_file);
+
+      name = g_strdup (g_app_info_get_name ((GAppInfo *)gdapp));
+
+      g_object_unref (gdapp);
+      g_free (desktop_file);
+  }
+
+  return name;
+}
+
+static void
+_handle_eject_error (MpdStorageDeviceTile *tile,
+		     GError *error)
+{
+  GArray *processes = mpd_storage_device_tile_get_processes (tile);
+
+  if (error->code == G_IO_ERROR_BUSY &&
+      processes && processes->len) {
+      gchar *msg;
+      char *process_name;
+      GPid pid;
+
+      /* TODO: we maybe want to iterate over the processes
+       *       until we get one from which we can successfully
+       *       lookup its localized name. */
+      pid = g_array_index (processes, GPid, 0);
+      process_name = get_name_for_pid (pid);
+      msg = g_strdup_printf (get_eject_failed_busy_message (),
+			     process_name ? : "Unknown");
+      mpd_storage_device_tile_show_message (tile, msg, false);
+
+      g_free (process_name);
+      g_free (msg);
+  } else {
+    mpd_storage_device_tile_show_message (tile,
+					  get_eject_failed_message (),
+					  false);
+  }
+
+  mx_widget_set_disabled (MX_WIDGET (tile), FALSE);
+  g_warning ("%s : %s", G_STRLOC, error->message);
+  g_clear_error (&error);
 }
 
 static void
@@ -71,16 +189,8 @@ _drive_eject_cb (GDrive       *drive,
   g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (data));
 
   g_drive_eject_with_operation_finish (drive, result, &error);
-  if (error)
-  {
-    mpd_storage_device_tile_show_message (
-                            MPD_STORAGE_DEVICE_TILE (data),
-                            get_eject_failed_message (),
-                            false);
-
-    mx_widget_set_disabled (MX_WIDGET (data), FALSE);
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
+  if (error) {
+    _handle_eject_error (MPD_STORAGE_DEVICE_TILE (data), error);
   }
 }
 
@@ -94,16 +204,8 @@ _vol_eject_cb (GVolume      *volume,
   g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (data));
 
   g_volume_eject_with_operation_finish (volume, result, &error);
-  if (error)
-  {
-    mpd_storage_device_tile_show_message (
-                            MPD_STORAGE_DEVICE_TILE (data),
-                            get_eject_failed_message (),
-                            false);
-
-    mx_widget_set_disabled (MX_WIDGET (data), FALSE);
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
+  if (error) {
+    _handle_eject_error (MPD_STORAGE_DEVICE_TILE (data), error);
   }
 }
 
@@ -117,12 +219,8 @@ _mount_eject_cb (GMount       *mount,
   g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (data));
 
   g_mount_eject_with_operation_finish (mount, result, &error);
-  if (error)
-  {
-    /* TODO inform user */
-    mx_widget_set_disabled (MX_WIDGET (data), FALSE);
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
+  if (error) {
+    _handle_eject_error (MPD_STORAGE_DEVICE_TILE (data), error);
   }
 }
 
@@ -136,16 +234,8 @@ _mount_unmount_cb (GMount       *mount,
   g_return_if_fail (MPD_IS_STORAGE_DEVICE_TILE (data));
 
   g_mount_unmount_with_operation_finish (mount, result, &error);
-  if (error)
-  {
-    mpd_storage_device_tile_show_message (
-                            MPD_STORAGE_DEVICE_TILE (data),
-                            get_eject_failed_message (),
-                            false);
-
-    mx_widget_set_disabled (MX_WIDGET (data), FALSE);
-    g_warning ("%s : %s", G_STRLOC, error->message);
-    g_clear_error (&error);
+  if (error) {
+    _handle_eject_error (MPD_STORAGE_DEVICE_TILE (data), error);
   }
 }
 
@@ -170,6 +260,31 @@ _find_mount_cb (GMount      *mount,
 }
 
 static void
+_show_processes_cb (GMountOperation *op,
+		    gchar           *message,
+		    GArray          *processes,
+		    GStrv            choices,
+		    gpointer         user_data)
+{
+  GArray *n_processes = NULL;
+  GPid pid;
+  int i;
+
+  if (processes && processes->len) {
+    n_processes = g_array_new (FALSE, FALSE, sizeof (GPid));
+
+    for (i = 0; i < processes->len; i++)
+      {
+	pid = g_array_index (processes, GPid, i);
+	g_array_append_val (n_processes, pid);
+      }
+  }
+
+  mpd_storage_device_tile_set_processes (MPD_STORAGE_DEVICE_TILE (user_data),
+					 n_processes);
+}
+
+static void
 _tile_eject_cb (MpdStorageDeviceTile  *tile,
                 MpdDevicesTile        *self)
 {
@@ -188,6 +303,12 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
     GDrive *drive;
     GVolume *vol;
     gboolean ejected = TRUE;
+    GMountOperation *mount_op =  g_mount_operation_new ();
+
+    mpd_storage_device_tile_set_processes (tile, NULL);
+
+    g_signal_connect (mount_op, "show-processes",
+		      G_CALLBACK (_show_processes_cb), tile);
 
     drive = g_mount_get_drive (mount);
     vol = g_mount_get_volume (mount);
@@ -195,25 +316,25 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
     if (drive && g_drive_can_eject (drive)) {
       g_debug ("%s() ejecting drive %s", __FUNCTION__, uri);
       g_drive_eject_with_operation (drive,
-                                    G_MOUNT_UNMOUNT_NONE, NULL, NULL,
+                                    G_MOUNT_UNMOUNT_NONE, mount_op, NULL,
                                     (GAsyncReadyCallback)_drive_eject_cb,
                                     tile);
     } else if (vol && g_volume_can_eject (vol)) {
       g_debug ("%s() ejecting volume %s", __FUNCTION__, uri);
       g_volume_eject_with_operation (vol,
-                                     G_MOUNT_UNMOUNT_NONE, NULL, NULL,
+                                     G_MOUNT_UNMOUNT_NONE, mount_op, NULL,
                                      (GAsyncReadyCallback)_vol_eject_cb,
                                      tile);
     } else if (g_mount_can_eject (mount)) {
       g_debug ("%s() ejecting mount %s", __FUNCTION__, uri);
       g_mount_eject_with_operation (mount,
-                                    G_MOUNT_UNMOUNT_NONE, NULL, NULL,
+                                    G_MOUNT_UNMOUNT_NONE, mount_op, NULL,
                                     (GAsyncReadyCallback) _mount_eject_cb,
                                     tile);
     } else if (g_mount_can_unmount (mount)) {
       g_debug ("%s() unmounting mount %s", __FUNCTION__, uri);
       g_mount_unmount_with_operation (mount,
-                                      G_MOUNT_UNMOUNT_NONE, NULL, NULL,
+                                      G_MOUNT_UNMOUNT_NONE, mount_op, NULL,
                                      (GAsyncReadyCallback) _mount_unmount_cb,
                                      tile);
     } else {
@@ -235,6 +356,8 @@ _tile_eject_cb (MpdStorageDeviceTile  *tile,
     if (vol) {
       g_object_unref (vol);
     }
+
+    g_object_unref (mount_op);
   }
 
   g_list_foreach (mounts, (GFunc) g_object_unref, NULL);
@@ -334,6 +457,8 @@ add_tile_from_mount (MpdDevicesTile *self,
                                       uri,
                                       mime_types ? mime_types[0] : NULL,
                                       icon_file);
+
+  mpd_storage_device_tile_set_client (tile, priv->panel_client);
   g_signal_connect (tile, "eject",
                     G_CALLBACK (_tile_eject_cb), self);
   g_signal_connect (tile, "request-hide",
@@ -507,3 +632,10 @@ mpd_devices_tile_new (void)
   return g_object_new (MPD_TYPE_DEVICES_TILE, NULL);
 }
 
+void
+mpd_devices_tile_set_client (MpdDevicesTile *self, MplPanelClient *client)
+{
+  MpdDevicesTilePrivate *priv = GET_PRIVATE (self);
+
+  priv->panel_client = client;
+}
