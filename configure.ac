@@ -73,7 +73,7 @@ AM_GLIB_GNU_GETTEXT
 # Libmeego-panel
 PKG_CHECK_MODULES(LIBMPL,
                   dbus-glib-1
-                  mx-1.0 >= 1.1.11
+                  mx-1.0 >= 1.1.13
                   gtk+-2.0
                   gio-unix-2.0)
 

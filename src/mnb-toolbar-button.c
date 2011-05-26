@@ -190,6 +190,15 @@ mnb_toolbar_button_get_preferred_height (ClutterActor *self,
 }
 
 static void
+mnb_toolbar_button_constructed (ClutterActor *self)
+{
+  if (G_OBJECT_CLASS (mnb_toolbar_button_parent_class)->constructed)
+    G_OBJECT_CLASS (mnb_toolbar_button_parent_class)->constructed (self);
+
+  mx_widget_set_tooltip_delay (MX_WIDGET (self), 0);
+}
+
+static void
 mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
@@ -202,6 +211,8 @@ mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
   actor_class->hide                 = mnb_toolbar_button_hide;
   actor_class->get_preferred_width  = mnb_toolbar_button_get_preferred_width;
   actor_class->get_preferred_height = mnb_toolbar_button_get_preferred_height;
+
+  G_OBJECT_CLASS (klass)->constructed = mnb_toolbar_button_constructed;
 }
 
 static void
