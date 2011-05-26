@@ -36,6 +36,7 @@ G_DEFINE_TYPE (MnbToolbarButton, mnb_toolbar_button, MX_TYPE_BUTTON)
 struct _MnbToolbarButtonPrivate
 {
   ClutterGeometry pick;
+  gchar *tooltip;
 };
 
 static void
@@ -58,11 +59,46 @@ mnb_toolbar_button_pick (ClutterActor *actor, const ClutterColor *pick_color)
 }
 
 static void
+mnb_toolbar_button_tooltip_text_cb (MnbToolbarButton *button,
+                                    GParamSpec *pspec,
+                                    gpointer data)
+{
+  const gchar *tooltip = mx_widget_get_tooltip_text (MX_WIDGET (button));
+
+  if (tooltip)
+    {
+      g_free (button->priv->tooltip);
+      button->priv->tooltip = g_strdup (tooltip);
+    }
+}
+
+
+static void
 mnb_toolbar_button_transition (MnbToolbarButton *button)
 {
-  const gchar  *pseudo_class;
+  const gchar *pseudo_class;
+  const gchar *tooltip;
   ClutterActor *bg_image;
   ClutterActor *icon;
+
+  tooltip = mx_widget_get_tooltip_text (MX_WIDGET (button));
+
+  if (mx_stylable_style_pseudo_class_contains (MX_STYLABLE (button),
+                                               "checked"))
+    {
+      if (tooltip)
+        {
+          mx_widget_set_tooltip_text (MX_WIDGET (button), NULL);
+        }
+    }
+  else
+    {
+      if (!tooltip)
+        {
+          mx_widget_set_tooltip_text (MX_WIDGET (button),
+                                      button->priv->tooltip);
+        }
+    }
 
   pseudo_class = mx_stylable_get_style_pseudo_class (MX_STYLABLE (button));
 
@@ -133,17 +169,6 @@ mnb_toolbar_button_press (ClutterActor *actor, ClutterButtonEvent *event)
            mnb_toolbar_button_parent_class)->button_press_event (actor, event);
 }
 
-static gboolean
-mnb_toolbar_button_enter (ClutterActor *actor, ClutterCrossingEvent *event)
-{
-  /* don't show a tooltip when the button is "checked" */
-  if (mx_button_get_toggled (MX_BUTTON (actor)))
-    return TRUE;
-  else
-    return CLUTTER_ACTOR_CLASS (
-                 mnb_toolbar_button_parent_class)->enter_event (actor, event);
-}
-
 static void
 mnb_toolbar_button_hide (ClutterActor *actor)
 {
@@ -192,10 +217,30 @@ mnb_toolbar_button_get_preferred_height (ClutterActor *self,
 static void
 mnb_toolbar_button_constructed (ClutterActor *self)
 {
+  MnbToolbarButton *button = MNB_TOOLBAR_BUTTON (self);
+  const gchar *tooltip;
+
   if (G_OBJECT_CLASS (mnb_toolbar_button_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_toolbar_button_parent_class)->constructed (self);
 
   mx_widget_set_tooltip_delay (MX_WIDGET (self), 0);
+
+  tooltip = mx_widget_get_tooltip_text (MX_WIDGET (button));
+  button->priv->tooltip = g_strdup (tooltip);
+  g_signal_connect (MX_WIDGET (button), "notify::tooltip-text",
+                    G_CALLBACK (mnb_toolbar_button_tooltip_text_cb),
+                    NULL);
+}
+
+static void
+mnb_toolbar_button_finalize (GObject *self)
+{
+  MnbToolbarButton *button = MNB_TOOLBAR_BUTTON (self);
+
+  g_free (button->priv->tooltip);
+  button->priv->tooltip = NULL;
+
+  G_OBJECT_CLASS (mnb_toolbar_button_parent_class)->finalize (self);
 }
 
 static void
@@ -207,12 +252,12 @@ mnb_toolbar_button_class_init (MnbToolbarButtonClass *klass)
 
   actor_class->pick                 = mnb_toolbar_button_pick;
   actor_class->button_press_event   = mnb_toolbar_button_press;
-  actor_class->enter_event          = mnb_toolbar_button_enter;
   actor_class->hide                 = mnb_toolbar_button_hide;
   actor_class->get_preferred_width  = mnb_toolbar_button_get_preferred_width;
   actor_class->get_preferred_height = mnb_toolbar_button_get_preferred_height;
 
   G_OBJECT_CLASS (klass)->constructed = mnb_toolbar_button_constructed;
+  G_OBJECT_CLASS (klass)->finalize    = mnb_toolbar_button_finalize;
 }
 
 static void
