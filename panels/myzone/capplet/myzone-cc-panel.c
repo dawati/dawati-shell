@@ -330,12 +330,18 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
     GtkWidget *button;
     const gchar *pictures_dir;
     gchar *current_filename;
+    GtkFileFilter *filter;
 
     button = (GtkWidget *)gtk_builder_get_object (builder, "background_chooser_button");
     preview = gtk_image_new ();
     gtk_file_chooser_set_preview_widget (GTK_FILE_CHOOSER (button), preview);
 
     pictures_dir = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
+
+    filter = gtk_file_filter_new ();
+    gtk_file_filter_add_pixbuf_formats (filter);
+    gtk_file_filter_set_name (filter, _("Images"));
+    gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (button), filter);
 
     gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (button),
                                           pictures_dir,
