@@ -374,7 +374,7 @@ _view_refresh_items_cb (MpsViewBridge *bridge)
 
   g_hash_table_iter_init (&iter, priv->item_uid_to_actor);
 
-  while (g_hash_table_iter_next (&iter, &key, (gpointer *) card)) {
+  while (g_hash_table_iter_next (&iter, &key, (gpointer *) &card)) {
     mps_tweet_card_refresh (card);
   }
 
