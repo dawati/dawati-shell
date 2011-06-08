@@ -46,6 +46,7 @@ libcarrick_la_CFLAGS =  -Wall \
                         $(GCONF_CFLAGS) \
                         $(MPL_CFLAGS) \
                         $(MX_CFLAGS) \
+                        $(DBUS_CFLAGS) \
                         $(LIBNOTIFY_CFLAGS) \
                         -DPKG_DATA_DIR=\"$(pkgdatadir)\" \
                         -DLIBEXECDIR=\"$(libexecdir)\"
@@ -54,6 +55,7 @@ libcarrick_la_LIBADD = $(GTK_LIBS) \
                        $(GCONF_LIBS) \
                        $(MPL_LIBS) \
                        $(MX_LIBS) \
+                       $(DBUS_LIBS) \
                        $(LIBNOTIFY_LIBS)
 
 
