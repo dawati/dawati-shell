@@ -120,6 +120,9 @@ static void last_focus_weak_notify_cb (gpointer data, GObject *meta_win);
 
 static GQuark actor_data_quark = 0;
 
+static void     check_for_empty_workspace (MutterPlugin *plugin,
+                                           gint workspace, MetaWindow *ignore,
+                                           gboolean win_destroyed);
 static void     minimize   (MutterPlugin *plugin,
                             MutterWindow *actor);
 static void     map        (MutterPlugin *plugin,
@@ -876,6 +879,9 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
   MutterPlugin *plugin = data->plugin;
   ActorPrivate *apriv;
   MutterWindow *mcw = MUTTER_WINDOW (data->actor);
+  MetaWindow   *mw  = mutter_window_get_meta_window (mcw);
+  MetaWorkspace *ws = meta_window_get_workspace (mw);
+  int ws_index = meta_workspace_index (ws);
 
   apriv = get_actor_private (mcw);
   apriv->tml_minimize = NULL;
@@ -888,6 +894,8 @@ on_minimize_effect_complete (ClutterTimeline *timeline, EffectCompleteData *data
 
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_minimize_completed (plugin, mcw);
+
+  check_for_empty_workspace (plugin, ws_index, mw, TRUE);
 }
 
 /*
@@ -1220,16 +1228,19 @@ maybe_show_myzone (MutterPlugin *plugin)
   while (l)
     {
       MutterWindow       *m    = l->data;
+      MetaWindow         *mw   = mutter_window_get_meta_window (m);
       MetaCompWindowType  type = mutter_window_get_window_type (m);
+      gboolean            minimized = mw && meta_window_is_skip_taskbar (mw);
 
       /*
-       * Ignore desktop, docs, and panel windows
+       * Ignore desktop, docs,panel windows and minimized windows
        *
        * (Panel windows are currently of type META_COMP_WINDOW_OVERRIDE_OTHER)
        */
       if (!(type == META_COMP_WINDOW_DESKTOP        ||
             type == META_COMP_WINDOW_DOCK           ||
-            type == META_COMP_WINDOW_OVERRIDE_OTHER))
+            type == META_COMP_WINDOW_OVERRIDE_OTHER) &&
+          !minimized)
         {
           /* g_debug ("Found singificant window %s of type %d", */
           /*          mutter_window_get_description (m), type); */
@@ -1296,7 +1307,8 @@ check_for_empty_workspace (MutterPlugin *plugin,
        * removed when the screen active workspace is not yet updated at this
        * point and we we try to translate it to an index, it blows up on us).
        */
-      if (mw != ignore &&
+      if (!meta_window_is_skip_taskbar (mw) &&
+          mw != ignore &&
           !meta_window_is_on_all_workspaces (mw) &&
           ((win_destroyed && xwin != xt) ||
            (!win_destroyed && !meta_window_is_ancestor_of_transient (ignore,
