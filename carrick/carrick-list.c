@@ -47,6 +47,7 @@ struct _CarrickListPrivate
   double         active_item_rel_pos;
   int            active_item_height;
 
+  gboolean dragged_item_removed;
   guint drag_position;
   guint drop_position;
 
@@ -232,18 +233,23 @@ carrick_list_drag_end (GtkWidget      *widget,
                        CarrickList    *list)
 {
   CarrickListPrivate *priv = list->priv;
-  GList              *children;
 
   if (gtk_widget_get_parent (widget) != priv->drag_window)
     return;
-
-  children = gtk_container_get_children (GTK_CONTAINER (priv->box));
 
   /* destroy the popup window */
   g_object_ref (widget);
   gtk_container_remove (GTK_CONTAINER (priv->drag_window), widget);
   gtk_widget_destroy (priv->drag_window);
   priv->drag_window = NULL;
+
+  /* If the item that was being dragged got removed from the model
+   * during the drag, we should do nothing else. */
+  if (priv->dragged_item_removed)
+    {
+      priv->dragged_item_removed = FALSE;
+      return;
+    }
 
   /* insert the widget into the list */
   gtk_box_pack_start (GTK_BOX (priv->box), widget,
@@ -255,10 +261,13 @@ carrick_list_drag_end (GtkWidget      *widget,
 
   if (priv->drop_position != priv->drag_position)
     {
+      GList       *children;
       GtkWidget   *other_widget;
       DBusGProxy  *service, * other_service;
       const gchar *path;
       move_data   *data = NULL;
+
+      children = gtk_container_get_children (GTK_CONTAINER (priv->box));
 
       service = carrick_service_item_get_proxy (CARRICK_SERVICE_ITEM (widget));
       data = g_slice_new0 (move_data);
@@ -292,9 +301,9 @@ carrick_list_drag_end (GtkWidget      *widget,
                                                 move_notify_cb,
                                                 data);
         }
-    }
 
-  g_list_free (children);
+      g_list_free (children);
+    }
 }
 
 static void
@@ -558,6 +567,19 @@ _find_and_remove (GtkWidget *item,
     }
 }
 
+static CarrickServiceItem*
+_get_item_from_drag_window(GtkWidget *drag_window)
+{
+  GList *children;
+  CarrickServiceItem *item;
+
+  children = gtk_container_get_children (GTK_CONTAINER (drag_window));
+  item = CARRICK_SERVICE_ITEM (children->data);
+  g_list_free (children);
+
+  return item;
+}
+
 static void
 _row_deleted_cb (GtkTreeModel *tree_model,
                  GtkTreePath  *path,
@@ -576,15 +598,31 @@ _row_deleted_cb (GtkTreeModel *tree_model,
       carrick_list_update_fallback (self);
       gtk_widget_show (priv->fallback);
       _set_active_item (self, NULL);
+
+      if (priv->drag_window)
+        priv->dragged_item_removed = TRUE;
+
+      return;
     }
-  else
+
+  /* Then we check whether the dragged item got removed. */
+  if (priv->drag_window && !priv->dragged_item_removed)
     {
-      /* Row removed, find widget with corresponding GtkTreePath
-       * and destroy */
-      gtk_container_foreach (GTK_CONTAINER (priv->box),
-                             _find_and_remove,
-                             user_data);
+      CarrickServiceItem *item = _get_item_from_drag_window (priv->drag_window);
+      GtkTreeRowReference *row = carrick_service_item_get_row_reference (item);
+
+      if (!gtk_tree_row_reference_valid (row))
+        {
+          priv->dragged_item_removed = TRUE;
+          return;
+        }
     }
+
+  /* Row that got removed is not the one that is being dragged;
+   * find widget with corresponding GtkTreePath and destroy */
+  gtk_container_foreach (GTK_CONTAINER (priv->box),
+                         _find_and_remove,
+                         user_data);
 }
 
 static void
@@ -657,11 +695,38 @@ _row_changed_cb (GtkTreeModel *model,
         gtk_box_reorder_child (GTK_BOX (priv->box),
                                item,
                                index);
+
+      return;
     }
-  else
+
+  /* If we didn't find the widget on the list, it may be that it is
+   * being dragged, so let's check this possibility as well. */
+  if (priv->drag_window)
     {
-      _row_inserted_cb (model, path, iter, list);
+      CarrickServiceItem *item = _get_item_from_drag_window (priv->drag_window);
+      GtkTreeRowReference *row_reference = carrick_service_item_get_row_reference (item);
+      DBusGProxy *drag_proxy;
+
+      if (!gtk_tree_row_reference_valid (row_reference))
+        {
+          _row_inserted_cb (model, path, iter, list);
+          return;
+        }
+
+      drag_proxy = carrick_service_item_get_proxy (item);
+
+      /* If we found the item we're looking for is being dragged,
+       * update it. */
+      if (!g_strcmp0 (dbus_g_proxy_get_path (proxy),
+                      dbus_g_proxy_get_path (drag_proxy)))
+        {
+          carrick_service_item_update (CARRICK_SERVICE_ITEM (item));
+          return;
+        }
     }
+
+  /* We don't have a widget for this item, so create it! */
+  _row_inserted_cb (model, path, iter, list);
 }
 
 static gboolean
