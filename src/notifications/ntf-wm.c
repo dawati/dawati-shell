@@ -59,6 +59,12 @@ ntf_wm_meta_window_demands_attention_cb (MetaWindow *mw,
 }
 
 static void
+ntf_wm_meta_window_unmanaged_cb (MetaWindow *mw, gpointer data)
+{
+  ntf_wm_demands_attention_clear (mw);
+}
+
+static void
 ntf_wm_ntf_closed_cb (NtfNotification *ntf, gpointer dummy)
 {
   NtfSource  *src    = ntf_notification_get_source (ntf);
@@ -69,9 +75,12 @@ ntf_wm_ntf_closed_cb (NtfNotification *ntf, gpointer dummy)
    * stored pointer before closing any notifications that go with this.
    */
   if (window)
-    g_signal_handlers_disconnect_by_func (window,
-                                        ntf_wm_meta_window_demands_attention_cb,
-                                        NULL);
+    {
+      g_signal_handlers_disconnect_by_func (window,
+          ntf_wm_meta_window_demands_attention_cb, NULL);
+      g_signal_handlers_disconnect_by_func (window,
+          ntf_wm_meta_window_unmanaged_cb, NULL);
+    }
 }
 
 static void
@@ -179,6 +188,13 @@ ntf_wm_handle_demands_attention (MetaWindow *window)
                     NULL);
   g_signal_connect (window, "notify::urgent",
                     G_CALLBACK (ntf_wm_meta_window_demands_attention_cb),
+                    NULL);
+  /* If the window is closed, the notification cannot activate the window
+   * anymore so the notification should be closed.
+   * See: https://bugs.meego.com/show_bug.cgi?id=19677
+   */
+  g_signal_connect (window, "unmanaged",
+                    G_CALLBACK (ntf_wm_meta_window_unmanaged_cb),
                     NULL);
 }
 
