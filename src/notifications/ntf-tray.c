@@ -235,8 +235,7 @@ ntf_tray_key_press_event (ClutterActor *actor, ClutterKeyEvent *event)
           {
             NtfNotification *ntf = NTF_NOTIFICATION (last->data);
 
-            ntf_notification_handle_key_event (ntf, event);
-            retval = TRUE;
+            retval = ntf_notification_handle_key_event (ntf, event);
           }
 
         g_list_free (notifiers);
@@ -563,7 +562,7 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
                              FADE_DURATION,
                              "opacity", 0xff,
                              NULL);
-     }
+    }
   else if (priv->n_notifiers == 2)
     {
       /* slide the control into view */

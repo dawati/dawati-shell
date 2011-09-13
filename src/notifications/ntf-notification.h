@@ -81,6 +81,7 @@ NtfSource *ntf_notification_get_source         (NtfNotification *ntf);
 void       ntf_notification_close              (NtfNotification *ntf);
 void       ntf_notification_add_button         (NtfNotification *ntf,
                                                 ClutterActor    *button,
+                                                const gchar     *keyname,
                                                 KeySym           keysym);
 void       ntf_notification_remove_button      (NtfNotification *ntf,
                                                 ClutterActor    *button);

@@ -30,9 +30,11 @@
 #include "ntf-notification.h"
 
 #define KEYSYM_KEY "ntf-notification-keysym"
+#define KEYNAME_KEY "ntf-notification-keyname"
 
 static gint subsytem_id = 0;
 static GQuark keysym_quark = 0;
+static GQuark keyname_quark = 0;
 
 static void ntf_notification_dispose (GObject *object);
 static void ntf_notification_finalize (GObject *object);
@@ -138,6 +140,7 @@ ntf_notification_class_init (NtfNotificationClass *klass)
   ClutterActorClass *actor_class  = CLUTTER_ACTOR_CLASS (klass);
 
   keysym_quark = g_quark_from_static_string (KEYSYM_KEY);
+  keyname_quark = g_quark_from_static_string (KEYNAME_KEY);
 
   g_type_class_add_private (klass, sizeof (NtfNotificationPrivate));
 
@@ -288,8 +291,7 @@ ntf_notification_constructed (GObject *object)
   if (priv->dismiss_button)
     {
       /* add the dismiss button to the button box */
-      clutter_container_add_actor (CLUTTER_CONTAINER (priv->button_box),
-                                   CLUTTER_ACTOR (priv->dismiss_button));
+      ntf_notification_add_button (self, priv->dismiss_button, "dismiss", 0);
     }
 
   mx_stylable_set_style_class (MX_STYLABLE (priv->summary),
@@ -478,6 +480,7 @@ ntf_notification_close (NtfNotification *ntf)
 void
 ntf_notification_add_button (NtfNotification *ntf,
                              ClutterActor    *button,
+                             const gchar     *keyname,
                              KeySym           keysym)
 {
   NtfNotificationPrivate *priv;
@@ -493,6 +496,13 @@ ntf_notification_add_button (NtfNotification *ntf,
     {
       g_object_set_qdata (G_OBJECT (button), keysym_quark,
                           GINT_TO_POINTER (keysym));
+    }
+
+  if (keyname)
+    {
+      g_object_set_qdata_full (G_OBJECT (button), keyname_quark,
+                               (gpointer) g_strdup (keyname),
+                               g_free);
     }
 }
 

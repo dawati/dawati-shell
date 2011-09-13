@@ -127,7 +127,7 @@ ntf_wm_update_notification (NtfNotification *ntf, MetaWindow *window)
                     G_CALLBACK (ntf_wm_activate_cb),
                     window);
 
-  ntf_notification_add_button (ntf, button, 0);
+  ntf_notification_add_button (ntf, button, "activate", 0);
 }
 
 static void

@@ -48,6 +48,9 @@ typedef struct
   MeegoNetbookNotifyStore *store;
 } ActionData;
 
+static gint     n_notifiers;
+static gboolean overlay_focused;
+
 static void
 free_action_data (gpointer action)
 {
@@ -66,12 +69,50 @@ ntf_libnotify_action_cb (ClutterActor *button, ActionData *data)
                                       data->action);
 }
 
+static void
+ntf_libnotify_update_modal (void)
+{
+  NtfTray      *tray = ntf_overlay_get_tray (TRUE);
+  MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
+
+  if (ntf_tray_get_n_notifications (tray) > 0)
+    {
+      if (!overlay_focused)
+        {
+          ClutterActor *stage = mutter_plugin_get_stage (plugin);
+          MxFocusManager *manager =
+            mx_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
+
+          meego_netbook_stash_window_focus (plugin, CurrentTime);
+          mx_focus_manager_push_focus (manager, MX_FOCUSABLE (tray));
+          overlay_focused = TRUE;
+        }
+    }
+  else
+    {
+      if (overlay_focused)
+        {
+          meego_netbook_unstash_window_focus (plugin, CurrentTime);
+          overlay_focused = FALSE;
+        }
+    }
+}
+
 /*
  * Handler for the NtfNotify::closed signal
  */
 static void
 ntf_libnotify_ntf_closed_cb (NtfNotification *ntf, gpointer dummy)
 {
+
+  n_notifiers--;
+  if (n_notifiers < 0)
+    {
+      g_warning ("Bug in notifier accounting, attempting to fix");
+      n_notifiers = 0;
+    }
+
+  ntf_libnotify_update_modal ();
   meego_netbook_notify_store_close (store,
                                      ntf_notification_get_id (ntf),
                                      ClosedDismissed);
@@ -115,12 +156,14 @@ ntf_libnotify_notification_added_cb (MeegoNetbookNotifyStore *store,
 
       if (ntf)
         {
-          g_signal_connect (ntf, "closed",
-                            G_CALLBACK (ntf_libnotify_ntf_closed_cb),
-                            NULL);
+          n_notifiers++;
+          g_signal_connect_after (ntf, "closed",
+                                  G_CALLBACK (ntf_libnotify_ntf_closed_cb),
+                                  NULL);
 
           ntf_libnotify_update (ntf, notification);
           ntf_tray_add_notification (tray, ntf);
+          ntf_libnotify_update_modal ();
         }
 
       g_free (srcid);
@@ -150,12 +193,24 @@ ntf_libnotify_notification_closed_cb (MeegoNetbookNotifyStore *store,
     }
 
   if (ntf && !ntf_notification_is_closed (ntf))
-    ntf_notification_close (ntf);
+    {
+      n_notifiers--;
+      if (n_notifiers < 0)
+        {
+          g_warning ("Bug in notifier accounting, attempting to fix");
+          n_notifiers = 0;
+        }
+      ntf_notification_close (ntf);
+      ntf_libnotify_update_modal ();
+    }
 }
 
 void
 ntf_libnotify_init (void)
 {
+  n_notifiers = 0;
+  overlay_focused = FALSE;
+
   store = meego_netbook_notify_store_new ();
 
   subsystem_id = ntf_notification_get_subsystem_id ();
@@ -301,7 +356,7 @@ ntf_libnotify_update (NtfNotification *ntf, Notification *details)
                     }
                 }
 
-              ntf_notification_add_button (ntf, button, keysym);
+              ntf_notification_add_button (ntf, button, key, keysym);
             }
         }
     }

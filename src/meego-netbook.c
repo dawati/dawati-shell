@@ -2159,8 +2159,9 @@ xevent_filter (MutterPlugin *plugin, XEvent *xev)
           Window        xwin;
 
           /*
-           * We only get key events on the no-focus window, but for clutter we
-           * need to pretend they come from the stage window.
+           * We only get key events on the no-focus window, but for
+           * clutter we need to pretend they come from the stage
+           * window.
            */
           xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
