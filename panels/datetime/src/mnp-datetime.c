@@ -49,7 +49,7 @@ G_DEFINE_TYPE (MnpDatetime, mnp_datetime, MX_TYPE_BOX_LAYOUT)
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
 #define SINGLE_DIV_LINE THEMEDIR "/single-div-line.png"
 #define DOUBLE_DIV_LINE THEMEDIR "/double-div-line.png"
-#define CALENDAR_ICON THEMEDIR "/calendar-icon-%d.png"
+#define CALENDAR_ICON MYZONETHEMEDIR "/calendar-icon-%d.png"
 
 static gboolean update_date (MnpDatetime *datetime);
 
