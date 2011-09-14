@@ -373,10 +373,12 @@ mnp_clock_area_new (void)
 
 static void
 mnp_clock_tile_removed (MnpClockTile *tile, MnpClockArea *area)
-{
+{	
 	g_ptr_array_remove (area->priv->clock_tiles, tile);	
 	
 	area->priv->zone_remove_func (area, mnp_clock_tile_get_location(tile)->display, area->priv->zone_remove_data);
+	if (area->priv->clock_tiles->len > 3) /* We had 4+1 tile */
+		clutter_actor_show ((ClutterActor *) area->priv->clock_tiles->pdata[3]);
 }
 
 void
@@ -410,7 +412,12 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 	} else
 		g_ptr_array_add (area->priv->clock_tiles, tile);
 	mnp_clock_tile_set_remove_cb (tile, (TileRemoveFunc)mnp_clock_tile_removed, (gpointer)area);
-
+	
+	if (area->priv->clock_tiles->len > 4) {
+		int i;
+		for (i= 4; i <= area->priv->clock_tiles->len-1; i++)
+			clutter_actor_hide ((ClutterActor *) area->priv->clock_tiles->pdata[i]);
+	}
 	g_signal_connect (tile, "drag-y-pos", G_CALLBACK(tile_drag_run), area);
 }
 

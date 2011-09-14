@@ -77,7 +77,7 @@ struct _MnpWorldClockPrivate {
 	ClutterActor *launcher;
 
 	const char *search_text;
-
+	gboolean location_tile;
 	MnpClockArea *area;
 
 	GPtrArray *zones;
@@ -327,7 +327,8 @@ add_location_tile(MnpWorldClock *world_clock, const char *display, gboolean prio
 	if (!priority) {
 		g_ptr_array_add (priv->zones, loc);
 		mnp_save_zones(priv->zones);
-	}
+	} else
+		priv->location_tile = TRUE;
 
 	mx_entry_set_text (priv->search_location, "");
 
@@ -337,7 +338,7 @@ add_location_tile(MnpWorldClock *world_clock, const char *display, gboolean prio
 	priv->search_text = "asd";
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");	
 	
-	if (priv->zones->len >= 4)
+	if (priv->zones->len >= 4 || (priv->location_tile && priv->zones->len >= 3))
 		clutter_actor_hide (priv->entry_box);
 
 }
@@ -428,7 +429,7 @@ zone_removed_cb (MnpClockArea *area, char *display, MnpWorldClock *clock)
 		mnp_save_zones(priv->zones);
 	}
 
-	if (priv->zones->len < 4)
+	if ((priv->location_tile && priv->zones->len < 3) || priv->zones->len < 4)
 		clutter_actor_show (priv->entry_box);
 	
 }
@@ -740,6 +741,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
 
 	stage = clutter_stage_get_default ();
+	priv->location_tile = FALSE;
 
 	mx_box_layout_set_orientation ((MxBoxLayout *)world_clock, MX_ORIENTATION_VERTICAL);
 	mx_box_layout_set_spacing ((MxBoxLayout *)world_clock, 0);
@@ -860,7 +862,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 			MnpClockTile *tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area), FALSE);
 			mnp_clock_area_add_tile (priv->area, tile);
 		}
-		if (priv->zones->len >= 4)
+		if (priv->zones->len >= 4 || (priv->location_tile && priv->zones->len >= 3) )
 			clutter_actor_hide (priv->entry_box);
 	}
 	
