@@ -23,7 +23,14 @@ MnpShell {
   padding: 2 0 2 8;
 }
 
-*#TimeTitle, *#EventPaneTitle, *#TaskPaneTitle
+*#EventPaneTitle
+{
+  font-size: 16;
+  font-weight: bold;
+  padding: 8;
+}
+
+*#TimeTitle, *#TaskPaneTitle
 {
   font-size: 16;
   font-weight: bold;

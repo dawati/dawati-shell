@@ -49,6 +49,7 @@ G_DEFINE_TYPE (MnpDatetime, mnp_datetime, MX_TYPE_BOX_LAYOUT)
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
 #define SINGLE_DIV_LINE THEMEDIR "/single-div-line.png"
 #define DOUBLE_DIV_LINE THEMEDIR "/double-div-line.png"
+#define CALENDAR_ICON THEMEDIR "/calendar-icon-%d.png"
 
 static gboolean update_date (MnpDatetime *datetime);
 
@@ -63,6 +64,7 @@ struct _MnpDatetimePrivate {
 	ClutterActor *task_area;
 
 	ClutterActor *cal_header;
+	ClutterActor *date_icon;
 	ClutterActor *task_header;
 
 	ClutterActor *penge_events;
@@ -79,6 +81,7 @@ struct _MnpDatetimePrivate {
 	ClutterActor *task_launcher;
 
 	guint date_update_timeout;
+	guint8 day_of_month;
 };
 
 static void
@@ -176,6 +179,33 @@ events_pane_update (MnpDatetime *dtime)
 
 /* From myzone */
 static void
+penge_calendar_pane_update_calendar_icon (MnpDatetime *pane,
+                                          JanaTime          *time)
+{
+  MnpDatetimePrivate *priv = GET_PRIVATE (pane);
+  GError *error = NULL;
+  gchar *path = NULL;
+
+  if (jana_time_get_day (time) != priv->day_of_month)
+  {
+    priv->day_of_month = jana_time_get_day (time);
+    path = g_strdup_printf (CALENDAR_ICON, priv->day_of_month);
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->date_icon),
+                                   path,
+                                   &error);
+
+    g_free (path);
+
+    if (error)
+    {
+      g_warning (G_STRLOC ": Error setting path on calendar texture: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+  }
+}
+
+static void
 penge_calendar_pane_update (MnpDatetime *pane)
 {
   MnpDatetimePrivate *priv = GET_PRIVATE (pane);
@@ -186,6 +216,7 @@ penge_calendar_pane_update (MnpDatetime *pane)
                 "time",
                 now,
                 NULL);
+  penge_calendar_pane_update_calendar_icon (pane, now);
   g_object_unref (now);
 }
 
@@ -275,19 +306,19 @@ construct_calendar_area (MnpDatetime *dtime)
 			       "x-fill", TRUE,			       			       
                                NULL);	
 
-	icon = (ClutterActor *)mx_icon_new ();
-  	mx_stylable_set_style_class (MX_STYLABLE (icon),
-        	                       	"EventIcon");
-  	clutter_actor_set_size (icon, 36, 36);
-	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), icon, -1);
+	priv->date_icon = clutter_texture_new ();
+	/* Need to fix the size to avoid being squashed */
+	clutter_actor_set_size (priv->date_icon, 27, 28);
+	mx_box_layout_add_actor (MX_BOX_LAYOUT(box), priv->date_icon, -1);
 	clutter_container_child_set (CLUTTER_CONTAINER (box),
-                               icon,
+                               priv->date_icon,
 			       "expand", FALSE,
 			       "x-fill", FALSE,
 			       "y-fill", FALSE,
 			       "y-align", MX_ALIGN_MIDDLE,
 			       "x-align", MX_ALIGN_START,
                                NULL);
+	penge_calendar_pane_update_calendar_icon (dtime, now);
 
 
 	label = mx_label_new_with_text(_("Appointments"));
