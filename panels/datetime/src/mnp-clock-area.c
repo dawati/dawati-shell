@@ -398,7 +398,17 @@ mnp_clock_area_add_tile (MnpClockArea *area, MnpClockTile *tile)
 			       "y-fill", FALSE,
 			       "x-fill", TRUE,
                                NULL);	
-	g_ptr_array_add (area->priv->clock_tiles, tile);
+
+	if (tile->priority) {
+		int i;
+
+		insert_in_ptr_array (area->priv->clock_tiles, tile, 0);
+	  	clutter_actor_set_depth ((ClutterActor *)tile, (0.05) - 0.01);
+  
+ 	 	for (i=area->priv->clock_tiles->len-1; i >= 0; i--)
+		  	clutter_actor_set_depth (area->priv->clock_tiles->pdata[i], (i + 1) * 0.05);
+	} else
+		g_ptr_array_add (area->priv->clock_tiles, tile);
 	mnp_clock_tile_set_remove_cb (tile, (TileRemoveFunc)mnp_clock_tile_removed, (gpointer)area);
 
 	g_signal_connect (tile, "drag-y-pos", G_CALLBACK(tile_drag_run), area);

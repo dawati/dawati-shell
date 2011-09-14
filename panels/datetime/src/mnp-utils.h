@@ -57,8 +57,8 @@ ClutterModel * mnp_get_world_timezones (void);
 const GWeatherLocation * mnp_utils_get_location_from_display (ClutterModel *store, const char *display);
 GPtrArray * mnp_load_zones (void);
 void mnp_save_zones (GPtrArray *zones);
-MnpDateFormat * mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now, gboolean tfh);
+MnpDateFormat * mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now, gboolean tfh, gboolean priority);
 char * mnp_utils_get_display_from_location (ClutterModel *store, GWeatherLocation *location);
-
+char * mnp_find_location (const char *city, const char *country);
 
 #endif 

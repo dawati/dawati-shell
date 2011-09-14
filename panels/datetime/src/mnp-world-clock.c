@@ -29,6 +29,10 @@
 #include <meego-panel/mpl-panel-common.h>
 #include <meego-panel/mpl-entry.h>
 
+#include <geoclue/geoclue-master.h>
+#include <geoclue/geoclue-geocode.h>
+#include <geoclue/geoclue-reverse-geocode.h>
+
 #include "mnp-world-clock.h"
 #include "mnp-utils.h"
 #include "mnp-button-item.h"
@@ -81,6 +85,11 @@ struct _MnpWorldClockPrivate {
 	gboolean completion_inited;
 
 	MplPanelClient *panel_client;
+
+	/* Geo Clue */
+	GeocluePosition *geo_position;
+	GeoclueGeocode *geo_geocode;
+	GeoclueReverseGeocode *geo_reverse_geocode;
 };
 
 static void construct_completion (MnpWorldClock *world_clock);
@@ -277,6 +286,63 @@ clear_btn_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 }
 
 static void
+add_location_tile(MnpWorldClock *world_clock, const char *display, gboolean priority)
+{
+	const GWeatherLocation *location;
+	MnpClockTile *tile;
+	MnpZoneLocation *loc = g_new0(MnpZoneLocation, 1);
+	const GWeatherTimezone *tzone;
+	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
+	int i;
+
+	if (!priv->zones_model)
+		priv->zones_model = mnp_get_world_timezones();
+
+	location = mnp_utils_get_location_from_display (priv->zones_model, display);
+	if (!location)
+		return;
+
+	printf("Adding location: %s\n", display);
+	loc->display = g_strdup(display);
+	loc->city = g_strdup(gweather_location_get_city_name (location));
+	tzone =  gweather_location_get_timezone (location);
+	loc->tzid = g_strdup(gweather_timezone_get_tzid ((GWeatherTimezone *)tzone));
+
+	for (i=0; i< priv->zones->len; i++) {
+		MnpZoneLocation *cmp = priv->zones->pdata[i];
+
+		if (strcmp (loc->tzid, cmp->tzid) == 0 &&
+		    strcmp (loc->city, cmp->city) == 0) {
+			/* We already have this. So don't add. */
+			g_free (loc->tzid);
+			g_free (loc->city);
+			g_free (loc->display);
+			g_free (loc);
+			printf("Not adding %s, as it is already there \n");
+
+			return;
+		}
+	}
+
+	if (!priority) {
+		g_ptr_array_add (priv->zones, loc);
+		mnp_save_zones(priv->zones);
+	}
+
+	mx_entry_set_text (priv->search_location, "");
+
+	tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area), priority);
+	mnp_clock_area_add_tile (priv->area, tile);
+
+	priv->search_text = "asd";
+	g_signal_emit_by_name (priv->zones_model, "filter-changed");	
+	
+	if (priv->zones->len >= 4)
+		clutter_actor_hide (priv->entry_box);
+
+}
+
+static void
 add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 {
 	MnpWorldClockPrivate *priv = GET_PRIVATE (world_clock);
@@ -290,27 +356,9 @@ add_location_clicked_cb (ClutterActor *button, MnpWorldClock *world_clock)
 	priv->search_text = NULL;
 	g_signal_emit_by_name (priv->zones_model, "filter-changed");
 	
-	location = mnp_utils_get_location_from_display (priv->zones_model, mx_entry_get_text (priv->search_location));
-	loc->display = g_strdup(mx_entry_get_text (priv->search_location));
-	loc->city = g_strdup(gweather_location_get_city_name (location));
-	tzone =  gweather_location_get_timezone (location);
-	loc->tzid = g_strdup(gweather_timezone_get_tzid ((GWeatherTimezone *)tzone));
+	add_location_tile (world_clock, mx_entry_get_text (priv->search_location), FALSE);
 
-
-	g_ptr_array_add (priv->zones, loc);
-	mnp_save_zones(priv->zones);
-
-	mx_entry_set_text (priv->search_location, "");
-
-	tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area));
-	mnp_clock_area_add_tile (priv->area, tile);
-
-	priv->search_text = "asd";
-	g_signal_emit_by_name (priv->zones_model, "filter-changed");	
 	mx_list_view_set_model (MX_LIST_VIEW (priv->zones_list), priv->zones_model);
-	
-	if (priv->zones->len >= 4)
-		clutter_actor_hide (priv->entry_box);
 }
 
 
@@ -442,8 +490,12 @@ construct_completion (MnpWorldClock *world_clock)
         g_signal_connect (priv->event_box, "button-press-event",
                           G_CALLBACK (event_box_clicked_cb), world_clock);
 
-	model = mnp_get_world_timezones ();
-	priv->zones_model = model;
+	if (!priv->zones_model) {
+		model = mnp_get_world_timezones ();
+		priv->zones_model = model;
+	} else
+		model = priv->zones_model;
+
 	clutter_model_set_filter (model, filter_zone, world_clock, NULL);
 	priv->search_text = "asd";
 
@@ -614,6 +666,72 @@ time_changed (MnpClockArea *area, MnpWorldClock *clock)
 }
 
 static void
+mnp_wc_reverse_geocode_cb (GeoclueReverseGeocode *rev_geocode,
+			    GHashTable            *details,
+			    GeoclueAccuracy       *accuracy,
+			    GError                *error,
+			    gpointer               userdata)
+{
+	MnpWorldClockPrivate *priv = GET_PRIVATE (userdata);
+ 	char *city, *country;;
+	char *code;
+
+	if (error) {
+		g_warning (G_STRLOC ": Error reverse geocoding: %s", error->message);
+		return;
+	}
+
+
+	city = g_strdup (g_hash_table_lookup (details, GEOCLUE_ADDRESS_KEY_LOCALITY));
+	country = g_strdup (g_hash_table_lookup (details, GEOCLUE_ADDRESS_KEY_COUNTRY));
+
+	printf("Location %s, %s \n", city, country);
+	if (!city || !country) {
+		g_warning ("Unable to identidy your location\n");
+		return;
+	}
+	code = mnp_find_location (city, country);
+	if (!code)
+		code = g_strdup_printf("%s, %s", city, country);
+	add_location_tile ((MnpWorldClock *)userdata, code, TRUE);
+	g_free (city);
+	g_free (country);
+	g_free (code);
+}
+
+static void
+mnp_wc_get_position_cb (GeocluePosition       *position,
+			GeocluePositionFields  fields,
+			int                    timestamp,
+			double                 latitude,
+			double                 longitude,
+			double                 altitude,
+			GeoclueAccuracy       *accuracy,
+			GError                *error,
+			gpointer               userdata)
+{
+	MnpWorldClockPrivate *priv = GET_PRIVATE (userdata);
+	GeoclueAccuracy *n_accuracy;
+
+	if (error) {
+		g_warning ("Unable to get position: %s\n", error->message);
+		return;
+	}
+	
+	printf("POSI: %lf %lf\n", latitude, longitude);
+	n_accuracy = geoclue_accuracy_new (GEOCLUE_ACCURACY_LEVEL_DETAILED, 0, 0);
+	geoclue_reverse_geocode_position_to_address_async (priv->geo_reverse_geocode,
+							   latitude,
+							   longitude,
+							   n_accuracy,
+							   mnp_wc_reverse_geocode_cb,
+                                                     	   userdata);
+
+	geoclue_accuracy_free (n_accuracy);
+
+}
+
+static void
 mnp_world_clock_construct (MnpWorldClock *world_clock)
 {
 	ClutterActor *entry, *box, *stage, *div;
@@ -690,6 +808,20 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 			       "x-fill", FALSE,
 			       "x-align",  MX_ALIGN_START,
                                NULL);
+	
+	/* Prep GeoClue */
+	priv->geo_position = geoclue_position_new ("org.freedesktop.Geoclue.Providers.Hostip",
+                                             	   "/org/freedesktop/Geoclue/Providers/Hostip");
+
+	priv->geo_geocode = geoclue_geocode_new ("org.freedesktop.Geoclue.Providers.Yahoo",
+                                           	 "/org/freedesktop/Geoclue/Providers/Yahoo");
+
+	priv->geo_reverse_geocode = geoclue_reverse_geocode_new ("org.freedesktop.Geoclue.Providers.Nominatim",
+                                                           	 "/org/freedesktop/Geoclue/Providers/Nominatim");
+
+  	geoclue_position_get_position_async (priv->geo_position,
+                                       	     mnp_wc_get_position_cb,
+                                       	     world_clock);
 
 	/* Clock Area */
 
@@ -725,7 +857,7 @@ mnp_world_clock_construct (MnpWorldClock *world_clock)
 
 		for (i=0; i<priv->zones->len; i++) {
 			MnpZoneLocation *loc = (MnpZoneLocation *)priv->zones->pdata[i];
-			MnpClockTile *tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area));
+			MnpClockTile *tile = mnp_clock_tile_new (loc, mnp_clock_area_get_time(priv->area), FALSE);
 			mnp_clock_area_add_tile (priv->area, tile);
 		}
 		if (priv->zones->len >= 4)

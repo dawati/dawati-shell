@@ -397,11 +397,11 @@ mnp_clock_construct (MnpClockTile *tile)
 
 	fmt = mnp_format_time_from_location (tile->priv->loc, 
 					     tile->priv->time_now,
-					     gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL)
+					     gconf_client_get_bool (client, "/apps/date-time-panel/24_h_clock", NULL),
+					     tile->priority
 					     );
 
 	g_object_unref(client);
- 
 
 	label1 = mx_label_new_with_text (fmt->date);
 	tile->priv->date = (MxLabel *)label1;
@@ -466,15 +466,16 @@ mnp_clock_construct (MnpClockTile *tile)
 	mx_stylable_set_style_class (MX_STYLABLE (priv->remove_button),
                                			"ClockTileRemoveButton");
   	icon = (ClutterActor *)mx_icon_new ();
-  	mx_stylable_set_style_class (MX_STYLABLE (icon),
-                               		"ClockTileRemoveIcon");
+	mx_stylable_set_style_class (MX_STYLABLE (icon),
+				     "ClockTileRemoveIcon");
+
   	mx_bin_set_child (MX_BIN (priv->remove_button),
                       		  (ClutterActor *)icon);
-	
+
 }
 
 MnpClockTile *
-mnp_clock_tile_new (MnpZoneLocation *location, time_t time_now)
+mnp_clock_tile_new (MnpZoneLocation *location, time_t time_now, gboolean priority)
 {
 	MnpClockTile *tile = g_object_new (MNP_TYPE_CLOCK_TILE, NULL);
 
@@ -486,6 +487,7 @@ mnp_clock_tile_new (MnpZoneLocation *location, time_t time_now)
 	tile->priv->loc = location;
 	tile->priv->time_now = time_now;
 	tile->priv->clone = NULL;
+	tile->priority = priority;
 
 	mnp_clock_construct (tile);
 
@@ -498,7 +500,7 @@ mnp_clock_tile_refresh (MnpClockTile *tile, time_t now, gboolean tfh)
 	MnpDateFormat *fmt;
 
 	tile->priv->time_now = now;
-	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now, tfh);
+	fmt = mnp_format_time_from_location (tile->priv->loc, tile->priv->time_now, tfh, tile->priority);
 
 	mx_label_set_text ((MxLabel *)tile->priv->time, fmt->time);
 	mx_label_set_text ((MxLabel *)tile->priv->date, fmt->date);

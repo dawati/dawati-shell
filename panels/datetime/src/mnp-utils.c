@@ -32,6 +32,7 @@
 #include "system-timezone.h"
 #include "mnp-utils.h"
 
+GWeatherLocation *world = NULL;
 WeatherLocation *gweather_location_to_weather_location (GWeatherLocation *gloc,
 							const char *name);
 struct _pass_data {
@@ -195,7 +196,6 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
 	    sort_name = g_strdup_printf ("%s:%s",
 					    gweather_location_get_sort_name (loc),
 					    parent_sort_name);
-
 	    clutter_model_prepend(store, 
 				GWEATHER_LOCATION_ENTRY_COL_LOCATION, children[0],
 				GWEATHER_LOCATION_ENTRY_COL_DISPLAY_NAME, display_name,
@@ -231,6 +231,86 @@ fill_location_entry_model (ClutterModel *store, GWeatherLocation *loc,
     }
 
 }
+
+static char *
+find_location_entry (GWeatherLocation *loc,
+		     const char *city,
+		     const char *country,
+		     const char *parent_display_name)
+{
+    GWeatherLocation **children;
+    int i;
+    char *display_name;
+    char *zone=NULL;
+
+    children = gweather_location_get_children (loc);
+
+    switch (gweather_location_get_level (loc)) {
+    case GWEATHER_LOCATION_WORLD:
+    case GWEATHER_LOCATION_REGION:
+    case GWEATHER_LOCATION_ADM2:
+	/* Ignore these levels of hierarchy; just recurse, passing on
+	 * the names from the parent node.
+	 */
+	for (i = 0; children[i] && !zone; i++) {
+	    zone = find_location_entry	(children[i], city, country, parent_display_name);
+	}
+
+	return zone;
+
+    case GWEATHER_LOCATION_COUNTRY: {
+	/* Recurse, initializing the names to the country name */
+	char *lcountry = gweather_location_get_name (loc);
+
+	if (g_ascii_strcasecmp (lcountry, country) == 0) {
+
+		for (i = 0; children[i] && !zone; i++) {
+			zone = find_location_entry (children[i], city, country, gweather_location_get_name (loc));
+		}
+	}
+
+	return zone;
+    }
+    case GWEATHER_LOCATION_ADM1:
+	/* Recurse, adding the ADM1 name to the country name */
+	display_name = g_strdup_printf ("%s, %s", gweather_location_get_name (loc), parent_display_name);
+
+	for (i = 0; children[i] && !zone; i++) {
+	    zone = find_location_entry	(children[i], city, country, display_name);
+	}
+	g_free (display_name);
+	
+	return zone;
+
+    case GWEATHER_LOCATION_CITY: {
+	char *lcity = gweather_location_get_name (loc);
+
+	if (g_ascii_strcasecmp (lcity, city) == 0) {
+		if (children[0] && children[1]) {
+			display_name = g_strdup_printf ("%s (%s), %s",
+						gweather_location_get_name (loc),
+						gweather_location_get_name (children[i]),
+						parent_display_name);
+			printf("display: %s\n", display_name);
+			return display_name;
+		} else if (children[0]) {
+			display_name = g_strdup_printf ("%s, %s",
+						gweather_location_get_name (loc),
+						parent_display_name);
+			printf("display: %s\n", display_name);
+			return display_name;			
+		}
+
+	}
+	return NULL;
+    }
+    case GWEATHER_LOCATION_WEATHER_STATION:
+	break;
+    }
+
+    return NULL;
+}
+
 
 static gint 
 sort_weather_model (ClutterModel *model, const GValue *a, const GValue *b, gpointer user_data)
@@ -275,13 +355,24 @@ sort_weather_model (ClutterModel *model, const GValue *a, const GValue *b, gpoin
 
 }
 
+char *
+mnp_find_location (const char *city, const char *country)
+{
+	if (!world) {
+		world = gweather_location_new_world (FALSE);
+	}
+
+	return find_location_entry (world, city, country, NULL);
+}
+
 ClutterModel *
 mnp_get_world_timezones (void)
 {
-	GWeatherLocation *world;
 	ClutterModel *store;
 
-	world = gweather_location_new_world (FALSE);
+	if (!world) {
+		world = gweather_location_new_world (FALSE);
+	}
 	if (!world)
 		return NULL;
 
@@ -390,7 +481,8 @@ static MnpDateFormat *
 format_time (struct tm   *now, 
              char        *tzname,
              gboolean  	  twelveh,
-	     time_t 	 local_t)
+	     time_t 	 local_t,
+	     gboolean 	 priority)
 {
 	char buf[256];
 	char *format;
@@ -439,7 +531,9 @@ format_time (struct tm   *now,
 	else {
 		/* Translators: This is a strftime format string.
 		 * It is used to display in Aug 6 */
-		if (now_t == local_t) 
+		if (priority) 
+			format = _("%b %-d (current location)");
+		else if (now_t == local_t) 
 			format = _("%b %-d (local)");
 		else
 			format = _("%b %-d");
@@ -456,7 +550,7 @@ format_time (struct tm   *now,
 }
 
 MnpDateFormat *
-mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now, gboolean tfh)
+mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now, gboolean tfh, gboolean priority)
 {
 	char *tzid;
 	char *tzname;
@@ -471,7 +565,7 @@ mnp_format_time_from_location (MnpZoneLocation *location, time_t time_now, gbool
 	tzname = g_strdup (get_tzname(tzid));
 
 	clock_location_localtime (systz, tzid, &now, time_now);
-	fmt = format_time (&now, tzname, !tfh, time_now);
+	fmt = format_time (&now, tzname, !tfh, time_now, priority);
 
 	fmt->city = g_strdup(location->city);
 	g_free(tzname);
