@@ -6,6 +6,7 @@ AM_CFLAGS = \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
+	-DMYZONETHEMEDIR=\"$(datadir)/meego-panel-myzone/theme\" \
 	-Wall -g3 -O0 -ggdb
 
 meego_panel_datetime_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
