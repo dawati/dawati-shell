@@ -164,7 +164,7 @@ get_notification (MeegoNetbookNotifyStore *notify,
 typedef struct _PidData
 {
   MeegoNetbookNotifyStore  *store;
-  Notification              *notification;
+  guint                     notification_id;
 } PidData;
 
 static void
@@ -173,14 +173,21 @@ unix_process_id_reply_cb (DBusGProxy *proxy,
                           GError     *error,
                           gpointer    data)
 {
-  PidData *pid_data = data;
+  PidData      *pid_data = data;
+  Notification *notification;
 
   g_return_if_fail (data && pid);
 
-  pid_data->notification->pid = pid;
+  if (find_notification (pid_data->store,
+                         pid_data->notification_id,
+                         &notification))
+    {
 
-  g_signal_emit (pid_data->store,
-                 signals[NOTIFICATION_ADDED], 0, pid_data->notification);
+      notification->pid = pid;
+
+      g_signal_emit (pid_data->store,
+                     signals[NOTIFICATION_ADDED], 0, notification);
+    }
 
   g_slice_free (PidData, pid_data);
 }
@@ -314,8 +321,8 @@ notification_manager_notify (MeegoNetbookNotifyStore  *notify,
     {
       PidData *pid_data = g_slice_new0 (PidData);
 
-      pid_data->store        = notify;
-      pid_data->notification = notification;
+      pid_data->store           = notify;
+      pid_data->notification_id = notification->id;
 
       notification->sender = dbus_g_method_get_sender (context);
 
