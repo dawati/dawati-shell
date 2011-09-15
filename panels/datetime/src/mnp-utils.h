@@ -50,6 +50,7 @@ typedef struct _mnp_zone_location {
 	char *display;
 	char *city;
 	char *tzid;
+	gboolean local;
 }MnpZoneLocation;
 
 

@@ -519,7 +519,11 @@ format_time (struct tm   *now,
 	fmt->time = utf8;
 	fmt->day = ((now->tm_hour >= 6) && (now->tm_hour < 19)) ? TRUE: FALSE;
 
-	if (local_now.tm_wday != now->tm_wday) {
+	if (priority) {
+		/* Translators: This is a strftime format string.
+		 * It is used to display in Aug 6 (current location) */
+		format = _("%b %-d (current location)");
+	} else if (local_now.tm_wday != now->tm_wday) {
 		/* Translators: This is a strftime format string.
 		 * It is used to display in Aug 6 (Yesterday) */
 		
@@ -527,13 +531,10 @@ format_time (struct tm   *now,
 			format = _("%b %-d (Yesterday)");
 		else
 			format = _("%b %-d (Tomorrow)");
-	}
-	else {
+	} else {
 		/* Translators: This is a strftime format string.
 		 * It is used to display in Aug 6 */
-		if (priority) 
-			format = _("%b %-d (current location)");
-		else if (now_t == local_t) 
+		if (now_t == local_t) 
 			format = _("%b %-d (local)");
 		else
 			format = _("%b %-d");
@@ -620,8 +621,11 @@ mnp_save_zones (GPtrArray *zones)
 
 	for (i=0; i<zones->len; i++) {
 		MnpZoneLocation *loc = (MnpZoneLocation *)zones->pdata[i];
-		g_key_file_set_string (kfile, loc->display, "city", loc->city);
-		g_key_file_set_string (kfile, loc->display, "tzid", loc->tzid);
+
+		if (!loc->local) {
+			g_key_file_set_string (kfile, loc->display, "city", loc->city);
+			g_key_file_set_string (kfile, loc->display, "tzid", loc->tzid);
+		}
 
 	}
 	contents = g_key_file_to_data (kfile, &len, NULL);
