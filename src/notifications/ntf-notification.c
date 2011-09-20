@@ -634,6 +634,27 @@ ntf_notification_get_id (NtfNotification *ntf)
   return ntf->priv->id;
 }
 
+/**
+ * ntf_notification_get_urgent:
+ * @ntf: #NtfNotification:
+ *
+ * Returns whether this notification is urgent.
+ */
+gboolean
+ntf_notification_get_urgent (NtfNotification *ntf)
+{
+  g_return_val_if_fail (NTF_IS_NOTIFICATION (ntf), FALSE);
+
+  return ntf->priv->urgent;
+}
+
+/**
+ * ntf_notification_get_urgent:
+ * @ntf: #NtfNotification:
+ * @is_urgent: if %TRUE, set this notification as urgent.
+ *
+ * Set a notification is urgent.
+ */
 void
 ntf_notification_set_urgent (NtfNotification *ntf, gboolean is_urgent)
 {

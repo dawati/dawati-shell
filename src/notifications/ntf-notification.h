@@ -95,6 +95,7 @@ void       ntf_notification_set_timeout        (NtfNotification *ntf,
                                                 guint            timeout);
 gint       ntf_notification_get_id             (NtfNotification *ntf);
 gint       ntf_notification_get_subsystem      (NtfNotification *ntf);
+gboolean   ntf_notification_get_urgent         (NtfNotification *ntf);
 void       ntf_notification_set_urgent         (NtfNotification *ntf,
                                                 gboolean is_urgent);
 
