@@ -69,6 +69,7 @@ struct _NtfNotificationPrivate
 
   gint          timeout;
   guint         timeout_id;
+  GTimer       *timer;
 
   gulong source_closed_id;
 
@@ -122,9 +123,55 @@ ntf_notification_show (ClutterActor *actor)
       priv->timeout_id =
         g_timeout_add (priv->timeout, (GSourceFunc)ntf_notification_timeout_cb,
                        actor);
+      if (!priv->timer)
+        priv->timer = g_timer_new ();
+      else
+        g_timer_reset (priv->timer);
+      g_timer_start (priv->timer);
     }
 
   CLUTTER_ACTOR_CLASS (ntf_notification_parent_class)->show (actor);
+}
+
+static gboolean
+ntf_notification_enter_event (ClutterActor         *actor,
+                              ClutterCrossingEvent *event)
+{
+  NtfNotificationPrivate *priv = NTF_NOTIFICATION (actor)->priv;
+
+  if (priv->timeout > 0)
+    {
+      if (priv->timeout_id)
+        {
+          g_source_remove (priv->timeout_id);
+          priv->timeout_id = 0;
+        }
+      g_timer_stop (priv->timer);
+    }
+
+  return
+    CLUTTER_ACTOR_CLASS (ntf_notification_parent_class)->enter_event (actor,
+                                                                      event);
+}
+
+static gboolean
+ntf_notification_leave_event (ClutterActor         *actor,
+                              ClutterCrossingEvent *event)
+{
+  NtfNotificationPrivate *priv = NTF_NOTIFICATION (actor)->priv;
+
+  if (priv->timeout > 0)
+    {
+      priv->timeout_id =
+        g_timeout_add (g_timer_elapsed (priv->timer, NULL) * 1000,
+                       (GSourceFunc) ntf_notification_timeout_cb,
+                       actor);
+      g_timer_continue (priv->timer);
+    }
+
+  return
+    CLUTTER_ACTOR_CLASS (ntf_notification_parent_class)->leave_event (actor,
+                                                                      event);
 }
 
 static void
@@ -151,6 +198,8 @@ ntf_notification_class_init (NtfNotificationClass *klass)
   object_class->set_property = ntf_notification_set_property;
 
   actor_class->show          = ntf_notification_show;
+  actor_class->enter_event   = ntf_notification_enter_event;
+  actor_class->leave_event   = ntf_notification_leave_event;
 
   klass->closed              = ntf_notification_closed;
 
@@ -401,6 +450,12 @@ ntf_notification_dispose (GObject *object)
     return;
 
   priv->disposed = TRUE;
+
+  if (priv->timer)
+    {
+      g_timer_destroy (priv->timer);
+      priv->timer = NULL;
+    }
 
   if (priv->timeout_id)
     {
