@@ -36,6 +36,8 @@ static gint subsytem_id = 0;
 static GQuark keysym_quark = 0;
 static GQuark keyname_quark = 0;
 
+static void ntf_notification_focusable_init (MxFocusableIface *iface);
+
 static void ntf_notification_dispose (GObject *object);
 static void ntf_notification_finalize (GObject *object);
 static void ntf_notification_constructed (GObject *object);
@@ -48,7 +50,9 @@ static void ntf_notification_set_property (GObject      *object,
                                            const GValue *value,
                                            GParamSpec   *pspec);
 
-G_DEFINE_TYPE (NtfNotification, ntf_notification, MX_TYPE_TABLE);
+G_DEFINE_TYPE_WITH_CODE (NtfNotification, ntf_notification, MX_TYPE_TABLE,
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_FOCUSABLE,
+                                                ntf_notification_focusable_init));
 
 #define NTF_NOTIFICATION_GET_PRIVATE(o) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((o), NTF_TYPE_NOTIFICATION, NtfNotificationPrivate))
@@ -63,6 +67,8 @@ struct _NtfNotificationPrivate
   ClutterActor *dismiss_button;
   ClutterActor *button_box;
   ClutterActor *title_box;
+
+  gchar *focused_keyname;
 
   gint          id;
   gint          subsystem;
@@ -451,6 +457,12 @@ ntf_notification_dispose (GObject *object)
 
   priv->disposed = TRUE;
 
+  if (priv->focused_keyname)
+    {
+      g_free (priv->focused_keyname);
+      priv->focused_keyname = NULL;
+    }
+
   if (priv->timer)
     {
       g_timer_destroy (priv->timer);
@@ -483,6 +495,141 @@ static void
 ntf_notification_finalize (GObject *object)
 {
   G_OBJECT_CLASS (ntf_notification_parent_class)->finalize (object);
+}
+
+static GList *
+ntf_notification_get_focus (NtfNotification *ntf, GList *children)
+{
+  NtfNotificationPrivate *priv = ntf->priv;
+  GList *l = children;
+
+  if (priv->focused_keyname)
+    {
+      for (l = children; l; l = g_list_next (l))
+        {
+          gchar *keyname = (gchar *) g_object_get_qdata (G_OBJECT (l->data),
+                                                         keyname_quark);
+
+          /* If we have a focused_keyname and the current child match,
+             then we've found the focus. Otherwise, look of the one
+             named "default". */
+          if (priv->focused_keyname &&
+              (!strcmp (priv->focused_keyname, keyname)))
+            {
+              return l;
+            }
+        }
+    }
+
+  return g_list_last (children);
+}
+static void
+ntf_notification_save_focus (NtfNotification *ntf, MxFocusable *focusable)
+{
+  NtfNotificationPrivate *priv = ntf->priv;
+
+  if (priv->focused_keyname)
+    g_free (priv->focused_keyname);
+  priv->focused_keyname = g_object_get_qdata (G_OBJECT (focusable),
+                                              keyname_quark);
+  if (priv->focused_keyname)
+    priv->focused_keyname = g_strdup (priv->focused_keyname);
+}
+
+static MxFocusable *
+ntf_notification_move_focus (MxFocusable      *focusable,
+                             MxFocusDirection  direction,
+                             MxFocusable      *from)
+{
+  NtfNotification *ntf = NTF_NOTIFICATION (focusable);
+  NtfNotificationPrivate *priv = ntf->priv;
+  GList *l, *children;
+
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (priv->button_box));
+
+  if (!children)
+    return NULL;
+
+  l = ntf_notification_get_focus (ntf, children);
+
+  switch (direction)
+    {
+    case MX_FOCUS_DIRECTION_LEFT:
+      if (l->prev)
+        focusable = (MxFocusable *) l->prev->data;
+      else
+        focusable = (MxFocusable *) l->data;
+      break;
+
+    case MX_FOCUS_DIRECTION_RIGHT:
+      if (l->next)
+        focusable = (MxFocusable *) l->next->data;
+      else
+        focusable = (MxFocusable *) l->data;
+      break;
+
+    case MX_FOCUS_DIRECTION_NEXT:
+      if (l->next)
+        focusable = (MxFocusable *) l->next->data;
+      else
+        focusable = (MxFocusable *) children->data;
+      break;
+
+    case MX_FOCUS_DIRECTION_PREVIOUS:
+      if (l->prev)
+        focusable = (MxFocusable *) l->prev->data;
+      else
+        focusable = (MxFocusable *) g_list_last (children)->data;
+      break;
+
+    default:
+    case MX_FOCUS_DIRECTION_DOWN:
+    case MX_FOCUS_DIRECTION_UP:
+      focusable = l->data;
+      break;
+    }
+
+  ntf_notification_save_focus (ntf, focusable);
+
+  focusable =
+    mx_focusable_accept_focus (focusable,
+                               mx_focus_hint_from_direction (direction));
+
+  g_list_free (children);
+
+  return focusable;
+}
+
+static MxFocusable *
+ntf_notification_accept_focus (MxFocusable *focusable, MxFocusHint hint)
+{
+  NtfNotification *ntf = NTF_NOTIFICATION (focusable);
+  NtfNotificationPrivate *priv = ntf->priv;
+  GList *l, *children;
+
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (priv->button_box));
+  if (!children)
+    return NULL;
+
+  l = ntf_notification_get_focus (ntf, children);
+  focusable = (MxFocusable *) l->data;
+
+  ntf_notification_save_focus (ntf, focusable);
+
+  g_list_free (children);
+
+  if (focusable)
+    return mx_focusable_accept_focus (focusable, hint);
+  return NULL;
+}
+
+static void
+ntf_notification_focusable_init (MxFocusableIface *iface)
+{
+  iface->move_focus = ntf_notification_move_focus;
+  iface->accept_focus = ntf_notification_accept_focus;
 }
 
 /**
@@ -572,10 +719,19 @@ void
 ntf_notification_remove_button (NtfNotification *ntf, ClutterActor *button)
 {
   NtfNotificationPrivate *priv;
+  gchar *keyname;
 
   g_return_if_fail (NTF_IS_NOTIFICATION (ntf) && CLUTTER_IS_ACTOR (button));
 
   priv = ntf->priv;
+
+  /* Reset focused keyname if we remove the focused button */
+  keyname = g_object_get_qdata (G_OBJECT (button), keyname_quark);
+  if (!strcmp (keyname, priv->focused_keyname))
+    {
+      g_free (priv->focused_keyname);
+      priv->focused_keyname = NULL;
+    }
 
   clutter_container_remove_actor (CLUTTER_CONTAINER (priv->button_box),
                                   CLUTTER_ACTOR (button));
@@ -590,6 +746,13 @@ ntf_notification_remove_all_buttons (NtfNotification *ntf)
   g_return_if_fail (NTF_IS_NOTIFICATION (ntf));
 
   priv = ntf->priv;
+
+  /* Reset focused keyname */
+  if (priv->focused_keyname)
+    {
+      g_free (priv->focused_keyname);
+      priv->focused_keyname = NULL;
+    }
 
   /*
    * Remove all buttons, but hold onto the default button and prepend it
