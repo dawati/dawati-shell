@@ -491,7 +491,7 @@ update_volume_icon (MpdVolumeTile *self)
   volume = gvc_mixer_stream_get_volume (priv->sink);
   value = volume / PA_VOLUME_NORM;
 
-  if (is_muted)
+  if (is_muted || (value == 0.0))
   {
     clutter_texture_set_from_file (CLUTTER_TEXTURE (priv->icon),
                                    PKGICONDIR "/volume-icon-mute.png",
