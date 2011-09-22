@@ -70,12 +70,13 @@ struct _NtfTray
 
 GType ntf_tray_get_type (void) G_GNUC_CONST;
 
-NtfTray         *ntf_tray_new               (void);
-void             ntf_tray_add_notification  (NtfTray         *tray,
-                                             NtfNotification *ntf);
-NtfNotification *ntf_tray_find_notification (NtfTray         *tray,
-                                             gint             subsystem,
-                                             gint             id);
+NtfTray         *ntf_tray_new                 (void);
+void             ntf_tray_add_notification    (NtfTray         *tray,
+                                               NtfNotification *ntf);
+NtfNotification *ntf_tray_find_notification   (NtfTray         *tray,
+                                               gint             subsystem,
+                                               gint             id);
+guint            ntf_tray_get_n_notifications (NtfTray         *tray);
 
 G_END_DECLS
 

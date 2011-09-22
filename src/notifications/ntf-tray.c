@@ -629,6 +629,14 @@ ntf_tray_find_notification (NtfTray *tray, gint subsystem, gint id)
   return ntf;
 }
 
+guint
+ntf_tray_get_n_notifications (NtfTray *tray)
+{
+  g_return_val_if_fail (NTF_IS_TRAY (tray), 0);
+
+  return tray->priv->n_notifiers;
+}
+
 NtfTray *
 ntf_tray_new (void)
 {
