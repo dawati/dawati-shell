@@ -32,12 +32,16 @@
 #define CLUSTER_WIDTH 320
 #define FADE_DURATION 300
 
+static void ntf_tray_focusable_init (MxFocusableIface *iface);
+
 static void ntf_tray_dismiss_all_cb (ClutterActor *button, NtfTray *tray);
 static void ntf_tray_dispose (GObject *object);
 static void ntf_tray_finalize (GObject *object);
 static void ntf_tray_constructed (GObject *object);
 
-G_DEFINE_TYPE (NtfTray, ntf_tray, MX_TYPE_WIDGET);
+G_DEFINE_TYPE_WITH_CODE (NtfTray, ntf_tray, MX_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_FOCUSABLE,
+                                                ntf_tray_focusable_init));
 
 #define NTF_TRAY_GET_PRIVATE(o) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((o), NTF_TYPE_TRAY, NtfTrayPrivate))
@@ -351,6 +355,38 @@ static void
 ntf_tray_finalize (GObject *object)
 {
   G_OBJECT_CLASS (ntf_tray_parent_class)->finalize (object);
+}
+
+static MxFocusable *
+ntf_tray_move_focus (MxFocusable      *focusable,
+                     MxFocusDirection  direction,
+                     MxFocusable      *from)
+{
+  NtfTrayPrivate *priv = NTF_TRAY (focusable)->priv;
+
+  if (!priv->active_notifier)
+    return NULL;
+
+  return mx_focusable_accept_focus (MX_FOCUSABLE (priv->active_notifier),
+                                    mx_focus_hint_from_direction (direction));
+}
+
+static MxFocusable *
+ntf_tray_accept_focus (MxFocusable *focusable, MxFocusHint hint)
+{
+  NtfTrayPrivate *priv = NTF_TRAY (focusable)->priv;
+
+  if (!priv->active_notifier)
+    return NULL;
+
+  return mx_focusable_accept_focus (MX_FOCUSABLE (priv->active_notifier), hint);
+}
+
+static void
+ntf_tray_focusable_init (MxFocusableIface *iface)
+{
+  iface->move_focus = ntf_tray_move_focus;
+  iface->accept_focus = ntf_tray_accept_focus;
 }
 
 static void
