@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Toni Hermoso Pulido <toniher@softcatala.cat>, 2010.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:57+0000\n"
-"PO-Revision-Date: 2010-07-21 12:30-0700\n"
-"Last-Translator: Toni Hermoso Pulido <toniher@softcatala.cat>\n"
-"Language-Team: Softcatalà\n"
-"Language: ca\n"
+"Project-Id-Version: meego-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2010-11-27 00:58+0000\n"
+"PO-Revision-Date: 2011-03-02 18:46+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Catalan <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.1\n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
@@ -97,7 +97,7 @@ msgstr "Cites"
 #. "x-fill", TRUE,
 #. NULL);
 #. clutter_actor_set_height (div, 2);
-#.
+#. 
 #. format date
 #: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"

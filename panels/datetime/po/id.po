@@ -1,17 +1,21 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-datetime master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:57+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
-"Language-Team: Indonesian <id@li.org>\n"
+"Project-Id-Version: meego-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2010-11-27 00:58+0000\n"
+"PO-Revision-Date: 2011-03-02 18:47+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Indonesian <None>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Indonesian\n"
-"X-Poedit-Country: Indonesia\n"
+"Language: id\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
@@ -121,120 +125,9 @@ msgstr "Pewaktu 24 jam atau 12 jam"
 
 #: ../src/date-time.schemas.in.h:2
 msgid "Alarms stored in encoded form for use by the alarm notfier."
-msgstr "Alarm disimpan dalam bentuk terkode untuk dipakai oleh pemberitahu alarm."
+msgstr ""
+"Alarm disimpan dalam bentuk terkode untuk dipakai oleh pemberitahu alarm."
 
 #: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "Daftar alarm dalam bentuk terkode pendek"
-
-#~ msgid "OFF"
-#~ msgstr "MATI"
-
-#~ msgid "Beep"
-#~ msgstr "Bip"
-
-#~ msgid "Music"
-#~ msgstr "Musik"
-
-#~ msgid "Never"
-#~ msgstr "Tidak pernah"
-
-#~ msgid "Everyday"
-#~ msgstr "Setiap Hari"
-
-#~ msgid "Monday - Friday"
-#~ msgstr "Senin - Jumat"
-
-#~ msgid "Monday"
-#~ msgstr "Senin"
-
-#~ msgid "Tuesday"
-#~ msgstr "Selasa"
-
-#~ msgid "Wednesday"
-#~ msgstr "Rabu"
-
-#~ msgid "Thursday"
-#~ msgstr "Kamis"
-
-#~ msgid "Friday"
-#~ msgstr "Jumat"
-
-#~ msgid "Saturday"
-#~ msgstr "Sabtu"
-
-#~ msgid "Sunday"
-#~ msgstr "Minggu"
-
-#~ msgid "Alarm settings"
-#~ msgstr "Tatanan alarm"
-
-#~ msgid "ON"
-#~ msgstr "NYALA"
-
-#~ msgid "Repeat"
-#~ msgstr "Ulang"
-
-#~ msgid "Snooze"
-#~ msgstr "Tidur Sejenak"
-
-#~ msgid "Sound"
-#~ msgstr "Suara"
-
-#~ msgid "Delete alarm"
-#~ msgstr "Hapus alarm"
-
-#~ msgid ""
-#~ "New\n"
-#~ "Alarm"
-#~ msgstr ""
-#~ "Alarm\n"
-#~ "Baru"
-
-#~ msgid "Alarm Notify"
-#~ msgstr "Beritahu Alarm"
-
-#~ msgid "Alarm at %d:%.2d %s"
-#~ msgstr "Alarm pada %d:%.2d %s"
-
-#~ msgid "am"
-#~ msgstr "am"
-
-#~ msgid "pm"
-#~ msgstr "pm"
-
-#~ msgid "Meego Alarm Notify"
-#~ msgstr "Beritahu Alarm Meego"
-
-#~ msgid "AlarmNotifications"
-#~ msgstr "AlarmNotifications"
-
-#~ msgid "MON-FRI"
-#~ msgstr "SEN-JUM"
-
-#~ msgid "MONDAYS"
-#~ msgstr "TIAP SENIN"
-
-#~ msgid "TUESDAYS"
-#~ msgstr "TIAP SELASA"
-
-#~ msgid "WEDNESDAYS"
-#~ msgstr "TIAP RABU"
-
-#~ msgid "THURSDAYS"
-#~ msgstr "TIAP KAMIS"
-
-#~ msgid "FRIDAYS"
-#~ msgstr "TIAP JUMAT"
-
-#~ msgid "SATURDAYS"
-#~ msgstr "TIAP SABTU"
-
-#~ msgid "SUNDAYS"
-#~ msgstr "TIAP MINGGU"
-
-#~ msgid "Meego alarm notify"
-#~ msgstr "Memberitahu alarm Meego"
-
-#~ msgid "Search"
-#~ msgstr "Cari"

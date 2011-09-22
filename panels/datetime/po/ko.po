@@ -1,20 +1,21 @@
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
-# Park Shinjo <peremen@gmail.com>, 2010.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:57+0000\n"
-"PO-Revision-Date: 2010-07-10 05:52+0900\n"
-"Last-Translator: Park Shinjo <peremen@gmail.com>\n"
-"Language-Team: Korean <peremen@gmail.com>\n"
+"Project-Id-Version: meego-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2010-11-27 00:58+0000\n"
+"PO-Revision-Date: 2011-03-02 18:47+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Korean <None>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/meego-panel-date-time.c:111
 msgid "Date/Time"
@@ -96,7 +97,7 @@ msgstr "약속"
 #. "x-fill", TRUE,
 #. NULL);
 #. clutter_actor_set_height (div, 2);
-#.
+#. 
 #. format date
 #: ../src/mnp-datetime.c:342 ../src/mnp-datetime.c:541
 msgid "Today"
@@ -129,112 +130,3 @@ msgstr "알람 알림이가 사용할 수 있도록 인코딩된 형태로 알�
 #: ../src/date-time.schemas.in.h:3
 msgid "List of alarms in short encoded form"
 msgstr "짧은 인코딩된 형식으로 저장된 알람 목록"
-
-#~ msgid "OFF"
-#~ msgstr "끔"
-
-#~ msgid "Beep"
-#~ msgstr "경보"
-
-#~ msgid "Music"
-#~ msgstr "음악"
-
-#~ msgid "Never"
-#~ msgstr "결코"
-
-#~ msgid "Everyday"
-#~ msgstr "매일"
-
-#~ msgid "Monday - Friday"
-#~ msgstr "월-금"
-
-#~ msgid "Monday"
-#~ msgstr "월"
-
-#~ msgid "Tuesday"
-#~ msgstr "화"
-
-#~ msgid "Wednesday"
-#~ msgstr "수"
-
-#~ msgid "Thursday"
-#~ msgstr "목"
-
-#~ msgid "Friday"
-#~ msgstr "금"
-
-#~ msgid "Saturday"
-#~ msgstr "토"
-
-#~ msgid "Sunday"
-#~ msgstr "일"
-
-#~ msgid "Alarm settings"
-#~ msgstr "경보 설정"
-
-#~ msgid "ON"
-#~ msgstr "켬"
-
-#~ msgid "Repeat"
-#~ msgstr "반복"
-
-#~ msgid "Snooze"
-#~ msgstr "일시 정지"
-
-#~ msgid "Sound"
-#~ msgstr "소리"
-
-#~ msgid "Delete alarm"
-#~ msgstr "경보 삭제"
-
-#~ msgid ""
-#~ "New\n"
-#~ "Alarm"
-#~ msgstr ""
-#~ "새로운\n"
-#~ "경보"
-
-#~ msgid "Alarm Notify"
-#~ msgstr "경보 통보"
-
-#~ msgid "Alarm at %d:%.2d %s"
-#~ msgstr "경보 시간 %d:%.2d %s"
-
-#~ msgid "am"
-#~ msgstr "오전"
-
-#~ msgid "pm"
-#~ msgstr "오후"
-
-#~ msgid "Meego Alarm Notify"
-#~ msgstr "Meego 경보 통보"
-
-#~ msgid "AlarmNotifications"
-#~ msgstr "AlarmNotifications"
-
-#~ msgid "MON-FRI"
-#~ msgstr "월-금"
-
-#~ msgid "MONDAYS"
-#~ msgstr "월요일"
-
-#~ msgid "TUESDAYS"
-#~ msgstr "화요일"
-
-#~ msgid "WEDNESDAYS"
-#~ msgstr "수요일"
-
-#~ msgid "THURSDAYS"
-#~ msgstr "목요일"
-
-#~ msgid "FRIDAYS"
-#~ msgstr "금요일"
-
-#~ msgid "SATURDAYS"
-#~ msgstr "토요일"
-
-#~ msgid "SUNDAYS"
-#~ msgstr "일요일"
-
-#~ msgid "Meego alarm notify"
-#~ msgstr "Meego 경보 통보"
