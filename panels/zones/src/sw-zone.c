@@ -22,6 +22,7 @@
 #include "sw-zone.h"
 #include "sw-window.h"
 #include <mx/mx.h>
+#include <math.h>
 
 #include <glib/gi18n.h>
 
@@ -607,8 +608,8 @@ sw_zone_allocate (ClutterActor           *actor,
 {
   GList *l;
   ClutterActorBox avail_box;
-  gint n = 0;
-  gfloat title_height;
+  gint n = 0, n_columns = 0, n_children_per_column, current_column = 0;
+  gfloat title_height, column_height, column_width;
   ClutterActorBox childbox;
 
   SwZonePrivate *priv = SW_ZONE (actor)->priv;
@@ -617,6 +618,7 @@ sw_zone_allocate (ClutterActor           *actor,
 
   gfloat start;
   gfloat child_height;
+  gfloat min_height;
 
   mx_widget_get_available_area (MX_WIDGET (actor), box, &avail_box);
 
@@ -678,8 +680,26 @@ sw_zone_allocate (ClutterActor           *actor,
       clutter_actor_allocate (priv->welcome, &childbox, flags);
     }
 
-  child_height = ((avail_box.y2 - avail_box.y1) / priv->n_children)
-                  - (PADDING);
+  if (!priv->children)
+    return;
+
+  /* use the first child to determine the minimum height */
+  clutter_actor_get_preferred_height (priv->children->data, -1, &min_height,
+                                      NULL);
+
+  /* calculate the number of possible columns */
+  column_height = avail_box.y2 - avail_box.y1 - PADDING * 2;
+
+  n_columns = ceil (((min_height + PADDING) * (float) priv->n_children)
+                    / column_height);
+
+  n_children_per_column = ceil ((float) priv->n_children / (float) n_columns);
+
+  column_width = ((avail_box.x2 - avail_box.x1)
+                  - (WINDOW_EDGE_PADDING * (n_columns + 1))) / n_columns;
+
+  child_height = (column_height / n_children_per_column);
+  child_height = MAX (child_height, min_height);
   start = avail_box.y1;
 
   if (!priv->is_animating)
@@ -693,16 +713,14 @@ sw_zone_allocate (ClutterActor           *actor,
   for (l = priv->children; l; l = l->next)
     {
       ClutterActor *child;
-      gfloat width;
 
       child = CLUTTER_ACTOR (l->data);
 
-      clutter_actor_get_preferred_width (child, child_height, NULL, &width);
-
       childbox.y1 = start;
       childbox.y2 = start + child_height;
-      childbox.x1 = avail_box.x1 + WINDOW_EDGE_PADDING;
-      childbox.x2 = (avail_box.x2 - avail_box.x1) - WINDOW_EDGE_PADDING;
+      childbox.x1 = ((column_width + WINDOW_EDGE_PADDING) * current_column)
+        + WINDOW_EDGE_PADDING;
+      childbox.x2 = childbox.x1 + column_width;
 
       mx_allocate_align_fill (child, &childbox, MX_ALIGN_MIDDLE,
                               MX_ALIGN_MIDDLE, FALSE, FALSE);
@@ -731,8 +749,6 @@ sw_zone_allocate (ClutterActor           *actor,
           now.y2 = (int) (start->y2 + (end->y2 - start->y2) * alpha);
 
           clutter_actor_allocate (CLUTTER_ACTOR (l->data), &now, flags);
-
-          n++;
         }
       else
         {
@@ -749,7 +765,13 @@ sw_zone_allocate (ClutterActor           *actor,
           clutter_actor_allocate (child, &childbox, flags);
         }
 
+      n++;
       start += child_height + PADDING;
+      if (n % n_children_per_column == 0)
+        {
+          current_column++;
+          start = avail_box.y1;
+        }
     }
 }
 
