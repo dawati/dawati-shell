@@ -932,7 +932,7 @@ mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
 
   GError *texture_error = NULL;
 
-  if (!entry) 
+  if (!entry)
     return;
 
   gchar *favi_url = NULL;
@@ -958,15 +958,20 @@ mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
 
   if(favi_url)
     {
-      gchar *csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, favi_url, -1);  
+      gchar *csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, favi_url, -1);
       gchar *thumbnail_filename = g_strconcat (csum, ".ico", NULL);
-      icon_path = g_build_filename (g_get_home_dir (),  
-                                    ".config",  
-                                    "internet-panel",  
-                                    "favicons",  
-                                    thumbnail_filename,  
-                                    NULL);  
-      g_free(csum);  
+      icon_path = g_build_filename (g_get_home_dir (),
+                                    ".config",
+                                    "internet-panel",
+                                    "favicons",
+                                    thumbnail_filename,
+                                    NULL);
+      if (!g_file_test (icon_path, G_FILE_TEST_EXISTS))
+        {
+          g_free (icon_path);
+          icon_path = g_strdup_printf ("%s%s", THEMEDIR, "o2_globe.png");
+        }
+      g_free(csum);
       g_free(thumbnail_filename);
     }
   else
@@ -977,9 +982,9 @@ mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
 
   if (icon_path)
     {
-      entry->texture =  cogl_texture_new_from_file (icon_path, 
-                                                    COGL_TEXTURE_NONE, 
-                                                    COGL_PIXEL_FORMAT_ANY, 
+      entry->texture =  cogl_texture_new_from_file (icon_path,
+                                                    COGL_TEXTURE_NONE,
+                                                    COGL_PIXEL_FORMAT_ANY,
                                                     &texture_error);
       if (texture_error)
         {
@@ -1045,7 +1050,7 @@ mwb_ac_list_result_exception(void *context,
 }
 
 static void
-mwb_ac_list_result_received(void       *context, 
+mwb_ac_list_result_received(void       *context,
                             int         type,
                             const char *url,
                             const char *value,
@@ -1055,7 +1060,7 @@ mwb_ac_list_result_received(void       *context,
   MwbAcListPrivate *priv = self->priv;
 
   if (!url || !value) /* No URL */
-    return; 
+    return;
 
   char *result_text = NULL;
 
