@@ -27,7 +27,7 @@ meego_panel_web_SOURCES = \
   mnb-netpanel-bar.cc        \
   mnb-netpanel-bar.h        \
   mnb-netpanel-scrollview.cc \
-  mnb-netpanel-scrollview.h 
+  mnb-netpanel-scrollview.h
 
 meego_panel_web_DEPENDENCIES = \
   $(top_builddir)/common/libcommon.a
@@ -36,7 +36,7 @@ servicedir = $(datadir)/dbus-1/services
 service_in_files = com.meego.UX.Shell.Panels.internet.service.in
 service_DATA = com.meego.UX.Shell.Panels.internet.service
 
-autostartdir = $(datadir)/mutter-meego/panels
+autostartdir = $(MEEGO_PANELS_DIR)
 autostart_DATA = meego-panel-internet.desktop
 
 @INTLTOOL_DESKTOP_RULE@
