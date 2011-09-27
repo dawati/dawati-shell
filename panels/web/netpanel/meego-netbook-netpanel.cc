@@ -1305,10 +1305,26 @@ create_history (MeegoNetbookNetpanel *self)
       do
         {
           if (priv->n_favs < NR_FAVORITE)
-              favs_received (self,
-                      (gchar*) sqlite3_column_text (fav_stmt, 0),  // url
-                      (gchar*) sqlite3_column_text (fav_stmt, 1),  // title
-                      priority++);
+            {
+              /*XXX: Duplicated computing */
+              gchar* url = (gchar*)sqlite3_column_text(fav_stmt, 0);
+              gchar *csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, url, -1);
+              gchar *thumbnail_filename = g_strconcat (csum, ".png", NULL);
+              gchar *path = g_build_filename (g_get_home_dir (),
+                                              NETPANEL_DIR,
+                                              "thumbnails",
+                                              thumbnail_filename,
+                                              NULL);
+
+              if(g_file_test(path, G_FILE_TEST_EXISTS))
+                favs_received (self,
+                               (gchar*) sqlite3_column_text (fav_stmt, 0),  // url
+                               (gchar*) sqlite3_column_text (fav_stmt, 1),  // title
+                               priority++);
+              g_free(csum);
+              g_free(thumbnail_filename);
+              g_free(path);
+            }
         }
       while (sqlite3_step (fav_stmt) == SQLITE_ROW);
     }
