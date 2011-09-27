@@ -1002,7 +1002,9 @@ add_texture_to_scrollview(void*data)
 
   if (path)
     {
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (tex), path, &error);
+      mx_image_set_from_file_at_size (MX_IMAGE (tex), path,
+                                      CELL_WIDTH, CELL_HEIGHT,
+                                      &error);
       g_free (path);
       if (error)
         {
@@ -1014,8 +1016,10 @@ add_texture_to_scrollview(void*data)
   if (!path || error)
     {
       error = NULL;
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (tex),
-                                     THEMEDIR "/fallback-page.png", &error);
+      mx_image_set_from_file_at_size (MX_IMAGE (tex),
+                                      THEMEDIR "/fallback-page.png",
+                                      CELL_WIDTH, CELL_HEIGHT,
+                                      &error);
       if (error)
         {
           g_warning ("[netpanel] unable to open fallback thumbnail: %s\n",
@@ -1025,15 +1029,18 @@ add_texture_to_scrollview(void*data)
     }
 
   error = NULL;
-  if(ff){
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (favi), ff, &error);
+  if(ff)
+    {
+      mx_image_set_from_file_at_size (MX_IMAGE (favi), ff,
+                                      FAVI_SIZE, FAVI_SIZE,
+                                      &error);
       if (error)
         {
           g_warning ("[netpanel] unable to open thumbnail: %s\n",
                      error->message);
           g_error_free (error);
         }
-  }
+    }
 
   g_free(url);
   g_free(ff);
@@ -1046,10 +1053,10 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
                              const gchar *url, const gchar *title,
                              const gchar *favicon_filename, const int priority)
 {
-
-  ClutterActor *tex;
   GError *error = NULL;
-  MxWidget *button, *label;
+  ClutterActor *vbox, *hbox;
+  ClutterActor *button, *tex;
+  ClutterActor *label, *favi_tex;
   gchar *path;
   gboolean new_tab = FALSE;
 
@@ -1064,35 +1071,46 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
     return NULL;
 #endif
 
-  button = MX_WIDGET(mx_button_new ());
-  clutter_actor_set_name (CLUTTER_ACTOR (button), "weblink");
-  mx_stylable_set_style_class ((MxStylable*)button, "weblink");
+  vbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox),
+                                 MX_ORIENTATION_VERTICAL);
+
+  button = mx_button_new ();
+  clutter_actor_set_name (button, "weblink");
+  mx_stylable_set_style_class (MX_STYLABLE (button), "weblink");
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), button);
+
+  tex = mx_image_new ();
+  clutter_actor_set_size (tex, CELL_WIDTH, CELL_HEIGHT);
+  clutter_container_add_actor (CLUTTER_CONTAINER (button), tex);
+
+  hbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox),
+                                 MX_ORIENTATION_HORIZONTAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), hbox);
+
+  favi_tex = mx_image_new ();
+  clutter_actor_set_name (favi_tex, "favicon");
+  // clutter_actor_set_size (favi_tex, FAVI_SIZE, FAVI_SIZE);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), favi_tex);
 
   if (!title)
     title = url;
+  label = mx_label_new_with_text (title);
+  clutter_actor_set_name (label, "title");
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
 
-  label = MX_WIDGET(mx_label_new_with_text (title));
-  clutter_actor_set_width (CLUTTER_ACTOR (label), CELL_WIDTH - FAVI_SIZE);
+  mnb_netpanel_scrollview_add_item (scrollview, 0, vbox);
 
-  ClutterActor *favi_tex = clutter_texture_new ();
-
-  tex = clutter_texture_new ();
-
-  TextureData *tex_data = (TextureData*)g_malloc0(sizeof(TextureData));
+  TextureData *tex_data = (TextureData*) g_malloc0 (sizeof (TextureData));
   tex_data->tex = tex;
   tex_data->favi = favi_tex;
-  tex_data->url = g_strdup(url);
-  tex_data->ff = g_strdup(favicon_filename);
-  clutter_threads_add_idle_full(priority, add_texture_to_scrollview, (void*)tex_data, NULL);
+  tex_data->url = g_strdup (url);
+  tex_data->ff = g_strdup (favicon_filename);
+  clutter_threads_add_idle_full (priority, add_texture_to_scrollview,
+                                 (void*) tex_data, NULL);
 
-  clutter_actor_set_size (CLUTTER_ACTOR (favi_tex), FAVI_SIZE, FAVI_SIZE);
-
-  clutter_actor_set_size (CLUTTER_ACTOR (tex), CELL_WIDTH, CELL_HEIGHT);
-  clutter_container_add_actor (CLUTTER_CONTAINER (button), tex);
-
-  mnb_netpanel_scrollview_add_item (scrollview, 0, CLUTTER_ACTOR (button), CLUTTER_ACTOR (favi_tex),
-                                    CLUTTER_ACTOR (label));
-  return button;
+  return MX_WIDGET (button);
 }
 
 static void
@@ -1142,13 +1160,20 @@ static void tabs_exception(void* context, int errno)
   MeegoNetbookNetpanelPrivate *priv = self->priv;
   MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
 
-  MxWidget *label;
-  MxWidget *button;
-  ClutterActor *tex;
+  ClutterActor *vbox, *hbox;
+  ClutterActor *button, *tex;
+  ClutterActor *label, *favi_tex;
   GError *error = NULL;
 
-  tex = clutter_texture_new_from_file (THEMEDIR "/newtab-thumbnail.png",
-                                       &error);
+  vbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (vbox),
+                                 MX_ORIENTATION_VERTICAL);
+
+  tex = mx_image_new ();
+  mx_image_set_from_file_at_size (MX_IMAGE (tex),
+                                  THEMEDIR "/newtab-thumbnail.png",
+                                  CELL_WIDTH, CELL_HEIGHT,
+                                  &error);
   if (error)
     {
       g_warning ("[netpanel] unable to open new tab thumbnail: %s\n",
@@ -1156,25 +1181,29 @@ static void tabs_exception(void* context, int errno)
       g_error_free (error);
     }
 
-  button = MX_WIDGET(mx_button_new ());
-  mx_stylable_set_style_class ((MxStylable*)button, "weblink");
+  button = mx_button_new ();
+  mx_stylable_set_style_class (MX_STYLABLE (button), "weblink");
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (button),
-                               CLUTTER_ACTOR (tex));
+  clutter_container_add_actor (CLUTTER_CONTAINER (button), tex);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (new_tab_clicked_cb), self);
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), button);
 
-  label = MX_WIDGET(mx_label_new_with_text (_("New tab")));
+  hbox = mx_box_layout_new ();
+  mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox),
+                                 MX_ORIENTATION_HORIZONTAL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (vbox), hbox);
 
-  ClutterActor *favi_tex = clutter_texture_new ();
-  clutter_actor_set_size (CLUTTER_ACTOR (favi_tex), FAVI_SIZE, FAVI_SIZE);
+  favi_tex = mx_image_new ();
+  clutter_actor_set_name (favi_tex, "favicon");
+  // clutter_actor_set_size (favi_tex, FAVI_SIZE, FAVI_SIZE);
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), favi_tex);
 
-  mnb_netpanel_scrollview_add_item (MNB_NETPANEL_SCROLLVIEW (priv->tabs_view),
-                                    0,
-                                    CLUTTER_ACTOR (button),
-                                    CLUTTER_ACTOR (favi_tex),
-                                    CLUTTER_ACTOR (label));
+  label = mx_label_new_with_text (_("New tab"));
+  clutter_actor_set_name (label, "title");
+  clutter_container_add_actor (CLUTTER_CONTAINER (hbox), label);
 
+  mnb_netpanel_scrollview_add_item (scrollview, 0, vbox);
 }
 
 static void tabs_received(void* context, int tab_id,

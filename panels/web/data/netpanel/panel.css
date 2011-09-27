@@ -40,12 +40,17 @@ MeegoNetbookNetpanel
 }
 
 
-MeegoNetbookNetpanel MxLabel
+MeegoNetbookNetpanel MxLabel#title
 {
   font-family: "Droid Sans";
   font-size: 11px;
   color: #6e6e6e;
-  padding:  3 0 5 0;
+  padding:  3 0 5 3;
+}
+
+MeegoNetbookNetpanel MxImage#favicon
+{
+  padding:  0 0 0 8;
 }
 
 MeegoNetbookNetpanel MxLabel#section
