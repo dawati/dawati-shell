@@ -53,6 +53,7 @@ extern "C" {
 #define DISPLAY_TABS_MAX 4
 
 #define START_PAGE "meego://start/"
+#define NEWTAB_URL "chrome://newtab/"
 
 #define FAVORITE_SQL  "SELECT url, title FROM urls " \
                       "ORDER BY visit_count DESC LIMIT 9"
@@ -604,7 +605,7 @@ new_tab_clicked_cb (MxWidget *button, MeegoNetbookNetpanel *self)
   int id = -1;
   if (!meego_netbook_netpanel_open_tab (self, CMD_SELECT_TAB, &id))
     {
-      meego_netbook_netpanel_restore_tab (self, "");
+      meego_netbook_netpanel_restore_tab (self, NEWTAB_URL);
     }
 }
 
