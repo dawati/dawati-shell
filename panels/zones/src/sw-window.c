@@ -427,7 +427,7 @@ sw_window_get_preferred_width (ClutterActor *actor,
                                gfloat       *pref_width)
 {
   if (min_width)
-    *min_width = 240;
+    *min_width = 120;
 
   if (pref_width)
     *pref_width = 240;
@@ -440,7 +440,7 @@ sw_window_get_preferred_height (ClutterActor *actor,
                                 gfloat       *pref_height)
 {
   if (min_height)
-    *min_height = 240;
+    *min_height = 120;
 
   if (pref_height)
     *pref_height = 240;
