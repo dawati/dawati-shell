@@ -95,7 +95,6 @@ struct _MeegoNetbookNetpanelPrivate
 
   gchar         **fav_urls;
   gchar         **fav_titles;
-  gchar         *browser_name;
 
   GList          *session_urls;
 
@@ -103,7 +102,7 @@ struct _MeegoNetbookNetpanelPrivate
 
   /*  SQLite connection */
   gchar          *places_db;
-  sqlite3        *dbcon; 
+  sqlite3        *dbcon;
 
   gchar          *search_url;
 };
@@ -186,9 +185,6 @@ meego_netbook_netpanel_dispose (GObject *object)
       priv->session_urls = g_list_delete_link (priv->session_urls,
                                                priv->session_urls);
     }
-
-  if (priv->browser_name)
-    g_free (priv->browser_name);
 
   G_OBJECT_CLASS (meego_netbook_netpanel_parent_class)->dispose (object);
 }
@@ -542,12 +538,12 @@ meego_netbook_netpanel_launch_url (MeegoNetbookNetpanel *netpanel,
               esc_url = g_strdup_printf("%s%s%s", temp, url, s2);
               if(strchr (esc_url, ' '))
                 {
-                  g_strdelimit(esc_url, " ", '+'); 
+                  g_strdelimit(esc_url, " ", '+');
                 }
             }
           g_free(temp);
         }
-  
+
       if(!esc_url)
         {
           esc_url = g_strescape (url, NULL);
@@ -581,13 +577,7 @@ meego_netbook_netpanel_launch_url (MeegoNetbookNetpanel *netpanel,
       remaining = ptr + 1;
     }
 
-  std::string browser_exec(priv->browser_name);
-  if (browser_exec == "chromium")
-    browser_exec.append("-browser");
-
-  exec = g_strdup_printf ("%s %s \"%s%s\"",
-                          browser_exec.c_str(),
-                          "",
+  exec = g_strdup_printf ("gvfs-open \"%s%s\"",
                           prefix, remaining);
 
 //   printf("exec %s\n", exec);
@@ -768,7 +758,7 @@ meego_netbook_netpanel_open_tab (MeegoNetbookNetpanel *self, const gint type, vo
             g_free(plugin_pipe);
             return FALSE;
         }
-      
+
       if (g_io_channel_shutdown (output, FALSE, &error) ==
           G_IO_STATUS_ERROR)
         {
@@ -815,7 +805,7 @@ meego_netbook_netpanel_select_tab (MeegoNetbookNetpanel *self, gint tab_id)
       g_io_channel_set_close_on_unref (output, TRUE);
 
       pipe_send (output, G_TYPE_UINT, CMD_SELECT_TAB, G_TYPE_INT, tab_id, G_TYPE_INVALID);
-      
+
       if (g_io_channel_shutdown (output, FALSE, &error) ==
           G_IO_STATUS_ERROR)
         {
@@ -969,15 +959,15 @@ get_favicon_filename(MeegoNetbookNetpanel *self, const char *url)
                                &f2_stmt, NULL);
       if (!rc && sqlite3_step (f2_stmt) == SQLITE_ROW)
         {
-          gchar *csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, 
-                                (gchar*)sqlite3_column_text(f2_stmt, 0), -1);  
+          gchar *csum = g_compute_checksum_for_string (G_CHECKSUM_MD5,
+                                (gchar*)sqlite3_column_text(f2_stmt, 0), -1);
           gchar *thumbnail_filename = g_strconcat (csum, ".ico", NULL);
-          result = g_build_filename (g_get_home_dir (),  
+          result = g_build_filename (g_get_home_dir (),
                                      NETPANEL_DIR,
-                                     "favicons",  
-                                     thumbnail_filename,  
-                                     NULL);  
-          g_free(csum);  
+                                     "favicons",
+                                     thumbnail_filename,
+                                     NULL);
+          g_free(csum);
           g_free(thumbnail_filename);
         }
       sqlite3_finalize(f2_stmt);
@@ -989,7 +979,7 @@ get_favicon_filename(MeegoNetbookNetpanel *self, const char *url)
   return result;
 }
 
-static gboolean 
+static gboolean
 add_texture_to_scrollview(void*data)
 {
 
@@ -998,14 +988,14 @@ add_texture_to_scrollview(void*data)
   gchar *url = ((TextureData*)data)->url;
   gchar *ff = ((TextureData*)data)->ff;
 
-  gchar *csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, url, -1);  
+  gchar *csum = g_compute_checksum_for_string (G_CHECKSUM_MD5, url, -1);
   gchar *thumbnail_filename = g_strconcat (csum, ".png", NULL);
-  gchar *path = g_build_filename (g_get_home_dir (),  
+  gchar *path = g_build_filename (g_get_home_dir (),
                                   NETPANEL_DIR,
-                                  "thumbnails",  
-                                  thumbnail_filename,  
-                                  NULL);  
-  g_free(csum);  
+                                  "thumbnails",
+                                  thumbnail_filename,
+                                  NULL);
+  g_free(csum);
   g_free(thumbnail_filename);
   GError *error = NULL;
 
@@ -1052,7 +1042,7 @@ add_texture_to_scrollview(void*data)
 
 static MxWidget *
 add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
-                             const gchar *url, const gchar *title, 
+                             const gchar *url, const gchar *title,
                              const gchar *favicon_filename, const int priority)
 {
 
@@ -1133,7 +1123,7 @@ favs_received (void *context, const char* url, const char *title, const int prio
   button = add_thumbnail_to_scrollview (scrollview, url, title, favicon_filename,  priority);
   g_free(favicon_filename);
 
-  if (button) 
+  if (button)
     {
       priv->fav_urls[priv->n_favs] = g_strdup (url);
       priv->fav_titles[priv->n_favs] = g_strdup (title);
@@ -1188,8 +1178,8 @@ static void tabs_exception(void* context, int errno)
 
 static void tabs_received(void* context, int tab_id,
                                      const char* url,
-                                     const char* title, 
-                                     const int priority) 
+                                     const char* title,
+                                     const int priority)
 {
     MeegoNetbookNetpanel* self = (MeegoNetbookNetpanel*)context;
     MeegoNetbookNetpanelPrivate *priv = self->priv;
@@ -1210,7 +1200,7 @@ static void tabs_received(void* context, int tab_id,
         gchar *prev_url = (gchar *)malloc(strlen(url) + 3 + 8);
         //sprintf(prev_url, "%s#%d,%d", url, tab_id, navigation_index);
         sprintf(prev_url, "%s", url);
-        
+
         gchar *favicon_filename = get_favicon_filename(self, url);
         button = add_thumbnail_to_scrollview (scrollview, url, title, favicon_filename,  priority);
         g_free(favicon_filename);
@@ -1253,8 +1243,8 @@ create_tabs(MeegoNetbookNetpanel *self)
       do
         {
           priority = ++priority>(G_PRIORITY_DEFAULT_IDLE-NR_FAVORITE)?G_PRIORITY_DEFAULT_IDLE:priority;
-          tabs_received (self, 
-                         sqlite3_column_int(tab_stmt, 0), 
+          tabs_received (self,
+                         sqlite3_column_int(tab_stmt, 0),
                          (gchar*)sqlite3_column_text(tab_stmt, 1),
                          (gchar*)sqlite3_column_text(tab_stmt, 2),
                          priority);
@@ -1317,7 +1307,7 @@ create_history (MeegoNetbookNetpanel *self)
               favs_received (self,
                       (gchar*) sqlite3_column_text (fav_stmt, 0),  // url
                       (gchar*) sqlite3_column_text (fav_stmt, 1),  // title
-                      priority++); 
+                      priority++);
         }
       while (sqlite3_step (fav_stmt) == SQLITE_ROW);
     }
@@ -1372,9 +1362,9 @@ meego_netbook_netpanel_set_search_provider(MeegoNetbookNetpanel *self)
   if (!error)
     {
       provider = json_object_get_member(
-                      json_node_get_object(json_parser_get_root (parser)), 
+                      json_node_get_object(json_parser_get_root (parser)),
                       "default_search_provider");
-      sname = json_object_get_member(json_node_get_object(provider),"name"); 
+      sname = json_object_get_member(json_node_get_object(provider),"name");
       search_name = g_strdup(json_node_get_string(sname));
       if(g_strcmp0(search_name, "Google")!=0)
         {
@@ -1405,7 +1395,7 @@ meego_netbook_netpanel_show (ClutterActor *actor)
 
   mwb_utils_places_db_connect(priv->places_db, &priv->dbcon);
 
-//   mwb_utils_db_stmt_prepare(priv->dbcon, &priv->fav_stmt, 
+//   mwb_utils_db_stmt_prepare(priv->dbcon, &priv->fav_stmt,
 //           &priv->tab_stmt, &priv->thumbnail_stmt);
 
   mnb_netpanel_bar_set_dbcon (G_OBJECT (priv->entry), priv->dbcon);
@@ -1611,15 +1601,13 @@ meego_netbook_netpanel_init (MeegoNetbookNetpanel *self)
 
   priv->places_db = mwb_utils_places_db_get_filename();
   if (!priv->places_db)
-    { 
+    {
       g_warning ("[netpanel]: no places database found");
     }
   priv->dbcon = NULL;
 //   priv->fav_stmt = NULL;
 //   priv->tab_stmt = NULL;
 //   priv->thumbnail_stmt = NULL;
-
-  priv->browser_name = NULL;
 }
 
 
@@ -1629,17 +1617,6 @@ meego_netbook_netpanel_new (void)
   return (MxWidget*)g_object_new (MEEGO_TYPE_NETBOOK_NETPANEL,
                                   "visible", FALSE,
                                   NULL);
-}
-
-void
-meego_netbook_netpanel_set_browser(MeegoNetbookNetpanel *netpanel,
-                                    const char* browser_name)
-{
-  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
-
-  if(priv->browser_name)
-    g_free(priv->browser_name);
-  priv->browser_name = g_strdup(browser_name);
 }
 
 void

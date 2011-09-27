@@ -12,7 +12,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA. 
+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #include <locale.h>
@@ -75,7 +75,6 @@ main (int    argc,
   ClutterActor *stage;
   MeegoNetbookNetpanel *netpanel;
   GOptionContext *context;
-  std::string browser_name = "chromium";
   GError *error = NULL;
 
   setlocale (LC_ALL, "");
@@ -119,7 +118,6 @@ main (int    argc,
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
-    meego_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
 
     ClutterActor  *content_pane;
     ClutterActor  *base_pane;
@@ -169,7 +167,6 @@ main (int    argc,
 
     mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
     netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
-    meego_netbook_netpanel_set_browser(netpanel, browser_name.c_str());
 
     base_pane = mx_box_layout_new();
     clutter_actor_set_name (base_pane, "base-pane");

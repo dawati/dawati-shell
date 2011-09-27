@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA. 
+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #ifndef _MEEGO_NETBOOK_NETPANEL_H
@@ -51,7 +51,7 @@ typedef struct _MeegoNetbookNetpanelPrivate MeegoNetbookNetpanelPrivate;
 
 typedef struct {
   MxWidget parent;
-  
+
   MeegoNetbookNetpanelPrivate *priv;
 } MeegoNetbookNetpanel;
 
@@ -71,8 +71,6 @@ void meego_netbook_netpanel_set_panel_client (MeegoNetbookNetpanel *netpanel,
 
 void meego_netbook_netpanel_button_press (MeegoNetbookNetpanel *netpanel);
 
-void meego_netbook_netpanel_set_browser(MeegoNetbookNetpanel *netpanel,
-                                         const char* browser_name);
 G_END_DECLS
 
 #endif /* _MEEGO_NETBOOK_NETPANEL_H */
