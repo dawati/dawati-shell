@@ -340,26 +340,6 @@ mnb_netpanel_bar_captured_event (ClutterActor *actor,
 }
 
 static void
-mnb_netpanel_bar_map (ClutterActor *actor)
-{
-  MnbNetpanelBarPrivate *priv = MNB_NETPANEL_BAR (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_netpanel_bar_parent_class)->map (actor);
-
-  clutter_actor_map (CLUTTER_ACTOR (priv->ac_list));
-}
-
-static void
-mnb_netpanel_bar_unmap (ClutterActor *actor)
-{
-  MnbNetpanelBarPrivate *priv = MNB_NETPANEL_BAR (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_netpanel_bar_parent_class)->unmap (actor);
-
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->ac_list));
-}
-
-static void
 mnb_netpanel_bar_go (MnbNetpanelBar *self, const gchar *url)
 {
   /* empty */
@@ -380,8 +360,6 @@ mnb_netpanel_bar_class_init (MnbNetpanelBarClass *klass)
   actor_class->paint = mnb_netpanel_bar_paint;
   actor_class->pick = mnb_netpanel_bar_pick;
   actor_class->captured_event = mnb_netpanel_bar_captured_event;
-  actor_class->map = mnb_netpanel_bar_map;
-  actor_class->unmap = mnb_netpanel_bar_unmap;
 
   klass->go = mnb_netpanel_bar_go;
 

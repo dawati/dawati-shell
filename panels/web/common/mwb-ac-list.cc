@@ -775,50 +775,6 @@ mwb_ac_list_style_changed_cb (MxWidget *widget)
 }
 
 static void
-mwb_ac_list_map (ClutterActor *actor)
-{
-  guint i;
-  MwbAcListPrivate *priv = MWB_AC_LIST (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->map (actor);
-
-  clutter_actor_map (CLUTTER_ACTOR (priv->separator));
-
-  for (i = 0; i < priv->entries->len; i++)
-    {
-      MwbAcListEntry *entry = &g_array_index (priv->entries, MwbAcListEntry, i);
-      clutter_actor_map (CLUTTER_ACTOR (entry->label_actor));
-      clutter_actor_map (CLUTTER_ACTOR (entry->highlight_widget));
-    }
-}
-
-static void
-mwb_ac_list_unmap (ClutterActor *actor)
-{
-  guint i;
-  MwbAcListPrivate *priv = MWB_AC_LIST (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->unmap (actor);
-
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->separator));
-
-  for (i = 0; i < priv->entries->len; i++)
-    {
-      MwbAcListEntry *entry = &g_array_index (priv->entries, MwbAcListEntry, i);
-      clutter_actor_unmap (CLUTTER_ACTOR (entry->label_actor));
-      clutter_actor_unmap (CLUTTER_ACTOR (entry->highlight_widget));
-    }
-
-}
-
-static void
-mwb_ac_list_realize (ClutterActor *actor)
-{
-  if (CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->realize)
-    CLUTTER_ACTOR_CLASS (mwb_ac_list_parent_class)->realize (actor);
-}
-
-static void
 mwb_ac_list_class_init (MwbAcListClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -836,9 +792,6 @@ mwb_ac_list_class_init (MwbAcListClass *klass)
   actor_class->paint = mwb_ac_list_paint;
   actor_class->pick = mwb_ac_list_pick;
   actor_class->allocate = mwb_ac_list_allocate;
-  actor_class->map = mwb_ac_list_map;
-  actor_class->unmap = mwb_ac_list_unmap;
-  actor_class->realize = mwb_ac_list_realize;
 
   pspec = g_param_spec_string ("search-text", "Search Text",
                                "The text to auto complete on",

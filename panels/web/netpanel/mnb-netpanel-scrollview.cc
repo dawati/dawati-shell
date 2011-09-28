@@ -306,42 +306,6 @@ mnb_netpanel_scrollview_pick (ClutterActor       *actor,
   mnb_netpanel_scrollview_paint (actor);
 }
 
-static void
-mnb_netpanel_scrollview_map (ClutterActor *actor)
-{
-  GList *item;
-  MnbNetpanelScrollviewPrivate *priv = MNB_NETPANEL_SCROLLVIEW (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_netpanel_scrollview_parent_class)->map (actor);
-
-  for (item = priv->items; item != NULL; item = item->next)
-    {
-      ItemProps *props = (ItemProps*)item->data;
-      clutter_actor_map (props->box);
-    }
-
-  if (priv->scroll_bar)
-    clutter_actor_map (CLUTTER_ACTOR (priv->scroll_bar));
-}
-
-static void
-mnb_netpanel_scrollview_unmap (ClutterActor *actor)
-{
-  GList *item;
-  MnbNetpanelScrollviewPrivate *priv = MNB_NETPANEL_SCROLLVIEW (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mnb_netpanel_scrollview_parent_class)->unmap (actor);
-
-  for (item = priv->items; item != NULL; item = item->next)
-    {
-      ItemProps *props = (ItemProps*)item->data;
-      clutter_actor_unmap (props->box);
-    }
-
-  if (priv->scroll_bar)
-    clutter_actor_unmap (CLUTTER_ACTOR (priv->scroll_bar));
-}
-
 static gboolean
 mnb_netpanel_scrollview_captured_event (ClutterActor *actor,
                                         ClutterEvent *event)
@@ -371,8 +335,6 @@ mnb_netpanel_scrollview_class_init (MnbNetpanelScrollviewClass *klass)
     mnb_netpanel_scrollview_get_preferred_height;
   actor_class->paint = mnb_netpanel_scrollview_paint;
   actor_class->pick = mnb_netpanel_scrollview_pick;
-  actor_class->map = mnb_netpanel_scrollview_map;
-  actor_class->unmap = mnb_netpanel_scrollview_unmap;
   actor_class->captured_event = mnb_netpanel_scrollview_captured_event;
 }
 

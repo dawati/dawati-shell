@@ -777,34 +777,6 @@ mwb_radical_bar_captured_event (ClutterActor *actor,
 }
 
 static void
-mwb_radical_bar_map (ClutterActor *actor)
-{
-  MwbRadicalBarPrivate *priv = MWB_RADICAL_BAR (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mwb_radical_bar_parent_class)->map (actor);
-
-  clutter_actor_map (CLUTTER_ACTOR (priv->table));
-  clutter_actor_map (CLUTTER_ACTOR (priv->broken_highlight));
-  clutter_actor_map (CLUTTER_ACTOR (priv->encrypted_highlight));
-  clutter_actor_map (CLUTTER_ACTOR (priv->progress_bar));
-  clutter_actor_map (CLUTTER_ACTOR (priv->ac_list));
-}
-
-static void
-mwb_radical_bar_unmap (ClutterActor *actor)
-{
-  MwbRadicalBarPrivate *priv = MWB_RADICAL_BAR (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (mwb_radical_bar_parent_class)->unmap (actor);
-
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->table));
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->broken_highlight));
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->encrypted_highlight));
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->progress_bar));
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->ac_list));
-}
-
-static void
 mwb_radical_bar_go (MwbRadicalBar *self, const gchar *url)
 {
   MwbRadicalBarPrivate *priv = self->priv;
@@ -832,8 +804,6 @@ mwb_radical_bar_class_init (MwbRadicalBarClass *klass)
   actor_class->paint = mwb_radical_bar_paint;
   actor_class->pick = mwb_radical_bar_pick;
   actor_class->captured_event = mwb_radical_bar_captured_event;
-  actor_class->map = mwb_radical_bar_map;
-  actor_class->unmap = mwb_radical_bar_unmap;
 
   klass->go = mwb_radical_bar_go;
 
@@ -980,7 +950,7 @@ static void
 mwb_radical_bar_button_clicked_cb (MxButton *button, MwbRadicalBar *self)
 {
   MwbRadicalBarPrivate *priv = self->priv;
-  
+
   if (priv->loading)
     g_signal_emit (self, signals[STOP], 0);
   else
@@ -1331,7 +1301,7 @@ mwb_radical_bar_focus (MwbRadicalBar *radical_bar)
 {
   ClutterActor *text;
   MwbRadicalBarPrivate *priv = radical_bar->priv;
-  
+
   text = mx_entry_get_clutter_text (MX_ENTRY (priv->entry));
   mwb_utils_focus_on_click_cb (text, NULL, GINT_TO_POINTER (TRUE));
   mwb_radical_bar_select_all (radical_bar);

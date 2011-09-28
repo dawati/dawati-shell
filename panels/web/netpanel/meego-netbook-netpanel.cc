@@ -463,42 +463,6 @@ meego_netbook_netpanel_pick (ClutterActor *actor, const ClutterColor *color)
   meego_netbook_netpanel_paint (actor);
 }
 
-static void
-meego_netbook_netpanel_map (ClutterActor *actor)
-{
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->map (actor);
-
-  clutter_actor_map (CLUTTER_ACTOR (priv->entry_table));
-  if (priv->tabs_label)
-    clutter_actor_map (CLUTTER_ACTOR (priv->tabs_label));
-  if (priv->tabs_view)
-    clutter_actor_map (CLUTTER_ACTOR (priv->tabs_view));
-  if (priv->favs_label)
-    clutter_actor_map (CLUTTER_ACTOR (priv->favs_label));
-  if (priv->favs_view)
-    clutter_actor_map (CLUTTER_ACTOR (priv->favs_view));
-}
-
-static void
-meego_netbook_netpanel_unmap (ClutterActor *actor)
-{
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (actor)->priv;
-
-  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->unmap (actor);
-
-  clutter_actor_unmap (CLUTTER_ACTOR (priv->entry_table));
-  if (priv->tabs_label)
-    clutter_actor_unmap (CLUTTER_ACTOR (priv->tabs_label));
-  if (priv->tabs_view)
-    clutter_actor_unmap (CLUTTER_ACTOR (priv->tabs_view));
-  if (priv->favs_label)
-    clutter_actor_unmap (CLUTTER_ACTOR (priv->favs_label));
-  if (priv->favs_view)
-    clutter_actor_unmap (CLUTTER_ACTOR (priv->favs_view));
-}
-
 void
 meego_netbook_netpanel_button_press (MeegoNetbookNetpanel *netpanel)
 {
@@ -1548,8 +1512,6 @@ meego_netbook_netpanel_class_init (MeegoNetbookNetpanelClass *klass)
     meego_netbook_netpanel_get_preferred_height;
   actor_class->paint = meego_netbook_netpanel_paint;
   actor_class->pick = meego_netbook_netpanel_pick;
-  actor_class->map = meego_netbook_netpanel_map;
-  actor_class->unmap = meego_netbook_netpanel_unmap;
   actor_class->show = meego_netbook_netpanel_show;
   actor_class->hide = meego_netbook_netpanel_hide;
 }
