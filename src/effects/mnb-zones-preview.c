@@ -457,7 +457,7 @@ mnb_zones_preview_completed_cb (ClutterAnimation *animation,
     case MNB_ZP_ZOOM_OUT:
       /* Start panning */
       {
-        guint duration = 175 * abs (priv->dest_workspace - priv->workspace);
+        guint duration = MIN (175 * abs (priv->dest_workspace - priv->workspace), 525);
 
         if (duration)
           {
