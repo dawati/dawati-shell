@@ -115,7 +115,7 @@ mnb_netpanel_scrollview_allocate (ClutterActor           *actor,
                                     &item_width, &item_height);
 
   /* Allocate for the items and titles */
-  child_box.x1 = padding.left + COL_SPACING;
+  child_box.x1 = padding.left;
 
   for (item = priv->items; item != NULL; item = item->next)
     {
@@ -252,12 +252,15 @@ mnb_netpanel_scrollview_paint (ClutterActor *actor)
   GList *item;
   gfloat width, height, offset;
   MnbNetpanelScrollviewPrivate *priv = MNB_NETPANEL_SCROLLVIEW (actor)->priv;
+  ClutterActorBox alloc_box;
 
   /* Chain up to get the background */
   CLUTTER_ACTOR_CLASS (mnb_netpanel_scrollview_parent_class)->paint (actor);
 
-  clutter_actor_get_size (actor, &width, &height);
+  clutter_actor_get_allocation_box (actor, &alloc_box);
 
+  width = alloc_box.x2 - alloc_box.x1;
+  height = alloc_box.y2 - alloc_box.y1;
   cogl_clip_push_rectangle (0, 0, width, height);
 
   offset = priv->scroll_offset;
