@@ -53,7 +53,7 @@ extern "C" {
 #define DISPLAY_TABS_MAX 4
 
 #define START_PAGE "meego://start/"
-#define NEWTAB_URL "chrome://newtab/"
+#define NEWTAB_URL "http://"
 
 #define FAVORITE_SQL  "SELECT url, title FROM urls " \
                       "ORDER BY visit_count DESC LIMIT 9"
@@ -527,7 +527,10 @@ meego_netbook_netpanel_launch_url (MeegoNetbookNetpanel *netpanel,
     }
   else
     {
-      esc_url = g_strescape (url, NULL);
+      if (!url || url[0] == '\0')
+        esc_url = g_strdup ("http://");
+      else
+        esc_url = g_strescape (url, NULL);
     }
 
   /* Change any % to %% to work around g_app_info_launch */
