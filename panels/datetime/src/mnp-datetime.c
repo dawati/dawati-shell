@@ -778,6 +778,9 @@ update_date (MnpDatetime *datetime)
 {
   MnpDatetimePrivate *priv = GET_PRIVATE (datetime);
   time_t now = time(NULL), tom;
+  JanaTime *jnow;
+
+  jnow = jana_ecal_utils_time_now_local ();
 
   tom = get_start_of_nextday (now);
   priv->date_update_timeout = g_timeout_add_seconds(tom-now+1, (GSourceFunc) update_date, datetime); 
@@ -785,6 +788,8 @@ update_date (MnpDatetime *datetime)
   /* format_label (priv->top_date_label); */
   format_label (priv->cal_date_label);
   format_label (priv->task_date_label);
+  penge_calendar_pane_update_calendar_icon (datetime, jnow);
+  g_object_unref (jnow);
 
   return FALSE;
 }
