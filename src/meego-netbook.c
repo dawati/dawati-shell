@@ -1526,7 +1526,7 @@ window_destroyed_cb (MutterWindow *mcw, MutterPlugin *plugin)
 }
 
 /*
- * Protype; don't want to add this the public includes in metacity,
+ * Prototype; don't want to add this the public includes in metacity,
  * should be able to get rid of this call eventually.
  */
 void meta_window_calc_showing (MetaWindow  *window);
