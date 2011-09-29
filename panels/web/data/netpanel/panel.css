@@ -48,9 +48,9 @@ MeegoNetbookNetpanel MxLabel#title
   padding:  3 0 5 3;
 }
 
-MeegoNetbookNetpanel MxImage#favicon
+MeegoNetbookNetpanel MxBoxLayout#weblink-description
 {
-  padding:  0 0 0 8;
+  padding:  0 8 0 8;
 }
 
 MeegoNetbookNetpanel MxLabel#section

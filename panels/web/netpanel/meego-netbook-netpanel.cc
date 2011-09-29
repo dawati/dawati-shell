@@ -1052,8 +1052,10 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
   clutter_container_add_actor (CLUTTER_CONTAINER (button), tex);
 
   hbox = mx_box_layout_new ();
+  clutter_actor_set_name (hbox, "weblink-description");
   mx_box_layout_set_orientation (MX_BOX_LAYOUT (hbox),
                                  MX_ORIENTATION_HORIZONTAL);
+  clutter_actor_set_width (hbox, CELL_WIDTH);
   clutter_container_add_actor (CLUTTER_CONTAINER (vbox), hbox);
 
   favi_tex = mx_image_new ();
