@@ -76,6 +76,7 @@ void sw_overview_set_focused_window (SwOverview *overview, gulong xid);
 void sw_overview_remove_window (SwOverview *overview, gulong xid);
 
 void sw_overview_add_zone (SwOverview *self);
+gint sw_overview_get_n_zones (SwOverview *self);
 
 G_END_DECLS
 

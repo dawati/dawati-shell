@@ -522,3 +522,8 @@ sw_overview_set_focused_window (SwOverview *overview,
   g_list_free (children);
 }
 
+gint
+sw_overview_get_n_zones (SwOverview *overview)
+{
+  return overview->priv->n_zones;
+}
