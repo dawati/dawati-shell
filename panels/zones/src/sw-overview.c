@@ -86,6 +86,7 @@ sw_overview_set_property (GObject      *object,
     {
   case PROP_N_ZONES:
     priv->n_zones = g_value_get_int (value);
+    g_object_notify (G_OBJECT (object), "n-zones");
     break;
 
     default:
@@ -172,6 +173,7 @@ actor_added_to_dummy (ClutterContainer *zone,
   priv->dummy = NULL;
 
   priv->n_zones++;
+  g_object_notify (G_OBJECT (view), "n-zones");
   g_debug ("New zone added (count: %d)", priv->n_zones);
 
   sw_overview_renumber_zones (view);
@@ -220,6 +222,7 @@ sw_overview_renumber_zones (SwOverview   *view)
       mx_box_layout_set_enable_animations (MX_BOX_LAYOUT (view), TRUE);
 
       view->priv->n_zones++;
+      g_object_notify (G_OBJECT (view), "n-zones");
     }
 
   /* add the new dummy */
@@ -294,6 +297,7 @@ sw_overview_add_zone (SwOverview *self)
   sw_overview_renumber_zones (self);
 
   priv->n_zones++;
+  g_object_notify (G_OBJECT (self), "n-zones");
   g_debug ("Added a zone (count: %d)", priv->n_zones);
 }
 
@@ -304,6 +308,7 @@ zone_removed (SwOverview *overview,
   if (!sw_zone_get_dummy (zone))
     {
       overview->priv->n_zones--;
+      g_object_notify (G_OBJECT (overview), "n-zones");
       g_debug ("Zone removed (count: %d)", overview->priv->n_zones);
       sw_overview_renumber_zones (overview);
     }
