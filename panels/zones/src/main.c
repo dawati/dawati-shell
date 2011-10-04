@@ -399,6 +399,48 @@ window_closed (WnckScreen    *screen,
 }
 
 static void
+notify_n_zones_cb (SwOverview    *overview,
+                   GParamSpec    *pspec,
+                   ZonePanelData *data)
+{
+  gint n_zones;
+
+  n_zones = sw_overview_get_n_zones (overview);
+
+  g_debug ("Number of zones: %d", n_zones);
+
+  if (!client)
+    return;
+
+  switch (n_zones)
+    {
+    case 1:
+    case 2:
+      mpl_panel_client_request_button_style (client, "zones-button-1");
+      break;
+
+    case 3:
+    case 4:
+      mpl_panel_client_request_button_style (client, "zones-button-2");
+      break;
+
+    case 5:
+    case 6:
+      mpl_panel_client_request_button_style (client, "zones-button-3");
+      break;
+
+    case 7:
+    case 8:
+      mpl_panel_client_request_button_style (client, "zones-button-4");
+      break;
+
+    default:
+      mpl_panel_client_request_button_style (client, "zones-button");
+      break;
+    }
+}
+
+static void
 setup (ZonePanelData *data)
 {
   GList  *windows, *l;
@@ -425,6 +467,9 @@ setup (ZonePanelData *data)
 
   /* create the overview */
   overview = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
+  notify_n_zones_cb (SW_OVERVIEW (overview), NULL, data);
+  g_signal_connect (overview, "notify::n-zones", G_CALLBACK (notify_n_zones_cb),
+                    data);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (box_layout),
                                            overview, -1,
                                            "expand", TRUE,
