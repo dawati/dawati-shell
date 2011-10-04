@@ -87,3 +87,8 @@ MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:hover {
   background-image: url("launcher-button-fav-toggle-hover.png");
 }
 
+MxLabel.placeholder {
+  color: #595959ff;
+  font-size: 16px;
+  padding: 6 6 6 15;
+}
