@@ -58,6 +58,8 @@
 #define LAUNCHER_BUTTON_HEIGHT     65
 #define LAUNCHER_BUTTON_ICON_SIZE  48
 
+#define PLACEHOLDER_TEXT _("To see your favourite applications here and on the myzone, hover your pointer over the application you want to add and select the pin in the top right.")
+
 #define REAL_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER, MnbLauncherPrivate))
 
@@ -102,6 +104,7 @@ struct MnbLauncherPrivate_
   MxExpander              *first_expander;
   GSList                  *launchers;
   gboolean                 show_expanders;
+  guint                   fav_grid_items;
 
   /* Static widgets, managed by clutter. */
   ClutterActor            *filter_hbox;
@@ -109,6 +112,7 @@ struct MnbLauncherPrivate_
   ClutterActor            *scrollview;
   MxExpander              *default_expander;
   ClutterActor            *fav_grid;
+  ClutterActor            *placeholder_label;
 
   /* "Dynamic" widgets (browser vs. filter mode).
    * These are explicitely ref'd and destroyed. */
@@ -1078,6 +1082,30 @@ _filter_captured_event_cb (ClutterActor *actor,
   return FALSE;
 }
 
+static void
+_fav_add_complete_cb (ClutterActor *grid,
+                      ClutterActor *button,
+                      MnbLauncher *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (MNB_LAUNCHER (self));
+  priv->fav_grid_items++;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->placeholder_label))
+    clutter_actor_hide (priv->placeholder_label);
+}
+
+static void
+_fav_remove_complete_cb (ClutterActor *grid,
+                         ClutterActor *button,
+                         MnbLauncher *self)
+{
+  MnbLauncherPrivate *priv = GET_PRIVATE (MNB_LAUNCHER (self));
+  priv->fav_grid_items--;
+
+ if (priv->fav_grid_items == 0)
+   clutter_actor_show (priv->placeholder_label);
+}
+
 static GObject *
 _constructor (GType                  gtype,
               guint                  n_properties,
@@ -1115,6 +1143,15 @@ _constructor (GType                  gtype,
   clutter_actor_set_width (pane, FAV_PANE_WIDTH);
   clutter_container_add_actor (CLUTTER_CONTAINER (columns), pane);
 
+
+  priv->placeholder_label = mx_label_new_with_text (PLACEHOLDER_TEXT);
+  mx_stylable_set_style_class (MX_STYLABLE (priv->placeholder_label),
+                               "placeholder");
+
+  mx_label_set_line_wrap (MX_LABEL (priv->placeholder_label), TRUE);
+
+  mx_box_layout_add_actor (MX_BOX_LAYOUT (pane), priv->placeholder_label, 1);
+
   fav_scroll = mx_scroll_view_new ();
   clutter_actor_set_name (fav_scroll, "fav-pane-content");
   g_object_set (fav_scroll, "clip-to-allocation", TRUE, NULL);
@@ -1131,6 +1168,13 @@ _constructor (GType                  gtype,
   mx_stylable_set_style_class (MX_STYLABLE (priv->fav_grid), "fav-grid");
 //  mx_grid_set_column_spacing (MX_GRID (priv->fav_grid), APPS_GRID_COLUMN_GAP);
   mx_grid_set_row_spacing (MX_GRID (priv->fav_grid), APPS_GRID_ROW_GAP);
+
+  g_signal_connect (priv->fav_grid, "actor-added",
+                    G_CALLBACK (_fav_add_complete_cb), self);
+
+  g_signal_connect (priv->fav_grid, "actor-removed",
+                    G_CALLBACK (_fav_remove_complete_cb), self);
+
 //  mx_grid_set_max_stride (MX_GRID (priv->fav_grid), 4);
   clutter_container_add_actor (CLUTTER_CONTAINER (fav_scroll), priv->fav_grid);
 
