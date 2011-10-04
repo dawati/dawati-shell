@@ -41,8 +41,16 @@ dist_theme_panel_DATA = \
 	theme/panel/people-normal.png \
 	theme/panel/people-active-coloured.png \
 	theme/panel/people-active-normal.png \
-	theme/panel/spaces-coloured.png \
-	theme/panel/spaces-normal.png \
+	theme/panel/zones-coloured.png \
+	theme/panel/zones-normal.png \
+	theme/panel/zones-1-coloured.png \
+	theme/panel/zones-1-normal.png \
+	theme/panel/zones-2-coloured.png \
+	theme/panel/zones-2-normal.png \
+	theme/panel/zones-3-coloured.png \
+	theme/panel/zones-3-normal.png \
+	theme/panel/zones-4-coloured.png \
+	theme/panel/zones-4-normal.png \
 	theme/panel/status-coloured.png \
 	theme/panel/status-normal.png \
 	theme/panel/toolbar-button-normal.png \

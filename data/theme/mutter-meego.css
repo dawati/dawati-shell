@@ -170,12 +170,36 @@ MnbToolbarButton#people-button-active:hover, MnbToolbarButton#people-button-acti
   background-image: url("panel/people-active-coloured.png");
 }
 
-/* spaces button */
+/* zones button */
 MnbToolbarButton#zones-button {
-  background-image: url("panel/spaces-normal.png");
+  background-image: url("panel/zones-normal.png");
 }
 MnbToolbarButton#zones-button:hover, MnbToolbarButton#zones-button:active, MnbToolbarButton#zones-button:checked {
-  background-image: url("panel/spaces-coloured.png");
+  background-image: url("panel/zones-coloured.png");
+}
+MnbToolbarButton#zones-button-1 {
+  background-image: url("panel/zones-1-normal.png");
+}
+MnbToolbarButton#zones-button-1:hover, MnbToolbarButton#zones-button-1:active, MnbToolbarButton#zones-button-1:checked {
+  background-image: url("panel/zones-1-coloured.png");
+}
+MnbToolbarButton#zones-button-2 {
+  background-image: url("panel/zones-2-normal.png");
+}
+MnbToolbarButton#zones-button-2:hover, MnbToolbarButton#zones-button-2:active, MnbToolbarButton#zones-button-2:checked {
+  background-image: url("panel/zones-2-coloured.png");
+}
+MnbToolbarButton#zones-button-3 {
+  background-image: url("panel/zones-3-normal.png");
+}
+MnbToolbarButton#zones-button-3:hover, MnbToolbarButton#zones-button-3:active, MnbToolbarButton#zones-button-3:checked {
+  background-image: url("panel/zones-3-coloured.png");
+}
+MnbToolbarButton#zones-button-4 {
+  background-image: url("panel/zones-4-normal.png");
+}
+MnbToolbarButton#zones-button-4:hover, MnbToolbarButton#zones-button-4:active, MnbToolbarButton#zones-button-4:checked {
+  background-image: url("panel/zones-4-coloured.png");
 }
 
 /* status button */
