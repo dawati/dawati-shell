@@ -703,6 +703,9 @@ mnb_launcher_button_make_favorite (MnbLauncherButton *self,
                                    gfloat             width,
                                    gfloat             height)
 {
+  mx_widget_set_tooltip_text (MX_WIDGET (self),
+                              mx_label_get_text (self->priv->title));
+
   clutter_actor_destroy ((ClutterActor *) self->priv->title);
   self->priv->title = NULL;
   clutter_actor_destroy ((ClutterActor *) self->priv->launched);
