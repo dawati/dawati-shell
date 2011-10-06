@@ -81,6 +81,7 @@ enum
 enum
 {
   LAUNCHER_ACTIVATED,
+  COMMANDLINE_LAUNCH_ACTIVATED,
 
   LAST_SIGNAL
 };
@@ -1071,6 +1072,19 @@ _filter_captured_event_cb (ClutterActor *actor,
                              0,
                              desktop_file_path);
             }
+          else
+            {
+              const gchar *command;
+
+              command = mnb_filter_get_text (MNB_FILTER (actor));
+              if (command)
+                {
+                  g_signal_emit (self,
+                                 _signals[COMMANDLINE_LAUNCH_ACTIVATED],
+                                 0,
+                                 command);
+                }
+            }
         }
       else if (CLUTTER_Escape == key_event->keyval)
         {
@@ -1299,6 +1313,16 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MnbLauncherClass, launcher_activated),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1, G_TYPE_STRING);
+
+  _signals[COMMANDLINE_LAUNCH_ACTIVATED] =
+    g_signal_new ("commandline-launch-activated",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MnbLauncherClass,
+                                   commandline_launcher_activated),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1, G_TYPE_STRING);

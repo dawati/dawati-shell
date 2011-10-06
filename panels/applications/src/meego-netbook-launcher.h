@@ -66,6 +66,8 @@ struct MnbLauncherClass_ {
   /* Signals. */
   void (* launcher_activated) (MnbLauncher  *self,
                                const gchar  *desktop_file);
+  void (* commandline_launcher_activated) (MnbLauncher  *self,
+                                           const gchar  *commandline);
 };
 
 GType mnb_launcher_get_type (void) G_GNUC_CONST;
