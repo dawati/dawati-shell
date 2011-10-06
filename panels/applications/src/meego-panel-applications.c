@@ -97,6 +97,18 @@ launcher_activated_cb (MnbLauncher    *launcher,
 }
 
 static void
+commandline_launch_activated_cb (MnbLauncher    *launcher,
+                                 const gchar    *commandline,
+                                 MplPanelClient *panel)
+{
+  if (commandline)
+    {
+      if (mpl_panel_client_launch_application   (panel, commandline))
+        mpl_panel_client_hide (panel);
+    }
+}
+
+static void
 standalone_launcher_activated_cb (MnbLauncher    *launcher,
                                   const gchar    *desktop_file,
                                   gpointer        user_data)
@@ -256,6 +268,8 @@ main (int     argc,
       launcher = mnb_launcher_new ();
       g_signal_connect (launcher, "launcher-activated",
                         G_CALLBACK (launcher_activated_cb), panel);
+      g_signal_connect (launcher, "commandline-launch-activated",
+                        G_CALLBACK (commandline_launch_activated_cb), panel);
 
       g_signal_connect (panel, "show-begin",
                         G_CALLBACK (panel_show_begin_cb), launcher);
