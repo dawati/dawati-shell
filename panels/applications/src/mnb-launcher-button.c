@@ -71,6 +71,7 @@ struct _MnbLauncherButtonPrivate
   char          *title_key;
   char          *description_key;
   char          *comment_key;
+  char          *executable_key;
 
   /* Those are mutually exclusive.
    * fav_sibling:   sibling in the fav pane.
@@ -154,6 +155,7 @@ finalize (GObject *object)
   g_free (self->priv->category_key);
   g_free (self->priv->title_key);
   g_free (self->priv->description_key);
+  g_free (self->priv->executable_key);
 
   G_OBJECT_CLASS (mnb_launcher_button_parent_class)->finalize (object);
 }
@@ -669,6 +671,16 @@ mnb_launcher_button_match (MnbLauncherButton *self,
 
   if (self->priv->description_key &&
       NULL != strstr (self->priv->description_key, lcase_needle))
+    {
+      return TRUE;
+    }
+
+  /* Executable. */
+  if (self->priv->executable && !self->priv->executable_key)
+    self->priv->executable_key = g_utf8_strdown (self->priv->executable, -1);
+
+  if (self->priv->executable_key &&
+      NULL != strstr (self->priv->executable_key, lcase_needle))
     {
       return TRUE;
     }
