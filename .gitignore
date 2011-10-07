@@ -65,3 +65,10 @@ xmldocs.make
 /tests/test-pasteboard
 /tests/test-screensized
 /tests/test-tray
+Thumbs.db
+Desktop.ini
+/.svn/*
+*/.svn/*
+.DS_Store?
+.Spotlight-V100
+.Trashes
