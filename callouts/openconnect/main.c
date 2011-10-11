@@ -314,10 +314,11 @@ static gboolean ui_add_select (ui_fragment_data *data)
 	text = gtk_label_new(data->opt->label);
 	gtk_box_pack_start(GTK_BOX(hbox), text, FALSE, FALSE, 0);
 
-	combo = gtk_combo_box_new_text();
+	combo = gtk_combo_box_text_new();
 	gtk_box_pack_end(GTK_BOX(hbox), combo, FALSE, FALSE, 0);
 	for (i = 0; i < sopt->nr_choices; i++) {
-		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), sopt->choices[i].label);
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo),
+		                               sopt->choices[i].label);
 		if (data->entry_text && 
 		    !strcmp(data->entry_text, sopt->choices[i].name)) {
 			gtk_combo_box_set_active(GTK_COMBO_BOX(combo), i);
@@ -1015,14 +1016,14 @@ static void populate_vpnhost_combo(auth_ui_data *ui_data)
 {
 	struct vpnhost *host;
 	int i = 0;
-	GtkComboBox *combo = GTK_COMBO_BOX(ui_data->combo);
+	GtkComboBoxText *combo = GTK_COMBO_BOX_TEXT(ui_data->combo);
 
 	for (host = vpnhosts; host; host = host->next) {
-		gtk_combo_box_append_text(combo, host->hostname);
+		gtk_combo_box_text_append_text(combo, host->hostname);
 
 		if (i == 0 ||
 		    (lasthost && !strcmp(host->hostname, lasthost)))
-			gtk_combo_box_set_active(combo, i);
+			gtk_combo_box_set_active(GTK_COMBO_BOX(combo), i);
 		i++;
 
 	}
@@ -1319,7 +1320,7 @@ static void build_main_dialog(auth_ui_data *ui_data)
 	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
 	gtk_widget_show(label);
 
-	ui_data->combo = gtk_combo_box_new_text();
+	ui_data->combo = gtk_combo_box_text_new();
 	populate_vpnhost_combo(ui_data);
 	gtk_box_pack_start(GTK_BOX(hbox), ui_data->combo, TRUE, TRUE, 0);
 	g_signal_connect_swapped(ui_data->combo, "changed",

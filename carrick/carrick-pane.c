@@ -749,12 +749,12 @@ _new_connection_cb (GtkButton *button,
                              1, 2,
                              2, 3);
 
-  security_combo = gtk_combo_box_new_text ();
-  gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
+  security_combo = gtk_combo_box_text_new ();
+  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (security_combo),
                              _ ("None"));
-  gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
+  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (security_combo),
                              "WEP");
-  gtk_combo_box_append_text (GTK_COMBO_BOX (security_combo),
+  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (security_combo),
                              "WPA");
   gtk_combo_box_set_active (GTK_COMBO_BOX (security_combo),
                             0);
@@ -820,7 +820,7 @@ _new_connection_cb (GtkButton *button,
       char *message;
 
       network = gtk_entry_get_text (GTK_ENTRY (ssid_entry));
-      security = gtk_combo_box_get_active_text (GTK_COMBO_BOX (security_combo));
+      security = gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (security_combo));
       secret = gtk_entry_get_text (GTK_ENTRY (secret_entry));
 
       if (network == NULL)

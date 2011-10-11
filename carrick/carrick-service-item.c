@@ -431,7 +431,7 @@ _set_form_state (CarrickServiceItem *self)
   if (g_strcmp0 (priv->method, "manual") == 0)
     {
       if (gtk_combo_box_get_active (combo) == METHOD_FIXED)
-        gtk_combo_box_remove_text (combo, METHOD_FIXED);
+        gtk_combo_box_text_remove (GTK_COMBO_BOX_TEXT (combo), METHOD_FIXED);
 
       gtk_combo_box_set_active (combo, METHOD_MANUAL);
       gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
@@ -439,7 +439,7 @@ _set_form_state (CarrickServiceItem *self)
   else if (g_strcmp0 (priv->method, "dhcp") == 0)
     {
       if (gtk_combo_box_get_active (combo) == METHOD_FIXED)
-        gtk_combo_box_remove_text (combo, METHOD_FIXED);
+        gtk_combo_box_text_remove (GTK_COMBO_BOX_TEXT (combo), METHOD_FIXED);
 
       gtk_combo_box_set_active (combo, METHOD_DHCP);
       gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
@@ -452,7 +452,8 @@ _set_form_state (CarrickServiceItem *self)
             * combobox just like "DHCP" and "Static IP". Fixed means
             * that the IP configuration cannot be changed at all,
             * like in a 3G network */
-          gtk_combo_box_insert_text (combo, METHOD_FIXED, _("Fixed IP"));
+          gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (combo),
+                                          METHOD_FIXED, _("Fixed IP"));
         }
       gtk_combo_box_set_active (combo, METHOD_FIXED);
       gtk_widget_set_sensitive (GTK_WIDGET (combo), FALSE);
@@ -468,7 +469,8 @@ _set_form_state (CarrickServiceItem *self)
   if (g_strcmp0 (priv->ipv6_method, "manual") == 0)
     {
       if (gtk_combo_box_get_active (combo) == IPV6_METHOD_FIXED)
-        gtk_combo_box_remove_text (combo, IPV6_METHOD_FIXED);
+        gtk_combo_box_text_remove (GTK_COMBO_BOX_TEXT (combo),
+                                   IPV6_METHOD_FIXED);
 
       gtk_combo_box_set_active (combo, IPV6_METHOD_MANUAL);
       gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
@@ -476,7 +478,8 @@ _set_form_state (CarrickServiceItem *self)
   else if (g_strcmp0 (priv->ipv6_method, "auto") == 0)
     {
       if (gtk_combo_box_get_active (combo) == IPV6_METHOD_FIXED)
-        gtk_combo_box_remove_text (combo, IPV6_METHOD_FIXED);
+        gtk_combo_box_text_remove (GTK_COMBO_BOX_TEXT (combo),
+                                   IPV6_METHOD_FIXED);
 
       gtk_combo_box_set_active (combo, IPV6_METHOD_AUTO);
       gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
@@ -489,7 +492,8 @@ _set_form_state (CarrickServiceItem *self)
             * combobox just like "DHCP" and "Static IP". Fixed means
             * that the IP configuration cannot be changed at all,
             * like in a 3G network */
-          gtk_combo_box_insert_text (combo, IPV6_METHOD_FIXED, _("Fixed IP"));
+          gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (combo),
+                                          IPV6_METHOD_FIXED, _("Fixed IP"));
         }
       gtk_combo_box_set_active (combo, IPV6_METHOD_FIXED);
       gtk_widget_set_sensitive (GTK_WIDGET (combo), FALSE);
@@ -497,7 +501,8 @@ _set_form_state (CarrickServiceItem *self)
   else if (g_strcmp0 (priv->ipv6_method, "off") == 0)
     {
       if (gtk_combo_box_get_active (combo) == IPV6_METHOD_FIXED)
-        gtk_combo_box_remove_text (combo, IPV6_METHOD_FIXED);
+        gtk_combo_box_text_remove (GTK_COMBO_BOX_TEXT (combo),
+                                   IPV6_METHOD_FIXED);
 
       gtk_combo_box_set_active (combo, IPV6_METHOD_OFF);
       gtk_widget_set_sensitive (GTK_WIDGET (combo), TRUE);
@@ -2230,13 +2235,13 @@ carrick_service_item_init (CarrickServiceItem *self)
     add_label_to_table (GTK_TABLE (table), 9, _("Your MAC address:"));
   gtk_widget_hide (priv->mac_address_title_label);
 
-  priv->method_combo = gtk_combo_box_new_text ();
+  priv->method_combo = gtk_combo_box_text_new ();
   /* NOTE: order/index of items in combobox is significant */
   /* TRANSLATORS: choices in the connection method combobox:
    * Will include "DHCP", "Static IP" and sometimes "Fixed IP" */
-  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->method_combo),
+  gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (priv->method_combo),
                              METHOD_DHCP, _("DHCP"));
-  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->method_combo),
+  gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (priv->method_combo),
                              METHOD_MANUAL, _("Static IP"));
 
   gtk_widget_show (priv->method_combo);
@@ -2258,16 +2263,16 @@ carrick_service_item_init (CarrickServiceItem *self)
                     G_CALLBACK (static_ip_entry_notify_text), self);
 
 
-  priv->ipv6_method_combo = gtk_combo_box_new_text ();
+  priv->ipv6_method_combo = gtk_combo_box_text_new ();
   /* NOTE: order/index of items in combobox is significant */
   /* TRANSLATORS: choices in the IPv6 connection method combobox:
    * Will include "Off", "Automatic", "Static IP" and sometimes "Fixed IP",
    * and possibly in future "DHCP" */
-  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->ipv6_method_combo),
+  gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (priv->ipv6_method_combo),
                              IPV6_METHOD_OFF, _("Off"));
-  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->ipv6_method_combo),
+  gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (priv->ipv6_method_combo),
                              IPV6_METHOD_AUTO, _("Automatic"));
-  gtk_combo_box_insert_text (GTK_COMBO_BOX (priv->ipv6_method_combo),
+  gtk_combo_box_text_insert_text (GTK_COMBO_BOX_TEXT (priv->ipv6_method_combo),
                              IPV6_METHOD_MANUAL, _("Static IP"));
 
   gtk_widget_show (priv->ipv6_method_combo);
