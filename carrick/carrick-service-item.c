@@ -837,8 +837,6 @@ _delete_button_cb (GtkButton *delete_button,
 
   carrick_shell_close_dialog_on_hide (GTK_DIALOG (dialog));
 
-  gtk_dialog_set_has_separator (GTK_DIALOG (dialog),
-                                FALSE);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
                                    GTK_RESPONSE_ACCEPT);
   gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
@@ -1935,7 +1933,8 @@ add_entry_to_table (GtkTable *table, guint row)
 {
   GtkWidget *entry;
 
-  entry = gtk_entry_new_with_max_length (15);
+  entry = gtk_entry_new ();
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 15);
   gtk_widget_show (entry);
   gtk_widget_set_size_request (entry, 100, -1);
   gtk_table_attach (table, entry,

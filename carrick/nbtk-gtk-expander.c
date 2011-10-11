@@ -62,7 +62,7 @@ static gboolean
 nbtk_gtk_expander_expose_event (GtkWidget      *widget,
                                 GdkEventExpose *event)
 {
-  if (GTK_WIDGET_DRAWABLE (widget))
+  if (gtk_widget_is_drawable (widget))
     {
       NbtkGtkExpanderPrivate *priv = NBTK_GTK_EXPANDER (widget)->priv;
       GtkContainer *container = GTK_CONTAINER (widget);
@@ -168,7 +168,7 @@ nbtk_gtk_expander_size_allocate (GtkWidget     *widget,
   child = gtk_bin_get_child ((GtkBin*) widget);
   label = ((NbtkGtkExpander *) widget)->priv->label;
 
-  if (label && GTK_WIDGET_VISIBLE (label))
+  if (label && gtk_widget_get_visible (label))
     {
       gtk_widget_size_request (label, &label_req);
 
@@ -190,7 +190,7 @@ nbtk_gtk_expander_size_allocate (GtkWidget     *widget,
   else
     label_h = priv->indicator_size;
 
-  if (priv->is_open && child && GTK_WIDGET_VISIBLE (child))
+  if (priv->is_open && child && gtk_widget_get_visible (child))
     {
       gtk_widget_size_request (child, &child_req);
 
@@ -227,7 +227,7 @@ nbtk_gtk_expander_size_request (GtkWidget      *widget,
   requisition->width = widget->style->xthickness * 2;
   requisition->height = widget->style->ythickness * 2;
 
-  if (label && GTK_WIDGET_VISIBLE (label))
+  if (label && gtk_widget_get_visible (label))
     {
       gtk_widget_size_request (label, &req);
 
@@ -239,7 +239,7 @@ nbtk_gtk_expander_size_request (GtkWidget      *widget,
                              priv->indicator_size +
                              widget->style->ythickness * 2);
 
-  if (priv->is_open && child && GTK_WIDGET_VISIBLE (child))
+  if (priv->is_open && child && gtk_widget_get_visible (child))
     {
       gtk_widget_size_request (child, &req);
 
@@ -511,7 +511,7 @@ nbtk_gtk_expander_init (NbtkGtkExpander *self)
                                             NBTK_TYPE_GTK_EXPANDER,
                                             NbtkGtkExpanderPrivate);
 
-  GTK_WIDGET_SET_FLAGS (self, GTK_CAN_FOCUS);
+  gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
 
   priv = self->priv;
 

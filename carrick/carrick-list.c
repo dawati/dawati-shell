@@ -812,7 +812,7 @@ _mngr_property_changed_cb (DBusGProxy  *manager,
 {
   list_update_property (property, value, list);
 
-  if (GTK_WIDGET_VISIBLE (list->priv->fallback))
+  if (gtk_widget_get_visible (list->priv->fallback))
       carrick_list_update_fallback (list);
 }
 
