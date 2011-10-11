@@ -370,7 +370,7 @@ main (int    argc,
                       (GCallback) _client_show_cb,
                       applet);
     window = mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client));
-    gtk_window_set_default_size (window, 1024, 520);
+    gtk_window_set_default_size (GTK_WINDOW (window), 1024, 520);
 
     box = gtk_vbox_new (FALSE, 0);
     gtk_container_add (GTK_CONTAINER (window), box);
