@@ -47,15 +47,15 @@ static gboolean
 mux_banner_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   MuxBanner *banner = MUX_BANNER (widget);
-  GdkGC *gc;
+  cairo_t *cr;
 
-  gc = gdk_gc_new (widget->window);
-  gdk_gc_set_foreground (gc, &banner->priv->colour);
-
-  gdk_draw_rectangle (widget->window, gc, TRUE,
-                      event->area.x, event->area.y,
-                      event->area.width, event->area.height);
-
+  cr = gdk_cairo_create (widget->window);
+  gdk_cairo_set_source_color (cr, &banner->priv->colour);
+  cairo_rectangle (cr,
+                   event->area.x, event->area.y,
+                   event->area.width, event->area.height);
+  cairo_fill (cr);
+  cairo_destroy (cr);
 
   return GTK_WIDGET_CLASS (mux_banner_parent_class)->expose_event (widget, event);
 }
