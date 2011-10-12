@@ -528,16 +528,31 @@ hide (ZonePanelData *data)
   data->overview = NULL;
 }
 
-static void
+static gboolean
 key_press (ClutterActor  *actor,
            ClutterEvent  *event,
            ZonePanelData *data)
 {
+  if (event->key.keyval >= '1' && event->key.keyval <= '8')
+    {
+      gint index = event->key.keyval - '1';
+      WnckWorkspace *workspace;
+
+      workspace = wnck_screen_get_workspace (data->screen, index);
+
+      if (workspace)
+        wnck_workspace_activate (workspace, event->key.time);
+
+      return TRUE;
+    }
+
   if (event->key.keyval != 32)
-    return;
+    return FALSE;
 
   hide (data);
   show (data);
+
+  return TRUE;
 }
 
 int
