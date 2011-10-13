@@ -596,10 +596,8 @@ sw_window_init (SwWindow *self)
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
   /* label */
-  self->priv->text = clutter_text_new ();
+  self->priv->text = mx_label_new ();
   clutter_actor_set_parent (self->priv->text, CLUTTER_ACTOR (self));
-  clutter_text_set_ellipsize (CLUTTER_TEXT (self->priv->text),
-                              PANGO_ELLIPSIZE_END);
 
   /* close button */
   self->priv->close_button = mx_button_new ();
@@ -686,7 +684,7 @@ void
 sw_window_set_title (SwWindow    *window,
                      const gchar *title)
 {
-  clutter_text_set_text (CLUTTER_TEXT (window->priv->text), title);
+  mx_label_set_text (MX_LABEL (window->priv->text), title);
 }
 
 void
