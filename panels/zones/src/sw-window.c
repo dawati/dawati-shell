@@ -337,6 +337,16 @@ sw_window_button_release_event (ClutterActor       *actor,
 }
 
 static gboolean
+sw_window_event (ClutterActor *actor,
+                 ClutterEvent *event)
+{
+  /* prevent a second drag from starting before the first has finished */
+  return (event->any.type == CLUTTER_BUTTON_PRESS
+          && event->button.button == 1
+          && sw_window_get_in_drag (SW_WINDOW (actor)));
+}
+
+static gboolean
 sw_window_key_release_event (ClutterActor *actor,
                              ClutterKeyEvent *event)
 {
@@ -582,6 +592,7 @@ sw_window_class_init (SwWindowClass *klass)
   object_class->finalize = sw_window_finalize;
 
   actor_class->button_release_event = sw_window_button_release_event;
+  actor_class->event = sw_window_event;
   actor_class->key_release_event = sw_window_key_release_event;
   actor_class->map = sw_window_map;
   actor_class->unmap = sw_window_unmap;
