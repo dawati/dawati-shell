@@ -8,6 +8,7 @@ dist_theme_DATA = \
 	content-panel-header-grey.png \
 	content-panel-header-orange.png \
 	switcher.css \
+	tooltip-arrow.png \
 	workspace-title-new-symbol-active.png \
 	close-button.png \
 	close-button-hover.png

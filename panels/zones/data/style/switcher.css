@@ -94,3 +94,7 @@ MxBoxLayout#zones-panel-toplevel
 {
   padding: 5;
 }
+
+MxTooltip {
+  background-image: url('tooltip-arrow.png');
+}
