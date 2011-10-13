@@ -60,10 +60,10 @@ enum
 struct _SwWindowPrivate
 {
   gpointer dummy;
-  gboolean is_enabled : 1;
-  gboolean focused;
+  guint is_enabled : 1;
+  guint focused : 1;
 
-  ClutterActorBox area;
+  ClutterGeometry target_area;
 
   ClutterActor *clone;
 
@@ -167,8 +167,14 @@ static void
 sw_window_clone_animation_completed (ClutterAnimation *animation,
                                      SwWindowPrivate  *priv)
 {
-  clutter_actor_destroy (priv->clone);
-  priv->clone = NULL;
+  ClutterActor *actor;
+
+  actor = CLUTTER_ACTOR (clutter_animation_get_object (animation));
+
+  if (priv->clone == actor)
+    priv->clone = NULL;
+
+  clutter_actor_destroy (actor);
 }
 
 static void
@@ -176,17 +182,16 @@ sw_window_drag_end (MxDraggable *draggable,
                     gfloat       event_x,
                     gfloat       event_y)
 {
-  gfloat x, y, width, height;
   SwZone *zone;
   gint num;
 
   SwWindowPrivate *priv = SW_WINDOW (draggable)->priv;
 
-  clutter_actor_get_size (CLUTTER_ACTOR (draggable), &width, &height);
-  clutter_actor_get_transformed_position (CLUTTER_ACTOR (draggable),
-                                          &x, &y);
   clutter_actor_animate (CLUTTER_ACTOR (priv->clone), CLUTTER_LINEAR, 200,
-                         "x", x, "y", y, "width", width, "height", height,
+                         "x", (float) priv->target_area.x,
+                         "y", (float) priv->target_area.y,
+                         "width", (float) priv->target_area.width,
+                         "height", (float) priv->target_area.height,
                          "opacity", 0x00,
                          "signal-after::completed",
                          sw_window_clone_animation_completed,
@@ -735,4 +740,39 @@ sw_window_workspace_changed (SwWindow *window,
       g_signal_emit (window, window_signals[WORKSPACE_CHANGED], 0,
                      new_workspace);
     }
+}
+
+void
+sw_window_set_drop_target (SwWindow        *window,
+                           ClutterGeometry *box)
+{
+  SwWindowPrivate *priv= window->priv;
+  ClutterAnimation *animation;
+  GValue value = { 0, };
+
+  window->priv->target_area = *box;
+
+  if (priv->clone && (animation = clutter_actor_get_animation (priv->clone)))
+    {
+      /* update targets for the animation */
+      g_value_init (&value, G_TYPE_FLOAT);
+
+      g_value_set_float (&value, priv->target_area.x);
+      clutter_animation_update (animation, "x", &value);
+
+      g_value_set_float (&value, priv->target_area.y);
+      clutter_animation_update (animation, "y", &value);
+
+      g_value_set_float (&value, priv->target_area.width);
+      clutter_animation_update (animation, "width", &value);
+
+      g_value_set_float (&value, priv->target_area.height);
+      clutter_animation_update (animation, "height", &value);
+    }
+}
+
+gboolean
+sw_window_get_in_drag (SwWindow *window)
+{
+  return window->priv->clone != NULL;
 }

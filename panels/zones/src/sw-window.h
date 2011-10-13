@@ -80,6 +80,8 @@ void   sw_window_set_background (SwWindow *window, ClutterActor *thumbnail);
 
 void   sw_window_workspace_changed (SwWindow *window, gint new_workspace);
 
+void   sw_window_set_drop_target (SwWindow *window, ClutterGeometry *box);
+gboolean sw_window_get_in_drag (SwWindow *window);
 G_END_DECLS
 
 #endif /* _SW_WINDOW_H */
