@@ -446,6 +446,39 @@ sw_window_get_preferred_height (ClutterActor *actor,
     *pref_height = 240;
 }
 
+static gboolean
+sw_window_enable_tooltip (gpointer window)
+{
+  SwWindowPrivate *priv = SW_WINDOW (window)->priv;
+
+  mx_widget_set_tooltip_text (MX_WIDGET (window),
+                              mx_label_get_text (MX_LABEL (priv->text)));
+
+ return FALSE;
+}
+
+static gboolean
+sw_window_disable_tooltip (gpointer window)
+{
+  mx_widget_set_tooltip_text (MX_WIDGET (window), NULL);
+
+  return FALSE;
+}
+
+static void
+sw_window_set_tooltip (SwWindow *window,
+                            gboolean  show_tooltip)
+{
+  /* enable or disable the tooltip from the main loop to prevent allocation
+   * cycles */
+  if (show_tooltip)
+    g_idle_add_full (G_PRIORITY_DEFAULT, sw_window_enable_tooltip, window,
+                     NULL);
+  else
+    g_idle_add_full (G_PRIORITY_DEFAULT, sw_window_disable_tooltip, window,
+                     NULL);
+}
+
 static void
 sw_window_allocate (ClutterActor           *actor,
                     const ClutterActorBox  *box,
@@ -453,7 +486,7 @@ sw_window_allocate (ClutterActor           *actor,
 {
   SwWindowPrivate *priv = SW_WINDOW (actor)->priv;
   ClutterActorBox childbox, avail_box, infobox;
-  gfloat label_height, icon_size, button_w, button_h;
+  gfloat label_height, label_width, icon_size, button_w, button_h;
 
   CLUTTER_ACTOR_CLASS (sw_window_parent_class)->allocate (actor, box, flags);
 
@@ -490,7 +523,8 @@ sw_window_allocate (ClutterActor           *actor,
   clutter_actor_allocate (priv->close_button, &childbox, flags);
 
   /* label */
-  clutter_actor_get_preferred_height (priv->text, -1, NULL, &label_height);
+  clutter_actor_get_preferred_size (priv->text, NULL, NULL, &label_width,
+                                    &label_height);
 
   childbox.x1 = (int) (avail_box.x1 + icon_size + LABEL_SPACING);
   childbox.y1 = (int) (avail_box.y2 - (INFO_BOX_HEIGHT / 2)
@@ -499,6 +533,9 @@ sw_window_allocate (ClutterActor           *actor,
   childbox.y2 = (int) (childbox.y1 + label_height);
 
   clutter_actor_allocate (priv->text, &childbox, flags);
+
+  sw_window_set_tooltip (SW_WINDOW (actor),
+                         label_width > clutter_actor_box_get_width (&childbox));
 
   /* thumbnail */
   if (priv->texture)
