@@ -790,6 +790,22 @@ sw_zone_paint (ClutterActor *actor)
       child = CLUTTER_ACTOR (l->data);
 
       clutter_actor_paint (child);
+
+      if (sw_window_get_in_drag (SW_WINDOW (child)))
+        {
+          gfloat x, y, width, height;
+          ClutterGeometry drop_target;
+
+          clutter_actor_get_transformed_position (child, &x, &y);
+          clutter_actor_get_transformed_size (child, &width, &height);
+
+          drop_target.x = x;
+          drop_target.y = y;
+          drop_target.width = width;
+          drop_target.height = height;
+
+          sw_window_set_drop_target (SW_WINDOW (child), &drop_target);
+        }
     }
 
   clutter_actor_paint (priv->title);
