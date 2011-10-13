@@ -650,7 +650,8 @@ main (int argc, char **argv)
   mx_focus_manager_get_for_stage (CLUTTER_STAGE (data->stage));
 
 
-  clutter_actor_lower_bottom (data->background);
+  if (data->background)
+    clutter_actor_lower_bottom (data->background);
 
   clutter_main ();
 
