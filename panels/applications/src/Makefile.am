@@ -12,8 +12,6 @@ libexec_PROGRAMS = meego-panel-applications
 meego_panel_applications_LDADD = $(APPLICATIONS_LIBS) $(MPL_LIBS)
 
 meego_panel_applications_SOURCES = \
-  mnb-entry.c \
-  mnb-entry.h \
   mnb-expander.c \
   mnb-expander.h \
   mnb-filter.c \
