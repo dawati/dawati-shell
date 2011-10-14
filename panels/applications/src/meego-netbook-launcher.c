@@ -141,43 +141,6 @@ launcher_button_set_reactive_cb (ClutterActor *launcher)
 }
 
 static void
-launcher_button_hovered_cb (MnbLauncherButton  *launcher,
-                            MnbLauncher        *self)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (self);
-  MxWidget *expander;
-
-  if (priv->is_filtering)
-    {
-      const GSList *launchers_iter;
-      for (launchers_iter = priv->launchers;
-           launchers_iter;
-           launchers_iter = launchers_iter->next)
-        {
-          mx_stylable_set_style_pseudo_class (MX_STYLABLE (launchers_iter->data),
-                                              NULL);
-        }
-    }
-  else
-    {
-      clutter_container_foreach (CLUTTER_CONTAINER (priv->fav_grid),
-                                 (ClutterCallback) mx_stylable_set_style_pseudo_class,
-                                 NULL);
-
-      expander = mnb_launcher_grid_find_widget_by_pseudo_class (
-                  MNB_LAUNCHER_GRID (priv->apps_grid),
-                  "active");
-      if (expander)
-        {
-          ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (expander));
-          clutter_container_foreach (CLUTTER_CONTAINER (inner_grid),
-                                     (ClutterCallback) mx_stylable_set_style_pseudo_class,
-                                     NULL);
-        }
-    }
-}
-
-static void
 launcher_button_activated_cb (MnbLauncherButton  *launcher,
                               MnbLauncher        *self)
 {
@@ -207,9 +170,6 @@ launcher_button_fav_toggled_cb (MnbLauncherButton  *launcher,
       MxWidget *clone = mnb_launcher_button_create_favorite (launcher);
       clutter_container_add (CLUTTER_CONTAINER (priv->fav_grid),
                              CLUTTER_ACTOR (clone), NULL);
-      g_signal_connect (clone, "hovered",
-                        G_CALLBACK (launcher_button_hovered_cb),
-                        self);
       g_signal_connect (clone, "activated",
                         G_CALLBACK (launcher_button_activated_cb),
                         self);
@@ -351,8 +311,6 @@ expander_expanded_notify_cb (MxExpander      *expander,
         {
           if (e != expander)
             {
-              ClutterActor *inner_grid = mx_bin_get_child (MX_BIN (e));
-              mnb_launcher_grid_keynav_out (MNB_LAUNCHER_GRID (inner_grid));
               mx_expander_set_expanded (e, FALSE);
             }
         }
@@ -553,9 +511,6 @@ mnb_launcher_fill_category (MnbLauncher     *self)
 
           clutter_container_add (CLUTTER_CONTAINER (inner_grid),
                                   CLUTTER_ACTOR (button), NULL);
-          g_signal_connect (button, "hovered",
-                            G_CALLBACK (launcher_button_hovered_cb),
-                            self);
           g_signal_connect (button, "activated",
                             G_CALLBACK (launcher_button_activated_cb),
                             self);
@@ -646,9 +601,6 @@ mnb_launcher_fill_plain (MnbLauncher  *self)
                                              button);
                 }
 
-              g_signal_connect (button, "hovered",
-                                G_CALLBACK (launcher_button_hovered_cb),
-                                self);
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_button_activated_cb),
                                 self);
@@ -741,9 +693,6 @@ mnb_launcher_fill (MnbLauncher  *self)
                                                 TRUE);
               clutter_container_add (CLUTTER_CONTAINER (priv->fav_grid),
                                      CLUTTER_ACTOR (button), NULL);
-              g_signal_connect (button, "hovered",
-                                G_CALLBACK (launcher_button_hovered_cb),
-                                self);
               g_signal_connect (button, "activated",
                                 G_CALLBACK (launcher_button_activated_cb),
                                 self);
@@ -858,6 +807,7 @@ mnb_launcher_filter_cb (MnbLauncher *self)
         }
 
       /* Perform search. */
+
       for (iter = priv->launchers; iter; iter = iter->next)
         {
           MnbLauncherButton *button = MNB_LAUNCHER_BUTTON (iter->data);
@@ -964,14 +914,6 @@ _dispose (GObject *object)
   mnb_launcher_reset (self);
 
   G_OBJECT_CLASS (mnb_launcher_parent_class)->dispose (object);
-}
-
-static void
-_key_focus_in (ClutterActor *actor)
-{
-  MnbLauncherPrivate *priv = GET_PRIVATE (actor);
-
-  clutter_actor_grab_key_focus (priv->filter);
 }
 
 typedef struct {
@@ -1292,8 +1234,6 @@ mnb_launcher_class_init (MnbLauncherClass *klass)
   object_class->dispose = _dispose;
   object_class->set_property = _set_property;
   object_class->get_property = _get_property;
-
-  actor_class->key_focus_in = _key_focus_in;
 
   /* Properties */
 

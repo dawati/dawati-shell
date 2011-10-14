@@ -30,6 +30,12 @@
 #include <mx/mx.h>
 #include "mnb-launcher-button.h"
 
+static void mx_focusable_iface_init (MxFocusableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MnbLauncherButton, mnb_launcher_button, MX_TYPE_TABLE,
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_FOCUSABLE,
+                                                mx_focusable_iface_init))
+
 #define MNB_LAUNCHER_BUTTON_GET_PRIVATE(obj)    \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MNB_TYPE_LAUNCHER_BUTTON, MnbLauncherButtonPrivate))
 
@@ -42,7 +48,6 @@
 
 enum
 {
-  HOVERED,
   ACTIVATED,
   FAV_TOGGLED,
 
@@ -82,7 +87,16 @@ struct _MnbLauncherButtonPrivate
 
 static guint _signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (MnbLauncherButton, mnb_launcher_button, MX_TYPE_TABLE);
+static MxFocusable *
+mnb_launcher_button_accept_focus (MxFocusable *focusable,
+                                  MxFocusHint hint)
+{
+  clutter_ungrab_pointer ();
+  clutter_actor_grab_key_focus (CLUTTER_ACTOR (focusable));
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (focusable), "hover");
+
+  return focusable;
+}
 
 static void
 fav_button_notify_toggled_cb (MxButton          *button,
@@ -200,20 +214,56 @@ mnb_launcher_button_button_release_event (ClutterActor       *actor,
   return FALSE;
 }
 
+/* probably not really needed but making sure the is_pressed state is
+ * consistent
+ */
 static gboolean
-_enter_event_cb (ClutterActor         *actor,
-                 ClutterCrossingEvent *event,
-                 gpointer              data)
+mnb_launcher_button_key_press_event (ClutterActor       *actor,
+                                     ClutterKeyEvent *event)
 {
-  MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+  if (event->keyval == CLUTTER_KEY_Return ||
+      event->keyval == CLUTTER_KEY_KP_Enter ||
+      event->keyval == CLUTTER_KEY_ISO_Enter)
+    {
+      MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
 
-  g_signal_emit (self, _signals[HOVERED], 0);
-
-  mx_stylable_set_style_pseudo_class (MX_STYLABLE (self), "hover");
+      self->priv->is_pressed = TRUE;
+      clutter_actor_grab_key_focus (actor);
+      return TRUE;
+    }
 
   return FALSE;
 }
 
+static gboolean
+mnb_launcher_button_key_release_event (ClutterActor       *actor,
+                                       ClutterKeyEvent    *event)
+{
+  if (event->keyval == CLUTTER_KEY_Return ||
+      event->keyval == CLUTTER_KEY_KP_Enter ||
+      event->keyval == CLUTTER_KEY_ISO_Enter)
+    {
+      MnbLauncherButton *self = MNB_LAUNCHER_BUTTON (actor);
+
+      if (!self->priv->is_pressed)
+        return FALSE;
+
+      clutter_ungrab_keyboard ();
+      self->priv->is_pressed = FALSE;
+      g_signal_emit (self, _signals[ACTIVATED], 0);
+
+      mx_stylable_set_style_pseudo_class (MX_STYLABLE (self), NULL);
+      mx_widget_hide_tooltip (MX_WIDGET (self));
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+/* Accept focus handles setting hover pseudo style class and leave events
+ * handle unsetting the hover pseudo style class
+ */
 static gboolean
 _leave_event_cb (ClutterActor         *actor,
                  ClutterCrossingEvent *event,
@@ -226,8 +276,19 @@ _leave_event_cb (ClutterActor         *actor,
   if (self->priv->is_pressed)
     {
       clutter_ungrab_pointer ();
+      clutter_ungrab_keyboard ();
       self->priv->is_pressed = FALSE;
     }
+
+  return FALSE;
+}
+
+static gboolean
+_enter_event_cb (ClutterActor         *actor,
+                 ClutterCrossingEvent *event,
+                 gpointer              data)
+{
+  mx_focusable_accept_focus (MX_FOCUSABLE (actor), MX_FOCUS_HINT_FIRST);
 
   return FALSE;
 }
@@ -278,6 +339,12 @@ mnb_launcher_button_pick (ClutterActor       *actor,
 }
 
 static void
+mx_focusable_iface_init (MxFocusableIface *iface)
+{
+  iface->accept_focus = mnb_launcher_button_accept_focus;
+}
+
+static void
 mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -289,18 +356,13 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 
   actor_class->button_press_event = mnb_launcher_button_button_press_event;
   actor_class->button_release_event = mnb_launcher_button_button_release_event;
+  actor_class->key_press_event = mnb_launcher_button_key_press_event;
+  actor_class->key_release_event = mnb_launcher_button_key_release_event;
   actor_class->allocate = mnb_launcher_button_allocate;
   actor_class->allocate = mnb_launcher_button_allocate;
   actor_class->pick = mnb_launcher_button_pick;
   actor_class->paint = mnb_launcher_button_paint;
 
-  _signals[HOVERED] = g_signal_new ("hovered",
-                                    G_TYPE_FROM_CLASS (klass),
-                                    G_SIGNAL_RUN_LAST,
-                                    G_STRUCT_OFFSET (MnbLauncherButtonClass, hovered),
-                                    NULL, NULL,
-                                    g_cclosure_marshal_VOID__VOID,
-                                    G_TYPE_NONE, 0);
 
   _signals[ACTIVATED] = g_signal_new ("activated",
                                     G_TYPE_FROM_CLASS (klass),
@@ -320,17 +382,6 @@ mnb_launcher_button_class_init (MnbLauncherButtonClass *klass)
 }
 
 static void
-_mapped_notify_cb (MnbLauncherButton  *self,
-                   GParamSpec         *pspec,
-                   gpointer            user_data)
-{
-  if (!CLUTTER_ACTOR_IS_MAPPED (self))
-  {
-    mx_stylable_set_style_pseudo_class (MX_STYLABLE (self), NULL);
-  }
-}
-
-static void
 mnb_launcher_button_init (MnbLauncherButton *self)
 {
   ClutterActor *label;
@@ -339,14 +390,13 @@ mnb_launcher_button_init (MnbLauncherButton *self)
 
   mx_table_set_column_spacing (MX_TABLE (self), COL_SPACING);
 
-  g_signal_connect (self, "enter-event",
-                    G_CALLBACK (_enter_event_cb), NULL);
   g_signal_connect (self, "leave-event",
                     G_CALLBACK (_leave_event_cb), NULL);
-  g_signal_connect (self, "notify::mapped",
-                    G_CALLBACK (_mapped_notify_cb), NULL);
+  g_signal_connect (self, "key-focus-out",
+                    G_CALLBACK (_leave_event_cb), NULL);
+  g_signal_connect (self, "enter-event",
+                    G_CALLBACK (_enter_event_cb), NULL);
 
-  /* icon */
   self->priv->icon = NULL;
 
   /* "app" label */
