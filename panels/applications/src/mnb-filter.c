@@ -159,6 +159,10 @@ mnb_filter_init (MnbFilter *self)
                                NULL);
 
   button = mx_button_new_with_label (_("Search"));
+  /* This button is a visual guide only and does not perform any other
+   * function. Disabled to stop focus.
+   */
+  mx_widget_set_disabled (MX_WIDGET(button), TRUE);
   clutter_container_add_actor (CLUTTER_CONTAINER (self), button);
 }
 
