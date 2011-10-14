@@ -24,6 +24,7 @@
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
+#include <gtk/gtkx.h>
 #include <dbus/dbus-glib.h>
 
 #include "carrick/carrick-applet.h"
@@ -302,7 +303,7 @@ main (int    argc,
   CarrickApplet *applet;
   GtkWidget     *pane;
   gboolean       standalone = FALSE;
-  GdkNativeWindow windowid = 0;
+  Window         windowid = 0;
   GError        *error = NULL;
   GOptionEntry   entries[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &standalone,
