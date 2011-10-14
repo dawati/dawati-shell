@@ -20,8 +20,14 @@
  */
 
 #include "mnb-launcher-grid.h"
+#include "mnb-expander.h"
 
-G_DEFINE_TYPE (MnbLauncherGrid, mnb_launcher_grid, MX_TYPE_GRID)
+static void mx_focusable_iface_init (MxFocusableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MnbLauncherGrid, mnb_launcher_grid, MX_TYPE_GRID,
+                         G_IMPLEMENT_INTERFACE (MX_TYPE_FOCUSABLE,
+                                                mx_focusable_iface_init))
+
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), MNB_TYPE_LAUNCHER_GRID, MnbLauncherGridPrivate))
@@ -149,54 +155,15 @@ mnb_launcher_grid_new (void)
   return g_object_new (MNB_TYPE_LAUNCHER_GRID, NULL);
 }
 
-typedef struct
-{
-  const gchar *pseudo_class;
-  MxWidget    *widget;
-} find_widget_by_pseudo_class_data;
-
-static void
-_find_widget_by_pseudo_class_cb (ClutterActor                      *actor,
-                                 find_widget_by_pseudo_class_data  *data)
-{
-  const gchar *pseudo_class;
-
-  if (!CLUTTER_ACTOR_IS_MAPPED (actor))
-    return;
-
-  if (!MX_IS_STYLABLE (actor))
-    return;
-
-  pseudo_class = mx_stylable_get_style_pseudo_class (MX_STYLABLE (actor));
-  if (0 == g_strcmp0 (data->pseudo_class, pseudo_class))
-    data->widget = MX_WIDGET (actor);
-}
-
-MxWidget *
-mnb_launcher_grid_find_widget_by_pseudo_class (MnbLauncherGrid  *grid,
-                                               const gchar      *pseudo_class)
-{
-  find_widget_by_pseudo_class_data data;
-
-  data.pseudo_class = pseudo_class;
-  data.widget = NULL;
-
-  clutter_container_foreach (CLUTTER_CONTAINER (grid),
-                             (ClutterCallback) _find_widget_by_pseudo_class_cb,
-                             &data);
-
-  return data.widget;
-}
-
 typedef struct {
   gfloat  x;
   gfloat  y;
-  MxWidget  *widget;
-} find_widget_by_point_data_t;
+  ClutterActor  *actor;
+} find_actor_by_point_data_t;
 
 static void
-_find_widget_by_point_cb (ClutterActor                *actor,
-                          find_widget_by_point_data_t *data)
+_find_actor_by_point_cb (ClutterActor                *actor,
+                         find_actor_by_point_data_t  *data)
 {
   gfloat left = clutter_actor_get_x (actor);
   gfloat top = clutter_actor_get_y (actor);
@@ -209,148 +176,35 @@ _find_widget_by_point_cb (ClutterActor                *actor,
       right >= data->x &&
       bottom >= data->y)
     {
-      data->widget = MX_WIDGET (actor);
+      data->actor = actor;
     }
 }
 
-MxWidget *
-mnb_launcher_grid_find_widget_by_point (MnbLauncherGrid *self,
-                                        gfloat           x,
-                                        gfloat           y)
+static ClutterActor *
+mnb_launcher_grid_find_actor_by_point (MnbLauncherGrid *self,
+                                       gfloat           x,
+                                       gfloat           y)
 {
-  find_widget_by_point_data_t data;
+  find_actor_by_point_data_t data;
 
   data.x = x;
   data.y = y;
-  data.widget = NULL;
+  data.actor = NULL;
 
   clutter_container_foreach (CLUTTER_CONTAINER (self),
-                             (ClutterCallback) _find_widget_by_point_cb,
+                             (ClutterCallback) _find_actor_by_point_cb,
                              &data);
 
-  return data.widget;
+  return data.actor;
 }
 
-MxWidget *
-mnb_launcher_grid_keynav_up (MnbLauncherGrid *self)
+static ClutterActor *
+mnb_launcher_grid_keynav_wrap_up (MnbLauncherGrid *self, ClutterActor *old)
 {
-  MxWidget    *old, *new;
-  gfloat       x, y;
-
-  old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
-  if (old == NULL)
-    return NULL;
-
-  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
-
-  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
-      mx_grid_get_row_spacing (MX_GRID (self)) -
-      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
-
-  new = mnb_launcher_grid_find_widget_by_point (self, x, y);
-  if (new)
-    {
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
-      return new;
-    }
-
-  return NULL;
-}
-
-static MxWidget *
-mnb_launcher_grid_keynav_right (MnbLauncherGrid *self)
-{
-  MxWidget    *old, *new;
-  gfloat       x, y;
-
-  old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
-  if (old == NULL)
-    return NULL;
-
-  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
-      mx_grid_get_column_spacing (MX_GRID (self)) +
-      clutter_actor_get_width (CLUTTER_ACTOR (old)) * 1.5;
-
-  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
-
-  new = mnb_launcher_grid_find_widget_by_point (self, x, y);
-  if (new)
-    {
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
-      return new;
-    }
-
-  return NULL;
-}
-
-MxWidget *
-mnb_launcher_grid_keynav_down (MnbLauncherGrid *self)
-{
-  MxWidget    *old, *new;
-  gfloat       x, y;
-
-  old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
-  if (old == NULL)
-    return NULL;
-
-  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
-
-  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
-      mx_grid_get_row_spacing (MX_GRID (self)) +
-      clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
-
-  new = mnb_launcher_grid_find_widget_by_point (self, x, y);
-  if (new)
-    {
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
-      return new;
-    }
-
-  return NULL;
-}
-
-static MxWidget *
-mnb_launcher_grid_keynav_left (MnbLauncherGrid *self)
-{
-  MxWidget    *old, *new;
-  gfloat       x, y;
-
-  old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
-  if (old == NULL)
-    return NULL;
-
-  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) -
-      mx_grid_get_column_spacing (MX_GRID (self)) -
-      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
-
-  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
-      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
-
-  new = mnb_launcher_grid_find_widget_by_point (self, x, y);
-  if (new)
-    {
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
-      return new;
-    }
-
-  return NULL;
-}
-
-static MxWidget *
-mnb_launcher_grid_keynav_wrap_up (MnbLauncherGrid *self)
-{
-  MxWidget    *old, *new;
+  ClutterActor *new = NULL;
   MxPadding    padding;
   gfloat       x, y;
 
-  old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (old == NULL)
     return NULL;
 
@@ -364,25 +218,18 @@ mnb_launcher_grid_keynav_wrap_up (MnbLauncherGrid *self)
       mx_grid_get_row_spacing (MX_GRID (self)) -
       clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
 
-  new = mnb_launcher_grid_find_widget_by_point (self, x, y);
-  if (new)
-    {
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
-      return new;
-    }
+  new = mnb_launcher_grid_find_actor_by_point (self, x, y);
 
-  return NULL;
+  return new;
 }
 
-static MxWidget *
-mnb_launcher_grid_keynav_wrap_down (MnbLauncherGrid *self)
+static ClutterActor *
+mnb_launcher_grid_keynav_wrap_down (MnbLauncherGrid *self, ClutterActor *old)
 {
-  MxWidget    *old, *new;
+  ClutterActor *new = NULL;
   MxPadding    padding;
   gfloat       x, y;
 
-  old = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
   if (old == NULL)
     return NULL;
 
@@ -395,80 +242,219 @@ mnb_launcher_grid_keynav_wrap_down (MnbLauncherGrid *self)
       mx_grid_get_row_spacing (MX_GRID (self)) +
       clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
 
-  new = mnb_launcher_grid_find_widget_by_point (self, x, y);
-  if (new)
-    {
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (old), NULL);
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (new), "hover");
-      return new;
-    }
+  new = mnb_launcher_grid_find_actor_by_point (self, x, y);
 
-  return NULL;
+  return new;
 }
 
-MxWidget *
-mnb_launcher_grid_keynav_first (MnbLauncherGrid *self)
+static ClutterActor *
+mnb_launcher_grid_keynav_up (MnbLauncherGrid *self, ClutterActor *old)
 {
-  MxWidget    *widget;
-  MxPadding    padding;
+  ClutterActor *new = NULL;
   gfloat       x, y;
 
-  mx_widget_get_padding (MX_WIDGET (self), &padding);
+  if (old == NULL)
+    return NULL;
 
-  x = padding.left + 1;
-  y = padding.top + 1;
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
 
-  widget = mnb_launcher_grid_find_widget_by_point (self, x, y);
-  if (widget)
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) -
+      mx_grid_get_row_spacing (MX_GRID (self)) -
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) / 2;
+
+  new = mnb_launcher_grid_find_actor_by_point (self, x, y);
+
+  return new;
+}
+
+static ClutterActor *
+mnb_launcher_grid_keynav_down (MnbLauncherGrid *self, ClutterActor *old)
+{
+  ClutterActor *new = NULL;
+  gfloat       x, y;
+
+  if (old == NULL)
+    return NULL;
+
+  x = clutter_actor_get_x (CLUTTER_ACTOR (old)) +
+      clutter_actor_get_width (CLUTTER_ACTOR (old)) / 2;
+
+  y = clutter_actor_get_y (CLUTTER_ACTOR (old)) +
+      mx_grid_get_row_spacing (MX_GRID (self)) +
+      clutter_actor_get_height (CLUTTER_ACTOR (old)) * 1.5;
+
+  new = mnb_launcher_grid_find_actor_by_point (self, x, y);
+
+  return new;
+}
+
+static ClutterActor *
+_find_first_focusable (ClutterActor *self)
+{
+  GList *iter, *children = NULL;
+  ClutterActor *actor = NULL;
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+
+  if (children)
     {
-      mx_stylable_set_style_pseudo_class (MX_STYLABLE (widget), "hover");
-      return widget;
+      for (iter = children; iter; iter = iter->next)
+        {
+          if (CLUTTER_ACTOR_IS_MAPPED (iter->data) &&
+              MX_IS_FOCUSABLE (iter->data))
+            {
+              actor = iter->data;
+              break;
+            }
+        }
+      g_list_free (children);
+      return actor;
     }
-
   return NULL;
 }
 
-void
-mnb_launcher_grid_keynav_out (MnbLauncherGrid *self)
-{
-  MxWidget  *widget;
 
-  widget = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
-  if (widget)
-    mx_stylable_set_style_pseudo_class (MX_STYLABLE (widget), NULL);
+static ClutterActor *
+_find_next_focusable (ClutterActor *self, ClutterActor *from)
+{
+  GList *iter, *list, *children = NULL;
+  ClutterActor *actor = NULL;
+
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (self));
+
+  if (!children)
+    return NULL;
+
+  list = g_list_find (children, from);
+  list = g_list_next (list);
+
+  if (list)
+    {
+      for (iter = list; iter; iter = iter->next)
+        {
+          if (CLUTTER_ACTOR_IS_MAPPED (iter->data) &&
+              MX_IS_FOCUSABLE (iter->data) &&
+              iter->data != from)
+            {
+              actor = iter->data;
+              break;
+            }
+        }
+      g_list_free (children);
+    }
+  return actor;
 }
 
-MxWidget *
-mnb_launcher_grid_keynav (MnbLauncherGrid *self,
-                          guint            keyval)
+static ClutterActor *
+_find_previous_focusable (ClutterActor *self, ClutterActor *from)
 {
-  MxWidget *widget;
+  GList *iter, *list, *children = NULL;
+  ClutterActor *actor = NULL;
 
-  widget = NULL;
-  switch (keyval)
+  children =
+    clutter_container_get_children (CLUTTER_CONTAINER (self));
+
+  list = g_list_find (children, from);
+  list = g_list_previous (list);
+
+  if (list)
     {
-      case CLUTTER_Return:
-        widget = mnb_launcher_grid_find_widget_by_pseudo_class (self, "hover");
-        break;
-      case CLUTTER_Left:
-        widget = mnb_launcher_grid_keynav_left (self);
-        if (!widget)
-          widget = mnb_launcher_grid_keynav_wrap_up (self);
-        break;
-      case CLUTTER_Up:
-        widget = mnb_launcher_grid_keynav_up (self);
-        break;
-      case CLUTTER_Right:
-        widget = mnb_launcher_grid_keynav_right (self);
-        if (!widget)
-          widget = mnb_launcher_grid_keynav_wrap_down (self);
-        break;
-      case CLUTTER_Down:
-        widget = mnb_launcher_grid_keynav_down (self);
-        break;
+      for (iter = list; iter; iter = iter->prev)
+        {
+          if (CLUTTER_ACTOR_IS_MAPPED (iter->data) &&
+              MX_IS_FOCUSABLE (iter->data))
+            {
+              actor = iter->data;
+              break;
+            }
+        }
+      g_list_free (children);
+    }
+  return actor;
+}
+
+static MxFocusable *
+mnb_launcher_grid_accept_focus (MxFocusable *focusable,
+                                MxFocusHint hint)
+{
+  MxFocusable *focus;
+
+  focus = MX_FOCUSABLE (_find_first_focusable (CLUTTER_ACTOR (focusable)));
+  if (focus)
+    {
+      clutter_actor_grab_key_focus (CLUTTER_ACTOR (focusable));
+      return mx_focusable_accept_focus (focus, hint);
     }
 
-  return widget;
+  return focusable;
+}
+
+static MxFocusable *
+mnb_launcher_grid_move_focus (MxFocusable *focusable,
+                              MxFocusDirection direction,
+                              MxFocusable *from)
+{
+  ClutterActor *focus = NULL;
+
+  switch (direction)
+    {
+     case MX_FOCUS_DIRECTION_UP:
+       focus = mnb_launcher_grid_keynav_up (MNB_LAUNCHER_GRID (focusable),
+                                            CLUTTER_ACTOR (from));
+       if (!focus)
+         focus =
+           mnb_launcher_grid_keynav_wrap_up (MNB_LAUNCHER_GRID (focusable),
+                                             CLUTTER_ACTOR (from));
+       break;
+     case  MX_FOCUS_DIRECTION_DOWN:
+       focus = mnb_launcher_grid_keynav_down (MNB_LAUNCHER_GRID (focusable),
+                                              CLUTTER_ACTOR (from));
+       if (!focus)
+         focus =
+           mnb_launcher_grid_keynav_wrap_down (MNB_LAUNCHER_GRID (focusable),
+                                               CLUTTER_ACTOR (from));
+       break;
+     case MX_FOCUS_DIRECTION_LEFT:
+     case MX_FOCUS_DIRECTION_PREVIOUS:
+
+       focus = _find_previous_focusable (CLUTTER_ACTOR (focusable),
+                                         CLUTTER_ACTOR (from));
+       break;
+
+     case MX_FOCUS_DIRECTION_RIGHT:
+     case MX_FOCUS_DIRECTION_NEXT:
+       focus = _find_next_focusable (CLUTTER_ACTOR (focusable),
+                                     CLUTTER_ACTOR (from));
+       break;
+     default:
+       break;
+   }
+
+ if (focus)
+   {
+     ClutterActor *parent;
+     parent = clutter_actor_get_parent (CLUTTER_ACTOR (focusable));
+     if (MX_IS_SCROLL_VIEW (parent))
+       {
+         ClutterGeometry geo;
+         clutter_actor_get_geometry (focus, &geo);
+         mx_scroll_view_ensure_visible (MX_SCROLL_VIEW (parent),
+                                        &geo);
+       }
+
+     return mx_focusable_accept_focus (MX_FOCUSABLE (focus),
+                                       MX_FOCUS_HINT_FIRST);
+   }
+ return NULL;
+}
+
+static void
+mx_focusable_iface_init (MxFocusableIface *iface)
+{
+  iface->accept_focus = mnb_launcher_grid_accept_focus;
+  iface->move_focus = mnb_launcher_grid_move_focus;
 }
 
 gboolean

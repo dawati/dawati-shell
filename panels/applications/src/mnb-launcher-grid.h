@@ -62,19 +62,6 @@ GType mnb_launcher_grid_get_type (void);
 
 MxWidget  * mnb_launcher_grid_new         (void);
 
-MxWidget  * mnb_launcher_grid_keynav        (MnbLauncherGrid  *self,
-                                             guint             keyval);
-MxWidget *  mnb_launcher_grid_keynav_up     (MnbLauncherGrid  *self);
-MxWidget *  mnb_launcher_grid_keynav_down   (MnbLauncherGrid  *self);
-MxWidget *  mnb_launcher_grid_keynav_first  (MnbLauncherGrid  *self);
-void        mnb_launcher_grid_keynav_out    (MnbLauncherGrid  *self);
-
-MxWidget *  mnb_launcher_grid_find_widget_by_point        (MnbLauncherGrid  *self,
-                                                           gfloat            x,
-                                                           gfloat            y);
-
-MxWidget  * mnb_launcher_grid_find_widget_by_pseudo_class (MnbLauncherGrid  *self,
-                                                           const gchar      *pseudo_class);
 
 gboolean   mnb_launcher_grid_get_x_expand_children (MnbLauncherGrid *self);
 
