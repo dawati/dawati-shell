@@ -732,16 +732,7 @@ mnb_toolbar_allocate (ClutterActor          *actor,
                       const ClutterActorBox *box,
                       ClutterAllocationFlags flags)
 {
-  MnbToolbarPrivate *priv = MNB_TOOLBAR (actor)->priv;
-  ClutterActorClass *parent_class;
-
   /*
-   * The show and hide animations trigger allocations with origin_changed
-   * set to TRUE; if we call the parent class allocation in this case, it
-   * will force relayout, which we do not want. Instead, we call directly the
-   * ClutterActor implementation of allocate(); this ensures our actor box is
-   * correct, which is all we call about during the animations.
-   *
    * If the drop down is not visible, we just return; this insures that the
    * needs_allocation flag in ClutterActor remains set, and the actor will get
    * reallocated when we show it.
@@ -749,20 +740,7 @@ mnb_toolbar_allocate (ClutterActor          *actor,
   if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
     return;
 
-  if (priv->in_show_animation || priv->in_hide_animation)
-    {
-      ClutterActorClass  *actor_class;
-
-      actor_class = g_type_class_peek (CLUTTER_TYPE_ACTOR);
-
-      if (actor_class)
-        actor_class->allocate (actor, box, flags);
-
-      return;
-    }
-
-  parent_class = CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class);
-  parent_class->allocate (actor, box, flags);
+  CLUTTER_ACTOR_CLASS (mnb_toolbar_parent_class)->allocate (actor, box, flags);
 }
 
 static gboolean
