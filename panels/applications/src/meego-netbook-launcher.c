@@ -973,6 +973,9 @@ static void
 _apps_grid_find_single_visible_button_cb (ClutterActor                          *actor,
                                           app_grid_find_single_visible_button_t *data)
 {
+  if (data->n_visible == 1)
+    return;
+
   if (MNB_IS_LAUNCHER_BUTTON (actor) &&
       CLUTTER_ACTOR_IS_REACTIVE (actor) &&
       CLUTTER_ACTOR_IS_VISIBLE (actor))
