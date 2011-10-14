@@ -141,7 +141,7 @@ static void
 panel_show_end_cb (MplPanelClient *panel,
                    MnbLauncher    *launcher)
 {
-  clutter_actor_grab_key_focus (CLUTTER_ACTOR (launcher));
+  mx_focusable_accept_focus (launcher, MX_FOCUS_HINT_LAST);
 }
 
 static void
@@ -247,7 +247,6 @@ main (int     argc,
                         G_CALLBACK (stage_height_notify_cb), launcher);
 
       clutter_actor_show (stage);
-      clutter_actor_grab_key_focus (launcher);
 
     } else {
 
@@ -284,6 +283,11 @@ main (int     argc,
       g_signal_connect (panel, "set-size",
                         G_CALLBACK (panel_set_size_cb), launcher);
     }
+
+  mx_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
+
+  /* The last item in the launcher is the filter entry */
+  mx_focusable_accept_focus (MX_FOCUSABLE (launcher), MX_FOCUS_HINT_LAST);
 
   clutter_main ();
 
