@@ -691,6 +691,7 @@ _new_connection_cb (GtkButton *button,
                                         GTK_RESPONSE_REJECT,
                                         GTK_STOCK_CONNECT,
                                         GTK_RESPONSE_ACCEPT, NULL);
+  content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 
   carrick_shell_close_dialog_on_hide (GTK_DIALOG (dialog));
 
@@ -698,8 +699,7 @@ _new_connection_cb (GtkButton *button,
                                    GTK_RESPONSE_ACCEPT);
   gtk_window_set_icon_name (GTK_WINDOW (dialog),
                             GTK_STOCK_NETWORK);
-  gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                       6);
+  gtk_box_set_spacing (GTK_BOX (content), 6);
 
   table = gtk_table_new (5,
                          2,
@@ -710,8 +710,7 @@ _new_connection_cb (GtkButton *button,
                               6);
   gtk_container_set_border_width (GTK_CONTAINER (table),
                                   6);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
-                     table);
+  gtk_container_add (GTK_CONTAINER (content), table);
   image = gtk_image_new_from_icon_name (GTK_STOCK_NETWORK,
                                         GTK_ICON_SIZE_DIALOG);
   gtk_table_attach_defaults (GTK_TABLE (table),

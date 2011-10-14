@@ -105,8 +105,10 @@ ggg_plan_dialog_init (GggPlanDialog *self)
   GggPlanDialogPrivate *priv;
   GtkWidget *table, *image, *label;
   GtkCellRenderer *cell;
+  GtkWidget *content;
 
   priv = self->priv = GET_PRIVATE (self);
+  content = gtk_dialog_get_content_area (GTK_DIALOG (self));
 
   gtk_window_set_title (GTK_WINDOW (self), _("Cellular Data Connection Wizard"));
 
@@ -145,7 +147,7 @@ ggg_plan_dialog_init (GggPlanDialog *self)
   gtk_widget_show (priv->combo);
   gtk_table_attach_defaults (GTK_TABLE (table), priv->combo, 1, 3, 1, 2);
 
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (self)->vbox), table);
+  gtk_container_add (GTK_CONTAINER (content), table);
 }
 
 RestXmlNode *

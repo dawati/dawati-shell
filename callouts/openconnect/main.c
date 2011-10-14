@@ -645,7 +645,7 @@ static gboolean user_validate_cert(cert_data *data)
 	char *msg, *title;
 	BUF_MEM *certinfo;
 	char zero = 0;
-	GtkWidget *dlg, *text, *scroll;
+	GtkWidget *dlg, *content, *text, *scroll;
 	GtkTextBuffer *buffer;
 	int result;
 
@@ -665,6 +665,7 @@ static gboolean user_validate_cert(cert_data *data)
 	dlg = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_QUESTION,
 				     GTK_BUTTONS_OK_CANCEL,
 				     msg);
+	content = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
 	gtk_window_set_skip_taskbar_hint(GTK_WINDOW(dlg), FALSE);
 	gtk_window_set_skip_pager_hint(GTK_WINDOW(dlg), FALSE);
 	gtk_window_set_title(GTK_WINDOW(dlg), title);
@@ -676,7 +677,7 @@ static gboolean user_validate_cert(cert_data *data)
 	g_free(msg);
 
 	scroll = gtk_scrolled_window_new(NULL, NULL);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dlg)->vbox), scroll, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(content), scroll, TRUE, TRUE, 0);
 	gtk_widget_show(scroll);
 
 	text = gtk_text_view_new();
@@ -1292,7 +1293,7 @@ static void build_main_dialog(auth_ui_data *ui_data)
 	char *config_path = _config_path; /* FIXME global */
 	GConfClient *gcl = _gcl; /* FIXME global */
 	char *title;
-	GtkWidget *vbox, *hbox, *label, *frame, *image, *frame_box;
+	GtkWidget *content, *vbox, *hbox, *label, *frame, *image, *frame_box;
 	GtkWidget *exp, *scrolled, *view, *autocon;
 
 	gtk_window_set_default_icon_name(GTK_STOCK_DIALOG_AUTHENTICATION);
@@ -1301,6 +1302,7 @@ static void build_main_dialog(auth_ui_data *ui_data)
 	ui_data->dialog = gtk_dialog_new_with_buttons(title, NULL, GTK_DIALOG_MODAL,
 						      GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
 						      NULL);
+	content = gtk_dialog_get_content_area(GTK_DIALOG(ui_data->dialog));
 	g_signal_connect (ui_data->dialog, "response", G_CALLBACK(dialog_response), ui_data);
 	gtk_window_set_default_size(GTK_WINDOW(ui_data->dialog), 350, 300);
 	g_signal_connect_swapped(ui_data->dialog, "destroy",
@@ -1308,7 +1310,7 @@ static void build_main_dialog(auth_ui_data *ui_data)
 	g_free(title);
 
 	vbox = gtk_vbox_new(FALSE, 8);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(ui_data->dialog)->vbox), vbox, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(content), vbox, TRUE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 8);
 	gtk_widget_show(vbox);
 

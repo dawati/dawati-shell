@@ -826,7 +826,7 @@ _delete_button_cb (GtkButton *delete_button,
 {
   CarrickServiceItem        *item = CARRICK_SERVICE_ITEM (user_data);
   CarrickServiceItemPrivate *priv = item->priv;
-  GtkWidget                 *dialog;
+  GtkWidget                 *dialog, *content;
   GtkWidget                 *label;
   gchar                     *label_text = NULL;
 
@@ -839,6 +839,7 @@ _delete_button_cb (GtkButton *delete_button,
                                         GTK_STOCK_OK,
                                         GTK_RESPONSE_ACCEPT,
                                         NULL);
+  content = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 
   carrick_shell_close_dialog_on_hide (GTK_DIALOG (dialog));
 
@@ -857,9 +858,8 @@ _delete_button_cb (GtkButton *delete_button,
                                 priv->name);
   label = gtk_label_new (label_text);
 
-  gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                       12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  gtk_box_set_spacing (GTK_BOX (content), 12);
+  gtk_box_pack_start (GTK_BOX (content),
                       label,
                       TRUE,
                       TRUE,
@@ -1332,7 +1332,7 @@ carrick_service_item_dispose (GObject *object)
 
   if (priv->hand_cursor)
     {
-      gdk_cursor_unref (priv->hand_cursor);
+      g_object_unref (priv->hand_cursor);
       priv->hand_cursor = NULL;
     }
 
@@ -1380,9 +1380,9 @@ carrick_service_item_enter_notify_event (GtkWidget        *widget,
   CarrickServiceItemPrivate *priv = item->priv;
 
   if (priv->favorite)
-    gdk_window_set_cursor (widget->window, priv->hand_cursor);
+    gdk_window_set_cursor (gtk_widget_get_window (widget), priv->hand_cursor);
   else
-    gdk_window_set_cursor (widget->window, NULL);
+    gdk_window_set_cursor (gtk_widget_get_window (widget), NULL);
   
   return TRUE;
 }
@@ -1396,7 +1396,7 @@ carrick_service_item_leave_notify_event (GtkWidget        *widget,
   if (event->detail == GDK_NOTIFY_INFERIOR ||
       event->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL)
     {
-      gdk_window_set_cursor (widget->window, NULL);
+      gdk_window_set_cursor (gtk_widget_get_window (widget), NULL);
     }
 
   return TRUE;

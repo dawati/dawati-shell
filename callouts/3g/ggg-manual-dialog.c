@@ -62,9 +62,11 @@ ggg_manual_dialog_class_init (GggManualDialogClass *klass)
 static void
 ggg_manual_dialog_init (GggManualDialog *self)
 {
-  GtkWidget *table, *label, *entry;
+  GtkWidget *content, *table, *label, *entry;
 
   self->priv = GET_PRIVATE (self);
+
+  content = gtk_dialog_get_content_area (GTK_DIALOG (self));
 
   g_object_set (self,
                 "title", _("Cellular Data Connection Wizard"),
@@ -84,7 +86,7 @@ ggg_manual_dialog_init (GggManualDialog *self)
                 "border-width", 6,
                 NULL);
   gtk_widget_show (table);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (self)->vbox), table);
+  gtk_container_add (GTK_CONTAINER (content), table);
 
   label = gtk_label_new (_("Manual Configuration"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
