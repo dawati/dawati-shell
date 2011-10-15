@@ -5,6 +5,7 @@ dist_theme_DATA = \
 	apps-normal.png \
 	panel.css \
 	clear-entry.png \
+	clear-entry-hover.png \
   content-pane-background.png \
   content-pane-header.png \
 	launcher-button-fav-toggle-active.png \

@@ -147,6 +147,9 @@ mnb_filter_init (MnbFilter *self)
   priv->entry = (MxEntry *) mx_entry_new ();
   mx_entry_set_secondary_icon_from_file (priv->entry,
                                          THEMEDIR"/clear-entry.png");
+  mx_entry_set_secondary_icon_tooltip_text (priv->entry, _("Clear"));
+  mx_entry_set_icon_highlight_suffix (priv->entry, "-hover");
+
   g_signal_connect (priv->entry, "notify::text",
                     G_CALLBACK (_entry_text_notify_cb), self);
   g_signal_connect (priv->entry, "secondary-icon-clicked",
