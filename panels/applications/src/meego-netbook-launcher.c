@@ -927,20 +927,24 @@ _scrollview_allocation_changed_idle_cb (scrollview_allocation_changed_idle_t *da
   MnbLauncher         *self = data->self;
   MnbLauncherPrivate  *priv = GET_PRIVATE (self);
   gfloat         scroll_width;
-  MxPadding      padding;
-  guint          scrollbar_width;
-  gfloat         width;
 
   scroll_width = data->box.x2 - data->box.x1;
-  mx_widget_get_padding (MX_WIDGET (priv->scrollview), &padding);
-  mx_stylable_get (MX_STYLABLE (priv->scrollview),
-                   "x-mx-scrollbar-width", &scrollbar_width,
-                   NULL);
+  /*
+   *MxPadding      padding;
+   *gfloat         width;
+   *guint          scrollbar_width;
+   *mx_widget_get_padding (MX_WIDGET (priv->scrollview), &padding);
+   *mx_stylable_get (MX_STYLABLE (priv->scrollview),
+   *                "x-mx-scrollbar-width", &scrollbar_width,
+   *                NULL);
+   *
+   * width = scroll_width -
+   *       scrollbar_width - padding.left - padding.right - 15;
 
-  width = scroll_width -
-          scrollbar_width - padding.left - padding.right - 15;
+   * clutter_actor_set_width (priv->apps_grid, width);
+  */
 
-  clutter_actor_set_width (priv->apps_grid, width);
+  clutter_actor_set_width (priv->apps_grid, scroll_width);
 
   return FALSE;
 }
