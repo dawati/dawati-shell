@@ -1233,7 +1233,6 @@ static void
 mnb_launcher_class_init (MnbLauncherClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (MnbLauncherPrivate));
 
