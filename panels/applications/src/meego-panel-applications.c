@@ -141,7 +141,7 @@ static void
 panel_show_end_cb (MplPanelClient *panel,
                    MnbLauncher    *launcher)
 {
-  mx_focusable_accept_focus (launcher, MX_FOCUS_HINT_LAST);
+  mx_focusable_accept_focus (MX_FOCUSABLE (launcher), MX_FOCUS_HINT_LAST);
 }
 
 static void
