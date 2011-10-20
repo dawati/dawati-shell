@@ -72,6 +72,12 @@ MpsTweetCard.mps-tweet-card-last:active
   font-size: 16px;
 }
 
+*.mps-switcher-button-box
+{
+  padding: 10 0 0 0;
+}
+
+
 *.mps-switcher-new-service:hover,
 *.mps-switcher-new-service:active
 {
