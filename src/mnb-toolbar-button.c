@@ -215,7 +215,7 @@ mnb_toolbar_button_get_preferred_height (ClutterActor *self,
 }
 
 static void
-mnb_toolbar_button_constructed (ClutterActor *self)
+mnb_toolbar_button_constructed (GObject *self)
 {
   MnbToolbarButton *button = MNB_TOOLBAR_BUTTON (self);
   const gchar *tooltip;
