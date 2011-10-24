@@ -88,6 +88,9 @@ sw_zone_accept_focus (MxFocusable *focusable,
                       MxFocusHint  hint)
 {
   mx_stylable_set_style_pseudo_class(MX_STYLABLE (focusable), "active");
+
+  clutter_actor_grab_key_focus (CLUTTER_ACTOR (focusable));
+
   return focusable;
 }
 
