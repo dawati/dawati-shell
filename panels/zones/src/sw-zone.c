@@ -79,8 +79,17 @@ struct _SwZonePrivate
   gboolean is_welcome;
 
   gint number;
+
+  guint pressed : 1;
 };
 
+enum
+{
+  ACTIVATED,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
 
 /* focusable implementation */
 static MxFocusable *
@@ -898,6 +907,34 @@ sw_zone_button_press_event (ClutterActor       *actor,
   return TRUE;
 }
 
+static gboolean
+sw_zone_event (ClutterActor *actor,
+               ClutterEvent *event)
+{
+  SwZonePrivate *priv = SW_ZONE (actor)->priv;
+
+  if (event->any.type == CLUTTER_BUTTON_RELEASE)
+    {
+      if (priv->pressed)
+        g_signal_emit (actor, signals[ACTIVATED], 0);
+
+      priv->pressed = FALSE;
+    }
+  if (event->any.type == CLUTTER_BUTTON_PRESS)
+    {
+      priv->pressed = TRUE;
+    }
+  if (event->any.type == CLUTTER_KEY_RELEASE)
+    {
+      if (event->key.keyval == CLUTTER_KEY_Return)
+        g_signal_emit (actor, signals[ACTIVATED], 0);
+      else
+        return FALSE;
+    }
+
+  return FALSE;
+}
+
 static void
 sw_zone_class_init (SwZoneClass *klass)
 {
@@ -917,11 +954,19 @@ sw_zone_class_init (SwZoneClass *klass)
   actor_class->paint = sw_zone_paint;
   actor_class->pick = sw_zone_pick;
   actor_class->button_press_event = sw_zone_button_press_event;
+  actor_class->event = sw_zone_event;
 
   actor_class->map = sw_zone_map;
   actor_class->unmap = sw_zone_unmap;
 
   g_object_class_override_property (object_class, PROP_ENABLED, "drop-enabled");
+
+  signals[ACTIVATED] = g_signal_new ("activated",
+                                     G_TYPE_FROM_CLASS (klass),
+                                     G_SIGNAL_RUN_LAST,
+                                     0, NULL, NULL,
+                                     g_cclosure_marshal_VOID__VOID,
+                                     G_TYPE_NONE, 0);
 }
 
 static void
