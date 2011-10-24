@@ -441,6 +441,22 @@ notify_n_zones_cb (SwOverview    *overview,
 }
 
 static void
+zone_activated (SwOverview    *overview,
+                SwZone        *zone,
+                ZonePanelData *data)
+{
+  gint index;
+  WnckWorkspace *workspace;
+
+  index = sw_zone_get_number (zone) - 1;
+
+  workspace = wnck_screen_get_workspace (data->screen, index);
+
+  if (workspace)
+    wnck_workspace_activate (workspace, clutter_x11_get_current_event_time ());
+}
+
+static void
 setup (ZonePanelData *data)
 {
   GList  *windows, *l;
@@ -469,6 +485,8 @@ setup (ZonePanelData *data)
   overview = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
   notify_n_zones_cb (SW_OVERVIEW (overview), NULL, data);
   g_signal_connect (overview, "notify::n-zones", G_CALLBACK (notify_n_zones_cb),
+                    data);
+  g_signal_connect (overview, "zone-activated", G_CALLBACK (zone_activated),
                     data);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (box_layout),
                                            overview, -1,
