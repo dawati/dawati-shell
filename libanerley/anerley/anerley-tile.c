@@ -476,6 +476,11 @@ anerley_tile_allocate (ClutterActor           *actor,
 
     clutter_actor_allocate (priv->presence_icon, &presence_icon_box, flags);
   }
+  else
+    {
+      presence_label_box.x1 = presence_label_box.x2 = avatar_box.x2;
+      presence_label_box.y1 = presence_label_box.y2 = avatar_box.y2;
+    }
 
   if (priv->presence_label && CLUTTER_ACTOR_IS_VISIBLE (priv->presence_label))
   {
@@ -491,7 +496,7 @@ anerley_tile_allocate (ClutterActor           *actor,
 
     /* Assumes icon is larger than text! */
     presence_icon_height = presence_icon_box.y2 - presence_icon_box.y1;
-    presence_label_box.y1 = presence_icon_box.y1 + 
+    presence_label_box.y1 = presence_icon_box.y1 +
                             (gint)((presence_icon_height - nat_h) / 2);
     presence_label_box.y2 = presence_label_box.y1 + nat_h;
 
