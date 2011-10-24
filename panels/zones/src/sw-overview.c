@@ -144,9 +144,13 @@ sw_overview_dispose (GObject *object)
 static void actor_added_to_dummy (ClutterContainer *zone, ClutterActor *actor, SwOverview *view);
 
 static void sw_overview_renumber_zones (SwOverview *view);
-static gboolean zone_event (ClutterActor *zone,
-                            ClutterEvent *event,
-                            SwOverview   *view);
+
+static void
+zone_activated (ClutterActor *zone,
+                SwOverview   *view)
+{
+  g_signal_emit (view, signals[ZONE_ACTIVATED], 0, zone);
+}
 
 static void
 sw_overview_finalize (GObject *object)
@@ -164,7 +168,7 @@ sw_overview_add_dummy (SwOverview *view)
   priv->dummy_added_handler = g_signal_connect (priv->dummy, "actor-added",
                                                 G_CALLBACK (actor_added_to_dummy),
                                                 view);
-  g_signal_connect (priv->dummy, "event", G_CALLBACK (zone_event), view);
+  g_signal_connect (priv->dummy, "activated", G_CALLBACK (zone_activated), view);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (view), priv->dummy);
 }
@@ -189,25 +193,6 @@ actor_added_to_dummy (ClutterContainer *zone,
   g_debug ("New zone added (count: %d)", priv->n_zones);
 
   sw_overview_renumber_zones (view);
-}
-
-static gboolean
-zone_event (ClutterActor *zone,
-            ClutterEvent *event,
-            SwOverview   *view)
-{
-  if ((event->any.type == CLUTTER_BUTTON_RELEASE && event->button.button == 1)
-      || (event->any.type == CLUTTER_KEY_RELEASE && event->key.keyval == CLUTTER_KEY_Return))
-    {
-      if (sw_zone_get_dummy (SW_ZONE (zone)))
-        return TRUE;
-
-      g_signal_emit (view, signals[ZONE_ACTIVATED], 0, zone);
-
-      return TRUE;
-    }
-  else
-    return FALSE;
 }
 
 static void
@@ -246,7 +231,7 @@ sw_overview_renumber_zones (SwOverview   *view)
       clutter_container_add_actor (CLUTTER_CONTAINER (view), zone);
       clutter_container_child_set (CLUTTER_CONTAINER (view),
                                    zone, "expand", TRUE, NULL);
-      g_signal_connect (zone, "event", G_CALLBACK (zone_event), view);
+      g_signal_connect (zone, "activated", G_CALLBACK (zone_activated), view);
       sw_zone_set_is_welcome (SW_ZONE (zone), TRUE);
       sw_zone_set_number (SW_ZONE (zone), 1);
 
@@ -278,7 +263,7 @@ sw_overview_constructed (GObject *object)
       clutter_container_add_actor (CLUTTER_CONTAINER (object), zone);
       clutter_container_child_set (CLUTTER_CONTAINER (object),
                                    zone, "expand", TRUE, NULL);
-      g_signal_connect (zone, "event", G_CALLBACK (zone_event), object);
+      g_signal_connect (zone, "activated", G_CALLBACK (zone_activated), object);
     }
 
   if (priv->n_zones == 1)
@@ -333,7 +318,7 @@ sw_overview_add_zone (SwOverview *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), zone);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                zone, "expand", TRUE, NULL);
-  g_signal_connect (zone, "event", G_CALLBACK (zone_event), self);
+  g_signal_connect (zone, "activated", G_CALLBACK (zone_activated), self);
 
   sw_overview_renumber_zones (self);
 
