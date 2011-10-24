@@ -65,13 +65,13 @@ MxIcon#add-icon
   -mx-content-image: url('workspace-title-new-symbol-active.png');
 }
 
-MxButton
+MxButton#close-button
 {
   border-image: none;
   -mx-content-image: url('close-button.png');
 }
 
-MxButton:hover
+MxButton#close-button:hover
 {
   border-image: none;
   -mx-content-image: url('close-button-hover.png');

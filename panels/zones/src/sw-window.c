@@ -645,6 +645,7 @@ sw_window_init (SwWindow *self)
 
   /* close button */
   self->priv->close_button = mx_button_new ();
+  clutter_actor_set_name (self->priv->close_button, "close-button");
   clutter_actor_set_parent (self->priv->close_button, CLUTTER_ACTOR (self));
   g_signal_connect (self->priv->close_button, "clicked",
                     G_CALLBACK (sw_window_close_clicked_cb), self);
