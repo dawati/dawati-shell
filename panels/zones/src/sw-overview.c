@@ -53,6 +53,14 @@ struct _SwOverviewPrivate
   GList *window_handlers;
 };
 
+enum
+{
+  ZONE_ACTIVATED,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
 
 static void
 sw_overview_get_property (GObject    *object,
@@ -136,6 +144,9 @@ sw_overview_dispose (GObject *object)
 static void actor_added_to_dummy (ClutterContainer *zone, ClutterActor *actor, SwOverview *view);
 
 static void sw_overview_renumber_zones (SwOverview *view);
+static gboolean zone_button_release_event (ClutterActor       *zone,
+                                           ClutterButtonEvent *event,
+                                           SwOverview         *view);
 
 static void
 sw_overview_finalize (GObject *object)
@@ -153,6 +164,8 @@ sw_overview_add_dummy (SwOverview *view)
   priv->dummy_added_handler = g_signal_connect (priv->dummy, "actor-added",
                                                 G_CALLBACK (actor_added_to_dummy),
                                                 view);
+  g_signal_connect (priv->dummy, "button-release-event",
+                    G_CALLBACK (zone_button_release_event), view);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (view), priv->dummy);
 }
@@ -177,6 +190,22 @@ actor_added_to_dummy (ClutterContainer *zone,
   g_debug ("New zone added (count: %d)", priv->n_zones);
 
   sw_overview_renumber_zones (view);
+}
+
+static gboolean
+zone_button_release_event (ClutterActor       *zone,
+                           ClutterButtonEvent *event,
+                           SwOverview         *view)
+{
+  if (event->button != 1)
+    return FALSE;
+
+  if (sw_zone_get_dummy (SW_ZONE (zone)))
+    return TRUE;
+
+  g_signal_emit (view, signals[ZONE_ACTIVATED], 0, zone);
+
+  return TRUE;
 }
 
 static void
@@ -215,6 +244,8 @@ sw_overview_renumber_zones (SwOverview   *view)
       clutter_container_add_actor (CLUTTER_CONTAINER (view), zone);
       clutter_container_child_set (CLUTTER_CONTAINER (view),
                                    zone, "expand", TRUE, NULL);
+      g_signal_connect (zone, "button-release-event",
+                        G_CALLBACK (zone_button_release_event), view);
       sw_zone_set_is_welcome (SW_ZONE (zone), TRUE);
       sw_zone_set_number (SW_ZONE (zone), 1);
 
@@ -246,6 +277,8 @@ sw_overview_constructed (GObject *object)
       clutter_container_add_actor (CLUTTER_CONTAINER (object), zone);
       clutter_container_child_set (CLUTTER_CONTAINER (object),
                                    zone, "expand", TRUE, NULL);
+      g_signal_connect (zone, "button-release-event",
+                        G_CALLBACK (zone_button_release_event), object);
     }
 
   if (priv->n_zones == 1)
@@ -277,6 +310,13 @@ sw_overview_class_init (SwOverviewClass *klass)
                             G_PARAM_STATIC_STRINGS | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class, PROP_N_ZONES, pspec);
 
+  signals[ZONE_ACTIVATED] = g_signal_new ("zone-activated",
+                                          G_TYPE_FROM_CLASS (klass),
+                                          G_SIGNAL_RUN_LAST,
+                                          0, NULL, NULL,
+                                          g_cclosure_marshal_VOID__OBJECT,
+                                          G_TYPE_NONE,
+                                          1, G_TYPE_INT);
 }
 
 void
@@ -293,6 +333,8 @@ sw_overview_add_zone (SwOverview *self)
   clutter_container_add_actor (CLUTTER_CONTAINER (self), zone);
   clutter_container_child_set (CLUTTER_CONTAINER (self),
                                zone, "expand", TRUE, NULL);
+  g_signal_connect (zone, "button-release-event",
+                    G_CALLBACK (zone_button_release_event), self);
 
   sw_overview_renumber_zones (self);
 
