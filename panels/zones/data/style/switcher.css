@@ -26,7 +26,7 @@ SwZone#focused-zone
 
 SwWindow
 {
-  padding: 12;
+  padding: 12 8 12 8;
   border-image: url('app-background-panel.png') 4 4 51 4;
 }
 

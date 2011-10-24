@@ -44,7 +44,9 @@ G_DEFINE_TYPE_WITH_CODE (SwZone, sw_zone, MX_TYPE_WIDGET,
 #define DUMMY_MAX_WIDTH 200.0
 #define DUMMY_MIN_WIDTH 100.0
 
-#define WINDOW_EDGE_PADDING 18.0
+#define WINDOW_EDGE_PADDING 10.0
+
+#define SCROLL_BAR_WIDTH 24.0
 
 enum
 {
@@ -80,7 +82,12 @@ struct _SwZonePrivate
 
   gint number;
 
+  MxAdjustment *vadjustment;
+  ClutterActor *vscroll;
+
   guint pressed : 1;
+
+  ClutterActorBox clip;
 };
 
 enum
@@ -444,8 +451,8 @@ sw_zone_get_property (GObject    *object,
     g_value_set_boolean (value, priv->is_enabled);
     break;
 
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
@@ -467,7 +474,7 @@ sw_zone_set_property (GObject      *object,
     priv->is_enabled = g_value_get_boolean (value);
     break;
 
-    default:
+  default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
@@ -525,6 +532,17 @@ sw_zone_dispose (GObject *object)
       priv->alpha = NULL;
     }
 
+  if (priv->vscroll)
+    {
+      clutter_actor_unparent (priv->vscroll);
+      priv->vscroll = NULL;
+    }
+
+  if (priv->vadjustment)
+    {
+      g_object_unref (priv->vadjustment);
+      priv->vadjustment = NULL;
+    }
 
   G_OBJECT_CLASS (sw_zone_parent_class)->dispose (object);
 }
@@ -624,13 +642,13 @@ sw_zone_allocate (ClutterActor           *actor,
   gfloat title_height, column_height, column_width;
   ClutterActorBox childbox;
 
+  gfloat start;
+  gfloat child_height;
+  gfloat min_height, min_width;
+
   SwZonePrivate *priv = SW_ZONE (actor)->priv;
 
   CLUTTER_ACTOR_CLASS (sw_zone_parent_class)->allocate (actor, box, flags);
-
-  gfloat start;
-  gfloat child_height;
-  gfloat min_height;
 
   mx_widget_get_available_area (MX_WIDGET (actor), box, &avail_box);
 
@@ -647,6 +665,13 @@ sw_zone_allocate (ClutterActor           *actor,
 
   /* remove the title from the available box */
   avail_box.y1 += title_height + PADDING;
+
+  /* scroll bar */
+  childbox.x1 = avail_box.x2 - SCROLL_BAR_WIDTH;
+  childbox.x2 = avail_box.x2;
+  childbox.y1 = avail_box.y1;
+  childbox.y2 = avail_box.y2;
+  clutter_actor_allocate (priv->vscroll, &childbox, flags);
 
 
   if (priv->dummy)
@@ -698,6 +723,8 @@ sw_zone_allocate (ClutterActor           *actor,
   /* use the first child to determine the minimum height */
   clutter_actor_get_preferred_height (priv->children->data, -1, &min_height,
                                       NULL);
+  clutter_actor_get_preferred_width (priv->children->data, -1, &min_width,
+                                     NULL);
 
   /* calculate the number of possible columns */
   column_height = avail_box.y2 - avail_box.y1 - PADDING * 2;
@@ -707,12 +734,31 @@ sw_zone_allocate (ClutterActor           *actor,
 
   n_children_per_column = ceil ((float) priv->n_children / (float) n_columns);
 
-  column_width = ((avail_box.x2 - avail_box.x1)
-                  - (WINDOW_EDGE_PADDING * (n_columns + 1))) / n_columns;
+  column_width = (avail_box.x2 - avail_box.x1 - WINDOW_EDGE_PADDING) / n_columns;
+
+  if (column_width < min_width && n_columns > 1)
+    {
+      /* scrolling will be enabled, so take this into account here */
+      avail_box.x2 -= SCROLL_BAR_WIDTH;
+
+      /* reduce the number of columns until the column width is greater than
+       * the minimum item width, or the number of columns is 1 */
+
+      while (column_width - WINDOW_EDGE_PADDING * 2 < min_width && n_columns > 1)
+        {
+          n_columns--;
+
+          n_children_per_column = ceil ((float) priv->n_children
+                                        / (float) n_columns);
+
+          column_width = (avail_box.x2 - avail_box.x1 - WINDOW_EDGE_PADDING) / n_columns;
+        }
+    }
+
 
   child_height = (column_height / n_children_per_column);
   child_height = MAX (child_height, min_height);
-  start = avail_box.y1;
+  start = avail_box.y1 - mx_adjustment_get_value (priv->vadjustment);
 
   if (!priv->is_animating)
     {
@@ -730,9 +776,11 @@ sw_zone_allocate (ClutterActor           *actor,
 
       childbox.y1 = start;
       childbox.y2 = start + child_height;
-      childbox.x1 = ((column_width + WINDOW_EDGE_PADDING) * current_column)
-        + WINDOW_EDGE_PADDING;
+      childbox.x1 = avail_box.x1 + WINDOW_EDGE_PADDING / 2 + column_width * current_column;
       childbox.x2 = childbox.x1 + column_width;
+
+        childbox.x1 += WINDOW_EDGE_PADDING / 2;
+        childbox.x2 -= WINDOW_EDGE_PADDING / 2;
 
       mx_allocate_align_fill (child, &childbox, MX_ALIGN_MIDDLE,
                               MX_ALIGN_MIDDLE, FALSE, FALSE);
@@ -782,9 +830,18 @@ sw_zone_allocate (ClutterActor           *actor,
       if (n % n_children_per_column == 0)
         {
           current_column++;
-          start = avail_box.y1;
+          start = avail_box.y1 - mx_adjustment_get_value (priv->vadjustment);
         }
     }
+
+  mx_adjustment_set_lower (priv->vadjustment, 0);
+  mx_adjustment_set_page_size (priv->vadjustment, avail_box.y2 - avail_box.y1);
+  mx_adjustment_set_page_increment (priv->vadjustment, avail_box.y2 - avail_box.y1);
+  mx_adjustment_set_upper (priv->vadjustment,
+                           child_height * n_children_per_column
+                           + PADDING * (n_children_per_column - 1));
+
+  priv->clip = avail_box;
 }
 
 static void
@@ -794,6 +851,9 @@ sw_zone_paint (ClutterActor *actor)
   GList *l;
 
   CLUTTER_ACTOR_CLASS (sw_zone_parent_class)->paint (actor);
+
+  cogl_clip_push_rectangle (priv->clip.x1, priv->clip.y1, priv->clip.x2,
+                            priv->clip.y2);
 
   for (l = priv->children; l; l = l->next)
     {
@@ -819,8 +879,13 @@ sw_zone_paint (ClutterActor *actor)
           sw_window_set_drop_target (SW_WINDOW (child), &drop_target);
         }
     }
+  cogl_clip_pop ();
 
   clutter_actor_paint (priv->title);
+
+  if (mx_adjustment_get_upper (priv->vadjustment)
+      > mx_adjustment_get_page_size (priv->vadjustment))
+    clutter_actor_paint (priv->vscroll);
 
   if (priv->dummy)
     clutter_actor_paint (priv->add_icon);
@@ -854,6 +919,10 @@ sw_zone_pick (ClutterActor       *actor,
       if (CLUTTER_ACTOR_IS_REACTIVE (child))
         clutter_actor_paint (child);
     }
+
+  if (mx_adjustment_get_upper (priv->vadjustment)
+      > mx_adjustment_get_page_size (priv->vadjustment))
+    clutter_actor_paint (priv->vscroll);
 }
 
 
@@ -981,6 +1050,7 @@ sw_zone_style_changed_cb (MxStylable          *zone,
   mx_stylable_style_changed (title, flags);
 }
 
+
 static void
 sw_zone_init (SwZone *self)
 {
@@ -1007,6 +1077,13 @@ sw_zone_init (SwZone *self)
                                "no-apps-label");
   clutter_actor_set_parent (self->priv->label, CLUTTER_ACTOR (self));
 
+  self->priv->vadjustment = mx_adjustment_new ();
+  self->priv->vscroll = mx_scroll_bar_new ();
+  mx_scroll_bar_set_adjustment (MX_SCROLL_BAR (self->priv->vscroll),
+                                self->priv->vadjustment);
+  mx_scroll_bar_set_orientation (MX_SCROLL_BAR (self->priv->vscroll),
+                                 MX_ORIENTATION_VERTICAL);
+  clutter_actor_set_parent (self->priv->vscroll, CLUTTER_ACTOR (self));
 }
 
 ClutterActor *
