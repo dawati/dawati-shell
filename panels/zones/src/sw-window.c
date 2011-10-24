@@ -321,29 +321,20 @@ sw_window_finalize (GObject *object)
   G_OBJECT_CLASS (sw_window_parent_class)->finalize (object);
 }
 
+static gboolean
+sw_window_button_press_event (ClutterActor       *actor,
+                                ClutterButtonEvent *event)
+{
+  return TRUE;
+}
 
 static gboolean
 sw_window_button_release_event (ClutterActor       *actor,
                                 ClutterButtonEvent *event)
 {
-  if (event->button == 1)
-    {
-      g_signal_emit (actor, window_signals[CLICKED], 0);
+  g_signal_emit (actor, window_signals[CLICKED], 0);
 
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
-static gboolean
-sw_window_event (ClutterActor *actor,
-                 ClutterEvent *event)
-{
-  /* prevent a second drag from starting before the first has finished */
-  return (event->any.type == CLUTTER_BUTTON_PRESS
-          && event->button.button == 1
-          && sw_window_get_in_drag (SW_WINDOW (actor)));
+  return TRUE;
 }
 
 static gboolean
@@ -592,7 +583,7 @@ sw_window_class_init (SwWindowClass *klass)
   object_class->finalize = sw_window_finalize;
 
   actor_class->button_release_event = sw_window_button_release_event;
-  actor_class->event = sw_window_event;
+  actor_class->button_press_event = sw_window_button_press_event;
   actor_class->key_release_event = sw_window_key_release_event;
   actor_class->map = sw_window_map;
   actor_class->unmap = sw_window_unmap;
