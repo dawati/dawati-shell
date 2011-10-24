@@ -3,7 +3,7 @@
  * Copyright (C) 2009, Intel Corporation.
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -22,9 +22,7 @@
 #include <anerley/anerley-tp-feed.h>
 #include <anerley/anerley-item.h>
 
-#include <telepathy-glib/account.h>
-#include <telepathy-glib/account-manager.h>
-#include <telepathy-glib/contact.h>
+#include <telepathy-glib/telepathy-glib.h>
 
 #include <glib.h>
 #include <dbus/dbus-glib.h>
@@ -85,14 +83,22 @@ am_ready_cb (GObject      *source_object,
   const char **argv = userdata;
   GError *error = NULL;
 
-  if (!tp_account_manager_prepare_finish (account_manager, result, &error))
+  if (!tp_proxy_prepare_finish (TP_PROXY (account_manager), result, &error))
   {
     g_warning ("Failed to prepare account manager: %s", error->message);
     g_error_free (error);
     return;
   }
 
-  account = tp_account_manager_ensure_account (account_manager, argv[1]);
+  account = tp_simple_client_factory_ensure_account (
+               TP_SIMPLE_CLIENT_FACTORY (account_manager),
+               argv[1], NULL, &error);
+  if (!account)
+    {
+      g_warning ("Failed to retrieve account: %s", error->message);
+      g_error_free (error);
+      return;
+    }
 
   props = tp_account_get_parameters (account);
 
@@ -128,10 +134,10 @@ main (int    argc,
 
   account_manager = tp_account_manager_dup ();
 
-  tp_account_manager_prepare_async (account_manager,
-                                    NULL,
-                                    am_ready_cb,
-                                    argv);
+  tp_proxy_prepare_async (TP_PROXY (account_manager),
+                          NULL,
+                          am_ready_cb,
+                          argv);
 
   g_main_loop_run (main_loop);
 

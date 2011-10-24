@@ -3,7 +3,7 @@
  * Copyright (C) 2010, Intel Corporation.
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -30,7 +30,7 @@ _account_manager_ready_cb (TpAccountManager *am,
   TpConnectionPresenceType type = (TpConnectionPresenceType)GPOINTER_TO_INT (userdata);
   GError *error = NULL;
 
-  if (!tp_account_manager_prepare_finish (am, res, &error))
+  if (!tp_proxy_prepare_finish (TP_PROXY (am), res, &error))
   {
     g_warning (G_STRLOC ": Error preparing account manager: %s",
                error->message);
@@ -50,10 +50,10 @@ changed_accounts (TpConnectionPresenceType type)
   TpAccountManager *am;
 
   am = tp_account_manager_dup ();
-  tp_account_manager_prepare_async (am,
-                                    NULL,
-                                    (GAsyncReadyCallback)_account_manager_ready_cb,
-                                    GINT_TO_POINTER (type));
+  tp_proxy_prepare_async (TP_PROXY (am),
+                          NULL,
+                          (GAsyncReadyCallback)_account_manager_ready_cb,
+                          GINT_TO_POINTER (type));
   g_object_unref (am);
 }
 

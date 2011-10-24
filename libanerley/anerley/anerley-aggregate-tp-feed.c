@@ -3,7 +3,7 @@
  * Copyright (C) 2009, Intel Corporation.
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -222,7 +222,7 @@ _account_manager_ready_cb (GObject      *source_object,
   GList *accounts, *l;
   GError *error = NULL;
 
-  if (!tp_account_manager_prepare_finish (account_manager, result, &error))
+  if (!tp_proxy_prepare_finish (TP_PROXY (account_manager), result, &error))
   {
     g_warning ("Failed to prepare account manager: %s", error->message);
     g_error_free (error);
@@ -264,10 +264,10 @@ anerley_aggregate_tp_feed_constructed (GObject *object)
                     G_CALLBACK (_account_manager_account_removed_cb),
                     object);
 
-  tp_account_manager_prepare_async (priv->account_manager,
-                                    NULL,
-                                    _account_manager_ready_cb,
-                                    object);
+  tp_proxy_prepare_async (TP_PROXY (priv->account_manager),
+                          NULL,
+                          _account_manager_ready_cb,
+                          object);
 
   if (G_OBJECT_CLASS (anerley_aggregate_tp_feed_parent_class)->constructed)
     G_OBJECT_CLASS (anerley_aggregate_tp_feed_parent_class)->constructed (object);

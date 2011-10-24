@@ -4,7 +4,7 @@
  *
  * Authors: Danielle Madeley <danielle.madeley@collabora.co.uk>
  *          Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -99,7 +99,7 @@ _account_manager_ready (TpAccountManager *am,
 {
   GError *error = NULL;
 
-  if (!tp_account_manager_prepare_finish (am, res, &error))
+  if (!tp_proxy_prepare_finish (TP_PROXY (am), res, &error))
   {
     g_warning (G_STRLOC ": Error preparing account manager: %s",
                error->message);
@@ -258,10 +258,10 @@ anerley_presence_chooser_init (AnerleyPresenceChooser *self)
                     G_CALLBACK (_combo_index_changed),
                     NULL);
 
-  tp_account_manager_prepare_async (priv->am,
-                                    NULL,
-                                    (GAsyncReadyCallback)_account_manager_ready,
-                                    self);
+  tp_proxy_prepare_async (TP_PROXY (priv->am),
+                          NULL,
+                          (GAsyncReadyCallback)_account_manager_ready,
+                          self);
 }
 
 ClutterActor *

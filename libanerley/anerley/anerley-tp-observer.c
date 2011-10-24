@@ -3,7 +3,7 @@
  * Copyright (C) 2009, Intel Corporation.
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -166,9 +166,9 @@ anerley_tp_observer_constructed (GObject *object)
                                TRUE,
                                NULL);
 
-  dbus_g_connection_register_g_object (tp_get_bus (),
-                                       object_path,
-                                       G_OBJECT (object));
+  tp_dbus_daemon_register_object (priv->bus,
+                                  object_path,
+                                  G_OBJECT (object));
 
   g_free (object_path);
 
@@ -281,7 +281,7 @@ anerley_tp_observer_init (AnerleyTpObserver *self)
 AnerleyTpObserver *
 anerley_tp_observer_new (const gchar *client_name)
 {
-  return g_object_new (ANERLEY_TYPE_TP_OBSERVER, 
+  return g_object_new (ANERLEY_TYPE_TP_OBSERVER,
                        "client-name", client_name,
                        NULL);
 }
@@ -320,7 +320,7 @@ done:
   g_free (closure);
 }
 
-static void 
+static void
 _connection_ready_cb (TpConnection *connection,
                       const GError *error_in,
                       gpointer      userdata)

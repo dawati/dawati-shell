@@ -3,7 +3,7 @@
  * Copyright (C) 2009, Intel Corporation.
  *
  * Authors: Rob Bradford <rob@linux.intel.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
  * version 2.1, as published by the Free Software Foundation.
@@ -96,10 +96,10 @@ main (int    argc,
 
   account_manager = tp_account_manager_dup ();
 
-  tp_account_manager_prepare_async (account_manager,
-                                    NULL,
-                                    _account_manager_ready_cb,
-                                    NULL);
+  tp_proxy_prepare_async (TP_PROXY (account_manager),
+                          NULL,
+                          _account_manager_ready_cb,
+                          NULL);
   g_main_loop_run (main_loop);
 
   g_object_unref (account_manager);

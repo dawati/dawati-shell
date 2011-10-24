@@ -167,7 +167,7 @@ _account_ready_cb (TpAccount    *account,
 {
   GError *error = NULL;
 
-  tp_account_prepare_finish (account, res, &error);
+  tp_proxy_prepare_finish (TP_PROXY (account), res, &error);
 
   if (error)
   {
@@ -193,10 +193,10 @@ _get_next_avatar (AnerleyTpUserAvatar *self)
     TpAccount *account = priv->account_ptr->data;
     priv->account_ptr = priv->account_ptr->next;
 
-    tp_account_prepare_async (account,
-                              NULL,
-                              (GAsyncReadyCallback)_account_ready_cb,
-                              self);
+    tp_proxy_prepare_async (TP_PROXY (account),
+                            NULL,
+                            (GAsyncReadyCallback)_account_ready_cb,
+                            self);
   } else {
     clutter_texture_set_from_file (CLUTTER_TEXTURE (self),
                                    DEFAULT_AVATAR_IMAGE,
@@ -232,7 +232,7 @@ _account_manager_ready (GObject      *am,
   AnerleyTpUserAvatar *self = ANERLEY_TP_USER_AVATAR (user_data);
   GError *error = NULL;
 
-  if (!tp_account_manager_prepare_finish (TP_ACCOUNT_MANAGER (am), res, &error))
+  if (!tp_proxy_prepare_finish (TP_PROXY (am), res, &error))
     {
       g_critical (G_STRLOC ": failed to set up account: %s", error->message);
       g_clear_error (&error);
@@ -294,8 +294,8 @@ anerley_tp_user_avatar_init (AnerleyTpUserAvatar *self)
 
   priv->am = tp_account_manager_dup ();
 
-  tp_account_manager_prepare_async (priv->am, NULL,
-      _account_manager_ready, self);
+  tp_proxy_prepare_async (TP_PROXY (priv->am), NULL,
+                          _account_manager_ready, self);
 }
 
 ClutterActor *
