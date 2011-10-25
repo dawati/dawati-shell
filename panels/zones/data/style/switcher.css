@@ -4,7 +4,7 @@ SwZone
   padding: 3;
 }
 
-SwZone:active
+SwZone:active, SwZone:hover
 {
   border-image: url('content-panel-background-highlight-orange.png') 6;
 }
