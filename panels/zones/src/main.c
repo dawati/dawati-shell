@@ -479,7 +479,7 @@ setup (ZonePanelData *data)
 
   wnck_screen_force_update (data->screen);
 
-  windows = wnck_screen_get_windows (data->screen);
+  windows = wnck_screen_get_windows_stacked (data->screen);
 
   /* create the overview */
   overview = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
@@ -495,7 +495,7 @@ setup (ZonePanelData *data)
   data->overview = overview;
 
   /* add existing windows */
-  for (l = windows; l; l = g_list_next (l))
+  for (l = g_list_last (windows); l; l = g_list_previous (l))
     {
       WnckWorkspace *workspace;
       WnckWindow *win = l->data;
