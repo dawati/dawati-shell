@@ -516,7 +516,7 @@ sw_overview_set_focused_zone (SwOverview *overview,
                               gint        index)
 {
   GList *children, *l;
-  guint i;
+  gint i;
 
   children = clutter_container_get_children (CLUTTER_CONTAINER (overview));
 
