@@ -675,10 +675,11 @@ main (int argc, char **argv)
 
       clutter_container_add_actor (CLUTTER_CONTAINER (data->stage),
                                    (ClutterActor *) data->toplevel);
-
-      g_signal_connect (data->stage, "key-release-event",
-                        G_CALLBACK (key_press), data);
     }
+
+  clutter_actor_grab_key_focus (data->stage);
+  g_signal_connect (data->stage, "key-release-event", G_CALLBACK (key_press),
+                    data);
 
   /* enable key focus support */
   mx_focus_manager_get_for_stage (CLUTTER_STAGE (data->stage));
