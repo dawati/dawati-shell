@@ -289,6 +289,30 @@ switch_to (WnckWindow *win)
   wnck_workspace_activate (ws, clutter_x11_get_current_event_time ());
 }
 
+static gboolean
+activate_workspace_finish (WnckWorkspace *ws)
+{
+  wnck_workspace_activate (ws, clutter_x11_get_current_event_time ());
+
+  return FALSE;
+}
+
+static void
+activate_workspace (ZonePanelData *data,
+                    gint           zone)
+{
+  WnckWorkspace *ws;
+
+  if (client)
+    mpl_panel_client_hide (client);
+
+  ws = wnck_screen_get_workspace (data->screen, zone);
+
+  /* wait for the panel to hide */
+  g_timeout_add (250, activate_workspace_finish, ws);
+}
+
+
 static void
 hide_end (MplPanelClient *client,
           WnckWindow *window)
@@ -446,14 +470,10 @@ zone_activated (SwOverview    *overview,
                 ZonePanelData *data)
 {
   gint index;
-  WnckWorkspace *workspace;
 
   index = sw_zone_get_number (zone) - 1;
 
-  workspace = wnck_screen_get_workspace (data->screen, index);
-
-  if (workspace)
-    wnck_workspace_activate (workspace, clutter_x11_get_current_event_time ());
+  activate_workspace (data, index);
 }
 
 static void
@@ -554,12 +574,8 @@ key_press (ClutterActor  *actor,
   if (event->key.keyval >= '1' && event->key.keyval <= '8')
     {
       gint index = event->key.keyval - '1';
-      WnckWorkspace *workspace;
 
-      workspace = wnck_screen_get_workspace (data->screen, index);
-
-      if (workspace)
-        wnck_workspace_activate (workspace, event->key.time);
+      activate_workspace (data, index);
 
       return TRUE;
     }
