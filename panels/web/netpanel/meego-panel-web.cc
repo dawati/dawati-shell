@@ -61,9 +61,18 @@ stage_delete_event (ClutterStage *stage,
 
 
 static gboolean standalone = FALSE;
+static char const *geometry = NULL;
+static int         dpi = 0;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL}
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
+  { "geometry", 'g', 0, G_OPTION_ARG_STRING, &geometry,
+    "Window geometry in standalone mode", NULL },
+#if CLUTTER_CHECK_VERSION(1, 3, 0)
+  { "clutter-font-dpi", 'd', 0, G_OPTION_ARG_INT, &dpi,
+    "Set clutter font resolution to <dpi>", "<dpi>" },
+#endif
+  { NULL }
 };
 
 
@@ -99,6 +108,14 @@ main (int    argc,
 
   mpl_panel_clutter_init_with_gtk (&argc, &argv);
 
+  if (dpi)
+    {
+#if CLUTTER_CHECK_VERSION(1, 3, 0)
+      ClutterSettings *settings = clutter_settings_get_default ();
+      g_object_set (settings, "font-dpi", dpi * 1000, NULL);
+#endif
+    }
+
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
                                  MX_CACHE);
   mx_style_load_from_file (mx_style_get_default (),
@@ -115,6 +132,8 @@ main (int    argc,
 
 
     mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER(client));
+
+    mpl_panel_client_set_height_request (client, 600);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
     netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
@@ -164,6 +183,20 @@ main (int    argc,
     stage = clutter_stage_get_default ();
     clutter_actor_realize (stage);
     xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+    mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
+
+    if (geometry)
+      {
+        int x, y;
+        unsigned int width, height;
+        XParseGeometry (geometry, &x, &y, &width, &height);
+        clutter_actor_set_size (stage, width, height);
+      }
+    else
+      {
+        clutter_actor_set_size (stage, 1008, 600);
+      }
 
     mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
     netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
