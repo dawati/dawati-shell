@@ -233,7 +233,7 @@ _import_clicked_cb (MxButton             *button,
       launch_import (self, program, "--import-photos", &error);
   } else
   {
-    program = "banshee-1";
+    program = "banshee";
     launch_import (self, program, "--show-import-media", &error);
   }
 
