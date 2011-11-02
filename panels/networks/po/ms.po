@@ -1,465 +1,627 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: carrick-ng\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-07 18:32+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Mohamad Elrashidin Bin Sajeli <archayl@gmail.com>\n"
-"Language-Team: Malaysia\n"
+"Project-Id-Version: meego-panel-networks\n"
+"Report-Msgid-Bugs-To: https://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:34-0700\n"
+"PO-Revision-Date: 2011-02-23 23:50+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Malay (http://www.transifex.net/projects/p/meego/team/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Malay\n"
-"X-Poedit-Country: MALAYSIA\n"
+"Language: ms\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
-#.
-#. * Translator note: The disabled technologies available to be turned on is put together at
+#. Translator note: The disabled technologies available to be turned on is put
+#. together at
 #. * runtime.
-#. * The conjunction 'or' will be at the end of a choice of disabled technologies,
-#. * for example 'WiFi, WiMAX or 3G.
-#.
-#: ../carrick/carrick-list.c:859
+#. * The conjunction ' or ' will be at the end of a choice of disabled
+#. technologies,
+#. * for example 'You could try enabling WiFi, WiMAX or 3G'.
+#. * Note that you need to include spaces on both sides of the word/phrase
+#. * here -- unless you want it joined with previous or next word.
+#: ../carrick/carrick-list.c:1014
 msgid " or "
-msgstr "atau"
+msgstr ""
 
-#.
-#. * Translator note: the comma ',' will be used to join the different disabled technologies
-#. * as in the above example; 'WiFi, WiMAX or 3G'
-#.
-#: ../carrick/carrick-list.c:864
+#. Translator note: the comma ', ' will be used to join the different
+#. * disabled technologies as in the example:
+#. * 'You could try enabling WiFi, WiMAX or 3G'
+#. * Note that you need to include spaces in the string, unless you
+#. * want the words to appear right next to the comma.
+#: ../carrick/carrick-list.c:1021
 msgid ", "
-msgstr ", "
+msgstr ""
 
-#: ../carrick/carrick-list.c:865
+#. Translator note: these technology names will be used in forming
+#. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
+#. 
+#: ../carrick/carrick-list.c:1044 ../carrick/carrick-util.c:42
 msgid "wired"
-msgstr "dengan kabel"
+msgstr ""
 
-#: ../carrick/carrick-list.c:866
-#: ../carrick/carrick-pane.c:1445
+#. Switches
+#: ../carrick/carrick-list.c:1045 ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-util.c:40
 msgid "WiFi"
-msgstr "WiFi"
+msgstr ""
 
-#: ../carrick/carrick-list.c:867
-#: ../carrick/carrick-pane.c:1539
+#: ../carrick/carrick-list.c:1046 ../carrick/carrick-pane.c:2034
+#: ../carrick/carrick-util.c:46
 msgid "WiMAX"
-msgstr "WiMAX"
+msgstr ""
 
-#: ../carrick/carrick-list.c:868
-#: ../carrick/carrick-pane.c:1508
+#: ../carrick/carrick-list.c:1047 ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-util.c:44
 msgid "3G"
-msgstr "3G"
+msgstr ""
 
-#: ../carrick/carrick-list.c:869
-#: ../carrick/carrick-pane.c:1571
+#: ../carrick/carrick-list.c:1048 ../carrick/carrick-pane.c:2048
+#: ../carrick/carrick-util.c:48
 msgid "Bluetooth"
-msgstr "Bluetooth"
+msgstr ""
 
-#.
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
-#.
-#: ../carrick/carrick-list.c:882
-msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Maaf, kami tidak dapat mencari sebarang jaringan. Nampak seperti pengurus sambungan tidak berjalan. Anda boleh cuba untuk buka semula komputer anda."
+#. 
+#: ../carrick/carrick-list.c:1058
+msgid ""
+"Sorry, we can't find any networks. It appears that the connection manager is"
+" not running. You could try restarting your computer."
+msgstr ""
 
-#.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
-#.
-#: ../carrick/carrick-list.c:892
-msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "Maaf, kami tidak dapat mencari sebarang jaringan. Anda boleh cuba menyah-aktif mod Offline."
+#. 
+#: ../carrick/carrick-list.c:1068
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr ""
 
-#: ../carrick/carrick-list.c:1029
+#: ../carrick/carrick-list.c:1120
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Maaf, kami tidak dapat mencari sebarang jaringan. Anda boleh cuba mengaktifkan %s."
+msgstr ""
 
-#.
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
-#.
-#: ../carrick/carrick-list.c:1043
+#. 
+#: ../carrick/carrick-list.c:1134
 msgid "Sorry, we can't find any networks"
-msgstr "Maaf, kami tidak dapat mencari sebarang jaringan"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:103
+#: ../carrick/carrick-notification-manager.c:138
 msgid "Network connected"
-msgstr "Jaringan telah disambung"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:111
+#: ../carrick/carrick-notification-manager.c:146
 #, c-format
 msgid "You're now connected to a wired network"
-msgstr "Anda sekarang telah disambungkan ke jaringan dengan kabel."
-
-#: ../carrick/carrick-notification-manager.c:141
-#, c-format
-msgid "You're now connected to %s, a %s network"
-msgstr "Anda sekarang telah disambungkan ke %s, jaringan %s"
-
-#: ../carrick/carrick-notification-manager.c:147
-#, c-format
-msgid "You're now connected to a %s network"
-msgstr "Anda sekarang telah disambungkan ke jaringan %s"
-
-#: ../carrick/carrick-notification-manager.c:164
-msgid "Network lost"
-msgstr "Jaringan terputus"
-
-#: ../carrick/carrick-notification-manager.c:172
-#, c-format
-msgid "Sorry, we've lost your wired connection"
-msgstr "Maaf, kami telah terputus dari sambungan dengan kabel anda"
+msgstr ""
 
 #: ../carrick/carrick-notification-manager.c:176
 #, c-format
-msgid "Sorry we've lost your %s connection to %s"
-msgstr "Maaf, kami telah terputus dari sambungan dengan %s anda ke jaringan %s"
+msgid "You're now connected to %s, a %s network"
+msgstr ""
 
 #: ../carrick/carrick-notification-manager.c:182
 #, c-format
-msgid "Sorry, we've lost your %s connection"
-msgstr "Maaf, kami telah terputus dari sambungan  %s anda"
+msgid "You're now connected to a %s network"
+msgstr ""
 
 #: ../carrick/carrick-notification-manager.c:199
+msgid "Network lost"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:207
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:211
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:217
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:234
 msgid "Network changed"
-msgstr "Jaringan diubah."
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:218
+#: ../carrick/carrick-notification-manager.c:253
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Maaf, sambungan anda ke jaringan %s telah terputus. Jadi, kami telah menyambungkan anda ke jaringan dengan kabel"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:225
+#: ../carrick/carrick-notification-manager.c:260
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "Maaf, sambungan anda ke jaringan %s telah terputus. Jadi, kami telah menyambungkan anda ke jaringan %s, jaringan %s"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:233
+#: ../carrick/carrick-notification-manager.c:268
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "Maaf, sambungan anda ke jaringan %s telah terputus. Jadi, kami telah menyambungkan anda ke jaringan %s"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s "
+"network"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:243
+#: ../carrick/carrick-notification-manager.c:278
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Maaf, sambungan anda ke jaringan %s telah terputus. Jadi, kami telah menyambungkan anda ke jaringan dengan kabel"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired "
+"network"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:250
+#: ../carrick/carrick-notification-manager.c:285
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "Maaf, sambungan anda ke jaringan %s telah terputus. Jadi, kami telah menyambungkan anda ke jaringan %s, jaringan %s"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
 
-#: ../carrick/carrick-notification-manager.c:259
+#: ../carrick/carrick-notification-manager.c:294
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "Maaf, sambungan anda ke jaringan %s telah terputus. Jadi, kami telah menyambungkan anda ke jaringan %s"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr ""
 
-#: ../carrick/carrick-pane.c:630
+#: ../carrick/carrick-pane.c:686
 msgid "New connection settings"
-msgstr "Tetapan sambungan baru"
+msgstr ""
 
-#: ../carrick/carrick-pane.c:666
+#: ../carrick/carrick-pane.c:724
 msgid ""
 "Enter the name of the network you want\n"
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"Isikan nama jaringan yang anda mahu\n"
-"buat sambungan dan di mana-mana yang perlu, \n"
-"kata laluan dan jenis sekuriti."
 
-#: ../carrick/carrick-pane.c:676
+#: ../carrick/carrick-pane.c:734
 msgid "Network name"
-msgstr "Nama jaringan"
+msgstr ""
 
-#: ../carrick/carrick-pane.c:688
+#: ../carrick/carrick-pane.c:746
 msgid "Network security"
-msgstr "Sekuriti jaringan"
+msgstr ""
 
-#: ../carrick/carrick-pane.c:698
+#: ../carrick/carrick-pane.c:756
 msgid "None"
-msgstr "Tiada"
+msgstr ""
 
-#: ../carrick/carrick-pane.c:712
+#: ../carrick/carrick-pane.c:768
 msgid "Password"
-msgstr "Kata laluan"
+msgstr ""
 
-#: ../carrick/carrick-pane.c:727
-#: ../carrick/carrick-service-item.c:1280
+#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1953
 msgid "Show password"
-msgstr "Papar kata laluan"
+msgstr ""
 
-#: ../carrick/carrick-pane.c:1380
+#: ../carrick/carrick-pane.c:1975
+msgid "Settings"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:2006 ../carrick/carrick-service-item.c:461
+msgid "Wired"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:2073
+msgid "Offline mode"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:2083
+msgid "This will disable all your connections"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:2119 ../src/carrick.c:381
 msgid "Networks"
-msgstr "Jaringan"
+msgstr ""
 
 #. New connection button
-#: ../carrick/carrick-pane.c:1404
+#: ../carrick/carrick-pane.c:2125
 msgid "Add new connection"
-msgstr "Tambah jaringan baru"
+msgstr ""
 
-#: ../carrick/carrick-pane.c:1477
-#: ../carrick/carrick-service-item.c:239
-msgid "Wired"
-msgstr "Dengan kabel"
-
-#: ../carrick/carrick-pane.c:1615
-msgid "Offline mode"
-msgstr "Mod offline"
-
-#: ../carrick/carrick-pane.c:1640
-msgid "This will disable all your connections"
-msgstr "Ini akan menyah-aktif semua sambungan anda"
+#. TRANSLATORS: Button
+#. * There will be a combobox of VPN networks to the left of the
+#. * button
+#: ../carrick/carrick-pane.c:2165
+msgid "Connect to VPN"
+msgstr ""
 
 #. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
-#.
-#: ../carrick/carrick-service-item.c:47
+#. 
+#: ../carrick/carrick-service-item.c:64
 msgid "Critical Error: Invalid country code"
-msgstr "Ralat Kritikal: Kod negara yang tidah sah"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:48
+#: ../carrick/carrick-service-item.c:65
 msgid "Missing required APN (service plan name)"
-msgstr "Kekurangan APN yang diperlukan (nama pelan servis)"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:49
+#: ../carrick/carrick-service-item.c:66
 msgid "Internal Error: Invalid network service"
-msgstr "Ralat Dalaman: Servis jaringan tidak sah"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:50
+#: ../carrick/carrick-service-item.c:67
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Ralat Kritikal: Tidak dapat mengakses Pengurus Sambungan"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:51
+#: ../carrick/carrick-service-item.c:68
 msgid "ERROR: No 3G Hardware detected"
-msgstr "RALAT: Tiada perkakasan 3G dikesan"
+msgstr ""
 
-# 'Encrypt' is hard to translate
 #. TRANSLATORS: this is a wireless security method, at least WEP,
-#. *  WPA and WPA2 are possible token values. Example: "WEP encrypted".
-#.
-#: ../carrick/carrick-service-item.c:176
-#, fuzzy, c-format
+#. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
+#. 
+#: ../carrick/carrick-service-item.c:248
+#, c-format
 msgid "%s encrypted"
-msgstr "%s dikodkan"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:270
+#. TRANSLATORS: This string will be in the "Connect by:"-
+#. * combobox just like "DHCP" and "Static IP". Fixed means
+#. * that the IP configuration cannot be changed at all,
+#. * like in a 3G network
+#: ../carrick/carrick-service-item.c:407
+msgid "Fixed IP"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:474 ../carrick/carrick-service-item.c:492
 msgid "Disconnect"
-msgstr "Putuskan"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:273
+#: ../carrick/carrick-service-item.c:477
 msgid "Connected"
-msgstr "Telah bersambung"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:280
-#: ../carrick/carrick-service-item.c:289
+#: ../carrick/carrick-service-item.c:495
+msgid "Online"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:501 ../carrick/carrick-service-item.c:510
 #, c-format
 msgid "Cancel"
-msgstr "Batal"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:283
+#: ../carrick/carrick-service-item.c:504
 msgid "Configuring"
-msgstr "Mengatur"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:292
+#: ../carrick/carrick-service-item.c:513
 msgid "Associating"
-msgstr "Memasang"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:301
-#: ../carrick/carrick-service-item.c:326
-#: ../carrick/carrick-service-item.c:1269
+#: ../carrick/carrick-service-item.c:522 ../carrick/carrick-service-item.c:548
+#: ../carrick/carrick-service-item.c:1940
 msgid "Connect"
-msgstr "Sambung"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:329
+#: ../carrick/carrick-service-item.c:551
 msgid "Connection failed"
-msgstr "Sambungan gagal"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:332
+#: ../carrick/carrick-service-item.c:555
 msgid "Sorry, the connection failed. You could try again."
-msgstr "Maaf, sambungan gagal. Anda boleh cuba lagi."
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:338
-#: ../carrick/carrick-service-item.c:341
+#: ../carrick/carrick-service-item.c:562 ../carrick/carrick-service-item.c:565
 #, c-format
 msgid "Disconnecting"
-msgstr "Memutuskan"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:399
+#: ../carrick/carrick-service-item.c:633
 msgid "Type password here"
-msgstr "Taip kata laluan di sini"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:483
+#: ../carrick/carrick-service-item.c:709
 msgid "Really remove?"
-msgstr "Benar-benar buang?"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:501
+#: ../carrick/carrick-service-item.c:729
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-"Adakah anda mahu membuang jaringan %s %s? Ini\n"
-"akan mengakibatkan kata laluan padam dan anda tidak\n"
-"lagi disambung secara automatik ke jaringan %s."
 
-#: ../carrick/carrick-service-item.c:666
+#: ../carrick/carrick-service-item.c:1422
+msgid "Sorry, it looks like the IP address is not valid"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1434
+msgid "Sorry, it looks like the gateway address is not valid"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1446
+msgid "Sorry, it looks like the subnet mask is not valid"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1491
 #, c-format
-msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 28 characters, you have %i."
-msgstr "Kata laluan anda bukan dalam bilangan panjang yang betul. Untuk sambungan WEP ia perlu sama ada 10 atau 29 karakter, anda memasukkan %i."
+msgid "Sorry, it looks like the nameserver address '%s' is not valid"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:676
-#, c-format
-msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Kata laluan anda terlalu pendek. Untuk sambungan WPA ia perlu sekurang-kurangnya 8 karakter, anda masukkan %i"
+#. TRANSLATORS: label for the Advanced expander in a service item
+#: ../carrick/carrick-service-item.c:1853
+msgid "Advanced"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:680
-#, c-format
-msgid "Your password is too long. For a WPA  connection it needs to have fewer than 62 characters, you have %i"
-msgstr "Kata laluan anda terlalu panjang. Untuk sambungan WPA ia perlu maksimum 62 karakter, anda masukkan %i"
+#. TRANSLATORS: button for services that require an additional
+#. * web login (clicking will open browser)
+#: ../carrick/carrick-service-item.c:1865
+msgid "Log in"
+msgstr ""
 
-#: ../carrick/carrick-service-item.c:688
-#, c-format
-msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Kata laluan anda terlalu pendek. Untuk sambungan WPA2 ia perlu sekurang-kurangnya 8 karakter, anda masukkan %i"
-
-#: ../carrick/carrick-service-item.c:692
-#, c-format
-msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 62 characters, you have %i"
-msgstr "Kata laluan anda terlalu panjang. Untuk sambungan WPA2 ia perlu maksimum 62 karakter, anda masukkan %i"
-
-#: ../carrick/carrick-service-item.c:1205
+#: ../carrick/carrick-service-item.c:1874
 msgid "Scanning"
-msgstr "Mengesan"
+msgstr ""
 
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1224
+#: ../carrick/carrick-service-item.c:1895
 msgid "WPA2 encrypted"
-msgstr "Dikodkan dengan WPA2"
+msgstr ""
 
-#: ../src/carrick.c:62
+#. TRANSLATORS: label in advanced settings (next to combobox
+#. * for DHCP/Static IP)
+#: ../carrick/carrick-service-item.c:2002
+msgid "Connect by:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2004
+msgid "IP address:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2006
+msgid "Subnet mask:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2008
+msgid "Router:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2010
+msgid "DNS:"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:2017
+msgid "DHCP"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:2019
+msgid "Static IP"
+msgstr ""
+
+#. TRANSLATORS: label for apply button in static ip settings
+#: ../carrick/carrick-service-item.c:2070
+msgid "Apply"
+msgstr ""
+
+#: ../carrick/carrick-util.c:50
+msgid "VPN"
+msgstr ""
+
+#: ../carrick/carrick-util.c:86
+#, c-format
+msgid ""
+"Your password isn't the right length. For a WEP connection it needs to be "
+"either 10 or 26 characters, you have %i."
+msgstr ""
+
+#: ../carrick/carrick-util.c:101
+#, c-format
+msgid ""
+"Your password is too short. For a WPA  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+
+#: ../carrick/carrick-util.c:109
+#, c-format
+msgid ""
+"Your password is too long. For a WPA  connection it needs to have fewer than"
+" 64 characters, you have %i"
+msgstr ""
+
+#: ../carrick/carrick-util.c:122
+#, c-format
+msgid ""
+"Your password is too short. For a WPA2  connection it needs to be at least 8"
+" characters long, you have %i"
+msgstr ""
+
+#: ../carrick/carrick-util.c:130
+#, c-format
+msgid ""
+"Your password is too long. For a WPA2  connection it needs to have fewer "
+"than 64 characters, you have %i"
+msgstr ""
+
+#. TRANSLATORS: Tooltips for the toolbar icon
+#. * The possible placeholder is service name (such as
+#. * a wireless network name)
+#: ../src/carrick.c:52
 msgid "networks - not connected"
-msgstr "jaringan - tidak bersambung"
+msgstr ""
 
-#: ../src/carrick.c:68
+#: ../src/carrick.c:58
 msgid "networks - connecting"
-msgstr "jaringan - menyambung"
+msgstr ""
 
-#: ../src/carrick.c:74
+#: ../src/carrick.c:64
 msgid "networks - wired"
-msgstr "jaringan - dengan kabel"
+msgstr ""
 
-#: ../src/carrick.c:76
+#: ../src/carrick.c:66
 #, c-format
 msgid "networks - %s - wifi"
-msgstr "jaringan - %s - wifi"
+msgstr ""
 
-#: ../src/carrick.c:79
+#: ../src/carrick.c:69
 #, c-format
 msgid "networks - %s - wimax"
-msgstr "jaringan - %s - wimax"
+msgstr ""
 
-#: ../src/carrick.c:82
+#: ../src/carrick.c:72
 #, c-format
 msgid "networks - %s - 3G"
-msgstr "jaringan - %s - 3G"
+msgstr ""
 
-#: ../src/carrick.c:85
+#: ../src/carrick.c:75
 #, c-format
 msgid "networks - %s - bluetooth"
-msgstr "jaringan - %s - bluetooth"
+msgstr ""
+
+#: ../src/carrick.c:78
+#, c-format
+msgid "networks - %s - VPN"
+msgstr ""
+
+#: ../src/carrick.c:81 ../src/carrick.c:93
+msgid "networks"
+msgstr ""
 
 #: ../src/carrick.c:88
-#: ../src/carrick.c:100
-msgid "networks"
-msgstr "jaringan"
-
-#: ../src/carrick.c:95
 msgid "networks - error"
-msgstr "jaringan - ralat"
+msgstr ""
 
-#: ../src/carrick.c:127
+#: ../src/carrick.c:309
 msgid "Run in standalone mode"
-msgstr "Jalankan dalam mod berdikari"
+msgstr ""
 
-#: ../src/carrick.c:138
+#: ../src/carrick.c:311
+msgid "Embed in another window (overrides --standalone)"
+msgstr ""
+
+#: ../src/carrick.c:322
 msgid "Carrick connectivity applet"
-msgstr "Applet sambungan Carrick"
+msgstr ""
 
-#: ../src/carrick.c:139
-msgid "- Moblin connectivity applet"
-msgstr "- Applet sambungan Moblin"
+#: ../src/carrick.c:323
+msgid "- MeeGo connectivity applet"
+msgstr ""
 
-#: ../src/carrick.c:162
+#: ../src/carrick.c:364 ../data/carrick.desktop.in.in.h:2
 msgid "network"
-msgstr "jaringan"
+msgstr ""
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:69
-#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
-msgstr "Bestari Sambungan Data Selular"
+msgstr ""
 
 #: ../callouts/3g/ggg-country-dialog.c:93
 msgid "Select Country"
-msgstr "Pilih Negara"
+msgstr ""
 
-#: ../callouts/3g/ggg-manual-dialog.c:88
+#: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
-msgstr "Aturan Manual"
+msgstr ""
 
-#: ../callouts/3g/ggg-manual-dialog.c:92
+#: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr "Nama Pelan (diperlukan):"
+msgstr ""
 
-#: ../callouts/3g/ggg-manual-dialog.c:95
+#: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
-msgstr "Nama pengguna:"
+msgstr ""
 
-#: ../callouts/3g/ggg-manual-dialog.c:98
+#: ../callouts/3g/ggg-manual-dialog.c:99
 msgid "Password:"
-msgstr "Kata laluan:"
+msgstr ""
 
-#: ../callouts/3g/ggg-manual-dialog.c:102
+#: ../callouts/3g/ggg-manual-dialog.c:103
 msgid "Gateway:"
-msgstr "Gateway:"
+msgstr ""
 
-#: ../callouts/3g/ggg-manual-dialog.c:105
+#: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
-msgstr "DNS utama:"
+msgstr ""
 
-#: ../callouts/3g/ggg-manual-dialog.c:108
+#: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
-msgstr "DNS kedua:"
+msgstr ""
 
-#: ../callouts/3g/ggg-manual-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
-msgstr "DNS ketiga:"
+msgstr ""
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
-msgstr "Pilih Pelan 3G anda"
+msgstr ""
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
-msgstr "Pilih Pembekal"
+msgstr ""
 
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
 msgid "%s (Roaming)"
-msgstr "%s (Roaming)"
+msgstr ""
 
 #: ../callouts/3g/ggg-service-dialog.c:125
 msgid "Select 3G Service"
-msgstr "Pilih Servis 3G"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:659
+#, c-format
+msgid ""
+"Certificate from VPN server \"%s\" failed verification.\n"
+"Reason: %s\n"
+"Do you want to accept it?"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1318
+msgid "VPN host"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1338
+msgid "Automatically start connecting next time"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1355
+msgid "Select a host to fetch the login form"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1360
+msgid "Contacting host, please wait..."
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1372
+msgid "_Login"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1386
+msgid "Log"
+msgstr ""
+
+#: ../data/carrick.desktop.in.in.h:1
+msgid "Network settings"
+msgstr ""
+
 

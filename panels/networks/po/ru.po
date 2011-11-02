@@ -1,181 +1,192 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Patrick McCarty <patrick.mccarty@linux.intel.com>, 2011.
+# Yuri Myasoedov <omerta13@yandex.ru>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-19 16:54+0000\n"
-"PO-Revision-Date: 2010-10-19 19:45-0800\n"
-"Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
-"Language-Team: \n"
+"Project-Id-Version: meego-panel-networks\n"
+"Report-Msgid-Bugs-To: https://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:34-0700\n"
+"PO-Revision-Date: 2011-11-03 18:49+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Russian (http://www.transifex.net/projects/p/meego/team/ru/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n!=1;\n"
-"X-Poedit-Language: Russian\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#. Translator note: The disabled technologies available to be turned on is put together at
+#. Translator note: The disabled technologies available to be turned on is put
+#. together at
 #. * runtime.
-#. * The conjunction ' or ' will be at the end of a choice of disabled technologies,
+#. * The conjunction ' or ' will be at the end of a choice of disabled
+#. technologies,
 #. * for example 'You could try enabling WiFi, WiMAX or 3G'.
 #. * Note that you need to include spaces on both sides of the word/phrase
 #. * here -- unless you want it joined with previous or next word.
-#: ../carrick/carrick-list.c:1008
+#: ../carrick/carrick-list.c:1014
 msgid " or "
-msgstr "или"
+msgstr " или "
 
 #. Translator note: the comma ', ' will be used to join the different
 #. * disabled technologies as in the example:
 #. * 'You could try enabling WiFi, WiMAX or 3G'
 #. * Note that you need to include spaces in the string, unless you
 #. * want the words to appear right next to the comma.
-#: ../carrick/carrick-list.c:1015
+#: ../carrick/carrick-list.c:1021
 msgid ", "
 msgstr ", "
 
 #. Translator note: these technology names will be used in forming
 #. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
-#.
-#: ../carrick/carrick-list.c:1038
-#: ../carrick/carrick-util.c:40
+#. 
+#: ../carrick/carrick-list.c:1044 ../carrick/carrick-util.c:42
 msgid "wired"
 msgstr "проводная"
 
 #. Switches
-#: ../carrick/carrick-list.c:1039
-#: ../carrick/carrick-pane.c:1964
-#: ../carrick/carrick-util.c:38
+#: ../carrick/carrick-list.c:1045 ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-util.c:40
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:1040
-#: ../carrick/carrick-pane.c:2006
-#: ../carrick/carrick-util.c:44
+#: ../carrick/carrick-list.c:1046 ../carrick/carrick-pane.c:2034
+#: ../carrick/carrick-util.c:46
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:1041
-#: ../carrick/carrick-pane.c:1992
-#: ../carrick/carrick-util.c:42
+#: ../carrick/carrick-list.c:1047 ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-util.c:44
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:1042
-#: ../carrick/carrick-pane.c:2020
-#: ../carrick/carrick-util.c:46
+#: ../carrick/carrick-list.c:1048 ../carrick/carrick-pane.c:2048
+#: ../carrick/carrick-util.c:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#.
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
-#.
-#: ../carrick/carrick-list.c:1052
-msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Не найдено ни одной сети. Возможно, мастер соединений не запущен. Попробуйте перегрузить компьютер."
+#. 
+#: ../carrick/carrick-list.c:1058
+msgid ""
+"Sorry, we can't find any networks. It appears that the connection manager is"
+" not running. You could try restarting your computer."
+msgstr ""
+"Не найдено ни одной сети. Возможно, мастер соединений не запущен. Попробуйте"
+" перезагрузить компьютер."
 
-#.
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
-#.
-#: ../carrick/carrick-list.c:1062
-msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "Не удается найти ни одной сети. Попробуйте отключить режим Офлайн."
+#. 
+#: ../carrick/carrick-list.c:1068
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Не найдено ни одной сети. Попробуйте отключить режим «Оффлайн»."
 
-#: ../carrick/carrick-list.c:1114
+#: ../carrick/carrick-list.c:1120
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Не удается найти ни одной сети. Попробуйте активировать %s."
+msgstr "Не найдено ни одной сети. Попробуйте включить %s."
 
-#.
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
-#.
-#: ../carrick/carrick-list.c:1128
+#. 
+#: ../carrick/carrick-list.c:1134
 msgid "Sorry, we can't find any networks"
-msgstr "Не удается найти ни одной сети"
+msgstr "Не найдено ни одной сети"
 
-#: ../carrick/carrick-notification-manager.c:131
+#: ../carrick/carrick-notification-manager.c:138
 msgid "Network connected"
-msgstr "Сеть установлена"
+msgstr "Подключено к сети"
 
-#: ../carrick/carrick-notification-manager.c:139
+#: ../carrick/carrick-notification-manager.c:146
 #, c-format
 msgid "You're now connected to a wired network"
 msgstr "Теперь вы подключены к проводной сети"
 
-#: ../carrick/carrick-notification-manager.c:169
+#: ../carrick/carrick-notification-manager.c:176
 #, c-format
 msgid "You're now connected to %s, a %s network"
 msgstr "Теперь вы подключены к %s, сети %s"
 
-#: ../carrick/carrick-notification-manager.c:175
+#: ../carrick/carrick-notification-manager.c:182
 #, c-format
 msgid "You're now connected to a %s network"
 msgstr "Теперь вы подключены к сети %s"
 
-#: ../carrick/carrick-notification-manager.c:192
+#: ../carrick/carrick-notification-manager.c:199
 msgid "Network lost"
-msgstr "Соединение с сетью утрачено"
+msgstr "Соединение с сетью потеряно"
 
-#: ../carrick/carrick-notification-manager.c:200
+#: ../carrick/carrick-notification-manager.c:207
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "Ваше проводное подключение утрачено"
+msgstr "Ваше проводное подключение потеряно"
 
-#: ../carrick/carrick-notification-manager.c:204
+#: ../carrick/carrick-notification-manager.c:211
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "Ваше подключение %s к %s утрачено"
+msgstr "Ваше подключение %s к %s потеряно"
 
-#: ../carrick/carrick-notification-manager.c:210
+#: ../carrick/carrick-notification-manager.c:217
 #, c-format
 msgid "Sorry, we've lost your %s connection"
-msgstr "Ваше подключение %s утрачено"
+msgstr "Ваше подключение %s потеряно"
 
-#: ../carrick/carrick-notification-manager.c:227
+#: ../carrick/carrick-notification-manager.c:234
 msgid "Network changed"
 msgstr "Сеть изменена"
 
-#: ../carrick/carrick-notification-manager.c:246
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Ваше подключение к %s утрачено. Мы подключили вас к проводной сети"
-
 #: ../carrick/carrick-notification-manager.c:253
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "Ваше подключение к %s утрачено. Мы подключили вас к %s, сети %s"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас к проводной сети"
 
-#: ../carrick/carrick-notification-manager.c:261
+#: ../carrick/carrick-notification-manager.c:260
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "Ваше подключение к %s утрачено. Мы подключили вас к сети %s"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr "Ваше соединение с %s потеряно. Мы подключили вас к %s, сети %s"
 
-#: ../carrick/carrick-notification-manager.c:271
+#: ../carrick/carrick-notification-manager.c:268
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Ваше подключение к %s утрачено. Мы подключили вас проводной сети"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s "
+"network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас к сети %s"
 
 #: ../carrick/carrick-notification-manager.c:278
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "Ваше подключение к %s утрачено. Мы подключили вас к %s, сети %s"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired "
+"network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас проводной сети"
 
-#: ../carrick/carrick-notification-manager.c:287
+#: ../carrick/carrick-notification-manager.c:285
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "Ваше подключение к %s утрачено. Мы подключили вас к сети %s"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас к %s, сети %s"
+
+#: ../carrick/carrick-notification-manager.c:294
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас к сети %s"
 
 #: ../carrick/carrick-pane.c:686
 msgid "New connection settings"
-msgstr "Настройки нового подключения"
+msgstr "Параметры нового подключения"
 
 #: ../carrick/carrick-pane.c:724
 msgid ""
@@ -183,9 +194,9 @@ msgid ""
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"Укажите имя сети, к которой вы хотите\n"
-" подключиться, и, при необходимости, пароль\n"
-" и тип безопасности."
+"Введите имя сети, к которой вы хотите\n"
+"подключиться, и, при необходимости, пароль\n"
+"и тип безопасности."
 
 #: ../carrick/carrick-pane.c:734
 msgid "Network name"
@@ -193,7 +204,7 @@ msgstr "Сетевое имя"
 
 #: ../carrick/carrick-pane.c:746
 msgid "Network security"
-msgstr "Тип безопасности сети"
+msgstr "Сетевая безопасность"
 
 #: ../carrick/carrick-pane.c:756
 msgid "None"
@@ -203,49 +214,46 @@ msgstr "Отсутствует"
 msgid "Password"
 msgstr "Пароль"
 
-#: ../carrick/carrick-pane.c:786
-#: ../carrick/carrick-service-item.c:1944
+#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1953
 msgid "Show password"
-msgstr "Показать пароль"
+msgstr "Показывать пароль"
 
-#: ../carrick/carrick-pane.c:1947
+#: ../carrick/carrick-pane.c:1975
 msgid "Settings"
-msgstr "Настройки"
+msgstr "Параметры"
 
-#: ../carrick/carrick-pane.c:1978
-#: ../carrick/carrick-service-item.c:456
+#: ../carrick/carrick-pane.c:2006 ../carrick/carrick-service-item.c:461
 msgid "Wired"
 msgstr "Проводная"
 
-#: ../carrick/carrick-pane.c:2045
+#: ../carrick/carrick-pane.c:2073
 msgid "Offline mode"
-msgstr "Режим Оффлайн"
+msgstr "Режим «Оффлайн»"
 
-#: ../carrick/carrick-pane.c:2055
+#: ../carrick/carrick-pane.c:2083
 msgid "This will disable all your connections"
 msgstr "Это отключит все ваши подключения"
 
-#: ../carrick/carrick-pane.c:2091
-#: ../src/carrick.c:380
+#: ../carrick/carrick-pane.c:2119 ../src/carrick.c:381
 msgid "Networks"
 msgstr "Сетевые подключения"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:2097
+#: ../carrick/carrick-pane.c:2125
 msgid "Add new connection"
 msgstr "Добавить новое подключение"
 
 #. TRANSLATORS: Button
 #. * There will be a combobox of VPN networks to the left of the
 #. * button
-#: ../carrick/carrick-pane.c:2137
+#: ../carrick/carrick-pane.c:2165
 msgid "Connect to VPN"
 msgstr "Подключиться к виртуальной частной сети (VPN)"
 
 #. Translators:
 #. The following are potential errors that a user might see while
 #. attempting to configure a 3G data service.
-#.
+#. 
 #: ../carrick/carrick-service-item.c:64
 msgid "Critical Error: Invalid country code"
 msgstr "Критическая ошибка: неправильный код страны"
@@ -256,7 +264,7 @@ msgstr "Отсутствует необходимое APN (имя плана о�
 
 #: ../carrick/carrick-service-item.c:66
 msgid "Internal Error: Invalid network service"
-msgstr "Внутренняя ошибка: недействительная сетевая служба"
+msgstr "Внутренняя ошибка: недопустимая сетевая служба"
 
 #: ../carrick/carrick-service-item.c:67
 msgid "Critical Error: Unable to access Connection Manager"
@@ -264,12 +272,12 @@ msgstr "Критическая ошибка: невозможно получит
 
 #: ../carrick/carrick-service-item.c:68
 msgid "ERROR: No 3G Hardware detected"
-msgstr "ОШИБКА: 3G-устройства не обнаружены"
+msgstr "ОШИБКА: 3G-устройства не найдены"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
-#.
-#: ../carrick/carrick-service-item.c:243
+#. 
+#: ../carrick/carrick-service-item.c:248
 #, c-format
 msgid "%s encrypted"
 msgstr "%s зашифровано"
@@ -278,66 +286,62 @@ msgstr "%s зашифровано"
 #. * combobox just like "DHCP" and "Static IP". Fixed means
 #. * that the IP configuration cannot be changed at all,
 #. * like in a 3G network
-#: ../carrick/carrick-service-item.c:402
+#: ../carrick/carrick-service-item.c:407
 msgid "Fixed IP"
 msgstr "Статический IP-адрес"
 
-#: ../carrick/carrick-service-item.c:469
-#: ../carrick/carrick-service-item.c:487
+#: ../carrick/carrick-service-item.c:474 ../carrick/carrick-service-item.c:492
 msgid "Disconnect"
 msgstr "Отключить"
 
-#: ../carrick/carrick-service-item.c:472
+#: ../carrick/carrick-service-item.c:477
 msgid "Connected"
 msgstr "Подключено"
 
-#: ../carrick/carrick-service-item.c:490
+#: ../carrick/carrick-service-item.c:495
 msgid "Online"
 msgstr "Онлайн"
 
-#: ../carrick/carrick-service-item.c:496
-#: ../carrick/carrick-service-item.c:505
+#: ../carrick/carrick-service-item.c:501 ../carrick/carrick-service-item.c:510
 #, c-format
 msgid "Cancel"
 msgstr "Отменить"
 
-#: ../carrick/carrick-service-item.c:499
+#: ../carrick/carrick-service-item.c:504
 msgid "Configuring"
 msgstr "Настройка"
 
-#: ../carrick/carrick-service-item.c:508
+#: ../carrick/carrick-service-item.c:513
 msgid "Associating"
 msgstr "Ассоциирование"
 
-#: ../carrick/carrick-service-item.c:517
-#: ../carrick/carrick-service-item.c:543
-#: ../carrick/carrick-service-item.c:1931
+#: ../carrick/carrick-service-item.c:522 ../carrick/carrick-service-item.c:548
+#: ../carrick/carrick-service-item.c:1940
 msgid "Connect"
 msgstr "Подключить"
 
-#: ../carrick/carrick-service-item.c:546
+#: ../carrick/carrick-service-item.c:551
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: ../carrick/carrick-service-item.c:550
+#: ../carrick/carrick-service-item.c:555
 msgid "Sorry, the connection failed. You could try again."
 msgstr "Сбой подключения, повторите попытку."
 
-#: ../carrick/carrick-service-item.c:557
-#: ../carrick/carrick-service-item.c:560
+#: ../carrick/carrick-service-item.c:562 ../carrick/carrick-service-item.c:565
 #, c-format
 msgid "Disconnecting"
 msgstr "Отключение"
 
-#: ../carrick/carrick-service-item.c:628
+#: ../carrick/carrick-service-item.c:633
 msgid "Type password here"
 msgstr "Введите пароль здесь"
 
-#: ../carrick/carrick-service-item.c:704
+#: ../carrick/carrick-service-item.c:709
 msgid "Really remove?"
 msgstr "Действительно удалить?"
 
-#: ../carrick/carrick-service-item.c:724
+#: ../carrick/carrick-service-item.c:729
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
@@ -345,38 +349,38 @@ msgid ""
 "automatically connected to %s."
 msgstr ""
 "Удалить сеть %s %s? Это\n"
-"приведет к утрате пароля и невозможности\n"
+"приведёт к потере пароля и невозможности\n"
 "автоматического подключения к %s."
 
-#: ../carrick/carrick-service-item.c:1413
+#: ../carrick/carrick-service-item.c:1422
 msgid "Sorry, it looks like the IP address is not valid"
-msgstr "Похоже, что IP-адрес недействителен"
+msgstr "Некорректный IP-адрес"
 
-#: ../carrick/carrick-service-item.c:1425
+#: ../carrick/carrick-service-item.c:1434
 msgid "Sorry, it looks like the gateway address is not valid"
-msgstr "Похоже, что адрес межсетевого шлюза недействителен"
+msgstr "Некорректный адрес межсетевого шлюза"
 
-#: ../carrick/carrick-service-item.c:1437
+#: ../carrick/carrick-service-item.c:1446
 msgid "Sorry, it looks like the subnet mask is not valid"
-msgstr "Похоже, что маска подсети недействительна"
+msgstr "Некорректная маска подсети"
 
-#: ../carrick/carrick-service-item.c:1482
+#: ../carrick/carrick-service-item.c:1491
 #, c-format
 msgid "Sorry, it looks like the nameserver address '%s' is not valid"
-msgstr "Похоже, что адрес сервера преобразования имён '%s' недействителен"
+msgstr "Некорректный адрес сервера преобразования имён «%s»"
 
 #. TRANSLATORS: label for the Advanced expander in a service item
-#: ../carrick/carrick-service-item.c:1844
+#: ../carrick/carrick-service-item.c:1853
 msgid "Advanced"
 msgstr "Расширенные"
 
 #. TRANSLATORS: button for services that require an additional
 #. * web login (clicking will open browser)
-#: ../carrick/carrick-service-item.c:1856
+#: ../carrick/carrick-service-item.c:1865
 msgid "Log in"
 msgstr "Вход"
 
-#: ../carrick/carrick-service-item.c:1865
+#: ../carrick/carrick-service-item.c:1874
 msgid "Scanning"
 msgstr "Проверка"
 
@@ -384,151 +388,168 @@ msgstr "Проверка"
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1886
+#: ../carrick/carrick-service-item.c:1895
 msgid "WPA2 encrypted"
-msgstr "WPA2 зашифровано"
+msgstr "Шифрование WPA2"
 
 #. TRANSLATORS: label in advanced settings (next to combobox
 #. * for DHCP/Static IP)
-#: ../carrick/carrick-service-item.c:1993
+#: ../carrick/carrick-service-item.c:2002
 msgid "Connect by:"
-msgstr "Подключить посредством:"
+msgstr "Подключить с помощью:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1995
+#: ../carrick/carrick-service-item.c:2004
 msgid "IP address:"
 msgstr "IP-адрес:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1997
+#: ../carrick/carrick-service-item.c:2006
 msgid "Subnet mask:"
 msgstr "Маска подсети:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1999
+#: ../carrick/carrick-service-item.c:2008
 msgid "Router:"
 msgstr "Маршрутизатор:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2001
+#: ../carrick/carrick-service-item.c:2010
 msgid "DNS:"
 msgstr "DNS:"
 
-#: ../carrick/carrick-service-item.c:2008
+#: ../carrick/carrick-service-item.c:2017
 msgid "DHCP"
 msgstr "DHCP"
 
-#: ../carrick/carrick-service-item.c:2010
+#: ../carrick/carrick-service-item.c:2019
 msgid "Static IP"
 msgstr "Статический IP-адрес"
 
 #. TRANSLATORS: label for apply button in static ip settings
-#: ../carrick/carrick-service-item.c:2061
+#: ../carrick/carrick-service-item.c:2070
 msgid "Apply"
 msgstr "Применить"
 
-#: ../carrick/carrick-util.c:48
+#: ../carrick/carrick-util.c:50
 msgid "VPN"
 msgstr "Виртуальная частная сеть (VPN)"
 
-#: ../carrick/carrick-util.c:84
+#: ../carrick/carrick-util.c:86
 #, c-format
-msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
-msgstr "Пароль содержит неправильное количество символов. Для подключения WEP он должен содержать 10 или 26 символов, у вас %i."
+msgid ""
+"Your password isn't the right length. For a WEP connection it needs to be "
+"either 10 or 26 characters, you have %i."
+msgstr ""
+"Пароль содержит неправильное количество символов. Для подключения WEP он "
+"должен содержать 10 или 26 символов, у вас — %i."
 
-#: ../carrick/carrick-util.c:99
+#: ../carrick/carrick-util.c:101
 #, c-format
-msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Слишком короткий пароль. Для подключения WPA он должен состоять минимум из 8 символов, у вас %i"
+msgid ""
+"Your password is too short. For a WPA  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"Слишком короткий пароль. Для подключения WPA он должен состоять минимум из 8"
+" символов, у вас — %i"
 
-#: ../carrick/carrick-util.c:107
+#: ../carrick/carrick-util.c:109
 #, c-format
-msgid "Your password is too long. For a WPA  connection it needs to have fewer than 64 characters, you have %i"
-msgstr "Слишком длинный пароль. Для подключения WPA  пароль должен быть не длиннее 64 символов; у вас %i"
+msgid ""
+"Your password is too long. For a WPA  connection it needs to have fewer than"
+" 64 characters, you have %i"
+msgstr ""
+"Слишком длинный пароль. Для подключения WPA  пароль должен быть не длиннее "
+"64 символов; у вас — %i"
 
-#: ../carrick/carrick-util.c:120
+#: ../carrick/carrick-util.c:122
 #, c-format
-msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Слишком короткий пароль. Для подключения WPA2 он должен состоять минимум из 8 символов, у вас %i"
+msgid ""
+"Your password is too short. For a WPA2  connection it needs to be at least 8"
+" characters long, you have %i"
+msgstr ""
+"Слишком короткий пароль. Для подключения WPA2 он должен состоять минимум из "
+"8 символов, у вас — %i"
 
-#: ../carrick/carrick-util.c:128
+#: ../carrick/carrick-util.c:130
 #, c-format
-msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 64 characters, you have %i"
-msgstr "Слишком длинный пароль. Для подключения WPA2  пароль должен быть не длиннее 64 символов; у вас %i"
+msgid ""
+"Your password is too long. For a WPA2  connection it needs to have fewer "
+"than 64 characters, you have %i"
+msgstr ""
+"Слишком длинный пароль. Для подключения WPA2  пароль должен быть не длиннее "
+"64 символов; у вас — %i"
 
 #. TRANSLATORS: Tooltips for the toolbar icon
 #. * The possible placeholder is service name (such as
 #. * a wireless network name)
 #: ../src/carrick.c:52
 msgid "networks - not connected"
-msgstr "сети - не подключено"
+msgstr "сети — не подключено"
 
 #: ../src/carrick.c:58
 msgid "networks - connecting"
-msgstr "сети - подключение"
+msgstr "сети — подключение"
 
 #: ../src/carrick.c:64
 msgid "networks - wired"
-msgstr "сети - проводные"
+msgstr "сети — проводные"
 
 #: ../src/carrick.c:66
 #, c-format
 msgid "networks - %s - wifi"
-msgstr "сети - %s - wifi"
+msgstr "сети — %s — wifi"
 
 #: ../src/carrick.c:69
 #, c-format
 msgid "networks - %s - wimax"
-msgstr "сети - %s - wimax"
+msgstr "сети — %s — wimax"
 
 #: ../src/carrick.c:72
 #, c-format
 msgid "networks - %s - 3G"
-msgstr "сети - %s - 3G"
+msgstr "сети — %s — 3G"
 
 #: ../src/carrick.c:75
 #, c-format
 msgid "networks - %s - bluetooth"
-msgstr "сети - %s - bluetooth"
+msgstr "сети — %s — bluetooth"
 
 #: ../src/carrick.c:78
 #, c-format
 msgid "networks - %s - VPN"
-msgstr "сети - %s - VPN"
+msgstr "сети — %s — VPN"
 
-#: ../src/carrick.c:81
-#: ../src/carrick.c:93
+#: ../src/carrick.c:81 ../src/carrick.c:93
 msgid "networks"
 msgstr "сети"
 
 #: ../src/carrick.c:88
 msgid "networks - error"
-msgstr "сети - ошибка"
+msgstr "сети — ошибка"
 
-#: ../src/carrick.c:308
+#: ../src/carrick.c:309
 msgid "Run in standalone mode"
 msgstr "Запуск в автономном режиме"
 
-#: ../src/carrick.c:310
+#: ../src/carrick.c:311
 msgid "Embed in another window (overrides --standalone)"
 msgstr "Добавлено в другом окне (замещает --отдельный)"
 
-#: ../src/carrick.c:321
-msgid "Carrick connectivity applet"
-msgstr "Приложение для подключения Carrick"
-
 #: ../src/carrick.c:322
-msgid "- MeeGo connectivity applet"
-msgstr "- подключение апплета MeeGo"
+msgid "Carrick connectivity applet"
+msgstr "Апплет для подключения Carrick"
 
-#: ../src/carrick.c:363
-#: ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:323
+msgid "- MeeGo connectivity applet"
+msgstr "— апплет подключения"
+
+#: ../src/carrick.c:364 ../data/carrick.desktop.in.in.h:2
 msgid "network"
 msgstr "сеть"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
-#: ../callouts/3g/ggg-manual-dialog.c:70
-#: ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
@@ -564,11 +585,11 @@ msgstr "Основной DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
-msgstr "Второй DNS:"
+msgstr "Вторичный DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
-msgstr "Третий DNS:"
+msgstr "Третичный DNS:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
@@ -576,7 +597,7 @@ msgstr "Выберите свой план 3G"
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
-msgstr "Выберите провайдера"
+msgstr "Выберите провайдер"
 
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
@@ -587,7 +608,40 @@ msgstr "%s (роуминг)"
 msgid "Select 3G Service"
 msgstr "Выберите службу 3G"
 
+#: ../callouts/openconnect/main.c:659
+#, c-format
+msgid ""
+"Certificate from VPN server \"%s\" failed verification.\n"
+"Reason: %s\n"
+"Do you want to accept it?"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1318
+msgid "VPN host"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1338
+msgid "Automatically start connecting next time"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1355
+msgid "Select a host to fetch the login form"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1360
+msgid "Contacting host, please wait..."
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1372
+msgid "_Login"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1386
+msgid "Log"
+msgstr ""
+
 #: ../data/carrick.desktop.in.in.h:1
 msgid "Network settings"
 msgstr "Сетевые параметры"
+
 

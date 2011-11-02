@@ -1,20 +1,22 @@
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # 
-# Pavel, 2010, 2004.
+# Translators:
+# fri <pavelfric@seznam.cz>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-21 00:00+0000\n"
-"PO-Revision-Date: 2004-01-01 03:54+0100\n"
-"Last-Translator: \n"
-"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"Project-Id-Version: meego-panel-networks\n"
+"Report-Msgid-Bugs-To: https://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:34-0700\n"
+"PO-Revision-Date: 2011-11-03 18:49+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Czech (http://www.transifex.net/projects/p/meego/team/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 1.0\n"
+"Language: cs\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
 
 #. Translator note: The disabled technologies available to be turned on is put
 #. together at
@@ -24,7 +26,7 @@ msgstr ""
 #. * for example 'You could try enabling WiFi, WiMAX or 3G'.
 #. * Note that you need to include spaces on both sides of the word/phrase
 #. * here -- unless you want it joined with previous or next word.
-#: ../carrick/carrick-list.c:1008
+#: ../carrick/carrick-list.c:1014
 msgid " or "
 msgstr " nebo "
 
@@ -33,35 +35,35 @@ msgstr " nebo "
 #. * 'You could try enabling WiFi, WiMAX or 3G'
 #. * Note that you need to include spaces in the string, unless you
 #. * want the words to appear right next to the comma.
-#: ../carrick/carrick-list.c:1015
+#: ../carrick/carrick-list.c:1021
 msgid ", "
 msgstr ", "
 
 #. Translator note: these technology names will be used in forming
 #. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
 #. 
-#: ../carrick/carrick-list.c:1038 ../carrick/carrick-util.c:40
+#: ../carrick/carrick-list.c:1044 ../carrick/carrick-util.c:42
 msgid "wired"
-msgstr "s připojením na internet"
+msgstr "drátová"
 
 #. Switches
-#: ../carrick/carrick-list.c:1039 ../carrick/carrick-pane.c:1988
-#: ../carrick/carrick-util.c:38
+#: ../carrick/carrick-list.c:1045 ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-util.c:40
 msgid "WiFi"
 msgstr "WiFi"
 
-#: ../carrick/carrick-list.c:1040 ../carrick/carrick-pane.c:2030
-#: ../carrick/carrick-util.c:44
+#: ../carrick/carrick-list.c:1046 ../carrick/carrick-pane.c:2034
+#: ../carrick/carrick-util.c:46
 msgid "WiMAX"
 msgstr "WiMAX"
 
-#: ../carrick/carrick-list.c:1041 ../carrick/carrick-pane.c:2016
-#: ../carrick/carrick-util.c:42
+#: ../carrick/carrick-list.c:1047 ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-util.c:44
 msgid "3G"
 msgstr "3G"
 
-#: ../carrick/carrick-list.c:1042 ../carrick/carrick-pane.c:2044
-#: ../carrick/carrick-util.c:46
+#: ../carrick/carrick-list.c:1048 ../carrick/carrick-pane.c:2048
+#: ../carrick/carrick-util.c:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -69,105 +71,135 @@ msgstr "Bluetooth"
 #. * are no available networks because ConnMan, the
 #. * connectivity daemon, is not running.
 #. 
-#: ../carrick/carrick-list.c:1052
-msgid "Sorry, we can't find any networks. It appears that the connection manager is not running. You could try restarting your computer."
-msgstr "Promiňte, ale nemůžeme najít žádné sítě. Vypadá to, že správce připojení neběží. Můžete zkusit spustit svůj počítač znovu."
+#: ../carrick/carrick-list.c:1058
+msgid ""
+"Sorry, we can't find any networks. It appears that the connection manager is"
+" not running. You could try restarting your computer."
+msgstr ""
+"Promiňte, ale nelze najít žádné sítě. Zdá se, že správce spojení neběží.Mohl"
+" byste zkusit spustit svůj počítač znovu."
 
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
 #. 
-#: ../carrick/carrick-list.c:1062
-msgid "Sorry, we can't find any networks. You could try disabling Offline mode. "
-msgstr "Promiňte, ale nemůžeme najít žádné sítě. Můžete zkusit zakázat režim nepřipojený k internetu"
+#: ../carrick/carrick-list.c:1068
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr ""
+"Promiňte, ale nelze najít žádné sítě. Mohl byste zkusit zakázat režim "
+"nepřipojený. "
 
-#: ../carrick/carrick-list.c:1114
+#: ../carrick/carrick-list.c:1120
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Promiňte, ale nemůžeme najít žádné sítě. Můžete zkusit povolit %s."
+msgstr "Promiňte, ale nelze najít žádné sítě. Mohl byste zkusit povolit %s."
 
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
 #. * can not find any networks
 #. 
-#: ../carrick/carrick-list.c:1128
+#: ../carrick/carrick-list.c:1134
 msgid "Sorry, we can't find any networks"
-msgstr "Promiňte, ale nemůžeme najít žádné sítě"
+msgstr "Promiňte, ale nelze najít žádné sítě"
 
-#: ../carrick/carrick-notification-manager.c:131
+#: ../carrick/carrick-notification-manager.c:138
 msgid "Network connected"
 msgstr "Síť připojena"
 
-#: ../carrick/carrick-notification-manager.c:139
+#: ../carrick/carrick-notification-manager.c:146
 #, c-format
 msgid "You're now connected to a wired network"
-msgstr "Nyní jste připojeni k síti s připojením na internet"
+msgstr "Nyní jste připojen ke drátové síti"
 
-#: ../carrick/carrick-notification-manager.c:169
+#: ../carrick/carrick-notification-manager.c:176
 #, c-format
 msgid "You're now connected to %s, a %s network"
-msgstr "Nyní jste připojeni k %s, %s síti"
+msgstr "Nyní jste připojen k %s, %s síť"
 
-#: ../carrick/carrick-notification-manager.c:175
+#: ../carrick/carrick-notification-manager.c:182
 #, c-format
 msgid "You're now connected to a %s network"
-msgstr "Nyní jste připojeni k %s síti"
+msgstr "Nyní jste připojen k %s síti"
 
-#: ../carrick/carrick-notification-manager.c:192
+#: ../carrick/carrick-notification-manager.c:199
 msgid "Network lost"
 msgstr "Síť ztracena"
 
-#: ../carrick/carrick-notification-manager.c:200
+#: ../carrick/carrick-notification-manager.c:207
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "Promiňte, ale ztratili jsme vaše připojení na internet"
+msgstr "Promiňte, ale vaše drátové spojení bylo ztraceno"
 
-#: ../carrick/carrick-notification-manager.c:204
+#: ../carrick/carrick-notification-manager.c:211
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "Promiňte, ale ztratili jsme vaše %s připojení k %s"
+msgstr "Promiňte, ale vaše %s spojení s %s bylo ztraceno"
 
-#: ../carrick/carrick-notification-manager.c:210
+#: ../carrick/carrick-notification-manager.c:217
 #, c-format
 msgid "Sorry, we've lost your %s connection"
-msgstr "Promiňte, ale ztratili jsme vaše %s připojení"
+msgstr "Promiňte, ale vaše %s spojení bylo ztraceno"
 
-#: ../carrick/carrick-notification-manager.c:227
+#: ../carrick/carrick-notification-manager.c:234
 msgid "Network changed"
-msgstr "Sít změněna"
-
-#: ../carrick/carrick-notification-manager.c:246
-#, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a wired network"
-msgstr "Promiňte, ale vaše připojení k %s bylo ztraceno. Proto jsme vás připojili k síti s připojením na internet"
+msgstr "Síť změněna"
 
 #: ../carrick/carrick-notification-manager.c:253
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to %s, a %s network"
-msgstr "Promiňte, ale vaše připojení k %s bylo ztraceno. Proto jsme vás připojili k %s, %s síti"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr ""
+"Promiňte, ale vaše spojení s %s bylo ztraceno. Takže jste byl připojen ke "
+"drátové síti"
 
-#: ../carrick/carrick-notification-manager.c:261
+#: ../carrick/carrick-notification-manager.c:260
 #, c-format
-msgid "Sorry, your connection to %s was lost. So we've connected you to a %s network"
-msgstr "Promiňte, ale vaše připojení k %s bylo ztraceno. Proto jsme vás připojili k %s síti"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"Promiňte, ale vaše spojení s %s bylo ztraceno. Takže jste byl připojen k %s,"
+" %s síti"
 
-#: ../carrick/carrick-notification-manager.c:271
+#: ../carrick/carrick-notification-manager.c:268
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a wired network"
-msgstr "Promiňte, ale vaše %s připojení bylo ztraceno. Proto jsme vás připojili k síti s připojením na internet"
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s "
+"network"
+msgstr ""
+"Promiňte, ale vaše spojení s %s bylo ztraceno. Takže jste byl připojen k %s "
+"síti"
 
 #: ../carrick/carrick-notification-manager.c:278
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to %s, a %s network"
-msgstr "Promiňte, ale vaše %s připojení bylo ztraceno. Proto jsme vás připojili k %s, %s síti"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired "
+"network"
+msgstr ""
+"Promiňte, ale vaše %s spojení bylo ztraceno. Takže jste byl připojen ke "
+"drátové síti"
 
-#: ../carrick/carrick-notification-manager.c:287
+#: ../carrick/carrick-notification-manager.c:285
 #, c-format
-msgid "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "Promiňte, ale vaše %s připojení bylo ztraceno. Proto jsme vás připojili k %s síti"
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+"Promiňte, ale vaše %s spojení bylo ztraceno. Takže jste byl připojen k %s, a"
+" %s síti"
+
+#: ../carrick/carrick-notification-manager.c:294
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr ""
+"Promiňte, ale vaše %s spojení bylo ztraceno. Takže jste byl připojen k %s "
+"síti"
 
 #: ../carrick/carrick-pane.c:686
 msgid "New connection settings"
-msgstr "Nastavení nového připojení"
+msgstr "Nové nastavení spojení"
 
 #: ../carrick/carrick-pane.c:724
 msgid ""
@@ -176,8 +208,8 @@ msgid ""
 "password and security type."
 msgstr ""
 "Zadejte název sítě, ke které se chcete\n"
-"připojit, a pokud je to třeba, tak i heslo\n"
-"a typ zabezpečení."
+"připojit a, tam kde je to nutné, heslo\n"
+"a druh zabezpečení."
 
 #: ../carrick/carrick-pane.c:734
 msgid "Network name"
@@ -185,51 +217,51 @@ msgstr "Název sítě"
 
 #: ../carrick/carrick-pane.c:746
 msgid "Network security"
-msgstr "Zabezpečení sítě"
+msgstr "Bezpečnost sítě"
 
 #: ../carrick/carrick-pane.c:756
 msgid "None"
-msgstr "Žádné"
+msgstr "Žádný"
 
 #: ../carrick/carrick-pane.c:768
 msgid "Password"
 msgstr "Heslo"
 
-#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1944
+#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1953
 msgid "Show password"
 msgstr "Ukázat heslo"
 
-#: ../carrick/carrick-pane.c:1971
+#: ../carrick/carrick-pane.c:1975
 msgid "Settings"
 msgstr "Nastavení"
 
-#: ../carrick/carrick-pane.c:2002 ../carrick/carrick-service-item.c:456
+#: ../carrick/carrick-pane.c:2006 ../carrick/carrick-service-item.c:461
 msgid "Wired"
-msgstr "Připojen k síti"
+msgstr "Drátová"
 
-#: ../carrick/carrick-pane.c:2069
+#: ../carrick/carrick-pane.c:2073
 msgid "Offline mode"
-msgstr "Nepřipojen k síti"
+msgstr "Režim nepřipojený"
 
-#: ../carrick/carrick-pane.c:2079
+#: ../carrick/carrick-pane.c:2083
 msgid "This will disable all your connections"
-msgstr "Tohle zakáže všechna vaše připojení"
+msgstr "Toto zakáže všechna vaše spojení"
 
-#: ../carrick/carrick-pane.c:2115 ../src/carrick.c:380
+#: ../carrick/carrick-pane.c:2119 ../src/carrick.c:381
 msgid "Networks"
 msgstr "Sítě"
 
 #. New connection button
-#: ../carrick/carrick-pane.c:2121
+#: ../carrick/carrick-pane.c:2125
 msgid "Add new connection"
-msgstr "Přidat nové připojení"
+msgstr "Přidat nové spojení"
 
 #. TRANSLATORS: Button
 #. * There will be a combobox of VPN networks to the left of the
 #. * button
-#: ../carrick/carrick-pane.c:2161
+#: ../carrick/carrick-pane.c:2165
 msgid "Connect to VPN"
-msgstr "Připojit k VPN"
+msgstr "Spojit s VPN"
 
 #. Translators:
 #. The following are potential errors that a user might see while
@@ -237,11 +269,11 @@ msgstr "Připojit k VPN"
 #. 
 #: ../carrick/carrick-service-item.c:64
 msgid "Critical Error: Invalid country code"
-msgstr "Vážná chyba: Neplatná mezinárodní předvolba země"
+msgstr "Vážná chyba: Neplatný kód země"
 
 #: ../carrick/carrick-service-item.c:65
 msgid "Missing required APN (service plan name)"
-msgstr "Chybí požadované APN (název tarifu)"
+msgstr "Chybí požadované APN (název plánu služby)"
 
 #: ../carrick/carrick-service-item.c:66
 msgid "Internal Error: Invalid network service"
@@ -249,276 +281,296 @@ msgstr "Vnitřní chyba: Neplatná síťová služba"
 
 #: ../carrick/carrick-service-item.c:67
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Vážná chyba: Nelze přistoupit ke Správci připojení"
+msgstr "Vážná chyba: Nelze přistupovat ke správci spojení"
 
 #: ../carrick/carrick-service-item.c:68
 msgid "ERROR: No 3G Hardware detected"
-msgstr "CHYBA: Nebylo zjištěno žádné vybavení na úrovni 3G"
+msgstr "CHYBA: Nezjištěno žádné vybavení 3G"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
 #. 
-#: ../carrick/carrick-service-item.c:243
+#: ../carrick/carrick-service-item.c:248
 #, c-format
 msgid "%s encrypted"
-msgstr "%s šifrování"
+msgstr "%s zašifrováno"
 
 #. TRANSLATORS: This string will be in the "Connect by:"-
 #. * combobox just like "DHCP" and "Static IP". Fixed means
 #. * that the IP configuration cannot be changed at all,
 #. * like in a 3G network
-#: ../carrick/carrick-service-item.c:402
+#: ../carrick/carrick-service-item.c:407
 msgid "Fixed IP"
 msgstr "Pevná IP"
 
-#: ../carrick/carrick-service-item.c:469 ../carrick/carrick-service-item.c:487
+#: ../carrick/carrick-service-item.c:474 ../carrick/carrick-service-item.c:492
 msgid "Disconnect"
 msgstr "Odpojit"
 
-#: ../carrick/carrick-service-item.c:472
+#: ../carrick/carrick-service-item.c:477
 msgid "Connected"
-msgstr "Připojeno"
+msgstr "Spojeno"
 
-#: ../carrick/carrick-service-item.c:490
+#: ../carrick/carrick-service-item.c:495
 msgid "Online"
-msgstr "Připojený"
+msgstr "Připojen"
 
-#: ../carrick/carrick-service-item.c:496 ../carrick/carrick-service-item.c:505
+#: ../carrick/carrick-service-item.c:501 ../carrick/carrick-service-item.c:510
 #, c-format
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../carrick/carrick-service-item.c:499
+#: ../carrick/carrick-service-item.c:504
 msgid "Configuring"
-msgstr "Nastavování"
+msgstr "Nastavuje se"
 
-#: ../carrick/carrick-service-item.c:508
+#: ../carrick/carrick-service-item.c:513
 msgid "Associating"
-msgstr "Spojování"
+msgstr "Přiřazuje se"
 
-#: ../carrick/carrick-service-item.c:517 ../carrick/carrick-service-item.c:543
-#: ../carrick/carrick-service-item.c:1931
+#: ../carrick/carrick-service-item.c:522 ../carrick/carrick-service-item.c:548
+#: ../carrick/carrick-service-item.c:1940
 msgid "Connect"
-msgstr "Připojit"
+msgstr "Spojit"
 
-#: ../carrick/carrick-service-item.c:546
+#: ../carrick/carrick-service-item.c:551
 msgid "Connection failed"
-msgstr "Připojení selhalo"
+msgstr "Spojení se nezdařilo"
 
-#: ../carrick/carrick-service-item.c:550
+#: ../carrick/carrick-service-item.c:555
 msgid "Sorry, the connection failed. You could try again."
-msgstr "Promiňte, ale připojení selhalo. Můžete to zkusit znovu."
+msgstr "Promiňte, ale spojení se nezdařilo. Můžete to zkusit znovu."
 
-#: ../carrick/carrick-service-item.c:557 ../carrick/carrick-service-item.c:560
+#: ../carrick/carrick-service-item.c:562 ../carrick/carrick-service-item.c:565
 #, c-format
 msgid "Disconnecting"
-msgstr "Odpojování"
+msgstr "Odpojuje se"
 
-#: ../carrick/carrick-service-item.c:628
+#: ../carrick/carrick-service-item.c:633
 msgid "Type password here"
-msgstr "Zde napište heslo"
+msgstr "Zde zadejte heslo"
 
-#: ../carrick/carrick-service-item.c:704
+#: ../carrick/carrick-service-item.c:709
 msgid "Really remove?"
-msgstr "Skutečně odebrat?"
+msgstr "Skutečně odstranit?"
 
-#: ../carrick/carrick-service-item.c:724
+#: ../carrick/carrick-service-item.c:729
 #, c-format
 msgid ""
 "Do you want to remove the %s %s network? This\n"
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-"Chcete odebrat %s %s síť? Heslo bude\n"
-"zapomenuto a k %s už příště nebudete připojeni\n"
-"automaticky."
+"Chcete odstranit %s %s síť? Tím se\n"
+"zapomene heslo a vy už nadále nebudete\n"
+"automaticky připojen k %s."
 
-#: ../carrick/carrick-service-item.c:1413
+#: ../carrick/carrick-service-item.c:1422
 msgid "Sorry, it looks like the IP address is not valid"
 msgstr "Promiňte, ale vypadá to, že adresa IP není platná"
 
-#: ../carrick/carrick-service-item.c:1425
+#: ../carrick/carrick-service-item.c:1434
 msgid "Sorry, it looks like the gateway address is not valid"
-msgstr "Promiňte, ale vypadá to, že adresa vstupní brány není platná"
+msgstr "Promiňte, ale vypadá to, že adresa brány není platná"
 
-#: ../carrick/carrick-service-item.c:1437
+#: ../carrick/carrick-service-item.c:1446
 msgid "Sorry, it looks like the subnet mask is not valid"
 msgstr "Promiňte, ale vypadá to, že maska podsítě není platná"
 
-#: ../carrick/carrick-service-item.c:1482
+#: ../carrick/carrick-service-item.c:1491
 #, c-format
 msgid "Sorry, it looks like the nameserver address '%s' is not valid"
-msgstr "Promiňte, ale vypadá to, že adresa názvu serveru '%s' není platná"
+msgstr "Promiňte, ale vypadá to, že adresa jmenného serveru '%s' není platná"
 
 #. TRANSLATORS: label for the Advanced expander in a service item
-#: ../carrick/carrick-service-item.c:1844
+#: ../carrick/carrick-service-item.c:1853
 msgid "Advanced"
 msgstr "Pokročilé"
 
 #. TRANSLATORS: button for services that require an additional
 #. * web login (clicking will open browser)
-#: ../carrick/carrick-service-item.c:1856
+#: ../carrick/carrick-service-item.c:1865
 msgid "Log in"
 msgstr "Přihlásit se"
 
-#: ../carrick/carrick-service-item.c:1865
+#: ../carrick/carrick-service-item.c:1874
 msgid "Scanning"
-msgstr "Prohledávání"
+msgstr "Prohledává se"
 
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
 #. (see another translator comment), used to estimate the string length.
 #. It should look like the ones below network name in the UI
-#: ../carrick/carrick-service-item.c:1886
+#: ../carrick/carrick-service-item.c:1895
 msgid "WPA2 encrypted"
-msgstr "WPA2 šifrování"
+msgstr "WPA2 zašifrováno"
 
 #. TRANSLATORS: label in advanced settings (next to combobox
 #. * for DHCP/Static IP)
-#: ../carrick/carrick-service-item.c:1993
+#: ../carrick/carrick-service-item.c:2002
 msgid "Connect by:"
-msgstr "Připojit pomocí:"
+msgstr "Spojeno:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1995
+#: ../carrick/carrick-service-item.c:2004
 msgid "IP address:"
 msgstr "Adresa IP:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1997
+#: ../carrick/carrick-service-item.c:2006
 msgid "Subnet mask:"
 msgstr "Maska podsítě:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:1999
+#: ../carrick/carrick-service-item.c:2008
 msgid "Router:"
 msgstr "Směrovač:"
 
 #. TRANSLATORS: label in advanced settings
-#: ../carrick/carrick-service-item.c:2001
+#: ../carrick/carrick-service-item.c:2010
 msgid "DNS:"
 msgstr "DNS:"
 
-#: ../carrick/carrick-service-item.c:2008
+#: ../carrick/carrick-service-item.c:2017
 msgid "DHCP"
 msgstr "DHCP"
 
-#: ../carrick/carrick-service-item.c:2010
+#: ../carrick/carrick-service-item.c:2019
 msgid "Static IP"
-msgstr "Neměnná IP"
+msgstr "Statická IP"
 
 #. TRANSLATORS: label for apply button in static ip settings
-#: ../carrick/carrick-service-item.c:2061
+#: ../carrick/carrick-service-item.c:2070
 msgid "Apply"
 msgstr "Použít"
 
-#: ../carrick/carrick-util.c:48
+#: ../carrick/carrick-util.c:50
 msgid "VPN"
 msgstr "VPN"
 
-#: ../carrick/carrick-util.c:84
+#: ../carrick/carrick-util.c:86
 #, c-format
-msgid "Your password isn't the right length. For a WEP connection it needs to be either 10 or 26 characters, you have %i."
-msgstr "Vaše heslo nemá správnou délku. Pro WEP připojení musí mít buď 10 nebo 26 znaků, vy máte %i."
+msgid ""
+"Your password isn't the right length. For a WEP connection it needs to be "
+"either 10 or 26 characters, you have %i."
+msgstr ""
+"Vaše heslo nemá správnou délku. Pro spojení WEP je potřeba, aby mělo buď 10 "
+"nebo 26 znaků, pokud máte %i."
 
-#: ../carrick/carrick-util.c:99
+#: ../carrick/carrick-util.c:101
 #, c-format
-msgid "Your password is too short. For a WPA  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Vaše heslo je příliš krátké. Pro WPA připojení musí být alespoň 8 znaků dlouhé, vy máte %i"
+msgid ""
+"Your password is too short. For a WPA  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"Vaše heslo je příliš krátké. Pro spojení WEP je potřeba, aby mělo alespoň 8 "
+"znaků, pokud máte %i."
 
-#: ../carrick/carrick-util.c:107
+#: ../carrick/carrick-util.c:109
 #, c-format
-msgid "Your password is too long. For a WPA  connection it needs to have fewer than 64 characters, you have %i"
-msgstr "Vaše heslo je příliš dlouhé. Pro WPA připojení musí mít méně než 64 znaků, vy máte %i"
+msgid ""
+"Your password is too long. For a WPA  connection it needs to have fewer than"
+" 64 characters, you have %i"
+msgstr ""
+"Vaše heslo je příliš dlouhé. Pro spojení WEP je potřeba, aby mělo méně než "
+"64 znaků, pokud máte %i."
 
-#: ../carrick/carrick-util.c:120
+#: ../carrick/carrick-util.c:122
 #, c-format
-msgid "Your password is too short. For a WPA2  connection it needs to be at least 8 characters long, you have %i"
-msgstr "Vaše heslo je příliš krátké. Pro WPA2 připojení musí být alespoň 8 znaků dlouhé, vy máte %i"
+msgid ""
+"Your password is too short. For a WPA2  connection it needs to be at least 8"
+" characters long, you have %i"
+msgstr ""
+"Vaše heslo je příliš krátké. Pro spojení WPA2 je potřeba, aby mělo alespoň 8"
+" znaků, pokud máte %i."
 
-#: ../carrick/carrick-util.c:128
+#: ../carrick/carrick-util.c:130
 #, c-format
-msgid "Your password is too long. For a WPA2  connection it needs to have fewer than 64 characters, you have %i"
-msgstr "Vaše heslo je příliš dlouhé. Pro WPA2 připojení musí mít méně než 64 znaků, vy máte %i"
+msgid ""
+"Your password is too long. For a WPA2  connection it needs to have fewer "
+"than 64 characters, you have %i"
+msgstr ""
+"Vaše heslo je příliš dlouhé. Pro spojení WPA2 je potřeba, aby mělo méně než "
+"64 znaků, pokud máte %i."
 
 #. TRANSLATORS: Tooltips for the toolbar icon
 #. * The possible placeholder is service name (such as
 #. * a wireless network name)
 #: ../src/carrick.c:52
 msgid "networks - not connected"
-msgstr "Sítě - nepřipojeno"
+msgstr "sítě - nepřipojeno"
 
 #: ../src/carrick.c:58
 msgid "networks - connecting"
-msgstr "Sítě - připojování"
+msgstr "sítě - připojuje se"
 
 #: ../src/carrick.c:64
 msgid "networks - wired"
-msgstr "Sítě - s připojením na internet"
+msgstr "sítě - drátové"
 
 #: ../src/carrick.c:66
 #, c-format
 msgid "networks - %s - wifi"
-msgstr "Sítě - %s - wifi"
+msgstr "sítě - %s - wifi"
 
 #: ../src/carrick.c:69
 #, c-format
 msgid "networks - %s - wimax"
-msgstr "Sítě - %s - wimax"
+msgstr "sítě - %s - wimax"
 
 #: ../src/carrick.c:72
 #, c-format
 msgid "networks - %s - 3G"
-msgstr "Sítě - %s - 3G"
+msgstr "sítě - %s - 3G"
 
 #: ../src/carrick.c:75
 #, c-format
 msgid "networks - %s - bluetooth"
-msgstr "Sítě - %s - Bluetooth"
+msgstr "sítě - %s - bluetooth"
 
 #: ../src/carrick.c:78
 #, c-format
 msgid "networks - %s - VPN"
-msgstr "Sítě - %s - VPN"
+msgstr "sítě - %s - VPN"
 
 #: ../src/carrick.c:81 ../src/carrick.c:93
 msgid "networks"
-msgstr "Sítě"
+msgstr "sítě"
 
 #: ../src/carrick.c:88
 msgid "networks - error"
-msgstr "Sítě - chyba"
+msgstr "sítě - chyba"
 
-#: ../src/carrick.c:308
+#: ../src/carrick.c:309
 msgid "Run in standalone mode"
 msgstr "Spustit v samostatném režimu"
 
-#: ../src/carrick.c:310
+#: ../src/carrick.c:311
 msgid "Embed in another window (overrides --standalone)"
-msgstr "Zahrnout v jiném okně (přepíše --standalone)"
-
-#: ../src/carrick.c:321
-msgid "Carrick connectivity applet"
-msgstr "Carrick malý program pro propojitelnost"
+msgstr "Vložit do jiného okna (potlačí --standalone)"
 
 #: ../src/carrick.c:322
-msgid "- MeeGo connectivity applet"
-msgstr "- MeeGo malý program pro propojitelnost"
+msgid "Carrick connectivity applet"
+msgstr "Doplněk pro připojitelnost Carrick"
 
-#: ../src/carrick.c:363 ../data/carrick.desktop.in.in.h:2
+#: ../src/carrick.c:323
+msgid "- MeeGo connectivity applet"
+msgstr "- Doplněk pro připojitelnost MeeGo"
+
+#: ../src/carrick.c:364 ../data/carrick.desktop.in.in.h:2
 msgid "network"
-msgstr "Síť"
+msgstr "síť"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
 #: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
-msgstr "Průvodce pro spojení buněčných dat"
+msgstr "Průvodce připojením buněčných dat"
 
 #: ../callouts/3g/ggg-country-dialog.c:93
 msgid "Select Country"
-msgstr "Vyberte zemi"
+msgstr "Vybrat zemi"
 
 #: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
@@ -526,7 +578,7 @@ msgstr "Ruční nastavení"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr "Název tarifu (vyžadováno):"
+msgstr "Název plánu (požadován):"
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
@@ -542,33 +594,67 @@ msgstr "Brána:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
-msgstr "Hlavní DNS:"
+msgstr "Primární DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
-msgstr "Vedlejší DNS:"
+msgstr "Sekundární DNS:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
-msgstr "DNS třetího stupně:"
+msgstr "Terciární DNS:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
-msgstr "Vyberte váš tarif 3G"
+msgstr "Vyberte svůj plán 3G"
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
-msgstr "Vyberte poskytovatele"
+msgstr "Vybrat poskytovatele"
 
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
 msgid "%s (Roaming)"
-msgstr "%s (toulání se - roaming)"
+msgstr "%s (volání do zahraničí)"
 
 #: ../callouts/3g/ggg-service-dialog.c:125
 msgid "Select 3G Service"
-msgstr "Vyberte službu 3G"
+msgstr "Vybrat službu 3G"
+
+#: ../callouts/openconnect/main.c:659
+#, c-format
+msgid ""
+"Certificate from VPN server \"%s\" failed verification.\n"
+"Reason: %s\n"
+"Do you want to accept it?"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1318
+msgid "VPN host"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1338
+msgid "Automatically start connecting next time"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1355
+msgid "Select a host to fetch the login form"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1360
+msgid "Contacting host, please wait..."
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1372
+msgid "_Login"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1386
+msgid "Log"
+msgstr ""
 
 #: ../data/carrick.desktop.in.in.h:1
 msgid "Network settings"
 msgstr "Nastavení sítě"
+
+

@@ -3,8 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Aranel Surion <aranel@aranelsurion.org>, 2011.
-# Patrick McCarty <patrick.mccarty@linux.intel.com>, 2011.
+# សុវិចិត្រ Sovichet ទេព Tep <sovichet.tep@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-networks\n"
@@ -12,11 +11,11 @@ msgstr ""
 "POT-Creation-Date: 2011-11-02 13:34-0700\n"
 "PO-Revision-Date: 2011-11-03 18:49+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
-"Language-Team: Turkish (http://www.transifex.net/projects/p/meego/team/tr/)\n"
+"Language-Team: Khmer (http://www.transifex.net/projects/p/meego/team/km/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr\n"
+"Language: km\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #. Translator note: The disabled technologies available to be turned on is put
@@ -29,7 +28,7 @@ msgstr ""
 #. * here -- unless you want it joined with previous or next word.
 #: ../carrick/carrick-list.c:1014
 msgid " or "
-msgstr " ya da "
+msgstr " ឬ "
 
 #. Translator note: the comma ', ' will be used to join the different
 #. * disabled technologies as in the example:
@@ -45,7 +44,7 @@ msgstr ", "
 #. 
 #: ../carrick/carrick-list.c:1044 ../carrick/carrick-util.c:42
 msgid "wired"
-msgstr "kablolulu"
+msgstr "ដោយ​ខ្សែ"
 
 #. Switches
 #: ../carrick/carrick-list.c:1045 ../carrick/carrick-pane.c:1992
@@ -66,7 +65,7 @@ msgstr "3G"
 #: ../carrick/carrick-list.c:1048 ../carrick/carrick-pane.c:2048
 #: ../carrick/carrick-util.c:48
 msgid "Bluetooth"
-msgstr "Bluetooth"
+msgstr "ប៊្លូធូ"
 
 #. * Translators: this string is displayed if there
 #. * are no available networks because ConnMan, the
@@ -77,8 +76,9 @@ msgid ""
 "Sorry, we can't find any networks. It appears that the connection manager is"
 " not running. You could try restarting your computer."
 msgstr ""
-"Üzgünüz, hiç bir ağ bulamıyoruz. Bağlantı Yöneticisi çalışmıyor gibi "
-"görünüyor. Bilgisayarınızı yeniden başlatmayı deneyebilirsiniz."
+"សូម​ទោស, ពួក​យើង​រក​មិន​ឃើញ​បណ្ដាញ​ណា​មួយ​ទេ។ នេះ​បង្ហាញ​ឲ្យ​ឃើញ​ថា ឧបករណ៍​"
+"គ្រប់​គ្រង​ការ​ត​ភ្ជាប់ មិន​បាន​ដំណើរ​ការ​ទេ។ សូម​អ្នក​សាក​ល្បង​ចាប់​ដំណើរ​"
+"ការ កុំព្យូទ័រ​របស់​អ្នក​ម្ដង​ទៀត។"
 
 #. * Hint display if we detect that the system is in
 #. * offline mode and there are no available networks
@@ -87,13 +87,15 @@ msgstr ""
 msgid ""
 "Sorry, we can't find any networks. You could try disabling Offline mode. "
 msgstr ""
-"Üzgünüz, hiç bir ağ bulamıyoruz. Çevrimdışı modunu değiştirmeyi "
-"deneyebilirsiniz."
+"សូម​ទោស, ពួក​យើង​រក​មិន​ឃើញ​បណ្ដាញ​ណា​មួយ​ទេ។ សូម​អ្នក​សាក​ល្បង​បិទ​ដំណើរ​"
+"ការ របៀប​នៅ​ក្រៅ​បណ្ដាញ។"
 
 #: ../carrick/carrick-list.c:1120
 #, c-format
 msgid "Sorry, we can't find any networks. You could try enabling %s."
-msgstr "Üzgünüz, hiç bir ağ bulamıyoruz. %s açmayı deneyebilirsiniz."
+msgstr ""
+"សូម​ទោស, ពួក​យើង​រក​មិន​ឃើញ​បណ្ដាញ​ណា​មួយ​ទេ។ សូម​អ្នក​សាក​ល្បង​បើក​ដំណើរ​"
+"ការ %s ។"
 
 #. * Generic message to display if all available networking
 #. * technologies are turned on, but for whatever reason we
@@ -101,49 +103,49 @@ msgstr "Üzgünüz, hiç bir ağ bulamıyoruz. %s açmayı deneyebilirsiniz."
 #. 
 #: ../carrick/carrick-list.c:1134
 msgid "Sorry, we can't find any networks"
-msgstr "Üzgünüz, hiç bir ağ bulamıyoruz."
+msgstr "សូម​ទៅស, ពួក​យើង​រក​មិន​ឃើញ​បណ្ដាញ​ណា​មួយ​ទេ"
 
 #: ../carrick/carrick-notification-manager.c:138
 msgid "Network connected"
-msgstr "Ağa bağlanıldı"
+msgstr "បាន​តភ្ជាប់​បណ្ដាញ"
 
 #: ../carrick/carrick-notification-manager.c:146
 #, c-format
 msgid "You're now connected to a wired network"
-msgstr "Kablolu ağa bağlandınız"
+msgstr "ឥឡូវ​អ្នក​បាន​តភ្ជាប់​ទៅ​បណ្ដាញ​មាន​ខ្សែ"
 
 #: ../carrick/carrick-notification-manager.c:176
 #, c-format
 msgid "You're now connected to %s, a %s network"
-msgstr "Şu an %s 'e bağlısınız, bir %s ağı"
+msgstr "ឥឡូវ​អ្នក​បាន​ត​ភ្ជាប់​ទៅ %s, បណ្ដាញ %s"
 
 #: ../carrick/carrick-notification-manager.c:182
 #, c-format
 msgid "You're now connected to a %s network"
-msgstr "Şu an bir %s ağına bağlısınız"
+msgstr "ឥឡូវ​អ្នក​បាន​ត​ភ្ជាប់​ទៅ​បណ្ដាញ %s"
 
 #: ../carrick/carrick-notification-manager.c:199
 msgid "Network lost"
-msgstr "Ağ bağlantısı kayboldu"
+msgstr "បាន​បាត់​បណ្ដាញ"
 
 #: ../carrick/carrick-notification-manager.c:207
 #, c-format
 msgid "Sorry, we've lost your wired connection"
-msgstr "Üzgünüz, kablolu bağlantınızı yitirdik"
+msgstr "សូម​ទោស, ពួក​យើង​បាន​បាត់​នូវ​ការ​ត​ភ្ជាប់​តាម​ខ្សែ របស់​អ្នក​ហើយ។"
 
 #: ../carrick/carrick-notification-manager.c:211
 #, c-format
 msgid "Sorry we've lost your %s connection to %s"
-msgstr "Üzgünüz, %s bağlantınızı %s e kaybettik"
+msgstr "សូម​ទោស, ពួក​យើង​បាន​បាត់​នូវ​ការ​ត​ភ្ជាប់​បណ្ដាញ %s របស់​អ្នកទៅ %s"
 
 #: ../carrick/carrick-notification-manager.c:217
 #, c-format
 msgid "Sorry, we've lost your %s connection"
-msgstr "Üzgünüz, %s bağlantınızı kaybettik"
+msgstr "សូម​ទោស, ពួក​យើង​បាន​បាត់​ការ​ត​ភ្ជាប់​បណ្ដាញ %s របស់​អ្នក"
 
 #: ../carrick/carrick-notification-manager.c:234
 msgid "Network changed"
-msgstr "Ağ değişti"
+msgstr "បាន​ប្ដូរ​បណ្ដាញ"
 
 #: ../carrick/carrick-notification-manager.c:253
 #, c-format
@@ -151,7 +153,8 @@ msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to a wired "
 "network"
 msgstr ""
-"Üzgünüz %s bağlantınız kayboldu. Bu yüzden sizi kablolu bir ağa bağladık"
+"សូម​ទោស, បាន​បាត់​ការ​ត​ភ្ជាប់​របស់​អ្នក​ទៅ​កាន់ %s ហើយ។ ដូច្នេះ​យើង​បាន​ត​"
+"ភ្ជាប់​ទៅ​កាន់​បណ្ដាញ​មាន​ខ្សែ​វិញ។"
 
 #: ../carrick/carrick-notification-manager.c:260
 #, c-format
@@ -159,14 +162,17 @@ msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
 "network"
 msgstr ""
-"Üzgünüz %s bağlantınız kayboldu. Bu yüzden sizi %s'e, bir %s ağına bağladık"
+"សូម​ទោស, បាន​បាត់​ការ​ត​ភ្ជាប់​របស់​អ្នក​ទៅ​កាន់ %s ហើយ។ ដូច្នេះ​យើង​បាន​ត​"
+"ភ្ជាប់​ទៅ​កាន់បណ្ដាញ %s, %s វិញ។"
 
 #: ../carrick/carrick-notification-manager.c:268
 #, c-format
 msgid ""
 "Sorry, your connection to %s was lost. So we've connected you to a %s "
 "network"
-msgstr "Üzgünüz %s bağlantınız kayboldu. Bu yüzden sizi %s ağına bağladık"
+msgstr ""
+"សូម​ទោស, បាន​បាត់​ការ​ត​ភ្ជាប់​របស់​អ្នក​ទៅ​កាន់ %s ហើយ។ ដូច្នេះ​យើង​បាន​ត​"
+"ភ្ជាប់​អ្នក​ទៅ​កាន់​បណ្ដាញ %s វិញ។"
 
 #: ../carrick/carrick-notification-manager.c:278
 #, c-format
@@ -174,7 +180,8 @@ msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a wired "
 "network"
 msgstr ""
-"Üzgünüz %s bağlantınız kayboldu. Bu yüzden sizi kablolu bir ağa bağladık"
+"សូម​ទោស, បាន​បាត់​ការ​ត​ភ្ជាប់​របស់​អ្នក​ទៅ​កាន់ %s ហើយ។ ដូច្នេះ​យើង​បាន​ត​"
+"ភ្ជាប់​ទៅ​កាន់​បណ្ដាញ​មាន​ខ្សែ​វិញ។"
 
 #: ../carrick/carrick-notification-manager.c:285
 #, c-format
@@ -182,17 +189,20 @@ msgid ""
 "Sorry, your %s connection was lost. So we've connected you to %s, a %s "
 "network"
 msgstr ""
-"Üzgünüz %s bağlantınız kayboldu. Bu yüzden sizi %s'e, bir %s ağına bağladık"
+"សូម​ទោស, បាន​បាត់​ការ​ត​ភ្ជាប់​របស់​អ្នក​ទៅ​កាន់ %s ហើយ។ ដូច្នេះ​យើង​បាន​ត​"
+"ភ្ជាប់​ទៅ​កាន់បណ្ដាញ %s, %s វិញ។"
 
 #: ../carrick/carrick-notification-manager.c:294
 #, c-format
 msgid ""
 "Sorry, your %s connection was lost. So we've connected you to a %s network"
-msgstr "Üzgünüz %s bağlantınız kayboldu. Bu yüzden sizi %s ağına bağladık"
+msgstr ""
+"សូម​ទោស, ការ​ត​ភ្ជាប់ %s បាន​បាត់​ហើយ។ ដូច្នេះ​ពួក​យើង​បាន​ត​ភ្ជាប់​អ្នក​ទៅ​"
+"កាន់​បណ្ដាញ %s វិញ។"
 
 #: ../carrick/carrick-pane.c:686
 msgid "New connection settings"
-msgstr "Yeni bağlantı ayarları"
+msgstr "ការ​កំណត់​ការ​ត​ភ្ជាប់​ថ្មី"
 
 #: ../carrick/carrick-pane.c:724
 msgid ""
@@ -200,61 +210,61 @@ msgid ""
 "to connect to and, where necessary, the\n"
 "password and security type."
 msgstr ""
-"İstediğiniz ağa bağlanmak için\n"
-"ismini, gerekli olan yerler içinse\n"
-"şifreyi ve güvenlik kipini girin."
+"បញ្ចូល​ឈ្មោះ​បណ្ដាញ​ដែល​អ្នក​ចង់\n"
+"ត​ភ្ជាប់ ហើយ​ទី​កន្លែង​ដែល​សំខាន់​គឺ\n"
+"ពាក្យ​សម្ងាត់ និង ប្រភេទ​សុវត្ថិភាព។"
 
 #: ../carrick/carrick-pane.c:734
 msgid "Network name"
-msgstr "Ağ adı"
+msgstr "ឈ្មោះ​បណ្ដាញ"
 
 #: ../carrick/carrick-pane.c:746
 msgid "Network security"
-msgstr "Ağ güvenliği"
+msgstr "សុវត្ថិភាព​បណ្ដាញ"
 
 #: ../carrick/carrick-pane.c:756
 msgid "None"
-msgstr "Hiçbiri"
+msgstr "មិន​មាន"
 
 #: ../carrick/carrick-pane.c:768
 msgid "Password"
-msgstr "Şifre"
+msgstr "ពាក្យ​សម្ងាត់"
 
 #: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1953
 msgid "Show password"
-msgstr "Şifreyi göster"
+msgstr "បង្ហាញ​ពាក្យ​សម្ងាត់"
 
 #: ../carrick/carrick-pane.c:1975
 msgid "Settings"
-msgstr "Ayarlar"
+msgstr "ការ​កំណត់"
 
 #: ../carrick/carrick-pane.c:2006 ../carrick/carrick-service-item.c:461
 msgid "Wired"
-msgstr "Kablolu"
+msgstr "តាម​ខ្សែ"
 
 #: ../carrick/carrick-pane.c:2073
 msgid "Offline mode"
-msgstr "Çevrimdışı modu"
+msgstr "របៀប​ក្រៅ​បណ្ដាញ"
 
 #: ../carrick/carrick-pane.c:2083
 msgid "This will disable all your connections"
-msgstr "Bu tüm bağlantılarınızı etkisizleştirecek"
+msgstr "ធ្វើ​បែប​នេះ នឹង​បិទ​ដំណើរ​ការ​ការ​តភ្ជាប់​របស់​អ្នក​ទាំង​អស់"
 
 #: ../carrick/carrick-pane.c:2119 ../src/carrick.c:381
 msgid "Networks"
-msgstr "Ağlar"
+msgstr "បណ្ដាញ"
 
 #. New connection button
 #: ../carrick/carrick-pane.c:2125
 msgid "Add new connection"
-msgstr "Yeni bağlantı ekle"
+msgstr "បន្ថែម​ការ​ត​ភ្ជាប់​ថ្មី"
 
 #. TRANSLATORS: Button
 #. * There will be a combobox of VPN networks to the left of the
 #. * button
 #: ../carrick/carrick-pane.c:2165
 msgid "Connect to VPN"
-msgstr "VPN'e bağlan"
+msgstr "ត​ភ្ជាប់​ទៅ VPN"
 
 #. Translators:
 #. The following are potential errors that a user might see while
@@ -262,23 +272,24 @@ msgstr "VPN'e bağlan"
 #. 
 #: ../carrick/carrick-service-item.c:64
 msgid "Critical Error: Invalid country code"
-msgstr "Kritik hata: Geçersiz ülke kodu"
+msgstr "កំហុស​​គ្រោះ​ថ្នាក់: លេខ​កូដ​ប្រទេស​មិន​ត្រឹម​ត្រូវ"
 
 #: ../carrick/carrick-service-item.c:65
 msgid "Missing required APN (service plan name)"
-msgstr "Gerekli APN (servis plan ismi) eksik"
+msgstr "ខ្វះ APN (ឈ្មោះ​គម្រោង​សេវាកម្ម)"
 
 #: ../carrick/carrick-service-item.c:66
 msgid "Internal Error: Invalid network service"
-msgstr "Dahili hata: Geçersiz ağ servisi"
+msgstr "កំហុស​ផ្នែក​ក្នុង: សេវា​បណ្ដាញ​មិន​ត្រឹម​ត្រូវ"
 
 #: ../carrick/carrick-service-item.c:67
 msgid "Critical Error: Unable to access Connection Manager"
-msgstr "Kritik hata: Bağlantı yöneticisine bağlanamıyor"
+msgstr ""
+"កំហុស​គ្រោះ​ថ្នាក់: មិន​អា​ច​ចូល​ទៅ​កាន់​ឧបករណ៍​គ្រប់​គ្រង​ការ​ត​ភ្ជាប់"
 
 #: ../carrick/carrick-service-item.c:68
 msgid "ERROR: No 3G Hardware detected"
-msgstr "HATA: 3G donanımı bulunamadı"
+msgstr "កំហុស: រក​មិន​ឃើញ​​ផ្នែក​រឹង 3G ណា​មួយ​ទេ"
 
 #. TRANSLATORS: this is a wireless security method, at least WEP,
 #. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
@@ -286,7 +297,7 @@ msgstr "HATA: 3G donanımı bulunamadı"
 #: ../carrick/carrick-service-item.c:248
 #, c-format
 msgid "%s encrypted"
-msgstr "%s şifrelenmiş"
+msgstr "បាន​អ៊ីនគ្រីប %s"
 
 #. TRANSLATORS: This string will be in the "Connect by:"-
 #. * combobox just like "DHCP" and "Static IP". Fixed means
@@ -294,58 +305,58 @@ msgstr "%s şifrelenmiş"
 #. * like in a 3G network
 #: ../carrick/carrick-service-item.c:407
 msgid "Fixed IP"
-msgstr "Sabit IP"
+msgstr "IP ថេរ"
 
 #: ../carrick/carrick-service-item.c:474 ../carrick/carrick-service-item.c:492
 msgid "Disconnect"
-msgstr "Bağlantıyı kes"
+msgstr "ផ្ដាច់"
 
 #: ../carrick/carrick-service-item.c:477
 msgid "Connected"
-msgstr "Bağlandı"
+msgstr "បាន​ភ្ជាប់"
 
 #: ../carrick/carrick-service-item.c:495
 msgid "Online"
-msgstr "Çevirimiçi"
+msgstr "នៅ​លើ​បណ្ដាញ"
 
 #: ../carrick/carrick-service-item.c:501 ../carrick/carrick-service-item.c:510
 #, c-format
 msgid "Cancel"
-msgstr "İptal"
+msgstr "បោះ​បង់"
 
 #: ../carrick/carrick-service-item.c:504
 msgid "Configuring"
-msgstr "Ayarlanıyor"
+msgstr "កំពុង​កំណត់​សណ្ឋាន"
 
 #: ../carrick/carrick-service-item.c:513
 msgid "Associating"
-msgstr "İlişkilendiriliyor"
+msgstr "កំពុង​បញ្ចូល​គ្នា"
 
 #: ../carrick/carrick-service-item.c:522 ../carrick/carrick-service-item.c:548
 #: ../carrick/carrick-service-item.c:1940
 msgid "Connect"
-msgstr "Bağlan"
+msgstr "ត​ភ្ជាប់"
 
 #: ../carrick/carrick-service-item.c:551
 msgid "Connection failed"
-msgstr "Bağlantı başarısız"
+msgstr "ការ​ត​ភ្ជាប់​មិន​បាន​សម្រេច"
 
 #: ../carrick/carrick-service-item.c:555
 msgid "Sorry, the connection failed. You could try again."
-msgstr "Üzgünüz bağlantı başarısız. Yeniden deneyebilirsiniz."
+msgstr "សូម​ទោស, ការ​ត​ភ្ជាប់​មិន​បាន​សម្រេច​ទេ។ អ្នក​គួរ​ព្យាយាម​ម្ដង​ទៀត។"
 
 #: ../carrick/carrick-service-item.c:562 ../carrick/carrick-service-item.c:565
 #, c-format
 msgid "Disconnecting"
-msgstr "Bağlantı kesiliyor"
+msgstr "កំពុង​ផ្ដាច់"
 
 #: ../carrick/carrick-service-item.c:633
 msgid "Type password here"
-msgstr "Şifreyi girin"
+msgstr "បញ្ចូល​ពាក្យ​សម្ងាត់​នៅ​ទីនេះ"
 
 #: ../carrick/carrick-service-item.c:709
 msgid "Really remove?"
-msgstr "Kaldırılsın mı?"
+msgstr "ចង់​ដក​ចេញណាស់​មែនទេ?"
 
 #: ../carrick/carrick-service-item.c:729
 #, c-format
@@ -354,41 +365,41 @@ msgid ""
 "will forget the password and you will no longer be\n"
 "automatically connected to %s."
 msgstr ""
-" %s %s ağını silmek istiyor musunuz? Bu\n"
-" şifrenizi de kaybettirecek ve %s'e  bir daha otomatik\n"
-" giriş yapamayacaksınız."
+"តើ​អ្នក​ចង់​លុប​បណ្ដាញ %s %s ចោល​មែន​ទេ?\n"
+"វា​នឹង​បំភ្លេច​ពាក្យ​សម្ងាត់​របស់​អ្នក ហើយ​អ្នក​នឹង​មិន\n"
+"អាច​ធ្វើ​ការ​ត​ភ្ជាប់​ទៅ​កាន់ %s ដោយ​ស្វ័យ​ប្រវត្តិ​ទៀត​ទេ។"
 
 #: ../carrick/carrick-service-item.c:1422
 msgid "Sorry, it looks like the IP address is not valid"
-msgstr "Üzgünüz, IP adresi hatalı gibi"
+msgstr "សូម​ទោស, អាសយដ្ឋាន IP ដូច​ជាមិន​ត្រឹម​ត្រូវ​ទេ"
 
 #: ../carrick/carrick-service-item.c:1434
 msgid "Sorry, it looks like the gateway address is not valid"
-msgstr "Üzgünüz, ağ geçidi hatalı gibi"
+msgstr "សូម​ទោស, អាសយដ្ឋាន​ច្រក ដូច​ជាមិន​ត្រឹម​ត្រូវ​ទេ"
 
 #: ../carrick/carrick-service-item.c:1446
 msgid "Sorry, it looks like the subnet mask is not valid"
-msgstr "Üzgünüz, altağ maskelemesi hatalı gibi"
+msgstr "សូម​ទោស, subnet mask ដូច​ជា​មិន​ត្រឹម​ត្រូវ​ទេ"
 
 #: ../carrick/carrick-service-item.c:1491
 #, c-format
 msgid "Sorry, it looks like the nameserver address '%s' is not valid"
-msgstr "Üzgünüz, %s DNS adresi hatalı gibi"
+msgstr "សូម​ទោស, អាសយដ្ឋាន​ឈ្មោះ​ម៉ាស៊ីន​បម្រើ '%s' ដូច​ជា​មិន​ត្រឹម​ត្រូវ​ទេ"
 
 #. TRANSLATORS: label for the Advanced expander in a service item
 #: ../carrick/carrick-service-item.c:1853
 msgid "Advanced"
-msgstr "Gelişmiş"
+msgstr "កម្រិត​ខ្ពស់"
 
 #. TRANSLATORS: button for services that require an additional
 #. * web login (clicking will open browser)
 #: ../carrick/carrick-service-item.c:1865
 msgid "Log in"
-msgstr "Giriş"
+msgstr "ភ្ជាប់​ចូល"
 
 #: ../carrick/carrick-service-item.c:1874
 msgid "Scanning"
-msgstr "Tarıyor"
+msgstr "កំពុង​ស្គែន"
 
 #. Note: security_sample should contain the longest possible security method
 #. TRANSLATORS: This is an example of a wireless security method
@@ -396,28 +407,28 @@ msgstr "Tarıyor"
 #. It should look like the ones below network name in the UI
 #: ../carrick/carrick-service-item.c:1895
 msgid "WPA2 encrypted"
-msgstr "WPA2 şifrelenmiş"
+msgstr "បាន​អ៊ិនគ្រីប WPA2"
 
 #. TRANSLATORS: label in advanced settings (next to combobox
 #. * for DHCP/Static IP)
 #: ../carrick/carrick-service-item.c:2002
 msgid "Connect by:"
-msgstr "Bağlantı yöntemi:"
+msgstr "ត​ភ្ជាប់​ដោយ:"
 
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:2004
 msgid "IP address:"
-msgstr "IP adresi:"
+msgstr "អាសយដ្ឋាន IP:"
 
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:2006
 msgid "Subnet mask:"
-msgstr "Altağ maskesi:"
+msgstr "Subnet mask:"
 
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:2008
 msgid "Router:"
-msgstr "Yönlendirici:"
+msgstr "រ៉ោទ័រ:"
 
 #. TRANSLATORS: label in advanced settings
 #: ../carrick/carrick-service-item.c:2010
@@ -430,12 +441,12 @@ msgstr "DHCP"
 
 #: ../carrick/carrick-service-item.c:2019
 msgid "Static IP"
-msgstr "Statik IP"
+msgstr "ឋិតិវន្ត IP"
 
 #. TRANSLATORS: label for apply button in static ip settings
 #: ../carrick/carrick-service-item.c:2070
 msgid "Apply"
-msgstr "Uygula"
+msgstr "អនុវត្ត"
 
 #: ../carrick/carrick-util.c:50
 msgid "VPN"
@@ -447,8 +458,8 @@ msgid ""
 "Your password isn't the right length. For a WEP connection it needs to be "
 "either 10 or 26 characters, you have %i."
 msgstr ""
-"Şifrenizin uzunluğu uygun değil. WEP bağlantısı için şifreniz 10 ya da 26 "
-"karakter olmalı, sizinki %i"
+"ពាក្យ​សម្ងាត់​របស់​អ្នក មិន​ត្រឹម​ត្រូវ​នឹង​ប្រវែង​កំណត់​ទេ។ សម្រាប់​ការ​ត​"
+"ភ្ជាប់ WEP ត្រូវ​ការ​ឲ្យ​មាន ១០ ឬ ២៦​តួ, តែ​អ្នក​មានតែ %i  តួ​ប៉ុណ្ណោះ។"
 
 #: ../carrick/carrick-util.c:101
 #, c-format
@@ -456,8 +467,8 @@ msgid ""
 "Your password is too short. For a WPA  connection it needs to be at least 8 "
 "characters long, you have %i"
 msgstr ""
-"Şifreniz çok kısa. WPA bağlantısı için şifreniz en az 8 karakter olmalı, "
-"sizinki %i"
+"ពាក្យ​សម្ងាត់​របស់​អ្នក​ខ្លី​ណាស់។ សម្រាប់​ការ​ត​ភ្ជាប់ WPA ត្រូវ​ការ​"
+"យ៉ាងតិច ៨តួ, តែ​អ្នក​មានតែ %i តួ​ប៉ុណ្ណោះ។"
 
 #: ../carrick/carrick-util.c:109
 #, c-format
@@ -465,8 +476,8 @@ msgid ""
 "Your password is too long. For a WPA  connection it needs to have fewer than"
 " 64 characters, you have %i"
 msgstr ""
-"Girdiğiniz şifre çok uzun. WPA  bağlantısı için en çok 64 karakter, "
-"girebilirsiniz %i"
+"ពាក្យ​សម្ងាត់​របស់​អ្នក​វែង​ណាស់។ សម្រាប់​ការ​ត​ភ្ជាប់ WPA ត្រូវ​ការ​តិច​ជាង"
+" ៦៤​តួ, តែ​អ្នក​មាន​ដល់​ទៅ %i តួ។"
 
 #: ../carrick/carrick-util.c:122
 #, c-format
@@ -474,8 +485,8 @@ msgid ""
 "Your password is too short. For a WPA2  connection it needs to be at least 8"
 " characters long, you have %i"
 msgstr ""
-"Şifreniz çok kısa. WPA2 bağlantısı için şifreniz en az 8 karakter olmalı, "
-"sizinki %i"
+"ពាក្យ​សម្ងាត់​របស់​អ្នក​ខ្លី​ណាស់។ សម្រាប់​ការ​ត​ភ្ជាប់ WPA2 ត្រូវ​ការ​"
+"យ៉ាងតិច ៨តួ, តែ​អ្នក​មានតែ %i តួ​ប៉ុណ្ណោះ។"
 
 #: ../carrick/carrick-util.c:130
 #, c-format
@@ -483,136 +494,136 @@ msgid ""
 "Your password is too long. For a WPA2  connection it needs to have fewer "
 "than 64 characters, you have %i"
 msgstr ""
-"Girdiğiniz şifre çok uzun. WPA2  bağlantısı için en çok 64 karakter, "
-"girebilirsiniz %i"
+"ពាក្យ​សម្ងាត់​របស់​អ្នក​វែង​ណស់។ សម្រាប់​ការ​តភ្ជាប់ WPA2 ត្រូវ​ការ​តិច​ជាង "
+"៦៤​តួ, តែ​អ្នក​មានដល់​ទៅ %i តួ។"
 
 #. TRANSLATORS: Tooltips for the toolbar icon
 #. * The possible placeholder is service name (such as
 #. * a wireless network name)
 #: ../src/carrick.c:52
 msgid "networks - not connected"
-msgstr "ağlar - bağlı değil"
+msgstr "បណ្ដាញ - មិន​បាន​ត​ភ្ជាប់"
 
 #: ../src/carrick.c:58
 msgid "networks - connecting"
-msgstr "ağlar - bağlanıyor"
+msgstr "បណ្ដាញ - កំពុង​ត​ភ្ជាប់"
 
 #: ../src/carrick.c:64
 msgid "networks - wired"
-msgstr "ağlar - kablolu"
+msgstr "បណ្ដាញ - តាម​ខ្សែ"
 
 #: ../src/carrick.c:66
 #, c-format
 msgid "networks - %s - wifi"
-msgstr "ağlar - %s - wifi"
+msgstr "បណ្ដាញ - %s - wifi"
 
 #: ../src/carrick.c:69
 #, c-format
 msgid "networks - %s - wimax"
-msgstr "ağlar - %s - wimax"
+msgstr "បណ្ដាញ - %s - wimax"
 
 #: ../src/carrick.c:72
 #, c-format
 msgid "networks - %s - 3G"
-msgstr "ağlar - %s - 3G"
+msgstr "បណ្ដាញ - %s - 3G"
 
 #: ../src/carrick.c:75
 #, c-format
 msgid "networks - %s - bluetooth"
-msgstr "ağlar - %s - bluetooth"
+msgstr "បណ្ដាញ - %s - ប៊្លូធូ"
 
 #: ../src/carrick.c:78
 #, c-format
 msgid "networks - %s - VPN"
-msgstr "ağlar -%s - VPN"
+msgstr "បណ្ដាញ - %s - VPN"
 
 #: ../src/carrick.c:81 ../src/carrick.c:93
 msgid "networks"
-msgstr "ağlar"
+msgstr "បណ្ដាញ"
 
 #: ../src/carrick.c:88
 msgid "networks - error"
-msgstr "ağlar - hata"
+msgstr "បណ្ដាញ - កំហុស"
 
 #: ../src/carrick.c:309
 msgid "Run in standalone mode"
-msgstr "Tek başına bağımsız çalış"
+msgstr "រត់​នៅ​ក្នុង​របៀប​តែ​ឯង"
 
 #: ../src/carrick.c:311
 msgid "Embed in another window (overrides --standalone)"
-msgstr "Başka bir pencerenin içine koy. (bağımsız çalışmayı geçersiz kılar)"
+msgstr "បង្កប់​នៅ​ក្នុង​ផ្ទាំង​វីនដូ​ផ្សេង (បដិសេធ --តែឯង)"
 
 #: ../src/carrick.c:322
 msgid "Carrick connectivity applet"
-msgstr "Carrick bağlantı uygulaması"
+msgstr "អាប់ផ្លេត​ការ​ត​ភ្ជាប់ Carrick"
 
 #: ../src/carrick.c:323
 msgid "- MeeGo connectivity applet"
-msgstr "- MeeGo bağlantı uygulaması"
+msgstr "- អាប់ផ្លេត​ការ​ត​ភ្ជាប់ MeeGo"
 
 #: ../src/carrick.c:364 ../data/carrick.desktop.in.in.h:2
 msgid "network"
-msgstr "ağ"
+msgstr "បណ្ដាញ"
 
 #: ../callouts/3g/ggg-country-dialog.c:73
 #: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106
 #: ../callouts/3g/ggg-service-dialog.c:106
 msgid "Cellular Data Connection Wizard"
-msgstr "Hücresel Veri Bağlantı Sihirbazı"
+msgstr "ជំនួយ​ការ​ទិន្នន័យ​ការ​ត​ភ្ជាប់​ទូរស័ព្ទ​ចល័ត"
 
 #: ../callouts/3g/ggg-country-dialog.c:93
 msgid "Select Country"
-msgstr "Ülke seçin"
+msgstr "រើស​ប្រទេស"
 
 #: ../callouts/3g/ggg-manual-dialog.c:89
 msgid "Manual Configuration"
-msgstr "Kendiniz ayarlayın"
+msgstr "ការ​កំណត់​ដោយ​ដៃ"
 
 #: ../callouts/3g/ggg-manual-dialog.c:93
 msgid "Plan Name (required):"
-msgstr "Plan ismi (gerekli):"
+msgstr "ឈ្មោះ​គម្រោង (ត្រូវ​ការ):"
 
 #: ../callouts/3g/ggg-manual-dialog.c:96
 msgid "Username:"
-msgstr "Kullanıcı adı:"
+msgstr "ឈ្មោះ​សមាជិក:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:99
 msgid "Password:"
-msgstr "Şifre:"
+msgstr "ពាក្យ​សម្ងាត់:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:103
 msgid "Gateway:"
-msgstr "Ağ geçidi:"
+msgstr "ច្រក:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:106
 msgid "Primary DNS:"
-msgstr "Birincil DNS:"
+msgstr "DNS ដើម:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:109
 msgid "Secondary DNS:"
-msgstr "İkincil DNS:"
+msgstr "DNS ទីពីរ:"
 
 #: ../callouts/3g/ggg-manual-dialog.c:112
 msgid "Tertiary DNS:"
-msgstr "Üçüncü DNS:"
+msgstr "DNS ទី៣:"
 
 #: ../callouts/3g/ggg-plan-dialog.c:131
 msgid "Select your 3G Plan"
-msgstr "3G planınızı seçin"
+msgstr "រើស​គម្រោង 3G របស់​អ្នក"
 
 #: ../callouts/3g/ggg-provider-dialog.c:126
 msgid "Select Provider"
-msgstr "Servis sağlayıcı seçin"
+msgstr "រើស​ក្រុម​ហ៊ុន​ទូរស័ព្ទ"
 
 #: ../callouts/3g/ggg-service-dialog.c:59
 #, c-format
 msgid "%s (Roaming)"
-msgstr "%s (Roaming)"
+msgstr "%s (ពេល​ទៅ​ឆ្ងាយ)"
 
 #: ../callouts/3g/ggg-service-dialog.c:125
 msgid "Select 3G Service"
-msgstr "3G servisi seçin"
+msgstr "រើស​សេវា​កម្ម 3G"
 
 #: ../callouts/openconnect/main.c:659
 #, c-format
@@ -648,6 +659,6 @@ msgstr ""
 
 #: ../data/carrick.desktop.in.in.h:1
 msgid "Network settings"
-msgstr "Ağ ayarları"
+msgstr "ការ​កំណត់​បណ្ដាញ"
 
 
