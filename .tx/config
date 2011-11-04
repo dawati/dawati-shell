@@ -1,0 +1,7 @@
+[main]
+host = https://meego.transifex.net
+
+[mutter-meego.mutter-meego-netbook-plugin]
+file_filter = po/<lang>.po
+source_lang = en
+source_file = po/mutter-meego-netbook-plugin.pot
