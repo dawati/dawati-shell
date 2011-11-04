@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Dimitris Glezos <glezos@indifex.com>, 2011.
 # Teo  <anapospastos@hotmail.com>, 2011.
@@ -57,7 +57,7 @@ msgstr "Διαγραφή πρόσφατων εγγράφων"
 
 #: ../data/capplet.ui.h:7
 msgid "Email alerts:"
-msgstr "Ειδοποιήσεις email:\n"
+msgstr "Ειδοποιήσεις email:"
 
 #: ../data/capplet.ui.h:8
 msgid "Reset to default"

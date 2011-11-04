@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # PauGNU <>, 2011.
 msgid ""
@@ -56,7 +56,7 @@ msgstr "Neteja els documents recents"
 
 #: ../data/capplet.ui.h:7
 msgid "Email alerts:"
-msgstr "Avisos de correu electrònic:\n"
+msgstr "Avisos de correu electrònic:"
 
 #: ../data/capplet.ui.h:8
 msgid "Reset to default"
