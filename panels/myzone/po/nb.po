@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Torgeir Hjelmfoss <tih@inbox.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-panel-myzone\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:33-0700\n"
+"PO-Revision-Date: 2011-11-03 19:03+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Norwegian Bokmål (http://www.transifex.net/projects/p/meego/team/nb/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nb\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone-panel"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Endre Myzone-bakgrunn og innhold"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Endre hva som vises i din Myzone</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Myzone-bakgrunn</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Kalender og oppgaver:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Endre mine webkontoer"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Velg din bakgrunn"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Tøm nylig brukte dokumenter"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Epostvarsler:\n"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Tilbakestill til standard"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf feil: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "Alle videre feil vises kun i terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Vis så mye webtjenesteinnhold som mulig"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Vis for det meste webtjenesteinnhold"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Vis halvt om halvt"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Vis for det meste nylig brukte filer"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Vis så mange nylig brukte filer som mulig"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from your myzone"
+msgstr ""
+"Vil du tømme dine nylig brukte dokumenter? Dette vil fjerne det lokale "
+"innholdet fra din myzone"
+
+#: ../capplet/myzone-cc-panel.c:343
+msgid "Images"
+msgstr ""
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Avtaler"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Åpne"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Oppgaver"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "Opprett en avtale"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "Legg til"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "Ingen kalenderoppføringer denne uken"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "Webside"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "Opprett en ny oppgave"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "Ingenting å gjøre i dag"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "Ferdig %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid ""
+"When you’ve set up your web accounts and used some files, they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+"Når du har satt opp dine webkontoer og brukt noen filer, vil de vises her på"
+" myzone for lett tilgang når du vil."
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "Spill introvideo"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to MeeGo"
+msgstr "Velkommen til MeeGo"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "Ingen uleste meldinger"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Ulest melding"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Uleste meldinger"
+
+

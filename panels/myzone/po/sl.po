@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Jure Repinc <jlp@holodeck1.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-panel-myzone\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:33-0700\n"
+"PO-Revision-Date: 2011-11-03 19:03+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Slovenian <lugos-slo@lugos.si>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
+
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Plošča z mojim področjem"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Spremenite vsebino in ozadje svojega področja"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Moje področje"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Spremenite prikazano na svojem področju</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Ozadje vašega področja</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Koledar in opravila:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Spremeni moje spletne račune"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Izberite svoje ozadje"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Počisti nazadnje uporabljene dokumente"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Obvestila o e-pošti:\n"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Ponastavi na privzeto"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "Napaka v GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "Nadaljnje napake so prikazane samo v konzoli."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Prikaži kar se da veliko vsebin spletnih storitev"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Prikaži večinoma vsebine spletnih storitev"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Prikaži pol teh in pol drugih"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Prikaži večinoma nedavne datoteke"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Prikaži kar se da veliko nedavnih datotek"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from your myzone"
+msgstr ""
+"Ali želite počistiti svoje nedavne dokumente? To odstrani krajevno vsebino z"
+" vašega področja."
+
+#: ../capplet/myzone-cc-panel.c:343
+msgid "Images"
+msgstr ""
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Sestanki"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Odpri"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Opravila"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "Ustvari sestanek"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "Dodaj"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "Za ta teden na koledarju ni vnosov"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "Spletna stran:"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "Ustvari novo opravilo."
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "Danes ni potrebno opraviti nič"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "Zapade %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid ""
+"When you’ve set up your web accounts and used some files, they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+"Ko boste nastavili svoje spletne račune in uporabili nekaj datotek, se bodo "
+"prikazale tu na vašem področju, od koder bodo hitro dostopne. "
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "Predvajaj uvodni video"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to MeeGo"
+msgstr "Dobrodošli v MeeGo"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "Ni neprebranih sporočil"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Neprebrano sporočilo"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Neprebrana sporočila"
+
+

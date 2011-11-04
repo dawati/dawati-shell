@@ -1,0 +1,176 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# សុវិចិត្រ Sovichet ទេព Tep <sovichet.tep@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-panel-myzone\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:33-0700\n"
+"PO-Revision-Date: 2011-11-03 19:03+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Khmer (http://www.transifex.net/projects/p/meego/team/km/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: km\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+#: ../data/meego-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "បន្ទះ Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "ប្ដូរផ្ទៃ​ក្រោយ Myzone និង​មាតិកា"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>ប្ដូរ​អ្វី​ដែល​បង្ហាញ​នៅ​ក្នុង Myzone របស់​អ្នក</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>រូប​ផ្ទៃ​ក្រោយ​នៃ Myzone</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "ប្រតិទិន និង ភារកិច្ច:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "ប្ដូរ​គណនី​វែប​របស់​ខ្ញុំ"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "រើស​រូប​ផ្ទៃ​ក្រោយ​របស់​អ្ន"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "សម្អាត​ឯកសារ​អត្ថបទ​ថ្មីៗ"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "សារ​ផ្ដល់​ដំណឹង:\n"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "ត្រឡប់​ទៅ​ដូច​ដើម"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "កំហុង GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "រាល់​កំហុស​នានា នឹង​ត្រូវ​បង្ហាញ​នៅ​លើ ស្ថានីយ​បញ្ជា។"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "បង្ហាញ​មាតិកា​វែប​បាន​ច្រើន​តាម​តែ​អាច​ធ្វើ​ទៅ​បាន"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "បង្ហាញ​មាតិកា​វែប​ច្រើន​បំផុត"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "បង្ហាញ​ពាក់​កណ្ដាល​ស្មើៗ​គ្នា"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "បង្ហាញ​ឯកសារ​ថ្មីច្រើន​បំផុត"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "បង្ហាញ​ឯកសារ​បាន​ច្រើន​តាម​តែ​អាច​ធ្វើ​ទៅ​បាន"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from your myzone"
+msgstr ""
+"តើ​អ្នក​ចង់​សម្អាត​ឯកសារ​អត្ថបទ​ថ្មី​របស់​អ្នកឬ? ធ្វើ​បែប​នេះ នឹង​លុប​មាតិកា"
+"​មូលដ្ឋាន​ពី Myzone របស់​អ្នក"
+
+#: ../capplet/myzone-cc-panel.c:343
+msgid "Images"
+msgstr ""
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "ជំនួប"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "បើក"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "ភារកិច្ច"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "បង្កើត​ជំនួប"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "បន្ថែម"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "សប្ដាហ៍​នេះ​មិន​មាន​ទិន្នន័យ​ទេ"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "គេហទំព័រ"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "បង្កើត​ភារកិច្ច​ថ្មី"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "ថ្ងៃ​នេះ​មិន​មាន​អ្វី​ធ្វើ​ទេ"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "រយៈ​ពេល %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid ""
+"When you’ve set up your web accounts and used some files, they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+"នៅ​ពេល​អ្នក​ដំឡើង​គណនី​វែប ឬ បាន​ប្រើ​ឯកសារ​ណា​មួយ នោះ​អ្វីៗ​ទាំង​ឡាយ​នឹង​"
+"បង្ហាញ​នៅ​ទីនេះ​លើ Myzone ដែល​អ្នក​ងាយ​ស្រួល​ធ្វើ​ការ​បើក និង​ផ្សេងៗ​ទៀត​ដែល"
+"​អ្នក​ចង់។"
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "ចាក់​វីដេអូ​ណែនាំ"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to MeeGo"
+msgstr "សូម​ស្វាគមន៍​មក​កាន់ MeeGo"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "មិន​មាន​សារ​មិន​ទាន់​អាន​ទេ"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "សារ​មិន​ទាន់​អាន"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "សារ​មិន​ទាន់​អាន"
+
+
