@@ -3,43 +3,46 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Smruti Patel <smrutipatel1487@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter-meego\n"
 "Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
 "POT-Creation-Date: 2011-11-02 13:46-0700\n"
-"PO-Revision-Date: 2010-11-30 11:22+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Catalan (Valencian) (http://www.transifex.net/projects/p/meego/team/ca@valencia/)\n"
+"PO-Revision-Date: 2011-11-03 19:07+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Gujarati (http://www.transifex.net/projects/p/meego/team/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ca@valencia\n"
+"Language: gu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
-msgstr ""
+msgstr "તમારી સાધનપટ્ટી પસંદગીઓ સુયોજીત કરો"
 
 #: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
-msgstr ""
+msgstr "સાધનપટ્ટી સુયોજનો"
 
 #: ../capplet/src/mtp-bin.c:365
 msgid "Save toolbar"
-msgstr ""
+msgstr "સાધનપટ્ટી સંગ્રહો"
 
 #: ../capplet/src/mtp-bin.c:370
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
-msgstr ""
+msgstr "માફ કરજો, તમે પેનલ ઉમેરી શકો એ પહેલાં પેનલ દૂર કરવી પડશે."
 
 #: ../capplet/src/mtp-bin.c:372
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
 msgstr ""
+"તમે તમારી સાધનપટ્ટીમાં પેનલોમાંની ઘણી ઉમેરી, દૂર કરી શકો, અને ક્રમ બદલી શકો "
+"છો."
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
-msgstr ""
+msgstr "ઉપલબ્ધ પેનલો"
 
 #. translators: translate this to a suitable 24 hourt time format for
 #. * your locale showing only hours and minutes. For available format
@@ -48,7 +51,7 @@ msgstr ""
 #. 
 #: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #. translators: translate this to a suitable time format for your
 #. * locale showing only hours and minutes. For available format
@@ -62,7 +65,7 @@ msgstr ""
 #. 
 #: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
-msgstr ""
+msgstr "%l:%M %P"
 
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
@@ -70,38 +73,40 @@ msgstr ""
 #. 
 #: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
-msgstr ""
+msgstr "%B %e, %Y"
 
 #: ../capplet/src/mtp-cc-panel.c:118
 msgid "Toolbar"
-msgstr ""
+msgstr "સાધનપટ્ટી"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:1
 msgid "Set your system-tray preferences"
-msgstr ""
+msgstr "તમારી સિસ્ટમ-ટ્રે પસંદગીઓ સુયોજીત કરો"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
 #: ../capplet/src/syst-cc-panel.c:245
 msgid "System Tray"
-msgstr ""
+msgstr "સિસ્ટમ ટ્રે"
 
 #: ../capplet/src/syst-cc-panel.c:176
 msgid "Show system tray"
-msgstr ""
+msgstr "સિસ્ટમ ટ્રે બતાવો"
 
 #: ../capplet/src/syst-cc-panel.c:200
 msgid ""
 "The system tray is a concept used by some older applications to let you know"
 " when something happens or to stay running when you close them."
 msgstr ""
+"સિસ્ટમ ટ્રે એ જૂના કાર્યક્રમો દ્વારા વાપરવામાં આવતો પ્રકાર છે કે જે તમે કંઇક"
+" થાય ત્યારે જાણ કરે છે અથવા "
 
 #: ../data/mutter-meego.schemas.in.h:1
 msgid "Always use small screen mode"
-msgstr ""
+msgstr "હંમેશા નાની સ્ક્રીન સ્થિતિ વાપરો"
 
 #: ../data/mutter-meego.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
-msgstr ""
+msgstr "સાધનપટ્ટી પર પેનલોનો ક્રમ નક્કી કરે છે."
 
 #: ../data/mutter-meego.schemas.in.h:3
 msgid ""
@@ -111,7 +116,7 @@ msgstr ""
 
 #: ../data/mutter-meego.schemas.in.h:4
 msgid "Order of panels on toolbar"
-msgstr ""
+msgstr "સાધનપટ્ટી પર પેનલોનો ક્રમ"
 
 #: ../src/meego-netbook.c:846
 msgid "Meego Netbook Effects"
@@ -124,15 +129,15 @@ msgstr ""
 #: ../src/mnb-toolbar.c:1007
 #, c-format
 msgid "Sorry, %s is broken"
-msgstr ""
+msgstr "માફ કરો, %s ભાંગેલ છે"
 
 #: ../src/notifications/ntf-notification.c:292
 msgid "Dismiss"
-msgstr ""
+msgstr "રદબાતલ કરો"
 
 #: ../src/notifications/ntf-tray.c:311
 msgid "Dismiss All"
-msgstr ""
+msgstr "બધું રદબાતલ કરો"
 
 #: ../src/notifications/ntf-tray.c:516 ../src/notifications/ntf-tray.c:592
 #, c-format
@@ -145,15 +150,15 @@ msgstr ""
 
 #: ../src/notifications/ntf-wm.c:112
 msgid "Unknown window"
-msgstr ""
+msgstr "અજ્ઞાત વિન્ડો"
 
 #: ../src/notifications/ntf-wm.c:116
 msgid "is asking for your attention."
-msgstr ""
+msgstr "તમારા ધ્યાન માટે પૂછી રહ્યું છે."
 
 #: ../src/notifications/ntf-wm.c:124
 msgid "Activate"
-msgstr ""
+msgstr "સક્રિય કરો"
 
 #: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
