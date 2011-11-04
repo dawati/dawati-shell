@@ -1,4 +1,0 @@
-[D-BUS Service]
-Name=com.meego.UX.Shell.Panels.datetime
-Exec=@libexecdir@/meego-panel-datetime
-

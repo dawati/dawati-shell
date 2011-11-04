@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=com.dawati.UX.Shell.Panels.datetime
+Exec=@libexecdir@/dawati-panel-datetime
+

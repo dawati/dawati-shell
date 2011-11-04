@@ -24,8 +24,8 @@
 
 #include <glib-object.h>
 #include <mx/mx.h>
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
 
 G_BEGIN_DECLS
 

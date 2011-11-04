@@ -32,9 +32,9 @@
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
-#include <meego-panel/mpl-entry.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-entry.h>
 
 #include "mnp-shell.h"
 
@@ -69,7 +69,7 @@ _client_activated_cb  (MnpShell *shell,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-dawati panel", NULL},
   { NULL }
 };
 
@@ -88,7 +88,7 @@ main (int    argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- mutter-meego date/time panel");
+  context = g_option_context_new ("- mutter-dawati date/time panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, gtk_get_option_group (FALSE));

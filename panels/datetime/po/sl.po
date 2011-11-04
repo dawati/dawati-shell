@@ -6,8 +6,8 @@
 # Jure Repinc <jlp@holodeck1.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-datetime\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:31-0700\n"
 "PO-Revision-Date: 2011-11-03 19:01+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
 
-#: ../src/meego-panel-date-time.c:111
+#: ../src/dawati-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "Datum/čas"
 
-#: ../data/meego-panel-datetime.desktop.in.in.h:1
+#: ../data/dawati-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "Pult datuma in časa"
 
-#: ../data/meego-panel-datetime.desktop.in.in.h:2
+#: ../data/dawati-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "datum in čas"
 

@@ -6,17 +6,17 @@ AM_CFLAGS = \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
-	-DMYZONETHEMEDIR=\"$(datadir)/meego-panel-myzone/theme\" \
+	-DMYZONETHEMEDIR=\"$(datadir)/dawati-panel-myzone/theme\" \
 	-Wall -g3 -O0 -ggdb
 
-meego_panel_datetime_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
-meego_alarm_notify_LDADD =  $(DATETIME_LIBS) $(MPL_LIBS)
+dawati_panel_datetime_LDADD = $(DATETIME_LIBS) $(MPL_LIBS)
+dawati_alarm_notify_LDADD =  $(DATETIME_LIBS) $(MPL_LIBS)
 
-libexec_PROGRAMS = meego-panel-datetime
+libexec_PROGRAMS = dawati-panel-datetime
 
-#bin_PROGRAMS = meego-alarm-notify
+#bin_PROGRAMS = dawati-alarm-notify
 
-meego_panel_datetime_SOURCES = meego-panel-date-time.c	\
+dawati_panel_datetime_SOURCES = dawati-panel-date-time.c	\
 				 mnp-world-clock.c	\
 				 mnp-world-clock.h	\
 				 mnp-utils.c 		\
@@ -44,7 +44,7 @@ meego_panel_datetime_SOURCES = meego-panel-date-time.c	\
 #				 mx-spin-entry.h	\
 #				 mnp-alarm-utils.h	
 
-meego_alarm_notify_SOURCES = meego-alarm-notify.c 	\
+dawati_alarm_notify_SOURCES = dawati-alarm-notify.c 	\
 			      mnp-alarm-manager.c	\
 			      mnp-alarm-manager.h	\
 			      mnp-alarm-instance.c	\
@@ -53,25 +53,25 @@ meego_alarm_notify_SOURCES = meego-alarm-notify.c 	\
 
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = com.meego.UX.Shell.Panels.datetime.service.in
-service_DATA = com.meego.UX.Shell.Panels.datetime.service
+service_in_files = com.dawati.UX.Shell.Panels.datetime.service.in
+service_DATA = com.dawati.UX.Shell.Panels.datetime.service
 
 schemadir   = $(GCONF_SCHEMA_FILE_DIR)
 schema_in_files = date-time.schemas.in
 schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 @INTLTOOL_SCHEMAS_RULE@
 
-#meego_panel_date_time_LDFLAGS = \
+#dawati_panel_date_time_LDFLAGS = \
 #			-Wl,--export-dynamic
 
 DISTCLEANFILES = \
-	com.meego.UX.Shell.Panels.datetime.service\
+	com.dawati.UX.Shell.Panels.datetime.service\
 	date-time.schemas
 
 EXTRA_DIST = $(service_in_files) \
 	     $(schema_in_files) 	     
 
-com.meego.UX.Shell.Panels.datetime.service: com.meego.UX.Shell.Panels.datetime.service.in $(top_builddir)/config.log
+com.dawati.UX.Shell.Panels.datetime.service: com.dawati.UX.Shell.Panels.datetime.service.in $(top_builddir)/config.log
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 

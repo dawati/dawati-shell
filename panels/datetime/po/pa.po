@@ -5,8 +5,8 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-datetime\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2010-11-27 00:58+0000\n"
 "PO-Revision-Date: 2011-03-02 18:47+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Language: pa\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../src/meego-panel-date-time.c:111
+#: ../src/dawati-panel-date-time.c:111
 msgid "Date/Time"
 msgstr "ਮਿਤੀ/ਸਮਾਂ"
 
-#: ../data/meego-panel-datetime.desktop.in.in.h:1
+#: ../data/dawati-panel-datetime.desktop.in.in.h:1
 msgid "Date and Time panel"
 msgstr "ਮਿਤੀ ਤੇ ਸਮਾਂ ਪੈਨਲ"
 
-#: ../data/meego-panel-datetime.desktop.in.in.h:2
+#: ../data/dawati-panel-datetime.desktop.in.in.h:2
 msgid "date and time"
 msgstr "ਮਿਤੀ ਤੇ ਸਮਾਂ"
 

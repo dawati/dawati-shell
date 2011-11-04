@@ -40,8 +40,8 @@ main (int argc, char *argv[])
 
 	mx_set_locale();
 
-	if (!clutter_init_with_args (&argc, &argv, _("Meego alarm notify"), NULL, NULL, &error)) {
-		g_warning ("Unable to start meego-alarm-notify: %s\n", error->message);
+	if (!clutter_init_with_args (&argc, &argv, _("Dawati alarm notify"), NULL, NULL, &error)) {
+		g_warning ("Unable to start dawati-alarm-notify: %s\n", error->message);
 		g_error_free(error);
 		return 0;
 	}

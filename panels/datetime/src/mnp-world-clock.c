@@ -25,9 +25,9 @@
 #include <glib/gi18n.h>
 
 
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
-#include <meego-panel/mpl-entry.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-entry.h>
 
 #include <geoclue/geoclue-master.h>
 #include <geoclue/geoclue-geocode.h>
