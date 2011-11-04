@@ -24,8 +24,8 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
 #include "mnb-people-panel.h"
 
 #include <config.h>
@@ -45,7 +45,7 @@ _client_set_size_cb (MplPanelClient *client,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-dawati panel", NULL},
   { NULL }
 };
 
@@ -64,7 +64,7 @@ main (int    argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- mutter-meego people panel");
+  context = g_option_context_new ("- mutter-dawati people panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, cogl_get_option_group ());

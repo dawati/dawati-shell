@@ -1,7 +1,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Meego UX\n"
+"Project-Id-Version: Dawati UX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-19 16:57+0000\n"
 "PO-Revision-Date: \n"
@@ -14,9 +14,9 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 # <mousetip of the top of the screen>
-#: ../src/meego-panel-people.c:88
+#: ../src/dawati-panel-people.c:88
 #: ../src/mnb-people-panel.c:513
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "gente"
 
@@ -81,7 +81,7 @@ msgstr "Yo"
 msgid "My conversations"
 msgstr "Mis conversaciones"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Gente"
 

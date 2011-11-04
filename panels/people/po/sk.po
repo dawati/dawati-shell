@@ -15,8 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:476
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../src/dawati-panel-people.c:88 ../src/mnb-people-panel.c:476
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "ľudia"
 
@@ -76,6 +76,6 @@ msgstr "Ja"
 msgid "My conversations"
 msgstr "Moje rozhovory"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panel ľudí"

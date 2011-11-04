@@ -19,8 +19,8 @@ msgstr ""
 "X-Poedit-Language: Galician\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:513
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../src/dawati-panel-people.c:88 ../src/mnb-people-panel.c:513
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "persoas"
 
@@ -80,7 +80,7 @@ msgstr "Eu"
 msgid "My conversations"
 msgstr "As miñas conversas"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panel Persoas"
 

@@ -16,9 +16,9 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: BRAZIL\n"
 
-#: ../src/meego-panel-people.c:88
+#: ../src/dawati-panel-people.c:88
 #: ../src/mnb-people-panel.c:513
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "pessoas"
 
@@ -81,7 +81,7 @@ msgstr "Eu"
 msgid "My conversations"
 msgstr "Minhas conversas"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Painel de pessoas"
 

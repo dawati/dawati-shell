@@ -16,9 +16,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/meego-panel-people.c:88
+#: ../src/dawati-panel-people.c:88
 #: ../src/mnb-people-panel.c:513
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "persone"
 
@@ -81,7 +81,7 @@ msgstr "Io"
 msgid "My conversations"
 msgstr "Le mie conversazioni"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Pannello persone"
 

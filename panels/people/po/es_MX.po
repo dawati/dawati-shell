@@ -6,20 +6,20 @@
 # Gustavo Jasso <gjasso@matem.unam.mx>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-people\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-people\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:37-0700\n"
 "PO-Revision-Date: 2011-03-22 15:25+0000\n"
 "Last-Translator: gjasso <gjasso@matem.unam.mx>\n"
-"Language-Team: Spanish (Mexican) (http://www.transifex.net/projects/p/meego/team/es_MX/)\n"
+"Language-Team: Spanish (Mexican) (http://www.transifex.net/projects/p/dawati/team/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_MX\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:513
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../src/dawati-panel-people.c:88 ../src/mnb-people-panel.c:513
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "gente"
 
@@ -86,7 +86,7 @@ msgstr "Yo"
 msgid "My conversations"
 msgstr "Mis conversaciones"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panel Gente"
 

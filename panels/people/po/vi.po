@@ -6,20 +6,20 @@
 # Quang Pham <quang.pham@msn.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-people\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-people\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:37-0700\n"
 "PO-Revision-Date: 2011-03-22 15:25+0000\n"
 "Last-Translator: quangpham <quang.pham@msn.com>\n"
-"Language-Team: Vietnamese (http://www.transifex.net/projects/p/meego/team/vi/)\n"
+"Language-Team: Vietnamese (http://www.transifex.net/projects/p/dawati/team/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:513
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../src/dawati-panel-people.c:88 ../src/mnb-people-panel.c:513
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "bạn bè"
 
@@ -85,7 +85,7 @@ msgstr "Bản thân"
 msgid "My conversations"
 msgstr "Cuộc hội thoại của tôi"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Mục bạn bè"
 

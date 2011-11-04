@@ -25,7 +25,7 @@ dist_theme_DATA = \
 	background-gradient.png \
 	people.png
 
-# Manage mutter-meego's texture cache.
+# Manage mutter-dawati's texture cache.
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/nbtk.cache
 CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)

@@ -17,8 +17,8 @@ msgstr ""
 "X-Poedit-Country: Iran\n"
 "X-Poedit-Language: Persian\n"
 
-#: ../src/meego-panel-people.c:88 ../src/mnb-people-panel.c:513
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../src/dawati-panel-people.c:88 ../src/mnb-people-panel.c:513
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "مردم"
 
@@ -78,7 +78,7 @@ msgstr "من"
 msgid "My conversations"
 msgstr "مکالمات من"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "قاب مردم"
 

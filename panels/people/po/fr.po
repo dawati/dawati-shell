@@ -14,9 +14,9 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/meego-panel-people.c:88
+#: ../src/dawati-panel-people.c:88
 #: ../src/mnb-people-panel.c:513
-#: ../data/meego-panel-people.desktop.in.in.h:2
+#: ../data/dawati-panel-people.desktop.in.in.h:2
 msgid "people"
 msgstr "relations"
 
@@ -79,7 +79,7 @@ msgstr "Moi"
 msgid "My conversations"
 msgstr "Mes conversations"
 
-#: ../data/meego-panel-people.desktop.in.in.h:1
+#: ../data/dawati-panel-people.desktop.in.in.h:1
 msgid "People panel"
 msgstr "Panneau de relations"
 

@@ -38,9 +38,9 @@
 
 #include <libebook/e-book.h>
 
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
-#include <meego-panel/mpl-entry.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-entry.h>
 
 #include "mnb-people-panel.h"
 #include "sw-online.h"
@@ -754,7 +754,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
   priv->tile_view = anerley_tile_view_new (priv->model);
 
   active_feed = anerley_tp_monitor_feed_new ((AnerleyAggregateTpFeed *)priv->tp_feed,
-                                             "MeegoPanelPeople");
+                                             "DawatiPanelPeople");
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
 
   priv->active_list_view = anerley_compact_tile_view_new (priv->active_model);
@@ -1143,7 +1143,7 @@ mnb_people_panel_init (MnbPeoplePanel *self)
 
 
   active_feed = anerley_tp_monitor_feed_new ((AnerleyAggregateTpFeed *)priv->tp_feed,
-                                             "MeegoPanelPeople");
+                                             "DawatiPanelPeople");
   priv->active_model = (AnerleyFeedModel *)anerley_feed_model_new (active_feed);
 
 

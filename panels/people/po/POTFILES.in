@@ -1,4 +1,4 @@
 # List of source files containing translatable strings.
-src/meego-panel-people.c
+src/dawati-panel-people.c
 src/mnb-people-panel.c
-data/meego-panel-people.desktop.in.in
+data/dawati-panel-people.desktop.in.in
