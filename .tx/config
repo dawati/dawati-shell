@@ -1,0 +1,7 @@
+[main]
+host = https://meego.transifex.net
+
+[meego-anerley.master-po-anerley-pot]
+file_filter = po/<lang>.po
+source_lang = en
+source_file = po/anerley.pot
