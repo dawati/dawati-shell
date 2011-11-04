@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-myzone.meego-10\n"
+"Project-Id-Version: dawati-panel-myzone.dawati-10\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:20+0000\n"
 "PO-Revision-Date: 2010-04-20 21:52+0200\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Panel Myzone"
 
@@ -142,8 +142,8 @@ msgid "Play intro video"
 msgstr "Prehrať úvodné video"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Vitajte v MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Vitajte v Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"

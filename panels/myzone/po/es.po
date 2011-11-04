@@ -1,7 +1,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Meego UX\n"
+"Project-Id-Version: Dawati UX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: \n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone"
 
@@ -145,8 +145,8 @@ msgid "Play intro video"
 msgstr "Reproducir vídeo de introducción"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Bienvenido a MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Bienvenido a Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -170,6 +170,6 @@ msgstr "Mensajes sin leer"
 #~ "Things that your friends do online will appear here. Activate your "
 #~ "accounts now!"
 #~ msgstr "Aquí verás lo que hacen tus amigos en línea. ¡Activa tus cuentas!"
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Bienvenido a Meego 2.1 para miniportátiles</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Bienvenido a Dawati 2.1 para miniportátiles</b>"
 

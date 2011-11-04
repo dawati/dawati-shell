@@ -23,7 +23,7 @@
 #include <libsocialweb-client/sw-client.h>
 #include <gtk/gtk.h>
 #include <gio/gio.h>
-#include <meego-panel/mpl-utils.h>
+#include <dawati-panel/mpl-utils.h>
 #include <gconf/gconf-client.h>
 
 #include "penge-everything-pane.h"
@@ -39,9 +39,9 @@ G_DEFINE_TYPE (PengeEverythingPane, penge_everything_pane, PENGE_TYPE_BLOCK_CONT
 
 #define GET_PRIVATE(o) ((PengeEverythingPane *)o)->priv;
 
-#define MEEGO_MYZONE_MIN_TILE_WIDTH "/desktop/meego/myzone/min_tile_width"
-#define MEEGO_MYZONE_MIN_TILE_HEIGHT "/desktop/meego/myzone/min_tile_height"
-#define MEEGO_MYZONE_RATIO "/desktop/meego/myzone/ratio"
+#define DAWATI_MYZONE_MIN_TILE_WIDTH "/desktop/dawati/myzone/min_tile_width"
+#define DAWATI_MYZONE_MIN_TILE_HEIGHT "/desktop/dawati/myzone/min_tile_height"
+#define DAWATI_MYZONE_RATIO "/desktop/dawati/myzone/ratio"
 
 #define TILE_WIDTH 160
 #define TILE_HEIGHT 135
@@ -804,7 +804,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
   priv->gconf_client = gconf_client_get_default ();
 
   tile_width = gconf_client_get_float (priv->gconf_client,
-                                       MEEGO_MYZONE_MIN_TILE_WIDTH,
+                                       DAWATI_MYZONE_MIN_TILE_WIDTH,
                                        NULL);
 
   /* Returns 0.0 if unset */
@@ -814,7 +814,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
   }
 
   tile_height = gconf_client_get_float (priv->gconf_client,
-                                        MEEGO_MYZONE_MIN_TILE_HEIGHT,
+                                        DAWATI_MYZONE_MIN_TILE_HEIGHT,
                                         NULL);
 
   if (tile_height == 0.0)
@@ -833,7 +833,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
 
   priv->ratio_notify_id =
     gconf_client_notify_add (priv->gconf_client,
-                             MEEGO_MYZONE_RATIO,
+                             DAWATI_MYZONE_RATIO,
                              _gconf_ratio_notify_cb,
                              self,
                              NULL,
@@ -845,7 +845,7 @@ penge_everything_pane_init (PengeEverythingPane *self)
                error->message);
     g_clear_error (&error);
   } else {
-    gconf_client_notify (priv->gconf_client, MEEGO_MYZONE_RATIO);
+    gconf_client_notify (priv->gconf_client, DAWATI_MYZONE_RATIO);
   }
 
   priv->refresh_id = g_timeout_add_seconds (REFRESH_TIME, (GSourceFunc) _refresh_cb, self);

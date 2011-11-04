@@ -25,7 +25,7 @@
 #include <string.h>
 
 #include <mx/mx.h>
-#include <meego-panel/mpl-panel-client.h>
+#include <dawati-panel/mpl-panel-client.h>
 
 #include "penge-grid-view.h"
 
@@ -37,7 +37,7 @@ penge_utils_load_stylesheet ()
   gchar *path;
 
   path = g_build_filename (THEMEDIR,
-                           "mutter-meego.css",
+                           "mutter-dawati.css",
                            NULL);
 
   /* register the styling */

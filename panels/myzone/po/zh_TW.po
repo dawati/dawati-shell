@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone 面板"
 
@@ -141,8 +141,8 @@ msgid "Play intro video"
 msgstr "播放簡介影片"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "歡迎來到 MeeGo"
+msgid "Welcome to Dawati"
+msgstr "歡迎來到 Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -165,8 +165,8 @@ msgstr "未讀取的訊息"
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>歡迎來到專為網路筆電所設計的 Meego 2.1</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>歡迎來到專為網路筆電所設計的 Dawati 2.1</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "由於 Meego 和其他電腦有些不同，我們把一些東西湊在一塊來協助您上手。我們希望您能盡情地享受 Meego，Meego 團隊敬上。"
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "由於 Dawati 和其他電腦有些不同，我們把一些東西湊在一塊來協助您上手。我們希望您能盡情地享受 Dawati，Dawati 團隊敬上。"

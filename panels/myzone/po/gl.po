@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Galician\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Panel AMiñaZona"
 
@@ -145,8 +145,8 @@ msgid "Play intro video"
 msgstr "Reproducir o vídeo introdutorio"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Benvida/o a MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Benvida/o a Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"

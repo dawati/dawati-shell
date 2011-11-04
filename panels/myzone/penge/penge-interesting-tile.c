@@ -17,7 +17,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <meego-panel/mpl-utils.h>
+#include <dawati-panel/mpl-utils.h>
 
 #include "penge-interesting-tile.h"
 

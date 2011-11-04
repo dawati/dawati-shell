@@ -1,13 +1,13 @@
-# Dutch translation of mutter-meego.
-# Copyright (C) 2009 THE mutter-meego'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the mutter-meego package.
+# Dutch translation of mutter-dawati.
+# Copyright (C) 2009 THE mutter-dawati'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the mutter-dawati package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
 # Hylke Bons <hylke.bons@intel.com>, 2009.
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego meego2\n"
+"Project-Id-Version: mutter-dawati dawati2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2010-09-09 15:13-0800\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone paneel"
 
@@ -150,8 +150,8 @@ msgid "Play intro video"
 msgstr "Kennismakingsvideo afspelen"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Welkom by MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Welkom by Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -181,14 +181,14 @@ msgstr "Ongelezen berichten"
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone insellingen"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Welkom bij Meego 2.1 voor Netbooks</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Welkom bij Dawati 2.1 voor Netbooks</b>"
 
 #~ msgid ""
-#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "As Dawati is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Meego Team."
+#~ "enjoy it, The Dawati Team."
 #~ msgstr ""
-#~ "Meego is anders dan andere computers. We hebben hier en daar wat "
+#~ "Dawati is anders dan andere computers. We hebben hier en daar wat "
 #~ "dingetjes toegevoegd om je op weg te helpen. We hopen dat je het "
-#~ "waardeert, Het Meego Team."
+#~ "waardeert, Het Dawati Team."

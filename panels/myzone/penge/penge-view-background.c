@@ -22,7 +22,7 @@
 
 #include "penge-view-background.h"
 
-#define KEY_DIR "/desktop/meego/myzone"
+#define KEY_DIR "/desktop/dawati/myzone"
 #define KEY_BG_FILENAME KEY_DIR "/background_filename"
 
 G_DEFINE_TYPE (PengeViewBackground, penge_view_background, PENGE_TYPE_MAGIC_TEXTURE)

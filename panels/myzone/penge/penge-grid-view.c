@@ -17,7 +17,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <meego-panel/mpl-panel-client.h>
+#include <dawati-panel/mpl-panel-client.h>
 #include <gconf/gconf-client.h>
 
 #include "penge-grid-view.h"
@@ -39,8 +39,8 @@ G_DEFINE_TYPE (PengeGridView, penge_grid_view, MX_TYPE_TABLE)
 #define V_DIV_LINE THEMEDIR "/v-div-line.png"
 #define FADE_BG THEMEDIR "/top-fade.png"
 
-#define MEEGO_MYZONE_SHOW_CALENDAR "/desktop/meego/myzone/show_calendar"
-#define MEEGO_MYZONE_SHOW_EMAIL "/desktop/meego/myzone/show_email"
+#define DAWATI_MYZONE_SHOW_CALENDAR "/desktop/dawati/myzone/show_calendar"
+#define DAWATI_MYZONE_SHOW_EMAIL "/desktop/dawati/myzone/show_email"
 
 struct _PengeGridViewPrivate {
   ClutterActor *calendar_pane;
@@ -548,7 +548,7 @@ penge_grid_view_init (PengeGridView *self)
   priv->gconf_client = gconf_client_get_default ();
   priv->show_calendar_notify_id = 
     gconf_client_notify_add (priv->gconf_client,
-                             MEEGO_MYZONE_SHOW_CALENDAR,
+                             DAWATI_MYZONE_SHOW_CALENDAR,
                              _gconf_show_calendar_notify_cb,
                              self,
                              NULL,
@@ -559,12 +559,12 @@ penge_grid_view_init (PengeGridView *self)
                error->message);
     g_clear_error (&error);
   } else {
-    gconf_client_notify (priv->gconf_client, MEEGO_MYZONE_SHOW_CALENDAR);
+    gconf_client_notify (priv->gconf_client, DAWATI_MYZONE_SHOW_CALENDAR);
   }
 
   priv->show_email_notify_id = 
     gconf_client_notify_add (priv->gconf_client,
-                             MEEGO_MYZONE_SHOW_EMAIL,
+                             DAWATI_MYZONE_SHOW_EMAIL,
                              _gconf_show_email_notify_cb,
                              self,
                              NULL,
@@ -575,7 +575,7 @@ penge_grid_view_init (PengeGridView *self)
         error->message);
     g_clear_error (&error);
   } else {
-    gconf_client_notify (priv->gconf_client, MEEGO_MYZONE_SHOW_EMAIL);
+    gconf_client_notify (priv->gconf_client, DAWATI_MYZONE_SHOW_EMAIL);
   }
 
 }

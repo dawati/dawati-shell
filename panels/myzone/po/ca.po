@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Tauler Myzone"
 
@@ -142,8 +142,8 @@ msgid "Play intro video"
 msgstr "Reprodueix el vídeo d'introducció"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Benvingut al Meego"
+msgid "Welcome to Dawati"
+msgstr "Benvingut al Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -160,8 +160,8 @@ msgstr "Missatges sense llegir"
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Aquí es mostrarà el que fan en línia els teus amics. Activeu els vostres comptes"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Benvingut al Meego 2.1 per a mini portàtils</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Benvingut al Dawati 2.1 per a mini portàtils</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Així com el Meego és diferent d'altres ordinadors, s'han canviat algunes parts aquí i allà perquè us sigui més còmode. Esperem que us agradi, equip del Meego."
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Així com el Dawati és diferent d'altres ordinadors, s'han canviat algunes parts aquí i allà perquè us sigui més còmode. Esperem que us agradi, equip del Dawati."

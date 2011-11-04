@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Sicriftôr Myzone"
 
@@ -143,8 +143,8 @@ msgid "Play intro video"
 msgstr "Djouwer l' videyo d' adrovaedje"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Bénvnowe dins MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Bénvnowe dins Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -164,8 +164,8 @@ msgstr "Messaedjes nén léjhous"
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Il aparexhrè droci les sacwès k' vos soçons fijhnut so fyis. Metoz en alaedje vos contes do côp !"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Wilicome dins Meego 2.1 po les Netbooks</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Wilicome dins Dawati 2.1 po les Netbooks</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Come Meego est ene miete diferin des ôtes copiutreces, nos avans metou eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. Nos esperans k' vos alez awè do plaijhi, L' ekipe di Meego."
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Come Dawati est ene miete diferin des ôtes copiutreces, nos avans metou eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. Nos esperans k' vos alez awè do plaijhi, L' ekipe di Dawati."

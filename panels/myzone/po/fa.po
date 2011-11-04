@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-Language: Persian\n"
 "X-Poedit-Country: Iran\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "قاب منطقه ی من"
 
@@ -144,7 +144,7 @@ msgid "Play intro video"
 msgstr "پخش ویدیو معرفی"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
+msgid "Welcome to Dawati"
 msgstr "به می‌گو خوش آمدید"
 
 #: ../penge/penge-email-pane.c:192

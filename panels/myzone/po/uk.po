@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 #, fuzzy
 msgid "Myzone panel"
 msgstr "Панель Myzone"
@@ -149,8 +149,8 @@ msgid "Play intro video"
 msgstr "Показати вступне відео"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Ласкаво просимо до MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Ласкаво просимо до Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -167,8 +167,8 @@ msgstr "Непрочитані повідомлення"
 #~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 #~ msgstr "Тут можуть відображатись стрічки ваших друзів. Активуйте свої облікові записи!"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Ласкаво просимо до Meego 2.1 для нетбуків</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Ласкаво просимо до Dawati 2.1 для нетбуків</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Meego трохи відрізняється від інших комп'ютерів. Ми зібрали разом найкращі програми, щоб допомогти вам зорієнтуватись. Ми сподіваємось, що це Вам сподобається.Команда Meego."
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Dawati трохи відрізняється від інших комп'ютерів. Ми зібрали разом найкращі програми, щоб допомогти вам зорієнтуватись. Ми сподіваємось, що це Вам сподобається.Команда Dawati."

@@ -2,11 +2,11 @@ SUBDIRS=theme
 
 @INTLTOOL_DESKTOP_RULE@
 
-desktopfiles_in_files=meego-panel-myzone.desktop.in
+desktopfiles_in_files=dawati-panel-myzone.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
-if ENABLE_MEEGO_DESKTOP_FILE
-panelfilesdir=$(MEEGO_PANELS_DIR)/
+if ENABLE_DAWATI_DESKTOP_FILE
+panelfilesdir=$(DAWATI_PANELS_DIR)/
 panelfiles_DATA = $(desktopfiles_files)
 endif
 
@@ -28,7 +28,7 @@ ui_DATA = capplet.ui
 endif
 
 schemadir = $(GCONF_SCHEMA_FILE_DIR)
-schema_DATA = meego-panel-myzone.schemas
+schema_DATA = dawati-panel-myzone.schemas
 
 install-data-local:
 if GCONF_SCHEMAS_INSTALL
@@ -37,6 +37,6 @@ if GCONF_SCHEMAS_INSTALL
 	fi
 endif
 
-EXTRA_DIST = meego-panel-myzone.desktop.in.in myzone.desktop.in.in meego-panel-myzone.schemas.in capplet.ui
-CLEANFILES = meego-panel-myzone.desktop meego-panel-myzone.desktop.in \
+EXTRA_DIST = dawati-panel-myzone.desktop.in.in myzone.desktop.in.in dawati-panel-myzone.schemas.in capplet.ui
+CLEANFILES = dawati-panel-myzone.desktop dawati-panel-myzone.desktop.in \
 	     myzone.desktop myzone.desktop.in

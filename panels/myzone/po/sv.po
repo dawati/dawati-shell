@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone-panel"
 
@@ -144,8 +144,8 @@ msgid "Play intro video"
 msgstr "Spela upp introduktionsvideo"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Välkommen till MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Välkommen till Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -170,14 +170,14 @@ msgstr "Olästa meddelanden"
 #~ "accounts now!"
 #~ msgstr ""
 #~ "Vad dina vänner gör på internvet visas här. Aktivera dina konton nu!"
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Välkommen till Meego 2.1 för netbooks</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Välkommen till Dawati 2.1 för netbooks</b>"
 #~ msgid ""
-#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "As Dawati is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Meego Team."
+#~ "enjoy it, The Dawati Team."
 #~ msgstr ""
-#~ "Då Meego skiljer sig något från andra datorer har vi satt ihop en del "
+#~ "Då Dawati skiljer sig något från andra datorer har vi satt ihop en del "
 #~ "tips för att underlätta för dig att hitta allt. Hoppas du gillar det! "
-#~ "Team Meego."
+#~ "Team Dawati."
 

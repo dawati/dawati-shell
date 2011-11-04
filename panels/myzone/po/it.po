@@ -1,12 +1,12 @@
-# Italian translations for mutter-meego package.
-# Copyright (C) 2009 mutter-meego's copyright holder.
-# This file is distributed under the same license as the mutter-meego package.
+# Italian translations for mutter-dawati package.
+# Copyright (C) 2009 mutter-dawati's copyright holder.
+# This file is distributed under the same license as the mutter-dawati package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 #
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
+"Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2010-09-14 11:21-0800\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Pannello Myzone"
 
@@ -147,8 +147,8 @@ msgid "Play intro video"
 msgstr "Avvia il video di introduzione"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Benvenuti in MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Benvenuti in Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -179,14 +179,14 @@ msgstr "Messaggi non letti"
 #~ msgid "Myzone settings"
 #~ msgstr "Impostazioni myzone"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Benvenuti in Meego 2.1 per netbook</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Benvenuti in Dawati 2.1 per netbook</b>"
 
 #~ msgid ""
-#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "As Dawati is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Meego Team."
+#~ "enjoy it, The Dawati Team."
 #~ msgstr ""
-#~ "Poiché Meego è un po' diverso rispetto agli altri computer, sono state "
+#~ "Poiché Dawati è un po' diverso rispetto agli altri computer, sono state "
 #~ "raggruppate alcune informazioni per comprendere al meglio il sistema. "
-#~ "Speriamo troviate tutto di Vostro gradimento, il team Meego."
+#~ "Speriamo troviate tutto di Vostro gradimento, il team Dawati."

@@ -7,19 +7,19 @@
 # Quang Pham <quang.pham@msn.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-myzone\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-myzone\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:33-0700\n"
 "PO-Revision-Date: 2011-11-03 19:03+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
-"Language-Team: Vietnamese (http://www.transifex.net/projects/p/meego/team/vi/)\n"
+"Language-Team: Vietnamese (http://www.transifex.net/projects/p/dawati/team/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Bảng điều khiển khu vực cá nhân"
 
@@ -159,8 +159,8 @@ msgid "Play intro video"
 msgstr "Xem video giới thiệu"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Chào mừng bạn đến với MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Chào mừng bạn đến với Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"

@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Panel Myzone"
 
@@ -138,8 +138,8 @@ msgid "Play intro video"
 msgstr "Intro-Video spielen"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Willkommen bei MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Willkommen bei Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -166,8 +166,8 @@ msgstr "Wenn du deine Web-Konten eingerichtet und einige Dateien benutzt hast, w
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone Einstellungen"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Willkommen bei Meego 2.1 für Netbooks</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Willkommen bei Dawati 2.1 für Netbooks</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Da Meego ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich zurechtzufinden. Wir hoffen, es gefällt dir. Das Meego Team."
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Da Dawati ein bisschen anders ist, haben wir ein paar Dinge zusammengestellt, die dir dabei helfen sollen, dich zurechtzufinden. Wir hoffen, es gefällt dir. Das Dawati Team."

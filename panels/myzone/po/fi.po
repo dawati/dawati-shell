@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone-paneeli"
 
@@ -145,8 +145,8 @@ msgid "Play intro video"
 msgstr "Toista esittelyvideo"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Tervetuloa MeeGoon"
+msgid "Welcome to Dawati"
+msgstr "Tervetuloa Dawation"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -166,8 +166,8 @@ msgstr "Lukemattomat viestit"
 #~ msgstr "Kaveriesi päivitykset ja verkkopalvelut näkyvät täällä. Aktivoi tilisi nyt!"
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone-asetukset"
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Meego 2.1 ultrakannettaville toivottaa sinut tervetulleeksi!</b>"
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Koska Meego on vähän erilainen kuin muut käyttöjärjestelmät, olemme keränneet muutamia vinkkejä käytön helpottamiseksi. -Meego tiimi"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Dawati 2.1 ultrakannettaville toivottaa sinut tervetulleeksi!</b>"
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Koska Dawati on vähän erilainen kuin muut käyttöjärjestelmät, olemme keränneet muutamia vinkkejä käytön helpottamiseksi. -Dawati tiimi"
 

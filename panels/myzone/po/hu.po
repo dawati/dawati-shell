@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-myzone\n"
+"Project-Id-Version: dawati-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2009-12-22 21:52+0100\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-Language: Hungarian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Saját zóna panel"
 
@@ -145,8 +145,8 @@ msgid "Play intro video"
 msgstr "Bevezető megtekintése"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Üdvözöljük a MeeGo-ban!"
+msgid "Welcome to Dawati"
+msgstr "Üdvözöljük a Dawati-ban!"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -163,8 +163,8 @@ msgstr "Olvasatlan üzenetek"
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Gondolj arra, hogy a barátaid is szeretnének rólad tudni. Regisztrálj egy hozzáférést most!"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Üdvözöl a Meego 2.1 Netbook verzió</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Üdvözöl a Dawati 2.1 Netbook verzió</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "A Meego kicsit különbözik a többi környezettől. Sok-sok apró programot fogsz találni, amik segíteni fognak a célszerű használatban. Jó szórakozást kíván a Meego csapat!"
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "A Dawati kicsit különbözik a többi környezettől. Sok-sok apró programot fogsz találni, amik segíteni fognak a célszerű használatban. Jó szórakozást kíván a Dawati csapat!"

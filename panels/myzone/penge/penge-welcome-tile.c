@@ -33,7 +33,7 @@ G_DEFINE_TYPE (PengeWelcomeTile, penge_welcome_tile, MX_TYPE_TABLE)
 
 #define TMP_PLACEHOLDER _("Play intro video")
 
-#define WELCOME_VIDEO_FILENAME "/usr/share/videos/meego/meego-intro.ogv"
+#define WELCOME_VIDEO_FILENAME "/usr/share/videos/dawati/dawati-intro.ogv"
 
 static void
 penge_welcome_tile_dispose (GObject *object)
@@ -84,7 +84,7 @@ penge_welcome_tile_init (PengeWelcomeTile *tile)
   mx_stylable_set_style_class (MX_STYLABLE (tile),
                                "PengeWelcomeTile");
 
-  label = mx_label_new_with_text (_("Welcome to MeeGo"));
+  label = mx_label_new_with_text (_("Welcome to Dawati"));
   clutter_actor_set_name ((ClutterActor *)label,
                           "penge-welcome-primary-text");
   tmp_text = mx_label_get_clutter_text (MX_LABEL (label));

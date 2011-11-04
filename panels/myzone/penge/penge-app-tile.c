@@ -21,7 +21,7 @@
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
-#include <meego-panel/mpl-icon-theme.h>
+#include <dawati-panel/mpl-icon-theme.h>
 
 #include "penge-app-tile.h"
 #include "penge-utils.h"

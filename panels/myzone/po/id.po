@@ -1,10 +1,10 @@
-# Translation of meego-panel-myzone into Indonesian.
+# Translation of dawati-panel-myzone into Indonesian.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Andika Triwidada <andika@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-myzone\n"
+"Project-Id-Version: dawati-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2009-08-26 08:21+0700\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Panel Myzone"
 
@@ -141,8 +141,8 @@ msgid "Play intro video"
 msgstr "Mainkan video perkenalan"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Selamat datang ke MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Selamat datang ke Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -162,8 +162,8 @@ msgstr "Pesan-pesan belum dibaca"
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "Hal-hal yang dilakukan teman-teman Anda daring akan muncul di sini. Aktifkan akun Anda sekarang!"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>Selamat Datang ke Meego 2.1 untuk Netbook</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Selamat Datang ke Dawati 2.1 untuk Netbook</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Karena Meego agak berbeda daripada komputer lain, kami telah mengumpulkan beberapa hal kecil untuk membantu anda mengenali lingkungan. Kami berharap anda menikmatinya, Tim Meego."
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Karena Dawati agak berbeda daripada komputer lain, kami telah mengumpulkan beberapa hal kecil untuk membantu anda mengenali lingkungan. Kami berharap anda menikmatinya, Tim Dawati."

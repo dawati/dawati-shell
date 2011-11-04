@@ -1,11 +1,11 @@
-# Danish translation meego-panel-myzone
+# Danish translation dawati-panel-myzone
 # Copyright (C) 2009
-# This file is distributed under the same license as the meego-panel-myzone package.
+# This file is distributed under the same license as the dawati-panel-myzone package.
 # Kris Thomsen <lakristho@gmail.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-myzone\n"
+"Project-Id-Version: dawati-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-16 11:31+0000\n"
 "PO-Revision-Date: 2009-11-08 22:13+0100\n"
@@ -56,15 +56,15 @@ msgid "Due %x"
 msgstr "Til %x"
 
 #: ../penge/penge-welcome-tile.c:88
-msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-msgstr "<b>Velkommen til Meego 2.1 til netbooks</b>"
+msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+msgstr "<b>Velkommen til Dawati 2.1 til netbooks</b>"
 
 #: ../penge/penge-welcome-tile.c:108
 msgid ""
-"As Meego is a bit different to other computers, we've put together a couple "
+"As Dawati is a bit different to other computers, we've put together a couple "
 "of bits and pieces to help you find your way around. We hope you enjoy it, "
-"The Meego Team."
+"The Dawati Team."
 msgstr ""
-"Eftersom Meego er en smule anderledes end andre computere, har vi samlet nogle "
+"Eftersom Dawati er en smule anderledes end andre computere, har vi samlet nogle "
 "ting og sager, som kan hjælpe dig med at finde rundt. Vi håber du nyder det. "
-"Meego-holdet."
+"Dawati-holdet."

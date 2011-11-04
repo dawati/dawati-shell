@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-myzone\n"
+"Project-Id-Version: dawati-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2010-10-28 01:09-0000\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: Portugal\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Painel Myzone"
 
@@ -147,8 +147,8 @@ msgid "Play intro video"
 msgstr "Ver vídeo de introdução"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Bem-vindo ao MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Bem-vindo ao Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"

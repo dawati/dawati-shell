@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-myzone\n"
+"Project-Id-Version: dawati-panel-myzone\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:20+0000\n"
 "PO-Revision-Date: 2009-11-13 23:00+0200\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "لوحة نطاقي"
 
@@ -143,7 +143,7 @@ msgid "Play intro video"
 msgstr ""
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
+msgid "Welcome to Dawati"
 msgstr ""
 
 #: ../penge/penge-email-pane.c:192
@@ -161,8 +161,8 @@ msgstr "رسائل غير مقروءة"
 #~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
 #~ msgstr "أمور يفعلها اصدقاؤك بينما هم متّصلون ستظهر هنا. نشّط حساباتك الآن!"
 
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
 #~ msgstr "<b>مرحبًا بك بموبلن 2.1 لحواسيب الشبكة</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
 #~ msgstr "بما أن موبلن تختلف عن الحواسيب الاخرى، فقد جمعنا بعض القطع سويًا لمساعدتك  بايجاد طريقك. نأمل ان تستمتع بذلك، فريق موبلن."

@@ -25,13 +25,13 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
 #include <penge/penge-grid-view.h>
 
 #include <gconf/gconf-client.h>
 
-#define MEEGO_MYZONE_DIR "/desktop/meego/myzone"
+#define DAWATI_MYZONE_DIR "/desktop/dawati/myzone"
 
 
 static GTimer *profile_timer = NULL;
@@ -58,7 +58,7 @@ _grid_view_activated_cb (PengeGridView *grid_view,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-dawati panel", NULL},
   { NULL }
 };
 
@@ -109,7 +109,7 @@ main (int    argc,
   g_thread_init (NULL);
   profile_timer = g_timer_new ();
 
-  context = g_option_context_new ("- mutter-meego myzone panel");
+  context = g_option_context_new ("- mutter-dawati myzone panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, cogl_get_option_group ());
@@ -181,7 +181,7 @@ main (int    argc,
 
   gconf_client = gconf_client_get_default ();
   gconf_client_add_dir (gconf_client,
-                        MEEGO_MYZONE_DIR,
+                        DAWATI_MYZONE_DIR,
                         GCONF_CLIENT_PRELOAD_ONELEVEL,
                         &error);
 

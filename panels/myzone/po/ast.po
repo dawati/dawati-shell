@@ -4,7 +4,7 @@
 # iñigo varela <ivarela@softastur.org>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-myzone.master\n"
+"Project-Id-Version: dawati-panel-myzone.master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-27 19:10+0000\n"
 "PO-Revision-Date: 2010-09-07 21:17+0200\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Virtaal 0.5.2\n"
 "X-Poedit-Language: asturian\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone"
 
@@ -153,8 +153,8 @@ msgid "Play intro video"
 msgstr "Reproducir vídeo d'introducción"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "Bienllegáu a MeeGo"
+msgid "Welcome to Dawati"
+msgstr "Bienllegáu a Dawati"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"

@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-myzone.desktop.in.in.h:1
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
 msgid "Myzone panel"
 msgstr "Myzone パネル"
 
@@ -144,8 +144,8 @@ msgid "Play intro video"
 msgstr "イントロ動画の再生"
 
 #: ../penge/penge-welcome-tile.c:87
-msgid "Welcome to MeeGo"
-msgstr "ようこそ MeeGo へ"
+msgid "Welcome to Dawati"
+msgstr "ようこそ Dawati へ"
 
 #: ../penge/penge-email-pane.c:192
 msgid "No unread messages"
@@ -172,13 +172,13 @@ msgstr "未読メッセージ"
 #~ "アカウントをアクティブにすると、オンラインの友達がここに表示されます。"
 #~ msgid "Myzone settings"
 #~ msgstr "Myzone 設定"
-#~ msgid "<b>Welcome to Meego 2.1 for Netbooks</b>"
-#~ msgstr "<b>ネットブック Meego 2.1 にようこそ</b>"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>ネットブック Dawati 2.1 にようこそ</b>"
 #~ msgid ""
-#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "As Dawati is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Meego Team."
+#~ "enjoy it, The Dawati Team."
 #~ msgstr ""
-#~ "Meego は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いた"
-#~ "しました。お楽しみいただけることを願っております。Meego チーム一同"
+#~ "Dawati は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いた"
+#~ "しました。お楽しみいただけることを願っております。Dawati チーム一同"
 
