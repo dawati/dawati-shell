@@ -16,11 +16,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Configure as preferencias da barra de ferramentas"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Configuración da barra de ferramentas"
 
@@ -92,29 +92,29 @@ msgstr "Mostrar a área de notificación"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "A área de notificación é un concepto empregado por algúns aplicativos antigos para comunicar cando sucede algo ou para permanecer en execución ao pechalos."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Empregar sempre o modo de pantalla pequena"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina a orde dos paneis da barra de ferramentas."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Obriga a utilizar o modo de pantalla pequena mesmo se o tamaño a mostrar normalmente implicaría un modo de pantalla máis grande."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Orde dos paneis da barra de ferramentas"
 
-#: ../src/meego-netbook.c:829
-msgid "Meego Netbook Effects"
-msgstr "Efectos de Meego Netbook"
+#: ../src/dawati-netbook.c:829
+msgid "Dawati Netbook Effects"
+msgstr "Efectos de Dawati Netbook"
 
-#: ../src/meego-netbook.c:833
-msgid "Effects for Meego Netbooks"
-msgstr "Efectos para Meego Netbooks"
+#: ../src/dawati-netbook.c:833
+msgid "Effects for Dawati Netbooks"
+msgstr "Efectos para Dawati Netbooks"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -150,17 +150,17 @@ msgstr "está a chamar pola súa atención."
 msgid "Activate"
 msgstr "Activar"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr "Iniciando %s"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr "Abrindo %s"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"

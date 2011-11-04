@@ -34,7 +34,7 @@
 #include <dbus/dbus.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
-#include <meego-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-common.h>
 #include <display.h>
 #include <errors.h>
 
@@ -220,7 +220,7 @@ mnb_panel_oop_focus (MnbPanelOop *panel)
     return;
 
   if (!priv->hide_in_progress && priv->mcw)
-    meego_netbook_activate_mutter_window (priv->mcw);
+    dawati_netbook_activate_mutter_window (priv->mcw);
 }
 
 /*
@@ -499,13 +499,13 @@ mnb_panel_oop_class_init (MnbPanelOopClass *klass)
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
-  dbus_g_object_register_marshaller (meego_netbook_marshal_VOID__UINT_UINT,
+  dbus_g_object_register_marshaller (dawati_netbook_marshal_VOID__UINT_UINT,
                                      G_TYPE_NONE,
                                      G_TYPE_UINT, G_TYPE_UINT, G_TYPE_INVALID);
-  dbus_g_object_register_marshaller (meego_netbook_marshal_VOID__INT_INT,
+  dbus_g_object_register_marshaller (dawati_netbook_marshal_VOID__INT_INT,
                                      G_TYPE_NONE,
                                      G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID);
-  dbus_g_object_register_marshaller (meego_netbook_marshal_VOID__ENUM,
+  dbus_g_object_register_marshaller (dawati_netbook_marshal_VOID__ENUM,
                                      G_TYPE_NONE,
                                      G_TYPE_ENUM, G_TYPE_INVALID);
 }
@@ -538,7 +538,7 @@ mnb_panel_oop_show_begin (MnbPanel *self)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (self)->priv;
 
-  com_meego_UX_Shell_Panel_show_begin_async (priv->proxy,
+  com_dawati_UX_Shell_Panel_show_begin_async (priv->proxy,
                                              mnb_panel_oop_dbus_dumb_reply_cb,
                                              NULL);
 }
@@ -550,7 +550,7 @@ mnb_panel_oop_show_completed (MnbPanel *self)
 
   mnb_panel_oop_focus (MNB_PANEL_OOP (self));
 
-  com_meego_UX_Shell_Panel_show_end_async (priv->proxy,
+  com_dawati_UX_Shell_Panel_show_end_async (priv->proxy,
                                            mnb_panel_oop_dbus_dumb_reply_cb,
                                            NULL);
 }
@@ -568,7 +568,7 @@ mnb_panel_oop_hide_begin (MnbPanel *self)
       return;
     }
 
-  com_meego_UX_Shell_Panel_hide_begin_async (priv->proxy,
+  com_dawati_UX_Shell_Panel_hide_begin_async (priv->proxy,
                                              mnb_panel_oop_dbus_dumb_reply_cb,
                                              NULL);
 }
@@ -586,7 +586,7 @@ mnb_panel_oop_hide_completed (MnbPanel *self)
       return;
     }
 
-  com_meego_UX_Shell_Panel_hide_end_async (priv->proxy,
+  com_dawati_UX_Shell_Panel_hide_end_async (priv->proxy,
                                            mnb_panel_oop_dbus_dumb_reply_cb,
                                            NULL);
 }
@@ -700,7 +700,7 @@ mnb_panel_oop_init_panel_oop_reply_cb (DBusGProxy *proxy,
       unsigned long n_items;
       unsigned long r_after;
       char *r_prop;
-      MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
+      MutterPlugin *plugin = dawati_netbook_get_plugin_singleton ();
       MetaDisplay *display;
 
       display = meta_screen_get_display (mutter_plugin_get_screen (plugin));
@@ -766,7 +766,7 @@ mnb_panel_oop_init_owner (MnbPanelOop *panel)
    * Now call the remote init_panel_oop() method to obtain the panel name,
    * tooltip and xid.
    */
-  com_meego_UX_Shell_Panel_init_panel_async (priv->proxy,
+  com_dawati_UX_Shell_Panel_init_panel_async (priv->proxy,
                                           priv->x,
                                           priv->y,
                                           priv->width, priv->height,
@@ -1097,7 +1097,7 @@ mnb_panel_oop_set_size (MnbPanel *panel, guint width, guint height)
   if (!w_change && !h_change)
     return;
 
-  com_meego_UX_Shell_Panel_set_size_async (priv->proxy, width, height,
+  com_dawati_UX_Shell_Panel_set_size_async (priv->proxy, width, height,
                                            mnb_panel_oop_dbus_dumb_reply_cb,
                                            NULL);
 }
@@ -1238,7 +1238,7 @@ mnb_toolbar_ping_panel_oop (DBusGConnection *dbus_conn, const gchar *dbus_name)
       return;
     }
 
-  com_meego_UX_Shell_Panel_ping_async (proxy,
+  com_dawati_UX_Shell_Panel_ping_async (proxy,
                                        mnb_panel_oop_dbus_ping_cb,
                                        g_strdup (dbus_name));
 
@@ -1280,7 +1280,7 @@ static void
 mnb_panel_oop_show_animate (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
-  MutterPlugin    *plugin = meego_netbook_get_plugin_singleton ();
+  MutterPlugin    *plugin = dawati_netbook_get_plugin_singleton ();
   gfloat x, y;
   gfloat height, width;
   ClutterAnimation *animation;
@@ -1309,7 +1309,7 @@ mnb_panel_oop_show_animate (MnbPanelOop *panel)
   /*
    * Check the toolbar is visible, if not show it.
    */
-  toolbar = meego_netbook_get_toolbar (plugin);
+  toolbar = dawati_netbook_get_toolbar (plugin);
 
   if (!toolbar)
     {
@@ -1402,7 +1402,7 @@ mnb_panel_oop_show (MnbPanel *panel)
       priv->in_hide_animation = FALSE;
     }
 
-  com_meego_UX_Shell_Panel_show_async (priv->proxy,
+  com_dawati_UX_Shell_Panel_show_async (priv->proxy,
                                        mnb_panel_oop_dbus_dumb_reply_cb,
                                        NULL);
 }
@@ -1411,7 +1411,7 @@ static void
 mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = panel->priv;
-  MutterPlugin       *plugin = meego_netbook_get_plugin_singleton ();
+  MutterPlugin       *plugin = dawati_netbook_get_plugin_singleton ();
 
   priv->hide_anim = NULL;
   priv->hide_completed_id = 0;
@@ -1423,7 +1423,7 @@ mnb_panel_oop_hide_completed_cb (ClutterAnimation *anim, MnbPanelOop *panel)
        * If the hide_toolbar flag is set, we attempt to hide the Toolbar now
        * that the panel is hidden.
        */
-      ClutterActor *toolbar = meego_netbook_get_toolbar (plugin);
+      ClutterActor *toolbar = dawati_netbook_get_toolbar (plugin);
 
       if (toolbar)
         mnb_toolbar_hide ((MnbToolbar*)toolbar, MNB_SHOW_HIDE_BY_PANEL);
@@ -1512,7 +1512,7 @@ mnb_panel_oop_hide (MnbPanel *panel)
 
   priv->modal  = FALSE;
 
-  com_meego_UX_Shell_Panel_hide_async (priv->proxy,
+  com_dawati_UX_Shell_Panel_hide_async (priv->proxy,
                                        mnb_panel_oop_dbus_dumb_reply_cb,
                                        NULL);
 }
@@ -1622,7 +1622,7 @@ mnb_panel_oop_set_position (MnbPanel *panel, gint x, gint y)
   if (!x_change && !y_change)
     return;
 
-  com_meego_UX_Shell_Panel_set_position_async (priv->proxy, x, y,
+  com_dawati_UX_Shell_Panel_set_position_async (priv->proxy, x, y,
                                             mnb_panel_oop_dbus_dumb_reply_cb,
                                             NULL);
 }
@@ -1674,7 +1674,7 @@ mnb_panel_oop_unload (MnbPanelOop *panel)
 {
   MnbPanelOopPrivate *priv = MNB_PANEL_OOP (panel)->priv;
 
-  com_meego_UX_Shell_Panel_unload_async (priv->proxy,
+  com_dawati_UX_Shell_Panel_unload_async (priv->proxy,
                                          mnb_panel_oop_dbus_dumb_reply_cb,
                                          NULL);
 }

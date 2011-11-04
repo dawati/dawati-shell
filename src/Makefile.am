@@ -9,19 +9,19 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 AM_CFLAGS = \
 	$(MUTTER_PLUGIN_CFLAGS) \
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" \
-	-DMX_CACHE=\"$(MUTTER_MEEGO_THEME_DIR)/mx.cache\" \
-	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)\" \
-	-DPANELSDIR=\"$(MUTTER_MEEGO_PANELS_DIR)\" \
-	-I$(top_srcdir)/libmeego-panel
+	-DMX_CACHE=\"$(MUTTER_DAWATI_THEME_DIR)/mx.cache\" \
+	-DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)\" \
+	-DPANELSDIR=\"$(MUTTER_DAWATI_PANELS_DIR)\" \
+	-I$(top_srcdir)/libdawati-panel
 
 dbus_h = 	$(srcdir)/$(DBUS_GLUE) 			\
 		$(srcdir)/$(DBUS_BINDINGS)
 
 source_h =	$(srcdir)/marshal.h			\
-		$(srcdir)/../libmeego-panel/meego-panel/mpl-panel-common.h \
-		$(srcdir)/meego-netbook.h		\
-		$(srcdir)/meego-netbook-constraints.h	\
-		$(srcdir)/meego-netbook-mutter-hints.h	\
+		$(srcdir)/../libdawati-panel/dawati-panel/mpl-panel-common.h \
+		$(srcdir)/dawati-netbook.h		\
+		$(srcdir)/dawati-netbook-constraints.h	\
+		$(srcdir)/dawati-netbook-mutter-hints.h	\
 		$(srcdir)/mnb-spinner.h			\
 		$(srcdir)/mnb-input-manager.h		\
 		$(srcdir)/mnb-toolbar.h                 \
@@ -35,9 +35,9 @@ source_h =	$(srcdir)/marshal.h			\
 
 
 source_c = 	$(srcdir)/mnb-enum-types.c		\
-		$(srcdir)/meego-netbook.c		\
-		$(srcdir)/meego-netbook-constraints.c	\
-		$(srcdir)/meego-netbook-mutter-hints.c	\
+		$(srcdir)/dawati-netbook.c		\
+		$(srcdir)/dawati-netbook-constraints.c	\
+		$(srcdir)/dawati-netbook-mutter-hints.c	\
 		$(srcdir)/mnb-spinner.c			\
 		$(srcdir)/marshal.c                   	\
 		$(srcdir)/mnb-input-manager.c		\
@@ -50,7 +50,7 @@ source_c = 	$(srcdir)/mnb-enum-types.c		\
 		$(srcdir)/mnb-panel-frame.c         	\
 		$(srcdir)/mnb-panel-oop.c
 
-meego_netbook_la_SOURCES  = 	$(dbus_h)	\
+dawati_netbook_la_SOURCES  = 	$(dbus_h)	\
 				$(source_h) 	\
 				$(source_c)
 
@@ -94,7 +94,7 @@ marshal.h: stamp-marshal.h
 	@true
 stamp-marshal.h: marshal.list
 	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
-		--prefix=meego_netbook_marshal \
+		--prefix=dawati_netbook_marshal \
 		--header \
 	  $(srcdir)/marshal.list > xgen-cmh \
 	&& (cmp -s xgen-cmh marshal.h || cp xgen-cmh marshal.h ) \
@@ -104,20 +104,20 @@ stamp-marshal.h: marshal.list
 marshal.c: marshal.h Makefile
 	$(QUIET_GEN)( echo "#include \"marshal.h\"" ; \
 	  $(GLIB_GENMARSHAL) \
-	  	--prefix=meego_netbook_marshal \
+	  	--prefix=dawati_netbook_marshal \
 		--body \
 	  $(srcdir)/marshal.list --body ) >> xgen-cmc \
 	&& cp xgen-cmc marshal.c \
 	&& rm -f xgen-cmc
 
-meego_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
-meego_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
+dawati_netbook_la_LDFLAGS  = $(PLUGIN_LT_LDFLAGS) -module -no-undefined
+dawati_netbook_la_LIBADD   = @MUTTER_PLUGIN_LIBS@	\
 				effects/libeffects.la	\
 				alttab/libalttab.la	\
 				presence/libpresence.la	\
 				notifications/libnotifications.la
 
-pkglib_LTLIBRARIES = meego-netbook.la
+pkglib_LTLIBRARIES = dawati-netbook.la
 
 # post-install hook to remove the .la and .a files we are not interested in
 # (There is no way to stop libtool generating static libs locally, and we

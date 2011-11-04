@@ -27,7 +27,7 @@
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
-#include "../meego-netbook.h"
+#include "../dawati-netbook.h"
 #include "gsm-presence.h"
 
 #define IDLE_KEY_DIR "/desktop/gnome/session"
@@ -39,7 +39,7 @@ on_idle_delay_changed (GConfClient *client,
                        GConfEntry  *entry,
                        gpointer     user_data)
 {
-  MeegoNetbookPlugin *plugin = MEEGO_NETBOOK_PLUGIN (user_data);
+  DawatiNetbookPlugin *plugin = DAWATI_NETBOOK_PLUGIN (user_data);
 
   if (entry->value && entry->value->type == GCONF_VALUE_INT) {
     gsm_presence_set_idle_timeout (plugin->priv->presence,
@@ -87,7 +87,7 @@ connect_to_dbus (GsmPresence *presence)
 }
 
 void
-presence_init (MeegoNetbookPlugin *plugin)
+presence_init (DawatiNetbookPlugin *plugin)
 {
   plugin->priv->presence = gsm_presence_new ();
   gsm_presence_set_idle_enabled (plugin->priv->presence, TRUE);

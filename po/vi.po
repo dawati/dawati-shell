@@ -6,23 +6,23 @@
 # Quang Pham <quang.pham@msn.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: mutter-dawati\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:46-0700\n"
 "PO-Revision-Date: 2011-11-03 19:07+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
-"Language-Team: Vietnamese (http://www.transifex.net/projects/p/meego/team/vi/)\n"
+"Language-Team: Vietnamese (http://www.transifex.net/projects/p/dawati/team/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Thiết lập tùy chọn cho thanh công cụ"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Thiết lập thanh công cụ"
 
@@ -100,30 +100,30 @@ msgstr ""
 "Khay hệ thống cho bạn biết những ứng dụng đang được chạy khi bạn đóng ứng "
 "dụng đó"
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Luôn luôn sử dụng chết độ màn hình nhỏ"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Thiết lập vị trí cho các khung điều khiển cho thanh công cụ"
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid ""
 "Forces small screen mode to be used even if display size would normally "
 "imply bigger screen mode."
 msgstr "_Chế độ màn hình nhỏ được sử dụng ngay cả khi kích thước màn hình lớn"
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Sắp xếp các khung điều khiển cho thanh công cụ"
 
-#: ../src/meego-netbook.c:846
-msgid "Meego Netbook Effects"
+#: ../src/dawati-netbook.c:846
+msgid "Dawati Netbook Effects"
 msgstr ""
 
-#: ../src/meego-netbook.c:850
-msgid "Effects for Meego Netbooks"
+#: ../src/dawati-netbook.c:850
+msgid "Effects for Dawati Netbooks"
 msgstr ""
 
 #: ../src/mnb-toolbar.c:1007
@@ -160,17 +160,17 @@ msgstr "cần được chú ý"
 msgid "Activate"
 msgstr "Kích hoạt"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr ""
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr ""
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.dawati.UX.Shell.Panels.test
+Exec=@dir@/test-panel-gtk

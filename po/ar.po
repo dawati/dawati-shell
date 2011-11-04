@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
+"Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: 2009-11-10 23:16+0200\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "تعيين تفضيلات شريط الأدوات"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "إعدادات شريط الأدوات"
 
@@ -92,28 +92,28 @@ msgstr "اظهر لوحة النظام"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "لوحة النظام هي اداة تتيح معرفة حالة التطبيق"
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "دوما استخدام وضع الشاشة الصغيرة"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "ثبت ترتيب لوحات على شريط الأدوات."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "استخدم وضع الشاشة الصغيرة حتى لو كان العرض الافتراضي وضع الشاشة الكبيرة"
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "ترتيب اللوحات في شريط الأدوات"
 
-#: ../src/meego-netbook.c:825
-msgid "Meego Netbook Effects"
+#: ../src/dawati-netbook.c:825
+msgid "Dawati Netbook Effects"
 msgstr "ادوات ميقو للنوتبوك"
 
-#: ../src/meego-netbook.c:829
-msgid "Effects for Meego Netbooks"
+#: ../src/dawati-netbook.c:829
+msgid "Effects for Dawati Netbooks"
 msgstr "تأثيرات ميجو للنوتبوك"
 
 #: ../src/mnb-toolbar.c:1007

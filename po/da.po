@@ -1,11 +1,11 @@
-# Danish translation mutter-meego
+# Danish translation mutter-dawati
 # Copyright (C) 2009
-# This file is distributed under the same license as the mutter-meego package.
+# This file is distributed under the same license as the mutter-dawati package.
 # Kris Thomsen <lakristho@gmail.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
+"Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-03 23:44+0000\n"
 "PO-Revision-Date: 2009-12-14 17:24+0100\n"
@@ -15,27 +15,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/meego-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
+#: ../src/dawati-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "zoner"
 
-#: ../src/meego-netbook.c:621
-msgid "Meego Netbook Effects"
-msgstr "Meego Netbook-effekter"
+#: ../src/dawati-netbook.c:621
+msgid "Dawati Netbook Effects"
+msgstr "Dawati Netbook-effekter"
 
-#: ../src/meego-netbook.c:625
-msgid "Effects for Meego Netbooks"
-msgstr "Effekter til Meego Netbooks"
+#: ../src/dawati-netbook.c:625
+msgid "Effects for Dawati Netbooks"
+msgstr "Effekter til Dawati Netbooks"
 
-#: ../src/meego-netbook.c:2529
+#: ../src/dawati-netbook.c:2529
 msgid "Activate"
 msgstr "Aktivér"
 
-#: ../src/meego-netbook.c:2543
+#: ../src/dawati-netbook.c:2543
 msgid "Unknown window"
 msgstr "Ukendt vindue"
 
-#: ../src/meego-netbook.c:2545
+#: ../src/dawati-netbook.c:2545
 msgid "Is asking for your attention."
 msgstr "Prøver at få din opmærksomhed."
 

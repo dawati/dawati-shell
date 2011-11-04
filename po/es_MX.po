@@ -6,23 +6,23 @@
 # Gustavo Jasso <gjasso@matem.unam.mx>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: mutter-dawati\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:46-0700\n"
 "PO-Revision-Date: 2011-11-03 19:07+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
-"Language-Team: Spanish (Mexican) (http://www.transifex.net/projects/p/meego/team/es_MX/)\n"
+"Language-Team: Spanish (Mexican) (http://www.transifex.net/projects/p/dawati/team/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_MX\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Ajustar tus preferencias de la barra de herramientas"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Configuración de la barra de herramientas"
 
@@ -101,15 +101,15 @@ msgstr ""
 "viejas para informarte cuando algo sucede o continuar ejecutándose cuando "
 "las cierras."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Siempre utilizar el modo de pantalla pequeña"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina el orden de los paneles en la barra de herramientas"
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid ""
 "Forces small screen mode to be used even if display size would normally "
 "imply bigger screen mode."
@@ -117,16 +117,16 @@ msgstr ""
 "Obliga a utilizar el modo de pantalla pequeña aún cuando el tamaño del "
 "monitor normalmente implicaría un modo de pantalla más grande."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordena los paneles en la barra de herramientas"
 
-#: ../src/meego-netbook.c:846
-msgid "Meego Netbook Effects"
+#: ../src/dawati-netbook.c:846
+msgid "Dawati Netbook Effects"
 msgstr ""
 
-#: ../src/meego-netbook.c:850
-msgid "Effects for Meego Netbooks"
+#: ../src/dawati-netbook.c:850
+msgid "Effects for Dawati Netbooks"
 msgstr ""
 
 #: ../src/mnb-toolbar.c:1007
@@ -163,17 +163,17 @@ msgstr "está llamando tu atención."
 msgid "Activate"
 msgstr "Activar"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr ""
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr ""
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"

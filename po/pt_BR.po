@@ -15,11 +15,11 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Definir sua preferências da barra de ferramentas"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Configurações da barra de ferramentas"
 
@@ -91,29 +91,29 @@ msgstr "Mostrar bandeja de sistema"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "A bandeja de sistema é um conceito usado por alguns aplicativos mais antigos para te avisar quando algo acontecer ou para continuar executando quando você os fechar."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Sempre usar o modo tela pequena"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina a ordem dos painéis na barra de ferramentas."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Força o modo tela pequena a ser usado mesmo se o tamanho do monitor normalmente implicar em um modo de tela maior."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordem dos painéis na barra de ferramentas"
 
-#: ../src/meego-netbook.c:825
-msgid "Meego Netbook Effects"
-msgstr "Efeitos de netbook Meego"
+#: ../src/dawati-netbook.c:825
+msgid "Dawati Netbook Effects"
+msgstr "Efeitos de netbook Dawati"
 
-#: ../src/meego-netbook.c:829
-msgid "Effects for Meego Netbooks"
-msgstr "Efeitos para netbooks Meego"
+#: ../src/dawati-netbook.c:829
+msgid "Effects for Dawati Netbooks"
+msgstr "Efeitos para netbooks Dawati"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -146,8 +146,8 @@ msgstr "Ativar"
 #~ msgid "Socket for embedding"
 #~ msgstr "Soquete para embutir"
 
-#~ msgid "- Meego Toolbar Preferences"
-#~ msgstr "- Preferências de barra de ferramentas Meego"
+#~ msgid "- Dawati Toolbar Preferences"
+#~ msgstr "- Preferências de barra de ferramentas Dawati"
 
 #~ msgid "socket"
 #~ msgstr "soquete"
@@ -326,11 +326,11 @@ msgstr "Ativar"
 #~ msgid "Your friends' feeds and web services will appear here. Activate your accounts now!"
 #~ msgstr "Os feeds de seus amigos e serviços na web aparecerão aqui. Ative suas contas agora!"
 
-#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
-#~ msgstr "<b>Bem-vindo ao Meego 2.0 para Netbooks</b>"
+#~ msgid "<b>Welcome to Dawati 2.0 for Netbooks</b>"
+#~ msgstr "<b>Bem-vindo ao Dawati 2.0 para Netbooks</b>"
 
-#~ msgid "As Meego is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Meego Team."
-#~ msgstr "Como o Meego é um pouco diferente de outros computadores, temos dicas e itens para ajudá-lo navegar esta versão. Esperamos que se divirta, a Equipe Meego."
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Como o Dawati é um pouco diferente de outros computadores, temos dicas e itens para ajudá-lo navegar esta versão. Esperamos que se divirta, a Equipe Dawati."
 
 #~ msgid "Web page"
 #~ msgstr "Página da web"

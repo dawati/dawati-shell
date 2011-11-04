@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Meego Netbook
+ * Dawati Netbook
  * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
@@ -28,7 +28,7 @@
 #include "mnb-alttab-overlay.h"
 #include "mnb-alttab-overlay-app.h"
 #include "penge-magic-texture.h"
-#include "../meego-netbook.h"
+#include "../dawati-netbook.h"
 
 #define MNB_SWICHER_APP_ICON_PADDING         5.0
 #define MNB_SWICHER_APP_ICON_SIZE           32.0

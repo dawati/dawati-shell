@@ -58,7 +58,7 @@ mnb_switch_zones_effect (MutterPlugin         *plugin,
   MetaScreen *screen;
   ClutterActor *window_group;
 
-  MeegoNetbookPluginPrivate *priv = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
+  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
 
   if (running++)
     {

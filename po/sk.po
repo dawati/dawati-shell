@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego.master\n"
+"Project-Id-Version: mutter-dawati.master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: 2010-04-21 06:15+0200\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Nastaviť predvoľby panela nástrojov"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Nastavenia panela nástrojov"
 
@@ -91,29 +91,29 @@ msgstr "Ukázať oznamovaciu oblasť"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Oznamovacia oblasť je koncept používaný niektorými staršími programami, aby ste boli upozornený, keď sa niečo deje alebo aby zostali bežať na pozadí, keď ste ich zatvorili."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Vždy používať režim malej obrazovky"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Určuje poradie panelov v paneli nástrojov."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Vynucuje použitie režimu malej obrazovky aj keď veľkosť zobrazenia naznačuje režim väčšej obrazovky."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Poradie panelov v paneli nástrojov"
 
-#: ../src/meego-netbook.c:825
-msgid "Meego Netbook Effects"
-msgstr "Efekty Meego v prenosnom počítači"
+#: ../src/dawati-netbook.c:825
+msgid "Dawati Netbook Effects"
+msgstr "Efekty Dawati v prenosnom počítači"
 
-#: ../src/meego-netbook.c:829
-msgid "Effects for Meego Netbooks"
-msgstr "Efekty pre prenosné počítače s Meego"
+#: ../src/dawati-netbook.c:829
+msgid "Effects for Dawati Netbooks"
+msgstr "Efekty pre prenosné počítače s Dawati"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format

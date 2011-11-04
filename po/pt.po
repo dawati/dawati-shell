@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-mutter\n"
+"Project-Id-Version: dawati-mutter\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-23 22:53+0000\n"
 "PO-Revision-Date: 2010-10-28 10:41-0000\n"
@@ -18,11 +18,11 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: PORTUGAL\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Definir as preferências da barra"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Definições da barra"
 
@@ -97,29 +97,29 @@ msgstr "Mostrar área de notificação"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "A área de notificação é um conceito utilizado por algumas aplicações e indica-lhe quando algo acontece ou para continuar executando quando você os fechar."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Utilizar sempre o modo de ecrã reduzido"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina a ordem dos painéis na barra de ferramentas."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Obriga a que seja utilizado o modo de ecrã reduzido, mesmo que os programas implicam uma maior resolução."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordem dos painéis na barra de ferramentas"
 
-#: ../src/meego-netbook.c:829
-msgid "Meego Netbook Effects"
-msgstr "Efeitos Meego"
+#: ../src/dawati-netbook.c:829
+msgid "Dawati Netbook Effects"
+msgstr "Efeitos Dawati"
 
-#: ../src/meego-netbook.c:833
-msgid "Effects for Meego Netbooks"
-msgstr "Efeitos para o Meego"
+#: ../src/dawati-netbook.c:833
+msgid "Effects for Dawati Netbooks"
+msgstr "Efeitos para o Dawati"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -156,17 +156,17 @@ msgstr "está a solicitar a sua atenção."
 msgid "Activate"
 msgstr "Ativar"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr "Iniciando %s"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr "Abrindo %s"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"

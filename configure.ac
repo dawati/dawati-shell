@@ -21,10 +21,10 @@ m4_define([default_enable_cache],    [no])
 
 AC_PREREQ([2.59])
 
-AC_INIT([mutter-netbook], [plugin_version], [http://meego.org])
+AC_INIT([mutter-netbook], [plugin_version], [http://dawati.org])
 AC_CONFIG_MACRO_DIR([build/autotools])
 
-AC_CONFIG_SRCDIR(src/meego-netbook.c)
+AC_CONFIG_SRCDIR(src/dawati-netbook.c)
 
 AM_INIT_AUTOMAKE([tar-ustar dist-bzip2])
 
@@ -41,7 +41,7 @@ AC_SUBST(PLUGIN_API_VERSION)
 
 AM_CONFIG_HEADER([config.h])
 
-GETTEXT_PACKAGE=mutter-meego-netbook-plugin
+GETTEXT_PACKAGE=mutter-dawati-netbook-plugin
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    ["$GETTEXT_PACKAGE"],
@@ -70,18 +70,18 @@ LIBS=${SAVE_LIBS}
 
 AM_GLIB_GNU_GETTEXT
 
-# Libmeego-panel
+# Libdawati-panel
 PKG_CHECK_MODULES(LIBMPL,
                   dbus-glib-1
                   mx-1.0 >= 1.2.0
                   gtk+-2.0
                   gio-unix-2.0)
 
-MUTTER_MEEGO_THEME_DIR="${datadir}/${PACKAGE}/theme"
-AC_SUBST([MUTTER_MEEGO_THEME_DIR])
+MUTTER_DAWATI_THEME_DIR="${datadir}/${PACKAGE}/theme"
+AC_SUBST([MUTTER_DAWATI_THEME_DIR])
 
-MUTTER_MEEGO_PANELS_DIR="${datadir}/${PACKAGE}/panels"
-AC_SUBST([MUTTER_MEEGO_PANELS_DIR])
+MUTTER_DAWATI_PANELS_DIR="${datadir}/${PACKAGE}/panels"
+AC_SUBST([MUTTER_DAWATI_PANELS_DIR])
 
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 if test x"$GCONFTOOL" = xno; then
@@ -90,7 +90,7 @@ fi
 
 AM_GCONF_SOURCE_2
 
-# Mutter-meego
+# Mutter-dawati
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl
                   mx-1.0 >= 0.5.0                     dnl
@@ -104,7 +104,7 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN,
 
 AC_ARG_ENABLE([scaled-background],
 	AC_HELP_STRING([--enable-scaled-background],
-		[Scale the mutter-meego background image]),
+		[Scale the mutter-dawati background image]),
 		[scale_background="$enableval"], [scale_background=no])
 
 if test x"$scale_background" = xyes; then
@@ -216,20 +216,20 @@ src/notifications/Makefile
 src/presence/Makefile
 po/Makefile.in
 tests/Makefile
-libmeego-panel/Makefile
-libmeego-panel/docs/Makefile
-libmeego-panel/docs/reference/Makefile
-libmeego-panel/docs/reference/libmeego-panel/Makefile
-libmeego-panel/docs/reference/libmeego-panel/meego-panel-docs.xml
-libmeego-panel/meego-panel.pc
-libmeego-panel/meego-panel/Makefile
-libmeego-panel/meego-panel/mpl-version.h
-libmeego-panel/theme/Makefile
-libmeego-panel/tests/Makefile
+libdawati-panel/Makefile
+libdawati-panel/docs/Makefile
+libdawati-panel/docs/reference/Makefile
+libdawati-panel/docs/reference/libdawati-panel/Makefile
+libdawati-panel/docs/reference/libdawati-panel/dawati-panel-docs.xml
+libdawati-panel/dawati-panel.pc
+libdawati-panel/dawati-panel/Makefile
+libdawati-panel/dawati-panel/mpl-version.h
+libdawati-panel/theme/Makefile
+libdawati-panel/tests/Makefile
 ])
 
 echo "
-        Mutter Meego Netbook Plugin version plugin_version
+        Mutter Dawati Netbook Plugin version plugin_version
         ===================================================
 
         Configuration:

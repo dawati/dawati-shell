@@ -4,8 +4,8 @@ AM_CPPFLAGS = 						\
 	-DPKGLIBDIR=\"$(pkglibdir)\" 			\
 	-DLOCALEDIR=\"$(localedir)\" 			\
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 		\
-	-DPANELSDIR=\"$(MUTTER_MEEGO_PANELS_DIR)\" 	\
-	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)\"	\
+	-DPANELSDIR=\"$(MUTTER_DAWATI_PANELS_DIR)\" 	\
+	-DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)\"	\
 	-Wall -Wmissing-declarations
 
 AM_LDFLAGS = \
@@ -30,15 +30,15 @@ libmtp_common_la_SOURCES = \
 		mtp-space.c			\
 		mtp-bin.c
 
-bin_PROGRAMS=meego-toolbar-properties
+bin_PROGRAMS=dawati-toolbar-properties
 
-meego_toolbar_properties_CFLAGS  = -I.. $(CAPPLET_CFLAGS) 	\
+dawati_toolbar_properties_CFLAGS  = -I.. $(CAPPLET_CFLAGS) 	\
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 			\
-	-DPANELSDIR=\"$(MUTTER_MEEGO_PANELS_DIR)\" 		\
-	-DTHEMEDIR=\"$(MUTTER_MEEGO_THEME_DIR)\"
+	-DPANELSDIR=\"$(MUTTER_DAWATI_PANELS_DIR)\" 		\
+	-DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)\"
 
-meego_toolbar_properties_LDADD   = libmtp-common.la
-meego_toolbar_properties_SOURCES = meego-toolbar-properties.c
+dawati_toolbar_properties_LDADD   = libmtp-common.la
+dawati_toolbar_properties_SOURCES = dawati-toolbar-properties.c
 
 ccmodulesdir = $(CC_DIR)
 ccmodules_LTLIBRARIES = libmtp.la libsystray.la

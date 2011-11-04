@@ -4,7 +4,7 @@
 # Jean Cayron <jean.cayron@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego.master.mutter-meego-netbook-plugin\n"
+"Project-Id-Version: mutter-dawati.master.mutter-dawati-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-23 22:53+0000\n"
 "PO-Revision-Date: 2010-02-03 18:21+0100\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 0.3\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Definixhoz les preferinces di vosse bår ås usteyes"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Tchuzes del bår ås usteyes"
 
@@ -92,29 +92,29 @@ msgstr "Mostrer boesse ås imådjetes sistinme"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Li boesse ås imådjetes sistinme est ene atuze eployeye pa des pus vîs programes po vos dire cwand åk si passe ou po dmorer ovrant cwand vos les cloyoz."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Tofer si siervi do môde pitite waitroûle"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Dit l' ôre des scriftôrs sol bår ås usteyes."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Fwait k' ons eploye todi l' môde po les ptitès waitroûles minme sel grandeu d' håynaedje a dandjî d' on môde di waitroûle pus grand."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ôre des scriftôrs sol bår ås usteyes"
 
-#: ../src/meego-netbook.c:829
-msgid "Meego Netbook Effects"
-msgstr "Efets po Netbook da Meego"
+#: ../src/dawati-netbook.c:829
+msgid "Dawati Netbook Effects"
+msgstr "Efets po Netbook da Dawati"
 
-#: ../src/meego-netbook.c:833
-msgid "Effects for Meego Netbooks"
-msgstr "Efets da Meego po les Netbooks"
+#: ../src/dawati-netbook.c:833
+msgid "Effects for Dawati Netbooks"
+msgstr "Efets da Dawati po les Netbooks"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -150,17 +150,17 @@ msgstr "vos arinne."
 msgid "Activate"
 msgstr "Mete en alaedje"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr "Dj' enonde %s"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr "Dji drove %s"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"

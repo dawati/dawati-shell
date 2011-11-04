@@ -17,11 +17,11 @@ msgstr ""
 "X-Poedit-Language: Persian\n"
 "X-Poedit-Country: Iran\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "تنظیم ترجیحات نوار ابزار خود"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "تنظیمات نوار ابزار"
 
@@ -96,28 +96,28 @@ msgstr "نمایش سینی سیستم"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "سینی سیستم یک مفهومی است که به وسیله ی برنامه ی قدیمی تر استفاده می شود به شما اجازه می دهد بدانید وقتی چیزی اتفاقی می افتد یا هنوز در حال اجر وقتی انها را بسته اید."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "همیشه از حالت نمایش کوچک استفاده کن"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "شناسایی ترتیب قاب ها بر روی نوار ابزار"
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "مجبور کردن به استفاده از حالت نمایش کوچک حتی اگر اندازه ی نمایش بزرگتر از حالت نمایش باشد."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "ترتیب قاب های بر روی نوار ابزار"
 
-#: ../src/meego-netbook.c:825
-msgid "Meego Netbook Effects"
+#: ../src/dawati-netbook.c:825
+msgid "Dawati Netbook Effects"
 msgstr "افکت های نت بوک می‌گو"
 
-#: ../src/meego-netbook.c:829
-msgid "Effects for Meego Netbooks"
+#: ../src/dawati-netbook.c:829
+msgid "Effects for Dawati Netbooks"
 msgstr "افکت هایی برای نت‌بوک های می‌گو"
 
 #: ../src/mnb-toolbar.c:1007

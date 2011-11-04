@@ -1,7 +1,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Meego UX\n"
+"Project-Id-Version: Dawati UX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: \n"
@@ -13,11 +13,11 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Configura las preferencias la barra de herramientas"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Barra de herramientas"
 
@@ -89,31 +89,31 @@ msgstr "Mostrar la bandeja del sistema"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Algunas aplicaciones antiguas emplean la bandeja del sistema para comunicar lo que va ocurriendo o para seguir ejecutándose al cerrarlas."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Usar siempre el modo de pantalla pequeña"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina el orden de los paneles en la barra de herramientas."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Fuerza el modo de pantalla pequeña incluso cuando el tamaño de la pantalla normalmente implicaría un modo de pantalla mayor."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Orden de los paneles en la barra de herramientas"
 
-# Meego effects in the netbook
-#: ../src/meego-netbook.c:825
-msgid "Meego Netbook Effects"
-msgstr "Efectos de Meego en el miniportátil"
+# Dawati effects in the netbook
+#: ../src/dawati-netbook.c:825
+msgid "Dawati Netbook Effects"
+msgstr "Efectos de Dawati en el miniportátil"
 
 # Effects for netbooks with Mobin
-#: ../src/meego-netbook.c:829
-msgid "Effects for Meego Netbooks"
-msgstr "Efectos para miniportátiles con Meego"
+#: ../src/dawati-netbook.c:829
+msgid "Effects for Dawati Netbooks"
+msgstr "Efectos para miniportátiles con Dawati"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format

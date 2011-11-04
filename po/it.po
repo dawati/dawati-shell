@@ -1,11 +1,11 @@
-# Italian translations for mutter-meego package.
-# Copyright (C) 2009 mutter-meego's copyright holder.
-# This file is distributed under the same license as the mutter-meego package.
+# Italian translations for mutter-dawati package.
+# Copyright (C) 2009 mutter-dawati's copyright holder.
+# This file is distributed under the same license as the mutter-dawati package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
+"Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 11:52+0000\n"
 "PO-Revision-Date: 2010-08-26 11:17-0800\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Italian\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Imposta le preferenze della barra degli strumenti"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Impostazioni della barra degli strumenti"
 
@@ -96,29 +96,29 @@ msgstr "Mostra la barra degli strumenti"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "La barra degli strumenti del sistema è un concetto usato da alcune vecchie applicazioni per farti sapere quando succede qualcosa o per rimanere in esecuzione quando si chiudono."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Usare sempre la modalità schermo ridotto"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Determina l'ordine dei pannelli sulla barra degli strumenti."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Usare sempre la modalità schermo ridotto anche se le dimensioni del display indicherebbero normalmente la modalità schermo grande."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Ordine dei pannelli sulla barra degli strumenti"
 
-#: ../src/meego-netbook.c:825
-msgid "Meego Netbook Effects"
-msgstr "Effetti netbook MeeGo"
+#: ../src/dawati-netbook.c:825
+msgid "Dawati Netbook Effects"
+msgstr "Effetti netbook Dawati"
 
-#: ../src/meego-netbook.c:829
-msgid "Effects for Meego Netbooks"
-msgstr "Effetti per i netbook MeeGo"
+#: ../src/dawati-netbook.c:829
+msgid "Effects for Dawati Netbooks"
+msgstr "Effetti per i netbook Dawati"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -151,8 +151,8 @@ msgstr "Attiva"
 #~ msgid "Socket for embedding"
 #~ msgstr "Presa per l'incorporamento"
 
-#~ msgid "- Meego Toolbar Preferences"
-#~ msgstr "Preferenze della barra degli strumenti Meego"
+#~ msgid "- Dawati Toolbar Preferences"
+#~ msgstr "Preferenze della barra degli strumenti Dawati"
 
 #~ msgid "socket"
 #~ msgstr "presa"
@@ -349,17 +349,17 @@ msgstr "Attiva"
 #~ "Una volta attivati gli account personali, qui verranno mostrate le "
 #~ "notizie degli amici e i servizi web."
 
-#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
-#~ msgstr "<b>Benvenuti in Meego 2.0 per netbook</b>"
+#~ msgid "<b>Welcome to Dawati 2.0 for Netbooks</b>"
+#~ msgstr "<b>Benvenuti in Dawati 2.0 per netbook</b>"
 
 #~ msgid ""
-#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "As Dawati is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Meego Team."
+#~ "enjoy it, The Dawati Team."
 #~ msgstr ""
-#~ "Poiché Meego è un po' diverso rispetto agli altri computer, abiamo "
+#~ "Poiché Dawati è un po' diverso rispetto agli altri computer, abiamo "
 #~ "raccolto alcune informazioni per aiutare a comprendere al meglio come "
-#~ "usarlo. Speriamo troviate tutto di Vostro gradimento, il team Meego."
+#~ "usarlo. Speriamo troviate tutto di Vostro gradimento, il team Dawati."
 
 #~ msgid "Web page"
 #~ msgstr "Pagina web"

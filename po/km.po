@@ -6,23 +6,23 @@
 # សុវិចិត្រ Sovichet ទេព Tep <sovichet.tep@gmail.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: mutter-dawati\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:46-0700\n"
 "PO-Revision-Date: 2011-11-03 19:07+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
-"Language-Team: Khmer (http://www.transifex.net/projects/p/meego/team/km/)\n"
+"Language-Team: Khmer (http://www.transifex.net/projects/p/dawati/team/km/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: km\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "កំណត់​ចំណូល​ចិត្ត​លើ របារ​ឧបករណ៍"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "ការ​កំណត់​របារ​ឧបករណ៍"
 
@@ -100,30 +100,30 @@ msgid ""
 " when something happens or to stay running when you close them."
 msgstr ""
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "តែង​តែ​ប្រើ​របៀប​ទិដ្ឋភាព​តូច"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr ""
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid ""
 "Forces small screen mode to be used even if display size would normally "
 "imply bigger screen mode."
 msgstr ""
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "តម្រៀប​បន្ទះ​នៅ​លើ​របារ​ឧបករណ៍"
 
-#: ../src/meego-netbook.c:846
-msgid "Meego Netbook Effects"
+#: ../src/dawati-netbook.c:846
+msgid "Dawati Netbook Effects"
 msgstr ""
 
-#: ../src/meego-netbook.c:850
-msgid "Effects for Meego Netbooks"
+#: ../src/dawati-netbook.c:850
+msgid "Effects for Dawati Netbooks"
 msgstr ""
 
 #: ../src/mnb-toolbar.c:1007
@@ -160,17 +160,17 @@ msgstr "កំពុង​សួរ​រក​ការ​យក​ចិត្
 msgid "Activate"
 msgstr "បើក​ដំណើរ​ការ"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr ""
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr ""
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"

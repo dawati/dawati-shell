@@ -4,7 +4,7 @@
 # A S Alam <aalam@users.sf.net>, 2009, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego.Meego2-UI.mutter-meego-netbook-plugin\n"
+"Project-Id-Version: mutter-dawati.Dawati2-UI.mutter-dawati-netbook-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-23 22:53+0000\n"
 "PO-Revision-Date: 2010-10-31 07:37+0530\n"
@@ -16,11 +16,11 @@ msgstr ""
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "ਆਪਣੀ ਟੂਲਬਾਰ ਪਸੰਦ ਸੈੱਟ ਕਰੋ"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "ਟੂਲਬਾਰ ਸੈਟਿੰਗ"
 
@@ -96,15 +96,15 @@ msgstr ""
 "ਸਿਸਟਮ ਟਰੇ ਦੇ ਢੰਗ ਨੂੰ ਕੋਈ ਪੁਰਾਣੀਆਂ ਐਪਲੀਕੇਸ਼ਨ ਵਲੋਂ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕਰਨ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਜਦੋਂ ਕੁਝ "
 "ਵਾਪਰਦਾ ਹੈ ਜਾਂ ਚੱਲਦੀਆਂ ਰਹਿੰਦੀਆਂ ਹਨ, ਜਦੋਂ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਨੂੰ ਬੰਦ ਕਰਦੇ ਹੋ।"
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "ਹਮੇਸ਼ਾ ਛੋਟੀ ਸਕਰੀਨ ਮੋਡ ਵਰਤੋਂ"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "ਟੂਲਬਾਰ ਉੱਤੇ ਪੈਨਲਾਂ ਦਾ ਕ੍ਰਮ ਤਹਿ ਕਰੋ"
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid ""
 "Forces small screen mode to be used even if display size would normally "
 "imply bigger screen mode."
@@ -112,16 +112,16 @@ msgstr ""
 "ਜੇ ਸਕਰੀਨ ਦਾ ਆਕਾਰ ਸਧਾਰਨ ਵੀ ਹੋਵੇ ਤਾਂ ਵੀ ਵੱਡੀ ਸਕਰੀਨ ਮੋਡ ਦੀ ਬਜਾਏ ਛੋਟੀ ਸਕਰੀਨ ਮੋਡ ਲਈ ਮਨਜ਼ੂਰ "
 "ਕਰੋ।"
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "ਟੂਲਬਾਰ ਉੱਤੇ ਪੈਨਲ ਦਾ ਕ੍ਰਮ"
 
-#: ../src/meego-netbook.c:829
-msgid "Meego Netbook Effects"
+#: ../src/dawati-netbook.c:829
+msgid "Dawati Netbook Effects"
 msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਪਰਭਾਵ"
 
-#: ../src/meego-netbook.c:833
-msgid "Effects for Meego Netbooks"
+#: ../src/dawati-netbook.c:833
+msgid "Effects for Dawati Netbooks"
 msgstr "ਮੋਬਲਿਨ ਨੈੱਟਬੁੱਕ ਲਈ ਪਰਭਾਵ"
 
 #: ../src/mnb-toolbar.c:1007
@@ -158,17 +158,17 @@ msgstr "ਤੁਹਾਡਾ ਧਿਆਨ ਮੰਗ ਰਹੀ ਹੈ।"
 msgid "Activate"
 msgstr "ਐਕਟੀਵੇਟ"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr "%s ਸ਼ੁਰੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr "%s ਖੋਲ੍ਹਿਆ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"
@@ -334,13 +334,13 @@ msgstr[1] "%d ਆਈਟਮਾਂ ਖੋਲ੍ਹੀਆਂ ਜਾ ਰਹੀਆਂ
 #~ msgstr ""
 #~ "ਤੁਹਾਡੇ ਦੋਸਤਾਂ ਦੀ ਫੀਡ ਅਤੇ ਵੈੱਬ ਸਰਵਿਸਾਂ ਇੱਥੇ ਵੇਖਾਈ ਦੇਣਗੀਆਂ। ਆਪਣੇ ਅਕਾਊਂਟ ਹੁਣੇ ਐਕਟੀਵੇਟ ਕਰੋ!"
 
-#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
+#~ msgid "<b>Welcome to Dawati 2.0 for Netbooks</b>"
 #~ msgstr "<b>ਨੈੱਟਬੁੱਕ ਲਈ ਮੋਬਲਿਨ ੨.੦ ਵਲੋਂ ਜੀ ਆਇਆਂ ਨੂੰ</b>"
 
 #~ msgid ""
-#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "As Dawati is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Meego Team."
+#~ "enjoy it, The Dawati Team."
 #~ msgstr ""
 #~ "ਮੋਬਲਿਨ ਹੋਰ ਕੰਪਿਊਟਰ ਤੋਂ ਕੁਝ ਅੱਡ ਹੈ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਮ ਕਰਨ ਲਈ ਮੱਦਦਗਾਰ ਹੋਣ ਵਾਸਤੇ ਬਹੁਤ ਕੁਝ "
 #~ "ਇੱਕਠਾ ਕੀਤਾ ਹੈ। ਅਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹਾਂ ਕਿ ਤੁਸੀਂ ਇਸ ਨਾਲ ਮੌਜਾਂ ਮਾਣੋਗੇ, ਮੋਬਲਿਨ ਟੀਮ"

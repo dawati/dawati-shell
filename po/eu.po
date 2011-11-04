@@ -15,18 +15,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/meego-netbook.c:391
+#: ../src/dawati-netbook.c:391
 #: ../src/mnb-toolbar.c:1426
 msgid "zones"
 msgstr "zonak"
 
-#: ../src/meego-netbook.c:504
-msgid "Meego Netbook Effects"
-msgstr "Meego Netbook Efektuak"
+#: ../src/dawati-netbook.c:504
+msgid "Dawati Netbook Effects"
+msgstr "Dawati Netbook Efektuak"
 
-#: ../src/meego-netbook.c:508
-msgid "Effects for Meego Netbooks"
-msgstr "Meego Netbook-entzako Efektuak"
+#: ../src/dawati-netbook.c:508
+msgid "Effects for Dawati Netbooks"
+msgstr "Dawati Netbook-entzako Efektuak"
 
 #. translators: translate this to a suitable time format for your locale
 #. * showing only hours and minutes. For available format specifiers see

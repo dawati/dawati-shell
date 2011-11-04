@@ -26,7 +26,7 @@
 
 #include <display.h>
 
-#include "../meego-netbook.h"
+#include "../dawati-netbook.h"
 #include "ntf-notification.h"
 #include "ntf-tray.h"
 #include "ntf-overlay.h"
@@ -38,7 +38,7 @@ static void ntf_wm_demands_attention_clear (MetaWindow *window);
 static void
 ntf_wm_activate_cb (ClutterActor *button, MetaWindow *window)
 {
-  meego_netbook_activate_window (window);
+  dawati_netbook_activate_window (window);
 }
 
 static void
@@ -191,7 +191,7 @@ ntf_wm_handle_demands_attention (MetaWindow *window)
                     NULL);
   /* If the window is closed, the notification cannot activate the window
    * anymore so the notification should be closed.
-   * See: https://bugs.meego.com/show_bug.cgi?id=19677
+   * See: https://bugs.dawati.com/show_bug.cgi?id=19677
    */
   g_signal_connect (window, "unmanaged",
                     G_CALLBACK (ntf_wm_meta_window_unmanaged_cb),
@@ -259,7 +259,7 @@ ntf_wm_display_focus_window_notify_cb (MetaDisplay  *display,
 void
 ntf_wm_init (void)
 {
-  MutterPlugin *plugin  = meego_netbook_get_plugin_singleton ();
+  MutterPlugin *plugin  = dawati_netbook_get_plugin_singleton ();
   MetaScreen   *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay  *display = meta_screen_get_display (screen);
 

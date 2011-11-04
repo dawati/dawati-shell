@@ -12,7 +12,7 @@ AM_CFLAGS = \
 	-Werror=missing-prototypes
 
 # FIXME -- because of various fscked dependencies any tests relying on Penge
-# cannot be built (Penge calls into meego_netbook_launch_*() functions, which
+# cannot be built (Penge calls into dawati_netbook_launch_*() functions, which
 # dependency will go away when we move to the dbus API.) In the meantime,
 #
 # test-pasteboard: it uses some formating function from Penge utils; I just

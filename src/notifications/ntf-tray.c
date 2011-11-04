@@ -23,7 +23,7 @@
 
 #include <glib/gi18n.h>
 
-#include "../meego-netbook.h"
+#include "../dawati-netbook.h"
 #include "../mnb-input-manager.h"
 
 #include "ntf-tray.h"
@@ -531,9 +531,9 @@ ntf_tray_add_notification (NtfTray *tray, NtfNotification *ntf)
 
   priv   = tray->priv;
   ntfa   = CLUTTER_ACTOR (ntf);
-  plugin = meego_netbook_get_plugin_singleton ();
+  plugin = dawati_netbook_get_plugin_singleton ();
 
-  if (meego_netbook_compositor_disabled (plugin))
+  if (dawati_netbook_compositor_disabled (plugin))
     {
       mnb_notification_gtk_show ();
     }

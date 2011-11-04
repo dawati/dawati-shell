@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
+"Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-20 23:58+0000\n"
 "PO-Revision-Date: 2010-11-21 20:31+0300\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Налаштуйте ваш тулбар"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Налаштування тулбару"
 
@@ -95,29 +95,29 @@ msgstr "Показувати системний трей"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Системний трей - це засіб, що використовується деякими старими програмами аби повідомляти вам, що щось трапилось, або, що програма продовжує працювати, після закриття її вікна."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Завжди використовувати режим малого екрану"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Встановлює порядок розміщення панелей на тулбарі."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Встановлює використання режиму малого екрану, навіть, якщо розмір дисплею дозволяє режим більшого екрану."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Порядок панелей на тулбарі"
 
-#: ../src/meego-netbook.c:829
-msgid "Meego Netbook Effects"
-msgstr "Ефекти Meego Netbook"
+#: ../src/dawati-netbook.c:829
+msgid "Dawati Netbook Effects"
+msgstr "Ефекти Dawati Netbook"
 
-#: ../src/meego-netbook.c:833
-msgid "Effects for Meego Netbooks"
-msgstr "Ефекти для Meego Netbooks"
+#: ../src/dawati-netbook.c:833
+msgid "Effects for Dawati Netbooks"
+msgstr "Ефекти для Dawati Netbooks"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -154,17 +154,17 @@ msgstr "потребує вашої уваги."
 msgid "Activate"
 msgstr "Активувати"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr "Запускається %s"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr "Відкривається %s"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"

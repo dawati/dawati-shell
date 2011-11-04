@@ -24,7 +24,7 @@
 #ifndef MNB_SWITCH_ZONES_EFFECT_H
 #define MNB_SWITCH_ZONES_EFFECT_H
 
-#include "../meego-netbook.h"
+#include "../dawati-netbook.h"
 
 void     mnb_switch_zones_effect (MutterPlugin         *plugin,
                                   gint                  from,

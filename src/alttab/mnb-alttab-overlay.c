@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Meego Netbook
+ * Dawati Netbook
  * Copyright © 2009, 2010, Intel Corporation.
  *
  * Author: Tomas Frydrych <tf@linux.intel.com>
@@ -25,7 +25,7 @@
 #include "mnb-alttab-overlay-private.h"
 #include "mnb-alttab-overlay-app.h"
 #include "mnb-alttab-keys.h"
-#include "../meego-netbook.h"
+#include "../dawati-netbook.h"
 #include <display.h>
 #include <keybindings.h>
 #include <X11/keysym.h>
@@ -142,7 +142,7 @@ mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *self)
   MetaScreen   *screen;
   GList        *l, *filtered = NULL;
 
-  plugin = meego_netbook_get_plugin_singleton ();
+  plugin = dawati_netbook_get_plugin_singleton ();
   screen = mutter_plugin_get_screen (plugin);
 
   for (l = mutter_get_windows (screen); l; l = l->next)
@@ -197,8 +197,8 @@ mnb_alttab_overlay_get_app_list (MnbAlttabOverlay *self)
 static gboolean
 mnb_alttab_overlay_populate (MnbAlttabOverlay *self)
 {
-  MutterPlugin               *plugin = meego_netbook_get_plugin_singleton ();
-  MeegoNetbookPluginPrivate *ppriv  = MEEGO_NETBOOK_PLUGIN (plugin)->priv;
+  MutterPlugin               *plugin = dawati_netbook_get_plugin_singleton ();
+  DawatiNetbookPluginPrivate *ppriv  = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
   MnbAlttabOverlayPrivate    *priv = self->priv;
   GList                      *l, *filtered = NULL, *active = NULL;
 
@@ -280,7 +280,7 @@ mnb_alttab_overlay_constructed (GObject *self)
 {
   MnbAlttabOverlayPrivate *priv   = MNB_ALTTAB_OVERLAY (self)->priv;
   MxGrid                  *grid   = MX_GRID (mx_grid_new ());
-  MutterPlugin            *plugin = meego_netbook_get_plugin_singleton ();
+  MutterPlugin            *plugin = dawati_netbook_get_plugin_singleton ();
 
   if (G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->constructed)
     G_OBJECT_CLASS (mnb_alttab_overlay_parent_class)->constructed (self);
@@ -543,7 +543,7 @@ gboolean
 mnb_alttab_overlay_handle_xevent (MnbAlttabOverlay *overlay, XEvent *xev)
 {
   MnbAlttabOverlayPrivate *priv   = overlay->priv;
-  MutterPlugin            *plugin = meego_netbook_get_plugin_singleton ();
+  MutterPlugin            *plugin = dawati_netbook_get_plugin_singleton ();
 
   if (!priv->in_alt_grab)
     return FALSE;
@@ -689,7 +689,7 @@ gboolean
 mnb_alttab_overlay_tab_still_down (MnbAlttabOverlay *overlay)
 {
   MnbAlttabOverlayPrivate *priv = MNB_ALTTAB_OVERLAY (overlay)->priv;
-  MutterPlugin            *plugin  = meego_netbook_get_plugin_singleton ();
+  MutterPlugin            *plugin  = dawati_netbook_get_plugin_singleton ();
   MetaScreen              *screen  = mutter_plugin_get_screen (plugin);
   MetaDisplay             *display = meta_screen_get_display (screen);
   Display                 *xdpy    = meta_display_get_xdisplay (display);
@@ -770,7 +770,7 @@ mnb_alttab_overlay_autoscroll_trigger_cb (gpointer data)
 gboolean
 mnb_alttab_overlay_show (MnbAlttabOverlay *overlay, gboolean backward)
 {
-  MutterPlugin  *plugin = meego_netbook_get_plugin_singleton ();
+  MutterPlugin  *plugin = dawati_netbook_get_plugin_singleton ();
   gfloat         w, h;
   gint           screen_width, screen_height;
 

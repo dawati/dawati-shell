@@ -32,7 +32,7 @@
 #include "mtp-space.h"
 #include "mtp-jar.h"
 
-#define KEY_DIR "/desktop/meego/toolbar/panels"
+#define KEY_DIR "/desktop/dawati/toolbar/panels"
 #define KEY_ORDER KEY_DIR "/order"
 
 #define TOOLBAR_HEIGHT 64
@@ -162,9 +162,9 @@ load_panels (GConfClient *client)
    *       is that if there is some gconf screwup, we still want these on the
    *       toolbar.
    */
-  const gchar  *required[4] = {"meego-panel-myzone",
-                               "meego-panel-applications",
-                               "meego-panel-zones",
+  const gchar  *required[4] = {"dawati-panel-myzone",
+                               "dawati-panel-applications",
+                               "dawati-panel-zones",
                                "carrick"};
 
   /*

@@ -67,13 +67,13 @@ mtp_cc_panel_make_contents (MtpCcPanel *panel)
   GtkWidget         *embed;
 
   mx_style_load_from_file (mx_style_get_default (),
-                           THEMEDIR "/meego-toolbar-properties.css",
+                           THEMEDIR "/dawati-toolbar-properties.css",
                            &error);
 
   if (error)
     {
       g_warning ("Could not load stylesheet" THEMEDIR
-                 "/meego-toolbar-properties.css: %s", error->message);
+                 "/dawati-toolbar-properties.css: %s", error->message);
       g_clear_error (&error);
     }
 
@@ -116,7 +116,7 @@ mtp_cc_panel_constructor (GType                  type,
 
   g_object_set (panel,
                 "display-name", _("Toolbar"),
-                "id", "meego-toolbar-properties.desktop",
+                "id", "dawati-toolbar-properties.desktop",
                 NULL);
 
   return G_OBJECT (panel);

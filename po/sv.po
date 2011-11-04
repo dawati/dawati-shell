@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Ange dina inställningar för verktygsfältet"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Inställningar för verktygsfält"
 
@@ -93,29 +93,29 @@ msgstr "Visa systemfält"
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr "Systemfältet är ett koncept som används av vissa äldre program för att informera dig när något händer eller för att förbli aktiva när du stänger dem."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Använd alltid litet skärm läge"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Avgör panelordningen i verktygsfältet."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr "Tvinga alltid att använda litet skärm läge även om display läge normalt vill använda större skärm läge."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Panelordning i verktygsfältet"
 
-#: ../src/meego-netbook.c:825
-msgid "Meego Netbook Effects"
-msgstr "Meego netbook effekter"
+#: ../src/dawati-netbook.c:825
+msgid "Dawati Netbook Effects"
+msgstr "Dawati netbook effekter"
 
-#: ../src/meego-netbook.c:829
-msgid "Effects for Meego Netbooks"
-msgstr "Effekter för Meego netbooks"
+#: ../src/dawati-netbook.c:829
+msgid "Effects for Dawati Netbooks"
+msgstr "Effekter för Dawati netbooks"
 
 #: ../src/mnb-toolbar.c:1007
 #, c-format
@@ -336,17 +336,17 @@ msgstr "Aktivera"
 #~ "Dina vänners RSS-flöden och webbtjänster kommer visas här. Aktivera dina "
 #~ "konton nu!"
 
-#~ msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
-#~ msgstr "<b>Välkommen till Meego 2.0 för netbooks</b>"
+#~ msgid "<b>Welcome to Dawati 2.0 for Netbooks</b>"
+#~ msgstr "<b>Välkommen till Dawati 2.0 för netbooks</b>"
 
 #~ msgid ""
-#~ "As Meego is a bit different to other computers, we've put together a "
+#~ "As Dawati is a bit different to other computers, we've put together a "
 #~ "couple of bits and pieces to help you find your way around. We hope you "
-#~ "enjoy it, The Meego Team."
+#~ "enjoy it, The Dawati Team."
 #~ msgstr ""
-#~ "Då Meego skiljer sig något från andra datorer har vi satt ihop en del "
+#~ "Då Dawati skiljer sig något från andra datorer har vi satt ihop en del "
 #~ "tips för att underlätta för dig att hitta allt. Hoppas du gillar det! "
-#~ "Team Meego."
+#~ "Team Dawati."
 
 #~ msgid "Web page"
 #~ msgstr "Webbplats"

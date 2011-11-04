@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+
+]>
+<section>
+  <para>
+    The appearance of the Toolbar button is controled using CSS style ID. Each
+    panel needs to provide a css stylesheet with style definitions for the
+    desired button appearance; it is possible to define multiple appearances
+    with different IDs (e.g., the Power button would have different styles for
+    full battery, empty battery, AC power, etc.).
+  </para>
+
+  <para>
+    Apart from different style, the button can be in four different states
+    differentiated by the associated pseudo style (normal, hover, active and
+    checked state); a suitable style defintion needs to be provided for each of
+    these for each style ID. (NB: As per the current Dawati UI specficiation,
+    the normal, active and checked styles are identical.)
+  </para>
+
+  <para>
+    An example CSS definition for a single button state would looks as follows:
+
+    <programlisting>
+  MnbToolbarButton#mypanel-button-state1,
+  MnbToolbarButton#mypanel-button-state1:active,
+  MnbToolbarButton#mypanel-button-state1:checked
+  {
+    background-image: url("mypanel/mypanel-normal.png");
+  }
+
+  MnbToolbarButton#mypanel-button-state1:hover
+  {
+    background-image: url("mypanel/mypanel-hover.png");
+  }
+    </programlisting>
+  </para>
+</section>

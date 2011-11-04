@@ -1,0 +1,15 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+dawati_panel_theme_dir=@MUTTER_DAWATI_THEME_DIR@
+dawati_panel_panels_dir=@MUTTER_DAWATI_PANELS_DIR@
+
+Name: libdawati-panel
+Description: Dev framework for dawati panels
+Requires: dbus-glib-1 mx-1.0 gtk+-2.0 gio-unix-2.0
+Version: @VERSION@
+Libs: -L${libdir} -ldawati-panel
+Cflags: -I${includedir}/libdawati-panel

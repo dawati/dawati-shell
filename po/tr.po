@@ -10,7 +10,7 @@ msgstr ""
 "POT-Creation-Date: 2010-05-19 09:20+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ahmet Özgür Erdemli <dbl2010@gmail.com>\n"
-"Language-Team: MeeGo Türkçe\n"
+"Language-Team: Dawati Türkçe\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,11 +19,11 @@ msgstr ""
 "X-Poedit-Country: TURKEY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Araç çubuğu ayarlarınızı değiştirin"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Araç çubuğu ayarları"
 
@@ -98,39 +98,39 @@ msgstr ""
 msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
 msgstr ""
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Her zaman küçük ekran kipini kullan"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Araç çubuğunda panellerin sırasını belirler."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
 msgstr ""
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Araç çubuğunda panellerin sırası"
 
-#: ../src/meego-netbook.c:1016
-msgid "Meego Netbook Effects"
-msgstr "Meego Netbook Efektleri"
+#: ../src/dawati-netbook.c:1016
+msgid "Dawati Netbook Effects"
+msgstr "Dawati Netbook Efektleri"
 
-#: ../src/meego-netbook.c:1020
-msgid "Effects for Meego Netbooks"
-msgstr "Meego Netbooklar için Efektler"
+#: ../src/dawati-netbook.c:1020
+msgid "Effects for Dawati Netbooks"
+msgstr "Dawati Netbooklar için Efektler"
 
-#: ../src/meego-netbook.c:3231
+#: ../src/dawati-netbook.c:3231
 msgid "Activate"
 msgstr "Etkinleştir"
 
-#: ../src/meego-netbook.c:3245
+#: ../src/dawati-netbook.c:3245
 msgid "Unknown window"
 msgstr "Bilinmeyen pencere"
 
-#: ../src/meego-netbook.c:3247
+#: ../src/dawati-netbook.c:3247
 msgid "is asking for your attention."
 msgstr "ilgilinmenizi istiyor."
 

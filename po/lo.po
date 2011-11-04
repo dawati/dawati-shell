@@ -54,8 +54,8 @@ msgid "Media"
 msgstr ""
 
 #: ../ahoghill/ahoghill/ahoghill-search-pane.c:97
-#: ../applications/src/meego-netbook-launcher.c:1377
-#: ../pasteboard/src/meego-panel-pasteboard.c:223
+#: ../applications/src/dawati-netbook-launcher.c:1377
+#: ../pasteboard/src/dawati-panel-pasteboard.c:223
 #: ../people/src/mnb-people-panel.c:568
 msgid "Search"
 msgstr "ຊອກຫາ"
@@ -84,7 +84,7 @@ msgstr ""
 msgid "Year %d"
 msgstr "ປີ %d"
 
-#: ../ahoghill/src/meego-panel-media.c:138
+#: ../ahoghill/src/dawati-panel-media.c:138
 msgid "media"
 msgstr ""
 
@@ -92,52 +92,52 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../applications/src/meego-netbook-launcher.c:869
+#: ../applications/src/dawati-netbook-launcher.c:869
 msgid "Favourite Applications"
 msgstr ""
 
-#: ../applications/src/meego-netbook-launcher.c:1366
+#: ../applications/src/dawati-netbook-launcher.c:1366
 msgid "Applications"
 msgstr "ໂປຣເເກຣມ"
 
-#: ../applications/src/meego-panel-applications.c:166
+#: ../applications/src/dawati-panel-applications.c:166
 msgid "applications"
 msgstr "ໂປຣເເກຣມ"
 
-#: ../netpanel/src/meego-netbook-netpanel.c:588
+#: ../netpanel/src/dawati-netbook-netpanel.c:588
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
 msgstr ""
 
-#: ../netpanel/src/meego-netbook-netpanel.c:790
+#: ../netpanel/src/dawati-netbook-netpanel.c:790
 msgid "Untitled"
 msgstr "ບໍ່ມີຊື່"
 
-#: ../netpanel/src/meego-netbook-netpanel.c:972
+#: ../netpanel/src/dawati-netbook-netpanel.c:972
 msgid "New tab"
 msgstr "ເເທບໃຫມ່"
 
 #. Construct entry table widgets
-#: ../netpanel/src/meego-netbook-netpanel.c:1168
+#: ../netpanel/src/dawati-netbook-netpanel.c:1168
 msgid "Internet"
 msgstr "ອີນເຕີເເນດທ໌"
 
-#: ../netpanel/src/meego-netbook-netpanel.c:1181
+#: ../netpanel/src/dawati-netbook-netpanel.c:1181
 msgid "Go"
 msgstr "ໄປ"
 
 #. Construct title for tab preview section
-#: ../netpanel/src/meego-netbook-netpanel.c:1202
+#: ../netpanel/src/dawati-netbook-netpanel.c:1202
 msgid "Tabs"
 msgstr "ເເທບ"
 
 #. Construct title for favorite pages section
-#: ../netpanel/src/meego-netbook-netpanel.c:1207
+#: ../netpanel/src/dawati-netbook-netpanel.c:1207
 msgid "Favorite pages"
 msgstr ""
 
-#: ../netpanel/src/meego-panel-internet.c:87
+#: ../netpanel/src/dawati-panel-internet.c:87
 msgid "internet"
 msgstr "ອີນເຕີເເນດທ໌"
 
@@ -152,32 +152,32 @@ msgid "Go to %s"
 msgstr "ໄປຫາ %s"
 
 #: ../pasteboard/src/mnb-clipboard-item.c:250
-#: ../pasteboard/src/meego-panel-pasteboard.c:340
+#: ../pasteboard/src/dawati-panel-pasteboard.c:340
 msgid "Copy"
 msgstr "ສໍາເນົາ"
 
-#: ../pasteboard/src/meego-panel-pasteboard.c:140
-#: ../pasteboard/src/meego-panel-pasteboard.c:355
+#: ../pasteboard/src/dawati-panel-pasteboard.c:140
+#: ../pasteboard/src/dawati-panel-pasteboard.c:355
 msgid "the current selection to pasteboard"
 msgstr ""
 
-#: ../pasteboard/src/meego-panel-pasteboard.c:145
+#: ../pasteboard/src/dawati-panel-pasteboard.c:145
 msgid "your selection"
 msgstr "ການເລືອກຂອງເຈົ້າ"
 
-#: ../pasteboard/src/meego-panel-pasteboard.c:210
+#: ../pasteboard/src/dawati-panel-pasteboard.c:210
 msgid "Pasteboard"
 msgstr "ເເຜ່ນວ່າງ"
 
-#: ../pasteboard/src/meego-panel-pasteboard.c:258
+#: ../pasteboard/src/dawati-panel-pasteboard.c:258
 msgid "You need to copy some text to use Pasteboard"
 msgstr ""
 
-#: ../pasteboard/src/meego-panel-pasteboard.c:312
+#: ../pasteboard/src/dawati-panel-pasteboard.c:312
 msgid "Clear pasteboard"
 msgstr "ລົບລ້າງ ເເຜ່ນວ່າງ"
 
-#: ../pasteboard/src/meego-panel-pasteboard.c:444
+#: ../pasteboard/src/dawati-panel-pasteboard.c:444
 msgid "pasteboard"
 msgstr "ເເຜ່ນວ່າງ"
 
@@ -196,14 +196,14 @@ msgid ""
 msgstr ""
 
 #: ../penge/penge/penge-recent-files-pane.c:201
-msgid "<b>Welcome to Meego 2.0 for Netbooks</b>"
+msgid "<b>Welcome to Dawati 2.0 for Netbooks</b>"
 msgstr "<b>ຍິນດີຕ້ອຍຮັບ ເຂົ້າສູ່ລະບົບ ມອບລີນ ລຸ້ນ 2.0 ຂອງ ເເນດບຸກ</b>"
 
 #: ../penge/penge/penge-recent-files-pane.c:226
 msgid ""
-"As Meego is a bit different to other computers, we've put together a couple "
+"As Dawati is a bit different to other computers, we've put together a couple "
 "of bits and pieces to help you find your way around this Beta Release. We "
-"hope you enjoy it, The Meego Team."
+"hope you enjoy it, The Dawati Team."
 msgstr ""
 
 #: ../penge/penge/penge-recent-file-tile.c:218
@@ -277,7 +277,7 @@ msgstr "ປີກອນ"
 msgid "Ages ago"
 msgstr ""
 
-#: ../people/src/meego-panel-people.c:69
+#: ../people/src/dawati-panel-people.c:69
 msgid "people"
 msgstr "ຄົນ"
 
@@ -294,7 +294,7 @@ msgid "Send a message"
 msgstr "ສົ່ງຂໍ້ຄວາມ"
 
 #: ../people/src/mnb-people-panel.c:307
-#: ../status/src/meego-panel-status.c:825
+#: ../status/src/dawati-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr ""
 
@@ -310,28 +310,28 @@ msgstr "ການເລືອກ"
 msgid "Nobody selected"
 msgstr "ບໍ່ໃດ້ເລືອກໃຜ"
 
-#: ../src/meego-netbook.c:306 ../src/mnb-toolbar.c:1428
+#: ../src/dawati-netbook.c:306 ../src/mnb-toolbar.c:1428
 msgid "zones"
 msgstr "ເຂດ"
 
-#: ../src/meego-netbook.c:415
-msgid "Meego Netbook Effects"
+#: ../src/dawati-netbook.c:415
+msgid "Dawati Netbook Effects"
 msgstr ""
 
-#: ../src/meego-netbook.c:419
-msgid "Effects for Meego Netbooks"
+#: ../src/dawati-netbook.c:419
+msgid "Effects for Dawati Netbooks"
 msgstr ""
 
-#: ../src/meego-netbook-chooser.c:790
+#: ../src/dawati-netbook-chooser.c:790
 #, c-format
 msgid "Zone %d"
 msgstr "ເຂດ %d"
 
-#: ../src/meego-netbook-chooser.c:839
+#: ../src/dawati-netbook-chooser.c:839
 msgid "New zone (0)"
 msgstr "ເຂດໃຫມ່ (0)"
 
-#: ../src/meego-netbook-chooser.c:920
+#: ../src/dawati-netbook-chooser.c:920
 msgid "Choose zone for application:"
 msgstr ""
 
@@ -403,19 +403,19 @@ msgid "Offline"
 msgstr "ບໍ່ເສີ່ມສາຍ (offline)"
 
 #: ../status/src/mnb-im-status-row.c:105
-#: ../status/src/meego-panel-status.c:536
+#: ../status/src/dawati-panel-status.c:536
 msgid "Available"
 msgstr "ຍັ່ງວ່າງ"
 
 #: ../status/src/mnb-im-status-row.c:106 ../status/src/mnb-im-status-row.c:107
-#: ../status/src/meego-panel-status.c:540
-#: ../status/src/meego-panel-status.c:544
+#: ../status/src/dawati-panel-status.c:540
+#: ../status/src/dawati-panel-status.c:544
 msgid "Away"
 msgstr ""
 
 #: ../status/src/mnb-im-status-row.c:108 ../status/src/mnb-im-status-row.c:109
-#: ../status/src/meego-panel-status.c:548
-#: ../status/src/meego-panel-status.c:552
+#: ../status/src/dawati-panel-status.c:548
+#: ../status/src/dawati-panel-status.c:552
 msgid "Busy"
 msgstr "ຍັ່ງວ່າງ"
 
@@ -452,26 +452,26 @@ msgstr ""
 msgid "Post"
 msgstr ""
 
-#: ../status/src/meego-panel-status.c:470
+#: ../status/src/dawati-panel-status.c:470
 msgid "Your current status"
 msgstr "ສະຖານະພາບຂອງເຈົ້າ ປະຈຸບັນ"
 
-#: ../status/src/meego-panel-status.c:472
-#: ../status/src/meego-panel-status.c:960
+#: ../status/src/dawati-panel-status.c:472
+#: ../status/src/dawati-panel-status.c:960
 msgid "Your current status - you are offline"
 msgstr "ສະຖານະພາບຂອງເຈົ້າ ປະຈຸບັນ - ເຈົ້າບໍ່ເຊີ່ມສາຍ (offline)"
 
-#: ../status/src/meego-panel-status.c:994
+#: ../status/src/dawati-panel-status.c:994
 msgid ""
 "To update your web status you need to setup a Web Services account with a "
 "provider that supports status messages"
 msgstr ""
 
-#: ../status/src/meego-panel-status.c:1021
+#: ../status/src/dawati-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr ""
 
-#: ../status/src/meego-panel-status.c:1118
+#: ../status/src/dawati-panel-status.c:1118
 msgid "status"
 msgstr "ສະຖານະພາບ"
 

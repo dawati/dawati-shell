@@ -5,7 +5,7 @@ DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc
 SUBDIRS = build
 
 # always built
-SUBDIRS += libmeego-panel
+SUBDIRS += libdawati-panel
 
 # extra
 SUBDIRS += src po data tests

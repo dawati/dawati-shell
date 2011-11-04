@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+
+]>
+<section>
+  <para>
+    Each panel needs to provide a desktop file, containing information needed
+    by the Toolbar to construct the Panel button and to start the Panel process
+    when required:
+  </para>
+
+  <para>
+    <variablelist>
+
+      <varlistentry>
+	<term>Name</term>
+	<listitem>
+	  <para>
+	    The standard name field will be used as initial button tooltip,
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X‑Dawati‑Service</term>
+	<listitem>
+	  <para>
+	    The D-Bus service provided by this panel, e.g.,
+	    <emphasis>org.dawati.UX.Shell.Panels.myzone</emphasis>,
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X‑Dawati‑Panel‑Type</term>
+	<listitem>
+	  <para>
+	    Type of the panel; can be 'normal' for main
+	    panels or 'applet' for applets (such as the Network or BT panels);
+	    default value is 'normal',
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X‑Dawati‑Panel‑Windowless</term>
+	<listitem>
+	  <para>
+	    If set to <emphasis>true</emphasis>
+	    indicates that the Panel application does not provide an drop-down
+	    panel, only a button. The button will have a tooltip, but will not
+	    respond to user clicks. Defaults to <emphasis>false</emphasis>,
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X‑Dawati‑Panel‑Stylesheet</term>
+	<listitem>
+	  <para>
+	    The stylesheet to be use for styling the
+	    Toolbar button,
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X‑Dawati‑Panel‑Button‑Style</term>
+	<listitem>
+	  <para>
+	    The css style id to use for the inital
+	    styling of the Toolbar button,
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X‑Dawati‑Panel‑Optional</term>
+	<listitem>
+	  <para>
+	    If set to <emphasis>false</emphasis> the panel cannot be removed by
+	    the Toolbar settings application; defaults to
+	    <emphasis>true</emphasis>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X‑GNOME‑Autostart‑enable</term>
+	<listitem>
+	  <para>
+	    Panels are normally only started on demand;
+	    if the panel application needs to be running immediately, this field
+	    should be set to <emphasis>true</emphasis>, and the deskotp file
+	    installed into the system autostard directory.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X‑Dawati‑Priority</term>
+	<listitem>
+	  <para>
+	    This field can be used by panels that are being autostarted to
+	    control how soon into the boot process this happens; panels that
+	    need to be started early should set this to 'High' (the 'High' value
+	    should be used with care only when strictly necessary as loading a
+	    panel early will impact on the overall boot time).
+	  </para>
+	</listitem>
+      </varlistentry>
+
+    </variablelist>
+  </para>
+
+  <para>
+     The desktop file needs to be installed into the mutter-dawati panel
+     directory; this can be obtained from pkg-config via the
+     <varname>dawati_panel_panels_dir</varname> variable, e.g., `pkg-config
+     --variable=dawati_panel_panels_dir dawati-panel`.
+  </para>
+
+</section>

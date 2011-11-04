@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
+"Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-03 23:44+0000\n"
 "PO-Revision-Date: 2010-01-19 22:00+0700\n"
@@ -18,23 +18,23 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: THAILAND\n"
 
-#: ../src/meego-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
+#: ../src/dawati-netbook.c:463 ../src/switcher/mnb-switcher.c:1247
 msgid "zones"
 msgstr "โซน"
 
-#: ../src/meego-netbook.c:625
-msgid "Effects for Meego Netbooks"
-msgstr "เอฟเฟกสำหรับ Meego Netbook"
+#: ../src/dawati-netbook.c:625
+msgid "Effects for Dawati Netbooks"
+msgstr "เอฟเฟกสำหรับ Dawati Netbook"
 
-#: ../src/meego-netbook.c:621
-msgid "Meego Netbook Effects"
-msgstr "เอฟเฟก Meego Netbook"
+#: ../src/dawati-netbook.c:621
+msgid "Dawati Netbook Effects"
+msgstr "เอฟเฟก Dawati Netbook"
 
-#: ../src/meego-netbook.c:2543
+#: ../src/dawati-netbook.c:2543
 msgid "Unknown window"
 msgstr "หน้าต่างไม่ทราบชื่อ"
 
-#: ../src/meego-netbook.c:2529
+#: ../src/dawati-netbook.c:2529
 msgid "Activate"
 msgstr "เปิดใช้งาน"
 
@@ -46,7 +46,7 @@ msgstr "เปิดใช้งาน"
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
 
-#: ../src/meego-netbook.c:2545
+#: ../src/dawati-netbook.c:2545
 msgid "Is asking for your attention."
 msgstr "คุณสนใจหรือไม่"
 

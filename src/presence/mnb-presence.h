@@ -19,6 +19,6 @@
  * 02111-1307, USA.
  */
 
-#include "../meego-netbook.h"
+#include "../dawati-netbook.h"
 
-void presence_init (MeegoNetbookPlugin *plugin);
+void presence_init (DawatiNetbookPlugin *plugin);

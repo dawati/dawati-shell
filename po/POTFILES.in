@@ -1,6 +1,6 @@
 # List of source files containing translatable strings.
-capplet/data/meego-toolbar-properties.desktop.in
-capplet/src/meego-toolbar-properties.c
+capplet/data/dawati-toolbar-properties.desktop.in
+capplet/src/dawati-toolbar-properties.c
 capplet/src/mtp-toolbar.c
 capplet/src/mtp-bin.c
 capplet/src/mtp-jar.c
@@ -8,8 +8,8 @@ capplet/src/mtp-clock.c
 capplet/src/mtp-cc-panel.c
 capplet/data/system-tray-properties.desktop.in
 capplet/src/syst-cc-panel.c
-data/mutter-meego.schemas.in
-src/meego-netbook.c
+data/mutter-dawati.schemas.in
+src/dawati-netbook.c
 src/mnb-toolbar.c
 src/mnb-toolbar-clock.c
 src/notifications/ntf-notification.c
@@ -18,5 +18,5 @@ src/notifications/ntf-source.c
 src/notifications/ntf-overlay.c
 src/notifications/ntf-libnotify.c
 src/notifications/ntf-wm.c
-# TODO libmeego-panel needs it's own translations
-libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c
+# TODO libdawati-panel needs it's own translations
+libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c

@@ -6,8 +6,8 @@
 # Jure Repinc <jlp@holodeck1.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: mutter-dawati\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:46-0700\n"
 "PO-Revision-Date: 2011-11-03 19:07+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:1
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
 msgid "Set your toolbar preferences"
 msgstr "Nastavite lastnosti orodjarne"
 
-#: ../capplet/data/meego-toolbar-properties.desktop.in.h:2
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
 msgid "Toolbar settings"
 msgstr "Nastavitve orodjarne"
 
@@ -100,15 +100,15 @@ msgstr ""
 "Sistemska vrstica je koncept, ki ga nekateri starejši programi uporabljajo  "
 "za obveščanje o dogodkih ali pa v njej tečejo po zaprtju okna programa."
 
-#: ../data/mutter-meego.schemas.in.h:1
+#: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
 msgstr "Vedno uporabljaj način za male zaslone"
 
-#: ../data/mutter-meego.schemas.in.h:2
+#: ../data/mutter-dawati.schemas.in.h:2
 msgid "Determines the order of panels on the toolbar."
 msgstr "Določa vrstni red pultov v orodjarni."
 
-#: ../data/mutter-meego.schemas.in.h:3
+#: ../data/mutter-dawati.schemas.in.h:3
 msgid ""
 "Forces small screen mode to be used even if display size would normally "
 "imply bigger screen mode."
@@ -116,16 +116,16 @@ msgstr ""
 "Vsili uporabo načina za male zaslone, četudi velikost zaslona nakazuje na "
 "način za velike zaslone."
 
-#: ../data/mutter-meego.schemas.in.h:4
+#: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Vrstni red pultov v orodjarni"
 
-#: ../src/meego-netbook.c:846
-msgid "Meego Netbook Effects"
+#: ../src/dawati-netbook.c:846
+msgid "Dawati Netbook Effects"
 msgstr ""
 
-#: ../src/meego-netbook.c:850
-msgid "Effects for Meego Netbooks"
+#: ../src/dawati-netbook.c:850
+msgid "Effects for Dawati Netbooks"
 msgstr ""
 
 #: ../src/mnb-toolbar.c:1007
@@ -162,17 +162,17 @@ msgstr "zahteva vašo pozornost."
 msgid "Activate"
 msgstr "Vklopi"
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:320
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
 #, c-format
 msgid "Starting %s"
 msgstr ""
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:322
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
 #, c-format
 msgid "Opening %s"
 msgstr ""
 
-#: ../libmeego-panel/meego-panel/gdkapplaunchcontext-x11.c:325
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
 #, c-format
 msgid "Opening %d Item"
 msgid_plural "Opening %d Items"

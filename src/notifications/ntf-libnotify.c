@@ -25,17 +25,17 @@
 #include <string.h>
 #include <glib/gi18n.h>
 
-#include "meego-netbook-notify-store.h"
+#include "dawati-netbook-notify-store.h"
 #include "ntf-libnotify.h"
-#include "../meego-netbook.h"
+#include "../dawati-netbook.h"
 #include "ntf-notification.h"
 #include "ntf-tray.h"
 #include "ntf-overlay.h"
 
-#define MEEGO_KEY_PREFIX "meego:"
+#define DAWATI_KEY_PREFIX "dawati:"
 
 static guint32 subsystem_id = 0;
-static MeegoNetbookNotifyStore *store = NULL;
+static DawatiNetbookNotifyStore *store = NULL;
 
 static void
 ntf_libnotify_update (NtfNotification *ntf, Notification *details);
@@ -45,7 +45,7 @@ typedef struct
   NtfNotification *notification;
   gint   id;
   gchar *action;
-  MeegoNetbookNotifyStore *store;
+  DawatiNetbookNotifyStore *store;
 } ActionData;
 
 static gint     n_notifiers;
@@ -64,7 +64,7 @@ free_action_data (gpointer action)
 static void
 ntf_libnotify_action_cb (ClutterActor *button, ActionData *data)
 {
-  meego_netbook_notify_store_action (data->store,
+  dawati_netbook_notify_store_action (data->store,
                                       data->id,
                                       data->action);
 }
@@ -73,7 +73,7 @@ static void
 ntf_libnotify_update_modal (void)
 {
   NtfTray      *tray = ntf_overlay_get_tray (TRUE);
-  MutterPlugin *plugin = meego_netbook_get_plugin_singleton ();
+  MutterPlugin *plugin = dawati_netbook_get_plugin_singleton ();
 
   if (ntf_tray_get_n_notifications (tray) > 0)
     {
@@ -83,7 +83,7 @@ ntf_libnotify_update_modal (void)
           MxFocusManager *manager =
             mx_focus_manager_get_for_stage (CLUTTER_STAGE (stage));
 
-          meego_netbook_stash_window_focus (plugin, CurrentTime);
+          dawati_netbook_stash_window_focus (plugin, CurrentTime);
           mx_focus_manager_push_focus (manager, MX_FOCUSABLE (tray));
           overlay_focused = TRUE;
         }
@@ -92,7 +92,7 @@ ntf_libnotify_update_modal (void)
     {
       if (overlay_focused)
         {
-          meego_netbook_unstash_window_focus (plugin, CurrentTime);
+          dawati_netbook_unstash_window_focus (plugin, CurrentTime);
           overlay_focused = FALSE;
         }
     }
@@ -113,13 +113,13 @@ ntf_libnotify_ntf_closed_cb (NtfNotification *ntf, gpointer dummy)
     }
 
   ntf_libnotify_update_modal ();
-  meego_netbook_notify_store_close (store,
+  dawati_netbook_notify_store_close (store,
                                      ntf_notification_get_id (ntf),
                                      ClosedDismissed);
 }
 
 static void
-ntf_libnotify_notification_added_cb (MeegoNetbookNotifyStore *store,
+ntf_libnotify_notification_added_cb (DawatiNetbookNotifyStore *store,
                                      Notification             *notification,
                                      gpointer                  data)
 {
@@ -173,7 +173,7 @@ ntf_libnotify_notification_added_cb (MeegoNetbookNotifyStore *store,
 }
 
 static void
-ntf_libnotify_notification_closed_cb (MeegoNetbookNotifyStore *store,
+ntf_libnotify_notification_closed_cb (DawatiNetbookNotifyStore *store,
                                       guint                     id,
                                       guint                     reason,
                                       gpointer                  data)
@@ -211,7 +211,7 @@ ntf_libnotify_init (void)
   n_notifiers = 0;
   overlay_focused = FALSE;
 
-  store = meego_netbook_notify_store_new ();
+  store = dawati_netbook_notify_store_new ();
 
   subsystem_id = ntf_notification_get_subsystem_id ();
 
@@ -319,11 +319,11 @@ ntf_libnotify_update (NtfNotification *ntf, Notification *details)
                                      0);
 
               /*
-               * Handle the meego key shortcut protocol
+               * Handle the dawati key shortcut protocol
                */
-              if (!strncmp (key, MEEGO_KEY_PREFIX, strlen (MEEGO_KEY_PREFIX)))
+              if (!strncmp (key, DAWATI_KEY_PREFIX, strlen (DAWATI_KEY_PREFIX)))
                 {
-                  const char *k = key + strlen (MEEGO_KEY_PREFIX);
+                  const char *k = key + strlen (DAWATI_KEY_PREFIX);
                   const char *pfx = strstr (k, "XK_");
                   char       *name;
 

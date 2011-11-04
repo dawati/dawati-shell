@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.meego.UX.Shell.Panels.test
-Exec=@dir@/test-panel-clutter
