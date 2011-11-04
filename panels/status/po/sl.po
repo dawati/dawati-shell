@@ -3,122 +3,127 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Jure Repinc <jlp@holodeck1.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: meego-panel-status\n"
 "Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
 "POT-Creation-Date: 2011-11-02 13:38-0700\n"
-"PO-Revision-Date: 2010-11-30 11:13+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2011-03-30 22:53+0000\n"
+"Last-Translator: JLP <jlp@holodeck1.com>\n"
+"Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: oc\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
 
 #: ../src/meego-panel-status.c:95
 msgid "Status"
-msgstr ""
+msgstr "Stanje"
 
 #: ../src/meego-panel-status.c:153
 #: ../data/meego-panel-status.desktop.in.in.h:2
 msgid "status"
-msgstr ""
+msgstr "stanje"
 
 #. vim:set ts=8 expandtab
 #: ../data/meego-panel-status.desktop.in.in.h:1
 msgid "Status panel"
-msgstr ""
+msgstr "Pult s stanjem"
 
 #: ../src/mps-feed-pane.c:92
 msgid ""
 "Unable to update status. The service may be unavailable or your password "
 "could be wrong."
 msgstr ""
+"Stanja ni bilo moč posodobiti. Morda storitev ni na razpolago ali pa ste "
+"vnesli napačno geslo."
 
 #: ../src/mps-feed-pane.c:96
 msgid "Unable to update status: You're not online."
-msgstr ""
+msgstr "Ni moč posodobiti stanja: niste na zvezi."
 
 #: ../src/mps-feed-pane.c:445
 msgid "We were unable to guess your location"
-msgstr ""
+msgstr "Vaše lokacije nismo mogli ugotoviti"
 
 #: ../src/mps-feed-pane.c:453
 #, c-format
 msgid "We think your location is: %s (%f, %f)"
-msgstr ""
+msgstr "Menimo, da je vaša lokacija: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:459
 #, c-format
 msgid "Your location is currently shared as: %s (%f, %f)"
-msgstr ""
+msgstr "Vaša lokacija je na razpolago drugim kot: %s (%f, %f)"
 
 #: ../src/mps-feed-pane.c:469
 #, c-format
 msgid "We think your location is: %f %f"
-msgstr ""
+msgstr "Menimo, da je vaša lokacija: %f, %f"
 
 #: ../src/mps-feed-pane.c:473
 #, c-format
 msgid "Your location is currently shared as: %f %f"
-msgstr ""
+msgstr "Vaša lokacija je na razpolago drugim kot: %f, %f"
 
 #: ../src/mps-feed-pane.c:483
 msgid "Your location isn't currently shared"
-msgstr ""
+msgstr "Vaša lokacija trenutno ni na razpolago drugim"
 
 #. Actor creation
 #: ../src/mps-feed-pane.c:586
 msgid "Update"
-msgstr ""
+msgstr "Posodobi"
 
 #: ../src/mps-feed-pane.c:591
 msgid "What's happening?"
-msgstr ""
+msgstr "Kaj se dogaja?"
 
 #: ../src/mps-feed-pane.c:641
 msgid "Change"
-msgstr ""
+msgstr "Spremeni"
 
 #: ../src/mps-feed-switcher.c:35
 msgid ""
 "When you have a web account configured, you will be able to view your feeds "
 "and manage your status here."
 msgstr ""
+"Ko boste nastavili spletni račun, boste lahko tu videli svoje vire novic in "
+"upravljali s svojim stanjem."
 
 #: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
 msgid "Add new web account"
-msgstr ""
+msgstr "Dodaj nov spletni račun"
 
 #: ../src/mps-feed-switcher.c:539
 msgid "This is the Status panel."
-msgstr ""
+msgstr "To je pult s stanjem."
 
 #: ../src/mps-geotag-pane.c:232
 msgid "Your location"
-msgstr ""
+msgstr "Vaša lokacija"
 
 #: ../src/mps-geotag-pane.c:568
 msgid "Search"
-msgstr ""
+msgstr "Iskanje"
 
 #: ../src/mps-geotag-pane.c:573
 msgid "Where are you?"
-msgstr ""
+msgstr "Kje ste?"
 
 #: ../src/mps-geotag-pane.c:575
 msgid "Find me"
-msgstr ""
+msgstr "Najdi me"
 
 #: ../src/mps-geotag-pane.c:582
 msgid "Use location"
-msgstr ""
+msgstr "Uporabi lokacijo"
 
 #: ../src/mps-geotag-pane.c:583
 msgid "Don't use location"
-msgstr ""
+msgstr "Ne uporabi lokacije"
 
 #. When the tweet has a location associated with it then this string will
 #. * be <human readable time> from <human readable place name>
@@ -128,6 +133,6 @@ msgstr ""
 #: ../src/mps-tweet-card.c:491
 #, c-format
 msgid "%s from %s"
-msgstr ""
+msgstr "%s, %s"
 
 
