@@ -1,0 +1,290 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Quang Pham <quang.pham@msn.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-panel-devices\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:32-0700\n"
+"PO-Revision-Date: 2011-11-03 19:02+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Vietnamese (http://www.transifex.net/projects/p/meego/team/vi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+#: ../data/meego-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Bảng điều khiển thiết bị"
+
+#: ../data/meego-panel-devices.desktop.in.in.h:2
+#: ../src/meego-panel-devices.c:176
+msgid "devices"
+msgstr "thiết bị"
+
+#: ../data/meego-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Hết thời gian ngủ"
+
+#: ../data/meego-panel-devices.schemas.in.h:2
+msgid ""
+"Value of -1 means never sleep, other values are seconds of continuous idle "
+"state before sleeping."
+msgstr ""
+"Giá trị 1 là không bao giờ ngủ, các giá trị khác là khoảng thời gian máy "
+"nhàn rỗi trước khi đi ngủ."
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1005
+msgid "Disabled"
+msgstr "Bị khóa"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1012
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Đầu ra"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1022
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Đầu vào"
+
+#: ../gvc/gvc-mixer-control.c:1320
+msgid "System Sounds"
+msgstr "Âm thanh hệ thống"
+
+#: ../power-icon/src/meego-power-icon.c:46
+msgid "MeeGo Power Icon"
+msgstr "Biểu tượng nguồn MeeGo"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Pin còn ít năng lượng"
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid ""
+"I've noticed that your battery is running a bit low. If you can, it would be"
+" a good idea to plug in and top up."
+msgstr "Chú ý pin của bạn còn ít năng lượng. Nếu có thể, bạn nên cắm sạc."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "Đang gần hết"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can."
+msgstr ""
+"Pin bạn còn ít năng lượng. Bạn nên lưu tất cả các công việc đang làm và cắm "
+"sạc ngay khi bạn có thể."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "Nguy hiểm!"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid ""
+"Sorry, your computer is about to run out of battery. I'm going to have to go"
+" to sleep now. Please save your work and hope to see you again soon."
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:494
+msgid "battery"
+msgstr "pin"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Nếu bạn không quyết định, máy sẽ tắt trong %d giây"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Tắt"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Bạn có muốn tắt ngay bây giờ?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Nếu bạn không quyết định, máy sẽ tắt sau 30 giây."
+
+#: ../src/meego-panel-devices.c:126
+msgid "MeeGo Devices Panel"
+msgstr "Bảng điều khiển thiết bị MeeGo"
+
+#: ../src/mpd-battery-device.c:381
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Xin lỗi, pin chưa được lắp đặt."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Pin của bạn đang sạc. Khoảng %d%% ."
+
+#: ../src/mpd-battery-device.c:390
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Pin của bạn đang được sử dụng. Khoảng %d%% ."
+
+#: ../src/mpd-battery-device.c:395
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Pin của bạn đã được sạc đầy và máy đã sẵn sàng làm việc."
+
+#: ../src/mpd-battery-device.c:399
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Xin lỗi, dường như pin của bạn bị hỏng."
+
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Hiển thị độ sáng - khi cắm điện"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Hiển thị độ sáng - khi dùng pin"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "Máy tính của bạn"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Tất cả các thiết lập"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr "Cắm một thiết bị và nó sẽ được tự động phát hiện."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Các thiết bị khác"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Đẩy ra không thành công, dường như một ứng dụng đang được sử dụng"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Bây giờ an toàn để tháo thiết bị này"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of "
+"%s</span>"
+msgstr ""
+"<span font-weight='bold'>Bạn đang sử dụng</span> <span color='%s'>%d%% of "
+"%s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Thùng rác"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Thiết bị"
+
+#: ../src/mpd-storage-device-tile.c:241
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "Không thể chạy \"%s\""
+
+#: ../src/mpd-storage-device-tile.c:243
+msgid "Import error"
+msgstr "Nhập lỗi"
+
+#: ../src/mpd-storage-device-tile.c:354
+msgid "Import photos"
+msgstr "Nhập hình ảnh"
+
+#: ../src/mpd-storage-device-tile.c:356
+msgid "Import media"
+msgstr "Nhập phương tiện truyền thông"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:645
+msgid "Open"
+msgstr "Mở"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:651
+msgid "Eject"
+msgstr "Đẩy ra"
+
+#: ../src/mpd-storage-device-tile.c:855
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+"<span font-weight='bold'>%s</span> sử dụng <span color='%s'>%d%% của "
+"%s</span>"
+
+#: ../src/mpd-storage-device-tile.c:863
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Bật đến nấc 11"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Rất to"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "To"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Khá to"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Giữa thanh"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Khá yên tĩnh"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Yên tĩnh"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Rất yên tĩnh"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Im lặng"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Âm lượng máy tính"
+
+#: ../src/mpd-volume-tile.c:372
+msgid "Mute"
+msgstr "Câm"
+
+
