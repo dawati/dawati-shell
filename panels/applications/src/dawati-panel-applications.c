@@ -28,10 +28,10 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <meego-panel/mpl-app-launch-context.h>
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
-#include "meego-netbook-launcher.h"
+#include <dawati-panel/mpl-app-launch-context.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
+#include "dawati-netbook-launcher.h"
 #include "config.h"
 
 static void
@@ -160,7 +160,7 @@ main (int     argc,
   static int         _dpi = 0;
   static GOptionEntry _options[] = {
     { "standalone", 's', 0, G_OPTION_ARG_NONE, &_standalone,
-      "Do not embed into the mutter-meego panel", NULL },
+      "Do not embed into the mutter-dawati panel", NULL },
     { "geometry", 'g', 0, G_OPTION_ARG_STRING, &_geometry,
       "Window geometry in standalone mode", NULL },
 #if CLUTTER_CHECK_VERSION(1, 3, 0)
@@ -180,7 +180,7 @@ main (int     argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- Mutter-meego application launcher panel");
+  context = g_option_context_new ("- Mutter-dawati application launcher panel");
   g_option_context_add_main_entries (context, _options, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, gtk_get_option_group (TRUE));
@@ -204,11 +204,11 @@ main (int     argc,
     }
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
-    DATADIR "/icons/meego/48x48/mx.cache");
+    DATADIR "/icons/dawati/48x48/mx.cache");
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
     DATADIR "/icons/hicolor/48x48/mx.cache");
   mx_texture_cache_load_cache (mx_texture_cache_get_default (),
-    DATADIR "/mutter-meego/mx.cache");
+    DATADIR "/mutter-dawati/mx.cache");
 
   mx_texture_cache_load_cache (mx_texture_cache_get_default (), MX_CACHE);
   mx_style_load_from_file (mx_style_get_default (),
@@ -252,7 +252,7 @@ main (int     argc,
 
       MplPanelClient  *panel;
 
-      /* All button styling goes in mutter-meego.css for now,
+      /* All button styling goes in mutter-dawati.css for now,
        * don't pass our own stylesheet. */
       panel = mpl_panel_clutter_new ("applications",
                                       _("applications"),

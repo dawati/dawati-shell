@@ -20,27 +20,27 @@ msgid "Search"
 msgstr "Cerca"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1049
+#: ../src/dawati-netbook-launcher.c:1049
 msgid "Applications"
 msgstr "Aplicacions"
 
 #. * Fav apps pane
 #. 
-#: ../src/meego-netbook-launcher.c:1065
+#: ../src/dawati-netbook-launcher.c:1065
 msgid "Favorite applications"
 msgstr "Aplicacions preferides"
 
 #. * Applications
 #. 
-#: ../src/meego-netbook-launcher.c:1092
+#: ../src/dawati-netbook-launcher.c:1092
 msgid "Your applications"
 msgstr "Les vostres aplicacions"
 
-#: ../src/meego-panel-applications.c:223
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:223
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicacions"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Tauler d'aplicacions"

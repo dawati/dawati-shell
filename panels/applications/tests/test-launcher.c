@@ -7,17 +7,17 @@
 #include <gio/gdesktopappinfo.h>
 #include <mx/mx.h>
 #include "mnb-drop-down.h"
-#include "meego-netbook.h"
-#include "meego-netbook-launcher.h"
-#include "meego-netbook-chooser.h"
+#include "dawati-netbook.h"
+#include "dawati-netbook-launcher.h"
+#include "dawati-netbook-chooser.h"
 
 /* Fake plugin implementation to satisfy the linker. */
 
-GType meego_netbook_plugin_get_type (void);
+GType dawati_netbook_plugin_get_type (void);
 gboolean hide_panel (MutterPlugin *plugin);
 
 GType
-meego_netbook_plugin_get_type (void)
+dawati_netbook_plugin_get_type (void)
 {
   return 0;
 }
@@ -48,7 +48,7 @@ mnb_drop_down_set_child (MnbDropDown *drop_down, ClutterActor *child)
 }
 
 gboolean
-meego_netbook_launch_application_from_desktop_file (const  gchar *desktop,
+dawati_netbook_launch_application_from_desktop_file (const  gchar *desktop,
                                                      GList        *files,
                                                      gint          workspace,
                                                      gboolean      no_chooser)

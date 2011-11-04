@@ -7,11 +7,11 @@ AM_CFLAGS = \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
 	-DTHEMEDIR=\"$(pkgdatadir)/theme\"
 
-libexec_PROGRAMS = meego-panel-applications
+libexec_PROGRAMS = dawati-panel-applications
 
-meego_panel_applications_LDADD = $(APPLICATIONS_LIBS) $(MPL_LIBS)
+dawati_panel_applications_LDADD = $(APPLICATIONS_LIBS) $(MPL_LIBS)
 
-meego_panel_applications_SOURCES = \
+dawati_panel_applications_SOURCES = \
   mnb-expander.c \
   mnb-expander.h \
   mnb-filter.c \
@@ -24,18 +24,18 @@ meego_panel_applications_SOURCES = \
   mnb-launcher-grid.h \
   mnb-launcher-tree.c \
   mnb-launcher-tree.h \
-  meego-netbook-launcher.c \
-  meego-netbook-launcher.h \
-  meego-panel-applications.c
+  dawati-netbook-launcher.c \
+  dawati-netbook-launcher.h \
+  dawati-panel-applications.c
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = com.meego.UX.Shell.Panels.applications.service.in
-service_DATA = com.meego.UX.Shell.Panels.applications.service
+service_in_files = com.dawati.UX.Shell.Panels.applications.service.in
+service_DATA = com.dawati.UX.Shell.Panels.applications.service
 
 EXTRA_DIST = $(service_in_files)
 
-DISTCLEANFILES = com.meego.UX.Shell.Panels.applications.service
+DISTCLEANFILES = com.dawati.UX.Shell.Panels.applications.service
 
-com.meego.UX.Shell.Panels.applications.service: com.meego.UX.Shell.Panels.applications.service.in $(top_builddir)/config.log
+com.dawati.UX.Shell.Panels.applications.service: com.dawati.UX.Shell.Panels.applications.service.in $(top_builddir)/config.log
 	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 

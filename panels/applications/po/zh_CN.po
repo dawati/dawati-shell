@@ -1,7 +1,7 @@
-# Chinese translations for mutter-meego package
-# mutter-meego 软件包的简体中文翻译.
+# Chinese translations for mutter-dawati package
+# mutter-dawati 软件包的简体中文翻译.
 # Copyright Intel (C) 2009
-# This file is distributed under the same license as the mutter-meego package.
+# This file is distributed under the same license as the mutter-dawati package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
 #
@@ -22,26 +22,26 @@ msgid "Search"
 msgstr "搜索"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1098
+#: ../src/dawati-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "应用程序"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:1114
+#: ../src/dawati-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "收藏的应用程序"
 
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1141
+#: ../src/dawati-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "您的应用程序"
 
-#: ../src/meego-panel-applications.c:247
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "应用程序"
 
@@ -49,7 +49,7 @@ msgstr "应用程序"
 msgid "Never launched"
 msgstr "从未启动"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "应用程序面板"
 

@@ -21,24 +21,24 @@ msgid "Search"
 msgstr "Hledat"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1098
+#: ../src/dawati-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "Programy"
 
 #. * Fav apps pane
 #. 
-#: ../src/meego-netbook-launcher.c:1114
+#: ../src/dawati-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Oblíbené programy"
 
 #. * Applications
 #. 
-#: ../src/meego-netbook-launcher.c:1141
+#: ../src/dawati-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "Vaše programy"
 
-#: ../src/meego-panel-applications.c:247
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "Programy"
 
@@ -46,6 +46,6 @@ msgstr "Programy"
 msgid "Never launched"
 msgstr "Nikdy nespuštěno"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel Programy"

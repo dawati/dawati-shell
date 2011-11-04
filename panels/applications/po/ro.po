@@ -5,12 +5,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-applications\n"
+"Project-Id-Version: dawati-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-27 23:48+0000\n"
 "PO-Revision-Date: 2009-08-30 03:58+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
-"Language-Team: Meego Romania <live@meego.ro>\n"
+"Language-Team: Dawati Romania <live@dawati.ro>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,19 +23,19 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/meego-netbook-launcher.c:887
+#: ../src/dawati-netbook-launcher.c:887
 msgid "Favorite Applications"
 msgstr "Aplicații favorite"
 
-#: ../src/meego-netbook-launcher.c:1384
+#: ../src/dawati-netbook-launcher.c:1384
 msgid "Applications"
 msgstr "Aplicații"
 
-#: ../src/meego-netbook-launcher.c:1395
+#: ../src/dawati-netbook-launcher.c:1395
 msgid "Search"
 msgstr "Caută"
 
-#: ../src/meego-panel-applications.c:187
+#: ../src/dawati-panel-applications.c:187
 msgid "applications"
 msgstr "aplicații"
 

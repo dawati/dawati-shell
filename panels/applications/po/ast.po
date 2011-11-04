@@ -17,14 +17,14 @@ msgid "Search"
 msgstr "Gueta"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1098
+#: ../src/dawati-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "Aplicaciones"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:1114
+#: ../src/dawati-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Aplicaciones preferíes"
 
@@ -32,13 +32,13 @@ msgstr "Aplicaciones preferíes"
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1141
+#: ../src/dawati-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "Les tos aplicaciones"
 
 # <mousetip of the top of the screen>
-#: ../src/meego-panel-applications.c:247
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "aplicaciones"
 
@@ -46,7 +46,7 @@ msgstr "aplicaciones"
 msgid "Never launched"
 msgstr "Enxamás se llanzó"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Panel aplicaciones"
 

@@ -32,13 +32,13 @@
 
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <meego-panel/mpl-icon-theme.h>
+#include <dawati-panel/mpl-icon-theme.h>
 
-#include <meego-panel/mpl-app-bookmark-manager.h>
-#include <meego-panel/mpl-app-launches-store.h>
-#include <meego-panel/mpl-content-pane.h>
+#include <dawati-panel/mpl-app-bookmark-manager.h>
+#include <dawati-panel/mpl-app-launches-store.h>
+#include <dawati-panel/mpl-content-pane.h>
 
-#include "meego-netbook-launcher.h"
+#include "dawati-netbook-launcher.h"
 #include "mnb-filter.h"
 #include "mnb-expander.h"
 #include "mnb-launcher-button.h"

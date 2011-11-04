@@ -1,11 +1,11 @@
-# Italian translations for mutter-meego package.
-# Copyright (C) 2009 mutter-meego's copyright holder.
-# This file is distributed under the same license as the mutter-meego package.
+# Italian translations for mutter-dawati package.
+# Copyright (C) 2009 mutter-dawati's copyright holder.
+# This file is distributed under the same license as the mutter-dawati package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-meego\n"
+"Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-19 16:47+0000\n"
 "PO-Revision-Date: 2010-10-19 19:01-0800\n"
@@ -21,26 +21,26 @@ msgid "Search"
 msgstr "Cerca"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1098
+#: ../src/dawati-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "Applicazioni"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:1114
+#: ../src/dawati-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Applicazioni preferite"
 
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1141
+#: ../src/dawati-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "Applicazioni"
 
-#: ../src/meego-panel-applications.c:247
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "applicazioni"
 
@@ -48,7 +48,7 @@ msgstr "applicazioni"
 msgid "Never launched"
 msgstr "Mai avviato"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Pannello applicazioni"
 

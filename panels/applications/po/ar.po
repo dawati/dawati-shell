@@ -4,7 +4,7 @@
 # someone <sppppp987@aol.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-applications\n"
+"Project-Id-Version: dawati-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-24 01:00+0000\n"
 "PO-Revision-Date: 2010-10-24 13:17-0400\n"
@@ -23,26 +23,26 @@ msgid "Search"
 msgstr "بحث"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1098
+#: ../src/dawati-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "تطبيقات"
 
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:1114
+#: ../src/dawati-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "التطبيقات المفضّلة"
 
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1141
+#: ../src/dawati-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "تطبيقاتك"
 
-#: ../src/meego-panel-applications.c:247
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "التطبيقات"
 
@@ -50,7 +50,7 @@ msgstr "التطبيقات"
 msgid "Never launched"
 msgstr "لم يسبق تشغيل هذا التطبيق"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "شريط التطبيقات"
 

@@ -18,7 +18,7 @@ msgid "Search"
 msgstr "検索"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1098
+#: ../src/dawati-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "アプリケーション"
 
@@ -26,19 +26,19 @@ msgstr "アプリケーション"
 #.
 #. * Fav apps pane
 #.
-#: ../src/meego-netbook-launcher.c:1114
+#: ../src/dawati-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "お気に入り"
 
 #.
 #. * Applications
 #.
-#: ../src/meego-netbook-launcher.c:1141
+#: ../src/dawati-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "使用アプリケーション"
 
-#: ../src/meego-panel-applications.c:247
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "アプリケーション"
 
@@ -46,7 +46,7 @@ msgstr "アプリケーション"
 msgid "Never launched"
 msgstr "起動したことがない"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "アプリケーション パネル"
 

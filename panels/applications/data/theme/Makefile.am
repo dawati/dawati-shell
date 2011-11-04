@@ -16,7 +16,7 @@ dist_theme_DATA = \
 	launcher-search-bg.png \
 	$(NULL)
 
-# Manage mutter-meego's texture cache.
+# Manage mutter-dawati's texture cache.
 
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/mx.cache

@@ -20,8 +20,8 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef MEEGO_NETBOOK_LAUNCHER_H
-#define MEEGO_NETBOOK_LAUNCHER_H
+#ifndef DAWATI_NETBOOK_LAUNCHER_H
+#define DAWATI_NETBOOK_LAUNCHER_H
 
 #include <glib.h>
 #include <glib-object.h>

@@ -19,19 +19,19 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/meego-netbook-launcher.c:887
+#: ../src/dawati-netbook-launcher.c:887
 msgid "Favorite Applications"
 msgstr "Aplikazio Gogokoenak"
 
-#: ../src/meego-netbook-launcher.c:1384
+#: ../src/dawati-netbook-launcher.c:1384
 msgid "Applications"
 msgstr "Aplikazioak"
 
-#: ../src/meego-netbook-launcher.c:1395
+#: ../src/dawati-netbook-launcher.c:1395
 msgid "Search"
 msgstr "Bilatu"
 
-#: ../src/meego-panel-applications.c:187
+#: ../src/dawati-panel-applications.c:187
 msgid "applications"
 msgstr "aplikazioak"
 

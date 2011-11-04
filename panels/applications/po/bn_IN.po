@@ -21,18 +21,18 @@ msgstr ""
 #. * Fav apps.
 #.
 #. Label
-#: ../src/meego-netbook-launcher.c:813
+#: ../src/dawati-netbook-launcher.c:813
 msgid "Favorite Applications"
 msgstr "পছন্দের অ্যাপ্লিকেশন"
 
-#: ../src/meego-netbook-launcher.c:1337
+#: ../src/dawati-netbook-launcher.c:1337
 msgid "Applications"
 msgstr "অ্যাপ্লিকেশন"
 
-#: ../src/meego-netbook-launcher.c:1348
+#: ../src/dawati-netbook-launcher.c:1348
 msgid "Search"
 msgstr "খুঁজে নিন"
 
-#: ../src/meego-panel-applications.c:196
+#: ../src/dawati-panel-applications.c:196
 msgid "applications"
 msgstr "অ্যাপ্লিকেশন"

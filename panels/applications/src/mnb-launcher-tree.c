@@ -39,7 +39,7 @@
 
 #include "mnb-launcher-tree.h"
 
-#define MNB_LAUNCHER_TREE_CACHE_FILE "meego-launcher-cache"
+#define MNB_LAUNCHER_TREE_CACHE_FILE "dawati-launcher-cache"
 
 /* Set this to include the settings menu.
   #define MNB_LAUNCHER_TREE_LOAD_SETTINGS

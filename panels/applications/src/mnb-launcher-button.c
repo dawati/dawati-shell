@@ -479,7 +479,7 @@ mnb_launcher_button_new (const gchar *icon_name,
   if (description)
   {
     self->priv->description = g_strdup (description);
-    /* No tooltips for meego-1.0
+    /* No tooltips for dawati-1.0
      * mx_widget_set_tooltip_text (MX_WIDGET (self), self->priv->description); */
   }
 

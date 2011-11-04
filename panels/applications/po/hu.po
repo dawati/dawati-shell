@@ -1,7 +1,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-application\n"
+"Project-Id-Version: dawati-panel-application\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-20 22:52+0000\n"
 "PO-Revision-Date: \n"
@@ -19,24 +19,24 @@ msgid "Search"
 msgstr "Keresés"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1098
+#: ../src/dawati-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "Alkalmazások"
 
 #. * Fav apps pane
 #. 
-#: ../src/meego-netbook-launcher.c:1114
+#: ../src/dawati-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Kedvencek alkalmazások"
 
 #. * Applications
 #. 
-#: ../src/meego-netbook-launcher.c:1141
+#: ../src/dawati-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "Saját alkalmazások"
 
-#: ../src/meego-panel-applications.c:247
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "alkalmazások"
 
@@ -44,6 +44,6 @@ msgstr "alkalmazások"
 msgid "Never launched"
 msgstr "Sohasem volt elindítva"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Alkalmazások panel"

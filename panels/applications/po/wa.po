@@ -4,7 +4,7 @@
 # Jean Cayron <jean.cayron@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: panel-apps.master.meego-panel-applications\n"
+"Project-Id-Version: panel-apps.master.dawati-panel-applications\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-24 01:00+0000\n"
 "PO-Revision-Date: 2009-11-08 14:01+0100\n"
@@ -21,24 +21,24 @@ msgid "Search"
 msgstr "Trover"
 
 #. Panel label
-#: ../src/meego-netbook-launcher.c:1098
+#: ../src/dawati-netbook-launcher.c:1098
 msgid "Applications"
 msgstr "Programes"
 
 #. * Fav apps pane
 #. 
-#: ../src/meego-netbook-launcher.c:1114
+#: ../src/dawati-netbook-launcher.c:1114
 msgid "Favorite applications"
 msgstr "Programes colåds"
 
 #. * Applications
 #. 
-#: ../src/meego-netbook-launcher.c:1141
+#: ../src/dawati-netbook-launcher.c:1141
 msgid "Your applications"
 msgstr "Programes da vosse"
 
-#: ../src/meego-panel-applications.c:247
-#: ../data/meego-panel-applications.desktop.in.in.h:2
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
 msgid "applications"
 msgstr "programes"
 
@@ -46,7 +46,7 @@ msgstr "programes"
 msgid "Never launched"
 msgstr "Måy enondé"
 
-#: ../data/meego-panel-applications.desktop.in.in.h:1
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
 msgid "Applications panel"
 msgstr "Sicriftôr des programes"
 
