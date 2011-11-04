@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Gustavo Jasso <gjasso@matem.unam.mx>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: meego-panel-web\n"
+"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"POT-Creation-Date: 2011-11-02 13:43-0700\n"
+"PO-Revision-Date: 2011-03-22 15:23+0000\n"
+"Last-Translator: gjasso <gjasso@matem.unam.mx>\n"
+"Language-Team: Spanish (Mexican) (http://www.transifex.net/projects/p/meego/team/es_MX/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es_MX\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1288
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Buscar %%s en %s"
+
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Go to %s"
+msgstr "Ir a %s"
+
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Presiona enter para\n"
+"visitar el sitio"
+
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Presiona abajo para\n"
+"explorar la lista"
+
+#: ../netpanel/meego-netbook-netpanel.cc:882
+msgid ""
+"As you visit web pages, your favorites will appear here and on the New tab "
+"page in the browser."
+msgstr ""
+"Mientras visites páginas web, tus favoritos aparecerán aquí y cuando abras "
+"una nueva pestaña en el explorador."
+
+#: ../netpanel/meego-netbook-netpanel.cc:1032
+#: ../netpanel/meego-netbook-netpanel.cc:1169
+msgid "New tab"
+msgstr "Nueva pestaña"
+
+#. Construct entry table widgets
+#: ../netpanel/meego-netbook-netpanel.cc:1570
+msgid "Your pages"
+msgstr "Tus páginas"
+
+#: ../netpanel/meego-netbook-netpanel.cc:1583
+msgid "Search"
+msgstr "Buscar"
+
+#. Construct title for tab preview section
+#: ../netpanel/meego-netbook-netpanel.cc:1604
+msgid "Tabs"
+msgstr "Pestañas"
+
+#. Construct title for favorite pages section
+#: ../netpanel/meego-netbook-netpanel.cc:1609
+msgid "Favorite pages"
+msgstr "Páginas favoritas"
+
+#: ../netpanel/meego-panel-web.cc:111
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "internet"
+
+#: ../netpanel/meego-panel-web.cc:131 ../netpanel/meego-panel-web.cc:176
+msgid "Internet"
+msgstr "Internet"
+
+#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "Panel Internet"
+
+
