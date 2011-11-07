@@ -182,11 +182,12 @@ mwb_utils_places_db_get_filename()
   gchar **groups;
   gchar *result = NULL;
   gchar *path = NULL;
-  guint i, length = 0;
+  guint i;
+  gsize length = 0;
 
   result = g_build_filename(g_get_home_dir(),
-                            NETPANEL_DIR, 
-                            "chromium.db", 
+                            NETPANEL_DIR,
+                            "chromium.db",
                             NULL);
   return result;
 
@@ -225,10 +226,10 @@ mwb_utils_places_db_get_filename()
     }
 
   if (is_relative)
-    result = g_build_filename(g_get_home_dir (), MWB_PROFILES_BASE, 
+    result = g_build_filename(g_get_home_dir (), MWB_PROFILES_BASE,
                               path, MWB_PLACES_SQLITE, NULL);
   else
-    result = g_build_filename(path, MWB_PLACES_SQLITE, NULL); 
+    result = g_build_filename(path, MWB_PLACES_SQLITE, NULL);
 
   /* Ensure we return a valid db path */
   if (!g_file_test (result, G_FILE_TEST_EXISTS))
@@ -266,7 +267,7 @@ mwb_utils_places_db_connect(const gchar *places_db, sqlite3 **dbcon)
   return 0;
 }
 
-void 
+void
 mwb_utils_places_db_close(sqlite3 *dbcon)
 {
   sqlite3_close(dbcon);

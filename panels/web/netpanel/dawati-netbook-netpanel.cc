@@ -572,7 +572,7 @@ new_tab_clicked_cb (MxWidget *button, DawatiNetbookNetpanel *self)
   int id = -1;
   if (!dawati_netbook_netpanel_open_tab (self, CMD_SELECT_TAB, &id))
     {
-      dawati_netbook_netpanel_restore_tab (self, NEWTAB_URL);
+      dawati_netbook_netpanel_restore_tab (self, (gchar *) NEWTAB_URL);
     }
 }
 
@@ -822,7 +822,7 @@ session_tab_button_clicked_cb (MxWidget *button, DawatiNetbookNetpanel *self)
   DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (self)->priv;
 
   gchar *tab_url = (gchar *)g_object_get_data (G_OBJECT (button), "url");
-  guint tab_id = (guint)g_object_get_data (G_OBJECT (button), "tab_id");
+  guint tab_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (button), "tab_id"));
 
   if (!dawati_netbook_netpanel_open_tab (self, CMD_SELECT_TAB, (void*)&tab_id))
     {
