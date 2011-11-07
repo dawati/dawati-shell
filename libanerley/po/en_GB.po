@@ -5,7 +5,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Moblin Anerley\n"
+"Project-Id-Version: Dawati Anerley\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-26 03:43+0000\n"
 "PO-Revision-Date: 2009-11-19 14:59-0800\n"
