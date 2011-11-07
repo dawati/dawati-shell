@@ -529,7 +529,7 @@ msgstr "Carrick 接続アプレット"
 
 #: ../src/carrick.c:323
 msgid "- Dawati connectivity applet"
-msgstr "- Moblin 接続アプレット"
+msgstr "- Dawati 接続アプレット"
 
 #: ../src/carrick.c:364 ../data/carrick.desktop.in.in.h:2
 msgid "network"
