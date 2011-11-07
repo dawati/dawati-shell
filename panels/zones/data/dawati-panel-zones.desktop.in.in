@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/dawati-panel-zones
+TryExec=@libexecdir@/dawati-panel-zones
+_Name=zones
+Icon=dawati-panel-zones
+_Comment=Zones panel
+Terminal=false
+Categories=
+OnlyShowIn=DAWATI;
+X-Dawati-Priority=Low
+X-Dawati-Service=com.dawati.UX.Shell.Panels.zones
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Button-Style=zones-button

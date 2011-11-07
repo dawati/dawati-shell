@@ -19,12 +19,12 @@ msgstr ""
 "X-Poedit-Country: ROMANIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:1
+#: ../data/dawati-panel-zones.desktop.in.in.h:1
 #, fuzzy
 msgid "Zones panel"
 msgstr "Nici o zonă încă"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/dawati-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zone"
 

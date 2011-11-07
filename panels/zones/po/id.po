@@ -14,11 +14,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:1
+#: ../data/dawati-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "영역 패널"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/dawati-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zona"
 

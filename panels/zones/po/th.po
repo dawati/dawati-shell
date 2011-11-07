@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: THAILAND\n"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:1
+#: ../data/dawati-panel-zones.desktop.in.in.h:1
 #, fuzzy
 msgid "Zones panel"
 msgstr "โซนยังไม่มี"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/dawati-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "โซน"
 

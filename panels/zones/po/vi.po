@@ -18,11 +18,11 @@ msgstr ""
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:1
+#: ../data/dawati-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Bảng khu vực"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/dawati-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "khu vực"
 

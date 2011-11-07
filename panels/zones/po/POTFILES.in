@@ -1,4 +1,4 @@
-data/meego-panel-zones.desktop.in.in
+data/dawati-panel-zones.desktop.in.in
 src/main.c
 src/sw-overview.c
 src/sw-zone.c

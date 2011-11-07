@@ -18,11 +18,11 @@ msgstr ""
 "Language: ca@valencia\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:1
+#: ../data/dawati-panel-zones.desktop.in.in.h:1
 msgid "Zones panel"
 msgstr "Tauler de zones"
 
-#: ../data/meego-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+#: ../data/dawati-panel-zones.desktop.in.in.h:2 ../src/main.c:25
 msgid "zones"
 msgstr "zones"
 

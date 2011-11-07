@@ -12,8 +12,8 @@
 #include <clutter-gtk/clutter-gtk.h>
 #include <clutter/glx/clutter-glx.h>
 
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
 
 #include "penge-magic-texture.h"
 
@@ -58,7 +58,7 @@ _client_set_size_cb (MplPanelClient *client,
 static gboolean standalone = FALSE;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-dawati panel", NULL},
   { NULL }
 };
 
@@ -66,7 +66,7 @@ static GOptionEntry entries[] = {
 /* background loading */
 #define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
-#define THEMEDIR DATADIR "/mutter-meego/theme/"
+#define THEMEDIR DATADIR "/mutter-dawati/theme/"
 
 
 static void
@@ -606,7 +606,7 @@ main (int argc, char **argv)
 
   data = g_new0 (ZonePanelData, 1);
 
-  context = g_option_context_new ("- mutter-meego zones panel");
+  context = g_option_context_new ("- mutter-dawati zones panel");
   g_option_context_add_main_entries (context, entries, NULL);
   g_option_context_add_group (context,
                               clutter_get_option_group_without_init ());
