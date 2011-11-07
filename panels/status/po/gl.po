@@ -17,17 +17,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Galician\n"
 
-#: ../src/meego-panel-status.c:95
+#: ../src/dawati-panel-status.c:95
 msgid "Status"
 msgstr "Estado"
 
-#: ../src/meego-panel-status.c:153
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:153
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "estado"
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Panel de estado"
 

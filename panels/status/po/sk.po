@@ -15,21 +15,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/meego-panel-status.c:49
+#: ../src/dawati-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "Toto je panel stavu. Keď budete mať nakonfigurované vaše webové účty (napríklad Twitter) uvidíte tu vaše zdroje a môžete si aktualizovať váš stav."
 
-#: ../src/meego-panel-status.c:100
+#: ../src/dawati-panel-status.c:100
 msgid "Status"
 msgstr "Stav"
 
-#: ../src/meego-panel-status.c:158
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:158
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "stav"
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Panel stavu"
 

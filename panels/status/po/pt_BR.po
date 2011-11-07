@@ -15,17 +15,17 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/meego-panel-status.c:95
+#: ../src/dawati-panel-status.c:95
 msgid "Status"
 msgstr "Status"
 
-#: ../src/meego-panel-status.c:153
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:153
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Painel de status"
 

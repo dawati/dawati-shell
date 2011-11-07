@@ -13,17 +13,17 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../src/meego-panel-status.c:95
+#: ../src/dawati-panel-status.c:95
 msgid "Status"
 msgstr "ステータス"
 
-#: ../src/meego-panel-status.c:153
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:153
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "ステータス"
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "[ステータス] パネル"
 

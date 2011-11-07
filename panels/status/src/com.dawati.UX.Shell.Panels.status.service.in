@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=com.dawati.UX.Shell.Panels.status
+Exec=@libexecdir@/dawati-panel-status
+

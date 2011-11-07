@@ -351,7 +351,7 @@ mps_tweet_card_class_init (MpsTweetCardClass *klass)
                                                   0);
 }
 
-void meego_status_panel_hide (void);
+void dawati_status_panel_hide (void);
 
 static gboolean
 _button_release_event_cb (ClutterActor *actor,
@@ -375,7 +375,7 @@ _button_release_event_cb (ClutterActor *actor,
                error->message);
     g_clear_error (&error);
   } else {
-    meego_status_panel_hide ();
+    dawati_status_panel_hide ();
   }
 
   return TRUE;
@@ -396,7 +396,7 @@ _label_url_clicked_cb (PengeClickableLabel *label,
                error->message);
     g_clear_error (&error);
   } else {
-    meego_status_panel_hide ();
+    dawati_status_panel_hide ();
   }
 }
 

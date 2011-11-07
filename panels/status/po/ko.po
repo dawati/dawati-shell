@@ -14,17 +14,17 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/meego-panel-status.c:95
+#: ../src/dawati-panel-status.c:95
 msgid "Status"
 msgstr "상태"
 
-#: ../src/meego-panel-status.c:153
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:153
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "상태"
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "상태 패널"
 

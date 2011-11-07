@@ -6,9 +6,9 @@ datadir=@datadir@
 servicesdir=@servicesdir@
 servicesdatadir=@servicesdatadir@
 
-Name: meego-panel-status
-Description: Plugin for meego-panel-status
+Name: dawati-panel-status
+Description: Plugin for dawati-panel-status
 Version: @VERSION@
 Cflags: -I${includedir}
-Libs: -L${libdir} -lmeego-panel-status
+Libs: -L${libdir} -ldawati-panel-status
 Requires: mx-1.0 libsocialweb-client

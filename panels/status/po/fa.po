@@ -17,21 +17,21 @@ msgstr ""
 "X-Poedit-Language: Persian\n"
 "X-Poedit-Country: Iran\n"
 
-#: ../src/meego-panel-status.c:49
+#: ../src/dawati-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "سلام! این قاب وضعیت است. وقتی یک حساب وبی تنطیم شده اید داشتید، قادر خواهد بود فید های خود را دیده و در اینجا وضعیت خود را به هنگام سازی کنید."
 
-#: ../src/meego-panel-status.c:100
+#: ../src/dawati-panel-status.c:100
 msgid "Status"
 msgstr "وضعیت"
 
-#: ../src/meego-panel-status.c:158
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:158
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "وضعیت"
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "قاب وضعیت"
 

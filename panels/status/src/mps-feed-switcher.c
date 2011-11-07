@@ -323,7 +323,7 @@ _button_group_active_button_changed_cb (MxButtonGroup *button_group,
 }
 
 
-void meego_status_panel_hide (void);
+void dawati_status_panel_hide (void);
 
 static void
 _new_service_button_clicked_cb (MxButton        *button,
@@ -358,7 +358,7 @@ _new_service_button_clicked_cb (MxButton        *button,
                error->message);
     g_clear_error (&error);
   } else {
-    meego_status_panel_hide ();
+    dawati_status_panel_hide ();
   }
 
   g_object_unref (app_info);

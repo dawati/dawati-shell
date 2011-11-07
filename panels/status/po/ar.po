@@ -16,21 +16,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../src/meego-panel-status.c:49
+#: ../src/dawati-panel-status.c:49
 msgid "Hello! This is the Status panel. When you have a web account configured (like Twitter), you will be able to view your feeds and update your status here."
 msgstr "مرحبا! هذه لوحة الحالة. عندما يكون لديك إعدادات حساب انترنت مثل(Twitter) تستطيع تغيير اعداداته واستعراضها هنا"
 
-#: ../src/meego-panel-status.c:100
+#: ../src/dawati-panel-status.c:100
 msgid "Status"
 msgstr "الحالة"
 
-#: ../src/meego-panel-status.c:158
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:158
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "الحالة"
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "شريط الحالة"
 

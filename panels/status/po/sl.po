@@ -6,8 +6,8 @@
 # Jure Repinc <jlp@holodeck1.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-status\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-status\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:38-0700\n"
 "PO-Revision-Date: 2011-03-30 22:53+0000\n"
 "Last-Translator: JLP <jlp@holodeck1.com>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
 
-#: ../src/meego-panel-status.c:95
+#: ../src/dawati-panel-status.c:95
 msgid "Status"
 msgstr "Stanje"
 
-#: ../src/meego-panel-status.c:153
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:153
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "stanje"
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Pult s stanjem"
 

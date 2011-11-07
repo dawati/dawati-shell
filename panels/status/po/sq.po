@@ -5,29 +5,29 @@
 # Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-status\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-status\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:38-0700\n"
 "PO-Revision-Date: 2010-11-30 11:13+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Albanian (http://www.transifex.net/projects/p/meego/team/sq/)\n"
+"Language-Team: Albanian (http://www.transifex.net/projects/p/dawati/team/sq/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sq\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../src/meego-panel-status.c:95
+#: ../src/dawati-panel-status.c:95
 msgid "Status"
 msgstr ""
 
-#: ../src/meego-panel-status.c:153
-#: ../data/meego-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:153
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr ""
 
 #. vim:set ts=8 expandtab
-#: ../data/meego-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr ""
 

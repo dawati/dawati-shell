@@ -39,25 +39,25 @@
 #include <libsocialweb-client/sw-client.h>
 #include <mx/mx.h>
 
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
 
 #include "mps-view-bridge.h"
 #include "mps-feed-switcher.h"
 
-typedef struct _MeegoStatusPanel
+typedef struct _DawatiStatusPanel
 {
   SwClient *client;
   SwClientItemView *view;
   MplPanelClient *panel_client;
   MpsViewBridge *bridge;
-} MeegoStatusPanel;
+} DawatiStatusPanel;
 
 
-static MeegoStatusPanel *panel;
+static DawatiStatusPanel *panel;
 
 void
-meego_status_panel_hide (void)
+dawati_status_panel_hide (void)
 {
   if (panel->panel_client)
     mpl_panel_client_hide ((MplPanelClient *)panel->panel_client);
@@ -70,13 +70,13 @@ _client_view_opened_cb (SwClient         *client,
                         SwClientItemView *view,
                         gpointer          userdata)
 {
-  MeegoStatusPanel *status_panel = (MeegoStatusPanel *)userdata;
+  DawatiStatusPanel *status_panel = (DawatiStatusPanel *)userdata;
 
   mps_view_bridge_set_view (status_panel->bridge, view);
 }
 
 static ClutterActor *
-make_status (MeegoStatusPanel *status_panel)
+make_status (DawatiStatusPanel *status_panel)
 {
   ClutterActor *pane;
   ClutterActor *table;
@@ -123,7 +123,7 @@ on_client_set_size (MplPanelClient *client,
 }
 
 static void
-setup_standalone (MeegoStatusPanel *status_panel)
+setup_standalone (DawatiStatusPanel *status_panel)
 {
   ClutterActor *stage, *status;
   Window xwin;
@@ -144,7 +144,7 @@ setup_standalone (MeegoStatusPanel *status_panel)
 }
 
 static void
-setup_panel (MeegoStatusPanel *status_panel)
+setup_panel (DawatiStatusPanel *status_panel)
 {
   MplPanelClient *panel;
   ClutterActor *stage, *status;
@@ -175,7 +175,7 @@ static GOptionEntry status_options[] = {
     "standalone", 's',
     0,
     G_OPTION_ARG_NONE, &status_standalone,
-    "Do not embed into mutter-meego", NULL
+    "Do not embed into mutter-dawati", NULL
   },
 
   { NULL }
@@ -192,7 +192,7 @@ main (int argc, char *argv[])
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- meego status panel");
+  context = g_option_context_new ("- dawati status panel");
   g_option_context_add_main_entries (context, status_options, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, cogl_get_option_group ());
@@ -218,7 +218,7 @@ main (int argc, char *argv[])
       g_clear_error (&error);
     }
 
-  panel = g_new0 (MeegoStatusPanel, 1);
+  panel = g_new0 (DawatiStatusPanel, 1);
 
   if (status_standalone)
     setup_standalone (panel);

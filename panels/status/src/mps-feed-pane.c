@@ -38,9 +38,9 @@
 #include <libsocialweb-client/sw-client-service.h>
 #include <mx/mx.h>
 
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-entry.h>
-#include <meego-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-entry.h>
+#include <dawati-panel/mpl-panel-common.h>
 
 #include "mps-view-bridge.h"
 #include "mps-feed-pane.h"

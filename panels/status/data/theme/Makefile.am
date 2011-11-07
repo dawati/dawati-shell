@@ -23,7 +23,7 @@ dist_theme_DATA = \
 	people.png \
 	content-panel-header-grey.png
 
-# Manage mutter-meego's texture cache.
+# Manage mutter-dawati's texture cache.
 
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/nbtk.cache
