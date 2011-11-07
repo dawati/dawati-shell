@@ -1,5 +1,5 @@
 /*
- * Carrick - a connection panel for the MeeGo Netbook
+ * Carrick - a connection panel for the Dawati Netbook
  * Copyright (C) 2009 Intel Corporation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -287,9 +287,9 @@ show_network_panel (void)
   }
 
   proxy = dbus_g_proxy_new_for_name (session_bus,
-                                     "com.meego.UX.Shell.Toolbar",
-                                     "/com/meego/UX/Shell/Toolbar",
-                                     "com.meego.UX.Shell.Toolbar");
+                                     "com.dawati.UX.Shell.Toolbar",
+                                     "/com/dawati/UX/Shell/Toolbar",
+                                     "com.dawati.UX.Shell.Toolbar");
 
   dbus_g_proxy_call_no_reply (proxy, "ShowPanel",
                               G_TYPE_STRING, "network", G_TYPE_INVALID);

@@ -4,7 +4,7 @@ desktop_in_files = carrick.desktop.in.in carrick-standalone.desktop.in.in
 desktop_out_files = carrick.desktop carrick-standalone.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-if WITH_MEEGO
+if WITH_DAWATI
 paneldir = @PANEL_DIR@
 panel_DATA = carrick.desktop
 

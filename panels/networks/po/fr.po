@@ -8,12 +8,12 @@
 #: ../carrick/carrick-util.c:38
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-networks\n"
+"Project-Id-Version: dawati-panel-networks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-02 10:20+0000\n"
 "PO-Revision-Date: 2011-09-07 12:31+0000\n"
 "Last-Translator: cnxsoft <cnxsoft@cnx-software.com>\n"
-"Language-Team: French (http://www.transifex.net/projects/p/meego/team/fr/)\n"
+"Language-Team: French (http://www.transifex.net/projects/p/dawati/team/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -555,8 +555,8 @@ msgid "Carrick connectivity applet"
 msgstr "applette de connectivité Carrick"
 
 #: ../src/carrick.c:323
-msgid "- MeeGo connectivity applet"
-msgstr "- applette de connectivité MeeGo"
+msgid "- Dawati connectivity applet"
+msgstr "- applette de connectivité Dawati"
 
 #: ../src/carrick.c:364 ../data/carrick.desktop.in.in.h:2
 msgid "network"

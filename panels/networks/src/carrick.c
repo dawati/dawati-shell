@@ -1,5 +1,5 @@
 /*
- * Carrick - a connection panel for the MeeGo Netbook
+ * Carrick - a connection panel for the Dawati Netbook
  * Copyright (C) 2009 Intel Corporation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 
 /*
  * The GtkWindow in standalone mode, the GtkPlug in embedded mode, the
- * undecorated popup window in non-MeeGo mode, or NULL in MeeGo panel mode.
+ * undecorated popup window in non-Dawati mode, or NULL in Dawati panel mode.
  */
 static GtkWidget *window = NULL;
 
@@ -98,10 +98,10 @@ get_tip_and_icon_state (const gchar      *connection_type,
 }
 
 
-#if WITH_MEEGO
+#if WITH_DAWATI
 
-#include <meego-panel/mpl-panel-common.h>
-#include <meego-panel/mpl-panel-gtk.h>
+#include <dawati-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-gtk.h>
 
 static MplPanelClient *panel_client = NULL;
 
@@ -284,7 +284,7 @@ void _activate_cb (GObject *object, gpointer user_data)
 gboolean
 carrick_shell_is_visible (void)
 {
-#if WITH_MEEGO
+#if WITH_DAWATI
   if (panel_client)
     return gtk_widget_get_visible (mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client)));
   else
@@ -320,7 +320,7 @@ main (int    argc,
   textdomain (GETTEXT_PACKAGE);
 
   g_set_application_name (_ ("Carrick connectivity applet"));
-  gtk_init_with_args (&argc, &argv, _ ("- MeeGo connectivity applet"),
+  gtk_init_with_args (&argc, &argv, _ ("- Dawati connectivity applet"),
                       entries, GETTEXT_PACKAGE, &error);
   dbus_g_thread_init ();
 
@@ -355,7 +355,7 @@ main (int    argc,
 
     gtk_widget_show (window);
   } else {
-#if WITH_MEEGO
+#if WITH_DAWATI
     GdkScreen *screen;
     GtkWidget *box, *label;
     char *s;

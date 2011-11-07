@@ -16,13 +16,13 @@ carrick_connection_panel_LDADD= $(top_builddir)/carrick/libcarrick.la \
                                 $(GTK_LIBS) $(DBUS_LIBS) $(CONNMAN_LIBS) $(MPL_LIBS)
 
 
-if WITH_MEEGO
+if WITH_DAWATI
 %.service: %.service.in
 	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = com.meego.UX.Shell.Panels.network.service.in
-service_DATA =     com.meego.UX.Shell.Panels.network.service
+service_in_files = com.dawati.UX.Shell.Panels.network.service.in
+service_DATA =     com.dawati.UX.Shell.Panels.network.service
 endif
 
 EXTRA_DIST = $(service_in_files)

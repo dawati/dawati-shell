@@ -1491,7 +1491,7 @@ int main (int argc, char **argv)
 
 	g_thread_init (NULL);
 	/* This shouldn't be necessary; we're working around a gconf bug.
-	   http://bugzilla.meego.com/show_bug.cgi?id=918 */
+	   http://bugzilla.dawati.com/show_bug.cgi?id=918 */
 	dbus_g_thread_init();
 	gtk_init(0, NULL);
 

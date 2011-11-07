@@ -1,5 +1,5 @@
 /*
- * Carrick - a connection panel for the MeeGo Netbook
+ * Carrick - a connection panel for the Dawati Netbook
  * Copyright (C) 2009 Intel Corporation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
