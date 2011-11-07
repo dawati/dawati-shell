@@ -1,7 +1,7 @@
-# Chinese translations for mutter-moblin package
-# mutter-moblin 软件包的简体中文翻译.
+# Chinese translations for mutter-dawati package
+# mutter-dawati 软件包的简体中文翻译.
 # Copyright Intel (C) 2009
-# This file is distributed under the same license as the mutter-moblin package.
+# This file is distributed under the same license as the mutter-dawati package.
 # Li Jian <jian.li@turbolinux.com.cn>, 2009.
 # Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009
 #

@@ -4,7 +4,7 @@
 # Jean Cayron <jean.cayron@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-people.master.moblin-panel-people\n"
+"Project-Id-Version: dawati-panel-people.master.dawati-panel-people\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-23 23:12+0000\n"
 "PO-Revision-Date: 2009-11-08 10:44+0100\n"

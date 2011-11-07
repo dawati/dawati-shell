@@ -1,11 +1,11 @@
-# Italian translations for mutter-moblin package.
-# Copyright (C) 2009 mutter-moblin's copyright holder.
-# This file is distributed under the same license as the mutter-moblin package.
+# Italian translations for mutter-dawati package.
+# Copyright (C) 2009 mutter-dawati's copyright holder.
+# This file is distributed under the same license as the mutter-dawati package.
 # Milo Casagrande <milo@ubuntu.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin\n"
+"Project-Id-Version: mutter-dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-19 16:57+0000\n"
 "PO-Revision-Date: 2010-10-19 19:08-0800\n"
