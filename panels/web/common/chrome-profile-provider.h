@@ -1,5 +1,5 @@
 /*
- * Meego-Panel-Web: The web panel for Meego
+ * Dawati-Panel-Web: The web panel for Dawati
  * 
  * Chromium browser APIs wrapper
  */

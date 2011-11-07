@@ -1,5 +1,5 @@
 /*
- * Meego-Web-Browser: The web browser for Meego
+ * Dawati-Web-Browser: The web browser for Dawati
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -876,7 +876,7 @@ mwb_ac_list_new (void)
 
 #define FAVICON_SQL "SELECT url FROM favicons WHERE id='%d'"
 
-#define THEMEDIR "/usr/share/meego-panel-web/netpanel/"
+#define THEMEDIR "/usr/share/dawati-panel-web/netpanel/"
 static void
 mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
 {

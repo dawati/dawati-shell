@@ -1,5 +1,5 @@
 /* Overrode MnbEntry so we need to redeclare its styles apparently */
-MeegoNetbookNetpanel MxButton {
+DawatiNetbookNetpanel MxButton {
   padding: 7 4;
 }
 
@@ -33,14 +33,14 @@ MnbNetpanelBar *.MplEntryClearButton:hover {
   background-image: url('mpl-entry-clear-hover.png');
 }
 
-MeegoNetbookNetpanel
+DawatiNetbookNetpanel
 {
   background-color: #ffffff;
   padding: 1 1;
 }
 
 
-MeegoNetbookNetpanel MxLabel#title
+DawatiNetbookNetpanel MxLabel#title
 {
   font-family: "Droid Sans";
   font-size: 11px;
@@ -48,12 +48,12 @@ MeegoNetbookNetpanel MxLabel#title
   padding:  3 0 5 3;
 }
 
-MeegoNetbookNetpanel MxBoxLayout#weblink-description
+DawatiNetbookNetpanel MxBoxLayout#weblink-description
 {
   padding:  0 8 0 8;
 }
 
-MeegoNetbookNetpanel MxLabel#section
+DawatiNetbookNetpanel MxLabel#section
 {
   font-family: "Droid Sans Bold";
   font-size: 14px;
@@ -62,7 +62,7 @@ MeegoNetbookNetpanel MxLabel#section
   padding: 15 16 0 34;
 }
 
-MeegoNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
+DawatiNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
 {
   font-family: "Droid Sans";
   font-size: 16px;
@@ -70,7 +70,7 @@ MeegoNetbookNetpanel *#netpanel-placeholder-bin *#netpanel-placeholder-label
   padding: 13 16 13 34;
 }
 
-MeegoNetbookNetpanel *#netpanel-placeholder-bin
+DawatiNetbookNetpanel *#netpanel-placeholder-bin
 {
   border-image: url('content-pane-header.png') 2;
   color: #616261;
@@ -95,24 +95,24 @@ MwbAcList > MxFrame { /* highlight color */
   background-color: #ded5ed;
 }
 
-MeegoNetbookNetpanel MxButton.weblink {
+DawatiNetbookNetpanel MxButton.weblink {
   border-image: url("thumbnail.png") 7 8 9;
   padding: 7 8 9;
   color: #4e3972;
 }
 
-MeegoNetbookNetpanel MxButton.weblink:hover {
+DawatiNetbookNetpanel MxButton.weblink:hover {
   border-image: url("thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
   color: #c5a3fc;
 }
 
-MeegoNetbookNetpanel MxButton.weblink:active {
+DawatiNetbookNetpanel MxButton.weblink:active {
   border-image: url("thumbnail_hover.png") 7 8 9;
   padding: 7 8 9;
 }
 
-MeegoNetbookNetpanel *#netpanel-entrytable
+DawatiNetbookNetpanel *#netpanel-entrytable
 {
   border-image: url('content-pane-header.png') 2;
   padding: 0 7;

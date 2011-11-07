@@ -1,4 +1,4 @@
-/* meego-netbook-netpanel.c */
+/* dawati-netbook-netpanel.c */
 /*
  * Copyright (c) 2009 Intel Corp.
  *
@@ -31,10 +31,10 @@
 #include <json-glib/json-glib.h>
 
 extern "C" {
-#include <meego-panel/mpl-entry.h>
-#include <meego-panel/mpl-utils.h>
-#include <meego-panel/mpl-panel-client.h>
-#include "meego-netbook-netpanel.h"
+#include <dawati-panel/mpl-entry.h>
+#include <dawati-panel/mpl-utils.h>
+#include <dawati-panel/mpl-panel-client.h>
+#include "dawati-netbook-netpanel.h"
 #include "mnb-netpanel-bar.h"
 #include "mnb-netpanel-scrollview.h"
 #include "mwb-utils.h"
@@ -52,7 +52,7 @@ extern "C" {
 #define FAVI_SIZE   16
 #define DISPLAY_TABS_MAX 4
 
-#define START_PAGE "meego://start/"
+#define START_PAGE "dawati://start/"
 #define NEWTAB_URL "http://"
 
 #define FAVORITE_SQL  "SELECT url, title FROM urls " \
@@ -64,17 +64,17 @@ extern "C" {
 #define CMD_NEW_TAB    2
 
 static gboolean
-meego_netbook_netpanel_open_tab (MeegoNetbookNetpanel *self, const gint type, void *data);
+dawati_netbook_netpanel_open_tab (DawatiNetbookNetpanel *self, const gint type, void *data);
 
 static void
-meego_netbook_netpanel_restore_tab (MeegoNetbookNetpanel *self, gchar* tab_url);
+dawati_netbook_netpanel_restore_tab (DawatiNetbookNetpanel *self, gchar* tab_url);
 
-G_DEFINE_TYPE (MeegoNetbookNetpanel, meego_netbook_netpanel, MX_TYPE_WIDGET)
+G_DEFINE_TYPE (DawatiNetbookNetpanel, dawati_netbook_netpanel, MX_TYPE_WIDGET)
 
 #define NETPANEL_PRIVATE(o) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), MEEGO_TYPE_NETBOOK_NETPANEL, MeegoNetbookNetpanelPrivate))
+  (G_TYPE_INSTANCE_GET_PRIVATE ((o), DAWATI_TYPE_NETBOOK_NETPANEL, DawatiNetbookNetpanelPrivate))
 
-struct _MeegoNetbookNetpanelPrivate
+struct _DawatiNetbookNetpanelPrivate
 {
   GList          *calls;
 
@@ -110,10 +110,10 @@ struct _MeegoNetbookNetpanelPrivate
 
 
 static void
-meego_netbook_netpanel_dispose (GObject *object)
+dawati_netbook_netpanel_dispose (GObject *object)
 {
-  MeegoNetbookNetpanel *self = MEEGO_NETBOOK_NETPANEL (object);
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanel *self = DAWATI_NETBOOK_NETPANEL (object);
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
   guint i;
 
   if (priv->panel_client)
@@ -187,17 +187,17 @@ meego_netbook_netpanel_dispose (GObject *object)
                                                priv->session_urls);
     }
 
-  G_OBJECT_CLASS (meego_netbook_netpanel_parent_class)->dispose (object);
+  G_OBJECT_CLASS (dawati_netbook_netpanel_parent_class)->dispose (object);
 }
 
 static void
-meego_netbook_netpanel_finalize (GObject *object)
+dawati_netbook_netpanel_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (meego_netbook_netpanel_parent_class)->finalize (object);
+  G_OBJECT_CLASS (dawati_netbook_netpanel_parent_class)->finalize (object);
 }
 
 static void
-meego_netbook_netpanel_allocate (ClutterActor           *actor,
+dawati_netbook_netpanel_allocate (ClutterActor           *actor,
                                   const ClutterActorBox  *box,
                                   ClutterAllocationFlags  flags)
 {
@@ -207,9 +207,9 @@ meego_netbook_netpanel_allocate (ClutterActor           *actor,
   gfloat min_heights[5], natural_heights[5], final_heights[5];
   gfloat natural_height;
   guint i;
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (actor)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (actor)->priv;
 
-  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->
+  CLUTTER_ACTOR_CLASS (dawati_netbook_netpanel_parent_class)->
     allocate (actor, box, flags);
 
   mx_widget_get_padding (MX_WIDGET (actor), &padding);
@@ -350,16 +350,16 @@ expand_to_child_width (ClutterActor *actor,
 }
 
 static void
-meego_netbook_netpanel_get_preferred_width (ClutterActor *self,
+dawati_netbook_netpanel_get_preferred_width (ClutterActor *self,
                                              gfloat        for_height,
                                              gfloat        *min_width_p,
                                              gfloat        *natural_width_p)
 {
   MxPadding padding;
   gfloat min_width = 0.0, natural_width = 0.0;
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (self)->priv;
 
-  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->
+  CLUTTER_ACTOR_CLASS (dawati_netbook_netpanel_parent_class)->
     get_preferred_width (self, for_height, min_width_p, natural_width_p);
 
   if (for_height != -1.0)
@@ -410,15 +410,15 @@ add_child_height (ClutterActor *actor,
 }
 
 static void
-meego_netbook_netpanel_get_preferred_height (ClutterActor *self,
+dawati_netbook_netpanel_get_preferred_height (ClutterActor *self,
                                               gfloat        for_width,
                                               gfloat       *min_height_p,
                                               gfloat       *natural_height_p)
 {
   MxPadding padding;
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (self)->priv;
 
-  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->
+  CLUTTER_ACTOR_CLASS (dawati_netbook_netpanel_parent_class)->
     get_preferred_height (self, for_width, min_height_p, natural_height_p);
 
   mx_widget_get_padding (MX_WIDGET (self), &padding);
@@ -437,12 +437,12 @@ meego_netbook_netpanel_get_preferred_height (ClutterActor *self,
 }
 
 static void
-meego_netbook_netpanel_paint (ClutterActor *actor)
+dawati_netbook_netpanel_paint (ClutterActor *actor)
 {
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (actor)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (actor)->priv;
 
   /* Chain up to get the background */
-  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (dawati_netbook_netpanel_parent_class)->paint (actor);
 
   if (priv->tabs_label)
     clutter_actor_paint (CLUTTER_ACTOR (priv->tabs_label));
@@ -458,18 +458,18 @@ meego_netbook_netpanel_paint (ClutterActor *actor)
 }
 
 static void
-meego_netbook_netpanel_pick (ClutterActor *actor, const ClutterColor *color)
+dawati_netbook_netpanel_pick (ClutterActor *actor, const ClutterColor *color)
 {
-  meego_netbook_netpanel_paint (actor);
+  dawati_netbook_netpanel_paint (actor);
 }
 
 void
-meego_netbook_netpanel_button_press (MeegoNetbookNetpanel *netpanel)
+dawati_netbook_netpanel_button_press (DawatiNetbookNetpanel *netpanel)
 {
   if (!netpanel)
     return;
 
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (netpanel)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (netpanel)->priv;
   if (priv->entry)
     mnb_netpanel_bar_button_press_cb(NULL, NULL,
                                      MNB_NETPANEL_BAR (priv->entry));
@@ -481,11 +481,11 @@ meego_netbook_netpanel_button_press (MeegoNetbookNetpanel *netpanel)
  */
 
 static void
-meego_netbook_netpanel_launch_url (MeegoNetbookNetpanel *netpanel,
+dawati_netbook_netpanel_launch_url (DawatiNetbookNetpanel *netpanel,
                                     const gchar         *url,
                                     gboolean            bool_exec)
 {
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (netpanel)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (netpanel)->priv;
 
   gchar *exec, *ptr, *remaining, *esc_url=NULL;
   gchar *prefix = g_strdup ("");
@@ -519,7 +519,7 @@ meego_netbook_netpanel_launch_url (MeegoNetbookNetpanel *netpanel,
           g_free(esc_url);
           esc_url = tmp_url;
         }
-      if(meego_netbook_netpanel_open_tab(netpanel, CMD_NEW_TAB, (void*)esc_url))
+      if(dawati_netbook_netpanel_open_tab(netpanel, CMD_NEW_TAB, (void*)esc_url))
         {
           g_free(esc_url);
           return;
@@ -565,24 +565,24 @@ meego_netbook_netpanel_launch_url (MeegoNetbookNetpanel *netpanel,
 }
 
 static void
-new_tab_clicked_cb (MxWidget *button, MeegoNetbookNetpanel *self)
+new_tab_clicked_cb (MxWidget *button, DawatiNetbookNetpanel *self)
 {
   // -1 means open New Tab
   // FIXME: avoid hardcode here
   int id = -1;
-  if (!meego_netbook_netpanel_open_tab (self, CMD_SELECT_TAB, &id))
+  if (!dawati_netbook_netpanel_open_tab (self, CMD_SELECT_TAB, &id))
     {
-      meego_netbook_netpanel_restore_tab (self, NEWTAB_URL);
+      dawati_netbook_netpanel_restore_tab (self, NEWTAB_URL);
     }
 }
 
 static void
-fav_button_clicked_cb (MxWidget *button, MeegoNetbookNetpanel *self)
+fav_button_clicked_cb (MxWidget *button, DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
   guint fav = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (button), "fav"));
 
-  meego_netbook_netpanel_launch_url (self, priv->fav_urls[fav], FALSE);
+  dawati_netbook_netpanel_launch_url (self, priv->fav_urls[fav], FALSE);
 }
 
 static void
@@ -690,11 +690,11 @@ pipe_send (GIOChannel *channel, ...)
 }
 
 static gboolean
-meego_netbook_netpanel_open_tab (MeegoNetbookNetpanel *self, const gint type, void *data)
+dawati_netbook_netpanel_open_tab (DawatiNetbookNetpanel *self, const gint type, void *data)
 {
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (self)->priv;
 
-  gchar *plugin_pipe = g_strdup_printf ("%s/chrome-meego-plugin.fifo",
+  gchar *plugin_pipe = g_strdup_printf ("%s/chrome-dawati-plugin.fifo",
                                         g_get_tmp_dir ());
 
   if (g_file_test (plugin_pipe, G_FILE_TEST_EXISTS))
@@ -749,11 +749,11 @@ meego_netbook_netpanel_open_tab (MeegoNetbookNetpanel *self, const gint type, vo
 
 /*
 static gboolean
-meego_netbook_netpanel_select_tab (MeegoNetbookNetpanel *self, gint tab_id)
+dawati_netbook_netpanel_select_tab (DawatiNetbookNetpanel *self, gint tab_id)
 {
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (self)->priv;
 
-  gchar *plugin_pipe = g_strdup_printf ("%s/chrome-meego-plugin.fifo",
+  gchar *plugin_pipe = g_strdup_printf ("%s/chrome-dawati-plugin.fifo",
                                         g_get_tmp_dir ());
 
   if (g_file_test (plugin_pipe, G_FILE_TEST_EXISTS))
@@ -796,11 +796,11 @@ meego_netbook_netpanel_select_tab (MeegoNetbookNetpanel *self, gint tab_id)
 */
 
 static void
-meego_netbook_netpanel_restore_tab (MeegoNetbookNetpanel *self, gchar* tab_url)
+dawati_netbook_netpanel_restore_tab (DawatiNetbookNetpanel *self, gchar* tab_url)
 {
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (self)->priv;
 
-  gchar *plugin_cmd = g_strdup_printf ("%s/chrome-meego-extension.cmd",
+  gchar *plugin_cmd = g_strdup_printf ("%s/chrome-dawati-extension.cmd",
                                         g_get_tmp_dir ());
 
   // Put the tab id to a startup command file
@@ -812,28 +812,28 @@ meego_netbook_netpanel_restore_tab (MeegoNetbookNetpanel *self, gchar* tab_url)
       g_file_set_contents (plugin_cmd, (gchar *)tab_url, strlen(tab_url), NULL);
     }
   // Launch the Chrome to restore tabs and execute startup commands
-  meego_netbook_netpanel_launch_url(self, "", TRUE);
+  dawati_netbook_netpanel_launch_url(self, "", TRUE);
   g_free (plugin_cmd);
 }
 
 static void
-session_tab_button_clicked_cb (MxWidget *button, MeegoNetbookNetpanel *self)
+session_tab_button_clicked_cb (MxWidget *button, DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (self)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (self)->priv;
 
   gchar *tab_url = (gchar *)g_object_get_data (G_OBJECT (button), "url");
   guint tab_id = (guint)g_object_get_data (G_OBJECT (button), "tab_id");
 
-  if (!meego_netbook_netpanel_open_tab (self, CMD_SELECT_TAB, (void*)&tab_id))
+  if (!dawati_netbook_netpanel_open_tab (self, CMD_SELECT_TAB, (void*)&tab_id))
     {
-      meego_netbook_netpanel_restore_tab (self, tab_url);
+      dawati_netbook_netpanel_restore_tab (self, tab_url);
     }
 }
 
 static void
-create_tabs_view (MeegoNetbookNetpanel *self)
+create_tabs_view (DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
 
   if (priv->tabs_view)
     clutter_actor_unparent (CLUTTER_ACTOR (priv->tabs_view));
@@ -849,9 +849,9 @@ create_tabs_view (MeegoNetbookNetpanel *self)
 }
 
 static void
-create_favs_view (MeegoNetbookNetpanel *self)
+create_favs_view (DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
 
   if (priv->favs_view)
     clutter_actor_unparent (CLUTTER_ACTOR (priv->favs_view));
@@ -868,9 +868,9 @@ create_favs_view (MeegoNetbookNetpanel *self)
 }
 
 static void
-create_favs_placeholder (MeegoNetbookNetpanel *self)
+create_favs_placeholder (DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
   MxWidget *label, *bin;
 
   if (priv->favs_view)
@@ -899,9 +899,9 @@ typedef struct _TextureData{
 #define NETPANEL_DIR ".config/internet-panel"
 
 static gchar *
-get_favicon_filename(MeegoNetbookNetpanel *self, const char *url)
+get_favicon_filename(DawatiNetbookNetpanel *self, const char *url)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
   gchar *result = NULL;
 
   gchar *id_stmt = g_strdup_printf("select favicon_id from urls where url='%s'", url);
@@ -1085,8 +1085,8 @@ add_thumbnail_to_scrollview (MnbNetpanelScrollview *scrollview,
 static void
 favs_exception (void *context, int errno)
 {
-  MeegoNetbookNetpanel *self = (MeegoNetbookNetpanel*)context;
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanel *self = (DawatiNetbookNetpanel*)context;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
 
   create_favs_placeholder(self);
 }
@@ -1094,8 +1094,8 @@ favs_exception (void *context, int errno)
 static void
 favs_received (void *context, const char* url, const char *title, const int priority)
 {
-  MeegoNetbookNetpanel *self = (MeegoNetbookNetpanel*)context;
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanel *self = (DawatiNetbookNetpanel*)context;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
 
   MxWidget *button;
   MnbNetpanelScrollview *scrollview;
@@ -1125,8 +1125,8 @@ favs_received (void *context, const char* url, const char *title, const int prio
 
 static void tabs_exception(void* context, int errno)
 {
-  MeegoNetbookNetpanel* self = (MeegoNetbookNetpanel*)context;
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanel* self = (DawatiNetbookNetpanel*)context;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
   MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
 
   ClutterActor *vbox, *hbox;
@@ -1180,8 +1180,8 @@ static void tabs_received(void* context, int tab_id,
                                      const char* title,
                                      const int priority)
 {
-    MeegoNetbookNetpanel* self = (MeegoNetbookNetpanel*)context;
-    MeegoNetbookNetpanelPrivate *priv = self->priv;
+    DawatiNetbookNetpanel* self = (DawatiNetbookNetpanel*)context;
+    DawatiNetbookNetpanelPrivate *priv = self->priv;
     MnbNetpanelScrollview *scrollview = MNB_NETPANEL_SCROLLVIEW (priv->tabs_view);
 
     if (!scrollview)
@@ -1217,9 +1217,9 @@ static void tabs_received(void* context, int tab_id,
 }
 
 static void
-create_tabs(MeegoNetbookNetpanel *self)
+create_tabs(DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
   /* Create tabs table */
   create_tabs_view (self);
 
@@ -1259,9 +1259,9 @@ create_tabs(MeegoNetbookNetpanel *self)
 }
 
 static void
-create_history (MeegoNetbookNetpanel *self)
+create_history (DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
   gint rc, i;
 
   if (!priv->tabs_view)
@@ -1335,9 +1335,9 @@ create_history (MeegoNetbookNetpanel *self)
 }
 
 static void
-request_live_previews (MeegoNetbookNetpanel *self)
+request_live_previews (DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
 
   priv->display_tab = 0;
   priv->display_fav = 0;
@@ -1347,18 +1347,18 @@ request_live_previews (MeegoNetbookNetpanel *self)
 }
 
 static void
-meego_netbook_netpanel_unload (ClutterActor *actor)
+dawati_netbook_netpanel_unload (ClutterActor *actor)
 {
-  MeegoNetbookNetpanel *netpanel = MEEGO_NETBOOK_NETPANEL (actor);
-  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
+  DawatiNetbookNetpanel *netpanel = DAWATI_NETBOOK_NETPANEL (actor);
+  DawatiNetbookNetpanelPrivate *priv = netpanel->priv;
 
   clutter_main_quit();
 }
 
 static void
-meego_netbook_netpanel_set_search_provider(MeegoNetbookNetpanel *self)
+dawati_netbook_netpanel_set_search_provider(DawatiNetbookNetpanel *self)
 {
-  MeegoNetbookNetpanelPrivate *priv = self->priv;
+  DawatiNetbookNetpanelPrivate *priv = self->priv;
 
   JsonNode *provider, *sname;
   gchar *search_name = NULL;
@@ -1400,10 +1400,10 @@ meego_netbook_netpanel_set_search_provider(MeegoNetbookNetpanel *self)
 }
 
 static void
-meego_netbook_netpanel_show (ClutterActor *actor)
+dawati_netbook_netpanel_show (ClutterActor *actor)
 {
-  MeegoNetbookNetpanel *netpanel = MEEGO_NETBOOK_NETPANEL (actor);
-  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
+  DawatiNetbookNetpanel *netpanel = DAWATI_NETBOOK_NETPANEL (actor);
+  DawatiNetbookNetpanelPrivate *priv = netpanel->priv;
 
   if (!priv->places_db)
     priv->places_db = mwb_utils_places_db_get_filename ();
@@ -1415,23 +1415,23 @@ meego_netbook_netpanel_show (ClutterActor *actor)
 
   mnb_netpanel_bar_set_dbcon (G_OBJECT (priv->entry), priv->dbcon);
 
-  meego_netbook_netpanel_focus (netpanel);
+  dawati_netbook_netpanel_focus (netpanel);
 
   request_live_previews (netpanel);
 
-  meego_netbook_netpanel_set_search_provider(netpanel);
+  dawati_netbook_netpanel_set_search_provider(netpanel);
 
-  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->show (actor);
+  CLUTTER_ACTOR_CLASS (dawati_netbook_netpanel_parent_class)->show (actor);
 }
 
 static void
-meego_netbook_netpanel_hide (ClutterActor *actor)
+dawati_netbook_netpanel_hide (ClutterActor *actor)
 {
-  MeegoNetbookNetpanel *netpanel = MEEGO_NETBOOK_NETPANEL (actor);
-  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
+  DawatiNetbookNetpanel *netpanel = DAWATI_NETBOOK_NETPANEL (actor);
+  DawatiNetbookNetpanelPrivate *priv = netpanel->priv;
   guint i;
 
-  meego_netbook_netpanel_clear (netpanel);
+  dawati_netbook_netpanel_clear (netpanel);
 
   if (priv->tabs)
     {
@@ -1496,35 +1496,35 @@ meego_netbook_netpanel_hide (ClutterActor *actor)
 
   mwb_utils_places_db_close (priv->dbcon);
 
-  CLUTTER_ACTOR_CLASS (meego_netbook_netpanel_parent_class)->hide (actor);
+  CLUTTER_ACTOR_CLASS (dawati_netbook_netpanel_parent_class)->hide (actor);
 }
 
 static void
-meego_netbook_netpanel_class_init (MeegoNetbookNetpanelClass *klass)
+dawati_netbook_netpanel_class_init (DawatiNetbookNetpanelClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (MeegoNetbookNetpanelPrivate));
+  g_type_class_add_private (klass, sizeof (DawatiNetbookNetpanelPrivate));
 
-  object_class->dispose = meego_netbook_netpanel_dispose;
-  object_class->finalize = meego_netbook_netpanel_finalize;
+  object_class->dispose = dawati_netbook_netpanel_dispose;
+  object_class->finalize = dawati_netbook_netpanel_finalize;
 
-  actor_class->allocate = meego_netbook_netpanel_allocate;
+  actor_class->allocate = dawati_netbook_netpanel_allocate;
   actor_class->get_preferred_width =
-    meego_netbook_netpanel_get_preferred_width;
+    dawati_netbook_netpanel_get_preferred_width;
   actor_class->get_preferred_height =
-    meego_netbook_netpanel_get_preferred_height;
-  actor_class->paint = meego_netbook_netpanel_paint;
-  actor_class->pick = meego_netbook_netpanel_pick;
-  actor_class->show = meego_netbook_netpanel_show;
-  actor_class->hide = meego_netbook_netpanel_hide;
+    dawati_netbook_netpanel_get_preferred_height;
+  actor_class->paint = dawati_netbook_netpanel_paint;
+  actor_class->pick = dawati_netbook_netpanel_pick;
+  actor_class->show = dawati_netbook_netpanel_show;
+  actor_class->hide = dawati_netbook_netpanel_hide;
 }
 
 static void
 netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
                     const gchar           *url,
-                    MeegoNetbookNetpanel *self)
+                    DawatiNetbookNetpanel *self)
 {
   if (!url)
     return;
@@ -1538,12 +1538,12 @@ netpanel_bar_go_cb (MnbNetpanelBar        *netpanel_bar,
       return;
     }
 
-  meego_netbook_netpanel_launch_url (self, url, FALSE);
+  dawati_netbook_netpanel_launch_url (self, url, FALSE);
 }
 
 static void
 netpanel_bar_button_clicked_cb (MnbNetpanelBar        *netpanel_bar,
-                                MeegoNetbookNetpanel *self)
+                                DawatiNetbookNetpanel *self)
 {
   netpanel_bar_go_cb (netpanel_bar,
                       mpl_entry_get_text (MPL_ENTRY (netpanel_bar)),
@@ -1551,13 +1551,13 @@ netpanel_bar_button_clicked_cb (MnbNetpanelBar        *netpanel_bar,
 }
 
 static void
-meego_netbook_netpanel_init (MeegoNetbookNetpanel *self)
+dawati_netbook_netpanel_init (DawatiNetbookNetpanel *self)
 {
   DBusGConnection *connection;
   MxWidget *table, *label;
 
   GError *error = NULL;
-  MeegoNetbookNetpanelPrivate *priv = self->priv = NETPANEL_PRIVATE (self);
+  DawatiNetbookNetpanelPrivate *priv = self->priv = NETPANEL_PRIVATE (self);
 
   /* Construct entry table */
   priv->entry_table = table = MX_WIDGET (mx_table_new ());
@@ -1625,41 +1625,41 @@ meego_netbook_netpanel_init (MeegoNetbookNetpanel *self)
 
 
 MxWidget*
-meego_netbook_netpanel_new (void)
+dawati_netbook_netpanel_new (void)
 {
-  return (MxWidget*)g_object_new (MEEGO_TYPE_NETBOOK_NETPANEL,
+  return (MxWidget*)g_object_new (DAWATI_TYPE_NETBOOK_NETPANEL,
                                   "visible", FALSE,
                                   NULL);
 }
 
 void
-meego_netbook_netpanel_focus (MeegoNetbookNetpanel *netpanel)
+dawati_netbook_netpanel_focus (DawatiNetbookNetpanel *netpanel)
 {
-  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
+  DawatiNetbookNetpanelPrivate *priv = netpanel->priv;
   mnb_netpanel_bar_focus (MNB_NETPANEL_BAR (priv->entry));
 }
 
 void
-meego_netbook_netpanel_clear (MeegoNetbookNetpanel *netpanel)
+dawati_netbook_netpanel_clear (DawatiNetbookNetpanel *netpanel)
 {
-  MeegoNetbookNetpanelPrivate *priv = netpanel->priv;
+  DawatiNetbookNetpanelPrivate *priv = netpanel->priv;
   mpl_entry_set_text (MPL_ENTRY (priv->entry), "");
 }
 
 void
-meego_netbook_netpanel_set_panel_client (MeegoNetbookNetpanel *netpanel,
+dawati_netbook_netpanel_set_panel_client (DawatiNetbookNetpanel *netpanel,
                                           MplPanelClient *panel_client)
 {
-  MeegoNetbookNetpanelPrivate *priv = MEEGO_NETBOOK_NETPANEL (netpanel)->priv;
+  DawatiNetbookNetpanelPrivate *priv = DAWATI_NETBOOK_NETPANEL (netpanel)->priv;
 
   priv->panel_client = (MplPanelClient*)g_object_ref (panel_client);
 
   g_signal_connect_swapped (panel_client, "show-begin",
-                            (GCallback)meego_netbook_netpanel_show, netpanel);
+                            (GCallback)dawati_netbook_netpanel_show, netpanel);
 
   g_signal_connect_swapped (panel_client, "hide-end",
-                            (GCallback)meego_netbook_netpanel_hide, netpanel);
+                            (GCallback)dawati_netbook_netpanel_hide, netpanel);
 
   g_signal_connect_swapped (panel_client, "unload",
-                            (GCallback)meego_netbook_netpanel_unload, netpanel);
+                            (GCallback)dawati_netbook_netpanel_unload, netpanel);
 }

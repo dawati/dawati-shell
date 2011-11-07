@@ -44,7 +44,7 @@ msgstr ""
 "탐색 목록 가기\n"
 "아래쪽  화살표 이용"
 
-#: ../netpanel/meego-netbook-netpanel.cc:796
+#: ../netpanel/dawati-netbook-netpanel.cc:796
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
@@ -52,40 +52,40 @@ msgstr ""
 "웹 사이트를 방문하시면 귀하의 즐겨 찾기가 여기에 나타나고 새 탭 페이지에있는 "
 "브라우저에 표시됩니다."
 
-#: ../netpanel/meego-netbook-netpanel.cc:818
-#: ../netpanel/meego-netbook-netpanel.cc:941
+#: ../netpanel/dawati-netbook-netpanel.cc:818
+#: ../netpanel/dawati-netbook-netpanel.cc:941
 msgid "New tab"
 msgstr "새로운 탭"
 
 #. Construct entry table widgets
-#: ../netpanel/meego-netbook-netpanel.cc:1216
+#: ../netpanel/dawati-netbook-netpanel.cc:1216
 msgid "Your pages"
 msgstr "즐겨 찾기 페이지"
 
-#: ../netpanel/meego-netbook-netpanel.cc:1229
+#: ../netpanel/dawati-netbook-netpanel.cc:1229
 msgid "Search"
 msgstr "검색"
 
 #. Construct title for tab preview section
-#: ../netpanel/meego-netbook-netpanel.cc:1250
+#: ../netpanel/dawati-netbook-netpanel.cc:1250
 msgid "Tabs"
 msgstr "탭"
 
 #. Construct title for favorite pages section
-#: ../netpanel/meego-netbook-netpanel.cc:1255
+#: ../netpanel/dawati-netbook-netpanel.cc:1255
 msgid "Favorite pages"
 msgstr "즐겨 찾기 페이지"
 
-#: ../netpanel/meego-panel-web.cc:196
-#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+#: ../netpanel/dawati-panel-web.cc:196
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "인터넷"
 
-#: ../netpanel/meego-panel-web.cc:217 ../netpanel/meego-panel-web.cc:263
+#: ../netpanel/dawati-panel-web.cc:217 ../netpanel/dawati-panel-web.cc:263
 msgid "Internet"
 msgstr "인터넷"
 
-#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "인터넷 패널"
 
@@ -95,8 +95,8 @@ msgstr "인터넷 패널"
 #~ msgid "Web Browser"
 #~ msgstr "웹 브라우저"
 
-#~ msgid "Meego web browser - "
-#~ msgstr "Meego 웹 브라우저 -"
+#~ msgid "Dawati web browser - "
+#~ msgstr "Dawati 웹 브라우저 -"
 
 #~ msgid "Loading..."
 #~ msgstr "로드중..."
@@ -110,8 +110,8 @@ msgstr "인터넷 패널"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "다운로드 - %d%%"
 
-#~ msgid "Meego web browser"
-#~ msgstr "Meego 웹 브라우저"
+#~ msgid "Dawati web browser"
+#~ msgstr "Dawati 웹 브라우저"
 
 #~ msgid "Oops!"
 #~ msgstr "실수!"
@@ -158,8 +158,8 @@ msgstr "인터넷 패널"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "최근 파일 리스트에 URL을 더하십시오."
 
-#~ msgid "Meego Web Browser"
-#~ msgstr "Meego 웹 브라우저"
+#~ msgid "Dawati Web Browser"
+#~ msgstr "Dawati 웹 브라우저"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "새로운 탭에서 링크 열기"
@@ -294,10 +294,10 @@ msgstr "인터넷 패널"
 #~ "십시오. "
 
 #~ msgid ""
-#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Dawati Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
-#~ "Meego 넷북 웹 브라우저에 오신것을 환영합니다. 페이지를 열면 즐겨 찾는 페이"
+#~ "Dawati 넷북 웹 브라우저에 오신것을 환영합니다. 페이지를 열면 즐겨 찾는 페이"
 #~ "지가 여기에 보일 것 입니다. "
 
 #~ msgid "Getting started"
@@ -323,8 +323,8 @@ msgstr "인터넷 패널"
 #~ "개인용 탭입니다. 모든 작업들은 이 기계에 저장되지 않습니다. 하지만, 사용하"
 #~ "시는 웹싸이트에서 실행되는 작업이 기록될수 있습니다."
 
-#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Meego 웹 브라우저는 Mozilla 기술을 기반으로 합니다.  "
+#~ msgid "Dawati Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Dawati 웹 브라우저는 Mozilla 기술을 기반으로 합니다.  "
 
 #~ msgid "Go"
 #~ msgstr "가기 "

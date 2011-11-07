@@ -1,11 +1,11 @@
-# Thai locale meego-web-browser
+# Thai locale dawati-web-browser
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Anuchit Chalothorn <anoochit@gmail.com>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-web-browser\n"
+"Project-Id-Version: dawati-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-20 13:46-0400\n"
 "PO-Revision-Date: 2009-08-18 13:17+0700\n"
@@ -49,47 +49,47 @@ msgstr ""
 "กดปุ่มลูกศรลง\n"
 "เพื่อดูรายการ"
 
-#: ../netpanel/meego-netbook-netpanel.cc:789
+#: ../netpanel/dawati-netbook-netpanel.cc:789
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
 msgstr "เมื่อคุณเข้าชมเว็บไซต์ เมนูโปรดปรานจะแสดงที่นี่ และอยู่บนแท็บใหม่ในหน้าเบราว์เซอร์"
 
-#: ../netpanel/meego-netbook-netpanel.cc:811
-#: ../netpanel/meego-netbook-netpanel.cc:934
+#: ../netpanel/dawati-netbook-netpanel.cc:811
+#: ../netpanel/dawati-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "แท็บใหม่"
 
 #. Construct entry table widgets
-#: ../netpanel/meego-netbook-netpanel.cc:1198
+#: ../netpanel/dawati-netbook-netpanel.cc:1198
 #, fuzzy
 msgid "Your pages"
 msgstr "หน้าที่ประทับใจ"
 
-#: ../netpanel/meego-netbook-netpanel.cc:1211
+#: ../netpanel/dawati-netbook-netpanel.cc:1211
 msgid "Search"
 msgstr ""
 
 #. Construct title for tab preview section
-#: ../netpanel/meego-netbook-netpanel.cc:1232
+#: ../netpanel/dawati-netbook-netpanel.cc:1232
 msgid "Tabs"
 msgstr "แท็บ"
 
 #. Construct title for favorite pages section
-#: ../netpanel/meego-netbook-netpanel.cc:1237
+#: ../netpanel/dawati-netbook-netpanel.cc:1237
 msgid "Favorite pages"
 msgstr "หน้าที่ประทับใจ"
 
-#: ../netpanel/meego-panel-web.cc:195
-#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+#: ../netpanel/dawati-panel-web.cc:195
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "อินเทอร์เน็ต"
 
-#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
+#: ../netpanel/dawati-panel-web.cc:216 ../netpanel/dawati-panel-web.cc:262
 msgid "Internet"
 msgstr "อินเทอร์เน็ต"
 
-#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:1
 #, fuzzy
 msgid "Internet panel"
 msgstr "อินเทอร์เน็ต"
@@ -100,8 +100,8 @@ msgstr "อินเทอร์เน็ต"
 #~ msgid "Web Browser"
 #~ msgstr "เว็บเบราว์เซอร์"
 
-#~ msgid "Meego web browser - "
-#~ msgstr "Meego เว็บเบราว์เซอร์ - "
+#~ msgid "Dawati web browser - "
+#~ msgstr "Dawati เว็บเบราว์เซอร์ - "
 
 #~ msgid "Untitled"
 #~ msgstr "ไม่มีชื่อ"
@@ -112,8 +112,8 @@ msgstr "อินเทอร์เน็ต"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "ดาวน์โหลด - %d%%"
 
-#~ msgid "Meego web browser"
-#~ msgstr "Meego เว็บเบราว์เซอร์"
+#~ msgid "Dawati web browser"
+#~ msgstr "Dawati เว็บเบราว์เซอร์"
 
 #~ msgid "Download cancelled"
 #~ msgstr "ดาวน์โหลดถูกยกเลิก"
@@ -130,8 +130,8 @@ msgstr "อินเทอร์เน็ต"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "เพิ่มยูอาร์แอลในรายการที่ผ่านมา"
 
-#~ msgid "Meego Web Browser"
-#~ msgstr "Meego เว็บเบราว์เซอร์"
+#~ msgid "Dawati Web Browser"
+#~ msgstr "Dawati เว็บเบราว์เซอร์"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "เปิดลิงค์ในแท็บใหม่"
@@ -254,10 +254,10 @@ msgstr "อินเทอร์เน็ต"
 #~ msgstr "เลื่อนพอยน์เตอร์ไปยังด้านบนของหน้าจอเพื่อเลื่อนแถบเครื่องมือเลือกพาเนลเครือข่าย"
 
 #~ msgid ""
-#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Dawati Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
-#~ "ยินดีต้อนรับสู่เว็บเบราวเซอร์ Meego สำหรับเน็ตบุค เมื่อคุณเข้าชมเว็บไซต์ "
+#~ "ยินดีต้อนรับสู่เว็บเบราวเซอร์ Dawati สำหรับเน็ตบุค เมื่อคุณเข้าชมเว็บไซต์ "
 #~ "รายการที่โปรดปรานจะแสดงผลที่นี่"
 
 #~ msgid "Getting started"

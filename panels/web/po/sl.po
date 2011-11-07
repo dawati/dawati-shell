@@ -6,8 +6,8 @@
 # Jure Repinc <jlp@holodeck1.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-web\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-web\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:43-0700\n"
 "PO-Revision-Date: 2011-03-30 22:31+0000\n"
 "Last-Translator: JLP <jlp@holodeck1.com>\n"
@@ -49,7 +49,7 @@ msgstr ""
 "Za sprehod po seznamu\n"
 "pritisnite puščico dol"
 
-#: ../netpanel/meego-netbook-netpanel.cc:882
+#: ../netpanel/dawati-netbook-netpanel.cc:882
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
@@ -57,40 +57,40 @@ msgstr ""
 "Ko boste obiskovali spletne strani, se bodo priljubljene prikazovale tu in v"
 " brskalniku na strani za nov zavihek."
 
-#: ../netpanel/meego-netbook-netpanel.cc:1032
-#: ../netpanel/meego-netbook-netpanel.cc:1169
+#: ../netpanel/dawati-netbook-netpanel.cc:1032
+#: ../netpanel/dawati-netbook-netpanel.cc:1169
 msgid "New tab"
 msgstr "Nov zavihek"
 
 #. Construct entry table widgets
-#: ../netpanel/meego-netbook-netpanel.cc:1570
+#: ../netpanel/dawati-netbook-netpanel.cc:1570
 msgid "Your pages"
 msgstr "Vaše strani"
 
-#: ../netpanel/meego-netbook-netpanel.cc:1583
+#: ../netpanel/dawati-netbook-netpanel.cc:1583
 msgid "Search"
 msgstr "Iskanje"
 
 #. Construct title for tab preview section
-#: ../netpanel/meego-netbook-netpanel.cc:1604
+#: ../netpanel/dawati-netbook-netpanel.cc:1604
 msgid "Tabs"
 msgstr "Zavihki"
 
 #. Construct title for favorite pages section
-#: ../netpanel/meego-netbook-netpanel.cc:1609
+#: ../netpanel/dawati-netbook-netpanel.cc:1609
 msgid "Favorite pages"
 msgstr "Priljubljene strani"
 
-#: ../netpanel/meego-panel-web.cc:111
-#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+#: ../netpanel/dawati-panel-web.cc:111
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/meego-panel-web.cc:131 ../netpanel/meego-panel-web.cc:176
+#: ../netpanel/dawati-panel-web.cc:131 ../netpanel/dawati-panel-web.cc:176
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:1
 msgid "Internet panel"
 msgstr "Pult za internet"
 

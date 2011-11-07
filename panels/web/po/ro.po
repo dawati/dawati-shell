@@ -5,12 +5,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-web-browser\n"
+"Project-Id-Version: dawati-web-browser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-20 13:46-0400\n"
 "PO-Revision-Date: 2009-10-03 20:34+0200\n"
 "Last-Translator: Cosmin Bordeianu <elloxar@gmail.com>\n"
-"Language-Team: Meego Romania <live@meego.ro>\n"
+"Language-Team: Dawati Romania <live@dawati.ro>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -50,7 +50,7 @@ msgstr ""
 "Apasă jos pentru\n"
 "a explora lista"
 
-#: ../netpanel/meego-netbook-netpanel.cc:789
+#: ../netpanel/dawati-netbook-netpanel.cc:789
 msgid ""
 "As you visit web pages, your favorites will appear here and on the New tab "
 "page in the browser."
@@ -58,41 +58,41 @@ msgstr ""
 "În timp ce navigați pe internet paginile favorite vor apare aici și pe "
 "fiecare filă nouă din navigator."
 
-#: ../netpanel/meego-netbook-netpanel.cc:811
-#: ../netpanel/meego-netbook-netpanel.cc:934
+#: ../netpanel/dawati-netbook-netpanel.cc:811
+#: ../netpanel/dawati-netbook-netpanel.cc:934
 msgid "New tab"
 msgstr "Filă nouă"
 
 #. Construct entry table widgets
-#: ../netpanel/meego-netbook-netpanel.cc:1198
+#: ../netpanel/dawati-netbook-netpanel.cc:1198
 #, fuzzy
 msgid "Your pages"
 msgstr "Pagini favorite"
 
-#: ../netpanel/meego-netbook-netpanel.cc:1211
+#: ../netpanel/dawati-netbook-netpanel.cc:1211
 msgid "Search"
 msgstr "Caută"
 
 #. Construct title for tab preview section
-#: ../netpanel/meego-netbook-netpanel.cc:1232
+#: ../netpanel/dawati-netbook-netpanel.cc:1232
 msgid "Tabs"
 msgstr "File"
 
 #. Construct title for favorite pages section
-#: ../netpanel/meego-netbook-netpanel.cc:1237
+#: ../netpanel/dawati-netbook-netpanel.cc:1237
 msgid "Favorite pages"
 msgstr "Pagini favorite"
 
-#: ../netpanel/meego-panel-web.cc:195
-#: ../netpanel/meego-panel-internet.desktop.in.in.h:2
+#: ../netpanel/dawati-panel-web.cc:195
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:2
 msgid "internet"
 msgstr "internet"
 
-#: ../netpanel/meego-panel-web.cc:216 ../netpanel/meego-panel-web.cc:262
+#: ../netpanel/dawati-panel-web.cc:216 ../netpanel/dawati-panel-web.cc:262
 msgid "Internet"
 msgstr "Internet"
 
-#: ../netpanel/meego-panel-internet.desktop.in.in.h:1
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:1
 #, fuzzy
 msgid "Internet panel"
 msgstr "Internet"
@@ -121,8 +121,8 @@ msgstr "Internet"
 #~ msgid "Web Browser"
 #~ msgstr "Navigator Web"
 
-#~ msgid "Meego web browser - "
-#~ msgstr "Navigatorul web Meego - "
+#~ msgid "Dawati web browser - "
+#~ msgstr "Navigatorul web Dawati - "
 
 #~ msgid "Untitled"
 #~ msgstr "Fără titlu"
@@ -133,8 +133,8 @@ msgstr "Internet"
 #~ msgid "Downloads - %d%%"
 #~ msgstr "Descărcări - %d%%"
 
-#~ msgid "Meego web browser"
-#~ msgstr "Navigatorul web Meego"
+#~ msgid "Dawati web browser"
+#~ msgstr "Navigatorul web Dawati"
 
 #~ msgid "Download cancelled"
 #~ msgstr "Descărcare anulată"
@@ -151,8 +151,8 @@ msgstr "Internet"
 #~ msgid "Add the URL to the recent files list"
 #~ msgstr "Adaugă URL-ul la fișierele folosite recent"
 
-#~ msgid "Meego Web Browser"
-#~ msgstr "Navigatorul Web Meego"
+#~ msgid "Dawati Web Browser"
+#~ msgstr "Navigatorul Web Dawati"
 
 #~ msgid "Open link in new tab"
 #~ msgstr "Deschide legătura într-o filă nouă"
@@ -254,10 +254,10 @@ msgstr "Internet"
 #~ "instrumente şi alegeţi panoul de rețele."
 
 #~ msgid ""
-#~ "Welcome to Meego Netbook Web Browser. When you visit pages your favorite "
+#~ "Welcome to Dawati Netbook Web Browser. When you visit pages your favorite "
 #~ "ones will show up here."
 #~ msgstr ""
-#~ "Bine ați venit pe Navigatorul Web Meego pentru Netbook-uri. Atunci când "
+#~ "Bine ați venit pe Navigatorul Web Dawati pentru Netbook-uri. Atunci când "
 #~ "navigați pe internet, paginile web favorite vor apare aici."
 
 #~ msgid "Getting started"
@@ -284,8 +284,8 @@ msgstr "Internet"
 #~ "nu vor fi stocate local. Cu toate acestea, site-urile web pot să păstreze "
 #~ "înregistrări ale acţiunilor dvs."
 
-#~ msgid "Meego Web Browser is proudly based on Mozilla technology"
-#~ msgstr "Navigatorul Web Meego este bazat pe tehnologia Mozilla"
+#~ msgid "Dawati Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Navigatorul Web Dawati este bazat pe tehnologia Mozilla"
 
 #~ msgid "Go"
 #~ msgstr "Dute"

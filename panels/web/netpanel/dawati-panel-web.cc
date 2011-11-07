@@ -23,10 +23,10 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
-#include <meego-panel/mpl-panel-clutter.h>
-#include <meego-panel/mpl-panel-common.h>
+#include <dawati-panel/mpl-panel-clutter.h>
+#include <dawati-panel/mpl-panel-common.h>
 
-#include "meego-netbook-netpanel.h"
+#include "dawati-netbook-netpanel.h"
 
 #include <config.h>
 
@@ -45,9 +45,9 @@ _client_set_size_cb (MplPanelClient *client,
 static gboolean
 stage_button_press_event (ClutterStage          *stage,
                           ClutterEvent          *event,
-                          MeegoNetbookNetpanel *netpanel)
+                          DawatiNetbookNetpanel *netpanel)
 {
-  meego_netbook_netpanel_button_press (netpanel);
+  dawati_netbook_netpanel_button_press (netpanel);
   return TRUE;
 }
 
@@ -65,7 +65,7 @@ static char const *geometry = NULL;
 static int         dpi = 0;
 
 static GOptionEntry entries[] = {
-  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-meego panel", NULL},
+  {"standalone", 's', 0, G_OPTION_ARG_NONE, &standalone, "Do not embed into the mutter-dawati panel", NULL},
   { "geometry", 'g', 0, G_OPTION_ARG_STRING, &geometry,
     "Window geometry in standalone mode", NULL },
 #if CLUTTER_CHECK_VERSION(1, 3, 0)
@@ -82,7 +82,7 @@ main (int    argc,
 {
   MplPanelClient *client;
   ClutterActor *stage;
-  MeegoNetbookNetpanel *netpanel;
+  DawatiNetbookNetpanel *netpanel;
   GOptionContext *context;
   GError *error = NULL;
 
@@ -91,7 +91,7 @@ main (int    argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  context = g_option_context_new ("- mutter-meego myzone panel");
+  context = g_option_context_new ("- mutter-dawati myzone panel");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, gtk_get_option_group (FALSE));
@@ -136,7 +136,7 @@ main (int    argc,
     mpl_panel_client_set_height_request (client, 600);
 
     stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (client));
-    netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
+    netpanel = DAWATI_NETBOOK_NETPANEL (dawati_netbook_netpanel_new ());
 
     ClutterActor  *content_pane;
     ClutterActor  *base_pane;
@@ -169,7 +169,7 @@ main (int    argc,
                                  "y-fill", TRUE,
                                  NULL);
 
-    meego_netbook_netpanel_set_panel_client (netpanel, client);
+    dawati_netbook_netpanel_set_panel_client (netpanel, client);
     g_signal_connect (client,
                       "set-size",
                       (GCallback)_client_set_size_cb,
@@ -199,7 +199,7 @@ main (int    argc,
       }
 
     mpl_panel_clutter_setup_events_with_gtk_for_xid (xwin);
-    netpanel = MEEGO_NETBOOK_NETPANEL (meego_netbook_netpanel_new ());
+    netpanel = DAWATI_NETBOOK_NETPANEL (dawati_netbook_netpanel_new ());
 
     base_pane = mx_box_layout_new();
     clutter_actor_set_name (base_pane, "base-pane");

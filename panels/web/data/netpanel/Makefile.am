@@ -20,7 +20,7 @@ dist_theme_DATA = \
 	o2_search.png
 
 
-# Manage mutter-meego's texture cache.
+# Manage mutter-dawati's texture cache.
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/mx.cache
 CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)

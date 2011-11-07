@@ -1,5 +1,5 @@
 /*
- * Meego-Web-Browser: The web browser for Meego
+ * Dawati-Web-Browser: The web browser for Dawati
  * Copyright (c) 2009, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it

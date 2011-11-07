@@ -10,9 +10,9 @@ AM_CPPFLAGS = \
 	-fno-exceptions -fno-rtti \
 	-I$(top_srcdir)/common
 
-libexec_PROGRAMS = meego-panel-web
+libexec_PROGRAMS = dawati-panel-web
 
-meego_panel_web_LDADD = \
+dawati_panel_web_LDADD = \
 	$(SQLITE_LIBS) \
 	$(MX_LIBS) \
 	$(GTK_LIBS) \
@@ -20,28 +20,28 @@ meego_panel_web_LDADD = \
 	$(MPL_LIBS) \
 	$(top_builddir)/common/libcommon.a
 
-meego_panel_web_SOURCES = \
-  meego-panel-web.cc   \
-  meego-netbook-netpanel.cc \
-  meego-netbook-netpanel.h \
+dawati_panel_web_SOURCES = \
+  dawati-panel-web.cc   \
+  dawati-netbook-netpanel.cc \
+  dawati-netbook-netpanel.h \
   mnb-netpanel-bar.cc        \
   mnb-netpanel-bar.h        \
   mnb-netpanel-scrollview.cc \
   mnb-netpanel-scrollview.h
 
-meego_panel_web_DEPENDENCIES = \
+dawati_panel_web_DEPENDENCIES = \
   $(top_builddir)/common/libcommon.a
 
 servicedir = $(datadir)/dbus-1/services
-service_in_files = com.meego.UX.Shell.Panels.internet.service.in
-service_DATA = com.meego.UX.Shell.Panels.internet.service
+service_in_files = com.dawati.UX.Shell.Panels.internet.service.in
+service_DATA = com.dawati.UX.Shell.Panels.internet.service
 
-autostartdir = $(MEEGO_PANELS_DIR)
-autostart_DATA = meego-panel-internet.desktop
+autostartdir = $(DAWATI_PANELS_DIR)
+autostart_DATA = dawati-panel-internet.desktop
 
 @INTLTOOL_DESKTOP_RULE@
 
-desktopfiles_in_files=meego-panel-internet.desktop.in
+desktopfiles_in_files=dawati-panel-internet.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
 %.desktop.in: %.desktop.in.in Makefile
@@ -49,7 +49,7 @@ desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 
 EXTRA_DIST = $(service_in_files) $(autostart_DATA)
 
-DISTCLEANFILES = com.meego.UX.Shell.Panels.internet.service
+DISTCLEANFILES = com.dawati.UX.Shell.Panels.internet.service
 
-com.meego.UX.Shell.Panels.internet.service: com.meego.UX.Shell.Panels.internet.service.in
+com.dawati.UX.Shell.Panels.internet.service: com.dawati.UX.Shell.Panels.internet.service.in
 	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@

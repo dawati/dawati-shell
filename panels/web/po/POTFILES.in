@@ -7,9 +7,9 @@ common/mwb-separator.cc
 common/mwb-utils.cc
 
 # Panel
-netpanel/meego-netbook-netpanel.cc
-netpanel/meego-panel-web.cc
+netpanel/dawati-netbook-netpanel.cc
+netpanel/dawati-panel-web.cc
 netpanel/mnb-netpanel-scrollview.cc
 
 # Desktop
-netpanel/meego-panel-internet.desktop.in.in
+netpanel/dawati-panel-internet.desktop.in.in
