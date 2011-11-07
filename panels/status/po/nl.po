@@ -1,10 +1,10 @@
-# Dutch translation of mutter-moblin.
-# Copyright (C) 2009 THE mutter-moblin'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the mutter-moblin package.
+# Dutch translation of mutter-dawati.
+# Copyright (C) 2009 THE mutter-dawati'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the mutter-dawati package.
 # Auke Kok <auke-jan.h.kok@intel.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter-moblin moblin2\n"
+"Project-Id-Version: mutter-dawati dawati2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-19 16:36+0000\n"
 "PO-Revision-Date: 2010-10-19 22:07-0800\n"

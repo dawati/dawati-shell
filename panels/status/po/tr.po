@@ -21,17 +21,17 @@ msgstr ""
 msgid "Offline"
 msgstr "Çevrimdışı"
 
-#: ../src/mnb-im-status-row.c:105 ../src/moblin-panel-status.c:536
+#: ../src/mnb-im-status-row.c:105 ../src/dawati-panel-status.c:536
 msgid "Available"
 msgstr "Çevrimiçi"
 
 #: ../src/mnb-im-status-row.c:106 ../src/mnb-im-status-row.c:107
-#: ../src/moblin-panel-status.c:540 ../src/moblin-panel-status.c:544
+#: ../src/dawati-panel-status.c:540 ../src/dawati-panel-status.c:544
 msgid "Away"
 msgstr "Uzakta"
 
 #: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
-#: ../src/moblin-panel-status.c:548 ../src/moblin-panel-status.c:552
+#: ../src/dawati-panel-status.c:548 ../src/dawati-panel-status.c:552
 msgid "Busy"
 msgstr "Meşgul"
 
@@ -66,19 +66,19 @@ msgstr "Şuan ki durumunuzu buraya girin..."
 msgid "Post"
 msgstr "Posta"
 
-#: ../src/moblin-panel-status.c:470
+#: ../src/dawati-panel-status.c:470
 msgid "Your current status"
 msgstr "Şuan ki durumunuz"
 
-#: ../src/moblin-panel-status.c:472 ../src/moblin-panel-status.c:960
+#: ../src/dawati-panel-status.c:472 ../src/dawati-panel-status.c:960
 msgid "Your current status - you are offline"
 msgstr "Şuan ki durumnuz - çevrimdışısınız"
 
-#: ../src/moblin-panel-status.c:825
+#: ../src/dawati-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr "Üzgününüz, kimseyi bulamadık. Messenger hesabınızı ayarladınız mı?"
 
-#: ../src/moblin-panel-status.c:994
+#: ../src/dawati-panel-status.c:994
 msgid ""
 "To update your web status you need to setup a Web Services account with a "
 "provider that supports status messages"
@@ -86,10 +86,10 @@ msgstr ""
 "Durumunuzu güncellemek için bir web servis hesabına sahip olmalı ve durum"
 "mesajlarını destekleyen bir hizmet sağlayıcıya sahip olmalısınız"
 
-#: ../src/moblin-panel-status.c:1021
+#: ../src/dawati-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "Durumunuzu güncelleyebilmek için ani mesajlaşma hesabınız olmalı"
 
-#: ../src/moblin-panel-status.c:1118
+#: ../src/dawati-panel-status.c:1118
 msgid "status"
 msgstr "durum"

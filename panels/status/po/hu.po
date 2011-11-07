@@ -21,17 +21,17 @@ msgstr ""
 msgid "Offline"
 msgstr "Kilépve"
 
-#: ../src/mnb-im-status-row.c:105 ../src/moblin-panel-status.c:536
+#: ../src/mnb-im-status-row.c:105 ../src/dawati-panel-status.c:536
 msgid "Available"
 msgstr "Elérhető"
 
 #: ../src/mnb-im-status-row.c:106 ../src/mnb-im-status-row.c:107
-#: ../src/moblin-panel-status.c:540 ../src/moblin-panel-status.c:544
+#: ../src/dawati-panel-status.c:540 ../src/dawati-panel-status.c:544
 msgid "Away"
 msgstr "Távol"
 
 #: ../src/mnb-im-status-row.c:108 ../src/mnb-im-status-row.c:109
-#: ../src/moblin-panel-status.c:548 ../src/moblin-panel-status.c:552
+#: ../src/dawati-panel-status.c:548 ../src/dawati-panel-status.c:552
 msgid "Busy"
 msgstr "Elfoglalt"
 
@@ -66,21 +66,21 @@ msgstr "Adja meg itt az aktuális állapotát..."
 msgid "Post"
 msgstr "Elküldés"
 
-#: ../src/moblin-panel-status.c:470
+#: ../src/dawati-panel-status.c:470
 msgid "Your current status"
 msgstr "Az aktuális állapot"
 
-#: ../src/moblin-panel-status.c:472 ../src/moblin-panel-status.c:960
+#: ../src/dawati-panel-status.c:472 ../src/dawati-panel-status.c:960
 msgid "Your current status - you are offline"
 msgstr "Az ön aktuális állapota - kilépve"
 
-#: ../src/moblin-panel-status.c:825
+#: ../src/dawati-panel-status.c:825
 msgid "Sorry, we can't find any people. Have you set up a Messenger account?"
 msgstr ""
 "Sajnos nem található egy partner sem. Állított be csevegő felhasználói "
 "fiókot?"
 
-#: ../src/moblin-panel-status.c:994
+#: ../src/dawati-panel-status.c:994
 msgid ""
 "To update your web status you need to setup a Web Services account with a "
 "provider that supports status messages"
@@ -89,11 +89,11 @@ msgstr ""
 "szükséges, "
 "amely támogatja az állapot-üzeneteket."
 
-#: ../src/moblin-panel-status.c:1021
+#: ../src/dawati-panel-status.c:1021
 msgid "To update your IM status you need to setup an Instant Messaging account"
 msgstr "Az állapot frissítéséhez szükséges egy csevegési azonosító beállítása"
 
-#: ../src/moblin-panel-status.c:1118
+#: ../src/dawati-panel-status.c:1118
 msgid "status"
 msgstr "állapot"
 

@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-status\n"
+"Project-Id-Version: dawati-panel-status\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-14 09:43+0000\n"
 "PO-Revision-Date: 2010-04-15 08:53+0100\n"
@@ -19,21 +19,21 @@ msgstr ""
 "X-Poedit-Country: DENMARK\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/moblin-panel-status.c:48
+#: ../src/dawati-panel-status.c:48
 msgid "Hello! This is the Status panel.When you have a web account configured(like Twitter) you will be able to view yourfeeds and update your status here"
 msgstr "Hej! Dette er statuspanelet. Hvis du har konfigureret en web-konto (såsom Twitter), kan du få vist dine feeds og opdatere din status her."
 
-#: ../src/moblin-panel-status.c:99
+#: ../src/dawati-panel-status.c:99
 msgid "Status"
 msgstr "Status"
 
-#: ../src/moblin-panel-status.c:157
-#: ../data/moblin-panel-status.desktop.in.in.h:2
+#: ../src/dawati-panel-status.c:157
+#: ../data/dawati-panel-status.desktop.in.in.h:2
 msgid "status"
 msgstr "status"
 
 #. vim:set ts=8 expandtab
-#: ../data/moblin-panel-status.desktop.in.in.h:1
+#: ../data/dawati-panel-status.desktop.in.in.h:1
 msgid "Status panel"
 msgstr "Statuspanel"
 
