@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "设备面板"
 
-#: ../data/moblin-panel-devices.desktop.in.in.h:2
-#: ../src/moblin-panel-devices.c:160
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:160
 msgid "devices"
 msgstr "设备"
 
@@ -55,7 +55,7 @@ msgstr[1] "%u 输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
-#: ../power-icon/src/moblin-power-icon.c:46
+#: ../power-icon/src/dawati-power-icon.c:46
 msgid "Dawati Power Icon"
 msgstr "Dawati 电源图标"
 
@@ -106,7 +106,7 @@ msgstr "您要关闭吗？"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "如果您再不决定，我会在 30 秒后替您关闭。"
 
-#: ../src/moblin-panel-devices.c:121
+#: ../src/dawati-panel-devices.c:121
 msgid "Dawati Devices Panel"
 msgstr "Dawati 设备面板"
 

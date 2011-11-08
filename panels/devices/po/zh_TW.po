@@ -1,11 +1,11 @@
-# Traditional Chinese translation for moblin-panel-devices
+# Traditional Chinese translation for dawati-panel-devices
 # Copyright (C) 2010 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the moblin-panel-devices package.
+# This file is distributed under the same license as the dawati-panel-devices package.
 #
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: moblin-panel-devices\n"
+"Project-Id-Version: dawati-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-18 23:58+0000\n"
 "PO-Revision-Date: 2010-11-19 11:48+0800\n"
@@ -276,8 +276,8 @@ msgstr "靜音"
 
 #~ msgid "Netbook brightness"
 #~ msgstr "筆電螢幕的亮度"
-#~ msgid "Moblin Power Icon"
-#~ msgstr "Moblin 電源圖示"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati 電源圖示"
 #~ msgid "Netbook volume"
 #~ msgstr "網路筆電靜音"
 #~ msgid ""
