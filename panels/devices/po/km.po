@@ -6,32 +6,32 @@
 # សុវិចិត្រ Sovichet ទេព Tep <sovichet.tep@gmail.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-devices\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-devices\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:32-0700\n"
 "PO-Revision-Date: 2011-11-03 19:02+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
-"Language-Team: Khmer (http://www.transifex.net/projects/p/meego/team/km/)\n"
+"Language-Team: Khmer (http://www.transifex.net/projects/p/dawati/team/km/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: km\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "បន្ទះ​ឧបករណ៍"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "ឧបករណ៍"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "ពេល​សម្រាក"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid ""
 "Value of -1 means never sleep, other values are seconds of continuous idle "
 "state before sleeping."
@@ -65,9 +65,9 @@ msgstr[0] "%u ព័ត៌មាន​បញ្ចូល"
 msgid "System Sounds"
 msgstr "សម្លេង​ប្រព័ន្ធ"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "រូប​តំណាង​ថាមពល MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "រូប​តំណាង​ថាមពល Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -129,9 +129,9 @@ msgstr ""
 "បើ​មិន​សម្រេច​ចិត្ត​ទេ, ខ្ញុំ​នឹង​បិទ​ដំណើរ​ការ​ក្នុង​រយៈ​ពេល ៣០នាទី​ខាង​"
 "មុខ។"
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "បន្ទះ​ឧបករណ៍ MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "បន្ទះ​ឧបករណ៍ Dawati"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format

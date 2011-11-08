@@ -17,20 +17,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Galician\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel de dispositivos"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "dispositivos"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Tempo de espera para a suspensión"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Un valor igual a -1 significa que nunca se produce a suspensión. Outros valores representan os segundos de inactividade continuada antes de que se produza a suspensión."
 
@@ -62,9 +62,9 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Icona de alimentación de MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Icona de alimentación de Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -113,9 +113,9 @@ msgstr "Quere apagar agora?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Se non decide o contrario, apagarase en 30 segundos."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "Panel de dispositivos de MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Panel de dispositivos de Dawati"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format

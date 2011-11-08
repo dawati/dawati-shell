@@ -17,12 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Tauler dels dispositius"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:163
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:163
 msgid "devices"
 msgstr "dispositius"
 
@@ -54,9 +54,9 @@ msgstr[1] "%u entrades"
 msgid "System Sounds"
 msgstr "Sons del sistema"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Icona de la bateria del MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Icona de la bateria del Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -118,9 +118,9 @@ msgstr "Voleu apagar-lo ara?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Si no us decidiu, s'apagarà en 30 segons."
 
-#: ../src/meego-panel-devices.c:121
-msgid "MeeGo Devices Panel"
-msgstr "Tauler de dispositius del MeeGo"
+#: ../src/dawati-panel-devices.c:121
+msgid "Dawati Devices Panel"
+msgstr "Tauler de dispositius del Dawati"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format

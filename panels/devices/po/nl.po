@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-devices\n"
+"Project-Id-Version: dawati-panel-devices\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-19 16:51+0000\n"
 "PO-Revision-Date: 2010-10-19 22:00-0800\n"
@@ -18,20 +18,20 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Apparaten paneel"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "apparaten"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Slaap time-out"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Waarde van -1 betekent nooit slapen, andere waarden zijn seconden continue ruststand voor het slapen gaan."
 
@@ -63,9 +63,9 @@ msgstr[1] "%u invoeren"
 msgid "System Sounds"
 msgstr "Systeemgeluid"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo Energie pictogram"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati Energie pictogram"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -114,9 +114,9 @@ msgstr "Wil je nu afsluiten?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Als je niet beslist sluit ik in 30 seconden af"
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo Apparaten paneel"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati Apparaten paneel"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format
@@ -275,8 +275,8 @@ msgstr "Geluidsvolume"
 msgid "Mute"
 msgstr "Geluiden dempen"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego Energie pictogram"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati Energie pictogram"
 
 #~ msgid "Netbook volume"
 #~ msgstr "Netbook volume"

@@ -56,8 +56,8 @@ msgid "System Sounds"
 msgstr "系统声音"
 
 #: ../power-icon/src/moblin-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo 电源图标"
+msgid "Dawati Power Icon"
+msgstr "Dawati 电源图标"
 
 #: ../power-icon/src/mpd-power-icon.c:76
 msgid "Running low on battery"
@@ -107,8 +107,8 @@ msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "如果您再不决定，我会在 30 秒后替您关闭。"
 
 #: ../src/moblin-panel-devices.c:121
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo 设备面板"
+msgid "Dawati Devices Panel"
+msgstr "Dawati 设备面板"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format
@@ -262,8 +262,8 @@ msgstr "电脑音量"
 msgid "Mute"
 msgstr "静音"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego 电源图标"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati 电源图标"
 
 #~ msgid "Netbook volume"
 #~ msgstr "上网本音量"

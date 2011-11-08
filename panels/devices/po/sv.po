@@ -13,20 +13,20 @@ msgstr ""
 "X-Poedit-Language: Swedish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Enhetspanel"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "enheter"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Timeout för viloläge"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Ett värde av -1 betyder försätt aldrig i viloläge, andra värden är lika med sekunder av inaktivt tillstånd innan viloläge påbörjas."
 
@@ -58,9 +58,9 @@ msgstr[1] "%u inmatningar"
 msgid "System Sounds"
 msgstr "Systemljud"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo strömikon"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati strömikon"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -109,9 +109,9 @@ msgstr "Vill du stänga av nu?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Om du inte bestämmer dig snart stänger jag av datorn om 30 sekunder."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo enhetspanel"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati enhetspanel"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format
@@ -265,8 +265,8 @@ msgstr "Datorvolym"
 msgid "Mute"
 msgstr "Ljud avstängt"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego-strömikon"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati-strömikon"
 
 #~ msgid "Netbook volume"
 #~ msgstr "Netbook-volym"

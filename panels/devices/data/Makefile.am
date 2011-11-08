@@ -1,18 +1,18 @@
 
 SUBDIRS = icons theme
 
-autostart_src_files = meego-panel-devices.desktop.in.in
-autostart_in_files = meego-panel-devices.desktop.in
-autostartdir = $(MEEGO_PANELS_DIR)
+autostart_src_files = dawati-panel-devices.desktop.in.in
+autostart_in_files = dawati-panel-devices.desktop.in
+autostartdir = $(DAWATI_PANELS_DIR)
 autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
 
-schema_in_files = meego-panel-devices.schemas.in
+schema_in_files = dawati-panel-devices.schemas.in
 schemadir = $(GCONF_SCHEMA_FILE_DIR)
-schema_DATA = meego-panel-devices.schemas
+schema_DATA = dawati-panel-devices.schemas
 
-service_in_files = com.meego.UX.Shell.Panels.devices.service.in
+service_in_files = com.dawati.UX.Shell.Panels.devices.service.in
 servicedir = $(datadir)/dbus-1/services
-service_DATA = com.meego.UX.Shell.Panels.devices.service
+service_DATA = com.dawati.UX.Shell.Panels.devices.service
 
 EXTRA_DIST = \
   $(autostart_src_files) \

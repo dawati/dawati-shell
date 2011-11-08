@@ -19,12 +19,12 @@ msgstr ""
 "X-Poedit-Country: Iran\n"
 "Plural-Forms: nplurals=2; plural=1;\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "قاب ابزارها"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:163
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:163
 msgid "devices"
 msgstr "ابزار"
 
@@ -55,8 +55,8 @@ msgstr[1] "ورودی ها %u"
 msgid "System Sounds"
 msgstr "صداهای سیستم"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
 msgstr "آیکن نیروی می‌گو"
 
 #: ../power-icon/src/mpd-power-icon.c:77
@@ -105,8 +105,8 @@ msgstr "آیا می خواهید همین الان خاموش شود؟"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "اگر تصمیمی نگیرید طی ۳۰ ثانیه خاموش خواهد شد."
 
-#: ../src/meego-panel-devices.c:121
-msgid "MeeGo Devices Panel"
+#: ../src/dawati-panel-devices.c:121
+msgid "Dawati Devices Panel"
 msgstr "قاب ابزارهای می‌گو"
 
 #: ../src/mpd-battery-device.c:371

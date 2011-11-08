@@ -1,11 +1,11 @@
-# Translation of meego-panel-devices into Indonesian
-# Copyright (C) 2010 THE meego-panel-device'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the meego-panel-devices package.
+# Translation of dawati-panel-devices into Indonesian
+# Copyright (C) 2010 THE dawati-panel-device'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the dawati-panel-devices package.
 # Andika Triwidada <andika@gmail.com>, 2010.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-devices master\n"
+"Project-Id-Version: dawati-panel-devices master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-02 23:58+0000\n"
 "PO-Revision-Date: 2010-05-05 19:40+0700\n"
@@ -18,20 +18,20 @@ msgstr ""
 "X-Poedit-Language: Indonesian\n"
 "X-Poedit-Country: Indonesia\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel perangkat"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "perangkat"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Timeout tidur"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Nilai -1 berarti tak pernah tidur, nilai lain adalah lamanya menganggur terus-menerus dalam detik sebelum tidur."
 
@@ -61,9 +61,9 @@ msgstr[0] "%u Masukan"
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Ikon Daya MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Ikon Daya Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -111,9 +111,9 @@ msgstr "Anda mau mematikan sekarang?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Bila Anda tak memutuskan, komputer akan dimatikan dalam 30 detik."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "Panel Perangkat MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Panel Perangkat Dawati"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format
@@ -275,8 +275,8 @@ msgstr "Bisu"
 #~ msgid "Netbook brightness"
 #~ msgstr "Kecerahan netbook"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Ikon Daya Meego"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Ikon Daya Dawati"
 
 #~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
 #~ msgstr "<span font-weight='bold'>Mengimpor data</span> <span color='%s'>%d%%</span>"

@@ -13,20 +13,20 @@ msgstr ""
 "X-Poedit-Language: Japanese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "デバイスパネル"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "デバイス"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "スリープのタイムアウト"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "値が -1 というのは、スリープにならないことを示し、他の値の場合は、スリープになる前のアイドル状態の継続時間（秒）です。"
 
@@ -58,11 +58,11 @@ msgstr[1] "入力 %u"
 msgid "System Sounds"
 msgstr "システム効果音"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo 電源アイコン"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati 電源アイコン"
 
-# translation "charge up the battery" because translation of the original English translation creates UI truncation in actual MeeGo UI.
+# translation "charge up the battery" because translation of the original English translation creates UI truncation in actual Dawati UI.
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
 msgstr "バッテリーを充電してください"
@@ -110,9 +110,9 @@ msgstr "今すぐ電源をオフにしますか?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "このままの状態では、30秒後に電源がオフになります。"
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo デバイスパネル"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati デバイスパネル"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format
@@ -270,8 +270,8 @@ msgstr "ミュート"
 
 #~ msgid "Netbook volume"
 #~ msgstr "ネットブックの音量"
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego 電源アイコン"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati 電源アイコン"
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
 #~ "span>"

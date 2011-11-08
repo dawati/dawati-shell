@@ -19,20 +19,20 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Панель устройств"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "устройства"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Истечение времени ожидания в спящем режиме"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Значение -1 индицирует отсутствие сна, в то время как другие значения указывают на длительность (в секундах) непрерывного режима простоя перед переходом в спящий режим."
 
@@ -64,9 +64,9 @@ msgstr[1] "%u вводы"
 msgid "System Sounds"
 msgstr "Системные звуки"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Значок электропитания MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Значок электропитания Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -115,9 +115,9 @@ msgstr "Отключить питание немедленно?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "Панель устройств MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Панель устройств Dawati"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format
@@ -273,8 +273,8 @@ msgstr "Том компьютера"
 msgid "Mute"
 msgstr "Без звука"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego Power Icon"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati Power Icon"
 
 #~ msgid "Netbook volume"
 #~ msgstr "Громкость нетбука"

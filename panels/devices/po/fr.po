@@ -18,20 +18,20 @@ msgstr ""
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panneaux des périphériques"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "périphériques"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Délai de veille"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Valeur de -1 signifie jamais en veille, les autres valeurs sont des secondes d'état inactif avant la mise en veille"
 
@@ -63,9 +63,9 @@ msgstr[1] "%u Entrées"
 msgid "System Sounds"
 msgstr "Sons système"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Icône d'alimentation MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Icône d'alimentation Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -114,9 +114,9 @@ msgstr "Voulez-vous éteindre maintenant ?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Si vous ne vous décidez pas je vais m'éteindre dans 30 secondes."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "Panneaux des périphériques MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Panneaux des périphériques Dawati"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format
@@ -282,8 +282,8 @@ msgstr "Muet"
 #~ msgid "Netbook volume"
 #~ msgstr "Volume netbook"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Icône d'alimentation Meego"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Icône d'alimentation Dawati"
 
 #~ msgid ""
 #~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"

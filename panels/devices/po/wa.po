@@ -4,7 +4,7 @@
 # Jean Cayron et Odile Lambert <jean.cayron@gmail.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: Meego\n"
+"Project-Id-Version: Dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-24 01:24+0000\n"
 "PO-Revision-Date: 2010-05-09 00:22+0200\n"
@@ -18,20 +18,20 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Sicriftôr des éndjins"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "éndjins"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Tådjaedje divant d' s' edoirmi"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Li valixhance di -1 vout dire ni djamåy s' edoirmi, les ôtès valixhances sont des segondes kel sistinme ni frè rén divant d' s' edoirmi."
 
@@ -63,9 +63,9 @@ msgstr[1] "%u intrêyes"
 msgid "System Sounds"
 msgstr "Sons do sistinme"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Imådjete di l' enerdjeye di MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Imådjete di l' enerdjeye di Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -114,9 +114,9 @@ msgstr "Voloz vs arester l' éndjole do côp ?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Si vos n' decidez nén, dji m' va arester dins 30 segondes."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "Sicriftôr des éndjins da MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Sicriftôr des éndjins da Dawati"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format
@@ -278,8 +278,8 @@ msgstr "Moya"
 #~ msgid "Netbook brightness"
 #~ msgstr "Rilujhance del poirtåve éndjolete"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Imådjete d' enerdjeye di MeeGo"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Imådjete d' enerdjeye di Dawati"
 
 #~ msgid "Netbook volume"
 #~ msgstr "Volume del poirtåve éndjolete"

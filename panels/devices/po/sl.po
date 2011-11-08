@@ -6,8 +6,8 @@
 # Jure Repinc <jlp@holodeck1.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-devices\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-devices\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:32-0700\n"
 "PO-Revision-Date: 2011-11-03 19:02+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
@@ -18,20 +18,20 @@ msgstr ""
 "Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Pult z napravami"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "naprave"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Čas do zaustavitve"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid ""
 "Value of -1 means never sleep, other values are seconds of continuous idle "
 "state before sleeping."
@@ -72,9 +72,9 @@ msgstr[3] "%u vhodi"
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo ikona energije"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati ikona energije"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -135,8 +135,8 @@ msgstr "Ali želite sedaj ugasniti računalnik?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Če se ne odločite, se bo računalnik ugasnil čez 30 sekund."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
 msgstr "Pult z napravami"
 
 #: ../src/mpd-battery-device.c:381

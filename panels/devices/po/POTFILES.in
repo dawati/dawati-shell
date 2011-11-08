@@ -1,12 +1,12 @@
 # List of source files containing translatable strings.
-data/meego-panel-devices.desktop.in.in
-data/meego-panel-devices.schemas.in
+data/dawati-panel-devices.desktop.in.in
+data/dawati-panel-devices.schemas.in
 gvc/gvc-mixer-control.c
-power-icon/data/meego-power-icon.desktop.in.in
-power-icon/src/meego-power-icon.c
+power-icon/data/dawati-power-icon.desktop.in.in
+power-icon/src/dawati-power-icon.c
 power-icon/src/mpd-power-icon.c
 power-icon/src/mpd-shutdown-notification.c
-src/meego-panel-devices.c
+src/dawati-panel-devices.c
 src/mpd-battery-device.c
 src/mpd-battery-tile.c
 src/mpd-brightness-tile.c

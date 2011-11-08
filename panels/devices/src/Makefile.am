@@ -10,17 +10,17 @@ AM_CFLAGS = \
   $(NULL)
 
 libexec_PROGRAMS = \
-  meego-panel-devices \
+  dawati-panel-devices \
   $(NULL)
 
-meego_panel_devices_LDADD = \
+dawati_panel_devices_LDADD = \
   $(top_builddir)/gpm/libgpm.la \
   $(top_builddir)/gvc/libgvc.la \
   $(MPD_LIBS) \
   $(NULL)
 
-meego_panel_devices_SOURCES = \
-  meego-panel-devices.c \
+dawati_panel_devices_SOURCES = \
+  dawati-panel-devices.c \
   mpd-battery-device.c \
   mpd-battery-device.h \
   mpd-battery-icon.c \

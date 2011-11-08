@@ -18,20 +18,20 @@ msgstr ""
 "X-Poedit-Language: asturian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel de preseos"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "preseos"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Tiempu d'espera pa la suspensión"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Un valor igual a -1 significa qu'enxamás va producise la suspensión. Otros valores representen los segundos d'inactividá continuada enantes de que se produzca la suspensión."
 
@@ -63,9 +63,9 @@ msgstr[1] "Entraes %u"
 msgid "System Sounds"
 msgstr "Soníos del sistema"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Iconu d'enerxía MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Iconu d'enerxía Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -114,9 +114,9 @@ msgstr "¿Apagar l'equipu?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Si nun se decide un res, va apagase en 30 segundos."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "Panel de preseos de MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Panel de preseos de Dawati"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format

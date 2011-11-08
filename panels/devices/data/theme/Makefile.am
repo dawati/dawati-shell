@@ -13,7 +13,7 @@ dist_theme_DATA = \
   volume-bars-0.png \
   $(NULL)
 
-# Manage mutter-meego's texture cache.
+# Manage mutter-dawati's texture cache.
 
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/mx.cache

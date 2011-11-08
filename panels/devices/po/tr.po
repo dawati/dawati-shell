@@ -5,12 +5,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Meego\n"
+"Project-Id-Version: Dawati\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 09:20+0000\n"
 "PO-Revision-Date: 2010-05-18 16:04-0500\n"
 "Last-Translator: Ahmet Özgür Erdemli <dbl2010@gmail.com>\n"
-"Language-Team: MeeGo Türkçe\n"
+"Language-Team: Dawati Türkçe\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,12 +19,12 @@ msgstr ""
 "X-Poedit-Country: TURKEY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Cihazlar paneli"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:160
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:160
 msgid "devices"
 msgstr "cihazlar"
 
@@ -55,9 +55,9 @@ msgstr[0] "%u Giriş"
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
-#: ../power-icon/src/meego-power-icon.c:46
+#: ../power-icon/src/dawati-power-icon.c:46
 #, fuzzy
-msgid "MeeGo Power Icon"
+msgid "Dawati Power Icon"
 msgstr "Desteklenmeyen simge türü"
 
 #: ../power-icon/src/mpd-power-icon.c:77
@@ -113,9 +113,9 @@ msgstr "Şimdi kapatmak ister misiniz?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Eğer karar vermezseniz 30 saniye içinde kapanacağım."
 
-#: ../src/meego-panel-devices.c:121
+#: ../src/dawati-panel-devices.c:121
 #, fuzzy
-msgid "MeeGo Devices Panel"
+msgid "Dawati Devices Panel"
 msgstr "_Ekranları panelde göster"
 
 #: ../src/mpd-battery-device.c:371

@@ -2,7 +2,7 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-device master\n"
+"Project-Id-Version: dawati-panel-device master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-24 01:24+0000\n"
 "PO-Revision-Date: 2010-10-20 12:01-0800\n"
@@ -13,20 +13,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel »Geräte«"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "Geräte"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Zeitlimit für Energiesparmodus"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Ein Wert von -1 bedeutet kein Energiesparmodus, andere Werte sind Sekunden im Leerlaufzustand vor dem Energiesparmodus."
 
@@ -58,9 +58,9 @@ msgstr[1] "%u Eingänge"
 msgid "System Sounds"
 msgstr "Systemklänge"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo-Energiesymbol"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati-Energiesymbol"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -109,9 +109,9 @@ msgstr "Möchten Sie den Rechner jetzt ausschalten?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Der Rechner wird in 30 Sekunden automatisch ausgeschaltet."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo-Panel Geräte"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati-Panel Geräte"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format

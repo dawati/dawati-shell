@@ -54,7 +54,7 @@ main (int     argc,
   percentage = atoi (argv[1]);
 
   clutter_init (&argc, &argv);
-  notify_init ("MeeGo Power Icon");
+  notify_init ("Dawati Power Icon");
   /* Needed for egg-idletime's X extensions. */
   gtk_init (&argc, &argv);
 

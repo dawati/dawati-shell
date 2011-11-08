@@ -17,20 +17,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.1\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "لوحة الأجهزة"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "أجهزة"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr ""
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid ""
 "Value of -1 means never sleep, other values are seconds of continuous idle "
 "state before sleeping."
@@ -64,8 +64,8 @@ msgstr[1] ""
 msgid "System Sounds"
 msgstr "أصوات النظام"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
 msgstr ""
 
 #: ../power-icon/src/mpd-power-icon.c:77
@@ -123,8 +123,8 @@ msgstr "هل تريد إيقاف التشغيل الآن؟"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr ""
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
 msgstr ""
 
 #: ../src/mpd-battery-device.c:371

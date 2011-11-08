@@ -13,20 +13,20 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "장치 패널"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "장치"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "절전 모드 시간 제한"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "-1의 값은 절전 모드 사용 불능이며, 다른 값은 절전 모드 중 두번째 연속 휴면 상태입니다. "
 
@@ -58,9 +58,9 @@ msgstr[1] "%u 입력"
 msgid "System Sounds"
 msgstr "시스템 음향"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo 전원 아이콘"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati 전원 아이콘"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -109,9 +109,9 @@ msgstr "지금 끄시겠습니까?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "결정하지 않으시면, 30초 후에 종료됩니다."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo 장치 패널"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati 장치 패널"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format
@@ -265,8 +265,8 @@ msgstr "컴퓨터 볼륨"
 msgid "Mute"
 msgstr "음소거"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego 전원 아이콘"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati 전원 아이콘"
 
 #~ msgid "Netbook volume"
 #~ msgstr "넷북 볼륨"

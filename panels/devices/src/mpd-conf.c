@@ -48,7 +48,7 @@ typedef struct
   unsigned int   client_connection_id;
 } MpdConfPrivate;
 
-#define MPD_CONF_DIR "/desktop/meego"
+#define MPD_CONF_DIR "/desktop/dawati"
 #define MPD_CONF_BRIGHTNESS_ENABLED       MPD_CONF_DIR"/panel-devices/brightness_enabled"
 #define MPD_CONF_BRIGHTNESS_VALUE         MPD_CONF_DIR"/panel-devices/brightness_value"
 #define MPD_CONF_BRIGHTNESS_VALUE_BATTERY MPD_CONF_DIR"/panel-devices/brightness_value_battery"

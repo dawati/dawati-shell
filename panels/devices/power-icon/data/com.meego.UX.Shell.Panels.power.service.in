@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=com.meego.UX.Shell.Panels.power
-Exec=@LIBEXECDIR@/meego-power-icon

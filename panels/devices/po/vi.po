@@ -6,32 +6,32 @@
 # Quang Pham <quang.pham@msn.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: meego-panel-devices\n"
-"Report-Msgid-Bugs-To: http://bugs.meego.com/\n"
+"Project-Id-Version: dawati-panel-devices\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
 "POT-Creation-Date: 2011-11-02 13:32-0700\n"
 "PO-Revision-Date: 2011-11-03 19:02+0000\n"
 "Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
-"Language-Team: Vietnamese (http://www.transifex.net/projects/p/meego/team/vi/)\n"
+"Language-Team: Vietnamese (http://www.transifex.net/projects/p/dawati/team/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Bảng điều khiển thiết bị"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "thiết bị"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Hết thời gian ngủ"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid ""
 "Value of -1 means never sleep, other values are seconds of continuous idle "
 "state before sleeping."
@@ -65,9 +65,9 @@ msgstr[0] "%u Đầu vào"
 msgid "System Sounds"
 msgstr "Âm thanh hệ thống"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Biểu tượng nguồn MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Biểu tượng nguồn Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -123,9 +123,9 @@ msgstr "Bạn có muốn tắt ngay bây giờ?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Nếu bạn không quyết định, máy sẽ tắt sau 30 giây."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "Bảng điều khiển thiết bị MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Bảng điều khiển thiết bị Dawati"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format

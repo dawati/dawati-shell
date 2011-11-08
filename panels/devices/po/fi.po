@@ -14,20 +14,20 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Laitteet-paneeli"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "laitteet"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Unitilan aikakatkaisu"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Arvolla -1 laite ei koskaan siirry unitilaan. Muut arvot tarkoittavat sekunteja, kauanko koneen tulee olla käyttämättä siirtyäkseen unitilaan."
 
@@ -59,9 +59,9 @@ msgstr[1] "%u syötöt"
 msgid "System Sounds"
 msgstr "Järjestelmän äänet"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo-virtakuvake"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati-virtakuvake"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -110,9 +110,9 @@ msgstr "Haluaisitko sammuttaa nyt?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Jos et tee päätöstä, virta kytkeytyy pois päältä 30 sekunnissa."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo-laitepaneeli"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati-laitepaneeli"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format
@@ -274,8 +274,8 @@ msgstr "Mykistä"
 #~ msgid "Netbook brightness"
 #~ msgstr "Verkon kirkkaus"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego virtakuvake"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati virtakuvake"
 
 #~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
 #~ msgstr "<span font-weight='bold'>Tuo tietoja</span> <span color='%s'>%d%%</span>"

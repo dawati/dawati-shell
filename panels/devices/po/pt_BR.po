@@ -16,20 +16,20 @@ msgstr ""
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Painel de dispositivos"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "dispositivos"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Tempo limite de suspensão"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Valor de -1 significa nunca suspenso, outros valores são segundos em estado contínuo ocioso antes de suspensão."
 
@@ -61,9 +61,9 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons de sistema"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "Ícone de energia do MeeGo"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Ícone de energia do Dawati"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -112,9 +112,9 @@ msgstr "Deseja desligar agora?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Se você não decidir, vou desligar dentro de 30 segundos."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "Painel de dispositivos MeeGo"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Painel de dispositivos Dawati"
 
 #: ../src/mpd-battery-device.c:371
 #, c-format
@@ -268,8 +268,8 @@ msgstr "Volume de computador"
 msgid "Mute"
 msgstr "Mudo"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Ícone de energia Meego"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Ícone de energia Dawati"
 #~ msgid "Netbook volume"
 #~ msgstr "Volume de netbook"
 #~ msgid ""

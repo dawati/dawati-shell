@@ -15,20 +15,20 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:1
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
 msgid "Devices panel"
 msgstr "Panel Zařízení"
 
-#: ../data/meego-panel-devices.desktop.in.in.h:2
-#: ../src/meego-panel-devices.c:176
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
 msgid "devices"
 msgstr "Zařízení"
 
-#: ../data/meego-panel-devices.schemas.in.h:1
+#: ../data/dawati-panel-devices.schemas.in.h:1
 msgid "Sleep timeout"
 msgstr "Překročení času spánku"
 
-#: ../data/meego-panel-devices.schemas.in.h:2
+#: ../data/dawati-panel-devices.schemas.in.h:2
 msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
 msgstr "Hodnota -1 znamená, že spánek nikdy nebude, ostatní hodnoty představují sekundy nepřetržitého nečinného stavu před spaním."
 
@@ -60,9 +60,9 @@ msgstr[1] "%u vstupy"
 msgid "System Sounds"
 msgstr "Systémové zvuky"
 
-#: ../power-icon/src/meego-power-icon.c:46
-msgid "MeeGo Power Icon"
-msgstr "MeeGo symbol pro stav elektrické energie"
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati symbol pro stav elektrické energie"
 
 #: ../power-icon/src/mpd-power-icon.c:77
 msgid "Running low on battery"
@@ -111,9 +111,9 @@ msgstr "Chcete nyní provést vypnutí?"
 msgid "If you don't decide, I'll turn off in 30 seconds."
 msgstr "Pokud nebude přijato žádné rozhodnutí, dojde k vypnutí za 30 sekund."
 
-#: ../src/meego-panel-devices.c:126
-msgid "MeeGo Devices Panel"
-msgstr "MeeGo panel Zařízení"
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati panel Zařízení"
 
 #: ../src/mpd-battery-device.c:381
 #, c-format
@@ -278,8 +278,8 @@ msgstr "Ztlumit"
 #~ msgid "Netbook volume"
 #~ msgstr "Netbook-Lautstärke"
 
-#~ msgid "Meego Power Icon"
-#~ msgstr "Meego Energiesymbol"
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati Energiesymbol"
 
 #~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
 #~ msgstr "<span font-weight='bold'>Daten werden importiert</span> <span color='%s'>%d%%</span>"
