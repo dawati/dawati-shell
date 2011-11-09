@@ -1,0 +1,192 @@
+# translation of lo.po to Lao
+# Esperanto translations for dawati-web-browser package.
+# Copyright (C) 2009 Intel Corporation
+# This file is distributed under the same license as the dawati-web-browser package.
+#
+# Neil Roberts <neil@linux.intel.com>, 2009.
+# Anousak Souphavanh <anousak@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: lo\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"PO-Revision-Date: 2009-07-31 18:14+0700\n"
+"Last-Translator: Anousak Souphavanh <anousak@gmail.com>\n"
+"Language-Team: Lao <lo@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "ຊອກຫາ ສະເພາະ %%s ໃນ %s"
+
+#: ../common/mwb-ac-list.cc:1334
+#, c-format
+msgid "Go to %s"
+msgstr "ໄປຫາ %s"
+
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+
+#: ../netpanel/dawati-netbook-netpanel.cc:789
+msgid ""
+"As you visit web pages, your favorites will appear here and on the New tab "
+"page in the browser."
+msgstr ""
+
+#: ../netpanel/dawati-netbook-netpanel.cc:811
+#: ../netpanel/dawati-netbook-netpanel.cc:934
+msgid "New tab"
+msgstr "ເເທບໃຫມ່"
+
+#. Construct entry table widgets
+#: ../netpanel/dawati-netbook-netpanel.cc:1198
+msgid "Your pages"
+msgstr ""
+
+#: ../netpanel/dawati-netbook-netpanel.cc:1211
+msgid "Search"
+msgstr ""
+
+#. Construct title for tab preview section
+#: ../netpanel/dawati-netbook-netpanel.cc:1232
+msgid "Tabs"
+msgstr ""
+
+#. Construct title for favorite pages section
+#: ../netpanel/dawati-netbook-netpanel.cc:1237
+msgid "Favorite pages"
+msgstr ""
+
+#: ../netpanel/dawati-panel-web.cc:195
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:2
+#, fuzzy
+msgid "internet"
+msgstr "ມັນເເມ່ນ ອີນເຕີເເນດ"
+
+#: ../netpanel/dawati-panel-web.cc:216 ../netpanel/dawati-panel-web.cc:262
+#, fuzzy
+msgid "Internet"
+msgstr "ມັນເເມ່ນ ອີນເຕີເເນດ"
+
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr ""
+
+#~ msgid "Web Browser"
+#~ msgstr "ເວບ ບາວເຊີ"
+
+#~ msgid "Dawati web browser - "
+#~ msgstr "ມອບລີນ ເວບ ບາວເຊີ -"
+
+#~ msgid "Untitled"
+#~ msgstr "ບໍ່ມີຫົວຂໍ້"
+
+#~ msgid "Downloads"
+#~ msgstr "ດາວໂລດ"
+
+#~ msgid "Downloads - %d%%"
+#~ msgstr "ດາວໂລດ - %d%%"
+
+#~ msgid "Dawati web browser"
+#~ msgstr "ມອບລີນ ເວບ ບາວເຊີ"
+
+#~ msgid "Download cancelled"
+#~ msgstr "ຍົກເລີກ ດາວໂລດ "
+
+#~ msgid "Download completed"
+#~ msgstr "ດາວໂລດ ເເລ້ວ"
+
+#~ msgid "Open file"
+#~ msgstr "ເປີດເເຟ້ມ"
+
+#~ msgid "Dawati Web Browser"
+#~ msgstr "ມອບລີນ ເວບ ບາວເຊີ"
+
+#~ msgid "Yes, delete"
+#~ msgstr "ເເມ່ນ, ລຶບ"
+
+#~ msgid "No, save"
+#~ msgstr "ບໍ່ແມ່ນ, ບັນທຶກ"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "ປະມານ ລົດນາທີ ນຶງພ່ານໄປ"
+
+#~ msgid "About a minute ago"
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "ປະມານ ນາທີ ນຶງພ່ານໄປ"
+#~ msgstr[1] "ປະມານ ນາທີ ນຶງພ່ານໄປ"
+
+#~ msgid "About an hour ago"
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "ປະມານ ຊົ່ວໂມງ ນຶງພ່ານໄປ"
+#~ msgstr[1] "ປະມານ ນາທີ ນຶງພ່ານໄປ"
+
+#~ msgid "Today at %H:%M"
+#~ msgstr "ມື້ນີ້ŭ ໃນ %H:%M"
+
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "ມື້ວານນີິ ໃນ %H:%M"
+
+#~ msgid "Last %A at %H:%M"
+#~ msgstr "ສຸດທ້າຍ %An ໃນ %H:%M"
+
+#~ msgid "%x at %H:%M"
+#~ msgstr "%x ໃນ %H:%M"
+
+#~ msgid "Settings"
+#~ msgstr "ຕັ້ງຄ່າ"
+
+#~ msgid "General"
+#~ msgstr "ທົ່ວໄປ"
+
+#~ msgid "Add new search engine"
+#~ msgstr "ເພີ້ມເຄຶ້ອງຊອກໃຫມ່"
+
+#~ msgid "Privacy"
+#~ msgstr "ສິດຊ່ວນຕົວ"
+
+#~ msgid "Remember my passwords"
+#~ msgstr "ຈໍາລະຫັດພ່ານ ຂອງຂ້ອຍ"
+
+#~ msgid "Remember what I type into forms"
+#~ msgstr "ຈື່ວ່າຂ້ອຍປ້ອນຫຍັງເຂົ້າຟອມ"
+
+#~ msgid "Keep my browser history for up to"
+#~ msgstr "ŭ"
+
+#~ msgid "1 year"
+#~ msgstr "1 ປີ"
+
+#~ msgid "1 month"
+#~ msgstr "1 ເດືອນ"
+
+#~ msgid "1 week"
+#~ msgstr "1 ອາທິດ"
+
+#~ msgid "1 day"
+#~ msgstr "1 ມື້"
+
+#~ msgid "Trouble connecting?"
+#~ msgstr "ບັນຫາເຊີ່ມຕໍ່?"
+
+#~ msgid "Getting started"
+#~ msgstr "ກໍາລັງເລີ້ມ"

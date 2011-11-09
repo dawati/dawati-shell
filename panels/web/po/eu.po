@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-20 13:46-0400\n"
+"PO-Revision-Date: 2009-10-13 12:50+0100\n"
+"Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "%%s bilatu %s-n"
+
+#: ../common/mwb-ac-list.cc:1334
+#, c-format
+msgid "Go to %s"
+msgstr "%s-ra joan"
+
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"'Sartu' sakatu\n"
+"webgunea bisitatzeko"
+
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"'Behera' sakatu\n"
+"zerrenda arakatzeko"
+
+#: ../netpanel/dawati-netbook-netpanel.cc:789
+msgid ""
+"As you visit web pages, your favorites will appear here and on the New tab "
+"page in the browser."
+msgstr ""
+"Webguneak bisitatzen dituzun eran, zure gogokoenak hemen eta arakatzailean "
+"'Fitxa berria' agertuko dira."
+
+#: ../netpanel/dawati-netbook-netpanel.cc:811
+#: ../netpanel/dawati-netbook-netpanel.cc:934
+msgid "New tab"
+msgstr "Fitxa berria"
+
+#. Construct entry table widgets
+#: ../netpanel/dawati-netbook-netpanel.cc:1198
+#, fuzzy
+msgid "Your pages"
+msgstr "Orri gogokoenak"
+
+#: ../netpanel/dawati-netbook-netpanel.cc:1211
+msgid "Search"
+msgstr "Bilatu"
+
+#. Construct title for tab preview section
+#: ../netpanel/dawati-netbook-netpanel.cc:1232
+msgid "Tabs"
+msgstr "Fitxak"
+
+#. Construct title for favorite pages section
+#: ../netpanel/dawati-netbook-netpanel.cc:1237
+msgid "Favorite pages"
+msgstr "Orri gogokoenak"
+
+#: ../netpanel/dawati-panel-web.cc:195
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "internet"
+
+#: ../netpanel/dawati-panel-web.cc:216 ../netpanel/dawati-panel-web.cc:262
+msgid "Internet"
+msgstr "Internet"
+
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:1
+#, fuzzy
+msgid "Internet panel"
+msgstr "Internet"
+
+#~ msgid "Oops!"
+#~ msgstr "Hara!"
+
+#~ msgid "New tab page"
+#~ msgstr "Fitxa berria"
+
+#~ msgid "Reload page"
+#~ msgstr "Orria birkargatu"
+
+#~ msgid ""
+#~ "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab "
+#~ "to crash. The rest of the browser is unharmed. You can try to reload the "
+#~ "page or visit another one."
+#~ msgstr ""
+#~ "Lastima, badirudi <span color=\"#909090\">%s</span>-k fitxa hau "
+#~ "kraskatuarazi duela. Ez da arakatzailearen beste ezer kaltetu. Orria "
+#~ "birkagatzen saiatu zaitezke, edo beste bat bisitatu dezakezu."
+
+#~ msgid "It's the internet"
+#~ msgstr "Internet da"
+
+#~ msgid "Web Browser"
+#~ msgstr "Web-Arakatzailea"
+
+#~ msgid "Dawati web browser - "
+#~ msgstr "Dawati web-arakatzailea - "
+
+#~ msgid "Untitled"
+#~ msgstr "Izengabea"
+
+#~ msgid "Downloads"
+#~ msgstr "Deskargak"
+
+#~ msgid "Downloads - %d%%"
+#~ msgstr "Deskargak - %d%%"
+
+#~ msgid "Dawati web browser"
+#~ msgstr "Dawati web-arakatzailea"
+
+#~ msgid "Download cancelled"
+#~ msgstr "Deskarga ezeztatua"
+
+#~ msgid "Download completed"
+#~ msgstr "Deskarga burutua"
+
+#~ msgid "Open file"
+#~ msgstr "Fitxategia ireki"
+
+#~ msgid "Run the browser in a window"
+#~ msgstr "Leiho batean exekutatu arakatzailea"
+
+#~ msgid "Add the URL to the recent files list"
+#~ msgstr "Azken fitxategien zerrendara gehitu URLa"
+
+#~ msgid "Dawati Web Browser"
+#~ msgstr "Dawati Web-Arakatzailea"
+
+#~ msgid "Open link in new tab"
+#~ msgstr "Fitxa berrian ireki fitxa"
+
+#~ msgid "Copy link location"
+#~ msgstr "Estekaren kokalekua kopiatu"
+
+#~ msgid ""
+#~ "Do you want to reset your browser? This will remove your web history, "
+#~ "pinned pages and personal settings. "
+#~ msgstr ""
+#~ "Zure arakatzailea garbitu nahi al duzu? Zure web historia, orri markatuak "
+#~ "eta ezarpen pertsonalak ezabatuko dira."
+
+#~ msgid "Yes, delete"
+#~ msgstr "Bai, ezabatu"
+
+#~ msgid "No, save"
+#~ msgstr "Ez, gorde"
+
+#~ msgid ""
+#~ "No pinned pages. Push the pin in the automagic bar on a page you wish to "
+#~ "remember."
+#~ msgstr ""
+#~ "Markatutako orririk ez. Barra automagikoarekin markatu ditzakezu gogoratu "
+#~ "nahi dituzun orriak."
+
+#~ msgid "More pinned pages"
+#~ msgstr "Markatutako orri gehiago"
+
+#~ msgid "No matching pages were found"
+#~ msgstr "Ez da kointzidentziarik aurkitu"
+
+#~ msgid "__ wants to know your location."
+#~ msgstr "__ zure kokalekua ezagutu nahi du."
+
+#~ msgid "Share location"
+#~ msgstr "Kokalekua konpartitu"
+
+#~ msgid "Don't share"
+#~ msgstr "Ez konpartitu"
+
+#~ msgid "Remember for this site"
+#~ msgstr "Webgune honetarako gogoratu"
+
+#~ msgid "Settings"
+#~ msgstr "Ezarpenak"
+
+#~ msgid "General"
+#~ msgstr "Orokorrak"
+
+#~ msgid "Try to complete domain names in automagic bar"
+#~ msgstr "Domeinu-izenak osatzen saiatu barra automagikoan"
+
+#~ msgid "Search in automagic bar"
+#~ msgstr "Barra automagikoan bilatu"
+
+#~ msgid "Add new search engine"
+#~ msgstr "Bilaketa-motore berria gehitu"
+
+#~ msgid "Privacy"
+#~ msgstr "Pribatutasuna"
+
+#~ msgid "Remember my passwords"
+#~ msgstr "Nire pasahitzak gogoratu"
+
+#~ msgid "Remember what I type into forms"
+#~ msgstr "Formularioetan idazten dudana gogoratu"
+
+#~ msgid "Keep my browser history for up to"
+#~ msgstr "Nire arakatzailearen historia gorde"
+
+#~ msgid "1 year"
+#~ msgstr "urte 1"
+
+#~ msgid "1 month"
+#~ msgstr "hilabete 1"
+
+#~ msgid "1 week"
+#~ msgstr "aste 1"
+
+#~ msgid "1 day"
+#~ msgstr "egun 1"
+
+#~ msgid "Reset my browser now"
+#~ msgstr "Arakatzailea garbitu"
+
+#~ msgid "Pinned pages"
+#~ msgstr "Markatutako orriak"
+
+#~ msgid "Trouble connecting?"
+#~ msgstr "Konektatzeko arazoak?"
+
+#~ msgid ""
+#~ "Move your pointer to the top of the screen to bring down the toolbar and "
+#~ "choose the Networks panel."
+#~ msgstr ""
+#~ "Panatailaren goralderaino mugitu ezazu sagua tresna-barra agertarazteko, "
+#~ "eta Sareak panela hautatu ezazu."
+
+#~ msgid ""
+#~ "Welcome to Dawati Netbook Web Browser. When you visit pages your favorite "
+#~ "ones will show up here."
+#~ msgstr ""
+#~ "Ongietorri Dawati Netbook Web-Arakatzailera. Orriak bisitatzen "
+#~ "dituzunean, hemen agertuko dira zure gogokoenak."
+
+#~ msgid "Getting started"
+#~ msgstr "Nola hasi"
+
+#~ msgid ""
+#~ "First, make sure you have an internet connection! Then click on the "
+#~ "automagic bar or press Ctrl+L to get there quickly and type the address "
+#~ "or search you want."
+#~ msgstr ""
+#~ "Lehenik, internet konexioa duzula egiaztatu ezazu! Ondoren, barra "
+#~ "automagikoan egizu klik edo Ctrl+L sakatu ezazu nahi duzun helbidea edo "
+#~ "bilaketa idazteko."
+
+#~ msgid "Make this a private tab"
+#~ msgstr "Probatu bihurtu fitxa hau"
+
+#~ msgid ""
+#~ "This is a private tab. Things you do in this tab will not be stored on "
+#~ "this machine. However, websites you use may still keep records of your "
+#~ "actions."
+#~ msgstr ""
+#~ "Pribatua da fitxa hau. Ez da fitxa honetan egiten duzunaren arrastorik "
+#~ "gordeko ordenagailu honetan. Halaere, webguneek zure ekintzen erregistroa "
+#~ "gorde dezakete."
+
+#~ msgid "Dawati Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Mozilla-ren teknologian oinarritzen da Dawati Web-Arakatzailea"
+
+#~ msgid "Go"
+#~ msgstr "Joan"
+
+#~ msgid "Next"
+#~ msgstr "Hurrengoa"
+
+#~ msgid "Previous"
+#~ msgstr "Aurrekoa"

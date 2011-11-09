@@ -1,0 +1,202 @@
+# translation of dawati-web-browser.po to
+# translation of dawati-web-browser.master.dawati-web-browser.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-web-browser ru\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
+"PO-Revision-Date: 2009-08-19 12:27+0300\n"
+"Last-Translator: Volynets Ievgenii <gentoo@list.ru>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../common/mwb-ac-list.cc:1334
+#, c-format
+msgid "Go to %s"
+msgstr "Перейти к %s "
+
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Нажмите \"Ввод\" для\n"
+"посещения сайта"
+
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Нажмите стрелку вниз для\n"
+"получения списка"
+
+#: ../netpanel/dawati-netbook-netpanel.cc:811
+#: ../netpanel/dawati-netbook-netpanel.cc:934
+msgid "New tab"
+msgstr "Новая вкладка"
+
+#. Construct title for tab preview section
+#: ../netpanel/dawati-netbook-netpanel.cc:1243
+msgid "Tabs"
+msgstr "Вкладки"
+
+#. Construct title for favorite pages section
+#: ../netpanel/dawati-netbook-netpanel.cc:1248
+msgid "Favorite pages"
+msgstr "Любимые страницы"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Поиск %%s на %s"
+
+#: ../netpanel/dawati-netbook-netpanel.cc:789
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "Здесь, а также в окне новой вкладки, будут отображаться наиболее предпочитаемые/посещаемые вами страницы."
+
+#. Construct entry table widgets
+#: ../netpanel/dawati-netbook-netpanel.cc:1209
+msgid "Your pages"
+msgstr "Ваши страницы"
+
+#: ../netpanel/dawati-netbook-netpanel.cc:1222
+msgid "Search"
+msgstr "Поиск"
+
+#: ../netpanel/dawati-panel-web.cc:195
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "интернет"
+
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "Панель интернета"
+
+#: ../netpanel/dawati-panel-web.cc:216 ../netpanel/dawati-panel-web.cc:262
+msgid "Internet"
+msgstr "Интернет"
+
+#~ msgid "Untitled"
+#~ msgstr "Безымянное"
+
+#~ msgid "Downloads"
+#~ msgstr "Закачки"
+
+#~ msgid "Download cancelled"
+#~ msgstr "Скачивание отменено"
+
+#~ msgid "Download completed"
+#~ msgstr "Скачивание завершено"
+
+#~ msgid "Open file"
+#~ msgstr "Открыть файл"
+
+#~ msgid "Run the browser in a window"
+#~ msgstr "Запустить браузер в окне"
+
+#~ msgid "Add the URL to the recent files list"
+#~ msgstr "Добавить URL к текущему списку файлов"
+
+#~ msgid "Open link in new tab"
+#~ msgstr "Открыть ссылку в новой вкладке"
+
+#~ msgid "Copy link location"
+#~ msgstr "Копировать ссылку"
+
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "Переустановить браузер? Это уничтожит данные о посещении web, связанные страницы и личный настройки. "
+
+#~ msgid "Yes, delete"
+#~ msgstr "Да, удалить"
+
+#~ msgid "No, save"
+#~ msgstr "Нет, сохранить"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Менее минуты назад"
+
+#~ msgid "About a minute ago"
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "Около минуты назад"
+#~ msgstr[1] "Около __ минут назад"
+#~ msgstr[2] ""
+
+#~ msgid "About an hour ago"
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "Около часа назад"
+#~ msgstr[1] "Около __ часов назад"
+#~ msgstr[2] ""
+
+#~ msgid "Today at %H:%M"
+#~ msgstr "Сегодня в %H:%M"
+
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "Вчера в %H:%M"
+
+#~ msgid "%x at %H:%M"
+#~ msgstr "%x в %H:%M"
+
+#~ msgid "Remember for this site"
+#~ msgstr "Запомнить для этого сайта"
+
+#~ msgid "Settings"
+#~ msgstr "Настройки"
+
+#~ msgid "General"
+#~ msgstr "Общие"
+
+#~ msgid "Add new search engine"
+#~ msgstr "Добавить новую поисковую систему"
+
+#~ msgid "Privacy"
+#~ msgstr "Конфиденциальность"
+
+#~ msgid "Remember my passwords"
+#~ msgstr "Запоминать мои пароли"
+
+#~ msgid "Remember what I type into forms"
+#~ msgstr "Запоминать заполненные поля в формах"
+
+#~ msgid "Keep my browser history for up to"
+#~ msgstr "Сохранять историю"
+
+#~ msgid "1 year"
+#~ msgstr "1 год"
+
+#~ msgid "1 month"
+#~ msgstr "1 месяц"
+
+#~ msgid "1 week"
+#~ msgstr "1 неделю"
+
+#~ msgid "1 day"
+#~ msgstr "1 день"
+
+#~ msgid "Reset my browser now"
+#~ msgstr "Переустановить мой браузер"
+
+#~ msgid "Getting started"
+#~ msgstr "Начать"
+
+#~ msgid "Go"
+#~ msgstr "Перейти"
+
+#~ msgid "Next"
+#~ msgstr "Следующий"
+
+#~ msgid "Previous"
+#~ msgstr "Предыдущий"

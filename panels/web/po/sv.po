@@ -1,0 +1,331 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-05 09:21+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../common/mwb-ac-list.cc:1311
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Sök efter %%s på %s"
+
+#: ../common/mwb-ac-list.cc:1334
+#, c-format
+msgid "Go to %s"
+msgstr "Gå till %s"
+
+#: ../common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Använd enter\n"
+" för webbplats"
+
+#: ../common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Använd nedpil\n"
+"för att se lista"
+
+#: ../netpanel/dawati-netbook-netpanel.cc:789
+msgid "As you visit web pages, your favorites will appear here and on the New tab page in the browser."
+msgstr "När du besöker webbsidor kommer dina favoriter visas här och på den nya fliken i webbläsaren."
+
+#: ../netpanel/dawati-netbook-netpanel.cc:811
+#: ../netpanel/dawati-netbook-netpanel.cc:934
+msgid "New tab"
+msgstr "Ny flik"
+
+#: ../netpanel/dawati-netbook-netpanel.cc:1222
+msgid "Search"
+msgstr "Sök"
+
+#. Construct title for tab preview section
+#: ../netpanel/dawati-netbook-netpanel.cc:1243
+msgid "Tabs"
+msgstr "Flikar"
+
+#. Construct title for favorite pages section
+#: ../netpanel/dawati-netbook-netpanel.cc:1248
+msgid "Favorite pages"
+msgstr "Favoritsidor"
+
+#: ../netpanel/dawati-panel-web.cc:195
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "internet"
+
+#: ../netpanel/dawati-panel-web.cc:216 ../netpanel/dawati-panel-web.cc:262
+msgid "Internet"
+msgstr "Internet"
+
+#. Construct entry table widgets
+#: ../netpanel/dawati-netbook-netpanel.cc:1209
+msgid "Your pages"
+msgstr "Dina sidor"
+
+#: ../netpanel/dawati-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "Internetpanel"
+
+#~ msgid "It's the internet"
+#~ msgstr "Det är internet"
+
+#~ msgid "Web Browser"
+#~ msgstr "Webbläsare"
+
+#~ msgid "Dawati web browser - "
+#~ msgstr "Webbläsaren Dawati -"
+
+#~ msgid "Loading..."
+#~ msgstr "Laddar.."
+
+#~ msgid "Untitled"
+#~ msgstr "Namnlös"
+
+#~ msgid "Downloads"
+#~ msgstr "Nerladdat material"
+
+#~ msgid "Downloads - %d%%"
+#~ msgstr "Nerladdat material - %d%%"
+
+#~ msgid "Dawati web browser"
+#~ msgstr "Webbläsaren Dawati"
+
+#~ msgid "Oops!"
+#~ msgstr "Oooojdå!"
+
+#~ msgid "New tab page"
+#~ msgstr "Ny flik"
+
+#~ msgid "Reload page"
+#~ msgstr "Ladda om sidan"
+
+#~ msgid "Sorry, <span color=\"#909090\">%s</span> appears to have caused this tab to crash. The rest of the browser is unharmed. You can try to reload the page or visit another one."
+#~ msgstr "Ursäkta, <span color=\"#909090\">%s</span> verkar ha fått den här fliken att krascha. Resten av webbläsaren är ok. Du kan ladda om webbsidan eller besöka en annan.  "
+
+#~ msgid "Download cancelled"
+#~ msgstr "Nerladdningen avbruten"
+
+#~ msgid "Download completed"
+#~ msgstr "Nerladdningen färdig"
+
+#~ msgid "Open file"
+#~ msgstr "Öppna fil"
+
+#~ msgid "Find in Page"
+#~ msgstr "Hitta på sidan"
+
+#~ msgid "Type to search"
+#~ msgstr "Skriv för sökning"
+
+#~ msgid "Next result"
+#~ msgstr "Nästa resuktat"
+
+#~ msgid "Previous result"
+#~ msgstr "Tidigare resultat"
+
+#~ msgid "Run the browser in a window"
+#~ msgstr "Öppna webbläsaren i ett nytt fönster"
+
+#~ msgid "Add the URL to the recent files list"
+#~ msgstr "Lägg till URL'en i fillistan"
+
+#~ msgid "Dawati Web Browser"
+#~ msgstr "Webbläsaren Dawati"
+
+#~ msgid "Open link in new tab"
+#~ msgstr "Öppna länk i ny flik"
+
+#~ msgid "Copy link location"
+#~ msgstr "Kopiera länkdestination"
+
+#~ msgid "Save link"
+#~ msgstr "Spara länk"
+
+#~ msgid "View image"
+#~ msgstr "Se bild"
+
+#~ msgid "Copy image location"
+#~ msgstr "Kopiera bilddestination"
+
+#~ msgid "Save image"
+#~ msgstr "Spara bild"
+
+#~ msgid "Copy text"
+#~ msgstr "Kopiera text"
+
+#~ msgid "Back"
+#~ msgstr "Tillbaka"
+
+#~ msgid "Forward"
+#~ msgstr "Nästa"
+
+#~ msgid "Stop"
+#~ msgstr "Sluta"
+
+#~ msgid "Reload"
+#~ msgstr "Ladda om sidan"
+
+#~ msgid "Pin this page"
+#~ msgstr "Nåla fast sidan"
+
+#~ msgid "Save page"
+#~ msgstr "Spara sidan"
+
+#~ msgid "Do you want to reset your browser? This will remove your web history, pinned pages and personal settings. "
+#~ msgstr "Vill du radera din webbhistoria nu? Det kommer också att ta bort fastnålade sidor och personliga inställningar."
+
+#~ msgid "Yes, delete"
+#~ msgstr "Ja, ta bort"
+
+#~ msgid "No, save"
+#~ msgstr "Nej, spara"
+
+#~ msgid "No pinned pages. Push the pin in the automagic bar on a page you wish to remember."
+#~ msgstr "Inga fastnålade sidor. Klicka på knappnålen i automagi-listen för de webbsidor du vill komma ihåg."
+
+#~ msgid "More pinned pages"
+#~ msgstr "Fler fastnålade sidor"
+
+#~ msgid "No matching pages were found"
+#~ msgstr "Inga matchande sidor hittades"
+
+#~ msgid "__ wants to know your location."
+#~ msgstr "__vill veta din plats."
+
+#~ msgid "Share location"
+#~ msgstr "Dela plats"
+
+#~ msgid "Don't share"
+#~ msgstr "Dela inte"
+
+#~ msgid "Remember for this site"
+#~ msgstr "Kom ihåg för webbplats"
+
+#~ msgid "Settings"
+#~ msgstr "Inställningar"
+
+#~ msgid "General"
+#~ msgstr "Allmänna"
+
+#~ msgid "Try to complete domain names in automagic bar"
+#~ msgstr "Försök att fylla i domännamn med hjälp av automagi-listen"
+
+#~ msgid "Search in automagic bar"
+#~ msgstr "Sök med hjälp av automagi-listen"
+
+#~ msgid "Add new search engine"
+#~ msgstr "Lägg till ny sökmotor"
+
+#~ msgid "Privacy"
+#~ msgstr "Personliga"
+
+#~ msgid "Remember my passwords"
+#~ msgstr "Kom ihåg mina lösenord"
+
+#~ msgid "Remember what I type into forms"
+#~ msgstr "Kom ihåg vad jag fyller i formulär"
+
+#~ msgid "Keep my browser history for up to"
+#~ msgstr "Behåll min webbläsarhistorik upp till "
+
+#~ msgid "1 year"
+#~ msgstr "1 år "
+
+#~ msgid "1 month"
+#~ msgstr "1 månad"
+
+#~ msgid "1 week"
+#~ msgstr "1 vecka"
+
+#~ msgid "1 day"
+#~ msgstr "1 dag"
+
+#~ msgid "Reset my browser now"
+#~ msgstr "Nollställ min webbläsarhistorik nu"
+
+#~ msgid "Pinned pages"
+#~ msgstr "Fastnålade sidor"
+
+#~ msgid "Trouble connecting?"
+#~ msgstr "Problem att ansluta?"
+
+#~ msgid "Move your pointer to the top of the screen to bring down the toolbar and choose the Networks panel."
+#~ msgstr "Flytta din markör till översta delen av skärmen för att i verktygsfältet välja Nätverk"
+
+#~ msgid "Welcome to Dawati Netbook Web Browser. When you visit pages your favorite ones will show up here."
+#~ msgstr "Välkommen till Dawati Netbook webbläsare. När du besöker sidor kommer dina favoriter visas här."
+
+#~ msgid "Getting started"
+#~ msgstr "Börjar"
+
+#~ msgid "First, make sure you have an internet connection! Then click on the automagic bar or press Ctrl+L to get there quickly and type the address or search you want."
+#~ msgstr "Börja med att se att internetanslutningen fungerar! Klicka därefter på automagi-listen eller tryck på Ctrl+L för att hoppa dit direkt och skriv in addressen eller sök det du vill."
+
+#~ msgid "Make this a private tab"
+#~ msgstr "Skapa en personlig flik"
+
+#~ msgid "This is a private tab. Things you do in this tab will not be stored on this machine. However, websites you use may still keep records of your actions."
+#~ msgstr "Detta är en personlig flik. Det som du gör under denna flik kommer inte sparas på datorn. Webbplatser som du besöker kan  fortfarande ha sparat information beträffande dina aktiviteter."
+
+#~ msgid "Dawati Web Browser is proudly based on Mozilla technology"
+#~ msgstr "Dawati webbläsare är baserad på teknologi från Mozilla"
+
+#~ msgid "Go"
+#~ msgstr "Gå till"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Mindre än en minut sedan "
+
+#~ msgid "About a minute ago"
+#~ msgid_plural "About __ minutes ago"
+#~ msgstr[0] "Omkring en minut sedan"
+#~ msgstr[1] "Omkring __ minuter sedan"
+
+#~ msgid "About an hour ago"
+#~ msgid_plural "About __ hours ago"
+#~ msgstr[0] "Omkring en timme sedan"
+#~ msgstr[1] "Omkring __ timmar sedan"
+
+#~ msgid "Today at %H:%M"
+#~ msgstr "Idag vid %H:%M"
+
+#~ msgid "Yesterday at %H:%M"
+#~ msgstr "Igår vid %H:%M"
+
+#~ msgid "Last %A at %H:%M"
+#~ msgstr "Senast %A vid %H:%M"
+
+#~ msgid "%x at %H:%M"
+#~ msgstr "%x vid %H:%M"
+
+#~ msgid "<p>Push the pin icon in the location bar above to add pages to this list.</p>"
+#~ msgstr "<p>Klicka på knappnålsikonen i listen ovan för att lägga till sidor i listan.</p>"
+
+#~ msgid "Fewer pinned pages"
+#~ msgstr "Färre inlästa sidor"
+
+#~ msgid "Next"
+#~ msgstr "Nästa"
+
+#~ msgid "Previous"
+#~ msgstr "Tidigare"
