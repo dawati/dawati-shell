@@ -1,0 +1,526 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-19 16:51+0000\n"
+"PO-Revision-Date: 2010-10-19 19:27-0800\n"
+"Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Панель устройств"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
+msgid "devices"
+msgstr "устройства"
+
+#: ../data/dawati-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Истечение времени ожидания в спящем режиме"
+
+#: ../data/dawati-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Значение -1 индицирует отсутствие сна, в то время как другие значения указывают на длительность (в секундах) непрерывного режима простоя перед переходом в спящий режим."
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Отключено"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u вывод"
+msgstr[1] "%u выводы"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u ввод"
+msgstr[1] "%u вводы"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Системные звуки"
+
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Значок электропитания Dawati"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Заряд батареи на исходе"
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Заряд батареи на исходе. При возможности подключите шнур питания и зарядите ее."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "Заряд практически исчерпан"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "Заряд батареи практически исчерпан. Сохраните результаты своей работы и как можно быстрее подключите шнур питания."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "Внимание!"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Заряд батареи исчерпан и компьютер будет выключен. Сохраните свою работу, и до скорой встречи!"
+
+#: ../power-icon/src/mpd-power-icon.c:435
+msgid "battery"
+msgstr "батарея"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Если вы ничего не предпримите, компьютер отключится через %d секунду."
+msgstr[1] "Если вы ничего не предпримите, компьютер отключится через %d секунд."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Отключить"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Отключить питание немедленно?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
+
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Панель устройств Dawati"
+
+#: ../src/mpd-battery-device.c:371
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Похоже, у вас отсутствует батарея."
+
+#: ../src/mpd-battery-device.c:375
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Батарея заряжается. Ее заряд составляет %d%%."
+
+#: ../src/mpd-battery-device.c:380
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Батарея используется. Ее заряд составляет %d%%."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Батарея заряжена полностью, можете продолжить работу."
+
+#: ../src/mpd-battery-device.c:389
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Похоже, ваша батарея неисправна."
+
+#. First row.
+#: ../src/mpd-brightness-tile.c:141
+msgid "Netbook brightness"
+msgstr "Яркость экрана нетбука"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "Ваш компьютер"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Все настройки"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Подключите устройство,\n"
+"и оно будет обнаружено автоматически."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Другие устройства"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Операция извлечения была выполнена неудачно так как устройство, скорее всего, используется программным обеспечением"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Сейчас можно безопасно извлечь устройство"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Вы используете</span> <span color='%s'>%d%% из %s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Корзина"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Устройства"
+
+#: ../src/mpd-storage-device-tile.c:242
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "Не удалось запустить \"%s\""
+
+#: ../src/mpd-storage-device-tile.c:244
+msgid "Import error"
+msgstr "Ошибка импорта"
+
+# If space is a problem, we can use an equally good alternative "Импорт фото"
+#: ../src/mpd-storage-device-tile.c:355
+msgid "Import photos"
+msgstr "Импорт фотографий"
+
+#: ../src/mpd-storage-device-tile.c:357
+msgid "Import media"
+msgstr "Импорт медиа-данных"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:615
+msgid "Eject"
+msgstr "Извлечь"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:626
+msgid "Open"
+msgstr "Открыть"
+
+#: ../src/mpd-storage-device-tile.c:819
+#, c-format
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> использует <span color='%s'>%d%% из %s</span>"
+
+#: ../src/mpd-storage-device-tile.c:827
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Увеличено до 11"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Очень громко"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Громко"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Довольно громко"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Средняя громкость"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Довольно тихо"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Тихо"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Очень тихо"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Без звука"
+
+# Will need to see it in actual UI in order to translate correctly. Is "Volume" an HDD volume (C:\, D:\, etc.) or is it something else?
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Том компьютера"
+
+#: ../src/mpd-volume-tile.c:371
+msgid "Mute"
+msgstr "Без звука"
+
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Dawati Power Icon"
+
+#~ msgid "Netbook volume"
+#~ msgstr "Громкость нетбука"
+
+#~ msgid ""
+#~ "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</"
+#~ "span>"
+#~ msgstr ""
+#~ "<span font-weight='bold'>Импорт данных</span> <span color='%s'>%d%%</span>"
+
+#~ msgid "Stop"
+#~ msgstr "Стоп"
+
+#~ msgid ""
+#~ "%s nas been plugged in. You can use the Devices panel interact with it"
+#~ msgstr ""
+#~ "%s было подключено. Для взаимодействия с ним можно использовать панель "
+#~ "Устройства"
+
+#~ msgid "USB plugged in"
+#~ msgstr "USB подключено"
+
+#~ msgid "Show"
+#~ msgstr "Отобразить"
+
+#~ msgid "CompactFlash"
+#~ msgstr "CompactFlash"
+
+#~ msgid "MemoryStick"
+#~ msgstr "MemoryStick"
+
+#~ msgid "SmartMedia"
+#~ msgstr "SmartMedia"
+
+#~ msgid "SecureDigital"
+#~ msgstr "SecureDigital"
+
+#~ msgid "SD High Capacity"
+#~ msgstr "SD High Capacity"
+
+#~ msgid "Floppy"
+#~ msgstr "Дискета"
+
+#~ msgid "Zip"
+#~ msgstr "Zip-диск"
+
+#~ msgid "Jaz"
+#~ msgstr "Jaz"
+
+#~ msgid "CD"
+#~ msgstr "Компакт-диск"
+
+#~ msgid "DVD"
+#~ msgstr "DVD"
+
+#~ msgid "Blu-Ray"
+#~ msgstr "Blu-Ray"
+
+#~ msgid "HDDVD"
+#~ msgstr "HDDVD"
+
+#~ msgid "%s Drive"
+#~ msgstr "Диск %s"
+
+#~ msgid "%s %s Drive"
+#~ msgstr "Диск %s %s"
+
+#~ msgid "%s Hard Disk"
+#~ msgstr "Жесткий диск %s"
+
+#~ msgid "Hard Disk"
+#~ msgstr "Жесткий диск"
+
+#~ msgid "%s Solid-State Disk"
+#~ msgstr "Твердотельный диск %s"
+
+#~ msgid "Solid-State Disk"
+#~ msgstr "Твердотельный диск"
+
+#~ msgid "%s Media"
+#~ msgstr "Носитель %s"
+
+#~ msgid "No Media Detected"
+#~ msgstr "Носители не обнаружены"
+
+#~ msgid "MBR Partition Table"
+#~ msgstr "Таблица разделов MBR"
+
+#~ msgid "GUID Partition Table"
+#~ msgstr "Таблица разделов GUID"
+
+#~ msgid "Apple Partition Table"
+#~ msgstr "Таблица разделов Apple"
+
+#~ msgid "Partitioned"
+#~ msgstr "Содержащий разделы"
+
+#~ msgid "Not Partitioned"
+#~ msgstr "Не содержащий разделы"
+
+#~ msgid "SAS Expander"
+#~ msgstr "Расширитель SAS"
+
+#~ msgid "PATA Host Adapter"
+#~ msgstr "Хост-адаптер PATA"
+
+#~ msgid "SATA Host Adapter"
+#~ msgstr "Хост-адаптер SATA"
+
+#~ msgid "ATA Host Adapter"
+#~ msgstr "Хост-адаптер  ATA"
+
+#~ msgid "SAS Host Adapter"
+#~ msgstr "Хост-адаптер SAS"
+
+#~ msgid "SCSI Host Adapter"
+#~ msgstr "Хост-адаптер SCSI"
+
+#~ msgid "Host Adapter"
+#~ msgstr "Хост-адаптер"
+
+#~ msgid "Volume Group"
+#~ msgstr "Группа томов"
+
+#~ msgid "%s LVM2 Volume Group"
+#~ msgstr "Группа томов %s LVM2"
+
+#~ msgid "LVM2 Volume Group"
+#~ msgstr "Группа томов LVM2"
+
+#~ msgid "%s Free"
+#~ msgstr "%s свободно"
+
+#~ msgid "Unallocated Space"
+#~ msgstr "Нераспределенная область"
+
+#~ msgid "LVM2 VG Unallocated Space"
+#~ msgstr "Нераспределенная область LVM2 VG"
+
+#~ msgid "Logical Volume"
+#~ msgstr "Логический том"
+
+#~ msgid "LVM2 Logical Volume"
+#~ msgstr "Логический том LVM2"
+
+#~ msgid "%s %s Array"
+#~ msgstr "Массив %s %s"
+
+#~ msgid "%s Array"
+#~ msgstr "Массив %s"
+
+#~ msgid "RAID Array %s (%s)"
+#~ msgstr "RAID-массив %s (%s)"
+
+#~ msgid "RAID device %s"
+#~ msgstr "RAID-массив %s"
+
+#~ msgid "RAID"
+#~ msgstr "RAID"
+
+#~ msgid "RAID Array"
+#~ msgstr "RAID-массив"
+
+#~ msgid "Not Attached"
+#~ msgstr "Не подключено"
+
+#~ msgid "Faulty"
+#~ msgstr "Faulty"
+
+#~ msgid "Fully Synchronized"
+#~ msgstr "Полностью синхронизировано"
+
+#~ msgid "Writemostly"
+#~ msgstr "Writemostly"
+
+#~ msgid "Blocked"
+#~ msgstr "Blocked"
+
+#~ msgid "Spare"
+#~ msgstr "Spare"
+
+#~ msgid "Local Storage"
+#~ msgstr "Лоакльный накопитель"
+
+#~ msgid "Storage on %s"
+#~ msgstr "Накопитель на %s"
+
+#~ msgid "Multipath Devices"
+#~ msgstr "Устройства с несколькими путями"
+
+#~ msgid "Drives with multiple I/O paths"
+#~ msgstr "Устройства с несколькими путями ввода/вывода"
+
+#~ msgid "Multi-disk Devices"
+#~ msgstr "Устройства с несколькими дисками"
+
+#~ msgid "RAID, LVM and other logical drives"
+#~ msgstr "RAID, LVM и другие логические диски"
+
+#~ msgid "Peripheral Devices"
+#~ msgstr "Периферийные устройства"
+
+#~ msgid "USB, Firewire and other peripherals"
+#~ msgstr "USB, Firewire и другие внешние устройства"
+
+#~ msgid "Error enumerating devices: %s"
+#~ msgstr "Ошибка регистрации устройств: %s"
+
+#~ msgid "Error enumerating adapters: %s"
+#~ msgstr "Ошибка регистрации адаптеров: %s"
+
+#~ msgid "Error enumerating expanders: %s"
+#~ msgstr "Ошибка регистрации расширителей: %s"
+
+#~ msgid "Error enumerating ports: %s"
+#~ msgstr "Ошибка регистрации портов: %s"
+
+#~ msgid "Error listening to address `localhost:%d': %s: %s\n"
+#~ msgstr "Ошибка прослушивания адреса `localhost:%d': %s: %s\n"
+
+#~ msgid ""
+#~ "Error creating a local TCP server, tried binding to ports 9000-10000 on "
+#~ "localhost"
+#~ msgstr ""
+#~ "Ошибка создания локального TCP-сервера, попытка привязки к портам 9000-"
+#~ "10000 на рабочей станции"
+
+#~ msgid "Error setting auth mechanisms on local DBusServer\n"
+#~ msgstr "Ошибка установки механизмов авторизации на локальном DBusServer\n"
+
+#~ msgid "Unable to parse command-line `%s' (Malformed address?): %s"
+#~ msgstr ""
+#~ "Невозможно интерпретировать командную строку `%s' (Неправильный адрес?): %"
+#~ "s"
+
+#~ msgid "Unable to spawn ssh program: %s"
+#~ msgstr "Невозможно создать программу ssh: %s"
+
+#~ msgid "Error reading stderr output: %s"
+#~ msgstr "Ошибка чтения вывода stderr: %s"
+
+#~ msgid "Error reading stderr output: No content"
+#~ msgstr "Ошибка чтения вывода stderr: Содержимое отсутствует"
+
+#~ msgid "Error logging in"
+#~ msgstr "Ошибка регистрации в"
+
+#~ msgid "Error sending `%s': %s"
+#~ msgstr "Ошибка отправки `%s': %s"

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@LIBEXECDIR@/dawati-panel-devices
+TryExec=@LIBEXECDIR@/dawati-panel-devices
+_Name=devices
+Icon=dawati-panel-devices
+_Comment=Devices panel
+Terminal=false
+Categories=
+OnlyShowIn=X-DAWATI-NB;
+X-Dawati-Priority=Late
+X-Dawati-Service=com.dawati.UX.Shell.Panels.devices
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Button-Style=devices-button

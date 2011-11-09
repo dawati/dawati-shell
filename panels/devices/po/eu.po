@@ -1,0 +1,297 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# 9and3r <9and3r@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-devices\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
+"POT-Creation-Date: 2011-11-02 13:32-0700\n"
+"PO-Revision-Date: 2011-11-03 19:02+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Basque (http://www.transifex.net/projects/p/dawati/team/eu/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: eu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Gailuen panela"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
+msgid "devices"
+msgstr "gailuak"
+
+#: ../data/dawati-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Lotan jartzeko denbora"
+
+#: ../data/dawati-panel-devices.schemas.in.h:2
+msgid ""
+"Value of -1 means never sleep, other values are seconds of continuous idle "
+"state before sleeping."
+msgstr ""
+"1- balioarekin iza da inoiz lo jarriko, beste balioak inaktibo egon behar "
+"den segunduak dira lotan jarri aurretik."
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1005
+msgid "Disabled"
+msgstr "Ezgaituta"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1012
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "Irteera %u"
+msgstr[1] "%u Irteera"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1022
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "Sarrera %u"
+msgstr[1] "%u Sarrera"
+
+#: ../gvc/gvc-mixer-control.c:1320
+msgid "System Sounds"
+msgstr "Sistemaren soinuak"
+
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati Energia Ikonoa"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Bateria gutxirekin"
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid ""
+"I've noticed that your battery is running a bit low. If you can, it would be"
+" a good idea to plug in and top up."
+msgstr ""
+"Zure bateria baxu dagoela sumatu dut. Ahal baduzu, ideia ona izango zen "
+"entxufatzea eta kargatzea."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "Ia hutsik"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can."
+msgstr ""
+"Nahiko bateria baxuarekin ari zara. Ideia ona izango zen zure lan guztiak "
+"gordetzea eta entxufatzea ahal bezain laster."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "Kontuz!"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid ""
+"Sorry, your computer is about to run out of battery. I'm going to have to go"
+" to sleep now. Please save your work and hope to see you again soon."
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:494
+msgid "battery"
+msgstr "bateria"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Ez badauzu erabakitzen, segundu %d-en ondoren itzaliko dut"
+msgstr[1] "Ez baduzu erabakitzen, %d segunduren ondoren itzaliko dut"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Itzali"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Orain itzaltzea nahi al duzu?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Ez baduzu erantzuten, 30 segundutan itzaliko da."
+
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati-ren Gailuen Panela"
+
+#: ../src/mpd-battery-device.c:381
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Barkatu, badirudi ez duzula bateriarik."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Zure bateria kargatzen ari da. %d%% kargatuta dago."
+
+#: ../src/mpd-battery-device.c:390
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Zure bateria erabiltzen ari zara. %d%% gelditzen da."
+
+#: ../src/mpd-battery-device.c:395
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Zure bateria beteta dago eta erbailtzeko prest."
+
+#: ../src/mpd-battery-device.c:399
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Barkatu, badirudi zure bateria hondatuta dagoela"
+
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Pantailaren distira - entxufatuta"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Pantailaren distira- bateriarekin"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "Zure ordenagailua"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Ezarpen guztiak"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Entxufatu gailu  bat eta\n"
+"automatikoki detektatua izango da."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Beste gailuak"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Hutsegitea kanporatzean, badirudi aplikazioren bat erabiltzen dagoela"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Segurua da gailua deskonektatzea orain"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of "
+"%s</span>"
+msgstr ""
+"<span font-weight='bold'>Erabiltzen ari zara</span> <span color='%s'>%d%% of"
+" %s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Zakarrontzia"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Gailuak"
+
+#: ../src/mpd-storage-device-tile.c:241
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "Ezin da exekutatu \"%s\""
+
+#: ../src/mpd-storage-device-tile.c:243
+msgid "Import error"
+msgstr "Inportatze errorea"
+
+#: ../src/mpd-storage-device-tile.c:354
+msgid "Import photos"
+msgstr "Inportatu argazkiak"
+
+#: ../src/mpd-storage-device-tile.c:356
+msgid "Import media"
+msgstr "Inportatu media"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:645
+msgid "Open"
+msgstr "Ireki"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:651
+msgid "Eject"
+msgstr "Kanporatu"
+
+#: ../src/mpd-storage-device-tile.c:855
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+"<span font-weight='bold'>%s</span> erabiltzen <span color='%s'>%d%% of "
+"%s</span>"
+
+#: ../src/mpd-storage-device-tile.c:863
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "11-raino igota"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Oso altu"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Altu"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Nahiko altu"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Erdialdean"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Nahiko ixilik"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Ia Ixilik"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Oso ixilik"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Mutu"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Ordenagailuaren bolumena"
+
+#: ../src/mpd-volume-tile.c:372
+msgid "Mute"
+msgstr "Mutu"
+
+

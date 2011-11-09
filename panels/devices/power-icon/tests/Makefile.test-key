@@ -1,0 +1,7 @@
+
+test-key: test-key.c
+	$(CC) $(CFLAGS) -g -Wall $(shell pkg-config --cflags --libs gdk-x11-2.0 gtk+-2.0 libfakekey) -o $@ $<
+
+clean:
+	rm test-key
+

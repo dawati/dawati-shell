@@ -1,0 +1,283 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-24 01:24+0000\n"
+"PO-Revision-Date: 2010-10-26 14:58+0100\n"
+"Last-Translator: Iñigo Varela <ivarela@softastur.org>\n"
+"Language-Team: asturian <alministradores@softastur.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: asturian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Panel de preseos"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
+msgid "devices"
+msgstr "preseos"
+
+#: ../data/dawati-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Tiempu d'espera pa la suspensión"
+
+#: ../data/dawati-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Un valor igual a -1 significa qu'enxamás va producise la suspensión. Otros valores representen los segundos d'inactividá continuada enantes de que se produzca la suspensión."
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Deshabilitáu"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "Salida %u"
+msgstr[1] "Salides %u"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "Entrada %u"
+msgstr[1] "Entraes %u"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Soníos del sistema"
+
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Iconu d'enerxía Dawati"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Queda poca batería "
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "La batería ta escosándose y agora ta daqué baxa. Si puedes, enchúfala pa recargala."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "Casi escosada"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "L'equipu cásique nun tien batería. Guarda'l trabayu ya enchúfalu tan aína como puedas."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "¡Peligru!"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "L'equipu ta a piques d'escosar la batería. Va apagase agora mesmo. Por favor, guarda'l trabayu; esperamos vete aína."
+
+#: ../power-icon/src/mpd-power-icon.c:486
+msgid "battery"
+msgstr "batería"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Si nun se decide un res, va apagase en %d segundu."
+msgstr[1] "Si nun se decide un res, va apagase en %d segundos."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Apagar"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "¿Apagar l'equipu?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Si nun se decide un res, va apagase en 30 segundos."
+
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Panel de preseos de Dawati"
+
+#: ../src/mpd-battery-device.c:381
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Sentímoslo, paez que nun hai denguna batería instalada."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "La batería ta cargándose. Ta a un %d%% de la capacidá."
+
+#: ../src/mpd-battery-device.c:390
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Batería n'usu. Ta a un %d%% del total."
+
+#: ../src/mpd-battery-device.c:395
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "La batería ta dafechu cargada y llista."
+
+#: ../src/mpd-battery-device.c:399
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Sentímoslo, paez que la batería ta toyida."
+
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Amosar brillu - rede eléctrica"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Amosar brillu - batería"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "L'equipu"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Toles configuraciones"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Si coneutes un preséu,\n"
+"va deteutase automáticamente."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Otros preseos"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Nun s'espulsó, porque paez qu'hai otra aplicación usándolu"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Yá puedes desconeutar el preséu ensin problemes"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Tas usando</span> <span color='%s'>%d%% de %s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Papelera"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Preseos"
+
+#: ../src/mpd-storage-device-tile.c:241
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "Nun pudo executase \"%s\""
+
+#: ../src/mpd-storage-device-tile.c:243
+msgid "Import error"
+msgstr "Fallu durante la importación"
+
+#: ../src/mpd-storage-device-tile.c:354
+msgid "Import photos"
+msgstr "Importar semeyes"
+
+#: ../src/mpd-storage-device-tile.c:356
+msgid "Import media"
+msgstr "Importar media"
+
+#.
+#. * Column 2: buttons
+#.
+#. Open button
+#: ../src/mpd-storage-device-tile.c:633
+msgid "Open"
+msgstr "Abrir"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Espulsar"
+
+#: ../src/mpd-storage-device-tile.c:867
+#, c-format
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> usando <span color='%s'>%d%% de %s</span>"
+
+#: ../src/mpd-storage-device-tile.c:875
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Al máximu"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Mui altu"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Altu"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Daqué altu"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Mediu"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Daqué baxu"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Baxu"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Mui baxu"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Silenciu"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Volume del equipu"
+
+#: ../src/mpd-volume-tile.c:371
+msgid "Mute"
+msgstr "Silenciu"
+
+#~ msgid "Netbook brightness"
+#~ msgstr "Claror de pantalla"
+#~ msgid "Netbook volume"
+#~ msgstr "Volume del miniordenador"
+

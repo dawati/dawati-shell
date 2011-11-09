@@ -1,0 +1,11 @@
+
+MnbToolbarButton#devices-button {
+  background-image: url("devices-normal.png");
+}
+
+MnbToolbarButton#devices-button:hover,
+MnbToolbarButton#devices-button:active,
+MnbToolbarButton#devices-button:checked  {
+  background-image: url("devices-coloured.png");
+}
+

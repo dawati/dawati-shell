@@ -1,0 +1,304 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Jure Repinc <jlp@holodeck1.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-devices\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
+"POT-Creation-Date: 2011-11-02 13:32-0700\n"
+"PO-Revision-Date: 2011-11-03 19:02+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Slovenian <lugos-slo@lugos.si>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)\n"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Pult z napravami"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
+msgid "devices"
+msgstr "naprave"
+
+#: ../data/dawati-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Čas do zaustavitve"
+
+#: ../data/dawati-panel-devices.schemas.in.h:2
+msgid ""
+"Value of -1 means never sleep, other values are seconds of continuous idle "
+"state before sleeping."
+msgstr ""
+"Vrednost -1 pomeni, da do zaustavitve nikoli ne pride. Druge vrednosti so "
+"sekunde neprekinjenega mirovanja pred zaustavitvijo v stanje "
+"pripravljenosti."
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1005
+msgid "Disabled"
+msgstr "Onemogočeno"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1012
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u izhodov"
+msgstr[1] "%u izhod"
+msgstr[2] "%u izhoda"
+msgstr[3] "%u izhodi"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1022
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u vhodov"
+msgstr[1] "%u vhod"
+msgstr[2] "%u vhoda"
+msgstr[3] "%u vhodi"
+
+#: ../gvc/gvc-mixer-control.c:1320
+msgid "System Sounds"
+msgstr "Sistemski zvoki"
+
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati ikona energije"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Zmanjkuje baterije"
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid ""
+"I've noticed that your battery is running a bit low. If you can, it would be"
+" a good idea to plug in and top up."
+msgstr ""
+"Zaznano je bilo, da zmanjkuje baterije. Če je možno, priključite električno "
+"napajanje in jo napolnite."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "Baterija je skoraj prazna"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can."
+msgstr ""
+"Baterija je skoraj prazna. Svetujemo, da čimprej shranite vse svoje delo in "
+"priključite električno napajanje."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "Nevarnost!"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid ""
+"Sorry, your computer is about to run out of battery. I'm going to have to go"
+" to sleep now. Please save your work and hope to see you again soon."
+msgstr ""
+
+#: ../power-icon/src/mpd-power-icon.c:494
+msgid "battery"
+msgstr "baterija"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Če se ne odločite, se bo računalnik ugasnil čez %d sekund"
+msgstr[1] "Če se ne odločite, se bo računalnik ugasnil čez %d sekundo"
+msgstr[2] "Če se ne odločite, se bo računalnik ugasnil čez %d sekundi"
+msgstr[3] "Če se ne odločite, se bo računalnik ugasnil čez %d sekunde"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Ugasni"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Ali želite sedaj ugasniti računalnik?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Če se ne odločite, se bo računalnik ugasnil čez 30 sekund."
+
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Pult z napravami"
+
+#: ../src/mpd-battery-device.c:381
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Oprostite, kot kaže baterija ni vstavljena."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Baterija se polni. Napolnjena je približno %d %%."
+
+#: ../src/mpd-battery-device.c:390
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Baterija se prazni Napolnjena je približno %d %%."
+
+#: ../src/mpd-battery-device.c:395
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Baterija je povsem napolnjena."
+
+#: ../src/mpd-battery-device.c:399
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Oprostite, kot kaže je baterija poškodovana."
+
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Svetlost zaslona — priključen"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Svetlost zaslona — na bateriji"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "Vaš računalnik"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Vse nastavitve"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Priključite napravo in\n"
+"zaznana bo samodejno."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Druge naprave"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Izmet ni uspel, kot kaže jo nek program še uporablja"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Sedaj je to napravo varno odstraniti"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of "
+"%s</span>"
+msgstr ""
+"<span font-weight='bold'>Porabljenih je</span> <span color='%s'>%d %% "
+"%s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Smeti"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Naprave"
+
+#: ../src/mpd-storage-device-tile.c:241
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "Ni bilo moč zagnati »%s«"
+
+#: ../src/mpd-storage-device-tile.c:243
+msgid "Import error"
+msgstr "Napaka pri uvažanju"
+
+#: ../src/mpd-storage-device-tile.c:354
+msgid "Import photos"
+msgstr "Uvozi fotografije"
+
+#: ../src/mpd-storage-device-tile.c:356
+msgid "Import media"
+msgstr "Uvozi večpredstavnost"
+
+#. Open button
+#: ../src/mpd-storage-device-tile.c:645
+msgid "Open"
+msgstr "Odpri"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:651
+msgid "Eject"
+msgstr "Izvrzi"
+
+#: ../src/mpd-storage-device-tile.c:855
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+"<span font-weight='bold'>%s</span> uporablja <span color='%s'>%d %% "
+"%s</span>"
+
+#: ../src/mpd-storage-device-tile.c:863
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Ekstremno glasno"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Zelo glasno"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Glasno"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Malo glasnejše"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Srednje glasno"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Malo tišje"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Tiho"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Zelo tiho"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Ekstremno tiho"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Glasnost zvoka"
+
+#: ../src/mpd-volume-tile.c:372
+msgid "Mute"
+msgstr "Utišaj"
+
+

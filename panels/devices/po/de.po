@@ -1,0 +1,274 @@
+# Hendrik Richter <hendrikr@gnome.org>, 2010.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-device master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-24 01:24+0000\n"
+"PO-Revision-Date: 2010-10-20 12:01-0800\n"
+"Last-Translator: Clara Steiner-Jay <csteiner@aracnet.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Panel »Geräte«"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
+msgid "devices"
+msgstr "Geräte"
+
+#: ../data/dawati-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Zeitlimit für Energiesparmodus"
+
+#: ../data/dawati-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Ein Wert von -1 bedeutet kein Energiesparmodus, andere Werte sind Sekunden im Leerlaufzustand vor dem Energiesparmodus."
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Ausgang"
+msgstr[1] "%u Ausgänge"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Eingang"
+msgstr[1] "%u Eingänge"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Systemklänge"
+
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Dawati-Energiesymbol"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Ladezustand des Akkus ist niedrig"
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Der Rechner hat nur noch wenig Energie. Bitte laden Sie falls möglich den Akku auf."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "Ladezustand des Akkus ist sehr niedrig"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "Der Rechner hat nur noch sehr wenig Energie. Bitte speichern Sie Ihre Arbeit und laden den Akku so bald wie möglich auf."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "Ladezustand des Akkus ist kritisch"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Der Akkuladezustand ist im kritischen Bereich. Der Rechner wird deshalb nun heruntergefahren. Bitte speichern Sie Ihre Arbeit."
+
+#: ../power-icon/src/mpd-power-icon.c:486
+msgid "battery"
+msgstr "Akku"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Der Rechner wird in %d Sekunde ausgeschaltet, wenn keine Entscheidung getroffen wird."
+msgstr[1] "Der Rechner wird in %d Sekunden ausgeschaltet, wenn keine Entscheidung getroffen wird."
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Ausschalten"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Möchten Sie den Rechner jetzt ausschalten?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Der Rechner wird in 30 Sekunden automatisch ausgeschaltet."
+
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Dawati-Panel Geräte"
+
+#: ../src/mpd-battery-device.c:381
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Anscheinend ist kein Akku vorhanden."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Akku wird geladen. Aktueller Ladezustand: ca %d%%"
+
+#: ../src/mpd-battery-device.c:390
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Akku entlädt. Aktueller Ladezustand: ca %d%%"
+
+#: ../src/mpd-battery-device.c:395
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Akku ist vollständig geladen."
+
+#: ../src/mpd-battery-device.c:399
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Akku ist eventuell beschädigt."
+
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Bildschirmhelligkeit – Netzbetrieb"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Bildschirmhelligkeit – Akkubetrieb"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "Ihr Rechner"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Alle Einstellungen"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Stecken Sie ein Gerät ein\n"
+"und es wird automatisch erkannt."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Andere Geräte"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Aushängen ist gescheitert; möglicherweise verwendet eine Anwendung das Gerät."
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Das Gerät kann nun sicher entfernt werden."
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span color='%s'>%d%% von %s</span> Speicherplatz belegt"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Müll"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Geräte"
+
+#: ../src/mpd-storage-device-tile.c:241
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "»%s« konnte nicht ausgeführt werden."
+
+#: ../src/mpd-storage-device-tile.c:243
+msgid "Import error"
+msgstr "Fehler beim Importieren"
+
+#: ../src/mpd-storage-device-tile.c:354
+msgid "Import photos"
+msgstr "Fotos importieren"
+
+#: ../src/mpd-storage-device-tile.c:356
+msgid "Import media"
+msgstr "Medien importieren"
+
+#. * Column 2: buttons
+#. 
+#. Open button
+#: ../src/mpd-storage-device-tile.c:633
+msgid "Open"
+msgstr "Öffnen"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Aushängen"
+
+#: ../src/mpd-storage-device-tile.c:867
+#, c-format
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> <span color='%s'>%d%% von %s</span> belegt"
+
+#: ../src/mpd-storage-device-tile.c:875
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Ohrenbetäubend"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Sehr laut"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Laut"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Ziemlich laut"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Mittellaut"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Ziemlich leise"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Leise"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Sehr leise"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Still"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Lautstärke"
+
+#: ../src/mpd-volume-tile.c:371
+msgid "Mute"
+msgstr "Stumm"
+
+#~ msgid "Netbook brightness"
+#~ msgstr "Bildschirmhelligkeit"

@@ -1,0 +1,288 @@
+# Translation of dawati-panel-devices into Indonesian
+# Copyright (C) 2010 THE dawati-panel-device'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the dawati-panel-devices package.
+# Andika Triwidada <andika@gmail.com>, 2010.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-devices master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-11-02 23:58+0000\n"
+"PO-Revision-Date: 2010-05-05 19:40+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: Indonesia\n"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Panel perangkat"
+
+#: ../data/dawati-panel-devices.desktop.in.in.h:2
+#: ../src/dawati-panel-devices.c:176
+msgid "devices"
+msgstr "perangkat"
+
+#: ../data/dawati-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Timeout tidur"
+
+#: ../data/dawati-panel-devices.schemas.in.h:2
+msgid "Value of -1 means never sleep, other values are seconds of continuous idle state before sleeping."
+msgstr "Nilai -1 berarti tak pernah tidur, nilai lain adalah lamanya menganggur terus-menerus dalam detik sebelum tidur."
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1003
+msgid "Disabled"
+msgstr "Dimatikan"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1010
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u Keluaran"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1020
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u Masukan"
+
+#: ../gvc/gvc-mixer-control.c:1316
+msgid "System Sounds"
+msgstr "Suara Sistem"
+
+#: ../power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Ikon Daya Dawati"
+
+#: ../power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Baterai hampir habis"
+
+#: ../power-icon/src/mpd-power-icon.c:78
+msgid "I've noticed that your battery is running a bit low. If you can, it would be a good idea to plug in and top up."
+msgstr "Baterai Anda hampir habis. Alangkah baiknya apabila Anda menyambung ke listrik dan mengisinya."
+
+#: ../power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "Nyaris habis"
+
+#: ../power-icon/src/mpd-power-icon.c:82
+msgid "You're running quite low on battery. It'd be a good idea to save all your work and plug in as soon as you can."
+msgstr "Baterai Anda nyaris habis. Sebaiknya Anda menyimpan semua pekerjaan Anda dan menyambung ke listrik secepatnya."
+
+#: ../power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "Bahaya!"
+
+#: ../power-icon/src/mpd-power-icon.c:87
+msgid "Sorry, your computer is about to run out of battery. I'm going to have to turn off now. Please save your work and hope to see you again soon."
+msgstr "Maaf, baterai komputer Anda sekejap lagi habis. Kami mesti mematikan sekarang. Silakan simpan hasil kerja Anda dan semoga kita segera bertemu lagi."
+
+#: ../power-icon/src/mpd-power-icon.c:486
+msgid "battery"
+msgstr "baterai"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] "Bila Anda tak memutuskan, komputer akan dimatikan dalam %d detik"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Matikan"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Anda mau mematikan sekarang?"
+
+#: ../power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Bila Anda tak memutuskan, komputer akan dimatikan dalam 30 detik."
+
+#: ../src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Panel Perangkat Dawati"
+
+#: ../src/mpd-battery-device.c:381
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Maaf, sepertinya Anda tidak memasang baterai."
+
+#: ../src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Baterai Anda sedang diisi. Kira-kira terisi %d%%."
+
+#: ../src/mpd-battery-device.c:390
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Baterai Anda sedang dipakai. Kira-kira terisi %d%%."
+
+#: ../src/mpd-battery-device.c:395
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Baterai Anda telah terisi penuh dan Anda siap untuk pergi."
+
+#: ../src/mpd-battery-device.c:399
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Maaf, sepertinya baterai Anda rusak."
+
+#: ../src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr "Kecerahan tampilan - memakai listrik"
+
+#: ../src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr "Kecerahan tampilan - memakai baterai"
+
+#: ../src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "Komputer Anda"
+
+#: ../src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Semua tatanan"
+
+#: ../src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Tancapkan suatu perangkat\n"
+"itu akan otomatis dikenali."
+
+#: ../src/mpd-devices-pane.c:104
+msgid "Other devices"
+msgstr "Perangkat lain"
+
+#: ../src/mpd-devices-tile.c:61
+msgid "Ejecting failed, looks like an application is using it"
+msgstr "Eject gagal, sepertinya suatu aplikasi sedang memakainya"
+
+#: ../src/mpd-devices-tile.c:423
+msgid "It is safe to unplug this device now"
+msgstr "Kini aman untuk mencopot perangkat ini"
+
+#: ../src/mpd-disk-tile.c:65
+#, c-format
+msgid "<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>Anda memakai</span> <span color='%s'>%d%% dari %s</span>"
+
+#: ../src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Tong Sampah"
+
+#: ../src/mpd-shell.c:126
+msgid "Devices"
+msgstr "Perangkat"
+
+#: ../src/mpd-storage-device-tile.c:241
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "Tak bisa menjalankan \"%s\""
+
+#: ../src/mpd-storage-device-tile.c:243
+msgid "Import error"
+msgstr "Kesalahan impor"
+
+#: ../src/mpd-storage-device-tile.c:354
+msgid "Import photos"
+msgstr "Impor foto"
+
+#: ../src/mpd-storage-device-tile.c:356
+msgid "Import media"
+msgstr "Impor media"
+
+#. * Column 2: buttons
+#. 
+#. Open button
+#: ../src/mpd-storage-device-tile.c:633
+msgid "Open"
+msgstr "Buka"
+
+#. Eject button
+#: ../src/mpd-storage-device-tile.c:646
+msgid "Eject"
+msgstr "Keluarkan"
+
+#: ../src/mpd-storage-device-tile.c:867
+#, c-format
+msgid "<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr "<span font-weight='bold'>%s</span> memakai <span color='%s'>%d%% dari %s</span>"
+
+#: ../src/mpd-storage-device-tile.c:875
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Dinaikkan sampai ke 11"
+
+#: ../src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Sangat keras"
+
+#: ../src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Keras"
+
+#: ../src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Cukup keras"
+
+#: ../src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Di tengah jalan"
+
+#: ../src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Cukup sunyi"
+
+#: ../src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Sunyi"
+
+#: ../src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Sangat sunyi"
+
+#: ../src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Tanpa suara"
+
+#: ../src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Volume komputer"
+
+#: ../src/mpd-volume-tile.c:371
+msgid "Mute"
+msgstr "Bisu"
+
+#~ msgid "Netbook brightness"
+#~ msgstr "Kecerahan netbook"
+
+#~ msgid "Dawati Power Icon"
+#~ msgstr "Ikon Daya Dawati"
+
+#~ msgid "<span font-weight='bold'>Importing data</span> <span color='%s'>%d%%</span>"
+#~ msgstr "<span font-weight='bold'>Mengimpor data</span> <span color='%s'>%d%%</span>"
+
+#~ msgid "Stop"
+#~ msgstr "Stop"
+
+#~ msgid "Netbook volume"
+#~ msgstr "Keras suara netbook"
