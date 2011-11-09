@@ -1,0 +1,94 @@
+
+MnbLauncher {
+  padding: 5;
+}
+
+#panel-label {
+  color: #ed2124;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 6 6 6 15;
+}
+
+#fav-pane-content {
+  padding: 3 0 3 3;
+}
+
+#apps-pane-content {
+  padding: 3 0 3 3;
+}
+
+#apps-grid {
+  padding: 0 3 0 0;
+}
+
+.tile-label {
+  font-size: 14px;
+  color: #7e7e7e;
+}
+
+MnbLauncher *#launcher-expander-grid {
+  padding: 8 5 10 10;
+}
+
+/*
+ * Launcher button.
+ */
+
+MnbLauncherButton {
+  padding: 5 10 5 7;
+}
+
+MnbLauncherButton:hover {
+  border-image: url("launcher-hover.png") 4 6 6 4;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-title {
+  color: #3b3b3b;
+  font-size: 14px;
+  padding: 4 0 0 0;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-launched {
+  color: #7e7e7e;
+  font-size: 11px;
+  padding: 0 0 2 0;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-description {
+  color: #7e7e7e;
+  font-size: 14px;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-comment {
+  color: #a2adb6;
+  font-size: 14px;
+}
+
+MnbLauncherButton > *#mnb-launcher-button-fav-toggle {
+  background-image: none;
+  border-image: none;
+}
+
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle {
+  background-image: url("launcher-button-fav-toggle.png");
+  border-image: none;
+}
+
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:checked {
+  background-image: url("launcher-button-fav-toggle-checked.png");
+}
+
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:active {
+  background-image: url("launcher-button-fav-toggle-active.png");
+}
+
+MnbLauncherButton:hover > *#mnb-launcher-button-fav-toggle:hover {
+  background-image: url("launcher-button-fav-toggle-hover.png");
+}
+
+MxLabel.placeholder {
+  color: #595959ff;
+  font-size: 16px;
+  padding: 6 6 6 15;
+}

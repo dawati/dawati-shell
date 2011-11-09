@@ -1,0 +1,49 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-application\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-11-20 22:52+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Gönczi Norbert <gonczinorbert@gmail.com>\n"
+"Language-Team: hungarian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Hungarian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: HUNGARY\n"
+
+#: ../src/mnb-filter.c:161
+msgid "Search"
+msgstr "Keresés"
+
+#. Panel label
+#: ../src/dawati-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Alkalmazások"
+
+#. * Fav apps pane
+#. 
+#: ../src/dawati-netbook-launcher.c:1114
+msgid "Favorite applications"
+msgstr "Kedvencek alkalmazások"
+
+#. * Applications
+#. 
+#: ../src/dawati-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Saját alkalmazások"
+
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr "alkalmazások"
+
+#: ../src/mnb-launcher-button.c:607
+msgid "Never launched"
+msgstr "Sohasem volt elindítva"
+
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Alkalmazások panel"

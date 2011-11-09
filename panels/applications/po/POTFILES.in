@@ -1,0 +1,6 @@
+# List of source files containing translatable strings.
+src/mnb-filter.c
+src/dawati-netbook-launcher.c
+src/dawati-panel-applications.c
+src/mnb-launcher-button.c
+data/dawati-panel-applications.desktop.in.in

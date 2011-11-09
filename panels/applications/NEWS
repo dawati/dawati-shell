@@ -1,0 +1,127 @@
+
+Version 0.2.0, 2010-06-21
+
+- Initial release of 0.2 branch, same features as 0.1.30
+
+Version 0.1.29, 2010-06-21
+
+- Fixes: http://bugs.meego.com/show_bug.cgi?id=2790
+- Fixes: http://bugs.meego.com/show_bug.cgi?id=1462
+
+Version 0.1.28, 2010-05-18
+
+- l10n: Updates to ast, zh_TW (tracked by BMC#1679)
+
+Version 0.1.27, 2010-05-10
+
+- l10n: Updates to ja (tracked by BMC#1679)
+
+Version 0.1.26, 2010-05-04
+
+- Fixes: http://bugs.meego.com/show_bug.cgi?id=1582
+- l10n: Updates to zh_CN, gl
+
+Version 0.1.25, 2010-04-29
+
+- Fixes: http://bugs.meego.com/show_bug.cgi?id=1141
+
+Version 0.1.24, 2010-04-27
+
+- Fixes: http://bugs.meego.com/show_bug.cgi?id=7 (reopened)
+- Fixes: http://bugs.meego.com/show_bug.cgi?id=1215
+
+Version 0.1.23, 2010-04-26
+
+- Fixes: http://bugzilla.meego.com/show_bug.cgi?id=526
+
+Version 0.1.22, 2010-04-20
+
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=7
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=560
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=609
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=1057
+    Scrollbar must not overlap expanders (design tweak).
+    l10n: Updates to sv
+
+Version 0.1.21, 2010-04-19
+
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=948
+
+Version 0.1.20, 2010-04-16
+
+    Land new meego-1.0 layout.
+    Fixes: http://bugzilla.meego.com/show_bug.cgi?id=609
+    l10n: Updates to en_GB, es.
+
+Version 0.1.19, 2010-04-14
+
+    Fixes: MBC#590 - uninstall local application crashes meego-panel-application
+    Fixes: MBC#133 - The untoggle of favorite applications in application panel does not sync with myzone
+    l10n: Updates to pa, ko, it, wa, sv, fi, de, nl, pl, fr, zh_CN, es.
+    Theming updates.
+
+Version 0.1.18, 2010-04-06
+
+    Fixes: BMC#475
+    l10n: Updates to Brazilian Portuguese (pt_BR) translation
+    l10n: Updates to Russian (ru) translation
+    l10n: Updates to Japanese (ja) translation
+    l10n: Updates to Chinese (Taiwan) (zh_TW) translation
+    l10n: Updates to Indonesian (id) translation
+
+Version 0.1.17, 2010-04-02
+
+    Rough implementation of new visual design.
+
+Version 0.1.16, 2010-03-25
+
+    Depend on mx-1.0 >= 0.9, fix for API changes.
+
+Version 0.1.14, 2010-03-22
+
+    Depend on mx-1.0 >= 0.8
+    l10n: Updates to Walloon (wa) translation
+
+Version 0.1.13, 2010-03-19
+
+    Fixes: MB#9761
+    Fixes: MB#9874
+    l10n: Updates to Swedish (sv) translation
+
+Version 0.1.12, 2010-03-02
+
+    Fixes: MB#9242
+    l10n: Updates to Korean (ko) translation
+    l10n: Updates to Japanese (ja) translation
+    l10n: Updates to Indonesian (id) translation
+    l10n: Updates to Finnish (fi) translation
+    l10n: Updates to Spanish (Castilian) (es) translation
+
+Version 0.1.11, 2010-02-26
+
+    l10n: Updates to Dutch (Flemish) (nl) translation
+    l10n: Updates to Polish (pl) translation
+    l10n: Updates to Dutch (Flemish) (nl) translation
+    l10n: Updates to Dutch (Flemish) (nl) translation
+    l10n: Updates to Chinese (China) (zh_CN) translation
+    l10n: Updates to Brazilian Portuguese (pt_BR) translation
+    l10n: Updates to German (de) translation
+    l10n: Updates to French (fr) translation
+    l10n: Updates to Italian (it) translation
+    l10n: Updates to Russian (ru) translation
+
+Version 0.1.10, 2010-02-18
+
+    Do not load 'settings.menu', the control center has landed.
+    Do not use cache when it is older than the app binary.
+
+Version 0.1.9, 2010-02-17
+
+    Updates for recent mx changes.
+    l10n: Updates to Turkish (tr) translation
+
+Version 0.1.8, 2010-02-10
+
+    Use 'padding' everywhere instead of 'padding-left' and friends.
+    Tweak build system.
+

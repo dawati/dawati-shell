@@ -1,0 +1,53 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Dawati UX\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-19 16:47+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Pablo Barbecho <pablo.barbecho@ptiglobal.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/mnb-filter.c:161
+msgid "Search"
+msgstr "Buscar"
+
+#. Panel label
+#: ../src/dawati-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Aplicaciones"
+
+#.
+#. * Fav apps pane
+#.
+#: ../src/dawati-netbook-launcher.c:1114
+msgid "Favorite applications"
+msgstr "Aplicaciones preferidas"
+
+# <mousetip of the top of the screen>
+#.
+#. * Applications
+#.
+#: ../src/dawati-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Tus aplicaciones"
+
+# <mousetip of the top of the screen>
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr "aplicaciones"
+
+#: ../src/mnb-launcher-button.c:635
+msgid "Never launched"
+msgstr "Nunca se ha lanzado"
+
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Panel aplicaciones"
+

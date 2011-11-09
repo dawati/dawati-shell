@@ -1,0 +1,52 @@
+# Translation of dawati-apps into Indonesian.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Andika Triwidada <andika@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-apps\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-11-02 22:32+0000\n"
+"PO-Revision-Date: 2009-08-26 07:24+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/mnb-filter.c:161
+msgid "Search"
+msgstr "Cari"
+
+#. Panel label
+#: ../src/dawati-netbook-launcher.c:1098
+msgid "Applications"
+msgstr "Aplikasi"
+
+#. * Fav apps pane
+#. 
+#: ../src/dawati-netbook-launcher.c:1114
+msgid "Favorite applications"
+msgstr "Aplikasi favorit"
+
+#. * Applications
+#. 
+#: ../src/dawati-netbook-launcher.c:1141
+msgid "Your applications"
+msgstr "Aplikasi Anda"
+
+#: ../src/dawati-panel-applications.c:247
+#: ../data/dawati-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr "aplikasi"
+
+#: ../src/mnb-launcher-button.c:607
+msgid "Never launched"
+msgstr "Tak pernah diluncurkan"
+
+#: ../data/dawati-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Panel aplikasi"
+
+#~ msgid "Search for applications"
+#~ msgstr "Cari aplikasi"

@@ -1,0 +1,6 @@
+
+TODO
+====
+
+http://bugzilla.meego.com/show_bug.cgi?id=7:
+(17:40:50) Chris Lord: just attach to allocation-changed of the thing that's expanding and call it in there

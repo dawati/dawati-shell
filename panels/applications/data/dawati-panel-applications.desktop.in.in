@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/dawati-panel-applications
+TryExec=@libexecdir@/dawati-panel-applications
+_Name=applications
+Icon=dawati-panel-applications
+_Comment=Applications panel
+Terminal=false
+Categories=
+OnlyShowIn=DAWATI;
+X-Dawati-Priority=Low
+X-Dawati-Service=com.dawati.UX.Shell.Panels.applications
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Button-Style=applications-button
