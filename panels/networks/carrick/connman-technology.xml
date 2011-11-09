@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node name="/Technology" xmlns:tp="http://telepathy.freedesktop.org/wiki/DbusSpec#extensions-v0">
+  <interface name="net.connman.Technology">
+
+    <method name="GetProperties" tp:name-for-bindings="Get_Properties">
+      <arg name="properties" type="a{sv}" direction="out"/>
+    </method>
+
+    <signal name="PropertyChanged" tp:name-for-bindings="Property_Changed">
+      <arg name="name" type="s"/>
+      <arg name="value" type="v"/>
+    </signal>
+
+  </interface>
+</node>

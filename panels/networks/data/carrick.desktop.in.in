@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+_Name=network
+_Comment=Network settings
+Exec=@LIBEXECDIR@/carrick-connection-panel
+OnlyShowIn=X-DAWATI-NB;
+X-GNOME-Autostart-enable=true
+X-Dawati-Priority=High
+X-Dawati-Service=com.dawati.UX.Shell.Panels.network
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Type=applet
+X-Dawati-Panel-Stylesheet=@THEME_DIR@/network-applet.css
+X-Dawati-Panel-Button-Style=offline
