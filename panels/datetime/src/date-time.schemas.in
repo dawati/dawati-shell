@@ -1,0 +1,33 @@
+<gconfschemafile>
+  <schemalist>
+
+    <schema>
+      <key>/schemas/apps/date-time-panel/alarms</key>
+      <applyto>/apps/date-time-panel/alarms</applyto>
+      <owner>dawati-panel-datetime</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[]</default>      
+      <locale name="C">
+        <short>List of alarms in short encoded form</short>
+        <long>
+		Alarms stored in encoded form for use by the alarm notfier.
+        </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/date-time-panel/24_h_clock</key>
+      <applyto>/apps/date-time-panel/24_h_clock</applyto>
+      <owner>dawati-panel-datetime</owner>
+      <type>bool</type>
+      <default>true</default>      
+      <locale name="C">
+        <short>24 hour clock or 12 hour clock</short>
+        <long>
+		24 hour clock or 12 hour clock
+        </long>
+      </locale>
+    </schema>
+  </schemalist>
+</gconfschemafile>

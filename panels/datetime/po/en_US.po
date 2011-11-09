@@ -1,0 +1,141 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Patrick McCarty <patrick.mccarty@linux.intel.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-datetime\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
+"POT-Creation-Date: 2011-11-02 13:31-0700\n"
+"PO-Revision-Date: 2011-11-03 19:01+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: English (United States) (http://www.transifex.net/projects/p/dawati/team/en_US/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../src/dawati-panel-date-time.c:111
+msgid "Date/Time"
+msgstr "Date/Time"
+
+#: ../data/dawati-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr "Date and Time panel"
+
+#: ../data/dawati-panel-datetime.desktop.in.in.h:2
+msgid "date and time"
+msgstr "date and time"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../src/mnp-utils.c:504
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#: ../src/mnp-utils.c:512
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display in Aug 6 (current location)
+#: ../src/mnp-utils.c:525
+msgid "%b %-d (current location)"
+msgstr ""
+
+#: ../src/mnp-utils.c:531
+msgid "%b %-d (Yesterday)"
+msgstr "%b %-d (Yesterday)"
+
+#: ../src/mnp-utils.c:533
+msgid "%b %-d (Tomorrow)"
+msgstr "%b %-d (Tomorrow)"
+
+#: ../src/mnp-utils.c:538
+msgid "%b %-d (local)"
+msgstr "%b %-d (local)"
+
+#: ../src/mnp-utils.c:540
+msgid "%b %-d"
+msgstr "%b %-d"
+
+#: ../src/mnp-world-clock.c:580
+msgid "Time"
+msgstr "Time"
+
+#: ../src/mnp-world-clock.c:633
+msgid "24 hour clock"
+msgstr "24 hour clock"
+
+#: ../src/mnp-world-clock.c:770
+msgid "Enter a country or city"
+msgstr "Enter a country or city"
+
+#: ../src/mnp-world-clock.c:793
+msgid "Add"
+msgstr "Add"
+
+#: ../src/mnp-world-clock.c:882
+msgid "Set Time & Date"
+msgstr "Set Time & Date"
+
+#: ../src/mnp-datetime.c:324
+msgid "Appointments"
+msgstr "Appointments"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#. 
+#. format date
+#: ../src/mnp-datetime.c:373 ../src/mnp-datetime.c:579
+msgid "Today"
+msgstr "Today"
+
+#: ../src/mnp-datetime.c:471
+msgid "Open Appointments"
+msgstr "Open Appointments"
+
+#: ../src/mnp-datetime.c:549
+msgid "Tasks"
+msgstr "Tasks"
+
+#: ../src/mnp-datetime.c:651
+msgid "Open Tasks"
+msgstr "Open Tasks"
+
+#: ../src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Time and Date"
+
+#: ../src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "24 hour clock or 12 hour clock"
+
+#: ../src/date-time.schemas.in.h:2
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr "Alarms stored in encoded form for use by the alarm notfier."
+
+#: ../src/date-time.schemas.in.h:3
+msgid "List of alarms in short encoded form"
+msgstr "List of alarms in short encoded form"
+
+

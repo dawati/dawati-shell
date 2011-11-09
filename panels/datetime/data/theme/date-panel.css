@@ -1,0 +1,363 @@
+MnpShell {
+  padding: 5;
+}
+
+*#PanelDateHeading
+{
+  font-size: 22;
+  font-family: "Droid Sans";
+  font-weight: bold;
+  color: #31c2eeff;
+  padding: 4 4 2 15;
+}
+
+*#TimePane, *#CalendarPane, *#TaskPane
+{
+  border-image: url('main-panel.png') 6;
+  padding: 4;
+}
+
+*#TimeTitleBox, *#EventsTitleBox, *#TasksTitleBox
+{
+  border-image: url('panel-header-bar.png') 5 5 5 5;
+  padding: 2 0 2 8;
+}
+
+*#EventPaneTitle
+{
+  font-size: 16;
+  font-weight: bold;
+  padding: 8;
+}
+
+*#TimeTitle, *#TaskPaneTitle
+{
+  font-size: 16;
+  font-weight: bold;
+}
+
+*#TwelveHourButtonBox , *#EventButtonBox, *#TaskButtonBox
+{
+  border-image: url('panel-header-widget-bar-border.png') 5 5 5 5;	
+  padding: 6 0 6 12;
+}
+
+*#DateTimeLauncherBox, *#TasksLauncherBox, *#EventLauncherBox
+{
+  border-image: url('panel-header-widget-bar-border-up.png') 5 5 5 5;	
+  padding: 6 8 6 12;
+}
+
+
+*#CalendarPaneTitleToday,
+*#CalendarPaneTitleDate,
+*#TaskPaneTitleToday,
+*#TaskPaneTitleDate
+{
+  font-size: 14;
+  font-weight: bold;
+  font-family: "Droid Sans", "Sans";
+  color: #3e3e3eff;
+}
+
+MxButton.ZoneSearchEntryAddButton, MxButton.DateTimeLauncherButton,
+MxButton.TasksLauncherButton, MxButton.EventLauncherButton
+{
+}
+
+*#HourClockLabel
+{
+  font-weight: bold;
+}
+
+*.ZoneSearchEntryBox 
+{
+  padding: 0 0 0 0;
+}
+
+MxEntry.ZoneSearchEntry
+{
+}
+
+*#CompletionFrame
+{
+  border-image: url('drop-down-panel.png') 10;
+  padding: 8;
+}
+
+/*
+*#CompletionScrollView
+{
+}
+
+*#CompletionListView
+{
+}
+*/
+
+MxButton.CompletionListButton
+{
+  border-image: none;
+}
+
+MxButton.CompletionListButton:hover
+{
+  border-image: url('button.png') 10;
+}
+
+*#WorldClockArea
+{
+  padding: 5 5;
+}
+
+*#ClockTile
+{
+  padding: 4 4;	
+  border-image: url('time-panel.png') 10;
+
+}
+
+*#ClockTileDateCityBox
+{
+  padding: 4 4 10 15;	
+}
+
+
+*#ClockTileTimeDay
+{
+  border-image: url('clock-day.png') 10;
+  padding: 6 8 3 5;
+  color: #31c2eeff;
+  font-weight: bold;
+  font-size: 16;
+}
+
+*#ClockTileTimeNight
+{
+  border-image: url('clock-night.png') 10;
+  padding: 6 8 3 5;
+  color: #31c2eeff;
+  font-weight: bold;
+  font-size: 16;
+}
+
+*#ClockTileCity
+{
+  padding: 6 0 1 1;
+  font-size: 12;
+  font-family: "Droid Sans";
+  font-weight: bold;
+
+}
+
+*#ClockTileDate
+{
+  padding: 6 0 1 1;
+  font-size: 10;
+  font-family: "Droid Sans";
+
+}
+
+*.ClockTileRemoveButton,
+*.ClockTileRemoveButton:hover,
+*.ClockTileRemoveButton:active,
+*.AlarmRemoveButton,
+*.AlarmRemoveButton:hover,
+*.AlarmRemoveButton:active
+{
+  border-image:none;
+  padding:0;
+}
+
+*.ClockTileRemoveButton *.ClockTileRemoveIcon, *.AlarmRemoveButton *.AlarmDelIcon
+{
+  border: 0;
+  padding: 60 10 10 20;	
+  background-image: url('dismiss_button.png');
+}
+
+*.ClockTileRemoveButton:hover *.ClockTileRemoveIcon, *.AlarmRemoveButton:hover *.AlarmDelIcon
+{
+  border: 0;
+  padding: 60 10 10 20;		
+  background-image: url('dismiss_button_hover.png');
+}
+
+*.AlarmIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('alarm.png');
+}
+
+*.ClockIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('clock.png');
+}
+
+*.EventIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('appointments-icon.png');
+}
+
+*.TaskIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('tasks-icon.png');
+}
+
+
+
+PengeCalendarPane
+{
+  border-image: url('backdrop.png') 5 5 5 5;
+  padding: 2;
+}
+
+PengeEventTile, PengeTaskTile
+{
+  padding: 6;
+  border-image: url('event-task-tile-bg.png') 4;
+}
+
+PengeEventTile.FirstTile, PengeTaskTile.FirstTile
+{
+  border-image: none;
+  padding: 6;
+}
+
+PengeEventTile:hover, PengeTaskTile:hover
+PengeEventTile:active, PengeTaskTile:active
+{
+  border-image: url('event-task-tile-bg.png') 4;
+  padding: 6;
+}
+
+PengeEventTile.FirstTile:hover, PengeTaskTile.FirstTile:hover
+PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active
+{
+  border-image: none;
+  padding: 6;
+}
+
+MxButton.PengeTaskToggleButton
+{
+  border-image: url('check_box.png') 0;
+}
+
+MxButton.PengeTaskToggleButton:hover, MxButton.PengeTaskToggleButton:checked
+{
+  border-image: url('checked_box.png') 0;
+}
+
+
+MxLabel.PengeEventTimeLabel
+{
+  color: black;
+  font-size:12;
+  font-weight: bold;
+  font-family: "Droid Sans", "Sans";
+}
+
+MxLabel.PengeEventTimeLabel:past
+{
+  color: black;
+  font-size:12;
+  font-weight: bold;
+  font-family: "Droid Sans", "Sans";
+}
+
+*.PengeEventTimeBin
+{
+  border-image: url('time-bg.png') 0;
+}
+
+*.PengeEventTimeBin:past
+{
+  border-image: url('time-bg-past.png') 0;
+}
+
+PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
+{
+  font-size: 16;
+  font-family: "Droid Sans", "Sans";
+  color: #2c2c2cff;
+}
+
+
+
+*#new-alarm-dialog
+{
+  padding: 4 4;
+  background-color: #7e7e7eff;
+}
+
+*#alarms-tile-area
+{
+  padding: 2 2 2 2;	
+  background-color: #ffffffff;
+}
+
+*#new-alarm-tile-area
+{
+  padding: 2 2 2 2;
+  background-color: #ffffffff;  
+}
+
+MxButton.alarms-tile
+{
+  background-color: #7e7e7eff;
+}
+
+MxButton.new-alarm-tile
+{
+  background-color: #7e7e7eff;
+}
+
+*.MxSpinEntry *.UpButton,
+*.MxSpinEntry *.UpButton:hover,
+*.MxSpinEntry *.DownButton,
+*.MxSpinEntry *.DownButton:hover
+{
+  background-color: #000000ff;  
+  border-image: none;
+  padding: 0;
+}
+
+*.MxSpinEntry *.UpButton:active,
+*.MxSpinEntry *.DownButton:active
+{
+  background-color: #000000ff;  
+  border-image: none;
+  padding: 1;
+}
+
+*.MxSpinEntry *.UpButton *.UpIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('up.png');
+}
+
+*.MxSpinEntry *.DownButton *.DownIcon
+{
+  border: 0;
+  padding: 0;	
+  background-image: url('down.png');
+}
+
+*.AmPmToggle {
+  padding: 4;
+  background-image: url("am-pm-toggle-background.png");
+}
+
+*.SnoozeToggle {
+  padding: 4;
+  background-image: url("snooze-background.png");
+}
+
