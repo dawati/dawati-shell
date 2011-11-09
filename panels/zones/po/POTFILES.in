@@ -1,0 +1,4 @@
+data/dawati-panel-zones.desktop.in.in
+src/main.c
+src/sw-overview.c
+src/sw-zone.c

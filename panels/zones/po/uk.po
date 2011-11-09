@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Roman Tuz <tuzr@yandex.ru>, 2009.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-11-16 23:59+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Roman Tuz <tuzr@yandex.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/dawati-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Панель зон"
+
+#: ../data/dawati-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+msgid "zones"
+msgstr "зони"
+
+#: ../src/main.c:412
+msgid "Zones"
+msgstr "Зони"
+
+#: ../src/sw-zone.c:92
+msgid "New Zone"
+msgstr "Нова Зона"
+
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
+#, c-format
+msgid "Zone %d"
+msgstr "Зона %d"
+
+#: ../src/sw-zone.c:845
+msgid "No applications on this zone"
+msgstr "Немає програм в цій зоні"
+
+#: ../src/sw-zone.c:1001
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Програми, що ви їх використовуєте, показані тут. Ви можете переключатисьміж ними, організовувати на свій смак."
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Ефекти Moblin Netbook"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Ефекти для Moblin Netbooks"
+
+#~ msgid "Dismiss"
+#~ msgstr "Відхилити"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Відхилити все"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%l:%M %P"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%B %e, %Y"

@@ -1,0 +1,120 @@
+# Mutter Catalan translation.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the Mutter package.
+# Gil Forcada <gilforcada@guifi.net>, 2009.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Mutter 2.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 12:02+0000\n"
+"PO-Revision-Date: 2009-08-21 14:54+0200\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/dawati-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Tauler de zones"
+
+#: ../data/dawati-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+msgid "zones"
+msgstr "zones"
+
+#: ../src/main.c:412
+msgid "Zones"
+msgstr "Zones"
+
+#: ../src/sw-zone.c:92
+msgid "New Zone"
+msgstr "Zona nova"
+
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
+#, c-format
+msgid "Zone %d"
+msgstr "Zona %d"
+
+#: ../src/sw-zone.c:845
+msgid "No applications on this zone"
+msgstr "No hi ha aplicacions en aquesta zona"
+
+#: ../src/sw-zone.c:1001
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Aquí es mostraran les aplicacions que utilitzeu. Les podreu canviar i organitzar-les com més us agradi."
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "Fa menys d'un minut"
+
+#~ msgid "A few minutes ago"
+#~ msgstr "Fa uns minuts"
+
+#~ msgid "A couple of hours ago"
+#~ msgstr "Fa unes hores"
+
+#~ msgid "Earlier today"
+#~ msgstr "Avui"
+
+#~ msgid "Yesterday"
+#~ msgstr "Ahir"
+
+#~ msgid "On %A"
+#~ msgstr "El %A"
+
+#~ msgid "Unknown"
+#~ msgstr "Desconegut"
+
+#~ msgid "Last week"
+#~ msgstr "La setmana passada"
+
+#~ msgid "A couple of weeks ago"
+#~ msgstr "Fa un parell de setmanes"
+
+#~ msgid "This month"
+#~ msgstr "Aquest mes"
+
+#~ msgid "Last month"
+#~ msgstr "El mes passat"
+
+#~ msgid "This year"
+#~ msgstr "Aquest any"
+
+#~ msgid "Last year"
+#~ msgstr "L'any passat"
+
+#~ msgid "Ages ago"
+#~ msgstr "Fa milers d'anys"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Efectes del Moblin"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Efectes per als mini-portàtils Moblin"
+
+#~ msgid "Dismiss"
+#~ msgstr "Descarta"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Descarta-ho tot"
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%H:%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "%e de %B de %Y"
+
+#~ msgid "power & brightness"
+#~ msgstr "energia i brillantor"
+
+#~ msgid "volume"
+#~ msgstr "volum"
+
+#~ msgid "bluetooth"
+#~ msgstr "bluetooth"
+
+#~ msgid "networks"
+#~ msgstr "xarxes"
+
+#~ msgid "test"
+#~ msgstr "test"

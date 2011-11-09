@@ -1,0 +1,97 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Jean Cayron <jean.cayron@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: mutter-moblin.master.mutter-moblin-netbook-plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-23 22:50+0000\n"
+"PO-Revision-Date: 2010-02-03 18:21+0100\n"
+"Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
+"Language-Team: Walloon <linux-wa@walon.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 0.3\n"
+
+#: ../data/dawati-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Sicriftôr des redjons"
+
+#: ../data/dawati-panel-zones.desktop.in.in.h:2 ../src/main.c:25
+msgid "zones"
+msgstr "redjons"
+
+#: ../src/main.c:412
+msgid "Zones"
+msgstr "Redjons"
+
+#: ../src/sw-zone.c:92
+msgid "New Zone"
+msgstr "Novele redjon"
+
+#: ../src/sw-zone.c:98 ../src/sw-zone.c:1039
+#, c-format
+msgid "Zone %d"
+msgstr "Redjon %d"
+
+#: ../src/sw-zone.c:845
+msgid "No applications on this zone"
+msgstr "Nou programe dins cisse redjon ci"
+
+#: ../src/sw-zone.c:1001
+msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
+msgstr "Les programes ki vs eployîz vont aparexhe vaici. Vos pôroz ndè candjî eyet les assonrer sorlon çou k' vos veyoz voltî."
+
+#~ msgid "Hello! This is the Zones panel. When you have applications open you will be able to view, manage and access them here."
+#~ msgstr "Bondjoû ! Çouchal, c' est l' sicriftôr des Redjons. Cwand vs avoz des programes di drovous, vos les såroz vey, manaedjî eyet î moussî chal."
+
+#~ msgid "two"
+#~ msgstr "deus"
+
+#~ msgid "four"
+#~ msgstr "cwate"
+
+#~ msgid "three"
+#~ msgstr "troes"
+
+#~ msgid "six"
+#~ msgstr "shijh"
+
+#~ msgid "five"
+#~ msgstr "cénk"
+
+#~ msgid "eight"
+#~ msgstr "ût"
+
+#~ msgid "seven"
+#~ msgstr "sete"
+
+#~ msgid "Moblin Netbook Effects"
+#~ msgstr "Efets po Netbook da Moblin"
+
+#~ msgid "Effects for Moblin Netbooks"
+#~ msgstr "Efets da Moblin po les Netbooks"
+
+#~ msgid "Activate"
+#~ msgstr "Mete en alaedje"
+
+#~ msgid "Unknown window"
+#~ msgstr "Purnea nén cnoxhou"
+
+#~ msgid "Is asking for your attention."
+#~ msgstr "Vos arinne."
+
+#~ msgid "%l:%M %P"
+#~ msgstr "%H:%M"
+
+#~ msgid "%B %e, %Y"
+#~ msgstr "li %e di %B %Y"
+
+#~ msgid "Dismiss"
+#~ msgstr "Rinoncî"
+
+#~ msgid "Dismiss All"
+#~ msgstr "Rinoncî a ttafwait"
