@@ -1,0 +1,23 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Encoding=UTF-8
+TryExec=@LIBEXECDIR@/dawati-power-icon
+Exec=@LIBEXECDIR@/dawati-power-icon
+Icon=dawati-power-icon
+Terminal=false
+Categories=
+Name=Dawati power icon
+Comment=A power indicator
+GenericName=A power indicator
+NoDisplay=true
+OnlyShowIn=X-DAWATI-NB;
+X-GNOME-Autostart-enable=true
+X-Dawati-Panel-Button-Style=state-80
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Stylesheet=@PANEL_POWER_ICON_THEMEDIR@/power-icon/power-icon.css
+X-Dawati-Panel-Type=applet
+X-Dawati-Panel-Windowless=true
+X-Dawati-Priority=High
+X-Dawati-Service=com.dawati.UX.Shell.Panels.power
+

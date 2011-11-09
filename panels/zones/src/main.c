@@ -66,7 +66,6 @@ static GOptionEntry entries[] = {
 /* background loading */
 #define BG_KEY_DIR "/desktop/gnome/background"
 #define KEY_BG_FILENAME BG_KEY_DIR "/picture_filename"
-#define THEMEDIR DATADIR "/mutter-dawati/theme/"
 
 
 static void
@@ -599,9 +598,9 @@ main (int argc, char **argv)
 
 
   setlocale (LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE_PANEL_ZONES, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_ZONES, "UTF-8");
+  textdomain (GETTEXT_PACKAGE_PANEL_ZONES);
 
 
   data = g_new0 (ZonePanelData, 1);
@@ -622,7 +621,7 @@ main (int argc, char **argv)
   mpl_panel_clutter_init_with_gtk (&argc, &argv);
 
   mx_style_load_from_file (mx_style_get_default (),
-                           STYLEDIR "/switcher.css", NULL);
+                           THEMEDIR "/switcher.css", NULL);
 
   data->screen = wnck_screen_get_default ();
   wnck_screen_force_update (data->screen);

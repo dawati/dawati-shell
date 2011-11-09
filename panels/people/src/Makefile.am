@@ -1,16 +1,16 @@
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
-	$(PEOPLE_CFLAGS) \
-	$(MPL_CFLAGS) \
-	$(ONLINE_CFLAGS) \
-	-DLOCALEDIR=\"$(localedir)\" \
+	$(PANEL_PEOPLE_CFLAGS) \
+	\
 	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
-	-DTHEMEDIR=\"$(pkgdatadir)/theme\"
+	$(NULL)
 
 libexec_PROGRAMS = dawati-panel-people
 
-dawati_panel_people_LDADD = $(PEOPLE_LIBS) $(MPL_LIBS) $(ONLINE_LIBS)
+dawati_panel_people_LDADD = \
+	$(PANEL_PEOPLE_LIBS) \
+	$(NULL)
 
 %.c: %.list Makefile.am
 	$(QUIET_GEN)glib-genmarshal --body --prefix=sw_marshal $< > $@
@@ -21,19 +21,20 @@ dawati_panel_people_LDADD = $(PEOPLE_LIBS) $(MPL_LIBS) $(ONLINE_LIBS)
 BUILT_SOURCES = sw-marshals.c sw-marshals.h
 
 dawati_panel_people_SOURCES = \
-  mnb-people-panel.c \
-  mnb-people-panel.h \
-  dawati-panel-people.c \
-  sw-online.c \
-  sw-online.h \
-  sw-marshals.list \
-  $(BUILT_SOURCES)
+	mnb-people-panel.c \
+	mnb-people-panel.h \
+	dawati-panel-people.c \
+	sw-online.c \
+	sw-online.h \
+	sw-marshals.list \
+	$(BUILT_SOURCES) \
+	$(NULL)
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.dawati.UX.Shell.Panels.people.service.in
 service_DATA = com.dawati.UX.Shell.Panels.people.service
 
-EXTRA_DIST = $(service_in_files) 
+EXTRA_DIST = $(service_in_files)
 
 DISTCLEANFILES = com.dawati.UX.Shell.Panels.people.service $(BUILT_SOURCES)
 

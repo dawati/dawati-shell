@@ -1,4 +1,4 @@
-themedir = $(THEME_DIR)
+themedir = $(PANEL_NETWORKS_THEMEDIR)
 theme_DATA = network-applet.css
 
 %.css: %.css.in $(top_builddir)/config.log

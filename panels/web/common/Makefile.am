@@ -1,11 +1,8 @@
 AM_CPPFLAGS = \
-	-DPKGDATADIR=\"$(pkgdatadir)\" \
-	-DMWB_VERSION_STRING=\"$(MWB_VERSION)\" \
-	$(MX_CFLAGS) \
-	$(GTK_CFLAGS) \
+	$(PANEL_WEB_CFLAGS) \
 	-Wall \
 	-fno-exceptions -fno-rtti \
-	-I$(top_srcdir)/common
+	$(NULL)
 
 noinst_LIBRARIES = libcommon.a
 
@@ -19,4 +16,5 @@ libcommon_a_SOURCES = \
 	mwb-spindle.cc \
 	mwb-spindle.h \
 	mwb-utils.cc \
-	mwb-utils.h 
+	mwb-utils.h \
+	$(NULL)

@@ -1,23 +1,24 @@
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
-	    $(PENGE_CFLAGS) \
-	    $(MPL_CFLAGS) \
-	    -I$(top_srcdir) \
-	    -DLOCALEDIR=\"$(localedir)\" \
-	    -DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
-	    -DTHEMEDIR=\"$(pkgdatadir)/theme\"
+	$(PANEL_MYZONE_CFLAGS) \
+	$(PENGE_CFLAGS) \
+	-I$(top_srcdir)/penge \
+	\
+	-DNBTK_CACHE=\"$(pkgdatadir)/nbtk.cache\" \
+	$(NULL)
 
 libexec_PROGRAMS = dawati-panel-myzone
 
 dawati_panel_myzone_LDADD = \
-			    $(top_builddir)/penge/libpenge.la \
-			    $(PENGE_LIBS) \
-			    $(MAILME_LIBS) \
-			    $(MPL_LIBS)
+	$(PANEL_MYZONE_LIBS) \
+	$(PENGE_LIBS) \
+	$(top_builddir)/penge/libpenge.la \
+	$(NULL)
 
 dawati_panel_myzone_SOURCES = \
-  dawati-panel-myzone.c
+	dawati-panel-myzone.c \
+	$(NULL)
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.dawati.UX.Shell.Panels.myzone.service.in

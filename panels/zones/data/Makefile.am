@@ -1,15 +1,15 @@
-SUBDIRS=style
+SUBDIRS = theme
 
-assetdir = $(pkgdatadir)
+assetdir = $(PANEL_ZONES_DATADIR)
 dist_asset_DATA = people.png
 
 @INTLTOOL_DESKTOP_RULE@
 
-desktopfiles_in_files=dawati-panel-zones.desktop.in
-desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
+desktopfiles_in_files = dawati-panel-zones.desktop.in
+desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 
 if ENABLE_DAWATI_DESKTOP_FILE
-desktopfilesdir=$(DAWATI_PANELS_DIR)/
+desktopfilesdir = $(DAWATI_PANELS_DIR)/
 desktopfiles_DATA = $(desktopfiles_files)
 endif
 

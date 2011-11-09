@@ -1,4 +1,4 @@
-themedir = $(pkgdatadir)/theme
+themedir = $(PANEL_MYZONE_THEMEDIR)
 dist_theme_DATA = \
 	panel.css \
 	backdrop.png \
@@ -70,8 +70,8 @@ dist_theme_DATA = \
 	top-fade.png \
 	event-task-tile-bg.png \
 	intro-video-thumbnail.png \
-	play-button.png
-
+	play-button.png \
+	$(NULL)
 
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/nbtk.cache

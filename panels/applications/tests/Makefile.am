@@ -1,12 +1,13 @@
 AM_CFLAGS = \
-	$(APPLICATIONS_CFLAGS) \
-	-I$(top_srcdir)/src \
-	-DDATADIR=\"$(datadir)\" \
-	-DLOCALEDIR=\"$(localedir)\" \
-	-DTHEMEDIR=\"$(pkgdatadir)/theme\" \
+	$(LIBMPL_CFLAGS) \
+	$(PANEL_APPLICATIONS_CFLAGS) \
+	-I$(srcdir)/../src \
 	$(NULL)
 
-LDADD = $(APPLICATIONS_LIBS)
+LDADD = \
+	$(LIBMPL_LIBS) \
+	$(PANEL_APPLICATIONS_LIBS) \
+	$(NULL)
 
 noinst_PROGRAMS = \
 	test-filter \
@@ -15,20 +16,20 @@ noinst_PROGRAMS = \
 	test-launcher-tree
 
 test_filter_SOURCES = \
-	$(top_srcdir)/src/mnb-filter.c \
+	$(srcdir)/../src/mnb-filter.c \
 	test-filter.c
 
 test_launcher_button_SOURCES = \
-	$(top_srcdir)/src/mnb-launcher-button.c \
+	$(srcdir)/../src/mnb-launcher-button.c \
 	test-launcher-button.c
 
 test_launcher_monitor_SOURCES = \
-	$(top_srcdir)/src/mnb-launcher-application.c \
-	$(top_srcdir)/src/mnb-launcher-tree.c \
+	$(srcdir)/../src/mnb-launcher-application.c \
+	$(srcdir)/../src/mnb-launcher-tree.c \
 	test-launcher-monitor.c
 
 test_launcher_tree_SOURCES = \
-	$(top_srcdir)/src/mnb-launcher-application.c \
-	$(top_srcdir)/src/mnb-launcher-tree.c \
+	$(srcdir)/../src/mnb-launcher-application.c \
+	$(srcdir)/../src/mnb-launcher-tree.c \
 	test-launcher-tree.c
 

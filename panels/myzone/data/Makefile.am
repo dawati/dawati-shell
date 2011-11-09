@@ -1,17 +1,17 @@
-SUBDIRS=theme
+SUBDIRS = theme
 
 @INTLTOOL_DESKTOP_RULE@
 
-desktopfiles_in_files=dawati-panel-myzone.desktop.in
-desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
+desktopfiles_in_files = dawati-panel-myzone.desktop.in
+desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 
 if ENABLE_DAWATI_DESKTOP_FILE
-panelfilesdir=$(DAWATI_PANELS_DIR)/
+panelfilesdir = $(DAWATI_PANELS_DIR)
 panelfiles_DATA = $(desktopfiles_files)
 endif
 
-settingsfiles_in_files=myzone.desktop.in
-settingsfiles_files=$(settingsfiles_in_files:.desktop.in=.desktop)
+settingsfiles_in_files = myzone.desktop.in
+settingsfiles_files = $(settingsfiles_in_files:.desktop.in=.desktop)
 settingsdir = $(datadir)/applications
 settings_DATA = $(settingsfiles_files)
 

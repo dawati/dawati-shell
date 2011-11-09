@@ -1,4 +1,4 @@
-themedir = $(pkgdatadir)/theme
+themedir = $(PANEL_APPLICATIONS_THEMEDIR)
 dist_theme_DATA = \
 	toolbar-button.css \
 	apps-coloured.png \
@@ -6,8 +6,8 @@ dist_theme_DATA = \
 	panel.css \
 	clear-entry.png \
 	clear-entry-hover.png \
-  content-pane-background.png \
-  content-pane-header.png \
+	content-pane-background.png \
+	content-pane-header.png \
 	launcher-button-fav-toggle-active.png \
 	launcher-button-fav-toggle-checked.png \
 	launcher-button-fav-toggle-hover.png \

@@ -1,27 +1,26 @@
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 AM_CFLAGS = \
-	$(ZONES_CFLAGS) \
-	$(MPL_CFLAGS) \
-	-DLOCALEDIR=\"$(localedir)\" \
-	-DSTYLEDIR=\"$(pkgdatadir)/style\" \
-	-DPKGDATADIR=\"$(pkgdatadir)\" \
-	-DDATADIR=\"$(datadir)\"
+	$(PANEL_ZONES_CFLAGS) \
+	$(NULL)
 
 libexec_PROGRAMS = dawati-panel-zones
 
-dawati_panel_zones_LDADD = $(ZONES_LIBS) $(MPL_LIBS)
+dawati_panel_zones_LDADD = \
+	$(PANEL_ZONES_LIBS) \
+	$(NULL)
 
 dawati_panel_zones_SOURCES = \
-			     penge-magic-texture.c \
-			     penge-magic-texture.h \
-			     sw-overview.c \
-			     sw-overview.h \
-			     sw-window.c \
-			     sw-window.h \
-			     sw-zone.c \
-			     sw-zone.h \
-			     main.c
+	penge-magic-texture.c \
+	penge-magic-texture.h \
+	sw-overview.c \
+	sw-overview.h \
+	sw-window.c \
+	sw-window.h \
+	sw-zone.c \
+	sw-zone.h \
+	main.c \
+	$(NULL)
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.dawati.UX.Shell.Panels.zones.service.in

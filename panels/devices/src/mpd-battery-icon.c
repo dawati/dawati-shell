@@ -186,6 +186,7 @@ mpd_battery_icon_load_frames_from_dir (char const  *path,
   GList       *files = NULL;
   GList       *frames = NULL;
   CoglHandle   handle = COGL_INVALID_HANDLE;
+  GList const *files_iter;
 
   dir = g_dir_open (path, 0, error);
   if (NULL == dir)
@@ -206,7 +207,7 @@ mpd_battery_icon_load_frames_from_dir (char const  *path,
   files = g_list_sort (files, (GCompareFunc) g_strcmp0);
 
   /* Load textures */
-  for (GList const *files_iter = files;
+  for (files_iter = files;
        files_iter;
        files_iter = files_iter->next)
   {

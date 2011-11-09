@@ -2,15 +2,15 @@ SUBDIRS = icons theme
 
 desktop_in_files = carrick.desktop.in.in carrick-standalone.desktop.in.in
 desktop_out_files = carrick.desktop carrick-standalone.desktop
+
 @INTLTOOL_DESKTOP_RULE@
 
-if WITH_DAWATI
-paneldir = @PANEL_DIR@
+if ENABLE_DAWATI_DESKTOP_FILE
+paneldir = $(DAWATI_PANELS_DIR)
 panel_DATA = carrick.desktop
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = carrick.desktop
-
 endif
 
 desktopdir = $(datadir)/applications

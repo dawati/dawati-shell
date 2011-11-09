@@ -1,36 +1,30 @@
 AM_CPPFLAGS = \
-	$(SQLITE_CFLAGS) \
-	$(MX_CFLAGS) \
-	$(GTK_CFLAGS) \
-	$(NETPANEL_CFLAGS) \
-	$(MPL_CFLAGS) \
-	-DLOCALEDIR=\"$(localedir)\" \
+	$(PANEL_WEB_CFLAGS) \
 	-DMX_CACHE=\"$(pkgdatadir)/mx.cache\" \
-	-DTHEMEDIR=\"$(pkgdatadir)/netpanel\" \
 	-fno-exceptions -fno-rtti \
-	-I$(top_srcdir)/common
+	-I$(srcdir)/../common \
+	$(NULL)
 
 libexec_PROGRAMS = dawati-panel-web
 
 dawati_panel_web_LDADD = \
-	$(SQLITE_LIBS) \
-	$(MX_LIBS) \
-	$(GTK_LIBS) \
-	$(NETPANEL_LIBS) \
-	$(MPL_LIBS) \
-	$(top_builddir)/common/libcommon.a
+	$(PANEL_WEB_LIBS) \
+	$(builddir)/../common/libcommon.a \
+	$(NULL)
 
 dawati_panel_web_SOURCES = \
-  dawati-panel-web.cc   \
-  dawati-netbook-netpanel.cc \
-  dawati-netbook-netpanel.h \
-  mnb-netpanel-bar.cc        \
-  mnb-netpanel-bar.h        \
-  mnb-netpanel-scrollview.cc \
-  mnb-netpanel-scrollview.h
+	dawati-panel-web.cc \
+	dawati-netbook-netpanel.cc \
+	dawati-netbook-netpanel.h \
+	mnb-netpanel-bar.cc \
+	mnb-netpanel-bar.h \
+	mnb-netpanel-scrollview.cc \
+	mnb-netpanel-scrollview.h \
+	$(NULL)
 
 dawati_panel_web_DEPENDENCIES = \
-  $(top_builddir)/common/libcommon.a
+	$(builddir)/../common/libcommon.a \
+	$(NULL)
 
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.dawati.UX.Shell.Panels.internet.service.in
@@ -41,8 +35,8 @@ autostart_DATA = dawati-panel-internet.desktop
 
 @INTLTOOL_DESKTOP_RULE@
 
-desktopfiles_in_files=dawati-panel-internet.desktop.in
-desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
+desktopfiles_in_files = dawati-panel-internet.desktop.in
+desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 
 %.desktop.in: %.desktop.in.in Makefile
 	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@

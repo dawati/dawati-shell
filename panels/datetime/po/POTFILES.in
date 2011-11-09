@@ -1,14 +1,14 @@
 # List of source files containing translatable strings.
-src/dawati-panel-date-time.c
-data/dawati-panel-datetime.desktop.in.in
-src/mnp-clock-area.c
-src/mnp-utils.c
-src/dawati-panel-date-time.c
-src/mnp-clock-tile.c
-src/mnp-world-clock.c
-src/mnp-button-item.c
-src/mnp-datetime.c
-src/mnp-shell.c
-src/system-timezone.c
-src/com.dawati.UX.Shell.Panels.datetime.service.in
-src/date-time.schemas.in
+panels/datetime/src/dawati-panel-date-time.c
+panels/datetime/data/dawati-panel-datetime.desktop.in.in
+panels/datetime/src/mnp-clock-area.c
+panels/datetime/src/mnp-utils.c
+panels/datetime/src/dawati-panel-date-time.c
+panels/datetime/src/mnp-clock-tile.c
+panels/datetime/src/mnp-world-clock.c
+panels/datetime/src/mnp-button-item.c
+panels/datetime/src/mnp-datetime.c
+panels/datetime/src/mnp-shell.c
+panels/datetime/src/system-timezone.c
+panels/datetime/src/com.dawati.UX.Shell.Panels.datetime.service.in
+panels/datetime/src/date-time.schemas.in

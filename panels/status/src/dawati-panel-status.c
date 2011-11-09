@@ -65,7 +65,7 @@ dawati_status_panel_hide (void)
     g_debug (G_STRLOC ": Would hide the panel");
 }
 
-static void 
+static void
 _client_view_opened_cb (SwClient         *client,
                         SwClientItemView *view,
                         gpointer          userdata)
@@ -188,12 +188,12 @@ main (int argc, char *argv[])
   GError *error = NULL;
 
   setlocale (LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE_PANEL_STATUS, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_STATUS, "UTF-8");
+  textdomain (GETTEXT_PACKAGE_PANEL_STATUS);
 
   context = g_option_context_new ("- dawati status panel");
-  g_option_context_add_main_entries (context, status_options, GETTEXT_PACKAGE);
+  g_option_context_add_main_entries (context, status_options, GETTEXT_PACKAGE_PANEL_STATUS);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, cogl_get_option_group ());
   g_option_context_add_group (context, gtk_get_option_group (FALSE));

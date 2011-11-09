@@ -21,7 +21,7 @@ m4_define([default_enable_cache],    [no])
 
 AC_PREREQ([2.59])
 
-AC_INIT([mutter-netbook], [plugin_version], [http://dawati.org])
+AC_INIT([dawati-shell], [plugin_version], [http://dawati.org])
 AC_CONFIG_MACRO_DIR([build/autotools])
 
 AC_CONFIG_SRCDIR(src/dawati-netbook.c)
@@ -41,16 +41,26 @@ AC_SUBST(PLUGIN_API_VERSION)
 
 AM_CONFIG_HEADER([config.h])
 
-GETTEXT_PACKAGE=mutter-dawati-netbook-plugin
+GETTEXT_PACKAGE=dawati-shell
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    ["$GETTEXT_PACKAGE"],
                    [Name of default gettext domain])
 
+IT_PO_SUBDIR([panels/applications/po])
+IT_PO_SUBDIR([panels/datetime/po])
+IT_PO_SUBDIR([panels/devices/po])
+IT_PO_SUBDIR([panels/myzone/po])
+IT_PO_SUBDIR([panels/networks/po])
+IT_PO_SUBDIR([panels/people/po])
+IT_PO_SUBDIR([panels/status/po])
+IT_PO_SUBDIR([panels/web/po])
+IT_PO_SUBDIR([panels/zones/po])
 IT_PROG_INTLTOOL([0.34.90])
 AS_ALL_LINGUAS
 
 AC_PROG_CC
+AC_PROG_CXX
 AM_PROG_CC_C_O
 AC_ISC_POSIX
 AC_HEADER_STDC
@@ -124,7 +134,7 @@ AS_IF([test "x$enable_cache" = "xyes"],
 		[$(which mx-create-image-cache)])
 ])
 
-AM_CONDITIONAL([ENABLE_CACHE],   [test "x$enable_cache" = "xyes"])
+AM_CONDITIONAL([ENABLE_CACHE],   [test "$enable_cache" = "yes"])
 
 AC_ARG_ENABLE([debug],
               [AC_HELP_STRING([--enable-debug],
@@ -168,7 +178,7 @@ GTK_DOC_CHECK([1.11])
 #
 # we use autogen.sh as it exists only inside the Git clones, and it
 # is not packaged into tarballs.
-AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "autogen.sh"])
+AM_CONDITIONAL([BUILD_GTK_DOC], [test "$enable_gtk_doc" = "yes" || test ! -f "autogen.sh"])
 
 # prefixes for fixing gtk-doc references
 CLUTTER_PREFIX="`$PKG_CONFIG --variable=prefix clutter-1.0`"
@@ -199,6 +209,247 @@ AC_SUBST(PLUGIN_LT_LDFLAGS)
 
 SHAVE_INIT([build/autotools], [enable])
 
+###########################
+# Available panels
+###########################
+
+# Default list of panels to compile
+WITH_PANELS="applications,datetime,myzone,networks,people,status,web"
+
+# Provide a --with-panels/--without-panels configure option
+AS_DAWATI_ARG_WITH_PANELS
+
+# Applications
+AS_DAWATI_PANEL(applications, [clutter-x11-1.0
+                               gdk-x11-2.0
+                               gio-unix-2.0
+                               gtk+-2.0
+                               libgnome-menu
+                               mx-1.0 >= 1.4.0])
+
+# Date & time
+AS_DAWATI_PANEL(datetime, [glib-2.0
+                           clutter-1.0
+                           mx-1.0
+                           gweather
+                           gconf-2.0
+                           libnotify
+                           libcanberra
+                           libjana-ecal
+                           geoclue
+                           libxml-2.0])
+
+# Devices
+AS_DAWATI_PANEL(devices, [gdk-x11-2.0
+                          glib-2.0
+                          gobject-2.0
+                          devkit-power-gobject
+                          gconf-2.0
+                          clutter-gtk-0.12
+                          xrandr
+                          xext
+                          libpulse-mainloop-glib >= 0.9.15,
+                          libnotify])
+
+# Myzone
+AS_DAWATI_PANEL(myzone, [])
+
+# Networks
+AS_DAWATI_PANEL(networks, [gtk+-2.0 >= 2.12
+                           gthread-2.0
+                           dbus-glib-1 >= 0.73
+                           mx-gtk-1.0
+                           rest-0.7
+                           gconf-2.0])
+
+if test x$dawati_use_networks_panel = xyes; then
+   PKG_CHECK_MODULES(CARRICK, [gtk+-2.0
+                               gconf-2.0
+                               mx-1.0
+                               mx-gtk-1.0
+                               dbus-glib-1
+                               libnotify])
+   PKG_CHECK_MODULES(CALLOUTS, [gtk+-2.0
+                                gconf-2.0
+                                dbus-glib-1
+                                rest-0.7])
+
+   # Networks: openconnect
+   AC_MSG_CHECKING([whether to enable openconnect support])
+   AC_ARG_WITH([openconnect],[AS_HELP_STRING([--without-openconnect], [disable support for OpenConnect VPN])],
+               [], [with_openconnect=yes])
+   AS_IF([test "$with_openconnect" = yes],
+         [
+            AC_MSG_RESULT([yes])
+            AC_DEFINE([WITH_OPENCONNECT], 1, [Use OpenConnect])
+            PKG_CHECK_MODULES(OPENCONNECT, openconnect)
+         ],
+         AC_MSG_RESULT([no]))
+
+   # Networks: mobile provider db
+   AC_MSG_CHECKING([for mobile-broadband-provider-info])
+   PKG_CHECK_EXISTS(mobile-broadband-provider-info,
+                    _PKG_CONFIG(MOBILE_DATA, [variable=database], [mobile-broadband-provider-info])
+                    AC_DEFINE_UNQUOTED(MOBILE_DATA, "$pkg_cv_MOBILE_DATA", [Mobile provider database])
+                    AC_MSG_RESULT([yes]),
+                    AC_MSG_ERROR([Cannot find mobile-broadband-provider-info]))
+
+   # Networks: ISO codes
+   AC_MSG_CHECKING([for iso-codes])
+   PKG_CHECK_EXISTS(iso-codes,
+                    _PKG_CONFIG(ISOCODES, [variable=prefix], [iso-codes])
+                    AC_DEFINE_UNQUOTED(ISOCODES_PREFIX, "$pkg_cv_ISOCODES", [iso-codes prefix])
+                    AC_MSG_RESULT([yes]),
+                    AC_MSG_ERROR([Cannot find iso-codes]))
+
+fi
+AM_CONDITIONAL([USE_CARRICK_CALLOUTS], [test "$dawati_use_networks_panel" = "yes"])
+AM_CONDITIONAL([WITH_OPENCONNECT], [test "$with_openconnect" = "yes"])
+
+
+# People
+AS_DAWATI_PANEL(people, [anerley >= 0.2.4
+                         gtk+-2.0 >= 2.14
+                         mx-1.0 >= 0.9.0
+                         gio-2.0
+                         gio-unix-2.0])
+
+# Power
+AS_DAWATI_PANEL(power-icon, [$eck_deps
+                             clutter-1.0
+                             clutter-gtk-0.12
+                             devkit-power-gobject
+                             gconf-2.0
+                             gdk-x11-2.0
+                             libnotify
+                             mx-1.0])
+
+# Status
+AS_DAWATI_PANEL(status, [dbus-glib-1
+                         clutter-x11-1.0 >= 1.0.0
+                         clutter-gtk-0.12
+                         libsocialweb-client >= 0.25.3
+                         mx-1.0 >= 0.9.0
+                         champlain-0.8
+                         geoclue
+                         gconf-2.0])
+
+# Web
+AS_DAWATI_PANEL(web, [mx-1.0 >= 0.2.0
+                      gtk+-2.0
+                      sqlite3
+                      clutter-x11-1.0
+                      clutter-1.0])
+
+# Zones
+AS_DAWATI_PANEL(zones, [clutter-gtk-0.12
+                        gtk+-2.0 >= 2.14
+                        mx-1.0
+                        libwnck-1.0
+                        gconf-2.0])
+
+
+###########################
+# Cross panel options
+###########################
+
+if test x$dawati_use_myzone_panel = xyes || test x$dawati_use_datetime_panel = xyes; then
+   PKG_CHECK_MODULES(PENGE, [libjana-ecal
+                             libsocialweb-client
+                             telepathy-glib >= 0.14
+                             gtk+-2.0 >= 2.14
+                             mx-1.0 >= 0.9.0
+                             gconf-2.0
+                             gio-2.0
+                             gio-unix-2.0])
+
+   PKG_CHECK_MODULES(MAILME, [gobject-2.0
+                              glib-2.0
+                              telepathy-glib >= 0.14
+                              dbus-glib-1
+                              gio-2.0])
+fi
+AM_CONDITIONAL([USE_PENGE_MAILME],
+               [test "$dawati_use_myzone_panel" = "yes" || test "$dawati_use_datetime_panel" = "yes"])
+
+if test x$dawati_use_devices_panel = xyes || test x$dawati_use_power_icon_panel = xyes; then
+   #
+   # Egg Console Kit
+   #
+   PKG_CHECK_MODULES(ECK, dbus-glib-1)
+
+   #
+   # Gnome Power Manager
+   #
+   PKG_CHECK_MODULES(GPM, [gdk-x11-2.0
+                           glib-2.0
+                           gobject-2.0
+                           xrandr
+                           xext])
+
+   #
+   # Gnome Volume Control
+   #
+   PKG_CHECK_MODULES(GVC, libpulse-mainloop-glib >= 0.9.15)
+
+fi
+AM_CONDITIONAL([USE_ECK_GPM_GVC],
+               [test "$dawati_use_devices_panel" = "yes" || test "$dawati_use_power_icon_panel" = "yes"])
+
+if test x$dawati_use_people_panel = xyes || test x$dawati_use_status_panel = xyes; then
+   AC_MSG_CHECKING([how to detect we are online])
+   AC_ARG_WITH([online],
+        [AS_HELP_STRING([--with-online],
+                [how to check if we are online (always, connman, networkmanager, test)])],
+        [], [with_online=always])
+   AS_IF(
+        [test "$with_online" = always],
+        [
+        AC_MSG_RESULT([always])
+        AC_DEFINE([WITH_ONLINE_ALWAYS], 1, [No online detection])
+        ],
+
+        [test "$with_online" = connman],
+        [
+        AC_MSG_RESULT([Connection Manager])
+        AC_DEFINE([WITH_ONLINE_CONNMAN], 1, [ConnMan online detection])
+        ],
+
+        [test "$with_online" = networkmanager],
+        [
+        AC_MSG_RESULT([Network Manager])
+        PKG_CHECK_MODULES(ONLINE, libnm-glib >= 0.7)
+        AC_DEFINE([WITH_ONLINE_NM], 1, [NM online detection])
+        ],
+
+        [AC_MSG_ERROR([Unknown argument to --with-online])])
+fi
+
+# libnotify API breakage upon 0.7
+PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= 0.7,
+                  AC_DEFINE(HAVE_NOTIFY_0_7, 1, [we have libnotify 0.7 or better]))
+
+# Desktop files for panels
+AM_CONDITIONAL([ENABLE_DAWATI_DESKTOP_FILE], [test "$enable_mdesktop" = "yes"])
+
+# Capplets
+AC_ARG_ENABLE([capplet],
+              [AC_HELP_STRING([--disable-capplet],
+                              [Disable the building of the capplet])],
+              [enable_cappled=$enableval],
+              [enable_capplet=yes])
+
+AM_CONDITIONAL([ENABLE_CAPPLET], [test "$enable_capplet" = "yes"])
+
+# Test tools
+AC_MSG_CHECKING([whether to install test tools])
+AC_ARG_ENABLE([test-tools],
+              [AC_HELP_STRING([--enable-test-tools],
+                              [Enable extra tools for testing and debugging])])
+AC_MSG_RESULT([$enable_test_tools])
+AM_CONDITIONAL([INSTALL_TEST_TOOLS], [test "$enable_test_tools" = "yes"])
+
+#
 AC_OUTPUT([
 Makefile
 build/Makefile
@@ -216,6 +467,7 @@ src/notifications/Makefile
 src/presence/Makefile
 po/Makefile.in
 tests/Makefile
+
 libdawati-panel/Makefile
 libdawati-panel/docs/Makefile
 libdawati-panel/docs/reference/Makefile
@@ -226,6 +478,101 @@ libdawati-panel/dawati-panel/Makefile
 libdawati-panel/dawati-panel/mpl-version.h
 libdawati-panel/theme/Makefile
 libdawati-panel/tests/Makefile
+
+carrick/Makefile
+
+callouts/3g/Makefile
+callouts/Makefile
+callouts/openconnect/Makefile
+
+egg-console-kit/Makefile
+
+gpm/Makefile
+
+gvc/Makefile
+
+mailme/Makefile
+
+penge/Makefile
+
+panels/Makefile
+
+panels/applications/Makefile
+panels/applications/src/Makefile
+panels/applications/tests/Makefile
+panels/applications/data/Makefile
+panels/applications/data/theme/Makefile
+panels/applications/po/Makefile.in
+
+panels/datetime/Makefile
+panels/datetime/src/Makefile
+panels/datetime/data/Makefile
+panels/datetime/data/theme/Makefile
+panels/datetime/po/Makefile.in
+
+panels/devices/Makefile
+panels/devices/data/Makefile
+panels/devices/data/dawati-panel-devices.desktop.in
+panels/devices/data/dawati-panel-devices.schemas
+panels/devices/data/com.dawati.UX.Shell.Panels.devices.service
+panels/devices/data/icons/Makefile
+panels/devices/data/theme/Makefile
+panels/devices/po/Makefile.in
+panels/devices/src/Makefile
+panels/devices/tests/Makefile
+
+panels/myzone/Makefile
+panels/myzone/capplet/Makefile
+panels/myzone/data/Makefile
+panels/myzone/data/dawati-panel-myzone.schemas
+panels/myzone/data/theme/Makefile
+panels/myzone/po/Makefile.in
+panels/myzone/src/Makefile
+
+panels/networks/Makefile
+panels/networks/src/Makefile
+panels/networks/tests/Makefile
+panels/networks/data/icons/Makefile
+panels/networks/data/Makefile
+panels/networks/data/carrick.desktop.in
+panels/networks/data/carrick-standalone.desktop.in
+panels/networks/data/theme/Makefile
+panels/networks/po/Makefile.in
+
+panels/people/Makefile
+panels/people/data/Makefile
+panels/people/data/theme/Makefile
+panels/people/po/Makefile.in
+panels/people/src/Makefile
+
+panels/power-icon/Makefile
+panels/power-icon/data/Makefile
+panels/power-icon/data/com.dawati.UX.Shell.Panels.power.service
+panels/power-icon/data/dawati-power-icon.desktop.in
+panels/power-icon/data/theme/Makefile
+panels/power-icon/data/theme/power-icon.css
+panels/power-icon/src/Makefile
+panels/power-icon/tests/Makefile
+
+panels/status/Makefile
+panels/status/data/Makefile
+panels/status/data/theme/Makefile
+panels/status/po/Makefile.in
+panels/status/src/Makefile
+panels/status/src/dawati-panel-status.pc
+
+panels/web/Makefile
+panels/web/common/Makefile
+panels/web/data/Makefile
+panels/web/data/theme/Makefile
+panels/web/netpanel/Makefile
+panels/web/po/Makefile.in
+
+panels/zones/Makefile
+panels/zones/data/theme/Makefile
+panels/zones/data/Makefile
+panels/zones/po/Makefile.in
+panels/zones/src/Makefile
 ])
 
 echo "
@@ -240,6 +587,7 @@ echo "
 	    Profile          :    ${enable_profile}
 	    Scaled background:    ${scale_background}
             API Reference    :    ${enable_gtk_doc}
+            Panels           :    ${WITH_PANELS}
 
 	    CFLAGS: ${CFLAGS}
 

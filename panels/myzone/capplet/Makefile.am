@@ -1,5 +1,5 @@
 if ENABLE_CAPPLET
-ccmodulesdir = $(EXTENSIONSDIR)
+ccmodulesdir = $(CC_DIR)
 ccmodules_LTLIBRARIES = libmyzone.la
 
 libmyzone_la_SOURCES = myzone-cc-panel.c myzone-cc-panel.h gconf-bridge.c gconf-bridge.h

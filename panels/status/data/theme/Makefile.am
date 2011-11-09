@@ -1,4 +1,4 @@
-themedir = $(pkgdatadir)/theme
+themedir = $(PANEL_STATUS_THEMEDIR)
 dist_theme_DATA = \
 	panel.css \
 	add_status_header.png \
@@ -21,7 +21,8 @@ dist_theme_DATA = \
 	panel-background.png \
 	background-gradient.png \
 	people.png \
-	content-panel-header-grey.png
+	content-panel-header-grey.png \
+	$(NULL)
 
 # Manage mutter-dawati's texture cache.
 

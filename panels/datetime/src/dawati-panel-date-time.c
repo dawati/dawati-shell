@@ -84,12 +84,12 @@ main (int    argc,
   GError *error = NULL;
 
   setlocale (LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE_PANEL_DATETIME, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_DATETIME, "UTF-8");
+  textdomain (GETTEXT_PACKAGE_PANEL_DATETIME);
 
   context = g_option_context_new ("- mutter-dawati date/time panel");
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE_PANEL_DATETIME);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, gtk_get_option_group (FALSE));
   if (!g_option_context_parse (context, &argc, &argv, &error))
@@ -125,7 +125,7 @@ main (int    argc,
                       "set-size",
                       (GCallback)_client_set_size_cb,
                       datetime);
-    g_signal_connect (datetime, 
+    g_signal_connect (datetime,
 		      "activated",
 		      (GCallback)_client_activated_cb,
 		      client);
@@ -140,7 +140,7 @@ main (int    argc,
     datetime = mnp_shell_new ();
     clutter_actor_set_size (stage, 1016, 530);
     clutter_actor_set_size (datetime, 1016, 530);
-    
+
     clutter_actor_show (stage);
   }
 

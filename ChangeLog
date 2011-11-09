@@ -1,0 +1,26 @@
+2011-11-10  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* configure.ac (AC_OUTPUT): Add panels/devices/po/Makefile.in.
+
+2011-11-10  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* configure.ac (AC_OUTPUT): Add panels/myzone/po//Makefile.in.
+
+2011-11-10  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* configure.ac (AC_OUTPUT): Add panels/datetime/po//Makefile.in.
+
+2011-11-10  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* build/autotools/gettext.m4: New file, from gettext-0.18.1.
+	* build/autotools/iconv.m4: New file, from gettext-0.18.1.
+	* build/autotools/lib-ld.m4: New file, from gettext-0.18.1.
+	* build/autotools/lib-link.m4: New file, from gettext-0.18.1.
+	* build/autotools/lib-prefix.m4: New file, from gettext-0.18.1.
+	* build/autotools/nls.m4: New file, from gettext-0.18.1.
+	* build/autotools/po.m4: New file, from gettext-0.18.1.
+	* build/autotools/progtest.m4: New file, from gettext-0.18.1.
+	* build/autotools/Makefile.am (EXTRA_DIST): Add the new files.
+	* Makefile.am (EXTRA_DIST): Add config.rpath.
+	* configure.ac (AC_OUTPUT): Add panels/applications/po//Makefile.in.
+

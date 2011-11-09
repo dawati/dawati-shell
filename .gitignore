@@ -6,11 +6,13 @@
 *.swp
 .deps
 .libs
+*.gmo
 Makefile
 aclocal.m4
 autom4te.cache
 /build/autotools/*.m4
 !/build/autotools/shave.m4
+!/build/autotools/as-panels.m4
 /build/autotools/shave
 /build/autotools/shave-libtool
 compile
@@ -49,6 +51,7 @@ xmldocs.make
 /libdawati-panel/tests/test-panel-clutter
 /libdawati-panel/tests/test-panel-gtk
 /libdawati-panel/tests/*.css
+!/panels/*/po/Makefile.in.in
 /src/marshal.[ch]
 /src/mnb-panel-dbus-bindings.h
 /src/mnb-panel-dbus-glue.h

@@ -47,7 +47,7 @@ get_tip_and_icon_state (const gchar      *connection_type,
   if (g_str_equal (state, "idle"))
     {
       /* TRANSLATORS: Tooltips for the toolbar icon
-       * The possible placeholder is service name (such as 
+       * The possible placeholder is service name (such as
        * a wireless network name) */
       tip = g_strdup (_("networks - not connected"));
       *icon_state = ICON_OFFLINE;
@@ -315,13 +315,13 @@ main (int    argc,
   if (!g_thread_supported ())
     g_thread_init (NULL);
 
-  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE_PANEL_NETWORKS, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_NETWORKS, "UTF-8");
+  textdomain (GETTEXT_PACKAGE_PANEL_NETWORKS);
 
   g_set_application_name (_ ("Carrick connectivity applet"));
   gtk_init_with_args (&argc, &argv, _ ("- Dawati connectivity applet"),
-                      entries, GETTEXT_PACKAGE, &error);
+                      entries, GETTEXT_PACKAGE_PANEL_NETWORKS, &error);
   dbus_g_thread_init ();
 
   if (error)

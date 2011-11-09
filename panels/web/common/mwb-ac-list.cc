@@ -876,7 +876,6 @@ mwb_ac_list_new (void)
 
 #define FAVICON_SQL "SELECT url FROM favicons WHERE id='%d'"
 
-#define THEMEDIR "/usr/share/dawati-panel-web/netpanel/"
 static void
 mwb_ac_list_set_icon (MwbAcList *self, MwbAcListEntry *entry)
 {

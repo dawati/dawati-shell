@@ -1,4 +1,3 @@
-
 SUBDIRS = icons theme
 
 autostart_src_files = dawati-panel-devices.desktop.in.in

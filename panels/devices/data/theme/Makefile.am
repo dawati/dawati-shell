@@ -1,17 +1,16 @@
-
-themedir = $(pkgdatadir)/theme
+themedir = $(PANEL_DEVICES_THEMEDIR)
 dist_theme_DATA = \
-  toolbar-button.css \
-  content-pane-background.png \
-  content-pane-header.png \
-  devices-coloured.png \
-  devices-normal.png \
-  directory-highlight.png \
-  frame-border.png \
-  panel.css \
-  seperator.png \
-  volume-bars-0.png \
-  $(NULL)
+	toolbar-button.css \
+	content-pane-background.png \
+	content-pane-header.png \
+	devices-coloured.png \
+	devices-normal.png \
+	directory-highlight.png \
+	frame-border.png \
+	panel.css \
+	seperator.png \
+	volume-bars-0.png \
+	$(NULL)
 
 # Manage mutter-dawati's texture cache.
 
@@ -26,6 +25,5 @@ uninstall-hook:
 	rm -f $(texture_cache)
 	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(pkgdatadir)
 endif
-
 
 -include $(top_srcdir)/git.mk

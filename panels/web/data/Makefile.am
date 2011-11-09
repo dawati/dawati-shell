@@ -1,6 +1,6 @@
-SUBDIRS = netpanel
+SUBDIRS = theme
 
-searchiconsdir = $(pkgdatadir)/search-icons
+searchiconsdir = $(PANEL_WEB_DATADIR)/search-icons
 dist_searchicons_DATA = \
 	search-icons/Ask.ico \
 	search-icons/Bing.ico \
