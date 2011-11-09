@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-19 16:57+0000\n"
+"PO-Revision-Date: 2010-10-19 19:42-0800\n"
+"Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/dawati-panel-people.c:88
+#: ../src/mnb-people-panel.c:513
+#: ../data/dawati-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "люди"
+
+#: ../src/mnb-people-panel.c:56
+msgid "When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "Здесь вы сможете общаться с другими людьми после настройки службы мгновенного обмена сообщениями (например, Messenger)."
+
+#: ../src/mnb-people-panel.c:191
+#: ../src/mnb-people-panel.c:451
+#, c-format
+msgid "Open %s"
+msgstr "Открыть %s"
+
+#: ../src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr "Это панель «Люди»."
+
+#: ../src/mnb-people-panel.c:320
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Извините, невозможно найти людей. Похоже, что Вы находитесь не в сети."
+
+#: ../src/mnb-people-panel.c:365
+msgid "To see your IM contacts, you need to go online."
+msgstr "Для просмотра своих контактов IM перейдите в режим онлайн."
+
+#: ../src/mnb-people-panel.c:495
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "собеседники - у вас %d собеседников"
+
+#: ../src/mnb-people-panel.c:502
+msgid "people - you are chatting with someone"
+msgstr "собеседники - вы общаетесь с кем-то"
+
+#. Populate header
+#: ../src/mnb-people-panel.c:710
+#: ../src/mnb-people-panel.c:964
+msgid "People"
+msgstr "Люди"
+
+#: ../src/mnb-people-panel.c:723
+msgid "Search"
+msgstr "Поиск"
+
+#: ../src/mnb-people-panel.c:774
+#: ../src/mnb-people-panel.c:1162
+msgid "You are chatting with:"
+msgstr "Вы общаетесь с:"
+
+#: ../src/mnb-people-panel.c:981
+msgid "Me and my people"
+msgstr "Я и мои собеседники"
+
+#: ../src/mnb-people-panel.c:1019
+msgid "Me"
+msgstr "Я"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1119
+msgid "My conversations"
+msgstr "Мои беседы"
+
+#: ../data/dawati-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Панель контактов"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Извините, невозможно найти людей. Вы настроили учетную запись?"
+
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "люди - %d людей общаются с Вами"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "люди - Кто-то общается с Вами"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Люди общаются с Вами..."
+
+#~ msgid "Send an email"
+#~ msgstr "Отправить письмо"
+
+#~ msgid "Edit details"
+#~ msgstr "Редактировать дополнительную информацию"
+
+#~ msgid "Send a message"
+#~ msgstr "Отправить сообщение"
+
+#~ msgid "Selection"
+#~ msgstr "Выбор"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Никто не выбран"

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/dawati-panel-people
+TryExec=@libexecdir@/dawati-panel-people
+_Name=people
+Icon=dawati-panel-people
+_Comment=People panel
+Terminal=false
+Categories=
+OnlyShowIn=DAWATI;
+X-Dawati-Priority=Low
+X-Dawati-Service=com.dawati.UX.Shell.Panels.people
+X-Dawati-Panel-Optional=true
+X-Dawati-Panel-Button-Style=people-button

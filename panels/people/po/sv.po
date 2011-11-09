@@ -1,0 +1,112 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-19 16:57+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Petra Mathilda Klein <mathilda.klein@ptiglobal.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/dawati-panel-people.c:88
+#: ../src/mnb-people-panel.c:513
+#: ../data/dawati-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "personer "
+
+#: ../src/mnb-people-panel.c:56
+msgid "When you have an IM service configured (like Messenger), this is where you chat to people."
+msgstr "När du har en konfigurerad IM-tjänst (som ett IM-konto t.ex. Messenger) är detta där du chattar med personer."
+
+#: ../src/mnb-people-panel.c:191
+#: ../src/mnb-people-panel.c:451
+#, c-format
+msgid "Open %s"
+msgstr "Öppna %s"
+
+#: ../src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr "Hej! Detta är personpanelen."
+
+#: ../src/mnb-people-panel.c:320
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Vi kan inte hitta någon person. Det verkar som ingen är uppkopplad just nu."
+
+#: ../src/mnb-people-panel.c:365
+msgid "To see your IM contacts, you need to go online."
+msgstr "Du måste koppla upp dig för att se dina IM-kontakter."
+
+#: ../src/mnb-people-panel.c:495
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "personer - du chattar med %d personer"
+
+#: ../src/mnb-people-panel.c:502
+msgid "people - you are chatting with someone"
+msgstr "personer - du chattar med någon"
+
+#. Populate header
+#: ../src/mnb-people-panel.c:710
+#: ../src/mnb-people-panel.c:964
+msgid "People"
+msgstr "Personer "
+
+#: ../src/mnb-people-panel.c:723
+msgid "Search"
+msgstr "Sök"
+
+#: ../src/mnb-people-panel.c:774
+#: ../src/mnb-people-panel.c:1162
+msgid "You are chatting with:"
+msgstr "Du chattar med:"
+
+#: ../src/mnb-people-panel.c:981
+msgid "Me and my people"
+msgstr "Jag och mina personer"
+
+#: ../src/mnb-people-panel.c:1019
+msgid "Me"
+msgstr "Jag"
+
+#. Side table
+#: ../src/mnb-people-panel.c:1119
+msgid "My conversations"
+msgstr "Mina konversationer"
+
+#: ../data/dawati-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Personpanel"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr "Vi kan inte hitta någon person. Har du konfigurerat ett IM-konto?"
+
+#~ msgid "people - %d people are talking to you"
+#~ msgstr "personer - %d personer talar med dig"
+
+#~ msgid "people - Someone is talking to you"
+#~ msgstr "personer - någon talar med dig"
+
+#~ msgid "People talking to you ..."
+#~ msgstr "Personer som talar med dig...."
+
+#~ msgid "Send an email"
+#~ msgstr "Skicka ett email"
+
+#~ msgid "Edit details"
+#~ msgstr "Redigera detaljer"
+
+#~ msgid "Send a message"
+#~ msgstr "Skicka ett meddelande"
+
+#~ msgid "Selection"
+#~ msgstr "Val"
+
+#~ msgid "Nobody selected"
+#~ msgstr "Ingen vald"

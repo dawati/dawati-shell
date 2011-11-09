@@ -1,0 +1,178 @@
+MnbPeoplePanel
+{
+  padding: 5;
+}
+
+*#people-no-people-message-title,
+*#people-panel-header-label
+{
+  color: #febf00ff;
+  font-size: 22px;
+  font-weight: bold;
+  font-family: "Droid Sans";
+}
+
+*#people-panel-header-label
+{
+  padding: 0 0 0 15;
+}
+
+*#people-panel-content-header-label,
+*#people-panel-side-box-header-label
+{
+  color: #616261ff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: "Droid Sans";
+}
+
+*#people-panel-active-content-header-label
+{
+  color: #616261ff;
+  font-size: 14px;
+  font-family: "Droid Sans";
+}
+
+*#people-panel-content-header,
+*#people-panel-side-box-header
+{
+  border-image: url("content-panel-header-grey.png") 5;
+  padding: 8 8 8 12;
+}
+
+*#people-panel-me-box
+{
+  border-image: url("box-background.png") 5;
+  padding: 6;
+}
+
+*#people-panel-content-box,
+*#people-panel-side-box
+{
+  border-image: url("content-panel-background.png") 5;
+  padding: 3;
+}
+
+*#no-people-panel-content-box
+{
+  border-image: url("background-gradient.png") 5;
+  padding: 2;
+}
+
+*#people-panel-me-avatar-frame
+{
+  border-image: url("avatar_frame.png") 4 4 4 4;
+  padding: 2 2 2 2;
+}
+
+*#people-panel-me-label
+{
+  color: #616261ff;
+  font-size: 16px;
+  font-family: "Droid Sans";
+}
+
+*#people-pane-no-people-tile
+{
+  padding: 28 25 90 4;
+}
+
+*#people-no-people-message-bin,
+*#people-pane-everybody-offline-bin,
+*#people-pane-you-offline-bin
+{
+  padding: 8;
+}
+
+*#people-no-people-message-label,
+*#people-pane-everybody-offline-label,
+*#people-pane-you-offline-label
+{
+  font-size:16px;
+  font-family: "Droid Sans";
+  color: #616261ff;
+}
+
+*#people-no-people-message-label
+{
+  padding: 0 0 24 0;
+}
+
+*#people-panel-messenger-launcher-tile,
+*#people-panel-settings-launcher-tile,
+*#people-panel-active-content-box
+{
+  padding: 12;
+}
+
+*#people-panel-messenger-launcher-tile
+{
+  border-image: url("box-background.png") 5;
+}
+
+/* Anerley */
+
+*.AnerleyTileAvatar
+{
+  border-image: url("avatar_frame.png") 4 4 4 4;
+  padding: 2 2 2 2;
+}
+
+AnerleyTile, AnerleyCompactTile
+{
+  padding: 6;
+}
+
+AnerleyCompactTile
+{
+}
+
+AnerleyTile:hover,
+AnerleyCompactTile:hover
+{
+  border-image: url("tile-bg-hover.png") 4 4 4 4;
+}
+
+AnerleyTile *.AnerleyTilePrimaryLabel
+{
+  font-family: "Droid Sans";
+  font-size: 14;
+}
+
+*#people-primary-action, *#people-secondary-action
+{
+}
+
+*#content-table
+{
+  border-image: url('scroll-view-bin-bg.png') 10;
+  padding: 8;
+}
+
+*#active-content-table
+{
+  border-image: url('active-content-table-bg.png') 2;
+  padding: 8;
+}
+
+*#active-content-header
+{
+  border-image: url('active-conversations-header.png') 1;
+  padding: 8;
+}
+
+*#active-content-header-label
+{
+  font-family: "Droid Sans";
+  font-size: 16;
+  color: #7e7e7eff;
+}
+
+*.AnerleyCompactTileMessageCount
+{
+  font-family: "Droid Sans";
+  color: white;
+  font-size: 11;
+  border-image: url('unread-message-bubble-bg.png') 7 7 7 7;
+}
+
