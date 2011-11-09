@@ -1,0 +1,167 @@
+# myzone Catalan translation.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the myzone package.
+# Gil Forcada <gilforcada@guifi.net>, 2009.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: myzone 2.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-20 17:55+0000\n"
+"PO-Revision-Date: 2009-12-31 19:21+0100\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Tauler Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Canvia el fons i contingut de Myzone"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr ""
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Fons d'escriptori de Myzone</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calendari i tasques:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr ""
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Trieu el fons d'escriptori"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Neteja els documents recents"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Avisos de correu electrònic:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Reinicia als valors per defecte"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "Error GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "Tots els errors següents es mostraran només al terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Mostra tants serveis web com sigui possible"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Mostra'n més contingut de serveis web"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Mostra meitat i meitat"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Mostra'n més fitxers recents"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Mostra'n tants fitxers recents com sigui possible"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Voleu netejar els documents recents? Això eliminarà el contingut local del vostre myzone"
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Cites"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Obre"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Tasques"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "Crea una cita"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "Afegeix"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "No hi ha entrades en el calendari per aquesta setmana"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "Pàgina web"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "Crea una tasca nova"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "No hi ha res per avui"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "Venç al %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr "Quan hàgiu configurat els comptes web i utilitzat alguns fitxers, apareixeran ací al myzone per a un accés més fàcil sempre que vulgueu."
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "Reprodueix el vídeo d'introducció"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr "Benvingut al Dawati"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "No hi ha cap missatge sense llegir"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Missatge sense llegir"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Missatges sense llegir"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "Aquí es mostrarà el que fan en línia els teus amics. Activeu els vostres comptes"
+
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Benvingut al Dawati 2.1 per a mini portàtils</b>"
+
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Així com el Dawati és diferent d'altres ordinadors, s'han canviat algunes parts aquí i allà perquè us sigui més còmode. Esperem que us agradi, equip del Dawati."

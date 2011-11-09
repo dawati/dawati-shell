@@ -1,0 +1,187 @@
+#
+# Park Shinjo <peremen@gmail.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-19 16:53+0000\n"
+"PO-Revision-Date: 2010-10-20 08:15-0800\n"
+"Last-Translator: Sun Kim <sunx.kim@intel.com>\n"
+"Language-Team: Korean <peremen@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Korean\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone 패널"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Myzone 배경과 내용 변경하기"
+
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Myzone에 나타나는 항목 바꾸기</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Myzone 배경 그림</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "달력과 작업:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "내 웹 계정 바꾸기"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "배경 그림 선택"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "최근 문서 지우기"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "전자 우편 알림:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "기본값으로 복원"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf 오류: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "이후 발생하는 오류는 터미널에만 표시됩니다."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "가능한 한 많은 웹 서비스 내용 보이기"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "대부분의 웹 서비스 내용 보이기"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "반반씩 보이기"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "대부분의 최근 파일 보이기"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "가능한 한 많은 최근 파일 보이기"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "최근 문서를 비우시겠습니까? Myzone에 있는 로컬 내용을 삭제합니다"
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "약속"
+
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "열기"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "작업"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "일정 만들기"
+
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "추가"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "이 주의 달력 항목 없음"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "웹 페이지"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "새 작업 만들기"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "오늘 할 일 없음"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "%x까지"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "웹 계정과 사용하는 일부 파일을 설정하면, 언제든지 쉽게 액세스할 수 있도록 Myzone에 나타납니다."
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "소개 비디오 재생하기"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr "Dawati에 오신 것을 환영합니다"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "읽지 않은 메시지 없음"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "읽지 않은 메시지"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "읽지 않은 메시지"
+
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr "Myzone에서 최근 사용된 파일과 웹 피드의 콘텐츠가 표시됩니다."
+
+#~ msgid ""
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "친구들과의 웹 사이트 활동이 여기에 나타날 것입니다. 지금 계정을 여십시오!"
+
+#~ msgid "Myzone settings"
+#~ msgstr "Myzone 설정"
+
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Dawati 2.0 넷북에 오신것을 환영합니다.</b>   "
+
+#~ msgid ""
+#~ "As Dawati is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Dawati Team."
+#~ msgstr ""
+#~ "Dawati은 다른 컴퓨터와 차이가 있으며, 당신이 이에 잘 적응할 수 있도록 여러"
+#~ "가지로 노력했습니다. 좋은 경험이 되시길 바랍니다. Dawati 팀."

@@ -1,0 +1,169 @@
+# Translation of dawati-panel-myzone into Indonesian.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Andika Triwidada <andika@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-myzone\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2009-08-26 08:21+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Panel Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Ubah latar belakang dan isi Myzone"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Ubah apa yang ditampilkan di Myzone</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Wallpaper Myzone</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Kalender dan tugas:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Ubah Akun Webku"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Pilih wallpaper Anda"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Bersihkan dokumen terkini"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Peringatan lewat email:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Kembalikan ke baku"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "Galat GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "Galat selanjutnya hanya ditampilkan pada terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Tampilkan isi layanan web sebanyak mungkin"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Tampilkan lebih banyak isi layanan web"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Tampilkan separuh separuh"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Tampilkan lebih banyak berkas terkini"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Tampilkan berkas terkini sebanyak mungkin"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Anda ingin membersihkan dokumen terkini? Ini akan menghapus muatan lokal dari myzone"
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "<b>Janji Temu</b>"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Buka"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Tugas"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "Buat suatu janji pertemuan"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "Tambah"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "Tidak ada entri kalender minggu ini"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "Halaman web"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "Buat tugas baru"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "Tak ada yang perlu dilakukan hari ini"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "Jatuh tempo %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Ketika Anda telah menata akun web Anda dan memakai beberapa berkas, mereka akan muncul disini pada myzone untuk pengaksesan yang mudah kapanpun Anda inginkan."
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "Mainkan video perkenalan"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr "Selamat datang ke Dawati"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "Tak ada pesan belum dibaca"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Pesan belum dibaca"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Pesan-pesan belum dibaca"
+
+#~ msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+#~ msgstr "Ini adalah Myzone, dimana berkas yang baru-baru ini dipakai dan isi dari asupan web akan muncul."
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "Hal-hal yang dilakukan teman-teman Anda daring akan muncul di sini. Aktifkan akun Anda sekarang!"
+
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Selamat Datang ke Dawati 2.1 untuk Netbook</b>"
+
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Karena Dawati agak berbeda daripada komputer lain, kami telah mengumpulkan beberapa hal kecil untuk membantu anda mengenali lingkungan. Kami berharap anda menikmatinya, Tim Dawati."

@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/dawati-panel-myzone
+TryExec=@libexecdir@/dawati-panel-myzone
+Name=myzone
+Icon=dawati-panel-myzone
+_Comment=Myzone panel
+Terminal=false
+Categories=
+OnlyShowIn=X-DAWATI-NB;
+X-Dawati-Priority=Highest
+X-GNOME-Autostart-enable=true
+X-Dawati-Service=com.dawati.UX.Shell.Panels.myzone
+X-Dawati-Panel-Optional=false
+X-Dawati-Panel-Button-Style=myzone-button

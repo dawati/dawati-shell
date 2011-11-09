@@ -1,0 +1,165 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Pavel, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-11-03 00:16+0000\n"
+"PO-Revision-Date: 2010-07-06 11:36+0200\n"
+"Last-Translator: Pavel\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Panel Myzone neboli moje oblast"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Změnit pozadí panelu Myzone (moje oblast) a obsah"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone (moje oblast)"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Změňte to, co se ukazuje ve vašem panelu Myzone (moje oblast)</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Obrázek tvořící pozadí panelu Myzone (moje oblast)</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Kalendář a úkoly:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Změňte své internetové účty"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Vyberte svůj obrázek pozadí"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Smazat naposledy otevřené dokumenty"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Upozornění na elektronickou poštu:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Obnovit výchozí nastavení"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "Chyba GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "Všechny další chyby se budou ukazovat jen v terminálu."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Ukázat tolik obsahu internetových služeb, kolik je jen možné"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Ukázat většinou obsah internetových služeb"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Ukázat půl napůl"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Ukázat většinou naposledy otevřené dokumenty"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Ukázat tolik naposledy otevřených dokumentů, kolik je jen možné"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Chcete smazat své naposledy otevřené dokumenty? Tím se z vašeho panelu Myzone (moje oblast) odstraní místní obsah"
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Schůzky"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Otevřít"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Úkoly"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "Vytvořit schůzku"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "Přidat"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "Tento týden žádné záznamy v kalendáři"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "Internetová stránka"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "Vytvořit nový úkol"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "Dnes není co dělat"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "Očekáváno %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Když jste si zřídil své internetové účty a použil nějaké soubory, objeví se zde v panelu Myzone (moje oblast), pro snadný přístup vždy, když budete chtít. "
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "Přehrát úvodní video"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr "Vítejte v Dawati"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "Žádné nepřečtené zprávy"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Nepřečtená zpráva"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Nepřečtené zprávy"
+
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Vítá vás Dawati 2.1 pro netbooky</b>"

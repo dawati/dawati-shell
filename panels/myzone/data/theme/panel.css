@@ -1,0 +1,278 @@
+MxLabel#myzone-panel-header-label
+{
+  color: #31c2eeff;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 0 0 0 15;
+}
+
+PengeGridView
+{
+  padding: 5;
+}
+
+PengeCalendarPane
+{
+  border-image: url('content-panel-background.png') 5 5 5 5;
+  padding: 3;
+}
+
+PengeAppsPane
+{
+  border-image: url('content-panel-background.png') 5 5 5 5;
+  padding: 4;
+}
+
+*.PengeEventsPaneHeader, *.PengeTasksPaneHeader
+{
+  border-image: url('content-panel-header-grey.png') 4 4 4;
+  padding: 6;
+}
+
+
+MxLabel.PengeEventsPaneTitle, MxLabel.PengeTasksPaneTitle
+{
+  font-size: 16px;
+  font-weight: bold;
+  color: #616261ff;
+}
+
+PengeEventTile, PengeTaskTile
+{
+  padding: 6;
+  border-image: url('event-task-tile-bg.png') 4;
+}
+
+PengeEventTile.FirstTile, PengeTaskTile.FirstTile
+{
+  border-image: none;
+  padding: 6;
+}
+
+PengeEventTile:hover, PengeTaskTile:hover
+PengeEventTile:active, PengeTaskTile:active
+{
+  border-image: url('event-task-tile-bg.png') 4;
+  padding: 6;
+}
+
+PengeEventTile.FirstTile:hover, PengeTaskTile.FirstTile:hover
+PengeEventTile.FirstTile:active, PengeTaskTile.FirstTile:active
+{
+  border-image: none;
+  padding: 6;
+}
+
+PengeAppTile
+{
+  background-color: #fff0;
+  padding: 6;
+  border-image: none;
+}
+
+PengeAppTile:hover,
+PengeAppTile:active
+{
+  border-image: url('content-panel-background-highlight.png') 5;
+  padding: 6;
+}
+
+
+PengeRecentFileTile, PengePeopleTile
+{
+  border-image: url('content-panel-background.png') 5;
+  padding: 4 4 4 4;
+}
+
+
+PengeRecentFileTile:hover, PengePeopleTile:hover,
+PengeRecentFileTile:active, PengePeopleTile:active
+{
+  border-image: url('content-panel-background-highlight.png') 5;
+  padding: 4 4 4 4;
+}
+
+PengeCountTile
+{
+  border-image: url('content-panel-background.png') 5;
+  padding: 6;
+}
+
+PengeCountTile:hover,
+PengeCountTile:active
+{
+  border-image: url('content-panel-background-highlight.png') 5;
+  padding: 6;
+}
+
+MxLabel.PengeEventTimeLabel
+{
+  font-weight: bold;
+}
+
+MxLabel.PengeEventTimeLabel:past
+{
+  font-weight: bold;
+}
+
+MxLabel.PengeEventSummary
+{
+}
+
+PengePeopleTile *.PengeInterestingTilePrimaryLabel,
+PengeRecentFileTile *.PengeInterestingTilePrimaryLabel
+{
+  color: #3e3e3eff;
+  font-size: 14px;
+}
+
+PengePeopleTile *.PengeInterestingTileSecondaryLabel,
+PengeRecentFileTile *.PengeInterestingTileSecondaryLabel
+{
+  color: #3e3e3eff;
+  font-size: 11px;
+}
+
+PengePeopleTile *.PengePeopleTileContentLabel
+{
+  font-size: 14px;
+}
+
+PengePeopleTile *.PengePeopleTileContentBackground
+{
+  border-image: url('quotebackground.png') 45 51 46 52;
+  padding: 8;
+}
+
+PengeEventsPane *.PengeNoMoreEventsLabel, PengeTasksPane *.PengeNoMoreTasksLabel
+{
+  font-size: 14px;
+  color: #2c2c2cff;
+}
+
+MxTable.PengeInterestingTileDetails
+{
+  padding: 2;
+}
+
+PengePeoplePlaceholderTile *#penge-no-content-main-message
+{
+  font-size:15px;
+  color: #2c2c2cff;
+}
+
+PengePeoplePlaceholderTile *#penge-no-content-other-message
+{
+  font-size:14px;
+  color: #2c2c2cff;
+}
+
+PengePeoplePlaceholderTile
+{
+  border-image: url('no-content-tile-bg.png') 7 8 9 8;
+  padding: 10 11 12 11;
+}
+
+PengePeoplePlaceholderTile:hover
+{
+  border-image: url('no-content-tile-glow-bg.png') 7 8 9 8;
+  padding: 10 11 12 11;
+}
+
+PengeWelcomeTile
+{
+}
+
+*#penge-welcome-primary-text
+{
+  color: #31c2eeff;
+  font-size:22px;
+  font-weight: bold;
+}
+
+*#penge-welcome-secondary-text
+{
+  font-size:18px;
+  color: #616261;
+  padding: 0 0 12 0;
+}
+
+*#penge-welcome-launcher
+{
+  border-image: url('content-panel-background.png') 5;
+  padding: 4 4 4 4;
+}
+
+*#penge-welcome-launcher:hover,
+*#penge-welcome-launcher:active
+{
+  border-image: url('content-panel-background-highlight.png') 5;
+  padding: 4 4 4 4;
+}
+
+*#penge-welcome-launcher-thumbnail
+{
+  -mx-content-image: url('intro-video-thumbnail.png');
+}
+
+*#penge-welcome-launcher-play-button
+{
+  -mx-content-image: url('play-button.png');
+}
+
+
+*.PengeInterestingTileRemoveButton,
+*.PengeInterestingTileRemoveButton:hover,
+*.PengeInterestingTileRemoveButton:active
+{
+  border-image:none;
+  padding:0;
+}
+
+*.PengeInterestingTileRemoveButton *.PengeInterestingTileIcon
+{
+  -mx-content-image: url('dismiss_button.png');
+}
+
+*.PengeInterestingTileRemoveButton:hover *.PengeInterestingTileIcon
+{
+  -mx-content-image: url('dismiss_button_hover.png');
+}
+
+*.PengePeopleTileAvatarBackground
+{
+  border-image: url("avatar_frame.png") 4 4 4 4;
+  padding: 2 2 2 2;
+}
+
+MxLabel.PengeZeroCountLabel
+{
+  font-size: 22px;
+  color: #a7a7a7ff;
+  border-image: url('count-frame-zero.png') 12;
+  padding: 5 6;
+}
+
+MxLabel.PengeCountLabel
+{
+  font-size: 22px;
+  color: #000000ff;
+  border-image: url('count-frame.png') 12;
+  padding: 5 6;
+}
+
+MxLabel.PengeCountMessageLabel
+{
+  font-size: 14px;
+}
+
+MxLabel.PengeCountAccountLabel
+{
+  font-size: 11px;
+  color: #7a7a7aff;
+}
+
+*#tasks-icon
+{
+  -mx-content-image: url("tasks-icon.png");
+}

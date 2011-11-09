@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="value">0.5</property>
+    <property name="upper">1</property>
+    <property name="step_increment">0.25</property>
+    <property name="page_increment">0.25</property>
+  </object>
+  <object class="GtkVBox" id="main_vbox">
+    <property name="visible">True</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">12</property>
+    <child>
+      <object class="GtkFrame" id="frame1">
+        <property name="visible">True</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">none</property>
+        <child>
+          <object class="GtkAlignment" id="alignment1">
+            <property name="visible">True</property>
+            <property name="top_padding">12</property>
+            <property name="left_padding">12</property>
+            <child>
+              <object class="GtkVBox" id="vbox2">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">12</property>
+                <child>
+                  <object class="GtkAlignment" id="alignment3">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xscale">0</property>
+                    <child>
+                      <object class="GtkHScale" id="ratio_slider">
+                        <property name="width_request">400</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="adjustment">adjustment1</property>
+                        <property name="value_pos">bottom</property>
+                        <signal name="format_value" handler="ratio_slider_format_value_cb"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="calendar_button_hbox">
+                    <property name="visible">True</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel" id="label2">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Calendar and tasks:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="email_button_hbox">
+                    <property name="visible">True</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel" id="label4">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Email alerts:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkAlignment" id="alignment5">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xscale">0</property>
+                    <child>
+                      <object class="GtkVBox" id="vbox3">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="GtkButton" id="clear_recent_files_button">
+                            <property name="label" translatable="yes">Clear recent documents</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="clear_recent_files_clicked_cb"/>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="change_web_accounts_button">
+                            <property name="label" translatable="yes">Change My Web Accounts</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="change_web_accounts_button_clicked_cb"/>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label1">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&lt;b&gt;Change what is shown in your Myzone&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkFrame" id="frame2">
+        <property name="visible">True</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">none</property>
+        <child>
+          <object class="GtkAlignment" id="alignment6">
+            <property name="visible">True</property>
+            <property name="border_width">6</property>
+            <property name="xalign">0</property>
+            <property name="top_padding">12</property>
+            <property name="left_padding">12</property>
+            <child>
+              <object class="GtkAlignment" id="alignment2">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="xscale">0.5</property>
+                <child>
+                  <object class="GtkHBox" id="hbox2">
+                    <property name="visible">True</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkFileChooserButton" id="background_chooser_button">
+                        <property name="visible">True</property>
+                        <property name="create_folders">False</property>
+                        <property name="title" translatable="yes">Choose your wallpaper</property>
+                        <signal name="file_set" handler="background_chooser_button_file_set_cb"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="reset_background_button">
+                        <property name="label" translatable="yes">Reset to default</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="reset_background_button_clicked_cb"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label3">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">&lt;b&gt;Myzone Wallpaper&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+  <object class="GtkSizeGroup" id="sizegroup1">
+    <widgets>
+      <widget name="label4"/>
+      <widget name="label2"/>
+    </widgets>
+  </object>
+</interface>

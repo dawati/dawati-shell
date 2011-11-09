@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Gustavo Jasso <gjasso@matem.unam.mx>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-myzone\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
+"POT-Creation-Date: 2011-11-02 13:33-0700\n"
+"PO-Revision-Date: 2011-11-03 19:03+0000\n"
+"Last-Translator: patrick <patrick.mccarty@linux.intel.com>\n"
+"Language-Team: Spanish (Mexican) (http://www.transifex.net/projects/p/dawati/team/es_MX/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es_MX\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Panel Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Cambiar el fondo y el contenido de Myzone"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Cambiar lo que se muestra en tu Myzone</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "Fondo de Myzone"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calendario y tareas:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Cambiar mis cuentas de red"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Elige tu papel tapiz"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Borrar documentos recientes"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Alertas de correo electrónico:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Restablecer valores predeterminados"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "Error de GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "Todos los errores siguientes se mostrarán solo en la terminal."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Mostrar tanto contenido de servicios de red como sea posible"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Mostrar, sobre todo, contenido de servicios de red"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Mostrar mitad y mitad"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Mostrar, sobre todo, archivos recientes"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Mostrar tantos archivos recientes como sea posible"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from your myzone"
+msgstr ""
+"¿Quieres borrar tus documentos recientes? Esto eliminará el contenido local "
+"de tu myzone"
+
+#: ../capplet/myzone-cc-panel.c:343
+msgid "Images"
+msgstr ""
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Citas"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Abrir"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Tareas"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "Crear una cita"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "Agregar"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "No hay entradas en el calendario esta semana"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "Página web"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "Crear una tarea nueva"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "Nada que hacer hoy"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "Antes de %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid ""
+"When you’ve set up your web accounts and used some files, they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+"Cuando hayas configurado tus cuentas web y utilizado algunos archivos, éstos"
+" aparecerán aqui en myzone para accesesar fácilmente a ellos cuando quieras."
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "Reproducir video introductorio"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr "Bienvenido a Dawati"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "No hay mensajes no leídos"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Mensaje no leído"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Mensajes no leídos"
+
+

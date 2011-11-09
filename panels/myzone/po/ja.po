@@ -1,0 +1,184 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: GLSJPN_Etsuko <etsuko.murozono@ptiglobal.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Japanese\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Myzone パネル"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Myzone の背景とコンテンツを変更"
+
+#: ../data/myzone.desktop.in.in.h:2
+#: ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Myzone に表示されている内容を変更</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Myzone の壁紙</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "カレンダーとタスク："
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "マイ Web アカウントを変更"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "壁紙を選択"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "最近の文書をクリア"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "メールアラート："
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "デフォルトにリセット"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "GConf エラー: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "その他のエラーは全て端末に表示されます。"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "できるだけ多くの Web サービスを表示"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Web サービスを中心に表示"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "半分づつ表示"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "もっとも最新のファイルを表示"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "最近のファイルをできるだけ多く表示"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "最近使用した文書をクリアしますか? この操作ではローカルのコンテンツが Myzone から削除されます。"
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "予定"
+
+#: ../penge/penge-calendar-pane.c:496
+#: ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "開く"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "タスク"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "予定を作成します。"
+
+#: ../penge/penge-events-pane.c:72
+#: ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "追加"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "今週は、予定が入ってません"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "Web ページ"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "新しいタスクを作成します。"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "今日のイベントは何もありません"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "期限：%x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Web アカウントを設定してファイルを使用した場合、それらのファイルは必要な時にすぐアクセスできるように Myzone のこの場所に表示されます。"
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "イントロ動画の再生"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr "ようこそ Dawati へ"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "未読メッセージなし"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "未読メッセージ"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "未読メッセージ"
+
+#~ msgid ""
+#~ "This is the Myzone, where your recently used files and content from your "
+#~ "web feeds will appear."
+#~ msgstr ""
+#~ "ここは Myzone です。Web フィードから最近使用したファイルやコンテンツが表示"
+#~ "されます。"
+#~ msgid ""
+#~ "Things that your friends do online will appear here. Activate your "
+#~ "accounts now!"
+#~ msgstr ""
+#~ "アカウントをアクティブにすると、オンラインの友達がここに表示されます。"
+#~ msgid "Myzone settings"
+#~ msgstr "Myzone 設定"
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>ネットブック Dawati 2.1 にようこそ</b>"
+#~ msgid ""
+#~ "As Dawati is a bit different to other computers, we've put together a "
+#~ "couple of bits and pieces to help you find your way around. We hope you "
+#~ "enjoy it, The Dawati Team."
+#~ msgstr ""
+#~ "Dawati は、従来のコンピューターとは少し異なるため、ヘルプファイルを用意いた"
+#~ "しました。お楽しみいただけることを願っております。Dawati チーム一同"
+

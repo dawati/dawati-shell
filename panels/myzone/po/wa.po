@@ -1,0 +1,171 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Jean Cayron <jean.cayron@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-03-20 09:54+0100\n"
+"Last-Translator: Jean Cayron <jean.cayron@gmail.com>\n"
+"Language-Team: Walloon <linux-wa@walon.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "Sicriftôr Myzone"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "Candjî l' fond d' Myzone et çou k' i gn a ddins"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "Myzone"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>Candjî çou k' est mostré e vosse Myzone</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>Tapisreye di Myzone</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "Calindrî eyet bouyes :"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "Candjî mes contes waibe"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "Tchoezixhoz vosse tapisreye"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "Netyî les documint d' enawaire"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "Abranles emile :"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "Rimete come prémetou"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "Aroke GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "Totes les ôtes arokes ni sont mostrêyes k' e terminå."
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "Mostrer ostant d' ådvins d' siervices waibe k' on sait"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "Mostrer sortot les ådvins d' siervice waibe"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "Mostrer mitan d' onk et mitan d' l' ôte"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "Mostrer sortot les fitchîs d' enawaire"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "Mostrer ostant d' fitchîs d' enawaire k' on sait"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "Voloz vs rinetyî vos documints d' enawaire? Ça va oister l' ådvins coinrece di vosse myzone"
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Radjoûs"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Drovi"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Bouyes"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "Ahiver on radjoû"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "Radjouter"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "Rén e calindrî cisse samwinne ci"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "Pådje waibe"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "Ahiver ene novele bouye"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "Rén a fé ådjourdu"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "A fé pol %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "Cwand vs åroz apontyî vos contes waibes eyet eployî kékès fitchîs, il aparexhront chal so myzone pos î moussî  åjheymint cwand vos l' vôroz."
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "Djouwer l' videyo d' adrovaedje"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr "Bénvnowe dins Dawati"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "I gn a pont d' messaedje nén léjhou"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "Messaedje nén léjhou"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "Messaedjes nén léjhous"
+
+#~ msgid "This is the Myzone, where your recently used files and content from your web feeds will appear."
+#~ msgstr "Çouchal est Myzone, wice ki vos fitchîs eployîs enawaire eyet l' ådvins d' vos floûs waibe aparexhront."
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "Il aparexhrè droci les sacwès k' vos soçons fijhnut so fyis. Metoz en alaedje vos contes do côp !"
+
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>Wilicome dins Dawati 2.1 po les Netbooks</b>"
+
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "Come Dawati est ene miete diferin des ôtes copiutreces, nos avans metou eshonne deus ou troes cayets po vs aidî a trover vosse voye dins tot ça. Nos esperans k' vos alez awè do plaijhi, L' ekipe di Dawati."

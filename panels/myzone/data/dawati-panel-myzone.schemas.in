@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<gconfschemafile>
+  <schemalist>
+    <schema>
+      <key>/schemas/desktop/dawati/myzone/show_calendar</key>
+      <applyto>/desktop/dawati/myzone/show_calendar</applyto>
+      <owner>dawati-panel-myzone</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+        <short/>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/desktop/dawati/myzone/show_email</key>
+      <applyto>/desktop/dawati/myzone/show_email</applyto>
+      <owner>dawati-panel-myzone</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+        <short/>
+      </locale>
+    </schema>
+   <schema>
+      <key>/schemas/desktop/dawati/myzone/ratio</key>
+      <applyto>/desktop/dawati/myzone/ratio</applyto>
+      <owner>dawati-panel-myzone</owner>
+      <type>float</type>
+      <default>0.5</default>
+      <locale name="C">
+        <short/>
+      </locale>
+    </schema>
+   <schema>
+      <key>/schemas/desktop/dawati/myzone/background_filename</key>
+      <applyto>/desktop/dawati/myzone/background_filename</applyto>
+      <owner>dawati-panel-myzone</owner>
+      <type>string</type>
+      <default>/usr/share/backgrounds/images/myzone-default-background.png</default>
+      <locale name="C">
+        <short/>
+      </locale>
+    </schema>
+  </schemalist>
+</gconfschemafile>

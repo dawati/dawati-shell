@@ -1,0 +1,168 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-myzone\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-03 11:20+0000\n"
+"PO-Revision-Date: 2009-11-13 23:00+0200\n"
+"Last-Translator: Yousef Abu Al Naser <yousef@itsoftex.com>\n"
+"Language-Team: ITSOFTEX <info@itsoftex.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Arabic\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "لوحة نطاقي"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "غير خلفية ومحتويات نطاقي"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "نطاقي"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>غير مايظهر لك في نطاقك</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>ورقة الحائط الخاصه في نطاقي</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "التقويم و المهمات"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "غيًر عضوية الويب الخاصه بي"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "اختر خلفية ورق الحائط الخاصه بك"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "أمسح المستندات الحديثة"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "اشعار بواسطة البريد الألكتروني"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "أعِد الضبط للإفتراضي"
+
+#: ../capplet/gconf-bridge.c:1232
+#, c-format
+msgid "GConf error: %s"
+msgstr "خلل GConf: %s"
+
+#: ../capplet/gconf-bridge.c:1237
+msgid "All further errors shown only on terminal."
+msgstr "جميع الاخطاء تظهر فقط في التيرمنال"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "اظهر محتوى خدمات ويب قدر الأمكان"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr ""
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr ""
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "أظهر الملفات الأحدث"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "اظهر الملفات الحديثة قدر المستطاع"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr ""
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "مواعيد"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "افتح"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "مهمات"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "إنشاء موعد"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "إضافة"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "لا يوجد مدخلات تقويم لهذا الأسبوع"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "صفحة ويب"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "إنشاء مهمة جديدة"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "لا شيء للعمل اليوم"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "تاريخ الإستحقاق %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files they will appear here on myzone for easy access whenever you want. "
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "لا رسائل غير مقروءة"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "رسالة غير مقروءة"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "رسائل غير مقروءة"
+
+#~ msgid "Things that your friends do online will appear here. Activate your accounts now!"
+#~ msgstr "أمور يفعلها اصدقاؤك بينما هم متّصلون ستظهر هنا. نشّط حساباتك الآن!"
+
+#~ msgid "<b>Welcome to Dawati 2.1 for Netbooks</b>"
+#~ msgstr "<b>مرحبًا بك بموبلن 2.1 لحواسيب الشبكة</b>"
+
+#~ msgid "As Dawati is a bit different to other computers, we've put together a couple of bits and pieces to help you find your way around. We hope you enjoy it, The Dawati Team."
+#~ msgstr "بما أن موبلن تختلف عن الحواسيب الاخرى، فقد جمعنا بعض القطع سويًا لمساعدتك  بايجاد طريقك. نأمل ان تستمتع بذلك، فريق موبلن."

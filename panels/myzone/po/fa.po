@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-27 19:10+0000\n"
+"PO-Revision-Date: 2010-08-12 14:16+0330\n"
+"Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
+"Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Persian\n"
+"X-Poedit-Country: Iran\n"
+
+#: ../data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr "قاب منطقه ی من"
+
+#: ../data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr "تغییر پس زمینه و محتوای منطقه ی من"
+
+#: ../data/myzone.desktop.in.in.h:2 ../capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr "منطقه ی من"
+
+#: ../data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr "<b>تغییر انچه که در منطقه شما نمایش داده می شود</b>"
+
+#: ../data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr "<b>تصویر پس زمینه من</b>"
+
+#: ../data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr "تقویم و وظایف:"
+
+#: ../data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr "تغییر حساب های وبی من"
+
+#: ../data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr "انتخاب تصویر پس زمینه"
+
+#: ../data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr "حذف اسناد اخیر"
+
+#: ../data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr "اعلان های ایمیل:"
+
+#: ../data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr "بازنشانی صورت پیش فرض"
+
+#: ../capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr "خطای GConf:  %s"
+
+#: ../capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr "همه خطاهای دیگر فقط در ترمینال نمایش داده می شوند"
+
+#: ../capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr "نمایش هر تعداد محتوای سرویس وب ممکن"
+
+#: ../capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr "نمایش محتوای خدمت وب اخیر"
+
+#: ../capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr "نمایش نیم و نیم"
+
+#: ../capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr "نمایش فایل های اخیر"
+
+#: ../capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr "نمایش هر تعداد فایل ممکن"
+
+#: ../capplet/myzone-cc-panel.c:77
+msgid "Do you want to clear your recent documents? This will remove the local content from your myzone"
+msgstr "آیا می خواهید اسناد جدید را پاک کنید؟ این باعث حذف محتوای داخلی از منطقه ی شما خواهد شد"
+
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "قرار ملاقات"
+
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "باز"
+
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "وظایف"
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr "ایجاد قرار ملاقات"
+
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "افزودن"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr "هیچ ورودی در تقویم این هفته نیست"
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr "صفحه ی وب"
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr "ساخت وظیفه ای جدید"
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr "امروز هیچ کاری برای انجام دادن نیست"
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr "سررسید  %x"
+
+#: ../penge/penge-welcome-tile.c:28
+msgid "When you’ve set up your web accounts and used some files, they will appear here on myzone for easy access whenever you want. "
+msgstr "وقتی شما حساب های وبی خود را تنظیم کردید و برخی فایل ها را استفاده کردید انها اینجا برای دسترسی آسان هر زمان که شما بخواهید در منطقه ی من ظاهر خواهند شد."
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr "پخش ویدیو معرفی"
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr "به می‌گو خوش آمدید"
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr "هیچ پیام خوانده نشده"
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr "پیام خوانده نشده"
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr "پیام های خوانده نشده"
