@@ -1,0 +1,252 @@
+*#status-panel-header-label
+{
+  color: #a0da00ff;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 0 0 0 15;
+}
+
+*#status-panel
+{
+  background-color: #0000;
+  padding: 5;
+}
+
+MpsFeedSwitcher
+{
+  padding: 8;
+  border-image: url("content-panel-background.png") 5;
+}
+
+MpsFeedSwitcher.first-run
+{
+  padding: 3;
+  border-image: url('background-gradient.png') 6;
+}
+
+MpsFeedPane
+{
+  background-color: white;
+}
+
+*.mps-tweet-avatar-frame
+{
+  border-image: url("avatar_frame.png") 4 4 4 4;
+  padding: 2 2 2 2;
+}
+
+MpsTweetCard, MpsTweetCard:hover, MpsTweetCard:active
+{
+  border-image: url("status_card_background.png") 4 4 4 4;
+  padding: 16 8 16 0;
+}
+
+MpsTweetCard.mps-tweet-card-last,
+MpsTweetCard.mps-tweet-card-last:hover,
+MpsTweetCard.mps-tweet-card-last:active
+{
+  border-image: none;
+}
+
+*.mps-tweet-content-label
+{
+  color: #595959ff;
+  font-size: 14px;
+}
+
+*.mps-tweet-secondary-label
+{
+  color: #7dbe0cff;
+  font-size: 12px;
+}
+
+*.mps-switcher-notebook
+{
+  padding: 16;
+}
+
+*.mps-switcher-new-service
+{
+  border-image: url("add_status_header.png") 4 4 4 4;
+  padding: 6;
+  font-size: 16px;
+}
+
+*.mps-switcher-button-box
+{
+  padding: 10 0 0 0;
+}
+
+
+*.mps-switcher-new-service:hover,
+*.mps-switcher-new-service:active
+{
+  border-image: url("add_status_header_hover.png") 4 4 4 4;
+  padding: 6;
+  font-size: 16px;
+}
+
+*.mps-switcher-button
+{
+  border-image: url("alt_status_header.png") 4 4 4 4;
+  padding: 6;
+  color: white;
+  font-size: 16px;
+}
+
+*.mps-switcher-button:checked
+{
+  border-image: url("current_status_header.png") 4 4 4 4;
+  padding: 6;
+  color: white;
+  font-size: 16px;
+}
+
+*.mps-switcher-button:hover,
+*.mps-switcher-button:active
+{
+  border-image: url("alt_status_header_hover.png") 4 4 4 4;
+  padding: 6;
+  color: white;
+  font-size: 16px;
+}
+
+*.mps-status-entry
+{
+  border-image: url("status_entry_box.png") 4 4 4 4;
+}
+
+*.mps-status-entry *.MplEntryEntry
+{
+  font-size: 16px;
+  color: #595959ff;
+  border-image:none;
+}
+
+*.mps-status-entry *.MplEntryButton
+{
+  color: #7dbe0cff;
+}
+
+*.mps-switcher-placeholder-frame
+{
+  padding: 20 134 40 0;
+}
+
+*.mps-switcher-placeholder-title
+{
+  color: #a0da00;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+*.mps-switcher-placeholder-header
+{
+  border-image: url("content-panel-header-grey.png") 2 2 35 2;
+  padding: 2 2 35 2;
+}
+
+*.mps-switcher-placeholder-label, *.mps-something-wrong-message
+{
+  color: #595959ff;
+  font-size: 16px;
+}
+
+*.mps-something-wrong-frame
+{
+  padding: 4px;
+}
+
+MpsFeedSwitcher
+{
+  padding: 0 8 0 8;
+}
+
+*.mps-tweet-card-reply-button MxIcon
+{
+  -mx-content-image: url("tweet-reply.png");
+  padding: 0;
+}
+
+*.mps-tweet-card-retweet-button MxIcon
+{
+  -mx-content-image: url("retweet.png");
+  padding: 0;
+}
+
+*.mps-tweet-card-reply-button:hover MxIcon
+{
+  -mx-content-image: url("tweet-reply-hover.png");
+  padding: 0;
+}
+
+*.mps-tweet-card-retweet-button:hover MxIcon
+{
+  -mx-content-image: url("retweet-hover.png");
+  padding: 0;
+}
+
+*.mps-tweet-card-reply-button,
+*.mps-tweet-card-reply-button:active
+{
+  border-image: none;
+  padding: 0;
+}
+
+*.mps-tweet-card-retweet-button,
+*.mps-tweet-card-retweet-button:active
+{
+  border-image: none;
+  padding: 0;
+}
+
+
+*.mps-tweet-card-reply-button:hover,
+*.mps-tweet-card-retweet-button:hover
+{
+  border-image: url("icon-bg-hover.png") 4;
+  padding: 0;
+}
+
+*.mps-feed-location-hbox
+{
+  border-image: url("location-box-bg.png") 4;
+  padding: 6;
+}
+
+*.mps-feed-location-change-button,
+*.mps-feed-location-change-button:hover,
+*.mps-feed-location-change-button:active
+{
+  border-image: none;
+  padding: 0;
+  font-size:16px;
+  color: #7dbe0cff;
+}
+
+*.mps-feed-location-label
+{
+  font-size:16px;
+  font-family: "Droid Sans";
+  color: #595959ff;
+}
+
+*.mps-geo-search-entry
+{
+  padding: 2;
+  border-image: url("status_entry_box.png") 4 4 4 4;
+}
+
+*.mps-geo-search-entry *.MplEntryEntry
+{
+  font-size: 16px;
+  color: #595959ff;
+  border-image:none;
+}
+
+*.mps-geo-search-entry *.MplEntryButton
+{
+  color: #7dbe0cff;
+}
+
+

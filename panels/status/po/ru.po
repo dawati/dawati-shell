@@ -1,0 +1,183 @@
+# translation of dawati-panel-status.master.dawati-panel-status.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: panel status ru\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-19 16:36+0000\n"
+"PO-Revision-Date: 2010-10-19 19:58-0800\n"
+"Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../src/dawati-panel-status.c:95
+msgid "Status"
+msgstr "Статус"
+
+#: ../src/dawati-panel-status.c:153
+#: ../data/dawati-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr "статус"
+
+#. vim:set ts=8 expandtab
+#: ../data/dawati-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Панель статуса"
+
+#: ../src/mps-feed-pane.c:92
+msgid "Unable to update status. The service may be unavailable or your password could be wrong."
+msgstr "Не удается обновить статус. Возможно, сервис недоступен, либо вы ввели неправильный пароль."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Невозможно обновить статус: вы не в режиме онлайн."
+
+#: ../src/mps-feed-pane.c:445
+msgid "We were unable to guess your location"
+msgstr "Мы не смогли определить ваше местоположение"
+
+#: ../src/mps-feed-pane.c:453
+#, c-format
+msgid "We think your location is: %s (%f, %f)"
+msgstr "Ваше вероятное местоположение: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:459
+#, c-format
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "Ваше местоположение указывается как: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:469
+#, c-format
+msgid "We think your locations is: %f %f"
+msgstr "Ваше вероятное местоположение: %f %f"
+
+#: ../src/mps-feed-pane.c:473
+#, c-format
+msgid "Your location is currently shared as: %f %f"
+msgstr "Ваше местоположение указывается как: %f %f"
+
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "Ваше местоположение не указывается"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:586
+msgid "Update"
+msgstr "Обновить"
+
+#: ../src/mps-feed-pane.c:591
+msgid "What's happening?"
+msgstr "Что происходит?"
+
+#: ../src/mps-feed-pane.c:641
+msgid "Change"
+msgstr "Изменить"
+
+#: ../src/mps-feed-switcher.c:35
+msgid "When you have a web account configured, you will be able to view your feeds and manage your status here."
+msgstr "Здесь вы сможете просматривать свои веб-ленты и обновлять свой статус после создания учетной веб-записи."
+
+#: ../src/mps-feed-switcher.c:509
+#: ../src/mps-feed-switcher.c:554
+msgid "Add new web account"
+msgstr "Добавить новую учетную запись"
+
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Это панель «Статус»."
+
+#: ../src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr "Ваше местоположение"
+
+#: ../src/mps-geotag-pane.c:568
+msgid "Search"
+msgstr "Поиск"
+
+#: ../src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr "Где вы находитесь?"
+
+#: ../src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr "Найти меня"
+
+#: ../src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr "Использовать местоположение"
+
+#: ../src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr "Не использовать местоположение"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../src/mps-tweet-card.c:528
+#, c-format
+msgid "%s from %s"
+msgstr "%s из %s"
+
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "У вас не настроен ни один веб-сервис или их параметры указаны неверно. "
+#~ "Воспользуйтесь расположенной выше кнопкой для открытия страницы Мои "
+#~ "учетные записи и настройки одной из них."
+
+#~ msgid "Offline"
+#~ msgstr "Offline"
+
+#~ msgid "Available"
+#~ msgstr "Доступен"
+
+#~ msgid "Away"
+#~ msgstr "Отсутствует"
+
+#~ msgid "Busy"
+#~ msgstr "Занят"
+
+#~ msgid "Close"
+#~ msgstr "Закрыть"
+
+#~ msgid "Unknown account"
+#~ msgstr "Неизвестная учётная запись"
+
+#~ msgid "Edit"
+#~ msgstr "Редактировать"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "Введите здесь %s статус..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "Введите здесь текущий статус..."
+
+#~ msgid "Your current status"
+#~ msgstr "Текущий статус"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "Текущий статус - offline"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "К сожалению, мы никого не можем найти. Есть ли у Вас учётная запись "
+#~ "Messenger?"
+
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Для того, чтобы обновить IM статус, нужно настроить учётную запись IM"

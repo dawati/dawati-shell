@@ -1,0 +1,138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# 9and3r <9and3r@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-status\n"
+"Report-Msgid-Bugs-To: http://bugs.dawati.com/\n"
+"POT-Creation-Date: 2011-11-02 13:38-0700\n"
+"PO-Revision-Date: 2011-03-23 17:57+0000\n"
+"Last-Translator: 9and3r <9and3r@gmail.com>\n"
+"Language-Team: Basque (http://www.transifex.net/projects/p/dawati/team/eu/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: eu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../src/dawati-panel-status.c:95
+msgid "Status"
+msgstr "Egoera"
+
+#: ../src/dawati-panel-status.c:153
+#: ../data/dawati-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr "egoera"
+
+#. vim:set ts=8 expandtab
+#: ../data/dawati-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Egoera panela"
+
+#: ../src/mps-feed-pane.c:92
+msgid ""
+"Unable to update status. The service may be unavailable or your password "
+"could be wrong."
+msgstr ""
+"Ezin izan da egoera eguneratu. Agian zerbitzua ez dago erabilgarri edo zure "
+"pasahitza okerra izan daiteke."
+
+#: ../src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Ezinezkoa egoera eguneratzea: Ez zaude online."
+
+#: ../src/mps-feed-pane.c:445
+msgid "We were unable to guess your location"
+msgstr "Ezin izan dugu zure kokapena aurreikusi"
+
+#: ../src/mps-feed-pane.c:453
+#, c-format
+msgid "We think your location is: %s (%f, %f)"
+msgstr "Uste dugu zure kokapena %s (%f, %f) dela"
+
+#: ../src/mps-feed-pane.c:459
+#, c-format
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "Zure momunte honetako partekatutako kokapena: %s (%f, %f)"
+
+#: ../src/mps-feed-pane.c:469
+#, c-format
+msgid "We think your location is: %f %f"
+msgstr "Uste dugu zure kokapena %f, %f dela"
+
+#: ../src/mps-feed-pane.c:473
+#, c-format
+msgid "Your location is currently shared as: %f %f"
+msgstr "Zure kokapena %f %f bezala partekatzen ari da"
+
+#: ../src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "Zure kokapena ez da partekatzen"
+
+#. Actor creation
+#: ../src/mps-feed-pane.c:586
+msgid "Update"
+msgstr "Eguneratu"
+
+#: ../src/mps-feed-pane.c:591
+msgid "What's happening?"
+msgstr "Zer ari da gertatzen?"
+
+#: ../src/mps-feed-pane.c:641
+msgid "Change"
+msgstr "Aldatu"
+
+#: ../src/mps-feed-switcher.c:35
+msgid ""
+"When you have a web account configured, you will be able to view your feeds "
+"and manage your status here."
+msgstr ""
+"Web kontu bat konfiguratuta duzunean zure jarioak eta zure egoera kudeatu "
+"ahalko duzu hemen."
+
+#: ../src/mps-feed-switcher.c:509 ../src/mps-feed-switcher.c:554
+msgid "Add new web account"
+msgstr "Gehitu web-kontu berria"
+
+#: ../src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Hau Egoera panela da."
+
+#: ../src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr "Zure kokapena"
+
+#: ../src/mps-geotag-pane.c:568
+msgid "Search"
+msgstr "Bilatu"
+
+#: ../src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr "Non zaude?"
+
+#: ../src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr "Aurkitu nazazu"
+
+#: ../src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr "Erabiltzailearen kokapena"
+
+#: ../src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr "Ez erabili kokapen hau"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#. 
+#: ../src/mps-tweet-card.c:491
+#, c-format
+msgid "%s from %s"
+msgstr "%s-tik %s"
+
+

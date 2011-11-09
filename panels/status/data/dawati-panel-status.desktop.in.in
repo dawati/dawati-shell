@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Exec=@libexecdir@/dawati-panel-status
+TryExec=@libexecdir@/dawati-panel-status
+_Name=status
+Icon=dawati-panel-status
+_Comment=Status panel
+Terminal=false
+Categories=
+OnlyShowIn=DAWATI;
+X-Dawati-Priority=Low
+X-Dawati-Service=com.dawati.UX.Shell.Panels.status
+X-Dawati-Panel-Optional=true
+X-Dawati-Panel-Button-Style=status-button

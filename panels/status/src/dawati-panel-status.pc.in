@@ -1,0 +1,14 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@/libsocialweb
+datadir=@datadir@
+servicesdir=@servicesdir@
+servicesdatadir=@servicesdatadir@
+
+Name: dawati-panel-status
+Description: Plugin for dawati-panel-status
+Version: @VERSION@
+Cflags: -I${includedir}
+Libs: -L${libdir} -ldawati-panel-status
+Requires: mx-1.0 libsocialweb-client
