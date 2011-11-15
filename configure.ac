@@ -418,7 +418,8 @@ fi
 
 # libnotify API breakage upon 0.7
 PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= 0.7,
-                  AC_DEFINE(HAVE_NOTIFY_0_7, 1, [we have libnotify 0.7 or better]))
+                  AC_DEFINE(HAVE_NOTIFY_0_7, 1, [we have libnotify 0.7 or better]),
+                  AC_MSG_NOTICE([]))
 
 # Desktop files for panels
 AM_CONDITIONAL([ENABLE_DAWATI_DESKTOP_FILE], [test "$enable_mdesktop" = "yes"])
