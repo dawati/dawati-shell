@@ -47,15 +47,6 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    ["$GETTEXT_PACKAGE"],
                    [Name of default gettext domain])
 
-IT_PO_SUBDIR([panels/applications/po])
-IT_PO_SUBDIR([panels/datetime/po])
-IT_PO_SUBDIR([panels/devices/po])
-IT_PO_SUBDIR([panels/myzone/po])
-IT_PO_SUBDIR([panels/networks/po])
-IT_PO_SUBDIR([panels/people/po])
-IT_PO_SUBDIR([panels/status/po])
-IT_PO_SUBDIR([panels/web/po])
-IT_PO_SUBDIR([panels/zones/po])
 IT_PROG_INTLTOOL([0.34.90])
 AS_ALL_LINGUAS
 
@@ -502,13 +493,11 @@ panels/applications/src/Makefile
 panels/applications/tests/Makefile
 panels/applications/data/Makefile
 panels/applications/data/theme/Makefile
-panels/applications/po/Makefile.in
 
 panels/datetime/Makefile
 panels/datetime/src/Makefile
 panels/datetime/data/Makefile
 panels/datetime/data/theme/Makefile
-panels/datetime/po/Makefile.in
 
 panels/devices/Makefile
 panels/devices/data/Makefile
@@ -517,7 +506,6 @@ panels/devices/data/dawati-panel-devices.schemas
 panels/devices/data/com.dawati.UX.Shell.Panels.devices.service
 panels/devices/data/icons/Makefile
 panels/devices/data/theme/Makefile
-panels/devices/po/Makefile.in
 panels/devices/src/Makefile
 panels/devices/tests/Makefile
 
@@ -526,7 +514,6 @@ panels/myzone/capplet/Makefile
 panels/myzone/data/Makefile
 panels/myzone/data/dawati-panel-myzone.schemas
 panels/myzone/data/theme/Makefile
-panels/myzone/po/Makefile.in
 panels/myzone/src/Makefile
 
 panels/networks/Makefile
@@ -537,12 +524,10 @@ panels/networks/data/Makefile
 panels/networks/data/carrick.desktop.in
 panels/networks/data/carrick-standalone.desktop.in
 panels/networks/data/theme/Makefile
-panels/networks/po/Makefile.in
 
 panels/people/Makefile
 panels/people/data/Makefile
 panels/people/data/theme/Makefile
-panels/people/po/Makefile.in
 panels/people/src/Makefile
 
 panels/power-icon/Makefile
@@ -557,7 +542,6 @@ panels/power-icon/tests/Makefile
 panels/status/Makefile
 panels/status/data/Makefile
 panels/status/data/theme/Makefile
-panels/status/po/Makefile.in
 panels/status/src/Makefile
 panels/status/src/dawati-panel-status.pc
 
@@ -566,12 +550,10 @@ panels/web/common/Makefile
 panels/web/data/Makefile
 panels/web/data/theme/Makefile
 panels/web/netpanel/Makefile
-panels/web/po/Makefile.in
 
 panels/zones/Makefile
 panels/zones/data/theme/Makefile
 panels/zones/data/Makefile
-panels/zones/po/Makefile.in
 panels/zones/src/Makefile
 ])
 

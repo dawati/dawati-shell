@@ -176,9 +176,9 @@ main (int     argc,
   GError          *error = NULL;
 
   setlocale (LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE_PANEL_APPLICATIONS, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_APPLICATIONS, "UTF-8");
-  textdomain (GETTEXT_PACKAGE_PANEL_APPLICATIONS);
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 
   context = g_option_context_new ("- Mutter-dawati application launcher panel");
   g_option_context_add_main_entries (context, _options, GETTEXT_PACKAGE);

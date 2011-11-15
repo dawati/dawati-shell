@@ -307,7 +307,7 @@ main (int argc, char **argv)
   char **l;
 
   context = g_option_context_new ("- Carrick/ConnMan 3G connection wizard");
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE_PANEL_NETWORKS);
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, gtk_get_option_group (TRUE));
   if (!g_option_context_parse (context, &argc, &argv, &error)) {
     g_printerr ("option parsing failed: %s\n", error->message);

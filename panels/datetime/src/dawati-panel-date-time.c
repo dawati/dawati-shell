@@ -84,12 +84,12 @@ main (int    argc,
   GError *error = NULL;
 
   setlocale (LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE_PANEL_DATETIME, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_DATETIME, "UTF-8");
-  textdomain (GETTEXT_PACKAGE_PANEL_DATETIME);
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 
   context = g_option_context_new ("- mutter-dawati date/time panel");
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE_PANEL_DATETIME);
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   g_option_context_add_group (context, gtk_get_option_group (FALSE));
   if (!g_option_context_parse (context, &argc, &argv, &error))

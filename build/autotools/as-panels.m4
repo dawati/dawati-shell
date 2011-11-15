@@ -78,11 +78,6 @@ AC_DEFUN([AS_DAWATI_PANEL],
   fi
   AM_CONDITIONAL([USE_]PNAME_DEF, echo " $DAWATI_PANELS_SELECTED " | grep -i " [$1] " > /dev/null)
 
-  dnl gettext definitions
-  define([[GETTEXT_PACKAGE_]PNAME_DEF],[dawati-panel-]pname_def)
-  AC_SUBST([GETTEXT_PACKAGE_]PNAME_DEF)
-  AC_DEFINE([[GETTEXT_PACKAGE_]PNAME_DEF],"[dawati-panel-]pname_def",[Gettext package name for [dawati-panel-]pname_def])
-
   dnl datadir
   AC_SUBST(PNAME_DEF[_LIBS],
            [$PNAME_DEF[_LIBS]' $(top_builddir)/libdawati-panel/dawati-panel/libdawati-panel.la'])

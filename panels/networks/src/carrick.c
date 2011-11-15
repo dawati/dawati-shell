@@ -315,13 +315,13 @@ main (int    argc,
   if (!g_thread_supported ())
     g_thread_init (NULL);
 
-  bindtextdomain (GETTEXT_PACKAGE_PANEL_NETWORKS, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_NETWORKS, "UTF-8");
-  textdomain (GETTEXT_PACKAGE_PANEL_NETWORKS);
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 
   g_set_application_name (_ ("Carrick connectivity applet"));
   gtk_init_with_args (&argc, &argv, _ ("- Dawati connectivity applet"),
-                      entries, GETTEXT_PACKAGE_PANEL_NETWORKS, &error);
+                      entries, GETTEXT_PACKAGE, &error);
   dbus_g_thread_init ();
 
   if (error)

@@ -224,11 +224,11 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
   bridge = gconf_bridge_get ();
   client = gconf_bridge_get_client (bridge);
 
-  bindtextdomain (GETTEXT_PACKAGE_PANEL_MYZONE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_MYZONE, "UTF-8");
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
   builder = gtk_builder_new ();
-  gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE_PANEL_MYZONE);
+  gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
   gtk_builder_add_from_file (builder,
                              UI_FILE,
                              NULL);
@@ -378,8 +378,8 @@ myzone_cc_panel_init (MyzoneCcPanel *self)
 void
 g_io_module_load (GIOModule *module)
 {
-  bindtextdomain (GETTEXT_PACKAGE_PANEL_MYZONE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_MYZONE, "UTF-8");
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
   myzone_cc_panel_register_type (G_TYPE_MODULE (module));
   g_io_extension_point_implement (CC_PANEL_EXTENSION_POINT_NAME,

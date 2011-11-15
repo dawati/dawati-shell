@@ -1,7 +1,0 @@
-# List of source files containing translatable strings.
-panels/status/src/dawati-panel-status.c
-panels/status/data/dawati-panel-status.desktop.in.in
-panels/status/src/mps-feed-pane.c
-panels/status/src/mps-feed-switcher.c
-panels/status/src/mps-geotag-pane.c
-panels/status/src/mps-tweet-card.c

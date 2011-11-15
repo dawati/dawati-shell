@@ -106,12 +106,12 @@ main (int     argc,
   GError          *error = NULL;
 
   setlocale (LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE_PANEL_DEVICES, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_DEVICES, "UTF-8");
-  textdomain (GETTEXT_PACKAGE_PANEL_DEVICES);
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 
   context = g_option_context_new ("- Dawati devices panel");
-  g_option_context_add_main_entries (context, _options, GETTEXT_PACKAGE_PANEL_DEVICES);
+  g_option_context_add_main_entries (context, _options, GETTEXT_PACKAGE);
   g_option_context_add_group (context, clutter_get_option_group_without_init ());
   if (!g_option_context_parse (context, &argc, &argv, &error))
   {

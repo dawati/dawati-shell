@@ -1,19 +1,154 @@
+# #-#-#-#-#  ru.po  #-#-#-#-#
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
-# 
+#
+# #-#-#-#-#  ru.po (dawati-web-browser ru)  #-#-#-#-#
+# #-#-#-#-#  ru.po (dawati-web-browser ru)  #-#-#-#-#
+# translation of dawati-web-browser.po to
+# translation of dawati-web-browser.master.dawati-web-browser.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  ru.po (panel status ru)  #-#-#-#-#
+# #-#-#-#-#  ru.po (panel status ru)  #-#-#-#-#
+# translation of dawati-panel-status.master.dawati-panel-status.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
+#
+# #-#-#-#-#  ru.po (dawati-panel-networks)  #-#-#-#-#
+# #-#-#-#-#  ru.po (dawati-panel-networks)  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Patrick McCarty <patrick.mccarty@linux.intel.com>, 2011.
+# Yuri Myasoedov <omerta13@yandex.ru>, 2011.
+# #-#-#-#-#  ru.po (dawati-panel-networks)  #-#-#-#-#
+# #-#-#-#-#  ru.po (dawati-panel-networks)  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Patrick McCarty <patrick.mccarty@linux.intel.com>, 2011.
+# Yuri Myasoedov <omerta13@yandex.ru>, 2011.
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  ru.po (dawati-panel-datetime)  #-#-#-#-#
+# #-#-#-#-#  ru.po (dawati-panel-datetime)  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  ru.po  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Alexander Mineev <alexander.g.mineev@intel.com>, 2009.
+#
+#: ../carrick/carrick-util.c:38
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-03 11:52+0000\n"
+"POT-Creation-Date: 2011-11-15 13:35+0000\n"
 "PO-Revision-Date: 2010-07-01 13:32-0800\n"
 "Last-Translator: Bogdan Nosach <bogdan.nosach@ptiglobal.net>\n"
 "Language-Team: \n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"#-#-#-#-#  ru.po (dawati-web-browser ru)  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po (dawati-web-browser ru)  #-#-#-#-#\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
+"#-#-#-#-#  ru.po (panel status ru)  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po (panel status ru)  #-#-#-#-#\n"
+"Plural-Forms: plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: KBabel 1.11.4\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"#-#-#-#-#  ru.po (dawati-panel-networks)  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po (dawati-panel-networks)  #-#-#-#-#\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"#-#-#-#-#  ru.po (dawati-panel-networks)  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po (dawati-panel-networks)  #-#-#-#-#\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"#-#-#-#-#  ru.po (dawati-panel-datetime)  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po (dawati-panel-datetime)  #-#-#-#-#\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Russian\n"
+"#-#-#-#-#  ru.po  #-#-#-#-#\n"
 "Plural-Forms: nplurals=2; plural=n!=1;\n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -26,17 +161,19 @@ msgstr "Настроить параметры панели инструмент�
 msgid "Toolbar settings"
 msgstr "Настройки панели инструментов"
 
-#: ../capplet/src/mtp-bin.c:362
+#: ../capplet/src/mtp-bin.c:365
 msgid "Save toolbar"
 msgstr "Сохранить панель инструментов"
 
-#: ../capplet/src/mtp-bin.c:367
+#: ../capplet/src/mtp-bin.c:370
 msgid "Sorry, you'll have to remove a panel before you can add a new one."
 msgstr "Перед добавлением новой панели инструментов удалите старую."
 
-#: ../capplet/src/mtp-bin.c:369
+#: ../capplet/src/mtp-bin.c:372
 msgid "You can add, remove, and reorder many of the panels in your toolbar."
-msgstr "Вы можете добавить, удалить или изменить положение многих панелей на своей панели инструментов."
+msgstr ""
+"Вы можете добавить, удалить или изменить положение многих панелей на своей "
+"панели инструментов."
 
 #: ../capplet/src/mtp-jar.c:110
 msgid "Available panels"
@@ -46,8 +183,19 @@ msgstr "Доступные панели"
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
-#: ../capplet/src/mtp-clock.c:217 ../src/mnb-toolbar-clock.c:125
+#.
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:217 ../panels/datetime/src/mnp-utils.c:512
+#: ../src/mnb-toolbar-clock.c:125
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -55,12 +203,12 @@ msgstr "%H:%M"
 #. * locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #. translators: translate this to a suitable default time format for
 #. * your locale showing only hours and minutes. For available format
 #. * specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
 msgid "%l:%M %P"
 msgstr "%l:%M %P"
@@ -68,7 +216,7 @@ msgstr "%l:%M %P"
 #. translators: translate this to a suitable date format for your locale.
 #. * For availabe format specifiers see
 #. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
-#. 
+#.
 #: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
 msgid "%B %e, %Y"
 msgstr "%B %e, %Y"
@@ -82,17 +230,574 @@ msgid "Set your system-tray preferences"
 msgstr "Установить настройки области уведомлений"
 
 #: ../capplet/data/system-tray-properties.desktop.in.h:2
-#: ../capplet/src/syst-cc-panel.c:241
+#: ../capplet/src/syst-cc-panel.c:245
 msgid "System Tray"
 msgstr "Область уведомлений"
 
-#: ../capplet/src/syst-cc-panel.c:174
+#: ../capplet/src/syst-cc-panel.c:176
 msgid "Show system tray"
 msgstr "Показать область уведомлений"
 
-#: ../capplet/src/syst-cc-panel.c:195
-msgid "The system tray is a concept used by some older applications to let you know when something happens or to stay running when you close them."
-msgstr "Область уведомлений используется некоторыми более старыми приложениями для информирования пользователя в случае возникновения какого-то события или продолжения работы после их закрытия."
+#: ../capplet/src/syst-cc-panel.c:200
+msgid ""
+"The system tray is a concept used by some older applications to let you know "
+"when something happens or to stay running when you close them."
+msgstr ""
+"Область уведомлений используется некоторыми более старыми приложениями для "
+"информирования пользователя в случае возникновения какого-то события или "
+"продолжения работы после их закрытия."
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr "Мастер подключения сотовой системы подключения данных"
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr "Выберите страну"
+
+#: ../callouts/3g/ggg-manual-dialog.c:89
+msgid "Manual Configuration"
+msgstr "Ручная настройка"
+
+#: ../callouts/3g/ggg-manual-dialog.c:93
+msgid "Plan Name (required):"
+msgstr "Название плана (обязательно):"
+
+#: ../callouts/3g/ggg-manual-dialog.c:96
+msgid "Username:"
+msgstr "Имя пользователя:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:99
+msgid "Password:"
+msgstr "Пароль:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:103
+msgid "Gateway:"
+msgstr "Шлюз:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:106
+msgid "Primary DNS:"
+msgstr "Основной DNS:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:109
+msgid "Secondary DNS:"
+msgstr "Вторичный DNS:"
+
+#: ../callouts/3g/ggg-manual-dialog.c:112
+msgid "Tertiary DNS:"
+msgstr "Третичный DNS:"
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr "Выберите свой план 3G"
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr "Выберите провайдер"
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr "%s (роуминг)"
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr "Выберите службу 3G"
+
+#: ../callouts/openconnect/main.c:659
+#, c-format
+msgid ""
+"Certificate from VPN server \"%s\" failed verification.\n"
+"Reason: %s\n"
+"Do you want to accept it?"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1318
+msgid "VPN host"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1338
+msgid "Automatically start connecting next time"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1355
+msgid "Select a host to fetch the login form"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1360
+msgid "Contacting host, please wait..."
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1372
+msgid "_Login"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1386
+msgid "Log"
+msgstr ""
+
+#. Translator note: The disabled technologies available to be turned on is put together at
+#. * runtime.
+#. * The conjunction ' or ' will be at the end of a choice of disabled technologies,
+#. * for example 'You could try enabling WiFi, WiMAX or 3G'.
+#. * Note that you need to include spaces on both sides of the word/phrase
+#. * here -- unless you want it joined with previous or next word.
+#: ../carrick/carrick-list.c:1014
+msgid " or "
+msgstr " или "
+
+#. Translator note: the comma ', ' will be used to join the different
+#. * disabled technologies as in the example:
+#. * 'You could try enabling WiFi, WiMAX or 3G'
+#. * Note that you need to include spaces in the string, unless you
+#. * want the words to appear right next to the comma.
+#: ../carrick/carrick-list.c:1021
+msgid ", "
+msgstr ", "
+
+#. Translator note: these technology names will be used in forming
+#. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
+#.
+#: ../carrick/carrick-list.c:1044 ../carrick/carrick-util.c:42
+msgid "wired"
+msgstr "проводная"
+
+#. Switches
+#: ../carrick/carrick-list.c:1045 ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-util.c:40
+msgid "WiFi"
+msgstr "WiFi"
+
+#: ../carrick/carrick-list.c:1046 ../carrick/carrick-pane.c:2034
+#: ../carrick/carrick-util.c:46
+msgid "WiMAX"
+msgstr "WiMAX"
+
+#: ../carrick/carrick-list.c:1047 ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-util.c:44
+msgid "3G"
+msgstr "3G"
+
+#: ../carrick/carrick-list.c:1048 ../carrick/carrick-pane.c:2048
+#: ../carrick/carrick-util.c:48
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#.
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#.
+#: ../carrick/carrick-list.c:1058
+msgid ""
+"Sorry, we can't find any networks. It appears that the connection manager is "
+"not running. You could try restarting your computer."
+msgstr ""
+"Не найдено ни одной сети. Возможно, мастер соединений не запущен. Попробуйте "
+"перезагрузить компьютер."
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-list.c:1068
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr "Не найдено ни одной сети. Попробуйте отключить режим «Оффлайн»."
+
+#: ../carrick/carrick-list.c:1120
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr "Не найдено ни одной сети. Попробуйте включить %s."
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-list.c:1134
+msgid "Sorry, we can't find any networks"
+msgstr "Не найдено ни одной сети"
+
+#: ../carrick/carrick-notification-manager.c:138
+msgid "Network connected"
+msgstr "Подключено к сети"
+
+#: ../carrick/carrick-notification-manager.c:146
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr "Теперь вы подключены к проводной сети"
+
+#: ../carrick/carrick-notification-manager.c:176
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr "Теперь вы подключены к %s, сети %s"
+
+#: ../carrick/carrick-notification-manager.c:182
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr "Теперь вы подключены к сети %s"
+
+#: ../carrick/carrick-notification-manager.c:199
+msgid "Network lost"
+msgstr "Соединение с сетью потеряно"
+
+#: ../carrick/carrick-notification-manager.c:207
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr "Ваше проводное подключение потеряно"
+
+#: ../carrick/carrick-notification-manager.c:211
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr "Ваше подключение %s к %s потеряно"
+
+#: ../carrick/carrick-notification-manager.c:217
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr "Ваше подключение %s потеряно"
+
+#: ../carrick/carrick-notification-manager.c:234
+msgid "Network changed"
+msgstr "Сеть изменена"
+
+#: ../carrick/carrick-notification-manager.c:253
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас к проводной сети"
+
+#: ../carrick/carrick-notification-manager.c:260
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr "Ваше соединение с %s потеряно. Мы подключили вас к %s, сети %s"
+
+#: ../carrick/carrick-notification-manager.c:268
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас к сети %s"
+
+#: ../carrick/carrick-notification-manager.c:278
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас проводной сети"
+
+#: ../carrick/carrick-notification-manager.c:285
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас к %s, сети %s"
+
+#: ../carrick/carrick-notification-manager.c:294
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr "Ваше подключение к %s потеряно. Мы подключили вас к сети %s"
+
+#: ../carrick/carrick-pane.c:686
+msgid "New connection settings"
+msgstr "Параметры нового подключения"
+
+#: ../carrick/carrick-pane.c:724
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+"Введите имя сети, к которой вы хотите\n"
+"подключиться, и, при необходимости, пароль\n"
+"и тип безопасности."
+
+#: ../carrick/carrick-pane.c:734
+msgid "Network name"
+msgstr "Сетевое имя"
+
+#: ../carrick/carrick-pane.c:746
+msgid "Network security"
+msgstr "Сетевая безопасность"
+
+#: ../carrick/carrick-pane.c:756
+msgid "None"
+msgstr "Отсутствует"
+
+#: ../carrick/carrick-pane.c:768
+msgid "Password"
+msgstr "Пароль"
+
+#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1953
+msgid "Show password"
+msgstr "Показывать пароль"
+
+#: ../carrick/carrick-pane.c:1975
+msgid "Settings"
+msgstr "Параметры"
+
+#: ../carrick/carrick-pane.c:2006 ../carrick/carrick-service-item.c:461
+msgid "Wired"
+msgstr "Проводная"
+
+#: ../carrick/carrick-pane.c:2073
+msgid "Offline mode"
+msgstr "Режим «Оффлайн»"
+
+#: ../carrick/carrick-pane.c:2083
+msgid "This will disable all your connections"
+msgstr "Это отключит все ваши подключения"
+
+#: ../carrick/carrick-pane.c:2119 ../panels/networks/src/carrick.c:381
+msgid "Networks"
+msgstr "Сетевые подключения"
+
+#. New connection button
+#: ../carrick/carrick-pane.c:2125
+msgid "Add new connection"
+msgstr "Добавить новое подключение"
+
+#. TRANSLATORS: Button
+#. * There will be a combobox of VPN networks to the left of the
+#. * button
+#: ../carrick/carrick-pane.c:2165
+msgid "Connect to VPN"
+msgstr "Подключиться к виртуальной частной сети (VPN)"
+
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#.
+#: ../carrick/carrick-service-item.c:64
+msgid "Critical Error: Invalid country code"
+msgstr "Критическая ошибка: неправильный код страны"
+
+#: ../carrick/carrick-service-item.c:65
+msgid "Missing required APN (service plan name)"
+msgstr "Отсутствует необходимое APN (имя плана обслуживания)"
+
+#: ../carrick/carrick-service-item.c:66
+msgid "Internal Error: Invalid network service"
+msgstr "Внутренняя ошибка: недопустимая сетевая служба"
+
+#: ../carrick/carrick-service-item.c:67
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr "Критическая ошибка: невозможно получить доступ к мастеру подключений"
+
+#: ../carrick/carrick-service-item.c:68
+msgid "ERROR: No 3G Hardware detected"
+msgstr "ОШИБКА: 3G-устройства не найдены"
+
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
+#.
+#: ../carrick/carrick-service-item.c:248
+#, c-format
+msgid "%s encrypted"
+msgstr "%s зашифровано"
+
+#. TRANSLATORS: This string will be in the "Connect by:"-
+#. * combobox just like "DHCP" and "Static IP". Fixed means
+#. * that the IP configuration cannot be changed at all,
+#. * like in a 3G network
+#: ../carrick/carrick-service-item.c:407
+msgid "Fixed IP"
+msgstr "Статический IP-адрес"
+
+#: ../carrick/carrick-service-item.c:474 ../carrick/carrick-service-item.c:492
+msgid "Disconnect"
+msgstr "Отключить"
+
+#: ../carrick/carrick-service-item.c:477
+msgid "Connected"
+msgstr "Подключено"
+
+#: ../carrick/carrick-service-item.c:495
+msgid "Online"
+msgstr "Онлайн"
+
+#: ../carrick/carrick-service-item.c:501 ../carrick/carrick-service-item.c:510
+#, c-format
+msgid "Cancel"
+msgstr "Отменить"
+
+#: ../carrick/carrick-service-item.c:504
+msgid "Configuring"
+msgstr "Настройка"
+
+#: ../carrick/carrick-service-item.c:513
+msgid "Associating"
+msgstr "Ассоциирование"
+
+#: ../carrick/carrick-service-item.c:522 ../carrick/carrick-service-item.c:548
+#: ../carrick/carrick-service-item.c:1940
+msgid "Connect"
+msgstr "Подключить"
+
+#: ../carrick/carrick-service-item.c:551
+msgid "Connection failed"
+msgstr "Сбой подключения"
+
+#: ../carrick/carrick-service-item.c:555
+msgid "Sorry, the connection failed. You could try again."
+msgstr "Сбой подключения, повторите попытку."
+
+#: ../carrick/carrick-service-item.c:562 ../carrick/carrick-service-item.c:565
+#, c-format
+msgid "Disconnecting"
+msgstr "Отключение"
+
+#: ../carrick/carrick-service-item.c:633
+msgid "Type password here"
+msgstr "Введите пароль здесь"
+
+#: ../carrick/carrick-service-item.c:709
+msgid "Really remove?"
+msgstr "Действительно удалить?"
+
+#: ../carrick/carrick-service-item.c:729
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr ""
+"Удалить сеть %s %s? Это\n"
+"приведёт к потере пароля и невозможности\n"
+"автоматического подключения к %s."
+
+#: ../carrick/carrick-service-item.c:1422
+msgid "Sorry, it looks like the IP address is not valid"
+msgstr "Некорректный IP-адрес"
+
+#: ../carrick/carrick-service-item.c:1434
+msgid "Sorry, it looks like the gateway address is not valid"
+msgstr "Некорректный адрес межсетевого шлюза"
+
+#: ../carrick/carrick-service-item.c:1446
+msgid "Sorry, it looks like the subnet mask is not valid"
+msgstr "Некорректная маска подсети"
+
+#: ../carrick/carrick-service-item.c:1491
+#, c-format
+msgid "Sorry, it looks like the nameserver address '%s' is not valid"
+msgstr "Некорректный адрес сервера преобразования имён «%s»"
+
+#. TRANSLATORS: label for the Advanced expander in a service item
+#: ../carrick/carrick-service-item.c:1853
+msgid "Advanced"
+msgstr "Расширенные"
+
+#. TRANSLATORS: button for services that require an additional
+#. * web login (clicking will open browser)
+#: ../carrick/carrick-service-item.c:1865
+msgid "Log in"
+msgstr "Вход"
+
+#: ../carrick/carrick-service-item.c:1874
+msgid "Scanning"
+msgstr "Проверка"
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:1895
+msgid "WPA2 encrypted"
+msgstr "Шифрование WPA2"
+
+#. TRANSLATORS: label in advanced settings (next to combobox
+#. * for DHCP/Static IP)
+#: ../carrick/carrick-service-item.c:2002
+msgid "Connect by:"
+msgstr "Подключить с помощью:"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2004
+msgid "IP address:"
+msgstr "IP-адрес:"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2006
+msgid "Subnet mask:"
+msgstr "Маска подсети:"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2008
+msgid "Router:"
+msgstr "Маршрутизатор:"
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2010
+msgid "DNS:"
+msgstr "DNS:"
+
+#: ../carrick/carrick-service-item.c:2017
+msgid "DHCP"
+msgstr "DHCP"
+
+#: ../carrick/carrick-service-item.c:2019
+msgid "Static IP"
+msgstr "Статический IP-адрес"
+
+#. TRANSLATORS: label for apply button in static ip settings
+#: ../carrick/carrick-service-item.c:2070
+msgid "Apply"
+msgstr "Применить"
+
+#: ../carrick/carrick-util.c:50
+msgid "VPN"
+msgstr "Виртуальная частная сеть (VPN)"
+
+#: ../carrick/carrick-util.c:86
+#, c-format
+msgid ""
+"Your password isn't the right length. For a WEP connection it needs to be "
+"either 10 or 26 characters, you have %i."
+msgstr ""
+"Пароль содержит неправильное количество символов. Для подключения WEP он "
+"должен содержать 10 или 26 символов, у вас — %i."
+
+#: ../carrick/carrick-util.c:101
+#, c-format
+msgid ""
+"Your password is too short. For a WPA  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"Слишком короткий пароль. Для подключения WPA он должен состоять минимум из 8 "
+"символов, у вас — %i"
+
+#: ../carrick/carrick-util.c:109
+#, c-format
+msgid ""
+"Your password is too long. For a WPA  connection it needs to have fewer than "
+"64 characters, you have %i"
+msgstr ""
+"Слишком длинный пароль. Для подключения WPA  пароль должен быть не длиннее "
+"64 символов; у вас — %i"
+
+#: ../carrick/carrick-util.c:122
+#, c-format
+msgid ""
+"Your password is too short. For a WPA2  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+"Слишком короткий пароль. Для подключения WPA2 он должен состоять минимум из "
+"8 символов, у вас — %i"
+
+#: ../carrick/carrick-util.c:130
+#, c-format
+msgid ""
+"Your password is too long. For a WPA2  connection it needs to have fewer "
+"than 64 characters, you have %i"
+msgstr ""
+"Слишком длинный пароль. Для подключения WPA2  пароль должен быть не длиннее "
+"64 символов; у вас — %i"
 
 #: ../data/mutter-dawati.schemas.in.h:1
 msgid "Always use small screen mode"
@@ -103,57 +808,1103 @@ msgid "Determines the order of panels on the toolbar."
 msgstr "Определяет порядок панелей на инструментальной панели."
 
 #: ../data/mutter-dawati.schemas.in.h:3
-msgid "Forces small screen mode to be used even if display size would normally imply bigger screen mode."
-msgstr "Принуждает использовать малое разрешение экрана даже тогда, когда размер экрана подразумевает использование большого разрешения."
+msgid ""
+"Forces small screen mode to be used even if display size would normally "
+"imply bigger screen mode."
+msgstr ""
+"Принуждает использовать малое разрешение экрана даже тогда, когда размер "
+"экрана подразумевает использование большого разрешения."
 
 #: ../data/mutter-dawati.schemas.in.h:4
 msgid "Order of panels on toolbar"
 msgstr "Порядок панелей на инструментальной панели"
 
-#: ../src/dawati-netbook.c:825
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1005
+msgid "Disabled"
+msgstr "Отключено"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1012
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u вывод"
+msgstr[1] "%u выводы"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1022
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u ввод"
+msgstr[1] "%u вводы"
+
+#: ../gvc/gvc-mixer-control.c:1320
+msgid "System Sounds"
+msgstr "Системные звуки"
+
+#: ../panels/applications/src/mnb-filter.c:150
+msgid "Clear"
+msgstr ""
+
+#: ../panels/applications/src/mnb-filter.c:164
+#: ../panels/people/src/mnb-people-panel.c:723
+#: ../panels/status/src/mps-geotag-pane.c:568
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1585
+msgid "Search"
+msgstr "Поиск"
+
+#: ../panels/applications/src/dawati-netbook-launcher.c:61
+msgid ""
+"To see your favourite applications here and on the myzone, hover your "
+"pointer over the application you want to add and select the pin in the top "
+"right."
+msgstr ""
+
+#. Panel label
+#: ../panels/applications/src/dawati-netbook-launcher.c:1089
+msgid "Applications"
+msgstr "Приложения"
+
+#.
+#. * Fav apps pane
+#.
+#: ../panels/applications/src/dawati-netbook-launcher.c:1105
+msgid "Favorite applications"
+msgstr "Избранные приложения"
+
+#.
+#. * Applications
+#.
+#: ../panels/applications/src/dawati-netbook-launcher.c:1148
+msgid "Your applications"
+msgstr "Ваши приложения"
+
+#: ../panels/applications/src/dawati-panel-applications.c:258
+#: ../panels/applications/data/dawati-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr "приложения"
+
+# Could potentailly cause declension issues. Need to know the noun associated with this tring. What has never been launched? Program, function, component, etc.
+#: ../panels/applications/src/mnb-launcher-button.c:659
+msgid "Never launched"
+msgstr "Никогда не запускалось"
+
+#: ../panels/applications/data/dawati-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr "Панель приложений"
+
+#: ../panels/datetime/src/dawati-panel-date-time.c:111
+msgid "Date/Time"
+msgstr "Дата/время"
+
+#: ../panels/datetime/data/dawati-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr "Панель даты и времени"
+
+#: ../panels/datetime/data/dawati-panel-datetime.desktop.in.in.h:2
+msgid "date and time"
+msgstr "дата и время"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../panels/datetime/src/mnp-utils.c:504
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: This is a strftime format string.
+#. * It is used to display in Aug 6 (current location)
+#: ../panels/datetime/src/mnp-utils.c:525
+#, fuzzy
+msgid "%b %-d (current location)"
+msgstr "%b %-d (местный)"
+
+#: ../panels/datetime/src/mnp-utils.c:531
+msgid "%b %-d (Yesterday)"
+msgstr "%b %-d (Вчера)"
+
+#: ../panels/datetime/src/mnp-utils.c:533
+msgid "%b %-d (Tomorrow)"
+msgstr "%b %-d (Завтра)"
+
+#: ../panels/datetime/src/mnp-utils.c:538
+msgid "%b %-d (local)"
+msgstr "%b %-d (местный)"
+
+#: ../panels/datetime/src/mnp-utils.c:540
+msgid "%b %-d"
+msgstr "%b %-d"
+
+#: ../panels/datetime/src/mnp-world-clock.c:580
+msgid "Time"
+msgstr "Время"
+
+#: ../panels/datetime/src/mnp-world-clock.c:633
+msgid "24 hour clock"
+msgstr "Формат времени: 24 часа"
+
+#: ../panels/datetime/src/mnp-world-clock.c:770
+msgid "Enter a country or city"
+msgstr "Введите страну или город"
+
+#: ../panels/datetime/src/mnp-world-clock.c:793
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr "Добавить"
+
+#: ../panels/datetime/src/mnp-world-clock.c:882
+msgid "Set Time & Date"
+msgstr "Установить время и дату"
+
+#: ../panels/datetime/src/mnp-datetime.c:324
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr "Встречи"
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#.
+#. format date
+#: ../panels/datetime/src/mnp-datetime.c:373
+#: ../panels/datetime/src/mnp-datetime.c:579
+msgid "Today"
+msgstr "Сегодня"
+
+#: ../panels/datetime/src/mnp-datetime.c:471
+msgid "Open Appointments"
+msgstr "Открыть Встречи"
+
+#: ../panels/datetime/src/mnp-datetime.c:549
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr "Задания"
+
+#: ../panels/datetime/src/mnp-datetime.c:651
+msgid "Open Tasks"
+msgstr "Открыть Задания"
+
+#: ../panels/datetime/src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr "Время и дата"
+
+#: ../panels/datetime/src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr "Формат времени: 12 или 24 часа"
+
+#: ../panels/datetime/src/date-time.schemas.in.h:2
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr ""
+"Сигналы хранятся в зашифрованном виде для использования при оповещении."
+
+#: ../panels/datetime/src/date-time.schemas.in.h:3
+msgid "List of alarms in short encoded form"
+msgstr "Список сигналов в краткой зашифрованной форме"
+
+#: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr "Панель устройств"
+
+#: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:2
+#: ../panels/devices/src/dawati-panel-devices.c:176
+msgid "devices"
+msgstr "устройства"
+
+#: ../panels/devices/data/dawati-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr "Истечение времени ожидания в спящем режиме"
+
+#: ../panels/devices/data/dawati-panel-devices.schemas.in.h:2
+msgid ""
+"Value of -1 means never sleep, other values are seconds of continuous idle "
+"state before sleeping."
+msgstr ""
+"Значение -1 индицирует отсутствие сна, в то время как другие значения "
+"указывают на длительность (в секундах) непрерывного режима простоя перед "
+"переходом в спящий режим."
+
+#: ../panels/devices/src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr "Панель устройств Dawati"
+
+#: ../panels/devices/src/mpd-battery-device.c:381
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr "Похоже, у вас отсутствует батарея."
+
+#: ../panels/devices/src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr "Батарея заряжается. Ее заряд составляет %d%%."
+
+#: ../panels/devices/src/mpd-battery-device.c:390
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr "Батарея используется. Ее заряд составляет %d%%."
+
+#: ../panels/devices/src/mpd-battery-device.c:395
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr "Батарея заряжена полностью, можете продолжить работу."
+
+#: ../panels/devices/src/mpd-battery-device.c:399
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr "Похоже, ваша батарея неисправна."
+
+#: ../panels/devices/src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr ""
+
+#: ../panels/devices/src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr ""
+
+#: ../panels/devices/src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr "Ваш компьютер"
+
+#: ../panels/devices/src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr "Все настройки"
+
+#: ../panels/devices/src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+"Подключите устройство,\n"
+"и оно будет обнаружено автоматически."
+
+#: ../panels/devices/src/mpd-devices-pane.c:107
+msgid "Other devices"
+msgstr "Другие устройства"
+
+#: ../panels/devices/src/mpd-devices-tile.c:66
+#, fuzzy
+msgid "Sorry, we can't eject at the moment"
+msgstr "Не найдено ни одной сети"
+
+#: ../panels/devices/src/mpd-devices-tile.c:72
+#, c-format
+msgid "Sorry, we can't eject because <b>%s</b> is using the disk"
+msgstr ""
+
+#: ../panels/devices/src/mpd-devices-tile.c:549
+msgid "It is safe to unplug this device now"
+msgstr "Сейчас можно безопасно извлечь устройство"
+
+#: ../panels/devices/src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
+"span>"
+msgstr ""
+"<span font-weight='bold'>Вы используете</span> <span color='%s'>%d%% из %s</"
+"span>"
+
+#: ../panels/devices/src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr "Корзина"
+
+#: ../panels/devices/src/mpd-shell.c:128
+msgid "Devices"
+msgstr "Устройства"
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:243
+#, c-format
+msgid "Could not run \"%s\""
+msgstr "Не удалось запустить \"%s\""
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:246
+#: ../panels/devices/src/mpd-storage-device-tile.c:248
+msgid "Import error"
+msgstr "Ошибка импорта"
+
+# If space is a problem, we can use an equally good alternative "Импорт фото"
+#: ../panels/devices/src/mpd-storage-device-tile.c:360
+msgid "Import photos"
+msgstr "Импорт фотографий"
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:362
+msgid "Import media"
+msgstr "Импорт медиа-данных"
+
+#. Open button
+#: ../panels/devices/src/mpd-storage-device-tile.c:653
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr "Открыть"
+
+#. Eject button
+#: ../panels/devices/src/mpd-storage-device-tile.c:659
+msgid "Eject"
+msgstr "Извлечь"
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:863
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+"<span font-weight='bold'>%s</span> использует <span color='%s'>%d%% из %s</"
+"span>"
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:871
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr "<span font-weight='bold'>%s</span>"
+
+#: ../panels/devices/src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr "Увеличено до 11"
+
+#: ../panels/devices/src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr "Очень громко"
+
+#: ../panels/devices/src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr "Громко"
+
+#: ../panels/devices/src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr "Довольно громко"
+
+#: ../panels/devices/src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr "Средняя громкость"
+
+#: ../panels/devices/src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr "Довольно тихо"
+
+#: ../panels/devices/src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr "Тихо"
+
+#: ../panels/devices/src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr "Очень тихо"
+
+#: ../panels/devices/src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr "Без звука"
+
+# Will need to see it in actual UI in order to translate correctly. Is "Volume" an HDD volume (C:\, D:\, etc.) or is it something else?
+#: ../panels/devices/src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr "Том компьютера"
+
+#: ../panels/devices/src/mpd-volume-tile.c:372
+msgid "Mute"
+msgstr "Без звука"
+
+#: ../panels/myzone/data/dawati-panel-myzone.desktop.in.in.h:1
+#, fuzzy
+msgid "Myzone panel"
+msgstr "Панель зон"
+
+#: ../panels/myzone/data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr ""
+
+#: ../panels/myzone/data/myzone.desktop.in.in.h:2
+#: ../panels/myzone/capplet/myzone-cc-panel.c:169
+#, fuzzy
+msgid "Myzone"
+msgstr "зоны"
+
+#: ../panels/myzone/data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr ""
+
+#: ../panels/myzone/capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr ""
+
+#: ../panels/myzone/capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:77
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from your myzone"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:343
+msgid "Images"
+msgstr ""
+
+#: ../panels/networks/data/carrick.desktop.in.in.h:1
+msgid "Network settings"
+msgstr "Сетевые параметры"
+
+#: ../panels/networks/data/carrick.desktop.in.in.h:2
+#: ../panels/networks/src/carrick.c:364
+msgid "network"
+msgstr "сеть"
+
+#. TRANSLATORS: Tooltips for the toolbar icon
+#. * The possible placeholder is service name (such as
+#. * a wireless network name)
+#: ../panels/networks/src/carrick.c:52
+msgid "networks - not connected"
+msgstr "сети — не подключено"
+
+#: ../panels/networks/src/carrick.c:58
+msgid "networks - connecting"
+msgstr "сети — подключение"
+
+#: ../panels/networks/src/carrick.c:64
+msgid "networks - wired"
+msgstr "сети — проводные"
+
+#: ../panels/networks/src/carrick.c:66
+#, c-format
+msgid "networks - %s - wifi"
+msgstr "сети — %s — wifi"
+
+#: ../panels/networks/src/carrick.c:69
+#, c-format
+msgid "networks - %s - wimax"
+msgstr "сети — %s — wimax"
+
+#: ../panels/networks/src/carrick.c:72
+#, c-format
+msgid "networks - %s - 3G"
+msgstr "сети — %s — 3G"
+
+#: ../panels/networks/src/carrick.c:75
+#, c-format
+msgid "networks - %s - bluetooth"
+msgstr "сети — %s — bluetooth"
+
+#: ../panels/networks/src/carrick.c:78
+#, c-format
+msgid "networks - %s - VPN"
+msgstr "сети — %s — VPN"
+
+#: ../panels/networks/src/carrick.c:81 ../panels/networks/src/carrick.c:93
+msgid "networks"
+msgstr "сети"
+
+#: ../panels/networks/src/carrick.c:88
+msgid "networks - error"
+msgstr "сети — ошибка"
+
+#: ../panels/networks/src/carrick.c:309
+msgid "Run in standalone mode"
+msgstr "Запуск в автономном режиме"
+
+#: ../panels/networks/src/carrick.c:311
+msgid "Embed in another window (overrides --standalone)"
+msgstr "Добавлено в другом окне (замещает --отдельный)"
+
+#: ../panels/networks/src/carrick.c:322
+msgid "Carrick connectivity applet"
+msgstr "Апплет для подключения Carrick"
+
+#: ../panels/networks/src/carrick.c:323
+msgid "- Dawati connectivity applet"
+msgstr "— апплет подключения"
+
+#: ../panels/people/src/dawati-panel-people.c:88
+#: ../panels/people/src/mnb-people-panel.c:513
+#: ../panels/people/data/dawati-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr "люди"
+
+#: ../panels/people/src/mnb-people-panel.c:56
+msgid ""
+"When you have an IM service configured (like Messenger), this is where you "
+"chat to people."
+msgstr ""
+"Здесь вы сможете общаться с другими людьми после настройки службы "
+"мгновенного обмена сообщениями (например, Messenger)."
+
+#: ../panels/people/src/mnb-people-panel.c:191
+#: ../panels/people/src/mnb-people-panel.c:451
+#, c-format
+msgid "Open %s"
+msgstr "Открыть %s"
+
+#: ../panels/people/src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr "Это панель «Люди»."
+
+#: ../panels/people/src/mnb-people-panel.c:320
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr "Извините, невозможно найти людей. Похоже, что Вы находитесь не в сети."
+
+#: ../panels/people/src/mnb-people-panel.c:365
+msgid "To see your IM contacts, you need to go online."
+msgstr "Для просмотра своих контактов IM перейдите в режим онлайн."
+
+#: ../panels/people/src/mnb-people-panel.c:495
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr "собеседники - у вас %d собеседников"
+
+#: ../panels/people/src/mnb-people-panel.c:502
+msgid "people - you are chatting with someone"
+msgstr "собеседники - вы общаетесь с кем-то"
+
+#. Populate header
+#: ../panels/people/src/mnb-people-panel.c:710
+#: ../panels/people/src/mnb-people-panel.c:964
+msgid "People"
+msgstr "Люди"
+
+#: ../panels/people/src/mnb-people-panel.c:774
+#: ../panels/people/src/mnb-people-panel.c:1162
+msgid "You are chatting with:"
+msgstr "Вы общаетесь с:"
+
+#: ../panels/people/src/mnb-people-panel.c:981
+msgid "Me and my people"
+msgstr "Я и мои собеседники"
+
+#: ../panels/people/src/mnb-people-panel.c:1019
+msgid "Me"
+msgstr "Я"
+
+#. Side table
+#: ../panels/people/src/mnb-people-panel.c:1119
+msgid "My conversations"
+msgstr "Мои беседы"
+
+#: ../panels/people/data/dawati-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr "Панель контактов"
+
+#: ../panels/power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr "Значок электропитания Dawati"
+
+#: ../panels/power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr "Заряд батареи на исходе"
+
+#: ../panels/power-icon/src/mpd-power-icon.c:78
+msgid ""
+"I've noticed that your battery is running a bit low. If you can, it would be "
+"a good idea to plug in and top up."
+msgstr ""
+"Заряд батареи на исходе. При возможности подключите шнур питания и зарядите "
+"ее."
+
+#: ../panels/power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr "Заряд практически исчерпан"
+
+#: ../panels/power-icon/src/mpd-power-icon.c:82
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can."
+msgstr ""
+"Заряд батареи практически исчерпан. Сохраните результаты своей работы и как "
+"можно быстрее подключите шнур питания."
+
+#: ../panels/power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr "Внимание!"
+
+#: ../panels/power-icon/src/mpd-power-icon.c:87
+#, fuzzy
+msgid ""
+"Sorry, your computer is about to run out of battery. I'm going to have to go "
+"to sleep now. Please save your work and hope to see you again soon."
+msgstr ""
+"Заряд батареи исчерпан и компьютер будет выключен. Сохраните свою работу, и "
+"до скорой встречи!"
+
+#: ../panels/power-icon/src/mpd-power-icon.c:500
+msgid "battery"
+msgstr "батарея"
+
+#: ../panels/power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] ""
+"Если вы ничего не предпримите, компьютер отключится через %d секунду."
+msgstr[1] ""
+"Если вы ничего не предпримите, компьютер отключится через %d секунд."
+
+#: ../panels/power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr "Отключить"
+
+#: ../panels/power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr "Отключить питание немедленно?"
+
+#: ../panels/power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr "Если вы ничего не предпримите, компьютер отключится через 30 секунд."
+
+#: ../panels/status/src/dawati-panel-status.c:95
+msgid "Status"
+msgstr "Статус"
+
+#: ../panels/status/src/dawati-panel-status.c:153
+#: ../panels/status/data/dawati-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr "статус"
+
+#. vim:set ts=8 expandtab
+#: ../panels/status/data/dawati-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr "Панель статуса"
+
+#: ../panels/status/src/mps-feed-pane.c:92
+msgid ""
+"Unable to update status. The service may be unavailable or your password "
+"could be wrong."
+msgstr ""
+"Не удается обновить статус. Возможно, сервис недоступен, либо вы ввели "
+"неправильный пароль."
+
+#: ../panels/status/src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr "Невозможно обновить статус: вы не в режиме онлайн."
+
+#: ../panels/status/src/mps-feed-pane.c:445
+msgid "We were unable to guess your location"
+msgstr "Мы не смогли определить ваше местоположение"
+
+#: ../panels/status/src/mps-feed-pane.c:453
+#, c-format
+msgid "We think your location is: %s (%f, %f)"
+msgstr "Ваше вероятное местоположение: %s (%f, %f)"
+
+#: ../panels/status/src/mps-feed-pane.c:459
+#, c-format
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr "Ваше местоположение указывается как: %s (%f, %f)"
+
+#: ../panels/status/src/mps-feed-pane.c:469
+#, fuzzy, c-format
+msgid "We think your location is: %f %f"
+msgstr "Ваше вероятное местоположение: %f %f"
+
+#: ../panels/status/src/mps-feed-pane.c:473
+#, c-format
+msgid "Your location is currently shared as: %f %f"
+msgstr "Ваше местоположение указывается как: %f %f"
+
+#: ../panels/status/src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr "Ваше местоположение не указывается"
+
+#. Actor creation
+#: ../panels/status/src/mps-feed-pane.c:586
+msgid "Update"
+msgstr "Обновить"
+
+#: ../panels/status/src/mps-feed-pane.c:591
+msgid "What's happening?"
+msgstr "Что происходит?"
+
+#: ../panels/status/src/mps-feed-pane.c:641
+msgid "Change"
+msgstr "Изменить"
+
+#: ../panels/status/src/mps-feed-switcher.c:35
+msgid ""
+"When you have a web account configured, you will be able to view your feeds "
+"and manage your status here."
+msgstr ""
+"Здесь вы сможете просматривать свои веб-ленты и обновлять свой статус после "
+"создания учетной веб-записи."
+
+#: ../panels/status/src/mps-feed-switcher.c:509
+#: ../panels/status/src/mps-feed-switcher.c:554
+msgid "Add new web account"
+msgstr "Добавить новую учетную запись"
+
+#: ../panels/status/src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr "Это панель «Статус»."
+
+#: ../panels/status/src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr "Ваше местоположение"
+
+#: ../panels/status/src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr "Где вы находитесь?"
+
+#: ../panels/status/src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr "Найти меня"
+
+#: ../panels/status/src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr "Использовать местоположение"
+
+#: ../panels/status/src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr "Не использовать местоположение"
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../panels/status/src/mps-tweet-card.c:491
+#, c-format
+msgid "%s from %s"
+msgstr "%s из %s"
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../panels/web/common/mwb-ac-list.cc:1287
+#, c-format
+msgid "Search for %%s on %s"
+msgstr "Поиск %%s на %s"
+
+#: ../panels/web/common/mwb-ac-list.cc:1310
+#, c-format
+msgid "Go to %s"
+msgstr "Перейти к %s "
+
+#: ../panels/web/common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+"Нажмите \"Ввод\" для\n"
+"посещения сайта"
+
+#: ../panels/web/common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+"Нажмите стрелку вниз для\n"
+"получения списка"
+
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:882
+msgid ""
+"As you visit web pages, your favorites will appear here and on the New tab "
+"page in the browser."
+msgstr ""
+"Здесь, а также в окне новой вкладки, будут отображаться наиболее "
+"предпочитаемые/посещаемые вами страницы."
+
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1032
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1171
+msgid "New tab"
+msgstr "Новая вкладка"
+
+#. Construct entry table widgets
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1572
+msgid "Your pages"
+msgstr "Ваши страницы"
+
+#. Construct title for tab preview section
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1606
+msgid "Tabs"
+msgstr "Вкладки"
+
+#. Construct title for favorite pages section
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1611
+msgid "Favorite pages"
+msgstr "Любимые страницы"
+
+#: ../panels/web/netpanel/dawati-panel-web.cc:128
+#: ../panels/web/netpanel/dawati-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr "интернет"
+
+#: ../panels/web/netpanel/dawati-panel-web.cc:150
+#: ../panels/web/netpanel/dawati-panel-web.cc:209
+msgid "Internet"
+msgstr "Интернет"
+
+#: ../panels/web/netpanel/dawati-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr "Панель интернета"
+
+#: ../panels/zones/data/dawati-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr "Панель зон"
+
+#: ../panels/zones/data/dawati-panel-zones.desktop.in.in.h:2
+#: ../panels/zones/src/main.c:25
+msgid "zones"
+msgstr "зоны"
+
+#: ../panels/zones/src/main.c:494
+msgid "Zones"
+msgstr "Зоны"
+
+#: ../panels/zones/src/sw-zone.c:186
+msgid "New Zone"
+msgstr "Новая зона"
+
+#: ../panels/zones/src/sw-zone.c:192 ../panels/zones/src/sw-zone.c:1276
+#, c-format
+msgid "Zone %d"
+msgstr "Зона %d"
+
+#: ../panels/zones/src/sw-zone.c:1075
+msgid "No applications on this zone"
+msgstr "Нет программ в этой зоне."
+
+#: ../panels/zones/src/sw-zone.c:1238
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+"Программы, которые будут использоваться, появятся здесь.  Вы сможете "
+"переключать и упорядочить их."
+
+#: ../penge/penge-events-pane.c:71
+#, fuzzy
+msgid "Create an appointment"
+msgstr "Открыть Встречи"
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr ""
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr ""
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr ""
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr ""
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:28
+msgid ""
+"When you’ve set up your web accounts and used some files, they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr ""
+
+#: ../src/dawati-netbook.c:846
 msgid "Dawati Netbook Effects"
 msgstr "Эффекты Dawati Netbook"
 
-#: ../src/dawati-netbook.c:829
+#: ../src/dawati-netbook.c:850
 msgid "Effects for Dawati Netbooks"
 msgstr "Эффекты для Dawati Netbooks"
 
-#: ../src/mnb-toolbar.c:1007
+#: ../src/mnb-toolbar.c:985
 #, c-format
 msgid "Sorry, %s is broken"
 msgstr "Извините, %s поврежден"
 
-#: ../src/notifications/ntf-notification.c:224
+#: ../src/notifications/ntf-notification.c:292
 msgid "Dismiss"
 msgstr "Пропустить"
 
-#: ../src/notifications/ntf-tray.c:308
+#: ../src/notifications/ntf-tray.c:311
 msgid "Dismiss All"
 msgstr "Пропустить"
 
-#: ../src/notifications/ntf-wm.c:103
+#: ../src/notifications/ntf-tray.c:516 ../src/notifications/ntf-tray.c:592
+#, c-format
+msgid "%i pending messages"
+msgstr ""
+
+#: ../src/notifications/ntf-tray.c:570
+msgid "1 pending message"
+msgstr ""
+
+#: ../src/notifications/ntf-wm.c:112
 msgid "Unknown window"
 msgstr "Неизвестное окно"
 
-#: ../src/notifications/ntf-wm.c:107
+#: ../src/notifications/ntf-wm.c:116
 msgid "is asking for your attention."
 msgstr "просит обратить внимание."
 
-#: ../src/notifications/ntf-wm.c:115
+#: ../src/notifications/ntf-wm.c:124
 msgid "Activate"
 msgstr "Активировать"
+
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
+#, fuzzy, c-format
+msgid "Starting %s"
+msgstr "Параметры"
+
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
+#, fuzzy, c-format
+msgid "Opening %s"
+msgstr "Открыть %s"
+
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
+#, c-format
+msgid "Opening %d Item"
+msgid_plural "Opening %d Items"
+msgstr[0] ""
+msgstr[1] ""
+
+#~ msgid "Netbook brightness"
+#~ msgstr "Яркость экрана нетбука"
+
+#~ msgid "Ejecting failed, looks like an application is using it"
+#~ msgstr ""
+#~ "Операция извлечения была выполнена неудачно так как устройство, скорее "
+#~ "всего, используется программным обеспечением"
+
+#~ msgid ""
+#~ "You don't appear to have any web services configured or there is a "
+#~ "problem with their configuration. Use the button above to open the My Web "
+#~ "Accounts and set one up."
+#~ msgstr ""
+#~ "У вас не настроен ни один веб-сервис или их параметры указаны неверно. "
+#~ "Воспользуйтесь расположенной выше кнопкой для открытия страницы Мои "
+#~ "учетные записи и настройки одной из них."
+
+#~ msgid "Offline"
+#~ msgstr "Offline"
+
+#~ msgid "Available"
+#~ msgstr "Доступен"
+
+#~ msgid "Away"
+#~ msgstr "Отсутствует"
+
+#~ msgid "Busy"
+#~ msgstr "Занят"
+
+#~ msgid "Close"
+#~ msgstr "Закрыть"
+
+#~ msgid "Unknown account"
+#~ msgstr "Неизвестная учётная запись"
+
+#~ msgid "Edit"
+#~ msgstr "Редактировать"
+
+#~ msgid "Enter your %s status here..."
+#~ msgstr "Введите здесь %s статус..."
+
+#~ msgid "Enter your current status here..."
+#~ msgstr "Введите здесь текущий статус..."
+
+#~ msgid "Your current status"
+#~ msgstr "Текущий статус"
+
+#~ msgid "Your current status - you are offline"
+#~ msgstr "Текущий статус - offline"
+
+#~ msgid ""
+#~ "Sorry, we can't find any people. Have you set up a Messenger account?"
+#~ msgstr ""
+#~ "К сожалению, мы никого не можем найти. Есть ли у Вас учётная запись "
+#~ "Messenger?"
+
+#~ msgid ""
+#~ "To update your IM status you need to setup an Instant Messaging account"
+#~ msgstr ""
+#~ "Для того, чтобы обновить IM статус, нужно настроить учётную запись IM"
+
+#~ msgid "Search for applications"
+#~ msgstr "Поиск приложений"
 
 #~ msgid "System tray"
 #~ msgstr "Область уведомлений"
 
-#~ msgid "zones"
-#~ msgstr "зоны"
-
 #~ msgid "No Zones yet"
 #~ msgstr "Нет зон"
-
-#~ msgid "Applications you’re using will show up here. You will be able to switch and organize them to your heart's content."
-#~ msgstr "Программы, которые будут использоваться, появятся здесь.  Вы сможете переключать и упорядочить их."
-
-#~ msgid "No applications on this zone"
-#~ msgstr "Нет программ в этой зоне."

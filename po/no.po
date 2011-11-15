@@ -1,0 +1,1650 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+#: ../carrick/carrick-util.c:38
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: dawati-panel-people\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-11-15 13:35+0000\n"
+"PO-Revision-Date: 2010-11-30 11:13+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Norwegian (http://www.transifex.net/projects/p/dawati/team/"
+"no/)\n"
+"Language: no\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  no.po (meego-panel-zones)  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"#-#-#-#-#  no.po (dawati-panel-web)  #-#-#-#-#\n"
+"#-#-#-#-#  no.po (dawati-panel-web)  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"#-#-#-#-#  no.po (dawati-panel-status)  #-#-#-#-#\n"
+"#-#-#-#-#  no.po (dawati-panel-status)  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"#-#-#-#-#  no.po (dawati-panel-people)  #-#-#-#-#\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:1
+msgid "Set your toolbar preferences"
+msgstr ""
+
+#: ../capplet/data/dawati-toolbar-properties.desktop.in.h:2
+msgid "Toolbar settings"
+msgstr ""
+
+#: ../capplet/src/mtp-bin.c:365
+msgid "Save toolbar"
+msgstr ""
+
+#: ../capplet/src/mtp-bin.c:370
+msgid "Sorry, you'll have to remove a panel before you can add a new one."
+msgstr ""
+
+#: ../capplet/src/mtp-bin.c:372
+msgid "You can add, remove, and reorder many of the panels in your toolbar."
+msgstr ""
+
+#: ../capplet/src/mtp-jar.c:110
+msgid "Available panels"
+msgstr ""
+
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 24-hours format
+#. * (eg, like in France: 20:10), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday).
+#. translators: translate this to a suitable 24 hourt time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:217 ../panels/datetime/src/mnp-utils.c:512
+#: ../src/mnb-toolbar-clock.c:125
+msgid "%H:%M"
+msgstr ""
+
+#. translators: translate this to a suitable time format for your
+#. * locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#. translators: translate this to a suitable default time format for
+#. * your locale showing only hours and minutes. For available format
+#. * specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:227 ../src/mnb-toolbar-clock.c:134
+msgid "%l:%M %P"
+msgstr ""
+
+#. translators: translate this to a suitable date format for your locale.
+#. * For availabe format specifiers see
+#. * http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html
+#.
+#: ../capplet/src/mtp-clock.c:249 ../src/mnb-toolbar-clock.c:155
+msgid "%B %e, %Y"
+msgstr ""
+
+#: ../capplet/src/mtp-cc-panel.c:118
+msgid "Toolbar"
+msgstr ""
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:1
+msgid "Set your system-tray preferences"
+msgstr ""
+
+#: ../capplet/data/system-tray-properties.desktop.in.h:2
+#: ../capplet/src/syst-cc-panel.c:245
+msgid "System Tray"
+msgstr ""
+
+#: ../capplet/src/syst-cc-panel.c:176
+msgid "Show system tray"
+msgstr ""
+
+#: ../capplet/src/syst-cc-panel.c:200
+msgid ""
+"The system tray is a concept used by some older applications to let you know "
+"when something happens or to stay running when you close them."
+msgstr ""
+
+#: ../callouts/3g/ggg-country-dialog.c:73
+#: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
+#: ../callouts/3g/ggg-provider-dialog.c:106
+#: ../callouts/3g/ggg-service-dialog.c:106
+msgid "Cellular Data Connection Wizard"
+msgstr ""
+
+#: ../callouts/3g/ggg-country-dialog.c:93
+msgid "Select Country"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:89
+msgid "Manual Configuration"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:93
+msgid "Plan Name (required):"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:96
+msgid "Username:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:99
+msgid "Password:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:103
+msgid "Gateway:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:106
+msgid "Primary DNS:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:109
+msgid "Secondary DNS:"
+msgstr ""
+
+#: ../callouts/3g/ggg-manual-dialog.c:112
+msgid "Tertiary DNS:"
+msgstr ""
+
+#: ../callouts/3g/ggg-plan-dialog.c:131
+msgid "Select your 3G Plan"
+msgstr ""
+
+#: ../callouts/3g/ggg-provider-dialog.c:126
+msgid "Select Provider"
+msgstr ""
+
+#: ../callouts/3g/ggg-service-dialog.c:59
+#, c-format
+msgid "%s (Roaming)"
+msgstr ""
+
+#: ../callouts/3g/ggg-service-dialog.c:125
+msgid "Select 3G Service"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:659
+#, c-format
+msgid ""
+"Certificate from VPN server \"%s\" failed verification.\n"
+"Reason: %s\n"
+"Do you want to accept it?"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1318
+msgid "VPN host"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1338
+msgid "Automatically start connecting next time"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1355
+msgid "Select a host to fetch the login form"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1360
+msgid "Contacting host, please wait..."
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1372
+msgid "_Login"
+msgstr ""
+
+#: ../callouts/openconnect/main.c:1386
+msgid "Log"
+msgstr ""
+
+#. Translator note: The disabled technologies available to be turned on is put together at
+#. * runtime.
+#. * The conjunction ' or ' will be at the end of a choice of disabled technologies,
+#. * for example 'You could try enabling WiFi, WiMAX or 3G'.
+#. * Note that you need to include spaces on both sides of the word/phrase
+#. * here -- unless you want it joined with previous or next word.
+#: ../carrick/carrick-list.c:1014
+msgid " or "
+msgstr ""
+
+#. Translator note: the comma ', ' will be used to join the different
+#. * disabled technologies as in the example:
+#. * 'You could try enabling WiFi, WiMAX or 3G'
+#. * Note that you need to include spaces in the string, unless you
+#. * want the words to appear right next to the comma.
+#: ../carrick/carrick-list.c:1021
+msgid ", "
+msgstr ""
+
+#. Translator note: these technology names will be used in forming
+#. * sentences like : 'You could try enabling WiFi, WiMAX or 3G'
+#.
+#: ../carrick/carrick-list.c:1044 ../carrick/carrick-util.c:42
+msgid "wired"
+msgstr ""
+
+#. Switches
+#: ../carrick/carrick-list.c:1045 ../carrick/carrick-pane.c:1992
+#: ../carrick/carrick-util.c:40
+msgid "WiFi"
+msgstr ""
+
+#: ../carrick/carrick-list.c:1046 ../carrick/carrick-pane.c:2034
+#: ../carrick/carrick-util.c:46
+msgid "WiMAX"
+msgstr ""
+
+#: ../carrick/carrick-list.c:1047 ../carrick/carrick-pane.c:2020
+#: ../carrick/carrick-util.c:44
+msgid "3G"
+msgstr ""
+
+#: ../carrick/carrick-list.c:1048 ../carrick/carrick-pane.c:2048
+#: ../carrick/carrick-util.c:48
+msgid "Bluetooth"
+msgstr ""
+
+#.
+#. * Translators: this string is displayed if there
+#. * are no available networks because ConnMan, the
+#. * connectivity daemon, is not running.
+#.
+#: ../carrick/carrick-list.c:1058
+msgid ""
+"Sorry, we can't find any networks. It appears that the connection manager is "
+"not running. You could try restarting your computer."
+msgstr ""
+
+#.
+#. * Hint display if we detect that the system is in
+#. * offline mode and there are no available networks
+#.
+#: ../carrick/carrick-list.c:1068
+msgid ""
+"Sorry, we can't find any networks. You could try disabling Offline mode. "
+msgstr ""
+
+#: ../carrick/carrick-list.c:1120
+#, c-format
+msgid "Sorry, we can't find any networks. You could try enabling %s."
+msgstr ""
+
+#.
+#. * Generic message to display if all available networking
+#. * technologies are turned on, but for whatever reason we
+#. * can not find any networks
+#.
+#: ../carrick/carrick-list.c:1134
+msgid "Sorry, we can't find any networks"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:138
+msgid "Network connected"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:146
+#, c-format
+msgid "You're now connected to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:176
+#, c-format
+msgid "You're now connected to %s, a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:182
+#, c-format
+msgid "You're now connected to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:199
+msgid "Network lost"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:207
+#, c-format
+msgid "Sorry, we've lost your wired connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:211
+#, c-format
+msgid "Sorry we've lost your %s connection to %s"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:217
+#, c-format
+msgid "Sorry, we've lost your %s connection"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:234
+msgid "Network changed"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:253
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a wired "
+"network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:260
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:268
+#, c-format
+msgid ""
+"Sorry, your connection to %s was lost. So we've connected you to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:278
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a wired network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:285
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to %s, a %s "
+"network"
+msgstr ""
+
+#: ../carrick/carrick-notification-manager.c:294
+#, c-format
+msgid ""
+"Sorry, your %s connection was lost. So we've connected you to a %s network"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:686
+msgid "New connection settings"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:724
+msgid ""
+"Enter the name of the network you want\n"
+"to connect to and, where necessary, the\n"
+"password and security type."
+msgstr ""
+
+#: ../carrick/carrick-pane.c:734
+msgid "Network name"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:746
+msgid "Network security"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:756
+msgid "None"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:768
+msgid "Password"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:786 ../carrick/carrick-service-item.c:1953
+msgid "Show password"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:1975
+msgid "Settings"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:2006 ../carrick/carrick-service-item.c:461
+msgid "Wired"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:2073
+msgid "Offline mode"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:2083
+msgid "This will disable all your connections"
+msgstr ""
+
+#: ../carrick/carrick-pane.c:2119 ../panels/networks/src/carrick.c:381
+msgid "Networks"
+msgstr ""
+
+#. New connection button
+#: ../carrick/carrick-pane.c:2125
+msgid "Add new connection"
+msgstr ""
+
+#. TRANSLATORS: Button
+#. * There will be a combobox of VPN networks to the left of the
+#. * button
+#: ../carrick/carrick-pane.c:2165
+msgid "Connect to VPN"
+msgstr ""
+
+#. Translators:
+#. The following are potential errors that a user might see while
+#. attempting to configure a 3G data service.
+#.
+#: ../carrick/carrick-service-item.c:64
+msgid "Critical Error: Invalid country code"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:65
+msgid "Missing required APN (service plan name)"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:66
+msgid "Internal Error: Invalid network service"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:67
+msgid "Critical Error: Unable to access Connection Manager"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:68
+msgid "ERROR: No 3G Hardware detected"
+msgstr ""
+
+#. TRANSLATORS: this is a wireless security method, at least WEP,
+#. *  WPA and IEEE8021X are possible token values. Example: "WEP encrypted".
+#.
+#: ../carrick/carrick-service-item.c:248
+#, c-format
+msgid "%s encrypted"
+msgstr ""
+
+#. TRANSLATORS: This string will be in the "Connect by:"-
+#. * combobox just like "DHCP" and "Static IP". Fixed means
+#. * that the IP configuration cannot be changed at all,
+#. * like in a 3G network
+#: ../carrick/carrick-service-item.c:407
+msgid "Fixed IP"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:474 ../carrick/carrick-service-item.c:492
+msgid "Disconnect"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:477
+msgid "Connected"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:495
+msgid "Online"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:501 ../carrick/carrick-service-item.c:510
+#, c-format
+msgid "Cancel"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:504
+msgid "Configuring"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:513
+msgid "Associating"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:522 ../carrick/carrick-service-item.c:548
+#: ../carrick/carrick-service-item.c:1940
+msgid "Connect"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:551
+msgid "Connection failed"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:555
+msgid "Sorry, the connection failed. You could try again."
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:562 ../carrick/carrick-service-item.c:565
+#, c-format
+msgid "Disconnecting"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:633
+msgid "Type password here"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:709
+msgid "Really remove?"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:729
+#, c-format
+msgid ""
+"Do you want to remove the %s %s network? This\n"
+"will forget the password and you will no longer be\n"
+"automatically connected to %s."
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1422
+msgid "Sorry, it looks like the IP address is not valid"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1434
+msgid "Sorry, it looks like the gateway address is not valid"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1446
+msgid "Sorry, it looks like the subnet mask is not valid"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1491
+#, c-format
+msgid "Sorry, it looks like the nameserver address '%s' is not valid"
+msgstr ""
+
+#. TRANSLATORS: label for the Advanced expander in a service item
+#: ../carrick/carrick-service-item.c:1853
+msgid "Advanced"
+msgstr ""
+
+#. TRANSLATORS: button for services that require an additional
+#. * web login (clicking will open browser)
+#: ../carrick/carrick-service-item.c:1865
+msgid "Log in"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:1874
+msgid "Scanning"
+msgstr ""
+
+#. Note: security_sample should contain the longest possible security method
+#. TRANSLATORS: This is an example of a wireless security method
+#. (see another translator comment), used to estimate the string length.
+#. It should look like the ones below network name in the UI
+#: ../carrick/carrick-service-item.c:1895
+msgid "WPA2 encrypted"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings (next to combobox
+#. * for DHCP/Static IP)
+#: ../carrick/carrick-service-item.c:2002
+msgid "Connect by:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2004
+msgid "IP address:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2006
+msgid "Subnet mask:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2008
+msgid "Router:"
+msgstr ""
+
+#. TRANSLATORS: label in advanced settings
+#: ../carrick/carrick-service-item.c:2010
+msgid "DNS:"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:2017
+msgid "DHCP"
+msgstr ""
+
+#: ../carrick/carrick-service-item.c:2019
+msgid "Static IP"
+msgstr ""
+
+#. TRANSLATORS: label for apply button in static ip settings
+#: ../carrick/carrick-service-item.c:2070
+msgid "Apply"
+msgstr ""
+
+#: ../carrick/carrick-util.c:50
+msgid "VPN"
+msgstr ""
+
+#: ../carrick/carrick-util.c:86
+#, c-format
+msgid ""
+"Your password isn't the right length. For a WEP connection it needs to be "
+"either 10 or 26 characters, you have %i."
+msgstr ""
+
+#: ../carrick/carrick-util.c:101
+#, c-format
+msgid ""
+"Your password is too short. For a WPA  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+
+#: ../carrick/carrick-util.c:109
+#, c-format
+msgid ""
+"Your password is too long. For a WPA  connection it needs to have fewer than "
+"64 characters, you have %i"
+msgstr ""
+
+#: ../carrick/carrick-util.c:122
+#, c-format
+msgid ""
+"Your password is too short. For a WPA2  connection it needs to be at least 8 "
+"characters long, you have %i"
+msgstr ""
+
+#: ../carrick/carrick-util.c:130
+#, c-format
+msgid ""
+"Your password is too long. For a WPA2  connection it needs to have fewer "
+"than 64 characters, you have %i"
+msgstr ""
+
+#: ../data/mutter-dawati.schemas.in.h:1
+msgid "Always use small screen mode"
+msgstr ""
+
+#: ../data/mutter-dawati.schemas.in.h:2
+msgid "Determines the order of panels on the toolbar."
+msgstr ""
+
+#: ../data/mutter-dawati.schemas.in.h:3
+msgid ""
+"Forces small screen mode to be used even if display size would normally "
+"imply bigger screen mode."
+msgstr ""
+
+#: ../data/mutter-dawati.schemas.in.h:4
+msgid "Order of panels on toolbar"
+msgstr ""
+
+#. translators:
+#. * The device has been disabled
+#: ../gvc/gvc-mixer-control.c:1005
+msgid "Disabled"
+msgstr ""
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1012
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../gvc/gvc-mixer-control.c:1022
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../gvc/gvc-mixer-control.c:1320
+msgid "System Sounds"
+msgstr ""
+
+#: ../panels/applications/src/mnb-filter.c:150
+msgid "Clear"
+msgstr ""
+
+#: ../panels/applications/src/mnb-filter.c:164
+#: ../panels/people/src/mnb-people-panel.c:723
+#: ../panels/status/src/mps-geotag-pane.c:568
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1585
+msgid "Search"
+msgstr ""
+
+#: ../panels/applications/src/dawati-netbook-launcher.c:61
+msgid ""
+"To see your favourite applications here and on the myzone, hover your "
+"pointer over the application you want to add and select the pin in the top "
+"right."
+msgstr ""
+
+#. Panel label
+#: ../panels/applications/src/dawati-netbook-launcher.c:1089
+msgid "Applications"
+msgstr ""
+
+#.
+#. * Fav apps pane
+#.
+#: ../panels/applications/src/dawati-netbook-launcher.c:1105
+msgid "Favorite applications"
+msgstr ""
+
+#.
+#. * Applications
+#.
+#: ../panels/applications/src/dawati-netbook-launcher.c:1148
+msgid "Your applications"
+msgstr ""
+
+#: ../panels/applications/src/dawati-panel-applications.c:258
+#: ../panels/applications/data/dawati-panel-applications.desktop.in.in.h:2
+msgid "applications"
+msgstr ""
+
+#: ../panels/applications/src/mnb-launcher-button.c:659
+msgid "Never launched"
+msgstr ""
+
+#: ../panels/applications/data/dawati-panel-applications.desktop.in.in.h:1
+msgid "Applications panel"
+msgstr ""
+
+#: ../panels/datetime/src/dawati-panel-date-time.c:111
+msgid "Date/Time"
+msgstr ""
+
+#: ../panels/datetime/data/dawati-panel-datetime.desktop.in.in.h:1
+msgid "Date and Time panel"
+msgstr ""
+
+#: ../panels/datetime/data/dawati-panel-datetime.desktop.in.in.h:2
+msgid "date and time"
+msgstr ""
+
+#. Translators: This is a strftime format string.
+#. * It is used to display the time in 12-hours format
+#. * (eg, like in the US: 8:10 am), when the local
+#. * weekday differs from the weekday at the location
+#. * (the %A expands to the weekday). The %p expands to
+#. * am/pm.
+#: ../panels/datetime/src/mnp-utils.c:504
+msgid "%l:%M %p"
+msgstr ""
+
+#. Translators: This is a strftime format string.
+#. * It is used to display in Aug 6 (current location)
+#: ../panels/datetime/src/mnp-utils.c:525
+msgid "%b %-d (current location)"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-utils.c:531
+msgid "%b %-d (Yesterday)"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-utils.c:533
+msgid "%b %-d (Tomorrow)"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-utils.c:538
+msgid "%b %-d (local)"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-utils.c:540
+msgid "%b %-d"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-world-clock.c:580
+msgid "Time"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-world-clock.c:633
+msgid "24 hour clock"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-world-clock.c:770
+msgid "Enter a country or city"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-world-clock.c:793
+#: ../penge/penge-events-pane.c:72 ../penge/penge-tasks-pane.c:53
+msgid "Add"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-world-clock.c:882
+msgid "Set Time & Date"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-datetime.c:324
+#: ../penge/penge-calendar-pane.c:484
+msgid "Appointments"
+msgstr ""
+
+#. div = clutter_texture_new_from_file (SINGLE_DIV_LINE, NULL);
+#. mx_table_add_actor_with_properties (MX_TABLE (priv->cal_area),
+#. div,
+#. 2, 0,
+#. "x-expand", TRUE,
+#. "y-expand", FALSE,
+#. "x-fill", TRUE,
+#. NULL);
+#. clutter_actor_set_height (div, 2);
+#.
+#. format date
+#: ../panels/datetime/src/mnp-datetime.c:373
+#: ../panels/datetime/src/mnp-datetime.c:579
+msgid "Today"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-datetime.c:471
+msgid "Open Appointments"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-datetime.c:549
+#: ../penge/penge-calendar-pane.c:527
+msgid "Tasks"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-datetime.c:651
+msgid "Open Tasks"
+msgstr ""
+
+#: ../panels/datetime/src/mnp-shell.c:164
+msgid "Time and Date"
+msgstr ""
+
+#: ../panels/datetime/src/date-time.schemas.in.h:1
+msgid "24 hour clock or 12 hour clock"
+msgstr ""
+
+#: ../panels/datetime/src/date-time.schemas.in.h:2
+msgid "Alarms stored in encoded form for use by the alarm notfier."
+msgstr ""
+
+#: ../panels/datetime/src/date-time.schemas.in.h:3
+msgid "List of alarms in short encoded form"
+msgstr ""
+
+#: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:1
+msgid "Devices panel"
+msgstr ""
+
+#: ../panels/devices/data/dawati-panel-devices.desktop.in.in.h:2
+#: ../panels/devices/src/dawati-panel-devices.c:176
+msgid "devices"
+msgstr ""
+
+#: ../panels/devices/data/dawati-panel-devices.schemas.in.h:1
+msgid "Sleep timeout"
+msgstr ""
+
+#: ../panels/devices/data/dawati-panel-devices.schemas.in.h:2
+msgid ""
+"Value of -1 means never sleep, other values are seconds of continuous idle "
+"state before sleeping."
+msgstr ""
+
+#: ../panels/devices/src/dawati-panel-devices.c:126
+msgid "Dawati Devices Panel"
+msgstr ""
+
+#: ../panels/devices/src/mpd-battery-device.c:381
+#, c-format
+msgid "Sorry, you don't appear to have a battery installed."
+msgstr ""
+
+#: ../panels/devices/src/mpd-battery-device.c:385
+#, c-format
+msgid "Your battery is charging. It is about %d%% full."
+msgstr ""
+
+#: ../panels/devices/src/mpd-battery-device.c:390
+#, c-format
+msgid "Your battery is being used. It is about %d%% full."
+msgstr ""
+
+#: ../panels/devices/src/mpd-battery-device.c:395
+#, c-format
+msgid "Your battery is fully charged and you're ready to go."
+msgstr ""
+
+#: ../panels/devices/src/mpd-battery-device.c:399
+#, c-format
+msgid "Sorry, it looks like your battery is broken."
+msgstr ""
+
+#: ../panels/devices/src/mpd-brightness-tile.c:297
+msgid "Display brightness - plugged in"
+msgstr ""
+
+#: ../panels/devices/src/mpd-brightness-tile.c:299
+msgid "Display brightness - on battery"
+msgstr ""
+
+#: ../panels/devices/src/mpd-computer-pane.c:119
+msgid "Your computer"
+msgstr ""
+
+#: ../panels/devices/src/mpd-computer-pane.c:128
+msgid "All settings"
+msgstr ""
+
+#: ../panels/devices/src/mpd-default-device-tile.c:107
+msgid ""
+"Plug in a device and it will\n"
+"be automatically detected."
+msgstr ""
+
+#: ../panels/devices/src/mpd-devices-pane.c:107
+msgid "Other devices"
+msgstr ""
+
+#: ../panels/devices/src/mpd-devices-tile.c:66
+msgid "Sorry, we can't eject at the moment"
+msgstr ""
+
+#: ../panels/devices/src/mpd-devices-tile.c:72
+#, c-format
+msgid "Sorry, we can't eject because <b>%s</b> is using the disk"
+msgstr ""
+
+#: ../panels/devices/src/mpd-devices-tile.c:549
+msgid "It is safe to unplug this device now"
+msgstr ""
+
+#: ../panels/devices/src/mpd-disk-tile.c:65
+#, c-format
+msgid ""
+"<span font-weight='bold'>You are using</span> <span color='%s'>%d%% of %s</"
+"span>"
+msgstr ""
+
+#: ../panels/devices/src/mpd-folder-tile.c:186
+msgid "Trash"
+msgstr ""
+
+#: ../panels/devices/src/mpd-shell.c:128
+msgid "Devices"
+msgstr ""
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:243
+#, c-format
+msgid "Could not run \"%s\""
+msgstr ""
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:246
+#: ../panels/devices/src/mpd-storage-device-tile.c:248
+msgid "Import error"
+msgstr ""
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:360
+msgid "Import photos"
+msgstr ""
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:362
+msgid "Import media"
+msgstr ""
+
+#. Open button
+#: ../panels/devices/src/mpd-storage-device-tile.c:653
+#: ../penge/penge-calendar-pane.c:496 ../penge/penge-calendar-pane.c:539
+msgid "Open"
+msgstr ""
+
+#. Eject button
+#: ../panels/devices/src/mpd-storage-device-tile.c:659
+msgid "Eject"
+msgstr ""
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:863
+#, c-format
+msgid ""
+"<span font-weight='bold'>%s</span> using <span color='%s'>%d%% of %s</span>"
+msgstr ""
+
+#: ../panels/devices/src/mpd-storage-device-tile.c:871
+#, c-format
+msgid "<span font-weight='bold'>%s</span>"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:113
+msgid "Turned up to 11"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:115
+msgid "Very loud"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:117
+msgid "Loud"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:119
+msgid "Fairly loud"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:121
+msgid "Middle of the road"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:123
+msgid "Fairly quiet"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:125
+msgid "Quiet"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:127
+msgid "Very quiet"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:129
+msgid "Silent"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:355
+msgid "Computer volume"
+msgstr ""
+
+#: ../panels/devices/src/mpd-volume-tile.c:372
+msgid "Mute"
+msgstr ""
+
+#: ../panels/myzone/data/dawati-panel-myzone.desktop.in.in.h:1
+msgid "Myzone panel"
+msgstr ""
+
+#: ../panels/myzone/data/myzone.desktop.in.in.h:1
+msgid "Change the Myzone background and content"
+msgstr ""
+
+#: ../panels/myzone/data/myzone.desktop.in.in.h:2
+#: ../panels/myzone/capplet/myzone-cc-panel.c:169
+msgid "Myzone"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:1
+msgid "<b>Change what is shown in your Myzone</b>"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:2
+msgid "<b>Myzone Wallpaper</b>"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:3
+msgid "Calendar and tasks:"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:4
+msgid "Change My Web Accounts"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:5
+msgid "Choose your wallpaper"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:6
+msgid "Clear recent documents"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:7
+msgid "Email alerts:"
+msgstr ""
+
+#: ../panels/myzone/data/capplet.ui.h:8
+msgid "Reset to default"
+msgstr ""
+
+#: ../panels/myzone/capplet/gconf-bridge.c:1220
+#, c-format
+msgid "GConf error: %s"
+msgstr ""
+
+#: ../panels/myzone/capplet/gconf-bridge.c:1225
+msgid "All further errors shown only on terminal."
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:47
+msgid "Show as much web service content as possible"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:49
+msgid "Show mostly web service content"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:51
+msgid "Show half and half"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:53
+msgid "Show mostly recent files"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:55
+msgid "Show as many recent files as possible"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:77
+msgid ""
+"Do you want to clear your recent documents? This will remove the local "
+"content from your myzone"
+msgstr ""
+
+#: ../panels/myzone/capplet/myzone-cc-panel.c:343
+msgid "Images"
+msgstr ""
+
+#: ../panels/networks/data/carrick.desktop.in.in.h:1
+msgid "Network settings"
+msgstr ""
+
+#: ../panels/networks/data/carrick.desktop.in.in.h:2
+#: ../panels/networks/src/carrick.c:364
+msgid "network"
+msgstr ""
+
+#. TRANSLATORS: Tooltips for the toolbar icon
+#. * The possible placeholder is service name (such as
+#. * a wireless network name)
+#: ../panels/networks/src/carrick.c:52
+msgid "networks - not connected"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:58
+msgid "networks - connecting"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:64
+msgid "networks - wired"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:66
+#, c-format
+msgid "networks - %s - wifi"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:69
+#, c-format
+msgid "networks - %s - wimax"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:72
+#, c-format
+msgid "networks - %s - 3G"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:75
+#, c-format
+msgid "networks - %s - bluetooth"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:78
+#, c-format
+msgid "networks - %s - VPN"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:81 ../panels/networks/src/carrick.c:93
+msgid "networks"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:88
+msgid "networks - error"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:309
+msgid "Run in standalone mode"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:311
+msgid "Embed in another window (overrides --standalone)"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:322
+msgid "Carrick connectivity applet"
+msgstr ""
+
+#: ../panels/networks/src/carrick.c:323
+msgid "- Dawati connectivity applet"
+msgstr ""
+
+#: ../panels/people/src/dawati-panel-people.c:88
+#: ../panels/people/src/mnb-people-panel.c:513
+#: ../panels/people/data/dawati-panel-people.desktop.in.in.h:2
+msgid "people"
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:56
+msgid ""
+"When you have an IM service configured (like Messenger), this is where you "
+"chat to people."
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:191
+#: ../panels/people/src/mnb-people-panel.c:451
+#, c-format
+msgid "Open %s"
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:233
+msgid "This is the People panel."
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:320
+msgid "Sorry, we can't find any people. It looks like they are all offline."
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:365
+msgid "To see your IM contacts, you need to go online."
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:495
+#, c-format
+msgid "people - you are chatting with %d people"
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:502
+msgid "people - you are chatting with someone"
+msgstr ""
+
+#. Populate header
+#: ../panels/people/src/mnb-people-panel.c:710
+#: ../panels/people/src/mnb-people-panel.c:964
+msgid "People"
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:774
+#: ../panels/people/src/mnb-people-panel.c:1162
+msgid "You are chatting with:"
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:981
+msgid "Me and my people"
+msgstr ""
+
+#: ../panels/people/src/mnb-people-panel.c:1019
+msgid "Me"
+msgstr ""
+
+#. Side table
+#: ../panels/people/src/mnb-people-panel.c:1119
+msgid "My conversations"
+msgstr ""
+
+#: ../panels/people/data/dawati-panel-people.desktop.in.in.h:1
+msgid "People panel"
+msgstr ""
+
+#: ../panels/power-icon/src/dawati-power-icon.c:46
+msgid "Dawati Power Icon"
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-power-icon.c:77
+msgid "Running low on battery"
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-power-icon.c:78
+msgid ""
+"I've noticed that your battery is running a bit low. If you can, it would be "
+"a good idea to plug in and top up."
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-power-icon.c:81
+msgid "Getting close to empty"
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-power-icon.c:82
+msgid ""
+"You're running quite low on battery. It'd be a good idea to save all your "
+"work and plug in as soon as you can."
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-power-icon.c:86
+msgid "Danger!"
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-power-icon.c:87
+msgid ""
+"Sorry, your computer is about to run out of battery. I'm going to have to go "
+"to sleep now. Please save your work and hope to see you again soon."
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-power-icon.c:500
+msgid "battery"
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-shutdown-notification.c:98
+#, c-format
+msgid "If you don't decide, I'll turn off in %d second"
+msgid_plural "If you don't decide, I'll turn off in %d seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../panels/power-icon/src/mpd-shutdown-notification.c:130
+msgid "Turn off"
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-shutdown-notification.c:184
+msgid "Would you like to turn off now?"
+msgstr ""
+
+#: ../panels/power-icon/src/mpd-shutdown-notification.c:185
+msgid "If you don't decide, I'll turn off in 30 seconds."
+msgstr ""
+
+#: ../panels/status/src/dawati-panel-status.c:95
+msgid "Status"
+msgstr ""
+
+#: ../panels/status/src/dawati-panel-status.c:153
+#: ../panels/status/data/dawati-panel-status.desktop.in.in.h:2
+msgid "status"
+msgstr ""
+
+#. vim:set ts=8 expandtab
+#: ../panels/status/data/dawati-panel-status.desktop.in.in.h:1
+msgid "Status panel"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:92
+msgid ""
+"Unable to update status. The service may be unavailable or your password "
+"could be wrong."
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:96
+msgid "Unable to update status: You're not online."
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:445
+msgid "We were unable to guess your location"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:453
+#, c-format
+msgid "We think your location is: %s (%f, %f)"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:459
+#, c-format
+msgid "Your location is currently shared as: %s (%f, %f)"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:469
+#, c-format
+msgid "We think your location is: %f %f"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:473
+#, c-format
+msgid "Your location is currently shared as: %f %f"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:483
+msgid "Your location isn't currently shared"
+msgstr ""
+
+#. Actor creation
+#: ../panels/status/src/mps-feed-pane.c:586
+msgid "Update"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:591
+msgid "What's happening?"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-pane.c:641
+msgid "Change"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-switcher.c:35
+msgid ""
+"When you have a web account configured, you will be able to view your feeds "
+"and manage your status here."
+msgstr ""
+
+#: ../panels/status/src/mps-feed-switcher.c:509
+#: ../panels/status/src/mps-feed-switcher.c:554
+msgid "Add new web account"
+msgstr ""
+
+#: ../panels/status/src/mps-feed-switcher.c:539
+msgid "This is the Status panel."
+msgstr ""
+
+#: ../panels/status/src/mps-geotag-pane.c:232
+msgid "Your location"
+msgstr ""
+
+#: ../panels/status/src/mps-geotag-pane.c:573
+msgid "Where are you?"
+msgstr ""
+
+#: ../panels/status/src/mps-geotag-pane.c:575
+msgid "Find me"
+msgstr ""
+
+#: ../panels/status/src/mps-geotag-pane.c:582
+msgid "Use location"
+msgstr ""
+
+#: ../panels/status/src/mps-geotag-pane.c:583
+msgid "Don't use location"
+msgstr ""
+
+#. When the tweet has a location associated with it then this string will
+#. * be <human readable time> from <human readable place name>
+#. *
+#. * e.g. A couple of hours ago from Aldgate, London
+#.
+#: ../panels/status/src/mps-tweet-card.c:491
+#, c-format
+msgid "%s from %s"
+msgstr ""
+
+#. Translators: This string ends up in the autocomplete list and
+#. is used for searching. '%%s' is the string that the user
+#. typed in to the entry box and '%s' is the name of the search
+#. engine provider (such as 'Yahoo!'). It is safe to swap the
+#. order of these markers if necessary in your language
+#: ../panels/web/common/mwb-ac-list.cc:1287
+#, c-format
+msgid "Search for %%s on %s"
+msgstr ""
+
+#: ../panels/web/common/mwb-ac-list.cc:1310
+#, c-format
+msgid "Go to %s"
+msgstr ""
+
+#: ../panels/web/common/mwb-radical-bar.cc:503
+msgid ""
+"Press enter to\n"
+"visit site"
+msgstr ""
+
+#: ../panels/web/common/mwb-radical-bar.cc:506
+msgid ""
+"Press down to\n"
+"explore list"
+msgstr ""
+
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:882
+msgid ""
+"As you visit web pages, your favorites will appear here and on the New tab "
+"page in the browser."
+msgstr ""
+
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1032
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1171
+msgid "New tab"
+msgstr ""
+
+#. Construct entry table widgets
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1572
+msgid "Your pages"
+msgstr ""
+
+#. Construct title for tab preview section
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1606
+msgid "Tabs"
+msgstr ""
+
+#. Construct title for favorite pages section
+#: ../panels/web/netpanel/dawati-netbook-netpanel.cc:1611
+msgid "Favorite pages"
+msgstr ""
+
+#: ../panels/web/netpanel/dawati-panel-web.cc:128
+#: ../panels/web/netpanel/dawati-panel-internet.desktop.in.in.h:2
+msgid "internet"
+msgstr ""
+
+#: ../panels/web/netpanel/dawati-panel-web.cc:150
+#: ../panels/web/netpanel/dawati-panel-web.cc:209
+msgid "Internet"
+msgstr ""
+
+#: ../panels/web/netpanel/dawati-panel-internet.desktop.in.in.h:1
+msgid "Internet panel"
+msgstr ""
+
+#: ../panels/zones/data/dawati-panel-zones.desktop.in.in.h:1
+msgid "Zones panel"
+msgstr ""
+
+#: ../panels/zones/data/dawati-panel-zones.desktop.in.in.h:2
+#: ../panels/zones/src/main.c:25
+msgid "zones"
+msgstr ""
+
+#: ../panels/zones/src/main.c:494
+msgid "Zones"
+msgstr ""
+
+#: ../panels/zones/src/sw-zone.c:186
+msgid "New Zone"
+msgstr ""
+
+#: ../panels/zones/src/sw-zone.c:192 ../panels/zones/src/sw-zone.c:1276
+#, c-format
+msgid "Zone %d"
+msgstr ""
+
+#: ../panels/zones/src/sw-zone.c:1075
+msgid "No applications on this zone"
+msgstr ""
+
+#: ../panels/zones/src/sw-zone.c:1238
+msgid ""
+"Applications you’re using will show up here. You will be able to switch and "
+"organize them to your heart's content."
+msgstr ""
+
+#: ../penge/penge-events-pane.c:71
+msgid "Create an appointment"
+msgstr ""
+
+#: ../penge/penge-events-pane.c:402
+msgid "No calendar entries this week"
+msgstr ""
+
+#: ../penge/penge-recent-file-tile.c:217
+msgid "Web page"
+msgstr ""
+
+#: ../penge/penge-tasks-pane.c:52
+msgid "Create a new task"
+msgstr ""
+
+#: ../penge/penge-tasks-pane.c:430
+msgid "Nothing to do today"
+msgstr ""
+
+#: ../penge/penge-task-tile.c:319
+#, c-format
+msgid "Due %x"
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:28
+msgid ""
+"When you’ve set up your web accounts and used some files, they will appear "
+"here on myzone for easy access whenever you want. "
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:34
+msgid "Play intro video"
+msgstr ""
+
+#: ../penge/penge-welcome-tile.c:87
+msgid "Welcome to Dawati"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:192
+msgid "No unread messages"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:194
+msgid "Unread message"
+msgstr ""
+
+#: ../penge/penge-email-pane.c:196
+msgid "Unread messages"
+msgstr ""
+
+#: ../src/dawati-netbook.c:846
+msgid "Dawati Netbook Effects"
+msgstr ""
+
+#: ../src/dawati-netbook.c:850
+msgid "Effects for Dawati Netbooks"
+msgstr ""
+
+#: ../src/mnb-toolbar.c:985
+#, c-format
+msgid "Sorry, %s is broken"
+msgstr ""
+
+#: ../src/notifications/ntf-notification.c:292
+msgid "Dismiss"
+msgstr ""
+
+#: ../src/notifications/ntf-tray.c:311
+msgid "Dismiss All"
+msgstr ""
+
+#: ../src/notifications/ntf-tray.c:516 ../src/notifications/ntf-tray.c:592
+#, c-format
+msgid "%i pending messages"
+msgstr ""
+
+#: ../src/notifications/ntf-tray.c:570
+msgid "1 pending message"
+msgstr ""
+
+#: ../src/notifications/ntf-wm.c:112
+msgid "Unknown window"
+msgstr ""
+
+#: ../src/notifications/ntf-wm.c:116
+msgid "is asking for your attention."
+msgstr ""
+
+#: ../src/notifications/ntf-wm.c:124
+msgid "Activate"
+msgstr ""
+
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:320
+#, c-format
+msgid "Starting %s"
+msgstr ""
+
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:322
+#, c-format
+msgid "Opening %s"
+msgstr ""
+
+#: ../libdawati-panel/dawati-panel/gdkapplaunchcontext-x11.c:325
+#, c-format
+msgid "Opening %d Item"
+msgid_plural "Opening %d Items"
+msgstr[0] ""
+msgstr[1] ""

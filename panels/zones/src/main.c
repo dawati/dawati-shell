@@ -598,9 +598,9 @@ main (int argc, char **argv)
 
 
   setlocale (LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE_PANEL_ZONES, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE_PANEL_ZONES, "UTF-8");
-  textdomain (GETTEXT_PACKAGE_PANEL_ZONES);
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 
 
   data = g_new0 (ZonePanelData, 1);

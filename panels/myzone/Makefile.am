@@ -1,8 +1,7 @@
 SUBDIRS = \
 	src \
 	capplet \
-	data \
-	po
+	data
 
 EXTRA_DIST = \
 	AUTHORS \

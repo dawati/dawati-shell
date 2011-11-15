@@ -51,7 +51,6 @@ xmldocs.make
 /libdawati-panel/tests/test-panel-clutter
 /libdawati-panel/tests/test-panel-gtk
 /libdawati-panel/tests/*.css
-!/panels/*/po/Makefile.in.in
 /src/marshal.[ch]
 /src/mnb-panel-dbus-bindings.h
 /src/mnb-panel-dbus-glue.h
