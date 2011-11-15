@@ -24,6 +24,6 @@ if HAVE_CAPPLET
 SUBDIRS += capplet
 endif
 
-EXTRA_DIST = config.rpath
+EXTRA_DIST = autogen.sh config.rpath
 
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update po/stamp-it po/.intltool-merge-cache
