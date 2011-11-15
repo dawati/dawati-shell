@@ -205,7 +205,7 @@ SHAVE_INIT([build/autotools], [enable])
 ###########################
 
 # Default list of panels to compile
-WITH_PANELS="applications,datetime,myzone,networks,people,status,web"
+WITH_PANELS="applications,datetime,devices,myzone,networks,people,status,web,zones"
 
 # Provide a --with-panels/--without-panels configure option
 AS_DAWATI_ARG_WITH_PANELS
