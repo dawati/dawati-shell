@@ -53,6 +53,7 @@ libpenge_la_SOURCES = \
 	$(NULL)
 
 libpenge_la_LIBADD = \
+	$(PENGE_LIBS) \
 	$(top_builddir)/libdawati-panel/dawati-panel/libdawati-panel.la \
 	$(top_builddir)/mailme/libmailme.la \
 	$(NULL)
