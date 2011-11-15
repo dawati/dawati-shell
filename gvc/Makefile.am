@@ -6,6 +6,10 @@ noinst_LTLIBRARIES = \
 	libgvc.la \
 	$(NULL)
 
+libgvc_la_LIBADD = \
+	$(GVC_LIBS) \
+	$(NULL)
+
 libgvc_la_SOURCES = \
 	gvc-channel-map.c \
 	gvc-channel-map.c \
