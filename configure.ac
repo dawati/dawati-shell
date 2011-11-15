@@ -243,7 +243,9 @@ AS_DAWATI_PANEL(devices, [gdk-x11-2.0
                           libnotify])
 
 # Myzone
-AS_DAWATI_PANEL(myzone, [])
+AS_DAWATI_PANEL(myzone, [gconf-2.0
+                         gdk-x11-2.0
+                         libgnome-control-center-extension])
 
 # Networks
 AS_DAWATI_PANEL(networks, [gtk+-2.0 >= 2.12
