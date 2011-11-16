@@ -261,13 +261,14 @@ _make_empty_people_tile (MnbPeoplePanel *people_panel)
   clutter_actor_set_width (label, 500);
 
   mx_bin_set_child (MX_BIN (frame), label);
+
   mx_table_add_actor_with_properties (MX_TABLE (tile),
                                       frame,
                                       1, 0,
                                       "x-expand", TRUE,
-                                      "y-expand", FALSE,
+                                      "y-expand", TRUE,
                                       "x-fill", TRUE,
-                                      "y-fill", FALSE,
+                                      "y-fill", TRUE,
                                       "x-align", MX_ALIGN_START,
                                       NULL);
   mx_bin_set_alignment (MX_BIN (frame), MX_ALIGN_START, MX_ALIGN_MIDDLE);
