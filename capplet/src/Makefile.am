@@ -30,7 +30,7 @@ libmtp_common_la_SOURCES = \
 		mtp-space.c			\
 		mtp-bin.c
 
-bin_PROGRAMS=dawati-toolbar-properties
+bin_PROGRAMS = dawati-toolbar-properties
 
 dawati_toolbar_properties_CFLAGS  = -I.. $(CAPPLET_CFLAGS) 	\
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 			\
@@ -55,6 +55,6 @@ libsystray_la_SOURCES = \
 	syst-module.c \
 	syst-cc-panel.h \
 	syst-cc-panel.c
-libsystray_la_CPPFLAGS = $(AM_CPPFLAGS) $(CC_CFLAGS) $(SYSTRAY_CFLAGS)
-libsystray_la_LIBADD = $(CC_LIBS) $(SYSTRAY_LIBS)
+libsystray_la_CPPFLAGS = $(AM_CPPFLAGS) $(CAPPLET_CFLAGS)
+libsystray_la_LIBADD = $(CAPPLET_LIBS)
 libsystray_la_LDFLAGS = $(AM_LDFLAGS) -module -avoid-version

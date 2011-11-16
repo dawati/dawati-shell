@@ -152,9 +152,13 @@ AC_ARG_ENABLE([capplet],
               [enable_capplet=yes])
 
 if test "$enable_capplet" != "no"; then
-  PKG_CHECK_MODULES(CAPPLET, mx-1.0 gconf-2.0)
-  PKG_CHECK_MODULES(SYSTRAY, mx-gtk-1.0)
-  PKG_CHECK_MODULES(CC, gmodule-export-2.0 libgnome-control-center-extension clutter-gtk-0.12)
+  PKG_CHECK_MODULES(CAPPLET, [gio-unix-2.0
+                              gconf-2.0
+                              clutter-gtk-0.12
+                              mx-1.0
+                              mx-gtk-1.0
+                              gmodule-export-2.0
+                              libgnome-control-center-extension])
   CC_DIR=$($PKG_CONFIG libgnome-control-center-extension --variable=extensiondir)
 fi
 AC_SUBST(CC_DIR)

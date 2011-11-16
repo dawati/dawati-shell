@@ -1,7 +1,10 @@
 SUBDIRS = \
 	src \
-	capplet \
 	data
+
+if HAVE_CAPPLET
+SUBDIRS += capplet
+endif
 
 EXTRA_DIST = \
 	AUTHORS \
