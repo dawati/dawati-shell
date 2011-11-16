@@ -5,16 +5,16 @@ desktop_out_files = carrick.desktop carrick-standalone.desktop
 
 @INTLTOOL_DESKTOP_RULE@
 
-if ENABLE_DAWATI_DESKTOP_FILE
 paneldir = $(DAWATI_PANELS_DIR)
 panel_DATA = carrick.desktop
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = carrick.desktop
-endif
 
+if ENABLE_DAWATI_DESKTOP_FILE
 desktopdir = $(datadir)/applications
 desktop_DATA = carrick-standalone.desktop
+endif
 
 EXTRA_DIST = $(panel_in_files)
 CLEANFILES = $(panel_DATA)

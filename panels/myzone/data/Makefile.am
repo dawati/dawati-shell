@@ -5,10 +5,8 @@ SUBDIRS = theme
 desktopfiles_in_files = dawati-panel-myzone.desktop.in
 desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 
-if ENABLE_DAWATI_DESKTOP_FILE
 panelfilesdir = $(DAWATI_PANELS_DIR)
 panelfiles_DATA = $(desktopfiles_files)
-endif
 
 settingsfiles_in_files = myzone.desktop.in
 settingsfiles_files = $(settingsfiles_in_files:.desktop.in=.desktop)
