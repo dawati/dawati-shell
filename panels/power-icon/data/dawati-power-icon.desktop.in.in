@@ -2,8 +2,8 @@
 Version=1.0
 Type=Application
 Encoding=UTF-8
-TryExec=@LIBEXECDIR@/dawati-power-icon
-Exec=@LIBEXECDIR@/dawati-power-icon
+TryExec=@libexecdir@/dawati-power-icon
+Exec=@libexecdir@/dawati-power-icon
 Icon=dawati-power-icon
 Terminal=false
 Categories=

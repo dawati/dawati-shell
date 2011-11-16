@@ -2,8 +2,8 @@
 Version=1.0
 Encoding=UTF-8
 Type=Application
-Exec=@LIBEXECDIR@/dawati-panel-devices
-TryExec=@LIBEXECDIR@/dawati-panel-devices
+Exec=@libexecdir@/dawati-panel-devices
+TryExec=@libexecdir@/dawati-panel-devices
 _Name=devices
 Icon=dawati-panel-devices
 _Comment=Devices panel

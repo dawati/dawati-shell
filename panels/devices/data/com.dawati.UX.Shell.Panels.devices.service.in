@@ -1,4 +1,4 @@
 [D-BUS Service]
 Name=com.dawati.UX.Shell.Panels.devices
-Exec=@LIBEXECDIR@/dawati-panel-devices
+Exec=@libexecdir@/dawati-panel-devices
 
