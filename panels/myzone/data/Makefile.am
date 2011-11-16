@@ -13,9 +13,6 @@ settingsfiles_files = $(settingsfiles_in_files:.desktop.in=.desktop)
 settingsdir = $(datadir)/applications
 settings_DATA = $(settingsfiles_files)
 
-%.desktop.in: %.desktop.in.in Makefile
-	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
-
 # would prefer to just symlink this, but could make that pass distcheck
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = $(desktopfiles_files)
@@ -35,6 +32,7 @@ if GCONF_SCHEMAS_INSTALL
 	fi
 endif
 
-EXTRA_DIST = dawati-panel-myzone.desktop.in.in myzone.desktop.in.in dawati-panel-myzone.schemas.in capplet.ui
-CLEANFILES = dawati-panel-myzone.desktop dawati-panel-myzone.desktop.in \
-	     myzone.desktop myzone.desktop.in
+EXTRA_DIST = dawati-panel-myzone.desktop.in myzone.desktop.in dawati-panel-myzone.schemas.in capplet.ui
+CLEANFILES = dawati-panel-myzone.desktop myzone.desktop
+
+include $(top_srcdir)/build/autotools/Makefile.am.panels

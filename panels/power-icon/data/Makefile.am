@@ -1,7 +1,7 @@
 SUBDIRS = theme
 
-desktop_in_files = dawati-power-icon.desktop.in.in
-desktop_data = $(desktop_in_files:.desktop.in.in=.desktop)
+desktop_in_files = dawati-power-icon.desktop.in
+desktop_data = $(desktop_in_files:.desktop.in=.desktop)
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = $(desktop_data)
@@ -25,5 +25,6 @@ DISTCLEANFILES = \
 
 @INTLTOOL_DESKTOP_RULE@
 
+include $(top_srcdir)/build/autotools/Makefile.am.panels
 
 -include $(top_srcdir)/git.mk

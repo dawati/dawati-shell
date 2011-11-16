@@ -8,8 +8,7 @@ desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfilesdir = $(DAWATI_PANELS_DIR)
 desktopfiles_DATA = $(desktopfiles_files)
 
-%.desktop.in: %.desktop.in.in Makefile
-	$(QUIET_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
-
-EXTRA_DIST = dawati-panel-status.desktop.in.in
+EXTRA_DIST = dawati-panel-status.desktop.in
 CLEANFILES = dawati-panel-status.desktop dawati-panel-status.desktop.in
+
+include $(top_srcdir)/build/autotools/Makefile.am.panels

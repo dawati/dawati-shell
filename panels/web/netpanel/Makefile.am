@@ -38,12 +38,8 @@ autostart_DATA = dawati-panel-internet.desktop
 desktopfiles_in_files = dawati-panel-internet.desktop.in
 desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 
-%.desktop.in: %.desktop.in.in Makefile
-	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
-
 EXTRA_DIST = $(service_in_files) $(autostart_DATA)
 
 DISTCLEANFILES = com.dawati.UX.Shell.Panels.internet.service
 
-com.dawati.UX.Shell.Panels.internet.service: com.dawati.UX.Shell.Panels.internet.service.in
-	sed -e "s|\@libexecdir\@|$(libexecdir)|" $< > $@
+include $(top_srcdir)/build/autotools/Makefile.am.panels

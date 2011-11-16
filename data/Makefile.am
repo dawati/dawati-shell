@@ -125,3 +125,5 @@ endif
 
 CLEANFILES = $(schema_DATA)
 EXTRA_DIST = $(schema_in_files)
+
+include $(top_srcdir)/build/autotools/Makefile.am.panels

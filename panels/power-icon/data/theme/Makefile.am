@@ -16,9 +16,10 @@ EXTRA_DIST = \
   power-icon.css.in \
   $(NULL)
 
-DISTCLEANFILES = \
+CLEANFILES = \
   power-icon.css \
   $(NULL)
 
+include $(top_srcdir)/build/autotools/Makefile.am.panels
 
 -include $(top_srcdir)/git.mk

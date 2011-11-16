@@ -1,6 +1,5 @@
 SUBDIRS = icons theme
 
-autostart_src_files = dawati-panel-devices.desktop.in.in
 autostart_in_files = dawati-panel-devices.desktop.in
 autostartdir = $(DAWATI_PANELS_DIR)
 autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
@@ -14,13 +13,12 @@ servicedir = $(datadir)/dbus-1/services
 service_DATA = com.dawati.UX.Shell.Panels.devices.service
 
 EXTRA_DIST = \
-  $(autostart_src_files) \
+  $(autostart_in_files) \
   $(schema_in_files) \
   $(service_in_files) \
   $(NULL)
 
 DISTCLEANFILES = \
-  $(autostart_in_files) \
   $(autostart_DATA) \
   $(schema_DATA) \
   $(service_DATA) \
@@ -34,5 +32,7 @@ if GCONF_SCHEMAS_INSTALL
 		GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(schema_DATA) 2>&1 > /dev/null; \
 	fi
 endif
+
+include $(top_srcdir)/build/autotools/Makefile.am.panels
 
 -include $(top_srcdir)/git.mk

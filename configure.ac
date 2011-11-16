@@ -508,9 +508,7 @@ panels/datetime/data/theme/Makefile
 
 panels/devices/Makefile
 panels/devices/data/Makefile
-panels/devices/data/dawati-panel-devices.desktop.in
 panels/devices/data/dawati-panel-devices.schemas
-panels/devices/data/com.dawati.UX.Shell.Panels.devices.service
 panels/devices/data/icons/Makefile
 panels/devices/data/theme/Makefile
 panels/devices/src/Makefile
@@ -528,8 +526,6 @@ panels/networks/src/Makefile
 panels/networks/tests/Makefile
 panels/networks/data/icons/Makefile
 panels/networks/data/Makefile
-panels/networks/data/carrick.desktop.in
-panels/networks/data/carrick-standalone.desktop.in
 panels/networks/data/theme/Makefile
 
 panels/people/Makefile
@@ -539,10 +535,7 @@ panels/people/src/Makefile
 
 panels/power-icon/Makefile
 panels/power-icon/data/Makefile
-panels/power-icon/data/com.dawati.UX.Shell.Panels.power.service
-panels/power-icon/data/dawati-power-icon.desktop.in
 panels/power-icon/data/theme/Makefile
-panels/power-icon/data/theme/power-icon.css
 panels/power-icon/src/Makefile
 panels/power-icon/tests/Makefile
 

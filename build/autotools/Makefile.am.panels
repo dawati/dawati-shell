@@ -1,0 +1,20 @@
+# TODO: We should find a better way to do that ...
+# Inspecting all the environnement variable might be a way.
+
+%.desktop: %.desktop.in Makefile
+	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< | \
+		   sed -e "s|\@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|" | \
+		   sed -e "s|\@PANEL_POWER_ICON_THEMEDIR\@|$(PANEL_POWER_ICON_THEMEDIR)|" \
+		   > $@
+
+%.service: %.service.in Makefile
+	$(AM_V_GEN)sed -e "s|\@libexecdir\@|$(libexecdir)|" $< | \
+		   sed -e "s|\@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|" | \
+		   sed -e "s|\@PANEL_POWER_ICON_THEMEDIR\@|$(PANEL_POWER_ICON_THEMEDIR)|" \
+		   > $@
+
+%.css: %.css.in Makefile
+	$(AM_V_GEN)sed -e "s|\@pkgdatadir\@|$(pkgdatadir)|" $< | \
+		   sed -e "s|\@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|" | \
+		   sed -e "s|\@PANEL_POWER_ICON_THEMEDIR\@|$(PANEL_POWER_ICON_THEMEDIR)|" \
+		   > $@
