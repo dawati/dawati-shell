@@ -5,7 +5,7 @@ AM_CFLAGS = \
 	$(PENGE_CFLAGS) \
 	-I$(top_srdir)/penge \
 	\
-	-DMYZONETHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)/myzone\" \
+	-DMYZONETHEMEDIR=\"$(PANEL_MYZONE_THEMEDIR)\" \
 	-Wall -g3 -O0 -ggdb \
 	$(NULL)
 

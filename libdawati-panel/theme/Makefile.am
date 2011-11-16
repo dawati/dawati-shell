@@ -1,6 +1,6 @@
 # Use a separate mx.cache for the dawati-panel library generic assets so we
 # don't need to load in all mutter-dawati assets
-themedir = $(MUTTER_DAWATI_THEME_DIR)/dawati-panel
+themedir = $(DAWATI_THEME_DIR)/dawati-panel
 dist_theme_DATA = \
 	theme.css \
 	content-pane-background.png \

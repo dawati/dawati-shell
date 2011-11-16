@@ -8,9 +8,6 @@ carrick_connection_panel_CFLAGS = \
 	$(LIBMPL_CFLAGS) \
 	$(PANEL_NETWORKS_CFLAGS) \
 	-I$(srcdir)/../ \
-	-DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)/networks\" \
-	-DLOCALEDIR=\""$(localedir)"\" \
-	-DPKG_DATA_DIR=\"$(pkgdatadir)\" \
 	-Wall
 
 carrick_connection_panel_LDADD = \

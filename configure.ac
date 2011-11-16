@@ -78,11 +78,11 @@ PKG_CHECK_MODULES(LIBMPL,
                   gtk+-2.0
                   gio-unix-2.0)
 
-MUTTER_DAWATI_THEME_DIR="${datadir}/${PACKAGE}/theme"
-AC_SUBST([MUTTER_DAWATI_THEME_DIR])
+DAWATI_THEME_DIR="${datadir}/${PACKAGE}/theme"
+AC_SUBST([DAWATI_THEME_DIR])
 
-MUTTER_DAWATI_PANELS_DIR="${datadir}/${PACKAGE}/panels"
-AC_SUBST([MUTTER_DAWATI_PANELS_DIR])
+DAWATI_PANELS_DIR="${datadir}/${PACKAGE}/panels"
+AC_SUBST([DAWATI_PANELS_DIR])
 
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 if test x"$GCONFTOOL" = xno; then

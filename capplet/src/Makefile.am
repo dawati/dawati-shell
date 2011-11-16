@@ -4,8 +4,8 @@ AM_CPPFLAGS = 						\
 	-DPKGLIBDIR=\"$(pkglibdir)\" 			\
 	-DLOCALEDIR=\"$(localedir)\" 			\
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 		\
-	-DPANELSDIR=\"$(MUTTER_DAWATI_PANELS_DIR)\" 	\
-	-DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)\"	\
+	-DPANELSDIR=\"$(DAWATI_PANELS_DIR)\" 	\
+	-DTHEMEDIR=\"$(DAWATI_THEME_DIR)\"	\
 	-Wall -Wmissing-declarations
 
 AM_LDFLAGS = \
@@ -34,8 +34,8 @@ bin_PROGRAMS = dawati-toolbar-properties
 
 dawati_toolbar_properties_CFLAGS  = -I.. $(CAPPLET_CFLAGS) 	\
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" 			\
-	-DPANELSDIR=\"$(MUTTER_DAWATI_PANELS_DIR)\" 		\
-	-DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)\"
+	-DPANELSDIR=\"$(DAWATI_PANELS_DIR)\" 		\
+	-DTHEMEDIR=\"$(DAWATI_THEME_DIR)\"
 
 dawati_toolbar_properties_LDADD   = libmtp-common.la
 dawati_toolbar_properties_SOURCES = dawati-toolbar-properties.c

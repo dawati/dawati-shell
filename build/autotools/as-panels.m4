@@ -81,17 +81,14 @@ AC_DEFUN([AS_DAWATI_PANEL],
   dnl datadir
   AC_SUBST(PNAME_DEF[_LIBS],
            [$PNAME_DEF[_LIBS]' $(top_builddir)/libdawati-panel/dawati-panel/libdawati-panel.la'])
-  AC_SUBST(PNAME_DEF[_THEMEDIR],'$(MUTTER_DAWATI_THEME_DIR)/$1')
+  AC_SUBST(PNAME_DEF[_THEMEDIR],'$(DAWATI_THEME_DIR)/$1')
   AC_SUBST(PNAME_DEF[_DATADIR],'$(pkgdatadir)/$1')
 
   dnl additionnal cflags/libs (themedir, localedir, datadir, pkgdatadir)
   AC_SUBST(PNAME_DEF[_CFLAGS],
-           [$PNAME_DEF[_CFLAGS]' $(LIBMPL_CFLAGS) -I$(top_builddir) -I$(top_srcdir)/libdawati-panel -DDATADIR=\"$(datadir)\" -DPKGDATADIR=\"$(pkgdatadir)/$1\" -DLOCALEDIR=\"$(localedir)\" -DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)/$1\"'])
+           [$PNAME_DEF[_CFLAGS]' $(LIBMPL_CFLAGS) -I$(top_builddir) -I$(top_srcdir)/libdawati-panel -DDATADIR=\"$(datadir)\" -DPKGDATADIR=\"$(pkgdatadir)/$1\" -DLOCALEDIR=\"$(localedir)\" -DTHEMEDIR=\"$(DAWATI_THEME_DIR)/$1\"'])
   AC_SUBST(PNAME_DEF[_LIBS],
            [$PNAME_DEF[_LIBS]' $(LIBMPL_LIBS) $(top_builddir)/libdawati-panel/dawati-panel/libdawati-panel.la'])
-
-  dnl theming definitions
-  dnl AC_DEFINE([[THEMEDIR_]PNAME_DEF],THEMEDIR "[panel-]pname_def",[Theme directory for [panel-]pname_def])
 
   undefine([pname_def])
   undefine([PNAME_DEF])

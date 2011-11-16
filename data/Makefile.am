@@ -11,12 +11,12 @@ else
 install-data-local:
 endif
 
-themedir = $(MUTTER_DAWATI_THEME_DIR)
+themedir = $(DAWATI_THEME_DIR)
 dist_theme_DATA = \
 	theme/mutter-dawati.css \
 	theme/LICENSE
 
-theme_paneldir = $(MUTTER_DAWATI_THEME_DIR)/panel
+theme_paneldir = $(DAWATI_THEME_DIR)/panel
 dist_theme_panel_DATA = \
 	theme/panel/apps-coloured.png \
 	theme/panel/apps-normal.png \
@@ -58,7 +58,7 @@ dist_theme_panel_DATA = \
 	theme/panel/toolbar-button-hover.png \
 	theme/panel/toolbar-button-tray.png
 
-theme_genericdir = $(MUTTER_DAWATI_THEME_DIR)/generic
+theme_genericdir = $(DAWATI_THEME_DIR)/generic
 dist_theme_generic_DATA = \
 	theme/generic/checkbox.png	\
 	theme/generic/close-button.png	\
@@ -78,17 +78,17 @@ dist_theme_generic_DATA = \
 	theme/generic/vscroll-handle.png \
 	theme/generic/placeholder-bg.png
 
-theme_alttabdir = $(MUTTER_DAWATI_THEME_DIR)/alttab
+theme_alttabdir = $(DAWATI_THEME_DIR)/alttab
 dist_theme_alttab_DATA = \
 	theme/alttab/application-normal.png \
 	theme/alttab/application-active.png
 
-theme_dropdowndir = $(MUTTER_DAWATI_THEME_DIR)/drop-down
+theme_dropdowndir = $(DAWATI_THEME_DIR)/drop-down
 dist_theme_dropdown_DATA = \
 	theme/drop-down/panel_shadow.png	\
 	theme/drop-down/panel_stub_shadow.png
 
-theme_cappletdir = $(MUTTER_DAWATI_THEME_DIR)/capplet
+theme_cappletdir = $(DAWATI_THEME_DIR)/capplet
 dist_theme_capplet_DATA = \
 	theme/capplet/capplet-background.png	\
 	theme/capplet/close-icon.png		\
@@ -99,28 +99,28 @@ dist_theme_capplet_DATA = \
 	theme/capplet/toolbar-background.png	\
 	theme/capplet/button-background.png
 
-theme_notifiersdir = $(MUTTER_DAWATI_THEME_DIR)/notifiers
+theme_notifiersdir = $(DAWATI_THEME_DIR)/notifiers
 dist_theme_notifiers_DATA = \
 	theme/notifiers/notification-bg.png	\
 	theme/notifiers/fscreen-notif-hover.png \
 	theme/notifiers/fscreen-notif-normal.png
 
-theme_effectsdir = $(MUTTER_DAWATI_THEME_DIR)/effects
+theme_effectsdir = $(DAWATI_THEME_DIR)/effects
 dist_theme_effects_DATA = \
 	theme/effects/zone-switch-background.png \
 	theme/effects/bin-border-image.png
 
 # Manage mutter-dawati's texture cache.
 if ENABLE_CACHE
-texture_cache = $(DESTDIR)$(MUTTER_DAWATI_THEME_DIR)/mx.cache
+texture_cache = $(DESTDIR)$(DAWATI_THEME_DIR)/mx.cache
 CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)
 
 install-data-hook:
-	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_DAWATI_THEME_DIR)
+	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(DAWATI_THEME_DIR)
 
 uninstall-hook:
 	rm -f $(texture_cache)
-	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(MUTTER_DAWATI_THEME_DIR)
+	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(DAWATI_THEME_DIR)
 endif
 
 CLEANFILES = $(schema_DATA)

@@ -9,9 +9,9 @@ pkglibdir=$(MUTTER_PLUGIN_DIR)
 AM_CFLAGS = \
 	$(MUTTER_PLUGIN_CFLAGS) \
 	-DPLUGIN_LOCALEDIR=\"$(localedir)\" \
-	-DMX_CACHE=\"$(MUTTER_DAWATI_THEME_DIR)/mx.cache\" \
-	-DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)\" \
-	-DPANELSDIR=\"$(MUTTER_DAWATI_PANELS_DIR)\" \
+	-DMX_CACHE=\"$(DAWATI_THEME_DIR)/mx.cache\" \
+	-DTHEMEDIR=\"$(DAWATI_THEME_DIR)\" \
+	-DPANELSDIR=\"$(DAWATI_PANELS_DIR)\" \
 	-I$(top_srcdir)/libdawati-panel
 
 dbus_h = 	$(srcdir)/$(DBUS_GLUE) 			\

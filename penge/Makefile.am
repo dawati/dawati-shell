@@ -64,7 +64,7 @@ AM_CFLAGS = \
 	$(PENGE_CFLAGS) \
 	-I$(top_srcdir)/libdawati-panel \
 	\
-	-DTHEMEDIR=\"$(MUTTER_DAWATI_THEME_DIR)/myzone\" \
+	-DTHEMEDIR=\"$(PANEL_MYZONE_THEMEDIR)\" \
 	-DLOCALEDIR=\"$(localedir)\" \
 	$(NULL)
 
