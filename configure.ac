@@ -74,12 +74,20 @@ LIBS=${SAVE_LIBS}
 
 AM_GLIB_GNU_GETTEXT
 
+
+# Dependencies
+GDK_DEPS="gdk-x11-3.0"
+GTK_DEPS="gtk+-3.0"
+MX_DEPS="mx-1.0 >= 1.4.0"
+CLUTTER_GTK_DEPS="clutter-gtk-1.0"
+MX_GTK_DEPS="mx-gtk-1.0 >= 1.4.0"
+
 # Libdawati-panel
 PKG_CHECK_MODULES(LIBMPL,
+                  gio-unix-2.0
                   dbus-glib-1
-                  mx-1.0 >= 1.2.0
-                  gtk+-2.0
-                  gio-unix-2.0)
+                  $GTK_DEPS
+                  $MX_DEPS)
 
 DAWATI_THEME_DIR="${datadir}/${PACKAGE}/theme"
 AC_SUBST([DAWATI_THEME_DIR])
@@ -103,16 +111,16 @@ AC_ARG_ENABLE([mutter],
 
 if test "$enable_mutter" != "no"; then
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
-                  mutter-plugins >= mutter_version dnl
-                  libmutter >= mutter_version dnl
-                  mx-1.0 >= 0.5.0                     dnl
-                  libstartup-notification-1.0        dnl
-                  gtk+-2.0                           dnl
-                  dbus-glib-1                        dnl
-                  gconf-2.0
-                  gio-unix-2.0
-                  xrandr
-                  xscrnsaver)
+                  [gio-unix-2.0
+                   dbus-glib-1
+                   gconf-2.0
+                   mutter-plugins >= mutter_version
+                   libmutter >= mutter_version
+                   libstartup-notification-1.0
+                   $GTK_DEPS
+                   $MX_DEPS
+		   xrandr
+		   xscrnsaver])
 fi
 
 AM_CONDITIONAL([HAVE_MUTTER], [test "$enable_mutter" != "no"])
@@ -168,10 +176,10 @@ AC_ARG_ENABLE([capplet],
 if test "$enable_capplet" != "no"; then
   PKG_CHECK_MODULES(CAPPLET, [gio-unix-2.0
                               gconf-2.0
-                              clutter-gtk-0.12
-                              mx-1.0
-                              mx-gtk-1.0
                               gmodule-export-2.0
+                              $CLUTTER_GTK_DEPS
+                              $MX_DEPS
+                              $MX_GTK_DEPS
                               libgnome-control-center-extension])
   CC_DIR=$($PKG_CONFIG libgnome-control-center-extension --variable=extensiondir)
 fi
@@ -228,35 +236,33 @@ AS_DAWATI_ARG_WITH_PANELS
 
 # Applications
 AS_DAWATI_PANEL(applications, [clutter-x11-1.0
-                               gdk-x11-2.0
                                gio-unix-2.0
-                               gtk+-2.0
-                               libgnome-menu
                                gconf-2.0
-                               mx-1.0 >= 1.4.0])
+                               $GTK_DEPS
+                               $MX_DEPS
+                               libgnome-menu])
 
 # Bluetooth
 AS_DAWATI_PANEL(bluetooth, [])
 
 # Date & time
 AS_DAWATI_PANEL(datetime, [glib-2.0
-                           clutter-1.0
-                           mx-1.0
-                           gweather
                            gconf-2.0
+                           libxml-2.0
+                           $CLUTTER_DEPS
+                           $MX_DEPS
+                           gweather
                            libnotify
                            libcanberra
                            libjana-ecal
-                           geoclue
-                           libxml-2.0])
+                           geoclue])
 
 # Devices
-AS_DAWATI_PANEL(devices, [gdk-x11-2.0
-                          glib-2.0
+AS_DAWATI_PANEL(devices, [glib-2.0
                           gobject-2.0
                           devkit-power-gobject
                           gconf-2.0
-                          clutter-gtk-0.12
+                          $CLUTTER_GTK_DEPS
                           xrandr
                           xext
                           libpulse-mainloop-glib >= 0.9.15,
@@ -268,23 +274,23 @@ AS_DAWATI_PANEL(myzone, [gconf-2.0
                          libgnome-control-center-extension])
 
 # Networks
-AS_DAWATI_PANEL(networks, [gtk+-2.0 >= 2.12
+AS_DAWATI_PANEL(networks, [gconf-2.0
                            gthread-2.0
                            dbus-glib-1 >= 0.73
-                           mx-gtk-1.0
-                           rest-0.7
-                           gconf-2.0])
+                           $GTK_DEPS
+                           $MX_GTK_DEPS
+                           rest-0.7])
 
 if test x$dawati_use_networks_panel = xyes; then
-   PKG_CHECK_MODULES(CARRICK, [gtk+-2.0
-                               gconf-2.0
-                               mx-1.0
-                               mx-gtk-1.0
+   PKG_CHECK_MODULES(CARRICK, [gconf-2.0
                                dbus-glib-1
+                               $GTK_DEPS
+                               $MX_DEPS
+                               $MX_GTK_DEPS
                                libnotify])
-   PKG_CHECK_MODULES(CALLOUTS, [gtk+-2.0
+   PKG_CHECK_MODULES(CALLOUTS, [dbus-glib-1
                                 gconf-2.0
-                                dbus-glib-1
+                                $GTK_DEPS
                                 rest-0.7])
 
    # Networks: openconnect
@@ -321,45 +327,43 @@ AM_CONDITIONAL([WITH_OPENCONNECT], [test "$with_openconnect" = "yes"])
 
 
 # People
-AS_DAWATI_PANEL(people, [anerley >= 0.2.4
-                         gtk+-2.0 >= 2.14
-                         mx-1.0 >= 0.9.0
-                         gio-2.0
-                         gio-unix-2.0])
+AS_DAWATI_PANEL(people, [gio-2.0
+                         gio-unix-2.0
+                         anerley >= 0.2.4
+                         $GTK_DEPS
+                         $MX_DEPS])
 
 # Power
-AS_DAWATI_PANEL(power-icon, [$eck_deps
-                             clutter-1.0
-                             clutter-gtk-0.12
+AS_DAWATI_PANEL(power-icon, [gconf-2.0
+                             $GDK_DEPS
+                             $CLUTTER_DEPS
+                             $CLUTTER_GTK_DEPS
+                             $MX_DEPS
                              devkit-power-gobject
-                             gconf-2.0
-                             gdk-x11-2.0
-                             libnotify
-                             mx-1.0])
+                             libnotify])
 
 # Status
 AS_DAWATI_PANEL(status, [dbus-glib-1
-                         clutter-x11-1.0 >= 1.0.0
-                         clutter-gtk-0.12
+                         $CLUTTER_DEPS
+                         $CLUTTER_GTK_DEPS
+                         $MX_DEPS
                          libsocialweb-client >= 0.25.3
-                         mx-1.0 >= 0.9.0
                          champlain-0.8
                          geoclue
                          gconf-2.0])
 
 # Web
-AS_DAWATI_PANEL(web, [mx-1.0 >= 0.2.0
-                      gtk+-2.0
-                      sqlite3
-                      clutter-x11-1.0
-                      clutter-1.0])
+AS_DAWATI_PANEL(web, [sqlite3
+                      $GTK_DEPS
+                      $CLUTTER_DEPS
+                      $MX_DEPS])
 
 # Zones
-AS_DAWATI_PANEL(zones, [clutter-gtk-0.12
-                        gtk+-2.0 >= 2.14
-                        mx-1.0
-                        libwnck-1.0
-                        gconf-2.0])
+AS_DAWATI_PANEL(zones, [gconf-2.0
+                        $GTK_DEPS
+                        $CLUTTER_GTK_DEPS
+                        $MX_DEPS
+                        libwnck-1.0])
 
 
 ###########################
@@ -367,20 +371,20 @@ AS_DAWATI_PANEL(zones, [clutter-gtk-0.12
 ###########################
 
 if test x$dawati_use_myzone_panel = xyes || test x$dawati_use_datetime_panel = xyes; then
-   PKG_CHECK_MODULES(PENGE, [libjana-ecal
+   PKG_CHECK_MODULES(PENGE, [gio-2.0
+                             gio-unix-2.0
+                             gconf-2.0
+                             libjana-ecal
                              libsocialweb-client
                              telepathy-glib >= 0.14
-                             gtk+-2.0 >= 2.14
-                             mx-1.0 >= 0.9.0
-                             gconf-2.0
-                             gio-2.0
-                             gio-unix-2.0])
+                             $GTK_DEPS
+                             $MX_DEPS])
 
-   PKG_CHECK_MODULES(MAILME, [gobject-2.0
-                              glib-2.0
-                              telepathy-glib >= 0.14
+   PKG_CHECK_MODULES(MAILME, [glib-2.0
+                              gobject-2.0
+                              gio-2.0
                               dbus-glib-1
-                              gio-2.0])
+                              telepathy-glib >= 0.14])
 fi
 AM_CONDITIONAL([USE_PENGE_MAILME],
                [test "$dawati_use_myzone_panel" = "yes" || test "$dawati_use_datetime_panel" = "yes"])
@@ -394,9 +398,9 @@ if test x$dawati_use_devices_panel = xyes || test x$dawati_use_power_icon_panel 
    #
    # Gnome Power Manager
    #
-   PKG_CHECK_MODULES(GPM, [gdk-x11-2.0
-                           glib-2.0
+   PKG_CHECK_MODULES(GPM, [glib-2.0
                            gobject-2.0
+                           $GDK_DEPS
                            xrandr
                            xext])
 

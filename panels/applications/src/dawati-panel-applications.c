@@ -25,7 +25,6 @@
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gio/gdesktopappinfo.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <mx/mx.h>
 #include <dawati-panel/mpl-app-launch-context.h>
