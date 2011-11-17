@@ -14,11 +14,12 @@ servicedir = $(datadir)/dbus-1/services
 service_DATA = com.dawati.UX.Shell.Panels.power.service
 
 EXTRA_DIST = \
-	$(desktop_in_files) \
+	dawati-power-icon.desktop.in.in \
 	$(service_in_files) \
 	$(NULL)
 
-DISTCLEANFILES = \
+CLEANFILES = \
+	$(desktop_in_files) \
 	$(panel_DATA) \
 	$(service_DATA) \
 	$(NULL)

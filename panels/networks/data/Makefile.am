@@ -1,7 +1,7 @@
 SUBDIRS = icons theme
 
-desktop_in_files = carrick.desktop.in carrick-standalone.desktop.in
-desktop_out_files = carrick.desktop carrick-standalone.desktop
+desktopfiles_in_files = carrick.desktop.in carrick-standalone.desktop.in
+desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 
 @INTLTOOL_DESKTOP_RULE@
 
@@ -16,8 +16,14 @@ desktopdir = $(datadir)/applications
 desktop_DATA = carrick-standalone.desktop
 endif
 
-EXTRA_DIST = $(desktop_in_files) $(panel_in_files)
-CLEANFILES = $(panel_DATA)
+EXTRA_DIST = \
+	carrick.desktop.in.in \
+	carrick-standalone.desktop.in.in \
+	$(NULL)
+CLEANFILES = \
+	$(desktopfiles_files) \
+	$(desktopfiles_in_files) \
+	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels
 

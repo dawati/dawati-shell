@@ -13,16 +13,17 @@ servicedir = $(datadir)/dbus-1/services
 service_DATA = com.dawati.UX.Shell.Panels.devices.service
 
 EXTRA_DIST = \
-  $(autostart_in_files) \
-  $(schema_in_files) \
-  $(service_in_files) \
-  $(NULL)
+	dawati-panel-devices.desktop.in.in \
+	$(schema_in_files) \
+	$(service_in_files) \
+	$(NULL)
 
 DISTCLEANFILES = \
-  $(autostart_DATA) \
-  $(schema_DATA) \
-  $(service_DATA) \
-  $(NULL)
+	$(autostart_in_files) \
+	$(autostart_DATA) \
+	$(schema_DATA) \
+	$(service_DATA) \
+	$(NULL)
 
 @INTLTOOL_DESKTOP_RULE@
 

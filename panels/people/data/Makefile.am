@@ -19,11 +19,14 @@ clientfiledir = $(datarootdir)/telepathy/clients
 clientfile_DATA = DawatiPanelPeople.client
 
 EXTRA_DIST = \
+	dawati-panel-people.desktop.in.in \
+	$(servicefile_in_files) \
 	$(clientfile_DATA) \
-	$(desktopfiles_in_files) \
-	$(servicefile_in_files)
+	$(NULL)
 CLEANFILES = \
-	$(desktopfiles_DATA) \
-	$(servicefile_DATA)
+	$(desktopfiles_in_files) \
+	$(desktopfiles_files) \
+	$(servicefile_DATA) \
+	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels

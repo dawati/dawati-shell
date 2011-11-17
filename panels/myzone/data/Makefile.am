@@ -10,6 +10,7 @@ panelfiles_DATA = $(desktopfiles_files)
 
 settingsfiles_in_files = myzone.desktop.in
 settingsfiles_files = $(settingsfiles_in_files:.desktop.in=.desktop)
+
 settingsdir = $(datadir)/applications
 settings_DATA = $(settingsfiles_files)
 
@@ -32,7 +33,16 @@ if GCONF_SCHEMAS_INSTALL
 	fi
 endif
 
-EXTRA_DIST = dawati-panel-myzone.desktop.in myzone.desktop.in dawati-panel-myzone.schemas.in capplet.ui
-CLEANFILES = dawati-panel-myzone.desktop myzone.desktop
+EXTRA_DIST = \
+	dawati-panel-myzone.desktop.in.in \
+	myzone.desktop.in.in \
+	dawati-panel-myzone.schemas.in \
+	capplet.ui \
+	$(NULL)
+CLEANFILES = \
+	$(desktopfiles_in_files) \
+	$(desktopfiles_files) \
+	$(schema_DATA)
+	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels

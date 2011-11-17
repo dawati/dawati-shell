@@ -38,8 +38,14 @@ autostart_DATA = dawati-panel-internet.desktop
 desktopfiles_in_files = dawati-panel-internet.desktop.in
 desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 
-EXTRA_DIST = $(service_in_files) $(autostart_DATA)
+EXTRA_DIST = \
+	$(service_in_files) \
+	$(autostart_DATA) \
+	$(NULL)
 
-DISTCLEANFILES = com.dawati.UX.Shell.Panels.internet.service
+DISTCLEANFILES = \
+	dawati-panel-internet.desktop.in.in \
+	com.dawati.UX.Shell.Panels.internet.service \
+	$(NULL)
 
 include $(top_srcdir)/build/autotools/Makefile.am.panels
