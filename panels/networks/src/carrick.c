@@ -98,7 +98,7 @@ get_tip_and_icon_state (const gchar      *connection_type,
 }
 
 
-#if WITH_DAWATI
+#if ! WITH_DAWATI_STANDALONE
 
 #include <dawati-panel/mpl-panel-common.h>
 #include <dawati-panel/mpl-panel-gtk.h>
@@ -284,7 +284,7 @@ void _activate_cb (GObject *object, gpointer user_data)
 gboolean
 carrick_shell_is_visible (void)
 {
-#if WITH_DAWATI
+#if ! WITH_DAWATI_STANDALONE
   if (panel_client)
     return gtk_widget_get_visible (mpl_panel_gtk_get_window (MPL_PANEL_GTK (panel_client)));
   else
@@ -355,14 +355,14 @@ main (int    argc,
 
     gtk_widget_show (window);
   } else {
-#if WITH_DAWATI
+#if ! WITH_DAWATI_STANDALONE
     GdkScreen *screen;
     GtkWidget *box, *label;
     char *s;
 
     panel_client = mpl_panel_gtk_new (MPL_PANEL_NETWORK,
                                       _("network"),
-                                      THEME_DIR "/network-applet.css",
+                                      THEMEDIR "/network-applet.css",
                                       "offline",
                                       TRUE);
     g_signal_connect (panel_client,
