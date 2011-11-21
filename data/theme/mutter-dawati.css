@@ -43,13 +43,13 @@ MxTable {
 }
 
 MxLabel#time-label {
-  color: #31c2ee;
+  color: #dadada;
   font-size: 18px;
   font-weight: bold;
 }
 
 MxLabel#date-label {
-  color: #31c2ee;
+  color: #dadada;
   font-size: 12px;
 }
 
