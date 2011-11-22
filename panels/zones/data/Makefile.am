@@ -11,6 +11,9 @@ desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfilesdir = $(DAWATI_PANELS_DIR)/
 desktopfiles_DATA = $(desktopfiles_files)
 
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_DATA = $(desktopfiles_files)
+
 EXTRA_DIST = dawati-panel-zones.desktop.in.in
 CLEANFILES = \
 	$(desktopfiles_files) \
