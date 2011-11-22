@@ -11,10 +11,7 @@ Makefile
 aclocal.m4
 autom4te.cache
 /build/autotools/*.m4
-!/build/autotools/shave.m4
 !/build/autotools/as-panels.m4
-/build/autotools/shave
-/build/autotools/shave-libtool
 compile
 config.guess
 config.h

@@ -8,7 +8,4 @@ EXTRA_DIST = \
 	lib-prefix.m4 \
 	nls.m4 \
 	po.m4 \
-	progtest.m4 \
-	shave.in \
-	shave-libtool.in \
-	shave.m4
+	progtest.m4

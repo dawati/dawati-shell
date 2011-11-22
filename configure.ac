@@ -47,6 +47,9 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    ["$GETTEXT_PACKAGE"],
                    [Name of default gettext domain])
 
+# enable quiet ("silent") builds, if available
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+
 IT_PROG_INTLTOOL([0.34.90])
 AS_ALL_LINGUAS
 
@@ -201,8 +204,6 @@ PLUGIN_LT_LDFLAGS="-version-info $PLUGIN_LT_VERSION"
 
 AC_SUBST(PLUGIN_LT_VERSION)
 AC_SUBST(PLUGIN_LT_LDFLAGS)
-
-SHAVE_INIT([build/autotools], [enable])
 
 ###########################
 # Available panels
@@ -452,8 +453,6 @@ AC_OUTPUT([
 Makefile
 build/Makefile
 build/autotools/Makefile
-build/autotools/shave
-build/autotools/shave-libtool
 capplet/Makefile
 capplet/data/Makefile
 capplet/src/Makefile
