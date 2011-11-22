@@ -313,7 +313,7 @@ activate_workspace (ZonePanelData *data,
   ws = wnck_screen_get_workspace (data->screen, zone);
 
   /* wait for the panel to hide */
-  g_timeout_add (250, activate_workspace_finish, ws);
+  g_timeout_add (250, (GSourceFunc) activate_workspace_finish, ws);
 }
 
 
