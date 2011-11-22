@@ -432,6 +432,8 @@ mnb_launcher_grid_move_focus (MxFocusable *focusable,
        break;
    }
 
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (from), NULL);
+
  if (focus)
    {
      ClutterActor *parent;

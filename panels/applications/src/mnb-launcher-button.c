@@ -288,7 +288,7 @@ _enter_event_cb (ClutterActor         *actor,
                  ClutterCrossingEvent *event,
                  gpointer              data)
 {
-  mx_focusable_accept_focus (MX_FOCUSABLE (actor), MX_FOCUS_HINT_FIRST);
+  mx_stylable_set_style_pseudo_class (MX_STYLABLE (actor), "hover");
 
   return FALSE;
 }
