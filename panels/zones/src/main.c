@@ -45,6 +45,11 @@ typedef struct
   SwWindow *sw_window;
 } WindowNotify;
 
+
+static void update_toolbar_icon (WnckScreen    *screen,
+                                 WnckWorkspace *space,
+                                 ZonePanelData *data);
+
 static void
 _client_set_size_cb (MplPanelClient *client,
                      guint           w,
@@ -353,6 +358,8 @@ window_opened (WnckScreen    *screen,
   ClutterActor *thumbnail_background;
   ClutterActor *icon;
 
+  update_toolbar_icon (screen, NULL, data);
+
   if (!data->overview)
     return;
 
@@ -419,21 +426,59 @@ window_closed (WnckScreen    *screen,
   if (data->overview)
     sw_overview_remove_window (SW_OVERVIEW (data->overview),
                                wnck_window_get_xid (window));
+
+  update_toolbar_icon (screen, NULL, data);
 }
 
 static void
-notify_n_zones_cb (SwOverview    *overview,
-                   GParamSpec    *pspec,
-                   ZonePanelData *data)
+zone_activated (SwOverview    *overview,
+                SwZone        *zone,
+                ZonePanelData *data)
+{
+  gint index;
+
+  index = sw_zone_get_number (zone) - 1;
+
+  activate_workspace (data, index);
+}
+
+static void
+update_toolbar_icon (WnckScreen    *screen,
+                     WnckWorkspace *space,
+                     ZonePanelData *data)
 {
   gint n_zones;
+  GList *windows;
 
-  n_zones = sw_overview_get_n_zones (overview);
-
-  g_debug ("Number of zones: %d", n_zones);
+  n_zones = wnck_screen_get_workspace_count (screen);
 
   if (!client)
     return;
+
+  if (n_zones == 1)
+    {
+      gint n_windows = 0;
+
+      for (windows = wnck_screen_get_windows (screen);
+           windows != NULL;
+           windows = g_list_next (windows))
+        {
+          WnckWindow *window = windows->data;
+
+          if (wnck_window_is_skip_pager (window))
+            continue;
+
+          if (wnck_window_is_skip_tasklist (window))
+            continue;
+
+          n_windows++;
+        }
+
+      if (n_windows == 0)
+        n_zones = 0;
+    }
+
+  g_debug ("Number of zones: %d", n_zones);
 
   switch (n_zones)
     {
@@ -464,18 +509,6 @@ notify_n_zones_cb (SwOverview    *overview,
 }
 
 static void
-zone_activated (SwOverview    *overview,
-                SwZone        *zone,
-                ZonePanelData *data)
-{
-  gint index;
-
-  index = sw_zone_get_number (zone) - 1;
-
-  activate_workspace (data, index);
-}
-
-static void
 setup (ZonePanelData *data)
 {
   GList  *windows, *l;
@@ -502,9 +535,6 @@ setup (ZonePanelData *data)
 
   /* create the overview */
   overview = sw_overview_new (wnck_screen_get_workspace_count (data->screen));
-  notify_n_zones_cb (SW_OVERVIEW (overview), NULL, data);
-  g_signal_connect (overview, "notify::n-zones", G_CALLBACK (notify_n_zones_cb),
-                    data);
   g_signal_connect (overview, "zone-activated", G_CALLBACK (zone_activated),
                     data);
   mx_box_layout_add_actor_with_properties (MX_BOX_LAYOUT (box_layout),
@@ -530,23 +560,6 @@ setup (ZonePanelData *data)
   /* ensure the current workspace is marked */
   active_workspace_changed (data->screen, NULL, data);
 
-  if (!data->connected)
-    {
-      data->connected = TRUE;
-
-      g_signal_connect (data->screen, "active-window-changed",
-                        G_CALLBACK (active_window_changed), data);
-
-
-      g_signal_connect (data->screen, "active-workspace-changed",
-                        G_CALLBACK (active_workspace_changed), data);
-
-      g_signal_connect (data->screen, "window-closed",
-                        G_CALLBACK (window_closed), data);
-
-      g_signal_connect (data->screen, "window-opened",
-                        G_CALLBACK (window_opened), data);
-    }
 }
 
 static void
@@ -626,6 +639,24 @@ main (int argc, char **argv)
   data->screen = wnck_screen_get_default ();
   wnck_screen_force_update (data->screen);
 
+  /* connect screen signal handlers */
+  g_signal_connect (data->screen, "active-window-changed",
+                    G_CALLBACK (active_window_changed), data);
+
+  g_signal_connect (data->screen, "active-workspace-changed",
+                    G_CALLBACK (active_workspace_changed), data);
+
+  g_signal_connect (data->screen, "window-closed",
+                    G_CALLBACK (window_closed), data);
+
+  g_signal_connect (data->screen, "window-opened",
+                    G_CALLBACK (window_opened), data);
+
+  g_signal_connect (data->screen, "workspace-created",
+                    G_CALLBACK (update_toolbar_icon), data);
+
+  g_signal_connect (data->screen, "workspace-destroyed",
+                    G_CALLBACK (update_toolbar_icon), data);
 
   if (!standalone)
     {
@@ -634,6 +665,8 @@ main (int argc, char **argv)
                                       NULL,
                                       "zones-button",
                                       TRUE);
+
+      update_toolbar_icon (data->screen, NULL, data);
 
       mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (client));
 
