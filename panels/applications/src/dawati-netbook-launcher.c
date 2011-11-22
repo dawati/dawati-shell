@@ -1028,10 +1028,13 @@ _filter_captured_event_cb (ClutterActor *actor,
               command = mnb_filter_get_text (MNB_FILTER (actor));
               if (command)
                 {
-                  g_signal_emit (self,
-                                 _signals[COMMANDLINE_LAUNCH_ACTIVATED],
-                                 0,
-                                 command);
+                  if (strlen (command) > 0)
+                    {
+                      g_signal_emit (self,
+                                     _signals[COMMANDLINE_LAUNCH_ACTIVATED],
+                                     0,
+                                     command);
+                    }
                 }
             }
         }
