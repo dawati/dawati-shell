@@ -456,7 +456,22 @@ build/autotools/Makefile
 capplet/Makefile
 capplet/data/Makefile
 capplet/src/Makefile
+
 data/Makefile
+data/theme/Makefile
+data/theme/applications/Makefile
+data/theme/datetime/Makefile
+data/theme/devices/Makefile
+data/theme/devices/icons/Makefile
+data/theme/myzone/Makefile
+data/theme/networks/Makefile
+data/theme/networks/icons/Makefile
+data/theme/people/Makefile
+data/theme/power-icon/Makefile
+data/theme/status/Makefile
+data/theme/web/Makefile
+data/theme/zones/Makefile
+
 src/Makefile
 src/effects/Makefile
 src/alttab/Makefile
@@ -498,18 +513,14 @@ panels/applications/Makefile
 panels/applications/src/Makefile
 panels/applications/tests/Makefile
 panels/applications/data/Makefile
-panels/applications/data/theme/Makefile
 
 panels/datetime/Makefile
 panels/datetime/src/Makefile
 panels/datetime/data/Makefile
-panels/datetime/data/theme/Makefile
 
 panels/devices/Makefile
 panels/devices/data/Makefile
 panels/devices/data/dawati-panel-devices.schemas
-panels/devices/data/icons/Makefile
-panels/devices/data/theme/Makefile
 panels/devices/src/Makefile
 panels/devices/tests/Makefile
 
@@ -517,41 +528,33 @@ panels/myzone/Makefile
 panels/myzone/capplet/Makefile
 panels/myzone/data/Makefile
 panels/myzone/data/dawati-panel-myzone.schemas
-panels/myzone/data/theme/Makefile
 panels/myzone/src/Makefile
 
 panels/networks/Makefile
 panels/networks/src/Makefile
 panels/networks/tests/Makefile
-panels/networks/data/icons/Makefile
 panels/networks/data/Makefile
-panels/networks/data/theme/Makefile
 
 panels/people/Makefile
 panels/people/data/Makefile
-panels/people/data/theme/Makefile
 panels/people/src/Makefile
 
 panels/power-icon/Makefile
 panels/power-icon/data/Makefile
-panels/power-icon/data/theme/Makefile
 panels/power-icon/src/Makefile
 panels/power-icon/tests/Makefile
 
 panels/status/Makefile
 panels/status/data/Makefile
-panels/status/data/theme/Makefile
 panels/status/src/Makefile
 panels/status/src/dawati-panel-status.pc
 
 panels/web/Makefile
 panels/web/common/Makefile
 panels/web/data/Makefile
-panels/web/data/theme/Makefile
 panels/web/netpanel/Makefile
 
 panels/zones/Makefile
-panels/zones/data/theme/Makefile
 panels/zones/data/Makefile
 panels/zones/src/Makefile
 ])

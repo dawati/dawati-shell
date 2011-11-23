@@ -1,5 +1,3 @@
-SUBDIRS = theme
-
 searchiconsdir = $(PANEL_WEB_DATADIR)/search-icons
 dist_searchicons_DATA = \
 	search-icons/Ask.ico \

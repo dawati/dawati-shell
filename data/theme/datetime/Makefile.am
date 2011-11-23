@@ -48,3 +48,5 @@ uninstall-hook:
 	rm -f $(texture_cache)
 	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(pkgdatadir)
 endif
+
+include $(top_srcdir)/build/autotools/Makefile.am.panels

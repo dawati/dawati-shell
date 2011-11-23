@@ -1,5 +1,3 @@
-SUBDIRS = icons theme
-
 desktopfiles_in_files = carrick.desktop.in carrick-standalone.desktop.in
 desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 

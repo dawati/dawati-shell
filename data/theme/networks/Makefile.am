@@ -1,3 +1,5 @@
+SUBDIRS = icons
+
 themedir = $(PANEL_NETWORKS_THEMEDIR)
 theme_DATA = network-applet.css
 

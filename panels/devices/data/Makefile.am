@@ -1,5 +1,3 @@
-SUBDIRS = icons theme
-
 autostart_in_files = dawati-panel-devices.desktop.in
 autostartdir = $(DAWATI_PANELS_DIR)
 autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)

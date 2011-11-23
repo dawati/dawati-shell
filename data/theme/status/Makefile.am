@@ -1,32 +1,31 @@
-themedir = $(PANEL_PEOPLE_THEMEDIR)
+themedir = $(PANEL_STATUS_THEMEDIR)
 dist_theme_DATA = \
 	panel.css \
-	avatar-bg.png \
+	add_status_header.png \
+	add_status_header_hover.png \
+	status_header_hover.png \
 	avatar_icon.png \
+	status_entry_box.png \
+	alt_status_header.png \
+	alt_status_header_hover.png \
+	current_status_header.png \
 	avatar_frame.png \
-	grey-backdrop.png \
-	people-search-bg.png \
-	scroll-view-bin-bg.png \
-	selected-highlight.png \
-	selection-border.png \
-	selection-empty.png \
-	selection-full.png \
-	tile-bg-hover.png \
-	active-conversations-header.png \
-	active-content-table-bg.png \
-	unread-message-bubble-bg.png \
-	box-background.png \
-	frame-header-background.png \
-	frame-background.png \
-	panel-background.png \
+	status_card_background.png \
+	retweet.png \
+	retweet-hover.png \
+	tweet-reply.png \
+	tweet-reply-hover.png \
+	icon-bg-hover.png \
+	location-box-bg.png \
 	content-panel-background.png \
-	content-panel-header-grey.png \
-	box-background-border-bottom.png \
+	panel-background.png \
 	background-gradient.png \
 	people.png \
+	content-panel-header-grey.png \
 	$(NULL)
 
 # Manage mutter-dawati's texture cache.
+
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/nbtk.cache
 CACHE_GEN = $(Q:@=@echo '  GEN   '$(texture_cache);)
@@ -38,3 +37,5 @@ uninstall-hook:
 	rm -f $(texture_cache)
 	$(CACHE_GEN)$(NBTK_CREATE_IMAGE_CACHE) $(DESTDIR)$(pkgdatadir)
 endif
+
+include $(top_srcdir)/build/autotools/Makefile.am.panels

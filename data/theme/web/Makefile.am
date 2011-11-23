@@ -18,7 +18,6 @@ dist_theme_DATA = \
 	o2_more.png \
 	o2_search.png
 
-
 # Manage mutter-dawati's texture cache.
 if ENABLE_CACHE
 texture_cache = $(DESTDIR)$(pkgdatadir)/mx.cache
@@ -31,3 +30,5 @@ uninstall-hook:
 	rm -f $(texture_cache)
 	$(CACHE_GEN)$(MX_CREATE_IMAGE_CACHE) $(DESTDIR)$(pkgdatadir)
 endif
+
+include $(top_srcdir)/build/autotools/Makefile.am.panels

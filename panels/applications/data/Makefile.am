@@ -1,5 +1,3 @@
-SUBDIRS = theme
-
 @INTLTOOL_DESKTOP_RULE@
 
 desktopfiles_in_files = dawati-panel-applications.desktop.in

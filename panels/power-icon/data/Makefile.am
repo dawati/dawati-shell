@@ -1,5 +1,3 @@
-SUBDIRS = theme
-
 desktop_in_files = dawati-power-icon.desktop.in
 desktop_data = $(desktop_in_files:.desktop.in=.desktop)
 

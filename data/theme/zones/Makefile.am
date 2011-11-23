@@ -14,4 +14,9 @@ dist_theme_DATA = \
 	close-button-hover.png \
 	$(NULL)
 
+assetdir = $(PANEL_ZONES_DATADIR)
+dist_asset_DATA = people.png
+
+include $(top_srcdir)/build/autotools/Makefile.am.panels
+
 -include $(top_srcdir)/git.mk

@@ -1,8 +1,3 @@
-SUBDIRS = theme
-
-assetdir = $(PANEL_ZONES_DATADIR)
-dist_asset_DATA = people.png
-
 @INTLTOOL_DESKTOP_RULE@
 
 desktopfiles_in_files = dawati-panel-zones.desktop.in

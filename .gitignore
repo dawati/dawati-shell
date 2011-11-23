@@ -50,6 +50,10 @@ xmldocs.make
 /config.rpath
 /configure.ac.orig
 /data/mutter-dawati.schemas
+/data/theme/networks/network-applet.css
+/data/theme/power-icon/power-icon.css
+/data/theme/networks/network-applet.css
+/data/theme/power-icon/power-icon.css
 /libdawati-panel/*.pc
 /libdawati-panel/dawati-panel/marshal.[ch]
 /libdawati-panel/dawati-panel/mnb-*-bindings.h
@@ -105,14 +109,12 @@ xmldocs.make
 /panels/myzone/data/dawati-panel-myzone.schemas
 /panels/myzone/src/dawati-panel-myzone
 /panels/networks/data/carrick.desktop
-/panels/networks/data/theme/network-applet.css
 /panels/networks/src/carrick-connection-panel
 /panels/networks/tests/test-model
 /panels/people/src/dawati-panel-people
 /panels/people/src/sw-marshals.c
 /panels/people/src/sw-marshals.h
 /panels/power-icon/data/dawati-power-icon.desktop
-/panels/power-icon/data/theme/power-icon.css
 /panels/power-icon/src/dawati-power-icon
 /panels/status/data/dawati-panel-status.desktop
 /panels/status/src/dawati-panel-status
