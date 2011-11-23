@@ -64,9 +64,6 @@ libdawati_panel_status_la_LIBADD = \
 	$(NM_LIBS) \
 	$(NULL)
 
-pkgconfig_DATA = dawati-panel-status.pc
-pkgconfigdir = $(libdir)/pkgconfig
-
 servicedir = $(datadir)/dbus-1/services
 service_in_files = com.dawati.UX.Shell.Panels.status.service.in
 service_DATA = com.dawati.UX.Shell.Panels.status.service

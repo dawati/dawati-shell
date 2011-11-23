@@ -547,7 +547,6 @@ panels/power-icon/tests/Makefile
 panels/status/Makefile
 panels/status/data/Makefile
 panels/status/src/Makefile
-panels/status/src/dawati-panel-status.pc
 
 panels/web/Makefile
 panels/web/common/Makefile
