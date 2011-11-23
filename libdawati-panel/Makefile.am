@@ -1,4 +1,3 @@
-
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 SUBDIRS = dawati-panel theme tests docs

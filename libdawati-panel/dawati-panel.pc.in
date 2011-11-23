@@ -4,8 +4,8 @@ libdir=@libdir@
 includedir=@includedir@
 datarootdir=@datarootdir@
 datadir=@datadir@
-dawati_panel_theme_dir=@MUTTER_DAWATI_THEME_DIR@
-dawati_panel_panels_dir=@MUTTER_DAWATI_PANELS_DIR@
+dawati_panel_theme_dir=@DAWATI_THEME_DIR@
+dawati_panel_panels_dir=@DAWATI_PANELS_DIR@
 
 Name: libdawati-panel
 Description: Dev framework for dawati panels
