@@ -223,6 +223,9 @@ AS_DAWATI_PANEL(applications, [clutter-x11-1.0
                                libgnome-menu
                                mx-1.0 >= 1.4.0])
 
+# Bluetooth
+AS_DAWATI_PANEL(bluetooth, [])
+
 # Date & time
 AS_DAWATI_PANEL(datetime, [glib-2.0
                            clutter-1.0
@@ -460,6 +463,7 @@ capplet/src/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/applications/Makefile
+data/theme/bluetooth/Makefile
 data/theme/datetime/Makefile
 data/theme/devices/Makefile
 data/theme/devices/icons/Makefile

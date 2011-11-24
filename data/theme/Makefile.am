@@ -1,5 +1,6 @@
 SUBDIRS = \
 	applications \
+	bluetooth \
 	datetime \
 	devices \
 	myzone \

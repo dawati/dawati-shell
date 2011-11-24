@@ -17,5 +17,6 @@
 	$(AM_V_GEN)sed -e "s|\@pkgdatadir\@|$(pkgdatadir)|" $< | \
 		   sed -e "s|\@PANEL_NETWORKS_THEMEDIR\@|$(PANEL_NETWORKS_THEMEDIR)|" | \
 		   sed -e "s|\@PANEL_NETWORKS_DATADIR\@|$(PANEL_NETWORKS_DATADIR)|" | \
+		   sed -e "s|\@PANEL_BLUETOOTH_THEMEDIR\@|$(PANEL_BLUETOOTH_THEMEDIR)|" | \
 		   sed -e "s|\@PANEL_POWER_ICON_THEMEDIR\@|$(PANEL_POWER_ICON_THEMEDIR)|" \
 		   > $@

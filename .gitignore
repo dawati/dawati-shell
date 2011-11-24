@@ -50,6 +50,7 @@ xmldocs.make
 /config.rpath
 /configure.ac.orig
 /data/mutter-dawati.schemas
+/data/theme/bluetooth/bluetooth-panel.css
 /data/theme/networks/network-applet.css
 /data/theme/power-icon/power-icon.css
 /data/theme/networks/network-applet.css
