@@ -1,0 +1,22 @@
+MnbToolbarButton#state-off {
+  background-image: url("@PANEL_BLUETOOTH_THEMEDIR@/bluetooth-off.png");
+}
+MnbToolbarButton#state-off:hover, MnbToolbarButton#state-off:active, MnbToolbarButton#state-off:checked {
+  background-image: url("@PANEL_BLUETOOTH_THEMEDIR@/bluetooth-off-hover.png");
+}
+
+
+MnbToolbarButton#state-idle {
+  background-image: url("@PANEL_BLUETOOTH_THEMEDIR@/bluetooth-idle.png");
+}
+MnbToolbarButton#state-idle:hover, MnbToolbarButton#state-idle:active, MnbToolbarButton#state-idle:checked {
+  background-image: url("@PANEL_BLUETOOTH_THEMEDIR@/bluetooth-idle-hover.png");
+}
+
+
+MnbToolbarButton#state-connecting {
+  background-image: url("@PANEL_BLUETOOTH_THEMEDIR@/bluetooth-connecting.png");
+}
+MnbToolbarButton#state-connecting:hover, MnbToolbarButton#state-connecting:active, MnbToolbarButton#state-connecting:checked {
+  background-image: url("@PANEL_BLUETOOTH_THEMEDIR@/bluetooth-connecting-hover.png");
+}
