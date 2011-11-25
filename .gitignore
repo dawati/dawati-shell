@@ -116,6 +116,7 @@ xmldocs.make
 /panels/networks/data/carrick.desktop
 /panels/networks/src/carrick-connection-panel
 /panels/networks/tests/test-model
+/panels/people/data/dawati-panel-people.desktop
 /panels/people/src/dawati-panel-people
 /panels/people/src/sw-marshals.c
 /panels/people/src/sw-marshals.h
