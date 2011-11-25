@@ -109,7 +109,9 @@ xmldocs.make
 /panels/devices/data/dawati-panel-devices.desktop
 /panels/devices/data/dawati-panel-devices.schemas
 /panels/devices/src/dawati-panel-devices
+/panels/myzone/data/dawati-panel-myzone.desktop
 /panels/myzone/data/dawati-panel-myzone.schemas
+/panels/myzone/data/myzone.desktop
 /panels/myzone/src/dawati-panel-myzone
 /panels/networks/data/carrick.desktop
 /panels/networks/src/carrick-connection-panel
