@@ -46,8 +46,11 @@ stage_width_notify_cb (ClutterActor  *stage,
 
   if (width > 1024)
     {
+      gboolean expander_config;
+      expander_config = mnb_launcher_get_show_expanders_in_bcm (launcher);
+
       /* Big-screen mode. */
-      mnb_launcher_set_show_expanders (launcher, FALSE);
+      mnb_launcher_set_show_expanders (launcher, expander_config);
     }
   else
     {
@@ -66,6 +69,24 @@ stage_height_notify_cb (ClutterActor  *stage,
 }
 
 static void
+show_expanders_in_bcm_changed_cb (MnbLauncher  *launcher,
+                                  GParamSpec   *pspec,
+                                  ClutterActor *stage)
+{
+  guint width = clutter_actor_get_width (stage);
+
+  if (width > 1024)
+    {
+      gboolean expander_config;
+
+      expander_config = mnb_launcher_get_show_expanders_in_bcm (launcher);
+      mnb_launcher_set_show_expanders (launcher, expander_config);
+    }
+}
+
+
+
+static void
 panel_set_size_cb (MplPanelClient *panel,
                    guint           width,
                    guint           height,
@@ -76,8 +97,10 @@ panel_set_size_cb (MplPanelClient *panel,
 
   if (width > 1024)
     {
+      gboolean expander_config;
+      expander_config = mnb_launcher_get_show_expanders_in_bcm (launcher);
       /* Big-screen mode. */
-      mnb_launcher_set_show_expanders (launcher, FALSE);
+      mnb_launcher_set_show_expanders (launcher, expander_config);
     }
   else
     {
@@ -260,6 +283,7 @@ main (int     argc,
                                      "applications-button",
                                      TRUE);
 
+      stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
       mpl_panel_clutter_setup_events_with_gtk (MPL_PANEL_CLUTTER (panel));
 
       mpl_panel_client_set_height_request (panel, 600);
@@ -269,6 +293,8 @@ main (int     argc,
                         G_CALLBACK (launcher_activated_cb), panel);
       g_signal_connect (launcher, "commandline-launch-activated",
                         G_CALLBACK (commandline_launch_activated_cb), panel);
+      g_signal_connect (launcher, "notify::show-expanders-in-bcm",
+                        G_CALLBACK (show_expanders_in_bcm_changed_cb), stage);
 
       g_signal_connect (panel, "show-begin",
                         G_CALLBACK (panel_show_begin_cb), launcher);
@@ -277,7 +303,6 @@ main (int     argc,
       g_signal_connect (panel, "hide-end",
                         G_CALLBACK (panel_hide_end_cb), launcher);
 
-      stage = mpl_panel_clutter_get_stage (MPL_PANEL_CLUTTER (panel));
       clutter_container_add_actor (CLUTTER_CONTAINER (stage), launcher);
 
       g_signal_connect (panel, "set-size",

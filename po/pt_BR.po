@@ -222,6 +222,14 @@ msgstr ""
 "para te avisar quando algo acontecer ou para continuar executando quando "
 "você os fechar."
 
+#: ../capplet/src/app-cc-panel.c:83
+msgid "Use categories"
+msgstr "Utilizar categorias"
+
+#: ../capplet/src/app-cc-panel.c:109
+msgid "Enable/disable categories in applications panel"
+msgstr "Habilita/desabilita categorias no painel de aplicativos"
+
 #: ../callouts/3g/ggg-country-dialog.c:73
 #: ../callouts/3g/ggg-manual-dialog.c:70 ../callouts/3g/ggg-plan-dialog.c:111
 #: ../callouts/3g/ggg-provider-dialog.c:106

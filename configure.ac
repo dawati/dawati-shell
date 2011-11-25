@@ -221,6 +221,7 @@ AS_DAWATI_PANEL(applications, [clutter-x11-1.0
                                gio-unix-2.0
                                gtk+-2.0
                                libgnome-menu
+                               gconf-2.0
                                mx-1.0 >= 1.4.0])
 
 # Bluetooth

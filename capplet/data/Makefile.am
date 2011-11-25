@@ -7,6 +7,8 @@ desktopfiles_in_files = \
 	system-tray-properties.desktop.in \
 	$(NULL)
 
+#	dawati-applications-panel-properties.desktop.in
+
 desktopfiles_files = $(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
 

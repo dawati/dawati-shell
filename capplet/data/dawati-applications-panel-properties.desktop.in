@@ -1,0 +1,9 @@
+[Desktop Entry]
+_Name=Applications panel
+_Comment=Applications panel preferences
+Exec=app-properties
+Icon=system-tray-properties
+Terminal=false
+Type=Application
+StartupNotify=false
+Categories=GNOME;Settings;DesktopSettings;

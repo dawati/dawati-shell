@@ -78,6 +78,8 @@ void            mnb_launcher_clear_filter   (MnbLauncher *self);
 
 gboolean        mnb_launcher_get_show_expanders (MnbLauncher *self);
 
+gboolean        mnb_launcher_get_show_expanders_in_bcm (MnbLauncher *self);
+
 void            mnb_launcher_set_show_expanders (MnbLauncher *self,
                                                  gboolean     show_expanders);
 

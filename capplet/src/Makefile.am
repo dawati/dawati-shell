@@ -41,7 +41,7 @@ dawati_toolbar_properties_LDADD   = libmtp-common.la
 dawati_toolbar_properties_SOURCES = dawati-toolbar-properties.c
 
 ccmodulesdir = $(CC_DIR)
-ccmodules_LTLIBRARIES = libmtp.la libsystray.la
+ccmodules_LTLIBRARIES = libmtp.la libsystray.la libapp.la
 
 libmtp_la_SOURCES = \
 	module.c \
@@ -58,3 +58,12 @@ libsystray_la_SOURCES = \
 libsystray_la_CPPFLAGS = $(AM_CPPFLAGS) $(CAPPLET_CFLAGS)
 libsystray_la_LIBADD = $(CAPPLET_LIBS)
 libsystray_la_LDFLAGS = $(AM_LDFLAGS) -module -avoid-version
+
+#
+#libapp_la_SOURCES = \
+#	app-module.c \
+#	app-cc-panel.h \
+#	app-cc-panel.c
+#libapp_la_CPPFLAGS = $(AM_CPPFLAGS) $(CAPPLET_CFLAGS)
+#libapp_la_LIBADD = $(CAPPLET_LIBS)
+#libapp_la_LDFLAGS = $(AM_LDFLAGS) --module --avoid-version
