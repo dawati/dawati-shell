@@ -251,7 +251,7 @@ AS_DAWATI_PANEL(datetime, [glib-2.0
                            libxml-2.0
                            $CLUTTER_DEPS
                            $MX_DEPS
-                           gweather
+                           gweather-3.0
                            libnotify
                            libcanberra
                            libjana-ecal
