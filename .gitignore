@@ -125,6 +125,7 @@ xmldocs.make
 /panels/web/common/libcommon.a
 /panels/web/netpanel/dawati-panel-internet.desktop
 /panels/web/netpanel/dawati-panel-web
+/panels/zones/data/dawati-panel-zones.desktop
 /panels/zones/src/dawati-panel-zones
 /penge/test-block-container
 /penge/test-everything-pane
