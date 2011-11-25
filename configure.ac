@@ -270,8 +270,7 @@ AS_DAWATI_PANEL(devices, [glib-2.0
 
 # Myzone
 AS_DAWATI_PANEL(myzone, [gconf-2.0
-                         gdk-x11-2.0
-                         libgnome-control-center-extension])
+                         $GDK_DEPS])
 
 # Networks
 AS_DAWATI_PANEL(networks, [gconf-2.0
