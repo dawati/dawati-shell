@@ -362,7 +362,7 @@ AS_DAWATI_PANEL(zones, [gconf-2.0
                         $GTK_DEPS
                         $CLUTTER_GTK_DEPS
                         $MX_DEPS
-                        libwnck-1.0])
+                        libwnck-3.0])
 
 
 ###########################
