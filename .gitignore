@@ -97,11 +97,13 @@ xmldocs.make
 /libdawati-panel/tests/test-content-pane
 /libdawati-panel/tests/test-icon-theme
 /mailme/test-mailme
+/panels/applications/data/dawati-panel-applications.desktop
 /panels/applications/src/dawati-panel-applications
 /panels/applications/tests/test-filter
 /panels/applications/tests/test-launcher-button
 /panels/applications/tests/test-launcher-monitor
 /panels/applications/tests/test-launcher-tree
+/panels/datetime/data/dawati-panel-datetime.desktop
 /panels/datetime/src/date-time.schemas
 /panels/datetime/src/dawati-panel-datetime
 /panels/devices/data/dawati-panel-devices.desktop
