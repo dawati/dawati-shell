@@ -277,7 +277,6 @@ AS_DAWATI_PANEL(networks, [gconf-2.0
                            gthread-2.0
                            dbus-glib-1 >= 0.73
                            $GTK_DEPS
-                           $MX_GTK_DEPS
                            rest-0.7])
 
 if test x$dawati_use_networks_panel = xyes; then
@@ -285,7 +284,6 @@ if test x$dawati_use_networks_panel = xyes; then
                                dbus-glib-1
                                $GTK_DEPS
                                $MX_DEPS
-                               $MX_GTK_DEPS
                                libnotify])
    PKG_CHECK_MODULES(CALLOUTS, [dbus-glib-1
                                 gconf-2.0

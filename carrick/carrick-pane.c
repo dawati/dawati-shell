@@ -121,12 +121,12 @@ enum {
 };
 
 
-static gboolean _wifi_switch_callback (MxGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
-static gboolean _ethernet_switch_callback (MxGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
-static gboolean _wimax_switch_callback (MxGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
-static gboolean _threeg_switch_callback (MxGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
-static gboolean _bluetooth_switch_callback (MxGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
-static gboolean _offline_mode_switch_callback (MxGtkLightSwitch *wifi_switch, gboolean new_state, CarrickPane *pane);
+static gboolean _wifi_switch_callback (GtkSwitch *wifi_switch, GParamSpec *property, CarrickPane *pane);
+static gboolean _ethernet_switch_callback (GtkSwitch *wifi_switch, GParamSpec *property, CarrickPane *pane);
+static gboolean _wimax_switch_callback (GtkSwitch *wifi_switch, GParamSpec *property, CarrickPane *pane);
+static gboolean _threeg_switch_callback (GtkSwitch *wifi_switch, GParamSpec *property, CarrickPane *pane);
+static gboolean _bluetooth_switch_callback (GtkSwitch *wifi_switch, GParamSpec *property, CarrickPane *pane);
+static gboolean _offline_mode_switch_callback (GtkSwitch *wifi_switch, GParamSpec *property, CarrickPane *pane);
 
 static void
 pane_manager_changed_cb (DBusGProxy  *proxy, const gchar *property,
@@ -341,8 +341,8 @@ wifi_switch_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
 
-      mx_gtk_light_switch_set_active
-        (MX_GTK_LIGHT_SWITCH (priv->wifi_switch),
+      gtk_switch_set_active
+        (GTK_SWITCH (priv->wifi_switch),
          priv->wifi_enabled);
     }
 
@@ -352,9 +352,9 @@ wifi_switch_notify_cb (DBusGProxy *proxy,
 }
 
 static gboolean
-_wifi_switch_callback (MxGtkLightSwitch *wifi_switch,
-                       gboolean            new_state,
-                       CarrickPane        *pane)
+_wifi_switch_callback (GtkSwitch   *wifi_switch,
+                       GParamSpec  *property,
+                       CarrickPane *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
 
@@ -362,7 +362,7 @@ _wifi_switch_callback (MxGtkLightSwitch *wifi_switch,
                                    _wifi_switch_callback,
                                    pane);
 
-  if (new_state)
+  if (gtk_switch_get_active (wifi_switch))
     {
       carrick_notification_manager_queue_event (priv->notes,
                                                 "wifi",
@@ -402,8 +402,8 @@ ethernet_switch_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
 
-      mx_gtk_light_switch_set_active
-        (MX_GTK_LIGHT_SWITCH (priv->ethernet_switch),
+      gtk_switch_set_active
+        (GTK_SWITCH (priv->ethernet_switch),
          priv->ethernet_enabled);
     }
 
@@ -413,9 +413,9 @@ ethernet_switch_notify_cb (DBusGProxy *proxy,
 }
 
 static gboolean
-_ethernet_switch_callback (MxGtkLightSwitch *ethernet_switch,
-                           gboolean            new_state,
-                           CarrickPane        *pane)
+_ethernet_switch_callback (GtkSwitch   *ethernet_switch,
+                           GParamSpec  *property,
+                           CarrickPane *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
 
@@ -423,7 +423,7 @@ _ethernet_switch_callback (MxGtkLightSwitch *ethernet_switch,
                                    _ethernet_switch_callback,
                                    pane);
 
-  if (new_state)
+  if (gtk_switch_get_active (ethernet_switch))
     {
       carrick_notification_manager_queue_event (priv->notes,
                                                 "ethernet",
@@ -463,8 +463,8 @@ threeg_switch_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
 
-      mx_gtk_light_switch_set_active
-        (MX_GTK_LIGHT_SWITCH (priv->threeg_switch),
+      gtk_switch_set_active
+        (GTK_SWITCH (priv->threeg_switch),
          priv->threeg_enabled);
     }
 
@@ -474,9 +474,9 @@ threeg_switch_notify_cb (DBusGProxy *proxy,
 }
 
 static gboolean
-_threeg_switch_callback (MxGtkLightSwitch *threeg_switch,
-                         gboolean            new_state,
-                         CarrickPane        *pane)
+_threeg_switch_callback (GtkSwitch   *threeg_switch,
+                         GParamSpec  *property,
+                         CarrickPane *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
 
@@ -484,7 +484,7 @@ _threeg_switch_callback (MxGtkLightSwitch *threeg_switch,
                                    _threeg_switch_callback,
                                    pane);
 
-  if (new_state)
+  if (gtk_switch_get_active (threeg_switch))
     {
       carrick_notification_manager_queue_event (priv->notes,
                                                 "cellular",
@@ -524,8 +524,8 @@ wimax_switch_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
 
-      mx_gtk_light_switch_set_active
-        (MX_GTK_LIGHT_SWITCH (priv->wimax_switch),
+      gtk_switch_set_active
+        (GTK_SWITCH (priv->wimax_switch),
          priv->wimax_enabled);
     }
 
@@ -535,9 +535,9 @@ wimax_switch_notify_cb (DBusGProxy *proxy,
 }
 
 static gboolean
-_wimax_switch_callback (MxGtkLightSwitch *wimax_switch,
-                        gboolean            new_state,
-                        CarrickPane        *pane)
+_wimax_switch_callback (GtkSwitch   *wimax_switch,
+                        GParamSpec  *property,
+                        CarrickPane *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
 
@@ -545,7 +545,7 @@ _wimax_switch_callback (MxGtkLightSwitch *wimax_switch,
                                    _wimax_switch_callback,
                                    pane);
 
-  if (new_state)
+  if (gtk_switch_get_active (wimax_switch))
     {
       carrick_notification_manager_queue_event (priv->notes,
                                                 "wimax",
@@ -585,8 +585,8 @@ bluetooth_switch_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
 
-      mx_gtk_light_switch_set_active
-        (MX_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
+      gtk_switch_set_active
+        (GTK_SWITCH (priv->bluetooth_switch),
          priv->bluetooth_enabled);
     }
 
@@ -596,9 +596,9 @@ bluetooth_switch_notify_cb (DBusGProxy *proxy,
 }
 
 static gboolean
-_bluetooth_switch_callback (MxGtkLightSwitch *bluetooth_switch,
-                            gboolean            new_state,
-                            CarrickPane        *pane)
+_bluetooth_switch_callback (GtkSwitch   *bluetooth_switch,
+                            GParamSpec  *property,
+                            CarrickPane *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
 
@@ -606,7 +606,7 @@ _bluetooth_switch_callback (MxGtkLightSwitch *bluetooth_switch,
                                    _bluetooth_switch_callback,
                                    pane);
 
-  if (new_state)
+  if (gtk_switch_get_active (bluetooth_switch))
     {
       carrick_notification_manager_queue_event (priv->notes,
                                                 "bluetooth",
@@ -943,8 +943,8 @@ offline_switch_notify_cb (DBusGProxy *proxy,
                error->message);
       g_error_free (error);
 
-      mx_gtk_light_switch_set_active
-        (MX_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
+      gtk_switch_set_active
+        (GTK_SWITCH (priv->offline_mode_switch),
          priv->offline_mode);
     }
 
@@ -954,9 +954,9 @@ offline_switch_notify_cb (DBusGProxy *proxy,
 }
 
 static gboolean
-_offline_mode_switch_callback (MxGtkLightSwitch *flight_switch,
-                               gboolean            new_state,
-                               CarrickPane        *pane)
+_offline_mode_switch_callback (GtkSwitch   *flight_switch,
+                               GParamSpec  *property,
+                               CarrickPane *pane)
 {
   CarrickPanePrivate *priv = pane->priv;
   GValue *value;
@@ -974,7 +974,7 @@ _offline_mode_switch_callback (MxGtkLightSwitch *flight_switch,
   value = g_slice_new0 (GValue);
   g_value_init (value, G_TYPE_BOOLEAN);
   g_value_set_boolean (value,
-                       new_state);
+                       gtk_switch_get_active (flight_switch));
 
   net_connman_Manager_set_property_async (priv->manager,
                                           "OfflineMode",
@@ -1044,7 +1044,7 @@ new_tech_proxy (const char *tech, GtkWidget *tech_switch)
   gtk_widget_set_sensitive (tech_switch, TRUE);
 
   connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, NULL);
-  if (!connection) 
+  if (!connection)
     return NULL;
 
   path = g_strdup_printf ("/net/connman/technology/%s", tech);
@@ -1069,7 +1069,7 @@ new_tech_proxy (const char *tech, GtkWidget *tech_switch)
   net_connman_Technology_get_properties_async (proxy,
                                                tech_get_properties_cb,
                                                tech_switch);
-  
+
   return proxy;
 }
 
@@ -1103,9 +1103,8 @@ pane_update_property (const gchar *property,
                                        _offline_mode_switch_callback,
                                        user_data);
 
-      mx_gtk_light_switch_set_active (MX_GTK_LIGHT_SWITCH
-                                        (priv->offline_mode_switch),
-                                        priv->offline_mode);
+      gtk_switch_set_active (GTK_SWITCH (priv->offline_mode_switch),
+                             priv->offline_mode);
 
       /* arm signal handler */
       g_signal_handlers_unblock_by_func (priv->offline_mode_switch,
@@ -1254,21 +1253,16 @@ pane_update_property (const gchar *property,
                                        _bluetooth_switch_callback,
                                        user_data);
 
-      mx_gtk_light_switch_set_active (MX_GTK_LIGHT_SWITCH
-                                        (priv->ethernet_switch),
-                                        priv->ethernet_enabled);
-      mx_gtk_light_switch_set_active (MX_GTK_LIGHT_SWITCH
-                                        (priv->wifi_switch),
-                                        priv->wifi_enabled);
-      mx_gtk_light_switch_set_active (MX_GTK_LIGHT_SWITCH
-                                        (priv->threeg_switch),
-                                        priv->threeg_enabled);
-      mx_gtk_light_switch_set_active (MX_GTK_LIGHT_SWITCH
-                                        (priv->wimax_switch),
-                                        priv->wimax_enabled);
-      mx_gtk_light_switch_set_active (MX_GTK_LIGHT_SWITCH
-                                        (priv->bluetooth_switch),
-                                        priv->bluetooth_enabled);
+      gtk_switch_set_active (GTK_SWITCH (priv->ethernet_switch),
+                             priv->ethernet_enabled);
+      gtk_switch_set_active (GTK_SWITCH (priv->wifi_switch),
+                             priv->wifi_enabled);
+      gtk_switch_set_active (GTK_SWITCH (priv->threeg_switch),
+                             priv->threeg_enabled);
+      gtk_switch_set_active (GTK_SWITCH (priv->wimax_switch),
+                             priv->wimax_enabled);
+      gtk_switch_set_active (GTK_SWITCH (priv->bluetooth_switch),
+                             priv->bluetooth_enabled);
 
       /* arm signal handlers */
       g_signal_handlers_unblock_by_func (priv->ethernet_switch,
@@ -1502,7 +1496,7 @@ get_technology_box (const char *name,
   gtk_widget_show (tech_box);
   box = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (box);
-  *tech_switch = mx_gtk_light_switch_new ();
+  *tech_switch = gtk_switch_new ();
   gtk_widget_show (*tech_switch);
 
   switch_label = gtk_label_new (NULL);
@@ -1521,14 +1515,6 @@ get_technology_box (const char *name,
                     FALSE, FALSE, 0);
 
   return tech_box;
-}
-
-static void
-button_size_request_cb (GtkWidget      *button,
-                        GtkRequisition *requisition,
-                        gpointer        user_data)
-{
-  requisition->width = MAX (requisition->width, CARRICK_MIN_BUTTON_WIDTH);
 }
 
 static void
@@ -1683,7 +1669,7 @@ auth_dialog_exit_cb (GPid pid, int status, auth_dialog_data *data)
     }
 
   carrick_pane_connect_vpn (data->self, data->name,
-                            gw_term, cookie_term, gw_cert_term); 
+                            gw_term, cookie_term, gw_cert_term);
   g_free (data->name);
   g_free (data);
   g_free (gw_term);
@@ -1807,7 +1793,7 @@ carrick_pane_load_vpn_config (CarrickPane *self)
                           -1);
       g_free (uuid);
       g_free (id);
- 
+
       if (!have_vpn)
         {
           gtk_combo_box_set_active_iter (GTK_COMBO_BOX (priv->vpn_combo),
@@ -1990,8 +1976,8 @@ carrick_pane_init (CarrickPane *self)
                                        &priv->wifi_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->wifi_box,
                       FALSE, FALSE, 0);
-  g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->wifi_switch),
-                    "switch-flipped",
+  g_signal_connect (priv->wifi_switch,
+                    "notify::active",
                     G_CALLBACK (_wifi_switch_callback),
                     self);
 
@@ -2004,8 +1990,8 @@ carrick_pane_init (CarrickPane *self)
                                            &priv->ethernet_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->ethernet_box,
                       FALSE, FALSE, 0);
-  g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->ethernet_switch),
-                    "switch-flipped",
+  g_signal_connect (priv->ethernet_switch,
+                    "notify::active",
                     G_CALLBACK (_ethernet_switch_callback),
                     self);
 
@@ -2018,8 +2004,8 @@ carrick_pane_init (CarrickPane *self)
                                          &priv->threeg_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->threeg_box,
                       FALSE, FALSE, 0);
-  g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->threeg_switch),
-                    "switch-flipped",
+  g_signal_connect (priv->threeg_switch,
+                    "notify::active",
                     G_CALLBACK (_threeg_switch_callback),
                     self);
 
@@ -2032,8 +2018,8 @@ carrick_pane_init (CarrickPane *self)
                                         &priv->wimax_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->wimax_box,
                       FALSE, FALSE, 0);
-  g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->wimax_switch),
-                    "switch-flipped",
+  g_signal_connect (priv->wimax_switch,
+                    "notify::active",
                     G_CALLBACK (_wimax_switch_callback),
                     self);
 
@@ -2046,8 +2032,8 @@ carrick_pane_init (CarrickPane *self)
                                             &priv->bluetooth_switch);
   gtk_box_pack_start (GTK_BOX (box), priv->bluetooth_box,
                       FALSE, FALSE, 0);
-  g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->bluetooth_switch),
-                    "switch-flipped",
+  g_signal_connect (priv->bluetooth_switch,
+                    "notify::active",
                     G_CALLBACK (_bluetooth_switch_callback),
                     self);
 
@@ -2071,8 +2057,8 @@ carrick_pane_init (CarrickPane *self)
                                                &priv->offline_mode_switch);
   gtk_box_pack_end (GTK_BOX (box), priv->offline_mode_box,
                     FALSE, FALSE, 0);
-  g_signal_connect (MX_GTK_LIGHT_SWITCH (priv->offline_mode_switch),
-                    "switch-flipped",
+  g_signal_connect (priv->offline_mode_switch,
+                    "notify::active",
                     G_CALLBACK (_offline_mode_switch_callback),
                     self);
 
@@ -2120,8 +2106,8 @@ carrick_pane_init (CarrickPane *self)
 
   /* New connection button */
   priv->new_conn_button = gtk_button_new_with_label (_ ("Add new connection"));
-  g_signal_connect_after (priv->new_conn_button, "size-request",
-                          G_CALLBACK (button_size_request_cb), self);
+  gtk_widget_set_size_request (priv->new_conn_button, CARRICK_MIN_BUTTON_WIDTH, -1);
+
   gtk_widget_set_sensitive (priv->new_conn_button,
                             FALSE);
   gtk_widget_show (priv->new_conn_button);
@@ -2157,7 +2143,7 @@ carrick_pane_init (CarrickPane *self)
   gtk_box_pack_start (GTK_BOX (priv->vpn_box), box, FALSE, FALSE, 4);
 
   /* TRANSLATORS: Button
-   * There will be a combobox of VPN networks to the left of the 
+   * There will be a combobox of VPN networks to the left of the
    * button */
   vpn_connect_button = gtk_button_new_with_label (_("Connect to VPN"));
   gtk_widget_show (vpn_connect_button);

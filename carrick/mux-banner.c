@@ -38,9 +38,6 @@ mux_banner_realize (GtkWidget *widget)
   GTK_WIDGET_CLASS (mux_banner_parent_class)->realize (widget);
 
   gdk_color_parse ("#d7d9d6", &banner->priv->colour);
-  gdk_colormap_alloc_color (gdk_colormap_get_system (),
-                            &banner->priv->colour,
-                            FALSE, TRUE);
 }
 
 static gboolean
@@ -54,7 +51,6 @@ mux_banner_draw (GtkWidget *widget, cairo_t *cr)
                    gtk_widget_get_allocated_width (widget),
                    gtk_widget_get_allocated_height (widget));
   cairo_fill (cr);
-  cairo_destroy (cr);
 
   return GTK_WIDGET_CLASS (mux_banner_parent_class)->draw (widget, cr);
 }
