@@ -163,7 +163,7 @@ AC_ARG_ENABLE([profile],
 
 CFLAGS="$CFLAGS -Wall"
 
-AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g -O0"])
+AS_IF([test "x$enable_debug" = "xyes"], [CFLAGS="$CFLAGS -g3 -O0"])
 AS_IF([test "x$enable_profile" = "xyes"], [CFLAGS="$CFLAGS -pg"])
 
 # control center capplet
