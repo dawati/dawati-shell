@@ -4,6 +4,9 @@ schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_in_files = mutter-dawati.schemas.in
 schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 
+sessiondir = $(datadir)/xsessions
+dist_session_DATA = dawati.desktop
+
 @INTLTOOL_SCHEMAS_RULE@
 
 if GCONF_SCHEMAS_INSTALL

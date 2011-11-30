@@ -1,0 +1,5 @@
+[Desktop Entry]
+Version=1.0
+Name=Dawati Desktop
+Exec=mutter --mutter-plugins=dawati-netbook --sm-disable
+Type=Application
