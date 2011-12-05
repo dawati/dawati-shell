@@ -93,11 +93,6 @@ MnbPeoplePanel
   color: #616261ff;
 }
 
-*#people-no-people-message-label
-{
-  padding: 0 0 10 0;
-}
-
 *#people-panel-messenger-launcher-tile,
 *#people-panel-settings-launcher-tile,
 *#people-panel-active-content-box
