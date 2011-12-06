@@ -475,10 +475,6 @@ dawati_netbook_display_window_created_cb (MetaDisplay  *display,
         {
           priv->screen_saver_mcw = mcw;
           dawati_netbook_toggle_compositor (plugin, FALSE);
-
-          g_signal_connect (mcw, "window-destroyed",
-                            G_CALLBACK (window_destroyed_cb),
-                            plugin);
         }
     }
 
@@ -1796,7 +1792,7 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
       dawati_netbook_window_is_modal_for_panel (active_panel, mw))
     {
       mnb_panel_oop_set_auto_modal ((MnbPanelOop*)active_panel, TRUE);
-      g_signal_connect (mcw, "window-destroyed",
+      g_signal_connect (mw, "unmanaged",
                         G_CALLBACK (dawati_netbook_panel_modal_destroyed_cb),
                         active_panel);
     }
@@ -1903,15 +1899,6 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
       if (meta_window_is_blessed_window (mw))
         mnb_toolbar_hide (MNB_TOOLBAR (priv->toolbar), MNB_SHOW_HIDE_POLICY);
 
-      if (type == META_WINDOW_NORMAL ||
-          type == META_WINDOW_DIALOG ||
-          type == META_WINDOW_MODAL_DIALOG)
-        {
-          g_signal_connect (mcw, "window-destroyed",
-                            G_CALLBACK (window_destroyed_cb),
-                            plugin);
-        }
-
       /*
        * Move application window to a new workspace, if appropriate.
        *
@@ -2009,16 +1996,7 @@ map (MetaPlugin *plugin, MetaWindowActor *mcw)
         meta_plugin_map_completed (plugin, mcw);
     }
   else
-    {
-      /*
-       * For any other typed windows, connect to the window-destroyed signal.
-       */
-      g_signal_connect (mcw, "window-destroyed",
-                        G_CALLBACK (window_destroyed_cb),
-                        plugin);
-
-      meta_plugin_map_completed (plugin, mcw);
-    }
+    meta_plugin_map_completed (plugin, mcw);
 }
 
 static void
