@@ -4041,10 +4041,14 @@ mnb_toolbar_load_gconf_settings (MnbToolbar *toolbar)
   GConfClient                *client = ppriv->gconf_client;
   GSList                     *order;
   gint                        i;
-  const gchar                *required[4] = {"dawati-panel-myzone",
-                                             "dawati-panel-applications",
+  const gchar                *required[8] = {"dawati-panel-myzone",
                                              "dawati-panel-zones",
-                                             "carrick"};
+                                             "dawati-panel-applications",
+                                             "dawati-panel-status",
+                                             "dawati-panel-people",
+                                             "dawati-panel-internet",
+                                             "carrick",
+                                             "dawati-panel-datetime"};
 
   order = gconf_client_get_list (client, KEY_ORDER, GCONF_VALUE_STRING, NULL);
 
