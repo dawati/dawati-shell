@@ -305,6 +305,16 @@ dawati_netbook_fullscreen_apps_present_on_workspace (MetaPlugin *plugin,
 }
 
 static void
+dawati_netbook_workspace_added_cb (MetaScreen *screen,
+                                   gint        num,
+                                   MetaPlugin *plugin)
+{
+  DawatiNetbookPluginPrivate *priv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
+
+  dawati_netbook_set_struts (plugin, -1, -1, -1, -1);
+}
+
+static void
 dawati_netbook_workspace_switched_cb (MetaScreen          *screen,
                                      gint                 from,
                                      gint                 to,
@@ -697,6 +707,11 @@ dawati_netbook_plugin_start (MetaPlugin *plugin)
       g_warning ("%s", err->message);
       g_error_free (err);
     }
+
+  g_signal_connect (screen,
+                    "workspace-added",
+                    G_CALLBACK (dawati_netbook_workspace_added_cb),
+                    plugin);
 
   g_signal_connect (screen,
                     "workareas-changed",
@@ -2972,6 +2987,12 @@ dawati_netbook_urgent_notification_present (MetaPlugin *plugin)
   return ntf_overlay_urgent_notification_present ();
 }
 
+static void
+_free_this (gpointer data, gpointer user_data)
+{
+  g_free (data);
+}
+
 /*
  * pass -1 for any values not to be used.
  */
@@ -2982,70 +3003,89 @@ dawati_netbook_set_struts (MetaPlugin *plugin,
                            gint          top,
                            gint          bottom)
 {
-  DawatiNetbookPluginPrivate *ppriv = DAWATI_NETBOOK_PLUGIN (plugin)->priv;
-  MetaScreen        *screen         = meta_plugin_get_screen (plugin);
-  MetaDisplay       *display        = meta_screen_get_display (screen);
-  Display           *xdpy           = meta_display_get_xdisplay (display);
-  Window             xwin           = ppriv->focus_xwin;
-  Atom               strut_atom     = meta_display_get_atom (display,
-                                                      META_ATOM__NET_WM_STRUT);
+  MetaScreen  *screen  = meta_plugin_get_screen (plugin);
+  MetaDisplay *display = meta_screen_get_display (screen);
 
-  static gint32 struts[4] = {-1, -1, -1, -1};
+  static gint32 struts[4] = {-1, /* left */
+                             -1, /* right */
+                             -1, /* top */
+                             -1  /* bottom */};
 
   if (left   != struts[0] ||
       right  != struts[1] ||
       top    != struts[2] ||
       bottom != struts[3])
     {
+      GSList *strut_list = NULL;
+      GList *workspaces;
+      MetaStrut *strut;
+      MetaRectangle monitor_rect;
+
+      meta_screen_get_monitor_geometry (screen,
+                                        meta_screen_get_primary_monitor (screen),
+                                        &monitor_rect);
+
       if (left >= 0)
         struts[0] = left;
+      if (struts[0] >= 0)
+        {
+          strut = g_new0 (MetaStrut, 1);
+          strut->side = META_SIDE_LEFT;
+          strut->rect.x = 0;
+          strut->rect.y = 0;
+          strut->rect.width = struts[0];
+          strut->rect.height = monitor_rect.height;
+          strut_list = g_slist_prepend (strut_list, strut);
+        }
 
       if (right >= 0)
         struts[1] = right;
+      if (struts[1] >= 0)
+        {
+          strut = g_new0 (MetaStrut, 1);
+          strut->side = META_SIDE_RIGHT;
+          strut->rect.x = monitor_rect.width - struts[1];
+          strut->rect.y = 0;
+          strut->rect.width = struts[1];
+          strut->rect.height = monitor_rect.height;
+          strut_list = g_slist_prepend (strut_list, strut);
+        }
 
       if (top >= 0)
         struts[2] = top;
+      if (struts[2] >= 0)
+        {
+          strut = g_new0 (MetaStrut, 1);
+          strut->side = META_SIDE_TOP;
+          strut->rect.x = 0;
+          strut->rect.y = 0;
+          strut->rect.width = monitor_rect.width;
+          strut->rect.height = struts[2];
+          strut_list = g_slist_prepend (strut_list, strut);
+        }
 
       if (bottom >= 0)
         struts[3] = bottom;
-
-      if (struts[0] <= 0 &&
-          struts[1] <= 0 &&
-          struts[2] <= 0 &&
-          struts[3] <= 0)
+      if (struts[3] >= 0)
         {
-          struts[0] = struts[1] = struts[2] = struts[3] = -1;
-
-          meta_error_trap_push (display);
-
-          XDeleteProperty (xdpy, xwin, strut_atom);
-
-          meta_error_trap_pop (display);
+          strut = g_new0 (MetaStrut, 1);
+          strut->side = META_SIDE_BOTTOM;
+          strut->rect.x = 0;
+          strut->rect.y = monitor_rect.height - struts[3];
+          strut->rect.width = monitor_rect.width;
+          strut->rect.height = struts[3];
+          strut_list = g_slist_prepend (strut_list, strut);
         }
-      else
+
+      workspaces = meta_screen_get_workspaces (screen);
+      while (workspaces)
         {
-          gint32 new_struts[4] = {0,};
-
-          if (struts[0] > 0)
-            new_struts[0] = struts[0];
-
-          if (struts[1] > 0)
-            new_struts[1] = struts[1];
-
-          if (struts[2] > 0)
-            new_struts[2] = struts[2];
-
-          if (struts[3] > 0)
-            new_struts[3] = struts[3];
-
-          meta_error_trap_push (display);
-
-          XChangeProperty (xdpy, xwin,
-                           strut_atom,
-                           XA_CARDINAL, 32, PropModeReplace,
-                           (unsigned char *) &new_struts, 4);
-
-          meta_error_trap_pop (display);
+          meta_workspace_set_builtin_struts (META_WORKSPACE (workspaces->data),
+                                             strut_list);
+          workspaces = workspaces->next;
         }
+
+      g_slist_foreach (strut_list, _free_this, NULL);
+      g_slist_free (strut_list);
     }
 }
