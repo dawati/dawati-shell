@@ -17,8 +17,16 @@ if USE_CARRICK_CALLOUTS
 SUBDIRS += carrick callouts
 endif
 
+if HAVE_MUTTER
+SUBDIRS += src
+endif
+
 # extra
-SUBDIRS += src po data tests panels
+SUBDIRS += po data panels
+
+if INSTALL_TEST_TOOLS
+SUBDIRS += tests
+endif
 
 if HAVE_CAPPLET
 SUBDIRS += capplet

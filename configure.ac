@@ -95,16 +95,26 @@ fi
 AM_GCONF_SOURCE_2
 
 # Mutter-dawati
+AC_ARG_ENABLE([mutter],
+              [AC_HELP_STRING([--disable-mutter],
+                              [Disable mutter])],
+              [],
+              [enable_mutter=yes])
+
+if test "$enable_mutter" != "no"; then
 PKG_CHECK_MODULES(MUTTER_PLUGIN,
                   mutter-plugins >= mutter_version dnl
-                  mx-1.0 >= 0.5.0                     dnl
-                  libstartup-notification-1.0        dnl
-                  gtk+-2.0                           dnl
-                  dbus-glib-1                        dnl
+                  mx-1.0 >= 0.5.0                  dnl
+                  libstartup-notification-1.0      dnl
+                  gtk+-2.0                         dnl
+                  dbus-glib-1                      dnl
                   gconf-2.0
                   gio-unix-2.0
-		  xrandr
-		  xscrnsaver)
+                  xrandr
+                  xscrnsaver)
+fi
+
+AM_CONDITIONAL([HAVE_MUTTER], [test "$enable_mutter" != "no"])
 
 AC_ARG_ENABLE([scaled-background],
 	AC_HELP_STRING([--enable-scaled-background],
