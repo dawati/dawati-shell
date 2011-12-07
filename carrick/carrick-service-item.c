@@ -37,7 +37,6 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <glib/gi18n.h>
-#include <mx-gtk/mx-gtk.h>
 #include "nbtk-gtk-expander.h"
 
 #include "connman-service-bindings.h"
