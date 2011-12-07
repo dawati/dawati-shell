@@ -493,6 +493,7 @@ static void
 mpd_power_icon_init (MpdPowerIcon *self)
 {
   MpdPowerIconPrivate *priv = GET_PRIVATE (self);
+  GdkDisplay *display;
   unsigned int key_code;
 
   /* Panel */
@@ -514,8 +515,10 @@ mpd_power_icon_init (MpdPowerIcon *self)
   /* Idle manager */
   priv->idle_manager = mpd_idle_manager_new ();
 
+  display = gdk_display_get_default ();
+
   /* Shutdown key. */
-  key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_PowerOff);
+  key_code = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (display), XF86XK_PowerOff);
   if (key_code)
   {
     priv->shutdown_key = mpd_global_key_new (key_code);
@@ -527,7 +530,7 @@ mpd_power_icon_init (MpdPowerIcon *self)
   }
 
   /* Sleep key. */
-  key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_Sleep);
+  key_code = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (display), XF86XK_Sleep);
   if (key_code)
   {
     priv->sleep_key = mpd_global_key_new (key_code);
@@ -546,7 +549,8 @@ mpd_power_icon_init (MpdPowerIcon *self)
                                            get_display_device_mode (self));
 
     /* Brightness keys. */
-    key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_MonBrightnessUp);
+    key_code = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (display),
+                                 XF86XK_MonBrightnessUp);
     if (key_code)
     {
       priv->brightness_up_key = mpd_global_key_new (key_code);
@@ -556,7 +560,8 @@ mpd_power_icon_init (MpdPowerIcon *self)
     } else {
       g_warning ("Failed to query XF86XK_MonBrightnessUp key code.");
     }
-    key_code = XKeysymToKeycode (GDK_DISPLAY (), XF86XK_MonBrightnessDown);
+    key_code = XKeysymToKeycode (GDK_DISPLAY_XDISPLAY (display),
+                                 XF86XK_MonBrightnessDown);
     if (key_code)
     {
       priv->brightness_down_key = mpd_global_key_new (key_code);

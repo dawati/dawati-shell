@@ -63,7 +63,7 @@ window_grab_key (GdkWindow     *window,
                  unsigned int   key_code,
                  GError       **error)
 {
-  Display       *dpy = GDK_DISPLAY ();
+  Display       *dpy = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
   unsigned int   mask = AnyModifier;
   int            ret;
 
@@ -194,7 +194,7 @@ _dispose (GObject *object)
 
   if (priv->key_code)
   {
-    Display *dpy = GDK_DISPLAY ();
+    Display *dpy = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
     GdkWindow *root_window = gdk_screen_get_root_window (
                                 gdk_screen_get_default ());
 

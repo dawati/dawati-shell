@@ -20,7 +20,7 @@
  */
 
 #include <dbus/dbus-glib.h>
-#include <devkit-power-gobject/devicekit-power.h>
+#include <libupower-glib/upower.h>
 
 #include <gdk/gdkx.h>
 #include <X11/extensions/dpms.h>
@@ -42,7 +42,7 @@ typedef struct
   DBusGProxy  *presence;
   DBusGProxy  *screensaver;
 
-  DkpClient   *power_client;
+  UpClient    *power_client;
 
   Display     *display;
 
@@ -216,7 +216,7 @@ mpd_idle_manager_init (MpdIdleManager *self)
   g_signal_connect (priv->conf, "notify::suspend-idle-time",
                     G_CALLBACK (_suspend_timeout_changed_cb), self);
 
-  priv->power_client = dkp_client_new ();
+  priv->power_client = up_client_new ();
 
   conn = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (!conn)
@@ -285,7 +285,7 @@ mpd_idle_manager_suspend (MpdIdleManager   *self,
   if (!ret)
     return false;
 
-  ret = dkp_client_suspend (priv->power_client, error);
+  ret = up_client_suspend_sync (priv->power_client, NULL, error);
 
   dbus_g_proxy_call_no_reply (priv->screensaver, "SimulateUserActivity",
                               G_TYPE_INVALID);

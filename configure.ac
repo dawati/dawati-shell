@@ -336,7 +336,7 @@ AS_DAWATI_PANEL(power-icon, [gconf-2.0
                              $CLUTTER_DEPS
                              $CLUTTER_GTK_DEPS
                              $MX_DEPS
-                             devkit-power-gobject
+                             upower-glib
                              libnotify])
 
 # Status

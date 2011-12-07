@@ -18,7 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <devkit-power-gobject/devicekit-power.h>
+#include <libupower-glib/upower.h>
 
 #include "mpd-gobject.h"
 #include "mpd-lid-device.h"
@@ -42,19 +42,17 @@ enum
 
 typedef struct
 {
-  DkpClient *client;
+  UpClient  *client;
   bool       closed;
 } MpdLidDevicePrivate;
 
 static void
-_client_changed_cb (DkpClient    *client,
+_client_changed_cb (UpClient     *client,
                     MpdLidDevice *self)
 {
   bool closed;
 
-	g_object_get (client,
-                "lid-is-closed", &closed,
-                NULL);
+  g_object_get (client, "lid-is-closed", &closed, NULL);
 
   mpd_lid_device_set_closed (self, closed);
 }
@@ -128,7 +126,7 @@ mpd_lid_device_init (MpdLidDevice *self)
 {
   MpdLidDevicePrivate *priv = GET_PRIVATE (self);
 
-  priv->client = dkp_client_new ();
+  priv->client = up_client_new ();
   g_signal_connect (priv->client, "changed",
                     G_CALLBACK (_client_changed_cb), self);
 	g_object_get (priv->client,
@@ -172,4 +170,3 @@ mpd_lid_device_set_closed (MpdLidDevice *self,
   }
 #endif
 }
-
