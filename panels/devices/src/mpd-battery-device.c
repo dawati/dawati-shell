@@ -18,7 +18,7 @@
  * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <devkit-power-gobject/devicekit-power.h>
+#include <libupower-glib/upower.h>
 #include <glib/gi18n.h>
 
 #include "mpd-battery-device.h"
@@ -40,8 +40,8 @@ enum
 
 typedef struct
 {
-  DkpClient             *client;
-  DkpDevice             *device;
+  UpClient              *client;
+  UpDevice              *device;
   unsigned int           percentage;
   MpdBatteryDeviceState  state;
 } MpdBatteryDevicePrivate;
@@ -54,20 +54,18 @@ mpd_battery_device_set_state      (MpdBatteryDevice       *self,
                                    MpdBatteryDeviceState   state);
 
 static void
-_client_device_added_cb (DkpClient        *client,
-                         DkpDevice        *device,
-                         MpdBatteryDevice *self)
+_client_device_added_cb (UpClient         *client,
+			 UpDevice         *device,
+			 MpdBatteryDevice *self)
 {
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
-  DkpDeviceType device_type;
+  UpDeviceKind device_kind;
 
   if (NULL == priv->device)
   {
-    g_object_get (device,
-                  "type", &device_type,
-                  NULL);
+    g_object_get (device, "kind", &device_kind, NULL);
 
-    if (DKP_DEVICE_TYPE_BATTERY == device_type)
+    if (UP_DEVICE_KIND_BATTERY == device_kind)
     {
       priv->device = g_object_ref (device);
 
@@ -80,15 +78,15 @@ _client_device_added_cb (DkpClient        *client,
 }
 
 static void
-_client_device_removed_cb (DkpClient        *client,
-                           DkpDevice        *device,
-                           MpdBatteryDevice *self)
+_client_device_removed_cb (UpClient         *client,
+			   UpDevice         *device,
+			   MpdBatteryDevice *self)
 {
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
 
   if (priv->device &&
-      0 == g_strcmp0 (dkp_device_get_object_path (device),
-                      dkp_device_get_object_path (priv->device)))
+      0 == g_strcmp0 (up_device_get_object_path (device),
+                      up_device_get_object_path (priv->device)))
   {
     g_object_unref (priv->device);
     priv->device = NULL;
@@ -99,15 +97,15 @@ _client_device_removed_cb (DkpClient        *client,
 }
 
 static void
-_client_device_changed_cb (DkpClient        *client,
-                           DkpDevice        *device,
-                           MpdBatteryDevice *self)
+_client_device_changed_cb (UpClient         *client,
+			   UpDevice         *device,
+			   MpdBatteryDevice *self)
 {
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
 
   if (priv->device &&
-      0 == g_strcmp0 (dkp_device_get_object_path (device),
-                      dkp_device_get_object_path (priv->device)))
+      0 == g_strcmp0 (up_device_get_object_path (device),
+                      up_device_get_object_path (priv->device)))
   {
     mpd_battery_device_set_percentage (self,
                                        mpd_battery_device_get_percentage (self));
@@ -143,7 +141,7 @@ _constructor (GType                  type,
 
   /* Look up battery device. */
 
-  devices = dkp_client_enumerate_devices (priv->client, &error);
+  up_client_enumerate_devices_sync (priv->client, NULL, &error);
   if (error)
   {
     g_critical ("%s : %s", G_STRLOC, error->message);
@@ -152,15 +150,16 @@ _constructor (GType                  type,
     return NULL;
   }
 
+  devices = up_client_get_devices (priv->client);
+
   for (i = 0; i < devices->len; i++)
   {
-    DkpDevice *device = g_ptr_array_index (devices, i);
-    DkpDeviceType device_type;
-    g_object_get (device,
-                  "type", &device_type,
-                  NULL);
+    UpDevice *device = g_ptr_array_index (devices, i);
+    UpDeviceKind device_kind;
 
-    if (DKP_DEVICE_TYPE_BATTERY == device_type)
+    g_object_get (device, "kind", &device_kind, NULL);
+
+    if (UP_DEVICE_KIND_BATTERY == device_kind)
       priv->device = g_object_ref (device);
   }
 
@@ -262,7 +261,7 @@ mpd_battery_device_init (MpdBatteryDevice *self)
 {
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
 
-  priv->client = dkp_client_new ();
+  priv->client = up_client_new ();
   g_signal_connect (priv->client, "device-added",
                     G_CALLBACK (_client_device_added_cb), self);
   g_signal_connect (priv->client, "device-removed",
@@ -319,7 +318,7 @@ mpd_battery_device_get_state (MpdBatteryDevice *self)
 {
   MpdBatteryDevicePrivate *priv = GET_PRIVATE (self);
   MpdBatteryDeviceState state;
-  DkpDeviceState        device_state;
+  UpDeviceState         device_state;
 
   g_return_val_if_fail (MPD_IS_BATTERY_DEVICE (self),
                         MPD_BATTERY_DEVICE_STATE_UNKNOWN);
@@ -329,20 +328,18 @@ mpd_battery_device_get_state (MpdBatteryDevice *self)
     return MPD_BATTERY_DEVICE_STATE_MISSING;
   }
 
-  g_object_get (priv->device,
-                "state", &device_state,
-                NULL);
+  g_object_get (priv->device, "state", &device_state, NULL);
 
   switch (device_state)
   {
-  case DKP_DEVICE_STATE_CHARGING:
+  case UP_DEVICE_STATE_CHARGING:
     state = MPD_BATTERY_DEVICE_STATE_CHARGING;
     break;
-  case DKP_DEVICE_STATE_DISCHARGING:
-  case DKP_DEVICE_STATE_EMPTY:
+  case UP_DEVICE_STATE_DISCHARGING:
+  case UP_DEVICE_STATE_EMPTY:
     state = MPD_BATTERY_DEVICE_STATE_DISCHARGING;
     break;
-  case DKP_DEVICE_STATE_FULLY_CHARGED:
+  case UP_DEVICE_STATE_FULLY_CHARGED:
     state = MPD_BATTERY_DEVICE_STATE_FULLY_CHARGED;
     break;
   default:

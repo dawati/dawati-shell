@@ -260,7 +260,7 @@ AS_DAWATI_PANEL(datetime, [glib-2.0
 # Devices
 AS_DAWATI_PANEL(devices, [glib-2.0
                           gobject-2.0
-                          devkit-power-gobject
+                          upower-glib
                           gconf-2.0
                           $CLUTTER_GTK_DEPS
                           xrandr
